@@ -8,6 +8,7 @@ import StrategyPage from '@/components/strategy/StrategyPage';
 import PortfolioPage from '@/components/portfolio/PortfolioPage';
 import OrdersPage from '@/components/orders/OrdersPage';
 import SettingsPage from '@/components/settings/SettingsPage';
+import MarketplacePage from '@/components/marketplace/MarketplacePage';
 
 const pages: Record<string, React.FC> = {
   market: MarketPage,
@@ -15,10 +16,10 @@ const pages: Record<string, React.FC> = {
   portfolio: PortfolioPage,
   orders: OrdersPage,
   settings: SettingsPage,
+  marketplace: MarketplacePage,
   // Aliases for views that share pages
   live: MarketPage,
   backtest: StrategyPage,
-  marketplace: StrategyPage,
   risk: SettingsPage,
 };
 
