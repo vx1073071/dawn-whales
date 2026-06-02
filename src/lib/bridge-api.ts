@@ -1,68 +1,99 @@
-// ── DAWN WHALES — Bridge API Client ────────────────────────────────────────
-// Connects to the running Futu Bridge (http://127.0.0.1:38901)
-// The bridge handles OpenD protobuf communication
+// ── DAWN WHALES — IPC API Client (直连 OpenD，通过 Electron IPC) ──────────────
+// Replaces the old bridge-api.ts that used HTTP to the Bridge.
+// Now communicates directly with OpenD via Electron Main Process.
 
-const BRIDGE_URL = 'http://127.0.0.1:38901';
-
-interface BridgeQuote {
-  code: string;
-  name: string;
-  price: number;
-  change: number;
-  changePct: number;
-  volume: number;
-  high: number;
-  low: number;
-  open: number;
-  prevClose: number;
-  amplitude: number;
-  updateTime: string;
-}
-
-interface BridgeAccount {
-  accId: string;
-  trdEnv: string;
-  totalAssets: number;
-  cash: number;
-  power: number;
-  marketVal: number;
-  todayPnl: number;
-  currency: string;
-  positions?: any[];
-}
-
-async function bridgeFetch(path: string): Promise<any> {
-  try {
-    const r = await fetch(`${BRIDGE_URL}${path}`);
-    if (!r.ok) return null;
-    return r.json();
-  } catch {
-    return null;
+declare global {
+  interface Window {
+    api: {
+      broker: {
+        connect: (config: any) => Promise<any>;
+        disconnect: () => Promise<any>;
+        getAccounts: () => Promise<any>;
+        getFunds: (accountId: string) => Promise<any>;
+        getPositions: (accountId: string) => Promise<any>;
+        getQuotes: (codes: string[]) => Promise<any>;
+        getKlines: (code: string, period: string, count: number) => Promise<any>;
+        placeOrder: (order: any) => Promise<any>;
+        cancelOrder: (orderId: string) => Promise<any>;
+        getOrders: (accountId: string) => Promise<any>;
+      };
+      strategy: {
+        create: (dsl: any) => Promise<any>;
+        backtest: (config: any) => Promise<any>;
+        startLive: (id: string) => Promise<any>;
+        stopLive: (id: string) => Promise<any>;
+      };
+      db: {
+        getStrategies: () => Promise<any>;
+        saveStrategy: (s: any) => Promise<any>;
+        getSettings: () => Promise<any>;
+        saveSettings: (s: any) => Promise<any>;
+      };
+      app: {
+        getInfo: () => Promise<any>;
+        getMemoryUsage: () => Promise<any>;
+      };
+      on: (channel: string, callback: (...args: any[]) => void) => void;
+    };
   }
 }
 
-export async function getHealth(): Promise<any> {
-  return bridgeFetch('/api/status');
-}
-
-export async function getQuotes(): Promise<BridgeQuote[]> {
-  // Bridge uses /api/watchlist (returns array directly, not {quotes:[...]})
-  const data = await bridgeFetch('/api/watchlist');
-  if (Array.isArray(data)) return data;
-  return data?.quotes || [];
-}
-
-export async function getAccounts(): Promise<BridgeAccount[]> {
-  const data = await bridgeFetch('/api/accounts');
-  return data?.accounts || [];
+function hasIPC(): boolean {
+  return typeof window !== 'undefined' && !!window.api?.broker;
 }
 
 export async function getKlines(code: string, period: string = 'daily', count: number = 200): Promise<any[]> {
-  // Bridge doesn't have /api/klines yet — generate demo data for K-line display
-  // TODO: Add real kline endpoint to bridge
+  if (!hasIPC()) return generateDemoKlines(count);
+  const result = await window.api.broker.getKlines(code, period, count);
+  if (result?.success && result.klines?.length > 0) return result.klines;
   return generateDemoKlines(count);
 }
 
+export async function getAccounts(): Promise<any[]> {
+  if (!hasIPC()) return [];
+  const result = await window.api.broker.getAccounts();
+  if (result?.success) return result.accounts || [];
+  return [];
+}
+
+export async function getFunds(accountId: string): Promise<any> {
+  if (!hasIPC()) return null;
+  const result = await window.api.broker.getFunds(accountId);
+  if (result?.success) return result.funds;
+  return null;
+}
+
+export async function getPositions(accountId: string): Promise<any[]> {
+  if (!hasIPC()) return [];
+  const result = await window.api.broker.getPositions(accountId);
+  if (result?.success) return result.positions || [];
+  return [];
+}
+
+export async function isConnected(): Promise<boolean> {
+  if (!hasIPC()) {
+    console.log('[API] No IPC available (not in Electron)');
+    return false;
+  }
+  try {
+    const result = await window.api.broker.getAccounts();
+    console.log('[API] isConnected:', result);
+    return result?.success === true;
+  } catch (err) {
+    console.log('[API] isConnected error:', err);
+    return false;
+  }
+}
+
+export async function getQuotes(codes: string[] = []): Promise<any[]> {
+  if (!hasIPC()) return [];
+  const result = await window.api.broker.getQuotes(codes);
+  console.log('[API] getQuotes result:', result?.success, result?.quotes?.length);
+  if (result?.success) return result.quotes || [];
+  return [];
+}
+
+// Demo K-line generator (fallback when OpenD kline fails)
 function generateDemoKlines(count: number): any[] {
   const data: any[] = [];
   let price = 100 + Math.random() * 50;
@@ -81,22 +112,10 @@ function generateDemoKlines(count: number): any[] {
 
     data.push({
       time: startTime + i * daySeconds,
-      open: +open.toFixed(2),
-      high: +high.toFixed(2),
-      low: +low.toFixed(2),
-      close: +close.toFixed(2),
-      volume,
+      open: +open.toFixed(2), high: +high.toFixed(2),
+      low: +low.toFixed(2), close: +close.toFixed(2), volume,
     });
     price = close;
   }
   return data;
-}
-
-export async function isBridgeAlive(): Promise<boolean> {
-  try {
-    const r = await fetch(`${BRIDGE_URL}/api/status`, { signal: AbortSignal.timeout(2000) });
-    return r.ok;
-  } catch {
-    return false;
-  }
 }

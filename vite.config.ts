@@ -19,7 +19,7 @@ export default defineConfig({
               fileName: () => 'main.cjs',
             },
             rollupOptions: {
-              external: ['better-sqlite3', 'electron-log', 'electron-updater', 'electron', 'http', 'path', 'net', 'fs', 'os', 'crypto'],
+              external: ['better-sqlite3', 'electron-log', 'electron-updater', 'electron', 'futu-api', 'http', 'path', 'net', 'fs', 'os', 'crypto'],
               output: {
                 entryFileNames: 'main.cjs',
               },

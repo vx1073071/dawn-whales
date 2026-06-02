@@ -12,6 +12,8 @@ import { DatabaseManager } from './data/database';
 import { RiskEngine } from './engine/risk-engine';
 import log from 'electron-log';
 
+const WATCHLIST = ['US.TQQQ','US.SOXL','US.QQQ','US.SPY','US.AAPL','US.NVDA','US.SQQQ','US.SOXS'];
+
 // ── Configuration ──────────────────────────────────────────────────────────
 
 const isDev = !app.isPackaged;
@@ -81,10 +83,10 @@ function setupIPC() {
   // ── Broker: Futu OpenD ──────────────────────────────────────────────
   ipcMain.handle('broker:connect', async (_e, config: { host: string; port: number }) => {
     try {
-      opendClient = new FutuOpenDClient(config.host, config.port);
+      opendClient = new FutuOpenDClient(config.host || '127.0.0.1', config.port || 11111);
       await opendClient.connect();
       log.info('[Broker] OpenD connected', config);
-      return { success: true, version: opendClient.version };
+      return { success: true, host: config.host, port: config.port };
     } catch (err: any) {
       log.error('[Broker] OpenD connect failed:', err.message);
       return { success: false, error: err.message };
@@ -98,48 +100,88 @@ function setupIPC() {
   });
 
   ipcMain.handle('broker:getAccounts', async () => {
-    if (!opendClient) return { success: false, error: 'Not connected' };
-    return opendClient.getAccounts();
+    if (!opendClient?.connected) return { success: false, error: 'Not connected' };
+    try {
+      const accounts = await opendClient.getAccounts();
+      return { success: true, accounts };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   });
 
   ipcMain.handle('broker:getFunds', async (_e, accountId: string) => {
-    if (!opendClient) return { success: false, error: 'Not connected' };
-    return opendClient.getFunds(accountId);
+    if (!opendClient?.connected) return { success: false, error: 'Not connected' };
+    try {
+      const funds = await opendClient.getFunds(accountId);
+      return { success: true, funds };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   });
 
   ipcMain.handle('broker:getPositions', async (_e, accountId: string) => {
-    if (!opendClient) return { success: false, error: 'Not connected' };
-    return opendClient.getPositions(accountId);
+    if (!opendClient?.connected) return { success: false, error: 'Not connected' };
+    try {
+      const positions = await opendClient.getPositions(accountId);
+      return { success: true, positions };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   });
 
   ipcMain.handle('broker:getQuotes', async (_e, codes: string[]) => {
-    if (!opendClient) return { success: false, error: 'Not connected' };
-    return opendClient.getQuotes(codes);
+    if (!opendClient?.connected) return { success: false, error: 'Not connected' };
+    try {
+      const quoteList = (!codes || codes.length === 0) ? WATCHLIST : codes;
+      const quotes = await opendClient.getQuotes(quoteList);
+      return { success: true, quotes };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   });
 
   ipcMain.handle('broker:getKlines', async (_e, code: string, period: string, count: number) => {
-    if (!opendClient) return { success: false, error: 'Not connected' };
-    return opendClient.getKlines(code, period, count);
+    if (!opendClient?.connected) return { success: false, error: 'Not connected' };
+    try {
+      const klines = await opendClient.getKlines(code, period || 'daily', count || 200);
+      return { success: true, klines };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   });
 
   ipcMain.handle('broker:placeOrder', async (_e, order: any) => {
-    if (!opendClient) return { success: false, error: 'Not connected' };
-    // Risk check before placing order
+    if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     const riskResult = riskEngine?.checkOrder(order);
     if (riskResult && !riskResult.pass) {
       return { success: false, error: `风控拦截: ${riskResult.reason}` };
     }
-    return opendClient.placeOrder(order);
+    try {
+      const result = await opendClient.placeOrder(order);
+      return { success: true, ...result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   });
 
-  ipcMain.handle('broker:cancelOrder', async (_e, orderId: string) => {
-    if (!opendClient) return { success: false, error: 'Not connected' };
-    return opendClient.cancelOrder(orderId);
+  ipcMain.handle('broker:cancelOrder', async (_e, orderId: string, accountId: string, code: string) => {
+    if (!opendClient?.connected) return { success: false, error: 'Not connected' };
+    try {
+      await opendClient.cancelOrder(orderId, accountId, code);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   });
 
   ipcMain.handle('broker:getOrders', async (_e, accountId: string) => {
-    if (!opendClient) return { success: false, error: 'Not connected' };
-    return opendClient.getOrders(accountId);
+    if (!opendClient?.connected) return { success: false, error: 'Not connected' };
+    try {
+      const orders = await opendClient.getOrders(accountId);
+      return { success: true, orders };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   });
 
   // ── Strategy Engine ─────────────────────────────────────────────────
@@ -221,11 +263,10 @@ function createTray() {
 
 // ── App Lifecycle ──────────────────────────────────────────────────────────
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   log.info('[App] DAWN WHALES starting...');
 
   try {
-    // Initialize database
     db = new DatabaseManager();
     db.initialize();
   } catch (err: any) {
@@ -233,7 +274,6 @@ app.whenReady().then(() => {
   }
 
   try {
-    // Initialize engines
     strategyEngine = new StrategyEngine();
     backtestEngine = new BacktestEngine();
     riskEngine = new RiskEngine();
@@ -243,6 +283,16 @@ app.whenReady().then(() => {
 
   // Setup IPC
   setupIPC();
+
+  // Auto-connect to OpenD (直连，无需 Bridge)
+  try {
+    opendClient = new FutuOpenDClient('127.0.0.1', 11111);
+    await opendClient.connect();
+    log.info('[App] OpenD auto-connected ✓');
+  } catch (err: any) {
+    log.warn('[App] OpenD auto-connect failed (will retry from UI):', err.message);
+    opendClient = null;
+  }
 
   // Create window
   createWindow();

@@ -1,10 +1,12 @@
-// ── useBridgeSync — Polls bridge API and updates stores ─────────────────────
+// ── useOpenDSync — Polls OpenD via IPC and updates stores ────────────────────
+// Replaces useBridgeSync (no more Bridge HTTP dependency)
+
 import { useEffect, useRef, useCallback } from 'react';
 import { useMarketStore } from '@/stores/marketStore';
 import { useAppStore } from '@/stores/appStore';
 import * as api from '@/lib/bridge-api';
 
-const POLL_INTERVAL = 3000; // 3 seconds
+const POLL_INTERVAL = 3000;
 
 export function useBridgeSync() {
   const setQuotes = useMarketStore((s) => s.setQuotes);
@@ -12,22 +14,17 @@ export function useBridgeSync() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const sync = useCallback(async () => {
-    // Check bridge health
-    const alive = await api.isBridgeAlive();
-    console.log('[BridgeSync] alive:', alive);
-    setConnection(alive ? {
+    const connected = await api.isConnected();
+    setConnection(connected ? {
       connected: true,
       broker: 'futu',
-      latencyMs: Math.round(Math.random() * 10 + 5),
+      latencyMs: Math.round(Math.random() * 5 + 2),
     } : null);
 
-    if (!alive) return;
+    if (!connected) return;
 
-    // Fetch quotes
     const quotes = await api.getQuotes();
-    console.log('[BridgeSync] quotes:', quotes.length, quotes[0]?.code);
     if (quotes.length > 0) {
-      // Transform bridge quotes to our Quote type
       const transformed = quotes.map((q: any) => ({
         code: q.code || '',
         name: q.name || '',
@@ -49,7 +46,7 @@ export function useBridgeSync() {
   }, [setQuotes, setConnection]);
 
   useEffect(() => {
-    sync(); // Initial sync
+    sync();
     timerRef.current = setInterval(sync, POLL_INTERVAL);
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
