@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>道鲸 DAWN WHALES · AI 量化交易系统</title>
+  <meta name="description" content="零代码散户量化平台，说人话就能做量化。对接富途/moomoo，AI 策略创建，实时行情，回测引擎，策略市场。">
+  <meta name="keywords" content="量化交易,AI量化,散户量化,富途,moomoo,自动交易,策略回测,TQQQ">
+  <meta property="og:title" content="道鲸 DAWN WHALES · AI 量化交易系统">
+  <meta property="og:description" content="说人话就能做量化的 AI 交易系统">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="favicon.jpg" type="image/jpeg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: { 400: '#D4A853', 500: '#C9A046', 600: '#B8912E' },
+            surface: { 0: '#0A0A0F', 1: '#12121A', 2: '#1A1A25', 3: '#22222F' },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    .gradient-text {
+      background: linear-gradient(135deg, #D4A853 0%, #F5D78E 50%, #C9A046 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-border {
+      background: linear-gradient(135deg, #D4A853, #C9A046);
+      padding: 1px;
+      border-radius: 16px;
+    }
+
+    .gradient-border > div {
+      background: #12121A;
+      border-radius: 15px;
+    }
+
+    .glow {
+      box-shadow: 0 0 40px rgba(201, 160, 70, 0.15);
+    }
+
+    .hero-bg {
+      background: radial-gradient(ellipse at 50% 0%, rgba(201, 160, 70, 0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+    }
+
+    .wave-line {
+      animation: wave 3s ease-in-out infinite;
+    }
+    .wave-line:nth-child(2) { animation-delay: 0.2s; }
+    .wave-line:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes wave {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.8s ease forwards;
+    }
+    .fade-in:nth-child(2) { animation-delay: 0.1s; }
+    .fade-in:nth-child(3) { animation-delay: 0.2s; }
+    .fade-in:nth-child(4) { animation-delay: 0.3s; }
+
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+
+    .pricing-card.popular {
+      border: 2px solid #C9A046;
+      transform: scale(1.05);
+    }
+
+    .pricing-card.popular .badge {
+      background: linear-gradient(135deg, #D4A853, #C9A046);
+    }
+
+    /* Smooth counter animation */
+    .counter { font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body class="bg-surface-0 text-gray-200 font-sans antialiased">
+
+  <!-- ═══════════════ Navigation ═══════════════ -->
+  <nav class="fixed top-0 w-full z-50 bg-surface-0/80 backdrop-blur-xl border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center">
+          <svg width="20" height="14" viewBox="0 0 20 14" fill="none">
+            <path class="wave-line" d="M1 7C4 3 7 3 10 7C13 11 16 11 19 7" stroke="#0A0A0F" stroke-width="1.8" stroke-linecap="round"/>
+            <path class="wave-line" d="M1 4C4 0 7 0 10 4C13 8 16 8 19 4" stroke="#0A0A0F" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+            <path class="wave-line" d="M1 10C4 6 7 6 10 10C13 14 16 14 19 10" stroke="#0A0A0F" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+          </svg>
+        </div>
+        <span class="font-bold text-lg">道鲸</span>
+      </div>
+      <div class="hidden md:flex items-center gap-8 text-sm text-gray-400">
+        <a href="#features" class="hover:text-white transition">功能</a>
+        <a href="#how-it-works" class="hover:text-white transition">怎么用</a>
+        <a href="#pricing" class="hover:text-white transition">定价</a>
+        <a href="#marketplace" class="hover:text-white transition">策略市场</a>
+      </div>
+      <a href="#download" class="bg-gold-500 hover:bg-gold-400 text-surface-0 font-semibold px-5 py-2 rounded-lg text-sm transition">
+        免费下载
+      </a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════ Hero ═══════════════ -->
+  <section class="hero-bg pt-32 pb-20 px-6">
+    <div class="max-w-5xl mx-auto text-center">
+      <div class="fade-in">
+        <p class="text-gold-400 text-sm font-medium tracking-wider uppercase mb-4">AI-Powered Quantitative Trading</p>
+        <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6">
+          <span class="gradient-text">说人话</span><br>
+          就能做量化
+        </h1>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+          不需要写代码，不需要懂编程。<br>
+          告诉 AI 你想怎么交易，系统自动执行。<br>
+          对接富途/moomoo，毫秒级行情推送。
+        </p>
+      </div>
+
+      <div class="fade-in flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#download" class="bg-gold-500 hover:bg-gold-400 text-surface-0 font-bold px-8 py-4 rounded-xl text-lg transition glow">
+          🐋 免费下载 Windows 版
+        </a>
+        <a href="#features" class="border border-gray-700 hover:border-gold-500 text-gray-300 hover:text-gold-400 font-medium px-8 py-4 rounded-xl text-lg transition">
+          了解更多 →
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div class="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto">
+        <div class="text-center">
+          <div class="text-3xl font-bold gradient-text counter">&lt;50ms</div>
+          <div class="text-sm text-gray-500 mt-1">行情延迟</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold gradient-text counter">0 行</div>
+          <div class="text-sm text-gray-500 mt-1">代码量</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold gradient-text counter">3 种</div>
+          <div class="text-sm text-gray-500 mt-1">策略创建方式</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ App Preview ═══════════════ -->
+  <section class="py-16 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="gradient-border glow">
+        <div class="p-1">
+          <div class="bg-surface-1 rounded-2xl overflow-hidden">
+            <!-- Fake app window bar -->
+            <div class="flex items-center gap-2 px-4 py-3 bg-surface-2 border-b border-white/5">
+              <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+              <span class="ml-3 text-xs text-gray-500">DAWN WHALES · 行情中心</span>
+            </div>
+            <!-- App screenshot -->
+            <div class="p-2">
+              <img src="screenshot-app.png" alt="DAWN WHALES 应用截图" class="w-full rounded-lg" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ Features ═══════════════ -->
+  <section id="features" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4">核心功能</h2>
+        <p class="text-gray-400 text-lg">从行情到交易到策略，一站式量化平台</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Feature 1 -->
+        <div class="feature-card bg-surface-1 rounded-2xl p-8 border border-white/5 transition-all duration-300">
+          <div class="text-4xl mb-4">⚡</div>
+          <h3 class="text-xl font-bold mb-3">毫秒级行情</h3>
+          <p class="text-gray-400 leading-relaxed">
+            直连富途 OpenD，Push 模式实时推送。
+            告别 3 秒轮询，延迟 &lt;50ms。
+            支持美股、港股、A股、加密货币。
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card bg-surface-1 rounded-2xl p-8 border border-white/5 transition-all duration-300">
+          <div class="text-4xl mb-4">🤖</div>
+          <h3 class="text-xl font-bold mb-3">AI 策略创建</h3>
+          <p class="text-gray-400 leading-relaxed">
+            三种方式创建策略：自然语言描述、
+            经典模板选择、表单参数配置。
+            无需编程知识，说人话就行。
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card bg-surface-1 rounded-2xl p-8 border border-white/5 transition-all duration-300">
+          <div class="text-4xl mb-4">📈</div>
+          <h3 class="text-xl font-bold mb-3">专业回测</h3>
+          <p class="text-gray-400 leading-relaxed">
+            历史数据回测，年化收益、夏普比率、
+            最大回撤一目了然。
+            权益曲线可视化，策略优劣一眼看清。
+          </p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card bg-surface-1 rounded-2xl p-8 border border-white/5 transition-all duration-300">
+          <div class="text-4xl mb-4">🏪</div>
+          <h3 class="text-xl font-bold mb-3">策略市场</h3>
+          <p class="text-gray-400 leading-relaxed">
+            浏览社区策略，按收益/风险/热度排名。
+            创作者享受 70% 收入分成。
+            好策略不怕被复制，怕的是没人用。
+          </p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="feature-card bg-surface-1 rounded-2xl p-8 border border-white/5 transition-all duration-300">
+          <div class="text-4xl mb-4">🛡️</div>
+          <h3 class="text-xl font-bold mb-3">风控系统</h3>
+          <p class="text-gray-400 leading-relaxed">
+            单笔限额、日内频率限制、
+            紧急止损一键全平。
+            让你的量化之路稳如磐石。
+          </p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="feature-card bg-surface-1 rounded-2xl p-8 border border-white/5 transition-all duration-300">
+          <div class="text-4xl mb-4">🔌</div>
+          <h3 class="text-xl font-bold mb-3">券商直连</h3>
+          <p class="text-gray-400 leading-relaxed">
+            对接富途/moomoo OpenD，
+            本地 TCP 直连，数据不经第三方。
+            你的账户、你的数据、你的策略。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ How It Works ═══════════════ -->
+  <section id="how-it-works" class="py-20 px-6 bg-surface-1/50">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4">三步开始量化</h2>
+        <p class="text-gray-400 text-lg">从下载到实盘，5 分钟搞定</p>
+      </div>
+
+      <div class="space-y-12">
+        <!-- Step 1 -->
+        <div class="flex items-start gap-6">
+          <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-surface-0 font-bold text-xl">1</div>
+          <div>
+            <h3 class="text-xl font-bold mb-2">下载安装</h3>
+            <p class="text-gray-400 leading-relaxed">
+              下载 Windows 安装包，双击安装。
+              启动后自动连接富途 OpenD（需提前运行）。
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex items-start gap-6">
+          <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-surface-0 font-bold text-xl">2</div>
+          <div>
+            <h3 class="text-xl font-bold mb-2">创建策略</h3>
+            <p class="text-gray-400 leading-relaxed">
+              用自然语言描述你的交易逻辑，例如：<br>
+              <span class="text-gold-400 italic">"RSI 低于 30 时买入 TQQQ，涨 5% 卖出"</span><br>
+              AI 自动解析成可执行策略，先回测验证。
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex items-start gap-6">
+          <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-surface-0 font-bold text-xl">3</div>
+          <div>
+            <h3 class="text-xl font-bold mb-2">实盘运行</h3>
+            <p class="text-gray-400 leading-relaxed">
+              确认回测结果满意后，一键启动实盘。
+              系统自动监控行情、执行交易、管理风控。
+              你可以安心去做其他事。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ Marketplace ═══════════════ -->
+  <section id="marketplace" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4">策略市场</h2>
+        <p class="text-gray-400 text-lg">好策略值得被更多人使用，创作者享受 70% 收入分成</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Strategy Card 1 -->
+        <div class="bg-surface-1 rounded-xl p-6 border border-white/5 hover:border-gold-500/30 transition">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-gold-400 text-xs font-medium px-2 py-1 rounded bg-gold-500/10">趋势跟踪</span>
+            <span class="text-green-400 text-xs">● 运行中</span>
+          </div>
+          <h4 class="font-bold mb-1">双均线交叉 v2</h4>
+          <p class="text-gray-500 text-sm mb-4">MA20/MA50 交叉信号，配合 ATR 止损</p>
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <div class="text-green-400 font-bold">+34.2%</div>
+              <div class="text-xs text-gray-600">年化</div>
+            </div>
+            <div>
+              <div class="text-blue-400 font-bold">1.82</div>
+              <div class="text-xs text-gray-600">夏普</div>
+            </div>
+            <div>
+              <div class="text-yellow-400 font-bold">-12.3%</div>
+              <div class="text-xs text-gray-600">回撤</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Strategy Card 2 -->
+        <div class="bg-surface-1 rounded-xl p-6 border border-white/5 hover:border-gold-500/30 transition">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-purple-400 text-xs font-medium px-2 py-1 rounded bg-purple-500/10">动量</span>
+            <span class="text-green-400 text-xs">● 运行中</span>
+          </div>
+          <h4 class="font-bold mb-1">12-1 月动量因子</h4>
+          <p class="text-gray-500 text-sm mb-4">经典学术策略，跨资产有效</p>
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <div class="text-green-400 font-bold">+22.7%</div>
+              <div class="text-xs text-gray-600">年化</div>
+            </div>
+            <div>
+              <div class="text-blue-400 font-bold">1.45</div>
+              <div class="text-xs text-gray-600">夏普</div>
+            </div>
+            <div>
+              <div class="text-yellow-400 font-bold">-18.1%</div>
+              <div class="text-xs text-gray-600">回撤</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Strategy Card 3 -->
+        <div class="bg-surface-1 rounded-xl p-6 border border-white/5 hover:border-gold-500/30 transition">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-cyan-400 text-xs font-medium px-2 py-1 rounded bg-cyan-500/10">均值回归</span>
+            <span class="text-gray-400 text-xs">● 待启动</span>
+          </div>
+          <h4 class="font-bold mb-1">RSI 超卖反弹</h4>
+          <p class="text-gray-500 text-sm mb-4">RSI&lt;30 买入，RSI&gt;70 卖出</p>
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <div class="text-green-400 font-bold">+15.8%</div>
+              <div class="text-xs text-gray-600">年化</div>
+            </div>
+            <div>
+              <div class="text-blue-400 font-bold">1.21</div>
+              <div class="text-xs text-gray-600">夏普</div>
+            </div>
+            <div>
+              <div class="text-yellow-400 font-bold">-9.7%</div>
+              <div class="text-xs text-gray-600">回撤</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-10">
+        <p class="text-gray-500 text-sm">更多策略持续更新中...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ Pricing ═══════════════ -->
+  <section id="pricing" class="py-20 px-6 bg-surface-1/50">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4">简单定价</h2>
+        <p class="text-gray-400 text-lg">从免费开始，按需升级</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Free -->
+        <div class="pricing-card bg-surface-1 rounded-2xl p-8 border border-white/5 relative">
+          <h3 class="text-xl font-bold mb-2">免费版</h3>
+          <div class="mb-6">
+            <span class="text-4xl font-extrabold">¥0</span>
+            <span class="text-gray-500">/月</span>
+          </div>
+          <ul class="space-y-3 text-gray-400 mb-8">
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 1 个策略</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 模拟盘交易</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 实时行情</li>
+            <li class="flex items-center gap-2"><span class="text-gray-600">✗</span> <span class="text-gray-600">实盘交易</span></li>
+            <li class="flex items-center gap-2"><span class="text-gray-600">✗</span> <span class="text-gray-600">AI 助手</span></li>
+          </ul>
+          <a href="#download" class="block text-center py-3 rounded-xl border border-gray-700 text-gray-300 hover:border-gold-500 hover:text-gold-400 transition font-medium">
+            免费下载
+          </a>
+        </div>
+
+        <!-- Starter (Popular) -->
+        <div class="pricing-card popular bg-surface-1 rounded-2xl p-8 border relative">
+          <div class="badge absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold text-surface-0">
+            最受欢迎
+          </div>
+          <h3 class="text-xl font-bold mb-2">Starter</h3>
+          <div class="mb-6">
+            <span class="text-4xl font-extrabold gradient-text">¥99</span>
+            <span class="text-gray-500">/月</span>
+          </div>
+          <ul class="space-y-3 text-gray-400 mb-8">
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 5 个策略</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 实盘交易</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 实时行情 + 回测</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 策略市场浏览</li>
+            <li class="flex items-center gap-2"><span class="text-gray-600">✗</span> <span class="text-gray-600">AI 助手</span></li>
+          </ul>
+          <a href="#download" class="block text-center py-3 rounded-xl bg-gold-500 hover:bg-gold-400 text-surface-0 font-bold transition">
+            开始使用
+          </a>
+        </div>
+
+        <!-- Pro -->
+        <div class="pricing-card bg-surface-1 rounded-2xl p-8 border border-white/5 relative">
+          <h3 class="text-xl font-bold mb-2">Pro</h3>
+          <div class="mb-6">
+            <span class="text-4xl font-extrabold">¥299</span>
+            <span class="text-gray-500">/月</span>
+          </div>
+          <ul class="space-y-3 text-gray-400 mb-8">
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 无限策略</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 实盘交易</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> AI 策略助手</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 策略市场优先展示</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 优先技术支持</li>
+          </ul>
+          <a href="#download" class="block text-center py-3 rounded-xl border border-gray-700 text-gray-300 hover:border-gold-500 hover:text-gold-400 transition font-medium">
+            开始使用
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ Download ═══════════════ -->
+  <section id="download" class="py-20 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-4">立即下载</h2>
+      <p class="text-gray-400 text-lg mb-10">Windows 10/11，安装包约 80MB</p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+        <a href="#" class="bg-gold-500 hover:bg-gold-400 text-surface-0 font-bold px-10 py-4 rounded-xl text-lg transition glow inline-flex items-center gap-3">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+          下载 Windows 版
+        </a>
+      </div>
+
+      <p class="text-gray-600 text-sm">
+        需要 <a href="https://openapi.futunn.com/futu-api-doc/opend/opend-cmd.html" class="text-gold-500 hover:underline" target="_blank">富途 OpenD</a> 运行中（免费）
+      </p>
+
+      <div class="mt-8 text-sm text-gray-600">
+        <p>系统要求：Windows 10 64位及以上 · 4GB 内存 · 200MB 磁盘空间</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ FAQ ═══════════════ -->
+  <section class="py-20 px-6 bg-surface-1/50">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-4xl font-bold mb-12 text-center">常见问题</h2>
+
+      <div class="space-y-6">
+        <div class="bg-surface-1 rounded-xl p-6 border border-white/5">
+          <h4 class="font-bold mb-2">需要编程基础吗？</h4>
+          <p class="text-gray-400">不需要。用自然语言描述你的交易逻辑就行，AI 自动解析成可执行策略。</p>
+        </div>
+
+        <div class="bg-surface-1 rounded-xl p-6 border border-white/5">
+          <h4 class="font-bold mb-2">支持哪些券商？</h4>
+          <p class="text-gray-400">目前支持富途/moomoo（通过 OpenD），未来会接入更多券商。每个用户用自己的 OpenD 连接自己的券商账户，数据不经第三方。</p>
+        </div>
+
+        <div class="bg-surface-1 rounded-xl p-6 border border-white/5">
+          <h4 class="font-bold mb-2">行情数据要收费吗？</h4>
+          <p class="text-gray-400">不需要。LV1 基础行情通过 OpenD 免费获取。如果你有 LV3 行情订阅，也能直接使用。</p>
+        </div>
+
+        <div class="bg-surface-1 rounded-xl p-6 border border-white/5">
+          <h4 class="font-bold mb-2">策略安全吗？</h4>
+          <p class="text-gray-400">所有策略在本地运行，代码和数据不上传服务器。实盘前建议先用模拟盘验证，系统内置风控引擎防止异常交易。</p>
+        </div>
+
+        <div class="bg-surface-1 rounded-xl p-6 border border-white/5">
+          <h4 class="font-bold mb-2">策略市场的收入怎么分？</h4>
+          <p class="text-gray-400">创作者获得 70% 收入，平台抽成 30%。你发布的好策略被其他用户付费使用时，大部分收入归你。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ Footer ═══════════════ -->
+  <footer class="py-12 px-6 border-t border-white/5">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center">
+          <svg width="16" height="12" viewBox="0 0 20 14" fill="none">
+            <path d="M1 7C4 3 7 3 10 7C13 11 16 11 19 7" stroke="#0A0A0F" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="font-bold">DAWN WHALES · 道鲸</span>
+      </div>
+
+      <div class="flex items-center gap-6 text-sm text-gray-500">
+        <a href="https://github.com/vx1073071/dawn-whales" class="hover:text-gold-400 transition" target="_blank">GitHub</a>
+        <span>·</span>
+        <a href="#features" class="hover:text-gold-400 transition">功能</a>
+        <span>·</span>
+        <a href="#pricing" class="hover:text-gold-400 transition">定价</a>
+        <span>·</span>
+        <a href="#" class="hover:text-gold-400 transition">文档</a>
+      </div>
+
+      <p class="text-sm text-gray-600">© 2025 DAWN WHALES. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
