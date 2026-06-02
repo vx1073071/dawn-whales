@@ -6,6 +6,8 @@ import net from 'net';
 import { createHash } from 'crypto';
 import log from 'electron-log';
 
+type QuotePushCallback = (quotes: any[]) => void;
+
 // Load futu-api protobuf definitions
 let futuProtoRoot: any = null;
 try {
@@ -72,6 +74,7 @@ export class FutuOpenDClient {
   private connID = 0;
   private buffer = Buffer.alloc(0);
   private pending = new Map<number, { resolve: (v: Buffer) => void; reject: (e: Error) => void; timer: NodeJS.Timeout }>();
+  private pushCallback: QuotePushCallback | null = null;
   public connected = false;
 
   constructor(host: string = '127.0.0.1', port: number = 11111) {
@@ -129,12 +132,29 @@ export class FutuOpenDClient {
         this.socket?.destroy();
         return;
       }
+      const protoID = this.buffer.readUInt32LE(2);
       const serial = this.buffer.readUInt32LE(8);
       const bodyLen = this.buffer.readUInt32LE(12);
       if (this.buffer.length < 44 + bodyLen) return;
 
       const body = this.buffer.subarray(44, 44 + bodyLen);
       this.buffer = this.buffer.subarray(44 + bodyLen);
+
+      // Push: protoID 3005 = QotUpdateBasicQot
+      if (protoID === 3005 && this.pushCallback) {
+        try {
+          const PushResp = futuProtoRoot.lookup('Qot_UpdateBasicQot.Response');
+          const decoded = PushResp.decode(body);
+          if (decoded?.retType === 0) {
+            const quotes = this.parsePushQuotes(decoded);
+            if (quotes.length > 0) this.pushCallback(quotes);
+          }
+        } catch (e: any) {
+          log.warn('[FutuOpenD] Push decode error:', e.message);
+        }
+        continue;
+      }
+
       const item = this.pending.get(serial);
       if (item) {
         clearTimeout(item.timer);
@@ -179,12 +199,50 @@ export class FutuOpenDClient {
     return decoded;
   }
 
+  // ── Push 实时行情（<50ms 延迟）─────────────────────────────────────
+
+  onQuotePush(callback: QuotePushCallback) {
+    this.pushCallback = callback;
+  }
+
+  async subscribeAndPush(codes: string[]): Promise<void> {
+    const securityList = codes.map((c) => ({ market: marketCode(c), code: symOf(c) }));
+    await this.send(CMD.QotSub, {
+      c2s: {
+        securityList,
+        subTypeList: [1],
+        isSubOrUnSub: true,
+        isRegOrUnRegPush: true,
+        isFirstPush: true,
+      },
+    });
+    log.info(`[FutuOpenD] Subscribed + push: ${codes.join(', ')}`);
+  }
+
+  private parsePushQuotes(decoded: any): any[] {
+    return (decoded?.s2c?.basicQotList ?? []).map((q: any) => {
+      const prefix = MARKET_REV[q.security?.market] ?? 'US';
+      const code = `${prefix}.${q.security?.code}`;
+      const prevClose = toNum(q.prevClosePrice);
+      const price = toNum(q.curPrice);
+      return {
+        code, price,
+        change: prevClose > 0 ? Math.round((price - prevClose) * 100) / 100 : 0,
+        changePct: prevClose > 0 ? Math.round(((price - prevClose) / prevClose) * 10000) / 100 : 0,
+        volume: toNum(q.volume), amount: toNum(q.turnover),
+        open: toNum(q.openPrice), high: toNum(q.highPrice),
+        low: toNum(q.lowPrice), prevClose,
+        updateTime: new Date().toISOString(),
+      };
+    });
+  }
+
   // ── Market Data ────────────────────────────────────────────────────────
 
   async getQuotes(codes: string[]): Promise<any[]> {
     const securityList = codes.map((c) => ({ market: marketCode(c), code: symOf(c) }));
 
-    // Subscribe first
+    // Subscribe first (no push, for one-shot pull)
     await this.send(CMD.QotSub, {
       c2s: { securityList, subTypeList: [1], isSubOrUnSub: true, isRegOrUnRegPush: false, isFirstPush: true },
     });

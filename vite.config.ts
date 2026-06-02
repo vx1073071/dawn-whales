@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import electron from 'vite-plugin-electron';
-import electronRenderer from 'vite-plugin-electron-renderer';
 import path from 'path';
 
 export default defineConfig({
@@ -13,14 +12,12 @@ export default defineConfig({
         vite: {
           build: {
             outDir: 'dist-electron',
-            lib: {
-              entry: 'electron/main.ts',
-              formats: ['cjs'],
-              fileName: () => 'main.cjs',
-            },
+            minify: false,
+            ssr: true,
             rollupOptions: {
-              external: ['better-sqlite3', 'electron-log', 'electron-updater', 'electron', 'futu-api', 'http', 'path', 'net', 'fs', 'os', 'crypto'],
+              external: ['better-sqlite3', 'electron-log', 'electron-updater', 'electron', 'futu-api'],
               output: {
+                format: 'cjs',
                 entryFileNames: 'main.cjs',
               },
             },
@@ -35,14 +32,11 @@ export default defineConfig({
         vite: {
           build: {
             outDir: 'dist-electron',
-            lib: {
-              entry: 'electron/preload.ts',
-              formats: ['cjs'],
-              fileName: () => 'preload.cjs',
-            },
+            ssr: true,
             rollupOptions: {
               external: ['electron'],
               output: {
+                format: 'cjs',
                 entryFileNames: 'preload.cjs',
               },
             },
@@ -50,7 +44,6 @@ export default defineConfig({
         },
       },
     ]),
-    electronRenderer(),
   ],
   resolve: {
     alias: {

@@ -86,6 +86,14 @@ function setupIPC() {
       opendClient = new FutuOpenDClient(config.host || '127.0.0.1', config.port || 11111);
       await opendClient.connect();
       log.info('[Broker] OpenD connected', config);
+
+      // 注册 Push 回调，实时行情推送到前端
+      opendClient.onQuotePush((quotes) => {
+        mainWindow?.webContents.send('quotes:push', quotes);
+      });
+      await opendClient.subscribeAndPush(WATCHLIST);
+      log.info('[Broker] Push mode active, watchlist subscribed');
+
       return { success: true, host: config.host, port: config.port };
     } catch (err: any) {
       log.error('[Broker] OpenD connect failed:', err.message);
@@ -284,18 +292,23 @@ app.whenReady().then(async () => {
   // Setup IPC
   setupIPC();
 
-  // Auto-connect to OpenD (直连，无需 Bridge)
+  // Create window first (so push has somewhere to send)
+  createWindow();
+
+  // Auto-connect to OpenD + Push 订阅
   try {
     opendClient = new FutuOpenDClient('127.0.0.1', 11111);
     await opendClient.connect();
-    log.info('[App] OpenD auto-connected ✓');
+    opendClient.onQuotePush((quotes) => {
+      mainWindow?.webContents.send('quotes:push', quotes);
+    });
+    await opendClient.subscribeAndPush(WATCHLIST);
+    log.info('[App] OpenD auto-connected ✓ Push mode active');
   } catch (err: any) {
     log.warn('[App] OpenD auto-connect failed (will retry from UI):', err.message);
     opendClient = null;
   }
 
-  // Create window
-  createWindow();
   createTray();
 
   log.info('[App] DAWN WHALES ready');

@@ -7,3 +7,8 @@ target/
 .env.*
 .DS_Store
 Thumbs.db
+
+# Build output
+release/
+*.log
+node_modules/

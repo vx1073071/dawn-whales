@@ -4,7 +4,6 @@
   "private": true,
   "description": "道鲸 · AI 量化系统 — 说人话就能做量化",
   "main": "dist-electron/main.cjs",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

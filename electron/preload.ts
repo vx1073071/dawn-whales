@@ -42,7 +42,7 @@ contextBridge.exposeInMainWorld('api', {
 
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
-    const allowed = ['quote-update', 'order-update', 'strategy-signal', 'risk-alert', 'notification'];
+    const allowed = ['quotes:push', 'quote-update', 'order-update', 'strategy-signal', 'risk-alert', 'notification'];
     if (allowed.includes(channel)) {
       ipcRenderer.on(channel, (_event, ...args) => callback(...args));
     }
