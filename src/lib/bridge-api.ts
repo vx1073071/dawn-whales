@@ -71,16 +71,11 @@ export async function getPositions(accountId: string): Promise<any[]> {
 }
 
 export async function isConnected(): Promise<boolean> {
-  if (!hasIPC()) {
-    console.log('[API] No IPC available (not in Electron)');
-    return false;
-  }
+  if (!hasIPC()) return false;
   try {
     const result = await window.api.broker.getAccounts();
-    console.log('[API] isConnected:', result);
     return result?.success === true;
-  } catch (err) {
-    console.log('[API] isConnected error:', err);
+  } catch {
     return false;
   }
 }
@@ -88,7 +83,6 @@ export async function isConnected(): Promise<boolean> {
 export async function getQuotes(codes: string[] = []): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.broker.getQuotes(codes);
-  console.log('[API] getQuotes result:', result?.success, result?.quotes?.length);
   if (result?.success) return result.quotes || [];
   return [];
 }
