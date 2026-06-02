@@ -1,9 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMarketStore } from '@/stores/marketStore';
+import KLineChart from './KLineChart';
+import * as api from '@/lib/bridge-api';
 
 export default function MarketPage() {
   const watchlist = useMarketStore((s) => s.watchlist);
   const quotes = useMarketStore((s) => s.quotes);
+  const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
+  const [klineData, setKlineData] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (selectedSymbol) {
+      api.getKlines(selectedSymbol, 'daily', 200).then((klines) => {
+        if (klines.length > 0) {
+          setKlineData(klines.map((k: any) => ({
+            time: Math.floor(new Date(k.time || k.date).getTime() / 1000),
+            open: k.open,
+            high: k.high,
+            low: k.low,
+            close: k.close,
+            volume: k.volume,
+          })));
+        }
+      });
+    }
+  }, [selectedSymbol]);
 
   return (
     <div className="p-6">
@@ -38,7 +59,13 @@ export default function MarketPage() {
               const isInv = ['SQQQ','SOXS'].includes(sym);
 
               return (
-                <tr key={code} className="border-b border-border/50 hover:bg-surface-hover transition-colors cursor-pointer">
+                <tr
+                  key={code}
+                  onClick={() => setSelectedSymbol(code)}
+                  className={`border-b border-border/50 hover:bg-surface-hover transition-colors cursor-pointer ${
+                    selectedSymbol === code ? 'bg-surface-3' : ''
+                  }`}
+                >
                   <td className="px-4 py-3 font-semibold text-white text-sm">{sym}</td>
                   <td className="px-4 py-3 text-gray-400 text-xs">{q?.name || '--'}</td>
                   <td className={`px-4 py-3 text-right font-mono text-sm ${cls}`}>{q ? q.price.toFixed(2) : '--'}</td>
@@ -57,13 +84,35 @@ export default function MarketPage() {
         </table>
       </div>
 
-      {/* Chart placeholder */}
-      <div className="mt-6 bg-surface-2 border border-border rounded-xl p-6 min-h-[300px] flex items-center justify-center">
-        <div className="text-center text-gray-500">
-          <div className="text-3xl mb-2 opacity-40">📈</div>
-          <p className="text-sm">K线图区域</p>
-          <p className="text-xs mt-1">选择一只股票查看 K 线走势</p>
-        </div>
+      {/* K-Line Chart */}
+      <div className="mt-6">
+        {selectedSymbol && klineData.length > 0 ? (
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <h2 className="text-white font-semibold">{selectedSymbol.replace('US.', '')}</h2>
+              {(() => {
+                const q = quotes[selectedSymbol];
+                const cls = q && q.change > 0 ? 'text-up' : q && q.change < 0 ? 'text-down' : 'text-gray-500';
+                return q ? (
+                  <span className={`font-mono text-sm ${cls}`}>
+                    {q.price.toFixed(2)} {q.change > 0 ? '+' : ''}{q.changePct.toFixed(2)}%
+                  </span>
+                ) : null;
+              })()}
+            </div>
+            <KLineChart data={klineData} height={400} />
+          </div>
+        ) : selectedSymbol ? (
+          <div className="bg-surface-2 border border-border rounded-xl p-8 text-center">
+            <div className="text-3xl mb-2 opacity-40">⏳</div>
+            <p className="text-gray-400 text-sm">加载 {selectedSymbol.replace('US.', '')} K线数据...</p>
+          </div>
+        ) : (
+          <div className="bg-surface-2 border border-border rounded-xl p-8 text-center">
+            <div className="text-3xl mb-2 opacity-40">📈</div>
+            <p className="text-gray-400 text-sm">点击上面的股票查看 K 线图</p>
+          </div>
+        )}
       </div>
     </div>
   );

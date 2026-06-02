@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAppStore } from '@/stores/appStore';
+import { useBridgeSync } from '@/hooks/useBridgeSync';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
 import StatusBar from '@/components/layout/StatusBar';
@@ -27,6 +28,9 @@ export default function App() {
   const view = useAppStore((s) => s.sidebarView);
   const collapsed = useAppStore((s) => s.sidebarCollapsed);
   const Page = pages[view] || MarketPage;
+
+  // Sync real-time data from Bridge
+  useBridgeSync();
 
   return (
     <div className="h-screen flex flex-col bg-surface-1 text-gray-200 overflow-hidden">

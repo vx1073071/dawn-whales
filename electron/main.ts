@@ -38,20 +38,26 @@ function createWindow() {
     backgroundColor: '#0d1117',
     show: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: true,
+      sandbox: false,
+      webSecurity: false,  // Allow fetch to local bridge API
     },
   });
 
-  // Load app
-  if (isDev) {
-    mainWindow.loadURL('http://localhost:5173');
-    mainWindow.webContents.openDevTools({ mode: 'detach' });
-  } else {
-    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
-  }
+  // Load app — always load built dist
+  const distPath = path.join(__dirname, '../dist/index.html');
+  mainWindow.loadFile(distPath);
+
+  // Open DevTools for debugging (remove in production)
+  mainWindow.webContents.openDevTools({ mode: 'detach' });
+
+  // Log renderer console messages to main process
+  mainWindow.webContents.on('console-message', (_event, level, message, line, sourceId) => {
+    const levels = ['log', 'warn', 'error'];
+    log.info(`[Renderer:${levels[level] || 'log'}] ${message}`);
+  });
 
   // Show when ready (avoid white flash)
   mainWindow.once('ready-to-show', () => {
@@ -215,17 +221,25 @@ function createTray() {
 
 // ── App Lifecycle ──────────────────────────────────────────────────────────
 
-app.whenReady().then(async () => {
+app.whenReady().then(() => {
   log.info('[App] DAWN WHALES starting...');
 
-  // Initialize database
-  db = new DatabaseManager();
-  db.initialize();
+  try {
+    // Initialize database
+    db = new DatabaseManager();
+    db.initialize();
+  } catch (err: any) {
+    log.error('[App] Database init failed:', err.message);
+  }
 
-  // Initialize engines
-  strategyEngine = new StrategyEngine();
-  backtestEngine = new BacktestEngine();
-  riskEngine = new RiskEngine();
+  try {
+    // Initialize engines
+    strategyEngine = new StrategyEngine();
+    backtestEngine = new BacktestEngine();
+    riskEngine = new RiskEngine();
+  } catch (err: any) {
+    log.error('[App] Engine init failed:', err.message);
+  }
 
   // Setup IPC
   setupIPC();
