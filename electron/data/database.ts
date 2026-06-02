@@ -4,7 +4,7 @@ import path from 'path';
 import { app } from 'electron';
 import log from 'electron-log';
 
-const DB_NAME = 'quantdesk.db';
+const DB_NAME = 'dawn-whales.db';
 
 export class DatabaseManager {
   private db: Database.Database | null = null;

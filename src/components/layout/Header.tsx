@@ -16,9 +16,10 @@ export default function Header() {
       </button>
 
       <div className="flex items-center gap-2">
-        <span className="text-primary text-lg">◆</span>
-        <span className="text-primary font-bold text-sm tracking-wide">QuantDesk Pro</span>
-        <span className="text-gray-500 text-xs">v0.1.0</span>
+        <span className="text-primary text-lg">🐋</span>
+        <span className="text-primary font-bold text-sm tracking-wide">DAWN WHALES</span>
+        <span className="text-gray-400 text-xs">道鲸</span>
+        <span className="text-gray-500 text-[10px]">v0.1.0</span>
       </div>
 
       <div className="flex-1" />

@@ -15,7 +15,7 @@ export default function StatusBar() {
         <span>OpenD 127.0.0.1:11111</span>
       </div>
       <span>|</span>
-      <span>Futu / moomoo</span>
+      <span>DAWN WHALES · 道鲸</span>
       <div className="flex-1" />
       <span>{time.toLocaleTimeString('zh-CN', { hour12: false })}</span>
       <span>|</span>

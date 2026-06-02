@@ -1,8 +1,8 @@
 {
-  "name": "quantdesk-pro",
+  "name": "dawn-whales",
   "version": "0.1.0",
   "private": true,
-  "description": "散户的私人量化团队 — 说人话就能做量化",
+  "description": "道鲸 · AI 量化系统 — 说人话就能做量化",
   "main": "dist-electron/main.js",
   "type": "module",
   "scripts": {

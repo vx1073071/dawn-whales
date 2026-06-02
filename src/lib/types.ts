@@ -1,4 +1,4 @@
-// ── QuantDesk Pro — Core Type Definitions ──────────────────────────────────
+// ── DAWN WHALES · 道鲸 — Core Type Definitions ─────────────────────────────
 
 // ── Broker Types ──────────────────────────────────────────────────────────
 

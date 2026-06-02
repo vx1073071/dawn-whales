@@ -33,7 +33,7 @@ function createWindow() {
     height: 900,
     minWidth: 1000,
     minHeight: 600,
-    title: 'QuantDesk Pro',
+    title: 'DAWN WHALES · 道鲸',
     icon: path.join(RESOURCES_PATH, 'icons', 'icon.png'),
     backgroundColor: '#0d1117',
     show: false,
@@ -177,7 +177,7 @@ function setupIPC() {
   // ── App ─────────────────────────────────────────────────────────────
   ipcMain.handle('app:getInfo', () => ({
     version: app.getVersion(),
-    name: 'QuantDesk Pro',
+    name: 'DAWN WHALES',
     platform: process.platform,
     arch: process.arch,
     electronVersion: process.versions.electron,
@@ -200,7 +200,7 @@ function createTray() {
   tray = new Tray(icon);
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'QuantDesk Pro', enabled: false },
+    { label: 'DAWN WHALES · 道鲸', enabled: false },
     { type: 'separator' },
     { label: '显示主窗口', click: () => mainWindow?.show() },
     { label: '紧急停止所有策略', click: () => strategyEngine?.emergencyStop() },
@@ -208,7 +208,7 @@ function createTray() {
     { label: '退出', click: () => app.quit() },
   ]);
 
-  tray.setToolTip('QuantDesk Pro');
+  tray.setToolTip('DAWN WHALES · 道鲸');
   tray.setContextMenu(contextMenu);
   tray.on('double-click', () => mainWindow?.show());
 }
@@ -216,7 +216,7 @@ function createTray() {
 // ── App Lifecycle ──────────────────────────────────────────────────────────
 
 app.whenReady().then(async () => {
-  log.info('[App] QuantDesk Pro starting...');
+  log.info('[App] DAWN WHALES starting...');
 
   // Initialize database
   db = new DatabaseManager();
@@ -234,7 +234,7 @@ app.whenReady().then(async () => {
   createWindow();
   createTray();
 
-  log.info('[App] QuantDesk Pro ready');
+  log.info('[App] DAWN WHALES ready');
 });
 
 app.on('window-all-closed', () => {
