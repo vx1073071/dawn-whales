@@ -48,12 +48,18 @@ function createWindow() {
     },
   });
 
-  // Load app — always load built dist
-  const distPath = path.join(__dirname, '../dist/index.html');
-  mainWindow.loadFile(distPath);
+  // Load app — dev server in development, built files in production
+  const isDev = !app.isPackaged && process.env.VITE_DEV_SERVER_URL;
+  if (isDev) {
+    mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL!);
+  } else {
+    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+  }
 
-  // Open DevTools for debugging (remove in production)
-  mainWindow.webContents.openDevTools({ mode: 'detach' });
+  // Open DevTools in development only
+  if (isDev) {
+    mainWindow.webContents.openDevTools({ mode: 'detach' });
+  }
 
   // Log renderer console messages to main process
   mainWindow.webContents.on('console-message', (_event, level, message, line, sourceId) => {
