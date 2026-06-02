@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAppStore } from '@/stores/appStore';
+import logo from '@/assets/logo.jpg';
 
 export default function Header() {
   const toggleSidebar = useAppStore((s) => s.toggleSidebar);
@@ -15,8 +16,8 @@ export default function Header() {
         ☰
       </button>
 
-      <div className="flex items-center gap-2">
-        <span className="text-primary text-lg">🐋</span>
+      <div className="flex items-center gap-2.5">
+        <img src={logo} alt="DAWN WHALES" className="w-7 h-7 rounded-md" />
         <span className="text-primary font-bold text-sm tracking-wide">DAWN WHALES</span>
         <span className="text-gray-400 text-xs">道鲸</span>
         <span className="text-gray-500 text-[10px]">v0.1.0</span>
