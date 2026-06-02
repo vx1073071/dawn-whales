@@ -7,10 +7,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
-    "electron:dev": "vite & electron .",
-    "electron:build": "vite build && electron-builder",
+    "start": "vite build && electron .",
+    "pack": "vite build && electron-builder --dir",
+    "dist": "vite build && electron-builder",
+    "dist:win": "vite build && electron-builder --win",
+    "dist:mac": "vite build && electron-builder --mac",
     "lint": "eslint src --ext .ts,.tsx",
     "test": "vitest run"
   },
