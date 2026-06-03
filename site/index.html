@@ -104,14 +104,11 @@
   <nav class="fixed top-0 w-full z-50 bg-surface-0/80 backdrop-blur-xl border-b border-white/5">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center">
-          <svg width="20" height="14" viewBox="0 0 20 14" fill="none">
-            <path class="wave-line" d="M1 7C4 3 7 3 10 7C13 11 16 11 19 7" stroke="#0A0A0F" stroke-width="1.8" stroke-linecap="round"/>
-            <path class="wave-line" d="M1 4C4 0 7 0 10 4C13 8 16 8 19 4" stroke="#0A0A0F" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
-            <path class="wave-line" d="M1 10C4 6 7 6 10 10C13 14 16 14 19 10" stroke="#0A0A0F" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
-          </svg>
+        <img src="logo.jpg" alt="道鲸" class="w-10 h-10 rounded-xl">
+        <div class="flex flex-col leading-tight">
+          <span class="font-bold text-base text-white">道鲸·AI量化系统</span>
+          <span class="text-xs text-gold-400 font-medium tracking-wider">DAWN WHALES</span>
         </div>
-        <span class="font-bold text-lg">道鲸</span>
       </div>
       <div class="hidden md:flex items-center gap-8 text-sm text-gray-400">
         <a href="#features" class="hover:text-white transition">功能</a>
@@ -181,9 +178,146 @@
               <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
               <span class="ml-3 text-xs text-gray-500">DAWN WHALES · 行情中心</span>
             </div>
-            <!-- App screenshot -->
+            <!-- App Mockup -->
             <div class="p-2">
-              <img src="screenshot-app.png" alt="DAWN WHALES 应用截图" class="w-full rounded-lg" loading="lazy">
+              <div class="bg-[#0d0d14] rounded-lg overflow-hidden font-sans text-[11px]">
+                <!-- App Header -->
+                <div class="flex items-center justify-between px-4 py-2 bg-[#15151f] border-b border-white/5">
+                  <div class="flex items-center gap-2">
+                    <img src="logo.jpg" class="w-6 h-6 rounded-lg">
+                    <span class="font-bold text-white text-xs">道鲸·AI量化系统</span>
+                    <span class="text-[9px] text-amber-400/70 ml-1">DAWN WHALES</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-[9px] text-emerald-400 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"></span>OpenD 已连接</span>
+                    <span class="text-[9px] text-gray-500">US Market · Open</span>
+                  </div>
+                </div>
+                <div class="flex">
+                  <!-- Sidebar -->
+                  <div class="w-[120px] bg-[#111119] border-r border-white/5 py-2 flex-shrink-0">
+                    <div class="px-3 py-1.5 text-amber-400 bg-amber-400/10 border-l-2 border-amber-400 text-[10px] font-medium">📊 行情中心</div>
+                    <div class="px-3 py-1.5 text-gray-500 text-[10px]">🤖 策略管理</div>
+                    <div class="px-3 py-1.5 text-gray-500 text-[10px]">🏪 策略市场</div>
+                    <div class="px-3 py-1.5 text-gray-500 text-[10px]">💼 我的持仓</div>
+                    <div class="px-3 py-1.5 text-gray-500 text-[10px]">📋 订单记录</div>
+                    <div class="px-3 py-1.5 text-gray-500 text-[10px]">📈 回测中心</div>
+                    <div class="px-3 py-1.5 text-gray-500 text-[10px]">⚙️ 系统设置</div>
+                  </div>
+                  <!-- Main Content -->
+                  <div class="flex-1 p-3">
+                    <div class="flex gap-3">
+                      <!-- Chart Area -->
+                      <div class="flex-1">
+                        <div class="flex items-center justify-between mb-2">
+                          <div class="flex items-center gap-2">
+                            <span class="text-white font-bold text-xs">TQQQ</span>
+                            <span class="text-emerald-400 text-[10px] font-bold">$72.45</span>
+                            <span class="text-emerald-400 text-[9px]">+3.21%</span>
+                          </div>
+                          <div class="flex gap-1">
+                            <span class="text-[8px] px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-400">1D</span>
+                            <span class="text-[8px] px-1.5 py-0.5 rounded text-gray-600">1W</span>
+                            <span class="text-[8px] px-1.5 py-0.5 rounded text-gray-600">1M</span>
+                          </div>
+                        </div>
+                        <!-- K-line Chart Mockup -->
+                        <div class="bg-[#0a0a12] rounded-lg p-2 h-[140px] relative overflow-hidden">
+                          <svg width="100%" height="100%" viewBox="0 0 400 120" preserveAspectRatio="none">
+                            <!-- Grid lines -->
+                            <line x1="0" y1="30" x2="400" y2="30" stroke="#1a1a2e" stroke-width="0.5"/>
+                            <line x1="0" y1="60" x2="400" y2="60" stroke="#1a1a2e" stroke-width="0.5"/>
+                            <line x1="0" y1="90" x2="400" y2="90" stroke="#1a1a2e" stroke-width="0.5"/>
+                            <!-- Candlesticks -->
+                            <g transform="translate(10,0)">
+                              <line x1="8" y1="25" x2="8" y2="85" stroke="#22c55e" stroke-width="0.5"/><rect x="5" y="35" width="6" height="30" fill="#22c55e" rx="1"/>
+                              <line x1="22" y1="30" x2="22" y2="80" stroke="#ef4444" stroke-width="0.5"/><rect x="19" y="40" width="6" height="25" fill="#ef4444" rx="1"/>
+                              <line x1="36" y1="35" x2="36" y2="90" stroke="#22c55e" stroke-width="0.5"/><rect x="33" y="45" width="6" height="28" fill="#22c55e" rx="1"/>
+                              <line x1="50" y1="20" x2="50" y2="75" stroke="#22c55e" stroke-width="0.5"/><rect x="47" y="30" width="6" height="32" fill="#22c55e" rx="1"/>
+                              <line x1="64" y1="15" x2="64" y2="70" stroke="#ef4444" stroke-width="0.5"/><rect x="61" y="25" width="6" height="30" fill="#ef4444" rx="1"/>
+                              <line x1="78" y1="28" x2="78" y2="82" stroke="#22c55e" stroke-width="0.5"/><rect x="75" y="38" width="6" height="26" fill="#22c55e" rx="1"/>
+                              <line x1="92" y1="22" x2="92" y2="68" stroke="#22c55e" stroke-width="0.5"/><rect x="89" y="28" width="6" height="24" fill="#22c55e" rx="1"/>
+                              <line x1="106" y1="18" x2="106" y2="65" stroke="#ef4444" stroke-width="0.5"/><rect x="103" y="30" width="6" height="22" fill="#ef4444" rx="1"/>
+                              <line x1="120" y1="25" x2="120" y2="78" stroke="#22c55e" stroke-width="0.5"/><rect x="117" y="35" width="6" height="28" fill="#22c55e" rx="1"/>
+                              <line x1="134" y1="12" x2="134" y2="62" stroke="#22c55e" stroke-width="0.5"/><rect x="131" y="18" width="6" height="30" fill="#22c55e" rx="1"/>
+                              <line x1="148" y1="8" x2="148" y2="55" stroke="#ef4444" stroke-width="0.5"/><rect x="145" y="15" width="6" height="28" fill="#ef4444" rx="1"/>
+                              <line x1="162" y1="15" x2="162" y2="60" stroke="#22c55e" stroke-width="0.5"/><rect x="159" y="22" width="6" height="25" fill="#22c55e" rx="1"/>
+                              <line x1="176" y1="10" x2="176" y2="52" stroke="#22c55e" stroke-width="0.5"/><rect x="173" y="15" width="6" height="22" fill="#22c55e" rx="1"/>
+                              <line x1="190" y1="18" x2="190" y2="58" stroke="#ef4444" stroke-width="0.5"/><rect x="187" y="25" width="6" height="20" fill="#ef4444" rx="1"/>
+                              <line x1="204" y1="12" x2="204" y2="48" stroke="#22c55e" stroke-width="0.5"/><rect x="201" y="16" width="6" height="20" fill="#22c55e" rx="1"/>
+                              <line x1="218" y1="8" x2="218" y2="45" stroke="#22c55e" stroke-width="0.5"/><rect x="215" y="12" width="6" height="22" fill="#22c55e" rx="1"/>
+                              <line x1="232" y1="15" x2="232" y2="55" stroke="#ef4444" stroke-width="0.5"/><rect x="229" y="22" width="6" height="20" fill="#ef4444" rx="1"/>
+                              <line x1="246" y1="10" x2="246" y2="50" stroke="#22c55e" stroke-width="0.5"/><rect x="243" y="14" width="6" height="24" fill="#22c55e" rx="1"/>
+                              <line x1="260" y1="5" x2="260" y2="42" stroke="#22c55e" stroke-width="0.5"/><rect x="257" y="8" width="6" height="22" fill="#22c55e" rx="1"/>
+                              <line x1="274" y1="12" x2="274" y2="48" stroke="#ef4444" stroke-width="0.5"/><rect x="271" y="18" width="6" height="18" fill="#ef4444" rx="1"/>
+                              <line x1="288" y1="8" x2="288" y2="40" stroke="#22c55e" stroke-width="0.5"/><rect x="285" y="11" width="6" height="18" fill="#22c55e" rx="1"/>
+                              <line x1="302" y1="5" x2="302" y2="35" stroke="#22c55e" stroke-width="0.5"/><rect x="299" y="8" width="6" height="16" fill="#22c55e" rx="1"/>
+                              <line x1="316" y1="10" x2="316" y2="38" stroke="#ef4444" stroke-width="0.5"/><rect x="313" y="15" width="6" height="14" fill="#ef4444" rx="1"/>
+                              <line x1="330" y1="3" x2="330" y2="30" stroke="#22c55e" stroke-width="0.5"/><rect x="327" y="5" width="6" height="16" fill="#22c55e" rx="1"/>
+                              <line x1="344" y1="8" x2="344" y2="35" stroke="#22c55e" stroke-width="0.5"/><rect x="341" y="10" width="6" height="15" fill="#22c55e" rx="1"/>
+                              <line x1="358" y1="5" x2="358" y2="28" stroke="#ef4444" stroke-width="0.5"/><rect x="355" y="10" width="6" height="12" fill="#ef4444" rx="1"/>
+                              <line x1="372" y1="2" x2="372" y2="25" stroke="#22c55e" stroke-width="0.5"/><rect x="369" y="4" width="6" height="14" fill="#22c55e" rx="1"/>
+                            </g>
+                            <!-- MA lines -->
+                            <path d="M15,55 Q60,48 100,40 T200,28 T300,18 T380,10" fill="none" stroke="#C9A046" stroke-width="1" opacity="0.6"/>
+                            <path d="M15,65 Q60,58 100,52 T200,38 T300,28 T380,18" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.4"/>
+                          </svg>
+                          <div class="absolute bottom-1 left-2 text-[8px] text-gray-600">Vol: 12.4M</div>
+                        </div>
+                      </div>
+                      <!-- Watchlist -->
+                      <div class="w-[150px] flex-shrink-0">
+                        <div class="text-[9px] text-gray-500 font-medium mb-1.5">自选股 · 8</div>
+                        <div class="space-y-0.5">
+                          <div class="flex justify-between items-center py-1 px-1.5 rounded bg-amber-400/5">
+                            <span class="text-white text-[10px] font-medium">TQQQ</span>
+                            <span class="text-emerald-400 text-[10px] font-bold">72.45</span>
+                          </div>
+                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
+                            <span class="text-gray-300 text-[10px]">SOXL</span>
+                            <span class="text-emerald-400 text-[10px]">38.12</span>
+                          </div>
+                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
+                            <span class="text-gray-300 text-[10px]">QQQ</span>
+                            <span class="text-emerald-400 text-[10px]">523.8</span>
+                          </div>
+                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
+                            <span class="text-gray-300 text-[10px]">SPY</span>
+                            <span class="text-red-400 text-[10px]">589.3</span>
+                          </div>
+                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
+                            <span class="text-gray-300 text-[10px]">AAPL</span>
+                            <span class="text-emerald-400 text-[10px]">198.7</span>
+                          </div>
+                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
+                            <span class="text-gray-300 text-[10px]">NVDA</span>
+                            <span class="text-emerald-400 text-[10px]">134.6</span>
+                          </div>
+                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
+                            <span class="text-gray-300 text-[10px]">SQQQ</span>
+                            <span class="text-red-400 text-[10px]">18.92</span>
+                          </div>
+                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
+                            <span class="text-gray-300 text-[10px]">SOXS</span>
+                            <span class="text-red-400 text-[10px]">24.15</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Status Bar -->
+                <div class="flex items-center justify-between px-4 py-1.5 bg-[#0a0a12] border-t border-white/5 text-[9px] text-gray-600">
+                  <div class="flex items-center gap-3">
+                    <span>Push 模式 · &lt;50ms</span>
+                    <span>自选 8 只</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span>策略 2 个运行中</span>
+                    <span class="text-amber-400/60">道鲸 v0.1.0</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -540,12 +674,11 @@
   <footer class="py-12 px-6 border-t border-white/5">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center">
-          <svg width="16" height="12" viewBox="0 0 20 14" fill="none">
-            <path d="M1 7C4 3 7 3 10 7C13 11 16 11 19 7" stroke="#0A0A0F" stroke-width="2" stroke-linecap="round"/>
-          </svg>
+        <img src="logo.jpg" alt="道鲸" class="w-8 h-8 rounded-lg">
+        <div class="flex flex-col leading-tight">
+          <span class="font-bold text-sm">道鲸·AI量化系统</span>
+          <span class="text-[10px] text-gold-400 tracking-wider">DAWN WHALES</span>
         </div>
-        <span class="font-bold">DAWN WHALES · 道鲸</span>
       </div>
 
       <div class="flex items-center gap-6 text-sm text-gray-500">
@@ -558,7 +691,7 @@
         <a href="#" class="hover:text-gold-400 transition">文档</a>
       </div>
 
-      <p class="text-sm text-gray-600">© 2025 DAWN WHALES. All rights reserved.</p>
+      <p class="text-sm text-gray-600">© 2026 DAWN WHALES · 道鲸. All rights reserved.</p>
     </div>
   </footer>
 
