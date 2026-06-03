@@ -1,7 +1,6 @@
 // ── Preload Script — IPC Bridge (安全暴露 API 给渲染进程) ──────────────────
 import { contextBridge, ipcRenderer } from 'electron';
 
-// 只暴露白名单方法，不暴露 ipcRenderer 本身
 contextBridge.exposeInMainWorld('api', {
   // ── Broker ────────────────────────────────────────────────────────
   broker: {
@@ -20,9 +19,24 @@ contextBridge.exposeInMainWorld('api', {
   // ── Strategy ──────────────────────────────────────────────────────
   strategy: {
     create: (dsl: any) => ipcRenderer.invoke('strategy:create', dsl),
+    getAll: () => ipcRenderer.invoke('strategy:getAll'),
+    delete: (id: string) => ipcRenderer.invoke('strategy:delete', id),
     backtest: (config: any) => ipcRenderer.invoke('strategy:backtest', config),
     startLive: (id: string) => ipcRenderer.invoke('strategy:startLive', id),
     stopLive: (id: string) => ipcRenderer.invoke('strategy:stopLive', id),
+  },
+
+  // ── NL Parser ─────────────────────────────────────────────────────
+  nl: {
+    parse: (text: string) => ipcRenderer.invoke('nl:parse', text),
+    templates: () => ipcRenderer.invoke('nl:templates'),
+  },
+
+  // ── Risk ──────────────────────────────────────────────────────────
+  risk: {
+    getConfig: () => ipcRenderer.invoke('risk:getConfig'),
+    updateConfig: (config: any) => ipcRenderer.invoke('risk:updateConfig', config),
+    getAlerts: () => ipcRenderer.invoke('risk:getAlerts'),
   },
 
   // ── Database ──────────────────────────────────────────────────────
@@ -31,6 +45,11 @@ contextBridge.exposeInMainWorld('api', {
     saveStrategy: (s: any) => ipcRenderer.invoke('db:saveStrategy', s),
     getSettings: () => ipcRenderer.invoke('db:getSettings'),
     saveSettings: (s: any) => ipcRenderer.invoke('db:saveSettings', s),
+    getTrades: (strategyId?: string) => ipcRenderer.invoke('db:getTrades', strategyId),
+    getBacktestResults: (strategyId: string) => ipcRenderer.invoke('db:getBacktestResults', strategyId),
+    getWatchlist: () => ipcRenderer.invoke('db:getWatchlist'),
+    saveWatchlist: (codes: string[]) => ipcRenderer.invoke('db:saveWatchlist', codes),
+    getSignals: (strategyId?: string) => ipcRenderer.invoke('db:getSignals', strategyId),
   },
 
   // ── App ───────────────────────────────────────────────────────────
@@ -41,11 +60,16 @@ contextBridge.exposeInMainWorld('api', {
 
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
-    const allowed = ['quotes:push', 'quote-update', 'order-update', 'strategy-signal', 'risk-alert', 'notification'];
+    const allowed = [
+      'quotes:push',
+      'quote-update',
+      'order-update',
+      'strategy-signal',
+      'risk-alert',
+      'notification',
+    ];
     if (allowed.includes(channel)) {
       ipcRenderer.on(channel, (_event, ...args) => callback(...args));
     }
   },
 });
-
-

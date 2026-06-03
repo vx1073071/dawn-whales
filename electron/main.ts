@@ -1,7 +1,6 @@
-// ── QuantDesk Pro — Electron Main Process ──────────────────────────────────
+// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
 // 架构对齐：富途牛牛桌面端 (Electron + C++ core + React)
 // 我们用：Electron + Node.js (Main) + React (Renderer)
-// 性能热点后期下沉到 Rust N-API（富途用 C++ N-API）
 
 import { app, BrowserWindow, ipcMain, shell, Tray, Menu, nativeImage } from 'electron';
 import path from 'path';
@@ -10,6 +9,7 @@ import { StrategyEngine } from './engine/strategy-engine';
 import { BacktestEngine } from './engine/backtest-engine';
 import { DatabaseManager } from './data/database';
 import { RiskEngine } from './engine/risk-engine';
+import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/nl-parser';
 import log from 'electron-log';
 
 const WATCHLIST = ['US.TQQQ','US.SOXL','US.QQQ','US.SPY','US.AAPL','US.NVDA','US.SQQQ','US.SOXS'];
@@ -44,46 +44,36 @@ function createWindow() {
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: false,
-      webSecurity: false,  // Allow fetch to local bridge API
+      webSecurity: false,
     },
   });
 
   // Load app — dev server in development, built files in production
-  const isDev = !app.isPackaged && process.env.VITE_DEV_SERVER_URL;
-  if (isDev) {
+  const hasDevServer = !app.isPackaged && process.env.VITE_DEV_SERVER_URL;
+  if (hasDevServer) {
     mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL!);
+    mainWindow.webContents.openDevTools({ mode: 'detach' });
   } else {
     mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
   }
 
-  // Open DevTools in development only
-  if (isDev) {
-    mainWindow.webContents.openDevTools({ mode: 'detach' });
-  }
-
-  // Log renderer console messages to main process
-  mainWindow.webContents.on('console-message', (_event, level, message, line, sourceId) => {
+  // Log renderer console messages
+  mainWindow.webContents.on('console-message', (_event, level, message) => {
     const levels = ['log', 'warn', 'error'];
     log.info(`[Renderer:${levels[level] || 'log'}] ${message}`);
   });
 
-  // Show when ready (avoid white flash)
-  mainWindow.once('ready-to-show', () => {
-    mainWindow?.show();
-  });
+  mainWindow.once('ready-to-show', () => mainWindow?.show());
 
-  // External links open in browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
     return { action: 'deny' };
   });
 
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
+  mainWindow.on('closed', () => { mainWindow = null; });
 }
 
-// ── IPC Handlers (Main ↔ Renderer) ────────────────────────────────────────
+// ── IPC Handlers ───────────────────────────────────────────────────────────
 
 function setupIPC() {
   // ── Broker: Futu OpenD ──────────────────────────────────────────────
@@ -91,18 +81,18 @@ function setupIPC() {
     try {
       opendClient = new FutuOpenDClient(config.host || '127.0.0.1', config.port || 11111);
       await opendClient.connect();
-      log.info('[Broker] OpenD connected', config);
+      log.info('[Broker] OpenD connected');
 
-      // 注册 Push 回调，实时行情推送到前端
       opendClient.onQuotePush((quotes) => {
         mainWindow?.webContents.send('quotes:push', quotes);
+        strategyEngine?.onQuoteUpdate(quotes);
       });
       await opendClient.subscribeAndPush(WATCHLIST);
-      log.info('[Broker] Push mode active, watchlist subscribed');
+      log.info('[Broker] Push mode active');
 
       return { success: true, host: config.host, port: config.port };
     } catch (err: any) {
-      log.error('[Broker] OpenD connect failed:', err.message);
+      log.error('[Broker] Connect failed:', err.message);
       return { success: false, error: err.message };
     }
   });
@@ -116,66 +106,64 @@ function setupIPC() {
   ipcMain.handle('broker:getAccounts', async () => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
-      const accounts = await opendClient.getAccounts();
-      return { success: true, accounts };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
+      return { success: true, accounts: await opendClient.getAccounts() };
+    } catch (err: any) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getFunds', async (_e, accountId: string) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
       const funds = await opendClient.getFunds(accountId);
+      riskEngine?.updateTotalAssets(funds?.totalAssets || 0);
       return { success: true, funds };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
+    } catch (err: any) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getPositions', async (_e, accountId: string) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
-      const positions = await opendClient.getPositions(accountId);
-      return { success: true, positions };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
+      return { success: true, positions: await opendClient.getPositions(accountId) };
+    } catch (err: any) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getQuotes', async (_e, codes: string[]) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
       const quoteList = (!codes || codes.length === 0) ? WATCHLIST : codes;
-      const quotes = await opendClient.getQuotes(quoteList);
-      return { success: true, quotes };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
+      return { success: true, quotes: await opendClient.getQuotes(quoteList) };
+    } catch (err: any) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getKlines', async (_e, code: string, period: string, count: number) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
+      // Check cache first
+      const cached = db?.getKlines(code, period || 'daily', count || 200);
+      if (cached && cached.length > 0) {
+        return { success: true, klines: cached, cached: true };
+      }
       const klines = await opendClient.getKlines(code, period || 'daily', count || 200);
+      // Cache for future use
+      if (klines.length > 0 && db) {
+        db.saveKlines(code, period || 'daily', klines);
+      }
       return { success: true, klines };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
+    } catch (err: any) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:placeOrder', async (_e, order: any) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     const riskResult = riskEngine?.checkOrder(order);
     if (riskResult && !riskResult.pass) {
+      mainWindow?.webContents.send('risk-alert', { order, reason: riskResult.reason });
       return { success: false, error: `风控拦截: ${riskResult.reason}` };
     }
     try {
       const result = await opendClient.placeOrder(order);
+      db?.saveTrade({ ...order, orderId: result.orderId, status: 'submitted' });
+      mainWindow?.webContents.send('order-update', { ...order, orderId: result.orderId, status: 'submitted' });
       return { success: true, ...result };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
+    } catch (err: any) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:cancelOrder', async (_e, orderId: string, accountId: string, code: string) => {
@@ -183,30 +171,75 @@ function setupIPC() {
     try {
       await opendClient.cancelOrder(orderId, accountId, code);
       return { success: true };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
+    } catch (err: any) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getOrders', async (_e, accountId: string) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
-      const orders = await opendClient.getOrders(accountId);
-      return { success: true, orders };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
+      return { success: true, orders: await opendClient.getOrders(accountId) };
+    } catch (err: any) { return { success: false, error: err.message }; }
   });
 
   // ── Strategy Engine ─────────────────────────────────────────────────
   ipcMain.handle('strategy:create', async (_e, dsl: any) => {
-    const id = strategyEngine?.createStrategy(dsl);
-    return { success: true, id };
+    try {
+      const id = strategyEngine?.createStrategy(dsl);
+      const strategy = strategyEngine?.getStrategy(id!);
+      if (strategy && db) db.saveStrategy(strategy);
+      return { success: true, id, strategy };
+    } catch (err: any) { return { success: false, error: err.message }; }
+  });
+
+  ipcMain.handle('strategy:getAll', async () => {
+    return { success: true, strategies: strategyEngine?.getAllStrategies() || [] };
+  });
+
+  ipcMain.handle('strategy:delete', async (_e, id: string) => {
+    strategyEngine?.deleteStrategy(id);
+    db?.deleteStrategy(id);
+    return { success: true };
   });
 
   ipcMain.handle('strategy:backtest', async (_e, config: any) => {
-    if (!backtestEngine) return { success: false, error: 'Backtest engine not ready' };
-    return backtestEngine.run(config);
+    if (!strategyEngine || !backtestEngine) {
+      return { success: false, error: 'Engine not ready' };
+    }
+    try {
+      // Fetch K-lines
+      let klines = config.klines;
+      if (!klines || klines.length === 0) {
+        // Try cache first
+        klines = db?.getKlines(config.symbol || 'US.TQQQ', config.period || 'daily', config.count || 200);
+        if (!klines || klines.length === 0) {
+          if (opendClient?.connected) {
+            klines = await opendClient.getKlines(config.symbol || 'US.TQQQ', config.period || 'daily', config.count || 200);
+            if (klines.length > 0 && db) db.saveKlines(config.symbol || 'US.TQQQ', config.period || 'daily', klines);
+          }
+        }
+      }
+
+      if (!klines || klines.length < 50) {
+        return { success: false, error: 'K线数据不足（需要至少50根），请确认 OpenD 已连接' };
+      }
+
+      const strategyId = config.strategyId;
+      if (strategyId) {
+        const result = await strategyEngine.runBacktest(strategyId, klines);
+        if (result.success && db) {
+          db.saveBacktestResult({
+            strategyId, ...result.result,
+            initialCapital: config.initialCapital || 100000,
+          });
+        }
+        return result;
+      }
+
+      return await backtestEngine.run({ ...config, klines });
+    } catch (err: any) {
+      log.error('[IPC] Backtest error:', err.message);
+      return { success: false, error: err.message };
+    }
   });
 
   ipcMain.handle('strategy:startLive', async (_e, strategyId: string) => {
@@ -219,13 +252,37 @@ function setupIPC() {
     return { success: true };
   });
 
+  // ── NL Parser ───────────────────────────────────────────────────────
+  ipcMain.handle('nl:parse', async (_e, text: string) => {
+    return parseNaturalLanguage(text);
+  });
+
+  ipcMain.handle('nl:templates', async () => {
+    return { success: true, templates: STRATEGY_TEMPLATES };
+  });
+
+  // ── Risk Engine ─────────────────────────────────────────────────────
+  ipcMain.handle('risk:getConfig', async () => {
+    return { success: true, config: riskEngine?.getConfig() };
+  });
+
+  ipcMain.handle('risk:updateConfig', async (_e, config: any) => {
+    riskEngine?.updateConfig(config);
+    return { success: true };
+  });
+
+  ipcMain.handle('risk:getAlerts', async () => {
+    return { success: true, alerts: riskEngine?.getAlerts() || [] };
+  });
+
   // ── Database ────────────────────────────────────────────────────────
   ipcMain.handle('db:getStrategies', async () => {
     return db?.getStrategies() || [];
   });
 
   ipcMain.handle('db:saveStrategy', async (_e, strategy: any) => {
-    return db?.saveStrategy(strategy);
+    db?.saveStrategy(strategy);
+    return { success: true };
   });
 
   ipcMain.handle('db:getSettings', async () => {
@@ -233,7 +290,29 @@ function setupIPC() {
   });
 
   ipcMain.handle('db:saveSettings', async (_e, settings: any) => {
-    return db?.saveSettings(settings);
+    db?.saveSettings(settings);
+    return { success: true };
+  });
+
+  ipcMain.handle('db:getTrades', async (_e, strategyId?: string) => {
+    return db?.getTrades(strategyId) || [];
+  });
+
+  ipcMain.handle('db:getBacktestResults', async (_e, strategyId: string) => {
+    return db?.getBacktestResults(strategyId) || [];
+  });
+
+  ipcMain.handle('db:getWatchlist', async () => {
+    return db?.getWatchlist() || [];
+  });
+
+  ipcMain.handle('db:saveWatchlist', async (_e, codes: string[]) => {
+    db?.saveWatchlist(codes);
+    return { success: true };
+  });
+
+  ipcMain.handle('db:getSignals', async (_e, strategyId?: string) => {
+    return db?.getSignals(strategyId) || [];
   });
 
   // ── App ─────────────────────────────────────────────────────────────
@@ -256,7 +335,6 @@ function setupIPC() {
 // ── System Tray ────────────────────────────────────────────────────────────
 
 function createTray() {
-  // Create a simple tray icon (gold diamond)
   const iconSize = 16;
   const icon = nativeImage.createFromBuffer(createDiamondIcon(iconSize));
   tray = new Tray(icon);
@@ -280,6 +358,7 @@ function createTray() {
 app.whenReady().then(async () => {
   log.info('[App] DAWN WHALES starting...');
 
+  // Initialize modules
   try {
     db = new DatabaseManager();
     db.initialize();
@@ -295,42 +374,65 @@ app.whenReady().then(async () => {
     log.error('[App] Engine init failed:', err.message);
   }
 
-  // Setup IPC
   setupIPC();
-
-  // Create window first (so push has somewhere to send)
   createWindow();
 
-  // Auto-connect to OpenD + Push 订阅
+  // Auto-connect to OpenD
   try {
     opendClient = new FutuOpenDClient('127.0.0.1', 11111);
     await opendClient.connect();
     opendClient.onQuotePush((quotes) => {
       mainWindow?.webContents.send('quotes:push', quotes);
+      strategyEngine?.onQuoteUpdate(quotes);
     });
     await opendClient.subscribeAndPush(WATCHLIST);
     log.info('[App] OpenD auto-connected ✓ Push mode active');
   } catch (err: any) {
-    log.warn('[App] OpenD auto-connect failed (will retry from UI):', err.message);
+    log.warn('[App] OpenD auto-connect failed:', err.message);
     opendClient = null;
   }
 
-  createTray();
+  // Wire strategy engine callbacks
+  if (strategyEngine) {
+    strategyEngine.onSignal((event) => {
+      mainWindow?.webContents.send('strategy-signal', event);
+      db?.saveSignal(event);
+      log.info(`[App] Signal: ${event.signal} ${event.symbol} @ ${event.price} — ${event.reason}`);
+    });
 
+    strategyEngine.onTrade(async (order) => {
+      const riskResult = riskEngine?.checkOrder(order);
+      if (riskResult && !riskResult.pass) {
+        mainWindow?.webContents.send('risk-alert', { order, reason: riskResult.reason });
+        log.warn(`[App] Risk blocked: ${order.code} — ${riskResult.reason}`);
+        return;
+      }
+
+      if (opendClient?.connected) {
+        try {
+          const result = await opendClient.placeOrder(order);
+          db?.saveTrade({ ...order, orderId: result.orderId, status: 'submitted' });
+          mainWindow?.webContents.send('order-update', { ...order, orderId: result.orderId, status: 'submitted' });
+        } catch (err: any) {
+          log.error('[App] Auto-trade failed:', err.message);
+          mainWindow?.webContents.send('notification', { type: 'error', message: `交易失败: ${err.message}` });
+        }
+      }
+    });
+  }
+
+  createTray();
   log.info('[App] DAWN WHALES ready');
 });
 
 app.on('window-all-closed', () => {
-  // Don't quit on window close (tray app behavior, like Futu)
   if (process.platform !== 'darwin') {
-    // On Windows, minimize to tray instead of quit
+    // Minimize to tray on Windows
   }
 });
 
 app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+  if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
 app.on('before-quit', () => {
@@ -342,7 +444,6 @@ app.on('before-quit', () => {
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 function createDiamondIcon(size: number): Buffer {
-  // Create a simple RGBA buffer for a gold diamond icon
   const pixels = Buffer.alloc(size * size * 4);
   const cx = size / 2;
   const cy = size / 2;
@@ -351,10 +452,10 @@ function createDiamondIcon(size: number): Buffer {
       const dist = Math.abs(x - cx) + Math.abs(y - cy);
       const idx = (y * size + x) * 4;
       if (dist < size / 2 - 1) {
-        pixels[idx] = 201;     // R (#C9A96E gold)
-        pixels[idx + 1] = 169; // G
-        pixels[idx + 2] = 110; // B
-        pixels[idx + 3] = 255; // A
+        pixels[idx] = 201;
+        pixels[idx + 1] = 169;
+        pixels[idx + 2] = 110;
+        pixels[idx + 3] = 255;
       }
     }
   }

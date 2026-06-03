@@ -1,6 +1,4 @@
 // ── DAWN WHALES — IPC API Client (直连 OpenD，通过 Electron IPC) ──────────────
-// Replaces the old bridge-api.ts that used HTTP to the Bridge.
-// Now communicates directly with OpenD via Electron Main Process.
 
 declare global {
   interface Window {
@@ -19,15 +17,31 @@ declare global {
       };
       strategy: {
         create: (dsl: any) => Promise<any>;
+        getAll: () => Promise<any>;
+        delete: (id: string) => Promise<any>;
         backtest: (config: any) => Promise<any>;
         startLive: (id: string) => Promise<any>;
         stopLive: (id: string) => Promise<any>;
+      };
+      nl: {
+        parse: (text: string) => Promise<any>;
+        templates: () => Promise<any>;
+      };
+      risk: {
+        getConfig: () => Promise<any>;
+        updateConfig: (config: any) => Promise<any>;
+        getAlerts: () => Promise<any>;
       };
       db: {
         getStrategies: () => Promise<any>;
         saveStrategy: (s: any) => Promise<any>;
         getSettings: () => Promise<any>;
         saveSettings: (s: any) => Promise<any>;
+        getTrades: (strategyId?: string) => Promise<any>;
+        getBacktestResults: (strategyId: string) => Promise<any>;
+        getWatchlist: () => Promise<any>;
+        saveWatchlist: (codes: string[]) => Promise<any>;
+        getSignals: (strategyId?: string) => Promise<any>;
       };
       app: {
         getInfo: () => Promise<any>;
@@ -42,6 +56,13 @@ function hasIPC(): boolean {
   return typeof window !== 'undefined' && !!window.api?.broker;
 }
 
+// ── Broker ─────────────────────────────────────────────────────────────────
+
+export async function connectBroker(config?: { host?: string; port?: number }): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.broker.connect(config || { host: '127.0.0.1', port: 11111 });
+}
+
 export async function getKlines(code: string, period: string = 'daily', count: number = 200): Promise<any[]> {
   if (!hasIPC()) return generateDemoKlines(count);
   const result = await window.api.broker.getKlines(code, period, count);
@@ -52,22 +73,25 @@ export async function getKlines(code: string, period: string = 'daily', count: n
 export async function getAccounts(): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.broker.getAccounts();
-  if (result?.success) return result.accounts || [];
-  return [];
+  return result?.success ? result.accounts || [] : [];
 }
 
 export async function getFunds(accountId: string): Promise<any> {
   if (!hasIPC()) return null;
   const result = await window.api.broker.getFunds(accountId);
-  if (result?.success) return result.funds;
-  return null;
+  return result?.success ? result.funds : null;
 }
 
 export async function getPositions(accountId: string): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.broker.getPositions(accountId);
-  if (result?.success) return result.positions || [];
-  return [];
+  return result?.success ? result.positions || [] : [];
+}
+
+export async function getQuotes(codes: string[] = []): Promise<any[]> {
+  if (!hasIPC()) return [];
+  const result = await window.api.broker.getQuotes(codes);
+  return result?.success ? result.quotes || [] : [];
 }
 
 export async function isConnected(): Promise<boolean> {
@@ -75,19 +99,66 @@ export async function isConnected(): Promise<boolean> {
   try {
     const result = await window.api.broker.getAccounts();
     return result?.success === true;
-  } catch {
-    return false;
-  }
+  } catch { return false; }
 }
 
-export async function getQuotes(codes: string[] = []): Promise<any[]> {
+// ── Strategy ───────────────────────────────────────────────────────────────
+
+export async function createStrategy(input: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.strategy.create(input);
+}
+
+export async function getAllStrategies(): Promise<any[]> {
   if (!hasIPC()) return [];
-  const result = await window.api.broker.getQuotes(codes);
-  if (result?.success) return result.quotes || [];
-  return [];
+  const result = await window.api.strategy.getAll();
+  return result?.success ? result.strategies || [] : [];
 }
 
-// Demo K-line generator (fallback when OpenD kline fails)
+export async function runBacktest(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.strategy.backtest(config);
+}
+
+export async function startLive(strategyId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.strategy.startLive(strategyId);
+}
+
+export async function stopLive(strategyId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.strategy.stopLive(strategyId);
+}
+
+// ── NL Parser ──────────────────────────────────────────────────────────────
+
+export async function parseNL(text: string): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.nl.parse(text);
+}
+
+export async function getTemplates(): Promise<any[]> {
+  if (!hasIPC()) return [];
+  const result = await window.api.nl.templates();
+  return result?.success ? result.templates || [] : [];
+}
+
+// ── Risk ───────────────────────────────────────────────────────────────────
+
+export async function getRiskConfig(): Promise<any> {
+  if (!hasIPC()) return null;
+  const result = await window.api.risk.getConfig();
+  return result?.success ? result.config : null;
+}
+
+export async function getRiskAlerts(): Promise<any[]> {
+  if (!hasIPC()) return [];
+  const result = await window.api.risk.getAlerts();
+  return result?.success ? result.alerts || [] : [];
+}
+
+// ── Demo K-line Generator (fallback) ──────────────────────────────────────
+
 function generateDemoKlines(count: number): any[] {
   const data: any[] = [];
   let price = 100 + Math.random() * 50;
