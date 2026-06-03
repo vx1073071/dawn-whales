@@ -196,6 +196,22 @@ function setupIPC() {
     return { success: true, strategies: strategyEngine?.getAllStrategies() || [] };
   });
 
+  ipcMain.handle('strategy:get', async (_e, id: string) => {
+    const strategy = strategyEngine?.getStrategy(id);
+    return { success: !!strategy, strategy };
+  });
+
+  ipcMain.handle('strategy:update', async (_e, id: string, updates: any) => {
+    try {
+      const strategy = strategyEngine?.getStrategy(id);
+      if (!strategy) return { success: false, error: 'Strategy not found' };
+      // Merge updates
+      Object.assign(strategy, updates, { updatedAt: new Date().toISOString() });
+      if (db) db.saveStrategy(strategy);
+      return { success: true, strategy };
+    } catch (err: any) { return { success: false, error: err.message }; }
+  });
+
   ipcMain.handle('strategy:delete', async (_e, id: string) => {
     strategyEngine?.deleteStrategy(id);
     db?.deleteStrategy(id);
@@ -331,6 +347,34 @@ function setupIPC() {
     mainProcess: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
     total: Math.round(process.memoryUsage().rss / 1024 / 1024),
   }));
+
+  ipcMain.handle('app:emergencyStop', async () => {
+    log.warn('[App] Emergency stop triggered');
+    // Stop all live strategies
+    const strategies = strategyEngine?.getAllStrategies() || [];
+    for (const s of strategies) {
+      if (s.liveRunning) {
+        strategyEngine?.stopLive(s.id);
+      }
+    }
+    // Notify renderer
+    mainWindow?.webContents.send('notification', {
+      type: 'error',
+      title: '紧急停止',
+      message: '所有策略已停止',
+    });
+    return { success: true };
+  });
+
+  ipcMain.handle('app:openExternal', async (_e, url: string) => {
+    if (url.startsWith('http')) {
+      await shell.openExternal(url);
+    }
+    return { success: true };
+  });
+
+  ipcMain.handle('app:getVersion', () => app.getVersion());
+  ipcMain.handle('app:getPlatform', () => process.platform);
 
   // ── Auto-updater ──────────────────────────────────────────────────
   ipcMain.handle('app:checkUpdate', async () => {

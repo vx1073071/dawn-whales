@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates } from '../../lib/bridge-api';
+import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates, deleteStrategy } from '../../lib/bridge-api';
 
 type CreateMode = null | 'ai' | 'template' | 'form';
 
@@ -33,6 +33,8 @@ export default function StrategyPage() {
   const [mode, setMode] = useState<CreateMode>(null);
   const [strategies, setStrategies] = useState<any[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [nlPrefill, setNlPrefill] = useState<ParsedStrategy | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
@@ -62,15 +64,29 @@ export default function StrategyPage() {
       </div>
 
       {!mode && !selectedId && <ModeSelector onSelect={setMode} />}
-      {mode === 'ai' && <AICreator onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} />}
+      {mode === 'ai' && <AICreator onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} onFillForm={(parsed) => { setNlPrefill(parsed); setMode('form'); }} />}
       {mode === 'template' && <TemplateBrowser onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} />}
-      {mode === 'form' && <FormCreator onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} />}
+      {mode === 'form' && <FormCreator onBack={() => { setMode(null); setNlPrefill(null); }} onCreated={() => { setMode(null); setNlPrefill(null); refresh(); }} nlPrefill={nlPrefill || undefined} />}
 
       {/* My strategies */}
       {!mode && !selectedId && (
         <MyStrategies
           strategies={strategies}
           onSelect={(id) => setSelectedId(id)}
+          onEdit={(id) => setEditingId(id)}
+          onDelete={async (id) => {
+            await deleteStrategy(id);
+            refresh();
+          }}
+        />
+      )}
+
+      {/* Edit strategy */}
+      {!mode && editingId && (
+        <FormCreator
+          onBack={() => setEditingId(null)}
+          onCreated={() => { setEditingId(null); refresh(); }}
+          editId={editingId}
         />
       )}
 
@@ -115,7 +131,7 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
 
 // ── AI Natural Language Creator ────────────────────────────────────────────
 
-function AICreator({ onBack, onCreated }: { onBack: () => void; onCreated: () => void }) {
+function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCreated: () => void; onFillForm?: (parsed: ParsedStrategy) => void }) {
   const [input, setInput] = useState('');
   const [parsed, setParsed] = useState<ParsedStrategy | null>(null);
   const [loading, setLoading] = useState(false);
@@ -277,6 +293,11 @@ function AICreator({ onBack, onCreated }: { onBack: () => void; onCreated: () =>
             <button onClick={handleBacktest} disabled={backtestLoading} className="px-4 py-2 bg-[#22222f] text-gray-300 rounded-lg text-sm hover:bg-[#2a2a3a] transition-colors">
               {backtestLoading ? '⏳ 回测中...' : '📈 回测 200 天'}
             </button>
+            {onFillForm && (
+              <button onClick={() => onFillForm(parsed)} className="px-4 py-2 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-lg text-sm hover:bg-blue-500/30 transition-colors">
+                📊 填充表单调整
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -470,16 +491,44 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
 
 // ── Form Creator ───────────────────────────────────────────────────────────
 
-function FormCreator({ onBack, onCreated }: { onBack: () => void; onCreated: () => void }) {
-  const [strategyType, setStrategyType] = useState('ma_cross');
-  const [symbol, setSymbol] = useState('US.TQQQ');
-  const [shortPeriod, setShortPeriod] = useState(10);
-  const [longPeriod, setLongPeriod] = useState(30);
-  const [rsiOversold, setRsiOversold] = useState(30);
-  const [rsiOverbought, setRsiOverbought] = useState(70);
-  const [stopLoss, setStopLoss] = useState(5);
-  const [takeProfit, setTakeProfit] = useState(15);
+function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => void; onCreated: () => void; editId?: string; nlPrefill?: ParsedStrategy }) {
+  const [strategyType, setStrategyType] = useState(nlPrefill?.strategy?.type || 'ma_cross');
+  const [symbol, setSymbol] = useState(nlPrefill?.symbol || 'US.TQQQ');
+  const [shortPeriod, setShortPeriod] = useState(nlPrefill?.strategy?.params?.shortPeriod || 10);
+  const [longPeriod, setLongPeriod] = useState(nlPrefill?.strategy?.params?.longPeriod || 30);
+  const [rsiOversold, setRsiOversold] = useState(nlPrefill?.strategy?.params?.oversold || 30);
+  const [rsiOverbought, setRsiOverbought] = useState(nlPrefill?.strategy?.params?.overbought || 70);
+  const [stopLoss, setStopLoss] = useState(nlPrefill?.strategy?.stopLoss || 5);
+  const [takeProfit, setTakeProfit] = useState(nlPrefill?.strategy?.takeProfit || 15);
   const [creating, setCreating] = useState(false);
+  const [strategyName, setStrategyName] = useState('');
+
+  // Load existing strategy data for edit mode
+  useEffect(() => {
+    if (editId) {
+      const load = async () => {
+        try {
+          const list = await getAllStrategies();
+          const existing = list.find((s: any) => s.id === editId);
+          if (existing) {
+            setStrategyName(existing.name || '');
+            setSymbol(existing.symbol || existing.targetCode || 'US.TQQQ');
+            const st = existing.strategy || {};
+            setStrategyType(st.type || 'ma_cross');
+            if (st.params) {
+              if (st.params.shortPeriod) setShortPeriod(st.params.shortPeriod);
+              if (st.params.longPeriod) setLongPeriod(st.params.longPeriod);
+              if (st.params.oversold) setRsiOversold(st.params.oversold);
+              if (st.params.overbought) setRsiOverbought(st.params.overbought);
+            }
+            if (st.stopLoss) setStopLoss(st.stopLoss);
+            if (st.takeProfit) setTakeProfit(st.takeProfit);
+          }
+        } catch { /* silent */ }
+      };
+      load();
+    }
+  }, [editId]);
 
   async function handleCreate() {
     setCreating(true);
@@ -491,11 +540,17 @@ function FormCreator({ onBack, onCreated }: { onBack: () => void; onCreated: () 
       else if (strategyType === 'momentum') params = { lookback: longPeriod, threshold: takeProfit };
       else if (strategyType === 'bollinger') params = { bbPeriod: longPeriod, bbStdDev: 2 };
 
-      await createStrategy({
-        name: `${strategyType.toUpperCase()} ${symbol}`,
-        strategy: { type: strategyType, params, stopLoss, takeProfit },
-        symbol,
-      });
+      const name = strategyName || `${strategyType.toUpperCase()} ${symbol}`;
+      const config = { name, strategy: { type: strategyType, params, stopLoss, takeProfit }, symbol };
+
+      if (editId) {
+        // Update existing
+        if (typeof window !== 'undefined' && window.api?.strategy?.update) {
+          await window.api.strategy.update(editId, config);
+        }
+      } else {
+        await createStrategy(config);
+      }
       onCreated();
     } catch { /* silent */ } finally {
       setCreating(false);
@@ -512,7 +567,19 @@ function FormCreator({ onBack, onCreated }: { onBack: () => void; onCreated: () 
       <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">← 返回</button>
 
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 space-y-5">
-        <h2 className="text-white font-semibold">📊 表单模式 — 精确配置</h2>
+        <h2 className="text-white font-semibold">{editId ? '✏️ 编辑策略' : '📊 表单模式 — 精确配置'}</h2>
+
+        {/* Strategy name */}
+        <div>
+          <label className="block text-gray-400 text-xs mb-1">策略名称</label>
+          <input
+            type="text"
+            value={strategyName}
+            onChange={(e) => setStrategyName(e.target.value)}
+            placeholder={strategyName || `${strategyType.toUpperCase()} ${symbol}`}
+            className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50"
+          />
+        </div>
 
         {/* Strategy type */}
         <div>
@@ -556,7 +623,7 @@ function FormCreator({ onBack, onCreated }: { onBack: () => void; onCreated: () 
         </div>
 
         <button onClick={handleCreate} disabled={creating} className="px-5 py-2.5 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
-          {creating ? '创建中...' : '✅ 创建策略'}
+          {creating ? (editId ? '保存中...' : '创建中...') : (editId ? '💾 保存修改' : '✅ 创建策略')}
         </button>
       </div>
     </div>
@@ -577,7 +644,7 @@ function SliderInput({ label, value, min, max, onChange, unit = '' }: { label: s
 
 // ── My Strategies ──────────────────────────────────────────────────────────
 
-function MyStrategies({ strategies, onSelect }: { strategies: any[]; onSelect: (id: string) => void }) {
+function MyStrategies({ strategies, onSelect, onEdit, onDelete }: { strategies: any[]; onSelect: (id: string) => void; onEdit: (id: string) => void; onDelete: (id: string) => void }) {
   const statusColors: Record<string, string> = {
     draft: 'text-gray-400 bg-gray-500/20',
     backtested: 'text-blue-400 bg-blue-500/20',
@@ -624,6 +691,16 @@ function MyStrategies({ strategies, onSelect }: { strategies: any[]; onSelect: (
                 {statusLabels[s.status] || s.status}
               </span>
               <span className="text-gray-600 text-xs">{s.createdAt ? new Date(s.createdAt).toLocaleDateString() : ''}</span>
+              <button
+                onClick={(e) => { e.stopPropagation(); onEdit(s.id); }}
+                className="text-xs px-2 py-1 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
+                title="编辑策略"
+              >✏️</button>
+              <button
+                onClick={(e) => { e.stopPropagation(); if (confirm(`确认删除策略「${s.name}」？`)) onDelete(s.id); }}
+                className="text-xs px-2 py-1 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20"
+                title="删除策略"
+              >🗑️</button>
             </div>
           </button>
         ))}

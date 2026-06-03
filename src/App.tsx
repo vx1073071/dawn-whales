@@ -1,31 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useAppStore } from '@/stores/appStore';
 import { useBridgeSync } from '@/hooks/useBridgeSync';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
 import StatusBar from '@/components/layout/StatusBar';
-import MarketPage from '@/components/market/MarketPage';
-import StrategyPage from '@/components/strategy/StrategyPage';
-import PortfolioPage from '@/components/portfolio/PortfolioPage';
-import OrdersPage from '@/components/orders/OrdersPage';
-import SettingsPage from '@/components/settings/SettingsPage';
-import MarketplacePage from '@/components/marketplace/MarketplacePage';
 import OnboardingModal from '@/components/OnboardingModal';
 import NotificationToast from '@/components/NotificationToast';
 import { connectBroker } from '@/lib/bridge-api';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
-const pages: Record<string, React.FC> = {
+// ── Lazy-loaded pages for code splitting ──────────────────────────────────
+const MarketPage = lazy(() => import('@/components/market/MarketPage'));
+const StrategyPage = lazy(() => import('@/components/strategy/StrategyPage'));
+const PortfolioPage = lazy(() => import('@/components/portfolio/PortfolioPage'));
+const OrdersPage = lazy(() => import('@/components/orders/OrdersPage'));
+const SettingsPage = lazy(() => import('@/components/settings/SettingsPage'));
+const MarketplacePage = lazy(() => import('@/components/marketplace/MarketplacePage'));
+const LiveMonitorPage = lazy(() => import('@/components/live/LiveMonitorPage'));
+const BacktestReportPage = lazy(() => import('@/components/backtest/BacktestReportPage'));
+
+const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   market: MarketPage,
   strategy: StrategyPage,
   portfolio: PortfolioPage,
   orders: OrdersPage,
   settings: SettingsPage,
   marketplace: MarketplacePage,
-  // Aliases for views that share pages
-  live: MarketPage,
-  backtest: StrategyPage,
+  live: LiveMonitorPage,
+  backtest: BacktestReportPage,
   risk: SettingsPage,
 };
+
+function PageFallback() {
+  return (
+    <div className="flex items-center justify-center h-full">
+      <div className="text-gray-500 text-sm animate-pulse">加载中...</div>
+    </div>
+  );
+}
 
 export default function App() {
   const view = useAppStore((s) => s.sidebarView);
@@ -60,13 +72,18 @@ export default function App() {
   // Sync real-time data from Bridge
   useBridgeSync();
 
+  // Global keyboard shortcuts
+  useKeyboardShortcuts();
+
   return (
     <div className="h-screen flex flex-col bg-surface-1 text-gray-200 overflow-hidden">
       <Header />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar collapsed={collapsed} />
         <main className="flex-1 overflow-auto">
-          <Page />
+          <Suspense fallback={<PageFallback />}>
+            <Page />
+          </Suspense>
         </main>
       </div>
       <StatusBar />

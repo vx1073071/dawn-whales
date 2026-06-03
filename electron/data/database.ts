@@ -118,9 +118,14 @@ export class DatabaseManager {
       -- ── 索引 ────────────────────────────────────────────
       CREATE INDEX IF NOT EXISTS idx_trades_strategy ON trades(strategy_id);
       CREATE INDEX IF NOT EXISTS idx_trades_symbol ON trades(symbol);
+      CREATE INDEX IF NOT EXISTS idx_trades_time ON trades(entry_time);
       CREATE INDEX IF NOT EXISTS idx_signals_strategy ON signal_log(strategy_id);
+      CREATE INDEX IF NOT EXISTS idx_signals_time ON signal_log(timestamp);
+      CREATE INDEX IF NOT EXISTS idx_signals_type ON signal_log(type);
       CREATE INDEX IF NOT EXISTS idx_backtest_strategy ON backtest_runs(strategy_id);
+      CREATE INDEX IF NOT EXISTS idx_backtest_time ON backtest_runs(created_at);
       CREATE INDEX IF NOT EXISTS idx_kline_cache_lookup ON kline_cache(symbol, period, timestamp);
+      CREATE INDEX IF NOT EXISTS idx_strategies_status ON strategies(status);
     `);
     log.info('[Database] Tables initialized (v2)');
   }

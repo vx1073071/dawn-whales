@@ -18,6 +18,8 @@ declare global {
       strategy: {
         create: (dsl: any) => Promise<any>;
         getAll: () => Promise<any>;
+        get: (id: string) => Promise<any>;
+        update: (id: string, updates: any) => Promise<any>;
         delete: (id: string) => Promise<any>;
         backtest: (config: any) => Promise<any>;
         startLive: (id: string) => Promise<any>;
@@ -49,8 +51,13 @@ declare global {
         checkUpdate: () => Promise<any>;
         downloadUpdate: () => Promise<any>;
         installUpdate: () => Promise<void>;
+        emergencyStop: () => Promise<void>;
+        openExternal: (url: string) => Promise<void>;
+        getVersion: () => Promise<string>;
+        getPlatform: () => Promise<string>;
       };
       on: (channel: string, callback: (...args: any[]) => void) => void;
+      off?: (channel: string, callback: (...args: any[]) => void) => void;
     };
   }
 }
@@ -158,12 +165,6 @@ export async function getTemplates(): Promise<any[]> {
 
 // ── Risk ───────────────────────────────────────────────────────────────────
 
-export async function getRiskConfig(): Promise<any> {
-  if (!hasIPC()) return null;
-  const result = await window.api.risk.getConfig();
-  return result?.success ? result.config : null;
-}
-
 export async function getRiskAlerts(): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.risk.getAlerts();
@@ -185,6 +186,44 @@ export async function downloadUpdate(): Promise<any> {
 export async function installUpdate(): Promise<void> {
   if (!hasIPC()) return;
   return window.api.app.installUpdate();
+}
+
+// ── Strategy CRUD ────────────────────────────────────────────────────────────
+
+export async function getStrategies(): Promise<any[]> {
+  if (!hasIPC()) return [];
+  const result = await window.api.strategy.getAll();
+  return result?.success ? result.strategies || [] : [];
+}
+
+export async function updateStrategy(id: string, updates: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.strategy.update?.(id, updates) || { success: false, error: 'Not implemented' };
+}
+
+export async function deleteStrategy(id: string): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.strategy.delete(id);
+}
+
+// ── Signals ─────────────────────────────────────────────────────────────────
+
+export async function getSignals(strategyId?: string): Promise<any[]> {
+  if (!hasIPC()) return [];
+  const result = await window.api.db.getSignals(strategyId);
+  return Array.isArray(result) ? result : [];
+}
+
+// ── Risk Config ─────────────────────────────────────────────────────────────
+
+export async function getRiskConfig(): Promise<any> {
+  if (!hasIPC()) return null;
+  return window.api.risk.getConfig();
+}
+
+export async function updateRiskConfig(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.risk.updateConfig(config);
 }
 
 // ── Demo K-line Generator (fallback) ──────────────────────────────────────

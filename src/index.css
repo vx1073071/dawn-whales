@@ -55,6 +55,38 @@ select {
   padding-right: 32px;
 }
 
+/* ── Light Theme ───────────────────────────────────────────────── */
+html.light, html.light body { background: #f0f2f5; color: #1a1a2e; }
+html.light #root { background: #f0f2f5; }
+html.light ::-webkit-scrollbar-thumb { background: #c4c4c4; }
+html.light ::-webkit-scrollbar-thumb:hover { background: #a0a0a0; }
+html.light input[type="range"] { background: #ddd; }
+html.light input[type="range"]::-webkit-slider-thumb { background: #b8922e; border-color: #f0f2f5; }
+html.light select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+}
+
+/* Light theme overrides for common Tailwind dark classes */
+html.light .bg-\[\#0d1117\] { background: #f0f2f5 !important; }
+html.light .bg-\[\#12121a\] { background: #ffffff !important; }
+html.light .bg-\[\#1a1a25\] { background: #f8f9fa !important; }
+html.light .bg-\[\#22222f\] { background: #e9ecef !important; }
+html.light .bg-surface-1 { background: #f0f2f5 !important; }
+html.light .bg-surface-2 { background: #ffffff !important; }
+html.light .text-white { color: #1a1a2e !important; }
+html.light .text-gray-200 { color: #333 !important; }
+html.light .text-gray-300 { color: #555 !important; }
+html.light .text-gray-400 { color: #777 !important; }
+html.light .text-gray-500 { color: #999 !important; }
+html.light .text-gray-600 { color: #aaa !important; }
+html.light .border-white\/5 { border-color: rgba(0,0,0,0.08) !important; }
+html.light .border-white\/10 { border-color: rgba(0,0,0,0.12) !important; }
+html.light .border-white\/\[0\.03\] { border-color: rgba(0,0,0,0.05) !important; }
+html.light .border-border { border-color: #dee2e6 !important; }
+html.light .hover\:bg-white\/\[0\.02\]:hover { background: rgba(0,0,0,0.03) !important; }
+html.light .hover\:bg-white\/5:hover { background: rgba(0,0,0,0.04) !important; }
+html.light .divide-white\/\[0\.03\] > * + * { border-color: rgba(0,0,0,0.05) !important; }
+
 /* ── Ant Design Override ───────────────────────────────────────── */
 .ant-btn-primary {
   background: #c9a96e !important;

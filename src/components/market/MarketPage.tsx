@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useMarketStore } from '@/stores/marketStore';
 import KLineChart from './KLineChart';
 import * as api from '@/lib/bridge-api';
@@ -150,43 +150,16 @@ export default function MarketPage() {
             </tr>
           </thead>
           <tbody>
-            {watchlist.map((code) => {
-              const q = quotes[code];
-              const chg = q?.change ?? 0;
-              const pct = q?.changePct ?? 0;
-              const cls = chg > 0 ? 'text-emerald-400' : chg < 0 ? 'text-red-400' : 'text-gray-500';
-              const sym = code.replace('US.', '');
-              const isLev = ['TQQQ','SOXL','SQQQ','SOXS','UVXY'].includes(sym);
-              const isInv = ['SQQQ','SOXS'].includes(sym);
-
-              return (
-                <tr
-                  key={code}
-                  onClick={() => setSelectedSymbol(code)}
-                  className={`border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors cursor-pointer ${
-                    selectedSymbol === code ? 'bg-[#C9A046]/5' : ''
-                  }`}
-                >
-                  <td className="px-4 py-3 font-semibold text-white text-sm">{sym}</td>
-                  <td className="px-4 py-3 text-gray-400 text-xs">{q?.name || '--'}</td>
-                  <td className={`px-4 py-3 text-right font-mono text-sm ${cls}`}>{q ? q.price.toFixed(2) : '--'}</td>
-                  <td className={`px-4 py-3 text-right font-mono text-sm ${cls}`}>{chg > 0 ? '+' : ''}{chg.toFixed(2)}</td>
-                  <td className={`px-4 py-3 text-right font-mono text-sm ${cls}`}>{pct > 0 ? '+' : ''}{pct.toFixed(2)}%</td>
-                  <td className="px-4 py-3 text-right font-mono text-xs text-gray-400">{q ? fmtVol(q.volume) : '--'}</td>
-                  <td className="px-4 py-3 text-center">
-                    {isLev && <span className="text-[10px] bg-yellow-500/10 text-yellow-400 px-1.5 py-0.5 rounded mr-1">3x</span>}
-                    {isInv && <span className="text-[10px] bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded">反向</span>}
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <button
-                      onClick={(e) => { e.stopPropagation(); removeWatch(code); }}
-                      className="text-gray-600 hover:text-red-400 text-xs transition-colors"
-                      title="移出自选"
-                    >✕</button>
-                  </td>
-                </tr>
-              );
-            })}
+            {watchlist.map((code) => (
+              <WatchlistRow
+                key={code}
+                code={code}
+                quote={quotes[code]}
+                isSelected={selectedSymbol === code}
+                onSelect={setSelectedSymbol}
+                onRemove={removeWatch}
+              />
+            ))}
           </tbody>
         </table>
       </div>
@@ -252,3 +225,46 @@ function fmtVol(n: number): string {
   if (n >= 1e3) return (n / 1e3).toFixed(0) + 'K';
   return String(n);
 }
+
+// ── Memoized Watchlist Row ───────────────────────────────────────────────
+const WatchlistRow = memo(function WatchlistRow({
+  code,
+  quote,
+  isSelected,
+  onSelect,
+  onRemove,
+}: {
+  code: string;
+  quote: any;
+  isSelected: boolean;
+  onSelect: (code: string) => void;
+  onRemove: (code: string) => void;
+}) {
+  const chg = quote?.change ?? 0;
+  const pct = quote?.changePct ?? 0;
+  const cls = chg > 0 ? 'text-emerald-400' : chg < 0 ? 'text-red-400' : 'text-gray-500';
+  const sym = code.replace('US.', '');
+  const isLev = ['TQQQ', 'SOXL', 'SQQQ', 'SOXS', 'UVXY'].includes(sym);
+  const isInv = ['SQQQ', 'SOXS'].includes(sym);
+
+  return (
+    <tr
+      onClick={() => onSelect(code)}
+      className={`border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors cursor-pointer ${isSelected ? 'bg-[#C9A046]/5' : ''}`}
+    >
+      <td className="px-4 py-3 font-semibold text-white text-sm">{sym}</td>
+      <td className="px-4 py-3 text-gray-400 text-xs">{quote?.name || '--'}</td>
+      <td className={`px-4 py-3 text-right font-mono text-sm ${cls}`}>{quote ? quote.price.toFixed(2) : '--'}</td>
+      <td className={`px-4 py-3 text-right font-mono text-sm ${cls}`}>{chg > 0 ? '+' : ''}{chg.toFixed(2)}</td>
+      <td className={`px-4 py-3 text-right font-mono text-sm ${cls}`}>{pct > 0 ? '+' : ''}{pct.toFixed(2)}%</td>
+      <td className="px-4 py-3 text-right font-mono text-xs text-gray-400">{quote ? fmtVol(quote.volume) : '--'}</td>
+      <td className="px-4 py-3 text-center">
+        {isLev && <span className="text-[10px] bg-yellow-500/10 text-yellow-400 px-1.5 py-0.5 rounded mr-1">3x</span>}
+        {isInv && <span className="text-[10px] bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded">反向</span>}
+      </td>
+      <td className="px-4 py-3 text-center">
+        <button onClick={(e) => { e.stopPropagation(); onRemove(code); }} className="text-gray-600 hover:text-red-400 text-xs transition-colors" title="移出自选">✕</button>
+      </td>
+    </tr>
+  );
+});

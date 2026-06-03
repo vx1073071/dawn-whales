@@ -20,6 +20,8 @@ contextBridge.exposeInMainWorld('api', {
   strategy: {
     create: (dsl: any) => ipcRenderer.invoke('strategy:create', dsl),
     getAll: () => ipcRenderer.invoke('strategy:getAll'),
+    get: (id: string) => ipcRenderer.invoke('strategy:get', id),
+    update: (id: string, updates: any) => ipcRenderer.invoke('strategy:update', id, updates),
     delete: (id: string) => ipcRenderer.invoke('strategy:delete', id),
     backtest: (config: any) => ipcRenderer.invoke('strategy:backtest', config),
     startLive: (id: string) => ipcRenderer.invoke('strategy:startLive', id),
@@ -59,6 +61,10 @@ contextBridge.exposeInMainWorld('api', {
     checkUpdate: () => ipcRenderer.invoke('app:checkUpdate'),
     downloadUpdate: () => ipcRenderer.invoke('app:downloadUpdate'),
     installUpdate: () => ipcRenderer.invoke('app:installUpdate'),
+    emergencyStop: () => ipcRenderer.invoke('app:emergencyStop'),
+    openExternal: (url: string) => ipcRenderer.invoke('app:openExternal', url),
+    getVersion: () => ipcRenderer.invoke('app:getVersion'),
+    getPlatform: () => ipcRenderer.invoke('app:getPlatform'),
   },
 
   // ── Events (Main → Renderer) ─────────────────────────────────────
@@ -68,11 +74,16 @@ contextBridge.exposeInMainWorld('api', {
       'quote-update',
       'order-update',
       'strategy-signal',
+      'signal',
       'risk-alert',
       'notification',
     ];
     if (allowed.includes(channel)) {
       ipcRenderer.on(channel, (_event, ...args) => callback(...args));
     }
+  },
+
+  off: (channel: string, callback: (...args: any[]) => void) => {
+    ipcRenderer.removeListener(channel, callback);
   },
 });
