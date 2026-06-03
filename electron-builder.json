@@ -17,9 +17,7 @@
       }
     ],
     "icon": "build/icon.png",
-    "signAndEditExecutable": false,
-    "certificateFile": "${env.WIN_CSC_LINK}",
-    "certificatePassword": "${env.WIN_CSC_KEY_PASSWORD}"
+    "signAndEditExecutable": false
   },
   "nsis": {
     "oneClick": false,
