@@ -1,25 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useAppStore } from '@/stores/appStore';
 
 export default function StatusBar() {
   const [time, setTime] = useState(new Date());
+  const [mem, setMem] = useState<number | null>(null);
+  const conn = useAppStore((s) => s.connectionStatus);
+  const opendConnected = conn?.connected ?? false;
 
   useEffect(() => {
-    const t = setInterval(() => setTime(new Date()), 1000);
+    const t = setInterval(() => {
+      setTime(new Date());
+      // Poll memory usage
+      if (typeof window !== 'undefined' && window.api?.app) {
+        window.api.app.getMemoryUsage().then((info: any) => {
+          if (info?.total) setMem(info.total);
+        }).catch(() => {});
+      }
+    }, 5000);
     return () => clearInterval(t);
   }, []);
 
   return (
-    <footer className="h-6 bg-surface-2 border-t border-border flex items-center px-3 gap-4 text-[11px] text-gray-500 flex-shrink-0">
-      <div className="flex items-center gap-1">
-        <span className="w-1.5 h-1.5 rounded-full bg-gray-500" />
-        <span>OpenD 127.0.0.1:11111</span>
+    <footer className="h-6 bg-[#0a0a12] border-t border-white/5 flex items-center px-3 gap-3 text-[10px] text-gray-600 flex-shrink-0">
+      <div className="flex items-center gap-1.5">
+        <span className={`w-1.5 h-1.5 rounded-full ${opendConnected ? 'bg-emerald-400' : 'bg-gray-600'}`} />
+        <span>{opendConnected ? 'Push 模式 · <50ms' : 'OpenD 未连接'}</span>
       </div>
-      <span>|</span>
-      <span>DAWN WHALES · 道鲸</span>
+      <span className="text-gray-700">|</span>
+      <span>自选 8 只</span>
+      <span className="text-gray-700">|</span>
+      <span>道鲸 v0.1.0</span>
       <div className="flex-1" />
+      {mem && <span>内存: {mem}MB</span>}
+      {mem && <span className="text-gray-700">|</span>}
       <span>{time.toLocaleTimeString('zh-CN', { hour12: false })}</span>
-      <span>|</span>
-      <span>内存: --</span>
     </footer>
   );
 }

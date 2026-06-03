@@ -94,6 +94,16 @@ export async function getQuotes(codes: string[] = []): Promise<any[]> {
   return result?.success ? result.quotes || [] : [];
 }
 
+export async function getOrders(accountId: string): Promise<any> {
+  if (!hasIPC()) return { success: false, orders: [] };
+  return window.api.broker.getOrders(accountId);
+}
+
+export async function cancelOrder(orderId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.broker.cancelOrder(orderId);
+}
+
 export async function isConnected(): Promise<boolean> {
   if (!hasIPC()) return false;
   try {
