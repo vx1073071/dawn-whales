@@ -2,6 +2,33 @@
 
 All notable changes to DAWN WHALES · 道鲸 are documented in this file.
 
+## [0.3.0] - 2026-06-03
+
+### 🆕 New Features
+
+**UI Polish & New Features**
+- **Notification Toast System**: Global toasts for strategy signals, risk alerts, order updates, auto-updater notifications
+- **Sidebar Real-time Funds**: Display total assets + today PnL from OpenD, auto-refresh 30s
+- **Portfolio Asset Allocation**: Color-coded bar chart showing position weightings, percentage breakdown
+- **Portfolio Auto-Refresh**: Toggle 30s auto-refresh, graceful "not connected" state
+- **Marketplace Publish Modal**: Select strategy → description → price → submit review, revenue split display
+- **Market K-line Period Selector**: 6 periods (1m/5m/15m/60m/daily/weekly), instant switching
+- **15 Strategy Templates** (up from 8): Added slow MA cross, tight RSI, fast MACD, short momentum, narrow Bollinger, SPY conservative, SOXL aggressive
+- **Custom App Icon**: Gold gradient logo used as build/icon.png
+
+**Infrastructure**
+- App icon configured in electron-builder for all platforms
+- Test suite updated for 15+ templates
+- Renderer: 383KB → 410KB (toast + period selector + portfolio)
+- Main process: 81.6KB → 83.3KB (15 templates)
+
+### 📊 Code Stats
+- +800 lines of new code
+- 10 files modified
+- 38 unit tests (all passing)
+
+---
+
 ## [0.2.0] - 2026-06-03
 
 ### 🆕 New Features

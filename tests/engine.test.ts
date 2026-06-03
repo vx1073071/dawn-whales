@@ -89,7 +89,7 @@ section('NL Parser — Empty input');
 
 section('Strategy Templates');
 {
-  assert(STRATEGY_TEMPLATES.length === 8, `should have 8 templates (got ${STRATEGY_TEMPLATES.length})`);
+  assert(STRATEGY_TEMPLATES.length >= 15, `should have 15+ templates (got ${STRATEGY_TEMPLATES.length})`);
   assert(STRATEGY_TEMPLATES.every((t) => t.id && t.name && t.strategy), 'all templates should have id, name, strategy');
 }
 

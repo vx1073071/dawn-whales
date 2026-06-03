@@ -40,15 +40,25 @@ export default function MarketPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [klineLoading, setKlineLoading] = useState(false);
+  const [klinePeriod, setKlinePeriod] = useState<string>('daily');
+
+  const PERIODS = [
+    { key: '1m', label: '1分' },
+    { key: '5m', label: '5分' },
+    { key: '15m', label: '15分' },
+    { key: '60m', label: '60分' },
+    { key: 'daily', label: '日K' },
+    { key: 'weekly', label: '周K' },
+  ];
 
   useEffect(() => {
-    if (selectedSymbol) loadKlines(selectedSymbol);
-  }, [selectedSymbol]);
+    if (selectedSymbol) loadKlines(selectedSymbol, klinePeriod);
+  }, [selectedSymbol, klinePeriod]);
 
-  async function loadKlines(symbol: string) {
+  async function loadKlines(symbol: string, period: string = 'daily') {
     setKlineLoading(true);
     try {
-      const klines = await api.getKlines(symbol, 'daily', 200);
+      const klines = await api.getKlines(symbol, period, 200);
       if (klines.length > 0) {
         setKlineData(klines.map((k: any) => ({
           time: typeof k.time === 'number' ? k.time : Math.floor(new Date(k.time).getTime() / 1000),
@@ -201,7 +211,22 @@ export default function MarketPage() {
                   </span>
                 ) : null;
               })()}
-              <button onClick={() => loadKlines(selectedSymbol)} className="text-xs text-gray-500 hover:text-gray-300 ml-auto transition-colors">⟳ 刷新</button>
+              <div className="flex gap-1 ml-4">
+                {PERIODS.map((p) => (
+                  <button
+                    key={p.key}
+                    onClick={() => setKlinePeriod(p.key)}
+                    className={`px-2 py-0.5 rounded text-[10px] font-medium transition-colors ${
+                      klinePeriod === p.key
+                        ? 'bg-[#C9A046] text-black'
+                        : 'text-gray-500 hover:text-gray-300 bg-[#12121a]'
+                    }`}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+              <button onClick={() => loadKlines(selectedSymbol, klinePeriod)} className="text-xs text-gray-500 hover:text-gray-300 ml-auto transition-colors">⟳ 刷新</button>
             </div>
             <KLineChart data={klineData} height={400} />
           </div>
