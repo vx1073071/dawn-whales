@@ -46,6 +46,9 @@ declare global {
       app: {
         getInfo: () => Promise<any>;
         getMemoryUsage: () => Promise<any>;
+        checkUpdate: () => Promise<any>;
+        downloadUpdate: () => Promise<any>;
+        installUpdate: () => Promise<void>;
       };
       on: (channel: string, callback: (...args: any[]) => void) => void;
     };
@@ -165,6 +168,23 @@ export async function getRiskAlerts(): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.risk.getAlerts();
   return result?.success ? result.alerts || [] : [];
+}
+
+// ── App / Updater ──────────────────────────────────────────────────────────
+
+export async function checkUpdate(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.app.checkUpdate();
+}
+
+export async function downloadUpdate(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.app.downloadUpdate();
+}
+
+export async function installUpdate(): Promise<void> {
+  if (!hasIPC()) return;
+  return window.api.app.installUpdate();
 }
 
 // ── Demo K-line Generator (fallback) ──────────────────────────────────────

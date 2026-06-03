@@ -1,51 +1,142 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useMarketStore } from '@/stores/marketStore';
 import KLineChart from './KLineChart';
 import * as api from '@/lib/bridge-api';
 
+const POPULAR_US = [
+  { code: 'US.TQQQ', name: 'ProShares UltraPro QQQ 3x' },
+  { code: 'US.SQQQ', name: 'ProShares UltraPro Short QQQ' },
+  { code: 'US.SOXL', name: 'Direxion Semiconductor Bull 3x' },
+  { code: 'US.SOXS', name: 'Direxion Semiconductor Bear 3x' },
+  { code: 'US.QQQ', name: 'Invesco QQQ Trust' },
+  { code: 'US.SPY', name: 'SPDR S&P 500 ETF' },
+  { code: 'US.AAPL', name: 'Apple Inc.' },
+  { code: 'US.NVDA', name: 'NVIDIA Corp.' },
+  { code: 'US.MSFT', name: 'Microsoft Corp.' },
+  { code: 'US.TSLA', name: 'Tesla Inc.' },
+  { code: 'US.AMD', name: 'Advanced Micro Devices' },
+  { code: 'US.GOOG', name: 'Alphabet Inc.' },
+  { code: 'US.AMZN', name: 'Amazon.com Inc.' },
+  { code: 'US.META', name: 'Meta Platforms Inc.' },
+  { code: 'US.PLTR', name: 'Palantir Technologies' },
+  { code: 'US.AVGO', name: 'Broadcom Inc.' },
+  { code: 'US.ARKK', name: 'ARK Innovation ETF' },
+  { code: 'US.IWM', name: 'iShares Russell 2000' },
+  { code: 'US.GLD', name: 'SPDR Gold Shares' },
+  { code: 'US.TLT', name: 'iShares 20+ Year Treasury' },
+  { code: 'US.UVXY', name: 'ProShares Ultra VIX' },
+  { code: 'US.BABA', name: 'Alibaba Group (US)' },
+  { code: 'US.PDD', name: 'PDD Holdings' },
+  { code: 'US.NIO', name: 'NIO Inc.' },
+];
+
 export default function MarketPage() {
   const watchlist = useMarketStore((s) => s.watchlist);
   const quotes = useMarketStore((s) => s.quotes);
+  const addWatch = useMarketStore((s) => s.addWatch);
+  const removeWatch = useMarketStore((s) => s.removeWatch);
   const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
   const [klineData, setKlineData] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearch, setShowSearch] = useState(false);
+  const [klineLoading, setKlineLoading] = useState(false);
 
   useEffect(() => {
-    if (selectedSymbol) {
-      api.getKlines(selectedSymbol, 'daily', 200).then((klines) => {
-        if (klines.length > 0) {
-          setKlineData(klines.map((k: any) => ({
-            time: Math.floor(new Date(k.time || k.date).getTime() / 1000),
-            open: k.open,
-            high: k.high,
-            low: k.low,
-            close: k.close,
-            volume: k.volume,
-          })));
-        }
-      });
-    }
+    if (selectedSymbol) loadKlines(selectedSymbol);
   }, [selectedSymbol]);
+
+  async function loadKlines(symbol: string) {
+    setKlineLoading(true);
+    try {
+      const klines = await api.getKlines(symbol, 'daily', 200);
+      if (klines.length > 0) {
+        setKlineData(klines.map((k: any) => ({
+          time: typeof k.time === 'number' ? k.time : Math.floor(new Date(k.time).getTime() / 1000),
+          open: k.open, high: k.high, low: k.low, close: k.close, volume: k.volume,
+        })));
+      }
+    } catch { /* silent */ } finally { setKlineLoading(false); }
+  }
+
+  const filteredSearch = searchQuery.trim()
+    ? POPULAR_US.filter((s) => {
+        const q = searchQuery.toUpperCase();
+        return s.code.includes(q) || s.name.toUpperCase().includes(q);
+      })
+    : POPULAR_US.filter((s) => !watchlist.includes(s.code));
+
+  function handleAddStock(code: string) {
+    addWatch(code);
+    setSearchQuery('');
+    setShowSearch(false);
+  }
 
   return (
     <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white mb-1">行情中心</h1>
-        <p className="text-gray-400 text-sm">实时监控自选股行情</p>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white mb-1">行情中心</h1>
+          <p className="text-gray-400 text-sm">实时监控自选股行情 · Push 模式 &lt;50ms</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button onClick={() => setShowSearch(!showSearch)} className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">
+            ＋ 添加自选
+          </button>
+        </div>
       </div>
 
+      {/* Search panel */}
+      {showSearch && (
+        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4 mb-4">
+          <input
+            autoFocus
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="搜索股票代码或名称..."
+            className="w-full bg-[#12121a] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50 mb-3"
+            onKeyDown={(e) => { if (e.key === 'Escape') setShowSearch(false); }}
+          />
+          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 max-h-48 overflow-y-auto">
+            {filteredSearch.map((s) => {
+              const inWatchlist = watchlist.includes(s.code);
+              return (
+                <button
+                  key={s.code}
+                  onClick={() => !inWatchlist && handleAddStock(s.code)}
+                  disabled={inWatchlist}
+                  className={`text-left p-2 rounded-lg text-xs transition-colors ${
+                    inWatchlist
+                      ? 'bg-[#C9A046]/10 text-[#D4A853] cursor-default'
+                      : 'bg-[#12121a] text-gray-300 hover:bg-[#22222f] hover:text-white cursor-pointer'
+                  }`}
+                >
+                  <div className="font-mono font-medium">{s.code.replace('US.', '')}</div>
+                  <div className="text-gray-500 truncate mt-0.5" style={{ fontSize: '10px' }}>{s.name}</div>
+                </button>
+              );
+            })}
+            {filteredSearch.length === 0 && (
+              <div className="col-span-6 text-center text-gray-500 text-sm py-4">
+                未找到匹配 "{searchQuery}" 的股票
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Market table */}
-      <div className="bg-surface-2 border border-border rounded-xl overflow-hidden">
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-border">
+            <tr className="border-b border-white/5">
               <th className="px-4 py-3 text-left text-xs text-gray-500 font-medium uppercase tracking-wide">代码</th>
               <th className="px-4 py-3 text-left text-xs text-gray-500 font-medium uppercase tracking-wide">名称</th>
               <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">最新价</th>
               <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">涨跌额</th>
               <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">涨跌幅</th>
               <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">成交量</th>
-              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">振幅</th>
-              <th className="px-4 py-3 text-xs text-gray-500 font-medium uppercase tracking-wide">标签</th>
+              <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide">标签</th>
+              <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide w-12"></th>
             </tr>
           </thead>
           <tbody>
@@ -53,17 +144,17 @@ export default function MarketPage() {
               const q = quotes[code];
               const chg = q?.change ?? 0;
               const pct = q?.changePct ?? 0;
-              const cls = chg > 0 ? 'text-up' : chg < 0 ? 'text-down' : 'text-gray-500';
+              const cls = chg > 0 ? 'text-emerald-400' : chg < 0 ? 'text-red-400' : 'text-gray-500';
               const sym = code.replace('US.', '');
-              const isLev = ['TQQQ','SOXL','SQQQ','SOXS'].includes(sym);
+              const isLev = ['TQQQ','SOXL','SQQQ','SOXS','UVXY'].includes(sym);
               const isInv = ['SQQQ','SOXS'].includes(sym);
 
               return (
                 <tr
                   key={code}
                   onClick={() => setSelectedSymbol(code)}
-                  className={`border-b border-border/50 hover:bg-surface-hover transition-colors cursor-pointer ${
-                    selectedSymbol === code ? 'bg-surface-3' : ''
+                  className={`border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors cursor-pointer ${
+                    selectedSymbol === code ? 'bg-[#C9A046]/5' : ''
                   }`}
                 >
                   <td className="px-4 py-3 font-semibold text-white text-sm">{sym}</td>
@@ -72,10 +163,16 @@ export default function MarketPage() {
                   <td className={`px-4 py-3 text-right font-mono text-sm ${cls}`}>{chg > 0 ? '+' : ''}{chg.toFixed(2)}</td>
                   <td className={`px-4 py-3 text-right font-mono text-sm ${cls}`}>{pct > 0 ? '+' : ''}{pct.toFixed(2)}%</td>
                   <td className="px-4 py-3 text-right font-mono text-xs text-gray-400">{q ? fmtVol(q.volume) : '--'}</td>
-                  <td className="px-4 py-3 text-right font-mono text-xs text-gray-400">{q?.amplitude?.toFixed(2) || '--'}%</td>
-                  <td className="px-4 py-3">
-                    {isLev && <span className="text-xs bg-yellow-500/10 text-yellow-400 px-2 py-0.5 rounded mr-1">3x</span>}
-                    {isInv && <span className="text-xs bg-green-500/10 text-green-400 px-2 py-0.5 rounded">反向</span>}
+                  <td className="px-4 py-3 text-center">
+                    {isLev && <span className="text-[10px] bg-yellow-500/10 text-yellow-400 px-1.5 py-0.5 rounded mr-1">3x</span>}
+                    {isInv && <span className="text-[10px] bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded">反向</span>}
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); removeWatch(code); }}
+                      className="text-gray-600 hover:text-red-400 text-xs transition-colors"
+                      title="移出自选"
+                    >✕</button>
                   </td>
                 </tr>
               );
@@ -86,29 +183,35 @@ export default function MarketPage() {
 
       {/* K-Line Chart */}
       <div className="mt-6">
-        {selectedSymbol && klineData.length > 0 ? (
+        {klineLoading ? (
+          <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
+            <div className="text-3xl mb-2 opacity-40">⏳</div>
+            <p className="text-gray-400 text-sm">加载 {selectedSymbol?.replace('US.', '')} K线数据...</p>
+          </div>
+        ) : selectedSymbol && klineData.length > 0 ? (
           <div>
             <div className="flex items-center gap-3 mb-3">
               <h2 className="text-white font-semibold">{selectedSymbol.replace('US.', '')}</h2>
               {(() => {
                 const q = quotes[selectedSymbol];
-                const cls = q && q.change > 0 ? 'text-up' : q && q.change < 0 ? 'text-down' : 'text-gray-500';
+                const cls = q && q.change > 0 ? 'text-emerald-400' : q && q.change < 0 ? 'text-red-400' : 'text-gray-500';
                 return q ? (
                   <span className={`font-mono text-sm ${cls}`}>
                     {q.price.toFixed(2)} {q.change > 0 ? '+' : ''}{q.changePct.toFixed(2)}%
                   </span>
                 ) : null;
               })()}
+              <button onClick={() => loadKlines(selectedSymbol)} className="text-xs text-gray-500 hover:text-gray-300 ml-auto transition-colors">⟳ 刷新</button>
             </div>
             <KLineChart data={klineData} height={400} />
           </div>
         ) : selectedSymbol ? (
-          <div className="bg-surface-2 border border-border rounded-xl p-8 text-center">
-            <div className="text-3xl mb-2 opacity-40">⏳</div>
-            <p className="text-gray-400 text-sm">加载 {selectedSymbol.replace('US.', '')} K线数据...</p>
+          <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
+            <div className="text-3xl mb-2 opacity-40">📊</div>
+            <p className="text-gray-400 text-sm">K线数据加载中（需要 OpenD 连接）</p>
           </div>
         ) : (
-          <div className="bg-surface-2 border border-border rounded-xl p-8 text-center">
+          <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
             <div className="text-3xl mb-2 opacity-40">📈</div>
             <p className="text-gray-400 text-sm">点击上面的股票查看 K 线图</p>
           </div>

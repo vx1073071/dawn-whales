@@ -66,6 +66,8 @@ function toNum(v: any): number {
   return Number(v) || 0;
 }
 
+type DisconnectCallback = () => void;
+
 export class FutuOpenDClient {
   private host: string;
   private port: number;
@@ -75,6 +77,11 @@ export class FutuOpenDClient {
   private buffer = Buffer.alloc(0);
   private pending = new Map<number, { resolve: (v: Buffer) => void; reject: (e: Error) => void; timer: NodeJS.Timeout }>();
   private pushCallback: QuotePushCallback | null = null;
+  private disconnectCallback: DisconnectCallback | null = null;
+  private reconnectTimer: NodeJS.Timeout | null = null;
+  private reconnectAttempts = 0;
+  private maxReconnectAttempts = 50; // ~5 minutes with exponential backoff
+  private subscribedCodes: string[] = [];
   public connected = false;
 
   constructor(host: string = '127.0.0.1', port: number = 11111) {
@@ -97,7 +104,9 @@ export class FutuOpenDClient {
     this.socket.on('close', () => {
       this.connected = false;
       this.rejectAll(new Error('OpenD disconnected'));
+      this.disconnectCallback?.();
       log.info('[FutuOpenD] Disconnected');
+      this.scheduleReconnect();
     });
 
     // InitConnect handshake
@@ -118,10 +127,45 @@ export class FutuOpenDClient {
   }
 
   disconnect() {
+    this.cancelReconnect();
     this.socket?.destroy();
     this.socket = null;
     this.connected = false;
     this.rejectAll(new Error('Disconnected'));
+  }
+
+  onDisconnect(callback: DisconnectCallback) {
+    this.disconnectCallback = callback;
+  }
+
+  private scheduleReconnect() {
+    if (this.reconnectTimer || this.reconnectAttempts >= this.maxReconnectAttempts) return;
+    const delay = Math.min(1000 * Math.pow(1.5, this.reconnectAttempts), 30000);
+    this.reconnectAttempts++;
+    log.info(`[FutuOpenD] Reconnect scheduled in ${(delay / 1000).toFixed(1)}s (attempt ${this.reconnectAttempts})`);
+    this.reconnectTimer = setTimeout(async () => {
+      this.reconnectTimer = null;
+      try {
+        await this.connect();
+        this.reconnectAttempts = 0;
+        // Re-subscribe push after reconnect
+        if (this.subscribedCodes.length > 0) {
+          await this.subscribeAndPush(this.subscribedCodes);
+          log.info('[FutuOpenD] Re-subscribed after reconnect');
+        }
+      } catch (err: any) {
+        log.warn(`[FutuOpenD] Reconnect failed: ${err.message}`);
+        this.scheduleReconnect();
+      }
+    }, delay);
+  }
+
+  private cancelReconnect() {
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+    }
+    this.reconnectAttempts = 0;
   }
 
   private onData(chunk: Buffer) {
@@ -206,6 +250,7 @@ export class FutuOpenDClient {
   }
 
   async subscribeAndPush(codes: string[]): Promise<void> {
+    this.subscribedCodes = [...codes]; // Track for reconnect
     const securityList = codes.map((c) => ({ market: marketCode(c), code: symOf(c) }));
     await this.send(CMD.QotSub, {
       c2s: {

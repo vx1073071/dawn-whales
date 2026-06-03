@@ -56,6 +56,9 @@ contextBridge.exposeInMainWorld('api', {
   app: {
     getInfo: () => ipcRenderer.invoke('app:getInfo'),
     getMemoryUsage: () => ipcRenderer.invoke('app:getMemoryUsage'),
+    checkUpdate: () => ipcRenderer.invoke('app:checkUpdate'),
+    downloadUpdate: () => ipcRenderer.invoke('app:downloadUpdate'),
+    installUpdate: () => ipcRenderer.invoke('app:installUpdate'),
   },
 
   // ── Events (Main → Renderer) ─────────────────────────────────────

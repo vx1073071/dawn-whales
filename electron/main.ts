@@ -4,6 +4,7 @@
 
 import { app, BrowserWindow, ipcMain, shell, Tray, Menu, nativeImage } from 'electron';
 import path from 'path';
+import { autoUpdater } from 'electron-updater';
 import { FutuOpenDClient } from './broker/futu-opend';
 import { StrategyEngine } from './engine/strategy-engine';
 import { BacktestEngine } from './engine/backtest-engine';
@@ -330,6 +331,29 @@ function setupIPC() {
     mainProcess: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
     total: Math.round(process.memoryUsage().rss / 1024 / 1024),
   }));
+
+  // ── Auto-updater ──────────────────────────────────────────────────
+  ipcMain.handle('app:checkUpdate', async () => {
+    try {
+      const result = await autoUpdater.checkForUpdates();
+      return { success: true, version: result?.updateInfo?.version || null };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('app:downloadUpdate', async () => {
+    try {
+      await autoUpdater.downloadUpdate();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('app:installUpdate', () => {
+    autoUpdater.quitAndInstall();
+  });
 }
 
 // ── System Tray ────────────────────────────────────────────────────────────
@@ -377,9 +401,12 @@ app.whenReady().then(async () => {
   setupIPC();
   createWindow();
 
-  // Auto-connect to OpenD
+  // Auto-connect to OpenD (with auto-reconnect)
   try {
     opendClient = new FutuOpenDClient('127.0.0.1', 11111);
+    opendClient.onDisconnect(() => {
+      mainWindow?.webContents.send('notification', { type: 'warning', message: 'OpenD 连接断开，正在重连...' });
+    });
     await opendClient.connect();
     opendClient.onQuotePush((quotes) => {
       mainWindow?.webContents.send('quotes:push', quotes);
@@ -422,6 +449,27 @@ app.whenReady().then(async () => {
   }
 
   createTray();
+
+  // Auto-updater (only in production)
+  if (!isDev) {
+    autoUpdater.logger = log;
+    autoUpdater.autoDownload = false;
+    autoUpdater.on('update-available', (info) => {
+      log.info('[Updater] New version available:', info.version);
+      mainWindow?.webContents.send('notification', { type: 'info', message: `新版本 ${info.version} 可用，请在设置中更新` });
+    });
+    autoUpdater.on('update-downloaded', () => {
+      log.info('[Updater] Update downloaded, ready to install');
+      mainWindow?.webContents.send('notification', { type: 'success', message: '更新已下载，重启即可安装' });
+    });
+    autoUpdater.on('error', (err) => {
+      log.warn('[Updater] Error:', err.message);
+    });
+    // Check for updates 10s after launch, then every 4 hours
+    setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 10000);
+    setInterval(() => autoUpdater.checkForUpdates().catch(() => {}), 4 * 60 * 60 * 1000);
+  }
+
   log.info('[App] DAWN WHALES ready');
 });
 
