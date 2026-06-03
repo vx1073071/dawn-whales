@@ -11,6 +11,7 @@ import OrdersPage from '@/components/orders/OrdersPage';
 import SettingsPage from '@/components/settings/SettingsPage';
 import MarketplacePage from '@/components/marketplace/MarketplacePage';
 import OnboardingModal from '@/components/OnboardingModal';
+import NotificationToast from '@/components/NotificationToast';
 import { connectBroker } from '@/lib/bridge-api';
 
 const pages: Record<string, React.FC> = {
@@ -69,6 +70,7 @@ export default function App() {
         </main>
       </div>
       <StatusBar />
+      <NotificationToast />
       <OnboardingModal
         open={showOnboarding}
         onClose={handleCloseOnboarding}

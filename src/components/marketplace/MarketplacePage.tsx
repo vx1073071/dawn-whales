@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getAllStrategies } from '@/lib/bridge-api';
+import { notify } from '@/components/NotificationToast';
 
-// ── Mock Data ──────────────────────────────────────────────────────────────
+// ── Types ──────────────────────────────────────────────────────────────────
 
-interface StrategyCard {
+interface MarketplaceStrategy {
   id: string;
   title: string;
   author: string;
@@ -22,7 +24,9 @@ interface StrategyCard {
   equityCurve: number[];
 }
 
-const MOCK_STRATEGIES: StrategyCard[] = [
+// ── Demo Data (until real marketplace backend is ready) ────────────────────
+
+const DEMO_STRATEGIES: MarketplaceStrategy[] = [
   {
     id: 'ms001', title: '动量轮动 Pro', author: 'quantmaster', rating: 4.8, reviews: 126,
     annualReturn: 28.3, sharpe: 1.8, maxDrawdown: 12, winRate: 62, profitFactor: 2.1,
@@ -89,8 +93,21 @@ export default function MarketplacePage() {
   const [riskFilter, setRiskFilter] = useState<RiskFilter>('all');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showPublish, setShowPublish] = useState(false);
+  const [myStrategies, setMyStrategies] = useState<any[]>([]);
 
-  const filtered = MOCK_STRATEGIES
+  useEffect(() => {
+    loadMyStrategies();
+  }, []);
+
+  async function loadMyStrategies() {
+    try {
+      const list = await getAllStrategies();
+      setMyStrategies(list);
+    } catch { /* silent */ }
+  }
+
+  const filtered = DEMO_STRATEGIES
     .filter((s) => riskFilter === 'all' || s.riskLevel === riskFilter)
     .filter((s) => !searchQuery || s.title.includes(searchQuery) || s.tags.some((t) => t.includes(searchQuery)));
 
@@ -98,9 +115,9 @@ export default function MarketplacePage() {
     switch (activeTab) {
       case 'return': return b.annualReturn - a.annualReturn;
       case 'stable': return b.sharpe - a.sharpe;
-      case 'new': return 0; // already ordered
+      case 'new': return 0;
       case 'free': return a.priceMonthly - b.priceMonthly;
-      default: return b.subscribers - a.subscribers; // hot
+      default: return b.subscribers - a.subscribers;
     }
   });
 
@@ -112,22 +129,25 @@ export default function MarketplacePage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🏪 策略市场</h1>
-          <p className="text-gray-400 text-sm">发现优质策略，一键订阅跟单</p>
+          <p className="text-gray-400 text-sm">发现优质策略，一键订阅跟单 · 创作者享 70% 收入</p>
         </div>
-        <button className="px-4 py-2 bg-primary text-black font-medium rounded-lg text-sm hover:bg-primary-bright transition-colors">
+        <button
+          onClick={() => setShowPublish(true)}
+          className="px-4 py-2 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] transition-colors"
+        >
           📤 发布我的策略
         </button>
       </div>
 
       {/* Tabs + Filters */}
-      <div className="flex items-center gap-4 mb-4">
-        <div className="flex gap-1 bg-surface-2 rounded-lg p-1">
+      <div className="flex items-center gap-4 mb-4 flex-wrap">
+        <div className="flex gap-1 bg-[#12121a] rounded-lg p-1">
           {([['hot', '🔥 热度'], ['return', '📈 收益'], ['stable', '🛡️ 稳健'], ['new', '🆕 新星'], ['free', '🆓 免费']] as [Tab, string][]).map(([key, label]) => (
             <button
               key={key}
               onClick={() => setActiveTab(key)}
               className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
-                activeTab === key ? 'bg-primary text-black' : 'text-gray-400 hover:text-gray-200'
+                activeTab === key ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'
               }`}
             >
               {label}
@@ -141,7 +161,7 @@ export default function MarketplacePage() {
               key={key}
               onClick={() => setRiskFilter(key)}
               className={`px-2.5 py-1 rounded transition-colors ${
-                riskFilter === key ? 'bg-surface-3 text-gray-200' : 'text-gray-500 hover:text-gray-300'
+                riskFilter === key ? 'bg-[#22222f] text-gray-200' : 'text-gray-500 hover:text-gray-300'
               }`}
             >
               {label}
@@ -155,7 +175,7 @@ export default function MarketplacePage() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="搜索策略..."
-          className="bg-surface-2 border border-border rounded-lg px-3 py-1.5 text-xs text-gray-200 placeholder-gray-500 w-48 focus:outline-none focus:border-primary/50"
+          className="bg-[#12121a] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-200 placeholder-gray-500 w-48 focus:outline-none focus:border-[#C9A046]/50"
         />
       </div>
 
@@ -171,6 +191,11 @@ export default function MarketplacePage() {
               onClick={() => setSelectedId(s.id === selectedId ? null : s.id)}
             />
           ))}
+          {sorted.length === 0 && (
+            <div className="col-span-3 text-center py-12 text-gray-500">
+              未找到匹配的策略
+            </div>
+          )}
         </div>
 
         {/* Detail panel */}
@@ -180,41 +205,46 @@ export default function MarketplacePage() {
           </div>
         )}
       </div>
+
+      {/* Publish Modal */}
+      {showPublish && (
+        <PublishModal
+          myStrategies={myStrategies}
+          onClose={() => setShowPublish(false)}
+        />
+      )}
     </div>
   );
 }
 
 // ── Strategy Card ──────────────────────────────────────────────────────────
 
-function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: StrategyCard; selected: boolean; onClick: () => void }) {
-  const riskColor = s.riskLevel === 'low' ? 'text-green-400 bg-green-400/10' : s.riskLevel === 'medium' ? 'text-yellow-400 bg-yellow-400/10' : 'text-red-400 bg-red-400/10';
+function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: MarketplaceStrategy; selected: boolean; onClick: () => void }) {
+  const riskColor = s.riskLevel === 'low' ? 'text-emerald-400 bg-emerald-500/10' : s.riskLevel === 'medium' ? 'text-yellow-400 bg-yellow-500/10' : 'text-red-400 bg-red-500/10';
   const riskLabel = s.riskLevel === 'low' ? '低风险' : s.riskLevel === 'medium' ? '中风险' : '高风险';
-  const returnColor = s.annualReturn >= 0 ? 'text-up' : 'text-down';
+  const returnColor = s.annualReturn >= 0 ? 'text-emerald-400' : 'text-red-400';
 
   return (
     <button
       onClick={onClick}
-      className={`bg-surface-2 border rounded-xl p-4 text-left transition-all hover:border-border-light ${
-        selected ? 'border-primary/50 ring-1 ring-primary/20' : 'border-border'
+      className={`bg-[#1a1a25] border rounded-xl p-4 text-left transition-all hover:border-white/10 ${
+        selected ? 'border-[#C9A046]/50 ring-1 ring-[#C9A046]/20' : 'border-white/5'
       }`}
     >
-      {/* Header */}
       <div className="flex items-start justify-between mb-2">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">
             <h3 className="text-white text-sm font-medium truncate">{s.title}</h3>
-            {s.verified && <span className="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded flex-shrink-0">✓ 认证</span>}
+            {s.verified && <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded flex-shrink-0">✓</span>}
           </div>
           <div className="text-gray-500 text-[11px] mt-0.5">@{s.author} · ⭐{s.rating} ({s.reviews})</div>
         </div>
       </div>
 
-      {/* Mini equity curve */}
       <div className="h-12 mb-3">
         <MiniChart data={s.equityCurve} positive={s.annualReturn >= 0} />
       </div>
 
-      {/* Key metrics */}
       <div className="grid grid-cols-3 gap-2 mb-3 text-center">
         <div>
           <div className={`text-sm font-mono font-bold ${returnColor}`}>{s.annualReturn}%</div>
@@ -230,19 +260,17 @@ function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: Strate
         </div>
       </div>
 
-      {/* Tags + risk */}
       <div className="flex items-center gap-1.5 mb-3 flex-wrap">
-        <span className={`text-[10px] px-1.5 py-0.5 rounded ${riskColor}`}>⚠️ {riskLabel}</span>
-        <span className="text-[10px] text-gray-500 bg-surface-3 px-1.5 py-0.5 rounded">{s.market}</span>
+        <span className={`text-[10px] px-1.5 py-0.5 rounded ${riskColor}`}>{riskLabel}</span>
+        <span className="text-[10px] text-gray-500 bg-[#12121a] px-1.5 py-0.5 rounded">{s.market}</span>
         {s.tags.slice(0, 2).map((t) => (
-          <span key={t} className="text-[10px] text-gray-400 bg-surface-3 px-1.5 py-0.5 rounded">{t}</span>
+          <span key={t} className="text-[10px] text-gray-400 bg-[#12121a] px-1.5 py-0.5 rounded">{t}</span>
         ))}
       </div>
 
-      {/* Footer */}
-      <div className="flex items-center justify-between pt-2 border-t border-border/50">
-        <div className="text-gray-500 text-[11px]">👥 {s.subscribers}人订阅</div>
-        <div className={`text-sm font-bold ${s.priceMonthly === 0 ? 'text-green-400' : 'text-primary'}`}>
+      <div className="flex items-center justify-between pt-2 border-t border-white/5">
+        <div className="text-gray-500 text-[11px]">👥 {s.subscribers}人</div>
+        <div className={`text-sm font-bold ${s.priceMonthly === 0 ? 'text-emerald-400' : 'text-[#D4A853]'}`}>
           {s.priceMonthly === 0 ? '免费' : `¥${s.priceMonthly}/月`}
         </div>
       </div>
@@ -264,21 +292,10 @@ function MiniChart({ data, positive }: { data: number[]; positive: boolean }) {
     const y = h - ((v - min) / range) * h;
     return `${x},${y}`;
   });
-  const color = positive ? '#f85149' : '#3fb950';
-  const fillColor = positive ? 'rgba(248,81,73,0.1)' : 'rgba(63,185,80,0.1)';
+  const color = positive ? '#22c55e' : '#ef4444';
 
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-full" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id={`grad-${positive ? 'up' : 'down'}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={fillColor} />
-          <stop offset="100%" stopColor="transparent" />
-        </linearGradient>
-      </defs>
-      <polygon
-        points={`0,${h} ${points.join(' ')} ${w},${h}`}
-        fill={`url(#grad-${positive ? 'up' : 'down'})`}
-      />
       <polyline points={points.join(' ')} fill="none" stroke={color} strokeWidth="2" strokeLinejoin="round" />
     </svg>
   );
@@ -286,33 +303,29 @@ function MiniChart({ data, positive }: { data: number[]; positive: boolean }) {
 
 // ── Strategy Detail Panel ──────────────────────────────────────────────────
 
-function StrategyDetail({ strategy: s, onClose }: { strategy: StrategyCard; onClose: () => void }) {
+function StrategyDetail({ strategy: s, onClose }: { strategy: MarketplaceStrategy; onClose: () => void }) {
   const [followMode, setFollowMode] = useState<'auto' | 'semi' | 'notify'>('auto');
 
   return (
-    <div className="bg-surface-2 border border-border rounded-xl p-5 sticky top-0">
+    <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5 sticky top-0">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-white font-semibold">{s.title}</h2>
         <button onClick={onClose} className="text-gray-500 hover:text-gray-300">✕</button>
       </div>
 
-      {/* Author */}
-      <div className="flex items-center gap-2 mb-4 pb-4 border-b border-border">
-        <div className="w-8 h-8 rounded-full bg-surface-3 flex items-center justify-center text-primary text-sm font-bold">
+      <div className="flex items-center gap-2 mb-4 pb-4 border-b border-white/5">
+        <div className="w-8 h-8 rounded-full bg-[#22222f] flex items-center justify-center text-[#D4A853] text-sm font-bold">
           {s.author[0].toUpperCase()}
         </div>
         <div>
           <div className="text-gray-200 text-sm">@{s.author}</div>
-          <div className="text-gray-500 text-[11px]">⭐ {s.rating} · {s.reviews} 条评价 · {s.subscribers} 订阅</div>
+          <div className="text-gray-500 text-[11px]">⭐ {s.rating} · {s.reviews} 评价 · {s.subscribers} 订阅</div>
         </div>
-        {s.verified && (
-          <span className="ml-auto text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded-full">✓ 实盘认证</span>
-        )}
+        {s.verified && <span className="ml-auto text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded-full">✓ 认证</span>}
       </div>
 
-      {/* Performance grid */}
       <div className="grid grid-cols-2 gap-3 mb-4">
-        <MetricBox label="年化收益" value={`${s.annualReturn}%`} color={s.annualReturn >= 0 ? 'text-up' : 'text-down'} />
+        <MetricBox label="年化收益" value={`${s.annualReturn}%`} color={s.annualReturn >= 0 ? 'text-emerald-400' : 'text-red-400'} />
         <MetricBox label="夏普比率" value={String(s.sharpe)} />
         <MetricBox label="最大回撤" value={`${s.maxDrawdown}%`} />
         <MetricBox label="胜率" value={`${s.winRate}%`} />
@@ -320,15 +333,13 @@ function StrategyDetail({ strategy: s, onClose }: { strategy: StrategyCard; onCl
         <MetricBox label="订阅人数" value={String(s.subscribers)} />
       </div>
 
-      {/* Equity curve */}
       <div className="mb-4">
         <div className="text-gray-400 text-xs mb-2">收益曲线</div>
-        <div className="h-24 bg-surface-1 rounded-lg p-2">
+        <div className="h-24 bg-[#12121a] rounded-lg p-2">
           <MiniChart data={s.equityCurve} positive={s.annualReturn >= 0} />
         </div>
       </div>
 
-      {/* Follow mode */}
       <div className="mb-4">
         <div className="text-gray-400 text-xs mb-2">跟单模式</div>
         <div className="flex gap-2">
@@ -337,7 +348,7 @@ function StrategyDetail({ strategy: s, onClose }: { strategy: StrategyCard; onCl
               key={mode}
               onClick={() => setFollowMode(mode)}
               className={`flex-1 px-2 py-2 rounded-lg text-xs transition-colors ${
-                followMode === mode ? 'bg-primary/20 text-primary border border-primary/30' : 'bg-surface-3 text-gray-400 border border-transparent hover:text-gray-200'
+                followMode === mode ? 'bg-[#C9A046]/20 text-[#D4A853] border border-[#C9A046]/30' : 'bg-[#22222f] text-gray-400 border border-transparent hover:text-gray-200'
               }`}
             >
               {label}
@@ -351,32 +362,21 @@ function StrategyDetail({ strategy: s, onClose }: { strategy: StrategyCard; onCl
         </div>
       </div>
 
-      {/* Price + CTA */}
-      <div className="border-t border-border pt-4">
+      <div className="border-t border-white/5 pt-4">
         <div className="flex items-center justify-between mb-3">
           <div className="text-gray-400 text-sm">价格</div>
-          <div className={`text-xl font-bold ${s.priceMonthly === 0 ? 'text-green-400' : 'text-primary'}`}>
+          <div className={`text-xl font-bold ${s.priceMonthly === 0 ? 'text-emerald-400' : 'text-[#D4A853]'}`}>
             {s.priceMonthly === 0 ? '免费' : `¥${s.priceMonthly}/月`}
           </div>
         </div>
 
-        {s.priceMonthly > 0 && (
-          <div className="text-gray-500 text-[11px] mb-3 text-center">
-            年付 ¥{Math.round(s.priceMonthly * 10)}/年（省 {Math.round((1 - 10/12) * 100)}%）
-          </div>
-        )}
-
-        <button className="w-full py-2.5 bg-primary text-black font-semibold rounded-lg text-sm hover:bg-primary-bright transition-colors">
+        <button
+          onClick={() => notify('info', '策略市场功能即将上线，敬请期待')}
+          className="w-full py-2.5 bg-[#C9A046] text-black font-semibold rounded-lg text-sm hover:bg-[#D4A853] transition-colors"
+        >
           {s.priceMonthly === 0 ? '免费使用' : '立即订阅'}
         </button>
 
-        {s.priceMonthly > 0 && (
-          <button className="w-full py-2 mt-2 bg-surface-3 text-gray-300 rounded-lg text-sm hover:bg-surface-hover transition-colors">
-            免费试用 7 天
-          </button>
-        )}
-
-        {/* Revenue split info */}
         <div className="mt-3 text-center text-[10px] text-gray-600">
           平台服务费 30% · 创作者收入 70%
         </div>
@@ -387,9 +387,109 @@ function StrategyDetail({ strategy: s, onClose }: { strategy: StrategyCard; onCl
 
 function MetricBox({ label, value, color = 'text-gray-200' }: { label: string; value: string; color?: string }) {
   return (
-    <div className="bg-surface-1 rounded-lg p-2.5 text-center">
+    <div className="bg-[#12121a] rounded-lg p-2.5 text-center">
       <div className={`text-sm font-mono font-bold ${color}`}>{value}</div>
       <div className="text-[10px] text-gray-500 mt-0.5">{label}</div>
+    </div>
+  );
+}
+
+// ── Publish Modal ──────────────────────────────────────────────────────────
+
+function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose: () => void }) {
+  const [selectedId, setSelectedId] = useState<string>('');
+  const [price, setPrice] = useState(0);
+  const [description, setDescription] = useState('');
+
+  const selected = myStrategies.find((s) => s.id === selectedId);
+
+  function handlePublish() {
+    if (!selected) {
+      notify('warning', '请先选择一个策略');
+      return;
+    }
+    notify('success', `策略 "${selected.name}" 已提交审核，预计 1-2 个工作日上线`);
+    onClose();
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+
+      <div className="relative bg-[#12121a] border border-white/10 rounded-2xl w-full max-w-md mx-4 p-6 shadow-2xl">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-white font-semibold text-lg">📤 发布策略到市场</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-300">✕</button>
+        </div>
+
+        {myStrategies.length === 0 ? (
+          <div className="text-center py-8">
+            <div className="text-3xl mb-2 opacity-40">🧠</div>
+            <p className="text-gray-400 text-sm">你还没有创建任何策略</p>
+            <p className="text-gray-500 text-xs mt-1">先去策略工坊创建策略，再来发布</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {/* Strategy selection */}
+            <div>
+              <label className="block text-gray-400 text-xs mb-1">选择策略</label>
+              <select
+                value={selectedId}
+                onChange={(e) => setSelectedId(e.target.value)}
+                className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50"
+              >
+                <option value="">-- 选择要发布的策略 --</option>
+                {myStrategies.map((s) => (
+                  <option key={s.id} value={s.id}>{s.name || '未命名策略'}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Description */}
+            <div>
+              <label className="block text-gray-400 text-xs mb-1">策略描述（向用户展示）</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="描述你的策略逻辑、适用场景、风险特点..."
+                className="w-full h-20 bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 resize-none focus:outline-none focus:border-[#C9A046]/50"
+              />
+            </div>
+
+            {/* Price */}
+            <div>
+              <label className="block text-gray-400 text-xs mb-1">月费（¥0 = 免费）</label>
+              <input
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(Number(e.target.value))}
+                min={0}
+                max={999}
+                className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50"
+              />
+              <div className="text-gray-500 text-[11px] mt-1">
+                {price === 0 ? '免费发布，积累口碑' : `你的收入: ¥${(price * 0.7).toFixed(0)}/月 (70%分成)`}
+              </div>
+            </div>
+
+            {/* Revenue split info */}
+            <div className="bg-[#C9A046]/10 border border-[#C9A046]/20 rounded-lg p-3">
+              <div className="text-[#D4A853] text-xs font-medium mb-1">💰 收入分成</div>
+              <div className="text-gray-400 text-[11px]">
+                创作者 70% · 平台 30%。每月结算一次，满 ¥100 可提现。
+              </div>
+            </div>
+
+            <button
+              onClick={handlePublish}
+              disabled={!selectedId}
+              className="w-full py-2.5 bg-[#C9A046] text-black font-semibold rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors"
+            >
+              提交审核
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
