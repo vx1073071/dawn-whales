@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates } from '../../lib/bridge-api';
 
 type CreateMode = null | 'ai' | 'template' | 'form';
-type ViewState = 'list' | 'creating' | 'detail';
 
 interface ParsedStrategy {
   success: boolean;
@@ -72,7 +71,6 @@ export default function StrategyPage() {
         <MyStrategies
           strategies={strategies}
           onSelect={(id) => setSelectedId(id)}
-          onRefresh={refresh}
         />
       )}
 
@@ -373,7 +371,6 @@ function EquityChart({ data }: { data: { time: number; value: number }[] }) {
   const endVal = data[data.length - 1].value;
   const isUp = endVal >= startVal;
   const strokeColor = isUp ? '#22c55e' : '#ef4444';
-  const fillColor = isUp ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)';
 
   const pathD = `M${points.join(' L')}`;
   const fillD = `${pathD} L${width - padding},${height - padding} L${padding},${height - padding} Z`;
@@ -580,7 +577,7 @@ function SliderInput({ label, value, min, max, onChange, unit = '' }: { label: s
 
 // ── My Strategies ──────────────────────────────────────────────────────────
 
-function MyStrategies({ strategies, onSelect, onRefresh }: { strategies: any[]; onSelect: (id: string) => void; onRefresh: () => void }) {
+function MyStrategies({ strategies, onSelect }: { strategies: any[]; onSelect: (id: string) => void }) {
   const statusColors: Record<string, string> = {
     draft: 'text-gray-400 bg-gray-500/20',
     backtested: 'text-blue-400 bg-blue-500/20',
