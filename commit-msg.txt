@@ -1,0 +1,54 @@
+Q44-Q46: test framework + HTML dashboard + mutation testing (P0 DONE)
+
+- test-framework/qtest.js: full ESM implementation (~400 lines)
+  - describe/it/fdescribe/xdescribe/fit/xit/todo
+  - beforeAll/afterAll/beforeEach/afterEach hooks
+  - createExpect: toBe/toEqual/toBeTruthy/toBeFalsy/toBeNull/
+    toBeDefined/toBeNaN/toBeGreaterThan/toBeLessThan/toBeCloseTo/
+    toContain/toHaveLength/toThrow/toHaveBeenCalled/
+    toHaveBeenCalledWith/toHaveReturnedWith
+  - qmock(): mockImplementation/mockImplementationOnce/mockReturnValue/
+    mockReturnValueOnce/mockResolvedValue/mockResolvedValueOnce/
+    mockRejectedValue/mockRejectedValueOnce/mockRestore
+  - qmockSpyOn(): spy on object methods
+  - runFiles(): run test files (supports file:// URLs for Windows)
+  - printReport(): text report
+  - setupGlobals(): inject globals
+  - Parallel execution support (worker_threads)
+  - Isolated environments (VM sandbox)
+
+- test-framework/types.ts: TypeScript types (~200 lines)
+- test-framework/expect.ts: TypeScript expect (~700 lines)
+- test-framework/mock.ts: TypeScript mock (~400 lines)
+- test-framework/core.ts: TypeScript core (~400 lines)
+- test-framework/runner.ts: runner + HTML report (~300 lines)
+- test-framework/parallel-runner.ts: parallel runner (~150 lines)
+- test-framework/isolation.ts: VM sandbox (~150 lines)
+- test-framework/cli.ts: CLI entry (~250 lines)
+- test-framework/index.ts: ESM entry (~50 lines)
+- test-framework/package.json: npm package definition (added "type": "module")
+- test-framework/html-report.js: HTML report generator (~500 lines)
+  - Summary cards (Total/Passed/Failed/Skipped/Duration)
+  - Progress bar (color-coded: green=pass, red=fail, gray=skip)
+  - Canvas chart 1: Test Duration Histogram
+  - Canvas chart 2: Per-File Pass/Fail/Skipped bar chart
+  - File breakdown: collapsible sections, click-to-expand error details
+  - Error messages: expandable with error.message + error.stack
+  - Print styles: @media print adapts for printing
+  - Responsive: @media (max-width: 600px) mobile layout
+  - Zero dependencies: pure Canvas API, no Chart.js CDN
+
+- test-framework/mutation.js: mutation testing engine (~400 lines)
+  - 5 mutation operators: conditional flip, arithmetic op,
+    boolean literal, number literal, string literal
+  - Generates mutated variants of source code
+  - Runs tests against each mutation
+  - Reports killed/survived/errored mutations
+  - Generates mutation-score.html report
+
+- Verified: 12/12 tests pass (run-qtest.js)
+- Q44 DONE (P0 test infrastructure)
+- Q45 DONE (HTML dashboard)
+- Q46 DONE (mutation testing)
+
+Co-Authored-By: QClaw <qclaw@alienware-lam>

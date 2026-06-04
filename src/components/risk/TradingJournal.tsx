@@ -96,7 +96,7 @@ export default function TradingJournal() {
       const date = new Date(e.date).toISOString().split('T')[0];
       data[date] = (data[date] || 0) + (e.pnl || 0);
     });
-    return Object.entries(data).map(([d, v]) => [d, v]);
+    return Object.entries(data).map(([d, v]) => [d, v]) as [string, number][];
   }, [entries]);
 
   // Export CSV

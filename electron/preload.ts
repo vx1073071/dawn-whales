@@ -744,6 +744,16 @@ contextBridge.exposeInMainWorld('api', {
     query: (symbol: string, featureNames: string[], limit?: number) => ipcRenderer.invoke('feature:query', symbol, featureNames, limit),
   },
 
+  // ── Stream Computing (JVS-61) ──────────────────────────────────────────
+  streamComputing: {
+    processTick: (tick: any) => ipcRenderer.invoke('stream:process-tick', tick),
+    getAggregated: (symbol: string) => ipcRenderer.invoke('stream:get-aggregated', symbol),
+    getMetrics: (symbol: string) => ipcRenderer.invoke('stream:get-metrics', symbol),
+    getSymbols: () => ipcRenderer.invoke('stream:get-symbols'),
+    clearSymbol: (symbol: string) => ipcRenderer.invoke('stream:clear-symbol', symbol),
+    clearAll: () => ipcRenderer.invoke('stream:clear-all'),
+  },
+
   // ── Strategy Signal Generator (JVS-46) ──────────────────────────
   signalGenerator: {
     generate: (raw: any) => ipcRenderer.invoke('signal:generate', raw),

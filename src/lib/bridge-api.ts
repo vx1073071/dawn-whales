@@ -2156,3 +2156,35 @@ export async function queryFeatures(symbol: string, featureNames: string[], limi
   return window.api.featureStore.query(symbol, featureNames, limit);
 }
 
+// ── Stream Computing (JVS-61) ──────────────────────────────────────────────
+
+export async function processStreamTick(tick: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.streamComputing.processTick(tick);
+}
+
+export async function getStreamAggregated(symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.streamComputing.getAggregated(symbol);
+}
+
+export async function getStreamMetrics(symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.streamComputing.getMetrics(symbol);
+}
+
+export async function getStreamSymbols(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.streamComputing.getSymbols();
+}
+
+export async function clearStreamSymbol(symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.streamComputing.clearSymbol(symbol);
+}
+
+export async function clearStreamAll(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.streamComputing.clearAll();
+}
+

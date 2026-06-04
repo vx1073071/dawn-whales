@@ -162,7 +162,7 @@ export default function EquityChart({
               },
             ]
           : []),
-      ],
+      ] as any[],
       legend: {
         show: true,
         top: 8,

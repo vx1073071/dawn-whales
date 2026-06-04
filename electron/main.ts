@@ -53,6 +53,7 @@ import { DataCleaningPipeline, getDataCleaningPipeline } from './data/data-pipel
 import { HistoricalDataWarehouse, getHistoricalDataWarehouse } from './data/historical-warehouse';
 import { DataVersioningSystem, getDataVersioningSystem } from './data/data-versioning';
 import { FeatureStore, getFeatureStore } from './engine/feature-store';
+import { StreamComputingEngine, getStreamComputingEngine } from './engine/stream-computing';
 import { captureSnapshot, querySnapshots, getSnapshot, compareSnapshots, getSnapshotTimeline, getLatestSnapshot, cleanupOldSnapshots, exportSnapshots, importSnapshots, getSnapshotStats, deleteSnapshot, clearAllSnapshots } from './engine/snapshot-service';
 import { trackVersion, getEntityVersions, getVersion, getLatestVersion, diffVersions, rollback, queryVersions, getVersionStats, deleteVersion, clearAllVersions, exportVersions, importVersions } from './engine/version-control-service';
 import { setupI18nDataIPC } from './engine/i18n-data';
@@ -4545,6 +4546,67 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const store = getFeatureStore(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
       const features = store.queryFeatures(symbol, featureNames, limit || 100);
       return { success: true, features };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Stream Computing (JVS-61) ────────────────────────────────────────────
+  ipcMain.handle('stream:process-tick', async (_e, tick: any) => {
+    try {
+      const engine = getStreamComputingEngine();
+      const metrics = engine.processTick(tick);
+      return { success: true, metrics };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('stream:get-aggregated', async (_e, symbol: string) => {
+    try {
+      const engine = getStreamComputingEngine();
+      const data = engine.getAggregatedData(symbol);
+      return { success: true, data };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('stream:get-metrics', async (_e, symbol: string) => {
+    try {
+      const engine = getStreamComputingEngine();
+      const metrics = engine.getMetrics(symbol);
+      return { success: true, metrics };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('stream:get-symbols', async () => {
+    try {
+      const engine = getStreamComputingEngine();
+      const symbols = engine.getSymbols();
+      return { success: true, symbols };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('stream:clear-symbol', async (_e, symbol: string) => {
+    try {
+      const engine = getStreamComputingEngine();
+      engine.clearSymbol(symbol);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('stream:clear-all', async () => {
+    try {
+      const engine = getStreamComputingEngine();
+      engine.clearAll();
+      return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
     }
