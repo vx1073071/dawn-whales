@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
+��// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
 // 架构对齐：富途牛牛桌面端 (Electron + C++ core + React)
 // 我们用：Electron + Node.js (Main) + React (Renderer)
 
@@ -17,8 +17,59 @@ import { RiskEngine } from './engine/risk-engine';
 import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/nl-parser';
 import { MarketplaceService } from './data/marketplace-service';
 import { DataProviderService } from './data/data-provider';
+import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner';
+import { validate,
+  BrokerConnectSchema,
+  BrokerGetFundsSchema,
+  BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema,
+  BrokerSubscribeSchema,
+  BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema,
+  BrokerCancelOrderSchema,
+  BrokerSwitchSchema,
+  BrokerAddSchema,
+  StrategyCreateSchema,
+  StrategyUpdateSchema,
+  StrategyGetSchema,
+  StrategyBacktestSchema,
+  BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema,
+  BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema,
+  BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema,
+  RiskUpdateVixSchema,
+  DbSaveStrategySchema,
+  DbSaveSettingsSchema,
+  DbSaveWatchlistSchema,
+  DbGetTradesSchema,
+  DbGetBacktestResultsSchema,
+  DbGetSignalsSchema,
+  DbSaveFundamentalSchema,
+  DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema,
+  DbSaveAnomalySchema,
+  DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema,
+  MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema,
+  MarketplaceListSchema,
+  GreeksCalculateSchema,
+  GreeksPortfolioSchema,
+  DataNewsSchema,
+  DataFundamentalSchema,
+  DataCapitalFlowSchema,
+  DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema,
+  StrategyExplainSchema,
+  StrategyCompareSchema,
+} from './ipc-schemas';
 import log from 'electron-log';
 
 // 默认监控列表，连接时从 DB 读取用户配置
@@ -279,6 +330,8 @@ function setupIPC() {
   });
 
   ipcMain.handle('broker:add', async (_e, cfg: BrokerConfig) => {
+    const vErr = validate(BrokerAddSchema, { cfg });
+    if (vErr) return vErr;
     try {
       brokerManager?.addConfig(cfg);
       db?.saveBrokerConfig(cfg);
@@ -303,6 +356,8 @@ function setupIPC() {
 
   // ── Broker Switching (Sprint1) ───────────────────────────────────────
   ipcMain.handle('broker:switch', async (_e, id: string) => {
+    const vErr = validate(BrokerSwitchSchema, { id });
+    if (vErr) return vErr;
     try {
       const adapter = brokerManager?.getAdapters().get(id);
       if (!adapter) {
@@ -348,6 +403,8 @@ function setupIPC() {
 
   // ── Strategy Engine ─────────────────────────────────────────────────
   ipcMain.handle('strategy:create', async (_e, dsl: any) => {
+    const vErr = validate(StrategyCreateSchema, { dsl });
+    if (vErr) return vErr;
     try {
       const id = strategyEngine?.createStrategy(dsl);
       const strategy = strategyEngine?.getStrategy(id!);
@@ -368,6 +425,8 @@ function setupIPC() {
   // ── Strategy Update (with field whitelist for security) ─────────────
   const STRATEGY_UPDATE_WHITELIST = ['name', 'description', 'params', 'stopLoss', 'takeProfit', 'symbol'];
   ipcMain.handle('strategy:update', async (_e, id: string, updates: any) => {
+    const vErr = validate(StrategyUpdateSchema, { updates });
+    if (vErr) return vErr;
     try {
       const strategy = strategyEngine?.getStrategy(id);
       if (!strategy) return { success: false, error: 'Strategy not found' };
@@ -442,6 +501,8 @@ function setupIPC() {
   // ── Backtest Enhancement (Sprint 2: P1) ──────────────────────────
 
   ipcMain.handle('backtest:multiPeriod', async (_e, config: any) => {
+    const vErr = validate(BacktestMultiPeriodSchema, { config });
+    if (vErr) return vErr;
     try {
       const { BacktestEnhancer } = require('./engine/backtest-enhancer');
       const enhancer = new BacktestEnhancer(backtestEngine);
@@ -455,6 +516,8 @@ function setupIPC() {
   });
 
   ipcMain.handle('backtest:paramSweep', async (_e, config: any) => {
+    const vErr = validate(BacktestParamSweepSchema, { config });
+    if (vErr) return vErr;
     try {
       const { BacktestEnhancer } = require('./engine/backtest-enhancer');
       const enhancer = new BacktestEnhancer(backtestEngine);
@@ -688,6 +751,8 @@ Keep it under 250 words. Be objective, not promotional.`;
   // ── External URL Security ────────────────────────────────────────────
   const ALLOWED_PROTOCOLS = ['http:', 'https:'];
   ipcMain.handle('app:openExternal', async (_e, rawUrl: string) => {
+    const vErr = validate(Z.object({ rawUrl: z.string().url() }), { rawUrl });
+    if (vErr) return vErr;
     try {
       const url = new URL(rawUrl);
       if (!ALLOWED_PROTOCOLS.includes(url.protocol)) {
@@ -761,6 +826,8 @@ Keep it under 250 words. Be objective, not promotional.`;
   });
 
   ipcMain.handle('greeks:portfolio', async (_e, positions: any[]) => {
+    const vErr = validate(GreeksPortfolioSchema, { positions });
+    if (vErr) return vErr;
     try {
       const devPath = path.join(
         require('os').homedir(), '.workbuddy', 'skills', 'option-greeks', 'scripts', 'portfolio_greeks.py'
@@ -788,6 +855,8 @@ Keep it under 250 words. Be objective, not promotional.`;
   // ── Marketplace ───────────────────────────────────────────────────
 
   ipcMain.handle('marketplace:rate', async (_e, strategyId: string, rating: number) => {
+    const vErr = validate(MarketplaceRateSchema, { strategyId });
+    if (vErr) return vErr;
     try {
       db?.rateStrategy(strategyId, rating);
       const stats = db?.getStrategyRating(strategyId);
@@ -804,6 +873,8 @@ Keep it under 250 words. Be objective, not promotional.`;
   });
 
   ipcMain.handle('marketplace:comment', async (_e, strategyId: string, content: string, parentId?: number) => {
+    const vErr = validate(MarketplaceCommentSchema, { strategyId });
+    if (vErr) return vErr;
     try {
       db?.addComment(strategyId, content, parentId);
       return { success: true };
@@ -818,6 +889,8 @@ Keep it under 250 words. Be objective, not promotional.`;
   });
 
   ipcMain.handle('marketplace:savePerformance', async (_e, data: any) => {
+    const vErr = validate(MarketplaceSavePerformanceSchema, { data });
+    if (vErr) return vErr;
     try {
       db?.saveStrategyPerformance(data);
       return { success: true };
@@ -1009,6 +1082,8 @@ Keep it under 250 words. Be objective, not promotional.`;
 
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
   ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
+    const vErr = validate(BacktestWalkForwardSchema, { config });
+    if (vErr) return vErr;
     try {
       const wfa = new WalkForwardEngine();
       const klines = config.klines || [];
@@ -1025,6 +1100,8 @@ Keep it under 250 words. Be objective, not promotional.`;
 
   // ── Parameter Scanner (Sprint 2 — JVS) ───────────────────────────────
   ipcMain.handle('backtest:param-scan', async (_e, config: any) => {
+    const vErr = validate(BacktestParamScanSchema, { config });
+    if (vErr) return vErr;
     try {
       const scanner = new ParameterScanner();
       const klines = config.klines || [];
@@ -1041,6 +1118,8 @@ Keep it under 250 words. Be objective, not promotional.`;
 
   // ── Multi-timeframe comparison (Sprint 2 — JVS) ──────────────────────
   ipcMain.handle('backtest:multi-timeframe', async (_e, config: any) => {
+    const vErr = validate(BacktestMultiTimeframeSchema, { config });
+    if (vErr) return vErr;
     try {
       const engine = new BacktestEngine();
       const timeframes = config.timeframes || ['1m', '5m', '15m', '1h', 'daily'];
