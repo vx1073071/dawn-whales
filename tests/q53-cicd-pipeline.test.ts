@@ -129,3 +129,61 @@ export function runCICDTests(): void {
   const workflow = pipeline.generateGitHubActions();
   console.log('✅ CI/CD pipeline configuration generated');
 }
+
+// ── Vitest Test Cases ───────────────────────────────────────────────────────────
+
+import { describe, it, expect } from 'vitest';
+
+describe('Q53: CI/CD Pipeline', () => {
+  it('CICDConfig has correct structure', () => {
+    const config: CICDConfig = {
+      platform: 'github',
+      stages: [
+        {
+          name: 'Build',
+          steps: [{ name: 'Install', command: 'npm ci' }],
+        },
+      ],
+    };
+    expect(config.platform).toBe('github');
+    expect(config.stages.length).toBe(1);
+  });
+
+  it('CICDPipeline has 3 default stages', () => {
+    const pipeline = new CICDPipeline();
+    const stages = (pipeline as any).config.stages;
+    expect(stages.length).toBe(3);
+    expect(stages.map((s: any) => s.name)).toEqual(['Build', 'Test', 'Deploy']);
+  });
+
+  it('generateGitHubActions returns valid YAML', () => {
+    const pipeline = new CICDPipeline();
+    const yaml = pipeline.generateGitHubActions();
+    expect(typeof yaml).toBe('string');
+    expect(yaml).toContain('name: CI/CD Pipeline');
+    expect(yaml).toContain('on:');
+    expect(yaml).toContain('jobs:');
+    expect(yaml).toContain('build:');
+    expect(yaml).toContain('test:');
+    expect(yaml).toContain('deploy:');
+  });
+
+  it('GitHub Actions YAML has required job structure', () => {
+    const pipeline = new CICDPipeline();
+    const yaml = pipeline.generateGitHubActions();
+    // Test stage needs Build stage
+    expect(yaml).toContain('needs:');
+    expect(yaml).toContain('build');
+    // Deploy stage needs Test stage and refs check
+    expect(yaml).toContain('test');
+    expect(yaml).toContain("github.ref == 'refs/heads/main'");
+  });
+
+  it('toYAML handles nested objects', () => {
+    const pipeline = new CICDPipeline() as any;
+    const yaml = pipeline.toYAML({ a: { b: { c: 1 } } });
+    expect(yaml).toContain('a:');
+    expect(yaml).toContain('b:');
+    expect(yaml).toContain('c: 1');
+  });
+});

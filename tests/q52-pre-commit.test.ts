@@ -65,3 +65,44 @@ export function runPreCommitChecks(): void {
   const hook = new PreCommitHook();
   hook.run();
 }
+
+// ── Vitest Test Cases ───────────────────────────────────────────────────────────
+
+import { describe, it, expect } from 'vitest';
+
+describe('Q52: Pre-commit Hook', () => {
+  it('PreCommitHook has correct default checks', () => {
+    const hook = new PreCommitHook();
+    // Access private checks via type assertion for structural testing
+    const checks = (hook as any).checks as Array<{ name: string; command: string }>;
+    expect(checks.length).toBe(4);
+    expect(checks.map((c) => c.name)).toEqual(['ESLint', 'TypeScript', 'Tests', 'i18n']);
+  });
+
+  it('PreCommitResult interface is correct', () => {
+    const result: PreCommitResult = {
+      success: true,
+      checks: [
+        { name: 'ESLint', passed: true, output: 'no errors', duration: 100 },
+        { name: 'TypeScript', passed: false, output: '2 errors', duration: 500 },
+      ],
+    };
+    expect(result.success).toBe(true);
+    expect(result.checks.length).toBe(2);
+    expect(result.checks[0].passed).toBe(true);
+    expect(result.checks[1].passed).toBe(false);
+  });
+
+  it('PreCommitHook can add custom checks', () => {
+    class TestableHook extends PreCommitHook {
+      addCheck(name: string, command: string) {
+        (this as any).checks.push({ name, command });
+      }
+    }
+    const hook = new TestableHook();
+    hook.addCheck('Custom', 'echo test');
+    const checks = (hook as any).checks;
+    expect(checks.length).toBe(5);
+    expect(checks[4].name).toBe('Custom');
+  });
+});

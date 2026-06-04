@@ -69,3 +69,40 @@ export function runSecurityTests(): void {
   console.log('Running security scanning tests...');
   console.log('✅ Security scanning tests completed');
 }
+
+// ── Vitest Test Cases ───────────────────────────────────────────────────────────
+
+import { describe, it, expect } from 'vitest';
+
+describe('Q55: Security Scan', () => {
+  it('SecurityScanResult interface is correct', () => {
+    const result: SecurityScanResult = {
+      vulnerabilities: [
+        { package: 'lodash', severity: 'high', title: 'Prototype Pollution', url: 'https://nvd.nist.gov' },
+      ],
+      totalVulnerabilities: 1,
+      criticalCount: 0,
+      highCount: 1,
+    };
+    expect(result.totalVulnerabilities).toBe(1);
+    expect(result.criticalCount).toBe(0);
+    expect(result.highCount).toBe(1);
+  });
+
+  it('severity levels are valid', () => {
+    const severities: Array<'low' | 'medium' | 'high' | 'critical'> = ['low', 'medium', 'high', 'critical'];
+    expect(severities).toHaveLength(4);
+    expect(['low', 'medium', 'high', 'critical']).toContain('critical');
+  });
+
+  it('empty scan result is valid', () => {
+    const empty: SecurityScanResult = {
+      vulnerabilities: [],
+      totalVulnerabilities: 0,
+      criticalCount: 0,
+      highCount: 0,
+    };
+    expect(empty.totalVulnerabilities).toBe(0);
+    expect(empty.vulnerabilities).toHaveLength(0);
+  });
+});

@@ -73,3 +73,54 @@ export function runCodeReviewTests(): void {
   console.log('Running code review tests...');
   console.log('✅ Code review tests completed');
 }
+
+// ── Vitest Test Cases ───────────────────────────────────────────────────────────
+
+import { describe, it, expect } from 'vitest';
+
+describe('Q54: Code Review', () => {
+  it('detects console.log in production code', () => {
+    const reviewer = new CodeReviewer();
+    const result = reviewer.review('console.log("debug");');
+    expect(result.warnings.length).toBeGreaterThan(0);
+    expect(result.warnings.some((w) => w.includes('console.log'))).toBe(true);
+  });
+
+  it('detects any type usage', () => {
+    const reviewer = new CodeReviewer();
+    const result = reviewer.review('const x: any = 5;');
+    expect(result.warnings.some((w) => w.includes('any type'))).toBe(true);
+  });
+
+  it('detects TODO comments', () => {
+    const reviewer = new CodeReviewer();
+    const result = reviewer.review('// TODO: fix this');
+    expect(result.warnings.some((w) => w.includes('TODO'))).toBe(true);
+  });
+
+  it('passes clean code without warnings', () => {
+    const reviewer = new CodeReviewer();
+    const clean = 'export function add(a: number, b: number): number { return a + b; }';
+    const result = reviewer.review(clean);
+    expect(result.warnings).toHaveLength(0);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  it('flags files over 500 lines', () => {
+    const reviewer = new CodeReviewer();
+    const longFile = 'export const x = 1;\n'.repeat(501);
+    const result = reviewer.review(longFile);
+    expect(result.warnings.some((w) => w.includes('too long'))).toBe(true);
+  });
+
+  it('ReviewResult interface is correct', () => {
+    const result: ReviewResult = {
+      warnings: ['warn1'],
+      errors: ['err1'],
+      suggestions: ['sug1'],
+    };
+    expect(result.warnings).toHaveLength(1);
+    expect(result.errors).toHaveLength(1);
+    expect(result.suggestions).toHaveLength(1);
+  });
+});

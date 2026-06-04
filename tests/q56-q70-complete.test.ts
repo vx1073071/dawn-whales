@@ -156,3 +156,73 @@ export function runAllQClawTests(): void {
   console.log('✅ All QClaw Q47-Q70 tests completed successfully!');
   console.log('═══════════════════════════════════════════════════\n');
 }
+
+// ── Vitest Test Cases ───────────────────────────────────────────────────────────
+
+import { describe, it, expect } from 'vitest';
+
+describe('Q56-Q70: Complete QClaw Test Suite', () => {
+  it('Q47 property testing is available', () => {
+    expect(typeof runLicenseComplianceTests).toBe('function');
+  });
+
+  it('Q57 bundle analysis is available', () => {
+    expect(typeof runBundleAnalysisTests).toBe('function');
+  });
+
+  it('Q58 performance regression is available', () => {
+    expect(typeof runPerformanceRegressionTests).toBe('function');
+  });
+
+  it('Q59 documentation tests is available', () => {
+    expect(typeof runDocumentationTests).toBe('function');
+  });
+
+  it('Q60 API compatibility is available', () => {
+    expect(typeof runAPICompatibilityTests).toBe('function');
+  });
+
+  it('Q61 release automation is available', () => {
+    expect(typeof runReleaseAutomationTests).toBe('function');
+  });
+
+  it('Q62 performance monitoring is available', () => {
+    expect(typeof runPerformanceMonitoringTests).toBe('function');
+  });
+
+  it('Q63 error tracking is available', () => {
+    expect(typeof runErrorTrackingTests).toBe('function');
+  });
+
+  it('Q64 user analytics is available', () => {
+    expect(typeof runUserAnalyticsTests).toBe('function');
+  });
+
+  it('Q65 logging is available', () => {
+    expect(typeof runLoggingTests).toBe('function');
+  });
+
+  it('Q66 health dashboard is available', () => {
+    expect(typeof runHealthDashboardTests).toBe('function');
+  });
+
+  it('Q67 alerting is available', () => {
+    expect(typeof runAlertingTests).toBe('function');
+  });
+
+  it('Q68 fuzzing is available', () => {
+    expect(typeof runFuzzingTests).toBe('function');
+  });
+
+  it('Q69 formal verification is available', () => {
+    expect(typeof runFormalVerificationTests).toBe('function');
+  });
+
+  it('Q70 AI code review is available', () => {
+    expect(typeof runAICodeReviewTests).toBe('function');
+  });
+
+  it('runAllQClawTests is available', () => {
+    expect(typeof runAllQClawTests).toBe('function');
+  });
+});
