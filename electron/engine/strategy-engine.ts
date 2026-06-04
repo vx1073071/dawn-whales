@@ -1,10 +1,12 @@
-// ── Strategy Engine — 策略执行引擎 v1 ──────────────────────────────────────
+// ── Strategy Engine — 策略执行引擎 v2 ──────────────────────────────────────
 // 管理策略生命周期：创建 → 回测 → 模拟 → 实盘 → 停止
 // 实时行情驱动信号评估，触发交易指令
+// v2: 接入风控引擎 (Kelly sizing / ATR trailing stop / equity tracking)
 
 import log from 'electron-log';
 import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './nl-parser';
 import { BacktestEngine } from './backtest-engine';
+import type { RiskEngine } from './risk-engine';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -139,6 +141,14 @@ export class StrategyEngine {
   private signalCallbacks: SignalCallback[] = [];
   private tradeCallbacks: TradeCallback[] = [];
   private backtestEngine = new BacktestEngine();
+  private riskEngine: RiskEngine | null = null;
+
+  // ── Risk Engine Integration ──────────────────────────────────────
+
+  setRiskEngine(riskEngine: RiskEngine): void {
+    this.riskEngine = riskEngine;
+    log.info('[StrategyEngine] RiskEngine connected');
+  }
 
   // ── Strategy CRUD ──────────────────────────────────────────────────
 
@@ -285,6 +295,15 @@ export class StrategyEngine {
       const quote = quotes.find((q: any) => q.code === strategy.symbol);
       if (!quote) continue;
 
+      // v2: Update equity tracking for drawdown monitoring
+      if (this.riskEngine && strategy.position) {
+        const positionValue = strategy.position.qty * quote.price;
+        // Estimate total equity (simplified: position value + assumed cash)
+        // In production, this should come from the broker's funds API
+        const estimatedEquity = positionValue * 2; // rough estimate
+        this.riskEngine.updateEquity(estimatedEquity);
+      }
+
       // Update streaming indicators
       const ind = this.indicators.get(id);
       if (!ind) continue;
@@ -316,19 +335,36 @@ export class StrategyEngine {
 
       // Generate trade order if applicable
       if (signal === 'BUY' && !strategy.position) {
+        // v2: Calculate position size using risk engine
+        let qty = 0;
+        let sizingReason = '';
+        if (this.riskEngine) {
+          const sizing = this.riskEngine.calculatePositionSize(quote.price);
+          qty = sizing.qty;
+          sizingReason = sizing.reasoning;
+          log.info(`[StrategyEngine] Position sizing: qty=${qty}, method=${sizing.method}, ${sizingReason}`);
+        }
+
         const order = {
           code: strategy.symbol,
           side: 'BUY',
           orderType: 'MARKET',
-          qty: 0, // Will be calculated by risk engine based on funds
+          qty,
           price: quote.price,
           strategyId: id,
-          reason,
+          reason: `${reason} | ${sizingReason}`,
         };
         for (const cb of this.tradeCallbacks) {
           try { cb(order); } catch (e: any) { log.error('[StrategyEngine] Trade callback error:', e.message); }
         }
       } else if (signal === 'SELL' && strategy.position && strategy.position.qty > 0) {
+        // v2: Record trade for Kelly calculation
+        if (this.riskEngine && strategy.position.avgCost > 0) {
+          const pnl = (quote.price - strategy.position.avgCost) * strategy.position.qty;
+          this.riskEngine.recordTrade(pnl);
+          log.info(`[StrategyEngine] Trade recorded: pnl=$${pnl.toFixed(2)}`);
+        }
+
         const order = {
           code: strategy.symbol,
           side: 'SELL',
@@ -349,6 +385,13 @@ export class StrategyEngine {
 
         if (strategy.strategy.stopLoss && pnlPct <= -strategy.strategy.stopLoss) {
           log.warn(`[StrategyEngine] ⚠️ Stop loss triggered: ${id} PnL ${pnlPct.toFixed(2)}%`);
+
+          // v2: Record trade for Kelly calculation
+          if (this.riskEngine) {
+            const pnl = (quote.price - strategy.position.avgCost) * strategy.position.qty;
+            this.riskEngine.recordTrade(pnl);
+          }
+
           const order = {
             code: strategy.symbol, side: 'SELL', orderType: 'MARKET',
             qty: strategy.position.qty, price: quote.price,
@@ -357,6 +400,13 @@ export class StrategyEngine {
           for (const cb of this.tradeCallbacks) { try { cb(order); } catch {} }
         } else if (strategy.strategy.takeProfit && pnlPct >= strategy.strategy.takeProfit) {
           log.info(`[StrategyEngine] ✅ Take profit: ${id} PnL ${pnlPct.toFixed(2)}%`);
+
+          // v2: Record trade for Kelly calculation
+          if (this.riskEngine) {
+            const pnl = (quote.price - strategy.position.avgCost) * strategy.position.qty;
+            this.riskEngine.recordTrade(pnl);
+          }
+
           const order = {
             code: strategy.symbol, side: 'SELL', orderType: 'MARKET',
             qty: strategy.position.qty, price: quote.price,

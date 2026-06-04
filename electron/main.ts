@@ -327,6 +327,28 @@ function setupIPC() {
     return { success: true, alerts: riskEngine?.getAlerts() || [] };
   });
 
+  // v2: Risk engine status snapshot (for risk dashboard UI)
+  ipcMain.handle('risk:getStatusSnapshot', async () => {
+    if (!riskEngine) return { success: false, error: 'RiskEngine not initialized' };
+    return { success: true, snapshot: riskEngine.getStatusSnapshot() };
+  });
+
+  ipcMain.handle('risk:getKellyStats', async () => {
+    if (!riskEngine) return { success: false, error: 'RiskEngine not initialized' };
+    return { success: true, kelly: riskEngine.getKellyStats() };
+  });
+
+  ipcMain.handle('risk:getDrawdownState', async () => {
+    if (!riskEngine) return { success: false, error: 'RiskEngine not initialized' };
+    return { success: true, drawdown: riskEngine.getDrawdownState() };
+  });
+
+  ipcMain.handle('risk:updateVix', async (_e, vix: number) => {
+    if (!riskEngine) return { success: false, error: 'RiskEngine not initialized' };
+    riskEngine.updateVix(vix);
+    return { success: true };
+  });
+
   // ── Database ────────────────────────────────────────────────────────
   ipcMain.handle('db:getStrategies', async () => {
     return db?.getStrategies() || [];
@@ -618,6 +640,11 @@ app.whenReady().then(async () => {
     strategyEngine = new StrategyEngine();
     backtestEngine = new BacktestEngine();
     riskEngine = new RiskEngine();
+    // v2: Connect risk engine to strategy engine
+    if (strategyEngine && riskEngine) {
+      strategyEngine.setRiskEngine(riskEngine);
+      log.info('[App] StrategyEngine ↔ RiskEngine connected');
+    }
   } catch (err: any) {
     log.error('[App] Engine init failed:', err.message);
   }

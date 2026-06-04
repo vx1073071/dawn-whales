@@ -41,6 +41,10 @@ contextBridge.exposeInMainWorld('api', {
     getConfig: () => ipcRenderer.invoke('risk:getConfig'),
     updateConfig: (config: any) => ipcRenderer.invoke('risk:updateConfig', config),
     getAlerts: () => ipcRenderer.invoke('risk:getAlerts'),
+    getStatusSnapshot: () => ipcRenderer.invoke('risk:getStatusSnapshot'),
+    getKellyStats: () => ipcRenderer.invoke('risk:getKellyStats'),
+    getDrawdownState: () => ipcRenderer.invoke('risk:getDrawdownState'),
+    updateVix: (vix: number) => ipcRenderer.invoke('risk:updateVix', vix),
   },
 
   // ── Database ──────────────────────────────────────────────────────

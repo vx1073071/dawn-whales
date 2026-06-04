@@ -51,6 +51,10 @@ declare global {
         getConfig: () => Promise<any>;
         updateConfig: (config: any) => Promise<any>;
         getAlerts: () => Promise<any>;
+        getStatusSnapshot: () => Promise<any>;
+        getKellyStats: () => Promise<any>;
+        getDrawdownState: () => Promise<any>;
+        updateVix: (vix: number) => Promise<any>;
       };
       db: {
         getStrategies: () => Promise<any>;
