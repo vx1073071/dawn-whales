@@ -52,6 +52,7 @@ import { setupI18nDataIPC } from './engine/i18n-data';
 import { getFinancialReports } from './engine/financial-reports';
 import { getValuationData } from './engine/valuation-data';
 import { computeIndicators } from './engine/technical-indicators';
+import { blackScholesPrice, calculateGreeks, impliedVolatility, buildVolSurface, priceAndGreeks } from './engine/options-pricing';
 import { getDataQualityStream } from './engine/data-quality-stream';
 import { getSmartCacheManager } from './engine/smart-cache';
 import { getDragonTigerStream } from './engine/dragon-tiger-stream';
@@ -279,6 +280,53 @@ function setupIPC() {
       return computeIndicators(klines, indicators, options);
     } catch (err: any) {
       log.error('[TechnicalIndicators] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Options Pricing Engine (JVS-44) ────────────────────────────────────
+  ipcMain.handle('em:price-option', async (_e, params: any) => {
+    try {
+      return { success: true, ...blackScholesPrice(params) };
+    } catch (err: any) {
+      log.error('[OptionsPricing] Price error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:calc-greeks', async (_e, params: any) => {
+    try {
+      return { success: true, ...calculateGreeks(params) };
+    } catch (err: any) {
+      log.error('[OptionsPricing] Greeks error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:implied-vol', async (_e, marketPrice: number, S: number, K: number, T: number, r: number, optionType: string, q?: number) => {
+    try {
+      return { success: true, ...impliedVolatility(marketPrice, S, K, T, r, optionType as any, q) };
+    } catch (err: any) {
+      log.error('[OptionsPricing] IV error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:vol-surface', async (_e, S: number, r: number, strikes: number[], expiries: number[], callPrices: number[][], putPrices?: number[][]) => {
+    try {
+      const surface = buildVolSurface(S, r, strikes, expiries, callPrices, putPrices);
+      return { success: true, surface };
+    } catch (err: any) {
+      log.error('[OptionsPricing] Surface error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:price-and-greeks', async (_e, params: any) => {
+    try {
+      return { success: true, ...priceAndGreeks(params) };
+    } catch (err: any) {
+      log.error('[OptionsPricing] Price+Greeks error:', err);
       return { success: false, error: err.message };
     }
   });

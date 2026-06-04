@@ -491,6 +491,15 @@ contextBridge.exposeInMainWorld('api', {
     compute: (klines: any[], indicators?: string[], options?: any) => ipcRenderer.invoke('indicator:compute', klines, indicators, options),
   },
 
+  // ── Options Pricing Engine (JVS-44) ────────────────────────────────
+  optionsPricing: {
+    priceOption: (params: any) => ipcRenderer.invoke('em:price-option', params),
+    calcGreeks: (params: any) => ipcRenderer.invoke('em:calc-greeks', params),
+    impliedVol: (marketPrice: number, S: number, K: number, T: number, r: number, optionType: string, q?: number) => ipcRenderer.invoke('em:implied-vol', marketPrice, S, K, T, r, optionType, q),
+    volSurface: (S: number, r: number, strikes: number[], expiries: number[], callPrices: number[][], putPrices?: number[][]) => ipcRenderer.invoke('em:vol-surface', S, r, strikes, expiries, callPrices, putPrices),
+    priceAndGreeks: (params: any) => ipcRenderer.invoke('em:price-and-greeks', params),
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
     const allowed = [

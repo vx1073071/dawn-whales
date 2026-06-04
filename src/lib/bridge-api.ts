@@ -1548,3 +1548,44 @@ export async function computeTechnicalIndicators(
   if (!hasIPC()) return { success: false };
   return window.api.indicators.compute(klines, indicators, options);
 }
+
+// ── Options Pricing Engine (JVS-44) ────────────────────────────────────────
+export async function priceOption(params: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.optionsPricing.priceOption(params);
+}
+
+export async function calcGreeks(params: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.optionsPricing.calcGreeks(params);
+}
+
+export async function calcImpliedVol(
+  marketPrice: number,
+  underlyingPrice: number,
+  strikePrice: number,
+  timeToExpiry: number,
+  riskFreeRate: number,
+  optionType: string,
+  dividendYield?: number
+): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.optionsPricing.impliedVol(marketPrice, underlyingPrice, strikePrice, timeToExpiry, riskFreeRate, optionType, dividendYield);
+}
+
+export async function buildVolatilitySurface(
+  underlyingPrice: number,
+  riskFreeRate: number,
+  strikes: number[],
+  expiries: number[],
+  callPrices: number[][],
+  putPrices?: number[][]
+): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.optionsPricing.volSurface(underlyingPrice, riskFreeRate, strikes, expiries, callPrices, putPrices);
+}
+
+export async function priceOptionAndGreeks(params: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.optionsPricing.priceAndGreeks(params);
+}
