@@ -56,6 +56,21 @@ contextBridge.exposeInMainWorld('api', {
     detectRegime: (klines: any, vixLevel?: number, symbol?: string) =>
       ipcRenderer.invoke('regime:detect', { klines, vixLevel, symbol }),
 
+    // Q64: Backtest Stability
+    checkBacktestStability: (params: {
+      isReturns: number[]; oosReturns: number[]; paramGridResults?: any[];
+      walkForwardResults?: any[]; isPeriodDays?: number; oosPeriodDays?: number; tradingDays?: number;
+    }) => ipcRenderer.invoke('backtest:stability', params),
+
+    // Q63: Signal Quality Score
+    scoreSignalQuality: (params: {
+      signalType: string; marketContext?: any; backtestHistory?: any[]; signalParams?: any;
+    }) => ipcRenderer.invoke('signal:quality-score', params),
+
+    // Q68: Position Alert Check
+    checkPositionAlerts: (positions: any[], accountFunds: number, config?: any) =>
+      ipcRenderer.invoke('position:check', { positions, accountFunds, config }),
+
     // Q9: Risk Decomposition
     decomposeRisk: (equityCurve: number[], positions?: any[], confidenceLevel?: number) =>
       ipcRenderer.invoke('risk:decompose', { equityCurve, positions, confidenceLevel }),

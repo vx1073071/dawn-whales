@@ -67,6 +67,7 @@ import { exportData } from './engine/data-exporter';
 import { getSmartPicker } from './engine/smart-picker';
 import { getWsDataStream } from './data/ws-data-stream';
 import { getHistoryBackfill } from './data/history-backfill';
+import { getOpenDHealthMonitor } from './data/opd-health-data';
 // QClaw Q57-Q60
 import SentimentAttributionEngine from './engine/sentiment-attribution';
 import CapitalFlowPredictor from './engine/capital-flow-predictor';
@@ -1501,6 +1502,64 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       }
       const result = detectRegime(klines, { vixLevel });
       return { success: true, regime: result, symbol };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q64: Backtest Stability Checker ──────────────────────────────────
+  ipcMain.handle('backtest:stability', async (_e, raw: unknown) => {
+    try {
+      const { isReturns, oosReturns, paramGridResults, walkForwardResults, isPeriodDays, oosPeriodDays, tradingDays } = raw as {
+        isReturns: number[];
+        oosReturns: number[];
+        paramGridResults?: any[];
+        walkForwardResults?: any[];
+        isPeriodDays?: number;
+        oosPeriodDays?: number;
+        tradingDays?: number;
+      };
+      const { BacktestStabilityChecker } = await import('./engine/backtest-stability.js');
+      const checker = new BacktestStabilityChecker();
+      const result = checker.analyzeStability({ isReturns, oosReturns, paramGridResults, walkForwardResults, isPeriodDays, oosPeriodDays, tradingDays });
+      return { success: true, ...result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q63: Signal Quality Scorer ───────────────────────────────────────
+  ipcMain.handle('signal:quality-score', async (_e, raw: unknown) => {
+    try {
+      const { signalType, marketContext, backtestHistory, signalParams } = raw as {
+        signalType: string;
+        marketContext?: any;
+        backtestHistory?: any[];
+        signalParams?: any;
+      };
+      const { SignalQualityScorer } = await import('./engine/signal-quality-scorer.js');
+      const scorer = new SignalQualityScorer();
+      const report = scorer.score(signalType, marketContext, backtestHistory, signalParams);
+      return { success: true, report };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q68: Position Alert Engine ───────────────────────────────────────
+  ipcMain.handle('position:check', async (_e, raw: unknown) => {
+    try {
+      const { positions, accountFunds, config } = raw as {
+        positions: any[];
+        accountFunds: number;
+        config?: any;
+      };
+      const { PositionAlertEngine } = await import('./engine/position-alert-engine.js');
+      const engine = new PositionAlertEngine();
+      if (config) engine.updateConfig(config);
+      const alerts = positions.map(pos => engine.checkPosition(pos, accountFunds));
+      const summary = engine.getSummary();
+      return { success: true, alerts, summary };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

@@ -138,6 +138,19 @@ declare global {
       regime: {
         detect: (klines: { close: number[]; high: number[]; low: number[]; open: number[] }, vixLevel?: number, symbol?: string) => Promise<any>;
       };
+      // Q63: Signal Quality Scorer
+      signalQuality: {
+        score: (params: { signalType: string; marketContext?: any; backtestHistory?: any[]; signalParams?: any }) => Promise<any>;
+      };
+      // Q64: Backtest Stability
+      backtestStability: (params: {
+        isReturns: number[]; oosReturns: number[]; paramGridResults?: any[];
+        walkForwardResults?: any[]; isPeriodDays?: number; oosPeriodDays?: number; tradingDays?: number;
+      }) => Promise<any>;
+      // Q68: Position Alert
+      positionAlert: {
+        check: (positions: any[], accountFunds: number, config?: any) => Promise<any>;
+      };
       anomaly: {
         detect: (values: number[], method?: 'zscore' | 'iqr' | 'moving', window?: number, threshold?: number) => Promise<any>;
       };
