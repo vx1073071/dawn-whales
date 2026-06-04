@@ -7,7 +7,7 @@
  *   import { run } from './runner.js'
  *
  * Usage (CLI):
- *   npx tsx cli.ts run **/*.test.ts
+ *   npx tsx cli.ts run "tests/[GLOB]/[FILE].test.ts"
  */
 
 import { EventEmitter } from 'node:events';
@@ -293,6 +293,14 @@ async function runSuite(
 }
 
 // ============ Main run entry point ============
+
+export async function runFilesSequential(
+  files: string[],
+  config: { timeout?: number; retries?: number; bail?: number } = {}
+): Promise<RunResult> {
+  return runFiles(files, config);
+// Alias for runner compatibility (runFilesSequential is defined after runFiles below)
+export { runFiles as runFilesSequential };
 
 export async function runFiles(
   files: string[],

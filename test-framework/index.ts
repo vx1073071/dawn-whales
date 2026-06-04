@@ -9,7 +9,7 @@
  *   import { describe, it, expect, qmock, qmockSpyOn, run } from 'qtest'
  *
  * Usage (CLI):
- *   npx tsx test-framework/cli.ts run tests/**/*.test.ts
+ *   npx tsx test-framework/cli.ts run "tests/[GLOB]/[FILE].test.ts"
  */
 
 // Core

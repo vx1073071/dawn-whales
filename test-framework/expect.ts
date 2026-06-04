@@ -136,8 +136,9 @@ export class StringMatching implements AsymmetricMatcher {
   constructor(private re: RegExp | string) {}
   asymmetricMatch(value: unknown): boolean {
     if (typeof value !== 'string') return false;
-    const re = this.re is RegExp ? this.re : new RegExp(this.re);
-    return re.test(value);
+    const _re = typeof this.re === 'string' ? new RegExp(this.re) : this.re;
+    return _re.test(value);
+    return _re.test(value);
   }
   toString(): string { return `StringMatching<${this.re}>`; }
 }
@@ -747,7 +748,7 @@ export namespace expect {
     return new StringMatching(re);
   }
 
-  export function not: any {
+  export function not(actual: unknown) {
     return createExpect(undefined, { not: true, soft: false });
   }
 }
