@@ -96,6 +96,7 @@ export interface IBrokerAdapter {
   disconnect(): void;
 
   onQuotePush(callback: (quotes: QuoteInfo[]) => void): void;
+  removeQuotePush(callback: (quotes: QuoteInfo[]) => void): void;
   onDisconnect(callback: () => void): void;
 
   getQuotes(codes: string[]): Promise<QuoteInfo[]>;

@@ -50,6 +50,10 @@ class FutuBrokerAdapter implements IBrokerAdapter {
     this.quoteCallbacks.push(callback);
   }
 
+  removeQuotePush(callback: (quotes: QuoteInfo[]) => void): void {
+    this.quoteCallbacks = this.quoteCallbacks.filter((cb) => cb !== callback);
+  }
+
   onDisconnect(callback: () => void): void {
     this.disconnectCallbacks.push(callback);
   }
@@ -172,6 +176,10 @@ export class BrokerManager {
 
   onQuotePush(callback: (quotes: QuoteInfo[]) => void): void {
     this.quoteCallbacks.push(callback);
+  }
+
+  removeQuotePush(callback: (quotes: QuoteInfo[]) => void): void {
+    this.quoteCallbacks = this.quoteCallbacks.filter((cb) => cb !== callback);
   }
 
   async subscribeAndPush(brokerId: string, codes: string[]): Promise<void> {
