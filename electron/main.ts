@@ -1,4 +1,4 @@
-��// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
+// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
 // 架构对齐：富途牛牛桌面端 (Electron + C++ core + React)
 // 我们用：Electron + Node.js (Main) + React (Renderer)
 
@@ -796,6 +796,78 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     log.info(`[IPC] strategy:auto-tune — type=${strategyType} method=${method ?? 'both'}`);
     const result = await autoTune(strategyType, ranges, klines, { method, populationSize, generations, iterations });
     return { success: true, result };
+  });
+
+  // ── Q8: Market Regime Detector ─────────────────────────────────────────
+  ipcMain.handle('regime:detect', async (_e, raw: unknown) => {
+    try {
+      const { klines, vixLevel, symbol } = raw as {
+        klines: { close: number[]; high: number[]; low: number[]; open: number[] };
+        vixLevel?: number;
+        symbol?: string;
+      };
+      if (!klines || !klines.close || klines.close.length < 30) {
+        return { success: false, error: 'At least 30 klines required for regime detection' };
+      }
+      const result = detectRegime(klines, { vixLevel });
+      return { success: true, regime: result, symbol };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q9: Strategy Risk Decomposition ──────────────────────────────────
+  ipcMain.handle('risk:decompose', async (_e, raw: unknown) => {
+    try {
+      const { equityCurve, positions, confidenceLevel } = raw as {
+        equityCurve: number[];
+        positions?: any[];
+        confidenceLevel?: number;
+      };
+      if (!equityCurve || equityCurve.length < 20) {
+        return { success: false, error: 'At least 20 equity curve data points required' };
+      }
+      const result = decomposeRisk(equityCurve, positions, confidenceLevel ?? 0.95);
+      return { success: true, decomposition: result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('risk:monteCarlo', async (_e, raw: unknown) => {
+    try {
+      const { equityCurve, paths, horizon } = raw as {
+        equityCurve: number[];
+        paths?: number;
+        horizon?: number;
+      };
+      if (!equityCurve || equityCurve.length < 20) {
+        return { success: false, error: 'At least 20 data points required' };
+      }
+      const result = runMonteCarlo(equityCurve, paths ?? 10000, horizon ?? 252);
+      return { success: true, simulation: result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q10: Real-time Anomaly Detection ─────────────────────────────────
+  ipcMain.handle('anomaly:detect', async (_e, raw: unknown) => {
+    try {
+      const { values, method, window, threshold } = raw as {
+        values: number[];
+        method?: 'zscore' | 'iqr' | 'moving';
+        window?: number;
+        threshold?: number;
+      };
+      if (!values || values.length < 10) {
+        return { success: false, error: 'At least 10 data points required' };
+      }
+      const result = detectAnomalies({ values, method: method ?? 'zscore', window: window ?? 20, threshold: threshold ?? 3 });
+      return { success: true, anomalies: result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   });
 
   // ── NL Parser ───────────────────────────────────────────────────────

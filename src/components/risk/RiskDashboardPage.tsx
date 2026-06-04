@@ -297,6 +297,9 @@ export default function RiskDashboardPage() {
       {/* Performance Metrics */}
       <PerformanceMetricsPanel trades={demoTrades} title="📊 交易绩效指标" />
 
+      {/* Portfolio Stress Test */}
+      <PortfolioStressTest />
+
       {/* Trading Journal + System Log */}
       <div className="grid grid-cols-2 gap-4">
         <TradingJournal />

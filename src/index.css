@@ -86,6 +86,17 @@ html.light .border-border { border-color: #dee2e6 !important; }
 html.light .hover\:bg-white\/\[0\.02\]:hover { background: rgba(0,0,0,0.03) !important; }
 html.light .hover\:bg-white\/5:hover { background: rgba(0,0,0,0.04) !important; }
 html.light .divide-white\/\[0\.03\] > * + * { border-color: rgba(0,0,0,0.05) !important; }
+html.light .bg-\[#111119\] { background: #ffffff !important; }
+html.light .bg-\[#0a0a12\] { background: #e9ecef !important; }
+html.light .bg-\[#15151f\] { background: #ffffff !important; }
+html.light .bg-\[#0d0d14\] { background: #f8f9fa !important; }
+html.light .bg-\[#C9A046\]\/10 { background: rgba(201,169,70,0.08) !important; }
+html.light .hover\:bg-white\/\[0\.03\]:hover { background: rgba(0,0,0,0.02) !important; }
+html.light .hover\:text-gray-200:hover { color: #111 !important; }
+html.light .text-emerald-400 { color: #16a34a !important; }
+html.light .text-red-400 { color: #dc2626 !important; }
+html.light .text-yellow-400 { color: #ca8a04 !important; }
+html.light .border-\[#C9A046\] { border-color: #c9a96e !important; }
 
 /* ── Ant Design Override ───────────────────────────────────────── */
 .ant-btn-primary {

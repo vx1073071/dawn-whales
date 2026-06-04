@@ -89,6 +89,12 @@ declare global {
         generate: (ctx: { results: any[]; symbol?: string; apiKey?: string; timeoutMs?: number }) => Promise<any>;
         quick: (ctx: { result: any; apiKey?: string }) => Promise<any>;
       };
+      regime: {
+        detect: (klines: { close: number[]; high: number[]; low: number[]; open: number[] }, vixLevel?: number, symbol?: string) => Promise<any>;
+      };
+      anomaly: {
+        detect: (values: number[], method?: 'zscore' | 'iqr' | 'moving', window?: number, threshold?: number) => Promise<any>;
+      };
       autoTune: {
         tune: (ctx: { strategyType: string; ranges: any[]; klines: any[]; method?: 'ga' | 'bayesian' | 'both'; populationSize?: number; generations?: number; iterations?: number }) => Promise<any>;
       };
@@ -104,6 +110,9 @@ declare global {
         getKellyStats: () => Promise<any>;
         getDrawdownState: () => Promise<any>;
         updateVix: (vix: number) => Promise<any>;
+        // Q9: Risk Decomposition
+        decompose: (equityCurve: number[], positions?: any[], confidenceLevel?: number) => Promise<any>;
+        monteCarlo: (equityCurve: number[], paths?: number, horizon?: number) => Promise<any>;
       };
       db: {
         getStrategies: () => Promise<any>;

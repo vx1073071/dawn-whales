@@ -42,6 +42,20 @@ contextBridge.exposeInMainWorld('api', {
     notificationSummary: (alerts: any[], apiKey?: string) => ipcRenderer.invoke('notification:summary', alerts, apiKey),
     generateReport: (ctx: any) => ipcRenderer.invoke('report:generate', ctx),
     generateQuickReport: (ctx: any) => ipcRenderer.invoke('report:quick', ctx),
+
+    // Q8: Market Regime Detector
+    detectRegime: (klines: any, vixLevel?: number, symbol?: string) =>
+      ipcRenderer.invoke('regime:detect', { klines, vixLevel, symbol }),
+
+    // Q9: Risk Decomposition
+    decomposeRisk: (equityCurve: number[], positions?: any[], confidenceLevel?: number) =>
+      ipcRenderer.invoke('risk:decompose', { equityCurve, positions, confidenceLevel }),
+    runMonteCarlo: (equityCurve: number[], paths?: number, horizon?: number) =>
+      ipcRenderer.invoke('risk:monteCarlo', { equityCurve, paths, horizon }),
+
+    // Q10: Anomaly Detection
+    detectAnomalies: (values: number[], method?: string, window?: number, threshold?: number) =>
+      ipcRenderer.invoke('anomaly:detect', { values, method, window, threshold }),
     autoTune: (ctx: any) => ipcRenderer.invoke('strategy:auto-tune', ctx),
   },
 

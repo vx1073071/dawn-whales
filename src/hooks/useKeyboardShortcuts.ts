@@ -14,7 +14,7 @@ const SHORTCUTS: Record<string, { view?: string; action?: () => void; label: str
   '9': { view: 'settings', label: '系统设置' },
 };
 
-export function useKeyboardShortcuts() {
+export function useKeyboardShortcuts({ onOpenShortcuts }: { onOpenShortcuts?: () => void } = {}) {
   const setView = useAppStore((s) => s.setView);
   const toggleSidebar = useAppStore((s) => s.toggleSidebar);
 
@@ -27,7 +27,7 @@ export function useKeyboardShortcuts() {
 
       // Ctrl/Cmd shortcuts
       if (e.ctrlKey || e.metaKey) {
-        switch (e.key) {
+        switch (e.key.toLowerCase()) {
           case 'b':
             e.preventDefault();
             toggleSidebar();
@@ -38,7 +38,7 @@ export function useKeyboardShortcuts() {
             break;
           case 'k':
             e.preventDefault();
-            setView('market' as any);
+            if (onOpenShortcuts) onOpenShortcuts();
             break;
         }
         return;

@@ -17,6 +17,7 @@ import PriceAlertPanel from '../risk/PriceAlertPanel';
 import MarketBreadth from '../risk/MarketBreadth';
 import EconomicCalendar from '../risk/EconomicCalendar';
 import MarketMovers from '../risk/MarketMovers';
+import WatchlistManager from '../risk/WatchlistManager';
 import PerformanceMetricsPanel from '../risk/PerformanceMetricsPanel';
 import DailyPnLSummary from '../risk/DailyPnLSummary';
 
@@ -156,7 +157,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Account Summary Cards */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <SummaryCard
           label="总资产"
           value={account ? `${(account.totalAssets / 10000).toFixed(0)}万` : '--'}
@@ -185,13 +186,13 @@ export default function DashboardPage() {
       </div>
 
       {/* Market Sector Heatmap + Market Breadth */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MarketHeatmap title="🗺️ 市场板块热力图" />
         <MarketBreadth />
       </div>
 
       {/* Equity Curve + Allocation */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <EquityChart data={equityData} title="📈 账户净值走势" height={280} showDrawdown />
         <PortfolioAllocationChart
           data={positions.map((p) => ({ name: p.code.split('.')[1] || p.code, value: p.marketValue, pnl: p.pnl, pnlPct: p.pnlPct }))}
@@ -243,7 +244,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Performance Metrics + Daily PnL Summary */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <PerformanceMetricsPanel
           trades={positions.flatMap(p => [
             ...(p.pnl !== 0 ? [{ pnl: p.pnl, timestamp: Date.now() }] : [])
@@ -254,7 +255,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Bottom row: Strategies + Quick Trade + Market Clock */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Active Strategies */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
           <h2 className="text-white font-semibold text-sm mb-4">🧠 运行中的策略</h2>
@@ -283,21 +284,24 @@ export default function DashboardPage() {
         {/* Quick Trade */}
         <QuickTrade />
 
-        {/* Market Clock */}
-        <MarketClock />
+        {/* Market Clock - hidden on mobile */}
+        <div className="hidden md:block">
+          <MarketClock />
+        </div>
       </div>
 
       {/* Signal Timeline + Notifications + Price Alerts */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <SignalTimeline maxItems={20} autoRefresh />
         <NotificationCenter />
         <PriceAlertPanel />
       </div>
 
-      {/* Economic Calendar + Market Movers */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Economic Calendar + Market Movers + Watchlist */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <EconomicCalendar />
         <MarketMovers />
+        <WatchlistManager />
       </div>
     </div>
   );

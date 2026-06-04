@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import * as api from '@/lib/bridge-api';
+import PositionDetailPanel from '../risk/PositionDetailPanel';
 
 interface FundsInfo {
   totalAssets: number;
@@ -154,59 +155,64 @@ export default function PortfolioPage() {
         </div>
       )}
 
-      {/* Positions Table */}
-      <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/5">
-          <h2 className="text-white font-medium text-sm">持仓明细 ({positions.length})</h2>
-        </div>
-        {positions.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">
-            <div className="text-3xl mb-2 opacity-40">💼</div>
-            <p className="text-sm">{loading ? '加载中...' : '暂无持仓'}</p>
+      {/* Positions Table + Detail */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="col-span-2 bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-white/5">
+            <h2 className="text-white font-medium text-sm">持仓明细 ({positions.length})</h2>
           </div>
-        ) : (
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                <th className="px-4 py-3 text-left">代码</th>
-                <th className="px-4 py-3 text-left">名称</th>
-                <th className="px-4 py-3 text-right">持仓</th>
-                <th className="px-4 py-3 text-right">均价</th>
-                <th className="px-4 py-3 text-right">现价</th>
-                <th className="px-4 py-3 text-right">盈亏</th>
-                <th className="px-4 py-3 text-right">盈亏%</th>
-                <th className="px-4 py-3 text-right">市值</th>
-                <th className="px-4 py-3 text-right">占比</th>
-              </tr>
-            </thead>
-            <tbody>
-              {allocation.map((p, i) => (
-                <tr key={i} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
-                  <td className="px-4 py-3 font-semibold text-white text-sm">{p.code?.replace('US.', '')}</td>
-                  <td className="px-4 py-3 text-gray-400 text-xs">{p.name}</td>
-                  <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{p.qty}</td>
-                  <td className="px-4 py-3 text-right font-mono text-sm text-gray-400">{fmt(p.avgCost)}</td>
-                  <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{fmt(p.curPrice)}</td>
-                  <td className={`px-4 py-3 text-right font-mono text-sm ${pnlClass(p.pnl)}`}>
-                    {p.pnl >= 0 ? '+' : ''}{fmt(p.pnl)}
-                  </td>
-                  <td className={`px-4 py-3 text-right font-mono text-sm ${pnlClass(p.pnlPct)}`}>
-                    {p.pnlPct >= 0 ? '+' : ''}{p.pnlPct?.toFixed(2)}%
-                  </td>
-                  <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{fmt(p.marketVal)}</td>
-                  <td className="px-4 py-3 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <div className="w-12 h-1.5 bg-[#12121a] rounded-full overflow-hidden">
-                        <div className="h-full bg-[#C9A046] rounded-full" style={{ width: `${Math.min(p.pct, 100)}%` }} />
-                      </div>
-                      <span className="text-gray-500 text-xs w-10 text-right">{p.pct.toFixed(1)}%</span>
-                    </div>
-                  </td>
+          {positions.length === 0 ? (
+            <div className="p-8 text-center text-gray-500">
+              <div className="text-3xl mb-2 opacity-40">💼</div>
+              <p className="text-sm">{loading ? '加载中...' : '暂无持仓'}</p>
+            </div>
+          ) : (
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
+                  <th className="px-4 py-3 text-left">代码</th>
+                  <th className="px-4 py-3 text-left">名称</th>
+                  <th className="px-4 py-3 text-right">持仓</th>
+                  <th className="px-4 py-3 text-right">均价</th>
+                  <th className="px-4 py-3 text-right">现价</th>
+                  <th className="px-4 py-3 text-right">盈亏</th>
+                  <th className="px-4 py-3 text-right">盈亏%</th>
+                  <th className="px-4 py-3 text-right">市值</th>
+                  <th className="px-4 py-3 text-right">占比</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {allocation.map((p, i) => (
+                  <tr key={i} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
+                    <td className="px-4 py-3 font-semibold text-white text-sm">{p.code?.replace('US.', '')}</td>
+                    <td className="px-4 py-3 text-gray-400 text-xs">{p.name}</td>
+                    <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{p.qty}</td>
+                    <td className="px-4 py-3 text-right font-mono text-sm text-gray-400">{fmt(p.avgCost)}</td>
+                    <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{fmt(p.curPrice)}</td>
+                    <td className={`px-4 py-3 text-right font-mono text-sm ${pnlClass(p.pnl)}`}>
+                      {p.pnl >= 0 ? '+' : ''}{fmt(p.pnl)}
+                    </td>
+                    <td className={`px-4 py-3 text-right font-mono text-sm ${pnlClass(p.pnlPct)}`}>
+                      {p.pnlPct >= 0 ? '+' : ''}{p.pnlPct?.toFixed(2)}%
+                    </td>
+                    <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{fmt(p.marketVal)}</td>
+                    <td className="px-4 py-3 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <div className="w-12 h-1.5 bg-[#12121a] rounded-full overflow-hidden">
+                          <div className="h-full bg-[#C9A046] rounded-full" style={{ width: `${Math.min(p.pct, 100)}%` }} />
+                        </div>
+                        <span className="text-gray-500 text-xs w-10 text-right">{p.pct.toFixed(1)}%</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+
+        {/* Position Detail Panel */}
+        <PositionDetailPanel />
       </div>
     </div>
   );

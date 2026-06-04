@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header';
 import StatusBar from '@/components/layout/StatusBar';
 import OnboardingModal from '@/components/OnboardingModal';
 import NotificationToast from '@/components/NotificationToast';
+import KeyboardShortcutsPanel from '@/components/KeyboardShortcutsPanel';
 import { connectBroker } from '@/lib/bridge-api';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
@@ -50,6 +51,7 @@ export default function App() {
   // Onboarding: show for first-time users
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [connected, setConnected] = useState(false);
+  const [showShortcuts, setShowShortcuts] = useState(false);
 
   useEffect(() => {
     const seen = localStorage.getItem('dw_onboarding_done');
@@ -76,7 +78,7 @@ export default function App() {
   useBridgeSync();
 
   // Global keyboard shortcuts
-  useKeyboardShortcuts();
+  useKeyboardShortcuts({ onOpenShortcuts: () => setShowShortcuts(true) });
 
   return (
     <div className="h-screen flex flex-col bg-surface-1 text-gray-200 overflow-hidden">
@@ -96,6 +98,10 @@ export default function App() {
         onClose={handleCloseOnboarding}
         onConnect={handleConnect}
         connected={connected}
+      />
+      <KeyboardShortcutsPanel
+        open={showShortcuts}
+        onClose={() => setShowShortcuts(false)}
       />
     </div>
   );

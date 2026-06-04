@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface OnboardingModalProps {
   open: boolean;
@@ -7,26 +7,142 @@ interface OnboardingModalProps {
   connected: boolean;
 }
 
+// ── Demo Data Injection ────────────────────────────────────────────────────
+
+function injectDemoData() {
+  const now = Date.now();
+  const dayMs = 86400000;
+
+  // Mock equity curve (90 days)
+  const equityCurve: number[] = [];
+  let equity = 100000;
+  for (let i = 90; i >= 0; i--) {
+    const change = (Math.random() - 0.45) * 0.02 * equity;
+    equity += change;
+    equityCurve.push(Math.round(equity));
+  }
+
+  // Mock positions
+  const positions = [
+    { code: 'US.TQQQ', name: 'TQQQ', qty: 200, avgPrice: 45.5, currentPrice: 48.2, pnl: 540, pnlPct: 5.93 },
+    { code: 'US.QQQ', name: 'QQQ', qty: 50, avgPrice: 380, currentPrice: 395, pnl: 750, pnlPct: 3.95 },
+    { code: 'US.SPY', name: 'SPY', qty: 30, avgPrice: 520, currentPrice: 510, pnl: -300, pnlPct: -1.92 },
+    { code: 'US.AAPL', name: 'AAPL', qty: 40, avgPrice: 180, currentPrice: 195, pnl: 600, pnlPct: 8.33 },
+    { code: 'US.NVDA', name: 'NVDA', qty: 25, avgPrice: 750, currentPrice: 820, pnl: 1750, pnlPct: 9.33 },
+  ];
+
+  // Mock funds
+  const funds = {
+    totalAssets: equity,
+    availableFunds: equity * 0.35,
+    marketValue: equity * 0.65,
+    maxWithdrawal: equity * 0.25,
+    buyingPower: equity * 0.5,
+  };
+
+  // Mock trading journal entries
+  const journalEntries = [
+    { id: 'd1', date: new Date(now - 0 * dayMs).toISOString().split('T')[0], symbol: 'TQQQ', side: 'buy', qty: 100, price: 44.8, pnl: 0, tags: ['突破', '趋势'], notes: 'MA5上穿MA20' },
+    { id: 'd2', date: new Date(now - 1 * dayMs).toISOString().split('T')[0], symbol: 'NVDA', side: 'buy', qty: 10, price: 740, pnl: 0, tags: ['消息', '财报'], notes: 'CES keynote后买入' },
+    { id: 'd3', date: new Date(now - 2 * dayMs).toISOString().split('T')[0], symbol: 'SQQQ', side: 'sell', qty: 50, price: 12.5, pnl: -45, tags: ['止损'], notes: 'RSI超卖但继续下跌' },
+    { id: 'd4', date: new Date(now - 3 * dayMs).toISOString().split('T')[0], symbol: 'AAPL', side: 'buy', qty: 20, price: 178, pnl: 0, tags: ['回调', '技术'], notes: '回调到支撑位' },
+    { id: 'd5', date: new Date(now - 5 * dayMs).toISOString().split('T')[0], symbol: 'TQQQ', side: 'sell', qty: 50, price: 46.2, pnl: 120, tags: ['止盈'], notes: '目标价达成' },
+    { id: 'd6', date: new Date(now - 7 * dayMs).toISOString().split('T')[0], symbol: 'QQQ', side: 'buy', qty: 25, price: 375, pnl: 0, tags: ['趋势'], notes: '定投' },
+    { id: 'd7', date: new Date(now - 8 * dayMs).toISOString().split('T')[0], symbol: 'SOXL', side: 'sell', qty: 30, price: 32, pnl: -80, tags: ['止损', '技术'], notes: '跌破布林带下轨' },
+    { id: 'd8', date: new Date(now - 10 * dayMs).toISOString().split('T')[0], symbol: 'SPY', side: 'buy', qty: 15, price: 518, pnl: 0, tags: ['宏观'], notes: 'CPI数据低于预期' },
+  ];
+
+  // Mock watchlist
+  const watchlist = ['US.TQQQ', 'US.QQQ', 'US.SPY', 'US.AAPL', 'US.NVDA', 'US.SOXL', 'US.SQQQ', 'US.SOXS'];
+
+  // Persist
+  localStorage.setItem('dw_demo_equity_curve', JSON.stringify(equityCurve));
+  localStorage.setItem('dw_demo_positions', JSON.stringify(positions));
+  localStorage.setItem('dw_demo_funds', JSON.stringify(funds));
+  localStorage.setItem('dw_demo_journal', JSON.stringify(journalEntries));
+  localStorage.setItem('dw_demo_watchlist', JSON.stringify(watchlist));
+  localStorage.setItem('dw_demo_mode', '1');
+
+  // Also inject into the app's expected keys so components can read them
+  localStorage.setItem('dw_watchlist', JSON.stringify(watchlist));
+}
+
+function clearDemoData() {
+  localStorage.removeItem('dw_demo_equity_curve');
+  localStorage.removeItem('dw_demo_positions');
+  localStorage.removeItem('dw_demo_funds');
+  localStorage.removeItem('dw_demo_journal');
+  localStorage.removeItem('dw_demo_watchlist');
+  localStorage.removeItem('dw_demo_mode');
+}
+
+// ── Component ──────────────────────────────────────────────────────────────
+
 export default function OnboardingModal({ open, onClose, onConnect, connected }: OnboardingModalProps) {
   const [step, setStep] = useState(0);
   const [connecting, setConnecting] = useState(false);
   const [connectResult, setConnectResult] = useState<'idle' | 'success' | 'fail'>('idle');
   const [demoMode, setDemoMode] = useState(false);
   const [skippedSteps, setSkippedSteps] = useState<Set<number>>(new Set());
+  const [polling, setPolling] = useState(true);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Auto-detect OpenD connection on mount & when step 0 is active
+  useEffect(() => {
+    if (!open || step !== 0) return;
+
+    // Immediate check
+    const check = async () => {
+      if (!polling || connectResult === 'success') return;
+      try {
+        const ok = await onConnect();
+        if (ok) {
+          setConnectResult('success');
+          setPolling(false);
+        } else {
+          setConnectResult('fail');
+        }
+      } catch {
+        setConnectResult('fail');
+      }
+    };
+    check();
+
+    // Poll every 3 seconds
+    pollRef.current = setInterval(check, 3000);
+
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, [open, step, onConnect, polling, connectResult]);
+
+  // React to external `connected` prop
   useEffect(() => {
     if (connected && step === 0) {
       setConnectResult('success');
+      setPolling(false);
     }
   }, [connected, step]);
 
+  // Demo mode toggle → inject/clear data
+  useEffect(() => {
+    if (demoMode) {
+      injectDemoData();
+    } else {
+      clearDemoData();
+    }
+  }, [demoMode]);
+
   const handleConnect = useCallback(async () => {
     setConnecting(true);
+    setPolling(false); // pause auto-poll during manual attempt
     try {
       const ok = await onConnect();
       setConnectResult(ok ? 'success' : 'fail');
+      if (!ok) setPolling(true); // resume polling on failure
     } catch {
       setConnectResult('fail');
+      setPolling(true);
     } finally {
       setConnecting(false);
     }
@@ -95,6 +211,7 @@ export default function OnboardingModal({ open, onClose, onConnect, connected }:
   const isLast = step === steps.length - 1;
   const isFirst = step === 0;
   const isSkipped = skippedSteps.has(step);
+  const progressPct = ((step + 1) / steps.length) * 100;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -103,88 +220,83 @@ export default function OnboardingModal({ open, onClose, onConnect, connected }:
 
       {/* Modal */}
       <div className="relative bg-[#12121a] border border-white/10 rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-2xl">
-        {/* Progress bar */}
-        <div className="flex gap-1 px-6 pt-5">
-          {steps.map((s, i) => (
-            <div key={i} className="flex-1 flex items-center gap-1">
-              <div className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                i < step ? 'bg-[#C9A046]' : i === step ? 'bg-[#C9A046]' : 'bg-white/10'
-              }`} />
-              {i < steps.length - 1 && (
-                <div className={`w-1 h-1 rounded-full ${i < step ? 'bg-[#C9A046]' : 'bg-white/10'}`} />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Step dots */}
-        <div className="flex justify-center gap-2 mt-2">
-          {steps.map((s, i) => (
-            <button
-              key={i}
-              onClick={() => setStep(i)}
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-medium transition-all ${
-                i === step
-                  ? 'bg-[#C9A046] text-black'
-                  : i < step
-                  ? 'bg-[#C9A046]/30 text-[#D4A853]'
-                  : 'bg-white/5 text-gray-500'
-              }`}
-              title={s.title}
-            >
-              {i < step ? '✓' : i + 1}
-            </button>
-          ))}
+        {/* Linear Progress Bar (replaces dot navigation) */}
+        <div className="px-0 pt-0">
+          <div className="h-1.5 w-full bg-white/5">
+            <div
+              className="h-full bg-[#C9A046] transition-all duration-500 ease-out rounded-r-full"
+              style={{ width: `${progressPct}%` }}
+            />
+          </div>
+          <div className="flex items-center justify-between px-6 pt-4 pb-1">
+            <span className="text-[11px] text-gray-400 font-medium tracking-wide">
+              步骤 <span className="text-[#D4A853]">{step + 1}</span> / {steps.length}
+            </span>
+            <span className="text-[11px] text-[#D4A853] font-medium">
+              {Math.round(progressPct)}%
+            </span>
+          </div>
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          {/* Step indicator */}
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-xs text-[#D4A853] font-medium">步骤 {step + 1}/{steps.length}</span>
-            {isSkipped && <span className="text-[10px] text-gray-500">(已跳过)</span>}
-          </div>
-
+        <div className="px-6 pt-2 pb-4">
           {/* Icon */}
-          <div className="text-5xl mb-4">{current.icon}</div>
+          <div className="text-5xl mb-3">{current.icon}</div>
 
           {/* Title */}
           <h2 className="text-xl font-bold text-white mb-2">{current.title}</h2>
 
           {/* Description */}
-          <p className="text-gray-300 text-sm leading-relaxed mb-3">{current.desc}</p>
+          <p className="text-gray-300 text-sm leading-relaxed mb-2">{current.desc}</p>
           {current.detail && (
-            <p className="text-gray-500 text-xs leading-relaxed mb-6">{current.detail}</p>
+            <p className="text-gray-500 text-xs leading-relaxed mb-4">{current.detail}</p>
           )}
 
-          {/* Step 0: Connection status */}
+          {/* Step 0: Connection status with real-time polling indicator */}
           {step === 0 && (
             <div className="mb-4 space-y-3">
               {connectResult === 'idle' && (
-                <div className="flex items-center gap-2 text-gray-400 text-sm">
+                <div className="flex items-center gap-2 text-gray-400 text-sm bg-white/5 rounded-lg px-4 py-3">
                   <div className="w-2 h-2 rounded-full bg-gray-500 animate-pulse" />
-                  等待连接...
+                  <span>自动检测 OpenD 连接中…</span>
+                  <span className="ml-auto text-[10px] text-gray-500">每 3 秒检测</span>
                 </div>
               )}
               {connectResult === 'success' && (
                 <div className="flex items-center gap-2 text-emerald-400 text-sm bg-emerald-500/10 rounded-lg px-4 py-3 border border-emerald-500/20">
-                  <span>✓</span> OpenD 已连接，行情推送正常
+                  <span className="text-base">✓</span>
+                  <div>
+                    <div className="font-medium">OpenD 已连接</div>
+                    <div className="text-[10px] text-emerald-400/70">行情推送正常，自动检测已停止</div>
+                  </div>
                 </div>
               )}
               {connectResult === 'fail' && (
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-yellow-400 text-sm bg-yellow-500/10 rounded-lg px-4 py-3 border border-yellow-500/20">
-                    <span>⚠</span> 连接失败 — 检查 OpenD 是否运行 (端口 11111)
+                    <span className="text-base">⚠</span>
+                    <div>
+                      <div className="font-medium">未检测到 OpenD</div>
+                      <div className="text-[10px] text-yellow-400/70">请确认 OpenD 已运行（端口 11111），或选择演示模式</div>
+                    </div>
                   </div>
-                  <label className="flex items-center gap-2 text-xs text-gray-400 cursor-pointer">
+                  <label className="flex items-center gap-2.5 text-xs text-gray-300 cursor-pointer bg-white/5 rounded-lg px-4 py-3 border border-white/5 hover:border-white/10 transition-colors">
                     <input
                       type="checkbox"
                       checked={demoMode}
                       onChange={(e) => setDemoMode(e.target.checked)}
-                      className="rounded border-gray-600 bg-[#1a1a25] text-[#C9A046]"
+                      className="rounded border-gray-600 bg-[#1a1a25] text-[#C9A046] w-4 h-4"
                     />
-                    使用演示模式（模拟数据，无需 OpenD）
+                    <span>
+                      <span className="font-medium">使用演示模式</span>
+                      <span className="text-gray-500 ml-1">— 无需 OpenD，体验全部功能</span>
+                    </span>
                   </label>
+                  {demoMode && (
+                    <div className="text-[10px] text-emerald-400/80 bg-emerald-500/5 rounded-lg px-4 py-2 border border-emerald-500/10">
+                      ✓ 已注入模拟数据：8 只自选股、$100K 模拟资金、7 条交易记录
+                    </div>
+                  )}
                 </div>
               )}
             </div>
