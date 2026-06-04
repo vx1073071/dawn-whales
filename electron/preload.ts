@@ -70,6 +70,9 @@ contextBridge.exposeInMainWorld('api', {
     // Q15: Multi-Factor Model
     multiFactor: (req: { stocks?: Array<{ code: string; name: string }>; preset?: string; limit?: number }) =>
       ipcRenderer.invoke('strategy:multi-factor', req),
+
+    // Q16: Dynamic Position Sizer
+    positionSize: (req: any) => ipcRenderer.invoke('risk:position-size', req),
   },
 
   // ── NL Parser ─────────────────────────────────────────────────────

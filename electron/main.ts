@@ -922,6 +922,29 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Q16: Dynamic Position Sizer ────────────────────────────────
+  ipcMain.handle('risk:position-size', async (_e, raw: unknown) => {
+    try {
+      const { calcPositionSize, calcQuickSize, calcPortfolioSizes } = require('./engine/dynamic-sizer');
+      const req = raw as any;
+      if (req.strategies != null) {
+        // Portfolio mode
+        const result = await calcPortfolioSizes(req);
+        return { success: true, ...result };
+      }
+      if (req.equity == null || req.winRate == null || req.avgWin == null || req.avgLoss == null) {
+        return { success: false, error: 'equity, winRate, avgWin, avgLoss required' };
+      }
+      if (req.quick != null) {
+        return { success: true, ...calcQuickSize(req) };
+      }
+      const result = await calcPositionSize(req);
+      return { success: true, ...result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Q15: Multi-Factor Model ─────────────────────────────────────
   ipcMain.handle('strategy:multi-factor', async (_e, raw: unknown) => {
     try {
