@@ -1,8 +1,8 @@
 {
   "name": "dawn-whales",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
-  "description": "道鲸 · AI 量化系统 — 说人话就能做量化",
+  "description": "道鲸 · AI 量化系统 �?说人话就能做量化",
   "main": "dist-electron/main.cjs",
   "scripts": {
     "dev": "vite",

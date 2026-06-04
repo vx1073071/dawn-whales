@@ -27,6 +27,14 @@ class FutuBrokerAdapter implements IBrokerAdapter {
   get connected(): boolean { return this._connected && (this.client?.connected ?? false); }
 
   async connect(): Promise<void> {
+    // Clean up old client to prevent socket leak
+    if (this.client) {
+      this.client.disconnect();
+      this.client = null;
+    }
+    this.quoteCallbacks = [];
+    this.disconnectCallbacks = [];
+
     this.client = new FutuOpenDClient(this.config.host, this.config.port);
     await this.client.connect();
     this._connected = true;
@@ -126,11 +134,17 @@ export class BrokerManager {
     const config = this.configs.get(brokerId);
     if (!config) throw new Error(`Broker config not found: ${brokerId}`);
 
+    // Disconnect old adapter to prevent socket leak
+    if (this.brokers.has(brokerId)) {
+      this.disconnect(brokerId);
+    }
+
     const adapter = this.createAdapter(config);
     await adapter.connect();
     this.brokers.set(brokerId, adapter);
     this.activeBrokerId = brokerId;
 
+    // Forward adapter quotes to BrokerManager callbacks
     adapter.onQuotePush((quotes) => {
       for (const cb of this.quoteCallbacks) cb(quotes);
     });
@@ -180,6 +194,10 @@ export class BrokerManager {
 
   removeQuotePush(callback: (quotes: QuoteInfo[]) => void): void {
     this.quoteCallbacks = this.quoteCallbacks.filter((cb) => cb !== callback);
+  }
+
+  clearCallbacks(): void {
+    this.quoteCallbacks = [];
   }
 
   async subscribeAndPush(brokerId: string, codes: string[]): Promise<void> {
