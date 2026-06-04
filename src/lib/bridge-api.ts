@@ -231,6 +231,31 @@ declare global {
         getVersion: () => Promise<string>;
         getPlatform: () => Promise<string>;
       };
+      // Q22/Q54/Q56: Portfolio Rebalancer / RAR / Cost Analytics
+      portfolioOptimizer: {
+        optimize: (assets: any[], constraints?: any) => Promise<any>;
+        efficientFrontier: (assets: any[], points?: number, constraints?: any) => Promise<any>;
+        riskParity: (assets: any[], constraints?: any) => Promise<any>;
+        optimizeBatch: (scenarios: any[]) => Promise<any>;
+        rebalance: (positions: any[], targetWeights: Record<string, number>, dryRun?: boolean, driftThreshold?: number, maxTurnover?: number) => Promise<any>;
+        rebalanceKelly: (positions: any[], kellyFraction?: number, maxTurnover?: number) => Promise<any>;
+        costAnalyze: (positions: any[], trades: any[], periodDays?: number) => Promise<any>;
+        rarOptimize: (positions: any[], marketData?: any, riskAppetite?: string, constraints?: any) => Promise<any>;
+      };
+      // Q20: Real Trader
+      realTrader: {
+        execute: (signal: any, paperMode?: boolean) => Promise<any>;
+        getStatus: () => Promise<any>;
+      };
+      // Q29: Execution Analytics
+      executionAnalytics: {
+        analyze: (params: { executionRecords: any[]; marketData?: any; benchmarkPrice?: number; optionsScope?: any }) => Promise<any>;
+      };
+      // Q55: Options Strategy Builder
+      optionsBuilder: {
+        build: (params: { underlying: string; spotPrice: number; strategyType?: string; targetParams?: any; legs?: any[] }) => Promise<any>;
+        analyze: (params: { strategy: any; spotPrice: number; volatility?: number; riskFreeRate?: number; dividends?: any }) => Promise<any>;
+      };
       on: (channel: string, callback: (...args: any[]) => void) => void;
       off?: (channel: string, callback: (...args: any[]) => void) => void;
     };
@@ -1791,6 +1816,51 @@ export async function riskParityPortfolio(assets: any[], constraints?: any): Pro
 export async function batchOptimizePortfolios(scenarios: any[]): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.portfolioOptimizer.optimizeBatch(scenarios);
+}
+
+export async function rebalancePortfolio(positions: any[], targetWeights: Record<string, number>, dryRun?: boolean, driftThreshold?: number, maxTurnover?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.portfolioOptimizer.rebalance(positions, targetWeights, dryRun, driftThreshold, maxTurnover);
+}
+
+export async function rebalanceKelly(positions: any[], kellyFraction?: number, maxTurnover?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.portfolioOptimizer.rebalanceKelly(positions, kellyFraction, maxTurnover);
+}
+
+export async function analyzePortfolioCost(positions: any[], trades: any[], periodDays?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.portfolioOptimizer.costAnalyze(positions, trades, periodDays);
+}
+
+export async function rarOptimizePortfolio(positions: any[], marketData?: any, riskAppetite?: string, constraints?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.portfolioOptimizer.rarOptimize(positions, marketData, riskAppetite, constraints);
+}
+
+export async function analyzeExecution(params: { executionRecords: any[]; marketData?: any; benchmarkPrice?: number; optionsScope?: any }): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.executionAnalytics.analyze(params);
+}
+
+export async function buildOptionsStrategy(params: { underlying: string; spotPrice: number; strategyType?: string; targetParams?: any; legs?: any[] }): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.optionsBuilder.build(params);
+}
+
+export async function analyzeOptionsStrategy(params: { strategy: any; spotPrice: number; volatility?: number; riskFreeRate?: number; dividends?: any }): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.optionsBuilder.analyze(params);
+}
+
+export async function executeTraderSignal(signal: any, paperMode?: boolean): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.realTrader.execute(signal, paperMode);
+}
+
+export async function getTraderStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.realTrader.getStatus();
 }
 
 // ── WebSocket Real-time Data Enhancer (JVS-58) ────────────────────────────

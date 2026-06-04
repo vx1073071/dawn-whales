@@ -292,6 +292,35 @@ contextBridge.exposeInMainWorld('api', {
     efficientFrontier: (assets: any[], points?: number, constraints?: any) => ipcRenderer.invoke('portfolio:efficient-frontier', assets, points, constraints),
     riskParity: (assets: any[], constraints?: any) => ipcRenderer.invoke('portfolio:risk-parity', assets, constraints),
     optimizeBatch: (scenarios: any[]) => ipcRenderer.invoke('portfolio:optimize-batch', scenarios),
+    rebalance: (positions: any[], targetWeights: Record<string, number>, dryRun?: boolean, driftThreshold?: number, maxTurnover?: number) =>
+      ipcRenderer.invoke('portfolio:rebalance', { positions, targetWeights, dryRun, driftThreshold, maxTurnover }),
+    rebalanceKelly: (positions: any[], kellyFraction?: number, maxTurnover?: number) =>
+      ipcRenderer.invoke('portfolio:rebalance-kelly', { positions, kellyFraction, maxTurnover }),
+    costAnalyze: (positions: any[], trades: any[], periodDays?: number) =>
+      ipcRenderer.invoke('portfolio:cost-analyze', { positions, trades, periodDays }),
+    rarOptimize: (positions: any[], marketData?: any, riskAppetite?: string, constraints?: any) =>
+      ipcRenderer.invoke('portfolio:rar-optimize', { positions, marketData, riskAppetite, constraints }),
+  },
+
+  // ── Execution Analytics (Q29) ──────────────────────────────────
+  executionAnalytics: {
+    analyze: (params: { executionRecords: any[]; marketData?: any; benchmarkPrice?: number; optionsScope?: any }) =>
+      ipcRenderer.invoke('execution:analyze', params),
+  },
+
+  // ── Options Strategy Builder (Q55) ─────────────────────────────
+  optionsBuilder: {
+    build: (params: { underlying: string; spotPrice: number; strategyType?: string; targetParams?: any; legs?: any[] }) =>
+      ipcRenderer.invoke('options:build', params),
+    analyze: (params: { strategy: any; spotPrice: number; volatility?: number; riskFreeRate?: number; dividends?: any }) =>
+      ipcRenderer.invoke('options:analyze', params),
+  },
+
+  // ── Real Trader (Q20) ──────────────────────────────────────────
+  realTrader: {
+    execute: (signal: any, paperMode?: boolean) =>
+      ipcRenderer.invoke('trader:execute', { signal, paperMode }),
+    getStatus: () => ipcRenderer.invoke('trader:get-status'),
   },
 
   // ── WebSocket Real-time Data Enhancer (JVS-58) ────────────────
@@ -594,6 +623,15 @@ contextBridge.exposeInMainWorld('api', {
   // ── Technical Indicators (JVS-43) ──────────────────────────────────
   indicators: {
     compute: (klines: any[], indicators?: string[], options?: any) => ipcRenderer.invoke('indicator:compute', klines, indicators, options),
+  },
+
+  // ── Realtime Technical Indicators (JVS-36) ─────────────────────────
+  realtimeIndicators: {
+    addKLine: (symbol: string, kline: any) => ipcRenderer.invoke('indicator:realtime-add', symbol, kline),
+    addKLines: (symbol: string, klines: any[]) => ipcRenderer.invoke('indicator:realtime-add-batch', symbol, klines),
+    getBuffer: (symbol: string) => ipcRenderer.invoke('indicator:realtime-get-buffer', symbol),
+    clearBuffer: (symbol: string) => ipcRenderer.invoke('indicator:realtime-clear', symbol),
+    clearAll: () => ipcRenderer.invoke('indicator:realtime-clear-all'),
   },
 
   // ── Options Pricing Engine (JVS-44) ────────────────────────────────

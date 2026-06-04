@@ -52,6 +52,7 @@ import { setupI18nDataIPC } from './engine/i18n-data';
 import { getFinancialReports } from './engine/financial-reports';
 import { getValuationData } from './engine/valuation-data';
 import { computeIndicators } from './engine/technical-indicators';
+import { getRealtimeIndicatorCalculator } from './engine/realtime-indicators';
 import { blackScholesPrice, calculateGreeks, impliedVolatility, buildVolSurface, priceAndGreeks } from './engine/options-pricing';
 import { calculateRiskMetrics, calcSharpeRatio, calcMaxDrawdown, calcVaR } from './engine/risk-metrics';
 import { brinsonAttribution, timeSeriesAttribution } from './engine/performance-attribution';
@@ -303,6 +304,59 @@ function setupIPC() {
       return computeIndicators(klines, indicators, options);
     } catch (err: any) {
       log.error('[TechnicalIndicators] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Realtime Technical Indicators (JVS-36) ─────────────────────────────
+  ipcMain.handle('indicator:realtime-add', async (_e, symbol: string, kline: any) => {
+    try {
+      const calculator = getRealtimeIndicatorCalculator();
+      return { success: true, indicators: calculator.addKLine(symbol, kline) };
+    } catch (err: any) {
+      log.error('[RealtimeIndicators] Add error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('indicator:realtime-add-batch', async (_e, symbol: string, klines: any[]) => {
+    try {
+      const calculator = getRealtimeIndicatorCalculator();
+      return { success: true, indicators: calculator.addKLines(symbol, klines) };
+    } catch (err: any) {
+      log.error('[RealtimeIndicators] Batch add error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('indicator:realtime-get-buffer', async (_e, symbol: string) => {
+    try {
+      const calculator = getRealtimeIndicatorCalculator();
+      return { success: true, klines: calculator.getKLineBuffer(symbol) };
+    } catch (err: any) {
+      log.error('[RealtimeIndicators] Get buffer error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('indicator:realtime-clear', async (_e, symbol: string) => {
+    try {
+      const calculator = getRealtimeIndicatorCalculator();
+      calculator.clearBuffer(symbol);
+      return { success: true };
+    } catch (err: any) {
+      log.error('[RealtimeIndicators] Clear error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('indicator:realtime-clear-all', async () => {
+    try {
+      const calculator = getRealtimeIndicatorCalculator();
+      calculator.clearAllBuffers();
+      return { success: true };
+    } catch (err: any) {
+      log.error('[RealtimeIndicators] Clear all error:', err);
       return { success: false, error: err.message };
     }
   });
@@ -734,6 +788,147 @@ function setupIPC() {
       return { success: true, result };
     } catch (err: any) {
       log.error('[PortfolioOptimizer] Batch error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q29/Q54: Execution Analytics ────────────────────────────────────────
+  ipcMain.handle('execution:analyze', async (_e, raw: unknown) => {
+    try {
+      const { executionRecords, marketData, benchmarkPrice, optionsScope } = raw as {
+        executionRecords: any[]; marketData?: any; benchmarkPrice?: number; optionsScope?: any;
+      };
+      const { ExecutionAnalyticsEngine } = await import('./engine/execution-analytics.js');
+      const engine = new ExecutionAnalyticsEngine();
+      const result = engine.analyzeExecution(executionRecords, marketData, benchmarkPrice, optionsScope);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q55: Options Strategy Builder ────────────────────────────────────────
+  ipcMain.handle('options:build', async (_e, raw: unknown) => {
+    try {
+      const { underlying, spotPrice, strategyType, targetParams, legs } = raw as {
+        underlying: string; spotPrice: number; strategyType?: string; targetParams?: any; legs?: any[];
+      };
+      const { OptionsStrategyBuilder } = await import('./engine/options-strategy-builder.js');
+      const builder = new OptionsStrategyBuilder(underlying, spotPrice);
+      const result = builder.buildStrategy(strategyType, targetParams, legs);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('options:analyze', async (_e, raw: unknown) => {
+    try {
+      const { strategy, spotPrice, volatility, riskFreeRate, dividends } = raw as {
+        strategy: any; spotPrice: number; volatility?: number; riskFreeRate?: number; dividends?: any;
+      };
+      const { OptionsStrategyBuilder } = await import('./engine/options-strategy-builder.js');
+      const builder = new OptionsStrategyBuilder(strategy.underlying || 'UNKNOWN', spotPrice);
+      const result = builder.analyzeStrategy(strategy, { spotPrice, volatility, riskFreeRate, dividends });
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q56: Portfolio Cost Analytics ───────────────────────────────────────
+  ipcMain.handle('portfolio:cost-analyze', async (_e, raw: unknown) => {
+    try {
+      const { positions, trades, periodDays } = raw as {
+        positions: any[]; trades: any[]; periodDays?: number;
+      };
+      const { PortfolioCostAnalytics } = await import('./engine/portfolio-cost-analytics.js');
+      const result = new PortfolioCostAnalytics().analyze(positions, trades, periodDays);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q54: RAR Optimizer ──────────────────────────────────────────────────
+  ipcMain.handle('portfolio:rar-optimize', async (_e, raw: unknown) => {
+    try {
+      const { positions, marketData, riskAppetite, constraints } = raw as {
+        positions: any[]; marketData?: any; riskAppetite?: string; constraints?: any;
+      };
+      const { RAROptimizer } = await import('./engine/rar-optimizer.js');
+      const optimizer = new RAROptimizer();
+      const result = await optimizer.optimize(positions, marketData, riskAppetite, constraints);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q57: Cross-Asset Risk ───────────────────────────────────────────────
+  ipcMain.handle('risk:cross-asset', async (_e, raw: unknown) => {
+    try {
+      const { portfolios, confidenceLevel, method } = raw as {
+        portfolios: any[]; confidenceLevel?: number; method?: string;
+      };
+      const { CrossAssetRiskEngine } = await import('./engine/cross-asset-risk.js');
+      const engine = new CrossAssetRiskEngine();
+      const result = engine.calculatePortfolioVaR(portfolios, confidenceLevel, method);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q20: Real Trader ─────────────────────────────────────────────────────
+  ipcMain.handle('trader:execute', async (_e, raw: unknown) => {
+    try {
+      const { signal, paperMode } = raw as { signal: any; paperMode?: boolean };
+      const { getRealTrader } = await import('./engine/real-trader.js');
+      const trader = getRealTrader();
+      const result = await trader.executeSignal(signal, paperMode);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('trader:get-status', async () => {
+    try {
+      const { getRealTrader } = await import('./engine/real-trader.js');
+      const trader = getRealTrader();
+      return { success: true, status: trader.getStatus(), metrics: trader.getMetrics() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q22: Portfolio Rebalancer ────────────────────────────────────────────
+  ipcMain.handle('portfolio:rebalance', async (_e, raw: unknown) => {
+    try {
+      const { positions, targetWeights, dryRun, driftThreshold, maxTurnover } = raw as {
+        positions: any[]; targetWeights: Record<string, number>; dryRun?: boolean;
+        driftThreshold?: number; maxTurnover?: number;
+      };
+      const { getPortfolioRebalancer } = await import('./engine/portfolio-rebalancer.js');
+      const rebalancer = getPortfolioRebalancer();
+      const result = await rebalancer.rebalance(positions, targetWeights, dryRun, driftThreshold, maxTurnover);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('portfolio:rebalance-kelly', async (_e, raw: unknown) => {
+    try {
+      const { positions, kellyFraction, maxTurnover } = raw as {
+        positions: any[]; kellyFraction?: number; maxTurnover?: number;
+      };
+      const { getPortfolioRebalancer } = await import('./engine/portfolio-rebalancer.js');
+      const rebalancer = getPortfolioRebalancer();
+      const result = await rebalancer.kellyOptimize(positions, kellyFraction, maxTurnover);
+      return { success: true, result };
+    } catch (err: any) {
       return { success: false, error: err.message };
     }
   });
