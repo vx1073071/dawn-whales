@@ -1,4 +1,4 @@
-// ── DAWN WHALES — IPC API Client (直连 OpenD，通过 Electron IPC) ──────────────
+﻿// ── DAWN WHALES — IPC API Client (直连 OpenD，通过 Electron IPC) ──────────────
 
 declare global {
   interface Window {
