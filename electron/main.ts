@@ -23,6 +23,7 @@ import { SentimentIndexEngine } from './engine/sentiment-index';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
 import { SectorRotationMonitor } from './engine/sector-rotation';
+import { StockAnomalyDetector } from './engine/stock-anomaly-detector';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -118,6 +119,7 @@ let macroDataProvider: MacroDataProvider | null = null;
 let stockScreener: StockScreenerService | null = null;
 let newsAggregator: NewsAggregatorService | null = null;
 let sectorRotation: SectorRotationMonitor | null = null;
+let stockAnomalyDetector: StockAnomalyDetector | null = null;
 
 // ── Shared quote push handler (prevents duplicate listener registration) ─────
 const quotePushHandler = (quotes: any[]) => {
@@ -1486,6 +1488,47 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Stock Anomaly Detector (JVS-7) ────────────────────────────────────
+  ipcMain.handle('em:get-anomaly-summary', async () => {
+    if (!stockAnomalyDetector) return { success: false, error: 'AnomalyDetector not initialized' };
+    try {
+      const summary = stockAnomalyDetector.getSummary();
+      return { success: true, summary };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-anomaly-alerts', async (_e, options?: any) => {
+    if (!stockAnomalyDetector) return { success: false, error: 'AnomalyDetector not initialized' };
+    try {
+      const alerts = stockAnomalyDetector.getAlerts(options);
+      return { success: true, alerts };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:process-anomaly-quotes', async (_e, quotes: any[]) => {
+    if (!stockAnomalyDetector) return { success: false, error: 'AnomalyDetector not initialized' };
+    try {
+      const newAlerts = stockAnomalyDetector.processQuotes(quotes || []);
+      return { success: true, newAlerts: newAlerts.length };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:acknowledge-anomaly', async (_e, id: string) => {
+    if (!stockAnomalyDetector) return { success: false, error: 'AnomalyDetector not initialized' };
+    try {
+      const result = stockAnomalyDetector.acknowledgeAlert(id);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
   ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
@@ -1631,6 +1674,10 @@ app.whenReady().then(async () => {
       sectorRotation = new SectorRotationMonitor();
       sectorRotation.initialize(db);
       log.info('[App] SectorRotationMonitor initialized (JVS-6)');
+
+      stockAnomalyDetector = new StockAnomalyDetector();
+      stockAnomalyDetector.initialize(db);
+      log.info('[App] StockAnomalyDetector initialized (JVS-7)');
     }
   } catch (err: any) {
     log.error('[App] MarketplaceService init failed:', err.message);
