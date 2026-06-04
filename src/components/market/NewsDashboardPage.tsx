@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { searchNews, getMarketMood } from '../../lib/bridge-api';
 
 interface NewsArticle {

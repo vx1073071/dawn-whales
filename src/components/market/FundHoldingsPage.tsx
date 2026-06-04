@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getFundHoldings, getStockFundOwnership, getFundIncreaseRank, getFundDecreaseRank } from '../../lib/bridge-api';
 
 interface FundHolding {

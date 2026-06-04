@@ -7,8 +7,10 @@
 // 2. 东方财富为补充数据源（财报/估值/资金流向/新闻）
 // 3. 所有数据本地 SQLite 缓存，减少外部依赖
 // 4. 统一接口，策略引擎不需要知道数据来自哪个源
+// 5. JVS-51: 集成 LRU 多级缓存，提升高频数据访问性能
 
 import log from 'electron-log';
+import { LRUCache, MultiLevelCache } from './lru-cache';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -85,13 +87,21 @@ export class DataProviderService {
   private static REGIME_TTL = 60 * 60 * 1000;               // 1h
   private static ANOMALY_TTL = 15 * 60 * 1000;              // 15min
   private static NEWS_TTL = 30 * 60 * 1000;                 // 30min
+  private static QUOTE_TTL = 3 * 1000;                      // 3s（实时行情）
+  private static KLINE_TTL = 5 * 60 * 1000;                 // 5min（K线数据）
 
-  // 内存缓存
-  private fundamentalCache = new Map<string, { data: FundamentalData; expires: number }>();
-  private capitalFlowCache = new Map<string, { data: CapitalFlowData; expires: number }>();
+  // JVS-51: 多级缓存系统
+  // L1: 内存缓存（快速访问）
+  // L2: SQLite 持久化（重启恢复）
+  private quoteCache = new LRUCache<any>({ maxSize: 500, ttl: DataProviderService.QUOTE_TTL });
+  private klineCache = new LRUCache<any>({ maxSize: 200, ttl: DataProviderService.KLINE_TTL });
+  private fundamentalCache = new LRUCache<FundamentalData>({ maxSize: 1000, ttl: DataProviderService.FUNDAMENTAL_TTL });
+  private capitalFlowCache = new LRUCache<CapitalFlowData>({ maxSize: 500, ttl: DataProviderService.CAPITAL_FLOW_TTL });
+  private anomalyCache = new LRUCache<AnomalySignal[]>({ maxSize: 200, ttl: DataProviderService.ANOMALY_TTL });
+  private newsCache = new LRUCache<NewsItem[]>({ maxSize: 500, ttl: DataProviderService.NEWS_TTL });
+  
+  // Regime 缓存（单例）
   private regimeCache: { data: MarketRegime; expires: number } | null = null;
-  private anomalyCache = new Map<string, { data: AnomalySignal[]; expires: number }>();
-  private newsCache = new Map<string, { data: NewsItem[]; expires: number }>();
 
   // 数据库引用（从 DatabaseManager 注入）
   private db: any = null;
@@ -99,7 +109,7 @@ export class DataProviderService {
   initialize(db: any): void {
     this.db = db;
     this.createTables();
-    log.info('[DataProvider] Initialized with multi-source integration');
+    log.info('[DataProvider] Initialized with multi-source integration + LRU cache (JVS-51)');
   }
 
   private createTables(): void {

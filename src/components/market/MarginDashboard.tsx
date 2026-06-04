@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 import { getMarginData, getMarginBalanceRank, getShortInterestRank } from '../../lib/bridge-api';
 
