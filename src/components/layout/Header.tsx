@@ -2,15 +2,13 @@ import { useAppStore } from '@/stores/appStore';
 import { useThemeStore } from '@/lib/theme';
 import { useI18nStore, LOCALE_LABELS, type Locale } from '@/lib/i18n';
 import logo from '@/assets/logo.jpg';
+import BrokerSelector from './BrokerSelector';
 
 export default function Header() {
   const toggleSidebar = useAppStore((s) => s.toggleSidebar);
-  const conn = useAppStore((s) => s.connectionStatus);
   const emergencyStop = useAppStore((s) => s.emergencyStop);
   const { theme, toggleTheme } = useThemeStore();
   const { locale, setLocale } = useI18nStore();
-
-  const opendConnected = conn?.connected ?? false;
 
   return (
     <header className="h-12 bg-[#15151f] border-b border-white/5 flex items-center px-4 gap-3 flex-shrink-0">
@@ -28,15 +26,7 @@ export default function Header() {
 
       {/* Connection status */}
       <div className="flex items-center gap-4 text-xs">
-        <div className="flex items-center gap-1.5">
-          <span className={`w-1.5 h-1.5 rounded-full ${opendConnected ? 'bg-emerald-400 animate-pulse' : 'bg-gray-500'}`} />
-          <span className={opendConnected ? 'text-emerald-400' : 'text-gray-500'}>
-            OpenD {opendConnected ? '已连接' : '未连接'}
-          </span>
-          {opendConnected && conn?.latencyMs && (
-            <span className="text-gray-600 text-[10px]">{conn.latencyMs}ms</span>
-          )}
-        </div>
+        <BrokerSelector />
       </div>
 
       {/* Theme toggle */}

@@ -275,6 +275,47 @@ function setupIPC() {
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
+  // ── Broker Switching (Sprint1) ───────────────────────────────────────
+  ipcMain.handle('broker:switch', async (_e, id: string) => {
+    try {
+      const adapter = brokerManager?.getAdapters().get(id);
+      if (!adapter) {
+        // Broker not yet connected — connect first
+        const config = brokerManager?.getConfigs().find((c: any) => c.id === id);
+        if (!config) return { success: false, error: `Broker config not found: ${id}` };
+
+        brokerManager?.loadConfigs([config]);
+        await brokerManager?.connect(id);
+      } else if (!adapter.connected) {
+        await adapter.connect();
+      }
+
+      brokerManager?.setActiveBroker(id);
+      const activeId = brokerManager?.getActiveBrokerId();
+      const activeAdapter = brokerManager?.getActiveBroker();
+
+      // Re-subscribe quotes for the newly active broker
+      if (activeAdapter) {
+        activeAdapter.onQuotePush((quotes) => {
+          mainWindow?.webContents.send('quotes:push', quotes);
+          strategyEngine?.onQuoteUpdate(quotes);
+        });
+        const savedWatchlist = db?.getWatchlist();
+        await activeAdapter.subscribeAndPush(savedWatchlist && savedWatchlist.length > 0 ? savedWatchlist : WATCHLIST);
+      }
+
+      const status = brokerManager?.getStatus() || [];
+      const switched = status.find((s: any) => s.id === activeId);
+
+      log.info(`[Broker] Switched to ${id}, connected=${switched?.connected}`);
+      mainWindow?.webContents.send('broker:switched', { activeBroker: activeId, status });
+      return { success: true, activeBroker: activeId, brokerStatus: switched };
+    } catch (err: any) {
+      log.error('[Broker] Switch failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
   ipcMain.handle('broker:getStatus', async () => {
     return { success: true, status: brokerManager?.getStatus() || [] };
   });
@@ -785,9 +826,10 @@ app.whenReady().then(async () => {
         return;
       }
 
-      if (opendClient?.connected) {
+      const tradeBroker = brokerManager?.getActiveBroker() || opendClient;
+      if (tradeBroker?.connected) {
         try {
-          const result = await opendClient.placeOrder(order);
+          const result = await tradeBroker.placeOrder(order);
           db?.saveTrade({ ...order, orderId: result.orderId, status: 'submitted' });
           mainWindow?.webContents.send('order-update', { ...order, orderId: result.orderId, status: 'submitted' });
         } catch (err: any) {
@@ -834,6 +876,7 @@ app.on('activate', () => {
 });
 
 app.on('before-quit', () => {
+  brokerManager?.disconnect();
   opendClient?.disconnect();
   db?.close();
   strategyEngine?.emergencyStop();

@@ -16,6 +16,11 @@ declare global {
         placeOrder: (order: any) => Promise<any>;
         cancelOrder: (orderId: string) => Promise<any>;
         getOrders: (accountId: string) => Promise<any>;
+        list: () => Promise<any>;
+        add: (cfg: any) => Promise<any>;
+        remove: (id: string) => Promise<any>;
+        setActive: (id: string) => Promise<any>;
+        getStatus: () => Promise<any>;
       };
       greeks: {
         calculate: (params: any) => Promise<any>;
@@ -173,6 +178,35 @@ export async function isConnected(): Promise<boolean> {
     const result = await window.api.broker.getAccounts();
     return result?.success === true;
   } catch { return false; }
+}
+
+// ── Broker Manager (Sprint1: multi-broker) ───────────────────────────────
+
+export async function listBrokers(): Promise<any[]> {
+  if (!hasIPC()) return [];
+  const result = await window.api.broker.list();
+  return result?.success ? result.brokers || [] : [];
+}
+
+export async function addBroker(cfg: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.broker.add(cfg);
+}
+
+export async function removeBroker(id: string): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.broker.remove(id);
+}
+
+export async function setActiveBroker(id: string): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.broker.setActive(id);
+}
+
+export async function getBrokerStatus(): Promise<any[]> {
+  if (!hasIPC()) return [];
+  const result = await window.api.broker.getStatus();
+  return result?.success ? result.status || [] : [];
 }
 
 // ── Strategy ───────────────────────────────────────────────────────────────

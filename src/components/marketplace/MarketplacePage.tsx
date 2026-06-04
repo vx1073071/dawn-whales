@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { getAllStrategies, getMarketplaceList, getStrategyRating, rateStrategy, addComment, getComments, getPerformance } from '@/lib/bridge-api';
+﻿import { useState, useEffect } from 'react';
+import { getAllStrategies, getMarketplaceList, getStrategyRating, rateStrategy, addComment, getComments } from '@/lib/bridge-api';
 import { notify } from '@/components/NotificationToast';
 
 // ── Types ──────────────────────────────────────────────────────────────────

@@ -16,6 +16,12 @@ contextBridge.exposeInMainWorld('api', {
     placeOrder: (order: any) => ipcRenderer.invoke('broker:placeOrder', order),
     cancelOrder: (orderId: string) => ipcRenderer.invoke('broker:cancelOrder', orderId),
     getOrders: (accountId: string) => ipcRenderer.invoke('broker:getOrders', accountId),
+    // Sprint1: multi-broker management
+    list: () => ipcRenderer.invoke('broker:list'),
+    add: (cfg: any) => ipcRenderer.invoke('broker:add', cfg),
+    remove: (id: string) => ipcRenderer.invoke('broker:remove', id),
+    setActive: (id: string) => ipcRenderer.invoke('broker:setActive', id),
+    getStatus: () => ipcRenderer.invoke('broker:getStatus'),
   },
 
   // ── Strategy ──────────────────────────────────────────────────────

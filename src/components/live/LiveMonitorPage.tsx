@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import * as api from '../../lib/bridge-api';
 
 interface SignalLog {
@@ -248,8 +248,9 @@ export default function LiveMonitorPage() {
     ? signalLog.filter((l) => l.strategy === selectedStrategy)
     : signalLog;
 
-  // Get quote array sorted
-  const quoteArray = Array.from(quotes.values()).sort((a, b) => a.code.localeCompare(b.code));
+  // Quote array is computed but rendered via quotes:push events (live grid updates)
+  // Keeping sorted reference here for future extensibility
+  void Array.from(quotes.values()).sort((a: any, b: any) => a.code.localeCompare(b.code));
 
   return (
     <div className="p-6">
