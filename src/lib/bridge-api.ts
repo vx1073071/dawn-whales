@@ -1934,3 +1934,72 @@ export async function incrementalBackfill(symbol: string, startDate: string, end
   if (!hasIPC()) return { success: false };
   return window.api.backfillService.incremental(symbol, startDate, endDate, existingRecords);
 }
+
+// ── Version Control Service (JVS-40) ───────────────────────────────────────
+export async function trackVersion(
+  entityId: string,
+  entityType: string,
+  data: any,
+  changeType?: 'create' | 'update' | 'delete',
+  changeSummary?: string,
+  userId?: string,
+  tags?: string[]
+): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.versionControl.track(entityId, entityType, data, changeType, changeSummary, userId, tags);
+}
+
+export async function getEntityVersions(entityId: string, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.versionControl.getEntityVersions(entityId, limit);
+}
+
+export async function getVersion(versionId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.versionControl.get(versionId);
+}
+
+export async function getLatestVersion(entityId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.versionControl.getLatest(entityId);
+}
+
+export async function diffVersions(versionId1: string, versionId2: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.versionControl.diff(versionId1, versionId2);
+}
+
+export async function rollbackVersion(entityId: string, targetVersion: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.versionControl.rollback(entityId, targetVersion);
+}
+
+export async function queryVersions(query: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.versionControl.query(query);
+}
+
+export async function getVersionStats(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.versionControl.stats();
+}
+
+export async function deleteVersion(versionId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.versionControl.delete(versionId);
+}
+
+export async function clearAllVersions(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.versionControl.clear();
+}
+
+export async function exportVersions(query?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.versionControl.export(query);
+}
+
+export async function importVersions(jsonString: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.versionControl.import(jsonString);
+}

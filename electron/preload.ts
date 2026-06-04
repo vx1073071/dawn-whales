@@ -657,6 +657,40 @@ contextBridge.exposeInMainWorld('api', {
     timeSeries: (params: any) => ipcRenderer.invoke('em:time-series-attribution', params),
   },
 
+  // ── Snapshot Service (JVS-39) ───────────────────────────────────
+  snapshotService: {
+    capture: (type: string, category: string, data: any, metadata?: any) =>
+      ipcRenderer.invoke('snapshot:capture', type, category, data, metadata),
+    query: (query: any) => ipcRenderer.invoke('snapshot:query', query),
+    get: (id: string) => ipcRenderer.invoke('snapshot:get', id),
+    compare: (id1: string, id2: string) => ipcRenderer.invoke('snapshot:compare', id1, id2),
+    timeline: (category: string, limit?: number) => ipcRenderer.invoke('snapshot:timeline', category, limit),
+    latest: (category: string) => ipcRenderer.invoke('snapshot:latest', category),
+    cleanup: (daysOld?: number) => ipcRenderer.invoke('snapshot:cleanup', daysOld),
+    export: (query?: any) => ipcRenderer.invoke('snapshot:export', query),
+    import: (jsonString: string) => ipcRenderer.invoke('snapshot:import', jsonString),
+    stats: () => ipcRenderer.invoke('snapshot:stats'),
+    delete: (id: string) => ipcRenderer.invoke('snapshot:delete', id),
+    clear: () => ipcRenderer.invoke('snapshot:clear'),
+  },
+
+  // ── Version Control Service (JVS-40) ──────────────────────────
+  versionControl: {
+    track: (entityId: string, entityType: string, data: any, changeType?: string, changeSummary?: string, userId?: string, tags?: string[]) =>
+      ipcRenderer.invoke('version:track', entityId, entityType, data, changeType, changeSummary, userId, tags),
+    getEntityVersions: (entityId: string, limit?: number) => ipcRenderer.invoke('version:get-entity-versions', entityId, limit),
+    get: (versionId: string) => ipcRenderer.invoke('version:get', versionId),
+    getLatest: (entityId: string) => ipcRenderer.invoke('version:get-latest', entityId),
+    diff: (versionId1: string, versionId2: string) => ipcRenderer.invoke('version:diff', versionId1, versionId2),
+    rollback: (entityId: string, targetVersion: number) => ipcRenderer.invoke('version:rollback', entityId, targetVersion),
+    query: (query: any) => ipcRenderer.invoke('version:query', query),
+    stats: () => ipcRenderer.invoke('version:stats'),
+    delete: (versionId: string) => ipcRenderer.invoke('version:delete', versionId),
+    clear: () => ipcRenderer.invoke('version:clear'),
+    export: (query?: any) => ipcRenderer.invoke('version:export', query),
+    import: (jsonString: string) => ipcRenderer.invoke('version:import', jsonString),
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
     const allowed = [

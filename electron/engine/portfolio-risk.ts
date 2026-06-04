@@ -3,7 +3,7 @@
 // Integrates: correlation matrix, sentiment, anomaly, sector rotation
 
 import log from 'electron-log';
-import { computeCorrelationMatrix } from './correlation-matrix-v2';
+import { correlationMatrix as computeCorrelationMatrix } from './correlation-matrix-v2';
 import { SentimentIndexEngine } from './sentiment-index';
 import { getCapitalFlowMonitor } from './capital-flow-monitor';
 

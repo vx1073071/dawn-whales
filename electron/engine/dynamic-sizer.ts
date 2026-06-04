@@ -539,4 +539,13 @@ export function getDynamicSizer(): DynamicSizer | null {
   return sizerInstance;
 }
 
+export function getKellyFraction(wins: number, losses: number, avgWin: number, avgLoss: number): number {
+  const total = wins + losses;
+  if (total === 0) return 0.25;
+  const winRate = wins / total;
+  const avgWinLossRatio = avgLoss > 0 ? avgWin / avgLoss : 1;
+  const kelly = winRate - (1 - winRate) / avgWinLossRatio;
+  return Math.max(0, Math.min(kelly, 1));
+}
+
 export default DynamicSizer;

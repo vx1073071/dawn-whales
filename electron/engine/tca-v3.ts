@@ -32,10 +32,10 @@ export interface TCAResult {
   // Implementation shortfall
   arrivalPrice: number;
   executionPrice: number;
-  IS.bps: number;              // Implementation shortfall in bps
-  delay.bps: number;           // Delay cost component
-  marketImpact.bps: number;    // Market impact component
-  timing.bps: number;          // Timing risk component
+  'IS.bps': number;              // Implementation shortfall in bps
+  'delay.bps': number;           // Delay cost component
+  'marketImpact.bps': number;    // Market impact component
+  'timing.bps': number;          // Timing risk component
 
   // Venue breakdown
   byVenue: Array<{

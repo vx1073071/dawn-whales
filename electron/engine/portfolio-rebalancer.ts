@@ -210,7 +210,7 @@ export class PortfolioRebalancer extends EventEmitter {
         shares,
         price,
         estimatedCost: tradeValue * 0.0003,
-        reason: `${drift.driftDirection} ${drift.driftPct.toFixed(1)}% (target ${target.targetPct * 100.toFixed(1)}%, current ${drift.currentPct.toFixed(1)}%)`,
+        reason: `${drift.driftDirection} ${drift.driftPct.toFixed(1)}% (target ${(target.targetPct * 100).toFixed(1)}%, current ${drift.currentPct.toFixed(1)}%)`,
       });
 
       totalTurnover += tradeValue / totalValue;

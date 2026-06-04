@@ -298,8 +298,9 @@ export function getBackfillStatus(): BackfillStatus {
         totalDuration: 0,
         avgDurationPerSymbol: 0,
         successRate: 0,
-      };
-    }
+      }
+    };
+  }
   return backfillManager.getStatus();
 }
 

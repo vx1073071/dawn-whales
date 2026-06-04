@@ -196,7 +196,7 @@ export class SentimentAttributionEngine {
       HEALTHCARE: 'Healthcare', CONSUMER: 'Consumer Discretionary',
       RATE_HIKE: 'Financials', RATE_CUT: 'Financials',
       INFLATION: 'Consumer Staples', RECESSION: 'Consumer Discretionary',
-      GEOPOLITICAL: 'Energy', M&A: 'Financials',
+      GEOPOLITICAL: 'Energy', 'M&A': 'Financials',
     };
     return map[topic] ?? null;
   }
