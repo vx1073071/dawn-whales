@@ -399,6 +399,7 @@ export default function SettingsPage() {
 }
 
 function RiskSlider({ label, value, max, unit, onSave }: { label: string; value: number; max: number; unit: string; onSave: (v: number) => void }) {
+  const { t } = useTranslation();
   const [val, setVal] = useState(value);
   return (
     <div>
