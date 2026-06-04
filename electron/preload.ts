@@ -337,6 +337,22 @@ contextBridge.exposeInMainWorld('api', {
     },
   },
 
+  // ── Realtime Sentiment Stream (JVS-33) ───────────────────────
+  sentimentStream: {
+    start: () => ipcRenderer.invoke('sentiment:stream-start'),
+    stop: () => ipcRenderer.invoke('sentiment:stream-stop'),
+    status: () => ipcRenderer.invoke('sentiment:stream-status'),
+    history: (limit?: number) => ipcRenderer.invoke('sentiment:stream-history', limit),
+    alerts: () => ipcRenderer.invoke('sentiment:stream-alerts'),
+    clearAlerts: () => ipcRenderer.invoke('sentiment:stream-clear-alerts'),
+    onTick: (callback: (tick: any) => void) => {
+      ipcRenderer.on('sentiment:stream-tick', (_event, tick) => callback(tick));
+    },
+    onAlert: (callback: (alert: any) => void) => {
+      ipcRenderer.on('sentiment:stream-alert', (_event, alert) => callback(alert));
+    },
+  },
+
   // ── Smart Cache Manager (JVS-32) ───────────────────────────────
   smartCache: {
     get: (namespace: string, key: string) => ipcRenderer.invoke('cache:get', namespace, key),

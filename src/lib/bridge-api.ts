@@ -1144,6 +1144,48 @@ export function onDataQualityStreamAlert(callback: (alert: any) => void): void {
   window.api.dataQualityStream.onAlert(callback);
 }
 
+// ── Realtime Sentiment Stream (JVS-33) ─────────────────────────────────────
+
+export async function startSentimentStream(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sentimentStream.start();
+}
+
+export async function stopSentimentStream(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sentimentStream.stop();
+}
+
+export async function getSentimentStreamStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sentimentStream.status();
+}
+
+export async function getSentimentStreamHistory(limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sentimentStream.history(limit);
+}
+
+export async function getSentimentStreamAlerts(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sentimentStream.alerts();
+}
+
+export async function clearSentimentStreamAlerts(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sentimentStream.clearAlerts();
+}
+
+export function onSentimentStreamTick(callback: (tick: any) => void): void {
+  if (!hasIPC()) return;
+  window.api.sentimentStream.onTick(callback);
+}
+
+export function onSentimentStreamAlert(callback: (alert: any) => void): void {
+  if (!hasIPC()) return;
+  window.api.sentimentStream.onAlert(callback);
+}
+
 // ── Smart Cache Manager (JVS-32) ──────────────────────────────────────────
 
 export async function cacheGet(namespace: string, key: string): Promise<any> {

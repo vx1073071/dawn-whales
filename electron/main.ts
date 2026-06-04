@@ -20,6 +20,7 @@ import { DataProviderService } from './data/data-provider';
 import { EMDataProvider } from './data/em-data-provider';
 import { MacroDataProvider } from './data/macro-provider';
 import { SentimentIndexEngine } from './engine/sentiment-index';
+import { getRealtimeSentimentStream } from './engine/sentiment-stream';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
 import { SectorRotationMonitor } from './engine/sector-rotation';
@@ -49,7 +50,7 @@ import { getDividendCalendar } from './engine/dividend-calendar';
 import { getEarningsCalendar } from './engine/earnings-calendar';
 import { exportData } from './engine/data-exporter';
 import { getSmartPicker } from './engine/smart-picker';
-import { getWSDataStream } from './data/ws-data-stream';
+import { getWsDataStream } from './data/ws-data-stream';
 import { getHistoryBackfill } from './data/history-backfill';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
@@ -2484,7 +2485,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       });
       
       // Hook into WebSocket stream
-      const wsStream = getWSDataStream();
+      const wsStream = getWsDataStream();
       wsStream.on('tick', (tick) => {
         monitor.validateTick(tick);
       });
@@ -2531,6 +2532,83 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const monitor = getDataQualityStream();
       monitor.resetMetrics();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Realtime Sentiment Stream (JVS-33) ─────────────────────────────────
+  ipcMain.handle('sentiment:stream-start', async () => {
+    try {
+      const stream = getRealtimeSentimentStream();
+      stream.start();
+      
+      // Forward ticks to renderer
+      stream.on('tick', (tick) => {
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('sentiment:stream-tick', tick);
+        }
+      });
+      
+      // Forward alerts to renderer
+      stream.on('alert', (alert) => {
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('sentiment:stream-alert', alert);
+        }
+      });
+      
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('sentiment:stream-stop', async () => {
+    try {
+      const stream = getRealtimeSentimentStream();
+      stream.stop();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('sentiment:stream-status', async () => {
+    try {
+      const stream = getRealtimeSentimentStream();
+      const current = stream.getCurrentSentiment();
+      return { success: true, current };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('sentiment:stream-history', async (_e, limit?: number) => {
+    try {
+      const stream = getRealtimeSentimentStream();
+      const history = stream.getHistory();
+      const limited = limit ? history.slice(-limit) : history;
+      return { success: true, history: limited };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('sentiment:stream-alerts', async () => {
+    try {
+      const stream = getRealtimeSentimentStream();
+      const alerts = stream.getAlerts();
+      return { success: true, alerts };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('sentiment:stream-clear-alerts', async () => {
+    try {
+      const stream = getRealtimeSentimentStream();
+      stream.clearAlerts();
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
@@ -2729,7 +2807,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   // ── WS Data Stream (JVS-29) ────────────────────────────────────────────
   ipcMain.handle('ws:start-stream', async (_e, config?: any) => {
     try {
-      const stream = getWSDataStream();
+      const stream = getWsDataStream();
       await stream.start();
       stream.on('tick', (tick) => {
         if (mainWindow && !mainWindow.isDestroyed()) {
@@ -2744,7 +2822,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
   ipcMain.handle('ws:stop-stream', async () => {
     try {
-      getWSDataStream().stop();
+      getWsDataStream().stop();
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
@@ -2753,7 +2831,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
   ipcMain.handle('ws:subscribe', async (_e, codes: string[]) => {
     try {
-      getWSDataStream().subscribe(codes || []);
+      getWsDataStream().subscribe(codes || []);
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
@@ -2762,7 +2840,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
   ipcMain.handle('ws:unsubscribe', async (_e, codes: string[]) => {
     try {
-      getWSDataStream().unsubscribe(codes || []);
+      getWsDataStream().unsubscribe(codes || []);
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
@@ -2771,7 +2849,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
   ipcMain.handle('ws:stream-status', async () => {
     try {
-      return { success: true, status: getWSDataStream().getStatus() };
+      return { success: true, status: getWsDataStream().getStatus() };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

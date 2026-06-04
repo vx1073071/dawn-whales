@@ -31,8 +31,10 @@ const TradeExecutionPanel = lazy(() => import('@/components/trading/TradeExecuti
 const TradeHistoryPage = lazy(() => import('@/components/trading/TradeHistoryPage'));
 const AIAdvisorPage = lazy(() => import('@/components/strategy/AIAdvisorPage'));
 const PerformanceAttributionPage = lazy(() => import('@/components/strategy/PerformanceAttributionPage'));
+const RegimeMonitorPage = lazy(() => import('@/components/strategy/RegimeMonitorPage'));
 const StrategyPage = lazy(() => import('@/components/strategy/StrategyPage'));
 const PortfolioPage = lazy(() => import('@/components/portfolio/PortfolioPage'));
+const PortfolioRebalancerPage = lazy(() => import('@/components/portfolio/PortfolioRebalancerPage'));
 const OrdersPage = lazy(() => import('@/components/orders/OrdersPage'));
 const SettingsPage = lazy(() => import('@/components/settings/SettingsPage'));
 const MarketplacePage = lazy(() => import('@/components/marketplace/MarketplacePage'));
@@ -62,8 +64,10 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   tradeHistory: TradeHistoryPage,
   aiAdvisor: AIAdvisorPage,
   performanceAttribution: PerformanceAttributionPage,
+  regimeMonitor: RegimeMonitorPage,
   strategy: StrategyPage,
   portfolio: PortfolioPage,
+  portfolioRebalancer: PortfolioRebalancerPage,
   orders: OrdersPage,
   settings: SettingsPage,
   marketplace: MarketplacePage,
