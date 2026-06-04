@@ -77,14 +77,25 @@ function tTest(values: number[], mu0 = 0): { tStat: number; pValue: number } {
   return { tStat: Math.round(tStat * 100) / 100, pValue: Math.round(Math.max(0, Math.min(1, pValue)) * 1000) / 1000 };
 }
 
-function normalCDF(x: number): number {
-  const a = [0.254829592, -0.284496736, 1.421413741, -1.453152027, 1.061405429];
-  const p = [0.3275911, 0.254829592, -0.25449672, 1.421413741, -1.453152027, 1.061405429];
+// Standard error function approximation (Abramowitz & Stegun, formula 7.1.26)
+export function normalCDF(x: number): number {
+  if (!isFinite(x)) return x > 0 ? 1 : 0;
   const sign = x < 0 ? -1 : 1;
-  x = Math.abs(x) / Math.sqrt(2);
-  const t = 1 / (1 + p[0] * x);
-  const y = 1 - (((((p[4] * t + p[3]) * t + p[2]) * t + p[1]) * t + p[0]) * t * Math.exp(-x * x));
-  return 0.5 * (1 + sign * y);
+  x = Math.abs(x);
+  const t = 1 / (1 + 0.2316419 * x);
+  const d = 0.3989422804;
+  const p = 0.319381530;
+  const b = [-0.356563782, 1.781477937, -1.821255978, 1.330274429];
+  const poly = 1 - d * Math.exp(-x * x * 0.5) * t * (
+    p + t * (b[0] + t * (b[1] + t * (b[2] + t * b[3])))
+  );
+  return sign < 0 ? 1 - poly : poly;
+}
+
+export function normalPDF(x: number, mean = 0, sigma = 1): number {
+  if (!isFinite(x) || !isFinite(mean) || !isFinite(sigma) || sigma <= 0) return 0;
+  const z = (x - mean) / sigma;
+  return Math.exp(-0.5 * z * z) / (sigma * Math.sqrt(2 * Math.PI));
 }
 
 function significanceLevel(pValue: number): CalendarEffect['significanceLevel'] {

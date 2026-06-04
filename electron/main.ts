@@ -50,7 +50,8 @@ import { getPush2Proxy } from './data/push2-proxy';
 import { getDataQualityMonitor, registerModule } from './engine/data-quality-monitor';
 import { DataAggregator, getDataAggregator } from './data/data-aggregator';
 import { DataCleaningPipeline, getDataCleaningPipeline } from './data/data-pipeline';
-import { HistoricalDataWarehouse, getHistoricalDataWarehouse } from './data/historical-warehouse';
+import { HistoricalDataWarehouse, getHistoricalDataWarehouse } from './engine/historical-data-warehouse';
+import { getHistoricalDataWarehouse as getHistoricalDataWarehouseOld } from './data/historical-warehouse';
 import { DataVersioningSystem, getDataVersioningSystem } from './data/data-versioning';
 import { FeatureStore, getFeatureStore } from './engine/feature-store';
 import { StreamComputingEngine, getStreamComputingEngine } from './engine/stream-computing';
@@ -2415,6 +2416,57 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       }
       const result = await calcPositionSize(req);
       return { success: true, ...result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Historical Data Warehouse (JVS-58) ──────────────────────────────────
+  ipcMain.handle('historical:add', async (_e, point: any) => {
+    try {
+      const warehouse = getHistoricalDataWarehouse();
+      warehouse.addDataPoint(point);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('historical:add-batch', async (_e, points: any[]) => {
+    try {
+      const warehouse = getHistoricalDataWarehouse();
+      warehouse.addBatch(points);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('historical:query', async (_e, query: any) => {
+    try {
+      const warehouse = getHistoricalDataWarehouse();
+      const data = await warehouse.query(query);
+      return { success: true, data };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('historical:stats', async () => {
+    try {
+      const warehouse = getHistoricalDataWarehouse();
+      const stats = warehouse.getStats();
+      return { success: true, stats };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('historical:cleanup', async () => {
+    try {
+      const warehouse = getHistoricalDataWarehouse();
+      await warehouse.cleanup();
+      return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

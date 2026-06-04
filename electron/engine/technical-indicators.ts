@@ -1,10 +1,10 @@
-// ── Technical Indicators (JVS-43) ──────────────────────────────────────────
+﻿// 鈹€鈹€ Technical Indicators (JVS-43) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 // MA/MACD/RSI/BOLL/KDJ/OBV real-time calculation
 // IPC: indicator:compute
 
 import log from 'electron-log';
 
-// ── Types ──────────────────────────────────────────────────────────────────
+// 鈹€鈹€ Types 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export interface KLine {
   time: number;
@@ -61,7 +61,7 @@ export interface TechnicalIndicatorsResult {
   error?: string;
 }
 
-// ── Moving Average ─────────────────────────────────────────────────────────
+// 鈹€鈹€ Moving Average 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 function calculateMA(closes: number[], period: number): (number | null)[] {
   const result: (number | null)[] = [];
@@ -79,7 +79,7 @@ function calculateMA(closes: number[], period: number): (number | null)[] {
   return result;
 }
 
-// ── EMA ────────────────────────────────────────────────────────────────────
+// 鈹€鈹€ EMA 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 function calculateEMA(data: number[], period: number): (number | null)[] {
   const result: (number | null)[] = [];
@@ -105,7 +105,7 @@ function calculateEMA(data: number[], period: number): (number | null)[] {
   return result;
 }
 
-// ── MACD ───────────────────────────────────────────────────────────────────
+// 鈹€鈹€ MACD 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 function calculateMACD(
   closes: number[],
@@ -142,9 +142,9 @@ function calculateMACD(
   return { dif, dea, macd };
 }
 
-// ── RSI ────────────────────────────────────────────────────────────────────
+// 鈹€鈹€ RSI 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
-function calculateRSI(closes: number[], period: number = 14): (number | null)[] {
+export function calculateRSI(closes: number[], period: number = 14): (number | null)[] {
   const result: (number | null)[] = [];
 
   for (let i = 0; i < closes.length; i++) {
@@ -171,7 +171,7 @@ function calculateRSI(closes: number[], period: number = 14): (number | null)[] 
   return result;
 }
 
-// ── Bollinger Bands ────────────────────────────────────────────────────────
+// 鈹€鈹€ Bollinger Bands 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 function calculateBollinger(
   closes: number[],
@@ -200,7 +200,7 @@ function calculateBollinger(
   return { period, stdDev, upper, middle, lower };
 }
 
-// ── KDJ ────────────────────────────────────────────────────────────────────
+// 鈹€鈹€ KDJ 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 function calculateKDJ(
   klines: KLine[],
@@ -245,7 +245,7 @@ function calculateKDJ(
   return { k, d, j };
 }
 
-// ── OBV ────────────────────────────────────────────────────────────────────
+// 鈹€鈹€ OBV 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 function calculateOBV(klines: KLine[]): (number | null)[] {
   const result: (number | null)[] = [];
@@ -267,7 +267,7 @@ function calculateOBV(klines: KLine[]): (number | null)[] {
   return result;
 }
 
-// ── Main Export Function ──────────────────────────────────────────────────
+// 鈹€鈹€ Main Export Function 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export function computeIndicators(
   klines: KLine[],
