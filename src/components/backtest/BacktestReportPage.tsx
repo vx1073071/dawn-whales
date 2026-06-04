@@ -3,6 +3,9 @@ import * as api from '../../lib/bridge-api';
 import { generatePDFReport, backtestToReport } from '../../lib/pdf-report';
 import ParamScanPanel from './ParamScanPanel';
 import WalkForwardPanel from './WalkForwardPanel';
+import DrawdownChart from './DrawdownChart';
+import MonthlyReturnsHeatmap from './MonthlyReturnsHeatmap';
+import TradeTimeline from './TradeTimeline';
 
 interface BacktestResult {
   strategyId: string;
@@ -49,7 +52,7 @@ export default function BacktestReportPage() {
   const [loading, setLoading] = useState(false);
   const [tradeSort, setTradeSort] = useState<{ field: SortField; dir: SortDir }>({ field: 'entryDate', dir: 'desc' });
   const [days, setDays] = useState(365);
-  const [tab, setTab] = useState<'overview' | 'trades' | 'equity' | 'enhanced'>('overview');
+  const [tab, setTab] = useState<'overview' | 'equity' | 'drawdown' | 'monthly' | 'timeline' | 'trades' | 'enhanced'>('overview');
   const [paramScanResult, setParamScanResult] = useState<any>(null);
   const [wfaResult, setWfaResult] = useState<any>(null);
   const [paramScanLoading, setParamScanLoading] = useState(false);
@@ -332,7 +335,7 @@ export default function BacktestReportPage() {
         <>
           {/* Tabs */}
           <div className="flex gap-1 mb-4 bg-[#12121a] rounded-lg p-1 w-fit">
-            {([['overview', '📊 绩效概览'], ['equity', '📈 权益曲线'], ['trades', '📋 交易明细'], ['enhanced', '🔬 增强分析']] as const).map(([key, label]) => (
+            {([['overview', '📊 绩效概览'], ['equity', '📈 权益曲线'], ['drawdown', '📉 回撤分析'], ['monthly', '📅 月度收益'], ['timeline', '🕐 交易时间线'], ['trades', '📋 交易明细'], ['enhanced', '🔬 增强分析']] as const).map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => setTab(key)}
@@ -416,6 +419,21 @@ export default function BacktestReportPage() {
                 </span>
               </div>
             </div>
+          )}
+
+          {/* Drawdown Analysis */}
+          {tab === 'drawdown' && result && (
+            <DrawdownChart equityCurve={result.equityCurve} />
+          )}
+
+          {/* Monthly Returns Heatmap */}
+          {tab === 'monthly' && result && (
+            <MonthlyReturnsHeatmap trades={result.trades} />
+          )}
+
+          {/* Trade Timeline */}
+          {tab === 'timeline' && result && (
+            <TradeTimeline trades={result.trades} />
           )}
 
           {/* Trades */}

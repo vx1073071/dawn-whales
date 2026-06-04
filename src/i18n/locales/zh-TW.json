@@ -77,7 +77,11 @@
     "on": "開啟",
     "off": "暫停",
     "pause": "暫停",
-    "resume": "繼續"
+    "resume": "繼續",
+    "errorBoundary": {
+      "title": "頁面出現錯誤",
+      "retry": "重新載入"
+    }
   },
   "nav": {
     "overview": "總覽",
@@ -436,5 +440,24 @@
     "title": "風險儀表盤",
     "loading": "載入風控數據...",
     "engineNotInitialized": "風控引擎未初始化"
+  },
+  "openDHealth": {
+    "title": "Futu OpenD 健康檢查",
+    "lastRefresh": "上次刷新 {{time}}",
+    "notChecked": "尚未檢查",
+    "autoRefresh": "🔄 自動刷新(30s)",
+    "manualRefresh": "⏸ 手動刷新",
+    "checkFailed": "健康檢查失敗",
+    "connection": "連接:",
+    "pinging": "ping...",
+    "ping": "⚡ Ping",
+    "pingOk": "✅ {{ms}}ms",
+    "pingTimeout": "❌ 超時",
+    "healthy": "✅ 健康",
+    "degraded": "⚠️ 降級",
+    "unhealthy": "❌ 異常",
+    "unknown": "❓ 未知",
+    "recommendations": "💡 建議",
+    "clickRefresh": "點擊「刷新」進行健康檢查"
   }
 }

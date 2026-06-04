@@ -2,6 +2,7 @@
 // Shows 5 health checks, overall score, and auto-recommendations.
 
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface HealthCheck {
   name: string;
@@ -41,6 +42,7 @@ const SCORE_COLORS = (score: number): string => {
 };
 
 export default function OpenDHealthPanel() {
+  const { t } = useTranslation();
   const [health, setHealth] = useState<HealthResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -58,10 +60,10 @@ export default function OpenDHealthPanel() {
         setHealth(result ?? null);
         setLastRefresh(new Date());
       } else {
-        setError(result?.error ?? '健康检查失败');
+        setError(result?.error ?? t('openDHealth.checkFailed'));
       }
     } catch (e: any) {
-      setError(e.message ?? '检查失败');
+      setError(e.message ?? t('openDHealth.checkFailed'));
     } finally {
       setLoading(false);
     }
@@ -98,9 +100,9 @@ export default function OpenDHealthPanel() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-white font-semibold text-sm">Futu OpenD 健康检查</h3>
+          <h3 className="text-white font-semibold text-sm">{t('openDHealth.title')}</h3>
           <p className="text-gray-500 text-xs mt-0.5">
-            {lastRefresh ? `上次刷新 ${lastRefresh.toLocaleTimeString('zh-CN')}` : '尚未检查'}
+            {lastRefresh ? t('openDHealth.lastRefresh', { time: lastRefresh.toLocaleTimeString('zh-CN') }) : t('openDHealth.notChecked')}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -109,21 +111,21 @@ export default function OpenDHealthPanel() {
             onClick={() => setAutoRefresh((v) => !v)}
             className={`text-xs px-2 py-1 rounded transition-colors ${autoRefresh ? 'bg-green-900/40 text-green-400' : 'bg-white/5 text-gray-500'}`}
           >
-            {autoRefresh ? '🔄 自动刷新(30s)' : '⏸ 手动刷新'}
+            {autoRefresh ? t('openDHealth.autoRefresh') : t('openDHealth.manualRefresh')}
           </button>
           <button
             onClick={refresh}
             disabled={loading}
             className="text-xs bg-[#C9A046] hover:bg-[#D4A853] disabled:opacity-50 text-black px-3 py-1 rounded font-medium transition-colors"
           >
-            {loading ? '检查中...' : '刷新'}
+            {loading ? t('common.loading') : t('common.refresh')}
           </button>
         </div>
       </div>
 
       {/* Connection config */}
       <div className="flex items-center gap-2 text-xs">
-        <label className="text-gray-400">连接:</label>
+        <label className="text-gray-400">{t('openDHealth.connection')}</label>
         <input
           type="text"
           value={host}
@@ -144,11 +146,11 @@ export default function OpenDHealthPanel() {
           disabled={pingning}
           className="text-xs bg-white/5 hover:bg-white/10 text-gray-300 px-2 py-1 rounded transition-colors"
         >
-          {pingning ? 'ping...' : '⚡ Ping'}
+          {pingning ? t('openDHealth.pinging') : t('openDHealth.ping')}
         </button>
         {pingResult && (
           <span className={`text-xs font-mono ${pingResult.reachable ? 'text-green-400' : 'text-red-400'}`}>
-            {pingResult.reachable ? `✅ ${pingResult.ms}ms` : '❌ 超时'}
+            {pingResult.reachable ? t('openDHealth.pingOk', { ms: pingResult.ms }) : t('openDHealth.pingTimeout')}
           </span>
         )}
       </div>
@@ -169,9 +171,9 @@ export default function OpenDHealthPanel() {
             </div>
             <div>
               <div className="text-white font-semibold text-base">
-                {overall === 'HEALTHY'   ? '✅ 健康' :
-                 overall === 'DEGRADED'  ? '⚠️  降级' :
-                 overall === 'UNHEALTHY' ? '❌ 异常' : '❓ 未知'}
+                {overall === 'HEALTHY'   ? t('openDHealth.healthy') :
+                 overall === 'DEGRADED'  ? t('openDHealth.degraded') :
+                 overall === 'UNHEALTHY' ? t('openDHealth.unhealthy') : t('openDHealth.unknown')}
               </div>
               <div className="text-gray-400 text-xs mt-0.5">
                 {health.summary}
@@ -208,7 +210,7 @@ export default function OpenDHealthPanel() {
       {/* Recommendations */}
       {health && health.recommendations.length > 0 && (
         <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-xl p-4 space-y-2">
-          <div className="text-yellow-400 text-xs font-semibold mb-2">💡 建议</div>
+          <div className="text-yellow-400 text-xs font-semibold mb-2">{t('openDHealth.recommendations')}</div>
           {health.recommendations.map((rec, i) => (
             <div key={i} className="text-yellow-200/80 text-xs leading-relaxed">
               • {rec}
@@ -220,7 +222,7 @@ export default function OpenDHealthPanel() {
       {/* No data yet */}
       {!health && !loading && !error && (
         <div className="text-center text-gray-500 py-8 text-sm">
-          点击「刷新」进行健康检查
+          {t('openDHealth.clickRefresh')}
         </div>
       )}
     </div>

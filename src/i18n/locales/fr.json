@@ -77,7 +77,11 @@
     "on": "Actif",
     "off": "Inactif",
     "pause": "Pause",
-    "resume": "Reprendre"
+    "resume": "Reprendre",
+    "errorBoundary": {
+      "title": "Erreur de page",
+      "retry": "Recharger"
+    }
   },
   "nav": {
     "overview": "Vue d'ensemble",
@@ -436,5 +440,24 @@
     "title": "Tableau Risques",
     "loading": "Chargement risques...",
     "engineNotInitialized": "Moteur risque non initialisé"
+  },
+  "openDHealth": {
+    "title": "Vérification santé Futu OpenD",
+    "lastRefresh": "Dernière actualisation {{time}}",
+    "notChecked": "Non vérifié",
+    "autoRefresh": "🔄 Auto (30s)",
+    "manualRefresh": "⏸ Manuel",
+    "checkFailed": "Échec de la vérification",
+    "connection": "Connexion:",
+    "pinging": "ping...",
+    "ping": "⚡ Ping",
+    "pingOk": "✅ {{ms}}ms",
+    "pingTimeout": "❌ Délai dépassé",
+    "healthy": "✅ Sain",
+    "degraded": "⚠️ Dégradé",
+    "unhealthy": "❌ Unhealthy",
+    "unknown": "❓ Inconnu",
+    "recommendations": "💡 Recommandations",
+    "clickRefresh": "Cliquez sur Actualiser pour vérifier"
   }
 }

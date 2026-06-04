@@ -77,7 +77,11 @@
     "on": "켜짐",
     "off": "꺼짐",
     "pause": "일시정지",
-    "resume": "계속"
+    "resume": "계속",
+    "errorBoundary": {
+      "title": "페이지 오류",
+      "retry": "다시 로드"
+    }
   },
   "nav": {
     "overview": "개요",
@@ -436,5 +440,24 @@
     "title": "리스크 대시보드",
     "loading": "리스크 데이터 로딩...",
     "engineNotInitialized": "리스크 엔진 미초기화"
+  },
+  "openDHealth": {
+    "title": "Futu OpenD 상태 확인",
+    "lastRefresh": "마지막 새로고침 {{time}}",
+    "notChecked": "확인 안 됨",
+    "autoRefresh": "🔄 자동 새로고침(30s)",
+    "manualRefresh": "⏸ 수동 새로고침",
+    "checkFailed": "상태 확인 실패",
+    "connection": "연결:",
+    "pinging": "ping...",
+    "ping": "⚡ Ping",
+    "pingOk": "✅ {{ms}}ms",
+    "pingTimeout": "❌ 시간 초과",
+    "healthy": "✅ 정상",
+    "degraded": "⚠️ 저하",
+    "unhealthy": "❌ 비정상",
+    "unknown": "❓ 알 수 없음",
+    "recommendations": "💡 권장 사항",
+    "clickRefresh": "「새로고침」을 클릭하여 상태 확인"
   }
 }

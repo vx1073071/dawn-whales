@@ -77,7 +77,11 @@
     "on": "开启",
     "off": "暂停",
     "pause": "暂停",
-    "resume": "继续"
+    "resume": "继续",
+    "errorBoundary": {
+      "title": "页面出现错误",
+      "retry": "重新加载"
+    }
   },
   "nav": {
     "overview": "总览",
@@ -436,5 +440,24 @@
     "title": "风险仪表盘",
     "loading": "加载风控数据...",
     "engineNotInitialized": "风控引擎未初始化"
+  },
+  "openDHealth": {
+    "title": "Futu OpenD 健康检查",
+    "lastRefresh": "上次刷新 {{time}}",
+    "notChecked": "尚未检查",
+    "autoRefresh": "🔄 自动刷新(30s)",
+    "manualRefresh": "⏸ 手动刷新",
+    "checkFailed": "健康检查失败",
+    "connection": "连接:",
+    "pinging": "ping...",
+    "ping": "⚡ Ping",
+    "pingOk": "✅ {{ms}}ms",
+    "pingTimeout": "❌ 超时",
+    "healthy": "✅ 健康",
+    "degraded": "⚠️ 降级",
+    "unhealthy": "❌ 异常",
+    "unknown": "❓ 未知",
+    "recommendations": "💡 建议",
+    "clickRefresh": "点击「刷新」进行健康检查"
   }
 }

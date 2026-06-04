@@ -77,7 +77,11 @@
     "on": "ON",
     "off": "OFF",
     "pause": "一時停止",
-    "resume": "再開"
+    "resume": "再開",
+    "errorBoundary": {
+      "title": "ページエラー",
+      "retry": "再読み込み"
+    }
   },
   "nav": {
     "overview": "概要",
@@ -436,5 +440,24 @@
     "title": "リスクダッシュボード",
     "loading": "リスクデータ読込中...",
     "engineNotInitialized": "リスクエンジン未初期化"
+  },
+  "openDHealth": {
+    "title": "Futu OpenD ヘルスチェック",
+    "lastRefresh": "最終更新 {{time}}",
+    "notChecked": "未チェック",
+    "autoRefresh": "🔄 自動更新(30s)",
+    "manualRefresh": "⏸ 手動更新",
+    "checkFailed": "ヘルスチェック失敗",
+    "connection": "接続:",
+    "pinging": "ping...",
+    "ping": "⚡ Ping",
+    "pingOk": "✅ {{ms}}ms",
+    "pingTimeout": "❌ タイムアウト",
+    "healthy": "✅ 健康",
+    "degraded": "⚠️ 劣化",
+    "unhealthy": "❌ 異常",
+    "unknown": "❓ 不明",
+    "recommendations": "💡 提案",
+    "clickRefresh": "「更新」をクリックしてヘルスチェックを実行"
   }
 }
