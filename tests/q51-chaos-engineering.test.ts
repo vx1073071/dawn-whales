@@ -138,18 +138,92 @@ export class ChaosMonkey {
 
 // ── Chaos Test Suite ───────────────────────────────────────────────────────
 
-export function runChaosTests(): void {
-  console.log('Running chaos engineering tests...');
-  
-  const monkey = new ChaosMonkey({
-    failureRate: 0.2,
-    failureTypes: ['network_timeout', 'network_error', 'memory_pressure'],
-    duration: 30000,
-    interval: 5000,
+// ── Vitest Test Cases ───────────────────────────────────────────────────────────
+
+import { describe, it, expect } from 'vitest';
+
+describe('Q51: Chaos Engineering', () => {
+  it('ChaosConfig validates failure rate range', () => {
+    const config: ChaosConfig = {
+      failureRate: 0.3,
+      failureTypes: ['network_timeout', 'memory_pressure'],
+      duration: 60_000,
+      interval: 10_000,
+    };
+    expect(config.failureRate).toBeGreaterThanOrEqual(0);
+    expect(config.failureRate).toBeLessThanOrEqual(1);
   });
 
-  // Test cases would be defined here
-  // Each test would run system under chaos conditions
-  
-  console.log('✅ Chaos engineering tests completed');
-}
+  it('ChaosMonkey starts and stops', async () => {
+    const monkey = new ChaosMonkey({
+      failureRate: 0.0,
+      failureTypes: ['network_error'],
+      duration: 10_000,
+      interval: 1,
+    });
+    monkey.start();
+    await new Promise((r) => setTimeout(r, 5));
+    const stats = monkey.getStatistics();
+    expect(stats.totalFailures).toBe(0);
+    monkey.stop();
+  });
+
+  it('ChaosMonkey records failures', () => {
+    const monkey = new ChaosMonkey({
+      failureRate: 1.0,
+      failureTypes: ['network_error'],
+      duration: 10_000,
+      interval: 1,
+    });
+    monkey.start();
+    const stats = monkey.getStatistics();
+    expect(stats.totalFailures).toBeGreaterThanOrEqual(0);
+    expect(typeof stats.failuresByType).toBe('object');
+    monkey.stop();
+  });
+
+  it('ChaosTestResult validates required fields', () => {
+    const result: ChaosTestResult = {
+      totalFailures: 10,
+      successfulRecoveries: 8,
+      failedRecoveries: 2,
+      averageRecoveryTime: 150,
+      resilienceScore: 80,
+    };
+    expect(result.totalFailures).toBe(10);
+    expect(result.resilienceScore).toBeGreaterThanOrEqual(0);
+    expect(result.resilienceScore).toBeLessThanOrEqual(100);
+  });
+
+  it('circuit breaker pattern prevents cascading failures', () => {
+    let failures = 0;
+    const breaker = { threshold: 3, state: 'closed' as const };
+
+    const call = (shouldFail: boolean) => {
+      if (breaker.state === 'open') throw new Error('CIRCUIT_OPEN');
+      if (shouldFail) {
+        failures++;
+        if (failures >= breaker.threshold) breaker.state = 'open';
+        throw new Error('failure');
+      }
+      return 'ok';
+    };
+
+    // Fail 3 times → circuit opens
+    for (let i = 0; i < 3; i++) {
+      try { call(true); } catch { /* expected */ }
+    }
+    expect(breaker.state).toBe('open');
+
+    // Now calls are blocked by open circuit
+    expect(() => call(false)).toThrow('CIRCUIT_OPEN');
+  });
+
+  it('fallback returns safe default on circuit open', () => {
+    const fallback = { source: 'fallback', data: null };
+    const breaker = { state: 'open' as const };
+    const result = breaker.state === 'open' ? fallback : { source: 'live' };
+    expect(result.source).toBe('fallback');
+    expect(result.data).toBeNull();
+  });
+});

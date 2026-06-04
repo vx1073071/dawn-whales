@@ -29,17 +29,16 @@ const contracts: Contract[] = [
     response: { success: true, data: { accounts: [] } },
     matchers: {
       'data.accounts is array': (r) => Array.isArray((r as { accounts: unknown }).accounts),
-      'success is boolean': (r) => typeof (r as { success: unknown }).success === 'boolean',
     },
   },
   {
     channel: 'broker:get-positions',
     description: 'Returns positions for an account',
     request: { accountId: 'ACC001' },
-    response: { success: true, data: { positions: [] } },
+    response: { success: true, data: { positions: [], accountId: 'ACC001' } },
     matchers: {
       'data.positions is array': (r) => Array.isArray((r as { positions: unknown }).positions),
-      'accountId echoed': (r) => 'accountId' in r,
+      'data.accountId echoed': (r) => 'accountId' in (r as object),
     },
   },
   {
@@ -164,6 +163,18 @@ const contracts: Contract[] = [
       'latencyMs is non-negative': (r) => (r as { latencyMs: number }).latencyMs >= 0,
     },
   },
+
+  // ── Paper Trader ──────────────────────────────────────────────────────────────
+  {
+    channel: 'paper:submit-order',
+    description: 'Submits a paper trade order',
+    request: { symbol: 'HK.00700', quantity: 100, side: 'buy', price: 400 },
+    response: { success: true, data: { orderId: 'PAPER-001', status: 'pending' } },
+    matchers: {
+      'data.orderId is string': (r) => typeof (r as { orderId: unknown }).orderId === 'string',
+      'data.status is string': (r) => typeof (r as { status: unknown }).status === 'string',
+    },
+  },
 ];
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
@@ -176,11 +187,13 @@ describe('Q48: Contract Testing', () => {
       expect(contract).toHaveProperty('response');
       expect(contract).toHaveProperty('matchers');
       expect(typeof contract.channel).toBe('string');
+      // Top-level response.success must be boolean
+      expect(typeof (contract.response as {success: unknown}).success).toBe('boolean');
 
-      // Validate all matchers pass against the response
-      const responseData = contract.response.data;
+      // Validate all matchers pass against the response data
+      const data = contract.response.data;
       for (const [matcherName, matcherFn] of Object.entries(contract.matchers)) {
-        const result = matcherFn(responseData);
+        const result = matcherFn(data);
         expect(result, `${contract.channel}: matcher "${matcherName}" failed`).toBe(true);
       }
     });
@@ -193,7 +206,7 @@ describe('Q48: Contract Testing', () => {
   });
 
   it('all contract channels start with known prefix', () => {
-    const validPrefixes = ['broker:', 'risk:', 'vol:', 'sizer:', 'strategy:', 'opend:'];
+    const validPrefixes = ['broker:', 'risk:', 'vol:', 'sizer:', 'strategy:', 'opend:', 'paper:'];
     for (const contract of contracts) {
       const hasValidPrefix = validPrefixes.some((p) => contract.channel.startsWith(p));
       expect(hasValidPrefix, `${contract.channel} has unknown prefix`).toBe(true);

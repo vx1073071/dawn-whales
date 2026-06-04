@@ -447,6 +447,248 @@ export class DataAggregator {
   }
 }
 
+// ── Source Health Monitoring ─────────────────────────────────────────────────
+
+interface SourceHealth {
+  name: string;
+  type: string;
+  lastSuccess: number;
+  lastFailure: number;
+  successCount: number;
+  failureCount: number;
+  avgLatency: number;
+  healthy: boolean;
+}
+
+export class SourceHealthMonitor {
+  private healthMap: Map<string, SourceHealth> = new Map();
+  private healthCheckInterval: NodeJS.Timeout | null = null;
+
+  constructor(private checkIntervalMs: number = 60000) {
+    this.startHealthChecks();
+  }
+
+  private startHealthChecks(): void {
+    this.healthCheckInterval = setInterval(() => {
+      this.cleanupStaleSources();
+    }, this.checkIntervalMs);
+  }
+
+  private cleanupStaleSources(): void {
+    const now = Date.now();
+    const staleThreshold = 5 * 60 * 1000; // 5 minutes
+    
+    for (const [name, health] of this.healthMap.entries()) {
+      if (now - health.lastSuccess > staleThreshold && health.failureCount > 3) {
+        log.warn(`[SourceHealth] Source ${name} is stale, marking as unhealthy`);
+        health.healthy = false;
+      }
+    }
+  }
+
+  recordSuccess(name: string, latency: number): void {
+    const health = this.getOrCreateHealth(name);
+    health.lastSuccess = Date.now();
+    health.successCount++;
+    health.healthy = true;
+    
+    // Update average latency
+    health.avgLatency = (health.avgLatency * (health.successCount - 1) + latency) / health.successCount;
+  }
+
+  recordFailure(name: string): void {
+    const health = this.getOrCreateHealth(name);
+    health.lastFailure = Date.now();
+    health.failureCount++;
+    
+    if (health.failureCount > 3) {
+      health.healthy = false;
+    }
+  }
+
+  private getOrCreateHealth(name: string): SourceHealth {
+    if (!this.healthMap.has(name)) {
+      this.healthMap.set(name, {
+        name,
+        type: 'unknown',
+        lastSuccess: 0,
+        lastFailure: 0,
+        successCount: 0,
+        failureCount: 0,
+        avgLatency: 0,
+        healthy: true,
+      });
+    }
+    return this.healthMap.get(name)!;
+  }
+
+  isHealthy(name: string): boolean {
+    const health = this.healthMap.get(name);
+    return health ? health.healthy : true;
+  }
+
+  getHealthStatus(): Map<string, SourceHealth> {
+    return new Map(this.healthMap);
+  }
+
+  stop(): void {
+    if (this.healthCheckInterval) {
+      clearInterval(this.healthCheckInterval);
+      this.healthCheckInterval = null;
+    }
+  }
+}
+
+// ── Performance Metrics Tracker ─────────────────────────────────────────────
+
+interface PerformanceMetrics {
+  totalRequests: number;
+  successfulRequests: number;
+  failedRequests: number;
+  avgLatency: number;
+  p95Latency: number;
+  p99Latency: number;
+  latencies: number[];
+}
+
+export class PerformanceTracker {
+  private metrics: Map<string, PerformanceMetrics> = new Map();
+  private maxLatencySamples = 1000;
+
+  recordRequest(source: string, latency: number, success: boolean): void {
+    const metrics = this.getOrCreateMetrics(source);
+    metrics.totalRequests++;
+    
+    if (success) {
+      metrics.successfulRequests++;
+      metrics.latencies.push(latency);
+      
+      // Keep only last N samples
+      if (metrics.latencies.length > this.maxLatencySamples) {
+        metrics.latencies.shift();
+      }
+      
+      // Update average latency
+      metrics.avgLatency = metrics.latencies.reduce((a, b) => a + b, 0) / metrics.latencies.length;
+      
+      // Calculate percentiles
+      const sorted = [...metrics.latencies].sort((a, b) => a - b);
+      metrics.p95Latency = sorted[Math.floor(sorted.length * 0.95)] || 0;
+      metrics.p99Latency = sorted[Math.floor(sorted.length * 0.99)] || 0;
+    } else {
+      metrics.failedRequests++;
+    }
+  }
+
+  private getOrCreateMetrics(source: string): PerformanceMetrics {
+    if (!this.metrics.has(source)) {
+      this.metrics.set(source, {
+        totalRequests: 0,
+        successfulRequests: 0,
+        failedRequests: 0,
+        avgLatency: 0,
+        p95Latency: 0,
+        p99Latency: 0,
+        latencies: [],
+      });
+    }
+    return this.metrics.get(source)!;
+  }
+
+  getMetrics(source?: string): Map<string, PerformanceMetrics> | PerformanceMetrics | null {
+    if (source) {
+      return this.metrics.get(source) || null;
+    }
+    return new Map(this.metrics);
+  }
+
+  reset(): void {
+    this.metrics.clear();
+  }
+}
+
+// ── Request Batcher ─────────────────────────────────────────────────────────
+
+interface BatchRequest {
+  codes: string[];
+  resolve: (value: QuoteData[]) => void;
+  reject: (error: Error) => void;
+  timestamp: number;
+}
+
+export class RequestBatcher {
+  private pendingRequests: BatchRequest[] = [];
+  private batchTimeout: NodeJS.Timeout | null = null;
+  private batchSize: number;
+  private batchDelayMs: number;
+  private fetchFn: (codes: string[]) => Promise<QuoteData[]>;
+
+  constructor(
+    fetchFn: (codes: string[]) => Promise<QuoteData[]>,
+    batchSize: number = 50,
+    batchDelayMs: number = 100
+  ) {
+    this.fetchFn = fetchFn;
+    this.batchSize = batchSize;
+    this.batchDelayMs = batchDelayMs;
+  }
+
+  async fetch(codes: string[]): Promise<QuoteData[]> {
+    return new Promise((resolve, reject) => {
+      this.pendingRequests.push({
+        codes,
+        resolve,
+        reject,
+        timestamp: Date.now(),
+      });
+
+      if (!this.batchTimeout) {
+        this.batchTimeout = setTimeout(() => this.executeBatch(), this.batchDelayMs);
+      }
+    });
+  }
+
+  private async executeBatch(): Promise<void> {
+    this.batchTimeout = null;
+    
+    if (this.pendingRequests.length === 0) return;
+
+    // Collect all codes
+    const allCodes = new Set<string>();
+    for (const req of this.pendingRequests) {
+      for (const code of req.codes) {
+        allCodes.add(code);
+      }
+    }
+
+    const codesArray = Array.from(allCodes).slice(0, this.batchSize);
+
+    try {
+      const results = await this.fetchFn(codesArray);
+      
+      // Distribute results to pending requests
+      for (const req of this.pendingRequests) {
+        const filtered = results.filter(r => req.codes.includes(r.code));
+        req.resolve(filtered);
+      }
+    } catch (error) {
+      for (const req of this.pendingRequests) {
+        req.reject(error);
+      }
+    }
+
+    this.pendingRequests = [];
+  }
+
+  stop(): void {
+    if (this.batchTimeout) {
+      clearTimeout(this.batchTimeout);
+      this.batchTimeout = null;
+    }
+    this.pendingRequests = [];
+  }
+}
+
 // ── Singleton ──────────────────────────────────────────────────────────────
 
 let aggregatorInstance: DataAggregator | null = null;
@@ -456,4 +698,64 @@ export function getDataAggregator(config?: Partial<AggregatorConfig>): DataAggre
     aggregatorInstance = new DataAggregator(config);
   }
   return aggregatorInstance;
+}
+
+// ── Utility Functions ──────────────────────────────────────────────────────
+
+export function validateQuoteData(quote: QuoteData): boolean {
+  if (!quote.code || typeof quote.code !== 'string') return false;
+  if (typeof quote.price !== 'number' || quote.price <= 0) return false;
+  if (typeof quote.change !== 'number') return false;
+  if (typeof quote.changePct !== 'number') return false;
+  if (typeof quote.volume !== 'number' || quote.volume < 0) return false;
+  if (typeof quote.timestamp !== 'number' || quote.timestamp <= 0) return false;
+  return true;
+}
+
+export function normalizeQuoteData(quote: QuoteData): QuoteData {
+  return {
+    ...quote,
+    price: Math.round(quote.price * 100) / 100,
+    change: Math.round(quote.change * 100) / 100,
+    changePct: Math.round(quote.changePct * 100) / 100,
+    volume: Math.round(quote.volume),
+    turnover: quote.turnover ? Math.round(quote.turnover) : undefined,
+    high: quote.high ? Math.round(quote.high * 100) / 100 : undefined,
+    low: quote.low ? Math.round(quote.low * 100) / 100 : undefined,
+    open: quote.open ? Math.round(quote.open * 100) / 100 : undefined,
+  };
+}
+
+export function calculateDataQuality(quote: QuoteData): DataQualityScore {
+  const now = Date.now();
+  const age = now - quote.timestamp;
+  
+  // Freshness: 0-100 based on age
+  const freshness = Math.max(0, 100 - (age / 60000) * 10); // 10 points per minute
+  
+  // Completeness: count filled fields
+  const fields = ['price', 'change', 'changePct', 'volume', 'high', 'low', 'open', 'turnover'];
+  const filled = fields.filter(f => (quote as any)[f] !== undefined && (quote as any)[f] !== null).length;
+  const completeness = (filled / fields.length) * 100;
+  
+  // Consistency: check if change and changePct are consistent
+  let consistency = 100;
+  if (quote.price > 0 && quote.change !== 0) {
+    const calculatedChangePct = (quote.change / quote.price) * 100;
+    const diff = Math.abs(quote.changePct - calculatedChangePct);
+    consistency = Math.max(0, 100 - diff * 10);
+  }
+  
+  // Latency score: based on age
+  const latency = Math.max(0, 100 - (age / 1000) * 2);
+  
+  const overall = (freshness * 0.3 + completeness * 0.3 + consistency * 0.2 + latency * 0.2);
+  
+  return {
+    overall: Math.round(overall),
+    freshness: Math.round(freshness),
+    completeness: Math.round(completeness),
+    consistency: Math.round(consistency),
+    latency: Math.round(latency),
+  };
 }

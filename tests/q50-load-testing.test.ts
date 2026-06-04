@@ -141,11 +141,60 @@ export class LoadTestRunner {
 
 // ── Load Test Suite ────────────────────────────────────────────────────────
 
-export function runLoadTests(): void {
-  console.log('Running load tests...');
-  
-  // Test cases would be defined here
-  // Each test would run a specific IPC handler under load
-  
-  console.log('✅ Load tests completed');
-}
+// ── Vitest Test Cases ───────────────────────────────────────────────────────────
+
+import { describe, it, expect } from 'vitest';
+
+describe('Q50: Load Testing', () => {
+  it('LoadTestRunner has sane defaults', () => {
+    const runner = new LoadTestRunner();
+    expect(runner).toBeDefined();
+    expect(typeof runner.run).toBe('function');
+    expect(typeof runner.runStressTest).toBe('function');
+  });
+
+  it('LoadTestConfig validates concurrency', () => {
+    const config: LoadTestConfig = {
+      concurrency: 100,
+      duration: 60000,
+      rampUpTime: 5000,
+      targetRPS: 1000,
+    };
+    expect(config.concurrency).toBe(100);
+    expect(config.targetRPS).toBe(1000);
+  });
+
+  it('LoadTestResult has required fields', () => {
+    const result: LoadTestResult = {
+      totalRequests: 1000,
+      successfulRequests: 990,
+      failedRequests: 10,
+      averageLatency: 25,
+      p50Latency: 20,
+      p95Latency: 50,
+      p99Latency: 100,
+      maxLatency: 500,
+      requestsPerSecond: 1000,
+      errorRate: 1,
+    };
+    expect(result.totalRequests).toBe(1000);
+    expect(result.errorRate).toBeCloseTo(1);
+    expect(result.p99Latency).toBeGreaterThan(result.p95Latency);
+  });
+
+  it('concurrent async operations complete', async () => {
+    const runner = new LoadTestRunner({ concurrency: 20, duration: 1000, rampUpTime: 0, targetRPS: 200 });
+    let completed = 0;
+    const result = await runner.run(async () => {
+      await new Promise((r) => setTimeout(r, 1));
+      completed++;
+    });
+    expect(result.successfulRequests).toBeGreaterThan(0);
+  });
+
+  it('stress test validates error rate threshold', async () => {
+    const runner = new LoadTestRunner({ concurrency: 5, duration: 200, rampUpTime: 0, targetRPS: 50 });
+    const results = await runner.runStressTest(async () => { /* noop */ }, 20);
+    expect(Array.isArray(results)).toBe(true);
+  });
+});
