@@ -1,0 +1,6888 @@
+{
+  "summary": {
+    "totalFiles": 69,
+    "totalStrings": 1108,
+    "uniqueStrings": 781,
+    "generatedAt": "2026-06-04T21:44:05.934Z"
+  },
+  "files": [
+    {
+      "file": "src/components/risk/TradingJournal.tsx",
+      "count": 54,
+      "matches": [
+        {
+          "line": 27,
+          "text": "平静",
+          "type": "string",
+          "original": "'平静'",
+          "suggestedKey": "auto_gw92"
+        },
+        {
+          "line": 27,
+          "text": "贪婪",
+          "type": "string",
+          "original": "'贪婪'",
+          "suggestedKey": "auto_oi9s"
+        },
+        {
+          "line": 27,
+          "text": "恐惧",
+          "type": "string",
+          "original": "'恐惧'",
+          "suggestedKey": "auto_gwwn"
+        },
+        {
+          "line": 27,
+          "text": "急躁",
+          "type": "string",
+          "original": "'急躁'",
+          "suggestedKey": "auto_h4vw"
+        },
+        {
+          "line": 27,
+          "text": "自信",
+          "type": "string",
+          "original": "'自信'",
+          "suggestedKey": "auto_mjav"
+        },
+        {
+          "line": 30,
+          "text": "突破",
+          "type": "string",
+          "original": "'突破'",
+          "suggestedKey": "auto_lhw3"
+        },
+        {
+          "line": 30,
+          "text": "回调",
+          "type": "string",
+          "original": "'回调'",
+          "suggestedKey": "auto_fjl1"
+        },
+        {
+          "line": 30,
+          "text": "止损",
+          "type": "string",
+          "original": "'止损'",
+          "suggestedKey": "auto_it6l"
+        },
+        {
+          "line": 30,
+          "text": "止盈",
+          "type": "string",
+          "original": "'止盈'",
+          "suggestedKey": "auto_ix0m"
+        },
+        {
+          "line": 30,
+          "text": "趋势",
+          "type": "string",
+          "original": "'趋势'",
+          "suggestedKey": "auto_oj2s"
+        },
+        {
+          "line": 30,
+          "text": "反转",
+          "type": "string",
+          "original": "'反转'",
+          "suggestedKey": "auto_f1hb"
+        },
+        {
+          "line": 30,
+          "text": "消息",
+          "type": "string",
+          "original": "'消息'",
+          "suggestedKey": "auto_j5rb"
+        },
+        {
+          "line": 30,
+          "text": "财报",
+          "type": "string",
+          "original": "'财报'",
+          "suggestedKey": "auto_ojpf"
+        },
+        {
+          "line": 30,
+          "text": "宏观",
+          "type": "string",
+          "original": "'宏观'",
+          "suggestedKey": "auto_gbv7"
+        },
+        {
+          "line": 30,
+          "text": "技术",
+          "type": "string",
+          "original": "'技术'",
+          "suggestedKey": "auto_hbjj"
+        },
+        {
+          "line": 104,
+          "text": "日期",
+          "type": "string",
+          "original": "'日期'",
+          "suggestedKey": "auto_hwbe"
+        },
+        {
+          "line": 104,
+          "text": "代码",
+          "type": "string",
+          "original": "'代码'",
+          "suggestedKey": "auto_e2ri"
+        },
+        {
+          "line": 104,
+          "text": "方向",
+          "type": "string",
+          "original": "'方向'",
+          "suggestedKey": "auto_hri0"
+        },
+        {
+          "line": 104,
+          "text": "价格",
+          "type": "string",
+          "original": "'价格'",
+          "suggestedKey": "auto_e04l"
+        },
+        {
+          "line": 104,
+          "text": "数量",
+          "type": "string",
+          "original": "'数量'",
+          "suggestedKey": "auto_i1y7"
+        },
+        {
+          "line": 104,
+          "text": "理由",
+          "type": "string",
+          "original": "'理由'",
+          "suggestedKey": "auto_kdm3"
+        },
+        {
+          "line": 104,
+          "text": "情绪",
+          "type": "string",
+          "original": "'情绪'",
+          "suggestedKey": "auto_h5mt"
+        },
+        {
+          "line": 104,
+          "text": "结果",
+          "type": "string",
+          "original": "'结果'",
+          "suggestedKey": "auto_m52h"
+        },
+        {
+          "line": 104,
+          "text": "盈亏",
+          "type": "string",
+          "original": "'盈亏'",
+          "suggestedKey": "auto_kmvb"
+        },
+        {
+          "line": 104,
+          "text": "反思",
+          "type": "string",
+          "original": "'反思'",
+          "suggestedKey": "auto_es4w"
+        },
+        {
+          "line": 104,
+          "text": "标签",
+          "type": "string",
+          "original": "'标签'",
+          "suggestedKey": "auto_idef"
+        },
+        {
+          "line": 140,
+          "text": "取消",
+          "type": "string",
+          "original": "'取消'",
+          "suggestedKey": "cancel"
+        },
+        {
+          "line": 140,
+          "text": "+ 记一笔",
+          "type": "string",
+          "original": "'+ 记一笔'",
+          "suggestedKey": "auto_1923in"
+        },
+        {
+          "line": 153,
+          "text": "全部",
+          "type": "string",
+          "original": "'全部'",
+          "suggestedKey": "auto_en40"
+        },
+        {
+          "line": 153,
+          "text": "盈利",
+          "type": "string",
+          "original": "'盈利'",
+          "suggestedKey": "auto_knkx"
+        },
+        {
+          "line": 153,
+          "text": "亏损",
+          "type": "string",
+          "original": "'亏损'",
+          "suggestedKey": "auto_dwog"
+        },
+        {
+          "line": 153,
+          "text": "待定",
+          "type": "string",
+          "original": "'待定'",
+          "suggestedKey": "auto_gr05"
+        },
+        {
+          "line": 158,
+          "text": "全部标签",
+          "type": "jsx",
+          "original": ">全部标签<",
+          "suggestedKey": "auto_avdb6f"
+        },
+        {
+          "line": 298,
+          "text": "买入",
+          "type": "jsx",
+          "original": ">买入<",
+          "suggestedKey": "auto_dsdx"
+        },
+        {
+          "line": 298,
+          "text": "卖出",
+          "type": "jsx",
+          "original": ">卖出<",
+          "suggestedKey": "auto_emhw"
+        },
+        {
+          "line": 298,
+          "text": "持有",
+          "type": "jsx",
+          "original": ">持有<",
+          "suggestedKey": "auto_helk"
+        },
+        {
+          "line": 298,
+          "text": "观望",
+          "type": "jsx",
+          "original": ">观望<",
+          "suggestedKey": "auto_nzx5"
+        },
+        {
+          "line": 298,
+          "text": ">买入</option><option value=",
+          "type": "string",
+          "original": "\">买入</option><option value=\"",
+          "suggestedKey": "auto_m8s3i"
+        },
+        {
+          "line": 298,
+          "text": ">卖出</option><option value=",
+          "type": "string",
+          "original": "\">卖出</option><option value=\"",
+          "suggestedKey": "auto_ecql0v"
+        },
+        {
+          "line": 298,
+          "text": ">持有</option><option value=",
+          "type": "string",
+          "original": "\">持有</option><option value=\"",
+          "suggestedKey": "auto_fwjh63"
+        },
+        {
+          "line": 306,
+          "text": "😌 平静",
+          "type": "jsx",
+          "original": ">😌 平静<",
+          "suggestedKey": "auto_l4w1hz"
+        },
+        {
+          "line": 306,
+          "text": "😎 自信",
+          "type": "jsx",
+          "original": ">😎 自信<",
+          "suggestedKey": "auto_l52yiu"
+        },
+        {
+          "line": 306,
+          "text": "🤤 贪婪",
+          "type": "jsx",
+          "original": ">🤤 贪婪<",
+          "suggestedKey": "auto_l1jb5m"
+        },
+        {
+          "line": 306,
+          "text": "😰 恐惧",
+          "type": "jsx",
+          "original": ">😰 恐惧<",
+          "suggestedKey": "auto_l5j1ok"
+        },
+        {
+          "line": 306,
+          "text": "😤 急躁",
+          "type": "jsx",
+          "original": ">😤 急躁<",
+          "suggestedKey": "auto_l5blth"
+        },
+        {
+          "line": 306,
+          "text": ">😌 平静</option><option value=",
+          "type": "string",
+          "original": "\">😌 平静</option><option value=\"",
+          "suggestedKey": "auto_katcyw"
+        },
+        {
+          "line": 306,
+          "text": ">😎 自信</option><option value=",
+          "type": "string",
+          "original": "\">😎 自信</option><option value=\"",
+          "suggestedKey": "auto_oo1t9z"
+        },
+        {
+          "line": 306,
+          "text": ">🤤 贪婪</option><option value=",
+          "type": "string",
+          "original": "\">🤤 贪婪</option><option value=\"",
+          "suggestedKey": "auto_hne4ut"
+        },
+        {
+          "line": 306,
+          "text": ">😰 恐惧</option><option value=",
+          "type": "string",
+          "original": "\">😰 恐惧</option><option value=\"",
+          "suggestedKey": "auto_xgly5x"
+        },
+        {
+          "line": 309,
+          "text": "⏳ 待定",
+          "type": "jsx",
+          "original": ">⏳ 待定<",
+          "suggestedKey": "auto_4jpr0i"
+        },
+        {
+          "line": 309,
+          "text": "✓ 盈利",
+          "type": "jsx",
+          "original": ">✓ 盈利<",
+          "suggestedKey": "auto_4y0h3i"
+        },
+        {
+          "line": 309,
+          "text": "✗ 亏损",
+          "type": "jsx",
+          "original": ">✗ 亏损<",
+          "suggestedKey": "auto_4xwa55"
+        },
+        {
+          "line": 309,
+          "text": ">⏳ 待定</option><option value=",
+          "type": "string",
+          "original": "\">⏳ 待定</option><option value=\"",
+          "suggestedKey": "auto_7vnrvz"
+        },
+        {
+          "line": 309,
+          "text": ">✓ 盈利</option><option value=",
+          "type": "string",
+          "original": "\">✓ 盈利</option><option value=\"",
+          "suggestedKey": "auto_p16ewr"
+        }
+      ]
+    },
+    {
+      "file": "src/components/market/SmartPickerPage.tsx",
+      "count": 52,
+      "matches": [
+        {
+          "line": 19,
+          "text": "英伟达",
+          "type": "string",
+          "original": "'英伟达'",
+          "suggestedKey": "auto_jkp4g"
+        },
+        {
+          "line": 19,
+          "text": "AI芯片龙头",
+          "type": "string",
+          "original": "'AI芯片龙头'",
+          "suggestedKey": "auto_m65l0l"
+        },
+        {
+          "line": 19,
+          "text": "财报超预期",
+          "type": "string",
+          "original": "'财报超预期'",
+          "suggestedKey": "auto_3dsf9f"
+        },
+        {
+          "line": 19,
+          "text": "机构增持",
+          "type": "string",
+          "original": "'机构增持'",
+          "suggestedKey": "auto_dgb3n1"
+        },
+        {
+          "line": 20,
+          "text": "微软",
+          "type": "string",
+          "original": "'微软'",
+          "suggestedKey": "auto_h281"
+        },
+        {
+          "line": 20,
+          "text": "云计算增长",
+          "type": "string",
+          "original": "'云计算增长'",
+          "suggestedKey": "auto_tu2ojc"
+        },
+        {
+          "line": 20,
+          "text": "AI Copilot 变现",
+          "type": "string",
+          "original": "'AI Copilot 变现'",
+          "suggestedKey": "auto_xuo5ok"
+        },
+        {
+          "line": 20,
+          "text": "稳健现金流",
+          "type": "string",
+          "original": "'稳健现金流'",
+          "suggestedKey": "auto_8sfngy"
+        },
+        {
+          "line": 21,
+          "text": "苹果",
+          "type": "string",
+          "original": "'苹果'",
+          "suggestedKey": "auto_mugz"
+        },
+        {
+          "line": 21,
+          "text": "服务收入占比提升",
+          "type": "string",
+          "original": "'服务收入占比提升'",
+          "suggestedKey": "auto_ghbn2m"
+        },
+        {
+          "line": 21,
+          "text": "回购力度大",
+          "type": "string",
+          "original": "'回购力度大'",
+          "suggestedKey": "auto_2ndk8d"
+        },
+        {
+          "line": 21,
+          "text": "品牌护城河",
+          "type": "string",
+          "original": "'品牌护城河'",
+          "suggestedKey": "auto_8xtbnm"
+        },
+        {
+          "line": 22,
+          "text": "博通",
+          "type": "string",
+          "original": "'博通'",
+          "suggestedKey": "auto_eyv4"
+        },
+        {
+          "line": 22,
+          "text": "AI芯片需求",
+          "type": "string",
+          "original": "'AI芯片需求'",
+          "suggestedKey": "auto_m66xwe"
+        },
+        {
+          "line": 22,
+          "text": "VMware整合",
+          "type": "string",
+          "original": "'VMware整合'",
+          "suggestedKey": "auto_qrckl4"
+        },
+        {
+          "line": 22,
+          "text": "高股息",
+          "type": "string",
+          "original": "'高股息'",
+          "suggestedKey": "auto_naw92"
+        },
+        {
+          "line": 23,
+          "text": "Reels变现",
+          "type": "string",
+          "original": "'Reels变现'",
+          "suggestedKey": "auto_pk0fe7"
+        },
+        {
+          "line": 23,
+          "text": "AI降本增效",
+          "type": "string",
+          "original": "'AI降本增效'",
+          "suggestedKey": "auto_jr1h9r"
+        },
+        {
+          "line": 23,
+          "text": "元宇宙收缩止损",
+          "type": "string",
+          "original": "'元宇宙收缩止损'",
+          "suggestedKey": "auto_7igf8l"
+        },
+        {
+          "line": 24,
+          "text": "亚马逊",
+          "type": "string",
+          "original": "'亚马逊'",
+          "suggestedKey": "auto_c9irc"
+        },
+        {
+          "line": 24,
+          "text": "AWS增速回升",
+          "type": "string",
+          "original": "'AWS增速回升'",
+          "suggestedKey": "auto_duohaf"
+        },
+        {
+          "line": 24,
+          "text": "零售利润率改善",
+          "type": "string",
+          "original": "'零售利润率改善'",
+          "suggestedKey": "auto_ddyef7"
+        },
+        {
+          "line": 24,
+          "text": "物流优化",
+          "type": "string",
+          "original": "'物流优化'",
+          "suggestedKey": "auto_evvqwm"
+        },
+        {
+          "line": 25,
+          "text": "谷歌",
+          "type": "string",
+          "original": "'谷歌'",
+          "suggestedKey": "auto_ofsl"
+        },
+        {
+          "line": 25,
+          "text": "搜索广告韧性",
+          "type": "string",
+          "original": "'搜索广告韧性'",
+          "suggestedKey": "auto_7rktpr"
+        },
+        {
+          "line": 25,
+          "text": "云业务减亏",
+          "type": "string",
+          "original": "'云业务减亏'",
+          "suggestedKey": "auto_x9mfug"
+        },
+        {
+          "line": 25,
+          "text": "AI整合搜索",
+          "type": "string",
+          "original": "'AI整合搜索'",
+          "suggestedKey": "auto_pzl2ke"
+        },
+        {
+          "line": 26,
+          "text": "特斯拉",
+          "type": "string",
+          "original": "'特斯拉'",
+          "suggestedKey": "auto_h9g6r"
+        },
+        {
+          "line": 26,
+          "text": "FSD进展",
+          "type": "string",
+          "original": "'FSD进展'",
+          "suggestedKey": "auto_14oz01"
+        },
+        {
+          "line": 26,
+          "text": "储能增长",
+          "type": "string",
+          "original": "'储能增长'",
+          "suggestedKey": "auto_apkat2"
+        },
+        {
+          "line": 26,
+          "text": "价格战趋缓",
+          "type": "string",
+          "original": "'价格战趋缓'",
+          "suggestedKey": "auto_wu6wcl"
+        },
+        {
+          "line": 27,
+          "text": "MI300需求",
+          "type": "string",
+          "original": "'MI300需求'",
+          "suggestedKey": "auto_t2otll"
+        },
+        {
+          "line": 27,
+          "text": "PC市场复苏",
+          "type": "string",
+          "original": "'PC市场复苏'",
+          "suggestedKey": "auto_jwlj8z"
+        },
+        {
+          "line": 27,
+          "text": "服务器份额提升",
+          "type": "string",
+          "original": "'服务器份额提升'",
+          "suggestedKey": "auto_fy0o6j"
+        },
+        {
+          "line": 28,
+          "text": "AI Einstein增长",
+          "type": "string",
+          "original": "'AI Einstein增长'",
+          "suggestedKey": "auto_fccn5k"
+        },
+        {
+          "line": 28,
+          "text": "利润率提升",
+          "type": "string",
+          "original": "'利润率提升'",
+          "suggestedKey": "auto_jlhlz3"
+        },
+        {
+          "line": 28,
+          "text": "CRM市场领先",
+          "type": "string",
+          "original": "'CRM市场领先'",
+          "suggestedKey": "auto_ttpkco"
+        },
+        {
+          "line": 63,
+          "text": "价值",
+          "type": "string",
+          "original": "'价值'",
+          "suggestedKey": "auto_dvdx"
+        },
+        {
+          "line": 64,
+          "text": "成长",
+          "type": "string",
+          "original": "'成长'",
+          "suggestedKey": "auto_hi0f"
+        },
+        {
+          "line": 65,
+          "text": "动量",
+          "type": "string",
+          "original": "'动量'",
+          "suggestedKey": "auto_euxz"
+        },
+        {
+          "line": 66,
+          "text": "质量",
+          "type": "string",
+          "original": "'质量'",
+          "suggestedKey": "auto_ot5z"
+        },
+        {
+          "line": 67,
+          "text": "情绪",
+          "type": "string",
+          "original": "'情绪'",
+          "suggestedKey": "auto_h5mt"
+        },
+        {
+          "line": 112,
+          "text": "按评分",
+          "type": "string",
+          "original": "'按评分'",
+          "suggestedKey": "auto_f6fm3"
+        },
+        {
+          "line": 112,
+          "text": "按涨跌幅",
+          "type": "string",
+          "original": "'按涨跌幅'",
+          "suggestedKey": "auto_cyfd2w"
+        },
+        {
+          "line": 112,
+          "text": "按PE",
+          "type": "string",
+          "original": "'按PE'",
+          "suggestedKey": "auto_ei9j2"
+        },
+        {
+          "line": 120,
+          "text": "刷新中...",
+          "type": "string",
+          "original": "'刷新中...'",
+          "suggestedKey": "auto_25biey"
+        },
+        {
+          "line": 120,
+          "text": "刷新",
+          "type": "string",
+          "original": "'刷新'",
+          "suggestedKey": "refresh"
+        },
+        {
+          "line": 213,
+          "text": "价值",
+          "type": "string",
+          "original": "'价值'",
+          "suggestedKey": "auto_dvdx"
+        },
+        {
+          "line": 214,
+          "text": "成长",
+          "type": "string",
+          "original": "'成长'",
+          "suggestedKey": "auto_hi0f"
+        },
+        {
+          "line": 215,
+          "text": "动量",
+          "type": "string",
+          "original": "'动量'",
+          "suggestedKey": "auto_euxz"
+        },
+        {
+          "line": 216,
+          "text": "质量",
+          "type": "string",
+          "original": "'质量'",
+          "suggestedKey": "auto_ot5z"
+        },
+        {
+          "line": 217,
+          "text": "情绪",
+          "type": "string",
+          "original": "'情绪'",
+          "suggestedKey": "auto_h5mt"
+        }
+      ]
+    },
+    {
+      "file": "src/components/OnboardingModal.tsx",
+      "count": 50,
+      "matches": [
+        {
+          "line": 45,
+          "text": "突破",
+          "type": "string",
+          "original": "'突破'",
+          "suggestedKey": "auto_lhw3"
+        },
+        {
+          "line": 45,
+          "text": "趋势",
+          "type": "string",
+          "original": "'趋势'",
+          "suggestedKey": "auto_oj2s"
+        },
+        {
+          "line": 45,
+          "text": "MA5上穿MA20",
+          "type": "string",
+          "original": "'MA5上穿MA20'",
+          "suggestedKey": "auto_bpbgk8"
+        },
+        {
+          "line": 46,
+          "text": "消息",
+          "type": "string",
+          "original": "'消息'",
+          "suggestedKey": "auto_j5rb"
+        },
+        {
+          "line": 46,
+          "text": "财报",
+          "type": "string",
+          "original": "'财报'",
+          "suggestedKey": "auto_ojpf"
+        },
+        {
+          "line": 46,
+          "text": "CES keynote后买入",
+          "type": "string",
+          "original": "'CES keynote后买入'",
+          "suggestedKey": "auto_kuo8m7"
+        },
+        {
+          "line": 47,
+          "text": "止损",
+          "type": "string",
+          "original": "'止损'",
+          "suggestedKey": "auto_it6l"
+        },
+        {
+          "line": 47,
+          "text": "RSI超卖但继续下跌",
+          "type": "string",
+          "original": "'RSI超卖但继续下跌'",
+          "suggestedKey": "auto_2ge4es"
+        },
+        {
+          "line": 48,
+          "text": "回调",
+          "type": "string",
+          "original": "'回调'",
+          "suggestedKey": "auto_fjl1"
+        },
+        {
+          "line": 48,
+          "text": "技术",
+          "type": "string",
+          "original": "'技术'",
+          "suggestedKey": "auto_hbjj"
+        },
+        {
+          "line": 48,
+          "text": "回调到支撑位",
+          "type": "string",
+          "original": "'回调到支撑位'",
+          "suggestedKey": "auto_6iu6ww"
+        },
+        {
+          "line": 49,
+          "text": "止盈",
+          "type": "string",
+          "original": "'止盈'",
+          "suggestedKey": "auto_ix0m"
+        },
+        {
+          "line": 49,
+          "text": "目标价达成",
+          "type": "string",
+          "original": "'目标价达成'",
+          "suggestedKey": "auto_iqqfcg"
+        },
+        {
+          "line": 50,
+          "text": "趋势",
+          "type": "string",
+          "original": "'趋势'",
+          "suggestedKey": "auto_oj2s"
+        },
+        {
+          "line": 50,
+          "text": "定投",
+          "type": "string",
+          "original": "'定投'",
+          "suggestedKey": "auto_g4e3"
+        },
+        {
+          "line": 51,
+          "text": "止损",
+          "type": "string",
+          "original": "'止损'",
+          "suggestedKey": "auto_it6l"
+        },
+        {
+          "line": 51,
+          "text": "技术",
+          "type": "string",
+          "original": "'技术'",
+          "suggestedKey": "auto_hbjj"
+        },
+        {
+          "line": 51,
+          "text": "跌破布林带下轨",
+          "type": "string",
+          "original": "'跌破布林带下轨'",
+          "suggestedKey": "auto_vjj7yf"
+        },
+        {
+          "line": 52,
+          "text": "宏观",
+          "type": "string",
+          "original": "'宏观'",
+          "suggestedKey": "auto_gbv7"
+        },
+        {
+          "line": 52,
+          "text": "CPI数据低于预期",
+          "type": "string",
+          "original": "'CPI数据低于预期'",
+          "suggestedKey": "auto_4p57dh"
+        },
+        {
+          "line": 175,
+          "text": "连接富途 OpenD",
+          "type": "string",
+          "original": "'连接富途 OpenD'",
+          "suggestedKey": "auto_th1y9j"
+        },
+        {
+          "line": 176,
+          "text": "道鲸通过 OpenD 直连你的券商账户，获取实时行情和交易能力。",
+          "type": "string",
+          "original": "'道鲸通过 OpenD 直连你的券商账户，获取实时行情和交易能力。'",
+          "suggestedKey": "auto_6yo6nw"
+        },
+        {
+          "line": 177,
+          "text": "请确保 OpenD 已启动（默认端口 11111）。如果还没安装，可前往富途官网免费下载。",
+          "type": "string",
+          "original": "'请确保 OpenD 已启动（默认端口 11111）。如果还没安装，可前往富途官网免费下载。'",
+          "suggestedKey": "auto_7n7u93"
+        },
+        {
+          "line": 182,
+          "text": "添加自选股",
+          "type": "string",
+          "original": "'添加自选股'",
+          "suggestedKey": "auto_eszdh9"
+        },
+        {
+          "line": 183,
+          "text": "选择你关注的股票和 ETF，道鲸会实时监控它们的行情变化。",
+          "type": "string",
+          "original": "'选择你关注的股票和 ETF，道鲸会实时监控它们的行情变化。'",
+          "suggestedKey": "auto_aub1is"
+        },
+        {
+          "line": 184,
+          "text": "系统已预置 8 只热门标的（TQQQ、SOXL、QQQ、SPY、AAPL、NVDA 等），你也可以在设置中自定义。",
+          "type": "string",
+          "original": "'系统已预置 8 只热门标的（TQQQ、SOXL、QQQ、SPY、AAPL、NVDA 等），你也可以在设置中自定义。'",
+          "suggestedKey": "auto_8r9ox"
+        },
+        {
+          "line": 188,
+          "text": "创建第一个策略",
+          "type": "string",
+          "original": "'创建第一个策略'",
+          "suggestedKey": "auto_moyjeu"
+        },
+        {
+          "line": 189,
+          "text": "用一句话描述你的交易思路，AI 自动帮你生成可执行策略。",
+          "type": "string",
+          "original": "'用一句话描述你的交易思路，AI 自动帮你生成可执行策略。'",
+          "suggestedKey": "auto_d5tude"
+        },
+        {
+          "line": 190,
+          "text": "RSI 低于 30 时买入 TQQQ，涨 5% 卖出",
+          "type": "string",
+          "original": "\"RSI 低于 30 时买入 TQQQ，涨 5% 卖出\"",
+          "suggestedKey": "auto_as3aw3"
+        },
+        {
+          "line": 190,
+          "text": "例如：\"RSI 低于 30 时买入 TQQQ，涨 5% 卖出\"。你也可以选择模板或手动填表。",
+          "type": "string",
+          "original": "'例如：\"RSI 低于 30 时买入 TQQQ，涨 5% 卖出\"。你也可以选择模板或手动填表。'",
+          "suggestedKey": "auto_d0gm9r"
+        },
+        {
+          "line": 194,
+          "text": "设置风控规则",
+          "type": "string",
+          "original": "'设置风控规则'",
+          "suggestedKey": "auto_hluag2"
+        },
+        {
+          "line": 195,
+          "text": "配置你的风险承受能力，道鲸会自动拦截危险操作。",
+          "type": "string",
+          "original": "'配置你的风险承受能力，道鲸会自动拦截危险操作。'",
+          "suggestedKey": "auto_mvk09y"
+        },
+        {
+          "line": 196,
+          "text": "包括单品种上限、日亏损上限、Kelly 仓位管理、回撤降仓等。",
+          "type": "string",
+          "original": "'包括单品种上限、日亏损上限、Kelly 仓位管理、回撤降仓等。'",
+          "suggestedKey": "auto_4d4n6n"
+        },
+        {
+          "line": 200,
+          "text": "开始使用道鲸",
+          "type": "string",
+          "original": "'开始使用道鲸'",
+          "suggestedKey": "auto_ebzv4p"
+        },
+        {
+          "line": 202,
+          "text": "你已选择演示模式，所有数据为模拟，可安全体验全部功能。",
+          "type": "string",
+          "original": "'你已选择演示模式，所有数据为模拟，可安全体验全部功能。'",
+          "suggestedKey": "auto_mc01lu"
+        },
+        {
+          "line": 203,
+          "text": "一切就绪！道鲸正在实时监控市场，为你的交易保驾护航。",
+          "type": "string",
+          "original": "'一切就绪！道鲸正在实时监控市场，为你的交易保驾护航。'",
+          "suggestedKey": "auto_1la307"
+        },
+        {
+          "line": 261,
+          "text": "自动检测 OpenD 连接中…",
+          "type": "jsx",
+          "original": ">自动检测 OpenD 连接中…<",
+          "suggestedKey": "auto_j7qfj1"
+        },
+        {
+          "line": 319,
+          "text": "MA5 上穿 MA20 买入 TQQQ",
+          "type": "string",
+          "original": "'MA5 上穿 MA20 买入 TQQQ'",
+          "suggestedKey": "auto_sg6f3a"
+        },
+        {
+          "line": 319,
+          "text": "RSI < 30 买入 AAPL，止损 5%",
+          "type": "string",
+          "original": "'RSI < 30 买入 AAPL，止损 5%'",
+          "suggestedKey": "auto_qw0a13"
+        },
+        {
+          "line": 319,
+          "text": "MACD 金叉买入 QQQ",
+          "type": "string",
+          "original": "'MACD 金叉买入 QQQ'",
+          "suggestedKey": "auto_47f4bb"
+        },
+        {
+          "line": 331,
+          "text": "单品种上限",
+          "type": "string",
+          "original": "'单品种上限'",
+          "suggestedKey": "auto_i4qwl5"
+        },
+        {
+          "line": 332,
+          "text": "日亏损上限",
+          "type": "string",
+          "original": "'日亏损上限'",
+          "suggestedKey": "auto_hgflut"
+        },
+        {
+          "line": 333,
+          "text": "Kelly 上限",
+          "type": "string",
+          "original": "'Kelly 上限'",
+          "suggestedKey": "auto_3eucqv"
+        },
+        {
+          "line": 334,
+          "text": "回撤降仓",
+          "type": "string",
+          "original": "'回撤降仓'",
+          "suggestedKey": "auto_bdw6jw"
+        },
+        {
+          "line": 351,
+          "text": "演示模式已启用。所有行情和交易均为模拟，可放心探索功能。",
+          "type": "string",
+          "original": "'演示模式已启用。所有行情和交易均为模拟，可放心探索功能。'",
+          "suggestedKey": "auto_yv9z5v"
+        },
+        {
+          "line": 352,
+          "text": "OpenD 已连接，策略引擎就绪，风控系统激活。",
+          "type": "string",
+          "original": "'OpenD 已连接，策略引擎就绪，风控系统激活。'",
+          "suggestedKey": "auto_hhcyhk"
+        },
+        {
+          "line": 376,
+          "text": "连接中...",
+          "type": "string",
+          "original": "'连接中...'",
+          "suggestedKey": "auto_8r2drc"
+        },
+        {
+          "line": 376,
+          "text": "连接 OpenD",
+          "type": "string",
+          "original": "'连接 OpenD'",
+          "suggestedKey": "auto_g1c85d"
+        },
+        {
+          "line": 388,
+          "text": "开始使用 🐋",
+          "type": "string",
+          "original": "'开始使用 🐋'",
+          "suggestedKey": "auto_hkeg6y"
+        },
+        {
+          "line": 388,
+          "text": "下一步 →",
+          "type": "string",
+          "original": "'下一步 →'",
+          "suggestedKey": "auto_vapusi"
+        }
+      ]
+    },
+    {
+      "file": "src/components/risk/MarketHeatmap.tsx",
+      "count": 49,
+      "matches": [
+        {
+          "line": 20,
+          "text": "半导体",
+          "type": "string",
+          "original": "'半导体'",
+          "suggestedKey": "auto_cn9gh"
+        },
+        {
+          "line": 20,
+          "text": "中芯国际",
+          "type": "string",
+          "original": "'中芯国际'",
+          "suggestedKey": "auto_aeji4q"
+        },
+        {
+          "line": 20,
+          "text": "韦尔股份",
+          "type": "string",
+          "original": "'韦尔股份'",
+          "suggestedKey": "auto_jjti3u"
+        },
+        {
+          "line": 21,
+          "text": "人工智能",
+          "type": "string",
+          "original": "'人工智能'",
+          "suggestedKey": "auto_abq2cu"
+        },
+        {
+          "line": 21,
+          "text": "科大讯飞",
+          "type": "string",
+          "original": "'科大讯飞'",
+          "suggestedKey": "auto_fqv30l"
+        },
+        {
+          "line": 21,
+          "text": "海康威视",
+          "type": "string",
+          "original": "'海康威视'",
+          "suggestedKey": "auto_e7cv7p"
+        },
+        {
+          "line": 22,
+          "text": "新能源",
+          "type": "string",
+          "original": "'新能源'",
+          "suggestedKey": "auto_fiqqr"
+        },
+        {
+          "line": 22,
+          "text": "宁德时代",
+          "type": "string",
+          "original": "'宁德时代'",
+          "suggestedKey": "auto_bxzwxv"
+        },
+        {
+          "line": 22,
+          "text": "比亚迪",
+          "type": "string",
+          "original": "'比亚迪'",
+          "suggestedKey": "auto_g6qg4"
+        },
+        {
+          "line": 23,
+          "text": "白酒",
+          "type": "string",
+          "original": "'白酒'",
+          "suggestedKey": "auto_ky9h"
+        },
+        {
+          "line": 23,
+          "text": "贵州茅台",
+          "type": "string",
+          "original": "'贵州茅台'",
+          "suggestedKey": "auto_i7jq8k"
+        },
+        {
+          "line": 23,
+          "text": "五粮液",
+          "type": "string",
+          "original": "'五粮液'",
+          "suggestedKey": "auto_c45eg"
+        },
+        {
+          "line": 24,
+          "text": "银行",
+          "type": "string",
+          "original": "'银行'",
+          "suggestedKey": "auto_q32u"
+        },
+        {
+          "line": 24,
+          "text": "工商银行",
+          "type": "string",
+          "original": "'工商银行'",
+          "suggestedKey": "auto_c7jxzr"
+        },
+        {
+          "line": 24,
+          "text": "招商银行",
+          "type": "string",
+          "original": "'招商银行'",
+          "suggestedKey": "auto_cu2vc1"
+        },
+        {
+          "line": 25,
+          "text": "券商",
+          "type": "string",
+          "original": "'券商'",
+          "suggestedKey": "auto_egb2"
+        },
+        {
+          "line": 25,
+          "text": "中信证券",
+          "type": "string",
+          "original": "'中信证券'",
+          "suggestedKey": "auto_a7c7or"
+        },
+        {
+          "line": 25,
+          "text": "东方财富",
+          "type": "string",
+          "original": "'东方财富'",
+          "suggestedKey": "auto_aa8ts7"
+        },
+        {
+          "line": 26,
+          "text": "医药",
+          "type": "string",
+          "original": "'医药'",
+          "suggestedKey": "auto_evmc"
+        },
+        {
+          "line": 26,
+          "text": "恒瑞医药",
+          "type": "string",
+          "original": "'恒瑞医药'",
+          "suggestedKey": "auto_cmt7ts"
+        },
+        {
+          "line": 26,
+          "text": "药明康德",
+          "type": "string",
+          "original": "'药明康德'",
+          "suggestedKey": "auto_h077a7"
+        },
+        {
+          "line": 27,
+          "text": "房地产",
+          "type": "string",
+          "original": "'房地产'",
+          "suggestedKey": "auto_etb7a"
+        },
+        {
+          "line": 27,
+          "text": "万科A",
+          "type": "string",
+          "original": "'万科A'",
+          "suggestedKey": "auto_c05p3"
+        },
+        {
+          "line": 27,
+          "text": "保利发展",
+          "type": "string",
+          "original": "'保利发展'",
+          "suggestedKey": "auto_af2mj4"
+        },
+        {
+          "line": 28,
+          "text": "煤炭",
+          "type": "string",
+          "original": "'煤炭'",
+          "suggestedKey": "auto_jwll"
+        },
+        {
+          "line": 28,
+          "text": "中国神华",
+          "type": "string",
+          "original": "'中国神华'",
+          "suggestedKey": "auto_a8akv4"
+        },
+        {
+          "line": 28,
+          "text": "陕西煤业",
+          "type": "string",
+          "original": "'陕西煤业'",
+          "suggestedKey": "auto_jjacg0"
+        },
+        {
+          "line": 29,
+          "text": "钢铁",
+          "type": "string",
+          "original": "'钢铁'",
+          "suggestedKey": "auto_q3j3"
+        },
+        {
+          "line": 29,
+          "text": "宝钢股份",
+          "type": "string",
+          "original": "'宝钢股份'",
+          "suggestedKey": "auto_c6dd5t"
+        },
+        {
+          "line": 29,
+          "text": "鞍钢股份",
+          "type": "string",
+          "original": "'鞍钢股份'",
+          "suggestedKey": "auto_jqivw1"
+        },
+        {
+          "line": 30,
+          "text": "光伏",
+          "type": "string",
+          "original": "'光伏'",
+          "suggestedKey": "auto_e9d2"
+        },
+        {
+          "line": 30,
+          "text": "隆基绿能",
+          "type": "string",
+          "original": "'隆基绿能'",
+          "suggestedKey": "auto_jcz40i"
+        },
+        {
+          "line": 30,
+          "text": "通威股份",
+          "type": "string",
+          "original": "'通威股份'",
+          "suggestedKey": "auto_ik42jn"
+        },
+        {
+          "line": 31,
+          "text": "汽车",
+          "type": "string",
+          "original": "'汽车'",
+          "suggestedKey": "auto_j8nd"
+        },
+        {
+          "line": 31,
+          "text": "比亚迪",
+          "type": "string",
+          "original": "'比亚迪'",
+          "suggestedKey": "auto_g6qg4"
+        },
+        {
+          "line": 31,
+          "text": "长城汽车",
+          "type": "string",
+          "original": "'长城汽车'",
+          "suggestedKey": "auto_j877co"
+        },
+        {
+          "line": 32,
+          "text": "通信",
+          "type": "string",
+          "original": "'通信'",
+          "suggestedKey": "auto_oy6f"
+        },
+        {
+          "line": 32,
+          "text": "中国移动",
+          "type": "string",
+          "original": "'中国移动'",
+          "suggestedKey": "auto_a8aohp"
+        },
+        {
+          "line": 32,
+          "text": "中兴通讯",
+          "type": "string",
+          "original": "'中兴通讯'",
+          "suggestedKey": "auto_a7lkho"
+        },
+        {
+          "line": 33,
+          "text": "游戏",
+          "type": "string",
+          "original": "'游戏'",
+          "suggestedKey": "auto_jaaf"
+        },
+        {
+          "line": 33,
+          "text": "腾讯控股",
+          "type": "string",
+          "original": "'腾讯控股'",
+          "suggestedKey": "auto_gwxaiz"
+        },
+        {
+          "line": 33,
+          "text": "网易",
+          "type": "string",
+          "original": "'网易'",
+          "suggestedKey": "auto_m7s2"
+        },
+        {
+          "line": 34,
+          "text": "航运",
+          "type": "string",
+          "original": "'航运'",
+          "suggestedKey": "auto_mxgm"
+        },
+        {
+          "line": 34,
+          "text": "中远海控",
+          "type": "string",
+          "original": "'中远海控'",
+          "suggestedKey": "auto_agkivz"
+        },
+        {
+          "line": 34,
+          "text": "招商轮船",
+          "type": "string",
+          "original": "'招商轮船'",
+          "suggestedKey": "auto_cu1w9i"
+        },
+        {
+          "line": 35,
+          "text": "黄金",
+          "type": "string",
+          "original": "'黄金'",
+          "suggestedKey": "auto_rszx"
+        },
+        {
+          "line": 35,
+          "text": "山东黄金",
+          "type": "string",
+          "original": "'山东黄金'",
+          "suggestedKey": "auto_bzycuw"
+        },
+        {
+          "line": 35,
+          "text": "紫金矿业",
+          "type": "string",
+          "original": "'紫金矿业'",
+          "suggestedKey": "auto_ge9ytd"
+        },
+        {
+          "line": 40,
+          "text": "🗺️ 市场板块热力图",
+          "type": "string",
+          "original": "'🗺️ 市场板块热力图'",
+          "suggestedKey": "auto_q351fy"
+        }
+      ]
+    },
+    {
+      "file": "src/components/strategy/StrategyPage.tsx",
+      "count": 48,
+      "matches": [
+        {
+          "line": 210,
+          "text": "MA5 上穿 MA20 买入 TQQQ，止损 5%",
+          "type": "string",
+          "original": "'MA5 上穿 MA20 买入 TQQQ，止损 5%'",
+          "suggestedKey": "auto_rb17tf"
+        },
+        {
+          "line": 211,
+          "text": "RSI 低于 30 买入 AAPL，RSI 高于 70 卖出",
+          "type": "string",
+          "original": "'RSI 低于 30 买入 AAPL，RSI 高于 70 卖出'",
+          "suggestedKey": "auto_e4g6jr"
+        },
+        {
+          "line": 212,
+          "text": "MACD 金叉买入 QQQ，止盈 10% 止损 3%",
+          "type": "string",
+          "original": "'MACD 金叉买入 QQQ，止盈 10% 止损 3%'",
+          "suggestedKey": "auto_fp2ov0"
+        },
+        {
+          "line": 213,
+          "text": "布林带下轨买入 NVDA，上轨卖出",
+          "type": "string",
+          "original": "'布林带下轨买入 NVDA，上轨卖出'",
+          "suggestedKey": "auto_ekz23x"
+        },
+        {
+          "line": 214,
+          "text": "20日动量突破 5% 买入 SOXL",
+          "type": "string",
+          "original": "'20日动量突破 5% 买入 SOXL'",
+          "suggestedKey": "auto_rq9keu"
+        },
+        {
+          "line": 228,
+          "text": "无法识别策略模式",
+          "type": "string",
+          "original": "'无法识别策略模式'",
+          "suggestedKey": "auto_9uqv3r"
+        },
+        {
+          "line": 231,
+          "text": "解析失败",
+          "type": "string",
+          "original": "'解析失败'",
+          "suggestedKey": "auto_htpazl"
+        },
+        {
+          "line": 357,
+          "text": "✓ 已保存",
+          "type": "string",
+          "original": "'✓ 已保存'",
+          "suggestedKey": "auto_b4jri8"
+        },
+        {
+          "line": 357,
+          "text": "💾 保存策略",
+          "type": "string",
+          "original": "'💾 保存策略'",
+          "suggestedKey": "auto_lg4cvr"
+        },
+        {
+          "line": 360,
+          "text": "⏳ 回测中...",
+          "type": "string",
+          "original": "'⏳ 回测中...'",
+          "suggestedKey": "auto_rq5mzf"
+        },
+        {
+          "line": 360,
+          "text": "📈 回测 200 天",
+          "type": "string",
+          "original": "'📈 回测 200 天'",
+          "suggestedKey": "auto_to4bfh"
+        },
+        {
+          "line": 390,
+          "text": "总收益",
+          "type": "string",
+          "original": "\"总收益\"",
+          "suggestedKey": "auto_eladr"
+        },
+        {
+          "line": 391,
+          "text": "年化收益",
+          "type": "string",
+          "original": "\"年化收益\"",
+          "suggestedKey": "auto_c9ji0m"
+        },
+        {
+          "line": 392,
+          "text": "夏普比率",
+          "type": "string",
+          "original": "\"夏普比率\"",
+          "suggestedKey": "auto_bnwsz6"
+        },
+        {
+          "line": 393,
+          "text": "最大回撤",
+          "type": "string",
+          "original": "\"最大回撤\"",
+          "suggestedKey": "auto_dd61gt"
+        },
+        {
+          "line": 394,
+          "text": "胜率",
+          "type": "string",
+          "original": "\"胜率\"",
+          "suggestedKey": "auto_mjvv"
+        },
+        {
+          "line": 395,
+          "text": "盈亏比",
+          "type": "string",
+          "original": "\"盈亏比\"",
+          "suggestedKey": "auto_hsa99"
+        },
+        {
+          "line": 508,
+          "text": "低",
+          "type": "string",
+          "original": "'低'",
+          "suggestedKey": "auto_fny"
+        },
+        {
+          "line": 508,
+          "text": "中",
+          "type": "string",
+          "original": "'中'",
+          "suggestedKey": "auto_ffx"
+        },
+        {
+          "line": 508,
+          "text": "高",
+          "type": "string",
+          "original": "'高'",
+          "suggestedKey": "auto_ul4"
+        },
+        {
+          "line": 544,
+          "text": "创建中...",
+          "type": "string",
+          "original": "'创建中...'",
+          "suggestedKey": "auto_xojly8"
+        },
+        {
+          "line": 544,
+          "text": "使用此模板 →",
+          "type": "string",
+          "original": "'使用此模板 →'",
+          "suggestedKey": "auto_mfltrf"
+        },
+        {
+          "line": 627,
+          "text": "均线交叉",
+          "type": "string",
+          "original": "'均线交叉'",
+          "suggestedKey": "auto_bj8pvh"
+        },
+        {
+          "line": 627,
+          "text": "RSI 超买超卖",
+          "type": "string",
+          "original": "'RSI 超买超卖'",
+          "suggestedKey": "auto_ce0oxg"
+        },
+        {
+          "line": 627,
+          "text": "MACD 金叉死叉",
+          "type": "string",
+          "original": "'MACD 金叉死叉'",
+          "suggestedKey": "auto_wmwm3z"
+        },
+        {
+          "line": 628,
+          "text": "动量突破",
+          "type": "string",
+          "original": "'动量突破'",
+          "suggestedKey": "auto_b19ire"
+        },
+        {
+          "line": 628,
+          "text": "布林带突破",
+          "type": "string",
+          "original": "'布林带突破'",
+          "suggestedKey": "auto_pw75l1"
+        },
+        {
+          "line": 671,
+          "text": "快速均线",
+          "type": "string",
+          "original": "\"快速均线\"",
+          "suggestedKey": "auto_cp2gh8"
+        },
+        {
+          "line": 672,
+          "text": "慢速均线",
+          "type": "string",
+          "original": "\"慢速均线\"",
+          "suggestedKey": "auto_cvpwk5"
+        },
+        {
+          "line": 677,
+          "text": "超卖线",
+          "type": "string",
+          "original": "\"超卖线\"",
+          "suggestedKey": "auto_l53la"
+        },
+        {
+          "line": 678,
+          "text": "超买线",
+          "type": "string",
+          "original": "\"超买线\"",
+          "suggestedKey": "auto_l49lg"
+        },
+        {
+          "line": 686,
+          "text": "止损",
+          "type": "string",
+          "original": "\"止损\"",
+          "suggestedKey": "auto_it6l"
+        },
+        {
+          "line": 687,
+          "text": "止盈",
+          "type": "string",
+          "original": "\"止盈\"",
+          "suggestedKey": "auto_ix0m"
+        },
+        {
+          "line": 692,
+          "text": "保存中...",
+          "type": "string",
+          "original": "'保存中...'",
+          "suggestedKey": "auto_vts3p8"
+        },
+        {
+          "line": 692,
+          "text": "创建中...",
+          "type": "string",
+          "original": "'创建中...'",
+          "suggestedKey": "auto_xojly8"
+        },
+        {
+          "line": 692,
+          "text": "💾 保存修改",
+          "type": "string",
+          "original": "'💾 保存修改'",
+          "suggestedKey": "auto_lgbtvf"
+        },
+        {
+          "line": 692,
+          "text": "✅ 创建策略",
+          "type": "string",
+          "original": "'✅ 创建策略'",
+          "suggestedKey": "auto_iajvxz"
+        },
+        {
+          "line": 723,
+          "text": "草稿",
+          "type": "string",
+          "original": "'草稿'",
+          "suggestedKey": "auto_n02e"
+        },
+        {
+          "line": 723,
+          "text": "已回测",
+          "type": "string",
+          "original": "'已回测'",
+          "suggestedKey": "auto_e6qvz"
+        },
+        {
+          "line": 723,
+          "text": "🟢 运行中",
+          "type": "string",
+          "original": "'🟢 运行中'",
+          "suggestedKey": "auto_nb69cm"
+        },
+        {
+          "line": 723,
+          "text": "已停止",
+          "type": "string",
+          "original": "'已停止'",
+          "suggestedKey": "auto_e5mns"
+        },
+        {
+          "line": 723,
+          "text": "模拟中",
+          "type": "string",
+          "original": "'模拟中'",
+          "suggestedKey": "auto_g0v0v"
+        },
+        {
+          "line": 763,
+          "text": "AI 对比策略",
+          "type": "string",
+          "original": "\"AI 对比策略\"",
+          "suggestedKey": "auto_6q3rwi"
+        },
+        {
+          "line": 768,
+          "text": "编辑策略",
+          "type": "string",
+          "original": "\"编辑策略\"",
+          "suggestedKey": "auto_gmoeh6"
+        },
+        {
+          "line": 773,
+          "text": "删除策略",
+          "type": "string",
+          "original": "\"删除策略\"",
+          "suggestedKey": "auto_aziyvn"
+        },
+        {
+          "line": 867,
+          "text": "🟢 运行中",
+          "type": "string",
+          "original": "'🟢 运行中'",
+          "suggestedKey": "auto_nb69cm"
+        },
+        {
+          "line": 896,
+          "text": "⏳ 回测中...",
+          "type": "string",
+          "original": "'⏳ 回测中...'",
+          "suggestedKey": "auto_rq5mzf"
+        },
+        {
+          "line": 896,
+          "text": "📈 回测",
+          "type": "string",
+          "original": "'📈 回测'",
+          "suggestedKey": "auto_kz3n0i"
+        }
+      ]
+    },
+    {
+      "file": "src/components/strategy/PerformanceAttributionPage.tsx",
+      "count": 39,
+      "matches": [
+        {
+          "line": 24,
+          "text": "双均线突破策略",
+          "type": "string",
+          "original": "'双均线突破策略'",
+          "suggestedKey": "auto_4pdomy"
+        },
+        {
+          "line": 33,
+          "text": "动量",
+          "type": "string",
+          "original": "'动量'",
+          "suggestedKey": "auto_euxz"
+        },
+        {
+          "line": 34,
+          "text": "价值",
+          "type": "string",
+          "original": "'价值'",
+          "suggestedKey": "auto_dvdx"
+        },
+        {
+          "line": 35,
+          "text": "质量",
+          "type": "string",
+          "original": "'质量'",
+          "suggestedKey": "auto_ot5z"
+        },
+        {
+          "line": 36,
+          "text": "低波动",
+          "type": "string",
+          "original": "'低波动'",
+          "suggestedKey": "auto_c5590"
+        },
+        {
+          "line": 37,
+          "text": "市值",
+          "type": "string",
+          "original": "'市值'",
+          "suggestedKey": "auto_gfi2"
+        },
+        {
+          "line": 38,
+          "text": "成长",
+          "type": "string",
+          "original": "'成长'",
+          "suggestedKey": "auto_hi0f"
+        },
+        {
+          "line": 41,
+          "text": "1月",
+          "type": "string",
+          "original": "'1月'",
+          "suggestedKey": "auto_liv"
+        },
+        {
+          "line": 42,
+          "text": "2月",
+          "type": "string",
+          "original": "'2月'",
+          "suggestedKey": "auto_ljq"
+        },
+        {
+          "line": 43,
+          "text": "3月",
+          "type": "string",
+          "original": "'3月'",
+          "suggestedKey": "auto_lkl"
+        },
+        {
+          "line": 44,
+          "text": "4月",
+          "type": "string",
+          "original": "'4月'",
+          "suggestedKey": "auto_llg"
+        },
+        {
+          "line": 45,
+          "text": "5月",
+          "type": "string",
+          "original": "'5月'",
+          "suggestedKey": "auto_lmb"
+        },
+        {
+          "line": 46,
+          "text": "6月",
+          "type": "string",
+          "original": "'6月'",
+          "suggestedKey": "auto_ln6"
+        },
+        {
+          "line": 47,
+          "text": "7月",
+          "type": "string",
+          "original": "'7月'",
+          "suggestedKey": "auto_lo1"
+        },
+        {
+          "line": 48,
+          "text": "8月",
+          "type": "string",
+          "original": "'8月'",
+          "suggestedKey": "auto_low"
+        },
+        {
+          "line": 49,
+          "text": "9月",
+          "type": "string",
+          "original": "'9月'",
+          "suggestedKey": "auto_lpr"
+        },
+        {
+          "line": 50,
+          "text": "10月",
+          "type": "string",
+          "original": "'10月'",
+          "suggestedKey": "auto_1lu1"
+        },
+        {
+          "line": 51,
+          "text": "11月",
+          "type": "string",
+          "original": "'11月'",
+          "suggestedKey": "auto_1luw"
+        },
+        {
+          "line": 52,
+          "text": "12月",
+          "type": "string",
+          "original": "'12月'",
+          "suggestedKey": "auto_1lvr"
+        },
+        {
+          "line": 55,
+          "text": "科技",
+          "type": "string",
+          "original": "'科技'",
+          "suggestedKey": "auto_l9e7"
+        },
+        {
+          "line": 56,
+          "text": "金融",
+          "type": "string",
+          "original": "'金融'",
+          "suggestedKey": "auto_pjoc"
+        },
+        {
+          "line": 57,
+          "text": "消费",
+          "type": "string",
+          "original": "'消费'",
+          "suggestedKey": "auto_jelt"
+        },
+        {
+          "line": 58,
+          "text": "医药",
+          "type": "string",
+          "original": "'医药'",
+          "suggestedKey": "auto_evmc"
+        },
+        {
+          "line": 59,
+          "text": "能源",
+          "type": "string",
+          "original": "'能源'",
+          "suggestedKey": "auto_mjoz"
+        },
+        {
+          "line": 60,
+          "text": "工业",
+          "type": "string",
+          "original": "'工业'",
+          "suggestedKey": "auto_gedx"
+        },
+        {
+          "line": 88,
+          "text": "资产配置",
+          "type": "string",
+          "original": "'资产配置'",
+          "suggestedKey": "auto_i5nqw4"
+        },
+        {
+          "line": 88,
+          "text": "个股选择",
+          "type": "string",
+          "original": "'个股选择'",
+          "suggestedKey": "auto_aeg6bb"
+        },
+        {
+          "line": 88,
+          "text": "交互作用",
+          "type": "string",
+          "original": "'交互作用'",
+          "suggestedKey": "auto_a8z7sq"
+        },
+        {
+          "line": 93,
+          "text": "资产配置",
+          "type": "string",
+          "original": "'资产配置'",
+          "suggestedKey": "auto_i5nqw4"
+        },
+        {
+          "line": 94,
+          "text": "个股选择",
+          "type": "string",
+          "original": "'个股选择'",
+          "suggestedKey": "auto_aeg6bb"
+        },
+        {
+          "line": 95,
+          "text": "交互作用",
+          "type": "string",
+          "original": "'交互作用'",
+          "suggestedKey": "auto_a8z7sq"
+        },
+        {
+          "line": 122,
+          "text": "因子敞口",
+          "type": "string",
+          "original": "'因子敞口'",
+          "suggestedKey": "auto_bcbz5h"
+        },
+        {
+          "line": 133,
+          "text": "加载归因数据...",
+          "type": "string",
+          "original": "\"加载归因数据...\"",
+          "suggestedKey": "auto_y1vin9"
+        },
+        {
+          "line": 176,
+          "text": "资产配置效应",
+          "type": "string",
+          "original": "'资产配置效应'",
+          "suggestedKey": "auto_oiavv4"
+        },
+        {
+          "line": 176,
+          "text": "行业配置带来的超额收益",
+          "type": "string",
+          "original": "'行业配置带来的超额收益'",
+          "suggestedKey": "auto_dzjurm"
+        },
+        {
+          "line": 177,
+          "text": "个股选择效应",
+          "type": "string",
+          "original": "'个股选择效应'",
+          "suggestedKey": "auto_jmlful"
+        },
+        {
+          "line": 177,
+          "text": "行业内选股带来的超额收益",
+          "type": "string",
+          "original": "'行业内选股带来的超额收益'",
+          "suggestedKey": "auto_aqqin2"
+        },
+        {
+          "line": 178,
+          "text": "交互效应",
+          "type": "string",
+          "original": "'交互效应'",
+          "suggestedKey": "auto_a92tkq"
+        },
+        {
+          "line": 178,
+          "text": "配置与选股的交叉影响",
+          "type": "string",
+          "original": "'配置与选股的交叉影响'",
+          "suggestedKey": "auto_vujzog"
+        }
+      ]
+    },
+    {
+      "file": "src/components/market/MarketHeatmapPage.tsx",
+      "count": 37,
+      "matches": [
+        {
+          "line": 19,
+          "text": "🏭 行业板块",
+          "type": "string",
+          "original": "'🏭 行业板块'",
+          "suggestedKey": "auto_1nugph"
+        },
+        {
+          "line": 20,
+          "text": "💡 概念板块",
+          "type": "string",
+          "original": "'💡 概念板块'",
+          "suggestedKey": "auto_vxep4p"
+        },
+        {
+          "line": 21,
+          "text": "🌍 地区板块",
+          "type": "string",
+          "original": "'🌍 地区板块'",
+          "suggestedKey": "auto_vhqq41"
+        },
+        {
+          "line": 94,
+          "text": "加载中...",
+          "type": "string",
+          "original": "'加载中...'",
+          "suggestedKey": "auto_27k1ha"
+        },
+        {
+          "line": 216,
+          "text": "半导体",
+          "type": "string",
+          "original": "'半导体'",
+          "suggestedKey": "auto_cn9gh"
+        },
+        {
+          "line": 217,
+          "text": "人工智能",
+          "type": "string",
+          "original": "'人工智能'",
+          "suggestedKey": "auto_abq2cu"
+        },
+        {
+          "line": 218,
+          "text": "新能源",
+          "type": "string",
+          "original": "'新能源'",
+          "suggestedKey": "auto_fiqqr"
+        },
+        {
+          "line": 219,
+          "text": "白酒",
+          "type": "string",
+          "original": "'白酒'",
+          "suggestedKey": "auto_ky9h"
+        },
+        {
+          "line": 220,
+          "text": "银行",
+          "type": "string",
+          "original": "'银行'",
+          "suggestedKey": "auto_q32u"
+        },
+        {
+          "line": 221,
+          "text": "券商",
+          "type": "string",
+          "original": "'券商'",
+          "suggestedKey": "auto_egb2"
+        },
+        {
+          "line": 222,
+          "text": "医药",
+          "type": "string",
+          "original": "'医药'",
+          "suggestedKey": "auto_evmc"
+        },
+        {
+          "line": 223,
+          "text": "房地产",
+          "type": "string",
+          "original": "'房地产'",
+          "suggestedKey": "auto_etb7a"
+        },
+        {
+          "line": 224,
+          "text": "煤炭",
+          "type": "string",
+          "original": "'煤炭'",
+          "suggestedKey": "auto_jwll"
+        },
+        {
+          "line": 225,
+          "text": "钢铁",
+          "type": "string",
+          "original": "'钢铁'",
+          "suggestedKey": "auto_q3j3"
+        },
+        {
+          "line": 226,
+          "text": "光伏",
+          "type": "string",
+          "original": "'光伏'",
+          "suggestedKey": "auto_e9d2"
+        },
+        {
+          "line": 227,
+          "text": "汽车",
+          "type": "string",
+          "original": "'汽车'",
+          "suggestedKey": "auto_j8nd"
+        },
+        {
+          "line": 228,
+          "text": "通信",
+          "type": "string",
+          "original": "'通信'",
+          "suggestedKey": "auto_oy6f"
+        },
+        {
+          "line": 229,
+          "text": "游戏",
+          "type": "string",
+          "original": "'游戏'",
+          "suggestedKey": "auto_jaaf"
+        },
+        {
+          "line": 230,
+          "text": "航运",
+          "type": "string",
+          "original": "'航运'",
+          "suggestedKey": "auto_mxgm"
+        },
+        {
+          "line": 231,
+          "text": "黄金",
+          "type": "string",
+          "original": "'黄金'",
+          "suggestedKey": "auto_rszx"
+        },
+        {
+          "line": 232,
+          "text": "石油",
+          "type": "string",
+          "original": "'石油'",
+          "suggestedKey": "auto_kzza"
+        },
+        {
+          "line": 233,
+          "text": "电力",
+          "type": "string",
+          "original": "'电力'",
+          "suggestedKey": "auto_ke12"
+        },
+        {
+          "line": 238,
+          "text": "算力",
+          "type": "string",
+          "original": "'算力'",
+          "suggestedKey": "auto_lh44"
+        },
+        {
+          "line": 239,
+          "text": "人形机器人",
+          "type": "string",
+          "original": "'人形机器人'",
+          "suggestedKey": "auto_yvftng"
+        },
+        {
+          "line": 240,
+          "text": "低空经济",
+          "type": "string",
+          "original": "'低空经济'",
+          "suggestedKey": "auto_ainb63"
+        },
+        {
+          "line": 241,
+          "text": "固态电池",
+          "type": "string",
+          "original": "'固态电池'",
+          "suggestedKey": "auto_bdk576"
+        },
+        {
+          "line": 242,
+          "text": "商业航天",
+          "type": "string",
+          "original": "'商业航天'",
+          "suggestedKey": "auto_b39g43"
+        },
+        {
+          "line": 243,
+          "text": "数据要素",
+          "type": "string",
+          "original": "'数据要素'",
+          "suggestedKey": "auto_d7tkjh"
+        },
+        {
+          "line": 244,
+          "text": "脑机接口",
+          "type": "string",
+          "original": "'脑机接口'",
+          "suggestedKey": "auto_gpn7jb"
+        },
+        {
+          "line": 248,
+          "text": "上海",
+          "type": "string",
+          "original": "'上海'",
+          "suggestedKey": "auto_dvhp"
+        },
+        {
+          "line": 249,
+          "text": "深圳",
+          "type": "string",
+          "original": "'深圳'",
+          "suggestedKey": "auto_j6g2"
+        },
+        {
+          "line": 250,
+          "text": "北京",
+          "type": "string",
+          "original": "'北京'",
+          "suggestedKey": "auto_ekc5"
+        },
+        {
+          "line": 251,
+          "text": "浙江",
+          "type": "string",
+          "original": "'浙江'",
+          "suggestedKey": "auto_j6zq"
+        },
+        {
+          "line": 252,
+          "text": "江苏",
+          "type": "string",
+          "original": "'江苏'",
+          "suggestedKey": "auto_j5g0"
+        },
+        {
+          "line": 253,
+          "text": "广东",
+          "type": "string",
+          "original": "'广东'",
+          "suggestedKey": "auto_gi2l"
+        },
+        {
+          "line": 254,
+          "text": "山东",
+          "type": "string",
+          "original": "'山东'",
+          "suggestedKey": "auto_g5hn"
+        },
+        {
+          "line": 255,
+          "text": "福建",
+          "type": "string",
+          "original": "'福建'",
+          "suggestedKey": "auto_l74b"
+        }
+      ]
+    },
+    {
+      "file": "src/components/backtest/BacktestReportPage.tsx",
+      "count": 36,
+      "matches": [
+        {
+          "line": 108,
+          "text": "日期",
+          "type": "string",
+          "original": "'日期'",
+          "suggestedKey": "auto_hwbe"
+        },
+        {
+          "line": 108,
+          "text": "方向",
+          "type": "string",
+          "original": "'方向'",
+          "suggestedKey": "auto_hri0"
+        },
+        {
+          "line": 108,
+          "text": "入场价",
+          "type": "string",
+          "original": "'入场价'",
+          "suggestedKey": "auto_ccgma"
+        },
+        {
+          "line": 108,
+          "text": "出场价",
+          "type": "string",
+          "original": "'出场价'",
+          "suggestedKey": "auto_cfj3r"
+        },
+        {
+          "line": 108,
+          "text": "盈亏",
+          "type": "string",
+          "original": "'盈亏'",
+          "suggestedKey": "auto_kmvb"
+        },
+        {
+          "line": 108,
+          "text": "盈亏%",
+          "type": "string",
+          "original": "'盈亏%'",
+          "suggestedKey": "auto_hrozi"
+        },
+        {
+          "line": 108,
+          "text": "持有天数",
+          "type": "string",
+          "original": "'持有天数'",
+          "suggestedKey": "auto_cx2ff3"
+        },
+        {
+          "line": 145,
+          "text": "日期,方向,入场价,出场价,盈亏,盈亏%,持有天数",
+          "type": "string",
+          "original": "'日期,方向,入场价,出场价,盈亏,盈亏%,持有天数'",
+          "suggestedKey": "auto_h20nhb"
+        },
+        {
+          "line": 312,
+          "text": "3个月",
+          "type": "string",
+          "original": "'3个月'",
+          "suggestedKey": "auto_ewsx"
+        },
+        {
+          "line": 312,
+          "text": "6个月",
+          "type": "string",
+          "original": "'6个月'",
+          "suggestedKey": "auto_ez10"
+        },
+        {
+          "line": 312,
+          "text": "1年",
+          "type": "string",
+          "original": "'1年'",
+          "suggestedKey": "auto_jtv"
+        },
+        {
+          "line": 312,
+          "text": "2年",
+          "type": "string",
+          "original": "'2年'",
+          "suggestedKey": "auto_juq"
+        },
+        {
+          "line": 326,
+          "text": "⏳ 回测中...",
+          "type": "string",
+          "original": "'⏳ 回测中...'",
+          "suggestedKey": "auto_rq5mzf"
+        },
+        {
+          "line": 326,
+          "text": "🚀 开始回测",
+          "type": "string",
+          "original": "'🚀 开始回测'",
+          "suggestedKey": "auto_jkuqi3"
+        },
+        {
+          "line": 338,
+          "text": "📊 绩效概览",
+          "type": "string",
+          "original": "'📊 绩效概览'",
+          "suggestedKey": "auto_9sl0vc"
+        },
+        {
+          "line": 338,
+          "text": "📈 权益曲线",
+          "type": "string",
+          "original": "'📈 权益曲线'",
+          "suggestedKey": "auto_dni2nr"
+        },
+        {
+          "line": 338,
+          "text": "📉 回撤分析",
+          "type": "string",
+          "original": "'📉 回撤分析'",
+          "suggestedKey": "auto_fbnpz0"
+        },
+        {
+          "line": 338,
+          "text": "📅 月度收益",
+          "type": "string",
+          "original": "'📅 月度收益'",
+          "suggestedKey": "auto_f788t2"
+        },
+        {
+          "line": 338,
+          "text": "🕐 交易时间线",
+          "type": "string",
+          "original": "'🕐 交易时间线'",
+          "suggestedKey": "auto_h3iu63"
+        },
+        {
+          "line": 338,
+          "text": "📋 交易明细",
+          "type": "string",
+          "original": "'📋 交易明细'",
+          "suggestedKey": "auto_fem46f"
+        },
+        {
+          "line": 338,
+          "text": "🔬 增强分析",
+          "type": "string",
+          "original": "'🔬 增强分析'",
+          "suggestedKey": "auto_vqydg7"
+        },
+        {
+          "line": 357,
+          "text": "总收益",
+          "type": "string",
+          "original": "'总收益'",
+          "suggestedKey": "auto_eladr"
+        },
+        {
+          "line": 358,
+          "text": "年化收益",
+          "type": "string",
+          "original": "'年化收益'",
+          "suggestedKey": "auto_c9ji0m"
+        },
+        {
+          "line": 359,
+          "text": "最大回撤",
+          "type": "string",
+          "original": "'最大回撤'",
+          "suggestedKey": "auto_dd61gt"
+        },
+        {
+          "line": 360,
+          "text": "夏普比率",
+          "type": "string",
+          "original": "'夏普比率'",
+          "suggestedKey": "auto_bnwsz6"
+        },
+        {
+          "line": 361,
+          "text": "胜率",
+          "type": "string",
+          "original": "'胜率'",
+          "suggestedKey": "auto_mjvv"
+        },
+        {
+          "line": 362,
+          "text": "盈亏比",
+          "type": "string",
+          "original": "'盈亏比'",
+          "suggestedKey": "auto_hsa99"
+        },
+        {
+          "line": 363,
+          "text": "总交易",
+          "type": "string",
+          "original": "'总交易'",
+          "suggestedKey": "auto_ehcve"
+        },
+        {
+          "line": 364,
+          "text": "最终资金",
+          "type": "string",
+          "original": "'最终资金'",
+          "suggestedKey": "auto_dixyhh"
+        },
+        {
+          "line": 415,
+          "text": "初始: ${result.initialCapital.toLocaleString()}",
+          "type": "jsx",
+          "original": ">初始: ${result.initialCapital.toLocaleString()}<",
+          "suggestedKey": "auto_3gu4ku"
+        },
+        {
+          "line": 416,
+          "text": "最终: ${result.finalCapital.toFixed(2)}",
+          "type": "jsx",
+          "original": ">最终: ${result.finalCapital.toFixed(2)}<",
+          "suggestedKey": "auto_5uv57r"
+        },
+        {
+          "line": 491,
+          "text": "共 {result.trades.length} 笔交易",
+          "type": "jsx",
+          "original": ">共 {result.trades.length} 笔交易<",
+          "suggestedKey": "auto_t6qc74"
+        },
+        {
+          "line": 492,
+          "text": "胜率 {(result.winRate * 100).toFixed(1)}% · 盈亏比 {result.profitLossRatio.toFixed(2)}",
+          "type": "jsx",
+          "original": ">胜率 {(result.winRate * 100).toFixed(1)}% · 盈亏比 {result.profitLossRatio.toFixed(2)}<",
+          "suggestedKey": "auto_tsxno7"
+        },
+        {
+          "line": 511,
+          "text": "⏳ 扫描中...",
+          "type": "string",
+          "original": "'⏳ 扫描中...'",
+          "suggestedKey": "auto_twvham"
+        },
+        {
+          "line": 511,
+          "text": "🔬 参数扫描",
+          "type": "string",
+          "original": "'🔬 参数扫描'",
+          "suggestedKey": "auto_v5vkf7"
+        },
+        {
+          "line": 518,
+          "text": "⏳ 分析中...",
+          "type": "string",
+          "original": "'⏳ 分析中...'",
+          "suggestedKey": "auto_djfglk"
+        }
+      ]
+    },
+    {
+      "file": "src/components/strategy/AIAdvisorPage.tsx",
+      "count": 36,
+      "matches": [
+        {
+          "line": 15,
+          "text": "强烈买入",
+          "type": "string",
+          "original": "'强烈买入'",
+          "suggestedKey": "auto_chafk3"
+        },
+        {
+          "line": 16,
+          "text": "买入",
+          "type": "string",
+          "original": "'买入'",
+          "suggestedKey": "auto_dsdx"
+        },
+        {
+          "line": 17,
+          "text": "持有",
+          "type": "string",
+          "original": "'持有'",
+          "suggestedKey": "auto_helk"
+        },
+        {
+          "line": 18,
+          "text": "减仓",
+          "type": "string",
+          "original": "'减仓'",
+          "suggestedKey": "auto_ecis"
+        },
+        {
+          "line": 19,
+          "text": "卖出",
+          "type": "string",
+          "original": "'卖出'",
+          "suggestedKey": "auto_emhw"
+        },
+        {
+          "line": 23,
+          "text": "当前市场处于震荡整理阶段，AI和科技板块表现强势，传统行业相对疲软。美联储维持利率不变，市场预期年内降息1-2次。建议关注结构性机会。",
+          "type": "string",
+          "original": "'当前市场处于震荡整理阶段，AI和科技板块表现强势，传统行业相对疲软。美联储维持利率不变，市场预期年内降息1-2次。建议关注结构性机会。'",
+          "suggestedKey": "auto_n657bo"
+        },
+        {
+          "line": 27,
+          "text": "增持",
+          "type": "string",
+          "original": "'增持'",
+          "suggestedKey": "auto_fm77"
+        },
+        {
+          "line": 27,
+          "text": "英伟达",
+          "type": "string",
+          "original": "'英伟达'",
+          "suggestedKey": "auto_jkp4g"
+        },
+        {
+          "line": 27,
+          "text": "AI芯片需求持续强劲，Blackwell架构推出带来新增长点",
+          "type": "string",
+          "original": "'AI芯片需求持续强劲，Blackwell架构推出带来新增长点'",
+          "suggestedKey": "auto_5jx4eq"
+        },
+        {
+          "line": 28,
+          "text": "增持",
+          "type": "string",
+          "original": "'增持'",
+          "suggestedKey": "auto_fm77"
+        },
+        {
+          "line": 28,
+          "text": "博通",
+          "type": "string",
+          "original": "'博通'",
+          "suggestedKey": "auto_eyv4"
+        },
+        {
+          "line": 28,
+          "text": "AI定制芯片业务快速增长，VMware整合效应显现",
+          "type": "string",
+          "original": "'AI定制芯片业务快速增长，VMware整合效应显现'",
+          "suggestedKey": "auto_1lcwx2"
+        },
+        {
+          "line": 29,
+          "text": "减持",
+          "type": "string",
+          "original": "'减持'",
+          "suggestedKey": "auto_egia"
+        },
+        {
+          "line": 29,
+          "text": "特斯拉",
+          "type": "string",
+          "original": "'特斯拉'",
+          "suggestedKey": "auto_h9g6r"
+        },
+        {
+          "line": 29,
+          "text": "价格战压缩利润率，FSD商业化进度慢于预期",
+          "type": "string",
+          "original": "'价格战压缩利润率，FSD商业化进度慢于预期'",
+          "suggestedKey": "auto_gy00ls"
+        },
+        {
+          "line": 30,
+          "text": "持有",
+          "type": "string",
+          "original": "'持有'",
+          "suggestedKey": "auto_helk"
+        },
+        {
+          "line": 30,
+          "text": "苹果",
+          "type": "string",
+          "original": "'苹果'",
+          "suggestedKey": "auto_mugz"
+        },
+        {
+          "line": 30,
+          "text": "服务收入稳健增长，Vision Pro长期看好但短期影响有限",
+          "type": "string",
+          "original": "'服务收入稳健增长，Vision Pro长期看好但短期影响有限'",
+          "suggestedKey": "auto_9luq8y"
+        },
+        {
+          "line": 31,
+          "text": "关注",
+          "type": "string",
+          "original": "'关注'",
+          "suggestedKey": "auto_eg9h"
+        },
+        {
+          "line": 31,
+          "text": "超微电脑",
+          "type": "string",
+          "original": "'超微电脑'",
+          "suggestedKey": "auto_i969l1"
+        },
+        {
+          "line": 31,
+          "text": "AI服务器需求爆发，但估值较高需等待回调",
+          "type": "string",
+          "original": "'AI服务器需求爆发，但估值较高需等待回调'",
+          "suggestedKey": "auto_j6lb1p"
+        },
+        {
+          "line": 34,
+          "text": "地缘政治风险：中美关系紧张可能影响科技股估值",
+          "type": "string",
+          "original": "'地缘政治风险：中美关系紧张可能影响科技股估值'",
+          "suggestedKey": "auto_aimm95"
+        },
+        {
+          "line": 35,
+          "text": "通胀反复风险：若通胀数据超预期，可能推迟降息时间",
+          "type": "string",
+          "original": "'通胀反复风险：若通胀数据超预期，可能推迟降息时间'",
+          "suggestedKey": "auto_gb9pb"
+        },
+        {
+          "line": 36,
+          "text": "AI泡沫风险：部分AI概念股估值已透支未来2-3年增长",
+          "type": "string",
+          "original": "'AI泡沫风险：部分AI概念股估值已透支未来2-3年增长'",
+          "suggestedKey": "auto_t3q4kd"
+        },
+        {
+          "line": 37,
+          "text": "流动性风险：季度末资金面可能趋紧",
+          "type": "string",
+          "original": "'流动性风险：季度末资金面可能趋紧'",
+          "suggestedKey": "auto_cbepxy"
+        },
+        {
+          "line": 40,
+          "text": "AI算力基建",
+          "type": "string",
+          "original": "'AI算力基建'",
+          "suggestedKey": "auto_n7cat0"
+        },
+        {
+          "line": 41,
+          "text": "高股息防御",
+          "type": "string",
+          "original": "'高股息防御'",
+          "suggestedKey": "auto_h7fhfv"
+        },
+        {
+          "line": 42,
+          "text": "新能源出海",
+          "type": "string",
+          "original": "'新能源出海'",
+          "suggestedKey": "auto_buxw68"
+        },
+        {
+          "line": 43,
+          "text": "消费复苏",
+          "type": "string",
+          "original": "'消费复苏'",
+          "suggestedKey": "auto_eegr83"
+        },
+        {
+          "line": 44,
+          "text": "医药创新",
+          "type": "string",
+          "original": "'医药创新'",
+          "suggestedKey": "auto_b1km15"
+        },
+        {
+          "line": 46,
+          "text": "预计下周市场维持震荡格局，重点关注：1) 美联储会议纪要；2) 英伟达GTC大会后续影响；3) 中概股财报季。建议控制仓位，保持灵活性。",
+          "type": "string",
+          "original": "'预计下周市场维持震荡格局，重点关注：1) 美联储会议纪要；2) 英伟达GTC大会后续影响；3) 中概股财报季。建议控制仓位，保持灵活性。'",
+          "suggestedKey": "auto_4j6fra"
+        },
+        {
+          "line": 78,
+          "text": "分析中...",
+          "type": "string",
+          "original": "'分析中...'",
+          "suggestedKey": "auto_dpyq39"
+        },
+        {
+          "line": 78,
+          "text": "重新分析",
+          "type": "string",
+          "original": "'重新分析'",
+          "suggestedKey": "auto_itbn65"
+        },
+        {
+          "line": 125,
+          "text": "增持",
+          "type": "string",
+          "original": "'增持'",
+          "suggestedKey": "auto_fm77"
+        },
+        {
+          "line": 126,
+          "text": "减持",
+          "type": "string",
+          "original": "'减持'",
+          "suggestedKey": "auto_egia"
+        },
+        {
+          "line": 127,
+          "text": "卖出",
+          "type": "string",
+          "original": "'卖出'",
+          "suggestedKey": "auto_emhw"
+        }
+      ]
+    },
+    {
+      "file": "src/components/trading/TradeHistoryPage.tsx",
+      "count": 34,
+      "matches": [
+        {
+          "line": 27,
+          "text": "苹果",
+          "type": "string",
+          "original": "'苹果'",
+          "suggestedKey": "auto_mugz"
+        },
+        {
+          "line": 27,
+          "text": "双均线突破",
+          "type": "string",
+          "original": "'双均线突破'",
+          "suggestedKey": "auto_fyxfd5"
+        },
+        {
+          "line": 27,
+          "text": "金叉信号",
+          "type": "string",
+          "original": "'金叉信号'",
+          "suggestedKey": "auto_iqrbri"
+        },
+        {
+          "line": 28,
+          "text": "英伟达",
+          "type": "string",
+          "original": "'英伟达'",
+          "suggestedKey": "auto_jkp4g"
+        },
+        {
+          "line": 28,
+          "text": "动量轮动",
+          "type": "string",
+          "original": "'动量轮动'",
+          "suggestedKey": "auto_b1cvhd"
+        },
+        {
+          "line": 28,
+          "text": "突破前高",
+          "type": "string",
+          "original": "'突破前高'",
+          "suggestedKey": "auto_fy9fzy"
+        },
+        {
+          "line": 29,
+          "text": "苹果",
+          "type": "string",
+          "original": "'苹果'",
+          "suggestedKey": "auto_mugz"
+        },
+        {
+          "line": 29,
+          "text": "双均线突破",
+          "type": "string",
+          "original": "'双均线突破'",
+          "suggestedKey": "auto_fyxfd5"
+        },
+        {
+          "line": 29,
+          "text": "死叉信号",
+          "type": "string",
+          "original": "'死叉信号'",
+          "suggestedKey": "auto_dwouhw"
+        },
+        {
+          "line": 30,
+          "text": "特斯拉",
+          "type": "string",
+          "original": "'特斯拉'",
+          "suggestedKey": "auto_h9g6r"
+        },
+        {
+          "line": 30,
+          "text": "双均线突破",
+          "type": "string",
+          "original": "'双均线突破'",
+          "suggestedKey": "auto_fyxfd5"
+        },
+        {
+          "line": 30,
+          "text": "金叉信号",
+          "type": "string",
+          "original": "'金叉信号'",
+          "suggestedKey": "auto_iqrbri"
+        },
+        {
+          "line": 31,
+          "text": "英伟达",
+          "type": "string",
+          "original": "'英伟达'",
+          "suggestedKey": "auto_jkp4g"
+        },
+        {
+          "line": 31,
+          "text": "动量轮动",
+          "type": "string",
+          "original": "'动量轮动'",
+          "suggestedKey": "auto_b1cvhd"
+        },
+        {
+          "line": 31,
+          "text": "动量衰减",
+          "type": "string",
+          "original": "'动量衰减'",
+          "suggestedKey": "auto_b1bohy"
+        },
+        {
+          "line": 32,
+          "text": "微软",
+          "type": "string",
+          "original": "'微软'",
+          "suggestedKey": "auto_h281"
+        },
+        {
+          "line": 32,
+          "text": "价值投资",
+          "type": "string",
+          "original": "'价值投资'",
+          "suggestedKey": "auto_aase2c"
+        },
+        {
+          "line": 32,
+          "text": "PE低于均值",
+          "type": "string",
+          "original": "'PE低于均值'",
+          "suggestedKey": "auto_lrjnp2"
+        },
+        {
+          "line": 33,
+          "text": "特斯拉",
+          "type": "string",
+          "original": "'特斯拉'",
+          "suggestedKey": "auto_h9g6r"
+        },
+        {
+          "line": 33,
+          "text": "双均线突破",
+          "type": "string",
+          "original": "'双均线突破'",
+          "suggestedKey": "auto_fyxfd5"
+        },
+        {
+          "line": 33,
+          "text": "止损触发",
+          "type": "string",
+          "original": "'止损触发'",
+          "suggestedKey": "auto_dysxpk"
+        },
+        {
+          "line": 34,
+          "text": "博通",
+          "type": "string",
+          "original": "'博通'",
+          "suggestedKey": "auto_eyv4"
+        },
+        {
+          "line": 34,
+          "text": "动量轮动",
+          "type": "string",
+          "original": "'动量轮动'",
+          "suggestedKey": "auto_b1cvhd"
+        },
+        {
+          "line": 34,
+          "text": "AI芯片需求",
+          "type": "string",
+          "original": "'AI芯片需求'",
+          "suggestedKey": "auto_m66xwe"
+        },
+        {
+          "line": 35,
+          "text": "微软",
+          "type": "string",
+          "original": "'微软'",
+          "suggestedKey": "auto_h281"
+        },
+        {
+          "line": 35,
+          "text": "价值投资",
+          "type": "string",
+          "original": "'价值投资'",
+          "suggestedKey": "auto_aase2c"
+        },
+        {
+          "line": 35,
+          "text": "目标价到达",
+          "type": "string",
+          "original": "'目标价到达'",
+          "suggestedKey": "auto_ir0n90"
+        },
+        {
+          "line": 36,
+          "text": "博通",
+          "type": "string",
+          "original": "'博通'",
+          "suggestedKey": "auto_eyv4"
+        },
+        {
+          "line": 36,
+          "text": "动量轮动",
+          "type": "string",
+          "original": "'动量轮动'",
+          "suggestedKey": "auto_b1cvhd"
+        },
+        {
+          "line": 36,
+          "text": "动量转弱",
+          "type": "string",
+          "original": "'动量转弱'",
+          "suggestedKey": "auto_b1cxws"
+        },
+        {
+          "line": 37,
+          "text": "双均线突破",
+          "type": "string",
+          "original": "'双均线突破'",
+          "suggestedKey": "auto_fyxfd5"
+        },
+        {
+          "line": 37,
+          "text": "金叉信号",
+          "type": "string",
+          "original": "'金叉信号'",
+          "suggestedKey": "auto_iqrbri"
+        },
+        {
+          "line": 38,
+          "text": "双均线突破",
+          "type": "string",
+          "original": "'双均线突破'",
+          "suggestedKey": "auto_fyxfd5"
+        },
+        {
+          "line": 38,
+          "text": "死叉信号",
+          "type": "string",
+          "original": "'死叉信号'",
+          "suggestedKey": "auto_dwouhw"
+        }
+      ]
+    },
+    {
+      "file": "src/components/portfolio/PortfolioRebalancerPage.tsx",
+      "count": 31,
+      "matches": [
+        {
+          "line": 12,
+          "text": "增持",
+          "type": "string",
+          "original": "'增持'",
+          "suggestedKey": "auto_fm77"
+        },
+        {
+          "line": 12,
+          "text": "减持",
+          "type": "string",
+          "original": "'减持'",
+          "suggestedKey": "auto_egia"
+        },
+        {
+          "line": 12,
+          "text": "新增",
+          "type": "string",
+          "original": "'新增'",
+          "suggestedKey": "auto_hs6m"
+        },
+        {
+          "line": 12,
+          "text": "删除",
+          "type": "string",
+          "original": "'删除'",
+          "suggestedKey": "delete"
+        },
+        {
+          "line": 26,
+          "text": "苹果",
+          "type": "string",
+          "original": "'苹果'",
+          "suggestedKey": "auto_mugz"
+        },
+        {
+          "line": 26,
+          "text": "增持",
+          "type": "string",
+          "original": "'增持'",
+          "suggestedKey": "auto_fm77"
+        },
+        {
+          "line": 27,
+          "text": "英伟达",
+          "type": "string",
+          "original": "'英伟达'",
+          "suggestedKey": "auto_jkp4g"
+        },
+        {
+          "line": 27,
+          "text": "增持",
+          "type": "string",
+          "original": "'增持'",
+          "suggestedKey": "auto_fm77"
+        },
+        {
+          "line": 28,
+          "text": "微软",
+          "type": "string",
+          "original": "'微软'",
+          "suggestedKey": "auto_h281"
+        },
+        {
+          "line": 28,
+          "text": "增持",
+          "type": "string",
+          "original": "'增持'",
+          "suggestedKey": "auto_fm77"
+        },
+        {
+          "line": 29,
+          "text": "博通",
+          "type": "string",
+          "original": "'博通'",
+          "suggestedKey": "auto_eyv4"
+        },
+        {
+          "line": 29,
+          "text": "增持",
+          "type": "string",
+          "original": "'增持'",
+          "suggestedKey": "auto_fm77"
+        },
+        {
+          "line": 30,
+          "text": "特斯拉",
+          "type": "string",
+          "original": "'特斯拉'",
+          "suggestedKey": "auto_h9g6r"
+        },
+        {
+          "line": 30,
+          "text": "减持",
+          "type": "string",
+          "original": "'减持'",
+          "suggestedKey": "auto_egia"
+        },
+        {
+          "line": 31,
+          "text": "增持",
+          "type": "string",
+          "original": "'增持'",
+          "suggestedKey": "auto_fm77"
+        },
+        {
+          "line": 32,
+          "text": "新增",
+          "type": "string",
+          "original": "'新增'",
+          "suggestedKey": "auto_hs6m"
+        },
+        {
+          "line": 33,
+          "text": "英特尔",
+          "type": "string",
+          "original": "'英特尔'",
+          "suggestedKey": "auto_jqfe4"
+        },
+        {
+          "line": 33,
+          "text": "删除",
+          "type": "string",
+          "original": "'删除'",
+          "suggestedKey": "delete"
+        },
+        {
+          "line": 61,
+          "text": "增持",
+          "type": "string",
+          "original": "'增持'",
+          "suggestedKey": "auto_fm77"
+        },
+        {
+          "line": 67,
+          "text": "加载调仓建议...",
+          "type": "string",
+          "original": "\"加载调仓建议...\"",
+          "suggestedKey": "auto_s6xz8z"
+        },
+        {
+          "line": 134,
+          "text": "每日",
+          "type": "jsx",
+          "original": ">每日<",
+          "suggestedKey": "auto_iwae"
+        },
+        {
+          "line": 135,
+          "text": "每周",
+          "type": "jsx",
+          "original": ">每周<",
+          "suggestedKey": "auto_isu1"
+        },
+        {
+          "line": 136,
+          "text": "每月",
+          "type": "jsx",
+          "original": ">每月<",
+          "suggestedKey": "auto_iwih"
+        },
+        {
+          "line": 188,
+          "text": "增持",
+          "type": "string",
+          "original": "'增持'",
+          "suggestedKey": "auto_fm77"
+        },
+        {
+          "line": 188,
+          "text": "新增",
+          "type": "string",
+          "original": "'新增'",
+          "suggestedKey": "auto_hs6m"
+        },
+        {
+          "line": 189,
+          "text": "减持",
+          "type": "string",
+          "original": "'减持'",
+          "suggestedKey": "auto_egia"
+        },
+        {
+          "line": 189,
+          "text": "删除",
+          "type": "string",
+          "original": "'删除'",
+          "suggestedKey": "delete"
+        },
+        {
+          "line": 259,
+          "text": "Dry-run 模式：仅展示调仓预览",
+          "type": "string",
+          "original": "'Dry-run 模式：仅展示调仓预览'",
+          "suggestedKey": "auto_frtiax"
+        },
+        {
+          "line": 259,
+          "text": "真实执行：将提交调仓订单",
+          "type": "string",
+          "original": "'真实执行：将提交调仓订单'",
+          "suggestedKey": "auto_ehs6fb"
+        },
+        {
+          "line": 261,
+          "text": "预览调仓",
+          "type": "string",
+          "original": "'预览调仓'",
+          "suggestedKey": "auto_jtdbec"
+        },
+        {
+          "line": 261,
+          "text": "执行调仓",
+          "type": "string",
+          "original": "'执行调仓'",
+          "suggestedKey": "auto_czg0c5"
+        }
+      ]
+    },
+    {
+      "file": "src/components/market/DataQualityMonitorPage.tsx",
+      "count": 29,
+      "matches": [
+        {
+          "line": 44,
+          "text": "格式校验",
+          "type": "string",
+          "original": "'格式校验'",
+          "suggestedKey": "auto_djq6u6"
+        },
+        {
+          "line": 45,
+          "text": "价格边界",
+          "type": "string",
+          "original": "'价格边界'",
+          "suggestedKey": "auto_aeihlk"
+        },
+        {
+          "line": 46,
+          "text": "成交量异常",
+          "type": "string",
+          "original": "'成交量异常'",
+          "suggestedKey": "auto_w8kxan"
+        },
+        {
+          "line": 47,
+          "text": "时间戳间隙",
+          "type": "string",
+          "original": "'时间戳间隙'",
+          "suggestedKey": "auto_86qqjq"
+        },
+        {
+          "line": 48,
+          "text": "数据延迟",
+          "type": "string",
+          "original": "'数据延迟'",
+          "suggestedKey": "auto_d7mfqf"
+        },
+        {
+          "line": 52,
+          "text": "苹果",
+          "type": "string",
+          "original": "'苹果'",
+          "suggestedKey": "auto_mugz"
+        },
+        {
+          "line": 53,
+          "text": "英伟达",
+          "type": "string",
+          "original": "'英伟达'",
+          "suggestedKey": "auto_jkp4g"
+        },
+        {
+          "line": 54,
+          "text": "特斯拉",
+          "type": "string",
+          "original": "'特斯拉'",
+          "suggestedKey": "auto_h9g6r"
+        },
+        {
+          "line": 55,
+          "text": "微软",
+          "type": "string",
+          "original": "'微软'",
+          "suggestedKey": "auto_h281"
+        },
+        {
+          "line": 56,
+          "text": "亚马逊",
+          "type": "string",
+          "original": "'亚马逊'",
+          "suggestedKey": "auto_c9irc"
+        },
+        {
+          "line": 57,
+          "text": "谷歌",
+          "type": "string",
+          "original": "'谷歌'",
+          "suggestedKey": "auto_ofsl"
+        },
+        {
+          "line": 59,
+          "text": "博通",
+          "type": "string",
+          "original": "'博通'",
+          "suggestedKey": "auto_eyv4"
+        },
+        {
+          "line": 60,
+          "text": "腾讯",
+          "type": "string",
+          "original": "'腾讯'",
+          "suggestedKey": "auto_msj5"
+        },
+        {
+          "line": 61,
+          "text": "阿里",
+          "type": "string",
+          "original": "'阿里'",
+          "suggestedKey": "auto_qctp"
+        },
+        {
+          "line": 65,
+          "text": "价格边界",
+          "type": "string",
+          "original": "'价格边界'",
+          "suggestedKey": "auto_aeihlk"
+        },
+        {
+          "line": 65,
+          "text": "价格超出合理区间 (检测到 $9999.99)",
+          "type": "string",
+          "original": "'价格超出合理区间 (检测到 $9999.99)'",
+          "suggestedKey": "auto_unaezu"
+        },
+        {
+          "line": 66,
+          "text": "数据延迟",
+          "type": "string",
+          "original": "'数据延迟'",
+          "suggestedKey": "auto_d7mfqf"
+        },
+        {
+          "line": 66,
+          "text": "超过60秒未收到更新",
+          "type": "string",
+          "original": "'超过60秒未收到更新'",
+          "suggestedKey": "auto_tps2sq"
+        },
+        {
+          "line": 67,
+          "text": "数据延迟",
+          "type": "string",
+          "original": "'数据延迟'",
+          "suggestedKey": "auto_d7mfqf"
+        },
+        {
+          "line": 67,
+          "text": "超过30秒未收到更新",
+          "type": "string",
+          "original": "'超过30秒未收到更新'",
+          "suggestedKey": "auto_ea0pl9"
+        },
+        {
+          "line": 68,
+          "text": "时间戳间隙",
+          "type": "string",
+          "original": "'时间戳间隙'",
+          "suggestedKey": "auto_86qqjq"
+        },
+        {
+          "line": 68,
+          "text": "检测到时间戳倒序",
+          "type": "string",
+          "original": "'检测到时间戳倒序'",
+          "suggestedKey": "auto_37b2z1"
+        },
+        {
+          "line": 69,
+          "text": "成交量异常",
+          "type": "string",
+          "original": "'成交量异常'",
+          "suggestedKey": "auto_w8kxan"
+        },
+        {
+          "line": 69,
+          "text": "成交量突增300%",
+          "type": "string",
+          "original": "'成交量突增300%'",
+          "suggestedKey": "auto_jsnkxi"
+        },
+        {
+          "line": 132,
+          "text": "加载数据质量状态...",
+          "type": "string",
+          "original": "\"加载数据质量状态...\"",
+          "suggestedKey": "auto_ul9jnj"
+        },
+        {
+          "line": 248,
+          "text": "正常",
+          "type": "string",
+          "original": "'正常'",
+          "suggestedKey": "auto_is6t"
+        },
+        {
+          "line": 248,
+          "text": "延迟",
+          "type": "string",
+          "original": "'延迟'",
+          "suggestedKey": "auto_gxwp"
+        },
+        {
+          "line": 248,
+          "text": "异常",
+          "type": "string",
+          "original": "'异常'",
+          "suggestedKey": "auto_gody"
+        },
+        {
+          "line": 288,
+          "text": "{c.entries} 条目",
+          "type": "jsx",
+          "original": ">{c.entries} 条目<",
+          "suggestedKey": "auto_m11mue"
+        }
+      ]
+    },
+    {
+      "file": "src/components/backtest/BacktestComparisonPage.tsx",
+      "count": 28,
+      "matches": [
+        {
+          "line": 27,
+          "text": "双均线突破策略",
+          "type": "string",
+          "original": "'双均线突破策略'",
+          "suggestedKey": "auto_4pdomy"
+        },
+        {
+          "line": 43,
+          "text": "动量轮动策略",
+          "type": "string",
+          "original": "'动量轮动策略'",
+          "suggestedKey": "auto_nnhuk0"
+        },
+        {
+          "line": 59,
+          "text": "价值投资策略",
+          "type": "string",
+          "original": "'价值投资策略'",
+          "suggestedKey": "auto_optg5f"
+        },
+        {
+          "line": 75,
+          "text": "网格交易策略",
+          "type": "string",
+          "original": "'网格交易策略'",
+          "suggestedKey": "auto_9y0cqx"
+        },
+        {
+          "line": 171,
+          "text": "1月",
+          "type": "string",
+          "original": "'1月'",
+          "suggestedKey": "auto_liv"
+        },
+        {
+          "line": 171,
+          "text": "2月",
+          "type": "string",
+          "original": "'2月'",
+          "suggestedKey": "auto_ljq"
+        },
+        {
+          "line": 171,
+          "text": "3月",
+          "type": "string",
+          "original": "'3月'",
+          "suggestedKey": "auto_lkl"
+        },
+        {
+          "line": 171,
+          "text": "4月",
+          "type": "string",
+          "original": "'4月'",
+          "suggestedKey": "auto_llg"
+        },
+        {
+          "line": 171,
+          "text": "5月",
+          "type": "string",
+          "original": "'5月'",
+          "suggestedKey": "auto_lmb"
+        },
+        {
+          "line": 171,
+          "text": "6月",
+          "type": "string",
+          "original": "'6月'",
+          "suggestedKey": "auto_ln6"
+        },
+        {
+          "line": 171,
+          "text": "7月",
+          "type": "string",
+          "original": "'7月'",
+          "suggestedKey": "auto_lo1"
+        },
+        {
+          "line": 171,
+          "text": "8月",
+          "type": "string",
+          "original": "'8月'",
+          "suggestedKey": "auto_low"
+        },
+        {
+          "line": 171,
+          "text": "9月",
+          "type": "string",
+          "original": "'9月'",
+          "suggestedKey": "auto_lpr"
+        },
+        {
+          "line": 171,
+          "text": "10月",
+          "type": "string",
+          "original": "'10月'",
+          "suggestedKey": "auto_1lu1"
+        },
+        {
+          "line": 171,
+          "text": "11月",
+          "type": "string",
+          "original": "'11月'",
+          "suggestedKey": "auto_1luw"
+        },
+        {
+          "line": 171,
+          "text": "12月",
+          "type": "string",
+          "original": "'12月'",
+          "suggestedKey": "auto_1lvr"
+        },
+        {
+          "line": 218,
+          "text": "加载回测数据...",
+          "type": "string",
+          "original": "\"加载回测数据...\"",
+          "suggestedKey": "auto_ul7l5m"
+        },
+        {
+          "line": 278,
+          "text": "总收益率",
+          "type": "string",
+          "original": "'总收益率'",
+          "suggestedKey": "auto_ckckns"
+        },
+        {
+          "line": 279,
+          "text": "年化收益率",
+          "type": "string",
+          "original": "'年化收益率'",
+          "suggestedKey": "auto_p28vgx"
+        },
+        {
+          "line": 280,
+          "text": "最大回撤",
+          "type": "string",
+          "original": "'最大回撤'",
+          "suggestedKey": "auto_dd61gt"
+        },
+        {
+          "line": 281,
+          "text": "夏普比率",
+          "type": "string",
+          "original": "'夏普比率'",
+          "suggestedKey": "auto_bnwsz6"
+        },
+        {
+          "line": 282,
+          "text": "卡玛比率",
+          "type": "string",
+          "original": "'卡玛比率'",
+          "suggestedKey": "auto_b01v65"
+        },
+        {
+          "line": 283,
+          "text": "索提诺比率",
+          "type": "string",
+          "original": "'索提诺比率'",
+          "suggestedKey": "auto_581la7"
+        },
+        {
+          "line": 284,
+          "text": "胜率",
+          "type": "string",
+          "original": "'胜率'",
+          "suggestedKey": "auto_mjvv"
+        },
+        {
+          "line": 285,
+          "text": "盈亏比",
+          "type": "string",
+          "original": "'盈亏比'",
+          "suggestedKey": "auto_hsa99"
+        },
+        {
+          "line": 286,
+          "text": "交易次数",
+          "type": "string",
+          "original": "'交易次数'",
+          "suggestedKey": "auto_acjsf2"
+        },
+        {
+          "line": 326,
+          "text": "净值曲线",
+          "type": "string",
+          "original": "'净值曲线'",
+          "suggestedKey": "auto_angbk9"
+        },
+        {
+          "line": 326,
+          "text": "月度收益",
+          "type": "string",
+          "original": "'月度收益'",
+          "suggestedKey": "auto_de6o36"
+        }
+      ]
+    },
+    {
+      "file": "src/components/market/ConsumerDashboard.tsx",
+      "count": 28,
+      "matches": [
+        {
+          "line": 62,
+          "text": "获取数据失败",
+          "type": "string",
+          "original": "'获取数据失败'",
+          "suggestedKey": "auto_v1celr"
+        },
+        {
+          "line": 65,
+          "text": "获取数据失败",
+          "type": "string",
+          "original": "'获取数据失败'",
+          "suggestedKey": "auto_v1celr"
+        },
+        {
+          "line": 83,
+          "text": "食品",
+          "type": "string",
+          "original": "'食品'",
+          "suggestedKey": "auto_qgua"
+        },
+        {
+          "line": 83,
+          "text": "非食品",
+          "type": "string",
+          "original": "'非食品'",
+          "suggestedKey": "auto_mwmg0"
+        },
+        {
+          "line": 83,
+          "text": "服务",
+          "type": "string",
+          "original": "'服务'",
+          "suggestedKey": "auto_hzck"
+        },
+        {
+          "line": 98,
+          "text": "食品",
+          "type": "string",
+          "original": "'食品'",
+          "suggestedKey": "auto_qgua"
+        },
+        {
+          "line": 99,
+          "text": "非食品",
+          "type": "string",
+          "original": "'非食品'",
+          "suggestedKey": "auto_mwmg0"
+        },
+        {
+          "line": 100,
+          "text": "服务",
+          "type": "string",
+          "original": "'服务'",
+          "suggestedKey": "auto_hzck"
+        },
+        {
+          "line": 114,
+          "text": "零售总额",
+          "type": "string",
+          "original": "'零售总额'",
+          "suggestedKey": "auto_jeerwa"
+        },
+        {
+          "line": 114,
+          "text": "城镇",
+          "type": "string",
+          "original": "'城镇'",
+          "suggestedKey": "auto_fr5l"
+        },
+        {
+          "line": 114,
+          "text": "乡村",
+          "type": "string",
+          "original": "'乡村'",
+          "suggestedKey": "auto_dwcw"
+        },
+        {
+          "line": 114,
+          "text": "网上零售",
+          "type": "string",
+          "original": "'网上零售'",
+          "suggestedKey": "auto_ge92mp"
+        },
+        {
+          "line": 127,
+          "text": "零售总额",
+          "type": "string",
+          "original": "'零售总额'",
+          "suggestedKey": "auto_jeerwa"
+        },
+        {
+          "line": 128,
+          "text": "城镇",
+          "type": "string",
+          "original": "'城镇'",
+          "suggestedKey": "auto_fr5l"
+        },
+        {
+          "line": 129,
+          "text": "乡村",
+          "type": "string",
+          "original": "'乡村'",
+          "suggestedKey": "auto_dwcw"
+        },
+        {
+          "line": 130,
+          "text": "网上零售",
+          "type": "string",
+          "original": "'网上零售'",
+          "suggestedKey": "auto_ge92mp"
+        },
+        {
+          "line": 144,
+          "text": "消费者信心",
+          "type": "string",
+          "original": "'消费者信心'",
+          "suggestedKey": "auto_kf8ghi"
+        },
+        {
+          "line": 144,
+          "text": "预期",
+          "type": "string",
+          "original": "'预期'",
+          "suggestedKey": "auto_qiaj"
+        },
+        {
+          "line": 144,
+          "text": "满意",
+          "type": "string",
+          "original": "'满意'",
+          "suggestedKey": "auto_je4u"
+        },
+        {
+          "line": 144,
+          "text": "收入",
+          "type": "string",
+          "original": "'收入'",
+          "suggestedKey": "auto_hnu7"
+        },
+        {
+          "line": 144,
+          "text": "就业",
+          "type": "string",
+          "original": "'就业'",
+          "suggestedKey": "auto_g3yh"
+        },
+        {
+          "line": 157,
+          "text": "消费者信心",
+          "type": "string",
+          "original": "'消费者信心'",
+          "suggestedKey": "auto_kf8ghi"
+        },
+        {
+          "line": 158,
+          "text": "预期",
+          "type": "string",
+          "original": "'预期'",
+          "suggestedKey": "auto_qiaj"
+        },
+        {
+          "line": 159,
+          "text": "满意",
+          "type": "string",
+          "original": "'满意'",
+          "suggestedKey": "auto_je4u"
+        },
+        {
+          "line": 160,
+          "text": "收入",
+          "type": "string",
+          "original": "'收入'",
+          "suggestedKey": "auto_hnu7"
+        },
+        {
+          "line": 161,
+          "text": "就业",
+          "type": "string",
+          "original": "'就业'",
+          "suggestedKey": "auto_g3yh"
+        },
+        {
+          "line": 194,
+          "text": "刷新中...",
+          "type": "string",
+          "original": "'刷新中...'",
+          "suggestedKey": "auto_25biey"
+        },
+        {
+          "line": 194,
+          "text": "🔄 刷新",
+          "type": "string",
+          "original": "'🔄 刷新'",
+          "suggestedKey": "auto_l0548i"
+        }
+      ]
+    },
+    {
+      "file": "src/components/marketplace/MarketplacePage.tsx",
+      "count": 27,
+      "matches": [
+        {
+          "line": 102,
+          "text": "🔥 热度",
+          "type": "string",
+          "original": "'🔥 热度'",
+          "suggestedKey": "auto_l0vdgx"
+        },
+        {
+          "line": 102,
+          "text": "📈 收益",
+          "type": "string",
+          "original": "'📈 收益'",
+          "suggestedKey": "auto_kz64q1"
+        },
+        {
+          "line": 102,
+          "text": "🛡️ 稳健",
+          "type": "string",
+          "original": "'🛡️ 稳健'",
+          "suggestedKey": "auto_k7ceih"
+        },
+        {
+          "line": 102,
+          "text": "🆕 新星",
+          "type": "string",
+          "original": "'🆕 新星'",
+          "suggestedKey": "auto_l2982e"
+        },
+        {
+          "line": 102,
+          "text": "🆓 免费",
+          "type": "string",
+          "original": "'🆓 免费'",
+          "suggestedKey": "auto_l24oz9"
+        },
+        {
+          "line": 116,
+          "text": "全部",
+          "type": "string",
+          "original": "'全部'",
+          "suggestedKey": "auto_en40"
+        },
+        {
+          "line": 116,
+          "text": "低风险",
+          "type": "string",
+          "original": "'低风险'",
+          "suggestedKey": "auto_cczl5"
+        },
+        {
+          "line": 116,
+          "text": "中风险",
+          "type": "string",
+          "original": "'中风险'",
+          "suggestedKey": "auto_c71ag"
+        },
+        {
+          "line": 116,
+          "text": "高风险",
+          "type": "string",
+          "original": "'高风险'",
+          "suggestedKey": "auto_nfayb"
+        },
+        {
+          "line": 134,
+          "text": "搜索策略...",
+          "type": "string",
+          "original": "\"搜索策略...\"",
+          "suggestedKey": "auto_hmeoop"
+        },
+        {
+          "line": 155,
+          "text": "📭 市场暂未上架策略，去策略工坊创建第一个！",
+          "type": "string",
+          "original": "'📭 市场暂未上架策略，去策略工坊创建第一个！'",
+          "suggestedKey": "auto_c824mg"
+        },
+        {
+          "line": 155,
+          "text": "未找到匹配的策略",
+          "type": "string",
+          "original": "'未找到匹配的策略'",
+          "suggestedKey": "auto_6or08t"
+        },
+        {
+          "line": 284,
+          "text": "评分失败",
+          "type": "string",
+          "original": "'评分失败'",
+          "suggestedKey": "auto_hz2uza"
+        },
+        {
+          "line": 293,
+          "text": "评论失败",
+          "type": "string",
+          "original": "'评论失败'",
+          "suggestedKey": "auto_i7j4lm"
+        },
+        {
+          "line": 332,
+          "text": "标的",
+          "type": "string",
+          "original": "\"标的\"",
+          "suggestedKey": "auto_icf1"
+        },
+        {
+          "line": 332,
+          "text": "多市场",
+          "type": "string",
+          "original": "'多市场'",
+          "suggestedKey": "auto_dias2"
+        },
+        {
+          "line": 333,
+          "text": "年化收益",
+          "type": "string",
+          "original": "\"年化收益\"",
+          "suggestedKey": "auto_c9ji0m"
+        },
+        {
+          "line": 334,
+          "text": "夏普",
+          "type": "string",
+          "original": "\"夏普\"",
+          "suggestedKey": "auto_fpkv"
+        },
+        {
+          "line": 335,
+          "text": "评论",
+          "type": "string",
+          "original": "\"评论\"",
+          "suggestedKey": "auto_ojg6"
+        },
+        {
+          "line": 348,
+          "text": "写评论...",
+          "type": "string",
+          "original": "\"写评论...\"",
+          "suggestedKey": "auto_cyeukf"
+        },
+        {
+          "line": 380,
+          "text": "订阅功能即将上线，敬请期待",
+          "type": "string",
+          "original": "'订阅功能即将上线，敬请期待'",
+          "suggestedKey": "auto_4sf8fo"
+        },
+        {
+          "line": 413,
+          "text": "请先选择一个策略",
+          "type": "string",
+          "original": "'请先选择一个策略'",
+          "suggestedKey": "auto_t6n40m"
+        },
+        {
+          "line": 446,
+          "text": "-- 选择要发布的策略 --",
+          "type": "jsx",
+          "original": ">-- 选择要发布的策略 --<",
+          "suggestedKey": "auto_x2fp7k"
+        },
+        {
+          "line": 448,
+          "text": "{s.name || '未命名策略'}",
+          "type": "jsx",
+          "original": ">{s.name || '未命名策略'}<",
+          "suggestedKey": "auto_2x1daf"
+        },
+        {
+          "line": 448,
+          "text": "未命名策略",
+          "type": "string",
+          "original": "'未命名策略'",
+          "suggestedKey": "auto_bsug9j"
+        },
+        {
+          "line": 459,
+          "text": "描述你的策略逻辑、适用场景、风险特点...",
+          "type": "string",
+          "original": "\"描述你的策略逻辑、适用场景、风险特点...\"",
+          "suggestedKey": "auto_kcvp24"
+        },
+        {
+          "line": 476,
+          "text": "免费发布，积累口碑",
+          "type": "string",
+          "original": "'免费发布，积累口碑'",
+          "suggestedKey": "auto_5m3bvo"
+        }
+      ]
+    },
+    {
+      "file": "src/components/strategy/FactorExposurePage.tsx",
+      "count": 23,
+      "matches": [
+        {
+          "line": 27,
+          "text": "双均线突破策略",
+          "type": "string",
+          "original": "'双均线突破策略'",
+          "suggestedKey": "auto_4pdomy"
+        },
+        {
+          "line": 33,
+          "text": "市场因子",
+          "type": "string",
+          "original": "'市场因子'",
+          "suggestedKey": "auto_c81yaw"
+        },
+        {
+          "line": 34,
+          "text": "市值因子",
+          "type": "string",
+          "original": "'市值因子'",
+          "suggestedKey": "auto_c712zu"
+        },
+        {
+          "line": 35,
+          "text": "价值因子",
+          "type": "string",
+          "original": "'价值因子'",
+          "suggestedKey": "auto_aaq4id"
+        },
+        {
+          "line": 36,
+          "text": "盈利因子",
+          "type": "string",
+          "original": "'盈利因子'",
+          "suggestedKey": "auto_fbsrdd"
+        },
+        {
+          "line": 37,
+          "text": "投资因子",
+          "type": "string",
+          "original": "'投资因子'",
+          "suggestedKey": "auto_d0qm0v"
+        },
+        {
+          "line": 38,
+          "text": "动量因子",
+          "type": "string",
+          "original": "'动量因子'",
+          "suggestedKey": "auto_b13avr"
+        },
+        {
+          "line": 39,
+          "text": "低波因子",
+          "type": "string",
+          "original": "'低波因子'",
+          "suggestedKey": "auto_aggqmc"
+        },
+        {
+          "line": 40,
+          "text": "质量因子",
+          "type": "string",
+          "original": "'质量因子'",
+          "suggestedKey": "auto_iepufr"
+        },
+        {
+          "line": 43,
+          "text": "1月",
+          "type": "string",
+          "original": "'1月'",
+          "suggestedKey": "auto_liv"
+        },
+        {
+          "line": 44,
+          "text": "2月",
+          "type": "string",
+          "original": "'2月'",
+          "suggestedKey": "auto_ljq"
+        },
+        {
+          "line": 45,
+          "text": "3月",
+          "type": "string",
+          "original": "'3月'",
+          "suggestedKey": "auto_lkl"
+        },
+        {
+          "line": 46,
+          "text": "4月",
+          "type": "string",
+          "original": "'4月'",
+          "suggestedKey": "auto_llg"
+        },
+        {
+          "line": 47,
+          "text": "5月",
+          "type": "string",
+          "original": "'5月'",
+          "suggestedKey": "auto_lmb"
+        },
+        {
+          "line": 48,
+          "text": "6月",
+          "type": "string",
+          "original": "'6月'",
+          "suggestedKey": "auto_ln6"
+        },
+        {
+          "line": 49,
+          "text": "7月",
+          "type": "string",
+          "original": "'7月'",
+          "suggestedKey": "auto_lo1"
+        },
+        {
+          "line": 50,
+          "text": "8月",
+          "type": "string",
+          "original": "'8月'",
+          "suggestedKey": "auto_low"
+        },
+        {
+          "line": 51,
+          "text": "9月",
+          "type": "string",
+          "original": "'9月'",
+          "suggestedKey": "auto_lpr"
+        },
+        {
+          "line": 52,
+          "text": "10月",
+          "type": "string",
+          "original": "'10月'",
+          "suggestedKey": "auto_1lu1"
+        },
+        {
+          "line": 53,
+          "text": "11月",
+          "type": "string",
+          "original": "'11月'",
+          "suggestedKey": "auto_1luw"
+        },
+        {
+          "line": 54,
+          "text": "12月",
+          "type": "string",
+          "original": "'12月'",
+          "suggestedKey": "auto_1lvr"
+        },
+        {
+          "line": 100,
+          "text": "因子暴露",
+          "type": "string",
+          "original": "'因子暴露'",
+          "suggestedKey": "auto_bcckmm"
+        },
+        {
+          "line": 162,
+          "text": "加载因子分析...",
+          "type": "string",
+          "original": "\"加载因子分析...\"",
+          "suggestedKey": "auto_gyugon"
+        }
+      ]
+    },
+    {
+      "file": "src/components/settings/OpenDHealthPanel.tsx",
+      "count": 22,
+      "matches": [
+        {
+          "line": 78,
+          "text": "警告阈值",
+          "type": "string",
+          "original": "'警告阈值'",
+          "suggestedKey": "auto_hy0st4"
+        },
+        {
+          "line": 87,
+          "text": "加载 OpenD 状态...",
+          "type": "string",
+          "original": "\"加载 OpenD 状态...\"",
+          "suggestedKey": "auto_xqzdfq"
+        },
+        {
+          "line": 90,
+          "text": "在线",
+          "type": "string",
+          "original": "'在线'",
+          "suggestedKey": "auto_fiqf"
+        },
+        {
+          "line": 91,
+          "text": "离线",
+          "type": "string",
+          "original": "'离线'",
+          "suggestedKey": "auto_leg4"
+        },
+        {
+          "line": 92,
+          "text": "重连中",
+          "type": "string",
+          "original": "'重连中'",
+          "suggestedKey": "auto_m1pcs"
+        },
+        {
+          "line": 118,
+          "text": "重新连接 OpenD...",
+          "type": "string",
+          "original": "'重新连接 OpenD...'",
+          "suggestedKey": "auto_ipvyza"
+        },
+        {
+          "line": 174,
+          "text": "心跳检测",
+          "type": "string",
+          "original": "'心跳检测'",
+          "suggestedKey": "auto_co4c9n"
+        },
+        {
+          "line": 174,
+          "text": "正常",
+          "type": "string",
+          "original": "'正常'",
+          "suggestedKey": "auto_is6t"
+        },
+        {
+          "line": 175,
+          "text": "行情订阅",
+          "type": "string",
+          "original": "'行情订阅'",
+          "suggestedKey": "auto_hlq8gs"
+        },
+        {
+          "line": 175,
+          "text": "成功",
+          "type": "string",
+          "original": "'成功'",
+          "suggestedKey": "success"
+        },
+        {
+          "line": 176,
+          "text": "订单查询",
+          "type": "string",
+          "original": "'订单查询'",
+          "suggestedKey": "auto_hyqjm8"
+        },
+        {
+          "line": 176,
+          "text": "成功",
+          "type": "string",
+          "original": "'成功'",
+          "suggestedKey": "success"
+        },
+        {
+          "line": 177,
+          "text": "持仓同步",
+          "type": "string",
+          "original": "'持仓同步'",
+          "suggestedKey": "auto_cthxe3"
+        },
+        {
+          "line": 177,
+          "text": "成功",
+          "type": "string",
+          "original": "'成功'",
+          "suggestedKey": "success"
+        },
+        {
+          "line": 178,
+          "text": "账户信息",
+          "type": "string",
+          "original": "'账户信息'",
+          "suggestedKey": "auto_i7og1r"
+        },
+        {
+          "line": 178,
+          "text": "成功",
+          "type": "string",
+          "original": "'成功'",
+          "suggestedKey": "success"
+        },
+        {
+          "line": 179,
+          "text": "自动重连",
+          "type": "string",
+          "original": "'自动重连'",
+          "suggestedKey": "auto_gqphdb"
+        },
+        {
+          "line": 179,
+          "text": "成功",
+          "type": "string",
+          "original": "'成功'",
+          "suggestedKey": "success"
+        },
+        {
+          "line": 180,
+          "text": "连接断开",
+          "type": "string",
+          "original": "'连接断开'",
+          "suggestedKey": "auto_ikc3i2"
+        },
+        {
+          "line": 180,
+          "text": "警告",
+          "type": "string",
+          "original": "'警告'",
+          "suggestedKey": "auto_o690"
+        },
+        {
+          "line": 181,
+          "text": "初始连接",
+          "type": "string",
+          "original": "'初始连接'",
+          "suggestedKey": "auto_aqox1x"
+        },
+        {
+          "line": 181,
+          "text": "成功",
+          "type": "string",
+          "original": "'成功'",
+          "suggestedKey": "success"
+        }
+      ]
+    },
+    {
+      "file": "src/components/market/DailyReportPage.tsx",
+      "count": 20,
+      "matches": [
+        {
+          "line": 38,
+          "text": "今日市场宽幅震荡，北向资金净流入，科技板块表现活跃。",
+          "type": "string",
+          "original": "'今日市场宽幅震荡，北向资金净流入，科技板块表现活跃。'",
+          "suggestedKey": "auto_i7435n"
+        },
+        {
+          "line": 40,
+          "text": "上证指数收涨0.5%，深证成指涨0.8%，创业板指涨1.2%。两市成交额约8500亿元，较上一交易日放大约10%。",
+          "type": "string",
+          "original": "'上证指数收涨0.5%，深证成指涨0.8%，创业板指涨1.2%。两市成交额约8500亿元，较上一交易日放大约10%。'",
+          "suggestedKey": "auto_2y6esp"
+        },
+        {
+          "line": 41,
+          "text": "涨幅居前的板块：半导体(+3.2%)、新能源(+2.1%)、医药(+1.8%)。跌幅居前的板块：银行(-0.5%)、地产(-0.3%)。",
+          "type": "string",
+          "original": "'涨幅居前的板块：半导体(+3.2%)、新能源(+2.1%)、医药(+1.8%)。跌幅居前的板块：银行(-0.5%)、地产(-0.3%)。'",
+          "suggestedKey": "auto_57u3ve"
+        },
+        {
+          "line": 42,
+          "text": "最新宏观数据：GDP 5.0%，CPI 1.2%，PMI 50.0。经济数据整体平稳，通胀温和。",
+          "type": "string",
+          "original": "'最新宏观数据：GDP 5.0%，CPI 1.2%，PMI 50.0。经济数据整体平稳，通胀温和。'",
+          "suggestedKey": "auto_l79nza"
+        },
+        {
+          "line": 43,
+          "text": "市场情绪指数：65/100（偏多）。投资者情绪较昨日有所回暖，风险偏好上升。",
+          "type": "string",
+          "original": "'市场情绪指数：65/100（偏多）。投资者情绪较昨日有所回暖，风险偏好上升。'",
+          "suggestedKey": "auto_oow9np"
+        },
+        {
+          "line": 44,
+          "text": "北向资金净流入 +45.2亿。主力资金流向：半导体、新能源、消费电子。",
+          "type": "string",
+          "original": "'北向资金净流入 +45.2亿。主力资金流向：半导体、新能源、消费电子。'",
+          "suggestedKey": "auto_5teolx"
+        },
+        {
+          "line": 45,
+          "text": "涨停个股：12只。跌幅超过5%：8只。市场整体涨多跌少。",
+          "type": "string",
+          "original": "'涨停个股：12只。跌幅超过5%：8只。市场整体涨多跌少。'",
+          "suggestedKey": "auto_x27n6d"
+        },
+        {
+          "line": 46,
+          "text": "今日异动：2只个股触发异动检测（放量突破）。无重大异常交易。",
+          "type": "string",
+          "original": "'今日异动：2只个股触发异动检测（放量突破）。无重大异常交易。'",
+          "suggestedKey": "auto_9uxkf8"
+        },
+        {
+          "line": 47,
+          "text": "短期展望：市场或维持震荡格局，关注半导体和新能源板块的持续性。建议控制仓位，精选个股。",
+          "type": "string",
+          "original": "'短期展望：市场或维持震荡格局，关注半导体和新能源板块的持续性。建议控制仓位，精选个股。'",
+          "suggestedKey": "auto_4iwshy"
+        },
+        {
+          "line": 52,
+          "text": "获取简报失败",
+          "type": "string",
+          "original": "'获取简报失败'",
+          "suggestedKey": "auto_s9a5qg"
+        },
+        {
+          "line": 74,
+          "text": "市场概览",
+          "type": "string",
+          "original": "'市场概览'",
+          "suggestedKey": "auto_c85dku"
+        },
+        {
+          "line": 75,
+          "text": "板块表现",
+          "type": "string",
+          "original": "'板块表现'",
+          "suggestedKey": "auto_dfe328"
+        },
+        {
+          "line": 76,
+          "text": "宏观数据",
+          "type": "string",
+          "original": "'宏观数据'",
+          "suggestedKey": "auto_c4eki9"
+        },
+        {
+          "line": 77,
+          "text": "市场情绪",
+          "type": "string",
+          "original": "'市场情绪'",
+          "suggestedKey": "auto_c83tx9"
+        },
+        {
+          "line": 78,
+          "text": "资金流向",
+          "type": "string",
+          "original": "'资金流向'",
+          "suggestedKey": "auto_ifbj5p"
+        },
+        {
+          "line": 79,
+          "text": "涨跌排行",
+          "type": "string",
+          "original": "'涨跌排行'",
+          "suggestedKey": "auto_ef61b2"
+        },
+        {
+          "line": 80,
+          "text": "异动监控",
+          "type": "string",
+          "original": "'异动监控'",
+          "suggestedKey": "auto_cc2sm4"
+        },
+        {
+          "line": 81,
+          "text": "短期展望",
+          "type": "string",
+          "original": "'短期展望'",
+          "suggestedKey": "auto_fk3d88"
+        },
+        {
+          "line": 97,
+          "text": "生成中...",
+          "type": "string",
+          "original": "'生成中...'",
+          "suggestedKey": "auto_s41ylu"
+        },
+        {
+          "line": 97,
+          "text": "🔄 刷新",
+          "type": "string",
+          "original": "'🔄 刷新'",
+          "suggestedKey": "auto_l0548i"
+        }
+      ]
+    },
+    {
+      "file": "src/components/market/SentimentStreamDashboard.tsx",
+      "count": 20,
+      "matches": [
+        {
+          "line": 21,
+          "text": "市场情绪",
+          "type": "string",
+          "original": "'市场情绪'",
+          "suggestedKey": "auto_c83tx9"
+        },
+        {
+          "line": 22,
+          "text": "成交量",
+          "type": "string",
+          "original": "'成交量'",
+          "suggestedKey": "auto_er9a3"
+        },
+        {
+          "line": 23,
+          "text": "市场广度",
+          "type": "string",
+          "original": "'市场广度'",
+          "suggestedKey": "auto_c839mn"
+        },
+        {
+          "line": 24,
+          "text": "波动率",
+          "type": "string",
+          "original": "'波动率'",
+          "suggestedKey": "auto_gctvl"
+        },
+        {
+          "line": 25,
+          "text": "动量",
+          "type": "string",
+          "original": "'动量'",
+          "suggestedKey": "auto_euxz"
+        },
+        {
+          "line": 40,
+          "text": "极端情绪",
+          "type": "string",
+          "original": "'极端情绪'",
+          "suggestedKey": "auto_dkgd77"
+        },
+        {
+          "line": 40,
+          "text": "情绪得分突破 +40，进入强烈看多区间",
+          "type": "string",
+          "original": "'情绪得分突破 +40，进入强烈看多区间'",
+          "suggestedKey": "auto_z02ddt"
+        },
+        {
+          "line": 41,
+          "text": "趋势转变",
+          "type": "string",
+          "original": "'趋势转变'",
+          "suggestedKey": "auto_i7i3y8"
+        },
+        {
+          "line": 41,
+          "text": "情绪趋势由稳定转为改善",
+          "type": "string",
+          "original": "'情绪趋势由稳定转为改善'",
+          "suggestedKey": "auto_fi0itk"
+        },
+        {
+          "line": 42,
+          "text": "成分异常",
+          "type": "string",
+          "original": "'成分异常'",
+          "suggestedKey": "auto_cpqpd8"
+        },
+        {
+          "line": 42,
+          "text": "成交量成分出现负值，市场情绪分化",
+          "type": "string",
+          "original": "'成交量成分出现负值，市场情绪分化'",
+          "suggestedKey": "auto_2dxoj9"
+        },
+        {
+          "line": 139,
+          "text": "看多阈值",
+          "type": "string",
+          "original": "'看多阈值'",
+          "suggestedKey": "auto_featpf"
+        },
+        {
+          "line": 140,
+          "text": "看空阈值",
+          "type": "string",
+          "original": "'看空阈值'",
+          "suggestedKey": "auto_fj6t6r"
+        },
+        {
+          "line": 149,
+          "text": "加载情绪数据...",
+          "type": "string",
+          "original": "\"加载情绪数据...\"",
+          "suggestedKey": "auto_x3l2fi"
+        },
+        {
+          "line": 152,
+          "text": "看多",
+          "type": "string",
+          "original": "'看多'",
+          "suggestedKey": "auto_kqjz"
+        },
+        {
+          "line": 153,
+          "text": "看空",
+          "type": "string",
+          "original": "'看空'",
+          "suggestedKey": "auto_kx5b"
+        },
+        {
+          "line": 154,
+          "text": "中性",
+          "type": "string",
+          "original": "'中性'",
+          "suggestedKey": "auto_dtp6"
+        },
+        {
+          "line": 158,
+          "text": "改善中",
+          "type": "string",
+          "original": "'改善中'",
+          "suggestedKey": "auto_f8pwi"
+        },
+        {
+          "line": 159,
+          "text": "恶化中",
+          "type": "string",
+          "original": "'恶化中'",
+          "suggestedKey": "auto_ej74d"
+        },
+        {
+          "line": 160,
+          "text": "稳定",
+          "type": "string",
+          "original": "'稳定'",
+          "suggestedKey": "auto_ladj"
+        }
+      ]
+    },
+    {
+      "file": "src/components/risk/EconomicCalendar.tsx",
+      "count": 20,
+      "matches": [
+        {
+          "line": 18,
+          "text": "非农就业人数",
+          "type": "string",
+          "original": "'非农就业人数'",
+          "suggestedKey": "auto_2yy6v7"
+        },
+        {
+          "line": 18,
+          "text": "18.5万",
+          "type": "string",
+          "original": "'18.5万'",
+          "suggestedKey": "auto_rz34p"
+        },
+        {
+          "line": 18,
+          "text": "17.5万",
+          "type": "string",
+          "original": "'17.5万'",
+          "suggestedKey": "auto_ryg56"
+        },
+        {
+          "line": 19,
+          "text": "失业率",
+          "type": "string",
+          "original": "'失业率'",
+          "suggestedKey": "auto_dg80u"
+        },
+        {
+          "line": 20,
+          "text": "CPI月率",
+          "type": "string",
+          "original": "'CPI月率'",
+          "suggestedKey": "auto_12sykb"
+        },
+        {
+          "line": 21,
+          "text": "美联储利率决议",
+          "type": "string",
+          "original": "'美联储利率决议'",
+          "suggestedKey": "auto_9jw5yz"
+        },
+        {
+          "line": 22,
+          "text": "PPI月率",
+          "type": "string",
+          "original": "'PPI月率'",
+          "suggestedKey": "auto_19yaa0"
+        },
+        {
+          "line": 23,
+          "text": "密歇根消费者信心指数",
+          "type": "string",
+          "original": "'密歇根消费者信心指数'",
+          "suggestedKey": "auto_m0h61l"
+        },
+        {
+          "line": 24,
+          "text": "工业增加值",
+          "type": "string",
+          "original": "'工业增加值'",
+          "suggestedKey": "auto_m6ysat"
+        },
+        {
+          "line": 25,
+          "text": "初请失业金人数",
+          "type": "string",
+          "original": "'初请失业金人数'",
+          "suggestedKey": "auto_pvsdb0"
+        },
+        {
+          "line": 25,
+          "text": "21.5万",
+          "type": "string",
+          "original": "'21.5万'",
+          "suggestedKey": "auto_seetd"
+        },
+        {
+          "line": 25,
+          "text": "21.8万",
+          "type": "string",
+          "original": "'21.8万'",
+          "suggestedKey": "auto_seevy"
+        },
+        {
+          "line": 43,
+          "text": "高",
+          "type": "string",
+          "original": "'高'",
+          "suggestedKey": "auto_ul4"
+        },
+        {
+          "line": 44,
+          "text": "中",
+          "type": "string",
+          "original": "'中'",
+          "suggestedKey": "auto_ffx"
+        },
+        {
+          "line": 45,
+          "text": "低",
+          "type": "string",
+          "original": "'低'",
+          "suggestedKey": "auto_fny"
+        },
+        {
+          "line": 68,
+          "text": "全部",
+          "type": "string",
+          "original": "'全部'",
+          "suggestedKey": "auto_en40"
+        },
+        {
+          "line": 68,
+          "text": "高影响",
+          "type": "string",
+          "original": "'高影响'",
+          "suggestedKey": "auto_n56qc"
+        },
+        {
+          "line": 68,
+          "text": "中影响",
+          "type": "string",
+          "original": "'中影响'",
+          "suggestedKey": "auto_bwx2h"
+        },
+        {
+          "line": 94,
+          "text": "预期 {event.forecast}",
+          "type": "jsx",
+          "original": ">预期 {event.forecast}<",
+          "suggestedKey": "auto_96jnjc"
+        },
+        {
+          "line": 95,
+          "text": "前值 {event.previous}",
+          "type": "jsx",
+          "original": ">前值 {event.previous}<",
+          "suggestedKey": "auto_lpfm8o"
+        }
+      ]
+    },
+    {
+      "file": "src/components/risk/RiskDashboardPage.tsx",
+      "count": 19,
+      "matches": [
+        {
+          "line": 140,
+          "text": "无数据",
+          "type": "string",
+          "original": "'无数据'",
+          "suggestedKey": "auto_fezfi"
+        },
+        {
+          "line": 142,
+          "text": "极端波动",
+          "type": "string",
+          "original": "'极端波动'",
+          "suggestedKey": "auto_dki6ms"
+        },
+        {
+          "line": 144,
+          "text": "高波动",
+          "type": "string",
+          "original": "'高波动'",
+          "suggestedKey": "auto_n7gm6"
+        },
+        {
+          "line": 145,
+          "text": "正常",
+          "type": "string",
+          "original": "'正常'",
+          "suggestedKey": "auto_is6t"
+        },
+        {
+          "line": 185,
+          "text": "Kelly 建议仓位",
+          "type": "string",
+          "original": "\"Kelly 建议仓位\"",
+          "suggestedKey": "auto_dwu58v"
+        },
+        {
+          "line": 186,
+          "text": "无数据",
+          "type": "string",
+          "original": "'无数据'",
+          "suggestedKey": "auto_fezfi"
+        },
+        {
+          "line": 187,
+          "text": "交易历史不足",
+          "type": "string",
+          "original": "'交易历史不足'",
+          "suggestedKey": "auto_2cuuxr"
+        },
+        {
+          "line": 192,
+          "text": "当前回撤",
+          "type": "string",
+          "original": "\"当前回撤\"",
+          "suggestedKey": "auto_cdb7mo"
+        },
+        {
+          "line": 194,
+          "text": "正常",
+          "type": "string",
+          "original": "'正常'",
+          "suggestedKey": "auto_is6t"
+        },
+        {
+          "line": 199,
+          "text": "VIX 波动率",
+          "type": "string",
+          "original": "\"VIX 波动率\"",
+          "suggestedKey": "auto_k3p02u"
+        },
+        {
+          "line": 206,
+          "text": "日盈亏 / 总资产",
+          "type": "string",
+          "original": "\"日盈亏 / 总资产\"",
+          "suggestedKey": "auto_z8kdzb"
+        },
+        {
+          "line": 208,
+          "text": "未连接",
+          "type": "string",
+          "original": "'未连接'",
+          "suggestedKey": "auto_fszzl"
+        },
+        {
+          "line": 246,
+          "text": "胜率",
+          "type": "string",
+          "original": "\"胜率\"",
+          "suggestedKey": "auto_mjvv"
+        },
+        {
+          "line": 247,
+          "text": "平均盈利",
+          "type": "string",
+          "original": "\"平均盈利\"",
+          "suggestedKey": "auto_ca7r11"
+        },
+        {
+          "line": 248,
+          "text": "平均亏损",
+          "type": "string",
+          "original": "\"平均亏损\"",
+          "suggestedKey": "auto_ca104k"
+        },
+        {
+          "line": 249,
+          "text": "盈亏比",
+          "type": "string",
+          "original": "\"盈亏比\"",
+          "suggestedKey": "auto_hsa99"
+        },
+        {
+          "line": 259,
+          "text": "无波动率调节",
+          "type": "string",
+          "original": "'无波动率调节'",
+          "suggestedKey": "auto_q0d8g"
+        },
+        {
+          "line": 300,
+          "text": "📈 账户净值走势",
+          "type": "string",
+          "original": "\"📈 账户净值走势\"",
+          "suggestedKey": "auto_gp7plb"
+        },
+        {
+          "line": 305,
+          "text": "📊 交易绩效指标",
+          "type": "string",
+          "original": "\"📊 交易绩效指标\"",
+          "suggestedKey": "auto_ek5dup"
+        }
+      ]
+    },
+    {
+      "file": "src/components/risk/SystemLog.tsx",
+      "count": 19,
+      "matches": [
+        {
+          "line": 14,
+          "text": "行情推送连接建立",
+          "type": "string",
+          "original": "'行情推送连接建立'",
+          "suggestedKey": "auto_hk6906"
+        },
+        {
+          "line": 15,
+          "text": "策略 MA_Crossover 启动运行",
+          "type": "string",
+          "original": "'策略 MA_Crossover 启动运行'",
+          "suggestedKey": "auto_k2l35n"
+        },
+        {
+          "line": 16,
+          "text": "日亏损接近上限 80%",
+          "type": "string",
+          "original": "'日亏损接近上限 80%'",
+          "suggestedKey": "auto_hlyus"
+        },
+        {
+          "line": 17,
+          "text": "订单 #88234 部分成交 50/100",
+          "type": "string",
+          "original": "'订单 #88234 部分成交 50/100'",
+          "suggestedKey": "auto_p81yjs"
+        },
+        {
+          "line": 18,
+          "text": "获取 K 线数据超时，使用缓存",
+          "type": "string",
+          "original": "'获取 K 线数据超时，使用缓存'",
+          "suggestedKey": "auto_q0wdpe"
+        },
+        {
+          "line": 19,
+          "text": "Kelly 仓位计算: f*=0.125, qty=250",
+          "type": "string",
+          "original": "'Kelly 仓位计算: f*=0.125, qty=250'",
+          "suggestedKey": "auto_64w4ou"
+        },
+        {
+          "line": 20,
+          "text": "VIX 突破 25，波动率调节生效",
+          "type": "string",
+          "original": "'VIX 突破 25，波动率调节生效'",
+          "suggestedKey": "auto_mj18lq"
+        },
+        {
+          "line": 21,
+          "text": "回测完成: 夏普 1.34, 最大回撤 12.5%",
+          "type": "string",
+          "original": "'回测完成: 夏普 1.34, 最大回撤 12.5%'",
+          "suggestedKey": "auto_n5uifa"
+        },
+        {
+          "line": 35,
+          "text": "心跳检测正常",
+          "type": "string",
+          "original": "'心跳检测正常'",
+          "suggestedKey": "auto_tm4vps"
+        },
+        {
+          "line": 36,
+          "text": "行情数据更新",
+          "type": "string",
+          "original": "'行情数据更新'",
+          "suggestedKey": "auto_6o6r77"
+        },
+        {
+          "line": 37,
+          "text": "策略信号生成",
+          "type": "string",
+          "original": "'策略信号生成'",
+          "suggestedKey": "auto_574f6e"
+        },
+        {
+          "line": 38,
+          "text": "风控检查通过",
+          "type": "string",
+          "original": "'风控检查通过'",
+          "suggestedKey": "auto_uf4grv"
+        },
+        {
+          "line": 39,
+          "text": "订单状态变更",
+          "type": "string",
+          "original": "'订单状态变更'",
+          "suggestedKey": "auto_4zbv8a"
+        },
+        {
+          "line": 76,
+          "text": "自动刷新",
+          "type": "string",
+          "original": "'自动刷新'",
+          "suggestedKey": "auto_gqefo7"
+        },
+        {
+          "line": 76,
+          "text": "已暂停",
+          "type": "string",
+          "original": "'已暂停'",
+          "suggestedKey": "auto_e98y4"
+        },
+        {
+          "line": 97,
+          "text": "全部",
+          "type": "string",
+          "original": "'全部'",
+          "suggestedKey": "auto_en40"
+        },
+        {
+          "line": 97,
+          "text": "信息",
+          "type": "string",
+          "original": "'信息'",
+          "suggestedKey": "auto_e46m"
+        },
+        {
+          "line": 97,
+          "text": "警告",
+          "type": "string",
+          "original": "'警告'",
+          "suggestedKey": "auto_o690"
+        },
+        {
+          "line": 97,
+          "text": "错误",
+          "type": "string",
+          "original": "'错误'",
+          "suggestedKey": "error"
+        }
+      ]
+    },
+    {
+      "file": "src/components/risk/AnomalyAlertPanel.tsx",
+      "count": 17,
+      "matches": [
+        {
+          "line": 18,
+          "text": "高",
+          "type": "string",
+          "original": "'高'",
+          "suggestedKey": "auto_ul4"
+        },
+        {
+          "line": 19,
+          "text": "中",
+          "type": "string",
+          "original": "'中'",
+          "suggestedKey": "auto_ffx"
+        },
+        {
+          "line": 20,
+          "text": "低",
+          "type": "string",
+          "original": "'低'",
+          "suggestedKey": "auto_fny"
+        },
+        {
+          "line": 24,
+          "text": "涨停",
+          "type": "string",
+          "original": "'涨停'",
+          "suggestedKey": "auto_j3ck"
+        },
+        {
+          "line": 25,
+          "text": "跌停",
+          "type": "string",
+          "original": "'跌停'",
+          "suggestedKey": "auto_ok5s"
+        },
+        {
+          "line": 26,
+          "text": "放量异动",
+          "type": "string",
+          "original": "'放量异动'",
+          "suggestedKey": "auto_ddiqk7"
+        },
+        {
+          "line": 27,
+          "text": "快速拉升/跳水",
+          "type": "string",
+          "original": "'快速拉升/跳水'",
+          "suggestedKey": "auto_ydvt5u"
+        },
+        {
+          "line": 28,
+          "text": "突破",
+          "type": "string",
+          "original": "'突破'",
+          "suggestedKey": "auto_lhw3"
+        },
+        {
+          "line": 29,
+          "text": "跌破",
+          "type": "string",
+          "original": "'跌破'",
+          "suggestedKey": "auto_os14"
+        },
+        {
+          "line": 30,
+          "text": "异常交易",
+          "type": "string",
+          "original": "'异常交易'",
+          "suggestedKey": "auto_cdkxyd"
+        },
+        {
+          "line": 31,
+          "text": "大单异动",
+          "type": "string",
+          "original": "'大单异动'",
+          "suggestedKey": "auto_blh2es"
+        },
+        {
+          "line": 98,
+          "text": "刷新中...",
+          "type": "string",
+          "original": "'刷新中...'",
+          "suggestedKey": "auto_25biey"
+        },
+        {
+          "line": 136,
+          "text": "全部",
+          "type": "string",
+          "original": "'全部'",
+          "suggestedKey": "auto_en40"
+        },
+        {
+          "line": 136,
+          "text": "未处理",
+          "type": "string",
+          "original": "'未处理'",
+          "suggestedKey": "auto_fjrcc"
+        },
+        {
+          "line": 136,
+          "text": "高危",
+          "type": "string",
+          "original": "'高危'",
+          "suggestedKey": "auto_qsnt"
+        },
+        {
+          "line": 136,
+          "text": "中危",
+          "type": "string",
+          "original": "'中危'",
+          "suggestedKey": "auto_dr6s"
+        },
+        {
+          "line": 136,
+          "text": "低危",
+          "type": "string",
+          "original": "'低危'",
+          "suggestedKey": "auto_dy3n"
+        }
+      ]
+    },
+    {
+      "file": "src/components/strategy/PaperTraderPanel.tsx",
+      "count": 17,
+      "matches": [
+        {
+          "line": 109,
+          "text": "确定重置模拟账户？所有持仓和资金将清零。",
+          "type": "string",
+          "original": "'确定重置模拟账户？所有持仓和资金将清零。'",
+          "suggestedKey": "auto_j3bali"
+        },
+        {
+          "line": 158,
+          "text": "🟢 运行中",
+          "type": "string",
+          "original": "'🟢 运行中'",
+          "suggestedKey": "auto_nb69cm"
+        },
+        {
+          "line": 158,
+          "text": "⏸ 已暂停",
+          "type": "string",
+          "original": "'⏸ 已暂停'",
+          "suggestedKey": "auto_10gvq4"
+        },
+        {
+          "line": 158,
+          "text": "⏹ 未初始化",
+          "type": "string",
+          "original": "'⏹ 未初始化'",
+          "suggestedKey": "auto_tuk9az"
+        },
+        {
+          "line": 217,
+          "text": "📊 持仓",
+          "type": "string",
+          "original": "'📊 持仓'",
+          "suggestedKey": "auto_kz6tad"
+        },
+        {
+          "line": 217,
+          "text": "📋 订单",
+          "type": "string",
+          "original": "'📋 订单'",
+          "suggestedKey": "auto_kzedyd"
+        },
+        {
+          "line": 217,
+          "text": "📈 报告",
+          "type": "string",
+          "original": "'📈 报告'",
+          "suggestedKey": "auto_kz5i6y"
+        },
+        {
+          "line": 241,
+          "text": "数量: {p.qty}",
+          "type": "jsx",
+          "original": ">数量: {p.qty}<",
+          "suggestedKey": "auto_hiyfq3"
+        },
+        {
+          "line": 242,
+          "text": "均价: HKD {p.avgCost.toFixed(2)}",
+          "type": "jsx",
+          "original": ">均价: HKD {p.avgCost.toFixed(2)}<",
+          "suggestedKey": "auto_2yn1fg"
+        },
+        {
+          "line": 243,
+          "text": "现价: HKD {p.lastPrice.toFixed(2)}",
+          "type": "jsx",
+          "original": ">现价: HKD {p.lastPrice.toFixed(2)}<",
+          "suggestedKey": "auto_8ezhf5"
+        },
+        {
+          "line": 244,
+          "text": "市值: HKD {p.marketValue.toFixed(0)}",
+          "type": "jsx",
+          "original": ">市值: HKD {p.marketValue.toFixed(0)}<",
+          "suggestedKey": "auto_puyb7m"
+        },
+        {
+          "line": 286,
+          "text": "总收益率",
+          "type": "string",
+          "original": "'总收益率'",
+          "suggestedKey": "auto_ckckns"
+        },
+        {
+          "line": 287,
+          "text": "Sharpe 比率",
+          "type": "string",
+          "original": "'Sharpe 比率'",
+          "suggestedKey": "auto_761h20"
+        },
+        {
+          "line": 288,
+          "text": "最大回撤",
+          "type": "string",
+          "original": "'最大回撤'",
+          "suggestedKey": "auto_dd61gt"
+        },
+        {
+          "line": 289,
+          "text": "胜率",
+          "type": "string",
+          "original": "'胜率'",
+          "suggestedKey": "auto_mjvv"
+        },
+        {
+          "line": 290,
+          "text": "盈亏比",
+          "type": "string",
+          "original": "'盈亏比'",
+          "suggestedKey": "auto_hsa99"
+        },
+        {
+          "line": 291,
+          "text": "交易次数",
+          "type": "string",
+          "original": "'交易次数'",
+          "suggestedKey": "auto_acjsf2"
+        }
+      ]
+    },
+    {
+      "file": "src/components/risk/MarketClock.tsx",
+      "count": 16,
+      "matches": [
+        {
+          "line": 18,
+          "text": "美股",
+          "type": "string",
+          "original": "'美股'",
+          "suggestedKey": "auto_mehf"
+        },
+        {
+          "line": 22,
+          "text": "港股",
+          "type": "string",
+          "original": "'港股'",
+          "suggestedKey": "auto_jg42"
+        },
+        {
+          "line": 26,
+          "text": "A股",
+          "type": "string",
+          "original": "'A股'",
+          "suggestedKey": "auto_qyo"
+        },
+        {
+          "line": 30,
+          "text": "加密货币",
+          "type": "string",
+          "original": "'加密货币'",
+          "suggestedKey": "auto_ataijk"
+        },
+        {
+          "line": 52,
+          "text": "休市",
+          "type": "string",
+          "original": "'休市'",
+          "suggestedKey": "auto_dyq9"
+        },
+        {
+          "line": 52,
+          "text": "周一开市",
+          "type": "string",
+          "original": "'周一开市'",
+          "suggestedKey": "auto_az57dm"
+        },
+        {
+          "line": 56,
+          "text": "盘前",
+          "type": "string",
+          "original": "'盘前'",
+          "suggestedKey": "auto_knzp"
+        },
+        {
+          "line": 56,
+          "text": "开市",
+          "type": "string",
+          "original": "'开市'",
+          "suggestedKey": "auto_goaq"
+        },
+        {
+          "line": 59,
+          "text": "即将开盘",
+          "type": "string",
+          "original": "'即将开盘'",
+          "suggestedKey": "auto_awuuiz"
+        },
+        {
+          "line": 59,
+          "text": "开盘",
+          "type": "string",
+          "original": "'开盘'",
+          "suggestedKey": "auto_gt7c"
+        },
+        {
+          "line": 62,
+          "text": "交易中",
+          "type": "string",
+          "original": "'交易中'",
+          "suggestedKey": "auto_c0gm6"
+        },
+        {
+          "line": 62,
+          "text": "收盘",
+          "type": "string",
+          "original": "'收盘'",
+          "suggestedKey": "auto_hv8i"
+        },
+        {
+          "line": 65,
+          "text": "盘后",
+          "type": "string",
+          "original": "'盘后'",
+          "suggestedKey": "auto_koc6"
+        },
+        {
+          "line": 65,
+          "text": "收盘结束",
+          "type": "string",
+          "original": "'收盘结束'",
+          "suggestedKey": "auto_d9kyxa"
+        },
+        {
+          "line": 67,
+          "text": "已收盘",
+          "type": "string",
+          "original": "'已收盘'",
+          "suggestedKey": "auto_e98lw"
+        },
+        {
+          "line": 67,
+          "text": "明日开盘",
+          "type": "string",
+          "original": "'明日开盘'",
+          "suggestedKey": "auto_das6un"
+        }
+      ]
+    },
+    {
+      "file": "src/components/market/NewsDashboardPage.tsx",
+      "count": 15,
+      "matches": [
+        {
+          "line": 17,
+          "text": "正面",
+          "type": "string",
+          "original": "'正面'",
+          "suggestedKey": "auto_j3hb"
+        },
+        {
+          "line": 18,
+          "text": "负面",
+          "type": "string",
+          "original": "'负面'",
+          "suggestedKey": "auto_ou1v"
+        },
+        {
+          "line": 19,
+          "text": "中性",
+          "type": "string",
+          "original": "'中性'",
+          "suggestedKey": "auto_dtp6"
+        },
+        {
+          "line": 36,
+          "text": "市场",
+          "type": "string",
+          "original": "'市场'",
+          "suggestedKey": "auto_ggvs"
+        },
+        {
+          "line": 51,
+          "text": "获取新闻失败",
+          "type": "string",
+          "original": "'获取新闻失败'",
+          "suggestedKey": "auto_usszj6"
+        },
+        {
+          "line": 86,
+          "text": "刷新中...",
+          "type": "string",
+          "original": "'刷新中...'",
+          "suggestedKey": "auto_25biey"
+        },
+        {
+          "line": 86,
+          "text": "🔄 刷新",
+          "type": "string",
+          "original": "'🔄 刷新'",
+          "suggestedKey": "auto_l0548i"
+        },
+        {
+          "line": 96,
+          "text": "偏多",
+          "type": "string",
+          "original": "'偏多'",
+          "suggestedKey": "auto_e5d7"
+        },
+        {
+          "line": 96,
+          "text": "偏空",
+          "type": "string",
+          "original": "'偏空'",
+          "suggestedKey": "auto_ebyj"
+        },
+        {
+          "line": 96,
+          "text": "中性",
+          "type": "string",
+          "original": "'中性'",
+          "suggestedKey": "auto_dtp6"
+        },
+        {
+          "line": 129,
+          "text": "全部",
+          "type": "string",
+          "original": "'全部'",
+          "suggestedKey": "auto_en40"
+        },
+        {
+          "line": 129,
+          "text": "正面",
+          "type": "string",
+          "original": "'正面'",
+          "suggestedKey": "auto_j3hb"
+        },
+        {
+          "line": 129,
+          "text": "负面",
+          "type": "string",
+          "original": "'负面'",
+          "suggestedKey": "auto_ou1v"
+        },
+        {
+          "line": 129,
+          "text": "中性",
+          "type": "string",
+          "original": "'中性'",
+          "suggestedKey": "auto_dtp6"
+        },
+        {
+          "line": 155,
+          "text": "搜索新闻关键词...",
+          "type": "string",
+          "original": "\"搜索新闻关键词...\"",
+          "suggestedKey": "auto_61n0rx"
+        }
+      ]
+    },
+    {
+      "file": "src/components/market/StockOverviewPage.tsx",
+      "count": 15,
+      "matches": [
+        {
+          "line": 45,
+          "text": "诊断失败",
+          "type": "string",
+          "original": "'诊断失败'",
+          "suggestedKey": "auto_i22bg7"
+        },
+        {
+          "line": 48,
+          "text": "诊断失败",
+          "type": "string",
+          "original": "'诊断失败'",
+          "suggestedKey": "auto_i22bg7"
+        },
+        {
+          "line": 64,
+          "text": "资金流",
+          "type": "string",
+          "original": "'资金流'",
+          "suggestedKey": "auto_leaj8"
+        },
+        {
+          "line": 65,
+          "text": "舆情",
+          "type": "string",
+          "original": "'舆情'",
+          "suggestedKey": "auto_mnb3"
+        },
+        {
+          "line": 66,
+          "text": "基金",
+          "type": "string",
+          "original": "'基金'",
+          "suggestedKey": "auto_friv"
+        },
+        {
+          "line": 67,
+          "text": "龙虎榜",
+          "type": "string",
+          "original": "'龙虎榜'",
+          "suggestedKey": "auto_o0z8n"
+        },
+        {
+          "line": 68,
+          "text": "异动",
+          "type": "string",
+          "original": "'异动'",
+          "suggestedKey": "auto_gm3q"
+        },
+        {
+          "line": 118,
+          "text": "输入股票代码，如：600519",
+          "type": "string",
+          "original": "\"输入股票代码，如：600519\"",
+          "suggestedKey": "auto_q4z250"
+        },
+        {
+          "line": 126,
+          "text": "诊断中...",
+          "type": "string",
+          "original": "'诊断中...'",
+          "suggestedKey": "auto_jlqchw"
+        },
+        {
+          "line": 126,
+          "text": "诊断",
+          "type": "string",
+          "original": "'诊断'",
+          "suggestedKey": "auto_oc2r"
+        },
+        {
+          "line": 167,
+          "text": "💰 资金流向",
+          "type": "string",
+          "original": "'💰 资金流向'",
+          "suggestedKey": "auto_k41g0m"
+        },
+        {
+          "line": 168,
+          "text": "📰 舆情情绪",
+          "type": "string",
+          "original": "'📰 舆情情绪'",
+          "suggestedKey": "auto_8kk6k1"
+        },
+        {
+          "line": 169,
+          "text": "🏦 基金持仓",
+          "type": "string",
+          "original": "'🏦 基金持仓'",
+          "suggestedKey": "auto_7gz6v5"
+        },
+        {
+          "line": 170,
+          "text": "🐉 龙虎榜",
+          "type": "string",
+          "original": "'🐉 龙虎榜'",
+          "suggestedKey": "auto_8bvyk3"
+        },
+        {
+          "line": 171,
+          "text": "⚠️ 异动检测",
+          "type": "string",
+          "original": "'⚠️ 异动检测'",
+          "suggestedKey": "auto_3hkq9q"
+        }
+      ]
+    },
+    {
+      "file": "src/components/risk/PortfolioStressTest.tsx",
+      "count": 15,
+      "matches": [
+        {
+          "line": 16,
+          "text": "黑天鹅",
+          "type": "string",
+          "original": "'黑天鹅'",
+          "suggestedKey": "auto_npgwd"
+        },
+        {
+          "line": 16,
+          "text": "市场崩盘 -30%",
+          "type": "string",
+          "original": "'市场崩盘 -30%'",
+          "suggestedKey": "auto_inn7f8"
+        },
+        {
+          "line": 17,
+          "text": "熊市",
+          "type": "string",
+          "original": "'熊市'",
+          "suggestedKey": "auto_jttk"
+        },
+        {
+          "line": 17,
+          "text": "持续下跌 -15%",
+          "type": "string",
+          "original": "'持续下跌 -15%'",
+          "suggestedKey": "auto_v2aslj"
+        },
+        {
+          "line": 18,
+          "text": "回调",
+          "type": "string",
+          "original": "'回调'",
+          "suggestedKey": "auto_fjl1"
+        },
+        {
+          "line": 18,
+          "text": "正常回调 -8%",
+          "type": "string",
+          "original": "'正常回调 -8%'",
+          "suggestedKey": "auto_o1c87o"
+        },
+        {
+          "line": 19,
+          "text": "震荡",
+          "type": "string",
+          "original": "'震荡'",
+          "suggestedKey": "auto_qere"
+        },
+        {
+          "line": 19,
+          "text": "横盘震荡 ±2%",
+          "type": "string",
+          "original": "'横盘震荡 ±2%'",
+          "suggestedKey": "auto_11inro"
+        },
+        {
+          "line": 20,
+          "text": "反弹",
+          "type": "string",
+          "original": "'反弹'",
+          "suggestedKey": "auto_eryk"
+        },
+        {
+          "line": 20,
+          "text": "快速反弹 +10%",
+          "type": "string",
+          "original": "'快速反弹 +10%'",
+          "suggestedKey": "auto_hd73vf"
+        },
+        {
+          "line": 21,
+          "text": "牛市",
+          "type": "string",
+          "original": "'牛市'",
+          "suggestedKey": "auto_jytj"
+        },
+        {
+          "line": 21,
+          "text": "强劲上涨 +20%",
+          "type": "string",
+          "original": "'强劲上涨 +20%'",
+          "suggestedKey": "auto_mcp9ui"
+        },
+        {
+          "line": 133,
+          "text": "高",
+          "type": "string",
+          "original": "'高'",
+          "suggestedKey": "auto_ul4"
+        },
+        {
+          "line": 133,
+          "text": "中",
+          "type": "string",
+          "original": "'中'",
+          "suggestedKey": "auto_ffx"
+        },
+        {
+          "line": 133,
+          "text": "低",
+          "type": "string",
+          "original": "'低'",
+          "suggestedKey": "auto_fny"
+        }
+      ]
+    },
+    {
+      "file": "src/components/risk/PositionDetailPanel.tsx",
+      "count": 15,
+      "matches": [
+        {
+          "line": 39,
+          "text": "科技",
+          "type": "string",
+          "original": "'科技'",
+          "suggestedKey": "auto_l9e7"
+        },
+        {
+          "line": 73,
+          "text": "概览",
+          "type": "string",
+          "original": "'概览'",
+          "suggestedKey": "auto_ipae"
+        },
+        {
+          "line": 74,
+          "text": "历史",
+          "type": "string",
+          "original": "'历史'",
+          "suggestedKey": "auto_eo18"
+        },
+        {
+          "line": 75,
+          "text": "风险",
+          "type": "string",
+          "original": "'风险'",
+          "suggestedKey": "auto_qtej"
+        },
+        {
+          "line": 93,
+          "text": "持仓数量",
+          "type": "string",
+          "original": "\"持仓数量\"",
+          "suggestedKey": "auto_ctl3gx"
+        },
+        {
+          "line": 94,
+          "text": "平均成本",
+          "type": "string",
+          "original": "\"平均成本\"",
+          "suggestedKey": "auto_ca4cb4"
+        },
+        {
+          "line": 95,
+          "text": "市价",
+          "type": "string",
+          "original": "\"市价\"",
+          "suggestedKey": "auto_gf91"
+        },
+        {
+          "line": 96,
+          "text": "市值",
+          "type": "string",
+          "original": "\"市值\"",
+          "suggestedKey": "auto_gfi2"
+        },
+        {
+          "line": 97,
+          "text": "总盈亏",
+          "type": "string",
+          "original": "\"总盈亏\"",
+          "suggestedKey": "auto_eo20y"
+        },
+        {
+          "line": 98,
+          "text": "今日盈亏",
+          "type": "string",
+          "original": "\"今日盈亏\"",
+          "suggestedKey": "auto_ad8yn6"
+        },
+        {
+          "line": 121,
+          "text": "品种集中度",
+          "type": "string",
+          "original": "\"品种集中度\"",
+          "suggestedKey": "auto_7s5jd9"
+        },
+        {
+          "line": 122,
+          "text": "Beta 暴露",
+          "type": "string",
+          "original": "\"Beta 暴露\"",
+          "suggestedKey": "auto_ny6txq"
+        },
+        {
+          "line": 123,
+          "text": "波动率贡献",
+          "type": "string",
+          "original": "\"波动率贡献\"",
+          "suggestedKey": "auto_aghv72"
+        },
+        {
+          "line": 123,
+          "text": "中",
+          "type": "string",
+          "original": "\"中\"",
+          "suggestedKey": "auto_ffx"
+        },
+        {
+          "line": 124,
+          "text": "止损距离",
+          "type": "string",
+          "original": "\"止损距离\"",
+          "suggestedKey": "auto_dytth7"
+        }
+      ]
+    },
+    {
+      "file": "src/components/market/FundHoldingsPage.tsx",
+      "count": 14,
+      "matches": [
+        {
+          "line": 51,
+          "text": "获取失败",
+          "type": "string",
+          "original": "'获取失败'",
+          "suggestedKey": "auto_gysf2r"
+        },
+        {
+          "line": 53,
+          "text": "获取失败",
+          "type": "string",
+          "original": "'获取失败'",
+          "suggestedKey": "auto_gysf2r"
+        },
+        {
+          "line": 66,
+          "text": "获取失败",
+          "type": "string",
+          "original": "'获取失败'",
+          "suggestedKey": "auto_gysf2r"
+        },
+        {
+          "line": 68,
+          "text": "获取失败",
+          "type": "string",
+          "original": "'获取失败'",
+          "suggestedKey": "auto_gysf2r"
+        },
+        {
+          "line": 85,
+          "text": "获取失败",
+          "type": "string",
+          "original": "'获取失败'",
+          "suggestedKey": "auto_gysf2r"
+        },
+        {
+          "line": 115,
+          "text": "按基金查询",
+          "type": "string",
+          "original": "'按基金查询'",
+          "suggestedKey": "auto_r989z7"
+        },
+        {
+          "line": 115,
+          "text": "按股票查询",
+          "type": "string",
+          "original": "'按股票查询'",
+          "suggestedKey": "auto_m87v77"
+        },
+        {
+          "line": 115,
+          "text": "增持榜",
+          "type": "string",
+          "original": "'增持榜'",
+          "suggestedKey": "auto_dgp21"
+        },
+        {
+          "line": 115,
+          "text": "减持榜",
+          "type": "string",
+          "original": "'减持榜'",
+          "suggestedKey": "auto_cgslm"
+        },
+        {
+          "line": 136,
+          "text": "输入基金代码，如：110022",
+          "type": "string",
+          "original": "\"输入基金代码，如：110022\"",
+          "suggestedKey": "auto_5psjz1"
+        },
+        {
+          "line": 191,
+          "text": "输入股票代码，如：600519",
+          "type": "string",
+          "original": "\"输入股票代码，如：600519\"",
+          "suggestedKey": "auto_q4z250"
+        },
+        {
+          "line": 227,
+          "text": "增持",
+          "type": "string",
+          "original": "'增持'",
+          "suggestedKey": "auto_fm77"
+        },
+        {
+          "line": 227,
+          "text": "减持",
+          "type": "string",
+          "original": "'减持'",
+          "suggestedKey": "auto_egia"
+        },
+        {
+          "line": 227,
+          "text": "持平",
+          "type": "string",
+          "original": "'持平'",
+          "suggestedKey": "auto_hcwi"
+        }
+      ]
+    }
+  ],
+  "localeKeys": {
+    "平静": "auto_gw92",
+    "贪婪": "auto_oi9s",
+    "恐惧": "auto_gwwn",
+    "急躁": "auto_h4vw",
+    "自信": "auto_mjav",
+    "突破": "auto_lhw3",
+    "回调": "auto_fjl1",
+    "止损": "auto_it6l",
+    "止盈": "auto_ix0m",
+    "趋势": "auto_oj2s",
+    "反转": "auto_f1hb",
+    "消息": "auto_j5rb",
+    "财报": "auto_ojpf",
+    "宏观": "auto_gbv7",
+    "技术": "auto_hbjj",
+    "日期": "auto_hwbe",
+    "代码": "auto_e2ri",
+    "方向": "auto_hri0",
+    "价格": "auto_e04l",
+    "数量": "auto_i1y7",
+    "理由": "auto_kdm3",
+    "情绪": "auto_h5mt",
+    "结果": "auto_m52h",
+    "盈亏": "auto_kmvb",
+    "反思": "auto_es4w",
+    "标签": "auto_idef",
+    "取消": "cancel",
+    "+ 记一笔": "auto_1923in",
+    "全部": "auto_en40",
+    "盈利": "auto_knkx",
+    "亏损": "auto_dwog",
+    "待定": "auto_gr05",
+    "全部标签": "auto_avdb6f",
+    "买入": "auto_dsdx",
+    "卖出": "auto_emhw",
+    "持有": "auto_helk",
+    "观望": "auto_nzx5",
+    ">买入</option><option value=": "auto_m8s3i",
+    ">卖出</option><option value=": "auto_ecql0v",
+    ">持有</option><option value=": "auto_fwjh63",
+    "😌 平静": "auto_l4w1hz",
+    "😎 自信": "auto_l52yiu",
+    "🤤 贪婪": "auto_l1jb5m",
+    "😰 恐惧": "auto_l5j1ok",
+    "😤 急躁": "auto_l5blth",
+    ">😌 平静</option><option value=": "auto_katcyw",
+    ">😎 自信</option><option value=": "auto_oo1t9z",
+    ">🤤 贪婪</option><option value=": "auto_hne4ut",
+    ">😰 恐惧</option><option value=": "auto_xgly5x",
+    "⏳ 待定": "auto_4jpr0i",
+    "✓ 盈利": "auto_4y0h3i",
+    "✗ 亏损": "auto_4xwa55",
+    ">⏳ 待定</option><option value=": "auto_7vnrvz",
+    ">✓ 盈利</option><option value=": "auto_p16ewr",
+    "英伟达": "auto_jkp4g",
+    "AI芯片龙头": "auto_m65l0l",
+    "财报超预期": "auto_3dsf9f",
+    "机构增持": "auto_dgb3n1",
+    "微软": "auto_h281",
+    "云计算增长": "auto_tu2ojc",
+    "AI Copilot 变现": "auto_xuo5ok",
+    "稳健现金流": "auto_8sfngy",
+    "苹果": "auto_mugz",
+    "服务收入占比提升": "auto_ghbn2m",
+    "回购力度大": "auto_2ndk8d",
+    "品牌护城河": "auto_8xtbnm",
+    "博通": "auto_eyv4",
+    "AI芯片需求": "auto_m66xwe",
+    "VMware整合": "auto_qrckl4",
+    "高股息": "auto_naw92",
+    "Reels变现": "auto_pk0fe7",
+    "AI降本增效": "auto_jr1h9r",
+    "元宇宙收缩止损": "auto_7igf8l",
+    "亚马逊": "auto_c9irc",
+    "AWS增速回升": "auto_duohaf",
+    "零售利润率改善": "auto_ddyef7",
+    "物流优化": "auto_evvqwm",
+    "谷歌": "auto_ofsl",
+    "搜索广告韧性": "auto_7rktpr",
+    "云业务减亏": "auto_x9mfug",
+    "AI整合搜索": "auto_pzl2ke",
+    "特斯拉": "auto_h9g6r",
+    "FSD进展": "auto_14oz01",
+    "储能增长": "auto_apkat2",
+    "价格战趋缓": "auto_wu6wcl",
+    "MI300需求": "auto_t2otll",
+    "PC市场复苏": "auto_jwlj8z",
+    "服务器份额提升": "auto_fy0o6j",
+    "AI Einstein增长": "auto_fccn5k",
+    "利润率提升": "auto_jlhlz3",
+    "CRM市场领先": "auto_ttpkco",
+    "价值": "auto_dvdx",
+    "成长": "auto_hi0f",
+    "动量": "auto_euxz",
+    "质量": "auto_ot5z",
+    "按评分": "auto_f6fm3",
+    "按涨跌幅": "auto_cyfd2w",
+    "按PE": "auto_ei9j2",
+    "刷新中...": "auto_25biey",
+    "刷新": "refresh",
+    "MA5上穿MA20": "auto_bpbgk8",
+    "CES keynote后买入": "auto_kuo8m7",
+    "RSI超卖但继续下跌": "auto_2ge4es",
+    "回调到支撑位": "auto_6iu6ww",
+    "目标价达成": "auto_iqqfcg",
+    "定投": "auto_g4e3",
+    "跌破布林带下轨": "auto_vjj7yf",
+    "CPI数据低于预期": "auto_4p57dh",
+    "连接富途 OpenD": "auto_th1y9j",
+    "道鲸通过 OpenD 直连你的券商账户，获取实时行情和交易能力。": "auto_6yo6nw",
+    "请确保 OpenD 已启动（默认端口 11111）。如果还没安装，可前往富途官网免费下载。": "auto_7n7u93",
+    "添加自选股": "auto_eszdh9",
+    "选择你关注的股票和 ETF，道鲸会实时监控它们的行情变化。": "auto_aub1is",
+    "系统已预置 8 只热门标的（TQQQ、SOXL、QQQ、SPY、AAPL、NVDA 等），你也可以在设置中自定义。": "auto_8r9ox",
+    "创建第一个策略": "auto_moyjeu",
+    "用一句话描述你的交易思路，AI 自动帮你生成可执行策略。": "auto_d5tude",
+    "RSI 低于 30 时买入 TQQQ，涨 5% 卖出": "auto_as3aw3",
+    "例如：\"RSI 低于 30 时买入 TQQQ，涨 5% 卖出\"。你也可以选择模板或手动填表。": "auto_d0gm9r",
+    "设置风控规则": "auto_hluag2",
+    "配置你的风险承受能力，道鲸会自动拦截危险操作。": "auto_mvk09y",
+    "包括单品种上限、日亏损上限、Kelly 仓位管理、回撤降仓等。": "auto_4d4n6n",
+    "开始使用道鲸": "auto_ebzv4p",
+    "你已选择演示模式，所有数据为模拟，可安全体验全部功能。": "auto_mc01lu",
+    "一切就绪！道鲸正在实时监控市场，为你的交易保驾护航。": "auto_1la307",
+    "自动检测 OpenD 连接中…": "auto_j7qfj1",
+    "MA5 上穿 MA20 买入 TQQQ": "auto_sg6f3a",
+    "RSI < 30 买入 AAPL，止损 5%": "auto_qw0a13",
+    "MACD 金叉买入 QQQ": "auto_47f4bb",
+    "单品种上限": "auto_i4qwl5",
+    "日亏损上限": "auto_hgflut",
+    "Kelly 上限": "auto_3eucqv",
+    "回撤降仓": "auto_bdw6jw",
+    "演示模式已启用。所有行情和交易均为模拟，可放心探索功能。": "auto_yv9z5v",
+    "OpenD 已连接，策略引擎就绪，风控系统激活。": "auto_hhcyhk",
+    "连接中...": "auto_8r2drc",
+    "连接 OpenD": "auto_g1c85d",
+    "开始使用 🐋": "auto_hkeg6y",
+    "下一步 →": "auto_vapusi",
+    "半导体": "auto_cn9gh",
+    "中芯国际": "auto_aeji4q",
+    "韦尔股份": "auto_jjti3u",
+    "人工智能": "auto_abq2cu",
+    "科大讯飞": "auto_fqv30l",
+    "海康威视": "auto_e7cv7p",
+    "新能源": "auto_fiqqr",
+    "宁德时代": "auto_bxzwxv",
+    "比亚迪": "auto_g6qg4",
+    "白酒": "auto_ky9h",
+    "贵州茅台": "auto_i7jq8k",
+    "五粮液": "auto_c45eg",
+    "银行": "auto_q32u",
+    "工商银行": "auto_c7jxzr",
+    "招商银行": "auto_cu2vc1",
+    "券商": "auto_egb2",
+    "中信证券": "auto_a7c7or",
+    "东方财富": "auto_aa8ts7",
+    "医药": "auto_evmc",
+    "恒瑞医药": "auto_cmt7ts",
+    "药明康德": "auto_h077a7",
+    "房地产": "auto_etb7a",
+    "万科A": "auto_c05p3",
+    "保利发展": "auto_af2mj4",
+    "煤炭": "auto_jwll",
+    "中国神华": "auto_a8akv4",
+    "陕西煤业": "auto_jjacg0",
+    "钢铁": "auto_q3j3",
+    "宝钢股份": "auto_c6dd5t",
+    "鞍钢股份": "auto_jqivw1",
+    "光伏": "auto_e9d2",
+    "隆基绿能": "auto_jcz40i",
+    "通威股份": "auto_ik42jn",
+    "汽车": "auto_j8nd",
+    "长城汽车": "auto_j877co",
+    "通信": "auto_oy6f",
+    "中国移动": "auto_a8aohp",
+    "中兴通讯": "auto_a7lkho",
+    "游戏": "auto_jaaf",
+    "腾讯控股": "auto_gwxaiz",
+    "网易": "auto_m7s2",
+    "航运": "auto_mxgm",
+    "中远海控": "auto_agkivz",
+    "招商轮船": "auto_cu1w9i",
+    "黄金": "auto_rszx",
+    "山东黄金": "auto_bzycuw",
+    "紫金矿业": "auto_ge9ytd",
+    "🗺️ 市场板块热力图": "auto_q351fy",
+    "MA5 上穿 MA20 买入 TQQQ，止损 5%": "auto_rb17tf",
+    "RSI 低于 30 买入 AAPL，RSI 高于 70 卖出": "auto_e4g6jr",
+    "MACD 金叉买入 QQQ，止盈 10% 止损 3%": "auto_fp2ov0",
+    "布林带下轨买入 NVDA，上轨卖出": "auto_ekz23x",
+    "20日动量突破 5% 买入 SOXL": "auto_rq9keu",
+    "无法识别策略模式": "auto_9uqv3r",
+    "解析失败": "auto_htpazl",
+    "✓ 已保存": "auto_b4jri8",
+    "💾 保存策略": "auto_lg4cvr",
+    "⏳ 回测中...": "auto_rq5mzf",
+    "📈 回测 200 天": "auto_to4bfh",
+    "总收益": "auto_eladr",
+    "年化收益": "auto_c9ji0m",
+    "夏普比率": "auto_bnwsz6",
+    "最大回撤": "auto_dd61gt",
+    "胜率": "auto_mjvv",
+    "盈亏比": "auto_hsa99",
+    "低": "auto_fny",
+    "中": "auto_ffx",
+    "高": "auto_ul4",
+    "创建中...": "auto_xojly8",
+    "使用此模板 →": "auto_mfltrf",
+    "均线交叉": "auto_bj8pvh",
+    "RSI 超买超卖": "auto_ce0oxg",
+    "MACD 金叉死叉": "auto_wmwm3z",
+    "动量突破": "auto_b19ire",
+    "布林带突破": "auto_pw75l1",
+    "快速均线": "auto_cp2gh8",
+    "慢速均线": "auto_cvpwk5",
+    "超卖线": "auto_l53la",
+    "超买线": "auto_l49lg",
+    "保存中...": "auto_vts3p8",
+    "💾 保存修改": "auto_lgbtvf",
+    "✅ 创建策略": "auto_iajvxz",
+    "草稿": "auto_n02e",
+    "已回测": "auto_e6qvz",
+    "🟢 运行中": "auto_nb69cm",
+    "已停止": "auto_e5mns",
+    "模拟中": "auto_g0v0v",
+    "AI 对比策略": "auto_6q3rwi",
+    "编辑策略": "auto_gmoeh6",
+    "删除策略": "auto_aziyvn",
+    "📈 回测": "auto_kz3n0i",
+    "双均线突破策略": "auto_4pdomy",
+    "低波动": "auto_c5590",
+    "市值": "auto_gfi2",
+    "1月": "auto_liv",
+    "2月": "auto_ljq",
+    "3月": "auto_lkl",
+    "4月": "auto_llg",
+    "5月": "auto_lmb",
+    "6月": "auto_ln6",
+    "7月": "auto_lo1",
+    "8月": "auto_low",
+    "9月": "auto_lpr",
+    "10月": "auto_1lu1",
+    "11月": "auto_1luw",
+    "12月": "auto_1lvr",
+    "科技": "auto_l9e7",
+    "金融": "auto_pjoc",
+    "消费": "auto_jelt",
+    "能源": "auto_mjoz",
+    "工业": "auto_gedx",
+    "资产配置": "auto_i5nqw4",
+    "个股选择": "auto_aeg6bb",
+    "交互作用": "auto_a8z7sq",
+    "因子敞口": "auto_bcbz5h",
+    "加载归因数据...": "auto_y1vin9",
+    "资产配置效应": "auto_oiavv4",
+    "行业配置带来的超额收益": "auto_dzjurm",
+    "个股选择效应": "auto_jmlful",
+    "行业内选股带来的超额收益": "auto_aqqin2",
+    "交互效应": "auto_a92tkq",
+    "配置与选股的交叉影响": "auto_vujzog",
+    "🏭 行业板块": "auto_1nugph",
+    "💡 概念板块": "auto_vxep4p",
+    "🌍 地区板块": "auto_vhqq41",
+    "加载中...": "auto_27k1ha",
+    "石油": "auto_kzza",
+    "电力": "auto_ke12",
+    "算力": "auto_lh44",
+    "人形机器人": "auto_yvftng",
+    "低空经济": "auto_ainb63",
+    "固态电池": "auto_bdk576",
+    "商业航天": "auto_b39g43",
+    "数据要素": "auto_d7tkjh",
+    "脑机接口": "auto_gpn7jb",
+    "上海": "auto_dvhp",
+    "深圳": "auto_j6g2",
+    "北京": "auto_ekc5",
+    "浙江": "auto_j6zq",
+    "江苏": "auto_j5g0",
+    "广东": "auto_gi2l",
+    "山东": "auto_g5hn",
+    "福建": "auto_l74b",
+    "入场价": "auto_ccgma",
+    "出场价": "auto_cfj3r",
+    "盈亏%": "auto_hrozi",
+    "持有天数": "auto_cx2ff3",
+    "日期,方向,入场价,出场价,盈亏,盈亏%,持有天数": "auto_h20nhb",
+    "3个月": "auto_ewsx",
+    "6个月": "auto_ez10",
+    "1年": "auto_jtv",
+    "2年": "auto_juq",
+    "🚀 开始回测": "auto_jkuqi3",
+    "📊 绩效概览": "auto_9sl0vc",
+    "📈 权益曲线": "auto_dni2nr",
+    "📉 回撤分析": "auto_fbnpz0",
+    "📅 月度收益": "auto_f788t2",
+    "🕐 交易时间线": "auto_h3iu63",
+    "📋 交易明细": "auto_fem46f",
+    "🔬 增强分析": "auto_vqydg7",
+    "总交易": "auto_ehcve",
+    "最终资金": "auto_dixyhh",
+    "初始: ${result.initialCapital.toLocaleString()}": "auto_3gu4ku",
+    "最终: ${result.finalCapital.toFixed(2)}": "auto_5uv57r",
+    "共 {result.trades.length} 笔交易": "auto_t6qc74",
+    "胜率 {(result.winRate * 100).toFixed(1)}% · 盈亏比 {result.profitLossRatio.toFixed(2)}": "auto_tsxno7",
+    "⏳ 扫描中...": "auto_twvham",
+    "🔬 参数扫描": "auto_v5vkf7",
+    "⏳ 分析中...": "auto_djfglk",
+    "强烈买入": "auto_chafk3",
+    "减仓": "auto_ecis",
+    "当前市场处于震荡整理阶段，AI和科技板块表现强势，传统行业相对疲软。美联储维持利率不变，市场预期年内降息1-2次。建议关注结构性机会。": "auto_n657bo",
+    "增持": "auto_fm77",
+    "AI芯片需求持续强劲，Blackwell架构推出带来新增长点": "auto_5jx4eq",
+    "AI定制芯片业务快速增长，VMware整合效应显现": "auto_1lcwx2",
+    "减持": "auto_egia",
+    "价格战压缩利润率，FSD商业化进度慢于预期": "auto_gy00ls",
+    "服务收入稳健增长，Vision Pro长期看好但短期影响有限": "auto_9luq8y",
+    "关注": "auto_eg9h",
+    "超微电脑": "auto_i969l1",
+    "AI服务器需求爆发，但估值较高需等待回调": "auto_j6lb1p",
+    "地缘政治风险：中美关系紧张可能影响科技股估值": "auto_aimm95",
+    "通胀反复风险：若通胀数据超预期，可能推迟降息时间": "auto_gb9pb",
+    "AI泡沫风险：部分AI概念股估值已透支未来2-3年增长": "auto_t3q4kd",
+    "流动性风险：季度末资金面可能趋紧": "auto_cbepxy",
+    "AI算力基建": "auto_n7cat0",
+    "高股息防御": "auto_h7fhfv",
+    "新能源出海": "auto_buxw68",
+    "消费复苏": "auto_eegr83",
+    "医药创新": "auto_b1km15",
+    "预计下周市场维持震荡格局，重点关注：1) 美联储会议纪要；2) 英伟达GTC大会后续影响；3) 中概股财报季。建议控制仓位，保持灵活性。": "auto_4j6fra",
+    "分析中...": "auto_dpyq39",
+    "重新分析": "auto_itbn65",
+    "双均线突破": "auto_fyxfd5",
+    "金叉信号": "auto_iqrbri",
+    "动量轮动": "auto_b1cvhd",
+    "突破前高": "auto_fy9fzy",
+    "死叉信号": "auto_dwouhw",
+    "动量衰减": "auto_b1bohy",
+    "价值投资": "auto_aase2c",
+    "PE低于均值": "auto_lrjnp2",
+    "止损触发": "auto_dysxpk",
+    "目标价到达": "auto_ir0n90",
+    "动量转弱": "auto_b1cxws",
+    "新增": "auto_hs6m",
+    "删除": "delete",
+    "英特尔": "auto_jqfe4",
+    "加载调仓建议...": "auto_s6xz8z",
+    "每日": "auto_iwae",
+    "每周": "auto_isu1",
+    "每月": "auto_iwih",
+    "Dry-run 模式：仅展示调仓预览": "auto_frtiax",
+    "真实执行：将提交调仓订单": "auto_ehs6fb",
+    "预览调仓": "auto_jtdbec",
+    "执行调仓": "auto_czg0c5",
+    "格式校验": "auto_djq6u6",
+    "价格边界": "auto_aeihlk",
+    "成交量异常": "auto_w8kxan",
+    "时间戳间隙": "auto_86qqjq",
+    "数据延迟": "auto_d7mfqf",
+    "腾讯": "auto_msj5",
+    "阿里": "auto_qctp",
+    "价格超出合理区间 (检测到 $9999.99)": "auto_unaezu",
+    "超过60秒未收到更新": "auto_tps2sq",
+    "超过30秒未收到更新": "auto_ea0pl9",
+    "检测到时间戳倒序": "auto_37b2z1",
+    "成交量突增300%": "auto_jsnkxi",
+    "加载数据质量状态...": "auto_ul9jnj",
+    "正常": "auto_is6t",
+    "延迟": "auto_gxwp",
+    "异常": "auto_gody",
+    "{c.entries} 条目": "auto_m11mue",
+    "动量轮动策略": "auto_nnhuk0",
+    "价值投资策略": "auto_optg5f",
+    "网格交易策略": "auto_9y0cqx",
+    "加载回测数据...": "auto_ul7l5m",
+    "总收益率": "auto_ckckns",
+    "年化收益率": "auto_p28vgx",
+    "卡玛比率": "auto_b01v65",
+    "索提诺比率": "auto_581la7",
+    "交易次数": "auto_acjsf2",
+    "净值曲线": "auto_angbk9",
+    "月度收益": "auto_de6o36",
+    "获取数据失败": "auto_v1celr",
+    "食品": "auto_qgua",
+    "非食品": "auto_mwmg0",
+    "服务": "auto_hzck",
+    "零售总额": "auto_jeerwa",
+    "城镇": "auto_fr5l",
+    "乡村": "auto_dwcw",
+    "网上零售": "auto_ge92mp",
+    "消费者信心": "auto_kf8ghi",
+    "预期": "auto_qiaj",
+    "满意": "auto_je4u",
+    "收入": "auto_hnu7",
+    "就业": "auto_g3yh",
+    "🔄 刷新": "auto_l0548i",
+    "🔥 热度": "auto_l0vdgx",
+    "📈 收益": "auto_kz64q1",
+    "🛡️ 稳健": "auto_k7ceih",
+    "🆕 新星": "auto_l2982e",
+    "🆓 免费": "auto_l24oz9",
+    "低风险": "auto_cczl5",
+    "中风险": "auto_c71ag",
+    "高风险": "auto_nfayb",
+    "搜索策略...": "auto_hmeoop",
+    "📭 市场暂未上架策略，去策略工坊创建第一个！": "auto_c824mg",
+    "未找到匹配的策略": "auto_6or08t",
+    "评分失败": "auto_hz2uza",
+    "评论失败": "auto_i7j4lm",
+    "标的": "auto_icf1",
+    "多市场": "auto_dias2",
+    "夏普": "auto_fpkv",
+    "评论": "auto_ojg6",
+    "写评论...": "auto_cyeukf",
+    "订阅功能即将上线，敬请期待": "auto_4sf8fo",
+    "请先选择一个策略": "auto_t6n40m",
+    "-- 选择要发布的策略 --": "auto_x2fp7k",
+    "{s.name || '未命名策略'}": "auto_2x1daf",
+    "未命名策略": "auto_bsug9j",
+    "描述你的策略逻辑、适用场景、风险特点...": "auto_kcvp24",
+    "免费发布，积累口碑": "auto_5m3bvo",
+    "市场因子": "auto_c81yaw",
+    "市值因子": "auto_c712zu",
+    "价值因子": "auto_aaq4id",
+    "盈利因子": "auto_fbsrdd",
+    "投资因子": "auto_d0qm0v",
+    "动量因子": "auto_b13avr",
+    "低波因子": "auto_aggqmc",
+    "质量因子": "auto_iepufr",
+    "因子暴露": "auto_bcckmm",
+    "加载因子分析...": "auto_gyugon",
+    "警告阈值": "auto_hy0st4",
+    "加载 OpenD 状态...": "auto_xqzdfq",
+    "在线": "auto_fiqf",
+    "离线": "auto_leg4",
+    "重连中": "auto_m1pcs",
+    "重新连接 OpenD...": "auto_ipvyza",
+    "心跳检测": "auto_co4c9n",
+    "行情订阅": "auto_hlq8gs",
+    "成功": "success",
+    "订单查询": "auto_hyqjm8",
+    "持仓同步": "auto_cthxe3",
+    "账户信息": "auto_i7og1r",
+    "自动重连": "auto_gqphdb",
+    "连接断开": "auto_ikc3i2",
+    "警告": "auto_o690",
+    "初始连接": "auto_aqox1x",
+    "今日市场宽幅震荡，北向资金净流入，科技板块表现活跃。": "auto_i7435n",
+    "上证指数收涨0.5%，深证成指涨0.8%，创业板指涨1.2%。两市成交额约8500亿元，较上一交易日放大约10%。": "auto_2y6esp",
+    "涨幅居前的板块：半导体(+3.2%)、新能源(+2.1%)、医药(+1.8%)。跌幅居前的板块：银行(-0.5%)、地产(-0.3%)。": "auto_57u3ve",
+    "最新宏观数据：GDP 5.0%，CPI 1.2%，PMI 50.0。经济数据整体平稳，通胀温和。": "auto_l79nza",
+    "市场情绪指数：65/100（偏多）。投资者情绪较昨日有所回暖，风险偏好上升。": "auto_oow9np",
+    "北向资金净流入 +45.2亿。主力资金流向：半导体、新能源、消费电子。": "auto_5teolx",
+    "涨停个股：12只。跌幅超过5%：8只。市场整体涨多跌少。": "auto_x27n6d",
+    "今日异动：2只个股触发异动检测（放量突破）。无重大异常交易。": "auto_9uxkf8",
+    "短期展望：市场或维持震荡格局，关注半导体和新能源板块的持续性。建议控制仓位，精选个股。": "auto_4iwshy",
+    "获取简报失败": "auto_s9a5qg",
+    "市场概览": "auto_c85dku",
+    "板块表现": "auto_dfe328",
+    "宏观数据": "auto_c4eki9",
+    "市场情绪": "auto_c83tx9",
+    "资金流向": "auto_ifbj5p",
+    "涨跌排行": "auto_ef61b2",
+    "异动监控": "auto_cc2sm4",
+    "短期展望": "auto_fk3d88",
+    "生成中...": "auto_s41ylu",
+    "成交量": "auto_er9a3",
+    "市场广度": "auto_c839mn",
+    "波动率": "auto_gctvl",
+    "极端情绪": "auto_dkgd77",
+    "情绪得分突破 +40，进入强烈看多区间": "auto_z02ddt",
+    "趋势转变": "auto_i7i3y8",
+    "情绪趋势由稳定转为改善": "auto_fi0itk",
+    "成分异常": "auto_cpqpd8",
+    "成交量成分出现负值，市场情绪分化": "auto_2dxoj9",
+    "看多阈值": "auto_featpf",
+    "看空阈值": "auto_fj6t6r",
+    "加载情绪数据...": "auto_x3l2fi",
+    "看多": "auto_kqjz",
+    "看空": "auto_kx5b",
+    "中性": "auto_dtp6",
+    "改善中": "auto_f8pwi",
+    "恶化中": "auto_ej74d",
+    "稳定": "auto_ladj",
+    "非农就业人数": "auto_2yy6v7",
+    "18.5万": "auto_rz34p",
+    "17.5万": "auto_ryg56",
+    "失业率": "auto_dg80u",
+    "CPI月率": "auto_12sykb",
+    "美联储利率决议": "auto_9jw5yz",
+    "PPI月率": "auto_19yaa0",
+    "密歇根消费者信心指数": "auto_m0h61l",
+    "工业增加值": "auto_m6ysat",
+    "初请失业金人数": "auto_pvsdb0",
+    "21.5万": "auto_seetd",
+    "21.8万": "auto_seevy",
+    "高影响": "auto_n56qc",
+    "中影响": "auto_bwx2h",
+    "预期 {event.forecast}": "auto_96jnjc",
+    "前值 {event.previous}": "auto_lpfm8o",
+    "无数据": "auto_fezfi",
+    "极端波动": "auto_dki6ms",
+    "高波动": "auto_n7gm6",
+    "Kelly 建议仓位": "auto_dwu58v",
+    "交易历史不足": "auto_2cuuxr",
+    "当前回撤": "auto_cdb7mo",
+    "VIX 波动率": "auto_k3p02u",
+    "日盈亏 / 总资产": "auto_z8kdzb",
+    "未连接": "auto_fszzl",
+    "平均盈利": "auto_ca7r11",
+    "平均亏损": "auto_ca104k",
+    "无波动率调节": "auto_q0d8g",
+    "📈 账户净值走势": "auto_gp7plb",
+    "📊 交易绩效指标": "auto_ek5dup",
+    "行情推送连接建立": "auto_hk6906",
+    "策略 MA_Crossover 启动运行": "auto_k2l35n",
+    "日亏损接近上限 80%": "auto_hlyus",
+    "订单 #88234 部分成交 50/100": "auto_p81yjs",
+    "获取 K 线数据超时，使用缓存": "auto_q0wdpe",
+    "Kelly 仓位计算: f*=0.125, qty=250": "auto_64w4ou",
+    "VIX 突破 25，波动率调节生效": "auto_mj18lq",
+    "回测完成: 夏普 1.34, 最大回撤 12.5%": "auto_n5uifa",
+    "心跳检测正常": "auto_tm4vps",
+    "行情数据更新": "auto_6o6r77",
+    "策略信号生成": "auto_574f6e",
+    "风控检查通过": "auto_uf4grv",
+    "订单状态变更": "auto_4zbv8a",
+    "自动刷新": "auto_gqefo7",
+    "已暂停": "auto_e98y4",
+    "信息": "auto_e46m",
+    "错误": "error",
+    "涨停": "auto_j3ck",
+    "跌停": "auto_ok5s",
+    "放量异动": "auto_ddiqk7",
+    "快速拉升/跳水": "auto_ydvt5u",
+    "跌破": "auto_os14",
+    "异常交易": "auto_cdkxyd",
+    "大单异动": "auto_blh2es",
+    "未处理": "auto_fjrcc",
+    "高危": "auto_qsnt",
+    "中危": "auto_dr6s",
+    "低危": "auto_dy3n",
+    "确定重置模拟账户？所有持仓和资金将清零。": "auto_j3bali",
+    "⏸ 已暂停": "auto_10gvq4",
+    "⏹ 未初始化": "auto_tuk9az",
+    "📊 持仓": "auto_kz6tad",
+    "📋 订单": "auto_kzedyd",
+    "📈 报告": "auto_kz5i6y",
+    "数量: {p.qty}": "auto_hiyfq3",
+    "均价: HKD {p.avgCost.toFixed(2)}": "auto_2yn1fg",
+    "现价: HKD {p.lastPrice.toFixed(2)}": "auto_8ezhf5",
+    "市值: HKD {p.marketValue.toFixed(0)}": "auto_puyb7m",
+    "Sharpe 比率": "auto_761h20",
+    "美股": "auto_mehf",
+    "港股": "auto_jg42",
+    "A股": "auto_qyo",
+    "加密货币": "auto_ataijk",
+    "休市": "auto_dyq9",
+    "周一开市": "auto_az57dm",
+    "盘前": "auto_knzp",
+    "开市": "auto_goaq",
+    "即将开盘": "auto_awuuiz",
+    "开盘": "auto_gt7c",
+    "交易中": "auto_c0gm6",
+    "收盘": "auto_hv8i",
+    "盘后": "auto_koc6",
+    "收盘结束": "auto_d9kyxa",
+    "已收盘": "auto_e98lw",
+    "明日开盘": "auto_das6un",
+    "正面": "auto_j3hb",
+    "负面": "auto_ou1v",
+    "市场": "auto_ggvs",
+    "获取新闻失败": "auto_usszj6",
+    "偏多": "auto_e5d7",
+    "偏空": "auto_ebyj",
+    "搜索新闻关键词...": "auto_61n0rx",
+    "诊断失败": "auto_i22bg7",
+    "资金流": "auto_leaj8",
+    "舆情": "auto_mnb3",
+    "基金": "auto_friv",
+    "龙虎榜": "auto_o0z8n",
+    "异动": "auto_gm3q",
+    "输入股票代码，如：600519": "auto_q4z250",
+    "诊断中...": "auto_jlqchw",
+    "诊断": "auto_oc2r",
+    "💰 资金流向": "auto_k41g0m",
+    "📰 舆情情绪": "auto_8kk6k1",
+    "🏦 基金持仓": "auto_7gz6v5",
+    "🐉 龙虎榜": "auto_8bvyk3",
+    "⚠️ 异动检测": "auto_3hkq9q",
+    "黑天鹅": "auto_npgwd",
+    "市场崩盘 -30%": "auto_inn7f8",
+    "熊市": "auto_jttk",
+    "持续下跌 -15%": "auto_v2aslj",
+    "正常回调 -8%": "auto_o1c87o",
+    "震荡": "auto_qere",
+    "横盘震荡 ±2%": "auto_11inro",
+    "反弹": "auto_eryk",
+    "快速反弹 +10%": "auto_hd73vf",
+    "牛市": "auto_jytj",
+    "强劲上涨 +20%": "auto_mcp9ui",
+    "概览": "auto_ipae",
+    "历史": "auto_eo18",
+    "风险": "auto_qtej",
+    "持仓数量": "auto_ctl3gx",
+    "平均成本": "auto_ca4cb4",
+    "市价": "auto_gf91",
+    "总盈亏": "auto_eo20y",
+    "今日盈亏": "auto_ad8yn6",
+    "品种集中度": "auto_7s5jd9",
+    "Beta 暴露": "auto_ny6txq",
+    "波动率贡献": "auto_aghv72",
+    "止损距离": "auto_dytth7",
+    "获取失败": "auto_gysf2r",
+    "按基金查询": "auto_r989z7",
+    "按股票查询": "auto_m87v77",
+    "增持榜": "auto_dgp21",
+    "减持榜": "auto_cgslm",
+    "输入基金代码，如：110022": "auto_5psjz1",
+    "持平": "auto_hcwi",
+    "紧急停止已触发，所有策略已停止": "auto_lrpv77",
+    "告警": "auto_f3oc",
+    "● 运行中": "auto_6dywdc",
+    "○ 已停止": "auto_647f37",
+    "信号 {s.signals}": "auto_y89wci",
+    "成交 {s.trades}": "auto_8ywbb8",
+    "停止": "auto_e9ae",
+    "启动": "auto_ertl",
+    "国内生产总值同比增长": "auto_kmh7s6",
+    "居民消费价格指数": "auto_rqjj63",
+    "制造业采购经理指数": "auto_8upbiu",
+    "工业生产者出厂价格": "auto_m1d5kb",
+    "广义货币供应量同比": "auto_hw7v9i",
+    "贷款市场报价利率": "auto_flgir5",
+    "城镇调查失业率": "auto_v51rib",
+    "规模以上工业增加值同比": "auto_lnfy6t",
+    "⟳ 刷新中": "auto_ei3gp3",
+    "↻ 刷新": "auto_49kuzi",
+    "月度": "auto_i1lq",
+    "极度恐慌": "auto_dgaz9d",
+    "恐慌": "auto_gwzg",
+    "极度贪婪": "auto_dgikjp",
+    "市场过度乐观，注意回调风险。": "auto_71lk0o",
+    "市场恐慌情绪浓厚，可能存在反弹机会。": "auto_vvd5v0",
+    "情绪中性，关注结构性机会。": "auto_a71ham",
+    "情绪面": "auto_esojh",
+    "🌀 动量": "auto_l8m0eb",
+    "↔️ 均值回归": "auto_2soi0i",
+    "📈 突破": "auto_kz9re0",
+    "🔗 配对": "auto_l0rxde",
+    "📋 期权": "auto_kz8aba",
+    "🔢 多因子": "auto_cbu9yn",
+    "加载失败": "auto_b0mmk1",
+    "实例化失败": "auto_dg6msd",
+    "搜索模板...": "auto_jmd5ka",
+    "使用此模板创建策略 →": "auto_h52hfr",
+    "加载模拟盘数据...": "auto_g83doz",
+    "高ROE低PE": "auto_l8hsst",
+    "小市值成长股": "auto_tghgh5",
+    "行业龙头": "auto_hj2v0p",
+    "近期突破": "auto_ikpt4x",
+    "北向资金增持": "auto_n5srw6",
+    "未找到匹配结果": "auto_4d8sxl",
+    "查询失败": "auto_doodpt",
+    "输入选股条件，如：高ROE低PE、小市值成长股、行业龙头...": "auto_2b5qsg",
+    "搜索中...": "auto_a6qf6h",
+    "搜索": "auto_hpqe",
+    "如：科技": "auto_ccdk13",
+    "半导体3倍做多": "auto_jebhej",
+    "纳斯达克3倍做多": "auto_fx8e77",
+    "纳斯达克3倍做空": "auto_fx8ksj",
+    "半导体3倍做空": "auto_jebnzv",
+    "20+年国债": "auto_otnyx0",
+    "黄金ETF": "auto_45mie",
+    "能源ETF": "auto_l2k5lw",
+    "🔥 市场异动": "auto_t303cm",
+    "涨幅榜": "auto_gitun",
+    "跌幅榜": "auto_l8b0j",
+    "阿里(美)": "auto_xev216",
+    "拼多多": "auto_exl4s",
+    "1日": "auto_las",
+    "5日": "auto_le8",
+    "20日": "auto_1mcn",
+    "资金流入": "auto_ifbimp",
+    "资金流出": "auto_ifbiqu",
+    "板块轮动": "auto_dff3jm",
+    "}强度 {sig.strength?.toFixed(1) ??": "auto_n0no3c",
+    "风控": "auto_qjdl",
+    "订单": "auto_o7hv",
+    "信号": "auto_e1py",
+    "系统": "auto_lydg",
+    "通知": "auto_p62z",
+    "as const, label: `未读${unreadCount > 0 ? `(${unreadCount})` :": "auto_q6o38p",
+    "保存": "save",
+    "总持仓上限": "auto_xx8gqb",
+    "下单频率": "auto_a7b2o0",
+    "ATR 止损倍数": "auto_ybrv29",
+    "回撤降仓阈值": "auto_35gfa8",
+    "VIX 高波动阈值": "auto_vz51e1",
+    "VIX 极端阈值": "auto_gltzer",
+    "未知策略": "auto_dil98q",
+    "已执行": "auto_e8uuv",
+    "已拒绝": "auto_e8vjx",
+    "已撤销": "auto_e9b2m",
+    "待处理": "auto_efg7b",
+    "个股": "auto_e01j",
+    "行业": "auto_nm1a",
+    "概念": "auto_ih0z",
+    "融资余额": "auto_hoknwb",
+    "融券余额": "auto_hfxb73",
+    "融资(亿)": "auto_kf1zyd",
+    "融券(亿)": "auto_rv5xo9",
+    "稳定性": "auto_icgn4",
+    "衰减比": "auto_kdxsl",
+    "一致性": "auto_c1x9v",
+    "正收益窗口": "auto_6yjj37",
+    "窗口数": "auto_id8lg",
+    "滚动窗口": "auto_ec17ei",
+    "⚠️ 建议简化策略参数。": "auto_ojhg6",
+    "策略在样本外有较好的一致性。": "auto_ioxm2g",
+    "富途": "auto_geko",
+    "长桥": "auto_q01y",
+    "自定义": "auto_jh1ll",
+    "切换券商": "auto_arevex",
+    "{activeBroker ? (BROKER_LABELS[activeBroker.type] || activeBroker.name) : '选择券商'}": "auto_nlb15r",
+    "选择券商": "auto_ikwbgu",
+    "已连接": "auto_ege0p",
+    "每日榜单": "auto_e0ychb",
+    "机构席位": "auto_dgbxsa",
+    "席位详情": "auto_c7wnz3",
+    "📊 市场广度": "auto_e03jam",
+    "强势": "auto_gngl",
+    "弱势": "auto_gn8u",
+    "✓ 量涨价涨": "auto_3kqayx",
+    "✗ 量跌价涨": "auto_1juc89",
+    "期望收益": "auto_dfty5s",
+    "最大连赢/连亏": "auto_4lwejv",
+    "请选择两个策略进行对比": "auto_7w3hg8",
+    "对比生成失败": "auto_6ox7hc",
+    "调用失败": "auto_i5ccbd",
+    "选择策略...": "auto_aczznj",
+    "AI 分析中...": "auto_m7yyl9",
+    "开始对比": "auto_ccymme",
+    "如: AAPL": "auto_l6tiro",
+    "限价": "auto_q013",
+    "{opendConnected ? 'Push 模式 ·": "auto_blued",
+    "Push 模式 · <50ms": "auto_e3aqaw",
+    "OpenD 未连接": "auto_cbxyvp",
+    "自选 8 只": "auto_r4i7gf",
+    "道鲸 v0.1.0": "auto_acs5c6",
+    "内存: {mem}MB": "auto_ws19ep",
+    "基准": "auto_fevg",
+    "净值": "auto_ecfw",
+    "回撤%": "auto_d761r",
+    "回撤": "auto_fbt2",
+    "计算失败": "auto_i4jove",
+    "计算异常": "auto_i4kf7w",
+    "计算中...": "auto_eudl4n",
+    "计算 Greeks": "auto_1n3k0z",
+    "解释生成失败": "auto_x68vpw",
+    "展开": "auto_g85n",
+    "收起": "auto_hzpd",
+    "AI 生成解读中...": "auto_4xyeua",
+    "持仓分配": "auto_cthshl",
+    "占比: ${pct.toFixed(1)}%": "auto_khuix9",
+    "市值: $${d.value.toLocaleString()}": "auto_1e419w",
+    "全局导航": "auto_anln5y",
+    "打开快捷键面板": "auto_9r4eha",
+    "页面切换（数字键）": "auto_ywj3y",
+    "高度分散": "auto_jxcp63",
+    "中度分散": "auto_a98dme",
+    "高度集中": "auto_jxo9kl",
+    "切换到浅色模式": "auto_yxqx74",
+    "切换到深色模式": "auto_yup3gc",
+    "加载缓存数据...": "auto_9jb1w2",
+    "全部 Namespace": "auto_el1pqz",
+    "数据点: {drawdownData.length}": "auto_7xa577",
+    "· 🏆 稳健": "auto_nc2ldr",
+    "{trade.holdingDays}天": "auto_t6hush",
+    ", `🛡️ 风控拦截: ${data.reason ||": "auto_2o4lv1",
+    "💰 今日盈亏汇总": "auto_8cqc9p",
+    "添加代码": "auto_e7vewz"
+  }
+}
