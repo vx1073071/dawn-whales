@@ -343,6 +343,11 @@ contextBridge.exposeInMainWorld('api', {
     export: (type: string, format?: string) => ipcRenderer.invoke('em:export-data', type, format),
   },
 
+  // ── Smart Picker (JVS-25 PM Round 2) ─────────────────────────
+  smartPicker: {
+    pick: (request?: any) => ipcRenderer.invoke('em:smart-pick', request),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),

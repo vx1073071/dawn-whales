@@ -45,6 +45,7 @@ import { getUnlockCalendar } from './engine/unlock-calendar';
 import { getDividendCalendar } from './engine/dividend-calendar';
 import { getEarningsCalendar } from './engine/earnings-calendar';
 import { exportData } from './engine/data-exporter';
+import { getSmartPicker } from './engine/smart-picker';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -2479,6 +2480,17 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   ipcMain.handle('em:export-data', async (_e, type: string, format?: string) => {
     try {
       const result = await exportData(type as any, (format as any) || 'json');
+      return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Smart Picker (JVS-25 PM Round 2) ───────────────────────────────────
+  ipcMain.handle('em:smart-pick', async (_e, request?: any) => {
+    try {
+      const picker = getSmartPicker();
+      const result = await picker.pick(request || {});
       return result;
     } catch (err: any) {
       return { success: false, error: err.message };

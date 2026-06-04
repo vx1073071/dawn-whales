@@ -1135,6 +1135,18 @@ export async function exportJVSData(type: string, format?: string): Promise<any>
   return window.api.dataExporter.export(type, format);
 }
 
+// ── Smart Picker (JVS-25 PM Round 2) ───────────────────────────────────────
+
+export async function smartPick(request?: {
+  market?: string;
+  limit?: number;
+  minScore?: number;
+  weights?: Record<string, number>;
+}): Promise<any> {
+  if (!hasIPC()) return { success: false, picks: [] };
+  return window.api.smartPicker.pick(request);
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {
