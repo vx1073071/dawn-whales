@@ -448,3 +448,20 @@ export const ReportQuickSchema = z.object({
   result: BacktestResultCoreSchema,
   apiKey: z.string().optional(),
 });
+
+// ── Strategy Auto-Tune ────────────────────────────────────────────────────────
+
+export const StrategyAutoTuneSchema = z.object({
+  strategyType: z.string(),
+  ranges: z.array(z.object({
+    name: z.string(),
+    min: z.number(),
+    max: z.number(),
+    step: z.number(),
+  })),
+  klines: z.array(z.record(z.string(), z.unknown())),
+  method: z.enum(['ga', 'bayesian', 'both']).optional(),
+  populationSize: z.number().optional(),
+  generations: z.number().optional(),
+  iterations: z.number().optional(),
+});

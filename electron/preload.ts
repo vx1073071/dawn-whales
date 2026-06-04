@@ -42,6 +42,7 @@ contextBridge.exposeInMainWorld('api', {
     notificationSummary: (alerts: any[], apiKey?: string) => ipcRenderer.invoke('notification:summary', alerts, apiKey),
     generateReport: (ctx: any) => ipcRenderer.invoke('report:generate', ctx),
     generateQuickReport: (ctx: any) => ipcRenderer.invoke('report:quick', ctx),
+    autoTune: (ctx: any) => ipcRenderer.invoke('strategy:auto-tune', ctx),
   },
 
   // ── NL Parser ─────────────────────────────────────────────────────

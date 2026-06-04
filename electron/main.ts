@@ -23,6 +23,7 @@ import { ParameterScanner } from './engine/parameter-scanner';
 import { computeCorrelationMatrix } from './engine/correlation-matrix';
 import { generateSmartAlerts, generateAlertSummary, type NotificationContext } from './engine/notification-engine';
 import { generateBacktestReport, generateQuickReport } from './engine/ai-report-generator';
+import { autoTune, type ParamRange } from './engine/auto-tuner';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -77,6 +78,7 @@ import { validate,
   NotificationGenerateSchema,
   ReportGenerateSchema,
   ReportQuickSchema,
+  StrategyAutoTuneSchema,
 } from './ipc-schemas';
 import { storeKey, getKey, getDeepSeekKey, storeDeepSeekKey } from './utils/secure-key';
 import log from 'electron-log';
@@ -776,6 +778,24 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     const { result, apiKey } = raw as { result: any; apiKey?: string };
     const report = await generateQuickReport(result, apiKey);
     return { success: true, report };
+  });
+
+  // ── Auto-Tuner ──────────────────────────────────────────────────────
+  ipcMain.handle('strategy:auto-tune', async (_e, raw: unknown) => {
+    const vErr = validate(StrategyAutoTuneSchema, raw);
+    if (vErr) return vErr;
+    const { strategyType, ranges, klines, method, populationSize, generations, iterations } = raw as {
+      strategyType: string;
+      ranges: ParamRange[];
+      klines: any[];
+      method?: 'ga' | 'bayesian' | 'both';
+      populationSize?: number;
+      generations?: number;
+      iterations?: number;
+    };
+    log.info(`[IPC] strategy:auto-tune — type=${strategyType} method=${method ?? 'both'}`);
+    const result = await autoTune(strategyType, ranges, klines, { method, populationSize, generations, iterations });
+    return { success: true, result };
   });
 
   // ── NL Parser ───────────────────────────────────────────────────────
