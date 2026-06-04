@@ -15,6 +15,8 @@ import { RiskEngine } from './engine/risk-engine';
 import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/nl-parser';
 import { MarketplaceService } from './data/marketplace-service';
 import { DataProviderService } from './data/data-provider';
+import { WalkForwardEngine } from './engine/walk-forward';
+import { ParameterScanner } from './engine/parameter-scanner';
 import log from 'electron-log';
 
 // 默认监控列表，连接时从 DB 读取用户配置
@@ -970,6 +972,69 @@ Keep it under 250 words. Be objective, not promotional.`;
       dataProvider.clearExpiredCache();
       return { success: true };
     } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
+  ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
+    try {
+      const wfa = new WalkForwardEngine();
+      const klines = config.klines || [];
+      if (klines.length < 100) {
+        return { success: false, error: 'K线数据不足 (需至少100根)' };
+      }
+      const report = await wfa.run(config, klines);
+      return { success: true, report };
+    } catch (err: any) {
+      log.error('[WFA] Failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Parameter Scanner (Sprint 2 — JVS) ───────────────────────────────
+  ipcMain.handle('backtest:param-scan', async (_e, config: any) => {
+    try {
+      const scanner = new ParameterScanner();
+      const klines = config.klines || [];
+      if (klines.length < 50) {
+        return { success: false, error: 'K线数据不足 (需至少50根)' };
+      }
+      const report = await scanner.run({ ...config, klines });
+      return { success: true, report };
+    } catch (err: any) {
+      log.error('[ParamScan] Failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Multi-timeframe comparison (Sprint 2 — JVS) ──────────────────────
+  ipcMain.handle('backtest:multi-timeframe', async (_e, config: any) => {
+    try {
+      const engine = new BacktestEngine();
+      const timeframes = config.timeframes || ['1m', '5m', '15m', '1h', 'daily'];
+      const results: Record<string, any> = {};
+
+      for (const tf of timeframes) {
+        const klines = config.klinesByTimeframe?.[tf] || [];
+        if (klines.length < 50) {
+          results[tf] = { success: false, error: 'K线不足' };
+          continue;
+        }
+        const btResult = await engine.run({
+          symbol: config.symbol,
+          initialCapital: config.initialCapital || 100000,
+          commission: config.commission || 0.001,
+          slippage: config.slippage || 0.0005,
+          strategy: config.strategy,
+          klines,
+        });
+        results[tf] = btResult;
+      }
+
+      return { success: true, results, timeframes };
+    } catch (err: any) {
+      log.error('[MultiTF] Failed:', err.message);
       return { success: false, error: err.message };
     }
   });

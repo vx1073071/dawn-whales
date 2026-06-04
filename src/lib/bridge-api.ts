@@ -53,6 +53,11 @@ declare global {
         saveNews: (symbol: string, items: any[]) => Promise<any>;
         clearCache: () => Promise<any>;
       };
+      backtestEnhanced: {
+        walkForward: (config: any) => Promise<any>;
+        paramScan: (config: any) => Promise<any>;
+        multiTimeframe: (config: any) => Promise<any>;
+      };
       strategy: {
         create: (dsl: any) => Promise<any>;
         getAll: () => Promise<any>;
@@ -449,7 +454,7 @@ export async function clearDataCache(): Promise<any> {
   return window.api.dataProvider.clearCache();
 }
 
-// ── Backtest Enhancement ──────────────────────────────────────────────────
+// ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {
   if (!hasIPC()) return { success: false };
@@ -469,6 +474,21 @@ export async function walkForwardAnalysis(config: any): Promise<any> {
 export async function computeRiskMetrics(equityCurve: number[], riskFreeRate?: number): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.backtest.riskMetrics(equityCurve, riskFreeRate);
+}
+
+export async function runWalkForwardV2(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backtest.walkForwardV2(config);
+}
+
+export async function runParamScan(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backtest.paramScan(config);
+}
+
+export async function runMultiTimeframe(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backtest.multiTimeframe(config);
 }
 
 // ── Demo K-line Generator (fallback) ──────────────────────────────────────

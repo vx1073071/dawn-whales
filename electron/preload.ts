@@ -118,12 +118,15 @@ contextBridge.exposeInMainWorld('api', {
     clearCache: () => ipcRenderer.invoke('data:clear-cache'),
   },
 
-  // ── Backtest Enhancement ──────────────────────────────────────────
+  // ── Backtest Enhancement (Sprint 2) ──────────────────────────────
   backtest: {
     multiPeriod: (config: any) => ipcRenderer.invoke('backtest:multiPeriod', config),
     paramSweep: (config: any) => ipcRenderer.invoke('backtest:paramSweep', config),
     walkForward: (config: any) => ipcRenderer.invoke('backtest:walkForward', config),
     riskMetrics: (equityCurve: number[], riskFreeRate?: number) => ipcRenderer.invoke('backtest:riskMetrics', equityCurve, riskFreeRate),
+    walkForwardV2: (config: any) => ipcRenderer.invoke('backtest:walk-forward', config),
+    paramScan: (config: any) => ipcRenderer.invoke('backtest:param-scan', config),
+    multiTimeframe: (config: any) => ipcRenderer.invoke('backtest:multi-timeframe', config),
   },
 
   // ── Events (Main → Renderer) ─────────────────────────────────────
