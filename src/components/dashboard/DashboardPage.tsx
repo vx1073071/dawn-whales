@@ -10,6 +10,8 @@ import EquityChart from '../risk/EquityChart';
 import PortfolioAllocationChart from '../risk/PortfolioAllocationChart';
 import SignalTimeline from '../risk/SignalTimeline';
 import MarketHeatmap from '../risk/MarketHeatmap';
+import NotificationCenter from '../risk/NotificationCenter';
+import MarketClock from '../risk/MarketClock';
 
 interface AccountSummary {
   totalAssets: number;
@@ -257,32 +259,15 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* System Health */}
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-          <h2 className="text-white font-semibold text-sm mb-4">🩺 系统状态</h2>
-          <div className="space-y-3">
-            <StatusRow label="OpenD 连接" ok={connected} okText="已连接" failText="未连接" />
-            <StatusRow label="策略引擎" ok={true} />
-            <StatusRow label="风控引擎" ok={true} />
-            <StatusRow label="回测引擎" ok={true} />
-            <StatusRow label="数据库" ok={true} />
-            <StatusRow label="市场数据" ok={true} />
-            <div className="pt-2 border-t border-white/5">
-              <div className="flex justify-between text-xs">
-                <span className="text-gray-500">版本</span>
-                <span className="text-gray-300 font-mono">v0.6.0</span>
-              </div>
-              <div className="flex justify-between text-xs mt-1">
-                <span className="text-gray-500">测试</span>
-                <span className="text-emerald-400 font-mono">148 passed</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Market Clock */}
+        <MarketClock />
       </div>
 
-      {/* Signal Timeline */}
-      <SignalTimeline maxItems={20} autoRefresh />
+      {/* Signal Timeline + Notifications */}
+      <div className="grid grid-cols-2 gap-4">
+        <SignalTimeline maxItems={20} autoRefresh />
+        <NotificationCenter />
+      </div>
     </div>
   );
 }
