@@ -6,9 +6,30 @@ import log from 'electron-log';
 
 const DB_NAME = 'dawn-whales.db';
 
+export interface CacheConfig {
+  maxSize: number;       // LRU 最大条目数 (default 5000)
+  expireDays: number;    // TTL 过期天数 (default 30)
+  cleanupIntervalMs: number; // 自动清理间隔 ms (default 3600000 = 1h)
+}
+
+export interface CacheStats {
+  totalEntries: number;
+  maxSize: number;
+  expireDays: number;
+  oldestTimestamp: number | null;
+  newestTimestamp: number | null;
+  symbols: string[];
+}
+
 export class DatabaseManager {
   private db: Database.Database | null = null;
   private dbPath = '';
+  private cacheConfig: CacheConfig = {
+    maxSize: 5000,
+    expireDays: 30,
+    cleanupIntervalMs: 3600_000,
+  };
+  private cleanupTimer: ReturnType<typeof setInterval> | null = null;
 
   initialize() {
     const userDataPath = app.getPath('userData');
@@ -20,6 +41,111 @@ export class DatabaseManager {
     this.db.pragma('foreign_keys = ON');
 
     this.createTables();
+    this.startAutoCleanup();
+    log.info('[Database] Cache auto-cleanup started', this.cacheConfig);
+  }
+
+  // ── Cache Configuration (J3) ──────────────────────────────────────
+
+  configureCache(opts: Partial<CacheConfig>): void {
+    Object.assign(this.cacheConfig, opts);
+    log.info('[Cache] Config updated', this.cacheConfig);
+    // Restart timer with new interval if needed
+    if (opts.cleanupIntervalMs !== undefined) {
+      this.stopAutoCleanup();
+      this.startAutoCleanup();
+    }
+  }
+
+  startAutoCleanup(): void {
+    this.stopAutoCleanup();
+    this.cleanupTimer = setInterval(() => {
+      try { this.cleanupCache(); } catch (e: any) {
+        log.error('[Cache] Auto-cleanup failed:', e.message);
+      }
+    }, this.cacheConfig.cleanupIntervalMs);
+    // Allow process to exit even if timer is running
+    if (this.cleanupTimer && typeof this.cleanupTimer === 'object' && 'unref' in this.cleanupTimer) {
+      (this.cleanupTimer as any).unref();
+    }
+  }
+
+  stopAutoCleanup(): void {
+    if (this.cleanupTimer) {
+      clearInterval(this.cleanupTimer);
+      this.cleanupTimer = null;
+    }
+  }
+
+  /**
+   * Combined cache cleanup:
+   * 1. Expire entries older than TTL
+   * 2. LRU eviction to keep maxSize entries
+   * Returns total entries removed.
+   */
+  cleanupCache(): number {
+    const expired = this.expireKlines();
+    const evicted = this.enforceCacheLimit();
+    if (expired + evicted > 0) {
+      log.info(`[Cache] Cleanup: expired=${expired}, evicted=${evicted}`);
+    }
+    return expired + evicted;
+  }
+
+  /**
+   * TTL-based expiration: remove entries older than expireDays.
+   */
+  expireKlines(maxAgeDays?: number): number {
+    if (!this.db) return 0;
+    const days = maxAgeDays ?? this.cacheConfig.expireDays;
+    const cutoff = Math.floor(Date.now() / 1000) - days * 86400;
+    const result = this.db.prepare('DELETE FROM kline_cache WHERE timestamp < ?').run(cutoff);
+    return result.changes;
+  }
+
+  /**
+   * LRU eviction: keep only the newest maxSize entries.
+   */
+  enforceCacheLimit(maxSize?: number): number {
+    if (!this.db) return 0;
+    const limit = maxSize ?? this.cacheConfig.maxSize;
+    const count = this.getKlineCount();
+    if (count <= limit) return 0;
+    const excess = count - limit;
+    // Delete oldest entries (LRU by timestamp)
+    const result = this.db.prepare(`
+      DELETE FROM kline_cache WHERE rowid IN (
+        SELECT rowid FROM kline_cache ORDER BY timestamp ASC LIMIT ?
+      )
+    `).run(excess);
+    return result.changes;
+  }
+
+  /**
+   * Get detailed cache statistics.
+   */
+  getCacheStats(): CacheStats {
+    const empty: CacheStats = {
+      totalEntries: 0, maxSize: this.cacheConfig.maxSize,
+      expireDays: this.cacheConfig.expireDays,
+      oldestTimestamp: null, newestTimestamp: null, symbols: [],
+    };
+    if (!this.db) return empty;
+    const countRow = this.db.prepare('SELECT COUNT(*) as count FROM kline_cache').get() as any;
+    const rangeRow = this.db.prepare(
+      'SELECT MIN(timestamp) as oldest, MAX(timestamp) as newest FROM kline_cache'
+    ).get() as any;
+    const symbolRows = this.db.prepare(
+      'SELECT DISTINCT symbol FROM kline_cache ORDER BY symbol'
+    ).all() as any[];
+    return {
+      totalEntries: countRow?.count || 0,
+      maxSize: this.cacheConfig.maxSize,
+      expireDays: this.cacheConfig.expireDays,
+      oldestTimestamp: rangeRow?.oldest ?? null,
+      newestTimestamp: rangeRow?.newest ?? null,
+      symbols: symbolRows.map((r: any) => r.symbol),
+    };
   }
 
   private createTables() {
@@ -269,6 +395,8 @@ export class DatabaseManager {
       }
     });
     tx(klines);
+    // J3: auto LRU eviction after insert if cache exceeds limit
+    this.enforceCacheLimit();
   }
 
   getKlines(symbol: string, period: string, count = 200): any[] {
@@ -293,7 +421,7 @@ export class DatabaseManager {
     return result.changes;
   }
 
-  limitKlineCache(maxRecords = 50000): number {
+  limitKlineCache(maxRecords = 5000): number {
     if (!this.db) return 0;
     const count = this.getKlineCount();
     if (count <= maxRecords) return 0;
@@ -464,6 +592,11 @@ export class DatabaseManager {
   // ── Lifecycle ───────────────────────────────────────────────────
 
   close() {
+    this.stopAutoCleanup();
+    // Final cleanup on shutdown
+    if (this.db) {
+      try { this.cleanupCache(); } catch { /* ignore */ }
+    }
     this.db?.close();
     this.db = null;
     log.info('[Database] Closed');
