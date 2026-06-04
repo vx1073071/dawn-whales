@@ -170,6 +170,10 @@ declare global {
         search: (query: string) => Promise<any>;
         instantiate: (id: string, overrides?: any) => Promise<any>;
       };
+      // Q19: OpenD Health Check
+      system: {
+        opendHealth: (req?: any) => Promise<any>;
+      };
       nl: {
         parse: (text: string) => Promise<any>;
         templates: () => Promise<any>;
@@ -185,6 +189,11 @@ declare global {
         // Q9: Risk Decomposition
         decompose: (equityCurve: number[], positions?: any[], confidenceLevel?: number) => Promise<any>;
         monteCarlo: (equityCurve: number[], paths?: number, horizon?: number) => Promise<any>;
+        // Q16: Dynamic Position Sizing
+        calculateSize: (request: any) => Promise<any>;
+        calculatePortfolioSizes: (request: any) => Promise<any>;
+        recordTrade: (trade: any) => Promise<any>;
+        getTradeHistory: (strategyId?: string) => Promise<any>;
       };
       db: {
         getStrategies: () => Promise<any>;
@@ -456,6 +465,27 @@ export async function multiFactorScore(request: {
 }): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.strategy.multiFactor(request);
+}
+
+// ── Q16: Dynamic Position Sizing ──────────────────────────
+export async function calculatePositionSize(request: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.risk['calculateSize'](request);
+}
+
+export async function calculatePortfolioSizes(request: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.risk['calculate-portfolio-sizes'](request);
+}
+
+export async function recordTrade(trade: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.risk['record-trade'](trade);
+}
+
+export async function getTradeHistory(strategyId?: string): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.risk['get-trade-history'](strategyId);
 }
 
 // ── NL Parser ──────────────────────────────────────────────────────────────

@@ -986,6 +986,22 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Q19: OpenD Health Check ─────────────────────────────────
+  ipcMain.handle('system:opend-health', async (_e, raw: unknown) => {
+    try {
+      const { runOpenDHealthCheck, pingOpenD } = require('./engine/opend-health-check');
+      const req = raw as { action?: string; host?: string; port?: number };
+      if (req?.action === 'ping') {
+        const result = await pingOpenD(req.host ?? '127.0.0.1', req.port ?? 11111);
+        return { success: true, ...result };
+      }
+      const result = await runOpenDHealthCheck(req as any);
+      return { success: true, ...result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Q18: Strategy Templates ─────────────────────────────────
   ipcMain.handle('strategy:templates', async (_e, raw: unknown) => {
     try {
@@ -2398,6 +2414,17 @@ app.whenReady().then(async () => {
     if (riskEngine) liveExecutor.setRiskEngine(riskEngine);
     log.info('[App] LiveExecutor initialized');
     brokerManager = new BrokerManager();
+
+    // Q15: Initialize multi-factor model
+    const { initMultiFactor } = require('./engine/multi-factor');
+    const multiFactor = initMultiFactor();
+    log.info('[App] MultiFactorModel initialized');
+
+    // Q16: Initialize dynamic sizer
+    const { initDynamicSizer } = require('./engine/dynamic-sizer');
+    const dynamicSizer = initDynamicSizer();
+    log.info('[App] DynamicSizer initialized');
+
   } catch (err: any) {
     log.error('[App] Engine init failed:', err.message);
   }

@@ -88,6 +88,9 @@ contextBridge.exposeInMainWorld('api', {
     searchTemplates: (query: string) => ipcRenderer.invoke('strategy:templates', { action: 'search', query }),
     instantiateTemplate: (id: string, overrides?: any) =>
       ipcRenderer.invoke('strategy:templates', { action: 'instantiate', id, overrides }),
+
+    // Q19: OpenD Health Check
+    opendHealth: (req?: any) => ipcRenderer.invoke('system:opend-health', req),
   },
 
   // ── NL Parser ─────────────────────────────────────────────────────
