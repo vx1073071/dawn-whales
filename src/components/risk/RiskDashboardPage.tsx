@@ -6,6 +6,7 @@ import { getRiskStatusSnapshot } from '../../lib/bridge-api';
 import EquityChart from './EquityChart';
 import PerformanceMetricsPanel from './PerformanceMetricsPanel';
 import TradingJournal from './TradingJournal';
+import DailyPnLSummary from './DailyPnLSummary';
 
 interface KellyStats {
   winRate: number;
@@ -284,8 +285,11 @@ export default function RiskDashboardPage() {
         </div>
       </div>
 
-      {/* Equity Curve */}
-      <EquityChart data={demoEquityData} title="📈 账户净值走势" height={300} showDrawdown />
+      {/* Equity Curve + Daily P&L */}
+      <div className="grid grid-cols-2 gap-4">
+        <EquityChart data={demoEquityData} title="📈 账户净值走势" height={300} showDrawdown />
+        <DailyPnLSummary />
+      </div>
 
       {/* Performance Metrics */}
       <PerformanceMetricsPanel trades={demoTrades} title="📊 交易绩效指标" />

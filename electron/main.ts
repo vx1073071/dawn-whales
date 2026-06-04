@@ -110,6 +110,34 @@ const quotePushHandler = (quotes: any[]) => {
   strategyEngine?.onQuoteUpdate(quotes);
 };
 
+// ── Black-Scholes Greeks (pure JS, ~5µs, P0: replaces Python subprocess) ──
+function normPDF(x: number): number {
+  return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
+}
+function normCDF(x: number): number {
+  const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741;
+  const a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
+  const sign = x < 0 ? -1 : 1;
+  x = Math.abs(x) / Math.SQRT2;
+  const t = 1 / (1 + p * x);
+  const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+  return 0.5 * (1 + sign * y);
+}
+function calcGreeksJS(spot: number, strike: number, vol: number, days: number, rate: number, type: 'CALL' | 'PUT') {
+  const T = Math.max(days, 0.01) / 365;
+  const d1 = (Math.log(spot / strike) + (rate + vol * vol / 2) * T) / (vol * Math.sqrt(T));
+  const d2 = d1 - vol * Math.sqrt(T);
+  const nd1 = normCDF(d1);
+  const sign = type === 'CALL' ? 1 : -1;
+  const price = sign * (spot * nd1 - strike * Math.exp(-rate * T) * normCDF(d2 * sign));
+  const delta = sign * nd1;
+  const gamma = normPDF(d1) / (spot * vol * Math.sqrt(T));
+  const vega = (spot * normPDF(d1) * Math.sqrt(T)) / 100;
+  const theta = (-spot * normPDF(d1) * vol / (2 * Math.sqrt(T)) - sign * rate * strike * Math.exp(-rate * T) * normCDF(d2 * sign)) / 365;
+  const rho = (sign * strike * T * Math.exp(-rate * T) * normCDF(d2 * sign)) / 100;
+  return { price: Math.max(price, 0), delta, gamma, theta, vega, rho };
+}
+
 // ── Window Creation ────────────────────────────────────────────────────────
 
 function createWindow() {
