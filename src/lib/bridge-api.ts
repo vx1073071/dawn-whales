@@ -84,6 +84,10 @@ declare global {
       marketHotspot: {
         getReport: (query?: any) => Promise<any>;
       };
+      dataScheduler: {
+        getStatus: () => Promise<any>;
+        refreshNow: (module?: string) => Promise<any>;
+      };
       backtestEnhanced: {
         walkForward: (config: any) => Promise<any>;
         paramScan: (config: any) => Promise<any>;
@@ -640,6 +644,18 @@ export async function getMarketHotspot(query?: {
 }): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.marketHotspot.getReport(query);
+}
+
+// ── Data Scheduler ─────────────────────────────────────────────────────────
+
+export async function getSchedulerStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataScheduler.getStatus();
+}
+
+export async function refreshDataNow(module?: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataScheduler.refreshNow(module);
 }
 
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────

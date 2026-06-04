@@ -190,6 +190,12 @@ contextBridge.exposeInMainWorld('api', {
     getReport: (query?: any) => ipcRenderer.invoke('em:get-hotspot', query),
   },
 
+  // ── Data Scheduler ─────────────────────────────────────────────
+  dataScheduler: {
+    getStatus: () => ipcRenderer.invoke('data:scheduler-status'),
+    refreshNow: (module?: string) => ipcRenderer.invoke('data:scheduler-refresh', module),
+  },
+
   // ── Backtest Enhancement (Sprint 2) ──────────────────────────────
   backtest: {
     multiPeriod: (config: any) => ipcRenderer.invoke('backtest:multiPeriod', config),

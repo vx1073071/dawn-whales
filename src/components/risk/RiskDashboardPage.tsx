@@ -10,6 +10,7 @@ import DailyPnLSummary from './DailyPnLSummary';
 import RiskConfigEditor from './RiskConfigEditor';
 import SystemLog from './SystemLog';
 import PortfolioStressTest from './PortfolioStressTest';
+import SentimentGauge from './SentimentGauge';
 
 interface KellyStats {
   winRate: number;
@@ -228,7 +229,10 @@ export default function RiskDashboardPage() {
       </div>
 
       {/* Middle Row */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Sentiment Gauge */}
+        <SentimentGauge />
+
         {/* Kelly Detail */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
           <h2 className="text-white font-semibold text-sm mb-4">🧮 Kelly 统计详情</h2>

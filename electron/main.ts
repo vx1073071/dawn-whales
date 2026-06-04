@@ -25,6 +25,7 @@ import { NewsAggregatorService } from './engine/news-aggregator';
 import { SectorRotationMonitor } from './engine/sector-rotation';
 import { StockAnomalyDetector } from './engine/stock-anomaly-detector';
 import { MarketHotspotService } from './engine/market-hotspot';
+import { DataSchedulerService } from './engine/data-scheduler';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -125,6 +126,7 @@ let newsAggregator: NewsAggregatorService | null = null;
 let sectorRotation: SectorRotationMonitor | null = null;
 let stockAnomalyDetector: StockAnomalyDetector | null = null;
 let marketHotspot: MarketHotspotService | null = null;
+let dataScheduler: DataSchedulerService | null = null;
 
 // ── Shared quote push handler (prevents duplicate listener registration) ─────
 const quotePushHandler = (quotes: any[]) => {
@@ -1606,6 +1608,26 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Data Scheduler (auto-refresh) ─────────────────────────────────────
+  ipcMain.handle('data:scheduler-status', async () => {
+    if (!dataScheduler) return { success: false, error: 'DataScheduler not initialized' };
+    return { success: true, status: dataScheduler.getStatus() };
+  });
+
+  ipcMain.handle('data:scheduler-refresh', async (_e, module?: string) => {
+    if (!dataScheduler) return { success: false, error: 'DataScheduler not initialized' };
+    try {
+      if (module) {
+        await dataScheduler.refreshNow(module);
+      } else {
+        await dataScheduler.refreshAll();
+      }
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
   ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
@@ -1758,6 +1780,23 @@ app.whenReady().then(async () => {
 
       marketHotspot = new MarketHotspotService();
       log.info('[App] MarketHotspotService initialized (JVS-8)');
+
+      dataScheduler = new DataSchedulerService();
+      // Register refresh callbacks
+      dataScheduler.register('heatmap', async () => {
+        if (emDataProvider) await emDataProvider.getHeatmap('industry');
+      });
+      dataScheduler.register('macro', async () => {
+        if (macroDataProvider) await macroDataProvider.getDashboard();
+      });
+      dataScheduler.register('news', async () => {
+        if (newsAggregator) await newsAggregator.search({ query: 'A股市场' });
+      });
+      dataScheduler.register('hotspot', async () => {
+        if (marketHotspot) await marketHotspot.getReport();
+      });
+      dataScheduler.start();
+      log.info('[App] DataSchedulerService initialized and started');
     }
   } catch (err: any) {
     log.error('[App] MarketplaceService init failed:', err.message);
