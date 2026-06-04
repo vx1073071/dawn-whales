@@ -264,6 +264,13 @@ contextBridge.exposeInMainWorld('api', {
     analyzeBatch: (symbols: any[]) => ipcRenderer.invoke('options:chain-batch', symbols),
   },
 
+  // ── Multi-Factor Selector (JVS-56) ────────────────────────────
+  multiFactor: {
+    score: (stocks: any[], factorWeights?: any) => ipcRenderer.invoke('factor:score', stocks, factorWeights),
+    screen: (stocks: any[], criteria: any, factorWeights?: any) => ipcRenderer.invoke('factor:screen', stocks, criteria, factorWeights),
+    screenBatch: (batches: any[]) => ipcRenderer.invoke('factor:screen-batch', batches),
+  },
+
   // ── Stock Anomaly Detector (JVS-7) ─────────────────────────────
   stockAnomaly: {
     getSummary: () => ipcRenderer.invoke('em:get-anomaly-summary'),

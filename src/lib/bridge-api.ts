@@ -1742,3 +1742,19 @@ export async function analyzeBatchOptionsChain(symbols: any[]): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.optionsChain.analyzeBatch(symbols);
 }
+
+// ── Multi-Factor Selector (JVS-56) ────────────────────────────────────────
+export async function scoreStocks(stocks: any[], factorWeights?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.multiFactor.score(stocks, factorWeights);
+}
+
+export async function screenStocks(stocks: any[], criteria: any, factorWeights?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.multiFactor.screen(stocks, criteria, factorWeights);
+}
+
+export async function batchScreenStocks(batches: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.multiFactor.screenBatch(batches);
+}

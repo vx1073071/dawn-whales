@@ -56,7 +56,10 @@
     "mode": "Mode",
     "operation": "Operation",
     "submitting": "Submitting...",
-    "confirmSubmit": "Confirm Submit"
+    "confirmSubmit": "Confirm Submit",
+    "back": "Back",
+    "parsing": "Parsing...",
+    "orTry": "Or try"
   },
   "nav": {
     "overview": "Overview",
@@ -209,7 +212,25 @@
     "statusReady": "Ready",
     "statusLive": "Live",
     "statusPaused": "Paused",
-    "statusError": "Error"
+    "statusError": "Error",
+    "subtitle": "Create, backtest, and run your quant strategies",
+    "strategyCount": "strategies",
+    "paperTrading": "Paper Trading",
+    "paperTradingDesc": "Paper Trader · Start/Pause/Report",
+    "backToLab": "Back to Strategy Lab",
+    "speakIt": "Speak It",
+    "speakItDesc": "Describe your strategy in natural language\nAI will auto-generate executable strategy",
+    "recommendedForBeginners": "Recommended for beginners",
+    "chooseTemplate": "Templates",
+    "chooseTemplateDesc": "Classic strategy templates\nPick one and tweak parameters",
+    "templateCount": "templates",
+    "fillForm": "Form",
+    "fillFormDesc": "Precise control over every parameter\nFully customize your strategy",
+    "fullyCustomizable": "Fully customizable",
+    "describeStrategy": "Describe your strategy in natural language",
+    "aiParseDesc": "Just chat with AI, it will auto-parse into executable strategy",
+    "examplePlaceholder": "e.g. MA5 cross above MA20 buy TQQQ, stop loss 5%",
+    "parseStrategy": "Parse Strategy"
   },
   "portfolio": {
     "title": "Portfolio",

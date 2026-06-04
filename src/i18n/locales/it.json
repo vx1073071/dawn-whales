@@ -56,7 +56,10 @@
     "mode": "Modalità",
     "operation": "Operazione",
     "submitting": "Invio...",
-    "confirmSubmit": "Conferma Invio"
+    "confirmSubmit": "Conferma Invio",
+    "back": "Indietro",
+    "parsing": "Parsing...",
+    "orTry": "O prova"
   },
   "nav": {
     "overview": "Panoramica",
@@ -209,7 +212,25 @@
     "statusReady": "Pronto",
     "statusLive": "Attivo",
     "statusPaused": "In Pausa",
-    "statusError": "Errore"
+    "statusError": "Errore",
+    "subtitle": "Crea, backtesta ed esegui le tue strategie",
+    "strategyCount": "strategie",
+    "paperTrading": "Trading Simulato",
+    "paperTradingDesc": "Paper Trader · Avvia/Pausa/Rapporto",
+    "backToLab": "Torna al Lab",
+    "speakIt": "Descrivi",
+    "speakItDesc": "Descrivi la strategia in linguaggio naturale\nL'IA genera automaticamente",
+    "recommendedForBeginners": "Consigliato principianti",
+    "chooseTemplate": "Template",
+    "chooseTemplateDesc": "Libreria template classici\nScegli e modifica",
+    "templateCount": "template",
+    "fillForm": "Modulo",
+    "fillFormDesc": "Controllo preciso di ogni parametro\nPersonalizzazione completa",
+    "fullyCustomizable": "Completamente personalizzabile",
+    "describeStrategy": "Descrivi la tua strategia",
+    "aiParseDesc": "Parla naturalmente, l'IA parsa automaticamente",
+    "examplePlaceholder": "es: MA5 incrocia MA20 acquisto TQQQ, stop 5%",
+    "parseStrategy": "Parse Strategia"
   },
   "portfolio": {
     "title": "Portafoglio",

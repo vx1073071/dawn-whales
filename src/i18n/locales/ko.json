@@ -56,7 +56,10 @@
     "mode": "모드",
     "operation": "작업",
     "submitting": "제출 중...",
-    "confirmSubmit": "제출 확인"
+    "confirmSubmit": "제출 확인",
+    "back": "돌아가기",
+    "parsing": "파싱 중...",
+    "orTry": "또는"
   },
   "nav": {
     "overview": "개요",
@@ -209,7 +212,25 @@
     "statusReady": "준비완료",
     "statusLive": "운영 중",
     "statusPaused": "일시정지",
-    "statusError": "오류"
+    "statusError": "오류",
+    "subtitle": "전략 생성, 백테스트, 실행",
+    "strategyCount": "개 전략",
+    "paperTrading": "모의투자",
+    "paperTradingDesc": "Paper Trader · 시작/일시정지/보고서",
+    "backToLab": "전략 연구소로 돌아가기",
+    "speakIt": "말로 입력",
+    "speakItDesc": "자연어로 전략 설명\nAI가 자동 생성",
+    "recommendedForBeginners": "초보자 추천",
+    "chooseTemplate": "템플릿",
+    "chooseTemplateDesc": "클��식 전략 템플릿\n선택 후 파라미터 조정",
+    "templateCount": "개 템플릿",
+    "fillForm": "폼",
+    "fillFormDesc": "각 파라미터 정밀 제어\n완전 커스터마이징",
+    "fullyCustomizable": "완전 커스터마이징",
+    "describeStrategy": "자연어로 전략 설명",
+    "aiParseDesc": "대화하듯 설명하면 AI가 자동 파싱",
+    "examplePlaceholder": "예: MA5가 MA20 상향돌파 시 TQQQ 매수, 손절 5%",
+    "parseStrategy": "전략 파싱"
   },
   "portfolio": {
     "title": "포트폴리오",

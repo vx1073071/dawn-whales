@@ -56,7 +56,10 @@
     "mode": "Mode",
     "operation": "Opération",
     "submitting": "Envoi...",
-    "confirmSubmit": "Confirmer Envoi"
+    "confirmSubmit": "Confirmer Envoi",
+    "back": "Retour",
+    "parsing": "Parsing...",
+    "orTry": "Ou essayez"
   },
   "nav": {
     "overview": "Vue d'ensemble",
@@ -209,7 +212,25 @@
     "statusReady": "Prêt",
     "statusLive": "En Cours",
     "statusPaused": "En Pause",
-    "statusError": "Erreur"
+    "statusError": "Erreur",
+    "subtitle": "Créer, backtester et exécuter vos stratégies",
+    "strategyCount": "stratégies",
+    "paperTrading": "Trading Simulé",
+    "paperTradingDesc": "Paper Trader · Démarrer/Pause/Rapport",
+    "backToLab": "Retour au Lab",
+    "speakIt": "Décrire",
+    "speakItDesc": "Décrivez votre stratégie en langage naturel\nL'IA génère automatiquement",
+    "recommendedForBeginners": "Recommandé débutants",
+    "chooseTemplate": "Templates",
+    "chooseTemplateDesc": "Bibliothèque de templates classiques\nChoisissez et ajustez",
+    "templateCount": "templates",
+    "fillForm": "Formulaire",
+    "fillFormDesc": "Contrôle précis de chaque paramètre\nPersonnalisation complète",
+    "fullyCustomizable": "Complètement personnalisable",
+    "describeStrategy": "Décrivez votre stratégie",
+    "aiParseDesc": "Parlez naturellement, l'IA parse automatiquement",
+    "examplePlaceholder": "ex: MA5 croise MA20 achat TQQQ, stop 5%",
+    "parseStrategy": "Parser Stratégie"
   },
   "portfolio": {
     "title": "Portefeuille",

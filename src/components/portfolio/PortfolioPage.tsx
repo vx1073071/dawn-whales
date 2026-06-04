@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import * as api from '@/lib/bridge-api';
 import PositionDetailPanel from '../risk/PositionDetailPanel';
 
@@ -12,6 +13,7 @@ interface FundsInfo {
 }
 
 export default function PortfolioPage() {
+  const { t } = useTranslation();
   const [accountId, setAccountId] = useState<string>('');
   const [funds, setFunds] = useState<FundsInfo | null>(null);
   const [positions, setPositions] = useState<any[]>([]);
@@ -70,8 +72,8 @@ export default function PortfolioPage() {
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">持仓管理</h1>
-          <p className="text-gray-400 text-sm">账户总览 · 持仓明细 · 资产配置</p>
+          <h1 className="text-2xl font-bold text-white">{t('portfolio.title')}</h1>
+          <p className="text-gray-400 text-sm">{t('portfolio.subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
           <label className="flex items-center gap-1.5 text-xs text-gray-400 cursor-pointer">
@@ -81,14 +83,14 @@ export default function PortfolioPage() {
               onChange={(e) => setAutoRefresh(e.target.checked)}
               className="accent-[#C9A046]"
             />
-            自动刷新
+            {t('portfolio.autoRefresh')}
           </label>
           <button
             onClick={loadData}
             disabled={loading || !accountId}
             className="px-4 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors disabled:opacity-40"
           >
-            ⟳ 刷新
+            ⟳ {t('common.refresh')}
           </button>
         </div>
       </div>

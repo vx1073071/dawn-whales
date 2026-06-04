@@ -56,7 +56,10 @@
     "mode": "Modus",
     "operation": "Operation",
     "submitting": "Senden...",
-    "confirmSubmit": "Senden Bestätigen"
+    "confirmSubmit": "Senden Bestätigen",
+    "back": "Zurück",
+    "parsing": "Parsen...",
+    "orTry": "Oder versuchen"
   },
   "nav": {
     "overview": "Übersicht",
@@ -209,7 +212,25 @@
     "statusReady": "Bereit",
     "statusLive": "Live",
     "statusPaused": "Pausiert",
-    "statusError": "Fehler"
+    "statusError": "Fehler",
+    "subtitle": "Strategien erstellen, testen und ausführen",
+    "strategyCount": "Strategien",
+    "paperTrading": "Papier-Trading",
+    "paperTradingDesc": "Paper Trader · Starten/Pause/Bericht",
+    "backToLab": "Zurück zum Labor",
+    "speakIt": "Beschreiben",
+    "speakItDesc": "Beschreiben Sie Ihre Strategie\nKI generiert automatisch",
+    "recommendedForBeginners": "Anfänger empfohlen",
+    "chooseTemplate": "Vorlagen",
+    "chooseTemplateDesc": "Klassische Strategie-Vorlagen\nWählen und anpassen",
+    "templateCount": "Vorlagen",
+    "fillForm": "Formular",
+    "fillFormDesc": "Präzise Kontrolle jedes Parameters\nVollständig anpassbar",
+    "fullyCustomizable": "Vollständig anpassbar",
+    "describeStrategy": "Beschreiben Sie Ihre Strategie",
+    "aiParseDesc": "Sprechen Sie natürlich, KI parst automatisch",
+    "examplePlaceholder": "z.B. MA5 kreuzt MA20 Kauf TQQQ, Stop 5%",
+    "parseStrategy": "Strategie Parsen"
   },
   "portfolio": {
     "title": "Portfolio",

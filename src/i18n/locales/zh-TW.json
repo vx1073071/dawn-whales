@@ -56,7 +56,10 @@
     "mode": "模式",
     "operation": "操作",
     "submitting": "提交中...",
-    "confirmSubmit": "確認提交"
+    "confirmSubmit": "確認提交",
+    "back": "返回",
+    "parsing": "解析中...",
+    "orTry": "或試試"
   },
   "nav": {
     "overview": "總覽",
@@ -209,7 +212,25 @@
     "statusReady": "就緒",
     "statusLive": "運行中",
     "statusPaused": "已暫停",
-    "statusError": "錯誤"
+    "statusError": "錯誤",
+    "subtitle": "創建、回測、執行你的量化策略",
+    "strategyCount": "個策略",
+    "paperTrading": "模擬實盤",
+    "paperTradingDesc": "Paper Trader · 啟動/暫停/績效報告",
+    "backToLab": "返回策略工坊",
+    "speakIt": "說出來",
+    "speakItDesc": "用自然語言描述你的策略\nAI 幫你自動生成可執行策略",
+    "recommendedForBeginners": "推薦新手",
+    "chooseTemplate": "選模板",
+    "chooseTemplateDesc": "經典策略模板庫\n選一個改改參數就能用",
+    "templateCount": "個策略模板",
+    "fillForm": "填表單",
+    "fillFormDesc": "精確控制每個參數\n完全自定義策略",
+    "fullyCustomizable": "完全自定義",
+    "describeStrategy": "用自然語言描述你的策略",
+    "aiParseDesc": "像跟朋友聊天一樣說就行，AI 自動解析成可執行策略",
+    "examplePlaceholder": "例如：MA5 上穿 MA20 買入 TQQQ，止損 5%",
+    "parseStrategy": "解析策略"
   },
   "portfolio": {
     "title": "持倉管理",

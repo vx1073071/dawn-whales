@@ -174,6 +174,7 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
 // ── AI Natural Language Creator ────────────────────────────────────────────
 
 function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCreated: () => void; onFillForm?: (parsed: ParsedStrategy) => void }) {
+  const { t } = useTranslation();
   const [input, setInput] = useState('');
   const [parsed, setParsed] = useState<ParsedStrategy | null>(null);
   const [loading, setLoading] = useState(false);
@@ -256,25 +257,25 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
 
   return (
     <div className="mb-8">
-      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">← 返回</button>
+      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">← {t('common.back')}</button>
 
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
-        <h2 className="text-white font-semibold mb-1 flex items-center gap-2">💬 用自然语言描述你的策略</h2>
-        <p className="text-gray-400 text-xs mb-4">像跟朋友聊天一样说就行，AI 自动解析成可执行策略</p>
+        <h2 className="text-white font-semibold mb-1 flex items-center gap-2">💬 {t('strategy.describeStrategy')}</h2>
+        <p className="text-gray-400 text-xs mb-4">{t('strategy.aiParseDesc')}</p>
 
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="例如：MA5 上穿 MA20 买入 TQQQ，止损 5%"
+          placeholder={t('strategy.examplePlaceholder')}
           className="w-full h-28 bg-[#12121a] border border-white/10 rounded-lg p-4 text-sm text-gray-200 placeholder-gray-600 resize-none focus:outline-none focus:border-[#C9A046]/50"
           onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleParse(); }}
         />
 
         <div className="flex items-center gap-2 mt-3">
           <button onClick={handleParse} disabled={!input.trim() || loading} className="px-4 py-2 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
-            {loading ? '解析中...' : '🤖 解析策略'}
+            {loading ? t('common.parsing') : `🤖 ${t('strategy.parseStrategy')}`}
           </button>
-          <span className="text-gray-500 text-xs">或试试：</span>
+          <span className="text-gray-500 text-xs">{t('common.orTry')}：</span>
         </div>
 
         <div className="flex flex-wrap gap-2 mt-2">

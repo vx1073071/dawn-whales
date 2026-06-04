@@ -92,6 +92,7 @@ import { detectCorrelationAnomalies, analyzeCorrelationMatrix } from './engine/c
 import { generateWalkForwardReport, generateBatchWalkForwardReport } from './engine/walk-forward-report';
 import { generateBrinsonReport, generateBatchBrinsonReport } from './engine/brinson-attribution';
 import { analyzeOptionsChain, analyzeBatchOptionsChain } from './engine/options-chain-analyzer';
+import { scoreAndRankStocks, screenStocks, batchScreenStocks } from './engine/multi-factor-selector';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -631,6 +632,37 @@ function setupIPC() {
       return { success: true, result };
     } catch (err: any) {
       log.error('[OptionsChainBatch] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Multi-Factor Selector (JVS-56) ─────────────────────────────────────
+  ipcMain.handle('factor:score', async (_e, stocks: any[], factorWeights?: any) => {
+    try {
+      const result = scoreAndRankStocks(stocks, factorWeights);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[MultiFactor] Score error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('factor:screen', async (_e, stocks: any[], criteria: any, factorWeights?: any) => {
+    try {
+      const result = screenStocks(stocks, criteria, factorWeights);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[MultiFactor] Screen error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('factor:screen-batch', async (_e, batches: any[]) => {
+    try {
+      const result = await batchScreenStocks(batches);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[MultiFactor] Batch screen error:', err);
       return { success: false, error: err.message };
     }
   });

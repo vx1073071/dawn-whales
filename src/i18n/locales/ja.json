@@ -56,7 +56,10 @@
     "mode": "モード",
     "operation": "操作",
     "submitting": "送信中...",
-    "confirmSubmit": "送信確認"
+    "confirmSubmit": "送信確認",
+    "back": "戻る",
+    "parsing": "解析中...",
+    "orTry": "または"
   },
   "nav": {
     "overview": "概要",
@@ -209,7 +212,25 @@
     "statusReady": "準備完了",
     "statusLive": "稼働中",
     "statusPaused": "一時停止",
-    "statusError": "エラー"
+    "statusError": "エラー",
+    "subtitle": "戦略の作成、バックテスト、実行",
+    "strategyCount": "件の戦略",
+    "paperTrading": "ペーパートレード",
+    "paperTradingDesc": "Paper Trader · 開始/一時停止/レポート",
+    "backToLab": "戦略ラボに戻る",
+    "speakIt": "AI入力",
+    "speakItDesc": "自然言語で戦略を説明\nAIが自動生成",
+    "recommendedForBeginners": "初心者向け",
+    "chooseTemplate": "テンプレート",
+    "chooseTemplateDesc": "クラシック戦略テンプレート\n選んでパラメータ調整",
+    "templateCount": "件のテンプレート",
+    "fillForm": "フォーム",
+    "fillFormDesc": "各パラメータを精密制御\n完全カスタマイズ",
+    "fullyCustomizable": "完全カスタマイズ",
+    "describeStrategy": "自然言語で戦略を説明",
+    "aiParseDesc": "会話するように説明すると、AIが自動解析",
+    "examplePlaceholder": "例: MA5がMA20を上抜けたらTQQQを買う、損切5%",
+    "parseStrategy": "戦略解析"
   },
   "portfolio": {
     "title": "ポートフォリオ",
