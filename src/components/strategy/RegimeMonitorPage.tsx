@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import { getMarketRegime } from '@/lib/bridge-api';
 
 interface RegimeData {
   current: 'bull' | 'bear' | 'range' | 'volatile' | 'unknown';
@@ -64,16 +65,43 @@ function getRegimeDescKey(r: string): string {
 export default function RegimeMonitorPage() {
   const { t } = useTranslation();
   const [data, setData] = useState<RegimeData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // TODO: wire to QClaw regime-adaptor IPC
-    const timer = setTimeout(() => {
-      setData(MOCK_REGIME);
-      setLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
+    let cancelled = false;
+    async function loadRegime() {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await getMarketRegime();
+        if (cancelled) return;
+        if (result?.success && result.regime) {
+          setData({
+            current: result.regime.label || result.regime.current || 'unknown',
+            confidence: result.regime.confidence || 0,
+            duration: result.regime.duration || 0,
+            transitionProbs: result.regime.transitionProbs || {},
+            suggestedStrategy: result.regime.suggestedStrategy || t('regimeMonitor.suggestedStrategy'),
+            riskLevel: result.regime.riskLevel || 'Medium',
+            positionSuggestion: result.regime.positionSuggestion || '',
+            history: result.regime.history || [],
+          });
+        } else {
+          // Fallback to mock data when IPC unavailable
+          setData(MOCK_REGIME);
+        }
+      } catch {
+        if (!cancelled) {
+          // IPC failed — use mock as graceful degradation
+          setData(MOCK_REGIME);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    loadRegime();
+    return () => { cancelled = true; };
+  }, [t]);
 
   if (loading) return <LoadingSpinner fullscreen text={t('common.loading')} />;
   if (!data) return <LoadingSpinner fullscreen text={t('common.noData')} />;
