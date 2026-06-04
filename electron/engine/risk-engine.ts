@@ -1,4 +1,4 @@
-// ── Risk Engine — 风控引擎 v2 ──────────────────────────────────────────────
+﻿// ── Risk Engine — 风控引擎 v2 ──────────────────────────────────────────────
 // v1: 7项静态检查
 // v2: + ATR动态止损 + 滚动回撤Caps + Kelly仓位 + 波动率调节
 // 每笔订单必须通过风控才能提交
@@ -269,7 +269,7 @@ export class RiskEngine {
    * p = 胜率
    * q = 1 - p
    *
-   * 使用 Half-Kelly (f*/2) 更保守，避免 overbetting。
+   * 使用 Half-Kelly (f-star / 2) 更保守，避免 overbetting。
    */
   private kellySizing(
     price: number,
