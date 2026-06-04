@@ -1048,6 +1048,38 @@ export async function getPythonProxyStatus(): Promise<any> {
   return window.api.pythonProxy.getStatus();
 }
 
+// ── Data Quality Monitor (JVS-22) ────────────────────────────────────────
+
+export async function runDataQualityCheck(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataQuality.runCheck();
+}
+
+export async function getDataQualityReport(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataQuality.getReport();
+}
+
+export async function acknowledgeDataQualityAlert(alertIndex: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataQuality.acknowledgeAlert(alertIndex);
+}
+
+export async function clearAcknowledgedDataQualityAlerts(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataQuality.clearAcknowledged();
+}
+
+export async function startDataQualityPeriodicCheck(intervalMs?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataQuality.startPeriodic(intervalMs);
+}
+
+export async function stopDataQualityPeriodicCheck(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataQuality.stopPeriodic();
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {

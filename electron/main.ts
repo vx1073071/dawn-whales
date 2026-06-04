@@ -39,6 +39,7 @@ import { getConsumerDataReport } from './engine/consumer-data';
 import { getMarginDataReport, getStockMargin, getMarginBalanceRanking, getShortInterestRanking } from './engine/margin-data';
 import { getStockOverview, getMarketOverview, getDailyReport } from './engine/emi-unified';
 import { getPythonProxy } from './data/python-proxy';
+import { getDataQualityMonitor, registerModule } from './engine/data-quality-monitor';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1029,6 +1030,116 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
         return { success: !error, strategy, error };
       }
       return { success: false, error: 'Unknown action' };
+  // ── Q17: Paper Trader ──────────────────────
+
+  ipcMain.handle('paper:start', async (_e, symbols?: string[]) => {
+
+    try {
+
+      const { getPaperTrader } = require('./engine/paper-trader');
+
+      const pt = getPaperTrader('default');
+
+      pt.start(symbols);
+
+      return { success: true, status: pt.getAccount() };
+
+    } catch (err: any) {
+
+      return { success: false, error: err.message };
+
+    }
+
+  });
+
+
+
+  ipcMain.handle('paper:stop', async () => {
+
+    try {
+
+      const { getPaperTrader } = require('./engine/paper-trader');
+
+      getPaperTrader('default').stop();
+
+      return { success: true };
+
+    } catch (err: any) {
+
+      return { success: false, error: err.message };
+
+    }
+
+  });
+
+
+
+  ipcMain.handle('paper:reset', async () => {
+
+    try {
+
+      const { getPaperTrader } = require('./engine/paper-trader');
+
+      getPaperTrader('default').reset();
+
+      return { success: true };
+
+    } catch (err: any) {
+
+      return { success: false, error: err.message };
+
+    }
+
+  });
+
+
+
+  ipcMain.handle('paper:report', async (_e, strategyId?: string) => {
+
+    try {
+
+      const { getPaperTrader } = require('./engine/paper-trader');
+
+      const pt = getPaperTrader('default');
+
+      const report = pt.getReport(strategyId);
+
+      return { success: true, ...report };
+
+    } catch (err: any) {
+
+      return { success: false, error: err.message };
+
+    }
+
+  });
+
+
+
+  ipcMain.handle('paper:submit-order', async (_e, raw: unknown) => {
+
+    try {
+
+      const { getPaperTrader } = require('./engine/paper-trader');
+
+      const pt = getPaperTrader('default');
+
+      const order = raw as any;
+
+      const orderId = pt.submitOrder(order);
+
+      return { success: true, orderId };
+
+    } catch (err: any) {
+
+      return { success: false, error: err.message };
+
+    }
+
+  });
+
+
+
     } catch (err: any) {
       return { success: false, error: err.message };
     }
@@ -2226,6 +2337,67 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Data Quality Monitor (JVS-22) ────────────────────────────────────────
+  ipcMain.handle('data:quality-check', async () => {
+    try {
+      const monitor = getDataQualityMonitor();
+      const report = await monitor.runHealthCheck();
+      return { success: true, report };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:quality-report', async () => {
+    try {
+      const monitor = getDataQualityMonitor();
+      const report = monitor.getLastReport();
+      return { success: true, report };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:quality-acknowledge', async (_e, alertIndex: number) => {
+    try {
+      const monitor = getDataQualityMonitor();
+      monitor.acknowledgeAlert(alertIndex);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:quality-clear-acknowledged', async () => {
+    try {
+      const monitor = getDataQualityMonitor();
+      monitor.clearAcknowledgedAlerts();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:quality-start-periodic', async (_e, intervalMs?: number) => {
+    try {
+      const monitor = getDataQualityMonitor();
+      monitor.startPeriodicCheck(intervalMs);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:quality-stop-periodic', async () => {
+    try {
+      const monitor = getDataQualityMonitor();
+      monitor.stopPeriodicCheck();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // Wire quote stream events to renderer
   if (getQuoteStream()) {
     getQuoteStream()!.on('quote:update', (quotes) => {
@@ -2424,6 +2596,12 @@ app.whenReady().then(async () => {
     const { initDynamicSizer } = require('./engine/dynamic-sizer');
     const dynamicSizer = initDynamicSizer();
     log.info('[App] DynamicSizer initialized');
+
+
+    // Q17: Initialize paper trader
+    const { initPaperTrader } = require('./engine/paper-trader');
+    const paperTrader = initPaperTrader();
+    log.info('[App] PaperTrader initialized');
 
   } catch (err: any) {
     log.error('[App] Engine init failed:', err.message);

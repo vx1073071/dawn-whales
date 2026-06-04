@@ -1,322 +1,517 @@
-// ── Q17: Paper Trader (模拟实盘交易) ──────────────────────────────────────────
-// Wraps LiveExecutor signals into simulated trades with:
-//   - Virtual portfolio (cash, positions, P&L)
-//   - Slippage / commission simulation
-//   - Drawdown tracking
-//   - Trade log with fills
-//   - Performance report generation
+// ── Q17: Paper Trader ──────────────────────────────────
+// Simulate trading via quote:stream-tick (consumes JVS QuoteStreamService)
+// Record all fills, calculate performance, compare slippage vs real
 
 import log from 'electron-log';
-import { LiveExecutor, Signal, Order, LiveExecutorStatus } from './live-executor';
+import { EventEmitter } from 'events';
+import type { QuoteTick } from './quote-stream';
+import type { LiveOrder, LivePosition } from './live-executor';
 
-export { Signal, Order }; // re-export for convenience
-
-// ── Types ───────────────────────────────────────────────────────────────────
+// ── Types ─────────────────────────────────────────────────────────────────
 
 export interface PaperAccount {
-  cash: number;
-  initialCash: number;
-  totalValue: number;
-  totalPnL: number;
-  unrealizedPnL: number;
-  realizedPnL: number;
-  drawdown: number;
-  maxDrawdown: number;
+  capital: number;           // Available cash (RMB)
+  commissionRate: number;    // 0.0003 (0.03% one-way)
+  stampDutyRate: number;   // 0.001 (0.1% sell only)
+  slippageBps: number;       // 5 bps (0.05% slippage per fill)
+  initialCapital: number;  // Starting capital (for reporting)
 }
 
-export interface PaperPosition {
-  code: string;
-  name: string;
+export interface PaperFill {
+  orderId: string;
+  symbol: string;
+  side: 'BUY' | 'SELL';
   quantity: number;
-  avgCost: number;
-  currentPrice: number;
-  unrealizedPnL: number;
-  realizedPnL: number;
+  fillPrice: number;        // Actual fill price (with slippage)
+  commission: number;      // Commission paid
+  stampDuty?: number;     // Stamp duty (sell only)
+  slippage: number;         // Slippage cost
+  timestamp: number;
+  strategyId: string;
 }
 
 export interface PaperTrade {
   id: string;
-  timestamp: number;
-  code: string;
-  name: string;
-  side: 'BUY' | 'SELL';
+  strategyId: string;
+  symbol: string;
+  entryTime: number;
+  exitTime: number;
+  entryPrice: number;
+  exitPrice: number;
   quantity: number;
-  price: number;
-  slippage: number;
+  side: 'LONG' | 'SHORT';
+  pnl: number;
+  pnlPct: number;
   commission: number;
-  totalCost: number;
-  pnl?: number;        // filled trade P&L
-  signal?: Signal;
+  stampDuty: number;
+  slippage: number;
+  netPnl: number;          // P&L after costs
+  holdingDays: number;
+  exitReason: string;     // 'stop_loss' | 'take_profit' | 'signal' | 'manual'
+}
+
+export interface PaperPerformance {
+  strategyId: string;
+  totalTrades: number;
+  winningTrades: number;
+  losingTrades: number;
+  winRate: number;          // 0-1
+  avgWin: number;
+  avgLoss: number;
+  largestWin: number;
+  largestLoss: number;
+  profitFactor: number;     // avgWin / |avgLoss|
+  expectancy: number;       // winRate × avgWin - (1-winRate) × |avgLoss|
+  totalReturn: number;     // %
+  annualizedReturn: number; // %
+  sharpeRatio: number;
+  maxDrawdown: number;    // %
+  recoveryFactor: number;   // totalReturn / |maxDrawdown|
+  avgHoldingDays: number;
+  totalCommission: number;
+  totalStampDuty: number;
+  totalSlippage: number;
 }
 
 export interface PaperReport {
+  success: boolean;
   account: PaperAccount;
-  positions: PaperPosition[];
-  recentTrades: PaperTrade[];
-  tradeCount: number;
-  winRate: number;
-  sharpeRatio: number;
-  maxDrawdown: number;
-  winLossRatio: number;
-  period: { start: number; end: number };
-  timestamp: number;
+  currentCapital: number;
+  totalEquity: number;
+  positions: LivePosition[];
+  trades: PaperTrade[];
+  performance: PaperPerformance[];
+  equityCurve: Array<{ timestamp: number; equit: number }>;
+  error?: string;
 }
 
-export interface PaperTradeConfig {
-  initialCash?: number;      // default 1,000,000 CNY
-  commission?: number;        // default 0.0003 (万三)
-  slippage?: number;          // default 0.001 (千一)
-  maxDrawdownPct?: number;   // default 0.15 (15% stop)
-}
+// ── Default Account ─────────────────────────────────────────────────
 
-// ── Paper Trader ─────────────────────────────────────────────────────────────
+const DEFAULT_ACCOUNT: PaperAccount = {
+  capital: 1000000,      // ¥1M
+  commissionRate: 0.0003, // 0.03%
+  stampDutyRate: 0.001,  // 0.1% (sell only)
+  slippageBps: 5,          // 5 bps
+  initialCapital: 1000000,
+};
 
-export class PaperTrader {
-  private liveExec: LiveExecutor | null = null;
-  private config: Required<PaperTradeConfig>;
+// ── Paper Trader ─────────────────────────────────────────────────
+
+export class PaperTrader extends EventEmitter {
   private account: PaperAccount;
-  private positions: Map<string, PaperPosition> = new Map();
-  private tradeLog: PaperTrade[] = [];
-  private tradeCounter = 0;
-  private startedAt: number | null = null;
-  private stopped = false;
+  private positions = new Map<string, LivePosition>();  // strategyId → position
+  private pendingOrders = new Map<string, LiveOrder>(); // orderId → order
+  private fills: PaperFill[] = [];
+  private trades: PaperTrade[] = [];
+  private equityCurve: Array<{ timestamp: number; equit: number }> = [];
+  private running = false;
+  private subscriptions: Array<() => void> = [];
 
-  constructor(config: PaperTradeConfig = {}) {
-    this.config = {
-      initialCash: config.initialCash ?? 1_000_000,
-      commission:  config.commission  ?? 0.0003,
-      slippage:    config.slippage    ?? 0.001,
-      maxDrawdownPct: config.maxDrawdownPct ?? 0.15,
-    };
-    this.account = this._freshAccount();
-    log.info(`[PaperTrader] Initialized with ${this.config.initialCash} CNY paper money`);
+  constructor(account?: Partial<PaperAccount>) {
+    super();
+    this.account = { ...DEFAULT_ACCOUNT, ...account };
+    log.info('[PaperTrader] Initialized with capital: ¥' + this.account.capital);
   }
 
-  // ── Account helpers ────────────────────────────────────────────────────
+  // ── Lifecycle ─────────────────────────────────────────────────
 
-  private _freshAccount(): PaperAccount {
-    return {
-      cash: this.config.initialCash,
-      initialCash: this.config.initialCash,
-      totalValue: this.config.initialCash,
-      totalPnL: 0,
-      unrealizedPnL: 0,
-      realizedPnL: 0,
-      drawdown: 0,
-      maxDrawdown: 0,
-    };
-  }
-
-  private _updatePrices(prices: Map<string, number>) {
-    let totalUnrealized = 0;
-    for (const [code, pos] of this.positions) {
-      const price = prices.get(code) ?? pos.currentPrice;
-      pos.currentPrice = price;
-      pos.unrealizedPnL = (price - pos.avgCost) * pos.quantity * (pos.side === 'LONG' ? 1 : -1);
-      totalUnrealized += pos.unrealizedPnL;
-    }
-    this.account.unrealizedPnL = totalUnrealized;
-    this.account.totalValue = this.account.cash + totalUnrealized + this.account.realizedPnL;
-    this.account.totalPnL = this.account.totalValue - this.account.initialCash;
-    // Drawdown
-    const peak = Math.max(this.account.initialCash, this.account.totalValue);
-    this.account.drawdown = peak > 0 ? Math.max(0, (peak - this.account.totalValue) / peak) : 0;
-    this.account.maxDrawdown = Math.max(this.account.maxDrawdown, this.account.drawdown);
-  }
-
-  // ── Price simulation ────────────────────────────────────────────────────
-
-  private simulatePrice(code: string, signal: Signal): number {
-    // Use signal.price if available, otherwise generate a realistic mock price
-    const basePrice = signal.price ?? 100;
-    const slippageBps = this.config.slippage * 100; // e.g. 10 bps
-    const noise = (Math.random() - 0.5) * 2 * slippageBps / 10000 * basePrice;
-    return Math.max(0.01, basePrice + noise);
-  }
-
-  // ── Execute a paper signal ─────────────────────────────────────────────
-
-  executeSignal(signal: Signal, name?: string): PaperTrade | null {
-    if (this.stopped) {
-      log.warn('[PaperTrader] PaperTrader is stopped, ignoring signal');
-      return null;
+  start(symbols?: string[]): void {
+    if (this.running) {
+      log.warn('[PaperTrader] Already running');
+      return;
     }
 
-    const price = this.simulatePrice(signal.code, signal);
-    const slippage = Math.abs(price - (signal.price ?? price));
-    const commission = price * signal.quantity * this.config.commission;
-    const side = signal.side === 'BUY' ? 'BUY' : 'SELL';
-    const totalCost = side === 'BUY'
-      ? price * signal.quantity + commission
-      : price * signal.quantity - commission;
-
-    this.tradeCounter++;
-    const trade: PaperTrade = {
-      id: `PT-${Date.now()}-${this.tradeCounter}`,
-      timestamp: Date.now(),
-      code: signal.code,
-      name: name ?? signal.code,
-      side,
-      quantity: signal.quantity,
-      price,
-      slippage,
-      commission,
-      totalCost,
-      signal,
-    };
-
-    // ── BUY ──────────────────────────────────────────────────────────────
-    if (side === 'BUY') {
-      if (totalCost > this.account.cash) {
-        log.warn(`[PaperTrader] Insufficient cash: need ${totalCost.toFixed(2)}, have ${this.account.cash.toFixed(2)}`);
-        return null;
-      }
-      this.account.cash -= totalCost;
-      const existing = this.positions.get(signal.code);
-      if (existing) {
-        const totalQty = existing.quantity + signal.quantity;
-        existing.avgCost = (existing.avgCost * existing.quantity + price * signal.quantity) / totalQty;
-        existing.quantity = totalQty;
-        existing.side = 'LONG';
-      } else {
-        this.positions.set(signal.code, {
-          code: signal.code,
-          name: name ?? signal.code,
-          quantity: signal.quantity,
-          avgCost: price,
-          currentPrice: price,
-          unrealizedPnL: 0,
-          realizedPnL: 0,
-          side: 'LONG',
-        });
-      }
-      log.info(`[PaperTrader] BUY ${signal.quantity} ${signal.code} @ ${price.toFixed(3)} (cost ${totalCost.toFixed(2)})`);
-
-    // ── SELL ─────────────────────────────────────────────────────────────
-    } else {
-      const pos = this.positions.get(signal.code);
-      if (!pos || pos.quantity < signal.quantity) {
-        log.warn(`[PaperTrader] Insufficient position to sell: have ${pos?.quantity ?? 0}, want ${signal.quantity}`);
-        return null;
-      }
-      this.account.cash += totalCost;
-      const pnl = (price - pos.avgCost) * signal.quantity;
-      pos.realizedPnL += pnl;
-      this.account.realizedPnL += pnl;
-      trade.pnl = pnl;
-      pos.quantity -= signal.quantity;
-      if (pos.quantity === 0) {
-        this.positions.delete(signal.code);
-      }
-      log.info(`[PaperTrader] SELL ${signal.quantity} ${signal.code} @ ${price.toFixed(3)} (realized PnL ${pnl.toFixed(2)})`);
-    }
-
-    this.tradeLog.push(trade);
-
-    // ── Drawdown stop check ─────────────────────────────────────────────
-    if (this.account.drawdown >= this.config.maxDrawdownPct) {
-      log.warn(`[PaperTrader] MAX DRAWDOWN STOP TRIGGERED: ${(this.account.drawdown * 100).toFixed(2)}%`);
-      this.stopAll();
-    }
-
-    return trade;
+    this.running = true;
+    log.info(`[PaperTrader] Started, tracking ${symbols?.length || 'all'} symbols`);
+    this.emit('papertrader:started');
   }
 
-  // ── Stop all positions ─────────────────────────────────────────────────
+  stop(): void {
+    if (!this.running) return;
 
-  stopAll(): void {
-    this.stopped = true;
-    if (this.liveExec) {
-      this.liveExec.stop();
-    }
-    log.info('[PaperTrader] Paper trading stopped. Closing all positions...');
-    // Close all open positions at current prices
-    for (const [code, pos] of this.positions) {
-      const closeSignal: Signal = {
-        code,
-        side: 'SELL',
-        quantity: pos.quantity,
-        price: pos.currentPrice,
-        timestamp: Date.now(),
-        orderType: 'MARKET',
-        strategyId: 'paper-stop',
-      };
-      this.executeSignal(closeSignal, pos.name);
-    }
-    this.positions.clear();
-  }
-
-  // ── Connect to LiveExecutor ────────────────────────────────────────────
-
-  attachLiveExecutor(exec: LiveExecutor): void {
-    this.liveExec = exec;
-    this.startedAt = Date.now();
-    log.info('[PaperTrader] Attached to LiveExecutor');
-  }
-
-  // ── Performance Report ──────────────────────────────────────────────────
-
-  getReport(prices?: Map<string, number>): PaperReport {
-    if (prices) this._updatePrices(prices);
-
-    const closedTrades = this.tradeLog.filter(t => t.pnl != null);
-    const wins = closedTrades.filter(t => (t.pnl ?? 0) > 0);
-    const winRate = closedTrades.length > 0 ? wins.length / closedTrades.length : 0;
-    const avgWin = wins.length > 0 ? wins.reduce((s, t) => s + (t.pnl ?? 0), 0) / wins.length : 0;
-    const avgLoss = closedTrades.filter(t => (t.pnl ?? 0) < 0);
-    const avgLossAmt = avgLoss.length > 0
-      ? avgLoss.reduce((s, t) => s + (t.pnl ?? 0), 0) / avgLoss.length
-      : 0;
-    const winLossRatio = Math.abs(avgLossAmt) > 0 ? avgWin / Math.abs(avgLossAmt) : 0;
-
-    // Simple Sharpe (using realized PnL series)
-    const pnlSeries = closedTrades.map(t => t.pnl ?? 0);
-    const mean = pnlSeries.length > 0 ? pnlSeries.reduce((a, b) => a + b, 0) / pnlSeries.length : 0;
-    const variance = pnlSeries.length > 1
-      ? pnlSeries.reduce((s, p) => s + (p - mean) ** 2, 0) / (pnlSeries.length - 1)
-      : 0;
-    const stdDev = Math.sqrt(variance);
-    const sharpe = stdDev > 0 ? (mean * 252) / (stdDev * Math.sqrt(252)) : 0;
-
-    return {
-      account: { ...this.account },
-      positions: [...this.positions.values()],
-      recentTrades: this.tradeLog.slice(-50),
-      tradeCount: this.tradeLog.length,
-      winRate: Math.round(winRate * 10000) / 100,
-      sharpeRatio: Math.round(sharpe * 100) / 100,
-      maxDrawdown: Math.round(this.account.maxDrawdown * 10000) / 100,
-      winLossRatio: Math.round(winLossRatio * 100) / 100,
-      period: {
-        start: this.startedAt ?? Date.now(),
-        end: Date.now(),
-      },
-      timestamp: Date.now(),
-    };
-  }
-
-  getStatus(): string {
-    if (this.stopped) return 'STOPPED';
-    return this.liveExec ? 'RUNNING' : 'IDLE';
+    this.running = false;
+    this.subscriptions.forEach((unsub) => unsub());
+    this.subscriptions = [];
+    log.info('[PaperTrader] Stopped');
+    this.emit('papertrader:stopped');
   }
 
   reset(): void {
-    this.stopped = false;
-    this.liveExec = null;
+    this.stop();
     this.positions.clear();
-    this.tradeLog = [];
-    this.tradeCounter = 0;
-    this.startedAt = null;
-    this.account = this._freshAccount();
-    log.info('[PaperTrader] Reset — fresh paper account');
+    this.pendingOrders.clear();
+    this.fills = [];
+    this.trades = [];
+    this.equityCurve = [];
+    this.account.capital = this.account.initialCapital;
+    log.info('[PaperTrader] Reset (capital → ¥' + this.account.initialCapital + ')');
+    this.emit('papertrader:reset');
+  }
+
+  // ── Order Management ─────────────────────────────────────────
+
+  submitOrder(order: LiveOrder): string {
+    if (!this.running) {
+      log.warn('[PaperTrader] Not running, order rejected');
+      return '';
+    }
+
+    // Simulate immediate fill (market order) or pending (limit order)
+    if (order.type === 'MARKET') {
+      this.simulateFill(order, order.price!);
+    } else {
+      // Limit order: add to pending, fill when price hits
+      this.pendingOrders.set(order.id, order);
+      log.info(`[PaperTrader] Limit order ${order.id} pending @ ${order.price}`);
+      this.emit('papertrader:orderPending', order);
+    }
+
+    return order.id;
+  }
+
+  cancelOrder(orderId: string): boolean {
+    const removed = this.pendingOrders.delete(orderId);
+    if (removed) {
+      log.info(`[PaperTrader] Order ${orderId} cancelled`);
+      this.emit('papertrader:orderCancelled', { orderId });
+    }
+    return removed;
+  }
+
+  // ── Quote Processing (consume quote:stream-tick) ─────────
+
+  onQuotes(quotes: QuoteTick[]): void {
+    if (!this.running) return;
+
+    for (const quote of quotes) {
+      // Check pending limit orders
+      this.checkLimitOrders(quote);
+
+      // Update position unrealized P&L
+      this.updatePositionPnL(quote);
+    }
+
+    // Record equity snapshot
+    const equity = this.calculateTotalEquity(quotes);
+    this.equityCurve.push({ timestamp: Date.now(), equit: equity });
+  }
+
+  private checkLimitOrders(quote: QuoteTick): void {
+    for (const [orderId, order] of this.pendingOrders) {
+      if (order.symbol !== quote.code) continue;
+
+      let shouldFill = false;
+      if (order.side === 'BUY' && quote.price <= order.price!) {
+        shouldFill = true;
+      } else if (order.side === 'SELL' && quote.price >= order.price!) {
+        shouldFill = true;
+      }
+
+      if (shouldFill) {
+        this.simulateFill(order, quote.price);
+        this.pendingOrders.delete(orderId);
+      }
+    }
+  }
+
+  // ── Fill Simulation ───────────────────────────────────────────
+
+  private simulateFill(order: LiveOrder, marketPrice: number): void {
+    // Apply slippage
+    const slippage = this.account.slippageBps / 10000; // 5bps = 0.0005
+    const fillPrice =
+      order.side === 'BUY'
+        ? marketPrice * (1 + slippage)
+        : marketPrice * (1 - slippage);
+
+    // Calculate costs
+    const commission = fillPrice * order.quantity * this.account.commissionRate;
+    const stampDuty =
+      order.side === 'SELL' ? fillPrice * order.quantity * this.account.stampDutyRate : 0;
+    const slippageCost = Math.abs(fillPrice - marketPrice) * order.quantity;
+
+    const fill: PaperFill = {
+      orderId: order.id,
+      symbol: order.symbol,
+      side: order.side,
+      quantity: order.filledQty || order.quantity,
+      fillPrice,
+      commission,
+      stampDuty: stampDuty || undefined,
+      slippage: slippageCost,
+      timestamp: Date.now(),
+      strategyId: order.strategyId,
+    };
+
+    this.fills.push(fill);
+
+    // Update position
+    this.updatePositionAfterFill(fill);
+
+    log.info(
+      `[PaperTrader] Filled: ${order.side} ${fill.quantity} ${order.symbol} @ ¥${fillPrice.toFixed(2)} (slippage: ¥${slippageCost.toFixed(2)})`
+    );
+    this.emit('papertrader:fill', fill);
+  }
+
+  // ── Position Management ────────────────────────────────────────
+
+  private updatePositionAfterFill(fill: PaperFill): void {
+    const existing = this.positions.get(fill.strategyId);
+
+    if (fill.side === 'BUY') {
+      if (existing) {
+        // Average up/down
+        const totalQty = existing.quantity + fill.quantity;
+        existing.avgCost =
+          (existing.avgCost * existing.quantity + fill.fillPrice * fill.quantity) / totalQty;
+        existing.quantity = totalQty;
+      } else {
+        // New position
+        this.positions.set(fill.strategyId, {
+          strategyId: fill.strategyId,
+          symbol: fill.symbol,
+          side: 'LONG',
+          quantity: fill.quantity,
+          avgCost: fill.fillPrice,
+          unrealizedPnL: 0,
+          unrealizedPnLPct: 0,
+          entryTime: fill.timestamp,
+        });
+      }
+    } else if (fill.side === 'SELL') {
+      if (existing) {
+        // Close (partial or full)
+        const remaining = existing.quantity - fill.quantity;
+
+        if (remaining <= 0) {
+          // Full close → record trade
+          this.recordTrade(fill.strategyId, fill.fillPrice, fill.quantity, 'signal');
+          this.positions.delete(fill.strategyId);
+        } else {
+          existing.quantity = remaining;
+        }
+      }
+    }
+  }
+
+  private updatePositionPnL(quote: QuoteTick): void {
+    for (const [strategyId, pos] of this.positions) {
+      if (pos.symbol !== quote.code) continue;
+
+      const pnl = (quote.price - pos.avgCost) * pos.quantity;
+      pos.unrealizedPnL = Math.round(pnl * 100) / 100;
+      pos.unrealizedPnLPct = Math.round((pnl / (pos.avgCost * pos.quantity)) * 10000) / 100;
+    }
+  }
+
+  // ── Trade Recording ──────────────────────────────────────────
+
+  private recordTrade(strategyId: string, exitPrice: number, quantity: number, reason: string): void {
+    const position = this.positions.get(strategyId)!;
+    const entryTime = position.entryTime;
+    const exitTime = Date.now();
+
+    const pnl = (exitPrice - position.avgCost) * quantity;
+    const pnlPct = (exitPrice - position.avgCost) / position.avgCost;
+
+    // Calculate costs from fills
+    const relatedFills = this.fills.filter(
+      (f) => f.strategyId === strategyId && f.side === 'BUY'
+    );
+    const commission = relatedFills.reduce((sum, f) => sum + f.commission, 0);
+    const stampDuty = relatedFills
+      .filter((f) => f.side === 'SELL')
+      .reduce((sum, f) => sum + (f.stampDuty || 0), 0);
+    const slippage = relatedFills.reduce((sum, f) => sum + f.slippage, 0);
+
+    const trade: PaperTrade = {
+      id: `trade_${Date.now()}`,
+      strategyId,
+      symbol: position.symbol,
+      entryTime,
+      exitTime,
+      entryPrice: position.avgCost,
+      exitPrice,
+      quantity,
+      side: position.side,
+      pnl,
+      pnlPct,
+      commission,
+      stampDuty,
+      slippage,
+      netPnl: pnl - commission - stampDuty - slippage,
+      holdingDays: Math.floor((exitTime - entryTime) / 8640000),
+      exitReason: reason,
+    };
+
+    this.trades.push(trade);
+
+    // Update capital
+    this.account.capital += trade.netPnl;
+
+    log.info(
+      `[PaperTrader] Trade closed: ${strategyId} P&L: ¥${trade.netPnl.toFixed(2)} (${(
+        trade.pnlPct * 100
+      ).toFixed(2)}%)`
+    );
+    this.emit('papertrader:trade', trade);
+  }
+
+  // ── Performance Calculation ───────────────────────────────────
+
+  calculatePerformance(strategyId?: string): PaperPerformance[] {
+    const trades = strategyId
+      ? this.trades.filter((t) => t.strategyId === strategyId)
+      : this.trades;
+
+    if (trades.length === 0) {
+      return [];
+    }
+
+    const strategyPerf = new Map<string, PaperTrade[]>();
+
+    for (const trade of trades) {
+      const list = strategyPerf.get(trade.strategyId) || [];
+      list.push(trade);
+      strategyPerf.set(trade.strategyId, list);
+    }
+
+    const results: PaperPerformance[] = [];
+
+    for (const [sid, tradeList] of strategyPerf) {
+      const wins = tradeList.filter((t) => t.netPnl > 0);
+      const losses = tradeList.filter((t) => t.netPnl <= 0);
+
+      const totalReturn = tradeList.reduce((sum, t) => sum + t.netPnl, 0);
+      const initial = this.account.initialCapital;
+      const totalReturnPct = (totalReturn / initial) * 100;
+
+      // Max drawdown
+      let peak = initial;
+      let maxDD = 0;
+      let equity = initial;
+      for (const t of tradeList.sort((a, b) => a.exitTime - b.exitTime)) {
+        equity += t.netPnl;
+        if (equity > peak) peak = equity;
+        const dd = ((peak - equity) / peak) * 100;
+        if (dd > maxDD) maxDD = dd;
+      }
+
+      const perf: PaperPerformance = {
+        strategyId: sid,
+        totalTrades: tradeList.length,
+        winningTrades: wins.length,
+        losingTrades: losses.length,
+        winRate: wins.length / tradeList.length,
+        avgWin: wins.length > 0 ? wins.reduce((sum, t) => sum + t.netPnl, 0) / wins.length : 0,
+        avgLoss: losses.length > 0 ? losses.reduce((sum, t) => sum + t.netPnl, 0) / losses.length : 0,
+        largestWin: Math.max(...tradeList.map((t) => t.netPnl)),
+        largestLoss: Math.min(...tradeList.map((t) => t.netPnl)),
+        profitFactor:
+          wins.length > 0 && losses.length > 0
+            ? Math.abs(wins.reduce((sum, t) => sum + t.netPnl, 0) / losses.reduce((sum, t) => sum + t.netPnl, 0))
+            : 0,
+        expectancy:
+          wins.length > 0 && losses.length > 0
+            ? wins.reduce((sum, t) => sum + t.netPnl, 0) / wins.length -
+              Math.abs(losses.reduce((sum, t) => sum + t.netPnl, 0) / losses.length)
+            : 0,
+        totalReturn: totalReturnPct,
+        annualizedReturn: totalReturnPct * (252 / tradeList.length), // Simplied
+        sharpeRatio: 0, // TODO: calculate from equity curve
+        maxDrawdown: maxDD,
+        recoveryFactor: maxDD > 0 ? totalReturnPct / maxDD : 0,
+        avgHoldingDays: tradeList.reduce((sum, t) => sum + t.holdingDays, 0) / tradeList.length,
+        totalCommission: tradeList.reduce((sum, t) => sum + t.commission, 0),
+        totalStampDuty: tradeList.reduce((sum, t) => sum + t.stampDuty, 0),
+        totalSlippage: tradeList.reduce((sum, t) => sum + t.slippage, 0),
+      };
+
+      results.push(perf);
+    }
+
+    return results;
+  }
+
+  // ── Reporting ──────────────────────────────────────────────────
+
+  getReport(strategyId?: string): PaperReport {
+    const currentCapital = this.account.capital;
+    const positions = Array.from(this.positions.values());
+    const totalPositionValue = positions.reduce(
+      (sum, p) => sum + p.quantity * p.avgCost + p.unrealizedPnL,
+      0
+    );
+    const totalEquity = currentCapital + totalPositionValue;
+
+    const performance = this.calculatePerformance(strategyId);
+
+    return {
+      success: true,
+      account: this.account,
+      currentCapital,
+      totalEquity,
+      positions,
+      trades: this.trades,
+      performance,
+      equityCurve: this.equityCurve,
+    };
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────
+
+  private calculateTotalEquity(quotes: QuoteTick[]): number {
+    let equity = this.account.capital;
+
+    for (const pos of this.positions.values()) {
+      const quote = quotes.find((q) => q.code === pos.symbol);
+      const currentPrice = quote?.price || pos.avgCost;
+      equity += (currentPrice - pos.avgCost) * pos.quantity;
+    }
+
+    return equity;
+  }
+
+  getAccount(): PaperAccount {
+    return { ...this.account };
+  }
+
+  getPositions(): LivePosition[] {
+    return Array.from(this.positions.values());
+  }
+
+  getTrades(strategyId?: string): PaperTrade[] {
+    if (strategyId) {
+      return this.trades.filter((t) => t.strategyId === strategyId);
+    }
+    return this.trades;
+  }
+
+  getFills(): PaperFill[] {
+    return this.fills;
+  }
+
+  updateAccount(updates: Partial<PaperAccount>): void {
+    this.account = { ...this.account, ...updates };
+    log.info('[PaperTrader] Account updated:', updates);
   }
 }
 
-// ── Singleton manager ─────────────────────────────────────────────────────────
+// ── Singleton ───────────────────────────────────────────────────────
 
-const traders: Map<string, PaperTrader> = new Map();
+let paperTraderInstance: PaperTrader | null = null;
 
-export function getPaperTrader(id = 'default'): PaperTrader {
-  if (!traders.has(id)) traders.set(id, new PaperTrader());
-  return traders.get(id)!;
+export function initPaperTrader(account?: Partial<PaperAccount>): PaperTrader {
+  if (!paperTraderInstance) {
+    paperTraderInstance = new PaperTrader(account);
+  }
+  return paperTraderInstance;
 }
+
+export function getPaperTrader(strategyId?: string): PaperTrader | null {
+  void strategyId; // Reserved for multi-account future
+  return paperTraderInstance;
+}
+
+export default PaperTrader;

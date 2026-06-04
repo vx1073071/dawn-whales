@@ -305,6 +305,16 @@ contextBridge.exposeInMainWorld('api', {
     getStatus: () => ipcRenderer.invoke('py:proxy-status'),
   },
 
+  // ── Data Quality Monitor (JVS-22) ──────────────────────────────
+  dataQuality: {
+    runCheck: () => ipcRenderer.invoke('data:quality-check'),
+    getReport: () => ipcRenderer.invoke('data:quality-report'),
+    acknowledgeAlert: (alertIndex: number) => ipcRenderer.invoke('data:quality-acknowledge', alertIndex),
+    clearAcknowledged: () => ipcRenderer.invoke('data:quality-clear-acknowledged'),
+    startPeriodic: (intervalMs?: number) => ipcRenderer.invoke('data:quality-start-periodic', intervalMs),
+    stopPeriodic: () => ipcRenderer.invoke('data:quality-stop-periodic'),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),
