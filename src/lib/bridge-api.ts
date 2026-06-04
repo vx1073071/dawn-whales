@@ -53,6 +53,11 @@ declare global {
         saveNews: (symbol: string, items: any[]) => Promise<any>;
         clearCache: () => Promise<any>;
       };
+      backtestEnhanced: {
+        walkForward: (config: any) => Promise<any>;
+        paramScan: (config: any) => Promise<any>;
+        multiTimeframe: (config: any) => Promise<any>;
+      };
       strategy: {
         create: (dsl: any) => Promise<any>;
         getAll: () => Promise<any>;
@@ -445,6 +450,23 @@ export async function saveNewsItems(symbol: string, items: any[]): Promise<any> 
 export async function clearDataCache(): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.dataProvider.clearCache();
+}
+
+// ── Backtest Enhancements (Sprint 2) ────────────────────────────────────
+
+export async function runWalkForward(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.backtestEnhanced.walkForward(config);
+}
+
+export async function runParamScan(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.backtestEnhanced.paramScan(config);
+}
+
+export async function runMultiTimeframe(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.backtestEnhanced.multiTimeframe(config);
 }
 
 // ── Demo K-line Generator (fallback) ──────────────────────────────────────

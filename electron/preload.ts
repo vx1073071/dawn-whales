@@ -116,6 +116,13 @@ contextBridge.exposeInMainWorld('api', {
     clearCache: () => ipcRenderer.invoke('data:clear-cache'),
   },
 
+  // ── Backtest Enhancements (Sprint 2) ─────────────────────────────
+  backtestEnhanced: {
+    walkForward: (config: any) => ipcRenderer.invoke('backtest:walk-forward', config),
+    paramScan: (config: any) => ipcRenderer.invoke('backtest:param-scan', config),
+    multiTimeframe: (config: any) => ipcRenderer.invoke('backtest:multi-timeframe', config),
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
     const allowed = [
