@@ -240,6 +240,12 @@ contextBridge.exposeInMainWorld('api', {
     detectMultiple: (indicatorData: any[]) => ipcRenderer.invoke('alert:macro-multiple', indicatorData),
   },
 
+  // ── Correlation Alert (JVS-52) ─────────────────────────────────
+  correlationAlert: {
+    detect: (snapshots: any[], historicalData: any) => ipcRenderer.invoke('alert:correlation', snapshots, historicalData),
+    detectMatrix: (matrix: number[][], codes: string[], prevMatrix?: number[][], histMatrices?: any) => ipcRenderer.invoke('alert:correlation-matrix', matrix, codes, prevMatrix, histMatrices),
+  },
+
   // ── Stock Anomaly Detector (JVS-7) ─────────────────────────────
   stockAnomaly: {
     getSummary: () => ipcRenderer.invoke('em:get-anomaly-summary'),

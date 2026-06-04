@@ -88,6 +88,7 @@ import { compareBacktests, summaryTable } from './engine/backtest-comparator';
 import { getValuationDashboard, getValuationDashboardBatch } from './engine/valuation-dashboard';
 import { compareSectorStocks, compareMultipleSectors, rankSectorStocks } from './engine/sector-comparison';
 import { detectMacroAnomalies, analyzeMultipleIndicators } from './engine/macro-alert';
+import { detectCorrelationAnomalies, analyzeCorrelationMatrix } from './engine/correlation-alert';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -541,6 +542,29 @@ function setupIPC() {
       return { success: true, result };
     } catch (err: any) {
       log.error('[MacroAlertMultiple] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Correlation Alert (JVS-52) ─────────────────────────────────────────
+  ipcMain.handle('alert:correlation', async (_e, snapshots: any[], historicalData: any) => {
+    try {
+      const histMap = new Map(Object.entries(historicalData || {}) as [string, number[]][]);
+      const result = await detectCorrelationAnomalies(snapshots, histMap);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[CorrelationAlert] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('alert:correlation-matrix', async (_e, matrix: number[][], codes: string[], prevMatrix?: number[][], histMatrices?: any) => {
+    try {
+      const histMap = histMatrices ? new Map(Object.entries(histMatrices) as [string, number[]][]) : undefined;
+      const result = await analyzeCorrelationMatrix(matrix, codes, prevMatrix, histMap);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[CorrelationAlertMatrix] Error:', err);
       return { success: false, error: err.message };
     }
   });

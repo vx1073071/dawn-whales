@@ -53,7 +53,10 @@
     "confirmAdd": "确认添加",
     "switch": "切换",
     "count": "笔",
-    "mode": "模式"
+    "mode": "模式",
+    "operation": "操作",
+    "submitting": "提交中...",
+    "confirmSubmit": "确认提交"
   },
   "nav": {
     "overview": "总览",
@@ -155,7 +158,41 @@
     "liveMode": "实盘模式",
     "switchToLive": "切换至实盘",
     "switchToPaper": "切换至模拟盘",
-    "liveWarning": "警告：当前为实盘交易模式，操作将产生真实成交"
+    "liveWarning": "警告：当前为实盘交易模式，操作将产生真实成交",
+    "tradeExecution": "交易执行",
+    "tradeCarefully": "谨慎交易",
+    "placeOrder": "下单",
+    "codePlaceholder": "如 AAPL",
+    "marketPrice": "市价",
+    "previewOrder": "预览订单",
+    "estimatedAmount": "预估金额",
+    "noOrders": "暂无委托",
+    "time": "时间",
+    "price": "价格",
+    "filled": "成交",
+    "status": "状态",
+    "confirmOrder": "确认订单",
+    "pleaseCheck": "请仔细核对以下信息",
+    "liveModeWarning": "实盘模式：此订单将使用真实资金执行",
+    "orderFailed": "下单失败",
+    "errorCodeQty": "请填写股票代码和数量",
+    "errorLimitPrice": "限价单需要填写价格",
+    "errorStopPrice": "止损单需要填写止损价",
+    "remarkPlaceholder": "策略信号..."
+  },
+  "orderStatus": {
+    "pending": "待提交",
+    "submitted": "已提交",
+    "filled": "已成交",
+    "partial": "部分成交",
+    "cancelled": "已撤单",
+    "rejected": "已拒绝"
+  },
+  "market": {
+    "US": "美股",
+    "HK": "港股",
+    "CN": "A股",
+    "SG": "新加坡"
   },
   "strategy": {
     "title": "策略工坊",

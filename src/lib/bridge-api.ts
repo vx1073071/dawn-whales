@@ -1698,3 +1698,14 @@ export async function detectMultipleMacroAnomalies(indicatorData: any[]): Promis
   if (!hasIPC()) return { success: false };
   return window.api.macroAlert.detectMultiple(indicatorData);
 }
+
+// ── Correlation Alert (JVS-52) ─────────────────────────────────────────────
+export async function detectCorrelationAnomalies(snapshots: any[], historicalData: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.correlationAlert.detect(snapshots, historicalData);
+}
+
+export async function detectCorrelationMatrix(matrix: number[][], codes: string[], prevMatrix?: number[][], histMatrices?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.correlationAlert.detectMatrix(matrix, codes, prevMatrix, histMatrices);
+}
