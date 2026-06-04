@@ -163,6 +163,7 @@ declare global {
       app: {
         getInfo: () => Promise<any>;
         getMemoryUsage: () => Promise<any>;
+        exportPdf: (filename: string) => Promise<any>;
         checkUpdate: () => Promise<any>;
         downloadUpdate: () => Promise<any>;
         installUpdate: () => Promise<void>;
@@ -362,6 +363,11 @@ export async function getRiskDrawdownState(): Promise<any> {
 }
 
 // ── App / Updater ──────────────────────────────────────────────────────────
+
+export async function exportDashboardPdf(filename: string): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.app.exportPdf(filename);
+}
 
 export async function checkUpdate(): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };

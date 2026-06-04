@@ -197,20 +197,20 @@ export function runStressTest(
 
   for (const pos of positions) {
     const shockFactor = shockAssetClass(scenario, pos.assetClass, pos.currency);
-    const stressedMktVal = pos.marketValue * shockFactor;
-    const loss = stressedMktVal - pos.marketValue;
+    const stressedMktVal = pos.marketValueue * shockFactor;
+    const loss = stressedMktVal - pos.marketValueue;
     totalLoss += loss;
 
     // Individual VaR = position * beta * scenario sigma (approx)
     const scenarioSigma = 1 - scenario.equities; // rough vol estimate from shock
-    const individualVaR = pos.marketValue * pos.beta * scenarioSigma * 1.645;
+    const individualVaR = pos.marketValueue * pos.beta * scenarioSigma * 1.645;
 
     positionResults.push({
       symbol: pos.symbol,
-      originalMktVal: Math.round(pos.marketVal * 100) / 100,
+      originalMktVal: Math.round(pos.marketValue * 100) / 100,
       stressedMktVal: Math.round(stressedMktVal * 100) / 100,
       loss: Math.round(loss * 100) / 100,
-      lossPct: Math.round(((loss / pos.marketValue) * 10000)) / 100,
+      lossPct: Math.round(((loss / pos.marketValueue) * 10000)) / 100,
       var: Math.round(individualVaR * 100) / 100,
     });
   }
@@ -275,17 +275,17 @@ export function runCustomShock(
     const shockFactor = pos.assetClass === 'bond'
       ? combinedBondShock
       : combinedEquityShock;
-    const stressedMktVal = pos.marketValue * shockFactor;
-    const loss = stressedMktVal - pos.marketValue;
+    const stressedMktVal = pos.marketValueue * shockFactor;
+    const loss = stressedMktVal - pos.marketValueue;
     totalLoss += loss;
 
-    const individualVaR = pos.marketValue * pos.beta * portfolio.dailyVol * 1.645;
+    const individualVaR = pos.marketValueue * pos.beta * portfolio.dailyVol * 1.645;
     positionResults.push({
       symbol: pos.symbol,
-      originalMktVal: Math.round(pos.marketValue * 100) / 100,
+      originalMktVal: Math.round(pos.marketValueue * 100) / 100,
       stressedMktVal: Math.round(stressedMktVal * 100) / 100,
       loss: Math.round(loss * 100) / 100,
-      lossPct: Math.round(((loss / pos.marketValue) * 10000)) / 100,
+      lossPct: Math.round(((loss / pos.marketValueue) * 10000)) / 100,
       var: Math.round(individualVaR * 100) / 100,
     });
   }

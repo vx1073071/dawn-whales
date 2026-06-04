@@ -30,11 +30,21 @@ export interface BacktestResult {
 
 export interface RadarAxis {
   axis: string;
+  label: string;
   value: number;
   min: number;
   max: number;
   higherIsBetter: boolean;
   normalized: number;      // 0-1 normalized
+  weight: number;
+}
+
+// Axis definition with runtime key
+interface AxisDef {
+  key: string;
+  label: string;
+  higherIsBetter: boolean;
+  weight: number;
 }
 
 export interface StrategyComparison {
@@ -120,8 +130,8 @@ function overallScore(radar: RadarAxis[]): number {
   for (const ax of radar) {
     // For metrics where higherIsBetter=false, invert normalized
     const effective = ax.higherIsBetter ? ax.normalized : 1 - ax.normalized;
-    weighted += effective * (ax as any).weight;
-    totalWeight += (ax as any).weight;
+    weighted += effective * ax.weight;
+    totalWeight += ax.weight;
   }
   return totalWeight > 0 ? Math.round((weighted / totalWeight) * 1000) / 1000 : 0;
 }
@@ -156,7 +166,7 @@ export function compareBacktests(results: BacktestResult[]): StrategyComparison 
   // Per-strategy radar + ranks
   const perStrategy = results.map(r => {
     const radar = axes.map(ax => {
-      const raw = getMetric(r, ax.key);
+      const raw = getMetric(r, ax.axis);
       return {
         ...ax,
         value: raw,
