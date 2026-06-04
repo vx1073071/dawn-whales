@@ -1,31 +1,42 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getAccounts, placeOrder, cancelOrder, getOrders, getFunds } from '@/lib/bridge-api';
 import type { NewOrder, Order, OrderSide, OrderType, Market } from '@/lib/types';
 
-const ORDER_TYPES: { label: string; value: OrderType }[] = [
-  { label: '市价单', value: 'MARKET' },
-  { label: '限价单', value: 'LIMIT' },
-  { label: '止损单', value: 'STOP' },
-  { label: '止损限价', value: 'STOP_LIMIT' },
-];
+function OrderTypes() {
+  const { t } = useTranslation();
+  return [
+    { label: t('trading.marketOrder'), value: 'MARKET' as OrderType },
+    { label: t('trading.limitOrder'), value: 'LIMIT' as OrderType },
+    { label: t('trading.stopOrder'), value: 'STOP' as OrderType },
+    { label: t('trading.stopLimitOrder'), value: 'STOP_LIMIT' as OrderType },
+  ];
+}
 
-const MARKETS: { label: string; value: Market }[] = [
-  { label: '美股', value: 'US' },
-  { label: '港股', value: 'HK' },
-  { label: 'A股', value: 'CN' },
-  { label: '新加坡', value: 'SG' },
-];
+function Markets() {
+  const { t } = useTranslation();
+  return [
+    { label: t('market.US'), value: 'US' as Market },
+    { label: t('market.HK'), value: 'HK' as Market },
+    { label: t('market.CN'), value: 'CN' as Market },
+    { label: t('market.SG'), value: 'SG' as Market },
+  ];
+}
 
-const STATUS_MAP: Record<string, { label: string; color: string }> = {
-  PENDING: { label: '待提交', color: 'text-yellow-400' },
-  SUBMITTED: { label: '已提交', color: 'text-blue-400' },
-  FILLED: { label: '已成交', color: 'text-emerald-400' },
-  PARTIAL: { label: '部分成交', color: 'text-orange-400' },
-  CANCELLED: { label: '已撤单', color: 'text-gray-400' },
-  REJECTED: { label: '已拒绝', color: 'text-red-400' },
-};
+function StatusMap() {
+  const { t } = useTranslation();
+  return {
+    PENDING: { label: t('orderStatus.pending'), color: 'text-yellow-400' },
+    SUBMITTED: { label: t('orderStatus.submitted'), color: 'text-blue-400' },
+    FILLED: { label: t('orderStatus.filled'), color: 'text-emerald-400' },
+    PARTIAL: { label: t('orderStatus.partial'), color: 'text-orange-400' },
+    CANCELLED: { label: t('orderStatus.cancelled'), color: 'text-gray-400' },
+    REJECTED: { label: t('orderStatus.rejected'), color: 'text-red-400' },
+  };
+}
 
 export default function TradeExecutionPanel() {
+  const { t } = useTranslation();
   const [accounts, setAccounts] = useState<{ accId: string; trdEnv: string }[]>([]);
   const [selectedAccount, setSelectedAccount] = useState('');
   const [funds, setFunds] = useState<{ cash: number; power: number } | null>(null);
@@ -137,8 +148,8 @@ export default function TradeExecutionPanel() {
     <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">🚀 交易执行</h1>
-          <p className="text-gray-400 text-sm">{isReal ? '实盘模式' : '模拟盘模式'} · 谨慎交易</p>
+          <h1 className="text-2xl font-bold text-white mb-1">🚀 {t('trading.tradeExecution')}</h1>
+          <p className="text-gray-400 text-sm">{isReal ? t('trading.liveMode') : t('trading.paperMode')} · {t('trading.tradeCarefully')}</p>
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -149,7 +160,7 @@ export default function TradeExecutionPanel() {
                 : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
             }`}
           >
-            {isReal ? '🔴 实盘模式' : '🟢 模拟盘模式'}
+            {isReal ? `🔴 ${t('trading.liveMode')}` : `🟢 ${t('trading.paperMode')}`}
           </button>
         </div>
       </div>
