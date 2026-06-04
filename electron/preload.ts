@@ -305,6 +305,16 @@ contextBridge.exposeInMainWorld('api', {
     getStatus: () => ipcRenderer.invoke('py:proxy-status'),
   },
 
+  // ── Push2 Proxy Service (JVS-27) ──────────────────────────────
+  push2Proxy: {
+    getSectorHeatmap: (type?: string, limit?: number) => ipcRenderer.invoke('push2:get-sector-heatmap', type, limit),
+    getCapitalFlowRank: (type?: string, limit?: number) => ipcRenderer.invoke('push2:get-capital-flow-rank', type, limit),
+    getStockQuote: (secid: string) => ipcRenderer.invoke('push2:get-stock-quote', secid),
+    getMarketBreadth: () => ipcRenderer.invoke('push2:get-market-breadth'),
+    getStatus: () => ipcRenderer.invoke('push2:proxy-status'),
+    clearCache: () => ipcRenderer.invoke('push2:clear-cache'),
+  },
+
   // ── Data Quality Monitor (JVS-22) ──────────────────────────────
   dataQuality: {
     runCheck: () => ipcRenderer.invoke('data:quality-check'),

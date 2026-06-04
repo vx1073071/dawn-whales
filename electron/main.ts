@@ -39,6 +39,7 @@ import { getConsumerDataReport } from './engine/consumer-data';
 import { getMarginDataReport, getStockMargin, getMarginBalanceRanking, getShortInterestRanking } from './engine/margin-data';
 import { getStockOverview, getMarketOverview, getDailyReport } from './engine/emi-unified';
 import { getPythonProxy } from './data/python-proxy';
+import { getPush2Proxy } from './data/push2-proxy';
 import { getDataQualityMonitor, registerModule } from './engine/data-quality-monitor';
 import { getDragonTigerStream } from './engine/dragon-tiger-stream';
 import { getUnlockCalendar } from './engine/unlock-calendar';
@@ -2338,6 +2339,66 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const proxy = getPythonProxy();
       return { success: true, status: proxy.getStatus() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Push2 Proxy Service (JVS-27) ─────────────────────────────────────────
+  ipcMain.handle('push2:get-sector-heatmap', async (_e, type?: string, limit?: number) => {
+    try {
+      const proxy = getPush2Proxy();
+      const result = await proxy.getSectorHeatmap(type as any, limit);
+      return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('push2:get-capital-flow-rank', async (_e, type?: string, limit?: number) => {
+    try {
+      const proxy = getPush2Proxy();
+      const result = await proxy.getCapitalFlowRank(type as any, limit);
+      return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('push2:get-stock-quote', async (_e, secid: string) => {
+    try {
+      const proxy = getPush2Proxy();
+      const result = await proxy.getStockQuote(secid);
+      return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('push2:get-market-breadth', async () => {
+    try {
+      const proxy = getPush2Proxy();
+      const result = await proxy.getMarketBreadth();
+      return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('push2:proxy-status', async () => {
+    try {
+      const proxy = getPush2Proxy();
+      return { success: true, status: proxy.getStatus() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('push2:clear-cache', async () => {
+    try {
+      const proxy = getPush2Proxy();
+      proxy.clearCache();
+      return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

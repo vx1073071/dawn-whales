@@ -1048,6 +1048,38 @@ export async function getPythonProxyStatus(): Promise<any> {
   return window.api.pythonProxy.getStatus();
 }
 
+// ── Push2 Proxy Service (JVS-27) ──────────────────────────────────────────
+
+export async function push2GetSectorHeatmap(type?: string, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.push2Proxy.getSectorHeatmap(type, limit);
+}
+
+export async function push2GetCapitalFlowRank(type?: string, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.push2Proxy.getCapitalFlowRank(type, limit);
+}
+
+export async function push2GetStockQuote(secid: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.push2Proxy.getStockQuote(secid);
+}
+
+export async function push2GetMarketBreadth(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.push2Proxy.getMarketBreadth();
+}
+
+export async function push2GetProxyStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.push2Proxy.getStatus();
+}
+
+export async function push2ClearCache(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.push2Proxy.clearCache();
+}
+
 // ── Data Quality Monitor (JVS-22) ────────────────────────────────────────
 
 export async function runDataQualityCheck(): Promise<any> {
