@@ -146,6 +146,12 @@ contextBridge.exposeInMainWorld('api', {
     getAllHeatmaps: () => ipcRenderer.invoke('em:get-all-heatmaps'),
   },
 
+  // ── Macro Data Provider — Dashboard (JVS-2) ──────────────────────
+  macroDataProvider: {
+    getIndicator: (indicator?: string, limit?: number) => ipcRenderer.invoke('em:get-macro', indicator, limit),
+    getDashboard: (indicators?: string[]) => ipcRenderer.invoke('em:get-macro-dashboard', indicators),
+  },
+
   // ── Backtest Enhancement (Sprint 2) ──────────────────────────────
   backtest: {
     multiPeriod: (config: any) => ipcRenderer.invoke('backtest:multiPeriod', config),

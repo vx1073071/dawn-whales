@@ -18,6 +18,7 @@ import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/nl-parser';
 import { MarketplaceService } from './data/marketplace-service';
 import { DataProviderService } from './data/data-provider';
 import { EMDataProvider } from './data/em-data-provider';
+import { MacroDataProvider } from './data/macro-provider';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner';
@@ -109,6 +110,7 @@ let db: DatabaseManager | null = null;
 let marketplaceService: MarketplaceService | null = null;
 let dataProvider: DataProviderService | null = null;
 let emDataProvider: EMDataProvider | null = null;
+let macroDataProvider: MacroDataProvider | null = null;
 
 // ── Shared quote push handler (prevents duplicate listener registration) ─────
 const quotePushHandler = (quotes: any[]) => {
@@ -1383,6 +1385,30 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Macro Data Provider — Dashboard (JVS-2) ───────────────────────────
+  ipcMain.handle('em:get-macro', async (_e, indicator?: string, limit?: number) => {
+    if (!macroDataProvider) return { success: false, error: 'MacroDataProvider not initialized' };
+    try {
+      const type = (indicator || 'GDP') as any;
+      const result = await macroDataProvider.getIndicator(type, limit || 24);
+      return { success: true, data: result };
+    } catch (err: any) {
+      log.error('[MacroDataProvider] Fetch failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-macro-dashboard', async (_e, indicators?: string[]) => {
+    if (!macroDataProvider) return { success: false, error: 'MacroDataProvider not initialized' };
+    try {
+      const result = await macroDataProvider.getDashboard(indicators as any);
+      return { success: true, ...result };
+    } catch (err: any) {
+      log.error('[MacroDataProvider] Dashboard fetch failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
   ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
@@ -1513,6 +1539,10 @@ app.whenReady().then(async () => {
       emDataProvider = new EMDataProvider();
       emDataProvider.initialize(db);
       log.info('[App] EMDataProvider initialized (JVS-1)');
+
+      macroDataProvider = new MacroDataProvider();
+      macroDataProvider.initialize(db);
+      log.info('[App] MacroDataProvider initialized (JVS-2)');
     }
   } catch (err: any) {
     log.error('[App] MarketplaceService init failed:', err.message);

@@ -57,6 +57,10 @@ declare global {
         getHeatmap: (boardType?: string, limit?: number) => Promise<any>;
         getAllHeatmaps: () => Promise<any>;
       };
+      macroDataProvider: {
+        getIndicator: (indicator?: string, limit?: number) => Promise<any>;
+        getDashboard: (indicators?: string[]) => Promise<any>;
+      };
       backtestEnhanced: {
         walkForward: (config: any) => Promise<any>;
         paramScan: (config: any) => Promise<any>;
@@ -514,6 +518,18 @@ export async function getSectorHeatmap(boardType?: string, limit?: number): Prom
 export async function getAllSectorHeatmaps(): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.emDataProvider.getAllHeatmaps();
+}
+
+// ── Macro Data Provider (JVS-2) ───────────────────────────────────────────
+
+export async function getMacroIndicator(indicator?: string, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, data: null };
+  return window.api.macroDataProvider.getIndicator(indicator, limit);
+}
+
+export async function getMacroDashboard(indicators?: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.macroDataProvider.getDashboard(indicators);
 }
 
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
