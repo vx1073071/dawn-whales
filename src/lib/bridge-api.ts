@@ -1720,3 +1720,14 @@ export async function generateBatchWalkForwardReport(strategies: any[]): Promise
   if (!hasIPC()) return { success: false };
   return window.api.walkForwardReport.generateBatch(strategies);
 }
+
+// ── Brinson Attribution (JVS-54) ──────────────────────────────────────────
+export async function generateBrinsonReport(holdings: any[], benchmark: any[], benchmarkReturn: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.brinsonAttribution.generate(holdings, benchmark, benchmarkReturn);
+}
+
+export async function generateBatchBrinsonReport(portfolios: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.brinsonAttribution.generateBatch(portfolios);
+}

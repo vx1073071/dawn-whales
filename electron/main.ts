@@ -90,6 +90,7 @@ import { compareSectorStocks, compareMultipleSectors, rankSectorStocks } from '.
 import { detectMacroAnomalies, analyzeMultipleIndicators } from './engine/macro-alert';
 import { detectCorrelationAnomalies, analyzeCorrelationMatrix } from './engine/correlation-alert';
 import { generateWalkForwardReport, generateBatchWalkForwardReport } from './engine/walk-forward-report';
+import { generateBrinsonReport, generateBatchBrinsonReport } from './engine/brinson-attribution';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -587,6 +588,27 @@ function setupIPC() {
       return { success: true, result };
     } catch (err: any) {
       log.error('[WalkForwardReportBatch] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Brinson Attribution (JVS-54) ───────────────────────────────────────
+  ipcMain.handle('report:brinson-attribution', async (_e, holdings: any[], benchmark: any[], benchmarkReturn: number) => {
+    try {
+      const result = generateBrinsonReport(holdings, benchmark, benchmarkReturn);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[BrinsonAttribution] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('report:brinson-batch', async (_e, portfolios: any[]) => {
+    try {
+      const result = await generateBatchBrinsonReport(portfolios);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[BrinsonAttributionBatch] Error:', err);
       return { success: false, error: err.message };
     }
   });

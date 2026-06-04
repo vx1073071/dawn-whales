@@ -252,6 +252,12 @@ contextBridge.exposeInMainWorld('api', {
     generateBatch: (strategies: any[]) => ipcRenderer.invoke('report:walk-forward-batch', strategies),
   },
 
+  // ── Brinson Attribution (JVS-54) ──────────────────────────────
+  brinsonAttribution: {
+    generate: (holdings: any[], benchmark: any[], benchmarkReturn: number) => ipcRenderer.invoke('report:brinson-attribution', holdings, benchmark, benchmarkReturn),
+    generateBatch: (portfolios: any[]) => ipcRenderer.invoke('report:brinson-batch', portfolios),
+  },
+
   // ── Stock Anomaly Detector (JVS-7) ─────────────────────────────
   stockAnomaly: {
     getSummary: () => ipcRenderer.invoke('em:get-anomaly-summary'),

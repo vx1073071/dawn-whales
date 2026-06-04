@@ -136,17 +136,17 @@ export default function TradeHistoryPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">总盈亏</div>
+          <div className="text-xs text-gray-500 mb-1">{t('trading.totalPnl')}</div>
           <div className={`text-xl font-bold font-mono ${stats.totalPnl >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
             {stats.totalPnl >= 0 ? '+' : ''}${stats.totalPnl.toLocaleString('en-US', { minimumFractionDigits: 2 })}
           </div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">胜率</div>
+          <div className="text-xs text-gray-500 mb-1">{t('dashboard.winRate')}</div>
           <div className="text-xl font-bold font-mono text-white">{stats.winRate.toFixed(1)}%</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">平均盈利/亏损</div>
+          <div className="text-xs text-gray-500 mb-1">{t('trading.avgWinLoss')}</div>
           <div className="text-sm font-mono">
             <span className="text-red-400">+${stats.avgWin.toFixed(0)}</span>
             <span className="text-gray-500 mx-1">/</span>
@@ -154,7 +154,7 @@ export default function TradeHistoryPage() {
           </div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">最大单笔</div>
+          <div className="text-xs text-gray-500 mb-1">{t('trading.maxTrade')}</div>
           <div className="text-sm font-mono">
             <span className="text-red-400">+${stats.maxWin.toFixed(0)}</span>
             <span className="text-gray-500 mx-1">/</span>
@@ -165,7 +165,7 @@ export default function TradeHistoryPage() {
 
       {/* Monthly PnL Chart */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-white mb-4">月度盈亏</h2>
+        <h2 className="text-sm font-semibold text-white mb-4">{t('trading.monthlyPnl')}</h2>
         <div id="trade-pnl-chart" className="w-full h-[200px]" />
       </div>
 
@@ -175,7 +175,7 @@ export default function TradeHistoryPage() {
           type="text"
           value={searchCode}
           onChange={(e) => setSearchCode(e.target.value)}
-          placeholder="搜索股票代码或名称..."
+          placeholder={t('trading.searchPlaceholder')}
           className="bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046] w-48"
         />
         <select
@@ -183,7 +183,7 @@ export default function TradeHistoryPage() {
           onChange={(e) => setFilterStrategy(e.target.value)}
           className="bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
         >
-          <option value="all">全部策略</option>
+          <option value="all">{t('trading.allStrategies')}</option>
           {strategies.map(([id, name]) => (
             <option key={id} value={id}>{name}</option>
           ))}
@@ -193,9 +193,9 @@ export default function TradeHistoryPage() {
           onChange={(e) => setFilterSide(e.target.value as any)}
           className="bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
         >
-          <option value="all">全部方向</option>
-          <option value="BUY">买入</option>
-          <option value="SELL">卖出</option>
+          <option value="all">{t('trading.allDirections')}</option>
+          <option value="BUY">{t('common.buy')}</option>
+          <option value="SELL">{t('common.sell')}</option>
         </select>
       </div>
 
@@ -205,16 +205,16 @@ export default function TradeHistoryPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                <th className="px-4 py-3 text-left">时间</th>
-                <th className="px-4 py-3 text-left">股票</th>
-                <th className="px-4 py-3 text-left">方向</th>
-                <th className="px-4 py-3 text-right">数量</th>
-                <th className="px-4 py-3 text-right">成交价</th>
-                <th className="px-4 py-3 text-right">手续费</th>
-                <th className="px-4 py-3 text-right">盈亏</th>
-                <th className="px-4 py-3 text-right">盈亏%</th>
-                <th className="px-4 py-3 text-left">策略</th>
-                <th className="px-4 py-3 text-left">备注</th>
+                <th className="px-4 py-3 text-left">{t('trading.time')}</th>
+                <th className="px-4 py-3 text-left">{t('trading.stock')}</th>
+                <th className="px-4 py-3 text-left">{t('trading.direction')}</th>
+                <th className="px-4 py-3 text-right">{t('trading.quantity')}</th>
+                <th className="px-4 py-3 text-right">{t('trading.filledPrice')}</th>
+                <th className="px-4 py-3 text-right">{t('trading.commission')}</th>
+                <th className="px-4 py-3 text-right">{t('portfolio.pnl')}</th>
+                <th className="px-4 py-3 text-right">{t('portfolio.pnlPct')}</th>
+                <th className="px-4 py-3 text-left">{t('strategy.title')}</th>
+                <th className="px-4 py-3 text-left">{t('trading.remark')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -226,7 +226,7 @@ export default function TradeHistoryPage() {
                     <div className="text-[10px] text-gray-500">{t.code}</div>
                   </td>
                   <td className={`px-4 py-3 ${t.side === 'BUY' ? 'text-red-400' : 'text-emerald-400'}`}>
-                    {t.side === 'BUY' ? '买入' : '卖出'}
+                    {t.side === 'BUY' ? t('common.buy') : t('common.sell')}
                   </td>
                   <td className="px-4 py-3 text-right font-mono text-white">{t.qty}</td>
                   <td className="px-4 py-3 text-right font-mono text-white">${t.filledPrice.toFixed(2)}</td>
@@ -245,7 +245,7 @@ export default function TradeHistoryPage() {
           </table>
         </div>
         {filtered.length === 0 && (
-          <div className="text-gray-500 text-sm text-center py-8">无匹配记录</div>
+          <div className="text-gray-500 text-sm text-center py-8">{t('trading.noMatchingRecords')}</div>
         )}
       </div>
     </div>

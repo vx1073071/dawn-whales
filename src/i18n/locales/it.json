@@ -178,7 +178,19 @@
     "errorCodeQty": "Inserisci codice e quantità",
     "errorLimitPrice": "Ordine limite: prezzo richiesto",
     "errorStopPrice": "Ordine stop: stop richiesto",
-    "remarkPlaceholder": "Segnale strategia..."
+    "remarkPlaceholder": "Segnale strategia...",
+    "loadingTrades": "Caricamento trades...",
+    "tradeRecords": "trade",
+    "totalPnl": "P&L Totale",
+    "avgWinLoss": "Media G/P",
+    "maxTrade": "Max Trade",
+    "monthlyPnl": "P&L Mensile",
+    "searchPlaceholder": "Cerca codice o nome...",
+    "allStrategies": "Tutte Strategie",
+    "allDirections": "Tutte Direzioni",
+    "stock": "Stock",
+    "commission": "Commissione",
+    "noMatchingRecords": "Nessun risultato"
   },
   "strategy": {
     "title": "Lab Strategie",

@@ -178,7 +178,19 @@
     "errorCodeQty": "종목코드와 수량 입력",
     "errorLimitPrice": "지정가 주문에는 가격 필요",
     "errorStopPrice": "스톱 주문에는 스톱 가격 필요",
-    "remarkPlaceholder": "전략 시그널..."
+    "remarkPlaceholder": "전략 시그널...",
+    "loadingTrades": "거래 내역 로딩 중...",
+    "tradeRecords": "건 거래 기록",
+    "totalPnl": "총 손익",
+    "avgWinLoss": "평균 손익",
+    "maxTrade": "최대 거래",
+    "monthlyPnl": "월별 손익",
+    "searchPlaceholder": "종목코드 또는 이름 검색...",
+    "allStrategies": "전체 전략",
+    "allDirections": "전체 방향",
+    "stock": "종목",
+    "commission": "수수료",
+    "noMatchingRecords": "일치하는 기록 없음"
   },
   "strategy": {
     "title": "전략 연구소",

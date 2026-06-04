@@ -178,7 +178,19 @@
     "errorCodeQty": "銘柄コードと数量を入力",
     "errorLimitPrice": "指値注文には価格が必要",
     "errorStopPrice": "ストップ注文にはストップ価格が必要",
-    "remarkPlaceholder": "戦略シグナル..."
+    "remarkPlaceholder": "戦略シグナル...",
+    "loadingTrades": "取引履歴を読み込み中...",
+    "tradeRecords": "件の取引",
+    "totalPnl": "総損益",
+    "avgWinLoss": "平均損益",
+    "maxTrade": "最大取引",
+    "monthlyPnl": "月次損益",
+    "searchPlaceholder": "銘柄コードまたは名前で検索...",
+    "allStrategies": "すべての戦略",
+    "allDirections": "すべての方向",
+    "stock": "銘柄",
+    "commission": "手数料",
+    "noMatchingRecords": "該当データなし"
   },
   "strategy": {
     "title": "戦略ラボ",

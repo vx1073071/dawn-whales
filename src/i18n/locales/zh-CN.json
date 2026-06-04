@@ -178,7 +178,19 @@
     "errorCodeQty": "请填写股票代码和数量",
     "errorLimitPrice": "限价单需要填写价格",
     "errorStopPrice": "止损单需要填写止损价",
-    "remarkPlaceholder": "策略信号..."
+    "remarkPlaceholder": "策略信号...",
+    "loadingTrades": "加载交易记录...",
+    "tradeRecords": "笔成交记录",
+    "totalPnl": "总盈亏",
+    "avgWinLoss": "平均盈利/亏损",
+    "maxTrade": "最大单笔",
+    "monthlyPnl": "月度盈亏",
+    "searchPlaceholder": "搜索股票代码或名称...",
+    "allStrategies": "全部策略",
+    "allDirections": "全部方向",
+    "stock": "股票",
+    "commission": "手续费",
+    "noMatchingRecords": "无匹配记录"
   },
   "orderStatus": {
     "pending": "待提交",

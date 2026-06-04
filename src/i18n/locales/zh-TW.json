@@ -178,7 +178,19 @@
     "errorCodeQty": "請填寫股票代碼和數量",
     "errorLimitPrice": "限價單需要填寫價格",
     "errorStopPrice": "停損單需要填寫停損價",
-    "remarkPlaceholder": "策略訊號..."
+    "remarkPlaceholder": "策略訊號...",
+    "loadingTrades": "載入交易記錄...",
+    "tradeRecords": "筆成交記錄",
+    "totalPnl": "總盈虧",
+    "avgWinLoss": "平均盈利/虧損",
+    "maxTrade": "最大單筆",
+    "monthlyPnl": "月度盈虧",
+    "searchPlaceholder": "搜尋股票代碼或名稱...",
+    "allStrategies": "全部策略",
+    "allDirections": "全部方向",
+    "stock": "股票",
+    "commission": "手續費",
+    "noMatchingRecords": "無匹配記錄"
   },
   "strategy": {
     "title": "策略工坊",

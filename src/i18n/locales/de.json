@@ -178,7 +178,19 @@
     "errorCodeQty": "Code und Menge eingeben",
     "errorLimitPrice": "Limit: Preis erforderlich",
     "errorStopPrice": "Stop: Stop-Preis erforderlich",
-    "remarkPlaceholder": "Strategie-Signal..."
+    "remarkPlaceholder": "Strategie-Signal...",
+    "loadingTrades": "Trades laden...",
+    "tradeRecords": "Trades",
+    "totalPnl": "G/V Gesamt",
+    "avgWinLoss": "Ø G/V",
+    "maxTrade": "Max Trade",
+    "monthlyPnl": "Monatl. G/V",
+    "searchPlaceholder": "Code oder Name suchen...",
+    "allStrategies": "Alle Strategien",
+    "allDirections": "Alle Richtungen",
+    "stock": "Aktie",
+    "commission": "Provision",
+    "noMatchingRecords": "Keine Treffer"
   },
   "strategy": {
     "title": "Strategie-Labor",

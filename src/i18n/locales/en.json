@@ -178,7 +178,19 @@
     "errorCodeQty": "Please enter code and quantity",
     "errorLimitPrice": "Limit orders require a price",
     "errorStopPrice": "Stop orders require a stop price",
-    "remarkPlaceholder": "Strategy signal..."
+    "remarkPlaceholder": "Strategy signal...",
+    "loadingTrades": "Loading trades...",
+    "tradeRecords": "trades",
+    "totalPnl": "Total P&L",
+    "avgWinLoss": "Avg Win/Loss",
+    "maxTrade": "Max Trade",
+    "monthlyPnl": "Monthly P&L",
+    "searchPlaceholder": "Search code or name...",
+    "allStrategies": "All Strategies",
+    "allDirections": "All Directions",
+    "stock": "Stock",
+    "commission": "Commission",
+    "noMatchingRecords": "No matching records"
   },
   "strategy": {
     "title": "Strategy Lab",
