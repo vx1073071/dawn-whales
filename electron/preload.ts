@@ -691,6 +691,13 @@ contextBridge.exposeInMainWorld('api', {
     import: (jsonString: string) => ipcRenderer.invoke('version:import', jsonString),
   },
 
+  // ── Strategy Signal Generator (JVS-46) ──────────────────────────
+  signalGenerator: {
+    generate: (raw: any) => ipcRenderer.invoke('signal:generate', raw),
+    generateBatch: (raw: any) => ipcRenderer.invoke('signal:generate-batch', raw),
+    validateBacktest: (raw: any) => ipcRenderer.invoke('signal:validate-backtest', raw),
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
     const allowed = [
