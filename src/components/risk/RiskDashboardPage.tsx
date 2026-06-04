@@ -11,6 +11,7 @@ import RiskConfigEditor from './RiskConfigEditor';
 import SystemLog from './SystemLog';
 import PortfolioStressTest from './PortfolioStressTest';
 import SentimentGauge from './SentimentGauge';
+import AnomalyAlertPanel from './AnomalyAlertPanel';
 
 interface KellyStats {
   winRate: number;
@@ -303,6 +304,9 @@ export default function RiskDashboardPage() {
 
       {/* Portfolio Stress Test */}
       <PortfolioStressTest />
+
+      {/* Anomaly Alert Panel */}
+      <AnomalyAlertPanel />
 
       {/* Trading Journal + System Log */}
       <div className="grid grid-cols-2 gap-4">

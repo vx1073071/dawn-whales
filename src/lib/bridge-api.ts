@@ -862,6 +862,23 @@ export async function getShortInterestRank(limit?: number): Promise<any> {
   return window.api.marginData.getShortInterestRank(limit);
 }
 
+// ── EMI Unified Service Layer (JVS-19) ─────────────────────────────────────
+
+export async function getStockOverview(code: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.emiUnified.getStockOverview(code);
+}
+
+export async function getMarketOverview(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.emiUnified.getMarketOverview();
+}
+
+export async function getDailyReport(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.emiUnified.getDailyReport();
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {

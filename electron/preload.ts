@@ -266,6 +266,13 @@ contextBridge.exposeInMainWorld('api', {
     getShortInterestRank: (limit?: number) => ipcRenderer.invoke('em:get-short-interest-rank', limit),
   },
 
+  // ── EMI Unified Service Layer (JVS-19) ─────────────────────────
+  emiUnified: {
+    getStockOverview: (code: string) => ipcRenderer.invoke('em:get-stock-overview', code),
+    getMarketOverview: () => ipcRenderer.invoke('em:get-market-overview'),
+    getDailyReport: () => ipcRenderer.invoke('em:get-daily-report'),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),

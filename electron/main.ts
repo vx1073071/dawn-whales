@@ -37,6 +37,7 @@ import { calculatePortfolioRisk } from './engine/portfolio-risk';
 import { getMarketBreadth } from './engine/market-breadth';
 import { getConsumerDataReport } from './engine/consumer-data';
 import { getMarginDataReport, getStockMargin, getMarginBalanceRanking, getShortInterestRanking } from './engine/margin-data';
+import { getStockOverview, getMarketOverview, getDailyReport } from './engine/emi-unified';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1883,6 +1884,35 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   ipcMain.handle('em:get-short-interest-rank', async (_e, limit?: number) => {
     try {
       const result = await getShortInterestRanking(limit || 30);
+      return { success: true, data: result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── EMI Unified Service Layer (JVS-19) ──────────────────────────────────
+  ipcMain.handle('em:get-stock-overview', async (_e, code: string) => {
+    if (!code) return { success: false, error: 'Stock code required' };
+    try {
+      const result = await getStockOverview(code);
+      return { success: true, data: result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-market-overview', async () => {
+    try {
+      const result = await getMarketOverview();
+      return { success: true, data: result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-daily-report', async () => {
+    try {
+      const result = await getDailyReport();
       return { success: true, data: result };
     } catch (err: any) {
       return { success: false, error: err.message };
