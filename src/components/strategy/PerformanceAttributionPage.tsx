@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
@@ -62,7 +62,7 @@ const MOCK_DATA: AttributionData = {
 };
 
 export default function PerformanceAttributionPage() {
-  const [data, setData] = useState<AttributionData>(MOCK_DATA);
+  const [data] = useState<AttributionData>(MOCK_DATA);
   const [loading, setLoading] = useState(false);
 
   async function load() {

@@ -28,7 +28,7 @@ export default function SignalTimeline({
   autoRefresh = true,
 }: SignalTimelineProps) {
   const [signals, setSignals] = useState<SignalItem[]>([]);
-  const [strategies, setStrategies] = useState<Record<string, string>>({});
+  const [, setStrategies] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'BUY' | 'SELL'>('all');
 

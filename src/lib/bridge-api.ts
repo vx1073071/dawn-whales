@@ -2030,3 +2030,21 @@ export async function importVersions(jsonString: string): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.versionControl.import(jsonString);
 }
+ 
+ / /   9’¬ 9’¬   D a t a   A g g r e g a t o r   ( J V S - 5 6 )   9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬  
+  
+ e x p o r t   a s y n c   f u n c t i o n   a g g r e g a t e D a t a ( c o d e s :   s t r i n g [ ] ) :   P r o m i s e < a n y >   {  
+     i f   ( ! h a s I P C ( ) )   r e t u r n   {   s u c c e s s :   f a l s e ,   e r r o r :   ' I P C   n o t   a v a i l a b l e '   } ;  
+     r e t u r n   w i n d o w . a p i . d a t a A g g r e g a t o r . a g g r e g a t e ( c o d e s ) ;  
+ }  
+  
+ e x p o r t   a s y n c   f u n c t i o n   g e t D a t a A g g r e g a t o r S t a t s ( ) :   P r o m i s e < a n y >   {  
+     i f   ( ! h a s I P C ( ) )   r e t u r n   {   s u c c e s s :   f a l s e ,   e r r o r :   ' I P C   n o t   a v a i l a b l e '   } ;  
+     r e t u r n   w i n d o w . a p i . d a t a A g g r e g a t o r . s t a t s ( ) ;  
+ }  
+  
+ e x p o r t   a s y n c   f u n c t i o n   c l e a r D a t a A g g r e g a t o r C a c h e ( ) :   P r o m i s e < a n y >   {  
+     i f   ( ! h a s I P C ( ) )   r e t u r n   {   s u c c e s s :   f a l s e ,   e r r o r :   ' I P C   n o t   a v a i l a b l e '   } ;  
+     r e t u r n   w i n d o w . a p i . d a t a A g g r e g a t o r . c l e a r C a c h e ( ) ;  
+ }  
+ 

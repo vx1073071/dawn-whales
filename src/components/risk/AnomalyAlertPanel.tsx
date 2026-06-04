@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getAnomalySummary, getAnomalyAlerts, acknowledgeAnomalyAlert } from '../../lib/bridge-api';
 
 interface AnomalyAlert {

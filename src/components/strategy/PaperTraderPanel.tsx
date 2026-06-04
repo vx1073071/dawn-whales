@@ -57,7 +57,7 @@ export default function PaperTraderPanel() {
   const [orders, setOrders] = useState<PaperOrder[]>([]);
   const [report, setReport] = useState<PaperReport | null>(null);
   const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  const [, setRefreshing] = useState(false);
   const [activeTab, setActiveTab] = useState<'positions' | 'orders' | 'report'>('positions');
   const [error, setError] = useState<string | null>(null);
 
@@ -72,13 +72,6 @@ export default function PaperTraderPanel() {
     } catch (e: any) {
       setError(e.message);
     }
-  }, []);
-
-  const fetchReport = useCallback(async () => {
-    try {
-      const r = await (window as any).api.getPaperReport();
-      if (r) setReport(r);
-    } catch (e) { console.error('[Error:PaperTraderPanel]', e); }
   }, []);
 
   useEffect(() => {

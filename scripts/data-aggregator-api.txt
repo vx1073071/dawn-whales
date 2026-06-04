@@ -1,0 +1,17 @@
+
+// ── Data Aggregator (JVS-56) ───────────────────────────────────────────────
+
+export async function aggregateData(codes: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'IPC not available' };
+  return window.api.dataAggregator.aggregate(codes);
+}
+
+export async function getDataAggregatorStats(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'IPC not available' };
+  return window.api.dataAggregator.stats();
+}
+
+export async function clearDataAggregatorCache(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'IPC not available' };
+  return window.api.dataAggregator.clearCache();
+}

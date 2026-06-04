@@ -20,18 +20,20 @@ while pos < len(data2):
         pos += 1
         data2 = data2[1:]
 
-# Filter for dicts
 dict_objs = [o for o in all_json if isinstance(o, dict)]
 print(f'Total JSON dicts: {len(dict_objs)}')
 
-# Show all dicts from the last 20
-print('\n--- All dicts (last 20) ---')
-for obj in dict_objs[-20:]:
+# Show ALL dicts
+for obj in dict_objs:
     mid = obj.get('msgId', '?')
     sender = obj.get('from', '?')
     to = obj.get('to', '?')
     typ = obj.get('type', '?')
-    text_val = obj.get('text') or obj.get('description') or obj.get('task') or ''
-    print(f'[{mid}] from={sender} to={to} type={typ}')
-    if text_val:
-        print(f'  text: {str(text_val)[:150]}')
+    # Get ALL text content
+    parts = []
+    for key in ['text', 'description', 'task', 'content', 'message']:
+        if key in obj and obj[key]:
+            parts.append(str(obj[key]))
+    text_val = ' | '.join(parts)
+    print(f'\n=== [{mid}] from={sender} to={to} type={typ} ===')
+    print(text_val)

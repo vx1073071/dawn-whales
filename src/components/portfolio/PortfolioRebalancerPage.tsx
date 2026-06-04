@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getPositions, getFunds } from '@/lib/bridge-api';
+import { getFunds } from '@/lib/bridge-api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 interface RebalanceSuggestion {
@@ -34,7 +34,7 @@ const MOCK_SUGGESTIONS: RebalanceSuggestion[] = [
 ];
 
 export default function PortfolioRebalancerPage() {
-  const [suggestions, setSuggestions] = useState<RebalanceSuggestion[]>(MOCK_SUGGESTIONS);
+  const [suggestions] = useState<RebalanceSuggestion[]>(MOCK_SUGGESTIONS);
   const [loading, setLoading] = useState(false);
   const [config, setConfig] = useState<RebalanceConfig>({
     threshold: 5,
@@ -61,7 +61,7 @@ export default function PortfolioRebalancerPage() {
   const activeSuggestions = suggestions.filter(s => s.action !== '增持' || s.diffShares > 0);
   const totalBuy = activeSuggestions.filter(s => s.diffAmount > 0).reduce((s, i) => s + i.diffAmount, 0);
   const totalSell = activeSuggestions.filter(s => s.diffAmount < 0).reduce((s, i) => s + i.diffAmount, 0);
-  const netFlow = totalBuy + totalSell;
+  // const netFlow = totalBuy + totalSell;
   const turnover = (Math.abs(totalBuy) + Math.abs(totalSell)) / totalAssets * 100;
 
   if (loading) return <LoadingSpinner fullscreen text="加载调仓建议..." />;

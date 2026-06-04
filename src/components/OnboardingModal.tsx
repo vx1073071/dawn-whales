@@ -83,7 +83,7 @@ export default function OnboardingModal({ open, onClose, onConnect, connected }:
   const [connecting, setConnecting] = useState(false);
   const [connectResult, setConnectResult] = useState<'idle' | 'success' | 'fail'>('idle');
   const [demoMode, setDemoMode] = useState(false);
-  const [skippedSteps, setSkippedSteps] = useState<Set<number>>(new Set());
+  const [, setSkippedSteps] = useState<Set<number>>(new Set());
   const [polling, setPolling] = useState(true);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -210,7 +210,7 @@ export default function OnboardingModal({ open, onClose, onConnect, connected }:
   const current = steps[step];
   const isLast = step === steps.length - 1;
   const isFirst = step === 0;
-  const isSkipped = skippedSteps.has(step);
+  // const isSkipped = skippedSteps.has(step);
   const progressPct = ((step + 1) / steps.length) * 100;
 
   return (

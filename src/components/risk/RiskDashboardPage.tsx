@@ -346,12 +346,3 @@ function StatRow({ label, value, valueColor = 'text-gray-300' }: {
     </div>
   );
 }
-
-function ConfigItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="bg-[#12121a] rounded-lg px-3 py-2">
-      <div className="text-gray-500 text-[10px] mb-0.5">{label}</div>
-      <div className="text-gray-300 font-mono">{value}</div>
-    </div>
-  );
-}

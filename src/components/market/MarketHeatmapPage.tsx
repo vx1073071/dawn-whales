@@ -2,7 +2,7 @@
 // 板块热力图页面：调用 EM 数据层，支持行业/概念/地区切换
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { getSectorHeatmap, getAllSectorHeatmaps } from '../../lib/bridge-api';
+import { getSectorHeatmap } from '../../lib/bridge-api';
 
 interface SectorItem {
   name: string;

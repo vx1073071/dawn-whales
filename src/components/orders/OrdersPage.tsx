@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as api from '@/lib/bridge-api';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
+// import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 type Tab = 'active' | 'history' | 'trades';
 

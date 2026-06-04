@@ -63,7 +63,7 @@ const MOCK_DATA: FactorExposureResult = {
 };
 
 export default function FactorExposurePage() {
-  const [data, setData] = useState<FactorExposureResult>(MOCK_DATA);
+  const [data] = useState<FactorExposureResult>(MOCK_DATA);
   const [loading, setLoading] = useState(false);
 
   async function load() {

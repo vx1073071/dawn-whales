@@ -700,6 +700,13 @@ contextBridge.exposeInMainWorld('api', {
     import: (jsonString: string) => ipcRenderer.invoke('version:import', jsonString),
   },
 
+
+  // ── Data Aggregator (JVS-56) ───────────────────────────────────────────
+  dataAggregator: {
+    aggregate: (codes: string[]) => ipcRenderer.invoke("data:aggregate", codes),
+    stats: () => ipcRenderer.invoke("data:aggregator-stats"),
+    clearCache: () => ipcRenderer.invoke("data:aggregator-clear-cache"),
+  },
   // ── Strategy Signal Generator (JVS-46) ──────────────────────────
   signalGenerator: {
     generate: (raw: any) => ipcRenderer.invoke('signal:generate', raw),

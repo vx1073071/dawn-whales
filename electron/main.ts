@@ -48,6 +48,7 @@ import { getStockOverview, getMarketOverview, getDailyReport } from './engine/em
 import { getPythonProxy } from './data/python-proxy';
 import { getPush2Proxy } from './data/push2-proxy';
 import { getDataQualityMonitor, registerModule } from './engine/data-quality-monitor';
+import { DataAggregator, getDataAggregator } from './data/data-aggregator';
 import { captureSnapshot, querySnapshots, getSnapshot, compareSnapshots, getSnapshotTimeline, getLatestSnapshot, cleanupOldSnapshots, exportSnapshots, importSnapshots, getSnapshotStats, deleteSnapshot, clearAllSnapshots } from './engine/snapshot-service';
 import { trackVersion, getEntityVersions, getVersion, getLatestVersion, diffVersions, rollback, queryVersions, getVersionStats, deleteVersion, clearAllVersions, exportVersions, importVersions } from './engine/version-control-service';
 import { setupI18nDataIPC } from './engine/i18n-data';
@@ -4308,6 +4309,37 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     const checker = getDataConsistencyChecker();
     const summary = checker.getSummary(result);
     return { success: true, summary };
+  });
+
+  // ── Data Aggregator (JVS-56) ───────────────────────────────────────────
+  ipcMain.handle('data:aggregate', async (_e, codes: string[]) => {
+    try {
+      const aggregator = getDataAggregator();
+      const result = await aggregator.aggregate(codes);
+      return result;
+    } catch (err: any) {
+      log.error('[DataAggregator] Error:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:aggregator-stats', async () => {
+    try {
+      const aggregator = getDataAggregator();
+      return { success: true, stats: aggregator.getStats() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:aggregator-clear-cache', async () => {
+    try {
+      const aggregator = getDataAggregator();
+      aggregator.clearCache();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
   });
 }
 

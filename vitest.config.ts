@@ -7,8 +7,26 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: [],
+    setupFiles: ['tests/helpers/mocks.ts'],
     include: ['tests/**/*.test.{ts,tsx}'],
+    // Exclude legacy main()-style test files (run via: npm test)
+    exclude: [
+      'tests/engine.test.ts',
+      'tests/e2e-pipeline.test.ts',
+      'tests/kelly-sizing.test.ts',
+      'tests/ws-backfill.test.ts',
+      'tests/integration-full-pipeline.test.ts',
+      'tests/jvs-e2e-validation.test.ts',
+      'tests/jvs-integration.test.ts',
+      'tests/jvs-37-ipc-validation.test.ts',
+      'tests/paper-trader.test.ts',
+    ],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html', 'lcov'],
+      include: ['electron/engine/**/*.ts'],
+      exclude: ['**/*.d.ts', '**/*.test.*'],
+    },
   },
   resolve: {
     alias: {

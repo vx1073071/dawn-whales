@@ -44,7 +44,7 @@ const MOCK_DATA: SentimentData = {
 };
 
 export default function SentimentStreamDashboard() {
-  const [data, setData] = useState<SentimentData>(MOCK_DATA);
+  const [data] = useState<SentimentData>(MOCK_DATA);
   const [loading, setLoading] = useState(false);
 
   async function load() {

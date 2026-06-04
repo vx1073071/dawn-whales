@@ -42,7 +42,7 @@ export default function MarketPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [klineLoading, setKlineLoading] = useState(false);
-  const [klineError, setKlineError] = useState<string | null>(null);
+  const [, setKlineError] = useState<string | null>(null);
   const [klinePeriod, setKlinePeriod] = useState<string>('daily');
 
   const PERIODS = [

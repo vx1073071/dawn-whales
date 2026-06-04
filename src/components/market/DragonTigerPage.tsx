@@ -31,7 +31,7 @@ export default function DragonTigerPage() {
   const [detail, setDetail] = useState<DragonTigerDetail | null>(null);
   const [institutional, setInstitutional] = useState<DragonTigerEntry[]>([]);
   const [selectedDate, setSelectedDate] = useState('');
-  const [selectedCode, setSelectedCode] = useState('');
+  const [, setSelectedCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [tab, setTab] = useState<'daily' | 'institutional' | 'detail'>('daily');

@@ -20,6 +20,7 @@ const mockGetAccounts = vi.fn();
 const mockGetFunds = vi.fn();
 const mockGetPositions = vi.fn();
 const mockPlaceOrder = vi.fn();
+const mockGetOrders = vi.fn();
 
 vi.mock('@/lib/bridge-api', () => ({
   getQuotes: (...args: any[]) => mockGetQuotes(...args),
@@ -27,6 +28,7 @@ vi.mock('@/lib/bridge-api', () => ({
   getFunds: (...args: any[]) => mockGetFunds(...args),
   getPositions: (...args: any[]) => mockGetPositions(...args),
   placeOrder: (...args: any[]) => mockPlaceOrder(...args),
+  getOrders: (...args: any[]) => mockGetOrders(...args),
 }));
 
 // ── Component Imports ─────────────────────────────────────────────────────────
@@ -265,9 +267,12 @@ section('TradingDesk');
 describe('TradingDesk', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // TradeExecutionPanel also calls getAccounts/getPositions
+    // Restore console.error stub (vi.clearAllMocks removes our stubs)
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    // TradeExecutionPanel also calls getAccounts/getPositions/getOrders
     mockGetAccounts.mockResolvedValue([{ accountId: 'ACC001', accId: 'ACC001' }]);
     mockGetPositions.mockResolvedValue([{ code: 'US.AAPL', pnl: 0, pnlPct: 0, marketPrice: 100, marketValue: 10000, qty: 100 }]);
+    mockGetOrders.mockResolvedValue([]);
   });
 
   it('renders the 3-column grid layout', () => {

@@ -1,6 +1,6 @@
 // ── DAWN WHALES — MarketClock (全球市场时钟) ───────────────────────────────
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 interface MarketSession {
   name: string;
