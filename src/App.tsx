@@ -25,6 +25,9 @@ const CapitalFlowPage = lazy(() => import('@/components/market/CapitalFlowPage')
 const FundHoldingsPage = lazy(() => import('@/components/market/FundHoldingsPage'));
 const DailyReportPage = lazy(() => import('@/components/market/DailyReportPage'));
 const StockOverviewPage = lazy(() => import('@/components/market/StockOverviewPage'));
+const SmartPickerPage = lazy(() => import('@/components/market/SmartPickerPage'));
+const TradeExecutionPanel = lazy(() => import('@/components/trading/TradeExecutionPanel'));
+const AIAdvisorPage = lazy(() => import('@/components/strategy/AIAdvisorPage'));
 const StrategyPage = lazy(() => import('@/components/strategy/StrategyPage'));
 const PortfolioPage = lazy(() => import('@/components/portfolio/PortfolioPage'));
 const OrdersPage = lazy(() => import('@/components/orders/OrdersPage'));
@@ -49,6 +52,9 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   fundHoldings: FundHoldingsPage,
   dailyReport: DailyReportPage,
   stockOverview: StockOverviewPage,
+  smartPicker: SmartPickerPage,
+  tradeExecution: TradeExecutionPanel,
+  aiAdvisor: AIAdvisorPage,
   strategy: StrategyPage,
   portfolio: PortfolioPage,
   orders: OrdersPage,

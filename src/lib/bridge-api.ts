@@ -1243,3 +1243,17 @@ function generateDemoKlines(count: number): any[] {
   }
   return data;
 }
+
+// ── W41: Smart Picker ─────────────────────────────────────────────────────
+
+export async function getSmartPick(): Promise<any> {
+  if (!hasIPC()) return { success: false, data: [] };
+  return window.api.smartPicker?.getTopPicks?.() || { success: false, error: 'Not implemented' };
+}
+
+// ── W43: AI Advisor ───────────────────────────────────────────────────────
+
+export async function getAISuggest(): Promise<any> {
+  if (!hasIPC()) return { success: false, data: null };
+  return window.api.aiAdvisor?.suggest?.() || { success: false, error: 'Not implemented' };
+}

@@ -47,6 +47,8 @@ import { getDividendCalendar } from './engine/dividend-calendar';
 import { getEarningsCalendar } from './engine/earnings-calendar';
 import { exportData } from './engine/data-exporter';
 import { getSmartPicker } from './engine/smart-picker';
+import { getWSDataStream } from './data/ws-data-stream';
+import { getHistoryBackfill } from './data/history-backfill';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
