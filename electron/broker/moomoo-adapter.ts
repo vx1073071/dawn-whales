@@ -6,7 +6,7 @@
 import { FutuOpenD } from './futu-opend';
 import type { BrokerConfig, IBrokerAdapter, AccountInfo, FundsInfo, PositionInfo, OrderInfo, KLineInfo, QuoteInfo } from './IBrokerAdapter';
 
-export class MoomooOpenD extends FutuOpenD implements IBrokerAdapter {
+export class MoomooBrokerAdapter extends FutuOpenDClient implements IBrokerAdapter {
   readonly brokerType = 'moomoo' as const;
   readonly brokerName = 'Moomoo';
 

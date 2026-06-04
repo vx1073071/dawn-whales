@@ -207,6 +207,10 @@ export class BrokerManager {
 
   private createAdapter(config: BrokerConfig): IBrokerAdapter {
     // All Futu/moomoo share the same OpenD protocol
+    if (config.type === 'moomoo') {
+      const { MoomooBrokerAdapter } = require('./moomoo-adapter');
+      return new MoomooBrokerAdapter(config);
+    }
     return new FutuBrokerAdapter(config);
   }
 }
