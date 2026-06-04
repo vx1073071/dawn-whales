@@ -213,6 +213,13 @@ contextBridge.exposeInMainWorld('api', {
     getConceptRank: (sortBy?: string, order?: string, limit?: number) => ipcRenderer.invoke('em:get-capital-flow-concept', sortBy, order, limit),
   },
 
+  // ── Capital Flow Monitor — Real-time alerts (JVS-12) ──────────
+  capitalFlowMonitor: {
+    getAlerts: (items?: any[]) => ipcRenderer.invoke('em:get-capital-flow-alerts', items),
+    setConfig: (config: any) => ipcRenderer.invoke('em:set-capital-flow-config', config),
+    clearHistory: () => ipcRenderer.invoke('em:clear-capital-flow-history'),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),

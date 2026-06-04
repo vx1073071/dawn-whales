@@ -735,6 +735,23 @@ export async function getConceptCapitalFlowRank(sortBy?: string, order?: string,
   return window.api.capitalFlow.getConceptRank(sortBy, order, limit);
 }
 
+// ── Capital Flow Monitor — Real-time alerts (JVS-12) ──────────────────────
+
+export async function getCapitalFlowAlerts(items?: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false, alerts: [] };
+  return window.api.capitalFlowMonitor.getAlerts(items);
+}
+
+export async function setCapitalFlowConfig(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.capitalFlowMonitor.setConfig(config);
+}
+
+export async function clearCapitalFlowHistory(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.capitalFlowMonitor.clearHistory();
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {

@@ -29,6 +29,7 @@ import { DataSchedulerService } from './engine/data-scheduler';
 import { initQuoteStream, getQuoteStream } from './engine/quote-stream';
 import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from './engine/dragon-tiger-list';
 import { getStockCapitalFlowRank, getSectorCapitalFlowRank, getConceptCapitalFlowRank } from './engine/capital-flow-rank';
+import { getCapitalFlowMonitor } from './engine/capital-flow-monitor';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1724,6 +1725,36 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return result;
     } catch (err: any) {
       return { success: false, items: [], total: 0, type: 'concept', error: err.message };
+    }
+  });
+
+  // ── Capital Flow Monitor — Real-time alerts (JVS-12) ─────────────────
+  ipcMain.handle('em:get-capital-flow-alerts', async (_e, items?: any[]) => {
+    try {
+      const monitor = getCapitalFlowMonitor();
+      const alerts = items ? monitor.process(items) : [];
+      return { success: true, alerts, config: monitor.getConfig() };
+    } catch (err: any) {
+      return { success: false, alerts: [], error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:set-capital-flow-config', async (_e, config: any) => {
+    try {
+      const monitor = getCapitalFlowMonitor();
+      monitor.updateConfig(config);
+      return { success: true, config: monitor.getConfig() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:clear-capital-flow-history', async () => {
+    try {
+      getCapitalFlowMonitor().clearHistory();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
     }
   });
 
