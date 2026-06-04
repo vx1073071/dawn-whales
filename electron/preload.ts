@@ -199,6 +199,13 @@ contextBridge.exposeInMainWorld('api', {
     unsubscribe: (symbols: string[]) => ipcRenderer.invoke('quote:unsubscribe', symbols),
   },
 
+  // ── Dragon Tiger List — 龙虎榜 (JVS-10) ───────────────────────
+  dragonTiger: {
+    getList: (date?: string) => ipcRenderer.invoke('em:get-dragon-tiger', date),
+    getDetail: (code: string, date: string) => ipcRenderer.invoke('em:get-dragon-tiger-detail', code, date),
+    getInstitutionalTrades: (date?: string) => ipcRenderer.invoke('em:get-institutional-trades', date),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),

@@ -701,6 +701,23 @@ export function onQuoteStreamAnomaly(callback: (alerts: any[]) => void): void {
   window.api.on('quote:stream-anomaly', callback);
 }
 
+// ── Dragon Tiger List — 龙虎榜 (JVS-10) ───────────────────────────────────
+
+export async function getDragonTigerList(date?: string): Promise<any> {
+  if (!hasIPC()) return { success: false, entries: [], total: 0 };
+  return window.api.dragonTiger.getList(date);
+}
+
+export async function getDragonTigerDetail(code: string, date: string): Promise<any> {
+  if (!hasIPC()) return { success: false, detail: null };
+  return window.api.dragonTiger.getDetail(code, date);
+}
+
+export async function getInstitutionalTrades(date?: string): Promise<any> {
+  if (!hasIPC()) return { success: false, entries: [] };
+  return window.api.dragonTiger.getInstitutionalTrades(date);
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {

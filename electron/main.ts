@@ -27,6 +27,7 @@ import { StockAnomalyDetector } from './engine/stock-anomaly-detector';
 import { MarketHotspotService } from './engine/market-hotspot';
 import { DataSchedulerService } from './engine/data-scheduler';
 import { initQuoteStream, getQuoteStream } from './engine/quote-stream';
+import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from './engine/dragon-tiger-list';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1667,6 +1668,34 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     if (!stream) return { success: false, error: 'QuoteStream not initialized' };
     stream.unsubscribe(symbols);
     return { success: true, status: stream.getStatus() };
+  });
+
+  // ── Dragon Tiger List — 龙虎榜 (JVS-10) ─────────────────────────────
+  ipcMain.handle('em:get-dragon-tiger', async (_e, date?: string) => {
+    try {
+      const result = await getDragonTigerList(date);
+      return result;
+    } catch (err: any) {
+      return { success: false, entries: [], total: 0, date: '', error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-dragon-tiger-detail', async (_e, code: string, date: string) => {
+    try {
+      const detail = await getDragonTigerDetail(code, date);
+      return { success: !!detail, detail };
+    } catch (err: any) {
+      return { success: false, detail: null, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-institutional-trades', async (_e, date?: string) => {
+    try {
+      const entries = await getInstitutionalTrades(date);
+      return { success: true, entries };
+    } catch (err: any) {
+      return { success: false, entries: [], error: err.message };
+    }
   });
 
   // Wire quote stream events to renderer
