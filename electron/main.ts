@@ -26,7 +26,7 @@ import { exploreCache, getCacheEntryDetail, getCacheKeys } from './engine/cache-
 import { getSentimentDashboard } from './engine/sentiment-dashboard';
 import { exportData, getAvailableModules } from './engine/data-export-service';
 import { getRateLimiterManager } from './engine/rate-limiter';
-import { runConsistencyCheck, getConsistencyRules } from './engine/data-consistency-checker';
+import { getDataConsistencyChecker } from './engine/data-consistency-checker';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
 import { SectorRotationMonitor } from './engine/sector-rotation';
@@ -4289,6 +4289,25 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     const generator = getStrategySignalGenerator();
     const result = generator.validateWithBacktest(config);
     return { success: true, result };
+  });
+
+  // ── JVS-48: Data Consistency Checker ──────────────────────────────────
+  ipcMain.handle('consistency:check', async (_e, data: any[]) => {
+    const checker = getDataConsistencyChecker();
+    const result = checker.validateStockData(data);
+    return { success: true, result };
+  });
+
+  ipcMain.handle('consistency:check-multi', async (_e, sources: any[]) => {
+    const checker = getDataConsistencyChecker();
+    const result = checker.validateMultiSource(sources);
+    return { success: true, result };
+  });
+
+  ipcMain.handle('consistency:summary', async (_e, result: any) => {
+    const checker = getDataConsistencyChecker();
+    const summary = checker.getSummary(result);
+    return { success: true, summary };
   });
 }
 
