@@ -53,6 +53,10 @@ declare global {
         saveNews: (symbol: string, items: any[]) => Promise<any>;
         clearCache: () => Promise<any>;
       };
+      emDataProvider: {
+        getHeatmap: (boardType?: string, limit?: number) => Promise<any>;
+        getAllHeatmaps: () => Promise<any>;
+      };
       backtestEnhanced: {
         walkForward: (config: any) => Promise<any>;
         paramScan: (config: any) => Promise<any>;
@@ -498,6 +502,18 @@ export async function saveNewsItems(symbol: string, items: any[]): Promise<any> 
 export async function clearDataCache(): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.dataProvider.clearCache();
+}
+
+// ── EM Data Provider — Sector Heatmap (JVS-1) ─────────────────────────────
+
+export async function getSectorHeatmap(boardType?: string, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, sectors: [] };
+  return window.api.emDataProvider.getHeatmap(boardType, limit);
+}
+
+export async function getAllSectorHeatmaps(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.emDataProvider.getAllHeatmaps();
 }
 
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────

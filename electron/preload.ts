@@ -140,6 +140,12 @@ contextBridge.exposeInMainWorld('api', {
     clearCache: () => ipcRenderer.invoke('data:clear-cache'),
   },
 
+  // ── EM Data Provider — Sector Heatmap (JVS-1) ────────────────────
+  emDataProvider: {
+    getHeatmap: (boardType?: string, limit?: number) => ipcRenderer.invoke('em:get-heatmap', boardType, limit),
+    getAllHeatmaps: () => ipcRenderer.invoke('em:get-all-heatmaps'),
+  },
+
   // ── Backtest Enhancement (Sprint 2) ──────────────────────────────
   backtest: {
     multiPeriod: (config: any) => ipcRenderer.invoke('backtest:multiPeriod', config),

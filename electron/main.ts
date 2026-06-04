@@ -17,6 +17,7 @@ import { RiskEngine } from './engine/risk-engine';
 import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/nl-parser';
 import { MarketplaceService } from './data/marketplace-service';
 import { DataProviderService } from './data/data-provider';
+import { EMDataProvider } from './data/em-data-provider';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner';
@@ -107,6 +108,7 @@ let riskEngine: RiskEngine | null = null;
 let db: DatabaseManager | null = null;
 let marketplaceService: MarketplaceService | null = null;
 let dataProvider: DataProviderService | null = null;
+let emDataProvider: EMDataProvider | null = null;
 
 // ── Shared quote push handler (prevents duplicate listener registration) ─────
 const quotePushHandler = (quotes: any[]) => {
@@ -1357,6 +1359,30 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── EM Data Provider — Sector Heatmap (JVS-1) ─────────────────────────
+  ipcMain.handle('em:get-heatmap', async (_e, boardType?: string, limit?: number) => {
+    if (!emDataProvider) return { success: false, error: 'EMDataProvider not initialized' };
+    try {
+      const bt = (boardType === 'concept' || boardType === 'region') ? boardType : 'industry';
+      const result = await emDataProvider.getHeatmap(bt, limit || 50);
+      return { success: true, ...result };
+    } catch (err: any) {
+      log.error('[EMDataProvider] Heatmap fetch failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-all-heatmaps', async () => {
+    if (!emDataProvider) return { success: false, error: 'EMDataProvider not initialized' };
+    try {
+      const maps = await emDataProvider.getAllHeatmaps();
+      return { success: true, ...maps };
+    } catch (err: any) {
+      log.error('[EMDataProvider] All heatmaps fetch failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
   ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
@@ -1483,6 +1509,10 @@ app.whenReady().then(async () => {
       dataProvider = new DataProviderService();
       dataProvider.initialize(db);
       log.info('[App] DataProviderService initialized');
+
+      emDataProvider = new EMDataProvider();
+      emDataProvider.initialize(db);
+      log.info('[App] EMDataProvider initialized (JVS-1)');
     }
   } catch (err: any) {
     log.error('[App] MarketplaceService init failed:', err.message);
