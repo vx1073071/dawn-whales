@@ -16,6 +16,7 @@ import QuickTrade from '../risk/QuickTrade';
 import PriceAlertPanel from '../risk/PriceAlertPanel';
 import MarketBreadth from '../risk/MarketBreadth';
 import EconomicCalendar from '../risk/EconomicCalendar';
+import MarketMovers from '../risk/MarketMovers';
 import PerformanceMetricsPanel from '../risk/PerformanceMetricsPanel';
 import DailyPnLSummary from '../risk/DailyPnLSummary';
 
@@ -293,8 +294,11 @@ export default function DashboardPage() {
         <PriceAlertPanel />
       </div>
 
-      {/* Economic Calendar */}
-      <EconomicCalendar />
+      {/* Economic Calendar + Market Movers */}
+      <div className="grid grid-cols-2 gap-4">
+        <EconomicCalendar />
+        <MarketMovers />
+      </div>
     </div>
   );
 }
