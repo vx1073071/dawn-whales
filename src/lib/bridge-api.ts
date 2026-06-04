@@ -718,6 +718,23 @@ export async function getInstitutionalTrades(date?: string): Promise<any> {
   return window.api.dragonTiger.getInstitutionalTrades(date);
 }
 
+// ── Capital Flow Ranking — 资金流排行 (JVS-11) ────────────────────────────
+
+export async function getStockCapitalFlowRank(sortBy?: string, order?: string, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, items: [], total: 0 };
+  return window.api.capitalFlow.getStockRank(sortBy, order, limit);
+}
+
+export async function getSectorCapitalFlowRank(sortBy?: string, order?: string, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, items: [], total: 0 };
+  return window.api.capitalFlow.getSectorRank(sortBy, order, limit);
+}
+
+export async function getConceptCapitalFlowRank(sortBy?: string, order?: string, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, items: [], total: 0 };
+  return window.api.capitalFlow.getConceptRank(sortBy, order, limit);
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {

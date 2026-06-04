@@ -206,6 +206,13 @@ contextBridge.exposeInMainWorld('api', {
     getInstitutionalTrades: (date?: string) => ipcRenderer.invoke('em:get-institutional-trades', date),
   },
 
+  // ── Capital Flow Ranking — 资金流排行 (JVS-11) ────────────────
+  capitalFlow: {
+    getStockRank: (sortBy?: string, order?: string, limit?: number) => ipcRenderer.invoke('em:get-capital-flow-stock', sortBy, order, limit),
+    getSectorRank: (sortBy?: string, order?: string, limit?: number) => ipcRenderer.invoke('em:get-capital-flow-sector', sortBy, order, limit),
+    getConceptRank: (sortBy?: string, order?: string, limit?: number) => ipcRenderer.invoke('em:get-capital-flow-concept', sortBy, order, limit),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),

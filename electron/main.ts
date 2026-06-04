@@ -28,6 +28,7 @@ import { MarketHotspotService } from './engine/market-hotspot';
 import { DataSchedulerService } from './engine/data-scheduler';
 import { initQuoteStream, getQuoteStream } from './engine/quote-stream';
 import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from './engine/dragon-tiger-list';
+import { getStockCapitalFlowRank, getSectorCapitalFlowRank, getConceptCapitalFlowRank } from './engine/capital-flow-rank';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1695,6 +1696,34 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: true, entries };
     } catch (err: any) {
       return { success: false, entries: [], error: err.message };
+    }
+  });
+
+  // ── Capital Flow Ranking — 资金流排行 (JVS-11) ──────────────────────
+  ipcMain.handle('em:get-capital-flow-stock', async (_e, sortBy?: string, order?: string, limit?: number) => {
+    try {
+      const result = await getStockCapitalFlowRank(sortBy as any, order as any, limit);
+      return result;
+    } catch (err: any) {
+      return { success: false, items: [], total: 0, type: 'stock', error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-capital-flow-sector', async (_e, sortBy?: string, order?: string, limit?: number) => {
+    try {
+      const result = await getSectorCapitalFlowRank(sortBy as any, order as any, limit);
+      return result;
+    } catch (err: any) {
+      return { success: false, items: [], total: 0, type: 'sector', error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-capital-flow-concept', async (_e, sortBy?: string, order?: string, limit?: number) => {
+    try {
+      const result = await getConceptCapitalFlowRank(sortBy as any, order as any, limit);
+      return result;
+    } catch (err: any) {
+      return { success: false, items: [], total: 0, type: 'concept', error: err.message };
     }
   });
 
