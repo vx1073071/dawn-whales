@@ -4,6 +4,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { getRiskStatusSnapshot } from '../../lib/bridge-api';
 import EquityChart from './EquityChart';
+import PerformanceMetricsPanel from './PerformanceMetricsPanel';
 
 interface KellyStats {
   winRate: number;
@@ -62,6 +63,20 @@ export default function RiskDashboardPage() {
       });
     }
     return data;
+  }, []);
+
+  // Demo trade history for performance metrics
+  const demoTrades = useMemo(() => {
+    const trades: { pnl: number; timestamp: number }[] = [];
+    const now = Date.now();
+    for (let i = 0; i < 50; i++) {
+      const isWin = Math.random() > 0.42;
+      const pnl = isWin
+        ? 50 + Math.random() * 450
+        : -(30 + Math.random() * 220);
+      trades.push({ pnl, timestamp: now - i * 86400000 });
+    }
+    return trades;
   }, []);
 
   const loadData = useCallback(async () => {

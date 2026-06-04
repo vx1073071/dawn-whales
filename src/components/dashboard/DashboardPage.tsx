@@ -8,6 +8,7 @@ import {
 } from '../../lib/bridge-api';
 import EquityChart from '../risk/EquityChart';
 import PortfolioAllocationChart from '../risk/PortfolioAllocationChart';
+import SignalTimeline from '../risk/SignalTimeline';
 
 interface AccountSummary {
   totalAssets: number;
@@ -173,8 +174,15 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Equity Curve */}
-      <EquityChart data={equityData} title="📈 账户净值走势" height={280} showDrawdown />
+      {/* Equity Curve + Allocation */}
+      <div className="grid grid-cols-2 gap-4">
+        <EquityChart data={equityData} title="📈 账户净值走势" height={280} showDrawdown />
+        <PortfolioAllocationChart
+          data={positions.map((p) => ({ name: p.code.split('.')[1] || p.code, value: p.marketValue, pnl: p.pnl, pnlPct: p.pnlPct }))}
+          title="🥧 持仓分配"
+          height={280}
+        />
+      </div>
 
       {/* Position Heatmap */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
@@ -268,6 +276,9 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Signal Timeline */}
+      <SignalTimeline maxItems={20} autoRefresh />
     </div>
   );
 }

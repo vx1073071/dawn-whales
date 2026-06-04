@@ -18,6 +18,9 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm ci
+      - run: npx tsx tests/engine.test.ts
+      - run: npx tsx tests/e2e-pipeline.test.ts
+      - run: npx tsx tests/kelly-sizing.test.ts
       - run: npm run build
       - run: npx electron-builder --win --publish never
         env:
