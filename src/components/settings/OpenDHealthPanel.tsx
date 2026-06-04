@@ -45,7 +45,7 @@ export default function OpenDHealthPanel() {
     setLoading(true);
     try {
       const res = await isConnected();
-      setHealth(prev => ({ ...prev, connected: res?.connected ?? false }));
+      setHealth(prev => ({ ...prev, connected: (res as any)?.connected ?? false }));
     } catch (e) { console.error('[Error:OpenDHealthPanel]', e); }
     setLoading(false);
   }

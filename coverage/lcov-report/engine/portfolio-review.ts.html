@@ -1,0 +1,1075 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for engine/portfolio-review.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">engine</a> portfolio-review.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/331</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/331</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a>
+<a name='L206'></a><a href='#L206'>206</a>
+<a name='L207'></a><a href='#L207'>207</a>
+<a name='L208'></a><a href='#L208'>208</a>
+<a name='L209'></a><a href='#L209'>209</a>
+<a name='L210'></a><a href='#L210'>210</a>
+<a name='L211'></a><a href='#L211'>211</a>
+<a name='L212'></a><a href='#L212'>212</a>
+<a name='L213'></a><a href='#L213'>213</a>
+<a name='L214'></a><a href='#L214'>214</a>
+<a name='L215'></a><a href='#L215'>215</a>
+<a name='L216'></a><a href='#L216'>216</a>
+<a name='L217'></a><a href='#L217'>217</a>
+<a name='L218'></a><a href='#L218'>218</a>
+<a name='L219'></a><a href='#L219'>219</a>
+<a name='L220'></a><a href='#L220'>220</a>
+<a name='L221'></a><a href='#L221'>221</a>
+<a name='L222'></a><a href='#L222'>222</a>
+<a name='L223'></a><a href='#L223'>223</a>
+<a name='L224'></a><a href='#L224'>224</a>
+<a name='L225'></a><a href='#L225'>225</a>
+<a name='L226'></a><a href='#L226'>226</a>
+<a name='L227'></a><a href='#L227'>227</a>
+<a name='L228'></a><a href='#L228'>228</a>
+<a name='L229'></a><a href='#L229'>229</a>
+<a name='L230'></a><a href='#L230'>230</a>
+<a name='L231'></a><a href='#L231'>231</a>
+<a name='L232'></a><a href='#L232'>232</a>
+<a name='L233'></a><a href='#L233'>233</a>
+<a name='L234'></a><a href='#L234'>234</a>
+<a name='L235'></a><a href='#L235'>235</a>
+<a name='L236'></a><a href='#L236'>236</a>
+<a name='L237'></a><a href='#L237'>237</a>
+<a name='L238'></a><a href='#L238'>238</a>
+<a name='L239'></a><a href='#L239'>239</a>
+<a name='L240'></a><a href='#L240'>240</a>
+<a name='L241'></a><a href='#L241'>241</a>
+<a name='L242'></a><a href='#L242'>242</a>
+<a name='L243'></a><a href='#L243'>243</a>
+<a name='L244'></a><a href='#L244'>244</a>
+<a name='L245'></a><a href='#L245'>245</a>
+<a name='L246'></a><a href='#L246'>246</a>
+<a name='L247'></a><a href='#L247'>247</a>
+<a name='L248'></a><a href='#L248'>248</a>
+<a name='L249'></a><a href='#L249'>249</a>
+<a name='L250'></a><a href='#L250'>250</a>
+<a name='L251'></a><a href='#L251'>251</a>
+<a name='L252'></a><a href='#L252'>252</a>
+<a name='L253'></a><a href='#L253'>253</a>
+<a name='L254'></a><a href='#L254'>254</a>
+<a name='L255'></a><a href='#L255'>255</a>
+<a name='L256'></a><a href='#L256'>256</a>
+<a name='L257'></a><a href='#L257'>257</a>
+<a name='L258'></a><a href='#L258'>258</a>
+<a name='L259'></a><a href='#L259'>259</a>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a>
+<a name='L263'></a><a href='#L263'>263</a>
+<a name='L264'></a><a href='#L264'>264</a>
+<a name='L265'></a><a href='#L265'>265</a>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a>
+<a name='L270'></a><a href='#L270'>270</a>
+<a name='L271'></a><a href='#L271'>271</a>
+<a name='L272'></a><a href='#L272'>272</a>
+<a name='L273'></a><a href='#L273'>273</a>
+<a name='L274'></a><a href='#L274'>274</a>
+<a name='L275'></a><a href='#L275'>275</a>
+<a name='L276'></a><a href='#L276'>276</a>
+<a name='L277'></a><a href='#L277'>277</a>
+<a name='L278'></a><a href='#L278'>278</a>
+<a name='L279'></a><a href='#L279'>279</a>
+<a name='L280'></a><a href='#L280'>280</a>
+<a name='L281'></a><a href='#L281'>281</a>
+<a name='L282'></a><a href='#L282'>282</a>
+<a name='L283'></a><a href='#L283'>283</a>
+<a name='L284'></a><a href='#L284'>284</a>
+<a name='L285'></a><a href='#L285'>285</a>
+<a name='L286'></a><a href='#L286'>286</a>
+<a name='L287'></a><a href='#L287'>287</a>
+<a name='L288'></a><a href='#L288'>288</a>
+<a name='L289'></a><a href='#L289'>289</a>
+<a name='L290'></a><a href='#L290'>290</a>
+<a name='L291'></a><a href='#L291'>291</a>
+<a name='L292'></a><a href='#L292'>292</a>
+<a name='L293'></a><a href='#L293'>293</a>
+<a name='L294'></a><a href='#L294'>294</a>
+<a name='L295'></a><a href='#L295'>295</a>
+<a name='L296'></a><a href='#L296'>296</a>
+<a name='L297'></a><a href='#L297'>297</a>
+<a name='L298'></a><a href='#L298'>298</a>
+<a name='L299'></a><a href='#L299'>299</a>
+<a name='L300'></a><a href='#L300'>300</a>
+<a name='L301'></a><a href='#L301'>301</a>
+<a name='L302'></a><a href='#L302'>302</a>
+<a name='L303'></a><a href='#L303'>303</a>
+<a name='L304'></a><a href='#L304'>304</a>
+<a name='L305'></a><a href='#L305'>305</a>
+<a name='L306'></a><a href='#L306'>306</a>
+<a name='L307'></a><a href='#L307'>307</a>
+<a name='L308'></a><a href='#L308'>308</a>
+<a name='L309'></a><a href='#L309'>309</a>
+<a name='L310'></a><a href='#L310'>310</a>
+<a name='L311'></a><a href='#L311'>311</a>
+<a name='L312'></a><a href='#L312'>312</a>
+<a name='L313'></a><a href='#L313'>313</a>
+<a name='L314'></a><a href='#L314'>314</a>
+<a name='L315'></a><a href='#L315'>315</a>
+<a name='L316'></a><a href='#L316'>316</a>
+<a name='L317'></a><a href='#L317'>317</a>
+<a name='L318'></a><a href='#L318'>318</a>
+<a name='L319'></a><a href='#L319'>319</a>
+<a name='L320'></a><a href='#L320'>320</a>
+<a name='L321'></a><a href='#L321'>321</a>
+<a name='L322'></a><a href='#L322'>322</a>
+<a name='L323'></a><a href='#L323'>323</a>
+<a name='L324'></a><a href='#L324'>324</a>
+<a name='L325'></a><a href='#L325'>325</a>
+<a name='L326'></a><a href='#L326'>326</a>
+<a name='L327'></a><a href='#L327'>327</a>
+<a name='L328'></a><a href='#L328'>328</a>
+<a name='L329'></a><a href='#L329'>329</a>
+<a name='L330'></a><a href='#L330'>330</a>
+<a name='L331'></a><a href='#L331'>331</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >// ── Q44: Portfolio Review Report ─────────────────────────────────────────────<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
+<span class="cstat-no" title="statement not covered" >// Multi-period review (weekly/monthly/quarterly/annual)</span>
+<span class="cstat-no" title="statement not covered" >// Benchmark-relative attribution + actionable recommendations</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >import log from 'electron-log';</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >// ── Types ──────────────────────────────────────────────────────────────────</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >export interface PeriodReview {</span>
+<span class="cstat-no" title="statement not covered" >  startDate: string;</span>
+<span class="cstat-no" title="statement not covered" >  endDate: string;</span>
+<span class="cstat-no" title="statement not covered" >  period: 'weekly' | 'monthly' | 'quarterly' | 'annual';</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  // Returns</span>
+<span class="cstat-no" title="statement not covered" >  portfolioReturn: number;</span>
+<span class="cstat-no" title="statement not covered" >  benchmarkReturn: number;</span>
+<span class="cstat-no" title="statement not covered" >  activeReturn: number;</span>
+<span class="cstat-no" title="statement not covered" >  annualizedReturn: number;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  // Risk</span>
+<span class="cstat-no" title="statement not covered" >  volatility: number;</span>
+<span class="cstat-no" title="statement not covered" >  maxDrawdown: number;</span>
+<span class="cstat-no" title="statement not covered" >  sharpeRatio: number;</span>
+<span class="cstat-no" title="statement not covered" >  trackingError: number;</span>
+<span class="cstat-no" title="statement not covered" >  informationRatio: number;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  // P&amp;L attribution</span>
+<span class="cstat-no" title="statement not covered" >  totalPnL: number;</span>
+<span class="cstat-no" title="statement not covered" >  realizedPnL: number;</span>
+<span class="cstat-no" title="statement not covered" >  unrealizedPnL: number;</span>
+<span class="cstat-no" title="statement not covered" >  dividendIncome: number;</span>
+<span class="cstat-no" title="statement not covered" >  feeCost: number;</span>
+<span class="cstat-no" title="statement not covered" >  netPnL: number;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  // Position changes</span>
+<span class="cstat-no" title="statement not covered" >  positionsAdded: string[];</span>
+<span class="cstat-no" title="statement not covered" >  positionsRemoved: string[];</span>
+<span class="cstat-no" title="statement not covered" >  positionsIncreased: string[];</span>
+<span class="cstat-no" title="statement not covered" >  positionsDecreased: string[];</span>
+<span class="cstat-no" title="statement not covered" >  newPositions: Array&lt;{ symbol: string; weight: number; pnl: number }&gt;;</span>
+<span class="cstat-no" title="statement not covered" >  closedPositions: Array&lt;{ symbol: string; pnl: number; reason: string }&gt;;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  // Performance drivers</span>
+<span class="cstat-no" title="statement not covered" >  topContributors: Array&lt;{ symbol: string; contribution: number; return: number }&gt;;</span>
+<span class="cstat-no" title="statement not covered" >  topDetractors: Array&lt;{ symbol: string; contribution: number; return: number }&gt;;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  // Risk metrics</span>
+<span class="cstat-no" title="statement not covered" >  varEnd: number;</span>
+<span class="cstat-no" title="statement not covered" >  leverage: number;</span>
+<span class="cstat-no" title="statement not covered" >  cashPct: number;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >export interface AnnualReview extends PeriodReview {</span>
+<span class="cstat-no" title="statement not covered" >  ytdReturn: number;</span>
+<span class="cstat-no" title="statement not covered" >  vsGoalReturn: number;        // vs investment objective</span>
+<span class="cstat-no" title="statement not covered" >  goalAchieved: boolean;</span>
+<span class="cstat-no" title="statement not covered" >  taxImpact: number;</span>
+<span class="cstat-no" title="statement not covered" >  rebalancingEvents: number;</span>
+<span class="cstat-no" title="statement not covered" >  strategyAllocationChanges: Array&lt;{ from: string; to: string; weightChange: number }&gt;;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >export interface ReviewReport {</span>
+<span class="cstat-no" title="statement not covered" >  portfolioId: string;</span>
+<span class="cstat-no" title="statement not covered" >  generatedAt: string;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  reviews: {</span>
+<span class="cstat-no" title="statement not covered" >    weekly?: PeriodReview;</span>
+<span class="cstat-no" title="statement not covered" >    monthly?: PeriodReview;</span>
+<span class="cstat-no" title="statement not covered" >    quarterly?: PeriodReview;</span>
+<span class="cstat-no" title="statement not covered" >    annual?: AnnualReview;</span>
+<span class="cstat-no" title="statement not covered" >  };</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  benchmark: {</span>
+<span class="cstat-no" title="statement not covered" >    name: string;</span>
+<span class="cstat-no" title="statement not covered" >    return: number;</span>
+<span class="cstat-no" title="statement not covered" >    vol: number;</span>
+<span class="cstat-no" title="statement not covered" >  };</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  // Overall assessment</span>
+<span class="cstat-no" title="statement not covered" >  overallGrade: 'A+' | 'A' | 'B+' | 'B' | 'C' | 'D';</span>
+<span class="cstat-no" title="statement not covered" >  performanceSummary: string;</span>
+<span class="cstat-no" title="statement not covered" >  keyTakeaways: string[];</span>
+<span class="cstat-no" title="statement not covered" >  topRecommendations: string[];</span>
+<span class="cstat-no" title="statement not covered" >  nextPeriodWatchlist: string[];</span>
+<span class="cstat-no" title="statement not covered" >  timestamp: number;</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >// ── Portfolio Review Report ───────────────────────────────────────────────</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >export class PortfolioReviewEngine {</span>
+<span class="cstat-no" title="statement not covered" >  constructor() {</span>
+<span class="cstat-no" title="statement not covered" >    log.info('[PortfolioReviewEngine] Initialized');</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  // ── Build Single Period Review ──────────────────────────────────────</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  buildReview(</span>
+<span class="cstat-no" title="statement not covered" >    period: 'weekly' | 'monthly' | 'quarterly' | 'annual',</span>
+<span class="cstat-no" title="statement not covered" >    startDate: string,</span>
+<span class="cstat-no" title="statement not covered" >    endDate: string,</span>
+<span class="cstat-no" title="statement not covered" >    trades: Array&lt;{</span>
+<span class="cstat-no" title="statement not covered" >      date: string;</span>
+<span class="cstat-no" title="statement not covered" >      symbol: string;</span>
+<span class="cstat-no" title="statement not covered" >      side: 'BUY' | 'SELL';</span>
+<span class="cstat-no" title="statement not covered" >      quantity: number;</span>
+<span class="cstat-no" title="statement not covered" >      price: number;</span>
+<span class="cstat-no" title="statement not covered" >      pnl: number;</span>
+<span class="cstat-no" title="statement not covered" >      realized: boolean;</span>
+<span class="cstat-no" title="statement not covered" >    }&gt;,</span>
+<span class="cstat-no" title="statement not covered" >    positions: Array&lt;{</span>
+<span class="cstat-no" title="statement not covered" >      symbol: string;</span>
+<span class="cstat-no" title="statement not covered" >      quantity: number;</span>
+<span class="cstat-no" title="statement not covered" >      avgCost: number;</span>
+<span class="cstat-no" title="statement not covered" >      currentPrice: number;</span>
+<span class="cstat-no" title="statement not covered" >      weight: number;</span>
+<span class="cstat-no" title="statement not covered" >      strategyId?: string;</span>
+<span class="cstat-no" title="statement not covered" >    }&gt;,</span>
+<span class="cstat-no" title="statement not covered" >    benchmarkReturn: number,</span>
+<span class="cstat-no" title="statement not covered" >    dividends: number = 0,</span>
+<span class="cstat-no" title="statement not covered" >    fees: number = 0</span>
+<span class="cstat-no" title="statement not covered" >  ): PeriodReview {</span>
+<span class="cstat-no" title="statement not covered" >    const n = trades.length;</span>
+<span class="cstat-no" title="statement not covered" >    const realizedPnL = trades.filter(t =&gt; t.realized).reduce((s, t) =&gt; s + t.pnl, 0);</span>
+<span class="cstat-no" title="statement not covered" >    const unrealizedPnL = positions.reduce((s, p) =&gt;</span>
+<span class="cstat-no" title="statement not covered" >      s + (p.currentPrice - p.avgCost) * p.quantity, 0</span>
+<span class="cstat-no" title="statement not covered" >    );</span>
+<span class="cstat-no" title="statement not covered" >    const totalPnL = realizedPnL + unrealizedPnL;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Simple return calc (placeholder)</span>
+<span class="cstat-no" title="statement not covered" >    const totalValue = positions.reduce((s, p) =&gt; s + p.quantity * p.currentPrice, 0);</span>
+<span class="cstat-no" title="statement not covered" >    const portfolioReturn = totalValue &gt; 0 ? (totalPnL / totalValue) * 100 : 0;</span>
+<span class="cstat-no" title="statement not covered" >    const activeReturn = portfolioReturn - benchmarkReturn;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Top contributors/detractors</span>
+<span class="cstat-no" title="statement not covered" >    const pnlBySymbol = new Map&lt;string, number&gt;();</span>
+<span class="cstat-no" title="statement not covered" >    for (const t of trades) {</span>
+<span class="cstat-no" title="statement not covered" >      const prev = pnlBySymbol.get(t.symbol) ?? 0;</span>
+<span class="cstat-no" title="statement not covered" >      pnlBySymbol.set(t.symbol, prev + t.pnl);</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >    const sorted = [...pnlBySymbol.entries()].sort((a, b) =&gt; b[1] - a[1]);</span>
+<span class="cstat-no" title="statement not covered" >    const topContributors = sorted.slice(0, 5).map(([symbol, pnl]) =&gt; ({</span>
+<span class="cstat-no" title="statement not covered" >      symbol,</span>
+<span class="cstat-no" title="statement not covered" >      contribution: Math.round(pnl * 100) / 100,</span>
+<span class="cstat-no" title="statement not covered" >      return: Math.round((pnl / (totalValue / sorted.length)) * 10000) / 100,</span>
+<span class="cstat-no" title="statement not covered" >    }));</span>
+<span class="cstat-no" title="statement not covered" >    const topDetractors = sorted.slice(-5).map(([symbol, pnl]) =&gt; ({</span>
+<span class="cstat-no" title="statement not covered" >      symbol,</span>
+<span class="cstat-no" title="statement not covered" >      contribution: Math.round(pnl * 100) / 100,</span>
+<span class="cstat-no" title="statement not covered" >      return: Math.round((pnl / (totalValue / sorted.length)) * 10000) / 100,</span>
+<span class="cstat-no" title="statement not covered" >    }));</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Position changes</span>
+<span class="cstat-no" title="statement not covered" >    const buySymbols = new Set(trades.filter(t =&gt; t.side === 'BUY').map(t =&gt; t.symbol));</span>
+<span class="cstat-no" title="statement not covered" >    const sellSymbols = new Set(trades.filter(t =&gt; t.side === 'SELL').map(t =&gt; t.symbol));</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    return {</span>
+<span class="cstat-no" title="statement not covered" >      startDate,</span>
+<span class="cstat-no" title="statement not covered" >      endDate,</span>
+<span class="cstat-no" title="statement not covered" >      period,</span>
+<span class="cstat-no" title="statement not covered" >      portfolioReturn: Math.round(portfolioReturn * 100) / 100,</span>
+<span class="cstat-no" title="statement not covered" >      benchmarkReturn: Math.round(benchmarkReturn * 100) / 100,</span>
+<span class="cstat-no" title="statement not covered" >      activeReturn: Math.round(activeReturn * 100) / 100,</span>
+<span class="cstat-no" title="statement not covered" >      annualizedReturn: Math.round(this.annualize(portfolioReturn, period) * 100) / 100,</span>
+<span class="cstat-no" title="statement not covered" >      volatility: 0,</span>
+<span class="cstat-no" title="statement not covered" >      maxDrawdown: 0,</span>
+<span class="cstat-no" title="statement not covered" >      sharpeRatio: 0,</span>
+<span class="cstat-no" title="statement not covered" >      trackingError: 0,</span>
+<span class="cstat-no" title="statement not covered" >      informationRatio: activeReturn / 0.05,</span>
+<span class="cstat-no" title="statement not covered" >      totalPnL: Math.round(totalPnL * 100) / 100,</span>
+<span class="cstat-no" title="statement not covered" >      realizedPnL: Math.round(realizedPnL * 100) / 100,</span>
+<span class="cstat-no" title="statement not covered" >      unrealizedPnL: Math.round(unrealizedPnL * 100) / 100,</span>
+<span class="cstat-no" title="statement not covered" >      dividendIncome: Math.round(dividends * 100) / 100,</span>
+<span class="cstat-no" title="statement not covered" >      feeCost: Math.round(fees * 100) / 100,</span>
+<span class="cstat-no" title="statement not covered" >      netPnL: Math.round((totalPnL - dividends - fees) * 100) / 100,</span>
+<span class="cstat-no" title="statement not covered" >      positionsAdded: [...buySymbols].filter(s =&gt; !sellSymbols.has(s)),</span>
+<span class="cstat-no" title="statement not covered" >      positionsRemoved: [...sellSymbols].filter(s =&gt; !buySymbols.has(s)),</span>
+<span class="cstat-no" title="statement not covered" >      positionsIncreased: [],</span>
+<span class="cstat-no" title="statement not covered" >      positionsDecreased: [],</span>
+<span class="cstat-no" title="statement not covered" >      newPositions: [],</span>
+<span class="cstat-no" title="statement not covered" >      closedPositions: [],</span>
+<span class="cstat-no" title="statement not covered" >      topContributors,</span>
+<span class="cstat-no" title="statement not covered" >      topDetractors,</span>
+<span class="cstat-no" title="statement not covered" >      varEnd: 0,</span>
+<span class="cstat-no" title="statement not covered" >      leverage: 1,</span>
+<span class="cstat-no" title="statement not covered" >      cashPct: 0,</span>
+<span class="cstat-no" title="statement not covered" >    };</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  // ── Build Annual Review ──────────────────────────────────────────────</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  buildAnnualReview(</span>
+<span class="cstat-no" title="statement not covered" >    period: PeriodReview,</span>
+<span class="cstat-no" title="statement not covered" >    goalReturn: number,</span>
+<span class="cstat-no" title="statement not covered" >    taxImpact: number,</span>
+<span class="cstat-no" title="statement not covered" >    rebalancingEvents: number,</span>
+<span class="cstat-no" title="statement not covered" >    allocationChanges: Array&lt;{ from: string; to: string; weightChange: number }&gt;</span>
+<span class="cstat-no" title="statement not covered" >  ): AnnualReview {</span>
+<span class="cstat-no" title="statement not covered" >    return {</span>
+<span class="cstat-no" title="statement not covered" >      ...period,</span>
+<span class="cstat-no" title="statement not covered" >      ytdReturn: period.portfolioReturn,</span>
+<span class="cstat-no" title="statement not covered" >      vsGoalReturn: goalReturn - period.portfolioReturn,</span>
+<span class="cstat-no" title="statement not covered" >      goalAchieved: period.portfolioReturn &gt;= goalReturn,</span>
+<span class="cstat-no" title="statement not covered" >      taxImpact,</span>
+<span class="cstat-no" title="statement not covered" >      rebalancingEvents,</span>
+<span class="cstat-no" title="statement not covered" >      strategyAllocationChanges: allocationChanges,</span>
+<span class="cstat-no" title="statement not covered" >    };</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  // ── Generate Full Report ───────────────────────────────────────────</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  generateReport(</span>
+<span class="cstat-no" title="statement not covered" >    portfolioId: string,</span>
+<span class="cstat-no" title="statement not covered" >    benchmark: { name: string; return: number; vol: number },</span>
+<span class="cstat-no" title="statement not covered" >    trades: Array&lt;{</span>
+<span class="cstat-no" title="statement not covered" >      date: string;</span>
+<span class="cstat-no" title="statement not covered" >      symbol: string;</span>
+<span class="cstat-no" title="statement not covered" >      side: 'BUY' | 'SELL';</span>
+<span class="cstat-no" title="statement not covered" >      quantity: number;</span>
+<span class="cstat-no" title="statement not covered" >      price: number;</span>
+<span class="cstat-no" title="statement not covered" >      pnl: number;</span>
+<span class="cstat-no" title="statement not covered" >      realized: boolean;</span>
+<span class="cstat-no" title="statement not covered" >    }&gt;,</span>
+<span class="cstat-no" title="statement not covered" >    positions: Array&lt;{</span>
+<span class="cstat-no" title="statement not covered" >      symbol: string;</span>
+<span class="cstat-no" title="statement not covered" >      quantity: number;</span>
+<span class="cstat-no" title="statement not covered" >      avgCost: number;</span>
+<span class="cstat-no" title="statement not covered" >      currentPrice: number;</span>
+<span class="cstat-no" title="statement not covered" >      weight: number;</span>
+<span class="cstat-no" title="statement not covered" >      strategyId?: string;</span>
+<span class="cstat-no" title="statement not covered" >    }&gt;</span>
+<span class="cstat-no" title="statement not covered" >  ): ReviewReport {</span>
+<span class="cstat-no" title="statement not covered" >    log.info(`[PortfolioReview] Generating review for ${portfolioId}`);</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const now = new Date();</span>
+<span class="cstat-no" title="statement not covered" >    const endDate = now.toISOString().slice(0, 10);</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Weekly: last 7 days</span>
+<span class="cstat-no" title="statement not covered" >    const weekStart = new Date(now.getTime() - 7 * 24 * 3600 * 1000);</span>
+<span class="cstat-no" title="statement not covered" >    const weekTrades = trades.filter(t =&gt; new Date(t.date) &gt;= weekStart);</span>
+<span class="cstat-no" title="statement not covered" >    const weekly = weekTrades.length &gt; 0</span>
+<span class="cstat-no" title="statement not covered" >      ? this.buildReview('weekly', weekStart.toISOString().slice(0, 10), endDate, weekTrades, positions, benchmark.return)</span>
+<span class="cstat-no" title="statement not covered" >      : undefined;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Monthly: last 30 days</span>
+<span class="cstat-no" title="statement not covered" >    const monthStart = new Date(now.getTime() - 30 * 24 * 3600 * 1000);</span>
+<span class="cstat-no" title="statement not covered" >    const monthTrades = trades.filter(t =&gt; new Date(t.date) &gt;= monthStart);</span>
+<span class="cstat-no" title="statement not covered" >    const monthly = monthTrades.length &gt; 0</span>
+<span class="cstat-no" title="statement not covered" >      ? this.buildReview('monthly', monthStart.toISOString().slice(0, 10), endDate, monthTrades, positions, benchmark.return)</span>
+<span class="cstat-no" title="statement not covered" >      : undefined;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Quarterly: last 90 days</span>
+<span class="cstat-no" title="statement not covered" >    const quarterStart = new Date(now.getTime() - 90 * 24 * 3600 * 1000);</span>
+<span class="cstat-no" title="statement not covered" >    const quarterTrades = trades.filter(t =&gt; new Date(t.date) &gt;= quarterStart);</span>
+<span class="cstat-no" title="statement not covered" >    const quarterly = quarterTrades.length &gt; 0</span>
+<span class="cstat-no" title="statement not covered" >      ? this.buildReview('quarterly', quarterStart.toISOString().slice(0, 10), endDate, quarterTrades, positions, benchmark.return)</span>
+<span class="cstat-no" title="statement not covered" >      : undefined;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Annual: last 365 days</span>
+<span class="cstat-no" title="statement not covered" >    const yearStart = new Date(now.getTime() - 365 * 24 * 3600 * 1000);</span>
+<span class="cstat-no" title="statement not covered" >    const yearTrades = trades.filter(t =&gt; new Date(t.date) &gt;= yearStart);</span>
+<span class="cstat-no" title="statement not covered" >    const annual = yearTrades.length &gt; 0</span>
+<span class="cstat-no" title="statement not covered" >      ? this.buildReview('annual', yearStart.toISOString().slice(0, 10), endDate, yearTrades, positions, benchmark.return)</span>
+<span class="cstat-no" title="statement not covered" >      : undefined;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    // Overall grade</span>
+<span class="cstat-no" title="statement not covered" >    const annualRet = annual?.portfolioReturn ?? monthly?.portfolioReturn ?? 0;</span>
+<span class="cstat-no" title="statement not covered" >    let overallGrade: ReviewReport['overallGrade'];</span>
+<span class="cstat-no" title="statement not covered" >    if (annualRet &gt;= 20) overallGrade = 'A+';</span>
+<span class="cstat-no" title="statement not covered" >    else if (annualRet &gt;= 10) overallGrade = 'A';</span>
+<span class="cstat-no" title="statement not covered" >    else if (annualRet &gt;= 5) overallGrade = 'B+';</span>
+<span class="cstat-no" title="statement not covered" >    else if (annualRet &gt;= 0) overallGrade = 'B';</span>
+<span class="cstat-no" title="statement not covered" >    else if (annualRet &gt;= -10) overallGrade = 'C';</span>
+<span class="cstat-no" title="statement not covered" >    else overallGrade = 'D';</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const performanceSummary = annual</span>
+<span class="cstat-no" title="statement not covered" >      ? `YTD return ${annual.portfolioReturn &gt;= 0 ? '+' : ''}${annual.portfolioReturn.toFixed(2)}% vs benchmark ${annual.benchmarkReturn &gt;= 0 ? '+' : ''}${annual.benchmarkReturn.toFixed(2)}%. Active return ${annual.activeReturn &gt;= 0 ? '+' : ''}${annual.activeReturn.toFixed(2)}%.`</span>
+<span class="cstat-no" title="statement not covered" >      : monthly</span>
+<span class="cstat-no" title="statement not covered" >      ? `MTD return ${monthly.portfolioReturn &gt;= 0 ? '+' : ''}${monthly.portfolioReturn.toFixed(2)}% vs benchmark ${monthly.benchmarkReturn &gt;= 0 ? '+' : ''}${monthly.benchmarkReturn.toFixed(2)}%.`</span>
+<span class="cstat-no" title="statement not covered" >      : 'Insufficient trading activity for period review.';</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const keyTakeaways: string[] = [];</span>
+<span class="cstat-no" title="statement not covered" >    if (annual?.topContributors.length) {</span>
+<span class="cstat-no" title="statement not covered" >      const top = annual.topContributors[0];</span>
+<span class="cstat-no" title="statement not covered" >      if (top) keyTakeaways.push(`Top performer: ${top.symbol} (+${top.contribution &gt;= 0 ? '' : ''}${top.contribution})`);</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >    if (annual?.topDetractors.length) {</span>
+<span class="cstat-no" title="statement not covered" >      const worst = annual.topDetractors[0];</span>
+<span class="cstat-no" title="statement not covered" >      if (worst) keyTakeaways.push(`Worst detractor: ${worst.symbol} (${worst.contribution})`);</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >    if (annual &amp;&amp; annual.realizedPnL &gt; 0) keyTakeaways.push(`Realized gains: +HK$${(annual.realizedPnL / 10000).toFixed(1)}万`);</span>
+<span class="cstat-no" title="statement not covered" >    if (!keyTakeaways.length) keyTakeaways.push('Performance metrics within normal range');</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const topRecommendations: string[] = [];</span>
+<span class="cstat-no" title="statement not covered" >    if (annual &amp;&amp; annual.activeReturn &lt; -5) topRecommendations.push('Review underperforming strategies — consider rebalancing or stopping');</span>
+<span class="cstat-no" title="statement not covered" >    if (annual &amp;&amp; annual.maxDrawdown &gt; 15) topRecommendations.push('Drawdown exceeded 15% — tighten stop-loss rules');</span>
+<span class="cstat-no" title="statement not covered" >    if (monthly &amp;&amp; monthly.realizedPnL &gt; monthly.unrealizedPnL * 2) topRecommendations.push('Good realized P&amp;L — maintain discipline');</span>
+<span class="cstat-no" title="statement not covered" >    if (topRecommendations.length === 0) topRecommendations.push('Continue current strategy — maintain risk discipline');</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const nextPeriodWatchlist: string[] = [];</span>
+<span class="cstat-no" title="statement not covered" >    if (annual?.positionsAdded.length) nextPeriodWatchlist.push(...annual.positionsAdded.slice(0, 3));</span>
+<span class="cstat-no" title="statement not covered" >    if (!nextPeriodWatchlist.length) nextPeriodWatchlist.push('Maintain current allocations');</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    return {</span>
+<span class="cstat-no" title="statement not covered" >      portfolioId,</span>
+<span class="cstat-no" title="statement not covered" >      generatedAt: now.toISOString(),</span>
+<span class="cstat-no" title="statement not covered" >      reviews: { weekly, monthly, quarterly, annual: annual as AnnualReview | undefined },</span>
+<span class="cstat-no" title="statement not covered" >      benchmark,</span>
+<span class="cstat-no" title="statement not covered" >      overallGrade,</span>
+<span class="cstat-no" title="statement not covered" >      performanceSummary,</span>
+<span class="cstat-no" title="statement not covered" >      keyTakeaways,</span>
+<span class="cstat-no" title="statement not covered" >      topRecommendations,</span>
+<span class="cstat-no" title="statement not covered" >      nextPeriodWatchlist,</span>
+<span class="cstat-no" title="statement not covered" >      timestamp: Date.now(),</span>
+<span class="cstat-no" title="statement not covered" >    };</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  // ── Helpers ────────────────────────────────────────────────────────</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  private annualize(returnPct: number, period: string): number {</span>
+<span class="cstat-no" title="statement not covered" >    const periods: Record&lt;string, number&gt; = {</span>
+<span class="cstat-no" title="statement not covered" >      weekly: 52,</span>
+<span class="cstat-no" title="statement not covered" >      monthly: 12,</span>
+<span class="cstat-no" title="statement not covered" >      quarterly: 4,</span>
+<span class="cstat-no" title="statement not covered" >      annual: 1,</span>
+<span class="cstat-no" title="statement not covered" >    };</span>
+<span class="cstat-no" title="statement not covered" >    const n = periods[period] ?? 1;</span>
+<span class="cstat-no" title="statement not covered" >    return (Math.pow(1 + returnPct / 100, n) - 1) * 100;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >export default PortfolioReviewEngine;</span></pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-06-04T22:16:08.170Z
+            </div>
+        <script src="../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
+    </body>
+</html>
+    

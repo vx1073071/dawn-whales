@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Report — DAWN WHALES</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e2e8f0; min-height: 100vh; padding: 2rem; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; color: #fff; }
+  .subtitle { color: #64748b; font-size: 0.875rem; margin-bottom: 2rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .card { background: #111119; border: 1px solid #1e1e2e; border-radius: 12px; padding: 1.25rem; }
+  .card-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin-bottom: 0.5rem; }
+  .card-value { font-size: 2rem; font-weight: 700; }
+  .card-value.green { color: #22c55e; }
+  .card-value.yellow { color: #eab308; }
+  .card-value.red { color: #ef4444; }
+  .card-sub { font-size: 0.75rem; color: #475569; margin-top: 0.25rem; }
+  .section-title { font-size: 1.125rem; font-weight: 600; margin: 2rem 0 1rem; color: #fff; }
+  table { width: 100%; border-collapse: collapse; background: #111119; border-radius: 12px; overflow: hidden; }
+  th { text-align: left; padding: 0.75rem 1rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; border-bottom: 1px solid #1e1e2e; }
+  td { padding: 0.75rem 1rem; border-bottom: 1px solid #1e1e2e; font-size: 0.875rem; }
+  tr:last-child td { border-bottom: none; }
+  .pct-bar { display: flex; align-items: center; gap: 0.5rem; }
+  .bar-bg { flex: 1; height: 6px; background: #1e1e2e; border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+  .pct-label { font-size: 0.75rem; color: #94a3b8; min-width: 3rem; text-align: right; }
+  .badge { display: inline-block; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+  .badge.green { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .badge.red { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .badge.yellow { background: rgba(234,179,8,0.15); color: #eab308; }
+  .timestamp { color: #475569; font-size: 0.75rem; margin-top: 2rem; }
+  .nav { display: flex; gap: 1rem; margin-bottom: 2rem; }
+  .nav a { color: #64748b; text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; border-radius: 6px; transition: background 0.2s; }
+  .nav a:hover { background: #111119; color: #e2e8f0; }
+  .nav a.active { background: #1e1e2e; color: #fff; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="nav">
+    <a href="#" class="active">Summary</a>
+    <a href="#coverage">Coverage</a>
+    <a href="#uncovered">Uncovered Files</a>
+  </div>
+
+  <h1>DAWN WHALES — Test Report</h1>
+  <p class="subtitle">Automated test &amp; coverage dashboard</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-label">Coverage</div>
+      <div class="card-value red">2%</div>
+      <div class="card-sub">761 / 45033 lines</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Status</div>
+      <div class="card-value yellow">FAIL</div>
+      <div class="card-sub">Needs improvement</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Files Analyzed</div>
+      <div class="card-value">140</div>
+      <div class="card-sub">engine/**/*.ts</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Report Generated</div>
+      <div class="card-value" style="font-size:1rem">5/6/2026 上午6:18:46</div>
+      <div class="card-sub">DAWN WHALES v0.7.0</div>
+    </div>
+  </div>
+
+  <div class="section-title" id="coverage">Coverage by File</div>
+  <table>
+    <thead>
+      <tr>
+        <th>File</th>
+        <th style="width:300px">Coverage</th>
+        <th>Lines</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">dynamic-sizer.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:83%;background:#ef4444"></div></div>
+                <span class="pct-label">83%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">459 / 551</td>
+            <td><span class="badge green">✓ Good</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">multi-factor.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:58%;background:#ef4444"></div></div>
+                <span class="pct-label">58%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">302 / 524</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">ai-report-generator.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 258</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">anomaly-detector.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 312</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">auto-tuner.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 309</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">backfill-service.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 412</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">backtest-comparator.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 258</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">backtest-engine-parallel.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 612</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">backtest-engine.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 494</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">backtest-enhancer.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 398</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">backtest-optimizer.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 363</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">backtest-replay.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 300</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">backtest-stability.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 328</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">benchmark.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 133</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">brinson-attribution.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 254</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">cache-explorer.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 137</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">calendar-effects.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 370</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">capital-flow-monitor.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 216</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">capital-flow-predictor.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 251</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+<tr>
+            <td><code style="font-size:0.8rem;color:#94a3b8">capital-flow-rank.ts</code></td>
+            <td>
+              <div class="pct-bar">
+                <div class="bar-bg"><div class="bar-fill" style="width:0%;background:#ef4444"></div></div>
+                <span class="pct-label">0%</span>
+              </div>
+            </td>
+            <td style="color:#64748b">0 / 300</td>
+            <td><span class="badge red">✗ Low</span></td>
+          </tr>
+    </tbody>
+  </table>
+
+  
+  <div class="section-title" id="uncovered">⚠ Files Below 80% Coverage</div>
+  <table>
+    <thead><tr><th>File</th><th>Coverage</th><th>Lines</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code style="font-size:0.8rem;color:#ef4444">ai-report-generator.ts</code></td>
+        <td><span class="badge red">0%</span></td>
+        <td style="color:#64748b">0 / 258</td>
+      </tr>
+<tr>
+        <td><code style="font-size:0.8rem;color:#ef4444">anomaly-detector.ts</code></td>
+        <td><span class="badge red">0%</span></td>
+        <td style="color:#64748b">0 / 312</td>
+      </tr>
+<tr>
+        <td><code style="font-size:0.8rem;color:#ef4444">auto-tuner.ts</code></td>
+        <td><span class="badge red">0%</span></td>
+        <td style="color:#64748b">0 / 309</td>
+      </tr>
+<tr>
+        <td><code style="font-size:0.8rem;color:#ef4444">backfill-service.ts</code></td>
+        <td><span class="badge red">0%</span></td>
+        <td style="color:#64748b">0 / 412</td>
+      </tr>
+<tr>
+        <td><code style="font-size:0.8rem;color:#ef4444">backtest-comparator.ts</code></td>
+        <td><span class="badge red">0%</span></td>
+        <td style="color:#64748b">0 / 258</td>
+      </tr>
+<tr>
+        <td><code style="font-size:0.8rem;color:#ef4444">backtest-engine-parallel.ts</code></td>
+        <td><span class="badge red">0%</span></td>
+        <td style="color:#64748b">0 / 612</td>
+      </tr>
+<tr>
+        <td><code style="font-size:0.8rem;color:#ef4444">backtest-engine.ts</code></td>
+        <td><span class="badge red">0%</span></td>
+        <td style="color:#64748b">0 / 494</td>
+      </tr>
+<tr>
+        <td><code style="font-size:0.8rem;color:#ef4444">backtest-enhancer.ts</code></td>
+        <td><span class="badge red">0%</span></td>
+        <td style="color:#64748b">0 / 398</td>
+      </tr>
+<tr>
+        <td><code style="font-size:0.8rem;color:#ef4444">backtest-optimizer.ts</code></td>
+        <td><span class="badge red">0%</span></td>
+        <td style="color:#64748b">0 / 363</td>
+      </tr>
+<tr>
+        <td><code style="font-size:0.8rem;color:#ef4444">backtest-replay.ts</code></td>
+        <td><span class="badge red">0%</span></td>
+        <td style="color:#64748b">0 / 300</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="timestamp">Generated by DAWN WHALES test-dashboard.ts</p>
+</div>
+</body>
+</html>

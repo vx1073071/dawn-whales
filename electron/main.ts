@@ -50,6 +50,7 @@ import { getPush2Proxy } from './data/push2-proxy';
 import { getDataQualityMonitor, registerModule } from './engine/data-quality-monitor';
 import { DataAggregator, getDataAggregator } from './data/data-aggregator';
 import { DataCleaningPipeline, getDataCleaningPipeline } from './data/data-pipeline';
+import { HistoricalDataWarehouse, getHistoricalDataWarehouse } from './data/historical-warehouse';
 import { captureSnapshot, querySnapshots, getSnapshot, compareSnapshots, getSnapshotTimeline, getLatestSnapshot, cleanupOldSnapshots, exportSnapshots, importSnapshots, getSnapshotStats, deleteSnapshot, clearAllSnapshots } from './engine/snapshot-service';
 import { trackVersion, getEntityVersions, getVersion, getLatestVersion, diffVersions, rollback, queryVersions, getVersionStats, deleteVersion, clearAllVersions, exportVersions, importVersions } from './engine/version-control-service';
 import { setupI18nDataIPC } from './engine/i18n-data';
@@ -4379,6 +4380,57 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const pipeline = getDataCleaningPipeline();
       pipeline.clearHistory(code);
       return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Historical Data Warehouse (JVS-58) ──────────────────────────────────
+  ipcMain.handle('historical:insert', async (_e, points: any[]) => {
+    try {
+      const warehouse = getHistoricalDataWarehouse();
+      const result = warehouse.insertData(points);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('historical:query', async (_e, symbol: string, timeRange: any, limit?: number) => {
+    try {
+      const warehouse = getHistoricalDataWarehouse();
+      const data = warehouse.queryData(symbol, timeRange, limit);
+      return { success: true, data };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('historical:aggregate', async (_e, symbol: string, timeRange: any, interval: string) => {
+    try {
+      const warehouse = getHistoricalDataWarehouse();
+      const result = warehouse.aggregateToInterval(symbol, timeRange, interval);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('historical:stats', async () => {
+    try {
+      const warehouse = getHistoricalDataWarehouse();
+      const stats = warehouse.getStats();
+      return { success: true, stats };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('historical:clean-old', async (_e, retentionDays?: number) => {
+    try {
+      const warehouse = getHistoricalDataWarehouse();
+      const result = warehouse.cleanOldData(retentionDays);
+      return { success: true, result };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

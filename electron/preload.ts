@@ -716,6 +716,15 @@ contextBridge.exposeInMainWorld('api', {
     clearHistory: (code?: string) => ipcRenderer.invoke('data:pipeline-clear-history', code),
   },
 
+  // ── Historical Data Warehouse (JVS-58) ──────────────────────────────────
+  historicalWarehouse: {
+    insert: (points: any[]) => ipcRenderer.invoke('historical:insert', points),
+    query: (symbol: string, timeRange: any, limit?: number) => ipcRenderer.invoke('historical:query', symbol, timeRange, limit),
+    aggregate: (symbol: string, timeRange: any, interval: string) => ipcRenderer.invoke('historical:aggregate', symbol, timeRange, interval),
+    stats: () => ipcRenderer.invoke('historical:stats'),
+    cleanOld: (retentionDays?: number) => ipcRenderer.invoke('historical:clean-old', retentionDays),
+  },
+
   // ── Strategy Signal Generator (JVS-46) ──────────────────────────
   signalGenerator: {
     generate: (raw: any) => ipcRenderer.invoke('signal:generate', raw),

@@ -166,9 +166,9 @@ declare global {
       };
       // Q15: Multi-Factor Model
       multiFactor: {
-        score: (req: { stocks?: Array<{ code: string; name: string }>; preset?: string; limit?: number }) => Promise<any>;
-        screen: (stocks: any[], criteria: any, factorWeights?: any) => Promise<any>;
-        screenBatch: (stocks: any[], criteria: any, factorWeights?: any) => Promise<any>;
+        score: (stocks?: any[], factorWeights?: any) => Promise<any>;
+        screen: (stocks: any[], criteria?: any, factorWeights?: any) => Promise<any>;
+        screenBatch: (batches: any[]) => Promise<any>;
       };
       // Q16: Dynamic Position Sizer
       positionSize: {
@@ -267,6 +267,10 @@ declare global {
       optionsBuilder: {
         build: (params: { underlying: string; spotPrice: number; strategyType?: string; targetParams?: any; legs?: any[] }) => Promise<any>;
         analyze: (params: { strategy: any; spotPrice: number; volatility?: number; riskFreeRate?: number; dividends?: any }) => Promise<any>;
+      };
+      optionsChain: {
+        analyze: (contracts: any[], symbol: string, historicalIVRange?: any) => Promise<any>;
+        analyzeBatch: (symbols: any[]) => Promise<any>;
       };
       on: (channel: string, callback: (...args: any[]) => void) => void;
       off?: (channel: string, callback: (...args: any[]) => void) => void;
@@ -2064,5 +2068,32 @@ export async function getPipelineStats(): Promise<any> {
 export async function clearPipelineHistory(code?: string): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.dataPipeline.clearHistory(code);
+}
+
+// ── Historical Data Warehouse (JVS-58) ─────────────────────────────────────
+
+export async function insertHistoricalData(points: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.historicalWarehouse.insert(points);
+}
+
+export async function queryHistoricalData(symbol: string, timeRange: any, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.historicalWarehouse.query(symbol, timeRange, limit);
+}
+
+export async function aggregateHistoricalData(symbol: string, timeRange: any, interval: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.historicalWarehouse.aggregate(symbol, timeRange, interval);
+}
+
+export async function getHistoricalStats(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.historicalWarehouse.stats();
+}
+
+export async function cleanOldHistoricalData(retentionDays?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.historicalWarehouse.cleanOld(retentionDays);
 }
 

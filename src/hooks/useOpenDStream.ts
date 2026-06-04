@@ -83,7 +83,7 @@ export function useOpenDStream(codes: string[]) {
       }
     } catch (error) {
       console.error('[OpenD Stream] Connection failed:', error);
-      setStatus(prev => ({ ...prev, error: error.message, mode: 'polling' }));
+      setStatus(prev => ({ ...prev, error: (error as any).message, mode: 'polling' }));
       startPolling();
     }
   }, [codes]);

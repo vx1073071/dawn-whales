@@ -14,9 +14,13 @@
     "dist:win": "vite build && electron-builder --win",
     "dist:mac": "vite build && electron-builder --mac",
     "lint": "eslint src --ext .ts,.tsx",
-    "test": "tsx tests/engine.test.ts",
+    "test": "vitest run --config vitest.config.ts",
     "test:e2e": "playwright test",
-    "test:e2e:report": "playwright show-report test-results/html-report"
+    "test:e2e:report": "playwright show-report test-results/html-report",
+    "coverage": "vitest run --config vitest.config.ts --coverage && tsx tests/test-dashboard.ts",
+    "docs:api": "tsx tests/api-docs-generator.ts electron/engine docs/API.md",
+    "install:hook": "node scripts/install-hook.js",
+    "pre-commit": "node scripts/pre-commit-check.js"
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.0",

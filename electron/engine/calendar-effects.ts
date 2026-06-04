@@ -83,7 +83,7 @@ function normalCDF(x: number): number {
   const sign = x < 0 ? -1 : 1;
   x = Math.abs(x) / Math.sqrt(2);
   const t = 1 / (1 + p[0] * x);
-  const y = 1 - (((((p[4] * t + p[3]) * t + p[2]) * t + p[1]) * t + p[0]) * t * Math.exp(-x * x);
+  const y = 1 - (((((p[4] * t + p[3]) * t + p[2]) * t + p[1]) * t + p[0]) * t * Math.exp(-x * x));
   return 0.5 * (1 + sign * y);
 }
 
