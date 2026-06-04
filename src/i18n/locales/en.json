@@ -69,7 +69,15 @@
     "15min": "15m",
     "60min": "60m",
     "dailyK": "1D",
-    "weeklyK": "1W"
+    "weeklyK": "1W",
+    "unnamed": "Unnamed",
+    "unknownError": "Unknown Error",
+    "lastUpdate": "Last Update",
+    "autoRefresh": "Auto Refresh",
+    "on": "On",
+    "off": "Off",
+    "pause": "Pause",
+    "resume": "Resume"
   },
   "nav": {
     "overview": "Overview",
@@ -144,7 +152,12 @@
     "viewAll": "View All",
     "createStrategy": "Create Strategy",
     "runBacktest": "Run Backtest",
-    "connectBroker": "Connect Broker"
+    "connectBroker": "Connect Broker",
+    "pdfExported": "PDF Exported",
+    "exportFailed": "Export Failed",
+    "marketHeatmap": "🗺️ Market Sector Heatmap",
+    "equityChart": "📈 Equity Curve",
+    "portfolioAllocation": "🥧 Allocation"
   },
   "trading": {
     "orderForm": "Order Form",
@@ -318,7 +331,14 @@
     "systemInfo": "System Info",
     "version": "Version",
     "platform": "Platform",
-    "database": "Database"
+    "database": "Database",
+    "connectionFailed": "Connection Failed",
+    "connectionError": "Connection Error",
+    "addFailed": "Add Failed",
+    "addError": "Add Error",
+    "confirmDeleteBroker": "Are you sure you want to delete this broker config?",
+    "deleteFailed": "Delete Failed",
+    "switchFailed": "Switch Failed"
   },
   "orderStatus": {
     "pending": "Pending",
@@ -392,5 +412,29 @@
     "unknownDesc": "Regime unclear, stay cautious",
     "history": "Regime History",
     "days": "days"
+  },
+  "backtest": {
+    "loading": "Loading backtest data...",
+    "comparisonTitle": "Backtest Comparison",
+    "comparisonSubtitle": "Multi-strategy backtest result comparison",
+    "selectStrategies": "Select strategies to compare",
+    "riskReturnComparison": "Risk-Return Metrics",
+    "metric": "Metric"
+  },
+  "metrics": {
+    "totalReturn": "Total Return",
+    "annualReturn": "Annual Return",
+    "maxDrawdown": "Max Drawdown",
+    "sharpeRatio": "Sharpe Ratio",
+    "calmarRatio": "Calmar Ratio",
+    "sortinoRatio": "Sortino Ratio",
+    "winRate": "Win Rate",
+    "profitFactor": "Profit Factor",
+    "totalTrades": "Total Trades"
+  },
+  "risk": {
+    "title": "Risk Dashboard",
+    "loading": "Loading risk data...",
+    "engineNotInitialized": "Risk engine not initialized"
   }
 }

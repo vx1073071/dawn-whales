@@ -2,6 +2,7 @@
 // 实时展示 Kelly/回撤/VIX/风控状态
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getRiskStatusSnapshot } from '../../lib/bridge-api';
 import EquityChart from './EquityChart';
 import PerformanceMetricsPanel from './PerformanceMetricsPanel';
@@ -49,6 +50,7 @@ interface RiskSnapshot {
 }
 
 export default function RiskDashboardPage() {
+  const { t } = useTranslation();
   const [snapshot, setSnapshot] = useState<RiskSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<string>('');
@@ -109,7 +111,7 @@ export default function RiskDashboardPage() {
   if (loading) {
     return (
       <div className="p-6 flex items-center justify-center h-64">
-        <div className="text-gray-500">加载风控数据...</div>
+        <div className="text-gray-500">{t('risk.loading')}</div>
       </div>
     );
   }
@@ -117,7 +119,7 @@ export default function RiskDashboardPage() {
   if (!snapshot) {
     return (
       <div className="p-6 flex items-center justify-center h-64">
-        <div className="text-gray-500">风控引擎未初始化</div>
+        <div className="text-gray-500">{t('risk.engineNotInitialized')}</div>
       </div>
     );
   }
@@ -152,9 +154,9 @@ export default function RiskDashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">🛡️ 风险仪表盘</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">🛡️ {t('risk.title')}</h1>
           <p className="text-gray-400 text-sm">
-            最后更新: {lastUpdate || '--'} · 自动刷新 {autoRefresh ? '开启' : '暂停'}
+            {t('common.lastUpdate')}: {lastUpdate || '--'} · {t('common.autoRefresh')} {autoRefresh ? t('common.on') : t('common.off')}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -166,13 +168,13 @@ export default function RiskDashboardPage() {
                 : 'bg-gray-500/10 text-gray-400 border border-gray-500/20'
             }`}
           >
-            {autoRefresh ? '⏸ 暂停' : '▶ 继续'}
+            {autoRefresh ? `⏸ ${t('common.pause')}` : `▶ ${t('common.resume')}`}
           </button>
           <button
             onClick={loadData}
             className="px-3 py-1.5 rounded-lg text-xs font-medium bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 hover:bg-[#C9A046]/20 transition-colors"
           >
-            🔄 刷新
+            🔄 {t('common.refresh')}
           </button>
         </div>
       </div>

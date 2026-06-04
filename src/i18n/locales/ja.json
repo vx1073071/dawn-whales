@@ -69,7 +69,15 @@
     "15min": "15分",
     "60min": "60分",
     "dailyK": "日足",
-    "weeklyK": "週足"
+    "weeklyK": "週足",
+    "unnamed": "無名",
+    "unknownError": "不明なエラー",
+    "lastUpdate": "最終更新",
+    "autoRefresh": "自動更新",
+    "on": "ON",
+    "off": "OFF",
+    "pause": "一時停止",
+    "resume": "再開"
   },
   "nav": {
     "overview": "概要",
@@ -144,7 +152,12 @@
     "viewAll": "すべて見る",
     "createStrategy": "戦略を作成",
     "runBacktest": "バックテスト実行",
-    "connectBroker": "証券会社接続"
+    "connectBroker": "証券会社接続",
+    "pdfExported": "PDF 出力完了",
+    "exportFailed": "PDF 出力失敗",
+    "marketHeatmap": "🗺️ 市場セクター熱図",
+    "equityChart": "📈 資産推移",
+    "portfolioAllocation": "🥧 配分"
   },
   "trading": {
     "orderForm": "注文フォーム",
@@ -318,7 +331,14 @@
     "systemInfo": "システム情報",
     "version": "バージョン",
     "platform": "プラットフォーム",
-    "database": "データベース"
+    "database": "データベース",
+    "connectionFailed": "接続失敗",
+    "connectionError": "接続エラー",
+    "addFailed": "追加失敗",
+    "addError": "追加エラー",
+    "confirmDeleteBroker": "この証券設定を削除しますか？",
+    "deleteFailed": "削除失敗",
+    "switchFailed": "切替失敗"
   },
   "orderStatus": {
     "pending": "保留中",
@@ -392,5 +412,29 @@
     "unknownDesc": "状态不明，建议观望",
     "history": "历史状态",
     "days": "天"
+  },
+  "backtest": {
+    "loading": "バックテストデータ読込中...",
+    "comparisonTitle": "バックテスト比較",
+    "comparisonSubtitle": "複数戦略バックテスト結果比較",
+    "selectStrategies": "比較する戦略を選択",
+    "riskReturnComparison": "リスク・リターン指標",
+    "metric": "指標"
+  },
+  "metrics": {
+    "totalReturn": "総収益率",
+    "annualReturn": "年間収益率",
+    "maxDrawdown": "最大ドローダウン",
+    "sharpeRatio": "シャープレシオ",
+    "calmarRatio": "カルマー比率",
+    "sortinoRatio": "ソルティノ比率",
+    "winRate": "勝率",
+    "profitFactor": "損益比率",
+    "totalTrades": "取引回数"
+  },
+  "risk": {
+    "title": "リスクダッシュボード",
+    "loading": "リスクデータ読込中...",
+    "engineNotInitialized": "リスクエンジン未初期化"
   }
 }

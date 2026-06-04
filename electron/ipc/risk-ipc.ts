@@ -326,6 +326,26 @@ export function registerRiskIPC(
     return { success: true };
   });
 
+  // ── JVS-45: Portfolio Risk Calculator ──────────────────────────────────
+  ipcMain.handle('risk:portfolio-calculate', async (_e, raw: unknown) => {
+    try {
+      const { positions, historicalReturns, config } = raw as {
+        positions: any[];
+        historicalReturns?: Map<string, number[]>;
+        config?: any;
+      };
+      if (!positions || positions.length === 0) {
+        return { success: false, error: 'At least one position required' };
+      }
+      const { getPortfolioRiskCalculator } = await import('../engine/portfolio-risk-calculator');
+      const calculator = getPortfolioRiskCalculator(config);
+      const result = calculator.calculate(positions, historicalReturns);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Database ────────────────────────────────────────────────────────
 
 }

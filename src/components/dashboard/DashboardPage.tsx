@@ -110,7 +110,7 @@ export default function DashboardPage() {
         setStrategies(
           strats.filter((s: any) => s.status === 'running').slice(0, 5).map((s: any) => ({
             id: s.id,
-            name: s.name || '未命名',
+            name: s.name || t('common.unnamed'),
             status: 'running' as const,
             totalReturn: s.totalReturn || 0,
             signals: s.signals || 0,
@@ -184,12 +184,12 @@ export default function DashboardPage() {
               const filename = `dawn-whales-dashboard-${new Date().toISOString().split('T')[0]}.pdf`;
               const result = await exportDashboardPdf(filename);
               if (result?.success) {
-                alert(`PDF 已导出: ${result.path}`);
+                alert(`${t('dashboard.pdfExported')}: ${result.path}`);
               } else {
-                alert(`导出失败: ${result?.error || '未知错误'}`);
+                alert(`${t('dashboard.exportFailed')}: ${result?.error || t('common.unknownError')}`);
               }
             } catch (e: any) {
-              alert(`导出失败: ${e.message}`);
+              alert(`${t('dashboard.exportFailed')}: ${e.message}`);
             }
           }}
           className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors flex items-center gap-1.5"
@@ -230,16 +230,16 @@ export default function DashboardPage() {
 
       {/* Market Sector Heatmap + Market Breadth */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <MarketHeatmap title="🗺️ 市场板块热力图" />
+        <MarketHeatmap title={t('dashboard.marketHeatmap')} />
         <MarketBreadth />
       </div>
 
       {/* Equity Curve + Allocation */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <EquityChart data={equityData} title="📈 账户净值走势" height={280} showDrawdown />
+        <EquityChart data={equityData} title={t('dashboard.equityChart')} height={280} showDrawdown />
         <PortfolioAllocationChart
           data={positions.map((p) => ({ name: p.code.split('.')[1] || p.code, value: p.marketValue, pnl: p.pnl, pnlPct: p.pnlPct }))}
-          title="🥧 持仓分配"
+          title={t('dashboard.portfolioAllocation')}
           height={280}
         />
       </div>

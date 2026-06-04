@@ -69,7 +69,15 @@
     "15min": "15分",
     "60min": "60分",
     "dailyK": "日K",
-    "weeklyK": "周K"
+    "weeklyK": "周K",
+    "unnamed": "未命名",
+    "unknownError": "未知错误",
+    "lastUpdate": "最后更新",
+    "autoRefresh": "自动刷新",
+    "on": "开启",
+    "off": "暂停",
+    "pause": "暂停",
+    "resume": "继续"
   },
   "nav": {
     "overview": "总览",
@@ -144,7 +152,12 @@
     "viewAll": "查看全部",
     "createStrategy": "新建策略",
     "runBacktest": "运行回测",
-    "connectBroker": "连接券商"
+    "connectBroker": "连接券商",
+    "pdfExported": "PDF 已导出",
+    "exportFailed": "导出失败",
+    "marketHeatmap": "🗺️ 市场板块热力图",
+    "equityChart": "📈 账户净值走势",
+    "portfolioAllocation": "🥧 持仓分配"
   },
   "trading": {
     "orderForm": "订单表单",
@@ -342,7 +355,14 @@
     "systemInfo": "系统信息",
     "version": "版本",
     "platform": "平台",
-    "database": "数据库"
+    "database": "数据库",
+    "connectionFailed": "连接失败",
+    "connectionError": "连接异常",
+    "addFailed": "添加失败",
+    "addError": "添加异常",
+    "confirmDeleteBroker": "确定删除该券商配置？",
+    "deleteFailed": "删除失败",
+    "switchFailed": "切换失败"
   },
   "realTimeMarket": {
     "title": "实时行情",
@@ -392,5 +412,29 @@
     "unknownDesc": "状态不明，建议观望",
     "history": "历史状态",
     "days": "天"
+  },
+  "backtest": {
+    "loading": "加载回测数据...",
+    "comparisonTitle": "回测对比",
+    "comparisonSubtitle": "多策略回测结果对比分析",
+    "selectStrategies": "选择要对比的策略",
+    "riskReturnComparison": "风险收益指标对比",
+    "metric": "指标"
+  },
+  "metrics": {
+    "totalReturn": "总收益率",
+    "annualReturn": "年化收益率",
+    "maxDrawdown": "最大回撤",
+    "sharpeRatio": "夏普比率",
+    "calmarRatio": "卡玛比率",
+    "sortinoRatio": "索提诺比率",
+    "winRate": "胜率",
+    "profitFactor": "盈亏比",
+    "totalTrades": "交易次数"
+  },
+  "risk": {
+    "title": "风险仪表盘",
+    "loading": "加载风控数据...",
+    "engineNotInitialized": "风控引擎未初始化"
   }
 }

@@ -69,7 +69,15 @@
     "15min": "15分",
     "60min": "60分",
     "dailyK": "日K",
-    "weeklyK": "周K"
+    "weeklyK": "周K",
+    "unnamed": "未命名",
+    "unknownError": "未知錯誤",
+    "lastUpdate": "最後更新",
+    "autoRefresh": "自動刷新",
+    "on": "開啟",
+    "off": "暫停",
+    "pause": "暫停",
+    "resume": "繼續"
   },
   "nav": {
     "overview": "總覽",
@@ -144,7 +152,12 @@
     "viewAll": "查看全部",
     "createStrategy": "新建策略",
     "runBacktest": "執行回測",
-    "connectBroker": "連線券商"
+    "connectBroker": "連線券商",
+    "pdfExported": "PDF 已匯出",
+    "exportFailed": "匯出失敗",
+    "marketHeatmap": "🗺️ 市場板塊熱力圖",
+    "equityChart": "📈 帳戶淨值走勢",
+    "portfolioAllocation": "🥧 持倉分配"
   },
   "trading": {
     "orderForm": "訂單表單",
@@ -318,7 +331,14 @@
     "systemInfo": "系統資訊",
     "version": "版本",
     "platform": "平台",
-    "database": "資料庫"
+    "database": "資料庫",
+    "connectionFailed": "連接失敗",
+    "connectionError": "連接異常",
+    "addFailed": "新增失敗",
+    "addError": "新增異常",
+    "confirmDeleteBroker": "確定刪除該券商配置？",
+    "deleteFailed": "刪除失敗",
+    "switchFailed": "切換失敗"
   },
   "orderStatus": {
     "pending": "待提交",
@@ -392,5 +412,29 @@
     "unknownDesc": "状态不明，建议观望",
     "history": "历史状态",
     "days": "天"
+  },
+  "backtest": {
+    "loading": "載入回測數據...",
+    "comparisonTitle": "回測對比",
+    "comparisonSubtitle": "多策略回測結果對比分析",
+    "selectStrategies": "選擇要比對的策略",
+    "riskReturnComparison": "風險收益指標對比",
+    "metric": "指標"
+  },
+  "metrics": {
+    "totalReturn": "總收益率",
+    "annualReturn": "年化收益率",
+    "maxDrawdown": "最大回撤",
+    "sharpeRatio": "夏普比率",
+    "calmarRatio": "卡瑪比率",
+    "sortinoRatio": "索提諾比率",
+    "winRate": "勝率",
+    "profitFactor": "盈虧比",
+    "totalTrades": "交易次數"
+  },
+  "risk": {
+    "title": "風險儀表盤",
+    "loading": "載入風控數據...",
+    "engineNotInitialized": "風控引擎未初始化"
   }
 }

@@ -69,7 +69,15 @@
     "15min": "15min",
     "60min": "60min",
     "dailyK": "1J",
-    "weeklyK": "1S"
+    "weeklyK": "1S",
+    "unnamed": "Sans Nom",
+    "unknownError": "Erreur Inconnue",
+    "lastUpdate": "Dernière MàJ",
+    "autoRefresh": "Rafraîchissement Auto",
+    "on": "Actif",
+    "off": "Inactif",
+    "pause": "Pause",
+    "resume": "Reprendre"
   },
   "nav": {
     "overview": "Vue d'ensemble",
@@ -144,7 +152,12 @@
     "viewAll": "Voir Tout",
     "createStrategy": "Créer Stratégie",
     "runBacktest": "Lancer Backtest",
-    "connectBroker": "Connecter Courtier"
+    "connectBroker": "Connecter Courtier",
+    "pdfExported": "PDF Exporté",
+    "exportFailed": "Échec Export",
+    "marketHeatmap": "🗺️ Carte Secteurs",
+    "equityChart": "📈 Courbe Equity",
+    "portfolioAllocation": "🥧 Allocation"
   },
   "trading": {
     "orderForm": "Formulaire d'Ordre",
@@ -318,7 +331,14 @@
     "systemInfo": "Infos Système",
     "version": "Version",
     "platform": "Plateforme",
-    "database": "Base de Données"
+    "database": "Base de Données",
+    "connectionFailed": "Échec Connexion",
+    "connectionError": "Erreur Connexion",
+    "addFailed": "Échec Ajout",
+    "addError": "Erreur Ajout",
+    "confirmDeleteBroker": "Supprimer cette config courtier ?",
+    "deleteFailed": "Échec Suppression",
+    "switchFailed": "Échec Changement"
   },
   "orderStatus": {
     "pending": "En attente",
@@ -392,5 +412,29 @@
     "unknownDesc": "状态不明，建议观望",
     "history": "历史状态",
     "days": "天"
+  },
+  "backtest": {
+    "loading": "Chargement backtest...",
+    "comparisonTitle": "Comparaison Backtest",
+    "comparisonSubtitle": "Comparaison multi-stratégies",
+    "selectStrategies": "Sélectionner les stratégies",
+    "riskReturnComparison": "Métriques Risque-Rendement",
+    "metric": "Métrique"
+  },
+  "metrics": {
+    "totalReturn": "Rendement Total",
+    "annualReturn": "Rendement Annuel",
+    "maxDrawdown": "Drawdown Max",
+    "sharpeRatio": "Ratio Sharpe",
+    "calmarRatio": "Ratio Calmar",
+    "sortinoRatio": "Ratio Sortino",
+    "winRate": "Tx de Réussite",
+    "profitFactor": "Facteur Profit",
+    "totalTrades": "Trades Total"
+  },
+  "risk": {
+    "title": "Tableau Risques",
+    "loading": "Chargement risques...",
+    "engineNotInitialized": "Moteur risque non initialisé"
   }
 }

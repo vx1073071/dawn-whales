@@ -69,7 +69,15 @@
     "15min": "15min",
     "60min": "60min",
     "dailyK": "1G",
-    "weeklyK": "1S"
+    "weeklyK": "1S",
+    "unnamed": "Senza Nome",
+    "unknownError": "Errore Sconosciuto",
+    "lastUpdate": "Ultimo Agg.",
+    "autoRefresh": "Agg. Automatico",
+    "on": "On",
+    "off": "Off",
+    "pause": "Pausa",
+    "resume": "Riprendi"
   },
   "nav": {
     "overview": "Panoramica",
@@ -144,7 +152,12 @@
     "viewAll": "Vedi Tutto",
     "createStrategy": "Crea Strategia",
     "runBacktest": "Esegui Backtest",
-    "connectBroker": "Connetti Broker"
+    "connectBroker": "Connetti Broker",
+    "pdfExported": "PDF Esportato",
+    "exportFailed": "Esportazione Fallita",
+    "marketHeatmap": "🗺️ Mappa Settori",
+    "equityChart": "📈 Curva Equity",
+    "portfolioAllocation": "🥧 Allocazione"
   },
   "trading": {
     "orderForm": "Modulo Ordine",
@@ -318,7 +331,14 @@
     "systemInfo": "Info Sistema",
     "version": "Versione",
     "platform": "Piattaforma",
-    "database": "Database"
+    "database": "Database",
+    "connectionFailed": "Connessione Fallita",
+    "connectionError": "Errore Connessione",
+    "addFailed": "Aggiunta Fallita",
+    "addError": "Errore Aggiunta",
+    "confirmDeleteBroker": "Eliminare questa configurazione broker?",
+    "deleteFailed": "Eliminazione Fallita",
+    "switchFailed": "Cambio Fallito"
   },
   "orderStatus": {
     "pending": "In attesa",
@@ -392,5 +412,29 @@
     "unknownDesc": "状态不明，建议观望",
     "history": "历史状态",
     "days": "天"
+  },
+  "backtest": {
+    "loading": "Caricamento backtest...",
+    "comparisonTitle": "Confronto Backtest",
+    "comparisonSubtitle": "Confronto multi-strategia",
+    "selectStrategies": "Seleziona strategie",
+    "riskReturnComparison": "Metriche Rischio-Rendimento",
+    "metric": "Metrica"
+  },
+  "metrics": {
+    "totalReturn": "Rendimento Totale",
+    "annualReturn": "Rendimento Annuo",
+    "maxDrawdown": "Max Drawdown",
+    "sharpeRatio": "Ratio Sharpe",
+    "calmarRatio": "Ratio Calmar",
+    "sortinoRatio": "Ratio Sortino",
+    "winRate": "Win Rate",
+    "profitFactor": "Profit Factor",
+    "totalTrades": "Trade Totali"
+  },
+  "risk": {
+    "title": "Dashboard Rischi",
+    "loading": "Caricamento rischi...",
+    "engineNotInitialized": "Motore rischio non inizializzato"
   }
 }

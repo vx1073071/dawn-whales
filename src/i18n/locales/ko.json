@@ -69,7 +69,15 @@
     "15min": "15분",
     "60min": "60분",
     "dailyK": "일봉",
-    "weeklyK": "주봉"
+    "weeklyK": "주봉",
+    "unnamed": "이름 없음",
+    "unknownError": "알 수 없는 오류",
+    "lastUpdate": "최종 업데이트",
+    "autoRefresh": "자동 새로고침",
+    "on": "켜짐",
+    "off": "꺼짐",
+    "pause": "일시정지",
+    "resume": "계속"
   },
   "nav": {
     "overview": "개요",
@@ -144,7 +152,12 @@
     "viewAll": "모두 보기",
     "createStrategy": "전략 생성",
     "runBacktest": "백테스트 실행",
-    "connectBroker": "브로커 연결"
+    "connectBroker": "브로커 연결",
+    "pdfExported": "PDF 낳성 완료",
+    "exportFailed": "PDF 낳성 실패",
+    "marketHeatmap": "🗺️ 시장 섹터 히트맵",
+    "equityChart": "📈 자산 추이",
+    "portfolioAllocation": "🥧 배분"
   },
   "trading": {
     "orderForm": "주문 양식",
@@ -318,7 +331,14 @@
     "systemInfo": "시스템 정보",
     "version": "버전",
     "platform": "플랫폼",
-    "database": "데이터베이스"
+    "database": "데이터베이스",
+    "connectionFailed": "연결 실패",
+    "connectionError": "연결 오류",
+    "addFailed": "추가 실패",
+    "addError": "추가 오류",
+    "confirmDeleteBroker": "해당 증권 설정을 삭제하시겠습니까?",
+    "deleteFailed": "삭제 실패",
+    "switchFailed": "전환 실패"
   },
   "orderStatus": {
     "pending": "대기중",
@@ -392,5 +412,29 @@
     "unknownDesc": "状态不明，建议观望",
     "history": "历史状态",
     "days": "天"
+  },
+  "backtest": {
+    "loading": "백테스트 데이터 로딩...",
+    "comparisonTitle": "백테스트 비교",
+    "comparisonSubtitle": "다중 전략 백테스트 결과 비교",
+    "selectStrategies": "비교할 전략 선택",
+    "riskReturnComparison": "리스크·수익 지표",
+    "metric": "지표"
+  },
+  "metrics": {
+    "totalReturn": "총 수익률",
+    "annualReturn": "연간 수익률",
+    "maxDrawdown": "최대 낙폭",
+    "sharpeRatio": "샤프 비율",
+    "calmarRatio": "칼마 비율",
+    "sortinoRatio": "소르티노 비율",
+    "winRate": "승률",
+    "profitFactor": "손익비",
+    "totalTrades": "총 거래 횟수"
+  },
+  "risk": {
+    "title": "리스크 대시보드",
+    "loading": "리스크 데이터 로딩...",
+    "engineNotInitialized": "리스크 엔진 미초기화"
   }
 }

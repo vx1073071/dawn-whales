@@ -277,15 +277,15 @@ export default function BacktestComparisonPage() {
             </thead>
             <tbody className="divide-y divide-white/5">
               {[
-                { label: '总收益率', key: 'totalReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
-                { label: '年化收益率', key: 'annualReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
-                { label: '最大回撤', key: 'maxDrawdown', fmt: (v: number) => `${v.toFixed(2)}%`, color: true, inverse: true },
-                { label: '夏普比率', key: 'sharpeRatio', fmt: (v: number) => v.toFixed(2) },
-                { label: '卡玛比率', key: 'calmarRatio', fmt: (v: number) => v.toFixed(2) },
-                { label: '索提诺比率', key: 'sortinoRatio', fmt: (v: number) => v.toFixed(2) },
-                { label: '胜率', key: 'winRate', fmt: (v: number) => `${v.toFixed(1)}%` },
-                { label: '盈亏比', key: 'profitFactor', fmt: (v: number) => v.toFixed(2) },
-                { label: '交易次数', key: 'totalTrades', fmt: (v: number) => `${v}` },
+                { label: t('metrics.totalReturn'), key: 'totalReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
+                { label: t('metrics.annualReturn'), key: 'annualReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
+                { label: t('metrics.maxDrawdown'), key: 'maxDrawdown', fmt: (v: number) => `${v.toFixed(2)}%`, color: true, inverse: true },
+                { label: t('metrics.sharpeRatio'), key: 'sharpeRatio', fmt: (v: number) => v.toFixed(2) },
+                { label: t('metrics.calmarRatio'), key: 'calmarRatio', fmt: (v: number) => v.toFixed(2) },
+                { label: t('metrics.sortinoRatio'), key: 'sortinoRatio', fmt: (v: number) => v.toFixed(2) },
+                { label: t('metrics.winRate'), key: 'winRate', fmt: (v: number) => `${v.toFixed(1)}%` },
+                { label: t('metrics.profitFactor'), key: 'profitFactor', fmt: (v: number) => v.toFixed(2) },
+                { label: t('metrics.totalTrades'), key: 'totalTrades', fmt: (v: number) => `${v}` },
               ].map((row) => (
                 <tr key={row.label} className="hover:bg-white/[0.02]">
                   <td className="px-4 py-3 text-gray-400">{row.label}</td>

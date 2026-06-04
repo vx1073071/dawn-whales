@@ -76,10 +76,10 @@ export default function SettingsPage() {
       if (result?.success) {
         setConnected(true);
       } else {
-        setConnectError(result?.error || '连接失败');
+        setConnectError(result?.error || t('settings.connectionFailed'));
       }
     } catch (e: any) {
-      setConnectError(e.message || '连接异常');
+      setConnectError(e.message || t('settings.connectionError'));
     } finally {
       setConnecting(false);
     }
@@ -103,23 +103,23 @@ export default function SettingsPage() {
         setNewBroker({ name: '', type: 'futu', host: '127.0.0.1', port: '11111' });
         await refreshBrokers();
       } else {
-        alert(result?.error || '添加失败');
+        alert(result?.error || t('settings.addFailed'));
       }
     } catch (e: any) {
-      alert(e.message || '添加异常');
+      alert(e.message || t('settings.addError'));
     } finally {
       setBrokerActionLoading(null);
     }
   }
 
   async function handleRemoveBroker(id: string) {
-    if (!confirm('确定删除该券商配置？')) return;
+    if (!confirm(t('settings.confirmDeleteBroker'))) return;
     setBrokerActionLoading(id);
     try {
       await removeBroker(id);
       await refreshBrokers();
     } catch (e: any) {
-      alert(e.message || '删除失败');
+      alert(e.message || t('settings.deleteFailed'));
     } finally {
       setBrokerActionLoading(null);
     }
@@ -131,7 +131,7 @@ export default function SettingsPage() {
       await setActiveBroker(id);
       await refreshBrokers();
     } catch (e: any) {
-      alert(e.message || '切换失败');
+      alert(e.message || t('settings.switchFailed'));
     } finally {
       setBrokerActionLoading(null);
     }
