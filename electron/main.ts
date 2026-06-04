@@ -4,6 +4,8 @@
 
 import { app, BrowserWindow, ipcMain, shell, Tray, Menu, nativeImage } from 'electron';
 import path from 'path';
+import { exec } from 'child_process';
+import { promisify } from 'util';
 import { autoUpdater } from 'electron-updater';
 import { FutuOpenDClient } from './broker/futu-opend';
 import { BrokerManager } from './broker/BrokerManager';
@@ -21,6 +23,9 @@ import log from 'electron-log';
 
 // 默认监控列表，连接时从 DB 读取用户配置
 let WATCHLIST = ['US.TQQQ','US.SOXL','US.QQQ','US.SPY','US.AAPL','US.NVDA','US.SQQQ','US.SOXS'];
+
+// ── Utils ──────────────────────────────────────────────────────────────────
+const execAsync = promisify(exec);
 
 // ── Configuration ──────────────────────────────────────────────────────────
 
@@ -221,8 +226,25 @@ function setupIPC() {
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
+  // ── Order Placement (with input validation) ─────────────────────────
   ipcMain.handle('broker:placeOrder', async (_e, order: any) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
+    // Input validation
+    if (!order || typeof order !== 'object') {
+      return { success: false, error: 'Invalid order object' };
+    }
+    if (!order.code || typeof order.code !== 'string') {
+      return { success: false, error: 'Missing or invalid order.code' };
+    }
+    if (!['BUY', 'SELL'].includes(order.side)) {
+      return { success: false, error: 'Invalid order.side (must be BUY or SELL)' };
+    }
+    if (typeof order.qty !== 'number' || order.qty <= 0 || order.qty > 1000000 || !Number.isInteger(order.qty)) {
+      return { success: false, error: 'Invalid order.qty (must be positive integer <= 1,000,000)' };
+    }
+    if (order.price !== undefined && (typeof order.price !== 'number' || order.price < 0)) {
+      return { success: false, error: 'Invalid order.price' };
+    }
     const riskResult = riskEngine?.checkOrder(order);
     if (riskResult && !riskResult.pass) {
       mainWindow?.webContents.send('risk-alert', { order, reason: riskResult.reason });
@@ -343,12 +365,18 @@ function setupIPC() {
     return { success: !!strategy, strategy };
   });
 
+  // ── Strategy Update (with field whitelist for security) ─────────────
+  const STRATEGY_UPDATE_WHITELIST = ['name', 'description', 'params', 'stopLoss', 'takeProfit', 'symbol'];
   ipcMain.handle('strategy:update', async (_e, id: string, updates: any) => {
     try {
       const strategy = strategyEngine?.getStrategy(id);
       if (!strategy) return { success: false, error: 'Strategy not found' };
-      // Merge updates
-      Object.assign(strategy, updates, { updatedAt: new Date().toISOString() });
+      // Security: only allow whitelisted fields
+      const sanitized: any = {};
+      for (const key of STRATEGY_UPDATE_WHITELIST) {
+        if (key in updates) sanitized[key] = updates[key];
+      }
+      Object.assign(strategy, sanitized, { updatedAt: new Date().toISOString() });
       if (db) db.saveStrategy(strategy);
       return { success: true, strategy };
     } catch (err: any) { return { success: false, error: err.message }; }
@@ -439,19 +467,8 @@ function setupIPC() {
     }
   });
 
-  ipcMain.handle('backtest:walkForward', async (_e, config: any) => {
-    try {
-      const { BacktestEnhancer } = require('./engine/backtest-enhancer');
-      const enhancer = new BacktestEnhancer(backtestEngine);
-      const result = await enhancer.walkForwardAnalysis(
-        config.klines, config.baseConfig, config.paramRanges,
-        config.trainSize || 500, config.testSize || 100, config.maxWindows || 10
-      );
-      return { success: true, result };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
-  });
+  // NOTE: backtest:walk-forward is defined below (line ~980) using JVS WalkForwardEngine.
+  // The old backtest:walkForward handler has been removed to avoid duplicate registration.
 
   ipcMain.handle('backtest:riskMetrics', async (_e, equityCurve: number[], riskFreeRate?: number) => {
     try {
@@ -644,28 +661,44 @@ Keep it under 250 words. Be objective, not promotional.`;
   }));
 
   ipcMain.handle('app:emergencyStop', async () => {
-    log.warn('[App] Emergency stop triggered');
-    // Stop all live strategies
-    const strategies = strategyEngine?.getAllStrategies() || [];
-    for (const s of strategies) {
-      if (s.liveRunning) {
-        strategyEngine?.stopLive(s.id);
+    try {
+      log.warn('[App] Emergency stop triggered');
+      // Stop all live strategies
+      const strategies = strategyEngine?.getAllStrategies() || [];
+      for (const s of strategies) {
+        if (s.liveRunning) {
+          strategyEngine?.stopLive(s.id);
+        }
       }
+      // Notify renderer
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('notification', {
+          type: 'error',
+          title: '紧急停止',
+          message: '所有策略已停止',
+        });
+      }
+      return { success: true };
+    } catch (err: any) {
+      log.error('[App] Emergency stop failed:', err.message);
+      return { success: false, error: err.message };
     }
-    // Notify renderer
-    mainWindow?.webContents.send('notification', {
-      type: 'error',
-      title: '紧急停止',
-      message: '所有策略已停止',
-    });
-    return { success: true };
   });
 
-  ipcMain.handle('app:openExternal', async (_e, url: string) => {
-    if (url.startsWith('http')) {
-      await shell.openExternal(url);
+  // ── External URL Security ────────────────────────────────────────────
+  const ALLOWED_PROTOCOLS = ['http:', 'https:'];
+  ipcMain.handle('app:openExternal', async (_e, rawUrl: string) => {
+    try {
+      const url = new URL(rawUrl);
+      if (!ALLOWED_PROTOCOLS.includes(url.protocol)) {
+        log.warn('[Security] Blocked openExternal:', rawUrl);
+        return { success: false, error: 'Protocol not allowed' };
+      }
+      await shell.openExternal(rawUrl);
+      return { success: true };
+    } catch {
+      return { success: false, error: 'Invalid URL' };
     }
-    return { success: true };
   });
 
   ipcMain.handle('app:getVersion', () => app.getVersion());
@@ -700,15 +733,14 @@ Keep it under 250 words. Be objective, not promotional.`;
     rate?: number; type: 'CALL' | 'PUT'; qty?: number;
   }) => {
     try {
-      const { execSync } = require('child_process');
-      const scriptPath = require('path').join(
+      const scriptPath = path.join(
         process.resourcesPath, '..', '..', '.workbuddy', 'skills', 'option-greeks', 'scripts', 'calc_greeks.py'
       );
       // Fallback for dev mode
-      const devPath = require('path').join(
+      const devPath = path.join(
         require('os').homedir(), '.workbuddy', 'skills', 'option-greeks', 'scripts', 'calc_greeks.py'
       );
-      const pythonExe = require('path').join(
+      const pythonExe = path.join(
         require('os').homedir(), 'AppData', 'Local', 'Programs', 'Python', 'Python312', 'python.exe'
       );
 
@@ -719,8 +751,8 @@ Keep it under 250 words. Be objective, not promotional.`;
       }
 
       const cmd = `"${pythonExe}" "${actualScript}" --spot ${params.spot} --strike ${params.strike} --vol ${params.vol} --days ${params.days} --type ${params.type} --rate ${params.rate || 0.05} --json`;
-      const output = execSync(cmd, { encoding: 'utf-8', timeout: 5000 });
-      const result = JSON.parse(output);
+      const { stdout } = await execAsync(cmd, { encoding: 'utf-8', timeout: 5000 });
+      const result = JSON.parse(stdout);
       return { success: true, greeks: result };
     } catch (err: any) {
       log.error('[Greeks] Calculation failed:', err.message);
@@ -730,11 +762,10 @@ Keep it under 250 words. Be objective, not promotional.`;
 
   ipcMain.handle('greeks:portfolio', async (_e, positions: any[]) => {
     try {
-      const { execSync } = require('child_process');
-      const devPath = require('path').join(
+      const devPath = path.join(
         require('os').homedir(), '.workbuddy', 'skills', 'option-greeks', 'scripts', 'portfolio_greeks.py'
       );
-      const pythonExe = require('path').join(
+      const pythonExe = path.join(
         require('os').homedir(), 'AppData', 'Local', 'Programs', 'Python', 'Python312', 'python.exe'
       );
 
@@ -745,8 +776,8 @@ Keep it under 250 words. Be objective, not promotional.`;
 
       const positionsJson = JSON.stringify(positions).replace(/"/g, '\\"');
       const cmd = `"${pythonExe}" "${devPath}" --positions "${positionsJson}" --json`;
-      const output = execSync(cmd, { encoding: 'utf-8', timeout: 10000 });
-      const result = JSON.parse(output);
+      const { stdout } = await execAsync(cmd, { encoding: 'utf-8', timeout: 10000 });
+      const result = JSON.parse(stdout);
       return { success: true, portfolio: result };
     } catch (err: any) {
       log.error('[Greeks] Portfolio calc failed:', err.message);
