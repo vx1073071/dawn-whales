@@ -13,6 +13,8 @@ interface NavItem {
 const navItems: NavItem[] = [
   { id: 'dashboard', icon: '📊', label: '总览看板', section: '总览' },
   { id: 'market', icon: '📈', label: '行情中心', section: '交易' },
+  { id: 'sectorHeatmap', icon: '🗺️', label: '板块热力' },
+  { id: 'macroDashboard', icon: '📉', label: '宏观数据' },
   { id: 'strategy', icon: '🧠', label: '策略工坊' },
   { id: 'marketplace', icon: '🏪', label: '策略市场' },
   { id: 'backtest', icon: '🔬', label: '回测报告' },

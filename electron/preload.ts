@@ -1,4 +1,4 @@
-// ── Preload Script — IPC Bridge (安全暴露 API 给渲染进程) ──────────────────
+﻿// ── Preload Script — IPC Bridge (安全暴露 API 给渲染进程) ──────────────────
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('api', {
@@ -72,6 +72,9 @@ contextBridge.exposeInMainWorld('api', {
     getAlerts: () => ipcRenderer.invoke('risk:getAlerts'),
     getStatusSnapshot: () => ipcRenderer.invoke('risk:getStatusSnapshot'),
     getKellyStats: () => ipcRenderer.invoke('risk:getKellyStats'),
+    // Q12: Stress Tester
+    stressTest: (positions: any, scenarioName?: string, customFactors?: any[], portfolio?: any) =>
+      ipcRenderer.invoke('risk:stress-test', { positions, scenarioName, customFactors, portfolio }),
     getDrawdownState: () => ipcRenderer.invoke('risk:getDrawdownState'),
     updateVix: (vix: number) => ipcRenderer.invoke('risk:updateVix', vix),
   },
@@ -180,6 +183,11 @@ contextBridge.exposeInMainWorld('api', {
     getAlerts: (options?: any) => ipcRenderer.invoke('em:get-anomaly-alerts', options),
     processQuotes: (quotes: any[]) => ipcRenderer.invoke('em:process-anomaly-quotes', quotes),
     acknowledgeAlert: (id: string) => ipcRenderer.invoke('em:acknowledge-anomaly', id),
+  },
+
+  // ── Market Hotspot (JVS-8) ─────────────────────────────────────
+  marketHotspot: {
+    getReport: (query?: any) => ipcRenderer.invoke('em:get-hotspot', query),
   },
 
   // ── Backtest Enhancement (Sprint 2) ──────────────────────────────

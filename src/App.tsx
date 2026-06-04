@@ -13,6 +13,8 @@ import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 // ── Lazy-loaded pages for code splitting ──────────────────────────────────
 const DashboardPage = lazy(() => import('@/components/dashboard/DashboardPage'));
 const MarketPage = lazy(() => import('@/components/market/MarketPage'));
+const MarketHeatmapPage = lazy(() => import('@/components/market/MarketHeatmapPage'));
+const MacroDashboardPage = lazy(() => import('@/components/market/MacroDashboardPage'));
 const StrategyPage = lazy(() => import('@/components/strategy/StrategyPage'));
 const PortfolioPage = lazy(() => import('@/components/portfolio/PortfolioPage'));
 const OrdersPage = lazy(() => import('@/components/orders/OrdersPage'));
@@ -25,6 +27,8 @@ const RiskDashboardPage = lazy(() => import('@/components/risk/RiskDashboardPage
 const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   dashboard: DashboardPage,
   market: MarketPage,
+  sectorHeatmap: MarketHeatmapPage,
+  macroDashboard: MacroDashboardPage,
   strategy: StrategyPage,
   portfolio: PortfolioPage,
   orders: OrdersPage,

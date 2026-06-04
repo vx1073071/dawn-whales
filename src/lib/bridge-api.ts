@@ -81,6 +81,9 @@ declare global {
         processQuotes: (quotes: any[]) => Promise<any>;
         acknowledgeAlert: (id: string) => Promise<any>;
       };
+      marketHotspot: {
+        getReport: (query?: any) => Promise<any>;
+      };
       backtestEnhanced: {
         walkForward: (config: any) => Promise<any>;
         paramScan: (config: any) => Promise<any>;
@@ -627,6 +630,16 @@ export async function processAnomalyQuotes(quotes: any[]): Promise<any> {
 export async function acknowledgeAnomalyAlert(id: string): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.stockAnomaly.acknowledgeAlert(id);
+}
+
+// ── Market Hotspot (JVS-8) ────────────────────────────────────────────────
+
+export async function getMarketHotspot(query?: {
+  type?: string;
+  limit?: number;
+}): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.marketHotspot.getReport(query);
 }
 
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────

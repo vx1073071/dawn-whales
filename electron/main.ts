@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
+﻿// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
 // 架构对齐：富途牛牛桌面端 (Electron + C++ core + React)
 // 我们用：Electron + Node.js (Main) + React (Renderer)
 
@@ -24,6 +24,7 @@ import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
 import { SectorRotationMonitor } from './engine/sector-rotation';
 import { StockAnomalyDetector } from './engine/stock-anomaly-detector';
+import { MarketHotspotService } from './engine/market-hotspot';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -34,6 +35,9 @@ import { autoTune, type ParamRange } from './engine/auto-tuner';
 import { detectRegime, type RegimeLabel } from './engine/regime-detector';
 import { decomposeRisk, runMonteCarlo } from './engine/risk-decomposition';
 import { detectAnomalies } from './engine/anomaly-detector';
+import { buildCorrelationVisualization } from './engine/correlation-visualizer';
+import { runStressTest, runCustomShock, HISTORICAL_SCENARIOS } from './engine/stress-tester';
+import { compareBacktests, summaryTable } from './engine/backtest-comparator';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -120,6 +124,7 @@ let stockScreener: StockScreenerService | null = null;
 let newsAggregator: NewsAggregatorService | null = null;
 let sectorRotation: SectorRotationMonitor | null = null;
 let stockAnomalyDetector: StockAnomalyDetector | null = null;
+let marketHotspot: MarketHotspotService | null = null;
 
 // ── Shared quote push handler (prevents duplicate listener registration) ─────
 const quotePushHandler = (quotes: any[]) => {
@@ -886,6 +891,66 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Q11: Correlation Visualizer ────────────────────────────────────
+  ipcMain.handle('strategy:correlation-viz', async (_e, raw: unknown) => {
+    try {
+      const { buildCorrelationVisualization } = require('./engine/correlation-visualizer');
+      const { inputs } = raw as { inputs: Array<{ id: string; equityCurve: Array<{ time: number; value: number }> }> };
+      if (!inputs || inputs.length < 2) {
+        return { success: false, error: 'At least 2 strategies required for correlation visualization' };
+      }
+      const result = buildCorrelationVisualization(inputs);
+      return { success: true, ...result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q12: Stress Tester ────────────────────────────────────────────
+  ipcMain.handle('risk:stress-test', async (_e, raw: unknown) => {
+    try {
+      const { runStressTest, runCustomShock, HISTORICAL_SCENARIOS } = require('./engine/stress-tester');
+      const { positions, scenarioName, customFactors, portfolio } = raw as {
+        positions: any[];
+        scenarioName?: string;
+        customFactors?: any[];
+        portfolio?: { totalValue: number; dailyVol: number };
+      };
+      if (!positions || positions.length === 0) {
+        return { success: false, error: 'At least one position required' };
+      }
+      let result;
+      if (customFactors) {
+        result = runCustomShock(positions, customFactors, portfolio ?? { totalValue: 0, dailyVol: 0.02 });
+      } else {
+        const scenario = HISTORICAL_SCENARIOS.find((s: any) => s.name === scenarioName);
+        if (!scenario) {
+          return { success: false, error: 'Scenario not found: ' + scenarioName + '. Available: ' + HISTORICAL_SCENARIOS.map((s: any) => s.name).join(', ') };
+        }
+        result = runStressTest(positions, scenario);
+      }
+      return { success: true, ...result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Q13: Backtest Comparator ──────────────────────────────────────
+  ipcMain.handle('strategy:compare', async (_e, raw: unknown) => {
+    try {
+      const { compareBacktests, summaryTable } = require('./engine/backtest-comparator');
+      const { results } = raw as { results: any[] };
+      if (!results || results.length === 0) {
+        return { success: false, error: 'At least one backtest result required' };
+      }
+      const comparison = compareBacktests(results);
+      const table = summaryTable(results, comparison);
+      return { success: true, comparison, table };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── NL Parser ───────────────────────────────────────────────────────
   ipcMain.handle('nl:parse', async (_e, text: string) => {
     return parseNaturalLanguage(text);
@@ -1529,6 +1594,18 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Market Hotspot (JVS-8) ─────────────────────────────────────────────
+  ipcMain.handle('em:get-hotspot', async (_e, query?: any) => {
+    if (!marketHotspot) return { success: false, error: 'MarketHotspot not initialized' };
+    try {
+      const report = await marketHotspot.getReport(query);
+      return { success: true, ...report };
+    } catch (err: any) {
+      log.error('[MarketHotspot] Fetch failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
   ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
@@ -1678,6 +1755,9 @@ app.whenReady().then(async () => {
       stockAnomalyDetector = new StockAnomalyDetector();
       stockAnomalyDetector.initialize(db);
       log.info('[App] StockAnomalyDetector initialized (JVS-7)');
+
+      marketHotspot = new MarketHotspotService();
+      log.info('[App] MarketHotspotService initialized (JVS-8)');
     }
   } catch (err: any) {
     log.error('[App] MarketplaceService init failed:', err.message);
