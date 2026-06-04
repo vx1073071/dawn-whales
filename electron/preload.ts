@@ -244,6 +244,11 @@ contextBridge.exposeInMainWorld('api', {
     get: () => ipcRenderer.invoke('em:get-market-breadth'),
   },
 
+  // ── Consumer Data — 消费者数据服务 (JVS-17) ──────────────────
+  consumerData: {
+    get: (months?: number) => ipcRenderer.invoke('em:get-consumer-data', months),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),

@@ -34,6 +34,7 @@ import { getFundHoldings, getStockFundOwnership, getFundIncreaseRank, getFundDec
 import { diagnoseStock, batchDiagnose } from './engine/stock-diagnosis';
 import { calculatePortfolioRisk } from './engine/portfolio-risk';
 import { getMarketBreadth } from './engine/market-breadth';
+import { getConsumerDataReport } from './engine/consumer-data';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1832,6 +1833,16 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   ipcMain.handle('em:get-market-breadth', async () => {
     try {
       const result = await getMarketBreadth();
+      return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Consumer Data — 消费者数据服务 (JVS-17) ────────────────────
+  ipcMain.handle('em:get-consumer-data', async (_e, months?: number) => {
+    try {
+      const result = await getConsumerDataReport(months || 12);
       return result;
     } catch (err: any) {
       return { success: false, error: err.message };

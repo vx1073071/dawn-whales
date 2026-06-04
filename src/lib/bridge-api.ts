@@ -823,6 +823,13 @@ export async function getMarketBreadth(): Promise<any> {
   return window.api.marketBreadth.get();
 }
 
+// ── Consumer Data — 消费者数据服务 (JVS-17) ────────────────────────────────
+
+export async function getConsumerData(months?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.consumerData.get(months);
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {
