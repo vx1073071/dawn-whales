@@ -81,6 +81,10 @@ declare global {
         optimize: (strategyDSL: any, backtestResult: any) => Promise<any>;
         correlation: (strategies: any) => Promise<any>;
       };
+      notification: {
+        generate: (ctx: any) => Promise<any>;
+        summary: (alerts: any[], apiKey?: string) => Promise<any>;
+      };
       nl: {
         parse: (text: string) => Promise<any>;
         templates: () => Promise<any>;

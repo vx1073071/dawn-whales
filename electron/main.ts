@@ -21,6 +21,7 @@ import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner';
 import { computeCorrelationMatrix } from './engine/correlation-matrix';
+import { generateSmartAlerts, generateAlertSummary, type NotificationContext } from './engine/notification-engine';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -72,6 +73,7 @@ import { validate,
   StrategyCompareSchema,
   StrategyOptimizeSchema,
   StrategyCorrelationSchema,
+  NotificationGenerateSchema,
 } from './ipc-schemas';
 import { storeKey, getKey, getDeepSeekKey, storeDeepSeekKey } from './utils/secure-key';
 import log from 'electron-log';
@@ -704,6 +706,23 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
     const result = computeCorrelationMatrix(strategies);
     return { success: true, ...result };
+  });
+
+  // ── Smart Notification Engine ───────────────────────────────────────
+  ipcMain.handle('notification:generate', async (_e, raw: unknown) => {
+    const vErr = validate(NotificationGenerateSchema, raw);
+    if (vErr) return vErr;
+    const ctx = raw as NotificationContext;
+    const alerts = generateSmartAlerts(ctx);
+    return { success: true, alerts };
+  });
+
+  ipcMain.handle('notification:summary', async (_e, alerts: SmartAlert[], apiKey?: string) => {
+    if (!Array.isArray(alerts) || alerts.length === 0) {
+      return { success: true, summary: '暂无活跃警报。' };
+    }
+    const summary = await generateAlertSummary(alerts, apiKey ?? '');
+    return { success: true, summary };
   });
 
   // ── NL Parser ───────────────────────────────────────────────────────

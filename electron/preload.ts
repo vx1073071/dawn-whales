@@ -38,6 +38,8 @@ contextBridge.exposeInMainWorld('api', {
     compare: (s1: any, s2: any) => ipcRenderer.invoke('strategy:compare', s1, s2),
     optimize: (strategyDSL: any, backtestResult: any) => ipcRenderer.invoke('strategy:optimize', { strategyDSL, backtestResult }),
     correlation: (strategies: any) => ipcRenderer.invoke('strategy:correlation', { strategies }),
+    generateNotifications: (ctx: any) => ipcRenderer.invoke('notification:generate', ctx),
+    notificationSummary: (alerts: any[], apiKey?: string) => ipcRenderer.invoke('notification:summary', alerts, apiKey),
   },
 
   // ── NL Parser ─────────────────────────────────────────────────────

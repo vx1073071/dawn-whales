@@ -383,3 +383,33 @@ export const StrategyCorrelationSchema = z.object({
     })),
   })),
 });
+
+// ── Notification Generate ────────────────────────────────────────────────────
+
+export const NotificationGenerateSchema = z.object({
+  anomalies: z.array(z.object({
+    symbol: z.string(),
+    type: z.string(),
+    level: z.enum(['info', 'warning', 'critical']),
+    message: z.string().optional(),
+    details: z.record(z.string(), z.unknown()).optional(),
+    timestamp: z.number(),
+  })).optional(),
+  riskAlerts: z.array(z.object({
+    type: z.string(),
+    level: z.enum(['info', 'warning', 'critical']),
+    message: z.string().optional(),
+    metrics: z.record(z.string(), z.number()).optional(),
+  })).optional(),
+  marketRegime: z.object({
+    state: z.string(),
+    confidence: z.number(),
+    recommendation: z.string(),
+  }).optional(),
+  positions: z.array(z.object({
+    symbol: z.string(),
+    pnlPct: z.number(),
+    size: z.number(),
+  })).optional(),
+  vix: z.number().optional(),
+});
