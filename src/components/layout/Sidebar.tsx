@@ -44,6 +44,7 @@ const navItems: NavItem[] = [
   { id: 'portfolioRebalancer', icon: '⚖️', label: '组合再平衡' },
   { id: 'orders', icon: '📋', label: '委托订单' },
   { id: 'risk', icon: '🛡️', label: '风险仪表盘' },
+  { id: 'paperTrader', icon: '🎮', label: '模拟盘' },
   { id: 'opendHealth', icon: '🔌', label: 'OpenD 健康' },
   { id: 'settings', icon: '⚙️', label: '系统设置', section: '系统' },
 ];

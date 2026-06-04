@@ -48,6 +48,7 @@ import { getStockOverview, getMarketOverview, getDailyReport } from './engine/em
 import { getPythonProxy } from './data/python-proxy';
 import { getPush2Proxy } from './data/push2-proxy';
 import { getDataQualityMonitor, registerModule } from './engine/data-quality-monitor';
+import { setupI18nDataIPC } from './engine/i18n-data';
 import { getDataQualityStream } from './engine/data-quality-stream';
 import { getSmartCacheManager } from './engine/smart-cache';
 import { getDragonTigerStream } from './engine/dragon-tiger-stream';
@@ -246,6 +247,9 @@ function createWindow() {
 // ── IPC Handlers ───────────────────────────────────────────────────────────
 
 function setupIPC() {
+  // ── i18n Data Layer (JVS-40) ───────────────────────────────────────────
+  setupI18nDataIPC();
+
   // ── Broker: Multi-broker support (WP1 + Sprint1) ────────────────────
   ipcMain.handle('broker:connect', async (_e, config: { host: string; port: number; brokerId?: string }) => {
     try {

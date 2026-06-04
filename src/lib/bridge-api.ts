@@ -1504,3 +1504,25 @@ export async function getAISuggest(): Promise<any> {
   if (!hasIPC()) return { success: false, data: null };
   return window.api.aiAdvisor?.suggest?.() || { success: false, error: 'Not implemented' };
 }
+
+// ── i18n Data Layer (JVS-40) ───────────────────────────────────────────────
+
+export async function translateField(field: string, category: string, lang: string): Promise<any> {
+  if (!hasIPC()) return { success: false, translation: field };
+  return window.api.i18n.translateField(field, category, lang);
+}
+
+export async function translateFields(fields: string[], category: string, lang: string): Promise<any> {
+  if (!hasIPC()) return { success: false, translations: fields };
+  return window.api.i18n.translateFields(fields, category, lang);
+}
+
+export async function getAllTranslations(category: string): Promise<any> {
+  if (!hasIPC()) return { success: false, translations: {} };
+  return window.api.i18n.getAllTranslations(category);
+}
+
+export async function getSupportedLanguages(): Promise<any> {
+  if (!hasIPC()) return { success: false, languages: [] };
+  return window.api.i18n.getSupportedLanguages();
+}

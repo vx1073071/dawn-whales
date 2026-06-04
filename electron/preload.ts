@@ -468,6 +468,14 @@ contextBridge.exposeInMainWorld('api', {
     multiTimeframe: (config: any) => ipcRenderer.invoke('backtest:multi-timeframe', config),
   },
 
+  // ── i18n Data Layer (JVS-40) ────────────────────────────────────────
+  i18n: {
+    translateField: (field: string, category: string, lang: string) => ipcRenderer.invoke('i18n:translate-field', field, category, lang),
+    translateFields: (fields: string[], category: string, lang: string) => ipcRenderer.invoke('i18n:translate-fields', fields, category, lang),
+    getAllTranslations: (category: string) => ipcRenderer.invoke('i18n:get-all-translations', category),
+    getSupportedLanguages: () => ipcRenderer.invoke('i18n:get-supported-languages'),
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
     const allowed = [

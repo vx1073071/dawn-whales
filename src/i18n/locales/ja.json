@@ -1,0 +1,19 @@
+{
+  "app": { "name": "DAWN WHALES · AIクオンツシステム", "shortName": "DAWN WHALES" },
+  "nav": { "dashboard": "ダッシュボード", "strategy": "戦略", "market": "マーケット", "portfolio": "ポートフォリオ", "orders": "注文", "risk": "リスク", "settings": "設定", "marketplace": "マーケットプレイス", "live": "ライブ監視", "backtest": "バックテスト" },
+  "common": { "save": "保存", "cancel": "キャンセル", "delete": "削除", "confirm": "確認", "search": "検索", "loading": "読み込み中...", "error": "エラー", "retry": "再試行", "noData": "データなし", "refresh": "更新", "export": "エクスポート", "import": "インポート", "close": "閉じる", "back": "戻る", "next": "次へ", "submit": "送信" },
+  "dashboard": { "title": "ダッシュボード", "totalAssets": "総資産", "todayPnl": "本日損益", "positions": "ポジション数", "strategies": "実行中戦略", "equityCurve": "資産曲線", "allocation": "資産配分", "heatmap": "ポジションヒートマップ", "signals": "実行中の戦略" },
+  "strategy": { "title": "戦略管理", "create": "戦略作成", "nlInput": "自然言語で戦略を記述...", "backtest": "バックテスト", "startLive": "実践開始", "stopLive": "実践停止", "params": "パラメータ", "performance": "パフォーマンス" },
+  "market": { "title": "マーケット", "addSymbol": "銘柄追加", "sector": "セクター", "heatmap": "ヒートマップ", "breadth": "市場幅", "movers": "値上がり/値下がり", "calendar": "経済カレンダー" },
+  "portfolio": { "title": "ポートフォリオ", "symbol": "コード", "qty": "数量", "costPrice": "取得価格", "marketPrice": "現在値", "pnl": "損益", "ratio": "比率" },
+  "orders": { "title": "注文", "orderId": "注文番号", "side": "売買", "type": "種類", "qty": "数量", "price": "価格", "status": "状態", "cancel": "取消" },
+  "risk": { "title": "リスク管理", "alerts": "アラート", "limits": "制限", "drawdown": "ドローダウン", "var": "VaR", "sharpe": "シャープレシオ" },
+  "settings": { "title": "設定", "connection": "接続設定", "riskConfig": "リスク設定", "language": "言語", "theme": "テーマ", "about": "について" },
+  "connection": { "host": "ホスト", "port": "ポート", "connect": "接続", "disconnect": "切断", "connected": "接続済", "disconnected": "未接続" },
+  "broker": { "futu": "富途", "moomoo": "moomoo" },
+  "sector": { "industry": "業種", "concept": "テーマ", "region": "地域" },
+  "sentiment": { "extremeFear": "極度の恐怖", "fear": "恐怖", "neutral": "中立", "greed": "強欲", "extremeGreed": "極度の強欲" },
+  "macro": { "gdp": "GDP", "cpi": "CPI", "pmi": "PMI", "ppi": "PPI", "m2": "M2マネーサプライ", "lpr": "LPR", "unemployment": "失業率", "industrial": "鉱工業生産" },
+  "anomaly": { "limitUp": "ストップ高", "limitDown": "ストップ安", "volumeSurge": "出来高急増", "breakout": "ブレイクアウト", "breakdown": "ブレイクダウン", "rapidChange": "急騰", "unusualTrade": "異常取引", "bigOrder": "大口注文" },
+  "language": { "zh-CN": "简体中文", "zh-TW": "繁體中文", "en": "English", "ja": "日本語", "ko": "한국어", "fr": "Français", "it": "Italiano", "de": "Deutsch" }
+}

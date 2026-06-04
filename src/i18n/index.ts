@@ -9,11 +9,36 @@ import fr from './locales/fr.json';
 import it from './locales/it.json';
 import de from './locales/de.json';
 
-i18n.use(initReactI18next).init({
-  resources: { 'zh-CN': { translation: zhCN }, 'zh-TW': { translation: zhTW }, en: { translation: en }, ja: { translation: ja }, ko: { translation: ko }, fr: { translation: fr }, it: { translation: it }, de: { translation: de } },
-  lng: 'zh-CN',
-  fallbackLng: 'en',
-  interpolation: { escapeValue: false },
-});
+const resources = {
+  'zh-CN': { translation: zhCN },
+  'zh-TW': { translation: zhTW },
+  en: { translation: en },
+  ja: { translation: ja },
+  ko: { translation: ko },
+  fr: { translation: fr },
+  it: { translation: it },
+  de: { translation: de },
+};
+
+i18n
+  .use(initReactI18next)
+  .init({
+    resources,
+    lng: localStorage.getItem('dw_language') || 'zh-CN',
+    fallbackLng: 'zh-CN',
+    interpolation: { escapeValue: false },
+  });
 
 export default i18n;
+export const SUPPORTED_LANGUAGES = [
+  { code: 'zh-CN', name: '简体中文' },
+  { code: 'zh-TW', name: '繁體中文' },
+  { code: 'en', name: 'English' },
+  { code: 'ja', name: '日本語' },
+  { code: 'ko', name: '한국어' },
+  { code: 'fr', name: 'Français' },
+  { code: 'it', name: 'Italiano' },
+  { code: 'de', name: 'Deutsch' },
+] as const;
+
+export type LanguageCode = (typeof SUPPORTED_LANGUAGES)[number]['code'];

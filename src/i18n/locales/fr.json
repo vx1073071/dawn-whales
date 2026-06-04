@@ -1,0 +1,19 @@
+{
+  "app": { "name": "DAWN WHALES · Système Quant IA", "shortName": "DAWN WHALES" },
+  "nav": { "dashboard": "Tableau de bord", "strategy": "Stratégie", "market": "Marché", "portfolio": "Portefeuille", "orders": "Ordres", "risk": "Risque", "settings": "Paramètres", "marketplace": "Marketplace", "live": "Monitoring", "backtest": "Backtest" },
+  "common": { "save": "Enregistrer", "cancel": "Annuler", "delete": "Supprimer", "confirm": "Confirmer", "search": "Rechercher", "loading": "Chargement...", "error": "Erreur", "retry": "Réessayer", "noData": "Aucune donnée", "refresh": "Actualiser", "export": "Exporter", "import": "Importer", "close": "Fermer", "back": "Retour", "next": "Suivant", "submit": "Soumettre" },
+  "dashboard": { "title": "Tableau de bord", "totalAssets": "Actif total", "todayPnl": "P&L du jour", "positions": "Positions", "strategies": "Stratégies actives", "equityCurve": "Courbe de capital", "allocation": "Allocation", "heatmap": "Heatmap", "signals": "Stratégies actives" },
+  "strategy": { "title": "Stratégie", "create": "Créer une stratégie", "nlInput": "Décrivez votre stratégie...", "backtest": "Backtest", "startLive": "Lancer", "stopLive": "Arrêter", "params": "Paramètres", "performance": "Performance" },
+  "market": { "title": "Marché", "addSymbol": "Ajouter", "sector": "Secteur", "heatmap": "Heatmap", "breadth": "Ampleur", "movers": "Variations", "calendar": "Calendrier économique" },
+  "portfolio": { "title": "Portefeuille", "symbol": "Code", "qty": "Qté", "costPrice": "PRU", "marketPrice": "Cours", "pnl": "P&L", "ratio": "Ratio" },
+  "orders": { "title": "Ordres", "orderId": "N° ordre", "side": "Sens", "type": "Type", "qty": "Qté", "price": "Prix", "status": "Statut", "cancel": "Annuler" },
+  "risk": { "title": "Risque", "alerts": "Alertes", "limits": "Limites", "drawdown": "Drawdown", "var": "VaR", "sharpe": "Sharpe" },
+  "settings": { "title": "Paramètres", "connection": "Connexion", "riskConfig": "Config. risque", "language": "Langue", "theme": "Thème", "about": "À propos" },
+  "connection": { "host": "Hôte", "port": "Port", "connect": "Connecter", "disconnect": "Déconnecter", "connected": "Connecté", "disconnected": "Déconnecté" },
+  "broker": { "futu": "Futu", "moomoo": "moomoo" },
+  "sector": { "industry": "Industrie", "concept": "Concept", "region": "Région" },
+  "sentiment": { "extremeFear": "Peur extrême", "fear": "Peur", "neutral": "Neutre", "greed": "Cupidité", "extremeGreed": "Cupidité extrême" },
+  "macro": { "gdp": "PIB", "cpi": "IPC", "pmi": "PMI", "ppi": "IPP", "m2": "Masse monétaire M2", "lpr": "Taux LPR", "unemployment": "Chômage", "industrial": "Production industrielle" },
+  "anomaly": { "limitUp": "Limite haute", "limitDown": "Limite basse", "volumeSurge": "Volume anormal", "breakout": "Cassure haussière", "breakdown": "Cassure baissière", "rapidChange": "Hausse rapide", "unusualTrade": "Trade anormal", "bigOrder": "Gros ordre" },
+  "language": { "zh-CN": "简体中文", "zh-TW": "繁體中文", "en": "English", "ja": "日本語", "ko": "한국어", "fr": "Français", "it": "Italiano", "de": "Deutsch" }
+}

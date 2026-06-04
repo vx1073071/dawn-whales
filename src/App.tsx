@@ -47,6 +47,7 @@ const LiveMonitorPage = lazy(() => import('@/components/live/LiveMonitorPage'));
 const BacktestReportPage = lazy(() => import('@/components/backtest/BacktestReportPage'));
 const BacktestComparisonPage = lazy(() => import('@/components/backtest/BacktestComparisonPage'));
 const RiskDashboardPage = lazy(() => import('@/components/risk/RiskDashboardPage'));
+const PaperTraderPanel = lazy(() => import('@/components/trading/PaperTraderPanel'));
 
 const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   dashboard: DashboardPage,
@@ -85,6 +86,7 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   backtest: BacktestReportPage,
   backtestComparison: BacktestComparisonPage,
   risk: RiskDashboardPage,
+  paperTrader: PaperTraderPanel,
 };
 
 function PageFallback() {

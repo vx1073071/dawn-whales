@@ -1,0 +1,19 @@
+{
+  "app": { "name": "DAWN WHALES · AI 퀀트 시스템", "shortName": "DAWN WHALES" },
+  "nav": { "dashboard": "대시보드", "strategy": "전략", "market": "마켓", "portfolio": "포트폴리오", "orders": "주문", "risk": "리스크", "settings": "설정", "marketplace": "마켓플레이스", "live": "실시간 모니터", "backtest": "백테스트" },
+  "common": { "save": "저장", "cancel": "취소", "delete": "삭제", "confirm": "확인", "search": "검색", "loading": "로딩 중...", "error": "오류", "retry": "재시도", "noData": "데이터 없음", "refresh": "새로고침", "export": "내보내기", "import": "가져오기", "close": "닫기", "back": "뒤로", "next": "다음", "submit": "제출" },
+  "dashboard": { "title": "대시보드", "totalAssets": "총자산", "todayPnl": "오늘 손익", "positions": "포지션", "strategies": "실행 전략", "equityCurve": "자산 곡선", "allocation": "자산 배분", "heatmap": "포지션 히트맵", "signals": "실행 중인 전략" },
+  "strategy": { "title": "전략 관리", "create": "전략 생성", "nlInput": "자연어로 전략을 설명하세요...", "backtest": "백테스트", "startLive": "실전 시작", "stopLive": "실전 중지", "params": "파라미터", "performance": "성과" },
+  "market": { "title": "마켓", "addSymbol": "종목 추가", "sector": "섹터", "heatmap": "히트맵", "breadth": "시장 폭", "movers": "상승/하락", "calendar": "경제 캘린더" },
+  "portfolio": { "title": "포트폴리오", "symbol": "코드", "qty": "수량", "costPrice": "매수가", "marketPrice": "현재가", "pnl": "손익", "ratio": "비중" },
+  "orders": { "title": "주문", "orderId": "주문번호", "side": "매수/매도", "type": "유형", "qty": "수량", "price": "가격", "status": "상태", "cancel": "취소" },
+  "risk": { "title": "리스크", "alerts": "알림", "limits": "제한", "drawdown": "드로다운", "var": "VaR", "sharpe": "샤프비율" },
+  "settings": { "title": "설정", "connection": "연결 설정", "riskConfig": "리스크 설정", "language": "언어", "theme": "테마", "about": "정보" },
+  "connection": { "host": "호스트", "port": "포트", "connect": "연결", "disconnect": "연결해제", "connected": "연결됨", "disconnected": "연결안됨" },
+  "broker": { "futu": "Futu", "moomoo": "moomoo" },
+  "sector": { "industry": "업종", "concept": "테마", "region": "지역" },
+  "sentiment": { "extremeFear": "극도의 공포", "fear": "공포", "neutral": "중립", "greed": "탐욕", "extremeGreed": "극도의 탐욕" },
+  "macro": { "gdp": "GDP", "cpi": "CPI", "pmi": "PMI", "ppi": "PPI", "m2": "M2 통화량", "lpr": "LPR", "unemployment": "실업률", "industrial": "산업생산" },
+  "anomaly": { "limitUp": "상한가", "limitDown": "하한가", "volumeSurge": "거래량 급증", "breakout": "돌파", "breakdown": "붕괴", "rapidChange": "급등", "unusualTrade": "이상 거래", "bigOrder": "대량 주문" },
+  "language": { "zh-CN": "简体中文", "zh-TW": "繁體中文", "en": "English", "ja": "日本語", "ko": "한국어", "fr": "Français", "it": "Italiano", "de": "Deutsch" }
+}
