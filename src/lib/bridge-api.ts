@@ -148,6 +148,11 @@ declare global {
       multiFactor: {
         score: (req: { stocks?: Array<{ code: string; name: string }>; preset?: string; limit?: number }) => Promise<any>;
       };
+      // Q16: Dynamic Position Sizer
+      positionSize: {
+        calc: (req: any) => Promise<any>;
+        portfolio: (req: any) => Promise<any>;
+      };
       nl: {
         parse: (text: string) => Promise<any>;
         templates: () => Promise<any>;
