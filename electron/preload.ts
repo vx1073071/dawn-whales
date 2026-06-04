@@ -271,6 +271,14 @@ contextBridge.exposeInMainWorld('api', {
     screenBatch: (batches: any[]) => ipcRenderer.invoke('factor:screen-batch', batches),
   },
 
+  // ── Portfolio Optimizer (JVS-57) ──────────────────────────────
+  portfolioOptimizer: {
+    optimize: (assets: any[], constraints?: any) => ipcRenderer.invoke('portfolio:optimize', assets, constraints),
+    efficientFrontier: (assets: any[], points?: number, constraints?: any) => ipcRenderer.invoke('portfolio:efficient-frontier', assets, points, constraints),
+    riskParity: (assets: any[], constraints?: any) => ipcRenderer.invoke('portfolio:risk-parity', assets, constraints),
+    optimizeBatch: (scenarios: any[]) => ipcRenderer.invoke('portfolio:optimize-batch', scenarios),
+  },
+
   // ── Stock Anomaly Detector (JVS-7) ─────────────────────────────
   stockAnomaly: {
     getSummary: () => ipcRenderer.invoke('em:get-anomaly-summary'),

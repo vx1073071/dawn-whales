@@ -52,7 +52,7 @@ export default function PortfolioPage() {
       if (fundsData) setFunds({ ...fundsData, currency: fundsData.currency || 'USD' });
       setPositions(pos || []);
     } catch (e: any) {
-      setError(e.message || '加载失败');
+      setError(e.message || t('common.loadingFailed'));
     } finally {
       setLoading(false);
     }
@@ -102,26 +102,26 @@ export default function PortfolioPage() {
       {!accountId && !loading && (
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center mb-4">
           <div className="text-3xl mb-2 opacity-40">🔌</div>
-          <p className="text-gray-400 text-sm">未连接券商</p>
-          <p className="text-gray-500 text-xs mt-1">请先在系统设置中连接 OpenD</p>
+          <p className="text-gray-400 text-sm">{t('common.disconnected')}</p>
+          <p className="text-gray-500 text-xs mt-1">{t('portfolio.connectOpendFirst')}</p>
         </div>
       )}
 
       {/* Account Summary Cards */}
       {funds && (
         <div className="grid grid-cols-5 gap-3 mb-6">
-          <SummaryCard label="总资产" value={`$${fmt(funds.totalAssets)}`} highlight />
-          <SummaryCard label="今日盈亏" value={`${funds.todayPnl >= 0 ? '+' : ''}$${fmt(funds.todayPnl)}`} className={pnlClass(funds.todayPnl)} />
-          <SummaryCard label="持仓市值" value={`$${fmt(funds.marketVal)}`} />
-          <SummaryCard label="可用资金" value={`$${fmt(funds.cash)}`} />
-          <SummaryCard label="购买力" value={`$${fmt(funds.power)}`} />
+          <SummaryCard label={t('portfolio.totalAssets')} value={`$${fmt(funds.totalAssets)}`} highlight />
+          <SummaryCard label={t('portfolio.todayPnl')} value={`${funds.todayPnl >= 0 ? '+' : ''}$${fmt(funds.todayPnl)}`} className={pnlClass(funds.todayPnl)} />
+          <SummaryCard label={t('portfolio.marketValue')} value={`$${fmt(funds.marketVal)}`} />
+          <SummaryCard label={t('portfolio.availableCash')} value={`$${fmt(funds.cash)}`} />
+          <SummaryCard label={t('portfolio.buyingPower')} value={`$${fmt(funds.power)}`} />
         </div>
       )}
 
       {/* Allocation Bar */}
       {allocation.length > 0 && (
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4 mb-4">
-          <h3 className="text-gray-300 text-xs font-medium mb-3">资产配置</h3>
+          <h3 className="text-gray-300 text-xs font-medium mb-3">{t('portfolio.assetAllocation')}</h3>
           <div className="flex h-4 rounded-lg overflow-hidden mb-3">
             {allocation.slice(0, 8).map((p, i) => {
               const colors = ['#C9A046', '#22c55e', '#3b82f6', '#a855f7', '#ef4444', '#f97316', '#06b6d4', '#ec4899'];
@@ -161,26 +161,26 @@ export default function PortfolioPage() {
       <div className="grid grid-cols-3 gap-4">
         <div className="col-span-2 bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           <div className="px-4 py-3 border-b border-white/5">
-            <h2 className="text-white font-medium text-sm">持仓明细 ({positions.length})</h2>
+            <h2 className="text-white font-medium text-sm">{t('portfolio.positionDetail')} ({positions.length})</h2>
           </div>
           {positions.length === 0 ? (
             <div className="p-8 text-center text-gray-500">
               <div className="text-3xl mb-2 opacity-40">💼</div>
-              <p className="text-sm">{loading ? '加载中...' : '暂无持仓'}</p>
+              <p className="text-sm">{loading ? t('common.loading') : t('portfolio.noPositions')}</p>
             </div>
           ) : (
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">代码</th>
-                  <th className="px-4 py-3 text-left">名称</th>
-                  <th className="px-4 py-3 text-right">持仓</th>
-                  <th className="px-4 py-3 text-right">均价</th>
-                  <th className="px-4 py-3 text-right">现价</th>
-                  <th className="px-4 py-3 text-right">盈亏</th>
-                  <th className="px-4 py-3 text-right">盈亏%</th>
-                  <th className="px-4 py-3 text-right">市值</th>
-                  <th className="px-4 py-3 text-right">占比</th>
+                  <th className="px-4 py-3 text-left">{t('trading.code')}</th>
+                  <th className="px-4 py-3 text-left">{t('common.name')}</th>
+                  <th className="px-4 py-3 text-right">{t('portfolio.positions')}</th>
+                  <th className="px-4 py-3 text-right">{t('portfolio.avgCost')}</th>
+                  <th className="px-4 py-3 text-right">{t('portfolio.curPrice')}</th>
+                  <th className="px-4 py-3 text-right">{t('portfolio.pnl')}</th>
+                  <th className="px-4 py-3 text-right">{t('portfolio.pnlPct')}</th>
+                  <th className="px-4 py-3 text-right">{t('portfolio.marketValue')}</th>
+                  <th className="px-4 py-3 text-right">{t('portfolio.ratio')}</th>
                 </tr>
               </thead>
               <tbody>

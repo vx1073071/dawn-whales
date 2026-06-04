@@ -1758,3 +1758,24 @@ export async function batchScreenStocks(batches: any[]): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.multiFactor.screenBatch(batches);
 }
+
+// ── Portfolio Optimizer (JVS-57) ──────────────────────────────────────────
+export async function optimizePortfolio(assets: any[], constraints?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.portfolioOptimizer.optimize(assets, constraints);
+}
+
+export async function generateEfficientFrontier(assets: any[], points?: number, constraints?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.portfolioOptimizer.efficientFrontier(assets, points, constraints);
+}
+
+export async function riskParityPortfolio(assets: any[], constraints?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.portfolioOptimizer.riskParity(assets, constraints);
+}
+
+export async function batchOptimizePortfolios(scenarios: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.portfolioOptimizer.optimizeBatch(scenarios);
+}

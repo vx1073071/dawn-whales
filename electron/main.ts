@@ -93,6 +93,7 @@ import { generateWalkForwardReport, generateBatchWalkForwardReport } from './eng
 import { generateBrinsonReport, generateBatchBrinsonReport } from './engine/brinson-attribution';
 import { analyzeOptionsChain, analyzeBatchOptionsChain } from './engine/options-chain-analyzer';
 import { scoreAndRankStocks, screenStocks, batchScreenStocks } from './engine/multi-factor-selector';
+import { optimizePortfolio, generateEfficientFrontier, riskParityPortfolio, batchOptimizePortfolios } from './engine/portfolio-optimizer';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -663,6 +664,47 @@ function setupIPC() {
       return { success: true, result };
     } catch (err: any) {
       log.error('[MultiFactor] Batch screen error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Portfolio Optimizer (JVS-57) ────────────────────────────────────────
+  ipcMain.handle('portfolio:optimize', async (_e, assets: any[], constraints?: any) => {
+    try {
+      const result = optimizePortfolio(assets, constraints);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[PortfolioOptimizer] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('portfolio:efficient-frontier', async (_e, assets: any[], points?: number, constraints?: any) => {
+    try {
+      const result = generateEfficientFrontier(assets, points, constraints);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[PortfolioOptimizer] Frontier error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('portfolio:risk-parity', async (_e, assets: any[], constraints?: any) => {
+    try {
+      const result = riskParityPortfolio(assets, constraints);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[PortfolioOptimizer] Risk parity error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('portfolio:optimize-batch', async (_e, scenarios: any[]) => {
+    try {
+      const result = await batchOptimizePortfolios(scenarios);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[PortfolioOptimizer] Batch error:', err);
       return { success: false, error: err.message };
     }
   });
