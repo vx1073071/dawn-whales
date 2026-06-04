@@ -73,6 +73,14 @@ contextBridge.exposeInMainWorld('api', {
 
     // Q16: Dynamic Position Sizer
     positionSize: (req: any) => ipcRenderer.invoke('risk:position-size', req),
+
+    // Q17: Paper Trader
+    paperStart: () => ipcRenderer.invoke('paper:start'),
+    paperStop: () => ipcRenderer.invoke('paper:stop'),
+    paperReset: () => ipcRenderer.invoke('paper:reset'),
+    paperReport: () => ipcRenderer.invoke('paper:report'),
+    paperStatus: () => ipcRenderer.invoke('paper:status'),
+    paperExecuteSignal: (signal: any) => ipcRenderer.invoke('paper:execute-signal', signal),
   },
 
   // ── NL Parser ─────────────────────────────────────────────────────

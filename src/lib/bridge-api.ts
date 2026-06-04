@@ -153,6 +153,15 @@ declare global {
         calc: (req: any) => Promise<any>;
         portfolio: (req: any) => Promise<any>;
       };
+      // Q17: Paper Trader
+      paper: {
+        start: () => Promise<any>;
+        stop: () => Promise<any>;
+        reset: () => Promise<any>;
+        report: () => Promise<any>;
+        status: () => Promise<any>;
+        executeSignal: (signal: any) => Promise<any>;
+      };
       nl: {
         parse: (text: string) => Promise<any>;
         templates: () => Promise<any>;

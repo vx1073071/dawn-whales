@@ -922,6 +922,70 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Q17: Paper Trader ─────────────────────────────────────────
+  ipcMain.handle('paper:start', async () => {
+    try {
+      const { getPaperTrader } = require('./engine/paper-trader');
+      const pt = getPaperTrader('default');
+      return { success: true, status: pt.getStatus() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('paper:stop', async () => {
+    try {
+      const { getPaperTrader } = require('./engine/paper-trader');
+      const pt = getPaperTrader('default');
+      pt.stopAll();
+      return { success: true, report: pt.getReport() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('paper:reset', async () => {
+    try {
+      const { getPaperTrader } = require('./engine/paper-trader');
+      getPaperTrader('default').reset();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('paper:report', async () => {
+    try {
+      const { getPaperTrader } = require('./engine/paper-trader');
+      const pt = getPaperTrader('default');
+      const report = pt.getReport();
+      return { success: true, ...report };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('paper:execute-signal', async (_e, raw: unknown) => {
+    try {
+      const { getPaperTrader } = require('./engine/paper-trader');
+      const signal = raw as any;
+      const pt = getPaperTrader('default');
+      const trade = pt.executeSignal(signal, signal.name);
+      return { success: !!trade, trade };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('paper:status', async () => {
+    try {
+      const { getPaperTrader } = require('./engine/paper-trader');
+      return { success: true, status: getPaperTrader('default').getStatus() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Q16: Dynamic Position Sizer ────────────────────────────────
   ipcMain.handle('risk:position-size', async (_e, raw: unknown) => {
     try {
