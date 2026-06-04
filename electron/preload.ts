@@ -707,6 +707,15 @@ contextBridge.exposeInMainWorld('api', {
     stats: () => ipcRenderer.invoke("data:aggregator-stats"),
     clearCache: () => ipcRenderer.invoke("data:aggregator-clear-cache"),
   },
+
+  // ── Data Pipeline (JVS-57) ─────────────────────────────────────────────
+  dataPipeline: {
+    clean: (point: any) => ipcRenderer.invoke('data:clean', point),
+    cleanBatch: (points: any[]) => ipcRenderer.invoke('data:clean-batch', points),
+    stats: () => ipcRenderer.invoke('data:pipeline-stats'),
+    clearHistory: (code?: string) => ipcRenderer.invoke('data:pipeline-clear-history', code),
+  },
+
   // ── Strategy Signal Generator (JVS-46) ──────────────────────────
   signalGenerator: {
     generate: (raw: any) => ipcRenderer.invoke('signal:generate', raw),

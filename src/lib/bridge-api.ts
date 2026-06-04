@@ -116,6 +116,13 @@ declare global {
         optimize: (strategyDSL: any, backtestResult: any) => Promise<any>;
         correlation: (strategies: any) => Promise<any>;
         multiFactor: (request: { stocks: Array<{ code: string; name: string }>; preset?: string; limit?: number }) => Promise<any>;
+        liveStart: (symbols?: string[]) => Promise<any>;
+        liveStop: () => Promise<any>;
+        liveAddStrategy: (config: any) => Promise<any>;
+        liveRemoveStrategy: (strategyId: string) => Promise<any>;
+        liveGetStatus: () => Promise<any>;
+        liveGetPositions: () => Promise<any>;
+        liveGetOrders: () => Promise<any>;
       };
       notification: {
         generate: (ctx: any) => Promise<any>;
@@ -160,6 +167,8 @@ declare global {
       // Q15: Multi-Factor Model
       multiFactor: {
         score: (req: { stocks?: Array<{ code: string; name: string }>; preset?: string; limit?: number }) => Promise<any>;
+        screen: (stocks: any[], criteria: any, factorWeights?: any) => Promise<any>;
+        screenBatch: (stocks: any[], criteria: any, factorWeights?: any) => Promise<any>;
       };
       // Q16: Dynamic Position Sizer
       positionSize: {
@@ -205,8 +214,11 @@ declare global {
         // Q16: Dynamic Position Sizing
         calculateSize: (request: any) => Promise<any>;
         calculatePortfolioSizes: (request: any) => Promise<any>;
+        'calculate-portfolio-sizes': (request: any) => Promise<any>;
         recordTrade: (trade: any) => Promise<any>;
+        'record-trade': (trade: any) => Promise<any>;
         getTradeHistory: (strategyId?: string) => Promise<any>;
+        'get-trade-history': (strategyId?: string) => Promise<any>;
       };
       db: {
         getStrategies: () => Promise<any>;
@@ -258,6 +270,7 @@ declare global {
       };
       on: (channel: string, callback: (...args: any[]) => void) => void;
       off?: (channel: string, callback: (...args: any[]) => void) => void;
+      [key: string]: any;
     };
   }
 }
@@ -2030,21 +2043,26 @@ export async function importVersions(jsonString: string): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.versionControl.import(jsonString);
 }
- 
- / /   9’¬ 9’¬   D a t a   A g g r e g a t o r   ( J V S - 5 6 )   9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬ 9’¬  
-  
- e x p o r t   a s y n c   f u n c t i o n   a g g r e g a t e D a t a ( c o d e s :   s t r i n g [ ] ) :   P r o m i s e < a n y >   {  
-     i f   ( ! h a s I P C ( ) )   r e t u r n   {   s u c c e s s :   f a l s e ,   e r r o r :   ' I P C   n o t   a v a i l a b l e '   } ;  
-     r e t u r n   w i n d o w . a p i . d a t a A g g r e g a t o r . a g g r e g a t e ( c o d e s ) ;  
- }  
-  
- e x p o r t   a s y n c   f u n c t i o n   g e t D a t a A g g r e g a t o r S t a t s ( ) :   P r o m i s e < a n y >   {  
-     i f   ( ! h a s I P C ( ) )   r e t u r n   {   s u c c e s s :   f a l s e ,   e r r o r :   ' I P C   n o t   a v a i l a b l e '   } ;  
-     r e t u r n   w i n d o w . a p i . d a t a A g g r e g a t o r . s t a t s ( ) ;  
- }  
-  
- e x p o r t   a s y n c   f u n c t i o n   c l e a r D a t a A g g r e g a t o r C a c h e ( ) :   P r o m i s e < a n y >   {  
-     i f   ( ! h a s I P C ( ) )   r e t u r n   {   s u c c e s s :   f a l s e ,   e r r o r :   ' I P C   n o t   a v a i l a b l e '   } ;  
-     r e t u r n   w i n d o w . a p i . d a t a A g g r e g a t o r . c l e a r C a c h e ( ) ;  
- }  
- 
+
+// â”€â”€ Data Pipeline (JVS-57) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+export async function cleanDataPoint(point: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataPipeline.clean(point);
+}
+
+export async function cleanDataBatch(points: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataPipeline.cleanBatch(points);
+}
+
+export async function getPipelineStats(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataPipeline.stats();
+}
+
+export async function clearPipelineHistory(code?: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataPipeline.clearHistory(code);
+}
+

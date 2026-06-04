@@ -49,6 +49,7 @@ import { getPythonProxy } from './data/python-proxy';
 import { getPush2Proxy } from './data/push2-proxy';
 import { getDataQualityMonitor, registerModule } from './engine/data-quality-monitor';
 import { DataAggregator, getDataAggregator } from './data/data-aggregator';
+import { DataCleaningPipeline, getDataCleaningPipeline } from './data/data-pipeline';
 import { captureSnapshot, querySnapshots, getSnapshot, compareSnapshots, getSnapshotTimeline, getLatestSnapshot, cleanupOldSnapshots, exportSnapshots, importSnapshots, getSnapshotStats, deleteSnapshot, clearAllSnapshots } from './engine/snapshot-service';
 import { trackVersion, getEntityVersions, getVersion, getLatestVersion, diffVersions, rollback, queryVersions, getVersionStats, deleteVersion, clearAllVersions, exportVersions, importVersions } from './engine/version-control-service';
 import { setupI18nDataIPC } from './engine/i18n-data';
@@ -4336,6 +4337,47 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const aggregator = getDataAggregator();
       aggregator.clearCache();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Data Pipeline (JVS-57) ─────────────────────────────────────────────
+  ipcMain.handle('data:clean', async (_e, point: any) => {
+    try {
+      const pipeline = getDataCleaningPipeline();
+      const result = pipeline.clean(point);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:clean-batch', async (_e, points: any[]) => {
+    try {
+      const pipeline = getDataCleaningPipeline();
+      const results = pipeline.cleanBatch(points);
+      return { success: true, results };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:pipeline-stats', async () => {
+    try {
+      const pipeline = getDataCleaningPipeline();
+      const stats = pipeline.getStats();
+      return { success: true, stats };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:pipeline-clear-history', async (_e, code?: string) => {
+    try {
+      const pipeline = getDataCleaningPipeline();
+      pipeline.clearHistory(code);
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
