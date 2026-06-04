@@ -32,6 +32,7 @@ import { getStockCapitalFlowRank, getSectorCapitalFlowRank, getConceptCapitalFlo
 import { getCapitalFlowMonitor } from './engine/capital-flow-monitor';
 import { getFundHoldings, getStockFundOwnership, getFundIncreaseRank, getFundDecreaseRank } from './engine/fund-holdings';
 import { diagnoseStock, batchDiagnose } from './engine/stock-diagnosis';
+import { calculatePortfolioRisk } from './engine/portfolio-risk';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1813,6 +1814,16 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: true, reports: results };
     } catch (err: any) {
       return { success: false, reports: [], error: err.message };
+    }
+  });
+
+  // ── Portfolio Risk — 组合风险计算器 (JVS-15) ─────────────────────
+  ipcMain.handle('em:portfolio-risk', async (_e, request: any) => {
+    try {
+      const result = await calculatePortfolioRisk(request || { positions: [] });
+      return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
     }
   });
 

@@ -794,6 +794,28 @@ export async function batchDiagnoseStocks(codes: string[], options?: any): Promi
   return window.api.stockDiagnosis.batchDiagnose(codes, options);
 }
 
+// ── Portfolio Risk — 组合风险计算器 (JVS-15) ──────────────────────────────
+
+export async function calculatePortfolioRisk(request: {
+  positions: Array<{
+    code: string;
+    name: string;
+    shares: number;
+    avgCost: number;
+    currentPrice: number;
+    weight?: number;
+    sector?: string;
+  }>;
+  riskFreeRate?: number;
+  benchmarkCode?: string;
+  includeConcentration?: boolean;
+  includeCorrelation?: boolean;
+  includeSentiment?: boolean;
+}): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.portfolioRisk.calculate(request);
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {

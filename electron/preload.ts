@@ -234,6 +234,11 @@ contextBridge.exposeInMainWorld('api', {
     batchDiagnose: (codes: string[], options?: any) => ipcRenderer.invoke('em:batch-diagnose', codes, options),
   },
 
+  // ── Portfolio Risk — 组合风险计算器 (JVS-15) ──────────────────
+  portfolioRisk: {
+    calculate: (request: any) => ipcRenderer.invoke('em:portfolio-risk', request),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),
