@@ -3,8 +3,9 @@ import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, par
 import StrategyExplainCard from './StrategyExplainCard';
 import StrategyCompareModal from './StrategyCompareModal';
 import TemplateBrowser from './TemplateBrowser';
+import PaperTraderPanel from './PaperTraderPanel';
 
-type CreateMode = null | 'ai' | 'template' | 'form';
+type CreateMode = null | 'ai' | 'template' | 'form' | 'paper';
 
 interface ParsedStrategy {
   success: boolean;
@@ -68,11 +69,33 @@ export default function StrategyPage() {
         </div>
       </div>
 
-      {!mode && !selectedId && <ModeSelector onSelect={setMode} />}
+      {!mode && !selectedId && (
+        <>
+          <button
+            onClick={() => setMode('paper')}
+            className="w-full bg-[#0d1a0d] border border-green-500/20 rounded-xl p-4 text-left hover:border-green-500/40 transition-all mb-4"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">🎯</span>
+              <div>
+                <div className="text-green-400 font-semibold text-sm">模拟实盘</div>
+                <div className="text-gray-400 text-xs">Paper Trader · 启动/暂停/绩效报告</div>
+              </div>
+              <div className="ml-auto text-green-500/60 text-xs">→ 进入</div>
+            </div>
+          </button>
+          <ModeSelector onSelect={setMode} />
+        </>
+      )}
+      {mode === 'paper' && (
+        <div className="mb-4">
+          <button onClick={() => setMode(null)} className="text-gray-400 hover:text-white text-xs flex items-center gap-1 mb-4 transition-colors">← 返回策略工坊</button>
+          <PaperTraderPanel />
+        </div>
+      )}
       {mode === 'ai' && <AICreator onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} onFillForm={(parsed) => { setNlPrefill(parsed); setMode('form'); }} />}
       {mode === 'template' && <TemplateBrowser onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} />}
       {mode === 'form' && <FormCreator onBack={() => { setMode(null); setNlPrefill(null); }} onCreated={() => { setMode(null); setNlPrefill(null); refresh(); }} nlPrefill={nlPrefill || undefined} />}
-
       {/* My strategies */}
       {!mode && !selectedId && (
         <MyStrategies
