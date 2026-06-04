@@ -20,6 +20,7 @@ import { DataProviderService } from './data/data-provider';
 import { EMDataProvider } from './data/em-data-provider';
 import { MacroDataProvider } from './data/macro-provider';
 import { SentimentIndexEngine } from './engine/sentiment-index';
+import { StockScreenerService } from './engine/stock-screener';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner';
@@ -112,6 +113,7 @@ let marketplaceService: MarketplaceService | null = null;
 let dataProvider: DataProviderService | null = null;
 let emDataProvider: EMDataProvider | null = null;
 let macroDataProvider: MacroDataProvider | null = null;
+let stockScreener: StockScreenerService | null = null;
 
 // ── Shared quote push handler (prevents duplicate listener registration) ─────
 const quotePushHandler = (quotes: any[]) => {
@@ -1423,6 +1425,18 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Stock Screener (JVS-4) ─────────────────────────────────────────────
+  ipcMain.handle('screener:search', async (_e, request: any) => {
+    if (!stockScreener) return { success: false, error: 'StockScreener not initialized' };
+    try {
+      const result = await stockScreener.search(request || { query: '' });
+      return { success: true, ...result };
+    } catch (err: any) {
+      log.error('[StockScreener] Search failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
   ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
@@ -1557,6 +1571,9 @@ app.whenReady().then(async () => {
       macroDataProvider = new MacroDataProvider();
       macroDataProvider.initialize(db);
       log.info('[App] MacroDataProvider initialized (JVS-2)');
+
+      stockScreener = new StockScreenerService();
+      log.info('[App] StockScreenerService initialized (JVS-4)');
     }
   } catch (err: any) {
     log.error('[App] MarketplaceService init failed:', err.message);

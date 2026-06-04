@@ -64,6 +64,9 @@ declare global {
       sentimentIndex: {
         compute: (input?: any) => Promise<any>;
       };
+      stockScreener: {
+        search: (request: any) => Promise<any>;
+      };
       backtestEnhanced: {
         walkForward: (config: any) => Promise<any>;
         paramScan: (config: any) => Promise<any>;
@@ -540,6 +543,17 @@ export async function getMacroDashboard(indicators?: string[]): Promise<any> {
 export async function computeSentiment(input?: any): Promise<any> {
   if (!hasIPC()) return { success: false, result: null };
   return window.api.sentimentIndex.compute(input);
+}
+
+// ── Stock Screener (JVS-4) ────────────────────────────────────────────────
+
+export async function searchStocks(request: {
+  query: string;
+  selectType?: string;
+  limit?: number;
+}): Promise<any> {
+  if (!hasIPC()) return { success: false, records: [] };
+  return window.api.stockScreener.search(request);
 }
 
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────

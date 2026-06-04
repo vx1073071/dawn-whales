@@ -157,6 +157,11 @@ contextBridge.exposeInMainWorld('api', {
     compute: (input?: any) => ipcRenderer.invoke('em:get-sentiment', input),
   },
 
+  // ── Stock Screener (JVS-4) ──────────────────────────────────────
+  stockScreener: {
+    search: (request: any) => ipcRenderer.invoke('screener:search', request),
+  },
+
   // ── Backtest Enhancement (Sprint 2) ──────────────────────────────
   backtest: {
     multiPeriod: (config: any) => ipcRenderer.invoke('backtest:multiPeriod', config),
