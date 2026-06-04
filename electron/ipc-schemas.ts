@@ -327,6 +327,27 @@ export const StrategyCompareSchema = z.object({
   }),
 });
 
+// ── Strategy Optimize ────────────────────────────────────────────────────────
+
+export const StrategyOptimizeSchema = z.object({
+  strategyDSL: z.object({
+    name: z.string(),
+    symbol: z.string().optional(),
+    type: z.enum(['ma_cross', 'rsi', 'macd', 'momentum', 'bollinger', 'custom']),
+    params: z.record(z.string(), z.unknown()).optional(),
+    stopLoss: z.number().optional(),
+    takeProfit: z.number().optional(),
+  }),
+  backtestResult: z.object({
+    totalReturn: z.number(),
+    sharpeRatio: z.number(),
+    maxDrawdown: z.number(),
+    winRate: z.number(),
+    tradeCount: z.number().optional(),
+    equityCurve: z.array(z.number()).optional(),
+  }),
+});
+
 // ── Utility ────────────────────────────────────────────────────────────────
 
 /**

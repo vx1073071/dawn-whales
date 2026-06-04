@@ -69,6 +69,7 @@ import { validate,
   NlParseSchema,
   StrategyExplainSchema,
   StrategyCompareSchema,
+  StrategyOptimizeSchema,
 } from './ipc-schemas';
 import { storeKey, getKey, getDeepSeekKey, storeDeepSeekKey } from './utils/secure-key';
 import log from 'electron-log';
@@ -620,6 +621,70 @@ Keep it under 250 words. Be objective, not promotional.`;
       });
       const content = result.choices?.[0]?.message?.content || '';
       return { success: true, comparison: content };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Strategy Optimizer (LLM-powered) ─────────────────────────────────
+  ipcMain.handle('strategy:optimize', async (_e, raw: unknown) => {
+    const vErr = validate(StrategyOptimizeSchema, raw);
+    if (vErr) return vErr;
+    const { strategyDSL, backtestResult } = raw as {
+      strategyDSL: { name: string; symbol?: string; type: string; params: Record<string, unknown>; stopLoss?: number; takeProfit?: number };
+      backtestResult: { totalReturn: number; sharpeRatio: number; maxDrawdown: number; winRate: number; tradeCount?: number; equityCurve?: number[] };
+    };
+    const apiKey = getDeepSeekKey(app);
+    if (!apiKey) return { success: false, error: 'DeepSeek API key not configured. Use Settings to set your key.' };
+
+
+    const { totalReturn, sharpeRatio, maxDrawdown, winRate, tradeCount } = backtestResult;
+    const metricSummary = `Total Return: ${totalReturn}%; Sharpe: ${sharpeRatio}; Max Drawdown: ${maxDrawdown}%; Win Rate: ${winRate}%${tradeCount !== undefined ? `; Trades: ${tradeCount}` : ''}`;
+    const prompt = `You are a quantitative trading strategy optimization assistant. Based on the backtest results below, generate 3 concise parameter optimization suggestions to improve this strategy.
+
+Current Strategy:
+- Name: ${strategyDSL.name}
+- Type: ${strategyDSL.type}
+- Symbol: ${strategyDSL.symbol || 'Unknown'}
+- Current Params: ${JSON.stringify(strategyDSL.params || {})}
+- Stop Loss: ${strategyDSL.stopLoss ?? 'Not set'}%
+- Take Profit: ${strategyDSL.takeProfit ?? 'Not set'}%
+
+Backtest Results:
+${metricSummary}
+
+
+Provide exactly 3 suggestions. For each, explain:
+1. Which parameter to change and why
+2. The expected improvement
+3. A concise rationale (1 sentence)
+
+Respond ONLY with valid JSON in this exact format (no markdown, no explanation outside JSON):
+{
+  "suggestions": [
+    {
+      "param": "param_name",
+      "currentValue": "current value or range",
+      "suggestedValue": "suggested value or range",
+      "reason": "why this improves the strategy"
+    }
+  ]
+}`;
+
+
+    try {
+      const body = JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: prompt }], temperature: 0.4, max_tokens: 600 });
+      const result = await new Promise<any>((resolve, reject) => {
+        const req = require('https').request(
+          { hostname: 'api.deepseek.com', path: '/v1/chat/completions', method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` } },
+          (res: any) => { let data = ''; res.on('data', (c: string) => data += c); res.on('end', () => { try { resolve(JSON.parse(data)); } catch { reject(new Error('Invalid JSON')); } }); }
+        );
+        req.on('error', reject); req.write(body); req.end();
+      });
+      const rawContent = result.choices?.[0]?.message?.content || '';
+      let suggestions = [];
+      try { suggestions = JSON.parse(rawContent).suggestions || []; } catch { suggestions = []; }
+      return { success: true, suggestions };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

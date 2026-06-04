@@ -78,6 +78,7 @@ declare global {
         stopLive: (id: string) => Promise<any>;
         explain: (strategy: any) => Promise<any>;
         compare: (s1: any, s2: any) => Promise<any>;
+        optimize: (strategyDSL: any, backtestResult: any) => Promise<any>;
       };
       nl: {
         parse: (text: string) => Promise<any>;
