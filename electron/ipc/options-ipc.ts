@@ -4,7 +4,7 @@
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from '../../node_modules/electron-log';
-import { validate, z, 
+import { validate, 
   BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
   BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
   BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
@@ -38,8 +38,8 @@ import { validate, z,
 import { analyzeBatchOptionsChain, analyzeOptionsChain } from '../engine/options-chain-analyzer';
 
 export function registerOptionsIPC(
-  _services: any
-) {
+  calcGreeksJS: any
+) { {
 
   // ── Options Chain Analyzer (JVS-55) ─────────────────────────────────
   ipcMain.handle('options:chain-analyze', async (_e, contracts: any[], symbol: string, historicalIVRange?: any) => {

@@ -4,7 +4,7 @@
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from '../../node_modules/electron-log';
-import { validate, z, 
+import { validate, 
   BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
   BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
   BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
@@ -50,8 +50,12 @@ import { compareMultipleSectors, compareSectorStocks, rankSectorStocks } from '.
 import { batchScreenStocks, scoreAndRankStocks, screenStocks } from '../engine/multi-factor-selector';
 
 export function registerDataIPC(
-  _services: any
-) {
+  dataProvider: any,
+  stockScreener: any,
+  dataScheduler: any,
+  mainWindow: any,
+  flowPredictor: any
+) { {
 
   ipcMain.handle('predict:capital-flow', async (_e, params: any) => {
     try {

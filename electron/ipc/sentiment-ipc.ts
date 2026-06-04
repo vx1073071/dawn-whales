@@ -4,7 +4,7 @@
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from '../../node_modules/electron-log';
-import { validate, z, 
+import { validate, 
   BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
   BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
   BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
@@ -39,8 +39,9 @@ import { getRealtimeSentimentStream } from '../engine/sentiment-stream';
 import { getSentimentDashboard } from '../engine/sentiment-dashboard';
 
 export function registerSentimentIPC(
-  _services: any
-) {
+  mainWindow: any,
+  sentimentAttrEngine: any
+) { {
 
   ipcMain.handle('sentiment:attribution', async (_e, params: any) => {
     try {

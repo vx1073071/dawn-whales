@@ -4,7 +4,7 @@
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from '../../node_modules/electron-log';
-import { validate, z, 
+import { validate, 
   BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
   BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
   BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
@@ -40,8 +40,9 @@ import { decomposeRisk, runMonteCarlo } from '../engine/risk-decomposition';
 import { HISTORICAL_SCENARIOS, runCustomShock, runStressTest } from '../engine/stress-tester';
 
 export function registerRiskIPC(
-  _services: any
-) {
+  riskEngine: any,
+  unifiedRiskDash: any
+) { {
 
   ipcMain.handle('risk:dashboard', async (_e, params?: any) => {
     try {

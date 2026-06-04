@@ -4,7 +4,7 @@
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from '../../node_modules/electron-log';
-import { validate, z, 
+import { validate, 
   BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
   BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
   BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
@@ -38,8 +38,9 @@ import { validate, z,
 import { getVersion } from '../engine/version-control-service';
 
 export function registerAppIPC(
-  _services: any
-) {
+  mainWindow: any,
+  strategyEngine: any
+) { {
 
   // ── App ─────────────────────────────────────────────────────────────
   ipcMain.handle('app:getInfo', () => ({
@@ -101,7 +102,7 @@ export function registerAppIPC(
       if (mainWindow && !mainWindow.isDestroyed()) {
         mainWindow.webContents.send('notification', {
           type: 'error',
-          title: '紧急停止',
+          title: '紧急停�?,
           message: '所有策略已停止',
         });
       }
@@ -117,7 +118,7 @@ export function registerAppIPC(
     if (vErr) return vErr;
     try {
       const url = new URL(rawUrl);
-      if (!ALLOWED_PROTOCOLS.includes(url.protocol)) {
+      if (!['https:', 'http:', 'ftp:'].includes(url.protocol)) {
         log.warn('[Security] Blocked openExternal:', rawUrl);
         return { success: false, error: 'Protocol not allowed' };
       }

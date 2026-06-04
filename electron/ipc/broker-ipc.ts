@@ -4,7 +4,7 @@
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from '../../node_modules/electron-log';
-import { validate, z, 
+import { validate, 
   BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
   BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
   BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
@@ -39,8 +39,21 @@ import { FutuOpenDClient } from '../broker/futu-opend';
 import { BrokerManager } from '../broker/BrokerManager';
 
 export function registerBrokerIPC(
-  _services: any
-) {
+  opendClient: any,
+  brokerManager: any,
+  strategyEngine: any,
+  db: any,
+  WATCHLIST: any,
+  mainWindow: any,
+  quotePushHandler: any,
+  riskEngine: any,
+  orderRouter: any,
+  tcaEngine: any,
+  multiBrokerPnL: any,
+  BrokerConfig: any,
+  signalQualityScorer: any,
+  positionAlertEngine: any
+) { {
 
   ipcMain.handle('order:route', async (_e, params: any) => {
     try {
@@ -198,7 +211,7 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── Subscribe / Unsubscribe (WP1: 动态监控列表) ────────────────────
+  // ── Subscribe / Unsubscribe (WP1: 动态监控列�? ────────────────────
   ipcMain.handle('broker:subscribe', async (_e, codes: string[]) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
@@ -325,7 +338,7 @@ export function registerBrokerIPC(
     try {
       const adapter = brokerManager?.getAdapters().get(id);
       if (!adapter) {
-        // Broker not yet connected — connect first
+        // Broker not yet connected �?connect first
         const config = brokerManager?.getConfigs().find((c: any) => c.id === id);
         if (!config) return { success: false, error: `Broker config not found: ${id}` };
 

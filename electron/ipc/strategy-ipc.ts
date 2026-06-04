@@ -4,7 +4,7 @@
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from '../../node_modules/electron-log';
-import { validate, z, 
+import { validate, 
   BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
   BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
   BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
@@ -43,8 +43,15 @@ import { buildCorrelationVisualization } from '../engine/correlation-visualizer'
 import { compareBacktests, summaryTable } from '../engine/backtest-comparator';
 
 export function registerStrategyIPC(
-  _services: any
-) {
+  strategyEngine: any,
+  db: any,
+  opendClient: any,
+  backtestEngine: any,
+  getDeepSeekKey_: any,
+  liveExecutor: any,
+  app: any,
+  STRATEGY_UPDATE_WHITELIST: any
+) { {
 
   // ── Strategy Engine ─────────────────────────────────────────────────
   ipcMain.handle('strategy:create', async (_e, dsl: any) => {
@@ -109,7 +116,7 @@ export function registerStrategyIPC(
       }
 
       if (!klines || klines.length < 50) {
-        return { success: false, error: 'K线数据不足（需要至少50根），请确认 OpenD 已连接' };
+        return { success: false, error: 'K线数据不足（需要至�?0根），请确认 OpenD 已连�? };
       }
 
       const strategyId = config.strategyId;
@@ -141,7 +148,7 @@ export function registerStrategyIPC(
     return { success: true };
   });
 
-  // ── Strategy AI — LLM-powered (Sprint 2 P1) ─────────────────────
+  // ── Strategy AI �?LLM-powered (Sprint 2 P1) ─────────────────────
   ipcMain.handle('strategy:explain', async (_e, strategy: any) => {
     const apiKey = getDeepSeekKey_(app);
     if (!apiKey) {
@@ -312,7 +319,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       generations?: number;
       iterations?: number;
     };
-    log.info(`[IPC] strategy:auto-tune — type=${strategyType} method=${method ?? 'both'}`);
+    log.info(`[IPC] strategy:auto-tune �?type=${strategyType} method=${method ?? 'both'}`);
     const result = await autoTune(strategyType, ranges, klines, { method, populationSize, generations, iterations });
     return { success: true, result };
   });

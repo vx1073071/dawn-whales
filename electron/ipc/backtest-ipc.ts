@@ -4,7 +4,7 @@
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from '../../node_modules/electron-log';
-import { validate, z, 
+import { validate, 
   BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
   BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
   BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
@@ -40,8 +40,8 @@ import { WalkForwardEngine } from '../engine/walk-forward';
 import { ParameterScanner } from '../engine/parameter-scanner-v2';
 
 export function registerBacktestIPC(
-  _services: any
-) {
+  backtestEngine: any
+) { {
 
   ipcMain.handle('backtest:multiPeriod', async (_e, config: any) => {
     const vErr = validate(BacktestMultiPeriodSchema, { config });
@@ -105,7 +105,7 @@ export function registerBacktestIPC(
     }
   });
 
-  // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
+  // ── Walk-Forward Analysis (Sprint 2 �?JVS) ───────────────────────────
   ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
     if (vErr) return vErr;
@@ -113,7 +113,7 @@ export function registerBacktestIPC(
       const wfa = new WalkForwardEngine();
       const klines = config.klines || [];
       if (klines.length < 100) {
-        return { success: false, error: 'K线数据不足 (需至少100根)' };
+        return { success: false, error: 'K线数据不�?(需至少100�?' };
       }
       const report = await wfa.run(config, klines);
       return { success: true, report };
@@ -123,7 +123,7 @@ export function registerBacktestIPC(
     }
   });
 
-  // ── Parameter Scanner (Sprint 2 — JVS) ───────────────────────────────
+  // ── Parameter Scanner (Sprint 2 �?JVS) ───────────────────────────────
   ipcMain.handle('backtest:param-scan', async (_e, config: any) => {
     const vErr = validate(BacktestParamScanSchema, { config });
     if (vErr) return vErr;
@@ -131,7 +131,7 @@ export function registerBacktestIPC(
       const scanner = new ParameterScanner();
       const klines = config.klines || [];
       if (klines.length < 50) {
-        return { success: false, error: 'K线数据不足 (需至少50根)' };
+        return { success: false, error: 'K线数据不�?(需至少50�?' };
       }
       const report = await scanner.run({ ...config, klines });
       return { success: true, report };
@@ -141,7 +141,7 @@ export function registerBacktestIPC(
     }
   });
 
-  // ── Multi-timeframe comparison (Sprint 2 — JVS) ──────────────────────
+  // ── Multi-timeframe comparison (Sprint 2 �?JVS) ──────────────────────
   ipcMain.handle('backtest:multi-timeframe', async (_e, config: any) => {
     const vErr = validate(BacktestMultiTimeframeSchema, { config });
     if (vErr) return vErr;
@@ -153,7 +153,7 @@ export function registerBacktestIPC(
       for (const tf of timeframes) {
         const klines = config.klinesByTimeframe?.[tf] || [];
         if (klines.length < 50) {
-          results[tf] = { success: false, error: 'K线不足' };
+          results[tf] = { success: false, error: 'K线不�? };
           continue;
         }
         const btResult = await engine.run({

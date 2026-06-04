@@ -4,7 +4,7 @@
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from '../../node_modules/electron-log';
-import { validate, z, 
+import { validate, 
   BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
   BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
   BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
@@ -42,8 +42,8 @@ import { getWsDataStream } from '../data/ws-data-stream';
 import { connectWebSocket, disconnectWebSocket, getStreamingStats, getWebSocketStatus, subscribeToSymbol, subscribeToSymbols, unsubscribeFromSymbol, unsubscribeFromSymbols } from '../engine/websocket-enhancer';
 
 export function registerWsIPC(
-  _services: any
-) {
+  mainWindow: any
+) { {
 
   // ── WebSocket Real-time Data Enhancer (JVS-58) ──────────────────────────
   ipcMain.handle('ws:connect', async (_e, config: any) => {
@@ -126,7 +126,7 @@ export function registerWsIPC(
     }
   });
 
-  // ── Quote Stream — Real-time Market Data (JVS-9) ─────────────────────
+  // ── Quote Stream �?Real-time Market Data (JVS-9) ─────────────────────
   ipcMain.handle('quote:stream-start', async (_e, symbols?: string[]) => {
     const stream = getQuoteStream();
     if (!stream) return { success: false, error: 'QuoteStream not initialized' };

@@ -4,7 +4,7 @@
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from '../../node_modules/electron-log';
-import { validate, z, 
+import { validate, 
   BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
   BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
   BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
@@ -38,8 +38,9 @@ import { validate, z,
 import { MarketplaceService } from '../data/marketplace-service';
 
 export function registerMarketplaceIPC(
-  _services: any
-) {
+  db: any,
+  marketplaceService: any
+) { {
 
   ipcMain.handle('marketplace:rate', async (_e, strategyId: string, rating: number) => {
     const vErr = validate(MarketplaceRateSchema, { strategyId });
