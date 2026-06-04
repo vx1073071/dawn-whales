@@ -4522,6 +4522,21 @@ app.whenReady().then(async () => {
 
   createTray();
 
+  // ── Crash Reporter ────────────────────────────────────────────────────
+  const crashLog = log.scope?.('crash') || log;
+  
+  process.on('uncaughtException', (error) => {
+    crashLog.error('[CRASH] Uncaught Exception:', error.message, error.stack);
+    mainWindow?.webContents.send('notification', {
+      type: 'error',
+      message: `应用发生异常: ${error.message}`
+    });
+  });
+
+  process.on('unhandledRejection', (reason: any) => {
+    crashLog.error('[CRASH] Unhandled Rejection:', reason?.message || reason, reason?.stack);
+  });
+
   // Auto-updater (only in production)
   if (!isDev) {
     autoUpdater.logger = log;
