@@ -1222,6 +1222,47 @@ export async function getSentimentDashboard(): Promise<any> {
   return window.api.sentimentDashboard.get();
 }
 
+// ── Data Export Service (JVS-37) ───────────────────────────────────────────
+
+export async function exportData(request: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataExport.export(request);
+}
+
+export async function getExportModules(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataExport.getModules();
+}
+
+// ── Rate Limiter (JVS-38) ──────────────────────────────────────────────────
+
+export async function getRateLimiterStats(apiName?: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.rateLimiter.stats(apiName);
+}
+
+export async function resetRateLimiter(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.rateLimiter.reset();
+}
+
+export async function getRateLimiterAPIs(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.rateLimiter.getAPIs();
+}
+
+// ── Data Consistency Checker (JVS-39) ──────────────────────────────────────
+
+export async function runDataConsistencyCheck(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataConsistency.check();
+}
+
+export async function getDataConsistencyRules(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataConsistency.getRules();
+}
+
 // ── Smart Cache Manager (JVS-32) ──────────────────────────────────────────
 
 export async function cacheGet(namespace: string, key: string): Promise<any> {

@@ -24,6 +24,9 @@ import { getRealtimeSentimentStream } from './engine/sentiment-stream';
 import { getDataQualityDashboard } from './engine/data-quality-dashboard';
 import { exploreCache, getCacheEntryDetail, getCacheKeys } from './engine/cache-explorer';
 import { getSentimentDashboard } from './engine/sentiment-dashboard';
+import { exportData, getAvailableModules } from './engine/data-export-service';
+import { getRateLimiterManager } from './engine/rate-limiter';
+import { runConsistencyCheck, getConsistencyRules } from './engine/data-consistency-checker';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
 import { SectorRotationMonitor } from './engine/sector-rotation';
@@ -2661,6 +2664,75 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const dashboard = getSentimentDashboard();
       return { success: true, dashboard };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Data Export Service (JVS-37) ──────────────────────────────────────
+  ipcMain.handle('data:export', async (_e, request: any) => {
+    try {
+      const result = await exportData(request);
+      return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:export-modules', async () => {
+    try {
+      const modules = getAvailableModules();
+      return { success: true, modules };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Rate Limiter (JVS-38) ─────────────────────────────────────────────
+  ipcMain.handle('rate-limiter:stats', async (_e, apiName?: string) => {
+    try {
+      const manager = getRateLimiterManager();
+      const stats = manager.getStats(apiName);
+      return { success: true, stats };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('rate-limiter:reset', async () => {
+    try {
+      const manager = getRateLimiterManager();
+      manager.resetAll();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('rate-limiter:apis', async () => {
+    try {
+      const manager = getRateLimiterManager();
+      const apis = manager.getAvailableAPIs();
+      return { success: true, apis };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Data Consistency Checker (JVS-39) ─────────────────────────────────
+  ipcMain.handle('data:consistency-check', async () => {
+    try {
+      const report = await runConsistencyCheck();
+      return { success: true, report };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:consistency-rules', async () => {
+    try {
+      const rules = getConsistencyRules();
+      return { success: true, rules };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

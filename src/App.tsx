@@ -27,6 +27,8 @@ const DailyReportPage = lazy(() => import('@/components/market/DailyReportPage')
 const StockOverviewPage = lazy(() => import('@/components/market/StockOverviewPage'));
 const RealTimeMarketDashboard = lazy(() => import('@/components/market/RealTimeMarketDashboard'));
 const DataQualityMonitorPage = lazy(() => import('@/components/market/DataQualityMonitorPage'));
+const CachedDataExplorer = lazy(() => import('@/components/market/CachedDataExplorer'));
+const SentimentStreamDashboard = lazy(() => import('@/components/market/SentimentStreamDashboard'));
 const SmartPickerPage = lazy(() => import('@/components/market/SmartPickerPage'));
 const TradeExecutionPanel = lazy(() => import('@/components/trading/TradeExecutionPanel'));
 const TradeHistoryPage = lazy(() => import('@/components/trading/TradeHistoryPage'));
@@ -39,6 +41,7 @@ const PortfolioPage = lazy(() => import('@/components/portfolio/PortfolioPage'))
 const PortfolioRebalancerPage = lazy(() => import('@/components/portfolio/PortfolioRebalancerPage'));
 const OrdersPage = lazy(() => import('@/components/orders/OrdersPage'));
 const SettingsPage = lazy(() => import('@/components/settings/SettingsPage'));
+const OpenDHealthPanel = lazy(() => import('@/components/settings/OpenDHealthPanel'));
 const MarketplacePage = lazy(() => import('@/components/marketplace/MarketplacePage'));
 const LiveMonitorPage = lazy(() => import('@/components/live/LiveMonitorPage'));
 const BacktestReportPage = lazy(() => import('@/components/backtest/BacktestReportPage'));
@@ -62,6 +65,8 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   stockOverview: StockOverviewPage,
   realTimeMarket: RealTimeMarketDashboard,
   dataQuality: DataQualityMonitorPage,
+  cacheExplorer: CachedDataExplorer,
+  sentimentStream: SentimentStreamDashboard,
   smartPicker: SmartPickerPage,
   tradeExecution: TradeExecutionPanel,
   tradeHistory: TradeHistoryPage,
@@ -74,6 +79,7 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   portfolioRebalancer: PortfolioRebalancerPage,
   orders: OrdersPage,
   settings: SettingsPage,
+  opendHealth: OpenDHealthPanel,
   marketplace: MarketplacePage,
   live: LiveMonitorPage,
   backtest: BacktestReportPage,

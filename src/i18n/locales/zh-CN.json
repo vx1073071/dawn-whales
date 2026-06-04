@@ -1,0 +1,19 @@
+{
+  "app": { "name": "道鲸 · AI量化系统", "shortName": "道鲸" },
+  "nav": { "dashboard": "仪表盘", "strategy": "策略", "market": "行情", "portfolio": "持仓", "orders": "订单", "risk": "风控", "settings": "设置", "marketplace": "策略市场", "live": "实时监控", "backtest": "回测报告" },
+  "common": { "save": "保存", "cancel": "取消", "delete": "删除", "confirm": "确认", "search": "搜索", "loading": "加载中...", "error": "出错了", "retry": "重试", "noData": "暂无数据", "refresh": "刷新", "export": "导出", "import": "导入", "close": "关闭", "back": "返回", "next": "下一步", "submit": "提交" },
+  "dashboard": { "title": "仪表盘", "totalAssets": "总资产", "todayPnl": "今日盈亏", "positions": "持仓数量", "strategies": "运行策略", "equityCurve": "净值走势", "allocation": "持仓分配", "heatmap": "持仓热力图", "signals": "运行中的策略" },
+  "strategy": { "title": "策略管理", "create": "创建策略", "nlInput": "用自然语言描述你的策略...", "backtest": "回测", "startLive": "启动实盘", "stopLive": "停止实盘", "params": "参数", "performance": "绩效" },
+  "market": { "title": "行情", "addSymbol": "添加标的", "sector": "板块", "heatmap": "热力图", "breadth": "市场广度", "movers": "涨跌榜", "calendar": "财经日历" },
+  "portfolio": { "title": "持仓", "symbol": "代码", "qty": "数量", "costPrice": "成本价", "marketPrice": "现价", "pnl": "盈亏", "ratio": "占比" },
+  "orders": { "title": "订单", "orderId": "订单号", "side": "方向", "type": "类型", "qty": "数量", "price": "价格", "status": "状态", "cancel": "撤单" },
+  "risk": { "title": "风控", "alerts": "告警", "limits": "限制", "drawdown": "回撤", "var": "VaR", "sharpe": "夏普比率" },
+  "settings": { "title": "设置", "connection": "连接设置", "riskConfig": "风控配置", "language": "语言", "theme": "主题", "about": "关于" },
+  "connection": { "host": "主机", "port": "端口", "connect": "连接", "disconnect": "断开", "connected": "已连接", "disconnected": "未连接" },
+  "broker": { "futu": "富途", "moomoo": "moomoo" },
+  "sector": { "industry": "行业板块", "concept": "概念板块", "region": "地区板块" },
+  "sentiment": { "extremeFear": "极度恐慌", "fear": "恐慌", "neutral": "中性", "greed": "贪婪", "extremeGreed": "极度贪婪" },
+  "macro": { "gdp": "GDP", "cpi": "CPI", "pmi": "PMI", "ppi": "PPI", "m2": "M2货币供应", "lpr": "LPR贷款利率", "unemployment": "失业率", "industrial": "工业增加值" },
+  "anomaly": { "limitUp": "涨停", "limitDown": "跌停", "volumeSurge": "放量", "breakout": "突破", "breakdown": "跌破", "rapidChange": "快速拉升", "unusualTrade": "异常交易", "bigOrder": "大单" },
+  "language": { "zh-CN": "简体中文", "zh-TW": "繁體中文", "en": "English", "ja": "日本語", "ko": "한국어", "fr": "Français", "it": "Italiano", "de": "Deutsch" }
+}

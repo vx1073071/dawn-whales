@@ -27,6 +27,8 @@ const navItems: NavItem[] = [
   { id: 'stockOverview', icon: '🔍', label: '个股诊断' },
   { id: 'realTimeMarket', icon: '⚡', label: '实时行情' },
   { id: 'dataQuality', icon: '🔍', label: '数据质量' },
+  { id: 'cacheExplorer', icon: '💾', label: '缓存浏览' },
+  { id: 'sentimentStream', icon: '🎭', label: '情绪流' },
   { id: 'smartPicker', icon: '🎯', label: '智能选股' },
   { id: 'tradeExecution', icon: '🚀', label: '交易执行' },
   { id: 'tradeHistory', icon: '📜', label: '交易历史' },
@@ -42,6 +44,7 @@ const navItems: NavItem[] = [
   { id: 'portfolioRebalancer', icon: '⚖️', label: '组合再平衡' },
   { id: 'orders', icon: '📋', label: '委托订单' },
   { id: 'risk', icon: '🛡️', label: '风险仪表盘' },
+  { id: 'opendHealth', icon: '🔌', label: 'OpenD 健康' },
   { id: 'settings', icon: '⚙️', label: '系统设置', section: '系统' },
 ];
 

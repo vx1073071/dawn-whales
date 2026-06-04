@@ -370,6 +370,25 @@ contextBridge.exposeInMainWorld('api', {
     get: () => ipcRenderer.invoke('sentiment:dashboard'),
   },
 
+  // ── Data Export Service (JVS-37) ────────────────────────────
+  dataExport: {
+    export: (request: any) => ipcRenderer.invoke('data:export', request),
+    getModules: () => ipcRenderer.invoke('data:export-modules'),
+  },
+
+  // ── Rate Limiter (JVS-38) ───────────────────────────────────
+  rateLimiter: {
+    stats: (apiName?: string) => ipcRenderer.invoke('rate-limiter:stats', apiName),
+    reset: () => ipcRenderer.invoke('rate-limiter:reset'),
+    getAPIs: () => ipcRenderer.invoke('rate-limiter:apis'),
+  },
+
+  // ── Data Consistency Checker (JVS-39) ───────────────────────
+  dataConsistency: {
+    check: () => ipcRenderer.invoke('data:consistency-check'),
+    getRules: () => ipcRenderer.invoke('data:consistency-rules'),
+  },
+
   // ── Smart Cache Manager (JVS-32) ───────────────────────────────
   smartCache: {
     get: (namespace: string, key: string) => ipcRenderer.invoke('cache:get', namespace, key),
