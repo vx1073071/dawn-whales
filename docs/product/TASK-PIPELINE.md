@@ -1,55 +1,48 @@
 # DAWN WHALES · 任务流水线
 
-> v2.1 | 2026-06-04 21:15 | 主龙虾(PM)
+> v2.2 | 2026-06-04 22:25 | PM 主龙虾
 
 ---
 
 ## 当前状态
 
-| 🦞 | 已完成 | 进行中 |
-|------|------|:--:|
-| **主龙虾** | M1-M4 | M5 |
-| **JVS** | J1-J3 + JVS-1~4 ✅ | JVS-5/6/7 |
-| **QClaw** | Q1-Q10 ✅ | Q11-Q13 |
-| **WorkBuddy** | W1-W25 ✅ | W26-W28 |
+| 🦞 | 已完成 | 进行中 (Round 3) |
+|------|------|------|
+| **JVS** | J1-J3 + JVS-1~14 ✅ | JVS-15~16 |
+| **QClaw** | Q1-Q13 ✅ | Q14-Q16 |
+| **WB** | W1-W28 ✅ | W29-W33 |
+| **主龙虾** | M1-M5 ✅ | M6 (merge) |
 
 ---
 
-## 当前排程
+## Round 3 排程
 
-### JVS (EM数据 + 市场情报)
+### JVS (19 commits, 51 tests)
 | # | 任务 | 文件 |
 |---|------|------|
-| JVS-5 | 新闻舆情聚合器 | electron/engine/news-sentiment.ts |
-| JVS-6 | 板块轮动监控 | electron/engine/sector-rotation.ts |
-| JVS-7 | 个股异动检测 | electron/engine/anomaly-scanner.ts |
+| JVS-15 | 消费/债券数据 | electron/engine/consumer-data.ts |
+| JVS-16 | 融资融券数据 | electron/engine/margin-data.ts |
+| — | 集成测试 | tests/jvs-integration.test.ts |
 
-### QClaw (AI引擎)
+### QClaw
 | # | 任务 | 文件 |
 |---|------|------|
-| Q11 | 相关性矩阵可视化数据 | electron/engine/correlation-visualizer.ts |
-| Q12 | 风控场景压力测试 | electron/engine/stress-tester.ts |
-| Q13 | 回测对比仪表盘 | electron/engine/backtest-comparator.ts |
+| Q14 | 实时执行引擎 | electron/engine/live-executor.ts |
+| Q15 | 多因子选股模型 | electron/engine/multi-factor.ts |
+| Q16 | 动态仓位管理 | electron/engine/dynamic-sizer.ts |
 
-### WorkBuddy (前端UI)
+### WorkBuddy
 | # | 任务 | 文件 |
 |---|------|------|
-| W26 | 市场热力图页面 | src/components/market/MarketHeatmapPage.tsx |
-| W27 | 宏观仪表盘页面 | src/components/market/MacroDashboardPage.tsx |
-| W28 | 情绪指数仪表 | src/components/risk/SentimentGauge.tsx |
-
-### 主龙虾 (PM + 架构)
-| # | 任务 |
-|---|------|
-| M5 | v0.6.0压力测试 (50K bars, 1000策略) |
-| M6 | PR合入(JVS/QClaw/WB产出→main) |
-| M7 | v0.7.0 Release |
+| W29 | 股票筛选器页面 | src/components/market/StockScreenerPage.tsx |
+| W30 | 新闻舆情页面 | src/components/market/NewsDashboardPage.tsx |
+| W31 | 板块轮动页面 | src/components/market/SectorRotationPage.tsx |
+| W32 | 异动警报组件 | src/components/risk/AnomalyAlertPanel.tsx |
+| W33 | IPC注册 | bridge-api.ts + preload.ts |
 
 ---
 
 ## 规则
-- commit per task
-- 38/38 tests green
-- push directly to master
-- 桥消息确认(after each task done)
-- JVS/JVS-5~7分配的下一步: 端到端验证
+- commit per task | 38/38 tests green | direct push
+- 桥消息确认每次完成 | 每30min轮询
+- 不打扰主人 | 自主持续产出
