@@ -1526,3 +1526,25 @@ export async function getSupportedLanguages(): Promise<any> {
   if (!hasIPC()) return { success: false, languages: [] };
   return window.api.i18n.getSupportedLanguages();
 }
+
+// ── Financial Reports (JVS-41) ──────────────────────────────────────────────
+export async function getFinancialReports(code: string, quarters?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.financialReports.get(code, quarters);
+}
+
+// ── Valuation Data (JVS-42) ────────────────────────────────────────────────
+export async function getValuationData(code: string, historyDays?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.valuation.get(code, historyDays);
+}
+
+// ── Technical Indicators (JVS-43) ──────────────────────────────────────────
+export async function computeTechnicalIndicators(
+  klines: any[],
+  indicators?: string[],
+  options?: any
+): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.indicators.compute(klines, indicators, options);
+}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '@/stores/appStore';
 import { useBridgeSync } from '@/hooks/useBridgeSync';
 import Sidebar from '@/components/layout/Sidebar';
@@ -90,9 +91,10 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
 };
 
 function PageFallback() {
+  const { t } = useTranslation();
   return (
     <div className="flex items-center justify-center h-full">
-      <div className="text-gray-500 text-sm animate-pulse">加载中...</div>
+      <div className="text-gray-500 text-sm animate-pulse">{t('common.loading')}</div>
     </div>
   );
 }

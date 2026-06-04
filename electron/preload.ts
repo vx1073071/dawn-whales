@@ -476,6 +476,21 @@ contextBridge.exposeInMainWorld('api', {
     getSupportedLanguages: () => ipcRenderer.invoke('i18n:get-supported-languages'),
   },
 
+  // ── Financial Reports (JVS-41) ─────────────────────────────────────
+  financialReports: {
+    get: (code: string, quarters?: number) => ipcRenderer.invoke('em:get-financials', code, quarters),
+  },
+
+  // ── Valuation Data (JVS-42) ────────────────────────────────────────
+  valuation: {
+    get: (code: string, historyDays?: number) => ipcRenderer.invoke('em:get-valuation', code, historyDays),
+  },
+
+  // ── Technical Indicators (JVS-43) ──────────────────────────────────
+  indicators: {
+    compute: (klines: any[], indicators?: string[], options?: any) => ipcRenderer.invoke('indicator:compute', klines, indicators, options),
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
     const allowed = [

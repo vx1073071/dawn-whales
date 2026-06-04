@@ -45,7 +45,9 @@
     "fail": "Fail",
     "connected": "Connected",
     "disconnected": "Disconnected",
-    "connecting": "Connecting..."
+    "connecting": "Connecting...",
+    "tenThousand": "K",
+    "cash": "Cash"
   },
   "nav": {
     "overview": "Overview",

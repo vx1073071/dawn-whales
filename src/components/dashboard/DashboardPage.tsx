@@ -2,6 +2,7 @@
 // 总资产/持仓热力图/净值曲线/盈亏总览/最近信号
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   getAccounts, getFunds, getPositions, getQuotes, isConnected,
   getWatchlist, getAllStrategies, getComments, getMarketplaceList,
@@ -52,6 +53,7 @@ interface StrategyStatus {
 }
 
 export default function DashboardPage() {
+  const { t } = useTranslation();
   const [account, setAccount] = useState<AccountSummary | null>(null);
   const [positions, setPositions] = useState<PositionCard[]>([]);
   const [strategies, setStrategies] = useState<StrategyStatus[]>([]);
@@ -143,7 +145,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="p-6 flex items-center justify-center h-64">
-        <div className="text-gray-500">加载中...</div>
+        <div className="text-gray-500">{t('common.loading')}</div>
       </div>
     );
   }
@@ -153,9 +155,9 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">📊 总览看板</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">📊 {t('dashboard.title')}</h1>
           <p className="text-gray-400 text-sm">
-            {connected ? '已连接 OpenD · 实时数据' : '未连接券商 · 请先在设置中连接'}
+            {connected ? t('dashboard.connected') : t('dashboard.disconnected')}
           </p>
         </div>
         <button
@@ -173,37 +175,37 @@ export default function DashboardPage() {
             }
           }}
           className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors flex items-center gap-1.5"
-          title="导出当前看板为 PDF"
+          title={t('dashboard.exportPdf')}
         >
-          📄 导出 PDF
+          📄 {t('dashboard.exportPdf')}
         </button>
       </div>
 
       {/* Account Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <SummaryCard
-          label="总资产"
-          value={account ? `${(account.totalAssets / 10000).toFixed(0)}万` : '--'}
+          label={t('dashboard.totalAssets')}
+          value={account ? `${(account.totalAssets / 10000).toFixed(0)}${t('common.tenThousand')}` : '--'}
           sub={account?.currency || ''}
           color="text-white"
         />
         <SummaryCard
-          label="今日盈亏"
-          value={account ? `${account.todayPnl >= 0 ? '+' : ''}${(account.todayPnl / 10000).toFixed(1)}万` : '--'}
+          label={t('dashboard.todayPnl')}
+          value={account ? `${account.todayPnl >= 0 ? '+' : ''}${(account.todayPnl / 10000).toFixed(1)}${t('common.tenThousand')}` : '--'}
           sub={account ? `${account.todayPnlPct >= 0 ? '+' : ''}${account.todayPnlPct.toFixed(2)}%` : ''}
           color={pnlColor}
           bg={pnlBg}
         />
         <SummaryCard
-          label="持仓市值"
-          value={account ? `${(account.marketValue / 10000).toFixed(0)}万` : '--'}
-          sub={`现金 ${account ? (account.cash / 10000).toFixed(0) : '--'}万`}
+          label={t('dashboard.marketValue')}
+          value={account ? `${(account.marketValue / 10000).toFixed(0)}${t('common.tenThousand')}` : '--'}
+          sub={`${t('common.cash')} ${account ? (account.cash / 10000).toFixed(0) : '--'}${t('common.tenThousand')}`}
           color="text-blue-400"
         />
         <SummaryCard
-          label="策略市场"
+          label={t('dashboard.strategyMarket')}
           value={String(marketplaceCount || '--')}
-          sub="已上架策略"
+          sub={t('dashboard.listedStrategies')}
           color="text-[#D4A853]"
         />
       </div>
@@ -226,9 +228,9 @@ export default function DashboardPage() {
 
       {/* Position Heatmap */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-white font-semibold text-sm mb-4">🗺️ 持仓热力图</h2>
+        <h2 className="text-white font-semibold text-sm mb-4">🗺️ {t('dashboard.positionHeatmap')}</h2>
         {positions.length === 0 ? (
-          <p className="text-gray-500 text-sm py-4 text-center">暂无持仓数据</p>
+          <p className="text-gray-500 text-sm py-4 text-center">{t('common.noData')}</p>
         ) : (
           <div className="flex flex-wrap gap-2">
             {positions.map((p) => {
@@ -272,7 +274,7 @@ export default function DashboardPage() {
           trades={positions.flatMap(p => [
             ...(p.pnl !== 0 ? [{ pnl: p.pnl, timestamp: Date.now() }] : [])
           ])}
-          title="📊 交易绩效指标"
+          title={`📊 ${t('dashboard.performanceMetrics')}`}
         />
         <DailyPnLSummary />
       </div>
@@ -281,16 +283,16 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Active Strategies */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-          <h2 className="text-white font-semibold text-sm mb-4">🧠 运行中的策略</h2>
+          <h2 className="text-white font-semibold text-sm mb-4">🧠 {t('dashboard.activeStrategies')}</h2>
           {strategies.length === 0 ? (
-            <p className="text-gray-500 text-sm py-4 text-center">暂无运行中的策略</p>
+            <p className="text-gray-500 text-sm py-4 text-center">{t('dashboard.noActiveStrategies')}</p>
           ) : (
             <div className="space-y-2">
               {strategies.map((s) => (
                 <div key={s.id} className="flex items-center justify-between bg-[#12121a] rounded-lg px-4 py-3">
                   <div>
                     <div className="text-white text-sm">{s.name}</div>
-                    <div className="text-gray-500 text-[10px]">{s.signals} 个信号</div>
+                    <div className="text-gray-500 text-[10px]">{s.signals} {t('dashboard.signals')}</div>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />

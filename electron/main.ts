@@ -49,6 +49,9 @@ import { getPythonProxy } from './data/python-proxy';
 import { getPush2Proxy } from './data/push2-proxy';
 import { getDataQualityMonitor, registerModule } from './engine/data-quality-monitor';
 import { setupI18nDataIPC } from './engine/i18n-data';
+import { getFinancialReports } from './engine/financial-reports';
+import { getValuationData } from './engine/valuation-data';
+import { computeIndicators } from './engine/technical-indicators';
 import { getDataQualityStream } from './engine/data-quality-stream';
 import { getSmartCacheManager } from './engine/smart-cache';
 import { getDragonTigerStream } from './engine/dragon-tiger-stream';
@@ -249,6 +252,36 @@ function createWindow() {
 function setupIPC() {
   // ── i18n Data Layer (JVS-40) ───────────────────────────────────────────
   setupI18nDataIPC();
+
+  // ── Financial Reports (JVS-41) ─────────────────────────────────────────
+  ipcMain.handle('em:get-financials', async (_e, code: string, quarters?: number) => {
+    try {
+      return await getFinancialReports(code, quarters);
+    } catch (err: any) {
+      log.error('[FinancialReports] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Valuation Data (JVS-42) ────────────────────────────────────────────
+  ipcMain.handle('em:get-valuation', async (_e, code: string, historyDays?: number) => {
+    try {
+      return await getValuationData(code, historyDays);
+    } catch (err: any) {
+      log.error('[ValuationData] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Technical Indicators (JVS-43) ──────────────────────────────────────
+  ipcMain.handle('indicator:compute', async (_e, klines: any[], indicators?: string[], options?: any) => {
+    try {
+      return computeIndicators(klines, indicators, options);
+    } catch (err: any) {
+      log.error('[TechnicalIndicators] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
 
   // ── Broker: Multi-broker support (WP1 + Sprint1) ────────────────────
   ipcMain.handle('broker:connect', async (_e, config: { host: string; port: number; brokerId?: string }) => {

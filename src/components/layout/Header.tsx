@@ -1,14 +1,13 @@
 import { useAppStore } from '@/stores/appStore';
 import { useThemeStore } from '@/lib/theme';
-import { useI18nStore, LOCALE_LABELS, type Locale } from '@/lib/i18n';
 import logo from '@/assets/logo.jpg';
 import BrokerSelector from './BrokerSelector';
+import LanguageSwitcher from '@/components/common/LanguageSwitcher';
 
 export default function Header() {
   const toggleSidebar = useAppStore((s) => s.toggleSidebar);
   const emergencyStop = useAppStore((s) => s.emergencyStop);
   const { theme, toggleTheme } = useThemeStore();
-  const { locale, setLocale } = useI18nStore();
 
   return (
     <header className="h-12 bg-[#15151f] border-b border-white/5 flex items-center px-4 gap-3 flex-shrink-0">
@@ -39,16 +38,7 @@ export default function Header() {
       </button>
 
       {/* Language selector */}
-      <select
-        value={locale}
-        onChange={(e) => setLocale(e.target.value as Locale)}
-        className="bg-transparent border-none text-gray-400 text-xs cursor-pointer focus:outline-none hover:text-gray-200 px-1 py-1"
-        title="语言 / Language"
-      >
-        {Object.entries(LOCALE_LABELS).map(([k, v]) => (
-          <option key={k} value={k} className="bg-[#1a1a25] text-gray-200">{v}</option>
-        ))}
-      </select>
+      <LanguageSwitcher />
 
       {/* Actions */}
       <div className="flex items-center gap-1 ml-1">
