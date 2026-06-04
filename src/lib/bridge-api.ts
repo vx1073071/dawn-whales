@@ -447,6 +447,28 @@ export async function clearDataCache(): Promise<any> {
   return window.api.dataProvider.clearCache();
 }
 
+// ── Backtest Enhancement ──────────────────────────────────────────────────
+
+export async function multiPeriodBacktest(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backtest.multiPeriod(config);
+}
+
+export async function parameterSweep(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backtest.paramSweep(config);
+}
+
+export async function walkForwardAnalysis(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backtest.walkForward(config);
+}
+
+export async function computeRiskMetrics(equityCurve: number[], riskFreeRate?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backtest.riskMetrics(equityCurve, riskFreeRate);
+}
+
 // ── Demo K-line Generator (fallback) ──────────────────────────────────────
 
 function generateDemoKlines(count: number): any[] {

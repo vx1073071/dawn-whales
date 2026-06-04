@@ -116,6 +116,14 @@ contextBridge.exposeInMainWorld('api', {
     clearCache: () => ipcRenderer.invoke('data:clear-cache'),
   },
 
+  // ── Backtest Enhancement ──────────────────────────────────────────
+  backtest: {
+    multiPeriod: (config: any) => ipcRenderer.invoke('backtest:multiPeriod', config),
+    paramSweep: (config: any) => ipcRenderer.invoke('backtest:paramSweep', config),
+    walkForward: (config: any) => ipcRenderer.invoke('backtest:walkForward', config),
+    riskMetrics: (equityCurve: number[], riskFreeRate?: number) => ipcRenderer.invoke('backtest:riskMetrics', equityCurve, riskFreeRate),
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
     const allowed = [

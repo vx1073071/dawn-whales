@@ -409,6 +409,137 @@ function setupIPC() {
     return { success: true };
   });
 
+  // ── Backtest Enhancement (Sprint 2: P1) ──────────────────────────
+
+  ipcMain.handle('backtest:multiPeriod', async (_e, config: any) => {
+    try {
+      const { BacktestEnhancer } = require('./engine/backtest-enhancer');
+      const enhancer = new BacktestEnhancer(backtestEngine);
+      const results = await enhancer.multiPeriodBacktest(
+        config.klines, config.strategyConfig, config.periods
+      );
+      return { success: true, results };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('backtest:paramSweep', async (_e, config: any) => {
+    try {
+      const { BacktestEnhancer } = require('./engine/backtest-enhancer');
+      const enhancer = new BacktestEnhancer(backtestEngine);
+      const results = await enhancer.parameterSweep(
+        config.klines, config.baseConfig, config.paramRanges, config.maxCombinations || 100
+      );
+      return { success: true, results };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('backtest:walkForward', async (_e, config: any) => {
+    try {
+      const { BacktestEnhancer } = require('./engine/backtest-enhancer');
+      const enhancer = new BacktestEnhancer(backtestEngine);
+      const result = await enhancer.walkForwardAnalysis(
+        config.klines, config.baseConfig, config.paramRanges,
+        config.trainSize || 500, config.testSize || 100, config.maxWindows || 10
+      );
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('backtest:riskMetrics', async (_e, equityCurve: number[], riskFreeRate?: number) => {
+    try {
+      const { BacktestEnhancer } = require('./engine/backtest-enhancer');
+      const enhancer = new BacktestEnhancer(backtestEngine);
+      const metrics = enhancer.computeDeepRiskMetrics(equityCurve, riskFreeRate || 0.03);
+      return { success: true, metrics };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Strategy AI — LLM-powered (Sprint 2 P1) ─────────────────────
+  ipcMain.handle('strategy:explain', async (_e, strategy: any) => {
+    const apiKey = process.env.DEEPSEEK_API_KEY;
+    if (!apiKey) {
+      return { success: false, error: 'DeepSeek API key not configured. Set DEEPSEEK_API_KEY env var.' };
+    }
+    const prompt = `You are a quantitative trading strategy analyst. Explain the following strategy in clear, actionable English for a retail trader.
+
+Strategy:
+- Name: ${strategy.name || 'Unnamed'}
+- Symbol: ${strategy.symbol || 'Unknown'}
+- Type: ${strategy.strategy?.type || 'Unknown'}
+- Params: ${JSON.stringify(strategy.strategy?.params || {})}}
+- Stop Loss: ${strategy.strategy?.stopLoss || 'Not set'}%
+- Take Profit: ${strategy.strategy?.takeProfit || 'Not set'}%
+- Description: ${strategy.description || 'No description'}
+
+Provide a concise explanation covering:
+1. What the strategy does (in plain language)
+2. Entry and exit conditions
+3. Risk management (stop loss / take profit)
+4. Ideal market conditions for this strategy
+
+Keep it under 200 words. Use bullet points.`;
+
+    try {
+      const body = JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 400 });
+      const result = await new Promise<any>((resolve, reject) => {
+        const req = require('https').request(
+          { hostname: 'api.deepseek.com', path: '/v1/chat/completions', method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` } },
+          (res: any) => { let data = ''; res.on('data', (c: string) => data += c); res.on('end', () => { try { resolve(JSON.parse(data)); } catch { reject(new Error('Invalid JSON')); } }); }
+        );
+        req.on('error', reject); req.write(body); req.end();
+      });
+      const content = result.choices?.[0]?.message?.content || '';
+      return { success: true, explanation: content };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('strategy:compare', async (_e, s1: any, s2: any) => {
+    const apiKey = process.env.DEEPSEEK_API_KEY;
+    if (!apiKey) {
+      return { success: false, error: 'DeepSeek API key not configured. Set DEEPSEEK_API_KEY env var.' };
+    }
+    const fmt = (s: any) => `Name: ${s.name || '?'} | Symbol: ${s.symbol || '?'} | Type: ${s.strategy?.type || '?'} | Params: ${JSON.stringify(s.strategy?.params || {})} | SL: ${s.strategy?.stopLoss || '?'}% | TP: ${s.strategy?.takeProfit || '?'}%`;
+    const prompt = `You are a quantitative trading strategy comparison tool. Compare these two strategies objectively.
+
+Strategy A: ${fmt(s1)}
+
+Strategy B: ${fmt(s2)}
+
+Provide a structured comparison covering:
+1. Which strategy is more aggressive / conservative
+2. Which suits trending vs ranging markets
+3. Risk/reward comparison
+4. Which has better risk management (stop loss / take profit)
+5. Overall recommendation for different trader profiles
+
+Keep it under 250 words. Be objective, not promotional.`;
+
+    try {
+      const body = JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 500 });
+      const result = await new Promise<any>((resolve, reject) => {
+        const req = require('https').request(
+          { hostname: 'api.deepseek.com', path: '/v1/chat/completions', method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` } },
+          (res: any) => { let data = ''; res.on('data', (c: string) => data += c); res.on('end', () => { try { resolve(JSON.parse(data)); } catch { reject(new Error('Invalid JSON')); } }); }
+        );
+        req.on('error', reject); req.write(body); req.end();
+      });
+      const content = result.choices?.[0]?.message?.content || '';
+      return { success: true, comparison: content };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── NL Parser ───────────────────────────────────────────────────────
   ipcMain.handle('nl:parse', async (_e, text: string) => {
     return parseNaturalLanguage(text);
