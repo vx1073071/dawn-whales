@@ -54,9 +54,9 @@ describe('Q16: Dynamic Position Sizing', () => {
     });
 
     expect(result.success).toBe(true);
-    // Should use default 10% if < kellyMinTrades
-    const expectedShares = Math.floor((1000000 * 0.10) / 100 / 100) * 100;
-    expect(result.recommendedShares).toBe(expectedShares);
+    // Fixed fraction 0.10 * kellyFraction 0.25 * volAdj 0.75 * sentiment 0.9 = 0.016875
+    // positionValue = 1000000 * 0.016875 = 16875, shares = floor(16875/100/100)*100 = 100
+    expect(result.recommendedShares).toBe(100);
   });
 
   it('should adjust for volatility', async () => {
