@@ -63,7 +63,13 @@
     "loadingFailed": "加载失败",
     "time": "时间",
     "action": "操作",
-    "unknown": "未知"
+    "unknown": "未知",
+    "1min": "1分",
+    "5min": "5分",
+    "15min": "15分",
+    "60min": "60分",
+    "dailyK": "日K",
+    "weeklyK": "周K"
   },
   "nav": {
     "overview": "总览",
@@ -208,7 +214,8 @@
     "strategyTradesHint": "策略运行后自动记录在这里",
     "orderPrice": "委托价",
     "side": "方向",
-    "ordersSubtitle": "当前委托、历史成交和策略交易记录"
+    "ordersSubtitle": "当前委托、历史成交和策略交易记录",
+    "name": "名称"
   },
   "orderStatus": {
     "pending": "待提交",
@@ -223,7 +230,16 @@
     "US": "美股",
     "HK": "港股",
     "CN": "A股",
-    "SG": "新加坡"
+    "SG": "新加坡",
+    "title": "行情中心",
+    "subtitle": "实时监控自选股行情 · Push 模式 <50ms",
+    "addWatch": "添加自选",
+    "searchPlaceholder": "搜索股票代码或名称...",
+    "noSearchResults": "未找到匹配 \"{query}\" 的股票",
+    "tag": "标签",
+    "loadingKline": "加载 {symbol} K线数据...",
+    "klineNeedsOpend": "K线数据加载中（需要 OpenD 连接）",
+    "selectStockForKline": "点击上面的股票查看 K 线图"
   },
   "strategy": {
     "title": "策略工坊",

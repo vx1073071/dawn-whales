@@ -63,7 +63,13 @@
     "loadingFailed": "加载失败",
     "time": "時間",
     "action": "操作",
-    "unknown": "不明"
+    "unknown": "不明",
+    "1min": "1分",
+    "5min": "5分",
+    "15min": "15分",
+    "60min": "60分",
+    "dailyK": "日足",
+    "weeklyK": "週足"
   },
   "nav": {
     "overview": "概要",
@@ -208,7 +214,8 @@
     "strategyTradesHint": "戦略実行時に自動記録",
     "orderPrice": "注文価格",
     "side": "方向",
-    "ordersSubtitle": "有効注文、履歴、戦略取引"
+    "ordersSubtitle": "有効注文、履歴、戦略取引",
+    "name": "名称"
   },
   "strategy": {
     "title": "戦略ラボ",
@@ -326,7 +333,16 @@
     "US": "米国",
     "HK": "香港",
     "CN": "中国",
-    "SG": "シンガポール"
+    "SG": "シンガポール",
+    "title": "マーケット",
+    "subtitle": "リアルタイム監視銘柄 · Pushモード <50ms",
+    "addWatch": "監視追加",
+    "searchPlaceholder": "銘柄コードまたは名称を検索...",
+    "noSearchResults": "\"{query}\" の検索結果なし",
+    "tag": "タグ",
+    "loadingKline": "{symbol} のローソク足データ読込中...",
+    "klineNeedsOpend": "ローソク足読込中（OpenD接続が必要）",
+    "selectStockForKline": "上の銘柄をクリックしてローソク足を表示"
   },
   "realTimeMarket": {
     "title": "实时行情",

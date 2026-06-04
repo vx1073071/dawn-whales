@@ -63,7 +63,13 @@
     "loadingFailed": "Loading failed",
     "time": "Time",
     "action": "Action",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "1min": "1m",
+    "5min": "5m",
+    "15min": "15m",
+    "60min": "60m",
+    "dailyK": "1D",
+    "weeklyK": "1W"
   },
   "nav": {
     "overview": "Overview",
@@ -208,7 +214,8 @@
     "strategyTradesHint": "Recorded automatically when strategies run",
     "orderPrice": "Order Price",
     "side": "Side",
-    "ordersSubtitle": "Active orders, history and strategy trades"
+    "ordersSubtitle": "Active orders, history and strategy trades",
+    "name": "Name"
   },
   "strategy": {
     "title": "Strategy Lab",
@@ -326,7 +333,16 @@
     "US": "US",
     "HK": "HK",
     "CN": "CN",
-    "SG": "SG"
+    "SG": "SG",
+    "title": "Market",
+    "subtitle": "Real-time watchlist quotes · Push mode <50ms",
+    "addWatch": "Add Watch",
+    "searchPlaceholder": "Search symbol or name...",
+    "noSearchResults": "No results for \"{query}\"",
+    "tag": "Tag",
+    "loadingKline": "Loading {symbol} K-line...",
+    "klineNeedsOpend": "Loading K-line (OpenD connection required)",
+    "selectStockForKline": "Click a stock above to view K-line chart"
   },
   "realTimeMarket": {
     "title": "Real-time Quotes",

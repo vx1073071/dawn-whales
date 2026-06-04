@@ -63,7 +63,13 @@
     "loadingFailed": "加载失败",
     "time": "시간",
     "action": "작업",
-    "unknown": "알 수 없음"
+    "unknown": "알 수 없음",
+    "1min": "1분",
+    "5min": "5분",
+    "15min": "15분",
+    "60min": "60분",
+    "dailyK": "일봉",
+    "weeklyK": "주봉"
   },
   "nav": {
     "overview": "개요",
@@ -208,7 +214,8 @@
     "strategyTradesHint": "전략 실행 시 자동 기록",
     "orderPrice": "주문가",
     "side": "방향",
-    "ordersSubtitle": "활성 주문, 내역 및 전략 거래"
+    "ordersSubtitle": "활성 주문, 내역 및 전략 거래",
+    "name": "이름"
   },
   "strategy": {
     "title": "전략 연구소",
@@ -326,7 +333,16 @@
     "US": "미국",
     "HK": "홍콩",
     "CN": "중국",
-    "SG": "싱가포르"
+    "SG": "싱가포르",
+    "title": "시장",
+    "subtitle": "실시간 관심종목 · Push 모드 <50ms",
+    "addWatch": "관심추가",
+    "searchPlaceholder": "종목코드 또는 이름 검색...",
+    "noSearchResults": "\"{query}\" 검색 결과 없음",
+    "tag": "태그",
+    "loadingKline": "{symbol} 캔들 데이터 로딩...",
+    "klineNeedsOpend": "캔들 로딩중 (OpenD 연결 필요)",
+    "selectStockForKline": "위 종목을 클릭하여 캔들 차트 보기"
   },
   "realTimeMarket": {
     "title": "实时行情",

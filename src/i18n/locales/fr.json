@@ -63,7 +63,13 @@
     "loadingFailed": "加载失败",
     "time": "Heure",
     "action": "Action",
-    "unknown": "Inconnu"
+    "unknown": "Inconnu",
+    "1min": "1min",
+    "5min": "5min",
+    "15min": "15min",
+    "60min": "60min",
+    "dailyK": "1J",
+    "weeklyK": "1S"
   },
   "nav": {
     "overview": "Vue d'ensemble",
@@ -208,7 +214,8 @@
     "strategyTradesHint": "Enregistré automatiquement",
     "orderPrice": "Prix Ordre",
     "side": "Sens",
-    "ordersSubtitle": "Ordres actifs, historique et trades stratégie"
+    "ordersSubtitle": "Ordres actifs, historique et trades stratégie",
+    "name": "Nom"
   },
   "strategy": {
     "title": "Lab Stratégies",
@@ -326,7 +333,16 @@
     "US": "US",
     "HK": "HK",
     "CN": "CN",
-    "SG": "SG"
+    "SG": "SG",
+    "title": "Marché",
+    "subtitle": "Cotations temps réel · Mode Push <50ms",
+    "addWatch": "Ajouter",
+    "searchPlaceholder": "Rechercher un symbole...",
+    "noSearchResults": "Aucun résultat pour \"{query}\"",
+    "tag": "Étiquette",
+    "loadingKline": "Chargement K-line {symbol}...",
+    "klineNeedsOpend": "Chargement K-line (OpenD requis)",
+    "selectStockForKline": "Cliquez sur un titre pour voir le graphique"
   },
   "realTimeMarket": {
     "title": "实时行情",

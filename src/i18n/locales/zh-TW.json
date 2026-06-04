@@ -63,7 +63,13 @@
     "loadingFailed": "加载失败",
     "time": "時間",
     "action": "操作",
-    "unknown": "未知"
+    "unknown": "未知",
+    "1min": "1分",
+    "5min": "5分",
+    "15min": "15分",
+    "60min": "60分",
+    "dailyK": "日K",
+    "weeklyK": "周K"
   },
   "nav": {
     "overview": "總覽",
@@ -208,7 +214,8 @@
     "strategyTradesHint": "策略運行後自動記錄在這裡",
     "orderPrice": "委託價",
     "side": "方向",
-    "ordersSubtitle": "當前委託、歷史成交和策略交易記錄"
+    "ordersSubtitle": "當前委託、歷史成交和策略交易記錄",
+    "name": "名稱"
   },
   "strategy": {
     "title": "策略工坊",
@@ -326,7 +333,16 @@
     "US": "美股",
     "HK": "港股",
     "CN": "A股",
-    "SG": "新加坡"
+    "SG": "新加坡",
+    "title": "行情中心",
+    "subtitle": "實時監控自選股行情 · Push 模式 <50ms",
+    "addWatch": "添加自選",
+    "searchPlaceholder": "搜尋股票代碼或名稱...",
+    "noSearchResults": "未找到符合 \"{query}\" 的股票",
+    "tag": "標籤",
+    "loadingKline": "載入 {symbol} K線數據...",
+    "klineNeedsOpend": "K線數據載入中（需要 OpenD 連接）",
+    "selectStockForKline": "點擊上面的股票查看 K 線圖"
   },
   "realTimeMarket": {
     "title": "实时行情",
