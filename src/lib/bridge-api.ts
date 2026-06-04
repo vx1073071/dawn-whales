@@ -85,6 +85,10 @@ declare global {
         generate: (ctx: any) => Promise<any>;
         summary: (alerts: any[], apiKey?: string) => Promise<any>;
       };
+      report: {
+        generate: (ctx: { results: any[]; symbol?: string; apiKey?: string; timeoutMs?: number }) => Promise<any>;
+        quick: (ctx: { result: any; apiKey?: string }) => Promise<any>;
+      };
       nl: {
         parse: (text: string) => Promise<any>;
         templates: () => Promise<any>;

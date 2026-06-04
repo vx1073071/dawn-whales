@@ -413,3 +413,38 @@ export const NotificationGenerateSchema = z.object({
   })).optional(),
   vix: z.number().optional(),
 });
+
+// ── Report Generate ──────────────────────────────────────────────────────────
+
+// Minimal schema — BacktestResult is complex, we accept as any[] and validate key fields
+const BacktestResultCoreSchema = z.object({
+  success: z.boolean(),
+  result: z.object({
+    totalReturn: z.number(),
+    annualReturn: z.number(),
+    sharpeRatio: z.number(),
+    maxDrawdown: z.number(),
+    winRate: z.number(),
+    profitFactor: z.number(),
+    totalTrades: z.number(),
+    avgTradePnl: z.number(),
+    avgHoldingBars: z.number(),
+    config: z.object({
+      symbol: z.string().optional(),
+      strategyName: z.string().optional(),
+      strategy: z.object({ type: z.string() }).optional(),
+    }).optional(),
+  }),
+});
+
+export const ReportGenerateSchema = z.object({
+  results: z.array(BacktestResultCoreSchema),
+  symbol: z.string().optional(),
+  apiKey: z.string().optional(),
+  timeoutMs: z.number().optional(),
+});
+
+export const ReportQuickSchema = z.object({
+  result: BacktestResultCoreSchema,
+  apiKey: z.string().optional(),
+});

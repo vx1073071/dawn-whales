@@ -22,6 +22,7 @@ import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner';
 import { computeCorrelationMatrix } from './engine/correlation-matrix';
 import { generateSmartAlerts, generateAlertSummary, type NotificationContext } from './engine/notification-engine';
+import { generateBacktestReport, generateQuickReport } from './engine/ai-report-generator';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -74,6 +75,8 @@ import { validate,
   StrategyOptimizeSchema,
   StrategyCorrelationSchema,
   NotificationGenerateSchema,
+  ReportGenerateSchema,
+  ReportQuickSchema,
 } from './ipc-schemas';
 import { storeKey, getKey, getDeepSeekKey, storeDeepSeekKey } from './utils/secure-key';
 import log from 'electron-log';
@@ -725,6 +728,28 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     return { success: true, summary };
   });
 
+  // ── AI Report Generator ──────────────────────────────────────────────
+  ipcMain.handle('report:generate', async (_e, raw: unknown) => {
+    const vErr = validate(ReportGenerateSchema, raw);
+    if (vErr) return vErr;
+    const { results, symbol, apiKey, timeoutMs } = raw as {
+      results: any[];
+      symbol?: string;
+      apiKey?: string;
+      timeoutMs?: number;
+    };
+    const report = await generateBacktestReport(results, symbol, apiKey, timeoutMs ?? 20000);
+    return { success: true, report };
+  });
+
+  ipcMain.handle('report:quick', async (_e, raw: unknown) => {
+    const vErr = validate(ReportQuickSchema, raw);
+    if (vErr) return vErr;
+    const { result, apiKey } = raw as { result: any; apiKey?: string };
+    const report = await generateQuickReport(result, apiKey);
+    return { success: true, report };
+  });
+
   // ── NL Parser ───────────────────────────────────────────────────────
   ipcMain.handle('nl:parse', async (_e, text: string) => {
     return parseNaturalLanguage(text);
@@ -895,33 +920,14 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     autoUpdater.quitAndInstall();
   });
 
-  // ── Greeks Calculation (WP5: Python subprocess) ─────────────────────
+  // ── Greeks Calculation (P0-fixed: pure JS Black-Scholes, no Python subprocess) ─
   ipcMain.handle('greeks:calculate', async (_e, params: {
     spot: number; strike: number; vol: number; days: number;
     rate?: number; type: 'CALL' | 'PUT'; qty?: number;
   }) => {
     try {
-      const scriptPath = path.join(
-        process.resourcesPath, '..', '..', '.workbuddy', 'skills', 'option-greeks', 'scripts', 'calc_greeks.py'
-      );
-      // Fallback for dev mode
-      const devPath = path.join(
-        require('os').homedir(), '.workbuddy', 'skills', 'option-greeks', 'scripts', 'calc_greeks.py'
-      );
-      const pythonExe = path.join(
-        require('os').homedir(), 'AppData', 'Local', 'Programs', 'Python', 'Python312', 'python.exe'
-      );
-
-      const fs = require('fs');
-      const actualScript = fs.existsSync(scriptPath) ? scriptPath : devPath;
-      if (!fs.existsSync(actualScript)) {
-        return { success: false, error: 'option-greeks script not found' };
-      }
-
-      const cmd = `"${pythonExe}" "${actualScript}" --spot ${params.spot} --strike ${params.strike} --vol ${params.vol} --days ${params.days} --type ${params.type} --rate ${params.rate || 0.05} --json`;
-      const { stdout } = await execAsync(cmd, { encoding: 'utf-8', timeout: 5000 });
-      const result = JSON.parse(stdout);
-      return { success: true, greeks: result };
+      const greeks = calcGreeksJS(params.spot, params.strike, params.vol, params.days, params.rate || 0.05, params.type);
+      return { success: true, greeks };
     } catch (err: any) {
       log.error('[Greeks] Calculation failed:', err.message);
       return { success: false, error: err.message };
@@ -932,23 +938,27 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     const vErr = validate(GreeksPortfolioSchema, { positions });
     if (vErr) return vErr;
     try {
-      const devPath = path.join(
-        require('os').homedir(), '.workbuddy', 'skills', 'option-greeks', 'scripts', 'portfolio_greeks.py'
-      );
-      const pythonExe = path.join(
-        require('os').homedir(), 'AppData', 'Local', 'Programs', 'Python', 'Python312', 'python.exe'
-      );
-
-      const fs = require('fs');
-      if (!fs.existsSync(devPath)) {
-        return { success: false, error: 'portfolio_greeks script not found' };
-      }
-
-      const positionsJson = JSON.stringify(positions).replace(/"/g, '\\"');
-      const cmd = `"${pythonExe}" "${devPath}" --positions "${positionsJson}" --json`;
-      const { stdout } = await execAsync(cmd, { encoding: 'utf-8', timeout: 10000 });
-      const result = JSON.parse(stdout);
-      return { success: true, portfolio: result };
+      const portfolio = positions.map((p: any) => {
+        const g = calcGreeksJS(p.spot, p.strike, p.iv, p.dte, p.rate || 0.05, p.type);
+        const mult = p.qty || 1;
+        return {
+          ...g,
+          symbol: p.symbol,
+          type: p.type,
+          strike: p.strike,
+          qty: mult,
+          totalDelta: (g.delta * mult * 100).toFixed(2),
+          totalGamma: (g.gamma * mult * 100).toFixed(4),
+          totalTheta: (g.theta * mult).toFixed(2),
+          totalVega: (g.vega * mult * 0.01).toFixed(2),
+        };
+      });
+      const totals = {
+        netDelta: portfolio.reduce((s: number, p: any) => s + parseFloat(p.totalDelta), 0).toFixed(2),
+        netGamma: portfolio.reduce((s: number, p: any) => s + parseFloat(p.totalGamma), 0).toFixed(4),
+        netTheta: portfolio.reduce((s: number, p: any) => s + parseFloat(p.totalTheta), 0).toFixed(2),
+      };
+      return { success: true, portfolio: { positions: portfolio, totals } };
     } catch (err: any) {
       log.error('[Greeks] Portfolio calc failed:', err.message);
       return { success: false, error: err.message };

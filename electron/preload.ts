@@ -40,6 +40,8 @@ contextBridge.exposeInMainWorld('api', {
     correlation: (strategies: any) => ipcRenderer.invoke('strategy:correlation', { strategies }),
     generateNotifications: (ctx: any) => ipcRenderer.invoke('notification:generate', ctx),
     notificationSummary: (alerts: any[], apiKey?: string) => ipcRenderer.invoke('notification:summary', alerts, apiKey),
+    generateReport: (ctx: any) => ipcRenderer.invoke('report:generate', ctx),
+    generateQuickReport: (ctx: any) => ipcRenderer.invoke('report:quick', ctx),
   },
 
   // ── NL Parser ─────────────────────────────────────────────────────
