@@ -11,6 +11,7 @@ import { BacktestEngine } from './engine/backtest-engine';
 import { DatabaseManager } from './data/database';
 import { RiskEngine } from './engine/risk-engine';
 import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/nl-parser';
+import { MarketplaceService } from './data/marketplace-service';
 import log from 'electron-log';
 
 // 默认监控列表，连接时从 DB 读取用户配置
@@ -28,6 +29,7 @@ let strategyEngine: StrategyEngine | null = null;
 let backtestEngine: BacktestEngine | null = null;
 let riskEngine: RiskEngine | null = null;
 let db: DatabaseManager | null = null;
+let marketplaceService: MarketplaceService | null = null;
 
 // ── Window Creation ────────────────────────────────────────────────────────
 
@@ -542,6 +544,40 @@ function setupIPC() {
     const strategies = db?.getMarketplaceStrategies(sortBy || 'rating', limit || 50) || [];
     return { success: true, strategies };
   });
+
+  // ── Marketplace: Score & Verify (JVS) ─────────────────────────────────
+  ipcMain.handle('marketplace:score', async (_e, strategyId: string) => {
+    if (!marketplaceService) return { success: false, error: 'MarketplaceService not initialized' };
+    try {
+      const score = marketplaceService.calculateStrategyScore(strategyId);
+      return { success: true, score };
+    } catch (err: any) {
+      log.error('[Marketplace] Score calculation failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('marketplace:verify', async (_e, strategyId: string) => {
+    if (!marketplaceService) return { success: false, error: 'MarketplaceService not initialized' };
+    try {
+      const verification = marketplaceService.verifyPerformance(strategyId);
+      return { success: true, verification };
+    } catch (err: any) {
+      log.error('[Marketplace] Verification failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('marketplace:updateAllScores', async () => {
+    if (!marketplaceService) return { success: false, error: 'MarketplaceService not initialized' };
+    try {
+      const result = marketplaceService.updateAllScores();
+      return { success: true, ...result };
+    } catch (err: any) {
+      log.error('[Marketplace] Batch update failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
 }
 
 // ── System Tray ────────────────────────────────────────────────────────────
@@ -584,6 +620,15 @@ app.whenReady().then(async () => {
     riskEngine = new RiskEngine();
   } catch (err: any) {
     log.error('[App] Engine init failed:', err.message);
+  }
+
+  try {
+    if (db) {
+      marketplaceService = new MarketplaceService(db);
+      log.info('[App] MarketplaceService initialized');
+    }
+  } catch (err: any) {
+    log.error('[App] MarketplaceService init failed:', err.message);
   }
 
   setupIPC();

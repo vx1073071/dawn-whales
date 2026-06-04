@@ -29,6 +29,9 @@ declare global {
         savePerformance: (data: any) => Promise<any>;
         getPerformance: (strategyId: string) => Promise<any>;
         list: (sortBy?: string, limit?: number) => Promise<any>;
+        score: (strategyId: string) => Promise<any>;
+        verify: (strategyId: string) => Promise<any>;
+        updateAllScores: () => Promise<any>;
       };
       strategy: {
         create: (dsl: any) => Promise<any>;
@@ -307,6 +310,21 @@ export async function getPerformance(strategyId: string): Promise<any> {
 export async function getMarketplaceList(sortBy?: string, limit?: number): Promise<any> {
   if (!hasIPC()) return { success: false, strategies: [] };
   return window.api.marketplace.list(sortBy, limit);
+}
+
+export async function getStrategyScore(strategyId: string): Promise<any> {
+  if (!hasIPC()) return { success: false, score: null };
+  return window.api.marketplace.score(strategyId);
+}
+
+export async function verifyStrategy(strategyId: string): Promise<any> {
+  if (!hasIPC()) return { success: false, verification: null };
+  return window.api.marketplace.verify(strategyId);
+}
+
+export async function updateAllScores(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.marketplace.updateAllScores();
 }
 
 // ── Demo K-line Generator (fallback) ──────────────────────────────────────

@@ -84,6 +84,9 @@ contextBridge.exposeInMainWorld('api', {
     savePerformance: (data: any) => ipcRenderer.invoke('marketplace:savePerformance', data),
     getPerformance: (strategyId: string) => ipcRenderer.invoke('marketplace:getPerformance', strategyId),
     list: (sortBy?: string, limit?: number) => ipcRenderer.invoke('marketplace:list', sortBy, limit),
+    score: (strategyId: string) => ipcRenderer.invoke('marketplace:score', strategyId),
+    verify: (strategyId: string) => ipcRenderer.invoke('marketplace:verify', strategyId),
+    updateAllScores: () => ipcRenderer.invoke('marketplace:updateAllScores'),
   },
 
   // ── Events (Main → Renderer) ─────────────────────────────────────
