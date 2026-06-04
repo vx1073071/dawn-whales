@@ -500,6 +500,14 @@ contextBridge.exposeInMainWorld('api', {
     priceAndGreeks: (params: any) => ipcRenderer.invoke('em:price-and-greeks', params),
   },
 
+  // ── Risk Metrics Calculator (JVS-46) ───────────────────────────────
+  riskMetrics: {
+    calculate: (params: any) => ipcRenderer.invoke('em:calc-risk-metrics', params),
+    calcSharpe: (returns: number[], riskFreeRate?: number, tradingDays?: number) => ipcRenderer.invoke('em:calc-sharpe', returns, riskFreeRate, tradingDays),
+    calcMaxDrawdown: (returns: number[]) => ipcRenderer.invoke('em:calc-max-drawdown', returns),
+    calcVaR: (returns: number[], confidence?: number) => ipcRenderer.invoke('em:calc-var', returns, confidence),
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
     const allowed = [

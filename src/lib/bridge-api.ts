@@ -1589,3 +1589,34 @@ export async function priceOptionAndGreeks(params: any): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.optionsPricing.priceAndGreeks(params);
 }
+
+// ── Risk Metrics Calculator (JVS-46) ───────────────────────────────────────
+export async function calculateRiskMetrics(params: {
+  returns: number[];
+  riskFreeRate?: number;
+  benchmarkReturns?: number[];
+  tradingDaysPerYear?: number;
+  monteCarloSims?: number;
+}): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.riskMetrics.calculate(params);
+}
+
+export async function calculateSharpeRatio(
+  returns: number[],
+  riskFreeRate?: number,
+  tradingDays?: number
+): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.riskMetrics.calcSharpe(returns, riskFreeRate, tradingDays);
+}
+
+export async function calculateMaxDrawdown(returns: number[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.riskMetrics.calcMaxDrawdown(returns);
+}
+
+export async function calculateVaR(returns: number[], confidence?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.riskMetrics.calcVaR(returns, confidence);
+}

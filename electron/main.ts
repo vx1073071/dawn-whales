@@ -53,6 +53,7 @@ import { getFinancialReports } from './engine/financial-reports';
 import { getValuationData } from './engine/valuation-data';
 import { computeIndicators } from './engine/technical-indicators';
 import { blackScholesPrice, calculateGreeks, impliedVolatility, buildVolSurface, priceAndGreeks } from './engine/options-pricing';
+import { calculateRiskMetrics, calcSharpeRatio, calcMaxDrawdown, calcVaR } from './engine/risk-metrics';
 import { getDataQualityStream } from './engine/data-quality-stream';
 import { getSmartCacheManager } from './engine/smart-cache';
 import { getDragonTigerStream } from './engine/dragon-tiger-stream';
@@ -327,6 +328,41 @@ function setupIPC() {
       return { success: true, ...priceAndGreeks(params) };
     } catch (err: any) {
       log.error('[OptionsPricing] Price+Greeks error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Risk Metrics Calculator (JVS-46) ───────────────────────────────────
+  ipcMain.handle('em:calc-risk-metrics', async (_e, params: any) => {
+    try {
+      const result = calculateRiskMetrics(params);
+      return { success: true, metrics: result };
+    } catch (err: any) {
+      log.error('[RiskMetrics] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:calc-sharpe', async (_e, returns: number[], riskFreeRate?: number, tradingDays?: number) => {
+    try {
+      return { success: true, sharpe: calcSharpeRatio(returns, riskFreeRate, tradingDays) };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:calc-max-drawdown', async (_e, returns: number[]) => {
+    try {
+      return { success: true, maxDrawdown: calcMaxDrawdown(returns) };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:calc-var', async (_e, returns: number[], confidence?: number) => {
+    try {
+      return { success: true, var: calcVaR(returns, confidence) };
+    } catch (err: any) {
       return { success: false, error: err.message };
     }
   });
