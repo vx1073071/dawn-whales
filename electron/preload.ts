@@ -93,6 +93,23 @@ contextBridge.exposeInMainWorld('api', {
     updateAllScores: () => ipcRenderer.invoke('marketplace:updateAllScores'),
   },
 
+  // ── Data Provider (multi-source integration) ──────────────────────
+  dataProvider: {
+    getFundamental: (symbol: string) => ipcRenderer.invoke('data:fundamental', symbol),
+    getCapitalFlow: (symbol: string) => ipcRenderer.invoke('data:capital-flow', symbol),
+    getRegime: () => ipcRenderer.invoke('data:regime'),
+    getAnomalies: (symbol: string) => ipcRenderer.invoke('data:anomalies', symbol),
+    getNews: (symbol: string, limit?: number) => ipcRenderer.invoke('data:news', symbol, limit),
+    getCompositeScore: (symbol: string) => ipcRenderer.invoke('data:composite-score', symbol),
+    saveFundamental: (data: any) => ipcRenderer.invoke('data:save-fundamental', data),
+    saveCapitalFlow: (data: any) => ipcRenderer.invoke('data:save-capital-flow', data),
+    saveRegime: (regime: any) => ipcRenderer.invoke('data:save-regime', regime),
+    computeRegime: (factors: any) => ipcRenderer.invoke('data:compute-regime', factors),
+    saveAnomaly: (signal: any) => ipcRenderer.invoke('data:save-anomaly', signal),
+    saveNews: (symbol: string, items: any[]) => ipcRenderer.invoke('data:save-news', symbol, items),
+    clearCache: () => ipcRenderer.invoke('data:clear-cache'),
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
     const allowed = [
