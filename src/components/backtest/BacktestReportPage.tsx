@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import * as api from '../../lib/bridge-api';
 import { generatePDFReport, backtestToReport } from '../../lib/pdf-report';
+import ParamScanPanel from './ParamScanPanel';
+import WalkForwardPanel from './WalkForwardPanel';
 
 interface BacktestResult {
   strategyId: string;
@@ -47,7 +49,11 @@ export default function BacktestReportPage() {
   const [loading, setLoading] = useState(false);
   const [tradeSort, setTradeSort] = useState<{ field: SortField; dir: SortDir }>({ field: 'entryDate', dir: 'desc' });
   const [days, setDays] = useState(365);
-  const [tab, setTab] = useState<'overview' | 'trades' | 'equity'>('overview');
+  const [tab, setTab] = useState<'overview' | 'trades' | 'equity' | 'enhanced'>('overview');
+  const [paramScanResult, setParamScanResult] = useState<any>(null);
+  const [wfaResult, setWfaResult] = useState<any>(null);
+  const [paramScanLoading, setParamScanLoading] = useState(false);
+  const [wfaLoading, setWfaLoading] = useState(false);
 
   useEffect(() => {
     loadStrategies();
@@ -69,6 +75,28 @@ export default function BacktestReportPage() {
         setResult(res.result);
       }
     } catch { /* silent */ } finally { setLoading(false); }
+  }
+
+  async function runParamScan() {
+    if (!selectedId) return;
+    setParamScanLoading(true);
+    try {
+      const res = await api.runParamScan({ strategyId: selectedId });
+      if (res?.success) {
+        setParamScanResult(res.result);
+      }
+    } catch { /* silent */ } finally { setParamScanLoading(false); }
+  }
+
+  async function runWFA() {
+    if (!selectedId) return;
+    setWfaLoading(true);
+    try {
+      const res = await api.runWalkForwardV2({ strategyId: selectedId });
+      if (res?.success) {
+        setWfaResult(res.result);
+      }
+    } catch { /* silent */ } finally { setWfaLoading(false); }
   }
 
   function exportCSV() {
@@ -304,7 +332,7 @@ export default function BacktestReportPage() {
         <>
           {/* Tabs */}
           <div className="flex gap-1 mb-4 bg-[#12121a] rounded-lg p-1 w-fit">
-            {([['overview', '📊 绩效概览'], ['equity', '📈 权益曲线'], ['trades', '📋 交易明细']] as const).map(([key, label]) => (
+            {([['overview', '📊 绩效概览'], ['equity', '📈 权益曲线'], ['trades', '📋 交易明细'], ['enhanced', '🔬 增强分析']] as const).map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => setTab(key)}
@@ -313,7 +341,7 @@ export default function BacktestReportPage() {
                 {label}
               </button>
             ))}
-            <button onClick={() => { setResult(null); setSelectedId(null); }} className="px-4 py-2 rounded-md text-sm text-gray-500 hover:text-gray-300 ml-2">
+            <button onClick={() => { setResult(null); setSelectedId(null); setParamScanResult(null); setWfaResult(null); }} className="px-4 py-2 rounded-md text-sm text-gray-500 hover:text-gray-300 ml-2">
               ← 换策略
             </button>
           </div>
@@ -445,6 +473,48 @@ export default function BacktestReportPage() {
                 <span>共 {result.trades.length} 笔交易</span>
                 <span>胜率 {(result.winRate * 100).toFixed(1)}% · 盈亏比 {result.profitLossRatio.toFixed(2)}</span>
               </div>
+            </div>
+          )}
+
+          {/* Enhanced Analysis */}
+          {tab === 'enhanced' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-white font-medium">🔬 增强分析</div>
+                  <div className="text-xs text-gray-500">参数扫描 · Walk-Forward · 深度风险指标</div>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={runParamScan}
+                    disabled={paramScanLoading}
+                    className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-xs text-gray-300 hover:bg-[#22222f]"
+                  >
+                    {paramScanLoading ? '⏳ 扫描中...' : '🔬 参数扫描'}
+                  </button>
+                  <button
+                    onClick={runWFA}
+                    disabled={wfaLoading}
+                    className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-xs text-gray-300 hover:bg-[#22222f]"
+                  >
+                    {wfaLoading ? '⏳ 分析中...' : '🔄 Walk-Forward'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Param Scan */}
+              <ParamScanPanel
+                result={paramScanResult}
+                onRunScan={runParamScan}
+                loading={paramScanLoading}
+              />
+
+              {/* Walk-Forward */}
+              <WalkForwardPanel
+                result={wfaResult}
+                onRunWFA={runWFA}
+                loading={wfaLoading}
+              />
             </div>
           )}
         </>

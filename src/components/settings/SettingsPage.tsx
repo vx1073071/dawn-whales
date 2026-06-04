@@ -1,5 +1,18 @@
 import { useState, useEffect } from 'react';
-import { connectBroker, isConnected as checkConnected, getRiskConfig, getRiskAlerts } from '@/lib/bridge-api';
+import {
+  connectBroker, isConnected as checkConnected, getRiskConfig, getRiskAlerts,
+  listBrokers, addBroker, removeBroker, setActiveBroker, getBrokerStatus,
+} from '@/lib/bridge-api';
+
+interface BrokerItem {
+  id: string;
+  name: string;
+  type: string;
+  host: string;
+  port: number;
+  enabled: boolean;
+  connected?: boolean;
+}
 
 export default function SettingsPage() {
   const [host, setHost] = useState('127.0.0.1');
@@ -11,8 +24,18 @@ export default function SettingsPage() {
   const [alerts, setAlerts] = useState<any[]>([]);
   const [appInfo, setAppInfo] = useState<any>(null);
 
+  // ── Broker Manager (Sprint2) ────────────────────────────────────────
+  const [brokers, setBrokers] = useState<BrokerItem[]>([]);
+  const [brokerStatus, setBrokerStatus] = useState<any[]>([]);
+  const [showAddBroker, setShowAddBroker] = useState(false);
+  const [newBroker, setNewBroker] = useState({ name: '', type: 'futu', host: '127.0.0.1', port: '11111' });
+  const [brokerActionLoading, setBrokerActionLoading] = useState<string | null>(null);
+
   useEffect(() => {
     init();
+    refreshBrokers();
+    const interval = setInterval(refreshBrokers, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   async function init() {
@@ -30,9 +53,17 @@ export default function SettingsPage() {
     } catch { /* silent */ }
   }
 
+  async function refreshBrokers() {
+    try {
+      const list = await listBrokers();
+      const status = await getBrokerStatus();
+      setBrokers(list);
+      setBrokerStatus(status);
+    } catch { /* silent */ }
+  }
+
   async function handleConnect() {
     if (connected) {
-      // disconnect not wired yet
       setConnected(false);
       return;
     }
@@ -52,6 +83,58 @@ export default function SettingsPage() {
     }
   }
 
+  async function handleAddBroker() {
+    if (!newBroker.name.trim()) return;
+    setBrokerActionLoading('add');
+    try {
+      const cfg = {
+        id: `${newBroker.type}-${Date.now()}`,
+        name: newBroker.name,
+        type: newBroker.type,
+        host: newBroker.host,
+        port: Number(newBroker.port),
+        enabled: true,
+      };
+      const result = await addBroker(cfg);
+      if (result?.success) {
+        setShowAddBroker(false);
+        setNewBroker({ name: '', type: 'futu', host: '127.0.0.1', port: '11111' });
+        await refreshBrokers();
+      } else {
+        alert(result?.error || '添加失败');
+      }
+    } catch (e: any) {
+      alert(e.message || '添加异常');
+    } finally {
+      setBrokerActionLoading(null);
+    }
+  }
+
+  async function handleRemoveBroker(id: string) {
+    if (!confirm('确定删除该券商配置？')) return;
+    setBrokerActionLoading(id);
+    try {
+      await removeBroker(id);
+      await refreshBrokers();
+    } catch (e: any) {
+      alert(e.message || '删除失败');
+    } finally {
+      setBrokerActionLoading(null);
+    }
+  }
+
+  async function handleSetActive(id: string) {
+    setBrokerActionLoading(id);
+    try {
+      await setActiveBroker(id);
+      await refreshBrokers();
+    } catch (e: any) {
+      alert(e.message || '切换失败');
+    } finally {
+      setBrokerActionLoading(null);
+    }
+  }
+
   async function handleRiskSave(key: string, value: number) {
     if (!riskConfig) return;
     const updated = { ...riskConfig, [key]: value / 100 };
@@ -63,14 +146,153 @@ export default function SettingsPage() {
     } catch { /* silent */ }
   }
 
+  const activeBrokerId = brokerStatus.find((s: any) => s.active)?.id || brokerStatus[0]?.id;
+
   return (
     <div className="p-6 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold text-white mb-1">系统设置</h1>
       <p className="text-gray-400 text-sm mb-6">券商连接、风控参数、系统信息</p>
 
-      {/* Broker connection */}
+      {/* ── Broker Management (Sprint2) ─────────────────────────── */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
-        <h2 className="text-white font-semibold mb-4 flex items-center gap-2">🔌 券商连接</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-white font-semibold flex items-center gap-2">🏦 券商管理</h2>
+          <button
+            onClick={() => setShowAddBroker(!showAddBroker)}
+            className="text-xs bg-[#C9A046]/20 text-[#C9A046] hover:bg-[#C9A046]/30 px-3 py-1.5 rounded-lg transition-colors"
+          >
+            {showAddBroker ? '取消' : '+ 添加券商'}
+          </button>
+        </div>
+
+        {/* Add broker form */}
+        {showAddBroker && (
+          <div className="bg-[#12121a] rounded-lg p-4 mb-4 space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-gray-400 text-xs mb-1">名称</label>
+                <input
+                  value={newBroker.name}
+                  onChange={(e) => setNewBroker({ ...newBroker, name: e.target.value })}
+                  placeholder="例如: 富途香港"
+                  className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-400 text-xs mb-1">类型</label>
+                <select
+                  value={newBroker.type}
+                  onChange={(e) => setNewBroker({ ...newBroker, type: e.target.value })}
+                  className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50"
+                >
+                  <option value="futu">富途 Futu</option>
+                  <option value="moomoo">moomoo</option>
+                </select>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="col-span-2">
+                <label className="block text-gray-400 text-xs mb-1">主机</label>
+                <input
+                  value={newBroker.host}
+                  onChange={(e) => setNewBroker({ ...newBroker, host: e.target.value })}
+                  className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-400 text-xs mb-1">端口</label>
+                <input
+                  value={newBroker.port}
+                  onChange={(e) => setNewBroker({ ...newBroker, port: e.target.value })}
+                  className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <button
+                onClick={handleAddBroker}
+                disabled={brokerActionLoading === 'add'}
+                className="bg-[#C9A046] text-black text-sm px-4 py-2 rounded-lg hover:bg-[#D4A853] disabled:opacity-40 transition-colors"
+              >
+                {brokerActionLoading === 'add' ? '添加中...' : '确认添加'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Broker list */}
+        <div className="space-y-2">
+          {brokers.length === 0 && (
+            <p className="text-gray-500 text-sm py-4 text-center">暂无券商配置，点击右上角添加</p>
+          )}
+          {brokers.map((broker) => {
+            const status = brokerStatus.find((s: any) => s.id === broker.id);
+            const isConnected = status?.connected || false;
+            const isActive = activeBrokerId === broker.id;
+            const isLoading = brokerActionLoading === broker.id;
+
+            return (
+              <div
+                key={broker.id}
+                className={`flex items-center gap-3 bg-[#12121a] rounded-lg px-4 py-3 border transition-colors ${
+                  isActive ? 'border-[#C9A046]/40' : 'border-transparent'
+                }`}
+              >
+                {/* Status indicator */}
+                <div className="relative">
+                  <div className={`w-2.5 h-2.5 rounded-full ${isConnected ? 'bg-emerald-400' : 'bg-gray-600'}`} />
+                  {isConnected && (
+                    <div className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping opacity-40" />
+                  )}
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-white text-sm font-medium truncate">{broker.name}</span>
+                    {isActive && (
+                      <span className="text-[10px] bg-[#C9A046]/20 text-[#C9A046] px-1.5 py-0.5 rounded">当前使用</span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                    <span className="uppercase">{broker.type}</span>
+                    <span>·</span>
+                    <span className="font-mono">{broker.host}:{broker.port}</span>
+                    <span>·</span>
+                    <span className={isConnected ? 'text-emerald-400' : 'text-gray-600'}>
+                      {isConnected ? '已连接' : '未连接'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2">
+                  {!isActive && (
+                    <button
+                      onClick={() => handleSetActive(broker.id)}
+                      disabled={isLoading}
+                      className="text-xs bg-white/5 hover:bg-white/10 text-gray-300 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40"
+                    >
+                      {isLoading ? '...' : '切换'}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleRemoveBroker(broker.id)}
+                    disabled={isLoading}
+                    className="text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40"
+                  >
+                    {isLoading ? '...' : '删除'}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Quick Connect (legacy) ────────────────────────────────── */}
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
+        <h2 className="text-white font-semibold mb-4 flex items-center gap-2">🔌 快速连接</h2>
 
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-4">
