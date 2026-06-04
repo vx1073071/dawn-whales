@@ -9,7 +9,7 @@ interface AppStore extends AppState {
 }
 
 export const useAppStore = create<AppStore>((set) => ({
-  sidebarView: 'market',
+  sidebarView: 'dashboard',
   sidebarCollapsed: false,
   connectionStatus: null,
 

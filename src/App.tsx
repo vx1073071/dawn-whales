@@ -10,6 +10,7 @@ import { connectBroker } from '@/lib/bridge-api';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 // ── Lazy-loaded pages for code splitting ──────────────────────────────────
+const DashboardPage = lazy(() => import('@/components/dashboard/DashboardPage'));
 const MarketPage = lazy(() => import('@/components/market/MarketPage'));
 const StrategyPage = lazy(() => import('@/components/strategy/StrategyPage'));
 const PortfolioPage = lazy(() => import('@/components/portfolio/PortfolioPage'));
@@ -20,6 +21,7 @@ const LiveMonitorPage = lazy(() => import('@/components/live/LiveMonitorPage'));
 const BacktestReportPage = lazy(() => import('@/components/backtest/BacktestReportPage'));
 
 const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
+  dashboard: DashboardPage,
   market: MarketPage,
   strategy: StrategyPage,
   portfolio: PortfolioPage,

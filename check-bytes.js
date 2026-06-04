@@ -1,0 +1,12 @@
+const fs = require('fs');
+const path = 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\package.json';
+const b = fs.readFileSync(path);
+const l = b.length;
+let first = '';
+let last = '';
+for (let i = 0; i < 20; i++) first += b[i].toString(16) + ' ';
+const ml = Math.min(20, l);
+for (let i = 0; i < ml; i++) last += b[l - 20 + i].toString(16) + ' ';
+const out = `Length=${l}\nFirst=${first}\nLast=${last}`;
+fs.writeFileSync('C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\check-out.txt', out);
+console.log(out);

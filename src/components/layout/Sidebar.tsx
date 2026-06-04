@@ -11,12 +11,11 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { id: 'market', icon: '📊', label: '行情中心', section: '交易' },
+  { id: 'dashboard', icon: '📊', label: '总览看板', section: '总览' },
+  { id: 'market', icon: '📈', label: '行情中心', section: '交易' },
   { id: 'strategy', icon: '🧠', label: '策略工坊' },
   { id: 'marketplace', icon: '🏪', label: '策略市场' },
-  { id: 'backtest', icon: '📈', label: '回测报告' },
-  { id: 'live', icon: '⚡', label: '实盘监控', section: '管理' },
-  { id: 'backtest', icon: '📈', label: '回测报告' },
+  { id: 'backtest', icon: '🔬', label: '回测报告' },
   { id: 'portfolio', icon: '💼', label: '持仓管理' },
   { id: 'orders', icon: '📋', label: '委托订单' },
   { id: 'risk', icon: '🛡️', label: '风控设置' },

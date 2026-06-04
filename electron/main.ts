@@ -70,6 +70,7 @@ import { validate,
   StrategyExplainSchema,
   StrategyCompareSchema,
 } from './ipc-schemas';
+import { storeKey, getKey, getDeepSeekKey, storeDeepSeekKey } from './utils/secure-key';
 import log from 'electron-log';
 
 // 默认监控列表，连接时从 DB 读取用户配置
@@ -93,6 +94,13 @@ let riskEngine: RiskEngine | null = null;
 let db: DatabaseManager | null = null;
 let marketplaceService: MarketplaceService | null = null;
 let dataProvider: DataProviderService | null = null;
+
+// ── Shared quote push handler (prevents duplicate listener registration) ─────
+const quotePushHandler = (quotes: any[]) => {
+  if (!mainWindow || mainWindow.isDestroyed()) return;
+  mainWindow.webContents.send('quotes:push', quotes);
+  strategyEngine?.onQuoteUpdate(quotes);
+};
 
 // ── Window Creation ────────────────────────────────────────────────────────
 
@@ -157,12 +165,9 @@ function setupIPC() {
           enabled: true,
         };
         brokerManager.loadConfigs([brokerCfg]);
+        brokerManager.clearCallbacks();
+        brokerManager.onQuotePush(quotePushHandler);
         await brokerManager.connect(brokerCfg.id);
-        const adapter = brokerManager.getActiveBroker();
-        adapter?.onQuotePush((quotes) => {
-          mainWindow?.webContents.send('quotes:push', quotes);
-          strategyEngine?.onQuoteUpdate(quotes);
-        });
         // Load watchlist
         const savedWatchlist = db?.getWatchlist();
         if (savedWatchlist && savedWatchlist.length > 0) {
@@ -377,10 +382,8 @@ function setupIPC() {
 
       // Re-subscribe quotes for the newly active broker
       if (activeAdapter) {
-        activeAdapter.onQuotePush((quotes) => {
-          mainWindow?.webContents.send('quotes:push', quotes);
-          strategyEngine?.onQuoteUpdate(quotes);
-        });
+        brokerManager?.clearCallbacks();
+        brokerManager?.onQuotePush(quotePushHandler);
         const savedWatchlist = db?.getWatchlist();
         await activeAdapter.subscribeAndPush(savedWatchlist && savedWatchlist.length > 0 ? savedWatchlist : WATCHLIST);
       }
@@ -546,9 +549,9 @@ function setupIPC() {
 
   // ── Strategy AI — LLM-powered (Sprint 2 P1) ─────────────────────
   ipcMain.handle('strategy:explain', async (_e, strategy: any) => {
-    const apiKey = process.env.DEEPSEEK_API_KEY;
+    const apiKey = getDeepSeekKey(app);
     if (!apiKey) {
-      return { success: false, error: 'DeepSeek API key not configured. Set DEEPSEEK_API_KEY env var.' };
+      return { success: false, error: 'DeepSeek API key not configured. Use Settings to set your key.' };
     }
     const prompt = `You are a quantitative trading strategy analyst. Explain the following strategy in clear, actionable English for a retail trader.
 
@@ -586,9 +589,9 @@ Keep it under 200 words. Use bullet points.`;
   });
 
   ipcMain.handle('strategy:compare', async (_e, s1: any, s2: any) => {
-    const apiKey = process.env.DEEPSEEK_API_KEY;
+    const apiKey = getDeepSeekKey(app);
     if (!apiKey) {
-      return { success: false, error: 'DeepSeek API key not configured. Set DEEPSEEK_API_KEY env var.' };
+      return { success: false, error: 'DeepSeek API key not configured. Use Settings to set your key.' };
     }
     const fmt = (s: any) => `Name: ${s.name || '?'} | Symbol: ${s.symbol || '?'} | Type: ${s.strategy?.type || '?'} | Params: ${JSON.stringify(s.strategy?.params || {})} | SL: ${s.strategy?.stopLoss || '?'}% | TP: ${s.strategy?.takeProfit || '?'}%`;
     const prompt = `You are a quantitative trading strategy comparison tool. Compare these two strategies objectively.
@@ -1229,14 +1232,13 @@ app.whenReady().then(async () => {
     const savedConfigs = db?.getBrokerConfigs?.() || [defaultBroker];
     if (brokerManager) {
       brokerManager.loadConfigs(savedConfigs);
+      brokerManager.clearCallbacks();
+      brokerManager.onQuotePush(quotePushHandler);
       await brokerManager.connect('futu-default');
       const adapter = brokerManager.getActiveBroker();
-      adapter?.onQuotePush((quotes) => {
-        mainWindow?.webContents.send('quotes:push', quotes);
-        strategyEngine?.onQuoteUpdate(quotes);
-      });
       adapter?.onDisconnect(() => {
-        mainWindow?.webContents.send('notification', { type: 'warning', message: 'OpenD 连接断开，正在重连...' });
+        if (!mainWindow || mainWindow.isDestroyed()) return;
+        mainWindow.webContents.send('notification', { type: 'warning', message: 'OpenD 连接断开，正在重连...' });
       });
       await brokerManager.subscribeAndPush('futu-default', WATCHLIST);
       log.info('[App] BrokerManager auto-connected ✓ Push mode active');
