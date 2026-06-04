@@ -32,7 +32,6 @@ const DataQualityMonitorPage = lazy(() => import('@/components/market/DataQualit
 const CachedDataExplorer = lazy(() => import('@/components/market/CachedDataExplorer'));
 const SentimentStreamDashboard = lazy(() => import('@/components/market/SentimentStreamDashboard'));
 const SmartPickerPage = lazy(() => import('@/components/market/SmartPickerPage'));
-const TradeExecutionPanel = lazy(() => import('@/components/trading/TradeExecutionPanel'));
 const TradeHistoryPage = lazy(() => import('@/components/trading/TradeHistoryPage'));
 const TradingDesk = lazy(() => import('@/components/trading/TradingDesk'));
 const AIAdvisorPage = lazy(() => import('@/components/strategy/AIAdvisorPage'));

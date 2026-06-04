@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
 import * as echarts from 'echarts';
-import { runBacktest } from '@/lib/bridge-api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 interface BacktestResult {
@@ -109,7 +108,7 @@ function generateEquityCurve(initial: number, annualReturn: number, volatility: 
 }
 
 export default function BacktestComparisonPage() {
-  const [results, setResults] = useState<BacktestResult[]>(MOCK_RESULTS);
+  const [results] = useState<BacktestResult[]>(MOCK_RESULTS);
   const [loading, setLoading] = useState(false);
   const [selectedStrategies, setSelectedStrategies] = useState<Set<string>>(new Set(MOCK_RESULTS.map(r => r.strategyId)));
   const [chartType, setChartType] = useState<'equity' | 'drawdown' | 'monthly'>('equity');
