@@ -18,7 +18,7 @@ const navItems: NavItem[] = [
   { id: 'backtest', icon: '🔬', label: '回测报告' },
   { id: 'portfolio', icon: '💼', label: '持仓管理' },
   { id: 'orders', icon: '📋', label: '委托订单' },
-  { id: 'risk', icon: '🛡️', label: '风控设置' },
+  { id: 'risk', icon: '🛡️', label: '风险仪表盘' },
   { id: 'settings', icon: '⚙️', label: '系统设置', section: '系统' },
 ];
 

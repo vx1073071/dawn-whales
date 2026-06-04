@@ -1,11 +1,13 @@
 // ── DAWN WHALES — Dashboard (v0.6.0) ────────────────────────────────────────
 // 总资产/持仓热力图/净值曲线/盈亏总览/最近信号
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   getAccounts, getFunds, getPositions, getQuotes, isConnected,
   getWatchlist, getAllStrategies, getComments, getMarketplaceList,
 } from '../../lib/bridge-api';
+import EquityChart from '../risk/EquityChart';
+import PortfolioAllocationChart from '../risk/PortfolioAllocationChart';
 
 interface AccountSummary {
   totalAssets: number;
@@ -109,6 +111,21 @@ export default function DashboardPage() {
   const pnlColor = (account?.todayPnl ?? 0) >= 0 ? 'text-emerald-400' : 'text-red-400';
   const pnlBg = (account?.todayPnl ?? 0) >= 0 ? 'bg-emerald-500/10' : 'bg-red-500/10';
 
+  // Demo equity curve (90 days) — will be replaced with real account equity history
+  const equityData = useMemo(() => {
+    const data: { time: string; equity: number }[] = [];
+    let equity = account?.totalAssets || 100000;
+    const now = new Date();
+    for (let i = 89; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const change = (Math.random() - 0.47) * 0.015 * equity;
+      equity += change;
+      data.push({ time: d.toISOString().split('T')[0], equity: Math.max(equity, 50000) });
+    }
+    return data;
+  }, [account?.totalAssets]);
+
   if (loading) {
     return (
       <div className="p-6 flex items-center justify-center h-64">
@@ -155,6 +172,9 @@ export default function DashboardPage() {
           color="text-[#D4A853]"
         />
       </div>
+
+      {/* Equity Curve */}
+      <EquityChart data={equityData} title="📈 账户净值走势" height={280} showDrawdown />
 
       {/* Position Heatmap */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
@@ -238,7 +258,7 @@ export default function DashboardPage() {
             <div className="pt-2 border-t border-white/5">
               <div className="flex justify-between text-xs">
                 <span className="text-gray-500">版本</span>
-                <span className="text-gray-300 font-mono">v0.5.0</span>
+                <span className="text-gray-300 font-mono">v0.6.0</span>
               </div>
               <div className="flex justify-between text-xs mt-1">
                 <span className="text-gray-500">测试</span>

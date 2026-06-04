@@ -290,6 +290,21 @@ export async function getRiskAlerts(): Promise<any[]> {
   return result?.success ? result.alerts || [] : [];
 }
 
+export async function getRiskStatusSnapshot(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.risk.getStatusSnapshot();
+}
+
+export async function getRiskKellyStats(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.risk.getKellyStats();
+}
+
+export async function getRiskDrawdownState(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.risk.getDrawdownState();
+}
+
 // ── App / Updater ──────────────────────────────────────────────────────────
 
 export async function checkUpdate(): Promise<any> {
