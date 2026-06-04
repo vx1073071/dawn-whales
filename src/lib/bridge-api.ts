@@ -830,6 +830,28 @@ export async function getConsumerData(months?: number): Promise<any> {
   return window.api.consumerData.get(months);
 }
 
+// ── Margin Data — 融资融券数据服务 (JVS-18) ────────────────────────────────
+
+export async function getMarginData(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.marginData.get();
+}
+
+export async function getStockMargin(code: string, days?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, data: [] };
+  return window.api.marginData.getStockMargin(code, days);
+}
+
+export async function getMarginBalanceRank(limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, data: [] };
+  return window.api.marginData.getMarginBalanceRank(limit);
+}
+
+export async function getShortInterestRank(limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, data: [] };
+  return window.api.marginData.getShortInterestRank(limit);
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {

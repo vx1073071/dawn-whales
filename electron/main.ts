@@ -35,6 +35,7 @@ import { diagnoseStock, batchDiagnose } from './engine/stock-diagnosis';
 import { calculatePortfolioRisk } from './engine/portfolio-risk';
 import { getMarketBreadth } from './engine/market-breadth';
 import { getConsumerDataReport } from './engine/consumer-data';
+import { getMarginDataReport, getStockMargin, getMarginBalanceRanking, getShortInterestRanking } from './engine/margin-data';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1844,6 +1845,43 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const result = await getConsumerDataReport(months || 12);
       return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Margin Data — 融资融券数据服务 (JVS-18) ────────────────────
+  ipcMain.handle('em:get-margin-data', async () => {
+    try {
+      const result = await getMarginDataReport();
+      return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-stock-margin', async (_e, code: string, days?: number) => {
+    try {
+      const result = await getStockMargin(code, days || 30);
+      return { success: true, data: result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-margin-balance-rank', async (_e, limit?: number) => {
+    try {
+      const result = await getMarginBalanceRanking(limit || 30);
+      return { success: true, data: result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-short-interest-rank', async (_e, limit?: number) => {
+    try {
+      const result = await getShortInterestRanking(limit || 30);
+      return { success: true, data: result };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

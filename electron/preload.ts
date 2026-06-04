@@ -249,6 +249,14 @@ contextBridge.exposeInMainWorld('api', {
     get: (months?: number) => ipcRenderer.invoke('em:get-consumer-data', months),
   },
 
+  // ── Margin Data — 融资融券数据服务 (JVS-18) ─────────────────
+  marginData: {
+    get: () => ipcRenderer.invoke('em:get-margin-data'),
+    getStockMargin: (code: string, days?: number) => ipcRenderer.invoke('em:get-stock-margin', code, days),
+    getMarginBalanceRank: (limit?: number) => ipcRenderer.invoke('em:get-margin-balance-rank', limit),
+    getShortInterestRank: (limit?: number) => ipcRenderer.invoke('em:get-short-interest-rank', limit),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),
