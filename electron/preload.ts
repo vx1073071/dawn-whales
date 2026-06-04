@@ -725,6 +725,16 @@ contextBridge.exposeInMainWorld('api', {
     cleanOld: (retentionDays?: number) => ipcRenderer.invoke('historical:clean-old', retentionDays),
   },
 
+  // ── Data Versioning (JVS-59) ────────────────────────────────────────────
+  dataVersioning: {
+    create: (tableName: string, metadata?: Record<string, any>) => ipcRenderer.invoke('version:create', tableName, metadata),
+    getVersions: (tableName: string, limit?: number) => ipcRenderer.invoke('version:get-versions', tableName, limit),
+    get: (versionId: string) => ipcRenderer.invoke('version:get', versionId),
+    rollback: (versionId: string) => ipcRenderer.invoke('version:rollback', versionId),
+    compare: (versionId1: string, versionId2: string) => ipcRenderer.invoke('version:compare', versionId1, versionId2),
+    cleanupOld: (tableName: string, keepCount?: number) => ipcRenderer.invoke('version:cleanup-old', tableName, keepCount),
+  },
+
   // ── Strategy Signal Generator (JVS-46) ──────────────────────────
   signalGenerator: {
     generate: (raw: any) => ipcRenderer.invoke('signal:generate', raw),

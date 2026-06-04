@@ -2097,3 +2097,35 @@ export async function cleanOldHistoricalData(retentionDays?: number): Promise<an
   return window.api.historicalWarehouse.cleanOld(retentionDays);
 }
 
+// ── Data Versioning (JVS-59) ───────────────────────────────────────────────
+
+export async function createDataVersion(tableName: string, metadata?: Record<string, any>): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataVersioning.create(tableName, metadata);
+}
+
+export async function getDataVersions(tableName: string, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataVersioning.getVersions(tableName, limit);
+}
+
+export async function getDataVersion(versionId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataVersioning.get(versionId);
+}
+
+export async function rollbackDataVersion(versionId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataVersioning.rollback(versionId);
+}
+
+export async function compareDataVersions(versionId1: string, versionId2: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataVersioning.compare(versionId1, versionId2);
+}
+
+export async function cleanupOldDataVersions(tableName: string, keepCount?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataVersioning.cleanupOld(tableName, keepCount);
+}
+

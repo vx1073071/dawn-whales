@@ -51,6 +51,7 @@ import { getDataQualityMonitor, registerModule } from './engine/data-quality-mon
 import { DataAggregator, getDataAggregator } from './data/data-aggregator';
 import { DataCleaningPipeline, getDataCleaningPipeline } from './data/data-pipeline';
 import { HistoricalDataWarehouse, getHistoricalDataWarehouse } from './data/historical-warehouse';
+import { DataVersioningSystem, getDataVersioningSystem } from './data/data-versioning';
 import { captureSnapshot, querySnapshots, getSnapshot, compareSnapshots, getSnapshotTimeline, getLatestSnapshot, cleanupOldSnapshots, exportSnapshots, importSnapshots, getSnapshotStats, deleteSnapshot, clearAllSnapshots } from './engine/snapshot-service';
 import { trackVersion, getEntityVersions, getVersion, getLatestVersion, diffVersions, rollback, queryVersions, getVersionStats, deleteVersion, clearAllVersions, exportVersions, importVersions } from './engine/version-control-service';
 import { setupI18nDataIPC } from './engine/i18n-data';
@@ -4431,6 +4432,67 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const warehouse = getHistoricalDataWarehouse();
       const result = warehouse.cleanOldData(retentionDays);
       return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Data Versioning (JVS-59) ─────────────────────────────────────────────
+  ipcMain.handle('version:create', async (_e, tableName: string, metadata?: Record<string, any>) => {
+    try {
+      const versioning = getDataVersioningSystem(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
+      const versionId = versioning.createVersion(tableName, metadata);
+      return { success: true, versionId };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('version:get-versions', async (_e, tableName: string, limit?: number) => {
+    try {
+      const versioning = getDataVersioningSystem(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
+      const versions = versioning.getVersions(tableName, limit || 50);
+      return { success: true, versions };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('version:get', async (_e, versionId: string) => {
+    try {
+      const versioning = getDataVersioningSystem(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
+      const version = versioning.getVersion(versionId);
+      return { success: true, version };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('version:rollback', async (_e, versionId: string) => {
+    try {
+      const versioning = getDataVersioningSystem(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
+      const result = versioning.rollback(versionId);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('version:compare', async (_e, versionId1: string, versionId2: string) => {
+    try {
+      const versioning = getDataVersioningSystem(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
+      const diff = versioning.compareVersions(versionId1, versionId2);
+      return { success: true, diff };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('version:cleanup-old', async (_e, tableName: string, keepCount?: number) => {
+    try {
+      const versioning = getDataVersioningSystem(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
+      const deletedCount = versioning.cleanupOldVersions(tableName, keepCount || 10);
+      return { success: true, deletedCount };
     } catch (err: any) {
       return { success: false, error: err.message };
     }
