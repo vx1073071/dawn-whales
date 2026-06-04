@@ -174,6 +174,14 @@ contextBridge.exposeInMainWorld('api', {
     recordSnapshot: (sectors: any[]) => ipcRenderer.invoke('em:record-sector-snapshot', sectors),
   },
 
+  // ── Stock Anomaly Detector (JVS-7) ─────────────────────────────
+  stockAnomaly: {
+    getSummary: () => ipcRenderer.invoke('em:get-anomaly-summary'),
+    getAlerts: (options?: any) => ipcRenderer.invoke('em:get-anomaly-alerts', options),
+    processQuotes: (quotes: any[]) => ipcRenderer.invoke('em:process-anomaly-quotes', quotes),
+    acknowledgeAlert: (id: string) => ipcRenderer.invoke('em:acknowledge-anomaly', id),
+  },
+
   // ── Backtest Enhancement (Sprint 2) ──────────────────────────────
   backtest: {
     multiPeriod: (config: any) => ipcRenderer.invoke('backtest:multiPeriod', config),

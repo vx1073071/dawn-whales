@@ -75,6 +75,12 @@ declare global {
         analyze: () => Promise<any>;
         recordSnapshot: (sectors: any[]) => Promise<any>;
       };
+      stockAnomaly: {
+        getSummary: () => Promise<any>;
+        getAlerts: (options?: any) => Promise<any>;
+        processQuotes: (quotes: any[]) => Promise<any>;
+        acknowledgeAlert: (id: string) => Promise<any>;
+      };
       backtestEnhanced: {
         walkForward: (config: any) => Promise<any>;
         paramScan: (config: any) => Promise<any>;
@@ -593,6 +599,34 @@ export async function analyzeSectorRotation(): Promise<any> {
 export async function recordSectorSnapshot(sectors: any[]): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.sectorRotation.recordSnapshot(sectors);
+}
+
+// ── Stock Anomaly Detector (JVS-7) ────────────────────────────────────────
+
+export async function getAnomalySummary(): Promise<any> {
+  if (!hasIPC()) return { success: false, summary: null };
+  return window.api.stockAnomaly.getSummary();
+}
+
+export async function getAnomalyAlerts(options?: {
+  level?: string;
+  type?: string;
+  code?: string;
+  limit?: number;
+  unacknowledgedOnly?: boolean;
+}): Promise<any> {
+  if (!hasIPC()) return { success: false, alerts: [] };
+  return window.api.stockAnomaly.getAlerts(options);
+}
+
+export async function processAnomalyQuotes(quotes: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.stockAnomaly.processQuotes(quotes);
+}
+
+export async function acknowledgeAnomalyAlert(id: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.stockAnomaly.acknowledgeAlert(id);
 }
 
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
