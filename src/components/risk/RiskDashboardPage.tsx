@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { getRiskStatusSnapshot } from '../../lib/bridge-api';
 import EquityChart from './EquityChart';
 import PerformanceMetricsPanel from './PerformanceMetricsPanel';
+import TradingJournal from './TradingJournal';
 
 interface KellyStats {
   winRate: number;
