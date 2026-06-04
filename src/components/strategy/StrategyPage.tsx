@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates, deleteStrategy } from '../../lib/bridge-api';
 import StrategyExplainCard from './StrategyExplainCard';
 import StrategyCompareModal from './StrategyCompareModal';
+import TemplateBrowser from './TemplateBrowser';
 
 type CreateMode = null | 'ai' | 'template' | 'form';
 
