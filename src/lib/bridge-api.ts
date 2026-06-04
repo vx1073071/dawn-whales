@@ -1660,3 +1660,41 @@ export async function detectSectorRotation(params: {
   if (!hasIPC()) return { success: false };
   return window.api.sectorRotationV2.detect(params);
 }
+
+// ── Valuation Dashboard (JVS-49) ───────────────────────────────────────────
+export async function getValuationDashboard(codes: string[], historyDays?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.valuationDashboard.get(codes, historyDays);
+}
+
+export async function getValuationDashboardBatch(codes: string[], batchSize?: number, delayMs?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.valuationDashboard.batch(codes, batchSize, delayMs);
+}
+
+// ── Sector Comparison (JVS-50) ─────────────────────────────────────────────
+export async function compareSectorStocks(stocks: any[], financialData: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sectorComparison.compare(stocks, financialData);
+}
+
+export async function compareMultipleSectors(sectors: any[], financialData: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sectorComparison.compareMultiple(sectors, financialData);
+}
+
+export async function rankSectorStocks(metrics: any[], weights?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sectorComparison.rank(metrics, weights);
+}
+
+// ── Macro Alert (JVS-51) ─────────────────────────────────────────────────
+export async function detectMacroAnomalies(currentData: any[], historicalData: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.macroAlert.detect(currentData, historicalData);
+}
+
+export async function detectMultipleMacroAnomalies(indicatorData: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.macroAlert.detectMultiple(indicatorData);
+}

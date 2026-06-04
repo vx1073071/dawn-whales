@@ -34,7 +34,6 @@
     "high": "High",
     "low": "Low",
     "open": "Open",
-    "close": "Close",
     "volume": "Volume",
     "turnover": "Turnover",
     "change": "Change",
@@ -47,7 +46,14 @@
     "disconnected": "Disconnected",
     "connecting": "Connecting...",
     "tenThousand": "K",
-    "cash": "Cash"
+    "cash": "Cash",
+    "name": "Name",
+    "type": "Type",
+    "adding": "Adding...",
+    "confirmAdd": "Confirm Add",
+    "switch": "Switch",
+    "count": "",
+    "mode": "Mode"
   },
   "nav": {
     "overview": "Overview",
@@ -189,6 +195,7 @@
   },
   "settings": {
     "title": "Settings",
+    "subtitle": "Broker connection, risk parameters, system info",
     "general": "General",
     "broker": "Broker",
     "risk": "Risk",
@@ -202,6 +209,29 @@
     "languageDesc": "Choose interface language",
     "saveSuccess": "Settings saved",
     "connect": "Connect",
-    "disconnect": "Disconnect"
+    "disconnect": "Disconnect",
+    "brokerManagement": "Broker Management",
+    "addBroker": "Add Broker",
+    "brokerNamePlaceholder": "e.g. Futu HK",
+    "brokerFutu": "Futu",
+    "host": "Host",
+    "port": "Port",
+    "noBrokerConfig": "No broker configured. Click + to add.",
+    "currentlyInUse": "Active",
+    "quickConnect": "Quick Connect",
+    "longbridgeSoon": "Longbridge (Coming soon)",
+    "ibSoon": "Interactive Brokers (Coming soon)",
+    "tradingEnv": "Trading Environment",
+    "realTrading": "Real Trading",
+    "simulateTrading": "Paper Trading",
+    "opendAddress": "OpenD Address",
+    "connectOpend": "Connect OpenD",
+    "globalRisk": "Global Risk Control",
+    "connectOpendForRisk": "Connect OpenD to configure risk parameters",
+    "riskAlerts": "Risk Alerts",
+    "systemInfo": "System Info",
+    "version": "Version",
+    "platform": "Platform",
+    "database": "Database"
   }
 }

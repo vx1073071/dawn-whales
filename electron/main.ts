@@ -67,6 +67,11 @@ import { exportData } from './engine/data-exporter';
 import { getSmartPicker } from './engine/smart-picker';
 import { getWsDataStream } from './data/ws-data-stream';
 import { getHistoryBackfill } from './data/history-backfill';
+// QClaw Q57-Q60
+import SentimentAttributionEngine from './engine/sentiment-attribution';
+import CapitalFlowPredictor from './engine/capital-flow-predictor';
+import SmartOrderRouter from './engine/smart-order-router';
+import TCAV2Engine from './engine/tca-v3';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -80,6 +85,9 @@ import { detectAnomalies } from './engine/anomaly-detector';
 import { buildCorrelationVisualization } from './engine/correlation-visualizer';
 import { runStressTest, runCustomShock, HISTORICAL_SCENARIOS } from './engine/stress-tester';
 import { compareBacktests, summaryTable } from './engine/backtest-comparator';
+import { getValuationDashboard, getValuationDashboardBatch } from './engine/valuation-dashboard';
+import { compareSectorStocks, compareMultipleSectors, rankSectorStocks } from './engine/sector-comparison';
+import { detectMacroAnomalies, analyzeMultipleIndicators } from './engine/macro-alert';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -409,6 +417,130 @@ function setupIPC() {
       return { success: true, result };
     } catch (err: any) {
       log.error('[SectorRotation] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Sentiment Attribution (QClaw Q57) ──────────────────────────────────
+  const sentimentAttrEngine = new SentimentAttributionEngine();
+  ipcMain.handle('sentiment:attribution', async (_e, params: any) => {
+    try {
+      const result = sentimentAttrEngine.attributeSentiment(params);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[SentimentAttr] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Capital Flow Predictor (QClaw Q58) ─────────────────────────────────
+  const flowPredictor = new CapitalFlowPredictor();
+  ipcMain.handle('predict:capital-flow', async (_e, params: any) => {
+    try {
+      const result = flowPredictor.predict(params);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[FlowPredict] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Smart Order Router (QClaw Q59) ─────────────────────────────────────
+  const orderRouter = new SmartOrderRouter();
+  ipcMain.handle('order:route', async (_e, params: any) => {
+    try {
+      const result = orderRouter.route(params);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[OrderRouter] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── TCA V2 (QClaw Q60) ────────────────────────────────────────────────
+  const tcaEngine = new TCAV2Engine();
+  ipcMain.handle('order:tca', async (_e, params: any) => {
+    try {
+      const result = tcaEngine.analyze(params);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[TCA] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Valuation Dashboard (JVS-49) ────────────────────────────────────────
+  ipcMain.handle('data:valuation-dashboard', async (_e, codes: string[], historyDays?: number) => {
+    try {
+      const result = await getValuationDashboard(codes, historyDays);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[ValuationDashboard] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:valuation-dashboard-batch', async (_e, codes: string[], batchSize?: number, delayMs?: number) => {
+    try {
+      const result = await getValuationDashboardBatch(codes, batchSize, delayMs);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[ValuationDashboardBatch] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Sector Comparison (JVS-50) ──────────────────────────────────────────
+  ipcMain.handle('data:sector-compare', async (_e, stocks: any[], financialData: any) => {
+    try {
+      const financialMap = new Map(Object.entries(financialData || {}));
+      const result = await compareSectorStocks(stocks, financialMap);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[SectorComparison] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:sector-compare-multiple', async (_e, sectors: any[], financialData: any) => {
+    try {
+      const financialMap = new Map(Object.entries(financialData || {}));
+      const result = await compareMultipleSectors(sectors, financialMap);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[SectorComparisonMultiple] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:sector-rank', async (_e, metrics: any[], weights?: any) => {
+    try {
+      const result = rankSectorStocks(metrics, weights);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[SectorRank] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Macro Alert (JVS-51) ────────────────────────────────────────────────
+  ipcMain.handle('alert:macro', async (_e, currentData: any[], historicalData: any) => {
+    try {
+      const historicalMap = new Map(Object.entries(historicalData || {}) as [string, number[]][]);
+      const result = await detectMacroAnomalies(currentData, historicalMap);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[MacroAlert] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('alert:macro-multiple', async (_e, indicatorData: any[]) => {
+    try {
+      const result = await analyzeMultipleIndicators(indicatorData);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[MacroAlertMultiple] Error:', err);
       return { success: false, error: err.message };
     }
   });

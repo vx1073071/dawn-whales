@@ -221,6 +221,25 @@ contextBridge.exposeInMainWorld('api', {
     detect: (params: any) => ipcRenderer.invoke('em:sector-rotation', params),
   },
 
+  // ── Valuation Dashboard (JVS-49) ───────────────────────────────
+  valuationDashboard: {
+    get: (codes: string[], historyDays?: number) => ipcRenderer.invoke('data:valuation-dashboard', codes, historyDays),
+    batch: (codes: string[], batchSize?: number, delayMs?: number) => ipcRenderer.invoke('data:valuation-dashboard-batch', codes, batchSize, delayMs),
+  },
+
+  // ── Sector Comparison (JVS-50) ─────────────────────────────────
+  sectorComparison: {
+    compare: (stocks: any[], financialData: any) => ipcRenderer.invoke('data:sector-compare', stocks, financialData),
+    compareMultiple: (sectors: any[], financialData: any) => ipcRenderer.invoke('data:sector-compare-multiple', sectors, financialData),
+    rank: (metrics: any[], weights?: any) => ipcRenderer.invoke('data:sector-rank', metrics, weights),
+  },
+
+  // ── Macro Alert (JVS-51) ───────────────────────────────────────
+  macroAlert: {
+    detect: (currentData: any[], historicalData: any) => ipcRenderer.invoke('alert:macro', currentData, historicalData),
+    detectMultiple: (indicatorData: any[]) => ipcRenderer.invoke('alert:macro-multiple', indicatorData),
+  },
+
   // ── Stock Anomaly Detector (JVS-7) ─────────────────────────────
   stockAnomaly: {
     getSummary: () => ipcRenderer.invoke('em:get-anomaly-summary'),

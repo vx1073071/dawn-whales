@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   connectBroker, isConnected as checkConnected, getRiskConfig, getRiskAlerts,
   listBrokers, addBroker, removeBroker, setActiveBroker, getBrokerStatus,
@@ -15,6 +16,7 @@ interface BrokerItem {
 }
 
 export default function SettingsPage() {
+  const { t } = useTranslation();
   const [host, setHost] = useState('127.0.0.1');
   const [port, setPort] = useState('11111');
   const [connected, setConnected] = useState(false);
@@ -150,18 +152,18 @@ export default function SettingsPage() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold text-white mb-1">系统设置</h1>
-      <p className="text-gray-400 text-sm mb-6">券商连接、风控参数、系统信息</p>
+      <h1 className="text-2xl font-bold text-white mb-1">{t('settings.title')}</h1>
+      <p className="text-gray-400 text-sm mb-6">{t('settings.subtitle')}</p>
 
       {/* ── Broker Management (Sprint2) ─────────────────────────── */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-white font-semibold flex items-center gap-2">🏦 券商管理</h2>
+          <h2 className="text-white font-semibold flex items-center gap-2">🏦 {t('settings.brokerManagement')}</h2>
           <button
             onClick={() => setShowAddBroker(!showAddBroker)}
             className="text-xs bg-[#C9A046]/20 text-[#C9A046] hover:bg-[#C9A046]/30 px-3 py-1.5 rounded-lg transition-colors"
           >
-            {showAddBroker ? '取消' : '+ 添加券商'}
+            {showAddBroker ? t('common.cancel') : `+ ${t('settings.addBroker')}`}
           </button>
         </div>
 
@@ -170,29 +172,29 @@ export default function SettingsPage() {
           <div className="bg-[#12121a] rounded-lg p-4 mb-4 space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-gray-400 text-xs mb-1">名称</label>
+                <label className="block text-gray-400 text-xs mb-1">{t('common.name')}</label>
                 <input
                   value={newBroker.name}
                   onChange={(e) => setNewBroker({ ...newBroker, name: e.target.value })}
-                  placeholder="例如: 富途香港"
+                  placeholder={t('settings.brokerNamePlaceholder')}
                   className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50"
                 />
               </div>
               <div>
-                <label className="block text-gray-400 text-xs mb-1">类型</label>
+                <label className="block text-gray-400 text-xs mb-1">{t('common.type')}</label>
                 <select
                   value={newBroker.type}
                   onChange={(e) => setNewBroker({ ...newBroker, type: e.target.value })}
                   className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50"
                 >
-                  <option value="futu">富途 Futu</option>
+                  <option value="futu">{t('settings.brokerFutu')}</option>
                   <option value="moomoo">moomoo</option>
                 </select>
               </div>
             </div>
             <div className="grid grid-cols-3 gap-3">
               <div className="col-span-2">
-                <label className="block text-gray-400 text-xs mb-1">主机</label>
+                <label className="block text-gray-400 text-xs mb-1">{t('settings.host')}</label>
                 <input
                   value={newBroker.host}
                   onChange={(e) => setNewBroker({ ...newBroker, host: e.target.value })}
@@ -200,7 +202,7 @@ export default function SettingsPage() {
                 />
               </div>
               <div>
-                <label className="block text-gray-400 text-xs mb-1">端口</label>
+                <label className="block text-gray-400 text-xs mb-1">{t('settings.port')}</label>
                 <input
                   value={newBroker.port}
                   onChange={(e) => setNewBroker({ ...newBroker, port: e.target.value })}
@@ -214,7 +216,7 @@ export default function SettingsPage() {
                 disabled={brokerActionLoading === 'add'}
                 className="bg-[#C9A046] text-black text-sm px-4 py-2 rounded-lg hover:bg-[#D4A853] disabled:opacity-40 transition-colors"
               >
-                {brokerActionLoading === 'add' ? '添加中...' : '确认添加'}
+                {brokerActionLoading === 'add' ? t('common.adding') : t('common.confirmAdd')}
               </button>
             </div>
           </div>
@@ -223,7 +225,7 @@ export default function SettingsPage() {
         {/* Broker list */}
         <div className="space-y-2">
           {brokers.length === 0 && (
-            <p className="text-gray-500 text-sm py-4 text-center">暂无券商配置，点击右上角添加</p>
+            <p className="text-gray-500 text-sm py-4 text-center">{t('settings.noBrokerConfig')}</p>
           )}
           {brokers.map((broker) => {
             const status = brokerStatus.find((s: any) => s.id === broker.id);
@@ -251,7 +253,7 @@ export default function SettingsPage() {
                   <div className="flex items-center gap-2">
                     <span className="text-white text-sm font-medium truncate">{broker.name}</span>
                     {isActive && (
-                      <span className="text-[10px] bg-[#C9A046]/20 text-[#C9A046] px-1.5 py-0.5 rounded">当前使用</span>
+                      <span className="text-[10px] bg-[#C9A046]/20 text-[#C9A046] px-1.5 py-0.5 rounded">{t('settings.currentlyInUse')}</span>
                     )}
                   </div>
                   <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
@@ -260,7 +262,7 @@ export default function SettingsPage() {
                     <span className="font-mono">{broker.host}:{broker.port}</span>
                     <span>·</span>
                     <span className={isConnected ? 'text-emerald-400' : 'text-gray-600'}>
-                      {isConnected ? '已连接' : '未连接'}
+                      {isConnected ? t('common.connected') : t('common.disconnected')}
                     </span>
                   </div>
                 </div>
@@ -273,7 +275,7 @@ export default function SettingsPage() {
                       disabled={isLoading}
                       className="text-xs bg-white/5 hover:bg-white/10 text-gray-300 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40"
                     >
-                      {isLoading ? '...' : '切换'}
+                      {isLoading ? '...' : t('common.switch')}
                     </button>
                   )}
                   <button
@@ -281,7 +283,7 @@ export default function SettingsPage() {
                     disabled={isLoading}
                     className="text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40"
                   >
-                    {isLoading ? '...' : '删除'}
+                    {isLoading ? '...' : t('common.delete')}
                   </button>
                 </div>
               </div>
@@ -292,35 +294,35 @@ export default function SettingsPage() {
 
       {/* ── Quick Connect (legacy) ────────────────────────────────── */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
-        <h2 className="text-white font-semibold mb-4 flex items-center gap-2">🔌 快速连接</h2>
+        <h2 className="text-white font-semibold mb-4 flex items-center gap-2">🔌 {t('settings.quickConnect')}</h2>
 
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-400 text-xs mb-1">券商</label>
+              <label className="block text-gray-400 text-xs mb-1">{t('settings.broker')}</label>
               <select className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50">
-                <option>富途 Futu</option>
+                <option>{t('settings.brokerFutu')}</option>
                 <option>moomoo</option>
-                <option disabled>长桥 Longbridge (即将)</option>
-                <option disabled>盈透 IB (即将)</option>
+                <option disabled>{t('settings.longbridgeSoon')}</option>
+                <option disabled>{t('settings.ibSoon')}</option>
               </select>
             </div>
             <div>
-              <label className="block text-gray-400 text-xs mb-1">交易环境</label>
+              <label className="block text-gray-400 text-xs mb-1">{t('settings.tradingEnv')}</label>
               <select className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50">
-                <option>实盘 REAL</option>
-                <option>模拟盘 SIMULATE</option>
+                <option>{t('settings.realTrading')}</option>
+                <option>{t('settings.simulateTrading')}</option>
               </select>
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2">
-              <label className="block text-gray-400 text-xs mb-1">OpenD 地址</label>
+              <label className="block text-gray-400 text-xs mb-1">{t('settings.opendAddress')}</label>
               <input value={host} onChange={(e) => setHost(e.target.value)} className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50" />
             </div>
             <div>
-              <label className="block text-gray-400 text-xs mb-1">端口</label>
+              <label className="block text-gray-400 text-xs mb-1">{t('settings.port')}</label>
               <input value={port} onChange={(e) => setPort(e.target.value)} className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50" />
             </div>
           </div>
@@ -335,12 +337,12 @@ export default function SettingsPage() {
                   : 'bg-[#C9A046] text-black hover:bg-[#D4A853] disabled:opacity-40'
               }`}
             >
-              {connecting ? '连接中...' : connected ? '断开连接' : '连接 OpenD'}
+              {connecting ? t('common.connecting') : connected ? t('common.disconnect') : t('settings.connectOpend')}
             </button>
             {connected && (
               <span className="text-emerald-400 text-xs flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                已连接 · Push 模式
+                {t('common.connected')} · Push {t('common.mode')}
               </span>
             )}
             {connectError && <span className="text-red-400 text-xs">{connectError}</span>}
@@ -350,24 +352,24 @@ export default function SettingsPage() {
 
       {/* Risk config */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
-        <h2 className="text-white font-semibold mb-4 flex items-center gap-2">🛡️ 全局风控</h2>
+        <h2 className="text-white font-semibold mb-4 flex items-center gap-2">🛡️ {t('settings.globalRisk')}</h2>
 
         {riskConfig ? (
           <div className="grid grid-cols-2 gap-4">
-            <RiskSlider label="日最大亏损" value={Math.round((riskConfig.dailyLossLimitPct || 0.05) * 100)} max={20} unit="%" onSave={(v) => handleRiskSave('dailyLossLimitPct', v)} />
-            <RiskSlider label="单品种最大仓位" value={Math.round((riskConfig.maxSinglePositionPct || 0.20) * 100)} max={50} unit="%" onSave={(v) => handleRiskSave('maxSinglePositionPct', v)} />
-            <RiskSlider label="总持仓上限" value={Math.round((riskConfig.maxTotalPositionPct || 0.95) * 100)} max={100} unit="%" onSave={(v) => handleRiskSave('maxTotalPositionPct', v)} />
-            <RiskSlider label="每分钟最大下单" value={riskConfig.maxOrdersPerMinute || 10} max={30} unit="笔" onSave={(v) => handleRiskSave('maxOrdersPerMinute', v)} />
+            <RiskSlider label={t('risk.maxDailyLoss')} value={Math.round((riskConfig.dailyLossLimitPct || 0.05) * 100)} max={20} unit="%" onSave={(v) => handleRiskSave('dailyLossLimitPct', v)} />
+            <RiskSlider label={t('risk.maxPosition')} value={Math.round((riskConfig.maxSinglePositionPct || 0.20) * 100)} max={50} unit="%" onSave={(v) => handleRiskSave('maxSinglePositionPct', v)} />
+            <RiskSlider label={t('risk.maxTotalPosition')} value={Math.round((riskConfig.maxTotalPositionPct || 0.95) * 100)} max={100} unit="%" onSave={(v) => handleRiskSave('maxTotalPositionPct', v)} />
+            <RiskSlider label={t('risk.maxOrdersPerMin')} value={riskConfig.maxOrdersPerMinute || 10} max={30} unit={t('common.count')} onSave={(v) => handleRiskSave('maxOrdersPerMinute', v)} />
           </div>
         ) : (
-          <p className="text-gray-500 text-sm">连接 OpenD 后可配置风控参数</p>
+          <p className="text-gray-500 text-sm">{t('settings.connectOpendForRisk')}</p>
         )}
       </div>
 
       {/* Risk alerts */}
       {alerts.length > 0 && (
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
-          <h2 className="text-white font-semibold mb-4 flex items-center gap-2">⚠️ 风控告警</h2>
+          <h2 className="text-white font-semibold mb-4 flex items-center gap-2">⚠️ {t('settings.riskAlerts')}</h2>
           <div className="space-y-2 max-h-40 overflow-y-auto">
             {alerts.slice(-10).reverse().map((a, i) => (
               <div key={i} className="flex items-center gap-3 text-xs bg-red-500/10 rounded-lg px-3 py-2">
@@ -382,14 +384,14 @@ export default function SettingsPage() {
 
       {/* App info */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
-        <h2 className="text-white font-semibold mb-4 flex items-center gap-2">ℹ️ 系统信息</h2>
+        <h2 className="text-white font-semibold mb-4 flex items-center gap-2">ℹ️ {t('settings.systemInfo')}</h2>
         <div className="grid grid-cols-2 gap-3 text-sm">
-          <InfoRow label="版本" value={appInfo?.version || '0.1.0'} />
-          <InfoRow label="平台" value={`${appInfo?.platform || 'win32'} ${appInfo?.arch || 'x64'}`} />
+          <InfoRow label={t('settings.version')} value={appInfo?.version || '0.1.0'} />
+          <InfoRow label={t('settings.platform')} value={`${appInfo?.platform || 'win32'} ${appInfo?.arch || 'x64'}`} />
           <InfoRow label="Electron" value={appInfo?.electronVersion || '--'} />
           <InfoRow label="Node.js" value={appInfo?.nodeVersion || '--'} />
           <InfoRow label="Chrome" value={appInfo?.chromeVersion || '--'} />
-          <InfoRow label="数据库" value="SQLite (WAL)" />
+          <InfoRow label={t('settings.database')} value="SQLite (WAL)" />
         </div>
       </div>
     </div>
@@ -410,7 +412,7 @@ function RiskSlider({ label, value, max, unit, onSave }: { label: string; value:
           onChange={(e) => setVal(Number(e.target.value))}
           className="flex-1 h-1.5 bg-[#12121a] rounded-lg appearance-none cursor-pointer accent-[#C9A046]"
         />
-        <button onClick={() => onSave(val)} className="text-xs text-[#C9A046] hover:text-[#D4A853] px-2 py-1 rounded transition-colors">保存</button>
+        <button onClick={() => onSave(val)} className="text-xs text-[#C9A046] hover:text-[#D4A853] px-2 py-1 rounded transition-colors">{t('common.save')}</button>
       </div>
     </div>
   );
