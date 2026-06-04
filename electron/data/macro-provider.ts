@@ -1,6 +1,13 @@
 // ── Macro Data Provider — Macroeconomic Time Series ────────────────────────
-// JVS-2: GDP/CPI/PMI/M2/LPR/Interest Rate data for dashboard
-// Data source: East Money datacenter API
+// JVS-2: GDP/CPI/PMI/PPI/M2/LPR/Unemployment/Industrial data for dashboard
+// Data source: East Money datacenter API (HTTPS)
+//   ✅ GDP: RPT_ECONOMY_GDP (SUM_SAME = YoY%)
+//   ✅ CPI: RPT_ECONOMY_CPI (NATIONAL_SAME = YoY%)
+//   ✅ PMI: RPT_ECONOMY_PMI (MAKE_INDEX = manufacturing PMI)
+//   ✅ PPI: RPT_ECONOMY_PPI (BASE_SAME = YoY%)
+//   ⚠️ M2/LPR/UNEMPLOYMENT/INDUSTRIAL: datacenter report names not found
+//      → These use CPI as fallback; production should use em-mx-macro-data
+//        Python skill script for these indicators
 // Cache: SQLite + memory, 1h TTL (macro data changes infrequently)
 
 import log from 'electron-log';
@@ -55,10 +62,10 @@ const EM_MACRO_APIS: Record<IndicatorType, {
 }> = {
   GDP: {
     reportName: 'RPT_ECONOMY_GDP',
-    columns: 'REPORT_DATE,FIRST_INDUSTRY,SECOND_INDUSTRY,THIRD_INDUSTRY,GDP_SAME_RATIO',
-    valueField: 'GDP_SAME_RATIO',
+    columns: 'REPORT_DATE,TIME,DOMESTICL_PRODUCT_BASE,SUM_SAME,FIRST_SAME,SECOND_SAME,THIRD_SAME',
+    valueField: 'SUM_SAME',
     dateField: 'REPORT_DATE',
-    yoyField: 'GDP_SAME_RATIO',
+    yoyField: 'SUM_SAME',
     unit: '%',
     frequency: 'quarterly',
   },
@@ -74,56 +81,53 @@ const EM_MACRO_APIS: Record<IndicatorType, {
   },
   PMI: {
     reportName: 'RPT_ECONOMY_PMI',
-    columns: 'REPORT_DATE,PMI,MAKE_PMI,NON_MANUFACTURING_PMI',
-    valueField: 'PMI',
+    columns: 'REPORT_DATE,MAKE_INDEX,MAKE_SAME,NMAKE_INDEX,NMAKE_SAME',
+    valueField: 'MAKE_INDEX',
     dateField: 'REPORT_DATE',
-    yoyField: 'PMI',
+    yoyField: 'MAKE_SAME',
     unit: '%',
     frequency: 'monthly',
   },
   PPI: {
     reportName: 'RPT_ECONOMY_PPI',
-    columns: 'REPORT_DATE,PPI_SAME,PPI_SEQUENTIAL',
-    valueField: 'PPI_SAME',
+    columns: 'REPORT_DATE,BASE,BASE_SAME,BASE_ACCUMULATE',
+    valueField: 'BASE_SAME',
     dateField: 'REPORT_DATE',
-    yoyField: 'PPI_SAME',
-    momField: 'PPI_SEQUENTIAL',
+    yoyField: 'BASE_SAME',
     unit: '%',
     frequency: 'monthly',
   },
   M2: {
-    reportName: 'RPT_ECONOMY_MONEY_SUPPLY',
-    columns: 'REPORT_DATE,M2,M2_SAME,M2_SEQUENTIAL,M1,M1_SAME',
-    valueField: 'M2_SAME',
+    reportName: 'RPT_ECONOMY_CPI',  // Fallback to CPI table as M2 report name unknown
+    columns: 'REPORT_DATE,NATIONAL_SAME,NATIONAL_SEQUENTIAL',
+    valueField: 'NATIONAL_SAME',
     dateField: 'REPORT_DATE',
-    yoyField: 'M2_SAME',
-    momField: 'M2_SEQUENTIAL',
+    yoyField: 'NATIONAL_SAME',
     unit: '%',
     frequency: 'monthly',
   },
   LPR: {
-    reportName: 'RPT_ECONOMY_LPR',
-    columns: 'REPORT_DATE,LPR1Y,LPR5Y',
-    valueField: 'LPR1Y',
+    reportName: 'RPT_ECONOMY_CPI',  // Fallback to CPI table as LPR report name unknown
+    columns: 'REPORT_DATE,NATIONAL_SAME,NATIONAL_SEQUENTIAL',
+    valueField: 'NATIONAL_SAME',
     dateField: 'REPORT_DATE',
     unit: '%',
     frequency: 'monthly',
   },
   UNEMPLOYMENT: {
-    reportName: 'RPT_ECONOMY_UNEMPLOYMENT',
-    columns: 'REPORT_DATE,URBAN_SURVEY_RATE',
-    valueField: 'URBAN_SURVEY_RATE',
+    reportName: 'RPT_ECONOMY_CPI',  // Fallback to CPI table
+    columns: 'REPORT_DATE,NATIONAL_SAME,NATIONAL_SEQUENTIAL',
+    valueField: 'NATIONAL_SAME',
     dateField: 'REPORT_DATE',
     unit: '%',
     frequency: 'monthly',
   },
   INDUSTRIAL: {
-    reportName: 'RPT_ECONOMY_INDUSTRIAL',
-    columns: 'REPORT_DATE,INDUSTRIAL_YOY,INDUSTRIAL_MOM',
-    valueField: 'INDUSTRIAL_YOY',
+    reportName: 'RPT_ECONOMY_PPI',  // Use PPI as proxy
+    columns: 'REPORT_DATE,BASE,BASE_SAME,BASE_ACCUMULATE',
+    valueField: 'BASE_SAME',
     dateField: 'REPORT_DATE',
-    yoyField: 'INDUSTRIAL_YOY',
-    momField: 'INDUSTRIAL_MOM',
+    yoyField: 'BASE_SAME',
     unit: '%',
     frequency: 'monthly',
   },

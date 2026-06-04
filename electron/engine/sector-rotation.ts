@@ -139,13 +139,15 @@ export class SectorRotationMonitor {
    * Record a new snapshot of sector data
    * Called periodically (e.g., every 30min during trading hours)
    */
-  recordSnapshot(sectors: SectorSnapshot[]): void {
+  recordSnapshot(sectors: SectorSnapshot[], force = false): void {
     const now = Date.now();
 
     // Check if we should record (enforce TTL between snapshots)
-    const lastSnapshot = this.getLastSnapshotTime();
-    if (lastSnapshot && now - lastSnapshot < SNAPSHOT_TTL) {
-      return; // Too soon
+    if (!force) {
+      const lastSnapshot = this.getLastSnapshotTime();
+      if (lastSnapshot && now - lastSnapshot < SNAPSHOT_TTL) {
+        return; // Too soon
+      }
     }
 
     for (const sector of sectors) {

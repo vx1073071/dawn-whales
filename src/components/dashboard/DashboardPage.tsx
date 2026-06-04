@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   getAccounts, getFunds, getPositions, getQuotes, isConnected,
   getWatchlist, getAllStrategies, getComments, getMarketplaceList,
+  exportDashboardPdf,
 } from '../../lib/bridge-api';
 import EquityChart from '../risk/EquityChart';
 import PortfolioAllocationChart from '../risk/PortfolioAllocationChart';
@@ -160,7 +161,7 @@ export default function DashboardPage() {
           onClick={async () => {
             try {
               const filename = `dawn-whales-dashboard-${new Date().toISOString().split('T')[0]}.pdf`;
-              const result = await window.api?.app?.exportPdf(filename);
+              const result = await exportDashboardPdf(filename);
               if (result?.success) {
                 alert(`PDF 已导出: ${result.path}`);
               } else {
