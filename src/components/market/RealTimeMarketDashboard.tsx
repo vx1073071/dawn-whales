@@ -97,6 +97,7 @@ export default function RealTimeMarketDashboard() {
   const [streamConnected, setStreamConnected] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
   const flashTimers = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+  const quoteStreamListener = useRef<((event: any, quotes: any[]) => void) | null>(null);
 
   const loadQuotes = useCallback(async () => {
     try {
@@ -142,10 +143,98 @@ export default function RealTimeMarketDashboard() {
     setLoading(false);
   }, []);
 
-  // Initial load + polling fallback
+  // WebSocket push listener
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.api) return;
+
+    const handleQuoteUpdate = (_event: any, quoteUpdates: any[]) => {
+      if (!Array.isArray(quoteUpdates) || quoteUpdates.length === 0) return;
+
+      setQuotes(prev => {
+        const next = { ...prev };
+        
+        for (const q of quoteUpdates) {
+          if (!q.code || !q.price) continue;
+          
+          const stock = WATCHLIST.find(s => s.code === q.code);
+          if (!stock) continue;
+
+          const oldQuote = next[q.code];
+          const prevPrice = oldQuote?.price || q.prevClose || q.price;
+          const flash = q.price > prevPrice ? 'up' : q.price < prevPrice ? 'down' : null;
+
+          // Clear old flash timer
+          if (flashTimers.current[q.code]) {
+            clearTimeout(flashTimers.current[q.code]);
+          }
+
+          // Set new flash timer
+          if (flash) {
+            flashTimers.current[q.code] = setTimeout(() => {
+              setQuotes(p => ({
+                ...p,
+                [q.code]: { ...p[q.code], flash: null }
+              }));
+            }, 800);
+          }
+
+          // Update sparkline
+          let sparkline = oldQuote?.sparkline || generateSparkline(prevPrice);
+          if (sparkline.length >= 30) {
+            sparkline = [...sparkline.slice(1), q.price];
+          } else {
+            sparkline = [...sparkline, q.price];
+          }
+
+          next[q.code] = {
+            code: q.code,
+            name: stock.name,
+            price: +q.price.toFixed(2),
+            prevClose: q.prevClose || prevPrice,
+            change: +(q.price - (q.prevClose || prevPrice)).toFixed(2),
+            changePct: +((q.price - (q.prevClose || prevPrice)) / (q.prevClose || prevPrice) * 100).toFixed(2),
+            volume: q.volume || oldQuote?.volume || 0,
+            turnover: q.turnover || oldQuote?.turnover || 0,
+            bid: q.bid || +(q.price * 0.999).toFixed(2),
+            ask: q.ask || +(q.price * 1.001).toFixed(2),
+            bidVol: q.bidVol || oldQuote?.bidVol || 0,
+            askVol: q.askVol || oldQuote?.askVol || 0,
+            high: Math.max(q.high || q.price, oldQuote?.high || 0),
+            low: q.low ? Math.min(q.low, oldQuote?.low || Infinity) : oldQuote?.low || q.price,
+            open: q.open || oldQuote?.open || q.price,
+            updateTime: new Date().toISOString(),
+            sparkline,
+            flash,
+            dataQuality: 'good',
+          };
+        }
+
+        setLastUpdate(new Date());
+        return next;
+      });
+    };
+
+    // Register WebSocket listener
+    if (window.api.on) {
+      window.api.on('quote:stream-tick', handleQuoteUpdate);
+      quoteStreamListener.current = handleQuoteUpdate;
+    }
+
+    return () => {
+      // Cleanup listener
+      if (window.api.off && quoteStreamListener.current) {
+        window.api.off('quote:stream-tick', quoteStreamListener.current);
+        quoteStreamListener.current = null;
+      }
+      // Clear all flash timers
+      Object.values(flashTimers.current).forEach(t => clearTimeout(t));
+    };
+  }, []);
+
+  // Initial load + stream subscription
   useEffect(() => {
     loadQuotes();
-    // Try to start quote stream
+
     async function startStream() {
       try {
         const status = await getQuoteStreamStatus();
@@ -157,52 +246,22 @@ export default function RealTimeMarketDashboard() {
         setStreamConnected(false);
       }
     }
+
     startStream();
 
-    // Fallback polling every 3s if stream not connected
-    const interval = setInterval(() => {
+    // Fallback polling only if stream not connected (every 5s)
+    const fallbackInterval = setInterval(() => {
       if (!streamConnected) {
-        setQuotes(prev => {
-          const next: Record<string, RealTimeQuote> = {};
-          Object.values(prev).forEach(q => {
-            const newPrice = q.price * (1 + (Math.random() - 0.5) * 0.005);
-            const change = newPrice - q.prevClose;
-            const changePct = (change / q.prevClose) * 100;
-            const flash = newPrice > q.price ? 'up' : newPrice < q.price ? 'down' : null;
-
-            // Clear old flash timer
-            if (flashTimers.current[q.code]) clearTimeout(flashTimers.current[q.code]);
-            if (flash) {
-              flashTimers.current[q.code] = setTimeout(() => {
-                setQuotes(p => ({ ...p, [q.code]: { ...p[q.code], flash: null } }));
-              }, 800);
-            }
-
-            next[q.code] = {
-              ...q,
-              price: +newPrice.toFixed(2),
-              change: +change.toFixed(2),
-              changePct: +changePct.toFixed(2),
-              volume: q.volume + Math.floor(Math.random() * 10000),
-              bid: +(newPrice * 0.999).toFixed(2),
-              ask: +(newPrice * 1.001).toFixed(2),
-              flash,
-              updateTime: new Date().toISOString(),
-            };
-          });
-          return next;
-        });
-        setLastUpdate(new Date());
+        loadQuotes();
       }
-    }, 3000);
+    }, 5000);
 
     return () => {
-      clearInterval(interval);
-      Object.values(flashTimers.current).forEach(t => clearTimeout(t));
+      clearInterval(fallbackInterval);
       // Unsubscribe on unmount
       unsubscribeQuoteStream(WATCHLIST.map(s => s.code)).catch(() => {});
     };
-  }, [loadQuotes, streamConnected]);
+  }, [loadQuotes]);
 
   if (loading) return <LoadingSpinner fullscreen text={t('common.loading')} />;
 
