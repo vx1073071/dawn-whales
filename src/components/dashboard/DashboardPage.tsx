@@ -15,6 +15,9 @@ import MarketClock from '../risk/MarketClock';
 import QuickTrade from '../risk/QuickTrade';
 import PriceAlertPanel from '../risk/PriceAlertPanel';
 import MarketBreadth from '../risk/MarketBreadth';
+import EconomicCalendar from '../risk/EconomicCalendar';
+import PerformanceMetricsPanel from '../risk/PerformanceMetricsPanel';
+import DailyPnLSummary from '../risk/DailyPnLSummary';
 
 interface AccountSummary {
   totalAssets: number;
@@ -238,6 +241,17 @@ export default function DashboardPage() {
         )}
       </div>
 
+      {/* Performance Metrics + Daily PnL Summary */}
+      <div className="grid grid-cols-2 gap-4">
+        <PerformanceMetricsPanel
+          trades={positions.flatMap(p => [
+            ...(p.pnl !== 0 ? [{ pnl: p.pnl, timestamp: Date.now() }] : [])
+          ])}
+          title="📊 交易绩效指标"
+        />
+        <DailyPnLSummary />
+      </div>
+
       {/* Bottom row: Strategies + Quick Trade + Market Clock */}
       <div className="grid grid-cols-3 gap-4">
         {/* Active Strategies */}
@@ -278,6 +292,9 @@ export default function DashboardPage() {
         <NotificationCenter />
         <PriceAlertPanel />
       </div>
+
+      {/* Economic Calendar */}
+      <EconomicCalendar />
     </div>
   );
 }
