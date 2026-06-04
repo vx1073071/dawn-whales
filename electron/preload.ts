@@ -81,6 +81,13 @@ contextBridge.exposeInMainWorld('api', {
     paperReport: () => ipcRenderer.invoke('paper:report'),
     paperStatus: () => ipcRenderer.invoke('paper:status'),
     paperExecuteSignal: (signal: any) => ipcRenderer.invoke('paper:execute-signal', signal),
+
+    // Q18: Strategy Templates
+    getTemplates: () => ipcRenderer.invoke('strategy:templates', { action: 'list' }),
+    getTemplate: (id: string) => ipcRenderer.invoke('strategy:templates', { action: 'get', id }),
+    searchTemplates: (query: string) => ipcRenderer.invoke('strategy:templates', { action: 'search', query }),
+    instantiateTemplate: (id: string, overrides?: any) =>
+      ipcRenderer.invoke('strategy:templates', { action: 'instantiate', id, overrides }),
   },
 
   // ── NL Parser ─────────────────────────────────────────────────────

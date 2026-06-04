@@ -986,6 +986,38 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Q18: Strategy Templates ─────────────────────────────────
+  ipcMain.handle('strategy:templates', async (_e, raw: unknown) => {
+    try {
+      const { getAllTemplates, getTemplate, getTemplatesByCategory, searchTemplates, instantiateTemplate } =
+        require('./engine/strategy-templates');
+      const req = raw as { action?: string; id?: string; category?: string; query?: string; overrides?: any };
+      const action = req?.action ?? 'list';
+      if (action === 'list') return { success: true, templates: getAllTemplates() };
+      if (action === 'get') {
+        if (!req.id) return { success: false, error: 'id required' };
+        const t = getTemplate(req.id);
+        return { success: !!t, template: t };
+      }
+      if (action === 'category') {
+        if (!req.category) return { success: false, error: 'category required' };
+        return { success: true, templates: getTemplatesByCategory(req.category) };
+      }
+      if (action === 'search') {
+        if (!req.query) return { success: false, error: 'query required' };
+        return { success: true, templates: searchTemplates(req.query) };
+      }
+      if (action === 'instantiate') {
+        if (!req.id) return { success: false, error: 'id required' };
+        const { strategy, error } = instantiateTemplate(req.id, req.overrides ?? {});
+        return { success: !error, strategy, error };
+      }
+      return { success: false, error: 'Unknown action' };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Q16: Dynamic Position Sizer ────────────────────────────────
   ipcMain.handle('risk:position-size', async (_e, raw: unknown) => {
     try {
@@ -998,6 +1030,128 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       }
       if (req.equity == null || req.winRate == null || req.avgWin == null || req.avgLoss == null) {
         return { success: false, error: 'equity, winRate, avgWin, avgLoss required' };
+  // ── Q16: Dynamic Position Sizer ──────────────────────
+
+  ipcMain.handle('risk:calculate-size', async (_e, raw: unknown) => {
+
+    try {
+
+      const { getDynamicSizer } = require('./engine/dynamic-sizer');
+
+      const sizer = getDynamicSizer();
+
+      if (!sizer) {
+
+        return { success: false, error: 'DynamicSizer not initialized' };
+
+      }
+
+      const req = raw as any;
+
+      const result = await sizer.calculateSize(req);
+
+      return { success: true, ...result };
+
+    } catch (err: any) {
+
+      return { success: false, error: err.message };
+
+    }
+
+  });
+
+
+
+  ipcMain.handle('risk:calculate-portfolio-sizes', async (_e, raw: unknown) => {
+
+    try {
+
+      const { getDynamicSizer } = require('./engine/dynamic-sizer');
+
+      const sizer = getDynamicSizer();
+
+      if (!sizer) {
+
+        return { success: false, error: 'DynamicSizer not initialized' };
+
+      }
+
+      const req = raw as any;
+
+      const result = await sizer.calculatePortfolioSizes(req);
+
+      return { success: true, ...result };
+
+    } catch (err: any) {
+
+      return { success: false, error: err.message };
+
+    }
+
+  });
+
+
+
+  ipcMain.handle('risk:record-trade', async (_e, raw: unknown) => {
+
+    try {
+
+      const { getDynamicSizer } = require('./engine/dynamic-sizer');
+
+      const sizer = getDynamicSizer();
+
+      if (!sizer) {
+
+        return { success: false, error: 'DynamicSizer not initialized' };
+
+      }
+
+      const trade = raw as any;
+
+      sizer.recordTrade(trade);
+
+      return { success: true };
+
+    } catch (err: any) {
+
+      return { success: false, error: err.message };
+
+    }
+
+  });
+
+
+
+  ipcMain.handle('risk:get-trade-history', async (_e, strategyId?: string) => {
+
+    try {
+
+      const { getDynamicSizer } = require('./engine/dynamic-sizer');
+
+      const sizer = getDynamicSizer();
+
+      if (!sizer) {
+
+        return { success: false, error: 'DynamicSizer not initialized' };
+
+      }
+
+      const history = sizer.getTradeHistory(strategyId);
+
+      const winRate = sizer.getWinRate(strategyId);
+
+      return { success: true, history, winRate };
+
+    } catch (err: any) {
+
+      return { success: false, error: err.message };
+
+    }
+
+  });
+
+
+
       }
       if (req.quick != null) {
         return { success: true, ...calcQuickSize(req) };

@@ -162,6 +162,14 @@ declare global {
         status: () => Promise<any>;
         executeSignal: (signal: any) => Promise<any>;
       };
+      // Q18: Strategy Templates
+      templates: {
+        list: () => Promise<any>;
+        get: (id: string) => Promise<any>;
+        category: (cat: string) => Promise<any>;
+        search: (query: string) => Promise<any>;
+        instantiate: (id: string, overrides?: any) => Promise<any>;
+      };
       nl: {
         parse: (text: string) => Promise<any>;
         templates: () => Promise<any>;
