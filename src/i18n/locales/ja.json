@@ -59,7 +59,8 @@
     "confirmSubmit": "送信確認",
     "back": "戻る",
     "parsing": "解析中...",
-    "orTry": "または"
+    "orTry": "または",
+    "loadingFailed": "加载失败"
   },
   "nav": {
     "overview": "概要",
@@ -193,7 +194,8 @@
     "allDirections": "すべての方向",
     "stock": "銘柄",
     "commission": "手数料",
-    "noMatchingRecords": "該当データなし"
+    "noMatchingRecords": "該当データなし",
+    "tradeHistory": "交易历史"
   },
   "strategy": {
     "title": "戦略ラボ",
@@ -247,7 +249,15 @@
     "pnlPct": "損益率",
     "avgCost": "平均原価",
     "curPrice": "現在価格",
-    "canSellQty": "売却可能数量"
+    "canSellQty": "売却可能数量",
+    "subtitle": "持仓与资产全景视图",
+    "autoRefresh": "自动刷新",
+    "connectOpendFirst": "请先连接 OpenD 以获取持仓数据",
+    "todayPnl": "今日盈亏",
+    "assetAllocation": "资产配置",
+    "positionDetail": "持仓明细",
+    "noPositions": "暂无持仓",
+    "ratio": "占比"
   },
   "settings": {
     "title": "設定",
@@ -303,5 +313,54 @@
     "HK": "香港",
     "CN": "中国",
     "SG": "シンガポール"
+  },
+  "realTimeMarket": {
+    "title": "实时行情",
+    "subtitle": "实时报价与行情监控",
+    "wsConnected": "WebSocket 实时推送中",
+    "pollingMode": "轮询模式 · 3秒刷新",
+    "lastUpdate": "最后更新",
+    "liveConnection": "实时连接",
+    "polling": "轮询中",
+    "dataStale": "数据延迟",
+    "buy": "买",
+    "sell": "卖",
+    "volume": "量",
+    "high": "高",
+    "low": "低",
+    "detailQuote": "详细报价",
+    "stockName": "股票",
+    "latestPrice": "最新价",
+    "change": "涨跌",
+    "changePct": "涨幅",
+    "turnover": "成交额",
+    "bid1": "买一",
+    "ask1": "卖一",
+    "highest": "最高",
+    "lowest": "最低"
+  },
+  "regimeMonitor": {
+    "title": "市场状态监控",
+    "subtitle": "市场状态识别与策略适配",
+    "currentRegime": "当前市场状态",
+    "regimeBull": "牛市",
+    "regimeBear": "熊市",
+    "regimeRange": "震荡市",
+    "regimeVolatile": "高波动",
+    "regimeUnknown": "未知",
+    "regimeDuration": "状态持续",
+    "regimeConfidence": "置信度",
+    "regimeTransition": "状态转换概率",
+    "suggestedStrategy": "建议策略风格",
+    "adaptation": "策略适配",
+    "riskLevel": "风险等级",
+    "positionSuggestion": "仓位建议",
+    "bullDesc": "趋势向上，适合趋势跟踪策略",
+    "bearDesc": "趋势向下，建议减仓或对冲",
+    "rangeDesc": "区间震荡，适合均值回归策略",
+    "volatileDesc": "波动剧烈，建议降低仓位",
+    "unknownDesc": "状态不明，建议观望",
+    "history": "历史状态",
+    "days": "天"
   }
 }

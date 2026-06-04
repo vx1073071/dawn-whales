@@ -1,4 +1,5 @@
 import { useState, useEffect, memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMarketStore } from '@/stores/marketStore';
 import KLineChart from './KLineChart';
 import * as api from '@/lib/bridge-api';
@@ -31,6 +32,7 @@ const POPULAR_US = [
 ];
 
 export default function MarketPage() {
+  const { t } = useTranslation();
   const watchlist = useMarketStore((s) => s.watchlist);
   const quotes = useMarketStore((s) => s.quotes);
   const addWatch = useMarketStore((s) => s.addWatch);
@@ -40,6 +42,7 @@ export default function MarketPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [klineLoading, setKlineLoading] = useState(false);
+  const [klineError, setKlineError] = useState<string | null>(null);
   const [klinePeriod, setKlinePeriod] = useState<string>('daily');
 
   const PERIODS = [
@@ -57,6 +60,7 @@ export default function MarketPage() {
 
   async function loadKlines(symbol: string, period: string = 'daily') {
     setKlineLoading(true);
+    setKlineError(null);
     try {
       const klines = await api.getKlines(symbol, period, 200);
       if (klines.length > 0) {
@@ -65,7 +69,9 @@ export default function MarketPage() {
           open: k.open, high: k.high, low: k.low, close: k.close, volume: k.volume,
         })));
       }
-    } catch { /* silent */ } finally { setKlineLoading(false); }
+    } catch (e: any) {
+      setKlineError(e?.message || t('common.loadingFailed'));
+    } finally { setKlineLoading(false); }
   }
 
   const filteredSearch = searchQuery.trim()

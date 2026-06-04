@@ -8,6 +8,7 @@ import StatusBar from '@/components/layout/StatusBar';
 import OnboardingModal from '@/components/OnboardingModal';
 import NotificationToast from '@/components/NotificationToast';
 import KeyboardShortcutsPanel from '@/components/KeyboardShortcutsPanel';
+import ErrorBoundary from '@/components/common/ErrorBoundary';
 import { connectBroker } from '@/lib/bridge-api';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
@@ -142,9 +143,11 @@ export default function App() {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar collapsed={collapsed} />
         <main className="flex-1 overflow-auto">
-          <Suspense fallback={<PageFallback />}>
-            <Page />
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense fallback={<PageFallback />}>
+              <Page />
+            </Suspense>
+          </ErrorBoundary>
         </main>
       </div>
       <StatusBar />

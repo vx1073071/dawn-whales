@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   getQuotes, subscribeQuoteStream, unsubscribeQuoteStream, getQuoteStreamStatus,
 } from '@/lib/bridge-api';
@@ -90,6 +91,7 @@ function generateMockQuote(stock: { code: string; name: string }): RealTimeQuote
 }
 
 export default function RealTimeMarketDashboard() {
+  const { t } = useTranslation();
   const [quotes, setQuotes] = useState<Record<string, RealTimeQuote>>({});
   const [loading, setLoading] = useState(true);
   const [streamConnected, setStreamConnected] = useState(false);
@@ -202,7 +204,7 @@ export default function RealTimeMarketDashboard() {
     };
   }, [loadQuotes, streamConnected]);
 
-  if (loading) return <LoadingSpinner fullscreen text="连接行情数据..." />;
+  if (loading) return <LoadingSpinner fullscreen text={t('common.loading')} />;
 
   const quoteList = Object.values(quotes);
 
@@ -210,10 +212,10 @@ export default function RealTimeMarketDashboard() {
     <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">⚡ 实时行情</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">⚡ {t('realTimeMarket.title')}</h1>
           <p className="text-gray-400 text-sm">
-            {streamConnected ? 'WebSocket 实时推送中' : '轮询模式 · 3秒刷新'}
-            {lastUpdate && ` · 最后更新 ${lastUpdate.toLocaleTimeString()}`}
+            {streamConnected ? t('realTimeMarket.wsConnected') : t('realTimeMarket.pollingMode')}
+            {lastUpdate && ` · ${t('realTimeMarket.lastUpdate')} ${lastUpdate.toLocaleTimeString()}`}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -221,7 +223,7 @@ export default function RealTimeMarketDashboard() {
             streamConnected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-yellow-500/10 text-yellow-400'
           }`}>
             <span className={`w-1.5 h-1.5 rounded-full ${streamConnected ? 'bg-emerald-400 animate-pulse' : 'bg-yellow-400'}`} />
-            {streamConnected ? '实时连接' : '轮询中'}
+            {streamConnected ? t('realTimeMarket.liveConnection') : t('realTimeMarket.polling')}
           </span>
         </div>
       </div>
@@ -243,7 +245,7 @@ export default function RealTimeMarketDashboard() {
                 <div className="text-[10px] text-gray-500">{q.code}</div>
               </div>
               {q.dataQuality === 'stale' && (
-                <span className="text-[10px] bg-yellow-500/10 text-yellow-400 px-1.5 py-0.5 rounded">数据延迟</span>
+                <span className="text-[10px] bg-yellow-500/10 text-yellow-400 px-1.5 py-0.5 rounded">{t('realTimeMarket.dataStale')}</span>
               )}
             </div>
 
@@ -275,19 +277,19 @@ export default function RealTimeMarketDashboard() {
             {/* Bid/Ask */}
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="bg-[#0a0a12] rounded px-2 py-1.5">
-                <div className="text-gray-500">买 {q.bidVol}</div>
+                <div className="text-gray-500">{t('realTimeMarket.buy')} {q.bidVol}</div>
                 <div className="font-mono text-red-400">{q.bid.toFixed(2)}</div>
               </div>
               <div className="bg-[#0a0a12] rounded px-2 py-1.5">
-                <div className="text-gray-500">卖 {q.askVol}</div>
+                <div className="text-gray-500">{t('realTimeMarket.sell')} {q.askVol}</div>
                 <div className="font-mono text-emerald-400">{q.ask.toFixed(2)}</div>
               </div>
             </div>
 
             {/* Volume & Range */}
             <div className="flex items-center justify-between mt-2 text-[10px] text-gray-500">
-              <span>量: {(q.volume / 1e6).toFixed(1)}M</span>
-              <span>高: {q.high.toFixed(2)} 低: {q.low.toFixed(2)}</span>
+              <span>{t('realTimeMarket.volume')}: {(q.volume / 1e6).toFixed(1)}M</span>
+              <span>{t('realTimeMarket.high')}: {q.high.toFixed(2)} {t('realTimeMarket.low')}: {q.low.toFixed(2)}</span>
             </div>
           </div>
         ))}
@@ -296,22 +298,22 @@ export default function RealTimeMarketDashboard() {
       {/* Detail Table */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/5">
-          <h2 className="text-sm font-semibold text-white">详细报价</h2>
+          <h2 className="text-sm font-semibold text-white">{t('realTimeMarket.detailQuote')}</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                <th className="px-4 py-3 text-left">股票</th>
-                <th className="px-4 py-3 text-right">最新价</th>
-                <th className="px-4 py-3 text-right">涨跌</th>
-                <th className="px-4 py-3 text-right">涨幅</th>
-                <th className="px-4 py-3 text-right">成交量</th>
-                <th className="px-4 py-3 text-right">成交额</th>
-                <th className="px-4 py-3 text-right">买一</th>
-                <th className="px-4 py-3 text-right">卖一</th>
-                <th className="px-4 py-3 text-right">最高</th>
-                <th className="px-4 py-3 text-right">最低</th>
+                <th className="px-4 py-3 text-left">{t('realTimeMarket.stockName')}</th>
+                <th className="px-4 py-3 text-right">{t('realTimeMarket.latestPrice')}</th>
+                <th className="px-4 py-3 text-right">{t('realTimeMarket.change')}</th>
+                <th className="px-4 py-3 text-right">{t('realTimeMarket.changePct')}</th>
+                <th className="px-4 py-3 text-right">{t('common.volume')}</th>
+                <th className="px-4 py-3 text-right">{t('realTimeMarket.turnover')}</th>
+                <th className="px-4 py-3 text-right">{t('realTimeMarket.bid1')}</th>
+                <th className="px-4 py-3 text-right">{t('realTimeMarket.ask1')}</th>
+                <th className="px-4 py-3 text-right">{t('realTimeMarket.highest')}</th>
+                <th className="px-4 py-3 text-right">{t('realTimeMarket.lowest')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">

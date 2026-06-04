@@ -44,14 +44,24 @@ export default function StrategyPage() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [compareOpen, setCompareOpen] = useState(false);
   const [compareDefaultA, setCompareDefaultA] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadStrategies();
   }, [refreshKey]);
 
   async function loadStrategies() {
-    const list = await getAllStrategies();
-    setStrategies(list);
+    setLoading(true);
+    setError(null);
+    try {
+      const list = await getAllStrategies();
+      setStrategies(list);
+    } catch (e: any) {
+      setError(e?.message || t('common.loadingFailed'));
+    } finally {
+      setLoading(false);
+    }
   }
 
   function refresh() {
@@ -70,6 +80,19 @@ export default function StrategyPage() {
           <span className="text-xs text-gray-500">{strategies.length} {t('strategy.strategyCount')}</span>
         </div>
       </div>
+
+      {loading && (
+        <div className="flex justify-center py-12">
+          <div className="text-gray-500 text-sm">{t('common.loading')}</div>
+        </div>
+      )}
+
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-4 text-red-400 text-sm flex items-center justify-between">
+          <span>{error}</span>
+          <button onClick={loadStrategies} className="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 rounded text-xs transition-colors">{t('common.retry')}</button>
+        </div>
+      )}
 
       {!mode && !selectedId && (
         <>

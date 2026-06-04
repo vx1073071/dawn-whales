@@ -59,6 +59,7 @@ export default function DashboardPage() {
   const [strategies, setStrategies] = useState<StrategyStatus[]>([]);
   const [marketplaceCount, setMarketplaceCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
@@ -68,6 +69,7 @@ export default function DashboardPage() {
   }, []);
 
   async function loadDashboard() {
+    setError(null);
     try {
       const conn = await isConnected();
       setConnected(conn);
@@ -120,7 +122,9 @@ export default function DashboardPage() {
       if (mkt?.strategies) {
         setMarketplaceCount(mkt.strategies.length);
       }
-    } catch {}
+    } catch (e: any) {
+      setError(e?.message || t('common.loadingFailed'));
+    }
     setLoading(false);
   }
 
@@ -146,6 +150,20 @@ export default function DashboardPage() {
     return (
       <div className="p-6 flex items-center justify-center h-64">
         <div className="text-gray-500">{t('common.loading')}</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 flex flex-col items-center justify-center h-64 gap-4">
+        <div className="text-red-400 text-sm">{t('common.loadingFailed')}: {error}</div>
+        <button
+          onClick={loadDashboard}
+          className="px-4 py-2 bg-[#D4A853] text-black rounded-lg text-sm font-medium hover:bg-[#c49a4a] transition-colors"
+        >
+          {t('common.retry')}
+        </button>
       </div>
     );
   }

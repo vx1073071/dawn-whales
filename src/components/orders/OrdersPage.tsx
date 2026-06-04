@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import * as api from '@/lib/bridge-api';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 type Tab = 'active' | 'history' | 'trades';
 
@@ -19,10 +21,12 @@ interface Order {
 }
 
 export default function OrdersPage() {
+  const { t } = useTranslation();
   const [tab, setTab] = useState<Tab>('active');
   const [orders, setOrders] = useState<Order[]>([]);
   const [dbTrades, setDbTrades] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [selectedAccount, setSelectedAccount] = useState<string>('');
 
   useEffect(() => {
@@ -47,17 +51,21 @@ export default function OrdersPage() {
   async function loadAccount() {
     try {
       const accs = await api.getAccounts();
-      if (accs.length > 0) setSelectedAccount(accs[0].accId);
-    } catch { /* silent */ }
+      if (accs.length > 0) setSelectedAccount(accs[0].accId || accs[0].accountId);
+    } catch (e: any) { setError(e?.message || t('common.loadingFailed')); }
   }
 
   async function loadOrders() {
     if (!selectedAccount) return;
     setLoading(true);
+    setError(null);
     try {
       const result = await api.getOrders(selectedAccount);
       setOrders(result?.success ? result.orders || [] : []);
-    } catch { setOrders([]); } finally { setLoading(false); }
+    } catch (e: any) {
+      setError(e?.message || t('common.loadingFailed'));
+      setOrders([]);
+    } finally { setLoading(false); }
   }
 
   async function loadTrades() {
@@ -66,7 +74,7 @@ export default function OrdersPage() {
         const trades = await window.api.db.getTrades();
         setDbTrades(trades || []);
       }
-    } catch { /* silent */ }
+    } catch (e: any) { setError(e?.message || t('common.loadingFailed')); }
   }
 
   async function handleCancel(order: Order) {
@@ -75,7 +83,7 @@ export default function OrdersPage() {
         await window.api.broker.cancelOrder(order.orderId);
         loadOrders();
       }
-    } catch { /* silent */ }
+    } catch (e: any) { setError(e?.message || t('common.loadingFailed')); }
   }
 
   const statusColors: Record<string, string> = {
@@ -109,13 +117,20 @@ export default function OrdersPage() {
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">委托订单</h1>
-          <p className="text-gray-400 text-sm">当前委托、历史成交和策略交易记录</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{t('trading.orders')}</h1>
+          <p className="text-gray-400 text-sm">{t('trading.ordersSubtitle')}</p>
         </div>
         <button onClick={() => { loadOrders(); loadTrades(); }} disabled={loading} className="px-4 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">
-          {loading ? '...' : '⟳ 刷新'}
+          {loading ? '...' : `⟳ ${t('common.refresh')}`}
         </button>
       </div>
+
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-4 text-red-400 text-sm flex items-center justify-between">
+          <span>{error}</span>
+          <button onClick={loadOrders} className="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 rounded text-xs transition-colors">{t('common.retry')}</button>
+        </div>
+      )}
 
       {/* Tabs */}
       <div className="flex gap-1 mb-4 bg-[#12121a] rounded-lg p-1 w-fit">

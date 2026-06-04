@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as api from '@/lib/bridge-api';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import PositionDetailPanel from '../risk/PositionDetailPanel';
 
 interface FundsInfo {
@@ -95,11 +96,25 @@ export default function PortfolioPage() {
         </div>
       </div>
 
-      {error && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-4 text-red-400 text-sm">{error}</div>
+      {loading && (
+        <div className="flex justify-center py-12">
+          <LoadingSpinner text={t('common.loading')} />
+        </div>
       )}
 
-      {!accountId && !loading && (
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-4 text-red-400 text-sm flex items-center justify-between">
+          <span>{error}</span>
+          <button
+            onClick={loadData}
+            className="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 rounded text-xs transition-colors"
+          >
+            {t('common.retry')}
+          </button>
+        </div>
+      )}
+
+      {!loading && !accountId && (
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center mb-4">
           <div className="text-3xl mb-2 opacity-40">🔌</div>
           <p className="text-gray-400 text-sm">{t('common.disconnected')}</p>
