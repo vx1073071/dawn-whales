@@ -1,0 +1,9 @@
+﻿// ── DAWN WHALES — Scanner Worker ───────────────────────────────────────────
+// Parameter scanning / grid search in worker thread
+
+import { ParameterScanner } from '../engine/parameter-scanner-v2';
+
+export default async function execute(config: any) {
+  const scanner = new ParameterScanner();
+  return await scanner.scan(config);
+}
