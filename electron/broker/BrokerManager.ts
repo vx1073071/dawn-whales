@@ -1,307 +1,186 @@
-// ── BrokerManager — 多券商统一管理器 ────────────────────────────────────────
-// 管理多个券商适配器，提供统一接口给上层调用
+// ── DAWN WHALES — Broker Manager (Multi-Broker) ──────────────────────────────
+// Sprint 1: 多券商统一管理器
 
 import log from 'electron-log';
-import {
-  IBrokerAdapter,
-  BrokerConfig,
-  QuotePushCallback,
-  QuoteInfo,
-  AccountInfo,
-  FundsInfo,
-  PositionInfo,
-  OrderInfo,
-  KlineInfo,
-  PlaceOrderRequest,
-} from './IBrokerAdapter';
 import { FutuOpenDClient } from './futu-opend';
+import type { BrokerConfig, IBrokerAdapter, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from './IBrokerAdapter';
 
-export interface BrokerStatus {
-  id: string;
-  name: string;
-  type: string;
-  connected: boolean;
-  accountCount: number;
-  lastError?: string;
+// ── Futu/Moomoo Adapter (wrapper around FutuOpenDClient) ─────────────────
+
+class FutuBrokerAdapter implements IBrokerAdapter {
+  readonly id: string;
+  readonly type: string;
+  readonly name: string;
+  private client: FutuOpenDClient | null = null;
+  private _connected = false;
+  private config: BrokerConfig;
+  private quoteCallbacks: Array<(quotes: QuoteInfo[]) => void> = [];
+  private disconnectCallbacks: Array<() => void> = [];
+
+  constructor(config: BrokerConfig) {
+    this.id = config.id;
+    this.type = config.type;
+    this.name = config.name;
+    this.config = config;
+  }
+
+  get connected(): boolean { return this._connected && (this.client?.connected ?? false); }
+
+  async connect(): Promise<void> {
+    this.client = new FutuOpenDClient(this.config.host, this.config.port);
+    await this.client.connect();
+    this._connected = true;
+
+    this.client.onQuotePush((quotes) => {
+      for (const cb of this.quoteCallbacks) cb(quotes);
+    });
+
+    this.client.onDisconnect(() => {
+      this._connected = false;
+      for (const cb of this.disconnectCallbacks) cb();
+    });
+  }
+
+  disconnect(): void {
+    this.client?.disconnect();
+    this._connected = false;
+  }
+
+  onQuotePush(callback: (quotes: QuoteInfo[]) => void): void {
+    this.quoteCallbacks.push(callback);
+  }
+
+  onDisconnect(callback: () => void): void {
+    this.disconnectCallbacks.push(callback);
+  }
+
+  async getQuotes(codes: string[]): Promise<QuoteInfo[]> {
+    return this.client?.getQuotes(codes) ?? [];
+  }
+
+  async getKlines(code: string, period: string, count: number): Promise<KlineInfo[]> {
+    return this.client?.getKlines(code, period, count) ?? [];
+  }
+
+  async getAccounts(): Promise<AccountInfo[]> {
+    return this.client?.getAccounts() ?? [];
+  }
+
+  async getFunds(accountId: string): Promise<FundsInfo> {
+    return this.client?.getFunds(accountId) ?? { totalAssets: 0, cash: 0, marketValue: 0, frozenCash: 0, availableCash: 0, currency: 'USD' };
+  }
+
+  async getPositions(accountId: string): Promise<PositionInfo[]> {
+    return this.client?.getPositions(accountId) ?? [];
+  }
+
+  async getOrders(accountId: string): Promise<OrderInfo[]> {
+    return this.client?.getOrders(accountId) ?? [];
+  }
+
+  async placeOrder(order: PlaceOrderRequest): Promise<{ orderId: string }> {
+    if (!this.client) throw new Error('Not connected');
+    return this.client.placeOrder(order);
+  }
+
+  async cancelOrder(orderId: string, accountId: string, code: string): Promise<void> {
+    if (!this.client) throw new Error('Not connected');
+    return this.client.cancelOrder(orderId, accountId, code);
+  }
+
+  async subscribeAndPush(codes: string[]): Promise<void> {
+    if (!this.client) throw new Error('Not connected');
+    return this.client.subscribeAndPush(codes);
+  }
 }
 
+// ── Broker Manager ─────────────────────────────────────────────────────────
+
 export class BrokerManager {
-  private adapters = new Map<string, IBrokerAdapter>();
-  private configs: BrokerConfig[] = [];
-  private pushCallbacks: QuotePushCallback[] = [];
+  private brokers: Map<string, IBrokerAdapter> = new Map();
+  private configs: Map<string, BrokerConfig> = new Map();
   private activeBrokerId: string | null = null;
+  private quoteCallbacks: Array<(quotes: QuoteInfo[]) => void> = [];
 
-  // ── Config Management ──────────────────────────────────────────────
-
-  loadConfigs(configs: BrokerConfig[]) {
-    this.configs = configs.filter((c) => c.enabled);
-    log.info('[BrokerManager] Loaded', this.configs.length, 'broker configs');
-  }
-
-  getConfigs(): BrokerConfig[] {
-    return [...this.configs];
-  }
-
-  addConfig(config: BrokerConfig) {
-    this.configs.push(config);
-    log.info('[BrokerManager] Added broker config:', config.id);
-  }
-
-  removeConfig(id: string) {
-    this.configs = this.configs.filter((c) => c.id !== id);
-    this.disconnect(id);
-    log.info('[BrokerManager] Removed broker config:', id);
-  }
-
-  // ── Adapter Factory ────────────────────────────────────────────────
-
-  private createAdapter(config: BrokerConfig): IBrokerAdapter {
-    switch (config.type) {
-      case 'futu':
-      case 'moomoo':
-        // Futu and Moomoo share the same OpenD protocol
-        return new FutuBrokerAdapter(config);
-      default:
-        throw new Error(`Unsupported broker type: ${config.type}`);
+  loadConfigs(configs: BrokerConfig[]): void {
+    for (const cfg of configs) {
+      this.configs.set(cfg.id, cfg);
+      log.info(`[BrokerManager] Loaded config: ${cfg.id} (${cfg.type})`);
     }
   }
 
-  // ── Connection ─────────────────────────────────────────────────────
+  addConfig(config: BrokerConfig): void {
+    this.configs.set(config.id, config);
+  }
 
-  async connect(brokerId?: string): Promise<void> {
-    if (brokerId) {
-      const config = this.configs.find((c) => c.id === brokerId);
-      if (!config) throw new Error(`Broker config not found: ${brokerId}`);
+  removeConfig(brokerId: string): void {
+    this.configs.delete(brokerId);
+    this.disconnect(brokerId);
+  }
 
-      const adapter = this.createAdapter(config);
-      adapter.onQuotePush((quotes) => this.broadcastQuotes(quotes));
-      adapter.onDisconnect(() => {
-        log.warn(`[BrokerManager] ${brokerId} disconnected`);
-        if (this.activeBrokerId === brokerId) this.activeBrokerId = null;
-      });
+  async connect(brokerId: string): Promise<void> {
+    const config = this.configs.get(brokerId);
+    if (!config) throw new Error(`Broker config not found: ${brokerId}`);
 
-      await adapter.connect();
-      this.adapters.set(brokerId, adapter);
+    const adapter = this.createAdapter(config);
+    await adapter.connect();
+    this.brokers.set(brokerId, adapter);
+    this.activeBrokerId = brokerId;
+
+    adapter.onQuotePush((quotes) => {
+      for (const cb of this.quoteCallbacks) cb(quotes);
+    });
+
+    log.info(`[BrokerManager] Connected: ${brokerId}`);
+  }
+
+  disconnect(brokerId?: string): void {
+    const id = brokerId || this.activeBrokerId;
+    if (id) {
+      this.brokers.get(id)?.disconnect();
+      this.brokers.delete(id);
+      if (this.activeBrokerId === id) this.activeBrokerId = null;
+      log.info(`[BrokerManager] Disconnected: ${id}`);
+    }
+  }
+
+  setActiveBroker(brokerId: string): void {
+    if (this.brokers.has(brokerId)) {
       this.activeBrokerId = brokerId;
-      log.info(`[BrokerManager] Connected ${brokerId}`);
-      return;
+      log.info(`[BrokerManager] Active broker: ${brokerId}`);
     }
-
-    // Connect all enabled brokers
-    for (const config of this.configs) {
-      if (this.adapters.has(config.id)) continue;
-      try {
-        const adapter = this.createAdapter(config);
-        adapter.onQuotePush((quotes) => this.broadcastQuotes(quotes));
-        adapter.onDisconnect(() => {
-          log.warn(`[BrokerManager] ${config.id} disconnected`);
-          if (this.activeBrokerId === config.id) this.activeBrokerId = null;
-        });
-        await adapter.connect();
-        this.adapters.set(config.id, adapter);
-        if (!this.activeBrokerId) this.activeBrokerId = config.id;
-        log.info(`[BrokerManager] Connected ${config.id}`);
-      } catch (err: any) {
-        log.error(`[BrokerManager] Failed to connect ${config.id}:`, err.message);
-      }
-    }
-  }
-
-  async disconnect(brokerId?: string): Promise<void> {
-    if (brokerId) {
-      const adapter = this.adapters.get(brokerId);
-      if (adapter) {
-        await adapter.disconnect();
-        this.adapters.delete(brokerId);
-        if (this.activeBrokerId === brokerId) this.activeBrokerId = null;
-      }
-      return;
-    }
-
-    for (const [id, adapter] of this.adapters) {
-      await adapter.disconnect();
-      log.info(`[BrokerManager] Disconnected ${id}`);
-    }
-    this.adapters.clear();
-    this.activeBrokerId = null;
-  }
-
-  // ── Active Broker ──────────────────────────────────────────────────
-
-  setActiveBroker(id: string) {
-    if (!this.adapters.has(id)) throw new Error(`Broker not connected: ${id}`);
-    this.activeBrokerId = id;
-    log.info('[BrokerManager] Active broker:', id);
   }
 
   getActiveBroker(): IBrokerAdapter | null {
     if (!this.activeBrokerId) return null;
-    return this.adapters.get(this.activeBrokerId) || null;
+    return this.brokers.get(this.activeBrokerId) || null;
   }
 
-  getActiveBrokerId(): string | null {
-    return this.activeBrokerId;
+  getBroker(brokerId: string): IBrokerAdapter | null {
+    return this.brokers.get(brokerId) || null;
   }
 
-  // ── Status ─────────────────────────────────────────────────────────
-
-  getStatus(): BrokerStatus[] {
-    return this.configs.map((c) => {
-      const adapter = this.adapters.get(c.id);
-      return {
-        id: c.id,
-        name: c.name,
-        type: c.type,
-        connected: adapter?.connected ?? false,
-        accountCount: 0, // populated lazily
-      };
-    });
+  getStatus(): Array<{ id: string; name: string; type: string; connected: boolean; active: boolean }> {
+    return Array.from(this.configs.values()).map((cfg) => ({
+      id: cfg.id,
+      name: cfg.name,
+      type: cfg.type,
+      connected: this.brokers.get(cfg.id)?.connected ?? false,
+      active: this.activeBrokerId === cfg.id,
+    }));
   }
 
-  // ── Sprint1: Expose adapters map for broker switching ─────────────────
-  getAdapters(): Map<string, IBrokerAdapter> {
-    return this.adapters;
+  onQuotePush(callback: (quotes: QuoteInfo[]) => void): void {
+    this.quoteCallbacks.push(callback);
   }
 
-  // ── Push ───────────────────────────────────────────────────────────
-
-  onQuotePush(callback: QuotePushCallback) {
-    this.pushCallbacks.push(callback);
+  async subscribeAndPush(brokerId: string, codes: string[]): Promise<void> {
+    const broker = this.brokers.get(brokerId);
+    if (broker) await broker.subscribeAndPush(codes);
   }
 
-  private broadcastQuotes(quotes: QuoteInfo[]) {
-    for (const cb of this.pushCallbacks) {
-      try { cb(quotes); } catch (e: any) { log.warn('[BrokerManager] Push callback error:', e.message); }
-    }
-  }
-
-  async subscribeAndPush(brokerId: string | undefined, codes: string[]): Promise<void> {
-    const adapter = brokerId ? this.adapters.get(brokerId) : this.getActiveBroker();
-    if (!adapter) throw new Error('No broker connected');
-    await adapter.subscribeAndPush(codes);
-  }
-
-  // ── Market Data (delegated to active or specified broker) ──────────
-
-  async getQuotes(codes: string[], brokerId?: string): Promise<QuoteInfo[]> {
-    const adapter = brokerId ? this.adapters.get(brokerId) : this.getActiveBroker();
-    if (!adapter) throw new Error('No broker connected');
-    return adapter.getQuotes(codes);
-  }
-
-  async getKlines(code: string, period: string, count: number, brokerId?: string): Promise<KlineInfo[]> {
-    const adapter = brokerId ? this.adapters.get(brokerId) : this.getActiveBroker();
-    if (!adapter) throw new Error('No broker connected');
-    return adapter.getKlines(code, period, count);
-  }
-
-  // ── Trading (delegated to active or specified broker) ──────────────
-
-  async getAccounts(brokerId?: string): Promise<AccountInfo[]> {
-    const adapter = brokerId ? this.adapters.get(brokerId) : this.getActiveBroker();
-    if (!adapter) throw new Error('No broker connected');
-    return adapter.getAccounts();
-  }
-
-  async getFunds(accountId: string, brokerId?: string): Promise<FundsInfo | null> {
-    const adapter = brokerId ? this.adapters.get(brokerId) : this.getActiveBroker();
-    if (!adapter) throw new Error('No broker connected');
-    return adapter.getFunds(accountId);
-  }
-
-  async getPositions(accountId: string, brokerId?: string): Promise<PositionInfo[]> {
-    const adapter = brokerId ? this.adapters.get(brokerId) : this.getActiveBroker();
-    if (!adapter) throw new Error('No broker connected');
-    return adapter.getPositions(accountId);
-  }
-
-  async getOrders(accountId: string, brokerId?: string): Promise<OrderInfo[]> {
-    const adapter = brokerId ? this.adapters.get(brokerId) : this.getActiveBroker();
-    if (!adapter) throw new Error('No broker connected');
-    return adapter.getOrders(accountId);
-  }
-
-  async placeOrder(order: PlaceOrderRequest, brokerId?: string): Promise<{ orderId: string }> {
-    const adapter = brokerId ? this.adapters.get(brokerId) : this.getActiveBroker();
-    if (!adapter) throw new Error('No broker connected');
-    return adapter.placeOrder(order);
-  }
-
-  async cancelOrder(orderId: string, accountId: string, code: string, brokerId?: string): Promise<void> {
-    const adapter = brokerId ? this.adapters.get(brokerId) : this.getActiveBroker();
-    if (!adapter) throw new Error('No broker connected');
-    return adapter.cancelOrder(orderId, accountId, code);
-  }
-}
-
-// ── FutuBrokerAdapter — wraps FutuOpenDClient to implement IBrokerAdapter ───
-
-class FutuBrokerAdapter implements IBrokerAdapter {
-  readonly config: BrokerConfig;
-  private client: FutuOpenDClient;
-  private _connected = false;
-
-  constructor(config: BrokerConfig) {
-    this.config = config;
-    this.client = new FutuOpenDClient(config.host, config.port);
-  }
-
-  get connected() { return this._connected; }
-
-  async connect(): Promise<void> {
-    await this.client.connect();
-    this._connected = true;
-  }
-
-  async disconnect(): Promise<void> {
-    this.client.disconnect();
-    this._connected = false;
-  }
-
-  onQuotePush(callback: QuotePushCallback) {
-    this.client.onQuotePush((quotes) => callback(quotes as QuoteInfo[]));
-  }
-
-  onDisconnect(callback: () => void) {
-    this.client.onDisconnect(callback);
-  }
-
-  async subscribeAndPush(codes: string[]): Promise<void> {
-    await this.client.subscribeAndPush(codes);
-  }
-
-  async getQuotes(codes: string[]): Promise<QuoteInfo[]> {
-    return this.client.getQuotes(codes) as Promise<QuoteInfo[]>;
-  }
-
-  async getKlines(code: string, period: string, count: number): Promise<KlineInfo[]> {
-    return this.client.getKlines(code, period, count) as Promise<KlineInfo[]>;
-  }
-
-  async getAccounts(): Promise<AccountInfo[]> {
-    return this.client.getAccounts() as Promise<AccountInfo[]>;
-  }
-
-  async getFunds(accountId: string): Promise<FundsInfo | null> {
-    return this.client.getFunds(accountId) as Promise<FundsInfo | null>;
-  }
-
-  async getPositions(accountId: string): Promise<PositionInfo[]> {
-    return this.client.getPositions(accountId) as Promise<PositionInfo[]>;
-  }
-
-  async getOrders(accountId: string): Promise<OrderInfo[]> {
-    return this.client.getOrders(accountId) as Promise<OrderInfo[]>;
-  }
-
-  async placeOrder(order: PlaceOrderRequest): Promise<{ orderId: string }> {
-    return this.client.placeOrder({
-      ...order,
-      trdEnv: order.trdEnv || 'REAL',
-    });
-  }
-
-  async cancelOrder(orderId: string, accountId: string, code: string): Promise<void> {
-    await this.client.cancelOrder(orderId, accountId, code);
+  private createAdapter(config: BrokerConfig): IBrokerAdapter {
+    // All Futu/moomoo share the same OpenD protocol
+    return new FutuBrokerAdapter(config);
   }
 }

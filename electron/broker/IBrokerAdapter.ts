@@ -1,30 +1,31 @@
-// ── IBrokerAdapter — 券商适配器抽象接口 ────────────────────────────────────
-// 所有券商适配器必须实现此接口，供 BrokerManager 统一管理
+// ── DAWN WHALES — Broker Adapter Interface ──────────────────────────────────
+// 多券商统一接口 (Sprint 1: Multi-Broker)
 
 export interface BrokerConfig {
-  id: string;          // 唯一标识，如 'futu-main', 'moomoo-sg'
-  name: string;        // 显示名称
-  type: 'futu' | 'moomoo' | 'ib' | 'longbridge' | 'custom';
+  id: string;           // e.g. 'futu-default', 'moomoo-hk'
+  name: string;         // display name
+  type: 'futu' | 'moomoo' | 'ib' | 'longbridge';
   host: string;
   port: number;
   enabled: boolean;
-  priority?: number;   // 优先级，数字小的优先
-  remark?: string;
 }
 
 export interface AccountInfo {
-  accId: string;
-  trdEnv: 'REAL' | 'SIMULATE';
-  name?: string;
+  accountId: string;
+  name: string;
+  currency: string;
+  netAssets: number;
+  totalAssets: number;
+  cash: number;
+  marketValue: number;
 }
 
 export interface FundsInfo {
   totalAssets: number;
   cash: number;
-  power: number;
-  marketVal: number;
+  marketValue: number;
   frozenCash: number;
-  todayPnl: number;
+  availableCash: number;
   currency: string;
 }
 
@@ -32,42 +33,39 @@ export interface PositionInfo {
   code: string;
   name: string;
   qty: number;
-  canSellQty: number;
-  avgCost: number;
-  curPrice: number;
-  marketVal: number;
+  costPrice: number;
+  marketPrice: number;
+  marketValue: number;
   pnl: number;
   pnlPct: number;
+  ratio: number;
 }
 
 export interface OrderInfo {
   orderId: string;
   code: string;
-  name: string;
   side: 'BUY' | 'SELL';
-  orderType: number;
+  orderType: 'MARKET' | 'LIMIT';
   qty: number;
   price: number;
   filledQty: number;
   filledPrice: number;
   status: string;
-  createTime: string;
-  updateTime: string;
+  createdAt: string;
 }
 
 export interface QuoteInfo {
   code: string;
-  name: string;
   price: number;
-  prevClose: number;
-  open: number;
-  high: number;
-  low: number;
-  volume: number;
   change: number;
   changePct: number;
-  amplitude: number;
-  updateTime: string;
+  volume: number;
+  turnover: number;
+  high: number;
+  low: number;
+  open: number;
+  prevClose: number;
+  time: string;
 }
 
 export interface KlineInfo {
@@ -80,41 +78,33 @@ export interface KlineInfo {
 }
 
 export interface PlaceOrderRequest {
-  accountId: string;
   code: string;
   side: 'BUY' | 'SELL';
-  orderType: 'LIMIT' | 'MARKET';
+  orderType: 'MARKET' | 'LIMIT';
   qty: number;
   price?: number;
-  remark?: string;
-  trdEnv?: 'REAL' | 'SIMULATE';
+  accountId?: string;
 }
 
-export type QuotePushCallback = (quotes: QuoteInfo[]) => void;
-export type DisconnectCallback = () => void;
-
 export interface IBrokerAdapter {
-  readonly config: BrokerConfig;
-  readonly connected: boolean;
+  readonly id: string;
+  readonly type: string;
+  readonly name: string;
+  connected: boolean;
 
-  // Lifecycle
   connect(): Promise<void>;
-  disconnect(): Promise<void>;
+  disconnect(): void;
 
-  // Push
-  onQuotePush(callback: QuotePushCallback): void;
-  onDisconnect(callback: DisconnectCallback): void;
-  subscribeAndPush(codes: string[]): Promise<void>;
+  onQuotePush(callback: (quotes: QuoteInfo[]) => void): void;
+  onDisconnect(callback: () => void): void;
 
-  // Market Data
   getQuotes(codes: string[]): Promise<QuoteInfo[]>;
   getKlines(code: string, period: string, count: number): Promise<KlineInfo[]>;
-
-  // Trading
   getAccounts(): Promise<AccountInfo[]>;
-  getFunds(accountId: string): Promise<FundsInfo | null>;
+  getFunds(accountId: string): Promise<FundsInfo>;
   getPositions(accountId: string): Promise<PositionInfo[]>;
   getOrders(accountId: string): Promise<OrderInfo[]>;
   placeOrder(order: PlaceOrderRequest): Promise<{ orderId: string }>;
   cancelOrder(orderId: string, accountId: string, code: string): Promise<void>;
+  subscribeAndPush(codes: string[]): Promise<void>;
 }
