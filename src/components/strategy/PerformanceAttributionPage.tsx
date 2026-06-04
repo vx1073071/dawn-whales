@@ -70,7 +70,7 @@ export default function PerformanceAttributionPage() {
     try {
       // const res = await getPerformanceAttribution();
       // if (res?.success) setData(res.data);
-    } catch { /* use mock */ }
+    } catch (e) { console.error('[Error:PerformanceAttributionPage]', e); }
     setLoading(false);
   }
 

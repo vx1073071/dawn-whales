@@ -500,7 +500,7 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
     try {
       await createStrategy({ templateId: template.id, symbol: template.symbol || 'US.TQQQ' });
       onCreated();
-    } catch { /* silent */ } finally {
+    } catch (e) { console.error('[Error:StrategyPage]', e); }
       setLoading(false);
     }
   }
@@ -590,7 +590,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
             if (st.stopLoss) setStopLoss(st.stopLoss);
             if (st.takeProfit) setTakeProfit(st.takeProfit);
           }
-        } catch { /* silent */ }
+        } catch (e) { console.error('[Error:StrategyPage]', e); }
       };
       load();
     }
@@ -618,7 +618,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
         await createStrategy(config);
       }
       onCreated();
-    } catch { /* silent */ } finally {
+    } catch (e) { console.error('[Error:StrategyPage]', e); }
       setCreating(false);
     }
   }
@@ -815,7 +815,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
         slippage: 0.0005,
       });
       if (result.success) setBacktestResult(result.result);
-    } catch { /* silent */ } finally {
+    } catch (e) { console.error('[Error:StrategyPage]', e); }
       setBacktestLoading(false);
     }
   }
@@ -826,7 +826,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       await startLive(strategyId);
       onRefresh();
       loadDetail();
-    } catch { /* silent */ } finally {
+    } catch (e) { console.error('[Error:StrategyPage]', e); }
       setActionLoading(false);
     }
   }
@@ -837,7 +837,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       await stopLive(strategyId);
       onRefresh();
       loadDetail();
-    } catch { /* silent */ } finally {
+    } catch (e) { console.error('[Error:StrategyPage]', e); }
       setActionLoading(false);
     }
   }

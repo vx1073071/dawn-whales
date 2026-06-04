@@ -51,7 +51,7 @@ export default function TradeHistoryPage() {
     try {
       const res = await getTradeHistory();
       if (res?.success && Array.isArray(res.trades)) setTrades(res.trades);
-    } catch { /* use mock */ }
+    } catch (e) { console.error('[Error:TradeHistoryPage]', e); }
     setLoading(false);
   }
 

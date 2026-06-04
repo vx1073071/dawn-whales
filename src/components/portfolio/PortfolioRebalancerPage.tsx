@@ -52,7 +52,7 @@ export default function PortfolioRebalancerPage() {
       // if (res?.success) setSuggestions(res.suggestions);
       const funds = await getFunds('');
       if (funds) setTotalAssets(funds.totalAssets);
-    } catch { /* use mock */ }
+    } catch (e) { console.error('[Error:PortfolioRebalancerPage]', e); }
     setLoading(false);
   }
 

@@ -23,7 +23,7 @@ export default function PriceAlertPanel() {
     try {
       const saved = localStorage.getItem('dawn-whales-alerts');
       if (saved) setAlerts(JSON.parse(saved));
-    } catch { /* ignore */ }
+    } catch (e) { console.error('[Error:PriceAlertPanel]', e); }
   }, []);
 
   // Save to localStorage

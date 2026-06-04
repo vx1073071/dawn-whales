@@ -89,7 +89,7 @@ export default function DataQualityMonitorPage() {
     try {
       // const res = await getDataQualityStatus();
       // if (res?.success) { ... }
-    } catch { /* use mock */ }
+    } catch (e) { console.error('[Error:DataQualityMonitorPage]', e); }
     setLoading(false);
   }
 

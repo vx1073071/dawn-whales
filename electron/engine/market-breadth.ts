@@ -110,13 +110,13 @@ export async function getMarketBreadth(): Promise<BreadthReport> {
       const luResp = await httpGet(limitUpUrl).catch(() => '{}');
       const luData = JSON.parse(luResp);
       limitUp = luData.data?.pool?.length || 0;
-    } catch { /* ignore */ }
+    } catch (e) { logger.error('[backend:market-breadth]', e); }
 
     try {
       const ldResp = await httpGet(limitDownUrl).catch(() => '{}');
       const ldData = JSON.parse(ldResp);
       limitDown = ldData.data?.pool?.length || 0;
-    } catch { /* ignore */ }
+    } catch (e) { logger.error('[backend:market-breadth]', e); }
 
     const snapshot: MarketBreadthSnapshot = {
       date: new Date().toISOString().split('T')[0],

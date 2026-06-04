@@ -52,7 +52,7 @@ export default function SentimentStreamDashboard() {
     try {
       // const res = await getSentimentStreamStatus();
       // if (res?.success) setData(res.data);
-    } catch { /* use mock */ }
+    } catch (e) { console.error('[Error:SentimentStreamDashboard]', e); }
     setLoading(false);
   }
 

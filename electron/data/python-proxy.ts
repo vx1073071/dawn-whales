@@ -99,7 +99,7 @@ export class PythonProxyService {
           log.info(`[PythonProxy] Found Python at: ${candidate}`);
           return;
         }
-      } catch { /* continue */ }
+      } catch (e) { logger.error('[backend:python-proxy]', e); }
     }
 
     // Fallback to PATH resolution

@@ -1,0 +1,77 @@
+{
+  "em": [
+    "emDataProvider",
+    "macroDataProvider",
+    "newsAggregator",
+    "sectorRotation",
+    "snapshot",
+    "stockAnomalyDetector",
+    "marketHotspot",
+    "mainWindow"
+  ],
+  "indicator": [],
+  "sentiment": [
+    "mainWindow"
+  ],
+  "data": [
+    "dataProvider",
+    "stockScreener",
+    "dataScheduler",
+    "mainWindow"
+  ],
+  "broker": [
+    "opendClient",
+    "brokerManager",
+    "strategyEngine",
+    "db",
+    "WATCHLIST",
+    "mainWindow",
+    "quotePushHandler",
+    "riskEngine"
+  ],
+  "risk": [
+    "riskEngine",
+    "snapshot"
+  ],
+  "alert-notification": [],
+  "report": [],
+  "options": [
+    "calcGreeksJS"
+  ],
+  "portfolio": [],
+  "ws": [
+    "mainWindow"
+  ],
+  "backfill": [],
+  "strategy": [
+    "strategyEngine",
+    "db",
+    "opendClient",
+    "backtestEngine",
+    "getDeepSeekKey_",
+    "app",
+    "liveExecutor"
+  ],
+  "backtest": [
+    "backtestEngine"
+  ],
+  "system": [],
+  "snapshot": [
+    "snapshot"
+  ],
+  "version": [],
+  "db": [
+    "db"
+  ],
+  "app": [
+    "app",
+    "mainWindow",
+    "strategyEngine",
+    "autoUpdater"
+  ],
+  "marketplace": [
+    "db",
+    "marketplaceService"
+  ],
+  "cache": []
+}

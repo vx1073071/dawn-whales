@@ -98,15 +98,15 @@ export default function OrdersPage() {
   };
 
   const statusLabels: Record<string, string> = {
-    SUBMITTED: '已提交', WAITING: '等待中', FILLED: '已成交', PARTIAL: '部分成交',
-    CANCELLED: '已撤销', REJECTED: '已拒绝', UNKNOWN: '未知',
-    submitted: '已提交', pending: '待处理',
+    SUBMITTED: t('orderStatus.submitted'), WAITING: t('orderStatus.waiting'), FILLED: t('orderStatus.filled'),
+    PARTIAL: t('orderStatus.partial'), CANCELLED: t('orderStatus.cancelled'), REJECTED: t('orderStatus.rejected'),
+    UNKNOWN: t('common.unknown'), submitted: t('orderStatus.submitted'), pending: t('orderStatus.pending'),
   };
 
   const tabs: { key: Tab; label: string; icon: string }[] = [
-    { key: 'active', label: '当前委托', icon: '📋' },
-    { key: 'history', label: '历史委托', icon: '📜' },
-    { key: 'trades', label: '策略交易记录', icon: '🔄' },
+    { key: 'active', label: t('trading.activeOrders'), icon: '📋' },
+    { key: 'history', label: t('trading.historyOrders'), icon: '📜' },
+    { key: 'trades', label: t('trading.strategyTrades'), icon: '🔄' },
   ];
 
   const activeOrders = orders.filter((o) => ['SUBMITTED', 'WAITING', 'PARTIAL'].includes(o.status));
@@ -154,26 +154,26 @@ export default function OrdersPage() {
       {(tab === 'active' || tab === 'history') && (
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           {loading && displayOrders.length === 0 ? (
-            <div className="p-8 text-center text-gray-500 text-sm">加载中...</div>
+            <div className="p-8 text-center text-gray-500 text-sm">{t('common.loading')}</div>
           ) : displayOrders.length === 0 ? (
             <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">{tab === 'active' ? '📋' : '📜'}</div>
-              <p className="text-gray-400 text-sm">{tab === 'active' ? '暂无活跃委托' : '暂无历史委托'}</p>
-              {!selectedAccount && <p className="text-gray-600 text-xs mt-1">请先连接 OpenD</p>}
+              <p className="text-gray-400 text-sm">{tab === 'active' ? t('trading.noActiveOrders') : t('trading.noHistoryOrders')}</p>
+              {!selectedAccount && <p className="text-gray-600 text-xs mt-1">{t('portfolio.connectOpendFirst')}</p>}
             </div>
           ) : (
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">时间</th>
-                  <th className="px-4 py-3 text-left">代码</th>
-                  <th className="px-4 py-3 text-center">方向</th>
-                  <th className="px-4 py-3 text-right">数量</th>
-                  <th className="px-4 py-3 text-right">委托价</th>
-                  <th className="px-4 py-3 text-right">成交数</th>
-                  <th className="px-4 py-3 text-right">成交价</th>
-                  <th className="px-4 py-3 text-center">状态</th>
-                  {tab === 'active' && <th className="px-4 py-3 text-center">操作</th>}
+                  <th className="px-4 py-3 text-left">{t('common.time')}</th>
+                  <th className="px-4 py-3 text-left">{t('trading.code')}</th>
+                  <th className="px-4 py-3 text-center">{t('trading.side')}</th>
+                  <th className="px-4 py-3 text-right">{t('trading.quantity')}</th>
+                  <th className="px-4 py-3 text-right">{t('trading.orderPrice')}</th>
+                  <th className="px-4 py-3 text-right">{t('trading.filledQty')}</th>
+                  <th className="px-4 py-3 text-right">{t('trading.filledPrice')}</th>
+                  <th className="px-4 py-3 text-center">{t('trading.status')}</th>
+                  {tab === 'active' && <th className="px-4 py-3 text-center">{t('common.action')}</th>}
                 </tr>
               </thead>
               <tbody>
@@ -183,7 +183,7 @@ export default function OrdersPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{o.code?.replace('US.', '') || '--'}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${o.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {o.side === 'BUY' ? '买入' : '卖出'}
+                        {o.side === 'BUY' ? t('trading.buy') : t('trading.sell')}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{o.qty}</td>
@@ -198,7 +198,7 @@ export default function OrdersPage() {
                     {tab === 'active' && (
                       <td className="px-4 py-3 text-center">
                         <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded transition-colors">
-                          撤单
+                          {t('trading.cancelOrder')}
                         </button>
                       </td>
                     )}
@@ -216,8 +216,8 @@ export default function OrdersPage() {
           {dbTrades.length === 0 ? (
             <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">🔄</div>
-              <p className="text-gray-400 text-sm">暂无策略交易记录</p>
-              <p className="text-gray-600 text-xs mt-1">策略运行后自动记录在这里</p>
+              <p className="text-gray-400 text-sm">{t('trading.noStrategyTrades')}</p>
+              <p className="text-gray-600 text-xs mt-1">{t('trading.strategyTradesHint')}</p>
             </div>
           ) : (
             <table className="w-full">

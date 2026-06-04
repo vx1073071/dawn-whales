@@ -63,7 +63,7 @@ export default function BacktestReportPage() {
     try {
       const all = await api.getStrategies();
       setStrategies(all || []);
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:BacktestReportPage]', e); }
   }
 
   async function runBacktest() {

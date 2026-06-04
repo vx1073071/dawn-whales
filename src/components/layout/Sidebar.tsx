@@ -75,7 +75,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
         const f = await getFunds(accounts[0].accId);
         if (f) setFunds({ totalAssets: f.totalAssets, todayPnl: f.todayPnl || 0 });
       }
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:Sidebar]', e); }
   }
 
   let lastSection = '';

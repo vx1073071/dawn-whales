@@ -38,7 +38,7 @@ export default function PortfolioPage() {
     try {
       const accs = await api.getAccounts();
       if (accs.length > 0) setAccountId(accs[0].accId);
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:PortfolioPage]', e); }
   }
 
   async function loadData() {

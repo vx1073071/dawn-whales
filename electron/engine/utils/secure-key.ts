@@ -47,7 +47,7 @@ export function getDeepSeekKey(): string {
       const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
       if (config[CONFIG_KEY]) return decrypt(config[CONFIG_KEY]);
     }
-  } catch { /* ignore */ }
+  } catch (e) { logger.error('[backend:secure-key]', e); }
 
   return '';
 }
@@ -62,7 +62,7 @@ export function setDeepSeekKey(key: string): void {
     if (fs.existsSync(configPath)) {
       config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
     }
-  } catch { /* ignore */ }
+  } catch (e) { logger.error('[backend:secure-key]', e); }
 
   config[CONFIG_KEY] = encrypt(key);
   fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
@@ -75,6 +75,6 @@ export function clearDeepSeekKey(): void {
       const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
       delete config[CONFIG_KEY];
       fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
-    } catch { /* ignore */ }
+    } catch (e) { logger.error('[backend:secure-key]', e); }
   }
 }

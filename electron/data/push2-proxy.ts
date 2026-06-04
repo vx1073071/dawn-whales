@@ -90,7 +90,7 @@ export class Push2ProxyService {
           const fs = require('fs');
           if (fs.existsSync(p)) { this.pythonPath = p; return; }
         }
-      } catch {}
+      } catch (e) { logger.error('[backend:push2-proxy]', e); }
     }
     this.pythonPath = 'python';
   }

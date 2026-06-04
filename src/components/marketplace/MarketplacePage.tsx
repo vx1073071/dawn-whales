@@ -64,7 +64,7 @@ export default function MarketplacePage() {
       if (res?.success && res.strategies) {
         setMarketStrategies(res.strategies);
       }
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:MarketplacePage]', e); }
     setLoading(false);
   }
 
@@ -72,7 +72,7 @@ export default function MarketplacePage() {
     try {
       const list = await getAllStrategies();
       setMyStrategies(list);
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:MarketplacePage]', e); }
   }
 
   const filtered = marketStrategies
@@ -267,14 +267,14 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
     try {
       const res = await getStrategyRating(s.id);
       if (res?.success) setRating({ avg: res.avg, count: res.count, myRating: res.myRating });
-    } catch {}
+    } catch (e) { console.error('[Error:MarketplacePage]', e); }
   }
 
   async function loadComments() {
     try {
       const res = await getComments(s.id);
       if (res?.success) setComments(res.comments || []);
-    } catch {}
+    } catch (e) { console.error('[Error:MarketplacePage]', e); }
   }
 
   async function handleRate(star: number) {

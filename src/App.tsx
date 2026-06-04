@@ -34,6 +34,7 @@ const SentimentStreamDashboard = lazy(() => import('@/components/market/Sentimen
 const SmartPickerPage = lazy(() => import('@/components/market/SmartPickerPage'));
 const TradeExecutionPanel = lazy(() => import('@/components/trading/TradeExecutionPanel'));
 const TradeHistoryPage = lazy(() => import('@/components/trading/TradeHistoryPage'));
+const TradingDesk = lazy(() => import('@/components/trading/TradingDesk'));
 const AIAdvisorPage = lazy(() => import('@/components/strategy/AIAdvisorPage'));
 const PerformanceAttributionPage = lazy(() => import('@/components/strategy/PerformanceAttributionPage'));
 const RegimeMonitorPage = lazy(() => import('@/components/strategy/RegimeMonitorPage'));
@@ -71,7 +72,7 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   cacheExplorer: CachedDataExplorer,
   sentimentStream: SentimentStreamDashboard,
   smartPicker: SmartPickerPage,
-  tradeExecution: TradeExecutionPanel,
+  tradeExecution: TradingDesk,
   tradeHistory: TradeHistoryPage,
   aiAdvisor: AIAdvisorPage,
   performanceAttribution: PerformanceAttributionPage,

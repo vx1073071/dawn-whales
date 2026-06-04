@@ -39,7 +39,7 @@ export default function SmartPickerPage() {
     try {
       const res = await getSmartPick();
       if (res?.success && Array.isArray(res.data)) setData(res.data);
-    } catch { /* use mock */ }
+    } catch (e) { console.error('[Error:SmartPickerPage]', e); }
     setLoading(false);
   }
 

@@ -56,7 +56,7 @@ export default function CachedDataExplorer() {
     try {
       // const res = await getCacheStats();
       // if (res?.success) { ... }
-    } catch { /* use mock */ }
+    } catch (e) { console.error('[Error:CachedDataExplorer]', e); }
     setLoading(false);
   }
 

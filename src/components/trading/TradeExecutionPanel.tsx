@@ -35,7 +35,7 @@ function StatusMap() {
   };
 }
 
-export default function TradeExecutionPanel() {
+export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange?: (symbol: string) => void }) {
   const { t } = useTranslation();
   const [accounts, setAccounts] = useState<{ accId: string; trdEnv: string }[]>([]);
   const [selectedAccount, setSelectedAccount] = useState('');
@@ -73,21 +73,21 @@ export default function TradeExecutionPanel() {
         setAccounts(res);
         if (res.length > 0) setSelectedAccount(res[0].accId);
       }
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:TradeExecutionPanel]', e); }
   }
 
   async function loadFunds() {
     try {
       const f = await getFunds(selectedAccount);
       if (f) setFunds({ cash: f.cash, power: f.power });
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:TradeExecutionPanel]', e); }
   }
 
   async function loadOrders() {
     try {
       const res = await getOrders(selectedAccount);
       if (Array.isArray(res)) setOrders(res);
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:TradeExecutionPanel]', e); }
   }
 
   function handlePreview() {
@@ -134,7 +134,7 @@ export default function TradeExecutionPanel() {
     try {
       await cancelOrder(orderId);
       loadOrders();
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:TradeExecutionPanel]', e); }
   }
 
   const totalAmount = (() => {
@@ -197,7 +197,7 @@ export default function TradeExecutionPanel() {
           <div>
             <label className="text-xs text-gray-500 mb-1 block">{t('trading.code')}</label>
             <input
-              type="text" value={code} onChange={(e) => setCode(e.target.value)}
+              type="text" value={code} onChange={(e) => { setCode(e.target.value); onSymbolChange?.(e.target.value); }}
               placeholder={t('trading.codePlaceholder')}
               className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046] uppercase"
             />

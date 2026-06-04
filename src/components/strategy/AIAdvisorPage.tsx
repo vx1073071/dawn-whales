@@ -55,7 +55,7 @@ export default function AIAdvisorPage() {
     try {
       const res = await getAISuggest();
       if (res?.success && res.data) setAdvice(res.data);
-    } catch { /* use mock */ }
+    } catch (e) { console.error('[Error:AIAdvisorPage]', e); }
     setLoading(false);
   }
 

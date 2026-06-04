@@ -59,7 +59,7 @@ export default function LiveMonitorPage() {
       const list = await api.getWatchlist();
       if (list && list.length > 0) setWatchlist(list);
       else setWatchlist(['US.TQQQ', 'US.SOXL', 'US.QQQ', 'US.SPY', 'HK.00700', 'US.AAPL', 'US.NVDA', 'US.SQQQ']);
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:LiveMonitorPage]', e); }
   }
 
   // WP1: Listen for real-time price pushes
@@ -158,7 +158,7 @@ export default function LiveMonitorPage() {
         await api.startLive(id);
       }
       loadStrategies();
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:LiveMonitorPage]', e); }
   }
 
   async function handleEmergencyStop() {
@@ -168,7 +168,7 @@ export default function LiveMonitorPage() {
         addLog('ALERT', 'SYSTEM', '紧急停止已触发，所有策略已停止');
         loadStrategies();
       }
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:LiveMonitorPage]', e); }
   }
 
   async function handleAddCode() {
@@ -181,7 +181,7 @@ export default function LiveMonitorPage() {
     try {
       await api.subscribeQuotes([code]);
       await api.saveWatchlist(newList);
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:LiveMonitorPage]', e); }
   }
 
   async function handleRemoveCode(code: string) {
@@ -192,7 +192,7 @@ export default function LiveMonitorPage() {
     try {
       await api.unsubscribeQuotes([code]);
       await api.saveWatchlist(newList);
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:LiveMonitorPage]', e); }
   }
 
   function addLog(type: SignalLog['type'], code: string, message: string) {

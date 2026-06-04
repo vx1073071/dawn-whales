@@ -71,7 +71,7 @@ export default function FactorExposurePage() {
     try {
       // const res = await getFactorExposure();
       // if (res?.success) setData(res.data);
-    } catch { /* use mock */ }
+    } catch (e) { console.error('[Error:FactorExposurePage]', e); }
     setLoading(false);
   }
 

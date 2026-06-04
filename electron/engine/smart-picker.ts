@@ -133,7 +133,7 @@ export class SmartPickerService {
             if (item.fundCount > 10) c.signals.push(`${item.fundCount}家基金增持`);
           }
         }
-      } catch { /* fund data may fail */ }
+      } catch (e) { logger.error('[backend:smart-picker]', e); }
 
       // Step 2: Score sentiment and technical for all candidates
       const newsResult = await this.newsAggregator.search({ query: 'A股市场', hoursBack: 24, limit: 5 });

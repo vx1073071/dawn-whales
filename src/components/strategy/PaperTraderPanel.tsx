@@ -78,7 +78,7 @@ export default function PaperTraderPanel() {
     try {
       const r = await (window as any).api.getPaperReport();
       if (r) setReport(r);
-    } catch {}
+    } catch (e) { console.error('[Error:PaperTraderPanel]', e); }
   }, []);
 
   useEffect(() => {

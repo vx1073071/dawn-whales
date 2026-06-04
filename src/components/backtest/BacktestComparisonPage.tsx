@@ -119,7 +119,7 @@ export default function BacktestComparisonPage() {
     try {
       // In real implementation, call: const res = await compareBacktests(strategyIds);
       // For now use mock data
-    } catch { /* use mock */ }
+    } catch (e) { console.error('[Error:BacktestComparisonPage]', e); }
     setLoading(false);
   }
 

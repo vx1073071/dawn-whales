@@ -75,7 +75,7 @@ export default function PaperTraderPanel() {
     try {
       // const res = await getPaperTraderStatus();
       // if (res?.success) { ... }
-    } catch { /* use mock */ }
+    } catch (e) { console.error('[Error:PaperTraderPanel]', e); }
     setLoading(false);
   }
 

@@ -52,7 +52,7 @@ export default function SettingsPage() {
         const info = await window.api.app.getInfo();
         setAppInfo(info);
       }
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:SettingsPage]', e); }
   }
 
   async function refreshBrokers() {
@@ -61,7 +61,7 @@ export default function SettingsPage() {
       const status = await getBrokerStatus();
       setBrokers(list);
       setBrokerStatus(status);
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:SettingsPage]', e); }
   }
 
   async function handleConnect() {
@@ -145,7 +145,7 @@ export default function SettingsPage() {
       if (typeof window !== 'undefined' && window.api?.risk) {
         await window.api.risk.updateConfig(updated);
       }
-    } catch { /* silent */ }
+    } catch (e) { console.error('[Error:SettingsPage]', e); }
   }
 
   const activeBrokerId = brokerStatus.find((s: any) => s.active)?.id || brokerStatus[0]?.id;

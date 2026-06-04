@@ -365,7 +365,7 @@ export function registerWsStreamIPC(ipcMain: any): void {
           win.webContents.send('ws:tick', ticks);
         }
       }
-    } catch {}
+    } catch (e) { logger.error('[backend:ws-data-stream]', e); }
   });
 
   service.on('anomaly', (alerts: any[]) => {
@@ -377,7 +377,7 @@ export function registerWsStreamIPC(ipcMain: any): void {
           win.webContents.send('ws:anomaly', alerts);
         }
       }
-    } catch {}
+    } catch (e) { logger.error('[backend:ws-data-stream]', e); }
   });
 
   service.on('mode:changed', (info: any) => {
@@ -389,7 +389,7 @@ export function registerWsStreamIPC(ipcMain: any): void {
           win.webContents.send('ws:mode-changed', info);
         }
       }
-    } catch {}
+    } catch (e) { logger.error('[backend:ws-data-stream]', e); }
   });
 
   log.info('[WsDataStream] IPC handlers registered');

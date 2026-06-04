@@ -43,7 +43,7 @@ export default function TradingJournal() {
     try {
       const saved = localStorage.getItem('dawn-whales-journal');
       if (saved) setEntries(JSON.parse(saved));
-    } catch { /* ignore */ }
+    } catch (e) { console.error('[Error:TradingJournal]', e); }
   }, []);
 
   // Save to localStorage
