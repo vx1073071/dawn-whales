@@ -413,3 +413,55 @@ export const NotificationGenerateSchema = z.object({
   })).optional(),
   vix: z.number().optional(),
 });
+
+// ── Report Generate ──────────────────────────────────────────────────────────
+
+// Minimal schema — BacktestResult is complex, we accept as any[] and validate key fields
+const BacktestResultCoreSchema = z.object({
+  success: z.boolean(),
+  result: z.object({
+    totalReturn: z.number(),
+    annualReturn: z.number(),
+    sharpeRatio: z.number(),
+    maxDrawdown: z.number(),
+    winRate: z.number(),
+    profitFactor: z.number(),
+    totalTrades: z.number(),
+    avgTradePnl: z.number(),
+    avgHoldingBars: z.number(),
+    config: z.object({
+      symbol: z.string().optional(),
+      strategyName: z.string().optional(),
+      strategy: z.object({ type: z.string() }).optional(),
+    }).optional(),
+  }),
+});
+
+export const ReportGenerateSchema = z.object({
+  results: z.array(BacktestResultCoreSchema),
+  symbol: z.string().optional(),
+  apiKey: z.string().optional(),
+  timeoutMs: z.number().optional(),
+});
+
+export const ReportQuickSchema = z.object({
+  result: BacktestResultCoreSchema,
+  apiKey: z.string().optional(),
+});
+
+// ── Strategy Auto-Tune ────────────────────────────────────────────────────────
+
+export const StrategyAutoTuneSchema = z.object({
+  strategyType: z.string(),
+  ranges: z.array(z.object({
+    name: z.string(),
+    min: z.number(),
+    max: z.number(),
+    step: z.number(),
+  })),
+  klines: z.array(z.record(z.string(), z.unknown())),
+  method: z.enum(['ga', 'bayesian', 'both']).optional(),
+  populationSize: z.number().optional(),
+  generations: z.number().optional(),
+  iterations: z.number().optional(),
+});

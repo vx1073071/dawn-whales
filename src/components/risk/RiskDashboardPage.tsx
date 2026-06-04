@@ -6,6 +6,10 @@ import { getRiskStatusSnapshot } from '../../lib/bridge-api';
 import EquityChart from './EquityChart';
 import PerformanceMetricsPanel from './PerformanceMetricsPanel';
 import TradingJournal from './TradingJournal';
+import DailyPnLSummary from './DailyPnLSummary';
+import RiskConfigEditor from './RiskConfigEditor';
+import SystemLog from './SystemLog';
+import PortfolioStressTest from './PortfolioStressTest';
 
 interface KellyStats {
   winRate: number;
@@ -284,29 +288,23 @@ export default function RiskDashboardPage() {
         </div>
       </div>
 
-      {/* Equity Curve */}
-      <EquityChart data={demoEquityData} title="📈 账户净值走势" height={300} showDrawdown />
+      {/* Equity Curve + Daily P&L */}
+      <div className="grid grid-cols-2 gap-4">
+        <EquityChart data={demoEquityData} title="📈 账户净值走势" height={300} showDrawdown />
+        <DailyPnLSummary />
+      </div>
 
       {/* Performance Metrics */}
       <PerformanceMetricsPanel trades={demoTrades} title="📊 交易绩效指标" />
 
-      {/* Trading Journal */}
-      <TradingJournal />
-
-      {/* Bottom: Config Summary */}
-      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-white font-semibold text-sm mb-4">⚙️ 风控配置摘要</h2>
-        <div className="grid grid-cols-4 gap-4 text-xs">
-          <ConfigItem label="单品种上限" value={`${(snapshot.config.maxSinglePositionPct * 100).toFixed(0)}%`} />
-          <ConfigItem label="总持仓上限" value={`${(snapshot.config.maxTotalPositionPct * 100).toFixed(0)}%`} />
-          <ConfigItem label="日亏损上限" value={`${(snapshot.config.dailyLossLimitPct * 100).toFixed(0)}%`} />
-          <ConfigItem label="下单频率" value={`${snapshot.config.maxOrdersPerMinute}/min`} />
-          <ConfigItem label="Kelly 上限" value={`${(snapshot.config.kellyMaxFraction * 100).toFixed(0)}%`} />
-          <ConfigItem label="Half-Kelly" value={snapshot.config.kellyHalfEnabled ? '启用' : '关闭'} />
-          <ConfigItem label="ATR 止损倍数" value={`${snapshot.config.atrStopMultiplier}x`} />
-          <ConfigItem label="回撤降仓阈值" value={`${(snapshot.config.drawdownReduceThreshold * 100).toFixed(0)}%`} />
-        </div>
+      {/* Trading Journal + System Log */}
+      <div className="grid grid-cols-2 gap-4">
+        <TradingJournal />
+        <SystemLog />
       </div>
+
+      {/* Risk Config Editor */}
+      <RiskConfigEditor />
     </div>
   );
 }

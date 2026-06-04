@@ -12,6 +12,13 @@ import SignalTimeline from '../risk/SignalTimeline';
 import MarketHeatmap from '../risk/MarketHeatmap';
 import NotificationCenter from '../risk/NotificationCenter';
 import MarketClock from '../risk/MarketClock';
+import QuickTrade from '../risk/QuickTrade';
+import PriceAlertPanel from '../risk/PriceAlertPanel';
+import MarketBreadth from '../risk/MarketBreadth';
+import EconomicCalendar from '../risk/EconomicCalendar';
+import MarketMovers from '../risk/MarketMovers';
+import PerformanceMetricsPanel from '../risk/PerformanceMetricsPanel';
+import DailyPnLSummary from '../risk/DailyPnLSummary';
 
 interface AccountSummary {
   totalAssets: number;
@@ -177,8 +184,11 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Market Sector Heatmap */}
-      <MarketHeatmap title="🗺️ 市场板块热力图" />
+      {/* Market Sector Heatmap + Market Breadth */}
+      <div className="grid grid-cols-2 gap-4">
+        <MarketHeatmap title="🗺️ 市场板块热力图" />
+        <MarketBreadth />
+      </div>
 
       {/* Equity Curve + Allocation */}
       <div className="grid grid-cols-2 gap-4">
@@ -232,8 +242,19 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* Bottom row: Strategies + Quick Stats */}
+      {/* Performance Metrics + Daily PnL Summary */}
       <div className="grid grid-cols-2 gap-4">
+        <PerformanceMetricsPanel
+          trades={positions.flatMap(p => [
+            ...(p.pnl !== 0 ? [{ pnl: p.pnl, timestamp: Date.now() }] : [])
+          ])}
+          title="📊 交易绩效指标"
+        />
+        <DailyPnLSummary />
+      </div>
+
+      {/* Bottom row: Strategies + Quick Trade + Market Clock */}
+      <div className="grid grid-cols-3 gap-4">
         {/* Active Strategies */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
           <h2 className="text-white font-semibold text-sm mb-4">🧠 运行中的策略</h2>
@@ -259,14 +280,24 @@ export default function DashboardPage() {
           )}
         </div>
 
+        {/* Quick Trade */}
+        <QuickTrade />
+
         {/* Market Clock */}
         <MarketClock />
       </div>
 
-      {/* Signal Timeline + Notifications */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Signal Timeline + Notifications + Price Alerts */}
+      <div className="grid grid-cols-3 gap-4">
         <SignalTimeline maxItems={20} autoRefresh />
         <NotificationCenter />
+        <PriceAlertPanel />
+      </div>
+
+      {/* Economic Calendar + Market Movers */}
+      <div className="grid grid-cols-2 gap-4">
+        <EconomicCalendar />
+        <MarketMovers />
       </div>
     </div>
   );
