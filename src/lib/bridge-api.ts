@@ -336,6 +336,91 @@ export async function stopLive(strategyId: string): Promise<any> {
   return window.api.strategy.stopLive(strategyId);
 }
 
+// ── Q14: Live Executor ──────────────────────────────────────────────
+
+export interface LiveStrategyConfig {
+  strategyId: string;
+  symbol: string;
+  signalType?: 'BUY' | 'SELL' | 'CLOSE';
+  price?: number;
+  quantity?: number;
+  stopLoss?: number;
+  takeProfit?: number;
+}
+
+export interface LiveOrder {
+  id: string;
+  strategyId: string;
+  symbol: string;
+  side: 'BUY' | 'SELL';
+  type: 'MARKET' | 'LIMIT';
+  quantity: number;
+  price?: number;
+  status: 'pending' | 'submitted' | 'filled' | 'partial' | 'cancelled' | 'rejected';
+  filledQty: number;
+  avgFillPrice?: number;
+  createdAt: number;
+  updatedAt: number;
+  signalReason: string;
+}
+
+export interface LivePosition {
+  strategyId: string;
+  symbol: string;
+  side: 'LONG' | 'SHORT';
+  quantity: number;
+  avgCost: number;
+  unrealizedPnL: number;
+  unrealizedPnLPct: number;
+  entryTime: number;
+  stopLoss?: number;
+  takeProfit?: number;
+}
+
+export interface ExecutorStatus {
+  isRunning: boolean;
+  strategiesCount: number;
+  positionsCount: number;
+  ordersCount: number;
+  totalPnL: number;
+  lastUpdate: number;
+}
+
+export async function liveStart(symbols?: string[]): Promise<{ success: boolean; status?: ExecutorStatus; error?: string }> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.strategy.liveStart(symbols);
+}
+
+export async function liveStop(): Promise<{ success: boolean }> {
+  if (!hasIPC()) return { success: false };
+  return window.api.strategy.liveStop();
+}
+
+export async function liveAddStrategy(config: LiveStrategyConfig): Promise<{ success: boolean; error?: string }> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.strategy.liveAddStrategy(config);
+}
+
+export async function liveRemoveStrategy(strategyId: string): Promise<{ success: boolean }> {
+  if (!hasIPC()) return { success: false };
+  return window.api.strategy.liveRemoveStrategy(strategyId);
+}
+
+export async function liveGetStatus(): Promise<{ success: boolean; status: ExecutorStatus | null }> {
+  if (!hasIPC()) return { success: true, status: null };
+  return window.api.strategy.liveGetStatus();
+}
+
+export async function liveGetPositions(): Promise<{ success: boolean; positions: LivePosition[] }> {
+  if (!hasIPC()) return { success: true, positions: [] };
+  return window.api.strategy.liveGetPositions();
+}
+
+export async function liveGetOrders(): Promise<{ success: boolean; orders: LiveOrder[] }> {
+  if (!hasIPC()) return { success: true, orders: [] };
+  return window.api.strategy.liveGetOrders();
+}
+
 // ── NL Parser ──────────────────────────────────────────────────────────────
 
 export async function parseNL(text: string): Promise<any> {
