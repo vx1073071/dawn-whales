@@ -8,6 +8,7 @@ import PerformanceMetricsPanel from './PerformanceMetricsPanel';
 import TradingJournal from './TradingJournal';
 import DailyPnLSummary from './DailyPnLSummary';
 import RiskConfigEditor from './RiskConfigEditor';
+import SystemLog from './SystemLog';
 
 interface KellyStats {
   winRate: number;
