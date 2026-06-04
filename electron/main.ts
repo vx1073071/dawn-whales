@@ -21,6 +21,7 @@ import { EMDataProvider } from './data/em-data-provider';
 import { MacroDataProvider } from './data/macro-provider';
 import { SentimentIndexEngine } from './engine/sentiment-index';
 import { StockScreenerService } from './engine/stock-screener';
+import { NewsAggregatorService } from './engine/news-aggregator';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -114,6 +115,7 @@ let dataProvider: DataProviderService | null = null;
 let emDataProvider: EMDataProvider | null = null;
 let macroDataProvider: MacroDataProvider | null = null;
 let stockScreener: StockScreenerService | null = null;
+let newsAggregator: NewsAggregatorService | null = null;
 
 // ── Shared quote push handler (prevents duplicate listener registration) ─────
 const quotePushHandler = (quotes: any[]) => {
@@ -1437,6 +1439,29 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── News Aggregator (JVS-5) ────────────────────────────────────────────
+  ipcMain.handle('em:get-news-aggregate', async (_e, request: any) => {
+    if (!newsAggregator) return { success: false, error: 'NewsAggregator not initialized' };
+    try {
+      const result = await newsAggregator.search(request || { query: '' });
+      return { success: true, ...result };
+    } catch (err: any) {
+      log.error('[NewsAggregator] Search failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-market-mood', async (_e, symbols?: string[]) => {
+    if (!newsAggregator) return { success: false, error: 'NewsAggregator not initialized' };
+    try {
+      const report = await newsAggregator.getMarketMood(symbols);
+      return { success: true, report };
+    } catch (err: any) {
+      log.error('[NewsAggregator] Market mood failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
   ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
@@ -1574,6 +1599,10 @@ app.whenReady().then(async () => {
 
       stockScreener = new StockScreenerService();
       log.info('[App] StockScreenerService initialized (JVS-4)');
+
+      newsAggregator = new NewsAggregatorService();
+      newsAggregator.initialize(db);
+      log.info('[App] NewsAggregatorService initialized (JVS-5)');
     }
   } catch (err: any) {
     log.error('[App] MarketplaceService init failed:', err.message);

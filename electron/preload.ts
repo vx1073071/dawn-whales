@@ -162,6 +162,12 @@ contextBridge.exposeInMainWorld('api', {
     search: (request: any) => ipcRenderer.invoke('screener:search', request),
   },
 
+  // ── News Aggregator (JVS-5) ────────────────────────────────────
+  newsAggregator: {
+    search: (request: any) => ipcRenderer.invoke('em:get-news-aggregate', request),
+    getMarketMood: (symbols?: string[]) => ipcRenderer.invoke('em:get-market-mood', symbols),
+  },
+
   // ── Backtest Enhancement (Sprint 2) ──────────────────────────────
   backtest: {
     multiPeriod: (config: any) => ipcRenderer.invoke('backtest:multiPeriod', config),

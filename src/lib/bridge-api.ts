@@ -67,6 +67,10 @@ declare global {
       stockScreener: {
         search: (request: any) => Promise<any>;
       };
+      newsAggregator: {
+        search: (request: any) => Promise<any>;
+        getMarketMood: (symbols?: string[]) => Promise<any>;
+      };
       backtestEnhanced: {
         walkForward: (config: any) => Promise<any>;
         paramScan: (config: any) => Promise<any>;
@@ -554,6 +558,25 @@ export async function searchStocks(request: {
 }): Promise<any> {
   if (!hasIPC()) return { success: false, records: [] };
   return window.api.stockScreener.search(request);
+}
+
+// ── News Aggregator (JVS-5) ───────────────────────────────────────────────
+
+export async function searchNews(request: {
+  query: string;
+  symbols?: string[];
+  categories?: string[];
+  sentimentFilter?: string;
+  hoursBack?: number;
+  limit?: number;
+}): Promise<any> {
+  if (!hasIPC()) return { success: false, articles: [] };
+  return window.api.newsAggregator.search(request);
+}
+
+export async function getMarketMood(symbols?: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false, report: null };
+  return window.api.newsAggregator.getMarketMood(symbols);
 }
 
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
