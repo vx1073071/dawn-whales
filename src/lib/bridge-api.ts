@@ -774,6 +774,26 @@ export async function getFundDecreaseRank(limit?: number, reportDate?: string): 
   return window.api.fundHoldings.getDecreaseRank(limit, reportDate);
 }
 
+// ── Stock Diagnosis — 个股诊断聚合器 (JVS-14) ─────────────────────────────
+
+export async function diagnoseStock(request: {
+  code: string;
+  name?: string;
+  includeCapitalFlow?: boolean;
+  includeFundHoldings?: boolean;
+  includeDragonTiger?: boolean;
+  includeNews?: boolean;
+  includeAnomalies?: boolean;
+}): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.stockDiagnosis.diagnose(request);
+}
+
+export async function batchDiagnoseStocks(codes: string[], options?: any): Promise<any> {
+  if (!hasIPC()) return { success: false, reports: [] };
+  return window.api.stockDiagnosis.batchDiagnose(codes, options);
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {

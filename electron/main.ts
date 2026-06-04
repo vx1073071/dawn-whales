@@ -31,6 +31,7 @@ import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from
 import { getStockCapitalFlowRank, getSectorCapitalFlowRank, getConceptCapitalFlowRank } from './engine/capital-flow-rank';
 import { getCapitalFlowMonitor } from './engine/capital-flow-monitor';
 import { getFundHoldings, getStockFundOwnership, getFundIncreaseRank, getFundDecreaseRank } from './engine/fund-holdings';
+import { diagnoseStock, batchDiagnose } from './engine/stock-diagnosis';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1793,6 +1794,25 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return result;
     } catch (err: any) {
       return { success: false, items: [], total: 0, error: err.message };
+    }
+  });
+
+  // ── Stock Diagnosis — 个股诊断聚合器 (JVS-14) ──────────────────────
+  ipcMain.handle('em:diagnose-stock', async (_e, request: any) => {
+    try {
+      const result = await diagnoseStock(request || { code: '' });
+      return result;
+    } catch (err: any) {
+      return { success: false, code: '', name: '', timestamp: Date.now(), error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:batch-diagnose', async (_e, codes: string[], options?: any) => {
+    try {
+      const results = await batchDiagnose(codes || [], options);
+      return { success: true, reports: results };
+    } catch (err: any) {
+      return { success: false, reports: [], error: err.message };
     }
   });
 

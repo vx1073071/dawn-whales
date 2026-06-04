@@ -228,6 +228,12 @@ contextBridge.exposeInMainWorld('api', {
     getDecreaseRank: (limit?: number, reportDate?: string) => ipcRenderer.invoke('em:get-fund-decrease-rank', limit, reportDate),
   },
 
+  // ── Stock Diagnosis — 个股诊断聚合器 (JVS-14) ─────────────────
+  stockDiagnosis: {
+    diagnose: (request: any) => ipcRenderer.invoke('em:diagnose-stock', request),
+    batchDiagnose: (codes: string[], options?: any) => ipcRenderer.invoke('em:batch-diagnose', codes, options),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),
