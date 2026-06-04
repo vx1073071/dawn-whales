@@ -1,30 +1,46 @@
-// ── DAWN WHALES IPC: portfolio ────────────────────────────────────────────
-// Auto-split from main.ts — 8 handlers
-//
-// Registered channels:
-//   portfolio:optimize
-//   portfolio:efficient-frontier
-//   portfolio:risk-parity
-//   portfolio:optimize-batch
-//   portfolio:cost-analyze
-//   portfolio:rar-optimize
-//   portfolio:rebalance
-//   portfolio:rebalance-kelly
+// ?? DAWN WHALES IPC: portfolio ????????????????????????????????????????????
+// Auto-split from main.ts ? 8 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { batchOptimizePortfolios, generateEfficientFrontier, optimizePortfolio, riskParityPortfolio } from './engine/portfolio-optimizer';
+import { batchOptimizePortfolios, generateEfficientFrontier, optimizePortfolio, riskParityPortfolio } from '../engine/portfolio-optimizer';
 
-/**
- * Register all portfolio IPC handlers
- *
- */
 export function registerPortfolioIPC(
-  
+  _services: any
 ) {
 
-  // ── portfolio:optimize ───────────────────────────────────────────────
   // ── Portfolio Optimizer (JVS-57) ────────────────────────────────────────
   ipcMain.handle('portfolio:optimize', async (_e, assets: any[], constraints?: any) => {
     try {
@@ -36,7 +52,6 @@ export function registerPortfolioIPC(
     }
   });
 
-  // ── portfolio:efficient-frontier ───────────────────────────────────────────────
   ipcMain.handle('portfolio:efficient-frontier', async (_e, assets: any[], points?: number, constraints?: any) => {
     try {
       const result = generateEfficientFrontier(assets, points, constraints);
@@ -47,7 +62,6 @@ export function registerPortfolioIPC(
     }
   });
 
-  // ── portfolio:risk-parity ───────────────────────────────────────────────
   ipcMain.handle('portfolio:risk-parity', async (_e, assets: any[], constraints?: any) => {
     try {
       const result = riskParityPortfolio(assets, constraints);
@@ -58,7 +72,6 @@ export function registerPortfolioIPC(
     }
   });
 
-  // ── portfolio:optimize-batch ───────────────────────────────────────────────
   ipcMain.handle('portfolio:optimize-batch', async (_e, scenarios: any[]) => {
     try {
       const result = await batchOptimizePortfolios(scenarios);
@@ -69,7 +82,6 @@ export function registerPortfolioIPC(
     }
   });
 
-  // ── portfolio:cost-analyze ───────────────────────────────────────────────
   // ── Q56: Portfolio Cost Analytics ───────────────────────────────────────
   ipcMain.handle('portfolio:cost-analyze', async (_e, raw: unknown) => {
     try {
@@ -84,7 +96,6 @@ export function registerPortfolioIPC(
     }
   });
 
-  // ── portfolio:rar-optimize ───────────────────────────────────────────────
   // ── Q54: RAR Optimizer ──────────────────────────────────────────────────
   ipcMain.handle('portfolio:rar-optimize', async (_e, raw: unknown) => {
     try {
@@ -100,7 +111,6 @@ export function registerPortfolioIPC(
     }
   });
 
-  // ── portfolio:rebalance ───────────────────────────────────────────────
   // ── Q22: Portfolio Rebalancer ────────────────────────────────────────────
   ipcMain.handle('portfolio:rebalance', async (_e, raw: unknown) => {
     try {
@@ -117,7 +127,6 @@ export function registerPortfolioIPC(
     }
   });
 
-  // ── portfolio:rebalance-kelly ───────────────────────────────────────────────
   ipcMain.handle('portfolio:rebalance-kelly', async (_e, raw: unknown) => {
     try {
       const { positions, kellyFraction, maxTurnover } = raw as {

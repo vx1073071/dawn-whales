@@ -1,130 +1,72 @@
-// ── DAWN WHALES IPC: em ────────────────────────────────────────────
-// Auto-split from main.ts — 67 handlers
-//
-// Registered channels:
-//   em:get-financials
-//   em:get-valuation
-//   em:price-option
-//   em:calc-greeks
-//   em:implied-vol
-//   em:vol-surface
-//   em:price-and-greeks
-//   em:calc-risk-metrics
-//   em:calc-sharpe
-//   em:calc-max-drawdown
-//   em:calc-var
-//   em:portfolio-attribution
-//   em:time-series-attribution
-//   em:correlation-matrix
-//   em:sector-rotation
-//   em:get-heatmap
-//   em:get-all-heatmaps
-//   em:get-macro
-//   em:get-macro-dashboard
-//   em:get-sentiment
-//   em:get-news-aggregate
-//   em:get-market-mood
-//   em:get-sector-rotation
-//   em:record-sector-snapshot
-//   em:get-anomaly-summary
-//   em:get-anomaly-alerts
-//   em:process-anomaly-quotes
-//   em:acknowledge-anomaly
-//   em:get-hotspot
-//   em:get-dragon-tiger
-//   em:get-dragon-tiger-detail
-//   em:get-institutional-trades
-//   em:get-capital-flow-stock
-//   em:get-capital-flow-sector
-//   em:get-capital-flow-concept
-//   em:get-capital-flow-alerts
-//   em:set-capital-flow-config
-//   em:clear-capital-flow-history
-//   em:get-fund-holdings
-//   em:get-stock-fund-ownership
-//   em:get-fund-increase-rank
-//   em:get-fund-decrease-rank
-//   em:diagnose-stock
-//   em:batch-diagnose
-//   em:portfolio-risk
-//   em:get-market-breadth
-//   em:get-consumer-data
-//   em:get-margin-data
-//   em:get-stock-margin
-//   em:get-margin-balance-rank
-//   em:get-short-interest-rank
-//   em:get-stock-overview
-//   em:get-market-overview
-//   em:get-daily-report
-//   em:dragon-tiger-stream-start
-//   em:dragon-tiger-stream-stop
-//   em:dragon-tiger-stream-fetch
-//   em:dragon-tiger-stream-status
-//   em:get-unlock-calendar
-//   em:get-dividend-calendar
-//   em:get-earnings-calendar
-//   em:export-data
-//   em:smart-pick
-//   em:backfill-start
-//   em:backfill-status
-//   em:backfill-data
-//   em:backfill-list
+// ?? DAWN WHALES IPC: em ????????????????????????????????????????????
+// Auto-split from main.ts ? 67 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { EMDataProvider } from './data/em-data-provider';
-import { MacroDataProvider } from './data/macro-provider';
-import { SentimentIndexEngine } from './engine/sentiment-index';
-import { exportData } from './engine/data-export-service';
-import { getDragonTigerDetail, getDragonTigerList, getInstitutionalTrades } from './engine/dragon-tiger-list';
-import { getConceptCapitalFlowRank, getSectorCapitalFlowRank, getStockCapitalFlowRank } from './engine/capital-flow-rank';
-import { getCapitalFlowMonitor } from './engine/capital-flow-monitor';
-import { getFundDecreaseRank, getFundHoldings, getFundIncreaseRank, getStockFundOwnership } from './engine/fund-holdings';
-import { batchDiagnose, diagnoseStock } from './engine/stock-diagnosis';
-import { calculatePortfolioRisk } from './engine/portfolio-risk';
-import { getMarketBreadth } from './engine/market-breadth';
-import { getConsumerDataReport } from './engine/consumer-data';
-import { getMarginBalanceRanking, getMarginDataReport, getShortInterestRanking, getStockMargin } from './engine/margin-data';
-import { getDailyReport, getMarketOverview, getStockOverview } from './engine/emi-unified';
-import { getFinancialReports } from './engine/financial-reports';
-import { getValuationData } from './engine/valuation-data';
-import { blackScholesPrice, buildVolSurface, calculateGreeks, impliedVolatility, priceAndGreeks } from './engine/options-pricing';
-import { calcMaxDrawdown, calcSharpeRatio, calcVaR, calculateRiskMetrics } from './engine/risk-metrics';
-import { brinsonAttribution, timeSeriesAttribution } from './engine/performance-attribution';
-import { correlationMatrix } from './engine/correlation-matrix-v2';
-import { detectSectorRotation } from './engine/sector-rotation-v2';
-import { getDragonTigerStream } from './engine/dragon-tiger-stream';
-import { getUnlockCalendar } from './engine/unlock-calendar';
-import { getDividendCalendar } from './engine/dividend-calendar';
-import { getEarningsCalendar } from './engine/earnings-calendar';
-import { getSmartPicker } from './engine/smart-picker';
-import { getHistoryBackfill } from './data/history-backfill';
+import { EMDataProvider } from '../data/em-data-provider';
+import { MacroDataProvider } from '../data/macro-provider';
+import { SentimentIndexEngine } from '../engine/sentiment-index';
+import { exportData } from '../engine/data-export-service';
+import { getDragonTigerDetail, getDragonTigerList, getInstitutionalTrades } from '../engine/dragon-tiger-list';
+import { getConceptCapitalFlowRank, getSectorCapitalFlowRank, getStockCapitalFlowRank } from '../engine/capital-flow-rank';
+import { getCapitalFlowMonitor } from '../engine/capital-flow-monitor';
+import { getFundDecreaseRank, getFundHoldings, getFundIncreaseRank, getStockFundOwnership } from '../engine/fund-holdings';
+import { batchDiagnose, diagnoseStock } from '../engine/stock-diagnosis';
+import { calculatePortfolioRisk } from '../engine/portfolio-risk';
+import { getMarketBreadth } from '../engine/market-breadth';
+import { getConsumerDataReport } from '../engine/consumer-data';
+import { getMarginBalanceRanking, getMarginDataReport, getShortInterestRanking, getStockMargin } from '../engine/margin-data';
+import { getDailyReport, getMarketOverview, getStockOverview } from '../engine/emi-unified';
+import { getFinancialReports } from '../engine/financial-reports';
+import { getValuationData } from '../engine/valuation-data';
+import { blackScholesPrice, buildVolSurface, calculateGreeks, impliedVolatility, priceAndGreeks } from '../engine/options-pricing';
+import { calcMaxDrawdown, calcSharpeRatio, calcVaR, calculateRiskMetrics } from '../engine/risk-metrics';
+import { brinsonAttribution, timeSeriesAttribution } from '../engine/performance-attribution';
+import { correlationMatrix } from '../engine/correlation-matrix-v2';
+import { detectSectorRotation } from '../engine/sector-rotation-v2';
+import { getDragonTigerStream } from '../engine/dragon-tiger-stream';
+import { getUnlockCalendar } from '../engine/unlock-calendar';
+import { getDividendCalendar } from '../engine/dividend-calendar';
+import { getEarningsCalendar } from '../engine/earnings-calendar';
+import { getSmartPicker } from '../engine/smart-picker';
+import { getHistoryBackfill } from '../data/history-backfill';
 
-/**
- * Register all em IPC handlers
- *
- * @param emDataProvider - service reference
- * @param macroDataProvider - service reference
- * @param newsAggregator - service reference
- * @param sectorRotation - service reference
- * @param snapshot - service reference
- * @param stockAnomalyDetector - service reference
- * @param marketHotspot - service reference
- * @param mainWindow - service reference
- */
 export function registerEmIPC(
-  emDataProvider: any,
-  macroDataProvider: any,
-  newsAggregator: any,
-  sectorRotation: any,
-  snapshot: any,
-  stockAnomalyDetector: any,
-  marketHotspot: any,
-  mainWindow: any
+  _services: any
 ) {
 
-  // ── em:get-financials ───────────────────────────────────────────────
   // ── Financial Reports (JVS-41) ─────────────────────────────────────────
   ipcMain.handle('em:get-financials', async (_e, code: string, quarters?: number) => {
     try {
@@ -135,7 +77,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-valuation ───────────────────────────────────────────────
   // ── Valuation Data (JVS-42) ────────────────────────────────────────────
   ipcMain.handle('em:get-valuation', async (_e, code: string, historyDays?: number) => {
     try {
@@ -146,7 +87,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:price-option ───────────────────────────────────────────────
   // ── Options Pricing Engine (JVS-44) ────────────────────────────────────
   ipcMain.handle('em:price-option', async (_e, params: any) => {
     try {
@@ -157,7 +97,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:calc-greeks ───────────────────────────────────────────────
   ipcMain.handle('em:calc-greeks', async (_e, params: any) => {
     try {
       return { success: true, ...calculateGreeks(params) };
@@ -167,7 +106,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:implied-vol ───────────────────────────────────────────────
   ipcMain.handle('em:implied-vol', async (_e, marketPrice: number, S: number, K: number, T: number, r: number, optionType: string, q?: number) => {
     try {
       return { success: true, ...impliedVolatility(marketPrice, S, K, T, r, optionType as any, q) };
@@ -177,7 +115,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:vol-surface ───────────────────────────────────────────────
   ipcMain.handle('em:vol-surface', async (_e, S: number, r: number, strikes: number[], expiries: number[], callPrices: number[][], putPrices?: number[][]) => {
     try {
       const surface = buildVolSurface(S, r, strikes, expiries, callPrices, putPrices);
@@ -188,7 +125,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:price-and-greeks ───────────────────────────────────────────────
   ipcMain.handle('em:price-and-greeks', async (_e, params: any) => {
     try {
       return { success: true, ...priceAndGreeks(params) };
@@ -198,7 +134,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:calc-risk-metrics ───────────────────────────────────────────────
   // ── Risk Metrics Calculator (JVS-46) ───────────────────────────────────
   ipcMain.handle('em:calc-risk-metrics', async (_e, params: any) => {
     try {
@@ -210,7 +145,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:calc-sharpe ───────────────────────────────────────────────
   ipcMain.handle('em:calc-sharpe', async (_e, returns: number[], riskFreeRate?: number, tradingDays?: number) => {
     try {
       return { success: true, sharpe: calcSharpeRatio(returns, riskFreeRate, tradingDays) };
@@ -219,7 +153,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:calc-max-drawdown ───────────────────────────────────────────────
   ipcMain.handle('em:calc-max-drawdown', async (_e, returns: number[]) => {
     try {
       return { success: true, maxDrawdown: calcMaxDrawdown(returns) };
@@ -228,7 +161,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:calc-var ───────────────────────────────────────────────
   ipcMain.handle('em:calc-var', async (_e, returns: number[], confidence?: number) => {
     try {
       return { success: true, var: calcVaR(returns, confidence) };
@@ -237,7 +169,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:portfolio-attribution ───────────────────────────────────────────────
   // ── Performance Attribution (JVS-45) ─────────────────────────────────
   ipcMain.handle('em:portfolio-attribution', async (_e, params: any) => {
     try {
@@ -249,7 +180,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:time-series-attribution ───────────────────────────────────────────────
   ipcMain.handle('em:time-series-attribution', async (_e, params: any) => {
     try {
       const result = timeSeriesAttribution(params);
@@ -260,7 +190,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:correlation-matrix ───────────────────────────────────────────────
   // ── Correlation Matrix v2 (JVS-47) ──────────────────────────────────────
   ipcMain.handle('em:correlation-matrix', async (_e, params: any) => {
     try {
@@ -272,7 +201,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:sector-rotation ───────────────────────────────────────────────
   // ── Sector Rotation v2 (JVS-48) ─────────────────────────────────────────
   ipcMain.handle('em:sector-rotation', async (_e, params: any) => {
     try {
@@ -284,7 +212,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-heatmap ───────────────────────────────────────────────
   // ── EM Data Provider — Sector Heatmap (JVS-1) ─────────────────────────
   ipcMain.handle('em:get-heatmap', async (_e, boardType?: string, limit?: number) => {
     if (!emDataProvider) return { success: false, error: 'EMDataProvider not initialized' };
@@ -298,7 +225,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-all-heatmaps ───────────────────────────────────────────────
   ipcMain.handle('em:get-all-heatmaps', async () => {
     if (!emDataProvider) return { success: false, error: 'EMDataProvider not initialized' };
     try {
@@ -310,7 +236,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-macro ───────────────────────────────────────────────
   // ── Macro Data Provider — Dashboard (JVS-2) ───────────────────────────
   ipcMain.handle('em:get-macro', async (_e, indicator?: string, limit?: number) => {
     if (!macroDataProvider) return { success: false, error: 'MacroDataProvider not initialized' };
@@ -324,7 +249,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-macro-dashboard ───────────────────────────────────────────────
   ipcMain.handle('em:get-macro-dashboard', async (_e, indicators?: string[]) => {
     if (!macroDataProvider) return { success: false, error: 'MacroDataProvider not initialized' };
     try {
@@ -336,7 +260,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-sentiment ───────────────────────────────────────────────
   // ── Sentiment Index Engine (JVS-3) ──────────────────────────────────────
   ipcMain.handle('em:get-sentiment', async (_e, input?: any) => {
     try {
@@ -350,7 +273,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-news-aggregate ───────────────────────────────────────────────
   // ── News Aggregator (JVS-5) ────────────────────────────────────────────
   ipcMain.handle('em:get-news-aggregate', async (_e, request: any) => {
     if (!newsAggregator) return { success: false, error: 'NewsAggregator not initialized' };
@@ -363,7 +285,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-market-mood ───────────────────────────────────────────────
   ipcMain.handle('em:get-market-mood', async (_e, symbols?: string[]) => {
     if (!newsAggregator) return { success: false, error: 'NewsAggregator not initialized' };
     try {
@@ -375,7 +296,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-sector-rotation ───────────────────────────────────────────────
   // ── Sector Rotation Monitor (JVS-6) ──────────────────────────────────
   ipcMain.handle('em:get-sector-rotation', async () => {
     if (!sectorRotation) return { success: false, error: 'SectorRotation not initialized' };
@@ -388,7 +308,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:record-sector-snapshot ───────────────────────────────────────────────
   ipcMain.handle('em:record-sector-snapshot', async (_e, sectors: any[]) => {
     if (!sectorRotation) return { success: false, error: 'SectorRotation not initialized' };
     try {
@@ -399,7 +318,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-anomaly-summary ───────────────────────────────────────────────
   // ── Stock Anomaly Detector (JVS-7) ────────────────────────────────────
   ipcMain.handle('em:get-anomaly-summary', async () => {
     if (!stockAnomalyDetector) return { success: false, error: 'AnomalyDetector not initialized' };
@@ -411,7 +329,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-anomaly-alerts ───────────────────────────────────────────────
   ipcMain.handle('em:get-anomaly-alerts', async (_e, options?: any) => {
     if (!stockAnomalyDetector) return { success: false, error: 'AnomalyDetector not initialized' };
     try {
@@ -422,7 +339,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:process-anomaly-quotes ───────────────────────────────────────────────
   ipcMain.handle('em:process-anomaly-quotes', async (_e, quotes: any[]) => {
     if (!stockAnomalyDetector) return { success: false, error: 'AnomalyDetector not initialized' };
     try {
@@ -433,7 +349,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:acknowledge-anomaly ───────────────────────────────────────────────
   ipcMain.handle('em:acknowledge-anomaly', async (_e, id: string) => {
     if (!stockAnomalyDetector) return { success: false, error: 'AnomalyDetector not initialized' };
     try {
@@ -444,7 +359,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-hotspot ───────────────────────────────────────────────
   // ── Market Hotspot (JVS-8) ─────────────────────────────────────────────
   ipcMain.handle('em:get-hotspot', async (_e, query?: any) => {
     if (!marketHotspot) return { success: false, error: 'MarketHotspot not initialized' };
@@ -457,7 +371,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-dragon-tiger ───────────────────────────────────────────────
   // ── Dragon Tiger List — 龙虎榜 (JVS-10) ─────────────────────────────
   ipcMain.handle('em:get-dragon-tiger', async (_e, date?: string) => {
     try {
@@ -468,7 +381,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-dragon-tiger-detail ───────────────────────────────────────────────
   ipcMain.handle('em:get-dragon-tiger-detail', async (_e, code: string, date: string) => {
     try {
       const detail = await getDragonTigerDetail(code, date);
@@ -478,7 +390,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-institutional-trades ───────────────────────────────────────────────
   ipcMain.handle('em:get-institutional-trades', async (_e, date?: string) => {
     try {
       const entries = await getInstitutionalTrades(date);
@@ -488,7 +399,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-capital-flow-stock ───────────────────────────────────────────────
   // ── Capital Flow Ranking — 资金流排行 (JVS-11) ──────────────────────
   ipcMain.handle('em:get-capital-flow-stock', async (_e, sortBy?: string, order?: string, limit?: number) => {
     try {
@@ -499,7 +409,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-capital-flow-sector ───────────────────────────────────────────────
   ipcMain.handle('em:get-capital-flow-sector', async (_e, sortBy?: string, order?: string, limit?: number) => {
     try {
       const result = await getSectorCapitalFlowRank(sortBy as any, order as any, limit);
@@ -509,7 +418,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-capital-flow-concept ───────────────────────────────────────────────
   ipcMain.handle('em:get-capital-flow-concept', async (_e, sortBy?: string, order?: string, limit?: number) => {
     try {
       const result = await getConceptCapitalFlowRank(sortBy as any, order as any, limit);
@@ -519,7 +427,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-capital-flow-alerts ───────────────────────────────────────────────
   // ── Capital Flow Monitor — Real-time alerts (JVS-12) ─────────────────
   ipcMain.handle('em:get-capital-flow-alerts', async (_e, items?: any[]) => {
     try {
@@ -531,7 +438,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:set-capital-flow-config ───────────────────────────────────────────────
   ipcMain.handle('em:set-capital-flow-config', async (_e, config: any) => {
     try {
       const monitor = getCapitalFlowMonitor();
@@ -542,7 +448,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:clear-capital-flow-history ───────────────────────────────────────────────
   ipcMain.handle('em:clear-capital-flow-history', async () => {
     try {
       getCapitalFlowMonitor().clearHistory();
@@ -552,7 +457,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-fund-holdings ───────────────────────────────────────────────
   // ── Fund Holdings — 基金持仓数据 (JVS-13) ────────────────────────
   ipcMain.handle('em:get-fund-holdings', async (_e, fundCode: string, reportDate?: string) => {
     try {
@@ -563,7 +467,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-stock-fund-ownership ───────────────────────────────────────────────
   ipcMain.handle('em:get-stock-fund-ownership', async (_e, stockCode: string, reportDate?: string) => {
     try {
       const result = await getStockFundOwnership(stockCode, reportDate);
@@ -573,7 +476,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-fund-increase-rank ───────────────────────────────────────────────
   ipcMain.handle('em:get-fund-increase-rank', async (_e, limit?: number, reportDate?: string) => {
     try {
       const result = await getFundIncreaseRank(limit, reportDate);
@@ -583,7 +485,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-fund-decrease-rank ───────────────────────────────────────────────
   ipcMain.handle('em:get-fund-decrease-rank', async (_e, limit?: number, reportDate?: string) => {
     try {
       const result = await getFundDecreaseRank(limit, reportDate);
@@ -593,7 +494,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:diagnose-stock ───────────────────────────────────────────────
   // ── Stock Diagnosis — 个股诊断聚合器 (JVS-14) ──────────────────────
   ipcMain.handle('em:diagnose-stock', async (_e, request: any) => {
     try {
@@ -604,7 +504,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:batch-diagnose ───────────────────────────────────────────────
   ipcMain.handle('em:batch-diagnose', async (_e, codes: string[], options?: any) => {
     try {
       const results = await batchDiagnose(codes || [], options);
@@ -614,7 +513,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:portfolio-risk ───────────────────────────────────────────────
   // ── Portfolio Risk — 组合风险计算器 (JVS-15) ─────────────────────
   ipcMain.handle('em:portfolio-risk', async (_e, request: any) => {
     try {
@@ -625,7 +523,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-market-breadth ───────────────────────────────────────────────
   // ── Market Breadth — 市场广度分析器 (JVS-16) ────────────────────
   ipcMain.handle('em:get-market-breadth', async () => {
     try {
@@ -636,7 +533,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-consumer-data ───────────────────────────────────────────────
   // ── Consumer Data — 消费者数据服务 (JVS-17) ────────────────────
   ipcMain.handle('em:get-consumer-data', async (_e, months?: number) => {
     try {
@@ -647,7 +543,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-margin-data ───────────────────────────────────────────────
   // ── Margin Data — 融资融券数据服务 (JVS-18) ────────────────────
   ipcMain.handle('em:get-margin-data', async () => {
     try {
@@ -658,7 +553,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-stock-margin ───────────────────────────────────────────────
   ipcMain.handle('em:get-stock-margin', async (_e, code: string, days?: number) => {
     try {
       const result = await getStockMargin(code, days || 30);
@@ -668,7 +562,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-margin-balance-rank ───────────────────────────────────────────────
   ipcMain.handle('em:get-margin-balance-rank', async (_e, limit?: number) => {
     try {
       const result = await getMarginBalanceRanking(limit || 30);
@@ -678,7 +571,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-short-interest-rank ───────────────────────────────────────────────
   ipcMain.handle('em:get-short-interest-rank', async (_e, limit?: number) => {
     try {
       const result = await getShortInterestRanking(limit || 30);
@@ -688,7 +580,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-stock-overview ───────────────────────────────────────────────
   // ── EMI Unified Service Layer (JVS-19) ──────────────────────────────────
   ipcMain.handle('em:get-stock-overview', async (_e, code: string) => {
     if (!code) return { success: false, error: 'Stock code required' };
@@ -700,7 +591,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-market-overview ───────────────────────────────────────────────
   ipcMain.handle('em:get-market-overview', async () => {
     try {
       const result = await getMarketOverview();
@@ -710,7 +600,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-daily-report ───────────────────────────────────────────────
   ipcMain.handle('em:get-daily-report', async () => {
     try {
       const result = await getDailyReport();
@@ -720,7 +609,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:dragon-tiger-stream-start ───────────────────────────────────────────────
   // ── Dragon Tiger Stream (JVS-22 PM) ─────────────────────────────────────
   ipcMain.handle('em:dragon-tiger-stream-start', async () => {
     try {
@@ -737,7 +625,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:dragon-tiger-stream-stop ───────────────────────────────────────────────
   ipcMain.handle('em:dragon-tiger-stream-stop', async () => {
     try {
       getDragonTigerStream().stop();
@@ -747,7 +634,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:dragon-tiger-stream-fetch ───────────────────────────────────────────────
   ipcMain.handle('em:dragon-tiger-stream-fetch', async () => {
     try {
       const result = await getDragonTigerStream().fetchNow();
@@ -757,7 +643,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:dragon-tiger-stream-status ───────────────────────────────────────────────
   ipcMain.handle('em:dragon-tiger-stream-status', async () => {
     try {
       return { success: true, status: getDragonTigerStream().getStatus() };
@@ -766,7 +651,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-unlock-calendar ───────────────────────────────────────────────
   // ── Unlock Calendar (JVS-23 PM) ────────────────────────────────────────
   ipcMain.handle('em:get-unlock-calendar', async (_e, days?: number) => {
     try {
@@ -777,7 +661,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-dividend-calendar ───────────────────────────────────────────────
   // ── Dividend Calendar (JVS-24 PM) ──────────────────────────────────────
   ipcMain.handle('em:get-dividend-calendar', async (_e, days?: number) => {
     try {
@@ -788,7 +671,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:get-earnings-calendar ───────────────────────────────────────────────
   // ── Earnings Calendar (JVS-25 PM) ──────────────────────────────────────
   ipcMain.handle('em:get-earnings-calendar', async (_e, days?: number) => {
     try {
@@ -799,7 +681,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:export-data ───────────────────────────────────────────────
   // ── Data Exporter (JVS-26 PM) ──────────────────────────────────────────
   ipcMain.handle('em:export-data', async (_e, type: string, format?: string) => {
     try {
@@ -810,7 +691,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:smart-pick ───────────────────────────────────────────────
   // ── Smart Picker (JVS-25 PM Round 2) ───────────────────────────────────
   ipcMain.handle('em:smart-pick', async (_e, request?: any) => {
     try {
@@ -822,7 +702,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:backfill-start ───────────────────────────────────────────────
   // ── History Backfill (JVS-30) ──────────────────────────────────────────
   ipcMain.handle('em:backfill-start', async (_e, config?: any) => {
     try {
@@ -834,7 +713,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:backfill-status ───────────────────────────────────────────────
   ipcMain.handle('em:backfill-status', async () => {
     try {
       return { success: true, status: getHistoryBackfill().getStatus() };
@@ -843,7 +721,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:backfill-data ───────────────────────────────────────────────
   ipcMain.handle('em:backfill-data', async (_e, module: string) => {
     try {
       const data = getHistoryBackfill().getBackfillData(module);
@@ -853,7 +730,6 @@ export function registerEmIPC(
     }
   });
 
-  // ── em:backfill-list ───────────────────────────────────────────────
   ipcMain.handle('em:backfill-list', async () => {
     try {
       const files = getHistoryBackfill().listBackfillFiles();

@@ -1,44 +1,48 @@
-// ── DAWN WHALES IPC: risk ────────────────────────────────────────────
-// Auto-split from main.ts — 17 handlers
-//
-// Registered channels:
-//   risk:dashboard
-//   risk:cross-asset
-//   risk:decompose
-//   risk:monteCarlo
-//   risk:position-size
-//   risk:calculate-size
-//   risk:calculate-portfolio-sizes
-//   risk:record-trade
-//   risk:get-trade-history
-//   risk:stress-test
-//   risk:getConfig
-//   risk:updateConfig
-//   risk:getAlerts
-//   risk:getStatusSnapshot
-//   risk:getKellyStats
-//   risk:getDrawdownState
-//   risk:updateVix
+// ?? DAWN WHALES IPC: risk ????????????????????????????????????????????
+// Auto-split from main.ts ? 17 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { RiskEngine } from './engine/risk-engine';
-import { decomposeRisk, runMonteCarlo } from './engine/risk-decomposition';
-import { HISTORICAL_SCENARIOS, runCustomShock, runStressTest } from './engine/stress-tester';
+import { RiskEngine } from '../engine/risk-engine';
+import { decomposeRisk, runMonteCarlo } from '../engine/risk-decomposition';
+import { HISTORICAL_SCENARIOS, runCustomShock, runStressTest } from '../engine/stress-tester';
 
-/**
- * Register all risk IPC handlers
- *
- * @param riskEngine - service reference
- * @param snapshot - service reference
- */
 export function registerRiskIPC(
-  riskEngine: any,
-  snapshot: any
+  _services: any
 ) {
 
-  // ── risk:dashboard ───────────────────────────────────────────────
   ipcMain.handle('risk:dashboard', async (_e, params?: any) => {
     try {
       const result = unifiedRiskDash.generate(params);
@@ -49,7 +53,6 @@ export function registerRiskIPC(
     }
   });
 
-  // ── risk:cross-asset ───────────────────────────────────────────────
   // ── Q57: Cross-Asset Risk ───────────────────────────────────────────────
   ipcMain.handle('risk:cross-asset', async (_e, raw: unknown) => {
     try {
@@ -65,7 +68,6 @@ export function registerRiskIPC(
     }
   });
 
-  // ── risk:decompose ───────────────────────────────────────────────
   // ── Q9: Strategy Risk Decomposition ──────────────────────────────────
   ipcMain.handle('risk:decompose', async (_e, raw: unknown) => {
     try {
@@ -84,7 +86,6 @@ export function registerRiskIPC(
     }
   });
 
-  // ── risk:monteCarlo ───────────────────────────────────────────────
   ipcMain.handle('risk:monteCarlo', async (_e, raw: unknown) => {
     try {
       const { equityCurve, paths, horizon } = raw as {
@@ -102,7 +103,6 @@ export function registerRiskIPC(
     }
   });
 
-  // ── risk:position-size ───────────────────────────────────────────────
   // ── Q16: Dynamic Position Sizer ────────────────────────────────
   ipcMain.handle('risk:position-size', async (_e, raw: unknown) => {
     try {
@@ -248,7 +248,6 @@ export function registerRiskIPC(
     }
   });
 
-  // ── risk:calculate-size ───────────────────────────────────────────────
   ipcMain.handle('risk:calculate-size', async (_e, raw: unknown) => {
 
     try {
@@ -277,7 +276,6 @@ export function registerRiskIPC(
 
   });
 
-  // ── risk:calculate-portfolio-sizes ───────────────────────────────────────────────
   ipcMain.handle('risk:calculate-portfolio-sizes', async (_e, raw: unknown) => {
 
     try {
@@ -306,7 +304,6 @@ export function registerRiskIPC(
 
   });
 
-  // ── risk:record-trade ───────────────────────────────────────────────
   ipcMain.handle('risk:record-trade', async (_e, raw: unknown) => {
 
     try {
@@ -335,7 +332,6 @@ export function registerRiskIPC(
 
   });
 
-  // ── risk:get-trade-history ───────────────────────────────────────────────
   ipcMain.handle('risk:get-trade-history', async (_e, strategyId?: string) => {
 
     try {
@@ -364,7 +360,6 @@ export function registerRiskIPC(
 
   });
 
-  // ── risk:stress-test ───────────────────────────────────────────────
   // ── Q12: Stress Tester ────────────────────────────────────────────
   ipcMain.handle('risk:stress-test', async (_e, raw: unknown) => {
     try {
@@ -394,43 +389,36 @@ export function registerRiskIPC(
     }
   });
 
-  // ── risk:getConfig ───────────────────────────────────────────────
   // ── Risk Engine ─────────────────────────────────────────────────────
   ipcMain.handle('risk:getConfig', async () => {
     return { success: true, config: riskEngine?.getConfig() };
   });
 
-  // ── risk:updateConfig ───────────────────────────────────────────────
   ipcMain.handle('risk:updateConfig', async (_e, config: any) => {
     riskEngine?.updateConfig(config);
     return { success: true };
   });
 
-  // ── risk:getAlerts ───────────────────────────────────────────────
   ipcMain.handle('risk:getAlerts', async () => {
     return { success: true, alerts: riskEngine?.getAlerts() || [] };
   });
 
-  // ── risk:getStatusSnapshot ───────────────────────────────────────────────
   // v2: Risk engine status snapshot (for risk dashboard UI)
   ipcMain.handle('risk:getStatusSnapshot', async () => {
     if (!riskEngine) return { success: false, error: 'RiskEngine not initialized' };
     return { success: true, snapshot: riskEngine.getStatusSnapshot() };
   });
 
-  // ── risk:getKellyStats ───────────────────────────────────────────────
   ipcMain.handle('risk:getKellyStats', async () => {
     if (!riskEngine) return { success: false, error: 'RiskEngine not initialized' };
     return { success: true, kelly: riskEngine.getKellyStats() };
   });
 
-  // ── risk:getDrawdownState ───────────────────────────────────────────────
   ipcMain.handle('risk:getDrawdownState', async () => {
     if (!riskEngine) return { success: false, error: 'RiskEngine not initialized' };
     return { success: true, drawdown: riskEngine.getDrawdownState() };
   });
 
-  // ── risk:updateVix ───────────────────────────────────────────────
   ipcMain.handle('risk:updateVix', async (_e, vix: number) => {
     if (!riskEngine) return { success: false, error: 'RiskEngine not initialized' };
     riskEngine.updateVix(vix);

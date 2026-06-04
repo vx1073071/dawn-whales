@@ -1,86 +1,58 @@
-// ── DAWN WHALES IPC: data ────────────────────────────────────────────
-// Auto-split from main.ts — 46 handlers
-//
-// Registered channels:
-//   predict:capital-flow
-//   data:valuation-dashboard
-//   data:valuation-dashboard-batch
-//   data:sector-compare
-//   data:sector-compare-multiple
-//   data:sector-rank
-//   factor:score
-//   factor:screen
-//   factor:screen-batch
-//   regime:detect
-//   anomaly:detect
-//   data:fundamental
-//   data:capital-flow
-//   data:regime
-//   data:anomalies
-//   data:news
-//   data:composite-score
-//   data:save-fundamental
-//   data:save-capital-flow
-//   data:save-regime
-//   data:compute-regime
-//   data:save-anomaly
-//   data:save-news
-//   data:clear-cache
-//   screener:search
-//   data:scheduler-status
-//   data:scheduler-refresh
-//   data:quality-check
-//   data:quality-report
-//   data:quality-acknowledge
-//   data:quality-clear-acknowledged
-//   data:quality-start-periodic
-//   data:quality-stop-periodic
-//   data:quality-stream-start
-//   data:quality-stream-stop
-//   data:quality-stream-status
-//   data:quality-stream-clear-alerts
-//   data:quality-stream-reset-metrics
-//   data:quality-dashboard
-//   data:export
-//   data:export-modules
-//   rate-limiter:stats
-//   rate-limiter:reset
-//   rate-limiter:apis
-//   data:consistency-check
-//   data:consistency-rules
+// ?? DAWN WHALES IPC: data ????????????????????????????????????????????
+// Auto-split from main.ts ? 49 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { getDataQualityDashboard } from './engine/data-quality-dashboard';
-import { exportData, getAvailableModules } from './engine/data-export-service';
-import { getRateLimiterManager } from './engine/rate-limiter';
-import { getConsistencyRules, runConsistencyCheck } from './engine/data-consistency-checker';
-import { getDataQualityMonitor } from './engine/data-quality-monitor';
-import { getDataQualityStream } from './engine/data-quality-stream';
-import { getWsDataStream } from './data/ws-data-stream';
-import { detectRegime } from './engine/regime-detector';
-import { detectAnomalies } from './engine/anomaly-detector';
-import { getValuationDashboard, getValuationDashboardBatch } from './engine/valuation-dashboard';
-import { compareMultipleSectors, compareSectorStocks, rankSectorStocks } from './engine/sector-comparison';
-import { batchScreenStocks, scoreAndRankStocks, screenStocks } from './engine/multi-factor-selector';
+import { getDataQualityDashboard } from '../engine/data-quality-dashboard';
+import { exportData, getAvailableModules } from '../engine/data-export-service';
+import { getRateLimiterManager } from '../engine/rate-limiter';
+import { getConsistencyRules, runConsistencyCheck } from '../engine/data-consistency-checker';
+import { getPythonProxy } from '../data/python-proxy';
+import { getDataQualityMonitor } from '../engine/data-quality-monitor';
+import { getDataQualityStream } from '../engine/data-quality-stream';
+import { getWsDataStream } from '../data/ws-data-stream';
+import { detectRegime } from '../engine/regime-detector';
+import { detectAnomalies } from '../engine/anomaly-detector';
+import { getValuationDashboard, getValuationDashboardBatch } from '../engine/valuation-dashboard';
+import { compareMultipleSectors, compareSectorStocks, rankSectorStocks } from '../engine/sector-comparison';
+import { batchScreenStocks, scoreAndRankStocks, screenStocks } from '../engine/multi-factor-selector';
 
-/**
- * Register all data IPC handlers
- *
- * @param dataProvider - service reference
- * @param stockScreener - service reference
- * @param dataScheduler - service reference
- * @param mainWindow - service reference
- */
 export function registerDataIPC(
-  dataProvider: any,
-  stockScreener: any,
-  dataScheduler: any,
-  mainWindow: any
+  _services: any
 ) {
 
-  // ── predict:capital-flow ───────────────────────────────────────────────
   ipcMain.handle('predict:capital-flow', async (_e, params: any) => {
     try {
       const result = flowPredictor.predict(params);
@@ -91,7 +63,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:valuation-dashboard ───────────────────────────────────────────────
   // ── Valuation Dashboard (JVS-49) ────────────────────────────────────────
   ipcMain.handle('data:valuation-dashboard', async (_e, codes: string[], historyDays?: number) => {
     try {
@@ -103,7 +74,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:valuation-dashboard-batch ───────────────────────────────────────────────
   ipcMain.handle('data:valuation-dashboard-batch', async (_e, codes: string[], batchSize?: number, delayMs?: number) => {
     try {
       const result = await getValuationDashboardBatch(codes, batchSize, delayMs);
@@ -114,7 +84,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:sector-compare ───────────────────────────────────────────────
   // ── Sector Comparison (JVS-50) ──────────────────────────────────────────
   ipcMain.handle('data:sector-compare', async (_e, stocks: any[], financialData: any) => {
     try {
@@ -127,7 +96,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:sector-compare-multiple ───────────────────────────────────────────────
   ipcMain.handle('data:sector-compare-multiple', async (_e, sectors: any[], financialData: any) => {
     try {
       const financialMap = new Map(Object.entries(financialData || {}));
@@ -139,7 +107,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:sector-rank ───────────────────────────────────────────────
   ipcMain.handle('data:sector-rank', async (_e, metrics: any[], weights?: any) => {
     try {
       const result = rankSectorStocks(metrics, weights);
@@ -150,7 +117,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── factor:score ───────────────────────────────────────────────
   // ── Multi-Factor Selector (JVS-56) ─────────────────────────────────────
   ipcMain.handle('factor:score', async (_e, stocks: any[], factorWeights?: any) => {
     try {
@@ -162,7 +128,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── factor:screen ───────────────────────────────────────────────
   ipcMain.handle('factor:screen', async (_e, stocks: any[], criteria: any, factorWeights?: any) => {
     try {
       const result = screenStocks(stocks, criteria, factorWeights);
@@ -173,7 +138,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── factor:screen-batch ───────────────────────────────────────────────
   ipcMain.handle('factor:screen-batch', async (_e, batches: any[]) => {
     try {
       const result = await batchScreenStocks(batches);
@@ -184,7 +148,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── regime:detect ───────────────────────────────────────────────
   // ── Q8: Market Regime Detector ─────────────────────────────────────────
   ipcMain.handle('regime:detect', async (_e, raw: unknown) => {
     try {
@@ -203,7 +166,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── anomaly:detect ───────────────────────────────────────────────
   // ── Q10: Real-time Anomaly Detection ─────────────────────────────────
   ipcMain.handle('anomaly:detect', async (_e, raw: unknown) => {
     try {
@@ -223,7 +185,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:fundamental ───────────────────────────────────────────────
   // ── Data Provider (multi-source integration) ───────────────────────────
   ipcMain.handle('data:fundamental', async (_e, symbol: string) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
@@ -236,7 +197,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:capital-flow ───────────────────────────────────────────────
   ipcMain.handle('data:capital-flow', async (_e, symbol: string) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
@@ -248,7 +208,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:regime ───────────────────────────────────────────────
   ipcMain.handle('data:regime', async () => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
@@ -260,7 +219,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:anomalies ───────────────────────────────────────────────
   ipcMain.handle('data:anomalies', async (_e, symbol: string) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
@@ -272,7 +230,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:news ───────────────────────────────────────────────
   ipcMain.handle('data:news', async (_e, symbol: string, limit?: number) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
@@ -284,7 +241,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:composite-score ───────────────────────────────────────────────
   ipcMain.handle('data:composite-score', async (_e, symbol: string) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
@@ -296,7 +252,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:save-fundamental ───────────────────────────────────────────────
   ipcMain.handle('data:save-fundamental', async (_e, data: any) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
@@ -307,7 +262,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:save-capital-flow ───────────────────────────────────────────────
   ipcMain.handle('data:save-capital-flow', async (_e, data: any) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
@@ -318,7 +272,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:save-regime ───────────────────────────────────────────────
   ipcMain.handle('data:save-regime', async (_e, regime: any) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
@@ -329,7 +282,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:compute-regime ───────────────────────────────────────────────
   ipcMain.handle('data:compute-regime', async (_e, factors: any) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
@@ -340,7 +292,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:save-anomaly ───────────────────────────────────────────────
   ipcMain.handle('data:save-anomaly', async (_e, signal: any) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
@@ -351,7 +302,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:save-news ───────────────────────────────────────────────
   ipcMain.handle('data:save-news', async (_e, symbol: string, items: any[]) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
@@ -362,7 +312,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:clear-cache ───────────────────────────────────────────────
   ipcMain.handle('data:clear-cache', async () => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
@@ -373,7 +322,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── screener:search ───────────────────────────────────────────────
   // ── Stock Screener (JVS-4) ─────────────────────────────────────────────
   ipcMain.handle('screener:search', async (_e, request: any) => {
     if (!stockScreener) return { success: false, error: 'StockScreener not initialized' };
@@ -386,14 +334,12 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:scheduler-status ───────────────────────────────────────────────
   // ── Data Scheduler (auto-refresh) ─────────────────────────────────────
   ipcMain.handle('data:scheduler-status', async () => {
     if (!dataScheduler) return { success: false, error: 'DataScheduler not initialized' };
     return { success: true, status: dataScheduler.getStatus() };
   });
 
-  // ── data:scheduler-refresh ───────────────────────────────────────────────
   ipcMain.handle('data:scheduler-refresh', async (_e, module?: string) => {
     if (!dataScheduler) return { success: false, error: 'DataScheduler not initialized' };
     try {
@@ -408,7 +354,35 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:quality-check ───────────────────────────────────────────────
+  // ── Python Script Proxy Layer (JVS-20) ──────────────────────────────────
+  ipcMain.handle('py:call-skill', async (_e, skillName: string, query: string, options?: any) => {
+    try {
+      const proxy = getPythonProxy();
+      const result = await proxy.callSkill(skillName, query, options);
+      return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('py:list-skills', async () => {
+    try {
+      const proxy = getPythonProxy();
+      return { success: true, skills: proxy.listAvailableSkills() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('py:proxy-status', async () => {
+    try {
+      const proxy = getPythonProxy();
+      return { success: true, status: proxy.getStatus() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Data Quality Monitor (JVS-22) ────────────────────────────────────────
   ipcMain.handle('data:quality-check', async () => {
     try {
@@ -420,7 +394,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:quality-report ───────────────────────────────────────────────
   ipcMain.handle('data:quality-report', async () => {
     try {
       const monitor = getDataQualityMonitor();
@@ -431,7 +404,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:quality-acknowledge ───────────────────────────────────────────────
   ipcMain.handle('data:quality-acknowledge', async (_e, alertIndex: number) => {
     try {
       const monitor = getDataQualityMonitor();
@@ -442,7 +414,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:quality-clear-acknowledged ───────────────────────────────────────────────
   ipcMain.handle('data:quality-clear-acknowledged', async () => {
     try {
       const monitor = getDataQualityMonitor();
@@ -453,7 +424,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:quality-start-periodic ───────────────────────────────────────────────
   ipcMain.handle('data:quality-start-periodic', async (_e, intervalMs?: number) => {
     try {
       const monitor = getDataQualityMonitor();
@@ -464,7 +434,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:quality-stop-periodic ───────────────────────────────────────────────
   ipcMain.handle('data:quality-stop-periodic', async () => {
     try {
       const monitor = getDataQualityMonitor();
@@ -475,33 +444,31 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:quality-stream-start ───────────────────────────────────────────────
   // ── Data Quality Stream Monitor (JVS-31) ─────────────────────────────────
   ipcMain.handle('data:quality-stream-start', async () => {
     try {
       const monitor = getDataQualityStream();
       monitor.start();
-
+      
       // Forward alerts to renderer
       monitor.on('alert', (alert) => {
         if (mainWindow && !mainWindow.isDestroyed()) {
           mainWindow.webContents.send('data:quality-stream-alert', alert);
         }
       });
-
+      
       // Hook into WebSocket stream
       const wsStream = getWsDataStream();
       wsStream.on('tick', (tick) => {
         monitor.validateTick(tick);
       });
-
+      
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
     }
   });
 
-  // ── data:quality-stream-stop ───────────────────────────────────────────────
   ipcMain.handle('data:quality-stream-stop', async () => {
     try {
       const monitor = getDataQualityStream();
@@ -512,7 +479,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:quality-stream-status ───────────────────────────────────────────────
   ipcMain.handle('data:quality-stream-status', async () => {
     try {
       const monitor = getDataQualityStream();
@@ -525,7 +491,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:quality-stream-clear-alerts ───────────────────────────────────────────────
   ipcMain.handle('data:quality-stream-clear-alerts', async () => {
     try {
       const monitor = getDataQualityStream();
@@ -536,7 +501,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:quality-stream-reset-metrics ───────────────────────────────────────────────
   ipcMain.handle('data:quality-stream-reset-metrics', async () => {
     try {
       const monitor = getDataQualityStream();
@@ -547,7 +511,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:quality-dashboard ───────────────────────────────────────────────
   // ── Data Quality Dashboard Aggregator (JVS-34) ────────────────────────
   ipcMain.handle('data:quality-dashboard', async () => {
     try {
@@ -558,7 +521,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:export ───────────────────────────────────────────────
   // ── Data Export Service (JVS-37) ──────────────────────────────────────
   ipcMain.handle('data:export', async (_e, request: any) => {
     try {
@@ -569,7 +531,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:export-modules ───────────────────────────────────────────────
   ipcMain.handle('data:export-modules', async () => {
     try {
       const modules = getAvailableModules();
@@ -579,7 +540,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── rate-limiter:stats ───────────────────────────────────────────────
   // ── Rate Limiter (JVS-38) ─────────────────────────────────────────────
   ipcMain.handle('rate-limiter:stats', async (_e, apiName?: string) => {
     try {
@@ -591,7 +551,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── rate-limiter:reset ───────────────────────────────────────────────
   ipcMain.handle('rate-limiter:reset', async () => {
     try {
       const manager = getRateLimiterManager();
@@ -602,7 +561,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── rate-limiter:apis ───────────────────────────────────────────────
   ipcMain.handle('rate-limiter:apis', async () => {
     try {
       const manager = getRateLimiterManager();
@@ -613,7 +571,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:consistency-check ───────────────────────────────────────────────
   // ── Data Consistency Checker (JVS-39) ─────────────────────────────────
   ipcMain.handle('data:consistency-check', async () => {
     try {
@@ -624,7 +581,6 @@ export function registerDataIPC(
     }
   });
 
-  // ── data:consistency-rules ───────────────────────────────────────────────
   ipcMain.handle('data:consistency-rules', async () => {
     try {
       const rules = getConsistencyRules();

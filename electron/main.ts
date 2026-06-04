@@ -278,6 +278,9 @@ function createWindow() {
 
 import { registerAllIPC } from './ipc/index';
 
+// ── System Tray ────────────────────────────────────────────────────────────
+
+function createTray() {
   const iconSize = 16;
   const icon = nativeImage.createFromBuffer(createDiamondIcon(iconSize));
   tray = new Tray(icon);

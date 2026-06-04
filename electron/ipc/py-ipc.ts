@@ -6,10 +6,41 @@
 //   py:list-skills
 //   py:proxy-status
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { getPythonProxy } from './data/python-proxy';
+import { getPythonProxy } from '../data/python-proxy';
 
 /**
  * Register all py IPC handlers

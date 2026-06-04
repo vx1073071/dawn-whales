@@ -1,35 +1,46 @@
-// ── DAWN WHALES IPC: marketplace ────────────────────────────────────────────
-// Auto-split from main.ts — 10 handlers
-//
-// Registered channels:
-//   marketplace:rate
-//   marketplace:getRating
-//   marketplace:comment
-//   marketplace:getComments
-//   marketplace:savePerformance
-//   marketplace:getPerformance
-//   marketplace:list
-//   marketplace:score
-//   marketplace:verify
-//   marketplace:updateAllScores
+// ?? DAWN WHALES IPC: marketplace ????????????????????????????????????????????
+// Auto-split from main.ts ? 10 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { MarketplaceService } from './data/marketplace-service';
+import { MarketplaceService } from '../data/marketplace-service';
 
-/**
- * Register all marketplace IPC handlers
- *
- * @param db - service reference
- * @param marketplaceService - service reference
- */
 export function registerMarketplaceIPC(
-  db: any,
-  marketplaceService: any
+  _services: any
 ) {
 
-  // ── marketplace:rate ───────────────────────────────────────────────
   ipcMain.handle('marketplace:rate', async (_e, strategyId: string, rating: number) => {
     const vErr = validate(MarketplaceRateSchema, { strategyId });
     if (vErr) return vErr;
@@ -42,14 +53,12 @@ export function registerMarketplaceIPC(
     }
   });
 
-  // ── marketplace:getRating ───────────────────────────────────────────────
   ipcMain.handle('marketplace:getRating', async (_e, strategyId: string) => {
     const rating = db?.getStrategyRating(strategyId);
     const myRating = db?.getMyRating(strategyId);
     return { success: true, ...rating, myRating };
   });
 
-  // ── marketplace:comment ───────────────────────────────────────────────
   ipcMain.handle('marketplace:comment', async (_e, strategyId: string, content: string, parentId?: number) => {
     const vErr = validate(MarketplaceCommentSchema, { strategyId });
     if (vErr) return vErr;
@@ -61,13 +70,11 @@ export function registerMarketplaceIPC(
     }
   });
 
-  // ── marketplace:getComments ───────────────────────────────────────────────
   ipcMain.handle('marketplace:getComments', async (_e, strategyId: string) => {
     const comments = db?.getComments(strategyId) || [];
     return { success: true, comments };
   });
 
-  // ── marketplace:savePerformance ───────────────────────────────────────────────
   ipcMain.handle('marketplace:savePerformance', async (_e, data: any) => {
     const vErr = validate(MarketplaceSavePerformanceSchema, { data });
     if (vErr) return vErr;
@@ -79,19 +86,16 @@ export function registerMarketplaceIPC(
     }
   });
 
-  // ── marketplace:getPerformance ───────────────────────────────────────────────
   ipcMain.handle('marketplace:getPerformance', async (_e, strategyId: string) => {
     const perf = db?.getStrategyPerformance(strategyId) || [];
     return { success: true, performance: perf };
   });
 
-  // ── marketplace:list ───────────────────────────────────────────────
   ipcMain.handle('marketplace:list', async (_e, sortBy?: string, limit?: number) => {
     const strategies = db?.getMarketplaceStrategies(sortBy || 'rating', limit || 50) || [];
     return { success: true, strategies };
   });
 
-  // ── marketplace:score ───────────────────────────────────────────────
   // ── Marketplace: Score & Verify (JVS) ─────────────────────────────────
   ipcMain.handle('marketplace:score', async (_e, strategyId: string) => {
     if (!marketplaceService) return { success: false, error: 'MarketplaceService not initialized' };
@@ -104,7 +108,6 @@ export function registerMarketplaceIPC(
     }
   });
 
-  // ── marketplace:verify ───────────────────────────────────────────────
   ipcMain.handle('marketplace:verify', async (_e, strategyId: string) => {
     if (!marketplaceService) return { success: false, error: 'MarketplaceService not initialized' };
     try {
@@ -116,7 +119,6 @@ export function registerMarketplaceIPC(
     }
   });
 
-  // ── marketplace:updateAllScores ───────────────────────────────────────────────
   ipcMain.handle('marketplace:updateAllScores', async () => {
     if (!marketplaceService) return { success: false, error: 'MarketplaceService not initialized' };
     try {

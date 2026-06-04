@@ -223,14 +223,14 @@ export default function OrdersPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">时间</th>
-                  <th className="px-4 py-3 text-left">代码</th>
-                  <th className="px-4 py-3 text-center">方向</th>
-                  <th className="px-4 py-3 text-right">数量</th>
-                  <th className="px-4 py-3 text-right">价格</th>
-                  <th className="px-4 py-3 text-right">盈亏</th>
-                  <th className="px-4 py-3 text-center">状态</th>
-                  <th className="px-4 py-3 text-left">备注</th>
+                  <th className="px-4 py-3 text-left">{t('common.time')}</th>
+                  <th className="px-4 py-3 text-left">{t('trading.code')}</th>
+                  <th className="px-4 py-3 text-center">{t('trading.side')}</th>
+                  <th className="px-4 py-3 text-right">{t('trading.quantity')}</th>
+                  <th className="px-4 py-3 text-right">{t('trading.price')}</th>
+                  <th className="px-4 py-3 text-right">{t('trading.pnl')}</th>
+                  <th className="px-4 py-3 text-center">{t('trading.status')}</th>
+                  <th className="px-4 py-3 text-left">{t('trading.remark')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -240,7 +240,7 @@ export default function OrdersPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{t.symbol?.replace('US.', '')}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${t.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {t.side === 'BUY' ? '买入' : '卖出'}
+                        {t.side === 'BUY' ? t('trading.buy') : t('trading.sell')}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{t.quantity}</td>

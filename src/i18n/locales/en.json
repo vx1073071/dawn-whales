@@ -60,7 +60,10 @@
     "back": "Back",
     "parsing": "Parsing...",
     "orTry": "Or try",
-    "loadingFailed": "Loading failed"
+    "loadingFailed": "Loading failed",
+    "time": "Time",
+    "action": "Action",
+    "unknown": "Unknown"
   },
   "nav": {
     "overview": "Overview",
@@ -195,7 +198,17 @@
     "stock": "Stock",
     "commission": "Commission",
     "noMatchingRecords": "No matching records",
-    "tradeHistory": "Trade History"
+    "tradeHistory": "Trade History",
+    "activeOrders": "Active Orders",
+    "historyOrders": "Order History",
+    "strategyTrades": "Strategy Trades",
+    "noActiveOrders": "No active orders",
+    "noHistoryOrders": "No history orders",
+    "noStrategyTrades": "No strategy trades",
+    "strategyTradesHint": "Recorded automatically when strategies run",
+    "orderPrice": "Order Price",
+    "side": "Side",
+    "ordersSubtitle": "Active orders, history and strategy trades"
   },
   "strategy": {
     "title": "Strategy Lab",
@@ -306,7 +319,8 @@
     "filled": "Filled",
     "partial": "Partial",
     "cancelled": "Cancelled",
-    "rejected": "Rejected"
+    "rejected": "Rejected",
+    "waiting": "Waiting"
   },
   "market": {
     "US": "US",

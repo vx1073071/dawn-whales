@@ -1,29 +1,46 @@
-// ── DAWN WHALES IPC: options ────────────────────────────────────────────
-// Auto-split from main.ts — 6 handlers
-//
-// Registered channels:
-//   options:chain-analyze
-//   options:chain-batch
-//   options:build
-//   options:analyze
-//   greeks:calculate
-//   greeks:portfolio
+// ?? DAWN WHALES IPC: options ????????????????????????????????????????????
+// Auto-split from main.ts ? 6 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { analyzeBatchOptionsChain, analyzeOptionsChain } from './engine/options-chain-analyzer';
+import { analyzeBatchOptionsChain, analyzeOptionsChain } from '../engine/options-chain-analyzer';
 
-/**
- * Register all options IPC handlers
- *
- * @param calcGreeksJS - service reference
- */
 export function registerOptionsIPC(
-  calcGreeksJS: any
+  _services: any
 ) {
 
-  // ── options:chain-analyze ───────────────────────────────────────────────
   // ── Options Chain Analyzer (JVS-55) ─────────────────────────────────
   ipcMain.handle('options:chain-analyze', async (_e, contracts: any[], symbol: string, historicalIVRange?: any) => {
     try {
@@ -35,7 +52,6 @@ export function registerOptionsIPC(
     }
   });
 
-  // ── options:chain-batch ───────────────────────────────────────────────
   ipcMain.handle('options:chain-batch', async (_e, symbols: any[]) => {
     try {
       const result = await analyzeBatchOptionsChain(symbols);
@@ -46,7 +62,6 @@ export function registerOptionsIPC(
     }
   });
 
-  // ── options:build ───────────────────────────────────────────────
   // ── Q55: Options Strategy Builder ────────────────────────────────────────
   ipcMain.handle('options:build', async (_e, raw: unknown) => {
     try {
@@ -62,7 +77,6 @@ export function registerOptionsIPC(
     }
   });
 
-  // ── options:analyze ───────────────────────────────────────────────
   ipcMain.handle('options:analyze', async (_e, raw: unknown) => {
     try {
       const { strategy, spotPrice, volatility, riskFreeRate, dividends } = raw as {
@@ -77,7 +91,6 @@ export function registerOptionsIPC(
     }
   });
 
-  // ── greeks:calculate ───────────────────────────────────────────────
   // ── Greeks Calculation (P0-fixed: pure JS Black-Scholes, no Python subprocess) ─
   ipcMain.handle('greeks:calculate', async (_e, params: {
     spot: number; strike: number; vol: number; days: number;
@@ -92,7 +105,6 @@ export function registerOptionsIPC(
     }
   });
 
-  // ── greeks:portfolio ───────────────────────────────────────────────
   ipcMain.handle('greeks:portfolio', async (_e, positions: any[]) => {
     const vErr = validate(GreeksPortfolioSchema, { positions });
     if (vErr) return vErr;

@@ -1,30 +1,48 @@
-// ── DAWN WHALES IPC: report ────────────────────────────────────────────
-// Auto-split from main.ts — 6 handlers
-//
-// Registered channels:
-//   report:walk-forward
-//   report:walk-forward-batch
-//   report:brinson-attribution
-//   report:brinson-batch
-//   report:generate
-//   report:quick
+// ?? DAWN WHALES IPC: report ????????????????????????????????????????????
+// Auto-split from main.ts ? 6 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { generateBacktestReport, generateQuickReport } from './engine/ai-report-generator';
-import { generateBatchWalkForwardReport, generateWalkForwardReport } from './engine/walk-forward-report';
-import { generateBatchBrinsonReport, generateBrinsonReport } from './engine/brinson-attribution';
+import { generateBacktestReport, generateQuickReport } from '../engine/ai-report-generator';
+import { generateBatchWalkForwardReport, generateWalkForwardReport } from '../engine/walk-forward-report';
+import { generateBatchBrinsonReport, generateBrinsonReport } from '../engine/brinson-attribution';
 
-/**
- * Register all report IPC handlers
- *
- */
 export function registerReportIPC(
-  
+  _services: any
 ) {
 
-  // ── report:walk-forward ───────────────────────────────────────────────
   // ── Walk-Forward Report (JVS-53) ───────────────────────────────────────
   ipcMain.handle('report:walk-forward', async (_e, strategyName: string, windows: any[]) => {
     try {
@@ -36,7 +54,6 @@ export function registerReportIPC(
     }
   });
 
-  // ── report:walk-forward-batch ───────────────────────────────────────────────
   ipcMain.handle('report:walk-forward-batch', async (_e, strategies: any[]) => {
     try {
       const result = await generateBatchWalkForwardReport(strategies);
@@ -47,7 +64,6 @@ export function registerReportIPC(
     }
   });
 
-  // ── report:brinson-attribution ───────────────────────────────────────────────
   // ── Brinson Attribution (JVS-54) ───────────────────────────────────────
   ipcMain.handle('report:brinson-attribution', async (_e, holdings: any[], benchmark: any[], benchmarkReturn: number) => {
     try {
@@ -59,7 +75,6 @@ export function registerReportIPC(
     }
   });
 
-  // ── report:brinson-batch ───────────────────────────────────────────────
   ipcMain.handle('report:brinson-batch', async (_e, portfolios: any[]) => {
     try {
       const result = await generateBatchBrinsonReport(portfolios);
@@ -70,7 +85,6 @@ export function registerReportIPC(
     }
   });
 
-  // ── report:generate ───────────────────────────────────────────────
   // ── AI Report Generator ──────────────────────────────────────────────
   ipcMain.handle('report:generate', async (_e, raw: unknown) => {
     const vErr = validate(ReportGenerateSchema, raw);
@@ -85,7 +99,6 @@ export function registerReportIPC(
     return { success: true, report };
   });
 
-  // ── report:quick ───────────────────────────────────────────────
   ipcMain.handle('report:quick', async (_e, raw: unknown) => {
     const vErr = validate(ReportQuickSchema, raw);
     if (vErr) return vErr;

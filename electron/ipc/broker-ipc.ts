@@ -1,64 +1,47 @@
-// ── DAWN WHALES IPC: broker ────────────────────────────────────────────
-// Auto-split from main.ts — 26 handlers
-//
-// Registered channels:
-//   order:route
-//   order:tca
-//   pnl:multi-broker
-//   execution:analyze
-//   trader:execute
-//   trader:get-status
-//   broker:connect
-//   broker:disconnect
-//   broker:getAccounts
-//   broker:getFunds
-//   broker:getPositions
-//   broker:getQuotes
-//   broker:subscribe
-//   broker:unsubscribe
-//   broker:getKlines
-//   broker:placeOrder
-//   broker:cancelOrder
-//   broker:getOrders
-//   broker:list
-//   broker:add
-//   broker:remove
-//   broker:setActive
-//   broker:switch
-//   broker:getStatus
-//   signal:quality-score
-//   position:check
+// ?? DAWN WHALES IPC: broker ????????????????????????????????????????????
+// Auto-split from main.ts ? 26 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { FutuOpenDClient } from './broker/futu-opend';
-import { BrokerManager } from './broker/BrokerManager';
+import { FutuOpenDClient } from '../broker/futu-opend';
+import { BrokerManager } from '../broker/BrokerManager';
 
-/**
- * Register all broker IPC handlers
- *
- * @param opendClient - service reference
- * @param brokerManager - service reference
- * @param strategyEngine - service reference
- * @param db - service reference
- * @param watchlist - service reference
- * @param mainWindow - service reference
- * @param quotePushHandler - service reference
- * @param riskEngine - service reference
- */
 export function registerBrokerIPC(
-  opendClient: any,
-  brokerManager: any,
-  strategyEngine: any,
-  db: any,
-  watchlist: any,
-  mainWindow: any,
-  quotePushHandler: any,
-  riskEngine: any
+  _services: any
 ) {
 
-  // ── order:route ───────────────────────────────────────────────
   ipcMain.handle('order:route', async (_e, params: any) => {
     try {
       const result = orderRouter.route(params);
@@ -69,7 +52,6 @@ export function registerBrokerIPC(
     }
   });
 
-  // ── order:tca ───────────────────────────────────────────────
   ipcMain.handle('order:tca', async (_e, params: any) => {
     try {
       const result = tcaEngine.analyze(params);
@@ -80,7 +62,6 @@ export function registerBrokerIPC(
     }
   });
 
-  // ── pnl:multi-broker ───────────────────────────────────────────────
   ipcMain.handle('pnl:multi-broker', async (_e, params?: any) => {
     try {
       const result = multiBrokerPnL.consolidate(params);
@@ -91,7 +72,6 @@ export function registerBrokerIPC(
     }
   });
 
-  // ── execution:analyze ───────────────────────────────────────────────
   // ── Q29/Q54: Execution Analytics ────────────────────────────────────────
   ipcMain.handle('execution:analyze', async (_e, raw: unknown) => {
     try {
@@ -107,7 +87,6 @@ export function registerBrokerIPC(
     }
   });
 
-  // ── trader:execute ───────────────────────────────────────────────
   // ── Q20: Real Trader ─────────────────────────────────────────────────────
   ipcMain.handle('trader:execute', async (_e, raw: unknown) => {
     try {
@@ -121,7 +100,6 @@ export function registerBrokerIPC(
     }
   });
 
-  // ── trader:get-status ───────────────────────────────────────────────
   ipcMain.handle('trader:get-status', async () => {
     try {
       const { getRealTrader } = await import('./engine/real-trader.js');
@@ -132,7 +110,6 @@ export function registerBrokerIPC(
     }
   });
 
-  // ── broker:connect ───────────────────────────────────────────────
   // ── Broker: Multi-broker support (WP1 + Sprint1) ────────────────────
   ipcMain.handle('broker:connect', async (_e, config: { host: string; port: number; brokerId?: string }) => {
     try {
@@ -184,14 +161,12 @@ export function registerBrokerIPC(
     }
   });
 
-  // ── broker:disconnect ───────────────────────────────────────────────
   ipcMain.handle('broker:disconnect', async () => {
     opendClient?.disconnect();
     opendClient = null;
     return { success: true };
   });
 
-  // ── broker:getAccounts ───────────────────────────────────────────────
   ipcMain.handle('broker:getAccounts', async () => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
@@ -199,7 +174,6 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:getFunds ───────────────────────────────────────────────
   ipcMain.handle('broker:getFunds', async (_e, accountId: string) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
@@ -209,7 +183,6 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:getPositions ───────────────────────────────────────────────
   ipcMain.handle('broker:getPositions', async (_e, accountId: string) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
@@ -217,7 +190,6 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:getQuotes ───────────────────────────────────────────────
   ipcMain.handle('broker:getQuotes', async (_e, codes: string[]) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
@@ -226,7 +198,6 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:subscribe ───────────────────────────────────────────────
   // ── Subscribe / Unsubscribe (WP1: 动态监控列表) ────────────────────
   ipcMain.handle('broker:subscribe', async (_e, codes: string[]) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
@@ -242,7 +213,6 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:unsubscribe ───────────────────────────────────────────────
   ipcMain.handle('broker:unsubscribe', async (_e, codes: string[]) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
@@ -254,7 +224,6 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:getKlines ───────────────────────────────────────────────
   ipcMain.handle('broker:getKlines', async (_e, code: string, period: string, count: number) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
@@ -272,7 +241,6 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:placeOrder ───────────────────────────────────────────────
   // ── Order Placement (with input validation) ─────────────────────────
   ipcMain.handle('broker:placeOrder', async (_e, order: any) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
@@ -305,7 +273,6 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:cancelOrder ───────────────────────────────────────────────
   ipcMain.handle('broker:cancelOrder', async (_e, orderId: string, accountId: string, code: string) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
@@ -314,7 +281,6 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:getOrders ───────────────────────────────────────────────
   ipcMain.handle('broker:getOrders', async (_e, accountId: string) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
@@ -322,13 +288,11 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:list ───────────────────────────────────────────────
   // ── Broker Manager (Sprint1: multi-broker) ──────────────────────────
   ipcMain.handle('broker:list', async () => {
     return { success: true, brokers: brokerManager?.getConfigs() || [] };
   });
 
-  // ── broker:add ───────────────────────────────────────────────
   ipcMain.handle('broker:add', async (_e, cfg: BrokerConfig) => {
     const vErr = validate(BrokerAddSchema, { cfg });
     if (vErr) return vErr;
@@ -339,7 +303,6 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:remove ───────────────────────────────────────────────
   ipcMain.handle('broker:remove', async (_e, id: string) => {
     try {
       brokerManager?.removeConfig(id);
@@ -348,7 +311,6 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:setActive ───────────────────────────────────────────────
   ipcMain.handle('broker:setActive', async (_e, id: string) => {
     try {
       brokerManager?.setActiveBroker(id);
@@ -356,7 +318,6 @@ export function registerBrokerIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── broker:switch ───────────────────────────────────────────────
   // ── Broker Switching (Sprint1) ───────────────────────────────────────
   ipcMain.handle('broker:switch', async (_e, id: string) => {
     const vErr = validate(BrokerSwitchSchema, { id });
@@ -398,12 +359,10 @@ export function registerBrokerIPC(
     }
   });
 
-  // ── broker:getStatus ───────────────────────────────────────────────
   ipcMain.handle('broker:getStatus', async () => {
     return { success: true, status: brokerManager?.getStatus() || [] };
   });
 
-  // ── signal:quality-score ───────────────────────────────────────────────
   // ── Q63: Signal Quality Scorer ───────────────────────────────────────
   ipcMain.handle('signal:quality-score', async (_e, raw: unknown) => {
     try {
@@ -422,7 +381,6 @@ export function registerBrokerIPC(
     }
   });
 
-  // ── position:check ───────────────────────────────────────────────
   // ── Q68: Position Alert Engine ───────────────────────────────────────
   ipcMain.handle('position:check', async (_e, raw: unknown) => {
     try {

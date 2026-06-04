@@ -1,76 +1,51 @@
-// ── DAWN WHALES IPC: strategy ────────────────────────────────────────────
-// Auto-split from main.ts — 38 handlers
-//
-// Registered channels:
-//   strategy:create
-//   strategy:getAll
-//   strategy:get
-//   strategy:update
-//   strategy:delete
-//   strategy:backtest
-//   strategy:startLive
-//   strategy:stopLive
-//   strategy:explain
-//   strategy:compare
-//   strategy:optimize
-//   strategy:correlation
-//   strategy:auto-tune
-//   strategy:correlation-viz
-//   paper:start
-//   paper:stop
-//   paper:reset
-//   paper:report
-//   paper:execute-signal
-//   paper:status
-//   strategy:templates
-//   paper:start
-//   paper:stop
-//   paper:reset
-//   paper:report
-//   paper:submit-order
-//   strategy:multi-factor
-//   strategy:compare
-//   nl:parse
-//   nl:templates
-//   strategy:correlation
-//   live:start
-//   live:stop
-//   live:add-strategy
-//   live:remove-strategy
-//   live:get-status
-//   live:get-positions
-//   live:get-orders
+// ?? DAWN WHALES IPC: strategy ????????????????????????????????????????????
+// Auto-split from main.ts ? 38 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { STRATEGY_TEMPLATES, parseNaturalLanguage } from './engine/nl-parser';
-import { LiveExecutor } from './engine/live-executor';
-import { computeCorrelationMatrix } from './engine/correlation-matrix';
-import { autoTune } from './engine/auto-tuner';
-import { buildCorrelationVisualization } from './engine/correlation-visualizer';
-import { compareBacktests, summaryTable } from './engine/backtest-comparator';
+import { STRATEGY_TEMPLATES, parseNaturalLanguage } from '../engine/nl-parser';
+import { LiveExecutor } from '../engine/live-executor';
+import { computeCorrelationMatrix } from '../engine/correlation-matrix';
+import { autoTune } from '../engine/auto-tuner';
+import { buildCorrelationVisualization } from '../engine/correlation-visualizer';
+import { compareBacktests, summaryTable } from '../engine/backtest-comparator';
 
-/**
- * Register all strategy IPC handlers
- *
- * @param strategyEngine - service reference
- * @param db - service reference
- * @param opendClient - service reference
- * @param backtestEngine - service reference
- * @param getDeepSeekKey_ - service reference
- * @param liveExecutor - service reference
- */
 export function registerStrategyIPC(
-  strategyEngine: any,
-  db: any,
-  opendClient: any,
-  backtestEngine: any,
-  getDeepSeekKey_: any,
-  liveExecutor: any
+  _services: any
 ) {
 
-  // ── strategy:create ───────────────────────────────────────────────
   // ── Strategy Engine ─────────────────────────────────────────────────
   ipcMain.handle('strategy:create', async (_e, dsl: any) => {
     const vErr = validate(StrategyCreateSchema, { dsl });
@@ -83,18 +58,15 @@ export function registerStrategyIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── strategy:getAll ───────────────────────────────────────────────
   ipcMain.handle('strategy:getAll', async () => {
     return { success: true, strategies: strategyEngine?.getAllStrategies() || [] };
   });
 
-  // ── strategy:get ───────────────────────────────────────────────
   ipcMain.handle('strategy:get', async (_e, id: string) => {
     const strategy = strategyEngine?.getStrategy(id);
     return { success: !!strategy, strategy };
   });
 
-  // ── strategy:update ───────────────────────────────────────────────
   ipcMain.handle('strategy:update', async (_e, id: string, updates: any) => {
     const vErr = validate(StrategyUpdateSchema, { updates });
     if (vErr) return vErr;
@@ -112,14 +84,12 @@ export function registerStrategyIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
-  // ── strategy:delete ───────────────────────────────────────────────
   ipcMain.handle('strategy:delete', async (_e, id: string) => {
     strategyEngine?.deleteStrategy(id);
     db?.deleteStrategy(id);
     return { success: true };
   });
 
-  // ── strategy:backtest ───────────────────────────────────────────────
   ipcMain.handle('strategy:backtest', async (_e, config: any) => {
     if (!strategyEngine || !backtestEngine) {
       return { success: false, error: 'Engine not ready' };
@@ -161,19 +131,16 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── strategy:startLive ───────────────────────────────────────────────
   ipcMain.handle('strategy:startLive', async (_e, strategyId: string) => {
     strategyEngine?.startLive(strategyId);
     return { success: true };
   });
 
-  // ── strategy:stopLive ───────────────────────────────────────────────
   ipcMain.handle('strategy:stopLive', async (_e, strategyId: string) => {
     strategyEngine?.stopLive(strategyId);
     return { success: true };
   });
 
-  // ── strategy:explain ───────────────────────────────────────────────
   // ── Strategy AI — LLM-powered (Sprint 2 P1) ─────────────────────
   ipcMain.handle('strategy:explain', async (_e, strategy: any) => {
     const apiKey = getDeepSeekKey_(app);
@@ -182,11 +149,39 @@ export function registerStrategyIPC(
     }
     const prompt = `You are a quantitative trading strategy analyst. Explain the following strategy in clear, actionable English for a retail trader.
 
-  Strategy:
-  - Name: ${strategy.name || 'Unnamed'}
-  - Symbol: ${strategy.symbol || 'Unknown'}
-  - Type: ${strategy.strategy?.type || 'Unknown'}
-  - Params: ${JSON.stringify(strategy.strategy?.params || {})}}
+Strategy:
+- Name: ${strategy.name || 'Unnamed'}
+- Symbol: ${strategy.symbol || 'Unknown'}
+- Type: ${strategy.strategy?.type || 'Unknown'}
+- Params: ${JSON.stringify(strategy.strategy?.params || {})}
+- Stop Loss: ${strategy.strategy?.stopLoss || 'N/A'}%
+- Take Profit: ${strategy.strategy?.takeProfit || 'N/A'}%
+- Notes: ${strategy.notes || 'None'}
+
+Provide a breakdown of:
+1. What market condition this strategy targets
+2. How the entry/exit signals work (in plain language)
+3. Risk management (stop loss, take profit)
+4. Suggested capital allocation
+5. Potential weaknesses or caveats
+
+Keep it under 200 words. Be educational, not promotional.`;
+
+    try {
+      const body = JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 400 });
+      const result = await new Promise<any>((resolve, reject) => {
+        const req = require('https').request(
+          { hostname: 'api.deepseek.com', path: '/v1/chat/completions', method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` } },
+          (res: any) => { let data = ''; res.on('data', (c: string) => data += c); res.on('end', () => { try { resolve(JSON.parse(data)); } catch { reject(new Error('Invalid JSON')); } }); }
+        );
+        req.on('error', reject); req.write(body); req.end();
+      });
+      const content = result.choices?.[0]?.message?.content || '';
+      return { success: true, explanation: content };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
 
   // ── strategy:compare ───────────────────────────────────────────────
   ipcMain.handle('strategy:compare', async (_e, s1: any, s2: any) => {
@@ -197,18 +192,18 @@ export function registerStrategyIPC(
     const fmt = (s: any) => `Name: ${s.name || '?'} | Symbol: ${s.symbol || '?'} | Type: ${s.strategy?.type || '?'} | Params: ${JSON.stringify(s.strategy?.params || {})} | SL: ${s.strategy?.stopLoss || '?'}% | TP: ${s.strategy?.takeProfit || '?'}%`;
     const prompt = `You are a quantitative trading strategy comparison tool. Compare these two strategies objectively.
 
-  Strategy A: ${fmt(s1)}
+Strategy A: ${fmt(s1)}
 
-  Strategy B: ${fmt(s2)}
+Strategy B: ${fmt(s2)}
 
-  Provide a structured comparison covering:
-  1. Which strategy is more aggressive / conservative
-  2. Which suits trending vs ranging markets
-  3. Risk/reward comparison
-  4. Which has better risk management (stop loss / take profit)
-  5. Overall recommendation for different trader profiles
+Provide a structured comparison covering:
+1. Which strategy is more aggressive / conservative
+2. Which suits trending vs ranging markets
+3. Risk/reward comparison
+4. Which has better risk management (stop loss / take profit)
+5. Overall recommendation for different trader profiles
 
-  Keep it under 250 words. Be objective, not promotional.`;
+Keep it under 250 words. Be objective, not promotional.`;
 
     try {
       const body = JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 500 });
@@ -226,7 +221,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── strategy:optimize ───────────────────────────────────────────────
   // ── Strategy Optimizer (LLM-powered) ─────────────────────────────────
   ipcMain.handle('strategy:optimize', async (_e, raw: unknown) => {
     const vErr = validate(StrategyOptimizeSchema, raw);
@@ -243,25 +237,25 @@ export function registerStrategyIPC(
     const metricSummary = `Total Return: ${totalReturn}%; Sharpe: ${sharpeRatio}; Max Drawdown: ${maxDrawdown}%; Win Rate: ${winRate}%${tradeCount !== undefined ? `; Trades: ${tradeCount}` : ''}`;
     const prompt = `You are a quantitative trading strategy optimization assistant. Based on the backtest results below, generate 3 concise parameter optimization suggestions to improve this strategy.
 
-  Current Strategy:
-  - Name: ${strategyDSL.name}
-  - Type: ${strategyDSL.type}
-  - Symbol: ${strategyDSL.symbol || 'Unknown'}
-  - Current Params: ${JSON.stringify(strategyDSL.params || {})}
-  - Stop Loss: ${strategyDSL.stopLoss ?? 'Not set'}%
-  - Take Profit: ${strategyDSL.takeProfit ?? 'Not set'}%
+Current Strategy:
+- Name: ${strategyDSL.name}
+- Type: ${strategyDSL.type}
+- Symbol: ${strategyDSL.symbol || 'Unknown'}
+- Current Params: ${JSON.stringify(strategyDSL.params || {})}
+- Stop Loss: ${strategyDSL.stopLoss ?? 'Not set'}%
+- Take Profit: ${strategyDSL.takeProfit ?? 'Not set'}%
 
-  Backtest Results:
-  ${metricSummary}
+Backtest Results:
+${metricSummary}
 
 
-  Provide exactly 3 suggestions. For each, explain:
-  1. Which parameter to change and why
-  2. The expected improvement
-  3. A concise rationale (1 sentence)
+Provide exactly 3 suggestions. For each, explain:
+1. Which parameter to change and why
+2. The expected improvement
+3. A concise rationale (1 sentence)
 
-  Respond ONLY with valid JSON in this exact format (no markdown, no explanation outside JSON):
-  {
+Respond ONLY with valid JSON in this exact format (no markdown, no explanation outside JSON):
+{
   "suggestions": [
     {
       "param": "param_name",
@@ -270,7 +264,7 @@ export function registerStrategyIPC(
       "reason": "why this improves the strategy"
     }
   ]
-  }`;
+}`;
 
 
     try {
@@ -291,7 +285,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── strategy:correlation ───────────────────────────────────────────────
   // ── Strategy Correlation Matrix ───────────────────────────────────────
   ipcMain.handle('strategy:correlation', async (_e, raw: unknown) => {
     const vErr = validate(StrategyCorrelationSchema, raw);
@@ -306,7 +299,6 @@ export function registerStrategyIPC(
     return { success: true, ...result };
   });
 
-  // ── strategy:auto-tune ───────────────────────────────────────────────
   // ── Auto-Tuner ──────────────────────────────────────────────────────
   ipcMain.handle('strategy:auto-tune', async (_e, raw: unknown) => {
     const vErr = validate(StrategyAutoTuneSchema, raw);
@@ -325,7 +317,6 @@ export function registerStrategyIPC(
     return { success: true, result };
   });
 
-  // ── strategy:correlation-viz ───────────────────────────────────────────────
   // ── Q11: Correlation Visualizer ────────────────────────────────────
   ipcMain.handle('strategy:correlation-viz', async (_e, raw: unknown) => {
     try {
@@ -341,7 +332,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── paper:start ───────────────────────────────────────────────
   // ── Q17: Paper Trader ─────────────────────────────────────────
   ipcMain.handle('paper:start', async () => {
     try {
@@ -353,7 +343,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── paper:stop ───────────────────────────────────────────────
   ipcMain.handle('paper:stop', async () => {
     try {
       const { getPaperTrader } = require('./engine/paper-trader');
@@ -365,7 +354,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── paper:reset ───────────────────────────────────────────────
   ipcMain.handle('paper:reset', async () => {
     try {
       const { getPaperTrader } = require('./engine/paper-trader');
@@ -376,7 +364,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── paper:report ───────────────────────────────────────────────
   ipcMain.handle('paper:report', async () => {
     try {
       const { getPaperTrader } = require('./engine/paper-trader');
@@ -388,7 +375,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── paper:execute-signal ───────────────────────────────────────────────
   ipcMain.handle('paper:execute-signal', async (_e, raw: unknown) => {
     try {
       const { getPaperTrader } = require('./engine/paper-trader');
@@ -401,7 +387,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── paper:status ───────────────────────────────────────────────
   ipcMain.handle('paper:status', async () => {
     try {
       const { getPaperTrader } = require('./engine/paper-trader');
@@ -411,7 +396,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── strategy:templates ───────────────────────────────────────────────
   // ── Q18: Strategy Templates ─────────────────────────────────
   ipcMain.handle('strategy:templates', async (_e, raw: unknown) => {
     try {
@@ -444,7 +428,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── paper:start ───────────────────────────────────────────────
   ipcMain.handle('paper:start', async (_e, symbols?: string[]) => {
 
     try {
@@ -465,7 +448,6 @@ export function registerStrategyIPC(
 
   });
 
-  // ── paper:stop ───────────────────────────────────────────────
   ipcMain.handle('paper:stop', async () => {
 
     try {
@@ -484,7 +466,6 @@ export function registerStrategyIPC(
 
   });
 
-  // ── paper:reset ───────────────────────────────────────────────
   ipcMain.handle('paper:reset', async () => {
 
     try {
@@ -503,7 +484,6 @@ export function registerStrategyIPC(
 
   });
 
-  // ── paper:report ───────────────────────────────────────────────
   ipcMain.handle('paper:report', async (_e, strategyId?: string) => {
 
     try {
@@ -524,7 +504,6 @@ export function registerStrategyIPC(
 
   });
 
-  // ── paper:submit-order ───────────────────────────────────────────────
   ipcMain.handle('paper:submit-order', async (_e, raw: unknown) => {
 
     try {
@@ -547,7 +526,6 @@ export function registerStrategyIPC(
 
   });
 
-  // ── strategy:multi-factor ───────────────────────────────────────────────
   // ── Q15: Multi-Factor Model ─────────────────────────────────────
   ipcMain.handle('strategy:multi-factor', async (_e, raw: unknown) => {
     try {
@@ -568,7 +546,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── strategy:compare ───────────────────────────────────────────────
   // ── Q13: Backtest Comparator ──────────────────────────────────────
   ipcMain.handle('strategy:compare', async (_e, raw: unknown) => {
     try {
@@ -585,18 +562,15 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── nl:parse ───────────────────────────────────────────────
   // ── NL Parser ───────────────────────────────────────────────────────
   ipcMain.handle('nl:parse', async (_e, text: string) => {
     return parseNaturalLanguage(text);
   });
 
-  // ── nl:templates ───────────────────────────────────────────────
   ipcMain.handle('nl:templates', async () => {
     return { success: true, templates: STRATEGY_TEMPLATES };
   });
 
-  // ── strategy:correlation ───────────────────────────────────────────────
   // ── Correlation Matrix (Q2: QClaw) ──────────────────────────────────
   ipcMain.handle('strategy:correlation', async (_e, inputs: Array<{ id: string; equityCurve: Array<{ time: number; value: number }> }>) => {
     try {
@@ -608,7 +582,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── live:start ───────────────────────────────────────────────
   // ── Q14: Live Executor ──────────────────────────────────────────────
   ipcMain.handle('live:start', async (_e, symbols?: string[]) => {
     try {
@@ -623,7 +596,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── live:stop ───────────────────────────────────────────────
   ipcMain.handle('live:stop', async () => {
     try {
       liveExecutor?.stop();
@@ -633,7 +605,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── live:add-strategy ───────────────────────────────────────────────
   ipcMain.handle('live:add-strategy', async (_e, config: any) => {
     try {
       if (!liveExecutor) return { success: false, error: 'LiveExecutor not initialized' };
@@ -646,7 +617,6 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── live:remove-strategy ───────────────────────────────────────────────
   ipcMain.handle('live:remove-strategy', async (_e, strategyId: string) => {
     try {
       liveExecutor?.removeStrategy(strategyId);
@@ -656,17 +626,14 @@ export function registerStrategyIPC(
     }
   });
 
-  // ── live:get-status ───────────────────────────────────────────────
   ipcMain.handle('live:get-status', async () => {
     return { success: true, status: liveExecutor?.getStatus() ?? null };
   });
 
-  // ── live:get-positions ───────────────────────────────────────────────
   ipcMain.handle('live:get-positions', async () => {
     return { success: true, positions: liveExecutor?.getPositions() ?? [] };
   });
 
-  // ── live:get-orders ───────────────────────────────────────────────
   ipcMain.handle('live:get-orders', async () => {
     return { success: true, orders: liveExecutor?.getOrders() ?? [] };
   });

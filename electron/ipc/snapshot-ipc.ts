@@ -1,35 +1,46 @@
-// ── DAWN WHALES IPC: snapshot ────────────────────────────────────────────
-// Auto-split from main.ts — 12 handlers
-//
-// Registered channels:
-//   snapshot:capture
-//   snapshot:query
-//   snapshot:get
-//   snapshot:compare
-//   snapshot:timeline
-//   snapshot:latest
-//   snapshot:cleanup
-//   snapshot:export
-//   snapshot:import
-//   snapshot:stats
-//   snapshot:delete
-//   snapshot:clear
+// ?? DAWN WHALES IPC: snapshot ????????????????????????????????????????????
+// Auto-split from main.ts ? 12 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { captureSnapshot, cleanupOldSnapshots, clearAllSnapshots, compareSnapshots, deleteSnapshot, exportSnapshots, getLatestSnapshot, getSnapshot, getSnapshotStats, getSnapshotTimeline, importSnapshots, querySnapshots } from './engine/snapshot-service';
+import { captureSnapshot, cleanupOldSnapshots, clearAllSnapshots, compareSnapshots, deleteSnapshot, exportSnapshots, getLatestSnapshot, getSnapshot, getSnapshotStats, getSnapshotTimeline, importSnapshots, querySnapshots } from '../engine/snapshot-service';
 
-/**
- * Register all snapshot IPC handlers
- *
- * @param snapshot - service reference
- */
 export function registerSnapshotIPC(
-  snapshot: any
+  _services: any
 ) {
 
-  // ── snapshot:capture ───────────────────────────────────────────────
   // ── JVS-39: Data Snapshot Service ──────────────────────────────────────
   ipcMain.handle('snapshot:capture', async (_e, type: string, category: string, data: any, metadata?: any) => {
     try {
@@ -40,7 +51,6 @@ export function registerSnapshotIPC(
     }
   });
 
-  // ── snapshot:query ───────────────────────────────────────────────
   ipcMain.handle('snapshot:query', async (_e, query: any) => {
     try {
       const snapshots = await querySnapshots(query);
@@ -50,7 +60,6 @@ export function registerSnapshotIPC(
     }
   });
 
-  // ── snapshot:get ───────────────────────────────────────────────
   ipcMain.handle('snapshot:get', async (_e, id: string) => {
     try {
       const snapshot = await getSnapshot(id);
@@ -60,7 +69,6 @@ export function registerSnapshotIPC(
     }
   });
 
-  // ── snapshot:compare ───────────────────────────────────────────────
   ipcMain.handle('snapshot:compare', async (_e, id1: string, id2: string) => {
     try {
       const comparison = await compareSnapshots(id1, id2);
@@ -70,7 +78,6 @@ export function registerSnapshotIPC(
     }
   });
 
-  // ── snapshot:timeline ───────────────────────────────────────────────
   ipcMain.handle('snapshot:timeline', async (_e, category: string, limit?: number) => {
     try {
       const timeline = await getSnapshotTimeline(category, limit);
@@ -80,7 +87,6 @@ export function registerSnapshotIPC(
     }
   });
 
-  // ── snapshot:latest ───────────────────────────────────────────────
   ipcMain.handle('snapshot:latest', async (_e, category: string) => {
     try {
       const snapshot = await getLatestSnapshot(category);
@@ -90,7 +96,6 @@ export function registerSnapshotIPC(
     }
   });
 
-  // ── snapshot:cleanup ───────────────────────────────────────────────
   ipcMain.handle('snapshot:cleanup', async (_e, daysOld?: number) => {
     try {
       const deleted = await cleanupOldSnapshots(daysOld);
@@ -100,7 +105,6 @@ export function registerSnapshotIPC(
     }
   });
 
-  // ── snapshot:export ───────────────────────────────────────────────
   ipcMain.handle('snapshot:export', async (_e, query?: any) => {
     try {
       const json = await exportSnapshots(query);
@@ -110,7 +114,6 @@ export function registerSnapshotIPC(
     }
   });
 
-  // ── snapshot:import ───────────────────────────────────────────────
   ipcMain.handle('snapshot:import', async (_e, jsonString: string) => {
     try {
       const imported = await importSnapshots(jsonString);
@@ -120,7 +123,6 @@ export function registerSnapshotIPC(
     }
   });
 
-  // ── snapshot:stats ───────────────────────────────────────────────
   ipcMain.handle('snapshot:stats', async () => {
     try {
       const stats = getSnapshotStats();
@@ -130,7 +132,6 @@ export function registerSnapshotIPC(
     }
   });
 
-  // ── snapshot:delete ───────────────────────────────────────────────
   ipcMain.handle('snapshot:delete', async (_e, id: string) => {
     try {
       const deleted = await deleteSnapshot(id);
@@ -140,7 +141,6 @@ export function registerSnapshotIPC(
     }
   });
 
-  // ── snapshot:clear ───────────────────────────────────────────────
   ipcMain.handle('snapshot:clear', async () => {
     try {
       await clearAllSnapshots();

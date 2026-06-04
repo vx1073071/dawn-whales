@@ -46,12 +46,12 @@ export default function MarketPage() {
   const [klinePeriod, setKlinePeriod] = useState<string>('daily');
 
   const PERIODS = [
-    { key: '1m', label: '1分' },
-    { key: '5m', label: '5分' },
-    { key: '15m', label: '15分' },
-    { key: '60m', label: '60分' },
-    { key: 'daily', label: '日K' },
-    { key: 'weekly', label: '周K' },
+    { key: '1m', label: t('common.1min') },
+    { key: '5m', label: t('common.5min') },
+    { key: '15m', label: t('common.15min') },
+    { key: '60m', label: t('common.60min') },
+    { key: 'daily', label: t('common.dailyK') },
+    { key: 'weekly', label: t('common.weeklyK') },
   ];
 
   useEffect(() => {
@@ -91,12 +91,12 @@ export default function MarketPage() {
     <div className="p-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">行情中心</h1>
-          <p className="text-gray-400 text-sm">实时监控自选股行情 · Push 模式 &lt;50ms</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{t('market.title')}</h1>
+          <p className="text-gray-400 text-sm">{t('market.subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setShowSearch(!showSearch)} className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">
-            ＋ 添加自选
+            ＋ {t('market.addWatch')}
           </button>
         </div>
       </div>
@@ -108,7 +108,7 @@ export default function MarketPage() {
             autoFocus
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="搜索股票代码或名称..."
+            placeholder={t('market.searchPlaceholder')}
             className="w-full bg-[#12121a] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50 mb-3"
             onKeyDown={(e) => { if (e.key === 'Escape') setShowSearch(false); }}
           />

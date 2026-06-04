@@ -60,7 +60,10 @@
     "back": "Zurück",
     "parsing": "Parsen...",
     "orTry": "Oder versuchen",
-    "loadingFailed": "加载失败"
+    "loadingFailed": "加载失败",
+    "time": "Zeit",
+    "action": "Aktion",
+    "unknown": "Unbekannt"
   },
   "nav": {
     "overview": "Übersicht",
@@ -195,7 +198,17 @@
     "stock": "Aktie",
     "commission": "Provision",
     "noMatchingRecords": "Keine Treffer",
-    "tradeHistory": "交易历史"
+    "tradeHistory": "交易历史",
+    "activeOrders": "Aktive Orders",
+    "historyOrders": "Historie",
+    "strategyTrades": "Strategie-Trades",
+    "noActiveOrders": "Keine aktiven Orders",
+    "noHistoryOrders": "Keine Historie",
+    "noStrategyTrades": "Keine Strategie-Trades",
+    "strategyTradesHint": "Automatisch aufgezeichnet",
+    "orderPrice": "Orderpreis",
+    "side": "Richtung",
+    "ordersSubtitle": "Aktive Orders, Historie und Strategie-Trades"
   },
   "strategy": {
     "title": "Strategie-Labor",
@@ -306,7 +319,8 @@
     "filled": "Ausgeführt",
     "partial": "Teilweise",
     "cancelled": "Storniert",
-    "rejected": "Abgelehnt"
+    "rejected": "Abgelehnt",
+    "waiting": "Wartend"
   },
   "market": {
     "US": "US",

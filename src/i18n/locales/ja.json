@@ -60,7 +60,10 @@
     "back": "戻る",
     "parsing": "解析中...",
     "orTry": "または",
-    "loadingFailed": "加载失败"
+    "loadingFailed": "加载失败",
+    "time": "時間",
+    "action": "操作",
+    "unknown": "不明"
   },
   "nav": {
     "overview": "概要",
@@ -195,7 +198,17 @@
     "stock": "銘柄",
     "commission": "手数料",
     "noMatchingRecords": "該当データなし",
-    "tradeHistory": "交易历史"
+    "tradeHistory": "交易历史",
+    "activeOrders": "有効注文",
+    "historyOrders": "注文履歴",
+    "strategyTrades": "戦略取引",
+    "noActiveOrders": "有効注文なし",
+    "noHistoryOrders": "履歴なし",
+    "noStrategyTrades": "戦略取引なし",
+    "strategyTradesHint": "戦略実行時に自動記録",
+    "orderPrice": "注文価格",
+    "side": "方向",
+    "ordersSubtitle": "有効注文、履歴、戦略取引"
   },
   "strategy": {
     "title": "戦略ラボ",
@@ -306,7 +319,8 @@
     "filled": "約定済",
     "partial": "部分約定",
     "cancelled": "取消済",
-    "rejected": "拒否"
+    "rejected": "拒否",
+    "waiting": "待機中"
   },
   "market": {
     "US": "米国",

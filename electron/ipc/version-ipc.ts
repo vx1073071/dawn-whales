@@ -1,35 +1,46 @@
-// ── DAWN WHALES IPC: version ────────────────────────────────────────────
-// Auto-split from main.ts — 12 handlers
-//
-// Registered channels:
-//   version:track
-//   version:get-entity-versions
-//   version:get
-//   version:get-latest
-//   version:diff
-//   version:rollback
-//   version:query
-//   version:stats
-//   version:delete
-//   version:clear
-//   version:export
-//   version:import
+// ?? DAWN WHALES IPC: version ????????????????????????????????????????????
+// Auto-split from main.ts ? 12 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { clearAllVersions, deleteVersion, diffVersions, exportVersions, getEntityVersions, getLatestVersion, getVersion, getVersionStats, importVersions, queryVersions, rollback, trackVersion } from './engine/version-control-service';
+import { clearAllVersions, deleteVersion, diffVersions, exportVersions, getEntityVersions, getLatestVersion, getVersion, getVersionStats, importVersions, queryVersions, rollback, trackVersion } from '../engine/version-control-service';
 
-/**
- * Register all version IPC handlers
- *
- * @param version - service reference
- */
 export function registerVersionIPC(
-  version: any
+  _services: any
 ) {
 
-  // ── version:track ───────────────────────────────────────────────
   // ── JVS-40: Version Control Service ──────────────────────────────────────
   ipcMain.handle('version:track', async (_e, entityId: string, entityType: string, data: any, changeType?: string, changeSummary?: string, userId?: string, tags?: string[]) => {
     try {
@@ -40,7 +51,6 @@ export function registerVersionIPC(
     }
   });
 
-  // ── version:get-entity-versions ───────────────────────────────────────────────
   ipcMain.handle('version:get-entity-versions', async (_e, entityId: string, limit?: number) => {
     try {
       const versions = await getEntityVersions(entityId, limit);
@@ -50,7 +60,6 @@ export function registerVersionIPC(
     }
   });
 
-  // ── version:get ───────────────────────────────────────────────
   ipcMain.handle('version:get', async (_e, versionId: string) => {
     try {
       const version = await getVersion(versionId);
@@ -60,7 +69,6 @@ export function registerVersionIPC(
     }
   });
 
-  // ── version:get-latest ───────────────────────────────────────────────
   ipcMain.handle('version:get-latest', async (_e, entityId: string) => {
     try {
       const version = await getLatestVersion(entityId);
@@ -70,7 +78,6 @@ export function registerVersionIPC(
     }
   });
 
-  // ── version:diff ───────────────────────────────────────────────
   ipcMain.handle('version:diff', async (_e, versionId1: string, versionId2: string) => {
     try {
       const diff = await diffVersions(versionId1, versionId2);
@@ -80,7 +87,6 @@ export function registerVersionIPC(
     }
   });
 
-  // ── version:rollback ───────────────────────────────────────────────
   ipcMain.handle('version:rollback', async (_e, entityId: string, targetVersion: number) => {
     try {
       const result = await rollback(entityId, targetVersion);
@@ -90,7 +96,6 @@ export function registerVersionIPC(
     }
   });
 
-  // ── version:query ───────────────────────────────────────────────
   ipcMain.handle('version:query', async (_e, query: any) => {
     try {
       const versions = await queryVersions(query);
@@ -100,7 +105,6 @@ export function registerVersionIPC(
     }
   });
 
-  // ── version:stats ───────────────────────────────────────────────
   ipcMain.handle('version:stats', async () => {
     try {
       const stats = getVersionStats();
@@ -110,7 +114,6 @@ export function registerVersionIPC(
     }
   });
 
-  // ── version:delete ───────────────────────────────────────────────
   ipcMain.handle('version:delete', async (_e, versionId: string) => {
     try {
       const deleted = await deleteVersion(versionId);
@@ -120,7 +123,6 @@ export function registerVersionIPC(
     }
   });
 
-  // ── version:clear ───────────────────────────────────────────────
   ipcMain.handle('version:clear', async () => {
     try {
       await clearAllVersions();
@@ -130,7 +132,6 @@ export function registerVersionIPC(
     }
   });
 
-  // ── version:export ───────────────────────────────────────────────
   ipcMain.handle('version:export', async (_e, query?: any) => {
     try {
       const json = await exportVersions(query);
@@ -140,7 +141,6 @@ export function registerVersionIPC(
     }
   });
 
-  // ── version:import ───────────────────────────────────────────────
   ipcMain.handle('version:import', async (_e, jsonString: string) => {
     try {
       const imported = await importVersions(jsonString);

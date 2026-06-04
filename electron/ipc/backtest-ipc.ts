@@ -1,32 +1,48 @@
-// ── DAWN WHALES IPC: backtest ────────────────────────────────────────────
-// Auto-split from main.ts — 7 handlers
-//
-// Registered channels:
-//   backtest:multiPeriod
-//   backtest:paramSweep
-//   backtest:riskMetrics
-//   backtest:stability
-//   backtest:walk-forward
-//   backtest:param-scan
-//   backtest:multi-timeframe
+// ?? DAWN WHALES IPC: backtest ????????????????????????????????????????????
+// Auto-split from main.ts ? 7 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { BacktestEngine } from './engine/backtest-engine';
-import { WalkForwardEngine } from './engine/walk-forward';
-import { ParameterScanner } from './engine/parameter-scanner-v2';
+import { BacktestEngine } from '../engine/backtest-engine';
+import { WalkForwardEngine } from '../engine/walk-forward';
+import { ParameterScanner } from '../engine/parameter-scanner-v2';
 
-/**
- * Register all backtest IPC handlers
- *
- * @param backtestEngine - service reference
- */
 export function registerBacktestIPC(
-  backtestEngine: any
+  _services: any
 ) {
 
-  // ── backtest:multiPeriod ───────────────────────────────────────────────
   ipcMain.handle('backtest:multiPeriod', async (_e, config: any) => {
     const vErr = validate(BacktestMultiPeriodSchema, { config });
     if (vErr) return vErr;
@@ -42,7 +58,6 @@ export function registerBacktestIPC(
     }
   });
 
-  // ── backtest:paramSweep ───────────────────────────────────────────────
   ipcMain.handle('backtest:paramSweep', async (_e, config: any) => {
     const vErr = validate(BacktestParamSweepSchema, { config });
     if (vErr) return vErr;
@@ -58,7 +73,6 @@ export function registerBacktestIPC(
     }
   });
 
-  // ── backtest:riskMetrics ───────────────────────────────────────────────
   ipcMain.handle('backtest:riskMetrics', async (_e, equityCurve: number[], riskFreeRate?: number) => {
     try {
       const { BacktestEnhancer } = require('./engine/backtest-enhancer');
@@ -70,7 +84,6 @@ export function registerBacktestIPC(
     }
   });
 
-  // ── backtest:stability ───────────────────────────────────────────────
   // ── Q64: Backtest Stability Checker ──────────────────────────────────
   ipcMain.handle('backtest:stability', async (_e, raw: unknown) => {
     try {
@@ -92,7 +105,6 @@ export function registerBacktestIPC(
     }
   });
 
-  // ── backtest:walk-forward ───────────────────────────────────────────────
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
   ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
@@ -111,7 +123,6 @@ export function registerBacktestIPC(
     }
   });
 
-  // ── backtest:param-scan ───────────────────────────────────────────────
   // ── Parameter Scanner (Sprint 2 — JVS) ───────────────────────────────
   ipcMain.handle('backtest:param-scan', async (_e, config: any) => {
     const vErr = validate(BacktestParamScanSchema, { config });
@@ -130,7 +141,6 @@ export function registerBacktestIPC(
     }
   });
 
-  // ── backtest:multi-timeframe ───────────────────────────────────────────────
   // ── Multi-timeframe comparison (Sprint 2 — JVS) ──────────────────────
   ipcMain.handle('backtest:multi-timeframe', async (_e, config: any) => {
     const vErr = validate(BacktestMultiTimeframeSchema, { config });

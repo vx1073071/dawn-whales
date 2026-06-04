@@ -1,37 +1,46 @@
-// ── DAWN WHALES IPC: app ────────────────────────────────────────────
-// Auto-split from main.ts — 10 handlers
-//
-// Registered channels:
-//   app:getInfo
-//   app:getMemoryUsage
-//   app:exportPdf
-//   app:emergencyStop
-//   app:openExternal
-//   app:getVersion
-//   app:getPlatform
-//   app:checkUpdate
-//   app:downloadUpdate
-//   app:installUpdate
+// ?? DAWN WHALES IPC: app ????????????????????????????????????????????
+// Auto-split from main.ts ? 10 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { getVersion } from './engine/version-control-service';
+import { getVersion } from '../engine/version-control-service';
 
-/**
- * Register all app IPC handlers
- *
- * @param version - service reference
- * @param mainWindow - service reference
- * @param strategyEngine - service reference
- */
 export function registerAppIPC(
-  version: any,
-  mainWindow: any,
-  strategyEngine: any
+  _services: any
 ) {
 
-  // ── app:getInfo ───────────────────────────────────────────────
   // ── App ─────────────────────────────────────────────────────────────
   ipcMain.handle('app:getInfo', () => ({
     version: app.getVersion(),
@@ -43,13 +52,11 @@ export function registerAppIPC(
     chromeVersion: process.versions.chrome,
   }));
 
-  // ── app:getMemoryUsage ───────────────────────────────────────────────
   ipcMain.handle('app:getMemoryUsage', () => ({
     mainProcess: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
     total: Math.round(process.memoryUsage().rss / 1024 / 1024),
   }));
 
-  // ── app:exportPdf ───────────────────────────────────────────────
   ipcMain.handle('app:exportPdf', async (_e, filename: string) => {
     try {
       if (!mainWindow || mainWindow.isDestroyed()) {
@@ -80,7 +87,6 @@ export function registerAppIPC(
     }
   });
 
-  // ── app:emergencyStop ───────────────────────────────────────────────
   ipcMain.handle('app:emergencyStop', async () => {
     try {
       log.warn('[App] Emergency stop triggered');
@@ -106,7 +112,6 @@ export function registerAppIPC(
     }
   });
 
-  // ── app:openExternal ───────────────────────────────────────────────
   ipcMain.handle('app:openExternal', async (_e, rawUrl: string) => {
     const vErr = validate(Z.object({ rawUrl: z.string().url() }), { rawUrl });
     if (vErr) return vErr;
@@ -123,23 +128,12 @@ export function registerAppIPC(
     }
   });
 
-  // ── app:getVersion ───────────────────────────────────────────────
   ipcMain.handle('app:getVersion', () => app.getVersion());
   ipcMain.handle('app:getPlatform', () => process.platform);
 
-  // ── Auto-updater ──────────────────────────────────────────────────
-  ipcMain.handle('app:checkUpdate', async () => {
-    try {
-      const result = await autoUpdater.checkForUpdates();
-      return { success: true, version: result?.updateInfo?.version || null };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
-  });
-
-  // ── app:getPlatform ───────────────────────────────────────────────
   ipcMain.handle('app:getPlatform', () => process.platform);
 
+
   // ── Auto-updater ──────────────────────────────────────────────────
   ipcMain.handle('app:checkUpdate', async () => {
     try {
@@ -150,18 +144,6 @@ export function registerAppIPC(
     }
   });
 
-  // ── app:checkUpdate ───────────────────────────────────────────────
-  // ── Auto-updater ──────────────────────────────────────────────────
-  ipcMain.handle('app:checkUpdate', async () => {
-    try {
-      const result = await autoUpdater.checkForUpdates();
-      return { success: true, version: result?.updateInfo?.version || null };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
-  });
-
-  // ── app:downloadUpdate ───────────────────────────────────────────────
   ipcMain.handle('app:downloadUpdate', async () => {
     try {
       await autoUpdater.downloadUpdate();
@@ -171,7 +153,6 @@ export function registerAppIPC(
     }
   });
 
-  // ── app:installUpdate ───────────────────────────────────────────────
   ipcMain.handle('app:installUpdate', () => {
     autoUpdater.quitAndInstall();
   });

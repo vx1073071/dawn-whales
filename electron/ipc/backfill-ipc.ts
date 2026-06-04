@@ -1,28 +1,46 @@
-// ── DAWN WHALES IPC: backfill ────────────────────────────────────────────
-// Auto-split from main.ts — 6 handlers
-//
-// Registered channels:
-//   backfill:start
-//   backfill:stop
-//   backfill:status
-//   backfill:stats
-//   backfill:symbols
-//   backfill:incremental
+// ?? DAWN WHALES IPC: backfill ????????????????????????????????????????????
+// Auto-split from main.ts ? 6 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { backfillSymbols, getBackfillStats, getBackfillStatus, incrementalBackfill, startBackfill, stopBackfill } from './engine/backfill-service';
+import { backfillSymbols, getBackfillStats, getBackfillStatus, incrementalBackfill, startBackfill, stopBackfill } from '../engine/backfill-service';
 
-/**
- * Register all backfill IPC handlers
- *
- */
 export function registerBackfillIPC(
-  
+  _services: any
 ) {
 
-  // ── backfill:start ───────────────────────────────────────────────
   // ── Backfill Service (JVS-59) ───────────────────────────────────────────
   ipcMain.handle('backfill:start', async (_e, config: any) => {
     try {
@@ -34,7 +52,6 @@ export function registerBackfillIPC(
     }
   });
 
-  // ── backfill:stop ───────────────────────────────────────────────
   ipcMain.handle('backfill:stop', async () => {
     try {
       stopBackfill();
@@ -45,7 +62,6 @@ export function registerBackfillIPC(
     }
   });
 
-  // ── backfill:status ───────────────────────────────────────────────
   ipcMain.handle('backfill:status', async () => {
     try {
       const status = getBackfillStatus();
@@ -56,7 +72,6 @@ export function registerBackfillIPC(
     }
   });
 
-  // ── backfill:stats ───────────────────────────────────────────────
   ipcMain.handle('backfill:stats', async () => {
     try {
       const stats = getBackfillStats();
@@ -67,7 +82,6 @@ export function registerBackfillIPC(
     }
   });
 
-  // ── backfill:symbols ───────────────────────────────────────────────
   ipcMain.handle('backfill:symbols', async (_e, symbols: string[], startDate: string, endDate: string, interval?: any) => {
     try {
       const result = await backfillSymbols(symbols, startDate, endDate, interval);
@@ -78,7 +92,6 @@ export function registerBackfillIPC(
     }
   });
 
-  // ── backfill:incremental ───────────────────────────────────────────────
   ipcMain.handle('backfill:incremental', async (_e, symbol: string, startDate: string, endDate: string, existingRecords: any[]) => {
     try {
       const result = await incrementalBackfill(symbol, startDate, endDate, existingRecords);

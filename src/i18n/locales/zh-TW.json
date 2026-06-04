@@ -60,7 +60,10 @@
     "back": "返回",
     "parsing": "解析中...",
     "orTry": "或試試",
-    "loadingFailed": "加载失败"
+    "loadingFailed": "加载失败",
+    "time": "時間",
+    "action": "操作",
+    "unknown": "未知"
   },
   "nav": {
     "overview": "總覽",
@@ -195,7 +198,17 @@
     "stock": "股票",
     "commission": "手續費",
     "noMatchingRecords": "無匹配記錄",
-    "tradeHistory": "交易历史"
+    "tradeHistory": "交易历史",
+    "activeOrders": "當前委託",
+    "historyOrders": "歷史委託",
+    "strategyTrades": "策略交易記錄",
+    "noActiveOrders": "暫無活躍委託",
+    "noHistoryOrders": "暫無歷史委託",
+    "noStrategyTrades": "暫無策略交易記錄",
+    "strategyTradesHint": "策略運行後自動記錄在這裡",
+    "orderPrice": "委託價",
+    "side": "方向",
+    "ordersSubtitle": "當前委託、歷史成交和策略交易記錄"
   },
   "strategy": {
     "title": "策略工坊",
@@ -306,7 +319,8 @@
     "filled": "已成交",
     "partial": "部分成交",
     "cancelled": "已撤單",
-    "rejected": "已拒絕"
+    "rejected": "已拒絕",
+    "waiting": "等待中"
   },
   "market": {
     "US": "美股",

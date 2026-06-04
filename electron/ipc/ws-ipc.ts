@@ -1,51 +1,50 @@
-// ── DAWN WHALES IPC: ws ────────────────────────────────────────────
-// Auto-split from main.ts — 24 handlers
-//
-// Registered channels:
-//   ws:connect
-//   ws:disconnect
-//   ws:subscribe
-//   ws:unsubscribe
-//   ws:subscribe-batch
-//   ws:unsubscribe-batch
-//   ws:status
-//   ws:streaming-stats
-//   quote:stream-start
-//   quote:stream-stop
-//   quote:stream-status
-//   quote:subscribe
-//   quote:unsubscribe
-//   push2:get-sector-heatmap
-//   push2:get-capital-flow-rank
-//   push2:get-stock-quote
-//   push2:get-market-breadth
-//   push2:proxy-status
-//   push2:clear-cache
-//   ws:start-stream
-//   ws:stop-stream
-//   ws:subscribe
-//   ws:unsubscribe
-//   ws:stream-status
+// ?? DAWN WHALES IPC: ws ????????????????????????????????????????????
+// Auto-split from main.ts ? 24 handlers
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import log from '../../node_modules/electron-log';
+import { validate, z, 
+  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
+  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
+  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
+  BrokerSwitchSchema, BrokerAddSchema,
+  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
+  StrategyBacktestSchema, BacktestMultiPeriodSchema,
+  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
+  BacktestWalkForwardSchema, BacktestParamScanSchema,
+  BacktestMultiTimeframeSchema,
+  RiskUpdateConfigSchema, RiskUpdateVixSchema,
+  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
+  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
+  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
+  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
+  DataComputeRegimeSchema,
+  MarketplaceRateSchema, MarketplaceCommentSchema,
+  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
+  GreeksCalculateSchema, GreeksPortfolioSchema,
+  DataNewsSchema, DataFundamentalSchema,
+  DataCapitalFlowSchema, DataAnomaliesSchema,
+  DataCompositeScoreSchema,
+  NlParseSchema, StrategyExplainSchema,
+  StrategyCompareSchema, StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
+  NotificationGenerateSchema,
+  ReportGenerateSchema, ReportQuickSchema,
+  StrategyAutoTuneSchema,
+} from '../ipc-schemas';
 
 // Auto-imported dependencies:
-import { getQuoteStream } from './engine/quote-stream';
-import { getMarketBreadth } from './engine/market-breadth';
-import { getPush2Proxy } from './data/push2-proxy';
-import { getWsDataStream } from './data/ws-data-stream';
-import { connectWebSocket, disconnectWebSocket, getStreamingStats, getWebSocketStatus, subscribeToSymbol, subscribeToSymbols, unsubscribeFromSymbol, unsubscribeFromSymbols } from './engine/websocket-enhancer';
+import { getQuoteStream } from '../engine/quote-stream';
+import { getMarketBreadth } from '../engine/market-breadth';
+import { getPush2Proxy } from '../data/push2-proxy';
+import { getWsDataStream } from '../data/ws-data-stream';
+import { connectWebSocket, disconnectWebSocket, getStreamingStats, getWebSocketStatus, subscribeToSymbol, subscribeToSymbols, unsubscribeFromSymbol, unsubscribeFromSymbols } from '../engine/websocket-enhancer';
 
-/**
- * Register all ws IPC handlers
- *
- * @param mainWindow - service reference
- */
 export function registerWsIPC(
-  mainWindow: any
+  _services: any
 ) {
 
-  // ── ws:connect ───────────────────────────────────────────────
   // ── WebSocket Real-time Data Enhancer (JVS-58) ──────────────────────────
   ipcMain.handle('ws:connect', async (_e, config: any) => {
     try {
@@ -57,7 +56,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── ws:disconnect ───────────────────────────────────────────────
   ipcMain.handle('ws:disconnect', async () => {
     try {
       await disconnectWebSocket();
@@ -68,7 +66,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── ws:subscribe ───────────────────────────────────────────────
   ipcMain.handle('ws:subscribe', async (_e, symbol: string) => {
     try {
       const result = subscribeToSymbol(symbol);
@@ -79,7 +76,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── ws:unsubscribe ───────────────────────────────────────────────
   ipcMain.handle('ws:unsubscribe', async (_e, symbol: string) => {
     try {
       const result = unsubscribeFromSymbol(symbol);
@@ -90,7 +86,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── ws:subscribe-batch ───────────────────────────────────────────────
   ipcMain.handle('ws:subscribe-batch', async (_e, symbols: string[]) => {
     try {
       const result = subscribeToSymbols(symbols);
@@ -101,7 +96,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── ws:unsubscribe-batch ───────────────────────────────────────────────
   ipcMain.handle('ws:unsubscribe-batch', async (_e, symbols: string[]) => {
     try {
       const result = unsubscribeFromSymbols(symbols);
@@ -112,7 +106,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── ws:status ───────────────────────────────────────────────
   ipcMain.handle('ws:status', async () => {
     try {
       const status = getWebSocketStatus();
@@ -123,7 +116,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── ws:streaming-stats ───────────────────────────────────────────────
   ipcMain.handle('ws:streaming-stats', async () => {
     try {
       const stats = getStreamingStats();
@@ -134,7 +126,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── quote:stream-start ───────────────────────────────────────────────
   // ── Quote Stream — Real-time Market Data (JVS-9) ─────────────────────
   ipcMain.handle('quote:stream-start', async (_e, symbols?: string[]) => {
     const stream = getQuoteStream();
@@ -148,7 +139,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── quote:stream-stop ───────────────────────────────────────────────
   ipcMain.handle('quote:stream-stop', async () => {
     const stream = getQuoteStream();
     if (!stream) return { success: false, error: 'QuoteStream not initialized' };
@@ -156,14 +146,12 @@ export function registerWsIPC(
     return { success: true };
   });
 
-  // ── quote:stream-status ───────────────────────────────────────────────
   ipcMain.handle('quote:stream-status', async () => {
     const stream = getQuoteStream();
     if (!stream) return { success: false, error: 'QuoteStream not initialized' };
     return { success: true, status: stream.getStatus() };
   });
 
-  // ── quote:subscribe ───────────────────────────────────────────────
   ipcMain.handle('quote:subscribe', async (_e, symbols: string[]) => {
     const stream = getQuoteStream();
     if (!stream) return { success: false, error: 'QuoteStream not initialized' };
@@ -171,7 +159,6 @@ export function registerWsIPC(
     return { success: true, status: stream.getStatus() };
   });
 
-  // ── quote:unsubscribe ───────────────────────────────────────────────
   ipcMain.handle('quote:unsubscribe', async (_e, symbols: string[]) => {
     const stream = getQuoteStream();
     if (!stream) return { success: false, error: 'QuoteStream not initialized' };
@@ -179,7 +166,6 @@ export function registerWsIPC(
     return { success: true, status: stream.getStatus() };
   });
 
-  // ── push2:get-sector-heatmap ───────────────────────────────────────────────
   // ── Push2 Proxy Service (JVS-27) ─────────────────────────────────────────
   ipcMain.handle('push2:get-sector-heatmap', async (_e, type?: string, limit?: number) => {
     try {
@@ -191,7 +177,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── push2:get-capital-flow-rank ───────────────────────────────────────────────
   ipcMain.handle('push2:get-capital-flow-rank', async (_e, type?: string, limit?: number) => {
     try {
       const proxy = getPush2Proxy();
@@ -202,7 +187,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── push2:get-stock-quote ───────────────────────────────────────────────
   ipcMain.handle('push2:get-stock-quote', async (_e, secid: string) => {
     try {
       const proxy = getPush2Proxy();
@@ -213,7 +197,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── push2:get-market-breadth ───────────────────────────────────────────────
   ipcMain.handle('push2:get-market-breadth', async () => {
     try {
       const proxy = getPush2Proxy();
@@ -224,7 +207,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── push2:proxy-status ───────────────────────────────────────────────
   ipcMain.handle('push2:proxy-status', async () => {
     try {
       const proxy = getPush2Proxy();
@@ -234,7 +216,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── push2:clear-cache ───────────────────────────────────────────────
   ipcMain.handle('push2:clear-cache', async () => {
     try {
       const proxy = getPush2Proxy();
@@ -245,7 +226,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── ws:start-stream ───────────────────────────────────────────────
   // ── WS Data Stream (JVS-29) ────────────────────────────────────────────
   ipcMain.handle('ws:start-stream', async (_e, config?: any) => {
     try {
@@ -262,7 +242,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── ws:stop-stream ───────────────────────────────────────────────
   ipcMain.handle('ws:stop-stream', async () => {
     try {
       getWsDataStream().stop();
@@ -272,7 +251,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── ws:subscribe ───────────────────────────────────────────────
   ipcMain.handle('ws:subscribe', async (_e, codes: string[]) => {
     try {
       getWsDataStream().subscribe(codes || []);
@@ -282,7 +260,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── ws:unsubscribe ───────────────────────────────────────────────
   ipcMain.handle('ws:unsubscribe', async (_e, codes: string[]) => {
     try {
       getWsDataStream().unsubscribe(codes || []);
@@ -292,7 +269,6 @@ export function registerWsIPC(
     }
   });
 
-  // ── ws:stream-status ───────────────────────────────────────────────
   ipcMain.handle('ws:stream-status', async () => {
     try {
       return { success: true, status: getWsDataStream().getStatus() };
