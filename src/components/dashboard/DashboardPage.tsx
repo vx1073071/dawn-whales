@@ -1,11 +1,11 @@
 // ── DAWN WHALES — Dashboard (v0.6.0) ────────────────────────────────────────
 // 总资产/持仓热力图/净值曲线/盈亏总览/最近信号
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  getAccounts, getFunds, getPositions, getQuotes, isConnected,
-  getWatchlist, getAllStrategies, getComments, getMarketplaceList,
+  getAccounts, getFunds, getPositions, isConnected,
+  getAllStrategies, getMarketplaceList,
   exportDashboardPdf,
 } from '../../lib/bridge-api';
 import EquityChart from '../risk/EquityChart';
@@ -253,7 +253,6 @@ export default function DashboardPage() {
           <div className="flex flex-wrap gap-2">
             {positions.map((p) => {
               const width = Math.max(8, p.ratio);
-              const h = Math.max(60, p.ratio * 4 + 40);
               const isProfit = p.pnl >= 0;
               const intensity = Math.min(1, Math.abs(p.pnlPct) / 30);
               const bg = isProfit
@@ -369,16 +368,3 @@ function SummaryCard({ label, value, sub, color, bg }: {
   );
 }
 
-function StatusRow({ label, ok, okText = '正常', failText = '异常' }: {
-  label: string; ok: boolean; okText?: string; failText?: string;
-}) {
-  return (
-    <div className="flex items-center justify-between text-xs">
-      <span className="text-gray-400">{label}</span>
-      <span className={`flex items-center gap-1.5 ${ok ? 'text-emerald-400' : 'text-red-400'}`}>
-        <span className={`w-1.5 h-1.5 rounded-full ${ok ? 'bg-emerald-400' : 'bg-red-400'}`} />
-        {ok ? okText : failText}
-      </span>
-    </div>
-  );
-}
