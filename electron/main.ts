@@ -23,7 +23,7 @@ import { SentimentIndexEngine } from './engine/sentiment-index';
 import { StockScreenerService } from './engine/stock-screener';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
-import { ParameterScanner } from './engine/parameter-scanner';
+import { ParameterScanner } from './engine/parameter-scanner-v2';
 import { computeCorrelationMatrix } from './engine/correlation-matrix';
 import { generateSmartAlerts, generateAlertSummary, type NotificationContext } from './engine/notification-engine';
 import { generateBacktestReport, generateQuickReport } from './engine/ai-report-generator';

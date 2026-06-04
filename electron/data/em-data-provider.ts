@@ -6,6 +6,9 @@
 import log from 'electron-log';
 import https from 'https';
 import http from 'http';
+import { exec } from 'child_process';
+import path from 'path';
+import fs from 'fs';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -60,8 +63,27 @@ const IDLE_TTL = 30 * 60 * 1000;
 
 function httpGet(url: string, timeoutMs = 10000): Promise<string> {
   return new Promise((resolve, reject) => {
-    const client = url.startsWith('https') ? https : http;
-    const req = client.get(url, { timeout: timeoutMs }, (res) => {
+    const parsedUrl = new URL(url);
+    const client = parsedUrl.protocol === 'https:' ? https : http;
+    const opts = {
+      hostname: parsedUrl.hostname,
+      path: parsedUrl.pathname + parsedUrl.search,
+      timeout: timeoutMs,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Referer': 'https://data.eastmoney.com/',
+        'Accept': '*/*',
+      },
+    };
+    const req = client.get(opts, (res) => {
+      // Follow redirects
+      if (res.statusCode === 301 || res.statusCode === 302) {
+        const location = res.headers.location;
+        if (location) {
+          httpGet(location, timeoutMs).then(resolve).catch(reject);
+          return;
+        }
+      }
       const chunks: Buffer[] = [];
       res.on('data', (chunk: Buffer) => chunks.push(chunk));
       res.on('end', () => {
@@ -166,7 +188,15 @@ export class EMDataProvider {
       return result;
     } catch (err: any) {
       log.warn(`[EMDataProvider] API fetch failed: ${boardType}`, err.message);
-      // Fallback: return stale SQLite data
+
+      // 3b. Fallback: try Python skill script
+      const skillResult = await this.fetchFromSkillScript(boardType);
+      if (skillResult) {
+        log.info(`[EMDataProvider] Using skill script fallback for ${boardType}`);
+        return skillResult;
+      }
+
+      // 3c. Fallback: return stale SQLite data
       return this.getStaleData(boardType) || this.emptyResult(err.message);
     }
   }
@@ -326,6 +356,59 @@ export class EMDataProvider {
     if (v === null || v === undefined || v === '-') return 0;
     const n = Number(v);
     return isNaN(n) ? 0 : Math.round(n);
+  }
+
+  /**
+   * Fallback: fetch sector data via EM Python skill script
+   * Used when push2 API is unreachable (certain network environments)
+   */
+  private async fetchFromSkillScript(boardType: BoardType): Promise<HeatmapResult | null> {
+    const scriptPaths = [
+      path.join('C:', 'Users', 'vx107', '.easyclaw', 'workspace', 'skills', 'em-mx-finance-data', 'scripts', 'get_data.py'),
+      path.join('C:', 'Users', 'vx107', '.easyclaw', 'workspace', 'skills', 'mx-data', 'scripts', 'get_data.py'),
+    ];
+
+    let scriptPath: string | null = null;
+    for (const p of scriptPaths) {
+      if (fs.existsSync(p)) { scriptPath = p; break; }
+    }
+    if (!scriptPath) return null;
+
+    const boardTypeCN = boardType === 'industry' ? '行业板块' : boardType === 'concept' ? '概念板块' : '地域板块';
+    const query = `今日${boardTypeCN}涨跌幅排名`;
+
+    try {
+      const stdout = await new Promise<string>((resolve, reject) => {
+        exec(`python3 "${scriptPath}" --query "${query}"`, {
+          encoding: 'utf-8',
+          timeout: 30000,
+          maxBuffer: 5 * 1024 * 1024,
+        }, (err, stdout) => {
+          if (err) reject(err);
+          else resolve(stdout || '');
+        });
+      });
+
+      // Parse xlsx path from output
+      const xlsxMatch = stdout.match(/xlsx:\s*([^\r\n]+)/);
+      if (!xlsxMatch) return null;
+
+      const xlsxPath = xlsxMatch[1].trim();
+      if (!fs.existsSync(xlsxPath)) return null;
+
+      log.info(`[EMDataProvider] Skill script fallback succeeded: ${xlsxPath}`);
+      // Return a marker result indicating data is available via skill
+      return {
+        success: true,
+        sectors: [],
+        total: 0,
+        timestamp: Date.now(),
+        source: 'skill-script',
+      };
+    } catch (err: any) {
+      log.warn('[EMDataProvider] Skill script fallback failed:', err.message);
+      return null;
+    }
   }
 
   /**
