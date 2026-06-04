@@ -291,6 +291,16 @@ contextBridge.exposeInMainWorld('api', {
     streamingStats: () => ipcRenderer.invoke('ws:streaming-stats'),
   },
 
+  // ── Backfill Service (JVS-59) ─────────────────────────────────
+  backfillService: {
+    start: (config: any) => ipcRenderer.invoke('backfill:start', config),
+    stop: () => ipcRenderer.invoke('backfill:stop'),
+    status: () => ipcRenderer.invoke('backfill:status'),
+    stats: () => ipcRenderer.invoke('backfill:stats'),
+    symbols: (symbols: string[], startDate: string, endDate: string, interval?: any) => ipcRenderer.invoke('backfill:symbols', symbols, startDate, endDate, interval),
+    incremental: (symbol: string, startDate: string, endDate: string, existingRecords: any[]) => ipcRenderer.invoke('backfill:incremental', symbol, startDate, endDate, existingRecords),
+  },
+
   // ── Stock Anomaly Detector (JVS-7) ─────────────────────────────
   stockAnomaly: {
     getSummary: () => ipcRenderer.invoke('em:get-anomaly-summary'),

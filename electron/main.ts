@@ -72,6 +72,8 @@ import SentimentAttributionEngine from './engine/sentiment-attribution';
 import CapitalFlowPredictor from './engine/capital-flow-predictor';
 import SmartOrderRouter from './engine/smart-order-router';
 import TCAV2Engine from './engine/tca-v3';
+import MultiBrokerPnLEngine from './engine/multi-broker-pnl';
+import UnifiedRiskDashboard from './engine/unified-risk-dashboard';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -95,6 +97,7 @@ import { analyzeOptionsChain, analyzeBatchOptionsChain } from './engine/options-
 import { scoreAndRankStocks, screenStocks, batchScreenStocks } from './engine/multi-factor-selector';
 import { optimizePortfolio, generateEfficientFrontier, riskParityPortfolio, batchOptimizePortfolios } from './engine/portfolio-optimizer';
 import { connectWebSocket, disconnectWebSocket, subscribeToSymbol, unsubscribeFromSymbol, getWebSocketStatus, subscribeToSymbols, unsubscribeFromSymbols, getStreamingStats } from './engine/websocket-enhancer';
+import { startBackfill, stopBackfill, getBackfillStatus, getBackfillStats, backfillSymbols, incrementalBackfill } from './engine/backfill-service';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -476,6 +479,30 @@ function setupIPC() {
     }
   });
 
+  // ── Multi-Broker PnL (QClaw Q61) ──────────────────────────────────────
+  const multiBrokerPnL = new MultiBrokerPnLEngine();
+  ipcMain.handle('pnl:multi-broker', async (_e, params?: any) => {
+    try {
+      const result = multiBrokerPnL.consolidate(params);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[MultiBrokerPnL] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Unified Risk Dashboard (QClaw Q62) ─────────────────────────────────
+  const unifiedRiskDash = new UnifiedRiskDashboard();
+  ipcMain.handle('risk:dashboard', async (_e, params?: any) => {
+    try {
+      const result = unifiedRiskDash.generate(params);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[RiskDashboard] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Valuation Dashboard (JVS-49) ────────────────────────────────────────
   ipcMain.handle('data:valuation-dashboard', async (_e, codes: string[], historyDays?: number) => {
     try {
@@ -787,6 +814,67 @@ function setupIPC() {
       return { success: true, stats };
     } catch (err: any) {
       log.error('[WebSocket] Streaming stats error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Backfill Service (JVS-59) ───────────────────────────────────────────
+  ipcMain.handle('backfill:start', async (_e, config: any) => {
+    try {
+      const result = await startBackfill(config);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[Backfill] Start error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('backfill:stop', async () => {
+    try {
+      stopBackfill();
+      return { success: true };
+    } catch (err: any) {
+      log.error('[Backfill] Stop error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('backfill:status', async () => {
+    try {
+      const status = getBackfillStatus();
+      return { success: true, status };
+    } catch (err: any) {
+      log.error('[Backfill] Status error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('backfill:stats', async () => {
+    try {
+      const stats = getBackfillStats();
+      return { success: true, stats };
+    } catch (err: any) {
+      log.error('[Backfill] Stats error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('backfill:symbols', async (_e, symbols: string[], startDate: string, endDate: string, interval?: any) => {
+    try {
+      const result = await backfillSymbols(symbols, startDate, endDate, interval);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[Backfill] Symbols backfill error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('backfill:incremental', async (_e, symbol: string, startDate: string, endDate: string, existingRecords: any[]) => {
+    try {
+      const result = await incrementalBackfill(symbol, startDate, endDate, existingRecords);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[Backfill] Incremental backfill error:', err);
       return { success: false, error: err.message };
     }
   });

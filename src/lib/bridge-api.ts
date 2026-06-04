@@ -1820,3 +1820,34 @@ export async function getStreamingStats(): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.websocketEnhancer.streamingStats();
 }
+
+// ── Backfill Service (JVS-59) ─────────────────────────────────────────────
+export async function startBackfill(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backfillService.start(config);
+}
+
+export async function stopBackfill(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backfillService.stop();
+}
+
+export async function getBackfillStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backfillService.status();
+}
+
+export async function getBackfillStats(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backfillService.stats();
+}
+
+export async function backfillSymbols(symbols: string[], startDate: string, endDate: string, interval?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backfillService.symbols(symbols, startDate, endDate, interval);
+}
+
+export async function incrementalBackfill(symbol: string, startDate: string, endDate: string, existingRecords: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.backfillService.incremental(symbol, startDate, endDate, existingRecords);
+}
