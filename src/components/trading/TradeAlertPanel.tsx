@@ -15,19 +15,27 @@ export default function TradeAlertPanel() {
   const [alerts, setAlerts] = useState<TradeAlert[]>([]);
 
   useEffect(() => {
+    const handler = (data: any) => {
+      setAlerts((prev) => [{
+        id: data?.id || String(Date.now()),
+        type: data?.type || 'price',
+        symbol: data?.symbol || '',
+        message: data?.message || '',
+        triggeredAt: new Date().toISOString(),
+        read: false,
+      }, ...prev].slice(0, 50));
+    };
+
     // Listen for real-time alerts from main process
     if (typeof window !== 'undefined' && window.api?.on) {
-      window.api.on('trade-alert', (data: any) => {
-        setAlerts((prev) => [{
-          id: data?.id || String(Date.now()),
-          type: data?.type || 'price',
-          symbol: data?.symbol || '',
-          message: data?.message || '',
-          triggeredAt: new Date().toISOString(),
-          read: false,
-        }, ...prev].slice(0, 50));
-      });
+      window.api.on('trade-alert', handler);
     }
+
+    return () => {
+      if (typeof window !== 'undefined' && window.api?.off) {
+        window.api.off('trade-alert', handler);
+      }
+    };
   }, []);
 
   function markRead(id: string) {
