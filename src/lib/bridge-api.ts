@@ -1640,3 +1640,23 @@ export async function timeSeriesAttribution(params: {
   if (!hasIPC()) return { success: false };
   return window.api.performanceAttribution.timeSeries(params);
 }
+
+// ── Correlation Matrix v2 (JVS-47) ─────────────────────────────────────────
+export async function computeCorrelationMatrix(params: {
+  returns: Record<string, number[]>;
+  method?: 'pearson' | 'spearman';
+}): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.correlationMatrix.compute(params);
+}
+
+// ── Sector Rotation v2 (JVS-48) ────────────────────────────────────────────
+export async function detectSectorRotation(params: {
+  currentPeriod: { sector: string; netInflow: number; changePct: number; volume: number; date: string }[];
+  previousPeriod: { sector: string; netInflow: number; changePct: number; volume: number; date: string }[];
+  lookbackPeriods?: number;
+  history?: { sector: string; netInflow: number; changePct: number; volume: number; date: string }[][];
+}): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sectorRotationV2.detect(params);
+}

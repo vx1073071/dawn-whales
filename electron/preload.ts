@@ -211,6 +211,16 @@ contextBridge.exposeInMainWorld('api', {
     recordSnapshot: (sectors: any[]) => ipcRenderer.invoke('em:record-sector-snapshot', sectors),
   },
 
+  // ── Correlation Matrix v2 (JVS-47) ─────────────────────────────
+  correlationMatrix: {
+    compute: (params: any) => ipcRenderer.invoke('em:correlation-matrix', params),
+  },
+
+  // ── Sector Rotation v2 (JVS-48) ────────────────────────────────
+  sectorRotationV2: {
+    detect: (params: any) => ipcRenderer.invoke('em:sector-rotation', params),
+  },
+
   // ── Stock Anomaly Detector (JVS-7) ─────────────────────────────
   stockAnomaly: {
     getSummary: () => ipcRenderer.invoke('em:get-anomaly-summary'),

@@ -55,6 +55,8 @@ import { computeIndicators } from './engine/technical-indicators';
 import { blackScholesPrice, calculateGreeks, impliedVolatility, buildVolSurface, priceAndGreeks } from './engine/options-pricing';
 import { calculateRiskMetrics, calcSharpeRatio, calcMaxDrawdown, calcVaR } from './engine/risk-metrics';
 import { brinsonAttribution, timeSeriesAttribution } from './engine/performance-attribution';
+import { correlationMatrix } from './engine/correlation-matrix-v2';
+import { detectSectorRotation } from './engine/sector-rotation-v2';
 import { getDataQualityStream } from './engine/data-quality-stream';
 import { getSmartCacheManager } from './engine/smart-cache';
 import { getDragonTigerStream } from './engine/dragon-tiger-stream';
@@ -385,6 +387,28 @@ function setupIPC() {
       return { success: true, result };
     } catch (err: any) {
       log.error('[Attribution] TimeSeries Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Correlation Matrix v2 (JVS-47) ──────────────────────────────────────
+  ipcMain.handle('em:correlation-matrix', async (_e, params: any) => {
+    try {
+      const result = correlationMatrix(params);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[CorrelationMatrix] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Sector Rotation v2 (JVS-48) ─────────────────────────────────────────
+  ipcMain.handle('em:sector-rotation', async (_e, params: any) => {
+    try {
+      const result = detectSectorRotation(params);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[SectorRotation] Error:', err);
       return { success: false, error: err.message };
     }
   });
