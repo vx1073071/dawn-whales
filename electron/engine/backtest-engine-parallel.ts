@@ -562,7 +562,6 @@ export class ParallelBacktestEngine {
         worker.terminate();
         resolve({ 
           success: false, 
-          result: null as any,
           result: { reason: '超时' } as any
         });
       }, 60000); // 60 秒超时
