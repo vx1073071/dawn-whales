@@ -21,6 +21,7 @@ import MarketMovers from '../risk/MarketMovers';
 import WatchlistManager from '../risk/WatchlistManager';
 import PerformanceMetricsPanel from '../risk/PerformanceMetricsPanel';
 import DailyPnLSummary from '../risk/DailyPnLSummary';
+import OpenDHealthPanel from './OpenDHealthPanel';
 
 interface AccountSummary {
   totalAssets: number;
@@ -310,6 +311,11 @@ export default function DashboardPage() {
         <div className="hidden md:block">
           <MarketClock />
         </div>
+      </div>
+
+      {/* OpenD Health Check */}
+      <div className="bg-[#12121c] border border-white/5 rounded-xl p-4">
+        <OpenDHealthPanel />
       </div>
 
       {/* Signal Timeline + Notifications + Price Alerts */}
