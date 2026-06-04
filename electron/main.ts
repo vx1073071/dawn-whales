@@ -94,6 +94,7 @@ import { generateBrinsonReport, generateBatchBrinsonReport } from './engine/brin
 import { analyzeOptionsChain, analyzeBatchOptionsChain } from './engine/options-chain-analyzer';
 import { scoreAndRankStocks, screenStocks, batchScreenStocks } from './engine/multi-factor-selector';
 import { optimizePortfolio, generateEfficientFrontier, riskParityPortfolio, batchOptimizePortfolios } from './engine/portfolio-optimizer';
+import { connectWebSocket, disconnectWebSocket, subscribeToSymbol, unsubscribeFromSymbol, getWebSocketStatus, subscribeToSymbols, unsubscribeFromSymbols, getStreamingStats } from './engine/websocket-enhancer';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -705,6 +706,87 @@ function setupIPC() {
       return { success: true, result };
     } catch (err: any) {
       log.error('[PortfolioOptimizer] Batch error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── WebSocket Real-time Data Enhancer (JVS-58) ──────────────────────────
+  ipcMain.handle('ws:connect', async (_e, config: any) => {
+    try {
+      const result = await connectWebSocket(config);
+      return { success: result };
+    } catch (err: any) {
+      log.error('[WebSocket] Connect error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('ws:disconnect', async () => {
+    try {
+      await disconnectWebSocket();
+      return { success: true };
+    } catch (err: any) {
+      log.error('[WebSocket] Disconnect error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('ws:subscribe', async (_e, symbol: string) => {
+    try {
+      const result = subscribeToSymbol(symbol);
+      return { success: result };
+    } catch (err: any) {
+      log.error('[WebSocket] Subscribe error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('ws:unsubscribe', async (_e, symbol: string) => {
+    try {
+      const result = unsubscribeFromSymbol(symbol);
+      return { success: result };
+    } catch (err: any) {
+      log.error('[WebSocket] Unsubscribe error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('ws:subscribe-batch', async (_e, symbols: string[]) => {
+    try {
+      const result = subscribeToSymbols(symbols);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[WebSocket] Batch subscribe error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('ws:unsubscribe-batch', async (_e, symbols: string[]) => {
+    try {
+      const result = unsubscribeFromSymbols(symbols);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[WebSocket] Batch unsubscribe error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('ws:status', async () => {
+    try {
+      const status = getWebSocketStatus();
+      return { success: true, status };
+    } catch (err: any) {
+      log.error('[WebSocket] Status error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('ws:streaming-stats', async () => {
+    try {
+      const stats = getStreamingStats();
+      return { success: true, stats };
+    } catch (err: any) {
+      log.error('[WebSocket] Streaming stats error:', err);
       return { success: false, error: err.message };
     }
   });

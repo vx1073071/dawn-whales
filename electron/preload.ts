@@ -279,6 +279,18 @@ contextBridge.exposeInMainWorld('api', {
     optimizeBatch: (scenarios: any[]) => ipcRenderer.invoke('portfolio:optimize-batch', scenarios),
   },
 
+  // ── WebSocket Real-time Data Enhancer (JVS-58) ────────────────
+  websocketEnhancer: {
+    connect: (config: any) => ipcRenderer.invoke('ws:connect', config),
+    disconnect: () => ipcRenderer.invoke('ws:disconnect'),
+    subscribe: (symbol: string) => ipcRenderer.invoke('ws:subscribe', symbol),
+    unsubscribe: (symbol: string) => ipcRenderer.invoke('ws:unsubscribe', symbol),
+    subscribeBatch: (symbols: string[]) => ipcRenderer.invoke('ws:subscribe-batch', symbols),
+    unsubscribeBatch: (symbols: string[]) => ipcRenderer.invoke('ws:unsubscribe-batch', symbols),
+    status: () => ipcRenderer.invoke('ws:status'),
+    streamingStats: () => ipcRenderer.invoke('ws:streaming-stats'),
+  },
+
   // ── Stock Anomaly Detector (JVS-7) ─────────────────────────────
   stockAnomaly: {
     getSummary: () => ipcRenderer.invoke('em:get-anomaly-summary'),

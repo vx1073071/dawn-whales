@@ -1779,3 +1779,44 @@ export async function batchOptimizePortfolios(scenarios: any[]): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.portfolioOptimizer.optimizeBatch(scenarios);
 }
+
+// ── WebSocket Real-time Data Enhancer (JVS-58) ────────────────────────────
+export async function connectWebSocket(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.websocketEnhancer.connect(config);
+}
+
+export async function disconnectWebSocket(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.websocketEnhancer.disconnect();
+}
+
+export async function subscribeToWebSocket(symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.websocketEnhancer.subscribe(symbol);
+}
+
+export async function unsubscribeFromWebSocket(symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.websocketEnhancer.unsubscribe(symbol);
+}
+
+export async function subscribeToWebSockets(symbols: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.websocketEnhancer.subscribeBatch(symbols);
+}
+
+export async function unsubscribeFromWebSockets(symbols: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.websocketEnhancer.unsubscribeBatch(symbols);
+}
+
+export async function getWebSocketStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.websocketEnhancer.status();
+}
+
+export async function getStreamingStats(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.websocketEnhancer.streamingStats();
+}
