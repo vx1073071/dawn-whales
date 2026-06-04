@@ -3,8 +3,8 @@
 
 import { EventEmitter } from 'events';
 import log from 'electron-log';
-import { getSentimentIndex } from './sentiment-index';
-import { getWSDataStream } from './ws-data-stream';
+import { getSentimentEngine } from './sentiment-index';
+import { getWsDataStream } from '../data/ws-data-stream';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -77,7 +77,7 @@ class RealtimeSentimentStream extends EventEmitter {
   constructor(config: Partial<SentimentStreamConfig> = {}) {
     super();
     this.config = { ...DEFAULT_CONFIG, ...config };
-    this.sentimentIndex = getSentimentIndex();
+    this.sentimentIndex = getSentimentEngine();
     this.wsStream = getWSDataStream();
     log.info('[RealtimeSentimentStream] Initialized');
   }

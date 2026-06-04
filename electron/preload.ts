@@ -353,6 +353,23 @@ contextBridge.exposeInMainWorld('api', {
     },
   },
 
+  // ── Data Quality Dashboard (JVS-34) ─────────────────────────
+  dataQualityDashboard: {
+    get: () => ipcRenderer.invoke('data:quality-dashboard'),
+  },
+
+  // ── Cache Explorer (JVS-35) ─────────────────────────────────
+  cacheExplorer: {
+    explore: () => ipcRenderer.invoke('cache:explore'),
+    entryDetail: (namespace: string, key: string) => ipcRenderer.invoke('cache:entry-detail', namespace, key),
+    keysPaginated: (namespace: string, limit?: number, offset?: number) => ipcRenderer.invoke('cache:keys-paginated', namespace, limit, offset),
+  },
+
+  // ── Sentiment Dashboard (JVS-36) ────────────────────────────
+  sentimentDashboard: {
+    get: () => ipcRenderer.invoke('sentiment:dashboard'),
+  },
+
   // ── Smart Cache Manager (JVS-32) ───────────────────────────────
   smartCache: {
     get: (namespace: string, key: string) => ipcRenderer.invoke('cache:get', namespace, key),

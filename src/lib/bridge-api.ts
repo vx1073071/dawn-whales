@@ -307,6 +307,11 @@ export async function cancelOrder(orderId: string): Promise<any> {
   return window.api.broker.cancelOrder(orderId);
 }
 
+export async function placeOrder(order: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.broker.placeOrder(order);
+}
+
 export async function isConnected(): Promise<boolean> {
   if (!hasIPC()) return false;
   try {
@@ -1184,6 +1189,37 @@ export function onSentimentStreamTick(callback: (tick: any) => void): void {
 export function onSentimentStreamAlert(callback: (alert: any) => void): void {
   if (!hasIPC()) return;
   window.api.sentimentStream.onAlert(callback);
+}
+
+// ── Data Quality Dashboard (JVS-34) ─────────────────────────────────────────
+
+export async function getDataQualityDashboard(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataQualityDashboard.get();
+}
+
+// ── Cache Explorer (JVS-35) ────────────────────────────────────────────────
+
+export async function exploreCache(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.cacheExplorer.explore();
+}
+
+export async function getCacheEntryDetail(namespace: string, key: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.cacheExplorer.entryDetail(namespace, key);
+}
+
+export async function getCacheKeysPaginated(namespace: string, limit?: number, offset?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.cacheExplorer.keysPaginated(namespace, limit, offset);
+}
+
+// ── Sentiment Dashboard (JVS-36) ───────────────────────────────────────────
+
+export async function getSentimentDashboard(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sentimentDashboard.get();
 }
 
 // ── Smart Cache Manager (JVS-32) ──────────────────────────────────────────

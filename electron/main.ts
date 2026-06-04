@@ -21,6 +21,9 @@ import { EMDataProvider } from './data/em-data-provider';
 import { MacroDataProvider } from './data/macro-provider';
 import { SentimentIndexEngine } from './engine/sentiment-index';
 import { getRealtimeSentimentStream } from './engine/sentiment-stream';
+import { getDataQualityDashboard } from './engine/data-quality-dashboard';
+import { exploreCache, getCacheEntryDetail, getCacheKeys } from './engine/cache-explorer';
+import { getSentimentDashboard } from './engine/sentiment-dashboard';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
 import { SectorRotationMonitor } from './engine/sector-rotation';
@@ -2610,6 +2613,54 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const stream = getRealtimeSentimentStream();
       stream.clearAlerts();
       return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Data Quality Dashboard Aggregator (JVS-34) ────────────────────────
+  ipcMain.handle('data:quality-dashboard', async () => {
+    try {
+      const dashboard = await getDataQualityDashboard();
+      return { success: true, dashboard };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Cache Explorer API (JVS-35) ───────────────────────────────────────
+  ipcMain.handle('cache:explore', async () => {
+    try {
+      const result = exploreCache();
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('cache:entry-detail', async (_e, namespace: string, key: string) => {
+    try {
+      const detail = getCacheEntryDetail(namespace, key);
+      return { success: true, detail };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('cache:keys-paginated', async (_e, namespace: string, limit?: number, offset?: number) => {
+    try {
+      const result = getCacheKeys(namespace, limit || 100, offset || 0);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Sentiment Dashboard API (JVS-36) ──────────────────────────────────
+  ipcMain.handle('sentiment:dashboard', async () => {
+    try {
+      const dashboard = getSentimentDashboard();
+      return { success: true, dashboard };
     } catch (err: any) {
       return { success: false, error: err.message };
     }
