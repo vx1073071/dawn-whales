@@ -993,6 +993,17 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     return { success: true, strategies };
   });
 
+  // ── Correlation Matrix (Q2: QClaw) ──────────────────────────────────
+  ipcMain.handle('strategy:correlation', async (_e, inputs: Array<{ id: string; equityCurve: Array<{ time: number; value: number }> }>) => {
+    try {
+      const { computeCorrelationMatrix } = require('./engine/correlation-matrix');
+      const result = computeCorrelationMatrix(inputs);
+      return { success: true, ...result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Marketplace: Score & Verify (JVS) ─────────────────────────────────
   ipcMain.handle('marketplace:score', async (_e, strategyId: string) => {
     if (!marketplaceService) return { success: false, error: 'MarketplaceService not initialized' };

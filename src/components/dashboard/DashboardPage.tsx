@@ -9,6 +9,7 @@ import {
 import EquityChart from '../risk/EquityChart';
 import PortfolioAllocationChart from '../risk/PortfolioAllocationChart';
 import SignalTimeline from '../risk/SignalTimeline';
+import MarketHeatmap from '../risk/MarketHeatmap';
 
 interface AccountSummary {
   totalAssets: number;
@@ -173,6 +174,9 @@ export default function DashboardPage() {
           color="text-[#D4A853]"
         />
       </div>
+
+      {/* Market Sector Heatmap */}
+      <MarketHeatmap title="🗺️ 市场板块热力图" />
 
       {/* Equity Curve + Allocation */}
       <div className="grid grid-cols-2 gap-4">

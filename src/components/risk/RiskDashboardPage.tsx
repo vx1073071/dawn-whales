@@ -286,6 +286,9 @@ export default function RiskDashboardPage() {
       {/* Equity Curve */}
       <EquityChart data={demoEquityData} title="📈 账户净值走势" height={300} showDrawdown />
 
+      {/* Performance Metrics */}
+      <PerformanceMetricsPanel trades={demoTrades} title="📊 交易绩效指标" />
+
       {/* Bottom: Config Summary */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
         <h2 className="text-white font-semibold text-sm mb-4">⚙️ 风控配置摘要</h2>
