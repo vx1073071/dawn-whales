@@ -816,6 +816,13 @@ export async function calculatePortfolioRisk(request: {
   return window.api.portfolioRisk.calculate(request);
 }
 
+// ── Market Breadth — 市场广度分析器 (JVS-16) ──────────────────────────────
+
+export async function getMarketBreadth(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.marketBreadth.get();
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {

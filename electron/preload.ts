@@ -239,6 +239,11 @@ contextBridge.exposeInMainWorld('api', {
     calculate: (request: any) => ipcRenderer.invoke('em:portfolio-risk', request),
   },
 
+  // ── Market Breadth — 市场广度分析器 (JVS-16) ─────────────────
+  marketBreadth: {
+    get: () => ipcRenderer.invoke('em:get-market-breadth'),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),

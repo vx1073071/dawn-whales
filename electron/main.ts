@@ -33,6 +33,7 @@ import { getCapitalFlowMonitor } from './engine/capital-flow-monitor';
 import { getFundHoldings, getStockFundOwnership, getFundIncreaseRank, getFundDecreaseRank } from './engine/fund-holdings';
 import { diagnoseStock, batchDiagnose } from './engine/stock-diagnosis';
 import { calculatePortfolioRisk } from './engine/portfolio-risk';
+import { getMarketBreadth } from './engine/market-breadth';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1821,6 +1822,16 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   ipcMain.handle('em:portfolio-risk', async (_e, request: any) => {
     try {
       const result = await calculatePortfolioRisk(request || { positions: [] });
+      return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Market Breadth — 市场广度分析器 (JVS-16) ────────────────────
+  ipcMain.handle('em:get-market-breadth', async () => {
+    try {
+      const result = await getMarketBreadth();
       return result;
     } catch (err: any) {
       return { success: false, error: err.message };
