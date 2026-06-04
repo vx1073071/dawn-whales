@@ -52,6 +52,7 @@ import { DataAggregator, getDataAggregator } from './data/data-aggregator';
 import { DataCleaningPipeline, getDataCleaningPipeline } from './data/data-pipeline';
 import { HistoricalDataWarehouse, getHistoricalDataWarehouse } from './data/historical-warehouse';
 import { DataVersioningSystem, getDataVersioningSystem } from './data/data-versioning';
+import { FeatureStore, getFeatureStore } from './engine/feature-store';
 import { captureSnapshot, querySnapshots, getSnapshot, compareSnapshots, getSnapshotTimeline, getLatestSnapshot, cleanupOldSnapshots, exportSnapshots, importSnapshots, getSnapshotStats, deleteSnapshot, clearAllSnapshots } from './engine/snapshot-service';
 import { trackVersion, getEntityVersions, getVersion, getLatestVersion, diffVersions, rollback, queryVersions, getVersionStats, deleteVersion, clearAllVersions, exportVersions, importVersions } from './engine/version-control-service';
 import { setupI18nDataIPC } from './engine/i18n-data';
@@ -4493,6 +4494,57 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const versioning = getDataVersioningSystem(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
       const deletedCount = versioning.cleanupOldVersions(tableName, keepCount || 10);
       return { success: true, deletedCount };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Feature Store (JVS-60) ────────────────────────────────────────────────
+  ipcMain.handle('feature:compute', async (_e, symbol: string, klines: any[]) => {
+    try {
+      const store = getFeatureStore(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
+      const features = store.computeFeatures(symbol, klines);
+      return { success: true, features };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('feature:get-cached', async (_e, symbol: string) => {
+    try {
+      const store = getFeatureStore(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
+      const features = store.getCachedFeatures(symbol);
+      return { success: true, features };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('feature:get-definitions', async () => {
+    try {
+      const store = getFeatureStore(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
+      const definitions = store.getFeatureDefinitions();
+      return { success: true, definitions };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('feature:save', async (_e, features: any[]) => {
+    try {
+      const store = getFeatureStore(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
+      store.saveFeatures(features);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('feature:query', async (_e, symbol: string, featureNames: string[], limit?: number) => {
+    try {
+      const store = getFeatureStore(db, 'C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\data');
+      const features = store.queryFeatures(symbol, featureNames, limit || 100);
+      return { success: true, features };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

@@ -218,27 +218,27 @@ export default function TradeHistoryPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {filtered.map((t) => (
-                <tr key={t.tradeId} className="hover:bg-white/[0.02]">
-                  <td className="px-4 py-3 text-gray-400 whitespace-nowrap">{t.tradeTime}</td>
+              {filtered.map((trade) => (
+                <tr key={trade.tradeId} className="hover:bg-white/[0.02]">
+                  <td className="px-4 py-3 text-gray-400 whitespace-nowrap">{trade.tradeTime}</td>
                   <td className="px-4 py-3">
-                    <div className="font-medium text-white">{t.name}</div>
-                    <div className="text-[10px] text-gray-500">{t.code}</div>
+                    <div className="font-medium text-white">{trade.name}</div>
+                    <div className="text-[10px] text-gray-500">{trade.code}</div>
                   </td>
-                  <td className={`px-4 py-3 ${t.side === 'BUY' ? 'text-red-400' : 'text-emerald-400'}`}>
-                    {t.side === 'BUY' ? t('common.buy') : t('common.sell')}
+                  <td className={`px-4 py-3 ${trade.side === 'BUY' ? 'text-red-400' : 'text-emerald-400'}`}>
+                    {trade.side === 'BUY' ? t('common.buy') : t('common.sell')}
                   </td>
-                  <td className="px-4 py-3 text-right font-mono text-white">{t.qty}</td>
-                  <td className="px-4 py-3 text-right font-mono text-white">${t.filledPrice.toFixed(2)}</td>
-                  <td className="px-4 py-3 text-right font-mono text-gray-400">${t.commission.toFixed(2)}</td>
-                  <td className={`px-4 py-3 text-right font-mono font-bold ${t.pnl > 0 ? 'text-red-400' : t.pnl < 0 ? 'text-emerald-400' : 'text-gray-400'}`}>
-                    {t.pnl > 0 ? '+' : ''}${t.pnl.toFixed(2)}
+                  <td className="px-4 py-3 text-right font-mono text-white">{trade.qty}</td>
+                  <td className="px-4 py-3 text-right font-mono text-white">${trade.filledPrice.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-right font-mono text-gray-400">${trade.commission.toFixed(2)}</td>
+                  <td className={`px-4 py-3 text-right font-mono font-bold ${trade.pnl > 0 ? 'text-red-400' : trade.pnl < 0 ? 'text-emerald-400' : 'text-gray-400'}`}>
+                    {trade.pnl > 0 ? '+' : ''}${trade.pnl.toFixed(2)}
                   </td>
-                  <td className={`px-4 py-3 text-right font-mono ${t.pnlPct > 0 ? 'text-red-400' : t.pnlPct < 0 ? 'text-emerald-400' : 'text-gray-400'}`}>
-                    {t.pnlPct > 0 ? '+' : ''}{t.pnlPct.toFixed(2)}%
+                  <td className={`px-4 py-3 text-right font-mono ${trade.pnlPct > 0 ? 'text-red-400' : trade.pnlPct < 0 ? 'text-emerald-400' : 'text-gray-400'}`}>
+                    {trade.pnlPct > 0 ? '+' : ''}{trade.pnlPct.toFixed(2)}%
                   </td>
-                  <td className="px-4 py-3 text-xs text-gray-300">{t.strategyName || '--'}</td>
-                  <td className="px-4 py-3 text-xs text-gray-400">{t.remark || '--'}</td>
+                  <td className="px-4 py-3 text-xs text-gray-300">{trade.strategyName || '--'}</td>
+                  <td className="px-4 py-3 text-xs text-gray-400">{trade.remark || '--'}</td>
                 </tr>
               ))}
             </tbody>

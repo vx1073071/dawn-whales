@@ -2,12 +2,13 @@
   "name": "qtest-framework",
   "version": "0.1.0",
   "description": "QTest - lightweight standalone test framework (no Vitest/Jest dependency). Supports describe/it/expect/mock, parallel execution, isolated environments.",
+  "type": "module",
   "main": "./index.ts",
   "types": "./types.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "node --import tsx/cli.cli.js cli.ts run tests/**/*.test.ts",
-    "test:watch": "node --import tsx/cli.cli.js cli.ts watch tests/**/*.test.ts"
+    "test": "node --import tsx/cli.js cli.ts run tests/**/*.test.ts",
+    "test:watch": "node --import tsx/cli.js cli.ts watch tests/**/*.test.ts"
   },
   "keywords": ["test", "testing", "framework", "expect", "mock", "standalone"],
   "author": "QClaw",

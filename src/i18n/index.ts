@@ -35,7 +35,7 @@ const resources = {
 };
 
 const savedLang = localStorage.getItem('dw_language') as SupportedLang | null;
-const defaultLang: SupportedLang = savedLang && resources[savedLang] ? savedLang : 'zh-CN';
+const defaultLang: SupportedLang = savedLang && (resources as any)[savedLang] ? savedLang : 'zh-CN';
 
 i18n.use(initReactI18next).init({
   resources,

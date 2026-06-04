@@ -735,6 +735,15 @@ contextBridge.exposeInMainWorld('api', {
     cleanupOld: (tableName: string, keepCount?: number) => ipcRenderer.invoke('version:cleanup-old', tableName, keepCount),
   },
 
+  // ── Feature Store (JVS-60) ─────────────────────────────────────────────
+  featureStore: {
+    compute: (symbol: string, klines: any[]) => ipcRenderer.invoke('feature:compute', symbol, klines),
+    getCached: (symbol: string) => ipcRenderer.invoke('feature:get-cached', symbol),
+    getDefinitions: () => ipcRenderer.invoke('feature:get-definitions'),
+    save: (features: any[]) => ipcRenderer.invoke('feature:save', features),
+    query: (symbol: string, featureNames: string[], limit?: number) => ipcRenderer.invoke('feature:query', symbol, featureNames, limit),
+  },
+
   // ── Strategy Signal Generator (JVS-46) ──────────────────────────
   signalGenerator: {
     generate: (raw: any) => ipcRenderer.invoke('signal:generate', raw),

@@ -2129,3 +2129,30 @@ export async function cleanupOldDataVersions(tableName: string, keepCount?: numb
   return window.api.dataVersioning.cleanupOld(tableName, keepCount);
 }
 
+// ── Feature Store (JVS-60) ─────────────────────────────────────────────────
+
+export async function computeFeatures(symbol: string, klines: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.featureStore.compute(symbol, klines);
+}
+
+export async function getCachedFeatures(symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.featureStore.getCached(symbol);
+}
+
+export async function getFeatureDefinitions(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.featureStore.getDefinitions();
+}
+
+export async function saveFeatures(features: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.featureStore.save(features);
+}
+
+export async function queryFeatures(symbol: string, featureNames: string[], limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.featureStore.query(symbol, featureNames, limit);
+}
+

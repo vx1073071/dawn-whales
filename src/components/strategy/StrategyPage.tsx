@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates, deleteStrategy } from '../../lib/bridge-api';
 import StrategyExplainCard from './StrategyExplainCard';
 import StrategyCompareModal from './StrategyCompareModal';
-import TemplateBrowser from './TemplateBrowser';
+// import TemplateBrowser from './TemplateBrowser';
 import PaperTraderPanel from './PaperTraderPanel';
 
 type CreateMode = null | 'ai' | 'template' | 'form' | 'paper';
@@ -170,6 +170,7 @@ export default function StrategyPage() {
 // ── Mode Selector ──────────────────────────────────────────────────────────
 
 function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
+  const { t } = useTranslation();
   return (
     <div className="grid grid-cols-3 gap-4 mb-8">
       <button onClick={() => onSelect('ai')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
@@ -816,7 +817,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       });
       if (result.success) setBacktestResult(result.result);
     } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
-      setXXX(false);
+      setBacktestLoading(false);
     }
   }
 
@@ -827,7 +828,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       onRefresh();
       loadDetail();
     } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
-      setXXX(false);
+      setActionLoading(false);
     }
   }
 
@@ -838,7 +839,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       onRefresh();
       loadDetail();
     } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
-      setXXX(false);
+      setActionLoading(false);
     }
   }
 
