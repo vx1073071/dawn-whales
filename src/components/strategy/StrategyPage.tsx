@@ -500,7 +500,7 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
     try {
       await createStrategy({ templateId: template.id, symbol: template.symbol || 'US.TQQQ' });
       onCreated();
-    } catch (e) { console.error('[Error:StrategyPage]', e); }
+    } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
       setLoading(false);
     }
   }
@@ -618,7 +618,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
         await createStrategy(config);
       }
       onCreated();
-    } catch (e) { console.error('[Error:StrategyPage]', e); }
+    } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
       setCreating(false);
     }
   }
@@ -815,8 +815,8 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
         slippage: 0.0005,
       });
       if (result.success) setBacktestResult(result.result);
-    } catch (e) { console.error('[Error:StrategyPage]', e); }
-      setBacktestLoading(false);
+    } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
+      setXXX(false);
     }
   }
 
@@ -826,8 +826,8 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       await startLive(strategyId);
       onRefresh();
       loadDetail();
-    } catch (e) { console.error('[Error:StrategyPage]', e); }
-      setActionLoading(false);
+    } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
+      setXXX(false);
     }
   }
 
@@ -837,8 +837,8 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       await stopLive(strategyId);
       onRefresh();
       loadDetail();
-    } catch (e) { console.error('[Error:StrategyPage]', e); }
-      setActionLoading(false);
+    } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
+      setXXX(false);
     }
   }
 
