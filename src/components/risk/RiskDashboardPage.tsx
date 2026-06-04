@@ -9,6 +9,7 @@ import TradingJournal from './TradingJournal';
 import DailyPnLSummary from './DailyPnLSummary';
 import RiskConfigEditor from './RiskConfigEditor';
 import SystemLog from './SystemLog';
+import PortfolioStressTest from './PortfolioStressTest';
 
 interface KellyStats {
   winRate: number;
@@ -296,8 +297,11 @@ export default function RiskDashboardPage() {
       {/* Performance Metrics */}
       <PerformanceMetricsPanel trades={demoTrades} title="📊 交易绩效指标" />
 
-      {/* Trading Journal */}
-      <TradingJournal />
+      {/* Trading Journal + System Log */}
+      <div className="grid grid-cols-2 gap-4">
+        <TradingJournal />
+        <SystemLog />
+      </div>
 
       {/* Risk Config Editor */}
       <RiskConfigEditor />
