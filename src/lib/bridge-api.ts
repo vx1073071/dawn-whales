@@ -38,6 +38,21 @@ declare global {
         verify: (strategyId: string) => Promise<any>;
         updateAllScores: () => Promise<any>;
       };
+      dataProvider: {
+        getFundamental: (symbol: string) => Promise<any>;
+        getCapitalFlow: (symbol: string) => Promise<any>;
+        getRegime: () => Promise<any>;
+        getAnomalies: (symbol: string) => Promise<any>;
+        getNews: (symbol: string, limit?: number) => Promise<any>;
+        getCompositeScore: (symbol: string) => Promise<any>;
+        saveFundamental: (data: any) => Promise<any>;
+        saveCapitalFlow: (data: any) => Promise<any>;
+        saveRegime: (regime: any) => Promise<any>;
+        computeRegime: (factors: any) => Promise<any>;
+        saveAnomaly: (signal: any) => Promise<any>;
+        saveNews: (symbol: string, items: any[]) => Promise<any>;
+        clearCache: () => Promise<any>;
+      };
       strategy: {
         create: (dsl: any) => Promise<any>;
         getAll: () => Promise<any>;
@@ -363,6 +378,73 @@ export async function verifyStrategy(strategyId: string): Promise<any> {
 export async function updateAllScores(): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.marketplace.updateAllScores();
+}
+
+// ── Data Provider ─────────────────────────────────────────────────────────
+
+export async function getFundamental(symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false, data: null };
+  return window.api.dataProvider.getFundamental(symbol);
+}
+
+export async function getCapitalFlow(symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false, data: null };
+  return window.api.dataProvider.getCapitalFlow(symbol);
+}
+
+export async function getMarketRegime(): Promise<any> {
+  if (!hasIPC()) return { success: false, regime: null };
+  return window.api.dataProvider.getRegime();
+}
+
+export async function getAnomalies(symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false, signals: [] };
+  return window.api.dataProvider.getAnomalies(symbol);
+}
+
+export async function getNews(symbol: string, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, items: [] };
+  return window.api.dataProvider.getNews(symbol, limit);
+}
+
+export async function getCompositeScore(symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false, result: null };
+  return window.api.dataProvider.getCompositeScore(symbol);
+}
+
+export async function saveFundamentalData(data: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataProvider.saveFundamental(data);
+}
+
+export async function saveCapitalFlowData(data: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataProvider.saveCapitalFlow(data);
+}
+
+export async function saveMarketRegimeData(regime: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataProvider.saveRegime(regime);
+}
+
+export async function computeMarketRegime(factors: any): Promise<any> {
+  if (!hasIPC()) return { success: false, regime: null };
+  return window.api.dataProvider.computeRegime(factors);
+}
+
+export async function saveAnomalySignal(signal: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataProvider.saveAnomaly(signal);
+}
+
+export async function saveNewsItems(symbol: string, items: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataProvider.saveNews(symbol, items);
+}
+
+export async function clearDataCache(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataProvider.clearCache();
 }
 
 // ── Demo K-line Generator (fallback) ──────────────────────────────────────

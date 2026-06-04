@@ -14,6 +14,7 @@ import { DatabaseManager } from './data/database';
 import { RiskEngine } from './engine/risk-engine';
 import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/nl-parser';
 import { MarketplaceService } from './data/marketplace-service';
+import { DataProviderService } from './data/data-provider';
 import log from 'electron-log';
 
 // 默认监控列表，连接时从 DB 读取用户配置
@@ -33,6 +34,7 @@ let backtestEngine: BacktestEngine | null = null;
 let riskEngine: RiskEngine | null = null;
 let db: DatabaseManager | null = null;
 let marketplaceService: MarketplaceService | null = null;
+let dataProvider: DataProviderService | null = null;
 
 // ── Window Creation ────────────────────────────────────────────────────────
 
@@ -703,6 +705,143 @@ function setupIPC() {
       return { success: false, error: err.message };
     }
   });
+
+  // ── Data Provider (multi-source integration) ───────────────────────────
+  ipcMain.handle('data:fundamental', async (_e, symbol: string) => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      const data = await dataProvider.getFundamental(symbol);
+      return { success: true, data };
+    } catch (err: any) {
+      log.error('[DataProvider] Fundamental fetch failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:capital-flow', async (_e, symbol: string) => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      const data = await dataProvider.getCapitalFlow(symbol);
+      return { success: true, data };
+    } catch (err: any) {
+      log.error('[DataProvider] Capital flow fetch failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:regime', async () => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      const regime = await dataProvider.getMarketRegime();
+      return { success: true, regime };
+    } catch (err: any) {
+      log.error('[DataProvider] Regime fetch failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:anomalies', async (_e, symbol: string) => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      const signals = await dataProvider.getAnomalies(symbol);
+      return { success: true, signals };
+    } catch (err: any) {
+      log.error('[DataProvider] Anomalies fetch failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:news', async (_e, symbol: string, limit?: number) => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      const items = await dataProvider.getNews(symbol, limit);
+      return { success: true, items };
+    } catch (err: any) {
+      log.error('[DataProvider] News fetch failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:composite-score', async (_e, symbol: string) => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      const result = await dataProvider.getCompositeScore(symbol);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[DataProvider] Composite score failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:save-fundamental', async (_e, data: any) => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      dataProvider.saveFundamental(data);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:save-capital-flow', async (_e, data: any) => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      dataProvider.saveCapitalFlow(data);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:save-regime', async (_e, regime: any) => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      dataProvider.saveMarketRegime(regime);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:compute-regime', async (_e, factors: any) => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      const regime = dataProvider.computeRegime(factors);
+      return { success: true, regime };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:save-anomaly', async (_e, signal: any) => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      dataProvider.saveAnomaly(signal);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:save-news', async (_e, symbol: string, items: any[]) => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      dataProvider.saveNews(symbol, items);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:clear-cache', async () => {
+    if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
+    try {
+      dataProvider.clearExpiredCache();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
 }
 
 // ── System Tray ────────────────────────────────────────────────────────────
@@ -757,6 +896,10 @@ app.whenReady().then(async () => {
     if (db) {
       marketplaceService = new MarketplaceService(db);
       log.info('[App] MarketplaceService initialized');
+
+      dataProvider = new DataProviderService();
+      dataProvider.initialize(db);
+      log.info('[App] DataProviderService initialized');
     }
   } catch (err: any) {
     log.error('[App] MarketplaceService init failed:', err.message);
