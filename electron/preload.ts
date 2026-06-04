@@ -258,6 +258,12 @@ contextBridge.exposeInMainWorld('api', {
     generateBatch: (portfolios: any[]) => ipcRenderer.invoke('report:brinson-batch', portfolios),
   },
 
+  // ── Options Chain Analyzer (JVS-55) ───────────────────────────
+  optionsChain: {
+    analyze: (contracts: any[], symbol: string, historicalIVRange?: any) => ipcRenderer.invoke('options:chain-analyze', contracts, symbol, historicalIVRange),
+    analyzeBatch: (symbols: any[]) => ipcRenderer.invoke('options:chain-batch', symbols),
+  },
+
   // ── Stock Anomaly Detector (JVS-7) ─────────────────────────────
   stockAnomaly: {
     getSummary: () => ipcRenderer.invoke('em:get-anomaly-summary'),

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates, deleteStrategy } from '../../lib/bridge-api';
 import StrategyExplainCard from './StrategyExplainCard';
 import StrategyCompareModal from './StrategyCompareModal';
@@ -34,6 +35,7 @@ interface BacktestResult {
 }
 
 export default function StrategyPage() {
+  const { t } = useTranslation();
   const [mode, setMode] = useState<CreateMode>(null);
   const [strategies, setStrategies] = useState<any[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -61,11 +63,11 @@ export default function StrategyPage() {
       {/* Page header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">策略工坊</h1>
-          <p className="text-gray-400 text-sm">创建、回测、运行你的量化策略</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{t('strategy.title')}</h1>
+          <p className="text-gray-400 text-sm">{t('strategy.subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-gray-500">{strategies.length} 个策略</span>
+          <span className="text-xs text-gray-500">{strategies.length} {t('strategy.strategyCount')}</span>
         </div>
       </div>
 
@@ -78,8 +80,8 @@ export default function StrategyPage() {
             <div className="flex items-center gap-3">
               <span className="text-2xl">🎯</span>
               <div>
-                <div className="text-green-400 font-semibold text-sm">模拟实盘</div>
-                <div className="text-gray-400 text-xs">Paper Trader · 启动/暂停/绩效报告</div>
+            <div className="text-green-400 font-semibold text-sm">{t('strategy.paperTrading')}</div>
+            <div className="text-gray-400 text-xs">{t('strategy.paperTradingDesc')}</div>
               </div>
               <div className="ml-auto text-green-500/60 text-xs">→ 进入</div>
             </div>
@@ -89,7 +91,7 @@ export default function StrategyPage() {
       )}
       {mode === 'paper' && (
         <div className="mb-4">
-          <button onClick={() => setMode(null)} className="text-gray-400 hover:text-white text-xs flex items-center gap-1 mb-4 transition-colors">← 返回策略工坊</button>
+          <button onClick={() => setMode(null)} className="text-gray-400 hover:text-white text-xs flex items-center gap-1 mb-4 transition-colors">← {t('strategy.backToLab')}</button>
           <PaperTraderPanel />
         </div>
       )}
@@ -149,21 +151,21 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
     <div className="grid grid-cols-3 gap-4 mb-8">
       <button onClick={() => onSelect('ai')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
         <div className="text-3xl mb-3">💬</div>
-        <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">说出来</h3>
-        <p className="text-gray-400 text-xs leading-relaxed">用自然语言描述你的策略<br/>AI 帮你自动生成可执行策略</p>
-        <div className="mt-3 text-[#D4A853] text-xs font-medium">推荐新手 →</div>
+        <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{t('strategy.speakIt')}</h3>
+        <p className="text-gray-400 text-xs leading-relaxed">{t('strategy.speakItDesc')}</p>
+        <div className="mt-3 text-[#D4A853] text-xs font-medium">{t('strategy.recommendedForBeginners')} →</div>
       </button>
       <button onClick={() => onSelect('template')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
         <div className="text-3xl mb-3">📋</div>
-        <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">选模板</h3>
-        <p className="text-gray-400 text-xs leading-relaxed">经典策略模板库<br/>选一个改改参数就能用</p>
-        <div className="mt-3 text-gray-500 text-xs">8 个策略模板</div>
+        <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{t('strategy.chooseTemplate')}</h3>
+        <p className="text-gray-400 text-xs leading-relaxed">{t('strategy.chooseTemplateDesc')}</p>
+        <div className="mt-3 text-gray-500 text-xs">8 {t('strategy.templateCount')}</div>
       </button>
       <button onClick={() => onSelect('form')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
         <div className="text-3xl mb-3">📊</div>
-        <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">填表单</h3>
-        <p className="text-gray-400 text-xs leading-relaxed">精确控制每个参数<br/>完全自定义策略</p>
-        <div className="mt-3 text-gray-500 text-xs">完全自定义</div>
+        <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{t('strategy.fillForm')}</h3>
+        <p className="text-gray-400 text-xs leading-relaxed">{t('strategy.fillFormDesc')}</p>
+        <div className="mt-3 text-gray-500 text-xs">{t('strategy.fullyCustomizable')}</div>
       </button>
     </div>
   );

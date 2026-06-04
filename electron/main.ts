@@ -91,6 +91,7 @@ import { detectMacroAnomalies, analyzeMultipleIndicators } from './engine/macro-
 import { detectCorrelationAnomalies, analyzeCorrelationMatrix } from './engine/correlation-alert';
 import { generateWalkForwardReport, generateBatchWalkForwardReport } from './engine/walk-forward-report';
 import { generateBrinsonReport, generateBatchBrinsonReport } from './engine/brinson-attribution';
+import { analyzeOptionsChain, analyzeBatchOptionsChain } from './engine/options-chain-analyzer';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -609,6 +610,27 @@ function setupIPC() {
       return { success: true, result };
     } catch (err: any) {
       log.error('[BrinsonAttributionBatch] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Options Chain Analyzer (JVS-55) ─────────────────────────────────
+  ipcMain.handle('options:chain-analyze', async (_e, contracts: any[], symbol: string, historicalIVRange?: any) => {
+    try {
+      const result = analyzeOptionsChain(contracts, symbol, historicalIVRange);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[OptionsChain] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('options:chain-batch', async (_e, symbols: any[]) => {
+    try {
+      const result = await analyzeBatchOptionsChain(symbols);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[OptionsChainBatch] Error:', err);
       return { success: false, error: err.message };
     }
   });

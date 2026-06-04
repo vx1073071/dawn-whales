@@ -1731,3 +1731,14 @@ export async function generateBatchBrinsonReport(portfolios: any[]): Promise<any
   if (!hasIPC()) return { success: false };
   return window.api.brinsonAttribution.generateBatch(portfolios);
 }
+
+// ── Options Chain Analyzer (JVS-55) ──────────────────────────────────────
+export async function analyzeOptionsChain(contracts: any[], symbol: string, historicalIVRange?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.optionsChain.analyze(contracts, symbol, historicalIVRange);
+}
+
+export async function analyzeBatchOptionsChain(symbols: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.optionsChain.analyzeBatch(symbols);
+}
