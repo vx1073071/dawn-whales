@@ -27,6 +27,7 @@ import { StockAnomalyDetector } from './engine/stock-anomaly-detector';
 import { MarketHotspotService } from './engine/market-hotspot';
 import { DataSchedulerService } from './engine/data-scheduler';
 import { initQuoteStream, getQuoteStream } from './engine/quote-stream';
+import { initLiveExecutor, getLiveExecutor, LiveExecutor } from './engine/live-executor';
 import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from './engine/dragon-tiger-list';
 import { getStockCapitalFlowRank, getSectorCapitalFlowRank, getConceptCapitalFlowRank } from './engine/capital-flow-rank';
 import { getCapitalFlowMonitor } from './engine/capital-flow-monitor';
@@ -126,6 +127,7 @@ let brokerManager: BrokerManager | null = null;
 let strategyEngine: StrategyEngine | null = null;
 let backtestEngine: BacktestEngine | null = null;
 let riskEngine: RiskEngine | null = null;
+let liveExecutor: LiveExecutor | null = null;
 let db: DatabaseManager | null = null;
 let marketplaceService: MarketplaceService | null = null;
 let dataProvider: DataProviderService | null = null;
@@ -1969,6 +1971,62 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: false, error: err.message };
     }
   });
+
+  // ── Q14: Live Executor ──────────────────────────────────────────────
+  ipcMain.handle('live:start', async (_e, symbols?: string[]) => {
+    try {
+      if (!liveExecutor) {
+        return { success: false, error: 'LiveExecutor not initialized' };
+      }
+      liveExecutor.start(symbols);
+      return { success: true, status: liveExecutor.getStatus() };
+    } catch (err: any) {
+      log.error('[live:start]', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('live:stop', async () => {
+    try {
+      liveExecutor?.stop();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('live:add-strategy', async (_e, config: any) => {
+    try {
+      if (!liveExecutor) return { success: false, error: 'LiveExecutor not initialized' };
+      const { strategyId, symbol, signalType, price, quantity, stopLoss, takeProfit } = config;
+      if (!strategyId || !symbol) return { success: false, error: 'strategyId and symbol required' };
+      liveExecutor.addStrategy({ strategyId, symbol, signalType: signalType || 'BUY', price, quantity, stopLoss, takeProfit });
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('live:remove-strategy', async (_e, strategyId: string) => {
+    try {
+      liveExecutor?.removeStrategy(strategyId);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('live:get-status', async () => {
+    return { success: true, status: liveExecutor?.getStatus() ?? null };
+  });
+
+  ipcMain.handle('live:get-positions', async () => {
+    return { success: true, positions: liveExecutor?.getPositions() ?? [] };
+  });
+
+  ipcMain.handle('live:get-orders', async () => {
+    return { success: true, orders: liveExecutor?.getOrders() ?? [] };
+  });
 }
 
 // ── System Tray ────────────────────────────────────────────────────────────
@@ -2014,6 +2072,10 @@ app.whenReady().then(async () => {
       strategyEngine.setRiskEngine(riskEngine);
       log.info('[App] StrategyEngine ↔ RiskEngine connected');
     }
+    // Q14: Initialize live executor
+    liveExecutor = initLiveExecutor(strategyEngine!);
+    if (riskEngine) liveExecutor.setRiskEngine(riskEngine);
+    log.info('[App] LiveExecutor initialized');
     brokerManager = new BrokerManager();
   } catch (err: any) {
     log.error('[App] Engine init failed:', err.message);

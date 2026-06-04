@@ -43,6 +43,15 @@ contextBridge.exposeInMainWorld('api', {
     generateReport: (ctx: any) => ipcRenderer.invoke('report:generate', ctx),
     generateQuickReport: (ctx: any) => ipcRenderer.invoke('report:quick', ctx),
 
+    // Q14: Live Executor
+    liveStart: (symbols?: string[]) => ipcRenderer.invoke('live:start', symbols),
+    liveStop: () => ipcRenderer.invoke('live:stop'),
+    liveAddStrategy: (config: any) => ipcRenderer.invoke('live:add-strategy', config),
+    liveRemoveStrategy: (strategyId: string) => ipcRenderer.invoke('live:remove-strategy', strategyId),
+    liveGetStatus: () => ipcRenderer.invoke('live:get-status'),
+    liveGetPositions: () => ipcRenderer.invoke('live:get-positions'),
+    liveGetOrders: () => ipcRenderer.invoke('live:get-orders'),
+
     // Q8: Market Regime Detector
     detectRegime: (klines: any, vixLevel?: number, symbol?: string) =>
       ipcRenderer.invoke('regime:detect', { klines, vixLevel, symbol }),

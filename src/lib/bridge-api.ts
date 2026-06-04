@@ -120,6 +120,16 @@ declare global {
         generate: (ctx: any) => Promise<any>;
         summary: (alerts: any[], apiKey?: string) => Promise<any>;
       };
+      // Q14: Live Executor
+      live: {
+        start: (symbols?: string[]) => Promise<any>;
+        stop: () => Promise<any>;
+        addStrategy: (config: { strategyId: string; symbol: string; signalType?: string; price?: number; quantity?: number; stopLoss?: number; takeProfit?: number }) => Promise<any>;
+        removeStrategy: (strategyId: string) => Promise<any>;
+        getStatus: () => Promise<any>;
+        getPositions: () => Promise<any>;
+        getOrders: () => Promise<any>;
+      };
       report: {
         generate: (ctx: { results: any[]; symbol?: string; apiKey?: string; timeoutMs?: number }) => Promise<any>;
         quick: (ctx: { result: any; apiKey?: string }) => Promise<any>;
@@ -681,12 +691,12 @@ export async function getQuoteStreamStatus(): Promise<any> {
   return window.api.quoteStream.status();
 }
 
-export async function subscribeQuotes(symbols: string[]): Promise<any> {
+export async function subscribeQuoteStream(symbols: string[]): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.quoteStream.subscribe(symbols);
 }
 
-export async function unsubscribeQuotes(symbols: string[]): Promise<any> {
+export async function unsubscribeQuoteStream(symbols: string[]): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.quoteStream.unsubscribe(symbols);
 }
