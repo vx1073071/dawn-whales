@@ -149,11 +149,32 @@ export default function DashboardPage() {
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-white mb-1">📊 总览看板</h1>
-        <p className="text-gray-400 text-sm">
-          {connected ? '已连接 OpenD · 实时数据' : '未连接券商 · 请先在设置中连接'}
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white mb-1">📊 总览看板</h1>
+          <p className="text-gray-400 text-sm">
+            {connected ? '已连接 OpenD · 实时数据' : '未连接券商 · 请先在设置中连接'}
+          </p>
+        </div>
+        <button
+          onClick={async () => {
+            try {
+              const filename = `dawn-whales-dashboard-${new Date().toISOString().split('T')[0]}.pdf`;
+              const result = await window.api?.app?.exportPdf(filename);
+              if (result?.success) {
+                alert(`PDF 已导出: ${result.path}`);
+              } else {
+                alert(`导出失败: ${result?.error || '未知错误'}`);
+              }
+            } catch (e: any) {
+              alert(`导出失败: ${e.message}`);
+            }
+          }}
+          className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors flex items-center gap-1.5"
+          title="导出当前看板为 PDF"
+        >
+          📄 导出 PDF
+        </button>
       </div>
 
       {/* Account Summary Cards */}

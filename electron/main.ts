@@ -24,6 +24,9 @@ import { computeCorrelationMatrix } from './engine/correlation-matrix';
 import { generateSmartAlerts, generateAlertSummary, type NotificationContext } from './engine/notification-engine';
 import { generateBacktestReport, generateQuickReport } from './engine/ai-report-generator';
 import { autoTune, type ParamRange } from './engine/auto-tuner';
+import { detectRegime, type RegimeLabel } from './engine/regime-detector';
+import { decomposeRisk, runMonteCarlo } from './engine/risk-decomposition';
+import { detectAnomalies } from './engine/anomaly-detector';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -970,6 +973,36 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     mainProcess: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
     total: Math.round(process.memoryUsage().rss / 1024 / 1024),
   }));
+
+  ipcMain.handle('app:exportPdf', async (_e, filename: string) => {
+    try {
+      if (!mainWindow || mainWindow.isDestroyed()) {
+        return { success: false, error: 'Window not available' };
+      }
+      const { dialog } = require('electron');
+      const fs = require('fs');
+      const path = require('path');
+
+      const defaultPath = path.join(require('os').homedir(), 'Downloads', filename);
+      const { filePath, canceled } = await dialog.showSaveDialog(mainWindow, {
+        defaultPath,
+        filters: [{ name: 'PDF', extensions: ['pdf'] }],
+      });
+      if (canceled || !filePath) return { success: false, error: 'User cancelled' };
+
+      const data = await mainWindow.webContents.printToPDF({
+        marginsType: 1,
+        pageSize: 'A4',
+        printBackground: true,
+        preferCSSPageSize: true,
+      });
+      fs.writeFileSync(filePath, data);
+      return { success: true, path: filePath };
+    } catch (err: any) {
+      log.error('[App] PDF export failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
 
   ipcMain.handle('app:emergencyStop', async () => {
     try {

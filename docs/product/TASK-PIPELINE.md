@@ -1,67 +1,70 @@
 # DAWN WHALES · 任务流水线
 
-> v1.0 | 2026-06-04 | 主龙虾(项目经理)
+> v2.0 | 2026-06-04 19:50 | 主龙虾(项目经理)
 
 ---
 
-## 当前任务 (v0.6.0 Sprint 1)
+## 当前状态 (v0.6.0)
 
-| 🦞 | 当前任务 | 状态 |
-|------|---------|:--:|
-| 主龙虾 | Dashboard + 回测压力测试 + 总协调 | ✅ |
-| QClaw | strategy:optimize (LLM参数优化后端) | ⏳ |
-| JVS | 回测引擎性能优化 (5K+ bars) | ⏳ |
-| WorkBuddy | RiskDashboardPage (风控实时面板) | ⏳ |
-
----
-
-## 预排任务 (完成后立刻分配)
-
-### QClaw — LLM/AI 路线
-| # | 任务 | 说明 |
-|---|------|------|
-| Q1 | strategy:optimize | ✅当前 |
-| Q2 | 策略相关性矩阵 | 计算多策略收益相关系数，输出分散化建议 |
-| Q3 | 智能通知引擎 | 策略异常→LLM生成自然语言告警→推送到前端 |
-| Q4 | 回测报告AI解读 | 输入回测结果→DeepSeek生成专业分析报告 |
-
-### JVS — 架构/性能路线
-| # | 任务 | 说明 |
-|---|------|------|
-| J1 | 回测引擎性能优化 | ✅当前 |
-| J2 | Web Worker 并行回测 | 参数扫描100组合并行→10x加速 |
-| J3 | 缓存层优化 | K线缓存 TTL + LRU 淘汰 + 内存限制 |
-| J4 | TypeScript 严格模式迁移 | 消除所有 any 类型，提升类型安全 |
-
-### WorkBuddy — UI/可视化路线
-| # | 任务 | 说明 |
-|---|------|------|
-| W1 | RiskDashboardPage | ✅当前 |
-| W2 | 净值曲线组件 (EquityChart) | Canvas/SVG 高性能渲染，支持缩放+标注 |
-| W3 | 市场热力地图 | 板块/行业涨跌全景图 |
-| W4 | Onboarding 优化 | 新用户3步引导→真实账户连接→创建第一个策略 |
-
-### 主龙虾 — 产品/发布路线
-| # | 任务 | 说明 |
-|---|------|------|
-| M1 | Dashboard + 压力测试 | ✅完成 |
-| M2 | electron-builder 正式打包流水线 | Win/Mac/Linux 三平台 + 自动上传 GitHub Release |
-| M3 | Landing Page v2 | 真实截图 + 功能动画 + 下载按钮 |
-| M4 | 代码审查 + 全线测试 | 148→200+，覆盖率报告 |
+| 🦞 | 已完成 | 进行中 | 排程中 |
+|------|:--:|:--:|:--:|
+| **主龙虾** | M1-M4 ✅ | — | M5: 压力测试 |
+| **QClaw** | Q1-Q10 ✅ | Q6 组合优化 | Q11-Q15 |
+| **JVS** | — ⚠️ | JVS-1 市场热力图数据 | JVS-2/3/4 |
+| **WorkBuddy** | W1-W22 ✅ | W19-W21 | W23-W25 |
 
 ---
 
-## 规则
+## QClaw — AI/量化引擎 (端口64000, 轮询桥)
+| # | 任务 | 文件 | 状态 |
+|---|------|------|:--:|
+| Q1 | strategy:optimize | auto-tuner.ts | ✅ |
+| Q2 | 策略相关性矩阵 | correlation-matrix.ts | ✅ |
+| Q3 | 智能通知引擎 | notification-engine.ts | ✅ |
+| Q4 | AI回测报告解读 | ai-report-generator.ts | ✅ |
+| Q5 | 策略自动调参 (GA+Bayesian) | auto-tuner.ts | ✅ |
+| Q6 | 多资产组合优化 (Markowitz/Risk Parity/Black-Litterman) | portfolio-optimizer.ts | ⏳ |
+| Q7 | 策略回测对比器 | strategy:compare IPC | 排程 |
+| Q8 | 市场状态检测 (HMM) | regime-detector.ts | ✅ |
+| Q9 | 策略风险分解 (VaR/CVaR/Monte Carlo) | risk-decomposition.ts | ✅ |
+| Q10 | 实时异常检测 | anomaly-detector.ts | ✅ |
 
-1. **完成当前任务→立刻通知→立刻分配下一个**
-2. **每人手头永远有 1 个在做的 + 3 个排队的**
-3. **若队列清空→让每人提 4 个新任务建议**
-4. **优先级：实盘相关 > 性能 > 可视化 > 文档**
+## JVS — 市场情报 / 东方财富数据 (OpenClaw, 轮询桥)
+| # | 任务 | 文件 | 状态 |
+|---|------|------|:--:|
+| JVS-1 | 市场热力图数据管道 (EM API) | electron/data/em-data-provider.ts | 🆕 分配 |
+| JVS-2 | 宏观数据仪表盘 (GDP/CPI/PMI) | electron/data/macro-provider.ts | 排程 |
+| JVS-3 | 市场情绪指数 | electron/engine/sentiment-index.ts | 排程 |
+| JVS-4 | 股票筛选器 (EM Skill) | electron/engine/stock-screener.ts | 排程 |
+
+## WorkBuddy — UI/数据管线 (端口64001, 即时响应)
+| # | 任务 | 文件 | 状态 |
+|---|------|------|:--:|
+| W1-W22 | 22个风险组件 | src/components/risk/*.tsx | ✅ |
+| W19 | 交易日记全页 | TradingJournal 扩展 | ⏳ |
+| W20 | 移动端适配 | DashboardPage responsive | ⏳ |
+| W21 | Onboarding改进 | OnboardingModal.tsx | ⏳ |
+| W23 | 暗/亮主题切换 | ThemeProvider | 排程 |
+| W24 | 快捷键面板 | KeyboardShortcutsPanel | ✅ |
+| W25 | 仪表盘PDF导出 | export dashboard | 排程 |
+
+## 主龙虾 — 产品/发布
+| # | 任务 | 状态 |
+|---|------|:--:|
+| M1 | Dashboard集成 | ✅ |
+| M2 | 三平台CI/CD + electron-builder | ✅ |
+| M3 | Landing Page v2 (v0.6.0) | ✅ |
+| M4 | 代码审查 + 构建修复 (BOM/secure-key) | ✅ |
+| M5 | v0.6.0 压力测试 (50K bars, 1000策略) | ⏳ |
 
 ---
 
-## 当前等待
+## 沟通确认
+- QClaw: ✅ Q1-Q10完成，Q6/Q7进行中，桥消息已送达
+- JVS: 🆕 桥消息UTF-8编码写入，README已更新，JVS-1~4已分配
+- WB: ✅ 22组件，W19-W21进行中，W23-W25排程中
 
-- QClaw: Q1 完成后自动分配 Q2
-- JVS: J1 完成后自动分配 J2
-- WorkBuddy: W1 完成后自动分配 W2
+## v0.6.0 Release
+- Tag: v0.6.0 → GitHub Actions自动构建中
+- Tests: 148/148 ✅
+- Build: Vite 8.43s ✅

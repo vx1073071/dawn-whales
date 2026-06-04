@@ -93,6 +93,7 @@ contextBridge.exposeInMainWorld('api', {
   app: {
     getInfo: () => ipcRenderer.invoke('app:getInfo'),
     getMemoryUsage: () => ipcRenderer.invoke('app:getMemoryUsage'),
+    exportPdf: (filename: string) => ipcRenderer.invoke('app:exportPdf', filename),
     checkUpdate: () => ipcRenderer.invoke('app:checkUpdate'),
     downloadUpdate: () => ipcRenderer.invoke('app:downloadUpdate'),
     installUpdate: () => ipcRenderer.invoke('app:installUpdate'),
