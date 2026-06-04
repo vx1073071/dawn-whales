@@ -5,6 +5,7 @@ import { shared } from './_import-shared';
 import { BacktestEngine } from '../engine/backtest-engine';
 import { WalkForwardEngine } from '../engine/walk-forward';
 import { ParameterScanner } from '../engine/parameter-scanner';
+import { runParallelBacktests, runParameterScan, runWalkForwardParallel } from '../engine/parallel-backtest';
 import { validate, BacktestMultiPeriodSchema, BacktestParamSweepSchema, BacktestRiskMetricsSchema, BacktestWalkForwardSchema, BacktestParamScanSchema, BacktestMultiTimeframeSchema } from '../ipc-schemas';
 import log from 'electron-log';
 
@@ -121,5 +122,60 @@ export function registerBacktestHandlers() {
         return { success: false, error: err.message };
       }
     });
+
+  // ── Parallel Backtest (J2) ──────────────────────────────────────────
+  ipcMain.handle('backtest:parallel', async (_e, config: any) => {
+    try {
+      const { configs, maxWorkers, timeout } = config;
+      if (!configs || !Array.isArray(configs) || configs.length === 0) {
+        return { success: false, error: 'configs must be a non-empty array' };
+      }
+      
+      log.info(`[ParallelBacktest] Starting ${configs.length} backtests with maxWorkers=${maxWorkers || 4}`);
+      const result = await runParallelBacktests({ configs, maxWorkers, timeout });
+      
+      log.info(`[ParallelBacktest] Done: ${result.successCount}/${configs.length} success, ${result.totalPerfMs.toFixed(1)}ms total`);
+      return { success: true, ...result };
+    } catch (err: any) {
+      log.error('[ParallelBacktest] Failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('backtest:param-scan-parallel', async (_e, config: any) => {
+    try {
+      const { baseConfig, paramRanges, maxWorkers } = config;
+      if (!baseConfig || !paramRanges) {
+        return { success: false, error: 'baseConfig and paramRanges are required' };
+      }
+      
+      log.info('[ParamScanParallel] Starting parallel parameter scan');
+      const result = await runParameterScan(baseConfig, paramRanges);
+      
+      log.info(`[ParamScanParallel] Done: ${result.successCount} success, ${result.totalPerfMs.toFixed(1)}ms total`);
+      return { success: true, ...result };
+    } catch (err: any) {
+      log.error('[ParamScanParallel] Failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('backtest:walk-forward-parallel', async (_e, config: any) => {
+    try {
+      const { baseConfig, windows, maxWorkers } = config;
+      if (!baseConfig || !windows || !Array.isArray(windows)) {
+        return { success: false, error: 'baseConfig and windows array are required' };
+      }
+      
+      log.info(`[WalkForwardParallel] Starting parallel walk-forward with ${windows.length} windows`);
+      const result = await runWalkForwardParallel(baseConfig, windows);
+      
+      log.info(`[WalkForwardParallel] Done: ${result.successCount}/${windows.length} success, ${result.totalPerfMs.toFixed(1)}ms total`);
+      return { success: true, ...result };
+    } catch (err: any) {
+      log.error('[WalkForwardParallel] Failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
 
 }
