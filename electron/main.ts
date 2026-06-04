@@ -54,6 +54,7 @@ import { getValuationData } from './engine/valuation-data';
 import { computeIndicators } from './engine/technical-indicators';
 import { blackScholesPrice, calculateGreeks, impliedVolatility, buildVolSurface, priceAndGreeks } from './engine/options-pricing';
 import { calculateRiskMetrics, calcSharpeRatio, calcMaxDrawdown, calcVaR } from './engine/risk-metrics';
+import { brinsonAttribution, timeSeriesAttribution } from './engine/performance-attribution';
 import { getDataQualityStream } from './engine/data-quality-stream';
 import { getSmartCacheManager } from './engine/smart-cache';
 import { getDragonTigerStream } from './engine/dragon-tiger-stream';
@@ -363,6 +364,27 @@ function setupIPC() {
     try {
       return { success: true, var: calcVaR(returns, confidence) };
     } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Performance Attribution (JVS-45) ─────────────────────────────────
+  ipcMain.handle('em:portfolio-attribution', async (_e, params: any) => {
+    try {
+      const result = brinsonAttribution(params);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[Attribution] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:time-series-attribution', async (_e, params: any) => {
+    try {
+      const result = timeSeriesAttribution(params);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[Attribution] TimeSeries Error:', err);
       return { success: false, error: err.message };
     }
   });

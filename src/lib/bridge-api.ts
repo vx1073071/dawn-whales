@@ -1620,3 +1620,23 @@ export async function calculateVaR(returns: number[], confidence?: number): Prom
   if (!hasIPC()) return { success: false };
   return window.api.riskMetrics.calcVaR(returns, confidence);
 }
+
+// ── Performance Attribution (JVS-45) ───────────────────────────────────────
+export async function brinsonAttribution(params: {
+  portfolio: { sector: string; weight: number; returnPct: number }[];
+  benchmark: { sector: string; weight: number; returnPct: number }[];
+}): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceAttribution.brinson(params);
+}
+
+export async function timeSeriesAttribution(params: {
+  periods: {
+    date: string;
+    portfolio: { sector: string; weight: number; returnPct: number }[];
+    benchmark: { sector: string; weight: number; returnPct: number }[];
+  }[];
+}): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceAttribution.timeSeries(params);
+}

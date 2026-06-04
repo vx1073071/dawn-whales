@@ -508,6 +508,12 @@ contextBridge.exposeInMainWorld('api', {
     calcVaR: (returns: number[], confidence?: number) => ipcRenderer.invoke('em:calc-var', returns, confidence),
   },
 
+  // ── Performance Attribution (JVS-45) ───────────────────────────────
+  performanceAttribution: {
+    brinson: (params: any) => ipcRenderer.invoke('em:portfolio-attribution', params),
+    timeSeries: (params: any) => ipcRenderer.invoke('em:time-series-attribution', params),
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
     const allowed = [
