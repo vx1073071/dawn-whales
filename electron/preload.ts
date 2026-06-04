@@ -220,6 +220,14 @@ contextBridge.exposeInMainWorld('api', {
     clearHistory: () => ipcRenderer.invoke('em:clear-capital-flow-history'),
   },
 
+  // ── Fund Holdings — 基金持仓数据 (JVS-13) ─────────────────────
+  fundHoldings: {
+    getHoldings: (fundCode: string, reportDate?: string) => ipcRenderer.invoke('em:get-fund-holdings', fundCode, reportDate),
+    getStockOwnership: (stockCode: string, reportDate?: string) => ipcRenderer.invoke('em:get-stock-fund-ownership', stockCode, reportDate),
+    getIncreaseRank: (limit?: number, reportDate?: string) => ipcRenderer.invoke('em:get-fund-increase-rank', limit, reportDate),
+    getDecreaseRank: (limit?: number, reportDate?: string) => ipcRenderer.invoke('em:get-fund-decrease-rank', limit, reportDate),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),

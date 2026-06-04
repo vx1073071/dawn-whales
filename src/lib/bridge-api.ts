@@ -752,6 +752,28 @@ export async function clearCapitalFlowHistory(): Promise<any> {
   return window.api.capitalFlowMonitor.clearHistory();
 }
 
+// ── Fund Holdings — 基金持仓数据 (JVS-13) ─────────────────────────────────
+
+export async function getFundHoldings(fundCode: string, reportDate?: string): Promise<any> {
+  if (!hasIPC()) return { success: false, items: [], total: 0 };
+  return window.api.fundHoldings.getHoldings(fundCode, reportDate);
+}
+
+export async function getStockFundOwnership(stockCode: string, reportDate?: string): Promise<any> {
+  if (!hasIPC()) return { success: false, items: [], total: 0 };
+  return window.api.fundHoldings.getStockOwnership(stockCode, reportDate);
+}
+
+export async function getFundIncreaseRank(limit?: number, reportDate?: string): Promise<any> {
+  if (!hasIPC()) return { success: false, items: [], total: 0 };
+  return window.api.fundHoldings.getIncreaseRank(limit, reportDate);
+}
+
+export async function getFundDecreaseRank(limit?: number, reportDate?: string): Promise<any> {
+  if (!hasIPC()) return { success: false, items: [], total: 0 };
+  return window.api.fundHoldings.getDecreaseRank(limit, reportDate);
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {

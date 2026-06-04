@@ -30,6 +30,7 @@ import { initQuoteStream, getQuoteStream } from './engine/quote-stream';
 import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from './engine/dragon-tiger-list';
 import { getStockCapitalFlowRank, getSectorCapitalFlowRank, getConceptCapitalFlowRank } from './engine/capital-flow-rank';
 import { getCapitalFlowMonitor } from './engine/capital-flow-monitor';
+import { getFundHoldings, getStockFundOwnership, getFundIncreaseRank, getFundDecreaseRank } from './engine/fund-holdings';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1755,6 +1756,43 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
+    }
+  });
+
+  // ── Fund Holdings — 基金持仓数据 (JVS-13) ────────────────────────
+  ipcMain.handle('em:get-fund-holdings', async (_e, fundCode: string, reportDate?: string) => {
+    try {
+      const result = await getFundHoldings(fundCode, reportDate);
+      return result;
+    } catch (err: any) {
+      return { success: false, items: [], total: 0, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-stock-fund-ownership', async (_e, stockCode: string, reportDate?: string) => {
+    try {
+      const result = await getStockFundOwnership(stockCode, reportDate);
+      return result;
+    } catch (err: any) {
+      return { success: false, items: [], total: 0, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-fund-increase-rank', async (_e, limit?: number, reportDate?: string) => {
+    try {
+      const result = await getFundIncreaseRank(limit, reportDate);
+      return result;
+    } catch (err: any) {
+      return { success: false, items: [], total: 0, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:get-fund-decrease-rank', async (_e, limit?: number, reportDate?: string) => {
+    try {
+      const result = await getFundDecreaseRank(limit, reportDate);
+      return result;
+    } catch (err: any) {
+      return { success: false, items: [], total: 0, error: err.message };
     }
   });
 
