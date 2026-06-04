@@ -4258,6 +4258,38 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   ipcMain.handle('live:get-orders', async () => {
     return { success: true, orders: liveExecutor?.getOrders() ?? [] };
   });
+
+  // ── OpenD Connection Validator (JVS-47) ──────────────────────────────────
+  ipcMain.handle('opend:validate', async () => {
+    const validator = getOpenDValidator();
+    const result = await validator.validate();
+    return { success: true, result };
+  });
+
+  ipcMain.handle('opend:getStatus', async () => {
+    const validator = getOpenDValidator();
+    const status = await validator.getStatus();
+    return { success: true, status };
+  });
+
+  // ── Strategy Signal Generator (JVS-46) ──────────────────────────────────
+  ipcMain.handle('signal:generate', async (_e, config: any) => {
+    const generator = getStrategySignalGenerator(config);
+    const signal = generator.generateSignal();
+    return { success: true, signal };
+  });
+
+  ipcMain.handle('signal:generate-batch', async (_e, configs: any[]) => {
+    const generator = getStrategySignalGenerator();
+    const signals = generator.generateBatchSignals(configs);
+    return { success: true, signals };
+  });
+
+  ipcMain.handle('signal:validate-backtest', async (_e, config: any) => {
+    const generator = getStrategySignalGenerator();
+    const result = generator.validateWithBacktest(config);
+    return { success: true, result };
+  });
 }
 
 // ── System Tray ────────────────────────────────────────────────────────────

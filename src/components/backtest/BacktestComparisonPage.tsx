@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import * as echarts from 'echarts';
 import { runBacktest } from '@/lib/bridge-api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -110,7 +109,6 @@ function generateEquityCurve(initial: number, annualReturn: number, volatility: 
 }
 
 export default function BacktestComparisonPage() {
-  const { t } = useTranslation();
   const [results, setResults] = useState<BacktestResult[]>(MOCK_RESULTS);
   const [loading, setLoading] = useState(false);
   const [selectedStrategies, setSelectedStrategies] = useState<Set<string>>(new Set(MOCK_RESULTS.map(r => r.strategyId)));
@@ -217,26 +215,26 @@ export default function BacktestComparisonPage() {
     return () => chart.dispose();
   }, [monthlyHeatmapData, filtered]);
 
-  if (loading) return <LoadingSpinner fullscreen text={t('backtest.loading')} />;
+  if (loading) return <LoadingSpinner fullscreen text="加载回测数据..." />;
 
   return (
     <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">📊 {t('backtest.comparisonTitle')}</h1>
-          <p className="text-gray-400 text-sm">{t('backtest.comparisonSubtitle')}</p>
+          <h1 className="text-2xl font-bold text-white mb-1">📊 回测对比</h1>
+          <p className="text-gray-400 text-sm">多策略回测结果对比分析</p>
         </div>
         <button
           onClick={load}
           className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-2 rounded-lg transition-colors"
         >
-          {t('common.refresh')}
+          刷新数据
         </button>
       </div>
 
       {/* Strategy Selector */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-        <div className="text-xs text-gray-500 mb-3">{t('backtest.selectStrategies')}</div>
+        <div className="text-xs text-gray-500 mb-3">选择要对比的策略</div>
         <div className="flex flex-wrap gap-2">
           {results.map((r) => (
             <button
@@ -258,13 +256,13 @@ export default function BacktestComparisonPage() {
       {/* Metrics Comparison Table */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/5">
-          <h2 className="text-sm font-semibold text-white">{t('backtest.riskReturnComparison')}</h2>
+          <h2 className="text-sm font-semibold text-white">风险收益指标对比</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs">
-                <th className="px-4 py-3 text-left">{t('backtest.metric')}</th>
+                <th className="px-4 py-3 text-left">指标</th>
                 {filtered.map((r) => (
                   <th key={r.strategyId} className="px-4 py-3 text-right">
                     <span className="inline-flex items-center gap-1.5">
@@ -277,15 +275,15 @@ export default function BacktestComparisonPage() {
             </thead>
             <tbody className="divide-y divide-white/5">
               {[
-                { label: t('metrics.totalReturn'), key: 'totalReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
-                { label: t('metrics.annualReturn'), key: 'annualReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
-                { label: t('metrics.maxDrawdown'), key: 'maxDrawdown', fmt: (v: number) => `${v.toFixed(2)}%`, color: true, inverse: true },
-                { label: t('metrics.sharpeRatio'), key: 'sharpeRatio', fmt: (v: number) => v.toFixed(2) },
-                { label: t('metrics.calmarRatio'), key: 'calmarRatio', fmt: (v: number) => v.toFixed(2) },
-                { label: t('metrics.sortinoRatio'), key: 'sortinoRatio', fmt: (v: number) => v.toFixed(2) },
-                { label: t('metrics.winRate'), key: 'winRate', fmt: (v: number) => `${v.toFixed(1)}%` },
-                { label: t('metrics.profitFactor'), key: 'profitFactor', fmt: (v: number) => v.toFixed(2) },
-                { label: t('metrics.totalTrades'), key: 'totalTrades', fmt: (v: number) => `${v}` },
+                { label: '总收益率', key: 'totalReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
+                { label: '年化收益率', key: 'annualReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
+                { label: '最大回撤', key: 'maxDrawdown', fmt: (v: number) => `${v.toFixed(2)}%`, color: true, inverse: true },
+                { label: '夏普比率', key: 'sharpeRatio', fmt: (v: number) => v.toFixed(2) },
+                { label: '卡玛比率', key: 'calmarRatio', fmt: (v: number) => v.toFixed(2) },
+                { label: '索提诺比率', key: 'sortinoRatio', fmt: (v: number) => v.toFixed(2) },
+                { label: '胜率', key: 'winRate', fmt: (v: number) => `${v.toFixed(1)}%` },
+                { label: '盈亏比', key: 'profitFactor', fmt: (v: number) => v.toFixed(2) },
+                { label: '交易次数', key: 'totalTrades', fmt: (v: number) => `${v}` },
               ].map((row) => (
                 <tr key={row.label} className="hover:bg-white/[0.02]">
                   <td className="px-4 py-3 text-gray-400">{row.label}</td>
