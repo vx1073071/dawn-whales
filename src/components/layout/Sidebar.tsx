@@ -15,6 +15,8 @@ const navItems: NavItem[] = [
   { id: 'market', icon: '📈', label: '行情中心', section: '交易' },
   { id: 'sectorHeatmap', icon: '🗺️', label: '板块热力' },
   { id: 'macroDashboard', icon: '📉', label: '宏观数据' },
+  { id: 'stockScreener', icon: '🔍', label: '智能选股' },
+  { id: 'newsDashboard', icon: '📰', label: '新闻舆情' },
   { id: 'strategy', icon: '🧠', label: '策略工坊' },
   { id: 'marketplace', icon: '🏪', label: '策略市场' },
   { id: 'backtest', icon: '🔬', label: '回测报告' },

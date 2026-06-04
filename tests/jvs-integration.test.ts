@@ -1,5 +1,5 @@
 // ── JVS Integration Test Suite ─────────────────────────────────────────────
-// Validates all JVS-1~8 modules with real scenarios
+// Validates JVS-1~18 modules with real scenarios
 // Run: npx tsx tests/jvs-integration.test.ts
 
 import { SentimentIndexEngine } from '../electron/engine/sentiment-index';
@@ -255,6 +255,144 @@ async function testNewsAggregator() {
   });
 }
 
+// ── JVS-12: Capital Flow Monitor Tests ─────────────────────────────────────
+
+import { getCapitalFlowMonitor } from '../electron/engine/capital-flow-monitor';
+
+async function testCapitalFlowMonitor() {
+  console.log('\n💰 JVS-12: Capital Flow Monitor');
+
+  await test('Should initialize with default config', () => {
+    const monitor = getCapitalFlowMonitor();
+    const config = monitor.getConfig();
+    assert(config.mainForceThreshold === 5000, 'Default main force threshold should be 5000');
+    assert(config.largeOrderThreshold === 1000, 'Default large order threshold should be 1000');
+    assert(config.enabled === true, 'Should be enabled by default');
+  });
+
+  await test('Should generate alert for large main force inflow', () => {
+    const monitor = getCapitalFlowMonitor();
+    monitor.updateConfig({ mainForceThreshold: 100, alertInterval: 1000 });
+    monitor.clearHistory();
+    const alerts = monitor.process([
+      { code: '600519', name: '贵州茅台', mainNetInflow: 500, superLargeIn: 0, turnover: 10000, changePct: 3.5 },
+    ]);
+    assert(alerts.length > 0, 'Should generate alerts for large inflow');
+    assert(alerts[0].type === 'main_force_inflow', 'Should be main_force_inflow type');
+    assert(alerts[0].severity === 'medium' || alerts[0].severity === 'high', 'Should have appropriate severity');
+  });
+
+  await test('Should suppress duplicate alerts within interval', () => {
+    const monitor = getCapitalFlowMonitor();
+    monitor.updateConfig({ mainForceThreshold: 100, alertInterval: 60000 });
+    monitor.clearHistory();
+    const firstAlerts = monitor.process([
+      { code: '000001', name: '平安银行', mainNetInflow: 200, superLargeIn: 0, turnover: 5000, changePct: 2 },
+    ]);
+    const secondAlerts = monitor.process([
+      { code: '000001', name: '平安银行', mainNetInflow: 200, superLargeIn: 0, turnover: 5000, changePct: 2 },
+    ]);
+    assert(firstAlerts.length > 0, 'First batch should generate alerts');
+    assert(secondAlerts.length === 0, 'Second batch should be suppressed');
+  });
+
+  await test('Should detect unusual activity', () => {
+    const monitor = getCapitalFlowMonitor();
+    monitor.updateConfig({ mainForceThreshold: 10000 });
+    monitor.clearHistory();
+    const alerts = monitor.process([
+      { code: '600000', name: '浦发银行', mainNetInflow: 5000, superLargeIn: 0, turnover: 12000, changePct: 1 },
+    ]);
+    const unusual = alerts.find(a => a.type === 'unusual_activity');
+    assert(unusual !== undefined, 'Should detect unusual activity when main force ratio > 30%');
+  });
+}
+
+// ── JVS-15: Portfolio Risk Tests ───────────────────────────────────────────
+
+import { calculatePortfolioRisk } from '../electron/engine/portfolio-risk';
+
+async function testPortfolioRisk() {
+  console.log('\n📊 JVS-15: Portfolio Risk');
+
+  await test('Should calculate risk for multi-stock portfolio', async () => {
+    const report = await calculatePortfolioRisk({
+      positions: [
+        { code: '600519', name: '贵州茅台', shares: 100, avgCost: 1800, currentPrice: 1900, sector: '白酒' },
+        { code: '000858', name: '五粮液', shares: 500, avgCost: 150, currentPrice: 160, sector: '白酒' },
+        { code: '601318', name: '中国平安', shares: 1000, avgCost: 50, currentPrice: 48, sector: '保险' },
+      ],
+      includeCorrelation: false,
+      includeSentiment: false,
+    });
+    assert(report.success === true, 'Should succeed');
+    assert(report.overview.positionCount === 3, 'Should have 3 positions');
+    assert(report.overview.totalValue > 0, 'Should have positive total value');
+    assert(typeof report.riskScore === 'number', 'Should have risk score');
+    assert(['A', 'B', 'C', 'D', 'F'].includes(report.riskGrade), 'Should have valid grade');
+  });
+
+  await test('Should detect high concentration', async () => {
+    const report = await calculatePortfolioRisk({
+      positions: [
+        { code: '600519', name: '贵州茅台', shares: 1000, avgCost: 1800, currentPrice: 1900, sector: '白酒' },
+        { code: '000001', name: '平安银行', shares: 100, avgCost: 12, currentPrice: 12, sector: '银行' },
+      ],
+      includeCorrelation: false,
+      includeSentiment: false,
+    });
+    assert(report.success === true, 'Should succeed');
+    assert(report.overview.totalValue > 0, 'Should have positive value');
+    assert(report.concentration.hhi > 0, 'Should have HHI index');
+    assert(report.recommendations.length > 0, 'Should have recommendations');
+  });
+
+  await test('Should return empty report for no positions', async () => {
+    const report = await calculatePortfolioRisk({ positions: [] });
+    assert(report.success === false, 'Should fail with no positions');
+    assert(report.error !== undefined, 'Should have error message');
+  });
+}
+
+// ── JVS-14: Stock Diagnosis Tests ──────────────────────────────────────────
+
+import { diagnoseStock } from '../electron/engine/stock-diagnosis';
+
+async function testStockDiagnosis() {
+  console.log('\n🔍 JVS-14: Stock Diagnosis');
+
+  await test('Should return diagnosis structure', async () => {
+    const result = await diagnoseStock({
+      code: '600519',
+      name: '贵州茅台',
+      includeCapitalFlow: false,
+      includeFundHoldings: false,
+      includeDragonTiger: false,
+      includeNews: false,
+      includeAnomalies: true,
+    });
+    assert(result.success === true, 'Should succeed');
+    assert(result.code === '600519', 'Should have correct code');
+    assert(result.overview !== undefined, 'Should have overview');
+    assert(typeof result.overview.score === 'number', 'Should have score');
+    assert(result.dimensions !== undefined, 'Should have dimensions');
+  });
+
+  await test('Should handle missing data gracefully', async () => {
+    const result = await diagnoseStock({
+      code: '999999',
+      name: '不存在',
+      includeCapitalFlow: false,
+      includeFundHoldings: false,
+      includeDragonTiger: false,
+      includeNews: false,
+      includeAnomalies: false,
+    });
+    assert(result.success === true, 'Should still succeed');
+    assert(result.overview.score === 50, 'Should default to 50 when no data');
+  });
+}
+
 // ── Run All Tests ─────────────────────────────────────────────────────────
 
 async function runAllTests() {
@@ -266,6 +404,9 @@ async function runAllTests() {
   await testAnomalyDetector();
   await testSectorRotation();
   await testNewsAggregator();
+  await testCapitalFlowMonitor();
+  await testPortfolioRisk();
+  await testStockDiagnosis();
 
   console.log('\n══════════════════════════════════════════════════');
   console.log(`  Results: ${passed} passed, ${failed} failed, ${passed + failed} total`);
