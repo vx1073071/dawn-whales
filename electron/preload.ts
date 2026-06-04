@@ -246,6 +246,12 @@ contextBridge.exposeInMainWorld('api', {
     detectMatrix: (matrix: number[][], codes: string[], prevMatrix?: number[][], histMatrices?: any) => ipcRenderer.invoke('alert:correlation-matrix', matrix, codes, prevMatrix, histMatrices),
   },
 
+  // ── Walk-Forward Report (JVS-53) ───────────────────────────────
+  walkForwardReport: {
+    generate: (strategyName: string, windows: any[]) => ipcRenderer.invoke('report:walk-forward', strategyName, windows),
+    generateBatch: (strategies: any[]) => ipcRenderer.invoke('report:walk-forward-batch', strategies),
+  },
+
   // ── Stock Anomaly Detector (JVS-7) ─────────────────────────────
   stockAnomaly: {
     getSummary: () => ipcRenderer.invoke('em:get-anomaly-summary'),

@@ -53,7 +53,10 @@
     "confirmAdd": "Conferma Aggiunta",
     "switch": "Cambia",
     "count": "",
-    "mode": "Modalità"
+    "mode": "Modalità",
+    "operation": "Operazione",
+    "submitting": "Invio...",
+    "confirmSubmit": "Conferma Invio"
   },
   "nav": {
     "overview": "Panoramica",
@@ -155,7 +158,27 @@
     "liveMode": "Modalità Reale",
     "switchToLive": "Passa a Reale",
     "switchToPaper": "Passa a Simulazione",
-    "liveWarning": "ATTENZIONE: Modalità reale. Gli ordini saranno eseguiti davvero."
+    "liveWarning": "ATTENZIONE: Modalità reale. Gli ordini saranno eseguiti davvero.",
+    "tradeExecution": "Esecuzione",
+    "tradeCarefully": "Fai attenzione",
+    "placeOrder": "Inserisci Ordine",
+    "codePlaceholder": "es: AAPL",
+    "marketPrice": "Mercato",
+    "previewOrder": "Anteprima",
+    "estimatedAmount": "Importo Stim.",
+    "noOrders": "Nessun ordine",
+    "time": "Ora",
+    "price": "Prezzo",
+    "filled": "Eseguito",
+    "status": "Stato",
+    "confirmOrder": "Conferma Ordine",
+    "pleaseCheck": "Verifica i dettagli",
+    "liveModeWarning": "Modalità reale: userà fondi reali",
+    "orderFailed": "Ordine fallito",
+    "errorCodeQty": "Inserisci codice e quantità",
+    "errorLimitPrice": "Ordine limite: prezzo richiesto",
+    "errorStopPrice": "Ordine stop: stop richiesto",
+    "remarkPlaceholder": "Segnale strategia..."
   },
   "strategy": {
     "title": "Lab Strategie",
@@ -233,5 +256,19 @@
     "version": "Versione",
     "platform": "Piattaforma",
     "database": "Database"
+  },
+  "orderStatus": {
+    "pending": "In attesa",
+    "submitted": "Inviato",
+    "filled": "Eseguito",
+    "partial": "Parziale",
+    "cancelled": "Annullato",
+    "rejected": "Rifiutato"
+  },
+  "market": {
+    "US": "US",
+    "HK": "HK",
+    "CN": "CN",
+    "SG": "SG"
   }
 }

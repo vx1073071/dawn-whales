@@ -53,7 +53,10 @@
     "confirmAdd": "Hinzufügen Bestätigen",
     "switch": "Wechseln",
     "count": "",
-    "mode": "Modus"
+    "mode": "Modus",
+    "operation": "Operation",
+    "submitting": "Senden...",
+    "confirmSubmit": "Senden Bestätigen"
   },
   "nav": {
     "overview": "Übersicht",
@@ -155,7 +158,27 @@
     "liveMode": "Live-Handel",
     "switchToLive": "Zu Live wechseln",
     "switchToPaper": "Zu Papier wechseln",
-    "liveWarning": "WARNUNG: Live-Handel. Aufträge werden tatsächlich ausgeführt."
+    "liveWarning": "WARNUNG: Live-Handel. Aufträge werden tatsächlich ausgeführt.",
+    "tradeExecution": "Ausführung",
+    "tradeCarefully": "Vorsichtig handeln",
+    "placeOrder": "Auftrag",
+    "codePlaceholder": "z.B. AAPL",
+    "marketPrice": "Markt",
+    "previewOrder": "Vorschau",
+    "estimatedAmount": "Gesch. Betrag",
+    "noOrders": "Keine Aufträge",
+    "time": "Zeit",
+    "price": "Preis",
+    "filled": "Ausgeführt",
+    "status": "Status",
+    "confirmOrder": "Auftrag Bestätigen",
+    "pleaseCheck": "Bitte prüfen",
+    "liveModeWarning": "Live-Modus: Echte Mittel verwendet",
+    "orderFailed": "Auftrag fehlgeschlagen",
+    "errorCodeQty": "Code und Menge eingeben",
+    "errorLimitPrice": "Limit: Preis erforderlich",
+    "errorStopPrice": "Stop: Stop-Preis erforderlich",
+    "remarkPlaceholder": "Strategie-Signal..."
   },
   "strategy": {
     "title": "Strategie-Labor",
@@ -233,5 +256,19 @@
     "version": "Version",
     "platform": "Plattform",
     "database": "Datenbank"
+  },
+  "orderStatus": {
+    "pending": "Ausstehend",
+    "submitted": "Gesendet",
+    "filled": "Ausgeführt",
+    "partial": "Teilweise",
+    "cancelled": "Storniert",
+    "rejected": "Abgelehnt"
+  },
+  "market": {
+    "US": "US",
+    "HK": "HK",
+    "CN": "CN",
+    "SG": "SG"
   }
 }

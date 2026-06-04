@@ -53,7 +53,10 @@
     "confirmAdd": "追加確認",
     "switch": "切替",
     "count": "件",
-    "mode": "モード"
+    "mode": "モード",
+    "operation": "操作",
+    "submitting": "送信中...",
+    "confirmSubmit": "送信確認"
   },
   "nav": {
     "overview": "概要",
@@ -155,7 +158,27 @@
     "liveMode": "実際モード",
     "switchToLive": "実際に切替",
     "switchToPaper": "ペーパーに切替",
-    "liveWarning": "警告：実際の取引モードです。注文は実際に約定します。"
+    "liveWarning": "警告：実際の取引モードです。注文は実際に約定します。",
+    "tradeExecution": "取引実行",
+    "tradeCarefully": "慎重に取引",
+    "placeOrder": "注文",
+    "codePlaceholder": "例: AAPL",
+    "marketPrice": "成行",
+    "previewOrder": "注文確認",
+    "estimatedAmount": "推定金額",
+    "noOrders": "注文なし",
+    "time": "時間",
+    "price": "価格",
+    "filled": "約定",
+    "status": "状態",
+    "confirmOrder": "注文確認",
+    "pleaseCheck": "内容を確認してください",
+    "liveModeWarning": "実際モード：本注文は実資金で実行されます",
+    "orderFailed": "注文失敗",
+    "errorCodeQty": "銘柄コードと数量を入力",
+    "errorLimitPrice": "指値注文には価格が必要",
+    "errorStopPrice": "ストップ注文にはストップ価格が必要",
+    "remarkPlaceholder": "戦略シグナル..."
   },
   "strategy": {
     "title": "戦略ラボ",
@@ -233,5 +256,19 @@
     "version": "バージョン",
     "platform": "プラットフォーム",
     "database": "データベース"
+  },
+  "orderStatus": {
+    "pending": "保留中",
+    "submitted": "送信済",
+    "filled": "約定済",
+    "partial": "部分約定",
+    "cancelled": "取消済",
+    "rejected": "拒否"
+  },
+  "market": {
+    "US": "米国",
+    "HK": "香港",
+    "CN": "中国",
+    "SG": "シンガポール"
   }
 }

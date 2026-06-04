@@ -1709,3 +1709,14 @@ export async function detectCorrelationMatrix(matrix: number[][], codes: string[
   if (!hasIPC()) return { success: false };
   return window.api.correlationAlert.detectMatrix(matrix, codes, prevMatrix, histMatrices);
 }
+
+// ── Walk-Forward Report (JVS-53) ──────────────────────────────────────────
+export async function generateWalkForwardReport(strategyName: string, windows: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.walkForwardReport.generate(strategyName, windows);
+}
+
+export async function generateBatchWalkForwardReport(strategies: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.walkForwardReport.generateBatch(strategies);
+}

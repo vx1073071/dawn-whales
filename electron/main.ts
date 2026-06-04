@@ -89,6 +89,7 @@ import { getValuationDashboard, getValuationDashboardBatch } from './engine/valu
 import { compareSectorStocks, compareMultipleSectors, rankSectorStocks } from './engine/sector-comparison';
 import { detectMacroAnomalies, analyzeMultipleIndicators } from './engine/macro-alert';
 import { detectCorrelationAnomalies, analyzeCorrelationMatrix } from './engine/correlation-alert';
+import { generateWalkForwardReport, generateBatchWalkForwardReport } from './engine/walk-forward-report';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -565,6 +566,27 @@ function setupIPC() {
       return { success: true, result };
     } catch (err: any) {
       log.error('[CorrelationAlertMatrix] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Walk-Forward Report (JVS-53) ───────────────────────────────────────
+  ipcMain.handle('report:walk-forward', async (_e, strategyName: string, windows: any[]) => {
+    try {
+      const result = generateWalkForwardReport(strategyName, windows);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[WalkForwardReport] Error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('report:walk-forward-batch', async (_e, strategies: any[]) => {
+    try {
+      const result = await generateBatchWalkForwardReport(strategies);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[WalkForwardReportBatch] Error:', err);
       return { success: false, error: err.message };
     }
   });

@@ -53,7 +53,10 @@
     "confirmAdd": "Confirm Add",
     "switch": "Switch",
     "count": "",
-    "mode": "Mode"
+    "mode": "Mode",
+    "operation": "Operation",
+    "submitting": "Submitting...",
+    "confirmSubmit": "Confirm Submit"
   },
   "nav": {
     "overview": "Overview",
@@ -155,7 +158,27 @@
     "liveMode": "Live Mode",
     "switchToLive": "Switch to Live",
     "switchToPaper": "Switch to Paper",
-    "liveWarning": "WARNING: Live trading mode. Orders will be executed for real."
+    "liveWarning": "WARNING: Live trading mode. Orders will be executed for real.",
+    "tradeExecution": "Trade Execution",
+    "tradeCarefully": "Trade carefully",
+    "placeOrder": "Place Order",
+    "codePlaceholder": "e.g. AAPL",
+    "marketPrice": "Market",
+    "previewOrder": "Preview Order",
+    "estimatedAmount": "Est. Amount",
+    "noOrders": "No orders",
+    "time": "Time",
+    "price": "Price",
+    "filled": "Filled",
+    "status": "Status",
+    "confirmOrder": "Confirm Order",
+    "pleaseCheck": "Please verify",
+    "liveModeWarning": "Live mode: this order will use real funds",
+    "orderFailed": "Order failed",
+    "errorCodeQty": "Please enter code and quantity",
+    "errorLimitPrice": "Limit orders require a price",
+    "errorStopPrice": "Stop orders require a stop price",
+    "remarkPlaceholder": "Strategy signal..."
   },
   "strategy": {
     "title": "Strategy Lab",
@@ -233,5 +256,19 @@
     "version": "Version",
     "platform": "Platform",
     "database": "Database"
+  },
+  "orderStatus": {
+    "pending": "Pending",
+    "submitted": "Submitted",
+    "filled": "Filled",
+    "partial": "Partial",
+    "cancelled": "Cancelled",
+    "rejected": "Rejected"
+  },
+  "market": {
+    "US": "US",
+    "HK": "HK",
+    "CN": "CN",
+    "SG": "SG"
   }
 }

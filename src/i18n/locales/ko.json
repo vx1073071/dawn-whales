@@ -53,7 +53,10 @@
     "confirmAdd": "추가 확인",
     "switch": "전환",
     "count": "건",
-    "mode": "모드"
+    "mode": "모드",
+    "operation": "작업",
+    "submitting": "제출 중...",
+    "confirmSubmit": "제출 확인"
   },
   "nav": {
     "overview": "개요",
@@ -155,7 +158,27 @@
     "liveMode": "실전 모드",
     "switchToLive": "실전으로 전환",
     "switchToPaper": "모의투자로 전환",
-    "liveWarning": "경고: 현재 실전 거래 모드입니다. 주문이 실제로 체결됩니다."
+    "liveWarning": "경고: 현재 실전 거래 모드입니다. 주문이 실제로 체결됩니다.",
+    "tradeExecution": "거래 실행",
+    "tradeCarefully": "신중하게 거래",
+    "placeOrder": "주문",
+    "codePlaceholder": "예: AAPL",
+    "marketPrice": "시장가",
+    "previewOrder": "주문 미리보기",
+    "estimatedAmount": "예상 금액",
+    "noOrders": "주문 없음",
+    "time": "시간",
+    "price": "가격",
+    "filled": "체결",
+    "status": "상태",
+    "confirmOrder": "주문 확인",
+    "pleaseCheck": "내용을 확인하세요",
+    "liveModeWarning": "실전 모드: 실제 자금으로 실행됩니다",
+    "orderFailed": "주문 실패",
+    "errorCodeQty": "종목코드와 수량 입력",
+    "errorLimitPrice": "지정가 주문에는 가격 필요",
+    "errorStopPrice": "스톱 주문에는 스톱 가격 필요",
+    "remarkPlaceholder": "전략 시그널..."
   },
   "strategy": {
     "title": "전략 연구소",
@@ -233,5 +256,19 @@
     "version": "버전",
     "platform": "플랫폼",
     "database": "데이터베이스"
+  },
+  "orderStatus": {
+    "pending": "대기중",
+    "submitted": "제출됨",
+    "filled": "체결됨",
+    "partial": "부분체결",
+    "cancelled": "취소됨",
+    "rejected": "거부됨"
+  },
+  "market": {
+    "US": "미국",
+    "HK": "홍콩",
+    "CN": "중국",
+    "SG": "싱가포르"
   }
 }

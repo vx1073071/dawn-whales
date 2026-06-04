@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import * as echarts from 'echarts';
 import { getTradeHistory } from '@/lib/bridge-api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -38,6 +39,7 @@ const MOCK_TRADES: TradeRecord[] = [
 ];
 
 export default function TradeHistoryPage() {
+  const { t } = useTranslation();
   const [trades, setTrades] = useState<TradeRecord[]>(MOCK_TRADES);
   const [loading, setLoading] = useState(false);
   const [filterStrategy, setFilterStrategy] = useState('all');
@@ -114,20 +116,20 @@ export default function TradeHistoryPage() {
     return () => chart.dispose();
   }, [filtered]);
 
-  if (loading) return <LoadingSpinner fullscreen text="加载交易记录..." />;
+  if (loading) return <LoadingSpinner fullscreen text={t('trading.loadingTrades')} />;
 
   return (
     <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">📜 交易历史</h1>
-          <p className="text-gray-400 text-sm">{stats.totalTrades} 笔成交记录</p>
+          <h1 className="text-2xl font-bold text-white mb-1">📜 {t('trading.tradeHistory')}</h1>
+          <p className="text-gray-400 text-sm">{stats.totalTrades} {t('trading.tradeRecords')}</p>
         </div>
         <button
           onClick={load}
           className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-2 rounded-lg transition-colors"
         >
-          刷新数据
+          {t('common.refresh')}
         </button>
       </div>
 
