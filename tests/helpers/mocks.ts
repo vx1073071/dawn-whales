@@ -5,6 +5,54 @@
 
 import { vi } from 'vitest';
 
+// ── Mock Node.js EventEmitter for jsdom environment ───────────────
+// jsdom doesn't have Node.js's events module, so we provide a simple implementation
+class MockEventEmitter {
+  private events: Map<string, Function[]> = new Map();
+
+  on(event: string, listener: Function) {
+    if (!this.events.has(event)) {
+      this.events.set(event, []);
+    }
+    this.events.get(event)!.push(listener);
+    return this;
+  }
+
+  off(event: string, listener: Function) {
+    const listeners = this.events.get(event);
+    if (listeners) {
+      const index = listeners.indexOf(listener);
+      if (index > -1) {
+        listeners.splice(index, 1);
+      }
+    }
+    return this;
+  }
+
+  emit(event: string, ...args: any[]) {
+    const listeners = this.events.get(event);
+    if (listeners) {
+      listeners.forEach(listener => listener(...args));
+    }
+    return true;
+  }
+
+  removeAllListeners(event?: string) {
+    if (event) {
+      this.events.delete(event);
+    } else {
+      this.events.clear();
+    }
+    return this;
+  }
+}
+
+// Mock the events module
+vi.mock('events', () => ({
+  EventEmitter: MockEventEmitter,
+  default: MockEventEmitter,
+}));
+
 // ── IPC Handler Mocks ──────────────────────────────────────────────
 
 /** Mock an IPC handler call without Electron */

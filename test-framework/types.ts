@@ -11,10 +11,17 @@ export interface TestContext {
   concurrency: number;
 }
 
+// ============ Error Types ============
+
+export interface TestError {
+  message: string;
+  stack?: string;
+}
+
 export interface TestResult {
   name: string;
   file: string;
-  status: 'passed' | 'failed' | 'skipped' | 'todo';
+  status: 'passed' | 'failed' | 'skipped' | 'todo' | 'running';
   duration: number;        // ms
   error?: TestError;
   assertions: number;

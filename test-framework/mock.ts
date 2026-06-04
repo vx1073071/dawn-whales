@@ -157,44 +157,44 @@ function createMockFunction<T extends (...args: unknown[]) => unknown>(
   (mockFn as any).mockName = (n: string) => {
     metadata.mockName = n;
     metadata.name = n;
-    return mockFn as MockFunction<T>;
+    return mockFn as unknown as MockFunction<T>;
   };
   (mockFn as any).getMockName = () => metadata.mockName;
   (mockFn as any).mockImplementation = (fn: T) => {
     state.implementation = fn;
-    return mockFn as MockFunction<T>;
+    return mockFn as unknown as MockFunction<T>;
   };
   (mockFn as any).mockImplementationOnce = (fn: T) => {
     state.onceImplementations.push(fn);
-    return mockFn as MockFunction<T>;
+    return mockFn as unknown as MockFunction<T>;
   };
   (mockFn as any).mockReturnValue = (val: ReturnType<T>) => {
     state.defaultReturnValue = val;
-    return mockFn as MockFunction<T>;
+    return mockFn as unknown as MockFunction<T>;
   };
   (mockFn as any).mockReturnValueOnce = (val: ReturnType<T>) => {
     state.onceReturnValues.push(val);
-    return mockFn as MockFunction<T>;
+    return mockFn as unknown as MockFunction<T>;
   };
   (mockFn as any).mockResolvedValue = (val: Awaited<ReturnType<T>>) => {
     state.defaultReturnValue = Promise.resolve(val);
-    return mockFn as MockFunction<T>;
+    return mockFn as unknown as MockFunction<T>;
   };
   (mockFn as any).mockResolvedValueOnce = (val: Awaited<ReturnType<T>>) => {
     state.onceResolvedValues.push(val);
-    return mockFn as MockFunction<T>;
+    return mockFn as unknown as MockFunction<T>;
   };
   (mockFn as any).mockRejectedValue = (err: unknown) => {
     state.defaultThrowValue = err;
-    return mockFn as MockFunction<T>;
+    return mockFn as unknown as MockFunction<T>;
   };
   (mockFn as any).mockRejectedValueOnce = (err: unknown) => {
     state.onceRejectedValues.push(err);
-    return mockFn as MockFunction<T>;
+    return mockFn as unknown as MockFunction<T>;
   };
   (mockFn as any).mockReturnThis = () => {
     state.implementation = ((function (this: unknown) { return this; }) as any) as T;
-    return mockFn as MockFunction<T>;
+    return mockFn as unknown as MockFunction<T>;
   };
   (mockFn as any).withImplementation = (fn: T, cb: () => void) => {
     const prev = state.implementation;
@@ -225,7 +225,7 @@ function createMockFunction<T extends (...args: unknown[]) => unknown>(
   // Register for restoreAllMocks
   allMocks.push({ restore: () => { (mockFn as any).restoreMocks(); } });
 
-  return mockFn as MockFunction<T>;
+  return mockFn as unknown as MockFunction<T>;
 }
 
 // ============ qmock() ============
@@ -243,7 +243,7 @@ export function qmock<T extends (...args: unknown[]) => unknown>(
 
 // ============ qmockSpyOn() ============
 
-const spyRegistry = new WeakMap<object, Map<string | symbol, PropertyDescriptor | null>>();
+let spyRegistry = new WeakMap<object, Map<string | symbol, PropertyDescriptor | null>>();
 
 export function qmockSpyOn<T extends object, M extends keyof T>(
   obj: T,

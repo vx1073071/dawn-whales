@@ -11,11 +11,13 @@
  */
 
 import { EventEmitter } from 'node:events';
+import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import type {
   TestSuite, TestCase, TestResult, SuiteHooks, RunResult, SuiteResult
 } from './types.js';
 import { createExpect, setCurrentTestContext } from './expect.js';
-import { qmockSetupGlobals } from './mock.js';
+import { setupGlobals as setupMockGlobals } from './mock.js';
 
 // ============ Globals / State ============
 
@@ -294,12 +296,7 @@ async function runSuite(
 
 // ============ Main run entry point ============
 
-export async function runFilesSequential(
-  files: string[],
-  config: { timeout?: number; retries?: number; bail?: number } = {}
-): Promise<RunResult> {
-  return runFiles(files, config);
-// Alias for runner compatibility (runFilesSequential is defined after runFiles below)
+// Alias for runner compatibility (runFilesSequential = runFiles)
 export { runFiles as runFilesSequential };
 
 export async function runFiles(
@@ -325,7 +322,12 @@ export async function runFiles(
     // Dynamically import the test file (ESM)
     try {
       // Use dynamic import for .ts files (via tsx/register) or .js files
-      await import(file);
+      // Resolve bare-relative paths (tests/foo.ts) to file:// URLs for ESM
+      const resolvedPath = file.startsWith('.') || file.startsWith('/')
+        ? file
+        : './' + file;
+      const importUrl = pathToFileURL(resolve(resolvedPath)).href;
+      await import(importUrl);
     } catch (e: unknown) {
       allResults.push({
         name: `(file) ${file}`,
@@ -385,8 +387,7 @@ function setupGlobals(globalObj: any = globalThis): void {
   globalObj.beforeEach = beforeEach;
   globalObj.afterEach = afterEach;
   globalObj.expect = createExpect;
-  // mock
-  const { setupGlobals: setupMockGlobals } = require('./mock.js') as any;
+  // mock globals (setupMockGlobals is imported at top level)
   setupMockGlobals(globalObj);
 }
 

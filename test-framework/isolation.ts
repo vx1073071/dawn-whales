@@ -6,11 +6,11 @@
  * Each file gets its own global snapshot + module cache.
  */
 
-import { createContext, runInContext, Context } from 'node:vm';
-import { Script } from 'node:vm';
+import vm, { createContext, runInContext } from 'node:vm';
+import type { Context } from 'node:vm';
+import type { IsolationContext, Sandbox } from './types.js';
 import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import type { IsolationContext, Sandbox } from './types.js';
 
 // ============ Snapshot env ============
 
@@ -72,7 +72,7 @@ export function createSandbox(file: string): Sandbox {
       platform: process.platform,
       arch: process.arch,
     },
-  } as any) as Context;
+  } as any) as vm.Context;
 
   return {
     globals: context as any,
@@ -82,7 +82,8 @@ export function createSandbox(file: string): Sandbox {
 }
 
 export function runInSandbox(sandbox: Sandbox, code: string): unknown {
-  const script = new Script(code, { filename: 'test.vm' });
+  const ScriptClass = vm.Script as any;
+  const script = new ScriptClass(code, { filename: 'test.vm' });
   return runInContext(script, sandbox.globals as Context);
 }
 

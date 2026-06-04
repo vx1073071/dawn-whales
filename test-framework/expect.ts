@@ -137,8 +137,7 @@ export class StringMatching implements AsymmetricMatcher {
   asymmetricMatch(value: unknown): boolean {
     if (typeof value !== 'string') return false;
     const _re = typeof this.re === 'string' ? new RegExp(this.re) : this.re;
-    return _re.test(value);
-    return _re.test(value);
+    return _re.test(value as string);
   }
   toString(): string { return `StringMatching<${this.re}>`; }
 }
@@ -161,7 +160,8 @@ export function setCurrentTestContext(softFailures: Array<{ message: string }>):
   currentTestSoftFailures = softFailures;
 }
 
-export function createExpect(received: unknown, config: ExpectConfig = { not: false, soft: false }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createExpect(received: unknown, config: ExpectConfig = { not: false, soft: false }): any {
   const { not, promise, soft } = config;
 
   const makeMatcher = <T>(matcherFn: (received: unknown, expected?: T) => MatcherResult) => {
@@ -644,7 +644,7 @@ export function createExpect(received: unknown, config: ExpectConfig = { not: fa
             await received;
             throw new Error('promise resolved but expected reject');
           } catch (e) {
-            return toThrow(() => { throw e; })(expected);
+            return (toThrow as any)(() => { throw e; })(expected);
           }
         },
       }
@@ -686,30 +686,46 @@ export function createExpect(received: unknown, config: ExpectConfig = { not: fa
     ...promiseMatchers,
   };
 
-  // .not
-  const notMatchers = not ? {} : {};
+  // .not — copy matchers from notExpect so they invert
+  const notMatchers: Record<string, any> = not ? {} : {};
   if (!not) {
-    const notConfig = { ...config, not: true };
-    const notExpect = createExpect(received, notConfig);
-    Object.keys(notExpect.matchers).forEach(key => {
-      (notMatchers as any)[key] = (notExpect.matchers as any)[key];
+    const notConfig: any = { ...config, not: true };
+    const notExpect: any = createExpect(received, notConfig);
+    // only copy direct (non-getter) function properties to avoid infinite recursion
+    const ownProps = Object.getOwnPropertyNames(notExpect);
+    ownProps.forEach(key => {
+      if (key === 'not' || key === 'resolves' || key === 'rejects') return;
+      const descriptor = Object.getOwnPropertyDescriptor(notExpect, key);
+      if (descriptor && descriptor.get) return; // skip getters
+      if (typeof (notExpect as any)[key] === 'function') {
+        notMatchers[key] = (notExpect as any)[key];
+      }
     });
   }
 
   // .resolves / .rejects
   let resolves: any, rejects: any;
   if (!promise && received instanceof Promise) {
-    const resolvesConfig = { ...config, promise: 'resolves' };
-    resolves = createExpect(received, resolvesConfig).matchers;
-    const rejectsConfig = { ...config, promise: 'rejects' };
-    rejects = createExpect(received, rejectsConfig).matchers;
+    const resolvesConfig: any = { ...config, promise: 'resolves' };
+    resolves = createExpect(received, resolvesConfig);
+    const rejectsConfig: any = { ...config, promise: 'rejects' };
+    rejects = createExpect(received, rejectsConfig);
   }
 
   return {
+    // spread all matchers at top level so .toBe(...) works directly
     ...matchers,
     ...notMatchers,
-    ...(resolves ? { resolves } : {}),
-    ...(rejects ? { rejects } : {}),
+    // .not, .resolves, .rejects as getters so they create new expect objects
+    get not() {
+      return createExpect(received, { ...config, not: !config.not });
+    },
+    get resolves() {
+      return createExpect(received, { ...config, promise: 'resolves' });
+    },
+    get rejects() {
+      return createExpect(received, { ...config, promise: 'rejects' });
+    },
   };
 }
 
