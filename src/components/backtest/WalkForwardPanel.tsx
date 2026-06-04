@@ -1,16 +1,7 @@
 // ── DAWN WHALES — Walk-Forward Panel (Sprint 2 UI) ──────────────────────────
 // Stability grade + decay bar chart + window detail table
 
-import { useState, useEffect } from 'react';
-import { walkForwardAnalysis } from '../../lib/bridge-api';
-
-interface WFAConfig {
-  klines: any[];
-  baseConfig: any;
-  paramRanges: Record<string, { min: number; max: number; step: number }>;
-  trainSize?: number;
-  testSize?: number;
-}
+import { useState } from 'react';
 
 interface WFAWindow {
   trainPeriod: string;
@@ -26,47 +17,68 @@ interface WFAResult {
   windows: WFAWindow[];
 }
 
-export default function WalkForwardPanel({ config }: { config: WFAConfig }) {
-  const [result, setResult] = useState<WFAResult | null>(null);
-  const [loading, setLoading] = useState(false);
+interface WalkForwardPanelProps {
+  result?: {
+    success: boolean;
+    result?: WFAResult;
+  } | null;
+  loading?: boolean;
+}
+
+function ScoreCard({ label, value, sub, color }: { label: string; value: string; sub: string; color: string }) {
+  return (
+    <div className="bg-[#12121a] rounded-lg p-3 text-center">
+      <div className="text-[10px] text-gray-500 mb-1">{label}</div>
+      <div className={`text-lg font-bold font-mono ${color}`}>{value}</div>
+      <div className="text-[9px] text-gray-600">{sub}</div>
+    </div>
+  );
+}
+
+export default function WalkForwardPanel({ result, loading }: WalkForwardPanelProps) {
   const [selectedWindow, setSelectedWindow] = useState<number | null>(null);
 
-  useEffect(() => { runWFA(); }, []);
+  const wfaResult = result?.result;
 
-  async function runWFA() {
-    setLoading(true);
-    try {
-      const res = await walkForwardAnalysis({
-        klines: config.klines,
-        baseConfig: config.baseConfig,
-        paramRanges: config.paramRanges,
-        trainSize: config.trainSize || 500,
-        testSize: config.testSize || 100,
-      });
-      if (res?.success && res.result) {
-        setResult(res.result);
-      }
-    } catch {}
-    setLoading(false);
+  if (!result) {
+    return (
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-white font-semibold text-sm">🔍 Walk-Forward 分析</h3>
+        </div>
+        <div className="text-center py-8 text-gray-500 text-sm">
+          点击上方「Walk-Forward」按钮开始分析
+        </div>
+      </div>
+    );
   }
 
-  if (loading) return <div className="text-center py-8 text-gray-500 text-sm">正在运行 Walk-Forward 分析...</div>;
-  if (!result || !result.windows.length) {
+  if (loading) {
     return (
-      <div className="text-center py-8">
-        <p className="text-gray-500 text-sm mb-2">暂无 WFA 结果</p>
-        <button
-          onClick={runWFA}
-          className="text-xs bg-[#C9A046]/20 text-[#D4A853] px-4 py-2 rounded-lg hover:bg-[#C9A046]/30"
-        >
-          运行 Walk-Forward 分析
-        </button>
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-white font-semibold text-sm">🔍 Walk-Forward 分析</h3>
+        </div>
+        <div className="text-center py-8 text-gray-500 text-sm">正在运行 Walk-Forward 分析...</div>
+      </div>
+    );
+  }
+
+  if (!wfaResult || !wfaResult.windows.length) {
+    return (
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-white font-semibold text-sm">🔍 Walk-Forward 分析</h3>
+        </div>
+        <div className="text-center py-8">
+          <p className="text-gray-500 text-sm mb-2">暂无 WFA 结果</p>
+        </div>
       </div>
     );
   }
 
   // Stability grade
-  const stabilityPct = Math.round(result.stability * 100);
+  const stabilityPct = Math.round(wfaResult.stability * 100);
   let grade = 'F', gradeColor = 'text-red-400';
   if (stabilityPct >= 85) { grade = 'S'; gradeColor = 'text-[#D4A853]'; }
   else if (stabilityPct >= 70) { grade = 'A'; gradeColor = 'text-emerald-400'; }
@@ -75,20 +87,13 @@ export default function WalkForwardPanel({ config }: { config: WFAConfig }) {
   else if (stabilityPct >= 25) { grade = 'D'; gradeColor = 'text-orange-400'; }
 
   const overfit = stabilityPct < 40;
-  const decayRatio = result.outOfSample.sharpeRatio / Math.max(0.01, result.inSample.sharpeRatio);
-  const consistent = result.windows.filter((w) => w.testReturn > 0).length / result.windows.length * 100;
+  const decayRatio = wfaResult.outOfSample.sharpeRatio / Math.max(0.01, wfaResult.inSample.sharpeRatio);
+  const consistent = wfaResult.windows.filter((w) => w.testReturn > 0).length / wfaResult.windows.length * 100;
 
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-white font-semibold text-sm">🔍 Walk-Forward 分析</h3>
-        <button
-          onClick={runWFA}
-          disabled={loading}
-          className="text-xs bg-[#22222f] text-gray-400 px-3 py-1 rounded-lg hover:text-gray-200"
-        >
-          重新分析
-        </button>
       </div>
 
       {/* Overfit warning */}
@@ -120,7 +125,7 @@ export default function WalkForwardPanel({ config }: { config: WFAConfig }) {
         />
         <ScoreCard
           label="窗口数"
-          value={String(result.windows.length)}
+          value={String(wfaResult.windows.length)}
           sub="滚动窗口"
           color="text-gray-300"
         />
@@ -130,7 +135,7 @@ export default function WalkForwardPanel({ config }: { config: WFAConfig }) {
       <div className="mb-4">
         <div className="text-gray-400 text-[11px] font-medium mb-2">📊 逐窗衰减比</div>
         <div className="flex items-end gap-1 h-20">
-          {result.windows.map((w, i) => {
+          {wfaResult.windows.map((w, i) => {
             const oosSharpe = w.testReturn > 0 && w.trainReturn > 0
               ? Math.abs(w.testReturn / w.trainReturn)
               : 0;
@@ -171,7 +176,7 @@ export default function WalkForwardPanel({ config }: { config: WFAConfig }) {
               </tr>
             </thead>
             <tbody>
-              {result.windows.map((w, i) => (
+              {wfaResult.windows.map((w, i) => (
                 <tr
                   key={i}
                   className={`border-b border-white/[0.02] cursor-pointer ${
@@ -197,19 +202,9 @@ export default function WalkForwardPanel({ config }: { config: WFAConfig }) {
       {/* Auto conclusion */}
       <div className="bg-[#12121a] rounded-lg p-3 text-xs text-gray-400">
         <span className="text-gray-300 font-medium">结论：</span>
-        样本内年化 {result.inSample.totalReturn.toFixed(1)}%，样本外 {result.outOfSample.totalReturn.toFixed(1)}%，
+        样本内年化 {wfaResult.inSample.totalReturn.toFixed(1)}%，样本外 {wfaResult.outOfSample.totalReturn.toFixed(1)}%，
         稳定性 {grade} 级（{stabilityPct}%）。{overfit ? '⚠️ 建议简化策略参数。' : '策略在样本外有较好的一致性。'}
       </div>
-    </div>
-  );
-}
-
-function ScoreCard({ label, value, sub, color }: { label: string; value: string; sub: string; color: string }) {
-  return (
-    <div className="bg-[#12121a] rounded-lg p-3 text-center">
-      <div className="text-[10px] text-gray-500 mb-1">{label}</div>
-      <div className={`text-lg font-bold font-mono ${color}`}>{value}</div>
-      <div className="text-[9px] text-gray-600">{sub}</div>
     </div>
   );
 }

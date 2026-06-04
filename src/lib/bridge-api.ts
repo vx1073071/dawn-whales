@@ -58,6 +58,15 @@ declare global {
         paramScan: (config: any) => Promise<any>;
         multiTimeframe: (config: any) => Promise<any>;
       };
+      backtest: {
+        multiPeriod: (config: any) => Promise<any>;
+        paramSweep: (config: any) => Promise<any>;
+        walkForward: (config: any) => Promise<any>;
+        riskMetrics: (equityCurve: number[], riskFreeRate?: number) => Promise<any>;
+        walkForwardV2: (config: any) => Promise<any>;
+        paramScan: (config: any) => Promise<any>;
+        multiTimeframe: (config: any) => Promise<any>;
+      };
       strategy: {
         create: (dsl: any) => Promise<any>;
         getAll: () => Promise<any>;

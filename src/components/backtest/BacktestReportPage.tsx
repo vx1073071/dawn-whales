@@ -503,18 +503,10 @@ export default function BacktestReportPage() {
               </div>
 
               {/* Param Scan */}
-              <ParamScanPanel
-                result={paramScanResult}
-                onRunScan={runParamScan}
-                loading={paramScanLoading}
-              />
+              <ParamScanPanel result={paramScanResult} loading={paramScanLoading} />
 
               {/* Walk-Forward */}
-              <WalkForwardPanel
-                result={wfaResult}
-                onRunWFA={runWFA}
-                loading={wfaLoading}
-              />
+              <WalkForwardPanel result={wfaResult} loading={wfaLoading} />
             </div>
           )}
         </>
