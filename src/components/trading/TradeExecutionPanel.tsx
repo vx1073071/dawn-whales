@@ -122,7 +122,7 @@ export default function TradeExecutionPanel() {
         setCode(''); setQty(''); setPrice(''); setStopPrice(''); setRemark('');
         loadOrders(); loadFunds();
       } else {
-        setError(res?.error || t('trading.orderFailed')));
+        setError(res?.error || t('trading.orderFailed'));
       }
     } catch (e: any) {
       setError(e.message || t('trading.orderFailed'));
