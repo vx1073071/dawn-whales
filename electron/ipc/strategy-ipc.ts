@@ -1,46 +1,8 @@
-// ?? DAWN WHALES IPC: strategy ????????????????????????????????????????????
-// Auto-split from main.ts ? 38 handlers
+﻿// ?? DAWN WHALES IPC: strategy ????????????????????????????????????????????
+// 38 handlers
 
-import { ipcMain, BrowserWindow, app, shell } from 'electron';
-import { autoUpdater } from 'electron-updater';
-import log from '../../node_modules/electron-log';
-import { validate, 
-  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
-  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
-  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
-  BrokerSwitchSchema, BrokerAddSchema,
-  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
-  StrategyBacktestSchema, BacktestMultiPeriodSchema,
-  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
-  BacktestWalkForwardSchema, BacktestParamScanSchema,
-  BacktestMultiTimeframeSchema,
-  RiskUpdateConfigSchema, RiskUpdateVixSchema,
-  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
-  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
-  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
-  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
-  DataComputeRegimeSchema,
-  MarketplaceRateSchema, MarketplaceCommentSchema,
-  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
-  GreeksCalculateSchema, GreeksPortfolioSchema,
-  DataNewsSchema, DataFundamentalSchema,
-  DataCapitalFlowSchema, DataAnomaliesSchema,
-  DataCompositeScoreSchema,
-  NlParseSchema, StrategyExplainSchema,
-  StrategyCompareSchema, StrategyOptimizeSchema,
-  StrategyCorrelationSchema,
-  NotificationGenerateSchema,
-  ReportGenerateSchema, ReportQuickSchema,
-  StrategyAutoTuneSchema,
-} from '../ipc-schemas';
-
-// Auto-imported dependencies:
-import { STRATEGY_TEMPLATES, parseNaturalLanguage } from '../engine/nl-parser';
-import { LiveExecutor } from '../engine/live-executor';
-import { computeCorrelationMatrix } from '../engine/correlation-matrix';
-import { autoTune } from '../engine/auto-tuner';
-import { buildCorrelationVisualization } from '../engine/correlation-visualizer';
-import { compareBacktests, summaryTable } from '../engine/backtest-comparator';
+import { ipcMain, BrowserWindow, app } from 'electron';
+import log from 'electron-log';
 
 export function registerStrategyIPC(
   strategyEngine: any,
@@ -48,10 +10,8 @@ export function registerStrategyIPC(
   opendClient: any,
   backtestEngine: any,
   getDeepSeekKey_: any,
-  liveExecutor: any,
-  app: any,
-  STRATEGY_UPDATE_WHITELIST: any
-) { {
+  liveExecutor: any
+) {
 
   // ── Strategy Engine ─────────────────────────────────────────────────
   ipcMain.handle('strategy:create', async (_e, dsl: any) => {
@@ -65,14 +25,19 @@ export function registerStrategyIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
+
   ipcMain.handle('strategy:getAll', async () => {
     return { success: true, strategies: strategyEngine?.getAllStrategies() || [] };
   });
+
 
   ipcMain.handle('strategy:get', async (_e, id: string) => {
     const strategy = strategyEngine?.getStrategy(id);
     return { success: !!strategy, strategy };
   });
+
+  // ── Strategy Update (with field whitelist for security) ─────────────
+  const STRATEGY_UPDATE_WHITELIST = ['name', 'description', 'params', 'stopLoss', 'takeProfit', 'symbol'];
 
   ipcMain.handle('strategy:update', async (_e, id: string, updates: any) => {
     const vErr = validate(StrategyUpdateSchema, { updates });
@@ -91,11 +56,13 @@ export function registerStrategyIPC(
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
+
   ipcMain.handle('strategy:delete', async (_e, id: string) => {
     strategyEngine?.deleteStrategy(id);
     db?.deleteStrategy(id);
     return { success: true };
   });
+
 
   ipcMain.handle('strategy:backtest', async (_e, config: any) => {
     if (!strategyEngine || !backtestEngine) {
@@ -116,7 +83,7 @@ export function registerStrategyIPC(
       }
 
       if (!klines || klines.length < 50) {
-        return { success: false, error: 'K线数据不足（需要至�?0根），请确认 OpenD 已连�? };
+        return { success: false, error: 'K线数据不足（需要至少50根），请确认 OpenD 已连接' };
       }
 
       const strategyId = config.strategyId;
@@ -127,28 +94,22 @@ export function registerStrategyIPC(
             strategyId, ...result.result,
             initialCapital: config.initialCapital || 100000,
           });
-        }
-        return result;
-      }
-
-      return await backtestEngine.run({ ...config, klines });
-    } catch (err: any) {
-      log.error('[IPC] Backtest error:', err.message);
-      return { success: false, error: err.message };
-    }
-  });
 
   ipcMain.handle('strategy:startLive', async (_e, strategyId: string) => {
     strategyEngine?.startLive(strategyId);
     return { success: true };
   });
 
+
   ipcMain.handle('strategy:stopLive', async (_e, strategyId: string) => {
     strategyEngine?.stopLive(strategyId);
     return { success: true };
   });
 
-  // ── Strategy AI �?LLM-powered (Sprint 2 P1) ─────────────────────
+  // ── Backtest Enhancement (Sprint 2: P1) ──────────────────────────
+
+
+  // ── Strategy AI — LLM-powered (Sprint 2 P1) ─────────────────────
   ipcMain.handle('strategy:explain', async (_e, strategy: any) => {
     const apiKey = getDeepSeekKey_(app);
     if (!apiKey) {
@@ -160,19 +121,18 @@ Strategy:
 - Name: ${strategy.name || 'Unnamed'}
 - Symbol: ${strategy.symbol || 'Unknown'}
 - Type: ${strategy.strategy?.type || 'Unknown'}
-- Params: ${JSON.stringify(strategy.strategy?.params || {})}
-- Stop Loss: ${strategy.strategy?.stopLoss || 'N/A'}%
-- Take Profit: ${strategy.strategy?.takeProfit || 'N/A'}%
-- Notes: ${strategy.notes || 'None'}
+- Params: ${JSON.stringify(strategy.strategy?.params || {})}}
+- Stop Loss: ${strategy.strategy?.stopLoss || 'Not set'}%
+- Take Profit: ${strategy.strategy?.takeProfit || 'Not set'}%
+- Description: ${strategy.description || 'No description'}
 
-Provide a breakdown of:
-1. What market condition this strategy targets
-2. How the entry/exit signals work (in plain language)
-3. Risk management (stop loss, take profit)
-4. Suggested capital allocation
-5. Potential weaknesses or caveats
+Provide a concise explanation covering:
+1. What the strategy does (in plain language)
+2. Entry and exit conditions
+3. Risk management (stop loss / take profit)
+4. Ideal market conditions for this strategy
 
-Keep it under 200 words. Be educational, not promotional.`;
+Keep it under 200 words. Use bullet points.`;
 
     try {
       const body = JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 400 });
@@ -190,7 +150,7 @@ Keep it under 200 words. Be educational, not promotional.`;
     }
   });
 
-  // ── strategy:compare ───────────────────────────────────────────────
+
   ipcMain.handle('strategy:compare', async (_e, s1: any, s2: any) => {
     const apiKey = getDeepSeekKey_(app);
     if (!apiKey) {
@@ -227,6 +187,8 @@ Keep it under 250 words. Be objective, not promotional.`;
       return { success: false, error: err.message };
     }
   });
+
+  // ── Strategy Optimizer (LLM-powered) ─────────────────────────────────
 
   // ── Strategy Optimizer (LLM-powered) ─────────────────────────────────
   ipcMain.handle('strategy:optimize', async (_e, raw: unknown) => {
@@ -293,6 +255,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   });
 
   // ── Strategy Correlation Matrix ───────────────────────────────────────
+
+  // ── Strategy Correlation Matrix ───────────────────────────────────────
   ipcMain.handle('strategy:correlation', async (_e, raw: unknown) => {
     const vErr = validate(StrategyCorrelationSchema, raw);
     if (vErr) return vErr;
@@ -305,6 +269,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     const result = computeCorrelationMatrix(strategies);
     return { success: true, ...result };
   });
+
+  // ── Smart Notification Engine ───────────────────────────────────────
 
   // ── Auto-Tuner ──────────────────────────────────────────────────────
   ipcMain.handle('strategy:auto-tune', async (_e, raw: unknown) => {
@@ -319,10 +285,12 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       generations?: number;
       iterations?: number;
     };
-    log.info(`[IPC] strategy:auto-tune �?type=${strategyType} method=${method ?? 'both'}`);
+    log.info(`[IPC] strategy:auto-tune — type=${strategyType} method=${method ?? 'both'}`);
     const result = await autoTune(strategyType, ranges, klines, { method, populationSize, generations, iterations });
     return { success: true, result };
   });
+
+  // ── Q8: Market Regime Detector ─────────────────────────────────────────
 
   // ── Q11: Correlation Visualizer ────────────────────────────────────
   ipcMain.handle('strategy:correlation-viz', async (_e, raw: unknown) => {
@@ -340,6 +308,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   });
 
   // ── Q17: Paper Trader ─────────────────────────────────────────
+
+  // ── Q17: Paper Trader ─────────────────────────────────────────
   ipcMain.handle('paper:start', async () => {
     try {
       const { getPaperTrader } = require('./engine/paper-trader');
@@ -349,6 +319,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: false, error: err.message };
     }
   });
+
 
   ipcMain.handle('paper:stop', async () => {
     try {
@@ -361,6 +332,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+
   ipcMain.handle('paper:reset', async () => {
     try {
       const { getPaperTrader } = require('./engine/paper-trader');
@@ -370,6 +342,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: false, error: err.message };
     }
   });
+
 
   ipcMain.handle('paper:report', async () => {
     try {
@@ -381,6 +354,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: false, error: err.message };
     }
   });
+
 
   ipcMain.handle('paper:execute-signal', async (_e, raw: unknown) => {
     try {
@@ -394,6 +368,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+
   ipcMain.handle('paper:status', async () => {
     try {
       const { getPaperTrader } = require('./engine/paper-trader');
@@ -402,6 +377,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: false, error: err.message };
     }
   });
+
+  // ── Q19: OpenD Health Check ─────────────────────────────────
 
   // ── Q18: Strategy Templates ─────────────────────────────────
   ipcMain.handle('strategy:templates', async (_e, raw: unknown) => {
@@ -435,6 +412,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── JVS-39: Data Snapshot Service ──────────────────────────────────────
+
   ipcMain.handle('paper:start', async (_e, symbols?: string[]) => {
 
     try {
@@ -455,6 +434,9 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
   });
 
+
+
+
   ipcMain.handle('paper:stop', async () => {
 
     try {
@@ -473,6 +455,9 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
   });
 
+
+
+
   ipcMain.handle('paper:reset', async () => {
 
     try {
@@ -490,6 +475,9 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
 
   });
+
+
+
 
   ipcMain.handle('paper:report', async (_e, strategyId?: string) => {
 
@@ -510,6 +498,9 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
 
   });
+
+
+
 
   ipcMain.handle('paper:submit-order', async (_e, raw: unknown) => {
 
@@ -533,6 +524,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
   });
 
+  // ── Q16: Dynamic Position Sizer ────────────────────────────────
+
   // ── Q15: Multi-Factor Model ─────────────────────────────────────
   ipcMain.handle('strategy:multi-factor', async (_e, raw: unknown) => {
     try {
@@ -553,6 +546,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Q12: Stress Tester ────────────────────────────────────────────
+
   // ── Q13: Backtest Comparator ──────────────────────────────────────
   ipcMain.handle('strategy:compare', async (_e, raw: unknown) => {
     try {
@@ -570,13 +565,18 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   });
 
   // ── NL Parser ───────────────────────────────────────────────────────
+
+  // ── NL Parser ───────────────────────────────────────────────────────
   ipcMain.handle('nl:parse', async (_e, text: string) => {
     return parseNaturalLanguage(text);
   });
 
+
   ipcMain.handle('nl:templates', async () => {
     return { success: true, templates: STRATEGY_TEMPLATES };
   });
+
+  // ── Risk Engine ─────────────────────────────────────────────────────
 
   // ── Correlation Matrix (Q2: QClaw) ──────────────────────────────────
   ipcMain.handle('strategy:correlation', async (_e, inputs: Array<{ id: string; equityCurve: Array<{ time: number; value: number }> }>) => {
@@ -588,6 +588,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: false, error: err.message };
     }
   });
+
+  // ── Marketplace: Score & Verify (JVS) ─────────────────────────────────
 
   // ── Q14: Live Executor ──────────────────────────────────────────────
   ipcMain.handle('live:start', async (_e, symbols?: string[]) => {
@@ -603,6 +605,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+
   ipcMain.handle('live:stop', async () => {
     try {
       liveExecutor?.stop();
@@ -611,6 +614,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: false, error: err.message };
     }
   });
+
 
   ipcMain.handle('live:add-strategy', async (_e, config: any) => {
     try {
@@ -624,6 +628,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+
   ipcMain.handle('live:remove-strategy', async (_e, strategyId: string) => {
     try {
       liveExecutor?.removeStrategy(strategyId);
@@ -633,13 +638,16 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+
   ipcMain.handle('live:get-status', async () => {
     return { success: true, status: liveExecutor?.getStatus() ?? null };
   });
 
+
   ipcMain.handle('live:get-positions', async () => {
     return { success: true, positions: liveExecutor?.getPositions() ?? [] };
   });
+
 
   ipcMain.handle('live:get-orders', async () => {
     return { success: true, orders: liveExecutor?.getOrders() ?? [] };

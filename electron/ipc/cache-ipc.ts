@@ -1,46 +1,14 @@
-// ?? DAWN WHALES IPC: cache ????????????????????????????????????????????
-// Auto-split from main.ts ? 11 handlers
+// ── DAWN WHALES IPC: cache ────────────────────────────────────────────
+// 11 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import log from '../../node_modules/electron-log';
-import { validate, 
-  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
-  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
-  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
-  BrokerSwitchSchema, BrokerAddSchema,
-  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
-  StrategyBacktestSchema, BacktestMultiPeriodSchema,
-  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
-  BacktestWalkForwardSchema, BacktestParamScanSchema,
-  BacktestMultiTimeframeSchema,
-  RiskUpdateConfigSchema, RiskUpdateVixSchema,
-  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
-  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
-  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
-  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
-  DataComputeRegimeSchema,
-  MarketplaceRateSchema, MarketplaceCommentSchema,
-  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
-  GreeksCalculateSchema, GreeksPortfolioSchema,
-  DataNewsSchema, DataFundamentalSchema,
-  DataCapitalFlowSchema, DataAnomaliesSchema,
-  DataCompositeScoreSchema,
-  NlParseSchema, StrategyExplainSchema,
-  StrategyCompareSchema, StrategyOptimizeSchema,
-  StrategyCorrelationSchema,
-  NotificationGenerateSchema,
-  ReportGenerateSchema, ReportQuickSchema,
-  StrategyAutoTuneSchema,
-} from '../ipc-schemas';
-
-// Auto-imported dependencies:
-import { exploreCache, getCacheEntryDetail, getCacheKeys } from '../engine/cache-explorer';
-import { getSmartCacheManager } from '../engine/smart-cache';
+import log from 'electron-log';
+import { validate } from '../ipc-schemas';
 
 export function registerCacheIPC(
-  _services: any
 ) {
+
 
   // ── Cache Explorer API (JVS-35) ───────────────────────────────────────
   ipcMain.handle('cache:explore', async () => {
@@ -52,6 +20,8 @@ export function registerCacheIPC(
     }
   });
 
+
+
   ipcMain.handle('cache:entry-detail', async (_e, namespace: string, key: string) => {
     try {
       const detail = getCacheEntryDetail(namespace, key);
@@ -61,6 +31,8 @@ export function registerCacheIPC(
     }
   });
 
+
+
   ipcMain.handle('cache:keys-paginated', async (_e, namespace: string, limit?: number, offset?: number) => {
     try {
       const result = getCacheKeys(namespace, limit || 100, offset || 0);
@@ -69,6 +41,9 @@ export function registerCacheIPC(
       return { success: false, error: err.message };
     }
   });
+
+  // ── Sentiment Dashboard API (JVS-36) ──────────────────────────────────
+
 
   // ── Smart Cache Manager (JVS-32) ──────────────────────────────────────
   ipcMain.handle('cache:get', async (_e, namespace: string, key: string) => {
@@ -82,6 +57,8 @@ export function registerCacheIPC(
     }
   });
 
+
+
   ipcMain.handle('cache:set', async (_e, namespace: string, key: string, value: any, ttl?: number) => {
     try {
       const manager = getSmartCacheManager();
@@ -93,6 +70,8 @@ export function registerCacheIPC(
     }
   });
 
+
+
   ipcMain.handle('cache:has', async (_e, namespace: string, key: string) => {
     try {
       const manager = getSmartCacheManager();
@@ -103,6 +82,8 @@ export function registerCacheIPC(
     }
   });
 
+
+
   ipcMain.handle('cache:delete', async (_e, namespace: string, key: string) => {
     try {
       const manager = getSmartCacheManager();
@@ -112,6 +93,8 @@ export function registerCacheIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('cache:clear', async (_e, namespace?: string) => {
     try {
@@ -127,6 +110,8 @@ export function registerCacheIPC(
     }
   });
 
+
+
   ipcMain.handle('cache:stats', async (_e, namespace?: string) => {
     try {
       const manager = getSmartCacheManager();
@@ -140,6 +125,8 @@ export function registerCacheIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('cache:reset-stats', async (_e, namespace?: string) => {
     try {
@@ -156,6 +143,8 @@ export function registerCacheIPC(
     }
   });
 
+
+
   ipcMain.handle('cache:keys', async (_e, namespace: string) => {
     try {
       const manager = getSmartCacheManager();
@@ -165,5 +154,7 @@ export function registerCacheIPC(
       return { success: false, error: err.message };
     }
   });
+
+  // ── Dragon Tiger Stream (JVS-22 PM) ─────────────────────────────────────
 
 }

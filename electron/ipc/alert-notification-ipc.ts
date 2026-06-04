@@ -1,47 +1,14 @@
-// ?? DAWN WHALES IPC: alert-notification ????????????????????????????????????????????
-// Auto-split from main.ts ? 6 handlers
+// ── DAWN WHALES IPC: alert-notification ────────────────────────────────────────────
+// 6 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import log from '../../node_modules/electron-log';
-import { validate, 
-  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
-  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
-  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
-  BrokerSwitchSchema, BrokerAddSchema,
-  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
-  StrategyBacktestSchema, BacktestMultiPeriodSchema,
-  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
-  BacktestWalkForwardSchema, BacktestParamScanSchema,
-  BacktestMultiTimeframeSchema,
-  RiskUpdateConfigSchema, RiskUpdateVixSchema,
-  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
-  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
-  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
-  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
-  DataComputeRegimeSchema,
-  MarketplaceRateSchema, MarketplaceCommentSchema,
-  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
-  GreeksCalculateSchema, GreeksPortfolioSchema,
-  DataNewsSchema, DataFundamentalSchema,
-  DataCapitalFlowSchema, DataAnomaliesSchema,
-  DataCompositeScoreSchema,
-  NlParseSchema, StrategyExplainSchema,
-  StrategyCompareSchema, StrategyOptimizeSchema,
-  StrategyCorrelationSchema,
-  NotificationGenerateSchema,
-  ReportGenerateSchema, ReportQuickSchema,
-  StrategyAutoTuneSchema,
-} from '../ipc-schemas';
-
-// Auto-imported dependencies:
-import { generateAlertSummary, generateSmartAlerts } from '../engine/notification-engine';
-import { analyzeMultipleIndicators, detectMacroAnomalies } from '../engine/macro-alert';
-import { analyzeCorrelationMatrix, detectCorrelationAnomalies } from '../engine/correlation-alert';
+import log from 'electron-log';
+import { validate } from '../ipc-schemas';
 
 export function registerAlertNotificationIPC(
-  _services: any
 ) {
+
 
   // ── Macro Alert (JVS-51) ────────────────────────────────────────────────
   ipcMain.handle('alert:macro', async (_e, currentData: any[], historicalData: any) => {
@@ -55,6 +22,8 @@ export function registerAlertNotificationIPC(
     }
   });
 
+
+
   ipcMain.handle('alert:macro-multiple', async (_e, indicatorData: any[]) => {
     try {
       const result = await analyzeMultipleIndicators(indicatorData);
@@ -64,6 +33,9 @@ export function registerAlertNotificationIPC(
       return { success: false, error: err.message };
     }
   });
+
+  // ── Correlation Alert (JVS-52) ─────────────────────────────────────────
+
 
   // ── Correlation Alert (JVS-52) ─────────────────────────────────────────
   ipcMain.handle('alert:correlation', async (_e, snapshots: any[], historicalData: any) => {
@@ -77,6 +49,8 @@ export function registerAlertNotificationIPC(
     }
   });
 
+
+
   ipcMain.handle('alert:correlation-matrix', async (_e, matrix: number[][], codes: string[], prevMatrix?: number[][], histMatrices?: any) => {
     try {
       const histMap = histMatrices ? new Map(Object.entries(histMatrices) as [string, number[]][]) : undefined;
@@ -88,6 +62,9 @@ export function registerAlertNotificationIPC(
     }
   });
 
+  // ── Walk-Forward Report (JVS-53) ───────────────────────────────────────
+
+
   // ── Smart Notification Engine ───────────────────────────────────────
   ipcMain.handle('notification:generate', async (_e, raw: unknown) => {
     const vErr = validate(NotificationGenerateSchema, raw);
@@ -97,6 +74,8 @@ export function registerAlertNotificationIPC(
     return { success: true, alerts };
   });
 
+
+
   ipcMain.handle('notification:summary', async (_e, alerts: SmartAlert[], apiKey?: string) => {
     if (!Array.isArray(alerts) || alerts.length === 0) {
       return { success: true, summary: '暂无活跃警报。' };
@@ -104,5 +83,7 @@ export function registerAlertNotificationIPC(
     const summary = await generateAlertSummary(alerts, apiKey ?? '');
     return { success: true, summary };
   });
+
+  // ── AI Report Generator ──────────────────────────────────────────────
 
 }

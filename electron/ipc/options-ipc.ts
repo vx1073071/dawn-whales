@@ -1,45 +1,15 @@
-// ?? DAWN WHALES IPC: options ????????????????????????????????????????????
-// Auto-split from main.ts ? 6 handlers
+// ── DAWN WHALES IPC: options ────────────────────────────────────────────
+// 6 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import log from '../../node_modules/electron-log';
-import { validate, 
-  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
-  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
-  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
-  BrokerSwitchSchema, BrokerAddSchema,
-  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
-  StrategyBacktestSchema, BacktestMultiPeriodSchema,
-  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
-  BacktestWalkForwardSchema, BacktestParamScanSchema,
-  BacktestMultiTimeframeSchema,
-  RiskUpdateConfigSchema, RiskUpdateVixSchema,
-  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
-  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
-  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
-  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
-  DataComputeRegimeSchema,
-  MarketplaceRateSchema, MarketplaceCommentSchema,
-  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
-  GreeksCalculateSchema, GreeksPortfolioSchema,
-  DataNewsSchema, DataFundamentalSchema,
-  DataCapitalFlowSchema, DataAnomaliesSchema,
-  DataCompositeScoreSchema,
-  NlParseSchema, StrategyExplainSchema,
-  StrategyCompareSchema, StrategyOptimizeSchema,
-  StrategyCorrelationSchema,
-  NotificationGenerateSchema,
-  ReportGenerateSchema, ReportQuickSchema,
-  StrategyAutoTuneSchema,
-} from '../ipc-schemas';
-
-// Auto-imported dependencies:
-import { analyzeBatchOptionsChain, analyzeOptionsChain } from '../engine/options-chain-analyzer';
+import log from 'electron-log';
+import { validate } from '../ipc-schemas';
 
 export function registerOptionsIPC(
   calcGreeksJS: any
-) { {
+) {
+
 
   // ── Options Chain Analyzer (JVS-55) ─────────────────────────────────
   ipcMain.handle('options:chain-analyze', async (_e, contracts: any[], symbol: string, historicalIVRange?: any) => {
@@ -52,6 +22,8 @@ export function registerOptionsIPC(
     }
   });
 
+
+
   ipcMain.handle('options:chain-batch', async (_e, symbols: any[]) => {
     try {
       const result = await analyzeBatchOptionsChain(symbols);
@@ -61,6 +33,9 @@ export function registerOptionsIPC(
       return { success: false, error: err.message };
     }
   });
+
+  // ── Multi-Factor Selector (JVS-56) ─────────────────────────────────────
+
 
   // ── Q55: Options Strategy Builder ────────────────────────────────────────
   ipcMain.handle('options:build', async (_e, raw: unknown) => {
@@ -77,6 +52,8 @@ export function registerOptionsIPC(
     }
   });
 
+
+
   ipcMain.handle('options:analyze', async (_e, raw: unknown) => {
     try {
       const { strategy, spotPrice, volatility, riskFreeRate, dividends } = raw as {
@@ -91,6 +68,9 @@ export function registerOptionsIPC(
     }
   });
 
+  // ── Q56: Portfolio Cost Analytics ───────────────────────────────────────
+
+
   // ── Greeks Calculation (P0-fixed: pure JS Black-Scholes, no Python subprocess) ─
   ipcMain.handle('greeks:calculate', async (_e, params: {
     spot: number; strike: number; vol: number; days: number;
@@ -104,6 +84,8 @@ export function registerOptionsIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('greeks:portfolio', async (_e, positions: any[]) => {
     const vErr = validate(GreeksPortfolioSchema, { positions });
@@ -135,5 +117,8 @@ export function registerOptionsIPC(
       return { success: false, error: err.message };
     }
   });
+
+  // ── Marketplace ───────────────────────────────────────────────────
+
 
 }

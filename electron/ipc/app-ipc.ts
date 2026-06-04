@@ -1,46 +1,16 @@
-// ?? DAWN WHALES IPC: app ????????????????????????????????????????????
-// Auto-split from main.ts ? 10 handlers
+// ── DAWN WHALES IPC: app ────────────────────────────────────────────
+// 10 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import log from '../../node_modules/electron-log';
-import { validate, 
-  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
-  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
-  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
-  BrokerSwitchSchema, BrokerAddSchema,
-  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
-  StrategyBacktestSchema, BacktestMultiPeriodSchema,
-  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
-  BacktestWalkForwardSchema, BacktestParamScanSchema,
-  BacktestMultiTimeframeSchema,
-  RiskUpdateConfigSchema, RiskUpdateVixSchema,
-  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
-  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
-  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
-  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
-  DataComputeRegimeSchema,
-  MarketplaceRateSchema, MarketplaceCommentSchema,
-  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
-  GreeksCalculateSchema, GreeksPortfolioSchema,
-  DataNewsSchema, DataFundamentalSchema,
-  DataCapitalFlowSchema, DataAnomaliesSchema,
-  DataCompositeScoreSchema,
-  NlParseSchema, StrategyExplainSchema,
-  StrategyCompareSchema, StrategyOptimizeSchema,
-  StrategyCorrelationSchema,
-  NotificationGenerateSchema,
-  ReportGenerateSchema, ReportQuickSchema,
-  StrategyAutoTuneSchema,
-} from '../ipc-schemas';
-
-// Auto-imported dependencies:
-import { getVersion } from '../engine/version-control-service';
+import log from 'electron-log';
+import { validate } from '../ipc-schemas';
 
 export function registerAppIPC(
   mainWindow: any,
   strategyEngine: any
-) { {
+) {
+
 
   // ── App ─────────────────────────────────────────────────────────────
   ipcMain.handle('app:getInfo', () => ({
@@ -53,10 +23,14 @@ export function registerAppIPC(
     chromeVersion: process.versions.chrome,
   }));
 
+
+
   ipcMain.handle('app:getMemoryUsage', () => ({
     mainProcess: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
     total: Math.round(process.memoryUsage().rss / 1024 / 1024),
   }));
+
+
 
   ipcMain.handle('app:exportPdf', async (_e, filename: string) => {
     try {
@@ -88,6 +62,8 @@ export function registerAppIPC(
     }
   });
 
+
+
   ipcMain.handle('app:emergencyStop', async () => {
     try {
       log.warn('[App] Emergency stop triggered');
@@ -102,7 +78,7 @@ export function registerAppIPC(
       if (mainWindow && !mainWindow.isDestroyed()) {
         mainWindow.webContents.send('notification', {
           type: 'error',
-          title: '紧急停�?,
+          title: '紧急停止',
           message: '所有策略已停止',
         });
       }
@@ -113,12 +89,15 @@ export function registerAppIPC(
     }
   });
 
+  // ── External URL Security ────────────────────────────────────────────
+  const ALLOWED_PROTOCOLS = ['http:', 'https:'];
+
   ipcMain.handle('app:openExternal', async (_e, rawUrl: string) => {
     const vErr = validate(Z.object({ rawUrl: z.string().url() }), { rawUrl });
     if (vErr) return vErr;
     try {
       const url = new URL(rawUrl);
-      if (!['https:', 'http:', 'ftp:'].includes(url.protocol)) {
+      if (!ALLOWED_PROTOCOLS.includes(url.protocol)) {
         log.warn('[Security] Blocked openExternal:', rawUrl);
         return { success: false, error: 'Protocol not allowed' };
       }
@@ -129,10 +108,13 @@ export function registerAppIPC(
     }
   });
 
+
+
   ipcMain.handle('app:getVersion', () => app.getVersion());
-  ipcMain.handle('app:getPlatform', () => process.platform);
 
   ipcMain.handle('app:getPlatform', () => process.platform);
+
+  // ── Auto-updater ──────────────────────────────────────────────────
 
 
   // ── Auto-updater ──────────────────────────────────────────────────
@@ -145,6 +127,8 @@ export function registerAppIPC(
     }
   });
 
+
+
   ipcMain.handle('app:downloadUpdate', async () => {
     try {
       await autoUpdater.downloadUpdate();
@@ -154,8 +138,12 @@ export function registerAppIPC(
     }
   });
 
+
+
   ipcMain.handle('app:installUpdate', () => {
     autoUpdater.quitAndInstall();
   });
+
+  // ── Greeks Calculation (P0-fixed: pure JS Black-Scholes, no Python subprocess) ─
 
 }

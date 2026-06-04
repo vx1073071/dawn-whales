@@ -1,46 +1,16 @@
-// ?? DAWN WHALES IPC: indicator ????????????????????????????????????????????
-// Auto-split from main.ts ? 6 handlers
+// ── DAWN WHALES IPC: indicator ────────────────────────────────────────────
+// 6 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import log from '../../node_modules/electron-log';
-import { validate, 
-  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
-  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
-  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
-  BrokerSwitchSchema, BrokerAddSchema,
-  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
-  StrategyBacktestSchema, BacktestMultiPeriodSchema,
-  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
-  BacktestWalkForwardSchema, BacktestParamScanSchema,
-  BacktestMultiTimeframeSchema,
-  RiskUpdateConfigSchema, RiskUpdateVixSchema,
-  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
-  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
-  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
-  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
-  DataComputeRegimeSchema,
-  MarketplaceRateSchema, MarketplaceCommentSchema,
-  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
-  GreeksCalculateSchema, GreeksPortfolioSchema,
-  DataNewsSchema, DataFundamentalSchema,
-  DataCapitalFlowSchema, DataAnomaliesSchema,
-  DataCompositeScoreSchema,
-  NlParseSchema, StrategyExplainSchema,
-  StrategyCompareSchema, StrategyOptimizeSchema,
-  StrategyCorrelationSchema,
-  NotificationGenerateSchema,
-  ReportGenerateSchema, ReportQuickSchema,
-  StrategyAutoTuneSchema,
-} from '../ipc-schemas';
-
-// Auto-imported dependencies:
+import log from 'electron-log';
+import { validate } from '../ipc-schemas';
 import { computeIndicators } from '../engine/technical-indicators';
 import { getRealtimeIndicatorCalculator } from '../engine/realtime-indicators';
 
 export function registerIndicatorIPC(
-  _services: any
 ) {
+
 
   // ── Technical Indicators (JVS-43) ──────────────────────────────────────
   ipcMain.handle('indicator:compute', async (_e, klines: any[], indicators?: string[], options?: any) => {
@@ -53,6 +23,9 @@ export function registerIndicatorIPC(
   });
 
   // ── Realtime Technical Indicators (JVS-36) ─────────────────────────────
+
+
+  // ── Realtime Technical Indicators (JVS-36) ─────────────────────────────
   ipcMain.handle('indicator:realtime-add', async (_e, symbol: string, kline: any) => {
     try {
       const calculator = getRealtimeIndicatorCalculator();
@@ -62,6 +35,8 @@ export function registerIndicatorIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('indicator:realtime-add-batch', async (_e, symbol: string, klines: any[]) => {
     try {
@@ -73,6 +48,8 @@ export function registerIndicatorIPC(
     }
   });
 
+
+
   ipcMain.handle('indicator:realtime-get-buffer', async (_e, symbol: string) => {
     try {
       const calculator = getRealtimeIndicatorCalculator();
@@ -82,6 +59,8 @@ export function registerIndicatorIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('indicator:realtime-clear', async (_e, symbol: string) => {
     try {
@@ -94,6 +73,8 @@ export function registerIndicatorIPC(
     }
   });
 
+
+
   ipcMain.handle('indicator:realtime-clear-all', async () => {
     try {
       const calculator = getRealtimeIndicatorCalculator();
@@ -101,6 +82,20 @@ export function registerIndicatorIPC(
       return { success: true };
     } catch (err: any) {
       log.error('[RealtimeIndicators] Clear all error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Options Pricing Engine (JVS-44) ────────────────────────────────────
+
+  // JVS-44: 技术指标实时计算
+  ipcMain.handle('indicator:calculate', async (_e, symbol: string, klines: any[], indicators?: string[]) => {
+    try {
+      const calculator = getRealtimeIndicatorCalculator();
+      const result = calculator.calculate(symbol, klines, indicators);
+      return { success: true, indicators: result };
+    } catch (err: any) {
+      log.error('[Indicator:calculate] Error:', err);
       return { success: false, error: err.message };
     }
   });

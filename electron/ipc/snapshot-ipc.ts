@@ -1,45 +1,14 @@
-// ?? DAWN WHALES IPC: snapshot ????????????????????????????????????????????
-// Auto-split from main.ts ? 12 handlers
+// ── DAWN WHALES IPC: snapshot ────────────────────────────────────────────
+// 12 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import log from '../../node_modules/electron-log';
-import { validate, 
-  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
-  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
-  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
-  BrokerSwitchSchema, BrokerAddSchema,
-  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
-  StrategyBacktestSchema, BacktestMultiPeriodSchema,
-  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
-  BacktestWalkForwardSchema, BacktestParamScanSchema,
-  BacktestMultiTimeframeSchema,
-  RiskUpdateConfigSchema, RiskUpdateVixSchema,
-  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
-  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
-  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
-  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
-  DataComputeRegimeSchema,
-  MarketplaceRateSchema, MarketplaceCommentSchema,
-  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
-  GreeksCalculateSchema, GreeksPortfolioSchema,
-  DataNewsSchema, DataFundamentalSchema,
-  DataCapitalFlowSchema, DataAnomaliesSchema,
-  DataCompositeScoreSchema,
-  NlParseSchema, StrategyExplainSchema,
-  StrategyCompareSchema, StrategyOptimizeSchema,
-  StrategyCorrelationSchema,
-  NotificationGenerateSchema,
-  ReportGenerateSchema, ReportQuickSchema,
-  StrategyAutoTuneSchema,
-} from '../ipc-schemas';
-
-// Auto-imported dependencies:
-import { captureSnapshot, cleanupOldSnapshots, clearAllSnapshots, compareSnapshots, deleteSnapshot, exportSnapshots, getLatestSnapshot, getSnapshot, getSnapshotStats, getSnapshotTimeline, importSnapshots, querySnapshots } from '../engine/snapshot-service';
+import log from 'electron-log';
+import { validate } from '../ipc-schemas';
 
 export function registerSnapshotIPC(
-  _services: any
 ) {
+
 
   // ── JVS-39: Data Snapshot Service ──────────────────────────────────────
   ipcMain.handle('snapshot:capture', async (_e, type: string, category: string, data: any, metadata?: any) => {
@@ -51,6 +20,8 @@ export function registerSnapshotIPC(
     }
   });
 
+
+
   ipcMain.handle('snapshot:query', async (_e, query: any) => {
     try {
       const snapshots = await querySnapshots(query);
@@ -59,6 +30,8 @@ export function registerSnapshotIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('snapshot:get', async (_e, id: string) => {
     try {
@@ -69,6 +42,8 @@ export function registerSnapshotIPC(
     }
   });
 
+
+
   ipcMain.handle('snapshot:compare', async (_e, id1: string, id2: string) => {
     try {
       const comparison = await compareSnapshots(id1, id2);
@@ -77,6 +52,8 @@ export function registerSnapshotIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('snapshot:timeline', async (_e, category: string, limit?: number) => {
     try {
@@ -87,6 +64,8 @@ export function registerSnapshotIPC(
     }
   });
 
+
+
   ipcMain.handle('snapshot:latest', async (_e, category: string) => {
     try {
       const snapshot = await getLatestSnapshot(category);
@@ -95,6 +74,8 @@ export function registerSnapshotIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('snapshot:cleanup', async (_e, daysOld?: number) => {
     try {
@@ -105,6 +86,8 @@ export function registerSnapshotIPC(
     }
   });
 
+
+
   ipcMain.handle('snapshot:export', async (_e, query?: any) => {
     try {
       const json = await exportSnapshots(query);
@@ -113,6 +96,8 @@ export function registerSnapshotIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('snapshot:import', async (_e, jsonString: string) => {
     try {
@@ -123,6 +108,8 @@ export function registerSnapshotIPC(
     }
   });
 
+
+
   ipcMain.handle('snapshot:stats', async () => {
     try {
       const stats = getSnapshotStats();
@@ -131,6 +118,8 @@ export function registerSnapshotIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('snapshot:delete', async (_e, id: string) => {
     try {
@@ -141,6 +130,8 @@ export function registerSnapshotIPC(
     }
   });
 
+
+
   ipcMain.handle('snapshot:clear', async () => {
     try {
       await clearAllSnapshots();
@@ -149,5 +140,7 @@ export function registerSnapshotIPC(
       return { success: false, error: err.message };
     }
   });
+
+  // ── JVS-40: Version Control Service ──────────────────────────────────────
 
 }

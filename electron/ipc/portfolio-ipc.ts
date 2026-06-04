@@ -1,45 +1,14 @@
-// ?? DAWN WHALES IPC: portfolio ????????????????????????????????????????????
-// Auto-split from main.ts ? 8 handlers
+// ── DAWN WHALES IPC: portfolio ────────────────────────────────────────────
+// 8 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import log from '../../node_modules/electron-log';
-import { validate, 
-  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
-  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
-  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
-  BrokerSwitchSchema, BrokerAddSchema,
-  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
-  StrategyBacktestSchema, BacktestMultiPeriodSchema,
-  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
-  BacktestWalkForwardSchema, BacktestParamScanSchema,
-  BacktestMultiTimeframeSchema,
-  RiskUpdateConfigSchema, RiskUpdateVixSchema,
-  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
-  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
-  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
-  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
-  DataComputeRegimeSchema,
-  MarketplaceRateSchema, MarketplaceCommentSchema,
-  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
-  GreeksCalculateSchema, GreeksPortfolioSchema,
-  DataNewsSchema, DataFundamentalSchema,
-  DataCapitalFlowSchema, DataAnomaliesSchema,
-  DataCompositeScoreSchema,
-  NlParseSchema, StrategyExplainSchema,
-  StrategyCompareSchema, StrategyOptimizeSchema,
-  StrategyCorrelationSchema,
-  NotificationGenerateSchema,
-  ReportGenerateSchema, ReportQuickSchema,
-  StrategyAutoTuneSchema,
-} from '../ipc-schemas';
-
-// Auto-imported dependencies:
-import { batchOptimizePortfolios, generateEfficientFrontier, optimizePortfolio, riskParityPortfolio } from '../engine/portfolio-optimizer';
+import log from 'electron-log';
+import { validate } from '../ipc-schemas';
 
 export function registerPortfolioIPC(
-  _services: any
 ) {
+
 
   // ── Portfolio Optimizer (JVS-57) ────────────────────────────────────────
   ipcMain.handle('portfolio:optimize', async (_e, assets: any[], constraints?: any) => {
@@ -52,6 +21,8 @@ export function registerPortfolioIPC(
     }
   });
 
+
+
   ipcMain.handle('portfolio:efficient-frontier', async (_e, assets: any[], points?: number, constraints?: any) => {
     try {
       const result = generateEfficientFrontier(assets, points, constraints);
@@ -61,6 +32,8 @@ export function registerPortfolioIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('portfolio:risk-parity', async (_e, assets: any[], constraints?: any) => {
     try {
@@ -72,6 +45,8 @@ export function registerPortfolioIPC(
     }
   });
 
+
+
   ipcMain.handle('portfolio:optimize-batch', async (_e, scenarios: any[]) => {
     try {
       const result = await batchOptimizePortfolios(scenarios);
@@ -81,6 +56,9 @@ export function registerPortfolioIPC(
       return { success: false, error: err.message };
     }
   });
+
+  // ── Q29/Q54: Execution Analytics ────────────────────────────────────────
+
 
   // ── Q56: Portfolio Cost Analytics ───────────────────────────────────────
   ipcMain.handle('portfolio:cost-analyze', async (_e, raw: unknown) => {
@@ -97,6 +75,9 @@ export function registerPortfolioIPC(
   });
 
   // ── Q54: RAR Optimizer ──────────────────────────────────────────────────
+
+
+  // ── Q54: RAR Optimizer ──────────────────────────────────────────────────
   ipcMain.handle('portfolio:rar-optimize', async (_e, raw: unknown) => {
     try {
       const { positions, marketData, riskAppetite, constraints } = raw as {
@@ -110,6 +91,9 @@ export function registerPortfolioIPC(
       return { success: false, error: err.message };
     }
   });
+
+  // ── Q57: Cross-Asset Risk ───────────────────────────────────────────────
+
 
   // ── Q22: Portfolio Rebalancer ────────────────────────────────────────────
   ipcMain.handle('portfolio:rebalance', async (_e, raw: unknown) => {
@@ -127,6 +111,8 @@ export function registerPortfolioIPC(
     }
   });
 
+
+
   ipcMain.handle('portfolio:rebalance-kelly', async (_e, raw: unknown) => {
     try {
       const { positions, kellyFraction, maxTurnover } = raw as {
@@ -140,5 +126,7 @@ export function registerPortfolioIPC(
       return { success: false, error: err.message };
     }
   });
+
+  // ── WebSocket Real-time Data Enhancer (JVS-58) ──────────────────────────
 
 }

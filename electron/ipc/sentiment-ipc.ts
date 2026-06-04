@@ -1,47 +1,16 @@
-// ?? DAWN WHALES IPC: sentiment ????????????????????????????????????????????
-// Auto-split from main.ts ? 8 handlers
+// ── DAWN WHALES IPC: sentiment ────────────────────────────────────────────
+// 8 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import log from '../../node_modules/electron-log';
-import { validate, 
-  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
-  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
-  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
-  BrokerSwitchSchema, BrokerAddSchema,
-  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
-  StrategyBacktestSchema, BacktestMultiPeriodSchema,
-  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
-  BacktestWalkForwardSchema, BacktestParamScanSchema,
-  BacktestMultiTimeframeSchema,
-  RiskUpdateConfigSchema, RiskUpdateVixSchema,
-  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
-  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
-  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
-  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
-  DataComputeRegimeSchema,
-  MarketplaceRateSchema, MarketplaceCommentSchema,
-  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
-  GreeksCalculateSchema, GreeksPortfolioSchema,
-  DataNewsSchema, DataFundamentalSchema,
-  DataCapitalFlowSchema, DataAnomaliesSchema,
-  DataCompositeScoreSchema,
-  NlParseSchema, StrategyExplainSchema,
-  StrategyCompareSchema, StrategyOptimizeSchema,
-  StrategyCorrelationSchema,
-  NotificationGenerateSchema,
-  ReportGenerateSchema, ReportQuickSchema,
-  StrategyAutoTuneSchema,
-} from '../ipc-schemas';
-
-// Auto-imported dependencies:
-import { getRealtimeSentimentStream } from '../engine/sentiment-stream';
-import { getSentimentDashboard } from '../engine/sentiment-dashboard';
+import log from 'electron-log';
+import { validate } from '../ipc-schemas';
 
 export function registerSentimentIPC(
-  mainWindow: any,
-  sentimentAttrEngine: any
-) { {
+  sentimentAttrEngine: any,
+  flowPredictor: any,
+  mainWindow: any
+) {
 
   ipcMain.handle('sentiment:attribution', async (_e, params: any) => {
     try {
@@ -52,6 +21,10 @@ export function registerSentimentIPC(
       return { success: false, error: err.message };
     }
   });
+
+  // ── Capital Flow Predictor (QClaw Q58) ─────────────────────────────────
+  const localCapitalFlowPredictor = new CapitalFlowPredictor();
+
 
   // ── Realtime Sentiment Stream (JVS-33) ─────────────────────────────────
   ipcMain.handle('sentiment:stream-start', async () => {
@@ -79,6 +52,8 @@ export function registerSentimentIPC(
     }
   });
 
+
+
   ipcMain.handle('sentiment:stream-stop', async () => {
     try {
       const stream = getRealtimeSentimentStream();
@@ -89,6 +64,8 @@ export function registerSentimentIPC(
     }
   });
 
+
+
   ipcMain.handle('sentiment:stream-status', async () => {
     try {
       const stream = getRealtimeSentimentStream();
@@ -98,6 +75,8 @@ export function registerSentimentIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('sentiment:stream-history', async (_e, limit?: number) => {
     try {
@@ -110,6 +89,8 @@ export function registerSentimentIPC(
     }
   });
 
+
+
   ipcMain.handle('sentiment:stream-alerts', async () => {
     try {
       const stream = getRealtimeSentimentStream();
@@ -119,6 +100,8 @@ export function registerSentimentIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('sentiment:stream-clear-alerts', async () => {
     try {
@@ -130,6 +113,9 @@ export function registerSentimentIPC(
     }
   });
 
+  // ── Data Quality Dashboard Aggregator (JVS-34) ────────────────────────
+
+
   // ── Sentiment Dashboard API (JVS-36) ──────────────────────────────────
   ipcMain.handle('sentiment:dashboard', async () => {
     try {
@@ -140,4 +126,7 @@ export function registerSentimentIPC(
     }
   });
 
+  // ── Data Export Service (JVS-37) ──────────────────────────────────────
+
 }
+

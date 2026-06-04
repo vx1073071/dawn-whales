@@ -1,45 +1,14 @@
-// ?? DAWN WHALES IPC: version ????????????????????????????????????????????
-// Auto-split from main.ts ? 12 handlers
+// ── DAWN WHALES IPC: version ────────────────────────────────────────────
+// 12 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import log from '../../node_modules/electron-log';
-import { validate, 
-  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
-  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
-  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
-  BrokerSwitchSchema, BrokerAddSchema,
-  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
-  StrategyBacktestSchema, BacktestMultiPeriodSchema,
-  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
-  BacktestWalkForwardSchema, BacktestParamScanSchema,
-  BacktestMultiTimeframeSchema,
-  RiskUpdateConfigSchema, RiskUpdateVixSchema,
-  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
-  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
-  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
-  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
-  DataComputeRegimeSchema,
-  MarketplaceRateSchema, MarketplaceCommentSchema,
-  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
-  GreeksCalculateSchema, GreeksPortfolioSchema,
-  DataNewsSchema, DataFundamentalSchema,
-  DataCapitalFlowSchema, DataAnomaliesSchema,
-  DataCompositeScoreSchema,
-  NlParseSchema, StrategyExplainSchema,
-  StrategyCompareSchema, StrategyOptimizeSchema,
-  StrategyCorrelationSchema,
-  NotificationGenerateSchema,
-  ReportGenerateSchema, ReportQuickSchema,
-  StrategyAutoTuneSchema,
-} from '../ipc-schemas';
-
-// Auto-imported dependencies:
-import { clearAllVersions, deleteVersion, diffVersions, exportVersions, getEntityVersions, getLatestVersion, getVersion, getVersionStats, importVersions, queryVersions, rollback, trackVersion } from '../engine/version-control-service';
+import log from 'electron-log';
+import { validate } from '../ipc-schemas';
 
 export function registerVersionIPC(
-  _services: any
 ) {
+
 
   // ── JVS-40: Version Control Service ──────────────────────────────────────
   ipcMain.handle('version:track', async (_e, entityId: string, entityType: string, data: any, changeType?: string, changeSummary?: string, userId?: string, tags?: string[]) => {
@@ -51,6 +20,8 @@ export function registerVersionIPC(
     }
   });
 
+
+
   ipcMain.handle('version:get-entity-versions', async (_e, entityId: string, limit?: number) => {
     try {
       const versions = await getEntityVersions(entityId, limit);
@@ -59,6 +30,8 @@ export function registerVersionIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('version:get', async (_e, versionId: string) => {
     try {
@@ -69,6 +42,8 @@ export function registerVersionIPC(
     }
   });
 
+
+
   ipcMain.handle('version:get-latest', async (_e, entityId: string) => {
     try {
       const version = await getLatestVersion(entityId);
@@ -77,6 +52,8 @@ export function registerVersionIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('version:diff', async (_e, versionId1: string, versionId2: string) => {
     try {
@@ -87,6 +64,8 @@ export function registerVersionIPC(
     }
   });
 
+
+
   ipcMain.handle('version:rollback', async (_e, entityId: string, targetVersion: number) => {
     try {
       const result = await rollback(entityId, targetVersion);
@@ -95,6 +74,8 @@ export function registerVersionIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('version:query', async (_e, query: any) => {
     try {
@@ -105,6 +86,8 @@ export function registerVersionIPC(
     }
   });
 
+
+
   ipcMain.handle('version:stats', async () => {
     try {
       const stats = getVersionStats();
@@ -113,6 +96,8 @@ export function registerVersionIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('version:delete', async (_e, versionId: string) => {
     try {
@@ -123,6 +108,8 @@ export function registerVersionIPC(
     }
   });
 
+
+
   ipcMain.handle('version:clear', async () => {
     try {
       await clearAllVersions();
@@ -131,6 +118,8 @@ export function registerVersionIPC(
       return { success: false, error: err.message };
     }
   });
+
+
 
   ipcMain.handle('version:export', async (_e, query?: any) => {
     try {
@@ -141,6 +130,8 @@ export function registerVersionIPC(
     }
   });
 
+
+
   ipcMain.handle('version:import', async (_e, jsonString: string) => {
     try {
       const imported = await importVersions(jsonString);
@@ -149,5 +140,8 @@ export function registerVersionIPC(
       return { success: false, error: err.message };
     }
   });
+
+  // ── Q17: Paper Trader ──────────────────────
+
 
 }

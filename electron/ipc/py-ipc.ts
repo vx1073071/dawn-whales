@@ -1,56 +1,15 @@
 // ── DAWN WHALES IPC: py ────────────────────────────────────────────
-// Auto-split from main.ts — 3 handlers
-//
-// Registered channels:
-//   py:call-skill
-//   py:list-skills
-//   py:proxy-status
+// 3 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import log from '../../node_modules/electron-log';
-import { validate, 
-  BrokerConnectSchema, BrokerGetFundsSchema, BrokerGetPositionsSchema,
-  BrokerGetQuotesSchema, BrokerSubscribeSchema, BrokerGetKlinesSchema,
-  BrokerPlaceOrderSchema, BrokerCancelOrderSchema,
-  BrokerSwitchSchema, BrokerAddSchema,
-  StrategyCreateSchema, StrategyUpdateSchema, StrategyGetSchema,
-  StrategyBacktestSchema, BacktestMultiPeriodSchema,
-  BacktestParamSweepSchema, BacktestRiskMetricsSchema,
-  BacktestWalkForwardSchema, BacktestParamScanSchema,
-  BacktestMultiTimeframeSchema,
-  RiskUpdateConfigSchema, RiskUpdateVixSchema,
-  DbSaveStrategySchema, DbSaveSettingsSchema, DbSaveWatchlistSchema,
-  DbGetTradesSchema, DbGetBacktestResultsSchema, DbGetSignalsSchema,
-  DbSaveFundamentalSchema, DbSaveCapitalFlowSchema,
-  DbSaveRegimeSchema, DbSaveAnomalySchema, DbSaveNewsSchema,
-  DataComputeRegimeSchema,
-  MarketplaceRateSchema, MarketplaceCommentSchema,
-  MarketplaceSavePerformanceSchema, MarketplaceListSchema,
-  GreeksCalculateSchema, GreeksPortfolioSchema,
-  DataNewsSchema, DataFundamentalSchema,
-  DataCapitalFlowSchema, DataAnomaliesSchema,
-  DataCompositeScoreSchema,
-  NlParseSchema, StrategyExplainSchema,
-  StrategyCompareSchema, StrategyOptimizeSchema,
-  StrategyCorrelationSchema,
-  NotificationGenerateSchema,
-  ReportGenerateSchema, ReportQuickSchema,
-  StrategyAutoTuneSchema,
-} from '../ipc-schemas';
+import log from 'electron-log';
+import { validate } from '../ipc-schemas';
 
-// Auto-imported dependencies:
-import { getPythonProxy } from '../data/python-proxy';
-
-/**
- * Register all py IPC handlers
- *
- */
 export function registerPyIPC(
-  
 ) {
 
-  // ── py:call-skill ───────────────────────────────────────────────
+
   // ── Python Script Proxy Layer (JVS-20) ──────────────────────────────────
   ipcMain.handle('py:call-skill', async (_e, skillName: string, query: string, options?: any) => {
     try {
@@ -62,7 +21,8 @@ export function registerPyIPC(
     }
   });
 
-  // ── py:list-skills ───────────────────────────────────────────────
+
+
   ipcMain.handle('py:list-skills', async () => {
     try {
       const proxy = getPythonProxy();
@@ -72,7 +32,8 @@ export function registerPyIPC(
     }
   });
 
-  // ── py:proxy-status ───────────────────────────────────────────────
+
+
   ipcMain.handle('py:proxy-status', async () => {
     try {
       const proxy = getPythonProxy();
@@ -81,5 +42,7 @@ export function registerPyIPC(
       return { success: false, error: err.message };
     }
   });
+
+  // ── Push2 Proxy Service (JVS-27) ─────────────────────────────────────────
 
 }
