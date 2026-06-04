@@ -325,6 +325,18 @@ contextBridge.exposeInMainWorld('api', {
     stopPeriodic: () => ipcRenderer.invoke('data:quality-stop-periodic'),
   },
 
+  // ── Data Quality Stream Monitor (JVS-31) ───────────────────────
+  dataQualityStream: {
+    start: () => ipcRenderer.invoke('data:quality-stream-start'),
+    stop: () => ipcRenderer.invoke('data:quality-stream-stop'),
+    status: () => ipcRenderer.invoke('data:quality-stream-status'),
+    clearAlerts: () => ipcRenderer.invoke('data:quality-stream-clear-alerts'),
+    resetMetrics: () => ipcRenderer.invoke('data:quality-stream-reset-metrics'),
+    onAlert: (callback: (alert: any) => void) => {
+      ipcRenderer.on('data:quality-stream-alert', (_event, alert) => callback(alert));
+    },
+  },
+
   // ── Dragon Tiger Stream (JVS-22 PM) ───────────────────────────
   dragonTigerStream: {
     start: () => ipcRenderer.invoke('em:dragon-tiger-stream-start'),
@@ -358,6 +370,23 @@ contextBridge.exposeInMainWorld('api', {
     pick: (request?: any) => ipcRenderer.invoke('em:smart-pick', request),
   },
 
+  // ── WS Data Stream (JVS-29) ────────────────────────────────────
+  wsStream: {
+    start: (config?: any) => ipcRenderer.invoke('ws:start-stream', config),
+    stop: () => ipcRenderer.invoke('ws:stop-stream'),
+    subscribe: (codes: string[]) => ipcRenderer.invoke('ws:subscribe', codes),
+    unsubscribe: (codes: string[]) => ipcRenderer.invoke('ws:unsubscribe', codes),
+    status: () => ipcRenderer.invoke('ws:stream-status'),
+  },
+
+  // ── History Backfill (JVS-30) ──────────────────────────────────
+  historyBackfill: {
+    start: (config?: any) => ipcRenderer.invoke('em:backfill-start', config),
+    status: () => ipcRenderer.invoke('em:backfill-status'),
+    data: (module: string) => ipcRenderer.invoke('em:backfill-data', module),
+    list: () => ipcRenderer.invoke('em:backfill-list'),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),
@@ -388,6 +417,7 @@ contextBridge.exposeInMainWorld('api', {
       'quote:stream-tick',
       'quote:stream-anomaly',
       'dragon-tiger:update',
+      'ws:tick',
     ];
     if (allowed.includes(channel)) {
       ipcRenderer.on(channel, (_event, ...args) => callback(...args));

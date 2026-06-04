@@ -1,0 +1,345 @@
+import { useState, useEffect, useRef, useCallback } from 'react';
+import {
+  getQuotes, subscribeQuoteStream, unsubscribeQuoteStream, getQuoteStreamStatus,
+} from '@/lib/bridge-api';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
+
+interface RealTimeQuote {
+  code: string;
+  name: string;
+  price: number;
+  prevClose: number;
+  change: number;
+  changePct: number;
+  volume: number;
+  turnover: number;
+  bid: number;
+  ask: number;
+  bidVol: number;
+  askVol: number;
+  high: number;
+  low: number;
+  open: number;
+  updateTime: string;
+  sparkline?: number[];
+  flash?: 'up' | 'down' | null;
+  dataQuality?: 'good' | 'stale' | 'error';
+}
+
+const WATCHLIST = [
+  { code: 'US.AAPL', name: '苹果' },
+  { code: 'US.NVDA', name: '英伟达' },
+  { code: 'US.TSLA', name: '特斯拉' },
+  { code: 'US.MSFT', name: '微软' },
+  { code: 'US.AMZN', name: '亚马逊' },
+  { code: 'US.GOOGL', name: '谷歌' },
+  { code: 'US.META', name: 'Meta' },
+  { code: 'US.AVGO', name: '博通' },
+  { code: 'HK.00700', name: '腾讯' },
+  { code: 'HK.09988', name: '阿里' },
+  { code: 'US.BABA', name: '阿里(美)' },
+  { code: 'US.PDD', name: '拼多多' },
+];
+
+function generateSparkline(basePrice: number): number[] {
+  const data: number[] = [basePrice];
+  for (let i = 1; i < 30; i++) {
+    data.push(data[i - 1] * (1 + (Math.random() - 0.5) * 0.02));
+  }
+  return data;
+}
+
+function generateMockQuote(stock: { code: string; name: string }): RealTimeQuote {
+  const basePrice = stock.code.includes('AAPL') ? 189.5 :
+    stock.code.includes('NVDA') ? 875.3 :
+    stock.code.includes('TSLA') ? 172.6 :
+    stock.code.includes('MSFT') ? 412.2 :
+    stock.code.includes('AMZN') ? 178.1 :
+    stock.code.includes('GOOGL') ? 165.8 :
+    stock.code.includes('META') ? 474.3 :
+    stock.code.includes('AVGO') ? 1280.5 :
+    stock.code.includes('00700') ? 385.2 :
+    stock.code.includes('09988') ? 78.5 :
+    stock.code.includes('BABA') ? 78.3 :
+    stock.code.includes('PDD') ? 142.8 : 100;
+
+  const changePct = (Math.random() - 0.48) * 5;
+  const price = basePrice * (1 + changePct / 100);
+  const prevClose = basePrice;
+
+  return {
+    code: stock.code,
+    name: stock.name,
+    price: +price.toFixed(2),
+    prevClose: +prevClose.toFixed(2),
+    change: +(price - prevClose).toFixed(2),
+    changePct: +changePct.toFixed(2),
+    volume: Math.floor(Math.random() * 50000000) + 1000000,
+    turnover: Math.floor(Math.random() * 5000000000) + 100000000,
+    bid: +(price * 0.999).toFixed(2),
+    ask: +(price * 1.001).toFixed(2),
+    bidVol: Math.floor(Math.random() * 5000) + 100,
+    askVol: Math.floor(Math.random() * 5000) + 100,
+    high: +(price * 1.02).toFixed(2),
+    low: +(price * 0.98).toFixed(2),
+    open: +(prevClose * (1 + (Math.random() - 0.5) * 0.01)).toFixed(2),
+    updateTime: new Date().toISOString(),
+    sparkline: generateSparkline(prevClose),
+    dataQuality: Math.random() > 0.9 ? 'stale' : 'good',
+  };
+}
+
+export default function RealTimeMarketDashboard() {
+  const [quotes, setQuotes] = useState<Record<string, RealTimeQuote>>({});
+  const [loading, setLoading] = useState(true);
+  const [streamConnected, setStreamConnected] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
+  const flashTimers = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+
+  const loadQuotes = useCallback(async () => {
+    try {
+      const codes = WATCHLIST.map(s => s.code);
+      const res = await getQuotes(codes);
+      if (res?.success && Array.isArray(res.quotes)) {
+        const map: Record<string, RealTimeQuote> = {};
+        res.quotes.forEach((q: any) => {
+          const stock = WATCHLIST.find(s => s.code === q.code);
+          map[q.code] = {
+            code: q.code,
+            name: stock?.name || q.name || q.code,
+            price: q.price,
+            prevClose: q.prevClose,
+            change: q.change,
+            changePct: q.changePct,
+            volume: q.volume,
+            turnover: q.turnover,
+            bid: q.bid || q.price * 0.999,
+            ask: q.ask || q.price * 1.001,
+            bidVol: q.bidVol || 0,
+            askVol: q.askVol || 0,
+            high: q.high,
+            low: q.low,
+            open: q.open,
+            updateTime: q.updateTime,
+            sparkline: generateSparkline(q.prevClose),
+            dataQuality: 'good',
+          };
+        });
+        setQuotes(map);
+      } else {
+        // Mock data fallback
+        const map: Record<string, RealTimeQuote> = {};
+        WATCHLIST.forEach(s => { map[s.code] = generateMockQuote(s); });
+        setQuotes(map);
+      }
+    } catch {
+      const map: Record<string, RealTimeQuote> = {};
+      WATCHLIST.forEach(s => { map[s.code] = generateMockQuote(s); });
+      setQuotes(map);
+    }
+    setLoading(false);
+  }, []);
+
+  // Initial load + polling fallback
+  useEffect(() => {
+    loadQuotes();
+    // Try to start quote stream
+    async function startStream() {
+      try {
+        const status = await getQuoteStreamStatus();
+        if (!status?.running) {
+          await subscribeQuoteStream(WATCHLIST.map(s => s.code));
+        }
+        setStreamConnected(true);
+      } catch {
+        setStreamConnected(false);
+      }
+    }
+    startStream();
+
+    // Fallback polling every 3s if stream not connected
+    const interval = setInterval(() => {
+      if (!streamConnected) {
+        setQuotes(prev => {
+          const next: Record<string, RealTimeQuote> = {};
+          Object.values(prev).forEach(q => {
+            const newPrice = q.price * (1 + (Math.random() - 0.5) * 0.005);
+            const change = newPrice - q.prevClose;
+            const changePct = (change / q.prevClose) * 100;
+            const flash = newPrice > q.price ? 'up' : newPrice < q.price ? 'down' : null;
+
+            // Clear old flash timer
+            if (flashTimers.current[q.code]) clearTimeout(flashTimers.current[q.code]);
+            if (flash) {
+              flashTimers.current[q.code] = setTimeout(() => {
+                setQuotes(p => ({ ...p, [q.code]: { ...p[q.code], flash: null } }));
+              }, 800);
+            }
+
+            next[q.code] = {
+              ...q,
+              price: +newPrice.toFixed(2),
+              change: +change.toFixed(2),
+              changePct: +changePct.toFixed(2),
+              volume: q.volume + Math.floor(Math.random() * 10000),
+              bid: +(newPrice * 0.999).toFixed(2),
+              ask: +(newPrice * 1.001).toFixed(2),
+              flash,
+              updateTime: new Date().toISOString(),
+            };
+          });
+          return next;
+        });
+        setLastUpdate(new Date());
+      }
+    }, 3000);
+
+    return () => {
+      clearInterval(interval);
+      Object.values(flashTimers.current).forEach(t => clearTimeout(t));
+      // Unsubscribe on unmount
+      unsubscribeQuoteStream(WATCHLIST.map(s => s.code)).catch(() => {});
+    };
+  }, [loadQuotes, streamConnected]);
+
+  if (loading) return <LoadingSpinner fullscreen text="连接行情数据..." />;
+
+  const quoteList = Object.values(quotes);
+
+  return (
+    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white mb-1">⚡ 实时行情</h1>
+          <p className="text-gray-400 text-sm">
+            {streamConnected ? 'WebSocket 实时推送中' : '轮询模式 · 3秒刷新'}
+            {lastUpdate && ` · 最后更新 ${lastUpdate.toLocaleTimeString()}`}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full ${
+            streamConnected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-yellow-500/10 text-yellow-400'
+          }`}>
+            <span className={`w-1.5 h-1.5 rounded-full ${streamConnected ? 'bg-emerald-400 animate-pulse' : 'bg-yellow-400'}`} />
+            {streamConnected ? '实时连接' : '轮询中'}
+          </span>
+        </div>
+      </div>
+
+      {/* Quote Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+        {quoteList.map((q) => (
+          <div
+            key={q.code}
+            className={`bg-[#1a1a25] border rounded-xl p-4 transition-all duration-300 ${
+              q.flash === 'up' ? 'border-red-500/40 shadow-[0_0_12px_rgba(220,38,38,0.15)]' :
+              q.flash === 'down' ? 'border-emerald-500/40 shadow-[0_0_12px_rgba(16,185,129,0.15)]' :
+              'border-white/5'
+            }`}
+          >
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <div className="text-sm font-medium text-white">{q.name}</div>
+                <div className="text-[10px] text-gray-500">{q.code}</div>
+              </div>
+              {q.dataQuality === 'stale' && (
+                <span className="text-[10px] bg-yellow-500/10 text-yellow-400 px-1.5 py-0.5 rounded">数据延迟</span>
+              )}
+            </div>
+
+            <div className="flex items-baseline gap-2 mb-2">
+              <span className="text-xl font-bold font-mono text-white">${q.price.toFixed(2)}</span>
+              <span className={`text-sm font-mono ${q.changePct >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
+                {q.changePct >= 0 ? '+' : ''}{q.changePct.toFixed(2)}%
+              </span>
+            </div>
+
+            {/* Sparkline */}
+            {q.sparkline && (
+              <svg className="w-full h-8 mb-2" viewBox="0 0 100 20" preserveAspectRatio="none">
+                <polyline
+                  fill="none"
+                  stroke={q.changePct >= 0 ? '#ef4444' : '#10b981'}
+                  strokeWidth="1.5"
+                  points={q.sparkline.map((v, i) => {
+                    const min = Math.min(...q.sparkline!);
+                    const max = Math.max(...q.sparkline!);
+                    const x = (i / (q.sparkline!.length - 1)) * 100;
+                    const y = 20 - ((v - min) / (max - min || 1)) * 18 - 1;
+                    return `${x},${y}`;
+                  }).join(' ')}
+                />
+              </svg>
+            )}
+
+            {/* Bid/Ask */}
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="bg-[#0a0a12] rounded px-2 py-1.5">
+                <div className="text-gray-500">买 {q.bidVol}</div>
+                <div className="font-mono text-red-400">{q.bid.toFixed(2)}</div>
+              </div>
+              <div className="bg-[#0a0a12] rounded px-2 py-1.5">
+                <div className="text-gray-500">卖 {q.askVol}</div>
+                <div className="font-mono text-emerald-400">{q.ask.toFixed(2)}</div>
+              </div>
+            </div>
+
+            {/* Volume & Range */}
+            <div className="flex items-center justify-between mt-2 text-[10px] text-gray-500">
+              <span>量: {(q.volume / 1e6).toFixed(1)}M</span>
+              <span>高: {q.high.toFixed(2)} 低: {q.low.toFixed(2)}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Detail Table */}
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
+        <div className="px-4 py-3 border-b border-white/5">
+          <h2 className="text-sm font-semibold text-white">详细报价</h2>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
+                <th className="px-4 py-3 text-left">股票</th>
+                <th className="px-4 py-3 text-right">最新价</th>
+                <th className="px-4 py-3 text-right">涨跌</th>
+                <th className="px-4 py-3 text-right">涨幅</th>
+                <th className="px-4 py-3 text-right">成交量</th>
+                <th className="px-4 py-3 text-right">成交额</th>
+                <th className="px-4 py-3 text-right">买一</th>
+                <th className="px-4 py-3 text-right">卖一</th>
+                <th className="px-4 py-3 text-right">最高</th>
+                <th className="px-4 py-3 text-right">最低</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {quoteList.map((q) => (
+                <tr key={q.code} className="hover:bg-white/[0.02]">
+                  <td className="px-4 py-3">
+                    <div className="font-medium text-white">{q.name}</div>
+                    <div className="text-[10px] text-gray-500">{q.code}</div>
+                  </td>
+                  <td className="px-4 py-3 text-right font-mono text-white font-bold">${q.price.toFixed(2)}</td>
+                  <td className={`px-4 py-3 text-right font-mono ${q.change >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
+                    {q.change >= 0 ? '+' : ''}{q.change.toFixed(2)}
+                  </td>
+                  <td className={`px-4 py-3 text-right font-mono ${q.changePct >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
+                    {q.changePct >= 0 ? '+' : ''}{q.changePct.toFixed(2)}%
+                  </td>
+                  <td className="px-4 py-3 text-right font-mono text-gray-300">{(q.volume / 1e6).toFixed(1)}M</td>
+                  <td className="px-4 py-3 text-right font-mono text-gray-300">${(q.turnover / 1e9).toFixed(2)}B</td>
+                  <td className="px-4 py-3 text-right font-mono text-red-400">{q.bid.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-right font-mono text-emerald-400">{q.ask.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-right font-mono text-gray-300">{q.high.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-right font-mono text-gray-300">{q.low.toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}

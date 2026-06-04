@@ -6,7 +6,7 @@
 // Performance: GA 100×50 pop < 30s, Bayesian 50 iter < 20s
 
 import log from 'electron-log';
-import { runBacktest } from './backtest-engine';
+import { BacktestEngine } from './backtest-engine';
 
 export interface ParamRange {
   name: string;

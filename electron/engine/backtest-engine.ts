@@ -486,3 +486,9 @@ export class BacktestEngine {
     };
   }
 }
+
+// Convenience wrapper for auto-tuner / external callers
+export async function runBacktest(config: BacktestConfig): Promise<BacktestResult> {
+  const engine = new BacktestEngine(null as any);
+  return engine.run(config);
+}

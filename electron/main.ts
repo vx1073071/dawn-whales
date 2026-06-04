@@ -41,6 +41,7 @@ import { getStockOverview, getMarketOverview, getDailyReport } from './engine/em
 import { getPythonProxy } from './data/python-proxy';
 import { getPush2Proxy } from './data/push2-proxy';
 import { getDataQualityMonitor, registerModule } from './engine/data-quality-monitor';
+import { getDataQualityStream } from './engine/data-quality-stream';
 import { getDragonTigerStream } from './engine/dragon-tiger-stream';
 import { getUnlockCalendar } from './engine/unlock-calendar';
 import { getDividendCalendar } from './engine/dividend-calendar';
@@ -2467,6 +2468,73 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Data Quality Stream Monitor (JVS-31) ─────────────────────────────────
+  ipcMain.handle('data:quality-stream-start', async () => {
+    try {
+      const monitor = getDataQualityStream();
+      monitor.start();
+      
+      // Forward alerts to renderer
+      monitor.on('alert', (alert) => {
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('data:quality-stream-alert', alert);
+        }
+      });
+      
+      // Hook into WebSocket stream
+      const wsStream = getWSDataStream();
+      wsStream.on('tick', (tick) => {
+        monitor.validateTick(tick);
+      });
+      
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:quality-stream-stop', async () => {
+    try {
+      const monitor = getDataQualityStream();
+      monitor.stop();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:quality-stream-status', async () => {
+    try {
+      const monitor = getDataQualityStream();
+      const status = monitor.getStatus();
+      // Convert Map to object for IPC serialization
+      const symbolStats = Object.fromEntries(status.symbolStats);
+      return { success: true, status: { ...status, symbolStats } };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:quality-stream-clear-alerts', async () => {
+    try {
+      const monitor = getDataQualityStream();
+      monitor.clearAlerts();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('data:quality-stream-reset-metrics', async () => {
+    try {
+      const monitor = getDataQualityStream();
+      monitor.resetMetrics();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Dragon Tiger Stream (JVS-22 PM) ─────────────────────────────────────
   ipcMain.handle('em:dragon-tiger-stream-start', async () => {
     try {
@@ -2555,6 +2623,94 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const picker = getSmartPicker();
       const result = await picker.pick(request || {});
       return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── WS Data Stream (JVS-29) ────────────────────────────────────────────
+  ipcMain.handle('ws:start-stream', async (_e, config?: any) => {
+    try {
+      const stream = getWSDataStream();
+      await stream.start();
+      stream.on('tick', (tick) => {
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('ws:tick', tick);
+        }
+      });
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('ws:stop-stream', async () => {
+    try {
+      getWSDataStream().stop();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('ws:subscribe', async (_e, codes: string[]) => {
+    try {
+      getWSDataStream().subscribe(codes || []);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('ws:unsubscribe', async (_e, codes: string[]) => {
+    try {
+      getWSDataStream().unsubscribe(codes || []);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('ws:stream-status', async () => {
+    try {
+      return { success: true, status: getWSDataStream().getStatus() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── History Backfill (JVS-30) ──────────────────────────────────────────
+  ipcMain.handle('em:backfill-start', async (_e, config?: any) => {
+    try {
+      const backfill = getHistoryBackfill();
+      const status = await backfill.start(config);
+      return { success: true, status };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:backfill-status', async () => {
+    try {
+      return { success: true, status: getHistoryBackfill().getStatus() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:backfill-data', async (_e, module: string) => {
+    try {
+      const data = getHistoryBackfill().getBackfillData(module);
+      return { success: true, data };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:backfill-list', async () => {
+    try {
+      const files = getHistoryBackfill().listBackfillFiles();
+      return { success: true, files };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

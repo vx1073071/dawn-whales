@@ -25,9 +25,11 @@ const CapitalFlowPage = lazy(() => import('@/components/market/CapitalFlowPage')
 const FundHoldingsPage = lazy(() => import('@/components/market/FundHoldingsPage'));
 const DailyReportPage = lazy(() => import('@/components/market/DailyReportPage'));
 const StockOverviewPage = lazy(() => import('@/components/market/StockOverviewPage'));
+const RealTimeMarketDashboard = lazy(() => import('@/components/market/RealTimeMarketDashboard'));
 const SmartPickerPage = lazy(() => import('@/components/market/SmartPickerPage'));
 const TradeExecutionPanel = lazy(() => import('@/components/trading/TradeExecutionPanel'));
 const AIAdvisorPage = lazy(() => import('@/components/strategy/AIAdvisorPage'));
+const PerformanceAttributionPage = lazy(() => import('@/components/strategy/PerformanceAttributionPage'));
 const StrategyPage = lazy(() => import('@/components/strategy/StrategyPage'));
 const PortfolioPage = lazy(() => import('@/components/portfolio/PortfolioPage'));
 const OrdersPage = lazy(() => import('@/components/orders/OrdersPage'));
@@ -35,6 +37,7 @@ const SettingsPage = lazy(() => import('@/components/settings/SettingsPage'));
 const MarketplacePage = lazy(() => import('@/components/marketplace/MarketplacePage'));
 const LiveMonitorPage = lazy(() => import('@/components/live/LiveMonitorPage'));
 const BacktestReportPage = lazy(() => import('@/components/backtest/BacktestReportPage'));
+const BacktestComparisonPage = lazy(() => import('@/components/backtest/BacktestComparisonPage'));
 const RiskDashboardPage = lazy(() => import('@/components/risk/RiskDashboardPage'));
 
 const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
@@ -52,9 +55,11 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   fundHoldings: FundHoldingsPage,
   dailyReport: DailyReportPage,
   stockOverview: StockOverviewPage,
+  realTimeMarket: RealTimeMarketDashboard,
   smartPicker: SmartPickerPage,
   tradeExecution: TradeExecutionPanel,
   aiAdvisor: AIAdvisorPage,
+  performanceAttribution: PerformanceAttributionPage,
   strategy: StrategyPage,
   portfolio: PortfolioPage,
   orders: OrdersPage,
@@ -62,6 +67,7 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   marketplace: MarketplacePage,
   live: LiveMonitorPage,
   backtest: BacktestReportPage,
+  backtestComparison: BacktestComparisonPage,
   risk: RiskDashboardPage,
 };
 

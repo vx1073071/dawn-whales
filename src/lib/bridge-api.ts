@@ -1112,6 +1112,38 @@ export async function stopDataQualityPeriodicCheck(): Promise<any> {
   return window.api.dataQuality.stopPeriodic();
 }
 
+// ── Data Quality Stream Monitor (JVS-31) ──────────────────────────────────
+
+export async function startDataQualityStream(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataQualityStream.start();
+}
+
+export async function stopDataQualityStream(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataQualityStream.stop();
+}
+
+export async function getDataQualityStreamStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataQualityStream.status();
+}
+
+export async function clearDataQualityStreamAlerts(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataQualityStream.clearAlerts();
+}
+
+export async function resetDataQualityStreamMetrics(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataQualityStream.resetMetrics();
+}
+
+export function onDataQualityStreamAlert(callback: (alert: any) => void): void {
+  if (!hasIPC()) return;
+  window.api.dataQualityStream.onAlert(callback);
+}
+
 // ── Dragon Tiger Stream (JVS-22 PM) ────────────────────────────────────────
 
 export async function startDragonTigerStream(): Promise<any> {
@@ -1177,6 +1209,60 @@ export async function smartPick(request?: {
 }): Promise<any> {
   if (!hasIPC()) return { success: false, picks: [] };
   return window.api.smartPicker.pick(request);
+}
+
+// ── WS Data Stream (JVS-29) ────────────────────────────────────────────────
+
+export async function wsStartStream(config?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.wsStream.start(config);
+}
+
+export async function wsStopStream(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.wsStream.stop();
+}
+
+export async function wsSubscribe(codes: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.wsStream.subscribe(codes);
+}
+
+export async function wsUnsubscribe(codes: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.wsStream.unsubscribe(codes);
+}
+
+export async function wsStreamStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.wsStream.status();
+}
+
+export function onWSTick(callback: (tick: any) => void): void {
+  if (!hasIPC()) return;
+  window.api.on('ws:tick', callback);
+}
+
+// ── History Backfill (JVS-30) ──────────────────────────────────────────────
+
+export async function startHistoryBackfill(config?: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.historyBackfill.start(config);
+}
+
+export async function getHistoryBackfillStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.historyBackfill.status();
+}
+
+export async function getHistoryBackfillData(module: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.historyBackfill.data(module);
+}
+
+export async function listHistoryBackfillFiles(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.historyBackfill.list();
 }
 
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
