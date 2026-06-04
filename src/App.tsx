@@ -18,6 +18,13 @@ const MacroDashboardPage = lazy(() => import('@/components/market/MacroDashboard
 const StockScreenerPage = lazy(() => import('@/components/market/StockScreenerPage'));
 const NewsDashboardPage = lazy(() => import('@/components/market/NewsDashboardPage'));
 const SectorRotationPage = lazy(() => import('@/components/market/SectorRotationPage'));
+const ConsumerDashboard = lazy(() => import('@/components/market/ConsumerDashboard'));
+const MarginDashboard = lazy(() => import('@/components/market/MarginDashboard'));
+const DragonTigerPage = lazy(() => import('@/components/market/DragonTigerPage'));
+const CapitalFlowPage = lazy(() => import('@/components/market/CapitalFlowPage'));
+const FundHoldingsPage = lazy(() => import('@/components/market/FundHoldingsPage'));
+const DailyReportPage = lazy(() => import('@/components/market/DailyReportPage'));
+const StockOverviewPage = lazy(() => import('@/components/market/StockOverviewPage'));
 const StrategyPage = lazy(() => import('@/components/strategy/StrategyPage'));
 const PortfolioPage = lazy(() => import('@/components/portfolio/PortfolioPage'));
 const OrdersPage = lazy(() => import('@/components/orders/OrdersPage'));
@@ -35,6 +42,13 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   stockScreener: StockScreenerPage,
   newsDashboard: NewsDashboardPage,
   sectorRotation: SectorRotationPage,
+  consumerDashboard: ConsumerDashboard,
+  marginDashboard: MarginDashboard,
+  dragonTiger: DragonTigerPage,
+  capitalFlow: CapitalFlowPage,
+  fundHoldings: FundHoldingsPage,
+  dailyReport: DailyReportPage,
+  stockOverview: StockOverviewPage,
   strategy: StrategyPage,
   portfolio: PortfolioPage,
   orders: OrdersPage,

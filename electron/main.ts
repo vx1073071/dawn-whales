@@ -40,6 +40,11 @@ import { getMarginDataReport, getStockMargin, getMarginBalanceRanking, getShortI
 import { getStockOverview, getMarketOverview, getDailyReport } from './engine/emi-unified';
 import { getPythonProxy } from './data/python-proxy';
 import { getDataQualityMonitor, registerModule } from './engine/data-quality-monitor';
+import { getDragonTigerStream } from './engine/dragon-tiger-stream';
+import { getUnlockCalendar } from './engine/unlock-calendar';
+import { getDividendCalendar } from './engine/dividend-calendar';
+import { getEarningsCalendar } from './engine/earnings-calendar';
+import { exportData } from './engine/data-exporter';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -2393,6 +2398,88 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const monitor = getDataQualityMonitor();
       monitor.stopPeriodicCheck();
       return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Dragon Tiger Stream (JVS-22 PM) ─────────────────────────────────────
+  ipcMain.handle('em:dragon-tiger-stream-start', async () => {
+    try {
+      const stream = getDragonTigerStream();
+      stream.start();
+      stream.on('update', (event) => {
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('dragon-tiger:update', event);
+        }
+      });
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:dragon-tiger-stream-stop', async () => {
+    try {
+      getDragonTigerStream().stop();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:dragon-tiger-stream-fetch', async () => {
+    try {
+      const result = await getDragonTigerStream().fetchNow();
+      return { success: true, data: result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:dragon-tiger-stream-status', async () => {
+    try {
+      return { success: true, status: getDragonTigerStream().getStatus() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Unlock Calendar (JVS-23 PM) ────────────────────────────────────────
+  ipcMain.handle('em:get-unlock-calendar', async (_e, days?: number) => {
+    try {
+      const result = await getUnlockCalendar(days || 30);
+      return result;
+    } catch (err: any) {
+      return { success: false, events: [], total: 0, error: err.message };
+    }
+  });
+
+  // ── Dividend Calendar (JVS-24 PM) ──────────────────────────────────────
+  ipcMain.handle('em:get-dividend-calendar', async (_e, days?: number) => {
+    try {
+      const result = await getDividendCalendar(days || 30);
+      return result;
+    } catch (err: any) {
+      return { success: false, events: [], total: 0, error: err.message };
+    }
+  });
+
+  // ── Earnings Calendar (JVS-25 PM) ──────────────────────────────────────
+  ipcMain.handle('em:get-earnings-calendar', async (_e, days?: number) => {
+    try {
+      const result = await getEarningsCalendar(days || 30);
+      return result;
+    } catch (err: any) {
+      return { success: false, events: [], total: 0, error: err.message };
+    }
+  });
+
+  // ── Data Exporter (JVS-26 PM) ──────────────────────────────────────────
+  ipcMain.handle('em:export-data', async (_e, type: string, format?: string) => {
+    try {
+      const result = await exportData(type as any, (format as any) || 'json');
+      return result;
     } catch (err: any) {
       return { success: false, error: err.message };
     }

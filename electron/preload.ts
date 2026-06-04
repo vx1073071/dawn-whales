@@ -315,6 +315,34 @@ contextBridge.exposeInMainWorld('api', {
     stopPeriodic: () => ipcRenderer.invoke('data:quality-stop-periodic'),
   },
 
+  // ── Dragon Tiger Stream (JVS-22 PM) ───────────────────────────
+  dragonTigerStream: {
+    start: () => ipcRenderer.invoke('em:dragon-tiger-stream-start'),
+    stop: () => ipcRenderer.invoke('em:dragon-tiger-stream-stop'),
+    fetchNow: () => ipcRenderer.invoke('em:dragon-tiger-stream-fetch'),
+    status: () => ipcRenderer.invoke('em:dragon-tiger-stream-status'),
+  },
+
+  // ── Unlock Calendar (JVS-23 PM) ───────────────────────────────
+  unlockCalendar: {
+    get: (days?: number) => ipcRenderer.invoke('em:get-unlock-calendar', days),
+  },
+
+  // ── Dividend Calendar (JVS-24 PM) ─────────────────────────────
+  dividendCalendar: {
+    get: (days?: number) => ipcRenderer.invoke('em:get-dividend-calendar', days),
+  },
+
+  // ── Earnings Calendar (JVS-25 PM) ─────────────────────────────
+  earningsCalendar: {
+    get: (days?: number) => ipcRenderer.invoke('em:get-earnings-calendar', days),
+  },
+
+  // ── Data Exporter (JVS-26 PM) ─────────────────────────────────
+  dataExporter: {
+    export: (type: string, format?: string) => ipcRenderer.invoke('em:export-data', type, format),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),
@@ -344,6 +372,7 @@ contextBridge.exposeInMainWorld('api', {
       'notification',
       'quote:stream-tick',
       'quote:stream-anomaly',
+      'dragon-tiger:update',
     ];
     if (allowed.includes(channel)) {
       ipcRenderer.on(channel, (_event, ...args) => callback(...args));

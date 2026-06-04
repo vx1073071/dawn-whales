@@ -1080,6 +1080,61 @@ export async function stopDataQualityPeriodicCheck(): Promise<any> {
   return window.api.dataQuality.stopPeriodic();
 }
 
+// ── Dragon Tiger Stream (JVS-22 PM) ────────────────────────────────────────
+
+export async function startDragonTigerStream(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dragonTigerStream.start();
+}
+
+export async function stopDragonTigerStream(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dragonTigerStream.stop();
+}
+
+export async function fetchDragonTigerStreamNow(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dragonTigerStream.fetchNow();
+}
+
+export async function getDragonTigerStreamStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dragonTigerStream.status();
+}
+
+export function onDragonTigerUpdate(callback: (event: any) => void): void {
+  if (!hasIPC()) return;
+  window.api.on('dragon-tiger:update', callback);
+}
+
+// ── Unlock Calendar (JVS-23 PM) ────────────────────────────────────────────
+
+export async function getUnlockCalendar(days?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, events: [] };
+  return window.api.unlockCalendar.get(days);
+}
+
+// ── Dividend Calendar (JVS-24 PM) ──────────────────────────────────────────
+
+export async function getDividendCalendar(days?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, events: [] };
+  return window.api.dividendCalendar.get(days);
+}
+
+// ── Earnings Calendar (JVS-25 PM) ──────────────────────────────────────────
+
+export async function getEarningsCalendar(days?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, events: [] };
+  return window.api.earningsCalendar.get(days);
+}
+
+// ── Data Exporter (JVS-26 PM) ──────────────────────────────────────────────
+
+export async function exportJVSData(type: string, format?: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.dataExporter.export(type, format);
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {
