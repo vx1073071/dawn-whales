@@ -385,15 +385,25 @@ function evaluateSignal(config: StrategyConfig, ind: ComputedIndicators, i: numb
 
 export class BacktestEngine {
   private _aborted = false;
+  private _abortHandler: (() => void) | null = null;
+  private _abortSignal: AbortSignal | null = null;
 
   /** Clear internal state and release references */
   clear() {
+    // Remove abort listener to prevent accumulation on reused signals
+    if (this._abortHandler && this._abortSignal) {
+      this._abortSignal.removeEventListener('abort', this._abortHandler);
+    }
+    this._abortHandler = null;
+    this._abortSignal = null;
     this._aborted = false;
   }
 
   async run(config: BacktestConfig): Promise<BacktestResult> {
     const t0 = performance.now();
     this._aborted = false;
+    this._abortHandler = null;
+    this._abortSignal = null;
 
     log.info('[BacktestEngine] Starting:', config.strategy?.type, config.symbol, `${config.klines?.length ?? 0} bars`);
 
@@ -565,17 +575,34 @@ export class BacktestEngine {
     }
     const sharpeRatio = stdReturn > 0 ? (avgReturn * 252 - 0.04) / (stdReturn * Math.sqrt(252)) : 0;
 
-    const winTrades = trades.filter((t) => t.pnl > 0);
-    const lossTrades = trades.filter((t) => t.pnl <= 0);
-    const winRate = trades.length > 0 ? (winTrades.length / trades.length) * 100 : 0;
-    const grossProfit = winTrades.reduce((s, t) => s + t.pnl, 0);
-    const grossLoss = Math.abs(lossTrades.reduce((s, t) => s + t.pnl, 0));
+    // Single-pass metrics: win/loss counts, gross profit/loss, pnl sum, bars sum
+    let winCount = 0;
+    let grossProfit = 0;
+    let grossLoss = 0;
+    let pnlPctSum = 0;
+    let barsSum = 0;
+    for (let t = 0; t < trades.length; t++) {
+      const trade = trades[t];
+      if (trade.pnl > 0) {
+        winCount++;
+        grossProfit += trade.pnl;
+      } else {
+        grossLoss += trade.pnl; // negative
+      }
+      pnlPctSum += trade.pnlPct;
+      barsSum += trade.bars;
+    }
+    grossLoss = Math.abs(grossLoss);
+    const numTrades = trades.length;
+    const winRate = numTrades > 0 ? (winCount / numTrades) * 100 : 0;
     const profitFactor = grossLoss > 0 ? grossProfit / grossLoss : grossProfit > 0 ? Infinity : 0;
-
-    const avgTradePnl = trades.length > 0 ? trades.reduce((s, t) => s + t.pnlPct, 0) / trades.length : 0;
-    const avgHoldingBars = trades.length > 0 ? trades.reduce((s, t) => s + t.bars, 0) / trades.length : 0;
+    const avgTradePnl = numTrades > 0 ? pnlPctSum / numTrades : 0;
+    const avgHoldingBars = numTrades > 0 ? barsSum / numTrades : 0;
 
     const perfMs = Math.round((performance.now() - t0) * 10) / 10;
+
+    // Strip klines from config to prevent circular reference (config.klines → engine → result)
+    const { klines: _stripped, ...configRef } = config;
 
     const result = {
       totalReturn: Math.round(totalReturn * 100) / 100,
@@ -589,7 +616,7 @@ export class BacktestEngine {
       avgHoldingBars: Math.round(avgHoldingBars),
       equityCurve,
       trades,
-      config,
+      config: configRef as BacktestConfig,
       perfMs,
     };
 
@@ -602,10 +629,11 @@ export class BacktestEngine {
   }
 
   private emptyResult(config: BacktestConfig, reason: string) {
+    const { klines: _stripped, ...configRef } = config;
     return {
       totalReturn: 0, annualReturn: 0, sharpeRatio: 0, maxDrawdown: 0,
       winRate: 0, profitFactor: 0, totalTrades: 0, avgTradePnl: 0, avgHoldingBars: 0,
-      equityCurve: [], trades: [], config, reason,
+      equityCurve: [], trades: [], config: configRef as BacktestConfig, reason,
     };
   }
 }

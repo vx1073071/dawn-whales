@@ -586,6 +586,31 @@ export class RiskEngine {
     return { winRate, avgWin, avgLoss, profitFactor, kellyFraction, sampleSize: history.length };
   }
 
+  // ── Clear / Reset ──────────────────────────────────────────────
+
+  /**
+   * Release all internal state and accumulated data.
+   * Call between backtest runs or when the engine is no longer needed
+   * to prevent memory leaks from accumulated arrays.
+   */
+  clear(): void {
+    this.orderTimestamps = [];
+    this.tradeHistory = [];
+    this.alerts = [];
+    this.dailyPnl = 0;
+    this.dailyPnlDate = '';
+    this.totalAssets = 0;
+    this.currentVix = null;
+    this.drawdownState = {
+      peakEquity: 0,
+      currentDrawdownPct: 0,
+      maxDrawdownPct: 0,
+      drawdownStart: undefined,
+      isReduced: false,
+      reductionFactor: 1.0,
+    };
+  }
+
   // ── State Updates (v1 保留) ──────────────────────────────────
 
   updateTotalAssets(value: number) {
