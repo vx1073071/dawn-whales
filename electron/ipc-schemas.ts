@@ -371,3 +371,15 @@ export function validate<T extends z.ZodTypeAny>(
   }
   return null;
 }
+
+// ── Strategy Correlation Matrix ─────────────────────────────────────────────
+
+export const StrategyCorrelationSchema = z.object({
+  strategies: z.array(z.object({
+    id: z.string(),
+    equityCurve: z.array(z.object({
+      time: z.number(),
+      value: z.number(),
+    })),
+  })),
+});

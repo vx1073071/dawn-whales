@@ -37,6 +37,7 @@ contextBridge.exposeInMainWorld('api', {
     explain: (strategy: any) => ipcRenderer.invoke('strategy:explain', strategy),
     compare: (s1: any, s2: any) => ipcRenderer.invoke('strategy:compare', s1, s2),
     optimize: (strategyDSL: any, backtestResult: any) => ipcRenderer.invoke('strategy:optimize', { strategyDSL, backtestResult }),
+    correlation: (strategies: any) => ipcRenderer.invoke('strategy:correlation', { strategies }),
   },
 
   // ── NL Parser ─────────────────────────────────────────────────────

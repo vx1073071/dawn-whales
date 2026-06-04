@@ -79,6 +79,7 @@ declare global {
         explain: (strategy: any) => Promise<any>;
         compare: (s1: any, s2: any) => Promise<any>;
         optimize: (strategyDSL: any, backtestResult: any) => Promise<any>;
+        correlation: (strategies: any) => Promise<any>;
       };
       nl: {
         parse: (text: string) => Promise<any>;

@@ -20,6 +20,7 @@ import { DataProviderService } from './data/data-provider';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner';
+import { computeCorrelationMatrix } from './engine/correlation-matrix';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -70,6 +71,7 @@ import { validate,
   StrategyExplainSchema,
   StrategyCompareSchema,
   StrategyOptimizeSchema,
+  StrategyCorrelationSchema,
 } from './ipc-schemas';
 import { storeKey, getKey, getDeepSeekKey, storeDeepSeekKey } from './utils/secure-key';
 import log from 'electron-log';
@@ -688,6 +690,20 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     } catch (err: any) {
       return { success: false, error: err.message };
     }
+  });
+
+  // ── Strategy Correlation Matrix ───────────────────────────────────────
+  ipcMain.handle('strategy:correlation', async (_e, raw: unknown) => {
+    const vErr = validate(StrategyCorrelationSchema, raw);
+    if (vErr) return vErr;
+    const { strategies } = raw as {
+      strategies: { id: string; equityCurve: { time: number; value: number }[] }[];
+    };
+    if (strategies.length < 1) {
+      return { success: false, error: 'At least 1 strategy required' };
+    }
+    const result = computeCorrelationMatrix(strategies);
+    return { success: true, ...result };
   });
 
   // ── NL Parser ───────────────────────────────────────────────────────
