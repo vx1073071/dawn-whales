@@ -922,6 +922,26 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Q15: Multi-Factor Model ─────────────────────────────────────
+  ipcMain.handle('strategy:multi-factor', async (_e, raw: unknown) => {
+    try {
+      const { scoreStocks, scoreTopAStocks } = require('./engine/multi-factor');
+      const req = raw as { stocks?: Array<{ code: string; name: string }>; preset?: string; limit?: number };
+      if (req.limit != null) {
+        // Top-A mode
+        const result = await scoreTopAStocks(req.limit, req.preset as any);
+        return { success: true, ...result };
+      }
+      if (!req.stocks || req.stocks.length === 0) {
+        return { success: false, error: 'stocks array is required' };
+      }
+      const result = await scoreStocks(req as any);
+      return { success: true, ...result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Q12: Stress Tester ────────────────────────────────────────────
   ipcMain.handle('risk:stress-test', async (_e, raw: unknown) => {
     try {

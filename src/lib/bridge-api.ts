@@ -115,6 +115,7 @@ declare global {
         compare: (s1: any, s2: any) => Promise<any>;
         optimize: (strategyDSL: any, backtestResult: any) => Promise<any>;
         correlation: (strategies: any) => Promise<any>;
+        multiFactor: (request: { stocks: Array<{ code: string; name: string }>; preset?: string; limit?: number }) => Promise<any>;
       };
       notification: {
         generate: (ctx: any) => Promise<any>;
@@ -142,6 +143,10 @@ declare global {
       };
       autoTune: {
         tune: (ctx: { strategyType: string; ranges: any[]; klines: any[]; method?: 'ga' | 'bayesian' | 'both'; populationSize?: number; generations?: number; iterations?: number }) => Promise<any>;
+      };
+      // Q15: Multi-Factor Model
+      multiFactor: {
+        score: (req: { stocks?: Array<{ code: string; name: string }>; preset?: string; limit?: number }) => Promise<any>;
       };
       nl: {
         parse: (text: string) => Promise<any>;
@@ -419,6 +424,16 @@ export async function liveGetPositions(): Promise<{ success: boolean; positions:
 export async function liveGetOrders(): Promise<{ success: boolean; orders: LiveOrder[] }> {
   if (!hasIPC()) return { success: true, orders: [] };
   return window.api.strategy.liveGetOrders();
+}
+
+// ── Q15: Multi-Factor Model ──────────────────────────────────
+export async function multiFactorScore(request: {
+  stocks: Array<{ code: string; name: string }>;
+  preset?: string;
+  limit?: number;
+}): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.strategy.multiFactor(request);
 }
 
 // ── NL Parser ──────────────────────────────────────────────────────────────

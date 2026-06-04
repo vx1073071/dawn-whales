@@ -66,6 +66,10 @@ contextBridge.exposeInMainWorld('api', {
     detectAnomalies: (values: number[], method?: string, window?: number, threshold?: number) =>
       ipcRenderer.invoke('anomaly:detect', { values, method, window, threshold }),
     autoTune: (ctx: any) => ipcRenderer.invoke('strategy:auto-tune', ctx),
+
+    // Q15: Multi-Factor Model
+    multiFactor: (req: { stocks?: Array<{ code: string; name: string }>; preset?: string; limit?: number }) =>
+      ipcRenderer.invoke('strategy:multi-factor', req),
   },
 
   // ── NL Parser ─────────────────────────────────────────────────────
