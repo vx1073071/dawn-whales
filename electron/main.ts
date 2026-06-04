@@ -6,6 +6,8 @@ import { app, BrowserWindow, ipcMain, shell, Tray, Menu, nativeImage } from 'ele
 import path from 'path';
 import { autoUpdater } from 'electron-updater';
 import { FutuOpenDClient } from './broker/futu-opend';
+import { BrokerManager } from './broker/BrokerManager';
+import type { BrokerConfig } from './broker/IBrokerAdapter';
 import { StrategyEngine } from './engine/strategy-engine';
 import { BacktestEngine } from './engine/backtest-engine';
 import { DatabaseManager } from './data/database';
@@ -25,6 +27,7 @@ const RESOURCES_PATH = isDev ? path.join(__dirname, '..') : path.join(process.re
 let mainWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
 let opendClient: FutuOpenDClient | null = null;
+let brokerManager: BrokerManager | null = null;
 let strategyEngine: StrategyEngine | null = null;
 let backtestEngine: BacktestEngine | null = null;
 let riskEngine: RiskEngine | null = null;
@@ -80,9 +83,37 @@ function createWindow() {
 // ── IPC Handlers ───────────────────────────────────────────────────────────
 
 function setupIPC() {
-  // ── Broker: Futu OpenD ──────────────────────────────────────────────
-  ipcMain.handle('broker:connect', async (_e, config: { host: string; port: number }) => {
+  // ── Broker: Multi-broker support (WP1 + Sprint1) ────────────────────
+  ipcMain.handle('broker:connect', async (_e, config: { host: string; port: number; brokerId?: string }) => {
     try {
+      // Use BrokerManager if available, fallback to legacy opendClient
+      if (brokerManager) {
+        const brokerCfg: BrokerConfig = {
+          id: config.brokerId || 'futu-default',
+          name: config.brokerId || 'Futu OpenD',
+          type: 'futu',
+          host: config.host || '127.0.0.1',
+          port: config.port || 11111,
+          enabled: true,
+        };
+        brokerManager.loadConfigs([brokerCfg]);
+        await brokerManager.connect(brokerCfg.id);
+        const adapter = brokerManager.getActiveBroker();
+        adapter?.onQuotePush((quotes) => {
+          mainWindow?.webContents.send('quotes:push', quotes);
+          strategyEngine?.onQuoteUpdate(quotes);
+        });
+        // Load watchlist
+        const savedWatchlist = db?.getWatchlist();
+        if (savedWatchlist && savedWatchlist.length > 0) {
+          WATCHLIST = savedWatchlist;
+        }
+        await brokerManager.subscribeAndPush(brokerCfg.id, WATCHLIST);
+        log.info('[Broker] Multi-broker connected:', brokerCfg.id);
+        return { success: true, brokerId: brokerCfg.id, host: config.host, port: config.port };
+      }
+
+      // Legacy single-broker path
       opendClient = new FutuOpenDClient(config.host || '127.0.0.1', config.port || 11111);
       await opendClient.connect();
       log.info('[Broker] OpenD connected');
@@ -91,7 +122,6 @@ function setupIPC() {
         mainWindow?.webContents.send('quotes:push', quotes);
         strategyEngine?.onQuoteUpdate(quotes);
       });
-      // WP1: Load watchlist from DB, fallback to default
       const savedWatchlist = db?.getWatchlist();
       if (savedWatchlist && savedWatchlist.length > 0) {
         WATCHLIST = savedWatchlist;
@@ -215,6 +245,38 @@ function setupIPC() {
     try {
       return { success: true, orders: await opendClient.getOrders(accountId) };
     } catch (err: any) { return { success: false, error: err.message }; }
+  });
+
+  // ── Broker Manager (Sprint1: multi-broker) ──────────────────────────
+  ipcMain.handle('broker:list', async () => {
+    return { success: true, brokers: brokerManager?.getConfigs() || [] };
+  });
+
+  ipcMain.handle('broker:add', async (_e, cfg: BrokerConfig) => {
+    try {
+      brokerManager?.addConfig(cfg);
+      db?.saveBrokerConfig(cfg);
+      return { success: true };
+    } catch (err: any) { return { success: false, error: err.message }; }
+  });
+
+  ipcMain.handle('broker:remove', async (_e, id: string) => {
+    try {
+      brokerManager?.removeConfig(id);
+      db?.deleteBrokerConfig(id);
+      return { success: true };
+    } catch (err: any) { return { success: false, error: err.message }; }
+  });
+
+  ipcMain.handle('broker:setActive', async (_e, id: string) => {
+    try {
+      brokerManager?.setActiveBroker(id);
+      return { success: true, activeBroker: id };
+    } catch (err: any) { return { success: false, error: err.message }; }
+  });
+
+  ipcMain.handle('broker:getStatus', async () => {
+    return { success: true, status: brokerManager?.getStatus() || [] };
   });
 
   // ── Strategy Engine ─────────────────────────────────────────────────
@@ -645,6 +707,7 @@ app.whenReady().then(async () => {
       strategyEngine.setRiskEngine(riskEngine);
       log.info('[App] StrategyEngine ↔ RiskEngine connected');
     }
+    brokerManager = new BrokerManager();
   } catch (err: any) {
     log.error('[App] Engine init failed:', err.message);
   }
@@ -661,19 +724,46 @@ app.whenReady().then(async () => {
   setupIPC();
   createWindow();
 
-  // Auto-connect to OpenD (with auto-reconnect)
+  // Auto-connect to OpenD (with auto-reconnect) — via BrokerManager
   try {
-    opendClient = new FutuOpenDClient('127.0.0.1', 11111);
-    opendClient.onDisconnect(() => {
-      mainWindow?.webContents.send('notification', { type: 'warning', message: 'OpenD 连接断开，正在重连...' });
-    });
-    await opendClient.connect();
-    opendClient.onQuotePush((quotes) => {
-      mainWindow?.webContents.send('quotes:push', quotes);
-      strategyEngine?.onQuoteUpdate(quotes);
-    });
-    await opendClient.subscribeAndPush(WATCHLIST);
-    log.info('[App] OpenD auto-connected ✓ Push mode active');
+    const defaultBroker: BrokerConfig = {
+      id: 'futu-default',
+      name: 'Futu OpenD',
+      type: 'futu',
+      host: '127.0.0.1',
+      port: 11111,
+      enabled: true,
+    };
+
+    // Load saved broker configs from DB
+    const savedConfigs = db?.getBrokerConfigs?.() || [defaultBroker];
+    if (brokerManager) {
+      brokerManager.loadConfigs(savedConfigs);
+      await brokerManager.connect('futu-default');
+      const adapter = brokerManager.getActiveBroker();
+      adapter?.onQuotePush((quotes) => {
+        mainWindow?.webContents.send('quotes:push', quotes);
+        strategyEngine?.onQuoteUpdate(quotes);
+      });
+      adapter?.onDisconnect(() => {
+        mainWindow?.webContents.send('notification', { type: 'warning', message: 'OpenD 连接断开，正在重连...' });
+      });
+      await brokerManager.subscribeAndPush('futu-default', WATCHLIST);
+      log.info('[App] BrokerManager auto-connected ✓ Push mode active');
+    } else {
+      // Legacy fallback
+      opendClient = new FutuOpenDClient('127.0.0.1', 11111);
+      opendClient.onDisconnect(() => {
+        mainWindow?.webContents.send('notification', { type: 'warning', message: 'OpenD 连接断开，正在重连...' });
+      });
+      await opendClient.connect();
+      opendClient.onQuotePush((quotes) => {
+        mainWindow?.webContents.send('quotes:push', quotes);
+        strategyEngine?.onQuoteUpdate(quotes);
+      });
+      await opendClient.subscribeAndPush(WATCHLIST);
+      log.info('[App] OpenD auto-connected ✓ Push mode active');
+    }
   } catch (err: any) {
     log.warn('[App] OpenD auto-connect failed:', err.message);
     opendClient = null;
