@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates, deleteStrategy } from '../../lib/bridge-api';
+import StrategyExplainCard from './StrategyExplainCard';
+import StrategyCompareModal from './StrategyCompareModal';
 
 type CreateMode = null | 'ai' | 'template' | 'form';
 
@@ -36,6 +38,8 @@ export default function StrategyPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [nlPrefill, setNlPrefill] = useState<ParsedStrategy | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [compareOpen, setCompareOpen] = useState(false);
+  const [compareDefaultA, setCompareDefaultA] = useState<any>(null);
 
   useEffect(() => {
     loadStrategies();
@@ -78,6 +82,10 @@ export default function StrategyPage() {
             await deleteStrategy(id);
             refresh();
           }}
+          onCompare={(strategy) => {
+            setCompareDefaultA(strategy);
+            setCompareOpen(true);
+          }}
         />
       )}
 
@@ -96,6 +104,14 @@ export default function StrategyPage() {
           strategyId={selectedId}
           onBack={() => setSelectedId(null)}
           onRefresh={refresh}
+        />
+      )}
+
+      {compareOpen && (
+        <StrategyCompareModal
+          strategies={strategies}
+          defaultStrategyA={compareDefaultA}
+          onClose={() => setCompareOpen(false)}
         />
       )}
     </div>
@@ -644,7 +660,7 @@ function SliderInput({ label, value, min, max, onChange, unit = '' }: { label: s
 
 // ── My Strategies ──────────────────────────────────────────────────────────
 
-function MyStrategies({ strategies, onSelect, onEdit, onDelete }: { strategies: any[]; onSelect: (id: string) => void; onEdit: (id: string) => void; onDelete: (id: string) => void }) {
+function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { strategies: any[]; onSelect: (id: string) => void; onEdit: (id: string) => void; onDelete: (id: string) => void; onCompare: (strategy: any) => void }) {
   const statusColors: Record<string, string> = {
     draft: 'text-gray-400 bg-gray-500/20',
     backtested: 'text-blue-400 bg-blue-500/20',
@@ -691,6 +707,11 @@ function MyStrategies({ strategies, onSelect, onEdit, onDelete }: { strategies: 
                 {statusLabels[s.status] || s.status}
               </span>
               <span className="text-gray-600 text-xs">{s.createdAt ? new Date(s.createdAt).toLocaleDateString() : ''}</span>
+              <button
+                onClick={(e) => { e.stopPropagation(); onCompare(s); }}
+                className="text-xs px-2 py-1 rounded bg-[#C9A046]/10 text-[#D4A853] hover:bg-[#C9A046]/20"
+                title="AI 对比策略"
+              >⚖️</button>
               <button
                 onClick={(e) => { e.stopPropagation(); onEdit(s.id); }}
                 className="text-xs px-2 py-1 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
@@ -837,6 +858,8 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       </div>
 
       {backtestResult && <BacktestPanel result={backtestResult} />}
+
+      <StrategyExplainCard strategy={strategy} />
     </div>
   );
 }
