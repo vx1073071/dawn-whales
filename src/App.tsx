@@ -28,6 +28,7 @@ const StockOverviewPage = lazy(() => import('@/components/market/StockOverviewPa
 const RealTimeMarketDashboard = lazy(() => import('@/components/market/RealTimeMarketDashboard'));
 const SmartPickerPage = lazy(() => import('@/components/market/SmartPickerPage'));
 const TradeExecutionPanel = lazy(() => import('@/components/trading/TradeExecutionPanel'));
+const TradeHistoryPage = lazy(() => import('@/components/trading/TradeHistoryPage'));
 const AIAdvisorPage = lazy(() => import('@/components/strategy/AIAdvisorPage'));
 const PerformanceAttributionPage = lazy(() => import('@/components/strategy/PerformanceAttributionPage'));
 const StrategyPage = lazy(() => import('@/components/strategy/StrategyPage'));
@@ -58,6 +59,7 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   realTimeMarket: RealTimeMarketDashboard,
   smartPicker: SmartPickerPage,
   tradeExecution: TradeExecutionPanel,
+  tradeHistory: TradeHistoryPage,
   aiAdvisor: AIAdvisorPage,
   performanceAttribution: PerformanceAttributionPage,
   strategy: StrategyPage,

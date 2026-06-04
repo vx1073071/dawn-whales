@@ -42,6 +42,7 @@ import { getPythonProxy } from './data/python-proxy';
 import { getPush2Proxy } from './data/push2-proxy';
 import { getDataQualityMonitor, registerModule } from './engine/data-quality-monitor';
 import { getDataQualityStream } from './engine/data-quality-stream';
+import { getSmartCacheManager } from './engine/smart-cache';
 import { getDragonTigerStream } from './engine/dragon-tiger-stream';
 import { getUnlockCalendar } from './engine/unlock-calendar';
 import { getDividendCalendar } from './engine/dividend-calendar';
@@ -119,7 +120,8 @@ import { validate,
   ReportQuickSchema,
   StrategyAutoTuneSchema,
 } from './ipc-schemas';
-import { storeKey, getKey, getDeepSeekKey, storeDeepSeekKey } from './utils/secure-key';
+const _secureKey = require('./utils/secure-key');
+const getDeepSeekKey_ = (app: any) => _secureKey.getDeepSeekKey_(app);
 import log from 'electron-log';
 
 // 默认监控列表，连接时从 DB 读取用户配置
@@ -635,7 +637,7 @@ function setupIPC() {
 
   // ── Strategy AI — LLM-powered (Sprint 2 P1) ─────────────────────
   ipcMain.handle('strategy:explain', async (_e, strategy: any) => {
-    const apiKey = getDeepSeekKey(app);
+    const apiKey = getDeepSeekKey_(app);
     if (!apiKey) {
       return { success: false, error: 'DeepSeek API key not configured. Use Settings to set your key.' };
     }
@@ -675,7 +677,7 @@ Keep it under 200 words. Use bullet points.`;
   });
 
   ipcMain.handle('strategy:compare', async (_e, s1: any, s2: any) => {
-    const apiKey = getDeepSeekKey(app);
+    const apiKey = getDeepSeekKey_(app);
     if (!apiKey) {
       return { success: false, error: 'DeepSeek API key not configured. Use Settings to set your key.' };
     }
@@ -719,7 +721,7 @@ Keep it under 250 words. Be objective, not promotional.`;
       strategyDSL: { name: string; symbol?: string; type: string; params: Record<string, unknown>; stopLoss?: number; takeProfit?: number };
       backtestResult: { totalReturn: number; sharpeRatio: number; maxDrawdown: number; winRate: number; tradeCount?: number; equityCurve?: number[] };
     };
-    const apiKey = getDeepSeekKey(app);
+    const apiKey = getDeepSeekKey_(app);
     if (!apiKey) return { success: false, error: 'DeepSeek API key not configured. Use Settings to set your key.' };
 
 
@@ -2530,6 +2532,102 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const monitor = getDataQualityStream();
       monitor.resetMetrics();
       return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Smart Cache Manager (JVS-32) ──────────────────────────────────────
+  ipcMain.handle('cache:get', async (_e, namespace: string, key: string) => {
+    try {
+      const manager = getSmartCacheManager();
+      const cache = manager.getCache(namespace);
+      const value = cache.get(key);
+      return { success: true, value, hit: value !== undefined };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('cache:set', async (_e, namespace: string, key: string, value: any, ttl?: number) => {
+    try {
+      const manager = getSmartCacheManager();
+      const cache = manager.getCache(namespace);
+      cache.set(key, value, ttl);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('cache:has', async (_e, namespace: string, key: string) => {
+    try {
+      const manager = getSmartCacheManager();
+      const cache = manager.getCache(namespace);
+      return { success: true, exists: cache.has(key) };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('cache:delete', async (_e, namespace: string, key: string) => {
+    try {
+      const manager = getSmartCacheManager();
+      const cache = manager.getCache(namespace);
+      return { success: true, deleted: cache.delete(key) };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('cache:clear', async (_e, namespace?: string) => {
+    try {
+      const manager = getSmartCacheManager();
+      if (namespace) {
+        manager.clearNamespace(namespace);
+      } else {
+        manager.clearAll();
+      }
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('cache:stats', async (_e, namespace?: string) => {
+    try {
+      const manager = getSmartCacheManager();
+      if (namespace) {
+        const cache = manager.getCache(namespace);
+        return { success: true, stats: cache.getStats() };
+      } else {
+        return { success: true, stats: manager.getAllStats() };
+      }
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('cache:reset-stats', async (_e, namespace?: string) => {
+    try {
+      const manager = getSmartCacheManager();
+      if (namespace) {
+        const cache = manager.getCache(namespace);
+        cache.resetStats();
+      } else {
+        manager.resetAllStats();
+      }
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('cache:keys', async (_e, namespace: string) => {
+    try {
+      const manager = getSmartCacheManager();
+      const cache = manager.getCache(namespace);
+      return { success: true, keys: cache.keys() };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

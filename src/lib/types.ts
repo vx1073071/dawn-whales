@@ -283,7 +283,7 @@ export interface AppSettings {
   };
 }
 
-export type SidebarView = 'dashboard' | 'market' | 'sectorHeatmap' | 'macroDashboard' | 'stockScreener' | 'newsDashboard' | 'sectorRotation' | 'consumerDashboard' | 'marginDashboard' | 'dragonTiger' | 'capitalFlow' | 'fundHoldings' | 'dailyReport' | 'stockOverview' | 'realTimeMarket' | 'smartPicker' | 'tradeExecution' | 'aiAdvisor' | 'performanceAttribution' | 'strategy' | 'marketplace' | 'backtest' | 'backtestComparison' | 'live' | 'portfolio' | 'orders' | 'risk' | 'settings';
+export type SidebarView = 'dashboard' | 'market' | 'sectorHeatmap' | 'macroDashboard' | 'stockScreener' | 'newsDashboard' | 'sectorRotation' | 'consumerDashboard' | 'marginDashboard' | 'dragonTiger' | 'capitalFlow' | 'fundHoldings' | 'dailyReport' | 'stockOverview' | 'realTimeMarket' | 'smartPicker' | 'tradeExecution' | 'tradeHistory' | 'aiAdvisor' | 'performanceAttribution' | 'strategy' | 'marketplace' | 'backtest' | 'backtestComparison' | 'live' | 'portfolio' | 'orders' | 'risk' | 'settings';
 
 export interface AppState {
   sidebarView: SidebarView;

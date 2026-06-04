@@ -337,6 +337,18 @@ contextBridge.exposeInMainWorld('api', {
     },
   },
 
+  // ── Smart Cache Manager (JVS-32) ───────────────────────────────
+  smartCache: {
+    get: (namespace: string, key: string) => ipcRenderer.invoke('cache:get', namespace, key),
+    set: (namespace: string, key: string, value: any, ttl?: number) => ipcRenderer.invoke('cache:set', namespace, key, value, ttl),
+    has: (namespace: string, key: string) => ipcRenderer.invoke('cache:has', namespace, key),
+    delete: (namespace: string, key: string) => ipcRenderer.invoke('cache:delete', namespace, key),
+    clear: (namespace?: string) => ipcRenderer.invoke('cache:clear', namespace),
+    stats: (namespace?: string) => ipcRenderer.invoke('cache:stats', namespace),
+    resetStats: (namespace?: string) => ipcRenderer.invoke('cache:reset-stats', namespace),
+    keys: (namespace: string) => ipcRenderer.invoke('cache:keys', namespace),
+  },
+
   // ── Dragon Tiger Stream (JVS-22 PM) ───────────────────────────
   dragonTigerStream: {
     start: () => ipcRenderer.invoke('em:dragon-tiger-stream-start'),

@@ -1144,6 +1144,48 @@ export function onDataQualityStreamAlert(callback: (alert: any) => void): void {
   window.api.dataQualityStream.onAlert(callback);
 }
 
+// ── Smart Cache Manager (JVS-32) ──────────────────────────────────────────
+
+export async function cacheGet(namespace: string, key: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.smartCache.get(namespace, key);
+}
+
+export async function cacheSet(namespace: string, key: string, value: any, ttl?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.smartCache.set(namespace, key, value, ttl);
+}
+
+export async function cacheHas(namespace: string, key: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.smartCache.has(namespace, key);
+}
+
+export async function cacheDelete(namespace: string, key: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.smartCache.delete(namespace, key);
+}
+
+export async function cacheClear(namespace?: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.smartCache.clear(namespace);
+}
+
+export async function cacheStats(namespace?: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.smartCache.stats(namespace);
+}
+
+export async function cacheResetStats(namespace?: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.smartCache.resetStats(namespace);
+}
+
+export async function cacheKeys(namespace: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.smartCache.keys(namespace);
+}
+
 // ── Dragon Tiger Stream (JVS-22 PM) ────────────────────────────────────────
 
 export async function startDragonTigerStream(): Promise<any> {

@@ -28,6 +28,7 @@ const navItems: NavItem[] = [
   { id: 'realTimeMarket', icon: '⚡', label: '实时行情' },
   { id: 'smartPicker', icon: '🎯', label: '智能选股' },
   { id: 'tradeExecution', icon: '🚀', label: '交易执行' },
+  { id: 'tradeHistory', icon: '📜', label: '交易历史' },
   { id: 'aiAdvisor', icon: '🤖', label: 'AI 投顾' },
   { id: 'performanceAttribution', icon: '📊', label: '绩效归因' },
   { id: 'strategy', icon: '🧠', label: '策略工坊' },
