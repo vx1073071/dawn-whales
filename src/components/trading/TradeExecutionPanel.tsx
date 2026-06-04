@@ -168,19 +168,19 @@ export default function TradeExecutionPanel() {
       {/* Account & Funds */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">账户</div>
+          <div className="text-xs text-gray-500 mb-1">{t('portfolio.account')}</div>
           <select
             value={selectedAccount}
             onChange={(e) => setSelectedAccount(e.target.value)}
             className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
           >
             {accounts.map((a) => (
-              <option key={a.accId} value={a.accId}>{a.accId} ({a.trdEnv === 'REAL' ? '实盘' : '模拟'})</option>
+              <option key={a.accId} value={a.accId}>{a.accId} ({a.trdEnv === 'REAL' ? t('settings.realTrading') : t('settings.simulateTrading')})</option>
             ))}
           </select>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">可用资金</div>
+          <div className="text-xs text-gray-500 mb-1">{t('portfolio.availableCash')}</div>
           <div className="text-xl font-bold font-mono text-white">${funds?.cash.toLocaleString('en-US', { minimumFractionDigits: 2 }) ?? '--'}</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
