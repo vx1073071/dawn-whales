@@ -38,6 +38,7 @@ import { getMarketBreadth } from './engine/market-breadth';
 import { getConsumerDataReport } from './engine/consumer-data';
 import { getMarginDataReport, getStockMargin, getMarginBalanceRanking, getShortInterestRanking } from './engine/margin-data';
 import { getStockOverview, getMarketOverview, getDailyReport } from './engine/emi-unified';
+import { getPythonProxy } from './data/python-proxy';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1914,6 +1915,35 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const result = await getDailyReport();
       return { success: true, data: result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Python Script Proxy Layer (JVS-20) ──────────────────────────────────
+  ipcMain.handle('py:call-skill', async (_e, skillName: string, query: string, options?: any) => {
+    try {
+      const proxy = getPythonProxy();
+      const result = await proxy.callSkill(skillName, query, options);
+      return result;
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('py:list-skills', async () => {
+    try {
+      const proxy = getPythonProxy();
+      return { success: true, skills: proxy.listAvailableSkills() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('py:proxy-status', async () => {
+    try {
+      const proxy = getPythonProxy();
+      return { success: true, status: proxy.getStatus() };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

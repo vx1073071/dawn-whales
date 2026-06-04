@@ -273,6 +273,13 @@ contextBridge.exposeInMainWorld('api', {
     getDailyReport: () => ipcRenderer.invoke('em:get-daily-report'),
   },
 
+  // ── Python Script Proxy Layer (JVS-20) ─────────────────────────
+  pythonProxy: {
+    callSkill: (skillName: string, query: string, options?: any) => ipcRenderer.invoke('py:call-skill', skillName, query, options),
+    listSkills: () => ipcRenderer.invoke('py:list-skills'),
+    getStatus: () => ipcRenderer.invoke('py:proxy-status'),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),

@@ -964,6 +964,23 @@ export async function getDailyReport(): Promise<any> {
   return window.api.emiUnified.getDailyReport();
 }
 
+// ── Python Script Proxy Layer (JVS-20) ─────────────────────────────────────
+
+export async function callPythonSkill(skillName: string, query: string, options?: { selectType?: string; noSave?: boolean }): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.pythonProxy.callSkill(skillName, query, options);
+}
+
+export async function listPythonSkills(): Promise<any> {
+  if (!hasIPC()) return { success: false, skills: [] };
+  return window.api.pythonProxy.listSkills();
+}
+
+export async function getPythonProxyStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.pythonProxy.getStatus();
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {
