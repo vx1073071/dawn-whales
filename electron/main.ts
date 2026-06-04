@@ -26,6 +26,7 @@ import { SectorRotationMonitor } from './engine/sector-rotation';
 import { StockAnomalyDetector } from './engine/stock-anomaly-detector';
 import { MarketHotspotService } from './engine/market-hotspot';
 import { DataSchedulerService } from './engine/data-scheduler';
+import { initQuoteStream, getQuoteStream } from './engine/quote-stream';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -1628,6 +1629,60 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Quote Stream — Real-time Market Data (JVS-9) ─────────────────────
+  ipcMain.handle('quote:stream-start', async (_e, symbols?: string[]) => {
+    const stream = getQuoteStream();
+    if (!stream) return { success: false, error: 'QuoteStream not initialized' };
+    try {
+      if (symbols && symbols.length > 0) stream.subscribe(symbols);
+      stream.start();
+      return { success: true, status: stream.getStatus() };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('quote:stream-stop', async () => {
+    const stream = getQuoteStream();
+    if (!stream) return { success: false, error: 'QuoteStream not initialized' };
+    stream.stop();
+    return { success: true };
+  });
+
+  ipcMain.handle('quote:stream-status', async () => {
+    const stream = getQuoteStream();
+    if (!stream) return { success: false, error: 'QuoteStream not initialized' };
+    return { success: true, status: stream.getStatus() };
+  });
+
+  ipcMain.handle('quote:subscribe', async (_e, symbols: string[]) => {
+    const stream = getQuoteStream();
+    if (!stream) return { success: false, error: 'QuoteStream not initialized' };
+    stream.subscribe(symbols);
+    return { success: true, status: stream.getStatus() };
+  });
+
+  ipcMain.handle('quote:unsubscribe', async (_e, symbols: string[]) => {
+    const stream = getQuoteStream();
+    if (!stream) return { success: false, error: 'QuoteStream not initialized' };
+    stream.unsubscribe(symbols);
+    return { success: true, status: stream.getStatus() };
+  });
+
+  // Wire quote stream events to renderer
+  if (getQuoteStream()) {
+    getQuoteStream()!.on('quote:update', (quotes) => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('quote:stream-tick', quotes);
+      }
+    });
+    getQuoteStream()!.on('anomaly:detected', (alerts) => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('quote:stream-anomaly', alerts);
+      }
+    });
+  }
+
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
   ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
@@ -1797,6 +1852,13 @@ app.whenReady().then(async () => {
       });
       dataScheduler.start();
       log.info('[App] DataSchedulerService initialized and started');
+
+      // JVS-9: Real-time quote stream with anomaly detection integration
+      const quoteStream = initQuoteStream(
+        ['600519', '000858', '601318', '000001', '300750'],  // Default watchlist
+        stockAnomalyDetector || undefined
+      );
+      log.info('[App] QuoteStreamService initialized (JVS-9)');
     }
   } catch (err: any) {
     log.error('[App] MarketplaceService init failed:', err.message);

@@ -190,6 +190,15 @@ contextBridge.exposeInMainWorld('api', {
     getReport: (query?: any) => ipcRenderer.invoke('em:get-hotspot', query),
   },
 
+  // ── Quote Stream — Real-time Market Data (JVS-9) ───────────────
+  quoteStream: {
+    start: (symbols?: string[]) => ipcRenderer.invoke('quote:stream-start', symbols),
+    stop: () => ipcRenderer.invoke('quote:stream-stop'),
+    status: () => ipcRenderer.invoke('quote:stream-status'),
+    subscribe: (symbols: string[]) => ipcRenderer.invoke('quote:subscribe', symbols),
+    unsubscribe: (symbols: string[]) => ipcRenderer.invoke('quote:unsubscribe', symbols),
+  },
+
   // ── Data Scheduler ─────────────────────────────────────────────
   dataScheduler: {
     getStatus: () => ipcRenderer.invoke('data:scheduler-status'),
@@ -217,6 +226,8 @@ contextBridge.exposeInMainWorld('api', {
       'signal',
       'risk-alert',
       'notification',
+      'quote:stream-tick',
+      'quote:stream-anomaly',
     ];
     if (allowed.includes(channel)) {
       ipcRenderer.on(channel, (_event, ...args) => callback(...args));

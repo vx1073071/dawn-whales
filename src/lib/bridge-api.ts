@@ -664,6 +664,43 @@ export async function refreshDataNow(module?: string): Promise<any> {
   return window.api.dataScheduler.refreshNow(module);
 }
 
+// ── Quote Stream — Real-time Market Data (JVS-9) ──────────────────────────
+
+export async function startQuoteStream(symbols?: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.quoteStream.start(symbols);
+}
+
+export async function stopQuoteStream(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.quoteStream.stop();
+}
+
+export async function getQuoteStreamStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.quoteStream.status();
+}
+
+export async function subscribeQuotes(symbols: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.quoteStream.subscribe(symbols);
+}
+
+export async function unsubscribeQuotes(symbols: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.quoteStream.unsubscribe(symbols);
+}
+
+export function onQuoteStreamTick(callback: (quotes: any[]) => void): void {
+  if (!hasIPC()) return;
+  window.api.on('quote:stream-tick', callback);
+}
+
+export function onQuoteStreamAnomaly(callback: (alerts: any[]) => void): void {
+  if (!hasIPC()) return;
+  window.api.on('quote:stream-anomaly', callback);
+}
+
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {
