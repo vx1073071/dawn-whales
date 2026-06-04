@@ -3,20 +3,24 @@
 // Target: 10策略 × 5000 bars 并行 < 3s
 
 import { BacktestEngine } from './backtest-engine';
+import type { BacktestConfig, BacktestResult } from './backtest-engine';
 
 export interface WorkerRequest {
   type: 'backtest';
   id: string;
-  config: any;
+  config: BacktestConfig;
 }
 
 export interface WorkerResponse {
   type: 'result';
   id: string;
-  result: any;
+  result: BacktestResult | null;
   error?: string;
   perfMs?: number;
 }
+
+// J4: strict mode — use DedicatedWorkerGlobalScope typing
+declare const self: DedicatedWorkerGlobalScope;
 
 // Worker message handler
 self.onmessage = async (e: MessageEvent<WorkerRequest>) => {
@@ -35,16 +39,16 @@ self.onmessage = async (e: MessageEvent<WorkerRequest>) => {
       perfMs,
     };
     
-    (self as any).postMessage(response);
-  } catch (error: any) {
+    self.postMessage(response);
+  } catch (error: unknown) {
     const response: WorkerResponse = {
       type: 'result',
       id,
       result: null,
-      error: error.message,
+      error: (error as Error).message,
     };
     
-    (self as any).postMessage(response);
+    self.postMessage(response);
   }
 };
 

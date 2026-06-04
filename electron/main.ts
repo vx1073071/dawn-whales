@@ -17,6 +17,8 @@ import { RiskEngine } from './engine/risk-engine';
 import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/nl-parser';
 import { MarketplaceService } from './data/marketplace-service';
 import { DataProviderService } from './data/data-provider';
+import { CryptoPaymentService } from './payment/crypto-payment';
+import { LicenseManager } from './payment/license-manager';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner';
@@ -104,6 +106,8 @@ let riskEngine: RiskEngine | null = null;
 let db: DatabaseManager | null = null;
 let marketplaceService: MarketplaceService | null = null;
 let dataProvider: DataProviderService | null = null;
+let cryptoPayment: CryptoPaymentService | null = null;
+let licenseManager: LicenseManager | null = null;
 
 // ── Shared quote push handler (prevents duplicate listener registration) ─────
 const quotePushHandler = (quotes: any[]) => {
@@ -1320,6 +1324,66 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: false, error: err.message };
     }
   });
+
+  // ── Payment IPC Handlers ──────────────────────────────────────────────
+
+  ipcMain.handle('payment:create', async (_e, req: any) => {
+    if (!cryptoPayment) return { error: 'Payment service not initialized' };
+    try {
+      const order = await cryptoPayment.createPayment(req);
+      return { success: true, order };
+    } catch (err: any) {
+      log.error('[Payment] createPayment failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('payment:getOrder', async (_e, orderId: string) => {
+    if (!cryptoPayment) return { error: 'Payment service not initialized' };
+    const order = cryptoPayment.getOrder(orderId);
+    return order ? { success: true, order } : { success: false, error: 'Order not found' };
+  });
+
+  ipcMain.handle('payment:getAllOrders', async () => {
+    if (!cryptoPayment) return { error: 'Payment service not initialized' };
+    return { success: true, orders: cryptoPayment.getAllOrders() };
+  });
+
+  ipcMain.handle('payment:getPricing', async () => {
+    if (!cryptoPayment) return { error: 'Payment service not initialized' };
+    return { success: true, pricing: cryptoPayment.getPricing() };
+  });
+
+  ipcMain.handle('payment:getSupportedChains', async () => {
+    if (!cryptoPayment) return { error: 'Payment service not initialized' };
+    return { success: true, chains: cryptoPayment.getSupportedChains() };
+  });
+
+  // ── License IPC Handlers ──────────────────────────────────────────────
+
+  ipcMain.handle('license:get', async () => {
+    if (!licenseManager) return { error: 'License manager not initialized' };
+    return { success: true, license: licenseManager.getLicense() };
+  });
+
+  ipcMain.handle('license:getTier', async () => {
+    if (!licenseManager) return { error: 'License manager not initialized' };
+    return { success: true, tier: licenseManager.getTier() };
+  });
+
+  ipcMain.handle('license:isTrial', async () => {
+    if (!licenseManager) return { error: 'License manager not initialized' };
+    return {
+      success: true,
+      isTrial: licenseManager.isTrial(),
+      daysLeft: licenseManager.getTrialDaysLeft(),
+    };
+  });
+
+  ipcMain.handle('license:hasFeature', async (_e, feature: string) => {
+    if (!licenseManager) return { error: 'License manager not initialized' };
+    return { success: true, has: licenseManager.hasFeature(feature) };
+  });
 }
 
 // ── System Tray ────────────────────────────────────────────────────────────
@@ -1378,6 +1442,14 @@ app.whenReady().then(async () => {
       dataProvider = new DataProviderService();
       dataProvider.initialize(db);
       log.info('[App] DataProviderService initialized');
+
+      licenseManager = new LicenseManager();
+      licenseManager.initialize();
+      log.info(`[App] LicenseManager initialized: ${licenseManager.getTier()} (trial=${licenseManager.isTrial()})`);
+
+      cryptoPayment = new CryptoPaymentService();
+      cryptoPayment.initialize(db, licenseManager);
+      log.info('[App] CryptoPaymentService initialized');
     }
   } catch (err: any) {
     log.error('[App] MarketplaceService init failed:', err.message);
@@ -1498,6 +1570,7 @@ app.on('activate', () => {
 app.on('before-quit', () => {
   brokerManager?.disconnect();
   opendClient?.disconnect();
+  cryptoPayment?.stop();
   db?.close();
   strategyEngine?.emergencyStop();
 });

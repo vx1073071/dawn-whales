@@ -1,5 +1,5 @@
-// ── DAWN WHALES — Parallel Backtest Worker (J2) ─────────────────────────────
-// 参数扫描 100 组合并行 → 10x 加速
+// ── DAWN WHALES �?Parallel Backtest Worker (J2) ─────────────────────────────
+// 参数扫描 100 组合并行 �?10x 加�?
 // 主线程把 (strategy, params[], klines[]) 切成 4 份，每个 Worker 处理 25 组合
 
 import { parentPort, workerData } from 'worker_threads';
@@ -10,15 +10,27 @@ interface WorkerTask {
   id: number;
 }
 
+interface WorkerTrade {
+  entryTime: number;
+  exitTime: number;
+  side: 'LONG';
+  entryPrice: number;
+  exitPrice: number;
+  qty: number;
+  pnl: number;
+  pnlPct: number;
+  bars: number;
+}
+
 const task: WorkerTask = workerData;
 
 function runBacktestSync(config: BacktestConfig): BacktestResult {
   const klines = config.klines || [];
 
   // ── Phase 1: Compute indicators ─────────────────────────────────────
-  const closes = klines.map((k: any) => k.close);
-  const highs = klines.map((k: any) => k.high);
-  const lows = klines.map((k: any) => k.low);
+  const closes = klines.map((k) => k.close);
+  const highs = klines.map((k) => k.high);
+  const lows = klines.map((k) => k.low);
 
   // MA
   const shortMA = calcMA(closes, config.params?.shortPeriod || 5);
@@ -34,7 +46,7 @@ function runBacktestSync(config: BacktestConfig): BacktestResult {
   const [bbMid, bbUpper, bbLower] = calcBollinger(closes, config.params?.bbPeriod || 20, config.params?.bbStddev || 2);
 
   // Volume
-  const volumeMA = calcMA(klines.map((k: any) => k.volume), 20);
+  const volumeMA = calcMA(klines.map((k) => k.volume), 20);
 
   // ── Phase 2: Generate signals ───────────────────────────────────────
   const signals: boolean[] = new Array(klines.length).fill(false);
@@ -58,7 +70,7 @@ function runBacktestSync(config: BacktestConfig): BacktestResult {
   }
 
   // ── Phase 3: Simulate trades ────────────────────────────────────────
-  const trades: any[] = [];
+  const trades: WorkerTrade[] = [];
   let inPosition = false;
   let entryPrice = 0;
   let entryBar = 0;
@@ -158,7 +170,7 @@ function runBacktestSync(config: BacktestConfig): BacktestResult {
     losingTrades: losses,
     avgWin,
     avgLoss,
-    avgHoldingBars: trades.length > 0 ? trades.reduce((a: number, t: any) => a + t.bars, 0) / trades.length : 0,
+    avgHoldingBars: trades.length > 0 ? trades.reduce((a: number, t: WorkerTrade) => a + t.bars, 0) / trades.length : 0,
     maxConsecutiveWins: 0,
     maxConsecutiveLosses: 0,
     equity: [],

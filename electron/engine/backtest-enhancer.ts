@@ -1,7 +1,35 @@
-// ── DAWN WHALES — Backtest Enhancement (Sprint 2: P1) ───────────────────────
-// 多周期对比 + 参数扫描 + Walk-Forward 分析 + 深度风险指标
+// ── DAWN WHALES �?Backtest Enhancement (Sprint 2: P1) ───────────────────────
+// 多周期对�?+ 参数扫描 + Walk-Forward 分析 + 深度风险指标
 
 import { BacktestEngine } from './backtest-engine';
+
+// ── Shared types for strict mode (J4) ──────────────────────────────────────
+
+interface KLine {
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
+interface StrategyConfig {
+  type: string;
+  params: Record<string, number>;
+  stopLoss?: number;
+  takeProfit?: number;
+}
+
+interface EnhancerBaseConfig {
+  id?: string;
+  symbol?: string;
+  period?: string;
+  initialCapital?: number;
+  strategyId?: string;
+  dsl_json?: string;
+  [key: string]: unknown;
+}
 
 export interface PeriodResult {
   label: string;
@@ -67,8 +95,8 @@ export class BacktestEnhancer {
   // ── Multi-Period Comparison ───────────────────────────────────────
 
   async multiPeriodBacktest(
-    klines: any[],
-    strategyConfig: any,
+    klines: KLine[],
+    strategyConfig: StrategyConfig,
     periods: Array<{ label: string; startIdx: number; endIdx: number }>
   ): Promise<PeriodResult[]> {
     const results: PeriodResult[] = [];
@@ -101,8 +129,8 @@ export class BacktestEnhancer {
   // ── Parameter Sweep (Grid Search) ─────────────────────────────────
 
   async parameterSweep(
-    klines: any[],
-    baseConfig: any,
+    klines: KLine[],
+    baseConfig: EnhancerBaseConfig,
     paramRanges: Record<string, { min: number; max: number; step: number }>,
     maxCombinations = 100
   ): Promise<ParamSweepResult[]> {
@@ -146,8 +174,8 @@ export class BacktestEnhancer {
   // ── Walk-Forward Analysis ─────────────────────────────────────────
 
   async walkForwardAnalysis(
-    klines: any[],
-    baseConfig: any,
+    klines: KLine[],
+    baseConfig: EnhancerBaseConfig,
     paramRanges: Record<string, { min: number; max: number; step: number }>,
     trainSize: number,
     testSize: number,
@@ -192,8 +220,8 @@ export class BacktestEnhancer {
         if (testResult?.result) {
           outSampleReturns.push(testResult.result.totalReturn);
           windows.push({
-            trainPeriod: `${new Date(trainData[0].time * 1000).toISOString().slice(0, 10)} → ${new Date(trainData[trainData.length - 1].time * 1000).toISOString().slice(0, 10)}`,
-            testPeriod: `${new Date(testData[0].time * 1000).toISOString().slice(0, 10)} → ${new Date(testData[testData.length - 1].time * 1000).toISOString().slice(0, 10)}`,
+            trainPeriod: `${new Date(trainData[0].time * 1000).toISOString().slice(0, 10)} �?${new Date(trainData[trainData.length - 1].time * 1000).toISOString().slice(0, 10)}`,
+            testPeriod: `${new Date(testData[0].time * 1000).toISOString().slice(0, 10)} �?${new Date(testData[testData.length - 1].time * 1000).toISOString().slice(0, 10)}`,
             trainReturn: best.totalReturn,
             testReturn: testResult.result.totalReturn,
           });
@@ -386,12 +414,14 @@ export class BacktestEnhancer {
     return result;
   }
 
-  private setNestedValue(obj: any, path: string, value: any): void {
+  private setNestedValue(obj: Record<string, unknown>, path: string, value: unknown): void {
     const keys = path.split('.');
-    let current = obj;
+    let current: Record<string, unknown> = obj;
     for (let i = 0; i < keys.length - 1; i++) {
-      if (!current[keys[i]]) current[keys[i]] = {};
-      current = current[keys[i]];
+      if (!current[keys[i]] || typeof current[keys[i]] !== 'object') {
+        current[keys[i]] = {};
+      }
+      current = current[keys[i]] as Record<string, unknown>;
     }
     current[keys[keys.length - 1]] = value;
   }

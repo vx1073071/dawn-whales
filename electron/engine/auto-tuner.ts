@@ -8,6 +8,16 @@
 import log from 'electron-log';
 import { runBacktest } from './backtest-engine';
 
+// J4: strict mode type
+interface KLine {
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
 export interface ParamRange {
   name: string;
   min: number;
@@ -28,7 +38,7 @@ export interface TuningResult {
 
 // ── Fitness Function ─────────────────────────────────────────────────────────
 
-async function fitness(params: Record<string, number>, strategyType: string, klines: any[]): Promise<number> {
+async function fitness(params: Record<string, number>, strategyType: string, klines: KLine[]): Promise<number> {
   try {
     const result = await runBacktest({ strategy: { type: strategyType, params }, klines });
     if (!result.success) return -999;
@@ -95,7 +105,7 @@ function tournament(population: { params: Record<string, number>; score: number 
 export async function geneticTune(
   strategyType: string,
   ranges: ParamRange[],
-  klines: any[],
+  klines: KLine[],
   options: { populationSize?: number; generations?: number; eliteRatio?: number } = {}
 ): Promise<TuningResult> {
   const start = Date.now();
@@ -227,7 +237,7 @@ function sampleNextPoint(xs: DataPoint[], ranges: ParamRange[], nSamples = 500):
 export async function bayesianTune(
   strategyType: string,
   ranges: ParamRange[],
-  klines: any[],
+  klines: KLine[],
   options: { iterations?: number; initialSamples?: number } = {}
 ): Promise<TuningResult> {
   const start = Date.now();
@@ -284,7 +294,7 @@ export async function bayesianTune(
 export async function autoTune(
   strategyType: string,
   ranges: ParamRange[],
-  klines: any[],
+  klines: KLine[],
   options?: { method?: 'ga' | 'bayesian' | 'both'; populationSize?: number; generations?: number; iterations?: number }
 ): Promise<TuningResult | { ga: TuningResult; bayesian: TuningResult; best: TuningResult }> {
   const method = options?.method ?? 'both';
@@ -303,7 +313,7 @@ export async function autoTune(
   ]);
 
   const best = gaResult.bestScore >= bayesianResult.bestScore ? gaResult : bayesianResult;
-  log.info(`[AutoTuner] Both complete — GA: ${gaResult.bestScore.toFixed(3)}, Bayes: ${bayesianResult.bestScore.toFixed(3)}, chose: ${best.method}`);
+  log.info(`[AutoTuner] Both complete �?GA: ${gaResult.bestScore.toFixed(3)}, Bayes: ${bayesianResult.bestScore.toFixed(3)}, chose: ${best.method}`);
 
   return { ga: gaResult, bayesian: bayesianResult, best };
 }

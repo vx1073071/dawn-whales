@@ -31,6 +31,11 @@ export class DatabaseManager {
   };
   private cleanupTimer: ReturnType<typeof setInterval> | null = null;
 
+  /** Expose raw DB instance for services that need direct SQL access (e.g. CryptoPaymentService) */
+  getDb(): Database.Database | null {
+    return this.db;
+  }
+
   initialize() {
     const userDataPath = app.getPath('userData');
     this.dbPath = path.join(userDataPath, DB_NAME);

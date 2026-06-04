@@ -1,6 +1,6 @@
-// ── Strategy Engine — 策略执行引擎 v2 ──────────────────────────────────────
-// 管理策略生命周期：创建 → 回测 → 模拟 → 实盘 → 停止
-// 实时行情驱动信号评估，触发交易指令
+// ── Strategy Engine �?策略执行引擎 v2 ──────────────────────────────────────
+// 管理策略生命周期：创�?�?回测 �?模拟 �?实盘 �?停止
+// 实时行情驱动信号评估，触发交易指�?
 // v2: 接入风控引擎 (Kelly sizing / ATR trailing stop / equity tracking)
 
 import log from 'electron-log';
@@ -9,6 +9,47 @@ import { BacktestEngine } from './backtest-engine';
 import type { RiskEngine } from './risk-engine';
 
 // ── Types ──────────────────────────────────────────────────────────────────
+
+interface KLine {
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
+interface Quote {
+  code: string;
+  price: number;
+  high?: number;
+  low?: number;
+  volume?: number;
+  time?: number;
+}
+
+interface TradeOrder {
+  strategyId: string;
+  symbol: string;
+  side: 'BUY' | 'SELL';
+  price: number;
+  qty: number;
+  reason: string;
+  time: number;
+}
+
+interface BacktestRunResult {
+  success: boolean;
+  result: Record<string, unknown>;
+}
+
+interface StrategyCreateInput {
+  text?: string;
+  name?: string;
+  symbol?: string;
+  description?: string;
+  config?: StrategyConfig;
+}
 
 interface StrategyConfig {
   type: 'ma_cross' | 'rsi' | 'macd' | 'momentum' | 'bollinger' | 'combined';
@@ -26,7 +67,7 @@ interface Strategy {
   status: 'draft' | 'backtested' | 'simulating' | 'live' | 'stopped';
   createdAt: number;
   lastSignal?: { type: 'BUY' | 'SELL' | 'HOLD'; time: number; price: number };
-  backtestResult?: any;
+  backtestResult?: Record<string, unknown>;
   position: { qty: number; avgCost: number } | null;
 }
 
@@ -41,7 +82,7 @@ interface SignalEvent {
 }
 
 type SignalCallback = (event: SignalEvent) => void;
-type TradeCallback = (order: any) => void;
+type TradeCallback = (order: TradeOrder) => void;
 
 // ── Technical Indicator Helpers (simplified, streaming) ────────────────────
 
@@ -119,10 +160,10 @@ class StreamingIndicators {
         const overbought = p.overbought ?? 70;
 
         if (prevRSI <= oversold && rsiVal > oversold) {
-          return { signal: 'BUY', reason: `RSI 从 ${prevRSI.toFixed(1)} 突破超卖线 ${oversold} → ${rsiVal.toFixed(1)}` };
+          return { signal: 'BUY', reason: `RSI �?${prevRSI.toFixed(1)} 突破超卖�?${oversold} �?${rsiVal.toFixed(1)}` };
         }
         if (prevRSI >= overbought && rsiVal < overbought) {
-          return { signal: 'SELL', reason: `RSI 从 ${prevRSI.toFixed(1)} 跌破超买线 ${overbought} → ${rsiVal.toFixed(1)}` };
+          return { signal: 'SELL', reason: `RSI �?${prevRSI.toFixed(1)} 跌破超买�?${overbought} �?${rsiVal.toFixed(1)}` };
         }
         return { signal: 'HOLD', reason: `RSI = ${rsiVal.toFixed(1)}` };
       }
@@ -152,7 +193,7 @@ export class StrategyEngine {
 
   // ── Strategy CRUD ──────────────────────────────────────────────────
 
-  createStrategy(input: any): string {
+  createStrategy(input: string | StrategyCreateInput): string {
     let config: StrategyConfig;
     let name: string;
     let description: string;
@@ -160,7 +201,7 @@ export class StrategyEngine {
 
     if (typeof input === 'string' || input.text) {
       // Natural language input
-      const text = typeof input === 'string' ? input : input.text;
+      const text = typeof input === 'string' ? input : input.text!;
       const parsed = parseNaturalLanguage(text);
       if (!parsed.success) {
         log.warn('[StrategyEngine] NL parse failed:', parsed.error);
@@ -224,7 +265,7 @@ export class StrategyEngine {
 
   // ── Backtest ──────────────────────────────────────────────────────
 
-  async runBacktest(strategyId: string, klines: any[]): Promise<any> {
+  async runBacktest(strategyId: string, klines: KLine[]): Promise<BacktestRunResult> {
     const strategy = this.strategies.get(strategyId);
     if (!strategy) throw new Error(`Strategy not found: ${strategyId}`);
 
@@ -275,7 +316,7 @@ export class StrategyEngine {
   }
 
   emergencyStop() {
-    log.warn('[StrategyEngine] 🚨 EMERGENCY STOP — stopping all live strategies');
+    log.warn('[StrategyEngine] 🚨 EMERGENCY STOP �?stopping all live strategies');
     for (const [id, strategy] of this.strategies) {
       if (strategy.status === 'live' || strategy.status === 'simulating') {
         strategy.status = 'stopped';
@@ -287,12 +328,12 @@ export class StrategyEngine {
 
   // ── Real-time Quote Processing ────────────────────────────────────
 
-  onQuoteUpdate(quotes: any[]) {
+  onQuoteUpdate(quotes: Quote[]) {
     for (const [id, strategy] of this.strategies) {
       if (strategy.status !== 'live') continue;
 
       // Find matching quote
-      const quote = quotes.find((q: any) => q.code === strategy.symbol);
+      const quote = quotes.find((q: Quote) => q.code === strategy.symbol);
       if (!quote) continue;
 
       // v2: Update equity tracking for drawdown monitoring
@@ -326,11 +367,11 @@ export class StrategyEngine {
         reason,
       };
 
-      log.info(`[StrategyEngine] Signal: ${signal} ${strategy.symbol} @ ${quote.price} — ${reason}`);
+      log.info(`[StrategyEngine] Signal: ${signal} ${strategy.symbol} @ ${quote.price} �?${reason}`);
 
       // Notify listeners
       for (const cb of this.signalCallbacks) {
-        try { cb(event); } catch (e: any) { log.error('[StrategyEngine] Signal callback error:', e.message); }
+        try { cb(event); } catch (e: unknown) { log.error('[StrategyEngine] Signal callback error:', (e as Error).message); }
       }
 
       // Generate trade order if applicable
@@ -355,7 +396,7 @@ export class StrategyEngine {
           reason: `${reason} | ${sizingReason}`,
         };
         for (const cb of this.tradeCallbacks) {
-          try { cb(order); } catch (e: any) { log.error('[StrategyEngine] Trade callback error:', e.message); }
+          try { cb(order); } catch (e: unknown) { log.error('[StrategyEngine] Trade callback error:', (e as Error).message); }
         }
       } else if (signal === 'SELL' && strategy.position && strategy.position.qty > 0) {
         // v2: Record trade for Kelly calculation
@@ -375,7 +416,7 @@ export class StrategyEngine {
           reason,
         };
         for (const cb of this.tradeCallbacks) {
-          try { cb(order); } catch (e: any) { log.error('[StrategyEngine] Trade callback error:', e.message); }
+          try { cb(order); } catch (e: unknown) { log.error('[StrategyEngine] Trade callback error:', (e as Error).message); }
         }
       }
 
@@ -399,7 +440,7 @@ export class StrategyEngine {
           };
           for (const cb of this.tradeCallbacks) { try { cb(order); } catch {} }
         } else if (strategy.strategy.takeProfit && pnlPct >= strategy.strategy.takeProfit) {
-          log.info(`[StrategyEngine] ✅ Take profit: ${id} PnL ${pnlPct.toFixed(2)}%`);
+          log.info(`[StrategyEngine] �?Take profit: ${id} PnL ${pnlPct.toFixed(2)}%`);
 
           // v2: Record trade for Kelly calculation
           if (this.riskEngine) {
