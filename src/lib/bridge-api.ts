@@ -66,6 +66,9 @@ declare global {
         walkForwardV2: (config: any) => Promise<any>;
         paramScan: (config: any) => Promise<any>;
         multiTimeframe: (config: any) => Promise<any>;
+        parallel: (config: any) => Promise<any>;
+        paramScanParallel: (config: any) => Promise<any>;
+        walkForwardParallel: (config: any) => Promise<any>;
       };
       strategy: {
         create: (dsl: any) => Promise<any>;

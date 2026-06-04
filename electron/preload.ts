@@ -131,6 +131,9 @@ contextBridge.exposeInMainWorld('api', {
     walkForwardV2: (config: any) => ipcRenderer.invoke('backtest:walk-forward', config),
     paramScan: (config: any) => ipcRenderer.invoke('backtest:param-scan', config),
     multiTimeframe: (config: any) => ipcRenderer.invoke('backtest:multi-timeframe', config),
+    parallel: (config: any) => ipcRenderer.invoke('backtest:parallel', config),
+    paramScanParallel: (config: any) => ipcRenderer.invoke('backtest:param-scan-parallel', config),
+    walkForwardParallel: (config: any) => ipcRenderer.invoke('backtest:walk-forward-parallel', config),
   },
 
   // ── Events (Main → Renderer) ─────────────────────────────────────
