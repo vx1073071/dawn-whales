@@ -291,7 +291,7 @@ interface Indicators {
 
 function computeIndicators(klines: KLine[], config: StrategyConfig): Indicators {
   const closes = klines.map((k) => k.close);
-  const p = config.params;
+  const p = config.params || {};
 
   return {
     closes,
@@ -321,8 +321,9 @@ export class BacktestEngine {
     const commRate = commission ?? 0.001;
     const slipRate = slippage ?? 0.0005;
 
-    // Compute all indicators upfront
-    const indicators = computeIndicators(klines, strategy);
+    // Compute all indicators upfront (fallback to empty strategy if undefined)
+    const strategyConfig = strategy || { type: 'ma_cross' as const, params: {} };
+    const indicators = computeIndicators(klines, strategyConfig);
 
     // Run backtest
     let cash = capital;

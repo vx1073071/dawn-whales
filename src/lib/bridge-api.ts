@@ -71,6 +71,10 @@ declare global {
         search: (request: any) => Promise<any>;
         getMarketMood: (symbols?: string[]) => Promise<any>;
       };
+      sectorRotation: {
+        analyze: () => Promise<any>;
+        recordSnapshot: (sectors: any[]) => Promise<any>;
+      };
       backtestEnhanced: {
         walkForward: (config: any) => Promise<any>;
         paramScan: (config: any) => Promise<any>;
@@ -577,6 +581,18 @@ export async function searchNews(request: {
 export async function getMarketMood(symbols?: string[]): Promise<any> {
   if (!hasIPC()) return { success: false, report: null };
   return window.api.newsAggregator.getMarketMood(symbols);
+}
+
+// ── Sector Rotation (JVS-6) ───────────────────────────────────────────────
+
+export async function analyzeSectorRotation(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sectorRotation.analyze();
+}
+
+export async function recordSectorSnapshot(sectors: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.sectorRotation.recordSnapshot(sectors);
 }
 
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────

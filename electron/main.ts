@@ -22,6 +22,7 @@ import { MacroDataProvider } from './data/macro-provider';
 import { SentimentIndexEngine } from './engine/sentiment-index';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
+import { SectorRotationMonitor } from './engine/sector-rotation';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner-v2';
@@ -116,6 +117,7 @@ let emDataProvider: EMDataProvider | null = null;
 let macroDataProvider: MacroDataProvider | null = null;
 let stockScreener: StockScreenerService | null = null;
 let newsAggregator: NewsAggregatorService | null = null;
+let sectorRotation: SectorRotationMonitor | null = null;
 
 // ── Shared quote push handler (prevents duplicate listener registration) ─────
 const quotePushHandler = (quotes: any[]) => {
@@ -1462,6 +1464,28 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
+  // ── Sector Rotation Monitor (JVS-6) ──────────────────────────────────
+  ipcMain.handle('em:get-sector-rotation', async () => {
+    if (!sectorRotation) return { success: false, error: 'SectorRotation not initialized' };
+    try {
+      const report = sectorRotation.analyze();
+      return { success: true, ...report };
+    } catch (err: any) {
+      log.error('[SectorRotation] Analyze failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('em:record-sector-snapshot', async (_e, sectors: any[]) => {
+    if (!sectorRotation) return { success: false, error: 'SectorRotation not initialized' };
+    try {
+      sectorRotation.recordSnapshot(sectors || []);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
   ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
@@ -1603,6 +1627,10 @@ app.whenReady().then(async () => {
       newsAggregator = new NewsAggregatorService();
       newsAggregator.initialize(db);
       log.info('[App] NewsAggregatorService initialized (JVS-5)');
+
+      sectorRotation = new SectorRotationMonitor();
+      sectorRotation.initialize(db);
+      log.info('[App] SectorRotationMonitor initialized (JVS-6)');
     }
   } catch (err: any) {
     log.error('[App] MarketplaceService init failed:', err.message);

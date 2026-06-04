@@ -168,6 +168,12 @@ contextBridge.exposeInMainWorld('api', {
     getMarketMood: (symbols?: string[]) => ipcRenderer.invoke('em:get-market-mood', symbols),
   },
 
+  // ── Sector Rotation (JVS-6) ────────────────────────────────────
+  sectorRotation: {
+    analyze: () => ipcRenderer.invoke('em:get-sector-rotation'),
+    recordSnapshot: (sectors: any[]) => ipcRenderer.invoke('em:record-sector-snapshot', sectors),
+  },
+
   // ── Backtest Enhancement (Sprint 2) ──────────────────────────────
   backtest: {
     multiPeriod: (config: any) => ipcRenderer.invoke('backtest:multiPeriod', config),
