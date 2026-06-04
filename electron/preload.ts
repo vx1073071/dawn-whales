@@ -34,6 +34,8 @@ contextBridge.exposeInMainWorld('api', {
     backtest: (config: any) => ipcRenderer.invoke('strategy:backtest', config),
     startLive: (id: string) => ipcRenderer.invoke('strategy:startLive', id),
     stopLive: (id: string) => ipcRenderer.invoke('strategy:stopLive', id),
+    explain: (strategy: any) => ipcRenderer.invoke('strategy:explain', strategy),
+    compare: (s1: any, s2: any) => ipcRenderer.invoke('strategy:compare', s1, s2),
   },
 
   // ── NL Parser ─────────────────────────────────────────────────────

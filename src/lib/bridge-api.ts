@@ -62,6 +62,8 @@ declare global {
         backtest: (config: any) => Promise<any>;
         startLive: (id: string) => Promise<any>;
         stopLive: (id: string) => Promise<any>;
+        explain: (strategy: any) => Promise<any>;
+        compare: (s1: any, s2: any) => Promise<any>;
       };
       nl: {
         parse: (text: string) => Promise<any>;
