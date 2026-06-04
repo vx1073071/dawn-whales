@@ -1,7 +1,6 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
-import { getMarketRegime } from '@/lib/bridge-api';
 import { getMarketRegime } from '@/lib/bridge-api';
 
 interface RegimeData {
@@ -16,11 +15,11 @@ interface RegimeData {
 }
 
 const REGIME_CONFIG: Record<string, { icon: string; color: string; bg: string }> = {
-  bull: { icon: '馃悅', color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20' },
-  bear: { icon: '馃惢', color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
-  range: { icon: '馃搳', color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/20' },
-  volatile: { icon: '鈿?, color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20' },
-  unknown: { icon: '鉂?, color: 'text-gray-400', bg: 'bg-gray-500/10 border-gray-500/20' },
+  bull: { icon: '🐂', color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20' },
+  bear: { icon: '🐻', color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
+  range: { icon: '📊', color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/20' },
+  volatile: { icon: '⚡', color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20' },
+  unknown: { icon: '❓', color: 'text-gray-400', bg: 'bg-gray-500/10 border-gray-500/20' },
 };
 
 const MOCK_REGIME: RegimeData = {
@@ -28,7 +27,7 @@ const MOCK_REGIME: RegimeData = {
   confidence: 78.5,
   duration: 23,
   transitionProbs: { bull: 78.5, bear: 8.2, range: 10.3, volatile: 3.0 },
-  suggestedStrategy: 'Trend Following 路 Momentum',
+  suggestedStrategy: 'Trend Following · Momentum',
   riskLevel: 'Medium',
   positionSuggestion: '60%-80%',
   history: [
@@ -93,7 +92,7 @@ export default function RegimeMonitorPage() {
         }
       } catch {
         if (!cancelled) {
-          // IPC failed 鈥?use mock as graceful degradation
+          // IPC failed — use mock as graceful degradation
           setData(MOCK_REGIME);
         }
       } finally {
@@ -116,7 +115,7 @@ export default function RegimeMonitorPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">馃寠 {t('regimeMonitor.title')}</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">🌊 {t('regimeMonitor.title')}</h1>
           <p className="text-gray-400 text-sm">{t('regimeMonitor.subtitle')}</p>
         </div>
       </div>
@@ -145,17 +144,17 @@ export default function RegimeMonitorPage() {
         <SuggestionCard
           label={t('regimeMonitor.suggestedStrategy')}
           value={data.suggestedStrategy}
-          icon="馃幆"
+          icon="🎯"
         />
         <SuggestionCard
           label={t('regimeMonitor.riskLevel')}
           value={data.riskLevel}
-          icon="鈿狅笍"
+          icon="⚠️"
         />
         <SuggestionCard
           label={t('regimeMonitor.positionSuggestion')}
           value={data.positionSuggestion}
-          icon="馃搻"
+          icon="📐"
         />
       </div>
 
@@ -168,7 +167,7 @@ export default function RegimeMonitorPage() {
             const rKey = getRegimeKey(regime);
             return (
               <div key={regime} className="flex items-center gap-3">
-                <span className="text-lg">{rCfg?.icon || '鉂?}</span>
+                <span className="text-lg">{rCfg?.icon || '❓'}</span>
                 <span className="text-gray-300 text-sm w-20">{t(`regimeMonitor.${rKey}`)}</span>
                 <div className="flex-1 h-2 bg-[#12121a] rounded-full overflow-hidden">
                   <div
@@ -198,7 +197,7 @@ export default function RegimeMonitorPage() {
                 key={i}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border ${hCfg?.bg || 'bg-gray-500/10 border-gray-500/20'}`}
               >
-                <span className="text-sm">{hCfg?.icon || '鉂?}</span>
+                <span className="text-sm">{hCfg?.icon || '❓'}</span>
                 <span className={`text-xs font-medium ${hCfg?.color || 'text-gray-400'}`}>
                   {t(`regimeMonitor.${hKey}`)}
                 </span>
