@@ -61,6 +61,9 @@ declare global {
         getIndicator: (indicator?: string, limit?: number) => Promise<any>;
         getDashboard: (indicators?: string[]) => Promise<any>;
       };
+      sentimentIndex: {
+        compute: (input?: any) => Promise<any>;
+      };
       backtestEnhanced: {
         walkForward: (config: any) => Promise<any>;
         paramScan: (config: any) => Promise<any>;
@@ -530,6 +533,13 @@ export async function getMacroIndicator(indicator?: string, limit?: number): Pro
 export async function getMacroDashboard(indicators?: string[]): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.macroDataProvider.getDashboard(indicators);
+}
+
+// ── Sentiment Index (JVS-3) ───────────────────────────────────────────────
+
+export async function computeSentiment(input?: any): Promise<any> {
+  if (!hasIPC()) return { success: false, result: null };
+  return window.api.sentimentIndex.compute(input);
 }
 
 // ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────

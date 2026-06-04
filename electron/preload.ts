@@ -152,6 +152,11 @@ contextBridge.exposeInMainWorld('api', {
     getDashboard: (indicators?: string[]) => ipcRenderer.invoke('em:get-macro-dashboard', indicators),
   },
 
+  // ── Sentiment Index (JVS-3) ─────────────────────────────────────
+  sentimentIndex: {
+    compute: (input?: any) => ipcRenderer.invoke('em:get-sentiment', input),
+  },
+
   // ── Backtest Enhancement (Sprint 2) ──────────────────────────────
   backtest: {
     multiPeriod: (config: any) => ipcRenderer.invoke('backtest:multiPeriod', config),

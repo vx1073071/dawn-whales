@@ -19,6 +19,7 @@ import { MarketplaceService } from './data/marketplace-service';
 import { DataProviderService } from './data/data-provider';
 import { EMDataProvider } from './data/em-data-provider';
 import { MacroDataProvider } from './data/macro-provider';
+import { SentimentIndexEngine } from './engine/sentiment-index';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner';
@@ -1405,6 +1406,19 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: true, ...result };
     } catch (err: any) {
       log.error('[MacroDataProvider] Dashboard fetch failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Sentiment Index Engine (JVS-3) ──────────────────────────────────────
+  ipcMain.handle('em:get-sentiment', async (_e, input?: any) => {
+    try {
+      const engine = new SentimentIndexEngine();
+      const sentimentInput = input || {};
+      const result = engine.compute(sentimentInput);
+      return { success: true, result };
+    } catch (err: any) {
+      log.error('[SentimentIndex] Compute failed:', err.message);
       return { success: false, error: err.message };
     }
   });
