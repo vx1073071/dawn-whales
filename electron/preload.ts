@@ -11,6 +11,8 @@ contextBridge.exposeInMainWorld('api', {
     getPositions: (accountId: string) => ipcRenderer.invoke('broker:getPositions', accountId),
     getQuotes: (codes: string[]) => ipcRenderer.invoke('broker:getQuotes', codes),
     getKlines: (code: string, period: string, count: number) => ipcRenderer.invoke('broker:getKlines', code, period, count),
+    subscribe: (codes: string[]) => ipcRenderer.invoke('broker:subscribe', codes),
+    unsubscribe: (codes: string[]) => ipcRenderer.invoke('broker:unsubscribe', codes),
     placeOrder: (order: any) => ipcRenderer.invoke('broker:placeOrder', order),
     cancelOrder: (orderId: string) => ipcRenderer.invoke('broker:cancelOrder', orderId),
     getOrders: (accountId: string) => ipcRenderer.invoke('broker:getOrders', accountId),
@@ -65,6 +67,23 @@ contextBridge.exposeInMainWorld('api', {
     openExternal: (url: string) => ipcRenderer.invoke('app:openExternal', url),
     getVersion: () => ipcRenderer.invoke('app:getVersion'),
     getPlatform: () => ipcRenderer.invoke('app:getPlatform'),
+  },
+
+  // ── Greeks ────────────────────────────────────────────────────────
+  greeks: {
+    calculate: (params: any) => ipcRenderer.invoke('greeks:calculate', params),
+    portfolio: (positions: any[]) => ipcRenderer.invoke('greeks:portfolio', positions),
+  },
+
+  // ── Marketplace ───────────────────────────────────────────────────
+  marketplace: {
+    rate: (strategyId: string, rating: number) => ipcRenderer.invoke('marketplace:rate', strategyId, rating),
+    getRating: (strategyId: string) => ipcRenderer.invoke('marketplace:getRating', strategyId),
+    comment: (strategyId: string, content: string, parentId?: number) => ipcRenderer.invoke('marketplace:comment', strategyId, content, parentId),
+    getComments: (strategyId: string) => ipcRenderer.invoke('marketplace:getComments', strategyId),
+    savePerformance: (data: any) => ipcRenderer.invoke('marketplace:savePerformance', data),
+    getPerformance: (strategyId: string) => ipcRenderer.invoke('marketplace:getPerformance', strategyId),
+    list: (sortBy?: string, limit?: number) => ipcRenderer.invoke('marketplace:list', sortBy, limit),
   },
 
   // ── Events (Main → Renderer) ─────────────────────────────────────

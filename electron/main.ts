@@ -13,7 +13,8 @@ import { RiskEngine } from './engine/risk-engine';
 import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/nl-parser';
 import log from 'electron-log';
 
-const WATCHLIST = ['US.TQQQ','US.SOXL','US.QQQ','US.SPY','US.AAPL','US.NVDA','US.SQQQ','US.SOXS'];
+// 默认监控列表，连接时从 DB 读取用户配置
+let WATCHLIST = ['US.TQQQ','US.SOXL','US.QQQ','US.SPY','US.AAPL','US.NVDA','US.SQQQ','US.SOXS'];
 
 // ── Configuration ──────────────────────────────────────────────────────────
 
@@ -88,6 +89,12 @@ function setupIPC() {
         mainWindow?.webContents.send('quotes:push', quotes);
         strategyEngine?.onQuoteUpdate(quotes);
       });
+      // WP1: Load watchlist from DB, fallback to default
+      const savedWatchlist = db?.getWatchlist();
+      if (savedWatchlist && savedWatchlist.length > 0) {
+        WATCHLIST = savedWatchlist;
+        log.info('[Broker] Loaded watchlist from DB:', WATCHLIST);
+      }
       await opendClient.subscribeAndPush(WATCHLIST);
       log.info('[Broker] Push mode active');
 
@@ -132,6 +139,32 @@ function setupIPC() {
     try {
       const quoteList = (!codes || codes.length === 0) ? WATCHLIST : codes;
       return { success: true, quotes: await opendClient.getQuotes(quoteList) };
+    } catch (err: any) { return { success: false, error: err.message }; }
+  });
+
+  // ── Subscribe / Unsubscribe (WP1: 动态监控列表) ────────────────────
+  ipcMain.handle('broker:subscribe', async (_e, codes: string[]) => {
+    if (!opendClient?.connected) return { success: false, error: 'Not connected' };
+    try {
+      // Merge with existing watchlist, dedupe
+      const merged = Array.from(new Set([...WATCHLIST, ...codes]));
+      WATCHLIST = merged;
+      await opendClient.subscribeAndPush(WATCHLIST);
+      // Persist to DB
+      db?.saveWatchlist(WATCHLIST);
+      log.info('[Broker] Subscribed:', codes);
+      return { success: true, watchlist: WATCHLIST };
+    } catch (err: any) { return { success: false, error: err.message }; }
+  });
+
+  ipcMain.handle('broker:unsubscribe', async (_e, codes: string[]) => {
+    if (!opendClient?.connected) return { success: false, error: 'Not connected' };
+    try {
+      WATCHLIST = WATCHLIST.filter((c) => !codes.includes(c));
+      await opendClient.subscribeAndPush(WATCHLIST);
+      db?.saveWatchlist(WATCHLIST);
+      log.info('[Broker] Unsubscribed:', codes);
+      return { success: true, watchlist: WATCHLIST };
     } catch (err: any) { return { success: false, error: err.message }; }
   });
 
@@ -397,6 +430,117 @@ function setupIPC() {
 
   ipcMain.handle('app:installUpdate', () => {
     autoUpdater.quitAndInstall();
+  });
+
+  // ── Greeks Calculation (WP5: Python subprocess) ─────────────────────
+  ipcMain.handle('greeks:calculate', async (_e, params: {
+    spot: number; strike: number; vol: number; days: number;
+    rate?: number; type: 'CALL' | 'PUT'; qty?: number;
+  }) => {
+    try {
+      const { execSync } = require('child_process');
+      const scriptPath = require('path').join(
+        process.resourcesPath, '..', '..', '.workbuddy', 'skills', 'option-greeks', 'scripts', 'calc_greeks.py'
+      );
+      // Fallback for dev mode
+      const devPath = require('path').join(
+        require('os').homedir(), '.workbuddy', 'skills', 'option-greeks', 'scripts', 'calc_greeks.py'
+      );
+      const pythonExe = require('path').join(
+        require('os').homedir(), 'AppData', 'Local', 'Programs', 'Python', 'Python312', 'python.exe'
+      );
+
+      const fs = require('fs');
+      const actualScript = fs.existsSync(scriptPath) ? scriptPath : devPath;
+      if (!fs.existsSync(actualScript)) {
+        return { success: false, error: 'option-greeks script not found' };
+      }
+
+      const cmd = `"${pythonExe}" "${actualScript}" --spot ${params.spot} --strike ${params.strike} --vol ${params.vol} --days ${params.days} --type ${params.type} --rate ${params.rate || 0.05} --json`;
+      const output = execSync(cmd, { encoding: 'utf-8', timeout: 5000 });
+      const result = JSON.parse(output);
+      return { success: true, greeks: result };
+    } catch (err: any) {
+      log.error('[Greeks] Calculation failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('greeks:portfolio', async (_e, positions: any[]) => {
+    try {
+      const { execSync } = require('child_process');
+      const devPath = require('path').join(
+        require('os').homedir(), '.workbuddy', 'skills', 'option-greeks', 'scripts', 'portfolio_greeks.py'
+      );
+      const pythonExe = require('path').join(
+        require('os').homedir(), 'AppData', 'Local', 'Programs', 'Python', 'Python312', 'python.exe'
+      );
+
+      const fs = require('fs');
+      if (!fs.existsSync(devPath)) {
+        return { success: false, error: 'portfolio_greeks script not found' };
+      }
+
+      const positionsJson = JSON.stringify(positions).replace(/"/g, '\\"');
+      const cmd = `"${pythonExe}" "${devPath}" --positions "${positionsJson}" --json`;
+      const output = execSync(cmd, { encoding: 'utf-8', timeout: 10000 });
+      const result = JSON.parse(output);
+      return { success: true, portfolio: result };
+    } catch (err: any) {
+      log.error('[Greeks] Portfolio calc failed:', err.message);
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Marketplace ───────────────────────────────────────────────────
+
+  ipcMain.handle('marketplace:rate', async (_e, strategyId: string, rating: number) => {
+    try {
+      db?.rateStrategy(strategyId, rating);
+      const stats = db?.getStrategyRating(strategyId);
+      return { success: true, ...stats };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('marketplace:getRating', async (_e, strategyId: string) => {
+    const rating = db?.getStrategyRating(strategyId);
+    const myRating = db?.getMyRating(strategyId);
+    return { success: true, ...rating, myRating };
+  });
+
+  ipcMain.handle('marketplace:comment', async (_e, strategyId: string, content: string, parentId?: number) => {
+    try {
+      db?.addComment(strategyId, content, parentId);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('marketplace:getComments', async (_e, strategyId: string) => {
+    const comments = db?.getComments(strategyId) || [];
+    return { success: true, comments };
+  });
+
+  ipcMain.handle('marketplace:savePerformance', async (_e, data: any) => {
+    try {
+      db?.saveStrategyPerformance(data);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('marketplace:getPerformance', async (_e, strategyId: string) => {
+    const perf = db?.getStrategyPerformance(strategyId) || [];
+    return { success: true, performance: perf };
+  });
+
+  ipcMain.handle('marketplace:list', async (_e, sortBy?: string, limit?: number) => {
+    const strategies = db?.getMarketplaceStrategies(sortBy || 'rating', limit || 50) || [];
+    return { success: true, strategies };
   });
 }
 

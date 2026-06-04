@@ -109,6 +109,42 @@ export class DatabaseManager {
         added_at TEXT DEFAULT (datetime('now'))
       );
 
+      -- ── 策略评分表 (Marketplace) ────────────────────────
+      CREATE TABLE IF NOT EXISTS strategy_ratings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        strategy_id TEXT NOT NULL REFERENCES strategies(id) ON DELETE CASCADE,
+        user_id TEXT NOT NULL DEFAULT 'local',
+        rating INTEGER NOT NULL CHECK(rating >= 1 AND rating <= 5),
+        created_at TEXT DEFAULT (datetime('now')),
+        UNIQUE(strategy_id, user_id)
+      );
+
+      -- ── 策略评论表 (Marketplace) ────────────────────────
+      CREATE TABLE IF NOT EXISTS strategy_comments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        strategy_id TEXT NOT NULL REFERENCES strategies(id) ON DELETE CASCADE,
+        user_id TEXT NOT NULL DEFAULT 'local',
+        content TEXT NOT NULL,
+        parent_id INTEGER REFERENCES strategy_comments(id) ON DELETE CASCADE,
+        created_at TEXT DEFAULT (datetime('now'))
+      );
+
+      -- ── 策略收益认证表 (Marketplace) ────────────────────
+      CREATE TABLE IF NOT EXISTS strategy_performance (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        strategy_id TEXT NOT NULL REFERENCES strategies(id) ON DELETE CASCADE,
+        period TEXT NOT NULL,
+        annual_return REAL,
+        sharpe_ratio REAL,
+        max_drawdown REAL,
+        win_rate REAL,
+        total_trades INTEGER,
+        equity_curve TEXT,
+        verified INTEGER DEFAULT 0,
+        verified_at TEXT,
+        updated_at TEXT DEFAULT (datetime('now'))
+      );
+
       -- ── 设置表 ──────────────────────────────────────────
       CREATE TABLE IF NOT EXISTS settings (
         key TEXT PRIMARY KEY,
@@ -126,8 +162,11 @@ export class DatabaseManager {
       CREATE INDEX IF NOT EXISTS idx_backtest_time ON backtest_runs(created_at);
       CREATE INDEX IF NOT EXISTS idx_kline_cache_lookup ON kline_cache(symbol, period, timestamp);
       CREATE INDEX IF NOT EXISTS idx_strategies_status ON strategies(status);
+      CREATE INDEX IF NOT EXISTS idx_ratings_strategy ON strategy_ratings(strategy_id);
+      CREATE INDEX IF NOT EXISTS idx_comments_strategy ON strategy_comments(strategy_id);
+      CREATE INDEX IF NOT EXISTS idx_performance_strategy ON strategy_performance(strategy_id);
     `);
-    log.info('[Database] Tables initialized (v2)');
+    log.info('[Database] Tables initialized (v3 — marketplace)');
   }
 
   // ── Strategies ──────────────────────────────────────────────────
@@ -270,6 +309,107 @@ export class DatabaseManager {
       items.forEach((code, i) => stmt.run(code, i));
     });
     tx(codes);
+  }
+
+  // ── Marketplace: Ratings ────────────────────────────────────────
+
+  rateStrategy(strategyId: string, rating: number, userId = 'local'): any {
+    if (!this.db) return null;
+    return this.db.prepare(`
+      INSERT OR REPLACE INTO strategy_ratings (strategy_id, user_id, rating, created_at)
+      VALUES (?, ?, ?, datetime('now'))
+    `).run(strategyId, userId, rating);
+  }
+
+  getStrategyRating(strategyId: string): { avg: number; count: number } {
+    if (!this.db) return { avg: 0, count: 0 };
+    const row = this.db.prepare(`
+      SELECT AVG(rating) as avg, COUNT(*) as count FROM strategy_ratings WHERE strategy_id = ?
+    `).get(strategyId) as any;
+    return { avg: row?.avg ? Math.round(row.avg * 10) / 10 : 0, count: row?.count || 0 };
+  }
+
+  getMyRating(strategyId: string, userId = 'local'): number {
+    if (!this.db) return 0;
+    const row = this.db.prepare(
+      'SELECT rating FROM strategy_ratings WHERE strategy_id = ? AND user_id = ?'
+    ).get(strategyId, userId) as any;
+    return row?.rating || 0;
+  }
+
+  // ── Marketplace: Comments ───────────────────────────────────────
+
+  addComment(strategyId: string, content: string, parentId?: number, userId = 'local'): any {
+    if (!this.db) return null;
+    return this.db.prepare(`
+      INSERT INTO strategy_comments (strategy_id, user_id, content, parent_id)
+      VALUES (?, ?, ?, ?)
+    `).run(strategyId, userId, content, parentId || null);
+  }
+
+  getComments(strategyId: string, limit = 50): any[] {
+    if (!this.db) return [];
+    return this.db.prepare(`
+      SELECT * FROM strategy_comments WHERE strategy_id = ? ORDER BY created_at DESC LIMIT ?
+    `).all(strategyId, limit);
+  }
+
+  getCommentCount(strategyId: string): number {
+    if (!this.db) return 0;
+    const row = this.db.prepare(
+      'SELECT COUNT(*) as count FROM strategy_comments WHERE strategy_id = ?'
+    ).get(strategyId) as any;
+    return row?.count || 0;
+  }
+
+  // ── Marketplace: Performance ────────────────────────────────────
+
+  saveStrategyPerformance(data: {
+    strategyId: string; period: string; annualReturn: number;
+    sharpeRatio: number; maxDrawdown: number; winRate: number;
+    totalTrades: number; equityCurve?: string; verified?: boolean;
+  }): void {
+    if (!this.db) return;
+    this.db.prepare(`
+      INSERT OR REPLACE INTO strategy_performance
+        (strategy_id, period, annual_return, sharpe_ratio, max_drawdown,
+         win_rate, total_trades, equity_curve, verified, verified_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+    `).run(
+      data.strategyId, data.period, data.annualReturn, data.sharpeRatio,
+      data.maxDrawdown, data.winRate, data.totalTrades,
+      data.equityCurve || null,
+      data.verified ? 1 : 0,
+      data.verified ? new Date().toISOString() : null,
+    );
+  }
+
+  getStrategyPerformance(strategyId: string): any[] {
+    if (!this.db) return [];
+    return this.db.prepare(
+      'SELECT * FROM strategy_performance WHERE strategy_id = ? ORDER BY period'
+    ).all(strategyId);
+  }
+
+  getMarketplaceStrategies(sortBy = 'rating', limit = 50): any[] {
+    if (!this.db) return [];
+    const rows = this.db.prepare(`
+      SELECT
+        s.*,
+        COALESCE(AVG(r.rating), 0) as avg_rating,
+        COUNT(DISTINCT r.id) as rating_count,
+        COUNT(DISTINCT c.id) as comment_count,
+        (SELECT annual_return FROM strategy_performance sp WHERE sp.strategy_id = s.id AND sp.period = 'all' LIMIT 1) as performance_return,
+        (SELECT sharpe_ratio FROM strategy_performance sp WHERE sp.strategy_id = s.id AND sp.period = 'all' LIMIT 1) as performance_sharpe
+      FROM strategies s
+      LEFT JOIN strategy_ratings r ON s.id = r.strategy_id
+      LEFT JOIN strategy_comments c ON s.id = c.strategy_id
+      WHERE s.status = 'published'
+      GROUP BY s.id
+      ORDER BY ${sortBy === 'rating' ? 'avg_rating DESC, rating_count DESC' : sortBy === 'return' ? 'performance_return DESC' : 's.updated_at DESC'}
+      LIMIT ?
+    `).all(limit);
+    return rows;
   }
 
   // ── Settings ────────────────────────────────────────────────────

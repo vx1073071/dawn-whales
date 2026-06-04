@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import * as api from '../../lib/bridge-api';
 
 interface SignalLog {
@@ -23,6 +23,15 @@ interface LiveStrategy {
   lastSignal: string;
 }
 
+interface LiveQuote {
+  code: string;
+  price: number;
+  change: number;
+  changePct: number;
+  volume: number;
+  updateTime: number;
+}
+
 export default function LiveMonitorPage() {
   const [strategies, setStrategies] = useState<LiveStrategy[]>([]);
   const [signalLog, setSignalLog] = useState<SignalLog[]>([]);
@@ -30,10 +39,68 @@ export default function LiveMonitorPage() {
   const [autoScroll, setAutoScroll] = useState(true);
   const logRef = useRef<HTMLDivElement>(null);
 
+  // WP1: Live quotes from quotes:push
+  const [quotes, setQuotes] = useState<Map<string, LiveQuote>>(new Map());
+  const quotesRef = useRef<Map<string, LiveQuote>>(new Map());
+  const [watchlist, setWatchlist] = useState<string[]>([]);
+  const [newCode, setNewCode] = useState('');
+  const [showAddInput, setShowAddInput] = useState(false);
+
+  // Load watchlist on mount
   useEffect(() => {
+    loadWatchlist();
     loadStrategies();
     const interval = setInterval(loadStrategies, 5000);
     return () => clearInterval(interval);
+  }, []);
+
+  async function loadWatchlist() {
+    try {
+      const list = await api.getWatchlist();
+      if (list && list.length > 0) setWatchlist(list);
+      else setWatchlist(['US.TQQQ', 'US.SOXL', 'US.QQQ', 'US.SPY', 'HK.00700', 'US.AAPL', 'US.NVDA', 'US.SQQQ']);
+    } catch { /* silent */ }
+  }
+
+  // WP1: Listen for real-time price pushes
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.api?.on) {
+      const handler = (data: any) => {
+        // data can be single quote or array of quotes
+        const quoteList = Array.isArray(data) ? data : [data];
+        quoteList.forEach((q: any) => {
+          if (!q || !q.code) return;
+          const quote: LiveQuote = {
+            code: q.code,
+            price: q.price || 0,
+            change: q.change || 0,
+            changePct: q.changePct || 0,
+            volume: q.volume || 0,
+            updateTime: Date.now(),
+          };
+          quotesRef.current.set(q.code, quote);
+        });
+        // Batch update state to avoid excessive re-renders
+        setQuotes(new Map(quotesRef.current));
+
+        // Also add to signal log for significant moves (>2%)
+        quoteList.forEach((q: any) => {
+          if (Math.abs(q.changePct || 0) > 2) {
+            const log: SignalLog = {
+              id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+              time: new Date().toLocaleTimeString(),
+              type: 'ALERT',
+              strategy: 'Market',
+              code: q.code || '',
+              message: `${q.code} 异动 ${q.changePct > 0 ? '+' : ''}${(q.changePct || 0).toFixed(2)}%`,
+            };
+            setSignalLog((prev) => [log, ...prev].slice(0, 500));
+          }
+        });
+      };
+      window.api.on('quotes:push', handler);
+      return () => { window.api?.off?.('quotes:push', handler); };
+    }
   }, []);
 
   // Listen for real-time signals
@@ -104,6 +171,30 @@ export default function LiveMonitorPage() {
     } catch { /* silent */ }
   }
 
+  async function handleAddCode() {
+    const code = newCode.trim().toUpperCase();
+    if (!code || watchlist.includes(code)) return;
+    const newList = [...watchlist, code];
+    setWatchlist(newList);
+    setNewCode('');
+    setShowAddInput(false);
+    try {
+      await api.subscribeQuotes([code]);
+      await api.saveWatchlist(newList);
+    } catch { /* silent */ }
+  }
+
+  async function handleRemoveCode(code: string) {
+    const newList = watchlist.filter((c) => c !== code);
+    setWatchlist(newList);
+    quotesRef.current.delete(code);
+    setQuotes(new Map(quotesRef.current));
+    try {
+      await api.unsubscribeQuotes([code]);
+      await api.saveWatchlist(newList);
+    } catch { /* silent */ }
+  }
+
   function addLog(type: SignalLog['type'], code: string, message: string) {
     const log: SignalLog = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
@@ -157,6 +248,9 @@ export default function LiveMonitorPage() {
     ? signalLog.filter((l) => l.strategy === selectedStrategy)
     : signalLog;
 
+  // Get quote array sorted
+  const quoteArray = Array.from(quotes.values()).sort((a, b) => a.code.localeCompare(b.code));
+
   return (
     <div className="p-6">
       {/* Header */}
@@ -172,6 +266,66 @@ export default function LiveMonitorPage() {
           <button onClick={handleEmergencyStop} className="px-4 py-2 bg-red-500/20 border border-red-500/30 rounded-lg text-sm text-red-400 hover:bg-red-500/30 font-bold">
             🛑 紧急停止
           </button>
+        </div>
+      </div>
+
+      {/* WP1: Live Price Ticker Bar */}
+      <div className="mb-4 bg-[#12121a] rounded-xl border border-white/5 overflow-hidden">
+        <div className="flex items-center justify-between px-3 py-2 border-b border-white/5">
+          <span className="text-xs text-gray-500 font-medium">📈 实时行情</span>
+          <div className="flex items-center gap-2">
+            {showAddInput ? (
+              <div className="flex items-center gap-1">
+                <input
+                  type="text"
+                  value={newCode}
+                  onChange={(e) => setNewCode(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleAddCode()}
+                  placeholder="HK.00700"
+                  className="px-2 py-1 bg-[#1a1a25] border border-white/10 rounded text-xs text-white w-24 focus:outline-none focus:border-amber-500/50"
+                  autoFocus
+                />
+                <button onClick={handleAddCode} className="text-xs px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded hover:bg-emerald-500/30">+</button>
+                <button onClick={() => { setShowAddInput(false); setNewCode(''); }} className="text-xs px-2 py-1 text-gray-500 hover:text-gray-300">✕</button>
+              </div>
+            ) : (
+              <button onClick={() => setShowAddInput(true)} className="text-xs px-2 py-1 bg-amber-500/10 text-amber-400 rounded hover:bg-amber-500/20">
+                + 添加股票
+              </button>
+            )}
+          </div>
+        </div>
+        <div className="flex gap-3 px-3 py-2 overflow-x-auto">
+          {watchlist.map((code) => {
+            const q = quotes.get(code);
+            const isUp = (q?.change || 0) >= 0;
+            return (
+              <div key={code} className="flex-shrink-0 flex items-center gap-2 px-3 py-1.5 bg-white/[0.03] rounded-lg group relative">
+                <span className="text-xs text-gray-400 font-mono">{code}</span>
+                {q ? (
+                  <span className={`text-xs font-bold font-mono ${isUp ? 'text-red-400' : 'text-emerald-400'}`}>
+                    {q.price.toFixed(2)}
+                  </span>
+                ) : (
+                  <span className="text-xs text-gray-600">--</span>
+                )}
+                {q && (
+                  <span className={`text-[10px] font-mono ${isUp ? 'text-red-400/70' : 'text-emerald-400/70'}`}>
+                    {isUp ? '+' : ''}{q.changePct.toFixed(2)}%
+                  </span>
+                )}
+                <button
+                  onClick={() => handleRemoveCode(code)}
+                  className="opacity-0 group-hover:opacity-100 absolute -top-1 -right-1 w-4 h-4 bg-red-500/80 text-white rounded-full text-[8px] flex items-center justify-center hover:bg-red-500"
+                >
+                  ✕
+                </button>
+              </div>
+            );
+          })}
+          {watchlist.length === 0 && (
+            <span className="text-xs text-gray-600 py-1">暂无监控股票，点击 + 添加</span>
+          )}
         </div>
       </div>
 
@@ -197,7 +351,7 @@ export default function LiveMonitorPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4" style={{ height: 'calc(100vh - 320px)' }}>
+      <div className="grid grid-cols-3 gap-4" style={{ height: 'calc(100vh - 420px)' }}>
         {/* Strategy List */}
         <div className="bg-[#12121a] rounded-xl border border-white/5 flex flex-col overflow-hidden">
           <div className="p-3 border-b border-white/5">

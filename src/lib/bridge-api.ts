@@ -11,9 +11,24 @@ declare global {
         getPositions: (accountId: string) => Promise<any>;
         getQuotes: (codes: string[]) => Promise<any>;
         getKlines: (code: string, period: string, count: number) => Promise<any>;
+        subscribe: (codes: string[]) => Promise<any>;
+        unsubscribe: (codes: string[]) => Promise<any>;
         placeOrder: (order: any) => Promise<any>;
         cancelOrder: (orderId: string) => Promise<any>;
         getOrders: (accountId: string) => Promise<any>;
+      };
+      greeks: {
+        calculate: (params: any) => Promise<any>;
+        portfolio: (positions: any[]) => Promise<any>;
+      };
+      marketplace: {
+        rate: (strategyId: string, rating: number) => Promise<any>;
+        getRating: (strategyId: string) => Promise<any>;
+        comment: (strategyId: string, content: string, parentId?: number) => Promise<any>;
+        getComments: (strategyId: string) => Promise<any>;
+        savePerformance: (data: any) => Promise<any>;
+        getPerformance: (strategyId: string) => Promise<any>;
+        list: (sortBy?: string, limit?: number) => Promise<any>;
       };
       strategy: {
         create: (dsl: any) => Promise<any>;
@@ -102,6 +117,37 @@ export async function getQuotes(codes: string[] = []): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.broker.getQuotes(codes);
   return result?.success ? result.quotes || [] : [];
+}
+
+export async function subscribeQuotes(codes: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.broker.subscribe(codes);
+}
+
+export async function unsubscribeQuotes(codes: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.broker.unsubscribe(codes);
+}
+
+export async function getWatchlist(): Promise<string[]> {
+  if (!hasIPC()) return [];
+  const result = await window.api.db.getWatchlist();
+  return Array.isArray(result) ? result : [];
+}
+
+export async function saveWatchlist(codes: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.db.saveWatchlist(codes);
+}
+
+export async function calculateGreeks(params: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.greeks.calculate(params);
+}
+
+export async function calculatePortfolioGreeks(positions: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.greeks.portfolio(positions);
 }
 
 export async function getOrders(accountId: string): Promise<any> {
@@ -224,6 +270,43 @@ export async function getRiskConfig(): Promise<any> {
 export async function updateRiskConfig(config: any): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.risk.updateConfig(config);
+}
+
+// ── Marketplace ──────────────────────────────────────────────────────────
+
+export async function rateStrategy(strategyId: string, rating: number): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.marketplace.rate(strategyId, rating);
+}
+
+export async function getStrategyRating(strategyId: string): Promise<any> {
+  if (!hasIPC()) return { success: false, avg: 0, count: 0, myRating: 0 };
+  return window.api.marketplace.getRating(strategyId);
+}
+
+export async function addComment(strategyId: string, content: string, parentId?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.marketplace.comment(strategyId, content, parentId);
+}
+
+export async function getComments(strategyId: string): Promise<any> {
+  if (!hasIPC()) return { success: false, comments: [] };
+  return window.api.marketplace.getComments(strategyId);
+}
+
+export async function savePerformance(data: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.marketplace.savePerformance(data);
+}
+
+export async function getPerformance(strategyId: string): Promise<any> {
+  if (!hasIPC()) return { success: false, performance: [] };
+  return window.api.marketplace.getPerformance(strategyId);
+}
+
+export async function getMarketplaceList(sortBy?: string, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, strategies: [] };
+  return window.api.marketplace.list(sortBy, limit);
 }
 
 // ── Demo K-line Generator (fallback) ──────────────────────────────────────

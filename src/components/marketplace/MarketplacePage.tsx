@@ -1,104 +1,72 @@
 import { useState, useEffect } from 'react';
-import { getAllStrategies } from '@/lib/bridge-api';
+import { getAllStrategies, getMarketplaceList, getStrategyRating, rateStrategy, addComment, getComments, getPerformance } from '@/lib/bridge-api';
 import { notify } from '@/components/NotificationToast';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
 interface MarketplaceStrategy {
   id: string;
-  title: string;
-  author: string;
-  rating: number;
-  reviews: number;
-  annualReturn: number;
-  sharpe: number;
-  maxDrawdown: number;
-  winRate: number;
-  profitFactor: number;
-  market: string;
-  tags: string[];
-  riskLevel: 'low' | 'medium' | 'high';
-  subscribers: number;
-  priceMonthly: number;
-  verified: boolean;
-  equityCurve: number[];
+  name: string;
+  description: string;
+  symbol: string;
+  dsl_json: string;
+  avg_rating: number;
+  rating_count: number;
+  comment_count: number;
+  performance_return: number;
+  performance_sharpe: number;
+  status: string;
 }
 
-// ── Demo Data (until real marketplace backend is ready) ────────────────────
+interface StrategyRating {
+  avg: number;
+  count: number;
+  myRating: number;
+}
 
-const DEMO_STRATEGIES: MarketplaceStrategy[] = [
-  {
-    id: 'ms001', title: '动量轮动 Pro', author: 'quantmaster', rating: 4.8, reviews: 126,
-    annualReturn: 28.3, sharpe: 1.8, maxDrawdown: 12, winRate: 62, profitFactor: 2.1,
-    market: '美股', tags: ['科技', '月度轮动'], riskLevel: 'medium', subscribers: 234,
-    priceMonthly: 49.9, verified: true,
-    equityCurve: [100, 103, 107, 105, 112, 118, 115, 122, 128, 125, 132, 138],
-  },
-  {
-    id: 'ms002', title: '信仰战法 v2', author: 'alpha_hunter', rating: 4.9, reviews: 89,
-    annualReturn: 35.1, sharpe: 2.1, maxDrawdown: 18, winRate: 48, profitFactor: 3.2,
-    market: '美股', tags: ['杠杆ETF', 'TQQQ', '加仓'], riskLevel: 'high', subscribers: 156,
-    priceMonthly: 99.9, verified: true,
-    equityCurve: [100, 108, 95, 115, 125, 110, 135, 145, 130, 155, 165, 170],
-  },
-  {
-    id: 'ms003', title: '稳健双均线', author: 'safe_trader', rating: 4.5, reviews: 203,
-    annualReturn: 14.2, sharpe: 1.4, maxDrawdown: 8, winRate: 58, profitFactor: 1.8,
-    market: '美股', tags: ['趋势', '均线'], riskLevel: 'low', subscribers: 412,
-    priceMonthly: 0, verified: true,
-    equityCurve: [100, 101, 103, 102, 105, 107, 106, 109, 111, 110, 113, 114],
-  },
-  {
-    id: 'ms004', title: '港股价值选股', author: 'hk_quant', rating: 4.3, reviews: 67,
-    annualReturn: 19.5, sharpe: 1.2, maxDrawdown: 15, winRate: 55, profitFactor: 1.6,
-    market: '港股', tags: ['价值', '基本面'], riskLevel: 'medium', subscribers: 98,
-    priceMonthly: 29.9, verified: false,
-    equityCurve: [100, 98, 103, 106, 102, 108, 112, 109, 115, 118, 116, 120],
-  },
-  {
-    id: 'ms005', title: 'RSI 超卖反弹', author: 'mean_reversion', rating: 4.6, reviews: 154,
-    annualReturn: 16.8, sharpe: 1.5, maxDrawdown: 10, winRate: 65, profitFactor: 2.0,
-    market: '美股', tags: ['均值回归', 'RSI'], riskLevel: 'low', subscribers: 287,
-    priceMonthly: 19.9, verified: true,
-    equityCurve: [100, 102, 101, 104, 106, 105, 108, 110, 109, 112, 114, 117],
-  },
-  {
-    id: 'ms006', title: '网格交易 · 震荡市利器', author: 'grid_master', rating: 4.4, reviews: 91,
-    annualReturn: 22.1, sharpe: 1.6, maxDrawdown: 11, winRate: 72, profitFactor: 1.9,
-    market: '美股', tags: ['震荡', '网格'], riskLevel: 'medium', subscribers: 165,
-    priceMonthly: 39.9, verified: true,
-    equityCurve: [100, 102, 104, 103, 106, 108, 107, 110, 112, 111, 115, 118],
-  },
-  {
-    id: 'ms007', title: '海龟交易法 · 经典复刻', author: 'turtle_fund', rating: 4.7, reviews: 178,
-    annualReturn: 21.5, sharpe: 1.3, maxDrawdown: 20, winRate: 42, profitFactor: 2.5,
-    market: '美股', tags: ['趋势', '通道突破', 'ATR'], riskLevel: 'high', subscribers: 201,
-    priceMonthly: 59.9, verified: true,
-    equityCurve: [100, 95, 105, 115, 108, 120, 130, 118, 135, 140, 132, 148],
-  },
-  {
-    id: 'ms008', title: '多因子选股 Alpha', author: 'factor_lab', rating: 4.2, reviews: 45,
-    annualReturn: 18.7, sharpe: 1.7, maxDrawdown: 9, winRate: 56, profitFactor: 1.7,
-    market: 'A股', tags: ['多因子', '选股'], riskLevel: 'medium', subscribers: 73,
-    priceMonthly: 69.9, verified: false,
-    equityCurve: [100, 101, 104, 103, 107, 109, 108, 112, 114, 113, 117, 119],
-  },
-];
+interface StrategyComment {
+  id: number;
+  strategy_id: string;
+  user_id: string;
+  content: string;
+  parent_id: number | null;
+  created_at: string;
+}
 
-type Tab = 'hot' | 'return' | 'stable' | 'new' | 'free';
+type Tab = 'rating' | 'return' | 'new';
 type RiskFilter = 'all' | 'low' | 'medium' | 'high';
 
+// ── Demo equity curves for display (until real performance DB is populated) ─
+const DEMO_CHARTS: Record<string, number[]> = {
+  default: [100, 103, 107, 105, 112, 118, 115, 122, 128, 125, 132, 138],
+};
+
 export default function MarketplacePage() {
-  const [activeTab, setActiveTab] = useState<Tab>('hot');
+  const [activeTab, setActiveTab] = useState<Tab>('rating');
   const [riskFilter, setRiskFilter] = useState<RiskFilter>('all');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showPublish, setShowPublish] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [myStrategies, setMyStrategies] = useState<any[]>([]);
+  const [marketStrategies, setMarketStrategies] = useState<MarketplaceStrategy[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    loadMarketplace();
     loadMyStrategies();
-  }, []);
+  }, [activeTab]);
+
+  async function loadMarketplace() {
+    setLoading(true);
+    try {
+      const res = await getMarketplaceList(activeTab === 'return' ? 'return' : 'rating');
+      if (res?.success && res.strategies) {
+        setMarketStrategies(res.strategies);
+      }
+    } catch { /* silent */ }
+    setLoading(false);
+  }
 
   async function loadMyStrategies() {
     try {
@@ -107,21 +75,10 @@ export default function MarketplacePage() {
     } catch { /* silent */ }
   }
 
-  const filtered = DEMO_STRATEGIES
-    .filter((s) => riskFilter === 'all' || s.riskLevel === riskFilter)
-    .filter((s) => !searchQuery || s.title.includes(searchQuery) || s.tags.some((t) => t.includes(searchQuery)));
+  const filtered = marketStrategies
+    .filter((s) => !searchQuery || s.name.includes(searchQuery));
 
-  const sorted = [...filtered].sort((a, b) => {
-    switch (activeTab) {
-      case 'return': return b.annualReturn - a.annualReturn;
-      case 'stable': return b.sharpe - a.sharpe;
-      case 'new': return 0;
-      case 'free': return a.priceMonthly - b.priceMonthly;
-      default: return b.subscribers - a.subscribers;
-    }
-  });
-
-  const selected = sorted.find((s) => s.id === selectedId);
+  const selected = filtered.find((s) => s.id === selectedId);
 
   return (
     <div className="p-6">
@@ -180,31 +137,33 @@ export default function MarketplacePage() {
       </div>
 
       {/* Content area */}
-      <div className="flex gap-4">
-        {/* Strategy grid */}
-        <div className="flex-1 grid grid-cols-2 xl:grid-cols-3 gap-3 content-start">
-          {sorted.map((s) => (
-            <StrategyCardItem
-              key={s.id}
-              strategy={s}
-              selected={s.id === selectedId}
-              onClick={() => setSelectedId(s.id === selectedId ? null : s.id)}
-            />
-          ))}
-          {sorted.length === 0 && (
-            <div className="col-span-3 text-center py-12 text-gray-500">
-              未找到匹配的策略
+      {loading ? (
+        <div className="text-center py-12 text-gray-500">加载策略市场中...</div>
+      ) : (
+        <div className="flex gap-4">
+          <div className="flex-1 grid grid-cols-2 xl:grid-cols-3 gap-3 content-start">
+            {filtered.map((s) => (
+              <StrategyCardItem
+                key={s.id}
+                strategy={s}
+                selected={s.id === selectedId}
+                onClick={() => { setSelectedId(s.id === selectedId ? null : s.id); setShowDetail(true); }}
+              />
+            ))}
+            {filtered.length === 0 && (
+              <div className="col-span-3 text-center py-12 text-gray-500">
+                {marketStrategies.length === 0 ? '📭 市场暂未上架策略，去策略工坊创建第一个！' : '未找到匹配的策略'}
+              </div>
+            )}
+          </div>
+
+          {selected && showDetail && (
+            <div className="w-80 flex-shrink-0">
+              <StrategyDetailPanel strategy={selected} onClose={() => { setSelectedId(null); setShowDetail(false); }} />
             </div>
           )}
         </div>
-
-        {/* Detail panel */}
-        {selected && (
-          <div className="w-80 flex-shrink-0">
-            <StrategyDetail strategy={selected} onClose={() => setSelectedId(null)} />
-          </div>
-        )}
-      </div>
+      )}
 
       {/* Publish Modal */}
       {showPublish && (
@@ -220,9 +179,9 @@ export default function MarketplacePage() {
 // ── Strategy Card ──────────────────────────────────────────────────────────
 
 function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: MarketplaceStrategy; selected: boolean; onClick: () => void }) {
-  const riskColor = s.riskLevel === 'low' ? 'text-emerald-400 bg-emerald-500/10' : s.riskLevel === 'medium' ? 'text-yellow-400 bg-yellow-500/10' : 'text-red-400 bg-red-500/10';
-  const riskLabel = s.riskLevel === 'low' ? '低风险' : s.riskLevel === 'medium' ? '中风险' : '高风险';
-  const returnColor = s.annualReturn >= 0 ? 'text-emerald-400' : 'text-red-400';
+  const returnPct = s.performance_return || 0;
+  const returnColor = returnPct >= 0 ? 'text-emerald-400' : 'text-red-400';
+  const chart = DEMO_CHARTS.default;
 
   return (
     <button
@@ -233,46 +192,36 @@ function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: Market
     >
       <div className="flex items-start justify-between mb-2">
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1.5">
-            <h3 className="text-white text-sm font-medium truncate">{s.title}</h3>
-            {s.verified && <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded flex-shrink-0">✓</span>}
+          <h3 className="text-white text-sm font-medium truncate">{s.name || '未命名'}</h3>
+          <div className="text-gray-500 text-[11px] mt-0.5">
+            ⭐{s.avg_rating || 0} ({s.rating_count || 0}评) · 💬 {s.comment_count || 0}
           </div>
-          <div className="text-gray-500 text-[11px] mt-0.5">@{s.author} · ⭐{s.rating} ({s.reviews})</div>
         </div>
       </div>
 
       <div className="h-12 mb-3">
-        <MiniChart data={s.equityCurve} positive={s.annualReturn >= 0} />
+        <MiniChart data={chart} positive={returnPct >= 0} />
       </div>
 
-      <div className="grid grid-cols-3 gap-2 mb-3 text-center">
+      <div className="grid grid-cols-2 gap-2 mb-3 text-center">
         <div>
-          <div className={`text-sm font-mono font-bold ${returnColor}`}>{s.annualReturn}%</div>
+          <div className={`text-sm font-mono font-bold ${returnColor}`}>{returnPct > 0 ? '+' : ''}{returnPct.toFixed(1)}%</div>
           <div className="text-[10px] text-gray-500">年化</div>
         </div>
         <div>
-          <div className="text-sm font-mono text-gray-200">{s.sharpe}</div>
+          <div className="text-sm font-mono text-gray-200">{s.performance_sharpe ? s.performance_sharpe.toFixed(1) : '-'}</div>
           <div className="text-[10px] text-gray-500">夏普</div>
-        </div>
-        <div>
-          <div className="text-sm font-mono text-gray-200">{s.maxDrawdown}%</div>
-          <div className="text-[10px] text-gray-500">回撤</div>
         </div>
       </div>
 
-      <div className="flex items-center gap-1.5 mb-3 flex-wrap">
-        <span className={`text-[10px] px-1.5 py-0.5 rounded ${riskColor}`}>{riskLabel}</span>
-        <span className="text-[10px] text-gray-500 bg-[#12121a] px-1.5 py-0.5 rounded">{s.market}</span>
-        {s.tags.slice(0, 2).map((t) => (
-          <span key={t} className="text-[10px] text-gray-400 bg-[#12121a] px-1.5 py-0.5 rounded">{t}</span>
-        ))}
+      <div className="flex items-center gap-1.5 mb-3">
+        <span className="text-[10px] text-gray-500 bg-[#12121a] px-1.5 py-0.5 rounded">{s.symbol || '多市场'}</span>
+        {s.description && <span className="text-[10px] text-gray-400 truncate">{s.description.slice(0, 30)}</span>}
       </div>
 
       <div className="flex items-center justify-between pt-2 border-t border-white/5">
-        <div className="text-gray-500 text-[11px]">👥 {s.subscribers}人</div>
-        <div className={`text-sm font-bold ${s.priceMonthly === 0 ? 'text-emerald-400' : 'text-[#D4A853]'}`}>
-          {s.priceMonthly === 0 ? '免费' : `¥${s.priceMonthly}/月`}
-        </div>
+        <div className="text-gray-500 text-[11px]">📊 已认证</div>
+        <div className="text-sm font-bold text-[#D4A853]">查看详情 →</div>
       </div>
     </button>
   );
@@ -301,83 +250,139 @@ function MiniChart({ data, positive }: { data: number[]; positive: boolean }) {
   );
 }
 
-// ── Strategy Detail Panel ──────────────────────────────────────────────────
+// ── Strategy Detail Panel (with real rating + comment) ────────────────────
 
-function StrategyDetail({ strategy: s, onClose }: { strategy: MarketplaceStrategy; onClose: () => void }) {
-  const [followMode, setFollowMode] = useState<'auto' | 'semi' | 'notify'>('auto');
+function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceStrategy; onClose: () => void }) {
+  const [rating, setRating] = useState<StrategyRating>({ avg: 0, count: 0, myRating: 0 });
+  const [comments, setComments] = useState<StrategyComment[]>([]);
+  const [newComment, setNewComment] = useState('');
+  const [hoverStar, setHoverStar] = useState(0);
+
+  useEffect(() => {
+    loadRating();
+    loadComments();
+  }, [s.id]);
+
+  async function loadRating() {
+    try {
+      const res = await getStrategyRating(s.id);
+      if (res?.success) setRating({ avg: res.avg, count: res.count, myRating: res.myRating });
+    } catch {}
+  }
+
+  async function loadComments() {
+    try {
+      const res = await getComments(s.id);
+      if (res?.success) setComments(res.comments || []);
+    } catch {}
+  }
+
+  async function handleRate(star: number) {
+    try {
+      await rateStrategy(s.id, star);
+      await loadRating();
+    } catch { notify('error', '评分失败'); }
+  }
+
+  async function handleComment() {
+    if (!newComment.trim()) return;
+    try {
+      await addComment(s.id, newComment.trim());
+      setNewComment('');
+      await loadComments();
+    } catch { notify('error', '评论失败'); }
+  }
 
   return (
-    <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5 sticky top-0">
+    <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5 sticky top-0 max-h-[calc(100vh-120px)] overflow-y-auto">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-white font-semibold">{s.title}</h2>
-        <button onClick={onClose} className="text-gray-500 hover:text-gray-300">✕</button>
+        <h2 className="text-white font-semibold text-sm">{s.name}</h2>
+        <button onClick={onClose} className="text-gray-500 hover:text-gray-300 text-sm">✕</button>
       </div>
 
-      <div className="flex items-center gap-2 mb-4 pb-4 border-b border-white/5">
-        <div className="w-8 h-8 rounded-full bg-[#22222f] flex items-center justify-center text-[#D4A853] text-sm font-bold">
-          {s.author[0].toUpperCase()}
-        </div>
-        <div>
-          <div className="text-gray-200 text-sm">@{s.author}</div>
-          <div className="text-gray-500 text-[11px]">⭐ {s.rating} · {s.reviews} 评价 · {s.subscribers} 订阅</div>
-        </div>
-        {s.verified && <span className="ml-auto text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded-full">✓ 认证</span>}
-      </div>
+      {s.description && <p className="text-gray-400 text-xs mb-4">{s.description}</p>}
 
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <MetricBox label="年化收益" value={`${s.annualReturn}%`} color={s.annualReturn >= 0 ? 'text-emerald-400' : 'text-red-400'} />
-        <MetricBox label="夏普比率" value={String(s.sharpe)} />
-        <MetricBox label="最大回撤" value={`${s.maxDrawdown}%`} />
-        <MetricBox label="胜率" value={`${s.winRate}%`} />
-        <MetricBox label="盈亏比" value={String(s.profitFactor)} />
-        <MetricBox label="订阅人数" value={String(s.subscribers)} />
-      </div>
-
-      <div className="mb-4">
-        <div className="text-gray-400 text-xs mb-2">收益曲线</div>
-        <div className="h-24 bg-[#12121a] rounded-lg p-2">
-          <MiniChart data={s.equityCurve} positive={s.annualReturn >= 0} />
-        </div>
-      </div>
-
-      <div className="mb-4">
-        <div className="text-gray-400 text-xs mb-2">跟单模式</div>
-        <div className="flex gap-2">
-          {([['auto', '⚡ 全自动'], ['semi', '👆 半自动'], ['notify', '🔔 仅通知']] as const).map(([mode, label]) => (
-            <button
-              key={mode}
-              onClick={() => setFollowMode(mode)}
-              className={`flex-1 px-2 py-2 rounded-lg text-xs transition-colors ${
-                followMode === mode ? 'bg-[#C9A046]/20 text-[#D4A853] border border-[#C9A046]/30' : 'bg-[#22222f] text-gray-400 border border-transparent hover:text-gray-200'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-        <div className="text-gray-500 text-[11px] mt-2">
-          {followMode === 'auto' && '策略信号自动下单执行'}
-          {followMode === 'semi' && '推送信号，你确认后执行'}
-          {followMode === 'notify' && '只推送通知，不执行交易'}
-        </div>
-      </div>
-
-      <div className="border-t border-white/5 pt-4">
-        <div className="flex items-center justify-between mb-3">
-          <div className="text-gray-400 text-sm">价格</div>
-          <div className={`text-xl font-bold ${s.priceMonthly === 0 ? 'text-emerald-400' : 'text-[#D4A853]'}`}>
-            {s.priceMonthly === 0 ? '免费' : `¥${s.priceMonthly}/月`}
+      {/* Star Rating */}
+      <div className="mb-4 pb-4 border-b border-white/5">
+        <div className="flex items-center gap-3">
+          <div className="text-3xl font-bold text-[#D4A853]">{rating.avg || '-'}</div>
+          <div>
+            <div className="flex gap-0.5 mb-0.5">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  onClick={() => handleRate(star)}
+                  onMouseEnter={() => setHoverStar(star)}
+                  onMouseLeave={() => setHoverStar(0)}
+                  className={`text-sm transition-colors ${
+                    star <= (hoverStar || rating.myRating) ? 'text-[#D4A853]' : 'text-gray-600'
+                  }`}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
+            <div className="text-gray-500 text-[10px]">{rating.count} 人评分{rating.myRating > 0 && ` · 我的: ${rating.myRating}星`}</div>
           </div>
         </div>
+      </div>
 
+      {/* Strategy Info */}
+      <div className="grid grid-cols-2 gap-2 mb-4">
+        <MetricBox label="标的" value={s.symbol || '多市场'} />
+        <MetricBox label="年化收益" value={`${(s.performance_return || 0).toFixed(1)}%`} color={s.performance_return >= 0 ? 'text-emerald-400' : 'text-red-400'} />
+        <MetricBox label="夏普" value={s.performance_sharpe ? s.performance_sharpe.toFixed(1) : '-'} />
+        <MetricBox label="评论" value={String(s.comment_count || 0)} />
+      </div>
+
+      {/* Comments Section */}
+      <div className="mb-3">
+        <div className="text-gray-400 text-[11px] font-medium mb-2">💬 评论 ({comments.length})</div>
+
+        {/* Add comment */}
+        <div className="flex gap-2 mb-3">
+          <input
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleComment()}
+            placeholder="写评论..."
+            className="flex-1 bg-[#12121a] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50"
+          />
+          <button
+            onClick={handleComment}
+            disabled={!newComment.trim()}
+            className="px-3 py-1.5 bg-[#C9A046]/20 text-[#D4A853] text-xs rounded-lg hover:bg-[#C9A046]/30 disabled:opacity-40"
+          >
+            发送
+          </button>
+        </div>
+
+        {/* Comment list */}
+        <div className="space-y-2 max-h-48 overflow-y-auto">
+          {comments.length === 0 && (
+            <div className="text-gray-600 text-[10px] text-center py-3">暂无评论，来发表第一条</div>
+          )}
+          {comments.map((c) => (
+            <div key={c.id} className="bg-[#12121a] rounded-lg p-2.5">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-gray-400 text-[10px]">{c.user_id}</span>
+                <span className="text-gray-600 text-[9px]">{c.created_at?.slice(0, 16)}</span>
+              </div>
+              <div className="text-gray-300 text-xs">{c.content}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Action */}
+      <div className="border-t border-white/5 pt-4">
         <button
-          onClick={() => notify('info', '策略市场功能即将上线，敬请期待')}
+          onClick={() => notify('info', '订阅功能即将上线，敬请期待')}
           className="w-full py-2.5 bg-[#C9A046] text-black font-semibold rounded-lg text-sm hover:bg-[#D4A853] transition-colors"
         >
-          {s.priceMonthly === 0 ? '免费使用' : '立即订阅'}
+          📥 使用此策略
         </button>
-
-        <div className="mt-3 text-center text-[10px] text-gray-600">
+        <div className="mt-2 text-center text-[10px] text-gray-600">
           平台服务费 30% · 创作者收入 70%
         </div>
       </div>
