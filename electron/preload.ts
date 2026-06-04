@@ -52,6 +52,15 @@ contextBridge.exposeInMainWorld('api', {
     liveGetPositions: () => ipcRenderer.invoke('live:get-positions'),
     liveGetOrders: () => ipcRenderer.invoke('live:get-orders'),
 
+    // JVS-47: OpenD Connection Validator
+    opendValidate: () => ipcRenderer.invoke('opend:validate'),
+    opendGetStatus: () => ipcRenderer.invoke('opend:getStatus'),
+
+    // JVS-46: Strategy Signal Generator
+    signalGenerate: (config: any) => ipcRenderer.invoke('signal:generate', config),
+    signalGenerateBatch: (configs: any[]) => ipcRenderer.invoke('signal:generate-batch', configs),
+    signalValidateBacktest: (config: any) => ipcRenderer.invoke('signal:validate-backtest', config),
+
     // Q8: Market Regime Detector
     detectRegime: (klines: any, vixLevel?: number, symbol?: string) =>
       ipcRenderer.invoke('regime:detect', { klines, vixLevel, symbol }),

@@ -500,6 +500,33 @@ export async function liveGetOrders(): Promise<{ success: boolean; orders: LiveO
   return window.api.strategy.liveGetOrders();
 }
 
+// ── JVS-47: OpenD Connection Validator ──────────────────────────────────
+export async function opendValidate(): Promise<{ success: boolean; result?: any }> {
+  if (!hasIPC()) return { success: false };
+  return window.api.opendValidate();
+}
+
+export async function opendGetStatus(): Promise<{ success: boolean; status?: any }> {
+  if (!hasIPC()) return { success: false };
+  return window.api.opendGetStatus();
+}
+
+// ── JVS-46: Strategy Signal Generator ──────────────────────────────────
+export async function signalGenerate(config: any): Promise<{ success: boolean; signal?: any }> {
+  if (!hasIPC()) return { success: false };
+  return window.api.signalGenerate(config);
+}
+
+export async function signalGenerateBatch(configs: any[]): Promise<{ success: boolean; signals?: any[] }> {
+  if (!hasIPC()) return { success: false };
+  return window.api.signalGenerateBatch(configs);
+}
+
+export async function signalValidateBacktest(config: any): Promise<{ success: boolean; result?: any }> {
+  if (!hasIPC()) return { success: false };
+  return window.api.signalValidateBacktest(config);
+}
+
 // ── Q15: Multi-Factor Model ──────────────────────────────────
 export async function multiFactorScore(request: {
   stocks: Array<{ code: string; name: string }>;
