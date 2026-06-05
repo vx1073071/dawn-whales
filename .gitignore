@@ -12,3 +12,5 @@ Thumbs.db
 release/
 *.log
 node_modules/
+
+coverage/
