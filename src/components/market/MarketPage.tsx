@@ -1,5 +1,6 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 import { useMarketStore } from '@/stores/marketStore';
+import { useWebSocketQuotes } from '@/hooks/useWebSocketQuotes';
 import KLineChart from './KLineChart';
 import * as api from '@/lib/bridge-api';
 
@@ -51,6 +52,33 @@ export default function MarketPage() {
     { key: 'weekly', label: '周K' },
   ];
 
+  // ── J-25-05: WebSocket real-time quotes ──────────────────────────────────
+  const { quotes: wsQuotes, connected: wsConnected, source: wsSource } = useWebSocketQuotes({
+    symbols: watchlist,
+    enabled: true,
+    fallbackIntervalMs: 10000,
+  });
+
+  // Merge WS quotes with store quotes (WS takes priority)
+  const mergedQuotes = useMemo(() => {
+    const merged: Record<string, any> = { ...quotes };
+    wsQuotes.forEach((wsQ, code) => {
+      merged[code] = {
+        ...merged[code],
+        code: wsQ.code,
+        price: wsQ.price,
+        change: wsQ.change,
+        changePct: wsQ.changePct,
+        volume: wsQ.volume,
+        bid: wsQ.bid,
+        ask: wsQ.ask,
+        _wsSource: wsQ.source,
+        _wsTimestamp: wsQ.timestamp,
+      };
+    });
+    return merged;
+  }, [quotes, wsQuotes]);
+
   useEffect(() => {
     if (selectedSymbol) loadKlines(selectedSymbol, klinePeriod);
   }, [selectedSymbol, klinePeriod]);
@@ -86,7 +114,15 @@ export default function MarketPage() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">行情中心</h1>
-          <p className="text-gray-400 text-sm">实时监控自选股行情 · Push 模式 &lt;50ms</p>
+          <div className="flex items-center gap-2">
+            <p className="text-gray-400 text-sm">实时监控自选股行情 · Push 模式 &lt;50ms</p>
+            <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full ${
+              wsConnected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-500/10 text-gray-500'
+            }`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${wsConnected ? 'bg-emerald-400 animate-pulse' : 'bg-gray-500'}`} />
+              {wsConnected ? `WS ${wsSource}` : 'Polling'}
+            </span>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setShowSearch(!showSearch)} className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">
@@ -154,7 +190,7 @@ export default function MarketPage() {
               <WatchlistRow
                 key={code}
                 code={code}
-                quote={quotes[code]}
+                quote={mergedQuotes[code]}
                 isSelected={selectedSymbol === code}
                 onSelect={setSelectedSymbol}
                 onRemove={removeWatch}
@@ -176,7 +212,7 @@ export default function MarketPage() {
             <div className="flex items-center gap-3 mb-3">
               <h2 className="text-white font-semibold">{selectedSymbol.replace('US.', '')}</h2>
               {(() => {
-                const q = quotes[selectedSymbol];
+                const q = mergedQuotes[selectedSymbol];
                 const cls = q && q.change > 0 ? 'text-emerald-400' : q && q.change < 0 ? 'text-red-400' : 'text-gray-500';
                 return q ? (
                   <span className={`font-mono text-sm ${cls}`}>
