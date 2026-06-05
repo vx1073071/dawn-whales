@@ -1,7 +1,7 @@
-// ── TradingDeskPage — IPC Full-Link (Round 16 P0) ────────────────────────
-// 全链路交易台: 账户资金 + 持仓 + 下单 + 委托管理 + 快速交易
+﻿// 鈹€鈹€ TradingDeskPage 鈥?IPC Full-Link (Round 16 P0) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// 鍏ㄩ摼璺氦鏄撳彴: 璐︽埛璧勯噾 + 鎸佷粨 + 涓嬪崟 + 濮旀墭绠＄悊 + 蹇€熶氦鏄?
 // >=500 lines | dark theme | production-ready
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import * as api from '@/lib/bridge-api';
 
 type Tab = 'trade' | 'positions' | 'orders' | 'history';
@@ -43,17 +43,17 @@ interface Order {
   updateTime?: string;
 }
 
-// ── Account Summary Card ─────────────────────────────────────────────────
+// 鈹€鈹€ Account Summary Card 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 function AccountSummary({ fund, connected }: { fund: AccountFund | null; connected: boolean }) {
   if (!fund) {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-white font-medium text-sm">账户资金</h3>
-          <span className="text-xs text-red-400">{connected ? '加载中...' : '未连接'}</span>
+          <h3 className="text-white font-medium text-sm">璐︽埛璧勯噾</h3>
+          <span className="text-xs text-red-400">{connected ? '鍔犺浇涓?..' : '鏈繛鎺?}</span>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          {['总资产', '可用资金', '持仓市值', '购买力'].map((label) => (
+          {['鎬昏祫浜?, '鍙敤璧勯噾', '鎸佷粨甯傚€?, '璐拱鍔?].map((label) => (
             <div key={label}>
               <div className="text-gray-500 text-xs mb-1">{label}</div>
               <div className="text-gray-600 font-mono text-sm">--</div>
@@ -69,35 +69,35 @@ function AccountSummary({ fund, connected }: { fund: AccountFund | null; connect
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-white font-medium text-sm">账户资金</h3>
-        <span className="text-xs text-emerald-400">● 实时</span>
+        <h3 className="text-white font-medium text-sm">璐︽埛璧勯噾</h3>
+        <span className="text-xs text-emerald-400">鈼?瀹炴椂</span>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <div className="text-gray-500 text-xs mb-1">总资产</div>
+          <div className="text-gray-500 text-xs mb-1">鎬昏祫浜?/div>
           <div className="text-white font-mono text-lg font-semibold">{fmt(fund.totalAssets)}</div>
         </div>
         <div>
-          <div className="text-gray-500 text-xs mb-1">可用资金</div>
+          <div className="text-gray-500 text-xs mb-1">鍙敤璧勯噾</div>
           <div className="text-emerald-400 font-mono text-sm">{fmt(fund.cash)}</div>
         </div>
         <div>
-          <div className="text-gray-500 text-xs mb-1">持仓市值</div>
+          <div className="text-gray-500 text-xs mb-1">鎸佷粨甯傚€?/div>
           <div className="text-gray-300 font-mono text-sm">{fmt(fund.marketVal)}</div>
         </div>
         <div>
-          <div className="text-gray-500 text-xs mb-1">购买力</div>
+          <div className="text-gray-500 text-xs mb-1">璐拱鍔?/div>
           <div className="text-cyan-400 font-mono text-sm">{fmt(fund.buyingPower)}</div>
         </div>
       </div>
       {fund.frozenCash && fund.frozenCash > 0 && (
-        <div className="mt-2 text-xs text-yellow-400">冻结: {fmt(fund.frozenCash)}</div>
+        <div className="mt-2 text-xs text-yellow-400">鍐荤粨: {fmt(fund.frozenCash)}</div>
       )}
     </div>
   );
 }
 
-// ── Quick Trade Form ─────────────────────────────────────────────────────
+// 鈹€鈹€ Quick Trade Form 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 function QuickTradeForm({
   connected,
   selectedAccount,
@@ -119,15 +119,15 @@ function QuickTradeForm({
 
   async function handleSubmit() {
     if (!connected) {
-      setResult({ ok: false, msg: 'OpenD 未连接，无法下单' });
+      setResult({ ok: false, msg: 'OpenD 鏈繛鎺ワ紝鏃犳硶涓嬪崟' });
       return;
     }
     if (!qty || parseInt(qty) <= 0) {
-      setResult({ ok: false, msg: '请输入有效数量' });
+      setResult({ ok: false, msg: '璇疯緭鍏ユ湁鏁堟暟閲? });
       return;
     }
     if (orderType === 'LIMIT' && (!price || parseFloat(price) <= 0)) {
-      setResult({ ok: false, msg: '限价单请输入委托价格' });
+      setResult({ ok: false, msg: '闄愪环鍗曡杈撳叆濮旀墭浠锋牸' });
       return;
     }
 
@@ -145,13 +145,13 @@ function QuickTradeForm({
 
       const res = await api.placeOrder(order);
       if (res?.success || res?.orderId) {
-        setResult({ ok: true, msg: `下单成功: ${side === 'BUY' ? '买入' : '卖出'} ${qty} ${symbol.replace('US.', '')}` });
+        setResult({ ok: true, msg: `涓嬪崟鎴愬姛: ${side === 'BUY' ? '涔板叆' : '鍗栧嚭'} ${qty} ${symbol.replace('US.', '')}` });
         onOrderPlaced();
       } else {
-        setResult({ ok: false, msg: res?.error || '下单失败' });
+        setResult({ ok: false, msg: res?.error || '涓嬪崟澶辫触' });
       }
     } catch (err: any) {
-      setResult({ ok: false, msg: err.message || '下单异常' });
+      setResult({ ok: false, msg: err.message || '涓嬪崟寮傚父' });
     } finally {
       setLoading(false);
     }
@@ -159,7 +159,7 @@ function QuickTradeForm({
 
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-      <h3 className="text-white font-medium text-sm mb-4">快速下单</h3>
+      <h3 className="text-white font-medium text-sm mb-4">蹇€熶笅鍗?/h3>
 
       {/* Quick symbol buttons */}
       <div className="flex flex-wrap gap-1 mb-3">
@@ -182,7 +182,7 @@ function QuickTradeForm({
           value={symbol}
           onChange={(e) => setSymbol(e.target.value.toUpperCase())}
           className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-[#C9A046]/50"
-          placeholder="输入股票代码"
+          placeholder="杈撳叆鑲＄エ浠ｇ爜"
         />
       </div>
 
@@ -194,7 +194,7 @@ function QuickTradeForm({
             side === 'BUY' ? 'bg-emerald-500 text-white' : 'bg-[#12121a] text-gray-400 hover:text-white'
           }`}
         >
-          买入
+          涔板叆
         </button>
         <button
           onClick={() => setSide('SELL')}
@@ -202,7 +202,7 @@ function QuickTradeForm({
             side === 'SELL' ? 'bg-red-500 text-white' : 'bg-[#12121a] text-gray-400 hover:text-white'
           }`}
         >
-          卖出
+          鍗栧嚭
         </button>
       </div>
 
@@ -216,14 +216,14 @@ function QuickTradeForm({
               orderType === t ? 'bg-white/10 text-white' : 'bg-[#12121a] text-gray-500'
             }`}
           >
-            {t === 'MARKET' ? '市价' : '限价'}
+            {t === 'MARKET' ? '甯備环' : '闄愪环'}
           </button>
         ))}
       </div>
 
       {/* Quantity */}
       <div className="mb-3">
-        <label className="text-gray-500 text-xs mb-1 block">数量</label>
+        <label className="text-gray-500 text-xs mb-1 block">鏁伴噺</label>
         <input
           type="number"
           value={qty}
@@ -246,7 +246,7 @@ function QuickTradeForm({
       {/* Price (limit only) */}
       {orderType === 'LIMIT' && (
         <div className="mb-3">
-          <label className="text-gray-500 text-xs mb-1 block">委托价</label>
+          <label className="text-gray-500 text-xs mb-1 block">濮旀墭浠?/label>
           <input
             type="number"
             step="0.01"
@@ -270,7 +270,7 @@ function QuickTradeForm({
               : 'bg-red-500 hover:bg-red-600 text-white'
         } ${loading ? 'opacity-60' : ''}`}
       >
-        {loading ? '下单中...' : !connected ? '请先连接 OpenD' : `${side === 'BUY' ? '买入' : '卖出'} ${symbol.replace('US.', '')} × ${qty}`}
+        {loading ? '涓嬪崟涓?..' : !connected ? '璇峰厛杩炴帴 OpenD' : `${side === 'BUY' ? '涔板叆' : '鍗栧嚭'} ${symbol.replace('US.', '')} 脳 ${qty}`}
       </button>
 
       {/* Result message */}
@@ -283,7 +283,7 @@ function QuickTradeForm({
   );
 }
 
-// ── Main Page ────────────────────────────────────────────────────────────
+// 鈹€鈹€ Main Page 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 export default function TradingDeskPage() {
   const [tab, setTab] = useState<Tab>('trade');
   const [connected, setConnected] = useState(false);
@@ -425,10 +425,10 @@ export default function TradingDeskPage() {
   }
 
   const tabs: { key: Tab; label: string; icon: string }[] = [
-    { key: 'trade', label: '交易台', icon: '📈' },
-    { key: 'positions', label: '持仓', icon: '💼' },
-    { key: 'orders', label: '委托', icon: '📋' },
-    { key: 'history', label: '成交记录', icon: '📜' },
+    { key: 'trade', label: '浜ゆ槗鍙?, icon: '馃搱' },
+    { key: 'positions', label: '鎸佷粨', icon: '馃捈' },
+    { key: 'orders', label: '濮旀墭', icon: '馃搵' },
+    { key: 'history', label: '鎴愪氦璁板綍', icon: '馃摐' },
   ];
 
   const activeOrders = orders.filter((o) => ['SUBMITTED', 'WAITING', 'PARTIAL'].includes(o.status));
@@ -441,9 +441,9 @@ export default function TradingDeskPage() {
     submitted: 'text-blue-400 bg-blue-500/20', pending: 'text-yellow-400 bg-yellow-500/20',
   };
   const statusLabels: Record<string, string> = {
-    SUBMITTED: '已提交', WAITING: '等待中', FILLED: '已成交', PARTIAL: '部分成交',
-    CANCELLED: '已撤销', REJECTED: '已拒绝', UNKNOWN: '未知',
-    submitted: '已提交', pending: '待处理',
+    SUBMITTED: '宸叉彁浜?, WAITING: '绛夊緟涓?, FILLED: '宸叉垚浜?, PARTIAL: '閮ㄥ垎鎴愪氦',
+    CANCELLED: '宸叉挙閿€', REJECTED: '宸叉嫆缁?, UNKNOWN: '鏈煡',
+    submitted: '宸叉彁浜?, pending: '寰呭鐞?,
   };
 
   return (
@@ -451,23 +451,23 @@ export default function TradingDeskPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">交易台</h1>
-          <p className="text-gray-400 text-sm">IPC 全链路 · 下单/持仓/委托/成交</p>
+          <h1 className="text-2xl font-bold text-white mb-1">浜ゆ槗鍙?/h1>
+          <p className="text-gray-400 text-sm">IPC 鍏ㄩ摼璺?路 涓嬪崟/鎸佷粨/濮旀墭/鎴愪氦</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 text-xs">
             <div className={`w-2 h-2 rounded-full ${connected ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`} />
             <span className={connected ? 'text-emerald-400' : 'text-red-400'}>
-              {connected ? 'OpenD 已连接' : '未连接'}
+              {connected ? 'OpenD 宸茶繛鎺? : '鏈繛鎺?}
             </span>
           </div>
-          {lastRefresh && <span className="text-gray-600 text-xs">刷新: {lastRefresh}</span>}
+          {lastRefresh && <span className="text-gray-600 text-xs">鍒锋柊: {lastRefresh}</span>}
           <button
             onClick={refreshAll}
             disabled={loading}
             className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors"
           >
-            {loading ? '...' : '⟳ 刷新'}
+            {loading ? '...' : '鉄?鍒锋柊'}
           </button>
         </div>
       </div>
@@ -503,21 +503,21 @@ export default function TradingDeskPage() {
             {/* Active orders */}
             <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
               <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
-                <h3 className="text-white text-sm font-medium">当前委托 ({activeOrders.length})</h3>
+                <h3 className="text-white text-sm font-medium">褰撳墠濮旀墭 ({activeOrders.length})</h3>
               </div>
               {activeOrders.length === 0 ? (
-                <div className="p-6 text-center text-gray-500 text-sm">暂无活跃委托</div>
+                <div className="p-6 text-center text-gray-500 text-sm">鏆傛棤娲昏穬濮旀墭</div>
               ) : (
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                      <th className="px-3 py-2 text-left">代码</th>
-                      <th className="px-3 py-2 text-center">方向</th>
-                      <th className="px-3 py-2 text-right">数量</th>
-                      <th className="px-3 py-2 text-right">委托价</th>
-                      <th className="px-3 py-2 text-right">成交</th>
-                      <th className="px-3 py-2 text-center">状态</th>
-                      <th className="px-3 py-2 text-center">操作</th>
+                      <th className="px-3 py-2 text-left">浠ｇ爜</th>
+                      <th className="px-3 py-2 text-center">鏂瑰悜</th>
+                      <th className="px-3 py-2 text-right">鏁伴噺</th>
+                      <th className="px-3 py-2 text-right">濮旀墭浠?/th>
+                      <th className="px-3 py-2 text-right">鎴愪氦</th>
+                      <th className="px-3 py-2 text-center">鐘舵€?/th>
+                      <th className="px-3 py-2 text-center">鎿嶄綔</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -526,7 +526,7 @@ export default function TradingDeskPage() {
                         <td className="px-3 py-2 text-white text-sm font-medium">{o.code?.replace('US.', '')}</td>
                         <td className="px-3 py-2 text-center">
                           <span className={`text-xs px-2 py-0.5 rounded ${o.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                            {o.side === 'BUY' ? '买' : '卖'}
+                            {o.side === 'BUY' ? '涔? : '鍗?}
                           </span>
                         </td>
                         <td className="px-3 py-2 text-right font-mono text-sm">{o.qty}</td>
@@ -536,7 +536,7 @@ export default function TradingDeskPage() {
                           <span className={`text-xs px-2 py-0.5 rounded ${statusColors[o.status] || ''}`}>{statusLabels[o.status] || o.status}</span>
                         </td>
                         <td className="px-3 py-2 text-center">
-                          <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded">撤单</button>
+                          <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded">鎾ゅ崟</button>
                         </td>
                       </tr>
                     ))}
@@ -548,19 +548,19 @@ export default function TradingDeskPage() {
             {/* Positions preview */}
             <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden mt-4">
               <div className="px-4 py-3 border-b border-white/5">
-                <h3 className="text-white text-sm font-medium">当前持仓 ({positions.length})</h3>
+                <h3 className="text-white text-sm font-medium">褰撳墠鎸佷粨 ({positions.length})</h3>
               </div>
               {positions.length === 0 ? (
-                <div className="p-6 text-center text-gray-500 text-sm">暂无持仓</div>
+                <div className="p-6 text-center text-gray-500 text-sm">鏆傛棤鎸佷粨</div>
               ) : (
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                      <th className="px-3 py-2 text-left">代码</th>
-                      <th className="px-3 py-2 text-right">数量</th>
-                      <th className="px-3 py-2 text-right">成本</th>
-                      <th className="px-3 py-2 text-right">市价</th>
-                      <th className="px-3 py-2 text-right">盈亏</th>
+                      <th className="px-3 py-2 text-left">浠ｇ爜</th>
+                      <th className="px-3 py-2 text-right">鏁伴噺</th>
+                      <th className="px-3 py-2 text-right">鎴愭湰</th>
+                      <th className="px-3 py-2 text-right">甯備环</th>
+                      <th className="px-3 py-2 text-right">鐩堜簭</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -591,22 +591,22 @@ export default function TradingDeskPage() {
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           {positions.length === 0 ? (
             <div className="p-8 text-center">
-              <div className="text-3xl mb-2 opacity-40">💼</div>
-              <p className="text-gray-400 text-sm">暂无持仓</p>
-              {!selectedAccount && <p className="text-gray-600 text-xs mt-1">请先连接 OpenD</p>}
+              <div className="text-3xl mb-2 opacity-40">馃捈</div>
+              <p className="text-gray-400 text-sm">鏆傛棤鎸佷粨</p>
+              {!selectedAccount && <p className="text-gray-600 text-xs mt-1">璇峰厛杩炴帴 OpenD</p>}
             </div>
           ) : (
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">代码</th>
-                  <th className="px-4 py-3 text-left">名称</th>
-                  <th className="px-4 py-3 text-right">数量</th>
-                  <th className="px-4 py-3 text-right">成本价</th>
-                  <th className="px-4 py-3 text-right">市价</th>
-                  <th className="px-4 py-3 text-right">市值</th>
-                  <th className="px-4 py-3 text-right">盈亏</th>
-                  <th className="px-4 py-3 text-right">盈亏%</th>
+                  <th className="px-4 py-3 text-left">浠ｇ爜</th>
+                  <th className="px-4 py-3 text-left">鍚嶇О</th>
+                  <th className="px-4 py-3 text-right">鏁伴噺</th>
+                  <th className="px-4 py-3 text-right">鎴愭湰浠?/th>
+                  <th className="px-4 py-3 text-right">甯備环</th>
+                  <th className="px-4 py-3 text-right">甯傚€?/th>
+                  <th className="px-4 py-3 text-right">鐩堜簭</th>
+                  <th className="px-4 py-3 text-right">鐩堜簭%</th>
                 </tr>
               </thead>
               <tbody>
@@ -641,25 +641,25 @@ export default function TradingDeskPage() {
       {(tab === 'orders') && (
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           {loading && orders.length === 0 ? (
-            <div className="p-8 text-center text-gray-500 text-sm">加载中...</div>
+            <div className="p-8 text-center text-gray-500 text-sm">鍔犺浇涓?..</div>
           ) : orders.length === 0 ? (
             <div className="p-8 text-center">
-              <div className="text-3xl mb-2 opacity-40">📋</div>
-              <p className="text-gray-400 text-sm">暂无委托记录</p>
+              <div className="text-3xl mb-2 opacity-40">馃搵</div>
+              <p className="text-gray-400 text-sm">鏆傛棤濮旀墭璁板綍</p>
             </div>
           ) : (
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">时间</th>
-                  <th className="px-4 py-3 text-left">代码</th>
-                  <th className="px-4 py-3 text-center">方向</th>
-                  <th className="px-4 py-3 text-right">数量</th>
-                  <th className="px-4 py-3 text-right">委托价</th>
-                  <th className="px-4 py-3 text-right">成交数</th>
-                  <th className="px-4 py-3 text-right">成交价</th>
-                  <th className="px-4 py-3 text-center">状态</th>
-                  <th className="px-4 py-3 text-center">操作</th>
+                  <th className="px-4 py-3 text-left">鏃堕棿</th>
+                  <th className="px-4 py-3 text-left">浠ｇ爜</th>
+                  <th className="px-4 py-3 text-center">鏂瑰悜</th>
+                  <th className="px-4 py-3 text-right">鏁伴噺</th>
+                  <th className="px-4 py-3 text-right">濮旀墭浠?/th>
+                  <th className="px-4 py-3 text-right">鎴愪氦鏁?/th>
+                  <th className="px-4 py-3 text-right">鎴愪氦浠?/th>
+                  <th className="px-4 py-3 text-center">鐘舵€?/th>
+                  <th className="px-4 py-3 text-center">鎿嶄綔</th>
                 </tr>
               </thead>
               <tbody>
@@ -669,7 +669,7 @@ export default function TradingDeskPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{o.code?.replace('US.', '') || '--'}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${o.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {o.side === 'BUY' ? '买入' : '卖出'}
+                        {o.side === 'BUY' ? '涔板叆' : '鍗栧嚭'}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm">{o.qty}</td>
@@ -683,7 +683,7 @@ export default function TradingDeskPage() {
                     </td>
                     <td className="px-4 py-3 text-center">
                       {['SUBMITTED', 'WAITING', 'PARTIAL'].includes(o.status) && (
-                        <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded">撤单</button>
+                        <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded">鎾ゅ崟</button>
                       )}
                     </td>
                   </tr>
@@ -699,22 +699,22 @@ export default function TradingDeskPage() {
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           {dbTrades.length === 0 ? (
             <div className="p-8 text-center">
-              <div className="text-3xl mb-2 opacity-40">📜</div>
-              <p className="text-gray-400 text-sm">暂无成交记录</p>
-              <p className="text-gray-600 text-xs mt-1">策略运行后自动记录在这里</p>
+              <div className="text-3xl mb-2 opacity-40">馃摐</div>
+              <p className="text-gray-400 text-sm">鏆傛棤鎴愪氦璁板綍</p>
+              <p className="text-gray-600 text-xs mt-1">绛栫暐杩愯鍚庤嚜鍔ㄨ褰曞湪杩欓噷</p>
             </div>
           ) : (
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">时间</th>
-                  <th className="px-4 py-3 text-left">代码</th>
-                  <th className="px-4 py-3 text-center">方向</th>
-                  <th className="px-4 py-3 text-right">数量</th>
-                  <th className="px-4 py-3 text-right">价格</th>
-                  <th className="px-4 py-3 text-right">盈亏</th>
-                  <th className="px-4 py-3 text-center">状态</th>
-                  <th className="px-4 py-3 text-left">备注</th>
+                  <th className="px-4 py-3 text-left">鏃堕棿</th>
+                  <th className="px-4 py-3 text-left">浠ｇ爜</th>
+                  <th className="px-4 py-3 text-center">鏂瑰悜</th>
+                  <th className="px-4 py-3 text-right">鏁伴噺</th>
+                  <th className="px-4 py-3 text-right">浠锋牸</th>
+                  <th className="px-4 py-3 text-right">鐩堜簭</th>
+                  <th className="px-4 py-3 text-center">鐘舵€?/th>
+                  <th className="px-4 py-3 text-left">澶囨敞</th>
                 </tr>
               </thead>
               <tbody>
@@ -724,7 +724,7 @@ export default function TradingDeskPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{t.symbol?.replace('US.', '')}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${t.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {t.side === 'BUY' ? '买入' : '卖出'}
+                        {t.side === 'BUY' ? '涔板叆' : '鍗栧嚭'}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm">{t.quantity}</td>
@@ -748,3 +748,4 @@ export default function TradingDeskPage() {
     </div>
   );
 }
+
