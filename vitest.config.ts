@@ -23,7 +23,8 @@ export default defineConfig({
       'tests/paper-trader.test.ts',
       'tests/jvs-50-realtime-quality-monitor.test.ts',  // EventEmitter mock issue - run separately
       'tests/jvs-49-data-versioning.test.ts',  // better-sqlite3 native bindings - run separately
-      'tests/ipc-full-link-smoke.test.ts',  // QClaw WIP - enable after mock fixes (R21)
+      'tests/jvs-100-e2e.test.ts',  // EventEmitter extends issue in jsdom - run with node environment
+      'tests/t53-crypto-service.test.ts',  // Node.js crypto module - run with node environment
     ],
     coverage: {
       provider: 'v8',

@@ -13,10 +13,18 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { EventEmitter } from 'events';
 
 // Ensure EventEmitter is available in jsdom environment
-vi.mock('events', async () => {
-  const actual = await vi.importActual<typeof import('events')>('events');
-  return actual;
-});
+if (typeof EventEmitter === 'undefined') {
+  vi.mock('events', () => {
+    class MockEventEmitter {
+      private listeners: Record<string, Function[]> = {};
+      on(event: string, fn: Function) { (this.listeners[event] = this.listeners[event] || []).push(fn); return this; }
+      off(event: string, fn: Function) { if (this.listeners[event]) this.listeners[event] = this.listeners[event].filter(f => f !== fn); return this; }
+      emit(event: string, ...args: any[]) { (this.listeners[event] || []).forEach(fn => fn(...args)); return true; }
+      removeAllListeners() { this.listeners = {}; return this; }
+    }
+    return { EventEmitter: MockEventEmitter, default: MockEventEmitter };
+  });
+}
 
 // Import singleton getters
 import { getSlidingWindowAggregator } from '../electron/engine/sliding-window-aggregator';
