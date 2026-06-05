@@ -14,7 +14,7 @@
     "dist:win": "vite build && electron-builder --win",
     "dist:mac": "vite build && electron-builder --mac",
     "lint": "eslint src --ext .ts,.tsx",
-    "test": "vitest run"
+    "test": "cmd /c \"set NODE_OPTIONS=--no-deprecation && npx vitest run 2>nul\""
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.0",
