@@ -130,6 +130,39 @@ contextBridge.exposeInMainWorld('api', {
     multiTimeframe: (config: any) => ipcRenderer.invoke('backtest:multi-timeframe', config),
   },
 
+  // ── Trade Executor (Sprint 2 Phase 2) ─────────────────────────────
+  trade: {
+    execute: (signal: any) => ipcRenderer.invoke('trade:execute', signal),
+    cancel: (orderId: string) => ipcRenderer.invoke('trade:cancel', orderId),
+    'get-orders': (filter?: any) => ipcRenderer.invoke('trade:get-orders', filter),
+    history: (limit?: number) => ipcRenderer.invoke('trade:get-history', limit),
+    'get-config': () => ipcRenderer.invoke('trade:get-config'),
+    'update-config': (updates: any) => ipcRenderer.invoke('trade:update-config', updates),
+    'emergency-stop': () => ipcRenderer.invoke('trade:emergency-stop'),
+    'set-mode': (mode: string) => ipcRenderer.invoke('trade:set-mode', mode),
+    confirm: (signalId: string) => ipcRenderer.invoke('trade:confirm-signal', signalId),
+    reject: (signalId: string, reason?: string) => ipcRenderer.invoke('trade:reject-signal', signalId, reason),
+    summary: () => ipcRenderer.invoke('trade:get-summary'),
+    stats: () => ipcRenderer.invoke('trade:get-stats'),
+    positions: () => ipcRenderer.invoke('trade:get-positions'),
+    'trade-log': (limit?: number) => ipcRenderer.invoke('trade:get-trade-log', limit),
+    'daily-pnl': () => ipcRenderer.invoke('trade:get-daily-pnl'),
+    diagnostics: () => ipcRenderer.invoke('trade:get-diagnostics'),
+  },
+
+  // ── WebSocket Market Data (Sprint 2 Phase 1) ─────────────────────
+  ws: {
+    connect: (config?: any) => ipcRenderer.invoke('ws:connect', config),
+    disconnect: () => ipcRenderer.invoke('ws:disconnect'),
+    subscribe: (codes: string[], type?: string) => ipcRenderer.invoke('ws:subscribe', codes, type),
+    unsubscribe: (subscriptionId: string) => ipcRenderer.invoke('ws:unsubscribe', subscriptionId),
+    status: () => ipcRenderer.invoke('ws:status'),
+    'get-ticks': (code: string, limit?: number) => ipcRenderer.invoke('ws:get-ticks', code, limit),
+    'enable-mock': (symbols?: string[]) => ipcRenderer.invoke('ws:enable-mock', symbols),
+    'disable-mock': () => ipcRenderer.invoke('ws:disable-mock'),
+    diagnostics: () => ipcRenderer.invoke('ws:diagnostics'),
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: any[]) => void) => {
     const allowed = [
@@ -140,6 +173,20 @@ contextBridge.exposeInMainWorld('api', {
       'signal',
       'risk-alert',
       'notification',
+      'ws:tick',
+      'ws:kline',
+      'ws:connected',
+      'ws:disconnected',
+      'ws:reconnecting',
+      'ws:depth',
+      'ws:error',
+      'trade:order-created',
+      'trade:order-filled',
+      'trade:order-cancelled',
+      'trade:order-rejected',
+      'trade:signal-generated',
+      'trade:mode-changed',
+      'monitor:alert-push',
     ];
     if (allowed.includes(channel)) {
       ipcRenderer.on(channel, (_event, ...args) => callback(...args));
