@@ -73,6 +73,7 @@ import { registerMonitorIPC } from './ipc/monitor-ipc';
 import { registerPrefsIPC } from './ipc/prefs-ipc';
 import { registerBacktestIPC } from './ipc/backtest-ipc';
 import { registerExportIPC } from './ipc/export-ipc';
+import { registerTradeExecutorIPC } from './ipc/trade-executor-ipc';
 import { getFinancialReports } from './engine/financial-reports';
 import { getValuationData } from './engine/valuation-data';
 import { computeIndicators } from './engine/technical-indicators';
@@ -5456,6 +5457,11 @@ app.whenReady().then(async () => {
 
     // R20: Register Export IPC (6 missing handlers)
     registerExportIPC();
+    log.info('[App] ExportIPC registered');
+
+    // R22: Register Trade Executor IPC (18 handlers)
+    registerTradeExecutorIPC();
+    log.info('[App] TradeExecutorIPC registered');
     log.info('[App] ExportIPC registered');
 
   } catch (err: any) {
