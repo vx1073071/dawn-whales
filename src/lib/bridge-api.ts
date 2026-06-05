@@ -1387,6 +1387,53 @@ export async function stopHealthDashboard(): Promise<any> {
   return window.api.healthDashboard.stop();
 }
 
+// ── Anomaly Detection (JVS-89) ────────────────────────────────────────────
+
+export async function detectAnomalies(symbol: string, data: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.anomalyDetection.detect(symbol, data);
+}
+
+export async function getAnomalyAlerts(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.anomalyDetection.getAlerts();
+}
+
+export async function getAnomaliesBySymbol(symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.anomalyDetection.getBySymbol(symbol);
+}
+
+export async function getAnomaliesByType(type: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.anomalyDetection.getByType(type);
+}
+
+export async function acknowledgeAnomaly(alertId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.anomalyDetection.acknowledge(alertId);
+}
+
+export async function clearAnomalies(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.anomalyDetection.clear();
+}
+
+export async function startAnomalyDetection(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.anomalyDetection.start();
+}
+
+export async function stopAnomalyDetection(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.anomalyDetection.stop();
+}
+
+export async function getAnomalyStats(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.anomalyDetection.stats();
+}
+
 // ── Data Consistency Checker (JVS-39) ──────────────────────────────────────
 
 export async function runDataConsistencyCheck(): Promise<any> {

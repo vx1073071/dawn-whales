@@ -28,6 +28,7 @@ import { exportData, getAvailableModules } from './engine/data-export-service';
 import { getRateLimiterManager } from './engine/rate-limiter';
 import { getCircuitBreaker } from './engine/circuit-breaker';
 import { getHealthDashboard } from './engine/health-dashboard';
+import { getAnomalyDetectionSystem } from './engine/anomaly-detection';
 import { getDataConsistencyChecker } from './engine/data-consistency-checker';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
@@ -4019,6 +4020,97 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const dashboard = getHealthDashboard();
       dashboard.stop();
       return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Anomaly Detection (JVS-89) ──────────────────────────────────────────
+  ipcMain.handle('anomaly:detect', async (_e, symbol: string, data: any) => {
+    try {
+      const detector = getAnomalyDetectionSystem();
+      const alerts = detector.detectAnomalies(symbol, data);
+      return { success: true, alerts };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('anomaly:get-alerts', async () => {
+    try {
+      const detector = getAnomalyDetectionSystem();
+      const alerts = detector.getAlerts();
+      return { success: true, alerts };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('anomaly:get-by-symbol', async (_e, symbol: string) => {
+    try {
+      const detector = getAnomalyDetectionSystem();
+      const alerts = detector.getAlertsBySymbol(symbol);
+      return { success: true, alerts };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('anomaly:get-by-type', async (_e, type: string) => {
+    try {
+      const detector = getAnomalyDetectionSystem();
+      const alerts = detector.getAlertsByType(type as any);
+      return { success: true, alerts };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('anomaly:acknowledge', async (_e, alertId: string) => {
+    try {
+      const detector = getAnomalyDetectionSystem();
+      const success = detector.acknowledgeAlert(alertId);
+      return { success };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('anomaly:clear', async () => {
+    try {
+      const detector = getAnomalyDetectionSystem();
+      detector.clearAlerts();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('anomaly:start', async () => {
+    try {
+      const detector = getAnomalyDetectionSystem();
+      detector.start();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('anomaly:stop', async () => {
+    try {
+      const detector = getAnomalyDetectionSystem();
+      detector.stop();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('anomaly:stats', async () => {
+    try {
+      const detector = getAnomalyDetectionSystem();
+      const stats = detector.getStats();
+      return { success: true, stats };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

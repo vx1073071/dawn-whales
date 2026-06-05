@@ -544,6 +544,19 @@ contextBridge.exposeInMainWorld('api', {
     stop: () => ipcRenderer.invoke('health-dashboard:stop'),
   },
 
+  // ── Anomaly Detection (JVS-89) ────────────────────────────────
+  anomalyDetection: {
+    detect: (symbol: string, data: any) => ipcRenderer.invoke('anomaly:detect', symbol, data),
+    getAlerts: () => ipcRenderer.invoke('anomaly:get-alerts'),
+    getBySymbol: (symbol: string) => ipcRenderer.invoke('anomaly:get-by-symbol', symbol),
+    getByType: (type: string) => ipcRenderer.invoke('anomaly:get-by-type', type),
+    acknowledge: (alertId: string) => ipcRenderer.invoke('anomaly:acknowledge', alertId),
+    clear: () => ipcRenderer.invoke('anomaly:clear'),
+    start: () => ipcRenderer.invoke('anomaly:start'),
+    stop: () => ipcRenderer.invoke('anomaly:stop'),
+    stats: () => ipcRenderer.invoke('anomaly:stats'),
+  },
+
   // ── Data Consistency Checker (JVS-39) ───────────────────────
   dataConsistency: {
     check: () => ipcRenderer.invoke('data:consistency-check'),

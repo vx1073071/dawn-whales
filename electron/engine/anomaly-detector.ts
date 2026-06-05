@@ -1,312 +1,237 @@
-// ── Real-time Anomaly Detection ───────────────────────────────────────────────
-// Q10: Statistical anomaly detection on prices/volume/spreads
-// Methods: Z-score, IQR (Interquartile Range), Moving Window
+/**
+ * 异常检测器核心算法
+ * 
+ * 实现多种统计异常检测算法：
+ * - Z-Score: 基于标准差的异常检测
+ * - IQR (四分位距): 基于四分位数的异常检测
+ * - MAD (中位数绝对偏差): 鲁棒的异常检测
+ * - Isolation Forest: 基于隔离的异常检测（简化版）
+ */
 
-export type AnomalyMethod = 'zscore' | 'iqr' | 'moving';
+export class AnomalyDetector {
+  private methods: Array<{
+    name: string;
+    enabled: boolean;
+    weight: number;
+  }>;
 
-export interface AnomalyInput {
-  values: number[];
-  method?: AnomalyMethod;
-  window?: number;      // rolling window size, default 20
-  threshold?: number;   // threshold in std devs (zscore) or IQR multiples (iqr), default 3
-  minPeriods?: number;  // minimum observations required
-}
-
-export interface AnomalyResult {
-  isAnomaly: boolean[];
-  scores: number[];      // anomaly scores per point
-  anomalies: AnomalyPoint[];
-  method: AnomalyMethod;
-  threshold: number;
-  window: number;
-  summary: AnomalySummary;
-}
-
-export interface AnomalyPoint {
-  index: number;
-  value: number;
-  score: number;
-  deviation: number;    // raw deviation from expected
-  type: 'spike' | 'dip' | 'breakout' | 'volume_surge' | 'volume_drop';
-}
-
-export interface AnomalySummary {
-  totalAnomalies: number;
-  anomalyRate: number;   // percentage
-  spikeCount: number;
-  dipCount: number;
-  breakoutCount: number;
-  avgScore: number;
-  maxScore: number;
-  anomalyIndices: number[];
-}
-
-// ── Z-Score Method ─────────────────────────────────────────────────────────
-
-function detectZScore(values: number[], window = 20, threshold = 3, minPeriods = 5): { isAnomaly: boolean[]; scores: number[] } {
-  const isAnomaly: boolean[] = [];
-  const scores: number[] = [];
-
-  for (let i = 0; i < values.length; i++) {
-    if (i < minPeriods - 1) {
-      scores.push(0);
-      isAnomaly.push(false);
-      continue;
-    }
-    const start = Math.max(0, i - window + 1);
-    const windowValues = values.slice(start, i + 1);
-    const m = windowValues.reduce((a, b) => a + b, 0) / windowValues.length;
-    const s = Math.sqrt(windowValues.reduce((sum, v) => sum + (v - m) ** 2, 0) / windowValues.length);
-    const score = s > 0 ? Math.abs(values[i] - m) / s : 0;
-    scores.push(Math.round(score * 1000) / 1000);
-    isAnomaly.push(score > threshold);
+  constructor(methods: Array<{ name: string; enabled: boolean; weight: number }>) {
+    this.methods = methods;
   }
 
-  return { isAnomaly, scores };
-}
+  /**
+   * Z-Score 异常检测
+   * 基于标准差：|x - μ| / σ
+   */
+  zscore(value: number, history: number[]): number {
+    if (history.length === 0) return 0;
 
-// ── IQR Method ─────────────────────────────────────────────────────────────
+    const mean = history.reduce((sum, v) => sum + v, 0) / history.length;
+    const variance = history.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / history.length;
+    const stdDev = Math.sqrt(variance);
 
-function detectIQR(values: number[], window = 20, threshold = 1.5, minPeriods = 5): { isAnomaly: boolean[]; scores: number[] } {
-  const isAnomaly: boolean[] = [];
-  const scores: number[] = [];
+    if (stdDev === 0) return 0;
 
-  for (let i = 0; i < values.length; i++) {
-    if (i < minPeriods - 1) {
-      scores.push(0);
-      isAnomaly.push(false);
-      continue;
+    return (value - mean) / stdDev;
+  }
+
+  /**
+   * IQR (四分位距) 异常检测
+   * 基于四分位数：Q1 - 1.5*IQR < x < Q3 + 1.5*IQR
+   */
+  iqr(value: number, history: number[]): { isAnomaly: boolean; lower: number; upper: number } {
+    if (history.length === 0) {
+      return { isAnomaly: false, lower: 0, upper: 0 };
     }
-    const start = Math.max(0, i - window + 1);
-    const windowValues = values.slice(start, i + 1).sort((a, b) => a - b);
-    const q1Idx = Math.floor(windowValues.length * 0.25);
-    const q3Idx = Math.floor(windowValues.length * 0.75);
-    const q1 = windowValues[q1Idx];
-    const q3 = windowValues[q3Idx];
+
+    const sorted = [...history].sort((a, b) => a - b);
+    const q1 = this.percentile(sorted, 25);
+    const q3 = this.percentile(sorted, 75);
     const iqr = q3 - q1;
-    const upperBound = q3 + threshold * iqr;
-    const lowerBound = q1 - threshold * iqr;
-    const median = windowValues[Math.floor(windowValues.length / 2)];
-    const deviation = values[i] - median;
-    const score = iqr > 0 ? Math.abs(deviation) / iqr : 0;
-    scores.push(Math.round(score * 1000) / 1000);
-    isAnomaly.push(values[i] > upperBound || values[i] < lowerBound);
-  }
 
-  return { isAnomaly, scores };
-}
+    const lower = q1 - 1.5 * iqr;
+    const upper = q3 + 1.5 * iqr;
 
-// ── Moving Average Divergence Method ─────────────────────────────────────
-
-function detectMovingDivergence(values: number[], window = 20, threshold = 2, minPeriods = 5): { isAnomaly: boolean[]; scores: number[] } {
-  const isAnomaly: boolean[] = [];
-  const scores: number[] = [];
-
-  for (let i = 0; i < values.length; i++) {
-    if (i < minPeriods - 1) {
-      scores.push(0);
-      isAnomaly.push(false);
-      continue;
-    }
-    const start = Math.max(0, i - window + 1);
-    const windowVals = values.slice(start, i + 1);
-
-    // Short MA vs long MA
-    const shortWindow = Math.max(2, Math.floor(window / 4));
-    const shortMean = windowVals.slice(-shortWindow).reduce((a, b) => a + b, 0) / shortWindow;
-    const longMean = windowVals.reduce((a, b) => a + b, 0) / windowVals.length;
-    const mad = windowVals.reduce((s, v) => s + Math.abs(v - longMean), 0) / windowVals.length;
-
-    const score = mad > 0 ? Math.abs(shortMean - longMean) / mad : 0;
-    scores.push(Math.round(score * 1000) / 1000);
-    isAnomaly.push(score > threshold);
-  }
-
-  return { isAnomaly, scores };
-}
-
-// ── Anomaly Classification ─────────────────────────────────────────────────
-
-function classifyAnomaly(
-  values: number[],
-  isAnomaly: boolean[],
-  scores: number[],
-  method: AnomalyMethod,
-  window: number
-): AnomalyPoint[] {
-  const anomalies: AnomalyPoint[] = [];
-  const returns: number[] = [];
-  for (let i = 1; i < values.length; i++) {
-    returns.push((values[i] - values[i - 1]) / (values[i - 1] || 1));
-  }
-
-  for (let i = 0; i < values.length; i++) {
-    if (!isAnomaly[i]) continue;
-
-    const type = classifyType(values, returns, i, method, window);
-    const deviation = computeDeviation(values, i, method, window);
-
-    anomalies.push({
-      index: i,
-      value: Math.round(values[i] * 1000) / 1000,
-      score: scores[i],
-      deviation: Math.round(deviation * 1000) / 1000,
-      type,
-    });
-  }
-  return anomalies;
-}
-
-function classifyType(
-  values: number[],
-  returns: number[],
-  i: number,
-  method: AnomalyMethod,
-  window: number
-): AnomalyPoint['type'] {
-  if (i < 1 || i >= values.length - 1) return 'spike';
-
-  const start = Math.max(0, i - window + 1);
-  const windowVals = values.slice(start, i + 1);
-  const mean = windowVals.reduce((a, b) => a + b, 0) / windowVals.length;
-  const std = Math.sqrt(windowVals.reduce((s, v) => s + (v - mean) ** 2, 0) / windowVals.length);
-  const z = std > 0 ? (values[i] - mean) / std : 0;
-
-  if (i < returns.length) {
-    const ret = returns[i];
-    const prevReturns = returns.slice(Math.max(0, i - window), i);
-    const avgRet = prevReturns.length > 0 ? prevReturns.reduce((a, b) => a + b, 0) / prevReturns.length : 0;
-    const retStd = Math.sqrt(prevReturns.reduce((s, r) => s + (r - avgRet) ** 2, 0) / prevReturns.length);
-
-    if (retStd > 0) {
-      const retZ = Math.abs((ret - avgRet) / retStd);
-      if (ret > 0 && z > 0) return 'breakout';
-      if (ret < 0 && z < 0) return 'breakout';
-      if (Math.abs(retZ) > 3 && Math.abs(z) < 1) return 'volume_surge';
-    }
-  }
-
-  return z > 0 ? 'spike' : 'dip';
-}
-
-function computeDeviation(values: number[], i: number, method: AnomalyMethod, window: number): number {
-  const start = Math.max(0, i - window + 1);
-  const windowVals = values.slice(start, i + 1);
-  const mean = windowVals.reduce((a, b) => a + b, 0) / windowVals.length;
-  return values[i] - mean;
-}
-
-// ── Volume anomaly detection ───────────────────────────────────────────────
-
-export function detectVolumeAnomaly(
-  volumes: number[],
-  prices: number[],
-  options: { window?: number; threshold?: number } = {}
-): { isAnomaly: boolean[]; scores: number[] } {
-  const { window = 20, threshold = 2 } = options;
-
-  // Detect volume anomaly independent of price
-  const values = volumes;
-  return detectMovingDivergence(values, window, threshold);
-}
-
-// ── Main API ───────────────────────────────────────────────────────────────
-
-export function detectAnomalies(input: AnomalyInput): AnomalyResult {
-  const {
-    values,
-    method = 'zscore',
-    window = 20,
-    threshold = 3,
-    minPeriods = 5,
-  } = input;
-
-  if (values.length < minPeriods) {
     return {
-      isAnomaly: new Array(values.length).fill(false),
-      scores: new Array(values.length).fill(0),
-      anomalies: [],
-      method,
-      threshold,
-      window,
-      summary: { totalAnomalies: 0, anomalyRate: 0, spikeCount: 0, dipCount: 0, breakoutCount: 0, avgScore: 0, maxScore: 0, anomalyIndices: [] },
+      isAnomaly: value < lower || value > upper,
+      lower,
+      upper,
     };
   }
 
-  let isAnomaly: boolean[];
-  let scores: number[];
+  /**
+   * MAD (中位数绝对偏差) 异常检测
+   * 比标准差更鲁棒，对异常值不敏感
+   */
+  mad(value: number, history: number[]): number {
+    if (history.length === 0) return 0;
 
-  switch (method) {
-    case 'iqr':
-      ({ isAnomaly, scores } = detectIQR(values, window, threshold, minPeriods));
-      break;
-    case 'moving':
-      ({ isAnomaly, scores } = detectMovingDivergence(values, window, threshold, minPeriods));
-      break;
-    default:
-      ({ isAnomaly, scores } = detectZScore(values, window, threshold, minPeriods));
+    const median = this.median(history);
+    const deviations = history.map(v => Math.abs(v - median));
+    const mad = this.median(deviations);
+
+    if (mad === 0) return 0;
+
+    return Math.abs(value - median) / (mad * 1.4826); // 1.4826 is scaling factor
   }
 
-  const anomalies = classifyAnomaly(values, isAnomaly, scores, method, window);
-  const anomalyIndices = anomalies.map(a => a.index);
-  const totalAnomalies = anomalies.length;
-  const anomalyRate = Math.round((totalAnomalies / values.length) * 1000) / 10;
+  /**
+   * Isolation Forest (简化版)
+   * 基于隔离森林的异常检测
+   */
+  isolationForest(value: number, history: number[]): number {
+    if (history.length < 10) return 0;
 
-  const spikeCount = anomalies.filter(a => a.type === 'spike').length;
-  const dipCount = anomalies.filter(a => a.type === 'dip').length;
-  const breakoutCount = anomalies.filter(a => a.type === 'breakout' || a.type === 'volume_surge' || a.type === 'volume_drop').length;
-  const validScores = scores.filter(s => s > 0);
-  const avgScore = validScores.length > 0 ? Math.round((validScores.reduce((a, b) => a + b, 0) / validScores.length) * 100) / 100 : 0;
-  const maxScore = validScores.length > 0 ? Math.max(...validScores) : 0;
+    // 简化版：使用多个随机分割来计算异常分数
+    const numTrees = 10;
+    let totalPathLength = 0;
 
-  return {
-    isAnomaly,
-    scores,
-    anomalies,
-    method,
-    threshold,
-    window,
-    summary: {
-      totalAnomalies,
-      anomalyRate,
-      spikeCount,
-      dipCount,
-      breakoutCount,
-      avgScore,
-      maxScore,
-      anomalyIndices,
-    },
-  };
-}
-
-// ── Real-time streaming version ─────────────────────────────────────────────
-
-export class StreamingAnomalyDetector {
-  private window: number;
-  private threshold: number;
-  private method: AnomalyMethod;
-  private buffer: number[] = [];
-
-  constructor(window = 20, threshold = 3, method: AnomalyMethod = 'zscore') {
-    this.window = window;
-    this.threshold = threshold;
-    this.method = method;
-  }
-
-  update(value: number): AnomalyResult {
-    this.buffer.push(value);
-    if (this.buffer.length > this.window * 2) {
-      this.buffer = this.buffer.slice(-this.window * 2);
+    for (let i = 0; i < numTrees; i++) {
+      const pathLength = this.calculatePathLength(value, history);
+      totalPathLength += pathLength;
     }
-    return detectAnomalies({
-      values: this.buffer,
-      method: this.method,
-      window: this.window,
-      threshold: this.threshold,
-    });
+
+    const avgPathLength = totalPathLength / numTrees;
+    const expectedPathLength = this.expectedPathLength(history.length);
+
+    // Anomaly score: shorter path = more anomalous
+    const score = Math.pow(2, -avgPathLength / expectedPathLength);
+
+    return score;
   }
 
-  getBuffer(): number[] {
-    return [...this.buffer];
+  /**
+   * 计算百分位数
+   */
+  private percentile(sortedArray: number[], p: number): number {
+    if (sortedArray.length === 0) return 0;
+    if (sortedArray.length === 1) return sortedArray[0];
+
+    const index = (p / 100) * (sortedArray.length - 1);
+    const lower = Math.floor(index);
+    const upper = Math.ceil(index);
+
+    if (lower === upper) {
+      return sortedArray[lower];
+    }
+
+    const weight = index - lower;
+    return sortedArray[lower] * (1 - weight) + sortedArray[upper] * weight;
+  }
+
+  /**
+   * 计算中位数
+   */
+  private median(array: number[]): number {
+    if (array.length === 0) return 0;
+    const sorted = [...array].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+
+    if (sorted.length % 2 === 0) {
+      return (sorted[mid - 1] + sorted[mid]) / 2;
+    }
+
+    return sorted[mid];
+  }
+
+  /**
+   * 计算路径长度（Isolation Forest 简化版）
+   */
+  private calculatePathLength(value: number, history: number[]): number {
+    let depth = 0;
+    let currentData = [...history];
+
+    while (currentData.length > 1 && depth < 100) {
+      const min = Math.min(...currentData);
+      const max = Math.max(...currentData);
+
+      if (min === max) break;
+
+      const splitPoint = min + Math.random() * (max - min);
+
+      if (value < splitPoint) {
+        currentData = currentData.filter(v => v < splitPoint);
+      } else {
+        currentData = currentData.filter(v => v >= splitPoint);
+      }
+
+      depth++;
+
+      if (currentData.length === 1 && currentData[0] === value) {
+        break;
+      }
+    }
+
+    return depth;
+  }
+
+  /**
+   * 计算期望路径长度
+   */
+  private expectedPathLength(n: number): number {
+    if (n <= 1) return 0;
+    if (n === 2) return 1;
+
+    // Harmonic number approximation
+    const H = Math.log(n) + 0.5772156649; // Euler-Mascheroni constant
+    return 2 * H - 2 * (n - 1) / n;
+  }
+
+  /**
+   * 综合异常检测
+   * 使用多种方法的加权平均
+   */
+  detect(value: number, history: number[]): {
+    isAnomaly: boolean;
+    score: number;
+    details: Record<string, number>;
+  } {
+    const details: Record<string, number> = {};
+    let weightedScore = 0;
+    let totalWeight = 0;
+
+    // Z-Score
+    if (this.methods.find(m => m.name === 'zscore' && m.enabled)) {
+      const zscore = this.zscore(value, history);
+      const weight = this.methods.find(m => m.name === 'zscore')?.weight || 0.4;
+      details.zscore = zscore;
+      weightedScore += Math.abs(zscore) * weight;
+      totalWeight += weight;
+    }
+
+    // IQR
+    if (this.methods.find(m => m.name === 'iqr' && m.enabled)) {
+      const iqrResult = this.iqr(value, history);
+      const weight = this.methods.find(m => m.name === 'iqr')?.weight || 0.3;
+      details.iqr = iqrResult.isAnomaly ? 1 : 0;
+      weightedScore += (iqrResult.isAnomaly ? 1 : 0) * weight;
+      totalWeight += weight;
+    }
+
+    // MAD
+    if (this.methods.find(m => m.name === 'mad' && m.enabled)) {
+      const mad = this.mad(value, history);
+      const weight = this.methods.find(m => m.name === 'mad')?.weight || 0.2;
+      details.mad = mad;
+      weightedScore += Math.abs(mad) * weight;
+      totalWeight += weight;
+    }
+
+    // Isolation Forest
+    if (this.methods.find(m => m.name === 'isolation_forest' && m.enabled)) {
+      const isolationScore = this.isolationForest(value, history);
+      const weight = this.methods.find(m => m.name === 'isolation_forest')?.weight || 0.1;
+      details.isolation_forest = isolationScore;
+      weightedScore += isolationScore * weight;
+      totalWeight += weight;
+    }
+
+    const score = totalWeight > 0 ? weightedScore / totalWeight : 0;
+
+    return {
+      isAnomaly: score > 0.7, // 阈值可以调整
+      score,
+      details,
+    };
   }
 }
