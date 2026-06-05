@@ -7,6 +7,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
+    env: { NODE_ENV: 'development' },
     setupFiles: ['tests/helpers/mocks.ts'],
     include: ['tests/**/*.test.{ts,tsx}'],
     // Exclude legacy main()-style test files (run via: npm test)
@@ -33,6 +34,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      // Force react dev build for testing (production build breaks act())
+      'react': path.resolve(__dirname, './node_modules/react'),
+      'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
+      'react-dom/client': path.resolve(__dirname, './node_modules/react-dom/client.js'),
     },
   },
 });

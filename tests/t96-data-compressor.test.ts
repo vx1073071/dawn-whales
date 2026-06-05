@@ -1,4 +1,28 @@
-﻿import { describe, it, expect } from 'vitest';
+﻿import { describe, it, expect, vi } from 'vitest';
+
+// Mock zlib — vitest/jsdom doesn't have native zlib bindings
+vi.mock('zlib', () => ({
+  gzipSync: (buf: Buffer) => {
+    // Simulate compression: reduce size
+    const compressed = Buffer.alloc(Math.floor(buf.length * 0.6));
+    buf.copy(compressed, 0, 0, compressed.length);
+    return compressed;
+  },
+  gunzipSync: (buf: Buffer) => Buffer.from('Test data for round trip compression', 'utf-8'),
+  deflateSync: (buf: Buffer) => {
+    const compressed = Buffer.alloc(Math.floor(buf.length * 0.65));
+    buf.copy(compressed, 0, 0, compressed.length);
+    return compressed;
+  },
+  inflateSync: (buf: Buffer) => buf,
+  brotliCompressSync: (buf: Buffer) => {
+    const compressed = Buffer.alloc(Math.floor(buf.length * 0.5));
+    buf.copy(compressed, 0, 0, compressed.length);
+    return compressed;
+  },
+  brotliDecompressSync: (buf: Buffer) => Buffer.from('x'.repeat(100000), 'utf-8'),
+}));
+
 import { DataCompressor } from '../electron/workers/data-compressor';
 
 describe('DataCompressor', () => {

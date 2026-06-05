@@ -2,7 +2,8 @@
 // Load testing for IPC handlers and strategy engine
 // Tests performance under high concurrency
 
-import { performance } from 'perf_hooks';
+// Use Date.now() instead of perf_hooks.performance for jsdom compatibility
+const perfNow = () => Date.now();
 
 // ── Load Test Configuration ────────────────────────────────────────────────
 
@@ -46,13 +47,13 @@ export class LoadTestRunner {
    * Run load test
    */
   async run(testFn: () => Promise<any>): Promise<LoadTestResult> {
-    const startTime = performance.now();
+    const startTime = perfNow();
     const latencies: number[] = [];
     let successfulRequests = 0;
     let failedRequests = 0;
 
     const runRequest = async (): Promise<void> => {
-      const requestStart = performance.now();
+      const requestStart = perfNow();
       
       try {
         await testFn();
@@ -61,7 +62,7 @@ export class LoadTestRunner {
         failedRequests++;
       }
 
-      const latency = performance.now() - requestStart;
+      const latency = perfNow() - requestStart;
       latencies.push(latency);
     };
 
@@ -81,7 +82,7 @@ export class LoadTestRunner {
 
     // Calculate statistics
     const totalRequestsActual = successfulRequests + failedRequests;
-    const duration = performance.now() - startTime;
+    const duration = perfNow() - startTime;
     
     latencies.sort((a, b) => a - b);
     const p50Index = Math.floor(latencies.length * 0.5);
