@@ -79,7 +79,7 @@ export function registerBacktestIPC(
         oosPeriodDays?: number;
         tradingDays?: number;
       };
-      const { BacktestStabilityChecker } = await import('../engine/backtest-stability');
+      const { BacktestStabilityChecker } = await import('../engine/backtest-stability.js');
       const checker = new BacktestStabilityChecker();
       const result = checker.analyzeStability({ isReturns, oosReturns, paramGridResults, walkForwardResults, isPeriodDays, oosPeriodDays, tradingDays });
       return { success: true, ...result };
