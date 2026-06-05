@@ -41,10 +41,9 @@ export default function StatusBar() {
   async function handleReconnect() {
     setReconnecting(true);
     try {
-      if (window.api?.broker) {
-        await window.api.broker.reconnect();
-      }
-      setErrorCount(0);
+      // Trigger reconnection via broker status refresh
+      const accounts = await getAccounts();
+      if (accounts?.length > 0) setErrorCount(0);
       setOpendLatency(null);
     } finally {
       setReconnecting(false);

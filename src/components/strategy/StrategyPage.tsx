@@ -787,6 +787,8 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
   const [strategy, setStrategy] = useState<any>(null);
   const [backtestResult, setBacktestResult] = useState<BacktestResult | null>(null);
   const [backtestLoading, setBacktestLoading] = useState(false);
+  const [walkForwardResult, setWalkForwardResult] = useState<any>(null);
+  const [walkForwardLoading, setWalkForwardLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
 
   useEffect(() => {
@@ -892,9 +894,12 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
           )}
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <button onClick={handleBacktest} disabled={backtestLoading} className="px-4 py-2 bg-[#22222f] text-gray-300 rounded-lg text-sm hover:bg-[#2a2a3a] transition-colors">
             {backtestLoading ? '⏳ 回测中...' : '📈 回测'}
+          </button>
+          <button onClick={handleWalkForward} disabled={walkForwardLoading} className="px-4 py-2 bg-[#1a1a30] text-blue-300 rounded-lg text-sm hover:bg-[#222240] transition-colors border border-blue-500/20">
+            {walkForwardLoading ? '⏳ Walk-Forward中...' : '🔬 Walk-Forward'}
           </button>
           {isLive ? (
             <button onClick={handleStopLive} disabled={actionLoading} className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm hover:bg-red-500/30 transition-colors">

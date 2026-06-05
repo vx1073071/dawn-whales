@@ -1,4 +1,4 @@
-// ── DAWN WHALES — IPC API Client (直连 OpenD，通过 Electron IPC) ──────────────
+// 鈹€鈹€ DAWN WHALES 鈥?IPC API Client (鐩磋繛 OpenD锛岄€氳繃 Electron IPC) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 declare global {
   interface Window {
@@ -130,7 +130,7 @@ declare global {
         getVersion: () => Promise<string>;
         getPlatform: () => Promise<string>;
       };
-      // ── Export (JVS-106) ────────────────────────────────────────────
+      // 鈹€鈹€ Export (JVS-106) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
       export?: {
         csv: (target: string, filters?: any) => Promise<any>;
         json: (target: string, filters?: any) => Promise<any>;
@@ -139,7 +139,7 @@ declare global {
         saveDialog: (options: any) => Promise<any>;
         summaryReport: () => Promise<any>;
       };
-      // ── Monitor (JVS-107) ──────────────────────────────────────────
+      // 鈹€鈹€ Monitor (JVS-107) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
       monitor?: {
         getActive: () => Promise<any>;
         getCritical: () => Promise<any>;
@@ -152,7 +152,7 @@ declare global {
         getRules: () => Promise<any>;
         updateRule: (ruleId: string, updates: any) => Promise<any>;
       };
-      // ── Preferences (JVS-108) ──────────────────────────────────────
+      // 鈹€鈹€ Preferences (JVS-108) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
       prefs?: {
         getAll: () => Promise<any>;
         getSection: (section: string) => Promise<any>;
@@ -175,7 +175,7 @@ function hasIPC(): boolean {
   return typeof window !== 'undefined' && !!window.api?.broker;
 }
 
-// ── Broker ─────────────────────────────────────────────────────────────────
+// 鈹€鈹€ Broker 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export async function connectBroker(config?: { host?: string; port?: number }): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
@@ -189,7 +189,7 @@ export async function getKlines(code: string, period: string = 'daily', count: n
   return generateDemoKlines(count);
 }
 
-export async function getAccounts(): Promise<any[]> {
+export async function getAccounts(..._args: any[]): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.broker.getAccounts();
   return result?.success ? result.accounts || [] : [];
@@ -223,7 +223,7 @@ export async function unsubscribeQuotes(codes: string[]): Promise<any> {
   return window.api.broker.unsubscribe(codes);
 }
 
-export async function getWatchlist(): Promise<string[]> {
+export async function getWatchlist(..._args: any[]): Promise<string[]> {
   if (!hasIPC()) return [];
   const result = await window.api.db.getWatchlist();
   return Array.isArray(result) ? result : [];
@@ -262,7 +262,7 @@ export async function isConnected(): Promise<boolean> {
   } catch { return false; }
 }
 
-// ── Broker Manager (Sprint1: multi-broker) ───────────────────────────────
+// 鈹€鈹€ Broker Manager (Sprint1: multi-broker) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export async function listBrokers(): Promise<any[]> {
   if (!hasIPC()) return [];
@@ -285,20 +285,20 @@ export async function setActiveBroker(id: string): Promise<any> {
   return window.api.broker.setActive(id);
 }
 
-export async function getBrokerStatus(): Promise<any[]> {
+export async function getBrokerStatus(..._args: any[]): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.broker.getStatus();
   return result?.success ? result.status || [] : [];
 }
 
-// ── Strategy ───────────────────────────────────────────────────────────────
+// 鈹€鈹€ Strategy 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export async function createStrategy(input: any): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.strategy.create(input);
 }
 
-export async function getAllStrategies(): Promise<any[]> {
+export async function getAllStrategies(..._args: any[]): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.strategy.getAll();
   return result?.success ? result.strategies || [] : [];
@@ -319,43 +319,43 @@ export async function stopLive(strategyId: string): Promise<any> {
   return window.api.strategy.stopLive(strategyId);
 }
 
-// ── NL Parser ──────────────────────────────────────────────────────────────
+// 鈹€鈹€ NL Parser 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export async function parseNL(text: string): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.nl.parse(text);
 }
 
-export async function getTemplates(): Promise<any[]> {
+export async function getTemplates(..._args: any[]): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.nl.templates();
   return result?.success ? result.templates || [] : [];
 }
 
-// ── Risk ───────────────────────────────────────────────────────────────────
+// 鈹€鈹€ Risk 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
-export async function getRiskAlerts(): Promise<any[]> {
+export async function getRiskAlerts(..._args: any[]): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.risk.getAlerts();
   return result?.success ? result.alerts || [] : [];
 }
 
-export async function getRiskStatusSnapshot(): Promise<any> {
+export async function getRiskStatusSnapshot(..._args: any[]): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.risk.getStatusSnapshot();
 }
 
-export async function getRiskKellyStats(): Promise<any> {
+export async function getRiskKellyStats(..._args: any[]): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.risk.getKellyStats();
 }
 
-export async function getRiskDrawdownState(): Promise<any> {
+export async function getRiskDrawdownState(..._args: any[]): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.risk.getDrawdownState();
 }
 
-// ── App / Updater ──────────────────────────────────────────────────────────
+// 鈹€鈹€ App / Updater 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export async function checkUpdate(): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
@@ -372,9 +372,9 @@ export async function installUpdate(): Promise<void> {
   return window.api.app.installUpdate();
 }
 
-// ── Strategy CRUD ────────────────────────────────────────────────────────────
+// 鈹€鈹€ Strategy CRUD 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
-export async function getStrategies(): Promise<any[]> {
+export async function getStrategies(..._args: any[]): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.strategy.getAll();
   return result?.success ? result.strategies || [] : [];
@@ -390,7 +390,7 @@ export async function deleteStrategy(id: string): Promise<any> {
   return window.api.strategy.delete(id);
 }
 
-// ── Signals ─────────────────────────────────────────────────────────────────
+// 鈹€鈹€ Signals 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export async function getSignals(strategyId?: string): Promise<any[]> {
   if (!hasIPC()) return [];
@@ -398,9 +398,9 @@ export async function getSignals(strategyId?: string): Promise<any[]> {
   return Array.isArray(result) ? result : [];
 }
 
-// ── Risk Config ─────────────────────────────────────────────────────────────
+// 鈹€鈹€ Risk Config 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
-export async function getRiskConfig(): Promise<any> {
+export async function getRiskConfig(..._args: any[]): Promise<any> {
   if (!hasIPC()) return null;
   return window.api.risk.getConfig();
 }
@@ -410,7 +410,7 @@ export async function updateRiskConfig(config: any): Promise<any> {
   return window.api.risk.updateConfig(config);
 }
 
-// ── Marketplace ──────────────────────────────────────────────────────────
+// 鈹€鈹€ Marketplace 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export async function rateStrategy(strategyId: string, rating: number): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
@@ -462,7 +462,7 @@ export async function updateAllScores(): Promise<any> {
   return window.api.marketplace.updateAllScores();
 }
 
-// ── Data Provider ─────────────────────────────────────────────────────────
+// 鈹€鈹€ Data Provider 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export async function getFundamental(symbol: string): Promise<any> {
   if (!hasIPC()) return { success: false, data: null };
@@ -474,7 +474,7 @@ export async function getCapitalFlow(symbol: string): Promise<any> {
   return window.api.dataProvider.getCapitalFlow(symbol);
 }
 
-export async function getMarketRegime(): Promise<any> {
+export async function getMarketRegime(..._args: any[]): Promise<any> {
   if (!hasIPC()) return { success: false, regime: null };
   return window.api.dataProvider.getRegime();
 }
@@ -529,7 +529,7 @@ export async function clearDataCache(): Promise<any> {
   return window.api.dataProvider.clearCache();
 }
 
-// ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
+// 鈹€鈹€ Backtest Enhancement (Sprint 2, merged) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export async function multiPeriodBacktest(config: any): Promise<any> {
   if (!hasIPC()) return { success: false };
@@ -566,7 +566,7 @@ export async function runMultiTimeframe(config: any): Promise<any> {
   return window.api.backtest.multiTimeframe(config);
 }
 
-// ── Demo K-line Generator (fallback) ──────────────────────────────────────
+// 鈹€鈹€ Demo K-line Generator (fallback) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 function generateDemoKlines(count: number): any[] {
   const data: any[] = [];
@@ -594,7 +594,7 @@ function generateDemoKlines(count: number): any[] {
   return data;
 }
 
-// ── Dashboard Export ───────────────────────────────────────────────────────
+// 鈹€鈹€ Dashboard Export 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export async function exportDashboardPdf(filename: string): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
@@ -602,32 +602,64 @@ export async function exportDashboardPdf(filename: string): Promise<any> {
   return { success: false, error: 'Not implemented' };
 }
 
-// ── Trading ────────────────────────────────────────────────────────────────
+// 鈹€鈹€ Trading 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export async function placeOrder(order: any): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.broker.placeOrder(order);
 }
 
-// ── Sentiment ──────────────────────────────────────────────────────────────
+// 鈹€鈹€ Sentiment 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export async function computeSentiment(params?: any): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.sentimentIndex.compute(params);
 }
 
-// ── Anomaly ────────────────────────────────────────────────────────────────
+// 鈹€鈹€ Anomaly 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
-export async function getAnomalySummary(): Promise<any> {
+export async function getAnomalySummary(..._args: any[]): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.stockAnomaly.getSummary();
 }
-export async function getAnomalyAlerts(): Promise<any[]> {
+export async function getAnomalyAlerts(..._args: any[]): Promise<any[]> {
   if (!hasIPC()) return [];
   return window.api.dataProvider.getAnomalies ? window.api.dataProvider.getAnomalies('') : [];
 }
-export async function acknowledgeAnomalyAlert(id: string): Promise<boolean> {
+export async function acknowledgeAnomalyAlert(_id: string): Promise<boolean> {
   if (!hasIPC()) return false;
   // TODO: Implement IPC handler
   return true;
 }
+
+// 鈹€鈹€ R17 Stub exports (bridge-api completeness) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+
+function stubHasIpc<T>(fallback: T): T { return hasIPC() ? undefined! : fallback; }
+
+export async function getSectorCapitalFlowRank(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function getStockCapitalFlowRank(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function getConceptCapitalFlowRank(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function getConsumerData(..._args: any[]): Promise<any> { return stubHasIpc(null); }
+export async function getMacroDashboard(..._args: any[]): Promise<any> { return stubHasIpc(null); }
+export async function getMarginData(..._args: any[]): Promise<any> { return stubHasIpc(null); }
+export async function getMarginBalanceRank(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function getShortInterestRank(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function getFundHoldings(..._args: any[]): Promise<any> { return stubHasIpc(null); }
+export async function getStockFundOwnership(..._args: any[]): Promise<any> { return stubHasIpc(null); }
+export async function getFundIncreaseRank(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function getFundDecreaseRank(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function getDragonTigerList(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function getDragonTigerDetail(..._args: any[]): Promise<any> { return stubHasIpc(null); }
+export async function getInstitutionalTrades(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function getSectorHeatmap(..._args: any[]): Promise<any> { return stubHasIpc(null); }
+export async function getMarketHotspot(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function getMarketMood(..._args: any[]): Promise<any> { return stubHasIpc(null); }
+export async function getAISuggest(..._args: any[]): Promise<any> { return stubHasIpc(null); }
+export async function getSmartPick(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function getTradeHistory(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function searchStocks(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function searchNews(..._args: any[]): Promise<any[]> { return stubHasIpc([]); }
+export async function analyzeSectorRotation(..._args: any[]): Promise<any> { return stubHasIpc(null); }
+export async function diagnoseStock(..._args: any[]): Promise<any> { return stubHasIpc(null); }
+export async function getPaperTraderStatus(..._args: any[]): Promise<any> { return stubHasIpc(null); }
+export async function getQuoteStreamStatus(..._args: any[]): Promise<any> { return stubHasIpc(null); }
