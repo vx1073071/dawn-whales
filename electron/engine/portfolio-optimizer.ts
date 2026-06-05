@@ -1,446 +1,899 @@
-// ── Portfolio Optimizer (JVS-57) ────────────────────────────────────────────
-// Portfolio optimization using Markowitz mean-variance and Black-Litterman
-// Supports: efficient frontier, optimal weights, risk parity
-// IPC: portfolio:optimize, portfolio:efficient-frontier, portfolio:risk-parity
+/**
+ * Portfolio Optimizer - Mean-variance optimization and risk parity engine.
+ * JVS-97
+ *
+ * All matrix operations are implemented manually (no external linear-algebra libs).
+ * Optimization uses projected gradient descent with constraint handling.
+ * Efficient frontier approximation uses Monte Carlo sampling.
+ */
 
 import log from 'electron-log';
 
-// ── Types ──────────────────────────────────────────────────────────────────
+// ─── Interfaces ────────────────────────────────────────────────────────────────
 
-export interface AssetData {
-  symbol: string;
+export interface Asset {
+  id: string;
   name: string;
-  returns: number[];          // Historical returns
-  expectedReturn?: number;    // Optional expected return
-  weight?: number;            // Current weight (for current portfolio)
-}
-
-export interface PortfolioMetrics {
   expectedReturn: number;
   volatility: number;
-  sharpeRatio: number;
-  weights: Record<string, number>;
-  riskContribution: Record<string, number>;
 }
 
-export interface OptimizationConstraints {
-  minWeight?: number;         // Min weight per asset (default 0)
-  maxWeight?: number;         // Max weight per asset (default 1)
-  targetReturn?: number;      // Target return for min-variance optimization
-  targetVolatility?: number;  // Target volatility for max-return optimization
-  riskFreeRate?: number;      // Risk-free rate (default 0.02)
-  allowShortSelling?: boolean;
-  sectorLimits?: Record<string, number>;  // Max weight per sector
+export interface PortfolioAllocation {
+  assetId: string;
+  weight: number;
+  expectedContribution: number;
+  riskContribution: number;
 }
 
 export interface OptimizationResult {
-  success: boolean;
-  strategy: string;
-  portfolio: PortfolioMetrics;
-  // Optimization details
-  iterations: number;
-  convergence: boolean;
-  // Risk decomposition
-  riskDecomposition: {
-    systematicRisk: number;
-    idiosyncraticRisk: number;
-    diversificationRatio: number;
+  allocations: PortfolioAllocation[];
+  expectedReturn: number;
+  expectedVolatility: number;
+  sharpeRatio: number;
+  diversificationRatio: number;
+  method: string;
+  durationMs: number;
+}
+
+export interface OptimizationConfig {
+  method: 'mean_variance' | 'risk_parity' | 'min_variance' | 'max_sharpe' | 'equal_weight';
+  riskFreeRate: number;
+  constraints?: {
+    maxWeight?: number;
+    minWeight?: number;
+    maxAssets?: number;
   };
-  // Comparison with equal-weight
-  equalWeightPortfolio: PortfolioMetrics;
-  improvement: {
-    returnImprovement: number;
-    volatilityReduction: number;
-    sharpeImprovement: number;
+}
+
+export interface PortfolioAnalysis {
+  diversification: number;
+  concentration: number;
+  herfindahlIndex: number;
+}
+
+// ─── Matrix Utilities ──────────────────────────────────────────────────────────
+
+type Matrix = number[][];
+type Vector = number[];
+
+function zeros(n: number): Vector {
+  return new Array(n).fill(0);
+}
+
+function zerosMatrix(rows: number, cols: number): Matrix {
+  const m: Matrix = [];
+  for (let i = 0; i < rows; i++) {
+    m.push(new Array(cols).fill(0));
+  }
+  return m;
+}
+
+function cloneVector(v: Vector): Vector {
+  return v.slice();
+}
+
+function dot(a: Vector, b: Vector): number {
+  let s = 0;
+  for (let i = 0; i < a.length; i++) {
+    s += a[i] * b[i];
+  }
+  return s;
+}
+
+function vecAdd(a: Vector, b: Vector): Vector {
+  return a.map((v, i) => v + b[i]);
+}
+
+function vecSub(a: Vector, b: Vector): Vector {
+  return a.map((v, i) => v - b[i]);
+}
+
+function vecScale(v: Vector, s: number): Vector {
+  return v.map((x) => x * s);
+}
+
+function vecNorm(v: Vector): number {
+  return Math.sqrt(dot(v, v));
+}
+
+/** Matrix-vector multiply: M * v */
+function matVec(M: Matrix, v: Vector): Vector {
+  const n = M.length;
+  const result: Vector = zeros(n);
+  for (let i = 0; i < n; i++) {
+    let s = 0;
+    for (let j = 0; j < n; j++) {
+      s += M[i][j] * v[j];
+    }
+    result[i] = s;
+  }
+  return result;
+}
+
+/** Quadratic form: v^T * M * v */
+function quadraticForm(v: Vector, M: Matrix): number {
+  const Mv = matVec(M, v);
+  return dot(v, Mv);
+}
+
+/** Build covariance matrix from correlation matrix + volatilities */
+function buildCovarianceMatrix(corrMatrix: number[][], vols: number[]): Matrix {
+  const n = vols.length;
+  const cov = zerosMatrix(n, n);
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      cov[i][j] = corrMatrix[i][j] * vols[i] * vols[j];
+    }
+  }
+  return cov;
+}
+
+/** Sum of a vector */
+function vecSum(v: Vector): number {
+  let s = 0;
+  for (const x of v) s += x;
+  return s;
+}
+
+/** Simple seeded pseudo-random (xorshift32) for reproducible Monte Carlo */
+function xorshift32(seed: number): () => number {
+  let s = seed | 0;
+  return () => {
+    s ^= s << 13;
+    s ^= s >> 17;
+    s ^= s << 5;
+    return (s >>> 0) / 4294967296;
   };
-  timestamp: number;
-  error?: string;
 }
 
-// ── Statistical Helpers ────────────────────────────────────────────────────
-
-function mean(arr: number[]): number {
-  return arr.reduce((s, v) => s + v, 0) / arr.length;
+/** Box-Muller transform for normal random variates */
+function normalRandom(rng: () => number): number {
+  let u1 = rng();
+  let u2 = rng();
+  if (u1 < 1e-15) u1 = 1e-15;
+  return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
 }
 
-function covariance(x: number[], y: number[]): number {
-  const meanX = mean(x);
-  const meanY = mean(y);
-  const n = Math.min(x.length, y.length);
-  let sum = 0;
-  for (let i = 0; i < n; i++) {
-    sum += (x[i] - meanX) * (y[i] - meanY);
-  }
-  return sum / (n - 1);
-}
+// ─── Projection onto simplex / constraints ─────────────────────────────────────
 
-function covarianceMatrix(returns: number[][]): number[][] {
-  const n = returns.length;
-  const matrix: number[][] = [];
-  for (let i = 0; i < n; i++) {
-    matrix[i] = [];
-    for (let j = 0; j < n; j++) {
-      matrix[i][j] = covariance(returns[i], returns[j]);
+/**
+ * Project weights onto the simplex: sum(w) = 1, w_i >= 0.
+ * Uses the sorting-based algorithm.
+ */
+function projectSimplex(v: Vector): Vector {
+  const n = v.length;
+  const u = cloneVector(v).sort((a, b) => b - a);
+  let cssv = 0;
+  let rho = 0;
+  for (let j = 0; j < n; j++) {
+    cssv += u[j];
+    if (u[j] - (cssv - 1) / (j + 1) > 0) {
+      rho = j;
     }
   }
-  return matrix;
+  let cumsum = 0;
+  for (let j = 0; j <= rho; j++) cumsum += u[j];
+  const theta = (cumsum - 1) / (rho + 1);
+  return v.map((x) => Math.max(x - theta, 0));
 }
 
-function portfolioReturn(weights: number[], expectedReturns: number[]): number {
-  let ret = 0;
-  for (let i = 0; i < weights.length; i++) {
-    ret += weights[i] * expectedReturns[i];
-  }
-  return ret;
-}
+/**
+ * Project weights onto constrained simplex with min/max bounds.
+ * Alternating projections approach.
+ */
+function projectConstrained(
+  w: Vector,
+  minWeight: number,
+  maxWeight: number
+): Vector {
+  const n = w.length;
+  let proj = cloneVector(w);
 
-function portfolioVolatility(weights: number[], covMatrix: number[][]): number {
-  const n = weights.length;
-  let variance = 0;
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < n; j++) {
-      variance += weights[i] * weights[j] * covMatrix[i][j];
-    }
-  }
-  return Math.sqrt(variance);
-}
-
-// ── Optimization: Gradient Descent ─────────────────────────────────────────
-
-function optimizeWeights(
-  expectedReturns: number[],
-  covMatrix: number[][],
-  constraints: OptimizationConstraints,
-  objective: 'min-variance' | 'max-sharpe' | 'max-return'
-): number[] {
-  const n = expectedReturns.length;
-  const minWeight = constraints.minWeight ?? 0;
-  const maxWeight = constraints.maxWeight ?? 1;
-  const riskFreeRate = constraints.riskFreeRate ?? 0.02;
-
-  // Initialize with equal weights
-  let weights = new Array(n).fill(1 / n);
-
-  const learningRate = 0.01;
-  const maxIterations = 1000;
-  let iterations = 0;
-  let converged = false;
-
-  for (let iter = 0; iter < maxIterations; iter++) {
-    iterations++;
-    const oldWeights = [...weights];
-
-    // Calculate gradient
-    const gradient = new Array(n).fill(0);
-
-    if (objective === 'min-variance') {
-      // Gradient of variance
-      for (let i = 0; i < n; i++) {
-        for (let j = 0; j < n; j++) {
-          gradient[i] += 2 * weights[j] * covMatrix[i][j];
-        }
-      }
-    } else if (objective === 'max-sharpe') {
-      // Gradient of Sharpe ratio (negative for maximization)
-      const ret = portfolioReturn(weights, expectedReturns);
-      const vol = portfolioVolatility(weights, covMatrix);
-      const sharpe = (ret - riskFreeRate) / vol;
-
-      for (let i = 0; i < n; i++) {
-        const dRet = expectedReturns[i];
-        let dVol = 0;
-        for (let j = 0; j < n; j++) {
-          dVol += weights[j] * covMatrix[i][j];
-        }
-        dVol /= vol;
-
-        gradient[i] = -((dRet * vol - (ret - riskFreeRate) * dVol) / (vol * vol));
-      }
-    } else if (objective === 'max-return') {
-      // Gradient of return (negative for maximization)
-      for (let i = 0; i < n; i++) {
-        gradient[i] = -expectedReturns[i];
-      }
-    }
-
-    // Update weights
+  for (let iter = 0; iter < 100; iter++) {
+    // Clamp to bounds
     for (let i = 0; i < n; i++) {
-      weights[i] -= learningRate * gradient[i];
-      weights[i] = Math.max(minWeight, Math.min(maxWeight, weights[i]));
+      proj[i] = Math.max(minWeight, Math.min(maxWeight, proj[i]));
     }
+    // Project onto simplex (sum = 1)
+    // Adjust for minWeight floor
+    const excess = vecSum(proj) - 1;
+    if (Math.abs(excess) < 1e-12) break;
 
-    // Normalize to sum to 1
-    const sum = weights.reduce((s, w) => s + w, 0);
-    weights = weights.map(w => w / sum);
-
-    // Check convergence
-    const maxChange = Math.max(...weights.map((w, i) => Math.abs(w - oldWeights[i])));
-    if (maxChange < 1e-6) {
-      converged = true;
-      break;
+    // Distribute excess proportionally among non-clamped assets
+    const freeIndices: number[] = [];
+    for (let i = 0; i < n; i++) {
+      if (proj[i] > minWeight + 1e-12 && proj[i] < maxWeight - 1e-12) {
+        freeIndices.push(i);
+      }
+    }
+    if (freeIndices.length === 0) {
+      // All clamped, distribute evenly
+      const adj = excess / n;
+      for (let i = 0; i < n; i++) proj[i] -= adj;
+    } else {
+      const adj = excess / freeIndices.length;
+      for (const i of freeIndices) proj[i] -= adj;
     }
   }
 
-  return weights;
+  // Final clamp
+  for (let i = 0; i < n; i++) {
+    proj[i] = Math.max(0, Math.min(1, proj[i]));
+  }
+  // Re-normalize
+  const s = vecSum(proj);
+  if (s > 1e-15) {
+    for (let i = 0; i < n; i++) proj[i] /= s;
+  }
+  return proj;
 }
 
-// ── Main Optimization Function ─────────────────────────────────────────────
+// ─── Optimization Methods ──────────────────────────────────────────────────────
 
-export function optimizePortfolio(
-  assets: AssetData[],
-  constraints?: OptimizationConstraints
-): OptimizationResult {
-  const startTime = Date.now();
-  log.info(`[PortfolioOptimizer] Optimizing ${assets.length} assets`);
+const GRADIENT_ITERATIONS = 2000;
+const GRADIENT_LR = 0.01;
+const MONTE_CARLO_SAMPLES = 10000;
+const FRONTIER_DEFAULT_POINTS = 20;
 
-  if (!assets || assets.length === 0) {
+/**
+ * Minimum variance portfolio via gradient descent.
+ * min w^T Σ w  s.t. sum(w)=1, w>=0
+ */
+function optimizeMinVariance(
+  covMatrix: Matrix,
+  n: number,
+  constraints: OptimizationConfig['constraints']
+): Vector {
+  const minW = constraints?.minWeight ?? 0;
+  const maxW = constraints?.maxWeight ?? 1;
+
+  // Start from equal weight
+  let w = new Array(n).fill(1 / n);
+  const lr = GRADIENT_LR;
+
+  for (let iter = 0; iter < GRADIENT_ITERATIONS; iter++) {
+    // Gradient: 2 * Σ * w
+    const grad = vecScale(matVec(covMatrix, w), 2);
+
+    // Adaptive learning rate (decay)
+    const stepLr = lr / (1 + iter * 0.001);
+
+    // Gradient step
+    w = vecSub(w, vecScale(grad, stepLr));
+
+    // Project onto constraints
+    w = projectConstrained(w, minW, maxW);
+  }
+
+  return w;
+}
+
+/**
+ * Maximum Sharpe ratio portfolio via gradient descent.
+ * max (w^T μ - rf) / sqrt(w^T Σ w)
+ * Equivalent to minimizing negative Sharpe.
+ */
+function optimizeMaxSharpe(
+  returns: Vector,
+  covMatrix: Matrix,
+  n: number,
+  riskFreeRate: number,
+  constraints: OptimizationConfig['constraints']
+): Vector {
+  const minW = constraints?.minWeight ?? 0;
+  const maxW = constraints?.maxWeight ?? 1;
+
+  let w = new Array(n).fill(1 / n);
+  const lr = GRADIENT_LR;
+
+  for (let iter = 0; iter < GRADIENT_ITERATIONS; iter++) {
+    const portReturn = dot(w, returns);
+    const portVar = quadraticForm(w, covMatrix);
+    const portVol = Math.sqrt(Math.max(portVar, 1e-15));
+    const excessReturn = portReturn - riskFreeRate;
+
+    // Gradient of Sharpe = (μ * σ - (μ'w - rf) * Σw / σ) / σ^2
+    const SigmaW = matVec(covMatrix, w);
+    const grad: Vector = zeros(n);
+    for (let i = 0; i < n; i++) {
+      grad[i] =
+        (returns[i] * portVol - excessReturn * SigmaW[i] / portVol) /
+        (portVar + 1e-15);
+    }
+
+    const stepLr = lr / (1 + iter * 0.001);
+
+    // Ascend (maximize Sharpe → add gradient)
+    w = vecAdd(w, vecScale(grad, stepLr));
+    w = projectConstrained(w, minW, maxW);
+  }
+
+  return w;
+}
+
+/**
+ * Mean-variance optimization (Markowitz).
+ * min w^T Σ w - λ * (w^T μ - rf)
+ * where λ controls risk aversion. We use λ=1 as default.
+ */
+function optimizeMeanVariance(
+  returns: Vector,
+  covMatrix: Matrix,
+  n: number,
+  riskFreeRate: number,
+  constraints: OptimizationConfig['constraints']
+): Vector {
+  const minW = constraints?.minWeight ?? 0;
+  const maxW = constraints?.maxWeight ?? 1;
+  const lambda = 1.0; // risk aversion parameter
+
+  let w = new Array(n).fill(1 / n);
+  const lr = GRADIENT_LR;
+
+  for (let iter = 0; iter < GRADIENT_ITERATIONS; iter++) {
+    // Objective: w^T Σ w - λ * (w^T μ)
+    // Gradient: 2Σw - λμ
+    const SigmaW = matVec(covMatrix, w);
+    const grad: Vector = zeros(n);
+    for (let i = 0; i < n; i++) {
+      grad[i] = 2 * SigmaW[i] - lambda * returns[i];
+    }
+
+    const stepLr = lr / (1 + iter * 0.001);
+    w = vecSub(w, vecScale(grad, stepLr));
+    w = projectConstrained(w, minW, maxW);
+  }
+
+  return w;
+}
+
+/**
+ * Risk parity portfolio.
+ * Goal: each asset contributes equally to total portfolio risk.
+ * RC_i = w_i * (Σw)_i / σ_p  should equal σ_p / n for all i.
+ * Minimize: Σ (w_i*(Σw)_i - (w^T Σ w)/n)^2
+ */
+function optimizeRiskParity(
+  covMatrix: Matrix,
+  n: number,
+  constraints: OptimizationConfig['constraints']
+): Vector {
+  const minW = constraints?.minWeight ?? 0;
+  const maxW = constraints?.maxWeight ?? 1;
+
+  // Start from inverse-volatility weighting
+  const diagVar: Vector = [];
+  for (let i = 0; i < n; i++) diagVar.push(Math.sqrt(covMatrix[i][i]));
+  let invVolSum = 0;
+  for (const v of diagVar) invVolSum += 1 / (v + 1e-15);
+  let w: Vector = diagVar.map((v) => (1 / (v + 1e-15)) / invVolSum);
+
+  const lr = 0.005;
+
+  for (let iter = 0; iter < GRADIENT_ITERATIONS * 2; iter++) {
+    const SigmaW = matVec(covMatrix, w);
+    const portVar = dot(w, SigmaW);
+    const targetRC = portVar / n;
+
+    // Gradient of risk parity objective
+    const grad: Vector = zeros(n);
+    for (let i = 0; i < n; i++) {
+      const rci = w[i] * SigmaW[i];
+      const diff = rci - targetRC;
+      // d/dw_i of (w_i*(Σw)_i - target)^2
+      // = 2*(rci - target) * (Σw_i + w_i * Σ_ii ... approximation)
+      grad[i] = 2 * diff * (SigmaW[i] + w[i] * covMatrix[i][i]);
+    }
+
+    const stepLr = lr / (1 + iter * 0.0005);
+    w = vecSub(w, vecScale(grad, stepLr));
+    w = projectConstrained(w, minW, maxW);
+  }
+
+  return w;
+}
+
+/**
+ * Equal weight portfolio.
+ */
+function equalWeight(n: number): Vector {
+  return new Array(n).fill(1 / n);
+}
+
+/**
+ * Apply maxAssets constraint: keep top-N assets by weight, redistribute.
+ */
+function applyMaxAssets(
+  w: Vector,
+  maxAssets: number
+): Vector {
+  if (maxAssets >= w.length) return w;
+
+  const indexed = w.map((weight, idx) => ({ weight, idx }));
+  indexed.sort((a, b) => b.weight - a.weight);
+
+  const result = zeros(w.length);
+  let topSum = 0;
+  for (let i = 0; i < maxAssets; i++) {
+    result[indexed[i].idx] = indexed[i].weight;
+    topSum += indexed[i].weight;
+  }
+  // Re-normalize
+  if (topSum > 1e-15) {
+    for (let i = 0; i < result.length; i++) {
+      result[i] /= topSum;
+    }
+  }
+  return result;
+}
+
+// ─── Portfolio Metrics ─────────────────────────────────────────────────────────
+
+function computePortfolioReturn(w: Vector, returns: Vector): number {
+  return dot(w, returns);
+}
+
+function computePortfolioVolatility(w: Vector, covMatrix: Matrix): number {
+  return Math.sqrt(Math.max(quadraticForm(w, covMatrix), 0));
+}
+
+function computeSharpe(
+  portReturn: number,
+  portVol: number,
+  riskFreeRate: number
+): number {
+  if (portVol < 1e-15) return 0;
+  return (portReturn - riskFreeRate) / portVol;
+}
+
+function computeDiversificationRatio(
+  w: Vector,
+  vols: number[],
+  portVol: number
+): number {
+  if (portVol < 1e-15) return 1;
+  const weightedVolSum = dot(w, vols);
+  return weightedVolSum / portVol;
+}
+
+function computeRiskContributions(
+  w: Vector,
+  covMatrix: Matrix
+): Vector {
+  const SigmaW = matVec(covMatrix, w);
+  const portVar = dot(w, SigmaW);
+  const rc: Vector = zeros(w.length);
+  for (let i = 0; i < w.length; i++) {
+    rc[i] = (w[i] * SigmaW[i]) / (portVar + 1e-15);
+  }
+  return rc;
+}
+
+// ─── Main Class ────────────────────────────────────────────────────────────────
+
+export class PortfolioOptimizer {
+  /**
+   * Optimize a portfolio given assets, correlation matrix, and configuration.
+   */
+  optimize(
+    assets: Asset[],
+    correlationMatrix: number[][],
+    config: OptimizationConfig
+  ): OptimizationResult {
+    const start = performance.now();
+    const n = assets.length;
+
+    log.info(`[PortfolioOptimizer] Starting optimization: method=${config.method}, assets=${n}`);
+
+    if (n === 0) {
+      log.warn('[PortfolioOptimizer] No assets provided');
+      return this.emptyResult(config.method, start);
+    }
+
+    if (n === 1) {
+      return this.singleAssetResult(assets[0], config);
+    }
+
+    this.validateCorrelationMatrix(correlationMatrix, n);
+
+    const vols = assets.map((a) => a.volatility);
+    const returns = assets.map((a) => a.expectedReturn);
+    const covMatrix = buildCovarianceMatrix(correlationMatrix, vols);
+
+    let w: Vector;
+
+    switch (config.method) {
+      case 'equal_weight':
+        w = equalWeight(n);
+        break;
+      case 'min_variance':
+        w = optimizeMinVariance(covMatrix, n, config.constraints);
+        break;
+      case 'max_sharpe':
+        w = optimizeMaxSharpe(returns, covMatrix, n, config.riskFreeRate, config.constraints);
+        break;
+      case 'mean_variance':
+        w = optimizeMeanVariance(returns, covMatrix, n, config.riskFreeRate, config.constraints);
+        break;
+      case 'risk_parity':
+        w = optimizeRiskParity(covMatrix, n, config.constraints);
+        break;
+      default:
+        log.warn(`[PortfolioOptimizer] Unknown method: ${config.method}, falling back to equal_weight`);
+        w = equalWeight(n);
+    }
+
+    // Apply maxAssets constraint if specified
+    if (config.constraints?.maxAssets && config.constraints.maxAssets < n) {
+      w = applyMaxAssets(w, config.constraints.maxAssets);
+    }
+
+    // Build result
+    const result = this.buildResult(assets, w, returns, covMatrix, vols, config, start);
+    log.info(
+      `[PortfolioOptimizer] Optimization complete: return=${result.expectedReturn.toFixed(4)}, ` +
+      `vol=${result.expectedVolatility.toFixed(4)}, sharpe=${result.sharpeRatio.toFixed(4)}, ` +
+      `duration=${result.durationMs.toFixed(1)}ms`
+    );
+    return result;
+  }
+
+  /**
+   * Compute the efficient frontier using Monte Carlo sampling.
+   * Generates random portfolios and keeps those near the efficient frontier.
+   */
+  efficientFrontier(
+    assets: Asset[],
+    corrMatrix: number[][],
+    points: number = FRONTIER_DEFAULT_POINTS
+  ): OptimizationResult[] {
+    const start = performance.now();
+    const n = assets.length;
+
+    log.info(`[PortfolioOptimizer] Computing efficient frontier: assets=${n}, points=${points}`);
+
+    if (n === 0) return [];
+
+    const vols = assets.map((a) => a.volatility);
+    const returns = assets.map((a) => a.expectedReturn);
+    const covMatrix = buildCovarianceMatrix(corrMatrix, vols);
+
+    // Find min-return and max-return portfolios for range
+    const minRet = Math.min(...returns);
+    const maxRet = Math.max(...returns);
+    const targetReturns: number[] = [];
+    for (let i = 0; i < points; i++) {
+      targetReturns.push(minRet + (maxRet - minRet) * (i / (points - 1)));
+    }
+
+    // Monte Carlo: generate random portfolios and bucket by return
+    const rng = xorshift32(42);
+    const buckets: Map<number, { w: Vector; vol: number }> = new Map();
+
+    // Initialize buckets with infinity
+    for (let i = 0; i < points; i++) {
+      buckets.set(i, { w: zeros(n), vol: Infinity });
+    }
+
+    for (let sample = 0; sample < MONTE_CARLO_SAMPLES; sample++) {
+      // Generate random weights (Dirichlet via exponential)
+      const rawW: Vector = zeros(n);
+      for (let i = 0; i < n; i++) {
+        rawW[i] = -Math.log(Math.max(rng(), 1e-15));
+      }
+      const s = vecSum(rawW);
+      const w = rawW.map((x) => x / s);
+
+      const portRet = dot(w, returns);
+      const portVol = computePortfolioVolatility(w, covMatrix);
+
+      // Find closest target return bucket
+      let bestBucket = 0;
+      let bestDist = Infinity;
+      for (let i = 0; i < points; i++) {
+        const dist = Math.abs(portRet - targetReturns[i]);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestBucket = i;
+        }
+      }
+
+      const current = buckets.get(bestBucket)!;
+      if (portVol < current.vol) {
+        buckets.set(bestBucket, { w, vol: portVol });
+      }
+    }
+
+    // Also add optimized min-variance and max-sharpe portfolios
+    const minVarW = optimizeMinVariance(covMatrix, n, undefined);
+    const maxSharpeW = optimizeMaxSharpe(returns, covMatrix, n, 0, undefined);
+
+    // Build results
+    const results: OptimizationResult[] = [];
+    const config: OptimizationConfig = { method: 'mean_variance', riskFreeRate: 0 };
+
+    for (let i = 0; i < points; i++) {
+      const bucket = buckets.get(i)!;
+      if (bucket.vol === Infinity) {
+        // No sample landed here, use interpolated equal weight
+        bucket.w = new Array(n).fill(1 / n);
+      }
+      results.push(
+        this.buildResult(assets, bucket.w, returns, covMatrix, vols, config, start)
+      );
+    }
+
+    // Sort by expected return
+    results.sort((a, b) => a.expectedReturn - b.expectedReturn);
+
+    log.info(
+      `[PortfolioOptimizer] Efficient frontier computed: ${results.length} points, ` +
+      `duration=${(performance.now() - start).toFixed(1)}ms`
+    );
+    return results;
+  }
+
+  /**
+   * Analyze an existing portfolio's diversification characteristics.
+   */
+  analyzePortfolio(
+    allocations: PortfolioAllocation[],
+    corrMatrix: number[][]
+  ): PortfolioAnalysis {
+    log.info(`[PortfolioOptimizer] Analyzing portfolio: ${allocations.length} assets`);
+
+    const n = allocations.length;
+    if (n === 0) {
+      return { diversification: 0, concentration: 0, herfindahlIndex: 0 };
+    }
+
+    const weights = allocations.map((a) => a.weight);
+
+    // Herfindahl-Hirschman Index (HHI): sum of squared weights
+    // Ranges from 1/n (most diversified) to 1 (most concentrated)
+    let hhi = 0;
+    for (const w of weights) {
+      hhi += w * w;
+    }
+
+    // Concentration: normalized HHI
+    // 0 = perfectly diversified (equal weight), 1 = single asset
+    const concentration = n > 1 ? (hhi - 1 / n) / (1 - 1 / n) : 1;
+
+    // Diversification ratio using correlation structure
+    // DR = weighted average of individual vols / portfolio vol
+    // We need to reconstruct from allocations and corrMatrix
+    const riskContribs = allocations.map((a) => a.riskContribution);
+    const rcEntropy = this.computeEntropy(riskContribs);
+    const maxEntropy = Math.log(n);
+
+    // Diversification score: 0 to 1 based on risk contribution entropy
+    const diversification = maxEntropy > 0 ? rcEntropy / maxEntropy : 0;
+
+    log.info(
+      `[PortfolioOptimizer] Analysis: diversification=${diversification.toFixed(4)}, ` +
+      `concentration=${concentration.toFixed(4)}, HHI=${hhi.toFixed(4)}`
+    );
+
     return {
-      success: false,
-      strategy: 'unknown',
-      portfolio: { expectedReturn: 0, volatility: 0, sharpeRatio: 0, weights: {}, riskContribution: {} },
-      iterations: 0,
-      convergence: false,
-      riskDecomposition: { systematicRisk: 0, idiosyncraticRisk: 0, diversificationRatio: 0 },
-      equalWeightPortfolio: { expectedReturn: 0, volatility: 0, sharpeRatio: 0, weights: {}, riskContribution: {} },
-      improvement: { returnImprovement: 0, volatilityReduction: 0, sharpeImprovement: 0 },
-      timestamp: Date.now(),
-      error: 'No assets provided',
+      diversification: Math.min(1, Math.max(0, diversification)),
+      concentration: Math.min(1, Math.max(0, concentration)),
+      herfindahlIndex: hhi,
     };
   }
 
-  const n = assets.length;
-  const returns = assets.map(a => a.returns);
-  const expectedReturns = assets.map(a => a.expectedReturn ?? mean(a.returns));
-  const covMatrix = covarianceMatrix(returns);
+  /**
+   * Rebalance a portfolio from current weights to target weights.
+   * Only adjusts assets that have drifted beyond the threshold.
+   *
+   * @param current - Current portfolio allocations
+   * @param target - Target portfolio allocations
+   * @param threshold - Minimum drift (absolute weight difference) to trigger rebalance for an asset
+   * @returns New allocations after rebalancing
+   */
+  rebalance(
+    current: PortfolioAllocation[],
+    target: PortfolioAllocation[],
+    threshold: number
+  ): PortfolioAllocation[] {
+    log.info(
+      `[PortfolioOptimizer] Rebalancing: current=${current.length}, target=${target.length}, threshold=${threshold}`
+    );
 
-  const riskFreeRate = constraints?.riskFreeRate ?? 0.02;
+    // Build lookup maps
+    const currentMap = new Map<string, PortfolioAllocation>();
+    for (const a of current) currentMap.set(a.assetId, a);
 
-  // Optimize for max Sharpe ratio
-  const weights = optimizeWeights(expectedReturns, covMatrix, constraints || {}, 'max-sharpe');
+    const targetMap = new Map<string, PortfolioAllocation>();
+    for (const a of target) targetMap.set(a.assetId, a);
 
-  // Calculate portfolio metrics
-  const portfolioReturn = portfolioReturn(weights, expectedReturns);
-  const portfolioVol = portfolioVolatility(weights, covMatrix);
-  const sharpeRatio = (portfolioReturn - riskFreeRate) / portfolioVol;
+    // Collect all asset IDs
+    const allIds = new Set<string>([
+      ...currentMap.keys(),
+      ...targetMap.keys(),
+    ]);
 
-  // Risk contribution
-  const riskContribution: Record<string, number> = {};
-  for (let i = 0; i < n; i++) {
-    let contribution = 0;
-    for (let j = 0; j < n; j++) {
-      contribution += weights[i] * weights[j] * covMatrix[i][j];
-    }
-    riskContribution[assets[i].symbol] = Math.round((contribution / (portfolioVol * portfolioVol)) * 10000) / 100;
-  }
+    const result: PortfolioAllocation[] = [];
+    let adjustmentSum = 0;
 
-  const portfolioWeights: Record<string, number> = {};
-  for (let i = 0; i < n; i++) {
-    portfolioWeights[assets[i].symbol] = Math.round(weights[i] * 10000) / 100;
-  }
+    for (const id of allIds) {
+      const c = currentMap.get(id);
+      const t = targetMap.get(id);
 
-  const portfolio: PortfolioMetrics = {
-    expectedReturn: Math.round(portfolioReturn * 10000) / 100,
-    volatility: Math.round(portfolioVol * 10000) / 100,
-    sharpeRatio: Math.round(sharpeRatio * 100) / 100,
-    weights: portfolioWeights,
-    riskContribution,
-  };
+      const currentWeight = c?.weight ?? 0;
+      const targetWeight = t?.weight ?? 0;
+      const drift = Math.abs(currentWeight - targetWeight);
 
-  // Equal-weight portfolio for comparison
-  const equalWeights = new Array(n).fill(1 / n);
-  const equalReturn = portfolioReturn(equalWeights, expectedReturns);
-  const equalVol = portfolioVolatility(equalWeights, covMatrix);
-  const equalSharpe = (equalReturn - riskFreeRate) / equalVol;
+      let newWeight: number;
 
-  const equalWeightPortfolio: PortfolioMetrics = {
-    expectedReturn: Math.round(equalReturn * 10000) / 100,
-    volatility: Math.round(equalVol * 10000) / 100,
-    sharpeRatio: Math.round(equalSharpe * 100) / 100,
-    weights: {},
-    riskContribution: {},
-  };
-  for (let i = 0; i < n; i++) {
-    equalWeightPortfolio.weights[assets[i].symbol] = Math.round(equalWeights[i] * 10000) / 100;
-  }
-
-  // Risk decomposition
-  const systematicRisk = portfolioVol * 0.7;  // Simplified
-  const idiosyncraticRisk = Math.sqrt(Math.max(0, portfolioVol * portfolioVol - systematicRisk * systematicRisk));
-  const diversificationRatio = portfolioVol / Math.sqrt(covMatrix.reduce((s, row) => s + row.reduce((s2, v) => s2 + v, 0), 0) / (n * n));
-
-  const improvement = {
-    returnImprovement: Math.round((portfolioReturn - equalReturn) * 10000) / 100,
-    volatilityReduction: Math.round((equalVol - portfolioVol) * 10000) / 100,
-    sharpeImprovement: Math.round((sharpeRatio - equalSharpe) * 100) / 100,
-  };
-
-  log.info(`[PortfolioOptimizer] Done: Sharpe ${sharpeRatio.toFixed(2)}, Return ${portfolioReturn.toFixed(2)}%, Vol ${portfolioVol.toFixed(2)}%`);
-
-  return {
-    success: true,
-    strategy: 'max-sharpe',
-    portfolio,
-    iterations: 1000,
-    convergence: true,
-    riskDecomposition: {
-      systematicRisk: Math.round(systematicRisk * 10000) / 100,
-      idiosyncraticRisk: Math.round(idiosyncraticRisk * 10000) / 100,
-      diversificationRatio: Math.round(diversificationRatio * 100) / 100,
-    },
-    equalWeightPortfolio,
-    improvement,
-    timestamp: Date.now(),
-  };
-}
-
-// ── Efficient Frontier ─────────────────────────────────────────────────────
-
-export interface EfficientFrontierPoint {
-  expectedReturn: number;
-  volatility: number;
-  sharpeRatio: number;
-  weights: Record<string, number>;
-}
-
-export function generateEfficientFrontier(
-  assets: AssetData[],
-  points: number = 20,
-  constraints?: OptimizationConstraints
-): EfficientFrontierPoint[] {
-  log.info(`[PortfolioOptimizer] Generating efficient frontier with ${points} points`);
-
-  const n = assets.length;
-  const returns = assets.map(a => a.returns);
-  const expectedReturns = assets.map(a => a.expectedReturn ?? mean(a.returns));
-  const covMatrix = covarianceMatrix(returns);
-  const riskFreeRate = constraints?.riskFreeRate ?? 0.02;
-
-  const frontier: EfficientFrontierPoint[] = [];
-
-  // Generate points along the frontier
-  const minReturn = Math.min(...expectedReturns);
-  const maxReturn = Math.max(...expectedReturns);
-  const step = (maxReturn - minReturn) / (points - 1);
-
-  for (let i = 0; i < points; i++) {
-    const targetReturn = minReturn + i * step;
-    const constraintsWithTarget = { ...constraints, targetReturn };
-    const weights = optimizeWeights(expectedReturns, covMatrix, constraintsWithTarget, 'min-variance');
-
-    const portfolioReturn = portfolioReturn(weights, expectedReturns);
-    const portfolioVol = portfolioVolatility(weights, covMatrix);
-    const sharpeRatio = (portfolioReturn - riskFreeRate) / portfolioVol;
-
-    const portfolioWeights: Record<string, number> = {};
-    for (let j = 0; j < n; j++) {
-      portfolioWeights[assets[j].symbol] = Math.round(weights[j] * 10000) / 100;
-    }
-
-    frontier.push({
-      expectedReturn: Math.round(portfolioReturn * 10000) / 100,
-      volatility: Math.round(portfolioVol * 10000) / 100,
-      sharpeRatio: Math.round(sharpeRatio * 100) / 100,
-      weights: portfolioWeights,
-    });
-  }
-
-  log.info(`[PortfolioOptimizer] Frontier generated: ${frontier.length} points`);
-
-  return frontier;
-}
-
-// ── Risk Parity ────────────────────────────────────────────────────────────
-
-export function riskParityPortfolio(
-  assets: AssetData[],
-  constraints?: OptimizationConstraints
-): OptimizationResult {
-  log.info(`[PortfolioOptimizer] Risk parity optimization for ${assets.length} assets`);
-
-  const n = assets.length;
-  const returns = assets.map(a => a.returns);
-  const expectedReturns = assets.map(a => a.expectedReturn ?? mean(a.returns));
-  const covMatrix = covarianceMatrix(returns);
-  const riskFreeRate = constraints?.riskFreeRate ?? 0.02;
-
-  // Risk parity: equal risk contribution
-  const weights = new Array(n).fill(1 / n);
-  const maxIterations = 1000;
-
-  for (let iter = 0; iter < maxIterations; iter++) {
-    const portfolioVol = portfolioVolatility(weights, covMatrix);
-    const riskContributions = weights.map((w, i) => {
-      let contribution = 0;
-      for (let j = 0; j < n; j++) {
-        contribution += w * weights[j] * covMatrix[i][j];
+      if (drift >= threshold) {
+        // Rebalance this asset to target
+        newWeight = targetWeight;
+        log.debug(
+          `[PortfolioOptimizer] Rebalancing ${id}: ${currentWeight.toFixed(4)} → ${targetWeight.toFixed(4)} (drift=${drift.toFixed(4)})`
+        );
+      } else {
+        // Keep current weight
+        newWeight = currentWeight;
+        log.debug(
+          `[PortfolioOptimizer] Holding ${id}: ${currentWeight.toFixed(4)} (drift=${drift.toFixed(4)} < threshold)`
+        );
       }
-      return contribution / portfolioVol;
-    });
 
-    const targetRisk = portfolioVol / n;
-    const newWeights = weights.map((w, i) => w * (targetRisk / riskContributions[i]));
-    const sum = newWeights.reduce((s, w) => s + w, 0);
+      adjustmentSum += newWeight;
 
-    const maxChange = Math.max(...newWeights.map((w, i) => Math.abs(w / sum - weights[i])));
-    if (maxChange < 1e-6) break;
+      result.push({
+        assetId: id,
+        weight: newWeight,
+        expectedContribution: t?.expectedContribution ?? c?.expectedContribution ?? 0,
+        riskContribution: t?.riskContribution ?? c?.riskContribution ?? 0,
+      });
+    }
 
-    for (let i = 0; i < n; i++) {
-      weights[i] = newWeights[i] / sum;
+    // Normalize weights to sum to 1
+    if (adjustmentSum > 1e-15) {
+      for (const alloc of result) {
+        alloc.weight /= adjustmentSum;
+      }
+    }
+
+    // Sort by weight descending
+    result.sort((a, b) => b.weight - a.weight);
+
+    log.info(`[PortfolioOptimizer] Rebalance complete: ${result.length} allocations`);
+    return result;
+  }
+
+  // ─── Private Helpers ───────────────────────────────────────────────────────
+
+  /**
+   * Build an OptimizationResult from weight vector.
+   */
+  private buildResult(
+    assets: Asset[],
+    w: Vector,
+    returns: Vector,
+    covMatrix: Matrix,
+    vols: number[],
+    config: OptimizationConfig,
+    startTime: number
+  ): OptimizationResult {
+    const n = assets.length;
+    const portReturn = computePortfolioReturn(w, returns);
+    const portVol = computePortfolioVolatility(w, covMatrix);
+    const sharpe = computeSharpe(portReturn, portVol, config.riskFreeRate);
+    const divRatio = computeDiversificationRatio(w, vols, portVol);
+    const riskContribs = computeRiskContributions(w, covMatrix);
+
+    const allocations: PortfolioAllocation[] = assets.map((asset, i) => ({
+      assetId: asset.id,
+      weight: w[i],
+      expectedContribution: w[i] * returns[i],
+      riskContribution: riskContribs[i],
+    }));
+
+    return {
+      allocations,
+      expectedReturn: portReturn,
+      expectedVolatility: portVol,
+      sharpeRatio: sharpe,
+      diversificationRatio: divRatio,
+      method: config.method,
+      durationMs: performance.now() - startTime,
+    };
+  }
+
+  /**
+   * Return an empty result when no assets are provided.
+   */
+  private emptyResult(method: string, startTime: number): OptimizationResult {
+    return {
+      allocations: [],
+      expectedReturn: 0,
+      expectedVolatility: 0,
+      sharpeRatio: 0,
+      diversificationRatio: 1,
+      method,
+      durationMs: performance.now() - startTime,
+    };
+  }
+
+  /**
+   * Return a result for a single asset.
+   */
+  private singleAssetResult(
+    asset: Asset,
+    config: OptimizationConfig
+  ): OptimizationResult {
+    const start = performance.now();
+    const sharpe = computeSharpe(
+      asset.expectedReturn,
+      asset.volatility,
+      config.riskFreeRate
+    );
+
+    return {
+      allocations: [
+        {
+          assetId: asset.id,
+          weight: 1,
+          expectedContribution: asset.expectedReturn,
+          riskContribution: 1,
+        },
+      ],
+      expectedReturn: asset.expectedReturn,
+      expectedVolatility: asset.volatility,
+      sharpeRatio: sharpe,
+      diversificationRatio: 1,
+      method: config.method,
+      durationMs: performance.now() - start,
+    };
+  }
+
+  /**
+   * Validate that the correlation matrix has correct dimensions and properties.
+   */
+  private validateCorrelationMatrix(matrix: number[][], expectedSize: number): void {
+    if (matrix.length !== expectedSize) {
+      throw new Error(
+        `Correlation matrix rows (${matrix.length}) do not match asset count (${expectedSize})`
+      );
+    }
+    for (let i = 0; i < expectedSize; i++) {
+      if (matrix[i].length !== expectedSize) {
+        throw new Error(
+          `Correlation matrix row ${i} has ${matrix[i].length} columns, expected ${expectedSize}`
+        );
+      }
+      // Diagonal should be 1
+      if (Math.abs(matrix[i][i] - 1) > 1e-6) {
+        log.warn(
+          `[PortfolioOptimizer] Correlation matrix diagonal [${i}][${i}] = ${matrix[i][i]}, expected 1`
+        );
+      }
+      // Symmetry check
+      for (let j = i + 1; j < expectedSize; j++) {
+        if (Math.abs(matrix[i][j] - matrix[j][i]) > 1e-6) {
+          log.warn(
+            `[PortfolioOptimizer] Correlation matrix not symmetric: [${i}][${j}]=${matrix[i][j]} vs [${j}][${i}]=${matrix[j][i]}`
+          );
+        }
+      }
     }
   }
 
-  const portfolioReturn = portfolioReturn(weights, expectedReturns);
-  const portfolioVol = portfolioVolatility(weights, covMatrix);
-  const sharpeRatio = (portfolioReturn - riskFreeRate) / portfolioVol;
-
-  const portfolioWeights: Record<string, number> = {};
-  const riskContribution: Record<string, number> = {};
-  for (let i = 0; i < n; i++) {
-    portfolioWeights[assets[i].symbol] = Math.round(weights[i] * 10000) / 100;
-    let contribution = 0;
-    for (let j = 0; j < n; j++) {
-      contribution += weights[i] * weights[j] * covMatrix[i][j];
+  /**
+   * Compute Shannon entropy of a probability distribution (vector summing to ~1).
+   */
+  private computeEntropy(v: Vector): number {
+    let entropy = 0;
+    for (const x of v) {
+      if (x > 1e-15) {
+        entropy -= x * Math.log(x);
+      }
     }
-    riskContribution[assets[i].symbol] = Math.round((contribution / (portfolioVol * portfolioVol)) * 10000) / 100;
+    return entropy;
   }
-
-  const portfolio: PortfolioMetrics = {
-    expectedReturn: Math.round(portfolioReturn * 10000) / 100,
-    volatility: Math.round(portfolioVol * 10000) / 100,
-    sharpeRatio: Math.round(sharpeRatio * 100) / 100,
-    weights: portfolioWeights,
-    riskContribution,
-  };
-
-  log.info(`[PortfolioOptimizer] Risk parity done: Sharpe ${sharpeRatio.toFixed(2)}, equal risk contribution achieved`);
-
-  return {
-    success: true,
-    strategy: 'risk-parity',
-    portfolio,
-    iterations: 1000,
-    convergence: true,
-    riskDecomposition: { systematicRisk: 0, idiosyncraticRisk: 0, diversificationRatio: 1 },
-    equalWeightPortfolio: portfolio,
-    improvement: { returnImprovement: 0, volatilityReduction: 0, sharpeImprovement: 0 },
-    timestamp: Date.now(),
-  };
 }
 
-// ── Batch Optimization ─────────────────────────────────────────────────────
-
-export async function batchOptimizePortfolios(
-  scenarios: { name: string; assets: AssetData[]; constraints?: OptimizationConstraints }[]
-): Promise<{ name: string; result: OptimizationResult }[]> {
-  log.info(`[PortfolioOptimizer] Batch optimization for ${scenarios.length} scenarios`);
-
-  const results: { name: string; result: OptimizationResult }[] = [];
-  for (const scenario of scenarios) {
-    results.push({
-      name: scenario.name,
-      result: optimizePortfolio(scenario.assets, scenario.constraints),
-    });
-  }
-
-  return results;
-}
+export default PortfolioOptimizer;

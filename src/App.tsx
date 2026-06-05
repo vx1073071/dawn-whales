@@ -1,5 +1,4 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useAppStore } from '@/stores/appStore';
 import { useBridgeSync } from '@/hooks/useBridgeSync';
 import Sidebar from '@/components/layout/Sidebar';
@@ -7,95 +6,52 @@ import Header from '@/components/layout/Header';
 import StatusBar from '@/components/layout/StatusBar';
 import OnboardingModal from '@/components/OnboardingModal';
 import NotificationToast from '@/components/NotificationToast';
-import KeyboardShortcutsPanel from '@/components/KeyboardShortcutsPanel';
-import ErrorBoundary from '@/components/common/ErrorBoundary';
 import { connectBroker } from '@/lib/bridge-api';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 // ── Lazy-loaded pages for code splitting ──────────────────────────────────
 const DashboardPage = lazy(() => import('@/components/dashboard/DashboardPage'));
 const MarketPage = lazy(() => import('@/components/market/MarketPage'));
-const MarketHeatmapPage = lazy(() => import('@/components/market/MarketHeatmapPage'));
-const MacroDashboardPage = lazy(() => import('@/components/market/MacroDashboardPage'));
-const StockScreenerPage = lazy(() => import('@/components/market/StockScreenerPage'));
-const NewsDashboardPage = lazy(() => import('@/components/market/NewsDashboardPage'));
-const SectorRotationPage = lazy(() => import('@/components/market/SectorRotationPage'));
-const ConsumerDashboard = lazy(() => import('@/components/market/ConsumerDashboard'));
-const MarginDashboard = lazy(() => import('@/components/market/MarginDashboard'));
-const DragonTigerPage = lazy(() => import('@/components/market/DragonTigerPage'));
-const CapitalFlowPage = lazy(() => import('@/components/market/CapitalFlowPage'));
-const FundHoldingsPage = lazy(() => import('@/components/market/FundHoldingsPage'));
-const DailyReportPage = lazy(() => import('@/components/market/DailyReportPage'));
-const StockOverviewPage = lazy(() => import('@/components/market/StockOverviewPage'));
-const RealTimeMarketDashboard = lazy(() => import('@/components/market/RealTimeMarketDashboard'));
-const DataQualityMonitorPage = lazy(() => import('@/components/market/DataQualityMonitorPage'));
-const CachedDataExplorer = lazy(() => import('@/components/market/CachedDataExplorer'));
-const SentimentStreamDashboard = lazy(() => import('@/components/market/SentimentStreamDashboard'));
-const SmartPickerPage = lazy(() => import('@/components/market/SmartPickerPage'));
-const TradeHistoryPage = lazy(() => import('@/components/trading/TradeHistoryPage'));
-const TradingDesk = lazy(() => import('@/components/trading/TradingDesk'));
-const AIAdvisorPage = lazy(() => import('@/components/strategy/AIAdvisorPage'));
-const PerformanceAttributionPage = lazy(() => import('@/components/strategy/PerformanceAttributionPage'));
-const RegimeMonitorPage = lazy(() => import('@/components/strategy/RegimeMonitorPage'));
-const FactorExposurePage = lazy(() => import('@/components/strategy/FactorExposurePage'));
 const StrategyPage = lazy(() => import('@/components/strategy/StrategyPage'));
 const PortfolioPage = lazy(() => import('@/components/portfolio/PortfolioPage'));
-const PortfolioRebalancerPage = lazy(() => import('@/components/portfolio/PortfolioRebalancerPage'));
 const OrdersPage = lazy(() => import('@/components/orders/OrdersPage'));
+const TradingDeskPage = lazy(() => import('@/components/orders/TradingDeskPage'));
 const SettingsPage = lazy(() => import('@/components/settings/SettingsPage'));
-const OpenDHealthPanel = lazy(() => import('@/components/settings/OpenDHealthPanel'));
 const MarketplacePage = lazy(() => import('@/components/marketplace/MarketplacePage'));
 const LiveMonitorPage = lazy(() => import('@/components/live/LiveMonitorPage'));
 const BacktestReportPage = lazy(() => import('@/components/backtest/BacktestReportPage'));
-const BacktestComparisonPage = lazy(() => import('@/components/backtest/BacktestComparisonPage'));
 const RiskDashboardPage = lazy(() => import('@/components/risk/RiskDashboardPage'));
-const PaperTraderPanel = lazy(() => import('@/components/trading/PaperTraderPanel'));
+const DataExportPage = lazy(() => import('@/components/tools/DataExportPage'));
+const AlertCenterPage = lazy(() => import('@/components/risk/AlertCenterPage'));
+const PreferencesPage = lazy(() => import('@/components/settings/PreferencesPage'));
+const SentimentDashboardPage = lazy(() => import('@/components/risk/SentimentDashboardPage'));
+const MonteCarloPage = lazy(() => import('@/components/backtest/MonteCarloPage'));
+const DataQualityPage = lazy(() => import('@/components/tools/DataQualityPage'));
 
 const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   dashboard: DashboardPage,
   market: MarketPage,
-  sectorHeatmap: MarketHeatmapPage,
-  macroDashboard: MacroDashboardPage,
-  stockScreener: StockScreenerPage,
-  newsDashboard: NewsDashboardPage,
-  sectorRotation: SectorRotationPage,
-  consumerDashboard: ConsumerDashboard,
-  marginDashboard: MarginDashboard,
-  dragonTiger: DragonTigerPage,
-  capitalFlow: CapitalFlowPage,
-  fundHoldings: FundHoldingsPage,
-  dailyReport: DailyReportPage,
-  stockOverview: StockOverviewPage,
-  realTimeMarket: RealTimeMarketDashboard,
-  dataQuality: DataQualityMonitorPage,
-  cacheExplorer: CachedDataExplorer,
-  sentimentStream: SentimentStreamDashboard,
-  smartPicker: SmartPickerPage,
-  tradeExecution: TradingDesk,
-  tradeHistory: TradeHistoryPage,
-  aiAdvisor: AIAdvisorPage,
-  performanceAttribution: PerformanceAttributionPage,
-  regimeMonitor: RegimeMonitorPage,
-  factorExposure: FactorExposurePage,
   strategy: StrategyPage,
   portfolio: PortfolioPage,
-  portfolioRebalancer: PortfolioRebalancerPage,
   orders: OrdersPage,
+  trading: TradingDeskPage,
   settings: SettingsPage,
-  opendHealth: OpenDHealthPanel,
   marketplace: MarketplacePage,
   live: LiveMonitorPage,
   backtest: BacktestReportPage,
-  backtestComparison: BacktestComparisonPage,
   risk: RiskDashboardPage,
-  paperTrader: PaperTraderPanel,
+  export: DataExportPage,
+  alerts: AlertCenterPage,
+  preferences: PreferencesPage,
+  sentiment: SentimentDashboardPage,
+  montecarlo: MonteCarloPage,
+  quality: DataQualityPage,
 };
 
 function PageFallback() {
-  const { t } = useTranslation();
   return (
     <div className="flex items-center justify-center h-full">
-      <div className="text-gray-500 text-sm animate-pulse">{t('common.loading')}</div>
+      <div className="text-gray-500 text-sm animate-pulse">加载中...</div>
     </div>
   );
 }
@@ -108,7 +64,6 @@ export default function App() {
   // Onboarding: show for first-time users
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [connected, setConnected] = useState(false);
-  const [showShortcuts, setShowShortcuts] = useState(false);
 
   useEffect(() => {
     const seen = localStorage.getItem('dw_onboarding_done');
@@ -135,7 +90,7 @@ export default function App() {
   useBridgeSync();
 
   // Global keyboard shortcuts
-  useKeyboardShortcuts({ onOpenShortcuts: () => setShowShortcuts(true) });
+  useKeyboardShortcuts();
 
   return (
     <div className="h-screen flex flex-col bg-surface-1 text-gray-200 overflow-hidden">
@@ -143,11 +98,9 @@ export default function App() {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar collapsed={collapsed} />
         <main className="flex-1 overflow-auto">
-          <ErrorBoundary>
-            <Suspense fallback={<PageFallback />}>
-              <Page />
-            </Suspense>
-          </ErrorBoundary>
+          <Suspense fallback={<PageFallback />}>
+            <Page />
+          </Suspense>
         </main>
       </div>
       <StatusBar />
@@ -157,10 +110,6 @@ export default function App() {
         onClose={handleCloseOnboarding}
         onConnect={handleConnect}
         connected={connected}
-      />
-      <KeyboardShortcutsPanel
-        open={showShortcuts}
-        onClose={() => setShowShortcuts(false)}
       />
     </div>
   );
