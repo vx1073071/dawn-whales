@@ -35,6 +35,7 @@ import { getPortfolioOptimizationEngine } from './engine/portfolio-optimization'
 import { getSignalBacktester } from './engine/signal-backtesting';
 import { getRealtimeNewsFeed } from './engine/realtime-news';
 import { getPerformanceMonitoringDashboard } from './engine/performance-monitoring';
+import { getSlidingWindowAggregator } from './engine/sliding-window-aggregator';
 import { getDataConsistencyChecker } from './engine/data-consistency-checker';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
@@ -4530,6 +4531,87 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const monitor = getPerformanceMonitoringDashboard();
       const summary = monitor.getSummary();
+      return { success: true, summary };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Sliding Window Aggregator (JVS-96) ──────────────────────────────────
+  ipcMain.handle('aggregator:add-data', async (_e, symbol: string, data: any) => {
+    try {
+      const aggregator = getSlidingWindowAggregator();
+      aggregator.addDataPoint(symbol, data);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('aggregator:add-batch', async (_e, dataPoints: Array<{ symbol: string; data: any }>) => {
+    try {
+      const aggregator = getSlidingWindowAggregator();
+      aggregator.addBatchDataPoints(dataPoints);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('aggregator:get-data', async (_e, symbol: string) => {
+    try {
+      const aggregator = getSlidingWindowAggregator();
+      const data = aggregator.getAggregatedData(symbol);
+      return { success: true, data };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('aggregator:get-symbols', async () => {
+    try {
+      const aggregator = getSlidingWindowAggregator();
+      const symbols = aggregator.getSymbols();
+      return { success: true, symbols };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('aggregator:compress', async (_e, symbol: string, compressionRatio?: number) => {
+    try {
+      const aggregator = getSlidingWindowAggregator();
+      const compressed = aggregator.compressHistoricalData(symbol, compressionRatio);
+      return { success: true, compressed };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('aggregator:start', async () => {
+    try {
+      const aggregator = getSlidingWindowAggregator();
+      aggregator.start();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('aggregator:stop', async () => {
+    try {
+      const aggregator = getSlidingWindowAggregator();
+      aggregator.stop();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('aggregator:summary', async () => {
+    try {
+      const aggregator = getSlidingWindowAggregator();
+      const summary = aggregator.getSummary();
       return { success: true, summary };
     } catch (err: any) {
       return { success: false, error: err.message };

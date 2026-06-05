@@ -1663,6 +1663,48 @@ export async function getPerformanceMonitorSummary(): Promise<any> {
   return window.api.performanceMonitor.summary();
 }
 
+// ── Sliding Window Aggregator (JVS-96) ─────────────────────────────────────
+
+export async function startSlidingWindowAggregator(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.slidingWindowAggregator.start();
+}
+
+export async function stopSlidingWindowAggregator(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.slidingWindowAggregator.stop();
+}
+
+export async function addAggregatorData(symbol: string, data: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.slidingWindowAggregator.addData(symbol, data);
+}
+
+export async function addAggregatorBatchData(dataPoints: Array<{ symbol: string; data: any }>): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.slidingWindowAggregator.addBatch(dataPoints);
+}
+
+export async function getAggregatorData(symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.slidingWindowAggregator.getData(symbol);
+}
+
+export async function getAggregatorSymbols(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.slidingWindowAggregator.getSymbols();
+}
+
+export async function compressAggregatorData(symbol: string, compressionRatio?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.slidingWindowAggregator.compress(symbol, compressionRatio);
+}
+
+export async function getAggregatorSummary(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.slidingWindowAggregator.summary();
+}
+
 // ── Data Consistency Checker (JVS-39) ──────────────────────────────────────
 
 export async function runDataConsistencyCheck(): Promise<any> {

@@ -632,6 +632,18 @@ contextBridge.exposeInMainWorld('api', {
     summary: () => ipcRenderer.invoke('performance-monitor:summary'),
   },
 
+  // ── Sliding Window Aggregator (JVS-96) ─────────────────────────
+  slidingWindowAggregator: {
+    start: () => ipcRenderer.invoke('aggregator:start'),
+    stop: () => ipcRenderer.invoke('aggregator:stop'),
+    addData: (symbol: string, data: any) => ipcRenderer.invoke('aggregator:add-data', symbol, data),
+    addBatch: (dataPoints: Array<{ symbol: string; data: any }>) => ipcRenderer.invoke('aggregator:add-batch', dataPoints),
+    getData: (symbol: string) => ipcRenderer.invoke('aggregator:get-data', symbol),
+    getSymbols: () => ipcRenderer.invoke('aggregator:get-symbols'),
+    compress: (symbol: string, compressionRatio?: number) => ipcRenderer.invoke('aggregator:compress', symbol, compressionRatio),
+    summary: () => ipcRenderer.invoke('aggregator:summary'),
+  },
+
   // ── Data Consistency Checker (JVS-39) ───────────────────────
   dataConsistency: {
     check: () => ipcRenderer.invoke('data:consistency-check'),
