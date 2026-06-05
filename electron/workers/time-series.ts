@@ -20,7 +20,7 @@ export class TimeSeries {
   push(value: number, label?: string): void {
     const point: TimeSeriesPoint = { timestamp: Date.now(), value, label };
     const idx = this.head;
-    if (this.count > 0) {
+    if (this.count >= this.capacity) {
       const old = this.buffer[idx];
       this.sum -= old.value;
     }
