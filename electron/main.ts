@@ -69,6 +69,8 @@ import { captureSnapshot, querySnapshots, getSnapshot, compareSnapshots, getSnap
 import { trackVersion, getEntityVersions, getVersion, getLatestVersion, diffVersions, rollback, queryVersions, getVersionStats, deleteVersion, clearAllVersions, exportVersions, importVersions } from './engine/version-control-service';
 import { setupI18nDataIPC } from './engine/i18n-data';
 import { registerMonteCarloIPC } from './ipc/monte-carlo-ipc';
+import { registerMonitorIPC } from './ipc/monitor-ipc';
+import { registerPrefsIPC } from './ipc/prefs-ipc';
 import { getFinancialReports } from './engine/financial-reports';
 import { getValuationData } from './engine/valuation-data';
 import { computeIndicators } from './engine/technical-indicators';
@@ -5439,6 +5441,11 @@ app.whenReady().then(async () => {
     // R18: Register MonteCarlo IPC (JVS-100)
     registerMonteCarloIPC();
     log.info('[App] MonteCarloIPC registered');
+
+    // R20: Register Monitor + Prefs IPC (31 missing handlers)
+    registerMonitorIPC();
+    registerPrefsIPC();
+    log.info('[App] MonitorIPC + PrefsIPC registered');
 
   } catch (err: any) {
     log.error('[App] Engine init failed:', err.message);
