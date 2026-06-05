@@ -1,4 +1,4 @@
-��// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
+// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
 // 架构对齐：富途牛牛桌面端 (Electron + C++ core + React)
 // 我们用：Electron + Node.js (Main) + React (Renderer)
 
@@ -72,7 +72,7 @@ import { validate,
   StrategyCompareSchema,
   StrategyOptimizeSchema,
 } from './ipc-schemas';
-import { storeKey, getKey, getDeepSeekKey, storeDeepSeekKey } from './utils/secure-key';
+import { getDeepSeekKey } from './utils/secure-key';
 import log from 'electron-log';
 
 // 默认监控列表，连接时从 DB 读取用户配置

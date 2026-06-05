@@ -1,10 +1,10 @@
 // ── DAWN WHALES — Dashboard (v0.6.0) ────────────────────────────────────────
 // 总资产/持仓热力图/净值曲线/盈亏总览/最近信号
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import {
-  getAccounts, getFunds, getPositions, getQuotes, isConnected,
-  getWatchlist, getAllStrategies, getComments, getMarketplaceList,
+  getAccounts, getFunds, getPositions, isConnected,
+  getAllStrategies, getMarketplaceList,
 } from '../../lib/bridge-api';
 
 interface AccountSummary {
@@ -165,7 +165,6 @@ export default function DashboardPage() {
           <div className="flex flex-wrap gap-2">
             {positions.map((p) => {
               const width = Math.max(8, p.ratio);
-              const h = Math.max(60, p.ratio * 4 + 40);
               const isProfit = p.pnl >= 0;
               const intensity = Math.min(1, Math.abs(p.pnlPct) / 30);
               const bg = isProfit

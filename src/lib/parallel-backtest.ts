@@ -176,7 +176,6 @@ export async function parallelBacktest(
     const freeIdx = workerBusy.findIndex((busy) => !busy);
     if (freeIdx === -1) return;
 
-    const taskIdx = configs.length - 1 - ([...workerBusy].reverse().findIndex(b => !b) === -1 ? 0 : 0);
     // Find next unassigned task
     let nextTaskIdx = results.findIndex((r) => r === undefined);
     if (nextTaskIdx === -1) { resolveAll(results); return; }
