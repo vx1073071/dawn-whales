@@ -432,7 +432,6 @@ export default function TradingDeskPage() {
   ];
 
   const activeOrders = orders.filter((o) => ['SUBMITTED', 'WAITING', 'PARTIAL'].includes(o.status));
-  const _historyOrders = orders.filter((o) => ['FILLED', 'CANCELLED', 'REJECTED'].includes(o.status));
 
   const statusColors: Record<string, string> = {
     SUBMITTED: 'text-blue-400 bg-blue-500/20', WAITING: 'text-yellow-400 bg-yellow-500/20',
