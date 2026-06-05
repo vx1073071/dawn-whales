@@ -1331,3 +1331,99 @@ describe('VolatilityModels — Performance Benchmarks', () => {
     console.log(`  [VolatilityModels] GARCH params: α=${result.params.alpha.toFixed(4)}, β=${result.params.beta.toFixed(4)}, persistence=${persistence.toFixed(4)}, LL=${result.logLikelihood.toFixed(2)}`);
   });
 });
+
+// ════════════════════════════════════════════════════════════════════════════
+// 9. Q47 Property-Based Testing Benchmarks
+// ════════════════════════════════════════════════════════════════════════════
+
+describe('Q47: Property-Based Testing — Framework Benchmarks', () => {
+  let runPropertyTestSuite: typeof import('../electron/test-framework/property-tests').runPropertyTestSuite;
+  let formatPropertyReport: typeof import('../electron/test-framework/property-tests').formatPropertyReport;
+
+  beforeAll(async () => {
+    const mod = await import('../electron/test-framework/property-tests');
+    runPropertyTestSuite = mod.runPropertyTestSuite;
+    formatPropertyReport = mod.formatPropertyReport;
+  });
+
+  it('should run full property suite (11 properties × 200 runs) in < 30000ms', async () => {
+    const start = performance.now();
+    const report = await runPropertyTestSuite(200);
+    const ms = performance.now() - start;
+
+    console.log(`  [Q47] Full suite (11 props × 200 runs): ${ms.toFixed(0)}ms`);
+    console.log(formatPropertyReport(report));
+
+    recordResult({
+      engine: 'Q47-PropertyTests',
+      test: '11 properties × 200 runs each',
+      medianMs: ms,
+      thresholdMs: 30_000,
+      passed: ms < 30_000,
+      details: `${report.totalPassed}/${report.results.length} properties passed`,
+    });
+
+    expect(ms).toBeLessThan(30_000);
+    expect(report.allPassed).toBe(true);
+  });
+
+  it('should run RSI property (200 runs) in < 2000ms', async () => {
+    const { propRSIInRange } = await import('../electron/test-framework/property-tests');
+    const start = performance.now();
+    const result = await propRSIInRange(200);
+    const ms = performance.now() - start;
+
+    console.log(`  [Q47] propRSIInRange (200 runs): ${ms.toFixed(1)}ms`);
+
+    recordResult({
+      engine: 'Q47-PropertyTests',
+      test: 'propRSIInRange (200 runs)',
+      medianMs: ms,
+      thresholdMs: 2000,
+      passed: ms < 2000,
+    });
+
+    expect(ms).toBeLessThan(2000);
+    expect(result.passed).toBe(true);
+  });
+
+  it('should run Kelly property (300 runs) in < 1000ms', async () => {
+    const { propKellyInRange } = await import('../electron/test-framework/property-tests');
+    const start = performance.now();
+    const result = await propKellyInRange(300);
+    const ms = performance.now() - start;
+
+    console.log(`  [Q47] propKellyInRange (300 runs): ${ms.toFixed(1)}ms`);
+
+    recordResult({
+      engine: 'Q47-PropertyTests',
+      test: 'propKellyInRange (300 runs)',
+      medianMs: ms,
+      thresholdMs: 1000,
+      passed: ms < 1000,
+    });
+
+    expect(ms).toBeLessThan(1000);
+    expect(result.passed).toBe(true);
+  });
+
+  it('should run normalCDF property (500 runs) in < 500ms', async () => {
+    const { propNormalCDFInRange } = await import('../electron/test-framework/property-tests');
+    const start = performance.now();
+    const result = await propNormalCDFInRange(500);
+    const ms = performance.now() - start;
+
+    console.log(`  [Q47] propNormalCDFInRange (500 runs): ${ms.toFixed(1)}ms`);
+
+    recordResult({
+      engine: 'Q47-PropertyTests',
+      test: 'propNormalCDFInRange (500 runs)',
+      medianMs: ms,
+      thresholdMs: 500,
+      passed: ms < 500,
+    });
+
+    expect(ms).toBeLessThan(500);
+    expect(result.passed).toBe(true);
+  });
+});
