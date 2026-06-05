@@ -620,6 +620,18 @@ contextBridge.exposeInMainWorld('api', {
     summary: () => ipcRenderer.invoke('news-feed:summary'),
   },
 
+  // ── Performance Monitoring (JVS-95) ────────────────────────────
+  performanceMonitor: {
+    start: () => ipcRenderer.invoke('performance-monitor:start'),
+    stop: () => ipcRenderer.invoke('performance-monitor:stop'),
+    getSystemMetrics: (limit?: number) => ipcRenderer.invoke('performance-monitor:system-metrics', limit),
+    getPipelineMetrics: (limit?: number) => ipcRenderer.invoke('performance-monitor:pipeline-metrics', limit),
+    getWorkerMetrics: (limit?: number) => ipcRenderer.invoke('performance-monitor:worker-metrics', limit),
+    getAlerts: () => ipcRenderer.invoke('performance-monitor:alerts'),
+    acknowledgeAlert: (alertId: string) => ipcRenderer.invoke('performance-monitor:acknowledge-alert', alertId),
+    summary: () => ipcRenderer.invoke('performance-monitor:summary'),
+  },
+
   // ── Data Consistency Checker (JVS-39) ───────────────────────
   dataConsistency: {
     check: () => ipcRenderer.invoke('data:consistency-check'),

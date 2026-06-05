@@ -34,6 +34,7 @@ import { getPerformanceAnalyticsDashboard } from './engine/performance-analytics
 import { getPortfolioOptimizationEngine } from './engine/portfolio-optimization';
 import { getSignalBacktester } from './engine/signal-backtesting';
 import { getRealtimeNewsFeed } from './engine/realtime-news';
+import { getPerformanceMonitoringDashboard } from './engine/performance-monitoring';
 import { getDataConsistencyChecker } from './engine/data-consistency-checker';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
@@ -4448,6 +4449,87 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const newsFeed = getRealtimeNewsFeed();
       const summary = newsFeed.getSummary();
+      return { success: true, summary };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Performance Monitoring (JVS-95) ─────────────────────────────────────
+  ipcMain.handle('performance-monitor:start', async () => {
+    try {
+      const monitor = getPerformanceMonitoringDashboard();
+      monitor.start();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance-monitor:stop', async () => {
+    try {
+      const monitor = getPerformanceMonitoringDashboard();
+      monitor.stop();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance-monitor:system-metrics', async (_e, limit?: number) => {
+    try {
+      const monitor = getPerformanceMonitoringDashboard();
+      const metrics = monitor.getSystemMetricsHistory(limit);
+      return { success: true, metrics };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance-monitor:pipeline-metrics', async (_e, limit?: number) => {
+    try {
+      const monitor = getPerformanceMonitoringDashboard();
+      const metrics = monitor.getPipelineMetricsHistory(limit);
+      return { success: true, metrics };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance-monitor:worker-metrics', async (_e, limit?: number) => {
+    try {
+      const monitor = getPerformanceMonitoringDashboard();
+      const metrics = monitor.getWorkerMetricsHistory(limit);
+      return { success: true, metrics };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance-monitor:alerts', async () => {
+    try {
+      const monitor = getPerformanceMonitoringDashboard();
+      const alerts = monitor.getAlerts();
+      return { success: true, alerts };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance-monitor:acknowledge-alert', async (_e, alertId: string) => {
+    try {
+      const monitor = getPerformanceMonitoringDashboard();
+      const success = monitor.acknowledgeAlert(alertId);
+      return { success };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance-monitor:summary', async () => {
+    try {
+      const monitor = getPerformanceMonitoringDashboard();
+      const summary = monitor.getSummary();
       return { success: true, summary };
     } catch (err: any) {
       return { success: false, error: err.message };

@@ -1621,6 +1621,48 @@ export async function getNewsFeedSummary(): Promise<any> {
   return window.api.realtimeNews.summary();
 }
 
+// ── Performance Monitoring (JVS-95) ────────────────────────────────────────
+
+export async function startPerformanceMonitor(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceMonitor.start();
+}
+
+export async function stopPerformanceMonitor(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceMonitor.stop();
+}
+
+export async function getSystemMetrics(limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceMonitor.getSystemMetrics(limit);
+}
+
+export async function getPipelineMetrics(limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceMonitor.getPipelineMetrics(limit);
+}
+
+export async function getWorkerMetrics(limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceMonitor.getWorkerMetrics(limit);
+}
+
+export async function getPerformanceAlerts(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceMonitor.getAlerts();
+}
+
+export async function acknowledgePerformanceAlert(alertId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceMonitor.acknowledgeAlert(alertId);
+}
+
+export async function getPerformanceMonitorSummary(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceMonitor.summary();
+}
+
 // ── Data Consistency Checker (JVS-39) ──────────────────────────────────────
 
 export async function runDataConsistencyCheck(): Promise<any> {
