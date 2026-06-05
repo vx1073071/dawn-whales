@@ -180,8 +180,7 @@ import { validate,
   ReportQuickSchema,
   StrategyAutoTuneSchema,
 } from './ipc-schemas';
-const _secureKey = require('./utils/secure-key');
-const getDeepSeekKey_ = (app: any) => _secureKey.getDeepSeekKey_(app);
+import { getDeepSeekKey } from './utils/secure-key';
 import log from 'electron-log';
 
 // 默认监控列表，连接时从 DB 读取用户配置
@@ -1497,7 +1496,7 @@ function setupIPC() {
 
   // ── Strategy AI — LLM-powered (Sprint 2 P1) ─────────────────────
   ipcMain.handle('strategy:explain', async (_e, strategy: any) => {
-    const apiKey = getDeepSeekKey_(app);
+    const apiKey = getDeepSeekKey(app);
     if (!apiKey) {
       return { success: false, error: 'DeepSeek API key not configured. Use Settings to set your key.' };
     }
@@ -1537,7 +1536,7 @@ Keep it under 200 words. Use bullet points.`;
   });
 
   ipcMain.handle('strategy:compare', async (_e, s1: any, s2: any) => {
-    const apiKey = getDeepSeekKey_(app);
+    const apiKey = getDeepSeekKey(app);
     if (!apiKey) {
       return { success: false, error: 'DeepSeek API key not configured. Use Settings to set your key.' };
     }
@@ -1581,7 +1580,7 @@ Keep it under 250 words. Be objective, not promotional.`;
       strategyDSL: { name: string; symbol?: string; type: string; params: Record<string, unknown>; stopLoss?: number; takeProfit?: number };
       backtestResult: { totalReturn: number; sharpeRatio: number; maxDrawdown: number; winRate: number; tradeCount?: number; equityCurve?: number[] };
     };
-    const apiKey = getDeepSeekKey_(app);
+    const apiKey = getDeepSeekKey(app);
     if (!apiKey) return { success: false, error: 'DeepSeek API key not configured. Use Settings to set your key.' };
 
 

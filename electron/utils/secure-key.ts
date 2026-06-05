@@ -223,3 +223,6 @@ function storeDeepSeekKey(app, key) {
 }
 
 module.exports = { storeKey, getKey, deleteKey, getDeepSeekKey, storeDeepSeekKey };
+
+// R20: ES module exports for vite bundling compatibility
+export { storeKey, getKey, deleteKey, getDeepSeekKey, storeDeepSeekKey };

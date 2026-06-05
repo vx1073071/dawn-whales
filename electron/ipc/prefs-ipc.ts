@@ -8,8 +8,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import log from 'electron-log';
 
-const STORE_PATH = path.join(app.getPath('userData'), 'preferences.json');
-
 interface PrefsSection {
   [key: string]: any;
 }
@@ -17,11 +15,12 @@ interface PrefsSection {
 // In-memory cache
 let prefsCache: PrefsSection = {};
 let dirty = false;
+let STORE_PATH = '';
 
 // ── Load ───────────────────────────────────────────────────────────────────
 function load(): PrefsSection {
   try {
-    if (fs.existsSync(STORE_PATH)) {
+    if (STORE_PATH && fs.existsSync(STORE_PATH)) {
       const raw = fs.readFileSync(STORE_PATH, 'utf-8');
       prefsCache = JSON.parse(raw);
       log.info('[PrefsIPC] loaded', Object.keys(prefsCache).length, 'sections from', STORE_PATH);
@@ -36,6 +35,7 @@ function load(): PrefsSection {
 // ── Save ────────────────────────────────────────────────────────────────────
 function save() {
   try {
+    if (!STORE_PATH) return;
     fs.writeFileSync(STORE_PATH, JSON.stringify(prefsCache, null, 2), 'utf-8');
     dirty = false;
     log.debug('[PrefsIPC] saved to', STORE_PATH);
@@ -44,11 +44,11 @@ function save() {
   }
 }
 
-// Init load
-load();
-
 // ── Register ────────────────────────────────────────────────────────────────
 export function registerPrefsIPC() {
+  // Lazy-init STORE_PATH after app is ready
+  STORE_PATH = path.join(app.getPath('userData'), 'preferences.json');
+  load();
   // ── prefs:get — get value for key ───────────────────────────────────
   ipcMain.handle('prefs:get', async (_e, key: string) => {
     const val = key.includes('.') ? getNested(prefsCache, key) : prefsCache[key];
