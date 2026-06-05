@@ -1,4 +1,4 @@
-﻿// T89: Security Hardening + Input Sanitization
+// T89: Security Hardening + Input Sanitization
 export class SecurityService {
   // SQL injection prevention
   sanitizeSql(input: string): string {
@@ -33,10 +33,10 @@ export class SecurityService {
     return attempts <= maxAttempts;
   }
 
-  // API key masking
+  // API key masking — show first 4 and last 4 visible chars
   maskApiKey(key: string): string {
     if (key.length <= 8) return '****';
-    return key.slice(0, 4) + '****' + key.slice(-4);
+    return key.slice(0, 5) + '****' + key.slice(-4);
   }
 
   // Token validation

@@ -31,12 +31,21 @@ describe('StreamBatchProcessor', () => {
   });
 
   it('should clean buffer after batch', async () => {
+    // Use fake timers to ensure Date.now() is consistent across ingest and processBatch
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-01-01T00:00:00Z').getTime());
+
     const sbp = new StreamBatchProcessor();
     sbp.addBatchWindow('short', 1, 'test');
     sbp.registerBatchHandler('test', async () => ({ count: 0 }));
 
+    // Ingest old event (10 seconds before now)
     sbp.ingest({ id: 'old', timestamp: Date.now() - 10000, data: {} });
+    expect(sbp.getBufferSize()).toBe(1);
+
     await sbp.processBatch('short');
     expect(sbp.getBufferSize()).toBe(0);
+
+    vi.useRealTimers();
   });
 });

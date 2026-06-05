@@ -53,7 +53,8 @@ export class EventBus {
   }
 
   private _pattern(event: string): RegExp {
-    const regexStr = '^' + event.replace(/\*/g, '.*').replace(/\./g, '\\.') + '$';
+    // Escape dots first, then convert * to .* wildcard
+    const regexStr = '^' + event.replace(/\./g, '\\.').replace(/\*/g, '.*') + '$';
     return new RegExp(regexStr);
   }
 }

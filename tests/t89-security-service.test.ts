@@ -31,6 +31,6 @@ describe('SecurityService', () => {
   });
 
   it('should mask API keys', () => {
-    expect(sec.maskApiKey('sk-abc123def456ghi')).toBe('sk-a****ghi');
+    expect(sec.maskApiKey('sk-abc123def456ghi')).toBe('sk-ab****6ghi');
   });
 });

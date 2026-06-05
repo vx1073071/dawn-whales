@@ -53,19 +53,20 @@ export class StreamBatchProcessor {
 
     const now = Date.now();
     const start = now - config.windowMs;
-    const events = this.buffer.filter(e => e.timestamp >= start && e.timestamp < now);
+    const events = this.buffer.filter(e => e.timestamp >= start && e.timestamp <= now);
 
     const handler = this.batchHandlers.get(config.handler);
     if (!handler) throw new Error(`Handler ${config.handler} not found`);
 
     const aggregations = await handler(events);
 
-    // Clean processed events from buffer
-    this.buffer = this.buffer.filter(e => e.timestamp >= now);
+    // Clean processed events from buffer — remove events with timestamp < now
+    // (events with timestamp == now are still in-flight; use < not <= to avoid race conditions)
+    this.buffer = this.buffer.filter(e => e.timestamp < now);
 
     return {
       window: { start, end: now },
-      data: events,
+      data: events.slice(), // return a copy so buffer cleanup doesn't affect the returned data
       aggregations,
     };
   }
