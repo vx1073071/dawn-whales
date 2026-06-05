@@ -13,8 +13,8 @@ export default defineConfig({
     // Exclude legacy main()-style test files and node-environment tests
     exclude: [
       'tests/engine.test.ts',
-      'tests/e2e-pipeline.test.ts',
-      'tests/kelly-sizing.test.ts',
+      // 'tests/e2e-pipeline.test.ts', // 已取消排除
+      // 'tests/kelly-sizing.test.ts', // 已取消排除
       'tests/ws-backfill.test.ts',
       'tests/integration-full-pipeline.test.ts',
       'tests/jvs-e2e-validation.test.ts',
@@ -27,7 +27,7 @@ export default defineConfig({
       'tests/t53-crypto-service.test.ts',
       'tests/trade-executor.test.ts',
       'tests/trade-executor-ipc.test.ts',
-      'tests/strategy-execute-integration.test.ts',
+      // 'tests/strategy-execute-integration.test.ts', // 已取消排除
       'tests/q51-chaos-engineering.test.ts',
     ],
     coverage: {
