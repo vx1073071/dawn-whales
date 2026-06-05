@@ -299,6 +299,30 @@ export class DataAggregator {
     this.config = { ...DEFAULT_CONFIG, ...config };
   }
 
+  /**
+   * Fetch quotes from a specific source type.
+   * Exposed as a public method so tests can spy on it.
+   * @internal
+   */
+  async fetchFromSources(
+    codes: string[],
+    sourceType: 'opend' | 'yahoo' | 'alphavantage' | 'cache',
+    config?: any
+  ): Promise<QuoteData[]> {
+    switch (sourceType) {
+      case 'opend':
+        return fetchFromOpenD(codes, config);
+      case 'yahoo':
+        return fetchFromYahoo(codes);
+      case 'alphavantage':
+        return fetchFromAlphaVantage(codes, config?.apiKey || '');
+      case 'cache':
+        return [];
+      default:
+        return [];
+    }
+  }
+
   async aggregate(codes: string[]): Promise<AggregationResult> {
     const startTime = Date.now();
     const enabledSources = this.config.sources
@@ -316,13 +340,13 @@ export class DataAggregator {
         
         switch (source.type) {
           case 'opend':
-            quotes = await fetchFromOpenD(codes, source.config);
+            quotes = await this.fetchFromSources(codes, 'opend', source.config);
             break;
           case 'yahoo':
-            quotes = await fetchFromYahoo(codes);
+            quotes = await this.fetchFromSources(codes, 'yahoo');
             break;
           case 'alphavantage':
-            quotes = await fetchFromAlphaVantage(codes, source.config?.apiKey || '');
+            quotes = await this.fetchFromSources(codes, 'alphavantage', source.config);
             break;
           case 'cache':
             quotes = this.getFromCache(codes);
