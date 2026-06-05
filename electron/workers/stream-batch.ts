@@ -60,9 +60,9 @@ export class StreamBatchProcessor {
 
     const aggregations = await handler(events);
 
-    // Clean processed events from buffer — remove events with timestamp < now
-    // (events with timestamp == now are still in-flight; use < not <= to avoid race conditions)
-    this.buffer = this.buffer.filter(e => e.timestamp < now);
+    // Clean processed events from buffer — remove events with timestamp <= now
+    // (events with timestamp > now are future events, keep them)
+    this.buffer = this.buffer.filter(e => e.timestamp > now);
 
     return {
       window: { start, end: now },
