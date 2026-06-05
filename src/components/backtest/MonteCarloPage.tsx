@@ -433,40 +433,90 @@ export default function MonteCarloPage() {
 
   const runSimulation = useCallback(() => {
     setLoading(true);
-    setServerRiskMetrics(null); // Clear previous engine metrics on new run
-    // Use setTimeout to allow UI to update
-    setTimeout(() => {
-      const { initialCapital, expectedReturn, volatility, timeHorizon, numSimulations, distribution } = config;
-      const mu = expectedReturn / 100;
-      const sigma = volatility / 100;
-      const stepsPerYear = 12;
+    setServerRiskMetrics(null);
 
-      // Generate paths
-      const paths: number[][] = [];
-      for (let i = 0; i < numSimulations; i++) {
-        paths.push(generateGBMPath(initialCapital, mu, sigma, timeHorizon, stepsPerYear, distribution));
-      }
-      const terminalValues = paths.map(p => p[p.length - 1]);
-      const stats = computeStats(terminalValues, initialCapital);
+    // R18: Try server-side MonteCarlo engine first (JVS-100)
+    const api = (window as any).api;
+    if (api?.monteCarlo?.simulate) {
+      const serverConfig = {
+        initialCapital: config.initialCapital,
+        expectedReturn: config.expectedReturn / 100,
+        volatility: config.volatility / 100,
+        horizon: config.timeHorizon,
+        simulations: config.numSimulations,
+        distribution: config.distribution,
+        riskFreeRate: config.riskFreeRate / 100,
+      };
+      api.monteCarlo.simulate(serverConfig)
+        .then((res: any) => {
+          if (res?.success && res.result) {
+            const r = res.result;
+            // Convert server result to page format
+            const stats: SimStats = {
+              mean: r.statistics.mean,
+              median: r.statistics.median,
+              stdDev: r.statistics.stdDev,
+              percentile5: r.statistics.percentile5,
+              percentile95: r.statistics.percentile95,
+              min: r.statistics.min,
+              max: r.statistics.max,
+              probabilityOfProfit: r.probabilityOfProfit * 100,
+              probabilityOfLoss10pct: r.probabilityOfLoss10pct * 100,
+              var95: r.var95,
+              cvar95: r.cvar95,
+            };
+            setResults({
+              paths: r.equityCurves,
+              terminalValues: r.finalValues,
+              stats,
+              scenarios: [], // server mode: scenarios computed client-side as fallback
+              sensitivity: [],
+            });
+            setLoading(false);
+            return;
+          }
+          // Fall through to client-side on error
+          runClientSimulation();
+        })
+        .catch(() => runClientSimulation());
+    } else {
+      runClientSimulation();
+    }
 
-      // Scenarios
-      const simsForScenarios = Math.min(numSimulations, 500);
-      const scenarios: ScenarioResult[] = [
-        runScenario('Bear (悲观)', initialCapital, expectedReturn - 10, volatility + 10, timeHorizon, distribution, simsForScenarios),
-        runScenario('Base (基准)', initialCapital, expectedReturn, volatility, timeHorizon, distribution, simsForScenarios),
-        runScenario('Bull (乐观)', initialCapital, expectedReturn + 10, Math.max(volatility - 5, 5), timeHorizon, distribution, simsForScenarios),
-      ];
+    function runClientSimulation() {
+      setTimeout(() => {
+        const { initialCapital, expectedReturn, volatility, timeHorizon, numSimulations, distribution } = config;
+        const mu = expectedReturn / 100;
+        const sigma = volatility / 100;
+        const stepsPerYear = 12;
 
-      // Sensitivity
-      const sensitivity: SensitivityRow[] = [
-        ...runSensitivity(config, 'expectedReturn', [5, 10, 15, 20, 30]),
-        ...runSensitivity(config, 'volatility', [10, 20, 30, 40, 60]),
-        ...runSensitivity(config, 'timeHorizon', [3, 5, 10, 15, 20]),
-      ];
+        // Generate paths
+        const paths: number[][] = [];
+        for (let i = 0; i < numSimulations; i++) {
+          paths.push(generateGBMPath(initialCapital, mu, sigma, timeHorizon, stepsPerYear, distribution));
+        }
+        const terminalValues = paths.map(p => p[p.length - 1]);
+        const stats = computeStats(terminalValues, initialCapital);
 
-      setResults({ paths, terminalValues, stats, scenarios, sensitivity });
-      setLoading(false);
-    }, 50);
+        // Scenarios
+        const simsForScenarios = Math.min(numSimulations, 500);
+        const scenarios: ScenarioResult[] = [
+          runScenario('Bear (悲观)', initialCapital, expectedReturn - 10, volatility + 10, timeHorizon, distribution, simsForScenarios),
+          runScenario('Base (基准)', initialCapital, expectedReturn, volatility, timeHorizon, distribution, simsForScenarios),
+          runScenario('Bull (乐观)', initialCapital, expectedReturn + 10, Math.max(volatility - 5, 5), timeHorizon, distribution, simsForScenarios),
+        ];
+
+        // Sensitivity
+        const sensitivity: SensitivityRow[] = [
+          ...runSensitivity(config, 'expectedReturn', [5, 10, 15, 20, 30]),
+          ...runSensitivity(config, 'volatility', [10, 20, 30, 40, 60]),
+          ...runSensitivity(config, 'timeHorizon', [3, 5, 10, 15, 20]),
+        ];
+
+        setResults({ paths, terminalValues, stats, scenarios, sensitivity });
+        setLoading(false);
+      }, 50);
+    }
   }, [config]);
 
   // ─── Fetch server-side risk metrics via IPC after client-side computation ───
