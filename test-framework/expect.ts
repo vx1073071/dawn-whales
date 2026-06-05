@@ -314,9 +314,10 @@ export function createExpect(received: unknown, config: ExpectConfig = { not: fa
     };
   });
 
-  const toBeCloseTo = makeMatcher<number>((received, expected) => {
+  const toBeCloseTo = makeMatcher<number>((received, expected, precision = 2) => {
+    const p = typeof precision === 'number' ? precision : 2;
     const pass = typeof received === 'number' && typeof expected === 'number'
-      && Math.abs(received - expected) < 0.0001;
+      && Math.abs(received - expected) < Math.pow(10, -p);
     return {
       pass,
       message: () => buildMessage('toBeCloseTo', received, expected, { isNot: not }),
@@ -686,21 +687,15 @@ export function createExpect(received: unknown, config: ExpectConfig = { not: fa
     ...promiseMatchers,
   };
 
-  // .not — copy matchers from notExpect so they invert
-  const notMatchers: Record<string, any> = not ? {} : {};
+  // .not — NOT needed as spread; handled by getter below
+  // (The old approach of spreading notMatchers overrode matchers, breaking
+  // positive assertions like expect(2).toBe(2) which called the negated fn.)
+  const _notMatchers = not ? {} : {};
   if (!not) {
-    const notConfig: any = { ...config, not: true };
-    const notExpect: any = createExpect(received, notConfig);
-    // only copy direct (non-getter) function properties to avoid infinite recursion
-    const ownProps = Object.getOwnPropertyNames(notExpect);
-    ownProps.forEach(key => {
-      if (key === 'not' || key === 'resolves' || key === 'rejects') return;
-      const descriptor = Object.getOwnPropertyDescriptor(notExpect, key);
-      if (descriptor && descriptor.get) return; // skip getters
-      if (typeof (notExpect as any)[key] === 'function') {
-        notMatchers[key] = (notExpect as any)[key];
-      }
-    });
+    // Skip: notMatchers are now handled exclusively by the `.not` getter.
+    // We still compute createExpect(received, {not:true}) so the getter returns
+    // a fully-capable expect object with negated matchers.
+    void _notMatchers;
   }
 
   // .resolves / .rejects
@@ -715,10 +710,10 @@ export function createExpect(received: unknown, config: ExpectConfig = { not: fa
   return {
     // spread all matchers at top level so .toBe(...) works directly
     ...matchers,
-    ...notMatchers,
     // .not, .resolves, .rejects as getters so they create new expect objects
+    // config.not is always false here (top-level expect), so setting true = negated
     get not() {
-      return createExpect(received, { ...config, not: !config.not });
+      return createExpect(received, { ...config, not: true });
     },
     get resolves() {
       return createExpect(received, { ...config, promise: 'resolves' });

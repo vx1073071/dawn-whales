@@ -105,7 +105,7 @@ async function generateTextReport(result: RunResult, config: RunnerConfig): Prom
   console.log(output);
 
   // Write to file
-  const reportPath = resolve('test-framework/qtest-report.txt');
+  const reportPath = resolve('qtest-report.txt');
   await writeFile(reportPath, output, 'utf-8');
 }
 
