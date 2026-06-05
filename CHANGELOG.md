@@ -2,10 +2,34 @@
 
 ## [0.6.0] - 2026-06-06
 
-### Sprint 1 Complete
-- **Tests**: 116/116 pass (5 files), exit 0
+### Sprint 1 Complete (R26 Final Sign-off)
+- **Tests**: 129/129 pass (6 files), exit 0
 - **Build**: 0 errors, 0 warnings
-- **.exe**: DAWN WHALES Setup 0.6.0.exe
+- **.exe**: DAWN WHALES Setup 0.6.0.exe (113 MB)
+- **TSC**: 0 errors
+
+### R26 (ML)
+- v0.6.0 installer verification checklist (docs/demo/r26-installer-checklist.md)
+- Sprint 1 retrospective (docs/sprints/sprint1-retrospective.md)
+- R26 Demo script — 11 scenes (docs/demo/r26-demo-script.md)
+- CHANGELOG update to R26
+- Logo white corners removed (PNG transparency)
+- System tray icon + window icon from logo (was code-drawn diamond)
+
+### R26 (JVS)
+- Moomoo adapter real TCP connection (mock → real)
+- BrokerSelector component (dropdown + status indicator)
+- Cross-broker account asset aggregation
+
+### R26 (QClaw)
+- RiskEngine v2 5-scenario validation doc
+- Frontend performance analysis (bundle size + cold start + IPC latency)
+- Test gatekeeper (129+ maintained)
+
+### R26 (WB/PM)
+- Sprint 1 final demo recording (11 scenes)
+- Sprint 1 close-out broadcast
+- Sprint 2 Phase 3 roadmap (5 milestones: R26–R30)
 
 ### R24 (ML)
 - Electron .exe packaging (dist:win) verified
