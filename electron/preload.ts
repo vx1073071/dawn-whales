@@ -535,6 +535,15 @@ contextBridge.exposeInMainWorld('api', {
     close: (endpoint: string) => ipcRenderer.invoke('circuit-breaker:close', endpoint),
   },
 
+  // ── Health Dashboard (JVS-87) ───────────────────────────────────
+  healthDashboard: {
+    status: () => ipcRenderer.invoke('health-dashboard:status'),
+    alerts: () => ipcRenderer.invoke('health-dashboard:alerts'),
+    acknowledge: (alertId: string) => ipcRenderer.invoke('health-dashboard:acknowledge', alertId),
+    start: () => ipcRenderer.invoke('health-dashboard:start'),
+    stop: () => ipcRenderer.invoke('health-dashboard:stop'),
+  },
+
   // ── Data Consistency Checker (JVS-39) ───────────────────────
   dataConsistency: {
     check: () => ipcRenderer.invoke('data:consistency-check'),

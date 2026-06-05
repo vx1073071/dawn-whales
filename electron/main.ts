@@ -27,6 +27,7 @@ import { getSentimentDashboard } from './engine/sentiment-dashboard';
 import { exportData, getAvailableModules } from './engine/data-export-service';
 import { getRateLimiterManager } from './engine/rate-limiter';
 import { getCircuitBreaker } from './engine/circuit-breaker';
+import { getHealthDashboard } from './engine/health-dashboard';
 import { getDataConsistencyChecker } from './engine/data-consistency-checker';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
@@ -3967,6 +3968,57 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const cache = manager.getCache(namespace);
       const value = cache.get(key);
       return { success: true, value, hit: value !== undefined };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Health Dashboard (JVS-87) ─────────────────────────────────────────
+  ipcMain.handle('health-dashboard:status', async () => {
+    try {
+      const dashboard = getHealthDashboard();
+      const healthScore = await dashboard.performHealthCheck();
+      return { success: true, healthScore };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('health-dashboard:alerts', async () => {
+    try {
+      const dashboard = getHealthDashboard();
+      const alerts = dashboard.getAlerts();
+      return { success: true, alerts };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('health-dashboard:acknowledge', async (_e, alertId: string) => {
+    try {
+      const dashboard = getHealthDashboard();
+      const success = dashboard.acknowledgeAlert(alertId);
+      return { success };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('health-dashboard:start', async () => {
+    try {
+      const dashboard = getHealthDashboard();
+      dashboard.start();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('health-dashboard:stop', async () => {
+    try {
+      const dashboard = getHealthDashboard();
+      dashboard.stop();
+      return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

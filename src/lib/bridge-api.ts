@@ -1360,6 +1360,33 @@ export async function closeCircuitBreaker(endpoint: string): Promise<any> {
   return window.api.circuitBreaker.close(endpoint);
 }
 
+// ── Health Dashboard (JVS-87) ─────────────────────────────────────────────
+
+export async function getHealthDashboardStatus(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.healthDashboard.status();
+}
+
+export async function getHealthDashboardAlerts(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.healthDashboard.alerts();
+}
+
+export async function acknowledgeHealthAlert(alertId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.healthDashboard.acknowledge(alertId);
+}
+
+export async function startHealthDashboard(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.healthDashboard.start();
+}
+
+export async function stopHealthDashboard(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.healthDashboard.stop();
+}
+
 // ── Data Consistency Checker (JVS-39) ──────────────────────────────────────
 
 export async function runDataConsistencyCheck(): Promise<any> {
