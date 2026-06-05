@@ -54,6 +54,7 @@ function createErrorResponse(error: string | Error): IPCResponse<null> {
   return {
     success: false,
     error: message,
+    data: null,
     timestamp: new Date().toISOString(),
   };
 }
@@ -219,6 +220,9 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
   ipcMain.handle('trade:set-mode', async (_event: IpcMainInvokeEvent, mode: 'paper' | 'real') => {
     try {
       log.info('[TradeExecutorIPC] trade:set-mode', mode);
+      if (mode !== 'paper' && mode !== 'real') {
+        return createErrorResponse(`Invalid mode: ${mode}. Must be 'paper' or 'real'.`);
+      }
       executor.setMode(mode);
       return createResponse({ mode });
     } catch (err: any) {
@@ -231,7 +235,11 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
   ipcMain.handle('trade:get-summary', async () => {
     try {
       const summary = executor.getSummary();
-      return createResponse(summary);
+      return createResponse({
+        ...summary,
+        config: executor.getConfig(),
+        stats: executor.calculateTradeStats(),
+      });
     } catch (err: any) {
       log.error('[TradeExecutorIPC] trade:get-summary error:', err);
       return createErrorResponse(err);
@@ -253,7 +261,11 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
   ipcMain.handle('trade:get-stats', async () => {
     try {
       const stats = executor.calculateTradeStats();
-      return createResponse(stats);
+      return createResponse({
+        ...stats,
+        totalSignals: (executor as any).recentSignals?.size ?? 0,
+        totalOrders: (executor as any).orders?.size ?? 0,
+      });
     } catch (err: any) {
       log.error('[TradeExecutorIPC] trade:get-stats error:', err);
       return createErrorResponse(err);
@@ -297,6 +309,9 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
   ipcMain.handle('trade:confirm-signal', async (_event: IpcMainInvokeEvent, index: number) => {
     try {
       const order = await executor.confirmPendingSignal(index);
+      if (!order) {
+        return createErrorResponse('Invalid pending signal index');
+      }
       return createResponse(order);
     } catch (err: any) {
       log.error('[TradeExecutorIPC] trade:confirm-signal error:', err);

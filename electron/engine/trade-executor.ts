@@ -414,6 +414,10 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
     // Generate order from signal
     const order = this.createOrderFromSignal(signal);
 
+    // Store and emit order:created
+    this.orders.set(order.id, order);
+    this.emit('order:created', order);
+
     // Execute based on mode
     const executedOrder = await this.executeOrder(order);
 
