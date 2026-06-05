@@ -81,7 +81,12 @@ export class ChaosMonkey {
         ];
         
         this.failures.push({ type: failureType, timestamp: Date.now() });
-        await this.simulateFailure(failureType);
+        try {
+          await this.simulateFailure(failureType);
+        } catch (error) {
+          console.error(`[ChaosMonkey] Failure injected: ${failureType}`, error);
+          // In real system, this would trigger recovery mechanisms
+        }
       }
     }
   }
