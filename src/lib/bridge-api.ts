@@ -673,3 +673,45 @@ export async function getQuoteStreamStatus(..._args: any[]): Promise<any> { retu
 // R17 additional stubs
 export async function subscribeQuoteStream(symbol: string): Promise<any> { return { success: true }; }
 export async function unsubscribeQuoteStream(symbol: string): Promise<any> { return { success: true }; }
+
+// ── R18: Dashboard & Portfolio IPC stubs ──────────────────────────────────
+
+export async function getDashboardSummary(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.dashboard.getSummary();
+}
+
+export async function getDashboardPnl(days?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.dashboard.getPnl({ days });
+}
+
+export async function getDashboardPositions(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.dashboard.getPositions();
+}
+
+export async function getDashboardHealth(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.dashboard.getHealth();
+}
+
+export async function getPortfolioAllocation(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.portfolio.getAllocation();
+}
+
+export async function getPortfolioPerformance(days?: number): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.portfolio.getPerformance({ days });
+}
+
+export async function getPortfolioRiskMetrics(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.portfolio.getRiskMetrics();
+}
+
+export async function getPortfolioRebalance(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.portfolio.getRebalance();
+}

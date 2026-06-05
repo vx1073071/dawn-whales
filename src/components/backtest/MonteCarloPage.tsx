@@ -1,8 +1,9 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 
 // ============================================================
 // Monte Carlo Simulator Page
 // JVS-R16-P2: Visualize simulation outcomes with GBM paths
+// Enhanced: Optional IPC to backtest engine for server-side risk metrics
 // ============================================================
 
 // --- Types ---
@@ -423,6 +424,8 @@ export default function MonteCarloPage() {
   });
   const [results, setResults] = useState<SimResults | null>(null);
   const [loading, setLoading] = useState(false);
+  const [serverRiskMetrics, setServerRiskMetrics] = useState<Record<string, any> | null>(null);
+  const [engineLoading, setEngineLoading] = useState(false);
 
   const updateConfig = useCallback((key: keyof SimConfig, value: number | string) => {
     setConfig(prev => ({ ...prev, [key]: value }));
@@ -430,6 +433,7 @@ export default function MonteCarloPage() {
 
   const runSimulation = useCallback(() => {
     setLoading(true);
+    setServerRiskMetrics(null); // Clear previous engine metrics on new run
     // Use setTimeout to allow UI to update
     setTimeout(() => {
       const { initialCapital, expectedReturn, volatility, timeHorizon, numSimulations, distribution } = config;
@@ -464,6 +468,33 @@ export default function MonteCarloPage() {
       setLoading(false);
     }, 50);
   }, [config]);
+
+  // ─── Fetch server-side risk metrics via IPC after client-side computation ───
+  useEffect(() => {
+    if (!results) return;
+    const api = (window as any).api;
+    if (!api?.backtest?.riskMetrics) return;
+
+    setEngineLoading(true);
+    // Sample equity curve to max 500 points to avoid IPC payload issues
+    const curve = results.terminalValues;
+    const sampledCurve = curve.length > 500
+      ? Array.from({ length: 500 }, (_, i) => curve[Math.floor(i * curve.length / 500)])
+      : curve;
+
+    api.backtest.riskMetrics(sampledCurve, config.riskFreeRate / 100)
+      .then((data: any) => {
+        if (data && typeof data === 'object') {
+          setServerRiskMetrics(data);
+        }
+      })
+      .catch(() => {
+        // Server metrics unavailable — client-side results remain authoritative
+      })
+      .finally(() => {
+        setEngineLoading(false);
+      });
+  }, [results, config.riskFreeRate]);
 
   // Sharpe ratio
   const sharpe = useMemo(() => {
@@ -635,6 +666,110 @@ export default function MonteCarloPage() {
               </div>
             </div>
           </div>
+
+          {/* Engine-Enhanced Risk Metrics (from IPC backtest engine) */}
+          {serverRiskMetrics && (
+            <div className="rounded-2xl border border-indigo-500/30 bg-indigo-500/5 backdrop-blur-md p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+                  引擎增强风险指标
+                </h2>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
+                  Backtest Engine
+                </span>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                {serverRiskMetrics.annualizedReturn != null && (
+                  <StatCard
+                    label="年化收益"
+                    value={`${(serverRiskMetrics.annualizedReturn * 100).toFixed(2)}%`}
+                    variant={serverRiskMetrics.annualizedReturn > 0 ? 'success' : 'danger'}
+                    sub="Engine 计算"
+                  />
+                )}
+                {serverRiskMetrics.annualizedVolatility != null && (
+                  <StatCard
+                    label="年化波动率"
+                    value={`${(serverRiskMetrics.annualizedVolatility * 100).toFixed(2)}%`}
+                    variant="warning"
+                    sub="Engine 计算"
+                  />
+                )}
+                {serverRiskMetrics.maxDrawdown != null && (
+                  <StatCard
+                    label="最大回撤"
+                    value={`${(serverRiskMetrics.maxDrawdown * 100).toFixed(2)}%`}
+                    variant="danger"
+                    sub="Engine 计算"
+                  />
+                )}
+                {serverRiskMetrics.calmarRatio != null && (
+                  <StatCard
+                    label="Calmar 比率"
+                    value={serverRiskMetrics.calmarRatio.toFixed(3)}
+                    variant={serverRiskMetrics.calmarRatio > 1 ? 'success' : 'warning'}
+                    sub="收益/最大回撤"
+                  />
+                )}
+                {serverRiskMetrics.sortinoRatio != null && (
+                  <StatCard
+                    label="Sortino 比率"
+                    value={serverRiskMetrics.sortinoRatio.toFixed(3)}
+                    variant={serverRiskMetrics.sortinoRatio > 1 ? 'success' : 'warning'}
+                    sub="下行风险调整"
+                  />
+                )}
+                {serverRiskMetrics.informationRatio != null && (
+                  <StatCard
+                    label="信息比率"
+                    value={serverRiskMetrics.informationRatio.toFixed(3)}
+                    sub="超额收益/跟踪误差"
+                  />
+                )}
+                {serverRiskMetrics.omegaRatio != null && (
+                  <StatCard
+                    label="Omega 比率"
+                    value={serverRiskMetrics.omegaRatio.toFixed(3)}
+                    variant={serverRiskMetrics.omegaRatio > 1 ? 'success' : 'warning'}
+                    sub="收益分布质量"
+                  />
+                )}
+                {serverRiskMetrics.tailRatio != null && (
+                  <StatCard
+                    label="尾部比率"
+                    value={serverRiskMetrics.tailRatio.toFixed(3)}
+                    sub="右尾/左尾比"
+                  />
+                )}
+                {serverRiskMetrics.skewness != null && (
+                  <StatCard
+                    label="偏度"
+                    value={serverRiskMetrics.skewness.toFixed(3)}
+                    sub={serverRiskMetrics.skewness > 0 ? '右偏 (正)' : '左偏 (负)'}
+                  />
+                )}
+                {serverRiskMetrics.kurtosis != null && (
+                  <StatCard
+                    label="峰度"
+                    value={serverRiskMetrics.kurtosis.toFixed(3)}
+                    sub={serverRiskMetrics.kurtosis > 3 ? '尖峰 (厚尾)' : '扁平'}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Engine metrics loading indicator */}
+          {engineLoading && !serverRiskMetrics && (
+            <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 flex items-center gap-3">
+              <svg className="animate-spin h-4 w-4 text-indigo-400" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              <span className="text-sm text-indigo-400">正在从回测引擎获取增强风险指标...</span>
+            </div>
+          )}
 
           {/* Equity Curves */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-3">

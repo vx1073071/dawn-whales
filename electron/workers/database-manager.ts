@@ -1,10 +1,21 @@
-﻿// ── DAWN WHALES — SQLite Persistence Layer (Production) ────────────────────
+// ── DAWN WHALES — SQLite Persistence Layer (Production) ────────────────────
 // T105: Strategy/Config/Order persistent storage with better-sqlite3
 
 import Database from 'better-sqlite3';
 import path from 'path';
-import { app } from 'electron';
-import log from 'electron-log';
+
+// Lazy-load electron modules (test-safe)
+let _app: any;
+let _log: any;
+try {
+  _app = require('electron').app;
+  _log = require('electron-log');
+} catch {
+  _app = null;
+  _log = null;
+}
+const app = _app;
+const log = _log || { info: (...args: any[]) => console.log('[DB]', ...args), error: (...args: any[]) => console.error('[DB]', ...args) };
 
 // ── Schema ─────────────────────────────────────────────────────────────────
 

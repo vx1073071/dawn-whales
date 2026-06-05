@@ -50,14 +50,14 @@ export class ChaosMonkey {
   /**
    * Start chaos monkey
    */
-  async start(): Promise<void> {
+  start(): void {
     if (this.active) return;
     this.active = true;
     
     console.log(`[ChaosMonkey] Started with failure rate ${this.config.failureRate}`);
     
-    // Start failure injection loop
-    this.injectFailures();
+    // Start failure injection loop (fire-and-forget with internal error handling)
+    this.injectFailures().catch(() => {});
   }
 
   /**
