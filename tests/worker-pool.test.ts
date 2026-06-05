@@ -8,7 +8,7 @@ describe('WorkerPool P0 (core API)', () => {
   it('WorkerPoolBenchmark should measure throughput', async () => {
     const bench = new WorkerPoolBenchmark();
     const mockPool = {
-      execute: async () => { await new Promise(r => setTimeout(r, 1)); },
+      execute: async () => { await new Promise(r => setTimeout(r, 5)); },
       stats: { totalWorkers: 4, busyWorkers: 2, queueLength: 0 }
     } as any;
     const result = await bench.runBatch(mockPool, Array(10).fill(0), d => d);
@@ -20,7 +20,7 @@ describe('WorkerPool P0 (core API)', () => {
   it('WorkerPoolBenchmark should run stress test', async () => {
     const bench = new WorkerPoolBenchmark();
     const mockPool = {
-      execute: async () => { await new Promise(r => setTimeout(r, 1)); },
+      execute: async () => { await new Promise(r => setTimeout(r, 5)); },
       stats: { totalWorkers: 2, busyWorkers: 1, queueLength: 0 }
     } as any;
     const result = await bench.stressTest(mockPool, 5, 3);
