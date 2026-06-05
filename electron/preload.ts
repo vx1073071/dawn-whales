@@ -526,6 +526,15 @@ contextBridge.exposeInMainWorld('api', {
     getAPIs: () => ipcRenderer.invoke('rate-limiter:apis'),
   },
 
+  // ── Circuit Breaker (JVS-86) ───────────────────────────────────
+  circuitBreaker: {
+    getState: (endpoint: string) => ipcRenderer.invoke('circuit-breaker:state', endpoint),
+    getMetrics: () => ipcRenderer.invoke('circuit-breaker:metrics'),
+    reset: (endpoint?: string) => ipcRenderer.invoke('circuit-breaker:reset', endpoint),
+    open: (endpoint: string) => ipcRenderer.invoke('circuit-breaker:open', endpoint),
+    close: (endpoint: string) => ipcRenderer.invoke('circuit-breaker:close', endpoint),
+  },
+
   // ── Data Consistency Checker (JVS-39) ───────────────────────
   dataConsistency: {
     check: () => ipcRenderer.invoke('data:consistency-check'),

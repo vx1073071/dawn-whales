@@ -1333,6 +1333,33 @@ export async function getRateLimiterAPIs(): Promise<any> {
   return window.api.rateLimiter.getAPIs();
 }
 
+// ── Circuit Breaker (JVS-86) ──────────────────────────────────────────────
+
+export async function getCircuitBreakerState(endpoint: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.circuitBreaker.getState(endpoint);
+}
+
+export async function getCircuitBreakerMetrics(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.circuitBreaker.getMetrics();
+}
+
+export async function resetCircuitBreaker(endpoint?: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.circuitBreaker.reset(endpoint);
+}
+
+export async function openCircuitBreaker(endpoint: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.circuitBreaker.open(endpoint);
+}
+
+export async function closeCircuitBreaker(endpoint: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.circuitBreaker.close(endpoint);
+}
+
 // ── Data Consistency Checker (JVS-39) ──────────────────────────────────────
 
 export async function runDataConsistencyCheck(): Promise<any> {

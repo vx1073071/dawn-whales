@@ -26,6 +26,7 @@ import { exploreCache, getCacheEntryDetail, getCacheKeys } from './engine/cache-
 import { getSentimentDashboard } from './engine/sentiment-dashboard';
 import { exportData, getAvailableModules } from './engine/data-export-service';
 import { getRateLimiterManager } from './engine/rate-limiter';
+import { getCircuitBreaker } from './engine/circuit-breaker';
 import { getDataConsistencyChecker } from './engine/data-consistency-checker';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
@@ -3877,6 +3878,64 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const manager = getRateLimiterManager();
       const apis = manager.getAvailableAPIs();
       return { success: true, apis };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Circuit Breaker (JVS-86) ──────────────────────────────────────────
+  ipcMain.handle('circuit-breaker:state', async (_e, endpoint: string) => {
+    try {
+      const breaker = getCircuitBreaker();
+      const state = breaker.getCircuit(endpoint);
+      return { success: true, state };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('circuit-breaker:metrics', async () => {
+    try {
+      const breaker = getCircuitBreaker();
+      const metrics = breaker.getMetrics();
+      return { success: true, metrics };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('circuit-breaker:reset', async (_e, endpoint?: string) => {
+    try {
+      const breaker = getCircuitBreaker();
+      if (endpoint) {
+        const circuit = breaker.getCircuit(endpoint);
+        circuit.reset();
+      } else {
+        breaker.reset();
+      }
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('circuit-breaker:open', async (_e, endpoint: string) => {
+    try {
+      const breaker = getCircuitBreaker();
+      const circuit = breaker.getCircuit(endpoint);
+      circuit.open();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('circuit-breaker:close', async (_e, endpoint: string) => {
+    try {
+      const breaker = getCircuitBreaker();
+      const circuit = breaker.getCircuit(endpoint);
+      circuit.close();
+      return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message };
     }
