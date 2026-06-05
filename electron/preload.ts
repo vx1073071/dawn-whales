@@ -139,6 +139,11 @@ contextBridge.exposeInMainWorld('api', {
     walkForwardParallel: (config: any) => ipcRenderer.invoke('backtest:walk-forward-parallel', config),
   },
 
+  // ── Monte Carlo (JVS-100) ────────────────────────────────────────
+  monteCarlo: {
+    simulate: (config: any) => ipcRenderer.invoke('monte-carlo:simulate', config),
+  },
+
   // ── Export (JVS-106) ──────────────────────────────────────────────
   export: {
     csv: (target: string, filters?: any) => ipcRenderer.invoke('export:csv', target, filters),

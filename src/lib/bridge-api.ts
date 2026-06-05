@@ -76,6 +76,9 @@ declare global {
         paramScanParallel: (config: any) => Promise<any>;
         walkForwardParallel: (config: any) => Promise<any>;
       };
+      monteCarlo: {
+        simulate: (config: any) => Promise<any>;
+      };
       strategy: {
         create: (dsl: any) => Promise<any>;
         getAll: () => Promise<any>;
@@ -714,4 +717,9 @@ export async function getPortfolioRiskMetrics(): Promise<any> {
 export async function getPortfolioRebalance(): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.portfolio.getRebalance();
+}
+
+export async function runMonteCarloSimulation(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.monteCarlo.simulate(config);
 }

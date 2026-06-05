@@ -68,6 +68,7 @@ import { StreamComputingEngine, getStreamComputingEngine } from './engine/stream
 import { captureSnapshot, querySnapshots, getSnapshot, compareSnapshots, getSnapshotTimeline, getLatestSnapshot, cleanupOldSnapshots, exportSnapshots, importSnapshots, getSnapshotStats, deleteSnapshot, clearAllSnapshots } from './engine/snapshot-service';
 import { trackVersion, getEntityVersions, getVersion, getLatestVersion, diffVersions, rollback, queryVersions, getVersionStats, deleteVersion, clearAllVersions, exportVersions, importVersions } from './engine/version-control-service';
 import { setupI18nDataIPC } from './engine/i18n-data';
+import { registerMonteCarloIPC } from './ipc/monte-carlo-ipc';
 import { getFinancialReports } from './engine/financial-reports';
 import { getValuationData } from './engine/valuation-data';
 import { computeIndicators } from './engine/technical-indicators';
@@ -5434,6 +5435,10 @@ app.whenReady().then(async () => {
     const { initPaperTrader } = require('./engine/paper-trader');
     const paperTrader = initPaperTrader();
     log.info('[App] PaperTrader initialized');
+
+    // R18: Register MonteCarlo IPC (JVS-100)
+    registerMonteCarloIPC();
+    log.info('[App] MonteCarloIPC registered');
 
   } catch (err: any) {
     log.error('[App] Engine init failed:', err.message);
