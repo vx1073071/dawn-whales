@@ -20,6 +20,7 @@ import { DataProviderService } from './data/data-provider';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner';
+import { registerStrategyExecuteHandler } from './ipc/strategy-execute-handler';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -1376,6 +1377,15 @@ app.whenReady().then(async () => {
     // Check for updates 10s after launch, then every 4 hours
     setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 10000);
     setInterval(() => autoUpdater.checkForUpdates().catch(() => {}), 4 * 60 * 60 * 1000);
+  }
+
+  // Register strategy:execute IPC handler
+  if (strategyEngine && riskEngine) {
+    registerStrategyExecuteHandler(ipcMain, {
+      strategyEngine,
+      riskEngine,
+      backtestEngine: new BacktestEngine(),
+    });
   }
 
   log.info('[App] DAWN WHALES ready');
