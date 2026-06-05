@@ -3,7 +3,6 @@
 // Record all fills, calculate performance, compare slippage vs real
 
 import log from 'electron-log';
-import { EventEmitter } from 'events';
 import type { QuoteTick } from './quote-stream';
 import type { LiveOrder, LivePosition } from './live-executor';
 
@@ -11,10 +10,10 @@ import type { LiveOrder, LivePosition } from './live-executor';
 
 export interface PaperAccount {
   capital: number;           // Available cash (RMB)
-  commissionRate: number;    // 0.0003 (0.03% one-way)
-  stampDutyRate: number;   // 0.001 (0.1% sell only)
-  slippageBps: number;       // 5 bps (0.05% slippage per fill)
-  initialCapital: number;  // Starting capital (for reporting)
+  commissionRate: number;   // 0.0003 (0.03% one-way)
+  stampDutyRate: number;    // 0.001 (0.1% sell only)
+  slippageBps: number;      // 5 bps (0.05% slippage per fill)
+  initialCapital: number;   // Starting capital (for reporting)
 }
 
 export interface PaperFill {
@@ -22,10 +21,10 @@ export interface PaperFill {
   symbol: string;
   side: 'BUY' | 'SELL';
   quantity: number;
-  fillPrice: number;        // Actual fill price (with slippage)
-  commission: number;      // Commission paid
-  stampDuty?: number;     // Stamp duty (sell only)
-  slippage: number;         // Slippage cost
+  fillPrice: number;
+  commission: number;
+  stampDuty?: number;
+  slippage: number;
   timestamp: number;
   strategyId: string;
 }
@@ -45,9 +44,9 @@ export interface PaperTrade {
   commission: number;
   stampDuty: number;
   slippage: number;
-  netPnl: number;          // P&L after costs
+  netPnl: number;
   holdingDays: number;
-  exitReason: string;     // 'stop_loss' | 'take_profit' | 'signal' | 'manual'
+  exitReason: string;
 }
 
 export interface PaperPerformance {
@@ -55,18 +54,18 @@ export interface PaperPerformance {
   totalTrades: number;
   winningTrades: number;
   losingTrades: number;
-  winRate: number;          // 0-1
+  winRate: number;
   avgWin: number;
   avgLoss: number;
   largestWin: number;
   largestLoss: number;
-  profitFactor: number;     // avgWin / |avgLoss|
-  expectancy: number;       // winRate × avgWin - (1-winRate) × |avgLoss|
-  totalReturn: number;     // %
-  annualizedReturn: number; // %
+  profitFactor: number;
+  expectancy: number;
+  totalReturn: number;
+  annualizedReturn: number;
   sharpeRatio: number;
-  maxDrawdown: number;    // %
-  recoveryFactor: number;   // totalReturn / |maxDrawdown|
+  maxDrawdown: number;
+  recoveryFactor: number;
   avgHoldingDays: number;
   totalCommission: number;
   totalStampDuty: number;
@@ -81,36 +80,80 @@ export interface PaperReport {
   positions: LivePosition[];
   trades: PaperTrade[];
   performance: PaperPerformance[];
-  equityCurve: Array<{ timestamp: number; equit: number }>;
+  equityCurve: Array<{ timestamp: number; equity: number }>;
   error?: string;
 }
 
 // ── Default Account ─────────────────────────────────────────────────
 
 const DEFAULT_ACCOUNT: PaperAccount = {
-  capital: 1000000,      // ¥1M
-  commissionRate: 0.0003, // 0.03%
-  stampDutyRate: 0.001,  // 0.1% (sell only)
-  slippageBps: 5,          // 5 bps
+  capital: 1000000,
+  commissionRate: 0.0003,
+  stampDutyRate: 0.001,
+  slippageBps: 5,
   initialCapital: 1000000,
 };
 
+// ── Event Emitter Interface (for test injection) ─────────────────────
+
+interface EmitterLike {
+  on(event: string, listener: (...args: unknown[]) => void): this;
+  off(event: string, listener: (...args: unknown[]) => void): this;
+  emit(event: string, ...args: unknown[]): boolean;
+  once(event: string, listener: (...args: unknown[]) => void): this;
+  removeAllListeners(event?: string): this;
+}
+
 // ── Paper Trader ─────────────────────────────────────────────────
 
-export class PaperTrader extends EventEmitter {
+export class PaperTrader {
+  // Composition: internal EventEmitter (injected in tests)
+  private _emitter: EmitterLike;
+
   private account: PaperAccount;
-  private positions = new Map<string, LivePosition>();  // strategyId → position
-  private pendingOrders = new Map<string, LiveOrder>(); // orderId → order
+  private positions = new Map<string, LivePosition>();
+  private pendingOrders = new Map<string, LiveOrder>();
   private fills: PaperFill[] = [];
   private trades: PaperTrade[] = [];
-  private equityCurve: Array<{ timestamp: number; equit: number }> = [];
+  private equityCurve: Array<{ timestamp: number; equity: number }> = [];
   private running = false;
   private subscriptions: Array<() => void> = [];
 
-  constructor(account?: Partial<PaperAccount>) {
-    super();
+  constructor(account?: Partial<PaperAccount>, emitter?: EmitterLike) {
+    // Allow test injection; fall back to real Node EventEmitter
+    if (emitter) {
+      this._emitter = emitter;
+    } else {
+      try {
+        const { EventEmitter } = require('events');
+        this._emitter = new EventEmitter();
+      } catch {
+        this._emitter = createNoopEmitter();
+      }
+    }
     this.account = { ...DEFAULT_ACCOUNT, ...account };
     log.info('[PaperTrader] Initialized with capital: ¥' + this.account.capital);
+  }
+
+  // ── Event Delegation ──────────────────────────────────────────────
+
+  on(event: string, listener: (...args: unknown[]) => void): this {
+    this._emitter.on(event, listener);
+    return this;
+  }
+
+  once(event: string, listener: (...args: unknown[]) => void): this {
+    this._emitter.once(event, listener);
+    return this;
+  }
+
+  off(event: string, listener: (...args: unknown[]) => void): this {
+    this._emitter.off(event, listener);
+    return this;
+  }
+
+  protected emit(event: string, ...args: unknown[]): boolean {
+    return this._emitter.emit(event, ...args);
   }
 
   // ── Lifecycle ─────────────────────────────────────────────────
@@ -120,7 +163,6 @@ export class PaperTrader extends EventEmitter {
       log.warn('[PaperTrader] Already running');
       return;
     }
-
     this.running = true;
     log.info(`[PaperTrader] Started, tracking ${symbols?.length || 'all'} symbols`);
     this.emit('papertrader:started');
@@ -128,7 +170,6 @@ export class PaperTrader extends EventEmitter {
 
   stop(): void {
     if (!this.running) return;
-
     this.running = false;
     this.subscriptions.forEach((unsub) => unsub());
     this.subscriptions = [];
@@ -155,17 +196,13 @@ export class PaperTrader extends EventEmitter {
       log.warn('[PaperTrader] Not running, order rejected');
       return '';
     }
-
-    // Simulate immediate fill (market order) or pending (limit order)
     if (order.type === 'MARKET') {
       this.simulateFill(order, order.price!);
     } else {
-      // Limit order: add to pending, fill when price hits
       this.pendingOrders.set(order.id, order);
       log.info(`[PaperTrader] Limit order ${order.id} pending @ ${order.price}`);
       this.emit('papertrader:orderPending', order);
     }
-
     return order.id;
   }
 
@@ -178,35 +215,27 @@ export class PaperTrader extends EventEmitter {
     return removed;
   }
 
-  // ── Quote Processing (consume quote:stream-tick) ─────────
+  // ── Quote Processing ────────────────────────────────────────
 
   onQuotes(quotes: QuoteTick[]): void {
     if (!this.running) return;
-
     for (const quote of quotes) {
-      // Check pending limit orders
       this.checkLimitOrders(quote);
-
-      // Update position unrealized P&L
       this.updatePositionPnL(quote);
     }
-
-    // Record equity snapshot
     const equity = this.calculateTotalEquity(quotes);
-    this.equityCurve.push({ timestamp: Date.now(), equit: equity });
+    this.equityCurve.push({ timestamp: Date.now(), equity });
   }
 
   private checkLimitOrders(quote: QuoteTick): void {
     for (const [orderId, order] of this.pendingOrders) {
       if (order.symbol !== quote.code) continue;
-
       let shouldFill = false;
       if (order.side === 'BUY' && quote.price <= order.price!) {
         shouldFill = true;
       } else if (order.side === 'SELL' && quote.price >= order.price!) {
         shouldFill = true;
       }
-
       if (shouldFill) {
         this.simulateFill(order, quote.price);
         this.pendingOrders.delete(orderId);
@@ -214,17 +243,15 @@ export class PaperTrader extends EventEmitter {
     }
   }
 
-  // ── Fill Simulation ───────────────────────────────────────────
+  // ── Fill Simulation ─────────────────────────────────────────
 
   private simulateFill(order: LiveOrder, marketPrice: number): void {
-    // Apply slippage
-    const slippage = this.account.slippageBps / 10000; // 5bps = 0.0005
+    const slippage = this.account.slippageBps / 10000;
     const fillPrice =
       order.side === 'BUY'
         ? marketPrice * (1 + slippage)
         : marketPrice * (1 - slippage);
 
-    // Calculate costs
     const commission = fillPrice * order.quantity * this.account.commissionRate;
     const stampDuty =
       order.side === 'SELL' ? fillPrice * order.quantity * this.account.stampDutyRate : 0;
@@ -244,8 +271,6 @@ export class PaperTrader extends EventEmitter {
     };
 
     this.fills.push(fill);
-
-    // Update position
     this.updatePositionAfterFill(fill);
 
     log.info(
@@ -254,20 +279,18 @@ export class PaperTrader extends EventEmitter {
     this.emit('papertrader:fill', fill);
   }
 
-  // ── Position Management ────────────────────────────────────────
+  // ── Position Management ─────────────────────────────────────
 
   private updatePositionAfterFill(fill: PaperFill): void {
     const existing = this.positions.get(fill.strategyId);
 
     if (fill.side === 'BUY') {
       if (existing) {
-        // Average up/down
         const totalQty = existing.quantity + fill.quantity;
         existing.avgCost =
           (existing.avgCost * existing.quantity + fill.fillPrice * fill.quantity) / totalQty;
         existing.quantity = totalQty;
       } else {
-        // New position
         this.positions.set(fill.strategyId, {
           strategyId: fill.strategyId,
           symbol: fill.symbol,
@@ -281,11 +304,8 @@ export class PaperTrader extends EventEmitter {
       }
     } else if (fill.side === 'SELL') {
       if (existing) {
-        // Close (partial or full)
         const remaining = existing.quantity - fill.quantity;
-
         if (remaining <= 0) {
-          // Full close → record trade
           this.recordTrade(fill.strategyId, fill.fillPrice, fill.quantity, 'signal');
           this.positions.delete(fill.strategyId);
         } else {
@@ -296,16 +316,15 @@ export class PaperTrader extends EventEmitter {
   }
 
   private updatePositionPnL(quote: QuoteTick): void {
-    for (const [strategyId, pos] of this.positions) {
+    for (const [, pos] of this.positions) {
       if (pos.symbol !== quote.code) continue;
-
       const pnl = (quote.price - pos.avgCost) * pos.quantity;
       pos.unrealizedPnL = Math.round(pnl * 100) / 100;
       pos.unrealizedPnLPct = Math.round((pnl / (pos.avgCost * pos.quantity)) * 10000) / 100;
     }
   }
 
-  // ── Trade Recording ──────────────────────────────────────────
+  // ── Trade Recording ─────────────────────────────────────────
 
   private recordTrade(strategyId: string, exitPrice: number, quantity: number, reason: string): void {
     const position = this.positions.get(strategyId)!;
@@ -315,7 +334,6 @@ export class PaperTrader extends EventEmitter {
     const pnl = (exitPrice - position.avgCost) * quantity;
     const pnlPct = (exitPrice - position.avgCost) / position.avgCost;
 
-    // Calculate costs from fills
     const relatedFills = this.fills.filter(
       (f) => f.strategyId === strategyId && f.side === 'BUY'
     );
@@ -346,31 +364,24 @@ export class PaperTrader extends EventEmitter {
     };
 
     this.trades.push(trade);
-
-    // Update capital
     this.account.capital += trade.netPnl;
 
     log.info(
-      `[PaperTrader] Trade closed: ${strategyId} P&L: ¥${trade.netPnl.toFixed(2)} (${(
-        trade.pnlPct * 100
-      ).toFixed(2)}%)`
+      `[PaperTrader] Trade closed: ${strategyId} P&L: ¥${trade.netPnl.toFixed(2)} (${(trade.pnlPct * 100).toFixed(2)}%)`
     );
     this.emit('papertrader:trade', trade);
   }
 
-  // ── Performance Calculation ───────────────────────────────────
+  // ── Performance Calculation ─────────────────────────────────
 
   calculatePerformance(strategyId?: string): PaperPerformance[] {
     const trades = strategyId
       ? this.trades.filter((t) => t.strategyId === strategyId)
       : this.trades;
 
-    if (trades.length === 0) {
-      return [];
-    }
+    if (trades.length === 0) return [];
 
     const strategyPerf = new Map<string, PaperTrade[]>();
-
     for (const trade of trades) {
       const list = strategyPerf.get(trade.strategyId) || [];
       list.push(trade);
@@ -382,12 +393,10 @@ export class PaperTrader extends EventEmitter {
     for (const [sid, tradeList] of strategyPerf) {
       const wins = tradeList.filter((t) => t.netPnl > 0);
       const losses = tradeList.filter((t) => t.netPnl <= 0);
-
       const totalReturn = tradeList.reduce((sum, t) => sum + t.netPnl, 0);
       const initial = this.account.initialCapital;
       const totalReturnPct = (totalReturn / initial) * 100;
 
-      // Max drawdown
       let peak = initial;
       let maxDD = 0;
       let equity = initial;
@@ -418,8 +427,8 @@ export class PaperTrader extends EventEmitter {
               Math.abs(losses.reduce((sum, t) => sum + t.netPnl, 0) / losses.length)
             : 0,
         totalReturn: totalReturnPct,
-        annualizedReturn: totalReturnPct * (252 / tradeList.length), // Simplied
-        sharpeRatio: 0, // TODO: calculate from equity curve
+        annualizedReturn: totalReturnPct * (252 / tradeList.length),
+        sharpeRatio: 0,
         maxDrawdown: maxDD,
         recoveryFactor: maxDD > 0 ? totalReturnPct / maxDD : 0,
         avgHoldingDays: tradeList.reduce((sum, t) => sum + t.holdingDays, 0) / tradeList.length,
@@ -434,7 +443,7 @@ export class PaperTrader extends EventEmitter {
     return results;
   }
 
-  // ── Reporting ──────────────────────────────────────────────────
+  // ── Reporting ─────────────────────────────────────────────────
 
   getReport(strategyId?: string): PaperReport {
     const currentCapital = this.account.capital;
@@ -444,7 +453,6 @@ export class PaperTrader extends EventEmitter {
       0
     );
     const totalEquity = currentCapital + totalPositionValue;
-
     const performance = this.calculatePerformance(strategyId);
 
     return {
@@ -459,17 +467,15 @@ export class PaperTrader extends EventEmitter {
     };
   }
 
-  // ── Helpers ────────────────────────────────────────────────────
+  // ── Helpers ─────────────────────────────────────────────────
 
   private calculateTotalEquity(quotes: QuoteTick[]): number {
     let equity = this.account.capital;
-
     for (const pos of this.positions.values()) {
       const quote = quotes.find((q) => q.code === pos.symbol);
       const currentPrice = quote?.price || pos.avgCost;
       equity += (currentPrice - pos.avgCost) * pos.quantity;
     }
-
     return equity;
   }
 
@@ -482,10 +488,7 @@ export class PaperTrader extends EventEmitter {
   }
 
   getTrades(strategyId?: string): PaperTrade[] {
-    if (strategyId) {
-      return this.trades.filter((t) => t.strategyId === strategyId);
-    }
-    return this.trades;
+    return strategyId ? this.trades.filter((t) => t.strategyId === strategyId) : this.trades;
   }
 
   getFills(): PaperFill[] {
@@ -496,6 +499,18 @@ export class PaperTrader extends EventEmitter {
     this.account = { ...this.account, ...updates };
     log.info('[PaperTrader] Account updated:', updates);
   }
+}
+
+// ── Noop Emitter (fallback when 'events' unavailable) ────────────────
+
+function createNoopEmitter(): EmitterLike {
+  return {
+    on() { return this; },
+    off() { return this; },
+    emit() { return false; },
+    once() { return this; },
+    removeAllListeners() { return this; },
+  };
 }
 
 // ── Singleton ───────────────────────────────────────────────────────
@@ -509,8 +524,7 @@ export function initPaperTrader(account?: Partial<PaperAccount>): PaperTrader {
   return paperTraderInstance;
 }
 
-export function getPaperTrader(strategyId?: string): PaperTrader | null {
-  void strategyId; // Reserved for multi-account future
+export function getPaperTrader(): PaperTrader | null {
   return paperTraderInstance;
 }
 
