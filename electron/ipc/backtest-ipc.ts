@@ -79,7 +79,7 @@ export function registerBacktestIPC(
         oosPeriodDays?: number;
         tradingDays?: number;
       };
-      const { BacktestStabilityChecker } = await import('./engine/backtest-stability.js');
+      const { BacktestStabilityChecker } = await import('../engine/backtest-stability');
       const checker = new BacktestStabilityChecker();
       const result = checker.analyzeStability({ isReturns, oosReturns, paramGridResults, walkForwardResults, isPeriodDays, oosPeriodDays, tradingDays });
       return { success: true, ...result };
@@ -166,6 +166,83 @@ export function registerBacktestIPC(
     }
   });
 
-  // ── Q14: Live Executor ──────────────────────────────────────────────
+    // ── walkForward (alias for backtest:walk-forward) ─────────────────────
+  ipcMain.handle('backtest:walkForward', async (_e, config: any) => {
+    // Delegates to the main.ts inline backtest:walk-forward handler
+    // This stub ensures the preload call resolves even if main.ts hasn't
+    // registered the handler yet (registration order issue)
+    const WalkForwardEngine = (global as any).__walkForwardEngine;
+    if (WalkForwardEngine) {
+      try {
+        const result = await WalkForwardEngine.run(config);
+        return { success: true, result };
+      } catch (err: any) {
+        return { success: false, error: err.message };
+      }
+    }
+    return { success: false, error: 'WalkForwardEngine not initialized' };
+  });
+
+  // ── parallel — parallel backtest execution ───────────────────────────
+  ipcMain.handle('backtest:parallel', async (_e, configs: any[]) => {
+    if (!Array.isArray(configs) || configs.length === 0) {
+      return { success: false, error: 'configs must be non-empty array' };
+    }
+    const results = await Promise.allSettled(
+      configs.map(cfg => backtestEngine ? backtestEngine.run(cfg) : Promise.reject(new Error('No engine')))
+    );
+    return {
+      success: true,
+      results: results.map((r, i) =>
+        r.status === 'fulfilled' ? { index: i, ...(r.value as any) } : { index: i, error: (r as any).reason?.message }
+      ),
+    };
+  });
+
+  // ── param-scan-parallel ───────────────────────────────────────────────
+  ipcMain.handle('backtest:param-scan-parallel', async (_e, config: any) => {
+    const { paramGrid, baseConfig } = config || {};
+    if (!paramGrid || !baseConfig) {
+      return { success: false, error: 'paramGrid and baseConfig required' };
+    }
+    const keys = Object.keys(paramGrid);
+    const combos = keys.reduce((acc: any[][], k) => {
+      const vals = Array.isArray(paramGrid[k]) ? paramGrid[k] : [paramGrid[k]];
+      return acc.length === 0 ? vals.map(v => ({ [k]: v })) :
+        acc.flatMap(o => vals.map(v => ({ ...o, [k]: v })));
+    }, []);
+    const results = await Promise.allSettled(
+      combos.map(combo => {
+        const cfg = { ...baseConfig, ...combo };
+        return backtestEngine ? backtestEngine.run(cfg) : Promise.reject(new Error('No engine'));
+      })
+    );
+    const metrics = results.map((r, i) => ({
+      params: combos[i],
+      ...(r.status === 'fulfilled' ? (r.value as any) : { error: (r as any).reason?.message }),
+    }));
+    // Find best by Sharpe
+    const valid = metrics.filter(m => m.sharpe !== undefined);
+    if (valid.length > 0) {
+      valid.sort((a, b) => (b.sharpe as number) - (a.sharpe as number));
+    }
+    return { success: true, results: metrics, best: valid[0] || null, total: combos.length };
+  });
+
+  // ── walk-forward-parallel ─────────────────────────────────────────────
+  ipcMain.handle('backtest:walk-forward-parallel', async (_e, config: any, numWindows?: number, trainRatio?: number) => {
+    const WalkForwardEngine = (global as any).__walkForwardEngine;
+    if (!WalkForwardEngine) {
+      return { success: false, error: 'WalkForwardEngine not available' };
+    }
+    const engine = new WalkForwardEngine();
+    try {
+      const result = await engine.run({ ...config, numWindows: numWindows || 5, trainRatio: trainRatio || 0.7 });
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
 
 }
+

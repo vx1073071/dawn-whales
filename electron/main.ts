@@ -71,6 +71,8 @@ import { setupI18nDataIPC } from './engine/i18n-data';
 import { registerMonteCarloIPC } from './ipc/monte-carlo-ipc';
 import { registerMonitorIPC } from './ipc/monitor-ipc';
 import { registerPrefsIPC } from './ipc/prefs-ipc';
+import { registerBacktestIPC } from './ipc/backtest-ipc';
+import { registerExportIPC } from './ipc/export-ipc';
 import { getFinancialReports } from './engine/financial-reports';
 import { getValuationData } from './engine/valuation-data';
 import { computeIndicators } from './engine/technical-indicators';
@@ -5446,6 +5448,16 @@ app.whenReady().then(async () => {
     registerMonitorIPC();
     registerPrefsIPC();
     log.info('[App] MonitorIPC + PrefsIPC registered');
+
+    // R20: Register Backtest IPC (4 missing parallel handlers)
+    if (backtestEngine) {
+      registerBacktestIPC(backtestEngine);
+      log.info('[App] BacktestIPC registered');
+    }
+
+    // R20: Register Export IPC (6 missing handlers)
+    registerExportIPC();
+    log.info('[App] ExportIPC registered');
 
   } catch (err: any) {
     log.error('[App] Engine init failed:', err.message);
