@@ -588,6 +588,38 @@ contextBridge.exposeInMainWorld('api', {
     summary: () => ipcRenderer.invoke('performance:summary'),
   },
 
+  // ── Portfolio Optimization (JVS-92) ────────────────────────────
+  portfolioOptimization: {
+    optimize: (symbols: string[], returns: Record<string, number[]>, covarianceMatrix: number[][], currentWeights?: Record<string, number>) =>
+      ipcRenderer.invoke('optimization:optimize', symbols, returns, covarianceMatrix, currentWeights),
+    simulateMonteCarlo: (symbols: string[], weights: number[], expectedReturns: number[], covarianceMatrix: number[][], numSimulations?: number, numDays?: number) =>
+      ipcRenderer.invoke('optimization:simulate-monte-carlo', symbols, weights, expectedReturns, covarianceMatrix, numSimulations, numDays),
+    summary: () => ipcRenderer.invoke('optimization:summary'),
+  },
+
+  // ── Signal Backtesting (JVS-93) ────────────────────────────────
+  signalBacktest: {
+    backtest: (config: any) => ipcRenderer.invoke('signal-backtest:backtest', config),
+    walkForward: (config: any, numWindows?: number, trainRatio?: number) =>
+      ipcRenderer.invoke('signal-backtest:walk-forward', config, numWindows, trainRatio),
+    monteCarlo: (config: any, numSimulations?: number) =>
+      ipcRenderer.invoke('signal-backtest:monte-carlo', config, numSimulations),
+    compare: (configs: any[]) => ipcRenderer.invoke('signal-backtest:compare', configs),
+    summary: () => ipcRenderer.invoke('signal-backtest:summary'),
+  },
+
+  // ── Real-time News Feed (JVS-94) ───────────────────────────────
+  realtimeNews: {
+    start: (sources?: string[]) => ipcRenderer.invoke('news-feed:start', sources),
+    stop: () => ipcRenderer.invoke('news-feed:stop'),
+    getNews: (symbol?: string, limit?: number) => ipcRenderer.invoke('news-feed:get-news', symbol, limit),
+    filter: (filter: any) => ipcRenderer.invoke('news-feed:filter', filter),
+    analyzeSentiment: (newsId: string) => ipcRenderer.invoke('news-feed:sentiment', newsId),
+    measureImpact: (newsId: string, symbol: string) => ipcRenderer.invoke('news-feed:impact', newsId, symbol),
+    getAlerts: (keywords?: string[]) => ipcRenderer.invoke('news-feed:alerts', keywords),
+    summary: () => ipcRenderer.invoke('news-feed:summary'),
+  },
+
   // ── Data Consistency Checker (JVS-39) ───────────────────────
   dataConsistency: {
     check: () => ipcRenderer.invoke('data:consistency-check'),

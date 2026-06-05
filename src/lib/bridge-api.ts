@@ -1523,6 +1523,104 @@ export async function getPerformanceSummary(): Promise<any> {
   return window.api.performanceAnalytics.summary();
 }
 
+// ── Portfolio Optimization (JVS-92) ────────────────────────────────────────
+
+export async function optimizePortfolio(
+  symbols: string[],
+  returns: Record<string, number[]>,
+  covarianceMatrix: number[][],
+  currentWeights?: Record<string, number>
+): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.portfolioOptimization.optimize(symbols, returns, covarianceMatrix, currentWeights);
+}
+
+export async function simulateMonteCarlo(
+  symbols: string[],
+  weights: number[],
+  expectedReturns: number[],
+  covarianceMatrix: number[][],
+  numSimulations?: number,
+  numDays?: number
+): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.portfolioOptimization.simulateMonteCarlo(symbols, weights, expectedReturns, covarianceMatrix, numSimulations, numDays);
+}
+
+export async function getOptimizationSummary(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.portfolioOptimization.summary();
+}
+
+// ── Signal Backtesting (JVS-93) ────────────────────────────────────────────
+
+export async function backtestSignal(config: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.signalBacktest.backtest(config);
+}
+
+export async function walkForwardBacktest(config: any, numWindows?: number, trainRatio?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.signalBacktest.walkForward(config, numWindows, trainRatio);
+}
+
+export async function monteCarloSimulation(config: any, numSimulations?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.signalBacktest.monteCarlo(config, numSimulations);
+}
+
+export async function compareStrategies(configs: any[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.signalBacktest.compare(configs);
+}
+
+export async function getSignalBacktestSummary(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.signalBacktest.summary();
+}
+
+// ── Real-time News Feed (JVS-94) ───────────────────────────────────────────
+
+export async function startNewsFeed(sources?: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.realtimeNews.start(sources);
+}
+
+export async function stopNewsFeed(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.realtimeNews.stop();
+}
+
+export async function getRealtimeNews(symbol?: string, limit?: number): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.realtimeNews.getNews(symbol, limit);
+}
+
+export async function filterNews(filter: any): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.realtimeNews.filter(filter);
+}
+
+export async function analyzeNewsSentiment(newsId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.realtimeNews.analyzeSentiment(newsId);
+}
+
+export async function measureNewsImpact(newsId: string, symbol: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.realtimeNews.measureImpact(newsId, symbol);
+}
+
+export async function getNewsAlerts(keywords?: string[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.realtimeNews.getAlerts(keywords);
+}
+
+export async function getNewsFeedSummary(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.realtimeNews.summary();
+}
+
 // ── Data Consistency Checker (JVS-39) ──────────────────────────────────────
 
 export async function runDataConsistencyCheck(): Promise<any> {

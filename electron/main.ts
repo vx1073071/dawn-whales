@@ -31,6 +31,9 @@ import { getHealthDashboard } from './engine/health-dashboard';
 import { getAnomalyDetectionSystem } from './engine/anomaly-detection';
 import { getRiskManagementDashboard } from './engine/risk-management';
 import { getPerformanceAnalyticsDashboard } from './engine/performance-analytics';
+import { getPortfolioOptimizationEngine } from './engine/portfolio-optimization';
+import { getSignalBacktester } from './engine/signal-backtesting';
+import { getRealtimeNewsFeed } from './engine/realtime-news';
 import { getDataConsistencyChecker } from './engine/data-consistency-checker';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
@@ -4280,6 +4283,171 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const dashboard = getPerformanceAnalyticsDashboard();
       const summary = dashboard.getSummary();
+      return { success: true, summary };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Portfolio Optimization (JVS-92) ─────────────────────────────────────
+  ipcMain.handle('optimization:optimize', async (_e, symbols: string[], returns: Record<string, number[]>, covarianceMatrix: number[][], currentWeights?: Record<string, number>) => {
+    try {
+      const engine = getPortfolioOptimizationEngine();
+      const returnsMap = new Map(Object.entries(returns));
+      const currentWeightsMap = currentWeights ? new Map(Object.entries(currentWeights)) : undefined;
+      const result = engine.optimize(symbols, returnsMap, covarianceMatrix, currentWeightsMap);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('optimization:simulate-monte-carlo', async (_e, symbols: string[], weights: number[], expectedReturns: number[], covarianceMatrix: number[][], numSimulations?: number, numDays?: number) => {
+    try {
+      const engine = getPortfolioOptimizationEngine();
+      const finalReturns = engine.simulateMonteCarlo(symbols, weights, expectedReturns, covarianceMatrix, numSimulations, numDays);
+      return { success: true, finalReturns };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('optimization:summary', async () => {
+    try {
+      const engine = getPortfolioOptimizationEngine();
+      const summary = engine.getSummary();
+      return { success: true, summary };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Signal Backtesting (JVS-93) ─────────────────────────────────────────
+  ipcMain.handle('signal-backtest:backtest', async (_e, config: any) => {
+    try {
+      const backtester = getSignalBacktester();
+      const result = backtester.backtest(config);
+      return { success: true, result };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('signal-backtest:walk-forward', async (_e, config: any, numWindows?: number, trainRatio?: number) => {
+    try {
+      const backtester = getSignalBacktester();
+      const results = backtester.walkForwardBacktest(config, numWindows, trainRatio);
+      return { success: true, results };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('signal-backtest:monte-carlo', async (_e, config: any, numSimulations?: number) => {
+    try {
+      const backtester = getSignalBacktester();
+      const results = backtester.monteCarloSimulation(config, numSimulations);
+      return { success: true, results };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('signal-backtest:compare', async (_e, configs: any[]) => {
+    try {
+      const backtester = getSignalBacktester();
+      const comparison = backtester.compareStrategies(configs);
+      return { success: true, comparison };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('signal-backtest:summary', async () => {
+    try {
+      const backtester = getSignalBacktester();
+      const summary = backtester.getSummary();
+      return { success: true, summary };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Real-time News Feed (JVS-94) ────────────────────────────────────────
+  ipcMain.handle('news-feed:start', async (_e, sources?: string[]) => {
+    try {
+      const newsFeed = getRealtimeNewsFeed();
+      newsFeed.start(sources);
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('news-feed:stop', async () => {
+    try {
+      const newsFeed = getRealtimeNewsFeed();
+      newsFeed.stop();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('news-feed:get-news', async (_e, symbol?: string, limit?: number) => {
+    try {
+      const newsFeed = getRealtimeNewsFeed();
+      const news = newsFeed.getNews(symbol, limit);
+      return { success: true, news };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('news-feed:filter', async (_e, filter: any) => {
+    try {
+      const newsFeed = getRealtimeNewsFeed();
+      const news = newsFeed.filterNews(filter);
+      return { success: true, news };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('news-feed:sentiment', async (_e, newsId: string) => {
+    try {
+      const newsFeed = getRealtimeNewsFeed();
+      const sentiment = newsFeed.analyzeSentiment(newsId);
+      return { success: true, sentiment };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('news-feed:impact', async (_e, newsId: string, symbol: string) => {
+    try {
+      const newsFeed = getRealtimeNewsFeed();
+      const impact = newsFeed.measureImpact(newsId, symbol);
+      return { success: true, impact };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('news-feed:alerts', async (_e, keywords?: string[]) => {
+    try {
+      const newsFeed = getRealtimeNewsFeed();
+      const alerts = newsFeed.getAlerts(keywords);
+      return { success: true, alerts };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('news-feed:summary', async () => {
+    try {
+      const newsFeed = getRealtimeNewsFeed();
+      const summary = newsFeed.getSummary();
       return { success: true, summary };
     } catch (err: any) {
       return { success: false, error: err.message };
