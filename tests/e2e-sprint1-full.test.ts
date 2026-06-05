@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+﻿import { describe, it, expect, beforeAll } from 'vitest';
 
 class MockBroker {
   connected = false;
   accounts = [{ accountId: 'ACC001', name: 'Main' }];
-  funds = { totalAssets: 1500000, cash: 1351150, marketVal: 148850, todayPnl: 12500, todayPnlPct: 0.84, currency: 'HKD' };
+  funds = { totalAssets: 648850, cash: 500000, marketVal: 148850, todayPnl: 12500, todayPnlPct: 0.84, currency: 'HKD' };
   positions = [
     { code: 'US.TQQQ', name: 'ProShares 3x', qty: 200, costPrice: 48.5, marketPrice: 52.3, pnl: 760, pnlPct: 7.84, marketValue: 104600 },
     { code: 'US.NVDA', name: 'NVIDIA', qty: 50, costPrice: 820, marketPrice: 885, pnl: 3250, pnlPct: 7.93, marketValue: 44250 },
@@ -88,7 +88,7 @@ describe('Sprint 1 E2E', () => {
     it('portfolio', () => { expect(broker.positions.reduce((s,p) => s+p.marketValue,0)).toBe(broker.funds.marketVal); });
   });
 
-  // ── ML-25-01: +9 new tests ──────────────────────────────────────────
+  // 鈹€鈹€ ML-25-01: +9 new tests 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
   describe('Trade Dashboard', () => {
     it('paper mode default', () => { expect(broker.connected).toBe(true); });

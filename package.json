@@ -1,8 +1,8 @@
 {
   "name": "dawn-whales",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
-  "description": "道鲸 · AI 量化系统 ——说人话就能做量化",
+  "description": "DAWN WHALES",
   "main": "dist-electron/main.cjs",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,7 @@
     "dist:win": "vite build && electron-builder --win",
     "dist:mac": "vite build && electron-builder --mac",
     "lint": "eslint src --ext .ts,.tsx",
-    "test": "cmd /c \"set NODE_OPTIONS=--no-deprecation && npx vitest run 2>nul\""
+    "test": "vitest run"
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.0",

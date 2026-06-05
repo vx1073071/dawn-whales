@@ -55,35 +55,7 @@ interface DailyPnL {
   endBalance: number;
 }
 
-// ── Mock data for development (replaced by IPC in production) ──────────────
-
-const MOCK_POSITIONS: PositionInfo[] = [
-  { code: 'US.TQQQ', name: 'ProShares 3x QQQ', quantity: 2000, avgCost: 48.5, marketPrice: 52.3, marketValue: 104600, dayPnL: 1250, totalPnL: 7600, totalPnLPct: 7.84 },
-  { code: 'US.NVDA', name: 'NVIDIA', quantity: 100, avgCost: 820, marketPrice: 885, marketValue: 88500, dayPnL: -340, totalPnL: 6500, totalPnLPct: 7.93 },
-  { code: 'US.AAPL', name: 'Apple', quantity: 300, avgCost: 175, marketPrice: 182.5, marketValue: 54750, dayPnL: 520, totalPnL: 2250, totalPnLPct: 4.29 },
-  { code: 'HK.00700', name: '腾讯', quantity: 500, avgCost: 370, marketPrice: 378.5, marketValue: 189250, dayPnL: 890, totalPnL: 4250, totalPnLPct: 2.30 },
-];
-
-const MOCK_ORDERS: TradeOrder[] = [
-  { id: 'ORD-001', code: 'US.TQQQ', side: 'BUY', orderType: 'MARKET', quantity: 500, price: 52.1, status: 'filled', filledQty: 500, filledPrice: 52.1, commission: 2.61, createdAt: '2026-06-06T03:15:00Z', updatedAt: '2026-06-06T03:15:01Z' },
-  { id: 'ORD-002', code: 'US.NVDA', side: 'SELL', orderType: 'LIMIT', quantity: 50, price: 890, status: 'pending', filledQty: 0, filledPrice: 0, commission: 0, createdAt: '2026-06-06T03:20:00Z', updatedAt: '2026-06-06T03:20:00Z' },
-  { id: 'ORD-003', code: 'HK.00700', side: 'BUY', orderType: 'STOP', quantity: 200, price: 375, status: 'submitted', filledQty: 0, filledPrice: 0, commission: 0, createdAt: '2026-06-06T03:25:00Z', updatedAt: '2026-06-06T03:25:00Z' },
-];
-
-const MOCK_STATS: TradeStats = {
-  totalTrades: 247, winningTrades: 142, losingTrades: 105,
-  winRate: 57.5, totalPnL: 124500, totalCommission: 1250,
-  avgWin: 2100, avgLoss: 1650, maxDrawdown: 12.3, sharpeRatio: 1.48, profitFactor: 1.82,
-};
-
-const MOCK_DAILY: DailyPnL[] = Array.from({ length: 7 }, (_, i) => ({
-  date: new Date(Date.now() - (6 - i) * 86400000).toISOString().slice(0, 10),
-  pnl: Math.round((Math.random() - 0.35) * 5000),
-  trades: Math.floor(Math.random() * 8) + 3,
-  commissions: Math.round(Math.random() * 50 + 10),
-  startBalance: 1750000 + i * 2000,
-  endBalance: 1750000 + (i + 1) * 2000 + Math.round((Math.random() - 0.35) * 5000),
-}));
+// ── Real IPC data via window.api.trade (preload.ts J-23-01 exposes 16 APIs) ─
 
 // ── SubComponents ──────────────────────────────────────────────────────────
 
@@ -160,10 +132,10 @@ function OrderRow({ order }: { order: TradeOrder }) {
 
 export default function TradeDashboardPage() {
   const { t } = useTranslation();
-  const [positions, setPositions] = useState<PositionInfo[]>(MOCK_POSITIONS);
-  const [orders, setOrders] = useState<TradeOrder[]>(MOCK_ORDERS);
-  const [stats, setStats] = useState<TradeStats>(MOCK_STATS);
-  const [daily, setDaily] = useState<DailyPnL[]>(MOCK_DAILY);
+  const [positions, setPositions] = useState<PositionInfo[]>([]);
+  const [orders, setOrders] = useState<TradeOrder[]>([]);
+  const [stats, setStats] = useState<TradeStats>({ totalTrades: 0, winningTrades: 0, losingTrades: 0, winRate: 0, totalPnL: 0, totalCommission: 0, avgWin: 0, avgLoss: 0, maxDrawdown: 0, sharpeRatio: 0, profitFactor: 0 });
+  const [daily, setDaily] = useState<DailyPnL[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'positions' | 'orders' | 'daily'>('overview');
   const [execMode, setExecMode] = useState<'paper' | 'real'>('paper');
