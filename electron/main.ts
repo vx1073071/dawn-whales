@@ -1222,9 +1222,15 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 // ── System Tray ────────────────────────────────────────────────────────────
 
 function createTray() {
-  const iconSize = 16;
-  const icon = nativeImage.createFromBuffer(createDiamondIcon(iconSize));
-  tray = new Tray(icon);
+    const trayIconPath = path.join(RESOURCES_PATH, 'icons', 'tray-icon.png');
+    const icon = nativeImage.createFromPath(trayIconPath);
+    if (icon.isEmpty()) {
+      log.warn('[Tray] tray-icon.png not found, using fallback diamond');
+      const fallback = nativeImage.createFromBuffer(createDiamondIcon(16));
+      tray = new Tray(fallback);
+    } else {
+      tray = new Tray(icon);
+    }
 
   const contextMenu = Menu.buildFromTemplate([
     { label: 'DAWN WHALES · 道鲸', enabled: false },
