@@ -259,7 +259,7 @@ export default function RealTimeMarketDashboard() {
     return () => {
       clearInterval(fallbackInterval);
       // Unsubscribe on unmount
-      unsubscribeQuoteStream(WATCHLIST.map(s => s.code)).catch(() => {});
+      unsubscribeQuoteStream(WATCHLIST.map(s => s.code).join(",")).catch(() => {});
     };
   }, [loadQuotes]);
 

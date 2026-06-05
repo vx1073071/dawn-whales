@@ -449,7 +449,7 @@ const PreferencesPage: React.FC = () => {
 
   const handleExport = async () => {
     try {
-      const result: IPCResult<{ filePath: string }> = await window.api.prefs.exportPrefs();
+      const result: IPCResult<{ filePath: string }> = await window.api.prefs!.exportPrefs();
       if (result.success && result.data) {
         showStatus(`Exported to: ${result.data.filePath}`, 'success');
       }

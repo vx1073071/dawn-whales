@@ -38,6 +38,8 @@ interface SimStats {
   var95: number;
   cvar95: number;
   probProfit: number;
+  probabilityOfProfit?: number;
+  probabilityOfLoss10pct?: number;
 }
 
 interface ScenarioResult {
@@ -460,6 +462,7 @@ export default function MonteCarloPage() {
               percentile95: r.statistics.percentile95,
               min: r.statistics.min,
               max: r.statistics.max,
+              probProfit: r.probabilityOfProfit * 100,
               probabilityOfProfit: r.probabilityOfProfit * 100,
               probabilityOfLoss10pct: r.probabilityOfLoss10pct * 100,
               var95: r.var95,

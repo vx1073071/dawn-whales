@@ -1,4 +1,4 @@
-// ── TradingDeskPage — IPC Full-Link (Round 16 P0) ────────────────────────
+﻿// ── TradingDeskPage — IPC Full-Link (Round 16 P0) ────────────────────────
 // 全链路交易台: 账户资金 + 持仓 + 下单 + 委托管理 + 快速交易
 // >=500 lines | dark theme | production-ready
 import { useState, useEffect } from 'react';
@@ -100,7 +100,7 @@ function AccountSummary({ fund, connected }: { fund: AccountFund | null; connect
 // ── Quick Trade Form ─────────────────────────────────────────────────────
 function QuickTradeForm({
   connected,
-  selectedAccount,
+  selectedAccount: _sa,
   onOrderPlaced,
 }: {
   connected: boolean;
@@ -432,7 +432,7 @@ export default function TradingDeskPage() {
   ];
 
   const activeOrders = orders.filter((o) => ['SUBMITTED', 'WAITING', 'PARTIAL'].includes(o.status));
-  const historyOrders = orders.filter((o) => ['FILLED', 'CANCELLED', 'REJECTED'].includes(o.status));
+  const _historyOrders = orders.filter((o) => ['FILLED', 'CANCELLED', 'REJECTED'].includes(o.status));
 
   const statusColors: Record<string, string> = {
     SUBMITTED: 'text-blue-400 bg-blue-500/20', WAITING: 'text-yellow-400 bg-yellow-500/20',
@@ -746,8 +746,5 @@ export default function TradingDeskPage() {
         </div>
       )}
     </div>
-  );
-}
-iv>
   );
 }

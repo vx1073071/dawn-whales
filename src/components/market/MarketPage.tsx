@@ -1,7 +1,7 @@
 // ── MarketPage — IPC Full-Link (Round 16 P0) ─────────────────────────────
 // 全链路对接: marketStore quotes (IPC push) + K线 (IPC fetch) + 数据源状态
 // >=500 lines | dark theme | Ant-style cards
-import { useState, useEffect, useCallback, memo } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useMarketStore } from '@/stores/marketStore';
 import KLineChart from './KLineChart';
 import * as api from '@/lib/bridge-api';
