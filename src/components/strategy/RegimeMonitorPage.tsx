@@ -65,7 +65,8 @@ function getRegimeDescKey(r: string): string {
 export default function RegimeMonitorPage() {
   const { t } = useTranslation();
   const [data, setData] = useState<RegimeData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;

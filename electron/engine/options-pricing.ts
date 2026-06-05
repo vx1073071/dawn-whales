@@ -833,3 +833,22 @@ export class OptionsPricingEngine {
  * ```
  */
 export const optionsEngine = new OptionsPricingEngine();
+
+// ── Standalone exports for main.ts import ──────────────────────────────────
+export function blackScholesPrice(params: OptionParams): PricingResult {
+  return optionsEngine.blackScholes(params);
+}
+export function calculateGreeks(params: OptionParams): Greeks {
+  return optionsEngine.calculateGreeks(params);
+}
+export function priceAndGreeks(params: OptionParams): PricingResult & { greeks: Greeks } {
+  const price = optionsEngine.blackScholes(params);
+  const greeks = optionsEngine.calculateGreeks(params);
+  return { ...price, greeks };
+}
+export function buildVolSurface(inputs: VolSurfaceInput[]): VolatilitySurface {
+  return optionsEngine.buildVolatilitySurface(inputs);
+}
+export function impliedVolatility(marketPrice: number, params: Omit<OptionParams, 'volatility'>): number {
+  return optionsEngine.impliedVolatility(marketPrice, params);
+}

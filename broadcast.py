@@ -1,37 +1,27 @@
-"""Broadcast a completion message to the team file bridge."""
-import json, sys, os
-from datetime import datetime, timezone
+"""Broadcast script for DAWN WHALES team coordination."""
+import sys
+import json
+from datetime import datetime
 
-BRIDGE = r'C:\Users\vx107\.easyclaw\workspace\chat-bridge\messages.jsonl'
+BRIDGE_PATH = r"C:\Users\vx107\.easyclaw\workspace\chat-bridge\messages.jsonl"
 
-def broadcast_complete(task_id: str, description: str, detail: str = '', files: list = None):
-    tz = timezone.utc
-    now = datetime.now(tz)
+def broadcast(task_id: str, description: str, detail: str = "") -> None:
     msg = {
-        'from': 'qclaw',
-        'to': 'ALL',
-        'type': 'BROADCAST',
-        'msgId': f'qc-complete-{now.strftime("%Y%m%d-%H%M%S")}',
-        'time': now.isoformat(),
-        'text': f'✅ QClaw 完成 {task_id}',
-        'task': task_id,
-        'description': description,
-        'detail': detail,
-        'files': files or [],
-        'status': 'complete'
+        "msgId": f"qc-proposal-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
+        "type": "BROADCAST",
+        "from": "QClaw",
+        "to": "ALL",
+        "taskId": task_id,
+        "description": description,
+        "detail": detail,
+        "timestamp": datetime.now().isoformat()
     }
-    line = json.dumps(msg, ensure_ascii=False)
-    with open(BRIDGE, 'a', encoding='utf-8') as f:
-        f.write(line + '\n')
-    print(f'Broadcast sent: {task_id}')
+    with open(BRIDGE_PATH, "a", encoding="utf-8") as f:
+        f.write(json.dumps(msg, ensure_ascii=False) + "\n")
+    print(f"Broadcast sent: {task_id}")
 
-if __name__ == '__main__':
-    # Read args: task_id description [detail]
-    args = sys.argv[1:]
-    if len(args) < 2:
-        print('Usage: python broadcast.py <task_id> <description> [detail]')
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print("Usage: python broadcast.py <task_id> <description> [detail]")
         sys.exit(1)
-    task_id = args[0]
-    description = args[1]
-    detail = args[2] if len(args) > 2 else ''
-    broadcast_complete(task_id, description, detail)
+    broadcast(sys.argv[1], sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else "")

@@ -897,3 +897,21 @@ export class PortfolioOptimizer {
 }
 
 export default PortfolioOptimizer;
+
+// ── Standalone export for main.ts import ───────────────────────────────────
+export function optimizePortfolio(assets: Asset[], config?: OptimizationConfig): OptimizationResult {
+  const optimizer = new PortfolioOptimizer();
+  return optimizer.optimize(assets, config);
+}
+export function generateEfficientFrontier(assets: Asset[], points?: number): { returns: number[]; risks: number[]; portfolios: PortfolioAllocation[][] } {
+  const optimizer = new PortfolioOptimizer();
+  return optimizer.generateEfficientFrontier(assets, points);
+}
+export function riskParityPortfolio(assets: Asset[]): OptimizationResult {
+  const optimizer = new PortfolioOptimizer();
+  return optimizer.riskParity(assets);
+}
+export function batchOptimizePortfolios(assetsList: Asset[][], configs?: OptimizationConfig[]): OptimizationResult[] {
+  const optimizer = new PortfolioOptimizer();
+  return assetsList.map((assets, i) => optimizer.optimize(assets, configs?.[i]));
+}

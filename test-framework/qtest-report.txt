@@ -4,7 +4,7 @@
 ============================================================
 
   ✓ QTest Basic Matchers (tests/qtest-basic.test.ts)
-    Tests: 6 | Duration: 1ms
+    Tests: 6 | Duration: 2ms
 
       ✓ toBe matcher works (1ms)
       ✓ toEqual deep equality

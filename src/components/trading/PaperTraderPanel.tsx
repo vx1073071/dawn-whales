@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import { getPaperTraderStatus } from '@/lib/bridge-api';
 
 interface PaperPosition {
   code: string;
@@ -73,8 +74,11 @@ export default function PaperTraderPanel() {
   async function load() {
     setLoading(true);
     try {
-      // const res = await getPaperTraderStatus();
-      // if (res?.success) { ... }
+      const res = await getPaperTraderStatus();
+      if (res?.success) {
+        // account/positions/trades would be populated from IPC response
+        // For now keep mock data until backend returns real data
+      }
     } catch (e) { console.error('[Error:PaperTraderPanel]', e); }
     setLoading(false);
   }

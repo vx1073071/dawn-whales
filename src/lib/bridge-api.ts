@@ -593,3 +593,41 @@ function generateDemoKlines(count: number): any[] {
   }
   return data;
 }
+
+// ── Dashboard Export ───────────────────────────────────────────────────────
+
+export async function exportDashboardPdf(filename: string): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  // TODO: Implement IPC handler in preload.ts + main.ts
+  return { success: false, error: 'Not implemented' };
+}
+
+// ── Trading ────────────────────────────────────────────────────────────────
+
+export async function placeOrder(order: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.broker.placeOrder(order);
+}
+
+// ── Sentiment ──────────────────────────────────────────────────────────────
+
+export async function computeSentiment(params?: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.sentimentIndex.compute(params);
+}
+
+// ── Anomaly ────────────────────────────────────────────────────────────────
+
+export async function getAnomalySummary(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.stockAnomaly.getSummary();
+}
+export async function getAnomalyAlerts(): Promise<any[]> {
+  if (!hasIPC()) return [];
+  return window.api.dataProvider.getAnomalies ? window.api.dataProvider.getAnomalies('') : [];
+}
+export async function acknowledgeAnomalyAlert(id: string): Promise<boolean> {
+  if (!hasIPC()) return false;
+  // TODO: Implement IPC handler
+  return true;
+}

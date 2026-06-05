@@ -332,60 +332,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
-  // ── Q17: Paper Trader ─────────────────────────────────────────
-
-
-  // ── Q17: Paper Trader ─────────────────────────────────────────
-  ipcMain.handle('paper:start', async () => {
-    try {
-      const { getPaperTrader } = require('./engine/paper-trader');
-      const pt = getPaperTrader('default');
-      return { success: true, status: pt.getStatus() };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
-  });
-
-
-
-  ipcMain.handle('paper:stop', async () => {
-    try {
-      const { getPaperTrader } = require('./engine/paper-trader');
-      const pt = getPaperTrader('default');
-      pt.stopAll();
-      return { success: true, report: pt.getReport() };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
-  });
-
-
-
-  ipcMain.handle('paper:reset', async () => {
-    try {
-      const { getPaperTrader } = require('./engine/paper-trader');
-      getPaperTrader('default').reset();
-      return { success: true };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
-  });
-
-
-
-  ipcMain.handle('paper:report', async () => {
-    try {
-      const { getPaperTrader } = require('./engine/paper-trader');
-      const pt = getPaperTrader('default');
-      const report = pt.getReport();
-      return { success: true, ...report };
-    } catch (err: any) {
-      return { success: false, error: err.message };
-    }
-  });
-
-
-
+  // ── Q17: Paper Trader (keep execute-signal + status, rest in second group) ──
   ipcMain.handle('paper:execute-signal', async (_e, raw: unknown) => {
     try {
       const { getPaperTrader } = require('./engine/paper-trader');
