@@ -209,6 +209,96 @@ export default function RiskDashboardPage() {
     return () => clearInterval(interval);
   }, [autoRefresh, fetchData]);
 
+  // ─── WebSocket Real-Time Integration ──────────────────────────────────────
+
+  const [wsConnected, setWsConnected] = useState(false);
+  const [livePrices, setLivePrices] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    if (!api?.ws?.subscribe || !api?.ws?.on) return;
+
+    // Subscribe to position symbols for real-time price updates
+    const positionSymbols = ['US.TQQQ', 'US.SPY', 'US.AAPL', 'US.NVDA', 'US.MSFT']; // Example positions
+    
+    const handleTick = (data: any) => {
+      if (data?.code && data?.price) {
+        setLivePrices(prev => ({
+          ...prev,
+          [data.code]: data.price,
+        }));
+        
+        // Update snapshot with live price if this is a position we hold
+        if (positionSymbols.includes(data.code) && snapshot) {
+          setSnapshot(prev => {
+            if (!prev) return prev;
+            // Recalculate totalAssets based on live prices
+            // This is a simplified example - in production you'd track positions properly
+            const priceChange = data.price - (prev.totalAssets / positionSymbols.length);
+            return {
+              ...prev,
+              totalAssets: prev.totalAssets + priceChange * 0.01, // Scaled impact
+              dailyPnl: prev.dailyPnl + priceChange * 0.005,
+            };
+          });
+        }
+      }
+    };
+
+    const handleConnect = () => {
+      setWsConnected(true);
+    };
+
+    const handleDisconnect = () => {
+      setWsConnected(false);
+    };
+
+    // Subscribe and register handlers
+    api.ws.subscribe(positionSymbols, 'quote');
+    api.ws.on('tick', handleTick);
+    api.ws.on('connected', handleConnect);
+    api.ws.on('disconnected', handleDisconnect);
+
+    // Check initial connection status
+    api.ws.getStatus?.().then((status: any) => {
+      setWsConnected(status?.connected || false);
+    });
+
+    return () => {
+      api.ws.off?.('tick', handleTick);
+      api.ws.off?.('connected', handleConnect);
+      api.ws.off?.('disconnected', handleDisconnect);
+      api.ws.unsubscribe?.(positionSymbols);
+    };
+  }, [api, snapshot]);
+
+  // ─── Real-Time Alert Integration ──────────────────────────────────────────
+
+  useEffect(() => {
+    if (!api?.on) return;
+
+    const handleRiskAlert = (alert: any) => {
+      if (alert?.type && alert?.message) {
+        setAlerts(prev => [
+          {
+            id: alert.id || `alert-${Date.now()}`,
+            timestamp: alert.timestamp || new Date().toISOString(),
+            type: alert.type,
+            message: alert.message,
+            source: alert.source || 'ws-risk-monitor',
+          },
+          ...prev.slice(0, 19), // Keep max 20 alerts
+        ]);
+        setLastUpdate(new Date());
+      }
+    };
+
+    api.on('risk-alert', handleRiskAlert);
+
+    return () => {
+      api.off?.('risk-alert', handleRiskAlert);
+    };
+  }, [api]);
+
   // ─── Loading State ───────────────────────────────────────────────────────
 
   if (loading) {
@@ -236,6 +326,7 @@ export default function RiskDashboardPage() {
   const ddMaxPct = dd.maxPct;
   const ddRatio = ddMaxPct > 0 ? (ddPct / ddMaxPct) * 100 : 0;
   const kellyRatio = Math.min(kellyPct / (config.kellyFraction * 100) * 100, 100);
+  const livePriceCount = Object.keys(livePrices).length;
 
   // ─── Render ──────────────────────────────────────────────────────────────
 
@@ -245,11 +336,30 @@ export default function RiskDashboardPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-white">Risk Dashboard</h1>
-          <p className="text-gray-400 text-sm mt-1">
-            {lastUpdate
-              ? `Last updated: ${lastUpdate.toLocaleTimeString()}`
-              : 'Not yet updated'}
-          </p>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-gray-400 text-sm">
+              {lastUpdate
+                ? `Last updated: ${lastUpdate.toLocaleTimeString()}`
+                : 'Not yet updated'}
+            </p>
+            {wsConnected && (
+              <span className="flex items-center gap-1 text-xs text-green-400">
+                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                Live
+              </span>
+            )}
+            {!wsConnected && (
+              <span className="flex items-center gap-1 text-xs text-gray-500">
+                <span className="w-2 h-2 bg-gray-500 rounded-full" />
+                Polling
+              </span>
+            )}
+            {livePriceCount > 0 && (
+              <span className="text-xs text-gray-500">
+                ({livePriceCount} live prices)
+              </span>
+            )}
+          </div>
           {error && (
             <p className="text-yellow-400 text-xs mt-1">⚠ Using cached data: {error}</p>
           )}

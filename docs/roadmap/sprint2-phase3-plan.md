@@ -1,756 +1,381 @@
-# Sprint 2 Phase 3: Multi-Broker Support
+# Sprint 2 Phase 3: Multi-Broker Support — Technical Plan
 
-> **Status:** Planning  
-> **Author:** Engineering Team  
-> **Last Updated:** 2026-06-06  
-> **Sprint:** Sprint 2 (Phase 3)  
-> **Duration:** 4 weeks  
+> **Author:** Engineering Team
+> **Created:** 2026-06-06
+> **Status:** Draft — Pending Review
+> **Estimated Duration:** 4 weeks (Week 1–4)
+> **Goal:** Evolve from single Futu OpenD to a unified multi-broker platform supporting Futu, moomoo, and Interactive Brokers.
 
 ---
 
 ## 1. Overview
 
-This document outlines the technical plan for evolving the Dawn Whales platform from a single-broker (Futu OpenD) architecture to a multi-broker unified trading platform. The target brokers are:
+### 1.1 Current State
 
-| Broker | Protocol | Primary Markets | Priority |
-|--------|----------|-----------------|----------|
-| Futu OpenD | OpenD TCP | HK / US / A-share | Existing (baseline) |
-| moomoo OpenD | OpenD TCP (compatible) | SG / HK / US | Phase 3A |
-| Interactive Brokers (IB) | IB Gateway / TWS API | Global (NYSE, NASDAQ, CME, LSE, HKEX, etc.) | Phase 3B |
+Dawn Whales currently operates with a **single broker backend**: Futu OpenD. All market data, order routing, and account management flow through a single `FutuOpenDClient` instance. This limits users to Futu-supported markets and a single account.
 
-### 1.1 Goals
+### 1.2 Target State
 
-- Enable simultaneous connection to multiple brokers
-- Provide a unified `IBrokerAdapter` interface that abstracts broker-specific differences
-- Allow users to route orders to any connected broker from a single UI
-- Aggregate positions, P&L, and account data across brokers with currency normalization
+A unified multi-broker architecture where:
 
-### 1.2 Non-Goals
+- **Futu OpenD** remains the primary broker for US/HK markets.
+- **moomoo OpenD** is added as a secondary broker (Singapore/HK focus, API-compatible with Futu).
+- **Interactive Brokers (IB)** is integrated for advanced users requiring global exchange access, options chains, and complex order types.
 
-- Smart order routing (SOR) across brokers (deferred to Phase 4)
-- Broker-side algorithmic execution
-- Cross-broker margin optimization
+All three brokers operate behind a single `IBrokerAdapter` interface, managed by `BrokerManager`, with unified streaming via the existing WS Market Data Engine.
+
+### 1.3 Timeline
+
+| Phase | Scope | Weeks |
+|-------|-------|-------|
+| Phase 3A | moomoo Adapter | Week 1–2 |
+| Phase 3B | IB Adapter | Week 2–3 |
+| Phase 3C | Unified Account Management & UI | Week 3–4 |
+
+### 1.4 Success Criteria
+
+- All three brokers connect, authenticate, and stream quotes concurrently.
+- Cross-broker position aggregation displays correctly in the portfolio view.
+- Order routing respects per-broker market hours and instrument eligibility.
+- No regression in single-broker (Futu-only) mode.
 
 ---
 
-## 2. Current Architecture
+## 2. Current Architecture Analysis
+
+### 2.1 Core Components
 
 ```
-┌──────────────────────────────────────────────────────┐
-│                    Renderer (React)                  │
-│  ┌────────────┐  ┌────────────┐  ┌────────────────┐  │
-│  │ OrderPanel │  │ QuoteBoard │  │ AccountSummary │  │
-│  └─────┬──────┘  └─────┬──────┘  └───────┬────────┘  │
-│        └───────────────┼──────────────────┘           │
-│                        │ WebSocket (IPC)              │
-├────────────────────────┼─────────────────────────────┤
-│                   Electron Main                       │
-│                        │                              │
-│  ┌─────────────────────▼──────────────────────────┐   │
-│  │            BrokerManager                        │   │
-│  │  - lifecycle management                        │   │
-│  │  - adapter registry                            │   │
-│  └─────────────────────┬──────────────────────────┘   │
-│                        │                              │
-│  ┌─────────────────────▼──────────────────────────┐   │
-│  │         IBrokerAdapter (interface)              │   │
-│  └─────────────────────┬──────────────────────────┘   │
-│                        │                              │
-│  ┌─────────────────────▼──────────────────────────┐   │
-│  │          FutuOpenDClient                        │   │
-│  │   (electron/broker/futu-opend.ts)              │   │
-│  └────────────────────────────────────────────────┘   │
-│                                                       │
-│  ┌────────────────────────────────────────────────┐   │
-│  │         WS Market Data Engine                   │   │
-│  │   (unified tick streaming to renderer)          │   │
-│  └────────────────────────────────────────────────┘   │
-└──────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────┐
+│                  Renderer (React)                │
+│  ┌───────────┐  ┌──────────────┐  ┌──────────┐  │
+│  │ Sidebar   │  │ MarketPanel  │  │ OrderForm│  │
+│  └─────┬─────┘  └──────┬───────┘  └────┬─────┘  │
+│        │               │               │         │
+│  ┌─────┴───────────────┴───────────────┴──────┐  │
+│  │          preload.ts — broker: namespace     │  │
+│  └─────────────────────┬───────────────────────┘  │
+└────────────────────────┼─────────────────────────┘
+                         │ IPC
+┌────────────────────────┼─────────────────────────┐
+│                  Main Process (Electron)          │
+│  ┌─────────────────────┴───────────────────────┐  │
+│  │              BrokerManager                   │  │
+│  │  ┌──────────────┐  ┌─────────────────────┐  │  │
+│  │  │FutuOpenDClient│  │ WS Market Data Eng. │  │  │
+│  │  │(futu-opend.ts)│  │ (ws-engine.ts)      │  │  │
+│  │  └──────────────┘  └─────────────────────┘  │  │
+│  └─────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────┘
 ```
 
-### 2.1 Existing Components
+### 2.2 Key Files
 
-| Component | File | Responsibility |
-|-----------|------|----------------|
-| `FutuOpenDClient` | `electron/broker/futu-opend.ts` | TCP connection to Futu OpenD, quote subscription, order placement, account queries |
-| `BrokerManager` | `electron/broker/broker-manager.ts` | Adapter lifecycle (connect/disconnect), health checks, adapter registry |
-| `IBrokerAdapter` | `electron/broker/ibroker-adapter.ts` | Interface contract: `connect()`, `disconnect()`, `subscribeQuote()`, `placeOrder()`, `cancelOrder()`, `getAccountInfo()`, `getPositions()` |
-| `WSMarketDataEngine` | `electron/market/ws-engine.ts` | Fan-out tick data from any adapter to connected WebSocket clients in the renderer |
+| File | Role | Lines (approx) |
+|------|------|----------------|
+| `electron/broker/futu-opend.ts` | Futu OpenD client, implements `IBrokerAdapter` | ~480 |
+| `electron/broker/broker-manager.ts` | Lifecycle management for broker instances | ~220 |
+| `electron/broker/types.ts` | `IBrokerAdapter` interface and shared types | ~150 |
+| `electron/market/ws-engine.ts` | Unified WS streaming engine | ~350 |
+| `preload/index.ts` | Exposes `broker:` namespace to renderer | ~90 |
 
-### 2.2 IBrokerAdapter Interface (current)
+### 2.3 IBrokerAdapter Interface (Current)
 
 ```typescript
-// electron/broker/ibroker-adapter.ts
-
+// electron/broker/types.ts
 export interface IBrokerAdapter {
-  readonly brokerId: string;
-  readonly brokerName: string;
-  readonly status: 'disconnected' | 'connecting' | 'connected' | 'error';
+  readonly id: string;
+  readonly name: string;
+  readonly status: BrokerStatus;
 
-  // Connection lifecycle
   connect(config: BrokerConfig): Promise<void>;
   disconnect(): Promise<void>;
 
-  // Market data
-  subscribeQuote(symbols: string[]): Promise<void>;
-  unsubscribeQuote(symbols: string[]): Promise<void>;
-  onQuote(cb: (tick: QuoteTick) => void): void;
+  // Market Data
+  subscribeQuote(symbols: string[]): Promise<QuoteSubscription>;
+  unsubscribeQuote(subId: string): Promise<void>;
+  getSnapshot(symbol: string): Promise<QuoteSnapshot>;
 
   // Trading
-  placeOrder(order: NewOrder): Promise<OrderResult>;
+  placeOrder(order: OrderRequest): Promise<OrderResult>;
   cancelOrder(orderId: string): Promise<void>;
-  getOpenOrders(): Promise<OpenOrder[]>;
+  getOpenOrders(): Promise<Order[]>;
+  getOrderHistory(filter?: OrderFilter): Promise<Order[]>;
 
   // Account
   getAccountInfo(): Promise<AccountInfo>;
   getPositions(): Promise<Position[]>;
-  getFunds(): Promise<FundsInfo>;
+  getPnL(): Promise<PnLSummary>;
 }
+```
+
+### 2.4 BrokerManager Lifecycle
+
+```typescript
+// electron/broker/broker-manager.ts (simplified)
+class BrokerManager {
+  private adapters: Map<string, IBrokerAdapter> = new Map();
+
+  async registerAdapter(adapter: IBrokerAdapter): Promise<void> { ... }
+  async connectAll(): Promise<void> { ... }
+  async disconnectAll(): Promise<void> { ... }
+  getAdapter(brokerId: string): IBrokerAdapter { ... }
+  listAdapters(): BrokerSummary[] { ... }
+}
+```
+
+### 2.5 preload.ts Broker Namespace
+
+The renderer accesses broker functionality through a namespaced IPC bridge:
+
+```typescript
+// preload/index.ts
+contextBridge.exposeInMainWorld('broker', {
+  connect: (brokerId: string, config: any) => ipcRenderer.invoke('broker:connect', brokerId, config),
+  getQuote: (symbol: string) => ipcRenderer.invoke('broker:getQuote', symbol),
+  placeOrder: (order: any) => ipcRenderer.invoke('broker:placeOrder', order),
+  // ... additional methods
+});
 ```
 
 ---
 
 ## 3. Phase 3A: moomoo Adapter (Week 1–2)
 
-### 3.1 Background
+### 3.1 moomoo OpenD Integration
 
-moomoo is Futu's international brand. The moomoo OpenD gateway is wire-compatible with Futu OpenD — it uses the same protobuf-based TCP protocol with different default configuration. This means we can reuse the majority of the existing `FutuOpenDClient` logic with a thin adaptation layer.
+moomoo (Moomoo Technologies Inc.) is a subsidiary of Futu and uses the **same OpenD gateway protocol**. This means the wire format, message types, and SDK structure are nearly identical, with differences primarily in:
 
-### 3.2 Key Differences: Futu vs. moomoo
+- Default connection port
+- Market data subscriptions and available instruments
+- Account and currency configurations
 
-| Aspect | Futu OpenD | moomoo OpenD |
-|--------|------------|--------------|
-| Default TCP port | 11111 | 11211 |
-| Primary markets | HK, US, A-share (via Stock Connect) | SG, HK, US |
-| Market hours (local) | HK 09:30–16:00 HKT | SG 09:00–17:00 SGT |
-| Base currency | HKD | SGD / USD |
-| Default trading permissions | HK stocks, US stocks | SG stocks, HK stocks, US stocks |
-| Subscription quota | Same tier-based system | Same tier-based system |
-| OpenD binary | `FutuOpenD` | `moomooOpenD` (or `FutuOpenD` with moomoo config) |
+#### Implementation Approach
 
-### 3.3 Implementation Plan
-
-#### File: `electron/broker/moomoo-adapter.ts`
+Create `electron/broker/moomoo-adapter.ts` that extends a shared `OpenDBaseAdapter` class, which itself is a refactor of the existing `FutuOpenDClient`.
 
 ```typescript
 // electron/broker/moomoo-adapter.ts
+import { OpenDBaseAdapter } from './opend-base';
+import { IBrokerAdapter } from './types';
 
-import { FutuOpenDClient } from './futu-opend';
-import { IBrokerAdapter, BrokerConfig, QuoteTick, NewOrder, OrderResult, 
-         AccountInfo, Position, FundsInfo, OpenOrder } from './ibroker-adapter';
+export class MoomooAdapter extends OpenDBaseAdapter implements IBrokerAdapter {
+  readonly id = 'moomoo';
+  readonly name = 'moomoo';
 
-export interface MoomooConfig extends BrokerConfig {
-  port?: number;            // default: 11211
-  host?: string;            // default: '127.0.0.1'
-  trdEnv?: 'SIMULATE' | 'REAL';
-  currency?: 'SGD' | 'HKD' | 'USD';
-}
-
-export class MoomooAdapter implements IBrokerAdapter {
-  readonly brokerId = 'moomoo';
-  readonly brokerName = 'moomoo';
-  
-  private client: FutuOpenDClient;
-  private _status: IBrokerAdapter['status'] = 'disconnected';
+  protected defaultPort = 11211;
+  protected supportedMarkets = ['SG', 'HK', 'US'];
+  protected baseCurrencies = ['SGD', 'HKD', 'USD'];
 
   constructor() {
-    // Reuse FutuOpenDClient with moomoo-specific defaults
-    this.client = new FutuOpenDClient({
-      port: 11211,
-      // Override market defaults
-      defaultMarkets: ['SG', 'HK', 'US'],
-    });
+    super();
   }
 
-  get status() { return this._status; }
-
-  async connect(config: MoomooConfig): Promise<void> {
-    this._status = 'connecting';
-    try {
-      await this.client.connect({
-        host: config.host ?? '127.0.0.1',
-        port: config.port ?? 11211,
-        trdEnv: config.trdEnv ?? 'REAL',
-      });
-      this._status = 'connected';
-    } catch (err) {
-      this._status = 'error';
-      throw err;
+  // Override market hours for SG market
+  getMarketHours(market: string): MarketHours {
+    if (market === 'SG') {
+      return { open: '09:00', close: '17:00', timezone: 'Asia/Singapore' };
     }
-  }
-
-  async disconnect(): Promise<void> {
-    await this.client.disconnect();
-    this._status = 'disconnected';
-  }
-
-  // Delegate to underlying client — protocol-compatible
-  async subscribeQuote(symbols: string[]): Promise<void> {
-    return this.client.subscribeQuote(symbols);
-  }
-
-  async unsubscribeQuote(symbols: string[]): Promise<void> {
-    return this.client.unsubscribeQuote(symbols);
-  }
-
-  onQuote(cb: (tick: QuoteTick) => void): void {
-    this.client.onQuote(cb);
-  }
-
-  async placeOrder(order: NewOrder): Promise<OrderResult> {
-    // moomoo may use different security code format for SG stocks
-    const normalizedOrder = this.normalizeOrder(order);
-    return this.client.placeOrder(normalizedOrder);
-  }
-
-  async cancelOrder(orderId: string): Promise<void> {
-    return this.client.cancelOrder(orderId);
-  }
-
-  async getOpenOrders(): Promise<OpenOrder[]> {
-    return this.client.getOpenOrders();
-  }
-
-  async getAccountInfo(): Promise<AccountInfo> {
-    const raw = await this.client.getAccountInfo();
-    return this.normalizeCurrency(raw);
-  }
-
-  async getPositions(): Promise<Position[]> {
-    const raw = await this.client.getPositions();
-    return raw.map(p => this.normalizePosition(p));
-  }
-
-  async getFunds(): Promise<FundsInfo> {
-    const raw = await this.client.getFunds();
-    return this.normalizeCurrency(raw);
-  }
-
-  // --- Private helpers ---
-
-  private normalizeOrder(order: NewOrder): NewOrder {
-    // SG stock codes use different prefix convention
-    // e.g., moomoo uses "SG.DBS" while Futu internal may differ
-    return { ...order };
-  }
-
-  private normalizeCurrency<T extends { currency?: string }>(obj: T): T {
-    // Normalize SGD/HKD/USD reporting
-    return obj;
-  }
-
-  private normalizePosition(pos: Position): Position {
-    // Ensure market field is populated correctly for SG positions
-    return pos;
+    return super.getMarketHours(market);
   }
 }
 ```
 
-#### BrokerManager Registration
+#### Shared Base Class Refactor
+
+Extract common OpenD logic from `FutuOpenDClient` into `OpenDBaseAdapter`:
 
 ```typescript
-// In broker-manager.ts — add moomoo registration
+// electron/broker/opend-base.ts
+export abstract class OpenDBaseAdapter implements IBrokerAdapter {
+  abstract readonly id: string;
+  abstract readonly name: string;
+  protected abstract defaultPort: number;
+  protected abstract supportedMarkets: string[];
 
-import { MoomooAdapter } from './moomoo-adapter';
+  private connection: OpenDConnection | null = null;
 
-export class BrokerManager {
-  private adapters: Map<string, IBrokerAdapter> = new Map();
-
-  registerMoomoo(config: MoomooConfig): void {
-    const adapter = new MoomooAdapter();
-    this.adapters.set('moomoo', adapter);
+  async connect(config: BrokerConfig): Promise<void> {
+    const port = config.port ?? this.defaultPort;
+    this.connection = await OpenDConnection.create({
+      host: config.host ?? '127.0.0.1',
+      port,
+    });
+    // ... shared connection logic
   }
 
-  // ... existing connect/disconnect lifecycle
+  async disconnect(): Promise<void> { /* shared */ }
+  async subscribeQuote(symbols: string[]): Promise<QuoteSubscription> { /* shared */ }
+  async placeOrder(order: OrderRequest): Promise<OrderResult> { /* shared */ }
+  // ... all shared OpenD methods
 }
 ```
 
-### 3.4 Market Hour Configuration
+### 3.2 Key Differences from Futu
 
-```typescript
-// electron/broker/market-hours.ts
+| Aspect | Futu OpenD | moomoo OpenD |
+|--------|-----------|--------------|
+| Default Port | 11111 | 11211 |
+| Primary Markets | US, HK | SG, HK, US |
+| Market Hours (SG) | N/A | 09:00–17:00 SGT |
+| Base Currency | USD/HKD | SGD/HKD/USD |
+| Symbol Prefix | US., HK. | SG., HK., US. |
+| Binary Name | FutuOpenD | MoomooOpenD |
+| Config Path | `~/.futu/` | `~/.moomoo/` |
+| Auth Method |牛牛号 + 密码 | moomoo UID + 密码 |
 
-export const MARKET_HOURS: Record<string, MarketSession[]> = {
-  // Futu
-  'futu:HK': [
-    { open: '09:30', close: '12:00', tz: 'Asia/Hong_Kong' },
-    { open: '13:00', close: '16:00', tz: 'Asia/Hong_Kong' },
-  ],
-  'futu:US': [
-    { open: '09:30', close: '16:00', tz: 'America/New_York' },
-  ],
-  // moomoo
-  'moomoo:SG': [
-    { open: '09:00', close: '12:00', tz: 'Asia/Singapore' },
-    { open: '13:00', close: '17:00', tz: 'Asia/Singapore' },
-  ],
-  'moomoo:HK': [
-    { open: '09:30', close: '12:00', tz: 'Asia/Hong_Kong' },
-    { open: '13:00', close: '16:00', tz: 'Asia/Hong_Kong' },
-  ],
-  'moomoo:US': [
-    { open: '09:30', close: '16:00', tz: 'America/New_York' },
-  ],
-  // IB
-  'ib:US': [
-    { open: '09:30', close: '16:00', tz: 'America/New_York' },
-  ],
-  'ib:EU': [
-    { open: '08:00', close: '16:30', tz: 'Europe/London' },
-  ],
-};
-```
+### 3.3 Implementation Tasks
 
-### 3.5 Week 1–2 Deliverables
+| # | Task | File(s) | Est. Lines | Priority |
+|---|------|---------|-----------|----------|
+| 1 | Extract `OpenDBaseAdapter` from `FutuOpenDClient` | `electron/broker/opend-base.ts`, `electron/broker/futu-opend.ts` | ~300 | P0 |
+| 2 | Refactor `FutuOpenDClient` to extend `OpenDBaseAdapter` | `electron/broker/futu-opend.ts` | ~80 (net reduction) | P0 |
+| 3 | Create `MoomooAdapter` class | `electron/broker/moomoo-adapter.ts` | ~120 | P0 |
+| 4 | Add moomoo market hours definitions | `electron/broker/market-hours.ts` | ~40 | P1 |
+| 5 | Add SG symbol prefix mapping | `electron/broker/symbol-mapper.ts` | ~30 | P1 |
+| 6 | Register moomoo adapter in `BrokerManager` | `electron/broker/broker-manager.ts` | ~15 | P0 |
+| 7 | Add moomoo config schema | `electron/broker/config-schema.ts` | ~25 | P1 |
+| 8 | Update preload broker namespace for multi-broker | `preload/index.ts` | ~20 | P1 |
+| 9 | Unit tests for `MoomooAdapter` | `tests/broker/moomoo-adapter.test.ts` | ~150 | P1 |
+| 10 | Integration test: dual OpenD connection | `tests/broker/dual-opend.test.ts` | ~100 | P2 |
 
-| Week | Deliverable | Acceptance Criteria |
-|------|------------|---------------------|
-| 1 | moomoo adapter: connect + quotes | Can connect to moomoo OpenD on port 11211 and stream real-time quotes for SG/HK/US symbols |
-| 2 | moomoo adapter: orders + positions + funds | Full IBrokerAdapter compliance; can place/cancel orders, query positions and funds |
-| 2 | BrokerManager integration | moomoo adapter registered and lifecycle-managed alongside Futu |
-| 2 | Unit tests | >80% coverage on `moomoo-adapter.ts` with mocked OpenD responses |
+**Estimated Total:** ~880 lines of new/modified code
 
 ---
 
-## 4. Phase 3B: IB (Interactive Brokers) Adapter (Week 2–3)
+## 4. Phase 3B: IB Adapter (Week 2–3)
 
-### 4.1 Background
+### 4.1 IB Gateway/TWS Integration
 
-Interactive Brokers provides a fundamentally different API from Futu/moomoo. IB uses a TCP socket protocol with request/response patterns identified by numeric request IDs. The two connection endpoints are:
+Interactive Brokers provides programmatic access via the **IB API** (also known as TWS API). We use the `ibapi` npm package (or `@stoqey/ib` as a modern TypeScript wrapper) to connect to either:
 
-| Endpoint | Port | Use Case |
-|----------|------|----------|
-| IB Gateway | 4001 (live) / 4002 (paper) | Lightweight, headless — preferred for automated trading |
-| TWS (Trader Workstation) | 7496 (live) / 7497 (paper) | Full GUI application |
+- **IB Gateway** (lightweight, headless) — Port `4001` (live) / `4002` (paper)
+- **TWS (Trader Workstation)** — Port `7496` (live) / `7497` (paper)
 
-### 4.2 API Comparison: OpenD vs IB
+#### Architecture: Async Callback with Request IDs
 
-| Feature | Futu/moomoo OpenD | IB API |
-|---------|-------------------|--------|
-| Protocol | Protobuf over TCP | Custom binary/text over TCP |
-| Request identification | Sequential protocol IDs | Numeric `reqId` per request |
-| Market data push | Callback-based (Qt signal style) | Callback-based (`tickPrice`, `tickSize`) |
-| Order placement | Single `placeOrder` call | `placeOrder(orderId, contract, order)` with separate `orderStatus` callback |
-| Account data | Snapshot queries | `reqAccountUpdates` with continuous push |
-| Position data | Snapshot query | `reqPositions` with continuous push |
-| Connection limit | 1 client per OpenD instance | 1 client per TWS/Gateway (8 for TWS with multiple client IDs) |
-| Rate limits | Subscription quota | 60 messages/sec, 6000 messages/5min |
-| Reconnection | Auto-reconnect supported | Must re-subscribe everything after reconnect |
-
-### 4.3 NPM Package Selection
-
-| Package | Pros | Cons | Recommendation |
-|---------|------|------|----------------|
-| `@stoqey/ib` | TypeScript-native, active maintenance, Promise-based | Smaller community | **Primary choice** |
-| `ibapi` | Close to official Python API, well-documented | JavaScript (not TS), callback-heavy | Fallback |
-| Custom TCP client | Full control | High implementation cost, must maintain protocol | Not recommended |
-
-### 4.4 Implementation Plan
-
-#### File: `electron/broker/ib-adapter.ts`
+Unlike OpenD's synchronous request-response, IB uses an **asynchronous callback model** where each request is assigned a unique `reqId`, and responses arrive via event callbacks:
 
 ```typescript
 // electron/broker/ib-adapter.ts
-
-import { IBApi, Contract, Order as IBOrder, OrderState } from '@stoqey/ib';
-import { IBrokerAdapter, BrokerConfig, QuoteTick, NewOrder, OrderResult,
-         AccountInfo, Position, FundsInfo, OpenOrder } from './ibroker-adapter';
-
-export interface IBConfig extends BrokerConfig {
-  port?: number;            // default: 4001 (Gateway live)
-  host?: string;            // default: '127.0.0.1'
-  clientId?: number;        // default: 0
-  account?: string;         // IB account ID (e.g., 'U1234567')
-}
+import { IBApi, Contract, Order as IBOrder } from '@stoqey/ib';
+import { IBrokerAdapter, QuoteSubscription, OrderRequest, OrderResult } from './types';
 
 export class IBAdapter implements IBrokerAdapter {
-  readonly brokerId = 'ib';
-  readonly brokerName = 'Interactive Brokers';
+  readonly id = 'ib';
+  readonly name = 'Interactive Brokers';
 
-  private ib: IBApi;
-  private _status: IBrokerAdapter['status'] = 'disconnected';
+  private api: IBApi;
   private nextReqId = 1;
-  private nextOrderId = 1;
-  private quoteCallbacks: Map<number, (tick: QuoteTick) => void> = new Map();
-  private accountData: Partial<AccountInfo> = {};
-  private positionData: Map<string, Position> = new Map();
+  private pendingRequests: Map<number, { resolve: Function; reject: Function }> = new Map();
 
-  constructor() {
-    this.ib = new IBApi({
-      // Connection options
-    });
-    this.setupEventHandlers();
-  }
-
-  get status() { return this._status; }
-
-  // --- Connection ---
-
-  async connect(config: IBConfig): Promise<void> {
-    this._status = 'connecting';
-    return new Promise((resolve, reject) => {
-      this.ib.on('connected', () => {
-        this._status = 'connected';
-        // Request managed accounts
-        this.ib.reqManagedAccts();
-        resolve();
-      });
-      this.ib.on('error', (err) => {
-        this._status = 'error';
-        reject(err);
-      });
-      this.ib.connect(config.host ?? '127.0.0.1', config.port ?? 4001, config.clientId ?? 0);
-    });
-  }
-
-  async disconnect(): Promise<void> {
-    this.ib.disconnect();
-    this._status = 'disconnected';
-  }
-
-  // --- Market Data ---
-
-  async subscribeQuote(symbols: string[]): Promise<void> {
-    for (const symbol of symbols) {
-      const reqId = this.nextReqId++;
-      const contract = this.symbolToContract(symbol);
-      this.ib.reqMktData(reqId, contract, '', false, false, []);
-    }
-  }
-
-  async unsubscribeQuote(symbols: string[]): Promise<void> {
-    for (const symbol of symbols) {
-      // Cancel market data subscription
-      // Map symbol back to reqId via tracking map
-    }
-  }
-
-  onQuote(cb: (tick: QuoteTick) => void): void {
-    // Wire up tickPrice / tickSize / tickGeneric callbacks
-    this.ib.on('tickPrice', (reqId, tickType, price) => {
-      const tick = this.buildQuoteTick(reqId, tickType, price);
-      if (tick) cb(tick);
-    });
-  }
-
-  // --- Trading ---
-
-  async placeOrder(order: NewOrder): Promise<OrderResult> {
-    const orderId = this.nextOrderId++;
-    const contract = this.symbolToContract(order.symbol);
-    const ibOrder: IBOrder = {
-      action: order.side === 'BUY' ? 'BUY' : 'SELL',
-      totalQuantity: order.quantity,
-      orderType: this.mapOrderType(order.type),
-      lmtPrice: order.limitPrice ?? undefined,
-      auxPrice: order.auxPrice ?? undefined,
-      tif: order.tif ?? 'DAY',
-    };
+  async connect(config: BrokerConfig): Promise<void> {
+    const port = config.port ?? 4001;
+    this.api = new IBApi({ port });
 
     return new Promise((resolve, reject) => {
-      this.ib.once('orderStatus', (id, status, filled, remaining, 
-                                    avgFillPrice, permId, parentId,
-                                    lastFillPrice, clientId, whyHeld, mktCapPrice) => {
-        if (id === orderId) {
-          resolve({
-            orderId: String(orderId),
-            status: this.mapOrderStatus(status),
-            filledQty: filled,
-            avgPrice: avgFillPrice,
-          });
-        }
-      });
-      this.ib.placeOrder(orderId, contract, ibOrder);
+      this.api.on('connected', () => resolve());
+      this.api.on('error', (err) => reject(err));
+      this.api.connect();
     });
   }
 
-  async cancelOrder(orderId: string): Promise<void> {
-    this.ib.cancelOrder(parseInt(orderId, 10));
-  }
+  async getSnapshot(symbol: string): Promise<QuoteSnapshot> {
+    const reqId = this.nextReqId++;
+    const contract = this.symbolToContract(symbol);
 
-  async getOpenOrders(): Promise<OpenOrder[]> {
-    return new Promise((resolve) => {
-      const orders: OpenOrder[] = [];
-      this.ib.on('openOrder', (orderId, contract, order, orderState) => {
-        orders.push(this.mapOpenOrder(orderId, contract, order, orderState));
-      });
-      this.ib.once('openOrderEnd', () => resolve(orders));
-      this.ib.reqOpenOrders();
-    });
-  }
-
-  // --- Account ---
-
-  async getAccountInfo(): Promise<AccountInfo> {
-    return new Promise((resolve) => {
-      this.ib.once('accountDownloadEnd', () => {
-        resolve(this.accountData as AccountInfo);
-      });
-      this.ib.reqAccountUpdates(true, this.getAccount());
-    });
-  }
-
-  async getPositions(): Promise<Position[]> {
-    return new Promise((resolve) => {
-      const positions: Position[] = [];
-      this.ib.on('position', (account, contract, pos, avgCost) => {
-        positions.push({
-          symbol: contract.symbol,
-          exchange: contract.exchange,
-          quantity: pos,
-          avgCost: avgCost,
-          market: contract.primaryExch,
-        });
-      });
-      this.ib.once('positionEnd', () => resolve(positions));
-      this.ib.reqPositions();
-    });
-  }
-
-  async getFunds(): Promise<FundsInfo> {
-    // Extract from account data collected via reqAccountUpdates
-    return {
-      cash: this.accountData.cash ?? 0,
-      buyingPower: this.accountData.buyingPower ?? 0,
-      equity: this.accountData.equity ?? 0,
-      currency: 'USD',
-    } as FundsInfo;
-  }
-
-  // --- Private helpers ---
-
-  private setupEventHandlers(): void {
-    this.ib.on('accountValue', (key, value, currency, account) => {
-      this.processAccountValue(key, value, currency);
+    return new Promise((resolve, reject) => {
+      this.pendingRequests.set(reqId, { resolve, reject });
+      this.api.reqMktData(reqId, contract, '', false, false, []);
+      // Timeout after 10s
+      setTimeout(() => reject(new Error(`Snapshot timeout for ${symbol}`)), 10000);
     });
   }
 
   private symbolToContract(symbol: string): Contract {
-    // Parse symbol like "AAPL" or "AAPL:NASDAQ" into IB Contract
-    const [ticker, exchange] = symbol.split(':');
+    // Parse "US.AAPL" → { symbol: "AAPL", exchange: "SMART", currency: "USD" }
+    const [market, ticker] = symbol.split('.');
     return {
       symbol: ticker,
-      secType: 'STK',
-      exchange: exchange ?? 'SMART',
-      currency: 'USD',
-    };
-  }
-
-  private mapOrderType(type: string): string {
-    const typeMap: Record<string, string> = {
-      'MARKET': 'MKT',
-      'LIMIT': 'LMT',
-      'STOP': 'STP',
-      'STOP_LIMIT': 'STP LMT',
-      'TRAILING_STOP': 'TRAIL',
-    };
-    return typeMap[type] ?? type;
-  }
-
-  private mapOrderStatus(status: string): string {
-    // IB status: Submitted, Filled, Cancelled, Inactive, etc.
-    return status;
-  }
-
-  private mapOpenOrder(orderId: number, contract: Contract, 
-                       order: IBOrder, state: OrderState): OpenOrder {
-    return {
-      orderId: String(orderId),
-      symbol: contract.symbol,
-      side: order.action === 'BUY' ? 'BUY' : 'SELL',
-      quantity: order.totalQuantity,
-      filledQty: 0,
-      type: order.orderType,
-      status: state.status,
-    };
-  }
-
-  private processAccountValue(key: string, value: string, currency: string): void {
-    if (currency !== 'BASE' && currency !== 'USD') return;
-    const numValue = parseFloat(value);
-    switch (key) {
-      case 'NetLiquidation':
-        this.accountData.equity = numValue;
-        break;
-      case 'TotalCashValue':
-        this.accountData.cash = numValue;
-        break;
-      case 'BuyingPower':
-        this.accountData.buyingPower = numValue;
-        break;
-    }
-  }
-
-  private getAccount(): string {
-    // Return configured account or first managed account
-    return '';
-  }
-
-  private buildQuoteTick(reqId: number, tickType: number, price: number): QuoteTick | null {
-    // Map IB tick types to our QuoteTick format
-    // tickType 1 = bid, 2 = ask, 4 = last
-    return null; // placeholder
-  }
-}
-```
-
-### 4.5 IB-Specific Features
-
-#### Complex Order Types
-
-```typescript
-// Bracket order example
-async placeBracketOrder(symbol: string, quantity: number, 
-                         entry: number, takeProfit: number, stopLoss: number) {
-  const parentId = this.nextOrderId++;
-  const contract = this.symbolToContract(symbol);
-
-  // Parent: limit buy
-  this.ib.placeOrder(parentId, contract, {
-    action: 'BUY',
-    totalQuantity: quantity,
-    orderType: 'LMT',
-    lmtPrice: entry,
-    transmit: false,  // Don't send yet — wait for children
-  });
-
-  // Child 1: take profit (limit sell)
-  const tpId = this.nextOrderId++;
-  this.ib.placeOrder(tpId, contract, {
-    action: 'SELL',
-    totalQuantity: quantity,
-    orderType: 'LMT',
-    lmtPrice: takeProfit,
-    parentId: parentId,
-    transmit: false,
-  });
-
-  // Child 2: stop loss
-  const slId = this.nextOrderId++;
-  this.ib.placeOrder(slId, contract, {
-    action: 'SELL',
-    totalQuantity: quantity,
-    orderType: 'STP',
-    auxPrice: stopLoss,
-    parentId: parentId,
-    transmit: true,  // Now send the entire bracket
-  });
-}
-
-// OCO (One-Cancels-Other) group
-async placeOCOOrder(symbol: string, quantity: number,
-                     limitPrice: number, stopPrice: number) {
-  const ocaGroup = `OCA_${Date.now()}`;
-  const contract = this.symbolToContract(symbol);
-
-  // OCO leg 1: limit sell
-  this.ib.placeOrder(this.nextOrderId++, contract, {
-    action: 'SELL',
-    totalQuantity: quantity,
-    orderType: 'LMT',
-    lmtPrice: limitPrice,
-    ocaGroup,
-    ocaType: 1,  // Cancel all remaining with block
-  });
-
-  // OCO leg 2: stop sell
-  this.ib.placeOrder(this.nextOrderId++, contract, {
-    action: 'SELL',
-    totalQuantity: quantity,
-    orderType: 'STP',
-    auxPrice: stopPrice,
-    ocaGroup,
-    ocaType: 1,
-  });
-}
-```
-
-#### Options Chain Support
-
-```typescript
-// Request options chain data
-async getOptionsChain(underlying: string, expiry: string): Promise<OptionContract[]> {
-  return new Promise((resolve) => {
-    const contracts: OptionContract[] = [];
-    const reqId = this.nextReqId++;
-    
-    const contract: Contract = {
-      symbol: underlying,
-      secType: 'OPT',
       exchange: 'SMART',
-      currency: 'USD',
-      // expiry format: 'YYYYMMDD'
-      lastTradeDateOrContractMonth: expiry,
+      currency: market === 'US' ? 'USD' : market === 'HK' ? 'HKD' : 'SGD',
+      secType: 'STK',
     };
+  }
+}
+```
 
-    this.ib.on('contractDetails', (id, details) => {
-      if (id === reqId) {
-        contracts.push({
-          symbol: details.contract.localSymbol,
-          strike: details.contract.strike,
-          right: details.contract.right,  // 'C' or 'P'
-          expiry: details.contract.lastTradeDateOrContractMonth,
-        });
-      }
-    });
+### 4.2 IB-Specific Features
 
-    this.ib.once('contractDetailsEnd', (id) => {
-      if (id === reqId) resolve(contracts);
-    });
+#### 4.2.1 Multiple Exchange Support
 
-    this.ib.reqContractDetails(reqId, contract);
+IB provides access to global exchanges:
+
+| Exchange | Code | Instruments |
+|----------|------|-------------|
+| NYSE | NYSE | US Equities |
+| NASDAQ | NASDAQ | US Equities, ETFs |
+| CME | CME | Futures, Options on Futures |
+| HKEX | SEHK | HK Equities |
+| SGX | SGX | Singapore Equities, Futures |
+| LSE | LSE | UK Equities |
+| TSE | TSE | Japan Equities |
+
+#### 4.2.2 Options Chain Data
+
+```typescript
+async getOptionsChain(underlying: string, expiry?: string): Promise<OptionsChain> {
+  const reqId = this.nextReqId++;
+  const contract = this.symbolToContract(underlying);
+
+  return new Promise((resolve, reject) => {
+    this.pendingRequests.set(reqId, { resolve, reject });
+    this.api.reqSecDefOptParams(reqId, contract.symbol, '', 'STK', contract.conId);
   });
 }
 ```
 
-### 4.6 Rate Limiting Strategy
+#### 4.2.3 Complex Order Types
 
-| Limit Type | IB Constraint | Our Strategy |
-|------------|--------------|--------------|
-| Message rate | 60 msg/sec | Token bucket with 55 msg/sec cap (safety margin) |
-| Order rate | ~10 orders/sec sustained | Queue with 8 orders/sec throughput |
-| Historical data | 60 requests / 10 min | Request scheduler with backoff |
-| Market data lines | Max 50 simultaneous | Batch subscription, round-robin priority |
+| Order Type | IB API Method | Description |
+|-----------|---------------|-------------|
+| Bracket Order | `placeOrder` x3 | Parent + TP + SL as linked orders |
+| OCO (One-Cancels-Other) | `ocaGroup` field | Group two orders, filling one cancels the other |
+| Trailing Stop | `trailingPercent` / `trailStopPrice` | Dynamic stop price that follows the market |
+| Iceberg | `displaySize` | Show only partial quantity to the market |
+| VWAP | `algoStrategy = 'Vwap'` | Algorithmic execution benchmarked to VWAP |
+
+#### 4.2.4 Margin Requirements
 
 ```typescript
-// electron/broker/ib-rate-limiter.ts
-
-export class IBRateLimiter {
-  private tokenBucket: number = 55;
-  private maxTokens: number = 55;
-  private refillRate: number = 55; // tokens per second
-
-  async acquire(): Promise<void> {
-    if (this.tokenBucket > 0) {
-      this.tokenBucket--;
-      return;
-    }
-    // Wait for next refill
-    await this.waitForRefill();
-  }
-
-  private async waitForRefill(): Promise<void> {
-    return new Promise(resolve => {
-      const interval = setInterval(() => {
-        if (this.tokenBucket > 0) {
-          this.tokenBucket--;
-          clearInterval(interval);
-          resolve();
-        }
-      }, 1000 / this.refillRate);
-    });
-  }
+async getMarginRequirements(): Promise<MarginInfo> {
+  const reqId = this.nextReqId++;
+  return new Promise((resolve, reject) => {
+    this.pendingRequests.set(reqId, { resolve, reject });
+    this.api.reqAccountSummary(reqId, 'All', 'NetLiquidation,MaintMarginReq,InitMarginReq');
+  });
 }
 ```
 
-### 4.7 Week 2–3 Deliverables
+### 4.3 Implementation Tasks
 
-| Week | Deliverable | Acceptance Criteria |
-|------|------------|---------------------|
-| 2 | IB adapter: connect + quotes | Connect to IB Gateway on port 4001, stream real-time quotes for US equities |
-| 3 | IB adapter: orders + positions | Place/cancel orders, query positions and account data |
-| 3 | Rate limiter + error handling | Token bucket implemented, graceful handling of IB error codes |
-| 3 | Unit tests | >80% coverage on `ib-adapter.ts` with mocked IB API |
+| # | Task | File(s) | Est. Lines | Priority |
+|---|------|---------|-----------|----------|
+| 1 | Create `IBAdapter` class skeleton | `electron/broker/ib-adapter.ts` | ~80 | P0 |
+| 2 | Implement IB connection & auth flow | `electron/broker/ib-adapter.ts` | ~100 | P0 |
+| 3 | Implement request ID manager & callback router | `electron/broker/ib-req-manager.ts` | ~120 | P0 |
+| 4 | Symbol-to-Contract mapper (multi-exchange) | `electron/broker/ib-contract-mapper.ts` | ~90 | P0 |
+| 5 | Market data subscription (tick-level) | `electron/broker/ib-adapter.ts` | ~80 | P0 |
+| 6 | Order placement with complex types | `electron/broker/ib-order-builder.ts` | ~150 | P1 |
+| 7 | Options chain data retrieval | `electron/broker/ib-adapter.ts` | ~60 | P1 |
+| 8 | Margin & account summary | `electron/broker/ib-adapter.ts` | ~50 | P1 |
+| 9 | IB market hours (multi-exchange) | `electron/broker/market-hours.ts` | ~60 | P1 |
+| 10 | Register IB adapter in `BrokerManager` | `electron/broker/broker-manager.ts` | ~15 | P0 |
+| 11 | IB-specific error code mapping | `electron/broker/ib-errors.ts` | ~80 | P2 |
+| 12 | Unit tests for `IBAdapter` | `tests/broker/ib-adapter.test.ts` | ~200 | P1 |
+| 13 | Integration test: IB Gateway connection | `tests/broker/ib-gateway.test.ts` | ~120 | P2 |
+
+**Estimated Total:** ~1,205 lines of new code
 
 ---
 
@@ -758,444 +383,523 @@ export class IBRateLimiter {
 
 ### 5.1 Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    UnifiedAccountManager                     │
-│                                                              │
-│  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐ │
-│  │  Futu Adapter  │  │ moomoo Adapter │  │   IB Adapter   │ │
-│  │  (connected)   │  │  (connected)   │  │  (connected)   │ │
-│  └───────┬────────┘  └───────┬────────┘  └───────┬────────┘ │
-│          │                    │                    │          │
-│          ▼                    ▼                    ▼          │
-│  ┌─────────────────────────────────────────────────────┐     │
-│  │              Position Aggregator                     │     │
-│  │  - Group by underlying (e.g., AAPL across brokers)  │     │
-│  │  - Sum quantities, weighted avg cost                │     │
-│  └─────────────────────────────────────────────────────┘     │
-│                                                              │
-│  ┌─────────────────────────────────────────────────────┐     │
-│  │             Currency Normalizer                       │     │
-│  │  - All values → USD (real-time FX rates)            │     │
-│  │  - Source: IB forex data or free FX API             │     │
-│  └─────────────────────────────────────────────────────┘     │
-│                                                              │
-│  ┌─────────────────────────────────────────────────────┐     │
-│  │              Risk Manager                            │     │
-│  │  - Per-broker position limits                       │     │
-│  │  - Cross-broker exposure limits                     │     │
-│  │  - Concentration alerts                             │     │
-│  └─────────────────────────────────────────────────────┘     │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### 5.2 UnifiedAccountManager Class
+#### 5.1.1 UnifiedAccountManager
 
 ```typescript
-// electron/broker/unified-account-manager.ts
+// electron/account/unified-account-manager.ts
+import { IBrokerAdapter, Position, PnLSummary, AccountInfo } from '../broker/types';
 
-export interface AggregatedPosition {
+interface UnifiedPosition {
   symbol: string;
-  totalQuantity: number;
-  weightedAvgCost: number;
-  marketValue: number;
-  unrealizedPnL: number;
-  currency: string;           // normalized to USD
-  brokerBreakdown: BrokerPosition[];
+  totalQty: number;
+  avgCost: number;          // Normalized to USD
+  marketValue: number;      // Normalized to USD
+  unrealizedPnL: number;    // Normalized to USD
+  breakdown: PositionBreakdown[];
 }
 
-export interface BrokerPosition {
+interface PositionBreakdown {
   brokerId: string;
-  quantity: number;
-  avgCost: number;
-  marketValue: number;
-  unrealizedPnL: number;
-  originalCurrency: string;
-}
-
-export interface PortfolioSummary {
-  totalEquity: number;          // USD
-  totalCash: number;            // USD
-  totalBuyingPower: number;     // USD
-  totalUnrealizedPnL: number;   // USD
-  totalRealizedPnL: number;     // USD
-  positions: AggregatedPosition[];
-  brokerSummaries: BrokerSummary[];
-}
-
-export interface BrokerSummary {
-  brokerId: string;
-  brokerName: string;
-  status: 'connected' | 'disconnected' | 'error';
-  equity: number;
-  cash: number;
-  buyingPower: number;
-  positionCount: number;
+  qty: number;
+  avgCost: number;          // Local currency
   currency: string;
+  marketValue: number;      // Local currency
+}
+
+interface UnifiedPortfolio {
+  totalValue: number;        // USD
+  totalPnL: number;          // USD
+  positions: UnifiedPosition[];
+  brokerAccounts: AccountInfo[];
+  lastUpdated: Date;
 }
 
 export class UnifiedAccountManager {
-  private brokerManager: BrokerManager;
-  private fxRates: Map<string, number> = new Map();
-  private riskLimits: RiskLimits;
+  private adapters: Map<string, IBrokerAdapter>;
+  private fxRates: Map<string, number>;  // e.g., { 'SGD': 0.74, 'HKD': 0.128 }
 
-  constructor(brokerManager: BrokerManager, riskLimits: RiskLimits) {
-    this.brokerManager = brokerManager;
-    this.riskLimits = riskLimits;
-    this.initFxRates();
+  constructor(adapters: Map<string, IBrokerAdapter>) {
+    this.adapters = adapters;
+    this.fxRates = new Map();
   }
 
-  async getPortfolioSummary(): Promise<PortfolioSummary> {
-    const adapters = this.brokerManager.getConnectedAdapters();
-    const allPositions: Position[] = [];
-    const brokerSummaries: BrokerSummary[] = [];
-
-    for (const adapter of adapters) {
-      const [positions, funds, accountInfo] = await Promise.all([
-        adapter.getPositions(),
-        adapter.getFunds(),
-        adapter.getAccountInfo(),
-      ]);
-
-      allPositions.push(...positions.map(p => ({
-        ...p,
-        _brokerId: adapter.brokerId,
-        _originalCurrency: funds.currency,
-      })));
-
-      brokerSummaries.push({
-        brokerId: adapter.brokerId,
-        brokerName: adapter.brokerName,
-        status: adapter.status,
-        equity: this.toUSD(accountInfo.equity, funds.currency),
-        cash: this.toUSD(funds.cash, funds.currency),
-        buyingPower: this.toUSD(funds.buyingPower, funds.currency),
-        positionCount: positions.length,
-        currency: funds.currency,
-      });
-    }
-
-    const aggregatedPositions = this.aggregatePositions(allPositions);
-
-    return {
-      totalEquity: brokerSummaries.reduce((sum, b) => sum + b.equity, 0),
-      totalCash: brokerSummaries.reduce((sum, b) => sum + b.cash, 0),
-      totalBuyingPower: brokerSummaries.reduce((sum, b) => sum + b.buyingPower, 0),
-      totalUnrealizedPnL: aggregatedPositions.reduce((sum, p) => sum + p.unrealizedPnL, 0),
-      totalRealizedPnL: 0, // TODO: aggregate from trade history
-      positions: aggregatedPositions,
-      brokerSummaries,
-    };
+  async refreshFxRates(): Promise<void> {
+    // Fetch from a reliable FX API or use broker-provided rates
   }
 
-  private aggregatePositions(positions: any[]): AggregatedPosition[] {
-    const grouped = new Map<string, any[]>();
-    
+  async getUnifiedPortfolio(): Promise<UnifiedPortfolio> {
+    const allPositions = await Promise.all(
+      Array.from(this.adapters.entries()).map(async ([id, adapter]) => {
+        const positions = await adapter.getPositions();
+        return positions.map(p => ({ ...p, brokerId: id }));
+      })
+    );
+
+    return this.aggregatePositions(allPositions.flat());
+  }
+
+  private aggregatePositions(positions: (Position & { brokerId: string })[]): UnifiedPortfolio {
+    const grouped = new Map<string, PositionBreakdown[]>();
+
     for (const pos of positions) {
       const key = pos.symbol;
       if (!grouped.has(key)) grouped.set(key, []);
-      grouped.get(key)!.push(pos);
-    }
-
-    const result: AggregatedPosition[] = [];
-    for (const [symbol, group] of grouped) {
-      const totalQuantity = group.reduce((sum, p) => sum + p.quantity, 0);
-      const weightedAvgCost = group.reduce(
-        (sum, p) => sum + p.avgCost * p.quantity, 0
-      ) / totalQuantity;
-
-      result.push({
-        symbol,
-        totalQuantity,
-        weightedAvgCost,
-        marketValue: 0, // TODO: needs current price
-        unrealizedPnL: 0, // TODO: needs current price
-        currency: 'USD',
-        brokerBreakdown: group.map(p => ({
-          brokerId: p._brokerId,
-          quantity: p.quantity,
-          avgCost: p.avgCost,
-          marketValue: 0,
-          unrealizedPnL: 0,
-          originalCurrency: p._originalCurrency,
-        })),
+      grouped.get(key)!.push({
+        brokerId: pos.brokerId,
+        qty: pos.qty,
+        avgCost: pos.avgCost,
+        currency: pos.currency,
+        marketValue: pos.marketValue,
       });
     }
 
-    return result;
-  }
+    // Merge and normalize to USD
+    const unified: UnifiedPosition[] = [];
+    for (const [symbol, breakdowns] of grouped) {
+      let totalQty = 0;
+      let totalCostUSD = 0;
+      let totalValueUSD = 0;
 
-  private toUSD(amount: number, currency: string): number {
-    if (currency === 'USD') return amount;
-    const rate = this.fxRates.get(currency) ?? 1;
+      for (const b of breakdowns) {
+        const fxRate = this.fxRates.get(b.currency) ?? 1;
+        totalQty += b.qty;
+        totalCostUSD += b.avgCost * b.qty * fxRate;
+        totalValueUSD += b.marketValue * fxRate;
+      }
+
+      unified.push({
+        symbol,
+        totalQty,
+        avgCost: totalQty > 0 ? totalCostUSD / totalQty : 0,
+        marketValue: totalValueUSD,
+        unrealizedPnL: totalValueUSD - totalCostUSD,
+        breakdown: breakdowns,
+      });
+    }
+
+    const totalValue = unified.reduce((sum, p) => sum + p.marketValue, 0);
+    const totalPnL = unified.reduce((sum, p) => sum + p.unrealizedPnL, 0);
+
+    return {
+      totalValue,
+      totalPnL,
+      positions: unified,
+      brokerAccounts: [], // Populated separately
+      lastUpdated: new Date(),
+    };
+  }
+}
+```
+
+#### 5.1.2 Currency Normalization
+
+All P&L and position values are normalized to **USD** as the base display currency. FX rates are refreshed every 60 seconds from the broker's market data feed or an external API.
+
+```typescript
+// electron/account/fx-normalizer.ts
+export class FxNormalizer {
+  private rates: Map<string, number> = new Map([
+    ['USD', 1.0],
+    ['HKD', 0.1282],
+    ['SGD', 0.7407],
+    ['CNY', 0.1379],
+  ]);
+
+  normalize(amount: number, fromCurrency: string): number {
+    const rate = this.rates.get(fromCurrency);
+    if (!rate) throw new Error(`Unknown currency: ${fromCurrency}`);
     return amount * rate;
   }
 
-  private async initFxRates(): Promise<void> {
-    // Fetch from IB forex or free API
-    // SGD/USD, HKD/USD, CNY/USD, etc.
-    this.fxRates.set('SGD', 0.74);
-    this.fxRates.set('HKD', 0.128);
-    this.fxRates.set('CNY', 0.138);
+  async refreshRates(): Promise<void> {
+    // Fetch live FX rates
   }
 }
 ```
 
-### 5.3 Risk Limits Configuration
+### 5.2 UI Changes
 
-```typescript
-// electron/broker/risk-limits.ts
-
-export interface RiskLimits {
-  // Per-broker limits
-  maxPositionValuePerBroker: number;    // USD
-  maxOrdersPerMinutePerBroker: number;
-
-  // Cross-broker limits  
-  maxTotalPositionValue: number;        // USD
-  maxSingleSymbolExposure: number;      // USD
-  maxConcentrationPct: number;          // % of portfolio in single name
-
-  // Order validation
-  maxOrderValueUSD: number;
-  requireConfirmationAboveUSD: number;
-}
-
-export const DEFAULT_RISK_LIMITS: RiskLimits = {
-  maxPositionValuePerBroker: 500_000,
-  maxOrdersPerMinutePerBroker: 10,
-  maxTotalPositionValue: 1_000_000,
-  maxSingleSymbolExposure: 200_000,
-  maxConcentrationPct: 25,
-  maxOrderValueUSD: 50_000,
-  requireConfirmationAboveUSD: 10_000,
-};
-```
-
-### 5.4 UI Changes
-
-#### Sidebar Broker Selector
+#### 5.2.1 Broker Selector in Sidebar
 
 ```
-┌──────────────────────────────────────┐
-│  Dawn Whales                  ⚙️     │
-├──────────────────────────────────────┤
-│                                      │
-│  📊 Dashboard                        │
-│                                      │
-│  ── Brokers ─────────────────────    │
-│  🟢 Futu (HK)              $45,230  │
-│  🟢 moomoo (SG)            $32,100  │
-│  🟡 IB (US)                $78,500  │
-│                                      │
-│  ── Portfolio ───────────────────    │
-│  Total Equity             $155,830   │
-│  Total P&L (Today)        +$1,245    │
-│                                      │
-│  ── Quick Trade ────────────────     │
-│  Broker: [moomoo ▾]                  │
-│  Symbol: [________]                  │
-│  Side:   [BUY ▾]  Qty: [____]       │
-│  [  Place Order  ]                   │
-│                                      │
-└──────────────────────────────────────┘
+┌──────────────────────────┐
+│  ☰ Dawn Whales           │
+│  ─────────────────────── │
+│  📊 Portfolio            │
+│  ┌────────────────────┐  │
+│  │ ▼ All Brokers      │  │  ← New dropdown
+│  │   ├ Futu           │  │
+│  │   ├ moomoo         │  │
+│  │   └ IB             │  │
+│  └────────────────────┘  │
+│                          │
+│  AAPL   $189.25  +1.2%  │
+│  BABA   $78.50   -0.5%  │
+│  D05.SG $12.30   +0.8%  │  ← SG symbols from moomoo
+│  ...                     │
+└──────────────────────────┘
 ```
 
-#### Cross-Broker Portfolio View
+#### 5.2.2 Per-Broker Account Summary
 
-| Symbol | Futu Qty | moomoo Qty | IB Qty | Total | Avg Cost | Current | P&L |
-|--------|----------|-----------|--------|-------|----------|---------|-----|
-| AAPL | — | — | 100 | 100 | $172.50 | $178.30 | +$580 |
-| 9988.HK | 200 | — | — | 200 | HK$85.20 | HK$88.50 | +HK$660 |
-| D05.SI | — | 300 | — | 300 | S$28.10 | S$29.00 | +S$270 |
-| MSFT | — | — | 50 | 50 | $410.00 | $418.20 | +$410 |
+A new `BrokerAccountCard` component shows per-broker metrics:
 
-### 5.5 Order Routing Logic
+- Net Liquidation Value
+- Day P&L
+- Buying Power
+- Margin Utilization (IB only)
+- Connection Status indicator (🟢/🔴)
 
-```typescript
-// When user places an order from the UI:
-async function routeOrder(order: NewOrder, targetBroker: string): Promise<OrderResult> {
-  // 1. Get the target adapter
-  const adapter = brokerManager.getAdapter(targetBroker);
-  if (!adapter || adapter.status !== 'connected') {
-    throw new Error(`Broker ${targetBroker} is not connected`);
-  }
+#### 5.2.3 Cross-Broker Portfolio View
 
-  // 2. Validate against risk limits
-  const validation = await riskManager.validate(order, adapter);
-  if (!validation.passed) {
-    throw new RiskLimitError(validation.message);
-  }
+The existing portfolio table gains new columns:
 
-  // 3. Convert to broker-native format and place
-  return adapter.placeOrder(order);
-}
-```
+| Symbol | Total Qty | Avg Cost (USD) | Mkt Value (USD) | P&L | Brokers |
+|--------|-----------|----------------|-----------------|-----|---------|
+| AAPL | 150 | $172.30 | $28,387.50 | +$2,545.50 | Futu (100), IB (50) |
+| 0700.HK | 400 | HK$320.00 | $6,528.00 | +$256.00 | Futu (200), moomoo (200) |
 
-### 5.6 Week 3–4 Deliverables
+#### 5.2.4 Broker-Specific Order Routing
 
-| Week | Deliverable | Acceptance Criteria |
-|------|------------|---------------------|
-| 3 | UnifiedAccountManager | Aggregates positions and funds across all connected brokers |
-| 3 | Currency normalization | All values displayed in USD with configurable base currency |
-| 4 | UI: broker selector + portfolio view | Sidebar shows all brokers; cross-broker portfolio table works |
-| 4 | Risk limits engine | Order validation against per-broker and cross-broker limits |
-| 4 | Integration tests | Full multi-broker scenario: connect 3 brokers, aggregate data, route orders |
+When placing an order, the user selects which broker to route through. The order form validates:
+
+- Instrument availability on the selected broker
+- Market hours for the target exchange
+- Sufficient buying power / margin
+
+### 5.3 Implementation Tasks
+
+| # | Task | File(s) | Est. Lines | Priority |
+|---|------|---------|-----------|----------|
+| 1 | Create `UnifiedAccountManager` | `electron/account/unified-account-manager.ts` | ~200 | P0 |
+| 2 | Create `FxNormalizer` | `electron/account/fx-normalizer.ts` | ~60 | P0 |
+| 3 | Add unified portfolio IPC channel | `electron/ipc/account-channels.ts` | ~40 | P0 |
+| 4 | Broker selector component | `src/components/Sidebar/BrokerSelector.tsx` | ~80 | P0 |
+| 5 | Broker account card component | `src/components/Portfolio/BrokerAccountCard.tsx` | ~100 | P1 |
+| 6 | Update portfolio table with broker column | `src/components/Portfolio/PortfolioTable.tsx` | ~50 | P1 |
+| 7 | Broker selection in order form | `src/components/Order/OrderForm.tsx` | ~60 | P0 |
+| 8 | Order routing validation logic | `electron/trading/order-router.ts` | ~90 | P0 |
+| 9 | Connection status indicators | `src/components/Sidebar/BrokerStatusDot.tsx` | ~30 | P2 |
+| 10 | Update preload for account APIs | `preload/index.ts` | ~25 | P0 |
+| 11 | E2E test: multi-broker portfolio | `tests/e2e/multi-broker.test.ts` | ~150 | P1 |
+| 12 | E2E test: cross-broker order routing | `tests/e2e/order-routing.test.ts` | ~120 | P1 |
+
+**Estimated Total:** ~1,005 lines of new/modified code
 
 ---
 
-## 6. Technical Risks & Mitigations
+## 6. Data Flow Diagrams
 
-| # | Risk | Severity | Likelihood | Mitigation |
-|---|------|----------|------------|------------|
-| 1 | **IB API complexity** — async callbacks, request ID management, non-obvious error codes | High | High | Use `@stoqey/ib` (Promise-based wrapper); build a request ID tracker; create error code → user-friendly message mapping |
-| 2 | **Currency conversion accuracy** — stale FX rates lead to incorrect P&L | Medium | Medium | Use IB real-time forex data as primary source; free FX API as fallback; show "FX rate as of" timestamp |
-| 3 | **Market hour differences** — orders placed outside market hours may queue or reject | Medium | High | Centralized `MarketHours` service with timezone-aware open/close checks; show market status (🟢 open / 🔴 closed / 🟡 pre-market) per broker |
-| 4 | **Order type compatibility** — IB supports bracket/OCO/trailing but OpenD may not | Medium | Medium | Define a `SupportedOrderTypes` matrix per broker; UI disables unsupported types; adapter translates or rejects gracefully |
-| 5 | **Rate limiting per broker** — IB strict 60 msg/sec; OpenD subscription quotas | High | Medium | Per-adapter rate limiter; global message queue with priority (orders > quotes > account queries) |
-| 6 | **Reconnection handling** — IB requires full re-subscription after disconnect | High | Medium | Implement `ReconnectManager` that tracks all active subscriptions and re-issues them on reconnect; show reconnection status in UI |
-| 7 | **Port conflicts** — multiple OpenD instances on same machine | Low | Medium | Config validation at startup; auto-detect available ports; clear error messages with fix instructions |
+### 6.1 Quote Data Flow (Per Broker)
 
-### 6.1 Order Type Compatibility Matrix
+```
+┌────────────┐    ┌────────────┐    ┌────────────┐
+│ Futu OpenD │    │moomoo OpenD│    │ IB Gateway │
+│  :11111    │    │  :11211    │    │  :4001     │
+└─────┬──────┘    └─────┬──────┘    └─────┬──────┘
+      │                 │                 │
+      ▼                 ▼                 ▼
+┌──────────┐    ┌──────────┐    ┌──────────┐
+│  Futu    │    │  moomoo  │    │   IB     │
+│  Adapter │    │  Adapter │    │  Adapter │
+└────┬─────┘    └────┬─────┘    └────┬─────┘
+     │               │               │
+     ▼               ▼               ▼
+┌────────────────────────────────────────────┐
+│           BrokerManager                    │
+│  (routes subscriptions, normalizes data)   │
+└────────────────────┬───────────────────────┘
+                     │
+                     ▼
+┌────────────────────────────────────────────┐
+│          WS Market Data Engine             │
+│  (unified streaming to renderer via WS)    │
+└────────────────────┬───────────────────────┘
+                     │ WebSocket
+                     ▼
+┌────────────────────────────────────────────┐
+│              Renderer (React)              │
+│  MarketPanel / Watchlist / Chart           │
+└────────────────────────────────────────────┘
+```
 
-| Order Type | Futu | moomoo | IB | UI Display |
-|-----------|------|--------|----|-----------|
-| Market (MKT) | ✅ | ✅ | ✅ | Always available |
-| Limit (LMT) | ✅ | ✅ | ✅ | Always available |
-| Stop (STP) | ✅ | ✅ | ✅ | Always available |
-| Stop Limit (STP LMT) | ✅ | ✅ | ✅ | Always available |
-| Trailing Stop | ❌ | ❌ | ✅ | Only when IB selected |
-| Bracket | ❌ | ❌ | ✅ | Only when IB selected |
-| OCO | ❌ | ❌ | ✅ | Only when IB selected |
-| Iceberg | ❌ | ❌ | ✅ | Only when IB selected |
-| VWAP | ❌ | ❌ | ✅ | Only when IB selected |
+### 6.2 Order Routing Flow
+
+```
+User clicks "Buy AAPL 100 @ Market"
+         │
+         ▼
+┌─────────────────────┐
+│   OrderForm (UI)    │  Select broker: [Futu ▼]
+└─────────┬───────────┘
+          │ IPC: broker:placeOrder
+          ▼
+┌─────────────────────┐
+│   OrderRouter       │  Validates: market hours, buying power, instrument
+│   (Main Process)    │
+└─────────┬───────────┘
+          │ routes to selected adapter
+          ▼
+┌─────────────────────┐
+│  Selected Adapter   │  Futu / moomoo / IB
+│  .placeOrder()      │
+└─────────┬───────────┘
+          │
+          ▼
+┌─────────────────────┐
+│   Broker Backend    │  OpenD / IB Gateway
+└─────────┬───────────┘
+          │ confirmation
+          ▼
+┌─────────────────────┐
+│   OrderRouter       │  Emits order:update event
+└─────────┬───────────┘
+          │ IPC push
+          ▼
+┌─────────────────────┐
+│  Renderer (UI)      │  Order status toast + table update
+└─────────────────────┘
+```
+
+### 6.3 Position Aggregation Flow
+
+```
+┌──────────┐  ┌──────────┐  ┌──────────┐
+│  Futu    │  │  moomoo  │  │    IB    │
+│  Adapter │  │  Adapter │  │  Adapter │
+└────┬─────┘  └────┬─────┘  └────┬─────┘
+     │              │              │
+     │ getPositions()│              │
+     ▼              ▼              ▼
+┌────────────────────────────────────────────┐
+│        UnifiedAccountManager               │
+│                                            │
+│  1. Fetch positions from all adapters      │
+│  2. Group by symbol                        │
+│  3. Normalize currencies to USD via FxNorm │
+│  4. Calculate aggregated P&L               │
+│  5. Return UnifiedPortfolio                │
+└────────────────────┬───────────────────────┘
+                     │
+                     ▼
+┌────────────────────────────────────────────┐
+│        Renderer — Portfolio View           │
+│  Total: $125,430  P&L: +$3,210 (+2.6%)    │
+└────────────────────────────────────────────┘
+```
 
 ---
 
 ## 7. Testing Strategy
 
-### 7.1 Test Layers
+### 7.1 Unit Tests
 
+| Adapter | Test File | Scope | Est. Tests |
+|---------|-----------|-------|-----------|
+| `OpenDBaseAdapter` | `tests/broker/opend-base.test.ts` | Shared OpenD logic | 15 |
+| `FutuOpenDClient` | `tests/broker/futu-opend.test.ts` | Futu-specific overrides | 10 |
+| `MoomooAdapter` | `tests/broker/moomoo-adapter.test.ts` | moomoo port, markets, hours | 12 |
+| `IBAdapter` | `tests/broker/ib-adapter.test.ts` | IB connection, req IDs, callbacks | 20 |
+| `UnifiedAccountManager` | `tests/account/unified-account.test.ts` | Aggregation, FX, P&L | 18 |
+| `FxNormalizer` | `tests/account/fx-normalizer.test.ts` | Currency conversion | 8 |
+| `OrderRouter` | `tests/trading/order-router.test.ts` | Routing, validation | 12 |
+
+### 7.2 Integration Tests
+
+| Scenario | Description | Est. Tests |
+|----------|-------------|-----------|
+| Dual OpenD | Futu + moomoo connect simultaneously, no port conflict | 5 |
+| IB Gateway | Connect to paper account, subscribe to quotes | 6 |
+| BrokerManager lifecycle | Start all, stop all, handle individual failures | 8 |
+| WS Engine | Unified streaming from 3 adapters | 5 |
+
+### 7.3 E2E Tests
+
+| Scenario | Steps | Est. Tests |
+|----------|-------|-----------|
+| Multi-broker portfolio | Connect 3 brokers → View unified portfolio | 3 |
+| Cross-broker order | Place order via Futu, verify in Futu account only | 4 |
+| Broker failover | Kill one OpenD → UI shows disconnected → Reconnect | 3 |
+| Currency normalization | Hold same stock on Futu (USD) and moomoo (SGD) → Verify unified P&L | 2 |
+
+### 7.4 Test Infrastructure
+
+```typescript
+// tests/helpers/mock-broker-adapter.ts
+export class MockBrokerAdapter implements IBrokerAdapter {
+  readonly id: string;
+  readonly name: string;
+  status: BrokerStatus = 'disconnected';
+
+  private mockPositions: Position[] = [];
+  private mockQuotes: Map<string, QuoteSnapshot> = new Map();
+
+  constructor(id: string, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+
+  // Configurable mock data
+  setMockPositions(positions: Position[]): void { this.mockPositions = positions; }
+  setMockQuote(symbol: string, quote: QuoteSnapshot): void { this.mockQuotes.set(symbol, quote); }
+
+  // IBrokerAdapter implementation
+  async connect(): Promise<void> { this.status = 'connected'; }
+  async disconnect(): Promise<void> { this.status = 'disconnected'; }
+  async getPositions(): Promise<Position[]> { return this.mockPositions; }
+  async getSnapshot(symbol: string): Promise<QuoteSnapshot> {
+    const q = this.mockQuotes.get(symbol);
+    if (!q) throw new Error(`No mock quote for ${symbol}`);
+    return q;
+  }
+  // ... remaining methods with sensible defaults
+}
 ```
-┌─────────────────────────────────────────────────┐
-│              E2E Tests (Playwright)              │
-│  Multi-broker scenario: connect, trade, verify  │
-├─────────────────────────────────────────────────┤
-│          Integration Tests (Jest)                │
-│  Adapter + BrokerManager + UnifiedAccountMgr    │
-├─────────────────────────────────────────────────┤
-│            Unit Tests (Jest)                     │
-│  Per-adapter with mocked broker connections     │
-└─────────────────────────────────────────────────┘
-```
-
-### 7.2 Unit Tests
-
-Each adapter gets its own test suite with mocked network connections:
-
-| Test Suite | Scope | Target Coverage |
-|-----------|-------|-----------------|
-| `moomoo-adapter.test.ts` | Connect, quote, order, position, error handling | >80% |
-| `ib-adapter.test.ts` | Connect, quote, order types, account, positions, rate limiting | >80% |
-| `unified-account-manager.test.ts` | Aggregation, FX conversion, position grouping | >90% |
-| `risk-limits.test.ts` | Limit validation, edge cases | >90% |
-| `ib-rate-limiter.test.ts` | Token bucket, burst handling, backoff | >90% |
-| `market-hours.test.ts` | Timezone handling, DST transitions | >85% |
-
-### 7.3 Integration Tests
-
-| Scenario | Description |
-|----------|-------------|
-| Multi-broker connect | Connect Futu + moomoo + IB simultaneously via BrokerManager |
-| Cross-broker quote stream | Subscribe to same symbol on different brokers, verify unified tick delivery |
-| Order routing | Place order on each broker, verify correct adapter receives it |
-| Position aggregation | Seed positions across brokers, verify aggregation math |
-| Failover | Kill one broker connection, verify others continue and UI updates |
-| Reconnection | Disconnect/reconnect IB, verify all subscriptions restored |
-
-### 7.4 E2E Tests
-
-| Scenario | Steps |
-|----------|-------|
-| Full workflow | Launch app → Connect 3 brokers → View portfolio → Place order on moomoo → Verify position appears → Check cross-broker P&L |
-| Risk limit block | Set max position limit → Attempt to exceed → Verify order rejected with clear message |
-| Market hours gate | Outside market hours → Attempt order → Verify queued/rejected with market status shown |
 
 ---
 
-## 8. Milestones & Timeline
+## 8. Technical Risks
+
+| # | Risk | Probability | Impact | Mitigation |
+|---|------|------------|--------|------------|
+| 1 | **IB API callback complexity** — Async callbacks with request IDs can lead to race conditions and memory leaks if requests are never resolved. | High | High | Implement `IBReqManager` with automatic timeout (10s default) and cleanup. Use `Map<reqId, Promise>` pattern with guaranteed resolution. |
+| 2 | **moomoo OpenD binary availability** — moomoo OpenD may not be available on all platforms or may require separate licensing. | Medium | High | Verify binary distribution for Windows/macOS/Linux in Week 1. Fallback: run moomoo in a Docker container. |
+| 3 | **Port conflicts** — Running Futu OpenD (11111) and moomoo OpenD (11211) simultaneously may conflict with firewall rules or other services. | Low | Medium | Make ports configurable via settings UI. Add port check on startup with clear error messages. |
+| 4 | **FX rate staleness** — Using stale FX rates for P&L calculation can mislead users. | Medium | Medium | Refresh FX rates every 60s. Display "last updated" timestamp. Warn if rate is >5min old. |
+| 5 | **IB paper vs live confusion** — Users may accidentally connect to live trading when intending paper. | Medium | High | Require explicit confirmation modal when connecting to live IB port (4001/7496). Show prominent "LIVE" / "PAPER" badge. |
+| 6 | **OpenD base class refactor breaks existing Futu** — Extracting shared logic could introduce regressions. | Medium | High | Maintain 100% backward compatibility with existing Futu test suite. Run full regression after refactor before proceeding. |
+| 7 | **Memory usage with 3 concurrent connections** — Three broker connections + streaming may increase memory significantly. | Low | Medium | Profile memory usage in Week 3. Implement connection pooling and lazy subscription (only subscribe when UI panel is visible). |
+| 8 | **Symbol format inconsistency** — Futu uses `US.AAPL`, IB uses `AAPL@SMART`, moomoo uses `SG.D05`. | High | Medium | Implement `SymbolMapper` class that normalizes all formats to internal canonical form. Comprehensive mapping tests. |
+
+---
+
+## 9. Milestones
+
+| Week | Deliverable | Acceptance Criteria |
+|------|------------|-------------------|
+| **Week 1** | `OpenDBaseAdapter` refactor + `MoomooAdapter` skeleton | ① Futu tests pass unchanged after refactor ② `MoomooAdapter` compiles and connects to moomoo OpenD on port 11211 ③ Code review approved |
+| **Week 2** | moomoo complete + IB Adapter skeleton | ① moomoo subscribes to SG/HK quotes successfully ② `IBAdapter` connects to IB Gateway paper account ③ BrokerManager manages Futu + moomoo simultaneously |
+| **Week 3** | IB complete + UnifiedAccountManager | ① IB subscribes to US/HK quotes, places paper orders ② `UnifiedAccountManager` aggregates positions from 2+ brokers ③ FX normalization displays correct USD values |
+| **Week 4** | UI integration + E2E testing + release | ① Broker selector in sidebar functional ② Portfolio view shows cross-broker positions ③ All E2E tests pass ④ No regression in Futu-only mode ⑤ Performance: <500ms portfolio refresh with 3 brokers |
+
+---
+
+## 10. Dependencies
+
+### 10.1 External Dependencies
+
+| Dependency | Type | Version | Purpose | Risk |
+|-----------|------|---------|---------|------|
+| `@stoqey/ib` | npm package | ^0.8.x | IB API TypeScript wrapper | Medium — community-maintained, may have edge-case bugs |
+| `futu-opend` | Binary | Latest | Futu market data & trading | Low — first-party, well-maintained |
+| `moomoo-opend` | Binary | Latest | moomoo market data & trading | Medium — newer, less battle-tested |
+| IB Gateway / TWS | Desktop app | Latest | IB connectivity | Low — official IB software |
+
+### 10.2 Internal Dependencies
+
+| Component | File | Status | Notes |
+|-----------|------|--------|-------|
+| `IBrokerAdapter` interface | `electron/broker/types.ts` | ✅ Stable | May need minor extensions for IB-specific fields |
+| `BrokerManager` | `electron/broker/broker-manager.ts` | ✅ Stable | Supports multi-adapter registration |
+| `WS Market Data Engine` | `electron/market/ws-engine.ts` | ✅ Stable | Broker-agnostic streaming |
+| `preload.ts broker:` namespace | `preload/index.ts` | ⚠️ Needs update | Must support broker-specific routing |
+| `MarketPanel` component | `src/components/Market/` | ⚠️ Needs update | Display multi-broker quotes |
+| `OrderForm` component | `src/components/Order/` | ⚠️ Needs update | Broker selection dropdown |
+| `PortfolioTable` component | `src/components/Portfolio/` | ⚠️ Needs update | Cross-broker columns |
+
+### 10.3 Dependency Graph
 
 ```
-Week 1 (Day 1-5)
-├── Day 1-2: moomoo-adapter.ts scaffold + OpenD connection
-├── Day 3-4: Quote subscription + WS engine integration
-├── Day 5:   Unit tests for connect + quote flows
-│
-│  ✅ Milestone: moomoo adapter basic (connect + quotes)
-
-Week 2 (Day 6-10)
-├── Day 6-7:  moomoo order placement + cancellation
-├── Day 8:    moomoo account/positions/funds queries
-├── Day 9:    BrokerManager integration + market hours service
-├── Day 10:   Full moomoo unit test suite
-│
-│  ✅ Milestone: moomoo full (quotes + orders + positions)
-
-Week 3 (Day 11-15)
-├── Day 11-12: ib-adapter.ts scaffold + IB Gateway connection
-├── Day 13:    reqMktData + tick-to-QuoteTick mapping
-├── Day 14:    Rate limiter implementation
-├── Day 15:    Unit tests for connect + quote + rate limiter
-│
-│  ✅ Milestone: IB adapter basic (connect + quotes)
-
-Week 4 (Day 16-20)
-├── Day 16-17: IB order placement (market, limit, stop, bracket)
-├── Day 18:    IB account + positions + funds
-├── Day 19:    UnifiedAccountManager + UI broker selector
-├── Day 20:    Integration + E2E test pass
-│
-│  ✅ Milestone: IB full + unified account manager
+Phase 3A (moomoo)  ──────┐
+                          ├──▶ Phase 3C (Unified Account)
+Phase 3B (IB)      ──────┘
+         ▲                    │
+         │                    ▼
+    OpenDBaseAdapter      UI Integration
+    (refactor from        + E2E Testing
+     FutuOpenDClient)
 ```
 
-### 8.1 Definition of Done (Phase 3)
-
-- [ ] moomoo adapter: full `IBrokerAdapter` compliance, tested
-- [ ] IB adapter: full `IBrokerAdapter` compliance, tested
-- [ ] BrokerManager: manages 3+ simultaneous broker connections
-- [ ] UnifiedAccountManager: cross-broker aggregation with USD normalization
-- [ ] UI: broker selector in sidebar, per-broker summary, cross-broker portfolio table
-- [ ] Risk limits: configurable, validated on every order
-- [ ] All adapters: reconnection handling, error recovery
-- [ ] Test coverage: unit >80%, integration scenarios pass, E2E happy path passes
-- [ ] Documentation: adapter setup guides for each broker
+**Critical Path:** Phase 3A (OpenD refactor) → Phase 3B (IB, parallel) → Phase 3C (Unified Account) → UI + E2E
 
 ---
 
-## 9. Dependencies & Prerequisites
+## 11. Appendix
 
-| Dependency | Required For | Status |
-|-----------|-------------|--------|
-| moomoo OpenD installed & running | Phase 3A | ⬜ To verify |
-| IB Gateway or TWS installed & running | Phase 3B | ⬜ To verify |
-| IB paper trading account | Phase 3B testing | ⬜ To set up |
-| `@stoqey/ib` npm package | Phase 3B | ⬜ To install |
-| Existing `IBrokerAdapter` interface | All phases | ✅ Defined |
-| Existing `BrokerManager` | All phases | ✅ Implemented |
-| Existing `WSMarketDataEngine` | All phases | ✅ Implemented |
+### 11.1 File Structure (Post-Implementation)
+
+```
+electron/
+├── broker/
+│   ├── types.ts                    # IBrokerAdapter interface
+│   ├── opend-base.ts              # NEW: Shared OpenD logic
+│   ├── futu-opend.ts             # REFACTOR: extends OpenDBaseAdapter
+│   ├── moomoo-adapter.ts         # NEW: moomoo adapter
+│   ├── ib-adapter.ts             # NEW: IB adapter
+│   ├── ib-req-manager.ts         # NEW: IB request ID manager
+│   ├── ib-contract-mapper.ts     # NEW: Symbol → IB Contract
+│   ├── ib-order-builder.ts       # NEW: Complex order types
+│   ├── ib-errors.ts              # NEW: IB error code mapping
+│   ├── broker-manager.ts         # UPDATE: register new adapters
+│   ├── market-hours.ts           # UPDATE: add SG, multi-exchange
+│   ├── symbol-mapper.ts          # NEW: canonical symbol normalization
+│   └── config-schema.ts          # UPDATE: moomoo + IB config
+├── account/
+│   ├── unified-account-manager.ts # NEW: cross-broker aggregation
+│   └── fx-normalizer.ts          # NEW: currency conversion
+├── trading/
+│   └── order-router.ts           # NEW: broker-aware order routing
+├── market/
+│   └── ws-engine.ts              # MINOR UPDATE: multi-source streaming
+└── ipc/
+    └── account-channels.ts       # NEW: unified portfolio IPC
+
+src/components/
+├── Sidebar/
+│   ├── BrokerSelector.tsx        # NEW
+│   └── BrokerStatusDot.tsx       # NEW
+├── Portfolio/
+│   ├── BrokerAccountCard.tsx     # NEW
+│   └── PortfolioTable.tsx        # UPDATE: broker columns
+└── Order/
+    └── OrderForm.tsx             # UPDATE: broker selection
+
+tests/
+├── broker/
+│   ├── opend-base.test.ts        # NEW
+│   ├── moomoo-adapter.test.ts    # NEW
+│   ├── ib-adapter.test.ts        # NEW
+│   ├── dual-opend.test.ts        # NEW
+│   └── ib-gateway.test.ts        # NEW
+├── account/
+│   ├── unified-account.test.ts   # NEW
+│   └── fx-normalizer.test.ts     # NEW
+├── trading/
+│   └── order-router.test.ts      # NEW
+├── helpers/
+│   └── mock-broker-adapter.ts    # NEW
+└── e2e/
+    ├── multi-broker.test.ts      # NEW
+    └── order-routing.test.ts     # NEW
+```
+
+### 11.2 Estimated Effort Summary
+
+| Phase | New Files | Modified Files | Est. New Lines | Est. Modified Lines |
+|-------|-----------|----------------|---------------|-------------------|
+| 3A — moomoo | 4 | 4 | ~545 | ~120 |
+| 3B — IB | 6 | 2 | ~1,085 | ~75 |
+| 3C — Unified | 8 | 5 | ~855 | ~150 |
+| Testing | 10 | 0 | ~950 | 0 |
+| **Total** | **28** | **11** | **~3,435** | **~345** |
+
+### 11.3 Open Questions
+
+1. **moomoo API compatibility**: Need to confirm that moomoo OpenD's `TrdMarket` enum includes SG market code. If not, a custom mapping layer is required.
+2. **IB rate limits**: IB imposes pacing limits (max 60 requests/10s for market data). Need to implement a request throttler in `IBReqManager`.
+3. **Unified order ID format**: Should we prefix order IDs with broker ID (e.g., `futu:12345`, `ib:67890`) to avoid collisions in the UI?
+4. **FX data source**: Use broker-provided FX rates or an external API (e.g., ECB, exchangerate-api.com)?
 
 ---
 
-## 10. Open Questions
-
-| # | Question | Owner | Status |
-|---|---------|-------|--------|
-| 1 | Should we support multiple accounts within the same broker (e.g., 2 IB accounts)? | Architecture | Open |
-| 2 | FX rate source: IB forex (requires IB connection) vs. free API (less accurate)? | Data | Open |
-| 3 | Should cross-broker P&L be calculated per-symbol or per-broker? | Product | Open |
-| 4 | Do we need to handle corporate actions (splits, dividends) across brokers? | Backend | Deferred |
-| 5 | Should the broker selector persist across app restarts (auto-reconnect)? | UX | Open |
-
----
-
-*Document generated for Sprint 2 Phase 3 planning. Subject to revision as implementation progresses.*
+*End of Document*
