@@ -5,9 +5,15 @@
 
 import { vi } from 'vitest';
 
-// ── Mock Node.js EventEmitter for jsdom environment ───────────────
-// jsdom doesn't have Node.js's events module, so we provide a simple implementation
-class MockEventEmitter {
+// NOTE: Node.js 'events' module (EventEmitter) works natively in jsdom environment.
+// No vi.mock('events') needed here. If you need a custom EventEmitter implementation
+// for specific test scenarios, use the MockEventEmitter class below.
+
+/**
+ * Custom EventEmitter for tests that need fine-grained control.
+ * For most tests, use the real EventEmitter from 'events' module directly.
+ */
+export class MockEventEmitter {
   private events: Map<string, Function[]> = new Map();
 
   on(event: string, listener: Function) {
@@ -29,12 +35,21 @@ class MockEventEmitter {
     return this;
   }
 
-  emit(event: string, ...args: any[]) {
+  emit(event: string, ...args: unknown[]) {
     const listeners = this.events.get(event);
     if (listeners) {
-      listeners.forEach(listener => listener(...args));
+      listeners.forEach(listener => (listener as Function)(...args));
     }
     return true;
+  }
+
+  once(event: string, listener: Function) {
+    const wrapper = (...args: unknown[]) => {
+      this.off(event, wrapper);
+      (listener as Function)(...args);
+    };
+    this.on(event, wrapper);
+    return this;
   }
 
   removeAllListeners(event?: string) {
@@ -45,13 +60,16 @@ class MockEventEmitter {
     }
     return this;
   }
-}
 
-// Mock the events module
-vi.mock('events', () => ({
-  EventEmitter: MockEventEmitter,
-  default: MockEventEmitter,
-}));
+  removeListener = this.off;
+  addListener = this.on;
+  setMaxListeners(_n: number) { /* noop */ }
+  getMaxListeners() { return 10; }
+  listenerCount(event: string) { return this.events.get(event)?.length ?? 0; }
+  eventNames() { return [...this.events.keys()]; }
+  listeners(event: string) { return this.events.get(event) ?? []; }
+  rawListeners(event: string) { return this.events.get(event) ?? []; }
+}
 
 // ── IPC Handler Mocks ──────────────────────────────────────────────
 
@@ -146,7 +164,7 @@ export function createMockTrades(count: number, basePrice = 100) {
     shares: 100,
     pnl: (Math.random() - 0.5) * 1000,
     pnlPct: (Math.random() - 0.5) * 0.2,
-    timestamp: Date.now() - (count - i) * 86400_000,
+    timestamp: Date.now() - (count - i) * 86_400_000,
   }));
 }
 

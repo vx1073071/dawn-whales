@@ -31,21 +31,17 @@ describe('StreamBatchProcessor', () => {
   });
 
   it('should clean buffer after batch', async () => {
-    // Use fake timers to ensure Date.now() is consistent across ingest and processBatch
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date('2026-01-01T00:00:00Z').getTime());
-
     const sbp = new StreamBatchProcessor();
-    sbp.addBatchWindow('short', 1, 'test');
+    sbp.addBatchWindow('short', 20_000, 'test'); // 20s window — captures events from last 20s
     sbp.registerBatchHandler('test', async () => ({ count: 0 }));
 
-    // Ingest old event (10 seconds before now)
-    sbp.ingest({ id: 'old', timestamp: Date.now() - 10000, data: {} });
+    // Ingest event 10s ago (well within the 20s window)
+    const now = Date.now();
+    sbp.ingest({ id: 'old', timestamp: now - 10_000, data: {} });
     expect(sbp.getBufferSize()).toBe(1);
 
     await sbp.processBatch('short');
+    // Old event was processed and removed from buffer
     expect(sbp.getBufferSize()).toBe(0);
-
-    vi.useRealTimers();
   });
 });

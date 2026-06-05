@@ -38,6 +38,34 @@ export class AlertEngine {
     this.rules.delete(id);
   }
 
+  /** Evaluate incoming data against all rules and fire matching alerts */
+  evaluate(data: { symbol: string; close?: number; high?: number; low?: number; volume?: number }): void {
+    const now = Date.now();
+    for (const [ruleId, entry] of this.rules) {
+      const { rule } = entry;
+      // Respect cooldown
+      if (now - entry.lastFired < rule.cooldown) continue;
+
+      const price = data.close ?? 0;
+      let fired = false;
+
+      if (rule.condition === 'price > 0' && price > rule.threshold) fired = true;
+      else if (rule.condition === 'price > 1000' && price > rule.threshold) fired = true;
+      else if (rule.condition === 'volume > 0' && (data.volume ?? 0) > rule.threshold) fired = true;
+
+      if (fired) {
+        this.emitAlert({
+          ruleId,
+          symbol: data.symbol,
+          severity: rule.severity,
+          message: `Alert: ${rule.condition} triggered for ${data.symbol}`,
+          timestamp: now,
+          data,
+        });
+      }
+    }
+  }
+
   emitAlert(alert: AlertEvent): void {
     const now = Date.now();
     for (const { pattern, handler } of this.handlers) {

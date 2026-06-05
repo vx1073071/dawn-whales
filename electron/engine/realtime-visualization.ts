@@ -6,7 +6,7 @@
 
 import { EventEmitter } from 'events';
 import { getSlidingWindowAggregator } from './sliding-window-aggregator';
-import { getPerformanceMonitorService } from './performance-monitor';
+import { getPerformanceMonitor } from './performance-monitor';
 
 export interface VisualizationDataPoint {
   timestamp: number;
@@ -27,7 +27,7 @@ export interface VisualizationConfig {
 export class RealtimeVisualizationService extends EventEmitter {
   private config: VisualizationConfig;
   private aggregator = getSlidingWindowAggregator();
-  private monitor = getPerformanceMonitorService();
+  private monitor = getPerformanceMonitor();
   private isRunning = false;
   private updateTimer: NodeJS.Timeout | null = null;
 

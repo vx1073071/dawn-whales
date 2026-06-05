@@ -1,6 +1,8 @@
 // JVS-107: Performance Monitoring Dashboard
 // Monitor system performance metrics in real-time
 
+import { EventEmitter } from 'events';
+
 export interface PerformanceMetrics {
   timestamp: number;
   cpu: CPUMetrics;
@@ -60,7 +62,7 @@ export interface PerformanceDashboard {
   history: PerformanceMetrics[];
 }
 
-export class PerformanceMonitor {
+export class PerformanceMonitor extends EventEmitter {
   private metrics: PerformanceMetrics;
   private alerts: PerformanceAlert[];
   private history: PerformanceMetrics[];
@@ -68,6 +70,7 @@ export class PerformanceMonitor {
   private maxHistorySize: number;
 
   constructor(maxHistorySize: number = 100) {
+    super();
     this.maxHistorySize = maxHistorySize;
     this.metrics = this.initializeMetrics();
     this.alerts = [];
@@ -268,6 +271,13 @@ export class PerformanceMonitor {
     if (this.alerts.length > 100) {
       this.alerts.shift();
     }
+    // Notify listeners
+    this.emit('alert', alert);
+  }
+
+  /** Register a callback for new performance alerts */
+  onAlert(handler: (alert: PerformanceAlert) => void): void {
+    this.on('alert', handler);
   }
 
   /**

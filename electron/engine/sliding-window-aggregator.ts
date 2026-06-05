@@ -114,6 +114,21 @@ export class SlidingWindowAggregator extends EventEmitter {
     this.emit('data', { symbol, data: dataPoint });
   }
 
+  /** Alias for addDataPoint — accepted by E2E tests */
+  addData(symbol: string, data: Omit<AggregatedDataPoint, 'timestamp'>): void {
+    this.addDataPoint(symbol, data);
+  }
+
+  /** Alias for getAggregatedData — accepted by E2E tests */
+  getData(symbol: string): AggregatedDataPoint[] {
+    return this.getAggregatedData(symbol);
+  }
+
+  /** Alias for compressHistoricalData — accepted by E2E tests */
+  getCompressedData(symbol: string, compressionRatio: number = 10): AggregatedDataPoint[] {
+    return this.compressHistoricalData(symbol, compressionRatio);
+  }
+
   /**
    * Add multiple data points (batch)
    */
