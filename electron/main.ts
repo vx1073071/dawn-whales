@@ -29,6 +29,7 @@ import { getRateLimiterManager } from './engine/rate-limiter';
 import { getCircuitBreaker } from './engine/circuit-breaker';
 import { getHealthDashboard } from './engine/health-dashboard';
 import { getAnomalyDetectionSystem } from './engine/anomaly-detection';
+import { getRiskManagementDashboard } from './engine/risk-management';
 import { getDataConsistencyChecker } from './engine/data-consistency-checker';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
@@ -4111,6 +4112,88 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const detector = getAnomalyDetectionSystem();
       const stats = detector.getStats();
       return { success: true, stats };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Risk Management (JVS-90) ─────────────────────────────────────────────
+  ipcMain.handle('risk:calculate-metrics', async (_e, returns: number[], benchmarkReturns?: number[]) => {
+    try {
+      const dashboard = getRiskManagementDashboard();
+      const metrics = dashboard.calculateRiskMetrics(returns, benchmarkReturns);
+      return { success: true, metrics };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('risk:correlation-matrix', async (_e, symbols: string[], returns: Record<string, number[]>) => {
+    try {
+      const dashboard = getRiskManagementDashboard();
+      const returnsMap = new Map(Object.entries(returns));
+      const matrix = dashboard.calculateCorrelationMatrix(symbols, returnsMap);
+      return { success: true, matrix };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('risk:get-alerts', async () => {
+    try {
+      const dashboard = getRiskManagementDashboard();
+      const alerts = dashboard.getAlerts();
+      return { success: true, alerts };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('risk:acknowledge-alert', async (_e, alertId: string) => {
+    try {
+      const dashboard = getRiskManagementDashboard();
+      const success = dashboard.acknowledgeAlert(alertId);
+      return { success };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('risk:clear-alerts', async () => {
+    try {
+      const dashboard = getRiskManagementDashboard();
+      dashboard.clearAlerts();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('risk:start', async () => {
+    try {
+      const dashboard = getRiskManagementDashboard();
+      dashboard.start();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('risk:stop', async () => {
+    try {
+      const dashboard = getRiskManagementDashboard();
+      dashboard.stop();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('risk:summary', async () => {
+    try {
+      const dashboard = getRiskManagementDashboard();
+      const summary = dashboard.getSummary();
+      return { success: true, summary };
     } catch (err: any) {
       return { success: false, error: err.message };
     }

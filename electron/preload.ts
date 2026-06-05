@@ -557,6 +557,20 @@ contextBridge.exposeInMainWorld('api', {
     stats: () => ipcRenderer.invoke('anomaly:stats'),
   },
 
+  // ── Risk Management (JVS-90) ──────────────────────────────────
+  riskManagement: {
+    calculateMetrics: (returns: number[], benchmarkReturns?: number[]) =>
+      ipcRenderer.invoke('risk:calculate-metrics', returns, benchmarkReturns),
+    correlationMatrix: (symbols: string[], returns: Record<string, number[]>) =>
+      ipcRenderer.invoke('risk:correlation-matrix', symbols, returns),
+    getAlerts: () => ipcRenderer.invoke('risk:get-alerts'),
+    acknowledgeAlert: (alertId: string) => ipcRenderer.invoke('risk:acknowledge-alert', alertId),
+    clearAlerts: () => ipcRenderer.invoke('risk:clear-alerts'),
+    start: () => ipcRenderer.invoke('risk:start'),
+    stop: () => ipcRenderer.invoke('risk:stop'),
+    summary: () => ipcRenderer.invoke('risk:summary'),
+  },
+
   // ── Data Consistency Checker (JVS-39) ───────────────────────
   dataConsistency: {
     check: () => ipcRenderer.invoke('data:consistency-check'),

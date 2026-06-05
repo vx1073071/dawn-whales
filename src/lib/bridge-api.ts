@@ -1434,6 +1434,48 @@ export async function getAnomalyStats(): Promise<any> {
   return window.api.anomalyDetection.stats();
 }
 
+// ── Risk Management (JVS-90) ──────────────────────────────────────────────
+
+export async function calculateRiskMetrics(returns: number[], benchmarkReturns?: number[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.riskManagement.calculateMetrics(returns, benchmarkReturns);
+}
+
+export async function calculateCorrelationMatrix(symbols: string[], returns: Record<string, number[]>): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.riskManagement.correlationMatrix(symbols, returns);
+}
+
+export async function getRiskAlerts(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.riskManagement.getAlerts();
+}
+
+export async function acknowledgeRiskAlert(alertId: string): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.riskManagement.acknowledgeAlert(alertId);
+}
+
+export async function clearRiskAlerts(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.riskManagement.clearAlerts();
+}
+
+export async function startRiskManagement(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.riskManagement.start();
+}
+
+export async function stopRiskManagement(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.riskManagement.stop();
+}
+
+export async function getRiskSummary(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.riskManagement.summary();
+}
+
 // ── Data Consistency Checker (JVS-39) ──────────────────────────────────────
 
 export async function runDataConsistencyCheck(): Promise<any> {
