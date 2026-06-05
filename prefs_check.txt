@@ -1,0 +1,3 @@
+L28: prefs: { get: (key: string) => Promise<any>; set: (key: string, value: any) => Promise<any>; getAll: () => Promise<any>; reset: () => Promise<any>; };
+L160: prefs?: {
+Total lines: 673

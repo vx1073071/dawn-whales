@@ -239,7 +239,7 @@ export default function RealTimeMarketDashboard() {
       try {
         const status = await getQuoteStreamStatus();
         if (!status?.running) {
-          await subscribeQuoteStream(WATCHLIST.map(s => s.code));
+          await subscribeQuoteStream(WATCHLIST.map(s => s.code).join(','));
         }
         setStreamConnected(true);
       } catch {

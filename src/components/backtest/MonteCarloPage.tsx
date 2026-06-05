@@ -37,9 +37,7 @@ interface SimStats {
   max: number;
   var95: number;
   cvar95: number;
-  probabilityOfProfit: number;
-  probabilityOfLoss10pct?: number;
-  probProfit?: number;
+  probProfit: number;
 }
 
 interface ScenarioResult {

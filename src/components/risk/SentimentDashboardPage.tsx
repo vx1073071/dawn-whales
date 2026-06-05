@@ -140,7 +140,7 @@ const GlassCard: React.FC<{ children: React.ReactNode; className?: string }> = (
 const MoodGauge: React.FC<{ score: number }> = ({ score }) => {
   const { label, color } = getSentimentLabel(score);
   const normalized = (score + 1) / 2; // 0..1
-  const angle = -90 + normalized * 180; // -90 to 90 degrees
+  // (angle removed, unused)
 
   const arcPath = (startAngle: number, endAngle: number, radius: number, cx: number, cy: number) => {
     const s = (startAngle * Math.PI) / 180;

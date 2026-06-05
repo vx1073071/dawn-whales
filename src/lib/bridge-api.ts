@@ -25,8 +25,17 @@ declare global {
       stockStream: any;
       sentimentIndex: any;
       stockAnomaly: any;
-      prefs: any;
-      prefs: { get: (key: string) => Promise<any>; set: (key: string, value: any) => Promise<any>; getAll: () => Promise<any>; reset: () => Promise<any>; };
+      prefs?: {
+        getAll: () => Promise<any>;
+        getSection: (section: string) => Promise<any>;
+        get: (section: string, key: string) => Promise<any>;
+        set: (section: string, key: string, value: any) => Promise<any>;
+        setSection: (section: string, data: any) => Promise<any>;
+        reset: (section?: string) => Promise<any>;
+        exportPrefs: (filePath?: string) => Promise<any>;
+        importPrefs: (filePath?: string) => Promise<any>;
+        customSet: (key: string, value: any) => Promise<any>;
+        customGet: (key: string) => Promise<any>;
       };
       greeks: {
         calculate: (params: any) => Promise<any>;
@@ -674,8 +683,8 @@ export async function getPaperTraderStatus(..._args: any[]): Promise<any> { retu
 export async function getQuoteStreamStatus(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
 
 // R17 additional stubs
-export async function subscribeQuoteStream(symbol: string): Promise<any> { return { success: true }; }
-export async function unsubscribeQuoteStream(symbol: string): Promise<any> { return { success: true }; }
+export async function subscribeQuoteStream(_symbol: string): Promise<any> { return { success: true }; }
+export async function unsubscribeQuoteStream(_symbol: string): Promise<any> { return { success: true }; }
 
 // ── R18: Dashboard & Portfolio IPC stubs ──────────────────────────────────
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getPortfolioAllocation, getPortfolioPerformance, getPortfolioRiskMetrics } from '@/lib/bridge-api';
+import * as api from '@/lib/bridge-api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import PositionDetailPanel from '../risk/PositionDetailPanel';
 
@@ -22,69 +22,36 @@ export default function PortfolioPage() {
   const [error, setError] = useState('');
   const [autoRefresh, setAutoRefresh] = useState(true);
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => {
+    loadAccount();
+  }, []);
 
   useEffect(() => {
-    if (autoRefresh) {
+    if (accountId) loadData();
+    if (autoRefresh && accountId) {
       const timer = setInterval(loadData, 30000);
       return () => clearInterval(timer);
     }
-  }, [autoRefresh]);
+  }, [accountId, autoRefresh]);
+
+  async function loadAccount() {
+    try {
+      const accs = await api.getAccounts();
+      if (accs.length > 0) setAccountId(accs[0].accId);
+    } catch (e) { console.error('[Error:PortfolioPage]', e); }
+  }
 
   async function loadData() {
+    if (!accountId) return;
     setLoading(true);
     setError('');
     try {
-      // R19 P0-2: Use new portfolio IPC handlers
-      const [allocRes, perfRes, riskRes] = await Promise.all([
-        getPortfolioAllocation(),
-        getPortfolioPerformance(90),
-        getPortfolioRiskMetrics(),
+      const [fundsData, pos] = await Promise.all([
+        api.getFunds(accountId),
+        api.getPositions(accountId),
       ]);
-
-      if (allocRes?.success && allocRes.allocation) {
-        const a = allocRes.allocation;
-        setAccountId('connected');
-        setFunds({
-          totalAssets: a.totalValue + a.cash || 0,
-          cash: a.cash || 0,
-          power: 0,
-          marketVal: a.totalValue || 0,
-          todayPnl: 0,
-          currency: 'HKD',
-        });
-
-        // Map sector allocation to positions for table display
-        const posFromAlloc: any[] = [];
-        (a.sector || []).forEach((s: any) => {
-          posFromAlloc.push({
-            code: s.name,
-            name: s.name,
-            qty: 0,
-            avgCost: 0,
-            curPrice: 0,
-            marketVal: s.value,
-            pnl: 0,
-            pnlPct: 0,
-            pct: s.ratio,
-          });
-        });
-        setPositions(posFromAlloc);
-      } else {
-        setAccountId('');
-        setPositions([]);
-      }
-
-      if (riskRes?.success && riskRes.riskMetrics) {
-        const rm = riskRes.riskMetrics;
-        setFunds((prev: any) => prev ? {
-          ...prev,
-          totalAssets: rm.totalAssets,
-          cash: rm.cash,
-          marketVal: rm.totalMV,
-          power: rm.totalAssets * 2, // margin buying power
-        } : prev);
-      }
+      if (fundsData) setFunds({ ...fundsData, currency: fundsData.currency || 'USD' });
+      setPositions(pos || []);
     } catch (e: any) {
       setError(e.message || t('common.loadingFailed'));
     } finally {

@@ -1,7 +1,7 @@
-﻿// 鈹€鈹€ MarketPage 鈥?IPC Full-Link (Round 16 P0) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
-// 鍏ㄩ摼璺鎺? marketStore quotes (IPC push) + K绾?(IPC fetch) + 鏁版嵁婧愮姸鎬?
+// ── MarketPage — IPC Full-Link (Round 16 P0) ─────────────────────────────
+// 全链路对接: marketStore quotes (IPC push) + K线 (IPC fetch) + 数据源状态
 // >=500 lines | dark theme | Ant-style cards
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { useMarketStore } from '@/stores/marketStore';
 import KLineChart from './KLineChart';
 import * as api from '@/lib/bridge-api';
@@ -33,19 +33,19 @@ const POPULAR_US = [
   { code: 'US.NIO', name: 'NIO Inc.' },
 ];
 
-// 鈹€鈹€ Data Source Status Component 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// ── Data Source Status Component ──────────────────────────────────────────
 function DataSourceIndicator({ connected, brokerName }: { connected: boolean; brokerName: string }) {
   return (
     <div className="flex items-center gap-2 text-xs">
       <div className={`w-2 h-2 rounded-full ${connected ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`} />
       <span className={connected ? 'text-emerald-400' : 'text-red-400'}>
-        {connected ? `${brokerName} 瀹炴椂` : '绂荤嚎 (妯℃嫙鏁版嵁)'}
+        {connected ? `${brokerName} 实时` : '离线 (模拟数据)'}
       </span>
     </div>
   );
 }
 
-// 鈹€鈹€ Market Stats Bar 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// ── Market Stats Bar ──────────────────────────────────────────────────────
 function MarketStatsBar({ quotes, watchlist }: { quotes: Record<string, any>; watchlist: string[] }) {
   const stats = watchlist.reduce(
     (acc, code) => {
@@ -63,10 +63,10 @@ function MarketStatsBar({ quotes, watchlist }: { quotes: Record<string, any>; wa
 
   return (
     <div className="flex items-center gap-4 text-xs">
-      <span className="text-gray-500">鑷€?{stats.total} 鍙?/span>
-      <span className="text-emerald-400">鈫?{stats.up}</span>
-      <span className="text-red-400">鈫?{stats.down}</span>
-      <span className="text-gray-500">鈫?{stats.flat}</span>
+      <span className="text-gray-500">自选 {stats.total} 只</span>
+      <span className="text-emerald-400">↑ {stats.up}</span>
+      <span className="text-red-400">↓ {stats.down}</span>
+      <span className="text-gray-500">→ {stats.flat}</span>
     </div>
   );
 }
@@ -91,15 +91,15 @@ export default function MarketPage() {
   const [dataSource, setDataSource] = useState<'realtime' | 'cached' | 'simulated'>('simulated');
 
   const PERIODS = [
-    { key: '1m', label: '1鍒? },
-    { key: '5m', label: '5鍒? },
-    { key: '15m', label: '15鍒? },
-    { key: '60m', label: '60鍒? },
-    { key: 'daily', label: '鏃' },
-    { key: 'weekly', label: '鍛↘' },
+    { key: '1m', label: '1分' },
+    { key: '5m', label: '5分' },
+    { key: '15m', label: '15分' },
+    { key: '60m', label: '60分' },
+    { key: 'daily', label: '日K' },
+    { key: 'weekly', label: '周K' },
   ];
 
-  // 鈹€鈹€ IPC: Check broker connection 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  // ── IPC: Check broker connection ────────────────────────────────────────
   useEffect(() => {
     checkConnection();
     subscribeQuotes();
@@ -129,7 +129,7 @@ export default function MarketPage() {
     }
   }
 
-  // 鈹€鈹€ IPC: Subscribe to quote push 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  // ── IPC: Subscribe to quote push ─────────────────────────────────────
   function subscribeQuotes() {
     if (typeof window === 'undefined' || !window.api?.on) return;
 
@@ -153,7 +153,7 @@ export default function MarketPage() {
     });
   }
 
-  // 鈹€鈹€ IPC: Subscribe to broker quote push on mount 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  // ── IPC: Subscribe to broker quote push on mount ─────────────────────
   useEffect(() => {
     if (connected && watchlist.length > 0) {
       try {
@@ -162,7 +162,7 @@ export default function MarketPage() {
     }
   }, [connected, watchlist.length]);
 
-  // 鈹€鈹€ IPC: Fetch initial quotes on mount 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  // ── IPC: Fetch initial quotes on mount ───────────────────────────────
   useEffect(() => {
     if (watchlist.length > 0) fetchQuotes();
   }, [watchlist.length]);
@@ -200,7 +200,7 @@ export default function MarketPage() {
         time: Date.now(),
       };
     });
-    setQuotes(simulated);
+    setQuotes(simulated as any[]);
     setDataSource('simulated');
     setLastUpdateTime(new Date().toLocaleTimeString('zh-CN'));
   }
@@ -217,7 +217,7 @@ export default function MarketPage() {
     return prices[code] || 100;
   }
 
-  // 鈹€鈹€ IPC: Load K-lines 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  // ── IPC: Load K-lines ────────────────────────────────────────────────
   useEffect(() => {
     if (selectedSymbol) loadKlines(selectedSymbol, klinePeriod);
   }, [selectedSymbol, klinePeriod]);
@@ -287,7 +287,7 @@ export default function MarketPage() {
     setShowSearch(false);
   }
 
-  const dataSourceLabel = dataSource === 'realtime' ? '瀹炴椂鏁版嵁' : dataSource === 'cached' ? '缂撳瓨鏁版嵁' : '妯℃嫙鏁版嵁';
+  const dataSourceLabel = dataSource === 'realtime' ? '实时数据' : dataSource === 'cached' ? '缓存数据' : '模拟数据';
   const dataSourceColor = dataSource === 'realtime' ? 'text-emerald-400' : dataSource === 'cached' ? 'text-yellow-400' : 'text-gray-500';
 
   return (
@@ -295,8 +295,8 @@ export default function MarketPage() {
       {/* Header with IPC status */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">琛屾儏涓績</h1>
-          <p className="text-gray-400 text-sm">瀹炴椂鐩戞帶鑷€夎偂琛屾儏 路 IPC 鍏ㄩ摼璺?/p>
+          <h1 className="text-2xl font-bold text-white mb-1">行情中心</h1>
+          <p className="text-gray-400 text-sm">实时监控自选股行情 · IPC 全链路</p>
         </div>
         <div className="flex items-center gap-4">
           <DataSourceIndicator connected={connected} brokerName={brokerName} />
@@ -305,26 +305,26 @@ export default function MarketPage() {
             onClick={() => setShowSearch(!showSearch)}
             className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors"
           >
-            锛?娣诲姞鑷€?
+            ＋ 添加自选
           </button>
         </div>
       </div>
 
       {/* Data source status bar */}
       <div className="bg-[#12121a] border border-white/5 rounded-lg px-4 py-2 mb-4 flex items-center gap-4 text-xs">
-        <span className="text-gray-600">鏁版嵁婧?</span>
+        <span className="text-gray-600">数据源:</span>
         <span className={dataSourceColor}>{dataSourceLabel}</span>
         <span className="text-gray-700">|</span>
-        <span className="text-gray-500">Push 娆℃暟: {pushCount}</span>
+        <span className="text-gray-500">Push 次数: {pushCount}</span>
         <span className="text-gray-700">|</span>
-        <span className="text-gray-500">鏈€鍚庢洿鏂? {lastUpdateTime || '--'}</span>
+        <span className="text-gray-500">最后更新: {lastUpdateTime || '--'}</span>
         <span className="text-gray-700">|</span>
-        <span className="text-gray-500">鑷€? {watchlist.length} 鍙?/span>
+        <span className="text-gray-500">自选: {watchlist.length} 只</span>
         <button
           onClick={fetchQuotes}
           className="ml-auto text-gray-500 hover:text-gray-300 transition-colors"
         >
-          鉄?鍒锋柊琛屾儏
+          ⟳ 刷新行情
         </button>
       </div>
 
@@ -335,7 +335,7 @@ export default function MarketPage() {
             autoFocus
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="鎼滅储鑲＄エ浠ｇ爜鎴栧悕绉?.."
+            placeholder="搜索股票代码或名称..."
             className="w-full bg-[#12121a] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50 mb-3"
             onKeyDown={(e) => { if (e.key === 'Escape') setShowSearch(false); }}
           />
@@ -360,7 +360,7 @@ export default function MarketPage() {
             })}
             {filteredSearch.length === 0 && (
               <div className="col-span-6 text-center text-gray-500 text-sm py-4">
-                鏈壘鍒板尮閰?&quot;{searchQuery}&quot; 鐨勮偂绁?
+                未找到匹配 &quot;{searchQuery}&quot; 的股票
               </div>
             )}
           </div>
@@ -372,13 +372,13 @@ export default function MarketPage() {
         <table className="w-full">
           <thead>
             <tr className="border-b border-white/5">
-              <th className="px-4 py-3 text-left text-xs text-gray-500 font-medium uppercase tracking-wide">浠ｇ爜</th>
-              <th className="px-4 py-3 text-left text-xs text-gray-500 font-medium uppercase tracking-wide">鍚嶇О</th>
-              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">鏈€鏂颁环</th>
-              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">娑ㄨ穼棰?/th>
-              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">娑ㄨ穼骞?/th>
-              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">鎴愪氦閲?/th>
-              <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide">鏍囩</th>
+              <th className="px-4 py-3 text-left text-xs text-gray-500 font-medium uppercase tracking-wide">代码</th>
+              <th className="px-4 py-3 text-left text-xs text-gray-500 font-medium uppercase tracking-wide">名称</th>
+              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">最新价</th>
+              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">涨跌额</th>
+              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">涨跌幅</th>
+              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">成交量</th>
+              <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide">标签</th>
               <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide w-12"></th>
             </tr>
           </thead>
@@ -401,8 +401,8 @@ export default function MarketPage() {
       <div className="mt-6">
         {klineLoading ? (
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
-            <div className="text-3xl mb-2 opacity-40">鈴?/div>
-            <p className="text-gray-400 text-sm">鍔犺浇 {selectedSymbol?.replace('US.', '')} K绾挎暟鎹?(IPC)...</p>
+            <div className="text-3xl mb-2 opacity-40">⏳</div>
+            <p className="text-gray-400 text-sm">加载 {selectedSymbol?.replace('US.', '')} K线数据 (IPC)...</p>
           </div>
         ) : selectedSymbol && klineData.length > 0 ? (
           <div>
@@ -434,20 +434,20 @@ export default function MarketPage() {
               </div>
               <span className={`text-[10px] ml-2 ${dataSourceColor}`}>{dataSourceLabel}</span>
               <button onClick={() => loadKlines(selectedSymbol, klinePeriod)} className="text-xs text-gray-500 hover:text-gray-300 ml-auto transition-colors">
-                鉄?鍒锋柊
+                ⟳ 刷新
               </button>
             </div>
             <KLineChart data={klineData} height={400} />
           </div>
         ) : selectedSymbol ? (
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
-            <div className="text-3xl mb-2 opacity-40">馃搳</div>
-            <p className="text-gray-400 text-sm">K绾挎暟鎹姞杞戒腑锛坽connected ? 'IPC 璇锋眰涓?..' : '闇€瑕?OpenD 杩炴帴鎴栦娇鐢ㄦā鎷熸暟鎹?}锛?/p>
+            <div className="text-3xl mb-2 opacity-40">📊</div>
+            <p className="text-gray-400 text-sm">K线数据加载中（{connected ? 'IPC 请求中...' : '需要 OpenD 连接或使用模拟数据'}）</p>
           </div>
         ) : (
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
-            <div className="text-3xl mb-2 opacity-40">馃搱</div>
-            <p className="text-gray-400 text-sm">鐐瑰嚮涓婇潰鐨勮偂绁ㄦ煡鐪?K 绾垮浘</p>
+            <div className="text-3xl mb-2 opacity-40">📈</div>
+            <p className="text-gray-400 text-sm">点击上面的股票查看 K 线图</p>
           </div>
         )}
       </div>
@@ -462,7 +462,7 @@ function fmtVol(n: number): string {
   return String(n);
 }
 
-// 鈹€鈹€ Memoized Watchlist Row 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// ── Memoized Watchlist Row ───────────────────────────────────────────────
 const WatchlistRow = memo(function WatchlistRow({
   code,
   quote,
@@ -496,12 +496,11 @@ const WatchlistRow = memo(function WatchlistRow({
       <td className="px-4 py-3 text-right font-mono text-xs text-gray-400">{quote ? fmtVol(quote.volume) : '--'}</td>
       <td className="px-4 py-3 text-center">
         {isLev && <span className="text-[10px] bg-yellow-500/10 text-yellow-400 px-1.5 py-0.5 rounded mr-1">3x</span>}
-        {isInv && <span className="text-[10px] bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded">鍙嶅悜</span>}
+        {isInv && <span className="text-[10px] bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded">反向</span>}
       </td>
       <td className="px-4 py-3 text-center">
-        <button onClick={(e) => { e.stopPropagation(); onRemove(code); }} className="text-gray-600 hover:text-red-400 text-xs transition-colors" title="绉诲嚭鑷€?>鉁?/button>
+        <button onClick={(e) => { e.stopPropagation(); onRemove(code); }} className="text-gray-600 hover:text-red-400 text-xs transition-colors" title="移出自选">✕</button>
       </td>
     </tr>
   );
 });
-

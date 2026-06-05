@@ -4,8 +4,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  getDashboardSummary, getDashboardPnl, getDashboardPositions, getDashboardHealth,
-  getAllStrategies, getMarketplaceList, exportDashboardPdf,
+  getAccounts, getFunds, getPositions, isConnected,
+  getAllStrategies, getMarketplaceList,
+  exportDashboardPdf,
 } from '../../lib/bridge-api';
 import EquityChart from '../risk/EquityChart';
 import PortfolioAllocationChart from '../risk/PortfolioAllocationChart';
@@ -70,33 +71,40 @@ export default function DashboardPage() {
   async function loadDashboard() {
     setError(null);
     try {
-      // R19 P0-1: Use new dashboard IPC handlers
-      const [summaryRes, pnlRes, posRes] = await Promise.all([
-        getDashboardSummary(),
-        getDashboardPnl(30),
-        getDashboardPositions(),
-      ]);
+      const conn = await isConnected();
+      setConnected(conn);
+      if (!conn) { setLoading(false); return; }
 
-      if (summaryRes?.success && summaryRes.summary) {
-        const s = summaryRes.summary;
-        setConnected(s.connected);
-        setAccount({
-          totalAssets: s.totalAssets || 0,
-          cash: s.cash || 0,
-          marketValue: s.marketValue || 0,
-          todayPnl: s.todayPnl || 0,
-          todayPnlPct: s.todayPnlPct || 0,
-          currency: s.currency || 'HKD',
-        });
-      } else {
-        setConnected(false);
+      const accs = await getAccounts();
+      if (accs.length > 0) {
+        const funds = await getFunds(accs[0].accountId);
+        if (funds) {
+          setAccount({
+            totalAssets: funds.totalAssets || 0,
+            cash: funds.cash || 0,
+            marketValue: funds.marketValue || 0,
+            todayPnl: funds.todayPnl || 0,
+            todayPnlPct: funds.todayPnlPct || 0,
+            currency: funds.currency || 'HKD',
+          });
+        }
+
+        const pos = await getPositions(accs[0].accountId);
+        if (pos && pos.length > 0) {
+          const totalMV = pos.reduce((s: number, p: any) => s + (p.marketValue || 0), 0);
+          setPositions(pos.map((p: any) => ({
+            code: p.code,
+            name: p.name || p.code,
+            qty: p.qty,
+            marketPrice: p.marketPrice || 0,
+            marketValue: p.marketValue || 0,
+            pnl: p.pnl || 0,
+            pnlPct: p.pnlPct || 0,
+            ratio: totalMV > 0 ? (p.marketValue || 0) / totalMV * 100 : 0,
+          })));
+        }
       }
 
-      if (posRes?.success && posRes.positions) {
-        setPositions(posRes.positions);
-      }
-
-      // Strategies and marketplace still via old API (no new IPC yet)
       const strats = await getAllStrategies();
       if (strats) {
         setStrategies(
