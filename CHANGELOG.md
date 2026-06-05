@@ -31,6 +31,9 @@
 ### R25 (ML)
 - E2E core scenarios expanded: 30/30 pass
 - Trade Dashboard route + Sidebar navigation
+- TradeDashboard IPC integration (real broker data)
+- Logo white corners removed (PNG transparency)
+- System tray icon + window icon from logo (was code-drawn diamond)
 
 ### R22-R23
 - TradeDashboardPage UI (360 lines)
