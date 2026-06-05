@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -212,7 +211,7 @@ export default function TradeDashboardPage() {
   const totalPnL = positions.reduce((s, p) => s + p.totalPnL, 0);
   const todayDaily = daily[daily.length - 1];
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) return <div className="flex items-center justify-center h-64"><div className="text-gray-500">Loading...</div></div>;
 
   return (
     <div className="p-6 space-y-6">
