@@ -140,7 +140,7 @@
 |------|------|:----:|
 | TypeScript | 0 errors | ✅ |
 | Build | 0 errors, 0 warnings | ✅ |
-| Tests | 125/125 pass / 5 files | ✅ |
+| Tests | 129/129 pass / 6 files | ✅ |
 | Exit Code | 0 | ✅ |
 | 版本号 | 0.6.0 | ✅ |
 | .exe | DAWN WHALES Setup 0.6.0.exe | 🔄 |
