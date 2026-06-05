@@ -571,6 +571,23 @@ contextBridge.exposeInMainWorld('api', {
     summary: () => ipcRenderer.invoke('risk:summary'),
   },
 
+  // ── Performance Analytics (JVS-91) ────────────────────────────
+  performanceAnalytics: {
+    calculateMetrics: (returns: number[], benchmarkReturns?: number[]) =>
+      ipcRenderer.invoke('performance:calculate-metrics', returns, benchmarkReturns),
+    calculateAttribution: (portfolioWeights: Record<string, number>, portfolioReturns: Record<string, number>, benchmarkWeights: Record<string, number>, benchmarkReturns: Record<string, number>) =>
+      ipcRenderer.invoke('performance:calculate-attribution', portfolioWeights, portfolioReturns, benchmarkWeights, benchmarkReturns),
+    rollingPerformance: (returns: number[], periods?: number[]) =>
+      ipcRenderer.invoke('performance:rolling-performance', returns, periods),
+    analyzeDrawdowns: (returns: number[]) =>
+      ipcRenderer.invoke('performance:analyze-drawdowns', returns),
+    compareBenchmark: (returns: number[], benchmarkReturns: number[]) =>
+      ipcRenderer.invoke('performance:compare-benchmark', returns, benchmarkReturns),
+    start: () => ipcRenderer.invoke('performance:start'),
+    stop: () => ipcRenderer.invoke('performance:stop'),
+    summary: () => ipcRenderer.invoke('performance:summary'),
+  },
+
   // ── Data Consistency Checker (JVS-39) ───────────────────────
   dataConsistency: {
     check: () => ipcRenderer.invoke('data:consistency-check'),

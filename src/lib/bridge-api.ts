@@ -1476,6 +1476,53 @@ export async function getRiskSummary(): Promise<any> {
   return window.api.riskManagement.summary();
 }
 
+// ── Performance Analytics (JVS-91) ────────────────────────────────────────
+
+export async function calculatePerformanceMetrics(returns: number[], benchmarkReturns?: number[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceAnalytics.calculateMetrics(returns, benchmarkReturns);
+}
+
+export async function calculatePerformanceAttribution(
+  portfolioWeights: Record<string, number>,
+  portfolioReturns: Record<string, number>,
+  benchmarkWeights: Record<string, number>,
+  benchmarkReturns: Record<string, number>
+): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceAnalytics.calculateAttribution(portfolioWeights, portfolioReturns, benchmarkWeights, benchmarkReturns);
+}
+
+export async function getRollingPerformance(returns: number[], periods?: number[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceAnalytics.rollingPerformance(returns, periods);
+}
+
+export async function analyzePerformanceDrawdowns(returns: number[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceAnalytics.analyzeDrawdowns(returns);
+}
+
+export async function comparePerformanceBenchmark(returns: number[], benchmarkReturns: number[]): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceAnalytics.compareBenchmark(returns, benchmarkReturns);
+}
+
+export async function startPerformanceAnalytics(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceAnalytics.start();
+}
+
+export async function stopPerformanceAnalytics(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceAnalytics.stop();
+}
+
+export async function getPerformanceSummary(): Promise<any> {
+  if (!hasIPC()) return { success: false };
+  return window.api.performanceAnalytics.summary();
+}
+
 // ── Data Consistency Checker (JVS-39) ──────────────────────────────────────
 
 export async function runDataConsistencyCheck(): Promise<any> {

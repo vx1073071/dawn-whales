@@ -30,6 +30,7 @@ import { getCircuitBreaker } from './engine/circuit-breaker';
 import { getHealthDashboard } from './engine/health-dashboard';
 import { getAnomalyDetectionSystem } from './engine/anomaly-detection';
 import { getRiskManagementDashboard } from './engine/risk-management';
+import { getPerformanceAnalyticsDashboard } from './engine/performance-analytics';
 import { getDataConsistencyChecker } from './engine/data-consistency-checker';
 import { StockScreenerService } from './engine/stock-screener';
 import { NewsAggregatorService } from './engine/news-aggregator';
@@ -4192,6 +4193,92 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   ipcMain.handle('risk:summary', async () => {
     try {
       const dashboard = getRiskManagementDashboard();
+      const summary = dashboard.getSummary();
+      return { success: true, summary };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // ── Performance Analytics (JVS-91) ───────────────────────────────────────
+  ipcMain.handle('performance:calculate-metrics', async (_e, returns: number[], benchmarkReturns?: number[]) => {
+    try {
+      const dashboard = getPerformanceAnalyticsDashboard();
+      const metrics = dashboard.calculateMetrics(returns, benchmarkReturns);
+      return { success: true, metrics };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance:calculate-attribution', async (_e, portfolioWeights: Record<string, number>, portfolioReturns: Record<string, number>, benchmarkWeights: Record<string, number>, benchmarkReturns: Record<string, number>) => {
+    try {
+      const dashboard = getPerformanceAnalyticsDashboard();
+      const attribution = dashboard.calculateAttribution(
+        new Map(Object.entries(portfolioWeights)),
+        new Map(Object.entries(portfolioReturns)),
+        new Map(Object.entries(benchmarkWeights)),
+        new Map(Object.entries(benchmarkReturns))
+      );
+      return { success: true, attribution };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance:rolling-performance', async (_e, returns: number[], periods?: number[]) => {
+    try {
+      const dashboard = getPerformanceAnalyticsDashboard();
+      const rollingPerformance = dashboard.calculateRollingPerformance(returns, periods);
+      return { success: true, rollingPerformance };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance:analyze-drawdowns', async (_e, returns: number[]) => {
+    try {
+      const dashboard = getPerformanceAnalyticsDashboard();
+      const analysis = dashboard.analyzeDrawdowns(returns);
+      return { success: true, analysis };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance:compare-benchmark', async (_e, returns: number[], benchmarkReturns: number[]) => {
+    try {
+      const dashboard = getPerformanceAnalyticsDashboard();
+      const comparison = dashboard.compareWithBenchmark(returns, benchmarkReturns);
+      return { success: true, comparison };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance:start', async () => {
+    try {
+      const dashboard = getPerformanceAnalyticsDashboard();
+      dashboard.start();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance:stop', async () => {
+    try {
+      const dashboard = getPerformanceAnalyticsDashboard();
+      dashboard.stop();
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('performance:summary', async () => {
+    try {
+      const dashboard = getPerformanceAnalyticsDashboard();
       const summary = dashboard.getSummary();
       return { success: true, summary };
     } catch (err: any) {
