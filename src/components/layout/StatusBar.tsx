@@ -55,7 +55,7 @@ export default function StatusBar() {
     : 'bg-red-500';
 
   return (
-    <footer className="h-6 bg-[#0a0a12] border-t border-white/5 flex items-center px-3 gap-3 text-[10px] text-gray-600 flex-shrink-0">
+    <footer className="h-6 bg-deep border-t border-white/5 flex items-center px-3 gap-3 text-[10px] text-gray-600 flex-shrink-0">
       {/* OpenD 状态 */}
       <div className="flex items-center gap-1.5">
         <span className={`w-1.5 h-1.5 rounded-full ${statusColor}`} />

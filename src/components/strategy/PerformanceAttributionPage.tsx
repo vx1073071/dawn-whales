@@ -133,7 +133,7 @@ export default function PerformanceAttributionPage() {
   if (loading) return <LoadingSpinner fullscreen text="加载归因数据..." />;
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">📈 绩效归因</h1>
@@ -177,7 +177,7 @@ export default function PerformanceAttributionPage() {
               { label: '个股选择效应', value: data.selectionEffect, desc: '行业内选股带来的超额收益' },
               { label: '交互效应', value: data.interactionEffect, desc: '配置与选股的交叉影响' },
             ].map((item) => (
-              <div key={item.label} className="flex items-center justify-between bg-[#0a0a12] rounded-lg p-3">
+              <div key={item.label} className="flex items-center justify-between bg-deep rounded-lg p-3">
                 <div>
                   <div className="text-sm text-white font-medium">{item.label}</div>
                   <div className="text-xs text-gray-500">{item.desc}</div>
@@ -207,7 +207,7 @@ export default function PerformanceAttributionPage() {
         <h2 className="text-sm font-semibold text-white mb-4">因子贡献度</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {data.factorExposures.map((f) => (
-            <div key={f.factor} className="bg-[#0a0a12] rounded-lg p-3">
+            <div key={f.factor} className="bg-deep rounded-lg p-3">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-white font-medium">{f.factor}</span>
                 <span className={`text-sm font-mono font-bold ${f.contribution >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>

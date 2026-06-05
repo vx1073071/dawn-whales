@@ -139,7 +139,7 @@ export default function FundHoldingsPage() {
             <button
               onClick={fetchByFund}
               disabled={loading}
-              className="bg-[#C9A046] hover:bg-[#b8933f] text-[#111119] font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
+              className="bg-[#C9A046] hover:bg-[#b8933f] text-sidebar font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
             >
               查询
             </button>
@@ -148,7 +148,7 @@ export default function FundHoldingsPage() {
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-[#0d0d14] text-gray-400 text-xs">
+                <tr className="bg-card text-gray-400 text-xs">
                   <th className="px-4 py-3 text-left">股票代码</th>
                   <th className="px-4 py-3 text-left">股票名称</th>
                   <th className="px-4 py-3 text-right">持股数</th>
@@ -194,7 +194,7 @@ export default function FundHoldingsPage() {
             <button
               onClick={fetchByStock}
               disabled={loading}
-              className="bg-[#C9A046] hover:bg-[#b8933f] text-[#111119] font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
+              className="bg-[#C9A046] hover:bg-[#b8933f] text-sidebar font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
             >
               查询
             </button>
@@ -203,7 +203,7 @@ export default function FundHoldingsPage() {
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-[#0d0d14] text-gray-400 text-xs">
+                <tr className="bg-card text-gray-400 text-xs">
                   <th className="px-4 py-3 text-left">基金代码</th>
                   <th className="px-4 py-3 text-left">基金名称</th>
                   <th className="px-4 py-3 text-right">持股数</th>
@@ -243,7 +243,7 @@ export default function FundHoldingsPage() {
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#0d0d14] text-gray-400 text-xs">
+              <tr className="bg-card text-gray-400 text-xs">
                 <th className="px-4 py-3 text-left">排名</th>
                 <th className="px-4 py-3 text-left">基金代码</th>
                 <th className="px-4 py-3 text-left">基金名称</th>

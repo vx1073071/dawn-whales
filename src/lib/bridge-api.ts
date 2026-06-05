@@ -722,3 +722,37 @@ export async function runMonteCarloSimulation(config: any): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.monteCarlo.simulate(config);
 }
+
+// ── R20: Monitor (AlertCenter) IPC stubs ──────────────────────────────────
+export async function getActiveAlerts(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.monitor.getActive();
+}
+export async function getCriticalAlerts(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.monitor.getCritical();
+}
+export async function queryAlerts(query: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.monitor.query(query);
+}
+export async function getAlertStats(): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.monitor.stats();
+}
+export async function acknowledgeAlert(alertId: string): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.monitor.acknowledge(alertId);
+}
+export async function acknowledgeAllAlerts(level?: string): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.monitor.acknowledgeAll(level);
+}
+export async function resolveAlert(alertId: string): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.monitor.resolve(alertId);
+}
+export async function suppressAlert(alertId: string): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
+  return window.api.monitor.suppress(alertId);
+}

@@ -10,7 +10,7 @@ export default function Header() {
   const { theme, toggleTheme } = useThemeStore();
 
   return (
-    <header className="h-12 bg-[#15151f] border-b border-white/5 flex items-center px-4 gap-3 flex-shrink-0">
+    <header className="h-12 bg-header border-b border-white/5 flex items-center px-4 gap-3 flex-shrink-0">
       <button onClick={toggleSidebar} className="text-gray-400 hover:text-gray-200 text-lg p-1" title="折叠侧边栏 (Ctrl+B)">☰</button>
 
       <div className="flex items-center gap-2.5">

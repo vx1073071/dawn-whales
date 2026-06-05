@@ -162,7 +162,7 @@ export default function FactorExposurePage() {
   if (loading) return <LoadingSpinner fullscreen text="加载因子分析..." />;
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🧬 因子敞口分析</h1>
@@ -272,7 +272,7 @@ export default function FactorExposurePage() {
         <h2 className="text-sm font-semibold text-white mb-4">因子相关性</h2>
         <div className="flex flex-wrap gap-3">
           {data.factorCorrelation.map((c, idx) => (
-            <div key={idx} className="bg-[#0a0a12] rounded-lg px-3 py-2">
+            <div key={idx} className="bg-deep rounded-lg px-3 py-2">
               <div className="text-xs text-gray-400">{c.factor1} ↔ {c.factor2}</div>
               <div className={`text-sm font-mono font-bold ${c.correlation > 0.5 ? 'text-red-400' : c.correlation > 0.3 ? 'text-yellow-400' : 'text-gray-300'}`}>
                 {c.correlation.toFixed(2)}

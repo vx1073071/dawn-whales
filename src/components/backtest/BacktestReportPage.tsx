@@ -441,7 +441,7 @@ export default function BacktestReportPage() {
             <div className="bg-[#12121a] rounded-xl border border-white/5 overflow-hidden">
               <div className="overflow-auto" style={{ maxHeight: 'calc(100vh - 380px)' }}>
                 <table className="w-full text-sm">
-                  <thead className="bg-[#0d0d14] sticky top-0 z-10">
+                  <thead className="bg-card sticky top-0 z-10">
                     <tr className="text-gray-500 text-xs">
                       <th className="px-4 py-3 text-left cursor-pointer hover:text-gray-300" onClick={() => handleSort('entryDate')}>
                         入场日期{sortIcon('entryDate')}

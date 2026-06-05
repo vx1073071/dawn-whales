@@ -91,7 +91,7 @@ export default function PaperTraderPanel() {
   if (loading) return <LoadingSpinner fullscreen text="加载模拟盘数据..." />;
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🎮 模拟盘交易</h1>

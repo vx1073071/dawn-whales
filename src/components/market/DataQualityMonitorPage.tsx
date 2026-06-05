@@ -132,7 +132,7 @@ export default function DataQualityMonitorPage() {
   if (loading) return <LoadingSpinner fullscreen text="加载数据质量状态..." />;
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🔍 数据质量监控</h1>
@@ -277,7 +277,7 @@ export default function DataQualityMonitorPage() {
         <h2 className="text-sm font-semibold text-white mb-4">缓存统计 (JVS-32)</h2>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
           {cacheStats.map((c) => (
-            <div key={c.namespace} className="bg-[#0a0a12] rounded-lg p-3">
+            <div key={c.namespace} className="bg-deep rounded-lg p-3">
               <div className="text-xs text-gray-500 mb-1 capitalize">{c.namespace}</div>
               <div className="text-lg font-bold font-mono text-white">{c.hitRate.toFixed(1)}%</div>
               <div className="text-[10px] text-gray-500 mt-1">命中率</div>

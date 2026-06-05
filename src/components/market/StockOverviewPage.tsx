@@ -121,7 +121,7 @@ export default function StockOverviewPage() {
         <button
           onClick={handleDiagnose}
           disabled={loading}
-          className="bg-[#C9A046] hover:bg-[#b8933f] text-[#111119] font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
+          className="bg-[#C9A046] hover:bg-[#b8933f] text-sidebar font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
         >
           {loading ? '诊断中...' : '诊断'}
         </button>
@@ -148,7 +148,7 @@ export default function StockOverviewPage() {
                 <div className="text-sm text-gray-400 mt-1">{result.score}/100</div>
               </div>
             </div>
-            <div className="mt-4 p-3 bg-[#0d0d14] rounded-lg">
+            <div className="mt-4 p-3 bg-card rounded-lg">
               <div className="text-sm text-[#C9A046] font-medium">投资建议</div>
               <div className="text-sm text-gray-300 mt-1">{result.recommendation}</div>
             </div>
@@ -182,7 +182,7 @@ export default function StockOverviewPage() {
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-white">{labels[key]}</span>
                       <div className="flex items-center gap-2">
-                        <div className="w-20 h-2 bg-[#0d0d14] rounded-full overflow-hidden">
+                        <div className="w-20 h-2 bg-card rounded-full overflow-hidden">
                           <div className="h-full bg-[#C9A046] rounded-full" style={{ width: `${dim.score}%` }} />
                         </div>
                         <span className="text-sm font-bold text-[#C9A046]">{dim.score}</span>

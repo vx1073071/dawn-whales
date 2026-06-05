@@ -139,7 +139,7 @@ export default function DragonTigerPage() {
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#0d0d14] text-gray-400 text-xs">
+              <tr className="bg-card text-gray-400 text-xs">
                 <th className="px-4 py-3 text-left">代码</th>
                 <th className="px-4 py-3 text-left">名称</th>
                 <th className="px-4 py-3 text-right">涨跌幅</th>
@@ -183,7 +183,7 @@ export default function DragonTigerPage() {
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#0d0d14] text-gray-400 text-xs">
+              <tr className="bg-card text-gray-400 text-xs">
                 <th className="px-4 py-3 text-left">代码</th>
                 <th className="px-4 py-3 text-left">名称</th>
                 <th className="px-4 py-3 text-right">涨跌幅</th>
@@ -228,7 +228,7 @@ export default function DragonTigerPage() {
               <h3 className="text-sm font-medium text-red-400 mb-3">买入前五席位</h3>
               <div className="space-y-2">
                 {detail.buySeats.map((s) => (
-                  <div key={s.rank} className="flex items-center justify-between p-2 bg-[#0d0d14] rounded">
+                  <div key={s.rank} className="flex items-center justify-between p-2 bg-card rounded">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-gray-500">{s.rank}</span>
                       <span className="text-sm text-white truncate max-w-[200px]">{s.name}</span>
@@ -247,7 +247,7 @@ export default function DragonTigerPage() {
               <h3 className="text-sm font-medium text-emerald-400 mb-3">卖出前五席位</h3>
               <div className="space-y-2">
                 {detail.sellSeats.map((s) => (
-                  <div key={s.rank} className="flex items-center justify-between p-2 bg-[#0d0d14] rounded">
+                  <div key={s.rank} className="flex items-center justify-between p-2 bg-card rounded">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-gray-500">{s.rank}</span>
                       <span className="text-sm text-white truncate max-w-[200px]">{s.name}</span>

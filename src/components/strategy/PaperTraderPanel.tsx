@@ -166,31 +166,31 @@ export default function PaperTraderPanel() {
       {/* Account summary */}
       {status && (
         <div className="grid grid-cols-3 gap-3">
-          <div className="bg-[#0d0d14] border border-white/10 rounded-lg p-3">
+          <div className="bg-card border border-white/10 rounded-lg p-3">
             <div className="text-gray-500 text-[10px] mb-1">总价值</div>
             <div className="text-white font-semibold text-sm">HKD {status.totalValue.toFixed(0)}</div>
           </div>
-          <div className="bg-[#0d0d14] border border-white/10 rounded-lg p-3">
+          <div className="bg-card border border-white/10 rounded-lg p-3">
             <div className="text-gray-500 text-[10px] mb-1">可用现金</div>
             <div className="text-white font-semibold text-sm">HKD {status.cash.toFixed(0)}</div>
           </div>
-          <div className="bg-[#0d0d14] border border-white/10 rounded-lg p-3">
+          <div className="bg-card border border-white/10 rounded-lg p-3">
             <div className="text-gray-500 text-[10px] mb-1">持仓市值</div>
             <div className="text-white font-semibold text-sm">HKD {status.marketValue.toFixed(0)}</div>
           </div>
-          <div className={`bg-[#0d0d14] border border-white/10 rounded-lg p-3 ${status.todayPnl >= 0 ? 'border-green-500/20' : 'border-red-500/20'}`}>
+          <div className={`bg-card border border-white/10 rounded-lg p-3 ${status.todayPnl >= 0 ? 'border-green-500/20' : 'border-red-500/20'}`}>
             <div className="text-gray-500 text-[10px] mb-1">今日盈亏</div>
             <div className={`font-semibold text-sm ${status.todayPnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
               {fmt(status.todayPnl)}
             </div>
           </div>
-          <div className={`bg-[#0d0d14] border border-white/10 rounded-lg p-3 ${status.unrealizedPnl >= 0 ? 'border-green-500/20' : 'border-red-500/20'}`}>
+          <div className={`bg-card border border-white/10 rounded-lg p-3 ${status.unrealizedPnl >= 0 ? 'border-green-500/20' : 'border-red-500/20'}`}>
             <div className="text-gray-500 text-[10px] mb-1">持仓盈亏</div>
             <div className={`font-semibold text-sm ${status.unrealizedPnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
               {fmt(status.unrealizedPnl)}
             </div>
           </div>
-          <div className="bg-[#0d0d14] border border-white/10 rounded-lg p-3">
+          <div className="bg-card border border-white/10 rounded-lg p-3">
             <div className="text-gray-500 text-[10px] mb-1">持仓数量</div>
             <div className="text-white font-semibold text-sm">{positions.length} 只</div>
           </div>
@@ -220,7 +220,7 @@ export default function PaperTraderPanel() {
           ) : (
             <div className="space-y-2">
               {positions.map((p) => (
-                <div key={p.code} className="bg-[#0d0d14] border border-white/10 rounded-lg px-4 py-3">
+                <div key={p.code} className="bg-card border border-white/10 rounded-lg px-4 py-3">
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
                       <span className="text-white text-xs font-medium">{p.name}</span>
@@ -251,7 +251,7 @@ export default function PaperTraderPanel() {
           ) : (
             <div className="space-y-1">
               {orders.slice(0, 50).map((o) => (
-                <div key={o.id} className="flex items-center justify-between bg-[#0d0d14] border border-white/5 rounded px-3 py-2 text-[11px]">
+                <div key={o.id} className="flex items-center justify-between bg-card border border-white/5 rounded px-3 py-2 text-[11px]">
                   <div className="flex items-center gap-2">
                     <span className={`font-bold ${o.side === 'BUY' ? 'text-green-400' : 'text-red-400'}`}>{o.side}</span>
                     <span className="text-white">{o.name || o.code}</span>
@@ -283,7 +283,7 @@ export default function PaperTraderPanel() {
                   ['盈亏比', report.profitFactor.toFixed(2), report.profitFactor >= 1.5 ? 'text-green-400' : report.profitFactor >= 1 ? 'text-yellow-400' : 'text-red-400'],
                   ['交易次数', String(report.totalTrades), 'text-white'],
                 ].map(([label, value, color]) => (
-                  <div key={label as string} className="bg-[#0d0d14] border border-white/10 rounded-lg px-3 py-2.5">
+                  <div key={label as string} className="bg-card border border-white/10 rounded-lg px-3 py-2.5">
                     <div className="text-gray-500 text-[10px] mb-0.5">{label}</div>
                     <div className={`font-semibold text-sm ${color}`}>{value}</div>
                   </div>

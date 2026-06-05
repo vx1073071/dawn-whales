@@ -92,7 +92,7 @@ export default function SmartPickerPage() {
   }, [selected]);
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🎯 智能选股</h1>
@@ -216,7 +216,7 @@ export default function SmartPickerPage() {
                 { label: '质量', val: selected.dimensions.quality },
                 { label: '情绪', val: selected.dimensions.sentiment },
               ].map((d) => (
-                <div key={d.label} className="bg-[#0a0a12] rounded-lg p-3 text-center">
+                <div key={d.label} className="bg-deep rounded-lg p-3 text-center">
                   <div className="text-lg font-bold text-white">{d.val}</div>
                   <div className="text-[10px] text-gray-500">{d.label}</div>
                   <div className="w-full bg-white/5 rounded-full h-1 mt-2">

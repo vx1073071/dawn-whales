@@ -166,7 +166,7 @@ export default function SectorRotationPage() {
             <div className="text-gray-500 text-sm py-8 text-center">暂无轮动信号</div>
           )}
           {signals.slice(0, 8).map((sig, i) => (
-            <div key={i} className="flex items-center gap-3 p-2.5 bg-[#0d0d14] rounded-lg">
+            <div key={i} className="flex items-center gap-3 p-2.5 bg-card rounded-lg">
               <div className={`w-2 h-2 rounded-full ${
                 sig.type === 'inflow' ? 'bg-red-400' : sig.type === 'outflow' ? 'bg-emerald-400' : 'bg-[#C9A046]'
               }`} />
@@ -194,7 +194,7 @@ export default function SectorRotationPage() {
           <h2 className="text-sm font-medium text-red-400 mb-3">🔥 升温板块</h2>
           <div className="space-y-2">
             {heatingSectors.slice(0, 8).map((s) => (
-              <div key={s.name} className="flex items-center justify-between p-2.5 bg-[#0d0d14] rounded-lg">
+              <div key={s.name} className="flex items-center justify-between p-2.5 bg-card rounded-lg">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-500 w-5">{s.rank}</span>
                   <span className="text-sm text-white">{s.name}</span>
@@ -216,7 +216,7 @@ export default function SectorRotationPage() {
           <h2 className="text-sm font-medium text-emerald-400 mb-3">❄️ 降温板块</h2>
           <div className="space-y-2">
             {coolingSectors.slice(0, 8).map((s) => (
-              <div key={s.name} className="flex items-center justify-between p-2.5 bg-[#0d0d14] rounded-lg">
+              <div key={s.name} className="flex items-center justify-between p-2.5 bg-card rounded-lg">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-500 w-5">{s.rank}</span>
                   <span className="text-sm text-white">{s.name}</span>

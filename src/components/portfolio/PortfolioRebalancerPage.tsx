@@ -67,7 +67,7 @@ export default function PortfolioRebalancerPage() {
   if (loading) return <LoadingSpinner fullscreen text="加载调仓建议..." />;
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">⚖️ 组合再平衡</h1>
@@ -113,7 +113,7 @@ export default function PortfolioRebalancerPage() {
             <input
               type="number" value={config.threshold} min={1} max={20}
               onChange={(e) => setConfig({ ...config, threshold: parseInt(e.target.value) || 5 })}
-              className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
+              className="w-full bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
             />
           </div>
           <div>
@@ -121,7 +121,7 @@ export default function PortfolioRebalancerPage() {
             <input
               type="number" value={config.maxTurnover} min={5} max={50}
               onChange={(e) => setConfig({ ...config, maxTurnover: parseInt(e.target.value) || 20 })}
-              className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
+              className="w-full bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
             />
           </div>
           <div>
@@ -129,7 +129,7 @@ export default function PortfolioRebalancerPage() {
             <select
               value={config.frequency}
               onChange={(e) => setConfig({ ...config, frequency: e.target.value as any })}
-              className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
+              className="w-full bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
             >
               <option value="daily">每日</option>
               <option value="weekly">每周</option>
@@ -142,7 +142,7 @@ export default function PortfolioRebalancerPage() {
                 type="checkbox"
                 checked={config.useKelly}
                 onChange={(e) => setConfig({ ...config, useKelly: e.target.checked })}
-                className="w-4 h-4 rounded border-white/20 bg-[#0a0a12] text-[#C9A046] focus:ring-[#C9A046]"
+                className="w-4 h-4 rounded border-white/20 bg-deep text-[#C9A046] focus:ring-[#C9A046]"
               />
               <span className="text-sm text-gray-300">Kelly 优化</span>
             </label>
@@ -249,7 +249,7 @@ export default function PortfolioRebalancerPage() {
               type="checkbox"
               checked={dryRun}
               onChange={(e) => setDryRun(e.target.checked)}
-              className="w-4 h-4 rounded border-white/20 bg-[#0a0a12] text-[#C9A046] focus:ring-[#C9A046]"
+              className="w-4 h-4 rounded border-white/20 bg-deep text-[#C9A046] focus:ring-[#C9A046]"
             />
             <span className="text-sm text-gray-300">仅预览（Dry-run）</span>
           </label>

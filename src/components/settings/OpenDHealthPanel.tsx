@@ -100,7 +100,7 @@ export default function OpenDHealthPanel() {
   };
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🔌 OpenD 健康监控</h1>
@@ -180,7 +180,7 @@ export default function OpenDHealthPanel() {
             { time: '00:55:15', event: '连接断开', status: '警告', latency: '--' },
             { time: '00:30:00', event: '初始连接', status: '成功', latency: '120ms' },
           ].map((log, idx) => (
-            <div key={idx} className="flex items-center gap-3 bg-[#0a0a12] rounded-lg px-3 py-2">
+            <div key={idx} className="flex items-center gap-3 bg-deep rounded-lg px-3 py-2">
               <span className="text-xs text-gray-500 w-16">{log.time}</span>
               <span className="text-xs text-gray-300 w-20">{log.event}</span>
               <span className={`text-xs ${log.status === '成功' ? 'text-emerald-400' : log.status === '警告' ? 'text-yellow-400' : 'text-gray-400'}`}>

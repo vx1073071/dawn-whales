@@ -268,7 +268,7 @@ export default function RealTimeMarketDashboard() {
   const quoteList = Object.values(quotes);
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">⚡ {t('realTimeMarket.title')}</h1>
@@ -335,11 +335,11 @@ export default function RealTimeMarketDashboard() {
 
             {/* Bid/Ask */}
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="bg-[#0a0a12] rounded px-2 py-1.5">
+              <div className="bg-deep rounded px-2 py-1.5">
                 <div className="text-gray-500">{t('realTimeMarket.buy')} {q.bidVol}</div>
                 <div className="font-mono text-red-400">{q.bid.toFixed(2)}</div>
               </div>
-              <div className="bg-[#0a0a12] rounded px-2 py-1.5">
+              <div className="bg-deep rounded px-2 py-1.5">
                 <div className="text-gray-500">{t('realTimeMarket.sell')} {q.askVol}</div>
                 <div className="font-mono text-emerald-400">{q.ask.toFixed(2)}</div>
               </div>

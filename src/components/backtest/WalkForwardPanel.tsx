@@ -469,7 +469,7 @@ export default function WalkForwardPanel({ result: legacyResult, loading: legacy
   }
 
   return (
-    <div className="bg-[#0d0d14] border border-white/5 rounded-2xl overflow-hidden">
+    <div className="bg-card border border-white/5 rounded-2xl overflow-hidden">
       {/* Header */}
       <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between bg-[#111120]">
         <div className="flex items-center gap-2">
@@ -767,7 +767,7 @@ export default function WalkForwardPanel({ result: legacyResult, loading: legacy
               <div className="text-gray-400 text-xs font-semibold mb-3">
                 {'\u{1F4C8}'} OOS {'\u62FC\u63A5\u6743\u76CA\u66F2\u7EBF'}
               </div>
-              <div className="bg-[#0a0a12] border border-white/5 rounded-xl p-4 overflow-hidden">
+              <div className="bg-deep border border-white/5 rounded-xl p-4 overflow-hidden">
                 <EquityCurveChart windows={activeReport.windows} />
               </div>
               <div className="mt-3 grid grid-cols-3 gap-3">

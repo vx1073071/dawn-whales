@@ -158,7 +158,7 @@ export default function NewsDashboardPage() {
         <button
           onClick={fetchNews}
           disabled={loading}
-          className="bg-[#C9A046] hover:bg-[#b8933f] text-[#111119] font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
+          className="bg-[#C9A046] hover:bg-[#b8933f] text-sidebar font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
         >
           搜索
         </button>

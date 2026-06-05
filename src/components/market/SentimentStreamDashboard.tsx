@@ -161,7 +161,7 @@ export default function SentimentStreamDashboard() {
   }[data.trend];
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🎭 实时情绪流</h1>

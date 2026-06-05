@@ -143,7 +143,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
           placeholder="搜索模板..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-[#0d0d14] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C9A046]/50"
+          className="w-full bg-card border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C9A046]/50"
         />
         {search && (
           <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 text-xs">✕</button>
@@ -206,7 +206,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
 
       {/* Selected template detail panel */}
       {selected && (
-        <div className="bg-[#0d0d14] border border-white/10 rounded-xl p-5 space-y-4">
+        <div className="bg-card border border-white/10 rounded-xl p-5 space-y-4">
           <div className="flex items-start justify-between">
             <div>
               <h3 className="text-white font-semibold">{selected.nameCn || selected.name}</h3>

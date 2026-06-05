@@ -163,7 +163,7 @@ export default function OpenDHealthPanel() {
 
       {/* Overall score */}
       {health && (
-        <div className="bg-[#0d0d14] border border-white/10 rounded-xl p-4">
+        <div className="bg-card border border-white/10 rounded-xl p-4">
           <div className="flex items-center gap-4">
             {/* Score circle */}
             <div className={`text-4xl font-bold font-mono ${SCORE_COLORS(score)}`}>
@@ -187,7 +187,7 @@ export default function OpenDHealthPanel() {
       {health && (
         <div className="space-y-2">
           {health.checks.map((check, i) => (
-            <div key={i} className="bg-[#0d0d14] border border-white/10 rounded-lg px-4 py-3">
+            <div key={i} className="bg-card border border-white/10 rounded-lg px-4 py-3">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2">
                   <span className={`text-sm font-medium ${STATUS_COLORS[check.status]}`}>

@@ -64,7 +64,7 @@ export default function AIAdvisorPage() {
   const rec = RECOMMENDATION_MAP[advice.recommendation] || RECOMMENDATION_MAP.hold;
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🤖 AI 投顾</h1>
@@ -120,7 +120,7 @@ export default function AIAdvisorPage() {
         <h2 className="text-lg font-semibold text-white mb-4">调仓建议</h2>
         <div className="space-y-3">
           {advice.portfolioSuggestions.map((s, idx) => (
-            <div key={idx} className="flex items-start gap-3 bg-[#0a0a12] rounded-lg p-3">
+            <div key={idx} className="flex items-start gap-3 bg-deep rounded-lg p-3">
               <span className={`text-xs font-bold px-2 py-1 rounded flex-shrink-0 ${
                 s.action === '增持' ? 'bg-red-500/20 text-red-400' :
                 s.action === '减持' ? 'bg-emerald-500/20 text-emerald-400' :
@@ -146,7 +146,7 @@ export default function AIAdvisorPage() {
         <h2 className="text-lg font-semibold text-white mb-4">⚠️ 风险提示</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {advice.riskWarnings.map((w, idx) => (
-            <div key={idx} className="flex items-start gap-2 bg-[#0a0a12] rounded-lg p-3">
+            <div key={idx} className="flex items-start gap-2 bg-deep rounded-lg p-3">
               <span className="text-red-400 flex-shrink-0 mt-0.5">•</span>
               <span className="text-sm text-gray-300">{w}</span>
             </div>

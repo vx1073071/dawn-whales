@@ -145,7 +145,7 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
   })();
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🚀 {t('trading.tradeExecution')}</h1>
@@ -172,7 +172,7 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
           <select
             value={selectedAccount}
             onChange={(e) => setSelectedAccount(e.target.value)}
-            className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
+            className="w-full bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
           >
             {accounts.map((a) => (
               <option key={a.accId} value={a.accId}>{a.accId} ({a.trdEnv === 'REAL' ? t('settings.realTrading') : t('settings.simulateTrading')})</option>
@@ -199,14 +199,14 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
             <input
               type="text" value={code} onChange={(e) => { setCode(e.target.value); onSymbolChange?.(e.target.value); }}
               placeholder={t('trading.codePlaceholder')}
-              className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046] uppercase"
+              className="w-full bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046] uppercase"
             />
           </div>
           <div>
             <label className="text-xs text-gray-500 mb-1 block">{t('trading.market')}</label>
             <select
               value={market} onChange={(e) => setMarket(e.target.value as Market)}
-              className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
+              className="w-full bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
             >
               {Markets().map((m) => <option key={m.value} value={m.value}>{m.label}</option>)}
             </select>
@@ -217,7 +217,7 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
               <button
                 onClick={() => setSide('BUY')}
                 className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  side === 'BUY' ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-[#0a0a12] text-gray-400 border border-white/10'
+                  side === 'BUY' ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-deep text-gray-400 border border-white/10'
                 }`}
               >
                 {t('common.buy')}
@@ -225,7 +225,7 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
               <button
                 onClick={() => setSide('SELL')}
                 className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  side === 'SELL' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-[#0a0a12] text-gray-400 border border-white/10'
+                  side === 'SELL' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-deep text-gray-400 border border-white/10'
                 }`}
               >
                 {t('common.sell')}
@@ -236,7 +236,7 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
             <label className="text-xs text-gray-500 mb-1 block">{t('trading.orderType')}</label>
             <select
               value={orderType} onChange={(e) => setOrderType(e.target.value as OrderType)}
-              className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
+              className="w-full bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
             >
               {OrderTypes().map((ot) => <option key={ot.value} value={ot.value}>{ot.label}</option>)}
             </select>
@@ -246,7 +246,7 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
             <input
               type="number" value={qty} onChange={(e) => setQty(e.target.value)}
               placeholder="100"
-              className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046]"
+              className="w-full bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046]"
             />
           </div>
           {(orderType === 'LIMIT' || orderType === 'STOP_LIMIT') && (
@@ -255,7 +255,7 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
               <input
                 type="number" value={price} onChange={(e) => setPrice(e.target.value)}
                 placeholder="150.00"
-                className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046]"
+                className="w-full bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046]"
               />
             </div>
           )}
@@ -265,7 +265,7 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
               <input
                 type="number" value={stopPrice} onChange={(e) => setStopPrice(e.target.value)}
                 placeholder="140.00"
-                className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046]"
+                className="w-full bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046]"
               />
             </div>
           )}
@@ -274,7 +274,7 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
             <input
               type="text" value={remark} onChange={(e) => setRemark(e.target.value)}
               placeholder={t('trading.remarkPlaceholder')}
-              className="w-full bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046]"
+              className="w-full bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046]"
             />
           </div>
         </div>
@@ -367,7 +367,7 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
             <div className="flex gap-3">
               <button
                 onClick={() => setShowConfirm(false)}
-                className="flex-1 px-4 py-2 rounded-lg bg-[#0a0a12] text-gray-400 text-sm hover:text-white transition-colors"
+                className="flex-1 px-4 py-2 rounded-lg bg-deep text-gray-400 text-sm hover:text-white transition-colors"
               >
                 {t('common.cancel')}
               </button>

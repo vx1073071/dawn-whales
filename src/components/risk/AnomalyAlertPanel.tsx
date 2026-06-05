@@ -102,19 +102,19 @@ export default function AnomalyAlertPanel() {
       {/* Summary */}
       {summary && (
         <div className="grid grid-cols-4 gap-2 mb-4">
-          <div className="bg-[#0d0d14] rounded-lg p-2 text-center">
+          <div className="bg-card rounded-lg p-2 text-center">
             <div className="text-xs text-gray-500">今日</div>
             <div className="text-sm font-bold text-white">{summary.todayCount ?? 0}</div>
           </div>
-          <div className="bg-[#0d0d14] rounded-lg p-2 text-center">
+          <div className="bg-card rounded-lg p-2 text-center">
             <div className="text-xs text-gray-500">高危</div>
             <div className="text-sm font-bold text-red-400">{summary.highSeverityCount ?? 0}</div>
           </div>
-          <div className="bg-[#0d0d14] rounded-lg p-2 text-center">
+          <div className="bg-card rounded-lg p-2 text-center">
             <div className="text-xs text-gray-500">待处理</div>
             <div className="text-sm font-bold text-yellow-400">{summary.unacknowledgedCount ?? 0}</div>
           </div>
-          <div className="bg-[#0d0d14] rounded-lg p-2 text-center">
+          <div className="bg-card rounded-lg p-2 text-center">
             <div className="text-xs text-gray-500">活跃</div>
             <div className="text-sm font-bold text-[#C9A046]">{summary.activeStocksCount ?? 0}</div>
           </div>

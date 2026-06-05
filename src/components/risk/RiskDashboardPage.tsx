@@ -217,7 +217,7 @@ export default function RiskDashboardPage() {
           <h2 className="text-white font-semibold text-sm">📉 回撤进度</h2>
           <span className={`text-xs font-mono ${ddColor}`}>{ddPct.toFixed(1)}% / 峰值 ${drawdown.peakEquity.toFixed(0)}</span>
         </div>
-        <div className="w-full h-3 bg-[#0d0d14] rounded-full overflow-hidden">
+        <div className="w-full h-3 bg-card rounded-full overflow-hidden">
           <div
             className={`h-full rounded-full transition-all duration-500 ${ddBarColor}`}
             style={{ width: `${Math.min(ddPct, 100)}%` }}

@@ -112,7 +112,7 @@ export default function RegimeMonitorPage() {
   const descKey = getRegimeDescKey(data.current);
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>

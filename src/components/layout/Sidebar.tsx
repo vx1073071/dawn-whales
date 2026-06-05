@@ -61,7 +61,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
 
   return (
     <aside
-      className={`bg-[#111119] border-r border-white/5 flex flex-col transition-all duration-200 ${
+      className={`bg-sidebar border-r border-white/5 flex flex-col transition-all duration-200 ${
         collapsed ? 'w-14' : 'w-52'
       }`}
     >
@@ -96,7 +96,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
       {/* Account summary in sidebar */}
       {!collapsed && (
         <div className="border-t border-white/5 p-3">
-          <div className="bg-[#0d0d14] rounded-lg p-3">
+          <div className="bg-card rounded-lg p-3">
             <div className="text-[10px] text-gray-600 uppercase tracking-wide mb-1">总资产</div>
             {funds ? (
               <>

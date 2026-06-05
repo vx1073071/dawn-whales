@@ -115,12 +115,12 @@ export default function StockScreenerPage() {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             placeholder="输入选股条件，如：高ROE低PE、小市值成长股、行业龙头..."
-            className="flex-1 bg-[#0d0d14] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C9A046]/50"
+            className="flex-1 bg-card border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C9A046]/50"
           />
           <button
             onClick={handleSearch}
             disabled={loading}
-            className="bg-[#C9A046] hover:bg-[#b8933f] text-[#111119] font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
+            className="bg-[#C9A046] hover:bg-[#b8933f] text-sidebar font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
           >
             {loading ? '搜索中...' : '搜索'}
           </button>
@@ -156,7 +156,7 @@ export default function StockScreenerPage() {
                 value={filters.minPe}
                 onChange={(e) => setFilters({ ...filters, minPe: e.target.value })}
                 placeholder="0"
-                className="w-full bg-[#0d0d14] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50"
+                className="w-full bg-card border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50"
               />
             </div>
             <div>
@@ -166,7 +166,7 @@ export default function StockScreenerPage() {
                 value={filters.maxPe}
                 onChange={(e) => setFilters({ ...filters, maxPe: e.target.value })}
                 placeholder="100"
-                className="w-full bg-[#0d0d14] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50"
+                className="w-full bg-card border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50"
               />
             </div>
             <div>
@@ -176,7 +176,7 @@ export default function StockScreenerPage() {
                 value={filters.minRoe}
                 onChange={(e) => setFilters({ ...filters, minRoe: e.target.value })}
                 placeholder="10"
-                className="w-full bg-[#0d0d14] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50"
+                className="w-full bg-card border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50"
               />
             </div>
             <div>
@@ -186,7 +186,7 @@ export default function StockScreenerPage() {
                 value={filters.minMarketCap}
                 onChange={(e) => setFilters({ ...filters, minMarketCap: e.target.value })}
                 placeholder="50"
-                className="w-full bg-[#0d0d14] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50"
+                className="w-full bg-card border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50"
               />
             </div>
             <div>
@@ -196,7 +196,7 @@ export default function StockScreenerPage() {
                 value={filters.sector}
                 onChange={(e) => setFilters({ ...filters, sector: e.target.value })}
                 placeholder="如：科技"
-                className="w-full bg-[#0d0d14] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50"
+                className="w-full bg-card border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50"
               />
             </div>
           </div>
@@ -219,7 +219,7 @@ export default function StockScreenerPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-[#0d0d14] text-gray-400 text-xs">
+                <tr className="bg-card text-gray-400 text-xs">
                   <th className="px-4 py-3 text-left font-medium cursor-pointer hover:text-white" onClick={() => toggleSort('code')}>
                     代码 {sortKey === 'code' && (sortDesc ? '↓' : '↑')}
                   </th>

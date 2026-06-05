@@ -96,7 +96,7 @@ export default function CachedDataExplorer() {
   if (loading) return <LoadingSpinner fullscreen text="加载缓存数据..." />;
 
   return (
-    <div className="p-6 space-y-6 bg-[#0a0a12] min-h-full">
+    <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">💾 缓存数据浏览器</h1>
@@ -171,7 +171,7 @@ export default function CachedDataExplorer() {
           <select
             value={selectedNs}
             onChange={(e) => setSelectedNs(e.target.value)}
-            className="bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-1 text-xs text-white focus:outline-none focus:border-[#C9A046]"
+            className="bg-deep border border-white/10 rounded-lg px-3 py-1 text-xs text-white focus:outline-none focus:border-[#C9A046]"
           >
             <option value="all">全部 Namespace</option>
             {namespaces.map((ns) => (
