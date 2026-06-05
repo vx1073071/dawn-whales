@@ -1,8 +1,19 @@
-﻿import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+﻿import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { DatabaseManager, getDB } from '../electron/workers/database-manager';
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
+
+vi.mock('electron', () => ({
+  app: {
+    isReady: vi.fn(() => true),
+    getPath: vi.fn(() => os.tmpdir()),
+    getName: vi.fn(() => 'test'),
+    getVersion: vi.fn(() => '1.0.0'),
+    on: vi.fn(),
+    once: vi.fn(),
+  },
+}));
 
 const TEST_DB = path.join(os.tmpdir(), 'dw-test-' + Date.now() + '.db');
 
