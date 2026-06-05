@@ -235,3 +235,28 @@ export class AnomalyDetector {
     };
   }
 }
+
+// Standalone function for IPC handler usage
+export function detectAnomalies(params: {
+  values: number[];
+  method?: string;
+  window?: number;
+  threshold?: number;
+}): { anomalies: number[]; indices: number[] } {
+  const { values, method = 'zscore', window = 20, threshold = 3 } = params;
+  const detector = new AnomalyDetector([
+    { name: method, enabled: true, weight: 1 },
+  ]);
+  const anomalies: number[] = [];
+  const indices: number[] = [];
+  for (let i = 0; i < values.length; i++) {
+    const history = values.slice(Math.max(0, i - window), i);
+    const value = values[i];
+    const result = detector.detect(value, history);
+    if (result.isAnomaly && result.score > threshold) {
+      anomalies.push(value);
+      indices.push(i);
+    }
+  }
+  return { anomalies, indices };
+}

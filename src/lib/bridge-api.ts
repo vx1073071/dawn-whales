@@ -1394,10 +1394,6 @@ export async function detectAnomalies(symbol: string, data: any): Promise<any> {
   return window.api.anomalyDetection.detect(symbol, data);
 }
 
-export async function getAnomalyAlerts(): Promise<any> {
-  if (!hasIPC()) return { success: false };
-  return window.api.anomalyDetection.getAlerts();
-}
 
 export async function getAnomaliesBySymbol(symbol: string): Promise<any> {
   if (!hasIPC()) return { success: false };
@@ -1446,10 +1442,6 @@ export async function calculateCorrelationMatrix(symbols: string[], returns: Rec
   return window.api.riskManagement.correlationMatrix(symbols, returns);
 }
 
-export async function getRiskAlerts(): Promise<any> {
-  if (!hasIPC()) return { success: false };
-  return window.api.riskManagement.getAlerts();
-}
 
 export async function acknowledgeRiskAlert(alertId: string): Promise<any> {
   if (!hasIPC()) return { success: false };
@@ -2045,17 +2037,6 @@ export async function priceOptionAndGreeks(params: any): Promise<any> {
 }
 
 // ── Risk Metrics Calculator (JVS-46) ───────────────────────────────────────
-export async function calculateRiskMetrics(params: {
-  returns: number[];
-  riskFreeRate?: number;
-  benchmarkReturns?: number[];
-  tradingDaysPerYear?: number;
-  monteCarloSims?: number;
-}): Promise<any> {
-  if (!hasIPC()) return { success: false };
-  return window.api.riskMetrics.calculate(params);
-}
-
 export async function calculateSharpeRatio(
   returns: number[],
   riskFreeRate?: number,
@@ -2214,10 +2195,6 @@ export async function batchScreenStocks(batches: any[]): Promise<any> {
 }
 
 // ── Portfolio Optimizer (JVS-57) ──────────────────────────────────────────
-export async function optimizePortfolio(assets: any[], constraints?: any): Promise<any> {
-  if (!hasIPC()) return { success: false };
-  return window.api.portfolioOptimizer.optimize(assets, constraints);
-}
 
 export async function generateEfficientFrontier(assets: any[], points?: number, constraints?: any): Promise<any> {
   if (!hasIPC()) return { success: false };

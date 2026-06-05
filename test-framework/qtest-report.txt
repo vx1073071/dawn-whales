@@ -1,0 +1,21 @@
+
+============================================================
+  QTest Results
+============================================================
+
+  ✓ QTest Basic Matchers (tests/qtest-basic.test.ts)
+    Tests: 6 | Duration: 1ms
+
+      ✓ toBe matcher works (1ms)
+      ✓ toEqual deep equality
+      ✓ toBeTruthy / toBeFalsy
+      ✓ numeric matchers
+      ✓ string / array matchers
+      ✓ instance / type matchers
+
+------------------------------------------------------------
+  Total:  6
+  Passed: 6
+  Failed: 0
+  Duration: 0.01s
+------------------------------------------------------------

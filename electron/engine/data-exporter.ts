@@ -217,3 +217,11 @@ export function getDataExporter(config: ExportConfig): DataExporter {
   }
   return exporterInstance;
 }
+
+// Convenience wrapper for IPC handler usage
+export function exportData(target: string, format: string, data: unknown[]): Promise<{ success: boolean; path?: string; error?: string }> {
+  const exporter = getDataExporter({ targets: [target], formats: [format as any], outputDir: './exports' });
+  return exporter.export({ target, format: format as any, data } as any)
+    .then((result: ExportResult) => ({ success: true, path: result.filePath }))
+    .catch((err: Error) => ({ success: false, error: err.message }));
+}
