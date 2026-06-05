@@ -1,7 +1,7 @@
 import { useAppStore } from '@/stores/appStore';
 import { useThemeStore } from '@/lib/theme';
 import { useI18nStore, LOCALE_LABELS, type Locale } from '@/lib/i18n';
-import logo from '@/assets/logo.jpg';
+import logo from '@/assets/logo.png';
 import BrokerSelector from './BrokerSelector';
 
 export default function Header() {
