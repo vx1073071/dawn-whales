@@ -43,6 +43,28 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [connected, setConnected] = useState(false);
 
+  // ML-24-03: WebSocket real-time quotes (fallback: 30s polling)
+  const positionCodes = useMemo(() => positions.map(p => p.code), [positions]);
+  const { quotes, connected: wsConnected } = useWebSocketQuotes({
+    symbols: positionCodes,
+    enabled: positionCodes.length > 0,
+    fallbackIntervalMs: 30000,
+  });
+
+  // Merge WS quotes into position data
+  const livePositions = useMemo(() => {
+    if (!wsConnected || quotes.size === 0) return positions;
+    return positions.map(p => {
+      const q = quotes.get(p.code);
+      if (!q) return p;
+      const newMarketPrice = q.price;
+      const newMarketValue = p.qty * newMarketPrice;
+      const newPnl = (newMarketPrice - p.marketPrice) * p.qty + p.pnl;
+      const newPnlPct = p.marketPrice > 0 ? ((newMarketPrice - p.marketPrice) / p.marketPrice) * 100 : 0;
+      return { ...p, marketPrice: newMarketPrice, marketValue: newMarketValue, pnl: newPnl, pnlPct: newPnlPct };
+    });
+  }, [positions, quotes, wsConnected]);
+
   useEffect(() => {
     loadDashboard();
     const interval = setInterval(loadDashboard, 30000);
@@ -159,11 +181,11 @@ export default function DashboardPage() {
       {/* Position Heatmap */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
         <h2 className="text-white font-semibold text-sm mb-4">🗺️ 持仓热力图</h2>
-        {positions.length === 0 ? (
+        {livePositions.length === 0 ? (
           <p className="text-gray-500 text-sm py-4 text-center">暂无持仓数据</p>
         ) : (
           <div className="flex flex-wrap gap-2">
-            {positions.map((p) => {
+            {livePositions.map((p) => {
               const width = Math.max(8, p.ratio);
               const isProfit = p.pnl >= 0;
               const intensity = Math.min(1, Math.abs(p.pnlPct) / 30);
