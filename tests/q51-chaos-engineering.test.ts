@@ -173,7 +173,7 @@ describe('Q51: Chaos Engineering', () => {
     monkey.stop();
   });
 
-  it('ChaosMonkey records failures', () => {
+  it('ChaosMonkey records failures', async () => {
     const monkey = new ChaosMonkey({
       failureRate: 1.0,
       failureTypes: ['network_error'],
@@ -181,10 +181,14 @@ describe('Q51: Chaos Engineering', () => {
       interval: 1,
     });
     monkey.start();
+    // Allow async loop to run at least one iteration
+    await new Promise((r) => setTimeout(r, 10));
     const stats = monkey.getStatistics();
     expect(stats.totalFailures).toBeGreaterThanOrEqual(0);
     expect(typeof stats.failuresByType).toBe('object');
     monkey.stop();
+    // Allow any pending rejections to settle
+    await new Promise((r) => setTimeout(r, 5));
   });
 
   it('ChaosTestResult validates required fields', () => {

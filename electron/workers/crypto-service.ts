@@ -1,5 +1,5 @@
 ﻿// T53: AES-256-GCM Encryption Service
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 16;

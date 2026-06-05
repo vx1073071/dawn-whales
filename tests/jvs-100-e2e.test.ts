@@ -9,7 +9,14 @@
  * - AlertEngine: addRule() + evaluate() pattern
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { EventEmitter } from 'events';
+
+// Ensure EventEmitter is available in jsdom environment
+vi.mock('events', async () => {
+  const actual = await vi.importActual<typeof import('events')>('events');
+  return actual;
+});
 
 // Import singleton getters
 import { getSlidingWindowAggregator } from '../electron/engine/sliding-window-aggregator';

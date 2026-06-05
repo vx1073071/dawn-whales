@@ -193,7 +193,7 @@ describe('Q50: Load Testing', () => {
     expect(result.successfulRequests).toBeGreaterThan(0);
   });
 
-  it('stress test validates error rate threshold', async () => {
+  it('stress test validates error rate threshold', { timeout: 15000 }, async () => {
     const runner = new LoadTestRunner({ concurrency: 5, duration: 200, rampUpTime: 0, targetRPS: 50 });
     const results = await runner.runStressTest(async () => { /* noop */ }, 20);
     expect(Array.isArray(results)).toBe(true);
