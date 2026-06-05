@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+﻿import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -158,8 +158,8 @@ export default function TradeDashboardPage() {
 
         if (posResult?.success) setPositions(posResult.data ?? []);
         if (ordersResult?.success) setOrders(ordersResult.data ?? []);
-        if (statsResult?.success) setStats(statsResult.data ?? MOCK_STATS);
-        if (dailyResult?.success) setDaily(dailyResult.data ?? MOCK_DAILY);
+        if (statsResult?.success) setStats(statsResult.data ?? { totalTrades:0, winningTrades:0, losingTrades:0, winRate:0, totalPnL:0, totalCommission:0, avgWin:0, avgLoss:0, maxDrawdown:0, sharpeRatio:0, profitFactor:0 });
+        if (dailyResult?.success) setDaily(dailyResult.data ?? []);
         if (modeResult) setExecMode(typeof modeResult === 'string' ? modeResult as 'paper' | 'real' : modeResult?.data ?? 'paper');
       }
     } catch (err) {
