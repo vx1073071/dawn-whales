@@ -1,544 +1,562 @@
-/**
- * futu-mock-feed.ts
- *
- * Realistic mock market data feed generator for development and testing.
- * Generates synthetic ticks with configurable volatility, trend, and events,
- * then pushes them through the WsMarketDataEngine for downstream consumption.
- *
- * Features:
- *  - Per-symbol price state with random walk + drift + mean reversion
- *  - Realistic bid/ask spread (0.01–0.05% of price)
- *  - Volume with occasional spikes
- *  - Random "events": gap up/down, volume surges
- *  - Configurable tick interval
- */
-
 import log from 'electron-log';
-import type { WsMarketDataEngine, MarketTick } from './ws-market-data';
 
-// ─── Types ────────────────────────────────────────────────────
+// ─── Interfaces ────────────────────────────────────────────────────────────────
 
-type TrendDirection = 'up' | 'down' | 'flat';
-
-interface SymbolState {
+export interface MockTick {
   code: string;
-  currentPrice: number;
-  basePrice: number;
-  drift: number;
-  volatility: number;
-  trend: TrendDirection;
-  dayOpen: number;
-  dayHigh: number;
-  dayLow: number;
+  price: number;
   prevClose: number;
-  cumulativeVolume: number;
-  cumulativeAmount: number;
-  lastTickTime: number;
-  tickCount: number;
+  open: number;
+  high: number;
+  low: number;
+  volume: number;
+  turnover: number;
+  timestamp: number;
+  bidPrice: number;
+  askPrice: number;
+  bidVolume: number;
+  askVolume: number;
 }
 
-interface MockFeedConfig {
-  /** Default tick interval in milliseconds */
-  defaultIntervalMs: number;
-  /** Global volatility multiplier */
-  volatilityMultiplier: number;
-  /** Probability of a random event per tick (0–1) */
-  eventProbability: number;
-  /** Maximum spread as fraction of price */
-  maxSpreadPct: number;
-  /** Minimum spread as fraction of price */
-  minSpreadPct: number;
+export interface SymbolState {
+  code: string;
+  price: number;
+  prevClose: number;
+  open: number;
+  high: number;
+  low: number;
+  volume: number;
+  turnover: number;
+  volatility: number;      // 0.001 - 0.05
+  drift: number;           // -0.001 to 0.001 (trend direction)
+  meanReversion: number;   // 0.01 - 0.1 (strength of mean reversion)
+  trend: 'up' | 'down' | 'flat';
+  fairValue: number;       // mean-reversion target
+  baseVolume: number;      // average volume per tick
+  tickCount: number;       // ticks generated for this symbol
 }
 
-interface FeedStats {
-  totalTicksPushed: number;
-  ticksBySymbol: Record<string, number>;
-  errors: number;
-  startTime: number;
+export interface MockFeedConfig {
+  intervalMs: number;        // tick interval (50-5000ms)
+  symbols: string[];
+  eventProbability: number;  // 0-1, probability of a "market event" per tick
+  baseSpreadPct: number;     // 0.01-0.05%
+}
+
+export interface FeedStats {
+  totalTicks: number;
   uptimeMs: number;
+  symbolsActive: number;
+  symbolList: string[];
   eventsTriggered: number;
-  running: boolean;
+  recentEvents: MarketEvent[];
 }
 
-// ─── Default Symbol Prices ────────────────────────────────────
+export interface MarketEvent {
+  type: 'gap_up' | 'gap_down' | 'volume_surge' | 'flash_crash';
+  code: string;
+  description: string;
+  timestamp: number;
+  magnitude: number;
+}
 
-const DEFAULT_PRICES: Record<string, { price: number; name: string }> = {
-  'US.TQQQ':   { price: 52.00,   name: 'ProShares 3x QQQ' },
-  'US.SQQQ':   { price: 28.50,   name: 'ProShares -3x QQQ' },
-  'US.NVDA':   { price: 880.00,  name: 'NVIDIA' },
-  'US.AAPL':   { price: 192.00,  name: 'Apple' },
-  'US.MSFT':   { price: 420.00,  name: 'Microsoft' },
-  'US.GOOG':   { price: 175.00,  name: 'Alphabet' },
-  'US.AMZN':   { price: 185.00,  name: 'Amazon' },
-  'US.META':   { price: 510.00,  name: 'Meta Platforms' },
-  'US.TSLA':   { price: 245.00,  name: 'Tesla' },
-  'US.AMDB':   { price: 165.00,  name: 'AMD' },
-  'US.SPY':    { price: 545.00,  name: 'SPDR S&P 500' },
-  'US.QQQ':    { price: 468.00,  name: 'Invesco QQQ' },
-  'HK.00700':  { price: 378.50,  name: '腾讯控股' },
-  'HK.09988':  { price: 82.00,   name: '阿里巴巴' },
-  'HK.03690':  { price: 128.00,  name: '美团' },
-  'HK.01810':  { price: 18.50,   name: '小米集团' },
-  'HK.09888':  { price: 92.00,   name: '百度集团' },
-  'HK.00981':  { price: 18.20,   name: '中芯国际' },
-  'SH.600519': { price: 1580.00, name: '贵州茅台' },
-  'SZ.300750': { price: 195.00,  name: '宁德时代' },
+// ─── Default Prices ────────────────────────────────────────────────────────────
+
+const DEFAULT_PRICES: Record<string, number> = {
+  TQQQ: 52,
+  NVDA: 880,
+  AAPL: 192,
+  MSFT: 415,
+  GOOG: 155,
+  TSLA: 178,
+  AMZN: 185,
+  META: 490,
+  QQQ: 445,
+  SPY: 520,
+  SOXL: 35,
+  SOXS: 22,
+  SQQQ: 28,
+  PLTR: 24,
+  ARKK: 52,
+  IWM: 200,
+  GLD: 215,
+  TLT: 92,
+  UVXY: 18,
+  BABA: 78,
+  PDD: 128,
+  NIO: 5.5,
 };
 
-// ─── Default Configuration ────────────────────────────────────
+const DEFAULT_SYMBOLS = Object.keys(DEFAULT_PRICES);
 
 const DEFAULT_CONFIG: MockFeedConfig = {
-  defaultIntervalMs: 1000,
-  volatilityMultiplier: 1.0,
+  intervalMs: 500,
+  symbols: DEFAULT_SYMBOLS,
   eventProbability: 0.005,
-  maxSpreadPct: 0.0005,
-  minSpreadPct: 0.0001,
+  baseSpreadPct: 0.02,
 };
 
-// ─── FutuMockFeed Class ───────────────────────────────────────
+// ─── Utility: Box-Muller Normal Distribution ───────────────────────────────────
+
+function boxMullerRandom(): number {
+  let u1 = 0;
+  let u2 = 0;
+  // Avoid log(0) which is -Infinity
+  while (u1 === 0) u1 = Math.random();
+  while (u2 === 0) u2 = Math.random();
+  const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+  return z0;
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
+function roundTo(value: number, decimals: number): number {
+  const factor = Math.pow(10, decimals);
+  return Math.round(value * factor) / factor;
+}
+
+// ─── FutuMockFeed Class ────────────────────────────────────────────────────────
 
 export class FutuMockFeed {
-  private wsEngine: WsMarketDataEngine;
   private config: MockFeedConfig;
-  private symbolStates: Map<string, SymbolState> = new Map();
-  private intervalTimer: ReturnType<typeof setInterval> | null = null;
+  private symbols: Map<string, SymbolState> = new Map();
+  private tickListeners: Array<(tick: MockTick) => void> = [];
+  private intervalHandle: ReturnType<typeof setInterval> | null = null;
+  private startTime: number = 0;
+  private totalTicks: number = 0;
+  private eventLog: MarketEvent[] = [];
+  private maxEventLogSize = 50;
   private running = false;
-  private startTime = 0;
-  private totalTicksPushed = 0;
-  private errors = 0;
-  private eventsTriggered = 0;
-  private subscribedSymbols: string[] = [];
 
-  constructor(wsEngine: WsMarketDataEngine, config?: Partial<MockFeedConfig>) {
-    this.wsEngine = wsEngine;
+  constructor(config?: Partial<MockFeedConfig>) {
     this.config = { ...DEFAULT_CONFIG, ...config };
 
-    log.info('[FutuMockFeed] Initialized', {
-      defaultInterval: this.config.defaultIntervalMs,
-      volatilityMultiplier: this.config.volatilityMultiplier,
-    });
+    // Clamp config values to sane ranges
+    this.config.intervalMs = clamp(this.config.intervalMs, 50, 5000);
+    this.config.eventProbability = clamp(this.config.eventProbability, 0, 1);
+    this.config.baseSpreadPct = clamp(this.config.baseSpreadPct, 0.01, 0.05);
+
+    // Initialize symbols from config
+    for (const code of this.config.symbols) {
+      const defaultPrice = DEFAULT_PRICES[code];
+      this.initSymbol(code, defaultPrice ?? 100);
+    }
+
+    log.info(
+      `[FutuMockFeed] Initialized with ${this.symbols.size} symbols, ` +
+      `interval=${this.config.intervalMs}ms, ` +
+      `eventProb=${this.config.eventProbability}`
+    );
   }
 
-  // ─── Lifecycle ────────────────────────────────────────────
+  // ─── Public API ────────────────────────────────────────────────────────────
 
   /**
-   * Start pushing mock ticks for the given symbols.
-   *
-   * @param symbols - Array of symbol codes (e.g. ["US.TQQQ", "HK.00700"])
-   * @param intervalMs - Override tick interval (ms). Defaults to config.
+   * Start pushing ticks at the configured interval.
    */
-  start(symbols: string[], intervalMs?: number): void {
+  start(): void {
     if (this.running) {
-      log.warn('[FutuMockFeed] Already running — stopping first');
-      this.stop();
-    }
-
-    if (symbols.length === 0) {
-      log.warn('[FutuMockFeed] No symbols provided, not starting');
+      log.warn('[FutuMockFeed] Already running, ignoring start()');
       return;
-    }
-
-    this.subscribedSymbols = [...symbols];
-    const interval = intervalMs ?? this.config.defaultIntervalMs;
-
-    // Initialize symbol states
-    for (const code of symbols) {
-      this.initSymbolState(code);
     }
 
     this.running = true;
     this.startTime = Date.now();
-    this.totalTicksPushed = 0;
-    this.errors = 0;
-    this.eventsTriggered = 0;
+    log.info(`[FutuMockFeed] Starting tick feed (${this.symbols.size} symbols)`);
 
-    // Start the tick loop
-    this.intervalTimer = setInterval(() => {
-      this.tickLoop();
-    }, interval);
-
-    log.info(`[FutuMockFeed] Started — ${symbols.length} symbols @ ${interval}ms`, {
-      symbols: symbols.join(', '),
-    });
+    this.intervalHandle = setInterval(() => {
+      this.tickAll();
+    }, this.config.intervalMs);
   }
 
   /**
-   * Stop all mock feed generation.
+   * Stop all feeds.
    */
   stop(): void {
     if (!this.running) {
-      log.warn('[FutuMockFeed] Not running');
+      log.warn('[FutuMockFeed] Not running, ignoring stop()');
       return;
     }
 
     this.running = false;
-
-    if (this.intervalTimer) {
-      clearInterval(this.intervalTimer);
-      this.intervalTimer = null;
+    if (this.intervalHandle !== null) {
+      clearInterval(this.intervalHandle);
+      this.intervalHandle = null;
     }
 
     const uptime = Date.now() - this.startTime;
-    log.info(`[FutuMockFeed] Stopped — pushed ${this.totalTicksPushed} ticks in ${(uptime / 1000).toFixed(1)}s`, {
-      errors: this.errors,
-      events: this.eventsTriggered,
-    });
+    log.info(
+      `[FutuMockFeed] Stopped. Uptime=${uptime}ms, ` +
+      `totalTicks=${this.totalTicks}, events=${this.eventLog.length}`
+    );
   }
 
-  // ─── Configuration ────────────────────────────────────────
+  /**
+   * Add a symbol to the feed.
+   */
+  addSymbol(code: string, initialPrice?: number): void {
+    if (this.symbols.has(code)) {
+      log.warn(`[FutuMockFeed] Symbol ${code} already exists, skipping add`);
+      return;
+    }
+
+    const price = initialPrice ?? DEFAULT_PRICES[code] ?? 100;
+    this.initSymbol(code, price);
+    log.info(`[FutuMockFeed] Added symbol: ${code} @ ${price}`);
+  }
 
   /**
-   * Set volatility for a specific symbol.
-   * Higher values = larger price movements per tick.
-   *
-   * @param symbol - Symbol code
-   * @param vol - Volatility value (0.0001 = very calm, 0.01 = very wild)
+   * Remove a symbol from the feed.
    */
-  setVolatility(symbol: string, vol: number): void {
-    const state = this.symbolStates.get(symbol);
-    if (state) {
-      state.volatility = Math.max(0.00001, Math.min(vol, 0.1));
-      log.info(`[FutuMockFeed] Volatility set: ${symbol} → ${state.volatility}`);
-    } else {
-      log.warn(`[FutuMockFeed] Symbol not found: ${symbol}`);
+  removeSymbol(code: string): void {
+    if (!this.symbols.has(code)) {
+      log.warn(`[FutuMockFeed] Symbol ${code} not found, skipping remove`);
+      return;
     }
+
+    this.symbols.delete(code);
+    log.info(`[FutuMockFeed] Removed symbol: ${code}`);
+  }
+
+  /**
+   * Adjust volatility for a specific symbol.
+   */
+  setVolatility(code: string, vol: number): void {
+    const state = this.symbols.get(code);
+    if (!state) {
+      log.warn(`[FutuMockFeed] setVolatility: ${code} not found`);
+      return;
+    }
+
+    state.volatility = clamp(vol, 0.001, 0.05);
+    log.info(`[FutuMockFeed] ${code} volatility set to ${state.volatility}`);
   }
 
   /**
    * Set trend direction for a specific symbol.
-   *
-   * @param symbol - Symbol code
-   * @param direction - 'up', 'down', or 'flat'
    */
-  setTrend(symbol: string, direction: TrendDirection): void {
-    const state = this.symbolStates.get(symbol);
+  setTrend(code: string, direction: 'up' | 'down' | 'flat'): void {
+    const state = this.symbols.get(code);
     if (!state) {
-      log.warn(`[FutuMockFeed] Symbol not found: ${symbol}`);
+      log.warn(`[FutuMockFeed] setTrend: ${code} not found`);
       return;
     }
 
     state.trend = direction;
 
-    // Set drift based on direction
     switch (direction) {
       case 'up':
-        state.drift = state.volatility * 0.3;
+        state.drift = 0.0005 + Math.random() * 0.0005; // 0.0005 to 0.001
         break;
       case 'down':
-        state.drift = -state.volatility * 0.3;
+        state.drift = -(0.0005 + Math.random() * 0.0005); // -0.001 to -0.0005
         break;
       case 'flat':
-        state.drift = 0;
+        state.drift = (Math.random() - 0.5) * 0.0002; // -0.0001 to 0.0001
         break;
     }
 
-    log.info(`[FutuMockFeed] Trend set: ${symbol} → ${direction} (drift=${state.drift.toFixed(6)})`);
-  }
-
-  /**
-   * Get the current mock feed configuration.
-   */
-  getConfig(): MockFeedConfig & { subscribedSymbols: string[] } {
-    return {
-      ...this.config,
-      subscribedSymbols: [...this.subscribedSymbols],
-    };
+    log.info(`[FutuMockFeed] ${code} trend set to ${direction} (drift=${state.drift.toFixed(6)})`);
   }
 
   /**
    * Get feed statistics.
    */
   getStats(): FeedStats {
-    const ticksBySymbol: Record<string, number> = {};
-    for (const [code, state] of this.symbolStates.entries()) {
-      ticksBySymbol[code] = state.tickCount;
-    }
-
     return {
-      totalTicksPushed: this.totalTicksPushed,
-      ticksBySymbol,
-      errors: this.errors,
-      startTime: this.startTime,
+      totalTicks: this.totalTicks,
       uptimeMs: this.running ? Date.now() - this.startTime : 0,
-      eventsTriggered: this.eventsTriggered,
-      running: this.running,
+      symbolsActive: this.symbols.size,
+      symbolList: Array.from(this.symbols.keys()),
+      eventsTriggered: this.eventLog.length,
+      recentEvents: this.eventLog.slice(-10),
     };
   }
 
-  // ─── Core Tick Generation Loop ────────────────────────────
+  /**
+   * Register a tick listener callback.
+   */
+  onTick(callback: (tick: MockTick) => void): void {
+    this.tickListeners.push(callback);
+  }
 
   /**
-   * Main tick loop called on each interval.
-   * Generates and pushes one tick per subscribed symbol.
+   * Generate a single tick for a symbol (can be called manually for testing).
    */
-  private tickLoop(): void {
-    if (!this.running) return;
+  generateTick(code: string): MockTick {
+    const state = this.symbols.get(code);
+    if (!state) {
+      throw new Error(`[FutuMockFeed] generateTick: symbol ${code} not found`);
+    }
 
-    for (const code of this.subscribedSymbols) {
-      try {
-        const state = this.symbolStates.get(code);
-        if (!state) continue;
+    return this.produceTick(state);
+  }
 
-        // Check for random events
-        if (Math.random() < this.config.eventProbability) {
-          this.triggerEvent(state);
+  // ─── Internal Logic ────────────────────────────────────────────────────────
+
+  /**
+   * Initialize a symbol's state.
+   */
+  private initSymbol(code: string, price: number): void {
+    const volatility = this.deriveVolatility(code);
+    const drift = (Math.random() - 0.5) * 0.0004; // slight random drift
+    const meanReversion = 0.02 + Math.random() * 0.06; // 0.02 - 0.08
+
+    const state: SymbolState = {
+      code,
+      price,
+      prevClose: price,
+      open: price,
+      high: price,
+      low: price,
+      volume: 0,
+      turnover: 0,
+      volatility,
+      drift,
+      meanReversion,
+      trend: 'flat',
+      fairValue: price,
+      baseVolume: this.deriveBaseVolume(code, price),
+      tickCount: 0,
+    };
+
+    this.symbols.set(code, state);
+  }
+
+  /**
+   * Derive a reasonable volatility based on the symbol type.
+   * Leveraged ETFs and meme stocks get higher vol; index ETFs get lower.
+   */
+  private deriveVolatility(code: string): number {
+    const leveraged = ['TQQQ', 'SOXL', 'SOXS', 'SQQQ', 'UVXY'];
+    const highVol = ['TSLA', 'NVDA', 'PLTR', 'NIO', 'PDD', 'BABA'];
+    const lowVol = ['SPY', 'QQQ', 'IWM', 'GLD', 'TLT'];
+
+    if (leveraged.includes(code)) {
+      return 0.015 + Math.random() * 0.025; // 0.015 - 0.04
+    } else if (highVol.includes(code)) {
+      return 0.008 + Math.random() * 0.015; // 0.008 - 0.023
+    } else if (lowVol.includes(code)) {
+      return 0.002 + Math.random() * 0.005; // 0.002 - 0.007
+    } else {
+      return 0.004 + Math.random() * 0.01; // 0.004 - 0.014
+    }
+  }
+
+  /**
+   * Derive a reasonable base volume per tick based on symbol and price.
+   */
+  private deriveBaseVolume(code: string, price: number): number {
+    const megaCap = ['AAPL', 'MSFT', 'NVDA', 'AMZN', 'META', 'GOOG', 'TSLA'];
+    const indexEtf = ['SPY', 'QQQ', 'IWM'];
+
+    if (megaCap.includes(code)) {
+      return 50000 + Math.floor(Math.random() * 100000);
+    } else if (indexEtf.includes(code)) {
+      return 80000 + Math.floor(Math.random() * 120000);
+    } else if (price < 10) {
+      return 100000 + Math.floor(Math.random() * 200000); // low-priced = higher volume
+    } else {
+      return 10000 + Math.floor(Math.random() * 40000);
+    }
+  }
+
+  /**
+   * Tick all symbols once.
+   */
+  private tickAll(): void {
+    const codes = Array.from(this.symbols.keys());
+
+    for (const code of codes) {
+      const state = this.symbols.get(code);
+      if (!state) continue;
+
+      // Check for market events before generating tick
+      if (Math.random() < this.config.eventProbability) {
+        this.triggerEvent(state);
+      }
+
+      const tick = this.produceTick(state);
+      this.totalTicks++;
+
+      // Notify all listeners
+      for (const listener of this.tickListeners) {
+        try {
+          listener(tick);
+        } catch (err) {
+          log.error(`[FutuMockFeed] Tick listener error for ${code}:`, err);
         }
-
-        // Generate the tick
-        const tick = this.generateTick(state);
-
-        // Push to the WS engine
-        this.wsEngine.handleExternalTick(tick);
-
-        // Update stats
-        this.totalTicksPushed++;
-        state.tickCount++;
-        state.lastTickTime = Date.now();
-      } catch (err: any) {
-        this.errors++;
-        log.error(`[FutuMockFeed] Error generating tick for ${code}:`, err.message);
       }
     }
   }
 
   /**
-   * Generate a single tick for a symbol based on random walk with drift
-   * and mean reversion.
+   * Produce a single tick from a symbol state, updating the state in the process.
    */
-  private generateTick(state: SymbolState): MarketTick {
-    // Random walk component
-    const randomWalk = this.gaussianRandom() * state.volatility * state.currentPrice;
+  private produceTick(state: SymbolState): MockTick {
+    const normalRandom = boxMullerRandom();
 
-    // Mean reversion component (pulls price back toward base)
-    const meanReversionStrength = 0.002;
-    const deviation = state.currentPrice - state.basePrice;
-    const meanReversion = -deviation * meanReversionStrength;
+    // ── Price movement: random walk + mean reversion ──
+    const meanReversionForce = state.meanReversion * (state.fairValue - state.price) / state.price;
+    const priceChange = state.drift + state.volatility * normalRandom + meanReversionForce;
 
-    // Drift component (trend)
-    const driftComponent = state.drift * state.currentPrice;
+    const oldPrice = state.price;
+    let newPrice = state.price * (1 + priceChange);
 
-    // Calculate new price
-    const priceChange = randomWalk + meanReversion + driftComponent;
-    let newPrice = state.currentPrice + priceChange;
+    // Safety: never go below $0.01
+    newPrice = Math.max(0.01, newPrice);
+    newPrice = roundTo(newPrice, 2);
 
-    // Ensure price stays positive
-    newPrice = Math.max(newPrice, state.basePrice * 0.5);
-    newPrice = Math.max(newPrice, 0.01);
+    // Update state
+    state.price = newPrice;
+    state.tickCount++;
 
-    // Round to appropriate decimal places
-    newPrice = this.roundPrice(newPrice);
+    // Update OHLC
+    if (state.tickCount === 1) {
+      // First tick of session: open = first trade price
+      state.open = newPrice;
+      state.high = newPrice;
+      state.low = newPrice;
+    } else {
+      state.high = Math.max(state.high, newPrice);
+      state.low = Math.min(state.low, newPrice);
+    }
 
-    // Update day high/low
-    state.dayHigh = Math.max(state.dayHigh, newPrice);
-    state.dayLow = Math.min(state.dayLow, newPrice);
+    // ── Volume generation ──
+    const volumeNoise = 0.5 + Math.random() * 1.0; // 0.5x to 1.5x
+    const volumeSpike = Math.random() < 0.02 ? 10 : 1; // 2% chance of 10x spike
+    const tickVolume = Math.floor(state.baseVolume * volumeNoise * volumeSpike);
 
-    // Generate volume (with occasional spikes)
-    const baseVolume = this.generateVolume(state);
-    state.cumulativeVolume += baseVolume;
-    state.cumulativeAmount += baseVolume * newPrice;
+    state.volume += tickVolume;
+    state.turnover += tickVolume * newPrice;
 
-    // Calculate change from prev close
-    const change = this.roundPrice(newPrice - state.prevClose);
-    const changePct = state.prevClose > 0
-      ? Math.round(((newPrice - state.prevClose) / state.prevClose) * 10000) / 100
-      : 0;
-
-    // Generate bid/ask spread
-    const spreadPct = this.config.minSpreadPct +
-      Math.random() * (this.config.maxSpreadPct - this.config.minSpreadPct);
+    // ── Bid/Ask spread ──
+    const spreadPct = this.config.baseSpreadPct / 100;
     const halfSpread = newPrice * spreadPct / 2;
-    const bidPrice = this.roundPrice(newPrice - halfSpread);
-    const askPrice = this.roundPrice(newPrice + halfSpread);
 
-    // Bid/ask volumes (random but realistic)
-    const bidVolume = Math.round((500 + Math.random() * 5000) / 100) * 100;
-    const askVolume = Math.round((500 + Math.random() * 5000) / 100) * 100;
+    const bidPrice = roundTo(newPrice - halfSpread, 2);
+    const askPrice = roundTo(newPrice + halfSpread, 2);
 
-    // Update current price in state
-    state.currentPrice = newPrice;
+    // Bid/ask volumes: random but proportional to tick volume
+    const bidVolume = Math.floor(tickVolume * (0.3 + Math.random() * 0.7));
+    const askVolume = Math.floor(tickVolume * (0.3 + Math.random() * 0.7));
+
+    // ── Slowly drift fair value to create realistic trend shifts ──
+    if (state.tickCount % 100 === 0) {
+      const fairDrift = (Math.random() - 0.5) * state.volatility * state.fairValue * 0.5;
+      state.fairValue = Math.max(0.01, state.fairValue + fairDrift);
+    }
 
     return {
       code: state.code,
       price: newPrice,
-      change,
-      changePct,
-      volume: state.cumulativeVolume,
-      amount: Math.round(state.cumulativeAmount * 100) / 100,
-      open: state.dayOpen,
-      high: state.dayHigh,
-      low: state.dayLow,
       prevClose: state.prevClose,
+      open: state.open,
+      high: state.high,
+      low: state.low,
+      volume: state.volume,
+      turnover: roundTo(state.turnover, 2),
+      timestamp: Date.now(),
       bidPrice,
       askPrice,
       bidVolume,
       askVolume,
-      updateTime: new Date().toISOString(),
-      source: 'mock',
     };
   }
-
-  // ─── Event System ─────────────────────────────────────────
 
   /**
    * Trigger a random market event on a symbol.
-   * Events: gap up, gap down, volume surge.
    */
   private triggerEvent(state: SymbolState): void {
-    const eventType = Math.random();
-    this.eventsTriggered++;
+    const eventTypes: MarketEvent['type'][] = ['gap_up', 'gap_down', 'volume_surge', 'flash_crash'];
+    const eventType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
 
-    if (eventType < 0.35) {
-      // Gap Up: price jumps 1–3%
-      const gapPct = 0.01 + Math.random() * 0.02;
-      state.currentPrice = this.roundPrice(state.currentPrice * (1 + gapPct));
-      state.dayHigh = Math.max(state.dayHigh, state.currentPrice);
-      log.info(`[FutuMockFeed] EVENT: Gap UP ${state.code} +${(gapPct * 100).toFixed(2)}% → ${state.currentPrice}`);
-    } else if (eventType < 0.70) {
-      // Gap Down: price drops 1–3%
-      const gapPct = 0.01 + Math.random() * 0.02;
-      state.currentPrice = this.roundPrice(state.currentPrice * (1 - gapPct));
-      state.dayLow = Math.min(state.dayLow, state.currentPrice);
-      log.info(`[FutuMockFeed] EVENT: Gap DOWN ${state.code} -${(gapPct * 100).toFixed(2)}% → ${state.currentPrice}`);
-    } else {
-      // Volume Surge: 5–20x normal volume
-      const surgeMultiplier = 5 + Math.random() * 15;
-      const surgeVolume = Math.round(surgeMultiplier * 2000);
-      state.cumulativeVolume += surgeVolume;
-      state.cumulativeAmount += surgeVolume * state.currentPrice;
-      log.info(`[FutuMockFeed] EVENT: Volume SURGE ${state.code} ${surgeMultiplier.toFixed(1)}x (+${surgeVolume})`);
+    let description = '';
+    let magnitude = 0;
+
+    switch (eventType) {
+      case 'gap_up': {
+        magnitude = 0.05 + Math.random() * 0.10; // 5-15% jump
+        const jump = state.price * magnitude;
+        state.price = roundTo(state.price + jump, 2);
+        state.fairValue = state.price; // fair value adjusts with gap
+        state.high = Math.max(state.high, state.price);
+        description = `${state.code} gap UP ${(magnitude * 100).toFixed(1)}% to $${state.price}`;
+        break;
+      }
+
+      case 'gap_down': {
+        magnitude = 0.05 + Math.random() * 0.10; // 5-15% drop
+        const drop = state.price * magnitude;
+        state.price = roundTo(Math.max(0.01, state.price - drop), 2);
+        state.fairValue = state.price;
+        state.low = Math.min(state.low, state.price);
+        description = `${state.code} gap DOWN ${(magnitude * 100).toFixed(1)}% to $${state.price}`;
+        break;
+      }
+
+      case 'volume_surge': {
+        magnitude = 5 + Math.random() * 15; // 5-20x normal volume
+        const surgeVolume = Math.floor(state.baseVolume * magnitude);
+        state.volume += surgeVolume;
+        state.turnover += surgeVolume * state.price;
+        description = `${state.code} volume SURGE ${magnitude.toFixed(1)}x (${surgeVolume.toLocaleString()} shares)`;
+        break;
+      }
+
+      case 'flash_crash': {
+        // Rapid drop (3-8%) followed by partial recovery in the same tick
+        const crashMagnitude = 0.03 + Math.random() * 0.05;
+        const recoveryRatio = 0.4 + Math.random() * 0.4; // recover 40-80% of the drop
+        const dropAmount = state.price * crashMagnitude;
+        const crashLow = state.price - dropAmount;
+        const recovery = dropAmount * recoveryRatio;
+        state.price = roundTo(Math.max(0.01, state.price - dropAmount + recovery), 2);
+        state.low = Math.min(state.low, roundTo(Math.max(0.01, crashLow), 2));
+        magnitude = crashMagnitude;
+        description =
+          `${state.code} FLASH CRASH ${(crashMagnitude * 100).toFixed(1)}% drop, ` +
+          `recovered ${(recoveryRatio * 100).toFixed(0)}% → $${state.price}`;
+        break;
+      }
     }
-  }
 
-  // ─── Symbol State Initialization ──────────────────────────
-
-  /**
-   * Initialize or reset the state for a symbol.
-   */
-  private initSymbolState(code: string): void {
-    const defaultInfo = DEFAULT_PRICES[code];
-    const basePrice = defaultInfo?.price ?? 100;
-
-    // Add slight randomness to starting price (±0.5%)
-    const startPrice = this.roundPrice(basePrice * (1 + (Math.random() - 0.5) * 0.01));
-
-    const state: SymbolState = {
-      code,
-      currentPrice: startPrice,
-      basePrice,
-      drift: 0,
-      volatility: this.getDefaultVolatility(code),
-      trend: 'flat',
-      dayOpen: startPrice,
-      dayHigh: startPrice,
-      dayLow: startPrice,
-      prevClose: this.roundPrice(basePrice * (1 + (Math.random() - 0.5) * 0.005)),
-      cumulativeVolume: Math.round(Math.random() * 50000) + 10000,
-      cumulativeAmount: 0,
-      lastTickTime: 0,
-      tickCount: 0,
+    const event: MarketEvent = {
+      type: eventType,
+      code: state.code,
+      description,
+      timestamp: Date.now(),
+      magnitude,
     };
 
-    // Calculate initial cumulative amount
-    state.cumulativeAmount = state.cumulativeVolume * startPrice;
+    this.eventLog.push(event);
 
-    this.symbolStates.set(code, state);
+    // Keep event log bounded
+    if (this.eventLog.length > this.maxEventLogSize) {
+      this.eventLog = this.eventLog.slice(-this.maxEventLogSize);
+    }
 
-    log.info(`[FutuMockFeed] Symbol initialized: ${code} @ ${startPrice} (prevClose=${state.prevClose})`);
+    log.info(`[FutuMockFeed] EVENT: ${description}`);
   }
+}
 
-  /**
-   * Get default volatility for a symbol based on its type.
-   * Leveraged ETFs and crypto-adjacent stocks get higher vol.
-   */
-  private getDefaultVolatility(code: string): number {
-    const vol = this.config.volatilityMultiplier;
+// ─── Singleton convenience (optional) ──────────────────────────────────────────
 
-    // Leveraged ETFs are wild
-    if (code.includes('TQQQ') || code.includes('SQQQ') || code.includes('SOXL')) {
-      return 0.003 * vol;
-    }
+let defaultInstance: FutuMockFeed | null = null;
 
-    // Tech stocks are moderately volatile
-    if (code.includes('NVDA') || code.includes('TSLA') || code.includes('AMD')) {
-      return 0.002 * vol;
-    }
-
-    // Large caps are calmer
-    if (code.includes('AAPL') || code.includes('MSFT') || code.includes('GOOG')) {
-      return 0.001 * vol;
-    }
-
-    // HK stocks
-    if (code.startsWith('HK.')) {
-      return 0.0015 * vol;
-    }
-
-    // A-shares
-    if (code.startsWith('SH.') || code.startsWith('SZ.')) {
-      return 0.0012 * vol;
-    }
-
-    // Default
-    return 0.0015 * vol;
+export function getDefaultMockFeed(config?: Partial<MockFeedConfig>): FutuMockFeed {
+  if (!defaultInstance) {
+    defaultInstance = new FutuMockFeed(config);
   }
+  return defaultInstance;
+}
 
-  // ─── Volume Generation ────────────────────────────────────
-
-  /**
-   * Generate realistic per-tick volume.
-   * Most ticks have modest volume; occasional spikes.
-   */
-  private generateVolume(state: SymbolState): number {
-    // Base volume per tick (in shares)
-    let baseVol = 100 + Math.random() * 900;
-
-    // Volume spikes (5% chance)
-    if (Math.random() < 0.05) {
-      baseVol *= 3 + Math.random() * 7;
-    }
-
-    // Higher volume for popular stocks
-    if (state.code.includes('TQQQ') || state.code.includes('NVDA') || state.code.includes('00700')) {
-      baseVol *= 2;
-    }
-
-    // Round to nearest 100
-    return Math.round(baseVol / 100) * 100;
-  }
-
-  // ─── Utility Functions ────────────────────────────────────
-
-  /**
-   * Generate a Gaussian random number using Box-Muller transform.
-   * Mean = 0, StdDev = 1.
-   */
-  private gaussianRandom(): number {
-    let u1 = 0;
-    let u2 = 0;
-
-    // Avoid log(0)
-    while (u1 === 0) u1 = Math.random();
-    while (u2 === 0) u2 = Math.random();
-
-    const z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-    return z;
-  }
-
-  /**
-   * Round price to appropriate decimal places.
-   * HK stocks: 1–2 decimals; US stocks: 2 decimals; A-shares: 2 decimals.
-   */
-  private roundPrice(price: number): number {
-    if (price >= 1000) {
-      return Math.round(price * 100) / 100;
-    }
-    if (price >= 100) {
-      return Math.round(price * 100) / 100;
-    }
-    if (price >= 10) {
-      return Math.round(price * 100) / 100;
-    }
-    return Math.round(price * 1000) / 1000;
+export function destroyDefaultMockFeed(): void {
+  if (defaultInstance) {
+    defaultInstance.stop();
+    defaultInstance = null;
   }
 }
 

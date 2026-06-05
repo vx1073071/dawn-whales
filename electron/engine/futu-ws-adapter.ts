@@ -1,308 +1,480 @@
-/**
- * futu-ws-adapter.ts
- *
- * Adapts Futu OpenD TCP quote push data to the WsMarketDataEngine format.
- * Acts as a bridge between the FutuOpenDClient (raw TCP protobuf) and
- * the WsMarketDataEngine (normalized MarketTick events).
- *
- * Responsibilities:
- *  - Subscribe to Futu OpenD real-time quote pushes
- *  - Convert Futu quote format to MarketTick format
- *  - Forward converted ticks to WsMarketDataEngine
- *  - Handle connection/disconnection lifecycle events
- *  - Track adapter status and statistics
- */
-
 import log from 'electron-log';
-import type { WsMarketDataEngine, MarketTick } from './ws-market-data';
-import type { FutuOpenDClient } from '../broker/futu-opend';
 
-// ─── Types ────────────────────────────────────────────────────
+// ─── Interfaces ────────────────────────────────────────────────────────────────
 
-type AdapterStatus = 'disconnected' | 'connecting' | 'connected' | 'subscribed' | 'error';
-
-interface AdapterStats {
-  status: AdapterStatus;
-  subscribedSymbols: string[];
-  totalQuotesReceived: number;
-  totalTicksForwarded: number;
-  conversionErrors: number;
-  connectionErrors: number;
-  lastQuoteTime: number;
-  startTime: number;
-  uptimeMs: number;
+export interface FutuQuote {
+  code: string;
+  name: string;
+  curPrice: number;
+  prevClose: number;
+  openPrice: number;
+  highPrice: number;
+  lowPrice: number;
+  volume: number;
+  turnover: number;
+  updateTime: string;
+  bidPrice: number;
+  askPrice: number;
+  bidVol: number;
+  askVol: number;
 }
 
-interface FutuQuoteRaw {
+export interface MarketTick {
   code: string;
   price: number;
   change: number;
   changePct: number;
   volume: number;
-  amount: number;
-  open: number;
   high: number;
   low: number;
+  open: number;
   prevClose: number;
-  updateTime: string;
-  // Optional fields that may come from Futu push
-  bidPrice?: number;
-  askPrice?: number;
-  bidVolume?: number;
-  askVolume?: number;
+  timestamp: number;
+  bid?: number;
+  ask?: number;
+  bidVol?: number;
+  askVol?: number;
 }
 
-// ─── FutuWsAdapter Class ─────────────────────────────────────
+export interface AdapterStatus {
+  connected: boolean;
+  subscribedSymbols: string[];
+  ticksConverted: number;
+  errors: number;
+  lastTickAt: number;
+  uptime: number;
+}
+
+type QuoteUpdateCallback = (tick: MarketTick) => void;
+
+// ─── Constants ─────────────────────────────────────────────────────────────────
+
+const RECONNECT_DELAY_MS = 3000;
+const MAX_RECONNECT_ATTEMPTS = 10;
+const STATS_LOG_INTERVAL_MS = 60_000;
+
+// ─── Adapter ───────────────────────────────────────────────────────────────────
 
 export class FutuWsAdapter {
-  private futuClient: FutuOpenDClient;
-  private wsEngine: WsMarketDataEngine;
-  private status: AdapterStatus = 'disconnected';
-  private subscribedSymbols: string[] = [];
-  private totalQuotesReceived = 0;
-  private totalTicksForwarded = 0;
-  private conversionErrors = 0;
-  private connectionErrors = 0;
-  private lastQuoteTime = 0;
-  private startTime = 0;
-  private pushCallbackRegistered = false;
-  private disconnectHandlerRegistered = false;
+  private futuClient: any;
+  private wsEngine: any;
 
-  constructor(futuClient: FutuOpenDClient, wsEngine: WsMarketDataEngine) {
+  private subscribedSymbols: Set<string> = new Set();
+  private callbacks: QuoteUpdateCallback[] = [];
+
+  private connected = false;
+  private running = false;
+  private ticksConverted = 0;
+  private errors = 0;
+  private lastTickAt = 0;
+  private startedAt = 0;
+
+  private reconnectAttempts = 0;
+  private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+  private statsTimer: ReturnType<typeof setInterval> | null = null;
+
+  // Bound handlers for clean removal
+  private boundOnQuote: (quote: FutuQuote) => void;
+  private boundOnConnect: () => void;
+  private boundOnDisconnect: (reason: string) => void;
+  private boundOnError: (err: Error) => void;
+
+  constructor(futuClient: any, wsEngine: any) {
     this.futuClient = futuClient;
     this.wsEngine = wsEngine;
 
-    log.info('[FutuWsAdapter] Initialized');
+    this.boundOnQuote = this.handleFutuQuote.bind(this);
+    this.boundOnConnect = this.handleFutuConnect.bind(this);
+    this.boundOnDisconnect = this.handleFutuDisconnect.bind(this);
+    this.boundOnError = this.handleFutuError.bind(this);
   }
 
-  // ─── Lifecycle ────────────────────────────────────────────
+  // ─── Public API ────────────────────────────────────────────────────────────
 
-  /**
-   * Start the adapter: connect to Futu OpenD (if needed),
-   * subscribe to quote pushes for the given symbols,
-   * and forward converted ticks to the WS engine.
-   *
-   * @param symbols - Array of symbol codes (e.g. ["US.TQQQ", "HK.00700"])
-   */
-  async start(symbols: string[]): Promise<void> {
-    if (symbols.length === 0) {
-      log.warn('[FutuWsAdapter] No symbols provided, not starting');
+  async start(symbols: string[]): Promise<boolean> {
+    if (this.running) {
+      log.warn('[FutuWsAdapter] Adapter already running, ignoring start()');
+      return true;
+    }
+
+    log.info(`[FutuWsAdapter] Starting adapter with ${symbols.length} symbols`);
+    this.running = true;
+    this.startedAt = Date.now();
+    this.attachEventListeners();
+    this.startStatsLogger();
+
+    try {
+      const connected = await this.ensureConnection();
+      if (!connected) {
+        log.error('[FutuWsAdapter] Failed to connect to Futu OpenD');
+        return false;
+      }
+
+      await this.subscribeToSymbols(symbols);
+      log.info(`[FutuWsAdapter] Adapter started successfully`);
+      return true;
+    } catch (err) {
+      log.error('[FutuWsAdapter] Failed to start:', err);
+      this.errors++;
+      return false;
+    }
+  }
+
+  stop(): void {
+    log.info('[FutuWsAdapter] Stopping adapter');
+    this.running = false;
+    this.connected = false;
+
+    this.stopStatsLogger();
+    this.clearReconnectTimer();
+
+    if (this.subscribedSymbols.size > 0) {
+      this.unsubscribeAll();
+    }
+
+    this.detachEventListeners();
+    this.subscribedSymbols.clear();
+    this.callbacks = [];
+
+    log.info(
+      `[FutuWsAdapter] Adapter stopped — ${this.ticksConverted} ticks converted, ${this.errors} errors`
+    );
+  }
+
+  async addSymbols(symbols: string[]): Promise<void> {
+    const newSymbols = symbols.filter((s) => !this.subscribedSymbols.has(s));
+    if (newSymbols.length === 0) {
+      log.debug('[FutuWsAdapter] addSymbols: all symbols already subscribed');
       return;
     }
 
-    this.startTime = Date.now();
-    this.subscribedSymbols = [...symbols];
+    log.info(`[FutuWsAdapter] Adding ${newSymbols.length} symbols: ${newSymbols.join(', ')}`);
 
     try {
-      // Step 1: Ensure Futu client is connected
-      this.status = 'connecting';
-      await this.ensureConnection();
-
-      // Step 2: Register push callback (only once)
-      this.registerPushCallback();
-
-      // Step 3: Register disconnect handler (only once)
-      this.registerDisconnectHandler();
-
-      // Step 4: Subscribe to Futu quote pushes
-      this.status = 'subscribed';
-      await this.futuClient.subscribeAndPush(symbols);
-
-      log.info(`[FutuWsAdapter] Started — subscribed to ${symbols.length} symbols`, {
-        symbols: symbols.join(', '),
-      });
-    } catch (err: any) {
-      this.status = 'error';
-      this.connectionErrors++;
-      log.error(`[FutuWsAdapter] Start failed: ${err.message}`);
+      await this.subscribeToSymbols(newSymbols);
+    } catch (err) {
+      log.error('[FutuWsAdapter] Failed to add symbols:', err);
+      this.errors++;
       throw err;
     }
   }
 
-  /**
-   * Stop the adapter: unsubscribe from all symbols.
-   * The Futu client connection is left intact for other consumers.
-   */
-  async stop(): Promise<void> {
-    if (this.status === 'disconnected') {
-      log.warn('[FutuWsAdapter] Already disconnected');
+  removeSymbols(symbols: string[]): void {
+    const toRemove = symbols.filter((s) => this.subscribedSymbols.has(s));
+    if (toRemove.length === 0) {
+      log.debug('[FutuWsAdapter] removeSymbols: none of the specified symbols are subscribed');
       return;
     }
 
-    // Unsubscribe by subscribing with empty list (Futu OpenD behavior)
-    // Note: FutuOpenDClient doesn't expose an explicit unsubscribe method,
-    // so we rely on the disconnect or re-subscribe pattern.
-    this.status = 'disconnected';
-    this.subscribedSymbols = [];
+    log.info(`[FutuWsAdapter] Removing ${toRemove.length} symbols: ${toRemove.join(', ')}`);
 
-    const uptime = this.startTime > 0 ? Date.now() - this.startTime : 0;
-    log.info(`[FutuWsAdapter] Stopped — forwarded ${this.totalTicksForwarded} ticks in ${(uptime / 1000).toFixed(1)}s`, {
-      conversionErrors: this.conversionErrors,
-      connectionErrors: this.connectionErrors,
-    });
+    for (const sym of toRemove) {
+      this.subscribedSymbols.delete(sym);
+    }
 
-    // Reset counters
-    this.totalQuotesReceived = 0;
-    this.totalTicksForwarded = 0;
-    this.conversionErrors = 0;
-    this.startTime = 0;
+    try {
+      this.futuClient.unsubscribeQuote(toRemove);
+    } catch (err) {
+      log.error('[FutuWsAdapter] Error unsubscribing symbols:', err);
+      this.errors++;
+    }
   }
 
-  // ─── Quote Conversion ─────────────────────────────────────
+  convertQuote(futuQuote: FutuQuote): MarketTick {
+    const change = futuQuote.curPrice - futuQuote.prevClose;
+    const changePct =
+      futuQuote.prevClose !== 0
+        ? (change / futuQuote.prevClose) * 100
+        : 0;
 
-  /**
-   * Convert a raw Futu quote object to a MarketTick.
-   *
-   * @param futuQuote - Raw quote from Futu OpenD push
-   * @returns Normalized MarketTick
-   */
-  convertQuote(futuQuote: FutuQuoteRaw): MarketTick {
-    const price = futuQuote.price ?? 0;
-    const prevClose = futuQuote.prevClose ?? 0;
-
-    // Calculate bid/ask if not provided
-    const spreadPct = 0.0002; // Default 0.02% spread
-    const halfSpread = price * spreadPct / 2;
-    const bidPrice = futuQuote.bidPrice ?? Math.round((price - halfSpread) * 100) / 100;
-    const askPrice = futuQuote.askPrice ?? Math.round((price + halfSpread) * 100) / 100;
-    const bidVolume = futuQuote.bidVolume ?? 0;
-    const askVolume = futuQuote.askVolume ?? 0;
-
-    return {
+    const tick: MarketTick = {
       code: futuQuote.code,
-      price,
-      change: futuQuote.change ?? (prevClose > 0 ? Math.round((price - prevClose) * 100) / 100 : 0),
-      changePct: futuQuote.changePct ?? (prevClose > 0 ? Math.round(((price - prevClose) / prevClose) * 10000) / 100 : 0),
-      volume: futuQuote.volume ?? 0,
-      amount: futuQuote.amount ?? 0,
-      open: futuQuote.open ?? price,
-      high: futuQuote.high ?? price,
-      low: futuQuote.low ?? price,
-      prevClose,
-      bidPrice,
-      askPrice,
-      bidVolume,
-      askVolume,
-      updateTime: futuQuote.updateTime ?? new Date().toISOString(),
-      source: 'futu',
+      price: futuQuote.curPrice,
+      change: roundTo(change, 4),
+      changePct: roundTo(changePct, 4),
+      volume: futuQuote.volume,
+      high: futuQuote.highPrice,
+      low: futuQuote.lowPrice,
+      open: futuQuote.openPrice,
+      prevClose: futuQuote.prevClose,
+      timestamp: parseTimestamp(futuQuote.updateTime),
     };
+
+    if (futuQuote.bidPrice > 0) {
+      tick.bid = futuQuote.bidPrice;
+      tick.bidVol = futuQuote.bidVol;
+    }
+
+    if (futuQuote.askPrice > 0) {
+      tick.ask = futuQuote.askPrice;
+      tick.askVol = futuQuote.askVol;
+    }
+
+    return tick;
   }
 
-  // ─── Status ───────────────────────────────────────────────
-
-  /**
-   * Get the current adapter status and statistics.
-   */
-  getStatus(): AdapterStats {
+  getStatus(): AdapterStatus {
     return {
-      status: this.status,
-      subscribedSymbols: [...this.subscribedSymbols],
-      totalQuotesReceived: this.totalQuotesReceived,
-      totalTicksForwarded: this.totalTicksForwarded,
-      conversionErrors: this.conversionErrors,
-      connectionErrors: this.connectionErrors,
-      lastQuoteTime: this.lastQuoteTime,
-      startTime: this.startTime,
-      uptimeMs: this.startTime > 0 ? Date.now() - this.startTime : 0,
+      connected: this.connected,
+      subscribedSymbols: Array.from(this.subscribedSymbols),
+      ticksConverted: this.ticksConverted,
+      errors: this.errors,
+      lastTickAt: this.lastTickAt,
+      uptime: this.running ? Date.now() - this.startedAt : 0,
     };
   }
 
-  // ─── Private: Connection Management ───────────────────────
+  onQuoteUpdate(callback: QuoteUpdateCallback): void {
+    this.callbacks.push(callback);
+  }
 
-  /**
-   * Ensure the Futu OpenD client is connected.
-   * If not connected, attempts to connect.
-   */
-  private async ensureConnection(): Promise<void> {
-    if (this.futuClient.connected) {
-      log.info('[FutuWsAdapter] Futu client already connected');
-      this.status = 'connected';
+  // ─── Private: Event Handlers ───────────────────────────────────────────────
+
+  private handleFutuQuote(quote: FutuQuote): void {
+    try {
+      if (!quote || !quote.code) {
+        log.warn('[FutuWsAdapter] Received invalid quote (missing code)');
+        this.errors++;
+        return;
+      }
+
+      const tick = this.convertQuote(quote);
+      this.ticksConverted++;
+      this.lastTickAt = Date.now();
+
+      // Forward to wsEngine
+      this.forwardToWsEngine(tick);
+
+      // Notify registered callbacks
+      this.notifyCallbacks(tick);
+    } catch (err) {
+      log.error(`[FutuWsAdapter] Error processing quote for ${quote?.code}:`, err);
+      this.errors++;
+    }
+  }
+
+  private handleFutuConnect(): void {
+    log.info('[FutuWsAdapter] Futu OpenD connected');
+    this.connected = true;
+    this.reconnectAttempts = 0;
+
+    // Re-subscribe on reconnect if we had symbols
+    if (this.subscribedSymbols.size > 0) {
+      const symbols = Array.from(this.subscribedSymbols);
+      log.info(
+        `[FutuWsAdapter] Re-subscribing to ${symbols.length} symbols after reconnect`
+      );
+      this.subscribeToSymbols(symbols).catch((err) => {
+        log.error('[FutuWsAdapter] Failed to re-subscribe after reconnect:', err);
+        this.errors++;
+      });
+    }
+  }
+
+  private handleFutuDisconnect(reason: string): void {
+    log.warn(`[FutuWsAdapter] Futu OpenD disconnected: ${reason}`);
+    this.connected = false;
+
+    if (this.running) {
+      this.scheduleReconnect();
+    }
+  }
+
+  private handleFutuError(err: Error): void {
+    log.error('[FutuWsAdapter] Futu OpenD error:', err.message);
+    this.errors++;
+  }
+
+  // ─── Private: Subscriptions ────────────────────────────────────────────────
+
+  private async ensureConnection(): Promise<boolean> {
+    if (this.connected) return true;
+
+    try {
+      if (typeof this.futuClient.connect === 'function') {
+        await this.futuClient.connect();
+      }
+      this.connected = true;
+      this.reconnectAttempts = 0;
+      return true;
+    } catch (err) {
+      log.error('[FutuWsAdapter] Connection failed:', err);
+      this.connected = false;
+      return false;
+    }
+  }
+
+  private async subscribeToSymbols(symbols: string[]): Promise<void> {
+    for (const sym of symbols) {
+      this.subscribedSymbols.add(sym);
+    }
+
+    if (typeof this.futuClient.subscribeQuote === 'function') {
+      await this.futuClient.subscribeQuote(symbols);
+    } else {
+      log.warn('[FutuWsAdapter] futuClient.subscribeQuote is not available');
+    }
+  }
+
+  private unsubscribeAll(): void {
+    try {
+      const symbols = Array.from(this.subscribedSymbols);
+      if (typeof this.futuClient.unsubscribeQuote === 'function') {
+        this.futuClient.unsubscribeQuote(symbols);
+      }
+    } catch (err) {
+      log.error('[FutuWsAdapter] Error during unsubscribeAll:', err);
+      this.errors++;
+    }
+  }
+
+  // ─── Private: Reconnection ─────────────────────────────────────────────────
+
+  private scheduleReconnect(): void {
+    if (this.reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+      log.error(
+        `[FutuWsAdapter] Max reconnect attempts (${MAX_RECONNECT_ATTEMPTS}) reached, giving up`
+      );
       return;
     }
 
-    log.info('[FutuWsAdapter] Connecting to Futu OpenD...');
-    await this.futuClient.connect();
-    this.status = 'connected';
-    log.info('[FutuWsAdapter] Futu OpenD connected');
+    this.clearReconnectTimer();
+    this.reconnectAttempts++;
+
+    const delay = Math.min(
+      RECONNECT_DELAY_MS * this.reconnectAttempts,
+      30_000
+    );
+
+    log.info(
+      `[FutuWsAdapter] Scheduling reconnect attempt ${this.reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS} in ${delay}ms`
+    );
+
+    this.reconnectTimer = setTimeout(async () => {
+      if (!this.running) return;
+
+      log.info(`[FutuWsAdapter] Reconnect attempt ${this.reconnectAttempts}...`);
+      const ok = await this.ensureConnection();
+
+      if (ok) {
+        log.info('[FutuWsAdapter] Reconnected successfully');
+      } else {
+        log.warn('[FutuWsAdapter] Reconnect failed, will retry');
+        this.scheduleReconnect();
+      }
+    }, delay);
   }
 
-  /**
-   * Register the quote push callback on the Futu client.
-   * This callback receives raw quote arrays and converts/forwards them.
-   */
-  private registerPushCallback(): void {
-    if (this.pushCallbackRegistered) return;
-
-    this.futuClient.onQuotePush((quotes: any[]) => {
-      this.handleQuotePush(quotes);
-    });
-
-    this.pushCallbackRegistered = true;
-    log.info('[FutuWsAdapter] Push callback registered');
+  private clearReconnectTimer(): void {
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+    }
   }
 
-  /**
-   * Register a disconnect handler on the Futu client.
-   */
-  private registerDisconnectHandler(): void {
-    if (this.disconnectHandlerRegistered) return;
+  // ─── Private: Forwarding ───────────────────────────────────────────────────
 
-    this.futuClient.onDisconnect(() => {
-      this.handleDisconnect();
-    });
-
-    this.disconnectHandlerRegistered = true;
-    log.info('[FutuWsAdapter] Disconnect handler registered');
+  private forwardToWsEngine(tick: MarketTick): void {
+    try {
+      if (this.wsEngine && typeof this.wsEngine.pushTick === 'function') {
+        this.wsEngine.pushTick(tick);
+      } else if (this.wsEngine && typeof this.wsEngine.onMarketTick === 'function') {
+        this.wsEngine.onMarketTick(tick);
+      } else {
+        log.debug('[FutuWsAdapter] wsEngine has no pushTick/onMarketTick method');
+      }
+    } catch (err) {
+      log.error(`[FutuWsAdapter] Failed to forward tick ${tick.code} to wsEngine:`, err);
+      this.errors++;
+    }
   }
 
-  // ─── Private: Event Handlers ──────────────────────────────
-
-  /**
-   * Handle incoming quote push from Futu OpenD.
-   * Converts each quote to MarketTick and forwards to the WS engine.
-   */
-  private handleQuotePush(quotes: any[]): void {
-    if (!quotes || quotes.length === 0) return;
-
-    this.totalQuotesReceived += quotes.length;
-    this.lastQuoteTime = Date.now();
-
-    for (const rawQuote of quotes) {
+  private notifyCallbacks(tick: MarketTick): void {
+    for (const cb of this.callbacks) {
       try {
-        // Validate minimum required fields
-        if (!rawQuote.code || rawQuote.price == null || rawQuote.price <= 0) {
-          this.conversionErrors++;
-          continue;
-        }
-
-        // Convert to MarketTick
-        const tick = this.convertQuote(rawQuote as FutuQuoteRaw);
-
-        // Forward to WS engine
-        this.wsEngine.handleExternalTick(tick);
-        this.totalTicksForwarded++;
-      } catch (err: any) {
-        this.conversionErrors++;
-        log.warn(`[FutuWsAdapter] Quote conversion error for ${rawQuote?.code ?? 'unknown'}:`, err.message);
+        cb(tick);
+      } catch (err) {
+        log.error('[FutuWsAdapter] Callback error:', err);
+        this.errors++;
       }
     }
   }
 
-  /**
-   * Handle Futu OpenD disconnection.
-   * Updates adapter status and logs the event.
-   * The FutuOpenDClient handles reconnection internally;
-   * once reconnected, the push subscription will be re-established.
-   */
-  private handleDisconnect(): void {
-    log.warn('[FutuWsAdapter] Futu OpenD disconnected — adapter in error state');
-    this.status = 'error';
-    this.connectionErrors++;
+  // ─── Private: Event Listener Management ────────────────────────────────────
 
-    // The FutuOpenDClient's internal reconnect loop will re-establish
-    // the connection and re-subscribe. We just need to update our status.
-    // Once reconnected, the push callback will resume automatically.
+  private attachEventListeners(): void {
+    if (!this.futuClient) return;
+
+    if (typeof this.futuClient.on === 'function') {
+      this.futuClient.on('quote', this.boundOnQuote);
+      this.futuClient.on('connect', this.boundOnConnect);
+      this.futuClient.on('disconnect', this.boundOnDisconnect);
+      this.futuClient.on('error', this.boundOnError);
+    }
   }
+
+  private detachEventListeners(): void {
+    if (!this.futuClient) return;
+
+    if (typeof this.futuClient.off === 'function') {
+      this.futuClient.off('quote', this.boundOnQuote);
+      this.futuClient.off('connect', this.boundOnConnect);
+      this.futuClient.off('disconnect', this.boundOnDisconnect);
+      this.futuClient.off('error', this.boundOnError);
+    }
+  }
+
+  // ─── Private: Stats Logging ────────────────────────────────────────────────
+
+  private startStatsLogger(): void {
+    this.stopStatsLogger();
+    this.statsTimer = setInterval(() => {
+      const status = this.getStatus();
+      log.info(
+        `[FutuWsAdapter] Stats — connected: ${status.connected}, ` +
+          `symbols: ${status.subscribedSymbols.length}, ` +
+          `ticks: ${status.ticksConverted}, errors: ${status.errors}, ` +
+          `uptime: ${formatUptime(status.uptime)}`
+      );
+    }, STATS_LOG_INTERVAL_MS);
+  }
+
+  private stopStatsLogger(): void {
+    if (this.statsTimer) {
+      clearInterval(this.statsTimer);
+      this.statsTimer = null;
+    }
+  }
+}
+
+// ─── Utility Functions ─────────────────────────────────────────────────────────
+
+function roundTo(value: number, decimals: number): number {
+  const factor = Math.pow(10, decimals);
+  return Math.round(value * factor) / factor;
+}
+
+function parseTimestamp(updateTime: string): number {
+  if (!updateTime) return Date.now();
+
+  const parsed = new Date(updateTime).getTime();
+  return isNaN(parsed) ? Date.now() : parsed;
+}
+
+function formatUptime(ms: number): string {
+  if (ms <= 0) return '0s';
+
+  const seconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+
+  if (hours > 0) {
+    return `${hours}h ${minutes % 60}m`;
+  }
+  if (minutes > 0) {
+    return `${minutes}m ${seconds % 60}s`;
+  }
+  return `${seconds}s`;
 }
 
 export default FutuWsAdapter;

@@ -1,11 +1,12 @@
 // ── DAWN WHALES — Dashboard (v0.6.0) ────────────────────────────────────────
 // 总资产/持仓热力图/净值曲线/盈亏总览/最近信号
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   getAccounts, getFunds, getPositions, isConnected,
   getAllStrategies, getMarketplaceList,
 } from '../../lib/bridge-api';
+import { useWebSocketQuotes } from '../../hooks/useWebSocketQuotes';
 
 interface AccountSummary {
   totalAssets: number;
