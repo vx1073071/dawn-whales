@@ -47,7 +47,7 @@ export class JobScheduler {
       timeoutMs,
     };
     this._insert(job);
-    this._tick();
+    queueMicrotask(() => this._tick());
     return job;
   }
 

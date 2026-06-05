@@ -1,4 +1,4 @@
-﻿// T52: State Machine for OpenD Connection
+// T52: State Machine for OpenD Connection
 export type ConnState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'AUTHENTICATED' | 'STREAMING' | 'ERROR';
 
 export interface StateConfig {
@@ -24,19 +24,19 @@ export class StateMachine {
 
   async transition(to: ConnState): Promise<boolean> {
     const from = this.state;
-    const config = this.states.get(to);
-    if (!config) throw new Error(`Unknown state: ${to}`);
-    if (!config.allowedTransitions.includes(from)) {
+    const fromConfig = this.states.get(from);
+    const toConfig = this.states.get(to);
+    if (!toConfig) throw new Error(`Unknown state: ${to}`);
+    if (!fromConfig?.allowedTransitions.includes(to)) {
       return false; // invalid transition
     }
 
     // exit current state
-    const exitConfig = this.states.get(from);
-    if (exitConfig?.onExit) await exitConfig.onExit();
+    if (fromConfig?.onExit) await fromConfig.onExit();
 
     // enter new state
     this.state = to;
-    if (config.onEnter) await config.onEnter();
+    if (toConfig.onEnter) await toConfig.onEnter();
 
     this.history.push({ from, to, time: Date.now() });
     this.listeners.forEach(l => l(from, to));
@@ -52,8 +52,8 @@ export class StateMachine {
   isDisconnected() { return this.state === 'DISCONNECTED'; }
   isConnected() { return ['CONNECTED', 'AUTHENTICATED', 'STREAMING'].includes(this.state); }
   canTransition(to: ConnState): boolean {
-    const config = this.states.get(to);
-    return config ? config.allowedTransitions.includes(this.state) : false;
+    const fromConfig = this.states.get(this.state);
+    return fromConfig ? fromConfig.allowedTransitions.includes(to) : false;
   }
 }
 
