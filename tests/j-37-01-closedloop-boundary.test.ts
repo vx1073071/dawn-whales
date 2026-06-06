@@ -122,7 +122,7 @@ describe('J-37-01 ClosedLoopExecutor Boundary', () => {
       requireConfirmation: false,
     });
     const result = exec.addSignal(makeSignal({ price: 0.01 }));
-    expect(result.success).toBe(true || result.riskCheckPassed !== false).toBeTruthy();
+    assert(!!(result.success===true || result.riskCheckPassed!==false), "L:125");
   });
 
   it('B14: getStats returns valid structure', () => {

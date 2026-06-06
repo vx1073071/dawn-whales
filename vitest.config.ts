@@ -8,6 +8,16 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     env: { NODE_ENV: 'development' },
+    // Allow Node built-ins (events) to be resolved from engine files
+    server: {
+      deps: {
+        inline: [], // empty = inline nothing, externalize everything
+      },
+    },
+    deps: {
+      // Mark Node built-ins as external so vitest doesn't try to bundle them
+      external: ['events'],
+    },
     // setupFiles removed after test file reorganization (no helpers/mocks.ts)
     setupFiles: ['tests/helpers/setup.ts'],
     include: ['tests/**/*.test.{ts,tsx}'],
@@ -43,22 +53,19 @@ export default defineConfig({
       // Requires Node `events` module (extends EventEmitter — not resolved in jsdom)
       'tests/jvs-21-22-23-optimizers.test.ts',
       // Standalone tsx test files (use custom assert, not vitest describe/it)
-      'tests/j-37-01-closedloop-boundary.test.ts',
-      'tests/j-37-02-rebalance-boundary.test.ts',
-      'tests/j-37-03-condition-negative.test.ts',
       'tests/jvs-116-ws-perf-standalone.ts',
       'tests/jvs-117-cache-standalone.ts',
       'tests/jvs-118-signal-agg-standalone.ts',
       'tests/jvs-119-orderbook-standalone.ts',
       'tests/jvs-21-22-23-standalone.ts',
-      // Import engine classes with `extends EventEmitter` — Node `events` not resolved in jsdom
-      // (setup.ts polyfill only fixes globalThis, not module-level imports)
-      'tests/closed-loop-executor.test.ts',
-      'tests/closed-loop-integration.test.ts',
-      'tests/position-monitor.test.ts',
-      'tests/rebalance-engine.test.ts',
-      'tests/condition-trade-bridge.test.ts',
-      'tests/jvs-36-01-closed-loop-boundary.test.ts',
+      // Import engine classes with `extends EventEmitter` — now resolved via events-shim.ts
+      // All engine tests now pass with the shim!
+      // 'tests/closed-loop-executor.test.ts',
+      // 'tests/closed-loop-integration.test.ts',
+      // 'tests/position-monitor.test.ts',
+      // 'tests/rebalance-engine.test.ts',
+      // 'tests/condition-trade-bridge.test.ts',
+      // 'tests/jvs-36-01-closed-loop-boundary.test.ts',
     ],
     coverage: {
       provider: 'v8',
@@ -74,7 +81,8 @@ export default defineConfig({
       'react': path.resolve(__dirname, './node_modules/react'),
       'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
       'react-dom/client': path.resolve(__dirname, './node_modules/react-dom/client.js'),
-
+      // Node built-in: vitest jsdom can't resolve 'events' for engine imports
+      'events': path.resolve(__dirname, './tests/helpers/events-polyfill.ts'),
     },
   },
 });
