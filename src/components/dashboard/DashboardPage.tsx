@@ -7,6 +7,7 @@ import {
   getAllStrategies, getMarketplaceList,
 } from '../../lib/bridge-api';
 import { useWebSocketQuotes } from '../../hooks/useWebSocketQuotes';
+import BrokerStatusBar from '../trading/BrokerStatusBar';
 
 interface AccountSummary {
   totalAssets: number;
@@ -144,7 +145,10 @@ export default function DashboardPage() {
     <div className="p-6 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white mb-1">📊 总览看板</h1>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-2xl font-bold text-white">📊 总览看板</h1>
+          <BrokerStatusBar compact />
+        </div>
         <p className="text-gray-400 text-sm">
           {connected ? '已连接 OpenD · 实时数据' : '未连接券商 · 请先在设置中连接'}
         </p>
