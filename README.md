@@ -4,7 +4,7 @@
 
 🌐 **官网：https://vx1073071.github.io/dawn-whales/**
 📥 **下载：[v0.7.0 Windows 安装包](https://github.com/vx1073071/dawn-whales/releases)**
-⚙️ **测试**: 259/259 passed | **构建**: 0 errors | **TSC**: 0 errors
+⚙️ **测试**: 385/385 passed | **构建**: 0 errors | **TSC**: 0 errors
 
 零代码散户量化平台，支持 **Futu + Moomoo + IB** 三券商同时交易，自然语言创建策略、实时行情推送、回测引擎、多券商风控和策略市场。
 
