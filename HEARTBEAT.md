@@ -9,10 +9,12 @@
 ### QClaw
 - ✅ Q-26-01: RiskEngine v2 场景验证 — 20/20 passing，npm test 149/149 exit 0
 - ✅ Q-26-02: 前端性能分析完成（docs/performance/frontend-perf-q26-02.md）
-- ⏳ Q-26-03: 测试守卫（待开始）
+- ✅ Q-26-03: 测试守卫完成（docs/performance/test-guard-q26-03.md）
+  - 清理 13 个过期 vitest exclude 条目
+  - 识别 24 个无测试核心模块，按 Tier1-3 风险排序
 
 ### 最新 commit
-- c7b96c32: docs(Q-26-02): frontend performance analysis - bundle map + anti-patterns
+- d11f74fe: test(Q-26-03): clean up vitest exclude, add test-guard report - bundle map + anti-patterns
 
 ### 最新 commit
 - bbf01ac7: docs(q26-01): update RiskEngine v2 validation doc with verified API surface
@@ -35,3 +37,5 @@
 ## 已处理
 qclaw-q25-02-done-20260606-0710
 qclaw-q26-01-done-20260606-0755
+qclaw-q26-02-done-20260606-0800
+qclaw-q26-03-done-20260606-0800
