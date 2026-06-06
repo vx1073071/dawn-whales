@@ -1,5 +1,32 @@
 ﻿# DAWN WHALES Changelog
 
+## [0.8.1-alpha] - 2026-06-07
+
+### Sprint 2 Phase 5.0 Complete (R41) — 性能/市场/数据收尾
+
+**Tests**: 2076 passed / 0 failed / 9 skipped (134 files) — 8.5× growth from v0.7.0
+**Build**: 0 errors, 0 warnings
+**TSC**: 0 errors
+**Stability**: 5 轮 0 fail 验证 (R41 重点目标)
+
+### R41 (JVS)
+- **MultiSourceAggregator** (1668L, 50 tests, 4 源聚合: 东方财富/新浪/腾讯/雪球)
+- **StrategyRankingEngine** (577L, 多维度评分, 排名)
+- **NotificationEngine** (增强, 渠道/模板/事件类型, 18+ tests)
+
+### R41 (ML)
+- **MarketplacePublishPanel** (414L, 策略发布流程)
+- **MultiSourceDataPanel** (272L, 4 源对比 UI)
+- **Phase5SummaryPanel** (250L, 6 引擎 KPI 看板)
+
+### R41 (dao)
+- **Phase 5.0 用户指南** (695L, docs/guides/phase5-user-guide.md)
+- **R40 Code Review** (371L, docs/reviews/r40-code-review.md)
+- **MultiSource / StrategyRanking API** (466L 总, docs/api/)
+
+### PM 修复
+- multi-source-aggregator.test.ts best→bestData / consensus / dataPoints→allSources
+
 ## [0.8.0] - 2026-06-07
 
 ### Sprint 2 Phase 4 Complete (R29-R40)
