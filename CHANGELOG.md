@@ -1,5 +1,41 @@
 ﻿# DAWN WHALES Changelog
 
+## [0.9.0] - 2026-06-07
+
+### Sprint 2 Phase 6.0 Complete (R42) — 产品化打磨
+
+**Tests**: 2238 passed / 0 failed / 9 skipped (142 files) — 8.6× growth from v0.7.0
+**Build**: 0 errors, 0 warnings
+**TSC**: 0 errors
+**Stability**: 5 轮 0 fail 验证 (R42 重点目标)
+**Release**: v0.9.0 GitHub Release + .exe
+
+### R42 (JVS) — 3 引擎无新
+- **MultiAccountAdapter** (1109L, 27 tests, 账户隔离+余额聚合+跨账户分析)
+- **MobileDataAdapter** (546L, 32 tests, 移动端 WebSocket 推送降级+K 线缩略)
+- **AccountAnalytics** (458L, 14 tests, 总资产/总盈亏/账户对比)
+
+### R42 (ML) — UI 重构
+- **全站 Responsive 改造** (src/styles/responsive.css 325L, sm/md/lg/xl 4 断点)
+- **MultiAccountSwitcher** (240L, 集成到 Header, 快速切换)
+- **i18n 8 语言** (8 locales × 463L + I18nProvider 325L + LanguageSwitcher 31L)
+
+### R42 (QClaw) — 测试+E2E+性能
+- **测试 2238** (+162 from 2076, R42 目标 2120+ 超额 +118)
+- **Lighthouse 审计** (Mobile Chrome 3G 模拟)
+- **E2E 完整流程** (e2e-tests/*.spec.ts, Playwright + chromium)
+
+### R42 (dao) — 文档+审查
+- **Phase 6.0 架构文档** (604L, docs/architecture/phase6-architecture.md)
+- **多账户用户指南** (460L, docs/guides/multi-account-user-guide.md)
+- **Lighthouse 审计报告** (365L, docs/reports/lighthouse-audit-r42.md)
+
+### PM 修复 (9 处, R42 重点)
+- account-analytics.ts: getAccountSummary throw->return undefined
+- multi-account-adapter.ts: addAccount 返回 id, mask secrets, 补全 8 个缺失方法
+- multi-account-adapter.ts: 补 updateAccountBalance/Positions/Orders, addRealizedPnL, getAccountSnapshot, syncAccount, startSync/stopSync, isSyncRunning, hasActiveSyncTimer, getCrossAccountAnalytics
+- jvs-42-01/03 tests: 期望对齐 (config.metadata->metadata, getAccountData 分层)
+
 ## [0.8.1-alpha] - 2026-06-07
 
 ### Sprint 2 Phase 5.0 Complete (R41) — 性能/市场/数据收尾
