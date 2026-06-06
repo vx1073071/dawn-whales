@@ -2,8 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates, deleteStrategy } from '../../lib/bridge-api';
 import StrategyExplainCard from './StrategyExplainCard';
 import StrategyCompareModal from './StrategyCompareModal';
+import ConditionRulePanel from '../trading/ConditionRulePanel';
 
-type CreateMode = null | 'ai' | 'template' | 'form';
+type CreateMode = null | 'ai' | 'template' | 'form' | 'condition';
 
 interface ParsedStrategy {
   success: boolean;
@@ -64,6 +65,7 @@ export default function StrategyPage() {
       </div>
 
       {!mode && !selectedId && <ModeSelector onSelect={setMode} />}
+      {mode === 'condition' && <ConditionRulePanel onBack={() => setMode(null)} />}
       {mode === 'ai' && <AICreator onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} onFillForm={(parsed) => { setNlPrefill(parsed); setMode('form'); }} />}
       {mode === 'template' && <TemplateBrowser onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} />}
       {mode === 'form' && <FormCreator onBack={() => { setMode(null); setNlPrefill(null); }} onCreated={() => { setMode(null); setNlPrefill(null); refresh(); }} nlPrefill={nlPrefill || undefined} />}
@@ -118,24 +120,39 @@ export default function StrategyPage() {
 
 function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
   return (
-    <div className="grid grid-cols-3 gap-4 mb-8">
-      <button onClick={() => onSelect('ai')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
-        <div className="text-3xl mb-3">💬</div>
-        <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">说出来</h3>
-        <p className="text-gray-400 text-xs leading-relaxed">用自然语言描述你的策略<br/>AI 帮你自动生成可执行策略</p>
-        <div className="mt-3 text-[#D4A853] text-xs font-medium">推荐新手 →</div>
-      </button>
-      <button onClick={() => onSelect('template')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
-        <div className="text-3xl mb-3">📋</div>
-        <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">选模板</h3>
-        <p className="text-gray-400 text-xs leading-relaxed">经典策略模板库<br/>选一个改改参数就能用</p>
-        <div className="mt-3 text-gray-500 text-xs">8 个策略模板</div>
-      </button>
-      <button onClick={() => onSelect('form')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
-        <div className="text-3xl mb-3">📊</div>
-        <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">填表单</h3>
-        <p className="text-gray-400 text-xs leading-relaxed">精确控制每个参数<br/>完全自定义策略</p>
-        <div className="mt-3 text-gray-500 text-xs">完全自定义</div>
+    <div className="space-y-4 mb-8">
+      <div className="grid grid-cols-3 gap-4">
+        <button onClick={() => onSelect('ai')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
+          <div className="text-3xl mb-3">💬</div>
+          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">说出来</h3>
+          <p className="text-gray-400 text-xs leading-relaxed">用自然语言描述你的策略<br/>AI 帮你自动生成可执行策略</p>
+          <div className="mt-3 text-[#D4A853] text-xs font-medium">推荐新手 →</div>
+        </button>
+        <button onClick={() => onSelect('template')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
+          <div className="text-3xl mb-3">📋</div>
+          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">选模板</h3>
+          <p className="text-gray-400 text-xs leading-relaxed">经典策略模板库<br/>选一个改改参数就能用</p>
+          <div className="mt-3 text-gray-500 text-xs">8 个策略模板</div>
+        </button>
+        <button onClick={() => onSelect('form')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
+          <div className="text-3xl mb-3">📊</div>
+          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">填表单</h3>
+          <p className="text-gray-400 text-xs leading-relaxed">精确控制每个参数<br/>完全自定义策略</p>
+          <div className="mt-3 text-gray-500 text-xs">完全自定义</div>
+        </button>
+      </div>
+      {/* Phase 4.2: Condition Rules */}
+      <button onClick={() => onSelect('condition')} className="w-full bg-[#C9A046]/5 border border-[#C9A046]/20 rounded-xl p-4 text-left hover:border-[#C9A046]/40 hover:bg-[#C9A046]/10 transition-all group">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="text-2xl">⚡</div>
+            <div>
+              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">条件规则</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">价格/指标自动触发 · 无需手动盯盘 · 智能条件执行</p>
+            </div>
+          </div>
+          <span className="text-[#D4A853] text-xs font-medium">Phase 4.2 →</span>
+        </div>
       </button>
     </div>
   );
