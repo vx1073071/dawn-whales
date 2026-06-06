@@ -1,5 +1,51 @@
 ﻿# DAWN WHALES Changelog
 
+## [0.8.0] - 2026-06-07
+
+### Sprint 2 Phase 4 Complete (R29-R40)
+
+**Tests**: 1775 passed / 0 failed / 9 skipped (125 files) — 7.5× growth from v0.7.0
+**Build**: 0 errors, 0 warnings
+**TSC**: 0 errors
+**Brokers**: 3 brokers + Phase 4.4/5.0 决策引擎
+
+### Phase 4.1-4.2 (R29-R33) — ClosedLoop + Risk
+- **ClosedLoopExecutor** (620L, paper→live 桥接)
+- **RebalanceEngine** (400L, 组合再平衡)
+- **Risk Engine v2** (10 检查, VaR/CVaR)
+- **PerformanceDashboard** (KPI 实时)
+- **TradingCalendar** (节假日 + 交易日)
+
+### Phase 4.3 (R34-R36) — 边界修复
+- 5 模式集成: ClosedLoop + Rebalance + Risk + Calendar + Executor
+- 测试扩量: 487 → 1484 (+997, 3× 增长)
+- 守护循环 487/487 (3 轮稳定)
+
+### Phase 4.4 (R37-R38) — 自主决策引擎
+- **AdaptiveParamEngine** (1296L, 15+ tests, 在线学习)
+- **RewardEngine** (655L, 10+ tests, PnL+Sharpe)
+- **BacktestReplayEngine** (745L, 23+ tests, K线回放)
+- **SystemHealthPanel** (Dashboard 实时, 10 引擎监控)
+- **AdaptiveParamPanel** (>=400L, 4 strategy types)
+- simulationFailureRate 可配置 (deterministic default 0)
+
+### Phase 5.0 (R39-R40) — 智能决策 + Live Trading
+- **StrategyOptimizer** (814L, 27+ tests, 网格/随机/贝叶斯 3 模式)
+- **MultiTimeframeEngine** (656L, 37+ tests, 7 周期聚合)
+- **PortfolioRiskEngine** (695L, 27+ tests, VaR/CVaR/相关性/压力)
+- **LiveTradeBridge** (731L, sim→live 桥接, dry-run 模式)
+- **StrategyOptimizerPanel** + **PortfolioAnalyticsPanel** + **MultiTimeframePanel** (3 UI)
+
+### 5 虾协作模式 (R37-R40)
+- 主副双岗制: ML (UI) / JVS (引擎) / QClaw (测试) / PM (守护+发布) / dao (审查+文档)
+- v0.8.0 三轮欠账在 R40 启动 P0 第一优先级
+- 互备规则避免单点故障
+
+### 性能改进
+- 引擎总代码: 4865L (3 R40 + 3 R39 + 3 R38)
+- 测试稳定性: 5 轮 0 fail (random 失败根因修复)
+- 1-based → 0-based cursor 统一语义
+
 ## [0.7.0] - 2026-06-06
 
 ### Sprint 2 Phase 3 Complete (R28 Release)
