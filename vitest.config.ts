@@ -38,11 +38,11 @@ export default defineConfig({
       'tests/q35-trading-components.test.tsx',
       // Requires Electron IPC mock (ipcMain in main process)
       'tests/jvs-100-e2e.test.ts',
-      // Import engine classes with `extends EventEmitter` — Node `events` not in jsdom
-      'tests/closed-loop-executor.test.ts',
-      'tests/closed-loop-integration.test.ts',
-      'tests/position-monitor.test.ts',
-      'tests/rebalance-engine.test.ts',
+      // PM fixed: EventEmitter now in globalThis via setup file (tests/helpers/setup.ts)
+      // 'tests/closed-loop-executor.test.ts',
+      // 'tests/closed-loop-integration.test.ts',
+      // 'tests/position-monitor.test.ts',
+      // 'tests/rebalance-engine.test.ts',
     ],
     coverage: {
       provider: 'v8',

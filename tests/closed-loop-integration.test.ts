@@ -107,8 +107,8 @@ describe('J-35-01: ClosedLoop → TradeExecutor Integration', () => {
       executor.updateConfig({ maxDailyOrders: 999 });
       executor.resetDailyCount();
 
-      // Force all orders to succeed so positions.fill() deterministic
-      const randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0.02);
+      // Force all orders to succeed (Math.random() > 0.05)
+      const randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0.99);
       // Create 20 signals -> 20 positions (all orders succeed with mockReturnValue(0.02))
       for (let i = 0; i < 20; i++) {
         const signal: Signal = {
@@ -253,6 +253,9 @@ describe('J-35-01: ClosedLoop → TradeExecutor Integration', () => {
 
   describe('Statistics', () => {
     it('should calculate stats correctly', () => {
+      // Force order to succeed (Math.random() > 0.05)
+      const randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0.99);
+      
       const signal1: Signal = {
         id: 'sig-1',
         strategyId: 'strat-1',
@@ -263,7 +266,9 @@ describe('J-35-01: ClosedLoop → TradeExecutor Integration', () => {
         confidence: 0.8,
       };
       executor.addSignal(signal1);
-
+      
+      randomSpy.mockRestore();
+      
       const stats = executor.getStats();
       expect(stats.totalSignals).toBe(1);
       expect(stats.executedOrders).toBeGreaterThan(0);

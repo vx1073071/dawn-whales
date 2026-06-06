@@ -187,7 +187,13 @@ describe('J-35-02: PositionMonitor', () => {
         confidence: 0.8,
       };
 
+      // Force order to succeed (Math.random() > 0.05)
+      const randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0.99);
+      
       trailingExecutor.addSignal(signal);
+      
+      randomSpy.mockRestore();
+      
       const positions = trailingExecutor.getPositions();
       expect(positions.length).toBe(1);
 
