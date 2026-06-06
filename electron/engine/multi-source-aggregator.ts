@@ -139,6 +139,54 @@ interface FetchAttemptResult {
 }
 
 // ============================================================================
+// Enhancement Types (JVS-41-01 Extensions)
+// ============================================================================
+
+export interface ValidationConfig {
+  minPrice: number;
+  maxPrice: number;
+  maxVolumeRatio: number;
+  maxTimestampAgeMs: number;
+}
+
+export interface ValidationResult {
+  valid: boolean;
+  errors: string[];
+  warnings: string[];
+}
+
+export interface AnomalyRecord {
+  symbol: string;
+  source: DataSourceId;
+  price: number;
+  zScore: number;
+  timestamp: number;
+  flagged: boolean;
+}
+
+export interface LatencyStats {
+  p50: number;
+  p95: number;
+  p99: number;
+  samples: number;
+}
+
+export interface BatchFetchResult {
+  symbol: string;
+  success: boolean;
+  data?: DataPoint;
+  error?: string;
+}
+
+export interface SourceWeightEntry {
+  timestamp: number;
+  symbol: string;
+  selectedSource: DataSourceId;
+  allSources: DataSourceId[];
+  reason: string;
+}
+
+// ============================================================================
 // Constants
 // ============================================================================
 
@@ -159,6 +207,18 @@ const CONSENSUS_THRESHOLD = 0.05; // 5% price deviation for consensus
 
 export class MultiSourceAggregator extends SimpleEventEmitter {
   private sources: Map<DataSourceId, RegisteredSource> = new Map();
+
+  // Enhancement fields (JVS-41-01 Extensions)
+  private _sourceWeightHistory: SourceWeightEntry[] = [];
+  private _validationConfig: ValidationConfig = {
+    minPrice: 0.001,
+    maxPrice: 1_000_000,
+    maxVolumeRatio: 100,
+    maxTimestampAgeMs: 300_000, // 5 minutes
+  };
+  private _anomalyRecords: AnomalyRecord[] = [];
+  private _maxAnomalyRecords = 1000;
+  private _latencySamples: Map<DataSourceId, number[]> = new Map();
 
   constructor() {
     super();
@@ -302,6 +362,14 @@ export class MultiSourceAggregator extends SimpleEventEmitter {
       try {
         const result = await this.fetchFromSource(source, symbol);
         if (result.success && result.data) {
+          // Track latency and source weight (JVS-41-01 Extensions)
+          this.recordLatency(source.config.id, result.latencyMs);
+          this.recordSourceSelection(
+            symbol,
+            source.config.id,
+            sorted.map((s) => s.config.id),
+            'best-priority'
+          );
           this.emit('fetch-success', symbol, source.config.id, result.data);
           return result.data;
         }
@@ -345,6 +413,8 @@ export class MultiSourceAggregator extends SimpleEventEmitter {
 
       if (result.status === 'fulfilled' && result.value.success && result.value.data) {
         dataPoints.push(result.value.data);
+        // Track latency for successful fetches (JVS-41-01 Extension)
+        this.recordLatency(source.config.id, result.value.latencyMs);
       } else {
         const reason =
           result.status === 'rejected'
@@ -792,6 +862,440 @@ export class MultiSourceAggregator extends SimpleEventEmitter {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  // --------------------------------------------------------------------------
+  // Data Deduplication (JVS-41-01 Extension)
+  // --------------------------------------------------------------------------
+
+  /**
+   * Detect and remove duplicate data points across sources.
+   * Two data points are considered duplicates if they share the same symbol,
+   * source, and have prices within `tolerance` of each other.
+   */
+  deduplicateDataPoints(dataPoints: DataPoint[], tolerance: number = 0.001): DataPoint[] {
+    if (dataPoints.length <= 1) return [...dataPoints];
+
+    const unique: DataPoint[] = [];
+    const seen = new Set<string>();
+
+    for (const dp of dataPoints) {
+      // Create a normalized key: symbol + source + rounded price
+      const priceBucket = Math.round(dp.price / tolerance) * tolerance;
+      const key = `${dp.symbol}:${dp.source}:${priceBucket}`;
+
+      if (!seen.has(key)) {
+        seen.add(key);
+        unique.push(dp);
+      } else {
+        // Keep the one with higher confidence
+        const existingIdx = unique.findIndex(
+          (u) => u.symbol === dp.symbol && u.source === dp.source
+        );
+        if (existingIdx >= 0 && dp.confidence > unique[existingIdx].confidence) {
+          unique[existingIdx] = dp;
+        }
+      }
+    }
+
+    return unique;
+  }
+
+  /**
+   * Get count of duplicates that would be removed.
+   */
+  countDuplicates(dataPoints: DataPoint[], tolerance: number = 0.001): number {
+    return dataPoints.length - this.deduplicateDataPoints(dataPoints, tolerance).length;
+  }
+
+  // --------------------------------------------------------------------------
+  // Data Validation Layer (JVS-41-01 Extension)
+  // --------------------------------------------------------------------------
+
+  /**
+   * Get the current validation configuration.
+   */
+  getValidationConfig(): ValidationConfig {
+    return { ...this._validationConfig };
+  }
+
+  /**
+   * Set the validation configuration.
+   */
+  setValidationConfig(config: Partial<ValidationConfig>): void {
+    this._validationConfig = { ...this._validationConfig, ...config };
+  }
+
+  /**
+   * Validate a single data point against configured rules.
+   * Checks price range, volume sanity, and timestamp freshness.
+   */
+  validateDataPoint(dp: DataPoint): ValidationResult {
+    const errors: string[] = [];
+    const warnings: string[] = [];
+    const cfg = this._validationConfig;
+
+    // Price range validation
+    if (dp.price <= 0) {
+      errors.push(`Invalid price: ${dp.price} (must be > 0)`);
+    }
+    if (dp.price < cfg.minPrice) {
+      warnings.push(`Price ${dp.price} below minimum threshold ${cfg.minPrice}`);
+    }
+    if (dp.price > cfg.maxPrice) {
+      errors.push(`Price ${dp.price} exceeds maximum ${cfg.maxPrice}`);
+    }
+
+    // Volume sanity check
+    if (dp.volume < 0) {
+      errors.push(`Negative volume: ${dp.volume}`);
+    }
+    if (dp.volume > cfg.maxVolumeRatio * 1_000_000_000) {
+      warnings.push(`Unusually high volume: ${dp.volume}`);
+    }
+
+    // Timestamp freshness check
+    const age = Date.now() - dp.timestamp;
+    if (age > cfg.maxTimestampAgeMs) {
+      warnings.push(`Stale data: ${Math.round(age / 1000)}s old (max ${Math.round(cfg.maxTimestampAgeMs / 1000)}s)`);
+    }
+    if (dp.timestamp > Date.now() + 60000) {
+      errors.push(`Future timestamp: ${dp.timestamp}`);
+    }
+
+    // Confidence range check
+    if (dp.confidence < 0 || dp.confidence > 1) {
+      errors.push(`Confidence out of range: ${dp.confidence} (must be 0-1)`);
+    }
+
+    return {
+      valid: errors.length === 0,
+      errors,
+      warnings,
+    };
+  }
+
+  /**
+   * Validate an array of data points, returning per-point results.
+   */
+  validateAll(dataPoints: DataPoint[]): Array<{ point: DataPoint; result: ValidationResult }> {
+    return dataPoints.map((dp) => ({ point: dp, result: this.validateDataPoint(dp) }));
+  }
+
+  /**
+   * Filter data points to only valid ones.
+   */
+  filterValid(dataPoints: DataPoint[]): DataPoint[] {
+    return dataPoints.filter((dp) => this.validateDataPoint(dp).valid);
+  }
+
+  // --------------------------------------------------------------------------
+  // Price Anomaly Detection (JVS-41-01 Extension)
+  // --------------------------------------------------------------------------
+
+  /**
+   * Detect price anomalies using the Z-score method.
+   * A data point is flagged as anomalous if its z-score exceeds the threshold.
+   */
+  detectPriceAnomalies(dataPoints: DataPoint[], zScoreThreshold: number = 2.0): AnomalyRecord[] {
+    if (dataPoints.length < 2) return [];
+
+    const prices = dataPoints.map((dp) => dp.price);
+    const mean = prices.reduce((s, p) => s + p, 0) / prices.length;
+    const stdDev = Math.sqrt(
+      prices.reduce((s, p) => s + (p - mean) ** 2, 0) / prices.length
+    );
+
+    if (stdDev === 0) return [];
+
+    const records: AnomalyRecord[] = dataPoints.map((dp) => {
+      const zScore = Math.abs((dp.price - mean) / stdDev);
+      return {
+        symbol: dp.symbol,
+        source: dp.source,
+        price: dp.price,
+        zScore: Math.round(zScore * 10000) / 10000,
+        timestamp: Date.now(),
+        flagged: zScore > zScoreThreshold,
+      };
+    });
+
+    // Store records (with ring buffer cap)
+    for (const record of records) {
+      this._anomalyRecords.push(record);
+    }
+    while (this._anomalyRecords.length > this._maxAnomalyRecords) {
+      this._anomalyRecords.shift();
+    }
+
+    return records;
+  }
+
+  /**
+   * Detect anomalies using the IQR (Interquartile Range) method.
+   * Values below Q1 - 1.5*IQR or above Q3 + 1.5*IQR are flagged as outliers.
+   */
+  detectAnomaliesIQR(dataPoints: DataPoint[]): AnomalyRecord[] {
+    if (dataPoints.length < 4) return [];
+
+    const sorted = [...dataPoints].sort((a, b) => a.price - b.price);
+    const n = sorted.length;
+
+    const q1 = sorted[Math.floor(n * 0.25)].price;
+    const q3 = sorted[Math.floor(n * 0.75)].price;
+    const iqr = q3 - q1;
+    const lowerBound = q1 - 1.5 * iqr;
+    const upperBound = q3 + 1.5 * iqr;
+
+    return dataPoints.map((dp) => {
+      const isOutlier = dp.price < lowerBound || dp.price > upperBound;
+      const deviation = isOutlier
+        ? dp.price < lowerBound
+          ? (lowerBound - dp.price) / (iqr || 1)
+          : (dp.price - upperBound) / (iqr || 1)
+        : 0;
+
+      return {
+        symbol: dp.symbol,
+        source: dp.source,
+        price: dp.price,
+        zScore: Math.round(deviation * 10000) / 10000,
+        timestamp: Date.now(),
+        flagged: isOutlier,
+      };
+    });
+  }
+
+  /**
+   * Get all recorded anomaly records.
+   */
+  getAnomalyRecords(): AnomalyRecord[] {
+    return [...this._anomalyRecords];
+  }
+
+  /**
+   * Clear anomaly records.
+   */
+  clearAnomalyRecords(): void {
+    this._anomalyRecords = [];
+  }
+
+  // --------------------------------------------------------------------------
+  // Source Weight History (JVS-41-01 Extension)
+  // --------------------------------------------------------------------------
+
+  /**
+   * Record a source selection event for analytics.
+   */
+  recordSourceSelection(
+    symbol: string,
+    selectedSource: DataSourceId,
+    allSources: DataSourceId[],
+    reason: string = 'best-priority'
+  ): void {
+    this._sourceWeightHistory.push({
+      timestamp: Date.now(),
+      symbol,
+      selectedSource,
+      allSources,
+      reason,
+    });
+  }
+
+  /**
+   * Get the full source weight history.
+   */
+  getSourceWeightHistory(): SourceWeightEntry[] {
+    return [...this._sourceWeightHistory];
+  }
+
+  /**
+   * Get aggregated source weight distribution.
+   * Returns how many times each source was selected.
+   */
+  getSourceWeightDistribution(): Record<string, number> {
+    const dist: Record<string, number> = {};
+    for (const entry of this._sourceWeightHistory) {
+      dist[entry.selectedSource] = (dist[entry.selectedSource] || 0) + 1;
+    }
+    return dist;
+  }
+
+  /**
+   * Clear source weight history.
+   */
+  clearSourceWeightHistory(): void {
+    this._sourceWeightHistory = [];
+  }
+
+  // --------------------------------------------------------------------------
+  // Source Latency Tracking (JVS-41-01 Extension)
+  // --------------------------------------------------------------------------
+
+  /**
+   * Record a latency measurement for a source.
+   */
+  recordLatency(sourceId: DataSourceId, latencyMs: number): void {
+    if (!this._latencySamples.has(sourceId)) {
+      this._latencySamples.set(sourceId, []);
+    }
+    const samples = this._latencySamples.get(sourceId)!;
+    samples.push(latencyMs);
+    // Keep max 1000 samples per source (ring buffer)
+    if (samples.length > 1000) {
+      samples.shift();
+    }
+  }
+
+  /**
+   * Get latency percentiles for a specific source.
+   * Returns p50, p95, p99 latency values.
+   */
+  getLatencyStats(sourceId: DataSourceId): LatencyStats | undefined {
+    const samples = this._latencySamples.get(sourceId);
+    if (!samples || samples.length === 0) return undefined;
+
+    const sorted = [...samples].sort((a, b) => a - b);
+    return {
+      p50: this.percentile(sorted, 50),
+      p95: this.percentile(sorted, 95),
+      p99: this.percentile(sorted, 99),
+      samples: sorted.length,
+    };
+  }
+
+  /**
+   * Get latency stats for all sources.
+   */
+  getAllLatencyStats(): Record<string, LatencyStats> {
+    const result: Record<string, LatencyStats> = {};
+    for (const [id] of this._latencySamples) {
+      const stats = this.getLatencyStats(id);
+      if (stats) {
+        result[id] = stats;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Clear latency tracking data.
+   */
+  clearLatencyStats(): void {
+    this._latencySamples.clear();
+  }
+
+  /**
+   * Clear latency stats for a specific source.
+   */
+  clearLatencyStatsForSource(sourceId: DataSourceId): boolean {
+    return this._latencySamples.delete(sourceId);
+  }
+
+  /**
+   * Calculate the Nth percentile from a sorted array.
+   */
+  private percentile(sortedArr: number[], p: number): number {
+    if (sortedArr.length === 0) return 0;
+    if (sortedArr.length === 1) return sortedArr[0];
+    const idx = (p / 100) * (sortedArr.length - 1);
+    const lower = Math.floor(idx);
+    const upper = Math.ceil(idx);
+    if (lower === upper) return sortedArr[lower];
+    const frac = idx - lower;
+    return Math.round((sortedArr[lower] * (1 - frac) + sortedArr[upper] * frac) * 100) / 100;
+  }
+
+  // --------------------------------------------------------------------------
+  // Batch Fetch (JVS-41-01 Extension)
+  // --------------------------------------------------------------------------
+
+  /**
+   * Fetch data for multiple symbols in parallel with a configurable concurrency limit.
+   * Uses fetchBest for each symbol.
+   */
+  async batchFetch(
+    symbols: string[],
+    concurrencyLimit: number = 5
+  ): Promise<BatchFetchResult[]> {
+    if (symbols.length === 0) return [];
+
+    const results: BatchFetchResult[] = [];
+    const queue = [...symbols];
+    const executing: Promise<void>[] = [];
+
+    const processNext = async (): Promise<void> => {
+      const symbol = queue.shift();
+      if (!symbol) return;
+
+      try {
+        const data = await this.fetchBest(symbol);
+        results.push({ symbol, success: true, data });
+      } catch (err) {
+        results.push({
+          symbol,
+          success: false,
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
+
+      // Process next item in queue if any remain
+      if (queue.length > 0) {
+        const next = processNext();
+        executing.push(next);
+        await next;
+      }
+    };
+
+    // Start initial batch up to concurrency limit
+    const initialBatchSize = Math.min(concurrencyLimit, symbols.length);
+    for (let i = 0; i < initialBatchSize; i++) {
+      const p = processNext();
+      executing.push(p);
+    }
+    await Promise.all(executing);
+
+    this.emit('batch-fetch-complete', results);
+    return results;
+  }
+
+  /**
+   * Fetch all sources for a symbol with deduplication and validation applied.
+   * Returns enhanced aggregation result.
+   */
+  async fetchAllWithDedup(symbol: string): Promise<AggregationResult & {
+    duplicatesRemoved: number;
+    validationResults: ValidationResult[];
+    anomalies: AnomalyRecord[];
+  }> {
+    const result = await this.fetchAll(symbol);
+
+    // Deduplicate
+    const beforeDedup = result.allSources.length;
+    const deduped = this.deduplicateDataPoints(result.allSources);
+    const duplicatesRemoved = beforeDedup - deduped.length;
+
+    // Validate
+    const validationResults = deduped.map((dp) => this.validateDataPoint(dp));
+
+    // Detect anomalies
+    const anomalies = this.detectPriceAnomalies(deduped);
+
+    // Record source weight
+    this.recordSourceSelection(
+      symbol,
+      result.bestData.source,
+      deduped.map((d) => d.source),
+      'best-score'
+    );
+
+    return {
+      ...result,
+      allSources: deduped,
+      duplicatesRemoved,
+      validationResults,
+      anomalies,
+    };
+  }
+
   /**
    * Destroy the aggregator: stop all health checks and remove listeners.
    */
@@ -821,6 +1325,12 @@ export class MultiSourceAggregator extends SimpleEventEmitter {
         health: { ...s.health },
         stats: { ...s.stats },
       })),
+      // Enhancement state (JVS-41-01 Extensions)
+      sourceWeightHistory: [...this._sourceWeightHistory],
+      sourceWeightDistribution: this.getSourceWeightDistribution(),
+      anomalyRecordCount: this._anomalyRecords.length,
+      latencyStats: this.getAllLatencyStats(),
+      validationConfig: { ...this._validationConfig },
     };
   }
 }
