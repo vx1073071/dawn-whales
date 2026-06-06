@@ -1,0 +1,292 @@
+/**
+ * DesktopNotification — Browser Notification API bridge for trading alerts
+ * (ML-43-03, R43 Phase 6.0)
+ *
+ * Features:
+ * - Request permission flow with instructional banner
+ * - Send notifications for: strategy signal / stop-loss triggered / risk alert
+ * - Notification history (last 20)
+ * - Sound toggle + silent mode
+ */
+
+import React, { useState, useCallback, useEffect } from 'react';
+
+// ── Types ───────────────────────────────────────────────────────────────
+
+type NotificationType = 'signal' | 'stop_loss' | 'take_profit' | 'risk_alert' | 'system';
+
+interface DesktopNotification {
+  id: string;
+  type: NotificationType;
+  title: string;
+  body: string;
+  timestamp: number;
+  read: boolean;
+}
+
+// ── Constants ───────────────────────────────────────────────────────────
+
+const TYPE_ICONS: Record<NotificationType, string> = {
+  signal: '📊',
+  stop_loss: '🛑',
+  take_profit: '💰',
+  risk_alert: '⚠️',
+  system: '🔔',
+};
+
+const TYPE_COLORS: Record<NotificationType, string> = {
+  signal: 'text-amber-400',
+  stop_loss: 'text-red-400',
+  take_profit: 'text-emerald-400',
+  risk_alert: 'text-orange-400',
+  system: 'text-blue-400',
+};
+
+// ── Main Component ──────────────────────────────────────────────────────
+
+interface DesktopNotificationPanelProps {
+  className?: string;
+}
+
+export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> = ({ className }) => {
+  const [permission, setPermission] = useState<NotificationPermission | 'unsupported'>('default');
+  const [enabled, setEnabled] = useState(false);
+  const [sound, setSound] = useState(true);
+  const [history, setHistory] = useState<DesktopNotification[]>([]);
+  const [showTestSent, setShowTestSent] = useState(false);
+
+  // Check permission on mount
+  useEffect(() => {
+    if (!('Notification' in window)) {
+      setPermission('unsupported');
+      return;
+    }
+    setPermission(Notification.permission);
+  }, []);
+
+  // Sync enabled with permission
+  useEffect(() => {
+    setEnabled(permission === 'granted');
+  }, [permission]);
+
+  const requestPermission = useCallback(async () => {
+    if (!('Notification' in window)) return;
+    const result = await Notification.requestPermission();
+    setPermission(result);
+    if (result === 'granted') {
+      // Send welcome notification
+      new Notification('DAWN WHALES', {
+        body: '桌面通知已开启！你将收到策略信号和风控告警。',
+        icon: '/logo.png',
+      });
+    }
+  }, []);
+
+  const sendNotification = useCallback((type: NotificationType, title: string, body: string) => {
+    const id = `notif-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const entry: DesktopNotification = {
+      id, type, title, body, timestamp: Date.now(), read: false,
+    };
+
+    // Push to history
+    setHistory(prev => [entry, ...prev].slice(0, 20));
+
+    // Browser notification
+    if (enabled && 'Notification' in window) {
+      new Notification(title, {
+        body,
+        icon: '/logo.png',
+        tag: type,
+      });
+
+      // Sound via AudioContext (short beep)
+      if (sound) {
+        try {
+          const ctx = new AudioContext();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.type = type === 'risk_alert' || type === 'stop_loss' ? 'sawtooth' : 'sine';
+          osc.frequency.value = type === 'risk_alert' ? 880 : type === 'stop_loss' ? 660 : 520;
+          gain.gain.value = 0.1;
+          osc.start();
+          osc.stop(ctx.currentTime + 0.15);
+        } catch {}
+      }
+    }
+  }, [enabled, sound]);
+
+  // Demo buttons
+  const testSignal = useCallback(() => {
+    sendNotification('signal', '📊 策略信号', '双均线交叉策略发出买入信号: US.AAPL @ $150.00');
+    setShowTestSent(true);
+    setTimeout(() => setShowTestSent(false), 2000);
+  }, [sendNotification]);
+
+  const testStopLoss = useCallback(() => {
+    sendNotification('stop_loss', '🛑 止损触发', 'HK.00700 触及止损价 $365.00，已自动平仓');
+  }, [sendNotification]);
+
+  const testRisk = useCallback(() => {
+    sendNotification('risk_alert', '⚠️ 风控告警', '组合回撤已达 12%，接近 15% 硬限制');
+  }, [sendNotification]);
+
+  const markAllRead = useCallback(() => {
+    setHistory(prev => prev.map(h => ({ ...h, read: true })));
+  }, []);
+
+  const clearHistory = useCallback(() => {
+    setHistory([]);
+  }, []);
+
+  const unreadCount = history.filter(h => !h.read).length;
+
+  // ── Render ─────────────────────────────────────────────────────────
+
+  return (
+    <div className={`bg-gray-900 rounded-xl border border-gray-800 p-5 ${className ?? ''}`}>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5">
+        <div>
+          <h3 className="text-lg font-bold text-white">
+            桌面通知
+            <span className="ml-2 px-2 py-0.5 text-[10px] bg-amber-500/20 text-amber-400 rounded-full font-normal">
+              Phase 6.0
+            </span>
+          </h3>
+          <p className="text-xs text-gray-500 mt-0.5">
+            {permission === 'granted' ? '🟢 已授权' :
+             permission === 'denied' ? '🔴 已拒绝' :
+             permission === 'unsupported' ? '⚠️ 浏览器不支持' :
+             '🟡 未授权'}
+            {unreadCount > 0 && <span className="ml-2 text-amber-400">{unreadCount} 条未读</span>}
+          </p>
+        </div>
+
+        {/* Toggles */}
+        <div className="flex items-center gap-3">
+          <label className="flex items-center gap-1.5 text-[10px] text-gray-500">
+            <input
+              type="checkbox"
+              checked={sound}
+              onChange={e => setSound(e.target.checked)}
+              className="accent-amber-500"
+            />
+            🔊
+          </label>
+          <label className="flex items-center gap-1.5 text-[10px] text-gray-500">
+            <input
+              type="checkbox"
+              checked={enabled}
+              onChange={e => setEnabled(e.target.checked)}
+              disabled={permission !== 'granted'}
+              className="accent-amber-500"
+            />
+            推送
+          </label>
+        </div>
+      </div>
+
+      {/* Permission request */}
+      {permission === 'default' && (
+        <div className="bg-amber-500/5 border border-amber-500/20 rounded-lg p-4 mb-5">
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="text-amber-400 font-bold text-sm">开启桌面通知</div>
+              <p className="text-xs text-gray-500 mt-1">
+                策略信号、止损触发、风控告警将以桌面弹窗形式通知你。
+              </p>
+            </div>
+            <button
+              onClick={requestPermission}
+              className="px-4 py-2 bg-amber-500 text-black rounded-lg text-xs font-bold hover:bg-amber-400"
+            >
+              开启
+            </button>
+          </div>
+        </div>
+      )}
+
+      {permission === 'denied' && (
+        <div className="bg-red-500/5 border border-red-500/20 rounded-lg p-4 mb-5">
+          <p className="text-xs text-red-400">
+            通知权限已被拒绝。请在浏览器设置中允许通知。
+          </p>
+        </div>
+      )}
+
+      {permission === 'unsupported' && (
+        <div className="bg-gray-800/40 rounded-lg p-4 mb-5">
+          <p className="text-xs text-gray-500">
+            当前浏览器不支持桌面通知。请使用 Chrome/Edge/Firefox。
+          </p>
+        </div>
+      )}
+
+      {/* Test buttons */}
+      <div className="flex gap-2 mb-5">
+        <button onClick={testSignal} disabled={!enabled}
+          className={`px-3 py-1.5 rounded text-[10px] font-medium transition-colors ${
+            enabled ? 'bg-amber-500/10 text-amber-400 hover:bg-amber-500/20' : 'bg-gray-800 text-gray-600 cursor-not-allowed'
+          }`}>
+          📊 测试信号
+        </button>
+        <button onClick={testStopLoss} disabled={!enabled}
+          className={`px-3 py-1.5 rounded text-[10px] font-medium transition-colors ${
+            enabled ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20' : 'bg-gray-800 text-gray-600 cursor-not-allowed'
+          }`}>
+          🛑 测试止损
+        </button>
+        <button onClick={testRisk} disabled={!enabled}
+          className={`px-3 py-1.5 rounded text-[10px] font-medium transition-colors ${
+            enabled ? 'bg-orange-500/10 text-orange-400 hover:bg-orange-500/20' : 'bg-gray-800 text-gray-600 cursor-not-allowed'
+          }`}>
+          ⚠️ 测试风控
+        </button>
+        {showTestSent && <span className="text-[10px] text-emerald-400 py-1.5">✓ 已发送</span>}
+      </div>
+
+      {/* Notification history */}
+      <div className="flex items-center justify-between mb-3">
+        <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+          通知历史 ({history.length})
+        </h4>
+        <div className="flex gap-2">
+          <button onClick={markAllRead} className="text-[10px] text-gray-500 hover:text-gray-300">全部已读</button>
+          <button onClick={clearHistory} className="text-[10px] text-gray-600 hover:text-red-400">清空</button>
+        </div>
+      </div>
+
+      <div className="space-y-2 max-h-64 overflow-y-auto">
+        {history.length === 0 && (
+          <div className="text-center py-6 text-xs text-gray-600">
+            暂无通知记录
+          </div>
+        )}
+        {history.map(entry => (
+          <div
+            key={entry.id}
+            className={`flex items-start gap-3 rounded-lg p-3 border ${
+              entry.read ? 'bg-gray-800/20 border-gray-700/10' : 'bg-gray-800/40 border-gray-700/30'
+            }`}
+          >
+            <span className="text-lg">{TYPE_ICONS[entry.type]}</span>
+            <div className="flex-1 min-w-0">
+              <div className={`text-xs font-medium ${entry.read ? TYPE_COLORS[entry.type].replace('text-', 'text-').replace('400', '300') : TYPE_COLORS[entry.type]}`}>
+                {entry.title}
+                {!entry.read && <span className="ml-1.5 w-1.5 h-1.5 bg-amber-500 rounded-full inline-block" />}
+              </div>
+              <div className="text-[10px] text-gray-500 mt-0.5">{entry.body}</div>
+              <div className="text-[10px] text-gray-700 mt-1">
+                {new Date(entry.timestamp).toLocaleTimeString()}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default DesktopNotificationPanel;
