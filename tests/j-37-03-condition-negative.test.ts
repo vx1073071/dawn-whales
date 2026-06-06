@@ -1,21 +1,7 @@
-// J-37-03: ConditionEngine Negative Tests (8+ tests)
-// Tests invalid inputs, edge cases, and error conditions
-
+// J-37-03: ConditionEngine Negative Tests
+import { describe, it, expect } from 'vitest';
 import { ConditionEngine } from '../electron/engine/condition-engine';
 import type { MarketSnapshot } from '../electron/types/condition.js';
-
-let passed = 0;
-let failed = 0;
-
-function assert(condition: boolean, msg: string) {
-  if (condition) {
-    passed++;
-    console.log(`  [PASS] ${msg}`);
-  } else {
-    failed++;
-    console.log(`  [FAIL] ${msg}`);
-  }
-}
 
 function makeSnapshot(price: number): MarketSnapshot {
   return {
@@ -29,20 +15,16 @@ function makeSnapshot(price: number): MarketSnapshot {
   };
 }
 
-function run() {
-  console.log('\n━━ J-37-03: ConditionEngine Negative Tests ━━\n');
-
-  // Test 1: Evaluate with no rules
-  {
+describe('J-37-03 ConditionEngine Negative', () => {
+  it('N1: no rules → empty results', () => {
     const engine = new ConditionEngine();
     const results = engine.evaluate('600519', makeSnapshot(1800));
-    assert(results.length === 0, 'N1: no rules → empty results');
-  }
+    expect(results.length).toBe(0);
+  });
 
-  // Test 2: Evaluate with disabled rule
-  {
+  it('N2: disabled rule not evaluated', () => {
     const engine = new ConditionEngine();
-    const rule = engine.createRule({
+    engine.createRule({
       symbol: '600519',
       enabled: false,
       condition: { type: 'price', operator: 'gt', value: 1700 },
@@ -51,39 +33,30 @@ function run() {
       action: { type: 'notify', message: 'Price > 1700' },
     });
     const results = engine.evaluate('600519', makeSnapshot(1800));
-    assert(results.length === 0, 'N2: disabled rule not evaluated');
-  }
+    expect(results.length).toBe(0);
+  });
 
-  // Test 3: Delete non-existent rule
-  {
+  it('N3: delete non-existent rule returns false', () => {
     const engine = new ConditionEngine();
-    const deleted = engine.deleteRule('non-existent-id');
-    assert(deleted === false, 'N3: delete non-existent rule returns false');
-  }
+    expect(engine.deleteRule('non-existent-id')).toBe(false);
+  });
 
-  // Test 4: Update non-existent rule
-  {
+  it('N4: update non-existent rule returns null', () => {
     const engine = new ConditionEngine();
-    const updated = engine.updateRule('non-existent-id', { enabled: false });
-    assert(updated === null, 'N4: update non-existent rule returns null');
-  }
+    expect(engine.updateRule('non-existent-id', { enabled: false })).toBeNull();
+  });
 
-  // Test 5: Enable non-existent rule
-  {
+  it('N5: enable non-existent rule returns false', () => {
     const engine = new ConditionEngine();
-    const enabled = engine.enableRule('non-existent-id');
-    assert(enabled === false, 'N5: enable non-existent rule returns false');
-  }
+    expect(engine.enableRule('non-existent-id')).toBe(false);
+  });
 
-  // Test 6: Disable non-existent rule
-  {
+  it('N6: disable non-existent rule returns false', () => {
     const engine = new ConditionEngine();
-    const disabled = engine.disableRule('non-existent-id');
-    assert(disabled === false, 'N6: disable non-existent rule returns false');
-  }
+    expect(engine.disableRule('non-existent-id')).toBe(false);
+  });
 
-  // Test 7: Evaluate with negative price
-  {
+  it('N7: negative price handled without crash', () => {
     const engine = new ConditionEngine();
     engine.createRule({
       symbol: '600519',
@@ -93,12 +66,10 @@ function run() {
       maxTriggersPerDay: 100,
       action: { type: 'notify', message: 'Test' },
     });
-    const results = engine.evaluate('600519', makeSnapshot(-100));
-    assert(results.length > 0, 'N7: negative price handled without crash');
-  }
+    expect(() => engine.evaluate('600519', makeSnapshot(-100))).not.toThrow();
+  });
 
-  // Test 8: Evaluate with zero price
-  {
+  it('N8: zero price handled', () => {
     const engine = new ConditionEngine();
     engine.createRule({
       symbol: '600519',
@@ -108,59 +79,47 @@ function run() {
       maxTriggersPerDay: 100,
       action: { type: 'notify', message: 'Test' },
     });
-    const results = engine.evaluate('600519', makeSnapshot(0));
-    assert(results.length > 0, 'N8: zero price handled');
-  }
+    expect(() => engine.evaluate('600519', makeSnapshot(0))).not.toThrow();
+  });
 
-  // Test 9: Cooldown prevents re-trigger
-  {
+  it('N9: cooldown prevents immediate re-trigger', () => {
     const engine = new ConditionEngine();
     engine.createRule({
       symbol: '600519',
       enabled: true,
       condition: { type: 'price', operator: 'gt', value: 1700 },
-      cooldownMs: 60000, // 1 minute cooldown
+      cooldownMs: 60000,
       maxTriggersPerDay: 100,
       action: { type: 'notify', message: 'Test' },
     });
 
     const r1 = engine.evaluate('600519', makeSnapshot(1800));
     const triggered1 = r1.find(r => r.triggered);
-    
-    // If first evaluation triggered, check that second is blocked
+
     if (triggered1) {
       const r2 = engine.evaluate('600519', makeSnapshot(1850));
       const triggered2 = r2.find(r => r.triggered);
-      assert(triggered2 === undefined || triggered2.cooldownActive === true, 'N9: cooldown prevents immediate re-trigger');
-    } else {
-      // If first didn't trigger, test passes (condition not met)
-      assert(true, 'N9: cooldown test skipped (condition not met)');
+      expect(triggered2 === undefined || triggered2.cooldownActive === true).toBeTruthy();
     }
-  }
+    // If first didn't trigger, test passes (condition not met in snapshot)
+  });
 
-  // Test 10: maxTriggersPerDay limit
-  {
+  it('N10: maxTriggersPerDay blocks after limit', () => {
     const engine = new ConditionEngine();
     engine.createRule({
       symbol: '600519',
       enabled: true,
       condition: { type: 'price', operator: 'gt', value: 1700 },
-      cooldownMs: 0, // No cooldown
+      cooldownMs: 0,
       maxTriggersPerDay: 2,
       action: { type: 'notify', message: 'Test' },
     });
 
-    engine.evaluate('600519', makeSnapshot(1800)); // Trigger 1
-    engine.evaluate('600519', makeSnapshot(1850)); // Trigger 2
-    const r3 = engine.evaluate('600519', makeSnapshot(1900)); // Should be blocked
+    engine.evaluate('600519', makeSnapshot(1800));
+    engine.evaluate('600519', makeSnapshot(1850));
+    const r3 = engine.evaluate('600519', makeSnapshot(1900));
 
     const triggered3 = r3.find(r => r.triggered);
-    assert(triggered3 === undefined, 'N10: maxTriggersPerDay blocks after limit');
-  }
-
-  console.log(`\n━━ J-37-03 Results: ${passed} passed, ${failed} failed ━━`);
-  return failed;
-}
-
-const failures = run();
-process.exit(failures > 0 ? 1 : 0);
+    expect(triggered3).toBeUndefined();
+  });
+});

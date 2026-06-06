@@ -1,26 +1,8 @@
-// J-37-02: RebalanceEngine Boundary Tests (15+ tests)
-// Tests edge cases, invalid inputs, and boundary conditions
+// J-37-02: RebalanceEngine Boundary Tests
+import { describe, it, expect } from 'vitest';
+import { RebalanceEngine } from '../electron/engine/rebalance-engine';
 
-import {
-  RebalanceEngine,
-  Position,
-  TargetWeight,
-} from '../electron/engine/rebalance-engine';
-
-let passed = 0;
-let failed = 0;
-
-function assert(condition: boolean, msg: string) {
-  if (condition) {
-    passed++;
-    console.log(`  ✅ ${msg}`);
-  } else {
-    failed++;
-    console.log(`  ❌ ${msg}`);
-  }
-}
-
-function makePositions(items: { code: string; quantity: number; price: number }[]): Position[] {
+function makePositions(items: { code: string; quantity: number; price: number }[]) {
   const totalMV = items.reduce((s, i) => s + i.quantity * i.price, 0);
   return items.map(i => ({
     code: i.code,
@@ -31,112 +13,87 @@ function makePositions(items: { code: string; quantity: number; price: number }[
   }));
 }
 
-function run() {
-  console.log('\n━━ J-37-02: RebalanceEngine Boundary Tests ━━\n');
-
-  // Test 1: Empty targets array
-  {
+describe('J-37-02 RebalanceEngine Boundary', () => {
+  it('B1: empty targets accepted', () => {
     const engine = new RebalanceEngine();
     engine.setTargets([]);
-    assert(engine.getTargets().length === 0, 'B1: empty targets accepted');
-  }
+    expect(engine.getTargets().length).toBe(0);
+  });
 
-  // Test 2: Weights exceeding 1.0 are normalized
-  {
+  it('B2: weights >1.0 normalized to ~1.0', () => {
     const engine = new RebalanceEngine();
-    engine.setTargets([
-      { code: 'A', weight: 0.6 },
-      { code: 'B', weight: 0.8 },
-    ]);
-    const targets = engine.getTargets();
-    const sum = targets.reduce((s, t) => s + t.weight, 0);
-    assert(Math.abs(sum - 1.0) < 0.02, 'B2: weights >1.0 normalized to ~1.0');
-  }
+    engine.setTargets([{ code: 'A', weight: 0.6 }, { code: 'B', weight: 0.8 }]);
+    const sum = engine.getTargets().reduce((s, t) => s + t.weight, 0);
+    expect(Math.abs(sum - 1.0)).toBeLessThan(0.02);
+  });
 
-  // Test 3: Weights below 1.0 are normalized
-  {
+  it('B3: weights <1.0 normalized to ~1.0', () => {
     const engine = new RebalanceEngine();
-    engine.setTargets([
-      { code: 'A', weight: 0.2 },
-      { code: 'B', weight: 0.3 },
-    ]);
-    const targets = engine.getTargets();
-    const sum = targets.reduce((s, t) => s + t.weight, 0);
-    assert(Math.abs(sum - 1.0) < 0.02, 'B3: weights <1.0 normalized to ~1.0');
-  }
+    engine.setTargets([{ code: 'A', weight: 0.2 }, { code: 'B', weight: 0.3 }]);
+    const sum = engine.getTargets().reduce((s, t) => s + t.weight, 0);
+    expect(Math.abs(sum - 1.0)).toBeLessThan(0.02);
+  });
 
-  // Test 4: Single asset weight = 1.0
-  {
+  it('B4: single asset weight = 1.0', () => {
     const engine = new RebalanceEngine();
     engine.setTargets([{ code: 'SOLO', weight: 1.0 }]);
-    assert(engine.getTargets()[0].weight === 1.0, 'B4: single asset weight = 1.0');
-  }
+    expect(engine.getTargets()[0].weight).toBe(1.0);
+  });
 
-  // Test 5: Equal weights calculation
-  {
+  it('B5: equal weights = 0.25 each', () => {
     const engine = new RebalanceEngine();
     engine.setEqualWeights(['A', 'B', 'C', 'D']);
     const targets = engine.getTargets();
-    assert(targets.length === 4 && Math.abs(targets[0].weight - 0.25) < 0.001, 'B5: equal weights = 0.25 each');
-  }
+    expect(targets.length).toBe(4);
+    expect(Math.abs(targets[0].weight - 0.25)).toBeLessThan(0.001);
+  });
 
-  // Test 6: Empty positions for rebalance
-  {
+  it('B6: empty positions cause drift > 0', () => {
     const engine = new RebalanceEngine();
     engine.setTargets([{ code: 'A', weight: 0.5 }, { code: 'B', weight: 0.5 }]);
     engine.updatePositions([]);
-    const drift = engine.calculateDrift();
-    assert(drift > 0, 'B6: empty positions cause drift > 0');
-  }
+    expect(engine.calculateDrift()).toBeGreaterThan(0);
+  });
 
-  // Test 7: No targets, calculateDrift returns 0
-  {
+  it('B7: no targets → drift = 0', () => {
     const engine = new RebalanceEngine();
     engine.updatePositions(makePositions([{ code: 'A', quantity: 100, price: 50 }]));
-    const drift = engine.calculateDrift();
-    assert(drift === 0, 'B7: no targets → drift = 0');
-  }
+    expect(engine.calculateDrift()).toBe(0);
+  });
 
-  // Test 8: shouldRebalance with threshold mode and low drift
-  {
+  it('B8: low drift → shouldRebalance = false', () => {
     const engine = new RebalanceEngine({ mode: 'threshold', thresholdPct: 5 });
     engine.setTargets([{ code: 'A', weight: 0.5 }, { code: 'B', weight: 0.5 }]);
     engine.updatePositions(makePositions([
       { code: 'A', quantity: 100, price: 50 },
       { code: 'B', quantity: 100, price: 50 },
     ]));
-    assert(engine.shouldRebalance() === false, 'B8: low drift → shouldRebalance = false');
-  }
+    expect(engine.shouldRebalance()).toBe(false);
+  });
 
-  // Test 9: shouldRebalance with high drift
-  {
+  it('B9: high drift → shouldRebalance = true', () => {
     const engine = new RebalanceEngine({ mode: 'threshold', thresholdPct: 5 });
     engine.setTargets([{ code: 'A', weight: 0.5 }, { code: 'B', weight: 0.5 }]);
     engine.updatePositions(makePositions([
       { code: 'A', quantity: 100, price: 100 },
       { code: 'B', quantity: 10, price: 10 },
     ]));
-    assert(engine.shouldRebalance() === true, 'B9: high drift → shouldRebalance = true');
-  }
+    expect(engine.shouldRebalance()).toBe(true);
+  });
 
-  // Test 10: calculateRebalanceOrders with zero totalValue
-  {
+  it('B10: zero totalValue → empty or array orders', () => {
     const engine = new RebalanceEngine();
     engine.setTargets([{ code: 'A', weight: 1.0 }]);
-    const orders = engine.calculateRebalanceOrders(0);
-    assert(Array.isArray(orders), 'B10: zero totalValue → empty or array orders');
-  }
+    expect(Array.isArray(engine.calculateRebalanceOrders(0))).toBe(true);
+  });
 
-  // Test 11: Custom weights with zero weight
-  {
+  it('B11: zero weight asset included', () => {
     const engine = new RebalanceEngine();
     engine.setCustomWeights({ 'A': 0.5, 'B': 0.5, 'C': 0 });
-    const targets = engine.getTargets();
-    assert(targets.length === 3, 'B11: zero weight asset included');
-  }
+    expect(engine.getTargets().length).toBe(3);
+  });
 
-  // Test 12: Max positions constraint
-  {
+  it('B12: max positions constraint stored', () => {
     const engine = new RebalanceEngine({
       constraints: {
         minTradeSize: 100,
@@ -153,48 +110,34 @@ function run() {
       { code: 'C', weight: 0.25 },
       { code: 'D', weight: 0.25 },
     ]);
-    const targets = engine.getTargets();
-    assert(targets.length === 4, 'B12: max positions constraint stored (enforced during rebalance)');
-  }
+    expect(engine.getTargets().length).toBe(4);
+  });
 
-  // Test 13: getStats returns valid structure
-  {
+  it('B13: getStats returns valid structure', () => {
     const engine = new RebalanceEngine();
     const stats = engine.getStats();
-    assert(typeof stats.totalRebalances === 'number', 'B13: getStats returns totalRebalances');
-    assert(typeof stats.avgDriftBefore === 'number', 'B13b: avgDriftBefore is number');
-  }
+    expect(typeof stats.totalRebalances).toBe('number');
+    expect(typeof stats.avgDriftBefore).toBe('number');
+  });
 
-  // Test 14: Manual trigger always returns true
-  {
+  it('B14: manual trigger always true', () => {
     const engine = new RebalanceEngine({ mode: 'manual' });
-    assert(engine.shouldRebalance('manual') === true, 'B14: manual trigger always true');
-  }
+    expect(engine.shouldRebalance('manual')).toBe(true);
+  });
 
-  // Test 15: Signal trigger always returns true
-  {
+  it('B15: signal trigger always true', () => {
     const engine = new RebalanceEngine({ mode: 'signal' });
-    assert(engine.shouldRebalance('signal') === true, 'B15: signal trigger always true');
-  }
+    expect(engine.shouldRebalance('signal')).toBe(true);
+  });
 
-  // Test 16: Periodic trigger with recent rebalance
-  {
+  it('B16: periodic trigger returns boolean', () => {
     const engine = new RebalanceEngine({ mode: 'periodic', periodicIntervalDays: 30 });
-    // Simulate recent rebalance by accessing private state through public API
     const result = engine.shouldRebalance('periodic');
-    assert(result === true || result === false, 'B16: periodic trigger returns boolean');
-  }
+    expect(typeof result).toBe('boolean');
+  });
 
-  // Test 17: getPosition returns undefined for non-existent
-  {
+  it('B17: getPosition for non-existent returns undefined', () => {
     const engine = new RebalanceEngine();
-    const pos = engine.getPosition('NONEXISTENT');
-    assert(pos === undefined, 'B17: getPosition for non-existent returns undefined');
-  }
-
-  console.log(`\n━━ J-37-02 Results: ${passed} passed, ${failed} failed ━━`);
-  return failed;
-}
-
-const failures = run();
-process.exit(failures > 0 ? 1 : 0);
+    expect(engine.getPosition('NONEXISTENT')).toBeUndefined();
+  });
+});

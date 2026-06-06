@@ -1,24 +1,8 @@
-// J-37-01: ClosedLoopExecutor Boundary Tests (15+ tests)
-// Tests edge cases, invalid inputs, and boundary conditions
-
+// J-37-01: ClosedLoopExecutor Boundary Tests
 import {
   ClosedLoopExecutor,
   Signal,
-  ExecutorConfig,
 } from '../electron/engine/closed-loop-executor';
-
-let passed = 0;
-let failed = 0;
-
-function assert(condition: boolean, msg: string) {
-  if (condition) {
-    passed++;
-    console.log(`  ✅ ${msg}`);
-  } else {
-    failed++;
-    console.log(`  ❌ ${msg}`);
-  }
-}
 
 function makeSignal(overrides: Partial<Signal> = {}): Signal {
   return {
@@ -33,53 +17,42 @@ function makeSignal(overrides: Partial<Signal> = {}): Signal {
   };
 }
 
-function run() {
-  console.log('\n━━ J-37-01: ClosedLoopExecutor Boundary Tests ━━\n');
-
-  // Test 1: Executor disabled
-  {
+describe('J-37-01 ClosedLoopExecutor Boundary', () => {
+  it('B1: disabled executor rejects signal', () => {
     const exec = new ClosedLoopExecutor({ enabled: false });
     const result = exec.addSignal(makeSignal());
-    assert(result.success === false && result.error === 'Executor disabled', 'B1: disabled executor rejects signal');
-  }
+    expect(result.success).toBe(false);
+    expect(result.error).toBe('Executor disabled');
+  });
 
-  // Test 2: HOLD signal passes without execution
-  {
+  it('B2: HOLD signal succeeds with IDLE state', () => {
     const exec = new ClosedLoopExecutor({ autoExecute: true, executionMode: 'immediate' });
     const result = exec.addSignal(makeSignal({ type: 'HOLD' }));
-    assert(result.success === true && result.state === 'IDLE', 'B2: HOLD signal succeeds with IDLE state');
-  }
+    expect(result.success).toBe(true);
+    expect(result.state).toBe('IDLE');
+  });
 
-  // Test 3: Negative price signal (executor may process but we check it doesn't crash)
-  {
+  it('B3: negative price handled without crash', () => {
     const exec = new ClosedLoopExecutor({ autoExecute: true });
-    const result = exec.addSignal(makeSignal({ price: -100 }));
-    assert(result !== undefined, 'B3: negative price handled without crash');
-  }
+    expect(() => exec.addSignal(makeSignal({ price: -100 }))).not.toThrow();
+  });
 
-  // Test 4: Zero price signal (executor may process but we check it doesn't crash)
-  {
+  it('B4: zero price handled without crash', () => {
     const exec = new ClosedLoopExecutor({ autoExecute: true });
-    const result = exec.addSignal(makeSignal({ price: 0 }));
-    assert(result !== undefined, 'B4: zero price handled without crash');
-  }
+    expect(() => exec.addSignal(makeSignal({ price: 0 }))).not.toThrow();
+  });
 
-  // Test 5: Extremely large price
-  {
+  it('B5: extremely large price handled without crash', () => {
     const exec = new ClosedLoopExecutor({ autoExecute: true, executionMode: 'immediate' });
-    const result = exec.addSignal(makeSignal({ price: 999999999 }));
-    assert(result !== undefined, 'B5: extremely large price handled without crash');
-  }
+    expect(() => exec.addSignal(makeSignal({ price: 999999999 }))).not.toThrow();
+  });
 
-  // Test 6: Empty signal ID
-  {
+  it('B6: empty signal ID handled', () => {
     const exec = new ClosedLoopExecutor({ autoExecute: true });
-    const result = exec.addSignal(makeSignal({ id: '' }));
-    assert(result !== undefined, 'B6: empty signal ID handled');
-  }
+    expect(() => exec.addSignal(makeSignal({ id: '' }))).not.toThrow();
+  });
 
-  // Test 7: Max daily orders boundary (check that executor tracks orders)
-  {
+  it('B7: max daily orders handled without crash', () => {
     const exec = new ClosedLoopExecutor({
       autoExecute: true,
       executionMode: 'immediate',
@@ -88,16 +61,12 @@ function run() {
       riskCheckEnabled: false,
       cooldownMinutes: 0,
     });
-
     exec.addSignal(makeSignal());
     exec.addSignal(makeSignal());
-    const result3 = exec.addSignal(makeSignal());
-    // Executor may or may not enforce maxDailyOrders in all modes, but should not crash
-    assert(result3 !== undefined, 'B7: max daily orders handled without crash');
-  }
+    expect(() => exec.addSignal(makeSignal())).not.toThrow();
+  });
 
-  // Test 8: Cooldown boundary (0 minutes = no cooldown)
-  {
+  it('B8: zero cooldown allows rapid signals', () => {
     const exec = new ClosedLoopExecutor({
       autoExecute: true,
       executionMode: 'immediate',
@@ -107,11 +76,11 @@ function run() {
     });
     const r1 = exec.addSignal(makeSignal());
     const r2 = exec.addSignal(makeSignal());
-    assert(r1.success === true && r2.success === true, 'B8: zero cooldown allows rapid signals');
-  }
+    expect(r1.success).toBe(true);
+    expect(r2.success).toBe(true);
+  });
 
-  // Test 9: Triggered mode returns VALIDATED state
-  {
+  it('B9: triggered mode returns VALIDATED', () => {
     const exec = new ClosedLoopExecutor({
       autoExecute: true,
       executionMode: 'triggered',
@@ -119,11 +88,11 @@ function run() {
       riskCheckEnabled: false,
     });
     const result = exec.addSignal(makeSignal());
-    assert(result.success === true && result.state === 'VALIDATED', 'B9: triggered mode returns VALIDATED');
-  }
+    expect(result.success).toBe(true);
+    expect(result.state).toBe('VALIDATED');
+  });
 
-  // Test 10: Scheduled mode returns VALIDATED state
-  {
+  it('B10: scheduled mode returns VALIDATED', () => {
     const exec = new ClosedLoopExecutor({
       autoExecute: true,
       executionMode: 'scheduled',
@@ -131,25 +100,21 @@ function run() {
       riskCheckEnabled: false,
     });
     const result = exec.addSignal(makeSignal());
-    assert(result.success === true && result.state === 'VALIDATED', 'B10: scheduled mode returns VALIDATED');
-  }
+    expect(result.success).toBe(true);
+    expect(result.state).toBe('VALIDATED');
+  });
 
-  // Test 11: Confidence boundary (0 = minimum)
-  {
+  it('B11: zero confidence handled', () => {
     const exec = new ClosedLoopExecutor({ autoExecute: true, riskCheckEnabled: false });
-    const result = exec.addSignal(makeSignal({ confidence: 0 }));
-    assert(result !== undefined, 'B11: zero confidence handled');
-  }
+    expect(() => exec.addSignal(makeSignal({ confidence: 0 }))).not.toThrow();
+  });
 
-  // Test 12: Confidence boundary (100 = maximum)
-  {
+  it('B12: max confidence handled', () => {
     const exec = new ClosedLoopExecutor({ autoExecute: true, riskCheckEnabled: false });
-    const result = exec.addSignal(makeSignal({ confidence: 100 }));
-    assert(result !== undefined, 'B12: max confidence handled');
-  }
+    expect(() => exec.addSignal(makeSignal({ confidence: 100 }))).not.toThrow();
+  });
 
-  // Test 13: Risk check disabled bypasses preflight
-  {
+  it('B13: risk check disabled bypasses preflight', () => {
     const exec = new ClosedLoopExecutor({
       autoExecute: true,
       executionMode: 'immediate',
@@ -157,28 +122,25 @@ function run() {
       requireConfirmation: false,
     });
     const result = exec.addSignal(makeSignal({ price: 0.01 }));
-    assert(result.success === true || result.riskCheckPassed !== false, 'B13: risk check disabled bypasses preflight');
-  }
+    expect(result.success).toBe(true || result.riskCheckPassed !== false).toBeTruthy();
+  });
 
-  // Test 14: Stats return valid structure
-  {
+  it('B14: getStats returns valid structure', () => {
     const exec = new ClosedLoopExecutor();
     exec.addSignal(makeSignal());
     const stats = exec.getStats();
-    assert(typeof stats.totalSignals === 'number', 'B14: getStats returns valid structure');
-    assert(typeof stats.successRate === 'number', 'B14b: successRate is number');
-  }
+    expect(typeof stats.totalSignals).toBe('number');
+    expect(typeof stats.successRate).toBe('number');
+  });
 
-  // Test 15: getLoops returns array
-  {
+  it('B15: getLoops returns array', () => {
     const exec = new ClosedLoopExecutor();
     exec.addSignal(makeSignal());
     const loops = exec.getLoops();
-    assert(Array.isArray(loops), 'B15: getLoops returns array');
-  }
+    expect(Array.isArray(loops)).toBe(true);
+  });
 
-  // Test 16: Multiple rapid signals don't crash
-  {
+  it('B16: 20 rapid signals without crash', () => {
     const exec = new ClosedLoopExecutor({
       autoExecute: true,
       executionMode: 'immediate',
@@ -186,20 +148,8 @@ function run() {
       requireConfirmation: false,
       cooldownMinutes: 0,
     });
-    let errors = 0;
     for (let i = 0; i < 20; i++) {
-      try {
-        exec.addSignal(makeSignal({ code: `SYM${i}` }));
-      } catch (e) {
-        errors++;
-      }
+      expect(() => exec.addSignal(makeSignal({ code: `SYM${i}` }))).not.toThrow();
     }
-    assert(errors === 0, 'B16: 20 rapid signals without crash');
-  }
-
-  console.log(`\n━━ J-37-01 Results: ${passed} passed, ${failed} failed ━━`);
-  return failed;
-}
-
-const failures = run();
-process.exit(failures > 0 ? 1 : 0);
+  });
+});
