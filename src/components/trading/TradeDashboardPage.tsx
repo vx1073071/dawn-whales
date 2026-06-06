@@ -1,5 +1,6 @@
 ﻿import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import BrokerStatusBar from './BrokerStatusBar';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -185,8 +186,17 @@ export default function TradeDashboardPage() {
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="text-gray-500">Loading...</div></div>;
 
+  // Handle broker change — refresh all trade data
+  const handleBrokerChange = useCallback((brokerId: string) => {
+    console.log('[TradeDashboard] Broker changed:', brokerId, '— refreshing data');
+    fetchData();
+  }, [fetchData]);
+
   return (
     <div className="p-6 space-y-6">
+      {/* ── Broker Status Bar ────────────────────────────────────────── */}
+      <BrokerStatusBar onBrokerChange={handleBrokerChange} />
+
       {/* ── Header ─────────────────────────────────────────────────────── */}
       <div className="flex items-center justify-between">
         <div>

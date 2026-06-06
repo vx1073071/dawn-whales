@@ -105,6 +105,7 @@ export interface TradeSignal {
   reason: string;
   confidence: number; // 0-1
   timestamp: number;
+  brokerId?: string; // Optional: route to a specific broker; falls back to active broker
 }
 
 export interface TradeOrder {
@@ -124,6 +125,7 @@ export interface TradeOrder {
   updatedAt: string;
   brokerOrderId?: string;
   rejectionReason?: string;
+  brokerId?: string; // Target broker for routing (from strategy binding)
 }
 
 export interface RiskCheck {
@@ -306,6 +308,7 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
   private initialized: boolean = false;
   private pendingQueue: TradeSignal[] = [];
   private processingLock: boolean = false;
+  private activeBrokerId: string = ''; // Currently active broker for routing orders without explicit brokerId
 
   constructor(config?: Partial<ExecutionConfig>) {
     super();
@@ -367,7 +370,8 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
   // ============================================================
 
   async processSignal(signal: TradeSignal): Promise<TradeOrder | null> {
-    log.info(`[TradeExecutor] Processing signal: ${signal.strategyName} → ${signal.side} ${signal.code}`);
+    const effectiveBroker = this.resolveBrokerId(signal);
+    log.info(`[TradeExecutor] Processing signal: ${signal.strategyName} → ${signal.side} ${signal.code}${effectiveBroker ? ` (broker: ${effectiveBroker})` : ''}`);
 
     // Validate signal
     const validationError = this.validateSignal(signal);
@@ -495,6 +499,9 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
       price = calculateSlippage(price, signal.side, this.config.slippageBps);
     }
 
+    // Resolve broker routing: signal.brokerId > activeBrokerId
+    const effectiveBrokerId = this.resolveBrokerId(signal);
+
     const order: TradeOrder = {
       id: orderId,
       signalId: `${signal.strategyId}-${signal.timestamp}`,
@@ -510,6 +517,7 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
       commission: 0,
       createdAt: now,
       updatedAt: now,
+      brokerId: effectiveBrokerId || undefined,
     };
 
     return order;
@@ -889,7 +897,7 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
   }
 
   private async executeRealOrder(order: TradeOrder): Promise<TradeOrder> {
-    log.info(`[TradeExecutor] [REAL] Executing order: ${order.id}`);
+    log.info(`[TradeExecutor] [REAL] Executing order: ${order.id}${order.brokerId ? ` → broker: ${order.brokerId}` : ' → active broker'}`);
 
     if (!this.brokerAdapter) {
       log.error('[TradeExecutor] No broker adapter configured for real mode');
@@ -1346,6 +1354,31 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
     log.info('[TradeExecutor] Broker adapter configured');
   }
 
+  /**
+   * Set the active broker ID. Orders without an explicit brokerId will be routed
+   * to this broker.
+   */
+  setActiveBroker(brokerId: string): void {
+    const previous = this.activeBrokerId;
+    this.activeBrokerId = brokerId;
+    log.info(`[TradeExecutor] Active broker changed: ${previous || '(none)'} → ${brokerId || '(none)'}`);
+  }
+
+  /**
+   * Get the currently active broker ID.
+   */
+  getActiveBroker(): string {
+    return this.activeBrokerId;
+  }
+
+  /**
+   * Resolve the effective broker ID for a given signal.
+   * Priority: signal.brokerId > activeBrokerId > empty string (no routing).
+   */
+  private resolveBrokerId(signal: TradeSignal): string {
+    return signal.brokerId || this.activeBrokerId || '';
+  }
+
   // ============================================================
   // Price Feed
   // ============================================================
@@ -1589,6 +1622,7 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
     totalCapital: number;
     emergencyStopped: boolean;
     pendingSignals: number;
+    activeBroker: string;
   } {
     const stats = this.calculateTradeStats();
     return {
@@ -1602,6 +1636,7 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
       totalCapital: this.totalCapital,
       emergencyStopped: this.isEmergencyStopped,
       pendingSignals: this.pendingQueue.length,
+      activeBroker: this.activeBrokerId,
     };
   }
 
