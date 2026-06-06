@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates, deleteStrategy } from '../../lib/bridge-api';
 import StrategyExplainCard from './StrategyExplainCard';
 import StrategyCompareModal from './StrategyCompareModal';
@@ -41,18 +41,14 @@ export default function StrategyPage() {
   const [compareOpen, setCompareOpen] = useState(false);
   const [compareDefaultA, setCompareDefaultA] = useState<any>(null);
 
-  useEffect(() => {
-    loadStrategies();
-  }, [refreshKey]);
-
-  async function loadStrategies() {
+  const loadStrategies = useCallback(async () => {
     const list = await getAllStrategies();
     setStrategies(list);
-  }
+  }, []);
 
-  function refresh() {
-    setRefreshKey((k) => k + 1);
-  }
+  const refresh = useCallback(() => { setRefreshKey((k) => k + 1); }, []);
+
+  useEffect(() => { loadStrategies(); }, [refreshKey, loadStrategies]);
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -164,7 +160,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
     '20日动量突破 5% 买入 SOXL',
   ];
 
-  async function handleParse() {
+  const handleParse = useCallback(async () => {
     if (!input.trim()) return;
     setLoading(true);
     setError('');
@@ -182,9 +178,9 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
     } finally {
       setLoading(false);
     }
-  }
+  }, [input]);
 
-  async function handleCreate() {
+  const handleCreate = useCallback(async () => {
     if (!parsed?.success) return;
     setLoading(true);
     try {
@@ -202,9 +198,9 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
     } finally {
       setLoading(false);
     }
-  }
+  }, [input, parsed, onCreated]);
 
-  async function handleBacktest() {
+  const handleBacktest = useCallback(async () => {
     if (!strategyId && !parsed?.success) return;
     setBacktestLoading(true);
     try {
@@ -226,7 +222,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
     } finally {
       setBacktestLoading(false);
     }
-  }
+  }, [strategyId, parsed]);
 
   return (
     <div className="mb-8">
