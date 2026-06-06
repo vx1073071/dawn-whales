@@ -1,0 +1,348 @@
+// PositionMonitorPanel — Real-time position monitoring UI
+// Phase 4.3 R32 ML-32-03
+import { useState, useEffect, useCallback } from 'react';
+
+interface Position {
+  id: string;
+  code: string;
+  name: string;
+  type: 'long' | 'short';
+  shares: number;
+  avgCost: number;
+  currentPrice: number;
+  pnl: number;
+  pnlPct: number;
+  stopLoss?: number;
+  takeProfit?: number;
+  trailingStop?: number;
+  openTime: number;
+  strategyId?: string;
+}
+
+interface Props {
+  positions?: Position[];
+  onClose?: (id: string) => void;
+  onUpdateStopLoss?: (id: string, price: number) => void;
+  onUpdateTakeProfit?: (id: string, price: number) => void;
+  onCloseAll?: () => void;
+  refreshInterval?: number; // ms, default 10000
+}
+
+// ── mock data for development ──────────────────────────────────────────────
+function generateMockPositions(): Position[] {
+  const now = Date.now();
+  const symbols = [
+    { code: 'AAPL', name: 'Apple Inc.', price: 195.43 },
+    { code: 'TSLA', name: 'Tesla Inc.', price: 238.21 },
+    { code: 'NVDA', name: 'NVIDIA Corp.', price: 871.55 },
+    { code: 'MSFT', name: 'Microsoft Corp.', price: 425.67 },
+    { code: '00700', name: 'Tencent', price: 385.20 },
+    { code: '00981', name: 'SMIC', price: 22.15 },
+  ];
+
+  return symbols.map((s, i) => {
+    const shares = [100, 50, 200, 80, 500, 1000][i];
+    const avgCost = s.price * (0.92 + Math.random() * 0.16);
+    const pnl = (s.price - avgCost) * shares;
+    const pnlPct = ((s.price - avgCost) / avgCost) * 100;
+
+    return {
+      id: `pos_${i}_${now}`,
+      code: s.code,
+      name: s.name,
+      type: (i % 3 === 0 ? 'short' : 'long') as 'long' | 'short',
+      shares,
+      avgCost: +avgCost.toFixed(2),
+      currentPrice: s.price,
+      pnl: +pnl.toFixed(2),
+      pnlPct: +pnlPct.toFixed(2),
+      stopLoss: pnlPct < 0 ? undefined : +(avgCost * 0.95).toFixed(2),
+      takeProfit: pnlPct < 0 ? +(avgCost * 1.15).toFixed(2) : undefined,
+      openTime: now - Math.floor(Math.random() * 86400000 * 30),
+      strategyId: `strat_${(i % 3) + 1}`,
+    };
+  });
+}
+
+export default function PositionMonitorPanel({
+  positions: externalPositions,
+  onClose,
+  onUpdateStopLoss,
+  onUpdateTakeProfit,
+  onCloseAll,
+  refreshInterval = 10000,
+}: Props) {
+  const [positions, setPositions] = useState<Position[]>(externalPositions || generateMockPositions());
+  const [selectedPos, setSelectedPos] = useState<string | null>(null);
+  const [editStopLoss, setEditStopLoss] = useState<string | null>(null);
+  const [editTakeProfit, setEditTakeProfit] = useState<string | null>(null);
+  const [slInput, setSlInput] = useState('');
+  const [tpInput, setTpInput] = useState('');
+
+  // Auto-refresh positions (mock: random price drift)
+  useEffect(() => {
+    if (externalPositions) {
+      setPositions(externalPositions);
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setPositions(prev =>
+        prev.map(p => {
+          const drift = (Math.random() - 0.48) * p.currentPrice * 0.005;
+          const newPrice = +(p.currentPrice + drift).toFixed(2);
+          const pnl = +((newPrice - p.avgCost) * p.shares * (p.type === 'short' ? -1 : 1)).toFixed(2);
+          const pnlPct = pnlPctFromCost(pnl, p.avgCost, p.shares);
+          return { ...p, currentPrice: newPrice, pnl, pnlPct };
+        })
+      );
+    }, refreshInterval);
+    return () => clearInterval(timer);
+  }, [externalPositions, refreshInterval]);
+
+  const getStatusColor = useCallback((pnlPct: number, stopLoss?: number, currentPrice?: number, type?: string) => {
+    if (stopLoss && currentPrice) {
+      const slRatio = type === 'short'
+        ? (stopLoss - currentPrice) / stopLoss
+        : (currentPrice - stopLoss) / stopLoss;
+      if (slRatio < 0.02) return 'bg-yellow-500/20 border-yellow-500/50'; // near stop loss
+    }
+    if (pnlPct > 2) return 'bg-green-500/20 border-green-500/50';
+    if (pnlPct > 0) return 'bg-green-500/10 border-green-500/20';
+    if (pnlPct > -2) return 'bg-red-500/10 border-red-500/20';
+    return 'bg-red-500/20 border-red-500/50';
+  }, []);
+
+  const totalPnl = positions.reduce((sum, p) => sum + p.pnl, 0);
+  const totalPnlPct = totalPnl
+    ? +((totalPnl / positions.reduce((s, p) => s + p.avgCost * p.shares, 0)) * 100).toFixed(2)
+    : 0;
+
+  return (
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-lg font-semibold text-white">持仓监控</h2>
+          <p className="text-xs text-gray-500 mt-1">
+            {positions.length} 个持仓 • {refreshInterval / 1000}s 刷新
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="text-right">
+            <div className={`text-lg font-mono font-bold ${totalPnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              {totalPnl >= 0 ? '+' : ''}{totalPnl.toLocaleString()}
+            </div>
+            <div className={`text-xs ${totalPnlPct >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+              {totalPnlPct >= 0 ? '+' : ''}{totalPnlPct}%
+            </div>
+          </div>
+          {onCloseAll && positions.length > 0 && (
+            <button
+              onClick={onCloseAll}
+              className="px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg text-xs font-medium transition-colors"
+            >
+              一键平仓
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Position Cards */}
+      <div className="grid gap-3">
+        {positions.length === 0 && (
+          <div className="bg-[#12121a] rounded-xl p-8 text-center border border-white/5">
+            <div className="text-4xl mb-2">📭</div>
+            <p className="text-gray-400 text-sm">暂无持仓</p>
+          </div>
+        )}
+
+        {positions.map(pos => (
+          <div
+            key={pos.id}
+            className={`${getStatusColor(pos.pnlPct, pos.stopLoss, pos.currentPrice, pos.type)} border rounded-xl p-4 cursor-pointer transition-all hover:border-[#C9A046]/30`}
+            onClick={() => setSelectedPos(selectedPos === pos.id ? null : pos.id)}
+          >
+            {/* Top row: code + pnl */}
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-3">
+                <span className={`text-xs px-2 py-0.5 rounded ${pos.type === 'long' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                  {pos.type === 'long' ? '多' : '空'}
+                </span>
+                <span className="text-white font-mono font-semibold">{pos.code}</span>
+                <span className="text-gray-400 text-sm">{pos.name}</span>
+              </div>
+              <div className="text-right">
+                <div className={`font-mono font-bold ${pos.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {pos.pnl >= 0 ? '+' : ''}{pos.pnl.toLocaleString()}
+                </div>
+                <div className={`text-xs font-mono ${pos.pnlPct >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                  {pos.pnlPct >= 0 ? '+' : ''}{pos.pnlPct}%
+                </div>
+              </div>
+            </div>
+
+            {/* Details row */}
+            <div className="flex items-center gap-4 text-xs text-gray-500">
+              <span>均价 {pos.avgCost}</span>
+              <span className="font-mono text-gray-300">现价 {pos.currentPrice}</span>
+              <span>{pos.shares} 股</span>
+              {pos.stopLoss && (
+                <span className="text-yellow-500">止损 {pos.stopLoss}</span>
+              )}
+              {pos.takeProfit && (
+                <span className="text-blue-400">止盈 {pos.takeProfit}</span>
+              )}
+            </div>
+
+            {/* Expanded: stop loss / take profit editor */}
+            {selectedPos === pos.id && (
+              <div className="mt-3 pt-3 border-t border-white/5 space-y-2">
+                {/* Stop Loss */}
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-yellow-500 w-12">止损:</span>
+                  {editStopLoss === pos.id ? (
+                    <>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={slInput}
+                        onChange={e => setSlInput(e.target.value)}
+                        className="bg-[#0a0a12] border border-white/10 rounded px-2 py-1 text-xs text-white w-24"
+                        autoFocus
+                        onKeyDown={e => {
+                          if (e.key === 'Enter') {
+                            onUpdateStopLoss?.(pos.id, parseFloat(slInput));
+                            setEditStopLoss(null);
+                          }
+                          if (e.key === 'Escape') setEditStopLoss(null);
+                        }}
+                      />
+                      <button
+                        onClick={() => {
+                          onUpdateStopLoss?.(pos.id, parseFloat(slInput));
+                          setEditStopLoss(null);
+                        }}
+                        className="text-xs text-green-400 hover:text-green-300"
+                      >
+                        确认
+                      </button>
+                      <button onClick={() => setEditStopLoss(null)} className="text-xs text-gray-500 hover:text-gray-400">
+                        取消
+                      </button>
+                    </>
+                  ) : (
+                    <span
+                      className="text-xs text-yellow-400 font-mono cursor-pointer hover:underline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditStopLoss(pos.id);
+                        setSlInput(String(pos.stopLoss || pos.currentPrice * 0.95));
+                        setEditTakeProfit(null);
+                      }}
+                    >
+                      {pos.stopLoss ? pos.stopLoss : '点击设置'}
+                    </span>
+                  )}
+                </div>
+
+                {/* Take Profit */}
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-blue-400 w-12">止盈:</span>
+                  {editTakeProfit === pos.id ? (
+                    <>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={tpInput}
+                        onChange={e => setTpInput(e.target.value)}
+                        className="bg-[#0a0a12] border border-white/10 rounded px-2 py-1 text-xs text-white w-24"
+                        autoFocus
+                        onKeyDown={e => {
+                          if (e.key === 'Enter') {
+                            onUpdateTakeProfit?.(pos.id, parseFloat(tpInput));
+                            setEditTakeProfit(null);
+                          }
+                          if (e.key === 'Escape') setEditTakeProfit(null);
+                        }}
+                      />
+                      <button
+                        onClick={() => {
+                          onUpdateTakeProfit?.(pos.id, parseFloat(tpInput));
+                          setEditTakeProfit(null);
+                        }}
+                        className="text-xs text-green-400 hover:text-green-300"
+                      >
+                        确认
+                      </button>
+                      <button onClick={() => setEditTakeProfit(null)} className="text-xs text-gray-500 hover:text-gray-400">
+                        取消
+                      </button>
+                    </>
+                  ) : (
+                    <span
+                      className="text-xs text-blue-400 font-mono cursor-pointer hover:underline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditTakeProfit(pos.id);
+                        setTpInput(String(pos.takeProfit || pos.currentPrice * 1.1));
+                        setEditStopLoss(null);
+                      }}
+                    >
+                      {pos.takeProfit ? pos.takeProfit : '点击设置'}
+                    </span>
+                  )}
+                </div>
+
+                {/* Close Position Button */}
+                {onClose && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onClose(pos.id); }}
+                    className="mt-2 px-3 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded text-xs transition-colors"
+                  >
+                    平仓
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Summary bar */}
+      {positions.length > 0 && (
+        <div className="bg-[#12121a] rounded-xl p-3 flex items-center justify-between text-xs border border-white/5">
+          <div className="flex items-center gap-6">
+            <div>
+              <span className="text-gray-500">多仓: </span>
+              <span className="text-green-400">{positions.filter(p => p.type === 'long').length}</span>
+            </div>
+            <div>
+              <span className="text-gray-500">空仓: </span>
+              <span className="text-red-400">{positions.filter(p => p.type === 'short').length}</span>
+            </div>
+            <div>
+              <span className="text-gray-500">已设止损: </span>
+              <span className="text-yellow-400">{positions.filter(p => p.stopLoss).length}/{positions.length}</span>
+            </div>
+            <div>
+              <span className="text-gray-500">已设止盈: </span>
+              <span className="text-blue-400">{positions.filter(p => p.takeProfit).length}/{positions.length}</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-1">
+            <span className={`w-2 h-2 rounded-full ${totalPnl >= 0 ? 'bg-green-500' : 'bg-red-500'}`} />
+            <span className="text-gray-400">
+              {totalPnl >= 0 ? '盈利中' : totalPnl > -500 ? '注意风险' : '⚠ 高风险'}
+            </span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function pnlPctFromCost(pnl: number, avgCost: number, shares: number): number {
+  const costBasis = avgCost * shares;
+  return costBasis ? +((pnl / costBasis) * 100).toFixed(2) : 0;
+}

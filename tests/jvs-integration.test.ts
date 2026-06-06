@@ -14,7 +14,7 @@ let passed = 0;
 let failed = 0;
 const errors: string[] = [];
 
-function test(name: string, fn: () => void | Promise<void>) {
+function runTest(name: string, fn: () => void | Promise<void>) {
   try {
     const result = fn();
     if (result instanceof Promise) {
@@ -49,7 +49,7 @@ async function testSentimentIndex() {
 
   const engine = new SentimentIndexEngine();
 
-  await test('Should compute neutral sentiment with balanced inputs', () => {
+  await runTest('Should compute neutral sentiment with balanced inputs', () => {
     const result = engine.compute({
       capitalFlowNetInflow: 0,
       advanceCount: 2000,
@@ -60,7 +60,7 @@ async function testSentimentIndex() {
     assert(result.level === 'neutral', `Level ${result.level} should be neutral`);
   });
 
-  await test('Should compute greedy sentiment with bullish inputs', () => {
+  await runTest('Should compute greedy sentiment with bullish inputs', () => {
     const result = engine.compute({
       capitalFlowNetInflow: 100,
       northboundNetBuy: 15,
@@ -74,7 +74,7 @@ async function testSentimentIndex() {
     assert(['greed', 'extreme_greed'].includes(result.level), `Level ${result.level} should be greed+`);
   });
 
-  await test('Should compute fearful sentiment with bearish inputs', () => {
+  await runTest('Should compute fearful sentiment with bearish inputs', () => {
     const result = engine.compute({
       capitalFlowNetInflow: -150,
       northboundNetBuy: -10,
@@ -88,7 +88,7 @@ async function testSentimentIndex() {
     assert(['fear', 'extreme_fear'].includes(result.level), `Level ${result.level} should be fear+`);
   });
 
-  await test('Should generate contrarian signals', () => {
+  await runTest('Should generate contrarian signals', () => {
     const fearful = engine.compute({
       capitalFlowNetInflow: -200,
       advanceCount: 200,
@@ -108,7 +108,7 @@ async function testSentimentIndex() {
     assert(['strong_sell', 'sell'].includes(greedy.signal), `Signal ${greedy.signal} should be sell for extreme greed`);
   });
 
-  await test('Should track history', () => {
+  await runTest('Should track history', () => {
     engine.compute({ capitalFlowNetInflow: 50 });
     engine.compute({ capitalFlowNetInflow: -50 });
     engine.compute({ capitalFlowNetInflow: 0 });
@@ -124,7 +124,7 @@ async function testAnomalyDetector() {
 
   const detector = new StockAnomalyDetector();
 
-  await test('Should detect limit up', () => {
+  await runTest('Should detect limit up', () => {
     const alerts = detector.processQuotes([{
       code: '600519',
       name: '贵州茅台',
@@ -141,7 +141,7 @@ async function testAnomalyDetector() {
     assert(alerts.some(a => a.type === 'limit_up'), 'Should have limit_up alert');
   });
 
-  await test('Should detect volume surge', () => {
+  await runTest('Should detect volume surge', () => {
     // Set avg volume
     detector.updateAverageVolumes(new Map([['600519', 1000000000]]));
     
@@ -160,7 +160,7 @@ async function testAnomalyDetector() {
     assert(alerts.some(a => a.type === 'volume_surge'), 'Should detect volume surge');
   });
 
-  await test('Should detect rapid change', () => {
+  await runTest('Should detect rapid change', () => {
     const now = Date.now();
     // Feed historical quotes
     detector.processQuotes([{
@@ -191,7 +191,7 @@ async function testAnomalyDetector() {
     assert(alerts.some(a => a.type === 'rapid_change'), 'Should detect rapid change');
   });
 
-  await test('Should get summary', () => {
+  await runTest('Should get summary', () => {
     const summary = detector.getSummary();
     assert(summary.totalAlerts >= 0, 'Should return summary');
     assert(typeof summary.critical === 'number', 'Should have critical count');
@@ -206,14 +206,14 @@ async function testSectorRotation() {
 
   const monitor = new SectorRotationMonitor();
 
-  await test('Should record snapshots', () => {
+  await runTest('Should record snapshots', () => {
     monitor.recordSnapshot([
       { code: 'BK0001', name: '银行', changePct: 1.5, volume: 100, risingCount: 30, fallingCount: 5, timestamp: Date.now() },
       { code: 'BK0002', name: '半导体', changePct: 2.8, volume: 150, risingCount: 25, fallingCount: 10, timestamp: Date.now() },
     ], true);
   });
 
-  await test('Should analyze rotation', () => {
+  await runTest('Should analyze rotation', () => {
     // Add more snapshots over time (force=true to bypass TTL)
     const now = Date.now();
     for (let i = 0; i < 5; i++) {
@@ -238,7 +238,7 @@ async function testNewsAggregator() {
 
   const aggregator = new NewsAggregatorService();
 
-  await test('Should score positive sentiment', () => {
+  await runTest('Should score positive sentiment', () => {
     const result = aggregator.search({
       query: '半导体 芯片 上涨 利好',
       hoursBack: 24,
@@ -248,7 +248,7 @@ async function testNewsAggregator() {
     assert(result instanceof Promise, 'Should return promise');
   });
 
-  await test('Should get market mood', async () => {
+  await runTest('Should get market mood', async () => {
     const mood = await aggregator.getMarketMood();
     assert(mood.mood !== undefined, 'Should have mood');
     assert(typeof mood.score === 'number', 'Should have score');
@@ -262,7 +262,7 @@ import { getCapitalFlowMonitor } from '../electron/engine/capital-flow-monitor';
 async function testCapitalFlowMonitor() {
   console.log('\n💰 JVS-12: Capital Flow Monitor');
 
-  await test('Should initialize with default config', () => {
+  await runTest('Should initialize with default config', () => {
     const monitor = getCapitalFlowMonitor();
     const config = monitor.getConfig();
     assert(config.mainForceThreshold === 5000, 'Default main force threshold should be 5000');
@@ -270,7 +270,7 @@ async function testCapitalFlowMonitor() {
     assert(config.enabled === true, 'Should be enabled by default');
   });
 
-  await test('Should generate alert for large main force inflow', () => {
+  await runTest('Should generate alert for large main force inflow', () => {
     const monitor = getCapitalFlowMonitor();
     monitor.updateConfig({ mainForceThreshold: 100, alertInterval: 1000 });
     monitor.clearHistory();
@@ -282,7 +282,7 @@ async function testCapitalFlowMonitor() {
     assert(alerts[0].severity === 'medium' || alerts[0].severity === 'high', 'Should have appropriate severity');
   });
 
-  await test('Should suppress duplicate alerts within interval', () => {
+  await runTest('Should suppress duplicate alerts within interval', () => {
     const monitor = getCapitalFlowMonitor();
     monitor.updateConfig({ mainForceThreshold: 100, alertInterval: 60000 });
     monitor.clearHistory();
@@ -296,7 +296,7 @@ async function testCapitalFlowMonitor() {
     assert(secondAlerts.length === 0, 'Second batch should be suppressed');
   });
 
-  await test('Should detect unusual activity', () => {
+  await runTest('Should detect unusual activity', () => {
     const monitor = getCapitalFlowMonitor();
     monitor.updateConfig({ mainForceThreshold: 10000 });
     monitor.clearHistory();
@@ -315,7 +315,7 @@ import { calculatePortfolioRisk } from '../electron/engine/portfolio-risk';
 async function testPortfolioRisk() {
   console.log('\n📊 JVS-15: Portfolio Risk');
 
-  await test('Should calculate risk for multi-stock portfolio', async () => {
+  await runTest('Should calculate risk for multi-stock portfolio', async () => {
     const report = await calculatePortfolioRisk({
       positions: [
         { code: '600519', name: '贵州茅台', shares: 100, avgCost: 1800, currentPrice: 1900, sector: '白酒' },
@@ -332,7 +332,7 @@ async function testPortfolioRisk() {
     assert(['A', 'B', 'C', 'D', 'F'].includes(report.riskGrade), 'Should have valid grade');
   });
 
-  await test('Should detect high concentration', async () => {
+  await runTest('Should detect high concentration', async () => {
     const report = await calculatePortfolioRisk({
       positions: [
         { code: '600519', name: '贵州茅台', shares: 1000, avgCost: 1800, currentPrice: 1900, sector: '白酒' },
@@ -347,7 +347,7 @@ async function testPortfolioRisk() {
     assert(report.recommendations.length > 0, 'Should have recommendations');
   });
 
-  await test('Should return empty report for no positions', async () => {
+  await runTest('Should return empty report for no positions', async () => {
     const report = await calculatePortfolioRisk({ positions: [] });
     assert(report.success === false, 'Should fail with no positions');
     assert(report.error !== undefined, 'Should have error message');
@@ -361,7 +361,7 @@ import { diagnoseStock } from '../electron/engine/stock-diagnosis';
 async function testStockDiagnosis() {
   console.log('\n🔍 JVS-14: Stock Diagnosis');
 
-  await test('Should return diagnosis structure', async () => {
+  await runTest('Should return diagnosis structure', async () => {
     const result = await diagnoseStock({
       code: '600519',
       name: '贵州茅台',
@@ -378,7 +378,7 @@ async function testStockDiagnosis() {
     assert(result.dimensions !== undefined, 'Should have dimensions');
   });
 
-  await test('Should handle missing data gracefully', async () => {
+  await runTest('Should handle missing data gracefully', async () => {
     const result = await diagnoseStock({
       code: '999999',
       name: '不存在',
@@ -417,10 +417,15 @@ async function runAllTests() {
     errors.forEach(e => console.log(`  - ${e}`));
   }
 
-  process.exit(failed > 0 ? 1 : 0);
+  // handled by vitest
 }
 
-runAllTests().catch(err => {
-  console.error('Test suite failed:', err);
-  process.exit(1);
+describe("JVS Integration Suite", () => {
+  it("runs JVS-3 SentimentIndex", async () => { await testSentimentIndex(); });
+  it("runs JVS-7 AnomalyDetector", async () => { await testAnomalyDetector(); });
+  it("runs JVS-6 SectorRotation", async () => { await testSectorRotation(); });
+  it("runs JVS-5 NewsAggregator", async () => { await testNewsAggregator(); });
+  it("runs JVS-12 CapitalFlowMonitor", async () => { await testCapitalFlowMonitor(); });
+  it("runs JVS-15 PortfolioRisk", async () => { await testPortfolioRisk(); });
+  it("runs JVS-14 StockDiagnosis", async () => { await testStockDiagnosis(); });
 });

@@ -17,6 +17,10 @@ export default defineConfig({
       'tests/e2e-pipeline.test.ts',
       'tests/kelly-sizing.test.ts',
       'tests/strategy-execute-integration.test.ts',
+      // Standalone tsx script (imports electron-log, native path — breaks in jsdom)
+      'tests/integration-full-pipeline.test.ts',
+      // Electron IPC mock required — jsdom cannot run ipcMain
+      'tests/jvs-37-ipc-validation.test.ts',
     ],
     coverage: {
       provider: 'v8',

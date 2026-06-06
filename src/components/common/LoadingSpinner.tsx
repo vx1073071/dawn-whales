@@ -14,6 +14,10 @@ interface LoadingSpinnerProps {
   center?: boolean;
   /** Additional className for the wrapper */
   className?: string;
+  /** Render fullscreen overlay */
+  fullscreen?: boolean;
+  /** Alias for label (used by some consumers) */
+  text?: string;
 }
 
 export default function LoadingSpinner({
@@ -22,8 +26,13 @@ export default function LoadingSpinner({
   label,
   center = true,
   className = '',
+  fullscreen,
+  text,
 }: LoadingSpinnerProps) {
-  const wrapperClass = center
+  const displayLabel = label || text;
+  const wrapperClass = fullscreen
+    ? `fixed inset-0 flex flex-col items-center justify-center bg-black/50 z-50 ${className}`
+    : center
     ? `flex flex-col items-center justify-center ${className}`
     : className;
 
@@ -51,8 +60,8 @@ export default function LoadingSpinner({
           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
         />
       </svg>
-      {label && (
-        <span className="mt-2 text-sm text-gray-400">{label}</span>
+      {displayLabel && (
+        <span className="mt-2 text-sm text-gray-400">{displayLabel}</span>
       )}
     </div>
   );

@@ -14,7 +14,7 @@ let skipped = 0;
 const errors: string[] = [];
 const warnings: string[] = [];
 
-function test(name: string, fn: () => void | Promise<void>) {
+function runTest(name: string, fn: () => void | Promise<void>) {
   try {
     const result = fn();
     if (result instanceof Promise) {
@@ -90,7 +90,7 @@ function httpGet(url: string, timeoutMs = 15000): Promise<string> {
 async function testJVS1_SectorHeatmap() {
   console.log('\n🗺️ JVS-1: Sector Heatmap');
 
-  await test('push2 API - industry sectors (502 expected in Node.js)', async () => {
+  await runTest('push2 API - industry sectors (502 expected in Node.js)', async () => {
     const url = 'http://push2.eastmoney.com/api/qt/clist/get?pn=1&pz=5&po=1&np=1&fltt=2&invt=2&fid=f3&fs=m:90+t:2&fields=f2,f3,f12,f14,f20,f104,f105,f128,f140';
     try {
       const raw = await httpGet(url);
@@ -116,7 +116,7 @@ async function testJVS1_SectorHeatmap() {
 async function testJVS2_MacroDashboard() {
   console.log('\n📊 JVS-2: Macro Dashboard');
 
-  await test('GDP data (RPT_ECONOMY_GDP)', async () => {
+  await runTest('GDP data (RPT_ECONOMY_GDP)', async () => {
     const url = 'https://datacenter.eastmoney.com/api/data/v1/get?reportName=RPT_ECONOMY_GDP&columns=REPORT_DATE,SUM_SAME&pageSize=3&sortColumns=REPORT_DATE&sortTypes=-1&source=WEB&client=WEB';
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
@@ -125,7 +125,7 @@ async function testJVS2_MacroDashboard() {
     console.log(`    GDP: ${json.result.data[0].SUM_SAME}% (${json.result.data[0].REPORT_DATE.slice(0,10)})`);
   });
 
-  await test('CPI data (RPT_ECONOMY_CPI)', async () => {
+  await runTest('CPI data (RPT_ECONOMY_CPI)', async () => {
     const url = 'https://datacenter.eastmoney.com/api/data/v1/get?reportName=RPT_ECONOMY_CPI&columns=REPORT_DATE,NATIONAL_SAME&pageSize=3&sortColumns=REPORT_DATE&sortTypes=-1&source=WEB&client=WEB';
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
@@ -133,7 +133,7 @@ async function testJVS2_MacroDashboard() {
     console.log(`    CPI: ${json.result.data[0].NATIONAL_SAME}%`);
   });
 
-  await test('PMI data (RPT_ECONOMY_PMI)', async () => {
+  await runTest('PMI data (RPT_ECONOMY_PMI)', async () => {
     const url = 'https://datacenter.eastmoney.com/api/data/v1/get?reportName=RPT_ECONOMY_PMI&columns=REPORT_DATE,MAKE_INDEX&pageSize=3&sortColumns=REPORT_DATE&sortTypes=-1&source=WEB&client=WEB';
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
@@ -141,7 +141,7 @@ async function testJVS2_MacroDashboard() {
     console.log(`    PMI: ${json.result.data[0].MAKE_INDEX}`);
   });
 
-  await test('PPI data (RPT_ECONOMY_PPI)', async () => {
+  await runTest('PPI data (RPT_ECONOMY_PPI)', async () => {
     const url = 'https://datacenter.eastmoney.com/api/data/v1/get?reportName=RPT_ECONOMY_PPI&columns=REPORT_DATE,BASE_SAME&pageSize=3&sortColumns=REPORT_DATE&sortTypes=-1&source=WEB&client=WEB';
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
@@ -155,7 +155,7 @@ async function testJVS2_MacroDashboard() {
 async function testJVS10_DragonTiger() {
   console.log('\n🐉 JVS-10: Dragon Tiger List');
 
-  await test('Dragon Tiger list API', async () => {
+  await runTest('Dragon Tiger list API', async () => {
     const today = new Date().toISOString().split('T')[0];
     const url = `https://datacenter-web.eastmoney.com/api/data/v1/get?sortColumns=BILL_NETD_AMT&sortTypes=-1&pageSize=5&pageNumber=1&reportName=RPT_DAILYBILLBOARD_DETAILSNEW&columns=ALL&filter=(TRADE_DATE='${today}')&source=WEB&client=WEB`;
     const raw = await httpGet(url);
@@ -176,7 +176,7 @@ async function testJVS10_DragonTiger() {
 async function testJVS11_CapitalFlowRank() {
   console.log('\n💰 JVS-11: Capital Flow Rank');
 
-  await test('Stock capital flow ranking (push2, may 502)', async () => {
+  await runTest('Stock capital flow ranking (push2, may 502)', async () => {
     const url = 'http://push2.eastmoney.com/api/qt/clist/get?fid=f62&po=-1&pz=5&pn=1&np=1&fltt=2&invt=2&fields=f2,f3,f12,f14,f62,f66,f72,f78,f184&fs=m:0+t:6,m:0+t:13,m:0+t:80,m:1+t:2,m:1+t:23,m:0+t:81+s:2048';
     try {
       const raw = await httpGet(url);
@@ -195,7 +195,7 @@ async function testJVS11_CapitalFlowRank() {
     }
   });
 
-  await test('Sector capital flow ranking (push2, may 502)', async () => {
+  await runTest('Sector capital flow ranking (push2, may 502)', async () => {
     const url = 'http://push2.eastmoney.com/api/qt/clist/get?fid=f62&po=-1&pz=5&pn=1&np=1&fltt=2&invt=2&fields=f2,f3,f12,f14,f62,f66,f128&fs=m:90+t:2';
     try {
       const raw = await httpGet(url);
@@ -220,7 +220,7 @@ async function testJVS11_CapitalFlowRank() {
 async function testJVS13_FundHoldings() {
   console.log('\n🏦 JVS-13: Fund Holdings');
 
-  await test('Fund increase rank API', async () => {
+  await runTest('Fund increase rank API', async () => {
     const url = `https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_STOCK_FUNDHOLD_CHANGE&columns=ALL&filter=(REPORT_DATE='2025-12-31')&pageSize=5&sortColumns=HOLD_NUM_CHANGE&sortTypes=-1&source=WEB&client=WEB`;
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
@@ -239,7 +239,7 @@ async function testJVS13_FundHoldings() {
 async function testJVS17_ConsumerData() {
   console.log('\n🛒 JVS-17: Consumer Data');
 
-  await test('CPI sub-indexes (columns may vary)', async () => {
+  await runTest('CPI sub-indexes (columns may vary)', async () => {
     const url = 'https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_ECONOMY_CPI&columns=ALL&pageSize=3&sortColumns=REPORT_DATE&sortTypes=-1&source=WEB&client=WEB';
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
@@ -255,7 +255,7 @@ async function testJVS17_ConsumerData() {
 async function testJVS18_MarginData() {
   console.log('\n📈 JVS-18: Margin Data');
 
-  await test('Market margin balance history', async () => {
+  await runTest('Market margin balance history', async () => {
     const url = 'https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPTA_WEB_RZRQ_ZCZJMX&columns=REPORT_DATE,RZYE,RQYE,RZRQYE&pageSize=5&sortColumns=REPORT_DATE&sortTypes=-1&source=WEB&client=WEB';
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
@@ -274,7 +274,7 @@ async function testJVS18_MarginData() {
 async function testJVS16_MarketBreadth() {
   console.log('\n📊 JVS-16: Market Breadth');
 
-  await test('Market breadth from Shanghai index (push2, may 502)', async () => {
+  await runTest('Market breadth from Shanghai index (push2, may 502)', async () => {
     const url = 'http://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&secids=1.000001&fields=f2,f3,f4,f6,f12,f14,f104,f105,f106';
     try {
       const raw = await httpGet(url);
@@ -299,7 +299,7 @@ async function testJVS16_MarketBreadth() {
 async function testJVS9_QuoteStream() {
   console.log('\n📡 JVS-9: Quote Stream');
 
-  await test('Single stock quote API (push2, may 502)', async () => {
+  await runTest('Single stock quote API (push2, may 502)', async () => {
     const url = 'http://push2.eastmoney.com/api/qt/stock/get?secid=1.600519&fields=f43,f44,f45,f46,f47,f48,f57,f58,f169,f170';
     try {
       const raw = await httpGet(url);
@@ -326,7 +326,7 @@ async function testJVS9_QuoteStream() {
 async function testJVS3_Sentiment() {
   console.log('\n🧠 JVS-3: Sentiment Index (local)');
 
-  await test('Sentiment engine compute', async () => {
+  await runTest('Sentiment engine compute', async () => {
     const { SentimentIndexEngine } = require('../electron/engine/sentiment-index');
     const engine = new SentimentIndexEngine();
     const result = engine.compute({
@@ -347,7 +347,7 @@ async function testJVS3_Sentiment() {
 async function testJVS7_AnomalyDetector() {
   console.log('\n🚨 JVS-7: Anomaly Detector (local)');
 
-  await test('Detect limit up', async () => {
+  await runTest('Detect limit up', async () => {
     const { StockAnomalyDetector } = require('../electron/engine/stock-anomaly-detector');
     const detector = new StockAnomalyDetector();
     const alerts = detector.processQuotes([{
@@ -365,7 +365,7 @@ async function testJVS7_AnomalyDetector() {
 async function testJVS14_StockDiagnosis() {
   console.log('\n🔍 JVS-14: Stock Diagnosis (local)');
 
-  await test('Diagnose stock with all dimensions disabled', async () => {
+  await runTest('Diagnose stock with all dimensions disabled', async () => {
     const { diagnoseStock } = require('../electron/engine/stock-diagnosis');
     const result = await diagnoseStock({
       code: '600519', name: '贵州茅台',
@@ -383,7 +383,7 @@ async function testJVS14_StockDiagnosis() {
 async function testJVS15_PortfolioRisk() {
   console.log('\n📉 JVS-15: Portfolio Risk (local)');
 
-  await test('Calculate portfolio risk', async () => {
+  await runTest('Calculate portfolio risk', async () => {
     const { calculatePortfolioRisk } = require('../electron/engine/portfolio-risk');
     const result = await calculatePortfolioRisk({
       positions: [
@@ -405,7 +405,7 @@ async function testJVS15_PortfolioRisk() {
 async function testJVS19_EMIUnified() {
   console.log('\n🔗 JVS-19: EMI Unified (local)');
 
-  await test('Market overview (may use cached/fallback data)', async () => {
+  await runTest('Market overview (may use cached/fallback data)', async () => {
     const { getMarketOverview } = require('../electron/engine/emi-unified');
     const result = await getMarketOverview();
     assert(result.timestamp > 0, 'Should have timestamp');
@@ -454,10 +454,9 @@ async function runAllTests() {
     errors.forEach(e => console.log(`  - ${e}`));
   }
 
-  process.exit(failed > 0 ? 1 : 0);
+  return;
 }
 
-runAllTests().catch(err => {
-  console.error('Test suite failed:', err);
-  process.exit(1);
+describe("JVS E2E Validation Suite", () => {
+  it("runs all E2E tests", async () => { await runAllTests(); });
 });

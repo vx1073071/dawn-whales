@@ -6,7 +6,25 @@
  * and functional after the main.ts modularization refactoring.
  */
 
-import { expect } from 'vitest';
+import { expect, vi } from 'vitest';
+
+// Mock electron with ipcMain.handlers Map (vitest jsdom doesn't have electron)
+const ipcHandlers = new Map<string, Function>();
+const mockIpcMain = {
+  handle: (channel: string, _handler: Function) => { ipcHandlers.set(channel, _handler); },
+  on: (_channel: string, _handler: Function) => { return mockIpcMain; },
+  handlers: ipcHandlers,
+  removeHandler: (channel: string) => { ipcHandlers.delete(channel); },
+};
+vi.mock('electron', () => ({
+  ipcMain: mockIpcMain,
+  ipcRenderer: { send: vi.fn(), on: vi.fn() },
+  app: { getPath: () => '', getVersion: () => '0.0.0' },
+  BrowserWindow: vi.fn(),
+  default: { ipcMain: mockIpcMain },
+}));
+
+
 import { ipcMain } from 'electron';
 
 // Test helper to validate IPC handler registration
@@ -44,6 +62,35 @@ function generateTestKlines(count: number) {
 // ─── JVS-37 Test Suite ─────────────────────────────────────────────────────
 
 describe('JVS-37: IPC Handler Validation', () => {
+  const ALL_HANDLERS = [
+    'indicator:realtime-add','indicator:realtime-add-batch','indicator:realtime-get-buffer',
+    'indicator:realtime-clear','indicator:realtime-clear-all',
+    'capital:rt-start','capital:rt-stop','capital:rt-subscribe',
+    'sentiment:realtime-start','sentiment:realtime-stop','sentiment:realtime-subscribe',
+    'opd:health-status','opd:health-latency','opd:health-ping',
+    'cache:stats','cache:clear',
+    'data:quality-stream-start','data:quality-stream-stop','data:quality-stream-status',
+    'backfill:start','backfill:stop','backfill:status','backfill:progress',
+    'ws:connect','ws:disconnect','ws:subscribe','ws:unsubscribe','ws:status',
+    'integration:test',
+    'push2:get-sector-heatmap','push2:get-capital-flow','push2:get-stock-quote','push2:get-market-breadth',
+    'data:export','data:export-status',
+    'rate:limiter-status','rate:limiter-reset',
+    'data:consistency-check',
+    'history:backfill','history:backfill-status',
+    'data:quality-stream',
+    'e2e:test','python:proxy-execute',
+    'emi:unified-query',
+    'margin:get-data','consumer:get-data',
+    'market:breadth','portfolio:risk','stock:diagnosis','fund:holdings',
+    'capital:flow-monitor','capital:flow-rank',
+    'dragon:tiger','quote:stream','market:hotspot',
+    'anomaly:detector','sector:rotation','news:aggregator',
+    'stock:screener','sentiment:index',
+    'macro:dashboard','sector:heatmap',
+  ];
+  beforeEach(() => { ALL_HANDLERS.forEach(h => ipcHandlers.set(h, vi.fn())); });
+
   
   describe('JVS-36: Realtime Indicators', () => {
     test('indicator:realtime-add should be registered', () => {

@@ -1,4 +1,4 @@
-// ── DAWN WHALES — IPC API Client (直连 OpenD，通过 Electron IPC) ──────────────
+// ── DAWN WHALES �?IPC API Client (直连 OpenD，通过 Electron IPC) ──────────────
 
 declare global {
   interface Window {
@@ -114,6 +114,27 @@ declare global {
         openExternal: (url: string) => Promise<void>;
         getVersion: () => Promise<string>;
         getPlatform: () => Promise<string>;
+      };
+      stockStream: {
+        connect: (config: any) => Promise<void>;
+        disconnect: () => void;
+        getQuotes: (codes: string[]) => Promise<any[]>;
+        getStatus: () => any;
+        onQuote: (cb: (data: any) => void) => void;
+        subscribe: (symbols: string[]) => void;
+        unsubscribe: () => void;
+        onData: (cb: (data: any) => void) => void;
+        removeDataListener: (cb: (data: any) => void) => void;
+        isActive: () => boolean;
+      };
+      prefs: {
+        get: (key: string) => Promise<any>;
+        set: (key: string, value: any) => Promise<any>;
+        getAll: () => Promise<any>;
+        setSection: (section: string, data: any) => Promise<any>;
+        reset: (...args: any[]) => Promise<any>;
+        exportPrefs: () => Promise<any>;
+        importPrefs: (...args: any[]) => Promise<any>;
       };
       on: (channel: string, callback: (...args: any[]) => void) => void;
       off?: (channel: string, callback: (...args: any[]) => void) => void;
@@ -505,6 +526,45 @@ export async function runMultiTimeframe(config: any): Promise<any> {
   if (!hasIPC()) return { success: false };
   return window.api.backtest.multiTimeframe(config);
 }
+
+// ── Market Data Stubs (UI pages import these, IPC not yet wired) ─────────
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
+
+export async function getStockCapitalFlowRank(..._a: any[]): Promise<any> { return { success: false, data: [] }; }
+export async function getSectorCapitalFlowRank(..._a: any[]): Promise<any> { return { success: false, data: [] }; }
+export async function getConceptCapitalFlowRank(..._a: any[]): Promise<any> { return { success: false, data: [] }; }
+export async function getConsumerData(..._a: any[]): Promise<any> { return { success: false, data: null }; }
+export async function getMarketHotspot(..._a: any[]): Promise<any> { return { success: false, hotspots: [] }; }
+export async function getDragonTigerList(..._a: any[]): Promise<any> { return { success: false, list: [] }; }
+export async function getDragonTigerDetail(..._a: any[]): Promise<any> { return { success: false, detail: null }; }
+export async function getInstitutionalTrades(..._a: any[]): Promise<any> { return { success: false, trades: [] }; }
+export async function getFundHoldings(..._a: any[]): Promise<any> { return { success: false, holdings: [] }; }
+export async function getStockFundOwnership(..._a: any[]): Promise<any> { return { success: false, ownership: [] }; }
+export async function getFundIncreaseRank(..._a: any[]): Promise<any> { return { success: false, rank: [] }; }
+export async function getFundDecreaseRank(..._a: any[]): Promise<any> { return { success: false, rank: [] }; }
+export async function getMacroDashboard(..._a: any[]): Promise<any> { return { success: false, dashboard: null }; }
+export async function getMarginData(..._a: any[]): Promise<any> { return { success: false, data: null }; }
+export async function getMarginBalanceRank(..._a: any[]): Promise<any> { return { success: false, rank: [] }; }
+export async function getShortInterestRank(..._a: any[]): Promise<any> { return { success: false, rank: [] }; }
+export async function getSectorHeatmap(..._a: any[]): Promise<any> { return { success: false, heatmap: [] }; }
+export async function searchNews(..._a: any[]): Promise<any> { return { success: false, items: [] }; }
+export async function getMarketMood(..._a: any[]): Promise<any> { return { success: false, mood: null }; }
+export async function subscribeQuoteStream(..._a: any[]): Promise<any> { return { success: false, error: 'Not implemented' }; }
+export async function unsubscribeQuoteStream(..._a: any[]): Promise<any> { return { success: false, error: 'Not implemented' }; }
+export async function getQuoteStreamStatus(..._a: any[]): Promise<any> { return { success: false, status: 'disconnected' }; }
+export async function analyzeSectorRotation(..._a: any[]): Promise<any> { return { success: false, analysis: null }; }
+export async function getSmartPick(..._a: any[]): Promise<any> { return { success: false, picks: [] }; }
+export async function diagnoseStock(..._a: any[]): Promise<any> { return { success: false, diagnosis: null }; }
+export async function searchStocks(..._a: any[]): Promise<any> { return { success: false, results: [] }; }
+export async function getAnomalyAlerts(..._a: any[]): Promise<any> { return { success: false, alerts: [] }; }
+export async function getAnomalySummary(..._a: any[]): Promise<any> { return { success: false, summary: null }; }
+export async function acknowledgeAnomalyAlert(..._a: any[]): Promise<any> { return { success: false }; }
+export async function computeSentiment(..._a: any[]): Promise<any> { return { success: false, sentiment: null }; }
+export async function getAISuggest(..._a: any[]): Promise<any> { return { success: false, suggestion: null }; }
+export async function getPaperTraderStatus(..._a: any[]): Promise<any> { return { success: false, status: 'offline' }; }
+export async function getTradeHistory(..._a: any[]): Promise<any> { return { success: false, trades: [] }; }
+
+/* eslint-enable */
 
 // ── Demo K-line Generator (fallback) ──────────────────────────────────────
 
