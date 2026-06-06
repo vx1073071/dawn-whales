@@ -21,12 +21,8 @@ const MarketplacePage = lazy(() => import('@/components/marketplace/MarketplaceP
 const LiveMonitorPage = lazy(() => import('@/components/live/LiveMonitorPage'));
 const BacktestReportPage = lazy(() => import('@/components/backtest/BacktestReportPage'));
 const RiskDashboardPage = lazy(() => import('@/components/risk/RiskDashboardPage'));
-const DataExportPage = lazy(() => import('@/components/tools/DataExportPage'));
 const AlertCenterPage = lazy(() => import('@/components/risk/AlertCenterPage'));
-const PreferencesPage = lazy(() => import('@/components/settings/PreferencesPage'));
-const SentimentDashboardPage = lazy(() => import('@/components/risk/SentimentDashboardPage'));
-const MonteCarloPage = lazy(() => import('@/components/backtest/MonteCarloPage'));
-const DataQualityPage = lazy(() => import('@/components/tools/DataQualityPage'));
+const TradeDashboardPage = lazy(() => import('@/components/trading/TradeDashboardPage'));
 
 const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   dashboard: DashboardPage,
@@ -40,12 +36,8 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   live: LiveMonitorPage,
   backtest: BacktestReportPage,
   risk: RiskDashboardPage,
-  export: DataExportPage,
-  alerts: AlertCenterPage,
-  preferences: PreferencesPage,
-  sentiment: SentimentDashboardPage,
-  montecarlo: MonteCarloPage,
-  quality: DataQualityPage,
+  alert: AlertCenterPage,
+  trade: TradeDashboardPage,
 };
 
 function PageFallback() {

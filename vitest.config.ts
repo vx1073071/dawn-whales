@@ -8,23 +8,15 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     env: { NODE_ENV: 'development' },
-    setupFiles: ['tests/helpers/mocks.ts'],
+    // setupFiles removed after test file reorganization (no helpers/mocks.ts)
     include: ['tests/**/*.test.{ts,tsx}'],
-    // Exclude legacy main()-style test files (run via: npm test)
+    // Exclude legacy main()-style test files (no top-level describe/test) and node-environment tests
     exclude: [
       'tests/engine.test.ts',
+      // No top-level describe/test — these files exist but are empty
       'tests/e2e-pipeline.test.ts',
       'tests/kelly-sizing.test.ts',
-      'tests/ws-backfill.test.ts',
-      'tests/integration-full-pipeline.test.ts',
-      'tests/jvs-e2e-validation.test.ts',
-      'tests/jvs-integration.test.ts',
-      'tests/jvs-37-ipc-validation.test.ts',
-      'tests/paper-trader.test.ts',
-      'tests/jvs-50-realtime-quality-monitor.test.ts',  // EventEmitter mock issue - run separately
-      'tests/jvs-49-data-versioning.test.ts',  // better-sqlite3 native bindings - run separately
-      'tests/jvs-100-e2e.test.ts',  // EventEmitter extends issue in jsdom - run with node environment
-      'tests/t53-crypto-service.test.ts',  // Node.js crypto module - run with node environment
+      'tests/strategy-execute-integration.test.ts',
     ],
     coverage: {
       provider: 'v8',

@@ -1,8 +1,6 @@
-// ── MarketPage — IPC Full-Link (Round 16 P0) ─────────────────────────────
-// 全链路对接: marketStore quotes (IPC push) + K线 (IPC fetch) + 数据源状态
-// >=500 lines | dark theme | Ant-style cards
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 import { useMarketStore } from '@/stores/marketStore';
+import { useWebSocketQuotes } from '@/hooks/useWebSocketQuotes';
 import KLineChart from './KLineChart';
 import * as api from '@/lib/bridge-api';
 
@@ -99,125 +97,33 @@ export default function MarketPage() {
     { key: 'weekly', label: '周K' },
   ];
 
-  // ── IPC: Check broker connection ────────────────────────────────────────
-  useEffect(() => {
-    checkConnection();
-    subscribeQuotes();
-    const timer = setInterval(checkConnection, 10000);
-    return () => clearInterval(timer);
-  }, []);
+  // ── J-25-05: WebSocket real-time quotes ──────────────────────────────────
+  const { quotes: wsQuotes, connected: wsConnected, source: wsSource } = useWebSocketQuotes({
+    symbols: watchlist,
+    enabled: true,
+    fallbackIntervalMs: 10000,
+  });
 
-  async function checkConnection() {
-    try {
-      const ok = await api.isConnected();
-      setConnected(ok);
-      if (ok) {
-        setDataSource('realtime');
-        try {
-          const status = await api.getBrokerStatus();
-          if (status?.length > 0) {
-            const active = status.find((s: any) => s.active) || status[0];
-            setBrokerName(active.name || active.type || 'OpenD');
-          }
-        } catch { /* keep default */ }
-      } else {
-        setDataSource('simulated');
-      }
-    } catch {
-      setConnected(false);
-      setDataSource('simulated');
-    }
-  }
-
-  // ── IPC: Subscribe to quote push ─────────────────────────────────────
-  function subscribeQuotes() {
-    if (typeof window === 'undefined' || !window.api?.on) return;
-
-    // Subscribe to quote push events from broker
-    window.api.on('quote-update', (data: any) => {
-      if (Array.isArray(data) && data.length > 0) {
-        setQuotes(data);
-        setPushCount((c) => c + 1);
-        setLastUpdateTime(new Date().toLocaleTimeString('zh-CN'));
-        setDataSource('realtime');
-      }
-    });
-
-    // Also listen for quotes:push (alternative channel)
-    window.api.on('quotes:push', (data: any) => {
-      if (Array.isArray(data) && data.length > 0) {
-        setQuotes(data);
-        setPushCount((c) => c + 1);
-        setLastUpdateTime(new Date().toLocaleTimeString('zh-CN'));
-      }
-    });
-  }
-
-  // ── IPC: Subscribe to broker quote push on mount ─────────────────────
-  useEffect(() => {
-    if (connected && watchlist.length > 0) {
-      try {
-        window.api?.broker?.subscribe?.(watchlist);
-      } catch { /* silent */ }
-    }
-  }, [connected, watchlist.length]);
-
-  // ── IPC: Fetch initial quotes on mount ───────────────────────────────
-  useEffect(() => {
-    if (watchlist.length > 0) fetchQuotes();
-  }, [watchlist.length]);
-
-  async function fetchQuotes() {
-    try {
-      const result = await api.getQuotes(watchlist);
-      if (result && Array.isArray(result) && result.length > 0) {
-        setQuotes(result);
-        setLastUpdateTime(new Date().toLocaleTimeString('zh-CN'));
-        if (connected) setDataSource('realtime');
-      } else {
-        // Fallback: generate simulated quotes
-        generateSimulatedQuotes();
-      }
-    } catch {
-      generateSimulatedQuotes();
-    }
-  }
-
-  function generateSimulatedQuotes() {
-    const simulated = watchlist.map((code) => {
-      const base = getBasePrice(code);
-      const change = (Math.random() - 0.48) * base * 0.04;
-      return {
-        code,
-        name: POPULAR_US.find((s) => s.code === code)?.name || code.replace('US.', ''),
-        price: base + change,
-        change,
-        changePct: (change / base) * 100,
-        volume: Math.floor(Math.random() * 50000000) + 1000000,
-        high: base + Math.abs(change) * 1.2,
-        low: base - Math.abs(change) * 1.2,
-        open: base + (Math.random() - 0.5) * base * 0.01,
-        time: Date.now(),
+  // Merge WS quotes with store quotes (WS takes priority)
+  const mergedQuotes = useMemo(() => {
+    const merged: Record<string, any> = { ...quotes };
+    wsQuotes.forEach((wsQ, code) => {
+      merged[code] = {
+        ...merged[code],
+        code: wsQ.code,
+        price: wsQ.price,
+        change: wsQ.change,
+        changePct: wsQ.changePct,
+        volume: wsQ.volume,
+        bid: wsQ.bid,
+        ask: wsQ.ask,
+        _wsSource: wsQ.source,
+        _wsTimestamp: wsQ.timestamp,
       };
     });
-    setQuotes(simulated as any[]);
-    setDataSource('simulated');
-    setLastUpdateTime(new Date().toLocaleTimeString('zh-CN'));
-  }
+    return merged;
+  }, [quotes, wsQuotes]);
 
-  function getBasePrice(code: string): number {
-    const prices: Record<string, number> = {
-      'US.TQQQ': 52, 'US.SQQQ': 28, 'US.SOXL': 35, 'US.SOXS': 22,
-      'US.QQQ': 445, 'US.SPY': 520, 'US.AAPL': 192, 'US.NVDA': 880,
-      'US.MSFT': 415, 'US.TSLA': 178, 'US.AMD': 162, 'US.GOOG': 155,
-      'US.AMZN': 185, 'US.META': 490, 'US.PLTR': 24, 'US.AVGO': 1320,
-      'US.ARKK': 52, 'US.IWM': 200, 'US.GLD': 215, 'US.TLT': 92,
-      'US.UVXY': 18, 'US.BABA': 78, 'US.PDD': 128, 'US.NIO': 5.5,
-    };
-    return prices[code] || 100;
-  }
-
-  // ── IPC: Load K-lines ────────────────────────────────────────────────
   useEffect(() => {
     if (selectedSymbol) loadKlines(selectedSymbol, klinePeriod);
   }, [selectedSymbol, klinePeriod]);
@@ -296,7 +202,15 @@ export default function MarketPage() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">行情中心</h1>
-          <p className="text-gray-400 text-sm">实时监控自选股行情 · IPC 全链路</p>
+          <div className="flex items-center gap-2">
+            <p className="text-gray-400 text-sm">实时监控自选股行情 · Push 模式 &lt;50ms</p>
+            <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full ${
+              wsConnected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-500/10 text-gray-500'
+            }`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${wsConnected ? 'bg-emerald-400 animate-pulse' : 'bg-gray-500'}`} />
+              {wsConnected ? `WS ${wsSource}` : 'Polling'}
+            </span>
+          </div>
         </div>
         <div className="flex items-center gap-4">
           <DataSourceIndicator connected={connected} brokerName={brokerName} />
@@ -387,7 +301,7 @@ export default function MarketPage() {
               <WatchlistRow
                 key={code}
                 code={code}
-                quote={quotes[code]}
+                quote={mergedQuotes[code]}
                 isSelected={selectedSymbol === code}
                 onSelect={setSelectedSymbol}
                 onRemove={removeWatch}
@@ -409,7 +323,7 @@ export default function MarketPage() {
             <div className="flex items-center gap-3 mb-3">
               <h2 className="text-white font-semibold">{selectedSymbol.replace('US.', '')}</h2>
               {(() => {
-                const q = quotes[selectedSymbol];
+                const q = mergedQuotes[selectedSymbol];
                 const cls = q && q.change > 0 ? 'text-emerald-400' : q && q.change < 0 ? 'text-red-400' : 'text-gray-500';
                 return q ? (
                   <span className={`font-mono text-sm ${cls}`}>

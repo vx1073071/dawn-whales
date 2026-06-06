@@ -283,7 +283,7 @@ export interface AppSettings {
   };
 }
 
-export type SidebarView = 'dashboard' | 'market' | 'trading' | 'strategy' | 'marketplace' | 'backtest' | 'live' | 'portfolio' | 'orders' | 'risk' | 'settings' | 'sentiment' | 'montecarlo' | 'quality' | 'export' | 'alerts' | 'preferences';
+export type SidebarView = 'dashboard' | 'market' | 'strategy' | 'marketplace' | 'backtest' | 'live' | 'portfolio' | 'orders' | 'risk' | 'settings' | 'trade' | 'alert';
 
 export interface AppState {
   sidebarView: SidebarView;

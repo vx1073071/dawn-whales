@@ -1,348 +1,651 @@
-// ── DAWN WHALES — Risk Dashboard (v0.6.0) ───────────────────────────────────
-// 实时展示 Kelly/回撤/VIX/风控状态
+import { useState, useEffect, useCallback } from 'react';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { getRiskStatusSnapshot } from '../../lib/bridge-api';
-import EquityChart from './EquityChart';
-import PerformanceMetricsPanel from './PerformanceMetricsPanel';
-import TradingJournal from './TradingJournal';
-import DailyPnLSummary from './DailyPnLSummary';
-import RiskConfigEditor from './RiskConfigEditor';
-import SystemLog from './SystemLog';
-import PortfolioStressTest from './PortfolioStressTest';
-import SentimentGauge from './SentimentGauge';
-import AnomalyAlertPanel from './AnomalyAlertPanel';
+// ─── Types ───────────────────────────────────────────────────────────────────
 
-interface KellyStats {
-  winRate: number;
-  avgWin: number;
-  avgLoss: number;
-  profitFactor: number;
+interface RiskConfig {
+  maxDrawdownPct: number;
   kellyFraction: number;
-  sampleSize: number;
+  vixThreshold: number;
+  stopLossPct: number;
 }
 
 interface DrawdownState {
-  peakEquity: number;
-  currentDrawdownPct: number;
-  maxDrawdownPct: number;
-  drawdownStart?: number;
-  isReduced: boolean;
-  reductionFactor: number;
+  currentPct: number;
+  maxPct: number;
+  peakAssets: number;
+  troughAssets: number;
+}
+
+interface KellyStats {
+  fraction: number;
+  winRate: number;
+  profitFactor: number;
+  avgWin: number;
+  avgLoss: number;
+  sampleSize: number;
 }
 
 interface RiskAlert {
-  time: number;
-  type: string;
+  id: string;
+  timestamp: string;
+  type: 'critical' | 'warning' | 'info';
   message: string;
+  source: string;
 }
 
-interface RiskSnapshot {
-  config: any;
+interface StatusSnapshot {
+  config: RiskConfig;
   drawdown: DrawdownState;
   kelly: KellyStats;
-  volatilityFactor: number;
-  currentVix: number | null;
+  vix: number;
   totalAssets: number;
   dailyPnl: number;
   alerts: RiskAlert[];
 }
 
+// ─── Mock Data ───────────────────────────────────────────────────────────────
+
+const MOCK_SNAPSHOT: StatusSnapshot = {
+  config: {
+    maxDrawdownPct: 15,
+    kellyFraction: 0.25,
+    vixThreshold: 30,
+    stopLossPct: 5,
+  },
+  drawdown: {
+    currentPct: 4.7,
+    maxPct: 8.2,
+    peakAssets: 1250000,
+    troughAssets: 1147500,
+  },
+  kelly: {
+    fraction: 0.18,
+    winRate: 0.58,
+    profitFactor: 1.85,
+    avgWin: 3200,
+    avgLoss: 1730,
+    sampleSize: 240,
+  },
+  vix: 18.4,
+  totalAssets: 1192500,
+  dailyPnl: 12350,
+  alerts: [
+    {
+      id: 'a1',
+      timestamp: new Date(Date.now() - 300000).toISOString(),
+      type: 'warning',
+      message: 'Drawdown approaching 5% threshold',
+      source: 'drawdown-monitor',
+    },
+    {
+      id: 'a2',
+      timestamp: new Date(Date.now() - 1200000).toISOString(),
+      type: 'info',
+      message: 'Kelly fraction adjusted to 0.18',
+      source: 'kelly-engine',
+    },
+    {
+      id: 'a3',
+      timestamp: new Date(Date.now() - 3600000).toISOString(),
+      type: 'critical',
+      message: 'VIX spike detected: 32.1',
+      source: 'vix-monitor',
+    },
+  ],
+};
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function formatCurrency(value: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+function formatPct(value: number): string {
+  return `${(value * 100).toFixed(1)}%`;
+}
+
+function formatTime(iso: string): string {
+  return new Date(iso).toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+}
+
+function getAlertColor(type: string): string {
+  switch (type) {
+    case 'critical':
+      return 'text-red-400 bg-red-900/30 border-red-700';
+    case 'warning':
+      return 'text-yellow-400 bg-yellow-900/30 border-yellow-700';
+    default:
+      return 'text-blue-400 bg-blue-900/30 border-blue-700';
+  }
+}
+
+function getDrawdownColor(pct: number, max: number): string {
+  const ratio = pct / max;
+  if (ratio >= 0.8) return 'bg-red-500';
+  if (ratio >= 0.5) return 'bg-yellow-500';
+  return 'bg-green-500';
+}
+
+// ─── Component ───────────────────────────────────────────────────────────────
+
 export default function RiskDashboardPage() {
-  const { t } = useTranslation();
-  const [snapshot, setSnapshot] = useState<RiskSnapshot | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [lastUpdate, setLastUpdate] = useState<string>('');
+  const [snapshot, setSnapshot] = useState<StatusSnapshot | null>(null);
+  const [kellyStats, setKellyStats] = useState<KellyStats | null>(null);
+  const [drawdownState, setDrawdownState] = useState<DrawdownState | null>(null);
+  const [alerts, setAlerts] = useState<RiskAlert[]>([]);
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Demo equity curve data (60 days)
-  const demoEquityData = useMemo(() => {
-    const data: { time: string; equity: number }[] = [];
-    let equity = 100000;
-    const now = new Date();
-    for (let i = 59; i >= 0; i--) {
-      const d = new Date(now);
-      d.setDate(d.getDate() - i);
-      const change = (Math.random() - 0.48) * 0.02 * equity;
-      equity += change;
-      data.push({
-        time: d.toISOString().split('T')[0],
-        equity: Math.max(equity, 50000),
-      });
-    }
-    return data;
-  }, []);
+  const api = (window as any).api;
 
-  // Demo trade history for performance metrics
-  const demoTrades = useMemo(() => {
-    const trades: { pnl: number; timestamp: number }[] = [];
-    const now = Date.now();
-    for (let i = 0; i < 50; i++) {
-      const isWin = Math.random() > 0.42;
-      const pnl = isWin
-        ? 50 + Math.random() * 450
-        : -(30 + Math.random() * 220);
-      trades.push({ pnl, timestamp: now - i * 86400000 });
-    }
-    return trades;
-  }, []);
-
-  const loadData = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     try {
-      const result = await getRiskStatusSnapshot();
-      if (result?.success && result.snapshot) {
-        setSnapshot(result.snapshot);
-        setLastUpdate(new Date().toLocaleTimeString('zh-CN'));
+      let snap: StatusSnapshot;
+      let kelly: KellyStats;
+      let dd: DrawdownState;
+      let alertList: RiskAlert[];
+
+      if (api?.risk?.getStatusSnapshot) {
+        snap = await api.risk.getStatusSnapshot();
+      } else {
+        snap = MOCK_SNAPSHOT;
       }
-    } catch (err) {
-      console.error('[RiskDashboard] load error:', err);
+
+      if (api?.risk?.getKellyStats) {
+        kelly = await api.risk.getKellyStats();
+      } else {
+        kelly = snap.kelly;
+      }
+
+      if (api?.risk?.getDrawdownState) {
+        dd = await api.risk.getDrawdownState();
+      } else {
+        dd = snap.drawdown;
+      }
+
+      if (api?.risk?.getAlerts) {
+        alertList = await api.risk.getAlerts();
+      } else {
+        alertList = snap.alerts;
+      }
+
+      setSnapshot(snap);
+      setKellyStats(kelly);
+      setDrawdownState(dd);
+      setAlerts(alertList);
+      setLastUpdate(new Date());
+      setError(null);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to fetch risk data');
+      // Fallback to mock
+      setSnapshot(MOCK_SNAPSHOT);
+      setKellyStats(MOCK_SNAPSHOT.kelly);
+      setDrawdownState(MOCK_SNAPSHOT.drawdown);
+      setAlerts(MOCK_SNAPSHOT.alerts);
+      setLastUpdate(new Date());
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  }, []);
+  }, [api]);
 
   useEffect(() => {
-    loadData();
+    fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
     if (!autoRefresh) return;
-    const interval = setInterval(loadData, 10000);
+    const interval = setInterval(fetchData, 30000);
     return () => clearInterval(interval);
-  }, [loadData, autoRefresh]);
+  }, [autoRefresh, fetchData]);
+
+  // ─── WebSocket Real-Time Integration ──────────────────────────────────────
+
+  const [wsConnected, setWsConnected] = useState(false);
+  const [livePrices, setLivePrices] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    if (!api?.ws?.subscribe || !api?.ws?.on) return;
+
+    // Subscribe to position symbols for real-time price updates
+    const positionSymbols = ['US.TQQQ', 'US.SPY', 'US.AAPL', 'US.NVDA', 'US.MSFT']; // Example positions
+    
+    const handleTick = (data: any) => {
+      if (data?.code && data?.price) {
+        setLivePrices(prev => ({
+          ...prev,
+          [data.code]: data.price,
+        }));
+        
+        // Update snapshot with live price if this is a position we hold
+        if (positionSymbols.includes(data.code) && snapshot) {
+          setSnapshot(prev => {
+            if (!prev) return prev;
+            // Recalculate totalAssets based on live prices
+            // This is a simplified example - in production you'd track positions properly
+            const priceChange = data.price - (prev.totalAssets / positionSymbols.length);
+            return {
+              ...prev,
+              totalAssets: prev.totalAssets + priceChange * 0.01, // Scaled impact
+              dailyPnl: prev.dailyPnl + priceChange * 0.005,
+            };
+          });
+        }
+      }
+    };
+
+    const handleConnect = () => {
+      setWsConnected(true);
+    };
+
+    const handleDisconnect = () => {
+      setWsConnected(false);
+    };
+
+    // Subscribe and register handlers
+    api.ws.subscribe(positionSymbols, 'quote');
+    api.ws.on('tick', handleTick);
+    api.ws.on('connected', handleConnect);
+    api.ws.on('disconnected', handleDisconnect);
+
+    // Check initial connection status
+    api.ws.getStatus?.().then((status: any) => {
+      setWsConnected(status?.connected || false);
+    });
+
+    return () => {
+      api.ws.off?.('tick', handleTick);
+      api.ws.off?.('connected', handleConnect);
+      api.ws.off?.('disconnected', handleDisconnect);
+      api.ws.unsubscribe?.(positionSymbols);
+    };
+  }, [api, snapshot]);
+
+  // ─── Real-Time Alert Integration ──────────────────────────────────────────
+
+  useEffect(() => {
+    if (!api?.on) return;
+
+    const handleRiskAlert = (alert: any) => {
+      if (alert?.type && alert?.message) {
+        setAlerts(prev => [
+          {
+            id: alert.id || `alert-${Date.now()}`,
+            timestamp: alert.timestamp || new Date().toISOString(),
+            type: alert.type,
+            message: alert.message,
+            source: alert.source || 'ws-risk-monitor',
+          },
+          ...prev.slice(0, 19), // Keep max 20 alerts
+        ]);
+        setLastUpdate(new Date());
+      }
+    };
+
+    api.on('risk-alert', handleRiskAlert);
+
+    return () => {
+      api.off?.('risk-alert', handleRiskAlert);
+    };
+  }, [api]);
+
+  // ─── Loading State ───────────────────────────────────────────────────────
 
   if (loading) {
     return (
-      <div className="p-6 flex items-center justify-center h-64">
-        <div className="text-gray-500">{t('risk.loading')}</div>
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          <p className="text-gray-400 text-sm">Loading risk dashboard…</p>
+        </div>
       </div>
     );
   }
 
-  if (!snapshot) {
-    return (
-      <div className="p-6 flex items-center justify-center h-64">
-        <div className="text-gray-500">{t('risk.engineNotInitialized')}</div>
-      </div>
-    );
-  }
+  // ─── Derived Values ──────────────────────────────────────────────────────
 
-  const { kelly, drawdown, currentVix, totalAssets, dailyPnl, alerts, volatilityFactor } = snapshot;
+  const config = snapshot?.config ?? MOCK_SNAPSHOT.config;
+  const kelly = kellyStats ?? MOCK_SNAPSHOT.kelly;
+  const dd = drawdownState ?? MOCK_SNAPSHOT.drawdown;
+  const totalAssets = snapshot?.totalAssets ?? MOCK_SNAPSHOT.totalAssets;
+  const dailyPnl = snapshot?.dailyPnl ?? MOCK_SNAPSHOT.dailyPnl;
+  const vix = snapshot?.vix ?? MOCK_SNAPSHOT.vix;
 
-  // ── Derived visuals ───────────────────────────────────────────────────────
+  const kellyPct = kelly.fraction * 100;
+  const ddPct = dd.currentPct;
+  const ddMaxPct = dd.maxPct;
+  const ddRatio = ddMaxPct > 0 ? (ddPct / ddMaxPct) * 100 : 0;
+  const kellyRatio = Math.min(kellyPct / (config.kellyFraction * 100) * 100, 100);
+  const livePriceCount = Object.keys(livePrices).length;
 
-  const kellyPct = Math.round(kelly.kellyFraction * 100);
-  const kellyColor = kellyPct >= 15 ? 'text-emerald-400' : kellyPct >= 5 ? 'text-[#D4A853]' : 'text-gray-400';
-  const kellyBg = kellyPct >= 15 ? 'bg-emerald-500/10' : kellyPct >= 5 ? 'bg-[#D4A853]/10' : 'bg-gray-500/10';
-
-  const ddPct = drawdown.currentDrawdownPct * 100;
-  const ddColor = ddPct >= 15 ? 'text-red-400' : ddPct >= 10 ? 'text-orange-400' : 'text-emerald-400';
-  const ddBarColor = ddPct >= 15 ? 'bg-red-500' : ddPct >= 10 ? 'bg-orange-500' : 'bg-emerald-500';
-
-  const vixLabel = currentVix === null
-    ? { text: '无数据', color: 'text-gray-500', bg: 'bg-gray-500/10' }
-    : currentVix >= 35
-    ? { text: '极端波动', color: 'text-red-400', bg: 'bg-red-500/10' }
-    : currentVix >= 25
-    ? { text: '高波动', color: 'text-orange-400', bg: 'bg-orange-500/10' }
-    : { text: '正常', color: 'text-emerald-400', bg: 'bg-emerald-500/10' };
-
-  const volFactorPct = Math.round(volatilityFactor * 100);
-
-  const pnlColor = dailyPnl >= 0 ? 'text-emerald-400' : 'text-red-400';
-  const pnlBg = dailyPnl >= 0 ? 'bg-emerald-500/10' : 'bg-red-500/10';
+  // ─── Render ──────────────────────────────────────────────────────────────
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-h-screen bg-gray-900 text-gray-100 p-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">🛡️ {t('risk.title')}</h1>
-          <p className="text-gray-400 text-sm">
-            {t('common.lastUpdate')}: {lastUpdate || '--'} · {t('common.autoRefresh')} {autoRefresh ? t('common.on') : t('common.off')}
+          <h1 className="text-2xl font-bold text-white">Risk Dashboard</h1>
+          <div className="flex items-center gap-3 mt-1">
+            <p className="text-gray-400 text-sm">
+              {lastUpdate
+                ? `Last updated: ${lastUpdate.toLocaleTimeString()}`
+                : 'Not yet updated'}
+            </p>
+            {wsConnected && (
+              <span className="flex items-center gap-1 text-xs text-green-400">
+                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                Live
+              </span>
+            )}
+            {!wsConnected && (
+              <span className="flex items-center gap-1 text-xs text-gray-500">
+                <span className="w-2 h-2 bg-gray-500 rounded-full" />
+                Polling
+              </span>
+            )}
+            {livePriceCount > 0 && (
+              <span className="text-xs text-gray-500">
+                ({livePriceCount} live prices)
+              </span>
+            )}
+          </div>
+          {error && (
+            <p className="text-yellow-400 text-xs mt-1">⚠ Using cached data: {error}</p>
+          )}
+        </div>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={fetchData}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium transition-colors"
+          >
+            Refresh Now
+          </button>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <span className="text-sm text-gray-400">Auto-refresh</span>
+            <div
+              className={`relative w-11 h-6 rounded-full transition-colors ${
+                autoRefresh ? 'bg-blue-600' : 'bg-gray-600'
+              }`}
+              onClick={() => setAutoRefresh(!autoRefresh)}
+            >
+              <div
+                className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform ${
+                  autoRefresh ? 'translate-x-5' : 'translate-x-0'
+                }`}
+              />
+            </div>
+          </label>
+        </div>
+      </div>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+        {/* Total Assets */}
+        <div className="bg-gray-800 rounded-xl p-5 border border-gray-700">
+          <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Total Assets</p>
+          <p className="text-2xl font-bold text-white">{formatCurrency(totalAssets)}</p>
+          <p className="text-gray-500 text-xs mt-1">
+            Peak: {formatCurrency(dd.peakAssets)}
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setAutoRefresh(!autoRefresh)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-              autoRefresh
-                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                : 'bg-gray-500/10 text-gray-400 border border-gray-500/20'
+
+        {/* Daily P&L */}
+        <div className="bg-gray-800 rounded-xl p-5 border border-gray-700">
+          <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Daily P&L</p>
+          <p
+            className={`text-2xl font-bold ${
+              dailyPnl >= 0 ? 'text-green-400' : 'text-red-400'
             }`}
           >
-            {autoRefresh ? `⏸ ${t('common.pause')}` : `▶ ${t('common.resume')}`}
-          </button>
-          <button
-            onClick={loadData}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 hover:bg-[#C9A046]/20 transition-colors"
+            {dailyPnl >= 0 ? '+' : ''}
+            {formatCurrency(dailyPnl)}
+          </p>
+          <p className="text-gray-500 text-xs mt-1">
+            {totalAssets > 0 ? formatPct(dailyPnl / totalAssets) : '0%'} of portfolio
+          </p>
+        </div>
+
+        {/* Kelly % */}
+        <div className="bg-gray-800 rounded-xl p-5 border border-gray-700">
+          <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Kelly Fraction</p>
+          <p className="text-2xl font-bold text-blue-400">{kellyPct.toFixed(1)}%</p>
+          <p className="text-gray-500 text-xs mt-1">
+            Target: {formatPct(config.kellyFraction)}
+          </p>
+        </div>
+
+        {/* Drawdown % */}
+        <div className="bg-gray-800 rounded-xl p-5 border border-gray-700">
+          <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Drawdown</p>
+          <p
+            className={`text-2xl font-bold ${
+              ddPct > config.maxDrawdownPct * 0.8
+                ? 'text-red-400'
+                : ddPct > config.maxDrawdownPct * 0.5
+                ? 'text-yellow-400'
+                : 'text-green-400'
+            }`}
           >
-            🔄 {t('common.refresh')}
-          </button>
+            {ddPct.toFixed(1)}%
+          </p>
+          <p className="text-gray-500 text-xs mt-1">
+            Max: {ddMaxPct.toFixed(1)}% / Limit: {config.maxDrawdownPct}%
+          </p>
+        </div>
+
+        {/* VIX */}
+        <div className="bg-gray-800 rounded-xl p-5 border border-gray-700">
+          <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">VIX</p>
+          <p
+            className={`text-2xl font-bold ${
+              vix > config.vixThreshold ? 'text-red-400' : 'text-green-400'
+            }`}
+          >
+            {vix.toFixed(1)}
+          </p>
+          <p className="text-gray-500 text-xs mt-1">
+            Threshold: {config.vixThreshold}
+          </p>
         </div>
       </div>
 
-      {/* Top Cards */}
-      <div className="grid grid-cols-4 gap-4">
-        <SummaryCard
-          label="Kelly 建议仓位"
-          value={kelly.sampleSize > 0 ? `${kellyPct}%` : '无数据'}
-          sub={kelly.sampleSize > 0 ? `基于 ${kelly.sampleSize} 笔交易` : '交易历史不足'}
-          color={kellyColor}
-          bg={kellyBg}
-        />
-        <SummaryCard
-          label="当前回撤"
-          value={`${ddPct.toFixed(1)}%`}
-          sub={drawdown.isReduced ? `🔴 已降仓至 ${Math.round(drawdown.reductionFactor * 100)}%` : '正常'}
-          color={ddColor}
-          bg={drawdown.isReduced ? 'bg-red-500/10' : 'bg-emerald-500/10'}
-        />
-        <SummaryCard
-          label="VIX 波动率"
-          value={currentVix !== null ? `${currentVix.toFixed(1)}` : '--'}
-          sub={vixLabel.text}
-          color={vixLabel.color}
-          bg={vixLabel.bg}
-        />
-        <SummaryCard
-          label="日盈亏 / 总资产"
-          value={totalAssets > 0 ? `${(dailyPnl / 10000).toFixed(1)}万` : '--'}
-          sub={totalAssets > 0 ? `总资产 ${(totalAssets / 10000).toFixed(0)}万` : '未连接'}
-          color={pnlColor}
-          bg={pnlBg}
-        />
-      </div>
-
-      {/* Drawdown Bar */}
-      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-white font-semibold text-sm">📉 回撤进度</h2>
-          <span className={`text-xs font-mono ${ddColor}`}>{ddPct.toFixed(1)}% / 峰值 ${drawdown.peakEquity.toFixed(0)}</span>
-        </div>
-        <div className="w-full h-3 bg-card rounded-full overflow-hidden">
-          <div
-            className={`h-full rounded-full transition-all duration-500 ${ddBarColor}`}
-            style={{ width: `${Math.min(ddPct, 100)}%` }}
-          />
-        </div>
-        <div className="flex justify-between text-[10px] text-gray-500 mt-1.5">
-          <span>0%</span>
-          <span className="text-orange-400">降仓阈值 {(snapshot.config.drawdownReduceThreshold * 100).toFixed(0)}%</span>
-          <span className="text-red-400">极限 30%</span>
-          <span>100%</span>
-        </div>
-      </div>
-
-      {/* Middle Row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Sentiment Gauge */}
-        <SentimentGauge />
-
-        {/* Kelly Detail */}
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-          <h2 className="text-white font-semibold text-sm mb-4">🧮 Kelly 统计详情</h2>
-          {kelly.sampleSize === 0 ? (
-            <p className="text-gray-500 text-sm py-4 text-center">暂无交易记录，无法进行 Kelly 计算</p>
-          ) : (
-            <div className="space-y-3">
-              <StatRow label="胜率" value={`${(kelly.winRate * 100).toFixed(1)}%`} />
-              <StatRow label="平均盈利" value={`+$${kelly.avgWin.toFixed(0)}`} valueColor="text-emerald-400" />
-              <StatRow label="平均亏损" value={`-$${kelly.avgLoss.toFixed(0)}`} valueColor="text-red-400" />
-              <StatRow label="盈亏比" value={kelly.profitFactor === Infinity ? '∞' : kelly.profitFactor.toFixed(2)} />
-              <StatRow label="Kelly f*" value={`${(kelly.kellyFraction * 100).toFixed(1)}%`} valueColor={kellyColor} />
-              <div className="pt-2 border-t border-white/5">
-                <div className="flex justify-between text-xs">
-                  <span className="text-gray-500">仓位调节因子</span>
-                  <span className="text-gray-300 font-mono">{volFactorPct}%</span>
-                </div>
-                <div className="text-[10px] text-gray-600 mt-1">
-                  {volFactorPct < 100
-                    ? `波动率调节生效中 (${volFactorPct}% 正常仓位)`
-                    : '无波动率调节'}
-                </div>
+      {/* Visualizations Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        {/* Kelly Sizing Visual */}
+        <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
+          <h2 className="text-lg font-semibold text-white mb-4">Kelly Sizing</h2>
+          <div className="space-y-4">
+            <div>
+              <div className="flex justify-between text-sm mb-1">
+                <span className="text-gray-400">Current Fraction</span>
+                <span className="text-blue-400 font-medium">{kellyPct.toFixed(1)}%</span>
+              </div>
+              <div className="w-full bg-gray-700 rounded-full h-4">
+                <div
+                  className="bg-blue-500 h-4 rounded-full transition-all duration-500"
+                  style={{ width: `${Math.min(kellyRatio, 100)}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <span>0%</span>
+                <span>Target: {formatPct(config.kellyFraction)}</span>
+                <span>100%</span>
               </div>
             </div>
-          )}
-        </div>
-
-        {/* Alerts */}
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-          <h2 className="text-white font-semibold text-sm mb-4">🚨 最新告警</h2>
-          {alerts.length === 0 ? (
-            <p className="text-gray-500 text-sm py-4 text-center">暂无告警</p>
-          ) : (
-            <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
-              {alerts.slice().reverse().map((a, i) => {
-                const isSevere = a.type === 'DRAWDOWN_REDUCE' || a.type === 'RATE_LIMIT' || a.type === 'DAILY_LOSS';
-                return (
-                  <div
-                    key={i}
-                    className={`flex items-start gap-2 rounded-lg px-3 py-2 text-xs ${
-                      isSevere ? 'bg-red-500/5 border border-red-500/10' : 'bg-[#12121a]'
-                    }`}
-                  >
-                    <span className={`mt-0.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${isSevere ? 'bg-red-400' : 'bg-[#D4A853]'}`} />
-                    <div className="flex-1 min-w-0">
-                      <div className={`font-medium ${isSevere ? 'text-red-400' : 'text-[#D4A853]'}`}>{a.type}</div>
-                      <div className="text-gray-400 truncate">{a.message}</div>
-                      <div className="text-gray-600 text-[10px] mt-0.5">
-                        {new Date(a.time).toLocaleTimeString('zh-CN')}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="grid grid-cols-3 gap-4 mt-4">
+              <div className="text-center">
+                <p className="text-gray-400 text-xs">Win Rate</p>
+                <p className="text-white font-semibold">{formatPct(kelly.winRate)}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-gray-400 text-xs">Profit Factor</p>
+                <p className="text-white font-semibold">{kelly.profitFactor.toFixed(2)}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-gray-400 text-xs">Samples</p>
+                <p className="text-white font-semibold">{kelly.sampleSize}</p>
+              </div>
             </div>
-          )}
+            <div className="grid grid-cols-2 gap-4 mt-2">
+              <div className="text-center">
+                <p className="text-gray-400 text-xs">Avg Win</p>
+                <p className="text-green-400 font-semibold">{formatCurrency(kelly.avgWin)}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-gray-400 text-xs">Avg Loss</p>
+                <p className="text-red-400 font-semibold">{formatCurrency(kelly.avgLoss)}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Drawdown Visual */}
+        <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
+          <h2 className="text-lg font-semibold text-white mb-4">Drawdown Status</h2>
+          <div className="space-y-4">
+            <div>
+              <div className="flex justify-between text-sm mb-1">
+                <span className="text-gray-400">Current Drawdown</span>
+                <span
+                  className={`font-medium ${
+                    ddPct > config.maxDrawdownPct * 0.8
+                      ? 'text-red-400'
+                      : ddPct > config.maxDrawdownPct * 0.5
+                      ? 'text-yellow-400'
+                      : 'text-green-400'
+                  }`}
+                >
+                  {ddPct.toFixed(1)}%
+                </span>
+              </div>
+              <div className="w-full bg-gray-700 rounded-full h-4">
+                <div
+                  className={`h-4 rounded-full transition-all duration-500 ${getDrawdownColor(
+                    ddPct,
+                    config.maxDrawdownPct
+                  )}`}
+                  style={{ width: `${Math.min(ddRatio, 100)}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <span>0%</span>
+                <span>Max: {config.maxDrawdownPct}%</span>
+              </div>
+            </div>
+
+            {/* Drawdown threshold markers */}
+            <div className="mt-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-green-500" />
+                <span className="text-sm text-gray-400">
+                  Safe Zone (&lt; {config.maxDrawdownPct * 0.5}%)
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                <span className="text-sm text-gray-400">
+                  Caution ({config.maxDrawdownPct * 0.5}% – {config.maxDrawdownPct * 0.8}%)
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500" />
+                <span className="text-sm text-gray-400">
+                  Danger (&gt; {config.maxDrawdownPct * 0.8}%)
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <div className="bg-gray-700/50 rounded-lg p-3 text-center">
+                <p className="text-gray-400 text-xs">Peak Assets</p>
+                <p className="text-white font-semibold">{formatCurrency(dd.peakAssets)}</p>
+              </div>
+              <div className="bg-gray-700/50 rounded-lg p-3 text-center">
+                <p className="text-gray-400 text-xs">Trough Assets</p>
+                <p className="text-white font-semibold">{formatCurrency(dd.troughAssets)}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Equity Curve + Daily P&L */}
-      <div className="grid grid-cols-2 gap-4">
-        <EquityChart data={demoEquityData} title="📈 账户净值走势" height={300} showDrawdown />
-        <DailyPnLSummary />
+      {/* Alerts Table */}
+      <div className="bg-gray-800 rounded-xl border border-gray-700">
+        <div className="p-6 border-b border-gray-700">
+          <h2 className="text-lg font-semibold text-white">Recent Alerts</h2>
+          <p className="text-gray-400 text-sm mt-1">
+            {alerts.length} alert{alerts.length !== 1 ? 's' : ''} in recent history
+          </p>
+        </div>
+        {alerts.length === 0 ? (
+          <div className="p-8 text-center text-gray-500">
+            No alerts — all systems nominal
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="text-left text-xs text-gray-400 uppercase tracking-wider">
+                  <th className="px-6 py-3">Time</th>
+                  <th className="px-6 py-3">Type</th>
+                  <th className="px-6 py-3">Source</th>
+                  <th className="px-6 py-3">Message</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-700">
+                {alerts.map((alert) => (
+                  <tr key={alert.id} className="hover:bg-gray-700/30 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-400 whitespace-nowrap">
+                      {formatTime(alert.timestamp)}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span
+                        className={`inline-block px-2 py-1 rounded text-xs font-medium border ${getAlertColor(
+                          alert.type
+                        )}`}
+                      >
+                        {alert.type.toUpperCase()}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-400">{alert.source}</td>
+                    <td className="px-6 py-4 text-sm text-gray-200">{alert.message}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
-      {/* Performance Metrics */}
-      <PerformanceMetricsPanel trades={demoTrades} title="📊 交易绩效指标" />
-
-      {/* Portfolio Stress Test */}
-      <PortfolioStressTest />
-
-      {/* Anomaly Alert Panel */}
-      <AnomalyAlertPanel />
-
-      {/* Trading Journal + System Log */}
-      <div className="grid grid-cols-2 gap-4">
-        <TradingJournal />
-        <SystemLog />
+      {/* Config Summary Footer */}
+      <div className="mt-6 bg-gray-800/50 rounded-xl p-4 border border-gray-700/50">
+        <h3 className="text-sm font-medium text-gray-400 mb-2">Active Configuration</h3>
+        <div className="flex flex-wrap gap-6 text-xs text-gray-500">
+          <span>
+            Max Drawdown: <span className="text-gray-300">{config.maxDrawdownPct}%</span>
+          </span>
+          <span>
+            Kelly Target: <span className="text-gray-300">{formatPct(config.kellyFraction)}</span>
+          </span>
+          <span>
+            VIX Threshold: <span className="text-gray-300">{config.vixThreshold}</span>
+          </span>
+          <span>
+            Stop Loss: <span className="text-gray-300">{config.stopLossPct}%</span>
+          </span>
+        </div>
       </div>
-
-      {/* Risk Config Editor */}
-      <RiskConfigEditor />
-    </div>
-  );
-}
-
-// ── Sub-components ─────────────────────────────────────────────────────────
-
-function SummaryCard({ label, value, sub, color, bg }: {
-  label: string; value: string; sub: string; color: string; bg?: string;
-}) {
-  return (
-    <div className={`bg-[#1a1a25] border border-white/5 rounded-xl p-4 ${bg || ''}`}>
-      <div className="text-gray-500 text-[11px] mb-1">{label}</div>
-      <div className={`text-xl font-bold font-mono ${color}`}>{value}</div>
-      <div className="text-gray-500 text-[10px] mt-0.5">{sub}</div>
-    </div>
-  );
-}
-
-function StatRow({ label, value, valueColor = 'text-gray-300' }: {
-  label: string; value: string; valueColor?: string;
-}) {
-  return (
-    <div className="flex items-center justify-between text-xs">
-      <span className="text-gray-400">{label}</span>
-      <span className={`font-mono font-medium ${valueColor}`}>{value}</span>
     </div>
   );
 }

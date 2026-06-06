@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef, useCallback } from 'react';
 import * as api from '../../lib/bridge-api';
 
 interface SignalLog {
@@ -46,13 +46,65 @@ export default function LiveMonitorPage() {
   const [newCode, setNewCode] = useState('');
   const [showAddInput, setShowAddInput] = useState(false);
 
-  // Load watchlist on mount
+  // ── Stable handlers via useCallback (avoids re-registering IPC listeners) ──
+  const handleQuotePush = useCallback((data: any) => {
+    const quoteList = Array.isArray(data) ? data : [data];
+    quoteList.forEach((q: any) => {
+      if (!q || !q.code) return;
+      const quote: LiveQuote = {
+        code: q.code,
+        price: q.price || 0,
+        change: q.change || 0,
+        changePct: q.changePct || 0,
+        volume: q.volume || 0,
+        updateTime: Date.now(),
+      };
+      quotesRef.current.set(q.code, quote);
+      // Log significant moves (>2%)
+      if (Math.abs(q.changePct || 0) > 2) {
+        const log: SignalLog = {
+          id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+          time: new Date().toLocaleTimeString(),
+          type: 'ALERT',
+          strategy: 'Market',
+          code: q.code || '',
+          message: `${q.code} 异动 ${q.changePct > 0 ? '+' : ''}${(q.changePct || 0).toFixed(2)}%`,
+        };
+        setSignalLog((prev) => [log, ...prev].slice(0, 500));
+      }
+    });
+    setQuotes(new Map(quotesRef.current));
+  }, []);
+
+  const handleSignalPush = useCallback((data: any) => {
+    const log: SignalLog = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      time: new Date().toLocaleTimeString(),
+      type: data.type || 'ALERT',
+      strategy: data.strategy || 'Unknown',
+      code: data.code || '',
+      message: data.message || JSON.stringify(data),
+    };
+    setSignalLog((prev) => [log, ...prev].slice(0, 500));
+  }, []);
+
+  // ── Load watchlist + strategies on mount ─────────────────────────────────────
   useEffect(() => {
     loadWatchlist();
-    loadStrategies();
     const interval = setInterval(loadStrategies, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, []);  // loadStrategies is stable (no deps)
+
+  // ── Register IPC listeners once (stable refs) ─────────────────────────────────
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.api?.on) return;
+    window.api.on('quotes:push', handleQuotePush);
+    window.api.on('signal', handleSignalPush);
+    return () => {
+      window.api?.off?.('quotes:push', handleQuotePush);
+      window.api?.off?.('signal', handleSignalPush);
+    };
+  }, [handleQuotePush, handleSignalPush]);
 
   async function loadWatchlist() {
     try {
@@ -62,67 +114,7 @@ export default function LiveMonitorPage() {
     } catch (e) { console.error('[Error:LiveMonitorPage]', e); }
   }
 
-  // WP1: Listen for real-time price pushes
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.api?.on) {
-      const handler = (data: any) => {
-        // data can be single quote or array of quotes
-        const quoteList = Array.isArray(data) ? data : [data];
-        quoteList.forEach((q: any) => {
-          if (!q || !q.code) return;
-          const quote: LiveQuote = {
-            code: q.code,
-            price: q.price || 0,
-            change: q.change || 0,
-            changePct: q.changePct || 0,
-            volume: q.volume || 0,
-            updateTime: Date.now(),
-          };
-          quotesRef.current.set(q.code, quote);
-        });
-        // Batch update state to avoid excessive re-renders
-        setQuotes(new Map(quotesRef.current));
-
-        // Also add to signal log for significant moves (>2%)
-        quoteList.forEach((q: any) => {
-          if (Math.abs(q.changePct || 0) > 2) {
-            const log: SignalLog = {
-              id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-              time: new Date().toLocaleTimeString(),
-              type: 'ALERT',
-              strategy: 'Market',
-              code: q.code || '',
-              message: `${q.code} 异动 ${q.changePct > 0 ? '+' : ''}${(q.changePct || 0).toFixed(2)}%`,
-            };
-            setSignalLog((prev) => [log, ...prev].slice(0, 500));
-          }
-        });
-      };
-      window.api.on('quotes:push', handler);
-      return () => { window.api?.off?.('quotes:push', handler); };
-    }
-  }, []);
-
-  // Listen for real-time signals
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.api?.on) {
-      const handler = (data: any) => {
-        const log: SignalLog = {
-          id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-          time: new Date().toLocaleTimeString(),
-          type: data.type || 'ALERT',
-          strategy: data.strategy || 'Unknown',
-          code: data.code || '',
-          message: data.message || JSON.stringify(data),
-        };
-        setSignalLog((prev) => [log, ...prev].slice(0, 500));
-      };
-      window.api.on('signal', handler);
-      return () => { window.api?.off?.('signal', handler); };
-    }
-  }, []);
-
-  // Auto-scroll
+  // ── Auto-scroll when signalLog or autoScroll changes ──────────────────────────
   useEffect(() => {
     if (autoScroll && logRef.current) {
       logRef.current.scrollTop = 0;

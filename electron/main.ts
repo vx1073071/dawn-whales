@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
+// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
 // 架构对齐：富途牛牛桌面端 (Electron + C++ core + React)
 // 我们用：Electron + Node.js (Main) + React (Renderer)
 
@@ -103,28 +103,12 @@ import MultiBrokerPnLEngine from './engine/multi-broker-pnl';
 import UnifiedRiskDashboard from './engine/unified-risk-dashboard';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
-import { ParameterScanner } from './engine/parameter-scanner-v2';
-import { computeCorrelationMatrix } from './engine/correlation-matrix';
-import { generateSmartAlerts, generateAlertSummary, type NotificationContext } from './engine/notification-engine';
-import { generateBacktestReport, generateQuickReport } from './engine/ai-report-generator';
-import { autoTune, type ParamRange } from './engine/auto-tuner';
-import { detectRegime, type RegimeLabel } from './engine/regime-detector';
-import { decomposeRisk, runMonteCarlo } from './engine/risk-decomposition';
-import { detectAnomalies } from './engine/anomaly-detector';
-import { buildCorrelationVisualization } from './engine/correlation-visualizer';
-import { runStressTest, runCustomShock, HISTORICAL_SCENARIOS } from './engine/stress-tester';
-import { compareBacktests, summaryTable } from './engine/backtest-comparator';
-import { getValuationDashboard, getValuationDashboardBatch } from './engine/valuation-dashboard';
-import { compareSectorStocks, compareMultipleSectors, rankSectorStocks } from './engine/sector-comparison';
-import { detectMacroAnomalies, analyzeMultipleIndicators } from './engine/macro-alert';
-import { detectCorrelationAnomalies, analyzeCorrelationMatrix } from './engine/correlation-alert';
-import { generateWalkForwardReport, generateBatchWalkForwardReport } from './engine/walk-forward-report';
-import { generateBrinsonReport, generateBatchBrinsonReport } from './engine/brinson-attribution';
-import { analyzeOptionsChain, analyzeBatchOptionsChain } from './engine/options-chain-analyzer';
-import { scoreAndRankStocks, screenStocks, batchScreenStocks } from './engine/multi-factor-selector';
-import { optimizePortfolio, generateEfficientFrontier, riskParityPortfolio, batchOptimizePortfolios } from './engine/portfolio-optimizer';
-import { connectWebSocket, disconnectWebSocket, subscribeToSymbol, unsubscribeFromSymbol, getWebSocketStatus, subscribeToSymbols, unsubscribeFromSymbols, getStreamingStats } from './engine/websocket-enhancer';
-import { startBackfill, stopBackfill, getBackfillStatus, getBackfillStats, backfillSymbols, incrementalBackfill } from './engine/backfill-service';
+import { ParameterScanner } from './engine/parameter-scanner';
+import { CronScheduler } from './engine/cron-scheduler';
+import type { StrategyRunnerInterface } from './engine/cron-scheduler';
+import { ConditionWatcher } from './engine/condition-watcher';
+import type { QuoteSnapshot, ConditionRule } from './engine/condition-watcher';
+import { registerStrategyExecuteHandler } from './ipc/strategy-execute-handler';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -202,7 +186,8 @@ let brokerManager: BrokerManager | null = null;
 let strategyEngine: StrategyEngine | null = null;
 let backtestEngine: BacktestEngine | null = null;
 let riskEngine: RiskEngine | null = null;
-let liveExecutor: LiveExecutor | null = null;
+let cronScheduler: CronScheduler | null = null;
+let conditionWatcher: ConditionWatcher | null = null;
 let db: DatabaseManager | null = null;
 let marketplaceService: MarketplaceService | null = null;
 let dataProvider: DataProviderService | null = null;
@@ -5378,9 +5363,15 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 // ── System Tray ────────────────────────────────────────────────────────────
 
 function createTray() {
-  const iconSize = 16;
-  const icon = nativeImage.createFromBuffer(createDiamondIcon(iconSize));
-  tray = new Tray(icon);
+    const trayIconPath = path.join(RESOURCES_PATH, 'icons', 'tray-icon.png');
+    const icon = nativeImage.createFromPath(trayIconPath);
+    if (icon.isEmpty()) {
+      log.warn('[Tray] tray-icon.png not found, using fallback diamond');
+      const fallback = nativeImage.createFromBuffer(createDiamondIcon(16));
+      tray = new Tray(fallback);
+    } else {
+      tray = new Tray(icon);
+    }
 
   const contextMenu = Menu.buildFromTemplate([
     { label: 'DAWN WHALES · 道鲸', enabled: false },
@@ -5645,7 +5636,137 @@ app.whenReady().then(async () => {
     setInterval(() => autoUpdater.checkForUpdates().catch(() => {}), 4 * 60 * 60 * 1000);
   }
 
-  log.info('[App] DAWN WHALES ready');
+  // Register strategy:execute IPC handler
+  if (strategyEngine && riskEngine) {
+    registerStrategyExecuteHandler(ipcMain, {
+      strategyEngine,
+      riskEngine,
+      backtestEngine: new BacktestEngine(),
+    });
+  }
+
+  // ── CronScheduler (Phase 4.1) ──────────────────────────────────────
+  cronScheduler = new CronScheduler();
+
+  // Register a simple StrategyRunner bridge (full version in J-29-02)
+  const strategyRunner: StrategyRunnerInterface = {
+    run: async (opts) => {
+      log.info(`[CronScheduler] Running strategy: ${opts.strategyId}, dryRun=${opts.dryRun}`);
+      const strategy = strategyEngine?.getStrategy(opts.strategyId);
+      if (!strategy) throw new Error(`Strategy not found: ${opts.strategyId}`);
+
+      if (!opts.dryRun) {
+        // Signal through strategy engine
+        strategyEngine?.startLive(opts.strategyId);
+      }
+
+      return {
+        signal: { side: 'BUY', symbol: strategy.symbol, quantity: 100 },
+        riskPassed: true,
+        duration: Date.now() - Date.now(),
+      };
+    },
+  };
+  cronScheduler.setStrategyRunner(strategyRunner);
+
+  // CronScheduler IPC handlers
+  ipcMain.handle('cron:schedule', async (_e, data) => {
+    try {
+      const task = cronScheduler!.schedule({
+        name: data.name || 'Unnamed Task',
+        strategyId: data.strategyId,
+        schedule: data.schedule,
+        options: data.options || { dryRun: true, enabled: true },
+      });
+      return { success: true, task };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('cron:cancel', async (_e, taskId: string) => {
+    return { success: cronScheduler!.cancel(taskId) };
+  });
+
+  ipcMain.handle('cron:list', async () => {
+    return { success: true, tasks: cronScheduler!.list() };
+  });
+
+  ipcMain.handle('cron:pause', async (_e, taskId: string) => {
+    return { success: cronScheduler!.pause(taskId) };
+  });
+
+  ipcMain.handle('cron:resume', async (_e, taskId: string) => {
+    return { success: cronScheduler!.resume(taskId) };
+  });
+
+  ipcMain.handle('cron:trigger', async (_e, taskId: string) => {
+    return cronScheduler!.trigger(taskId);
+  });
+
+  cronScheduler!.onEvent((event) => {
+    mainWindow?.webContents.send('cron:event', event);
+  });
+
+  // ── ConditionWatcher (Phase 4.2) ──────────────────────────────────
+  conditionWatcher = new ConditionWatcher();
+  conditionWatcher.setStrategyRunner(strategyRunner);
+  conditionWatcher.startCleanup();
+
+  // Wire quote push to ConditionWatcher
+  const originalQuoteHandler = quotePushHandler;
+  // Override to also feed ConditionWatcher
+  const enhancedHandler = (quotes: any[]) => {
+    originalQuoteHandler(quotes);
+    for (const q of quotes) {
+      conditionWatcher?.processQuote({
+        symbol: q.code || q.symbol,
+        price: q.price || q.lastPrice || 0,
+        bid: q.bid || 0,
+        ask: q.ask || 0,
+        volume: q.volume || 0,
+        timestamp: Date.now(),
+        source: q.source || 'futu',
+      });
+    }
+  };
+  if (brokerManager) {
+    brokerManager.clearCallbacks();
+    brokerManager.onQuotePush(enhancedHandler);
+  }
+
+  // ConditionWatcher IPC handlers
+  ipcMain.handle('condition:addRule', async (_e, rule: any) => {
+    try {
+      const r = conditionWatcher!.addRule(rule);
+      return { success: true, rule: r };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('condition:removeRule', async (_e, ruleId: string) => {
+    return { success: conditionWatcher!.removeRule(ruleId) };
+  });
+
+  ipcMain.handle('condition:setEnabled', async (_e, ruleId: string, enabled: boolean) => {
+    return { success: conditionWatcher!.setEnabled(ruleId, enabled) };
+  });
+
+  ipcMain.handle('condition:listRules', async () => {
+    return { success: true, rules: conditionWatcher!.listRules() };
+  });
+
+  ipcMain.handle('condition:getRule', async (_e, ruleId: string) => {
+    return { success: true, rule: conditionWatcher!.getRule(ruleId) };
+  });
+
+  ipcMain.handle('condition:resetDaily', async () => {
+    conditionWatcher!.resetDailyCounts();
+    return { success: true };
+  });
+
+  log.info('[App] DAWN WHALES ready (CronScheduler + ConditionWatcher active)');
 });
 
 app.on('window-all-closed', () => {

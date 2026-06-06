@@ -1,428 +1,143 @@
-// ── Futu OpenD TCP Client — 直连 OpenD（无需 Bridge）────────────────────────
+// ── Futu OpenD TCP Client — Extends OpenDBaseAdapter ─────────────────────────
+// Futu-specific adapter using the shared OpenD base class for TCP connection,
+// protocol framing, quote parsing, and order management.
+//
+// Keeps: Futu-specific contract mapping, client ID, default port (11111),
+//        and legacy single-callback push API for backward compatibility.
+//
 // Ported from trading-blueprint-git/bridge-source/index.ts
 // Uses futu-api protobuf definitions + raw TCP (net.Socket)
+//
+// J-29-01: Refactored to extend OpenDBaseAdapter
 
-import net from 'net';
-import { createHash } from 'crypto';
 import log from 'electron-log';
+import {
+  OpenDBaseAdapter,
+  type ContractInfo,
+} from './opend-base-adapter';
+import type { QuoteInfo } from './IBrokerAdapter';
 
-type QuotePushCallback = (quotes: any[]) => void;
+// ── Futu-Specific Contract Mapping ──────────────────────────────────────────
 
-// Load futu-api protobuf definitions
-let futuProtoRoot: any = null;
-try {
-  futuProtoRoot = require('futu-api/proto.js');
-  if (futuProtoRoot?.default) futuProtoRoot = futuProtoRoot.default;
-  log.info('[FutuOpenD] Protobuf loaded');
-} catch (e: any) {
-  log.error('[FutuOpenD] Protobuf load failed:', e.message);
-}
-
-// Market codes: Qot_Common.QotMarket
-const MARKET: Record<string, number> = { HK: 1, US: 11, SH: 21, SZ: 22, CC: 91 };
-const MARKET_REV: Record<number, string> = { 1: 'HK', 11: 'US', 21: 'SH', 22: 'SZ', 91: 'CC' };
-
-// Command definitions
-const CMD = {
-  InitConnect: { cmd: 1001, name: 'InitConnect' },
-  QotSub: { cmd: 3001, name: 'Qot_Sub' },
-  QotGetBasicQot: { cmd: 3004, name: 'Qot_GetBasicQot' },
-  QotGetKL: { cmd: 3006, name: 'Qot_GetKL' },
-  QotRequestHistoryKL: { cmd: 3103, name: 'Qot_RequestHistoryKL' },
-  TrdGetAccList: { cmd: 2001, name: 'Trd_GetAccList' },
-  TrdUnlockTrade: { cmd: 2005, name: 'Trd_UnlockTrade' },
-  TrdGetFunds: { cmd: 2101, name: 'Trd_GetFunds' },
-  TrdGetPositionList: { cmd: 2102, name: 'Trd_GetPositionList' },
-  TrdGetOrderList: { cmd: 2201, name: 'Trd_GetOrderList' },
-  TrdPlaceOrder: { cmd: 2202, name: 'Trd_PlaceOrder' },
-  TrdCancelOrder: { cmd: 2205, name: 'Trd_ModifyOrder' },
+/** Futu-specific security contract information */
+const FUTU_CONTRACTS: Record<string, ContractInfo> = {
+  'US.AAPL':  { name: 'Apple Inc.',        market: 'US', lotSize: 1,   basePrice: 155 },
+  'US.TSLA':  { name: 'Tesla Inc.',        market: 'US', lotSize: 1,   basePrice: 210 },
+  'US.NVDA':  { name: 'NVIDIA Corp.',      market: 'US', lotSize: 1,   basePrice: 880 },
+  'US.MSFT':  { name: 'Microsoft Corp.',   market: 'US', lotSize: 1,   basePrice: 420 },
+  'US.GOOGL': { name: 'Alphabet Inc.',     market: 'US', lotSize: 1,   basePrice: 155 },
+  'US.AMZN':  { name: 'Amazon.com Inc.',   market: 'US', lotSize: 1,   basePrice: 185 },
+  'US.META':  { name: 'Meta Platforms',    market: 'US', lotSize: 1,   basePrice: 490 },
+  'US.SPY':   { name: 'SPDR S&P 500 ETF', market: 'US', lotSize: 1,   basePrice: 520 },
+  'US.QQQ':   { name: 'Invesco QQQ Trust', market: 'US', lotSize: 1,   basePrice: 445 },
+  'US.TQQQ':  { name: 'ProShares UltraPro QQQ', market: 'US', lotSize: 1, basePrice: 52 },
+  'US.SQQQ':  { name: 'ProShares UltraPro Short QQQ', market: 'US', lotSize: 1, basePrice: 28 },
+  'US.SOXL':  { name: 'Direxion Daily Semiconductor Bull 3X', market: 'US', lotSize: 1, basePrice: 35 },
+  'US.SOXS':  { name: 'Direxion Daily Semiconductor Bear 3X', market: 'US', lotSize: 1, basePrice: 22 },
+  'US.IWM':   { name: 'iShares Russell 2000 ETF', market: 'US', lotSize: 1, basePrice: 200 },
+  'US.GLD':   { name: 'SPDR Gold Shares',  market: 'US', lotSize: 1,   basePrice: 215 },
+  'HK.00700': { name: 'Tencent Holdings',  market: 'HK', lotSize: 100, basePrice: 380 },
+  'HK.09988': { name: 'Alibaba HK',        market: 'HK', lotSize: 100, basePrice: 85 },
+  'HK.03690': { name: 'Meituan',           market: 'HK', lotSize: 100, basePrice: 130 },
+  'HK.09888': { name: 'Baidu HK',          market: 'HK', lotSize: 50,  basePrice: 95 },
+  'HK.01810': { name: 'Xiaomi Corp.',      market: 'HK', lotSize: 200, basePrice: 18 },
 };
 
-// K-line period mapping: Qot_Common.KLType
-const KL_PERIOD: Record<string, number> = {
-  '1m': 1, '5m': 5, '15m': 15, '30m': 30, '60m': 60,
-  'daily': 4, 'weekly': 5, 'monthly': 6,
-};
+// ── FutuOpenDClient Class ───────────────────────────────────────────────────
 
-function marketCode(code: string): number {
-  const prefix = code.split('.')[0];
-  return MARKET[prefix] ?? 11;
-}
-
-function symOf(code: string): string {
-  return code.split('.').slice(1).join('.');
-}
-
-// Convert protobuf Long {low, high} to number
-function toNum(v: any): number {
-  if (v == null) return 0;
-  if (typeof v === 'number') return v;
-  if (typeof v === 'string') return Number(v) || 0;
-  if (typeof v === 'object' && 'low' in v) {
-    const lo = v.low >>> 0;
-    const hi = (v.high | 0) * 0x100000000;
-    return v.unsigned ? hi + lo : hi + lo;
-  }
-  return Number(v) || 0;
-}
-
-type DisconnectCallback = () => void;
-
-export class FutuOpenDClient {
-  private host: string;
-  private port: number;
-  private socket: net.Socket | null = null;
-  private serial = 1000;
-  private connID = 0;
-  private buffer = Buffer.alloc(0);
-  private pending = new Map<number, { resolve: (v: Buffer) => void; reject: (e: Error) => void; timer: NodeJS.Timeout }>();
-  private pushCallback: QuotePushCallback | null = null;
-  private disconnectCallback: DisconnectCallback | null = null;
-  private reconnectTimer: NodeJS.Timeout | null = null;
-  private reconnectAttempts = 0;
-  private maxReconnectAttempts = 50; // ~5 minutes with exponential backoff
-  private subscribedCodes: string[] = [];
-  public connected = false;
+/**
+ * Futu OpenD TCP client adapter.
+ * Extends OpenDBaseAdapter with Futu-specific defaults:
+ *   - Default port: 11111
+ *   - Client ID: "DawnWhales-Desktop"
+ *   - Futu contract mapping with HK + US securities
+ *   - Simple connect (no mock fallback — throws on failure)
+ */
+export class FutuOpenDClient extends OpenDBaseAdapter {
+  readonly id: string;
+  readonly type: string = 'futu';
+  readonly name: string;
 
   constructor(host: string = '127.0.0.1', port: number = 11111) {
-    this.host = host;
-    this.port = port;
+    super({ host, port });
+    this.id = `futu-${host}:${port}`;
+    this.name = 'Futu OpenD';
+    log.info(`[FutuOpenD] Initialized: ${this.id} (${host}:${port})`);
   }
 
-  async connect(): Promise<void> {
-    if (!futuProtoRoot) throw new Error('Protobuf definitions not loaded');
+  // ── Abstract Method Implementations ───────────────────────────────────
 
-    this.socket = await new Promise<net.Socket>((resolve, reject) => {
-      const s = net.createConnection({ host: this.host, port: this.port });
-      const timer = setTimeout(() => { s.destroy(); reject(new Error(`Connection timeout to ${this.port}`)); }, 5000);
-      s.once('connect', () => { clearTimeout(timer); resolve(s); });
-      s.once('error', (e) => { clearTimeout(timer); reject(e); });
-    });
-
-    this.socket.setKeepAlive(true, 30000);
-    this.socket.on('data', (chunk) => this.onData(chunk));
-    this.socket.on('close', () => {
-      this.connected = false;
-      this.rejectAll(new Error('OpenD disconnected'));
-      this.disconnectCallback?.();
-      log.info('[FutuOpenD] Disconnected');
-      this.scheduleReconnect();
-    });
-
-    // InitConnect handshake
-    const res = await this.send(CMD.InitConnect, {
-      c2s: {
-        clientVer: 106,
-        clientID: 'DawnWhales-Desktop',
-        recvNotify: true,
-        packetEncAlgo: -1,
-        pushProtoFmt: 0,
-        programmingLanguage: 'TypeScript',
-      },
-    }, 10000);
-
-    this.connID = Number(res?.s2c?.connID ?? 0);
-    this.connected = true;
-    log.info(`[FutuOpenD] Connected to ${this.host}:${this.port}, connID=${this.connID}`);
+  getAdapterName(): string {
+    return 'FutuOpenD';
   }
 
-  disconnect() {
-    this.cancelReconnect();
-    this.socket?.destroy();
-    this.socket = null;
-    this.connected = false;
-    this.rejectAll(new Error('Disconnected'));
+  getDefaultPort(): number {
+    return 11111;
   }
 
-  onDisconnect(callback: DisconnectCallback) {
-    this.disconnectCallback = callback;
+  getClientId(): string {
+    return 'DawnWhales-Desktop';
   }
 
-  private scheduleReconnect() {
-    if (this.reconnectTimer || this.reconnectAttempts >= this.maxReconnectAttempts) return;
-    const delay = Math.min(1000 * Math.pow(1.5, this.reconnectAttempts), 30000);
-    this.reconnectAttempts++;
-    log.info(`[FutuOpenD] Reconnect scheduled in ${(delay / 1000).toFixed(1)}s (attempt ${this.reconnectAttempts})`);
-    this.reconnectTimer = setTimeout(async () => {
-      this.reconnectTimer = null;
-      try {
-        await this.connect();
-        this.reconnectAttempts = 0;
-        // Re-subscribe push after reconnect
-        if (this.subscribedCodes.length > 0) {
-          await this.subscribeAndPush(this.subscribedCodes);
-          log.info('[FutuOpenD] Re-subscribed after reconnect');
-        }
-      } catch (err: any) {
-        log.warn(`[FutuOpenD] Reconnect failed: ${err.message}`);
-        this.scheduleReconnect();
-      }
-    }, delay);
+  getContractMapping(): Record<string, ContractInfo> {
+    return FUTU_CONTRACTS;
   }
 
-  private cancelReconnect() {
-    if (this.reconnectTimer) {
-      clearTimeout(this.reconnectTimer);
-      this.reconnectTimer = null;
-    }
-    this.reconnectAttempts = 0;
-  }
+  /**
+   * Generate a mock quote for the given security code using Futu contract data.
+   * Produces realistic random price movement around the contract base price.
+   */
+  generateMockQuote(code: string): QuoteInfo {
+    const contract = FUTU_CONTRACTS[code];
+    const basePrice = contract?.basePrice ?? 100;
+    const change = (Math.random() - 0.48) * basePrice * 0.03;
+    const price = basePrice + change;
+    const prevClose = basePrice - (Math.random() - 0.5) * basePrice * 0.02;
 
-  private onData(chunk: Buffer) {
-    this.buffer = Buffer.concat([this.buffer, chunk]);
-    while (this.buffer.length >= 44) {
-      if (this.buffer.subarray(0, 2).toString() !== 'FT') {
-        this.rejectAll(new Error('Invalid OpenD response'));
-        this.socket?.destroy();
-        return;
-      }
-      const protoID = this.buffer.readUInt32LE(2);
-      const serial = this.buffer.readUInt32LE(8);
-      const bodyLen = this.buffer.readUInt32LE(12);
-      if (this.buffer.length < 44 + bodyLen) return;
-
-      const body = this.buffer.subarray(44, 44 + bodyLen);
-      this.buffer = this.buffer.subarray(44 + bodyLen);
-
-      // Push: protoID 3005 = QotUpdateBasicQot
-      if (protoID === 3005 && this.pushCallback) {
-        try {
-          const PushResp = futuProtoRoot.lookup('Qot_UpdateBasicQot.Response');
-          const decoded = PushResp.decode(body);
-          if (decoded?.retType === 0) {
-            const quotes = this.parsePushQuotes(decoded);
-            if (quotes.length > 0) this.pushCallback(quotes);
-          }
-        } catch (e: any) {
-          log.warn('[FutuOpenD] Push decode error:', e.message);
-        }
-        continue;
-      }
-
-      const item = this.pending.get(serial);
-      if (item) {
-        clearTimeout(item.timer);
-        this.pending.delete(serial);
-        item.resolve(body);
-      }
-    }
-  }
-
-  private rejectAll(error: Error) {
-    for (const item of this.pending.values()) {
-      clearTimeout(item.timer);
-      item.reject(error);
-    }
-    this.pending.clear();
-  }
-
-  private async send(cmd: { cmd: number; name: string }, req: Record<string, unknown>, timeout = 15000): Promise<any> {
-    if (!this.socket) throw new Error('Not connected');
-    const Request = futuProtoRoot.lookup(`${cmd.name}.Request`);
-    const Response = futuProtoRoot.lookup(`${cmd.name}.Response`);
-    const body = Buffer.from(Request.encode(Request.create(req)).finish());
-    const serial = ++this.serial;
-
-    const header = Buffer.alloc(44);
-    header.write('FT', 0, 'ascii');
-    header.writeUInt32LE(cmd.cmd, 2);
-    header.writeUInt8(0, 6);
-    header.writeUInt8(0, 7);
-    header.writeUInt32LE(serial, 8);
-    header.writeUInt32LE(body.length, 12);
-    createHash('sha1').update(body).digest().copy(header, 16);
-
-    const raw = await new Promise<Buffer>((resolve, reject) => {
-      const timer = setTimeout(() => { this.pending.delete(serial); reject(new Error(`${cmd.name} timeout`)); }, timeout);
-      this.pending.set(serial, { resolve, reject, timer });
-      this.socket!.write(Buffer.concat([header, body]));
-    });
-
-    const decoded = Response.decode(raw);
-    if (decoded?.retType !== 0) throw new Error(decoded?.retMsg ?? `${cmd.name} failed`);
-    return decoded;
-  }
-
-  // ── Push 实时行情（<50ms 延迟）─────────────────────────────────────
-
-  onQuotePush(callback: QuotePushCallback) {
-    this.pushCallback = callback;
-  }
-
-  async subscribeAndPush(codes: string[]): Promise<void> {
-    this.subscribedCodes = [...codes]; // Track for reconnect
-    const securityList = codes.map((c) => ({ market: marketCode(c), code: symOf(c) }));
-    await this.send(CMD.QotSub, {
-      c2s: {
-        securityList,
-        subTypeList: [1],
-        isSubOrUnSub: true,
-        isRegOrUnRegPush: true,
-        isFirstPush: true,
-      },
-    });
-    log.info(`[FutuOpenD] Subscribed + push: ${codes.join(', ')}`);
-  }
-
-  private parsePushQuotes(decoded: any): any[] {
-    return (decoded?.s2c?.basicQotList ?? []).map((q: any) => {
-      const prefix = MARKET_REV[q.security?.market] ?? 'US';
-      const code = `${prefix}.${q.security?.code}`;
-      const prevClose = toNum(q.prevClosePrice);
-      const price = toNum(q.curPrice);
-      return {
-        code, price,
-        change: prevClose > 0 ? Math.round((price - prevClose) * 100) / 100 : 0,
-        changePct: prevClose > 0 ? Math.round(((price - prevClose) / prevClose) * 10000) / 100 : 0,
-        volume: toNum(q.volume), amount: toNum(q.turnover),
-        open: toNum(q.openPrice), high: toNum(q.highPrice),
-        low: toNum(q.lowPrice), prevClose,
-        updateTime: new Date().toISOString(),
-      };
-    });
-  }
-
-  // ── Market Data ────────────────────────────────────────────────────────
-
-  async getQuotes(codes: string[]): Promise<any[]> {
-    const securityList = codes.map((c) => ({ market: marketCode(c), code: symOf(c) }));
-
-    // Subscribe first (no push, for one-shot pull)
-    await this.send(CMD.QotSub, {
-      c2s: { securityList, subTypeList: [1], isSubOrUnSub: true, isRegOrUnRegPush: false, isFirstPush: true },
-    });
-
-    // Get quotes
-    const res: any = await this.send(CMD.QotGetBasicQot, { c2s: { securityList } });
-    return (res?.s2c?.basicQotList ?? []).map((q: any) => {
-      const prefix = MARKET_REV[q.security?.market] ?? 'US';
-      const code = `${prefix}.${q.security?.code}`;
-      const prevClose = toNum(q.prevClosePrice);
-      const price = toNum(q.curPrice);
-      const open = toNum(q.openPrice);
-      const high = toNum(q.highPrice);
-      const low = toNum(q.lowPrice);
-      const volume = toNum(q.volume);
-      const change = prevClose > 0 ? price - prevClose : 0;
-      const changePct = prevClose > 0 ? ((price - prevClose) / prevClose) * 100 : 0;
-      const amplitude = prevClose > 0 ? ((high - low) / prevClose) * 100 : 0;
-
-      return {
-        code, name: q.name ?? code, price, prevClose, open, high, low, volume,
-        change: Math.round(change * 100) / 100,
-        changePct: Math.round(changePct * 100) / 100,
-        amplitude: Math.round(amplitude * 100) / 100,
-        updateTime: new Date().toISOString(),
-      };
-    });
-  }
-
-  async getKlines(code: string, period: string = 'daily', count: number = 200): Promise<any[]> {
-    const klType = KL_PERIOD[period] ?? 4;
-    const security = { market: marketCode(code), code: symOf(code) };
-
-    const res: any = await this.send(CMD.QotGetKL, {
-      c2s: { security, reqType: 1, subType: klType, kLineCount: count, needField: 0 },
-    }, 20000);
-
-    return (res?.s2c?.kLineList ?? []).map((k: any) => ({
-      time: k.timeKey ? Math.floor(k.timeKey / 1000) : 0,
-      open: toNum(k.openPrice),
-      high: toNum(k.highPrice),
-      low: toNum(k.lowPrice),
-      close: toNum(k.closePrice),
-      volume: toNum(k.volume),
-    })).filter((k: any) => k.open > 0);
-  }
-
-  // ── Trading ────────────────────────────────────────────────────────────
-
-  async getAccounts(): Promise<any[]> {
-    const res: any = await this.send(CMD.TrdGetAccList, { c2s: { userID: 0 } }, 10000);
-    return (res?.s2c?.accList ?? [])
-      .filter((a: any) => a.trdEnv === 1)  // REAL env only
-      .map((a: any) => ({ accId: String(a.accID), trdEnv: 'REAL' }));
-  }
-
-  async getFunds(accountId: string): Promise<any> {
-    const trdHeader = { trdEnv: 1, accID: Number(accountId), trdMarket: 11 };
-    const res: any = await this.send(CMD.TrdGetFunds, { c2s: { header: trdHeader } });
-    const f = res?.s2c?.funds;
-    if (!f) return null;
     return {
-      totalAssets: toNum(f.totalAssets),
-      cash: toNum(f.cash),
-      power: toNum(f.maxPowerShort ?? f.buyingPower ?? f.cash),
-      marketVal: toNum(f.marketVal),
-      frozenCash: toNum(f.frozenCash),
-      todayPnl: toNum(f.todayPnl ?? f.todayPl ?? 0),
-      currency: 'USD',
+      code,
+      price: +price.toFixed(2),
+      change: +(price - prevClose).toFixed(2),
+      changePct: +(((price - prevClose) / prevClose) * 100).toFixed(2),
+      volume: Math.floor(Math.random() * 1000000) + 100000,
+      turnover: Math.floor(Math.random() * 100000000),
+      high: +(price + Math.random() * basePrice * 0.01).toFixed(2),
+      low: +(price - Math.random() * basePrice * 0.01).toFixed(2),
+      open: +(basePrice + (Math.random() - 0.5) * basePrice * 0.01).toFixed(2),
+      prevClose: +prevClose.toFixed(2),
+      time: new Date().toISOString(),
     };
   }
 
-  async getPositions(accountId: string): Promise<any[]> {
-    const trdHeader = { trdEnv: 1, accID: Number(accountId), trdMarket: 11 };
-    const res: any = await this.send(CMD.TrdGetPositionList, {
-      c2s: { header: trdHeader, filterConditions: { filterPLRatioMin: -999, filterPLRatioMax: 999 } },
-    });
+  // ── Connection Override (no mock fallback) ────────────────────────────
 
-    return (res?.s2c?.positionList ?? []).map((p: any) => {
-      const code = `${MARKET_REV[p.security?.market] ?? 'US'}.${p.security?.code}`;
-      const qty = toNum(p.qty);
-      const canSell = toNum(p.canSellQty);
-      const avgCost = toNum(p.costPrice);
-      const curPrice = toNum(p.valuationPrice ?? p.curPrice ?? 0);
-      const marketVal = toNum(p.valuationPrice ?? 0) * qty;
-      const pnl = toNum(p.plVal ?? 0);
-      const pnlPct = avgCost > 0 ? ((curPrice - avgCost) / avgCost) * 100 : 0;
-
-      return { code, name: p.name ?? code, qty, canSellQty: canSell, avgCost, curPrice, marketVal, pnl, pnlPct: Math.round(pnlPct * 100) / 100 };
-    });
+  /**
+   * Connect to Futu OpenD via TCP.
+   * Unlike MoomooAdapter, this does NOT fall back to mock mode on failure —
+   * it throws the error directly for the caller to handle.
+   */
+  async connect(): Promise<void> {
+    log.info(`[FutuOpenD] Connecting to ${this.host}:${this.port}...`);
+    await this.connectTCP();
   }
 
-  async getOrders(accountId: string): Promise<any[]> {
-    const trdHeader = { trdEnv: 1, accID: Number(accountId), trdMarket: 11 };
-    const res: any = await this.send(CMD.TrdGetOrderList, { c2s: { header: trdHeader } });
+  // ── Backward-Compatible Push API ──────────────────────────────────────
 
-    return (res?.s2c?.orderList ?? []).map((o: any) => ({
-      orderId: String(o.orderID ?? o.orderIDEx ?? ''),
-      code: `${MARKET_REV[o.security?.market] ?? 'US'}.${o.security?.code}`,
-      name: o.name ?? '',
-      side: o.trdSide === 1 ? 'BUY' : 'SELL',
-      orderType: o.orderType,
-      qty: toNum(o.qty),
-      price: toNum(o.price),
-      filledQty: toNum(o.dealQty ?? 0),
-      filledPrice: toNum(o.dealAvgPrice ?? 0),
-      status: ['SUBMITTED', 'WAITING', 'FILLED', 'PARTIAL', 'CANCELLED', 'REJECTED', ''][o.orderStatus ?? 0] ?? 'UNKNOWN',
-      createTime: o.createTime ?? '',
-      updateTime: o.updateTime ?? '',
-    }));
+  /**
+   * Override base class onQuotePush for backward compatibility.
+   * The original FutuOpenDClient used a single-callback model (set, not add).
+   * BrokerManager and main.ts rely on this replace semantics.
+   */
+  onQuotePush(callback: (quotes: any[]) => void): void {
+    // Clear all existing callbacks and set this one (replace semantics)
+    this.quoteCallbacks = [callback];
   }
 
-  async placeOrder(order: any): Promise<any> {
-    const trdHeader = { trdEnv: order.trdEnv === 'SIMULATE' ? 0 : 1, accID: Number(order.accountId), trdMarket: marketCode(order.code) };
-    const res: any = await this.send(CMD.TrdPlaceOrder, {
-      c2s: {
-        header: trdHeader,
-        trdSide: order.side === 'BUY' ? 1 : 2,
-        orderType: order.orderType === 'LIMIT' ? 1 : 2,
-        qty: order.qty,
-        price: order.price ?? 0,
-        code: symOf(order.code),
-        remark: order.remark ?? '',
-      },
-    });
-    const orderId = String(res?.s2c?.orderID ?? res?.s2c?.orderIDEx ?? '');
-    log.info('[FutuOpenD] Order placed:', orderId, order.code, order.side, order.qty);
-    return { orderId };
-  }
-
-  async cancelOrder(orderId: string, accountId: string, code: string): Promise<void> {
-    const trdHeader = { trdEnv: 1, accID: Number(accountId), trdMarket: marketCode(code) };
-    await this.send(CMD.TrdCancelOrder, {
-      c2s: { header: trdHeader, orderID: Number(orderId), modifyOrderOp: 3 },
-    });
-    log.info('[FutuOpenD] Order cancelled:', orderId);
+  /**
+   * Override base class onDisconnect for backward compatibility.
+   * Same single-callback replace semantics as onQuotePush.
+   */
+  onDisconnect(callback: () => void): void {
+    this.disconnectCallbacks = [callback];
   }
 }

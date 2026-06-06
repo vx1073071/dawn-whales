@@ -15,6 +15,7 @@ interface StrategyConfig {
   params: Record<string, number>;
   stopLoss?: number;
   takeProfit?: number;
+  brokerId?: string; // Optional: route orders to a specific broker; falls back to active broker
 }
 
 interface Strategy {
@@ -38,6 +39,7 @@ interface SignalEvent {
   price: number;
   time: number;
   reason: string;
+  brokerId?: string; // Propagated from StrategyConfig for broker routing
 }
 
 type SignalCallback = (event: SignalEvent) => void;
@@ -193,6 +195,11 @@ export class StrategyEngine {
       throw new Error('Invalid strategy input');
     }
 
+    // Allow overriding brokerId from input (top-level field takes precedence)
+    if (input.brokerId && typeof input.brokerId === 'string') {
+      config.brokerId = input.brokerId;
+    }
+
     const id = `strat_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
     const strategy: Strategy = {
       id, name, description, symbol,
@@ -203,7 +210,7 @@ export class StrategyEngine {
     };
 
     this.strategies.set(id, strategy);
-    log.info(`[StrategyEngine] Created: ${id} "${name}" (${config.type})`);
+    log.info(`[StrategyEngine] Created: ${id} "${name}" (${config.type})${config.brokerId ? ` → broker: ${config.brokerId}` : ''}`);
     return id;
   }
 
@@ -220,6 +227,20 @@ export class StrategyEngine {
     this.strategies.delete(id);
     this.indicators.delete(id);
     log.info(`[StrategyEngine] Deleted: ${id}`);
+  }
+
+  /**
+   * Bind a strategy to a specific broker.
+   * Pass `undefined` or empty string to clear the binding (use active broker).
+   */
+  setStrategyBroker(strategyId: string, brokerId: string | undefined): void {
+    const strategy = this.strategies.get(strategyId);
+    if (!strategy) {
+      log.warn(`[StrategyEngine] setStrategyBroker: strategy not found: ${strategyId}`);
+      return;
+    }
+    strategy.strategy.brokerId = brokerId || undefined;
+    log.info(`[StrategyEngine] Strategy ${strategyId} broker → ${brokerId || '(active broker)'}`);
   }
 
   // ── Backtest ──────────────────────────────────────────────────────
@@ -324,6 +345,7 @@ export class StrategyEngine {
         price: quote.price,
         time: Date.now(),
         reason,
+        brokerId: strategy.strategy.brokerId,
       };
 
       log.info(`[StrategyEngine] Signal: ${signal} ${strategy.symbol} @ ${quote.price} — ${reason}`);
@@ -353,6 +375,7 @@ export class StrategyEngine {
           price: quote.price,
           strategyId: id,
           reason: `${reason} | ${sizingReason}`,
+          brokerId: strategy.strategy.brokerId,
         };
         for (const cb of this.tradeCallbacks) {
           try { cb(order); } catch (e: any) { log.error('[StrategyEngine] Trade callback error:', e.message); }
@@ -373,6 +396,7 @@ export class StrategyEngine {
           price: quote.price,
           strategyId: id,
           reason,
+          brokerId: strategy.strategy.brokerId,
         };
         for (const cb of this.tradeCallbacks) {
           try { cb(order); } catch (e: any) { log.error('[StrategyEngine] Trade callback error:', e.message); }
@@ -396,6 +420,7 @@ export class StrategyEngine {
             code: strategy.symbol, side: 'SELL', orderType: 'MARKET',
             qty: strategy.position.qty, price: quote.price,
             strategyId: id, reason: `止损触发 (${pnlPct.toFixed(1)}%)`,
+            brokerId: strategy.strategy.brokerId,
           };
           for (const cb of this.tradeCallbacks) { try { cb(order); } catch {} }
         } else if (strategy.strategy.takeProfit && pnlPct >= strategy.strategy.takeProfit) {
@@ -411,6 +436,7 @@ export class StrategyEngine {
             code: strategy.symbol, side: 'SELL', orderType: 'MARKET',
             qty: strategy.position.qty, price: quote.price,
             strategyId: id, reason: `止盈触发 (${pnlPct.toFixed(1)}%)`,
+            brokerId: strategy.strategy.brokerId,
           };
           for (const cb of this.tradeCallbacks) { try { cb(order); } catch {} }
         }

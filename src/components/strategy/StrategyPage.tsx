@@ -1,12 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useState, useEffect, useCallback } from 'react';
 import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates, deleteStrategy } from '../../lib/bridge-api';
 import StrategyExplainCard from './StrategyExplainCard';
 import StrategyCompareModal from './StrategyCompareModal';
-// import TemplateBrowser from './TemplateBrowser';
-import PaperTraderPanel from './PaperTraderPanel';
+import ConditionRulePanel from '../trading/ConditionRulePanel';
 
-type CreateMode = null | 'ai' | 'template' | 'form' | 'paper';
+type CreateMode = null | 'ai' | 'template' | 'form' | 'condition';
 
 interface ParsedStrategy {
   success: boolean;
@@ -47,26 +45,14 @@ export default function StrategyPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadStrategies();
-  }, [refreshKey]);
+  const loadStrategies = useCallback(async () => {
+    const list = await getAllStrategies();
+    setStrategies(list);
+  }, []);
 
-  async function loadStrategies() {
-    setLoading(true);
-    setError(null);
-    try {
-      const list = await getAllStrategies();
-      setStrategies(list);
-    } catch (e: any) {
-      setError(e?.message || t('common.loadingFailed'));
-    } finally {
-      setLoading(false);
-    }
-  }
+  const refresh = useCallback(() => { setRefreshKey((k) => k + 1); }, []);
 
-  function refresh() {
-    setRefreshKey((k) => k + 1);
-  }
+  useEffect(() => { loadStrategies(); }, [refreshKey, loadStrategies]);
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -81,43 +67,8 @@ export default function StrategyPage() {
         </div>
       </div>
 
-      {loading && (
-        <div className="flex justify-center py-12">
-          <div className="text-gray-500 text-sm">{t('common.loading')}</div>
-        </div>
-      )}
-
-      {error && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-4 text-red-400 text-sm flex items-center justify-between">
-          <span>{error}</span>
-          <button onClick={loadStrategies} className="px-3 py-1 bg-red-500/20 hover:bg-red-500/30 rounded text-xs transition-colors">{t('common.retry')}</button>
-        </div>
-      )}
-
-      {!mode && !selectedId && (
-        <>
-          <button
-            onClick={() => setMode('paper')}
-            className="w-full bg-[#0d1a0d] border border-green-500/20 rounded-xl p-4 text-left hover:border-green-500/40 transition-all mb-4"
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">🎯</span>
-              <div>
-            <div className="text-green-400 font-semibold text-sm">{t('strategy.paperTrading')}</div>
-            <div className="text-gray-400 text-xs">{t('strategy.paperTradingDesc')}</div>
-              </div>
-              <div className="ml-auto text-green-500/60 text-xs">→ 进入</div>
-            </div>
-          </button>
-          <ModeSelector onSelect={setMode} />
-        </>
-      )}
-      {mode === 'paper' && (
-        <div className="mb-4">
-          <button onClick={() => setMode(null)} className="text-gray-400 hover:text-white text-xs flex items-center gap-1 mb-4 transition-colors">← {t('strategy.backToLab')}</button>
-          <PaperTraderPanel />
-        </div>
-      )}
+      {!mode && !selectedId && <ModeSelector onSelect={setMode} />}
+      {mode === 'condition' && <ConditionRulePanel onBack={() => setMode(null)} />}
       {mode === 'ai' && <AICreator onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} onFillForm={(parsed) => { setNlPrefill(parsed); setMode('form'); }} />}
       {mode === 'template' && <TemplateBrowser onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} />}
       {mode === 'form' && <FormCreator onBack={() => { setMode(null); setNlPrefill(null); }} onCreated={() => { setMode(null); setNlPrefill(null); refresh(); }} nlPrefill={nlPrefill || undefined} />}
@@ -172,24 +123,39 @@ export default function StrategyPage() {
 function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
   const { t } = useTranslation();
   return (
-    <div className="grid grid-cols-3 gap-4 mb-8">
-      <button onClick={() => onSelect('ai')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
-        <div className="text-3xl mb-3">💬</div>
-        <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{t('strategy.speakIt')}</h3>
-        <p className="text-gray-400 text-xs leading-relaxed">{t('strategy.speakItDesc')}</p>
-        <div className="mt-3 text-[#D4A853] text-xs font-medium">{t('strategy.recommendedForBeginners')} →</div>
-      </button>
-      <button onClick={() => onSelect('template')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
-        <div className="text-3xl mb-3">📋</div>
-        <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{t('strategy.chooseTemplate')}</h3>
-        <p className="text-gray-400 text-xs leading-relaxed">{t('strategy.chooseTemplateDesc')}</p>
-        <div className="mt-3 text-gray-500 text-xs">8 {t('strategy.templateCount')}</div>
-      </button>
-      <button onClick={() => onSelect('form')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
-        <div className="text-3xl mb-3">📊</div>
-        <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{t('strategy.fillForm')}</h3>
-        <p className="text-gray-400 text-xs leading-relaxed">{t('strategy.fillFormDesc')}</p>
-        <div className="mt-3 text-gray-500 text-xs">{t('strategy.fullyCustomizable')}</div>
+    <div className="space-y-4 mb-8">
+      <div className="grid grid-cols-3 gap-4">
+        <button onClick={() => onSelect('ai')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
+          <div className="text-3xl mb-3">💬</div>
+          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">说出来</h3>
+          <p className="text-gray-400 text-xs leading-relaxed">用自然语言描述你的策略<br/>AI 帮你自动生成可执行策略</p>
+          <div className="mt-3 text-[#D4A853] text-xs font-medium">推荐新手 →</div>
+        </button>
+        <button onClick={() => onSelect('template')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
+          <div className="text-3xl mb-3">📋</div>
+          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">选模板</h3>
+          <p className="text-gray-400 text-xs leading-relaxed">经典策略模板库<br/>选一个改改参数就能用</p>
+          <div className="mt-3 text-gray-500 text-xs">8 个策略模板</div>
+        </button>
+        <button onClick={() => onSelect('form')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
+          <div className="text-3xl mb-3">📊</div>
+          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">填表单</h3>
+          <p className="text-gray-400 text-xs leading-relaxed">精确控制每个参数<br/>完全自定义策略</p>
+          <div className="mt-3 text-gray-500 text-xs">完全自定义</div>
+        </button>
+      </div>
+      {/* Phase 4.2: Condition Rules */}
+      <button onClick={() => onSelect('condition')} className="w-full bg-[#C9A046]/5 border border-[#C9A046]/20 rounded-xl p-4 text-left hover:border-[#C9A046]/40 hover:bg-[#C9A046]/10 transition-all group">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="text-2xl">⚡</div>
+            <div>
+              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">条件规则</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">价格/指标自动触发 · 无需手动盯盘 · 智能条件执行</p>
+            </div>
+          </div>
+          <span className="text-[#D4A853] text-xs font-medium">Phase 4.2 →</span>
+        </div>
       </button>
     </div>
   );
@@ -215,7 +181,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
     '20日动量突破 5% 买入 SOXL',
   ];
 
-  async function handleParse() {
+  const handleParse = useCallback(async () => {
     if (!input.trim()) return;
     setLoading(true);
     setError('');
@@ -233,9 +199,9 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
     } finally {
       setLoading(false);
     }
-  }
+  }, [input]);
 
-  async function handleCreate() {
+  const handleCreate = useCallback(async () => {
     if (!parsed?.success) return;
     setLoading(true);
     try {
@@ -253,9 +219,9 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
     } finally {
       setLoading(false);
     }
-  }
+  }, [input, parsed, onCreated]);
 
-  async function handleBacktest() {
+  const handleBacktest = useCallback(async () => {
     if (!strategyId && !parsed?.success) return;
     setBacktestLoading(true);
     try {
@@ -277,7 +243,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
     } finally {
       setBacktestLoading(false);
     }
-  }
+  }, [strategyId, parsed]);
 
   return (
     <div className="mb-8">

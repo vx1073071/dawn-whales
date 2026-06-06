@@ -124,7 +124,7 @@ function _saveKeystore(app, ks) {
  * @param {string} key   - Plaintext key value
  * @returns {boolean}
  */
-function storeKey(app, name, key) {
+export function storeKey(app, name, key) {
   if (!app || !name || !key) return false;
 
   // ── Fast path: DPAPI (Windows, user-bound, no secret needed) ──
@@ -162,7 +162,7 @@ function storeKey(app, name, key) {
  * @param {string} name - Key identifier
  * @returns {string|null}
  */
-function getKey(app, name) {
+export function getKey(app, name) {
   if (!app || !name) return null;
 
   const ks = _loadKeystore(app);
@@ -205,7 +205,7 @@ function getKey(app, name) {
  * @param {object} app  - Electron app instance
  * @param {string} name - Key identifier
  */
-function deleteKey(app, name) {
+export function deleteKey(app, name) {
   if (!app || !name) return;
   const ks = _loadKeystore(app);
   delete ks[name];
@@ -213,12 +213,12 @@ function deleteKey(app, name) {
 }
 
 /** Convenience: get DeepSeek key specifically */
-function getDeepSeekKey(app) {
+export function getDeepSeekKey(app) {
   return getKey(app, 'DEEPSEEK_API_KEY');
 }
 
 /** Convenience: store DeepSeek key specifically */
-function storeDeepSeekKey(app, key) {
+export function storeDeepSeekKey(app, key) {
   return storeKey(app, 'DEEPSEEK_API_KEY', key);
 }
 

@@ -1,8 +1,8 @@
 {
   "name": "dawn-whales",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
-  "description": "道鲸 · AI 量化系统 ——说人话就能做量化",
+  "description": "DAWN WHALES",
   "main": "dist-electron/main.cjs",
   "scripts": {
     "dev": "vite",
@@ -14,13 +14,7 @@
     "dist:win": "vite build && electron-builder --win",
     "dist:mac": "vite build && electron-builder --mac",
     "lint": "eslint src --ext .ts,.tsx",
-    "test": "vitest run --config vitest.config.ts",
-    "test:e2e": "playwright test",
-    "test:e2e:report": "playwright show-report test-results/html-report",
-    "coverage": "vitest run --config vitest.config.ts --coverage && tsx tests/test-dashboard.ts",
-    "docs:api": "tsx tests/api-docs-generator.ts electron/engine docs/API.md",
-    "install:hook": "node scripts/install-hook.js",
-    "pre-commit": "node scripts/pre-commit-check.js"
+    "test": "node --no-warnings node_modules/vitest/vitest.mjs run"
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.0",

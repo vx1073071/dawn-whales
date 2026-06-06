@@ -13,7 +13,4 @@ release/
 *.log
 node_modules/
 
-# Generated artifacts
 coverage/
-Q*-task-summary.md
-

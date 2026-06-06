@@ -262,6 +262,11 @@ export async function cancelOrder(orderId: string): Promise<any> {
   return window.api.broker.cancelOrder(orderId);
 }
 
+export async function placeOrder(order: any): Promise<any> {
+  if (!hasIPC()) return { success: false, error: 'No IPC' };
+  return window.api.broker.placeOrder(order);
+}
+
 export async function isConnected(): Promise<boolean> {
   if (!hasIPC()) return false;
   try {
