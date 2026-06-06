@@ -22,7 +22,7 @@ describe('J-35-02: PositionMonitor', () => {
   });
 
   describe('Stop Loss', () => {
-    it('should trigger stop loss when price drops below threshold', () => {
+    it('should trigger stop loss when price drops below threshold', async () => {
       const signal: Signal = {
         id: 'sig-1',
         strategyId: 'strat-1',
@@ -49,7 +49,7 @@ describe('J-35-02: PositionMonitor', () => {
       expect(remainingPositions.length).toBe(0);
     });
 
-    it('should not trigger stop loss when price is above threshold', () => {
+    it('should not trigger stop loss when price is above threshold', async () => {
       const signal: Signal = {
         id: 'sig-1',
         strategyId: 'strat-1',
@@ -73,7 +73,7 @@ describe('J-35-02: PositionMonitor', () => {
   });
 
   describe('Take Profit', () => {
-    it('should trigger take profit when price rises above threshold', () => {
+    it('should trigger take profit when price rises above threshold', async () => {
       // Use dedicated executor with stopLoss disabled so position isn't auto-closed
       // by the stop-loss check during simulateOrderExecution price fluctuation
       const tpExecutor = new ClosedLoopExecutor({
@@ -100,7 +100,7 @@ describe('J-35-02: PositionMonitor', () => {
       tpExecutor.destroy();
     });
 
-    it('should not trigger take profit when price is below threshold', () => {
+    it('should not trigger take profit when price is below threshold', async () => {
       const signal: Signal = {
         id: 'sig-1',
         strategyId: 'strat-1',
@@ -123,7 +123,7 @@ describe('J-35-02: PositionMonitor', () => {
   });
 
   describe('Time-Based Exit', () => {
-    it('should track holding time', () => {
+    it('should track holding time', async () => {
       const signal: Signal = {
         id: 'sig-1',
         strategyId: 'strat-1',
@@ -140,7 +140,7 @@ describe('J-35-02: PositionMonitor', () => {
       expect(positions[0].entryTime).toBeDefined();
     });
 
-    it('should update position PnL on price update', () => {
+    it('should update position PnL on price update', async () => {
       const signal: Signal = {
         id: 'sig-1',
         strategyId: 'strat-1',
@@ -163,7 +163,7 @@ describe('J-35-02: PositionMonitor', () => {
   });
 
   describe('Trailing Stop', () => {
-    it('should update trailing stop when price rises', () => {
+    it('should update trailing stop when price rises', async () => {
       // Configure with trailing stop enabled
       const trailingExecutor = new ClosedLoopExecutor({
         enabled: true,
@@ -208,7 +208,7 @@ describe('J-35-02: PositionMonitor', () => {
   });
 
   describe('Position PnL Calculation', () => {
-    it('should calculate positive PnL correctly', () => {
+    it('should calculate positive PnL correctly', async () => {
       const signal: Signal = {
         id: 'sig-1',
         strategyId: 'strat-1',
@@ -227,7 +227,7 @@ describe('J-35-02: PositionMonitor', () => {
       expect(positions[0].pnlPct).toBeGreaterThan(0);
     });
 
-    it('should calculate negative PnL correctly', () => {
+    it('should calculate negative PnL correctly', async () => {
       // Disable stop loss so position isn't auto-closed before PnL check
       const noSlExecutor = new ClosedLoopExecutor({
         enabled: true,
