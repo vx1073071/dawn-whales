@@ -1,12 +1,75 @@
 ﻿# DAWN WHALES Changelog
 
-## [0.6.0] - 2026-06-06
+## [0.7.0] - 2026-06-06
 
-### Sprint 1 Complete (R26 Final Sign-off)
-- **Tests**: 129/129 pass (6 files), exit 0
+### Sprint 2 Phase 3 Complete (R28 Release)
+- **Tests**: 259/259 pass (11 files), exit 0
 - **Build**: 0 errors, 0 warnings
-- **.exe**: DAWN WHALES Setup 0.6.0.exe (113 MB)
+- **.exe**: DAWN WHALES Setup 0.7.0.exe
 - **TSC**: 0 errors
+- **Brokers**: Futu (real) + Moomoo (TCP real, 1185L) + IB (mock, 1768L)
+
+### R28 (ML)
+- v0.7.0 Release packaging (version bump + dist:win)
+- Full pipeline E2E tests: NL→Strategy→Order→Broker→Risk (15+ tests, 3 brokers)
+- README multi-broker architecture + Quickstart guide
+
+### R28 (JVS)
+- Moomoo live validation doc (5 API samples)
+- UnifiedAccountManager (connect 3 brokers simultaneously)
+- OpenDBaseAdapter refactor design doc
+
+### R28 (QClaw)
+- Multi-broker performance regression (5 metrics, <15% degradation)
+- Test expansion to 280+
+- GitHub Actions CI/CD configuration
+
+### R28 (WB/PM)
+- Sprint 1 Final Demo published (11 GIFs)
+- v0.7.0 Release Announcement
+- Sprint 2 Phase 4 roadmap
+
+### R27 (ML)
+- BrokerSelector + AccountSummary integration into App Shell
+- Multi-Broker E2E tests (13 tests)
+- DashboardPage BrokerStatusBar enhancement
+
+### R27 (JVS)
+- IB Adapter (1768L, 12 contract mappings)
+- StrategyBrokerSelector component (309L)
+- Strategy → Broker binding
+
+### R27 (QClaw)
+- nl-parser.ts full-scenario tests (42 tests)
+- strategy-engine.ts core logic tests (29 tests)
+- Multi-Broker IPC integration tests
+
+### R27 (WB/PM)
+- Sprint 1 Demo recording checklist
+- Build + Test guardian (259 pass)
+- Sprint 2 Phase 3 mid-review
+
+### R26 (ML)
+- v0.6.0 installer verification checklist
+- Sprint 1 retrospective
+- R26 Demo script (11 scenes)
+- Logo white corners removed + system tray icon fixed
+
+### R26 (JVS)
+- Moomoo adapter real TCP connection
+- BrokerSelector + BrokerStatusBar components
+- AccountAggregator + AccountSummary
+
+### R26 (QClaw)
+- RiskEngine v2 5-scenario validation
+- Frontend performance analysis
+- Test gatekeeper
+
+### R26 (WB/PM)
+- Sprint 1 final demo recording
+- Sprint 2 Phase 3 roadmap
+
+## [0.6.0] - 2026-06-06
 
 ### R26 (ML)
 - v0.6.0 installer verification checklist (docs/demo/r26-installer-checklist.md)
