@@ -8,8 +8,11 @@
 
 ### QClaw
 - ✅ Q-26-01: RiskEngine v2 场景验证 — 20/20 passing，npm test 149/149 exit 0
-- ⏳ Q-26-02: 前端性能分析（待开始）
+- ✅ Q-26-02: 前端性能分析完成（docs/performance/frontend-perf-q26-02.md）
 - ⏳ Q-26-03: 测试守卫（待开始）
+
+### 最新 commit
+- c7b96c32: docs(Q-26-02): frontend performance analysis - bundle map + anti-patterns
 
 ### 最新 commit
 - bbf01ac7: docs(q26-01): update RiskEngine v2 validation doc with verified API surface
