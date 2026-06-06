@@ -1,36 +1,78 @@
-﻿# ── DAWN WHALES CI/CD ─────────────────────────────────────────────────────
-name: CI
+name: DAWN WHALES CI
 
 on:
   push:
-    branches: [master]
+    branches: [main, develop]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
-  quality:
-    runs-on: windows-latest
+  typecheck:
+    name: TypeScript Check
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: '22' }
+        with:
+          node-version: '22'
+          cache: 'npm'
       - run: npm ci
       - run: npx tsc --noEmit
-      - run: npm test
-      - run: npm run build
 
-  release:
-    needs: quality
-    if: github.ref == 'refs/heads/master'
-    runs-on: windows-latest
+  test:
+    name: Tests (${{ matrix.shard }})
+    runs-on: ubuntu-latest
+    needs: typecheck
+    strategy:
+      fail-fast: false
+      matrix:
+        shard:
+          - market
+          - account
+          - broker
+          - strategy
+          - risk
+          - executor
+          - automation
+          - ui-trading
+          - ui-monitor
+          - ui-config
+          - integration
+          - performance
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: '22' }
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Run ${{ matrix.shard }} tests
+        run: npm run test:${{ matrix.shard }}
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
       - run: npm ci
       - run: npm run build
-      - run: npm run dist:win
-      - uses: softprops/action-gh-release@v2
+
+  release-check:
+    name: Release Readiness
+    runs-on: ubuntu-latest
+    needs: [typecheck, test, build]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          files: release/*.exe
-          generate_release_notes: true
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - run: npx electron-builder --dir --publish never

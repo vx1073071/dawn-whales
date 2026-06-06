@@ -8,6 +8,7 @@ import {
 } from '../../lib/bridge-api';
 import { useWebSocketQuotes } from '../../hooks/useWebSocketQuotes';
 import BrokerStatusBar from '../trading/BrokerStatusBar';
+import PerformanceDashboard from './PerformanceDashboard';
 
 interface AccountSummary {
   totalAssets: number;
@@ -223,6 +224,9 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Performance Dashboard (ML-35-01) */}
+      <PerformanceDashboard strategyName="总组合" />
 
       {/* Bottom row: Strategies + Quick Stats */}
       <div className="grid grid-cols-2 gap-4">

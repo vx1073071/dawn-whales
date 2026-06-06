@@ -9,6 +9,7 @@ export default defineConfig({
     globals: true,
     env: { NODE_ENV: 'development' },
     // setupFiles removed after test file reorganization (no helpers/mocks.ts)
+    setupFiles: ['tests/helpers/setup.ts'],
     include: ['tests/**/*.test.{ts,tsx}'],
     // Exclude legacy main()-style test files (no top-level describe/test) and node-environment tests
     exclude: [
@@ -37,6 +38,11 @@ export default defineConfig({
       'tests/q35-trading-components.test.tsx',
       // Requires Electron IPC mock (ipcMain in main process)
       'tests/jvs-100-e2e.test.ts',
+      // Import engine classes with `extends EventEmitter` — Node `events` not in jsdom
+      'tests/closed-loop-executor.test.ts',
+      'tests/closed-loop-integration.test.ts',
+      'tests/position-monitor.test.ts',
+      'tests/rebalance-engine.test.ts',
     ],
     coverage: {
       provider: 'v8',

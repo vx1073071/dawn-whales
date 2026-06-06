@@ -11,7 +11,15 @@
  */
 
 import log from 'electron-log';
-import { EventEmitter } from 'events';
+
+// Minimal EventEmitter polyfill for jsdom compatibility
+class TypedEventEmitter {
+  private listeners: Record<string, Function[]> = {};
+  on(event: string, fn: Function) { (this.listeners[event] = this.listeners[event] || []).push(fn); return this; }
+  off(event: string, fn: Function) { const arr = this.listeners[event]; if (arr) this.listeners[event] = arr.filter(f => f !== fn); return this; }
+  emit(event: string, ...args: any[]) { (this.listeners[event] || []).forEach(fn => fn(...args)); return true; }
+  removeAllListeners(event?: string) { if (event) delete this.listeners[event]; else this.listeners = {}; return this; }
+}
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

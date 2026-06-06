@@ -1,6 +1,7 @@
 // PositionMonitorPanel — Real-time position monitoring UI
-// Phase 4.3 R32 ML-32-03
-import { useState, useEffect, useCallback } from 'react';
+// Phase 4.3 R32 ML-32-03 / R35 ML-35-02: IPC integration
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { getPositions, getAccounts, placeOrder } from '../../lib/bridge-api';
 
 interface Position {
   id: string;
@@ -26,6 +27,8 @@ interface Props {
   onUpdateTakeProfit?: (id: string, price: number) => void;
   onCloseAll?: () => void;
   refreshInterval?: number; // ms, default 10000
+  /** Enable real IPC data fetching (replaces mock data) */
+  live?: boolean;
 }
 
 // ── mock data for development ──────────────────────────────────────────────
@@ -71,6 +74,7 @@ export default function PositionMonitorPanel({
   onUpdateTakeProfit,
   onCloseAll,
   refreshInterval = 10000,
+  live = false,
 }: Props) {
   const [positions, setPositions] = useState<Position[]>(externalPositions || generateMockPositions());
   const [selectedPos, setSelectedPos] = useState<string | null>(null);
@@ -78,9 +82,99 @@ export default function PositionMonitorPanel({
   const [editTakeProfit, setEditTakeProfit] = useState<string | null>(null);
   const [slInput, setSlInput] = useState('');
   const [tpInput, setTpInput] = useState('');
+  const [connected, setConnected] = useState(false);
+  const [accountId, setAccountId] = useState<string>('');
+  const closeAllRef = useRef(false);
 
-  // Auto-refresh positions (mock: random price drift)
+  // IPC-powered live data fetching (ML-35-02)
+  const fetchLivePositions = useCallback(async () => {
+    if (!live) return;
+    try {
+      const accs = await getAccounts();
+      if (accs.length === 0) { setConnected(false); return; }
+      const activeAcc = accs[0].accountId;
+      setAccountId(activeAcc);
+      setConnected(true);
+
+      const rawPositions = await getPositions(activeAcc);
+      if (rawPositions && rawPositions.length > 0) {
+        setPositions(rawPositions.map((p: any) => ({
+          id: p.code || `pos_${Date.now()}`,
+          code: p.code,
+          name: p.name || p.code,
+          type: (p.qty > 0 ? 'long' : 'short') as 'long' | 'short',
+          shares: Math.abs(p.qty || 0),
+          avgCost: p.avgCost || p.costPrice || 0,
+          currentPrice: p.marketPrice || p.currentPrice || 0,
+          pnl: p.pnl || 0,
+          pnlPct: p.pnlPct || 0,
+          stopLoss: p.stopLoss,
+          takeProfit: p.takeProfit,
+          openTime: Date.now(),
+          strategyId: p.strategyId,
+        })));
+      } else {
+        setPositions([]);
+      }
+    } catch {
+      setConnected(false);
+    }
+  }, [live]);
+
+  // IPC-powered close position
+  const handleClose = useCallback(async (posId: string) => {
+    if (!live || !accountId) { onClose?.(posId); return; }
+    try {
+      const pos = positions.find(p => p.id === posId);
+      if (pos) {
+        await placeOrder({
+          accountId,
+          code: pos.code,
+          qty: pos.shares,
+          side: pos.type === 'long' ? 'SELL' : 'BUY',
+          orderType: 'MARKET',
+        });
+      }
+      await fetchLivePositions();
+    } catch {
+      onClose?.(posId);
+    }
+  }, [live, accountId, positions, onClose, fetchLivePositions]);
+
+  // IPC-powered close all
+  const handleCloseAll = useCallback(async () => {
+    if (closeAllRef.current) return;
+    closeAllRef.current = true;
+    try {
+      if (live && accountId) {
+        for (const pos of positions) {
+          await placeOrder({
+            accountId,
+            code: pos.code,
+            qty: pos.shares,
+            side: pos.type === 'long' ? 'SELL' : 'BUY',
+            orderType: 'MARKET',
+          });
+        }
+        await fetchLivePositions();
+      }
+      onCloseAll?.();
+    } finally {
+      closeAllRef.current = false;
+    }
+  }, [live, accountId, positions, onCloseAll, fetchLivePositions]);
+
+  // Fetch on mount and on interval
   useEffect(() => {
+    if (live) fetchLivePositions();
+  }, [live, fetchLivePositions]);
+
+  // Auto-refresh positions (live: IPC fetch / mock: random price drift)
+  useEffect(() => {
+    if (live) {
+      const timer = setInterval(fetchLivePositions, refreshInterval);
+      return () => clearInterval(timer);
+    }
     if (externalPositions) {
       setPositions(externalPositions);
       return;
@@ -126,6 +220,7 @@ export default function PositionMonitorPanel({
           <h2 className="text-lg font-semibold text-white">持仓监控</h2>
           <p className="text-xs text-gray-500 mt-1">
             {positions.length} 个持仓 • {refreshInterval / 1000}s 刷新
+            {live && <span className="ml-2 text-green-500">{connected ? '● IPC 已连接' : '○ IPC 未连接'}</span>}
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -137,9 +232,9 @@ export default function PositionMonitorPanel({
               {totalPnlPct >= 0 ? '+' : ''}{totalPnlPct}%
             </div>
           </div>
-          {onCloseAll && positions.length > 0 && (
+          {positions.length > 0 && (
             <button
-              onClick={onCloseAll}
+              onClick={handleCloseAll}
               className="px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg text-xs font-medium transition-colors"
             >
               一键平仓
@@ -295,14 +390,12 @@ export default function PositionMonitorPanel({
                 </div>
 
                 {/* Close Position Button */}
-                {onClose && (
-                  <button
-                    onClick={(e) => { e.stopPropagation(); onClose(pos.id); }}
-                    className="mt-2 px-3 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded text-xs transition-colors"
-                  >
-                    平仓
-                  </button>
-                )}
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleClose(pos.id); }}
+                  className="mt-2 px-3 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded text-xs transition-colors"
+                >
+                  平仓
+                </button>
               </div>
             )}
           </div>

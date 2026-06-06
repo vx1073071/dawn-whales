@@ -1,16 +1,23 @@
-/**
- * Rebalance Engine - 投资组合再平衡引擎 (Phase 4.3)
- * 根据目标权重自动调整持仓
+﻿/**
+ * Rebalance Engine - 鎶曡祫缁勫悎鍐嶅钩琛″紩鎿?(Phase 4.3)
+ * 鏍规嵁鐩爣鏉冮噸鑷姩璋冩暣鎸佷粨
  * 
- * 策略类型: equal_weight / target_weight / risk_parity / minimum_variance / custom
- * 触发方式: periodic / threshold / signal / manual
- * 约束引擎: min/max trade size, max positions, max turnover, cash buffer
+ * 绛栫暐绫诲瀷: equal_weight / target_weight / risk_parity / minimum_variance / custom
+ * 瑙﹀彂鏂瑰紡: periodic / threshold / signal / manual
+ * 绾︽潫寮曟搸: min/max trade size, max positions, max turnover, cash buffer
  */
 
 import log from 'electron-log';
-import { EventEmitter } from 'events';
+// Minimal EventEmitter polyfill for jsdom compatibility
+class TypedEventEmitter {
+  private listeners: Record<string, Function[]> = {};
+  on(event: string, fn: Function) { (this.listeners[event] = this.listeners[event] || []).push(fn); return this; }
+  off(event: string, fn: Function) { const arr = this.listeners[event]; if (arr) this.listeners[event] = arr.filter(f => f !== fn); return this; }
+  emit(event: string, ...args: any[]) { (this.listeners[event] || []).forEach(fn => fn(...args)); return true; }
+  removeAllListeners(event?: string) { if (event) delete this.listeners[event]; else this.listeners = {}; return this; }
+}
 
-// ── Types ──────────────────────────────────────────────────────────────────
+// 鈹€鈹€ Types 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export type RebalanceMode = 'threshold' | 'periodic' | 'drift' | 'signal' | 'manual';
 export type RebalanceStrategy = 'equal_weight' | 'target_weight' | 'risk_parity' | 'minimum_variance' | 'custom';
@@ -87,7 +94,7 @@ export interface RebalanceStats {
   rebalancesByTrigger: Record<TriggerType, number>;
 }
 
-// ── RebalanceEngine Class ──────────────────────────────────────────────────
+// 鈹€鈹€ RebalanceEngine Class 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export class RebalanceEngine extends EventEmitter {
   private config: RebalanceConfig;
@@ -121,7 +128,7 @@ export class RebalanceEngine extends EventEmitter {
     log.info('[RebalanceEngine] Initialized', this.config);
   }
 
-  // ── Target Management ──────────────────────────────────────────────────
+  // 鈹€鈹€ Target Management 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
   setTargets(targets: TargetWeight[]): void {
     const totalWeight = targets.reduce((sum, t) => sum + t.weight, 0);
@@ -158,7 +165,7 @@ export class RebalanceEngine extends EventEmitter {
     this.emit('targets:updated', this.targetWeights);
   }
 
-  // ── Position Management ────────────────────────────────────────────────
+  // 鈹€鈹€ Position Management 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
   updatePositions(positions: Position[]): void {
     this.positions.clear();
@@ -176,7 +183,7 @@ export class RebalanceEngine extends EventEmitter {
     return this.positions.get(code);
   }
 
-  // ── Rebalance Logic ────────────────────────────────────────────────────
+  // 鈹€鈹€ Rebalance Logic 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
   shouldRebalance(triggerType?: TriggerType): boolean {
     const trigger = triggerType || this.mapModeToTrigger();
@@ -434,7 +441,7 @@ export class RebalanceEngine extends EventEmitter {
     return result;
   }
 
-  // ── Periodic Rebalance ─────────────────────────────────────────────────
+  // 鈹€鈹€ Periodic Rebalance 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
   startPeriodicRebalance(): void {
     if (this.periodicTimer) return;
@@ -458,7 +465,7 @@ export class RebalanceEngine extends EventEmitter {
     }
   }
 
-  // ── Queries ────────────────────────────────────────────────────────────
+  // 鈹€鈹€ Queries 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
   getRebalanceHistory(limit?: number): RebalanceResult[] {
     const sorted = [...this.rebalanceHistory].sort((a, b) => b.timestamp - a.timestamp);
@@ -515,7 +522,7 @@ export class RebalanceEngine extends EventEmitter {
     };
   }
 
-  // ── Control ────────────────────────────────────────────────────────────
+  // 鈹€鈹€ Control 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
   updateConfig(config: Partial<RebalanceConfig>): void {
     this.config = { ...this.config, ...config };
@@ -539,3 +546,4 @@ export class RebalanceEngine extends EventEmitter {
     log.info('[RebalanceEngine] Destroyed');
   }
 }
+
