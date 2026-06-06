@@ -42,6 +42,15 @@ export default defineConfig({
       'tests/jvs-115-aggregator.test.ts',
       // Requires Node `events` module (extends EventEmitter — not resolved in jsdom)
       'tests/jvs-21-22-23-optimizers.test.ts',
+      // Standalone tsx test files (use custom assert, not vitest describe/it)
+      'tests/j-37-01-closedloop-boundary.test.ts',
+      'tests/j-37-02-rebalance-boundary.test.ts',
+      'tests/j-37-03-condition-negative.test.ts',
+      'tests/jvs-116-ws-perf-standalone.ts',
+      'tests/jvs-117-cache-standalone.ts',
+      'tests/jvs-118-signal-agg-standalone.ts',
+      'tests/jvs-119-orderbook-standalone.ts',
+      'tests/jvs-21-22-23-standalone.ts',
       // Import engine classes with `extends EventEmitter` — Node `events` not resolved in jsdom
       // (setup.ts polyfill only fixes globalThis, not module-level imports)
       'tests/closed-loop-executor.test.ts',
