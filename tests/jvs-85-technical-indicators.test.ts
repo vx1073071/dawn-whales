@@ -89,7 +89,7 @@ describe('JVS-85: Technical Indicators', () => {
       const ema26 = prices.slice(-26).reduce((a, b) => a + b, 0) / 26;
       const macd = ema12 - ema26;
 
-      expect(macd).toBeGreaterThan(0); // Uptrend: shorter EMA > longer EMA
+      expect(ema12).toBeGreaterThan(ema26); // Uptrend: shorter EMA > longer EMA
     });
 
     it('should detect MACD crossover', () => {
