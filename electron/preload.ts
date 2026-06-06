@@ -37,12 +37,6 @@ contextBridge.exposeInMainWorld('api', {
     explain: (strategy: any) => ipcRenderer.invoke('strategy:explain', strategy),
     compare: (s1: any, s2: any) => ipcRenderer.invoke('strategy:compare', s1, s2),
     optimize: (strategyDSL: any, backtestResult: any) => ipcRenderer.invoke('strategy:optimize', { strategyDSL, backtestResult }),
-    correlation: (strategies: any) => ipcRenderer.invoke('strategy:correlation', { strategies }),
-    generateNotifications: (ctx: any) => ipcRenderer.invoke('notification:generate', ctx),
-    notificationSummary: (alerts: any[], apiKey?: string) => ipcRenderer.invoke('notification:summary', alerts, apiKey),
-    generateReport: (ctx: any) => ipcRenderer.invoke('report:generate', ctx),
-    generateQuickReport: (ctx: any) => ipcRenderer.invoke('report:quick', ctx),
-    autoTune: (ctx: any) => ipcRenderer.invoke('strategy:auto-tune', ctx),
   },
 
   // ── NL Parser ─────────────────────────────────────────────────────
@@ -134,52 +128,6 @@ contextBridge.exposeInMainWorld('api', {
     walkForwardV2: (config: any) => ipcRenderer.invoke('backtest:walk-forward', config),
     paramScan: (config: any) => ipcRenderer.invoke('backtest:param-scan', config),
     multiTimeframe: (config: any) => ipcRenderer.invoke('backtest:multi-timeframe', config),
-    parallel: (config: any) => ipcRenderer.invoke('backtest:parallel', config),
-    paramScanParallel: (config: any) => ipcRenderer.invoke('backtest:param-scan-parallel', config),
-    walkForwardParallel: (config: any) => ipcRenderer.invoke('backtest:walk-forward-parallel', config),
-  },
-
-  // ── Monte Carlo (JVS-100) ────────────────────────────────────────
-  monteCarlo: {
-    simulate: (config: any) => ipcRenderer.invoke('monte-carlo:simulate', config),
-  },
-
-  // ── Export (JVS-106) ──────────────────────────────────────────────
-  export: {
-    csv: (target: string, filters?: any) => ipcRenderer.invoke('export:csv', target, filters),
-    json: (target: string, filters?: any) => ipcRenderer.invoke('export:json', target, filters),
-    md: (target: string, filters?: any) => ipcRenderer.invoke('export:md', target, filters),
-    batch: (request: any) => ipcRenderer.invoke('export:batch', request),
-    saveDialog: (options: any) => ipcRenderer.invoke('export:save-dialog', options),
-    summaryReport: () => ipcRenderer.invoke('export:summary-report'),
-  },
-
-  // ── Monitor (JVS-107) ────────────────────────────────────────────
-  monitor: {
-    getActive: () => ipcRenderer.invoke('monitor:get-active'),
-    getCritical: () => ipcRenderer.invoke('monitor:get-critical'),
-    query: (q: any) => ipcRenderer.invoke('monitor:query', q),
-    stats: () => ipcRenderer.invoke('monitor:stats'),
-    acknowledge: (alertId: string) => ipcRenderer.invoke('monitor:acknowledge', alertId),
-    acknowledgeAll: (level?: string) => ipcRenderer.invoke('monitor:acknowledge-all', level),
-    resolve: (alertId: string) => ipcRenderer.invoke('monitor:resolve', alertId),
-    suppress: (alertId: string) => ipcRenderer.invoke('monitor:suppress', alertId),
-    getRules: () => ipcRenderer.invoke('monitor:get-rules'),
-    updateRule: (ruleId: string, updates: any) => ipcRenderer.invoke('monitor:update-rule', ruleId, updates),
-  },
-
-  // ── Preferences (JVS-108) ────────────────────────────────────────
-  prefs: {
-    getAll: () => ipcRenderer.invoke('prefs:get-all'),
-    getSection: (section: string) => ipcRenderer.invoke('prefs:get-section', section),
-    get: (section: string, key: string) => ipcRenderer.invoke('prefs:get', section, key),
-    set: (section: string, key: string, value: any) => ipcRenderer.invoke('prefs:set', section, key, value),
-    setSection: (section: string, data: any) => ipcRenderer.invoke('prefs:set-section', section, data),
-    reset: (section?: string) => ipcRenderer.invoke('prefs:reset', section),
-    exportPrefs: (filePath?: string) => ipcRenderer.invoke('prefs:export', filePath),
-    importPrefs: (filePath?: string) => ipcRenderer.invoke('prefs:import', filePath),
-    customSet: (key: string, value: any) => ipcRenderer.invoke('prefs:custom-set', key, value),
-    customGet: (key: string) => ipcRenderer.invoke('prefs:custom-get', key),
   },
 
   // ── Trade Executor (Sprint 2 Phase 2) ─────────────────────────────

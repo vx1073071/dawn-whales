@@ -278,35 +278,6 @@ export class DatabaseManager {
     ).all(symbol, period, count).reverse();
   }
 
-  // ── K-Line Cache Maintenance ───────────────────────────────────
-
-  getKlineCount(): number {
-    if (!this.db) return 0;
-    const row = this.db.prepare('SELECT COUNT(*) as count FROM kline_cache').get() as any;
-    return row?.count || 0;
-  }
-
-  cleanOldKlines(maxAgeDays = 365): number {
-    if (!this.db) return 0;
-    const cutoff = Math.floor(Date.now() / 1000) - maxAgeDays * 86400;
-    const result = this.db.prepare('DELETE FROM kline_cache WHERE timestamp < ?').run(cutoff);
-    return result.changes;
-  }
-
-  limitKlineCache(maxRecords = 50000): number {
-    if (!this.db) return 0;
-    const count = this.getKlineCount();
-    if (count <= maxRecords) return 0;
-    // Delete oldest entries beyond the limit
-    // SQLite doesn't support LIMIT in DELETE with subqueries easily, use rowid
-    const result = this.db.prepare(`
-      DELETE FROM kline_cache WHERE rowid IN (
-        SELECT rowid FROM kline_cache ORDER BY timestamp ASC LIMIT ?
-      )
-    `).run(count - maxRecords);
-    return result.changes;
-  }
-
   // ── Signal Log ──────────────────────────────────────────────────
 
   saveSignal(signal: any): void {

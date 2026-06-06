@@ -31,62 +31,17 @@ const POPULAR_US = [
   { code: 'US.NIO', name: 'NIO Inc.' },
 ];
 
-// ── Data Source Status Component ──────────────────────────────────────────
-function DataSourceIndicator({ connected, brokerName }: { connected: boolean; brokerName: string }) {
-  return (
-    <div className="flex items-center gap-2 text-xs">
-      <div className={`w-2 h-2 rounded-full ${connected ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`} />
-      <span className={connected ? 'text-emerald-400' : 'text-red-400'}>
-        {connected ? `${brokerName} 实时` : '离线 (模拟数据)'}
-      </span>
-    </div>
-  );
-}
-
-// ── Market Stats Bar ──────────────────────────────────────────────────────
-function MarketStatsBar({ quotes, watchlist }: { quotes: Record<string, any>; watchlist: string[] }) {
-  const stats = watchlist.reduce(
-    (acc, code) => {
-      const q = quotes[code];
-      if (q) {
-        acc.total++;
-        if (q.change > 0) acc.up++;
-        else if (q.change < 0) acc.down++;
-        else acc.flat++;
-      }
-      return acc;
-    },
-    { up: 0, down: 0, flat: 0, total: 0 }
-  );
-
-  return (
-    <div className="flex items-center gap-4 text-xs">
-      <span className="text-gray-500">自选 {stats.total} 只</span>
-      <span className="text-emerald-400">↑ {stats.up}</span>
-      <span className="text-red-400">↓ {stats.down}</span>
-      <span className="text-gray-500">→ {stats.flat}</span>
-    </div>
-  );
-}
-
 export default function MarketPage() {
   const watchlist = useMarketStore((s) => s.watchlist);
   const quotes = useMarketStore((s) => s.quotes);
   const addWatch = useMarketStore((s) => s.addWatch);
   const removeWatch = useMarketStore((s) => s.removeWatch);
-  const setQuotes = useMarketStore((s) => s.setQuotes);
-
   const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
   const [klineData, setKlineData] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [klineLoading, setKlineLoading] = useState(false);
   const [klinePeriod, setKlinePeriod] = useState<string>('daily');
-  const [connected, setConnected] = useState(false);
-  const [brokerName, setBrokerName] = useState('OpenD');
-  const [lastUpdateTime, setLastUpdateTime] = useState<string>('');
-  const [pushCount, setPushCount] = useState(0);
-  const [dataSource, setDataSource] = useState<'realtime' | 'cached' | 'simulated'>('simulated');
 
   const PERIODS = [
     { key: '1m', label: '1分' },
@@ -133,51 +88,12 @@ export default function MarketPage() {
     try {
       const klines = await api.getKlines(symbol, period, 200);
       if (klines.length > 0) {
-        setKlineData(
-          klines.map((k: any) => ({
-            time: typeof k.time === 'number' ? k.time : Math.floor(new Date(k.time).getTime() / 1000),
-            open: k.open, high: k.high, low: k.low, close: k.close, volume: k.volume,
-          }))
-        );
-        setDataSource(connected ? 'realtime' : 'cached');
-      } else {
-        // Fallback: generate simulated klines
-        setKlineData(generateSimulatedKlines(symbol));
-        setDataSource('simulated');
+        setKlineData(klines.map((k: any) => ({
+          time: typeof k.time === 'number' ? k.time : Math.floor(new Date(k.time).getTime() / 1000),
+          open: k.open, high: k.high, low: k.low, close: k.close, volume: k.volume,
+        })));
       }
-    } catch {
-      setKlineData(generateSimulatedKlines(symbol));
-      setDataSource('simulated');
-    } finally {
-      setKlineLoading(false);
-    }
-  }
-
-  function generateSimulatedKlines(symbol: string): any[] {
-    const base = getBasePrice(symbol);
-    const klines: any[] = [];
-    let price = base * 0.85;
-    const now = Math.floor(Date.now() / 1000);
-
-    for (let i = 199; i >= 0; i--) {
-      const change = (Math.random() - 0.47) * price * 0.025;
-      const open = price;
-      const close = price + change;
-      const high = Math.max(open, close) + Math.random() * price * 0.01;
-      const low = Math.min(open, close) - Math.random() * price * 0.01;
-      const volume = Math.floor(Math.random() * 30000000) + 5000000;
-
-      klines.push({
-        time: now - i * 86400,
-        open: +open.toFixed(2),
-        high: +high.toFixed(2),
-        low: +low.toFixed(2),
-        close: +close.toFixed(2),
-        volume,
-      });
-      price = close;
-    }
-    return klines;
+    } catch { /* silent */ } finally { setKlineLoading(false); }
   }
 
   const filteredSearch = searchQuery.trim()
@@ -193,12 +109,8 @@ export default function MarketPage() {
     setShowSearch(false);
   }
 
-  const dataSourceLabel = dataSource === 'realtime' ? '实时数据' : dataSource === 'cached' ? '缓存数据' : '模拟数据';
-  const dataSourceColor = dataSource === 'realtime' ? 'text-emerald-400' : dataSource === 'cached' ? 'text-yellow-400' : 'text-gray-500';
-
   return (
     <div className="p-6">
-      {/* Header with IPC status */}
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">行情中心</h1>
@@ -212,34 +124,11 @@ export default function MarketPage() {
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <DataSourceIndicator connected={connected} brokerName={brokerName} />
-          <MarketStatsBar quotes={quotes} watchlist={watchlist} />
-          <button
-            onClick={() => setShowSearch(!showSearch)}
-            className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors"
-          >
+        <div className="flex items-center gap-2">
+          <button onClick={() => setShowSearch(!showSearch)} className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">
             ＋ 添加自选
           </button>
         </div>
-      </div>
-
-      {/* Data source status bar */}
-      <div className="bg-[#12121a] border border-white/5 rounded-lg px-4 py-2 mb-4 flex items-center gap-4 text-xs">
-        <span className="text-gray-600">数据源:</span>
-        <span className={dataSourceColor}>{dataSourceLabel}</span>
-        <span className="text-gray-700">|</span>
-        <span className="text-gray-500">Push 次数: {pushCount}</span>
-        <span className="text-gray-700">|</span>
-        <span className="text-gray-500">最后更新: {lastUpdateTime || '--'}</span>
-        <span className="text-gray-700">|</span>
-        <span className="text-gray-500">自选: {watchlist.length} 只</span>
-        <button
-          onClick={fetchQuotes}
-          className="ml-auto text-gray-500 hover:text-gray-300 transition-colors"
-        >
-          ⟳ 刷新行情
-        </button>
       </div>
 
       {/* Search panel */}
@@ -274,7 +163,7 @@ export default function MarketPage() {
             })}
             {filteredSearch.length === 0 && (
               <div className="col-span-6 text-center text-gray-500 text-sm py-4">
-                未找到匹配 &quot;{searchQuery}&quot; 的股票
+                未找到匹配 "{searchQuery}" 的股票
               </div>
             )}
           </div>
@@ -316,7 +205,7 @@ export default function MarketPage() {
         {klineLoading ? (
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
             <div className="text-3xl mb-2 opacity-40">⏳</div>
-            <p className="text-gray-400 text-sm">加载 {selectedSymbol?.replace('US.', '')} K线数据 (IPC)...</p>
+            <p className="text-gray-400 text-sm">加载 {selectedSymbol?.replace('US.', '')} K线数据...</p>
           </div>
         ) : selectedSymbol && klineData.length > 0 ? (
           <div>
@@ -346,17 +235,14 @@ export default function MarketPage() {
                   </button>
                 ))}
               </div>
-              <span className={`text-[10px] ml-2 ${dataSourceColor}`}>{dataSourceLabel}</span>
-              <button onClick={() => loadKlines(selectedSymbol, klinePeriod)} className="text-xs text-gray-500 hover:text-gray-300 ml-auto transition-colors">
-                ⟳ 刷新
-              </button>
+              <button onClick={() => loadKlines(selectedSymbol, klinePeriod)} className="text-xs text-gray-500 hover:text-gray-300 ml-auto transition-colors">⟳ 刷新</button>
             </div>
             <KLineChart data={klineData} height={400} />
           </div>
         ) : selectedSymbol ? (
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
             <div className="text-3xl mb-2 opacity-40">📊</div>
-            <p className="text-gray-400 text-sm">K线数据加载中（{connected ? 'IPC 请求中...' : '需要 OpenD 连接或使用模拟数据'}）</p>
+            <p className="text-gray-400 text-sm">K线数据加载中（需要 OpenD 连接）</p>
           </div>
         ) : (
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">

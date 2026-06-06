@@ -1,9 +1,8 @@
-// DAWN WHALES bridge-api
+// ── DAWN WHALES — IPC API Client (直连 OpenD，通过 Electron IPC) ──────────────
 
 declare global {
   interface Window {
     api: {
-        [key: string]: any;  // R17: allow dynamic IPC method access
       broker: {
         connect: (config: any) => Promise<any>;
         disconnect: () => Promise<any>;
@@ -22,20 +21,6 @@ declare global {
         remove: (id: string) => Promise<any>;
         setActive: (id: string) => Promise<any>;
         getStatus: () => Promise<any>;
-      stockStream: any;
-      sentimentIndex: any;
-      stockAnomaly: any;
-      prefs?: {
-        getAll: () => Promise<any>;
-        getSection: (section: string) => Promise<any>;
-        get: (section: string, key: string) => Promise<any>;
-        set: (section: string, key: string, value: any) => Promise<any>;
-        setSection: (section: string, data: any) => Promise<any>;
-        reset: (section?: string) => Promise<any>;
-        exportPrefs: (filePath?: string) => Promise<any>;
-        importPrefs: (filePath?: string) => Promise<any>;
-        customSet: (key: string, value: any) => Promise<any>;
-        customGet: (key: string) => Promise<any>;
       };
       greeks: {
         calculate: (params: any) => Promise<any>;
@@ -81,12 +66,6 @@ declare global {
         walkForwardV2: (config: any) => Promise<any>;
         paramScan: (config: any) => Promise<any>;
         multiTimeframe: (config: any) => Promise<any>;
-        parallel: (config: any) => Promise<any>;
-        paramScanParallel: (config: any) => Promise<any>;
-        walkForwardParallel: (config: any) => Promise<any>;
-      };
-      monteCarlo: {
-        simulate: (config: any) => Promise<any>;
       };
       strategy: {
         create: (dsl: any) => Promise<any>;
@@ -100,18 +79,6 @@ declare global {
         explain: (strategy: any) => Promise<any>;
         compare: (s1: any, s2: any) => Promise<any>;
         optimize: (strategyDSL: any, backtestResult: any) => Promise<any>;
-        correlation: (strategies: any) => Promise<any>;
-      };
-      notification: {
-        generate: (ctx: any) => Promise<any>;
-        summary: (alerts: any[], apiKey?: string) => Promise<any>;
-      };
-      report: {
-        generate: (ctx: { results: any[]; symbol?: string; apiKey?: string; timeoutMs?: number }) => Promise<any>;
-        quick: (ctx: { result: any; apiKey?: string }) => Promise<any>;
-      };
-      autoTune: {
-        tune: (ctx: { strategyType: string; ranges: any[]; klines: any[]; method?: 'ga' | 'bayesian' | 'both'; populationSize?: number; generations?: number; iterations?: number }) => Promise<any>;
       };
       nl: {
         parse: (text: string) => Promise<any>;
@@ -148,56 +115,31 @@ declare global {
         getVersion: () => Promise<string>;
         getPlatform: () => Promise<string>;
       };
-      // DAWN WHALES bridge-api
-      export?: {
-        csv: (target: string, filters?: any) => Promise<any>;
-        json: (target: string, filters?: any) => Promise<any>;
-        md: (target: string, filters?: any) => Promise<any>;
-        batch: (request: any) => Promise<any>;
-        saveDialog: (options: any) => Promise<any>;
-        summaryReport: () => Promise<any>;
-      };
-      // DAWN WHALES bridge-api
-      monitor?: {
-        getActive: () => Promise<any>;
-        getCritical: () => Promise<any>;
-        query: (q: any) => Promise<any>;
-        stats: () => Promise<any>;
-        acknowledge: (alertId: string) => Promise<any>;
-        acknowledgeAll: (level?: string) => Promise<any>;
-        resolve: (alertId: string) => Promise<any>;
-        suppress: (alertId: string) => Promise<any>;
-        getRules: () => Promise<any>;
-        updateRule: (ruleId: string, updates: any) => Promise<any>;
-      };
-      // DAWN WHALES bridge-api
       on: (channel: string, callback: (...args: any[]) => void) => void;
       off?: (channel: string, callback: (...args: any[]) => void) => void;
     };
   }
 }
-}
-
 
 function hasIPC(): boolean {
   return typeof window !== 'undefined' && !!window.api?.broker;
 }
 
-// DAWN WHALES bridge-api
+// ── Broker ─────────────────────────────────────────────────────────────────
 
 export async function connectBroker(config?: { host?: string; port?: number }): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.broker.connect(config || { host: '127.0.0.1', port: 11111 });
 }
 
-export async function getKlines(code: string, period: string = 'daily', count: number = 200): Promise<any> {
+export async function getKlines(code: string, period: string = 'daily', count: number = 200): Promise<any[]> {
   if (!hasIPC()) return generateDemoKlines(count);
   const result = await window.api.broker.getKlines(code, period, count);
   if (result?.success && result.klines?.length > 0) return result.klines;
   return generateDemoKlines(count);
 }
 
-export async function getAccounts(..._args: any[]): Promise<any> {
+export async function getAccounts(): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.broker.getAccounts();
   return result?.success ? result.accounts || [] : [];
@@ -209,13 +151,13 @@ export async function getFunds(accountId: string): Promise<any> {
   return result?.success ? result.funds : null;
 }
 
-export async function getPositions(accountId: string): Promise<any> {
+export async function getPositions(accountId: string): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.broker.getPositions(accountId);
   return result?.success ? result.positions || [] : [];
 }
 
-export async function getQuotes(codes: string[] = []): Promise<any> {
+export async function getQuotes(codes: string[] = []): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.broker.getQuotes(codes);
   return result?.success ? result.quotes || [] : [];
@@ -231,7 +173,7 @@ export async function unsubscribeQuotes(codes: string[]): Promise<any> {
   return window.api.broker.unsubscribe(codes);
 }
 
-export async function getWatchlist(..._args: any[]): Promise<string[]> {
+export async function getWatchlist(): Promise<string[]> {
   if (!hasIPC()) return [];
   const result = await window.api.db.getWatchlist();
   return Array.isArray(result) ? result : [];
@@ -275,9 +217,9 @@ export async function isConnected(): Promise<boolean> {
   } catch { return false; }
 }
 
-// DAWN WHALES bridge-api
+// ── Broker Manager (Sprint1: multi-broker) ───────────────────────────────
 
-export async function listBrokers(): Promise<any> {
+export async function listBrokers(): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.broker.list();
   return result?.success ? result.brokers || [] : [];
@@ -298,20 +240,20 @@ export async function setActiveBroker(id: string): Promise<any> {
   return window.api.broker.setActive(id);
 }
 
-export async function getBrokerStatus(..._args: any[]): Promise<any> {
+export async function getBrokerStatus(): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.broker.getStatus();
   return result?.success ? result.status || [] : [];
 }
 
-// DAWN WHALES bridge-api
+// ── Strategy ───────────────────────────────────────────────────────────────
 
 export async function createStrategy(input: any): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.strategy.create(input);
 }
 
-export async function getAllStrategies(..._args: any[]): Promise<any> {
+export async function getAllStrategies(): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.strategy.getAll();
   return result?.success ? result.strategies || [] : [];
@@ -332,43 +274,28 @@ export async function stopLive(strategyId: string): Promise<any> {
   return window.api.strategy.stopLive(strategyId);
 }
 
-// DAWN WHALES bridge-api
+// ── NL Parser ──────────────────────────────────────────────────────────────
 
 export async function parseNL(text: string): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
   return window.api.nl.parse(text);
 }
 
-export async function getTemplates(..._args: any[]): Promise<any> {
+export async function getTemplates(): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.nl.templates();
   return result?.success ? result.templates || [] : [];
 }
 
-// DAWN WHALES bridge-api
+// ── Risk ───────────────────────────────────────────────────────────────────
 
-export async function getRiskAlerts(..._args: any[]): Promise<any> {
+export async function getRiskAlerts(): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.risk.getAlerts();
   return result?.success ? result.alerts || [] : [];
 }
 
-export async function getRiskStatusSnapshot(..._args: any[]): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.risk.getStatusSnapshot();
-}
-
-export async function getRiskKellyStats(..._args: any[]): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.risk.getKellyStats();
-}
-
-export async function getRiskDrawdownState(..._args: any[]): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.risk.getDrawdownState();
-}
-
-// DAWN WHALES bridge-api
+// ── App / Updater ──────────────────────────────────────────────────────────
 
 export async function checkUpdate(): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
@@ -385,9 +312,9 @@ export async function installUpdate(): Promise<void> {
   return window.api.app.installUpdate();
 }
 
-// DAWN WHALES bridge-api
+// ── Strategy CRUD ────────────────────────────────────────────────────────────
 
-export async function getStrategies(..._args: any[]): Promise<any> {
+export async function getStrategies(): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.strategy.getAll();
   return result?.success ? result.strategies || [] : [];
@@ -403,17 +330,17 @@ export async function deleteStrategy(id: string): Promise<any> {
   return window.api.strategy.delete(id);
 }
 
-// DAWN WHALES bridge-api
+// ── Signals ─────────────────────────────────────────────────────────────────
 
-export async function getSignals(strategyId?: string): Promise<any> {
+export async function getSignals(strategyId?: string): Promise<any[]> {
   if (!hasIPC()) return [];
   const result = await window.api.db.getSignals(strategyId);
   return Array.isArray(result) ? result : [];
 }
 
-// DAWN WHALES bridge-api
+// ── Risk Config ─────────────────────────────────────────────────────────────
 
-export async function getRiskConfig(..._args: any[]): Promise<any> {
+export async function getRiskConfig(): Promise<any> {
   if (!hasIPC()) return null;
   return window.api.risk.getConfig();
 }
@@ -423,7 +350,7 @@ export async function updateRiskConfig(config: any): Promise<any> {
   return window.api.risk.updateConfig(config);
 }
 
-// DAWN WHALES bridge-api
+// ── Marketplace ──────────────────────────────────────────────────────────
 
 export async function rateStrategy(strategyId: string, rating: number): Promise<any> {
   if (!hasIPC()) return { success: false, error: 'Not in Electron' };
@@ -475,7 +402,7 @@ export async function updateAllScores(): Promise<any> {
   return window.api.marketplace.updateAllScores();
 }
 
-// DAWN WHALES bridge-api
+// ── Data Provider ─────────────────────────────────────────────────────────
 
 export async function getFundamental(symbol: string): Promise<any> {
   if (!hasIPC()) return { success: false, data: null };
@@ -487,7 +414,7 @@ export async function getCapitalFlow(symbol: string): Promise<any> {
   return window.api.dataProvider.getCapitalFlow(symbol);
 }
 
-export async function getMarketRegime(..._args: any[]): Promise<any> {
+export async function getMarketRegime(): Promise<any> {
   if (!hasIPC()) return { success: false, regime: null };
   return window.api.dataProvider.getRegime();
 }
@@ -542,7 +469,7 @@ export async function clearDataCache(): Promise<any> {
   return window.api.dataProvider.clearCache();
 }
 
-// DAWN WHALES bridge-api
+// ── Backtest Enhancement (Sprint 2, merged) ──────────────────────────────
 
 export async function multiPeriodBacktest(config: any): Promise<any> {
   if (!hasIPC()) return { success: false };
@@ -579,7 +506,7 @@ export async function runMultiTimeframe(config: any): Promise<any> {
   return window.api.backtest.multiTimeframe(config);
 }
 
-// DAWN WHALES bridge-api
+// ── Demo K-line Generator (fallback) ──────────────────────────────────────
 
 function generateDemoKlines(count: number): any[] {
   const data: any[] = [];
@@ -605,159 +532,4 @@ function generateDemoKlines(count: number): any[] {
     price = close;
   }
   return data;
-}
-
-// DAWN WHALES bridge-api
-
-export async function exportDashboardPdf(_filename: string): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  // TODO: Implement IPC handler in preload.ts + main.ts
-  return { success: false, error: 'Not implemented' };
-}
-
-// DAWN WHALES bridge-api
-
-export async function placeOrder(order: any): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.broker.placeOrder(order);
-}
-
-// DAWN WHALES bridge-api
-
-export async function computeSentiment(params?: any): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.sentimentIndex.compute(params);
-}
-
-// DAWN WHALES bridge-api
-
-export async function getAnomalySummary(..._args: any[]): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.stockAnomaly.getSummary();
-}
-export async function getAnomalyAlerts(..._args: any[]): Promise<any> {
-  if (!hasIPC()) return [];
-  return window.api.dataProvider.getAnomalies ? window.api.dataProvider.getAnomalies('') : [];
-}
-export async function acknowledgeAnomalyAlert(_id: string): Promise<boolean> {
-  if (!hasIPC()) return false;
-  // TODO: Implement IPC handler
-  return true;
-}
-
-// DAWN WHALES bridge-api
-
-function stubHasIpc<T>(fallback: T): T { return hasIPC() ? undefined! : fallback; }
-
-export async function getSectorCapitalFlowRank(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function getStockCapitalFlowRank(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function getConceptCapitalFlowRank(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function getConsumerData(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-export async function getMacroDashboard(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-export async function getMarginData(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-export async function getMarginBalanceRank(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function getShortInterestRank(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function getFundHoldings(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-export async function getStockFundOwnership(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-export async function getFundIncreaseRank(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function getFundDecreaseRank(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function getDragonTigerList(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function getDragonTigerDetail(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-export async function getInstitutionalTrades(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function getSectorHeatmap(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-export async function getMarketHotspot(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function getMarketMood(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-export async function getAISuggest(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-export async function getSmartPick(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function getTradeHistory(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function searchStocks(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function searchNews(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: [], items: [] }) as any; }
-export async function analyzeSectorRotation(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-export async function diagnoseStock(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-export async function getPaperTraderStatus(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-export async function getQuoteStreamStatus(..._args: any[]): Promise<any> { return stubHasIpc({ success: true, data: null }) as any; }
-
-// R17 additional stubs
-export async function subscribeQuoteStream(_symbol: string): Promise<any> { return { success: true }; }
-export async function unsubscribeQuoteStream(_symbol: string): Promise<any> { return { success: true }; }
-
-// ── R18: Dashboard & Portfolio IPC stubs ──────────────────────────────────
-
-export async function getDashboardSummary(): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.dashboard.getSummary();
-}
-
-export async function getDashboardPnl(days?: number): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.dashboard.getPnl({ days });
-}
-
-export async function getDashboardPositions(): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.dashboard.getPositions();
-}
-
-export async function getDashboardHealth(): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.dashboard.getHealth();
-}
-
-export async function getPortfolioAllocation(): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.portfolio.getAllocation();
-}
-
-export async function getPortfolioPerformance(days?: number): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.portfolio.getPerformance({ days });
-}
-
-export async function getPortfolioRiskMetrics(): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.portfolio.getRiskMetrics();
-}
-
-export async function getPortfolioRebalance(): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.portfolio.getRebalance();
-}
-
-export async function runMonteCarloSimulation(config: any): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.monteCarlo.simulate(config);
-}
-
-// ── R20: Monitor (AlertCenter) IPC stubs ──────────────────────────────────
-export async function getActiveAlerts(): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.monitor.getActive();
-}
-export async function getCriticalAlerts(): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.monitor.getCritical();
-}
-export async function queryAlerts(query: any): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.monitor.query(query);
-}
-export async function getAlertStats(): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.monitor.stats();
-}
-export async function acknowledgeAlert(alertId: string): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.monitor.acknowledge(alertId);
-}
-export async function acknowledgeAllAlerts(level?: string): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.monitor.acknowledgeAll(level);
-}
-export async function resolveAlert(alertId: string): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.monitor.resolve(alertId);
-}
-export async function suppressAlert(alertId: string): Promise<any> {
-  if (!hasIPC()) return { success: false, error: 'Not in Electron' };
-  return window.api.monitor.suppress(alertId);
 }

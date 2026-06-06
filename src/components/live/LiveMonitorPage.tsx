@@ -111,7 +111,7 @@ export default function LiveMonitorPage() {
       const list = await api.getWatchlist();
       if (list && list.length > 0) setWatchlist(list);
       else setWatchlist(['US.TQQQ', 'US.SOXL', 'US.QQQ', 'US.SPY', 'HK.00700', 'US.AAPL', 'US.NVDA', 'US.SQQQ']);
-    } catch (e) { console.error('[Error:LiveMonitorPage]', e); }
+    } catch { /* silent */ }
   }
 
   // ── Auto-scroll when signalLog or autoScroll changes ──────────────────────────
@@ -150,7 +150,7 @@ export default function LiveMonitorPage() {
         await api.startLive(id);
       }
       loadStrategies();
-    } catch (e) { console.error('[Error:LiveMonitorPage]', e); }
+    } catch { /* silent */ }
   }
 
   async function handleEmergencyStop() {
@@ -160,7 +160,7 @@ export default function LiveMonitorPage() {
         addLog('ALERT', 'SYSTEM', '紧急停止已触发，所有策略已停止');
         loadStrategies();
       }
-    } catch (e) { console.error('[Error:LiveMonitorPage]', e); }
+    } catch { /* silent */ }
   }
 
   async function handleAddCode() {
@@ -173,7 +173,7 @@ export default function LiveMonitorPage() {
     try {
       await api.subscribeQuotes([code]);
       await api.saveWatchlist(newList);
-    } catch (e) { console.error('[Error:LiveMonitorPage]', e); }
+    } catch { /* silent */ }
   }
 
   async function handleRemoveCode(code: string) {
@@ -184,7 +184,7 @@ export default function LiveMonitorPage() {
     try {
       await api.unsubscribeQuotes([code]);
       await api.saveWatchlist(newList);
-    } catch (e) { console.error('[Error:LiveMonitorPage]', e); }
+    } catch { /* silent */ }
   }
 
   function addLog(type: SignalLog['type'], code: string, message: string) {

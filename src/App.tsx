@@ -15,7 +15,6 @@ const MarketPage = lazy(() => import('@/components/market/MarketPage'));
 const StrategyPage = lazy(() => import('@/components/strategy/StrategyPage'));
 const PortfolioPage = lazy(() => import('@/components/portfolio/PortfolioPage'));
 const OrdersPage = lazy(() => import('@/components/orders/OrdersPage'));
-const TradingDeskPage = lazy(() => import('@/components/orders/TradingDeskPage'));
 const SettingsPage = lazy(() => import('@/components/settings/SettingsPage'));
 const MarketplacePage = lazy(() => import('@/components/marketplace/MarketplacePage'));
 const LiveMonitorPage = lazy(() => import('@/components/live/LiveMonitorPage'));
@@ -30,7 +29,6 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   strategy: StrategyPage,
   portfolio: PortfolioPage,
   orders: OrdersPage,
-  trading: TradingDeskPage,
   settings: SettingsPage,
   marketplace: MarketplacePage,
   live: LiveMonitorPage,

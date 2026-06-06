@@ -12,18 +12,15 @@ interface NavItem {
 const navItems: NavItem[] = [
   { id: 'dashboard', icon: '📊', label: '总览看板', section: '总览' },
   { id: 'market', icon: '📈', label: '行情中心', section: '交易' },
-  { id: 'trading', icon: '💹', label: '交易台' },
   { id: 'strategy', icon: '🧠', label: '策略工坊' },
   { id: 'marketplace', icon: '🏪', label: '策略市场' },
   { id: 'backtest', icon: '🔬', label: '回测报告' },
-  { id: 'montecarlo', icon: '🎲', label: '蒙特卡洛' },
   { id: 'portfolio', icon: '💼', label: '持仓管理' },
   { id: 'orders', icon: '📋', label: '委托订单' },
   { id: 'trade', icon: '💹', label: '交易台' },
   { id: 'risk', icon: '🛡️', label: '风控面板' },
   { id: 'alert', icon: '🔔', label: '告警中心' },
   { id: 'settings', icon: '⚙️', label: '系统设置', section: '系统' },
-  { id: 'preferences', icon: '🎨', label: '偏好设置' },
 ];
 
 interface SidebarProps {
@@ -38,7 +35,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
 
   return (
     <aside
-      className={`bg-sidebar border-r border-white/5 flex flex-col transition-all duration-200 ${
+      className={`bg-[#111119] border-r border-white/5 flex flex-col transition-all duration-200 ${
         collapsed ? 'w-14' : 'w-52'
       }`}
     >

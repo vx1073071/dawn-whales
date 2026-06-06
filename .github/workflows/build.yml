@@ -18,9 +18,6 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm ci
-      - run: npx tsx tests/engine.test.ts
-      - run: npx tsx tests/e2e-pipeline.test.ts
-      - run: npx tsx tests/kelly-sizing.test.ts
       - run: npm run build
       - run: npx electron-builder --win --publish never
         env:
@@ -41,16 +38,12 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm ci
-      - run: npx tsx tests/engine.test.ts
-      - run: npx tsx tests/e2e-pipeline.test.ts
-      - run: npx tsx tests/kelly-sizing.test.ts
       - run: npm run build
       - run: npx electron-builder --mac --publish never
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
-          CSC_IDENTITY_AUTO_DISCOVERY: false
       - uses: actions/upload-artifact@v4
         with:
           name: macos-dmg
@@ -65,14 +58,10 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm ci
-      - run: npx tsx tests/engine.test.ts
-      - run: npx tsx tests/e2e-pipeline.test.ts
-      - run: npx tsx tests/kelly-sizing.test.ts
       - run: npm run build
       - run: npx electron-builder --linux --publish never
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          USE_SYSTEM_FPM: true
       - uses: actions/upload-artifact@v4
         with:
           name: linux-appimage

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   connectBroker, isConnected as checkConnected, getRiskConfig, getRiskAlerts,
   listBrokers, addBroker, removeBroker, setActiveBroker, getBrokerStatus,
@@ -55,7 +54,7 @@ export default function SettingsPage() {
         const info = await window.api.app.getInfo();
         setAppInfo(info);
       }
-    } catch (e) { console.error('[Error:SettingsPage]', e); }
+    } catch { /* silent */ }
   }
 
   async function refreshBrokers() {
@@ -64,7 +63,7 @@ export default function SettingsPage() {
       const status = await getBrokerStatus();
       setBrokers(list);
       setBrokerStatus(status);
-    } catch (e) { console.error('[Error:SettingsPage]', e); }
+    } catch { /* silent */ }
   }
 
   async function handleConnect() {
@@ -79,10 +78,10 @@ export default function SettingsPage() {
       if (result?.success) {
         setConnected(true);
       } else {
-        setConnectError(result?.error || t('settings.connectionFailed'));
+        setConnectError(result?.error || '连接失败');
       }
     } catch (e: any) {
-      setConnectError(e.message || t('settings.connectionError'));
+      setConnectError(e.message || '连接异常');
     } finally {
       setConnecting(false);
     }
@@ -106,23 +105,23 @@ export default function SettingsPage() {
         setNewBroker({ name: '', type: 'futu', host: '127.0.0.1', port: '11111' });
         await refreshBrokers();
       } else {
-        alert(result?.error || t('settings.addFailed'));
+        alert(result?.error || '添加失败');
       }
     } catch (e: any) {
-      alert(e.message || t('settings.addError'));
+      alert(e.message || '添加异常');
     } finally {
       setBrokerActionLoading(null);
     }
   }
 
   async function handleRemoveBroker(id: string) {
-    if (!confirm(t('settings.confirmDeleteBroker'))) return;
+    if (!confirm('确定删除该券商配置？')) return;
     setBrokerActionLoading(id);
     try {
       await removeBroker(id);
       await refreshBrokers();
     } catch (e: any) {
-      alert(e.message || t('settings.deleteFailed'));
+      alert(e.message || '删除失败');
     } finally {
       setBrokerActionLoading(null);
     }
@@ -134,7 +133,7 @@ export default function SettingsPage() {
       await setActiveBroker(id);
       await refreshBrokers();
     } catch (e: any) {
-      alert(e.message || t('settings.switchFailed'));
+      alert(e.message || '切换失败');
     } finally {
       setBrokerActionLoading(null);
     }
@@ -148,7 +147,7 @@ export default function SettingsPage() {
       if (typeof window !== 'undefined' && window.api?.risk) {
         await window.api.risk.updateConfig(updated);
       }
-    } catch (e) { console.error('[Error:SettingsPage]', e); }
+    } catch { /* silent */ }
   }
 
   // Callbacks for BrokerSelector
@@ -174,8 +173,8 @@ export default function SettingsPage() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold text-white mb-1">{t('settings.title')}</h1>
-      <p className="text-gray-400 text-sm mb-6">{t('settings.subtitle')}</p>
+      <h1 className="text-2xl font-bold text-white mb-1">系统设置</h1>
+      <p className="text-gray-400 text-sm mb-6">券商连接、风控参数、系统信息</p>
 
       {/* ── Tab Navigation ────────────────────────────────────────── */}
       <div className="flex gap-1 bg-[#1a1a25] border border-white/5 rounded-xl p-1 mb-6">
@@ -461,7 +460,6 @@ export default function SettingsPage() {
 }
 
 function RiskSlider({ label, value, max, unit, onSave }: { label: string; value: number; max: number; unit: string; onSave: (v: number) => void }) {
-  const { t } = useTranslation();
   const [val, setVal] = useState(value);
   return (
     <div>
@@ -475,7 +473,7 @@ function RiskSlider({ label, value, max, unit, onSave }: { label: string; value:
           onChange={(e) => setVal(Number(e.target.value))}
           className="flex-1 h-1.5 bg-[#12121a] rounded-lg appearance-none cursor-pointer accent-[#C9A046]"
         />
-        <button onClick={() => onSave(val)} className="text-xs text-[#C9A046] hover:text-[#D4A853] px-2 py-1 rounded transition-colors">{t('common.save')}</button>
+        <button onClick={() => onSave(val)} className="text-xs text-[#C9A046] hover:text-[#D4A853] px-2 py-1 rounded transition-colors">保存</button>
       </div>
     </div>
   );

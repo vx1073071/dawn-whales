@@ -33,7 +33,6 @@ interface BacktestResult {
 }
 
 export default function StrategyPage() {
-  const { t } = useTranslation();
   const [mode, setMode] = useState<CreateMode>(null);
   const [strategies, setStrategies] = useState<any[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -42,8 +41,6 @@ export default function StrategyPage() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [compareOpen, setCompareOpen] = useState(false);
   const [compareDefaultA, setCompareDefaultA] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const loadStrategies = useCallback(async () => {
     const list = await getAllStrategies();
@@ -59,11 +56,11 @@ export default function StrategyPage() {
       {/* Page header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">{t('strategy.title')}</h1>
-          <p className="text-gray-400 text-sm">{t('strategy.subtitle')}</p>
+          <h1 className="text-2xl font-bold text-white mb-1">策略工坊</h1>
+          <p className="text-gray-400 text-sm">创建、回测、运行你的量化策略</p>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-gray-500">{strategies.length} {t('strategy.strategyCount')}</span>
+          <span className="text-xs text-gray-500">{strategies.length} 个策略</span>
         </div>
       </div>
 
@@ -72,6 +69,7 @@ export default function StrategyPage() {
       {mode === 'ai' && <AICreator onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} onFillForm={(parsed) => { setNlPrefill(parsed); setMode('form'); }} />}
       {mode === 'template' && <TemplateBrowser onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} />}
       {mode === 'form' && <FormCreator onBack={() => { setMode(null); setNlPrefill(null); }} onCreated={() => { setMode(null); setNlPrefill(null); refresh(); }} nlPrefill={nlPrefill || undefined} />}
+
       {/* My strategies */}
       {!mode && !selectedId && (
         <MyStrategies
@@ -121,7 +119,6 @@ export default function StrategyPage() {
 // ── Mode Selector ──────────────────────────────────────────────────────────
 
 function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
-  const { t } = useTranslation();
   return (
     <div className="space-y-4 mb-8">
       <div className="grid grid-cols-3 gap-4">
@@ -164,7 +161,6 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
 // ── AI Natural Language Creator ────────────────────────────────────────────
 
 function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCreated: () => void; onFillForm?: (parsed: ParsedStrategy) => void }) {
-  const { t } = useTranslation();
   const [input, setInput] = useState('');
   const [parsed, setParsed] = useState<ParsedStrategy | null>(null);
   const [loading, setLoading] = useState(false);
@@ -247,25 +243,25 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
 
   return (
     <div className="mb-8">
-      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">← {t('common.back')}</button>
+      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">← 返回</button>
 
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
-        <h2 className="text-white font-semibold mb-1 flex items-center gap-2">💬 {t('strategy.describeStrategy')}</h2>
-        <p className="text-gray-400 text-xs mb-4">{t('strategy.aiParseDesc')}</p>
+        <h2 className="text-white font-semibold mb-1 flex items-center gap-2">💬 用自然语言描述你的策略</h2>
+        <p className="text-gray-400 text-xs mb-4">像跟朋友聊天一样说就行，AI 自动解析成可执行策略</p>
 
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={t('strategy.examplePlaceholder')}
+          placeholder="例如：MA5 上穿 MA20 买入 TQQQ，止损 5%"
           className="w-full h-28 bg-[#12121a] border border-white/10 rounded-lg p-4 text-sm text-gray-200 placeholder-gray-600 resize-none focus:outline-none focus:border-[#C9A046]/50"
           onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleParse(); }}
         />
 
         <div className="flex items-center gap-2 mt-3">
           <button onClick={handleParse} disabled={!input.trim() || loading} className="px-4 py-2 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
-            {loading ? t('common.parsing') : `🤖 ${t('strategy.parseStrategy')}`}
+            {loading ? '解析中...' : '🤖 解析策略'}
           </button>
-          <span className="text-gray-500 text-xs">{t('common.orTry')}：</span>
+          <span className="text-gray-500 text-xs">或试试：</span>
         </div>
 
         <div className="flex flex-wrap gap-2 mt-2">
@@ -467,7 +463,7 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
     try {
       await createStrategy({ templateId: template.id, symbol: template.symbol || 'US.TQQQ' });
       onCreated();
-    } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
+    } catch { /* silent */ } finally {
       setLoading(false);
     }
   }
@@ -557,7 +553,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
             if (st.stopLoss) setStopLoss(st.stopLoss);
             if (st.takeProfit) setTakeProfit(st.takeProfit);
           }
-        } catch (e) { console.error('[Error:StrategyPage]', e); }
+        } catch { /* silent */ }
       };
       load();
     }
@@ -585,7 +581,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
         await createStrategy(config);
       }
       onCreated();
-    } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
+    } catch { /* silent */ } finally {
       setCreating(false);
     }
   }
@@ -753,8 +749,6 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
   const [strategy, setStrategy] = useState<any>(null);
   const [backtestResult, setBacktestResult] = useState<BacktestResult | null>(null);
   const [backtestLoading, setBacktestLoading] = useState(false);
-  const [walkForwardResult, setWalkForwardResult] = useState<any>(null);
-  const [walkForwardLoading, setWalkForwardLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
 
   useEffect(() => {
@@ -784,66 +778,8 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
         slippage: 0.0005,
       });
       if (result.success) setBacktestResult(result.result);
-    } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
+    } catch { /* silent */ } finally {
       setBacktestLoading(false);
-    }
-  }
-
-  async function handleWalkForward() {
-    setWalkForwardLoading(true);
-    try {
-      // Run backtest first, then call walk-forward analysis
-      const btResult = await runBacktest({
-        strategyId,
-        symbol: strategy?.symbol || 'US.TQQQ',
-        period: 'daily',
-        count: 200,
-        strategy: strategy?.strategy,
-        initialCapital: 100000,
-        commission: 0.001,
-        slippage: 0.0005,
-      });
-
-      if (btResult.success) {
-        // Generate walk-forward analysis from backtest results
-        const bt = btResult.result;
-        const periods = Math.min(10, Math.floor(bt.totalTrades / 5) || 5);
-        const tradesPerPeriod = Math.ceil(bt.totalTrades / periods);
-        const wfResults: any[] = [];
-        let isReturns = 0;
-        let oosReturns = 0;
-
-        for (let p = 0; p < periods; p++) {
-          const periodTrades = (bt.trades || []).slice(p * tradesPerPeriod, (p + 1) * tradesPerPeriod);
-          if (periodTrades.length === 0) continue;
-          const pnl = periodTrades.reduce((s: number, t: any) => s + (t.pnl || 0), 0);
-          const isWinRate = periodTrades.filter((t: any) => (t.pnl || 0) > 0).length / periodTrades.length;
-
-          wfResults.push({
-            period: p + 1,
-            trades: periodTrades.length,
-            pnl: Math.round(pnl * 100) / 100,
-            winRate: Math.round(isWinRate * 1000) / 10,
-          });
-
-          if (p < Math.floor(periods * 0.7)) isReturns += pnl;
-          else oosReturns += pnl;
-        }
-
-        setWalkForwardResult({
-          periods: wfResults,
-          isReturn: Math.round(isReturns * 100) / 100,
-          oosReturn: Math.round(oosReturns * 100) / 100,
-          isSharpe: bt.sharpeRatio ? Math.round(bt.sharpeRatio * 100) / 100 : null,
-          oosSharpe: bt.sharpeRatio ? Math.round(bt.sharpeRatio * 0.85 * 100) / 100 : null,
-          overfitRisk: wfResults.length > 0
-            ? Math.abs(isReturns - oosReturns) / (Math.abs(isReturns) + Math.abs(oosReturns) + 1)
-            : 0,
-          maxDrawdown: bt.maxDrawdown || 0,
-        });
-      }
-    } catch (e) { console.error('[WalkForward]', e); } finally {
-      setWalkForwardLoading(false);
     }
   }
 
@@ -853,7 +789,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       await startLive(strategyId);
       onRefresh();
       loadDetail();
-    } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
+    } catch { /* silent */ } finally {
       setActionLoading(false);
     }
   }
@@ -864,7 +800,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       await stopLive(strategyId);
       onRefresh();
       loadDetail();
-    } catch (e) { console.error('[Error:StrategyPage]', e); } finally {
+    } catch { /* silent */ } finally {
       setActionLoading(false);
     }
   }
@@ -918,12 +854,9 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
           )}
         </div>
 
-        <div className="flex gap-3 flex-wrap">
+        <div className="flex gap-3">
           <button onClick={handleBacktest} disabled={backtestLoading} className="px-4 py-2 bg-[#22222f] text-gray-300 rounded-lg text-sm hover:bg-[#2a2a3a] transition-colors">
             {backtestLoading ? '⏳ 回测中...' : '📈 回测'}
-          </button>
-          <button onClick={handleWalkForward} disabled={walkForwardLoading} className="px-4 py-2 bg-[#1a1a30] text-blue-300 rounded-lg text-sm hover:bg-[#222240] transition-colors border border-blue-500/20">
-            {walkForwardLoading ? '⏳ Walk-Forward中...' : '🔬 Walk-Forward'}
           </button>
           {isLive ? (
             <button onClick={handleStopLive} disabled={actionLoading} className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm hover:bg-red-500/30 transition-colors">
@@ -939,120 +872,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
 
       {backtestResult && <BacktestPanel result={backtestResult} />}
 
-      {walkForwardResult && <WalkForwardPanel result={walkForwardResult} />}
-
       <StrategyExplainCard strategy={strategy} />
-    </div>
-  );
-}
-
-// ── Walk-Forward Panel ─────────────────────────────────────────────────────
-
-function WalkForwardPanel({ result }: { result: any }) {
-  if (!result) return null;
-
-  const riskLevel = result.overfitRisk > 0.5 ? '高' : result.overfitRisk > 0.25 ? '中' : '低';
-  const riskColor = result.overfitRisk > 0.5 ? 'text-red-400' : result.overfitRisk > 0.25 ? 'text-amber-400' : 'text-emerald-400';
-
-  return (
-    <div className="bg-[#1a1a25] border border-blue-500/20 rounded-xl p-6 mb-4">
-      <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-        🔬 Walk-Forward 分析
-        <span className={`text-xs px-2 py-0.5 rounded ${riskColor} bg-opacity-10 bg-current`}>
-          过拟合风险: {riskLevel}
-        </span>
-      </h3>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-        <div className="bg-[#12121a] rounded-lg p-3">
-          <div className="text-gray-500 text-xs">IS 收益</div>
-          <div className={`text-sm font-mono ${result.isReturn >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-            {result.isReturn >= 0 ? '+' : ''}{result.isReturn}
-          </div>
-        </div>
-        <div className="bg-[#12121a] rounded-lg p-3">
-          <div className="text-gray-500 text-xs">OOS 收益</div>
-          <div className={`text-sm font-mono ${result.oosReturn >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-            {result.oosReturn >= 0 ? '+' : ''}{result.oosReturn}
-          </div>
-        </div>
-        <div className="bg-[#12121a] rounded-lg p-3">
-          <div className="text-gray-500 text-xs">IS Sharpe</div>
-          <div className="text-sm font-mono text-gray-200">{result.isSharpe ?? '-'}</div>
-        </div>
-        <div className="bg-[#12121a] rounded-lg p-3">
-          <div className="text-gray-500 text-xs">Max DD</div>
-          <div className="text-sm font-mono text-red-400">{(result.maxDrawdown * 100).toFixed(1)}%</div>
-        </div>
-      </div>
-
-      <div className="overflow-x-auto">
-        <table className="w-full text-xs">
-          <thead>
-            <tr className="text-gray-500 border-b border-white/5">
-              <th className="text-left py-1 px-2">期</th>
-              <th className="text-right py-1 px-2">交易</th>
-              <th className="text-right py-1 px-2">PnL</th>
-              <th className="text-right py-1 px-2">胜率</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(result.periods || []).map((p: any) => (
-              <tr key={p.period} className="border-b border-white/[0.02] hover:bg-white/[0.02]">
-                <td className="py-1 px-2 text-gray-300">#{p.period}</td>
-                <td className="py-1 px-2 text-right text-gray-400">{p.trades}</td>
-                <td className={`py-1 px-2 text-right font-mono ${p.pnl >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                  {p.pnl >= 0 ? '+' : ''}{p.pnl}
-                </td>
-                <td className="py-1 px-2 text-right text-gray-400">{p.winRate}%</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
-// ── Engine Benchmark Report (P2-5) ─────────────────────────────────────────
-
-export function EngineBenchmarkReport() {
-  const benchmarks = [
-    { name: '回测引擎', throughput: '1,200 bars/s', latency: '0.8ms/bar', verdict: '✅ 优秀' },
-    { name: 'NL 解析器', throughput: '85 req/s', latency: '12ms/req', verdict: '✅ 优秀' },
-    { name: '数据清洗', throughput: '3,500 pts/s', latency: '0.3ms/pt', verdict: '✅ 优秀' },
-    { name: '数据仓库', throughput: '8,200 rows/s', latency: '0.12ms/row', verdict: '✅ 优秀' },
-    { name: 'GA 优化器', throughput: '12 gen/s', latency: '83ms/gen', verdict: '⚠️ 可优化' },
-    { name: '蒙特卡洛', throughput: '18 sim/s', latency: '56ms/sim', verdict: '⚠️ 可优化' },
-    { name: 'GARCH 拟合', throughput: '45 fit/s', latency: '22ms/fit', verdict: '✅ 优秀' },
-    { name: 'WorkerPool', throughput: '210 task/s', latency: '4.8ms/task', verdict: '✅ 优秀' },
-  ];
-
-  return (
-    <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
-      <h3 className="text-white font-semibold mb-4">⚡ 引擎性能基准</h3>
-      <div className="overflow-x-auto">
-        <table className="w-full text-xs">
-          <thead>
-            <tr className="text-gray-500 border-b border-white/5">
-              <th className="text-left py-1 px-2">引擎</th>
-              <th className="text-right py-1 px-2">吞吐量</th>
-              <th className="text-right py-1 px-2">延迟</th>
-              <th className="text-right py-1 px-2">评估</th>
-            </tr>
-          </thead>
-          <tbody>
-            {benchmarks.map((b) => (
-              <tr key={b.name} className="border-b border-white/[0.02] hover:bg-white/[0.02]">
-                <td className="py-1 px-2 text-gray-300">{b.name}</td>
-                <td className="py-1 px-2 text-right text-gray-400 font-mono">{b.throughput}</td>
-                <td className="py-1 px-2 text-right text-gray-400 font-mono">{b.latency}</td>
-                <td className="py-1 px-2 text-right">{b.verdict}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
     </div>
   );
 }
