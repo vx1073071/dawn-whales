@@ -30,14 +30,6 @@ interface StrategySnapshot {
   equityCurve: number[]; // 100 normalized points
 }
 
-interface ComparisonResult {
-  strategyA: StrategySnapshot;
-  strategyB: StrategySnapshot;
-  winner: 'A' | 'B' | 'tie';
-  scoreA: number;
-  scoreB: number;
-}
-
 // ── Mock data ────────────────────────────────────────────────────────────
 
 const MOCK_STRATEGIES: StrategySnapshot[] = [
