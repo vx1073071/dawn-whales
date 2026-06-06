@@ -1,299 +1,744 @@
-// ── Q59: Backtest Replay Engine ────────────────────────────────────────────────
-// Historical backtest playback + Walk-forward replay + Strategy comparison replay
-// Timeline visualization data + Trade animation frames + Performance milestones
+/**
+ * backtest-replay.ts
+ * K-line Replay Engine — 历史 K 线回放引擎
+ *
+ * 支持变速播放、断点设置、单步前进/后退、跳转、循环播放。
+ * 使用内联 EventEmitter polyfill 以兼容 jsdom 环境（不依赖 Node 'events' 模块）。
+ *
+ * @module electron/engine/backtest-replay
+ */
 
 import log from 'electron-log';
 
-// ── Types ──────────────────────────────────────────────────────────────────
+// ─── Inline EventEmitter Polyfill (jsdom-compatible) ──────────────────────────
 
-export interface BacktestTrade {
-  id: string;
-  timestamp: number;
-  date: string;
-  symbol: string;
-  side: 'BUY' | 'SELL';
-  price: number;
-  quantity: number;
-  value: number;
-  pnl: number;
-  commission: number;
-  slippage: number;
-  strategyId?: string;
+type EventHandler = (...args: unknown[]) => void;
+
+class EventEmitter {
+  private _listeners: Map<string, EventHandler[]> = new Map();
+
+  on(event: string, handler: EventHandler): this {
+    const list = this._listeners.get(event);
+    if (list) {
+      list.push(handler);
+    } else {
+      this._listeners.set(event, [handler]);
+    }
+    return this;
+  }
+
+  off(event: string, handler: EventHandler): this {
+    const list = this._listeners.get(event);
+    if (list) {
+      const idx = list.indexOf(handler);
+      if (idx !== -1) {
+        list.splice(idx, 1);
+      }
+      if (list.length === 0) {
+        this._listeners.delete(event);
+      }
+    }
+    return this;
+  }
+
+  once(event: string, handler: EventHandler): this {
+    const wrapper: EventHandler = (...args: unknown[]) => {
+      this.off(event, wrapper);
+      handler(...args);
+    };
+    this.on(event, wrapper);
+    return this;
+  }
+
+  emit(event: string, ...args: unknown[]): boolean {
+    const list = this._listeners.get(event);
+    if (!list || list.length === 0) {
+      return false;
+    }
+    // Copy to avoid mutation during iteration
+    const snapshot = [...list];
+    for (const handler of snapshot) {
+      try {
+        handler(...args);
+      } catch (err) {
+        log.error('[BacktestReplay] Event handler error:', err);
+      }
+    }
+    return true;
+  }
+
+  removeAllListeners(event?: string): this {
+    if (event !== undefined) {
+      this._listeners.delete(event);
+    } else {
+      this._listeners.clear();
+    }
+    return this;
+  }
+
+  listenerCount(event: string): number {
+    return this._listeners.get(event)?.length ?? 0;
+  }
 }
 
-export interface BacktestFrame {
-  timestamp: number;
-  date: string;
-  portfolioValue: number;
-  cumulativePnL: number;
-  dailyPnL: number;
-  drawdown: number;
-  trades: BacktestTrade[];
-  signals: Array<{ type: string; symbol: string; strength: number; date: string }>;
-  benchmarkValue: number;
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+export type ReplaySpeed = 0.5 | 1 | 2 | 5 | 10 | 25 | 50 | 100 | 'MAX';
+export type ReplayState = 'idle' | 'playing' | 'paused' | 'completed' | 'error';
+export type BreakpointType = 'price_above' | 'price_below' | 'volume_spike' | 'custom';
+
+export interface KlineBar {
+  /** Unix timestamp in milliseconds */
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
+export interface Breakpoint {
+  id: string;
+  type: BreakpointType;
+  condition: (bar: KlineBar, index: number) => boolean;
+  label: string;
+  enabled: boolean;
 }
 
 export interface ReplayConfig {
-  speed: '0.5x' | '1x' | '2x' | '5x' | '10x' | 'MAX';
-  frameIntervalMs: number;
-  showTrades: boolean;
-  showSignals: boolean;
-  showBenchmark: boolean;
-  highlightDrawdowns: boolean;
-  pauseOnTrade: boolean;
-  pauseOnDrawdown: boolean;
-  drawdownThreshold: number; // Pause when DD > this %
+  speed: ReplaySpeed;
+  autoPlay: boolean;
+  loopEnabled: boolean;
+  breakpoints: Breakpoint[];
 }
 
-export interface ReplaySession {
-  sessionId: string;
-  name: string;
-  config: ReplayConfig;
-  frames: BacktestFrame[];
-  tradeList: BacktestTrade[];
-  milestones: Array<{ date: string; event: string; description: string; frameIdx: number }>;
-  durationMs: number;
-  stats: {
-    totalFrames: number;
-    totalTrades: number;
-    startDate: string;
-    endDate: string;
-    nDays: number;
-  };
+export interface ReplayProgress {
+  currentIndex: number;
+  totalBars: number;
+  progressPct: number;
+  currentBar: KlineBar | null;
+  state: ReplayState;
+  speed: ReplaySpeed;
+  /** Total elapsed wall-clock time since first play() in current session (ms) */
+  elapsedMs: number;
 }
 
-export interface BacktestComparisonResult {
-  sessions: ReplaySession[];
-  comparison: Array<{
-    metric: string;
-    values: number[];
-    best: string;
-    worst: string;
-    spread: number;
-  }>;
-  rankings: Array<{ sessionId: string; score: number; rank: number }>;
-  recommendations: string[];
+// ─── Constants ───────────────────────────────────────────────────────────────
+
+/** Default interval (ms) per bar at 1x speed */
+const BASE_INTERVAL_MS = 500;
+
+/** Minimum interval (ms) — cap for MAX speed */
+const MIN_INTERVAL_MS = 5;
+
+/** Valid speed values for validation */
+const VALID_SPEEDS: ReplaySpeed[] = [0.5, 1, 2, 5, 10, 25, 50, 100, 'MAX'];
+
+// ─── Helper ──────────────────────────────────────────────────────────────────
+
+/**
+ * Compute the timer interval in ms for a given speed.
+ * 'MAX' uses the minimum interval cap.
+ */
+function speedToInterval(speed: ReplaySpeed): number {
+  if (speed === 'MAX') {
+    return MIN_INTERVAL_MS;
+  }
+  // Higher speed → shorter interval
+  return Math.max(MIN_INTERVAL_MS, Math.round(BASE_INTERVAL_MS / speed));
 }
 
-// ── Backtest Replay Engine ───────────────────────────────────────────────
+/**
+ * Validate and clamp an index to valid range [0, length-1].
+ */
+function clampIndex(index: number, length: number): number {
+  if (length <= 0) return 0;
+  return Math.max(0, Math.min(index, length - 1));
+}
 
-export class BacktestReplayEngine {
-  constructor() {
-    log.info('[BacktestReplayEngine] Initialized');
+// ─── Engine ──────────────────────────────────────────────────────────────────
+
+export class BacktestReplayEngine extends EventEmitter {
+  // ── State ────────────────────────────────────────────────────────────────
+
+  private _klines: KlineBar[] = [];
+  private _currentIndex = -1;
+  private _state: ReplayState = 'idle';
+  private _speed: ReplaySpeed = 1;
+  private _loopEnabled = false;
+  private _autoPlay = false;
+  private _breakpoints: Breakpoint[] = [];
+  private _timer: ReturnType<typeof setTimeout> | null = null;
+  private _sessionStartMs: number | null = null;
+  private _accumulatedMs = 0;
+
+  // ── Constructor ──────────────────────────────────────────────────────────
+
+  constructor(config?: Partial<ReplayConfig>) {
+    super();
+    if (config) {
+      if (config.speed !== undefined) {
+        this._speed = config.speed;
+      }
+      if (config.autoPlay !== undefined) {
+        this._autoPlay = config.autoPlay;
+      }
+      if (config.loopEnabled !== undefined) {
+        this._loopEnabled = config.loopEnabled;
+      }
+      if (config.breakpoints) {
+        this._breakpoints = [...config.breakpoints];
+      }
+    }
+    log.info('[BacktestReplay] Engine initialised', {
+      speed: this._speed,
+      autoPlay: this._autoPlay,
+      loopEnabled: this._loopEnabled,
+    });
   }
 
-  // ── Generate Replay Session ────────────────────────────────────────
+  // ── Data Loading ─────────────────────────────────────────────────────────
 
-  generateReplay(
-    sessionId: string,
-    name: string,
-    frames: Array<{
-      date: string;
-      portfolioValue: number;
-      dailyReturn: number;
-      trades?: BacktestTrade[];
-      signals?: BacktestFrame['signals'];
-    }>,
-    benchmark?: number[],  // Benchmark values (e.g. HSI returns)
-    config: Partial<ReplayConfig> = {}
-  ): ReplaySession {
-    log.info(`[BacktestReplay] Generating replay ${name}, ${frames.length} frames`);
+  /**
+   * Load K-line data into the engine. Resets all playback state.
+   * Bars are sorted ascending by time automatically.
+   *
+   * @param klines - Array of OHLCV bars
+   */
+  public load(klines: KlineBar[]): void {
+    if (!klines || klines.length === 0) {
+      log.warn('[BacktestReplay] load() called with empty data');
+      this._klines = [];
+      this._resetInternal();
+      return;
+    }
 
-    const cfg: ReplayConfig = {
-      speed: config.speed ?? '1x',
-      frameIntervalMs: config.frameIntervalMs ?? 500,
-      showTrades: config.showTrades ?? true,
-      showSignals: config.showSignals ?? true,
-      showBenchmark: config.showBenchmark ?? true,
-      highlightDrawdowns: config.highlightDrawdowns ?? true,
-      pauseOnTrade: config.pauseOnTrade ?? false,
-      pauseOnDrawdown: config.pauseOnDrawdown ?? false,
-      drawdownThreshold: config.drawdownThreshold ?? 10,
-      ...config,
-    };
+    // Sort ascending by time
+    this._klines = [...klines].sort((a, b) => a.time - b.time);
+    this._resetInternal();
 
-    const speedMultipliers: Record<string, number> = {
-      '0.5x': 2, '1x': 1, '2x': 0.5, '5x': 0.2, '10x': 0.1, 'MAX': 0,
-    };
-    const frameMs = cfg.frameIntervalMs * (speedMultipliers[cfg.speed] ?? 1);
-    const durationMs = frames.length * frameMs;
+    log.info('[BacktestReplay] Loaded %d bars, range: %d → %d',
+      this._klines.length,
+      this._klines[0].time,
+      this._klines[this._klines.length - 1].time,
+    );
 
-    // Build frames
-    let cumulativePnL = 0;
-    let peak = frames[0]?.portfolioValue ?? 0;
-    const allTrades: BacktestTrade[] = [];
+    if (this._autoPlay) {
+      this.play();
+    }
+  }
 
-    const replayFrames: BacktestFrame[] = frames.map((f, i) => {
-      cumulativePnL += f.dailyReturn * (frames[i - 1]?.portfolioValue ?? f.portfolioValue);
-      peak = Math.max(peak, f.portfolioValue);
-      const drawdown = (peak - f.portfolioValue) / peak * 100;
+  // ── Playback Controls ────────────────────────────────────────────────────
 
-      const frameTrades = f.trades ?? [];
-      allTrades.push(...frameTrades);
+  /**
+   * Start or resume playback.
+   * If the engine is idle, starts from index 0.
+   * If paused, resumes from current position.
+   * If completed, restarts from the beginning (or does nothing if loop is off and already at end).
+   */
+  public play(): void {
+    if (this._klines.length === 0) {
+      log.warn('[BacktestReplay] play() — no data loaded');
+      this._state = 'error';
+      return;
+    }
 
-      return {
-        timestamp: new Date(f.date).getTime(),
-        date: f.date,
-        portfolioValue: Math.round(f.portfolioValue * 100) / 100,
-        cumulativePnL: Math.round(cumulativePnL * 100) / 100,
-        dailyPnL: Math.round(f.dailyReturn * 10000) / 100,
-        drawdown: Math.round(drawdown * 100) / 100,
-        trades: frameTrades,
-        signals: f.signals ?? [],
-        benchmarkValue: benchmark?.[i] ?? f.portfolioValue,
-      };
-    });
+    if (this._state === 'playing') {
+      log.debug('[BacktestReplay] play() — already playing');
+      return;
+    }
 
-    // Milestones
-    const milestones: ReplaySession['milestones'] = [];
+    // If completed or idle, start from the beginning
+    if (this._state === 'idle' || this._state === 'completed') {
+      this._currentIndex = -1;
+      this._accumulatedMs = 0;
+    }
 
-    // Find milestone events
-    let maxDD = 0, maxDDDate = '';
-    let maxWin = 0, maxWinDate = '';
-    let totalTrades = 0;
+    if (this._sessionStartMs === null) {
+      this._sessionStartMs = Date.now();
+    }
 
-    for (const frame of replayFrames) {
-      totalTrades += frame.trades.length;
+    this._state = 'playing';
+    this.emit('playback-started', this.getProgress());
+    log.info('[BacktestReplay] Playback started at speed %s', this._speed);
+    this._scheduleNextTick();
+  }
 
-      if (frame.drawdown > maxDD) {
-        maxDD = frame.drawdown;
-        maxDDDate = frame.date;
+  /**
+   * Pause playback. No-op if not currently playing.
+   */
+  public pause(): void {
+    if (this._state !== 'playing') {
+      return;
+    }
+
+    this._clearTimer();
+    this._state = 'paused';
+
+    // Accumulate elapsed time
+    if (this._sessionStartMs !== null) {
+      this._accumulatedMs += Date.now() - this._sessionStartMs;
+      this._sessionStartMs = null;
+    }
+
+    this.emit('playback-paused', this.getProgress());
+    log.info('[BacktestReplay] Playback paused at index %d', this._currentIndex);
+  }
+
+  /**
+   * Stop playback entirely and rewind to the beginning.
+   */
+  public stop(): void {
+    this._clearTimer();
+    this._currentIndex = -1;
+    this._state = 'idle';
+    this._sessionStartMs = null;
+    this._accumulatedMs = 0;
+    log.info('[BacktestReplay] Playback stopped');
+  }
+
+  // ── Stepping ─────────────────────────────────────────────────────────────
+
+  /**
+   * Advance forward by `count` bars (default 1).
+   * Automatically pauses if currently playing.
+   *
+   * @returns Array of bars advanced through (may be fewer if reaching end)
+   */
+  public stepForward(count: number = 1): KlineBar[] {
+    if (this._klines.length === 0) return [];
+
+    // Pause if playing
+    if (this._state === 'playing') {
+      this.pause();
+    }
+
+    if (this._state === 'idle' || this._state === 'completed') {
+      this._currentIndex = -1;
+      this._state = 'paused';
+    }
+
+    const stepped: KlineBar[] = [];
+    for (let i = 0; i < count; i++) {
+      const nextIdx = this._currentIndex + 1;
+      if (nextIdx >= this._klines.length) {
+        break;
       }
-      if (frame.cumulativePnL > maxWin) {
-        maxWin = frame.cumulativePnL;
-        maxWinDate = frame.date;
+      this._currentIndex = nextIdx;
+      const bar = this._klines[this._currentIndex];
+      stepped.push(bar);
+      this._emitBar(bar);
+      this._checkBreakpoints(bar, this._currentIndex);
+    }
+
+    // Check if we reached the end
+    if (this._currentIndex >= this._klines.length - 1) {
+      this._handleEnd();
+    } else if (this._state !== 'paused') {
+      this._state = 'paused';
+    }
+
+    return stepped;
+  }
+
+  /**
+   * Step backward by `count` bars (default 1).
+   * Automatically pauses if currently playing.
+   *
+   * @returns Array of bars traversed backward (in reverse order, newest first)
+   */
+  public stepBackward(count: number = 1): KlineBar[] {
+    if (this._klines.length === 0) return [];
+
+    // Pause if playing
+    if (this._state === 'playing') {
+      this.pause();
+    }
+
+    if (this._state === 'idle') {
+      // Nothing to step back from
+      return [];
+    }
+
+    const stepped: KlineBar[] = [];
+    for (let i = 0; i < count; i++) {
+      if (this._currentIndex <= 0) {
+        break;
+      }
+      this._currentIndex--;
+      const bar = this._klines[this._currentIndex];
+      stepped.push(bar);
+      this._emitBar(bar);
+    }
+
+    if (this._state !== 'paused') {
+      this._state = 'paused';
+    }
+
+    return stepped;
+  }
+
+  // ── Seeking ──────────────────────────────────────────────────────────────
+
+  /**
+   * Jump to a specific bar index.
+   *
+   * @param index - Target index (clamped to valid range)
+   * @returns The bar at the target index
+   */
+  public seekTo(index: number): KlineBar {
+    if (this._klines.length === 0) {
+      throw new Error('[BacktestReplay] seekTo() — no data loaded');
+    }
+
+    const wasPlaying = this._state === 'playing';
+    if (wasPlaying) {
+      this._clearTimer();
+    }
+
+    this._currentIndex = clampIndex(index, this._klines.length);
+    const bar = this._klines[this._currentIndex];
+    this._emitBar(bar);
+
+    // If index was at or past end, handle completion
+    if (this._currentIndex >= this._klines.length - 1) {
+      this._handleEnd();
+    } else if (wasPlaying) {
+      this._scheduleNextTick();
+    }
+
+    return bar;
+  }
+
+  // ── Speed Control ────────────────────────────────────────────────────────
+
+  /**
+   * Change the playback speed.
+   * Takes effect immediately if currently playing.
+   */
+  public setSpeed(speed: ReplaySpeed): void {
+    if (!VALID_SPEEDS.includes(speed)) {
+      log.warn('[BacktestReplay] setSpeed() — invalid speed: %s', speed);
+      return;
+    }
+
+    const oldSpeed = this._speed;
+    this._speed = speed;
+    this.emit('speed-changed', { oldSpeed, newSpeed: speed });
+    log.info('[BacktestReplay] Speed changed: %s → %s', oldSpeed, speed);
+
+    // If currently playing, reschedule with new interval
+    if (this._state === 'playing') {
+      this._clearTimer();
+      this._scheduleNextTick();
+    }
+  }
+
+  // ── Breakpoints ──────────────────────────────────────────────────────────
+
+  /**
+   * Add a breakpoint. During playback, when a bar satisfies the breakpoint
+   * condition, the engine pauses and emits 'breakpoint-hit'.
+   */
+  public addBreakpoint(bp: Breakpoint): void {
+    if (!bp.id || !bp.condition) {
+      log.warn('[BacktestReplay] addBreakpoint() — invalid breakpoint (missing id or condition)');
+      return;
+    }
+    // Prevent duplicate IDs
+    const existing = this._breakpoints.findIndex((b) => b.id === bp.id);
+    if (existing !== -1) {
+      this._breakpoints[existing] = bp;
+      log.info('[BacktestReplay] Breakpoint updated: %s', bp.id);
+    } else {
+      this._breakpoints.push(bp);
+      log.info('[BacktestReplay] Breakpoint added: %s (%s)', bp.id, bp.label);
+    }
+  }
+
+  /**
+   * Remove a breakpoint by ID.
+   *
+   * @returns `true` if the breakpoint was found and removed
+   */
+  public removeBreakpoint(id: string): boolean {
+    const idx = this._breakpoints.findIndex((bp) => bp.id === id);
+    if (idx === -1) {
+      return false;
+    }
+    this._breakpoints.splice(idx, 1);
+    log.info('[BacktestReplay] Breakpoint removed: %s', id);
+    return true;
+  }
+
+  /**
+   * Find the next breakpoint that would be hit from the current position.
+   * Scans forward from `currentIndex + 1`.
+   *
+   * @returns Object with the bar index and matching breakpoint, or `null` if none found
+   */
+  public getNextBreakpoint(): { index: number; breakpoint: Breakpoint } | null {
+    if (this._klines.length === 0 || this._breakpoints.length === 0) {
+      return null;
+    }
+
+    const startIdx = Math.max(0, this._currentIndex + 1);
+    const enabledBps = this._breakpoints.filter((bp) => bp.enabled);
+    if (enabledBps.length === 0) return null;
+
+    for (let i = startIdx; i < this._klines.length; i++) {
+      const bar = this._klines[i];
+      for (const bp of enabledBps) {
+        try {
+          if (bp.condition(bar, i)) {
+            return { index: i, breakpoint: bp };
+          }
+        } catch (err) {
+          log.error('[BacktestReplay] Breakpoint condition error (%s):', bp.id, err);
+        }
       }
     }
 
-    if (maxDD > 5) milestones.push({
-      date: maxDDDate, event: 'MAX_DRAWDOWN', description: `Peak drawdown ${maxDD.toFixed(1)}%`, frameIdx: replayFrames.findIndex(f => f.date === maxDDDate)
-    });
-    if (maxWin > 0) milestones.push({
-      date: maxWinDate, event: 'MAX_PROFIT', description: `Max profit ${maxWin.toFixed(1)}%`, frameIdx: replayFrames.findIndex(f => f.date === maxWinDate)
-    });
+    return null;
+  }
 
-    // Best day
-    const bestDay = [...replayFrames].sort((a, b) => b.dailyPnL - a.dailyPnL)[0];
-    if (bestDay && bestDay.dailyPnL > 0) milestones.push({
-      date: bestDay.date, event: 'BEST_DAY', description: `Best day +${bestDay.dailyPnL.toFixed(2)}%`, frameIdx: replayFrames.indexOf(bestDay)
-    });
+  /**
+   * Jump forward to the next breakpoint.
+   * Pauses playback and seeks to the matching bar.
+   *
+   * @returns The bar at the breakpoint, or `null` if no breakpoint is ahead
+   */
+  public seekToNextBreakpoint(): KlineBar | null {
+    const next = this.getNextBreakpoint();
+    if (!next) {
+      log.info('[BacktestReplay] seekToNextBreakpoint() — no breakpoint ahead');
+      return null;
+    }
 
-    // Worst day
-    const worstDay = [...replayFrames].sort((a, b) => a.dailyPnL - b.dailyPnL)[0];
-    if (worstDay && worstDay.dailyPnL < 0) milestones.push({
-      date: worstDay.date, event: 'WORST_DAY', description: `Worst day ${worstDay.dailyPnL.toFixed(2)}%`, frameIdx: replayFrames.indexOf(worstDay)
+    const bar = this.seekTo(next.index);
+    this.emit('breakpoint-hit', {
+      bar,
+      index: next.index,
+      breakpoint: next.breakpoint,
     });
+    return bar;
+  }
 
-    // Filter out -1 frameIdx
-    milestones.forEach(m => { if (m.frameIdx < 0) m.frameIdx = 0; });
-    milestones.sort((a, b) => a.frameIdx - b.frameIdx);
+  // ── Progress & State Queries ─────────────────────────────────────────────
+
+  /**
+   * Get the current replay progress snapshot.
+   */
+  public getProgress(): ReplayProgress {
+    const totalBars = this._klines.length;
+    const currentIndex = Math.max(0, this._currentIndex);
+    const progressPct = totalBars > 0
+      ? Math.round((currentIndex / (totalBars - 1)) * 10000) / 100
+      : 0;
 
     return {
-      sessionId,
-      name,
-      config: cfg,
-      frames: replayFrames,
-      tradeList: allTrades,
-      milestones,
-      durationMs,
-      stats: {
-        totalFrames: replayFrames.length,
-        totalTrades: allTrades.length,
-        startDate: replayFrames[0]?.date ?? '',
-        endDate: replayFrames[replayFrames.length - 1]?.date ?? '',
-        nDays: replayFrames.length,
-      },
+      currentIndex,
+      totalBars,
+      progressPct,
+      currentBar: this.getCurrentBar(),
+      state: this._state,
+      speed: this._speed,
+      elapsedMs: this._getElapsedMs(),
     };
   }
 
-  // ── Walk-Forward Replay ────────────────────────────────────────────
-
-  generateWalkForwardReplay(
-    inSampleFrames: BacktestFrame[],
-    outOfSampleFrames: BacktestFrame[],
-    oosStartDate: string
-  ): { inSample: ReplaySession; outOfSample: ReplaySession } {
-    const inSample = this.generateReplay('wf_is', 'In-Sample', inSampleFrames);
-    const outOfSample = this.generateReplay('wf_oos', 'Out-of-Sample', outOfSampleFrames);
-
-    // Mark OOS start milestone
-    outOfSample.milestones.unshift({
-      date: oosStartDate,
-      event: 'OOS_START',
-      description: 'Out-of-sample period begins',
-      frameIdx: 0,
-    });
-
-    return { inSample, outOfSample };
+  /**
+   * Get the bar at the current playback position, or `null` if none.
+   */
+  public getCurrentBar(): KlineBar | null {
+    if (this._currentIndex < 0 || this._currentIndex >= this._klines.length) {
+      return null;
+    }
+    return this._klines[this._currentIndex];
   }
 
-  // ── Compare Sessions ──────────────────────────────────────────────
+  /**
+   * Get a range of bars by index (inclusive on both ends).
+   *
+   * @param start - Start index (clamped)
+   * @param end   - End index (clamped, inclusive)
+   * @returns Array of bars in the range
+   */
+  public getBars(start: number, end: number): KlineBar[] {
+    if (this._klines.length === 0) return [];
 
-  compare(sessions: ReplaySession[]): BacktestComparisonResult {
-    if (sessions.length === 0) return { sessions: [], comparison: [], rankings: [], recommendations: [] };
+    const s = clampIndex(start, this._klines.length);
+    const e = clampIndex(end, this._klines.length);
 
-    const metrics = [
-      { key: 'totalReturn', label: 'Total Return', higherBetter: true },
-      { key: 'sharpe', label: 'Sharpe Ratio', higherBetter: true },
-      { key: 'maxDrawdown', label: 'Max Drawdown', higherBetter: false },
-      { key: 'winRate', label: 'Win Rate', higherBetter: true },
-      { key: 'nTrades', label: 'Trade Count', higherBetter: false },
-      { key: 'avgSlippage', label: 'Avg Slippage', higherBetter: false },
-    ];
+    if (s > e) return [];
 
-    const comparison = metrics.map(m => {
-      const values = sessions.map(s => {
-        if (m.key === 'totalReturn') return s.frames[s.frames.length - 1]?.cumulativePnL ?? 0;
-        if (m.key === 'maxDrawdown') return Math.min(...s.frames.map(f => -f.drawdown), 0);
-        if (m.key === 'nTrades') return s.tradeList.length;
-        if (m.key === 'sharpe') {
-          const rets = s.frames.map(f => f.dailyPnL / 100);
-          const mean = rets.reduce((a, b) => a + b, 0) / rets.length;
-          const std = Math.sqrt(rets.reduce((a, b) => a + (b - mean) ** 2, 0) / rets.length);
-          return std > 0 ? (mean / std) * Math.sqrt(252) : 0;
-        }
-        if (m.key === 'winRate') {
-          const winners = s.tradeList.filter(t => t.pnl > 0).length;
-          return s.tradeList.length > 0 ? winners / s.tradeList.length : 0;
-        }
-        if (m.key === 'avgSlippage') {
-          return s.tradeList.length > 0
-            ? s.tradeList.reduce((a, t) => a + Math.abs(t.slippage), 0) / s.tradeList.length
-            : 0;
-        }
-        return 0;
-      });
+    return this._klines.slice(s, e + 1);
+  }
 
-      const bestIdx = m.higherBetter ? values.indexOf(Math.max(...values)) : values.indexOf(Math.min(...values));
-      const worstIdx = m.higherBetter ? values.indexOf(Math.min(...values)) : values.indexOf(Math.max(...values));
+  /**
+   * Reset the engine to its initial idle state. Keeps loaded data and config.
+   */
+  public reset(): void {
+    this._clearTimer();
+    this._currentIndex = -1;
+    this._state = 'idle';
+    this._sessionStartMs = null;
+    this._accumulatedMs = 0;
+    log.info('[BacktestReplay] Engine reset');
+  }
 
-      return {
-        metric: m.label,
-        values: values.map(v => Math.round(v * 100) / 100),
-        best: sessions[bestIdx]?.sessionId ?? 'N/A',
-        worst: sessions[worstIdx]?.sessionId ?? 'N/A',
-        spread: Math.round((Math.max(...values) - Math.min(...values)) * 100) / 100,
-      };
+  // ── Private Helpers ──────────────────────────────────────────────────────
+
+  /**
+   * Schedule the next tick based on current speed.
+   */
+  private _scheduleNextTick(): void {
+    if (this._state !== 'playing') return;
+
+    const interval = speedToInterval(this._speed);
+    this._timer = setTimeout(() => {
+      this._tick();
+    }, interval);
+  }
+
+  /**
+   * Core tick: advance one bar, check breakpoints, schedule next tick or finish.
+   */
+  private _tick(): void {
+    this._timer = null;
+
+    if (this._state !== 'playing') return;
+
+    const nextIdx = this._currentIndex + 1;
+
+    // End of data
+    if (nextIdx >= this._klines.length) {
+      this._handleEnd();
+      return;
+    }
+
+    this._currentIndex = nextIdx;
+    const bar = this._klines[this._currentIndex];
+
+    // Emit bar event
+    this._emitBar(bar);
+
+    // Check breakpoints — if any enabled breakpoint fires, pause
+    const hitBps = this._getMatchingBreakpoints(bar, this._currentIndex);
+    if (hitBps.length > 0) {
+      for (const bp of hitBps) {
+        this.emit('breakpoint-hit', {
+          bar,
+          index: this._currentIndex,
+          breakpoint: bp,
+        });
+      }
+      this.pause();
+      log.info(
+        '[BacktestReplay] Breakpoint hit at index %d: %s',
+        this._currentIndex,
+        hitBps.map((b) => b.label).join(', '),
+      );
+      return;
+    }
+
+    // Schedule next tick
+    this._scheduleNextTick();
+  }
+
+  /**
+   * Handle reaching the end of the K-line data.
+   */
+  private _handleEnd(): void {
+    this._clearTimer();
+
+    if (this._loopEnabled) {
+      log.info('[BacktestReplay] Loop restart');
+      this._currentIndex = -1;
+      this._scheduleNextTick();
+      return;
+    }
+
+    this._state = 'completed';
+    if (this._sessionStartMs !== null) {
+      this._accumulatedMs += Date.now() - this._sessionStartMs;
+      this._sessionStartMs = null;
+    }
+
+    this.emit('playback-completed', this.getProgress());
+    log.info('[BacktestReplay] Playback completed');
+  }
+
+  /**
+   * Emit a 'bar' event with the bar and its index.
+   */
+  private _emitBar(bar: KlineBar): void {
+    this.emit('bar', {
+      bar,
+      index: this._currentIndex,
+      progress: this.getProgress(),
     });
+  }
 
-    const rankings = sessions.map(s => ({
-      sessionId: s.sessionId,
-      score: 0,
-      rank: 0,
-    }));
+  /**
+   * Check all enabled breakpoints against a bar.
+   * Emits 'breakpoint-hit' for each match (used by stepForward).
+   */
+  private _checkBreakpoints(bar: KlineBar, index: number): void {
+    const hits = this._getMatchingBreakpoints(bar, index);
+    for (const bp of hits) {
+      this.emit('breakpoint-hit', { bar, index, breakpoint: bp });
+    }
+  }
 
-    const recommendations: string[] = [];
-    const bestSession = [...sessions].sort((a, b) => {
-      const aRet = a.frames[a.frames.length - 1]?.cumulativePnL ?? 0;
-      const bRet = b.frames[b.frames.length - 1]?.cumulativePnL ?? 0;
-      return bRet - aRet;
-    })[0];
+  /**
+   * Return all enabled breakpoints whose condition matches the given bar.
+   */
+  private _getMatchingBreakpoints(bar: KlineBar, index: number): Breakpoint[] {
+    const matched: Breakpoint[] = [];
+    for (const bp of this._breakpoints) {
+      if (!bp.enabled) continue;
+      try {
+        if (bp.condition(bar, index)) {
+          matched.push(bp);
+        }
+      } catch (err) {
+        log.error('[BacktestReplay] Breakpoint condition error (%s):', bp.id, err);
+      }
+    }
+    return matched;
+  }
 
-    if (bestSession) recommendations.push(`Best overall: ${bestSession.name}`);
-    const overfitting = sessions.filter(s => s.name.includes('IS'));
-    if (overfitting.length > 0) recommendations.push('Check IS vs OOS gap for overfitting signals');
+  /**
+   * Clear any pending timer.
+   */
+  private _clearTimer(): void {
+    if (this._timer !== null) {
+      clearTimeout(this._timer);
+      this._timer = null;
+    }
+  }
 
-    return { sessions, comparison, rankings, recommendations };
+  /**
+   * Get total elapsed wall-clock time in ms for the current playback session.
+   */
+  private _getElapsedMs(): number {
+    let total = this._accumulatedMs;
+    if (this._sessionStartMs !== null) {
+      total += Date.now() - this._sessionStartMs;
+    }
+    return total;
+  }
+
+  /**
+   * Internal reset of playback state (used by load).
+   */
+  private _resetInternal(): void {
+    this._clearTimer();
+    this._currentIndex = -1;
+    this._state = 'idle';
+    this._sessionStartMs = null;
+    this._accumulatedMs = 0;
   }
 }
 

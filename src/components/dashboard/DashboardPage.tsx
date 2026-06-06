@@ -9,6 +9,7 @@ import {
 import { useWebSocketQuotes } from '../../hooks/useWebSocketQuotes';
 import BrokerStatusBar from '../trading/BrokerStatusBar';
 import PerformanceDashboard from './PerformanceDashboard';
+import SystemHealthPanel from './SystemHealthPanel';
 
 interface AccountSummary {
   totalAssets: number;
@@ -295,28 +296,8 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* System Health */}
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-          <h2 className="text-white font-semibold text-sm mb-4">🩺 系统状态</h2>
-          <div className="space-y-3">
-            <StatusRow label="OpenD 连接" ok={connected} okText="已连接" failText="未连接" />
-            <StatusRow label="策略引擎" ok={true} />
-            <StatusRow label="风控引擎" ok={true} />
-            <StatusRow label="回测引擎" ok={true} />
-            <StatusRow label="数据库" ok={true} />
-            <StatusRow label="市场数据" ok={true} />
-            <div className="pt-2 border-t border-white/5">
-              <div className="flex justify-between text-xs">
-                <span className="text-gray-500">版本</span>
-                <span className="text-gray-300 font-mono">v0.5.0</span>
-              </div>
-              <div className="flex justify-between text-xs mt-1">
-                <span className="text-gray-500">测试</span>
-                <span className="text-emerald-400 font-mono">148 passed</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* System Health (ML-38-01: replaced static StatusRow with live panel) */}
+        <SystemHealthPanel connected={connected} compact={false} />
       </div>
     </div>
   );
@@ -336,16 +317,18 @@ function SummaryCard({ label, value, sub, color, bg }: {
   );
 }
 
-function StatusRow({ label, ok, okText = '正常', failText = '异常' }: {
-  label: string; ok: boolean; okText?: string; failText?: string;
-}) {
-  return (
-    <div className="flex items-center justify-between text-xs">
-      <span className="text-gray-400">{label}</span>
-      <span className={`flex items-center gap-1.5 ${ok ? 'text-emerald-400' : 'text-red-400'}`}>
-        <span className={`w-1.5 h-1.5 rounded-full ${ok ? 'bg-emerald-400' : 'bg-red-400'}`} />
-        {ok ? okText : failText}
-      </span>
-    </div>
-  );
-}
+// StatusRow was replaced by SystemHealthPanel in ML-38-01 (v0.8.0).
+// Kept below as comment for reference; remove in v0.9.0 cleanup.
+// function StatusRow({ label, ok, okText = '正常', failText = '异常' }: {
+//   label: string; ok: boolean; okText?: string; failText?: string;
+// }) {
+//   return (
+//     <div className="flex items-center justify-between text-xs">
+//       <span className="text-gray-400">{label}</span>
+//       <span className={`flex items-center gap-1.5 ${ok ? 'text-emerald-400' : 'text-red-400'}`}>
+//         <span className={`w-1.5 h-1.5 rounded-full ${ok ? 'bg-emerald-400' : 'bg-red-400'}`} />
+//         {ok ? okText : failText}
+//       </span>
+//     </div>
+//   );
+// }

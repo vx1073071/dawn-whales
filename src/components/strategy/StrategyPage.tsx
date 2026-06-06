@@ -4,8 +4,9 @@ import StrategyExplainCard from './StrategyExplainCard';
 import StrategyCompareModal from './StrategyCompareModal';
 import ConditionRulePanel from '../trading/ConditionRulePanel';
 import ClosedLoopConfigPanel from './ClosedLoopConfigPanel';
+import AdaptiveParamPanel from './AdaptiveParamPanel';
 
-type CreateMode = null | 'ai' | 'template' | 'form' | 'condition' | 'closedLoop';
+type CreateMode = null | 'ai' | 'template' | 'form' | 'condition' | 'closedLoop' | 'adaptive';
 
 interface ParsedStrategy {
   success: boolean;
@@ -68,6 +69,7 @@ export default function StrategyPage() {
       {!mode && !selectedId && <ModeSelector onSelect={setMode} />}
       {mode === 'condition' && <ConditionRulePanel onBack={() => setMode(null)} />}
       {mode === 'closedLoop' && <ClosedLoopConfigPanel onBack={() => setMode(null)} onSave={(config) => console.log('Loop config saved:', config)} strategyId={selectedId || undefined} />}
+      {mode === 'adaptive' && <AdaptiveParamPanel onBack={() => setMode(null)} strategyId={selectedId || 'ma_cross'} onApply={(params) => console.log('Adaptive params applied:', params)} />}
       {mode === 'ai' && <AICreator onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} onFillForm={(parsed) => { setNlPrefill(parsed); setMode('form'); }} />}
       {mode === 'template' && <TemplateBrowser onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} />}
       {mode === 'form' && <FormCreator onBack={() => { setMode(null); setNlPrefill(null); }} onCreated={() => { setMode(null); setNlPrefill(null); refresh(); }} nlPrefill={nlPrefill || undefined} />}
@@ -167,6 +169,19 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
             </div>
           </div>
           <span className="text-[#D4A853] text-xs font-medium">Phase 4.3 →</span>
+        </div>
+      </button>
+      {/* Phase 4.4: Adaptive Parameter Learning */}
+      <button onClick={() => onSelect('adaptive')} className="w-full bg-[#C9A046]/5 border border-[#C9A046]/20 rounded-xl p-4 text-left hover:border-[#C9A046]/40 hover:bg-[#C9A046]/10 transition-all group">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="text-2xl">🧬</div>
+            <div>
+              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">自适应学习</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">参数自优化 · 奖励函数 · 探索/利用平衡 · 持续进化</p>
+            </div>
+          </div>
+          <span className="text-[#D4A853] text-xs font-medium">Phase 4.4 →</span>
         </div>
       </button>
     </div>
