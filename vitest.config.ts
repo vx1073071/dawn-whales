@@ -38,6 +38,10 @@ export default defineConfig({
       'tests/q35-trading-components.test.tsx',
       // Requires Electron IPC mock (ipcMain in main process)
       'tests/jvs-100-e2e.test.ts',
+      // Requires WebSocket + KLine + Signal pusher singletons (complex deps)
+      'tests/jvs-115-aggregator.test.ts',
+      // Requires Node `events` module (extends EventEmitter — not resolved in jsdom)
+      'tests/jvs-21-22-23-optimizers.test.ts',
       // Import engine classes with `extends EventEmitter` — Node `events` not resolved in jsdom
       // (setup.ts polyfill only fixes globalThis, not module-level imports)
       'tests/closed-loop-executor.test.ts',
@@ -61,6 +65,7 @@ export default defineConfig({
       'react': path.resolve(__dirname, './node_modules/react'),
       'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
       'react-dom/client': path.resolve(__dirname, './node_modules/react-dom/client.js'),
+
     },
   },
 });
