@@ -472,9 +472,10 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
   log.info('[NLParser] Normalized:', normalized);
 
   // Phase 4.2: Try PriceCondition matcher.
-  // Skip if text contains "MA" followed by a number (indicator pattern like MA5/MA20)
-  // or "EMA" / "SMA" — these are strategy indicators, not price triggers.
-  if (!/\bMA\s*\d|\bEMA\s*\d|\bSMA\s*\d/i.test(normalized)) {
+  // Only match when an explicit stock symbol is present AND no risk-management keywords.
+  // This prevents false matches on: "RSI 低于 20", "止损 3%", "MA5上穿MA20买入TQQQ止损5%".
+  const hasRiskMgmt = /止损|止盈|stop\s*loss|take\s*profit/i.test(normalized);
+  if (extractSymbol(normalized) && !hasRiskMgmt) {
     const priceResult = matchPriceCondition(normalized);
     if (priceResult) {
       // Extract symbol separately — matchers don't return it
