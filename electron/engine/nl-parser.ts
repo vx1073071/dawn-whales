@@ -7,16 +7,24 @@ import log from 'electron-log';
 import { spawn } from 'child_process';
 import path from 'path';
 
+export interface PriceConditionOutput {
+  type: 'price';
+  operator: 'above' | 'below' | 'crosses_above' | 'crosses_below';
+  targetPrice: number;
+  reference?: string;
+}
+
 interface ParsedStrategy {
   success: boolean;
   name: string;
   description: string;
   strategy: {
-    type: 'ma_cross' | 'rsi' | 'macd' | 'momentum' | 'bollinger' | 'combined';
+    type: 'ma_cross' | 'rsi' | 'macd' | 'momentum' | 'bollinger' | 'combined' | 'price_condition';
     params: Record<string, number>;
     stopLoss?: number;
     takeProfit?: number;
   };
+  condition?: PriceConditionOutput;
   symbol?: string;
   error?: string;
 }
@@ -250,6 +258,92 @@ function matchBollinger(text: string): MatcherResult | null {
   return null;
 }
 
+// ── PriceCondition Parser (Phase 4.2) ──────────────────────────────────────────
+// "AAPL 涨破 200" → above
+// "AAPL 跌破 200" → crosses_below (下穿)
+// "AAPL 上穿 200" → crosses_above
+// "AAPL 下穿 200" → crosses_below
+// "AAPL 超过 200" / "AAPL 涨到 200" → above
+// "AAPL 低于 200" → below
+// "AAPL 价格 > 200" / "AAPL > 200" → above
+// "AAPL 价格 < 200" / "AAPL < 200" → below
+// "AAPL 突破 200" → crosses_above (默认下穿为 above，歧义处理)
+
+interface PriceConditionResult extends MatcherResult {
+  condition: {
+    type: 'price';
+    operator: 'above' | 'below' | 'crosses_above' | 'crosses_below';
+    targetPrice: number;
+    reference?: string;
+    symbol?: string;
+  };
+}
+
+function matchPriceCondition(text: string): PriceConditionResult | null {
+  const symbol = extractSymbol(text);
+
+  // Extract the last reasonable price number from text
+  const numbers = [...text.matchAll(/\b(\d+(?:\.\d+)?)\b/g)].map(m => parseFloat(m[1]));
+  const price = numbers.find(n => n >= 10 && n <= 999999);
+  if (!price) return null;
+
+  // ── Operator priority (most specific first) ──────────────────────
+
+  // 1. crosses_above: crossing UP through the price level
+  if (/上穿|涨破|突破|升穿|crosses?\s*above|cross.*up/i.test(text)) {
+    return {
+      name: `${symbol || ''} 上穿 ${price}`,
+      description: `当${symbol || '标的'}价格上穿 ${price} 时触发`,
+      strategy: { type: 'ma_cross', params: {} },
+      condition: { type: 'price', operator: 'crosses_above', targetPrice: price, reference: 'close', symbol },
+    };
+  }
+
+  // 2. crosses_below: crossing DOWN through the price level
+  if (/下穿|跌破|跌穿|降穿|crosses?\s*below|cross.*down/i.test(text)) {
+    return {
+      name: `${symbol || ''} 下穿 ${price}`,
+      description: `当${symbol || '标的'}价格下穿 ${price} 时触发`,
+      strategy: { type: 'ma_cross', params: {} },
+      condition: { type: 'price', operator: 'crosses_below', targetPrice: price, reference: 'close', symbol },
+    };
+  }
+
+  // 3. steady above: price is already above the target
+  if (/超过|高于|涨到|升到|价格超过|价格高于|above\b|\+\s*\$/i.test(text)) {
+    return {
+      name: `${symbol || ''} 高于 ${price}`,
+      description: `当${symbol || '标的'}价格高于 ${price} 时触发`,
+      strategy: { type: 'ma_cross', params: {} },
+      condition: { type: 'price', operator: 'above', targetPrice: price, reference: 'close', symbol },
+    };
+  }
+
+  // 4. steady below: price is already below the target
+  if (/低于|价格低于|价格\s*<|price\s*<|\s<\s|below\b/i.test(text)) {
+    return {
+      name: `${symbol || ''} 低于 ${price}`,
+      description: `当${symbol || '标的'}价格低于 ${price} 时触发`,
+      strategy: { type: 'ma_cross', params: {} },
+      condition: { type: 'price', operator: 'below', targetPrice: price, reference: 'close', symbol },
+    };
+  }
+
+  // 5. Generic fallback: any number present but no clear operator → treat as 'above'
+  return {
+    name: `${symbol || ''} 超过 ${price}`,
+    description: `当${symbol || '标的'}价格超过 ${price} 时触发`,
+    strategy: { type: 'ma_cross', params: {} },
+    condition: { type: 'price', operator: 'above', targetPrice: price, reference: 'close', symbol },
+  };
+}
+
+/*
+ * TEMPORARY STUB to replace the old (now duplicate) function below.
+ * The real implementation is above. Remove this stub after verifying all tests pass.
+ */
+function _stubMatchPriceCondition(_text: string): PriceConditionResult | null { return null; }
+
 // ── Stop Loss / Take Profit Extraction (Phase 3 增强) ─────────────────────
 // 支持：止损N%、亏N%止损、跌N%止损、N倍ATR止损、跟踪止损
 
@@ -372,16 +466,36 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
     return { success: false, name: '', description: '', strategy: { type: 'ma_cross', params: {} }, error: '输入为空' };
   }
 
-  // Phase 3: 先做同义词规范化
+  // Phase 3: 同义词规范化
   const normalized = normalizeInput(text);
   log.info('[NLParser] Original:', text);
   log.info('[NLParser] Normalized:', normalized);
+
+  // Phase 4.2: Try PriceCondition matcher.
+  // Skip if text contains "MA" followed by a number (indicator pattern like MA5/MA20)
+  // or "EMA" / "SMA" — these are strategy indicators, not price triggers.
+  if (!/\bMA\s*\d|\bEMA\s*\d|\bSMA\s*\d/i.test(normalized)) {
+    const priceResult = matchPriceCondition(normalized);
+    if (priceResult) {
+      // Extract symbol separately — matchers don't return it
+      const symbol = extractSymbol(normalized) || undefined;
+      log.info('[NLParser] PriceCondition matched:', priceResult.condition);
+      return {
+        success: true,
+        name: priceResult.name,
+        description: priceResult.description,
+        strategy: { type: 'price_condition', params: {} },
+        condition: { ...priceResult.condition, symbol },
+        symbol,
+      };
+    }
+  }
 
   // Try each pattern matcher
   const matchers = [matchMACross, matchRSI, matchMACD, matchMomentum, matchBollinger];
 
   for (const matcher of matchers) {
-    const result = matcher(normalized);
+    const result = matcher(normalized) as MatcherResult | null;
     if (result) {
       const symbol = result.symbol || extractSymbol(normalized);
       extractRiskManagement(normalized, result.strategy);
