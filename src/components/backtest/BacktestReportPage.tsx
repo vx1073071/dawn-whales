@@ -398,6 +398,46 @@ export default function BacktestReportPage() {
                   <div className="text-lg font-bold text-white">{result.maxConsecutiveWins} / {result.maxConsecutiveLosses}</div>
                 </div>
               </div>
+
+              {/* Phase 4.1: Auto-Exec Bridge */}
+              <div className="p-4 bg-[#C9A046]/10 border border-[#C9A046]/30 rounded-xl">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-medium text-[#D4A853]">🤖 设置自动执行</div>
+                    <div className="text-xs text-gray-400 mt-1">
+                      将此策略转为定时自动执行任务（每日盘前/每小时），支持 dry-run 模式先模拟验证
+                    </div>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      try {
+                        const taskName = `Auto-${result.strategyName || result.targetCode}`;
+                        const resp = await (window as any).api?.cron?.schedule({
+                          name: taskName,
+                          strategyId: result.strategyId,
+                          schedule: { type: 'cron', expression: '0 21 * * 1-5' },
+                          options: { dryRun: true, enabled: true },
+                        });
+                        if (resp?.success) {
+                          alert(`✅ 定时任务已创建: ${taskName}\n工作日21:00自动执行（dry-run）`);
+                        } else {
+                          alert(`❌ 创建失败: ${resp?.error || '未知错误'}`);
+                        }
+                      } catch (err: any) {
+                        alert('❌ CronScheduler 尚未初始化，请先启动应用');
+                      }
+                    }}
+                    className="px-4 py-2 bg-[#C9A046]/20 hover:bg-[#C9A046]/30 border border-[#C9A046]/30 rounded-lg text-sm text-[#D4A853] font-medium transition-colors shrink-0"
+                  >
+                    ⚡ Set Auto Schedule
+                  </button>
+                </div>
+                <div className="flex gap-4 mt-3 text-xs text-gray-500">
+                  <span>⏰ 工作日 21:00 (美东 9:00AM)</span>
+                  <span>🔒 Dry-run 模式 (模拟下单)</span>
+                  <span>📋 可在 Settings → Scheduler 管理</span>
+                </div>
+              </div>
             </div>
           )}
 

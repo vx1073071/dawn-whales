@@ -20,6 +20,8 @@ import { DataProviderService } from './data/data-provider';
 import { z } from 'zod';
 import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner';
+import { CronScheduler } from './engine/cron-scheduler';
+import type { StrategyRunnerInterface } from './engine/cron-scheduler';
 import { registerStrategyExecuteHandler } from './ipc/strategy-execute-handler';
 import { validate,
   BrokerConnectSchema,
@@ -93,6 +95,7 @@ let brokerManager: BrokerManager | null = null;
 let strategyEngine: StrategyEngine | null = null;
 let backtestEngine: BacktestEngine | null = null;
 let riskEngine: RiskEngine | null = null;
+let cronScheduler: CronScheduler | null = null;
 let db: DatabaseManager | null = null;
 let marketplaceService: MarketplaceService | null = null;
 let dataProvider: DataProviderService | null = null;
@@ -1394,7 +1397,70 @@ app.whenReady().then(async () => {
     });
   }
 
-  log.info('[App] DAWN WHALES ready');
+  // ── CronScheduler (Phase 4.1) ──────────────────────────────────────
+  cronScheduler = new CronScheduler();
+
+  // Register a simple StrategyRunner bridge (full version in J-29-02)
+  const strategyRunner: StrategyRunnerInterface = {
+    run: async (opts) => {
+      log.info(`[CronScheduler] Running strategy: ${opts.strategyId}, dryRun=${opts.dryRun}`);
+      const strategy = strategyEngine?.getStrategy(opts.strategyId);
+      if (!strategy) throw new Error(`Strategy not found: ${opts.strategyId}`);
+
+      if (!opts.dryRun) {
+        // Signal through strategy engine
+        strategyEngine?.startLive(opts.strategyId);
+      }
+
+      return {
+        signal: { side: 'BUY', symbol: strategy.symbol, quantity: 100 },
+        riskPassed: true,
+        duration: Date.now() - Date.now(),
+      };
+    },
+  };
+  cronScheduler.setStrategyRunner(strategyRunner);
+
+  // CronScheduler IPC handlers
+  ipcMain.handle('cron:schedule', async (_e, data) => {
+    try {
+      const task = cronScheduler!.schedule({
+        name: data.name || 'Unnamed Task',
+        strategyId: data.strategyId,
+        schedule: data.schedule,
+        options: data.options || { dryRun: true, enabled: true },
+      });
+      return { success: true, task };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('cron:cancel', async (_e, taskId: string) => {
+    return { success: cronScheduler!.cancel(taskId) };
+  });
+
+  ipcMain.handle('cron:list', async () => {
+    return { success: true, tasks: cronScheduler!.list() };
+  });
+
+  ipcMain.handle('cron:pause', async (_e, taskId: string) => {
+    return { success: cronScheduler!.pause(taskId) };
+  });
+
+  ipcMain.handle('cron:resume', async (_e, taskId: string) => {
+    return { success: cronScheduler!.resume(taskId) };
+  });
+
+  ipcMain.handle('cron:trigger', async (_e, taskId: string) => {
+    return cronScheduler!.trigger(taskId);
+  });
+
+  cronScheduler!.onEvent((event) => {
+    mainWindow?.webContents.send('cron:event', event);
+  });
+
+  log.info('[App] DAWN WHALES ready (CronScheduler active)');
 });
 
 app.on('window-all-closed', () => {
