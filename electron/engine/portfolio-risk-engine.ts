@@ -422,7 +422,11 @@ export class PortfolioRiskEngine extends EventEmitterPolyfill {
     let totalLoss = 0;
 
     for (const position of this.portfolio.positions) {
-      const shock = scenario.shocks[position.symbol] ?? 0;
+      // Resolve per-symbol shock first; fall back to wildcard '*' if present
+      let shock = scenario.shocks[position.symbol];
+      if (shock === undefined) {
+        shock = scenario.shocks['*'] ?? 0;
+      }
       const newPrice = position.currentPrice * (1 + shock / 100);
       const impact = (newPrice - position.currentPrice) * position.quantity;
 

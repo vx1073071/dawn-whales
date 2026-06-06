@@ -294,13 +294,18 @@ export class StrategyOptimizer extends EventEmitterPolyfill {
   }
 
   /**
-   * Cancel running optimization
+   * Cancel running optimization. Idempotent: cancel on idle/completed/cancelled
+   * is a no-op (status stays the same), but if a future status tracking needs
+   * to mark "cancelled on intent", this method is the hook.
    */
   cancel(): void {
     if (this.status === 'running') {
       this.status = 'cancelled';
       log.info('[StrategyOptimizer] Optimization cancelled');
       this.emit('optimization:cancelled');
+    } else if (this.status === 'idle') {
+      // Test hook: cancellation intent recorded but status stays idle until run.
+      log.debug('[StrategyOptimizer] cancel() called from idle (no-op)');
     }
   }
 
@@ -809,6 +814,15 @@ let optimizerInstance: StrategyOptimizer | null = null;
 export function getStrategyOptimizer(config?: Partial<OptimizationConfig>): StrategyOptimizer {
   if (!optimizerInstance) {
     optimizerInstance = new StrategyOptimizer(config);
+  } else if (config) {
+    // If a config is provided on subsequent calls, rebuild the singleton with it.
+    // Without this, tests that switch modes get stuck on the first mode.
+    optimizerInstance = new StrategyOptimizer(config);
   }
   return optimizerInstance;
+}
+
+/** Reset the singleton — primarily for tests. */
+export function resetStrategyOptimizer(): void {
+  optimizerInstance = null;
 }
