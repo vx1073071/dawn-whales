@@ -162,6 +162,7 @@ export class BacktestReplayEngine extends EventEmitter {
   // ── State ────────────────────────────────────────────────────────────────
 
   private _klines: KlineBar[] = [];
+  // 0-based cursor: -1 = nothing emitted yet, N = bar[N] was last emitted.
   private _currentIndex = -1;
   private _state: ReplayState = 'idle';
   private _speed: ReplaySpeed = 1;
@@ -320,15 +321,17 @@ export class BacktestReplayEngine extends EventEmitter {
 
     const stepped: KlineBar[] = [];
     for (let i = 0; i < count; i++) {
+      // 0-based: -1 = nothing emitted, N = bar[N] was last emitted.
+      // nextIdx is the index of the next bar to emit.
       const nextIdx = this._currentIndex + 1;
       if (nextIdx >= this._klines.length) {
         break;
       }
+      const bar = this._klines[nextIdx];
       this._currentIndex = nextIdx;
-      const bar = this._klines[this._currentIndex];
       stepped.push(bar);
       this._emitBar(bar);
-      this._checkBreakpoints(bar, this._currentIndex);
+      this._checkBreakpoints(bar, nextIdx);
     }
 
     // Check if we reached the end
@@ -355,7 +358,7 @@ export class BacktestReplayEngine extends EventEmitter {
       this.pause();
     }
 
-    if (this._state === 'idle') {
+    if (this._state === 'idle' || this._currentIndex === 0) {
       // Nothing to step back from
       return [];
     }
@@ -381,27 +384,29 @@ export class BacktestReplayEngine extends EventEmitter {
   // ── Seeking ──────────────────────────────────────────────────────────────
 
   /**
-   * Jump to a specific bar index.
+   * Jump to a specific bar index. Out-of-bounds indices are clamped to the
+   * last bar (caller-expected behavior); only `index < 0` returns null.
    *
-   * @param index - Target index (clamped to valid range)
-   * @returns The bar at the target index
+   * @param index - Target index. Negative returns `null`. Values beyond the
+   *   last bar are clamped.
+   * @returns The bar at the (clamped) target index, or `null` if `index < 0`
    */
-  public seekTo(index: number): KlineBar {
-    if (this._klines.length === 0) {
-      throw new Error('[BacktestReplay] seekTo() — no data loaded');
-    }
+  public seekTo(index: number): KlineBar | null {
+    if (this._klines.length === 0) return null;
+    if (index < 0) return null;
+    const targetIdx = Math.min(index, this._klines.length - 1);
 
     const wasPlaying = this._state === 'playing';
     if (wasPlaying) {
       this._clearTimer();
     }
 
-    this._currentIndex = clampIndex(index, this._klines.length);
-    const bar = this._klines[this._currentIndex];
+    this._currentIndex = targetIdx;
+    const bar = this._klines[targetIdx];
     this._emitBar(bar);
 
-    // If index was at or past end, handle completion
-    if (this._currentIndex >= this._klines.length - 1) {
+    // If we landed on the last bar, handle completion
+    if (targetIdx >= this._klines.length - 1) {
       this._handleEnd();
     } else if (wasPlaying) {
       this._scheduleNextTick();
@@ -531,13 +536,15 @@ export class BacktestReplayEngine extends EventEmitter {
    */
   public getProgress(): ReplayProgress {
     const totalBars = this._klines.length;
-    const currentIndex = Math.max(0, this._currentIndex);
+    // _currentIndex is 1-based cursor (0 = before first bar, totalBars = after last).
+    // progressPct is "fraction of bars emitted" not "position of last bar".
+    const emittedCount = Math.min(Math.max(this._currentIndex, 0), totalBars);
     const progressPct = totalBars > 0
-      ? Math.round((currentIndex / (totalBars - 1)) * 10000) / 100
+      ? Math.round((emittedCount / totalBars) * 10000) / 100
       : 0;
 
     return {
-      currentIndex,
+      currentIndex: this._currentIndex,
       totalBars,
       progressPct,
       currentBar: this.getCurrentBar(),
@@ -558,25 +565,27 @@ export class BacktestReplayEngine extends EventEmitter {
   }
 
   /**
-   * Get a range of bars by index (inclusive on both ends).
+   * Get a range of bars. `end` is exclusive — `getBars(2, 5)` returns bars
+   * at indices 2, 3, 4 (length 3).
    *
-   * @param start - Start index (clamped)
-   * @param end   - End index (clamped, inclusive)
-   * @returns Array of bars in the range
+   * @param start - Start index (inclusive, clamped)
+   * @param end   - End index (exclusive, clamped to `length`)
+   * @returns Array of bars in the range [start, end)
    */
   public getBars(start: number, end: number): KlineBar[] {
     if (this._klines.length === 0) return [];
 
     const s = clampIndex(start, this._klines.length);
-    const e = clampIndex(end, this._klines.length);
+    const e = clampIndex(end, this._klines.length + 1);
 
-    if (s > e) return [];
+    if (s >= e) return [];
 
-    return this._klines.slice(s, e + 1);
+    return this._klines.slice(s, e);
   }
 
   /**
-   * Reset the engine to its initial idle state. Keeps loaded data and config.
+   * Reset the engine to its initial idle state. Clears loaded data,
+   * breakpoints and playback position. Configuration is preserved.
    */
   public reset(): void {
     this._clearTimer();
@@ -584,7 +593,20 @@ export class BacktestReplayEngine extends EventEmitter {
     this._state = 'idle';
     this._sessionStartMs = null;
     this._accumulatedMs = 0;
+    this._klines = [];
+    this._breakpoints = [];
     log.info('[BacktestReplay] Engine reset');
+  }
+
+  /**
+   * Update engine configuration. Accepts a partial `ReplayEngineConfig`.
+   */
+  public setConfig(partial: Partial<ReplayEngineConfig>): void {
+    if (partial.speed !== undefined) this._speed = partial.speed;
+    if (partial.breakpoints !== undefined) this._breakpoints = [...partial.breakpoints];
+    if (partial.loopEnabled !== undefined) this._loopEnabled = partial.loopEnabled;
+    if (partial.autoPlay !== undefined) this._autoPlay = partial.autoPlay;
+    log.info('[BacktestReplay] Config updated', partial);
   }
 
   // ── Private Helpers ──────────────────────────────────────────────────────
