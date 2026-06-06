@@ -8,6 +8,8 @@
  */
 
 import log from 'electron-log';
+import { EventEmitter } from 'events';
+
 // Minimal EventEmitter polyfill for jsdom compatibility
 class TypedEventEmitter {
   private listeners: Record<string, Function[]> = {};
