@@ -58,6 +58,8 @@ export default defineConfig({
       'tests/jvs-118-signal-agg-standalone.ts',
       'tests/jvs-119-orderbook-standalone.ts',
       'tests/jvs-21-22-23-standalone.ts',
+      'tests/j-38-01-kline-replay.test.ts',
+      'tests/j-38-02-multi-timeframe.test.ts',
       // Import engine classes with `extends EventEmitter` — now resolved via events-shim.ts
       // All engine tests now pass with the shim!
       // 'tests/closed-loop-executor.test.ts',

@@ -109,6 +109,8 @@ export interface ExecutorConfig {
   maxHoldingMinutes: number;
   maxDailyLossPct: number;
   maxDrawdownPct: number;
+  /** Simulation failure rate (0..1). 0 = always succeed (for tests). Default 0.05. */
+  simulationFailureRate?: number;
 }
 
 export interface ExecutionResult {
@@ -190,6 +192,9 @@ export class ClosedLoopExecutor extends EventEmitter {
       maxHoldingMinutes: 0,
       maxDailyLossPct: 3,
       maxDrawdownPct: 15,
+      // Default 0 for deterministic behavior. Production may opt-in to realistic
+      // failure simulation by setting this > 0 in config.
+      simulationFailureRate: 0,
       ...config,
     };
     this.enabled = this.config.enabled;
@@ -307,7 +312,8 @@ export class ClosedLoopExecutor extends EventEmitter {
   }
 
   private simulateOrderExecution(order: Order, loop: LoopUnit): void {
-    const success = Math.random() > 0.05;
+    const failureRate = this.config.simulationFailureRate ?? 0.05;
+    const success = Math.random() > failureRate;
 
     if (success) {
       order.status = 'filled';
