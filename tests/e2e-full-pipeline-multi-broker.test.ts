@@ -73,7 +73,7 @@ class MockStrategyEngine {
   signals: Signal[] = [];
 
   createStrategy(config: { name: string; symbol: string; brokerId: string }): StrategyConfig {
-    const id = `S-${Date.now()}`;
+    const id = `S-${Date.now()}-${this.strategies.size}`;
     const s: StrategyConfig = { id, name: config.name, symbol: config.symbol, brokerId: config.brokerId, status: 'idle', orders: [] };
     this.strategies.set(id, s);
     return s;
@@ -171,7 +171,11 @@ class MockRiskEngine {
     return { passed, checks };
   }
 
-  getTotalAssets(): number { return this.totalAssets; }
+  getTotalAssets(): number {
+    let total = 0;
+    for (const v of this.brokerAssets.values()) total += v;
+    return total;
+  }
   getBrokerAssets(brokerId: string): number { return this.brokerAssets.get(brokerId) || 0; }
   addBlacklist(code: string): void { this.blacklist.push(code); }
 }
@@ -361,7 +365,7 @@ describe('Full Pipeline E2E — Multi-Broker', () => {
       const total = pipeline.riskEngine.getTotalAssets();
 
       expect(totalFutu + totalMoomoo + totalIB).toBe(total);
-      expect(total).toBe(24_090_000); // 17.6M + 1.49M + 5M
+      expect(total).toBe(17_600_000 + 1_490_000 + 5_000_000); // 24.09M
     });
   });
 
