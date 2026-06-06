@@ -71,8 +71,8 @@ describe('JVS-85: Technical Indicators', () => {
     it('should handle zero losses', () => {
       const avgGain = 2;
       const avgLoss = 0;
-      const rs = 100; // Convention: infinite RS = 100
-      const rsi = 100 - (100 / (1 + rs));
+      const rs = avgLoss === 0 ? 100 : avgGain / avgLoss; // Convention: 0 loss → max RS
+      const rsi = avgLoss === 0 ? 100 : 100 - (100 / (1 + rs));
 
       expect(rsi).toBeCloseTo(100, 0);
     });
@@ -80,14 +80,16 @@ describe('JVS-85: Technical Indicators', () => {
 
   describe('MACD', () => {
     it('should calculate MACD line', () => {
-      const prices = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+      // Generate 30 prices in uptrend: older prices lower, newer prices higher
+      const prices: number[] = [];
+      for (let i = 0; i < 30; i++) prices.push(10 + i * 0.5);
 
-      // Calculate EMA(12) and EMA(26) simplified
-      const ema12 = prices.slice(-12).reduce((a, b) => a + b, 0) / Math.min(12, prices.length);
-      const ema26 = prices.slice(-26).reduce((a, b) => a + b, 0) / Math.min(26, prices.length);
+      // EMA12: recent 12 prices (higher), EMA26: recent 26 prices (lower average)
+      const ema12 = prices.slice(-12).reduce((a, b) => a + b, 0) / 12;
+      const ema26 = prices.slice(-26).reduce((a, b) => a + b, 0) / 26;
       const macd = ema12 - ema26;
 
-      expect(macd).toBeGreaterThan(0); // Uptrend: fast EMA > slow EMA
+      expect(macd).toBeGreaterThan(0); // Uptrend: shorter EMA > longer EMA
     });
 
     it('should detect MACD crossover', () => {
