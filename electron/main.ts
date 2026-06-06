@@ -22,6 +22,8 @@ import { WalkForwardEngine } from './engine/walk-forward';
 import { ParameterScanner } from './engine/parameter-scanner';
 import { CronScheduler } from './engine/cron-scheduler';
 import type { StrategyRunnerInterface } from './engine/cron-scheduler';
+import { ConditionWatcher } from './engine/condition-watcher';
+import type { QuoteSnapshot, ConditionRule } from './engine/condition-watcher';
 import { registerStrategyExecuteHandler } from './ipc/strategy-execute-handler';
 import { validate,
   BrokerConnectSchema,
@@ -96,6 +98,7 @@ let strategyEngine: StrategyEngine | null = null;
 let backtestEngine: BacktestEngine | null = null;
 let riskEngine: RiskEngine | null = null;
 let cronScheduler: CronScheduler | null = null;
+let conditionWatcher: ConditionWatcher | null = null;
 let db: DatabaseManager | null = null;
 let marketplaceService: MarketplaceService | null = null;
 let dataProvider: DataProviderService | null = null;
@@ -1460,7 +1463,65 @@ app.whenReady().then(async () => {
     mainWindow?.webContents.send('cron:event', event);
   });
 
-  log.info('[App] DAWN WHALES ready (CronScheduler active)');
+  // ── ConditionWatcher (Phase 4.2) ──────────────────────────────────
+  conditionWatcher = new ConditionWatcher();
+  conditionWatcher.setStrategyRunner(strategyRunner);
+  conditionWatcher.startCleanup();
+
+  // Wire quote push to ConditionWatcher
+  const originalQuoteHandler = quotePushHandler;
+  // Override to also feed ConditionWatcher
+  const enhancedHandler = (quotes: any[]) => {
+    originalQuoteHandler(quotes);
+    for (const q of quotes) {
+      conditionWatcher?.processQuote({
+        symbol: q.code || q.symbol,
+        price: q.price || q.lastPrice || 0,
+        bid: q.bid || 0,
+        ask: q.ask || 0,
+        volume: q.volume || 0,
+        timestamp: Date.now(),
+        source: q.source || 'futu',
+      });
+    }
+  };
+  if (brokerManager) {
+    brokerManager.clearCallbacks();
+    brokerManager.onQuotePush(enhancedHandler);
+  }
+
+  // ConditionWatcher IPC handlers
+  ipcMain.handle('condition:addRule', async (_e, rule: any) => {
+    try {
+      const r = conditionWatcher!.addRule(rule);
+      return { success: true, rule: r };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  ipcMain.handle('condition:removeRule', async (_e, ruleId: string) => {
+    return { success: conditionWatcher!.removeRule(ruleId) };
+  });
+
+  ipcMain.handle('condition:setEnabled', async (_e, ruleId: string, enabled: boolean) => {
+    return { success: conditionWatcher!.setEnabled(ruleId, enabled) };
+  });
+
+  ipcMain.handle('condition:listRules', async () => {
+    return { success: true, rules: conditionWatcher!.listRules() };
+  });
+
+  ipcMain.handle('condition:getRule', async (_e, ruleId: string) => {
+    return { success: true, rule: conditionWatcher!.getRule(ruleId) };
+  });
+
+  ipcMain.handle('condition:resetDaily', async () => {
+    conditionWatcher!.resetDailyCounts();
+    return { success: true };
+  });
+
+  log.info('[App] DAWN WHALES ready (CronScheduler + ConditionWatcher active)');
 });
 
 app.on('window-all-closed', () => {
