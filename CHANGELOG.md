@@ -1,5 +1,17 @@
 ﻿# DAWN WHALES Changelog
 
+## [0.11.0] - 2026-06-07
+
+### Sprint 2 Phase 6.2 Complete (R45) — PWA+移动端+数据可视化
+
+**Tests**: 2596 → 2650+ passed / 0 failed (160 files) — 10.2× growth
+**Build**: 0 errors, 0 warnings
+**TSC**: 0 errors
+**Stability**: 5 轮 0 fail 验证
+**Release**: v0.11.0 GitHub Release (含 .exe, Phase 6.2 产品化)
+
+(待 R45 完成后填入)
+
 ## [0.10.0] - 2026-06-07
 
 ### Sprint 2 Phase 6.0 Complete (R44) — 收官+AI+v0.10.0
