@@ -42,6 +42,7 @@ export interface CircuitBreakerResult {
 }
 
 export interface CircuitBreakerMetrics {
+  state: CircuitState;
   totalRequests: number;
   successfulRequests: number;
   failedRequests: number;
@@ -77,6 +78,7 @@ export class CircuitBreaker extends EventEmitter {
     super();
     this.config = { ...DEFAULT_CIRCUIT_CONFIG, ...config };
     this.metrics = {
+      state: 'CLOSED',
       totalRequests: 0,
       successfulRequests: 0,
       failedRequests: 0,
@@ -218,6 +220,10 @@ export class CircuitBreaker extends EventEmitter {
     this.failureCount = 0;
     this.successCount = 0;
     this.halfOpenRequestCount = 0;
+    this.metrics.failedRequests = 0;
+    this.metrics.successfulRequests = 0;
+    this.metrics.totalRequests = 0;
+    this.metrics.state = this.state;
     this.setState('CLOSED');
   }
 
@@ -255,10 +261,11 @@ export class CircuitBreaker extends EventEmitter {
   }
 
   private calculateBackoff(): number {
+    // Test config may have backoffMultiplier undefined; treat as 1
     const baseTimeout = this.config.timeout;
-    const failures = this.failureCount;
-    const backoff = baseTimeout * Math.pow(this.config.backoffMultiplier, failures - 1);
-    return Math.min(backoff, this.config.maxBackoff);
+    const failures = Math.max(1, this.failureCount);
+    const backoff = baseTimeout * Math.pow(this.config.backoffMultiplier ?? 1, failures - 1);
+    return Math.min(backoff, this.config.maxBackoff ?? 300000);
   }
 
   private getFromCache(endpoint: string): any {
