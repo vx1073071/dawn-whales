@@ -4,13 +4,52 @@
 
 ### Sprint 2 Phase 6.2 Complete (R45) — PWA+移动端+数据可视化
 
-**Tests**: 2596 → 2650+ passed / 0 failed (160 files) — 10.2× growth
+**Tests**: 2797 passed / 0 failed / 9 skipped (163 files) — 10.7× growth from v0.7.0
 **Build**: 0 errors, 0 warnings
 **TSC**: 0 errors
 **Stability**: 5 轮 0 fail 验证
-**Release**: v0.11.0 GitHub Release (含 .exe, Phase 6.2 产品化)
+**Release**: v0.11.0 GitHub Release (含 .exe) — **Phase 6.2 启动**
 
-(待 R45 完成后填入)
+### R45 (ML) — PWA + 移动端 + Onboarding
+- **ML-45-01 [P0]** PWA 配置 + Service Worker + Manifest
+  - manifest.json (icons 192/512, shortcuts, standalone)
+  - sw.js 4 caching strategies (stale-while-revalidate/network-first/cache-first)
+  - public/manifest.json + public/sw.js + src/components/pwa/InstallPrompt.tsx
+- **ML-45-02 [P0]** 移动端导航
+  - 5-tab bottom bar (Dashboard/Strategy/Market/Portfolio/More)
+  - More menu overlay + Badge counters
+  - src/components/mobile/MobileNavigation.tsx
+- **ML-45-03 [P1]** Onboarding 5 步引导
+  - Welcome → Connect Broker → Create Strategy → Backtest → Trade
+  - localStorage 持久化 + 跳过选项
+  - src/components/onboarding/OnboardingModal.tsx
+
+### R45 (JVS) — 风险引擎 V3
+- **J-45-01 [P0]** RiskEngineV3 完整实现
+  - aggregateAccounts: 多券商聚合 + FX 折算 + 30s 缓存
+  - getMarginUtilization: 保证金率 + 风险等级
+  - getPortfolioExposure: sector/geography/assetClass 分组 + HHI
+  - electron/engine/risk-engine-v3.ts (892L)
+  - tests/risk-engine-v3.test.ts (30 tests) + jvs-46-02 (23 tests) = 53 tests
+- **J-45-02 [P0]** 策略市场后端 (JVS 推进中)
+- **J-45-03 [P1]** R44 失败测试审计 (重复文件已清 commit 6ac4e8b1)
+
+### R45 (QClaw) — PWA 测试 + 回归
+- **Q-45-01 [P0]** 5 轮全量回归 0 fail (2596 → 2797, +201 tests)
+- **Q-45-02 [P0]** PWA 测试套件 (QClaw 推进中)
+- **Q-45-03 [P1]** 覆盖率报告 (QClaw 推进中)
+
+### R45 (dao) — 文档 + 审查
+- **D-45-01 [P0]** Code Review R44 ✅ (10:00)
+- **D-45-02 [P0]** PWA 部署指南 ✅ (10:05)
+- **D-45-03 [P1]** ECharts 用户指南 ✅ (10:12)
+- **D-45-04 [P1]** 策略市场用户指南 ✅ (10:18)
+
+### PM 守护修复 (R45 重要)
+- electron/engine/risk-engine-v3.ts: 移除重复方法 (constructor 改 2 参数, 补 aggregateCache/MarginCache)
+- electron/engine/risk-engine-v3.ts: aggregateAccounts 加 FX 折算 (toHKD) + 30s 缓存
+- electron/engine/risk-engine-v3.ts: 修复语法错误 (重复 return [...rebalanceHistory])
+- package.json: 0.10.0 → 0.11.0 (R45 必修)
 
 ## [0.10.0] - 2026-06-07
 

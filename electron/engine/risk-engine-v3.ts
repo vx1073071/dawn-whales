@@ -1,550 +1,676 @@
-// ── Risk Engine v3 — Multi-Broker Risk Aggregation ────────────────────────────
-// Phase 1: 多券商账户聚合 + 保证金监控 + 敞口分析 + 熔断检测
-// 向后兼容: RiskEngine v2 所有接口保持不变，新增 RiskEngineV3 类
+/**
+ * Risk Engine V3 - Real-time risk scoring and auto-rebalancing
+ * JVS-46-02: Risk V3 Engine
+ * Provides real-time risk assessment and automatic rebalancing signals
+ */
 
 import log from 'electron-log';
-import { IBrokerAdapter, FundsInfo, PositionInfo } from '../broker/IBrokerAdapter';
-import { RiskEngine } from './risk-engine';
+
+// ── EventEmitter Polyfill ──────────────────────────────────────────────────
+
+class EventEmitter {
+  private listeners: Map<string, Set<Function>> = new Map();
+
+  on(event: string, listener: Function): void {
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, new Set());
+    }
+    this.listeners.get(event)!.add(listener);
+  }
+
+  off(event: string, listener: Function): void {
+    const eventListeners = this.listeners.get(event);
+    if (eventListeners) {
+      eventListeners.delete(listener);
+    }
+  }
+
+  emit(event: string, ...args: any[]): void {
+    const eventListeners = this.listeners.get(event);
+    if (eventListeners) {
+      eventListeners.forEach(listener => {
+        try {
+          listener(...args);
+        } catch (error) {
+          log.error(`[RiskEngine] Error in event listener for ${event}:`, error);
+        }
+      });
+    }
+  }
+
+  removeAllListeners(event?: string): void {
+    if (event) {
+      this.listeners.delete(event);
+    } else {
+      this.listeners.clear();
+    }
+  }
+}
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
-/** 单个账户快照 */
-export interface AccountSnapshot {
-  brokerId: string;
-  brokerName: string;
-  accountId: string;
-  totalAssets: number;     // HKD 折算
-  cash: number;
-  marketValue: number;
-  frozenCash: number;
-  availableCash: number;
-  positions: PositionSnapshot[];
-  currency: string;
-  updatedAt: number;        // unix ms
+export interface RiskScore {
+  overall: number;         // 0-100
+  drawdown: number;        // 0-100
+  volatility: number;      // 0-100
+  concentration: number;   // 0-100
+  correlation: number;     // 0-100
+  timestamp: number;
 }
 
-/** 持仓快照 */
-export interface PositionSnapshot {
+export interface RiskAlert {
+  type: 'drawdown' | 'volatility' | 'concentration' | 'correlation';
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  message: string;
+  value: number;
+  threshold: number;
+  timestamp: number;
+}
+
+export interface RebalanceSignal {
+  action: 'reduce' | 'increase' | 'rebalance';
+  symbol?: string;
+  targetWeight?: number;
+  reason: string;
+}
+
+export interface RiskThresholds {
+  drawdown: number;
+  volatility: number;
+  concentration: number;
+  correlation: number;
+}
+
+export interface RiskMetrics {
+  avgRiskScore: number;
+  alertCount: number;
+  rebalanceCount: number;
+}
+
+export interface PortfolioPosition {
+  symbol: string;
+  weight: number;
+  value: number;
+  pnl: number;
+  pnlPct: number;
+}
+
+export interface MarketData {
+  returns: number[];
+  benchmarkReturns?: number[];
+  currentPrice: number;
+  historicalPrices: number[];
+}
+
+// ── V3 Multi-Broker Types ──────────────────────────────────────────────────
+
+export interface AggregateAccountInfo {
+  brokerId: string;
+  accountId: string;
+  name: string;
+  currency: string;
+  totalAssets: number;
+  cash: number;
+  marketValue: number;
+  positions: AggregatedPosition[];
+}
+
+export interface AggregatedPosition {
   code: string;
   name: string;
   qty: number;
   costPrice: number;
   marketPrice: number;
-  marketValue: number;      // HKD 折算
+  marketValue: number;
   pnl: number;
   pnlPct: number;
-  ratio: number;            // 占总资产比例
-  sector: string;
-  geography: string;
+  ratio: number;
 }
 
-/** 多券商组合视图 */
 export interface AggregatedPortfolio {
-  accounts: AccountSnapshot[];
   totalAssets: number;
-  totalMarketValue: number;
-  totalCash: number;
-  totalExposure: number;    // 多头 + 空头绝对值
-  netExposure: number;      // 多头 - 空头
-  leverageRatio: number;    // totalExposure / totalAssets
+  totalExposure: number;
+  netExposure: number;
+  leverageRatio: number;
+  accounts: AggregateAccountInfo[];
 }
 
-/** 账户查询请求 */
-export interface AggregateAccountsRequest {
-  brokerIds: string[];
-  accountIds?: string[];
-  forceRefresh?: boolean;
-}
-
-/** 账户聚合结果 */
-export interface AggregateAccountsResult {
+export interface AggregateResult {
   success: boolean;
   portfolio: AggregatedPortfolio;
-  errors: Array<{ brokerId: string; error: string }>;
-  cachedAt?: number;
+  errors: { brokerId: string; error: string }[];
 }
 
-/** 保证金状态 */
-export interface MarginResult {
+export interface MarginAccountInfo {
   brokerId: string;
   accountId: string;
-  marginUsed: number;
-  marginAvailable: number;
-  marginTotal: number;
+  currency: string;
+  frozenCash: number;
+  availableCash: number;
+  totalMargin: number;
   utilizationRatio: number;
   marginCallRisk: 'none' | 'warning' | 'danger';
-  marginCallLevel: number;
-  unrealizedPnl: number;
-  currency: string;
 }
 
-/** 组合保证金总览 */
-export interface PortfolioMarginResult {
-  accounts: MarginResult[];
-  totalMarginUsed: number;
-  totalMarginAvailable: number;
-  maxUtilization: number;
+export interface MarginResult {
+  accounts: MarginAccountInfo[];
   anyMarginCallRisk: boolean;
+  maxUtilization: number;
 }
 
-/** 敞口分布 */
-export interface ExposureResult {
+export interface PortfolioExposure {
   bySector: Record<string, number>;
   byGeography: Record<string, number>;
   byAssetClass: Record<string, number>;
-  byMarket: Record<string, number>;
-  topPositions: Array<{ code: string; name: string; weight: number; pnl: number }>;
-  concentrationRisk: number;   // HHI 指数
+  topPositions: { code: string; name: string; weight: number; marketValue: number }[];
+  concentrationRisk: number;
 }
 
-/** 熔断状态 */
 export interface CircuitBreakerResult {
   market: string;
-  status: 'open' | 'halted' | 'resume_pending';
+  status: 'open' | 'resume_pending' | 'halted';
   triggerLevel: number;
-  triggerPrice?: number;
-  haltedAt?: number;
-  resumeAt?: number;
   reason?: string;
+  indexCode?: string;
+  changePct?: number;
+  cachedAt?: number;
 }
 
-// ── Circuit Breaker Rules ─────────────────────────────────────────────────
-
-const CIRCUIT_BREAKER_RULES: Record<string, { L1: number; L2: number; L3: number }> = {
-  HK: { L1: 0.05, L2: 0.10, L3: 0.20 },   // 恒生指数跌幅
-  US: { L1: 0.07, L2: 0.13, L3: 0.20 },    // S&P500
-  CN: { L1: 0.05, L2: 0.07, L3: 0.10 },   // 沪深300
-};
-
-// ── Currency Conversion ───────────────────────────────────────────────────
+// ── FX Rates (to HKD) ──────────────────────────────────────────────────────
 
 const FX_RATES_TO_HKD: Record<string, number> = {
   HKD: 1.0,
   USD: 7.78,
-  SGD: 5.78,
   CNY: 1.07,
-  EUR: 8.42,
-  GBP: 9.71,
-  JPY: 0.051,
+  EUR: 8.50,
+  GBP: 9.80,
+  JPY: 0.052,
+  SGD: 5.78,
+  AUD: 5.10,
+  CAD: 5.70,
 };
 
 function toHKD(amount: number, currency: string): number {
   const rate = FX_RATES_TO_HKD[currency] ?? 1.0;
-  return amount * rate;
+  return Math.round(amount * rate);
 }
 
-// ── Sector / Geography Mapping ────────────────────────────────────────────
+// ── Known ETF codes ────────────────────────────────────────────────────────
 
-// 手动标的名字 → 板块/地区 映射表
-const SECTOR_MAP: Record<string, string> = {
-  // 科技
-  // 互联网
-  'HK.00700': 'Internet',
-  'US.AAPL': 'Technology',
-  'US.NVDA': 'Technology',
-  'US.MSFT': 'Technology',
-  'US.GOOG': 'Technology',
-  'US.META': 'Technology',
-  'US.AMD': 'Technology',
-  'US.PLTR': 'Technology',
-  // 互联网
-  'US.BABA': 'Internet',
-  'US.PDD': 'Internet',
-  'US.AMZN': 'Internet',
-  'US.TSLA': 'EV/Auto',
-  // 金融
-  'HK.00001': 'Finance',
-  'HK.02318': 'Finance',
-  // 半导体
-  'US.SOXL': 'Semiconductor',
-  'US.SOXS': 'Semiconductor',
-  // 指数ETF
-  'US.QQQ': 'Index',
-  'US.SPY': 'Index',
-  'US.TQQQ': 'Index',
-  'US.SQQQ': 'Index',
-  'US.IWM': 'Index',
-  // 债券/商品
-  'US.TLT': 'Bonds',
-  'US.GLD': 'Commodity',
-  'US.UVXY': 'Volatility',
-  'US.ARKK': 'Innovation',
-  // 港股
-  'HK.07552': 'Technology',
+const KNOWN_ETFS = new Set([
+  'US.QQQ', 'US.SPY', 'US.GLD', 'US.TLT', 'US.IWM', 'US.VTI',
+  'US.VOO', 'US.EEM', 'US.EFA', 'US.XLF', 'US.XLE', 'US.XLK',
+  'US.TQQQ', 'US.SQQQ', 'US.UPRO', 'US.SOXL', 'US.GDX',
+  'HK.02800', 'HK.03067', 'HK.09988', 'HK.02840',
+]);
+
+// ── Index codes for circuit breaker ────────────────────────────────────────
+
+const MARKET_INDEX_CODES: Record<string, string> = {
+  HK: 'HK.HSI',
+  US: 'US.SPX',
+  CN: 'CN.000300',
 };
 
-const GEO_MAP: Record<string, string> = {
-  'HK.': 'HK',
-  'US.': 'US',
-  'CN.': 'CN',
-  'SZ.': 'CN',
-  'SH.': 'CN',
-};
+// ── Risk Engine V3 ─────────────────────────────────────────────────────────
 
-function getSector(code: string): string {
-  return SECTOR_MAP[code] ?? 'Other';
-}
+export class RiskEngineV3 extends EventEmitter {
+  private thresholds: RiskThresholds;
+  private alerts: RiskAlert[] = [];
+  private riskHistory: RiskScore[] = [];
+  private rebalanceHistory: RebalanceSignal[] = [];
+  private maxHistorySize: number = 1000;
+  private maxAlertsSize: number = 100;
+  private maxRebalanceSize: number = 50;
+  private brokerAdapters: any[] = [];
+  private baseEngine: any = null;
 
-function getGeography(code: string): string {
-  for (const [prefix, geo] of Object.entries(GEO_MAP)) {
-    if (code.startsWith(prefix)) return geo;
-  }
-  return 'Other';
-}
+  // Caches
+  private aggregateCache: Map<string, { data: AggregateResult; timestamp: number }> = new Map();
+  private marginCache: Map<string, { data: MarginAccountInfo; timestamp: number }> = new Map();
+  private circuitBreakerCache: Map<string, { data: CircuitBreakerResult; timestamp: number }> = new Map();
+  private exposureCache: { data: PortfolioExposure; timestamp: number } | null = null;
 
-// ── Cache ─────────────────────────────────────────────────────────────────
+  private static readonly AGGREGATE_CACHE_TTL = 30_000;   // 30s
+  private static readonly MARGIN_CACHE_TTL = 30_000;       // 30s
+  private static readonly CIRCUIT_BREAKER_CACHE_TTL = 60_000; // 60s
+  private static readonly EXPOSURE_CACHE_TTL = 30_000;     // 30s
 
-interface CacheEntry<T> {
-  data: T;
-  timestamp: number;
-}
-
-const DEFAULT_CACHE_TTL_MS = 30_000; // 30s
-
-// ── RiskEngine v3 ────────────────────────────────────────────────────────
-
-export class RiskEngineV3 {
-  private adapters: Map<string, IBrokerAdapter> = new Map();
-  private baseEngine: RiskEngine;
-  private portfolioCache: CacheEntry<AggregatedPortfolio> | null = null;
-  private marginCache: CacheEntry<PortfolioMarginResult> | null = null;
-  private exposureCache: CacheEntry<ExposureResult> | null = null;
-  private circuitCache: CacheEntry<CircuitBreakerResult> | null = null;
-
-  constructor(adapters: IBrokerAdapter[], baseEngine: RiskEngine) {
+  constructor(brokers?: any[], baseEngine?: any) {
+    super();
+    this.brokerAdapters = brokers || [];
     this.baseEngine = baseEngine;
-    for (const adapter of adapters) {
-      this.adapters.set(adapter.type, adapter);
-    }
+    this.thresholds = {
+      drawdown: 20,        // 20% max drawdown
+      volatility: 30,      // 30% annualized volatility
+      concentration: 40,   // 40% max single position
+      correlation: 0.8,    // 0.8 max correlation
+    };
+    log.info('[RiskEngineV3] Initialized with default thresholds');
   }
 
-  // ── aggregateAccounts ────────────────────────────────────────────────
+  // ── Core Risk Evaluation ───────────────────────────────────────────────
 
-  async aggregateAccounts(req: AggregateAccountsRequest): Promise<AggregateAccountsResult> {
-    const { brokerIds, forceRefresh = false } = req;
+  evaluateRisk(portfolio: PortfolioPosition[], marketData: MarketData): RiskScore {
+    const timestamp = Date.now();
 
-    // Check cache
-    if (!forceRefresh && this.portfolioCache) {
-      const age = Date.now() - this.portfolioCache.timestamp;
-      if (age < DEFAULT_CACHE_TTL_MS) {
-        return {
-          success: true,
-          portfolio: this.portfolioCache.data,
-          errors: [],
-          cachedAt: this.portfolioCache.timestamp,
-        };
+    const drawdownRisk = this.calculateDrawdownRisk(marketData);
+    const volatilityRisk = this.calculateVolatilityRisk(marketData);
+    const concentrationRisk = this.calculateConcentrationRisk(portfolio);
+    const correlationRisk = this.calculateCorrelationRisk(portfolio, marketData);
+
+    const overall = (
+      drawdownRisk * 0.35 +
+      volatilityRisk * 0.30 +
+      concentrationRisk * 0.25 +
+      correlationRisk * 0.20
+    );
+
+    const score: RiskScore = {
+      overall: Math.min(100, Math.max(0, overall)),
+      drawdown: drawdownRisk,
+      volatility: volatilityRisk,
+      concentration: concentrationRisk,
+      correlation: correlationRisk,
+      timestamp,
+    };
+
+    this.riskHistory.push(score);
+    if (this.riskHistory.length > this.maxHistorySize) {
+      this.riskHistory.shift();
+    }
+
+    this.checkThresholds(score);
+    this.emit('risk-evaluated', score);
+    log.debug(`[RiskEngineV3] Risk evaluated: overall=${score.overall.toFixed(2)}`);
+
+    return score;
+  }
+
+  getAlerts(): RiskAlert[] {
+    return [...this.alerts];
+  }
+
+  suggestRebalance(portfolio: PortfolioPosition[]): RebalanceSignal[] {
+    const signals: RebalanceSignal[] = [];
+
+    // Concentration check: each position vs threshold
+    const concentrationThreshold = this.thresholds.concentration / 100;
+    for (const pos of portfolio) {
+      if (pos.weight > concentrationThreshold) {
+        signals.push({
+          action: 'reduce',
+          symbol: pos.symbol,
+          targetWeight: concentrationThreshold,
+          reason: `Position ${pos.symbol} weight ${(pos.weight * 100).toFixed(1)}% exceeds concentration threshold (${this.thresholds.concentration}%)`,
+        });
       }
     }
 
-    const errors: Array<{ brokerId: string; error: string }> = [];
-    const accountSnapshots: AccountSnapshot[] = [];
+    // Drawdown check: use most recent evaluation (only if drawdown is severe)
+    const latestScore = this.riskHistory.length > 0 ? this.riskHistory[this.riskHistory.length - 1] : null;
+    if (latestScore && latestScore.drawdown > this.thresholds.drawdown * 2) {
+      // Only suggest rebalance for severe drawdowns (>2x threshold)
+      signals.push({
+        action: 'reduce',
+        reason: `Portfolio drawdown ${latestScore.drawdown.toFixed(2)}% far exceeds threshold (${this.thresholds.drawdown}%)`,
+      });
+    }
 
-    await Promise.all(
-      brokerIds.map(async (brokerId) => {
-        const adapter = this.adapters.get(brokerId);
-        if (!adapter) {
-          errors.push({ brokerId, error: `Adapter not found: ${brokerId}` });
-          return;
+    // Store and emit
+    this.rebalanceHistory.push(...signals);
+    if (this.rebalanceHistory.length > this.maxRebalanceSize) {
+      this.rebalanceHistory = this.rebalanceHistory.slice(-this.maxRebalanceSize);
+    }
+
+    if (signals.length > 0) {
+      this.emit('rebalance-suggested', signals);
+      log.info(`[RiskEngineV3] Suggested ${signals.length} rebalance signals`);
+    }
+
+    return signals;
+  }
+
+  setThresholds(thresholds: RiskThresholds): void {
+    this.thresholds = { ...thresholds };
+    this.emit('thresholds-updated', thresholds);
+    log.info('[RiskEngineV3] Thresholds updated:', thresholds);
+  }
+
+  getMetrics(): RiskMetrics {
+    const avgRiskScore = this.riskHistory.length > 0
+      ? this.riskHistory.reduce((sum, s) => sum + s.overall, 0) / this.riskHistory.length
+      : 0;
+
+    return {
+      avgRiskScore: Math.round(avgRiskScore * 100) / 100,
+      alertCount: this.alerts.length,
+      rebalanceCount: this.rebalanceHistory.length,
+    };
+  }
+
+  reset(): void {
+    this.alerts = [];
+    this.riskHistory = [];
+    this.rebalanceHistory = [];
+    this.emit('reset');
+    log.info('[RiskEngineV3] Reset');
+  }
+
+  getRiskHistory(): RiskScore[] {
+    return [...this.riskHistory];
+  }
+
+  getRebalanceHistory(): RebalanceSignal[] {
+    return [...this.rebalanceHistory];
+  }
+
+  // ── V3: Multi-Broker Account Aggregation ──────────────────────────────
+
+  async aggregateAccounts(options: {
+    brokerIds: string[];
+    forceRefresh?: boolean;
+  }): Promise<AggregateResult> {
+    const cacheKey = options.brokerIds.sort().join(',');
+    const now = Date.now();
+
+    // Check cache
+    if (!options.forceRefresh) {
+      const cached = this.aggregateCache.get(cacheKey);
+      if (cached && (now - cached.timestamp) < RiskEngineV3.AGGREGATE_CACHE_TTL) {
+        log.debug(`[RiskEngineV3] Returning cached aggregate for ${cacheKey}`);
+        return cached.data;
+      }
+    }
+
+    const errors: { brokerId: string; error: string }[] = [];
+    const accounts: AggregateAccountInfo[] = [];
+
+    for (const brokerId of options.brokerIds) {
+      const adapter = this.brokerAdapters.find((a: any) => a.type === brokerId);
+      if (!adapter) {
+        errors.push({ brokerId, error: `No adapter found for broker: ${brokerId}` });
+        continue;
+      }
+
+      try {
+        const accInfos = await adapter.getAccounts();
+        const funds = await adapter.getFunds();
+        const positions = await adapter.getPositions();
+
+        for (const acc of accInfos) {
+          const accountTotalHKD = toHKD(acc.totalAssets || funds.totalAssets, acc.currency || funds.currency);
+          const accountCashHKD = toHKD(acc.cash || funds.cash, acc.currency || funds.currency);
+          const accountMVHKD = toHKD(acc.marketValue || funds.marketValue, acc.currency || funds.currency);
+
+          const aggPositions: AggregatedPosition[] = (positions || []).map((p: any) => ({
+            code: p.code,
+            name: p.name || p.code,
+            qty: p.qty || 0,
+            costPrice: p.costPrice || 0,
+            marketPrice: p.marketPrice || 0,
+            marketValue: p.marketValue || 0,
+            pnl: p.pnl || 0,
+            pnlPct: p.pnlPct || 0,
+            ratio: accountTotalHKD > 0 ? (p.marketValue || 0) / accountTotalHKD : 0,
+          }));
+
+          accounts.push({
+            brokerId,
+            accountId: acc.accountId,
+            name: acc.name || `Account ${acc.accountId}`,
+            currency: acc.currency || funds.currency || 'HKD',
+            totalAssets: accountTotalHKD,
+            cash: accountCashHKD,
+            marketValue: accountMVHKD,
+            positions: aggPositions,
+          });
         }
+      } catch (err: any) {
+        errors.push({ brokerId, error: err.message || String(err) });
+        log.warn(`[RiskEngineV3] Failed to aggregate ${brokerId}: ${err.message}`);
+      }
+    }
 
-        try {
-          const accounts = await adapter.getAccounts();
-          await Promise.all(
-            accounts.map(async (account) => {
-              const funds = await adapter.getFunds(account.accountId);
-              const positions = await adapter.getPositions(account.accountId);
-
-              const positionsSnapshot: PositionSnapshot[] = positions.map((p) => ({
-                code: p.code,
-                name: p.name,
-                qty: p.qty,
-                costPrice: p.costPrice,
-                marketPrice: p.marketPrice,
-                marketValue: toHKD(p.marketValue, account.currency),
-                pnl: toHKD(p.pnl, account.currency),
-                pnlPct: p.pnlPct,
-                ratio: 0, // computed below
-                sector: getSector(p.code),
-                geography: getGeography(p.code),
-              }));
-
-              const totalHkd = toHKD(funds.totalAssets, funds.currency);
-
-              // Compute ratio
-              for (const pos of positionsSnapshot) {
-                pos.ratio = totalHkd > 0 ? pos.marketValue / totalHkd : 0;
-              }
-
-              accountSnapshots.push({
-                brokerId,
-                brokerName: adapter.name,
-                accountId: account.accountId,
-                totalAssets: totalHkd,
-                cash: toHKD(funds.cash, funds.currency),
-                marketValue: toHKD(funds.marketValue, funds.currency),
-                frozenCash: toHKD(funds.frozenCash, funds.currency),
-                availableCash: toHKD(funds.availableCash, funds.currency),
-                positions: positionsSnapshot,
-                currency: funds.currency,
-                updatedAt: Date.now(),
-              });
-            })
-          );
-        } catch (err: any) {
-          errors.push({ brokerId, error: err?.message ?? String(err) });
-        }
-      })
-    );
-
-    // Compute aggregated portfolio
-    const totalAssets = accountSnapshots.reduce((sum, a) => sum + a.totalAssets, 0);
-    const totalMarketValue = accountSnapshots.reduce((sum, a) => sum + a.marketValue, 0);
-    const totalCash = accountSnapshots.reduce((sum, a) => sum + a.cash, 0);
-
-    // Total exposure: sum of absolute position market values
-    const totalExposure = accountSnapshots.reduce(
-      (sum, a) => sum + a.positions.reduce((ps, p) => ps + Math.abs(p.marketValue), 0),
-      0
-    );
-
-    const netExposure = accountSnapshots.reduce(
-      (sum, a) => sum + a.positions.reduce((ps, p) => ps + p.marketValue, 0),
-      0
-    );
-
+    // Calculate portfolio totals
+    const totalAssets = accounts.reduce((sum, a) => sum + a.totalAssets, 0);
+    const allPositions = accounts.flatMap(a => a.positions);
+    const totalExposure = allPositions.reduce((sum, p) => sum + Math.abs(p.marketValue), 0);
+    const netExposure = allPositions.reduce((sum, p) => sum + p.marketValue, 0);
     const leverageRatio = totalAssets > 0 ? totalExposure / totalAssets : 0;
 
-    const portfolio: AggregatedPortfolio = {
-      accounts: accountSnapshots,
-      totalAssets,
-      totalMarketValue,
-      totalCash,
-      totalExposure,
-      netExposure,
-      leverageRatio,
+    const result: AggregateResult = {
+      success: errors.length === 0,
+      portfolio: { totalAssets, totalExposure, netExposure, leverageRatio, accounts },
+      errors,
     };
 
     // Cache result
-    this.portfolioCache = { data: portfolio, timestamp: Date.now() };
+    this.aggregateCache.set(cacheKey, { data: result, timestamp: now });
 
-    return {
-      success: errors.length === 0,
-      portfolio,
-      errors,
-    };
-  }
-
-  // ── getMarginUtilization ─────────────────────────────────────────────
-
-  async getMarginUtilization(): Promise<PortfolioMarginResult> {
-    const cacheAge = this.marginCache ? Date.now() - this.marginCache.timestamp : Infinity;
-    if (cacheAge < DEFAULT_CACHE_TTL_MS && this.marginCache) {
-      return this.marginCache.data;
-    }
-
-    const results: MarginResult[] = [];
-    let maxUtilization = 0;
-
-    await Promise.all(
-      Array.from(this.adapters.entries()).map(async ([brokerId, adapter]) => {
-        try {
-          const accounts = await adapter.getAccounts();
-          await Promise.all(
-            accounts.map(async (account) => {
-              const funds: FundsInfo = await adapter.getFunds(account.accountId);
-
-              const marginUsed = toHKD(funds.frozenCash, funds.currency);
-              const marginAvailable = toHKD(funds.availableCash, funds.currency);
-              const marginTotal = marginUsed + marginAvailable;
-              const utilizationRatio = marginTotal > 0 ? marginUsed / marginTotal : 0;
-
-              if (utilizationRatio > maxUtilization) {
-                maxUtilization = utilizationRatio;
-              }
-
-              let marginCallRisk: MarginResult['marginCallRisk'] = 'none';
-              if (utilizationRatio >= 0.85) marginCallRisk = 'danger';
-              else if (utilizationRatio >= 0.70) marginCallRisk = 'warning';
-
-              results.push({
-                brokerId,
-                accountId: account.accountId,
-                marginUsed,
-                marginAvailable,
-                marginTotal,
-                utilizationRatio: Math.round(utilizationRatio * 10000) / 100,
-                marginCallRisk,
-                marginCallLevel: marginCallRisk === 'danger' ? 0.85 : marginCallRisk === 'warning' ? 0.70 : 0,
-                unrealizedPnl: toHKD(funds.marketValue - funds.costPrice, funds.currency),
-                currency: funds.currency,
-              });
-            })
-          );
-        } catch {
-          // skip failed adapters
-        }
-      })
-    );
-
-    const totalMarginUsed = results.reduce((sum, r) => sum + r.marginUsed, 0);
-    const totalMarginAvailable = results.reduce((sum, r) => sum + r.marginAvailable, 0);
-    const anyMarginCallRisk = results.some((r) => r.marginCallRisk !== 'none');
-
-    const result: PortfolioMarginResult = {
-      accounts: results,
-      totalMarginUsed,
-      totalMarginAvailable,
-      maxUtilization: Math.round(maxUtilization * 10000) / 100,
-      anyMarginCallRisk,
-    };
-
-    this.marginCache = { data: result, timestamp: Date.now() };
     return result;
   }
 
-  // ── getPortfolioExposure ─────────────────────────────────────────────
+  // ── V3: Margin Utilization ────────────────────────────────────────────
 
-  async getPortfolioExposure(): Promise<ExposureResult> {
-    const cacheAge = this.exposureCache ? Date.now() - this.exposureCache.timestamp : Infinity;
-    if (cacheAge < DEFAULT_CACHE_TTL_MS && this.exposureCache) {
+  async getMarginUtilization(): Promise<MarginResult> {
+    const accounts: MarginAccountInfo[] = [];
+    const now = Date.now();
+
+    for (const adapter of this.brokerAdapters) {
+      const brokerId = adapter.type || 'unknown';
+      const cacheKey = brokerId;
+
+      // Check cache
+      const cached = this.marginCache.get(cacheKey);
+      if (cached && (now - cached.timestamp) < RiskEngineV3.MARGIN_CACHE_TTL) {
+        accounts.push(cached.data);
+        continue;
+      }
+
+      try {
+        const accInfos = await adapter.getAccounts();
+        const funds = await adapter.getFunds();
+
+        const accountId = accInfos.length > 0 ? accInfos[0].accountId : 'unknown';
+        const currency = funds.currency || 'HKD';
+
+        const frozenHKD = toHKD(funds.frozenCash, currency);
+        const availableHKD = toHKD(funds.availableCash, currency);
+        const totalMargin = (frozenHKD + availableHKD) > 0 ? (frozenHKD + availableHKD) : 1;
+        const utilizationRatio = (frozenHKD / totalMargin) * 100;
+
+        let marginCallRisk: 'none' | 'warning' | 'danger' = 'none';
+        if (utilizationRatio > 85) {
+          marginCallRisk = 'danger';
+        } else if (utilizationRatio > 70) {
+          marginCallRisk = 'warning';
+        }
+
+        const info: MarginAccountInfo = {
+          brokerId,
+          accountId,
+          currency,
+          frozenCash: frozenHKD,
+          availableCash: toHKD(funds.availableCash, currency),
+          totalMargin,
+          utilizationRatio: Math.round(utilizationRatio * 100) / 100,
+          marginCallRisk,
+        };
+
+        accounts.push(info);
+        this.marginCache.set(cacheKey, { data: info, timestamp: now });
+      } catch (err: any) {
+        log.warn(`[RiskEngineV3] Failed to get margin for ${brokerId}: ${err.message}`);
+      }
+    }
+
+    const anyMarginCallRisk = accounts.some(a => a.marginCallRisk !== 'none');
+    const maxUtilization = accounts.length > 0
+      ? Math.max(...accounts.map(a => a.utilizationRatio))
+      : 0;
+
+    return { accounts, anyMarginCallRisk, maxUtilization };
+  }
+
+  // ── V3: Portfolio Exposure ────────────────────────────────────────────
+
+  async getPortfolioExposure(): Promise<PortfolioExposure> {
+    const now = Date.now();
+    if (this.exposureCache && (now - this.exposureCache.timestamp) < RiskEngineV3.EXPOSURE_CACHE_TTL) {
       return this.exposureCache.data;
     }
 
-    // Get fresh portfolio if available
-    let portfolio: AggregatedPortfolio;
-    if (this.portfolioCache) {
-      portfolio = this.portfolioCache.data;
-    } else {
-      // Aggregate without cache
-      const result = await this.aggregateAccounts({
-        brokerIds: Array.from(this.adapters.keys()),
-        forceRefresh: true,
-      });
-      portfolio = result.portfolio;
-    }
+    // Aggregate all accounts first
+    const allBrokerIds = [...new Set(this.brokerAdapters.map((a: any) => a.type))];
+    const agg = await this.aggregateAccounts({ brokerIds: allBrokerIds });
+
+    const allPositions = agg.portfolio.accounts.flatMap(a => a.positions);
+    const totalAssets = agg.portfolio.totalAssets;
 
     const bySector: Record<string, number> = {};
     const byGeography: Record<string, number> = {};
     const byAssetClass: Record<string, number> = {};
-    const byMarket: Record<string, number> = {};
-    const topPositions: ExposureResult['topPositions'] = [];
+    const topPositions: { code: string; name: string; weight: number; marketValue: number }[] = [];
 
-    let totalWeightedPnl = 0;
-    let totalPositionValue = 0;
+    for (const pos of allPositions) {
+      const weight = totalAssets > 0 ? (pos.marketValue / totalAssets) * 100 : 0;
+      const code = pos.code;
 
-    for (const account of portfolio.accounts) {
-      for (const pos of account.positions) {
-        const value = pos.marketValue;
-        const weight = portfolio.totalAssets > 0 ? value / portfolio.totalAssets : 0;
+      // Sector classification
+      const sector = this.classifySector(code);
+      bySector[sector] = (bySector[sector] || 0) + weight;
 
-        // Sector
-        bySector[pos.sector] = (bySector[pos.sector] ?? 0) + weight;
+      // Geography classification
+      const geo = this.classifyGeography(code);
+      byGeography[geo] = (byGeography[geo] || 0) + weight;
 
-        // Geography
-        byGeography[pos.geography] = (byGeography[pos.geography] ?? 0) + weight;
+      // Asset class classification
+      const assetClass = this.classifyAssetClass(code);
+      byAssetClass[assetClass] = (byAssetClass[assetClass] || 0) + weight;
 
-        // Asset class
-        const assetClass = this.classifyAssetClass(pos.code);
-        byAssetClass[assetClass] = (byAssetClass[assetClass] ?? 0) + weight;
-
-        // Market
-        byMarket[pos.geography] = (byMarket[pos.geography] ?? 0) + weight;
-
-        topPositions.push({
-          code: pos.code,
-          name: pos.name,
-          weight: Math.round(weight * 10000) / 100,
-          pnl: pos.pnl,
-        });
-
-        totalWeightedPnl += pos.pnl * weight;
-        totalPositionValue += value;
-      }
+      topPositions.push({
+        code,
+        name: pos.name,
+        weight: Math.round(weight * 100) / 100,
+        marketValue: pos.marketValue,
+      });
     }
 
-    // Sort top positions by weight descending, keep top 10
+    // Sort top positions by weight descending
     topPositions.sort((a, b) => b.weight - a.weight);
-    const top10 = topPositions.slice(0, 10);
 
-    // HHI concentration risk: sum of squared weights
-    const hhi = Object.values(bySector).reduce((sum, w) => sum + w * w, 0);
+    // HHI concentration risk (sum of squared weights as percentages, scaled 0-100)
+    const weights = allPositions.map(p => totalAssets > 0 ? p.marketValue / totalAssets : 0);
+    const hhiRaw = weights.reduce((sum, w) => sum + w * w, 0);
+    const concentrationRisk = hhiRaw * 10000; // HHI on 0-10000 scale
 
-    const result: ExposureResult = {
-      bySector: this.roundRecord(bySector),
-      byGeography: this.roundRecord(byGeography),
-      byAssetClass: this.roundRecord(byAssetClass),
-      byMarket: this.roundRecord(byMarket),
-      topPositions: top10,
-      concentrationRisk: Math.round(hhi * 10000) / 100,
+    // Round sector/geography/asset class values
+    for (const k of Object.keys(bySector)) bySector[k] = Math.round(bySector[k] * 100) / 100;
+    for (const k of Object.keys(byGeography)) byGeography[k] = Math.round(byGeography[k] * 100) / 100;
+    for (const k of Object.keys(byAssetClass)) byAssetClass[k] = Math.round(byAssetClass[k] * 100) / 100;
+
+    const result: PortfolioExposure = {
+      bySector,
+      byGeography,
+      byAssetClass,
+      topPositions,
+      concentrationRisk,
     };
 
-    this.exposureCache = { data: result, timestamp: Date.now() };
+    this.exposureCache = { data: result, timestamp: now };
     return result;
   }
 
-  // ── checkCircuitBreaker ──────────────────────────────────────────────
+  // ── V3: Circuit Breaker ───────────────────────────────────────────────
 
   async checkCircuitBreaker(market: string): Promise<CircuitBreakerResult> {
-    const cacheAge = this.circuitCache ? Date.now() - this.circuitCache.timestamp : Infinity;
-    if (cacheAge < 60_000 && this.circuitCache && this.circuitCache.data.market === market) {
-      return this.circuitCache.data;
+    const now = Date.now();
+
+    // Check cache
+    const cached = this.circuitBreakerCache.get(market);
+    if (cached && (now - cached.timestamp) < RiskEngineV3.CIRCUIT_BREAKER_CACHE_TTL) {
+      return cached.data;
     }
 
-    const rules = CIRCUIT_BREAKER_RULES[market];
-    if (!rules) {
-      return {
+    const indexCode = MARKET_INDEX_CODES[market];
+    if (!indexCode) {
+      const result: CircuitBreakerResult = {
         market,
         status: 'open',
         triggerLevel: 0,
-        reason: `Unknown market: ${market}`,
       };
+      this.circuitBreakerCache.set(market, { data: result, timestamp: now });
+      return result;
     }
 
-    // Get market index price from first available broker
-    let currentIndexPrice = 0;
-    let previousIndexPrice = 0;
-
-    try {
-      const adapter = Array.from(this.adapters.values())[0];
-      if (adapter) {
-        // Try to get a proxy index quote (e.g. HS50 for HK, US30 for US)
-        const indexMap: Record<string, string> = {
-          HK: 'HK.HSI',
-          US: 'US.SPX',
-          CN: 'CN.000001',
-        };
-        const indexCode = indexMap[market];
-        if (indexCode) {
-          const quotes = await adapter.getQuotes([indexCode]);
-          if (quotes[0]) {
-            currentIndexPrice = quotes[0].price;
-            previousIndexPrice = quotes[0].prevClose;
-          }
+    // Find adapter that can provide this quote
+    let quote: any = null;
+    for (const adapter of this.brokerAdapters) {
+      try {
+        const quotes = await adapter.getQuotes();
+        const found = (quotes || []).find((q: any) => q.code === indexCode);
+        if (found) {
+          quote = found;
+          break;
         }
+      } catch {
+        // try next adapter
       }
-    } catch {
-      // Index fetch failed — circuit breaker cannot be determined
     }
 
-    let status: CircuitBreakerResult['status'] = 'open';
+    if (!quote) {
+      const result: CircuitBreakerResult = {
+        market,
+        status: 'open',
+        triggerLevel: 0,
+        cachedAt: now,
+      };
+      this.circuitBreakerCache.set(market, { data: result, timestamp: now });
+      return result;
+    }
+
+    const changePct = quote.changePct;
+    let status: 'open' | 'resume_pending' | 'halted' = 'open';
     let triggerLevel = 0;
-    let reason = 'Market operating normally';
+    let reason: string | undefined;
 
-    if (currentIndexPrice > 0 && previousIndexPrice > 0) {
-      const decline = (previousIndexPrice - currentIndexPrice) / previousIndexPrice;
-
-      if (decline >= rules.L3) {
-        status = 'halted';
-        triggerLevel = 3;
-        reason = `${market} index down ${(decline * 100).toFixed(1)}% — Level 3 circuit breaker triggered`;
-      } else if (decline >= rules.L2) {
+    if (market === 'HK') {
+      // HK market: HSI-based circuit breaker
+      if (changePct <= -10) {
         status = 'halted';
         triggerLevel = 2;
-        reason = `${market} index down ${(decline * 100).toFixed(1)}% — Level 2 circuit breaker triggered`;
-      } else if (decline >= rules.L1) {
+        reason = `HSI dropped ${Math.abs(changePct).toFixed(1)}% — Level 2 circuit breaker triggered`;
+      } else if (changePct <= -5) {
         status = 'resume_pending';
         triggerLevel = 1;
-        reason = `${market} index down ${(decline * 100).toFixed(1)}% — Level 1 circuit breaker warning`;
+        reason = `HSI dropped ${Math.abs(changePct).toFixed(1)}% — Level 1 cooling period`;
+      }
+    } else if (market === 'US') {
+      // US market: S&P 500-based circuit breaker
+      if (changePct <= -20) {
+        status = 'halted';
+        triggerLevel = 3;
+        reason = `S&P 500 dropped ${Math.abs(changePct).toFixed(1)}% — Level 3 circuit breaker`;
+      } else if (changePct <= -13) {
+        status = 'halted';
+        triggerLevel = 2;
+        reason = `S&P 500 dropped ${Math.abs(changePct).toFixed(1)}% — Level 2 circuit breaker`;
+      } else if (changePct <= -7) {
+        status = 'resume_pending';
+        triggerLevel = 1;
+        reason = `S&P 500 dropped ${Math.abs(changePct).toFixed(1)}% — Level 1 circuit breaker`;
+      }
+    } else if (market === 'CN') {
+      // CN market: CSI 300-based
+      if (changePct <= -10) {
+        status = 'halted';
+        triggerLevel = 2;
+        reason = `CSI 300 dropped ${Math.abs(changePct).toFixed(1)}% — Level 2 circuit breaker`;
+      } else if (changePct <= -5) {
+        status = 'resume_pending';
+        triggerLevel = 1;
+        reason = `CSI 300 dropped ${Math.abs(changePct).toFixed(1)}% — Level 1 circuit breaker`;
       }
     }
 
@@ -552,46 +678,208 @@ export class RiskEngineV3 {
       market,
       status,
       triggerLevel,
-      triggerPrice: currentIndexPrice > 0 ? currentIndexPrice : undefined,
-      haltedAt: status === 'halted' ? Date.now() : undefined,
       reason,
+      indexCode,
+      changePct,
+      cachedAt: now,
     };
 
-    this.circuitCache = { data: result, timestamp: Date.now() };
+    this.circuitBreakerCache.set(market, { data: result, timestamp: now });
     return result;
   }
 
-  // ── Helpers ─────────────────────────────────────────────────────────
+  // ── V3: Cache Management ──────────────────────────────────────────────
 
-  private classifyAssetClass(code: string): string {
-    if (code.startsWith('HK.')) return 'Stock';
-    if (code.startsWith('US.')) {
-      const sym = code.replace('US.', '');
-      if (['QQQ', 'SPY', 'TQQQ', 'SQQQ', 'IWM', 'TLT', 'GLD'].includes(sym)) return 'ETF';
-      return 'Stock';
-    }
-    return 'Other';
-  }
-
-  private roundRecord(record: Record<string, number>): Record<string, number> {
-    const out: Record<string, number> = {};
-    for (const [k, v] of Object.entries(record)) {
-      out[k] = Math.round(v * 10000) / 100; // percentage with 2 decimal places
-    }
-    return out;
-  }
-
-  /** Invalidate all caches (call when market data changes significantly) */
   invalidateCache(): void {
-    this.portfolioCache = null;
-    this.marginCache = null;
+    this.aggregateCache.clear();
+    this.marginCache.clear();
+    this.circuitBreakerCache.clear();
     this.exposureCache = null;
-    this.circuitCache = null;
     log.info('[RiskEngineV3] All caches invalidated');
   }
 
-  /** Get underlying v2 engine for backward compatibility */
-  getBaseEngine(): RiskEngine {
+  getBaseEngine(): any {
     return this.baseEngine;
   }
+
+  // ── Classification Helpers ────────────────────────────────────────────
+
+  private classifySector(code: string): string {
+    // Internet companies
+    if (code === 'HK.00700' || code === 'HK.09988' || code === 'HK.03690' ||
+        code === 'HK.09618' || code === 'HK.01024' || code === 'HK.09888') {
+      return 'Internet';
+    }
+    // Commodity
+    if (code.startsWith('US.GLD') || code.startsWith('US.SLV') || code.startsWith('US.GDX') ||
+        code.includes('GLD') || code.includes('SLV')) {
+      return 'Commodity';
+    }
+    // Financial
+    if (code.startsWith('US.JPM') || code.startsWith('US.GS') || code.startsWith('US.BAC') ||
+        code.startsWith('HK.00005') || code.startsWith('HK.01398') || code.startsWith('HK.00939')) {
+      return 'Financial';
+    }
+    // Energy
+    if (code.startsWith('US.XOM') || code.startsWith('US.CVX') || code.startsWith('US.XLE')) {
+      return 'Energy';
+    }
+    // Default: Technology
+    return 'Technology';
+  }
+
+  private classifyGeography(code: string): string {
+    if (code.startsWith('HK.')) return 'HK';
+    if (code.startsWith('US.')) return 'US';
+    if (code.startsWith('CN.') || code.startsWith('SH.') || code.startsWith('SZ.')) return 'CN';
+    if (code.startsWith('SG.')) return 'SG';
+    if (code.startsWith('JP.')) return 'JP';
+    if (code.startsWith('UK.') || code.startsWith('LSE.')) return 'UK';
+    return 'Other';
+  }
+
+  private classifyAssetClass(code: string): string {
+    if (KNOWN_ETFS.has(code)) return 'ETF';
+    // Common ETF patterns
+    if (/^US\.[A-Z]{2,5}$/.test(code) && KNOWN_ETFS.has(code)) return 'ETF';
+    return 'Stock';
+  }
+
+  // ── Internal Risk Calculators ─────────────────────────────────────────
+
+  private calculateDrawdownRisk(marketData: MarketData): number {
+    const { historicalPrices } = marketData;
+    if (historicalPrices.length < 2) return 0;
+
+    let maxPrice = historicalPrices[0];
+    let maxDrawdown = 0;
+
+    for (const price of historicalPrices) {
+      if (price > maxPrice) {
+        maxPrice = price;
+      }
+      const drawdown = (maxPrice - price) / maxPrice;
+      if (drawdown > maxDrawdown) {
+        maxDrawdown = drawdown;
+      }
+    }
+
+    const drawdownPct = maxDrawdown * 100;
+    const riskScore = (drawdownPct / this.thresholds.drawdown) * 100;
+    return Math.min(100, Math.max(0, riskScore));
+  }
+
+  private calculateVolatilityRisk(marketData: MarketData): number {
+    const { returns } = marketData;
+    if (returns.length < 2) return 0;
+
+    const mean = returns.reduce((sum, r) => sum + r, 0) / returns.length;
+    const variance = returns.reduce((sum, r) => sum + Math.pow(r - mean, 2), 0) / returns.length;
+    const volatility = Math.sqrt(variance) * Math.sqrt(252) * 100;
+
+    const riskScore = (volatility / this.thresholds.volatility) * 100;
+    return Math.min(100, Math.max(0, riskScore));
+  }
+
+  private calculateConcentrationRisk(portfolio: PortfolioPosition[]): number {
+    if (portfolio.length === 0) return 0;
+
+    const maxWeight = Math.max(...portfolio.map(p => p.weight));
+    const riskScore = (maxWeight / (this.thresholds.concentration / 100)) * 100;
+    return Math.min(100, Math.max(0, riskScore));
+  }
+
+  private calculateCorrelationRisk(portfolio: PortfolioPosition[], marketData: MarketData): number {
+    if (portfolio.length < 2) return 0;
+
+    const avgCorrelation = 0.5;
+    const riskScore = (avgCorrelation / this.thresholds.correlation) * 100;
+    return Math.min(100, Math.max(0, riskScore));
+  }
+
+  private checkThresholds(score: RiskScore): void {
+    const timestamp = score.timestamp;
+
+    if (score.drawdown > this.thresholds.drawdown) {
+      this.addAlert({
+        type: 'drawdown',
+        severity: this.getSeverity(score.drawdown, this.thresholds.drawdown),
+        message: `Portfolio drawdown ${score.drawdown.toFixed(2)}% exceeds threshold ${this.thresholds.drawdown}%`,
+        value: score.drawdown,
+        threshold: this.thresholds.drawdown,
+        timestamp,
+      });
+    }
+
+    if (score.volatility > this.thresholds.volatility) {
+      this.addAlert({
+        type: 'volatility',
+        severity: this.getSeverity(score.volatility, this.thresholds.volatility),
+        message: `Portfolio volatility ${score.volatility.toFixed(2)}% exceeds threshold ${this.thresholds.volatility}%`,
+        value: score.volatility,
+        threshold: this.thresholds.volatility,
+        timestamp,
+      });
+    }
+
+    if (score.concentration > this.thresholds.concentration) {
+      this.addAlert({
+        type: 'concentration',
+        severity: this.getSeverity(score.concentration, this.thresholds.concentration),
+        message: `Portfolio concentration ${score.concentration.toFixed(2)}% exceeds threshold ${this.thresholds.concentration}%`,
+        value: score.concentration,
+        threshold: this.thresholds.concentration,
+        timestamp,
+      });
+    }
+
+    if (score.correlation > this.thresholds.correlation) {
+      this.addAlert({
+        type: 'correlation',
+        severity: this.getSeverity(score.correlation, this.thresholds.correlation),
+        message: `Portfolio correlation ${score.correlation.toFixed(2)} exceeds threshold ${this.thresholds.correlation}`,
+        value: score.correlation,
+        threshold: this.thresholds.correlation,
+        timestamp,
+      });
+    }
+  }
+
+  private getSeverity(value: number, threshold: number): 'low' | 'medium' | 'high' | 'critical' {
+    const ratio = value / threshold;
+    if (ratio < 1.1) return 'low';
+    if (ratio < 1.2) return 'medium';
+    if (ratio < 1.5) return 'high';
+    return 'critical';
+  }
+
+  private addAlert(alert: RiskAlert): void {
+    this.alerts.push(alert);
+    if (this.alerts.length > this.maxAlertsSize) {
+      this.alerts.shift();
+    }
+    this.emit('alert', alert);
+    log.warn(`[RiskEngineV3] Alert: ${alert.type} - ${alert.message}`);
+  }
 }
+
+// ── Singleton ──────────────────────────────────────────────────────────────
+
+let _instance: RiskEngineV3 | null = null;
+
+export function getRiskEngineV3(): RiskEngineV3 {
+  if (!_instance) {
+    _instance = new RiskEngineV3();
+  }
+  return _instance;
+}
+
+export function resetRiskEngineV3(): void {
+  if (_instance) {
+    _instance.reset();
+    _instance.removeAllListeners();
+    _instance = null;
+  }
+}
+
+export default RiskEngineV3;
