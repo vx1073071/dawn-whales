@@ -15,7 +15,7 @@
  */
 
 import log from 'electron-log';
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -100,7 +100,7 @@ export class AuditTrailEngine {
     };
 
     // 生成私钥用于签名
-    this.privateKey = crypto.randomBytes(32).toString('hex');
+    this.privateKey = randomBytes(32).toString('hex');
 
     log.info('[AuditTrailEngine] Initialized', {
       enabled: this.config.enabled,
