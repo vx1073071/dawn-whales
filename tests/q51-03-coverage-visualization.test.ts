@@ -1,3 +1,4 @@
+// @vitest-environment node
 /**
  * Q-51-03: Coverage Visualization Suite [P1]
  * R51 — v1.0.1 patch

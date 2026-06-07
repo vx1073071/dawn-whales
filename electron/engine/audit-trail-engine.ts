@@ -15,7 +15,9 @@
  */
 
 import log from 'electron-log';
-import * as crypto from 'crypto';
+// Node.js crypto — use require() to bypass vitest/jsdom Web Crypto API resolution
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const _crypto = typeof require !== 'undefined' ? require('crypto') : (globalThis as any).crypto;
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -100,7 +102,7 @@ export class AuditTrailEngine {
     };
 
     // 生成私钥用于签名
-    this.privateKey = randomBytes(32).toString('hex');
+    this.privateKey = _crypto.randomBytes(32).toString('hex');
 
     log.info('[AuditTrailEngine] Initialized', {
       enabled: this.config.enabled,

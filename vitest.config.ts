@@ -85,6 +85,8 @@ export default defineConfig({
       'react-dom/client': path.resolve(__dirname, './node_modules/react-dom/client.js'),
       // Node built-in: vitest jsdom can't resolve 'events' for engine imports
       'events': path.resolve(__dirname, './tests/helpers/events-polyfill.ts'),
+      // Node built-in: vitest jsdom can't resolve 'crypto' for engine imports
+      'crypto': path.resolve(__dirname, './tests/helpers/crypto-polyfill.ts'),
     },
   },
 });

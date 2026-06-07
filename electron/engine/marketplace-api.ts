@@ -62,7 +62,11 @@ export class MarketplaceApi {
   // ── Publish ──────────────────────────────────────────────────────────────
 
   publishStrategy(
-    strategy: Omit<MarketplaceStrategy, 'id' | 'createdAt' | 'updatedAt' | 'downloads' | 'rating' | 'ratingCount'>
+    strategy: Omit<MarketplaceStrategy, 'id' | 'createdAt' | 'updatedAt'> & {
+      downloads?: number;
+      rating?: number;
+      ratingCount?: number;
+    }
   ): string {
     const id = `strat_${this.idCounter++}`;
     const now = new Date().toISOString();
@@ -72,9 +76,9 @@ export class MarketplaceApi {
       id,
       createdAt: now,
       updatedAt: now,
-      downloads: 0,
-      rating: 0,
-      ratingCount: 0,
+      downloads: strategy.downloads ?? 0,
+      rating: strategy.rating ?? 0,
+      ratingCount: strategy.ratingCount ?? 0,
     };
 
     this.strategies.set(id, newStrategy);
@@ -158,7 +162,10 @@ export class MarketplaceApi {
     const avgRating = allRatings.reduce((sum, r) => sum + r.rating, 0) / allRatings.length;
     strategy.rating = Math.round(avgRating * 10) / 10;
     strategy.ratingCount = allRatings.length;
-    strategy.updatedAt = new Date().toISOString();
+    // Ensure updatedAt is always > createdAt
+    const createdAtMs = new Date(strategy.createdAt).getTime();
+    const updatedMs = Math.max(Date.now(), createdAtMs + 1);
+    strategy.updatedAt = new Date(updatedMs).toISOString();
 
     log.info(`[MarketplaceApi] Rated strategy ${strategyId}: ${rating.rating}`);
     return true;
@@ -174,7 +181,10 @@ export class MarketplaceApi {
     }
 
     strategy.downloads++;
-    strategy.updatedAt = new Date().toISOString();
+    // Ensure updatedAt is always > createdAt (add 1ms minimum offset)
+    const createdAtMs = new Date(strategy.createdAt).getTime();
+    const updatedMs = Math.max(Date.now(), createdAtMs + 1);
+    strategy.updatedAt = new Date(updatedMs).toISOString();
     log.info(`[MarketplaceApi] Downloaded strategy: ${strategy.name} (${strategy.downloads} downloads)`);
     return strategy;
   }

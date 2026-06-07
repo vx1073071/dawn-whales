@@ -1,3 +1,4 @@
+// @vitest-environment node
 /**
  * Q-51-01: 5-Round Stability Guard [P0]
  * R51 — v1.0.1 patch
