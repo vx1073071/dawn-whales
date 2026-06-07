@@ -24,6 +24,7 @@ const RiskDashboardPage = lazy(() => import('@/components/risk/RiskDashboardPage
 const AlertCenterPage = lazy(() => import('@/components/risk/AlertCenterPage'));
 const TradeDashboardPage = lazy(() => import('@/components/trading/TradeDashboardPage'));
 const AIAssistantPage = lazy(() => import('@/components/ai/AIAssistantPanel'));
+const RiskVisualizerPage = lazy(() => import('@/components/risk/RiskVisualizer'));
 
 const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   dashboard: DashboardPage,
@@ -39,6 +40,7 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   alert: AlertCenterPage,
   trade: TradeDashboardPage,
   ai: AIAssistantPage,
+  riskviz: RiskVisualizerPage,
 };
 
 function PageFallback() {

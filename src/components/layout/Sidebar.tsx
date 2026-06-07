@@ -20,6 +20,7 @@ const navItems: NavItem[] = [
   { id: 'orders', icon: '📋', label: '委托订单' },
   { id: 'trade', icon: '💹', label: '交易台' },
   { id: 'risk', icon: '🛡️', label: '风控面板' },
+  { id: 'riskviz', icon: '📉', label: '风险可视化' },
   { id: 'alert', icon: '🔔', label: '告警中心' },
   { id: 'settings', icon: '⚙️', label: '系统设置', section: '系统' },
 ];
