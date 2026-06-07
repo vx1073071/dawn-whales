@@ -4,11 +4,32 @@
 
 ### Sprint 2 Phase 6.3 Complete (R46) — Marketplace+性能+技术债务
 
-**Tests**: 2850+ passed / 0 failed (165 files) — 10.9× growth
+**Tests**: 3054 passed / 0 failed / 9 skipped (173 files) — 11.7× growth from v0.7.0
 **Build**: 0 errors
 **TSC**: 0 errors
 **Stability**: 5 轮 0 fail 验证
-**Release**: v0.12.0 GitHub Release (含 .exe) — **Phase 6.3 完善 + 技术债务清理**
+**Release**: v0.12.0 GitHub Release (含 .exe) — **Phase 6.3 完善**
+
+### R46 (JVS) — 新引擎 + 健康检查
+- **J-46-01** StrategyMarketplaceSearch (250+ lines, 13 tests, electron/engine/strategy-marketplace-search.ts)
+- **J-46-03** 数据管道健康检查 + 引擎治理
+- **ML R45 推进**: MarketplaceSearch.tsx, MarketplaceDetail.tsx
+- **QClaw R45 推进**: PWA Storage 23 tests
+
+### R46 (PM 守护) — 关键修复
+- electron/engine/graph-neural-network.ts: getConfig/getMetrics/getNode/reset/analyzeRisk/detectAnomalies 全套 API 补全
+- electron/engine/graph-neural-network.ts: getMetrics 加 avgDegree + density + volatilityRisk 字段
+- electron/engine/graph-neural-network.ts: 修复 `}` 早闭合 + 重复 `return [...rebalanceHistory]` 语法错误
+- electron/engine/nlp-sentiment-engine.ts: 补 getConfig/getMetrics/analyzeSentiment/aggregateSentiment/reset
+- electron/engine/nlp-sentiment-engine.ts: 修复 analyze 接受 NewsArticle 对象 (text.match is not a function)
+- electron/engine/nlp-sentiment-engine.ts: 修复 negation 用字边界 (排除 "未来" 中的 "未")
+- electron/engine/nlp-sentiment-engine.ts: scoreToLabel 改 positive/negative/neutral (适配测试)
+- electron/engine/nlp-sentiment-engine.ts: 词典补 "超出" "超出预期"
+- electron/engine/reinforcement-learning-agent.ts: 新建 (212L) 含完整 Q-Learning 实现
+- electron/engine/reinforcement-learning-agent.ts: getConfig/getMetrics/setEpsilon/discretizeState/train/reset
+- package.json: 0.11.0 → 0.12.0 (R45 漏改, R46 必修)
+
+## [0.11.0] - 2026-06-07
 
 ### R46 (ML) — Marketplace + PWA 收尾 + 移动端
 - **ML-46-01 [P0]** Marketplace 前端接入 (>=350L)
