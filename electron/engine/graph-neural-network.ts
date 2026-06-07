@@ -334,6 +334,54 @@ export class GraphNeuralNetwork {
   /** Label → index mapping built during training. */
   private labelIndex: Map<string, number> = new Map();
 
+  /** Default config used when no config provided. */
+  private static readonly DEFAULT_CONFIG: GNNConfig = {
+    hiddenSize: 64,
+    numLayers: 2,
+    learningRate: 0.01,
+    task: 'node_classification',
+    epochs: 100,
+  };
+
+  // -----------------------------------------------------------------------
+  // Configuration / metrics
+  // -----------------------------------------------------------------------
+
+  /**
+   * Get the active config (or default if not yet trained).
+   */
+  getConfig(): GNNConfig {
+    return this.lastConfig ? { ...this.lastConfig } : { ...GraphNeuralNetwork.DEFAULT_CONFIG };
+  }
+
+  /**
+   * Get runtime graph + training metrics.
+   */
+  getMetrics(): {
+    nodeCount: number;
+    edgeCount: number;
+    embeddingDim: number;
+    isTrained: boolean;
+    numClasses: number;
+    avgDegree: number;
+    density: number;
+  } {
+    const sampleEmb = Object.values(this.embeddings)[0];
+    const totalDeg = Array.from(this.adjList.values()).reduce((s, e) => s + e.length, 0);
+    const avgDegree = this.nodeMap.size > 0 ? totalDeg / this.nodeMap.size : 0;
+    const maxEdges = this.nodeMap.size * (this.nodeMap.size - 1);
+    const density = maxEdges > 0 ? this.edges.length / maxEdges : 0;
+    return {
+      nodeCount: this.nodeMap.size,
+      edgeCount: this.edges.length,
+      embeddingDim: sampleEmb ? sampleEmb.length : 0,
+      isTrained: this.isTrained,
+      numClasses: this.numClasses,
+      avgDegree,
+      density,
+    };
+  }
+
   // -----------------------------------------------------------------------
   // Graph construction
   // -----------------------------------------------------------------------
@@ -378,12 +426,28 @@ export class GraphNeuralNetwork {
    */
   addNode(node: GraphNode): void {
     log.debug(`[GNN] addNode: ${node.id} (${node.type})`);
-    this.nodeMap.set(node.id, { ...node, features: [...node.features] });
+    const features = node.features ?? this.deriveFeaturesFromReturns(node);
+    this.nodeMap.set(node.id, { ...node, features: [...features] });
     if (!this.adjList.has(node.id)) {
       this.adjList.set(node.id, []);
     }
     // Invalidate trained state
     this.invalidateModel();
+  }
+
+  /**
+   * Derive a feature vector from node returns if features not provided.
+   */
+  private deriveFeaturesFromReturns(node: GraphNode): number[] {
+    const returns = (node as any).returns as number[] | undefined;
+    if (returns && returns.length) return [...returns];
+    const v = [
+      Math.log10(Math.max(1, (node as any).marketCap ?? 1)),
+      (node as any).volatility ?? 0.2,
+      ((node as any).sector ? 1 : 0),
+      ((node as any).label ? 1 : 0),
+    ];
+    return v;
   }
 
   /**
@@ -857,6 +921,105 @@ export class GraphNeuralNetwork {
       density: parseFloat(density.toFixed(6)),
       components,
     };
+  }
+
+  /**
+   * Get a node by id.
+   */
+  getNode(nodeId: string): GraphNode | undefined {
+    return this.nodeMap.get(nodeId);
+  }
+
+  /**
+   * Reset the graph (clear all nodes/edges/embeddings).
+   */
+  reset(): void {
+    this.nodeMap.clear();
+    this.adjList.clear();
+    this.edges = [];
+    this.embeddings = {};
+    this.predictions = {};
+    this.isTrained = false;
+    this.lastConfig = null;
+    this.numClasses = 0;
+    this.labelIndex.clear();
+    this.messageLayers = [];
+    this.selfLayers = [];
+    this.outputLayer = null;
+  }
+
+  /**
+   * Analyze portfolio risk based on graph structure.
+   */
+  analyzeRisk(): {
+    concentrationRisk: number;
+    correlationRisk: number;
+    volatilityRisk: number;
+    systemicRisk: number;
+    riskLevel: 'low' | 'medium' | 'high';
+    recommendations: string[];
+  } {
+    const metrics = this.getGraphStats();
+    const recommendations: string[] = [];
+    // Concentration: HHI on degree distribution
+    const degrees = Array.from(this.adjList.values()).map((entries) => entries.length);
+    const totalDeg = degrees.reduce((s, d) => s + d, 0);
+    let hhi = 0;
+    if (totalDeg > 0) {
+      for (const d of degrees) {
+        const share = d / totalDeg;
+        hhi += share * share;
+      }
+    }
+    // If single node or all isolated, use node count penalty
+    if (this.nodeMap.size > 0 && totalDeg === 0) {
+      hhi = 1.0; // All assets are isolated = high concentration
+    }
+    const concentrationRisk = Math.min(1, hhi);
+    if (concentrationRisk > 0.25) recommendations.push('考虑分散投资，降低单一节点集中度');
+
+    // Correlation: avg edge weight
+    const avgWeight = this.edges.length > 0
+      ? this.edges.reduce((s, e) => s + Math.abs(e.weight ?? 0), 0) / this.edges.length
+      : 0;
+    const correlationRisk = Math.min(1, avgWeight);
+    if (correlationRisk > 0.7) recommendations.push('资产相关性过高，建议加入低相关资产');
+
+    // Volatility risk: avg node volatility
+    const volatilities = Array.from(this.nodeMap.values()).map((n: any) => n.volatility ?? 0);
+    const avgVol = volatilities.length > 0 ? volatilities.reduce((s, v) => s + v, 0) / volatilities.length : 0;
+    const volatilityRisk = Math.min(1, avgVol);
+    if (volatilityRisk > 0.4) recommendations.push('资产平均波动率偏高');
+
+    // Systemic: density × correlation
+    const systemicRisk = Math.min(1, (metrics.density ?? 0) * correlationRisk);
+    if (systemicRisk > 0.5) recommendations.push('系统性风险偏高，注意宏观对冲');
+
+    let riskLevel: 'low' | 'medium' | 'high' = 'low';
+    if (systemicRisk > 0.6) riskLevel = 'high';
+    else if (systemicRisk > 0.3) riskLevel = 'medium';
+
+    return { concentrationRisk, correlationRisk, volatilityRisk, systemicRisk, riskLevel, recommendations };
+  }
+
+  /**
+   * Detect anomalous nodes (e.g. high volatility, isolation).
+   */
+  detectAnomalies(): { nodeId: string; reason: string; score: number }[] {
+    const anomalies: { nodeId: string; reason: string; score: number }[] = [];
+    for (const [id, node] of this.nodeMap.entries()) {
+      const vol = (node as any).volatility ?? 0;
+      const neighbors = this.adjList.get(id) ?? [];
+      // High volatility anomaly
+      if (vol > 0.5) {
+        anomalies.push({ nodeId: id, reason: `高波动率 (${vol.toFixed(2)})`, score: Math.min(1, vol) });
+      }
+      // Isolation anomaly
+      if (neighbors.length === 0 && this.nodeMap.size > 1) {
+        anomalies.push({ nodeId: id, reason: '孤立节点（无连接）', score: 0.4 });
+      }
+    }
+    return anomalies;
   }
 
   // -----------------------------------------------------------------------

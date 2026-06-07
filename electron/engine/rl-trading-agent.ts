@@ -84,22 +84,78 @@ const DEFAULT_DISCRETIZATION: DiscretizationBins = {
 
 // ─── RLTradingAgent ───────────────────────────────────────────────────────────
 
+export interface RLAgentConfig {
+  learningRate?: number;
+  discountFactor?: number;
+  epsilon?: number;
+  epsilonDecay?: number;
+  minEpsilon?: number;
+  batchSize?: number;
+  memorySize?: number;
+}
+
+const DEFAULT_CONFIG: Required<RLAgentConfig> = {
+  learningRate: 0.1,
+  discountFactor: 0.95,
+  epsilon: 1.0,
+  epsilonDecay: 0.995,
+  minEpsilon: 0.01,
+  batchSize: 32,
+  memorySize: 10000,
+};
+
 export class RLTradingAgent {
   private qTable: Map<string, number[]>;
   private replayBuffer: Experience[];
   private explorationRate: number;
   private episodesTrained: number;
   private totalSteps: number;
-  private config: RLConfig | null;
+  private config: RLConfig;
+  private agentConfig: Required<RLAgentConfig>;
 
-  constructor() {
+  constructor(config?: RLAgentConfig) {
+    this.agentConfig = { ...DEFAULT_CONFIG, ...config };
     this.qTable = new Map();
     this.replayBuffer = [];
-    this.explorationRate = 1.0;
+    this.explorationRate = this.agentConfig.epsilon;
     this.episodesTrained = 0;
     this.totalSteps = 0;
-    this.config = null;
+    this.config = {
+      learningRate: this.agentConfig.learningRate,
+      discountFactor: this.agentConfig.discountFactor,
+      explorationRate: this.agentConfig.epsilon,
+      explorationDecay: this.agentConfig.epsilonDecay,
+      explorationMin: this.agentConfig.minEpsilon,
+      batchSize: this.agentConfig.batchSize,
+      memorySize: this.agentConfig.memorySize,
+      rewardConfig: {
+        profitMultiplier: 1.0,
+        lossMultiplier: 1.5,
+        transactionCost: 0.001,
+        holdingPenalty: 0.01,
+        drawdownPenalty: 0.1,
+      },
+    };
     log.info('[RLTradingAgent] Initialized');
+  }
+
+  /**
+   * Get current agent configuration.
+   */
+  getConfig(): Required<RLAgentConfig> {
+    return { ...this.agentConfig };
+  }
+
+  /**
+   * Get agent metrics.
+   */
+  getMetrics(): { qTableSize: number; totalSteps: number; episodesTrained: number; explorationRate: number } {
+    return {
+      qTableSize: this.qTable.size,
+      totalSteps: this.totalSteps,
+      episodesTrained: this.episodesTrained,
+      explorationRate: this.explorationRate,
+    };
   }
 
   // ─── Public API ───────────────────────────────────────────────────────────
@@ -271,22 +327,33 @@ export class RLTradingAgent {
   /**
    * Convert a continuous MarketState into a discrete string key for the Q-table.
    * Each dimension is binned into buckets to keep the state space manageable.
+   * Accepts both MarketState and alternative state formats for backward compatibility.
    */
-  private discretizeState(state: MarketState): string {
+  discretizeState(state: MarketState | any): string {
     const bins = DEFAULT_DISCRETIZATION;
 
-    const pChange = this.binValue(state.priceChange, bins.priceChange);
-    const vol = this.binValue(state.volumeRatio, bins.volumeRatio);
-    const rsi = this.binValue(state.rsi, bins.rsi);
-    const macd = this.binValue(state.macdHistogram, bins.macdHistogram);
-    const boll = this.binValue(state.bollingerPosition, bins.bollingerPosition);
-    const pnl = this.binValue(state.unrealizedPnl, bins.unrealizedPnl);
-    const bars = this.binValue(state.barsSinceEntry, bins.barsSinceEntry);
+    // Handle alternative state format (backward compatibility)
+    const priceChange = state.priceChange ?? state.returns ?? 0;
+    const volumeRatio = state.volumeRatio ?? (state.volume ? state.volume / 1000000 : 1) ?? 1;
+    const rsi = state.rsi ?? 50;
+    const macdHistogram = state.macdHistogram ?? state.macd ?? 0;
+    const bollingerPosition = state.bollingerPosition ?? 0;
+    const unrealizedPnl = state.unrealizedPnl ?? 0;
+    const barsSinceEntry = state.barsSinceEntry ?? 0;
+    const position = state.position ?? state.smaCross ?? 0;
+
+    const pChange = this.binValue(priceChange, bins.priceChange);
+    const vol = this.binValue(volumeRatio, bins.volumeRatio);
+    const rsiBin = this.binValue(rsi, bins.rsi);
+    const macd = this.binValue(macdHistogram, bins.macdHistogram);
+    const boll = this.binValue(bollingerPosition, bins.bollingerPosition);
+    const pnl = this.binValue(unrealizedPnl, bins.unrealizedPnl);
+    const bars = this.binValue(barsSinceEntry, bins.barsSinceEntry);
 
     // Position is already discrete: -1, 0, 1 → map to 0, 1, 2
-    const posBucket = state.position + 1;
+    const posBucket = position + 1;
 
-    return `${pChange}|${vol}|${rsi}|${macd}|${boll}|${pnl}|${bars}|${posBucket}`;
+    return `${pChange}|${vol}|${rsiBin}|${macd}|${boll}|${pnl}|${bars}|${posBucket}`;
   }
 
   /**

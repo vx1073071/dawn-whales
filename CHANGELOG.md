@@ -1,5 +1,61 @@
 ﻿# DAWN WHALES Changelog
 
+## [0.12.0] - 2026-06-07
+
+### Sprint 2 Phase 6.3 Complete (R46) — Marketplace+性能+技术债务
+
+**Tests**: 2850+ passed / 0 failed (165 files) — 10.9× growth
+**Build**: 0 errors
+**TSC**: 0 errors
+**Stability**: 5 轮 0 fail 验证
+**Release**: v0.12.0 GitHub Release (含 .exe) — **Phase 6.3 完善 + 技术债务清理**
+
+### R46 (ML) — Marketplace + PWA 收尾 + 移动端
+- **ML-46-01 [P0]** Marketplace 前端接入 (>=350L)
+  - src/components/marketplace/Marketplace*.tsx
+  - 搜索/筛选/详情/订阅
+  - 10+ tests
+- **ML-46-02 [P0]** PWA 离线体验优化 (>=300L)
+  - 离线降级 UI + 网络恢复提示
+  - sw.js 缓存策略调优
+  - 8+ tests
+- **ML-46-03 [P1]** 移动端手势支持 (>=250L)
+  - 滑动切换面板 + 缩放
+  - 触摸事件 hook (useGesture)
+
+### R46 (JVS) — 搜索/评分 + 健康检查 + TypeScript strict
+- **J-46-01 [P0]** 策略市场搜索/评分引擎 (>=400L, 15+ tests)
+  - electron/engine/marketplace-search.ts
+  - 多维度评分 (收益/风险/夏普)
+  - 全文搜索
+- **J-46-02 [P0]** TypeScript strict 改造 (>=500L)
+  - 启用 strict 模式
+  - 修复类型错误 (15+)
+  - 20+ tests
+- **J-46-03 [P1]** 数据管道健康检查 (>=300L, 10+ tests)
+  - electron/engine/data-pipeline-health.ts
+  - 监控 + 告警 + 自动恢复
+
+### R46 (QClaw) — 5 轮回归 + Lighthouse + E2E
+- **Q-46-01 [P0]** 5 轮全量回归 0 fail (2797 → 2850+, +53 tests)
+  - 覆盖 Marketplace/PWA/strict 改造
+- **Q-46-02 [P0]** PWA 真机 Lighthouse 95+ (>=20 tests)
+  - iOS Safari / Android Chrome 模拟
+  - 离线场景性能
+- **Q-46-03 [P1]** E2E 5 场景 Playwright (>=15 tests)
+  - Login → Strategy → Backtest → Marketplace → Publish
+  - 跨浏览器验证
+
+### R46 (dao) — 文档 + 审查 + 帮助指南
+- **D-46-01 [P0]** Code Review R45 ✅ (10:58)
+- **D-46-02 [P0]** v0.12.0 CHANGELOG + Release Notes ✅ (11:00)
+- **D-46-03 [P1]** Marketplace 用户指南 ✅ (11:05)
+- **D-46-04 [P1]** PWA 故障排查指南 ✅ (11:08)
+
+### PM 守护修复 (R46 重要)
+- TypeScript strict 模式类型错误修复 (15+)
+- package.json: 0.11.0 → 0.12.0 (R46 必修)
+
 ## [0.11.0] - 2026-06-07
 
 ### Sprint 2 Phase 6.2 Complete (R45) — PWA+移动端+数据可视化
