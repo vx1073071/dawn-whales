@@ -60,6 +60,7 @@
     "autoprefixer": "^10.4.19",
     "electron": "^33.0.0",
     "electron-builder": "^25.1.8",
+    "lighthouse": "^12.8.2",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "tsx": "^4.22.4",
