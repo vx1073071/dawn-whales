@@ -15,6 +15,7 @@
     "dist:mac": "vite build && electron-builder --mac",
     "dist:linux": "vite build && electron-builder --linux",
     "dist:all": "vite build && npx tsx scripts/build-multi-platform.ts all",
+    "release:check": "npx tsx scripts/v1-release-build.ts",
     "lint": "eslint src --ext .ts,.tsx",
     "test": "node --no-warnings node_modules/vitest/vitest.mjs run",
     "test:market": "vitest run tests/market/",
