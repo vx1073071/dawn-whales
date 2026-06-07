@@ -14,7 +14,7 @@ import React, { createContext, useContext, useState, useCallback, useMemo } from
 
 // ── Types ───────────────────────────────────────────────────────────────
 
-type Locale = 'zh' | 'en';
+type Locale = 'zh' | 'zh-HK' | 'en';
 
 interface I18nContextValue {
   locale: Locale;
@@ -200,7 +200,8 @@ const EN: Record<string, string> = {
   'phase5.multisource': 'Multi-Source',
 };
 
-const translations: Record<Locale, Record<string, string>> = { zh: ZH, en: EN };
+const ZH_HK: Record<string, string> = ZH;
+const translations: Record<Locale, Record<string, string>> = { zh: ZH, 'zh-HK': ZH_HK, en: EN };
 
 // ── Context ─────────────────────────────────────────────────────────────
 
@@ -234,16 +235,19 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children, defaultLoc
   }, []);
 
   const t = useCallback((key: string, fallback?: string): string => {
-    return translations[locale]?.[key] ?? fallback ?? key;
+    const lang = locale === 'zh-HK' ? 'zh' : locale;
+    return translations[lang]?.[key] ?? fallback ?? key;
   }, [locale]);
 
   const formatNumber = useCallback((n: number, decimals = 0): string => {
+    if (locale === 'zh-HK') return n.toLocaleString('zh-HK', { maximumFractionDigits: decimals });
     return locale === 'zh'
       ? n.toLocaleString('zh-CN', { maximumFractionDigits: decimals })
       : n.toLocaleString('en-US', { maximumFractionDigits: decimals });
   }, [locale]);
 
   const formatCurrency = useCallback((n: number, currency = 'HKD'): string => {
+    if (locale === 'zh-HK') return `${currency} ${n.toLocaleString('zh-HK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     return locale === 'zh'
       ? `${currency} ${n.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
       : `${currency} ${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -260,7 +264,8 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children, defaultLoc
     const opts: Intl.DateTimeFormatOptions = format === 'long'
       ? { year: 'numeric', month: 'long', day: 'numeric' }
       : { month: '2-digit', day: '2-digit' };
-    return date.toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US', opts);
+    const dateLocale = locale === 'zh-HK' ? 'zh-HK' : locale === 'zh' ? 'zh-CN' : 'en-US';
+    return date.toLocaleDateString(dateLocale, opts);
   }, [locale]);
 
   const value = useMemo((): I18nContextValue => ({
