@@ -65,17 +65,35 @@ export interface FieldSelector {
 export class ResponseCache {
   private cache: Map<string, CacheEntry<any>> = new Map();
   private maxEntries: number;
+  private defaultTtl: number;
 
-  constructor(maxEntries: number = 100) {
-    this.maxEntries = maxEntries;
+  /**
+   * Constructor supports two signatures:
+   * - (maxEntries) — uses default 5min TTL
+   * - (defaultTtlMs, maxEntries) — explicit TTL + max
+   */
+  constructor(arg1: number = 100, arg2?: number) {
+    if (arg2 !== undefined) {
+      // (defaultTtlMs, maxEntries)
+      this.defaultTtl = arg1;
+      this.maxEntries = arg2;
+    } else {
+      // (maxEntries)
+      this.maxEntries = arg1;
+      this.defaultTtl = 300_000; // 5min default
+    }
+  }
+
+  get size(): number {
+    return this.cache.size;
   }
 
   private getTtl(policy: CachePolicy): number {
     switch (policy) {
       case 'none': return 0;
-      case 'short': return 30_000; // 30s
-      case 'medium': return 300_000; // 5min
-      case 'long': return 3600_000; // 1hr
+      case 'short': return 30_000;
+      case 'medium': return 300_000;
+      case 'long': return 3600_000;
     }
   }
 
@@ -97,10 +115,17 @@ export class ResponseCache {
   }
 
   /**
-   * Store response with cache policy
+   * Store response — supports both CachePolicy string and numeric TTL (ms)
    */
-  set<T>(key: string, data: T, policy: CachePolicy): void {
-    const ttl = this.getTtl(policy);
+  set<T>(key: string, data: T, policyOrTtl?: CachePolicy | number): void {
+    let ttl: number;
+    if (typeof policyOrTtl === 'number') {
+      ttl = policyOrTtl;
+    } else if (typeof policyOrTtl === 'string') {
+      ttl = this.getTtl(policyOrTtl);
+    } else {
+      ttl = this.defaultTtl;
+    }
     if (ttl === 0) return;
 
     // Evict oldest if at capacity
@@ -132,6 +157,20 @@ export class ResponseCache {
     let count = 0;
     for (const key of this.cache.keys()) {
       if (key === keyOrPrefix || key.startsWith(keyOrPrefix)) {
+        this.cache.delete(key);
+        count++;
+      }
+    }
+    return count;
+  }
+
+  /**
+   * Invalidate by pattern (alias for invalidate with prefix matching)
+   */
+  invalidatePattern(pattern: string): number {
+    let count = 0;
+    for (const key of this.cache.keys()) {
+      if (key.startsWith(pattern)) {
         this.cache.delete(key);
         count++;
       }
@@ -372,3 +411,146 @@ export function resetMobileApiAdapter(): void {
 }
 
 export default MobileApiAdapter;
+
+// ── QClaw Compatibility Layer ─────────────────────────────────────────────
+// Exports expected by tests/jvs-53-04-mobile-api-adapter.test.ts (QClaw)
+
+/**
+ * PaginationHelper — static paginate + cursorPaginate
+ */
+export const PaginationHelper = {
+  paginate<T>(items: T[], opts: { page: number; pageSize: number }) {
+    const { page, pageSize } = opts;
+    const start = (page - 1) * pageSize;
+    const data = items.slice(start, start + pageSize);
+    const totalPages = Math.ceil(items.length / pageSize);
+    return {
+      data,
+      total: items.length,
+      totalPages,
+      page,
+      pageSize,
+      hasNext: page < totalPages,
+      hasPrev: page > 1,
+    };
+  },
+
+  cursorPaginate<T extends { id: string }>(items: T[], opts: { cursor?: string; limit: number }) {
+    const { cursor, limit } = opts;
+    let startIdx = 0;
+    if (cursor) {
+      const idx = items.findIndex(i => i.id === cursor);
+      startIdx = idx >= 0 ? idx + 1 : 0;
+    }
+    const data = items.slice(startIdx, startIdx + limit);
+    const hasNext = startIdx + limit < items.length;
+    return {
+      data,
+      hasNext,
+      nextCursor: hasNext ? data[data.length - 1]?.id : undefined,
+    };
+  },
+};
+
+/**
+ * LightweightResponse — strips heavy fields (code, backtestResult, etc.)
+ */
+const HEAVY_FIELDS = ['code', 'backtestResult', 'fullHistory', 'rawData', 'debugInfo'];
+
+export class LightweightResponse {
+  build<T extends Record<string, any>>(obj: T): Partial<T> {
+    const result: Record<string, any> = {};
+    for (const [k, v] of Object.entries(obj)) {
+      if (!HEAVY_FIELDS.includes(k)) result[k] = v;
+    }
+    return result as Partial<T>;
+  }
+
+  buildList<T extends Record<string, any>>(items: T[]): Partial<T>[] {
+    return items.map(item => this.build(item));
+  }
+
+  static estimateSize(obj: any): number {
+    return JSON.stringify(obj).length;
+  }
+}
+
+/**
+ * RateLimiter — token bucket per client
+ */
+export class RateLimiter {
+  private clients: Map<string, { tokens: number; lastRefill: number }> = new Map();
+  private maxTokens: number;
+  private windowMs: number;
+
+  constructor(maxTokens: number, windowMs: number) {
+    this.maxTokens = maxTokens;
+    this.windowMs = windowMs;
+  }
+
+  check(clientId: string): { allowed: boolean; remaining: number; retryAfterMs: number } {
+    const now = Date.now();
+    let client = this.clients.get(clientId);
+
+    if (!client) {
+      client = { tokens: this.maxTokens, lastRefill: now };
+      this.clients.set(clientId, client);
+    }
+
+    // Refill tokens based on elapsed time
+    const elapsed = now - client.lastRefill;
+    if (elapsed >= this.windowMs) {
+      client.tokens = this.maxTokens;
+      client.lastRefill = now;
+    }
+
+    if (client.tokens > 0) {
+      client.tokens--;
+      return { allowed: true, remaining: client.tokens, retryAfterMs: 0 };
+    }
+
+    const retryAfterMs = this.windowMs - elapsed;
+    return { allowed: false, remaining: 0, retryAfterMs: Math.max(0, retryAfterMs) };
+  }
+
+  reset(clientId: string): void {
+    this.clients.delete(clientId);
+  }
+}
+
+/**
+ * Response builders
+ */
+export function okResponse<T>(data: T) {
+  return { ok: true as const, data, meta: undefined as any };
+}
+
+export function errorResponse(code: string, message: string, retryable: boolean = false) {
+  return { ok: false as const, data: undefined as any, error: { code, message, retryable } };
+}
+
+export function cachedResponse<T>(data: T) {
+  return { ok: true as const, data, meta: { cached: true } };
+}
+
+/**
+ * Global singletons for QClaw tests
+ */
+let _globalCache: ResponseCache | null = null;
+let _globalLimiter: RateLimiter | null = null;
+
+export function getResponseCache(): ResponseCache {
+  if (!_globalCache) _globalCache = new ResponseCache(300000, 100);
+  return _globalCache;
+}
+
+export function getRateLimiter(): RateLimiter {
+  if (!_globalLimiter) _globalLimiter = new RateLimiter(100, 60000);
+  return _globalLimiter;
+}
+
+export function resetMobileApi(): void {
+  _globalCache = null;
+  _globalLimiter = null;
+  resetMobileApiAdapter();
+}
