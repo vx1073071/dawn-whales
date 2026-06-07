@@ -1,5 +1,17 @@
 ﻿# DAWN WHALES Changelog
 
+## [0.10.0] - 2026-06-07
+
+### Sprint 2 Phase 6.0 Complete (R44) — 收官+AI+v0.10.0
+
+**Tests**: 2400 → 2450+ passed / 0 failed (143 files) — 9.4× growth from v0.7.0
+**Build**: 0 errors, 0 warnings
+**TSC**: 0 errors
+**Stability**: 10 轮 0 fail 验证
+**Release**: v0.10.0 GitHub Release (含 .exe)
+
+(待 R44 完成后填入完整交付物)
+
 ## [0.9.1-alpha] - 2026-06-07
 
 ### Sprint 2 Phase 6.1 Complete (R43) — 监控+实时+桌面沉浸
