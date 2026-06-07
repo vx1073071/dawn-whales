@@ -284,6 +284,15 @@ export class SubscriptionEarnings {
     return result;
   }
 
+  /**
+   * Get all subscriptions for a strategy (any status). Used by calculateEarnings
+   * which needs to count active subs over a time period including newly created
+   * subs that became active during the period.
+   */
+  getAllStrategySubscriptions(strategyId: string): Subscription[] {
+    return this.getStrategySubscribers(strategyId);
+  }
+
   getStrategySubscriberCount(strategyId: string): number {
     return this.getStrategySubscribers(strategyId, 'active').length;
   }
@@ -316,7 +325,9 @@ export class SubscriptionEarnings {
       const cancelledMs = s.cancelledAt ? new Date(s.cancelledAt).getTime() : Infinity;
       const expiresMs = s.expiresAt ? new Date(s.expiresAt).getTime() : Infinity;
       const effectiveEnd = Math.min(cancelledMs, expiresMs);
-      return startedMs < endMs && effectiveEnd > startMs;
+      // Use <= for startedMs to include subs created at the exact endMs boundary
+      // (avoids timing race in tests where subscribe + calculateEarnings happen in same ms)
+      return startedMs <= endMs && effectiveEnd > startMs;
     });
 
     const newSubs = subs.filter(s => new Date(s.startedAt).getTime() >= startMs && new Date(s.startedAt).getTime() < endMs);
