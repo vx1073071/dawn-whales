@@ -293,11 +293,11 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ className, c
     <div className={`flex items-center ${className ?? ''}`}>
       {compact ? (
         <button
-          onClick={() => setLocale(locale === 'zh' ? 'en' : 'zh')}
+          onClick={() => setLocale(locale === 'zh' ? 'en' : locale === 'en' ? 'zh-HK' : 'zh')}
           className="px-2 py-1 bg-gray-800/60 border border-gray-700/50 rounded text-xs text-gray-400 hover:text-gray-200"
-          title={locale === 'zh' ? 'Switch to English' : '切换中文'}
+          title={locale === 'zh' ? 'Switch to English' : locale === 'en' ? '香港繁體' : '简体中文'}
         >
-          {locale === 'zh' ? 'EN' : '中'}
+          {locale === 'zh' ? 'EN' : locale === 'en' ? '港' : '中'}
         </button>
       ) : (
         <div className="flex bg-gray-800/40 rounded-lg p-0.5">
@@ -310,6 +310,16 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ className, c
             }`}
           >
             中文
+          </button>
+          <button
+            onClick={() => setLocale('zh-HK')}
+            className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
+              locale === 'zh-HK'
+                ? 'bg-amber-500/20 text-amber-400'
+                : 'text-gray-500 hover:text-gray-300'
+            }`}
+          >
+            香港
           </button>
           <button
             onClick={() => setLocale('en')}

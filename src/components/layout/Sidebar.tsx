@@ -13,6 +13,7 @@ const navItems: NavItem[] = [
   { id: 'dashboard', icon: '📊', label: '总览看板', section: '总览' },
   { id: 'market', icon: '📈', label: '行情中心', section: '交易' },
   { id: 'strategy', icon: '🧠', label: '策略工坊' },
+  { id: 'ai', icon: '🐋', label: 'AI 助理' },
   { id: 'marketplace', icon: '🏪', label: '策略市场' },
   { id: 'backtest', icon: '🔬', label: '回测报告' },
   { id: 'portfolio', icon: '💼', label: '持仓管理' },

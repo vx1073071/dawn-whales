@@ -8,6 +8,7 @@ import OnboardingModal from '@/components/OnboardingModal';
 import NotificationToast from '@/components/NotificationToast';
 import { connectBroker } from '@/lib/bridge-api';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { getSkeletonForView } from '@/components/skeleton/SkeletonScreen';
 
 // ── Lazy-loaded pages for code splitting ──────────────────────────────────
 const DashboardPage = lazy(() => import('@/components/dashboard/DashboardPage'));
@@ -22,6 +23,7 @@ const BacktestReportPage = lazy(() => import('@/components/backtest/BacktestRepo
 const RiskDashboardPage = lazy(() => import('@/components/risk/RiskDashboardPage'));
 const AlertCenterPage = lazy(() => import('@/components/risk/AlertCenterPage'));
 const TradeDashboardPage = lazy(() => import('@/components/trading/TradeDashboardPage'));
+const AIAssistantPage = lazy(() => import('@/components/ai/AIAssistantPanel'));
 
 const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   dashboard: DashboardPage,
@@ -36,14 +38,13 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   risk: RiskDashboardPage,
   alert: AlertCenterPage,
   trade: TradeDashboardPage,
+  ai: AIAssistantPage,
 };
 
 function PageFallback() {
-  return (
-    <div className="flex items-center justify-center h-full">
-      <div className="text-gray-500 text-sm animate-pulse">加载中...</div>
-    </div>
-  );
+  const view = useAppStore((s) => s.sidebarView);
+  const Skeleton = getSkeletonForView(view);
+  return <Skeleton />;
 }
 
 export default function App() {
