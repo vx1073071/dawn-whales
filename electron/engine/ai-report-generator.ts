@@ -256,3 +256,415 @@ ${compTable}
 export async function generateQuickReport(result: BacktestResult, apiKey?: string): Promise<BacktestReport> {
   return generateBacktestReport([result], result.result.config?.symbol, apiKey);
 }
+
+// ── Daily Report Generation ─────────────────────────────────────────────────
+
+export interface DailyReportData {
+  date: string;
+  portfolioValue: number;
+  dailyPnl: number;
+  dailyPnlPct: number;
+  topPerformers: Array<{ symbol: string; pnl: number; pnlPct: number }>;
+  worstPerformers: Array<{ symbol: string; pnl: number; pnlPct: number }>;
+  signals: { buy: number; sell: number; hold: number };
+  riskLevel: 'low' | 'medium' | 'high';
+  alertsTriggered: number;
+}
+
+export async function generateDailyReport(
+  data: DailyReportData,
+  apiKey?: string,
+  timeoutMs = 15000
+): Promise<BacktestReport> {
+  log.info('[AIReportGenerator] Generating daily report for', data.date);
+
+  const prompt = `你是一个量化交易分析师。请为以下每日交易数据生成简洁的日报。
+
+**要求：**
+- 语言：中文（简洁明了）
+- 格式：Markdown，含标题和 bullet points
+- 包含：今日盈亏、表现最佳/最差标的、信号摘要、风险提示
+- 每个部分2-3句话
+
+**今日数据：**
+日期：${data.date}
+组合总值：$${data.portfolioValue.toFixed(2)}
+今日盈亏：$${data.dailyPnl.toFixed(2)} (${data.dailyPnlPct.toFixed(2)}%)
+
+表现最佳：
+${data.topPerformers.slice(0, 3).map(p => `- ${p.symbol}: $${p.pnl.toFixed(2)} (${p.pnlPct.toFixed(2)}%)`).join('\n')}
+
+表现最差：
+${data.worstPerformers.slice(0, 3).map(p => `- ${p.symbol}: $${p.pnl.toFixed(2)} (${p.pnlPct.toFixed(2)}%)`).join('\n')}
+
+信号摘要：
+- 买入信号：${data.signals.buy} 个
+- 卖出信号：${data.signals.sell} 个
+- 持有信号：${data.signals.hold} 个
+
+风险等级：${data.riskLevel}
+触发告警：${data.alertsTriggered} 个
+
+请直接输出 Markdown 日报内容。`;
+
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    let raw = '';
+    try {
+      const { getDeepSeekKey } = await import('./utils/secure-key');
+      const key = apiKey || getDeepSeekKey();
+      if (!key) throw new Error('No DeepSeek API key');
+      raw = await callDeepSeek(prompt, key, controller.signal);
+    } finally {
+      clearTimeout(timer);
+    }
+
+    if (!raw?.trim()) throw new Error('Empty LLM response');
+
+    const sectionBlocks = raw.split(/(?=^#{1,3}\s)/m);
+    const sections: ReportSection[] = sectionBlocks
+      .map(block => {
+        const lines = block.trim().split('\n');
+        const heading = lines[0]?.replace(/^#+\s*/, '').trim() || 'Daily Summary';
+        return { heading, content: lines.slice(1).join('\n').trim() };
+      })
+      .filter(s => s.content.length > 0);
+
+    return {
+      title: `Daily Report — ${data.date}`,
+      sections: sections.length > 0 ? sections : [{ heading: 'Daily Summary', content: raw }],
+      raw,
+      fallback: false,
+      generatedAt: Date.now(),
+    };
+  } catch (err: any) {
+    const aborted = err.name === 'AbortError' || err.message?.includes('timeout');
+    log.warn(`[AIReportGenerator] Daily report ${aborted ? 'timeout' : 'error'}: ${err.message}`);
+    return fallbackDailyReport(data);
+  }
+}
+
+function fallbackDailyReport(data: DailyReportData): BacktestReport {
+  const sections: ReportSection[] = [
+    {
+      heading: '📊 Daily Summary',
+      content: [
+        `**Date:** ${data.date}`,
+        `**Portfolio Value:** $${data.portfolioValue.toFixed(2)}`,
+        `**Daily P&L:** $${data.dailyPnl.toFixed(2)} (${data.dailyPnlPct.toFixed(2)}%)`,
+      ].join('\n'),
+    },
+    {
+      heading: '🏆 Top Performers',
+      content: data.topPerformers
+        .slice(0, 3)
+        .map(p => `- **${p.symbol}:** $${p.pnl.toFixed(2)} (${p.pnlPct.toFixed(2)}%)`)
+        .join('\n'),
+    },
+    {
+      heading: '📉 Worst Performers',
+      content: data.worstPerformers
+        .slice(0, 3)
+        .map(p => `- **${p.symbol}:** $${p.pnl.toFixed(2)} (${p.pnlPct.toFixed(2)}%)`)
+        .join('\n'),
+    },
+    {
+      heading: '📡 Signal Summary',
+      content: [
+        `- Buy signals: ${data.signals.buy}`,
+        `- Sell signals: ${data.signals.sell}`,
+        `- Hold signals: ${data.signals.hold}`,
+      ].join('\n'),
+    },
+    {
+      heading: '⚠️ Risk Status',
+      content: [
+        `**Risk Level:** ${data.riskLevel}`,
+        `**Alerts Triggered:** ${data.alertsTriggered}`,
+        data.riskLevel === 'high'
+          ? '- 🔴 High risk — consider reducing exposure'
+          : data.riskLevel === 'medium'
+          ? '- 🟡 Medium risk — monitor closely'
+          : '- 🟢 Low risk — portfolio stable',
+      ].join('\n'),
+    },
+  ];
+
+  return {
+    title: `Daily Report — ${data.date}`,
+    sections,
+    raw: '',
+    fallback: true,
+    generatedAt: Date.now(),
+  };
+}
+
+// ── Weekly Report Generation ─────────────────────────────────────────────────
+
+export interface WeeklyReportData {
+  weekStart: string;
+  weekEnd: string;
+  weeklyPnl: number;
+  weeklyPnlPct: number;
+  weeklyWinRate: number;
+  bestStrategies: Array<{ name: string; pnl: number; pnlPct: number }>;
+  worstStrategies: Array<{ name: string; pnl: number; pnlPct: number }>;
+  weekOverWeekChange: number;
+}
+
+export async function generateWeeklyReport(
+  data: WeeklyReportData,
+  apiKey?: string,
+  timeoutMs = 15000
+): Promise<BacktestReport> {
+  log.info('[AIReportGenerator] Generating weekly report for', data.weekStart, 'to', data.weekEnd);
+
+  const prompt = `你是一个量化交易分析师。请为以下每周交易数据生成简洁的周报。
+
+**要求：**
+- 语言：中文（简洁明了）
+- 格式：Markdown，含标题和 bullet points
+- 包含：本周盈亏、最佳/最差策略、周环比变化、建议
+- 每个部分2-3句话
+
+**本周数据：**
+周期：${data.weekStart} 至 ${data.weekEnd}
+本周盈亏：$${data.weeklyPnl.toFixed(2)} (${data.weeklyPnlPct.toFixed(2)}%)
+本周胜率：${data.weeklyWinRate.toFixed(1)}%
+
+最佳策略：
+${data.bestStrategies.slice(0, 3).map(s => `- ${s.name}: $${s.pnl.toFixed(2)} (${s.pnlPct.toFixed(2)}%)`).join('\n')}
+
+最差策略：
+${data.worstStrategies.slice(0, 3).map(s => `- ${s.name}: $${s.pnl.toFixed(2)} (${s.pnlPct.toFixed(2)}%)`).join('\n')}
+
+周环比变化：${data.weekOverWeekChange > 0 ? '+' : ''}${data.weekOverWeekChange.toFixed(2)}%
+
+请直接输出 Markdown 周报内容。`;
+
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    let raw = '';
+    try {
+      const { getDeepSeekKey } = await import('./utils/secure-key');
+      const key = apiKey || getDeepSeekKey();
+      if (!key) throw new Error('No DeepSeek API key');
+      raw = await callDeepSeek(prompt, key, controller.signal);
+    } finally {
+      clearTimeout(timer);
+    }
+
+    if (!raw?.trim()) throw new Error('Empty LLM response');
+
+    const sectionBlocks = raw.split(/(?=^#{1,3}\s)/m);
+    const sections: ReportSection[] = sectionBlocks
+      .map(block => {
+        const lines = block.trim().split('\n');
+        const heading = lines[0]?.replace(/^#+\s*/, '').trim() || 'Weekly Summary';
+        return { heading, content: lines.slice(1).join('\n').trim() };
+      })
+      .filter(s => s.content.length > 0);
+
+    return {
+      title: `Weekly Report — ${data.weekStart} to ${data.weekEnd}`,
+      sections: sections.length > 0 ? sections : [{ heading: 'Weekly Summary', content: raw }],
+      raw,
+      fallback: false,
+      generatedAt: Date.now(),
+    };
+  } catch (err: any) {
+    const aborted = err.name === 'AbortError' || err.message?.includes('timeout');
+    log.warn(`[AIReportGenerator] Weekly report ${aborted ? 'timeout' : 'error'}: ${err.message}`);
+    return fallbackWeeklyReport(data);
+  }
+}
+
+function fallbackWeeklyReport(data: WeeklyReportData): BacktestReport {
+  const sections: ReportSection[] = [
+    {
+      heading: '📊 Weekly Summary',
+      content: [
+        `**Period:** ${data.weekStart} to ${data.weekEnd}`,
+        `**Weekly P&L:** $${data.weeklyPnl.toFixed(2)} (${data.weeklyPnlPct.toFixed(2)}%)`,
+        `**Win Rate:** ${data.weeklyWinRate.toFixed(1)}%`,
+        `**Week-over-Week:** ${data.weekOverWeekChange > 0 ? '+' : ''}${data.weekOverWeekChange.toFixed(2)}%`,
+      ].join('\n'),
+    },
+    {
+      heading: '🏆 Best Strategies',
+      content: data.bestStrategies
+        .slice(0, 3)
+        .map(s => `- **${s.name}:** $${s.pnl.toFixed(2)} (${s.pnlPct.toFixed(2)}%)`)
+        .join('\n'),
+    },
+    {
+      heading: '📉 Worst Strategies',
+      content: data.worstStrategies
+        .slice(0, 3)
+        .map(s => `- **${s.name}:** $${s.pnl.toFixed(2)} (${s.pnlPct.toFixed(2)}%)`)
+        .join('\n'),
+    },
+    {
+      heading: '💡 Weekly Insights',
+      content: [
+        data.weeklyPnlPct > 5
+          ? '- ✅ Strong weekly performance — continue current strategy'
+          : data.weeklyPnlPct > 0
+          ? '- 🟡 Moderate performance — review underperforming strategies'
+          : '- 🔴 Negative week — consider strategy adjustments',
+        data.weekOverWeekChange > 0
+          ? '- 📈 Positive week-over-week trend'
+          : '- 📉 Negative week-over-week trend — investigate causes',
+      ].join('\n'),
+    },
+  ];
+
+  return {
+    title: `Weekly Report — ${data.weekStart} to ${data.weekEnd}`,
+    sections,
+    raw: '',
+    fallback: true,
+    generatedAt: Date.now(),
+  };
+}
+
+// ── Monthly Report Generation ────────────────────────────────────────────────
+
+export interface MonthlyReportData {
+  month: string;
+  monthlyPnl: number;
+  monthlyPnlPct: number;
+  monthlySharpe: number;
+  monthlySortino: number;
+  maxDrawdown: number;
+  strategyRanking: Array<{ name: string; pnl: number; pnlPct: number; sharpe: number }>;
+  monthOverMonthChange: number;
+}
+
+export async function generateMonthlyReport(
+  data: MonthlyReportData,
+  apiKey?: string,
+  timeoutMs = 20000
+): Promise<BacktestReport> {
+  log.info('[AIReportGenerator] Generating monthly report for', data.month);
+
+  const prompt = `你是一个量化交易分析师。请为以下每月交易数据生成专业的月报。
+
+**要求：**
+- 语言：中文（专业但易懂）
+- 格式：Markdown，含标题和 bullet points
+- 包含：本月表现、风险指标、策略排名、月环比、建议（3-5条）
+- 每个建议要具体可行
+
+**本月数据：**
+月份：${data.month}
+本月盈亏：$${data.monthlyPnl.toFixed(2)} (${data.monthlyPnlPct.toFixed(2)}%)
+夏普比率：${data.monthlySharpe.toFixed(2)}
+索提诺比率：${data.monthlySortino.toFixed(2)}
+最大回撤：${data.maxDrawdown.toFixed(2)}%
+
+策略排名：
+${data.strategyRanking.slice(0, 5).map(s => `- ${s.name}: $${s.pnl.toFixed(2)} (${s.pnlPct.toFixed(2)}%, Sharpe: ${s.sharpe.toFixed(2)})`).join('\n')}
+
+月环比变化：${data.monthOverMonthChange > 0 ? '+' : ''}${data.monthOverMonthChange.toFixed(2)}%
+
+请直接输出 Markdown 月报内容。`;
+
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    let raw = '';
+    try {
+      const { getDeepSeekKey } = await import('./utils/secure-key');
+      const key = apiKey || getDeepSeekKey();
+      if (!key) throw new Error('No DeepSeek API key');
+      raw = await callDeepSeek(prompt, key, controller.signal);
+    } finally {
+      clearTimeout(timer);
+    }
+
+    if (!raw?.trim()) throw new Error('Empty LLM response');
+
+    const sectionBlocks = raw.split(/(?=^#{1,3}\s)/m);
+    const sections: ReportSection[] = sectionBlocks
+      .map(block => {
+        const lines = block.trim().split('\n');
+        const heading = lines[0]?.replace(/^#+\s*/, '').trim() || 'Monthly Summary';
+        return { heading, content: lines.slice(1).join('\n').trim() };
+      })
+      .filter(s => s.content.length > 0);
+
+    return {
+      title: `Monthly Report — ${data.month}`,
+      sections: sections.length > 0 ? sections : [{ heading: 'Monthly Summary', content: raw }],
+      raw,
+      fallback: false,
+      generatedAt: Date.now(),
+    };
+  } catch (err: any) {
+    const aborted = err.name === 'AbortError' || err.message?.includes('timeout');
+    log.warn(`[AIReportGenerator] Monthly report ${aborted ? 'timeout' : 'error'}: ${err.message}`);
+    return fallbackMonthlyReport(data);
+  }
+}
+
+function fallbackMonthlyReport(data: MonthlyReportData): BacktestReport {
+  const sections: ReportSection[] = [
+    {
+      heading: '📊 Monthly Performance',
+      content: [
+        `**Month:** ${data.month}`,
+        `**Monthly P&L:** $${data.monthlyPnl.toFixed(2)} (${data.monthlyPnlPct.toFixed(2)}%)`,
+        `**Sharpe Ratio:** ${data.monthlySharpe.toFixed(2)}`,
+        `**Sortino Ratio:** ${data.monthlySortino.toFixed(2)}`,
+        `**Max Drawdown:** ${data.maxDrawdown.toFixed(2)}%`,
+        `**Month-over-Month:** ${data.monthOverMonthChange > 0 ? '+' : ''}${data.monthOverMonthChange.toFixed(2)}%`,
+      ].join('\n'),
+    },
+    {
+      heading: '🏆 Strategy Ranking',
+      content: data.strategyRanking
+        .slice(0, 5)
+        .map(s => `- **${s.name}:** $${s.pnl.toFixed(2)} (${s.pnlPct.toFixed(2)}%, Sharpe: ${s.sharpe.toFixed(2)})`)
+        .join('\n'),
+    },
+    {
+      heading: '⚠️ Risk Assessment',
+      content: [
+        `**Risk Level:** ${data.maxDrawdown > 20 ? '🔴 HIGH' : data.maxDrawdown > 10 ? '🟡 MEDIUM' : '🟢 LOW'}`,
+        `**Sharpe Quality:** ${data.monthlySharpe > 1 ? '🟢 Strong' : data.monthlySharpe > 0.5 ? '🟡 Moderate' : '🔴 Weak'}`,
+        data.maxDrawdown > 15
+          ? '- ⚠️ Drawdown exceeds 15% — review risk management'
+          : '- ✅ Drawdown within acceptable range',
+      ].join('\n'),
+    },
+    {
+      heading: '💡 Monthly Insights',
+      content: [
+        data.monthlySharpe > 1
+          ? '- ✅ Excellent risk-adjusted returns this month'
+          : data.monthlySharpe > 0.5
+          ? '- 🟡 Good performance — consider position optimization'
+          : '- 🔴 Weak risk-adjusted returns — review strategy selection',
+        data.monthOverMonthChange > 5
+          ? '- 📈 Strong month-over-month growth'
+          : data.monthOverMonthChange > 0
+          ? '- 📈 Positive monthly trend'
+          : '- 📉 Negative month-over-month — investigate underperformers',
+        data.maxDrawdown > 20
+          ? '- 🔴 High drawdown — implement tighter stop-losses'
+          : '- ✅ Drawdown well controlled',
+      ].join('\n'),
+    },
+  ];
+
+  return {
+    title: `Monthly Report — ${data.month}`,
+    sections,
+    raw: '',
+    fallback: true,
+    generatedAt: Date.now(),
+  };
+}
