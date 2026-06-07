@@ -1,6 +1,6 @@
 {
   "name": "dawn-whales",
-  "version": "1.0.0-rc1",
+  "version": "1.0.0",
   "private": true,
   "description": "DAWN WHALES",
   "main": "dist-electron/main.cjs",
