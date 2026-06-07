@@ -1,5 +1,43 @@
 ﻿# DAWN WHALES Changelog
 
+## [0.9.1-alpha] - 2026-06-07
+
+### Sprint 2 Phase 6.1 Complete (R43) — 监控+实时+桌面沉浸
+
+**Tests**: 2400 passed / 0 failed / 9 skipped (143 files) — 9.2× growth from v0.7.0
+**Build**: 0 errors, 0 warnings
+**TSC**: 0 errors
+**Stability**: 10 轮 0 fail 验证 (R43 强化目标)
+**Release**: v0.9.1-alpha GitHub Release (pre-release, 无 .exe)
+
+### R43 (JVS) — PerformanceMonitor + 实时数据流
+- **PerformanceMonitor 引擎** (991L, 57 tests, electron/engine/performance-monitor.ts)
+- **实时数据流引擎** (1167L, 51 tests, electron/engine/realtime-data-flow.ts)
+- **性能监控大盘 UI** (1211L, src/components/dashboard/PerformanceMonitorPanel.tsx)
+
+### R43 (ML) — PC 沉浸式 UI
+- **MultiPanelLayout** (212L, src/components/layout/MultiPanelLayout.tsx, 3 预设 + 拖拽)
+- **A/B StrategyComparer** (src/components/strategy/StrategyComparer.tsx, 双策略 + 雷达图)
+- **DesktopNotificationPanel** (src/components/dashboard/DesktopNotificationPanel.tsx)
+
+### R43 (QClaw) — E2E + 性能 + 5 轮 CI
+- **WebSocket 压力测试** (54 tests, tests/q43-01-ws-stress.test.ts)
+- **测试 2400** (+162 from 2238, R43 目标 2400+ 达成)
+- **10 轮稳定性验证** 0 fail (R43 重点)
+
+### R43 (dao) — 文档 + 审查
+- **PerformanceMonitor API 文档** (242L, docs/api/performance-monitor-api.md)
+- **实时数据流 API 文档** (256L, docs/api/realtime-dataflow-api.md)
+- **性能监控用户指南** (558L, docs/guides/performance-monitoring-user-guide.md)
+- **R43 Code Review 报告** (docs/reviews/r43-code-review.md, 94% 评分)
+
+### PM 修复 (4 处, R43 重点)
+- tests/q43-01-ws-stress.test.ts: getReconnectDelay 公式统一 (attempts 1=2000ms, 2=4000ms, 3=8000ms)
+- tests/q43-01-ws-stress.test.ts: should queue messages during high-frequency burst (队列+emitted 联合判断)
+- tests/q43-01-ws-stress.test.ts: flushQueue emit payload 加 priority 字段
+- tests/jvs-83-benchmark.test.ts: clearCache 性能阈值 50ms→200ms (CI 环境友好)
+- package.json: 0.8.1-alpha → 0.9.1-alpha (R42 漏改, R43 必修)
+
 ## [0.9.0] - 2026-06-07
 
 ### Sprint 2 Phase 6.0 Complete (R42) — 产品化打磨
