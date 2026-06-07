@@ -4,13 +4,40 @@
 
 ### Sprint 2 Phase 6.0 Complete (R44) — 收官+AI+v0.10.0
 
-**Tests**: 2400 → 2450+ passed / 0 failed (143 files) — 9.4× growth from v0.7.0
+**Tests**: 2596 passed / 0 failed / 9 skipped (152 files) — 10.0× growth from v0.7.0
 **Build**: 0 errors, 0 warnings
 **TSC**: 0 errors
-**Stability**: 10 轮 0 fail 验证
-**Release**: v0.10.0 GitHub Release (含 .exe)
+**Stability**: 5 轮 0 fail 验证
+**Release**: v0.10.0 GitHub Release (含 .exe) — **R42 欠账还完**
 
-(待 R44 完成后填入完整交付物)
+### R44 (JVS) — AI 报告引擎 + 数据导出
+- **AI 日报生成引擎激活** (ai-report-generator.ts 11,033L)
+- **数据导出完善** (data-exporter.ts 18,026L)
+- **PDF 报表生成** (electron/engine/pdf-report-generator.ts 976L + 邮件接口)
+- **测试**: jvs-44-01/02/03 完成
+
+### R44 (ML) — PC 沉浸式 + AI 日报面板
+- **usePreload hook** (140L, Page bundle preloading on hover/intent)
+- **AIDailyDigestPanel** (370L, 日/周/月报 tab)
+- **ErrorBoundary + 全局错误处理**
+
+### R44 (QClaw) — Lighthouse 95+ + 内存 0 泄漏
+- **Q-44-01** CircuitBreaker (22 tests)
+- **Q-44-02** BackfillService (15 tests)
+- **Q-44-03** Cleanup Methods (18 tests) + Memory Leak (13 tests)
+- **Q-44-04** Engine Performance (9 tests)
+- **Q-44-05** Smart Cache (24 tests)
+- **测试增长**: 2400 → 2596 (+196, +8.2%)
+
+### R44 (dao) — 文档 + 审查
+- **v0.10.0 用户手册** (574L, 安装/策略/回测/优化/发布/AI 日报)
+- **Phase 6.0 完整技术文档** (15+ 引擎架构图 + API)
+- **Lighthouse 审计 + SEO 优化**
+
+### PM 守护修复 (4 处, R44)
+- electron/engine/circuit-breaker.ts: CircuitBreakerMetrics 加 state 字段, reset() 清 metrics, calculateBackoff() 防 undefined
+- tests/q44-03-memory-leak.test.ts: 通过修复 CircuitBreaker 引擎补全
+- package.json: v0.9.1-alpha → v0.10.0 (R42 漏改技术债, R44 必修)
 
 ## [0.9.1-alpha] - 2026-06-07
 
