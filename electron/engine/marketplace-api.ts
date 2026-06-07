@@ -1,11 +1,23 @@
 /**
- * JVS-45-02: Marketplace API - 策略市场引擎
- * 策略发布、评分、下载、搜索
+ * JVS-45-02 + J-52-01: Marketplace API - 策略市场引擎
+ * 策略发布、审核、评分、下载、搜索、版本管理
+ *
+ * J-52-01 R52 enhancements:
+ * - Audit/review workflow (pending → approved/rejected)
+ * - Category + market + timeframe filtering
+ * - Strategy versioning (updateStrategy)
+ * - Audit queue management
  */
 
 import log from 'electron-log';
 
 // ── Types ──────────────────────────────────────────────────────────────────
+
+export type AuditStatus = 'pending' | 'approved' | 'rejected';
+export type StrategyVisibility = 'public' | 'private' | 'unlisted';
+export type StrategyCategory = 'momentum' | 'mean-reversion' | 'arbitrage' | 'trend-following' | 'scalping' | 'swing' | 'options' | 'forex' | 'crypto' | 'multi-asset';
+export type StrategyMarket = 'us-equity' | 'cn-equity' | 'hk-equity' | 'forex' | 'crypto' | 'futures' | 'options' | 'multi-market';
+export type StrategyTimeframe = 'intraday' | 'daily' | 'weekly' | 'monthly';
 
 export interface MarketplaceStrategy {
   id: string;
@@ -21,8 +33,19 @@ export interface MarketplaceStrategy {
   maxDrawdown: number;
   winRate: number;
   tags: string[];
-  visibility: 'public' | 'private';
+  visibility: StrategyVisibility;
   price?: number;
+  // J-52-01 enhanced fields
+  category?: StrategyCategory;
+  market?: StrategyMarket;
+  timeframe?: StrategyTimeframe;
+  auditStatus?: AuditStatus;
+  auditNote?: string;
+  reviewedBy?: string;
+  reviewedAt?: string;
+  version?: number;
+  annualReturn?: number;
+  subscriberCount?: number;
 }
 
 export interface StrategyRating {
@@ -39,6 +62,13 @@ export interface MarketplaceFilter {
   sortBy: 'rating' | 'downloads' | 'sharpe' | 'newest';
   page: number;
   pageSize: number;
+  // J-52-01 enhanced filters
+  category?: StrategyCategory;
+  market?: StrategyMarket;
+  timeframe?: StrategyTimeframe;
+  auditStatus?: AuditStatus;
+  maxDrawdown?: number;
+  minWinRate?: number;
 }
 
 export interface MarketplaceResult {
@@ -48,11 +78,24 @@ export interface MarketplaceResult {
   pageSize: number;
 }
 
+export interface AuditAction {
+  reviewer: string;
+  note?: string;
+}
+
+export interface StrategyVersion {
+  version: number;
+  strategy: MarketplaceStrategy;
+  changedAt: string;
+  changeNote?: string;
+}
+
 // ── Marketplace Engine ─────────────────────────────────────────────────────
 
 export class MarketplaceApi {
   private strategies: Map<string, MarketplaceStrategy> = new Map();
   private ratings: Map<string, StrategyRating[]> = new Map();
+  private versions: Map<string, StrategyVersion[]> = new Map();
   private idCounter: number = 1;
 
   constructor() {
@@ -79,11 +122,134 @@ export class MarketplaceApi {
       downloads: strategy.downloads ?? 0,
       rating: strategy.rating ?? 0,
       ratingCount: strategy.ratingCount ?? 0,
+      // J-52-01: default audit status to 'approved' for backward compatibility
+      auditStatus: strategy.auditStatus ?? 'approved',
+      version: strategy.version ?? 1,
+      subscriberCount: strategy.subscriberCount ?? 0,
+      annualReturn: strategy.annualReturn ?? 0,
     };
 
     this.strategies.set(id, newStrategy);
+    // Store initial version
+    this.versions.set(id, [{ version: 1, strategy: { ...newStrategy }, changedAt: now, changeNote: 'Initial publish' }]);
     log.info(`[MarketplaceApi] Published strategy: ${strategy.name} (${id})`);
     return id;
+  }
+
+  // ── J-52-01: Audit Workflow ──────────────────────────────────────────────
+
+  /**
+   * Publish strategy with pending audit status
+   */
+  submitForReview(
+    strategy: Omit<MarketplaceStrategy, 'id' | 'createdAt' | 'updatedAt' | 'auditStatus'>
+  ): string {
+    return this.publishStrategy({ ...strategy, auditStatus: 'pending' as AuditStatus });
+  }
+
+  /**
+   * Get all strategies pending audit review
+   */
+  getPendingQueue(): MarketplaceStrategy[] {
+    return Array.from(this.strategies.values())
+      .filter(s => s.auditStatus === 'pending')
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+  }
+
+  /**
+   * Approve a pending strategy
+   */
+  approveStrategy(id: string, action: AuditAction): boolean {
+    const strategy = this.strategies.get(id);
+    if (!strategy) {
+      log.warn(`[MarketplaceApi] Strategy not found: ${id}`);
+      return false;
+    }
+    if (strategy.auditStatus !== 'pending') {
+      log.warn(`[MarketplaceApi] Strategy ${id} is not pending (status: ${strategy.auditStatus})`);
+      return false;
+    }
+    strategy.auditStatus = 'approved';
+    strategy.reviewedBy = action.reviewer;
+    strategy.auditNote = action.note;
+    strategy.reviewedAt = new Date().toISOString();
+    const createdAtMs = new Date(strategy.createdAt).getTime();
+    strategy.updatedAt = new Date(Math.max(Date.now(), createdAtMs + 1)).toISOString();
+    log.info(`[MarketplaceApi] Approved strategy ${id} by ${action.reviewer}`);
+    return true;
+  }
+
+  /**
+   * Reject a pending strategy with reason
+   */
+  rejectStrategy(id: string, action: AuditAction): boolean {
+    const strategy = this.strategies.get(id);
+    if (!strategy) {
+      log.warn(`[MarketplaceApi] Strategy not found: ${id}`);
+      return false;
+    }
+    if (strategy.auditStatus !== 'pending') {
+      log.warn(`[MarketplaceApi] Strategy ${id} is not pending (status: ${strategy.auditStatus})`);
+      return false;
+    }
+    strategy.auditStatus = 'rejected';
+    strategy.reviewedBy = action.reviewer;
+    strategy.auditNote = action.note || 'Rejected';
+    strategy.reviewedAt = new Date().toISOString();
+    const createdAtMs = new Date(strategy.createdAt).getTime();
+    strategy.updatedAt = new Date(Math.max(Date.now(), createdAtMs + 1)).toISOString();
+    log.info(`[MarketplaceApi] Rejected strategy ${id} by ${action.reviewer}: ${action.note}`);
+    return true;
+  }
+
+  /**
+   * Get audit statistics
+   */
+  getAuditStats(): { pending: number; approved: number; rejected: number; total: number } {
+    const all = Array.from(this.strategies.values());
+    return {
+      pending: all.filter(s => s.auditStatus === 'pending').length,
+      approved: all.filter(s => s.auditStatus === 'approved').length,
+      rejected: all.filter(s => s.auditStatus === 'rejected').length,
+      total: all.length,
+    };
+  }
+
+  // ── J-52-01: Strategy Versioning ─────────────────────────────────────────
+
+  /**
+   * Update an existing strategy (creates a new version)
+   */
+  updateStrategy(id: string, updates: Partial<Pick<MarketplaceStrategy, 'name' | 'description' | 'tags' | 'price' | 'category' | 'market' | 'timeframe'>>, changeNote?: string): boolean {
+    const strategy = this.strategies.get(id);
+    if (!strategy) {
+      log.warn(`[MarketplaceApi] Strategy not found: ${id}`);
+      return false;
+    }
+    Object.assign(strategy, updates);
+    const currentVersion = (strategy.version ?? 1) + 1;
+    strategy.version = currentVersion;
+    const createdAtMs = new Date(strategy.createdAt).getTime();
+    strategy.updatedAt = new Date(Math.max(Date.now(), createdAtMs + 1)).toISOString();
+
+    // Store version history
+    if (!this.versions.has(id)) this.versions.set(id, []);
+    this.versions.get(id)!.push({
+      version: currentVersion,
+      strategy: { ...strategy },
+      changedAt: strategy.updatedAt,
+      changeNote,
+    });
+
+    log.info(`[MarketplaceApi] Updated strategy ${id} to v${currentVersion}`);
+    return true;
+  }
+
+  /**
+   * Get version history for a strategy
+   */
+  getVersionHistory(id: string): StrategyVersion[] {
+    return this.versions.get(id) || [];
   }
 
   // ── Get Strategies ───────────────────────────────────────────────────────
@@ -92,7 +258,12 @@ export class MarketplaceApi {
     let strategies = Array.from(this.strategies.values())
       .filter(s => s.visibility === 'public');
 
-    // Apply filters
+    // J-52-01: Audit status filter (only when explicitly requested)
+    if (filter.auditStatus) {
+      strategies = strategies.filter(s => s.auditStatus === filter.auditStatus);
+    }
+
+    // Apply base filters
     if (filter.tag) {
       strategies = strategies.filter(s => s.tags.includes(filter.tag!));
     }
@@ -101,6 +272,23 @@ export class MarketplaceApi {
     }
     if (filter.minSharpe !== undefined) {
       strategies = strategies.filter(s => s.sharpe >= filter.minSharpe!);
+    }
+
+    // J-52-01: Enhanced filters
+    if (filter.category) {
+      strategies = strategies.filter(s => s.category === filter.category);
+    }
+    if (filter.market) {
+      strategies = strategies.filter(s => s.market === filter.market);
+    }
+    if (filter.timeframe) {
+      strategies = strategies.filter(s => s.timeframe === filter.timeframe);
+    }
+    if (filter.maxDrawdown !== undefined) {
+      strategies = strategies.filter(s => s.maxDrawdown <= filter.maxDrawdown!);
+    }
+    if (filter.minWinRate !== undefined) {
+      strategies = strategies.filter(s => s.winRate >= filter.minWinRate!);
     }
 
     // Sort
@@ -195,6 +383,7 @@ export class MarketplaceApi {
     const existed = this.strategies.delete(id);
     if (existed) {
       this.ratings.delete(id);
+      this.versions.delete(id);
       log.info(`[MarketplaceApi] Deleted strategy: ${id}`);
     }
     return existed;
@@ -209,7 +398,10 @@ export class MarketplaceApi {
       .filter(s =>
         s.name.toLowerCase().includes(queryLower) ||
         s.description.toLowerCase().includes(queryLower) ||
-        s.tags.some(t => t.toLowerCase().includes(queryLower))
+        s.tags.some(t => t.toLowerCase().includes(queryLower)) ||
+        (s.author && s.author.toLowerCase().includes(queryLower)) ||
+        (s.category && s.category.toLowerCase().includes(queryLower)) ||
+        (s.market && s.market.toLowerCase().includes(queryLower))
       );
 
     // Apply filters
@@ -223,6 +415,26 @@ export class MarketplaceApi {
       if (filter.minSharpe !== undefined) {
         strategies = strategies.filter(s => s.sharpe >= filter.minSharpe!);
       }
+      // J-52-01: Enhanced search filters
+      if (filter.category) {
+        strategies = strategies.filter(s => s.category === filter.category);
+      }
+      if (filter.market) {
+        strategies = strategies.filter(s => s.market === filter.market);
+      }
+      if (filter.timeframe) {
+        strategies = strategies.filter(s => s.timeframe === filter.timeframe);
+      }
+      if (filter.auditStatus) {
+        strategies = strategies.filter(s => s.auditStatus === filter.auditStatus);
+      }
+      if (filter.maxDrawdown !== undefined) {
+        strategies = strategies.filter(s => s.maxDrawdown <= filter.maxDrawdown!);
+      }
+      if (filter.minWinRate !== undefined) {
+        strategies = strategies.filter(s => s.winRate >= filter.minWinRate!);
+      }
+
       switch (filter.sortBy) {
         case 'rating':
           strategies.sort((a, b) => b.rating - a.rating);
@@ -300,8 +512,68 @@ export class MarketplaceApi {
   clearAll(): void {
     this.strategies.clear();
     this.ratings.clear();
+    this.versions.clear();
     this.idCounter = 1;
     log.info('[MarketplaceApi] Cleared all strategies');
+  }
+
+  // ── J-52-01: Category/Market stats ────────────────────────────────────────
+
+  /**
+   * Get strategies grouped by category
+   */
+  getStrategiesByCategory(): Record<string, number> {
+    const result: Record<string, number> = {};
+    for (const s of this.strategies.values()) {
+      const cat = s.category || 'uncategorized';
+      result[cat] = (result[cat] || 0) + 1;
+    }
+    return result;
+  }
+
+  /**
+   * Get strategies grouped by market
+   */
+  getStrategiesByMarket(): Record<string, number> {
+    const result: Record<string, number> = {};
+    for (const s of this.strategies.values()) {
+      const mkt = s.market || 'unknown';
+      result[mkt] = (result[mkt] || 0) + 1;
+    }
+    return result;
+  }
+
+  /**
+   * Get all available categories
+   */
+  getAvailableCategories(): string[] {
+    const cats = new Set<string>();
+    for (const s of this.strategies.values()) {
+      if (s.category) cats.add(s.category);
+    }
+    return Array.from(cats).sort();
+  }
+
+  /**
+   * Get all available markets
+   */
+  getAvailableMarkets(): string[] {
+    const mkts = new Set<string>();
+    for (const s of this.strategies.values()) {
+      if (s.market) mkts.add(s.market);
+    }
+    return Array.from(mkts).sort();
+  }
+
+  /**
+   * Get all available timeframes
+   */
+  getAvailableTimeframes(): string[] {
+    const tfs = new Set<string>();
+    for (const s of this.strategies.values()) {
+      if (s.timeframe) tfs.add(s.timeframe);
+    }
+    return Array.from(tfs).sort();
   }
 }
 

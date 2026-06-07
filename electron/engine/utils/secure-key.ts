@@ -5,10 +5,12 @@
 import { app } from 'electron';
 import path from 'path';
 import fs from 'fs';
-import * as crypto from 'crypto';
+import { createHash, randomBytes, createCipheriv, createDecipheriv } from 'crypto';
 
 const ENV_KEY = 'DEEPSEEK_API_KEY';
 const CONFIG_KEY = 'deepseek_api_key';
+
+const logger = console;
 
 function getConfigPath(): string {
   const userData = app?.getPath?.('userData') || path.join(require('os').homedir(), '.dawn-whales');
@@ -36,11 +38,9 @@ function decrypt(encrypted: string): string {
 }
 
 export function getDeepSeekKey(): string {
-  // 1. Environment variable (highest priority)
   const envKey = process.env[ENV_KEY];
   if (envKey) return envKey;
 
-  // 2. Config file
   try {
     const configPath = getConfigPath();
     if (fs.existsSync(configPath)) {
@@ -75,10 +75,6 @@ export function clearDeepSeekKey(): void {
       const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
       delete config[CONFIG_KEY];
       fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
-    } catch (e) { logger.error('[backend:secure-key]', e); }
-  }
-}
-
     } catch (e) { logger.error('[backend:secure-key]', e); }
   }
 }
