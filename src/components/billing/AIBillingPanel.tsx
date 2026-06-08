@@ -11,7 +11,7 @@
  * - Cost estimator per analysis
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -129,6 +129,20 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
   const budgetColor = budgetPct >= 100 ? '#ef4444' : budgetPct >= 80 ? '#f59e0b' : '#22c55e';
   const remainingAnalyses = selectedTier.price > 0 ? Math.floor(billing.balance / selectedTier.price) : 99;
 
+  // Sort agents by usage count (descending)
+  const agentUsage = useMemo(() => {
+    const raw = [
+      { name: 'Fundamentals', count: 8, color: '#3b82f6' },
+      { name: 'Technical', count: 6, color: '#8b5cf6' },
+      { name: 'Sentiment', count: 5, color: '#ec4899' },
+      { name: 'Macro', count: 4, color: '#f59e0b' },
+    ];
+    const max = Math.max(...raw.map(a => a.count));
+    return raw.sort((a, b) => b.count - a.count).map(a => ({ ...a, pct: (a.count / max) * 100 }));
+  }, []);
+
+  const freeQuotaTip = billing.freeRemaining === 3 ? 'All 3 free — make them count!' : billing.freeRemaining === 1 ? 'Last free analysis! Top up after this.' : billing.freeRemaining === 0 ? 'Free quota used. Recharge to continue.' : '';
+
   return (
     <div className={`ai-billing-panel ${className}`}>
       <h2 className="billing-title">💳 AI Analysis Billing</h2>
@@ -151,8 +165,16 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
       {/* ── Free Quota Banner ─────────────────────── */}
       {billing.freeRemaining > 0 && (
         <div className="billing-free-banner">
-          🎉 Welcome! You have <strong>{billing.freeRemaining} free analyses</strong> remaining.
-          Try it before you buy!
+          🎉 <strong>{billing.freeRemaining} free {billing.freeRemaining === 1 ? 'analysis' : 'analyses'}</strong> remaining
+          {freeQuotaTip && <span className="billing-free-tip"> — {freeQuotaTip}</span>}
+          {billing.freeRemaining <= 1 && (
+            <span className="billing-free-upgrade"> · <button onClick={onRecharge} style={{ background: 'none', border: 'none', color: '#3b82f6', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit' }}>Recharge now →</button></span>
+          )}
+        </div>
+      )}
+      {billing.freeRemaining === 0 && (
+        <div className="billing-free-banner" style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)', color: '#ef4444' }}>
+          ⚡ Free quota used up — <strong>recharge to continue analyzing</strong>
         </div>
       )}
 
@@ -195,17 +217,12 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
 
         {/* ── Usage by Agent ──────────────────────── */}
         <div className="billing-agent-usage">
-          <h4 className="billing-agent-title">Usage by Agent</h4>
-          {[
-            { name: 'Fundamentals', count: 8, pct: 35 },
-            { name: 'Technical', count: 6, pct: 26 },
-            { name: 'Sentiment', count: 5, pct: 22 },
-            { name: 'Macro', count: 4, pct: 17 },
-          ].map((agent) => (
+          <h4 className="billing-agent-title">Usage by Agent (sorted)</h4>
+          {agentUsage.map((agent) => (
             <div key={agent.name} className="billing-agent-row">
               <span className="billing-agent-name">{agent.name}</span>
               <div className="billing-agent-bar">
-                <div className="billing-agent-fill" style={{ width: `${agent.pct}%` }} />
+                <div className="billing-agent-fill" style={{ width: `${agent.pct}%`, background: `linear-gradient(90deg, ${agent.color}, ${agent.color}88)` }} />
               </div>
               <span className="billing-agent-count">{agent.count}</span>
             </div>
@@ -238,7 +255,7 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
             <span>{billing.freeRemaining > 0 ? 'FREE' : `$${selectedTier.price.toFixed(1)}`}</span>
           </div>
           <div className="billing-cost-row">
-            <span>Cache discount (95%)</span>
+            <span title="Cached responses skip LLM API calls, saving 95%">Cache discount (95%) ⓘ</span>
             <span className="text-green">-${billing.freeRemaining > 0 ? '0.00' : (selectedTier.price * 0.95).toFixed(2)}</span>
           </div>
           <div className="billing-cost-row total">
