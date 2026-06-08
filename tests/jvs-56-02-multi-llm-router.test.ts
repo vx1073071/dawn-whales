@@ -125,12 +125,15 @@ describe('J-56-02-04: Degradation', () => {
     router = getMultiLLMRouter();
   });
 
-  it('12: default chain is DeepSeek → Qwen → MiniMax → Ollama', () => {
+  it('12: default chain is V4 Pro cached → V4 Pro → V4 Flash → MiniMax M3 (v18)', () => {
     const chain = router.getDegradationChain();
     expect(chain.primary).toBe('deepseek');
-    expect(chain.fallbacks).toContain('qwen');
     expect(chain.fallbacks).toContain('minimax');
-    expect(chain.fallbacks).toContain('ollama');
+    // v18 model chain should be V4 Pro cached → V4 Pro → V4 Flash → MiniMax M3
+    const modelChain = router.getModelChain();
+    expect(modelChain[0]).toBe('deepseek-v4-pro-cached');
+    expect(modelChain).toContain('deepseek-v4-flash');
+    expect(modelChain).toContain('minimax-m3');
   });
 
   it('13: getNextAvailableProvider returns primary when available', () => {
@@ -202,5 +205,104 @@ describe('J-56-02-05: Usage', () => {
     router.recordUsage({ provider: 'deepseek', model: 'deepseek-chat', inputTokens: 100, outputTokens: 50, latencyMs: 100 });
     router.reset();
     expect(router.usageCount).toBe(0);
+  });
+});
+
+// ── v18: Cache + Degradation + Cost Alerts ─────────────────────────────
+
+describe('J-56-02-v18: Cache Tracking + Model Chain + Alerts', () => {
+  let router: MultiLLMRouter;
+
+  beforeEach(() => {
+    resetMultiLLMRouter();
+    router = getMultiLLMRouter();
+  });
+
+  it('V18-01: cache hit rate starts at 0', () => {
+    expect(router.getCacheHitRate()).toBe(0);
+    const stats = router.getCacheStats();
+    expect(stats.hits).toBe(0);
+    expect(stats.total).toBe(0);
+    expect(stats.targetRate).toBe(90);
+  });
+
+  it('V18-02: cache hit/miss tracking', () => {
+    for (let i = 0; i < 9; i++) router.recordCacheHit();
+    router.recordCacheMiss();
+    expect(router.getCacheHitRate()).toBe(90);
+    expect(router.getCacheStats().hits).toBe(9);
+    expect(router.getCacheStats().total).toBe(10);
+  });
+
+  it('V18-03: V4 Pro cached model exists in catalog', () => {
+    const model = router.getModel('deepseek-v4-pro-cached');
+    expect(model).not.toBeNull();
+    expect(model!.cachedInputCostPer1K).toBeDefined();
+    expect(model!.cacheDiscountPct).toBe(99);
+    expect(model!.cachedInputCostPer1K!).toBeLessThan(model!.inputCostPer1K);
+  });
+
+  it('V18-04: V4 Flash model exists in catalog', () => {
+    const model = router.getModel('deepseek-v4-flash');
+    expect(model).not.toBeNull();
+    expect(model!.cacheDiscountPct).toBe(98);
+  });
+
+  it('V18-05: MiniMax M3 model exists (free fallback)', () => {
+    const model = router.getModel('minimax-m3');
+    expect(model).not.toBeNull();
+    expect(model!.inputCostPer1K).toBe(0);
+    expect(model!.outputCostPer1K).toBe(0);
+  });
+
+  it('V18-06: estimateCostWithCache respects hit rate', () => {
+    const cost100 = router.estimateCostWithCache('deepseek-v4-pro-cached', 10000, 1000, 100);
+    const cost0 = router.estimateCostWithCache('deepseek-v4-pro-cached', 10000, 1000, 0);
+    // 100% cache hit should be much cheaper than 0%
+    expect(cost100).toBeLessThan(cost0);
+    expect(cost100).toBeGreaterThan(0);
+  });
+
+  it('V18-07: model chain defaults to v18 chain', () => {
+    const chain = router.getModelChain();
+    expect(chain[0]).toBe('deepseek-v4-pro-cached');
+    expect(chain[1]).toBe('deepseek-v4-pro');
+    expect(chain[2]).toBe('deepseek-v4-flash');
+    expect(chain[3]).toBe('minimax-m3');
+  });
+
+  it('V18-08: getNextModelInChain returns next on failure', () => {
+    expect(router.getNextModelInChain()).toBe('deepseek-v4-pro-cached');
+    expect(router.getNextModelInChain('deepseek-v4-pro-cached')).toBe('deepseek-v4-pro');
+    expect(router.getNextModelInChain('deepseek-v4-pro')).toBe('deepseek-v4-flash');
+    expect(router.getNextModelInChain('deepseek-v4-flash')).toBe('minimax-m3');
+    // Last in chain stays at last
+    expect(router.getNextModelInChain('minimax-m3')).toBe('minimax-m3');
+  });
+
+  it('V18-09: cost alert triggers when threshold exceeded', () => {
+    router.setCostAlertThreshold(0.001);
+    // Record enough usage to exceed threshold
+    for (let i = 0; i < 20; i++) {
+      router.recordUsage({ provider: 'openai', model: 'gpt-4o', inputTokens: 5000, outputTokens: 1000, latencyMs: 100 });
+    }
+    const alerted = router.checkCostAlert();
+    expect(alerted).toBe(true);
+  });
+
+  it('V18-10: promo expiry alert fires after date', () => {
+    const pastDate = '2025-01-01T00:00:00Z';
+    expect(router.checkPromoExpiry(pastDate)).toBe(true);
+    // Second call should not re-alert
+    expect(router.checkPromoExpiry(pastDate)).toBe(false);
+  });
+
+  it('V18-11: reset clears cache stats and model chain', () => {
+    router.recordCacheHit();
+    router.recordCacheHit();
+    router.recordCacheMiss();
+    router.reset();
+    expect(router.getCacheHitRate()).toBe(0);
+    expect(router.getModelChain()[0]).toBe('deepseek-v4-pro-cached');
   });
 });

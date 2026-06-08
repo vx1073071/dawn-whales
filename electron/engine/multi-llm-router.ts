@@ -41,8 +41,10 @@ export interface LLMModel {
   displayName: string;
   contextWindow: number;
   maxOutputTokens: number;
-  inputCostPer1K: number;    // USDT per 1K input tokens
+  inputCostPer1K: number;    // USDT per 1K input tokens (uncached)
   outputCostPer1K: number;   // USDT per 1K output tokens
+  cachedInputCostPer1K?: number;  // USDT per 1K input tokens (cache hit, v18)
+  cacheDiscountPct?: number;     // cache discount percentage (e.g. 99 = 99% off)
   capabilities: LLMCapability[];
   supportsStreaming: boolean;
   supportsFunctionCalling: boolean;
@@ -114,10 +116,16 @@ export interface DegradationChain {
 // ── Model Catalog ──────────────────────────────────────────────────────────
 
 const MODEL_CATALOG: LLMModel[] = [
-  { id: 'deepseek-chat', provider: 'deepseek', name: 'deepseek-chat', displayName: 'DeepSeek Chat', contextWindow: 128000, maxOutputTokens: 8192, inputCostPer1K: 0.00014, outputCostPer1K: 0.00028, capabilities: ['chat', 'analysis', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 800, isLocal: false },
+  // DeepSeek V4 family (v18 pricing, 2026/06)
+  { id: 'deepseek-v4-pro-cached', provider: 'deepseek', name: 'deepseek-v4-pro', displayName: 'DeepSeek V4 Pro (Cached)', contextWindow: 128000, maxOutputTokens: 16384, inputCostPer1K: 0.000435, outputCostPer1K: 0.00087, cachedInputCostPer1K: 0.000003625, cacheDiscountPct: 99, capabilities: ['chat', 'analysis', 'reasoning', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 1500, isLocal: false },
+  { id: 'deepseek-v4-pro', provider: 'deepseek', name: 'deepseek-v4-pro', displayName: 'DeepSeek V4 Pro', contextWindow: 128000, maxOutputTokens: 16384, inputCostPer1K: 0.00174, outputCostPer1K: 0.00348, capabilities: ['chat', 'analysis', 'reasoning', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 1500, isLocal: false },
+  { id: 'deepseek-v4-flash', provider: 'deepseek', name: 'deepseek-v4-flash', displayName: 'DeepSeek V4 Flash', contextWindow: 128000, maxOutputTokens: 8192, inputCostPer1K: 0.00014, outputCostPer1K: 0.00028, cachedInputCostPer1K: 0.0000028, cacheDiscountPct: 98, capabilities: ['chat', 'analysis', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 800, isLocal: false },
+  // DeepSeek V3 family (legacy)
+  { id: 'deepseek-chat', provider: 'deepseek', name: 'deepseek-chat', displayName: 'DeepSeek V3.2 Chat', contextWindow: 128000, maxOutputTokens: 8192, inputCostPer1K: 0.00014, outputCostPer1K: 0.00028, capabilities: ['chat', 'analysis', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 800, isLocal: false },
   { id: 'deepseek-reasoner', provider: 'deepseek', name: 'deepseek-reasoner', displayName: 'DeepSeek R1', contextWindow: 128000, maxOutputTokens: 16384, inputCostPer1K: 0.00055, outputCostPer1K: 0.00219, capabilities: ['chat', 'analysis', 'reasoning'], supportsStreaming: true, supportsFunctionCalling: false, latencyMs: 3000, isLocal: false },
   { id: 'qwen-turbo', provider: 'qwen', name: 'qwen-turbo', displayName: 'Qwen Turbo', contextWindow: 128000, maxOutputTokens: 8192, inputCostPer1K: 0.0002, outputCostPer1K: 0.0006, capabilities: ['chat', 'analysis'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 600, isLocal: false },
   { id: 'qwen-max', provider: 'qwen', name: 'qwen-max', displayName: 'Qwen Max', contextWindow: 128000, maxOutputTokens: 8192, inputCostPer1K: 0.002, outputCostPer1K: 0.006, capabilities: ['chat', 'analysis', 'reasoning', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 1200, isLocal: false },
+  { id: 'minimax-m3', provider: 'minimax', name: 'MiniMax-M3', displayName: 'MiniMax M3', contextWindow: 204800, maxOutputTokens: 8192, inputCostPer1K: 0, outputCostPer1K: 0, capabilities: ['chat', 'analysis', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 700, isLocal: false },
   { id: 'minimax-abab6', provider: 'minimax', name: 'abab6.5-chat', displayName: 'MiniMax ABAB6', contextWindow: 32768, maxOutputTokens: 8192, inputCostPer1K: 0.001, outputCostPer1K: 0.001, capabilities: ['chat', 'analysis'], supportsStreaming: true, supportsFunctionCalling: false, latencyMs: 700, isLocal: false },
   { id: 'glm-4', provider: 'zhipu', name: 'glm-4', displayName: 'GLM-4', contextWindow: 128000, maxOutputTokens: 4096, inputCostPer1K: 0.001, outputCostPer1K: 0.001, capabilities: ['chat', 'analysis', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 900, isLocal: false },
   { id: 'gpt-4o', provider: 'openai', name: 'gpt-4o', displayName: 'GPT-4o', contextWindow: 128000, maxOutputTokens: 16384, inputCostPer1K: 0.0025, outputCostPer1K: 0.01, capabilities: ['chat', 'analysis', 'reasoning', 'code', 'multimodal'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 1500, isLocal: false },
@@ -130,11 +138,18 @@ const MODEL_CATALOG: LLMModel[] = [
   { id: 'yi-large', provider: 'yi', name: 'yi-large', displayName: 'Yi Large', contextWindow: 32768, maxOutputTokens: 4096, inputCostPer1K: 0.0015, outputCostPer1K: 0.0015, capabilities: ['chat', 'analysis', 'reasoning'], supportsStreaming: true, supportsFunctionCalling: false, latencyMs: 1200, isLocal: false },
 ];
 
-// Default degradation chain: cheapest first, local last
+// Default degradation chain (v18): V4 Pro cached → V4 Pro → V4 Flash → MiniMax M3
 const DEFAULT_CHAIN: DegradationChain = {
   primary: 'deepseek',
-  fallbacks: ['qwen', 'minimax', 'ollama'],
-  reason: 'Cost-optimized: DeepSeek → Qwen → MiniMax → Local',
+  fallbacks: ['deepseek', 'deepseek', 'minimax'],
+  reason: 'V4 Pro cached → V4 Pro → V4 Flash → MiniMax M3 (cost-optimized)',
+};
+
+// v18 model-level degradation chain (model IDs, not just providers)
+export const V18_MODEL_CHAIN = {
+  primary: 'deepseek-v4-pro-cached',
+  fallbacks: ['deepseek-v4-pro', 'deepseek-v4-flash', 'minimax-m3'],
+  reason: 'V4 Pro 99% cache → V4 Pro full → V4 Flash → MiniMax M3 (free)',
 };
 
 // ── Multi-LLM Router ───────────────────────────────────────────────────────
@@ -145,6 +160,13 @@ export class MultiLLMRouter extends EventEmitter {
   private rateCounters: Map<LLMProvider, { count: number; resetAt: number }> = new Map();
   private degradationChain: DegradationChain;
   private idCounter = 1;
+  // v18: cache tracking
+  private cacheHits = 0;
+  private cacheTotal = 0;
+  private modelChain: string[] = [V18_MODEL_CHAIN.primary, ...V18_MODEL_CHAIN.fallbacks];
+  // v18: cost alerts
+  private costAlertThresholdUSDT = 1.0; // alert when daily cost exceeds this
+  private promoExpiryAlert = false;
 
   constructor() {
     super();
@@ -370,6 +392,99 @@ export class MultiLLMRouter extends EventEmitter {
     };
   }
 
+  // ── v18: Cache Tracking ──────────────────────────────────────────────
+
+  recordCacheHit(): void {
+    this.cacheHits++;
+    this.cacheTotal++;
+  }
+
+  recordCacheMiss(): void {
+    this.cacheTotal++;
+  }
+
+  getCacheHitRate(): number {
+    if (this.cacheTotal === 0) return 0;
+    return Math.round((this.cacheHits / this.cacheTotal) * 10000) / 100;
+  }
+
+  getCacheStats(): { hits: number; total: number; hitRate: number; targetRate: number } {
+    return {
+      hits: this.cacheHits,
+      total: this.cacheTotal,
+      hitRate: this.getCacheHitRate(),
+      targetRate: 90,
+    };
+  }
+
+  /**
+   * Estimate cost with cache awareness (v18)
+   */
+  estimateCostWithCache(modelId: string, inputTokens: number, outputTokens: number, cacheHitRate: number): number {
+    const model = this.getModel(modelId);
+    if (!model) return 0;
+
+    const cachedCost = model.cachedInputCostPer1K ?? model.inputCostPer1K;
+    const uncachedCost = model.inputCostPer1K;
+
+    // Blended input cost based on cache hit rate
+    const blendedInputCost = (cachedCost * cacheHitRate / 100) + (uncachedCost * (1 - cacheHitRate / 100));
+    const inputCost = (inputTokens / 1000) * blendedInputCost;
+    const outputCost = (outputTokens / 1000) * model.outputCostPer1K;
+    return Math.round((inputCost + outputCost) * 1000000) / 1000000;
+  }
+
+  /**
+   * Get the next model in the v18 degradation chain
+   */
+  getNextModelInChain(failedModelId?: string): string {
+    if (!failedModelId) return this.modelChain[0];
+    const idx = this.modelChain.indexOf(failedModelId);
+    if (idx === -1 || idx >= this.modelChain.length - 1) return this.modelChain[this.modelChain.length - 1];
+    return this.modelChain[idx + 1];
+  }
+
+  getModelChain(): string[] {
+    return [...this.modelChain];
+  }
+
+  setModelChain(chain: string[]): void {
+    this.modelChain = [...chain];
+    this.emit('model-chain:updated', chain);
+  }
+
+  /**
+   * Check if promotional pricing has expired and alert
+   */
+  checkPromoExpiry(promoEndDate: string): boolean {
+    const now = new Date();
+    const expiry = new Date(promoEndDate);
+    if (now > expiry && !this.promoExpiryAlert) {
+      this.promoExpiryAlert = true;
+      this.emit('alert:promo-expired', { promoEndDate, message: 'V4 Pro promotional pricing expired!' });
+      log.warn(`[MultiLLMRouter] ⚠️ Promotional pricing expired: ${promoEndDate}`);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Cost alert: emits when daily cost exceeds threshold
+   */
+  checkCostAlert(): boolean {
+    const today = new Date().toISOString().split('T')[0];
+    const summary = this.getCostSummary(today);
+    if (summary.totalCostUSDT > this.costAlertThresholdUSDT) {
+      this.emit('alert:cost-threshold', { totalCost: summary.totalCostUSDT, threshold: this.costAlertThresholdUSDT });
+      return true;
+    }
+    return false;
+  }
+
+  setCostAlertThreshold(usdt: number): void {
+    this.costAlertThresholdUSDT = usdt;
+  }
+
   // ── Reset ──────────────────────────────────────────────────────────────
 
   reset(): void {
@@ -377,6 +492,10 @@ export class MultiLLMRouter extends EventEmitter {
     this.rateCounters.clear();
     this.idCounter = 1;
     this.degradationChain = { ...DEFAULT_CHAIN, fallbacks: [...DEFAULT_CHAIN.fallbacks] };
+    this.cacheHits = 0;
+    this.cacheTotal = 0;
+    this.modelChain = [V18_MODEL_CHAIN.primary, ...V18_MODEL_CHAIN.fallbacks];
+    this.promoExpiryAlert = false;
     log.info('[MultiLLMRouter] Reset');
   }
 
