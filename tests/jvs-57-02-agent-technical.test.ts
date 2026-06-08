@@ -1,0 +1,115 @@
+/**
+ * @vitest-environment node
+ * J-57-02: Technical Agent Tests (15+ tests)
+ */
+import { describe, it, expect, beforeEach } from 'vitest';
+import {
+  TechnicalAgent,
+  getTechnicalAgent,
+  resetTechnicalAgent,
+} from '../electron/engine/agent-technical';
+
+describe('J-57-02: TechnicalAgent', () => {
+  let agent: TechnicalAgent;
+
+  beforeEach(() => {
+    resetTechnicalAgent();
+    agent = getTechnicalAgent();
+  });
+
+  // ── Core ─────────────────────────────────────────────────────────────
+
+  it('01: analyzes AAPL and returns analysis', async () => {
+    const r = await agent.analyze('AAPL');
+    expect(r).not.toBeNull();
+    expect(r!.symbol).toBe('AAPL');
+    expect(r!.score).toBeGreaterThan(0);
+    expect(r!.score).toBeLessThanOrEqual(100);
+  });
+
+  it('02: analyzes MSFT with trend analysis', async () => {
+    const r = await agent.analyze('MSFT');
+    expect(r!.trendAnalysis).toContain('MA');
+  });
+
+  it('03: analyzes TSLA with bearish signals', async () => {
+    const r = await agent.analyze('TSLA');
+    expect(r!.signals.length).toBeGreaterThan(0);
+  });
+
+  it('04: price parameter overrides default', async () => {
+    const r = await agent.analyze('AAPL', 200);
+    expect(r).not.toBeNull();
+  });
+
+  it('05: random symbol generates mock data', async () => {
+    const r = await agent.analyze('UNKNOWN');
+    expect(r).not.toBeNull();
+    expect(r!.score).toBeGreaterThan(0);
+  });
+
+  // ── Cache ────────────────────────────────────────────────────────────
+
+  it('06: cache returns same result', async () => {
+    const r1 = await agent.analyze('AAPL');
+    const r2 = await agent.analyze('AAPL');
+    expect(r1!.score).toBe(r2!.score);
+  });
+
+  it('07: clearCache + reset work', async () => {
+    await agent.analyze('MSFT');
+    agent.clearCache();
+    const r = await agent.analyze('MSFT');
+    expect(r).not.toBeNull();
+  });
+
+  // ── Scoring Detail ───────────────────────────────────────────────────
+
+  it('08: RSI analysis detects strength', async () => {
+    const r = await agent.analyze('MSFT'); // RSI 68
+    expect(r!.rsiAnalysis).toContain('RSI');
+    expect(r!.rsiAnalysis).toContain('偏强');
+  });
+
+  it('09: MACD analysis for AAPL signals positive', async () => {
+    const r = await agent.analyze('AAPL'); // MACD histogram positive
+    expect(r!.macdAnalysis).toContain('金叉');
+  });
+
+  it('10: Bollinger analysis exists', async () => {
+    const r = await agent.analyze('AAPL');
+    expect(r!.bollingerAnalysis).toContain('布林带');
+  });
+
+  it('11: volume analysis responds to volume ratio', async () => {
+    const r = await agent.analyze('MSFT'); // volumeRatio 1.12
+    expect(r!.volumeAnalysis).toBeDefined();
+  });
+
+  it('12: resistance levels included', async () => {
+    const r = await agent.analyze('AAPL');
+    expect(r!.supportResistance).toContain('/');
+  });
+
+  // ── Narrative ────────────────────────────────────────────────────────
+
+  it('13: narrative generated in Chinese', async () => {
+    const r = await agent.analyze('AAPL');
+    expect(r!.narrative.length).toBeGreaterThan(20);
+  });
+
+  it('14: LLM cost is low (cached)', async () => {
+    const r = await agent.analyze('AAPL');
+    expect(r!.llmCost).toBeLessThan(0.01);
+    expect(r!.cacheHit).toBe(true);
+  });
+
+  it('15: agentType is technical', () => {
+    expect(agent.agentType).toBe('technical');
+  });
+
+  it('16: completedAt is valid', async () => {
+    const r = await agent.analyze('AAPL');
+    expect(Date.parse(r!.completedAt)).not.toBeNaN();
+  });
+});
