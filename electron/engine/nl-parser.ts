@@ -387,8 +387,8 @@ interface LLMParseResult {
   reason: string;
 }
 
-const LLM_API_URL = process.env.DEEPSEEK_API_URL || 'https://api.deepseek.com/v1/chat/completions';
-const LLM_MODEL = process.env.DEEPSEEK_MODEL || 'deepseek-chat';
+const AI_GATEWAY_URL = process.env.AI_GATEWAY_URL || 'http://localhost:3001/api/ai/gateway';
+const AI_GATEWAY_TOKEN = process.env.AI_GATEWAY_TOKEN || '';
 
 const LLM_PROMPT_TEMPLATE = `你是一个量化交易策略解析器。请从用户输入中提取策略参数，返回 JSON：
 {
@@ -404,29 +404,25 @@ const LLM_PROMPT_TEMPLATE = `你是一个量化交易策略解析器。请从用
 
 只返回 JSON，不要其他文字。`;
 
-function callLLM(input: string, apiKey: string): Promise<LLMParseResult | null> {
+function callLLM(input: string): Promise<LLMParseResult | null> {
   return new Promise((resolve) => {
-    if (!apiKey) {
-      resolve(null);
-      return;
-    }
-
+    const gatewayUrl = new URL(AI_GATEWAY_URL);
     const prompt = LLM_PROMPT_TEMPLATE.replace('{{INPUT}}', input);
     const body = JSON.stringify({
-      model: LLM_MODEL,
+      provider: 'deepseek',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.1,
       max_tokens: 300,
     });
 
-
     const options = {
-      hostname: 'api.deepseek.com',
-      path: '/v1/chat/completions',
+      hostname: gatewayUrl.hostname,
+      port: gatewayUrl.port,
+      path: gatewayUrl.pathname,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        'Authorization': `Bearer ${AI_GATEWAY_TOKEN}`,
       },
     };
 
@@ -521,7 +517,7 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
 
   // Phase 3: 规则引擎失败，尝试 LLM 兜底
   log.info('[NLParser] Rule engine failed, trying LLM fallback...');
-  callLLM(text, process.env.DEEPSEEK_API_KEY || '').then((llmResult) => {
+  callLLM(text).then((llmResult) => {
     if (llmResult) {
       log.info('[NLParser] LLM matched:', llmResult.type, llmResult.reason);
     }

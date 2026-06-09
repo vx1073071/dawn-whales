@@ -107,13 +107,13 @@ export interface HealthStatus {
 // ── Default Config ─────────────────────────────────────────────────────────
 
 const DEFAULT_CONFIG: OrchestratorConfig = {
-  baseUrl: 'http://localhost:8765',
-  wsUrl: 'ws://localhost:8765/ws',
-  timeoutMs: 120000,        // 2 min (analysis can take time)
-  retryCount: 3,
-  retryDelayMs: 1000,
-  heartbeatIntervalMs: 10000,
-  maxConcurrentSessions: 5,
+  baseUrl: process.env.ORCHESTRATOR_URL || 'http://localhost:8765',
+  wsUrl: process.env.ORCHESTRATOR_WS_URL || 'ws://localhost:8765/ws',
+  timeoutMs: parseInt(process.env.ORCHESTRATOR_TIMEOUT_MS || '120000', 10),
+  retryCount: parseInt(process.env.ORCHESTRATOR_RETRY_COUNT || '3', 10),
+  retryDelayMs: parseInt(process.env.ORCHESTRATOR_RETRY_DELAY_MS || '1000', 10),
+  heartbeatIntervalMs: parseInt(process.env.ORCHESTRATOR_HEARTBEAT_MS || '10000', 10),
+  maxConcurrentSessions: parseInt(process.env.ORCHESTRATOR_MAX_SESSIONS || '5', 10),
 };
 
 // ── Agent Orchestrator ─────────────────────────────────────────────────────
