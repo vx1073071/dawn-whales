@@ -69,7 +69,10 @@ export class ProductionMonitor {
     if (statusCode >= 400) this.errorCount++;
 
     this.latencySamples.push({
-      endpoint, method, durationMs, statusCode,
+      endpoint,
+      method,
+      durationMs,
+      statusCode,
       timestamp: Date.now(),
     });
 
@@ -95,7 +98,11 @@ export class ProductionMonitor {
         if (oldest) this.errors.delete(oldest[0]);
       }
       this.errors.set(key, {
-        endpoint, errorType, message, count: 1, lastSeen: Date.now(),
+        endpoint,
+        errorType,
+        message,
+        count: 1,
+        lastSeen: Date.now(),
       });
     }
   }
@@ -104,7 +111,10 @@ export class ProductionMonitor {
   updateFreshness(dataSource: string, lastUpdate: number, staleThresholdMs = 300_000): void {
     const isStale = Date.now() - lastUpdate > staleThresholdMs;
     this.freshness.set(dataSource, {
-      dataSource, lastUpdate, staleThresholdMs, isStale,
+      dataSource,
+      lastUpdate,
+      staleThresholdMs,
+      isStale,
     });
   }
 
@@ -117,10 +127,8 @@ export class ProductionMonitor {
 
   /** 获取监控统计 */
   getStats(): MonitoringStats {
-    const durations = this.latencySamples.map(s => s.durationMs).sort((a, b) => a - b);
-    const avgDuration = durations.length > 0
-      ? durations.reduce((a, b) => a + b, 0) / durations.length
-      : 0;
+    const durations = this.latencySamples.map((s) => s.durationMs).sort((a, b) => a - b);
+    const avgDuration = durations.length > 0 ? durations.reduce((a, b) => a + b, 0) / durations.length : 0;
 
     const mem = process.memoryUsage();
     const uptime = Date.now() - this.startTime;
@@ -137,14 +145,12 @@ export class ProductionMonitor {
         avg: Math.round(avgDuration * 100) / 100,
         max: durations.length > 0 ? durations[durations.length - 1] : 0,
       },
-      errors: [...this.errors.values()]
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 20),
+      errors: [...this.errors.values()].sort((a, b) => b.count - a.count).slice(0, 20),
       freshness: [...this.freshness.values()],
       memory: {
-        heapUsedMB: Math.round(mem.heapUsed / 1048576 * 100) / 100,
-        heapTotalMB: Math.round(mem.heapTotal / 1048576 * 100) / 100,
-        rssMB: Math.round(mem.rss / 1048576 * 100) / 100,
+        heapUsedMB: Math.round((mem.heapUsed / 1048576) * 100) / 100,
+        heapTotalMB: Math.round((mem.heapTotal / 1048576) * 100) / 100,
+        rssMB: Math.round((mem.rss / 1048576) * 100) / 100,
       },
       timestamp: Date.now(),
     };
@@ -158,12 +164,7 @@ export class ProductionMonitor {
 
       res.end = (...args: any[]) => {
         const duration = Date.now() - start;
-        this.recordLatency(
-          req.path || req.url || '/',
-          req.method || 'GET',
-          duration,
-          res.statusCode || 200
-        );
+        this.recordLatency(req.path || req.url || '/', req.method || 'GET', duration, res.statusCode || 200);
         return originalEnd.apply(res, args);
       };
 

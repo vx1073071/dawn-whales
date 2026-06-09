@@ -8,12 +8,18 @@
 export type DisputeReason = 'goods_not_received' | 'goods_damaged' | 'wrong_amount' | 'fraud_suspected' | 'other';
 
 export interface DisputeRecord {
-  id: string; transferId: string;
-  fromUserId: string; toUserId: string;
-  reason: DisputeReason; detail: string;
+  id: string;
+  transferId: string;
+  fromUserId: string;
+  toUserId: string;
+  reason: DisputeReason;
+  detail: string;
   status: 'open' | 'resolved_buyer' | 'resolved_seller' | 'resolved_admin' | 'closed';
-  createdAt: string; resolvedAt?: string; resolvedBy?: string;
-  adminNote?: string; evidenceUrls: string[];
+  createdAt: string;
+  resolvedAt?: string;
+  resolvedBy?: string;
+  adminNote?: string;
+  evidenceUrls: string[];
 }
 
 const DISPUTE_REASON_LABELS: Record<DisputeReason, string> = {
@@ -28,17 +34,29 @@ export class P2PDisputeEngine {
   private disputes = new Map<string, DisputeRecord>();
 
   /** 创建争议 — 买方发起申诉冻结中的转账 */
-  createDispute(transferId: string, fromUserId: string, toUserId: string, reason: DisputeReason, detail = '', evidenceUrls: string[] = []): DisputeRecord {
+  createDispute(
+    transferId: string,
+    fromUserId: string,
+    toUserId: string,
+    reason: DisputeReason,
+    detail = '',
+    evidenceUrls: string[] = [],
+  ): DisputeRecord {
     // 不允许同一转账多次申诉
-    const existing = [...this.disputes.values()].find(d => d.transferId === transferId && d.status !== 'closed');
+    const existing = [...this.disputes.values()].find((d) => d.transferId === transferId && d.status !== 'closed');
     if (existing) throw new Error(`Dispute already exists for transfer ${transferId}: ${existing.status}`);
 
     if (!DISPUTE_REASON_LABELS[reason]) throw new Error(`Invalid dispute reason: ${reason}`);
 
     const record: DisputeRecord = {
       id: `DISP-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-      transferId, fromUserId, toUserId, reason, detail,
-      status: 'open', createdAt: new Date().toISOString(),
+      transferId,
+      fromUserId,
+      toUserId,
+      reason,
+      detail,
+      status: 'open',
+      createdAt: new Date().toISOString(),
       evidenceUrls,
     };
     this.disputes.set(record.id, record);
@@ -46,23 +64,25 @@ export class P2PDisputeEngine {
   }
 
   /** 获取争议 */
-  getDispute(disputeId: string): DisputeRecord | undefined { return this.disputes.get(disputeId); }
+  getDispute(disputeId: string): DisputeRecord | undefined {
+    return this.disputes.get(disputeId);
+  }
 
   /** 按转账ID查争议 */
   getDisputeByTransfer(transferId: string): DisputeRecord | undefined {
-    return [...this.disputes.values()].find(d => d.transferId === transferId);
+    return [...this.disputes.values()].find((d) => d.transferId === transferId);
   }
 
   /** 按用户查争议 */
   listUserDisputes(userId: string, status?: DisputeRecord['status']): DisputeRecord[] {
-    let list = [...this.disputes.values()].filter(d => d.fromUserId === userId || d.toUserId === userId);
-    if (status) list = list.filter(d => d.status === status);
+    let list = [...this.disputes.values()].filter((d) => d.fromUserId === userId || d.toUserId === userId);
+    if (status) list = list.filter((d) => d.status === status);
     return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
   /** 所有活跃争议 */
   getOpenDisputes(): DisputeRecord[] {
-    return [...this.disputes.values()].filter(d => d.status === 'open');
+    return [...this.disputes.values()].filter((d) => d.status === 'open');
   }
 
   /** 管理员解决争议 */
@@ -92,20 +112,32 @@ export class P2PDisputeEngine {
   /** 统计 */
   getStats(): { open: number; resolved: number; closed: number; byReason: Record<string, number> } {
     const byReason: Record<string, number> = {};
-    let open = 0, resolved = 0, closed = 0;
+    let open = 0,
+      resolved = 0,
+      closed = 0;
     for (const d of this.disputes.values()) {
-      if (d.status === 'open') open++; else if (d.status === 'closed') closed++; else resolved++;
+      if (d.status === 'open') open++;
+      else if (d.status === 'closed') closed++;
+      else resolved++;
       byReason[d.reason] = (byReason[d.reason] || 0) + 1;
     }
     return { open, resolved, closed, byReason };
   }
 
-  reset(): void { this.disputes.clear(); }
+  reset(): void {
+    this.disputes.clear();
+  }
 }
 
 let _disputeEngine: P2PDisputeEngine | null = null;
-export function getP2PDisputeEngine(): P2PDisputeEngine { if (!_disputeEngine) _disputeEngine = new P2PDisputeEngine(); return _disputeEngine; }
-export function resetP2PDisputeEngine(): void { _disputeEngine?.reset(); _disputeEngine = null; }
+export function getP2PDisputeEngine(): P2PDisputeEngine {
+  if (!_disputeEngine) _disputeEngine = new P2PDisputeEngine();
+  return _disputeEngine;
+}
+export function resetP2PDisputeEngine(): void {
+  _disputeEngine?.reset();
+  _disputeEngine = null;
+}
 
 export const REASON_LABELS = DISPUTE_REASON_LABELS;
 export default { P2PDisputeEngine, getP2PDisputeEngine, resetP2PDisputeEngine, REASON_LABELS };

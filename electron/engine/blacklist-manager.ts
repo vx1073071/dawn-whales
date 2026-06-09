@@ -10,7 +10,7 @@ export interface BlacklistEntry {
   reason: string;
   addedBy: string;
   addedAt: string;
-  expiresAt?: string;        // 可选过期时间
+  expiresAt?: string; // 可选过期时间
   removedAt?: string;
   removedBy?: string;
   status: 'active' | 'expired' | 'removed';
@@ -30,7 +30,9 @@ export class BlacklistManager {
     if (existing && existing.status === 'active') throw new Error(`User ${userId} is already blacklisted`);
 
     const entry: BlacklistEntry = {
-      userId, reason, addedBy,
+      userId,
+      reason,
+      addedBy,
       addedAt: new Date().toISOString(),
       expiresAt: expiresInDays ? new Date(Date.now() + expiresInDays * 86400000).toISOString() : undefined,
       status: 'active',
@@ -75,11 +77,13 @@ export class BlacklistManager {
   }
 
   /** 获取黑名单详情 */
-  getEntry(userId: string): BlacklistEntry | undefined { return this.blacklist.get(userId); }
+  getEntry(userId: string): BlacklistEntry | undefined {
+    return this.blacklist.get(userId);
+  }
 
   /** 活跃黑名单列表 */
   getActiveList(): BlacklistEntry[] {
-    return [...this.blacklist.values()].filter(e => e.status === 'active');
+    return [...this.blacklist.values()].filter((e) => e.status === 'active');
   }
 
   /** 全部黑名单 (含历史) */
@@ -91,29 +95,55 @@ export class BlacklistManager {
   importBatch(entries: Array<{ userId: string; reason: string; addedBy: string; notes?: string }>): number {
     let count = 0;
     for (const e of entries) {
-      try { this.add(e.userId, e.reason, e.addedBy, undefined, e.notes); count++; } catch { /* skip duplicates */ }
+      try {
+        this.add(e.userId, e.reason, e.addedBy, undefined, e.notes);
+        count++;
+      } catch {
+        /* skip duplicates */
+      }
     }
     return count;
   }
 
   /** 白名单 */
-  addWhitelist(userId: string): void { this.whitelist.add(userId); }
-  removeWhitelist(userId: string): void { this.whitelist.delete(userId); }
-  isWhitelisted(userId: string): boolean { return this.whitelist.has(userId); }
-  getWhitelist(): string[] { return [...this.whitelist]; }
+  addWhitelist(userId: string): void {
+    this.whitelist.add(userId);
+  }
+  removeWhitelist(userId: string): void {
+    this.whitelist.delete(userId);
+  }
+  isWhitelisted(userId: string): boolean {
+    return this.whitelist.has(userId);
+  }
+  getWhitelist(): string[] {
+    return [...this.whitelist];
+  }
 
   getStats(): { total: number; active: number; expired: number; removed: number; whitelisted: number } {
-    let active = 0, expired = 0, removed = 0;
+    let active = 0,
+      expired = 0,
+      removed = 0;
     for (const e of this.blacklist.values()) {
-      if (e.status === 'active') active++; else if (e.status === 'expired') expired++; else removed++;
+      if (e.status === 'active') active++;
+      else if (e.status === 'expired') expired++;
+      else removed++;
     }
     return { total: this.blacklist.size, active, expired, removed, whitelisted: this.whitelist.size };
   }
 
-  reset(): void { this.blacklist.clear(); this.whitelist.clear(); }
+  reset(): void {
+    this.blacklist.clear();
+    this.whitelist.clear();
+  }
 }
 
 let _blacklistManager: BlacklistManager | null = null;
-export function getBlacklistManager(): BlacklistManager { if (!_blacklistManager) _blacklistManager = new BlacklistManager(); return _blacklistManager; }
-export function resetBlacklistManager(): void { _blacklistManager?.reset(); _blacklistManager = null; }
+export function getBlacklistManager(): BlacklistManager {
+  if (!_blacklistManager) _blacklistManager = new BlacklistManager();
+  return _blacklistManager;
+}
+export function resetBlacklistManager(): void {
+  _blacklistManager?.reset();
+  _blacklistManager = null;
+}
 export default { BlacklistManager, getBlacklistManager, resetBlacklistManager };

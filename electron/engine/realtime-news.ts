@@ -11,33 +11,53 @@
 // ── Types ──────────────────────────────────────────────────────────────────
 
 export interface RealtimeNewsItem {
-  id: string; source: string; title: string; summary: string;
-  url?: string; sentiment: number; symbols: string[]; categories: string[];
-  publishedAt: string; fetchedAt: string; relevance?: number;
+  id: string;
+  source: string;
+  title: string;
+  summary: string;
+  url?: string;
+  sentiment: number;
+  symbols: string[];
+  categories: string[];
+  publishedAt: string;
+  fetchedAt: string;
+  relevance?: number;
 }
 
 export interface NewsSourceConfig {
-  name: string; enabled: boolean;
-  apiKey?: string; baseUrl?: string;
-  fetchIntervalMs: number; maxItemsPerFetch: number;
+  name: string;
+  enabled: boolean;
+  apiKey?: string;
+  baseUrl?: string;
+  fetchIntervalMs: number;
+  maxItemsPerFetch: number;
 }
 
 export interface NewsFilter {
-  symbols?: string[]; categories?: string[];
-  minSentiment?: number; maxSentiment?: number;
-  since?: string; source?: string; keyword?: string;
+  symbols?: string[];
+  categories?: string[];
+  minSentiment?: number;
+  maxSentiment?: number;
+  since?: string;
+  source?: string;
+  keyword?: string;
   limit?: number;
 }
 
 export interface RealtimeNewsService {
-  start(): void; stop(): void;
+  start(): void;
+  stop(): void;
   getLatest(filter?: NewsFilter): RealtimeNewsItem[];
   onNews(callback: (item: RealtimeNewsItem) => void): () => void;
   getNewsById(id: string): RealtimeNewsItem | undefined;
   getStats(): NewsStats;
 }
 
-export interface NewsStats { totalItems: number; sources: Record<string, number>; categories: Record<string, number>; }
+export interface NewsStats {
+  totalItems: number;
+  sources: Record<string, number>;
+  categories: Record<string, number>;
+}
 
 // ── Source Configs ─────────────────────────────────────────────────────────
 
@@ -47,8 +67,37 @@ const DEFAULT_SOURCES: NewsSourceConfig[] = [
 ];
 
 // ── Sentiment keywords ────────────────────────────────────────────────────
-const BULLISH_WORDS = ['暴涨', '突破', '利好', '飙升', '强劲', '牛市', '抢购', '创新高', '增持', '盈利大增', '政策支持', '超预期', '回购'];
-const BEARISH_WORDS = ['暴跌', '崩盘', '利空', '风险', '抛售', '熊市', '亏损', '踩雷', '减持', '监管', '制裁', '贸易战', '通胀', '加息'];
+const BULLISH_WORDS = [
+  '暴涨',
+  '突破',
+  '利好',
+  '飙升',
+  '强劲',
+  '牛市',
+  '抢购',
+  '创新高',
+  '增持',
+  '盈利大增',
+  '政策支持',
+  '超预期',
+  '回购',
+];
+const BEARISH_WORDS = [
+  '暴跌',
+  '崩盘',
+  '利空',
+  '风险',
+  '抛售',
+  '熊市',
+  '亏损',
+  '踩雷',
+  '减持',
+  '监管',
+  '制裁',
+  '贸易战',
+  '通胀',
+  '加息',
+];
 
 // ── News Engine ───────────────────────────────────────────────────────────
 
@@ -75,7 +124,7 @@ export class RealtimeNewsEngine implements RealtimeNewsService {
   start(): void {
     if (this.running) return;
     this.running = true;
-    for (const src of DEFAULT_SOURCES.filter(s => s.enabled)) {
+    for (const src of DEFAULT_SOURCES.filter((s) => s.enabled)) {
       this.fetchFromSource(src);
       this.intervalIds.push(setInterval(() => this.fetchFromSource(src), src.fetchIntervalMs));
     }
@@ -88,27 +137,33 @@ export class RealtimeNewsEngine implements RealtimeNewsService {
   }
 
   getLatest(filter?: NewsFilter): RealtimeNewsItem[] {
-    let items = [...this.news.values()].sort((a, b) =>
-      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    let items = [...this.news.values()].sort(
+      (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
     );
     if (filter) {
-      if (filter.symbols?.length) items = items.filter(i => filter.symbols!.some(s => i.symbols.includes(s)));
-      if (filter.categories?.length) items = items.filter(i => filter.categories!.some(c => i.categories.includes(c)));
-      if (filter.minSentiment !== undefined) items = items.filter(i => i.sentiment >= filter.minSentiment!);
-      if (filter.maxSentiment !== undefined) items = items.filter(i => i.sentiment <= filter.maxSentiment!);
-      if (filter.keyword) items = items.filter(i => i.title.includes(filter.keyword!) || i.summary.includes(filter.keyword!));
-      if (filter.source) items = items.filter(i => i.source === filter.source);
-      if (filter.since) items = items.filter(i => new Date(i.publishedAt) >= new Date(filter.since!));
+      if (filter.symbols?.length) items = items.filter((i) => filter.symbols!.some((s) => i.symbols.includes(s)));
+      if (filter.categories?.length)
+        items = items.filter((i) => filter.categories!.some((c) => i.categories.includes(c)));
+      if (filter.minSentiment !== undefined) items = items.filter((i) => i.sentiment >= filter.minSentiment!);
+      if (filter.maxSentiment !== undefined) items = items.filter((i) => i.sentiment <= filter.maxSentiment!);
+      if (filter.keyword)
+        items = items.filter((i) => i.title.includes(filter.keyword!) || i.summary.includes(filter.keyword!));
+      if (filter.source) items = items.filter((i) => i.source === filter.source);
+      if (filter.since) items = items.filter((i) => new Date(i.publishedAt) >= new Date(filter.since!));
     }
     const limit = filter?.limit ?? 50;
     return items.slice(0, limit);
   }
 
-  getNewsById(id: string): RealtimeNewsItem | undefined { return this.news.get(id); }
+  getNewsById(id: string): RealtimeNewsItem | undefined {
+    return this.news.get(id);
+  }
 
   onNews(callback: (item: RealtimeNewsItem) => void): () => void {
     this.listeners.push(callback);
-    return () => { this.listeners = this.listeners.filter(l => l !== callback); };
+    return () => {
+      this.listeners = this.listeners.filter((l) => l !== callback);
+    };
   }
 
   getStats(): NewsStats {
@@ -121,7 +176,9 @@ export class RealtimeNewsEngine implements RealtimeNewsService {
     return { totalItems: this.news.size, sources, categories };
   }
 
-  clear(): void { this.news.clear(); }
+  clear(): void {
+    this.news.clear();
+  }
 
   // ── Fetch (simulated — real adapters in production) ───────────────────
 
@@ -137,9 +194,39 @@ export class RealtimeNewsEngine implements RealtimeNewsService {
   private async fetchNewsAPI(source: NewsSourceConfig): Promise<void> {
     // Simulated — in production: GET https://newsapi.org/v2/everything
     const mockItems: RealtimeNewsItem[] = [
-      { id: '', source: 'newsapi', title: 'Fed Signals Rate Hold', summary: 'Federal Reserve indicates interest rates to remain steady.', sentiment: 30, symbols: ['US.SPY'], categories: ['macro', 'fed'], publishedAt: new Date().toISOString(), fetchedAt: new Date().toISOString() },
-      { id: '', source: 'newsapi', title: 'Tech Earnings Beat Estimates', summary: 'Major tech companies report better-than-expected Q2 results.', sentiment: 60, symbols: ['US.AAPL', 'US.MSFT'], categories: ['earnings', 'tech'], publishedAt: new Date(Date.now() - 60000).toISOString(), fetchedAt: new Date().toISOString() },
-      { id: '', source: 'newsapi', title: 'Oil Prices Dip on Supply Concerns', summary: 'Crude oil prices fall amid increased OPEC+ production.', sentiment: -25, symbols: ['US.USO'], categories: ['commodities'], publishedAt: new Date(Date.now() - 120000).toISOString(), fetchedAt: new Date().toISOString() },
+      {
+        id: '',
+        source: 'newsapi',
+        title: 'Fed Signals Rate Hold',
+        summary: 'Federal Reserve indicates interest rates to remain steady.',
+        sentiment: 30,
+        symbols: ['US.SPY'],
+        categories: ['macro', 'fed'],
+        publishedAt: new Date().toISOString(),
+        fetchedAt: new Date().toISOString(),
+      },
+      {
+        id: '',
+        source: 'newsapi',
+        title: 'Tech Earnings Beat Estimates',
+        summary: 'Major tech companies report better-than-expected Q2 results.',
+        sentiment: 60,
+        symbols: ['US.AAPL', 'US.MSFT'],
+        categories: ['earnings', 'tech'],
+        publishedAt: new Date(Date.now() - 60000).toISOString(),
+        fetchedAt: new Date().toISOString(),
+      },
+      {
+        id: '',
+        source: 'newsapi',
+        title: 'Oil Prices Dip on Supply Concerns',
+        summary: 'Crude oil prices fall amid increased OPEC+ production.',
+        sentiment: -25,
+        symbols: ['US.USO'],
+        categories: ['commodities'],
+        publishedAt: new Date(Date.now() - 120000).toISOString(),
+        fetchedAt: new Date().toISOString(),
+      },
     ];
     this.addBatch(mockItems);
   }
@@ -147,10 +234,50 @@ export class RealtimeNewsEngine implements RealtimeNewsService {
   private async fetchEastmoney(source: NewsSourceConfig): Promise<void> {
     // Simulated — in production: GET https://push2.eastmoney.com/api/qt/ulist/news
     const mockItems: RealtimeNewsItem[] = [
-      { id: '', source: 'eastmoney', title: '新能源政策利好，光伏板块大涨', summary: '国家发布新一批新能源补贴政策，光伏、风电板块迎利好。', sentiment: 70, symbols: ['CN.601012', 'CN.688599'], categories: ['policy', 'newenergy', 'CN'], publishedAt: new Date().toISOString(), fetchedAt: new Date().toISOString() },
-      { id: '', source: 'eastmoney', title: '恒生指数盘中震荡，科技股承压', summary: '港股科技板块受外围影响走弱，恒生指数跌幅扩大。', sentiment: -40, symbols: ['HK.0700', 'HK.9988'], categories: ['market', 'tech', 'HK'], publishedAt: new Date(Date.now() - 30000).toISOString(), fetchedAt: new Date().toISOString() },
-      { id: '', source: 'eastmoney', title: 'A股成交额突破万亿', summary: '沪深两市成交额连续第5日突破1万亿元，北向资金净流入。', sentiment: 40, symbols: ['CN.000001'], categories: ['market', 'volume'], publishedAt: new Date(Date.now() - 90000).toISOString(), fetchedAt: new Date().toISOString() },
-      { id: '', source: 'eastmoney', title: '半导体板块持续走强', summary: '芯片需求回暖，国产替代加速推进，多股涨停。', sentiment: 75, symbols: ['CN.688981', 'CN.002049'], categories: ['tech', 'semiconductor', 'CN'], publishedAt: new Date(Date.now() - 150000).toISOString(), fetchedAt: new Date().toISOString() },
+      {
+        id: '',
+        source: 'eastmoney',
+        title: '新能源政策利好，光伏板块大涨',
+        summary: '国家发布新一批新能源补贴政策，光伏、风电板块迎利好。',
+        sentiment: 70,
+        symbols: ['CN.601012', 'CN.688599'],
+        categories: ['policy', 'newenergy', 'CN'],
+        publishedAt: new Date().toISOString(),
+        fetchedAt: new Date().toISOString(),
+      },
+      {
+        id: '',
+        source: 'eastmoney',
+        title: '恒生指数盘中震荡，科技股承压',
+        summary: '港股科技板块受外围影响走弱，恒生指数跌幅扩大。',
+        sentiment: -40,
+        symbols: ['HK.0700', 'HK.9988'],
+        categories: ['market', 'tech', 'HK'],
+        publishedAt: new Date(Date.now() - 30000).toISOString(),
+        fetchedAt: new Date().toISOString(),
+      },
+      {
+        id: '',
+        source: 'eastmoney',
+        title: 'A股成交额突破万亿',
+        summary: '沪深两市成交额连续第5日突破1万亿元，北向资金净流入。',
+        sentiment: 40,
+        symbols: ['CN.000001'],
+        categories: ['market', 'volume'],
+        publishedAt: new Date(Date.now() - 90000).toISOString(),
+        fetchedAt: new Date().toISOString(),
+      },
+      {
+        id: '',
+        source: 'eastmoney',
+        title: '半导体板块持续走强',
+        summary: '芯片需求回暖，国产替代加速推进，多股涨停。',
+        sentiment: 75,
+        symbols: ['CN.688981', 'CN.002049'],
+        categories: ['tech', 'semiconductor', 'CN'],
+        publishedAt: new Date(Date.now() - 150000).toISOString(),
+        fetchedAt: new Date().toISOString(),
+      },
     ];
     this.addBatch(mockItems);
   }
@@ -164,7 +291,11 @@ export class RealtimeNewsEngine implements RealtimeNewsService {
 
   private notify(item: RealtimeNewsItem): void {
     for (const listener of this.listeners) {
-      try { listener(item); } catch { /* ignore listener errors */ }
+      try {
+        listener(item);
+      } catch {
+        /* ignore listener errors */
+      }
     }
   }
 }
