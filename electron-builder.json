@@ -7,8 +7,18 @@
   },
   "files": [
     "dist/**/*",
-    "dist-electron/**/*"
+    "dist-electron/**/*",
+    "package.json"
   ],
+  "asar": true,
+  "asarUnpack": [
+    "node_modules/better-sqlite3/**",
+    "node_modules/electron-log/**"
+  ],
+  "compression": "maximum",
+  "extraMetadata": {
+    "main": "dist-electron/main.js"
+  },
   "win": {
     "target": [
       {
