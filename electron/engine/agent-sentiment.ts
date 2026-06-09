@@ -84,7 +84,10 @@ export class SentimentAgent extends EventEmitter {
     }
 
     try {
-      const data = this.getSentimentData(symbol);
+      let data = this.getSentimentData(symbol);
+    if (!data && !this.useMock) {
+      data = await this.getSentimentDataReal(symbol);
+    }
       if (!data) return null;
 
       const scores = {
@@ -166,19 +169,6 @@ export class SentimentAgent extends EventEmitter {
       analystBuy: 0, analystHold: 0, analystSell: 0,
       analystTargetPrice: 0, insiderNetBuying: 0,
       redditScore: 50, sentimentTrend: "stable",
-    };
-  }
-      newsNeutral: 20 + Math.random() * 30,
-      newsNegative: 10 + Math.random() * 40,
-      newsCount: 20 + Math.random() * 200,
-      fearGreedIndex: 20 + Math.random() * 60,
-      analystBuy: Math.floor(Math.random() * 30),
-      analystHold: Math.floor(Math.random() * 15),
-      analystSell: Math.floor(Math.random() * 10),
-      analystTargetPrice: 20 + Math.random() * 500,
-      insiderNetBuying: -5000000 + Math.random() * 10000000,
-      redditScore: 30 + Math.random() * 50,
-      sentimentTrend: ['improving','stable','deteriorating'][Math.floor(Math.random()*3)] as SentimentData['sentimentTrend'],
     };
   }
 

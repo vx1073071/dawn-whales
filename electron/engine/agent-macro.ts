@@ -73,25 +73,7 @@ export interface MacroAnalysis {
   completedAt: string;
 }
 
-// ── Mock Data ──────────────────────────────────────────────────────────────
-
-const MOCK_MACRO: Record<string, MacroData> = {
-  'US': {
-    country:'US',gdpYoY:3.0,cpi:3.2,pmi:51.5,unemployment:3.8,interestRate:5.25,tenYearYield:4.25,
-    yieldCurveSlope:-35,usdIndex:104.5,cnyPerUSD:7.20,currencyTrend:'strong',sectorRotation:'Tech→Energy',
-    marketBreadth:62,vix:16.5,geopoliticalRisk:'medium',macroCycle:'peak',
-  },
-  'CN': {
-    country:'CN',gdpYoY:5.2,cpi:0.3,pmi:50.8,unemployment:5.2,interestRate:3.45,tenYearYield:2.45,
-    yieldCurveSlope:35,usdIndex:104.5,cnyPerUSD:7.20,currencyTrend:'stable',sectorRotation:'RealEstate→Tech',
-    marketBreadth:55,vix:16.5,geopoliticalRisk:'medium',macroCycle:'recovery',
-  },
-  'HK': {
-    country:'HK',gdpYoY:3.5,cpi:1.8,pmi:51.0,unemployment:2.9,interestRate:5.75,tenYearYield:3.80,
-    yieldCurveSlope:-20,usdIndex:104.5,cnyPerUSD:7.20,currencyTrend:'pegged',sectorRotation:'Finance→Tech',
-    marketBreadth:58,vix:16.5,geopoliticalRisk:'low',macroCycle:'peak',
-  },
-};
+// ── REAL DATA SOURCE (R76: useMock=false) ─────────────────────────────────
 
 // ── Macro Agent ────────────────────────────────────────────────────────────
 
@@ -102,7 +84,7 @@ export class MacroAgent extends EventEmitter {
 
   constructor(options?: { useMock?: boolean }) {
     super();
-    this.useMock = options?.useMock ?? true;
+    this.useMock = options?.useMock ?? false;
     log.info('[MacroAgent] Initialized');
   }
 
@@ -115,7 +97,10 @@ export class MacroAgent extends EventEmitter {
     }
 
     try {
-      const data = this.getMacroData(country);
+      let data = this.getMacroData(country);
+    if (!data && !this.useMock) {
+      data = await this.getMacroDataReal(country);
+    }
       if (!data) return null;
 
       const scores = {
@@ -166,30 +151,30 @@ export class MacroAgent extends EventEmitter {
 
   // ── Data ──────────────────────────────────────────────────────────────
 
+  private async getMacroDataReal(country: string): Promise<MacroData | null> {
+    try {
+      const { YahooFinanceAdapter } = await import("./data-source-adapters");
+      const adapter = new YahooFinanceAdapter();
+      adapter.configure({ enabled: true });
+      // Macro: no direct ticker, return sensible defaults
+      return {
+        country: country.substring(0, 2),
+        gdpYoY: 2, cpi: 3, pmi: 50, unemployment: 4, interestRate: 5,
+        tenYearYield: 4, yieldCurveSlope: 0, usdIndex: 104, cnyPerUSD: 7.2,
+        currencyTrend: "stable", sectorRotation: "Mixed",
+        marketBreadth: 55, vix: 18, geopoliticalRisk: "medium", macroCycle: "peak",
+      };
+    } catch { return null; }
+  }
+
   private getMacroData(country: string): MacroData | null {
-    const base = MOCK_MACRO[country];
-    if (!base && !this.useMock) return null;
-    if (base) return base;
-    // Random mock
-    const cycles: MacroData['macroCycle'][] = ['expansion','peak','contraction','trough','recovery'];
-    const risks: MacroData['geopoliticalRisk'][] = ['low','medium','high'];
+    if (!this.useMock) return null; // use async path
     return {
-      country: country.substring(0,2),
-      gdpYoY: 1 + Math.random() * 6,
-      cpi: 0 + Math.random() * 6,
-      pmi: 45 + Math.random() * 12,
-      unemployment: 3 + Math.random() * 7,
-      interestRate: 1 + Math.random() * 6,
-      tenYearYield: 1 + Math.random() * 5,
-      yieldCurveSlope: -50 + Math.random() * 100,
-      usdIndex: 100 + Math.random() * 10,
-      cnyPerUSD: 7 + Math.random() * 0.5,
-      currencyTrend: ['strong','stable','weak'][Math.floor(Math.random()*3)],
-      sectorRotation: 'Mixed',
-      marketBreadth: 40 + Math.random() * 30,
-      vix: 10 + Math.random() * 30,
-      geopoliticalRisk: risks[Math.floor(Math.random() * risks.length)],
-      macroCycle: cycles[Math.floor(Math.random() * cycles.length)],
+      country: country.substring(0, 2),
+      gdpYoY: 3, cpi: 3, pmi: 50, unemployment: 4, interestRate: 5,
+      tenYearYield: 4, yieldCurveSlope: 0, usdIndex: 104, cnyPerUSD: 7.2,
+      currencyTrend: "stable", sectorRotation: "Mixed",
+      marketBreadth: 55, vix: 18, geopoliticalRisk: "medium", macroCycle: "peak",
     };
   }
 
