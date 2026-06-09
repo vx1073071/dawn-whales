@@ -1,208 +1,57 @@
-/**
- * UIPolishKit — ML-69-03 [P1]
- * R69: v1.7.0-beta — UI polish: skeleton screens, empty states, error-friendly messages
- *
- * Features:
- * - SkeletonScreen: shimmer loading placeholder for cards/tables
- * - EmptyState: friendly empty placeholders with CTA (8 scenarios)
- * - ErrorDisplay: error-friendly messages with retry + help links (6 scenarios)
- * - LoadingSpinner: branded spinner with optional message
- */
+import { useState, type ReactNode, type CSSProperties } from 'react';
 
+// ── ML-79: UI 质量打磨 — 三态统一·私行风·a11y·触控 ──
 
-// ── Types ───────────────────────────────────────────────────────────────
+// Shared polished constants
+export const PRIVATE_BANKING = {
+  colors: { bg: '#0A0A10', surface: '#1F2937', border: '#374151', gold: '#D4A853', accent: '#6366F1', text: '#F9FAFB', textSecondary: '#D1D5DB', textMuted: '#9CA3AF', success: '#10B981', warning: '#F59E0B', danger: '#EF4444' },
+  grid: 8,
+  radius: { sm: 6, md: 8, lg: 12, xl: 16 },
+  font: { body: '-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif', mono: '"JetBrains Mono","Fira Code",monospace' },
+  a11y: { touchMin: 44, focusOutline: '2px solid #818CF8', focusOffset: '2px' },
+};
 
-export type SkeletonVariant = 'card' | 'table-row' | 'chart' | 'text-block' | 'stats-grid';
-
-export interface SkeletonScreenProps {
-  variant?: SkeletonVariant;
-  count?: number;
-  className?: string;
-}
-
-export type EmptyScenario = 'no-signals' | 'no-strategies' | 'no-orders' | 'no-positions' | 'no-creators' | 'no-results' | 'no-notifications' | 'no-backtests';
-
-export interface EmptyStateProps {
-  scenario: EmptyScenario;
-  onAction?: () => void;
-  className?: string;
-}
-
-export type ErrorScenario = 'connection' | 'timeout' | 'auth' | 'permission' | 'server' | 'data-load';
-
-export interface ErrorDisplayProps {
-  scenario: ErrorScenario;
-  message?: string;
-  onRetry?: () => void;
-  onHelp?: () => void;
-  className?: string;
-}
-
-export interface LoadingSpinnerProps {
-  message?: string;
-  size?: 'sm' | 'md' | 'lg';
-  className?: string;
-}
-
-// ── Shimmer CSS ─────────────────────────────────────────────────────────
-
-const shimmerStyle = `
-@keyframes shimmer {
-  0% { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
-}
-.shimmer {
-  animation: shimmer 1.5s ease-in-out infinite;
-  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%);
-  background-size: 800px 100%;
-}
-`;
-
-// ── SkeletonScreen ──────────────────────────────────────────────────────
-
-export function SkeletonScreen({ variant = 'card', count = 3, className = '' }: SkeletonScreenProps) {
-  const renderSkeleton = () => {
-    switch (variant) {
-      case 'card':
-        return (
-          <div className={`shimmer bg-[#111119] border border-white/5 rounded-xl p-4`} style={{ height: 180 }}>
-            <div className="shimmer rounded-full w-10 h-10 mb-3" />
-            <div className="shimmer rounded h-4 w-3/4 mb-2" />
-            <div className="shimmer rounded h-3 w-full mb-2" />
-            <div className="shimmer rounded h-3 w-2/3 mb-3" />
-            <div className="flex gap-2">
-              <div className="shimmer rounded h-6 w-16" />
-              <div className="shimmer rounded h-6 w-16" />
-            </div>
-          </div>
-        );
-
-      case 'table-row':
-        return (
-          <div className="shimmer flex items-center gap-4 px-4 py-3 border-b border-white/5">
-            <div className="shimmer rounded-full w-8 h-8" />
-            <div className="flex-1">
-              <div className="shimmer rounded h-3 w-1/3 mb-1" />
-              <div className="shimmer rounded h-2 w-1/4" />
-            </div>
-            <div className="shimmer rounded h-3 w-16" />
-            <div className="shimmer rounded h-3 w-12" />
-          </div>
-        );
-
-      case 'chart':
-        return (
-          <div className="shimmer bg-[#111119] border border-white/5 rounded-xl p-5" style={{ height: 220 }}>
-            <div className="shimmer rounded h-4 w-1/3 mb-4" />
-            <div className="shimmer rounded" style={{ height: 150, width: '100%' }} />
-            <div className="flex justify-between mt-3">
-              {[1, 2, 3, 4, 5].map(i => (
-                <div key={i} className="shimmer rounded h-2 w-8" />
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'text-block':
-        return (
-          <div className="shimmer bg-[#111119] border border-white/5 rounded-xl p-5">
-            <div className="shimmer rounded h-4 w-1/2 mb-3" />
-            <div className="shimmer rounded h-3 w-full mb-2" />
-            <div className="shimmer rounded h-3 w-full mb-2" />
-            <div className="shimmer rounded h-3 w-3/4 mb-2" />
-            <div className="shimmer rounded h-3 w-1/2" />
-          </div>
-        );
-
-      case 'stats-grid':
-        return (
-          <div className="bg-[#111119] border border-white/5 rounded-xl p-4 flex flex-col items-center gap-2" style={{ minHeight: 100 }}>
-            <div className="shimmer rounded-full w-10 h-10" />
-            <div className="shimmer rounded h-5 w-16" />
-            <div className="shimmer rounded h-2 w-12" />
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
+// ── Loading State ──
+export function LoadingState({ label = '加载中...', fullPage }: { label?: string; fullPage?: boolean }) {
+  const style: CSSProperties = fullPage
+    ? { display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', background: PRIVATE_BANKING.colors.bg }
+    : { display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 24px', background: 'transparent' };
 
   return (
-    <div className={`ui-skeleton ${className}`}>
-      <style>{shimmerStyle}</style>
-      <div className={variant === 'table-row' ? '' : variant === 'stats-grid' ? 'grid grid-cols-4 gap-3' : 'space-y-4'}>
-        {Array.from({ length: count }).map((_, i) => (
-          <div key={i}>{renderSkeleton()}</div>
-        ))}
+    <div style={style} role="status" aria-live="polite" aria-label={label}>
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ fontSize: 32, marginBottom: 12, animation: 'spin 1s linear infinite' }}>⏳</div>
+        <div style={{ fontSize: 14, color: PRIVATE_BANKING.colors.textMuted }}>{label}</div>
       </div>
     </div>
   );
 }
 
-// ── EmptyState ──────────────────────────────────────────────────────────
-
-const EMPTY_CONFIG: Record<EmptyScenario, { icon: string; title: string; subtitle: string; action: string }> = {
-  'no-signals':      { icon: '📡', title: '暂无信号', subtitle: '创作者还未发布信号。订阅创作者后信号会出现在这里。', action: '浏览信号广场' },
-  'no-strategies':   { icon: '🧠', title: '暂无策略', subtitle: '使用自然语言创建你的第一个量化策略，或从市场购买。', action: '创建策略' },
-  'no-orders':       { icon: '📋', title: '暂无订单', subtitle: '创建策略并启动实盘后，订单将出现在这里。', action: '去策略工坊' },
-  'no-positions':    { icon: '💼', title: '持仓为空', subtitle: '连接券商并下单后，持仓信息会实时更新。', action: '连接券商' },
-  'no-creators':     { icon: '⭐', title: '暂无创作者', subtitle: '成为第一个创作者！发布你的交易策略并赚取USDT。', action: '成为创作者' },
-  'no-results':      { icon: '🔍', title: '无搜索结果', subtitle: '试试调整搜索条件或筛选器。', action: '清除筛选' },
-  'no-notifications':{ icon: '🔔', title: '暂无通知', subtitle: '当有信号提醒、交易更新或系统消息时，会在这里显示。', action: '查看设置' },
-  'no-backtests':    { icon: '🔬', title: '暂无回测', subtitle: '创建策略后运行回测，结果会出现在这里。', action: '去策略工坊' },
-};
-
-export function EmptyState({ scenario, onAction, className = '' }: EmptyStateProps) {
-  const cfg = EMPTY_CONFIG[scenario];
+// ── Empty State ──
+export function EmptyState({ icon = '📭', title = '暂无数据', description, action }: {
+  icon?: string; title?: string; description?: string;
+  action?: { label: string; onClick: () => void };
+}) {
   return (
-    <div className={`flex flex-col items-center justify-center py-16 px-4 text-center ${className}`}>
-      <span style={{ fontSize: 48, marginBottom: 16, opacity: 0.6 }}>{cfg.icon}</span>
-      <h3 style={{ fontSize: 16, fontWeight: 700, color: '#cbd5e1', marginBottom: 8 }}>{cfg.title}</h3>
-      <p style={{ fontSize: 13, color: '#64748b', maxWidth: 360, lineHeight: 1.6, marginBottom: 20 }}>
-        {cfg.subtitle}
-      </p>
-      {onAction && (
-        <button onClick={onAction}
-          style={{ padding: '10px 24px', fontSize: 13, fontWeight: 700, background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 10, cursor: 'pointer' }}>
-          {cfg.action}
-        </button>
-      )}
-    </div>
-  );
-}
-
-// ── ErrorDisplay ────────────────────────────────────────────────────────
-
-const ERROR_CONFIG: Record<ErrorScenario, { icon: string; title: string; defaultMessage: string; showRetry: boolean; showHelp: boolean }> = {
-  'connection': { icon: '🔌', title: '连接失败', defaultMessage: '无法连接到交易服务器。请检查网络连接和OpenD状态。', showRetry: true, showHelp: true },
-  'timeout':    { icon: '⏰', title: '请求超时', defaultMessage: '响应时间超过30秒。服务器可能繁忙，请稍后重试。', showRetry: true, showHelp: false },
-  'auth':       { icon: '🔐', title: '认证失败', defaultMessage: '许可证已过期或无效。请重新登录或续费激活。', showRetry: true, showHelp: true },
-  'permission': { icon: '🚫', title: '权限不足', defaultMessage: '当前账户没有访问此功能的权限。请升级账户或联系管理员。', showRetry: false, showHelp: true },
-  'server':     { icon: '💥', title: '服务器错误', defaultMessage: '服务器遇到内部错误(500)。我们的团队正在处理。', showRetry: true, showHelp: false },
-  'data-load':  { icon: '📭', title: '数据加载失败', defaultMessage: '无法加载市场数据。可能原因: 数据源超时、网络波动、非交易时段。', showRetry: true, showHelp: true },
-};
-
-export function ErrorDisplay({ scenario, message, onRetry, onHelp, className = '' }: ErrorDisplayProps) {
-  const cfg = ERROR_CONFIG[scenario];
-  return (
-    <div className={`flex flex-col items-center justify-center py-16 px-4 text-center ${className}`}>
-      <span style={{ fontSize: 48, marginBottom: 16 }}>{cfg.icon}</span>
-      <h3 style={{ fontSize: 16, fontWeight: 700, color: '#f87171', marginBottom: 8 }}>{cfg.title}</h3>
-      <p style={{ fontSize: 13, color: '#94a3b8', maxWidth: 440, lineHeight: 1.7, marginBottom: 24 }}>
-        {message ?? cfg.defaultMessage}
-      </p>
-      <div style={{ display: 'flex', gap: 10 }}>
-        {cfg.showRetry && onRetry && (
-          <button onClick={onRetry}
-            style={{ padding: '10px 24px', fontSize: 13, fontWeight: 700, background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 10, cursor: 'pointer' }}>
-            🔄 重试 Retry
-          </button>
-        )}
-        {cfg.showHelp && onHelp && (
-          <button onClick={onHelp}
-            style={{ padding: '10px 24px', fontSize: 13, fontWeight: 600, background: 'rgba(255,255,255,0.05)', color: '#94a3b8', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, cursor: 'pointer' }}>
-            📖 帮助 Help
+    <div
+      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '64px 24px' }}
+      role="status" aria-live="polite"
+    >
+      <div style={{ textAlign: 'center', maxWidth: 320 }}>
+        <div style={{ fontSize: 44, marginBottom: 12, opacity: 0.6 }}>{icon}</div>
+        <div style={{ fontSize: 16, fontWeight: 600, color: PRIVATE_BANKING.colors.textSecondary, marginBottom: 6 }}>{title}</div>
+        {description && <div style={{ fontSize: 13, color: PRIVATE_BANKING.colors.textMuted, lineHeight: 1.6, marginBottom: 16 }}>{description}</div>}
+        {action && (
+          <button
+            onClick={action.onClick}
+            style={{
+              padding: '10px 24px', borderRadius: PRIVATE_BANKING.radius.md, border: `1px solid ${PRIVATE_BANKING.colors.gold}`,
+              background: 'transparent', color: PRIVATE_BANKING.colors.gold, fontSize: 14, fontWeight: 600,
+              cursor: 'pointer', minWidth: PRIVATE_BANKING.a11y.touchMin, minHeight: PRIVATE_BANKING.a11y.touchMin,
+            }}
+            aria-label={action.label}
+          >
+            {action.label}
           </button>
         )}
       </div>
@@ -210,38 +59,248 @@ export function ErrorDisplay({ scenario, message, onRetry, onHelp, className = '
   );
 }
 
-// ── LoadingSpinner ──────────────────────────────────────────────────────
-
-export function LoadingSpinner({ message, size = 'md', className = '' }: LoadingSpinnerProps) {
-  const sizes = { sm: 24, md: 36, lg: 48 };
-  const s = sizes[size];
+// ── Error State ──
+export function ErrorState({ error, onRetry }: { error?: string; onRetry?: () => void }) {
+  const msg = error || '出错了，请稍后重试';
   return (
-    <div className={`flex flex-col items-center justify-center py-12 gap-4 ${className}`}>
-      <div style={{
-        width: s, height: s, borderRadius: '50%',
-        border: '3px solid rgba(255,255,255,0.06)',
-        borderTopColor: '#D4A853',
-        animation: 'spin 0.8s linear infinite',
-      }} />
-      {message && <span style={{ fontSize: 13, color: '#64748b' }}>{message}</span>}
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    <div
+      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '64px 24px' }}
+      role="alert" aria-live="assertive"
+    >
+      <div style={{ textAlign: 'center', maxWidth: 380 }}>
+        <div style={{ fontSize: 40, marginBottom: 12, opacity: 0.7 }}>⚠️</div>
+        <div style={{ fontSize: 16, fontWeight: 600, color: PRIVATE_BANKING.colors.warning, marginBottom: 8 }}>出了点问题</div>
+        <div style={{
+          fontSize: 13, color: PRIVATE_BANKING.colors.textMuted, lineHeight: 1.6, marginBottom: 18,
+          padding: '10px 14px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.surface,
+          border: `1px solid ${PRIVATE_BANKING.colors.border}`,
+          wordBreak: 'break-all',
+        }}>
+          {msg}
+        </div>
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            style={{
+              padding: '10px 28px', borderRadius: PRIVATE_BANKING.radius.md, border: 'none', background: PRIVATE_BANKING.colors.accent,
+              color: '#FFF', fontSize: 14, fontWeight: 700, cursor: 'pointer',
+              minWidth: PRIVATE_BANKING.a11y.touchMin, minHeight: PRIVATE_BANKING.a11y.touchMin,
+            }}
+            aria-label="重试"
+          >
+            🔄 重试
+          </button>
+        )}
+        <div style={{ marginTop: 14, fontSize: 11, color: PRIVATE_BANKING.colors.textMuted }}>
+          或 <span style={{ color: PRIVATE_BANKING.colors.accent, cursor: 'pointer', textDecoration: 'underline' }} tabIndex={0} role="button" aria-label="联系支持">联系支持</span>
+        </div>
+      </div>
     </div>
   );
 }
 
-// ── Badge: Friendly Status ──────────────────────────────────────────────
+// ── Offline Banner ──
+export function OfflineBanner() {
+  const [dismissed, setDismissed] = useState(false);
+  if (dismissed) return null;
 
-export function StatusBadge({ status, label }: { status: 'success' | 'warning' | 'error' | 'info'; label: string }) {
-  const colors = {
-    success: { bg: 'rgba(34,197,94,0.1)', color: '#4ade80', border: 'rgba(34,197,94,0.2)' },
-    warning: { bg: 'rgba(251,191,36,0.1)', color: '#fbbf24', border: 'rgba(251,191,36,0.2)' },
-    error:   { bg: 'rgba(239,68,68,0.1)', color: '#f87171', border: 'rgba(239,68,68,0.2)' },
-    info:    { bg: 'rgba(59,130,246,0.1)', color: '#60a5fa', border: 'rgba(59,130,246,0.2)' },
-  };
-  const c = colors[status];
   return (
-    <span style={{ display: 'inline-flex', padding: '2px 10px', fontSize: 11, fontWeight: 600, borderRadius: 6, background: c.bg, color: c.color, border: `1px solid ${c.border}` }}>
-      {label}
+    <div
+      style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+        padding: '10px 16px', background: `${PRIVATE_BANKING.colors.warning}14`, borderBottom: `1px solid ${PRIVATE_BANKING.colors.warning}33`,
+        fontSize: 13, color: PRIVATE_BANKING.colors.warning,
+      }}
+      role="alert"
+    >
+      <span>🔌</span>
+      <span>网络连接已断开 — 数据显示可能不是最新的</span>
+      <button
+        onClick={() => setDismissed(true)}
+        style={{
+          padding: '4px 10px', borderRadius: 4, border: `1px solid ${PRIVATE_BANKING.colors.warning}33`,
+          background: 'transparent', color: PRIVATE_BANKING.colors.warning, cursor: 'pointer', fontSize: 11,
+          minWidth: 36, minHeight: 36,
+        }}
+        aria-label="关闭离线提示"
+      >
+        ✕
+      </button>
+    </div>
+  );
+}
+
+// ── Skip Link (a11y) ──
+export function SkipLink({ targetId }: { targetId: string }) {
+  return (
+    <a
+      href={`#${targetId}`}
+      style={{
+        position: 'absolute', top: 8, left: 8, padding: '8px 16px', zIndex: 9999,
+        background: PRIVATE_BANKING.colors.accent, color: '#FFF', borderRadius: 8, fontWeight: 700, fontSize: 14,
+        textDecoration: 'none', transform: 'translateY(-200%)', transition: 'transform 0.1s',
+      }}
+    >
+      跳到主内容
+    </a>
+  );
+}
+
+// ── A11y Focus Ring utility ──
+export const focusRing: CSSProperties = {
+  outline: PRIVATE_BANKING.a11y.focusOutline,
+  outlineOffset: 2,
+};
+
+// ── Touch-friendly button wrapper ──
+export function TouchButton({ onClick, children, style, ...rest }: {
+  onClick: () => void; children: ReactNode; style?: CSSProperties;
+  [key: string]: any;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        minWidth: PRIVATE_BANKING.a11y.touchMin,
+        minHeight: PRIVATE_BANKING.a11y.touchMin,
+        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+        padding: '8px 16px', borderRadius: PRIVATE_BANKING.radius.md,
+        border: 'none', background: PRIVATE_BANKING.colors.accent, color: '#FFF',
+        fontSize: 14, fontWeight: 600, cursor: 'pointer',
+        ...style,
+      }}
+      {...rest}
+    >
+      {children}
+    </button>
+  );
+}
+
+// ── Number abbreviation (monospace for alignment) ──
+export function MonoNumber({ value, currency }: { value: number; currency?: string }) {
+  const abs = Math.abs(value);
+  let display: string;
+  if (abs >= 1e8) display = (value / 1e8).toFixed(2) + '亿';
+  else if (abs >= 1e6) display = (value / 1e6).toFixed(2) + 'M';
+  else if (abs >= 1e4) display = (value / 1e4).toFixed(2) + '万';
+  else display = value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+
+  return (
+    <span style={{ fontFamily: PRIVATE_BANKING.font.mono, fontVariantNumeric: 'tabular-nums', fontWeight: 600 }}>
+      {currency || ''}{display}
     </span>
+  );
+}
+
+// ── Dashboard Demo combining all ──
+export default function UIPolishKit() {
+  const [demo, setDemo] = useState<'loading' | 'empty' | 'error' | 'offline' | 'normal'>('normal');
+
+  const theme: CSSProperties = {
+    background: PRIVATE_BANKING.colors.bg, borderRadius: PRIVATE_BANKING.radius.xl, padding: 24,
+    border: `1px solid ${PRIVATE_BANKING.colors.border}`, color: PRIVATE_BANKING.colors.text,
+    maxWidth: 780, margin: '0 auto',
+  };
+
+  return (
+    <div style={theme}>
+      <SkipLink targetId="main-content" />
+
+      <div id="main-content">
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+          <div>
+            <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: PRIVATE_BANKING.colors.text }}>
+              🎨 UI 质量打磨面板
+            </h2>
+            <p style={{ margin: '4px 0 0', fontSize: 13, color: PRIVATE_BANKING.colors.textMuted }}>
+              三态统一·私行风·a11y·触控·离线恢复
+            </p>
+          </div>
+        </div>
+
+        {/* Demo controls */}
+        <div style={{ display: 'flex', gap: 6, marginBottom: 20, flexWrap: 'wrap' }}>
+          {[
+            { key: 'normal' as const, label: '正常' },
+            { key: 'loading' as const, label: '⏳ 加载' },
+            { key: 'empty' as const, label: '📭 空' },
+            { key: 'error' as const, label: '⚠️ 错误' },
+            { key: 'offline' as const, label: '🔌 离线' },
+          ].map(d => (
+            <button key={d.key} onClick={() => setDemo(d.key)} style={{
+              padding: '6px 14px', borderRadius: PRIVATE_BANKING.radius.md, border: `1px solid ${demo === d.key ? PRIVATE_BANKING.colors.accent : PRIVATE_BANKING.colors.border}`,
+              background: demo === d.key ? `${PRIVATE_BANKING.colors.accent}18` : PRIVATE_BANKING.colors.surface,
+              color: demo === d.key ? PRIVATE_BANKING.colors.accent : PRIVATE_BANKING.colors.textSecondary,
+              fontSize: 13, cursor: 'pointer', transition: 'all 0.15s',
+              minWidth: PRIVATE_BANKING.a11y.touchMin, minHeight: PRIVATE_BANKING.a11y.touchMin,
+            }}>
+              {d.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Render demo state */}
+        <div style={{ padding: '20px', borderRadius: PRIVATE_BANKING.radius.lg, background: PRIVATE_BANKING.colors.surface, border: `1px solid ${PRIVATE_BANKING.colors.border}`, minHeight: 200 }}>
+          {demo === 'offline' && <OfflineBanner />}
+
+          {demo === 'loading' && <LoadingState label="正在加载信号回测数据..." />}
+
+          {demo === 'empty' && (
+            <EmptyState
+              icon="📊"
+              title="暂无回测记录"
+              description="运行第一个策略回测后这里会显示结果"
+              action={{ label: '创建策略', onClick: () => {} }}
+            />
+          )}
+
+          {demo === 'error' && (
+            <ErrorState
+              error="TypeError: Cannot read properties of undefined (reading 'signals') — StrategyEngine.parse@line:234"
+              onRetry={() => setDemo('normal')}
+            />
+          )}
+
+          {demo === 'normal' && (
+            <div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: PRIVATE_BANKING.colors.text, marginBottom: 8 }}>✅ 正常运行</div>
+
+              {/* Accessibility demo */}
+              <div style={{ display: 'grid', gap: 10 }}>
+                <div style={{ padding: '12px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.bg, border: `1px solid ${PRIVATE_BANKING.colors.border}` }}>
+                  <div style={{ fontSize: 13, color: PRIVATE_BANKING.colors.textMuted, marginBottom: 6 }}>🎯 a11y: 屏幕阅读器友好 + 键盘导航</div>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button style={{ padding: '8px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.accent, color: '#FFF', border: 'none', cursor: 'pointer', minWidth: 44, minHeight: 44, fontSize: 14 }} aria-label="买入腾讯股份">买入</button>
+                    <button style={{ padding: '8px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.surface, color: PRIVATE_BANKING.colors.textSecondary, border: `1px solid ${PRIVATE_BANKING.colors.border}`, cursor: 'pointer', minWidth: 44, minHeight: 44, fontSize: 14 }} aria-label="卖出腾讯股份">卖出</button>
+                    <span style={{ fontSize: 12, color: PRIVATE_BANKING.colors.textMuted, display: 'flex', alignItems: 'center' }}>← 44px 触控区</span>
+                  </div>
+                </div>
+
+                <div style={{ padding: '12px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.bg, border: `1px solid ${PRIVATE_BANKING.colors.border}` }}>
+                  <div style={{ fontSize: 13, color: PRIVATE_BANKING.colors.textMuted, marginBottom: 6 }}>💎 私行风: 等宽数字 + 缩写</div>
+                  <div style={{ display: 'flex', gap: 16 }}>
+                    <MonoNumber value={1234567.89} currency="HK$ " />
+                    <MonoNumber value={876543210} />
+                    <MonoNumber value={-45678} currency="USDT " />
+                  </div>
+                </div>
+
+                <div style={{ padding: '12px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.bg, border: `1px solid ${PRIVATE_BANKING.colors.border}` }}>
+                  <div style={{ fontSize: 13, color: PRIVATE_BANKING.colors.textMuted, marginBottom: 6 }}>🌟 私行配色预览</div>
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    {Object.entries(PRIVATE_BANKING.colors).slice(0, 8).map(([k, v]) => (
+                      <div key={k} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <div style={{ width: 20, height: 20, borderRadius: 4, background: v, border: '1px solid #374151' }} />
+                        <span style={{ fontSize: 10, color: PRIVATE_BANKING.colors.textMuted }}>{k}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
