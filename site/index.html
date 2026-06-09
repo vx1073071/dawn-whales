@@ -1,669 +1,136 @@
-﻿<!DOCTYPE html>
-<html lang="zh-CN" class="scroll-smooth">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>閬撻哺 DAWN WHALES 路 AI 閲忓寲浜ゆ槗绯荤粺</title>
-  <meta name="description" content="闆朵唬鐮佹暎鎴烽噺鍖栧钩鍙帮紝璇翠汉璇濆氨鑳藉仛閲忓寲銆傚鎺ュ瘜閫?moomoo锛孉I 绛栫暐鍒涘缓锛屽疄鏃惰鎯咃紝鍥炴祴寮曟搸锛岀瓥鐣ュ競鍦恒€?>
-  <meta name="keywords" content="閲忓寲浜ゆ槗,AI閲忓寲,鏁ｆ埛閲忓寲,瀵岄€?moomoo,鑷姩浜ゆ槗,绛栫暐鍥炴祴,TQQQ">
-  <meta property="og:title" content="閬撻哺 DAWN WHALES 路 AI 閲忓寲浜ゆ槗绯荤粺">
-  <meta property="og:description" content="璇翠汉璇濆氨鑳藉仛閲忓寲鐨?AI 浜ゆ槗绯荤粺">
-  <meta property="og:type" content="website">
-  <link rel="icon" href="favicon.jpg" type="image/jpeg">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dawn Whales — AI量化策略平台 | 7大市场·30+因子·无需编程</title>
+  <meta name="description" content="Dawn Whales v1.8.0 — AI驱动的量化策略平台。覆盖港股/美股/新加坡/日本/澳洲/加拿大/马来西亚7大市场，30+量化因子，AI画线形态识别，策略社区。免费开始，无需编程。" />
+  <meta name="keywords" content="量化交易,AI选股,策略回测,港股量化,美股量化,技术分析,AI画线,K线形态,PineScript" />
+  <meta property="og:title" content="Dawn Whales — AI量化策略平台" />
+  <meta property="og:description" content="7大市场·30+因子·AI画线·策略社区。免费开始，无需编程。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://dawnwhales.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Dawn Whales — AI量化策略平台" />
+  <link rel="canonical" href="https://dawnwhales.com" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            gold: { 400: '#D4A853', 500: '#C9A046', 600: '#B8912E' },
-            surface: { 0: '#0A0A0F', 1: '#12121A', 2: '#1A1A25', 3: '#22222F' },
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
+  <script>tailwind.config={theme:{extend:{colors:{dw:{bg:'#0A0A10',surface:'#111827',gold:'#D4A853',accent:'#6366F1'}}}}}</script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-    .gradient-text {
-      background: linear-gradient(135deg, #D4A853 0%, #F5D78E 50%, #C9A046 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .gradient-border {
-      background: linear-gradient(135deg, #D4A853, #C9A046);
-      padding: 1px;
-      border-radius: 16px;
-    }
-
-    .gradient-border > div {
-      background: #12121A;
-      border-radius: 15px;
-    }
-
-    .glow {
-      box-shadow: 0 0 40px rgba(201, 160, 70, 0.15);
-    }
-
-    .hero-bg {
-      background: radial-gradient(ellipse at 50% 0%, rgba(201, 160, 70, 0.08) 0%, transparent 60%),
-                  radial-gradient(ellipse at 80% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
-    }
-
-    .wave-line {
-      animation: wave 3s ease-in-out infinite;
-    }
-    .wave-line:nth-child(2) { animation-delay: 0.2s; }
-    .wave-line:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes wave {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-3px); }
-    }
-
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 0.8s ease forwards;
-    }
-    .fade-in:nth-child(2) { animation-delay: 0.1s; }
-    .fade-in:nth-child(3) { animation-delay: 0.2s; }
-    .fade-in:nth-child(4) { animation-delay: 0.3s; }
-
-    @keyframes fadeIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .feature-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-    }
-
-    .pricing-card.popular {
-      border: 2px solid #C9A046;
-      transform: scale(1.05);
-    }
-
-    .pricing-card.popular .badge {
-      background: linear-gradient(135deg, #D4A853, #C9A046);
-    }
-
-    /* Smooth counter animation */
-    .counter { font-variant-numeric: tabular-nums; }
+    body { background: #0A0A10; color: #E5E7EB; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    .gradient-text { background: linear-gradient(135deg, #818CF8, #D4A853); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   </style>
 </head>
-<body class="bg-surface-0 text-gray-200 font-sans antialiased">
-
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?Navigation 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?-->
-  <nav class="fixed top-0 w-full z-50 bg-surface-0/80 backdrop-blur-xl border-b border-white/5">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+<body class="min-h-screen">
+  <!-- Nav -->
+  <nav class="sticky top-0 z-50 bg-dw-bg/90 backdrop-blur border-b border-gray-800">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="logo.png" alt="閬撻哺" class="w-10 h-10 rounded-xl">
-        <div class="flex flex-col leading-tight">
-          <span class="font-bold text-base text-white">閬撻哺路AI閲忓寲绯荤粺</span>
-          <span class="text-xs text-gold-400 font-medium tracking-wider">DAWN WHALES</span>
-        </div>
+        <span class="text-2xl">🐋</span>
+        <span class="text-xl font-extrabold text-white">Dawn Whales</span>
+        <span class="px-2 py-0.5 rounded-md bg-accent/20 text-blue-300 text-xs font-bold">v1.8.0</span>
       </div>
-      <div class="hidden md:flex items-center gap-8 text-sm text-gray-400">
-        <a href="#features" class="hover:text-white transition">鍔熻兘</a>
-        <a href="#how-it-works" class="hover:text-white transition">鎬庝箞鐢?/a>
-        <a href="#pricing" class="hover:text-white transition">瀹氫环</a>
-        <a href="#marketplace" class="hover:text-white transition">绛栫暐甯傚満</a>
+      <div class="flex gap-3 items-center">
+        <a href="#features" class="px-3 py-1.5 text-sm text-gray-400 hover:text-white">功能</a>
+        <a href="#pricing" class="px-3 py-1.5 text-sm text-gray-400 hover:text-white">定价</a>
+        <a href="#download" class="px-3 py-1.5 text-sm text-gray-400 hover:text-white">下载</a>
+        <a href="/register" class="px-5 py-2 rounded-lg bg-accent text-white font-semibold text-sm hover:bg-indigo-600">🚀 免费开始</a>
       </div>
-      <a href="#download" class="bg-gold-500 hover:bg-gold-400 text-surface-0 font-semibold px-5 py-2 rounded-lg text-sm transition">
-        鍏嶈垂涓嬭浇
-      </a>
     </div>
   </nav>
 
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?Hero 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?-->
-  <section class="hero-bg pt-32 pb-20 px-6">
-    <div class="max-w-5xl mx-auto text-center">
-      <div class="fade-in">
-        <p class="text-gold-400 text-sm font-medium tracking-wider uppercase mb-4">AI-Powered Quantitative Trading</p>
-        <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6">
-          <span class="gradient-text">璇翠汉璇?/span><br>
-          灏辫兘鍋氶噺鍖?        </h1>
-        <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-          涓嶉渶瑕佸啓浠ｇ爜锛屼笉闇€瑕佹噦缂栫▼銆?br>
-          鍛婅瘔 AI 浣犳兂鎬庝箞浜ゆ槗锛岀郴缁熻嚜鍔ㄦ墽琛屻€?br>
-          瀵规帴瀵岄€?moomoo锛屾绉掔骇琛屾儏鎺ㄩ€併€?        </p>
-      </div>
+  <!-- Hero -->
+  <section class="max-w-4xl mx-auto px-6 py-24 text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 mb-6 text-sm text-blue-300">
+      🎉 v1.8.0 GA 正式发布 — 7大市场 · 30+因子 · AI画线 · 策略社区
+    </div>
+    <h1 class="text-5xl font-black text-white leading-tight mb-4">
+      AI驱动的<br/><span class="gradient-text">量化策略平台</span>
+    </h1>
+    <p class="text-lg text-gray-400 max-w-xl mx-auto mb-8">
+      无需编程 · 自然语言创建 · 30秒出策略 · AI选股 · 7市场全覆盖 · 私行级体验
+    </p>
+    <div class="flex gap-6 justify-center mb-10">
+      <div><div class="text-2xl font-extrabold text-dw-gold">7</div><div class="text-xs text-gray-500">市场</div></div>
+      <div><div class="text-2xl font-extrabold text-dw-gold">30+</div><div class="text-xs text-gray-500">因子</div></div>
+      <div><div class="text-2xl font-extrabold text-dw-gold">22</div><div class="text-xs text-gray-500">AI形态</div></div>
+      <div><div class="text-2xl font-extrabold text-dw-gold">25项</div><div class="text-xs text-gray-500">新手引导</div></div>
+      <div><div class="text-2xl font-extrabold text-dw-gold">5</div><div class="text-xs text-gray-500">语言</div></div>
+    </div>
+    <div class="flex gap-3 justify-center flex-wrap">
+      <a href="/download" class="px-8 py-3.5 rounded-xl bg-accent text-white font-bold text-lg hover:bg-indigo-600">🚀 免费开始使用</a>
+      <a href="#demo" class="px-8 py-3.5 rounded-xl border border-gray-700 text-gray-300 text-lg hover:bg-gray-800">📺 看演示 (60秒)</a>
+    </div>
+    <p class="mt-4 text-xs text-gray-500">无需信用卡 · 免费层永久可用 · Windows / macOS / Linux</p>
+  </section>
 
-      <div class="fade-in flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="https://github.com/vx1073071/dawn-whales/releases/tag/v0.7.0" target="_blank" class="bg-gold-500 hover:bg-gold-400 text-surface-0 font-bold px-8 py-4 rounded-xl text-lg transition glow">
-          馃悑 鍏嶈垂涓嬭浇 Windows 鐗?v0.7.0
-        </a>
-        <a href="#features" class="border border-gray-700 hover:border-gold-500 text-gray-300 hover:text-gold-400 font-medium px-8 py-4 rounded-xl text-lg transition">
-          浜嗚В鏇村 鈫?        </a>
-      </div>
+  <!-- Features -->
+  <section id="features" class="max-w-6xl mx-auto px-6 py-16">
+    <h2 class="text-3xl font-extrabold text-white text-center mb-12">全部功能一览</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="p-6 rounded-xl bg-dw-surface border border-gray-800"><span class="text-2xl">🌍</span><h3 class="font-bold text-white mt-2">7大市场</h3><p class="text-sm text-gray-400 mt-1">港股·美股·新加坡·日本·澳洲·加拿大·马来西亚 · 全品种覆盖</p></div>
+      <div class="p-6 rounded-xl bg-dw-surface border border-gray-800"><span class="text-2xl">📊</span><h3 class="font-bold text-white mt-2">30+量化因子</h3><p class="text-sm text-gray-400 mt-1">价值/动量/质量/波动/股息/成长六维 · 市场兼容自动校验</p></div>
+      <div class="p-6 rounded-xl bg-dw-surface border border-gray-800"><span class="text-2xl">🤖</span><h3 class="font-bold text-white mt-2">4Agent AI信号</h3><p class="text-sm text-gray-400 mt-1">基本面·技术面·情绪面·宏观面 四引擎协同 · 真实数据源</p></div>
+      <div class="p-6 rounded-xl bg-dw-surface border border-gray-800"><span class="text-2xl">📈</span><h3 class="font-bold text-white mt-2">K线图表 TV级</h3><p class="text-sm text-gray-400 mt-1">蜡烛图+成交量+MA叠加+9周期+Crosshair+&lt;100ms渲染</p></div>
+      <div class="p-6 rounded-xl bg-dw-surface border border-gray-800"><span class="text-2xl">📐</span><h3 class="font-bold text-white mt-2">AI画线+形态</h3><p class="text-sm text-gray-400 mt-1">6画线工具 · 22种K线形态 · 半透明标注 · 置信度评分</p></div>
+      <div class="p-6 rounded-xl bg-dw-surface border border-gray-800"><span class="text-2xl">🎨</span><h3 class="font-bold text-white mt-2">私行级UI</h3><p class="text-sm text-gray-400 mt-1">深色+金色主题 · 深浅双模式 · 5语言 · 友好错误</p></div>
+    </div>
+  </section>
 
-      <!-- Stats -->
-      <div class="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto">
-        <div class="text-center">
-          <div class="text-3xl font-bold gradient-text counter">&lt;50ms</div>
-          <div class="text-sm text-gray-500 mt-1">琛屾儏寤惰繜</div>
-        </div>
-        <div class="text-center">
-          <div class="text-3xl font-bold gradient-text counter">0 琛?/div>
-          <div class="text-sm text-gray-500 mt-1">浠ｇ爜閲?/div>
-        </div>
-        <div class="text-center">
-          <div class="text-3xl font-bold gradient-text counter">3 绉?/div>
-          <div class="text-sm text-gray-500 mt-1">绛栫暐鍒涘缓鏂瑰紡</div>
-        </div>
+  <!-- Pricing -->
+  <section id="pricing" class="max-w-5xl mx-auto px-6 py-16">
+    <h2 class="text-3xl font-extrabold text-white text-center mb-12">简单定价 — 仅收 USDT</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+      <div class="p-8 rounded-2xl bg-dw-surface border border-gray-800 text-center">
+        <div class="text-lg font-bold text-gray-400 mb-2">Standard</div>
+        <div class="text-4xl font-black text-white mb-1">1.0<span class="text-base text-gray-500">/月</span></div>
+        <div class="text-xs text-gray-500 mb-6">USDT · TRC20</div>
+        <ul class="text-sm text-gray-300 space-y-2 mb-8 text-left">
+          <li>✅ 7市场行情</li><li>✅ 5个策略模板</li><li>✅ 3年回测</li><li>✅ 模拟交易</li>
+        </ul>
+        <a href="/register" class="block w-full py-3 rounded-lg border border-gray-600 text-gray-300 font-semibold hover:bg-gray-800">免费开始</a>
+      </div>
+      <div class="p-8 rounded-2xl border-2 border-accent bg-accent/5 text-center relative">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-accent text-white text-xs font-bold">最受欢迎</div>
+        <div class="text-lg font-bold text-blue-300 mb-2">Premium</div>
+        <div class="text-4xl font-black text-white mb-1">1.5<span class="text-base text-gray-500">/月</span></div>
+        <div class="text-xs text-gray-500 mb-6">USDT · TRC20</div>
+        <ul class="text-sm text-gray-300 space-y-2 mb-8 text-left">
+          <li>✅ 全部30+因子</li><li>✅ 全部20+模板</li><li>✅ AI信号 (4Agent)</li><li>✅ AI画线+形态</li><li>✅ 策略社区</li>
+        </ul>
+        <a href="/register" class="block w-full py-3 rounded-lg bg-accent text-white font-bold hover:bg-indigo-600">开始试用</a>
+      </div>
+      <div class="p-8 rounded-2xl bg-dw-surface border border-gray-800 text-center">
+        <div class="text-lg font-bold text-dw-gold mb-2">Flagship</div>
+        <div class="text-4xl font-black text-white mb-1">2.0<span class="text-base text-gray-500">/月</span></div>
+        <div class="text-xs text-gray-500 mb-6">USDT · TRC20</div>
+        <ul class="text-sm text-gray-300 space-y-2 mb-8 text-left">
+          <li>✅ 全部Premium功能</li><li>✅ AI助手 (4项收费)</li><li>✅ 每日简报</li><li>✅ 多券商实盘</li><li>✅ 优先支持</li>
+        </ul>
+        <a href="/register" class="block w-full py-3 rounded-lg border border-dw-gold text-dw-gold font-bold hover:bg-dw-gold/10">联系销售</a>
       </div>
     </div>
   </section>
 
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?App Preview 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?-->
-  <section class="py-16 px-6">
-    <div class="max-w-5xl mx-auto">
-      <div class="gradient-border glow">
-        <div class="p-1">
-          <div class="bg-surface-1 rounded-2xl overflow-hidden">
-            <!-- Fake app window bar -->
-            <div class="flex items-center gap-2 px-4 py-3 bg-surface-2 border-b border-white/5">
-              <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
-              <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-              <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
-              <span class="ml-3 text-xs text-gray-500">DAWN WHALES 路 琛屾儏涓績</span>
-            </div>
-            <!-- App Mockup -->
-            <div class="p-2">
-              <div class="bg-[#0d0d14] rounded-lg overflow-hidden font-sans text-[11px]">
-                <!-- App Header -->
-                <div class="flex items-center justify-between px-4 py-2 bg-[#15151f] border-b border-white/5">
-                  <div class="flex items-center gap-2">
-                    <img src="logo.png" class="w-6 h-6 rounded-lg">
-                    <span class="font-bold text-white text-xs">閬撻哺路AI閲忓寲绯荤粺</span>
-                    <span class="text-[9px] text-amber-400/70 ml-1">DAWN WHALES</span>
-                  </div>
-                  <div class="flex items-center gap-3">
-                    <span class="text-[9px] text-emerald-400 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"></span>OpenD 宸茶繛鎺?/span>
-                    <span class="text-[9px] text-gray-500">US Market 路 Open</span>
-                  </div>
-                </div>
-                <div class="flex">
-                  <!-- Sidebar -->
-                  <div class="w-[120px] bg-[#111119] border-r border-white/5 py-2 flex-shrink-0">
-                    <div class="px-3 py-1.5 text-amber-400 bg-amber-400/10 border-l-2 border-amber-400 text-[10px] font-medium">馃搳 琛屾儏涓績</div>
-                    <div class="px-3 py-1.5 text-gray-500 text-[10px]">馃 绛栫暐绠＄悊</div>
-                    <div class="px-3 py-1.5 text-gray-500 text-[10px]">馃彧 绛栫暐甯傚満</div>
-                    <div class="px-3 py-1.5 text-gray-500 text-[10px]">馃捈 鎴戠殑鎸佷粨</div>
-                    <div class="px-3 py-1.5 text-gray-500 text-[10px]">馃搵 璁㈠崟璁板綍</div>
-                    <div class="px-3 py-1.5 text-gray-500 text-[10px]">馃搱 鍥炴祴涓績</div>
-                    <div class="px-3 py-1.5 text-gray-500 text-[10px]">鈿欙笍 绯荤粺璁剧疆</div>
-                  </div>
-                  <!-- Main Content -->
-                  <div class="flex-1 p-3">
-                    <div class="flex gap-3">
-                      <!-- Chart Area -->
-                      <div class="flex-1">
-                        <div class="flex items-center justify-between mb-2">
-                          <div class="flex items-center gap-2">
-                            <span class="text-white font-bold text-xs">TQQQ</span>
-                            <span class="text-emerald-400 text-[10px] font-bold">$72.45</span>
-                            <span class="text-emerald-400 text-[9px]">+3.21%</span>
-                          </div>
-                          <div class="flex gap-1">
-                            <span class="text-[8px] px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-400">1D</span>
-                            <span class="text-[8px] px-1.5 py-0.5 rounded text-gray-600">1W</span>
-                            <span class="text-[8px] px-1.5 py-0.5 rounded text-gray-600">1M</span>
-                          </div>
-                        </div>
-                        <!-- K-line Chart Mockup -->
-                        <div class="bg-[#0a0a12] rounded-lg p-2 h-[140px] relative overflow-hidden">
-                          <svg width="100%" height="100%" viewBox="0 0 400 120" preserveAspectRatio="none">
-                            <!-- Grid lines -->
-                            <line x1="0" y1="30" x2="400" y2="30" stroke="#1a1a2e" stroke-width="0.5"/>
-                            <line x1="0" y1="60" x2="400" y2="60" stroke="#1a1a2e" stroke-width="0.5"/>
-                            <line x1="0" y1="90" x2="400" y2="90" stroke="#1a1a2e" stroke-width="0.5"/>
-                            <!-- Candlesticks -->
-                            <g transform="translate(10,0)">
-                              <line x1="8" y1="25" x2="8" y2="85" stroke="#22c55e" stroke-width="0.5"/><rect x="5" y="35" width="6" height="30" fill="#22c55e" rx="1"/>
-                              <line x1="22" y1="30" x2="22" y2="80" stroke="#ef4444" stroke-width="0.5"/><rect x="19" y="40" width="6" height="25" fill="#ef4444" rx="1"/>
-                              <line x1="36" y1="35" x2="36" y2="90" stroke="#22c55e" stroke-width="0.5"/><rect x="33" y="45" width="6" height="28" fill="#22c55e" rx="1"/>
-                              <line x1="50" y1="20" x2="50" y2="75" stroke="#22c55e" stroke-width="0.5"/><rect x="47" y="30" width="6" height="32" fill="#22c55e" rx="1"/>
-                              <line x1="64" y1="15" x2="64" y2="70" stroke="#ef4444" stroke-width="0.5"/><rect x="61" y="25" width="6" height="30" fill="#ef4444" rx="1"/>
-                              <line x1="78" y1="28" x2="78" y2="82" stroke="#22c55e" stroke-width="0.5"/><rect x="75" y="38" width="6" height="26" fill="#22c55e" rx="1"/>
-                              <line x1="92" y1="22" x2="92" y2="68" stroke="#22c55e" stroke-width="0.5"/><rect x="89" y="28" width="6" height="24" fill="#22c55e" rx="1"/>
-                              <line x1="106" y1="18" x2="106" y2="65" stroke="#ef4444" stroke-width="0.5"/><rect x="103" y="30" width="6" height="22" fill="#ef4444" rx="1"/>
-                              <line x1="120" y1="25" x2="120" y2="78" stroke="#22c55e" stroke-width="0.5"/><rect x="117" y="35" width="6" height="28" fill="#22c55e" rx="1"/>
-                              <line x1="134" y1="12" x2="134" y2="62" stroke="#22c55e" stroke-width="0.5"/><rect x="131" y="18" width="6" height="30" fill="#22c55e" rx="1"/>
-                              <line x1="148" y1="8" x2="148" y2="55" stroke="#ef4444" stroke-width="0.5"/><rect x="145" y="15" width="6" height="28" fill="#ef4444" rx="1"/>
-                              <line x1="162" y1="15" x2="162" y2="60" stroke="#22c55e" stroke-width="0.5"/><rect x="159" y="22" width="6" height="25" fill="#22c55e" rx="1"/>
-                              <line x1="176" y1="10" x2="176" y2="52" stroke="#22c55e" stroke-width="0.5"/><rect x="173" y="15" width="6" height="22" fill="#22c55e" rx="1"/>
-                              <line x1="190" y1="18" x2="190" y2="58" stroke="#ef4444" stroke-width="0.5"/><rect x="187" y="25" width="6" height="20" fill="#ef4444" rx="1"/>
-                              <line x1="204" y1="12" x2="204" y2="48" stroke="#22c55e" stroke-width="0.5"/><rect x="201" y="16" width="6" height="20" fill="#22c55e" rx="1"/>
-                              <line x1="218" y1="8" x2="218" y2="45" stroke="#22c55e" stroke-width="0.5"/><rect x="215" y="12" width="6" height="22" fill="#22c55e" rx="1"/>
-                              <line x1="232" y1="15" x2="232" y2="55" stroke="#ef4444" stroke-width="0.5"/><rect x="229" y="22" width="6" height="20" fill="#ef4444" rx="1"/>
-                              <line x1="246" y1="10" x2="246" y2="50" stroke="#22c55e" stroke-width="0.5"/><rect x="243" y="14" width="6" height="24" fill="#22c55e" rx="1"/>
-                              <line x1="260" y1="5" x2="260" y2="42" stroke="#22c55e" stroke-width="0.5"/><rect x="257" y="8" width="6" height="22" fill="#22c55e" rx="1"/>
-                              <line x1="274" y1="12" x2="274" y2="48" stroke="#ef4444" stroke-width="0.5"/><rect x="271" y="18" width="6" height="18" fill="#ef4444" rx="1"/>
-                              <line x1="288" y1="8" x2="288" y2="40" stroke="#22c55e" stroke-width="0.5"/><rect x="285" y="11" width="6" height="18" fill="#22c55e" rx="1"/>
-                              <line x1="302" y1="5" x2="302" y2="35" stroke="#22c55e" stroke-width="0.5"/><rect x="299" y="8" width="6" height="16" fill="#22c55e" rx="1"/>
-                              <line x1="316" y1="10" x2="316" y2="38" stroke="#ef4444" stroke-width="0.5"/><rect x="313" y="15" width="6" height="14" fill="#ef4444" rx="1"/>
-                              <line x1="330" y1="3" x2="330" y2="30" stroke="#22c55e" stroke-width="0.5"/><rect x="327" y="5" width="6" height="16" fill="#22c55e" rx="1"/>
-                              <line x1="344" y1="8" x2="344" y2="35" stroke="#22c55e" stroke-width="0.5"/><rect x="341" y="10" width="6" height="15" fill="#22c55e" rx="1"/>
-                              <line x1="358" y1="5" x2="358" y2="28" stroke="#ef4444" stroke-width="0.5"/><rect x="355" y="10" width="6" height="12" fill="#ef4444" rx="1"/>
-                              <line x1="372" y1="2" x2="372" y2="25" stroke="#22c55e" stroke-width="0.5"/><rect x="369" y="4" width="6" height="14" fill="#22c55e" rx="1"/>
-                            </g>
-                            <!-- MA lines -->
-                            <path d="M15,55 Q60,48 100,40 T200,28 T300,18 T380,10" fill="none" stroke="#C9A046" stroke-width="1" opacity="0.6"/>
-                            <path d="M15,65 Q60,58 100,52 T200,38 T300,28 T380,18" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.4"/>
-                          </svg>
-                          <div class="absolute bottom-1 left-2 text-[8px] text-gray-600">Vol: 12.4M</div>
-                        </div>
-                      </div>
-                      <!-- Watchlist -->
-                      <div class="w-[150px] flex-shrink-0">
-                        <div class="text-[9px] text-gray-500 font-medium mb-1.5">鑷€夎偂 路 8</div>
-                        <div class="space-y-0.5">
-                          <div class="flex justify-between items-center py-1 px-1.5 rounded bg-amber-400/5">
-                            <span class="text-white text-[10px] font-medium">TQQQ</span>
-                            <span class="text-emerald-400 text-[10px] font-bold">72.45</span>
-                          </div>
-                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
-                            <span class="text-gray-300 text-[10px]">SOXL</span>
-                            <span class="text-emerald-400 text-[10px]">38.12</span>
-                          </div>
-                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
-                            <span class="text-gray-300 text-[10px]">QQQ</span>
-                            <span class="text-emerald-400 text-[10px]">523.8</span>
-                          </div>
-                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
-                            <span class="text-gray-300 text-[10px]">SPY</span>
-                            <span class="text-red-400 text-[10px]">589.3</span>
-                          </div>
-                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
-                            <span class="text-gray-300 text-[10px]">AAPL</span>
-                            <span class="text-emerald-400 text-[10px]">198.7</span>
-                          </div>
-                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
-                            <span class="text-gray-300 text-[10px]">NVDA</span>
-                            <span class="text-emerald-400 text-[10px]">134.6</span>
-                          </div>
-                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
-                            <span class="text-gray-300 text-[10px]">SQQQ</span>
-                            <span class="text-red-400 text-[10px]">18.92</span>
-                          </div>
-                          <div class="flex justify-between items-center py-1 px-1.5 rounded">
-                            <span class="text-gray-300 text-[10px]">SOXS</span>
-                            <span class="text-red-400 text-[10px]">24.15</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Status Bar -->
-                <div class="flex items-center justify-between px-4 py-1.5 bg-[#0a0a12] border-t border-white/5 text-[9px] text-gray-600">
-                  <div class="flex items-center gap-3">
-                    <span>Push 妯″紡 路 &lt;50ms</span>
-                    <span>鑷€?8 鍙?/span>
-                  </div>
-                  <div class="flex items-center gap-3">
-                    <span>绛栫暐 2 涓繍琛屼腑</span>
-                    <span class="text-amber-400/60">閬撻哺 v0.7.0</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+  <!-- Download -->
+  <section id="download" class="max-w-4xl mx-auto px-6 py-16">
+    <div class="p-10 rounded-2xl bg-gradient-to-br from-accent/10 to-dw-gold/5 border border-gray-800 text-center">
+      <h2 class="text-3xl font-extrabold text-white mb-4">准备好开始量化了吗？</h2>
+      <p class="text-gray-400 mb-8">30秒创建第一个策略 · 7市场全覆盖 · AI驱动 · 免费开始</p>
+      <div class="flex gap-4 justify-center flex-wrap">
+        <a href="/download/win" class="px-8 py-3.5 rounded-xl bg-accent text-white font-bold text-lg">🖥️ Windows 下载</a>
+        <a href="/download/mac" class="px-8 py-3.5 rounded-xl border border-gray-700 text-gray-300 text-lg hover:bg-gray-800">🍎 macOS 下载</a>
+        <a href="/download/linux" class="px-8 py-3.5 rounded-xl border border-gray-700 text-gray-300 text-lg hover:bg-gray-800">🐧 Linux 下载</a>
       </div>
+      <p class="mt-4 text-xs text-gray-500">v1.8.0 · 支持 Windows 10+ / macOS 12+ / Ubuntu 20.04+</p>
     </div>
   </section>
 
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?Features 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?-->
-  <section id="features" class="py-20 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4">鏍稿績鍔熻兘</h2>
-        <p class="text-gray-400 text-lg">浠庤鎯呭埌浜ゆ槗鍒扮瓥鐣ワ紝涓€绔欏紡閲忓寲骞冲彴</p>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-6">
-        <!-- Feature 1 -->
-        <div class="feature-card bg-surface-1 rounded-2xl p-8 border border-white/5 transition-all duration-300">
-          <div class="text-4xl mb-4">鈿?/div>
-          <h3 class="text-xl font-bold mb-3">姣绾ц鎯?/h3>
-          <p class="text-gray-400 leading-relaxed">
-            鐩磋繛瀵岄€?OpenD锛孭ush 妯″紡瀹炴椂鎺ㄩ€併€?            鍛婂埆 3 绉掕疆璇紝寤惰繜 &lt;50ms銆?            鏀寔缇庤偂銆佹腐鑲°€丄鑲°€佸姞瀵嗚揣甯併€?          </p>
-        </div>
-
-        <!-- Feature 2 -->
-        <div class="feature-card bg-surface-1 rounded-2xl p-8 border border-white/5 transition-all duration-300">
-          <div class="text-4xl mb-4">馃</div>
-          <h3 class="text-xl font-bold mb-3">AI 绛栫暐鍒涘缓</h3>
-          <p class="text-gray-400 leading-relaxed">
-            涓夌鏂瑰紡鍒涘缓绛栫暐锛氳嚜鐒惰瑷€鎻忚堪銆?            缁忓吀妯℃澘閫夋嫨銆佽〃鍗曞弬鏁伴厤缃€?            鏃犻渶缂栫▼鐭ヨ瘑锛岃浜鸿瘽灏辫銆?          </p>
-        </div>
-
-        <!-- Feature 3 -->
-        <div class="feature-card bg-surface-1 rounded-2xl p-8 border border-white/5 transition-all duration-300">
-          <div class="text-4xl mb-4">馃搱</div>
-          <h3 class="text-xl font-bold mb-3">涓撲笟鍥炴祴</h3>
-          <p class="text-gray-400 leading-relaxed">
-            鍘嗗彶鏁版嵁鍥炴祴锛屽勾鍖栨敹鐩娿€佸鏅瘮鐜囥€?            鏈€澶у洖鎾や竴鐩簡鐒躲€?            鏉冪泭鏇茬嚎鍙鍖栵紝绛栫暐浼樺姡涓€鐪肩湅娓呫€?          </p>
-        </div>
-
-        <!-- Feature 4 -->
-        <div class="feature-card bg-surface-1 rounded-2xl p-8 border border-white/5 transition-all duration-300">
-          <div class="text-4xl mb-4">馃彧</div>
-          <h3 class="text-xl font-bold mb-3">绛栫暐甯傚満</h3>
-          <p class="text-gray-400 leading-relaxed">
-            娴忚绀惧尯绛栫暐锛屾寜鏀剁泭/椋庨櫓/鐑害鎺掑悕銆?            鍒涗綔鑰呬韩鍙?70% 鏀跺叆鍒嗘垚銆?            濂界瓥鐣ヤ笉鎬曡澶嶅埗锛屾€曠殑鏄病浜虹敤銆?          </p>
-        </div>
-
-        <!-- Feature 5 -->
-        <div class="feature-card bg-surface-1 rounded-2xl p-8 border border-white/5 transition-all duration-300">
-          <div class="text-4xl mb-4">馃洝锔?/div>
-          <h3 class="text-xl font-bold mb-3">椋庢帶绯荤粺</h3>
-          <p class="text-gray-400 leading-relaxed">
-            鍗曠瑪闄愰銆佹棩鍐呴鐜囬檺鍒躲€?            绱ф€ユ鎹熶竴閿叏骞炽€?            璁╀綘鐨勯噺鍖栦箣璺ǔ濡傜鐭炽€?          </p>
-        </div>
-
-        <!-- Feature 6 -->
-        <div class="feature-card bg-surface-1 rounded-2xl p-8 border border-white/5 transition-all duration-300">
-          <div class="text-4xl mb-4">馃攲</div>
-          <h3 class="text-xl font-bold mb-3">鍒稿晢鐩磋繛</h3>
-          <p class="text-gray-400 leading-relaxed">
-            瀵规帴瀵岄€?moomoo OpenD锛?            鏈湴 TCP 鐩磋繛锛屾暟鎹笉缁忕涓夋柟銆?            浣犵殑璐︽埛銆佷綘鐨勬暟鎹€佷綘鐨勭瓥鐣ャ€?          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?How It Works 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?-->
-  <section id="how-it-works" class="py-20 px-6 bg-surface-1/50">
-    <div class="max-w-4xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4">涓夋寮€濮嬮噺鍖?/h2>
-        <p class="text-gray-400 text-lg">浠庝笅杞藉埌瀹炵洏锛? 鍒嗛挓鎼炲畾</p>
-      </div>
-
-      <div class="space-y-12">
-        <!-- Step 1 -->
-        <div class="flex items-start gap-6">
-          <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-surface-0 font-bold text-xl">1</div>
-          <div>
-            <h3 class="text-xl font-bold mb-2">涓嬭浇瀹夎</h3>
-            <p class="text-gray-400 leading-relaxed">
-              涓嬭浇 Windows 瀹夎鍖咃紝鍙屽嚮瀹夎銆?              鍚姩鍚庤嚜鍔ㄨ繛鎺ュ瘜閫?OpenD锛堥渶鎻愬墠杩愯锛夈€?            </p>
-          </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="flex items-start gap-6">
-          <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-surface-0 font-bold text-xl">2</div>
-          <div>
-            <h3 class="text-xl font-bold mb-2">鍒涘缓绛栫暐</h3>
-            <p class="text-gray-400 leading-relaxed">
-              鐢ㄨ嚜鐒惰瑷€鎻忚堪浣犵殑浜ゆ槗閫昏緫锛屼緥濡傦細<br>
-              <span class="text-gold-400 italic">"RSI 浣庝簬 30 鏃朵拱鍏?TQQQ锛屾定 5% 鍗栧嚭"</span><br>
-              AI 鑷姩瑙ｆ瀽鎴愬彲鎵ц绛栫暐锛屽厛鍥炴祴楠岃瘉銆?            </p>
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="flex items-start gap-6">
-          <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-surface-0 font-bold text-xl">3</div>
-          <div>
-            <h3 class="text-xl font-bold mb-2">瀹炵洏杩愯</h3>
-            <p class="text-gray-400 leading-relaxed">
-              纭鍥炴祴缁撴灉婊℃剰鍚庯紝涓€閿惎鍔ㄥ疄鐩樸€?              绯荤粺鑷姩鐩戞帶琛屾儏銆佹墽琛屼氦鏄撱€佺鐞嗛鎺с€?              浣犲彲浠ュ畨蹇冨幓鍋氬叾浠栦簨銆?            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?Marketplace 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?-->
-  <section id="marketplace" class="py-20 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4">绛栫暐甯傚満</h2>
-        <p class="text-gray-400 text-lg">濂界瓥鐣ュ€煎緱琚洿澶氫汉浣跨敤锛屽垱浣滆€呬韩鍙?70% 鏀跺叆鍒嗘垚</p>
-      </div>
-
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Strategy Card 1 -->
-        <div class="bg-surface-1 rounded-xl p-6 border border-white/5 hover:border-gold-500/30 transition">
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-gold-400 text-xs font-medium px-2 py-1 rounded bg-gold-500/10">瓒嬪娍璺熻釜</span>
-            <span class="text-green-400 text-xs">鈼?杩愯涓?/span>
-          </div>
-          <h4 class="font-bold mb-1">鍙屽潎绾夸氦鍙?v2</h4>
-          <p class="text-gray-500 text-sm mb-4">MA20/MA50 浜ゅ弶淇″彿锛岄厤鍚?ATR 姝㈡崯</p>
-          <div class="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <div class="text-green-400 font-bold">+34.2%</div>
-              <div class="text-xs text-gray-600">骞村寲</div>
-            </div>
-            <div>
-              <div class="text-blue-400 font-bold">1.82</div>
-              <div class="text-xs text-gray-600">澶忔櫘</div>
-            </div>
-            <div>
-              <div class="text-yellow-400 font-bold">-12.3%</div>
-              <div class="text-xs text-gray-600">鍥炴挙</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Strategy Card 2 -->
-        <div class="bg-surface-1 rounded-xl p-6 border border-white/5 hover:border-gold-500/30 transition">
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-purple-400 text-xs font-medium px-2 py-1 rounded bg-purple-500/10">鍔ㄩ噺</span>
-            <span class="text-green-400 text-xs">鈼?杩愯涓?/span>
-          </div>
-          <h4 class="font-bold mb-1">12-1 鏈堝姩閲忓洜瀛?/h4>
-          <p class="text-gray-500 text-sm mb-4">缁忓吀瀛︽湳绛栫暐锛岃法璧勪骇鏈夋晥</p>
-          <div class="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <div class="text-green-400 font-bold">+22.7%</div>
-              <div class="text-xs text-gray-600">骞村寲</div>
-            </div>
-            <div>
-              <div class="text-blue-400 font-bold">1.45</div>
-              <div class="text-xs text-gray-600">澶忔櫘</div>
-            </div>
-            <div>
-              <div class="text-yellow-400 font-bold">-18.1%</div>
-              <div class="text-xs text-gray-600">鍥炴挙</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Strategy Card 3 -->
-        <div class="bg-surface-1 rounded-xl p-6 border border-white/5 hover:border-gold-500/30 transition">
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-cyan-400 text-xs font-medium px-2 py-1 rounded bg-cyan-500/10">鍧囧€煎洖褰?/span>
-            <span class="text-gray-400 text-xs">鈼?寰呭惎鍔?/span>
-          </div>
-          <h4 class="font-bold mb-1">RSI 瓒呭崠鍙嶅脊</h4>
-          <p class="text-gray-500 text-sm mb-4">RSI&lt;30 涔板叆锛孯SI&gt;70 鍗栧嚭</p>
-          <div class="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <div class="text-green-400 font-bold">+15.8%</div>
-              <div class="text-xs text-gray-600">骞村寲</div>
-            </div>
-            <div>
-              <div class="text-blue-400 font-bold">1.21</div>
-              <div class="text-xs text-gray-600">澶忔櫘</div>
-            </div>
-            <div>
-              <div class="text-yellow-400 font-bold">-9.7%</div>
-              <div class="text-xs text-gray-600">鍥炴挙</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="text-center mt-10">
-        <p class="text-gray-500 text-sm">鏇村绛栫暐鎸佺画鏇存柊涓?..</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?Pricing 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?-->
-  <section id="pricing" class="py-20 px-6 bg-surface-1/50">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4">绠€鍗曞畾浠?/h2>
-        <p class="text-gray-400 text-lg">浠庡厤璐瑰紑濮嬶紝鎸夐渶鍗囩骇</p>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-8">
-        <!-- Free -->
-        <div class="pricing-card bg-surface-1 rounded-2xl p-8 border border-white/5 relative">
-          <h3 class="text-xl font-bold mb-2">鍏嶈垂鐗?/h3>
-          <div class="mb-6">
-            <span class="text-4xl font-extrabold">楼0</span>
-            <span class="text-gray-500">/鏈?/span>
-          </div>
-          <ul class="space-y-3 text-gray-400 mb-8">
-            <li class="flex items-center gap-2"><span class="text-green-400">鉁?/span> 1 涓瓥鐣?/li>
-            <li class="flex items-center gap-2"><span class="text-green-400">鉁?/span> 妯℃嫙鐩樹氦鏄?/li>
-            <li class="flex items-center gap-2"><span class="text-green-400">鉁?/span> 瀹炴椂琛屾儏</li>
-            <li class="flex items-center gap-2"><span class="text-gray-600">鉁?/span> <span class="text-gray-600">瀹炵洏浜ゆ槗</span></li>
-            <li class="flex items-center gap-2"><span class="text-gray-600">鉁?/span> <span class="text-gray-600">AI 鍔╂墜</span></li>
-          </ul>
-          <a href="#download" class="block text-center py-3 rounded-xl border border-gray-700 text-gray-300 hover:border-gold-500 hover:text-gold-400 transition font-medium">
-            鍏嶈垂涓嬭浇
-          </a>
-        </div>
-
-        <!-- Starter (Popular) -->
-        <div class="pricing-card popular bg-surface-1 rounded-2xl p-8 border relative">
-          <div class="badge absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold text-surface-0">
-            鏈€鍙楁杩?          </div>
-          <h3 class="text-xl font-bold mb-2">Starter</h3>
-          <div class="mb-6">
-            <span class="text-4xl font-extrabold gradient-text">楼99</span>
-            <span class="text-gray-500">/鏈?/span>
-          </div>
-          <ul class="space-y-3 text-gray-400 mb-8">
-            <li class="flex items-center gap-2"><span class="text-green-400">鉁?/span> 5 涓瓥鐣?/li>
-            <li class="flex items-center gap-2"><span class="text-green-400">鉁?/span> 瀹炵洏浜ゆ槗</li>
-            <li class="flex items-center gap-2"><span class="text-green-400">鉁?/span> 瀹炴椂琛屾儏 + 鍥炴祴</li>
-            <li class="flex items-center gap-2"><span class="text-green-400">鉁?/span> 绛栫暐甯傚満娴忚</li>
-            <li class="flex items-center gap-2"><span class="text-gray-600">鉁?/span> <span class="text-gray-600">AI 鍔╂墜</span></li>
-          </ul>
-          <a href="#download" class="block text-center py-3 rounded-xl bg-gold-500 hover:bg-gold-400 text-surface-0 font-bold transition">
-            寮€濮嬩娇鐢?          </a>
-        </div>
-
-        <!-- Pro -->
-        <div class="pricing-card bg-surface-1 rounded-2xl p-8 border border-white/5 relative">
-          <h3 class="text-xl font-bold mb-2">Pro</h3>
-          <div class="mb-6">
-            <span class="text-4xl font-extrabold">楼299</span>
-            <span class="text-gray-500">/鏈?/span>
-          </div>
-          <ul class="space-y-3 text-gray-400 mb-8">
-            <li class="flex items-center gap-2"><span class="text-green-400">鉁?/span> 鏃犻檺绛栫暐</li>
-            <li class="flex items-center gap-2"><span class="text-green-400">鉁?/span> 瀹炵洏浜ゆ槗</li>
-            <li class="flex items-center gap-2"><span class="text-green-400">鉁?/span> AI 绛栫暐鍔╂墜</li>
-            <li class="flex items-center gap-2"><span class="text-green-400">鉁?/span> 绛栫暐甯傚満浼樺厛灞曠ず</li>
-            <li class="flex items-center gap-2"><span class="text-green-400">鉁?/span> 浼樺厛鎶€鏈敮鎸?/li>
-          </ul>
-          <a href="#download" class="block text-center py-3 rounded-xl border border-gray-700 text-gray-300 hover:border-gold-500 hover:text-gold-400 transition font-medium">
-            寮€濮嬩娇鐢?          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?Download 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?-->
-  <section id="download" class="py-20 px-6">
-    <div class="max-w-3xl mx-auto text-center">
-      <h2 class="text-4xl font-bold mb-4">绔嬪嵆涓嬭浇</h2>
-      <p class="text-gray-400 text-lg mb-10">Windows 10/11锛屽畨瑁呭寘绾?107MB 路 v0.7.0</p>
-
-      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-        <a href="https://github.com/vx1073071/dawn-whales/releases/tag/v0.7.0" target="_blank" class="bg-gold-500 hover:bg-gold-400 text-surface-0 font-bold px-10 py-4 rounded-xl text-lg transition glow inline-flex items-center gap-3">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
-          涓嬭浇 Windows 鐗?(v0.7.0)
-        </a>
-      </div>
-
-      <p class="text-gray-600 text-sm">
-        闇€瑕?<a href="https://openapi.futunn.com/futu-api-doc/opend/opend-cmd.html" class="text-gold-500 hover:underline" target="_blank">瀵岄€?OpenD</a> 杩愯涓紙鍏嶈垂锛?      </p>
-
-      <div class="mt-8 text-sm text-gray-600">
-        <p>绯荤粺瑕佹眰锛歐indows 10 64浣嶅強浠ヤ笂 路 4GB 鍐呭瓨 路 200MB 纾佺洏绌洪棿</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?FAQ 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?-->
-  <section class="py-20 px-6 bg-surface-1/50">
-    <div class="max-w-3xl mx-auto">
-      <h2 class="text-4xl font-bold mb-12 text-center">甯歌闂</h2>
-
-      <div class="space-y-6">
-        <div class="bg-surface-1 rounded-xl p-6 border border-white/5">
-          <h4 class="font-bold mb-2">闇€瑕佺紪绋嬪熀纭€鍚楋紵</h4>
-          <p class="text-gray-400">涓嶉渶瑕併€傜敤鑷劧璇█鎻忚堪浣犵殑浜ゆ槗閫昏緫灏辫锛孉I 鑷姩瑙ｆ瀽鎴愬彲鎵ц绛栫暐銆?/p>
-        </div>
-
-        <div class="bg-surface-1 rounded-xl p-6 border border-white/5">
-          <h4 class="font-bold mb-2">鏀寔鍝簺鍒稿晢锛?/h4>
-          <p class="text-gray-400">鐩墠鏀寔瀵岄€?moomoo锛堥€氳繃 OpenD锛夛紝鏈潵浼氭帴鍏ユ洿澶氬埜鍟嗐€傛瘡涓敤鎴风敤鑷繁鐨?OpenD 杩炴帴鑷繁鐨勫埜鍟嗚处鎴凤紝鏁版嵁涓嶇粡绗笁鏂广€?/p>
-        </div>
-
-        <div class="bg-surface-1 rounded-xl p-6 border border-white/5">
-          <h4 class="font-bold mb-2">琛屾儏鏁版嵁瑕佹敹璐瑰悧锛?/h4>
-          <p class="text-gray-400">涓嶉渶瑕併€侺V1 鍩虹琛屾儏閫氳繃 OpenD 鍏嶈垂鑾峰彇銆傚鏋滀綘鏈?LV3 琛屾儏璁㈤槄锛屼篃鑳界洿鎺ヤ娇鐢ㄣ€?/p>
-        </div>
-
-        <div class="bg-surface-1 rounded-xl p-6 border border-white/5">
-          <h4 class="font-bold mb-2">绛栫暐瀹夊叏鍚楋紵</h4>
-          <p class="text-gray-400">鎵€鏈夌瓥鐣ュ湪鏈湴杩愯锛屼唬鐮佸拰鏁版嵁涓嶄笂浼犳湇鍔″櫒銆傚疄鐩樺墠寤鸿鍏堢敤妯℃嫙鐩橀獙璇侊紝绯荤粺鍐呯疆椋庢帶寮曟搸闃叉寮傚父浜ゆ槗銆?/p>
-        </div>
-
-        <div class="bg-surface-1 rounded-xl p-6 border border-white/5">
-          <h4 class="font-bold mb-2">绛栫暐甯傚満鐨勬敹鍏ユ€庝箞鍒嗭紵</h4>
-          <p class="text-gray-400">鍒涗綔鑰呰幏寰?70% 鏀跺叆锛屽钩鍙版娊鎴?30%銆備綘鍙戝竷鐨勫ソ绛栫暐琚叾浠栫敤鎴蜂粯璐逛娇鐢ㄦ椂锛屽ぇ閮ㄥ垎鏀跺叆褰掍綘銆?/p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?Footer 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?-->
-  <footer class="py-12 px-6 border-t border-white/5">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="flex items-center gap-3">
-        <img src="logo.png" alt="閬撻哺" class="w-8 h-8 rounded-lg">
-        <div class="flex flex-col leading-tight">
-          <span class="font-bold text-sm">閬撻哺路AI閲忓寲绯荤粺</span>
-          <span class="text-[10px] text-gold-400 tracking-wider">DAWN WHALES</span>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-6 text-sm text-gray-500">
-        <a href="https://github.com/vx1073071/dawn-whales" class="hover:text-gold-400 transition" target="_blank">GitHub</a>
-        <span>路</span>
-        <a href="#features" class="hover:text-gold-400 transition">鍔熻兘</a>
-        <span>路</span>
-        <a href="#pricing" class="hover:text-gold-400 transition">瀹氫环</a>
-        <span>路</span>
-        <a href="#" class="hover:text-gold-400 transition">鏂囨。</a>
-      </div>
-
-      <p class="text-sm text-gray-600">漏 2026 DAWN WHALES 路 閬撻哺. All rights reserved.</p>
+  <!-- Footer -->
+  <footer class="border-t border-gray-800 py-8 px-6">
+    <div class="max-w-6xl mx-auto flex justify-between flex-wrap gap-4 text-xs text-gray-500">
+      <div><span class="mr-2">🐋</span><span class="text-gray-300 font-semibold">Dawn Whales</span> v1.8.0</div>
+      <div class="flex gap-5">© 2026 · 隐私政策 · 服务条款 · 联系我们</div>
     </div>
   </footer>
-
 </body>
 </html>
-
