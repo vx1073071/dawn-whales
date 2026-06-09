@@ -57,8 +57,8 @@ const DEFAULT_DEPLOY_CONFIG: DeploymentConfig = {
   rateLimitWindowMs: 60_000,
   rateLimitMax: 100,
   adminPort: 3001,
-  staticDir: resolve(process.cwd(), "public"),
-  logDir: resolve(process.cwd(), "logs"),
+  staticDir: "public",
+  logDir: "logs",
   domain: "dawnwhales.com",
 };
 
@@ -223,11 +223,11 @@ export class DeploymentManager {
       apps: apps.map((a) => ({
         ...a,
         log_date_format: "YYYY-MM-DD HH:mm:ss Z",
-        error_file: join(this.config.logDir, "error.log"),
-        out_file: join(this.config.logDir, "out.log"),
+        error_file: require("path").join(this.config.logDir, "error.log"),
+        out_file: require("path").join(this.config.logDir, "out.log"),
       })),
     };
-    writeFileSync(outputPath, JSON.stringify(content, null, 2), "utf-8");
+    require("fs").writeFileSync(outputPath, JSON.stringify(content, null, 2), "utf-8");
   }
 
   // ── Nginx Config Generator ───────────────────────────────────────────────
@@ -307,7 +307,7 @@ server {
 
   writeNginxConfig(outputPath: string): void {
     const config = this.generateNginxConfig();
-    writeFileSync(outputPath, config, "utf-8");
+    require("fs").writeFileSync(outputPath, config, "utf-8");
   }
 
   // ── .env Template Generator ──────────────────────────────────────────────
@@ -344,7 +344,7 @@ CORS_ORIGINS=${this.config.corsOrigins.join(",")}
 
   writeEnvTemplate(outputPath: string): void {
     const template = this.generateEnvTemplate();
-    writeFileSync(outputPath, template, "utf-8");
+    require("fs").writeFileSync(outputPath, template, "utf-8");
   }
 
   // ── Deploy Checklist ─────────────────────────────────────────────────────
