@@ -109,7 +109,8 @@ function computeSwingStrength(klines: KlineDataPoint[], index: number, type: "hi
     const comp = type === "high" ? klines[index - j].high : klines[index - j].low;
     deviation += Math.abs(price - comp) / price;
   }
-  return Math.min(1, deviation / lookback * 10);
+  // Scale: random walk has ~2% deviation per 3 bars → ~0.2 with *10 scaling
+  return Math.min(1, deviation / lookback * 5);
 }
 
 // ── Trend Line Detection ──────────────────────────────────────────────────
@@ -449,7 +450,7 @@ export class AIDrawingEngine {
     }
 
     // 1. Detect swing points
-    const swings = detectSwingPoints(klines, 0.25);
+    const swings = detectSwingPoints(klines, 0.15);
 
     // 2. Detect patterns
     const trendLines = detectTrendLines(klines, swings);
