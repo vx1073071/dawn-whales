@@ -49,10 +49,10 @@ describe('Q-71-02: Full Regression Gate 5600+', () => {
     });
 
     it('04: source files >= 200', () => {
-      const output = execSync('git ls-files -- "*.ts" "*.tsx" | find /c /v ""', {
+      const output = execSync('git ls-files -- "*.ts" "*.tsx"', {
         cwd: PROJECT_ROOT, encoding: 'utf8', timeout: 5000
       }).trim();
-      const count = parseInt(output) || 0;
+      const count = output ? output.split('\n').length : 0;
       console.log(`[Q-71-02] TS/TSX files: ${count}`);
       expect(count).toBeGreaterThanOrEqual(200);
     });

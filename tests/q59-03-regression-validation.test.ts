@@ -114,7 +114,7 @@ describe("Q-59-03-01: Full Billing E2E Pipeline", () => {
 // ── Test Baseline Verification ────────────────────────────────────────────
 
 describe("Q-59-03-02: Test Baseline Verification", () => {
-  const TESTS_DIR = __dirname;
+  const TESTS_DIR = path.resolve("tests");
 
   it("06: project has ≥240 test files", () => {
     const files = walkTestFiles(TESTS_DIR);
@@ -147,7 +147,8 @@ describe("Q-59-03-02: Test Baseline Verification", () => {
 // ── Quality Gates ─────────────────────────────────────────────────────────
 
 describe("Q-59-03-03: Quality Gates", () => {
-  const ROOT = path.resolve(__dirname, "..");
+  // __dirname is tests/ dir, ROOT is project root
+  const ROOT = path.resolve(".");
 
   it("10: tsconfig has strict mode", () => {
     const tsconfig = JSON.parse(fs.readFileSync(path.join(ROOT, "tsconfig.json"), "utf-8"));
