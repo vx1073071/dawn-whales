@@ -13,15 +13,15 @@ const FINAL_CHECKLIST = [
 ];
 
 const GA_SUMMARY = {
-  rounds: 30,
-  tests: '6500+',
+  rounds: 31,
+  tests: '5928',
   engines: '320+',
-  components: '54',
+  components: 200,
   markets: 7,
   factors: '30+',
   templates: '20+',
   indicators: '25+',
-  languages: 5,
+  languages: 9,
   agents: 4,
   themesCount: 2,
 };
