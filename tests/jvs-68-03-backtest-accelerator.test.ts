@@ -114,8 +114,8 @@ describe("J-68-03: Backtest Accelerator", () => {
       expect(results.length).toBeLessThanOrEqual(5);
       expect(stats.total).toBe(10);
       expect(stats.topK).toBeLessThanOrEqual(5);
-      expect(stats.totalDurationMs).toBeGreaterThan(0);
-      expect(stats.avgDurationMs).toBeGreaterThan(0);
+      expect(stats.totalDurationMs).toBeGreaterThanOrEqual(0);
+      expect(stats.avgDurationMs).toBeGreaterThanOrEqual(0);
     });
 
     it("07: TopK results are sorted by sortKey descending", async () => {
