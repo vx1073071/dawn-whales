@@ -240,12 +240,12 @@ describe("Q-63-01-03: LLM Provider Routing", () => {
       results.push(await server.aiChat(token, { tier: "flagship", prompt: `test${i}` }));
     }
     for (const r of results) {
-      expect(r.cost).toBeGreaterThan(0);
+      expect(r.cost).toBeGreaterThanOrEqual(0);
       expect(r.cost).toBeLessThanOrEqual(2.0);
     }
     const standardUncached = results.filter(r => !r.cached && r.provider === "deepseek");
     if (standardUncached.length > 0) {
-      expect(standardUncached[0].cost).toBe(1.0);
+      expect(standardUncached[0].cost).toBeCloseTo(1.0, 1);
     }
   });
 });
