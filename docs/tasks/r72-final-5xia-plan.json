@@ -1,0 +1,231 @@
+// ═══════════════════════════════════════════════════════════════════════
+// R72 最终 5 虾执行方案 — v1.8.0-alpha
+// 协调人: JVS | 时间: 2026-06-09 12:50 (GMT+8)
+// 依据: PM R72 FINAL (12:44) + QClaw/ML 提案 + 各虾能力分析
+// ═══════════════════════════════════════════════════════════════════════
+
+const r72Plan = {
+  round: 72,
+  version: "v1.8.0-alpha",
+  coordinator: "JVS",
+  baseline: "5577+ tests / 0 fail",
+  totalTasks: 22,
+  totalBudget: { lines: "5800+", tests: "120+" },
+
+  // ── 模块总览 ──────────────────────────────────────────────────
+  modules: {
+    markets:   "7市场(港/美/新/日/澳/加/马) + 全品种(股/ETF/涡轮/牛熊/期货/期权)",
+    factors:   "30+ 因子 × 市场兼容矩阵, 选股自动过滤不适配因子",
+    templates: "20+ 模板 × 市场兼容, 含牛熊证/涡轮/期权/期货跨市",
+    charts:    "9周期K线 + 16+技术指标 + PineScript编辑器",
+    ai:        "AI自动画线(趋势线/支撑阻力/斐波那契/江恩) + 形态识别(20+形态+置信度)",
+    community: "评论/点赞/关注/分享/feed/通知 (WebSocket实时+离线队列)",
+    analysis:  "因子IC/IR/暴露/衰减/拥挤度 + 6维策略雷达 + 有效前沿 + 风险预算",
+    monitoring:"P95延迟/错误率/钱包异常/告警升级链(15min) + 静默窗口",
+    ui:        "私行风深色+金, 响应式3断点(375/768/1024), 触控≥44px, 无荧光",
+    data:      "4Agent useMock=false, Yahoo+AV+NewsAPI+Reddit+StockTwits+自研+东财(港股)",
+    pipeline:  "注册→充值→AI→交易→钱包 / 发布→上架→订阅→分账",
+    quality:   "flaky清零, 5轮全量, 缓存≥95%, 4Agent<8s, API<100ms, 6000+ tests",
+  },
+
+  // ── 最终 5 虾任务分配 ──────────────────────────────────────────
+  assignments: {
+    JVS: {
+      title: "引擎虾 — 因子+模板+行情+AI+社区+监控 (8任务)",
+      tasks: [
+        {
+          id: "J-72-01", prio: "P0", title: "因子库 30++ 市场兼容矩阵",
+          spec: "每个因子标注适用市场(港/美/新/日/澳/加/马), 选股引擎自动过滤。通用因子(MOM/LIQ/VOL/GROWTH/SMB/HML等)x7 + 港股专有(北水/南水/牛熊证/涡轮)x1 + 美股专有(VIX/做空比/机构持仓)x1 + 全球专有(期权PCR/行业轮动)x1 → 因子矩阵",
+          budget: "400L, 10t",
+        },
+        {
+          id: "J-72-02", prio: "P0", title: "模板库 20++ 市场兼容性 + 品种限制",
+          spec: "通用(动量/均值回归/突破/配对/网格/DCA/海龟/双均线/布林/期权跨式)x7 + 美股(事件驱动)x1 + 港股(牛熊证对冲/涡轮套利)x1 + 全球(板块轮动/市场中性/波动率套利/期货跨市)x1 → 每个模板标注适用市场+品种+交易所",
+          budget: "350L, 8t",
+        },
+        {
+          id: "J-72-03", prio: "P0", title: "4Agent useMock=false 真实数据接入",
+          spec: "移除所有MOCK逻辑, 接入: Yahoo Finance API + Alpha Vantage + NewsAPI + Reddit/StockTwits sentiment + 东方财富(港股辅助) + 自研行情聚合。每个Agent的dataFetcher重写，统一使用async/await + 缓存层 + 失败重试(3次) + 降级策略",
+          budget: "350L, 8t",
+        },
+        {
+          id: "J-72-04", prio: "P0", title: "社区互动API + 信息流 + 通知引擎",
+          spec: "评论(多级回复max depth=2)+点赞+关注/取关+信号分享+举报+屏蔽+隐私+账户删除。信息流(following feed + 分页) + 通知(系统通知+订阅到期+信号更新+周报) + WebSocket实时推送 + 离线消息队列",
+          budget: "650L(社区350+feed300), 18t(社区10+feed8)",
+        },
+        {
+          id: "J-72-05", prio: "P0", title: "因子研究IC/IR + 策略对比6维雷达 + 组合优化有效前沿",
+          spec: "因子: Rank IC(Spearman)+Pearson IC+IR+暴露+衰减+拥挤度。策略: 6维雷达(收益/Sharpe/回撤/胜率/波动/Alpha) + 复合评分排名。组合: 有效前沿(MVO模拟+帕累托滤波) + 风险预算分解 + 再平衡建议(5%阈值) + 最大Sharpe切线组合",
+          budget: "700L(因子350+对比优化350), 14t(因子8+对比6)",
+        },
+        {
+          id: "J-72-06", prio: "P0", title: "多市场行情聚合引擎",
+          spec: "7市场实时行情聚合: bid/ask/last/volume。9周期K线(1m/5m/15m/30m/1h/4h/1d/1w/1M)。盘口深度(level2) + 逐笔成交。Futu OpenD API + 自有聚合层。统一接口: getQuote(market, symbol) + getKline(market, symbol, period) + getDepth(market, symbol) + getTicks(market, symbol)",
+          budget: "400L, 10t",
+        },
+        {
+          id: "J-72-07", prio: "P1", title: "AI自动画线引擎",
+          spec: "趋势线(高点连线+低点连线) + 水平支撑阻力(基于成交量分布) + 通道线 + 斐波那契回撤/扩展(基于高点到低点) + 江恩角度线。每条线标注: 类型/起点/终点/斜率/意义 + 可手动修正",
+          budget: "300L, 6t",
+        },
+        {
+          id: "J-72-08", prio: "P1", title: "AI形态识别引擎",
+          spec: "20+形态: 头肩顶/头肩底/双顶/双底/三角/旗形/楔形/矩形/吞没(看涨/看跌)/十字星/锤子/倒锤/启明星/黄昏星/三白兵/三乌鸦。输出: 形态名称 + 置信度(0-1) + 关键点位(颈线/突破点/目标价) + 半透明叠加标注区域",
+          budget: "350L, 8t",
+        },
+        {
+          id: "J-72-09", prio: "P1", title: "系统监控引擎 (告警+升级链+静默窗口)",
+          spec: "P95/P99延迟 + 错误率 + AI调用失败率 + 钱包余额异常。分钟级聚合。告警: 多级阈值(WARNING/CRITICAL/EMERGENCY) + 冷却时间。升级链: 15min未确认→自动升级。静默窗口(按小时+星期)。健康状态(healthy/degraded/unhealthy)",
+          budget: "400L(引擎370+前补30), 3t",
+        },
+      ],
+      totalLines: "3900",
+      totalTests: 85,
+    },
+
+    QClaw: {
+      title: "测试虾 — 质量守护 + 全量回归 + 真实数据验证 (3任务)",
+      tasks: [
+        {
+          id: "Q-72-01", prio: "P0", title: "因子兼容性E2E + 社区功能E2E + 形态识别E2E",
+          spec: "因子×市场矩阵完整E2E: 30因子×7市场=210组合, 验证选股过滤正确。社区: 评论/点赞/关注/feed/通知 完整流程。形态识别: 20+形态在7市场的识别准确率≥85%",
+          budget: "350L, 15t",
+        },
+        {
+          id: "Q-72-02", prio: "P0", title: "4Agent真实数据全链路 + 多市场行情一致性",
+          spec: "4Agent全部useMock=false, 验证数据接入正确性(与Yahoo/AV源对比)。多市场行情聚合: 7×9周期K线数据一致性。降级策略: 模拟API故障验证降级路径",
+          budget: "300L, 12t",
+        },
+        {
+          id: "Q-72-03", prio: "P0", title: "R72全量回归 6000+ tests + flaky清零",
+          spec: "5轮全量vitest: 目标6000+ tests/0 fail。flaky清零: 任何间歇性失败立即修复。性能验证: 4Agent<8s, API<100ms, 缓存命中率≥95%。旧测试兼容: 确保R71及以前全部通过",
+          budget: "200L, 8t",
+        },
+      ],
+      totalLines: "850",
+      totalTests: 35,
+    },
+
+    ML: {
+      title: "前端虾 — 私行UI + K线组件 + 社区/分析面板 + 指标编辑器 (7任务)",
+      tasks: [
+        {
+          id: "ML-72-01", prio: "P0", title: "全局私行风UI: 深色+金 + 8px栅格 + 响应式3断点",
+          spec: "6面板(行情/自选/策略/社区/分析/我的)全部套私行风。响应式: 375/768/1024三断点, 触控≥44px。数字等宽自动缩写(12.5B→125亿)不溢出。卡片堆叠无横滚。中性文案私行口吻。favicon/托盘/加载/App小图标",
+          budget: "400L, 6t",
+        },
+        {
+          id: "ML-72-02", prio: "P0", title: "K线高级图表组件 (TradingView级)",
+          spec: "ECharts/Canvas手绘K线: 9周期切换, 缩放拖拽, 十字光标, 指标叠加(MA/EMA/Bollinger/MACD/RSI/成交量), 标记渲染(AI画线+形态标注半透明), 自适应暗色主题",
+          budget: "350L, 5t",
+        },
+        {
+          id: "ML-72-03", prio: "P1", title: "PineScript公式编辑器",
+          spec: "指标公式编辑器: 代码高亮 + 语法提示 + 实时预览 + 保存到指标库 + 支持函数库(MA/EMA/SMA/STD/CROSS等)",
+          budget: "250L, 3t",
+        },
+        {
+          id: "ML-72-04", prio: "P0", title: "因子/模板市场面板",
+          spec: "因子市场: 30+因子卡片(名称/适用市场/IC/衰减) + 搜索/过滤/排序。模板市场: 20+模板卡片(策略/适用市场/品种) + 一键使用 + 自定义参数",
+          budget: "250L, 4t",
+        },
+        {
+          id: "ML-72-05", prio: "P0", title: "社区UI + 分析面板",
+          spec: "社区: 评论楼中楼 + 点赞动画 + 个人主页(动态/关注/信号) + 通知中心(红点+已读/未读)。分析: 6维雷达图 + 有效前沿曲线 + 因子IC热力图 + 策略对比表格",
+          budget: "350L, 5t",
+        },
+        {
+          id: "ML-72-06", prio: "P1", title: "全链路UI贯通: 注册→充值→AI→交易→钱包",
+          spec: "注册/登录(手机+邮箱+Google) → 充值(法币/加密货币) → AI策略选择 → 一键跟单交易 → 钱包/收益/提现。发布→上架→订阅→分账。P2P→冻结→申诉→解冻。落地页+下载页+/admin",
+          budget: "250L, 3t",
+        },
+        {
+          id: "ML-72-07", prio: "P1", title: "多市场品种选择器 + 自选管理",
+          spec: "7市场股票/ETF/涡轮/牛熊证/期货/期权搜索+添加自选。分组管理。自选排序(拖拽)。实时报价条。品种详情弹窗(基本面+技术面+AI摘要)",
+          budget: "200L, 3t",
+        },
+      ],
+      totalLines: "2050",
+      totalTests: 29,
+    },
+
+    PM: {
+      title: "守护虾 — 稳定发布 + 5轮验证 + 品牌 (2任务)",
+      tasks: [
+        {
+          id: "PM-72-01", prio: "P0", title: "5轮全量守护 + flaky清零 + 性能验证",
+          spec: "每轮: npm test全量 + TSC检查 + Build验证。5轮连续0 fail。flaky: 任何间歇性失败→立即修复或标记skip+记录。性能: 4Agent<8s, API<100ms, 缓存≥95%。每轮报告广播各虾",
+          budget: "连续循环(每30min一轮)",
+        },
+        {
+          id: "PM-72-02", prio: "P0", title: "v1.8.0-alpha 发布 + 品牌logo不动",
+          spec: "版本号同步(package.json=1.8.0-alpha, git tag)。Release Notes: PM检查youdao版本。品牌: logo不更改不调整。私行风一致性检查。发布广播: @all微信群/社区/App更新通知",
+          budget: "检查+审批(收尾阶段)",
+        },
+      ],
+      totalLines: "150(Release Notes审查)",
+      totalTests: 0,
+    },
+
+    youdao: {
+      title: "文档虾 — 因子/模板手册 + Release Notes (2任务)",
+      tasks: [
+        {
+          id: "D-72-01", prio: "P0", title: "因子手册(30+) + 模板指南(20+) — 按市场+品种分类",
+          spec: "因子手册: 30+因子, 每个因子→ 定义/计算公式/适用市场/适用品种/IC典型值/衰减特征/使用建议。模板指南: 20+模板, 每个→ 策略描述/适用场景/参数说明/回测示例/风险提示。中英双语。PDF+在线文档",
+          budget: "300L, 5t",
+        },
+        {
+          id: "D-72-02", prio: "P0", title: "v1.8.0-alpha Release Notes + 更新CHANGELOG",
+          spec: "Release Notes: 7市场/30因子/20模板/AI画线+形态/社区+分析+监控/私行UI。CHANGELOG更新: 从v1.7.0→v1.8.0。用户guide: 新功能快速上手。更新CONTRIBUTING.md(因子/模板贡献指引)",
+          budget: "150L, 3t",
+        },
+      ],
+      totalLines: "450",
+      totalTests: 8,
+    },
+  },
+
+  // ── 验收标准 ──────────────────────────────────────────────────
+  acceptance: {
+    code: "5800+ L (JVS 3900 + QClaw 850 + ML 2050 + PM 150 + youdao 450)",
+    tests: "120+ tests (85 + 35 + 29 + 0 + 8), 全量 6000+ / 0 fail",
+    performance: "4Agent < 8s, API < 100ms, 缓存 ≥ 95%",
+    quality: "5轮全量 0 fail, flaky 清零",
+    build: "TSC 0 errors, Build 0 errors",
+    branches: "全部合并 master, tag: v1.8.0-alpha",
+  },
+
+  // ── 里程碑 ────────────────────────────────────────────────────
+  milestones: [
+    { time: "12:50", event: "JVS 广播最终方案, 全虾 ACK" },
+    { time: "13:30", event: "P0 任务全部完成 (J-72-01~06, Q-72-01~02, ML-72-01~02/04~05, D-72-01~02)" },
+    { time: "14:00", event: "P1 任务完成 (J-72-07~09, Q-72-03, ML-72-03/06~07)" },
+    { time: "14:30", event: "第1轮全量回归 (目标 6000+/0 fail)" },
+    { time: "15:00", event: "5轮全量 0 fail 验证完成" },
+    { time: "15:30", event: "v1.8.0-alpha 发布 + 全虾 ROUND_COMPLETE 广播" },
+  ],
+
+  // ── 关键约束 ──────────────────────────────────────────────────
+  constraints: [
+    "❌ 不包含A股市场",
+    "❌ 品牌logo不改不动",
+    "❌ 不上链/不区块链",
+    "❌ 不新增AI引擎(已有243个) — 仅在已有基础上works",
+    "✅ 因子/模板须标注市场兼容性, 选股自动过滤",
+    "✅ 4Agent useMock=false, 移除所有MOCK代码",
+    "✅ 深色+金 无荧光 私行风",
+    "✅ 各虾独立测试文件 (tests/jvs-72-XX / tests/q-72-XX / tests/ml-72-XX / tests/d-72-XX)",
+  ],
+
+  // ── 协作模式 ──────────────────────────────────────────────────
+  collaboration: {
+    broadcastChannel: "messages.jsonl (appendFileSync)",
+    replyFormat: "msgId: {agent}-r72-{taskId}-{type}-{timestamp}",
+    statusReport: "每完成一个任务, 广播 ACK/DONE 到 PM",
+    pmAlias: "PM (守护虾, 协调+5轮验证+发布)",
+    escalation: "阻塞 > 15min → 广播 PM 请求协助",
+  },
+};
+
+console.log(JSON.stringify(r72Plan, null, 2));
