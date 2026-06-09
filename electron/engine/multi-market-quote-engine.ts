@@ -85,7 +85,7 @@ export class MultiMarketQuoteEngine {
   updateQuote(quote: Quote): void {
     const key = this.symbolKey(quote.market, quote.symbol);
     quote.timestamp = quote.timestamp || Date.now();
-    if (quote.change === undefined && quote.prevClose > 0) {
+    if ((quote.change === undefined || quote.change === 0) && quote.prevClose > 0) {
       quote.change = ((quote.last - quote.prevClose) / quote.prevClose) * 100;
       quote.changeAmount = quote.last - quote.prevClose;
     }

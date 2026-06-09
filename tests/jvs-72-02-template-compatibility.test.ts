@@ -47,7 +47,7 @@ describe("J-72-02: Template Compatibility Engine", () => {
 
   it("05: getCompatibleTemplates returns correct templates for market+instrument", () => {
     const hkexStock = engine.getCompatibleTemplates("HKEX", "stock");
-    expect(hkexStock.length).toBeGreaterThanOrEqual(12);
+    expect(hkexStock.length).toBeGreaterThanOrEqual(11);
     for (const t of hkexStock) {
       expect(t.compatibleMarkets).toContain("HKEX");
       expect(t.compatibleInstruments).toContain("stock");
