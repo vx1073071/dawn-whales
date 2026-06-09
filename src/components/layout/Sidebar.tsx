@@ -15,6 +15,8 @@ const navItems: NavItem[] = [
   { id: 'strategy', icon: '🧠', label: '策略工坊' },
   { id: 'ai', icon: '🐋', label: 'AI 助理' },
   { id: 'marketplace', icon: '🏪', label: '策略市场' },
+  { id: 'creator', icon: '⭐', label: '创作者中心' },
+  { id: 'signals', icon: '📡', label: '信号分析' },
   { id: 'backtest', icon: '🔬', label: '回测报告' },
   { id: 'portfolio', icon: '💼', label: '持仓管理' },
   { id: 'orders', icon: '📋', label: '委托订单' },
