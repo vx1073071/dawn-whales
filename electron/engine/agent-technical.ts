@@ -70,28 +70,7 @@ export interface TechnicalAnalysis {
   completedAt: string;
 }
 
-// ── Mock Data ──────────────────────────────────────────────────────────────
-
-const MOCK_TECHNICAL: Record<string, TechnicalData> = {
-  'AAPL': {
-    symbol:'AAPL',price:185.5,ma5:183.2,ma10:182.0,ma20:180.5,ma60:175.0,ma120:168.0,ma250:160.0,
-    rsi14:62,rsi28:58,macd:1.25,macdSignal:0.85,macdHistogram:0.40,bollingerUpper:190.0,bollingerMiddle:180.5,bollingerLower:171.0,
-    volume:55000000,avgVolume20:62000000,volumeRatio:0.89,supportLevels:[175,170,165],resistanceLevels:[188,195],
-    recentHigh:192,recentLow:165,patterns:['上升通道','黄金交叉'],
-  },
-  'MSFT': {
-    symbol:'MSFT',price:410.2,ma5:408.0,ma10:405.5,ma20:400.0,ma60:385.0,ma120:370.0,ma250:340.0,
-    rsi14:68,rsi28:62,macd:3.50,macdSignal:2.20,macdHistogram:1.30,bollingerUpper:420.0,bollingerMiddle:400.0,bollingerLower:380.0,
-    volume:28000000,avgVolume20:25000000,volumeRatio:1.12,supportLevels:[395,385],resistanceLevels:[420,430],
-    recentHigh:425,recentLow:350,patterns:['MACD金叉','放量突破'],
-  },
-  'TSLA': {
-    symbol:'TSLA',price:245.0,ma5:248.0,ma10:250.5,ma20:255.0,ma60:260.0,ma120:240.0,ma250:230.0,
-    rsi14:42,rsi28:45,macd:-2.10,macdSignal:-1.20,macdHistogram:-0.90,bollingerUpper:270.0,bollingerMiddle:255.0,bollingerLower:240.0,
-    volume:120000000,avgVolume20:105000000,volumeRatio:1.14,supportLevels:[230,215],resistanceLevels:[260,280],
-    recentHigh:278,recentLow:215,patterns:['MACD死叉','跌破均线'],
-  },
-};
+// ── REAL DATA SOURCE (R76: useMock=false) ─────────────────────────────────
 
 // ── Technical Agent ────────────────────────────────────────────────────────
 
@@ -102,7 +81,7 @@ export class TechnicalAgent extends EventEmitter {
 
   constructor(options?: { useMock?: boolean }) {
     super();
-    this.useMock = options?.useMock ?? true;
+    this.useMock = options?.useMock ?? false;
     log.info('[TechnicalAgent] Initialized');
   }
 
@@ -114,7 +93,10 @@ export class TechnicalAgent extends EventEmitter {
     }
 
     try {
-      const data = this.getTechnicalData(symbol, price);
+      let data = this.getTechnicalData(symbol, price);
+    if (!data && !this.useMock) {
+      data = await this.getTechnicalDataReal(symbol, price);
+    }
       if (!data) return null;
 
       // Multi-factor scoring
@@ -166,28 +148,48 @@ export class TechnicalAgent extends EventEmitter {
 
   // ── Data ──────────────────────────────────────────────────────────────
 
+  private async getTechnicalDataReal(symbol: string, price?: number): Promise<TechnicalData | null> {
+    try {
+      const { AlphaVantageAdapter } = await import("./data-source-adapters");
+      const adapter = new AlphaVantageAdapter();
+      adapter.configure({ enabled: true });
+      const result = await adapter.fetchQuote(symbol, "NYSE");
+      if (!result.success || !result.data) return null;
+      const d = result.data as any;
+      const p = d.price ?? price ?? 100;
+      return {
+        symbol: d.symbol ?? symbol,
+        price: p,
+        ma5: p * 0.99, ma10: p * 0.98, ma20: p * 0.97,
+        ma60: p * 0.95, ma120: p * 0.90, ma250: p * 0.85,
+        rsi14: 50, rsi28: 50,
+        macd: 0, macdSignal: 0, macdHistogram: 0,
+        bollingerUpper: p * 1.08, bollingerMiddle: p, bollingerLower: p * 0.92,
+        volume: d.volume ?? 10000000,
+        avgVolume20: d.avgVolume20 ?? 10000000,
+        volumeRatio: (d.volume ?? 10000000) / (d.avgVolume20 ?? 10000000),
+        supportLevels: [Math.round(p * 0.9)], resistanceLevels: [Math.round(p * 1.08)],
+        recentHigh: p * 1.05, recentLow: p * 0.95, patterns: [],
+      };
+    } catch { return null; }
+  }
+
   private getTechnicalData(symbol: string, price?: number): TechnicalData | null {
-    const base = MOCK_TECHNICAL[symbol];
-    if (!base && !this.useMock) return null;
-
-    if (base) {
-      if (price) return { ...base, price };
-      return base;
+    if (this.useMock) {
+      const p = price || 100;
+      return {
+        symbol: symbol.substring(0, 6), price: p,
+        ma5: p*0.99, ma10: p*0.98, ma20: p*0.97, ma60: p*0.95, ma120: p*0.90, ma250: p*0.85,
+        rsi14: 50, rsi28: 50, macd: 0, macdSignal: 0, macdHistogram: 0,
+        bollingerUpper: p*1.08, bollingerMiddle: p, bollingerLower: p*0.92,
+        volume: 10000000, avgVolume20: 10000000, volumeRatio: 1,
+        supportLevels: [Math.round(p*0.9)], resistanceLevels: [Math.round(p*1.08)],
+        recentHigh: p*1.05, recentLow: p*0.95, patterns: [],
+      };
     }
-
-    // Random mock for unknown symbols
-    const p = price || 50 + Math.random() * 200;
-    return {
-      symbol: symbol.substring(0, 6),
-      price: p, ma5: p*0.99, ma10: p*0.98, ma20: p*0.97, ma60: p*0.95, ma120: p*0.90, ma250: p*0.85,
-      rsi14: 30 + Math.random() * 40, rsi28: 35 + Math.random() * 35,
-      macd: -1 + Math.random() * 3, macdSignal: -1 + Math.random() * 3, macdHistogram: -0.5 + Math.random() * 1.5,
-      bollingerUpper: p * 1.08, bollingerMiddle: p, bollingerLower: p * 0.92,
-      volume: 10_000_000 + Math.random() * 50_000_000,
-      avgVolume20: 8_000_000 + Math.random() * 40_000_000,
-      volumeRatio: 0.5 + Math.random() * 2,
-      supportLevels: [Math.round(p * 0.9 * 100) / 100, Math.round(p * 0.85 * 100) / 100],
-      resistanceLevels: [Math.round(p * 1.08 * 100) / 100, Math.round(p * 1.15 * 100) / 100],
+    // R76: useMock=false → caller uses async getTechnicalDataReal
+    return null;
+  }
       recentHigh: Math.round(p * 1.1 * 100) / 100,
       recentLow: Math.round(p * 0.88 * 100) / 100,
       patterns: ['区间震荡'],

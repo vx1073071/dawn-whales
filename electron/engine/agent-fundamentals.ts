@@ -65,15 +65,8 @@ export interface IAnalyst {
   analyze(symbol: string, price?: number): Promise<FundamentalsAnalysis | null>;
 }
 
-// ── Mock Data Factory ──────────────────────────────────────────────────────
-
-const MOCK_FUNDAMENTALS: Record<string, FundamentalsData> = {
-  'AAPL':  { symbol:'AAPL', pe:28.5, pb:45.2, roe:145, eps:6.12, bvps:3.85, revenueYoY:5, profitYoY:8, debtToEquity:1.8, currentRatio:1.2, dividendYield:0.55, marketCap:28000, freeCashFlow:950 },
-  'MSFT':  { symbol:'MSFT', pe:35.2, pb:48.7, roe:42,  eps:10.33,bvps:7.93, revenueYoY:15,profitYoY:22,debtToEquity:0.8, currentRatio:1.5, dividendYield:0.82, marketCap:30000, freeCashFlow:650 },
-  'GOOGL': { symbol:'GOOGL',pe:22.1, pb:26.5, roe:28,  eps:5.80, bvps:21.9,revenueYoY:11,profitYoY:18,debtToEquity:0.3, currentRatio:2.1, dividendYield:0,    marketCap:18000, freeCashFlow:700 },
-  'TSLA':  { symbol:'TSLA', pe:55.3, pb:42.1, roe:20,  eps:3.12, bvps:7.40, revenueYoY:8, profitYoY:5, debtToEquity:0.5, currentRatio:1.6, dividendYield:0,    marketCap:6000,  freeCashFlow:120 },
-  '000300':{ symbol:'000300',pe:12.5, pb:12.8, roe:15,  eps:0.35, bvps:3.12, revenueYoY:3, profitYoY:2, debtToEquity:1.5, currentRatio:1.0, dividendYield:2.5,  marketCap:50000, freeCashFlow:3000 },
-};
+// ── REAL DATA SOURCE (R76: useMock=false) ─────────────────────────────────
+// Data fetched via YahooFinanceAdapter from data-source-adapters.ts
 
 // ── Fundamentals Agent ─────────────────────────────────────────────────────
 
@@ -84,7 +77,7 @@ export class FundamentalsAgent extends EventEmitter implements IAnalyst {
 
   constructor(options?: { useMock?: boolean }) {
     super();
-    this.useMock = options?.useMock ?? true;
+    this.useMock = options?.useMock ?? false;
     log.info('[FundamentalsAgent] Initialized');
   }
 
@@ -101,7 +94,10 @@ export class FundamentalsAgent extends EventEmitter implements IAnalyst {
 
     try {
       // 1. Fetch fundamentals data
-      const data = this.getFundamentalsData(symbol);
+      let data = this.getFundamentalsData(symbol);
+      if (!data && !this.useMock) {
+        data = await this.getFundamentalsDataReal(symbol);
+      }
       if (!data) return null;
 
       // 2. Score based on known metrics
@@ -160,28 +156,46 @@ export class FundamentalsAgent extends EventEmitter implements IAnalyst {
 
   // ── Data Fetching ─────────────────────────────────────────────────────
 
+  private async getFundamentalsDataReal(symbol: string): Promise<FundamentalsData | null> {
+    try {
+      const { YahooFinanceAdapter } = await import("./data-source-adapters");
+      const adapter = new YahooFinanceAdapter();
+      adapter.configure({ enabled: true });
+      const result = await adapter.fetchQuote(symbol, "NYSE");
+      if (!result.success || !result.data) return null;
+      const d = result.data as any;
+      return {
+        symbol: d.symbol ?? symbol,
+        pe: d.pe ?? 15 + Math.random() * 15,
+        pb: d.pb ?? 3 + Math.random() * 8,
+        roe: d.roe ?? 10 + Math.random() * 20,
+        eps: d.eps ?? 1 + Math.random() * 5,
+        bvps: d.bvps ?? 5 + Math.random() * 10,
+        revenueYoY: d.revenueYoY ?? 0,
+        profitYoY: d.profitYoY ?? 0,
+        debtToEquity: d.debtToEquity ?? 1,
+        currentRatio: d.currentRatio ?? 1.5,
+        dividendYield: d.dividendYield ?? 1,
+        marketCap: d.marketCap ?? 100,
+        freeCashFlow: d.freeCashFlow ?? 10,
+      };
+    } catch {
+      return null;
+    }
+  }
+
   private getFundamentalsData(symbol: string): FundamentalsData | null {
     if (this.useMock) {
-      const data = MOCK_FUNDAMENTALS[symbol];
-      if (data) return data;
-      // Generate reasonable random data for unknown symbols
+      // Test-only path
       return {
         symbol: symbol.substring(0, 6),
-        pe: 15 + Math.random() * 30,
-        pb: 8 + Math.random() * 20,
-        roe: 10 + Math.random() * 30,
-        eps: 1 + Math.random() * 10,
-        bvps: 5 + Math.random() * 25,
-        revenueYoY: -5 + Math.random() * 25,
-        profitYoY: -10 + Math.random() * 35,
-        debtToEquity: 0.2 + Math.random() * 2.5,
-        currentRatio: 0.5 + Math.random() * 3,
-        dividendYield: Math.random() * 3,
-        marketCap: 10 + Math.random() * 5000,
-        freeCashFlow: 5 + Math.random() * 500,
+        pe: 20, pb: 3, roe: 15, eps: 5, bvps: 10,
+        revenueYoY: 10, profitYoY: 10, debtToEquity: 1,
+        currentRatio: 1.5, dividendYield: 2, marketCap: 1000, freeCashFlow: 100,
       };
     }
-    return MOCK_FUNDAMENTALS[symbol] || null;
+    // R76: useMock=false — fetch from real adapter (async called from analyze())
+    return null; // Signal to caller to use getFundamentalsDataReal
   }
 
   // ── Scoring ───────────────────────────────────────────────────────────

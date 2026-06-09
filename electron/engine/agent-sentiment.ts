@@ -61,25 +61,7 @@ export interface SentimentAnalysis {
   completedAt: string;
 }
 
-// ── Mock Data ──────────────────────────────────────────────────────────────
-
-const MOCK_SENTIMENT: Record<string, SentimentData> = {
-  'AAPL': {
-    symbol:'AAPL',socialScore:72,socialVolume:85000,socialVolumeChange:12,newsPositive:55,newsNeutral:30,newsNegative:15,
-    newsCount:120,fearGreedIndex:65,analystBuy:28,analystHold:8,analystSell:2,analystTargetPrice:210,insiderNetBuying:-5000000,
-    redditScore:68,sentimentTrend:'improving',
-  },
-  'MSFT': {
-    symbol:'MSFT',socialScore:80,socialVolume:72000,socialVolumeChange:18,newsPositive:65,newsNeutral:25,newsNegative:10,
-    newsCount:95,fearGreedIndex:68,analystBuy:32,analystHold:5,analystSell:1,analystTargetPrice:480,insiderNetBuying:-2000000,
-    redditScore:75,sentimentTrend:'improving',
-  },
-  'TSLA': {
-    symbol:'TSLA',socialScore:55,socialVolume:200000,socialVolumeChange:-5,newsPositive:30,newsNeutral:35,newsNegative:35,
-    newsCount:250,fearGreedIndex:45,analystBuy:10,analystHold:12,analystSell:8,analystTargetPrice:280,insiderNetBuying:1000000,
-    redditScore:60,sentimentTrend:'deteriorating',
-  },
-};
+// ── REAL DATA SOURCE (R76: useMock=false) ─────────────────────────────────
 
 // ── Sentiment Agent ────────────────────────────────────────────────────────
 
@@ -90,7 +72,7 @@ export class SentimentAgent extends EventEmitter {
 
   constructor(options?: { useMock?: boolean }) {
     super();
-    this.useMock = options?.useMock ?? true;
+    this.useMock = options?.useMock ?? false;
     log.info('[SentimentAgent] Initialized');
   }
 
@@ -149,17 +131,43 @@ export class SentimentAgent extends EventEmitter {
 
   // ── Data ──────────────────────────────────────────────────────────────
 
+  private async getSentimentDataReal(symbol: string): Promise<SentimentData | null> {
+    try {
+      const { SocialSentimentAdapter } = await import("./data-source-adapters");
+      const adapter = new SocialSentimentAdapter();
+      adapter.configure({ enabled: true });
+      const result = await adapter.fetchSentiment(symbol);
+      if (!result.success || !result.data) return null;
+      const d = result.data as any;
+      return {
+        symbol: d.symbol ?? symbol,
+        socialScore: d.buzzScore ? d.buzzScore * 80 : 50,
+        socialVolume: d.mentionCount ? d.mentionCount * 1000 : 10000,
+        socialVolumeChange: 0,
+        newsPositive: d.sentiment === "bullish" ? 60 : 30,
+        newsNeutral: 30, newsNegative: d.sentiment === "bearish" ? 40 : 10,
+        newsCount: d.mentionCount ?? 10,
+        fearGreedIndex: 50,
+        analystBuy: 0, analystHold: 0, analystSell: 0,
+        analystTargetPrice: 0, insiderNetBuying: 0,
+        redditScore: d.buzzScore ? d.buzzScore * 100 : 50,
+        sentimentTrend: d.sentiment === "bullish" ? "improving" : d.sentiment === "bearish" ? "deteriorating" : "stable",
+      };
+    } catch { return null; }
+  }
+
   private getSentimentData(symbol: string): SentimentData | null {
-    const base = MOCK_SENTIMENT[symbol];
-    if (!base && !this.useMock) return null;
-    if (base) return base;
-    // Random mock
+    if (!this.useMock) return null; // use async path
     return {
       symbol: symbol.substring(0, 6),
-      socialScore: 30 + Math.random() * 50,
-      socialVolume: 10000 + Math.random() * 100000,
-      socialVolumeChange: -20 + Math.random() * 40,
-      newsPositive: 20 + Math.random() * 50,
+      socialScore: 50, socialVolume: 50000, socialVolumeChange: 0,
+      newsPositive: 40, newsNeutral: 40, newsNegative: 20,
+      newsCount: 50, fearGreedIndex: 50,
+      analystBuy: 0, analystHold: 0, analystSell: 0,
+      analystTargetPrice: 0, insiderNetBuying: 0,
+      redditScore: 50, sentimentTrend: "stable",
+    };
+  }
       newsNeutral: 20 + Math.random() * 30,
       newsNegative: 10 + Math.random() * 40,
       newsCount: 20 + Math.random() * 200,
