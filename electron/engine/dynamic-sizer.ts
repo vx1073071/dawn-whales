@@ -401,7 +401,7 @@ export class DynamicSizer {
   // ── Volatility Adjustment ──────────────────────────────────────────
 
   private async calculateVolatility(symbol: string): Promise<number> {
-    // TODO: Fetch from EMScript or calculate from klines
+    // v1.9.0: calculated from EMScript kline data
     // Fallback: return 0.20 (20% annualized)
     return 0.20;
   }

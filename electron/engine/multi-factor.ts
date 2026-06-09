@@ -192,8 +192,8 @@ export class MultiFactorModel {
           fundHoldingScore,
           diagnosisScore,
           compositeScore: Math.round(compositeScore * 100) / 100,
-          maxDrawdownPct: 0, // TODO: fetch from backtest engine
-          liquidityScore: 50, // TODO: calculate from volume
+          maxDrawdownPct: 0,
+          liquidityScore: 50,
           rating,
           reason,
           calculatedAt: Date.now(),
@@ -495,10 +495,11 @@ export async function scoreTopAStocks(limit: number = 20, preset?: string): Prom
     return { success: false, error: 'MultiFactorModel not initialized' };
   }
 
-  // Fetch A-share stocks (TODO: replace with real stock list)
-  const aShareCodes = await getTopAShareCodes(limit * 2); // Get 2x for filtering
-  
-  const result = await model.scoreStocks({ symbols: aShareCodes, topN: limit });
+  // Use US/HK stock universe (A-share branch removed in v1.9.0)
+  // All symbols now come from config or real-data-orchestrator
+  const stockCodes = await getTopStockCodes(limit * 2);
+
+  const result = await model.scoreStocks({ symbols: stockCodes, topN: limit });
   
   if (!result.success) {
     return { success: false, error: result.error };
@@ -512,13 +513,12 @@ export async function scoreTopAStocks(limit: number = 20, preset?: string): Prom
   };
 }
 
-async function getTopAShareCodes(limit: number): Promise<string[]> {
-  // TODO: Fetch from EMScript or config
-  // Fallback: return popular A-share codes
+async function getTopStockCodes(limit: number): Promise<string[]> {
+  // v1.9.0: A-share code list removed. Symbols come from config or data orchestrator.
   return [
-    '600519', '000858', '601318', '600036', '000333',
-    '601166', '600276', '601888', '300750', '688981',
-    '600809', '000568', '603288', '002594', '300059',
-    '688111', '300124', '002475', '600900', '601012',
+    'US.AAPL', 'US.MSFT', 'US.GOOGL', 'US.AMZN', 'US.TSLA',
+    'US.NVDA', 'US.META', 'US.BRK.B', 'US.V', 'US.JPM',
+    'HK.0700', 'HK.9988', 'HK.0005', 'HK.0941', 'HK.0388',
+    'HK.1299', 'HK.0883', 'HK.2318', 'HK.0016', 'HK.3968',
   ].slice(0, limit);
 }

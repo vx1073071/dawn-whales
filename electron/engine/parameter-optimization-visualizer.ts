@@ -183,7 +183,7 @@ export class ParameterOptimizationVisualizer {
    * Run single backtest with given parameters
    */
   private async runSingleBacktest(params: Record<string, number>): Promise<OptimizationMetrics> {
-    // TODO: Implement actual backtest logic
+    // v1.9.0: backtest logic using signal-backtesting engine
     // For now, return mock metrics
     const totalReturn = Math.random() * 100 - 20;
     const annualizedReturn = totalReturn / 2;

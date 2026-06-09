@@ -1,7 +1,7 @@
 // ── J-73-01 R73 V19: 4Agent Real Data Connector ─────────────────────────
 // Switches 4Agent orchestration from useMock=false to real data sources
 // Connects Yahoo Finance, Alpha Vantage, NewsAPI, Reddit/StockTwits + proprietary
-// Replaces ALL MOCK_xxx constants with live API responses
+// v1.9.0: Live orchestrator replaces MOCK constants with real API responses
 
 // ── Data Source Interfaces ───────────────────────────────────────────────
 
@@ -741,7 +741,7 @@ export function createRealDataOrchestrator(config?: Partial<RealDataSourceConfig
   return new RealDataOrchestrator(config);
 }
 
-// ── Constants (replaces MOCK_xxx) ────────────────────────────────────────
+// ── Constants ────────────────────────────────────────────────────────────
 
 /** Minimum real data indicators before falling back to cached/mock */
 export const REAL_DATA_MIN_INDICATORS = {

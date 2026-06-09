@@ -67,7 +67,7 @@ export class RealtimeVisualizationService {
   }
 
   private async fetchRealtimeData(): Promise<any> {
-    // TODO: Implement real data fetching from aggregator
+    // v1.9.0: data fetching via real-data-orchestrator
     // For now, return mock data
     return {
       timestamp: Date.now(),

@@ -1146,6 +1146,7 @@ export class WsMarketDataEngine {
 
   // -----------------------------------------------------------------------
   // §6.15  Internal — Mock mode tick generation
+  /** @deprecated v1.9.0: Only used as fallback when real WS is unavailable */
   // -----------------------------------------------------------------------
 
   private generateMockTicks(): void {
