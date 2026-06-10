@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react'
+import { useState, useEffect } from 'react-i18next';
 import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from '../../lib/bridge-api';
 
 interface DragonTigerEntry {
@@ -27,6 +28,8 @@ interface DragonTigerDetail {
 }
 
 export default function DragonTigerPage() {
+  const { t } = useTranslation();
+
   const [entries, setEntries] = useState<DragonTigerEntry[]>([]);
   const [detail, setDetail] = useState<DragonTigerDetail | null>(null);
   const [institutional, setInstitutional] = useState<DragonTigerEntry[]>([]);

@@ -1,6 +1,7 @@
 // ── DAWN WHALES — MarketMovers (市场异动) ──────────────────────────────────
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo , useTranslation} from 'react'
+import { useState, useMemo } from 'react-i18next';
 
 interface MoverItem {
   symbol: string;
@@ -38,6 +39,8 @@ export default function MarketMovers({
   losers = DEFAULT_LOSERS,
   title = '🔥 市场异动',
 }: MarketMoversProps) {
+  const { t } = useTranslation();
+
   const [tab, setTab] = useState<'gainers' | 'losers' | 'volume'>('gainers');
 
   const volumeLeaders = useMemo(() => {

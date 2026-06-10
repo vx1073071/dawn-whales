@@ -288,7 +288,7 @@ export default function SignalPerformancePanel({
         {/* ── Gauges Row ────────────────────────────────────────────────── */}
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4 flex flex-col items-center">
-            <Gauge value={perf.winRate} label="胜率" max={100} unit="%"
+            <Gauge value={perf.winRate} ={t("components.winRate")} max={100} unit="%"
                    colorRanges={[{ min: 0, max: 40, color: '#EF4444' }, { min: 40, max: 55, color: '#F97316' }, { min: 55, max: 70, color: '#FACC15' }, { min: 70, max: 100, color: '#22C55E' }]} />
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4 flex flex-col items-center">
@@ -296,7 +296,7 @@ export default function SignalPerformancePanel({
                    colorRanges={[{ min: -10, max: 0.5, color: '#EF4444' }, { min: 0.5, max: 1.5, color: '#FACC15' }, { min: 1.5, max: 2.5, color: '#22C55E' }, { min: 2.5, max: 10, color: '#3B82F6' }]} />
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4 flex flex-col items-center">
-            <Gauge value={perf.maxDrawdown} label="最大回撤" max={50} unit="%"
+            <Gauge value={perf.maxDrawdown} ={t("components.maxDrawdown")} max={50} unit="%"
                    colorRanges={[{ min: 0, max: 10, color: '#22C55E' }, { min: 10, max: 20, color: '#FACC15' }, { min: 20, max: 30, color: '#F97316' }, { min: 30, max: 100, color: '#EF4444' }]} />
           </div>
         </div>

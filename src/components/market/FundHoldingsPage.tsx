@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react'
+import { useState, useEffect } from 'react-i18next';
 import { getFundHoldings, getStockFundOwnership, getFundIncreaseRank, getFundDecreaseRank } from '../../lib/bridge-api';
 
 interface FundHolding {
@@ -31,6 +32,8 @@ interface FundRankItem {
 }
 
 export default function FundHoldingsPage() {
+  const { t } = useTranslation();
+
   const [tab, setTab] = useState<'byFund' | 'byStock' | 'increase' | 'decrease'>('byFund');
   const [fundCode, setFundCode] = useState('');
   const [stockCode, setStockCode] = useState('');

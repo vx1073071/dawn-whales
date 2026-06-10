@@ -1,6 +1,7 @@
 // ── DAWN WHALES — MarketBreadth (市场广度指标) ─────────────────────────────
 
-import { useMemo } from 'react';
+import { useMemo , useTranslation} from 'react'
+import { useMemo } from 'react-i18next';
 
 interface MarketBreadthData {
   advancing: number;
@@ -31,6 +32,8 @@ export default function MarketBreadth({
   data = DEFAULT_DATA,
   title = '📊 市场广度',
 }: MarketBreadthProps) {
+  const { t } = useTranslation();
+
   const total = data.advancing + data.declining + data.unchanged;
   const advanceDeclineRatio = data.declining > 0 ? data.advancing / data.declining : 0;
   const volumeRatio = data.downVolume > 0 ? data.upVolume / data.downVolume : 0;

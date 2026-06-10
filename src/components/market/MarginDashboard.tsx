@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef , useTranslation} from 'react'
+import { useState, useEffect, useRef } from 'react-i18next';
 import * as echarts from 'echarts';
 import { getMarginData, getMarginBalanceRank, getShortInterestRank } from '../../lib/bridge-api';
 
@@ -21,6 +22,8 @@ interface StockMargin {
 }
 
 export default function MarginDashboard() {
+  const { t } = useTranslation();
+
   const [balanceHistory, setBalanceHistory] = useState<MarginBalance[]>([]);
   const [marginRank, setMarginRank] = useState<StockMargin[]>([]);
   const [shortRank, setShortRank] = useState<StockMargin[]>([]);

@@ -394,9 +394,9 @@ export default function AIDrawingPatternPanel() {
       {/* Stats bar */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
         <StatBadge label="总形态" value={stats.total.toString()} color="#6366F1" />
-        <StatBadge label="看涨" value={stats.bullish.toString()} color="#10B981" />
-        <StatBadge label="看跌" value={stats.bearish.toString()} color="#EF4444" />
-        <StatBadge label="中性" value={stats.neutral.toString()} color="#6B7280" />
+        <StatBadge ={t("components.bullish")} value={stats.bullish.toString()} color="#10B981" />
+        <StatBadge ={t("components.bearish")} value={stats.bearish.toString()} color="#EF4444" />
+        <StatBadge ={t("components.neutral")} value={stats.neutral.toString()} color="#6B7280" />
         <StatBadge label="已标注" value={stats.annotated.toString()} color="#F59E0B" />
         <StatBadge label="高置信" value={stats.highConf.toString()} color="#10B981" />
       </div>

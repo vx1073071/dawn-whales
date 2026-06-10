@@ -1,6 +1,7 @@
 // ── DAWN WHALES — SystemLog (系统日志) ─────────────────────────────────────
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react'
+import { useState, useEffect } from 'react-i18next';
 
 interface LogEntry {
   id: string;
@@ -22,6 +23,8 @@ const DEMO_LOGS: LogEntry[] = [
 ];
 
 export default function SystemLog() {
+  const { t } = useTranslation();
+
   const [logs, setLogs] = useState<LogEntry[]>(DEMO_LOGS);
   const [filter, setFilter] = useState<'all' | 'info' | 'warn' | 'error'>('all');
   const [autoScroll, setAutoScroll] = useState(true);

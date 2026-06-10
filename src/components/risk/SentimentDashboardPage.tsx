@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 // ─── Types ───────────────────────────────────────────────────────────────────

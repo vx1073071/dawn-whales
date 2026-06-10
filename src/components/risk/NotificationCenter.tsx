@@ -1,6 +1,7 @@
 // ── DAWN WHALES — NotificationCenter (通知中心) ────────────────────────────
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react'
+import { useState, useEffect } from 'react-i18next';
 
 export interface NotificationItem {
   id: string;
@@ -37,6 +38,8 @@ export default function NotificationCenter({
   onClear,
   onMarkRead,
 }: NotificationCenterProps) {
+  const { t } = useTranslation();
+
   const [filter, setFilter] = useState<'all' | 'unread' | 'risk' | 'order' | 'signal'>('all');
   const [items, setItems] = useState<NotificationItem[]>(notifications);
 

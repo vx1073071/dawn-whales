@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo, memo } from 'react';
+import { useState, useEffect, useMemo, memo , useTranslation} from 'react'
+import { useState, useEffect, useMemo, memo } from 'react-i18next';
 import { useMarketStore } from '@/stores/marketStore';
 import { useWebSocketQuotes } from '@/hooks/useWebSocketQuotes';
 import KLineChart from './KLineChart';
@@ -32,6 +33,8 @@ const POPULAR_US = [
 ];
 
 export default function MarketPage() {
+  const { t } = useTranslation();
+
   const watchlist = useMarketStore((s) => s.watchlist);
   const quotes = useMarketStore((s) => s.quotes);
   const addWatch = useMarketStore((s) => s.addWatch);

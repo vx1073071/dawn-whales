@@ -1,12 +1,15 @@
 // ── DAWN WHALES — QuickTrade (快速下单) ────────────────────────────────────
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback , useTranslation} from 'react'
+import { useState, useCallback } from 'react-i18next';
 
 interface QuickTradeProps {
   onPlaceOrder?: (order: { code: string; side: 'BUY' | 'SELL'; qty: number; price: number; type: 'LIMIT' | 'MARKET' }) => void;
 }
 
 export default function QuickTrade({ onPlaceOrder }: QuickTradeProps) {
+  const { t } = useTranslation();
+
   const [code, setCode] = useState('');
   const [side, setSide] = useState<'BUY' | 'SELL'>('BUY');
   const [qty, setQty] = useState('100');

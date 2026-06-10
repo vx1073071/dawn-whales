@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback , useTranslation} from 'react'
+import { useState, useEffect, useCallback } from 'react-i18next';
 import { getAnomalySummary, getAnomalyAlerts, acknowledgeAnomalyAlert } from '../../lib/bridge-api';
 
 interface AnomalyAlert {
@@ -32,6 +33,8 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 export default function AnomalyAlertPanel() {
+  const { t } = useTranslation();
+
   const [alerts, setAlerts] = useState<AnomalyAlert[]>([]);
   const [summary, setSummary] = useState<unknown>(null);
   const [loading, setLoading] = useState(false);

@@ -1,6 +1,7 @@
 import { useAppStore } from '@/stores/appStore';
 import type { SidebarView } from '@/lib/types';
 import AccountSummary from '@/components/trading/AccountSummary';
+import { useTranslation } from 'react-i18next';
 
 interface NavItem {
   id: SidebarView;
@@ -10,21 +11,21 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { id: 'dashboard', icon: '📊', label: '总览看板', section: '总览' },
-  { id: 'market', icon: '📈', label: '行情中心', section: '交易' },
-  { id: 'strategy', icon: '🧠', label: '策略工坊' },
-  { id: 'ai', icon: '🐋', label: 'AI 助理' },
+  { id: 'dashboard', icon: '📊', label: t('nav.overview'), section: t('nav.overview') },
+  { id: 'market', icon: '📈', label: t('components.marketQuotes'), section: t('components.trade') },
+  { id: 'strategy', icon: '🧠', label: t('components.strategy') },
+  { id: 'ai', icon: '🐋', label: t('components.aiAssistant') },
   { id: 'marketplace', icon: '🏪', label: t('components.strategyMarketplace') },
-  { id: 'creator', icon: '⭐', label: '创作者中心' },
-  { id: 'signals', icon: '📡', label: '信号分析' },
-  { id: 'backtest', icon: '🔬', label: '回测报告' },
-  { id: 'portfolio', icon: '💼', label: '持仓管理' },
-  { id: 'orders', icon: '📋', label: '委托订单' },
-  { id: 'trade', icon: '💹', label: '交易台' },
-  { id: 'risk', icon: '🛡️', label: '风控面板' },
-  { id: 'riskviz', icon: '📉', label: '风险可视化' },
-  { id: 'alert', icon: '🔔', label: '告警中心' },
-  { id: 'settings', icon: '⚙️', label: '系统设置', section: t('components.system') },
+  { id: 'creator', icon: '⭐', label: t('components.creatorCenter') },
+  { id: 'signals', icon: '📡', label: t('components.signalAnalysis') },
+  { id: 'backtest', icon: '🔬', label: t('components.backtest') },
+  { id: 'portfolio', icon: '💼', label: t('components.portfolio') },
+  { id: 'orders', icon: '📋', label: t('components.orders') },
+  { id: 'trade', icon: '💹', label: t('components.tradingDesk') },
+  { id: 'risk', icon: '🛡️', label: t('components.riskPanel') },
+  { id: 'riskviz', icon: '📉', label: t('components.riskVisual') },
+  { id: 'alert', icon: '🔔', label: t('components.alertCenter') },
+  { id: 'settings', icon: '⚙️', label: t('components.settings'), section: t('components.system') },
 ];
 
 interface SidebarProps {
@@ -32,6 +33,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ collapsed }: SidebarProps) {
+  const { t } = useTranslation();
   const view = useAppStore((s) => s.sidebarView);
   const setView = useAppStore((s) => s.setView);
 

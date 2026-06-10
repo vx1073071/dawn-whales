@@ -1,6 +1,6 @@
 // ── DAWN WHALES — PositionDetailPanel (持仓详情面板) ───────────────────────
 
-import { useState } from 'react';
+import { useState , useTranslation} from 'react';
 
 interface PositionDetail {
   symbol: string;
@@ -45,6 +45,8 @@ export default function PositionDetailPanel({
   position = DEMO_POSITION,
   onClose,
 }: PositionDetailPanelProps) {
+  const { t } = useTranslation();
+
   const [tab, setTab] = useState<'overview' | 'history' | 'risk'>('overview');
 
   const isProfit = position.totalPnl >= 0;
@@ -92,8 +94,8 @@ export default function PositionDetailPanel({
           <div className="grid grid-cols-2 gap-2">
             <MetricBox label="持仓数量" value={position.qty.toString()} />
             <MetricBox label="平均成本" value={`$${position.avgCost.toFixed(2)}`} />
-            <MetricBox label="市价" value={`$${position.marketPrice.toFixed(2)}`} />
-            <MetricBox label="市值" value={`$${position.marketValue.toLocaleString()}`} />
+            <MetricBox label={t("components.marketPrice")} value={`$${position.marketPrice.toFixed(2)}`} />
+            <MetricBox label={t("components.marketCap")} value={`$${position.marketValue.toLocaleString()}`} />
             <MetricBox label="总盈亏" value={`${isProfit ? '+' : ''}$${position.totalPnl.toFixed(0)}`} color={isProfit ? 'text-emerald-400' : 'text-red-400'} />
             <MetricBox label="今日盈亏" value={`${dayIsProfit ? '+' : ''}$${position.dayPnl.toFixed(0)}`} color={dayIsProfit ? 'text-emerald-400' : 'text-red-400'} />
           </div>

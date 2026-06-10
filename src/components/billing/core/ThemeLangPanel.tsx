@@ -302,8 +302,8 @@ export default function ThemeLangPanel() {
           <ThemeSwatch label="表面" bg={colors.surface} text={colors.textSecondary} />
           <ThemeSwatch label="文字" bg={colors.text} text={colors.textSecondary} />
           <ThemeSwatch label="主色" bg={colors.accent} text={colors.textSecondary} />
-          <ThemeSwatch label="成功" bg={colors.success} text={colors.textSecondary} />
-          <ThemeSwatch label="警告" bg={colors.warning} text={colors.textSecondary} />
+          <ThemeSwatch ={t("components.success")} bg={colors.success} text={colors.textSecondary} />
+          <ThemeSwatch ={t("components.warning")} bg={colors.warning} text={colors.textSecondary} />
           <ThemeSwatch label="危险" bg={colors.danger} text={colors.textSecondary} />
           <ThemeSwatch label="图表" bg={colors.chartBg} text={colors.textSecondary} />
         </div>

@@ -1,6 +1,7 @@
 // ── DAWN WHALES — EconomicCalendar (财经日历) ──────────────────────────────
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo , useTranslation} from 'react'
+import { useState, useMemo } from 'react-i18next';
 
 interface EconomicEvent {
   id: string;
@@ -26,6 +27,8 @@ const DEMO_EVENTS: EconomicEvent[] = [
 ];
 
 export default function EconomicCalendar() {
+  const { t } = useTranslation();
+
   const [filter, setFilter] = useState<'all' | 'high' | 'medium'>('all');
 
   const filtered = useMemo(() => {

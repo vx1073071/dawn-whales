@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo , useTranslation} from 'react'
+import { useState, useEffect, useMemo } from 'react-i18next';
 import * as echarts from 'echarts';
 import { getSmartPick } from '@/lib/bridge-api';
 
@@ -29,6 +30,8 @@ const MOCK_DATA: SmartPickItem[] = [
 ];
 
 export default function SmartPickerPage() {
+  const { t } = useTranslation();
+
   const [data, setData] = useState<SmartPickItem[]>(MOCK_DATA);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<SmartPickItem | null>(null);

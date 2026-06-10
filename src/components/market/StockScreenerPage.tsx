@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback , useTranslation} from 'react'
+import { useState, useEffect, useCallback } from 'react-i18next';
 import { searchStocks } from '../../lib/bridge-api';
 
 interface ScreenerResult {
@@ -24,6 +25,8 @@ const PRESET_QUERIES = [
 ];
 
 export default function StockScreenerPage() {
+  const { t } = useTranslation();
+
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<ScreenerResult[]>([]);
   const [loading, setLoading] = useState(false);

@@ -1,6 +1,7 @@
 // ── DAWN WHALES — RiskConfigEditor (风控配置编辑器) ─────────────────────────
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react'
+import { useState, useEffect } from 'react-i18next';
 import { getRiskConfig, updateRiskConfig } from '../../lib/bridge-api';
 
 interface RiskConfig {
@@ -32,6 +33,8 @@ const DEFAULT_CONFIG: RiskConfig = {
 };
 
 export default function RiskConfigEditor() {
+  const { t } = useTranslation();
+
   const [config, setConfig] = useState<RiskConfig>(DEFAULT_CONFIG);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

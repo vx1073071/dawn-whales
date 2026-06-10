@@ -1,6 +1,7 @@
 // ── DAWN WHALES — PortfolioStressTest (组合压力测试) ────────────────────────
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo , useTranslation} from 'react'
+import { useState, useMemo } from 'react-i18next';
 import * as echarts from 'echarts';
 import { useRef, useEffect } from 'react';
 
@@ -22,6 +23,8 @@ const SCENARIOS: Scenario[] = [
 ];
 
 export default function PortfolioStressTest() {
+  const { t } = useTranslation();
+
   const [selectedScenario, setSelectedScenario] = useState<Scenario>(SCENARIOS[2]);
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);

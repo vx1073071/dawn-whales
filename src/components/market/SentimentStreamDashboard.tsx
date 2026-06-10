@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react'
+import { useState, useEffect } from 'react-i18next';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
@@ -44,6 +45,8 @@ const MOCK_DATA: SentimentData = {
 };
 
 export default function SentimentStreamDashboard() {
+  const { t } = useTranslation();
+
   const [data] = useState<SentimentData>(MOCK_DATA);
   const [loading, setLoading] = useState(false);
 

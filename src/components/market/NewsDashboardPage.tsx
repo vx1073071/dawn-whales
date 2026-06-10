@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback , useTranslation} from 'react'
+import { useState, useEffect, useCallback } from 'react-i18next';
 import { searchNews, getMarketMood } from '../../lib/bridge-api';
 
 interface NewsArticle {
@@ -20,6 +21,8 @@ const SENTIMENT_LABELS = {
 };
 
 export default function NewsDashboardPage() {
+  const { t } = useTranslation();
+
   const [query, setQuery] = useState('');
   const [articles, setArticles] = useState<NewsArticle[]>([]);
   const [mood, setMood] = useState<unknown>(null);

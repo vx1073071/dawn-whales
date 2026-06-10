@@ -158,11 +158,11 @@ export default function PerformanceAttributionPage() {
           <div className="text-xl font-bold font-mono text-red-400">+{data.benchmarkReturn.toFixed(2)}%</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">超额收益</div>
+          <div className="text-xs text-gray-500 mb-1">{t("components.excessReturn")}</div>
           <div className="text-xl font-bold font-mono text-[#D4A853]">+{data.excessReturn.toFixed(2)}%</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">信息比率</div>
+          <div className="text-xs text-gray-500 mb-1">{t("components.infoRatio")}</div>
           <div className="text-xl font-bold font-mono text-white">{(data.excessReturn / 5.2).toFixed(2)}</div>
         </div>
       </div>
@@ -242,7 +242,7 @@ export default function PerformanceAttributionPage() {
                 <th className="px-4 py-3 text-right">基准权重</th>
                 <th className="px-4 py-3 text-right">组合收益</th>
                 <th className="px-4 py-3 text-right">基准收益</th>
-                <th className="px-4 py-3 text-right">超额收益</th>
+                <th className="px-4 py-3 text-right">{t("components.excessReturn")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">

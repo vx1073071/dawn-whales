@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react'
+import { useState, useEffect } from 'react-i18next';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
@@ -78,6 +79,8 @@ const MOCK_CACHE: CacheStats[] = [
 ];
 
 export default function DataQualityMonitorPage() {
+  const { t } = useTranslation();
+
   const [checks] = useState<QualityCheck[]>(MOCK_CHECKS);
   const [symbols] = useState<SymbolQuality[]>(MOCK_SYMBOLS);
   const [alerts, setAlerts] = useState<QualityAlert[]>(MOCK_ALERTS);

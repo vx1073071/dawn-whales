@@ -1,7 +1,8 @@
 // ── DAWN WHALES — SentimentGauge (W28) ─────────────────────────────────────
 // 市场情绪指数仪表盘：0-100，恐慌/贪婪标签
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo , useTranslation} from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react-i18next';
 import ReactECharts from 'echarts-for-react';
 import { computeSentiment } from '../../lib/bridge-api';
 
@@ -26,6 +27,8 @@ const SENTIMENT_LEVELS = [
 ];
 
 function getLevel(index: number) {
+  const { t } = useTranslation();
+
   return SENTIMENT_LEVELS.find((l) => index >= l.min && index <= l.max) || SENTIMENT_LEVELS[2];
 }
 

@@ -1,6 +1,7 @@
 // ── DAWN WHALES — MarketClock (全球市场时钟) ───────────────────────────────
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react'
+import { useState, useEffect } from 'react-i18next';
 
 interface MarketSession {
   name: string;
@@ -82,6 +83,8 @@ function formatCountdown(minutes: number): string {
 }
 
 export default function MarketClock() {
+  const { t } = useTranslation();
+
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {

@@ -381,7 +381,7 @@ function BacktestPanel({ result }: { result: BacktestResult }) {
 
       {/* Metrics grid */}
       <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-4">
-        <MetricCard label="总收益" value={`${result.totalReturn > 0 ? '+' : ''}${result.totalReturn}%`} color={returnColor} />
+        <MetricCard ={t("components.totalReturn")} value={`${result.totalReturn > 0 ? '+' : ''}${result.totalReturn}%`} color={returnColor} />
         <MetricCard label="年化收益" value={`${result.annualReturn > 0 ? '+' : ''}${result.annualReturn}%`} color={returnColor} />
         <MetricCard label="夏普比率" value={result.sharpeRatio.toFixed(2)} color={result.sharpeRatio > 1 ? 'text-emerald-400' : result.sharpeRatio > 0 ? 'text-yellow-400' : 'text-red-400'} />
         <MetricCard label={t('maxDrawdown')} value={`-${result.maxDrawdown}%`} color="text-red-400" />
