@@ -1,7 +1,7 @@
 // ── DAWN WHALES — MarketHeatmapPage (W26) ──────────────────────────────────
 // 板块热力图页面：调用 EM 数据层，支持行业/概念/地区切换
 
-import { useState, useEffect, useCallback, useMemo , useTranslation} from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useState, useEffect, useCallback, useMemo } from 'react-i18next';
 import { getSectorHeatmap } from '../../lib/bridge-api';
 

@@ -1,6 +1,7 @@
 // ── DAWN WHALES — PositionDetailPanel (持仓详情面板) ───────────────────────
 
-import { useState , useTranslation} from 'react';
+import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 interface PositionDetail {
   symbol: string;

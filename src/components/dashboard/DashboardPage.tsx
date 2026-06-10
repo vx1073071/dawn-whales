@@ -1,7 +1,7 @@
 // ── DAWN WHALES — Dashboard (v0.6.0) ────────────────────────────────────────
 // 总资产/持仓热力图/净值曲线/盈亏总览/最近信号
 
-import { useState, useEffect, useMemo , useTranslation} from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   getAccounts, getFunds, getPositions, isConnected,
   getAllStrategies, getMarketplaceList,
@@ -10,6 +10,7 @@ import { useWebSocketQuotes } from '../../hooks/useWebSocketQuotes';
 import BrokerStatusBar from '../trading/BrokerStatusBar';
 import PerformanceDashboard from './PerformanceDashboard';
 import SystemHealthPanel from './SystemHealthPanel';
+import { useTranslation } from "react-i18next";
 
 interface AccountSummary {
   totalAssets: number;

@@ -1,4 +1,5 @@
-import { useState, type ReactNode, type CSSProperties , useTranslation} from 'react';
+import { useState, type ReactNode, type CSSProperties } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── ML-79: UI 质量打磨 — 三态统一·私行风·a11y·触控 ──
 

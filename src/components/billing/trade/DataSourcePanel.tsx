@@ -1,4 +1,5 @@
-import { useState, useEffect, type CSSProperties , useTranslation} from 'react';
+import { useState, useEffect, type CSSProperties } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ──
 interface DataSource {

@@ -1,7 +1,8 @@
 // TemplateBrowser — Strategy Template Selection UI
 // Displays 8 pre-built strategy templates with search, category filter, and instantiating.
 
-import { useState, useEffect , useTranslation} from 'react';
+import { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 
 interface ParameterDef {
   name: string;

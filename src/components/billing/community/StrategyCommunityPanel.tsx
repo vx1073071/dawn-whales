@@ -10,7 +10,8 @@
  * - Comment input with submit
  */
 
-import { useState, useCallback , useTranslation} from 'react';
+import { useState, useCallback } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ───────────────────────────────────────────────────────────────
 

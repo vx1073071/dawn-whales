@@ -10,7 +10,8 @@
  * - Max Sharpe / Min Variance / Equal Weight presets
  */
 
-import { useState , useTranslation} from 'react';
+import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ───────────────────────────────────────────────────────────────
 

@@ -76,18 +76,18 @@ export class AppealEngine {
     description: string
   ): AppealRecord {
     const state = this.transferState.get(transferId);
-    if (!state) throw new Error(`Transfer ${transferId} not found`);
+    if (!state) throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_UNAVAILABLE, `Transfer ${transferId} not found`);
 
     if (state.status !== 'frozen') {
-      throw new Error(`Cannot appeal transfer in status: ${state.status}. Must be frozen.`);
+      throw new EngineError(ErrorDomain.TRADE, ErrorCode.ORDER_REJECTED, `Cannot appeal transfer in status: ${state.status}. Must be frozen.`);
     }
 
     if (state.appealed) {
-      throw new Error(`Transfer ${transferId} already appealed`);
+      throw new EngineError(ErrorDomain.TRADE, ErrorCode.ORDER_REJECTED, `Transfer ${transferId} already appealed`);
     }
 
     if (reason === 'other' && !description.trim()) {
-      throw new Error('Description required for "other" appeal reason');
+      throw new EngineError(ErrorDomain.VALIDATION, ErrorCode.MISSING_FIELD, 'Description required for "other" appeal reason');
     }
 
     // Permanent freeze
@@ -115,10 +115,10 @@ export class AppealEngine {
    */
   cancelUnfreeze(transferId: string, cancelledBy: string): { status: string } {
     const state = this.transferState.get(transferId);
-    if (!state) throw new Error(`Transfer ${transferId} not found`);
+    if (!state) throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_UNAVAILABLE, `Transfer ${transferId} not found`);
 
     if (state.status !== 'frozen') {
-      throw new Error(`Cannot cancel-unfreeze transfer in status: ${state.status}`);
+      throw new EngineError(ErrorDomain.TRADE, ErrorCode.ORDER_REJECTED, `Cannot cancel-unfreeze transfer in status: ${state.status}`);
     }
 
     state.status = 'cancelled';
@@ -132,7 +132,7 @@ export class AppealEngine {
    */
   adminUnfreeze(transferId: string, adminId: string, reason: string): AdminUnfreezeLog {
     const state = this.transferState.get(transferId);
-    if (!state) throw new Error(`Transfer ${transferId} not found`);
+    if (!state) throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_UNAVAILABLE, `Transfer ${transferId} not found`);
 
     const log: AdminUnfreezeLog = {
       id: `ADM-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
@@ -155,7 +155,7 @@ export class AppealEngine {
    */
   resolveAppeal(appealId: string, resolvedBy: string, resolution: string): AppealRecord {
     const appeal = this.appeals.get(appealId);
-    if (!appeal) throw new Error(`Appeal ${appealId} not found`);
+    if (!appeal) throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_UNAVAILABLE, `Appeal ${appealId} not found`);
     if (appeal.status === 'resolved') throw new Error(`Appeal already resolved`);
 
     appeal.status = 'resolved';

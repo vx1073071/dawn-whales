@@ -1,6 +1,6 @@
 // ── DAWN WHALES — MarketMovers (市场异动) ──────────────────────────────────
 
-import { useState, useMemo , useTranslation} from 'react'
+import { useState, useMemo } from 'react'
 import { useState, useMemo } from 'react-i18next';
 
 interface MoverItem {

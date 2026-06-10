@@ -1,6 +1,6 @@
 // ── DAWN WHALES — QuickTrade (快速下单) ────────────────────────────────────
 
-import { useState, useCallback , useTranslation} from 'react'
+import { useState, useCallback } from 'react'
 import { useState, useCallback } from 'react-i18next';
 
 interface QuickTradeProps {

@@ -1,6 +1,7 @@
-import { useState, useEffect , useTranslation} from 'react';
+import { useState, useEffect } from 'react';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import { useTranslation } from "react-i18next";
 
 interface FactorData {
   factor: string;

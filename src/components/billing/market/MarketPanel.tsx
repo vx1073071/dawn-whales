@@ -10,7 +10,8 @@
  * - Watchlist management (add/remove/reorder)
  */
 
-import { useState, useMemo , useTranslation} from 'react';
+import { useState, useMemo } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ───────────────────────────────────────────────────────────────
 

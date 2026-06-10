@@ -1,5 +1,6 @@
-import { useState, useCallback , useTranslation} from 'react';
+import { useState, useCallback } from 'react';
 import * as api from '../../lib/bridge-api';
+import { useTranslation } from "react-i18next";
 
 interface GreeksResult {
   price: number;

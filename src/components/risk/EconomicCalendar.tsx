@@ -1,6 +1,6 @@
 // ── DAWN WHALES — EconomicCalendar (财经日历) ──────────────────────────────
 
-import { useState, useMemo , useTranslation} from 'react'
+import { useState, useMemo } from 'react'
 import { useState, useMemo } from 'react-i18next';
 
 interface EconomicEvent {

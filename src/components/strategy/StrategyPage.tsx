@@ -5,6 +5,7 @@ import StrategyCompareModal from './StrategyCompareModal';
 import ConditionRulePanel from '../trading/ConditionRulePanel';
 import ClosedLoopConfigPanel from './ClosedLoopConfigPanel';
 import AdaptiveParamPanel from './AdaptiveParamPanel';
+import { useTranslation } from "react-i18next";
 
 type CreateMode = null | 'ai' | 'template' | 'form' | 'condition' | 'closedLoop' | 'adaptive';
 

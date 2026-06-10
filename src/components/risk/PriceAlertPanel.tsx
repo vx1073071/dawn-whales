@@ -1,6 +1,6 @@
 // ── DAWN WHALES — PriceAlertPanel (价格告警面板) ───────────────────────────
 
-import { useState, useEffect, useCallback , useTranslation} from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useState, useEffect, useCallback } from 'react-i18next';
 
 interface PriceAlert {

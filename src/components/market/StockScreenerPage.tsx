@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback , useTranslation} from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useState, useEffect, useCallback } from 'react-i18next';
 import { searchStocks } from '../../lib/bridge-api';
 

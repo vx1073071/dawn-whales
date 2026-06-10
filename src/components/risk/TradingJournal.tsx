@@ -1,8 +1,9 @@
 // ── DAWN WHALES — TradingJournal v2 (交易日志) ─────────────────────────────
 // v2: +日历热力图 +标签 +CSV导出 +日期筛选
 
-import { useState, useEffect, useCallback, useMemo, useRef , useTranslation} from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import * as echarts from 'echarts';
+import { useTranslation } from "react-i18next";
 
 interface JournalEntry {
   id: string;

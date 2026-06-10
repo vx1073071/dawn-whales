@@ -11,7 +11,8 @@
  * - Per-strategy benchmark table
  */
 
-import { useState, useMemo , useTranslation} from 'react';
+import { useState, useMemo } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ───────────────────────────────────────────────────────────────
 

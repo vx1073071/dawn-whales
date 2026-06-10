@@ -1,8 +1,9 @@
 ﻿// ── TradingDeskPage — IPC Full-Link (Round 16 P0) ────────────────────────
 // 全链路交易台: 账户资金 + 持仓 + 下单 + 委托管理 + 快速交易
 // >=500 lines | dark theme | production-ready
-import { useState, useEffect , useTranslation} from 'react';
+import { useState, useEffect } from 'react';
 import * as api from '@/lib/bridge-api';
+import { useTranslation } from "react-i18next";
 
 type Tab = 'trade' | 'positions' | 'orders' | 'history';
 

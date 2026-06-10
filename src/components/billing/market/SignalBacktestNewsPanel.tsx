@@ -1,4 +1,5 @@
-import { useState, useMemo, type CSSProperties , useTranslation} from 'react';
+import { useState, useMemo, type CSSProperties } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ──
 interface SignalTrade {

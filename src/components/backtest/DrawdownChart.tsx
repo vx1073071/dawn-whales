@@ -1,4 +1,5 @@
-import { useMemo , useTranslation} from 'react';
+import { useMemo } from 'react';
+import { useTranslation } from "react-i18next";
 
 interface EquityPoint {
   date: string;

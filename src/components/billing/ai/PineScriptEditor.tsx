@@ -11,8 +11,9 @@
  * - Template gallery: SMA, EMA, RSI, MACD, Bollinger, custom
  */
 
-import { useState, useCallback, useMemo , useTranslation} from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import DOMPurify from 'dompurify';
+import { useTranslation } from "react-i18next";
 
 // ── Types ───────────────────────────────────────────────────────────────
 

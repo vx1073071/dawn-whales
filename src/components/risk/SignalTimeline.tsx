@@ -1,6 +1,6 @@
 // ── DAWN WHALES — SignalTimeline (策略信号时间线) ──────────────────────────
 
-import { useState, useEffect, useCallback , useTranslation} from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useState, useEffect, useCallback } from 'react-i18next';
 import { getSignals, getAllStrategies } from '../../lib/bridge-api';
 

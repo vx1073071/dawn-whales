@@ -1,4 +1,5 @@
-import { useState, type CSSProperties , useTranslation} from 'react';
+import { useState, type CSSProperties } from 'react';
+import { useTranslation } from "react-i18next";
 
 interface TxRecord { id: string; type: 'deposit' | 'withdraw' | 'revenue'; amount: number; status: 'pending' | 'confirmed' | 'failed'; txHash: string; date: string; note: string }
 

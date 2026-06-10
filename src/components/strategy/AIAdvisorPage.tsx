@@ -1,5 +1,6 @@
-import { useState, useEffect , useTranslation} from 'react';
+import { useState, useEffect } from 'react';
 import { getAISuggest } from '@/lib/bridge-api';
+import { useTranslation } from "react-i18next";
 
 interface AIAdvice {
   marketView: string;

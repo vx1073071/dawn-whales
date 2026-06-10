@@ -1,6 +1,6 @@
 // ── DAWN WHALES — SystemLog (系统日志) ─────────────────────────────────────
 
-import { useState, useEffect , useTranslation} from 'react'
+import { useState, useEffect } from 'react'
 import { useState, useEffect } from 'react-i18next';
 
 interface LogEntry {

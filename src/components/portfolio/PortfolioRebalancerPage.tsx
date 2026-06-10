@@ -1,6 +1,7 @@
-import { useState, useEffect , useTranslation} from 'react';
+import { useState, useEffect } from 'react';
 import { getFunds } from '@/lib/bridge-api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import { useTranslation } from "react-i18next";
 
 interface RebalanceSuggestion {
   code: string;

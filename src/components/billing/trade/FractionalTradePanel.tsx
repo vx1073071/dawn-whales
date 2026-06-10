@@ -11,7 +11,8 @@
  * - Partial fill history log
  */
 
-import { useState, useCallback, useMemo , useTranslation} from 'react';
+import { useState, useCallback, useMemo } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ───────────────────────────────────────────────────────────────
 

@@ -1,7 +1,8 @@
 // AdaptiveParamPanel — Strategy parameter self-learning UI
 // Phase 4.4 ML-38-02: Self-adaptive parameter adjustment for strategies
 // Connects to AdaptiveParamEngine + RewardEngine
-import { useState, useEffect, useCallback , useTranslation} from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ─────────────────────────────────────────────────────────────────
 

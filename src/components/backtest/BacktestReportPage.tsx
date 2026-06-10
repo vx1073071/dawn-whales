@@ -1,8 +1,9 @@
-import { useState, useEffect, useMemo , useTranslation} from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import * as api from '../../lib/bridge-api';
 import { generatePDFReport, backtestToReport } from '../../lib/pdf-report';
 import ParamScanPanel from './ParamScanPanel';
 import WalkForwardPanel from './WalkForwardPanel';
+import { useTranslation } from "react-i18next";
 
 interface BacktestResult {
   strategyId: string;

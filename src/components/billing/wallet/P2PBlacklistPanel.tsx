@@ -1,4 +1,5 @@
-import { useState, type CSSProperties , useTranslation} from 'react';
+import { useState, type CSSProperties } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ──
 interface P2POrder { id: string; type: 'buy' | 'sell'; amount: number; price: number; total: number; status: 'active' | 'locked' | 'completed' | 'disputed'; counterparty: string; created: string; frozenUntil?: string }

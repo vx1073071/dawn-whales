@@ -1,4 +1,5 @@
-import { useState, useCallback, useMemo, useEffect , useTranslation} from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ============================================================
 // Monte Carlo Simulator Page

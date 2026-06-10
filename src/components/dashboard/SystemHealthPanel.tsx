@@ -1,6 +1,7 @@
 // SystemHealthPanel — Real-time engine status monitor for Dashboard 2.0
 // Phase 5.0 ML-38-01: Replaces inline StatusRow components
-import { useState, useEffect, useCallback , useTranslation} from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from "react-i18next";
 
 interface EngineStatus {
   name: string;

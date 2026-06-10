@@ -1,6 +1,7 @@
 // ── BrokerSelector — Sprint1: Multi-broker switcher UI ──────────────────────
-import { useState, useEffect, useRef , useTranslation} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getBrokerStatus, setActiveBroker } from '@/lib/bridge-api';
+import { useTranslation } from "react-i18next";
 
 interface BrokerStatus {
   id: string;

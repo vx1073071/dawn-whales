@@ -10,7 +10,8 @@
  * - Expandable accordion answers
  */
 
-import { useState, useMemo, useCallback , useTranslation} from 'react';
+import { useState, useMemo, useCallback } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ───────────────────────────────────────────────────────────────
 

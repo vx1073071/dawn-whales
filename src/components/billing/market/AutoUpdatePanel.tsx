@@ -13,7 +13,8 @@
  * - Auto-check toggle (every 4h)
  */
 
-import { useState, useCallback, useEffect , useTranslation} from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ───────────────────────────────────────────────────────────────
 

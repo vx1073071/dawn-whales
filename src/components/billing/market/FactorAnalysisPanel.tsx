@@ -10,7 +10,8 @@
  * - Factor decay + crowding indicators
  */
 
-import { useState, useMemo , useTranslation} from 'react';
+import { useState, useMemo } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ───────────────────────────────────────────────────────────────
 

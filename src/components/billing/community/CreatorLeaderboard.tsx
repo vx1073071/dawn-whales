@@ -11,7 +11,8 @@
  * - Creator card with avatar, level badge, stats, rank badge
  */
 
-import { useState, useMemo , useTranslation} from 'react';
+import { useState, useMemo } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ───────────────────────────────────────────────────────────────
 

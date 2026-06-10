@@ -1,6 +1,6 @@
 // ── DAWN WHALES — MarketBreadth (市场广度指标) ─────────────────────────────
 
-import { useMemo , useTranslation} from 'react'
+import { useMemo } from 'react'
 import { useMemo } from 'react-i18next';
 
 interface MarketBreadthData {

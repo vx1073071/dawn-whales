@@ -1,4 +1,4 @@
-import { useState, useEffect , useTranslation} from 'react'
+import { useState, useEffect } from 'react'
 import { useState, useEffect } from 'react-i18next';
 import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from '../../lib/bridge-api';
 

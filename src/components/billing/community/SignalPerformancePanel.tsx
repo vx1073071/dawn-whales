@@ -11,7 +11,8 @@
  * - Signal calendar heatmap
  */
 
-import { useState, useMemo , useTranslation} from 'react';
+import { useState, useMemo } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ───────────────────────────────────────────────────────────────
 

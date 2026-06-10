@@ -1,5 +1,6 @@
-import { useState, type CSSProperties , useTranslation} from 'react';
+import { useState, type CSSProperties } from 'react';
 import { PRIVATE_BANKING, MonoNumber } from './UIPolishKit';
+import { useTranslation } from "react-i18next";
 
 // ── R81: ML-81-01 GA 最终打磨 — 深浅走查+响应式+数字缩写+GA RN ──
 

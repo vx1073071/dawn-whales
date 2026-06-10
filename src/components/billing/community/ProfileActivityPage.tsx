@@ -10,7 +10,8 @@
  * - Notification center: unread badge, categorized (signal/comment/system), mark read
  */
 
-import { useState, useMemo , useTranslation} from 'react';
+import { useState, useMemo } from 'react';
+import { useTranslation } from "react-i18next";
 
 // ── Types ───────────────────────────────────────────────────────────────
 
