@@ -1,0 +1,7 @@
+allowBuilds:
+  better-sqlite3: true
+  electron: true
+  esbuild: true
+  protobufjs: true
+minimumReleaseAgeExclude:
+  - prettier@3.8.4
