@@ -1,4 +1,4 @@
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 /**
  * J-60-03: Order State Machine & Audit Trail (R60 v19 — v1.3.0 GA)
  *

@@ -8,7 +8,7 @@ import log from 'electron-log';
   Strategy, 
   BacktestResult, 
   RiskMetrics 
-} from '../types';
+} from '../../types';
 
 export interface DataSnapshot {
   id: string;

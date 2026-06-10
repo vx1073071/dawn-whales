@@ -4,7 +4,7 @@
 // 负责：volume_spike / volume_anomaly / volume_trend 三种成交量触发逻辑
 
 import log from 'electron-log';
-import type { TriggerResult } from '../types/condition.js';
+import type { TriggerResult } from '../../types/condition.js';
 
 // ── Interfaces ────────────────────────────────────────────────────────────
 

@@ -3,9 +3,9 @@
 
 import { EventEmitter } from 'events';
 import log from 'electron-log';
-import { getWebSocketManager } from '../websocket/websocket-manager';
+import { getWebSocketManager } from '../../websocket/websocket-manager';
 import { getKLineProcessor } from './kline-processor';
-import { getStrategySignalPusher } from '../strategy/signal-pusher';
+import { getStrategySignalPusher } from '../../strategy/signal-pusher';
 
 export interface AggregatedData {
   symbol: string;

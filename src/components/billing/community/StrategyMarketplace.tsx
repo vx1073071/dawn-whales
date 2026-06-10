@@ -132,7 +132,7 @@ const mockStrategies: StrategyCard[] = [
 // ── Mini Chart (Sparkline) ──────────────────────────────────────────────
 
 function MiniChart({ data, color }: { data?: number[]; color: string }) {
-  if (!data || data.length < 2) return <div className="h-8 text-gray-600 text-xs flex items-center">无数据</div>;
+  if (!data || data.length < 2) return <div className="h-8 text-gray-600 text-xs flex items-center">{t('无数据')}</div>;
   const min = Math.min(...data);
   const max = Math.max(...data);
   const range = max - min || 1;
@@ -237,11 +237,11 @@ function PurchaseModal({
               <p className="text-sm text-gray-400">{strategy.description.slice(0, 120)}</p>
               {/* Price & Balance */}
               <div className="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg">
-                <span className="text-gray-400 text-sm">策略价格</span>
+                <span className="text-gray-400 text-sm">{t('策略价格')}</span>
                 <span className="text-[#D4A853] font-bold text-lg">{strategy.price} USDT</span>
               </div>
               <div className="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg">
-                <span className="text-gray-400 text-sm">你的余额</span>
+                <span className="text-gray-400 text-sm">{t('你的余额')}</span>
                 <span className={`font-medium ${userBalance >= strategy.price ? 'text-green-400' : 'text-red-400'}`}>
                   {userBalance.toLocaleString()} USDT
                 </span>
@@ -273,14 +273,14 @@ function PurchaseModal({
         {step === 'processing' && (
           <div className="p-10 flex flex-col items-center gap-4">
             <div className="w-10 h-10 border-2 border-[#D4A853] border-t-transparent rounded-full animate-spin" />
-            <span className="text-gray-300 text-sm">区块链确认中...</span>
+            <span className="text-gray-300 text-sm">{t('区块链确认中...')}</span>
           </div>
         )}
 
         {step === 'success' && (
           <div className="p-10 flex flex-col items-center gap-4">
             <span className="text-5xl">✅</span>
-            <div className="text-white font-semibold">购买成功！</div>
+            <div className="text-white font-semibold">{t('购买成功！')}</div>
             <div className="text-gray-400 text-xs text-center break-all px-2">
               TX: {txHash.slice(0, 20)}...
             </div>
@@ -377,10 +377,10 @@ export default function StrategyMarketplace({
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-xl font-bold">{t("components.strategyMarketplace")}</h2>
-            <p className="text-gray-500 text-xs mt-0.5">发现、购买、加载优质量化策略</p>
+            <p className="text-gray-500 text-xs mt-0.5">{t('发现、购买、加载优质量化策略')}</p>
           </div>
           <div className="flex items-center gap-2 text-xs text-gray-500">
-            <span>💰 余额:</span>
+            <span>{t('💰 余额:')}</span>
             <span className="text-[#D4A853] font-semibold">{userBalance.toLocaleString()} USDT</span>
           </div>
         </div>
@@ -402,9 +402,9 @@ export default function StrategyMarketplace({
           {/* Market */}
           <select value={marketFilter} onChange={(e) => setMarketFilter(e.target.value)}
                   className="px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-gray-300">
-            <option value="all">🌍 全部市场</option>
-            <option value="US">🇺🇸 美股</option>
-            <option value="HK">🇭🇰 港股</option>
+            <option value="all">{t('🌍 全部市场')}</option>
+            <option value="US">{t('🇺🇸 美股')}</option>
+            <option value="HK">{t('🇭🇰 港股')}</option>
 
           </select>
 
@@ -431,8 +431,8 @@ export default function StrategyMarketplace({
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-600 gap-2">
             <span className="text-4xl">🏪</span>
-            <span>没有找到匹配的策略</span>
-            <span className="text-xs">试试调整筛选条件</span>
+            <span>{t('没有找到匹配的策略')}</span>
+            <span className="text-xs">{t('试试调整筛选条件')}</span>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -476,7 +476,7 @@ export default function StrategyMarketplace({
                     <div className="text-sm font-semibold text-gray-200">{s.winRate}%</div>
                   </div>
                   <div className="bg-white/[0.03] rounded p-1.5">
-                    <div className="text-xs text-gray-500">回撤</div>
+                    <div className="text-xs text-gray-500">{t('回撤')}</div>
                     <div className="text-sm font-semibold text-red-400">{s.maxDrawdown}%</div>
                   </div>
                 </div>
@@ -533,7 +533,7 @@ export default function StrategyMarketplace({
                   <div className="flex items-center gap-2 mt-0.5">
                     <LevelBadge level={detailStrategy.creatorLevel} />
                     <span className="text-gray-400 text-sm">{detailStrategy.creatorName}</span>
-                    {detailStrategy.verified && <span className="text-blue-400 text-xs">✓ 认证</span>}
+                    {detailStrategy.verified && <span className="text-blue-400 text-xs">{t('✓ 认证')}</span>}
                   </div>
                 </div>
               </div>
@@ -548,13 +548,13 @@ export default function StrategyMarketplace({
               {/* Performance */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-3 bg-white/[0.03] rounded-lg">
-                  <div className="text-xs text-gray-500">累计收益</div>
+                  <div className="text-xs text-gray-500">{t('累计收益')}</div>
                   <div className={`text-lg font-bold ${detailStrategy.totalReturn >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {detailStrategy.totalReturn >= 0 ? '+' : ''}{detailStrategy.totalReturn}%
                   </div>
                 </div>
                 <div className="p-3 bg-white/[0.03] rounded-lg">
-                  <div className="text-xs text-gray-500">夏普比率</div>
+                  <div className="text-xs text-gray-500">{t('夏普比率')}</div>
                   <div className="text-lg font-bold text-white">{detailStrategy.sharpe}</div>
                 </div>
                 <div className="p-3 bg-white/[0.03] rounded-lg">
@@ -569,9 +569,9 @@ export default function StrategyMarketplace({
 
               {/* Meta */}
               <div className="flex flex-wrap gap-2 text-xs text-gray-500">
-                <span>👥 {detailStrategy.subscribers.toLocaleString()} 订阅</span>
-                <span>🔔 {detailStrategy.totalSignals} 信号</span>
-                <span>📅 {detailStrategy.updatedAt} 更新</span>
+                <span>{t('👥 {detailStrategy.subscribers.toLocaleString()} 订阅')}</span>
+                <span>{t('🔔 {detailStrategy.totalSignals} 信号')}</span>
+                <span>{t('📅 {detailStrategy.updatedAt} 更新')}</span>
                 <span>⭐ {detailStrategy.rating}({detailStrategy.ratingCount})</span>
               </div>
 

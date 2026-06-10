@@ -4,7 +4,7 @@
 // IPC: backfill:start, backfill:status, backfill:stop, backfill:stats
 
 import log from 'electron-log';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────

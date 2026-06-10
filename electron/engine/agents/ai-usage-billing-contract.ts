@@ -14,7 +14,7 @@
  */
 
 import { EventEmitter } from 'events';
-import { EngineError, ErrorDomain, ErrorCode } from './engine-error';
+import { EngineError, ErrorDomain, ErrorCode } from '../core/engine-error';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

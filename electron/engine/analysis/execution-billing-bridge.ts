@@ -11,7 +11,7 @@
  */
 
 import { EventEmitter } from 'events';
-import { getBillingContract } from './ai-usage-billing-contract';
+import { getBillingContract } from '../agents/ai-usage-billing-contract';
 import { getCommissionEngine } from './platform-commission-engine';
 
 // ── Types ──────────────────────────────────────────────────────────────────

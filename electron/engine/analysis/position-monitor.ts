@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import log from 'electron-log';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ─── Interfaces ─────────────────────────────────────────────────────────────

@@ -4,7 +4,7 @@
 
 import log from 'electron-log';
 import { getQuoteStreamStatus } from './quote-stream';
-import { getRiskStatus } from './risk-engine';
+import { getRiskStatus } from '../risk/risk-engine';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 

@@ -4,7 +4,7 @@
 // 负责：RSI 超买超卖 / MACD 金叉死叉 / MA 交叉 / 布林带突破
 
 import log from 'electron-log';
-import type { TriggerResult } from '../types/condition.js';
+import type { TriggerResult } from '../../types/condition.js';
 
 // ── KlineData ─────────────────────────────────────────────────────────────
 

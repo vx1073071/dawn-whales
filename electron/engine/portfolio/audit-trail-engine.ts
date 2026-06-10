@@ -15,7 +15,7 @@
  */
 
 import log from 'electron-log';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 // Node.js crypto — use require() to bypass vitest/jsdom Web Crypto API resolution
 // eslint-disable-next-line @typescript-eslint/no-var-requires

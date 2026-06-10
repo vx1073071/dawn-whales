@@ -3,7 +3,7 @@
 // Risk budget quotas with limit monitoring and risk-weighted scoring
 
 import log from 'electron-log';
-import type { LivePosition } from './live-executor';
+import type { LivePosition } from '../analysis/live-executor';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

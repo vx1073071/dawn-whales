@@ -7,7 +7,7 @@
 
 import { spawn, SpawnOptions } from 'child_process';
 import { createHash } from 'crypto';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ── 白名单：允许的命令（绝对路径安全） ──────────────────────

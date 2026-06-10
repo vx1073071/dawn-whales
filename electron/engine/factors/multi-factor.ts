@@ -4,11 +4,11 @@
 // Integrates with LiveExecutor for position sizing
 
 import log from 'electron-log';
-import { SentimentIndexEngine } from './sentiment-index';
-import { CapitalFlowRank } from './capital-flow-rank';
-import { DragonTigerList } from './dragon-tiger-list';
-import { FundHoldings } from './fund-holdings';
-import { StockDiagnosis } from './stock-diagnosis';
+import { SentimentIndexEngine } from '../analysis/sentiment-index';
+import { CapitalFlowRank } from '../analysis/capital-flow-rank';
+import { DragonTigerList } from '../data/dragon-tiger-list';
+import { FundHoldings } from '../data/fund-holdings';
+import { StockDiagnosis } from '../data/stock-diagnosis';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 

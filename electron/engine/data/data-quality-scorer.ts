@@ -18,20 +18,20 @@ import type {
   QualityContext,
   QualityReport,
   QualityThreshold,
-} from './data-quality/data-quality-scorer-types';
+} from '../data-quality/data-quality-scorer-types';
 import {
   scoreToGrade,
   buildSummary,
   buildRecommendations,
   clamp,
-} from './data-quality/data-quality-scorer-utils';
-import { scoreCompleteness, scoreAccuracy } from './data-quality/data-quality-scorer-dim-a';
-import { scoreTimeliness, scoreConsistency, scoreUniqueness } from './data-quality/data-quality-scorer-dim-b';
-import { scoreValidity, scoreUniformity } from './data-quality/data-quality-scorer-dim-c';
-import { scoreCoverage } from './data-quality/data-quality-scorer-dim-d';
-import { DEFAULT_WEIGHTS, DEFAULT_THRESHOLDS } from './data-quality/data-quality-scorer-config';
-import type { GradeHistoryEntry } from './data-quality/data-quality-scorer-config';
-import { EngineError, ErrorCode } from '../errors';
+} from '../data-quality/data-quality-scorer-utils';
+import { scoreCompleteness, scoreAccuracy } from '../data-quality/data-quality-scorer-dim-a';
+import { scoreTimeliness, scoreConsistency, scoreUniqueness } from '../data-quality/data-quality-scorer-dim-b';
+import { scoreValidity, scoreUniformity } from '../data-quality/data-quality-scorer-dim-c';
+import { scoreCoverage } from '../data-quality/data-quality-scorer-dim-d';
+import { DEFAULT_WEIGHTS, DEFAULT_THRESHOLDS } from '../data-quality/data-quality-scorer-config';
+import type { GradeHistoryEntry } from '../data-quality/data-quality-scorer-config';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ────────────────────────── DataQualityScorer Class ─────────────────────────

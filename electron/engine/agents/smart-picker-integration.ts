@@ -5,7 +5,7 @@
 
 import log from 'electron-log';
 import { SmartPickerService, SmartPickResult } from './smart-picker';
-import { scoreTopAStocks } from './multi-factor';
+import { scoreTopAStocks } from '../factors/multi-factor';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 

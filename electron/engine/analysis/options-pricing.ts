@@ -127,7 +127,7 @@ const MAX_VOLATILITY = 10.0;
  * Maximum absolute error �?1.5 × 10⁻⁷.
  */
 import { normalCDF } from '../utils/math';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 /**

@@ -37,8 +37,8 @@ import type {
   ExposureResult,
   PortfolioMarginResult,
 } from './risk-engine-v3';
-import { StrategyRunner } from './strategy-runner';
-import type { UnifiedAccountManager, AggregatedPosition } from '../broker/unified-account-manager';
+import { StrategyRunner } from '../analysis/strategy-runner';
+import type { UnifiedAccountManager, AggregatedPosition } from '../../broker/unified-account-manager';
 
 // ── Exported Types ─────────────────────────────────────────────────────────
 

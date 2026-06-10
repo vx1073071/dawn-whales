@@ -18,8 +18,8 @@
 import log from 'electron-log';
 import type { StrategyEngine } from './strategy-engine';
 import type { TradeExecutor, TradeSignal, RiskCheck } from './trade-executor';
-import type { UnifiedAccountManager } from '../broker/unified-account-manager';
-import type { QuoteInfo } from '../broker/IBrokerAdapter';
+import type { UnifiedAccountManager } from '../../broker/unified-account-manager';
+import type { QuoteInfo } from '../../broker/IBrokerAdapter';
 
 // ── Exported Interfaces ─────────────────────────────────────────────────────
 

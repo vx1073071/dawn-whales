@@ -334,7 +334,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
             <span style={styles.typingDot} />
             <span style={{ ...styles.typingDot, animationDelay: '0.2s' }} />
             <span style={{ ...styles.typingDot, animationDelay: '0.4s' }} />
-            <span style={styles.typingText}>分析中...</span>
+            <span style={styles.typingText}>{t('分析中...')}</span>
           </div>
         )}
         {agent.status === 'completed' && (
@@ -361,17 +361,17 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
 
   const renderDebate = (round: DebateRound) => (
     <div key={round.round} style={styles.debateRound}>
-      <div style={styles.debateTitle}>🗣️ 辩论 Round {round.round}</div>
+      <div style={styles.debateTitle}>{t('🗣️ 辩论 Round {round.round}')}</div>
       <div style={styles.debateBars}>
         <div style={styles.barSide}>
-          <span style={styles.bullLabel}>🐂 多方</span>
+          <span style={styles.bullLabel}>{t('🐂 多方')}</span>
           <div style={styles.barTrack}>
             <div style={{ ...styles.barFill, width: `${round.bullScore}%`, background: '#4CAF50' }} />
           </div>
           <span style={styles.barScore}>{round.bullScore}%</span>
         </div>
         <div style={styles.barSide}>
-          <span style={styles.bearLabel}>🐻 空方</span>
+          <span style={styles.bearLabel}>{t('🐻 空方')}</span>
           <div style={styles.barTrack}>
             <div style={{ ...styles.barFill, width: `${round.bearScore}%`, background: '#F44336' }} />
           </div>
@@ -402,7 +402,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
     <div style={styles.container}>
       {/* Header with tier selector */}
       <div style={styles.header}>
-        <h3 style={styles.title}>🤖 AI 协作分析</h3>
+        <h3 style={styles.title}>{t('🤖 AI 协作分析')}</h3>
         <div style={styles.tierSelector}>
           {(['standard', 'premium', 'flagship'] as Tier[]).map(t => (
             <button
@@ -452,7 +452,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
             <div style={{ ...styles.progressFill, width: `${progress}%` }} />
           </div>
           <div style={styles.progressText}>{progressMessage}</div>
-          <div style={styles.estimatedTime}>预估耗时: 10-15 秒</div>
+          <div style={styles.estimatedTime}>{t('预估耗时: 10-15 秒')}</div>
         </div>
       )}
 
@@ -480,11 +480,11 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
       {/* Cache info */}
       {stage === 'completed' && (
         <div style={styles.cacheInfo}>
-          <span>💾 缓存命中率: <strong>{cacheHitRate}%</strong></span>
+          <span>{t('💾 缓存命中率:')}<strong>{cacheHitRate}%</strong></span>
           <span style={cacheHitRate >= 90 ? styles.cacheGood : styles.cacheWarn}>
             {cacheHitRate >= 90 ? '✅ 达标 (>90%)' : `⚠️ 未达标 (目标 ≥90%)`}
           </span>
-          <span>💰 本次费用: <strong>{costEstimate.toFixed(4)} USDT</strong></span>
+          <span>{t('💰 本次费用:')}<strong>{costEstimate.toFixed(4)} USDT</strong></span>
         </div>
       )}
 
@@ -498,7 +498,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
             }}>
               {RECOMMENDATION_LABELS[finalDecision.recommendation]}
             </span>
-            <span style={styles.decisionConfidence}>置信度 {finalDecision.confidence}%</span>
+            <span style={styles.decisionConfidence}>{t('置信度 {finalDecision.confidence}%')}</span>
           </div>
           <div style={styles.decisionReasoning}>{finalDecision.reasoning}</div>
           <div style={styles.voteGrid}>
@@ -515,8 +515,8 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
             })}
           </div>
           <div style={styles.decisionActions}>
-            <button style={styles.actionBtn}>📋 复制策略</button>
-            <button style={{ ...styles.actionBtn, background: '#1a237e' }}>📊 查看详情</button>
+            <button style={styles.actionBtn}>{t('📋 复制策略')}</button>
+            <button style={{ ...styles.actionBtn, background: '#1a237e' }}>{t('📊 查看详情')}</button>
           </div>
         </div>
       )}

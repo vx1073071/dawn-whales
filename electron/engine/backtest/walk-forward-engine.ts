@@ -6,7 +6,7 @@
 // Phase 1: TypeScript 实现
 
 import log from 'electron-log';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ── Inline EventEmitter polyfill (no node:events) ───────────────────────────

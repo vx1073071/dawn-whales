@@ -3,8 +3,8 @@
 // Record all fills, calculate performance, compare slippage vs real
 
 import log from 'electron-log';
-import type { QuoteTick } from './quote-stream';
-import type { LiveOrder, LivePosition } from './live-executor';
+import type { QuoteTick } from '../data/quote-stream';
+import type { LiveOrder, LivePosition } from '../analysis/live-executor';
 
 // ── Types ─────────────────────────────────────────────────────────────────
 

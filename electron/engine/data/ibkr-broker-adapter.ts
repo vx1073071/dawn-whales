@@ -1,4 +1,4 @@
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 /**
  * J-68-01 [P0] IBKR Broker Adapter — IB Gateway API (tws-api)
  *
@@ -9,7 +9,7 @@ import { EngineError, ErrorCode } from '../errors';
  * - >=350L, 10 tests
  */
 
-import { IExecutionBroker } from "./ai-to-execution-bridge";
+import { IExecutionBroker } from "../agents/ai-to-execution-bridge";
 
 // ── IBKR-specific types ──────────────────────────────────────────────────
 

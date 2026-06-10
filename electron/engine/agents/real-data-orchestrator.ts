@@ -1,4 +1,4 @@
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 // ── J-73-01 R73 V19: 4Agent Real Data Connector ─────────────────────────
 // Connects 4Agent orchestration to real data sources
 // Connects Yahoo Finance, Alpha Vantage, NewsAPI, Reddit/StockTwits + proprietary

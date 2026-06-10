@@ -15,8 +15,8 @@
  */
 
 import log from 'electron-log';
-import { AuditTrailEngine, AuditLog, AuditAction, AuditSeverity } from './audit-trail-engine';
-import { EngineError, ErrorCode } from '../errors';
+import { AuditTrailEngine, AuditLog, AuditAction, AuditSeverity } from '../portfolio/audit-trail-engine';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────

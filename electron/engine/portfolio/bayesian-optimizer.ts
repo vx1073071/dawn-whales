@@ -10,7 +10,7 @@
 
 import log from 'electron-log';
 import { normalCDF } from '../utils/math';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ============================================================================

@@ -1,7 +1,7 @@
 // electron/main/ipc-handlers-condition.ts
 // ConditionEngine IPC handlers — Phase 4.2 R30 Q-30-02
 
-import { ConditionEngine } from '../engine/condition-engine.js';
+import { ConditionEngine } from '../engine/core/condition-engine.js';
 import type { ConditionRule } from '../types/condition.js';
 
 export function registerConditionHandlers(

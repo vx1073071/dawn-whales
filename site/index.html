@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,27 +13,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Dawn Whales — AI量化策略平台" />
   <link rel="canonical" href="https://dawnwhales.com" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            dw: {
-              bg: 'var(--dw-bg)',
-              surface: 'var(--dw-surface)',
-              gold: '#D4A853',
-              accent: '#6366F1',
-              text: 'var(--dw-text)',
-              textMuted: 'var(--dw-text-muted)',
-              border: 'var(--dw-border)',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <!-- Tailwind via Vite/PostCSS build, no CDN -->
   <style>
     :root {
       --dw-bg: #0A0A10;

@@ -142,7 +142,7 @@ export default function IBKRBrokerPanel({
       <div className="p-5 border-b border-white/5">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-xl font-bold">券商管理</h2>
+            <h2 className="text-xl font-bold">{t('券商管理')}</h2>
             <p className="text-gray-500 text-xs mt-0.5">Futu OpenD · Interactive Brokers</p>
           </div>
           {/* Active broker indicator */}
@@ -169,7 +169,7 @@ export default function IBKRBrokerPanel({
             {futuStatus && (
               <div className="space-y-1.5 text-xs text-gray-500">
                 <div className="flex justify-between"><span>{t("components.account")}</span><span className="text-gray-300">{futuStatus.accountId}</span></div>
-                <div className="flex justify-between"><span>余额</span><span className="text-gray-200">{futuStatus.balance.toLocaleString()} {futuStatus.currency}</span></div>
+                <div className="flex justify-between"><span>{t('余额')}</span><span className="text-gray-200">{futuStatus.balance.toLocaleString()} {futuStatus.currency}</span></div>
                 <div className="flex justify-between"><span>{t("components.buyingPower")}</span><span className="text-gray-300">{futuStatus.buyingPower.toLocaleString()}</span></div>
               </div>
             )}
@@ -184,8 +184,8 @@ export default function IBKRBrokerPanel({
             {ibkrStatus && isIbkrConnected ? (
               <div className="space-y-1.5 text-xs text-gray-500">
                 <div className="flex justify-between"><span>{t("components.account")}</span><span className="text-gray-300">{ibkrStatus.accountId}</span></div>
-                <div className="flex justify-between"><span>余额</span><span className="text-gray-200">{ibkrStatus.balance.toLocaleString()} {ibkrStatus.currency}</span></div>
-                <div className="flex justify-between"><span>保证金使用率</span>
+                <div className="flex justify-between"><span>{t('余额')}</span><span className="text-gray-200">{ibkrStatus.balance.toLocaleString()} {ibkrStatus.currency}</span></div>
+                <div className="flex justify-between"><span>{t('保证金使用率')}</span>
                   <span className={ibkrStatus.marginUtilization > 0.7 ? 'text-red-400' : 'text-green-400'}>
                     {(ibkrStatus.marginUtilization * 100).toFixed(0)}%
                   </span>
@@ -199,7 +199,7 @@ export default function IBKRBrokerPanel({
 
         {/* ── IBKR Connection Config ───────────────────────────────────── */}
         <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
-          <h3 className="text-gray-300 font-semibold text-sm mb-4">🔌 IB Gateway 连接设置</h3>
+          <h3 className="text-gray-300 font-semibold text-sm mb-4">{t('🔌 IB Gateway 连接设置')}</h3>
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div>
               <label className="text-[10px] text-gray-600 uppercase tracking-wider">Host</label>
@@ -258,17 +258,17 @@ export default function IBKRBrokerPanel({
         {/* ── Fee Comparison ────────────────────────────────────────────── */}
         <div className="bg-[#111119] border border-white/5 rounded-xl overflow-hidden">
           <div className="px-5 py-3 border-b border-white/5">
-            <h3 className="text-gray-300 font-semibold text-sm">💰 三市场费率对比 Futu vs IBKR</h3>
+            <h3 className="text-gray-300 font-semibold text-sm">{t('💰 三市场费率对比 Futu vs IBKR')}</h3>
           </div>
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-white/[0.02] text-gray-500">
                 <th className="text-left px-5 py-2.5 font-medium">{t("components.markets")}</th>
-                <th className="text-left px-5 py-2.5 font-medium">🐂 Futu 佣金</th>
-                <th className="text-left px-5 py-2.5 font-medium">Futu 最低</th>
-                <th className="text-left px-5 py-2.5 font-medium">🏦 IBKR 佣金</th>
-                <th className="text-left px-5 py-2.5 font-medium">IBKR 最低</th>
-                <th className="text-center px-5 py-2.5 font-medium">最优</th>
+                <th className="text-left px-5 py-2.5 font-medium">{t('🐂 Futu 佣金')}</th>
+                <th className="text-left px-5 py-2.5 font-medium">{t('Futu 最低')}</th>
+                <th className="text-left px-5 py-2.5 font-medium">{t('🏦 IBKR 佣金')}</th>
+                <th className="text-left px-5 py-2.5 font-medium">{t('IBKR 最低')}</th>
+                <th className="text-center px-5 py-2.5 font-medium">{t('最优')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -295,7 +295,7 @@ export default function IBKRBrokerPanel({
 
         {/* ── IBKR Features ─────────────────────────────────────────────── */}
         <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
-          <h3 className="text-gray-300 font-semibold text-sm mb-3">🏦 IBKR 独有功能</h3>
+          <h3 className="text-gray-300 font-semibold text-sm mb-3">{t('🏦 IBKR 独有功能')}</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {IBKR_FEATURES.map(f => (
               <div key={f.title} className="p-3 bg-white/[0.02] rounded-lg">
@@ -313,7 +313,7 @@ export default function IBKRBrokerPanel({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
              onClick={() => setShowSwitchConfirm(false)}>
           <div className="bg-[#1A1A24] border border-white/10 rounded-xl p-6 max-w-sm mx-4 shadow-2xl">
-            <h3 className="text-white font-semibold text-lg mb-2">切换券商</h3>
+            <h3 className="text-white font-semibold text-lg mb-2">{t('切换券商')}</h3>
             <p className="text-gray-400 text-sm mb-2">
               切换到 IBKR 后，所有下单将使用盈透证券执行。费率、结算周期、交易规则将会改变。
             </p>

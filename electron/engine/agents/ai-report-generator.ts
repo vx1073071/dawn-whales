@@ -1,11 +1,11 @@
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 // ── AI Report Generator ─────────────────────────────────────────────────────
 // Q4: Backtest Result AI Interpretation
 // Input: backtest results array → DeepSeek LLM → Markdown report
 // Timeout fallback: 20s → English template, Markdown includes key metrics + risk + recommendations
 
 import log from 'electron-log';
-import type { BacktestResult } from './backtest-engine';
+import type { BacktestResult } from '../backtest/backtest-engine';
 
 export interface ReportSection {
   heading: string;

@@ -5,17 +5,17 @@
 import fs from 'fs';
 import path from 'path';
 import log from 'electron-log';
-import { getSmartCacheManager } from './smart-cache';
-import { getMarketOverview } from './emi-unified';
-import { getStockCapitalFlowRank, getSectorCapitalFlowRank } from './capital-flow-rank';
+import { getSmartCacheManager } from '../core/smart-cache';
+import { getMarketOverview } from '../core/emi-unified';
+import { getStockCapitalFlowRank, getSectorCapitalFlowRank } from '../analysis/capital-flow-rank';
 import { getDragonTigerList } from './dragon-tiger-list';
-import { getMacroDataReport } from './macro-data';
+import { getMacroDataReport } from '../risk/macro-data';
 import { getMarginDataReport } from './margin-data';
 import { getConsumerDataReport } from './consumer-data';
 import { getUnlockCalendar } from './unlock-calendar';
 import { getDividendCalendar } from './dividend-calendar';
 import { getEarningsCalendar } from './earnings-calendar';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────

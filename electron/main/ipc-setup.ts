@@ -403,7 +403,7 @@ export function setupIPC(ctx: IPCContext): void {
     const vErr = validate(BacktestMultiPeriodSchema, { config });
     if (vErr) return vErr;
     try {
-      const { BacktestEnhancer } = require('../engine/backtest-enhancer');
+      const { BacktestEnhancer } = require('../engine/backtest/backtest-enhancer');
       const enhancer = new BacktestEnhancer(ctx.backtestEngine);
       const results = await enhancer.multiPeriodBacktest(
         config.klines, config.strategyConfig, config.periods
@@ -418,7 +418,7 @@ export function setupIPC(ctx: IPCContext): void {
     const vErr = validate(BacktestParamSweepSchema, { config });
     if (vErr) return vErr;
     try {
-      const { BacktestEnhancer } = require('../engine/backtest-enhancer');
+      const { BacktestEnhancer } = require('../engine/backtest/backtest-enhancer');
       const enhancer = new BacktestEnhancer(ctx.backtestEngine);
       const results = await enhancer.parameterSweep(
         config.klines, config.baseConfig, config.paramRanges, config.maxCombinations || 100
@@ -431,7 +431,7 @@ export function setupIPC(ctx: IPCContext): void {
 
   ipcMain.handle('backtest:riskMetrics', async (_e, equityCurve: number[], riskFreeRate?: number) => {
     try {
-      const { BacktestEnhancer } = require('../engine/backtest-enhancer');
+      const { BacktestEnhancer } = require('../engine/backtest/backtest-enhancer');
       const enhancer = new BacktestEnhancer(ctx.backtestEngine);
       const metrics = enhancer.computeDeepRiskMetrics(equityCurve, riskFreeRate || 0.03);
       return { success: true, metrics };

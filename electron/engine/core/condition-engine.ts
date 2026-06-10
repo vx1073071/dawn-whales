@@ -10,7 +10,7 @@ import { generateId } from '../utils/id';
   TriggerResult,
   MarketSnapshot,
   TriggerEvent,
-} from '../types/condition.js';
+} from '../../types/condition.js';
 
 
 function isPriceCondition(c: Condition): c is PriceCondition {

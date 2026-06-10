@@ -157,9 +157,31 @@ interface WindowApi {
   export: Record<string, (...args: unknown[]) => Promise<unknown>>;
   cron: Record<string, (...args: unknown[]) => Promise<unknown>>;
   shell: Record<string, (...args: unknown[]) => Promise<unknown>>;
-  prefs: Record<string, (...args: unknown[]) => Promise<unknown>>;
+
+  // Preferences
+  prefs: {
+    get: (key: string) => Promise<unknown>;
+    set: (key: string, value: unknown) => Promise<unknown>;
+    getAll: () => Promise<unknown>;
+    getSection: (section: string) => Promise<unknown>;
+    setSection: (section: string, data: unknown) => Promise<unknown>;
+    reset: (section?: string) => Promise<unknown>;
+    exportPrefs: () => Promise<unknown>;
+    importPrefs: () => Promise<unknown>;
+  };
+
+  // Stock Stream
+  stockStream: {
+    connect: (config?: unknown) => Promise<unknown>;
+    disconnect: () => Promise<unknown>;
+    getQuotes: (codes: string[]) => Promise<unknown[]>;
+    getStatus: () => Promise<unknown>;
+    onQuote: (cb: (data: unknown) => void) => void;
+  };
+
+  // Template operations
   getTemplates: () => Promise<unknown[]>;
-  instantiateTemplate: (id: string, overrides: unknown) => Promise<unknown>;
+  instantiateTemplate: (id: string, overrides?: unknown) => Promise<unknown>;
 
   // Event system
   on: (channel: string, callback: (...args: unknown[]) => void) => void;

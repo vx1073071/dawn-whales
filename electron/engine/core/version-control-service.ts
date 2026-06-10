@@ -2,7 +2,7 @@
 // Track and manage data changes with version history, diff, and rollback
 // Supports: version tracking, change detection, rollback, audit trail
 
-import { getSnapshotService, type DataSnapshot } from './snapshot-service';
+import { getSnapshotService, type DataSnapshot } from '../analysis/snapshot-service';
 import log from 'electron-log';
 
 // ── Types ──────────────────────────────────────────────────────────────────

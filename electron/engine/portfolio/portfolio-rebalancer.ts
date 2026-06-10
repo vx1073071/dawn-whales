@@ -5,8 +5,8 @@
 import { EventEmitter } from 'events';
 import log from 'electron-log';
 import { getKellyFraction } from './dynamic-sizer';
-import type { LivePosition } from './live-executor';
-import { EngineError, ErrorCode } from '../errors';
+import type { LivePosition } from '../analysis/live-executor';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ── Types ───────────────────────────────────────────────────────────────────

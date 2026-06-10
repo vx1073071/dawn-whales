@@ -13,8 +13,8 @@
  */
 
 import { EventEmitter } from 'events';
-import { CreatorTier, RevenueEngineV15, getRevenueEngineV15 } from './revenue-engine-v15';
-import { EngineError, ErrorCode } from '../errors';
+import { CreatorTier, RevenueEngineV15, getRevenueEngineV15 } from '../portfolio/revenue-engine-v15';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────

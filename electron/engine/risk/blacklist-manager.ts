@@ -1,5 +1,5 @@
 /**
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
  * J-78-03-4: blacklist-manager.ts — 黑名单管理引擎
  * v1.9.0: 拆分自p2p-transfer-engine

@@ -14,7 +14,7 @@
 
 import { EventEmitter } from 'events';
 import crypto from 'crypto';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────

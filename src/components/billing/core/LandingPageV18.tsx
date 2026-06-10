@@ -59,7 +59,7 @@ function HeroSection() {
         🎉 v1.8.0 GA 正式发布 — 7大市场 · 30+因子 · AI画线 · 策略社区
       </div>
       <h1 style={{ fontSize: 48, fontWeight: 900, color: '#F9FAFB', lineHeight: 1.15, margin: '0 0 16px' }}>
-        AI驱动的<br /><span style={{ background: 'linear-gradient(135deg, #818CF8, #D4A853)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>量化策略平台</span>
+        AI驱动的<br /><span style={{ background: 'linear-gradient(135deg, #818CF8, #D4A853)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{t('量化策略平台')}</span>
       </h1>
       <p style={{ fontSize: 18, color: '#9CA3AF', lineHeight: 1.7, maxWidth: 600, margin: '0 auto 32px' }}>
         无需编程 · 自然语言创建 · 30秒出策略 · AI选股 · 7市场全覆盖 · 私行级体验
@@ -82,7 +82,7 @@ function HeroSection() {
           📺 看演示 (60秒)
         </button>
       </div>
-      <div style={{ marginTop: 16, fontSize: 12, color: '#6B7280' }}>无需信用卡 · 免费层永久可用 · Windows/macOS/Linux</div>
+      <div style={{ marginTop: 16, fontSize: 12, color: '#6B7280' }}>{t('无需信用卡 · 免费层永久可用 · Windows/macOS/Linux')}</div>
     </section>
   );
 }
@@ -91,8 +91,8 @@ function FeatureGrid() {
   return (
     <section id={t("功能")} style={{ padding: '60px 24px', maxWidth: 1100, margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: 48 }}>
-        <h2 style={{ fontSize: 32, fontWeight: 800, color: '#F9FAFB', margin: '0 0 8px' }}>全部功能一览</h2>
-        <p style={{ fontSize: 15, color: '#9CA3AF' }}>R52→R74 · 25轮迭代 · 350+测试 · 12只虾协作</p>
+        <h2 style={{ fontSize: 32, fontWeight: 800, color: '#F9FAFB', margin: '0 0 8px' }}>{t('全部功能一览')}</h2>
+        <p style={{ fontSize: 15, color: '#9CA3AF' }}>{t('R52→R74 · 25轮迭代 · 350+测试 · 12只虾协作')}</p>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 14 }}>
         {FEATURES.map(f => (
@@ -117,10 +117,10 @@ function PricingSection() {
   return (
     <section id={t("定价")} style={{ padding: '60px 24px', maxWidth: 960, margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: 40 }}>
-        <h2 style={{ fontSize: 32, fontWeight: 800, color: '#F9FAFB', margin: '0 0 8px' }}>简单定价</h2>
+        <h2 style={{ fontSize: 32, fontWeight: 800, color: '#F9FAFB', margin: '0 0 8px' }}>{t('简单定价')}</h2>
         <div style={{ display: 'inline-flex', gap: 2, background: '#1F2937', borderRadius: 10, padding: 3, marginTop: 12 }}>
-          <button onClick={() => setYearly(false)} style={{ padding: '6px 16px', borderRadius: 8, border: 'none', background: yearly ? 'transparent' : '#6366F1', color: yearly ? '#9CA3AF' : '#FFF', fontSize: 13, cursor: 'pointer' }}>月付</button>
-          <button onClick={() => setYearly(true)} style={{ padding: '6px 16px', borderRadius: 8, border: 'none', background: yearly ? '#6366F1' : 'transparent', color: yearly ? '#FFF' : '#9CA3AF', fontSize: 13, cursor: 'pointer' }}>年付 <span style={{ color: '#34D399' }}>-20%</span></button>
+          <button onClick={() => setYearly(false)} style={{ padding: '6px 16px', borderRadius: 8, border: 'none', background: yearly ? 'transparent' : '#6366F1', color: yearly ? '#9CA3AF' : '#FFF', fontSize: 13, cursor: 'pointer' }}>{t('月付')}</button>
+          <button onClick={() => setYearly(true)} style={{ padding: '6px 16px', borderRadius: 8, border: 'none', background: yearly ? '#6366F1' : 'transparent', color: yearly ? '#FFF' : '#9CA3AF', fontSize: 13, cursor: 'pointer' }}>{t('年付')}<span style={{ color: '#34D399' }}>-20%</span></button>
         </div>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 16, alignItems: 'start' }}>
@@ -131,7 +131,7 @@ function PricingSection() {
             position: 'relative',
           }}>
             {t.popular && (
-              <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', padding: '3px 14px', borderRadius: 8, background: '#6366F1', color: '#FFF', fontSize: 11, fontWeight: 700 }}>最受欢迎</div>
+              <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', padding: '3px 14px', borderRadius: 8, background: '#6366F1', color: '#FFF', fontSize: 11, fontWeight: 700 }}>{t('最受欢迎')}</div>
             )}
             <div style={{ fontSize: 18, fontWeight: 700, color: t.color, marginBottom: 8 }}>{t.name}</div>
             <div style={{ marginBottom: 20 }}>
@@ -163,7 +163,7 @@ function TestimonialsSection() {
   return (
     <section style={{ padding: '60px 24px', maxWidth: 900, margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: 36 }}>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#F9FAFB', margin: 0 }}>交易者怎么说</h2>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#F9FAFB', margin: 0 }}>{t('交易者怎么说')}</h2>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
         {TESTIMONIALS.map(t => (
@@ -187,7 +187,7 @@ function CTASection() {
   return (
     <section style={{ padding: '60px 24px', maxWidth: 700, margin: '0 auto', textAlign: 'center' }}>
       <div style={{ padding: '48px 32px', borderRadius: 20, background: 'linear-gradient(135deg, #6366F118, #D4A85314)', border: '1px solid #374151' }}>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#F9FAFB', margin: '0 0 12px' }}>准备好开始量化了吗？</h2>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#F9FAFB', margin: '0 0 12px' }}>{t('准备好开始量化了吗？')}</h2>
         <p style={{ fontSize: 15, color: '#9CA3AF', marginBottom: 28, lineHeight: 1.7 }}>
           30秒创建第一个策略 · 7市场全覆盖 · AI驱动 · 免费开始
         </p>
@@ -214,9 +214,9 @@ function Footer() {
         </div>
         <div style={{ display: 'flex', gap: 20 }}>
           <span>© 2026 Dawn Whales</span>
-          <span>隐私政策</span>
-          <span>服务条款</span>
-          <span>联系我们</span>
+          <span>{t('隐私政策')}</span>
+          <span>{t('服务条款')}</span>
+          <span>{t('联系我们')}</span>
         </div>
       </div>
     </footer>
@@ -241,7 +241,7 @@ function SEOHead() {
 
   return (
     <>
-      <title>Dawn Whales — AI量化策略平台 | 7大市场·30+因子·无需编程</title>
+      <title>{t('Dawn Whales — AI量化策略平台 | 7大市场·30+因子·无需编程')}</title>
       <meta name="description" content={t("Dawn Whales v1.8.0 GA — AI驱动的量化策略平台。覆盖港股/美股/新加坡/日本/澳洲/加拿大/马来西亚7大市场，30+量化因子，AI画线形态识别，策略社区。免费开始，无需编程。")} />
       <meta name="keywords" content={t("量化交易,AI选股,策略回测,港股量化,美股量化,技术分析,AI画线,K线形态,PineScript")} />
       <meta property="og:title" content={t("Dawn Whales — AI量化策略平台")} />

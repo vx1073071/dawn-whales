@@ -1,4 +1,4 @@
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 // ── J-75-02 R75 V19: Data Source Adapters ───────────────────────────────
 // Unified IDataSourceAdapter interface × 4 concrete adapters
 // Yahoo Finance, Alpha Vantage, NewsAPI, Reddit/StockTwits

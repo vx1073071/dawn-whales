@@ -163,6 +163,34 @@ contextBridge.exposeInMainWorld('api', {
     diagnostics: () => ipcRenderer.invoke('ws:diagnostics'),
   },
 
+  // ── Template Instantiation ────────────────────────────────────────
+  getTemplates: () => ipcRenderer.invoke('nl:templates'),
+  instantiateTemplate: (id: string, overrides?: unknown) =>
+    ipcRenderer.invoke('nl:instantiate-template', id, overrides),
+
+  // ── Preferences ───────────────────────────────────────────────────
+  prefs: {
+    get: (key: string) => ipcRenderer.invoke('prefs:get', key),
+    set: (key: string, value: unknown) => ipcRenderer.invoke('prefs:set', key, value),
+    getAll: () => ipcRenderer.invoke('prefs:get-all'),
+    getSection: (section: string) => ipcRenderer.invoke('prefs:get-section', section),
+    setSection: (section: string, data: unknown) => ipcRenderer.invoke('prefs:set-section', section, data),
+    reset: (section?: string) => ipcRenderer.invoke('prefs:reset', section),
+    exportPrefs: () => ipcRenderer.invoke('prefs:export'),
+    importPrefs: () => ipcRenderer.invoke('prefs:import'),
+  },
+
+  // ── Stock Stream (OpenD) ──────────────────────────────────────────
+  stockStream: {
+    connect: (config?: unknown) => ipcRenderer.invoke('stock-stream:connect', config),
+    disconnect: () => ipcRenderer.invoke('stock-stream:disconnect'),
+    getQuotes: (codes: string[]) => ipcRenderer.invoke('stock-stream:get-quotes', codes),
+    getStatus: () => ipcRenderer.invoke('stock-stream:status'),
+    onQuote: (cb: (data: unknown) => void) => {
+      ipcRenderer.on('stock-stream:quote', (_event: any, data: unknown) => cb(data));
+    },
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: unknown[]) => void) => {
     const allowed = [
@@ -187,6 +215,7 @@ contextBridge.exposeInMainWorld('api', {
       'trade:signal-generated',
       'trade:mode-changed',
       'monitor:alert-push',
+      'stock-stream:quote',
     ];
     if (allowed.includes(channel)) {
       ipcRenderer.on(channel, (_event, ...args) => callback(...args));

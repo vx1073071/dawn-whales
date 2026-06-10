@@ -1,7 +1,7 @@
 // ── Cache Explorer API (JVS-35) ─────────────────────────────────────────────
 // Browse all cached data with metadata for WB W52 CachedDataExplorer
 
-import { getSmartCacheManager } from './smart-cache';
+import { getSmartCacheManager } from '../core/smart-cache';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

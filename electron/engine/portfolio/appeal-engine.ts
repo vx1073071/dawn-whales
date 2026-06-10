@@ -15,7 +15,7 @@
  * >=300L, 8 tests
  */
 
-import { EngineError, ErrorDomain, ErrorCode } from './engine-error';
+import { EngineError, ErrorDomain, ErrorCode } from '../core/engine-error';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

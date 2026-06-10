@@ -1,5 +1,5 @@
 /**
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
  * J-63-04: 桌面端清洁引擎 (R63 v19 — v1.5.0-rc 服务器化)
  *

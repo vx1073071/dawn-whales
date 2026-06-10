@@ -8,7 +8,7 @@
 
 import log from 'electron-log';
 import { generateId } from '../utils/id';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ─────────────────────────────────────────────────────────────────────────────

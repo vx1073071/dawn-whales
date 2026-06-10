@@ -1,5 +1,5 @@
 /**
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
  * J-78-03-3: p2p-freeze-manager.ts — P2P冻结管理引擎
  * v1.9.0: 拆分自p2p-transfer-engine

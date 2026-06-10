@@ -1,5 +1,5 @@
 /**
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
  * J-48-01: Engine Stability Module
  * Provides stability monitoring and testing capabilities for engines

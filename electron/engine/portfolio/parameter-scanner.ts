@@ -2,7 +2,7 @@
 // 不仅找最优参数，更要找稳健参数区间
 
 import log from 'electron-log';
-import { BacktestEngine } from './backtest-engine';
+import { BacktestEngine } from '../backtest/backtest-engine';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

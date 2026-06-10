@@ -3,10 +3,10 @@
 // Integrates: anomaly, sentiment, capital flow, dragon tiger, fund holdings, news
 
 import log from 'electron-log';
-import { getStockCapitalFlowRank } from './capital-flow-rank';
+import { getStockCapitalFlowRank } from '../analysis/capital-flow-rank';
 import { getStockFundOwnership } from './fund-holdings';
 import { getDragonTigerList, getDragonTigerDetail } from './dragon-tiger-list';
-import { SentimentIndexEngine } from './sentiment-index';
+import { SentimentIndexEngine } from '../analysis/sentiment-index';
 import { StockAnomalyDetector } from './stock-anomaly-detector';
 import { NewsAggregatorService } from './news-aggregator';
 

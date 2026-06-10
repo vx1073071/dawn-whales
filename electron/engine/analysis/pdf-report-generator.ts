@@ -3,7 +3,7 @@
 // Generates PDF reports from Markdown content with charts, templates, and batch support.
 
 import log from 'electron-log';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ── EventEmitter Polyfill (inline) ───────────────────────────────────────────

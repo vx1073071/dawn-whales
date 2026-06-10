@@ -9,7 +9,7 @@
  */
 
 import { IExecutionBroker } from "./ai-to-execution-broker";
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ── Types ─────────────────────────────────────────────────────────────────

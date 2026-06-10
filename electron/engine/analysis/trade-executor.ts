@@ -1,4 +1,4 @@
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 /**
  * Trade Execution Engine
  * Sprint 2 Phase 2 - Dawn Whales

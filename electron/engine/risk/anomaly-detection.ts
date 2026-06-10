@@ -6,7 +6,7 @@
  */
 
 import { EventEmitter } from 'events';
-import { AnomalyDetector } from './anomaly-detector';
+import { AnomalyDetector } from '../analysis/anomaly-detector';
 import log from 'electron-log';
 
 export interface AnomalyAlert {

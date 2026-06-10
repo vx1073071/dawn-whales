@@ -8,7 +8,7 @@
 // 5. 并行回测（集成 ParallelBacktestEngine）
 
 import log from 'electron-log';
-import { BacktestEngine, ParallelBacktestEngine } from './backtest-engine-parallel';
+import { BacktestEngine, ParallelBacktestEngine } from '../backtest/backtest-engine-parallel';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

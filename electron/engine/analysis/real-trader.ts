@@ -6,8 +6,8 @@
 import { EventEmitter } from 'events';
 import log from 'electron-log';
 import { LiveExecutor, LiveOrder, LivePosition, ExecutorStatus } from './live-executor';
-import type { IBrokerAdapter, FundsInfo } from '../broker/IBrokerAdapter';
-import { EngineError, ErrorCode } from '../errors';
+import type { IBrokerAdapter, FundsInfo } from '../../broker/IBrokerAdapter';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ── Types ───────────────────────────────────────────────────────────────────

@@ -4,12 +4,12 @@
 // IPC: em:smart-pick
 
 import log from 'electron-log';
-import { getStockCapitalFlowRank } from './capital-flow-rank';
-import { getDragonTigerList } from './dragon-tiger-list';
-import { getFundIncreaseRank } from './fund-holdings';
-import { SentimentIndexEngine } from './sentiment-index';
-import { NewsAggregatorService } from './news-aggregator';
-import { StockAnomalyDetector } from './stock-anomaly-detector';
+import { getStockCapitalFlowRank } from '../analysis/capital-flow-rank';
+import { getDragonTigerList } from '../data/dragon-tiger-list';
+import { getFundIncreaseRank } from '../data/fund-holdings';
+import { SentimentIndexEngine } from '../analysis/sentiment-index';
+import { NewsAggregatorService } from '../data/news-aggregator';
+import { StockAnomalyDetector } from '../data/stock-anomaly-detector';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

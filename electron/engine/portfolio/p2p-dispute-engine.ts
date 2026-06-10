@@ -1,5 +1,5 @@
 /**
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
  * J-78-03-2: p2p-dispute-engine.ts — P2P争议申诉引擎
  * v1.9.0: 拆分自p2p-transfer-engine

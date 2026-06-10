@@ -1,4 +1,4 @@
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 /**
  * J-61-01: A/美股 MultiMarketBroker (R61 v19 — v1.4.0-beta)
  *
@@ -24,7 +24,7 @@ import {
   ExecutionResult,
   BrokerAccount,
   BrokerPosition,
-} from './ai-to-execution-bridge';
+} from '../agents/ai-to-execution-bridge';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

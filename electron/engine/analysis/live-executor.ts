@@ -4,10 +4,10 @@
 
 import { EventEmitter } from 'events';
 import log from 'electron-log';
-import { QuoteStreamService, QuoteTick } from './quote-stream';
+import { QuoteStreamService, QuoteTick } from '../data/quote-stream';
 import { StrategyEngine, SignalEvent } from './strategy-engine';
-import type { RiskEngine } from './risk-engine';
-import type { IBrokerAdapter, Order, Position } from '../broker/IBrokerAdapter';
+import type { RiskEngine } from '../risk/risk-engine';
+import type { IBrokerAdapter, Order, Position } from '../../broker/IBrokerAdapter';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 

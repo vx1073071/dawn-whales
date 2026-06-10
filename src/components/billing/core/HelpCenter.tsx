@@ -124,7 +124,7 @@ export default function HelpCenter({ articles: propArticles, className = '' }: H
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>帮助中心 — DAWN WHALES | Help Center</title>
+        <title>{t('帮助中心 — DAWN WHALES | Help Center')}</title>
         <meta name="description" content={t("DAWN WHALES 帮助中心: 安装/注册/充值/AI分析/交易/钱包/提现 完整指南。FAQ常见问题解答。")} />
         <meta name="robots" content="index, follow" />
         <FAQJsonLd articles={articles} />
@@ -136,12 +136,12 @@ export default function HelpCenter({ articles: propArticles, className = '' }: H
             <span style={{ fontSize: 22 }}>🐋</span>
             <span style={{ fontSize: 16, fontWeight: 800, color: '#1e293b' }}>DAWN WHALES</span>
           </a>
-          <span style={{ fontSize: 13, color: '#64748b', fontWeight: 600 }}>帮助中心 Help Center</span>
+          <span style={{ fontSize: 13, color: '#64748b', fontWeight: 600 }}>{t('帮助中心 Help Center')}</span>
         </nav>
 
         {/* Header */}
         <header style={{ padding: '60px 24px 40px', background: 'linear-gradient(135deg, #0f172a, #1e3a5f)', color: '#fff', textAlign: 'center' }}>
-          <h1 style={{ fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 800, margin: '0 0 12px' }}>需要帮助?</h1>
+          <h1 style={{ fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 800, margin: '0 0 12px' }}>{t('需要帮助?')}</h1>
           <p style={{ fontSize: 16, color: '#94a3b8', marginBottom: 24 }}>How can we help? Search or browse topics.</p>
           <div style={{ maxWidth: 500, margin: '0 auto', position: 'relative' }}>
             <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: 16 }}>🔍</span>
@@ -174,7 +174,7 @@ export default function HelpCenter({ articles: propArticles, className = '' }: H
           {filtered.length === 0 ? (
             <div style={{ textAlign: 'center', padding: 60, color: '#94a3b8' }}>
               <span style={{ fontSize: 40 }}>📭</span>
-              <p>没有找到相关问题。试试调整搜索词。</p>
+              <p>{t('没有找到相关问题。试试调整搜索词。')}</p>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

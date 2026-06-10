@@ -4,7 +4,7 @@
 // 负责：above / below / crosses_above / crosses_below / breakout 五种价格触发逻辑
 
 import log from 'electron-log';
-import type { TriggerResult } from '../types/condition.js';
+import type { TriggerResult } from '../../types/condition.js';
 
 // ── Interfaces ────────────────────────────────────────────────────────────
 

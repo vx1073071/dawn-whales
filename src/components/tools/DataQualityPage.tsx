@@ -401,7 +401,7 @@ const ScoreGauge: React.FC<{ score: number; grade: string }> = ({ score, grade }
         <span className={`text-2xl font-semibold mt-1 ${GRADE_COLORS[grade] || 'text-white'}`}>
           {grade}
         </span>
-        <span className="text-xs text-gray-400 mt-2">综合评分</span>
+        <span className="text-xs text-gray-400 mt-2">{t('综合评分')}</span>
       </div>
     </div>
   );
@@ -415,7 +415,7 @@ const DimensionCard: React.FC<{ dimension: QualityDimension }> = ({ dimension })
     warning: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
     fail: 'bg-red-500/20 text-red-400 border-red-500/30',
   };
-  const statusLabels = { pass: '正常', warning: t('components.warning'), fail: '异常' };
+  const statusLabels = { pass: t('components.normal'), warning: t('components.warning'), fail: t('components.abnormal') };
   const barColor =
     dimension.score >= 80
       ? 'bg-emerald-500'
@@ -448,8 +448,8 @@ const DimensionCard: React.FC<{ dimension: QualityDimension }> = ({ dimension })
       </div>
 
       <div className="flex items-center justify-between text-xs text-gray-400">
-        <span>权重 {dimension.weight}%</span>
-        <span>{dimension.issueCount} 个问题</span>
+        <span>{t('权重 {dimension.weight}%')}</span>
+        <span>{t('{dimension.issueCount} 个问题')}</span>
       </div>
     </div>
   );
@@ -490,11 +490,11 @@ const IssueRow: React.FC<{
         <div className="px-4 pb-3 pl-12">
           <div className="bg-white/5 rounded-lg p-3 text-sm">
             <p className="text-gray-400 mb-2">
-              <span className="text-gray-500">维度：</span>
+              <span className="text-gray-500">{t('维度：')}</span>
               {issue.dimension}
             </p>
             <p className="text-gray-300">
-              <span className="text-gray-500">建议：</span>
+              <span className="text-gray-500">{t('建议：')}</span>
               {issue.suggestion}
             </p>
           </div>
@@ -509,7 +509,7 @@ const IssueRow: React.FC<{
 const HistoryTable: React.FC<{ history: EvaluationRecord[] }> = ({ history }) => {
   if (history.length === 0) {
     return (
-      <div className="text-center text-gray-500 py-8 text-sm">暂无评估记录</div>
+      <div className="text-center text-gray-500 py-8 text-sm">{t('暂无评估记录')}</div>
     );
   }
 
@@ -518,9 +518,9 @@ const HistoryTable: React.FC<{ history: EvaluationRecord[] }> = ({ history }) =>
       <table className="w-full text-sm">
         <thead>
           <tr className="text-left text-gray-400 border-b border-white/10">
-            <th className="pb-2 font-medium">标的</th>
-            <th className="pb-2 font-medium">评分</th>
-            <th className="pb-2 font-medium">等级</th>
+            <th className="pb-2 font-medium">{t('标的')}</th>
+            <th className="pb-2 font-medium">{t('评分')}</th>
+            <th className="pb-2 font-medium">{t('等级')}</th>
             <th className="pb-2 font-medium text-right">{t("components.time")}</th>
           </tr>
         </thead>
@@ -800,7 +800,7 @@ const DataQualityPage: React.FC = () => {
               className={`bg-gradient-to-br ${GRADE_BG[qualityState.grade] || 'from-blue-500/20 to-blue-600/5'}
                          backdrop-blur-xl border border-white/10 rounded-2xl p-6 flex flex-col items-center`}
             >
-              <h2 className="text-sm font-medium text-gray-400 mb-4">综合质量评分</h2>
+              <h2 className="text-sm font-medium text-gray-400 mb-4">{t('综合质量评分')}</h2>
               <ScoreGauge score={qualityState.overallScore} grade={qualityState.grade} />
               <div className="mt-4 flex items-center gap-4 text-xs text-gray-400">
                 <span>
@@ -818,7 +818,7 @@ const DataQualityPage: React.FC = () => {
             <div className="grid grid-cols-3 gap-3">
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-3 text-center">
                 <div className="text-2xl font-bold text-red-400">{stats.criticalCount}</div>
-                <div className="text-[10px] text-gray-500 mt-1">严重问题</div>
+                <div className="text-[10px] text-gray-500 mt-1">{t('严重问题')}</div>
               </div>
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-3 text-center">
                 <div className="text-2xl font-bold text-yellow-400">{stats.warningCount}</div>
@@ -826,13 +826,13 @@ const DataQualityPage: React.FC = () => {
               </div>
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-3 text-center">
                 <div className="text-2xl font-bold text-blue-400">{stats.infoCount}</div>
-                <div className="text-[10px] text-gray-500 mt-1">提示</div>
+                <div className="text-[10px] text-gray-500 mt-1">{t('提示')}</div>
               </div>
             </div>
 
             {/* Evaluation History */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-              <h2 className="text-sm font-medium text-gray-400 mb-4">评估历史</h2>
+              <h2 className="text-sm font-medium text-gray-400 mb-4">{t('评估历史')}</h2>
               <HistoryTable history={qualityState.history} />
             </div>
           </div>
@@ -841,7 +841,7 @@ const DataQualityPage: React.FC = () => {
           <div className="col-span-12 lg:col-span-8 space-y-6">
             {/* 8 Dimension Cards */}
             <div>
-              <h2 className="text-sm font-medium text-gray-400 mb-3">8维度评分</h2>
+              <h2 className="text-sm font-medium text-gray-400 mb-3">{t('8维度评分')}</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {qualityState.dimensions.map((dim) => (
                   <DimensionCard key={dim.key} dimension={dim} />
@@ -925,7 +925,7 @@ const DataQualityPage: React.FC = () => {
 
             {/* Weight Distribution Visual */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-              <h2 className="text-sm font-medium text-gray-400 mb-4">维度权重分布</h2>
+              <h2 className="text-sm font-medium text-gray-400 mb-4">{t('维度权重分布')}</h2>
               <div className="space-y-2">
                 {DIMENSION_CONFIG.map((cfg) => {
                   const dim = qualityState.dimensions.find((d) => d.key === cfg.key);
@@ -969,8 +969,8 @@ const DataQualityPage: React.FC = () => {
 
         {/* Footer */}
         <div className="mt-8 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-gray-600">
-          <span>JVS-R16-P1 · 数据质量监控引擎</span>
-          <span>8维度加权评估 · 实时分析</span>
+          <span>{t('JVS-R16-P1 · 数据质量监控引擎')}</span>
+          <span>{t('8维度加权评估 · 实时分析')}</span>
         </div>
       </div>
     </div>

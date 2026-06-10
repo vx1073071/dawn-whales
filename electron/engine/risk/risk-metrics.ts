@@ -1,4 +1,4 @@
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 // ── Risk Metrics Calculator (JVS-46) ────────────────────────────────────────
 // VaR / CVaR / Sharpe / Sortino / Information Ratio / Max Drawdown
 // IPC: em:calc-risk-metrics

@@ -6,7 +6,7 @@
 
 import { EventEmitter } from 'events';
 import { getSlidingWindowAggregator } from './sliding-window-aggregator';
-import { getPerformanceMonitor } from './performance-monitor';
+import { getPerformanceMonitor } from '../portfolio/performance-monitor';
 import log from 'electron-log';
 
 export interface VisualizationDataPoint {

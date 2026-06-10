@@ -23,6 +23,7 @@ import { registerReportIPC } from './report-ipc';
 import { registerRiskIPC } from './risk-ipc';
 import { registerSentimentIPC } from './sentiment-ipc';
 import { registerSnapshotIPC } from './snapshot-ipc';
+import { registerStockStreamIPC } from './stock-stream-ipc';
 import { registerStrategyIPC } from './strategy-ipc';
 import { registerSystemIPC } from './system-ipc';
 import { registerVersionIPC } from './version-ipc';
@@ -82,6 +83,7 @@ export function registerAllIPC(services: {
   registerRiskIPC(services.riskEngine, services.unifiedRiskDash);
   registerSentimentIPC(services.mainWindow, services.sentimentAttrEngine);
   registerSnapshotIPC(services._services);
+  registerStockStreamIPC();
   registerStrategyIPC(services.strategyEngine, services.db, services.opendClient, services.backtestEngine, services.liveExecutor, services.app, services.STRATEGY_UPDATE_WHITELIST);
   registerSystemIPC(services._services);
   registerVersionIPC(services._services);

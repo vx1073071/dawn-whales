@@ -6,7 +6,7 @@ import log from 'electron-log';
 import { exec } from 'child_process';
 import path from 'path';
 import fs from 'fs';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────

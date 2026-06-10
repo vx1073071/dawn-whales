@@ -5,14 +5,14 @@
 //   em:get-daily-report        — daily market brief (MD format)
 
 import log from 'electron-log';
-import { getStockCapitalFlowRank } from './capital-flow-rank';
-import { getDragonTigerList } from './dragon-tiger-list';
-import { getStockFundOwnership } from './fund-holdings';
-import { diagnoseStock } from './stock-diagnosis';
-import { SentimentIndexEngine } from './sentiment-index';
-import { NewsAggregatorService } from './news-aggregator';
-import { StockAnomalyDetector } from './stock-anomaly-detector';
-import { getMarketBreadth } from './market-breadth';
+import { getStockCapitalFlowRank } from '../analysis/capital-flow-rank';
+import { getDragonTigerList } from '../data/dragon-tiger-list';
+import { getStockFundOwnership } from '../data/fund-holdings';
+import { diagnoseStock } from '../data/stock-diagnosis';
+import { SentimentIndexEngine } from '../analysis/sentiment-index';
+import { NewsAggregatorService } from '../data/news-aggregator';
+import { StockAnomalyDetector } from '../data/stock-anomaly-detector';
+import { getMarketBreadth } from '../data/market-breadth';
 import { MacroDataProvider } from '../data/macro-provider';
 import { EMDataProvider } from '../data/em-data-provider';
 

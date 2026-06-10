@@ -1,4 +1,4 @@
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 /**
  * Strategy Optimizer Engine
  * Dawn Whales Project (J-39-01, R39)

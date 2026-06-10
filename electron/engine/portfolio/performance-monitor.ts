@@ -4,7 +4,7 @@
 // Monitor system performance metrics in real-time
 
 import log from 'electron-log';
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
 
 // ---------------------------------------------------------------------------

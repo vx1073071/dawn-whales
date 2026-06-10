@@ -1,4 +1,4 @@
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 /**
  * J-63-01: AI Gateway /api (R63 v19 — v1.5.0-rc 服务器化)
  *

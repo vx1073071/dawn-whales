@@ -559,6 +559,27 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     return { success: true, templates: STRATEGY_TEMPLATES };
   });
 
+  ipcMain.handle('nl:instantiate-template', async (_e, id: string, overrides: unknown) => {
+    try {
+      const { STRATEGY_TEMPLATES } = require('../engine/nl-parser');
+      const { parseNaturalLanguage } = require('../engine/nl-parser');
+      const template = STRATEGY_TEMPLATES.find((t: any) => t.id === id);
+      if (!template) return { success: false, error: `Template not found: ${id}` };
+      // Use the NL parser to create a strategy from the template DSL
+      const parsed = await parseNaturalLanguage(template.description || template.name);
+      if (!parsed) return { success: false, error: 'Failed to parse template' };
+      // Apply overrides if provided
+      const strategyToSave = overrides
+        ? { ...parsed, ...(overrides as Record<string, unknown>) }
+        : parsed;
+      const result = await (strategyEngine as any).createStrategy(strategyToSave);
+      return { success: true, strategyId: result?.id, strategy: result };
+    } catch (err: any) {
+      log.error('[nl:instantiate-template] error:', err);
+      return { success: false, error: err.message };
+    }
+  });
+
   // ── Risk Engine ─────────────────────────────────────────────────────
 
 

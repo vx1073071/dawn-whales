@@ -4,7 +4,7 @@
 
 import { EventEmitter } from 'events';
 import log from 'electron-log';
-import { KLineReplayEngine, KLineBar, ReplayState, ReplaySpeed } from './kline-replay-engine';
+import { KLineReplayEngine, KLineBar, ReplayState, ReplaySpeed } from '../backtest/kline-replay-engine';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

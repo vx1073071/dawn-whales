@@ -1,5 +1,5 @@
 /**
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 
  * J-66-01 [P0]: 创作者等级引擎 (R66 v19 — v1.6.0 GA)
  *

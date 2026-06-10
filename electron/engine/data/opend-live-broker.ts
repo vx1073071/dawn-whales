@@ -1,4 +1,4 @@
-import { EngineError, ErrorCode } from '../errors';
+import { EngineError, ErrorCode } from '../../errors';
 /**
  * J-60-01: Futu OpenD LiveBroker (R60 v19 — v1.3.0 GA)
  * Implements IExecutionBroker for real Futu OpenD trading
@@ -16,7 +16,7 @@ import { EngineError, ErrorCode } from '../errors';
  */
 
 import { EventEmitter } from 'events';
-import { IExecutionBroker } from './ai-to-execution-bridge';
+import { IExecutionBroker } from '../agents/ai-to-execution-bridge';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
