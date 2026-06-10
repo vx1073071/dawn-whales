@@ -17,7 +17,6 @@ interface CapitalFlowItem {
 }
 
 export default function CapitalFlowPage() {
-  const { t } = useTranslation();
 
   const [activeTab, setActiveTab] = useState<'stock' | 'sector' | 'concept'>('stock');
   const [stockData, setStockData] = useState<CapitalFlowItem[]>([]);
@@ -87,7 +86,7 @@ export default function CapitalFlowPage() {
         label: {
           show: true,
           position: 'right',
-          formatter: (p: unknown) => `${(p.value / 1e4).toFixed(0)}万`,
+          formatter: (p: Record<string, unknown>) => `${(p.value / 1e4).toFixed(0)}万`,
           color: '#9ca3af',
           fontSize: 10,
         },
@@ -131,7 +130,7 @@ export default function CapitalFlowPage() {
                 : 'bg-[#1a1a25] border-white/10 text-gray-400 hover:text-white'
             }`}
           >
-            {t === 'stock' ? '个股' : t === 'sector' ? t('components.industry') : t('components.concept')}
+            {t === 'stock' ? '个股' : t === 'sector' ? 'components.industry' : 'components.concept'}
           </button>
         ))}
       </div>
@@ -147,7 +146,7 @@ export default function CapitalFlowPage() {
         {/* Chart */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
           <h2 className="text-sm font-medium text-white mb-3">
-            {activeTab === 'stock' ? '个股' : activeTab === 'sector' ? t('components.industry') : t('components.concept')}资金净流入 Top 15
+            {activeTab === 'stock' ? '个股' : activeTab === 'sector' ? 'components.industry' : 'components.concept'}资金净流入 Top 15
           </h2>
           <div ref={chartRef} style={{ height: 380 }} />
         </div>
@@ -160,7 +159,7 @@ export default function CapitalFlowPage() {
               <thead>
                 <tr className="text-gray-400 text-xs border-b border-white/5">
                   <th className="py-2 text-left">排名</th>
-                  <th className="py-2 text-left">{t("components.name")}</th>
+                  <th className="py-2 text-left">{"components.name"}</th>
                   <th className="py-2 text-right">主力净流入</th>
                   <th className="py-2 text-right">超大单</th>
                   <th className="py-2 text-right">大单</th>
@@ -188,7 +187,7 @@ export default function CapitalFlowPage() {
               </tbody>
             </table>
             {currentData.length === 0 && !loading && (
-              <div className="text-gray-500 text-sm py-8 text-center">{t("components.noData")}</div>
+              <div className="text-gray-500 text-sm py-8 text-center">{"components.noData"}</div>
             )}
           </div>
         </div>

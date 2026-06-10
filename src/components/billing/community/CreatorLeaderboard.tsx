@@ -213,7 +213,7 @@ export default function CreatorLeaderboard({
                 {(['weekly', 'monthly', 'all'] as TimeRange[]).map((t) => (
                   <button key={t} onClick={() => setTimeRange(t)}
                           className={`px-3 py-1.5 rounded-lg text-xs transition-colors ${timeRange === t ? 'text-white bg-white/[0.06]' : 'text-gray-600 hover:text-gray-400'}`}>
-                    {t === 'weekly' ? t('components.thisWeek') : t === 'monthly' ? t('components.thisMonth') : t('components.all')}
+                    {t === 'weekly' ? 'components.thisWeek' : t === 'monthly' ? 'components.thisMonth' : 'components.all'}
                   </button>
                 ))}
               </div>
@@ -225,8 +225,8 @@ export default function CreatorLeaderboard({
               <div className="grid grid-cols-12 gap-2 px-4 py-2.5 bg-white/[0.03] text-[10px] text-gray-600 uppercase tracking-wider">
                 <div className="col-span-1">排名</div>
                 <div className="col-span-4">创作者</div>
-                <div className="col-span-2 text-right">{t("components.returnRate")}</div>
-                <div className="col-span-1 text-right">{t("components.sharpeRatio")}</div>
+                <div className="col-span-2 text-right">{"components.returnRate"}</div>
+                <div className="col-span-1 text-right">{"components.sharpeRatio"}</div>
                 <div className="col-span-2 text-right">订阅数</div>
                 <div className="col-span-2 text-right">收入</div>
               </div>

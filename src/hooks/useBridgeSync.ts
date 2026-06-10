@@ -65,12 +65,12 @@ export function useBridgeSync() {
     };
 
     // Signal listener — show notification in UI
-    const onSignal = (_data: unknown) => {
+    const onSignal = (_data: Record<string, unknown>) => {
       // Strategy signal received — handled by StrategyPage
     };
 
     // Risk alert listener
-    const onRiskAlert = (_data: unknown) => {
+    const onRiskAlert = (_data: Record<string, unknown>) => {
       // Risk alert received — handled by SettingsPage
     };
 

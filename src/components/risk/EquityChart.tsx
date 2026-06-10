@@ -83,10 +83,10 @@ export default function EquityChart({
         backgroundColor: '#1a1a25',
         borderColor: 'rgba(255,255,255,0.1)',
         textStyle: { color: '#e5e7eb', fontSize: 12 },
-        formatter: (params: unknown) => {
+        formatter: (params: Record<string, unknown>) => {
           if (!Array.isArray(params)) return '';
           let html = `<div class="font-mono text-xs">${params[0]?.axisValue}</div>`;
-          params.forEach((p: unknown) => {
+          params.forEach((p: Record<string, unknown>) => {
             const color = p.color;
             const val = typeof p.value === 'number' ? p.value.toFixed(2) : p.value?.[1]?.toFixed(2) || '--';
             html += `<div class="flex items-center gap-2 mt-1"><span style="width:8px;height:8px;border-radius:50%;background:${color}"></span><span>${p.seriesName}: ${val}</span></div>`;

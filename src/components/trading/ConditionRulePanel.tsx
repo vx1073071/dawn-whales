@@ -3,8 +3,6 @@
 
 import { useState, useCallback } from 'react';
 import type { ConditionRule, PriceCondition, TriggerEvent } from '../../../electron/types/condition.js';
-import { useTranslation } from 'react-i18next';
-
 interface Props {
   onBack?: () => void;
 }
@@ -93,19 +91,19 @@ function RuleCard({ rule, onDelete, onToggle, onViewHistory }: {
             onClick={() => onToggle(rule.id, !rule.enabled)}
             className={`text-xs px-2 py-1 rounded ${rule.enabled ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30' : 'bg-green-500/20 text-green-400 hover:bg-green-500/30'} transition-colors`}
           >
-            {rule.enabled ? t('components.disable') : t('components.enable')}
+            {rule.enabled ? 'components.disable' : 'components.enable'}
           </button>
           <button
             onClick={() => onViewHistory(rule.id)}
             className="text-xs px-2 py-1 bg-blue-500/20 text-blue-400 rounded hover:bg-blue-500/30 transition-colors"
           >
-            {t("components.历史")}
+            {"components.历史"}
           </button>
           <button
             onClick={() => onDelete(rule.id)}
             className="text-xs px-2 py-1 bg-white/5 text-gray-400 rounded hover:bg-red-500/20 hover:text-red-400 transition-colors"
           >
-            {t("components.删除")}
+            {"components.删除"}
           </button>
         </div>
       </div>
@@ -127,9 +125,9 @@ function HistoryModal({ ruleId, history, onClose }: {
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50" onClick={onClose}>
       <div className="bg-[#1a1a25] border border-white/10 rounded-xl p-6 max-w-lg w-full mx-4" onClick={e => e.stopPropagation()}>
-        <h3 className="text-white font-semibold mb-4">{t("components.触发历史")}</h3>
+        <h3 className="text-white font-semibold mb-4">{"components.触发历史"}</h3>
         {filtered.length === 0 ? (
-          <p className="text-gray-400 text-sm">{t("components.暂无触发记录")}</p>
+          <p className="text-gray-400 text-sm">{"components.暂无触发记录"}</p>
         ) : (
           <div className="flex flex-col gap-2 max-h-64 overflow-y-auto">
             {filtered.slice().reverse().map((e, i) => (
@@ -271,8 +269,7 @@ function CreateRuleForm({ onSubmit, onCancel }: {
 // ── Main component ─────────────────────────────────────────────────────────────
 
 export default function ConditionRulePanel({ onBack }: Props) {
-  const { t } = useTranslation();
-  const [rules, setRules] = useState<ConditionRule[]>([]);
+    const [rules, setRules] = useState<ConditionRule[]>([]);
   const [history, setHistory] = useState<TriggerEvent[]>([]);
   const [showCreate, setShowCreate] = useState(false);
   const [historyRuleId, setHistoryRuleId] = useState<string | null>(null);
@@ -313,9 +310,9 @@ export default function ConditionRulePanel({ onBack }: Props) {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             {onBack && (
-              <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm">{t("components.back")}</button>
+              <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm">{"components.back"}</button>
             )}
-            <h1 className="text-xl font-bold">{t("components.conditionRule")}</h1>
+            <h1 className="text-xl font-bold">{"components.conditionRule"}</h1>
             <span className="text-xs bg-[#C9A046]/20 text-[#C9A046] px-2 py-0.5 rounded">Phase 4.2</span>
           </div>
           <div className="flex gap-2">
@@ -324,7 +321,7 @@ export default function ConditionRulePanel({ onBack }: Props) {
               onChange={e => setFilter(e.target.value as any)}
               className="bg-[#1a1a25] border border-white/10 rounded px-3 py-1.5 text-sm text-gray-300 focus:border-[#C9A046] focus:outline-none"
             >
-              <option value="all">{t("components.all")}</option>
+              <option value="all">{"components.all"}</option>
               <option value="active">仅启用</option>
               <option value="disabled">仅禁用</option>
             </select>

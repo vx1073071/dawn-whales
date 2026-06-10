@@ -5,8 +5,6 @@ import StrategyCompareModal from './StrategyCompareModal';
 import ConditionRulePanel from '../trading/ConditionRulePanel';
 import ClosedLoopConfigPanel from './ClosedLoopConfigPanel';
 import AdaptiveParamPanel from './AdaptiveParamPanel';
-import { useTranslation } from "react-i18next";
-
 type CreateMode = null | 'ai' | 'template' | 'form' | 'condition' | 'closedLoop' | 'adaptive';
 
 interface ParsedStrategy {
@@ -60,8 +58,8 @@ export default function StrategyPage() {
       {/* Page header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">{t('strategyWorkshop')}</h1>
-          <p className="text-gray-400 text-sm">{t('strategyWorkshopDesc')}</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{'strategyWorkshop'}</h1>
+          <p className="text-gray-400 text-sm">{'strategyWorkshopDesc'}</p>
         </div>
         <div className="flex items-center gap-3">
           <span className="text-xs text-gray-500">{t('strategyCount', { count: strategies.length })}</span>
@@ -130,21 +128,21 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
       <div className="grid grid-cols-3 gap-4">
         <button onClick={() => onSelect('ai')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
           <div className="text-3xl mb-3">💬</div>
-          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{t('说出来')}</h3>
-          <p className="text-gray-400 text-xs leading-relaxed">{t('用自然语言描述你的策略')}<br/>{t('AI 帮你自动生成可执行策略')}</p>
-          <div className="mt-3 text-[#D4A853] text-xs font-medium">{t('推荐新手 →')}</div>
+          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{'说出来'}</h3>
+          <p className="text-gray-400 text-xs leading-relaxed">{'用自然语言描述你的策略'}<br/>{'AI 帮你自动生成可执行策略'}</p>
+          <div className="mt-3 text-[#D4A853] text-xs font-medium">{'推荐新手 →'}</div>
         </button>
         <button onClick={() => onSelect('template')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
           <div className="text-3xl mb-3">📋</div>
-          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{t('选模板')}</h3>
-          <p className="text-gray-400 text-xs leading-relaxed">{t('经典策略模板库')}<br/>{t('选一个改改参数就能用')}</p>
-          <div className="mt-3 text-gray-500 text-xs">{t('8 个策略模板')}</div>
+          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{'选模板'}</h3>
+          <p className="text-gray-400 text-xs leading-relaxed">{'经典策略模板库'}<br/>{'选一个改改参数就能用'}</p>
+          <div className="mt-3 text-gray-500 text-xs">{'8 个策略模板'}</div>
         </button>
         <button onClick={() => onSelect('form')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
           <div className="text-3xl mb-3">📊</div>
-          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{t('填表单')}</h3>
-          <p className="text-gray-400 text-xs leading-relaxed">{t('精确控制每个参数')}<br/>{t('完全自定义策略')}</p>
-          <div className="mt-3 text-gray-500 text-xs">{t('完全自定义')}</div>
+          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{'填表单'}</h3>
+          <p className="text-gray-400 text-xs leading-relaxed">{'精确控制每个参数'}<br/>{'完全自定义策略'}</p>
+          <div className="mt-3 text-gray-500 text-xs">{'完全自定义'}</div>
         </button>
       </div>
       {/* Phase 4.2: Condition Rules */}
@@ -153,8 +151,8 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
           <div className="flex items-center gap-3">
             <div className="text-2xl">⚡</div>
             <div>
-              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">{t('条件规则')}</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">{t('价格/指标自动触发 · 无需手动盯盘 · 智能条件执行')}</p>
+              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">{'条件规则'}</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">{'价格/指标自动触发 · 无需手动盯盘 · 智能条件执行'}</p>
             </div>
           </div>
           <span className="text-[#D4A853] text-xs font-medium">Phase 4.2 →</span>
@@ -166,8 +164,8 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
           <div className="flex items-center gap-3">
             <div className="text-2xl">🔄</div>
             <div>
-              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">{t('闭环执行')}</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">{t('止损止盈 · 追踪止损 · 再平衡 · 全自动闭环交易')}</p>
+              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">{'闭环执行'}</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">{'止损止盈 · 追踪止损 · 再平衡 · 全自动闭环交易'}</p>
             </div>
           </div>
           <span className="text-[#D4A853] text-xs font-medium">Phase 4.3 →</span>
@@ -179,8 +177,8 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
           <div className="flex items-center gap-3">
             <div className="text-2xl">🧬</div>
             <div>
-              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">{t('自适应学习')}</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">{t('参数自优化 · 奖励函数 · 探索/利用平衡 · 持续进化')}</p>
+              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">{'自适应学习'}</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">{'参数自优化 · 奖励函数 · 探索/利用平衡 · 持续进化'}</p>
             </div>
           </div>
           <span className="text-[#D4A853] text-xs font-medium">Phase 4.4 →</span>
@@ -275,11 +273,11 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
 
   return (
     <div className="mb-8">
-      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{t("components.back")}</button>
+      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{"components.back"}</button>
 
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
-        <h2 className="text-white font-semibold mb-1 flex items-center gap-2">{t('💬 用自然语言描述你的策略')}</h2>
-        <p className="text-gray-400 text-xs mb-4">{t('像跟朋友聊天一样说就行，AI 自动解析成可执行策略')}</p>
+        <h2 className="text-white font-semibold mb-1 flex items-center gap-2">{'💬 用自然语言描述你的策略'}</h2>
+        <p className="text-gray-400 text-xs mb-4">{'像跟朋友聊天一样说就行，AI 自动解析成可执行策略'}</p>
 
         <textarea
           value={input}
@@ -293,7 +291,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
           <button onClick={handleParse} disabled={!input.trim() || loading} className="px-4 py-2 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
             {loading ? '解析中...' : '🤖 解析策略'}
           </button>
-          <span className="text-gray-500 text-xs">{t('或试试：')}</span>
+          <span className="text-gray-500 text-xs">{'或试试：'}</span>
         </div>
 
         <div className="flex flex-wrap gap-2 mt-2">
@@ -325,7 +323,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm mb-4">
             <div className="bg-[#12121a] rounded-lg p-3">
-              <div className="text-gray-500 text-xs mb-1">{t('策略类型')}</div>
+              <div className="text-gray-500 text-xs mb-1">{'策略类型'}</div>
               <div className="text-gray-200 font-mono text-xs">{parsed.strategy.type}</div>
             </div>
             {Object.entries(parsed.strategy.params).slice(0, 3).map(([k, v]) => (
@@ -385,9 +383,9 @@ function BacktestPanel({ result }: { result: BacktestResult }) {
         <MetricCard label="总收益" value={`${result.totalReturn > 0 ? '+' : ''}${result.totalReturn}%`} color={returnColor} />
         <MetricCard label="年化收益" value={`${result.annualReturn > 0 ? '+' : ''}${result.annualReturn}%`} color={returnColor} />
         <MetricCard label="夏普比率" value={result.sharpeRatio.toFixed(2)} color={result.sharpeRatio > 1 ? 'text-emerald-400' : result.sharpeRatio > 0 ? 'text-yellow-400' : 'text-red-400'} />
-        <MetricCard label={t('maxDrawdown')} value={`-${result.maxDrawdown}%`} color="text-red-400" />
-        <MetricCard label={t('winRate')} value={`${result.winRate}%`} color={result.winRate > 50 ? 'text-emerald-400' : 'text-yellow-400'} />
-        <MetricCard label={t('profitFactor')} value={result.profitFactor === Infinity ? '∞' : result.profitFactor.toFixed(2)} color={result.profitFactor > 1.5 ? 'text-emerald-400' : 'text-yellow-400'} />
+        <MetricCard label={'maxDrawdown'} value={`-${result.maxDrawdown}%`} color="text-red-400" />
+        <MetricCard label={'winRate'} value={`${result.winRate}%`} color={result.winRate > 50 ? 'text-emerald-400' : 'text-yellow-400'} />
+        <MetricCard label={'profitFactor'} value={result.profitFactor === Infinity ? '∞' : result.profitFactor.toFixed(2)} color={result.profitFactor > 1.5 ? 'text-emerald-400' : 'text-yellow-400'} />
       </div>
 
       {/* Equity curve */}
@@ -504,15 +502,15 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
 
   return (
     <div className="mb-8">
-      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{t("components.back")}</button>
+      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{"components.back"}</button>
 
       <div className="flex items-center gap-3 mb-4">
-        <h2 className="text-white font-semibold">{t('📋 策略模板库')}</h2>
+        <h2 className="text-white font-semibold">{'📋 策略模板库'}</h2>
         <div className="flex gap-2 text-xs">
-          <button className="px-3 py-1 bg-[#C9A046]/20 text-[#D4A853] rounded-full">{t("components.all")}</button>
-          <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">{t("components.trend")}</button>
-          <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">{t('动量')}</button>
-          <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">{t('均值回归')}</button>
+          <button className="px-3 py-1 bg-[#C9A046]/20 text-[#D4A853] rounded-full">{"components.all"}</button>
+          <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">{"components.trend"}</button>
+          <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">{'动量'}</button>
+          <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">{'均值回归'}</button>
         </div>
       </div>
 
@@ -543,7 +541,7 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
           </button>
         ))}
         {templates.length === 0 && (
-          <div className="col-span-3 text-center py-8 text-gray-500 text-sm">{t('加载模板中...')}</div>
+          <div className="col-span-3 text-center py-8 text-gray-500 text-sm">{'加载模板中...'}</div>
         )}
       </div>
     </div>
@@ -570,7 +568,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
       const load = async () => {
         try {
           const list = await getAllStrategies();
-          const existing = list.find((s: unknown) => s.id === editId);
+          const existing = list.find((s: Record<string, unknown>) => s.id === editId);
           if (existing) {
             setStrategyName(existing.name || '');
             setSymbol(existing.symbol || existing.targetCode || 'US.TQQQ');
@@ -625,14 +623,14 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
 
   return (
     <div className="mb-8">
-      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{t("components.back")}</button>
+      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{"components.back"}</button>
 
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 space-y-5">
         <h2 className="text-white font-semibold">{editId ? '✏️ 编辑策略' : '📊 表单模式 — 精确配置'}</h2>
 
         {/* Strategy name */}
         <div>
-          <label className="block text-gray-400 text-xs mb-1">{t('strategyName')}</label>
+          <label className="block text-gray-400 text-xs mb-1">{'strategyName'}</label>
           <input
             type="text"
             value={strategyName}
@@ -644,7 +642,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
 
         {/* Strategy type */}
         <div>
-          <label className="block text-gray-400 text-xs mb-1">{t('策略类型')}</label>
+          <label className="block text-gray-400 text-xs mb-1">{'策略类型'}</label>
           <select value={strategyType} onChange={(e) => setStrategyType(e.target.value)} className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50">
             {Object.entries(typeLabels).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
@@ -652,7 +650,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
 
         {/* Symbol */}
         <div>
-          <label className="block text-gray-400 text-xs mb-1">{t('交易标的')}</label>
+          <label className="block text-gray-400 text-xs mb-1">{'交易标的'}</label>
           <select value={symbol} onChange={(e) => setSymbol(e.target.value)} className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50">
             {['US.TQQQ','US.SQQQ','US.QQQ','US.SPY','US.SOXL','US.AAPL','US.NVDA','US.MSFT','US.TSLA','US.AMD'].map((s) => (
               <option key={s} value={s}>{s}</option>
@@ -676,10 +674,10 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
 
         {/* Risk management */}
         <div className="border-t border-white/5 pt-4">
-          <h3 className="text-gray-300 text-xs font-medium uppercase tracking-wider mb-3">{t('风控参数')}</h3>
+          <h3 className="text-gray-300 text-xs font-medium uppercase tracking-wider mb-3">{'风控参数'}</h3>
           <div className="grid grid-cols-2 gap-4">
-            <SliderInput label={t('stopLoss')} value={stopLoss} min={1} max={30} onChange={setStopLoss} unit="%" />
-            <SliderInput label={t('takeProfit')} value={takeProfit} min={5} max={100} onChange={setTakeProfit} unit="%" />
+            <SliderInput label={'stopLoss'} value={stopLoss} min={1} max={30} onChange={setStopLoss} unit="%" />
+            <SliderInput label={'takeProfit'} value={takeProfit} min={5} max={100} onChange={setTakeProfit} unit="%" />
           </div>
         </div>
 
@@ -705,7 +703,7 @@ function SliderInput({ label, value, min, max, onChange, unit = '' }: { label: s
 
 // ── My Strategies ──────────────────────────────────────────────────────────
 
-function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { strategies: any[]; onSelect: (id: string) => void; onEdit: (id: string) => void; onDelete: (id: string) => void; onCompare: (strategy: unknown) => void }) {
+function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { strategies: any[]; onSelect: (id: string) => void; onEdit: (id: string) => void; onDelete: (id: string) => void; onCompare: (strategy: Record<string, unknown>) => void }) {
   const statusColors: Record<string, string> = {
     draft: 'text-gray-400 bg-gray-500/20',
     backtested: 'text-blue-400 bg-blue-500/20',
@@ -715,17 +713,17 @@ function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { s
   };
 
   const statusLabels: Record<string, string> = {
-    draft: '草稿', backtested: '已回测', live: '🟢 运行中', stopped: t('stopped'), simulating: '模拟中',
+    draft: '草稿', backtested: '已回测', live: '🟢 运行中', stopped: 'stopped', simulating: '模拟中',
   };
 
   if (strategies.length === 0) {
     return (
       <div>
-        <h2 className="text-white font-semibold mb-3">{t('我的策略')}</h2>
+        <h2 className="text-white font-semibold mb-3">{'我的策略'}</h2>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
           <div className="text-3xl mb-2 opacity-40">🐋</div>
-          <p className="text-gray-400 text-sm">{t('还没有策略')}</p>
-          <p className="text-gray-500 text-xs mt-1">{t('用上面三种方式创建你的第一个策略')}</p>
+          <p className="text-gray-400 text-sm">{'还没有策略'}</p>
+          <p className="text-gray-500 text-xs mt-1">{'用上面三种方式创建你的第一个策略'}</p>
         </div>
       </div>
     );
@@ -733,7 +731,7 @@ function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { s
 
   return (
     <div>
-      <h2 className="text-white font-semibold mb-3">{t('我的策略')}</h2>
+      <h2 className="text-white font-semibold mb-3">{'我的策略'}</h2>
       <div className="space-y-2">
         {strategies.map((s) => (
           <button
@@ -789,7 +787,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
 
   async function loadDetail() {
     const list = await getAllStrategies();
-    const found = list.find((s: unknown) => s.id === strategyId);
+    const found = list.find((s: Record<string, unknown>) => s.id === strategyId);
     setStrategy(found || null);
     if (found?.backtestResult) {
       setBacktestResult(found.backtestResult);
@@ -840,8 +838,8 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
   if (!strategy) {
     return (
       <div>
-        <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{t("components.back")}</button>
-        <p className="text-gray-500">{t("components.loading")}</p>
+        <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{"components.back"}</button>
+        <p className="text-gray-500">{"components.loading"}</p>
       </div>
     );
   }
@@ -850,7 +848,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
 
   return (
     <div>
-      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{t("components.back")}</button>
+      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{"components.back"}</button>
 
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
         <div className="flex items-center justify-between mb-4">
@@ -865,22 +863,22 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
           <div className="bg-[#12121a] rounded-lg p-3">
-            <div className="text-gray-500 text-xs mb-1">{t('标的')}</div>
+            <div className="text-gray-500 text-xs mb-1">{'标的'}</div>
             <div className="text-[#D4A853] font-mono text-sm">{strategy.symbol}</div>
           </div>
           <div className="bg-[#12121a] rounded-lg p-3">
-            <div className="text-gray-500 text-xs mb-1">{t("components.type")}</div>
+            <div className="text-gray-500 text-xs mb-1">{"components.type"}</div>
             <div className="text-gray-200 text-sm">{strategy.strategy?.type}</div>
           </div>
           {strategy.strategy?.stopLoss && (
             <div className="bg-[#12121a] rounded-lg p-3">
-              <div className="text-gray-500 text-xs mb-1">{t("components.stopLoss")}</div>
+              <div className="text-gray-500 text-xs mb-1">{"components.stopLoss"}</div>
               <div className="text-red-400 text-sm">{strategy.strategy.stopLoss}%</div>
             </div>
           )}
           {strategy.strategy?.takeProfit && (
             <div className="bg-[#12121a] rounded-lg p-3">
-              <div className="text-gray-500 text-xs mb-1">{t("components.takeProfit")}</div>
+              <div className="text-gray-500 text-xs mb-1">{"components.takeProfit"}</div>
               <div className="text-emerald-400 text-sm">{strategy.strategy.takeProfit}%</div>
             </div>
           )}

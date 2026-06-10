@@ -130,7 +130,7 @@ export default function FactorExposurePage() {
           itemStyle: { color: f.contribution >= 0 ? '#ef4444' : '#10b981' },
         })),
         barWidth: '60%',
-        label: { show: true, position: 'right', color: '#e5e7eb', fontSize: 10, formatter: (p: unknown) => `$${p.value}` },
+        label: { show: true, position: 'right', color: '#e5e7eb', fontSize: 10, formatter: (p: Record<string, unknown>) => `$${p.value}` },
       }],
     });
 

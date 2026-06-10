@@ -22,7 +22,6 @@ interface StockMargin {
 }
 
 export default function MarginDashboard() {
-  const { t } = useTranslation();
 
   const [balanceHistory, setBalanceHistory] = useState<MarginBalance[]>([]);
   const [marginRank, setMarginRank] = useState<StockMargin[]>([]);
@@ -179,7 +178,7 @@ export default function MarginDashboard() {
                 </div>
               </div>
             ))}
-            {marginRank.length === 0 && <div className="text-gray-500 text-sm py-4 text-center">{t("components.noData")}</div>}
+            {marginRank.length === 0 && <div className="text-gray-500 text-sm py-4 text-center">{"components.noData"}</div>}
           </div>
         </div>
 
@@ -202,7 +201,7 @@ export default function MarginDashboard() {
                 </div>
               </div>
             ))}
-            {shortRank.length === 0 && <div className="text-gray-500 text-sm py-4 text-center">{t("components.noData")}</div>}
+            {shortRank.length === 0 && <div className="text-gray-500 text-sm py-4 text-center">{"components.noData"}</div>}
           </div>
         </div>
       </div>

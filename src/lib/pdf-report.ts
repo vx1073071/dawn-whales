@@ -145,7 +145,7 @@ export function backtestToReport(result: unknown): ReportData {
         type: 'table',
         data: {
           headers: ['入场日期', '方向', '入场价', '出场日期', '出场价', '盈亏', '盈亏%', '持有天数'],
-          rows: (result.trades || []).map((t: unknown) => [
+          rows: (result.trades || []).map((t: Record<string, unknown>) => [
             t.entryDate, t.side, t.entryPrice.toFixed(2), t.exitDate, t.exitPrice.toFixed(2),
             `${t.pnl >= 0 ? '+' : ''}${t.pnl.toFixed(2)}`,
             `${(t.pnlPercent * 100).toFixed(2)}%`,

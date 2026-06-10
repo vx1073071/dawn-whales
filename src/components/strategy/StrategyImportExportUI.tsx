@@ -11,8 +11,6 @@
  */
 
 import React, { useState, useCallback, useMemo } from 'react';
-import { useTranslation } from "react-i18next";
-
 // ── Types ───────────────────────────────────────────────────────────────
 
 interface StrategyParam {
@@ -56,8 +54,8 @@ const MOCK_STRATEGY: StrategyConfig = {
   updatedAt: '2026-06-05T14:30:00Z',
   params: { maFast: 10, maSlow: 30, stopLoss: 0.05, takeProfit: 0.10, maxPosition: 1000, useVolume: 1 },
   paramSpecs: [
-    { name: 'maFast', value: 10, type: 'int', min: 3, max: 50, description: t('fastPeriod') },
-    { name: 'maSlow', value: 30, type: 'int', min: 10, max: 200, description: t('slowPeriod') },
+    { name: 'maFast', value: 10, type: 'int', min: 3, max: 50, description: 'fastPeriod' },
+    { name: 'maSlow', value: 30, type: 'int', min: 10, max: 200, description: 'slowPeriod' },
     { name: 'stopLoss', value: 0.05, type: 'number', min: 0.01, max: 0.20, description: '止损比例' },
     { name: 'takeProfit', value: 0.10, type: 'number', min: 0.01, max: 0.50, description: '止盈比例' },
     { name: 'maxPosition', value: 1000, type: 'int', min: 100, max: 10000, description: '最大持仓量' },
@@ -75,8 +73,7 @@ interface StrategyImportExportProps {
 }
 
 export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ className }) => {
-  const { t } = useTranslation();
-  const [activeStrategy, _setActiveStrategy] = useState<StrategyConfig>(MOCK_STRATEGY);
+    const [activeStrategy, _setActiveStrategy] = useState<StrategyConfig>(MOCK_STRATEGY);
   const [importText, setImportText] = useState('');
   const [importError, setImportError] = useState<string | null>(null);
   const [importedStrategy, setImportedStrategy] = useState<StrategyConfig | null>(null);
@@ -324,7 +321,7 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
                   <table className="w-full text-xs">
                     <thead>
                       <tr className="text-gray-500 border-b border-gray-700/50">
-                        <th className="text-left py-1.5 pr-3">{t('parameters')}</th>
+                        <th className="text-left py-1.5 pr-3">{'parameters'}</th>
                         <th className="text-left py-1.5 pr-3">当前值</th>
                         <th className="text-left py-1.5 pr-3">导入值</th>
                         <th className="text-left py-1.5">变化</th>

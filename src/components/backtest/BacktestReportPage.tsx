@@ -274,7 +274,7 @@ export default function BacktestReportPage() {
         <div className="bg-[#12121a] rounded-xl border border-white/5 p-6">
           <div className="text-lg font-medium text-white mb-4">{t('选择策略进行回测')}</div>
           <div className="grid grid-cols-2 gap-3">
-            {strategies.map((s: unknown) => (
+            {strategies.map((s: Record<string, unknown>) => (
               <button
                 key={s.id}
                 onClick={() => setSelectedId(s.id)}

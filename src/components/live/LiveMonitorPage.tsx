@@ -1,7 +1,5 @@
 ﻿import { useState, useEffect, useRef, useCallback } from 'react';
 import * as api from '../../lib/bridge-api';
-import { useTranslation } from "react-i18next";
-
 interface SignalLog {
   id: string;
   time: string;
@@ -34,7 +32,6 @@ interface LiveQuote {
 }
 
 export default function LiveMonitorPage() {
-  const { t } = useTranslation();
 
   const [strategies, setStrategies] = useState<LiveStrategy[]>([]);
   const [signalLog, setSignalLog] = useState<SignalLog[]>([]);
@@ -50,9 +47,9 @@ export default function LiveMonitorPage() {
   const [showAddInput, setShowAddInput] = useState(false);
 
   // ── Stable handlers via useCallback (avoids re-registering IPC listeners) ──
-  const handleQuotePush = useCallback((data: unknown) => {
+  const handleQuotePush = useCallback((data: Record<string, unknown>) => {
     const quoteList = Array.isArray(data) ? data : [data];
-    quoteList.forEach((q: unknown) => {
+    quoteList.forEach((q: Record<string, unknown>) => {
       if (!q || !q.code) return;
       const quote: LiveQuote = {
         code: q.code,
@@ -79,7 +76,7 @@ export default function LiveMonitorPage() {
     setQuotes(new Map(quotesRef.current));
   }, []);
 
-  const handleSignalPush = useCallback((data: unknown) => {
+  const handleSignalPush = useCallback((data: Record<string, unknown>) => {
     const log: SignalLog = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       time: new Date().toLocaleTimeString(),
@@ -127,7 +124,7 @@ export default function LiveMonitorPage() {
   async function loadStrategies() {
     try {
       const all = await api.getStrategies();
-      const live: LiveStrategy[] = (all || []).map((s: unknown) => ({
+      const live: LiveStrategy[] = (all || []).map((s: Record<string, unknown>) => ({
         id: s.id,
         name: s.name,
         code: s.targetCode || s.code || '',
@@ -224,8 +221,8 @@ export default function LiveMonitorPage() {
   };
 
   const typeLabels: Record<string, string> = {
-    BUY: '买入', SELL: '卖出', STOP_LOSS: t('components.stopLoss'),
-    TAKE_PROFIT: t('components.takeProfit'), ALERT: '告警', ERROR: t('components.error'),
+    BUY: '买入', SELL: '卖出', STOP_LOSS: 'components.stopLoss',
+    TAKE_PROFIT: 'components.takeProfit', ALERT: '告警', ERROR: 'components.error',
   };
 
   const statusColors: Record<string, string> = {

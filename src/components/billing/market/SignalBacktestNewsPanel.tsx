@@ -83,26 +83,26 @@ function SignalBacktestTab() {
       {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10, marginBottom: 20 }}>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t('总信号')}</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{'总信号'}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#818CF8' }}>{summary.totalSignals}</div>
         </div>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t("components.winRate")}</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{"components.winRate"}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#10B981' }}>{summary.winRate.toFixed(0)}%</div>
         </div>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t("components.profitLossRatio")}</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{"components.profitLossRatio"}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#D4A853' }}>{summary.profitFactor.toFixed(2)}</div>
         </div>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t("components.sharpeRatio")}</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{"components.sharpeRatio"}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#34D399' }}>{summary.sharpe.toFixed(2)}</div>
         </div>
       </div>
 
       {/* PnL chart bar */}
       <div style={{ marginBottom: 16, padding: '14px 16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937' }}>
-        <div style={{ fontSize: 12, color: '#9CA3AF', marginBottom: 8 }}>{t('📊 逐笔 PnL')}</div>
+        <div style={{ fontSize: 12, color: '#9CA3AF', marginBottom: 8 }}>{'📊 逐笔 PnL'}</div>
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 80 }}>
           {SIGNAL_TRADES.map(t => {
             const maxAbs = 10;
@@ -126,13 +126,13 @@ function SignalBacktestTab() {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
           <thead>
             <tr style={{ borderBottom: '1px solid #374151' }}>
-              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{t("components.date")}</th>
-              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{t('标的')}</th>
-              <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>{t("components.direction")}</th>
-              <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>{t('入场')}</th>
-              <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>{t('出场')}</th>
+              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{"components.date"}</th>
+              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{'标的'}</th>
+              <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>{"components.direction"}</th>
+              <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>{'入场'}</th>
+              <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>{'出场'}</th>
               <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>PnL</th>
-              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{t('原因')}</th>
+              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{'原因'}</th>
             </tr>
           </thead>
           <tbody>
@@ -175,7 +175,7 @@ function RealtimeNewsTab() {
       {/* Sentiment summary */}
       <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center' }}>
         <div style={{ padding: '10px 16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 11, color: '#6B7280' }}>{t('市场情绪')}</span>
+          <span style={{ fontSize: 11, color: '#6B7280' }}>{'市场情绪'}</span>
           <SentimentBar value={Math.round(avgSentiment)} />
         </div>
         {['all', 'positive', 'negative', 'neutral'].map(f => (
@@ -184,7 +184,7 @@ function RealtimeNewsTab() {
             background: sentimentFilter === f ? '#6366F118' : 'transparent', color: sentimentFilter === f ? '#818CF8' : '#6B7280',
             fontSize: 12, cursor: 'pointer',
           }}>
-            {f === 'all' ? t('components.all') : f === 'positive' ? '😊 正面' : f === 'negative' ? '😟 负面' : '😐 中性'}
+            {f === 'all' ? 'components.all' : f === 'positive' ? '😊 正面' : f === 'negative' ? '😟 负面' : '😐 中性'}
           </button>
         ))}
       </div>
@@ -246,12 +246,12 @@ export default function SignalBacktestNewsPanel() {
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'backtest' ? '#6366F1' : '#1F2937',
           color: tab === 'backtest' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>{t('📈 信号回测')}</button>
+        }}>{'📈 信号回测'}</button>
         <button onClick={() => setTab('news')} style={{
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'news' ? '#6366F1' : '#1F2937',
           color: tab === 'news' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>{t('📰 实时新闻')}</button>
+        }}>{'📰 实时新闻'}</button>
       </div>
 
       {tab === 'backtest' && <SignalBacktestTab />}

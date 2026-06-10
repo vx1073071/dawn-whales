@@ -50,31 +50,31 @@ const THEMES: Record<Theme, ThemeColors> = {
 const STRINGS: Record<Lang, LangStrings> = {
   'zh-CN': {
     appName: 'Dawn Whales', settings: '设置',
-    darkMode: '深色模式', lightMode: '浅色模式', followSystem: t('跟随系统'), themeLabel: '主题',
+    darkMode: '深色模式', lightMode: '浅色模式', followSystem: '跟随系统', themeLabel: '主题',
     langLabel: '语言',
-    errCodeFormat: t('代码格式错误'), errParamRange: t('参数超出范围'), errNetwork: t('网络错误'), errServer: t('服务器错误'),
-    friendlyCodeHK: t('港股代码是5位数字哦（如 00700），试试重新输入？'),
-    friendlyCodeUS: t('美股代码是英文字母（如 AAPL），大小写都可以~'),
-    friendlyParamShort: t('快线5~20适合短线快进快出，调整一下试试？'),
-    friendlyParamLong: t('慢线20~200适合中长期趋势，再试试？'),
-    friendlyNetwork: t('网络不太稳定，检查一下连接后重试？'),
-    friendlyServer: t('服务器繁忙中，稍等片刻自动恢复~'),
+    errCodeFormat: '代码格式错误', errParamRange: '参数超出范围', errNetwork: '网络错误', errServer: '服务器错误',
+    friendlyCodeHK: '港股代码是5位数字哦（如 00700），试试重新输入？',
+    friendlyCodeUS: '美股代码是英文字母（如 AAPL），大小写都可以~',
+    friendlyParamShort: '快线5~20适合短线快进快出，调整一下试试？',
+    friendlyParamLong: '慢线20~200适合中长期趋势，再试试？',
+    friendlyNetwork: '网络不太稳定，检查一下连接后重试？',
+    friendlyServer: '服务器繁忙中，稍等片刻自动恢复~',
     save: '保存', cancel: '取消', confirm: '确认', close: '关闭',
-    loading: '加载中...', empty: '暂无数据', error: t('出错了'),
+    loading: '加载中...', empty: '暂无数据', error: '出错了',
   },
   'zh-TW': {
-    appName: 'Dawn Whales', settings: t('設定'),
-    darkMode: '深色模式', lightMode: t('淺色模式'), followSystem: t('跟隨系統'), themeLabel: t('主題'),
-    langLabel: t('語言'),
-    errCodeFormat: t('代碼格式錯誤'), errParamRange: t('參數超出範圍'), errNetwork: t('網路錯誤'), errServer: t('伺服器錯誤'),
-    friendlyCodeHK: t('港股代碼是5位數字喔（如 00700），試試重新輸入？'),
-    friendlyCodeUS: t('美股代碼是英文字母（如 AAPL），大小寫都可以~'),
-    friendlyParamShort: t('快線5~20適合短線快進快出，調整一下試試？'),
-    friendlyParamLong: t('慢線20~200適合中長期趨勢，再試試？'),
-    friendlyNetwork: t('網路不太穩定，檢查一下連線後重試？'),
-    friendlyServer: t('伺服器繁忙中，稍等片刻自動恢復~'),
-    save: t('儲存'), cancel: '取消', confirm: t('確認'), close: t('關閉'),
-    loading: t('載入中...'), empty: t('暫無資料'), error: t('出錯了'),
+    appName: 'Dawn Whales', settings: '設定',
+    darkMode: '深色模式', lightMode: '淺色模式', followSystem: '跟隨系統', themeLabel: '主題',
+    langLabel: '語言',
+    errCodeFormat: '代碼格式錯誤', errParamRange: '參數超出範圍', errNetwork: '網路錯誤', errServer: '伺服器錯誤',
+    friendlyCodeHK: '港股代碼是5位數字喔（如 00700），試試重新輸入？',
+    friendlyCodeUS: '美股代碼是英文字母（如 AAPL），大小寫都可以~',
+    friendlyParamShort: '快線5~20適合短線快進快出，調整一下試試？',
+    friendlyParamLong: '慢線20~200適合中長期趨勢，再試試？',
+    friendlyNetwork: '網路不太穩定，檢查一下連線後重試？',
+    friendlyServer: '伺服器繁忙中，稍等片刻自動恢復~',
+    save: '儲存', cancel: '取消', confirm: '確認', close: '關閉',
+    loading: '載入中...', empty: '暫無資料', error: '出錯了',
   },
   'en': {
     appName: 'Dawn Whales', settings: 'Settings',
@@ -91,32 +91,32 @@ const STRINGS: Record<Lang, LangStrings> = {
     loading: 'Loading...', empty: 'No data', error: 'Error',
   },
   'ja': {
-    appName: 'Dawn Whales', settings: t('設定'),
-    darkMode: t('ダーク'), lightMode: t('ライト'), followSystem: t('システム'), themeLabel: t('テーマ'),
-    langLabel: t('言語'),
-    errCodeFormat: t('コード形式エラー'), errParamRange: t('パラメータ範囲外'), errNetwork: t('ネットワークエラー'), errServer: t('サーバーエラー'),
-    friendlyCodeHK: t('香港株のコードは5桁の数字です（例：00700）。もう一度お試しください！'),
-    friendlyCodeUS: t('米国株のティッカーは英字です（例：AAPL）。大文字小文字は問いません〜'),
-    friendlyParamShort: t('短期MA 5-20は短期売買向けです。調整してみてください。'),
-    friendlyParamLong: t('長期MA 20-200はトレンドフォロー向けです。もう一度！'),
-    friendlyNetwork: t('ネットワークが不安定です。接続を確認してください。'),
-    friendlyServer: t('サーバーが混雑しています。しばらくお待ちください〜'),
-    save: '保存', cancel: t('キャンセル'), confirm: t('確認'), close: t('閉じる'),
-    loading: t('読み込み中...'), empty: t('データなし'), error: t('エラー'),
+    appName: 'Dawn Whales', settings: '設定',
+    darkMode: 'ダーク', lightMode: 'ライト', followSystem: 'システム', themeLabel: 'テーマ',
+    langLabel: '言語',
+    errCodeFormat: 'コード形式エラー', errParamRange: 'パラメータ範囲外', errNetwork: 'ネットワークエラー', errServer: 'サーバーエラー',
+    friendlyCodeHK: '香港株のコードは5桁の数字です（例：00700）。もう一度お試しください！',
+    friendlyCodeUS: '米国株のティッカーは英字です（例：AAPL）。大文字小文字は問いません〜',
+    friendlyParamShort: '短期MA 5-20は短期売買向けです。調整してみてください。',
+    friendlyParamLong: '長期MA 20-200はトレンドフォロー向けです。もう一度！',
+    friendlyNetwork: 'ネットワークが不安定です。接続を確認してください。',
+    friendlyServer: 'サーバーが混雑しています。しばらくお待ちください〜',
+    save: '保存', cancel: 'キャンセル', confirm: '確認', close: '閉じる',
+    loading: '読み込み中...', empty: 'データなし', error: 'エラー',
   },
   'ko': {
-    appName: 'Dawn Whales', settings: t('설정'),
-    darkMode: t('다크'), lightMode: t('라이트'), followSystem: t('시스템'), themeLabel: t('테마'),
-    langLabel: t('언어'),
-    errCodeFormat: t('코드 형식 오류'), errParamRange: t('매개변수 범위 초과'), errNetwork: t('네트워크 오류'), errServer: t('서버 오류'),
-    friendlyCodeHK: t('홍콩 주식 코드는 5자리 숫자입니다 (예: 00700). 다시 입력해보세요!'),
-    friendlyCodeUS: t('미국 주식 티커는 영문입니다 (예: AAPL). 대소문자 상관없어요~'),
-    friendlyParamShort: t('단기 MA 5-20은 단기 스윙 트레이딩용입니다. 조정해보세요.'),
-    friendlyParamLong: t('장기 MA 20-200은 추세 추종용입니다. 다시 시도해보세요!'),
-    friendlyNetwork: t('네트워크가 불안정합니다. 연결을 확인해주세요.'),
-    friendlyServer: t('서버가 혼잡합니다. 잠시만 기다려주세요~'),
-    save: t('저장'), cancel: t('취소'), confirm: t('확인'), close: t('닫기'),
-    loading: t('로딩 중...'), empty: t('데이터 없음'), error: t('오류'),
+    appName: 'Dawn Whales', settings: '설정',
+    darkMode: '다크', lightMode: '라이트', followSystem: '시스템', themeLabel: '테마',
+    langLabel: '언어',
+    errCodeFormat: '코드 형식 오류', errParamRange: '매개변수 범위 초과', errNetwork: '네트워크 오류', errServer: '서버 오류',
+    friendlyCodeHK: '홍콩 주식 코드는 5자리 숫자입니다 (예: 00700). 다시 입력해보세요!',
+    friendlyCodeUS: '미국 주식 티커는 영문입니다 (예: AAPL). 대소문자 상관없어요~',
+    friendlyParamShort: '단기 MA 5-20은 단기 스윙 트레이딩용입니다. 조정해보세요.',
+    friendlyParamLong: '장기 MA 20-200은 추세 추종용입니다. 다시 시도해보세요!',
+    friendlyNetwork: '네트워크가 불안정합니다. 연결을 확인해주세요.',
+    friendlyServer: '서버가 혼잡합니다. 잠시만 기다려주세요~',
+    save: '저장', cancel: '취소', confirm: '확인', close: '닫기',
+    loading: '로딩 중...', empty: '데이터 없음', error: '오류',
   },
 };
 
@@ -161,7 +161,7 @@ function ThemeToggle() {
           color: theme === 'dark' ? '#FFF' : colors.textMuted, fontSize: 14,
           transition: 'all 0.2s',
         }}
-        title={t("components.darkMode")}
+        title={"components.darkMode"}
       >
         🌙
       </button>
@@ -173,7 +173,7 @@ function ThemeToggle() {
           color: theme === 'light' ? '#FFF' : colors.textMuted, fontSize: 14,
           transition: 'all 0.2s',
         }}
-        title={t("components.lightMode")}
+        title={"components.lightMode"}
       >
         ☀️
       </button>
@@ -186,11 +186,11 @@ function LanguageSelector() {
   const { lang, setLang, colors } = useThemeLang();
 
   const options: { value: Lang; label: string; flag: string }[] = [
-    { value: 'zh-CN', label: t('简体中文'), flag: t('🇨🇳') },
-    { value: 'zh-TW', label: t('繁體中文'), flag: t('🇹🇼') },
-    { value: 'en', label: 'English', flag: t('🇺🇸') },
-    { value: 'ja', label: t('日本語'), flag: t('🇯🇵') },
-    { value: 'ko', label: t('한국어'), flag: t('🇰🇷') },
+    { value: 'zh-CN', label: '简体中文', flag: '🇨🇳' },
+    { value: 'zh-TW', label: '繁體中文', flag: '🇹🇼' },
+    { value: 'en', label: 'English', flag: '🇺🇸' },
+    { value: 'ja', label: '日本語', flag: '🇯🇵' },
+    { value: 'ko', label: '한국어', flag: '🇰🇷' },
   ];
 
   return (
@@ -226,7 +226,7 @@ function FriendlyErrorDemo() {
   return (
     <div style={{ marginTop: 16 }}>
       <div style={{ fontSize: 14, fontWeight: 600, color: colors.text, marginBottom: 12 }}>
-        💡 {lang === 'zh-CN' ? t('友好错误提示对比') : lang === 'zh-TW' ? t('友善錯誤提示對比') : 'Friendly Error Messages'}
+        💡 {lang === 'zh-CN' ? '友好错误提示对比' : lang === 'zh-TW' ? '友善錯誤提示對比' : 'Friendly Error Messages'}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {pairs.map((p, i) => (
@@ -282,7 +282,7 @@ export default function ThemeLangPanel() {
             ⚙️ {s.settings}
           </h2>
           <p style={{ margin: '4px 0 0', fontSize: 13, color: colors.textMuted }}>
-            {lang === 'zh-CN' ? t('主题·语言·体验') : lang === 'zh-TW' ? t('主題·語言·體驗') : t('Theme · Language · Experience')}
+            {lang === 'zh-CN' ? '主题·语言·体验' : lang === 'zh-TW' ? '主題·語言·體驗' : 'Theme · Language · Experience'}
           </p>
         </div>
       </div>
@@ -305,8 +305,8 @@ export default function ThemeLangPanel() {
           <ThemeSwatch label="表面" bg={colors.surface} text={colors.textSecondary} />
           <ThemeSwatch label="文字" bg={colors.text} text={colors.textSecondary} />
           <ThemeSwatch label="主色" bg={colors.accent} text={colors.textSecondary} />
-          <ThemeSwatch  label={t("components.success")} bg={colors.success} text={colors.textSecondary} />
-          <ThemeSwatch  label={t("components.warning")} bg={colors.warning} text={colors.textSecondary} />
+          <ThemeSwatch  label={"components.success"} bg={colors.success} text={colors.textSecondary} />
+          <ThemeSwatch  label={"components.warning"} bg={colors.warning} text={colors.textSecondary} />
           <ThemeSwatch label="危险" bg={colors.danger} text={colors.textSecondary} />
           <ThemeSwatch label="图表" bg={colors.chartBg} text={colors.textSecondary} />
         </div>
@@ -318,7 +318,7 @@ export default function ThemeLangPanel() {
         }}>
           <div style={{ fontSize: 14, fontWeight: 600, color: colors.text, marginBottom: 4 }}>{s.appName}</div>
           <div style={{ fontSize: 12, color: colors.textSecondary, marginBottom: 8 }}>
-            {theme === 'dark' ? (lang === 'zh-CN' ? t('AI驱动的量化策略平台') : 'AI-Powered Quant Strategy Platform') : (lang === 'zh-CN' ? t('AI驱动的量化策略平台') : 'AI-Powered Quant Strategy Platform')}
+            {theme === 'dark' ? (lang === 'zh-CN' ? 'AI驱动的量化策略平台' : 'AI-Powered Quant Strategy Platform') : (lang === 'zh-CN' ? 'AI驱动的量化策略平台' : 'AI-Powered Quant Strategy Platform')}
           </div>
           <div style={{ display: 'flex', gap: 6 }}>
             <span style={{ padding: '4px 10px', borderRadius: 6, background: colors.success + '22', color: colors.success, fontSize: 11 }}>
@@ -358,9 +358,9 @@ export default function ThemeLangPanel() {
         border: `1px solid ${colors.accent}33`, fontSize: 12, color: colors.textSecondary,
         lineHeight: 1.8,
       }}>
-        📋 <strong>{lang === 'zh-CN' ? t('当前配置') : 'Current Config'}:</strong><br />
+        📋 <strong>{lang === 'zh-CN' ? '当前配置' : 'Current Config'}:</strong><br />
         {s.themeLabel}: <strong>{theme === 'dark' ? s.darkMode : s.lightMode}</strong> · {s.langLabel}: <strong>{lang}</strong><br />
-        {lang === 'zh-CN' ? t('支持5种语言 · 深浅双主题 · 友好错误文案') : t('5 languages supported · Dual theme · Friendly error messages')}
+        {lang === 'zh-CN' ? '支持5种语言 · 深浅双主题 · 友好错误文案' : '5 languages supported · Dual theme · Friendly error messages'}
       </div>
     </div>
   );

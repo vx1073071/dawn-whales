@@ -11,19 +11,19 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { id: 'dashboard', icon: '📊', label: t('nav.overview'), section: t('nav.overview') },
-  { id: 'market', icon: '📈', label: t('components.marketQuotes'), section: t('components.trade') },
+  { id: 'dashboard', icon: '📊', label: 'nav.overview', section: 'nav.overview' },
+  { id: 'market', icon: '📈', label: 'components.marketQuotes', section: 'components.trade' },
   { id: 'strategy', icon: '🧠', label: '策略' },
-  { id: 'ai', icon: '🐋', label: t('components.aiAssistant') },
+  { id: 'ai', icon: '🐋', label: 'components.aiAssistant' },
   { id: 'marketplace', icon: '🏪', label: '策略市场' },
-  { id: 'creator', icon: '⭐', label: t('components.creatorCenter') },
-  { id: 'signals', icon: '📡', label: t('components.signalAnalysis') },
+  { id: 'creator', icon: '⭐', label: 'components.creatorCenter' },
+  { id: 'signals', icon: '📡', label: 'components.signalAnalysis' },
   { id: 'backtest', icon: '🔬', label: '回测' },
-  { id: 'portfolio', icon: '💼', label: t('components.portfolio') },
+  { id: 'portfolio', icon: '💼', label: 'components.portfolio' },
   { id: 'orders', icon: '📋', label: '订单' },
-  { id: 'trade', icon: '💹', label: t('components.tradingDesk') },
-  { id: 'risk', icon: '🛡️', label: t('components.riskPanel') },
-  { id: 'riskviz', icon: '📉', label: t('components.riskVisual') },
+  { id: 'trade', icon: '💹', label: 'components.tradingDesk' },
+  { id: 'risk', icon: '🛡️', label: 'components.riskPanel' },
+  { id: 'riskviz', icon: '📉', label: 'components.riskVisual' },
   { id: 'alert', icon: '🔔', label: '警告中心' },
   { id: 'settings', icon: '⚙️', label: '设置', section: '系统' },
 ];

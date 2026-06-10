@@ -1,5 +1,4 @@
-﻿import { useTranslation } from 'react-i18next';
-import { useState, useMemo, useRef, type CSSProperties } from 'react';
+﻿import { useState, useMemo, useRef, type CSSProperties } from 'react';
 
 // ── Types ──
 interface Point { x: number; y: number; price: number; time: number }
@@ -214,7 +213,7 @@ function PatternCard({ pattern, onAnnotate, onCorrect }: {
   onCorrect: (id: string) => void
 }) {
   const typeColors: Record<string, string> = { bullish: '#10B981', bearish: '#EF4444', neutral: '#6B7280' };
-  const typeLabels: Record<string, string> = { bullish: t('components.bullish'), bearish: t('components.bearish'), neutral: '中性' };
+  const typeLabels: Record<string, string> = { bullish: 'components.bullish', bearish: 'components.bearish', neutral: '中性' };
 
   return (
     <div
@@ -293,7 +292,7 @@ function PatternCard({ pattern, onAnnotate, onCorrect }: {
           </button>
         )}
         {pattern.corrected && (
-          <span style={{ fontSize: 11, color: '#10B981' }}>{t('✅ 已修正')}</span>
+          <span style={{ fontSize: 11, color: '#10B981' }}>{'✅ 已修正'}</span>
         )}
       </div>
     </div>
@@ -303,18 +302,17 @@ function PatternCard({ pattern, onAnnotate, onCorrect }: {
 function PatternLegend() {
   return (
     <div style={{ display: 'flex', gap: 16, padding: '6px 0' }}>
-      <span style={{ fontSize: 12, color: '#10B981' }}>{t('🟢 看涨')}</span>
-      <span style={{ fontSize: 12, color: '#EF4444' }}>{t('🔴 看跌')}</span>
-      <span style={{ fontSize: 12, color: '#6B7280' }}>{t('⚪ 中性')}</span>
-      <span style={{ fontSize: 12, color: '#6366F1' }}>{t('✏️ 可标注/修正')}</span>
+      <span style={{ fontSize: 12, color: '#10B981' }}>{'🟢 看涨'}</span>
+      <span style={{ fontSize: 12, color: '#EF4444' }}>{'🔴 看跌'}</span>
+      <span style={{ fontSize: 12, color: '#6B7280' }}>{'⚪ 中性'}</span>
+      <span style={{ fontSize: 12, color: '#6366F1' }}>{'✏️ 可标注/修正'}</span>
     </div>
   );
 }
 
 // ── Main ──
 export default function AIDrawingPatternPanel() {
-  const { t } = useTranslation();
-  const [tab, setTab] = useState<'drawing' | 'pattern'>('drawing');
+    const [tab, setTab] = useState<'drawing' | 'pattern'>('drawing');
   const [activeTool, setActiveTool] = useState<string | null>(null);
   const [drawings, setDrawings] = useState<Drawing[]>([
     { id: 'd0', type: 'trendline', color: '#3B82F6', width: 2, editable: true, visible: true, label: '上升趋势', points: [{ x: 40, y: 320, price: 18500, time: 0 }, { x: 720, y: 100, price: 21000, time: 1 }] },
@@ -396,9 +394,9 @@ export default function AIDrawingPatternPanel() {
       {/* Stats bar */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
         <StatBadge label="总形态" value={stats.total.toString()} color="#6366F1" />
-        <StatBadge  label={t("components.bullish")} value={stats.bullish.toString()} color="#10B981" />
-        <StatBadge  label={t("components.bearish")} value={stats.bearish.toString()} color="#EF4444" />
-        <StatBadge  label={t("components.neutral")} value={stats.neutral.toString()} color="#6B7280" />
+        <StatBadge  label={"components.bullish"} value={stats.bullish.toString()} color="#10B981" />
+        <StatBadge  label={"components.bearish"} value={stats.bearish.toString()} color="#EF4444" />
+        <StatBadge  label={"components.neutral"} value={stats.neutral.toString()} color="#6B7280" />
         <StatBadge label="已标注" value={stats.annotated.toString()} color="#F59E0B" />
         <StatBadge label="高置信" value={stats.highConf.toString()} color="#10B981" />
       </div>
@@ -439,7 +437,7 @@ export default function AIDrawingPatternPanel() {
                     color: filterType === f ? '#818CF8' : '#6B7280', fontSize: 12, cursor: 'pointer',
                   }}
                 >
-                  {f === 'all' ? t('components.all') : f === 'bullish' ? '🟢 看涨' : f === 'bearish' ? '🔴 看跌' : '⚪ 中性'}
+                  {f === 'all' ? 'components.all' : f === 'bullish' ? '🟢 看涨' : f === 'bearish' ? '🔴 看跌' : '⚪ 中性'}
                 </button>
               ))}
               <select
@@ -450,8 +448,8 @@ export default function AIDrawingPatternPanel() {
                   background: '#1F2937', color: '#D1D5DB', fontSize: 12,
                 }}
               >
-                <option value="confidence">{t('按置信度')}</option>
-                <option value="name">{t('按名称')}</option>
+                <option value="confidence">{'按置信度'}</option>
+                <option value="name">{'按名称'}</option>
               </select>
             </div>
           </div>

@@ -40,7 +40,7 @@ export default function OrdersPage() {
   // Listen for real-time order updates
   useEffect(() => {
     if (typeof window !== 'undefined' && window.api?.on) {
-      window.api.on('order-update', (_data: unknown) => {
+      window.api.on('order-update', (_data: Record<string, unknown>) => {
         loadOrders();
         loadTrades();
       });

@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react'
 import { useMemo } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 interface MarketBreadthData {
   advancing: number;

@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import * as echarts from 'echarts';
 import { getTradeHistory } from '@/lib/bridge-api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -24,22 +23,21 @@ interface TradeRecord {
 }
 
 const MOCK_TRADES: TradeRecord[] = [
-  { tradeId: 'T001', orderId: 'O001', code: 'AAPL', name: t("components.mockStockApple"), side: 'BUY', qty: 100, price: 185.00, filledQty: 100, filledPrice: 184.95, commission: 1.85, pnl: 0, pnlPct: 0, tradeTime: '2024-01-15 09:32:15', strategyId: 'strategy-001', strategyName: t("components.strategyDualMA"), remark: t("components.signalGoldenCross") },
-  { tradeId: 'T002', orderId: 'O002', code: 'NVDA', name: t("components.mockStockNvidia"), side: 'BUY', qty: 50, price: 540.00, filledQty: 50, filledPrice: 540.20, commission: 2.70, pnl: 0, pnlPct: 0, tradeTime: '2024-01-15 09:35:22', strategyId: 'strategy-002', strategyName: t("components.strategyMomentumRotate"), remark: t("components.signalBreakHigh") },
-  { tradeId: 'T003', orderId: 'O003', code: 'AAPL', name: t("components.mockStockApple"), side: 'SELL', qty: 100, price: 192.50, filledQty: 100, filledPrice: 192.45, commission: 1.92, pnl: 750.00, pnlPct: 4.05, tradeTime: '2024-02-20 14:28:10', strategyId: 'strategy-001', strategyName: t("components.strategyDualMA"), remark: t("components.signalDeadCross") },
-  { tradeId: 'T004', orderId: 'O004', code: 'TSLA', name: t("components.mockStockTesla"), side: 'BUY', qty: 80, price: 195.00, filledQty: 80, filledPrice: 195.10, commission: 1.56, pnl: 0, pnlPct: 0, tradeTime: '2024-02-22 10:15:33', strategyId: 'strategy-001', strategyName: t("components.strategyDualMA"), remark: t("components.signalGoldenCross") },
-  { tradeId: 'T005', orderId: 'O005', code: 'NVDA', name: t("components.mockStockNvidia"), side: 'SELL', qty: 50, price: 720.00, filledQty: 50, filledPrice: 719.80, commission: 3.60, pnl: 8980.00, pnlPct: 33.27, tradeTime: '2024-03-10 11:45:18', strategyId: 'strategy-002', strategyName: t("components.strategyMomentumRotate"), remark: t("components.signalMomDecay") },
-  { tradeId: 'T006', orderId: 'O006', code: 'MSFT', name: t("components.mockStockMicrosoft"), side: 'BUY', qty: 60, price: 405.00, filledQty: 60, filledPrice: 405.05, commission: 2.43, pnl: 0, pnlPct: 0, tradeTime: '2024-03-12 09:20:45', strategyId: 'strategy-003', strategyName: t("components.strategyValueInvest"), remark: 'PE低于均值' },
-  { tradeId: 'T007', orderId: 'O007', code: 'TSLA', name: t("components.mockStockTesla"), side: 'SELL', qty: 80, price: 175.00, filledQty: 80, filledPrice: 174.90, commission: 1.40, pnl: -1616.00, pnlPct: -10.35, tradeTime: '2024-03-25 15:30:05', strategyId: 'strategy-001', strategyName: t("components.strategyDualMA"), remark: t("components.signalStopLoss") },
-  { tradeId: 'T008', orderId: 'O008', code: 'AVGO', name: t("components.mockStockBroadcom"), side: 'BUY', qty: 30, price: 1200.00, filledQty: 30, filledPrice: 1200.50, commission: 3.60, pnl: 0, pnlPct: 0, tradeTime: '2024-04-05 10:10:22', strategyId: 'strategy-002', strategyName: t("components.strategyMomentumRotate"), remark: 'AI芯片需求' },
-  { tradeId: 'T009', orderId: 'O009', code: 'MSFT', name: t("components.mockStockMicrosoft"), side: 'SELL', qty: 60, price: 420.00, filledQty: 60, filledPrice: 419.95, commission: 2.52, pnl: 894.00, pnlPct: 3.68, tradeTime: '2024-04-18 13:25:40', strategyId: 'strategy-003', strategyName: t("components.strategyValueInvest"), remark: t("components.signalTargetReached") },
-  { tradeId: 'T010', orderId: 'O010', code: 'AVGO', name: t("components.mockStockBroadcom"), side: 'SELL', qty: 30, price: 1285.00, filledQty: 30, filledPrice: 1284.80, commission: 3.85, pnl: 2529.00, pnlPct: 7.02, tradeTime: '2024-05-08 09:45:12', strategyId: 'strategy-002', strategyName: t("components.strategyMomentumRotate"), remark: t("components.signalMomWeaken") },
-  { tradeId: 'T011', orderId: 'O011', code: 'META', name: 'Meta', side: 'BUY', qty: 45, price: 465.00, filledQty: 45, filledPrice: 465.10, commission: 2.79, pnl: 0, pnlPct: 0, tradeTime: '2024-05-15 10:05:33', strategyId: 'strategy-001', strategyName: t("components.strategyDualMA"), remark: t("components.signalGoldenCross") },
-  { tradeId: 'T012', orderId: 'O012', code: 'META', name: 'Meta', side: 'SELL', qty: 45, price: 480.00, filledQty: 45, filledPrice: 479.90, commission: 2.88, pnl: 664.50, pnlPct: 3.18, tradeTime: '2024-06-01 14:15:20', strategyId: 'strategy-001', strategyName: t("components.strategyDualMA"), remark: t("components.signalDeadCross") },
+  { tradeId: 'T001', orderId: 'O001', code: 'AAPL', name: "components.mockStockApple", side: 'BUY', qty: 100, price: 185.00, filledQty: 100, filledPrice: 184.95, commission: 1.85, pnl: 0, pnlPct: 0, tradeTime: '2024-01-15 09:32:15', strategyId: 'strategy-001', strategyName: "components.strategyDualMA", remark: "components.signalGoldenCross" },
+  { tradeId: 'T002', orderId: 'O002', code: 'NVDA', name: "components.mockStockNvidia", side: 'BUY', qty: 50, price: 540.00, filledQty: 50, filledPrice: 540.20, commission: 2.70, pnl: 0, pnlPct: 0, tradeTime: '2024-01-15 09:35:22', strategyId: 'strategy-002', strategyName: "components.strategyMomentumRotate", remark: "components.signalBreakHigh" },
+  { tradeId: 'T003', orderId: 'O003', code: 'AAPL', name: "components.mockStockApple", side: 'SELL', qty: 100, price: 192.50, filledQty: 100, filledPrice: 192.45, commission: 1.92, pnl: 750.00, pnlPct: 4.05, tradeTime: '2024-02-20 14:28:10', strategyId: 'strategy-001', strategyName: "components.strategyDualMA", remark: "components.signalDeadCross" },
+  { tradeId: 'T004', orderId: 'O004', code: 'TSLA', name: "components.mockStockTesla", side: 'BUY', qty: 80, price: 195.00, filledQty: 80, filledPrice: 195.10, commission: 1.56, pnl: 0, pnlPct: 0, tradeTime: '2024-02-22 10:15:33', strategyId: 'strategy-001', strategyName: "components.strategyDualMA", remark: "components.signalGoldenCross" },
+  { tradeId: 'T005', orderId: 'O005', code: 'NVDA', name: "components.mockStockNvidia", side: 'SELL', qty: 50, price: 720.00, filledQty: 50, filledPrice: 719.80, commission: 3.60, pnl: 8980.00, pnlPct: 33.27, tradeTime: '2024-03-10 11:45:18', strategyId: 'strategy-002', strategyName: "components.strategyMomentumRotate", remark: "components.signalMomDecay" },
+  { tradeId: 'T006', orderId: 'O006', code: 'MSFT', name: "components.mockStockMicrosoft", side: 'BUY', qty: 60, price: 405.00, filledQty: 60, filledPrice: 405.05, commission: 2.43, pnl: 0, pnlPct: 0, tradeTime: '2024-03-12 09:20:45', strategyId: 'strategy-003', strategyName: "components.strategyValueInvest", remark: 'PE低于均值' },
+  { tradeId: 'T007', orderId: 'O007', code: 'TSLA', name: "components.mockStockTesla", side: 'SELL', qty: 80, price: 175.00, filledQty: 80, filledPrice: 174.90, commission: 1.40, pnl: -1616.00, pnlPct: -10.35, tradeTime: '2024-03-25 15:30:05', strategyId: 'strategy-001', strategyName: "components.strategyDualMA", remark: "components.signalStopLoss" },
+  { tradeId: 'T008', orderId: 'O008', code: 'AVGO', name: "components.mockStockBroadcom", side: 'BUY', qty: 30, price: 1200.00, filledQty: 30, filledPrice: 1200.50, commission: 3.60, pnl: 0, pnlPct: 0, tradeTime: '2024-04-05 10:10:22', strategyId: 'strategy-002', strategyName: "components.strategyMomentumRotate", remark: 'AI芯片需求' },
+  { tradeId: 'T009', orderId: 'O009', code: 'MSFT', name: "components.mockStockMicrosoft", side: 'SELL', qty: 60, price: 420.00, filledQty: 60, filledPrice: 419.95, commission: 2.52, pnl: 894.00, pnlPct: 3.68, tradeTime: '2024-04-18 13:25:40', strategyId: 'strategy-003', strategyName: "components.strategyValueInvest", remark: "components.signalTargetReached" },
+  { tradeId: 'T010', orderId: 'O010', code: 'AVGO', name: "components.mockStockBroadcom", side: 'SELL', qty: 30, price: 1285.00, filledQty: 30, filledPrice: 1284.80, commission: 3.85, pnl: 2529.00, pnlPct: 7.02, tradeTime: '2024-05-08 09:45:12', strategyId: 'strategy-002', strategyName: "components.strategyMomentumRotate", remark: "components.signalMomWeaken" },
+  { tradeId: 'T011', orderId: 'O011', code: 'META', name: 'Meta', side: 'BUY', qty: 45, price: 465.00, filledQty: 45, filledPrice: 465.10, commission: 2.79, pnl: 0, pnlPct: 0, tradeTime: '2024-05-15 10:05:33', strategyId: 'strategy-001', strategyName: "components.strategyDualMA", remark: "components.signalGoldenCross" },
+  { tradeId: 'T012', orderId: 'O012', code: 'META', name: 'Meta', side: 'SELL', qty: 45, price: 480.00, filledQty: 45, filledPrice: 479.90, commission: 2.88, pnl: 664.50, pnlPct: 3.18, tradeTime: '2024-06-01 14:15:20', strategyId: 'strategy-001', strategyName: "components.strategyDualMA", remark: "components.signalDeadCross" },
 ];
 
 export default function TradeHistoryPage() {
-  const { t } = useTranslation();
   const [trades, setTrades] = useState<TradeRecord[]>(MOCK_TRADES);
   const [loading, setLoading] = useState(false);
   const [filterStrategy, setFilterStrategy] = useState('all');
@@ -116,37 +114,37 @@ export default function TradeHistoryPage() {
     return () => chart.dispose();
   }, [filtered]);
 
-  if (loading) return <LoadingSpinner fullscreen text={t('trading.loadingTrades')} />;
+  if (loading) return <LoadingSpinner fullscreen text={'trading.loadingTrades'} />;
 
   return (
     <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">📜 {t('trading.tradeHistory')}</h1>
-          <p className="text-gray-400 text-sm">{stats.totalTrades} {t('trading.tradeRecords')}</p>
+          <h1 className="text-2xl font-bold text-white mb-1">📜 {'trading.tradeHistory'}</h1>
+          <p className="text-gray-400 text-sm">{stats.totalTrades} {'trading.tradeRecords'}</p>
         </div>
         <button
           onClick={load}
           className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-2 rounded-lg transition-colors"
         >
-          {t('common.refresh')}
+          {'common.refresh'}
         </button>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">{t('trading.totalPnl')}</div>
+          <div className="text-xs text-gray-500 mb-1">{'trading.totalPnl'}</div>
           <div className={`text-xl font-bold font-mono ${stats.totalPnl >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
             {stats.totalPnl >= 0 ? '+' : ''}${stats.totalPnl.toLocaleString('en-US', { minimumFractionDigits: 2 })}
           </div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">{t('dashboard.winRate')}</div>
+          <div className="text-xs text-gray-500 mb-1">{'dashboard.winRate'}</div>
           <div className="text-xl font-bold font-mono text-white">{stats.winRate.toFixed(1)}%</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">{t('trading.avgWinLoss')}</div>
+          <div className="text-xs text-gray-500 mb-1">{'trading.avgWinLoss'}</div>
           <div className="text-sm font-mono">
             <span className="text-red-400">+${stats.avgWin.toFixed(0)}</span>
             <span className="text-gray-500 mx-1">/</span>
@@ -154,7 +152,7 @@ export default function TradeHistoryPage() {
           </div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">{t('trading.maxTrade')}</div>
+          <div className="text-xs text-gray-500 mb-1">{'trading.maxTrade'}</div>
           <div className="text-sm font-mono">
             <span className="text-red-400">+${stats.maxWin.toFixed(0)}</span>
             <span className="text-gray-500 mx-1">/</span>
@@ -165,7 +163,7 @@ export default function TradeHistoryPage() {
 
       {/* Monthly PnL Chart */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-white mb-4">{t('trading.monthlyPnl')}</h2>
+        <h2 className="text-sm font-semibold text-white mb-4">{'trading.monthlyPnl'}</h2>
         <div id="trade-pnl-chart" className="w-full h-[200px]" />
       </div>
 
@@ -175,7 +173,7 @@ export default function TradeHistoryPage() {
           type="text"
           value={searchCode}
           onChange={(e) => setSearchCode(e.target.value)}
-          placeholder={t('trading.searchPlaceholder')}
+          placeholder={'trading.searchPlaceholder'}
           className="bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046] w-48"
         />
         <select
@@ -183,7 +181,7 @@ export default function TradeHistoryPage() {
           onChange={(e) => setFilterStrategy(e.target.value)}
           className="bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
         >
-          <option value="all">{t('trading.allStrategies')}</option>
+          <option value="all">{'trading.allStrategies'}</option>
           {strategies.map(([id, name]) => (
             <option key={id} value={id}>{name}</option>
           ))}
@@ -193,9 +191,9 @@ export default function TradeHistoryPage() {
           onChange={(e) => setFilterSide(e.target.value as any)}
           className="bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
         >
-          <option value="all">{t('trading.allDirections')}</option>
-          <option value="BUY">{t('common.buy')}</option>
-          <option value="SELL">{t('common.sell')}</option>
+          <option value="all">{'trading.allDirections'}</option>
+          <option value="BUY">{'common.buy'}</option>
+          <option value="SELL">{'common.sell'}</option>
         </select>
       </div>
 
@@ -205,16 +203,16 @@ export default function TradeHistoryPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                <th className="px-4 py-3 text-left">{t('trading.time')}</th>
-                <th className="px-4 py-3 text-left">{t('trading.stock')}</th>
-                <th className="px-4 py-3 text-left">{t('trading.direction')}</th>
-                <th className="px-4 py-3 text-right">{t('trading.quantity')}</th>
-                <th className="px-4 py-3 text-right">{t('trading.filledPrice')}</th>
-                <th className="px-4 py-3 text-right">{t('trading.commission')}</th>
-                <th className="px-4 py-3 text-right">{t('portfolio.pnl')}</th>
-                <th className="px-4 py-3 text-right">{t('portfolio.pnlPct')}</th>
-                <th className="px-4 py-3 text-left">{t('strategy.title')}</th>
-                <th className="px-4 py-3 text-left">{t('trading.remark')}</th>
+                <th className="px-4 py-3 text-left">{'trading.time'}</th>
+                <th className="px-4 py-3 text-left">{'trading.stock'}</th>
+                <th className="px-4 py-3 text-left">{'trading.direction'}</th>
+                <th className="px-4 py-3 text-right">{'trading.quantity'}</th>
+                <th className="px-4 py-3 text-right">{'trading.filledPrice'}</th>
+                <th className="px-4 py-3 text-right">{'trading.commission'}</th>
+                <th className="px-4 py-3 text-right">{'portfolio.pnl'}</th>
+                <th className="px-4 py-3 text-right">{'portfolio.pnlPct'}</th>
+                <th className="px-4 py-3 text-left">{'strategy.title'}</th>
+                <th className="px-4 py-3 text-left">{'trading.remark'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -226,7 +224,7 @@ export default function TradeHistoryPage() {
                     <div className="text-[10px] text-gray-500">{trade.code}</div>
                   </td>
                   <td className={`px-4 py-3 ${trade.side === 'BUY' ? 'text-red-400' : 'text-emerald-400'}`}>
-                    {trade.side === 'BUY' ? t('common.buy') : t('common.sell')}
+                    {trade.side === 'BUY' ? 'common.buy' : 'common.sell'}
                   </td>
                   <td className="px-4 py-3 text-right font-mono text-white">{trade.qty}</td>
                   <td className="px-4 py-3 text-right font-mono text-white">${trade.filledPrice.toFixed(2)}</td>
@@ -245,7 +243,7 @@ export default function TradeHistoryPage() {
           </table>
         </div>
         {filtered.length === 0 && (
-          <div className="text-gray-500 text-sm text-center py-8">{t('trading.noMatchingRecords')}</div>
+          <div className="text-gray-500 text-sm text-center py-8">{'trading.noMatchingRecords'}</div>
         )}
       </div>
     </div>

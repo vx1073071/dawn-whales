@@ -21,7 +21,6 @@ const SENTIMENT_LABELS = {
 };
 
 export default function NewsDashboardPage() {
-  const { t } = useTranslation();
 
   const [query, setQuery] = useState('');
   const [articles, setArticles] = useState<NewsArticle[]>([]);
@@ -36,7 +35,7 @@ export default function NewsDashboardPage() {
     try {
       const [newsRes, moodRes] = await Promise.all([
         searchNews({
-          query: query.trim() || t('components.markets'),
+          query: query.trim() || 'components.markets',
           limit: 50,
           hoursBack: 24,
         }),
@@ -129,7 +128,7 @@ export default function NewsDashboardPage() {
                     : 'bg-transparent border-white/10 text-gray-400 hover:text-white'
                 }`}
               >
-                {f === 'all' ? t('components.all') : f === 'positive' ? '正面' : f === 'negative' ? '负面' : '中性'}
+                {f === 'all' ? 'components.all' : f === 'positive' ? '正面' : f === 'negative' ? '负面' : '中性'}
                 {' '}
                 {f === 'all' ? articles.length : sentimentCounts[f]}
               </button>

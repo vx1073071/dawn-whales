@@ -93,7 +93,7 @@ function SourceCard({ source }: { source: DataSource }) {
           background: source.status === 'online' ? '#10B98122' : source.status === 'degraded' ? '#F59E0B22' : '#EF444422',
           color: source.status === 'online' ? '#10B981' : source.status === 'degraded' ? '#F59E0B' : '#EF4444',
         }}>
-          {source.status === 'online' ? t('components.online') : source.status === 'degraded' ? t('components.downgrade') : t('components.offline')}
+          {source.status === 'online' ? 'components.online' : source.status === 'degraded' ? 'components.downgrade' : 'components.offline'}
         </span>
       </div>
 
@@ -316,7 +316,7 @@ export default function DataSourcePanel() {
           </div>
           <div style={{ display: 'flex', gap: 4 }}>
             {[
-              { key: 'all' as const, label: t('components.all') },
+              { key: 'all' as const, label: 'components.all' },
               { key: 'fundamental' as const, label: '基本面' },
               { key: 'technical' as const, label: '技术面' },
               { key: 'sentiment' as const, label: '情绪面' },

@@ -105,7 +105,7 @@ export default function RealTimeMarketDashboard() {
       const res = await getQuotes(codes);
       if (Array.isArray(res)) {
         const map: Record<string, RealTimeQuote> = {};
-        res.forEach((q: unknown) => {
+        res.forEach((q: Record<string, unknown>) => {
           const stock = WATCHLIST.find(s => s.code === q.code);
           map[q.code] = {
             code: q.code,

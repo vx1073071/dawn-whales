@@ -61,7 +61,7 @@ export default function PortfolioAllocationChart({
         backgroundColor: '#1a1a25',
         borderColor: 'rgba(255,255,255,0.1)',
         textStyle: { color: '#e5e7eb', fontSize: 12 },
-        formatter: (params: unknown) => {
+        formatter: (params: Record<string, unknown>) => {
           const d = params.data;
           const pct = params.percent;
           const pnlColor = d.pnl >= 0 ? '#34d399' : '#f87171';

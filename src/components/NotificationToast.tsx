@@ -30,16 +30,16 @@ export default function NotificationToast() {
 
     // Listen for IPC notifications
     if (typeof window !== 'undefined' && window.api?.on) {
-      window.api.on('notification', (data: unknown) => {
+      window.api.on('notification', (data: Record<string, unknown>) => {
         notify(data.type || 'info', data.message || '');
       });
-      window.api.on('strategy-signal', (data: unknown) => {
+      window.api.on('strategy-signal', (data: Record<string, unknown>) => {
         notify('info', `📡 ${data.strategyName}: ${data.signal} ${data.symbol} @ $${data.price?.toFixed(2)} — ${data.reason}`);
       });
-      window.api.on('risk-alert', (data: unknown) => {
+      window.api.on('risk-alert', (data: Record<string, unknown>) => {
         notify('warning', `🛡️ 风控拦截: ${data.reason || '未知原因'}`);
       });
-      window.api.on('order-update', (data: unknown) => {
+      window.api.on('order-update', (data: Record<string, unknown>) => {
         notify('success', `📋 订单 ${data.orderId}: ${data.code} ${data.side} ${data.qty}`);
       });
     }

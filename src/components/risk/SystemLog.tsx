@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useState, useEffect } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 interface LogEntry {
   id: string;

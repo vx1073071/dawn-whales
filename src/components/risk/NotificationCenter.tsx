@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useState, useEffect } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 export interface NotificationItem {
   id: string;
@@ -46,7 +47,7 @@ export default function NotificationCenter({
   // Listen for real-time notifications via IPC
   useEffect(() => {
     if (typeof window !== 'undefined' && window.api?.on) {
-      const handler = (data: unknown) => {
+      const handler = (data: Record<string, unknown>) => {
         const newItem: NotificationItem = {
           id: `notif-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
           type: data.type || 'system',

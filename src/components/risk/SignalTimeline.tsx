@@ -28,7 +28,6 @@ export default function SignalTimeline({
   maxItems = 50,
   autoRefresh = true,
 }: SignalTimelineProps) {
-  const { t } = useTranslation();
 
   const [signals, setSignals] = useState<SignalItem[]>([]);
   const [, setStrategies] = useState<Record<string, string>>({});
@@ -39,12 +38,12 @@ export default function SignalTimeline({
     try {
       const strats = await getAllStrategies();
       const nameMap: Record<string, string> = {};
-      strats.forEach((s: unknown) => { nameMap[s.id] = s.name || s.id; });
+      strats.forEach((s: Record<string, unknown>) => { nameMap[s.id] = s.name || s.id; });
       setStrategies(nameMap);
 
       const result = await getSignals(strategyId);
       const items = (result || [])
-        .map((s: unknown) => ({
+        .map((s: Record<string, unknown>) => ({
           id: s.id || `${s.strategyId}-${s.timestamp}`,
           strategyId: s.strategyId || '',
           strategyName: nameMap[s.strategyId] || s.strategyId || '未知策略',
@@ -102,7 +101,7 @@ export default function SignalTimeline({
                   : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              {f === 'all' ? t('components.all') : f === 'BUY' ? '买入' : '卖出'}
+              {f === 'all' ? 'components.all' : f === 'BUY' ? '买入' : '卖出'}
             </button>
           ))}
         </div>
@@ -170,8 +169,8 @@ export default function SignalTimeline({
                     'text-yellow-400'
                   }`}>
                     {s.status === 'executed' ? '已执行' :
-                     s.status === 'rejected' ? t('components.tradeRejected') :
-                     s.status === 'cancelled' ? '已撤销' : t('components.pending')}
+                     s.status === 'rejected' ? 'components.tradeRejected' :
+                     s.status === 'cancelled' ? '已撤销' : 'components.pending'}
                   </div>
                 </div>
               </div>

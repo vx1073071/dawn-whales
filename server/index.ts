@@ -19,13 +19,19 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
-// AI Gateway status endpoint
+// AI Gateway status endpoint — R88: enhanced with key presence check
 app.get('/api/ai/status', (_req, res) => {
+  const deepseekKey = process.env.DEEPSEEK_API_KEY;
+  const gatewayUrl = process.env.AI_GATEWAY_URL;
+
   res.json({
-    gateway: 'ready',
+    gateway: deepseekKey ? 'direct' : gatewayUrl ? 'proxy' : 'offline',
     providers: ['deepseek-v4-pro', 'deepseek-flash', 'minimax-abab'],
     cacheEnabled: true,
-    gatewayUrl: process.env.AI_GATEWAY_URL || 'http://localhost:11434/v1',
+    hasApiKey: !!deepseekKey,
+    gatewayUrl: gatewayUrl || null,
+    model: process.env.AI_DEFAULT_MODEL || 'deepseek-chat',
+    timestamp: new Date().toISOString(),
   });
 });
 

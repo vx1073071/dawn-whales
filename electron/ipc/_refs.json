@@ -48,7 +48,6 @@
     "db",
     "opendClient",
     "backtestEngine",
-    "getDeepSeekKey_",
     "app",
     "liveExecutor"
   ],

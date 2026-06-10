@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   connectBroker, isConnected as checkConnected, getRiskConfig, getRiskAlerts,
   listBrokers, addBroker, removeBroker, setActiveBroker, getBrokerStatus,
@@ -19,7 +18,6 @@ interface BrokerItem {
 }
 
 export default function SettingsPage() {
-  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<SettingsTab>('broker-mgmt');
   const [host, setHost] = useState('127.0.0.1');
   const [port, setPort] = useState('11111');
@@ -80,10 +78,10 @@ export default function SettingsPage() {
       if (result?.success) {
         setConnected(true);
       } else {
-        setConnectError(result?.error || t('settings.connectionFailed'));
+        setConnectError(result?.error || 'settings.connectionFailed');
       }
     } catch (e: unknown) {
-      setConnectError(e.message || t('settings.connectionError'));
+      setConnectError(e.message || 'settings.connectionError');
     } finally {
       setConnecting(false);
     }
@@ -117,7 +115,7 @@ export default function SettingsPage() {
   }
 
   async function handleRemoveBroker(id: string) {
-    if (!confirm(t('settings.confirmDeleteBroker'))) return;
+    if (!confirm('settings.confirmDeleteBroker')) return;
     setBrokerActionLoading(id);
     try {
       await removeBroker(id);
@@ -164,19 +162,19 @@ export default function SettingsPage() {
     init(); // Refresh risk config and app info
   }
 
-  const activeBrokerId = brokerStatus.find((s: unknown) => s.active)?.id || brokerStatus[0]?.id;
+  const activeBrokerId = brokerStatus.find((s: Record<string, unknown>) => s.active)?.id || brokerStatus[0]?.id;
 
   const tabs: { id: SettingsTab; label: string; icon: string }[] = [
-    { id: 'broker-mgmt', label: t('settings.brokerManagement'), icon: '🏦' },
-    { id: 'connect', label: t('settings.quickConnect'), icon: '🔌' },
-    { id: 'risk', label: t('settings.globalRisk'), icon: '🛡️' },
-    { id: 'info', label: t('settings.systemInfo'), icon: 'ℹ️' },
+    { id: 'broker-mgmt', label: 'settings.brokerManagement', icon: '🏦' },
+    { id: 'connect', label: 'settings.quickConnect', icon: '🔌' },
+    { id: 'risk', label: 'settings.globalRisk', icon: '🛡️' },
+    { id: 'info', label: 'settings.systemInfo', icon: 'ℹ️' },
   ];
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold text-white mb-1">{t("settings.title")}</h1>
-      <p className="text-gray-400 text-sm mb-6">{t("settings.subtitle")}</p>
+      <h1 className="text-2xl font-bold text-white mb-1">{"settings.title"}</h1>
+      <p className="text-gray-400 text-sm mb-6">{"settings.subtitle"}</p>
 
       {/* ── Tab Navigation ────────────────────────────────────────── */}
       <div className="flex gap-1 bg-[#1a1a25] border border-white/5 rounded-xl p-1 mb-6">
@@ -210,12 +208,12 @@ export default function SettingsPage() {
           {/* ── Legacy Broker Management (Sprint2) ───────────────── */}
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-white font-semibold flex items-center gap-2">🏦 {t("settings.brokerConfig")}</h2>
+              <h2 className="text-white font-semibold flex items-center gap-2">🏦 {"settings.brokerConfig"}</h2>
               <button
                 onClick={() => setShowAddBroker(!showAddBroker)}
                 className="text-xs bg-[#C9A046]/20 text-[#C9A046] hover:bg-[#C9A046]/30 px-3 py-1.5 rounded-lg transition-colors"
               >
-                {showAddBroker ? t('components.cancel') : '+ 添加券商'}
+                {showAddBroker ? 'components.cancel' : '+ 添加券商'}
               </button>
             </div>
 
@@ -224,7 +222,7 @@ export default function SettingsPage() {
               <div className="bg-[#12121a] rounded-lg p-4 mb-4 space-y-3">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-gray-400 text-xs mb-1">{t("components.name")}</label>
+                    <label className="block text-gray-400 text-xs mb-1">{"components.name"}</label>
                     <input
                       value={newBroker.name}
                       onChange={(e) => setNewBroker({ ...newBroker, name: e.target.value })}
@@ -233,20 +231,20 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-400 text-xs mb-1">{t("components.type")}</label>
+                    <label className="block text-gray-400 text-xs mb-1">{"components.type"}</label>
                     <select
                       value={newBroker.type}
                       onChange={(e) => setNewBroker({ ...newBroker, type: e.target.value })}
                       className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50"
                     >
-                      <option value="futu">{t("settings.brokerFutu")}</option>
+                      <option value="futu">{"settings.brokerFutu"}</option>
                       <option value="moomoo">moomoo</option>
                     </select>
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   <div className="col-span-2">
-                    <label className="block text-gray-400 text-xs mb-1">{t("settings.host")}</label>
+                    <label className="block text-gray-400 text-xs mb-1">{"settings.host"}</label>
                     <input
                       value={newBroker.host}
                       onChange={(e) => setNewBroker({ ...newBroker, host: e.target.value })}
@@ -254,7 +252,7 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-400 text-xs mb-1">{t("settings.port")}</label>
+                    <label className="block text-gray-400 text-xs mb-1">{"settings.port"}</label>
                     <input
                       value={newBroker.port}
                       onChange={(e) => setNewBroker({ ...newBroker, port: e.target.value })}
@@ -268,7 +266,7 @@ export default function SettingsPage() {
                     disabled={brokerActionLoading === 'add'}
                     className="bg-[#C9A046] text-black text-sm px-4 py-2 rounded-lg hover:bg-[#D4A853] disabled:opacity-40 transition-colors"
                   >
-                    {brokerActionLoading === 'add' ? t('settings.adding') : t('settings.confirmAdd')}
+                    {brokerActionLoading === 'add' ? 'settings.adding' : 'settings.confirmAdd'}
                   </button>
                 </div>
               </div>
@@ -277,10 +275,10 @@ export default function SettingsPage() {
             {/* Broker list */}
             <div className="space-y-2">
               {brokers.length === 0 && (
-                <p className="text-gray-500 text-sm py-4 text-center">{t("settings.noBroker")}</p>
+                <p className="text-gray-500 text-sm py-4 text-center">{"settings.noBroker"}</p>
               )}
               {brokers.map((broker) => {
-                const status = brokerStatus.find((s: unknown) => s.id === broker.id);
+                const status = brokerStatus.find((s: Record<string, unknown>) => s.id === broker.id);
                 const isConnected = status?.connected || false;
                 const isActive = activeBrokerId === broker.id;
                 const isLoading = brokerActionLoading === broker.id;
@@ -305,7 +303,7 @@ export default function SettingsPage() {
                       <div className="flex items-center gap-2">
                         <span className="text-white text-sm font-medium truncate">{broker.name}</span>
                         {isActive && (
-                          <span className="text-[10px] bg-[#C9A046]/20 text-[#C9A046] px-1.5 py-0.5 rounded">{t("settings.currentlyInUse")}</span>
+                          <span className="text-[10px] bg-[#C9A046]/20 text-[#C9A046] px-1.5 py-0.5 rounded">{"settings.currentlyInUse"}</span>
                         )}
                       </div>
                       <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
@@ -314,7 +312,7 @@ export default function SettingsPage() {
                         <span className="font-mono">{broker.host}:{broker.port}</span>
                         <span>·</span>
                         <span className={isConnected ? 'text-emerald-400' : 'text-gray-600'}>
-                          {isConnected ? t('components.connected') : t('components.disconnected')}
+                          {isConnected ? 'components.connected' : 'components.disconnected'}
                         </span>
                       </div>
                     </div>
@@ -327,7 +325,7 @@ export default function SettingsPage() {
                           disabled={isLoading}
                           className="text-xs bg-white/5 hover:bg-white/10 text-gray-300 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40"
                         >
-                          {isLoading ? '...' : t('components.switch')}
+                          {isLoading ? '...' : 'components.switch'}
                         </button>
                       )}
                       <button
@@ -335,7 +333,7 @@ export default function SettingsPage() {
                         disabled={isLoading}
                         className="text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40"
                       >
-                        {isLoading ? '...' : t('components.delete')}
+                        {isLoading ? '...' : 'components.delete'}
                       </button>
                     </div>
                   </div>
@@ -356,28 +354,28 @@ export default function SettingsPage() {
               <div>
                 <label className="block text-gray-400 text-xs mb-1">券商</label>
                 <select className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50">
-                  <option>{t("settings.brokerFutu")}</option>
+                  <option>{"settings.brokerFutu"}</option>
                   <option>moomoo</option>
-                  <option disabled>{t("settings.longbridgeSoon")}</option>
-                  <option disabled>{t("settings.ibSoon")}</option>
+                  <option disabled>{"settings.longbridgeSoon"}</option>
+                  <option disabled>{"settings.ibSoon"}</option>
                 </select>
               </div>
               <div>
                 <label className="block text-gray-400 text-xs mb-1">交易环境</label>
                 <select className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50">
-                  <option>{t("settings.realTrading")}</option>
-                  <option>{t("settings.simulateTrading")}</option>
+                  <option>{"settings.realTrading"}</option>
+                  <option>{"settings.simulateTrading"}</option>
                 </select>
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-4">
               <div className="col-span-2">
-                <label className="block text-gray-400 text-xs mb-1">{t("settings.opendAddress")}</label>
+                <label className="block text-gray-400 text-xs mb-1">{"settings.opendAddress"}</label>
                 <input value={host} onChange={(e) => setHost(e.target.value)} className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50" />
               </div>
               <div>
-                <label className="block text-gray-400 text-xs mb-1">{t("settings.port")}</label>
+                <label className="block text-gray-400 text-xs mb-1">{"settings.port"}</label>
                 <input value={port} onChange={(e) => setPort(e.target.value)} className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50" />
               </div>
             </div>
@@ -392,12 +390,12 @@ export default function SettingsPage() {
                     : 'bg-[#C9A046] text-black hover:bg-[#D4A853] disabled:opacity-40'
                 }`}
               >
-                {connecting ? t('settings.connecting') : connected ? t('settings.disconnect') : t('settings.connectOpend')}
+                {connecting ? 'settings.connecting' : connected ? 'settings.disconnect' : 'settings.connectOpend'}
               </button>
               {connected && (
                 <span className="text-emerald-400 text-xs flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  {t("settings.pushMode")}
+                  {"settings.pushMode"}
                 </span>
               )}
               {connectError && <span className="text-red-400 text-xs">{connectError}</span>}
@@ -421,14 +419,14 @@ export default function SettingsPage() {
                 <RiskSlider label="每分钟最大下单" value={riskConfig.maxOrdersPerMinute || 10} max={30} unit="笔" onSave={(v) => handleRiskSave('maxOrdersPerMinute', v)} />
               </div>
             ) : (
-              <p className="text-gray-500 text-sm">{t("settings.connectHint")}</p>
+              <p className="text-gray-500 text-sm">{"settings.connectHint"}</p>
             )}
           </div>
 
           {/* Risk alerts */}
           {alerts.length > 0 && (
             <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
-              <h2 className="text-white font-semibold mb-4 flex items-center gap-2">⚠️ {t("settings.riskAlerts")}</h2>
+              <h2 className="text-white font-semibold mb-4 flex items-center gap-2">⚠️ {"settings.riskAlerts"}</h2>
               <div className="space-y-2 max-h-40 overflow-y-auto">
                 {alerts.slice(-10).reverse().map((a, i) => (
                   <div key={i} className="flex items-center gap-3 text-xs bg-red-500/10 rounded-lg px-3 py-2">
@@ -453,7 +451,7 @@ export default function SettingsPage() {
             <InfoRow label="Electron" value={appInfo?.electronVersion || '--'} />
             <InfoRow label="Node.js" value={appInfo?.nodeVersion || '--'} />
             <InfoRow label="Chrome" value={appInfo?.chromeVersion || '--'} />
-            <InfoRow label={t("settings.database")} value={t("settings.sqliteWal")} />
+            <InfoRow label={"settings.database"} value={"settings.sqliteWal"} />
           </div>
         </div>
       )}
@@ -475,7 +473,7 @@ function RiskSlider({ label, value, max, unit, onSave }: { label: string; value:
           onChange={(e) => setVal(Number(e.target.value))}
           className="flex-1 h-1.5 bg-[#12121a] rounded-lg appearance-none cursor-pointer accent-[#C9A046]"
         />
-        <button onClick={() => onSave(val)} className="text-xs text-[#C9A046] hover:text-[#D4A853] px-2 py-1 rounded transition-colors">{t("components.save")}</button>
+        <button onClick={() => onSave(val)} className="text-xs text-[#C9A046] hover:text-[#D4A853] px-2 py-1 rounded transition-colors">{"components.save"}</button>
       </div>
     </div>
   );

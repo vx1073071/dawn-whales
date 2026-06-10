@@ -10,41 +10,41 @@ interface AuditItem {
 }
 
 const AUDIT_ITEMS: AuditItem[] = [
-  { page: t('落地页'), component: 'LandingPageV18', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('SEO+OG+JSON-LD完整'), loading: true, empty: true, error: true },
-  { page: '策略', component: 'StrategyPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: t('浅色主题表单字段对比度'), loading: true, empty: true },
+  { page: '落地页', component: 'LandingPageV18', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'SEO+OG+JSON-LD完整', loading: true, empty: true, error: true },
+  { page: '策略', component: 'StrategyPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: '浅色主题表单字段对比度', loading: true, empty: true },
   { page: '市场', component: 'MarketPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'K线TV对标<100ms' },
-  { page: '订单', component: 'OrdersPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('实时订单+撤单') },
-  { page: t('组合'), component: 'PortfolioPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('自动刷新+资产配置') },
-  { page: '设置', component: 'SettingsPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('深浅主题+5语言切换') },
-  { page: t('交易仪表板'), component: 'TradeDashboardPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: t('浅色图表标签不可读'), loading: true },
-  { page: t('风险仪表板'), component: 'RiskDashboardPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: t('风险热力图浅色需调') },
-  { page: t('回测报告'), component: 'BacktestReportPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'warn', note: t('权益曲线溢出1366'), loading: true, empty: true },
-  { page: t('实时监控'), component: 'LiveMonitorPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('WebSocket实时') },
-  { page: t('市场广场'), component: 'MarketplacePage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('浏览筛选发布'), loading: true, empty: true },
-  { page: t('AI画线形态'), component: 'AIDrawingPatternPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('Canvas+6工具+22形态') },
-  { page: '新手引导', component: 'OnboardingFullKit', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: t('浅色步骤条对比度低') },
-  { page: t('AI助手'), component: 'AIAssistantPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('4入口USDT计费') },
-  { page: t('主题语言'), component: 'ThemeLangPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('深浅双切+5语言') },
-  { page: t('监控告警'), component: 'MonitoringAlertPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('SLO+6指标Gauge'), loading: true },
-  { page: t('成就引导'), component: 'AchievementOnboarding', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('7成就+3步') },
-  { page: t('Demo案例'), component: 'DemoCasePage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('3案例before/after') },
-  { page: t('私行UI'), component: 'PrivateBankingUI', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('深色+金#D4A853+8px'), loading: true },
-  { page: t('K线图表'), component: 'AdvancedKLineChart', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'TV对标<100ms' },
-  { page: t('公式编辑'), component: 'PineScriptEditor', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('6模板+语法高亮') },
-  { page: t('市场面板'), component: 'MarketPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('7市场+因子模板市场') },
-  { page: t('全链路UI'), component: 'FullPipelineUI', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('6步注册→提现') },
-  { page: t('社区面板'), component: 'StrategyCommunityPanel', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: t('浅色评论框对比度+窄屏'), loading: true, empty: true, error: true },
-  { page: t('因子分析'), component: 'FactorAnalysisPanel', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: t('浅色图表配色'), loading: true },
-  { page: t('组合优化'), component: 'PortfolioOptimizationPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('有效前沿+风险预算') },
-  { page: t('创作者排行'), component: 'CreatorLeaderboard', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('排行榜+徽章') },
-  { page: t('信号表现'), component: 'SignalPerformancePanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('信号统计+准确率'), loading: true },
-  { page: t('帮助中心'), component: 'HelpCenter', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('搜索+分类') },
-  { page: t('管理后台'), component: 'AdminDashboard', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: t('浅色表格+窄屏横滚'), loading: true },
-  { page: t('USDT钱包'), component: 'USDTWalletPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('充值提现TRC20'), loading: true, empty: true },
-  { page: t('创者入驻'), component: 'CreatorOnboardingGuide', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('三步入驻') },
-  { page: t('安全中心'), component: 'SecurityCenter', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('2FA+设备管理') },
-  { page: t('IBKR面板'), component: 'IBKRBrokerPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('碎股+多市场') },
-  { page: t('信号广场'), component: 'SignalSquare', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: t('信号发布+订阅'), loading: true, empty: true },
+  { page: '订单', component: 'OrdersPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '实时订单+撤单' },
+  { page: '组合', component: 'PortfolioPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '自动刷新+资产配置' },
+  { page: '设置', component: 'SettingsPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '深浅主题+5语言切换' },
+  { page: '交易仪表板', component: 'TradeDashboardPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: '浅色图表标签不可读', loading: true },
+  { page: '风险仪表板', component: 'RiskDashboardPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: '风险热力图浅色需调' },
+  { page: '回测报告', component: 'BacktestReportPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'warn', note: '权益曲线溢出1366', loading: true, empty: true },
+  { page: '实时监控', component: 'LiveMonitorPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'WebSocket实时' },
+  { page: '市场广场', component: 'MarketplacePage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '浏览筛选发布', loading: true, empty: true },
+  { page: 'AI画线形态', component: 'AIDrawingPatternPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'Canvas+6工具+22形态' },
+  { page: '新手引导', component: 'OnboardingFullKit', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: '浅色步骤条对比度低' },
+  { page: 'AI助手', component: 'AIAssistantPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '4入口USDT计费' },
+  { page: '主题语言', component: 'ThemeLangPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '深浅双切+5语言' },
+  { page: '监控告警', component: 'MonitoringAlertPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'SLO+6指标Gauge', loading: true },
+  { page: '成就引导', component: 'AchievementOnboarding', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '7成就+3步' },
+  { page: 'Demo案例', component: 'DemoCasePage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '3案例before/after' },
+  { page: '私行UI', component: 'PrivateBankingUI', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '深色+金#D4A853+8px', loading: true },
+  { page: 'K线图表', component: 'AdvancedKLineChart', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'TV对标<100ms' },
+  { page: '公式编辑', component: 'PineScriptEditor', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '6模板+语法高亮' },
+  { page: '市场面板', component: 'MarketPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '7市场+因子模板市场' },
+  { page: '全链路UI', component: 'FullPipelineUI', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '6步注册→提现' },
+  { page: '社区面板', component: 'StrategyCommunityPanel', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: '浅色评论框对比度+窄屏', loading: true, empty: true, error: true },
+  { page: '因子分析', component: 'FactorAnalysisPanel', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: '浅色图表配色', loading: true },
+  { page: '组合优化', component: 'PortfolioOptimizationPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '有效前沿+风险预算' },
+  { page: '创作者排行', component: 'CreatorLeaderboard', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '排行榜+徽章' },
+  { page: '信号表现', component: 'SignalPerformancePanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '信号统计+准确率', loading: true },
+  { page: '帮助中心', component: 'HelpCenter', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '搜索+分类' },
+  { page: '管理后台', component: 'AdminDashboard', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: '浅色表格+窄屏横滚', loading: true },
+  { page: 'USDT钱包', component: 'USDTWalletPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '充值提现TRC20', loading: true, empty: true },
+  { page: '创者入驻', component: 'CreatorOnboardingGuide', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '三步入驻' },
+  { page: '安全中心', component: 'SecurityCenter', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '2FA+设备管理' },
+  { page: 'IBKR面板', component: 'IBKRBrokerPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '碎股+多市场' },
+  { page: '信号广场', component: 'SignalSquare', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '信号发布+订阅', loading: true, empty: true },
 ];
 
 // ── Stats badge ──
@@ -60,7 +60,7 @@ function StatBadge({ label, value, color }: { label: string; value: string; colo
 }
 
 function StatusIcon({ status }: { status: 'pass' | 'warn' | 'fail' }) {
-  const map = { pass: { icon: t('✅'), color: '#10B981' }, warn: { icon: t('⚠️'), color: '#F59E0B' }, fail: { icon: t('❌'), color: '#EF4444' } };
+  const map = { pass: { icon: '✅', color: '#10B981' }, warn: { icon: '⚠️', color: '#F59E0B' }, fail: { icon: '❌', color: '#EF4444' } };
   return <span style={{ color: map[status].color, fontSize: 14 }}>{map[status].icon}</span>;
 }
 
@@ -123,10 +123,10 @@ export default function UIAuditPanel() {
       <div style={{ display: 'flex', gap: 6, marginBottom: 14, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', gap: 6 }}>
           {[
-            { key: 'all' as const, label: t('components.all'), color: '#6B7280' },
-            { key: 'pass' as const, label: t('✅ 通过'), color: '#10B981' },
-            { key: 'warn' as const, label: t('⚠️ 警告'), color: '#F59E0B' },
-            { key: 'fail' as const, label: t('❌ 失败'), color: '#EF4444' },
+            { key: 'all' as const, label: 'components.all', color: '#6B7280' },
+            { key: 'pass' as const, label: '✅ 通过', color: '#10B981' },
+            { key: 'warn' as const, label: '⚠️ 警告', color: '#F59E0B' },
+            { key: 'fail' as const, label: '❌ 失败', color: '#EF4444' },
           ].map(f => (
             <button
               key={f.key}
@@ -154,11 +154,11 @@ export default function UIAuditPanel() {
             <thead>
               <tr style={{ borderBottom: '1px solid #374151' }}>
                 <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>页面</th>
-                <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>{t("components.status")}</th>
+                <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>{"components.status"}</th>
                 <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>🌙</th>
                 <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>☀️</th>
                 <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>📱</th>
-                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{t("components.remarks")}</th>
+                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{"components.remarks"}</th>
               </tr>
             </thead>
             <tbody>

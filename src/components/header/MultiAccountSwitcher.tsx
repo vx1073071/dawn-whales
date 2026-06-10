@@ -145,7 +145,7 @@ export const MultiAccountSwitcher: React.FC<MultiAccountSwitcherProps> = ({
               {activeAccount.name}
             </span>
             <span className="text-[10px] text-gray-600 bg-gray-800/50 px-1 rounded flex-shrink-0">
-              {activeAccount.type === 'main' ? '主' : activeAccount.type === 'api' ? 'API' : t('components.simulation')}
+              {activeAccount.type === 'main' ? '主' : activeAccount.type === 'api' ? 'API' : 'components.simulation'}
             </span>
           </div>
           <div className="text-[10px] text-gray-500">
@@ -171,7 +171,7 @@ export const MultiAccountSwitcher: React.FC<MultiAccountSwitcherProps> = ({
         <div className="absolute top-full mt-1 left-0 right-0 bg-gray-900 border border-gray-700 rounded-lg shadow-xl z-50 min-w-[260px]">
           {/* Total bar */}
           <div className="px-4 py-3 border-b border-gray-800">
-            <div className="text-[10px] text-gray-500 uppercase">{t("components.totalAssets")}</div>
+            <div className="text-[10px] text-gray-500 uppercase">{"components.totalAssets"}</div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-bold text-white">
                 HKD {formatBalance(totalBalance)}
@@ -204,7 +204,7 @@ export const MultiAccountSwitcher: React.FC<MultiAccountSwitcherProps> = ({
                     {account.name}
                   </span>
                   <span className="text-[10px] text-gray-600 bg-gray-800/50 px-1 rounded">
-                    {account.type === 'main' ? '主账户' : account.type === 'api' ? 'API' : t('components.simulation')}
+                    {account.type === 'main' ? '主账户' : account.type === 'api' ? 'API' : 'components.simulation'}
                   </span>
                 </div>
                 <div className="text-[10px] text-gray-500">

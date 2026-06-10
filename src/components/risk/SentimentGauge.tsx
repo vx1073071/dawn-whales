@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useState, useEffect, useCallback, useMemo } from 'react-i18next';
 import ReactECharts from 'echarts-for-react';
 import { computeSentiment } from '../../lib/bridge-api';
+import { useTranslation } from "react-i18next";
 
 interface SentimentData {
   index: number; // 0-100
@@ -124,7 +125,7 @@ export default function SentimentGauge() {
         backgroundColor: '#1a1a25',
         borderColor: '#333',
         textStyle: { color: '#e6edf3', fontSize: 11 },
-        formatter: (params: unknown) => {
+        formatter: (params: Record<string, unknown>) => {
           const p = params[0];
           const lvl = getLevel(p.value);
           return `${p.name}<br/><span style="color:${lvl.color}">●</span> ${p.value} — ${lvl.label}`;
@@ -274,7 +275,7 @@ function generateDemoSentiment(): SentimentData {
         : '情绪中性，关注结构性机会。'
     }`,
     components: [
-      { name: t('components.volatility'), weight: 0.25, score: Math.round(Math.random() * 100) },
+      { name: 'components.volatility', weight: 0.25, score: Math.round(Math.random() * 100) },
       { name: '动量', weight: 0.20, score: Math.round(Math.random() * 100) },
       { name: '资金流向', weight: 0.20, score: Math.round(Math.random() * 100) },
       { name: '情绪面', weight: 0.20, score: Math.round(Math.random() * 100) },

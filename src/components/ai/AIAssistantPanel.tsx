@@ -68,7 +68,7 @@ const zhSuggestions: Suggestion[] = [
   {
     id: 's5',
     icon: '💡',
-    label: t("components.strategySuggestion"),
+    label: "components.strategySuggestion",
     prompt: '根据当前市场高波动的环境，推荐适合的量化策略',
     category: 'strategy',
   },
@@ -232,7 +232,7 @@ function detectCategory(text: string): Message['category'] {
 // ── Main Component ──────────────────────────────────────────────────────
 
 const AIAssistantPanel: React.FC = () => {
-  const { i18n, t } = useTranslation();
+  const { i18n } = useTranslation();
   const setView = useAppStore((s) => s.setView);
   const lang = (i18n.language?.startsWith('zh') ? 'zh' : 'en') as 'zh' | 'en';
   const suggestions = lang === 'zh' ? zhSuggestions : enSuggestions;
@@ -363,7 +363,7 @@ const AIAssistantPanel: React.FC = () => {
             onClick={() => navigateTo('strategy')}
             className="px-2.5 py-1 text-[10px] rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-colors"
           >
-            {lang === 'zh' ? t('strategyWorkshop') : 'Strategy Lab'}
+            {lang === 'zh' ? 'strategyWorkshop' : 'Strategy Lab'}
           </button>
           <button
             onClick={() => navigateTo('risk')}

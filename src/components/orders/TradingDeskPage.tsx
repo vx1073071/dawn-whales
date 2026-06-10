@@ -3,8 +3,6 @@
 // >=500 lines | dark theme | production-ready
 import { useState, useEffect } from 'react';
 import * as api from '@/lib/bridge-api';
-import { useTranslation } from "react-i18next";
-
 type Tab = 'trade' | 'positions' | 'orders' | 'history';
 
 interface Position {
@@ -46,17 +44,16 @@ interface Order {
 
 // ── Account Summary Card ─────────────────────────────────────────────────
 function AccountSummary({ fund, connected }: { fund: AccountFund | null; connected: boolean }) {
-  const { t } = useTranslation();
 
   if (!fund) {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-white font-medium text-sm">{t('accountCapital')}</h3>
-          <span className="text-xs text-red-400">{connected ? t('components.loading') : t('components.disconnected')}</span>
+          <h3 className="text-white font-medium text-sm">{'accountCapital'}</h3>
+          <span className="text-xs text-red-400">{connected ? 'components.loading' : 'components.disconnected'}</span>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          {[t('components.totalAssets'), t('components.availableFunds'), t('components.positionValue'), t('components.buyingPower')].map((label) => (
+          {['components.totalAssets', 'components.availableFunds', 'components.positionValue', 'components.buyingPower'].map((label) => (
             <div key={label}>
               <div className="text-gray-500 text-xs mb-1">{label}</div>
               <div className="text-gray-600 font-mono text-sm">--</div>
@@ -72,24 +69,24 @@ function AccountSummary({ fund, connected }: { fund: AccountFund | null; connect
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-white font-medium text-sm">{t('accountCapital')}</h3>
-        <span className="text-xs text-emerald-400">{t('liveRealtime')}</span>
+        <h3 className="text-white font-medium text-sm">{'accountCapital'}</h3>
+        <span className="text-xs text-emerald-400">{'liveRealtime'}</span>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <div className="text-gray-500 text-xs mb-1">{t("components.totalAssets")}</div>
+          <div className="text-gray-500 text-xs mb-1">{"components.totalAssets"}</div>
           <div className="text-white font-mono text-lg font-semibold">{fmt(fund.totalAssets)}</div>
         </div>
         <div>
-          <div className="text-gray-500 text-xs mb-1">{t("components.availableFunds")}</div>
+          <div className="text-gray-500 text-xs mb-1">{"components.availableFunds"}</div>
           <div className="text-emerald-400 font-mono text-sm">{fmt(fund.cash)}</div>
         </div>
         <div>
-          <div className="text-gray-500 text-xs mb-1">{t("components.positionValue")}</div>
+          <div className="text-gray-500 text-xs mb-1">{"components.positionValue"}</div>
           <div className="text-gray-300 font-mono text-sm">{fmt(fund.marketVal)}</div>
         </div>
         <div>
-          <div className="text-gray-500 text-xs mb-1">{t("components.buyingPower")}</div>
+          <div className="text-gray-500 text-xs mb-1">{"components.buyingPower"}</div>
           <div className="text-cyan-400 font-mono text-sm">{fmt(fund.buyingPower)}</div>
         </div>
       </div>
@@ -196,13 +193,13 @@ function QuickTradeForm({
           className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
             side === 'BUY' ? 'bg-emerald-500 text-white' : 'bg-[#12121a] text-gray-400 hover:text-white'
           }`}
-        >{t('buy')}</button>
+        >{'buy'}</button>
         <button
           onClick={() => setSide('SELL')}
           className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
             side === 'SELL' ? 'bg-red-500 text-white' : 'bg-[#12121a] text-gray-400 hover:text-white'
           }`}
-        >{t('sell')}</button>
+        >{'sell'}</button>
       </div>
 
       {/* Order type */}
@@ -215,14 +212,14 @@ function QuickTradeForm({
               orderType === t ? 'bg-white/10 text-white' : 'bg-[#12121a] text-gray-500'
             }`}
           >
-            {t === 'MARKET' ? t('components.marketPrice') : t('components.limitPrice')}
+            {t === 'MARKET' ? 'components.marketPrice' : 'components.limitPrice'}
           </button>
         ))}
       </div>
 
       {/* Quantity */}
       <div className="mb-3">
-        <label className="text-gray-500 text-xs mb-1 block">{t("components.quantity")}</label>
+        <label className="text-gray-500 text-xs mb-1 block">{"components.quantity"}</label>
         <input
           type="number"
           value={qty}
@@ -368,7 +365,7 @@ export default function TradingDeskPage() {
     try {
       const result = await api.getPositions(id);
       if (Array.isArray(result)) {
-        setPositions(result.map((p: unknown) => ({
+        setPositions(result.map((p: Record<string, unknown>) => ({
           code: p.code || p.symbol,
           name: p.name,
           qty: p.qty || p.quantity || 0,
@@ -425,7 +422,7 @@ export default function TradingDeskPage() {
 
   const tabs: { key: Tab; label: string; icon: string }[] = [
     { key: 'trade', label: '交易台', icon: '📈' },
-    { key: 'positions', label: t('components.positions'), icon: '💼' },
+    { key: 'positions', label: 'components.positions', icon: '💼' },
     { key: 'orders', label: '委托', icon: '📋' },
     { key: 'history', label: '成交记录', icon: '📜' },
   ];
@@ -441,9 +438,9 @@ export default function TradingDeskPage() {
     submitted: 'text-blue-400 bg-blue-500/20', pending: 'text-yellow-400 bg-yellow-500/20',
   };
   const statusLabels: Record<string, string> = {
-    SUBMITTED: '已提交', WAITING: '等待中', FILLED: t('components.tradeFilled'), PARTIAL: t('components.partialFill'),
-    CANCELLED: '已撤销', REJECTED: t('components.tradeRejected'), UNKNOWN: '未知',
-    submitted: '已提交', pending: t('components.pending'),
+    SUBMITTED: '已提交', WAITING: '等待中', FILLED: 'components.tradeFilled', PARTIAL: 'components.partialFill',
+    CANCELLED: '已撤销', REJECTED: 'components.tradeRejected', UNKNOWN: '未知',
+    submitted: '已提交', pending: 'components.pending',
   };
 
   return (
@@ -458,7 +455,7 @@ export default function TradingDeskPage() {
           <div className="flex items-center gap-2 text-xs">
             <div className={`w-2 h-2 rounded-full ${connected ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`} />
             <span className={connected ? 'text-emerald-400' : 'text-red-400'}>
-              {connected ? 'OpenD 已连接' : t('components.disconnected')}
+              {connected ? 'OpenD 已连接' : 'components.disconnected'}
             </span>
           </div>
           {lastRefresh && <span className="text-gray-600 text-xs">刷新: {lastRefresh}</span>}
@@ -511,13 +508,13 @@ export default function TradingDeskPage() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                      <th className="px-3 py-2 text-left">{t("components.code")}</th>
-                      <th className="px-3 py-2 text-center">{t("components.direction")}</th>
-                      <th className="px-3 py-2 text-right">{t("components.quantity")}</th>
+                      <th className="px-3 py-2 text-left">{"components.code"}</th>
+                      <th className="px-3 py-2 text-center">{"components.direction"}</th>
+                      <th className="px-3 py-2 text-right">{"components.quantity"}</th>
                       <th className="px-3 py-2 text-right">委托价</th>
-                      <th className="px-3 py-2 text-right">{t("components.filled")}</th>
-                      <th className="px-3 py-2 text-center">{t("components.status")}</th>
-                      <th className="px-3 py-2 text-center">{t("components.actions")}</th>
+                      <th className="px-3 py-2 text-right">{"components.filled"}</th>
+                      <th className="px-3 py-2 text-center">{"components.status"}</th>
+                      <th className="px-3 py-2 text-center">{"components.actions"}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -556,10 +553,10 @@ export default function TradingDeskPage() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                      <th className="px-3 py-2 text-left">{t("components.code")}</th>
-                      <th className="px-3 py-2 text-right">{t("components.quantity")}</th>
+                      <th className="px-3 py-2 text-left">{"components.code"}</th>
+                      <th className="px-3 py-2 text-right">{"components.quantity"}</th>
                       <th className="px-3 py-2 text-right">成本</th>
-                      <th className="px-3 py-2 text-right">{t("components.marketPrice")}</th>
+                      <th className="px-3 py-2 text-right">{"components.marketPrice"}</th>
                       <th className="px-3 py-2 text-right">盈亏</th>
                     </tr>
                   </thead>
@@ -599,12 +596,12 @@ export default function TradingDeskPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">{t("components.code")}</th>
-                  <th className="px-4 py-3 text-left">{t("components.name")}</th>
-                  <th className="px-4 py-3 text-right">{t("components.quantity")}</th>
+                  <th className="px-4 py-3 text-left">{"components.code"}</th>
+                  <th className="px-4 py-3 text-left">{"components.name"}</th>
+                  <th className="px-4 py-3 text-right">{"components.quantity"}</th>
                   <th className="px-4 py-3 text-right">成本价</th>
-                  <th className="px-4 py-3 text-right">{t("components.marketPrice")}</th>
-                  <th className="px-4 py-3 text-right">{t("components.marketCap")}</th>
+                  <th className="px-4 py-3 text-right">{"components.marketPrice"}</th>
+                  <th className="px-4 py-3 text-right">{"components.marketCap"}</th>
                   <th className="px-4 py-3 text-right">盈亏</th>
                   <th className="px-4 py-3 text-right">盈亏%</th>
                 </tr>
@@ -641,7 +638,7 @@ export default function TradingDeskPage() {
       {(tab === 'orders') && (
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           {loading && orders.length === 0 ? (
-            <div className="p-8 text-center text-gray-500 text-sm">{t("components.loading")}</div>
+            <div className="p-8 text-center text-gray-500 text-sm">{"components.loading"}</div>
           ) : orders.length === 0 ? (
             <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">📋</div>
@@ -651,15 +648,15 @@ export default function TradingDeskPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">{t("components.time")}</th>
-                  <th className="px-4 py-3 text-left">{t("components.code")}</th>
-                  <th className="px-4 py-3 text-center">{t("components.direction")}</th>
-                  <th className="px-4 py-3 text-right">{t("components.quantity")}</th>
+                  <th className="px-4 py-3 text-left">{"components.time"}</th>
+                  <th className="px-4 py-3 text-left">{"components.code"}</th>
+                  <th className="px-4 py-3 text-center">{"components.direction"}</th>
+                  <th className="px-4 py-3 text-right">{"components.quantity"}</th>
                   <th className="px-4 py-3 text-right">委托价</th>
                   <th className="px-4 py-3 text-right">成交数</th>
                   <th className="px-4 py-3 text-right">成交价</th>
-                  <th className="px-4 py-3 text-center">{t("components.status")}</th>
-                  <th className="px-4 py-3 text-center">{t("components.actions")}</th>
+                  <th className="px-4 py-3 text-center">{"components.status"}</th>
+                  <th className="px-4 py-3 text-center">{"components.actions"}</th>
                 </tr>
               </thead>
               <tbody>
@@ -707,14 +704,14 @@ export default function TradingDeskPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">{t("components.time")}</th>
-                  <th className="px-4 py-3 text-left">{t("components.code")}</th>
-                  <th className="px-4 py-3 text-center">{t("components.direction")}</th>
-                  <th className="px-4 py-3 text-right">{t("components.quantity")}</th>
-                  <th className="px-4 py-3 text-right">{t("components.price")}</th>
+                  <th className="px-4 py-3 text-left">{"components.time"}</th>
+                  <th className="px-4 py-3 text-left">{"components.code"}</th>
+                  <th className="px-4 py-3 text-center">{"components.direction"}</th>
+                  <th className="px-4 py-3 text-right">{"components.quantity"}</th>
+                  <th className="px-4 py-3 text-right">{"components.price"}</th>
                   <th className="px-4 py-3 text-right">盈亏</th>
-                  <th className="px-4 py-3 text-center">{t("components.status")}</th>
-                  <th className="px-4 py-3 text-left">{t("components.remarks")}</th>
+                  <th className="px-4 py-3 text-center">{"components.status"}</th>
+                  <th className="px-4 py-3 text-left">{"components.remarks"}</th>
                 </tr>
               </thead>
               <tbody>

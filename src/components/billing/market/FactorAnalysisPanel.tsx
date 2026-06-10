@@ -123,7 +123,7 @@ function ICSparkline({ data, color }: { data: number[]; color: string }) {
 // ── Radar Chart (simplified SVG) ─────────────────────────────────────────
 
 function RadarChart({ strategies }: { strategies: StrategyRadar[] }) {
-  const dims = [t('components.returnRate'), t('components.sharpeRatio'), '回撤↓', t('components.winRate'), '波动↓', 'Alpha'] as const;
+  const dims = ['components.returnRate', 'components.sharpeRatio', '回撤↓', 'components.winRate', '波动↓', 'Alpha'] as const;
   const cx = 70; const cy = 70; const r = 55;
   const angles = [270, 330, 30, 90, 150, 210].map(a => (a * Math.PI) / 180);
 
@@ -200,7 +200,7 @@ export default function FactorAnalysisPanel({
             <table className="w-full text-xs">
               <thead>
                 <tr className="bg-white/[0.02] text-gray-500">
-                  <th className="text-left px-4 py-2">{t("components.factor")}</th><th className="text-right px-4 py-2">IC</th><th className="text-right px-4 py-2">IR</th>
+                  <th className="text-left px-4 py-2">{"components.factor"}</th><th className="text-right px-4 py-2">IC</th><th className="text-right px-4 py-2">IR</th>
                   <th className="text-right px-4 py-2">衰减(月)</th><th className="text-right px-4 py-2">拥挤度</th>
                   <th className="text-right px-4 py-2">多空收益差%</th><th className="px-4 py-2">12月IC趋势</th>
                 </tr>
@@ -231,7 +231,7 @@ export default function FactorAnalysisPanel({
             <table className="w-full text-xs">
               <thead>
                 <tr className="bg-white/[0.02] text-gray-500">
-                  <th className="text-left px-4 py-2">{t("components.factor")}</th>
+                  <th className="text-left px-4 py-2">{"components.factor"}</th>
                   {STOCKS.map(s => <th key={s} className="text-center px-2 py-2">{s}</th>)}
                 </tr>
               </thead>
@@ -271,8 +271,8 @@ export default function FactorAnalysisPanel({
               <table className="w-full text-xs">
                 <thead>
                   <tr className="bg-white/[0.02] text-gray-500">
-                    <th className="text-left px-4 py-2">{t("components.strategy")}</th><th className="text-right px-4 py-2">{t("components.returnRate")}</th><th className="text-right px-4 py-2">{t("components.sharpeRatio")}</th>
-                    <th className="text-right px-4 py-2">回撤</th><th className="text-right px-4 py-2">{t("components.winRate")}</th>
+                    <th className="text-left px-4 py-2">{"components.strategy"}</th><th className="text-right px-4 py-2">{"components.returnRate"}</th><th className="text-right px-4 py-2">{"components.sharpeRatio"}</th>
+                    <th className="text-right px-4 py-2">回撤</th><th className="text-right px-4 py-2">{"components.winRate"}</th>
                     <th className="text-right px-4 py-2">波动</th><th className="text-right px-4 py-2">Alpha</th>
                   </tr>
                 </thead>

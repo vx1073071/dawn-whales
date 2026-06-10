@@ -1,6 +1,4 @@
 ﻿import { useState, useMemo, type CSSProperties } from 'react';
-import { useTranslation } from 'react-i18next';
-
 // ── Types ──
 interface Step {
   id: number
@@ -22,58 +20,57 @@ interface SignalPair { type: 'good' | 'bad'; date: string; signal: string; entry
 interface ConflictRule { signalA: string; signalB: string; meaning: string; action: string; color: string }
 
 const ONBOARD_STEPS: Step[] = [
-  { id: 1, title: t('选择市场'), subtitle: t('港股·美股·新加坡·日本·澳洲·加拿大·马来西亚'), icon: t('🌍') },
-  { id: 2, title: t('选择模板'), subtitle: t('20+量化模板·按市场和品种智能推荐'), icon: t('📋') },
-  { id: 3, title: t('调整参数'), subtitle: t('保守/均衡/激进一键预设·滑块微调·AI推荐'), icon: t('🎚️') },
-  { id: 4, title: t('回测验证'), subtitle: t('3年历史数据·实时收益曲线·健康检查'), icon: t('📈') },
-  { id: 5, title: t('发布上线'), subtitle: t('模拟/实盘一键切换·信号广场分享'), icon: t('🚀') },
+  { id: 1, title: '选择市场', subtitle: '港股·美股·新加坡·日本·澳洲·加拿大·马来西亚', icon: '🌍' },
+  { id: 2, title: '选择模板', subtitle: '20+量化模板·按市场和品种智能推荐', icon: '📋' },
+  { id: 3, title: '调整参数', subtitle: '保守/均衡/激进一键预设·滑块微调·AI推荐', icon: '🎚️' },
+  { id: 4, title: '回测验证', subtitle: '3年历史数据·实时收益曲线·健康检查', icon: '📈' },
+  { id: 5, title: '发布上线', subtitle: '模拟/实盘一键切换·信号广场分享', icon: '🚀' },
 ];
 
 const INDICATOR_CARDS: IndicatorCard[] = [
-  { name: t('MA 移动均线'), short: t('趋势跟踪'), usage: t('短买长卖：5日突破20日买入'), risk: t('震荡市频繁假突破'), category: 'trend' },
-  { name: t('RSI 相对强弱'), short: t('超买超卖'), usage: 'RSI<30超卖买入, RSI>70超买卖出', risk: t('强趋势中RSI长时间极端'), category: 'momentum' },
-  { name: 'MACD', short: t('趋势+动能'), usage: t('金叉买入·死叉卖出'), risk: t('滞后指标, 拐点延迟'), category: 'trend' },
-  { name: t('Bollinger 布林带'), short: t('波动率通道'), usage: t('触及下轨买入·触及上轨卖出'), risk: t('单边市突破后不止步'), category: 'volatility' },
-  { name: t('Volume 成交量'), short: t('资金流向'), usage: t('放量突破确认趋势'), risk: t('主力对倒放量欺骗'), category: 'volume' },
-  { name: t('ATR 真实波幅'), short: t('止损计算'), usage: t('2倍ATR止损·3倍ATR止盈'), risk: t('跳空缺口ATR失真'), category: 'volatility' },
-  { name: t('SAR 抛物线'), short: t('反转止损'), usage: t('SAR在价格上方→止损'), risk: t('盘整频繁反转'), category: 'trend' },
-  { name: t('OBV 能量潮'), short: t('量价配合'), usage: t('OBV与价格同向确认趋势'), risk: t('大单砸盘OBV骤降'), category: 'volume' },
+  { name: 'MA 移动均线', short: '趋势跟踪', usage: '短买长卖：5日突破20日买入', risk: '震荡市频繁假突破', category: 'trend' },
+  { name: 'RSI 相对强弱', short: '超买超卖', usage: 'RSI<30超卖买入, RSI>70超买卖出', risk: '强趋势中RSI长时间极端', category: 'momentum' },
+  { name: 'MACD', short: '趋势+动能', usage: '金叉买入·死叉卖出', risk: '滞后指标, 拐点延迟', category: 'trend' },
+  { name: 'Bollinger 布林带', short: '波动率通道', usage: '触及下轨买入·触及上轨卖出', risk: '单边市突破后不止步', category: 'volatility' },
+  { name: 'Volume 成交量', short: '资金流向', usage: '放量突破确认趋势', risk: '主力对倒放量欺骗', category: 'volume' },
+  { name: 'ATR 真实波幅', short: '止损计算', usage: '2倍ATR止损·3倍ATR止盈', risk: '跳空缺口ATR失真', category: 'volatility' },
+  { name: 'SAR 抛物线', short: '反转止损', usage: 'SAR在价格上方→止损', risk: '盘整频繁反转', category: 'trend' },
+  { name: 'OBV 能量潮', short: '量价配合', usage: 'OBV与价格同向确认趋势', risk: '大单砸盘OBV骤降', category: 'volume' },
 ];
 
 const FACTOR_STORIES: FactorStory[] = [
-  { factor: t('高 ROE'), story: t('ROE=净资产收益率, 代表公司用股东的每一块钱能赚多少。高ROE=赚钱能力强, 像一台高效的印钞机。'), example: t('腾讯ROE~18%, 每100块净资产年赚18块') },
-  { factor: t('低 PE'), story: t('PE=市盈率=股价÷每股收益。低PE=你很便宜地买到了同等利润。但注意：低PE可能是因为公司要不行了！'), example: t('银行股PE~5, 但不代表全部有价值陷阱') },
-  { factor: t('高股息率'), story: t('股息率=每股分红÷股价。高股息=上市公司从口袋里掏出真金白银给你花。防御型投资者最爱。'), example: t('中移动股息率~7%, 存银行不如买它') },
-  { factor: t('动量因子'), story: t('过去涨得好的, 近期还可能继续涨。就像赛跑中领跑的选手有惯性优势。但要提防"动量崩溃"！'), example: t('过去12个月涨幅前20%的股票, 下月平均仍跑赢') },
+  { factor: '高 ROE', story: 'ROE=净资产收益率, 代表公司用股东的每一块钱能赚多少。高ROE=赚钱能力强, 像一台高效的印钞机。', example: '腾讯ROE~18%, 每100块净资产年赚18块' },
+  { factor: '低 PE', story: 'PE=市盈率=股价÷每股收益。低PE=你很便宜地买到了同等利润。但注意：低PE可能是因为公司要不行了！', example: '银行股PE~5, 但不代表全部有价值陷阱' },
+  { factor: '高股息率', story: '股息率=每股分红÷股价。高股息=上市公司从口袋里掏出真金白银给你花。防御型投资者最爱。', example: '中移动股息率~7%, 存银行不如买它' },
+  { factor: '动量因子', story: '过去涨得好的, 近期还可能继续涨。就像赛跑中领跑的选手有惯性优势。但要提防"动量崩溃"！', example: '过去12个月涨幅前20%的股票, 下月平均仍跑赢' },
 ];
 
 const PRESETS: ParameterPreset[] = [
-  { label: t('保守'), icon: t('🛡️'), fast: 5, slow: 20, signal: 9, description: t('信号少, 胜率高, 适合大盘股') },
-  { label: t('均衡'), icon: t('⚖️'), fast: 12, slow: 26, signal: 9, description: t('经典MACD参数, 通用性强') },
-  { label: t('激进'), icon: t('🔥'), fast: 3, slow: 10, signal: 5, description: t('高频信号, 适合短线波段') },
+  { label: '保守', icon: '🛡️', fast: 5, slow: 20, signal: 9, description: '信号少, 胜率高, 适合大盘股' },
+  { label: '均衡', icon: '⚖️', fast: 12, slow: 26, signal: 9, description: '经典MACD参数, 通用性强' },
+  { label: '激进', icon: '🔥', fast: 3, slow: 10, signal: 5, description: '高频信号, 适合短线波段' },
 ];
 
 const BACKTEST_STORIES: BacktestStory[] = [
-  { title: t('快手-W (01024)'), initial: 'HK$100,000', final: 'HK$183,000', maxDrawdown: '-34%', winRate: '61%', verdict: t('优秀 ⭐'), verdictColor: '#10B981' },
-  { title: t('小米集团 (01810)'), initial: 'HK$100,000', final: 'HK$128,000', maxDrawdown: '-18%', winRate: '55%', verdict: t('良好 ✅'), verdictColor: '#10B981' },
-  { title: t('恒生ETF (02800)'), initial: 'HK$100,000', final: 'HK$91,000', maxDrawdown: '-22%', winRate: '42%', verdict: t('谨慎 ⚠️'), verdictColor: '#F59E0B' },
+  { title: '快手-W (01024)', initial: 'HK$100,000', final: 'HK$183,000', maxDrawdown: '-34%', winRate: '61%', verdict: '优秀 ⭐', verdictColor: '#10B981' },
+  { title: '小米集团 (01810)', initial: 'HK$100,000', final: 'HK$128,000', maxDrawdown: '-18%', winRate: '55%', verdict: '良好 ✅', verdictColor: '#10B981' },
+  { title: '恒生ETF (02800)', initial: 'HK$100,000', final: 'HK$91,000', maxDrawdown: '-22%', winRate: '42%', verdict: '谨慎 ⚠️', verdictColor: '#F59E0B' },
 ];
 
 const SIGNAL_DEMOS: SignalPair[] = [
-  { type: 'good', date: '2026-03-15', signal: 'MACD金叉 + RSI<30超卖', entry: 'HK$68.50', exit: 'HK$82.30', pnl: '+20.1%', reason: t('RSI超卖后反弹, MACD金叉确认上涨') },
-  { type: 'bad', date: '2026-04-02', signal: t('MA5突破MA20 + 放量'), entry: 'HK$75.00', exit: 'HK$66.00', pnl: '-12.0%', reason: t('假突破: 次日成交量骤缩, 主力诱多') },
+  { type: 'good', date: '2026-03-15', signal: 'MACD金叉 + RSI<30超卖', entry: 'HK$68.50', exit: 'HK$82.30', pnl: '+20.1%', reason: 'RSI超卖后反弹, MACD金叉确认上涨' },
+  { type: 'bad', date: '2026-04-02', signal: 'MA5突破MA20 + 放量', entry: 'HK$75.00', exit: 'HK$66.00', pnl: '-12.0%', reason: '假突破: 次日成交量骤缩, 主力诱多' },
 ];
 
 const CONFLICT_RULES: ConflictRule[] = [
-  { signalA: 'RSI超买 (>70)', signalB: t('MACD死叉'), meaning: t('双重看跌确认'), action: t('强烈卖出信号, 减仓/清仓'), color: '#EF4444' },
-  { signalA: 'RSI超卖 (<30)', signalB: t('MACD金叉'), meaning: t('双重看涨确认'), action: t('强烈买入信号, 分批建仓'), color: '#10B981' },
-  { signalA: t('MA金叉 (买入)'), signalB: t('RSI超买 (卖出)'), meaning: t('指标冲突'), action: t('观望, 等一方确认后再操作'), color: '#F59E0B' },
-  { signalA: t('放量突破'), signalB: t('OBV下降'), meaning: t('量价背离'), action: t('谨慎, 可能主力对倒出货'), color: '#F59E0B' },
+  { signalA: 'RSI超买 (>70)', signalB: 'MACD死叉', meaning: '双重看跌确认', action: '强烈卖出信号, 减仓/清仓', color: '#EF4444' },
+  { signalA: 'RSI超卖 (<30)', signalB: 'MACD金叉', meaning: '双重看涨确认', action: '强烈买入信号, 分批建仓', color: '#10B981' },
+  { signalA: 'MA金叉 (买入)', signalB: 'RSI超买 (卖出)', meaning: '指标冲突', action: '观望, 等一方确认后再操作', color: '#F59E0B' },
+  { signalA: '放量突破', signalB: 'OBV下降', meaning: '量价背离', action: '谨慎, 可能主力对倒出货', color: '#F59E0B' },
 ];
 
 // ── Sub-components ──
 function StepIndicator({ current }: { current: number }) {
-  const { t } = useTranslation();
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center', marginBottom: 32 }}>
@@ -88,7 +85,7 @@ function StepIndicator({ current }: { current: number }) {
               color: i <= current ? '#FFF' : '#6B7280', transition: 'all 0.3s',
             }}
           >
-            {i < current ? t('✓') : s.icon}
+            {i < current ? '✓' : s.icon}
           </div>
           {i < 4 && (
             <div style={{ width: 24, height: 2, background: i < current ? '#6366F1' : '#374151', transition: 'all 0.3s' }} />
@@ -101,7 +98,7 @@ function StepIndicator({ current }: { current: number }) {
 
 function IndicatorCardC({ card }: { card: IndicatorCard }) {
   const catColors: Record<string, string> = { trend: '#3B82F6', momentum: '#10B981', volatility: '#F59E0B', volume: '#EF4444' };
-  const catLabels: Record<string, string> = { trend: t('components.trend'), momentum: t('动量'), volatility: t('波动'), volume: t('components.volume') };
+  const catLabels: Record<string, string> = { trend: 'components.trend', momentum: '动量', volatility: '波动', volume: 'components.volume' };
 
   return (
     <div style={{
@@ -115,15 +112,15 @@ function IndicatorCardC({ card }: { card: IndicatorCard }) {
         </span>
       </div>
       <div>
-        <span style={{ fontSize: 11, color: '#6B7280' }}>{t('一句话:')}</span>
+        <span style={{ fontSize: 11, color: '#6B7280' }}>{'一句话:'}</span>
         <span style={{ fontSize: 12, color: '#D1D5DB' }}>{card.short}</span>
       </div>
       <div>
-        <span style={{ fontSize: 11, color: '#6B7280' }}>{t('用法:')}</span>
+        <span style={{ fontSize: 11, color: '#6B7280' }}>{'用法:'}</span>
         <span style={{ fontSize: 12, color: '#34D399' }}>{card.usage}</span>
       </div>
       <div>
-        <span style={{ fontSize: 11, color: '#6B7280' }}>{t('⚠️ 风险:')}</span>
+        <span style={{ fontSize: 11, color: '#6B7280' }}>{'⚠️ 风险:'}</span>
         <span style={{ fontSize: 12, color: '#FCA5A5' }}>{card.risk}</span>
       </div>
     </div>
@@ -187,16 +184,16 @@ function SignalComparisonCard({ pair }: { pair: SignalPair }) {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
         <span style={{ fontSize: 14, fontWeight: 700, color: isGood ? '#34D399' : '#FCA5A5' }}>
-          {isGood ? t('🟢 盈利信号') : t('🔴 亏损信号')}
+          {isGood ? '🟢 盈利信号' : '🔴 亏损信号'}
         </span>
         <span style={{ fontSize: 12, color: '#9CA3AF' }}>{pair.date}</span>
       </div>
       <div style={{ fontSize: 12, color: '#D1D5DB', marginBottom: 6 }}>
-        <strong>{t('信号:')}</strong> {pair.signal}
+        <strong>{'信号:'}</strong> {pair.signal}
       </div>
       <div style={{ display: 'flex', gap: 16, marginBottom: 6 }}>
-        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{t('入场:')}<span style={{ color: '#D1D5DB' }}>{pair.entry}</span></span>
-        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{t('出场:')}<span style={{ color: '#D1D5DB' }}>{pair.exit}</span></span>
+        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{'入场:'}<span style={{ color: '#D1D5DB' }}>{pair.entry}</span></span>
+        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{'出场:'}<span style={{ color: '#D1D5DB' }}>{pair.exit}</span></span>
         <span style={{ fontSize: 13, fontWeight: 700, color: isGood ? '#10B981' : '#EF4444' }}>{pair.pnl}</span>
       </div>
       <div style={{ fontSize: 11, color: '#6B7280', fontStyle: 'italic' }}>📝 {pair.reason}</div>
@@ -225,12 +222,12 @@ function ConflictRuleCard({ rule }: { rule: ConflictRule }) {
 
 function HealthCheckDemo() {
   const checks = [
-    { label: t('components.winRate'), value: '61%', verdict: t('✅ 良好'), color: '#10B981' },
-    { label: t('components.maxDrawdown'), value: '-34%', verdict: t('⚠️ 偏高'), color: '#F59E0B' },
-    { label: t('夏普比率'), value: '1.42', verdict: t('✅ 优秀'), color: '#10B981' },
-    { label: t('components.profitLossRatio'), value: '2.3:1', verdict: t('✅ 良好'), color: '#10B981' },
-    { label: t('最大持仓'), value: t('HK$68万'), verdict: t('⚠️ 建议不超总资金20%'), color: '#F59E0B' },
-    { label: t('连续亏损'), value: t('4次'), verdict: t('✅ 可接受'), color: '#10B981' },
+    { label: 'components.winRate', value: '61%', verdict: '✅ 良好', color: '#10B981' },
+    { label: 'components.maxDrawdown', value: '-34%', verdict: '⚠️ 偏高', color: '#F59E0B' },
+    { label: '夏普比率', value: '1.42', verdict: '✅ 优秀', color: '#10B981' },
+    { label: 'components.profitLossRatio', value: '2.3:1', verdict: '✅ 良好', color: '#10B981' },
+    { label: '最大持仓', value: 'HK$68万', verdict: '⚠️ 建议不超总资金20%', color: '#F59E0B' },
+    { label: '连续亏损', value: '4次', verdict: '✅ 可接受', color: '#10B981' },
   ];
 
   return (
@@ -258,7 +255,7 @@ function FriendlyErrorBanner() {
       marginBottom: 12,
     }}>
       <div style={{ fontSize: 13, color: '#D1D5DB', marginBottom: 6 }}>
-        💡 <strong>{t('友好提示示例')}</strong> — 我们不说"Error: invalid_input_400", 我们说：
+        💡 <strong>{'友好提示示例'}</strong> — 我们不说"Error: invalid_input_400", 我们说：
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
         <div style={{ fontSize: 11, color: '#EF4444' }}>
@@ -309,12 +306,12 @@ export default function OnboardingFullKit() {
             🎓 新手引导中心
           </h2>
           <p style={{ margin: '4px 0 0', fontSize: 13, color: '#9CA3AF' }}>
-            {step === 0 ? t('5步上手，30秒创建第一个策略') : step === 1 ? t('跟做模式：边学边做') : step === 2 ? t('指标卡片·因子故事·参数说明') : step === 3 ? t('回测解读·信号对比·健康检查') : t('🎉 恭喜出师！')}
+            {step === 0 ? '5步上手，30秒创建第一个策略' : step === 1 ? '跟做模式：边学边做' : step === 2 ? '指标卡片·因子故事·参数说明' : step === 3 ? '回测解读·信号对比·健康检查' : '🎉 恭喜出师！'}
           </p>
         </div>
         {/* Nav */}
         <div style={{ display: 'flex', gap: 4 }}>
-          {[t('📋 引导'), t('🎚️ 教程'), t('📖 指标'), t('📊 回测'), t('✅ 完成')].map((label, i) => (
+          {['📋 引导', '🎚️ 教程', '📖 指标', '📊 回测', '✅ 完成'].map((label, i) => (
             <button
               key={i}
               onClick={() => setStep(i)}
@@ -441,31 +438,31 @@ function TutorialFlow({ onComplete, sliderVal, setSliderVal, selectedPreset, set
               style={{ width: '100%', accentColor: '#6366F1', height: 6 }}
             />
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#6B7280', marginTop: 2 }}>
-              <span>{t('3 (超短线)')}</span>
+              <span>{'3 (超短线)'}</span>
               <span style={{ fontWeight: 700, color: '#818CF8' }}>{sliderVal}</span>
-              <span>{t('50 (长线)')}</span>
+              <span>{'50 (长线)'}</span>
             </div>
 
             <div style={{ marginTop: 12, fontSize: 12, color: '#9CA3AF' }}>
               💡 <span style={{ color: '#D1D5DB' }}>
-                {sliderVal <= 8 ? t('"快线5-20适合快进快出做短线，信号密集但假信号多。"') :
-                 sliderVal <= 20 ? t('"快线8-20是短线常用区间，捕捉1-3周趋势。"') :
-                 t('"慢线20-200适合中长期趋势跟踪，信号少但准。"')}
+                {sliderVal <= 8 ? '"快线5-20适合快进快出做短线，信号密集但假信号多。"' :
+                 sliderVal <= 20 ? '"快线8-20是短线常用区间，捕捉1-3周趋势。"' :
+                 '"慢线20-200适合中长期趋势跟踪，信号少但准。"'}
               </span>
             </div>
 
             {/* Param impact preview */}
             <div style={{ marginTop: 12, padding: '10px', borderRadius: 8, background: '#111827' }}>
-              <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t('📊 参数影响预览')}</div>
+              <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{'📊 参数影响预览'}</div>
               <div style={{ display: 'flex', gap: 16 }}>
                 <div>
-                  <div style={{ fontSize: 10, color: '#6B7280' }}>{t('预期信号数/月')}</div>
+                  <div style={{ fontSize: 10, color: '#6B7280' }}>{'预期信号数/月'}</div>
                   <div style={{ fontSize: 16, fontWeight: 700, color: '#818CF8' }}>
                     {sliderVal <= 8 ? '15-25' : sliderVal <= 20 ? '8-15' : '3-8'}
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 10, color: '#6B7280' }}>{t('预期胜率')}</div>
+                  <div style={{ fontSize: 10, color: '#6B7280' }}>{'预期胜率'}</div>
                   <div style={{ fontSize: 16, fontWeight: 700, color: '#34D399' }}>
                     {sliderVal <= 8 ? '~45%' : sliderVal <= 20 ? '~55%' : '~65%'}
                   </div>
@@ -504,9 +501,9 @@ function MetricsAndFactors() {
     <div>
       <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
         {[
-          { key: 'indicators' as const, label: t('📊 指标卡片') },
-          { key: 'factors' as const, label: t('📖 因子故事') },
-          { key: 'conflicts' as const, label: t('⚠️ 冲突规则') },
+          { key: 'indicators' as const, label: '📊 指标卡片' },
+          { key: 'factors' as const, label: '📖 因子故事' },
+          { key: 'conflicts' as const, label: '⚠️ 冲突规则' },
         ].map(t => (
           <button
             key={t.key}
@@ -551,9 +548,9 @@ function BacktestAndSignals() {
     <div>
       <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
         {[
-          { key: 'stories' as const, label: t('📈 回测故事') },
-          { key: 'signals' as const, label: t('🟢🔴 信号对比') },
-          { key: 'health' as const, label: t('🩺 健康检查') },
+          { key: 'stories' as const, label: '📈 回测故事' },
+          { key: 'signals' as const, label: '🟢🔴 信号对比' },
+          { key: 'health' as const, label: '🩺 健康检查' },
         ].map(t => (
           <button
             key={t.key}
@@ -588,7 +585,7 @@ function BacktestAndSignals() {
         <div>
           <HealthCheckDemo />
           <div style={{ marginTop: 12, padding: '12px 16px', borderRadius: 10, background: '#1F2937', border: '1px solid #374151', fontSize: 13, color: '#D1D5DB' }}>
-            <div style={{ fontWeight: 600, marginBottom: 4 }}>{t('📊 回测健康检查')}</div>
+            <div style={{ fontWeight: 600, marginBottom: 4 }}>{'📊 回测健康检查'}</div>
             <div style={{ lineHeight: 1.8 }}>
               不仅仅是看总收益！胜率、回撤、夏普、盈亏比、持仓集中度——<br />
               六维体检帮你发现策略的潜在风险。

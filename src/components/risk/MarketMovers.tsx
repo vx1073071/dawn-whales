@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { useState, useMemo } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 interface MoverItem {
   symbol: string;

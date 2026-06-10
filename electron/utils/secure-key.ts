@@ -8,6 +8,10 @@
  * - At runtime: DPAPI decrypts on-demand per call, key never hits process memory long-term
  * - On non-Windows: dotenv loading for development
  *
+ * @deprecated Since v2.0. DeepSeek API key is now managed server-side via process.env.DEEPSEEK_API_KEY.
+ *             This module is retained for backward compatibility only.
+ *             New code should read process.env.DEEPSEEK_API_KEY directly on the server side.
+ *
  * Usage:
  *   const { getDeepSeekKey, storeDeepSeekKey } = require('./utils/secure-key')
  *   const key = getDeepSeekKey()     // returns string or null
@@ -214,6 +218,7 @@ export function deleteKey(app, name) {
 
 /** Convenience: get DeepSeek key specifically */
 export function getDeepSeekKey(app) {
+  console.warn('[secure-key] @deprecated — Key is now managed server-side via process.env.DEEPSEEK_API_KEY. Use that directly.');
   return getKey(app, 'DEEPSEEK_API_KEY');
 }
 

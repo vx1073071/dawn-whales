@@ -158,8 +158,6 @@ import { validate,
   ReportQuickSchema,
   StrategyAutoTuneSchema,
 } from './ipc-schemas';
-const _secureKey = require('./utils/secure-key');
-const getDeepSeekKey_ = (app: unknown) => _secureKey.getDeepSeekKey_(app);
 import log from 'electron-log';
 
 // 默认监控列表，连接时从 DB 读取用户配置
@@ -428,7 +426,6 @@ app.whenReady().then(async () => {
     db,
     watchlist: WATCHLIST,
     mainWindow,
-    getDeepSeekKey_,
     quotePushHandler,
   });
   createWindow();

@@ -25,7 +25,6 @@ const PRESET_QUERIES = [
 ];
 
 export default function StockScreenerPage() {
-  const { t } = useTranslation();
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<ScreenerResult[]>([]);
@@ -125,7 +124,7 @@ export default function StockScreenerPage() {
             disabled={loading}
             className="bg-[#C9A046] hover:bg-[#b8933f] text-sidebar font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
           >
-            {loading ? '搜索中...' : t('components.search')}
+            {loading ? '搜索中...' : 'components.search'}
           </button>
         </div>
 
@@ -193,7 +192,7 @@ export default function StockScreenerPage() {
               />
             </div>
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">{t("components.industry")}</label>
+              <label className="text-xs text-gray-500 mb-1 block">{"components.industry"}</label>
               <input
                 type="text"
                 value={filters.sector}
@@ -247,7 +246,7 @@ export default function StockScreenerPage() {
                   <th className="px-4 py-3 text-right font-medium cursor-pointer hover:text-white" onClick={() => toggleSort('roe')}>
                     ROE {sortKey === 'roe' && (sortDesc ? '↓' : '↑')}
                   </th>
-                  <th className="px-4 py-3 text-left font-medium">{t("components.industry")}</th>
+                  <th className="px-4 py-3 text-left font-medium">{"components.industry"}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">

@@ -11,8 +11,6 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
-
 // ── Types ───────────────────────────────────────────────────────────────
 
 interface DigestSection {
@@ -57,7 +55,7 @@ const MOCK_DIGEST: Record<DigestType, DailyDigest> = {
     activeSignals: [
       { strategy: '双均线交叉', symbol: 'US.AAPL', signal: '买入', time: '09:35' },
       { strategy: '均值回归', symbol: 'HK.00700', signal: '卖出', time: '10:12' },
-      { strategy: '动量突破', symbol: 'US.NVDA', signal: t('components.positions'), time: '08:00' },
+      { strategy: '动量突破', symbol: 'US.NVDA', signal: 'components.positions', time: '08:00' },
     ],
     riskAlerts: [
       { level: 'info', message: '组合VaR在正常范围内' },
@@ -131,8 +129,7 @@ const ALERT_COLORS = {
 };
 
 export const AIDailyDigestPanel: React.FC<AIDailyDigestPanelProps> = ({ className }) => {
-  const { t } = useTranslation();
-  const [digestType, setDigestType] = useState<DigestType>('daily');
+    const [digestType, setDigestType] = useState<DigestType>('daily');
   const [regenerating, setRegenerating] = useState(false);
 
   const digest = MOCK_DIGEST[digestType];
@@ -205,7 +202,7 @@ export const AIDailyDigestPanel: React.FC<AIDailyDigestPanelProps> = ({ classNam
             <div className={`text-sm font-bold ${SENTIMENT_COLORS[digest.marketSentiment]}`}>
               市场情绪: {SENTIMENT_LABELS[digest.marketSentiment]}
             </div>
-            <div className="text-[10px] text-gray-500">{t('AI 综合分析量化信号 + 新闻情绪')}</div>
+            <div className="text-[10px] text-gray-500">{'AI 综合分析量化信号 + 新闻情绪'}</div>
           </div>
         </div>
       </div>
@@ -227,7 +224,7 @@ export const AIDailyDigestPanel: React.FC<AIDailyDigestPanelProps> = ({ classNam
         {/* Top movers */}
         {digest.topMovers.length > 0 && (
           <div className="bg-gray-800/40 rounded-lg p-4 border border-gray-700/30">
-            <h4 className="text-xs font-semibold text-gray-400 mb-3">{t('📌 涨跌榜')}</h4>
+            <h4 className="text-xs font-semibold text-gray-400 mb-3">{'📌 涨跌榜'}</h4>
             <div className="space-y-2">
               {digest.topMovers.map(m => (
                 <div key={m.symbol} className="flex items-center justify-between text-xs">
@@ -247,7 +244,7 @@ export const AIDailyDigestPanel: React.FC<AIDailyDigestPanelProps> = ({ classNam
         {/* Active signals */}
         {digest.activeSignals.length > 0 && (
           <div className="bg-gray-800/40 rounded-lg p-4 border border-gray-700/30">
-            <h4 className="text-xs font-semibold text-gray-400 mb-3">{t('📊 活跃信号')}</h4>
+            <h4 className="text-xs font-semibold text-gray-400 mb-3">{'📊 活跃信号'}</h4>
             <div className="space-y-2">
               {digest.activeSignals.map((s, i) => (
                 <div key={i} className="flex items-center justify-between text-xs">

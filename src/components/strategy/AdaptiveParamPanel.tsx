@@ -2,8 +2,6 @@
 // Phase 4.4 ML-38-02: Self-adaptive parameter adjustment for strategies
 // Connects to AdaptiveParamEngine + RewardEngine
 import { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from "react-i18next";
-
 // ── Types ─────────────────────────────────────────────────────────────────
 
 interface ParameterHistory {
@@ -40,27 +38,27 @@ interface Props {
 
 const STRATEGY_PARAMS: Record<string, { label: string; key: string; min: number; max: number; step: number; unit: string }[]> = {
   'ma_cross': [
-    { label: t('fastPeriod'), key: 'fastPeriod', min: 5, max: 50, step: 1, unit: '' },
-    { label: t('slowPeriod'), key: 'slowPeriod', min: 20, max: 200, step: 1, unit: '' },
-    { label: t('stopLossPct'), key: 'stopLoss', min: 1, max: 20, step: 0.5, unit: '%' },
+    { label: 'fastPeriod', key: 'fastPeriod', min: 5, max: 50, step: 1, unit: '' },
+    { label: 'slowPeriod', key: 'slowPeriod', min: 20, max: 200, step: 1, unit: '' },
+    { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 20, step: 0.5, unit: '%' },
     { label: '止盈(%)', key: 'takeProfit', min: 2, max: 50, step: 1, unit: '%' },
   ],
   'rsi': [
     { label: 'RSI 周期', key: 'period', min: 7, max: 28, step: 1, unit: '' },
     { label: '超卖阈值', key: 'oversold', min: 15, max: 40, step: 1, unit: '' },
     { label: '超买阈值', key: 'overbought', min: 60, max: 85, step: 1, unit: '' },
-    { label: t('stopLossPct'), key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
+    { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
   ],
   'macd': [
     { label: '快线', key: 'fast', min: 8, max: 20, step: 1, unit: '' },
     { label: '慢线', key: 'slow', min: 21, max: 40, step: 1, unit: '' },
     { label: '信号线', key: 'signal', min: 5, max: 15, step: 1, unit: '' },
-    { label: t('stopLossPct'), key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
+    { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
   ],
   'bollinger': [
     { label: '中轨周期', key: 'period', min: 10, max: 30, step: 1, unit: '' },
     { label: '标准差倍数', key: 'stdDev', min: 1.5, max: 3.5, step: 0.1, unit: 'σ' },
-    { label: t('stopLossPct'), key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
+    { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
     { label: '止盈(%)', key: 'takeProfit', min: 2, max: 30, step: 1, unit: '%' },
   ],
 };
@@ -103,8 +101,7 @@ function generateMockHistory(_strategyId: string, initialParams: Record<string, 
 // ── Component ──────────────────────────────────────────────────────────────
 
 export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, onBack, initialParams }: Props) {
-  const { t } = useTranslation();
-
+  
   const [state, setState] = useState<AdaptiveState>(() => {
     const params = initialParams || { ...DEFAULT_PARAMS };
     const history = generateMockHistory(strategyId, params);
@@ -173,7 +170,7 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
         </div>
         <div className="flex gap-2">
           {onBack && (
-            <button onClick={onBack} className="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition-colors">{t('goBack')}</button>
+            <button onClick={onBack} className="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition-colors">{'goBack'}</button>
           )}
           <label className="flex items-center gap-1.5 cursor-pointer">
             <input
@@ -277,7 +274,7 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
             onClick={() => setShowHistory(!showHistory)}
             className="text-xs text-gray-500 hover:text-gray-300"
           >
-            {showHistory ? t('components.hide') : '显示全部'}
+            {showHistory ? 'components.hide' : '显示全部'}
           </button>
         </div>
 

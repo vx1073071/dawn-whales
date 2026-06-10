@@ -9,8 +9,6 @@
  */
 
 import React, { useState, useCallback, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-
 // ── Types ───────────────────────────────────────────────────────────────
 
 interface PublishStrategy {
@@ -39,13 +37,13 @@ interface PublishForm {
 // ── Mock strategies for selection ───────────────────────────────────────
 
 const MOCK_STRATEGIES: PublishStrategy[] = [
-  { id: 'strat-001', name: t('双均线交叉 v3'), type: 'MA_CROSS', description: t('经典双均线交叉策略'), sharpe: 2.1, annualReturn: 0.35, maxDrawdown: -0.12, winRate: 0.58, tradeCount: 245 },
-  { id: 'strat-002', name: t('动量突破 v2'), type: 'MOMENTUM', description: t('20日动量突破+成交量确认'), sharpe: 1.8, annualReturn: 0.28, maxDrawdown: -0.18, winRate: 0.52, tradeCount: 180 },
-  { id: 'strat-003', name: t('均值回归 v1'), type: 'MEAN_REV', description: t('布林带上下轨回归'), sharpe: 2.4, annualReturn: 0.42, maxDrawdown: -0.09, winRate: 0.63, tradeCount: 320 },
+  { id: 'strat-001', name: '双均线交叉 v3', type: 'MA_CROSS', description: '经典双均线交叉策略', sharpe: 2.1, annualReturn: 0.35, maxDrawdown: -0.12, winRate: 0.58, tradeCount: 245 },
+  { id: 'strat-002', name: '动量突破 v2', type: 'MOMENTUM', description: '20日动量突破+成交量确认', sharpe: 1.8, annualReturn: 0.28, maxDrawdown: -0.18, winRate: 0.52, tradeCount: 180 },
+  { id: 'strat-003', name: '均值回归 v1', type: 'MEAN_REV', description: '布林带上下轨回归', sharpe: 2.4, annualReturn: 0.42, maxDrawdown: -0.09, winRate: 0.63, tradeCount: 320 },
 ];
 
-const CATEGORIES = [t('趋势跟踪'), t('均值回归'), t('动量'), t('套利'), t('事件驱动'), t('多因子'), 'AI/ML', t('自定义')];
-const SUGGESTED_TAGS = [t('A股'), t('港股'), t('美股'), t('日内'), t('中频'), t('低频'), t('高Sharpe'), t('低回撤'), t('稳健'), t('激进')];
+const CATEGORIES = ['趋势跟踪', '均值回归', '动量', '套利', '事件驱动', '多因子', 'AI/ML', '自定义'];
+const SUGGESTED_TAGS = ['A股', '港股', '美股', '日内', '中频', '低频', '高Sharpe', '低回撤', '稳健', '激进'];
 
 // ── Main Component ──────────────────────────────────────────────────────
 
@@ -54,14 +52,13 @@ interface MarketplacePublishPanelProps {
 }
 
 export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = ({ className }) => {
-  const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<PublishForm>({
     strategyId: '',
     title: '',
     description: '',
     tags: [],
-    category: t('趋势跟踪'),
+    category: '趋势跟踪',
     price: 'free',
     priceAmount: 0,
     authorNote: '',
@@ -114,7 +111,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
             </span>
           </h3>
           <p className="text-xs text-gray-500 mt-0.5">
-            步骤 {step}/3 · {step === 1 ? t('选择策略') : step === 2 ? t('标签与定价') : t('预览发布')}
+            步骤 {step}/3 · {step === 1 ? '选择策略' : step === 2 ? '标签与定价' : '预览发布'}
           </p>
         </div>
       </div>
@@ -128,7 +125,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
               s === step ? 'bg-amber-500/20 text-amber-400 ring-1 ring-amber-500/50' :
               'bg-gray-800 text-gray-600'
             }`}>
-              {s < step ? t('✓') : s}
+              {s < step ? '✓' : s}
             </div>
             {s < 3 && <div className={`flex-1 h-0.5 rounded ${s < step ? 'bg-emerald-500/50' : 'bg-gray-800'}`} />}
           </React.Fragment>
@@ -266,9 +263,9 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
             <label className="text-xs text-gray-500 mb-1.5 block">定价模式</label>
             <div className="grid grid-cols-3 gap-2 mb-3">
               {([
-                { key: 'free', label: t('免费'), sub: t('¥0') },
-                { key: 'one_time', label: t('一次性'), sub: t('买断') },
-                { key: 'subscription', label: t('订阅'), sub: t('月付') },
+                { key: 'free', label: '免费', sub: '¥0' },
+                { key: 'one_time', label: '一次性', sub: '买断' },
+                { key: 'subscription', label: '订阅', sub: '月付' },
               ] as const).map(p => (
                 <button
                   key={p.key}
@@ -327,7 +324,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
                   <span className={`text-[10px] px-1.5 py-0.5 rounded ${
                     form.price === 'free' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'
                   }`}>
-                    {form.price === 'free' ? t('免费') : form.price === 'one_time' ? `¥${form.priceAmount}` : `¥${form.priceAmount}/月`}
+                    {form.price === 'free' ? '免费' : form.price === 'one_time' ? `¥${form.priceAmount}` : `¥${form.priceAmount}/月`}
                   </span>
                 </div>
               </div>
@@ -340,9 +337,9 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
               <div className="grid grid-cols-4 gap-2 mb-4">
                 {([
                   ['Sharpe', selectedStrategy.sharpe.toFixed(1), 'text-amber-400'],
-                  [t('年化收益'), `${(selectedStrategy.annualReturn * 100).toFixed(0)}%`, 'text-emerald-400'],
-                  [t('components.maxDrawdown'), `${(selectedStrategy.maxDrawdown * 100).toFixed(0)}%`, 'text-red-400'],
-                  [t('components.winRate'), `${(selectedStrategy.winRate * 100).toFixed(0)}%`, 'text-blue-400'],
+                  ['年化收益', `${(selectedStrategy.annualReturn * 100).toFixed(0)}%`, 'text-emerald-400'],
+                  ['components.maxDrawdown', `${(selectedStrategy.maxDrawdown * 100).toFixed(0)}%`, 'text-red-400'],
+                  ['components.winRate', `${(selectedStrategy.winRate * 100).toFixed(0)}%`, 'text-blue-400'],
                 ] as const).map(([label, val, color]) => (
                   <div key={label} className="text-center">
                     <div className="text-[10px] text-gray-600">{label}</div>

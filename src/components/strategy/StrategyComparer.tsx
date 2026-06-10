@@ -185,9 +185,9 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
   const radarData = useMemo(() => {
     const metrics: { key: string; label: string; maxVal: number; get: (s: StrategySnapshot) => number }[] = [
       { key: 'sharpe', label: 'Sharpe', maxVal: 3.5, get: s => s.sharpe },
-      { key: 'return', label: t('components.returnRate'), maxVal: 0.6, get: s => s.totalReturn },
+      { key: 'return', label: 'components.returnRate', maxVal: 0.6, get: s => s.totalReturn },
       { key: 'drawdown', label: '回撤', maxVal: 0.25, get: s => Math.abs(s.maxDrawdown) },
-      { key: 'winRate', label: t('components.winRate'), maxVal: 0.8, get: s => s.winRate },
+      { key: 'winRate', label: 'components.winRate', maxVal: 0.8, get: s => s.winRate },
     ];
     return metrics.map(m => ({
       label: m.label,
@@ -220,12 +220,12 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
   const metrics = useMemo(() => {
     const list: { label: string; valueA: number; valueB: number; format: (v: number) => string; invert?: boolean }[] = [
       { label: 'Sharpe', valueA: strategyA.sharpe, valueB: strategyB.sharpe, format: v => v.toFixed(2) },
-      { label: t('components.totalReturn'), valueA: strategyA.totalReturn, valueB: strategyB.totalReturn, format: v => `${(v * 100).toFixed(1)}%` },
-      { label: t('components.maxDrawdown'), valueA: strategyA.maxDrawdown, valueB: strategyB.maxDrawdown, format: v => `${(v * 100).toFixed(1)}%`, invert: true },
-      { label: t('components.winRate'), valueA: strategyA.winRate, valueB: strategyB.winRate, format: v => `${(v * 100).toFixed(1)}%` },
+      { label: 'components.totalReturn', valueA: strategyA.totalReturn, valueB: strategyB.totalReturn, format: v => `${(v * 100).toFixed(1)}%` },
+      { label: 'components.maxDrawdown', valueA: strategyA.maxDrawdown, valueB: strategyB.maxDrawdown, format: v => `${(v * 100).toFixed(1)}%`, invert: true },
+      { label: 'components.winRate', valueA: strategyA.winRate, valueB: strategyB.winRate, format: v => `${(v * 100).toFixed(1)}%` },
       { label: '年化波动', valueA: strategyA.annualVol, valueB: strategyB.annualVol, format: v => `${(v * 100).toFixed(1)}%` },
       { label: 'Calmar', valueA: strategyA.calmarRatio, valueB: strategyB.calmarRatio, format: v => v.toFixed(1) },
-      { label: t('components.profitLossRatio'), valueA: strategyA.profitFactor, valueB: strategyB.profitFactor, format: v => v.toFixed(1) },
+      { label: 'components.profitLossRatio', valueA: strategyA.profitFactor, valueB: strategyB.profitFactor, format: v => v.toFixed(1) },
       { label: '交易次数', valueA: strategyA.tradeCount, valueB: strategyB.tradeCount, format: v => String(v) },
       { label: '均持仓天数', valueA: strategyA.avgHoldingDays, valueB: strategyB.avgHoldingDays, format: v => v.toFixed(1) },
       { label: '综合评分', valueA: scoreA, valueB: scoreB, format: v => v.toFixed(0) },
@@ -310,7 +310,7 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
           <div className="grid grid-cols-3 gap-1 mt-2 text-center text-[10px]">
             <div><span className="text-gray-600">Sharpe</span><br/><span className="text-amber-400">{strategyA.sharpe.toFixed(1)}</span></div>
             <div><span className="text-gray-600">回撤</span><br/><span className="text-red-400">{(strategyA.maxDrawdown * 100).toFixed(0)}%</span></div>
-            <div><span className="text-gray-600">{t("components.winRate")}</span><br/><span className="text-gray-400">{(strategyA.winRate * 100).toFixed(0)}%</span></div>
+            <div><span className="text-gray-600">{"components.winRate"}</span><br/><span className="text-gray-400">{(strategyA.winRate * 100).toFixed(0)}%</span></div>
           </div>
         </div>
         {/* Strategy B */}
@@ -327,7 +327,7 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
           <div className="grid grid-cols-3 gap-1 mt-2 text-center text-[10px]">
             <div><span className="text-gray-600">Sharpe</span><br/><span className="text-blue-400">{strategyB.sharpe.toFixed(1)}</span></div>
             <div><span className="text-gray-600">回撤</span><br/><span className="text-red-400">{(strategyB.maxDrawdown * 100).toFixed(0)}%</span></div>
-            <div><span className="text-gray-600">{t("components.winRate")}</span><br/><span className="text-gray-400">{(strategyB.winRate * 100).toFixed(0)}%</span></div>
+            <div><span className="text-gray-600">{"components.winRate"}</span><br/><span className="text-gray-400">{(strategyB.winRate * 100).toFixed(0)}%</span></div>
           </div>
         </div>
       </div>

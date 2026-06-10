@@ -156,8 +156,8 @@ export default function ProfileActivityPage({
         <div className="grid grid-cols-5 gap-2">
           <StatCard value={profile.followers} label="粉丝" />
           <StatCard value={profile.following} label="关注" />
-          <StatCard value={profile.strategies}  label={t("components.strategy")} />
-          <StatCard value={profile.signals}  label={t("components.signal")} />
+          <StatCard value={profile.strategies}  label={"components.strategy"} />
+          <StatCard value={profile.signals}  label={"components.signal"} />
           <StatCard value={`$${profile.totalRevenue.toLocaleString()}`} label="收入" />
         </div>
       </div>
@@ -198,8 +198,8 @@ export default function ProfileActivityPage({
                   </span>
                 </div>
                 <div className="grid grid-cols-4 gap-2 text-center text-xs">
-                  <div><div className="text-gray-500">{t("components.returnRate")}</div><div className={`font-semibold ${s.return_ >= 0 ? 'text-green-400' : 'text-red-400'}`}>+{s.return_}%</div></div>
-                  <div><div className="text-gray-500">{t("components.sharpeRatio")}</div><div className="font-semibold text-gray-300">{s.sharpe}</div></div>
+                  <div><div className="text-gray-500">{"components.returnRate"}</div><div className={`font-semibold ${s.return_ >= 0 ? 'text-green-400' : 'text-red-400'}`}>+{s.return_}%</div></div>
+                  <div><div className="text-gray-500">{"components.sharpeRatio"}</div><div className="font-semibold text-gray-300">{s.sharpe}</div></div>
                   <div><div className="text-gray-500">订阅</div><div className="font-semibold text-gray-300">{s.subscribers.toLocaleString()}</div></div>
                   <div><div className="text-gray-500">收入</div><div className="font-semibold text-[#D4A853]">${s.revenue.toLocaleString()}</div></div>
                 </div>

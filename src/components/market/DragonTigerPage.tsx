@@ -28,7 +28,6 @@ interface DragonTigerDetail {
 }
 
 export default function DragonTigerPage() {
-  const { t } = useTranslation();
 
   const [entries, setEntries] = useState<DragonTigerEntry[]>([]);
   const [detail, setDetail] = useState<DragonTigerDetail | null>(null);
@@ -143,12 +142,12 @@ export default function DragonTigerPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-card text-gray-400 text-xs">
-                <th className="px-4 py-3 text-left">{t("components.code")}</th>
-                <th className="px-4 py-3 text-left">{t("components.name")}</th>
-                <th className="px-4 py-3 text-right">{t("components.priceChange")}</th>
+                <th className="px-4 py-3 text-left">{"components.code"}</th>
+                <th className="px-4 py-3 text-left">{"components.name"}</th>
+                <th className="px-4 py-3 text-right">{"components.priceChange"}</th>
                 <th className="px-4 py-3 text-right">净买额</th>
                 <th className="px-4 py-3 text-left">上榜原因</th>
-                <th className="px-4 py-3 text-center">{t("components.actions")}</th>
+                <th className="px-4 py-3 text-center">{"components.actions"}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -176,7 +175,7 @@ export default function DragonTigerPage() {
             </tbody>
           </table>
           {entries.length === 0 && !loading && (
-            <div className="text-gray-500 text-sm py-8 text-center">{t("components.noData")}</div>
+            <div className="text-gray-500 text-sm py-8 text-center">{"components.noData"}</div>
           )}
         </div>
       )}
@@ -187,9 +186,9 @@ export default function DragonTigerPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-card text-gray-400 text-xs">
-                <th className="px-4 py-3 text-left">{t("components.code")}</th>
-                <th className="px-4 py-3 text-left">{t("components.name")}</th>
-                <th className="px-4 py-3 text-right">{t("components.priceChange")}</th>
+                <th className="px-4 py-3 text-left">{"components.code"}</th>
+                <th className="px-4 py-3 text-left">{"components.name"}</th>
+                <th className="px-4 py-3 text-right">{"components.priceChange"}</th>
                 <th className="px-4 py-3 text-right">机构净买</th>
                 <th className="px-4 py-3 text-left">原因</th>
               </tr>
@@ -211,7 +210,7 @@ export default function DragonTigerPage() {
             </tbody>
           </table>
           {institutional.length === 0 && !loading && (
-            <div className="text-gray-500 text-sm py-8 text-center">{t("components.noData")}</div>
+            <div className="text-gray-500 text-sm py-8 text-center">{"components.noData"}</div>
           )}
         </div>
       )}
@@ -220,7 +219,7 @@ export default function DragonTigerPage() {
       {tab === 'detail' && detail && (
         <div className="space-y-5">
           <div className="flex items-center gap-3">
-            <button onClick={() => setTab('daily')} className="text-xs text-gray-500 hover:text-white">{t("components.back")}</button>
+            <button onClick={() => setTab('daily')} className="text-xs text-gray-500 hover:text-white">{"components.back"}</button>
             <span className="text-white font-medium">{detail.name} ({detail.code})</span>
             <span className="text-xs text-gray-500">{detail.date}</span>
           </div>

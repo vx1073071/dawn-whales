@@ -225,6 +225,17 @@ export class AIGatewayServer {
 
   // ── AI Execution (simulated) ───────────────────────────────────────────
 
+  /**
+   * Execute an AI call against the selected provider.
+   *
+   * TODO(J-01): Currently simulated. In production, this should:
+   *   1. Read DEEPSEEK_API_KEY from process.env.DEEPSEEK_API_KEY
+   *   2. Make a real HTTPS call to api.deepseek.com/v1/chat/completions
+   *   3. Map the response to AIResponse format
+   *   4. Track actual token usage from response.usage
+   *
+   * @deprecated Simulation mode — replace with real LLM API integration
+   */
   private async executeAI(req: AIRequest, model: LLMProvider): Promise<AIResponse> {
     // Simulate token usage
     const promptTokens = Math.ceil((req.systemPrompt.length + req.userPrompt.length) / 4);

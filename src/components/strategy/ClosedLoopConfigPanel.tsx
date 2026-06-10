@@ -1,8 +1,6 @@
 // ClosedLoopConfigPanel — StrategyPage 闭环配置 UI
 // Phase 4.3 R36 ML-36-02: Control panel for ClosedLoopExecutor + RebalanceEngine config
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-
 interface LoopConfig {
   mode: 'immediate' | 'triggered' | 'scheduled';
   stopLoss: number;
@@ -41,9 +39,9 @@ const DEFAULT_CONFIG: LoopConfig = {
 };
 
 const MODE_LABELS: Record<LoopConfig['mode'], { icon: string; title: string; desc: string }> = {
-  immediate: { icon: '⚡', title: t('immediateExec'), desc: '手动触发，立即下单' },
-  triggered: { icon: '🎯', title: t('triggeredExec'), desc: '满足条件后自动执行' },
-  scheduled: { icon: '⏰', title: t('scheduledExec'), desc: '按 Cron 表达式定时执行' },
+  immediate: { icon: '⚡', title: 'immediateExec', desc: '手动触发，立即下单' },
+  triggered: { icon: '🎯', title: 'triggeredExec', desc: '满足条件后自动执行' },
+  scheduled: { icon: '⏰', title: 'scheduledExec', desc: '按 Cron 表达式定时执行' },
 };
 
 const RETRY_LABELS: Record<LoopConfig['retryStrategy'], string> = {
@@ -59,8 +57,7 @@ const REBALANCE_LABELS: Record<LoopConfig['rebalanceMethod'], string> = {
 };
 
 export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, strategyId }: Props) {
-  const { t } = useTranslation();
-  const [config, setConfig] = useState<LoopConfig>({
+    const [config, setConfig] = useState<LoopConfig>({
   ...DEFAULT_CONFIG, ...initialConfig });
   const [saved, setSaved] = useState(false);
 
@@ -86,7 +83,7 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
         </div>
         <div className="flex gap-2">
           {onBack && (
-            <button onClick={onBack} className="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition-colors">{t('goBack')}</button>
+            <button onClick={onBack} className="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition-colors">{'goBack'}</button>
           )}
           <button
             onClick={handleSave}

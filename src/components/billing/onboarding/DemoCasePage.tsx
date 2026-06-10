@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 ﻿/**
  * DemoCasePage — ML-73-03 [P1]
  * R73: v1.8.0-beta — GTM: 3 trading case studies + before/after + profit curves

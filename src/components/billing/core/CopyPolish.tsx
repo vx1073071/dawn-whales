@@ -20,56 +20,56 @@ export interface CopyPolishProps {
 // ── Definitive Pricing ──────────────────────────────────────────────────
 
 const PRICING_FINAL = [
-  { tier: t('标准 Standard'), price: '1.0', currency: 'USDT', unit: '/次 per analysis',
-    agents: t('2 Agent (基本面+技术面)'),
-    cache: t('基础缓存 Basic'),
-    models: t('单模型 Single model'),
-    markets: t('🇭🇰 港股 HK'),
+  { tier: '标准 Standard', price: '1.0', currency: 'USDT', unit: '/次 per analysis',
+    agents: '2 Agent (基本面+技术面)',
+    cache: '基础缓存 Basic',
+    models: '单模型 Single model',
+    markets: '🇭🇰 港股 HK',
     highlight: false },
-  { tier: t('高级 Premium'), price: '1.5', currency: 'USDT', unit: '/次 per analysis',
-    agents: t('3 Agent (基本面+技术面+情绪)'),
-    cache: t('95% 命中率 Hit rate'),
-    models: t('双模型辩论 2-Model debate'),
-    markets: t('🇭🇰 港股 + 🇺🇸 美股'),
-    highlight: true, badge: t('🔥 推荐 Recommended') },
-  { tier: t('旗舰 Flagship'), price: '2.0', currency: 'USDT', unit: '/次 per analysis',
-    agents: t('4 Agent Arena (全维度 All 4)'),
-    cache: t('99% 命中率 Hit rate'),
-    models: t('三模型竞技 3-Model arena'),
-    markets: t('🇭🇰 港股 + 🇺🇸 美股'),
-    highlight: false, badge: t('👑 旗舰 Flagship') },
+  { tier: '高级 Premium', price: '1.5', currency: 'USDT', unit: '/次 per analysis',
+    agents: '3 Agent (基本面+技术面+情绪)',
+    cache: '95% 命中率 Hit rate',
+    models: '双模型辩论 2-Model debate',
+    markets: '🇭🇰 港股 + 🇺🇸 美股',
+    highlight: true, badge: '🔥 推荐 Recommended' },
+  { tier: '旗舰 Flagship', price: '2.0', currency: 'USDT', unit: '/次 per analysis',
+    agents: '4 Agent Arena (全维度 All 4)',
+    cache: '99% 命中率 Hit rate',
+    models: '三模型竞技 3-Model arena',
+    markets: '🇭🇰 港股 + 🇺🇸 美股',
+    highlight: false, badge: '👑 旗舰 Flagship' },
 ];
 
 const FREE_VS_PAID_FINAL = [
-  { feature: t('行情查看 Market Quotes'), free: t('✅ 实时 Realtime'), paid: t('✅') },
-  { feature: t('技术指标 Technical Indicators'), free: t('✅ 12 指标 All'), paid: t('✅') },
-  { feature: t('K线图表 Charting'), free: t('✅ 多周期 Multi'), paid: t('✅') },
-  { feature: t('基础回测 Basic Backtest'), free: t('✅ 无限 Unlimited'), paid: t('✅ 高级 Advanced') },
-  { feature: t('AI策略分析 AI Analysis'), free: t('🆓 3次/终身 3 free'), paid: t('💰 1.0-2.0 USDT/次') },
-  { feature: t('实盘交易 Live Trading'), free: t('✅ Futu + IBKR'), paid: t('✅') },
-  { feature: t('信号广场浏览 Browse Signals'), free: t('✅ 只读 Read-only'), paid: t('✅ 完整 Full') },
-  { feature: t('信号订阅 Signal Subscribe'), free: t('❌'), paid: t('✅ 创作者定价') },
-  { feature: t('策略模板购买 Strategy Templates'), free: t('❌'), paid: t('✅ 0-1000 USDT') },
-  { feature: t('创作者发布 Creator Publishing'), free: t('❌'), paid: t('✅ L1-L3 分成') },
-  { feature: t('P2P转账 P2P Transfer'), free: t('❌'), paid: t('✅ 0.3% 双向') },
-  { feature: t('数据导出 Data Export'), free: t('❌'), paid: t('✅ CSV/JSON/PDF') },
-  { feature: '4 Agent Arena', free: t('❌'), paid: t('✅ Premium/Flagship') },
-  { feature: t('访客模式 Guest Mode'), free: t('✅ 浏览+5次回测/天'), paid: t('—') },
+  { feature: '行情查看 Market Quotes', free: '✅ 实时 Realtime', paid: '✅' },
+  { feature: '技术指标 Technical Indicators', free: '✅ 12 指标 All', paid: '✅' },
+  { feature: 'K线图表 Charting', free: '✅ 多周期 Multi', paid: '✅' },
+  { feature: '基础回测 Basic Backtest', free: '✅ 无限 Unlimited', paid: '✅ 高级 Advanced' },
+  { feature: 'AI策略分析 AI Analysis', free: '🆓 3次/终身 3 free', paid: '💰 1.0-2.0 USDT/次' },
+  { feature: '实盘交易 Live Trading', free: '✅ Futu + IBKR', paid: '✅' },
+  { feature: '信号广场浏览 Browse Signals', free: '✅ 只读 Read-only', paid: '✅ 完整 Full' },
+  { feature: '信号订阅 Signal Subscribe', free: '❌', paid: '✅ 创作者定价' },
+  { feature: '策略模板购买 Strategy Templates', free: '❌', paid: '✅ 0-1000 USDT' },
+  { feature: '创作者发布 Creator Publishing', free: '❌', paid: '✅ L1-L3 分成' },
+  { feature: 'P2P转账 P2P Transfer', free: '❌', paid: '✅ 0.3% 双向' },
+  { feature: '数据导出 Data Export', free: '❌', paid: '✅ CSV/JSON/PDF' },
+  { feature: '4 Agent Arena', free: '❌', paid: '✅ Premium/Flagship' },
+  { feature: '访客模式 Guest Mode', free: '✅ 浏览+5次回测/天', paid: '—' },
 ];
 
 const PLATFORMS_FINAL = [
-  { icon: t('🪟'), os: 'Windows', ext: '.exe', size: '128 MB', min: 'Windows 10+', arch: 'x64' },
-  { icon: t('🍎'), os: 'macOS', ext: '.dmg', size: '135 MB', min: 'macOS 12+', arch: 'x64 / arm64' },
-  { icon: t('🐧'), os: 'Linux', ext: '.AppImage', size: '140 MB', min: 'Ubuntu 20.04+', arch: 'x64' },
+  { icon: '🪟', os: 'Windows', ext: '.exe', size: '128 MB', min: 'Windows 10+', arch: 'x64' },
+  { icon: '🍎', os: 'macOS', ext: '.dmg', size: '135 MB', min: 'macOS 12+', arch: 'x64 / arm64' },
+  { icon: '🐧', os: 'Linux', ext: '.AppImage', size: '140 MB', min: 'Ubuntu 20.04+', arch: 'x64' },
 ];
 
 const FEATURES_FINAL = [
-  { icon: t('🤖'), title: '4 Agent AI', desc: t('基本面·技术面·情绪·宏观 Agent 协作。自然语言→交易信号。Fundamentals · Technical · Sentiment · Macro.') },
-  { icon: t('📊'), title: t('策略因子引擎'), desc: t('Fama-French 5因子 + Barra定制 + 自研选股。NL→DSL→Signal。') },
-  { icon: t('🌍'), title: t('双市场券商'), desc: t('港股HKEX·美股NYSE。Futu OpenD + IBKR Gateway 双通道。') },
-  { icon: t('💰'), title: t('USDT按次付费'), desc: t('Pay-per-use。不绑套餐。不强制订阅。TRC-20充值。P2P转账。') },
-  { icon: t('📡'), title: t('信号广场'), desc: t('发现·订阅·跟单。实时信号推送+质量评分(A+~F)+表现追踪。') },
-  { icon: t('🔒'), title: t('服务器端安全'), desc: t('AI密钥仅在服务器。桌面端瘦客户端。破解=React组件。2FA保护。') },
+  { icon: '🤖', title: '4 Agent AI', desc: '基本面·技术面·情绪·宏观 Agent 协作。自然语言→交易信号。Fundamentals · Technical · Sentiment · Macro.' },
+  { icon: '📊', title: '策略因子引擎', desc: 'Fama-French 5因子 + Barra定制 + 自研选股。NL→DSL→Signal。' },
+  { icon: '🌍', title: '双市场券商', desc: '港股HKEX·美股NYSE。Futu OpenD + IBKR Gateway 双通道。' },
+  { icon: '💰', title: 'USDT按次付费', desc: 'Pay-per-use。不绑套餐。不强制订阅。TRC-20充值。P2P转账。' },
+  { icon: '📡', title: '信号广场', desc: '发现·订阅·跟单。实时信号推送+质量评分(A+~F)+表现追踪。' },
+  { icon: '🔒', title: '服务器端安全', desc: 'AI密钥仅在服务器。桌面端瘦客户端。破解=React组件。2FA保护。' },
 ];
 
 // ── Highlight Badge ──────────────────────────────────────────────────────
@@ -104,7 +104,7 @@ export default function CopyPolish({ className = '' }: CopyPolishProps) {
             {(['pricing', 'download', 'freevspaid', 'features'] as CopySection[]).map(s => (
               <button key={s} onClick={() => setSection(s)}
                 className={`px-3 py-1.5 rounded-md text-xs font-medium ${section === s ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-600'}`}>
-                {s === 'pricing' ? t('💰 定价') : s === 'download' ? t('📦 下载') : s === 'freevspaid' ? t('🆓vs💰') : t('📋 功能')}
+                {s === 'pricing' ? '💰 定价' : s === 'download' ? '📦 下载' : s === 'freevspaid' ? '🆓vs💰' : '📋 功能'}
               </button>
             ))}
           </div>
@@ -187,8 +187,8 @@ export default function CopyPolish({ className = '' }: CopyPolishProps) {
                   {FREE_VS_PAID_FINAL.map((row, i) => (
                     <tr key={i} className={i % 2 === 0 ? 'bg-white/[0.01]' : ''}>
                       <td className="px-5 py-2.5 text-gray-300">{row.feature}</td>
-                      <td className="text-center px-5 py-2.5" style={{ color: row.free.includes(t('❌')) ? '#475569' : '#cbd5e1' }}>{row.free}</td>
-                      <td className="text-center px-5 py-2.5" style={{ color: row.paid.includes(t('❌')) ? '#475569' : row.paid.includes(t('💰')) ? '#fbbf24' : '#cbd5e1' }}>{row.paid}</td>
+                      <td className="text-center px-5 py-2.5" style={{ color: row.free.includes('❌') ? '#475569' : '#cbd5e1' }}>{row.free}</td>
+                      <td className="text-center px-5 py-2.5" style={{ color: row.paid.includes('❌') ? '#475569' : row.paid.includes('💰') ? '#fbbf24' : '#cbd5e1' }}>{row.paid}</td>
                     </tr>
                   ))}
                 </tbody>

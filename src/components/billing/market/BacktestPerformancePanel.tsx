@@ -143,8 +143,8 @@ export default function BacktestPerformancePanel({
       <div className="p-5 border-b border-white/5">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-xl font-bold">{t('回测性能')}</h2>
-            <p className="text-gray-500 text-xs mt-0.5">{t('并行+缓存加速 · TopK最优结果 · Worker监控')}</p>
+            <h2 className="text-xl font-bold">{'回测性能'}</h2>
+            <p className="text-gray-500 text-xs mt-0.5">{'并行+缓存加速 · TopK最优结果 · Worker监控'}</p>
           </div>
           <div className="flex gap-2">
             {(['speedup', 'topk', 'workers'] as const).map(t => (
@@ -161,19 +161,19 @@ export default function BacktestPerformancePanel({
         {/* Summary Cards */}
         <div className="grid grid-cols-4 gap-3 mb-5">
           <div className="bg-[#111119] border border-white/5 rounded-xl p-3 text-center">
-            <div className="text-[10px] text-gray-600 mb-1">{t('平均加速')}</div>
+            <div className="text-[10px] text-gray-600 mb-1">{'平均加速'}</div>
             <div className="text-xl font-bold text-green-400">{avgSpeedup.toFixed(1)}x</div>
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-3 text-center">
-            <div className="text-[10px] text-gray-600 mb-1">{t('优化前')}</div>
+            <div className="text-[10px] text-gray-600 mb-1">{'优化前'}</div>
             <div className="text-lg font-bold text-red-400">{(avgBefore / 1000).toFixed(1)}s</div>
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-3 text-center">
-            <div className="text-[10px] text-gray-600 mb-1">{t('优化后')}</div>
+            <div className="text-[10px] text-gray-600 mb-1">{'优化后'}</div>
             <div className="text-lg font-bold text-green-400">{(avgAfter / 1000).toFixed(1)}s</div>
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-3 text-center">
-            <div className="text-[10px] text-gray-600 mb-1">{t('总节省')}</div>
+            <div className="text-[10px] text-gray-600 mb-1">{'总节省'}</div>
             <div className="text-lg font-bold text-[#D4A853]">{(totalTimeSaved / 1000).toFixed(0)}s</div>
           </div>
         </div>
@@ -184,18 +184,18 @@ export default function BacktestPerformancePanel({
             {/* Timing table */}
             <div className="bg-[#111119] border border-white/5 rounded-xl overflow-hidden">
               <div className="px-5 py-3 border-b border-white/5">
-                <h4 className="text-gray-300 font-semibold text-sm">{t('⚡ 回测耗时对比 Before → After')}</h4>
+                <h4 className="text-gray-300 font-semibold text-sm">{'⚡ 回测耗时对比 Before → After'}</h4>
               </div>
               <table className="w-full text-xs">
                 <thead>
                   <tr className="bg-white/[0.02] text-gray-500">
-                    <th className="text-left px-4 py-2 font-medium">{t("components.strategy")}</th>
-                    <th className="text-left px-4 py-2 font-medium">{t('标的')}</th>
-                    <th className="text-left px-4 py-2 font-medium">{t('周期')}</th>
-                    <th className="text-right px-4 py-2 font-medium">{t('优化前')}</th>
-                    <th className="text-right px-4 py-2 font-medium">{t('优化后')}</th>
-                    <th className="text-center px-4 py-2 font-medium">{t('加速')}</th>
-                    <th className="text-center px-4 py-2 font-medium">{t('缓存')}</th>
+                    <th className="text-left px-4 py-2 font-medium">{"components.strategy"}</th>
+                    <th className="text-left px-4 py-2 font-medium">{'标的'}</th>
+                    <th className="text-left px-4 py-2 font-medium">{'周期'}</th>
+                    <th className="text-right px-4 py-2 font-medium">{'优化前'}</th>
+                    <th className="text-right px-4 py-2 font-medium">{'优化后'}</th>
+                    <th className="text-center px-4 py-2 font-medium">{'加速'}</th>
+                    <th className="text-center px-4 py-2 font-medium">{'缓存'}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
@@ -218,7 +218,7 @@ export default function BacktestPerformancePanel({
 
             {/* Before/After bar comparison */}
             <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
-              <h4 className="text-gray-300 font-semibold text-sm mb-4">{t('📊 加速对比图')}</h4>
+              <h4 className="text-gray-300 font-semibold text-sm mb-4">{'📊 加速对比图'}</h4>
               <div className="space-y-3">
                 {timings.slice(0, 6).map((t, i) => {
                   const maxMs = Math.max(...timings.map(x => x.beforeMs));
@@ -243,9 +243,9 @@ export default function BacktestPerformancePanel({
                 })}
               </div>
               <div className="flex items-center gap-4 mt-4 pt-3 border-t border-white/5 text-[10px] text-gray-600">
-                <span>{t('🟥 优化前 (Before)')}</span>
-                <span>{t('🟩 并行+缓存 (After)')}</span>
-                <span>{t('目标: 1年日线 &lt;2s')}</span>
+                <span>{'🟥 优化前 (Before)'}</span>
+                <span>{'🟩 并行+缓存 (After)'}</span>
+                <span>{'目标: 1年日线 &lt;2s'}</span>
               </div>
             </div>
 
@@ -256,12 +256,12 @@ export default function BacktestPerformancePanel({
               </div>
               <div className="bg-[#111119] border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center text-center">
                 <div className="text-3xl font-bold text-gray-200">{cache.entries.toLocaleString()}</div>
-                <div className="text-[10px] text-gray-600 mt-1">{t('缓存条目 Entries')}</div>
+                <div className="text-[10px] text-gray-600 mt-1">{'缓存条目 Entries'}</div>
                 <div className="text-xs text-gray-500 mt-2">{cache.sizeMB} MB · TTL {cache.ttlMinutes}min</div>
               </div>
               <div className="bg-[#111119] border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center text-center">
                 <div className="text-3xl font-bold text-[#D4A853]">{cache.saves}</div>
-                <div className="text-[10px] text-gray-600 mt-1">{t('本轮保存 Saves')}</div>
+                <div className="text-[10px] text-gray-600 mt-1">{'本轮保存 Saves'}</div>
                 <button onClick={onClearCache}
                         className="mt-2 px-3 py-1 rounded text-[10px] bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors">
                   清除缓存 Clear
@@ -276,18 +276,18 @@ export default function BacktestPerformancePanel({
           <div className="bg-[#111119] border border-white/5 rounded-xl overflow-hidden">
             <div className="px-5 py-3 border-b border-white/5 flex items-center justify-between">
               <h4 className="text-gray-300 font-semibold text-sm">🏆 Top {topK.length} 最优参数组合</h4>
-              <span className="text-[10px] text-gray-600">{t('堆排序 · 只保留最优')}</span>
+              <span className="text-[10px] text-gray-600">{'堆排序 · 只保留最优'}</span>
             </div>
             <table className="w-full text-xs">
               <thead>
                 <tr className="bg-white/[0.02] text-gray-500">
                   <th className="text-center px-3 py-2 font-medium w-10">#</th>
-                  <th className="text-left px-3 py-2 font-medium">{t('参数 Params')}</th>
-                  <th className="text-right px-3 py-2 font-medium">{t("components.sharpeRatio")}</th>
-                  <th className="text-right px-3 py-2 font-medium">{t("components.returnRate")}</th>
-                  <th className="text-right px-3 py-2 font-medium">{t('回撤')}</th>
-                  <th className="text-right px-3 py-2 font-medium">{t("components.winRate")}</th>
-                  <th className="text-right px-3 py-2 font-medium">{t('交易')}</th>
+                  <th className="text-left px-3 py-2 font-medium">{'参数 Params'}</th>
+                  <th className="text-right px-3 py-2 font-medium">{"components.sharpeRatio"}</th>
+                  <th className="text-right px-3 py-2 font-medium">{"components.returnRate"}</th>
+                  <th className="text-right px-3 py-2 font-medium">{'回撤'}</th>
+                  <th className="text-right px-3 py-2 font-medium">{"components.winRate"}</th>
+                  <th className="text-right px-3 py-2 font-medium">{'交易'}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -360,12 +360,12 @@ export default function BacktestPerformancePanel({
               </div>
               <div className="bg-[#111119] border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center">
                 <div className="text-3xl font-bold text-gray-200">{workers.active}/{workers.total}</div>
-                <div className="text-[10px] text-gray-600 mt-1">{t('活跃 Workers')}</div>
-                <div className="text-xs text-gray-500 mt-2">{t('4核 → 4x 并行')}</div>
+                <div className="text-[10px] text-gray-600 mt-1">{'活跃 Workers'}</div>
+                <div className="text-xs text-gray-500 mt-2">{'4核 → 4x 并行'}</div>
               </div>
               <div className="bg-[#111119] border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center">
                 <div className="text-3xl font-bold text-[#D4A853]">{workers.maxUtilization.toFixed(0)}%</div>
-                <div className="text-[10px] text-gray-600 mt-1">{t('峰值利用率')}</div>
+                <div className="text-[10px] text-gray-600 mt-1">{'峰值利用率'}</div>
                 <button onClick={onRunBenchmark}
                         className="mt-2 px-3 py-1 rounded text-[10px] bg-[#C9A046]/10 text-[#D4A853] hover:bg-[#C9A046]/20 transition-colors">
                   🚀 跑基准测试
@@ -375,7 +375,7 @@ export default function BacktestPerformancePanel({
 
             {/* Architecture note */}
             <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
-              <h4 className="text-gray-300 font-semibold text-sm mb-3">{t('🛠 并行架构')}</h4>
+              <h4 className="text-gray-300 font-semibold text-sm mb-3">{'🛠 并行架构'}</h4>
               <div className="text-xs text-gray-500 space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="text-green-400">●</span> worker_threads: 4个独立线程并行计算参数组合

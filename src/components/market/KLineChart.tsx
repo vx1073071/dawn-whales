@@ -25,8 +25,8 @@ function downsample(data: Array<{ time: number; open: number; high: number; low:
     result.push({
       time: chunk[0].time,
       open: chunk[0].open,
-      high: Math.max(...chunk.map((c: unknown) => c.high)),
-      low: Math.min(...chunk.map((c: unknown) => c.low)),
+      high: Math.max(...chunk.map((c: Record<string, unknown>) => c.high)),
+      low: Math.min(...chunk.map((c: Record<string, unknown>) => c.low)),
       close: chunk[chunk.length - 1].close,
       volume: chunk.reduce((sum: number, c: any) => sum + (c.volume || 0), 0),
     });

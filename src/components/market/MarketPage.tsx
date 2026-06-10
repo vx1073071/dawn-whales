@@ -91,7 +91,7 @@ export default function MarketPage() {
     try {
       const klines = await api.getKlines(symbol, period, 200);
       if (klines.length > 0) {
-        setKlineData(klines.map((k: unknown) => ({
+        setKlineData(klines.map((k: Record<string, unknown>) => ({
           time: typeof k.time === 'number' ? k.time : Math.floor(new Date(k.time).getTime() / 1000),
           open: k.open, high: k.high, low: k.low, close: k.close, volume: k.volume,
         })));

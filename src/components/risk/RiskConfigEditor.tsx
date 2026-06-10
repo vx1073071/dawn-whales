@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useState, useEffect } from 'react-i18next';
 import { getRiskConfig, updateRiskConfig } from '../../lib/bridge-api';
+import { useTranslation } from "react-i18next";
 
 interface RiskConfig {
   maxSinglePositionPct: number;
