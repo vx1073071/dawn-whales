@@ -16,7 +16,7 @@ export function registerIndicatorIPC(
   ipcMain.handle('indicator:compute', async (_e, klines: any[], indicators?: string[], options?: any) => {
     try {
       return computeIndicators(klines, indicators, options);
-    } catch (err: any) {
+    } catch (err) {
       log.error('[TechnicalIndicators] Error:', err);
       return { success: false, error: err.message };
     }
@@ -30,7 +30,7 @@ export function registerIndicatorIPC(
     try {
       const calculator = getRealtimeIndicatorCalculator();
       return { success: true, indicators: calculator.addKLine(symbol, kline) };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[RealtimeIndicators] Add error:', err);
       return { success: false, error: err.message };
     }
@@ -42,7 +42,7 @@ export function registerIndicatorIPC(
     try {
       const calculator = getRealtimeIndicatorCalculator();
       return { success: true, indicators: calculator.addKLines(symbol, klines) };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[RealtimeIndicators] Batch add error:', err);
       return { success: false, error: err.message };
     }
@@ -54,7 +54,7 @@ export function registerIndicatorIPC(
     try {
       const calculator = getRealtimeIndicatorCalculator();
       return { success: true, klines: calculator.getKLineBuffer(symbol) };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[RealtimeIndicators] Get buffer error:', err);
       return { success: false, error: err.message };
     }
@@ -67,7 +67,7 @@ export function registerIndicatorIPC(
       const calculator = getRealtimeIndicatorCalculator();
       calculator.clearBuffer(symbol);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[RealtimeIndicators] Clear error:', err);
       return { success: false, error: err.message };
     }
@@ -80,7 +80,7 @@ export function registerIndicatorIPC(
       const calculator = getRealtimeIndicatorCalculator();
       calculator.clearAllBuffers();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[RealtimeIndicators] Clear all error:', err);
       return { success: false, error: err.message };
     }
@@ -94,7 +94,7 @@ export function registerIndicatorIPC(
       const calculator = getRealtimeIndicatorCalculator();
       const result = calculator.calculate(symbol, klines, indicators);
       return { success: true, indicators: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Indicator:calculate] Error:', err);
       return { success: false, error: err.message };
     }

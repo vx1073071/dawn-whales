@@ -15,7 +15,7 @@ export function registerCacheIPC(
     try {
       const result = exploreCache();
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -26,7 +26,7 @@ export function registerCacheIPC(
     try {
       const detail = getCacheEntryDetail(namespace, key);
       return { success: true, detail };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -37,7 +37,7 @@ export function registerCacheIPC(
     try {
       const result = getCacheKeys(namespace, limit || 100, offset || 0);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -52,7 +52,7 @@ export function registerCacheIPC(
       const cache = manager.getCache(namespace);
       const value = cache.get(key);
       return { success: true, value, hit: value !== undefined };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -65,7 +65,7 @@ export function registerCacheIPC(
       const cache = manager.getCache(namespace);
       cache.set(key, value, ttl);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -77,7 +77,7 @@ export function registerCacheIPC(
       const manager = getSmartCacheManager();
       const cache = manager.getCache(namespace);
       return { success: true, exists: cache.has(key) };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -89,7 +89,7 @@ export function registerCacheIPC(
       const manager = getSmartCacheManager();
       const cache = manager.getCache(namespace);
       return { success: true, deleted: cache.delete(key) };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -105,7 +105,7 @@ export function registerCacheIPC(
         manager.clearAll();
       }
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -121,7 +121,7 @@ export function registerCacheIPC(
       } else {
         return { success: true, stats: manager.getAllStats() };
       }
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -138,7 +138,7 @@ export function registerCacheIPC(
         manager.resetAllStats();
       }
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -150,7 +150,7 @@ export function registerCacheIPC(
       const manager = getSmartCacheManager();
       const cache = manager.getCache(namespace);
       return { success: true, keys: cache.keys() };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

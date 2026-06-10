@@ -15,7 +15,7 @@ export function registerRiskIPC(
     try {
       const result = unifiedRiskDash.generate(params);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[RiskDashboard] Error:', err);
       return { success: false, error: err.message };
     }
@@ -34,7 +34,7 @@ export function registerRiskIPC(
       const engine = new CrossAssetRiskEngine();
       const result = engine.calculatePortfolioVaR(portfolios, confidenceLevel, method);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -55,7 +55,7 @@ export function registerRiskIPC(
       }
       const result = decomposeRisk(equityCurve, positions, confidenceLevel ?? 0.95);
       return { success: true, decomposition: result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -74,7 +74,7 @@ export function registerRiskIPC(
       }
       const result = runMonteCarlo(equityCurve, paths ?? 10000, horizon ?? 252);
       return { success: true, simulation: result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -119,7 +119,7 @@ export function registerRiskIPC(
 
       return { success: true, ...result };
 
-    } catch (err: any) {
+    } catch (err) {
 
       return { success: false, error: err.message };
 
@@ -153,7 +153,7 @@ export function registerRiskIPC(
 
       return { success: true, ...result };
 
-    } catch (err: any) {
+    } catch (err) {
 
       return { success: false, error: err.message };
 
@@ -187,7 +187,7 @@ export function registerRiskIPC(
 
       return { success: true };
 
-    } catch (err: any) {
+    } catch (err) {
 
       return { success: false, error: err.message };
 
@@ -221,7 +221,7 @@ export function registerRiskIPC(
 
       return { success: true, history, winRate };
 
-    } catch (err: any) {
+    } catch (err) {
 
       return { success: false, error: err.message };
 
@@ -237,7 +237,7 @@ export function registerRiskIPC(
       }
       const result = await calcPositionSize(req);
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -269,7 +269,7 @@ export function registerRiskIPC(
         result = runStressTest(positions, scenario);
       }
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -341,7 +341,7 @@ export function registerRiskIPC(
       const calculator = getPortfolioRiskCalculator(config);
       const result = calculator.calculate(positions, historicalReturns);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

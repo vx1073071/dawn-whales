@@ -15,7 +15,7 @@ export function registerBackfillIPC(
     try {
       const result = await startBackfill(config);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Backfill] Start error:', err);
       return { success: false, error: err.message };
     }
@@ -27,7 +27,7 @@ export function registerBackfillIPC(
     try {
       stopBackfill();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Backfill] Stop error:', err);
       return { success: false, error: err.message };
     }
@@ -39,7 +39,7 @@ export function registerBackfillIPC(
     try {
       const status = getBackfillStatus();
       return { success: true, status };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Backfill] Status error:', err);
       return { success: false, error: err.message };
     }
@@ -51,7 +51,7 @@ export function registerBackfillIPC(
     try {
       const stats = getBackfillStats();
       return { success: true, stats };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Backfill] Stats error:', err);
       return { success: false, error: err.message };
     }
@@ -63,7 +63,7 @@ export function registerBackfillIPC(
     try {
       const result = await backfillSymbols(symbols, startDate, endDate, interval);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Backfill] Symbols backfill error:', err);
       return { success: false, error: err.message };
     }
@@ -75,7 +75,7 @@ export function registerBackfillIPC(
     try {
       const result = await incrementalBackfill(symbol, startDate, endDate, existingRecords);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Backfill] Incremental backfill error:', err);
       return { success: false, error: err.message };
     }

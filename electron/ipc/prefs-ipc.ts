@@ -25,7 +25,7 @@ function load(): PrefsSection {
       prefsCache = JSON.parse(raw);
       log.info('[PrefsIPC] loaded', Object.keys(prefsCache).length, 'sections from', STORE_PATH);
     }
-  } catch (err: any) {
+  } catch (err) {
     log.warn('[PrefsIPC] load error, starting fresh:', err.message);
     prefsCache = {};
   }
@@ -39,7 +39,7 @@ function save() {
     fs.writeFileSync(STORE_PATH, JSON.stringify(prefsCache, null, 2), 'utf-8');
     dirty = false;
     log.debug('[PrefsIPC] saved to', STORE_PATH);
-  } catch (err: any) {
+  } catch (err) {
     log.error('[PrefsIPC] save error:', err.message);
   }
 }
@@ -118,7 +118,7 @@ export function registerPrefsIPC() {
       dirty = true;
       save();
       return { success: true, count: Object.keys(imported).length };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: 'Invalid JSON: ' + err.message };
     }
   });

@@ -60,6 +60,12 @@ export default defineConfig({
       reporter: ['text', 'html', 'lcov'],
       include: ['electron/engine/**/*.ts'],
       exclude: ['**/*.d.ts', '**/*.test.*'],
+      thresholds: {
+        lines: 60,
+        branches: 50,
+        functions: 55,
+        statements: 60,
+      },
     },
   },
   resolve: {

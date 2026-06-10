@@ -16,7 +16,7 @@ export function registerSentimentIPC(
     try {
       const result = sentimentAttrEngine.attributeSentiment(params);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[SentimentAttr] Error:', err);
       return { success: false, error: err.message };
     }
@@ -47,7 +47,7 @@ export function registerSentimentIPC(
       });
       
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -59,7 +59,7 @@ export function registerSentimentIPC(
       const stream = getRealtimeSentimentStream();
       stream.stop();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -71,7 +71,7 @@ export function registerSentimentIPC(
       const stream = getRealtimeSentimentStream();
       const current = stream.getCurrentSentiment();
       return { success: true, current };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -84,7 +84,7 @@ export function registerSentimentIPC(
       const history = stream.getHistory();
       const limited = limit ? history.slice(-limit) : history;
       return { success: true, history: limited };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -96,7 +96,7 @@ export function registerSentimentIPC(
       const stream = getRealtimeSentimentStream();
       const alerts = stream.getAlerts();
       return { success: true, alerts };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -108,7 +108,7 @@ export function registerSentimentIPC(
       const stream = getRealtimeSentimentStream();
       stream.clearAlerts();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -121,7 +121,7 @@ export function registerSentimentIPC(
     try {
       const dashboard = getSentimentDashboard();
       return { success: true, dashboard };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

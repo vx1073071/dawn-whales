@@ -118,7 +118,7 @@ export async function handleStrategyExecute(
       backtest: backtestResult,
     };
 
-  } catch (err: any) {
+  } catch (err) {
     log.error('[StrategyExecute] Error:', err.message);
     return {
       success: false,

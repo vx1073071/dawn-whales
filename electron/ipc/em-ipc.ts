@@ -22,7 +22,7 @@ export function registerEmIPC(
   ipcMain.handle('em:get-financials', async (_e, code: string, quarters?: number) => {
     try {
       return await getFinancialReports(code, quarters);
-    } catch (err: any) {
+    } catch (err) {
       log.error('[FinancialReports] Error:', err);
       return { success: false, error: err.message };
     }
@@ -35,7 +35,7 @@ export function registerEmIPC(
   ipcMain.handle('em:get-valuation', async (_e, code: string, historyDays?: number) => {
     try {
       return await getValuationData(code, historyDays);
-    } catch (err: any) {
+    } catch (err) {
       log.error('[ValuationData] Error:', err);
       return { success: false, error: err.message };
     }
@@ -48,7 +48,7 @@ export function registerEmIPC(
   ipcMain.handle('em:price-option', async (_e, params: any) => {
     try {
       return { success: true, ...blackScholesPrice(params) };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[OptionsPricing] Price error:', err);
       return { success: false, error: err.message };
     }
@@ -59,7 +59,7 @@ export function registerEmIPC(
   ipcMain.handle('em:calc-greeks', async (_e, params: any) => {
     try {
       return { success: true, ...calculateGreeks(params) };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[OptionsPricing] Greeks error:', err);
       return { success: false, error: err.message };
     }
@@ -70,7 +70,7 @@ export function registerEmIPC(
   ipcMain.handle('em:implied-vol', async (_e, marketPrice: number, S: number, K: number, T: number, r: number, optionType: string, q?: number) => {
     try {
       return { success: true, ...impliedVolatility(marketPrice, S, K, T, r, optionType as any, q) };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[OptionsPricing] IV error:', err);
       return { success: false, error: err.message };
     }
@@ -82,7 +82,7 @@ export function registerEmIPC(
     try {
       const surface = buildVolSurface(S, r, strikes, expiries, callPrices, putPrices);
       return { success: true, surface };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[OptionsPricing] Surface error:', err);
       return { success: false, error: err.message };
     }
@@ -93,7 +93,7 @@ export function registerEmIPC(
   ipcMain.handle('em:price-and-greeks', async (_e, params: any) => {
     try {
       return { success: true, ...priceAndGreeks(params) };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[OptionsPricing] Price+Greeks error:', err);
       return { success: false, error: err.message };
     }
@@ -107,7 +107,7 @@ export function registerEmIPC(
     try {
       const result = calculateRiskMetrics(params);
       return { success: true, metrics: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[RiskMetrics] Error:', err);
       return { success: false, error: err.message };
     }
@@ -118,7 +118,7 @@ export function registerEmIPC(
   ipcMain.handle('em:calc-sharpe', async (_e, returns: number[], riskFreeRate?: number, tradingDays?: number) => {
     try {
       return { success: true, sharpe: calcSharpeRatio(returns, riskFreeRate, tradingDays) };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -128,7 +128,7 @@ export function registerEmIPC(
   ipcMain.handle('em:calc-max-drawdown', async (_e, returns: number[]) => {
     try {
       return { success: true, maxDrawdown: calcMaxDrawdown(returns) };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -138,7 +138,7 @@ export function registerEmIPC(
   ipcMain.handle('em:calc-var', async (_e, returns: number[], confidence?: number) => {
     try {
       return { success: true, var: calcVaR(returns, confidence) };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -151,7 +151,7 @@ export function registerEmIPC(
     try {
       const result = brinsonAttribution(params);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Attribution] Error:', err);
       return { success: false, error: err.message };
     }
@@ -163,7 +163,7 @@ export function registerEmIPC(
     try {
       const result = timeSeriesAttribution(params);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Attribution] TimeSeries Error:', err);
       return { success: false, error: err.message };
     }
@@ -177,7 +177,7 @@ export function registerEmIPC(
     try {
       const result = correlationMatrix(params);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[CorrelationMatrix] Error:', err);
       return { success: false, error: err.message };
     }
@@ -191,7 +191,7 @@ export function registerEmIPC(
     try {
       const result = detectSectorRotation(params);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[SectorRotation] Error:', err);
       return { success: false, error: err.message };
     }
@@ -208,7 +208,7 @@ export function registerEmIPC(
       const bt = (boardType === 'concept' || boardType === 'region') ? boardType : 'industry';
       const result = await emDataProvider.getHeatmap(bt, limit || 50);
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[EMDataProvider] Heatmap fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -221,7 +221,7 @@ export function registerEmIPC(
     try {
       const maps = await emDataProvider.getAllHeatmaps();
       return { success: true, ...maps };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[EMDataProvider] All heatmaps fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -237,7 +237,7 @@ export function registerEmIPC(
       const type = (indicator || 'GDP') as any;
       const result = await macroDataProvider.getIndicator(type, limit || 24);
       return { success: true, data: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[MacroDataProvider] Fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -250,7 +250,7 @@ export function registerEmIPC(
     try {
       const result = await macroDataProvider.getDashboard(indicators as any);
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[MacroDataProvider] Dashboard fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -266,7 +266,7 @@ export function registerEmIPC(
       const sentimentInput = input || {};
       const result = engine.compute(sentimentInput);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[SentimentIndex] Compute failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -281,7 +281,7 @@ export function registerEmIPC(
     try {
       const result = await newsAggregator.search(request || { query: '' });
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[NewsAggregator] Search failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -294,7 +294,7 @@ export function registerEmIPC(
     try {
       const report = await newsAggregator.getMarketMood(symbols);
       return { success: true, report };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[NewsAggregator] Market mood failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -309,7 +309,7 @@ export function registerEmIPC(
     try {
       const report = sectorRotation.analyze();
       return { success: true, ...report };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[SectorRotation] Analyze failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -322,7 +322,7 @@ export function registerEmIPC(
     try {
       sectorRotation.recordSnapshot(sectors || []);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -336,7 +336,7 @@ export function registerEmIPC(
     try {
       const summary = stockAnomalyDetector.getSummary();
       return { success: true, summary };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -348,7 +348,7 @@ export function registerEmIPC(
     try {
       const alerts = stockAnomalyDetector.getAlerts(options);
       return { success: true, alerts };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -360,7 +360,7 @@ export function registerEmIPC(
     try {
       const newAlerts = stockAnomalyDetector.processQuotes(quotes || []);
       return { success: true, newAlerts: newAlerts.length };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -372,7 +372,7 @@ export function registerEmIPC(
     try {
       const result = stockAnomalyDetector.acknowledgeAlert(id);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -386,7 +386,7 @@ export function registerEmIPC(
     try {
       const report = await marketHotspot.getReport(query);
       return { success: true, ...report };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[MarketHotspot] Fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -400,7 +400,7 @@ export function registerEmIPC(
     try {
       const result = await getDragonTigerList(date);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, entries: [], total: 0, date: '', error: err.message };
     }
   });
@@ -411,7 +411,7 @@ export function registerEmIPC(
     try {
       const detail = await getDragonTigerDetail(code, date);
       return { success: !!detail, detail };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, detail: null, error: err.message };
     }
   });
@@ -422,7 +422,7 @@ export function registerEmIPC(
     try {
       const entries = await getInstitutionalTrades(date);
       return { success: true, entries };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, entries: [], error: err.message };
     }
   });
@@ -435,7 +435,7 @@ export function registerEmIPC(
     try {
       const result = await getStockCapitalFlowRank(sortBy as any, order as any, limit);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, items: [], total: 0, type: 'stock', error: err.message };
     }
   });
@@ -446,7 +446,7 @@ export function registerEmIPC(
     try {
       const result = await getSectorCapitalFlowRank(sortBy as any, order as any, limit);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, items: [], total: 0, type: 'sector', error: err.message };
     }
   });
@@ -457,7 +457,7 @@ export function registerEmIPC(
     try {
       const result = await getConceptCapitalFlowRank(sortBy as any, order as any, limit);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, items: [], total: 0, type: 'concept', error: err.message };
     }
   });
@@ -471,7 +471,7 @@ export function registerEmIPC(
       const monitor = getCapitalFlowMonitor();
       const alerts = items ? monitor.process(items) : [];
       return { success: true, alerts, config: monitor.getConfig() };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, alerts: [], error: err.message };
     }
   });
@@ -483,7 +483,7 @@ export function registerEmIPC(
       const monitor = getCapitalFlowMonitor();
       monitor.updateConfig(config);
       return { success: true, config: monitor.getConfig() };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -494,7 +494,7 @@ export function registerEmIPC(
     try {
       getCapitalFlowMonitor().clearHistory();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -507,7 +507,7 @@ export function registerEmIPC(
     try {
       const result = await getFundHoldings(fundCode, reportDate);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, items: [], total: 0, error: err.message };
     }
   });
@@ -518,7 +518,7 @@ export function registerEmIPC(
     try {
       const result = await getStockFundOwnership(stockCode, reportDate);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, items: [], total: 0, error: err.message };
     }
   });
@@ -529,7 +529,7 @@ export function registerEmIPC(
     try {
       const result = await getFundIncreaseRank(limit, reportDate);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, items: [], total: 0, error: err.message };
     }
   });
@@ -540,7 +540,7 @@ export function registerEmIPC(
     try {
       const result = await getFundDecreaseRank(limit, reportDate);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, items: [], total: 0, error: err.message };
     }
   });
@@ -553,7 +553,7 @@ export function registerEmIPC(
     try {
       const result = await diagnoseStock(request || { code: '' });
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, code: '', name: '', timestamp: Date.now(), error: err.message };
     }
   });
@@ -564,7 +564,7 @@ export function registerEmIPC(
     try {
       const results = await batchDiagnose(codes || [], options);
       return { success: true, reports: results };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, reports: [], error: err.message };
     }
   });
@@ -577,7 +577,7 @@ export function registerEmIPC(
     try {
       const result = await calculatePortfolioRisk(request || { positions: [] });
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -590,7 +590,7 @@ export function registerEmIPC(
     try {
       const result = await getMarketBreadth();
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -603,7 +603,7 @@ export function registerEmIPC(
     try {
       const result = await getConsumerDataReport(months || 12);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -616,7 +616,7 @@ export function registerEmIPC(
     try {
       const result = await getMarginDataReport();
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -627,7 +627,7 @@ export function registerEmIPC(
     try {
       const result = await getStockMargin(code, days || 30);
       return { success: true, data: result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -638,7 +638,7 @@ export function registerEmIPC(
     try {
       const result = await getMarginBalanceRanking(limit || 30);
       return { success: true, data: result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -649,7 +649,7 @@ export function registerEmIPC(
     try {
       const result = await getShortInterestRanking(limit || 30);
       return { success: true, data: result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -663,7 +663,7 @@ export function registerEmIPC(
     try {
       const result = await getStockOverview(code);
       return { success: true, data: result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -674,7 +674,7 @@ export function registerEmIPC(
     try {
       const result = await getMarketOverview();
       return { success: true, data: result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -685,7 +685,7 @@ export function registerEmIPC(
     try {
       const result = await getDailyReport();
       return { success: true, data: result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -704,7 +704,7 @@ export function registerEmIPC(
         }
       });
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -715,7 +715,7 @@ export function registerEmIPC(
     try {
       getDragonTigerStream().stop();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -726,7 +726,7 @@ export function registerEmIPC(
     try {
       const result = await getDragonTigerStream().fetchNow();
       return { success: true, data: result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -736,7 +736,7 @@ export function registerEmIPC(
   ipcMain.handle('em:dragon-tiger-stream-status', async () => {
     try {
       return { success: true, status: getDragonTigerStream().getStatus() };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -749,7 +749,7 @@ export function registerEmIPC(
     try {
       const result = await getUnlockCalendar(days || 30);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, events: [], total: 0, error: err.message };
     }
   });
@@ -762,7 +762,7 @@ export function registerEmIPC(
     try {
       const result = await getDividendCalendar(days || 30);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, events: [], total: 0, error: err.message };
     }
   });
@@ -775,7 +775,7 @@ export function registerEmIPC(
     try {
       const result = await getEarningsCalendar(days || 30);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, events: [], total: 0, error: err.message };
     }
   });
@@ -788,7 +788,7 @@ export function registerEmIPC(
     try {
       const result = await exportData(type as any, (format as any) || 'json');
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -802,7 +802,7 @@ export function registerEmIPC(
       const picker = getSmartPicker();
       const result = await picker.pick(request || {});
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -816,7 +816,7 @@ export function registerEmIPC(
       const backfill = getHistoryBackfill();
       const status = await backfill.start(config);
       return { success: true, status };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -826,7 +826,7 @@ export function registerEmIPC(
   ipcMain.handle('em:backfill-status', async () => {
     try {
       return { success: true, status: getHistoryBackfill().getStatus() };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -837,7 +837,7 @@ export function registerEmIPC(
     try {
       const data = getHistoryBackfill().getBackfillData(module);
       return { success: true, data };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -848,7 +848,7 @@ export function registerEmIPC(
     try {
       const files = getHistoryBackfill().listBackfillFiles();
       return { success: true, files };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

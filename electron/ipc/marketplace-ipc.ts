@@ -21,7 +21,7 @@ export function registerMarketplaceIPC(
       db?.rateStrategy(strategyId, rating);
       const stats = db?.getStrategyRating(strategyId);
       return { success: true, ...stats };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -42,7 +42,7 @@ export function registerMarketplaceIPC(
     try {
       db?.addComment(strategyId, content, parentId);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -62,7 +62,7 @@ export function registerMarketplaceIPC(
     try {
       db?.saveStrategyPerformance(data);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -90,7 +90,7 @@ export function registerMarketplaceIPC(
     try {
       const score = marketplaceService.calculateStrategyScore(strategyId);
       return { success: true, score };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Marketplace] Score calculation failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -103,7 +103,7 @@ export function registerMarketplaceIPC(
     try {
       const verification = marketplaceService.verifyPerformance(strategyId);
       return { success: true, verification };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Marketplace] Verification failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -116,7 +116,7 @@ export function registerMarketplaceIPC(
     try {
       const result = marketplaceService.updateAllScores();
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Marketplace] Batch update failed:', err.message);
       return { success: false, error: err.message };
     }

@@ -19,7 +19,7 @@ export function registerDataIPC(
     try {
       const result = flowPredictor.predict(params);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[FlowPredict] Error:', err);
       return { success: false, error: err.message };
     }
@@ -34,7 +34,7 @@ export function registerDataIPC(
     try {
       const result = await getValuationDashboard(codes, historyDays);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[ValuationDashboard] Error:', err);
       return { success: false, error: err.message };
     }
@@ -46,7 +46,7 @@ export function registerDataIPC(
     try {
       const result = await getValuationDashboardBatch(codes, batchSize, delayMs);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[ValuationDashboardBatch] Error:', err);
       return { success: false, error: err.message };
     }
@@ -61,7 +61,7 @@ export function registerDataIPC(
       const financialMap = new Map(Object.entries(financialData || {}));
       const result = await compareSectorStocks(stocks, financialMap);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[SectorComparison] Error:', err);
       return { success: false, error: err.message };
     }
@@ -74,7 +74,7 @@ export function registerDataIPC(
       const financialMap = new Map(Object.entries(financialData || {}));
       const result = await compareMultipleSectors(sectors, financialMap);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[SectorComparisonMultiple] Error:', err);
       return { success: false, error: err.message };
     }
@@ -86,7 +86,7 @@ export function registerDataIPC(
     try {
       const result = rankSectorStocks(metrics, weights);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[SectorRank] Error:', err);
       return { success: false, error: err.message };
     }
@@ -100,7 +100,7 @@ export function registerDataIPC(
     try {
       const result = scoreAndRankStocks(stocks, factorWeights);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[MultiFactor] Score error:', err);
       return { success: false, error: err.message };
     }
@@ -112,7 +112,7 @@ export function registerDataIPC(
     try {
       const result = screenStocks(stocks, criteria, factorWeights);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[MultiFactor] Screen error:', err);
       return { success: false, error: err.message };
     }
@@ -124,7 +124,7 @@ export function registerDataIPC(
     try {
       const result = await batchScreenStocks(batches);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[MultiFactor] Batch screen error:', err);
       return { success: false, error: err.message };
     }
@@ -146,7 +146,7 @@ export function registerDataIPC(
       }
       const result = detectRegime(klines, { vixLevel });
       return { success: true, regime: result, symbol };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -168,7 +168,7 @@ export function registerDataIPC(
       }
       const result = detectAnomalies({ values, method: method ?? 'zscore', window: window ?? 20, threshold: threshold ?? 3 });
       return { success: true, anomalies: result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -182,7 +182,7 @@ export function registerDataIPC(
     try {
       const data = await dataProvider.getFundamental(symbol);
       return { success: true, data };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DataProvider] Fundamental fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -195,7 +195,7 @@ export function registerDataIPC(
     try {
       const data = await dataProvider.getCapitalFlow(symbol);
       return { success: true, data };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DataProvider] Capital flow fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -208,7 +208,7 @@ export function registerDataIPC(
     try {
       const regime = await dataProvider.getMarketRegime();
       return { success: true, regime };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DataProvider] Regime fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -221,7 +221,7 @@ export function registerDataIPC(
     try {
       const signals = await dataProvider.getAnomalies(symbol);
       return { success: true, signals };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DataProvider] Anomalies fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -234,7 +234,7 @@ export function registerDataIPC(
     try {
       const items = await dataProvider.getNews(symbol, limit);
       return { success: true, items };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DataProvider] News fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -247,7 +247,7 @@ export function registerDataIPC(
     try {
       const result = await dataProvider.getCompositeScore(symbol);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DataProvider] Composite score failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -260,7 +260,7 @@ export function registerDataIPC(
     try {
       dataProvider.saveFundamental(data);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -272,7 +272,7 @@ export function registerDataIPC(
     try {
       dataProvider.saveCapitalFlow(data);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -284,7 +284,7 @@ export function registerDataIPC(
     try {
       dataProvider.saveMarketRegime(regime);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -296,7 +296,7 @@ export function registerDataIPC(
     try {
       const regime = dataProvider.computeRegime(factors);
       return { success: true, regime };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -308,7 +308,7 @@ export function registerDataIPC(
     try {
       dataProvider.saveAnomaly(signal);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -320,7 +320,7 @@ export function registerDataIPC(
     try {
       dataProvider.saveNews(symbol, items);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -332,7 +332,7 @@ export function registerDataIPC(
     try {
       dataProvider.clearExpiredCache();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -346,7 +346,7 @@ export function registerDataIPC(
     try {
       const result = await stockScreener.search(request || { query: '' });
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[StockScreener] Search failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -372,7 +372,7 @@ export function registerDataIPC(
         await dataScheduler.refreshAll();
       }
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -386,7 +386,7 @@ export function registerDataIPC(
       const monitor = getDataQualityMonitor();
       const report = await monitor.runHealthCheck();
       return { success: true, report };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -398,7 +398,7 @@ export function registerDataIPC(
       const monitor = getDataQualityMonitor();
       const report = monitor.getLastReport();
       return { success: true, report };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -410,7 +410,7 @@ export function registerDataIPC(
       const monitor = getDataQualityMonitor();
       monitor.acknowledgeAlert(alertIndex);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -422,7 +422,7 @@ export function registerDataIPC(
       const monitor = getDataQualityMonitor();
       monitor.clearAcknowledgedAlerts();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -434,7 +434,7 @@ export function registerDataIPC(
       const monitor = getDataQualityMonitor();
       monitor.startPeriodicCheck(intervalMs);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -446,7 +446,7 @@ export function registerDataIPC(
       const monitor = getDataQualityMonitor();
       monitor.stopPeriodicCheck();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -474,7 +474,7 @@ export function registerDataIPC(
       });
       
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -486,7 +486,7 @@ export function registerDataIPC(
       const monitor = getDataQualityStream();
       monitor.stop();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -500,7 +500,7 @@ export function registerDataIPC(
       // Convert Map to object for IPC serialization
       const symbolStats = Object.fromEntries(status.symbolStats);
       return { success: true, status: { ...status, symbolStats } };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -512,7 +512,7 @@ export function registerDataIPC(
       const monitor = getDataQualityStream();
       monitor.clearAlerts();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -524,7 +524,7 @@ export function registerDataIPC(
       const monitor = getDataQualityStream();
       monitor.resetMetrics();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -537,7 +537,7 @@ export function registerDataIPC(
     try {
       const dashboard = await getDataQualityDashboard();
       return { success: true, dashboard };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -550,7 +550,7 @@ export function registerDataIPC(
     try {
       const result = await exportData(request);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -561,7 +561,7 @@ export function registerDataIPC(
     try {
       const modules = getAvailableModules();
       return { success: true, modules };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -575,7 +575,7 @@ export function registerDataIPC(
       const manager = getRateLimiterManager();
       const stats = manager.getStats(apiName);
       return { success: true, stats };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -587,7 +587,7 @@ export function registerDataIPC(
       const manager = getRateLimiterManager();
       manager.resetAll();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -599,7 +599,7 @@ export function registerDataIPC(
       const manager = getRateLimiterManager();
       const apis = manager.getAvailableAPIs();
       return { success: true, apis };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -612,7 +612,7 @@ export function registerDataIPC(
     try {
       const report = await runConsistencyCheck();
       return { success: true, report };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -623,7 +623,7 @@ export function registerDataIPC(
     try {
       const rules = getConsistencyRules();
       return { success: true, rules };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

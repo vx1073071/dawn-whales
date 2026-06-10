@@ -23,7 +23,7 @@ export function registerBacktestIPC(
         config.klines, config.strategyConfig, config.periods
       );
       return { success: true, results };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -40,7 +40,7 @@ export function registerBacktestIPC(
         config.klines, config.baseConfig, config.paramRanges, config.maxCombinations || 100
       );
       return { success: true, results };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -59,7 +59,7 @@ export function registerBacktestIPC(
       const enhancer = new BacktestEnhancer(backtestEngine);
       const metrics = enhancer.computeDeepRiskMetrics(equityCurve, riskFreeRate || 0.03);
       return { success: true, metrics };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -83,7 +83,7 @@ export function registerBacktestIPC(
       const checker = new BacktestStabilityChecker();
       const result = checker.analyzeStability({ isReturns, oosReturns, paramGridResults, walkForwardResults, isPeriodDays, oosPeriodDays, tradingDays });
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -103,7 +103,7 @@ export function registerBacktestIPC(
       }
       const report = await wfa.run(config, klines);
       return { success: true, report };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[WFA] Failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -124,7 +124,7 @@ export function registerBacktestIPC(
       }
       const report = await scanner.run({ ...config, klines });
       return { success: true, report };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[ParamScan] Failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -160,7 +160,7 @@ export function registerBacktestIPC(
       }
 
       return { success: true, results, timeframes };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[MultiTF] Failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -176,7 +176,7 @@ export function registerBacktestIPC(
       try {
         const result = await WalkForwardEngine.run(config);
         return { success: true, result };
-      } catch (err: any) {
+      } catch (err) {
         return { success: false, error: err.message };
       }
     }
@@ -239,7 +239,7 @@ export function registerBacktestIPC(
     try {
       const result = await engine.run({ ...config, numWindows: numWindows || 5, trainRatio: trainRatio || 0.7 });
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

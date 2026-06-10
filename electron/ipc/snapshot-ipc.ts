@@ -15,7 +15,7 @@ export function registerSnapshotIPC(
     try {
       const snapshot = await captureSnapshot(type, category, data, metadata);
       return { success: true, snapshot };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -26,7 +26,7 @@ export function registerSnapshotIPC(
     try {
       const snapshots = await querySnapshots(query);
       return { success: true, snapshots };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -37,7 +37,7 @@ export function registerSnapshotIPC(
     try {
       const snapshot = await getSnapshot(id);
       return { success: true, snapshot };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -48,7 +48,7 @@ export function registerSnapshotIPC(
     try {
       const comparison = await compareSnapshots(id1, id2);
       return { success: true, comparison };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -59,7 +59,7 @@ export function registerSnapshotIPC(
     try {
       const timeline = await getSnapshotTimeline(category, limit);
       return { success: true, timeline };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -70,7 +70,7 @@ export function registerSnapshotIPC(
     try {
       const snapshot = await getLatestSnapshot(category);
       return { success: true, snapshot };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -81,7 +81,7 @@ export function registerSnapshotIPC(
     try {
       const deleted = await cleanupOldSnapshots(daysOld);
       return { success: true, deleted };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -92,7 +92,7 @@ export function registerSnapshotIPC(
     try {
       const json = await exportSnapshots(query);
       return { success: true, json };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -103,7 +103,7 @@ export function registerSnapshotIPC(
     try {
       const imported = await importSnapshots(jsonString);
       return { success: true, imported };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -114,7 +114,7 @@ export function registerSnapshotIPC(
     try {
       const stats = getSnapshotStats();
       return { success: true, stats };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -125,7 +125,7 @@ export function registerSnapshotIPC(
     try {
       const deleted = await deleteSnapshot(id);
       return { success: true, deleted };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -136,7 +136,7 @@ export function registerSnapshotIPC(
     try {
       await clearAllSnapshots();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

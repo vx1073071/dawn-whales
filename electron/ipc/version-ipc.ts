@@ -15,7 +15,7 @@ export function registerVersionIPC(
     try {
       const version = await trackVersion(entityId, entityType, data, changeType as any, changeSummary, userId, tags);
       return { success: true, version };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -26,7 +26,7 @@ export function registerVersionIPC(
     try {
       const versions = await getEntityVersions(entityId, limit);
       return { success: true, versions };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -37,7 +37,7 @@ export function registerVersionIPC(
     try {
       const version = await getVersion(versionId);
       return { success: true, version };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -48,7 +48,7 @@ export function registerVersionIPC(
     try {
       const version = await getLatestVersion(entityId);
       return { success: true, version };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -59,7 +59,7 @@ export function registerVersionIPC(
     try {
       const diff = await diffVersions(versionId1, versionId2);
       return { success: true, diff };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -70,7 +70,7 @@ export function registerVersionIPC(
     try {
       const result = await rollback(entityId, targetVersion);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -81,7 +81,7 @@ export function registerVersionIPC(
     try {
       const versions = await queryVersions(query);
       return { success: true, versions };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -92,7 +92,7 @@ export function registerVersionIPC(
     try {
       const stats = getVersionStats();
       return { success: true, stats };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -103,7 +103,7 @@ export function registerVersionIPC(
     try {
       const deleted = await deleteVersion(versionId);
       return { success: true, deleted };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -114,7 +114,7 @@ export function registerVersionIPC(
     try {
       await clearAllVersions();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -125,7 +125,7 @@ export function registerVersionIPC(
     try {
       const json = await exportVersions(query);
       return { success: true, json };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -136,7 +136,7 @@ export function registerVersionIPC(
     try {
       const imported = await importVersions(jsonString);
       return { success: true, imported };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

@@ -21,7 +21,7 @@ export function registerSystemIPC(
       }
       const result = await runOpenDHealthCheck(req as any);
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

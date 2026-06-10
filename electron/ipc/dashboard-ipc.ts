@@ -49,7 +49,7 @@ export function registerDashboardIPC(
       };
 
       return { success: true, summary };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[dashboard:summary]', err);
       return { success: false, error: err.message };
     }
@@ -96,7 +96,7 @@ export function registerDashboardIPC(
           days,
         },
       };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[dashboard:pnl]', err);
       return { success: false, error: err.message };
     }
@@ -137,7 +137,7 @@ export function registerDashboardIPC(
         totalMarketValue: totalMV,
         count: positions.length,
       };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[dashboard:positions]', err);
       return { success: false, error: err.message };
     }
@@ -161,7 +161,7 @@ export function registerDashboardIPC(
           version: process.env.npm_package_version || '0.7.0',
         },
       };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

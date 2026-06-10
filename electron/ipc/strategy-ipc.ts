@@ -24,7 +24,7 @@ export function registerStrategyIPC(
       const strategy = strategyEngine?.getStrategy(id!);
       if (strategy && db) db.saveStrategy(strategy);
       return { success: true, id, strategy };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
 
@@ -57,7 +57,7 @@ export function registerStrategyIPC(
       Object.assign(strategy, sanitized, { updatedAt: new Date().toISOString() });
       if (db) db.saveStrategy(strategy);
       return { success: true, strategy };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
 
@@ -105,7 +105,7 @@ export function registerStrategyIPC(
       }
 
       return await backtestEngine.run({ ...config, klines });
-    } catch (err: any) {
+    } catch (err) {
       log.error('[IPC] Backtest error:', err.message);
       return { success: false, error: err.message };
     }
@@ -160,7 +160,7 @@ Keep it under 200 words. Use bullet points.`;
     if (!result.success) return result;
     const content = result.content;
       return { success: true, explanation: content };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -194,7 +194,7 @@ Keep it under 250 words. Be objective, not promotional.`;
     if (!result.success) return result;
     const content = result.content;
       return { success: true, comparison: content };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -257,7 +257,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       let suggestions = [];
       try { suggestions = JSON.parse(rawContent).suggestions || []; } catch { suggestions = []; }
       return { success: true, suggestions };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -313,7 +313,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       }
       const result = buildCorrelationVisualization(inputs);
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -326,7 +326,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const pt = getPaperTrader('default');
       const trade = pt.executeSignal(signal, signal.name);
       return { success: !!trade, trade };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -337,7 +337,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const { getPaperTrader } = require('./engine/paper-trader');
       return { success: true, status: getPaperTrader('default').getStatus() };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -372,7 +372,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
         return { success: !error, strategy, error };
       }
       return { success: false, error: 'Unknown action' };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -394,7 +394,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
       return { success: true, status: pt.getAccount() };
 
-    } catch (err: any) {
+    } catch (err) {
 
       return { success: false, error: err.message };
 
@@ -418,7 +418,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
       return { success: true };
 
-    } catch (err: any) {
+    } catch (err) {
 
       return { success: false, error: err.message };
 
@@ -442,7 +442,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
       return { success: true };
 
-    } catch (err: any) {
+    } catch (err) {
 
       return { success: false, error: err.message };
 
@@ -468,7 +468,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
       return { success: true, ...report };
 
-    } catch (err: any) {
+    } catch (err) {
 
       return { success: false, error: err.message };
 
@@ -496,7 +496,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
       return { success: true, orderId };
 
-    } catch (err: any) {
+    } catch (err) {
 
       return { success: false, error: err.message };
 
@@ -522,7 +522,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       }
       const result = await scoreStocks(req as any);
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -541,7 +541,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const comparison = compareBacktests(results);
       const table = summaryTable(results, comparison);
       return { success: true, comparison, table };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -569,7 +569,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const { computeCorrelationMatrix } = require('./engine/correlation-matrix');
       const result = computeCorrelationMatrix(inputs);
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -585,7 +585,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       }
       liveExecutor.start(symbols);
       return { success: true, status: liveExecutor.getStatus() };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[live:start]', err.message);
       return { success: false, error: err.message };
     }
@@ -597,7 +597,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       liveExecutor?.stop();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -611,7 +611,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       if (!strategyId || !symbol) return { success: false, error: 'strategyId and symbol required' };
       liveExecutor.addStrategy({ strategyId, symbol, signalType: signalType || 'BUY', price, quantity, stopLoss, takeProfit });
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -622,7 +622,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       liveExecutor?.removeStrategy(strategyId);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -676,7 +676,7 @@ app.whenReady().then(async () => {
   try {
     db = new DatabaseManager();
     db.initialize();
-  } catch (err: any) {
+  } catch (err) {
     log.error('[App] Database init failed:', err.message);
   }
 
@@ -711,7 +711,7 @@ app.whenReady().then(async () => {
     const paperTrader = initPaperTrader();
     log.info('[App] PaperTrader initialized');
 
-  } catch (err: any) {
+  } catch (err) {
     log.error('[App] Engine init failed:', err.message);
   }
 

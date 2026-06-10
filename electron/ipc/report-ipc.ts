@@ -15,7 +15,7 @@ export function registerReportIPC(
     try {
       const result = generateWalkForwardReport(strategyName, windows);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[WalkForwardReport] Error:', err);
       return { success: false, error: err.message };
     }
@@ -27,7 +27,7 @@ export function registerReportIPC(
     try {
       const result = await generateBatchWalkForwardReport(strategies);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[WalkForwardReportBatch] Error:', err);
       return { success: false, error: err.message };
     }
@@ -41,7 +41,7 @@ export function registerReportIPC(
     try {
       const result = generateBrinsonReport(holdings, benchmark, benchmarkReturn);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[BrinsonAttribution] Error:', err);
       return { success: false, error: err.message };
     }
@@ -53,7 +53,7 @@ export function registerReportIPC(
     try {
       const result = await generateBatchBrinsonReport(portfolios);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[BrinsonAttributionBatch] Error:', err);
       return { success: false, error: err.message };
     }

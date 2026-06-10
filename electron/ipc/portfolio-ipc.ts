@@ -15,7 +15,7 @@ export function registerPortfolioIPC(
     try {
       const result = optimizePortfolio(assets, constraints);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[PortfolioOptimizer] Error:', err);
       return { success: false, error: err.message };
     }
@@ -27,7 +27,7 @@ export function registerPortfolioIPC(
     try {
       const result = generateEfficientFrontier(assets, points, constraints);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[PortfolioOptimizer] Frontier error:', err);
       return { success: false, error: err.message };
     }
@@ -39,7 +39,7 @@ export function registerPortfolioIPC(
     try {
       const result = riskParityPortfolio(assets, constraints);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[PortfolioOptimizer] Risk parity error:', err);
       return { success: false, error: err.message };
     }
@@ -51,7 +51,7 @@ export function registerPortfolioIPC(
     try {
       const result = await batchOptimizePortfolios(scenarios);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[PortfolioOptimizer] Batch error:', err);
       return { success: false, error: err.message };
     }
@@ -69,7 +69,7 @@ export function registerPortfolioIPC(
       const { PortfolioCostAnalytics } = await import('./engine/portfolio-cost-analytics.js');
       const result = new PortfolioCostAnalytics().analyze(positions, trades, periodDays);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -87,7 +87,7 @@ export function registerPortfolioIPC(
       const optimizer = new RAROptimizer();
       const result = await optimizer.optimize(positions, marketData, riskAppetite, constraints);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -106,7 +106,7 @@ export function registerPortfolioIPC(
       const rebalancer = getPortfolioRebalancer();
       const result = await rebalancer.rebalance(positions, targetWeights, dryRun, driftThreshold, maxTurnover);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -122,7 +122,7 @@ export function registerPortfolioIPC(
       const rebalancer = getPortfolioRebalancer();
       const result = await rebalancer.kellyOptimize(positions, kellyFraction, maxTurnover);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

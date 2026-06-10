@@ -16,7 +16,7 @@ export function registerAlertNotificationIPC(
       const historicalMap = new Map(Object.entries(historicalData || {}) as [string, number[]][]);
       const result = await detectMacroAnomalies(currentData, historicalMap);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[MacroAlert] Error:', err);
       return { success: false, error: err.message };
     }
@@ -28,7 +28,7 @@ export function registerAlertNotificationIPC(
     try {
       const result = await analyzeMultipleIndicators(indicatorData);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[MacroAlertMultiple] Error:', err);
       return { success: false, error: err.message };
     }
@@ -43,7 +43,7 @@ export function registerAlertNotificationIPC(
       const histMap = new Map(Object.entries(historicalData || {}) as [string, number[]][]);
       const result = await detectCorrelationAnomalies(snapshots, histMap);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[CorrelationAlert] Error:', err);
       return { success: false, error: err.message };
     }
@@ -56,7 +56,7 @@ export function registerAlertNotificationIPC(
       const histMap = histMatrices ? new Map(Object.entries(histMatrices) as [string, number[]][]) : undefined;
       const result = await analyzeCorrelationMatrix(matrix, codes, prevMatrix, histMap);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[CorrelationAlertMatrix] Error:', err);
       return { success: false, error: err.message };
     }

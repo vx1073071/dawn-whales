@@ -16,7 +16,7 @@ export function registerWsIPC(
     try {
       const result = await connectWebSocket(config);
       return { success: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[WebSocket] Connect error:', err);
       return { success: false, error: err.message };
     }
@@ -28,7 +28,7 @@ export function registerWsIPC(
     try {
       await disconnectWebSocket();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[WebSocket] Disconnect error:', err);
       return { success: false, error: err.message };
     }
@@ -40,7 +40,7 @@ export function registerWsIPC(
     try {
       const result = subscribeToSymbol(symbol);
       return { success: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[WebSocket] Subscribe error:', err);
       return { success: false, error: err.message };
     }
@@ -52,7 +52,7 @@ export function registerWsIPC(
     try {
       const result = unsubscribeFromSymbol(symbol);
       return { success: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[WebSocket] Unsubscribe error:', err);
       return { success: false, error: err.message };
     }
@@ -64,7 +64,7 @@ export function registerWsIPC(
     try {
       const result = subscribeToSymbols(symbols);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[WebSocket] Batch subscribe error:', err);
       return { success: false, error: err.message };
     }
@@ -76,7 +76,7 @@ export function registerWsIPC(
     try {
       const result = unsubscribeFromSymbols(symbols);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[WebSocket] Batch unsubscribe error:', err);
       return { success: false, error: err.message };
     }
@@ -88,7 +88,7 @@ export function registerWsIPC(
     try {
       const status = getWebSocketStatus();
       return { success: true, status };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[WebSocket] Status error:', err);
       return { success: false, error: err.message };
     }
@@ -100,7 +100,7 @@ export function registerWsIPC(
     try {
       const stats = getStreamingStats();
       return { success: true, stats };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[WebSocket] Streaming stats error:', err);
       return { success: false, error: err.message };
     }
@@ -117,7 +117,7 @@ export function registerWsIPC(
       if (symbols && symbols.length > 0) stream.subscribe(symbols);
       stream.start();
       return { success: true, status: stream.getStatus() };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -166,7 +166,7 @@ export function registerWsIPC(
       const proxy = getPush2Proxy();
       const result = await proxy.getSectorHeatmap(type as any, limit);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -178,7 +178,7 @@ export function registerWsIPC(
       const proxy = getPush2Proxy();
       const result = await proxy.getCapitalFlowRank(type as any, limit);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -190,7 +190,7 @@ export function registerWsIPC(
       const proxy = getPush2Proxy();
       const result = await proxy.getStockQuote(secid);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -202,7 +202,7 @@ export function registerWsIPC(
       const proxy = getPush2Proxy();
       const result = await proxy.getMarketBreadth();
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -213,7 +213,7 @@ export function registerWsIPC(
     try {
       const proxy = getPush2Proxy();
       return { success: true, status: proxy.getStatus() };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -225,7 +225,7 @@ export function registerWsIPC(
       const proxy = getPush2Proxy();
       proxy.clearCache();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -244,7 +244,7 @@ export function registerWsIPC(
         }
       });
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -255,7 +255,7 @@ export function registerWsIPC(
     try {
       getWsDataStream().stop();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -266,7 +266,7 @@ export function registerWsIPC(
     try {
       getWsDataStream().subscribe(codes || []);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -277,7 +277,7 @@ export function registerWsIPC(
     try {
       getWsDataStream().unsubscribe(codes || []);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -287,7 +287,7 @@ export function registerWsIPC(
   ipcMain.handle('ws:stream-status', async () => {
     try {
       return { success: true, status: getWsDataStream().getStatus() };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

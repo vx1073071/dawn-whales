@@ -51,7 +51,7 @@ export function registerExportIPC() {
       const csv = toCSV(data);
       const result = await saveFileDialog('csv', csv);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       log.error('[ExportCSV]', err);
       return { success: false, error: err.message };
     }
@@ -64,7 +64,7 @@ export function registerExportIPC() {
       const json = JSON.stringify(data, null, 2);
       const result = await saveFileDialog('json', json);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       log.error('[ExportJSON]', err);
       return { success: false, error: err.message };
     }
@@ -77,7 +77,7 @@ export function registerExportIPC() {
       const md = toMD(data);
       const result = await saveFileDialog('md', md);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       log.error('[ExportMD]', err);
       return { success: false, error: err.message };
     }
@@ -105,7 +105,7 @@ export function registerExportIPC() {
         results.push({ target, format, filepath, count: data.length });
       }
       return { success: true, results };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[ExportBatch]', err);
       return { success: false, error: err.message };
     }
@@ -132,7 +132,7 @@ export function registerExportIPC() {
         fs.writeFileSync(result.filePath, options.content, 'utf-8');
       }
       return { success: true, filepath: result.filePath };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[ExportSaveDialog]', err);
       return { success: false, error: err.message };
     }
@@ -152,7 +152,7 @@ export function registerExportIPC() {
       if (result.canceled || !result.filePath) return { success: false, canceled: true };
       fs.writeFileSync(result.filePath, report, 'utf-8');
       return { success: true, filepath: result.filePath };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[ExportSummary]', err);
       return { success: false, error: err.message };
     }

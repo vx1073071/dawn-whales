@@ -12,7 +12,7 @@ export function registerMonteCarloIPC() {
     try {
       const result = simulator.simulate(config);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[MonteCarloIPC]', err);
       return { success: false, error: err.message };
     }

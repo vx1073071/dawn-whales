@@ -56,7 +56,7 @@ export function registerAppIPC(
       });
       fs.writeFileSync(filePath, data);
       return { success: true, path: filePath };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[App] PDF export failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -83,7 +83,7 @@ export function registerAppIPC(
         });
       }
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[App] Emergency stop failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -122,7 +122,7 @@ export function registerAppIPC(
     try {
       const result = await autoUpdater.checkForUpdates();
       return { success: true, version: result?.updateInfo?.version || null };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -133,7 +133,7 @@ export function registerAppIPC(
     try {
       await autoUpdater.downloadUpdate();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

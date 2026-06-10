@@ -26,7 +26,7 @@ export function registerBrokerIPC(
     try {
       const result = orderRouter.route(params);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[OrderRouter] Error:', err);
       return { success: false, error: err.message };
     }
@@ -39,7 +39,7 @@ export function registerBrokerIPC(
     try {
       const result = tcaEngine.analyze(params);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[TCA] Error:', err);
       return { success: false, error: err.message };
     }
@@ -52,7 +52,7 @@ export function registerBrokerIPC(
     try {
       const result = multiBrokerPnL.consolidate(params);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[MultiBrokerPnL] Error:', err);
       return { success: false, error: err.message };
     }
@@ -72,7 +72,7 @@ export function registerBrokerIPC(
       const engine = new ExecutionAnalyticsEngine();
       const result = engine.analyzeExecution(executionRecords, marketData, benchmarkPrice, optionsScope);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -88,7 +88,7 @@ export function registerBrokerIPC(
       const trader = getRealTrader();
       const result = await trader.executeSignal(signal, paperMode);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -100,7 +100,7 @@ export function registerBrokerIPC(
       const { getRealTrader } = await import('./engine/real-trader.js');
       const trader = getRealTrader();
       return { success: true, status: trader.getStatus(), metrics: trader.getMetrics() };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -153,7 +153,7 @@ export function registerBrokerIPC(
       log.info('[Broker] Push mode active');
 
       return { success: true, host: config.host, port: config.port };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Broker] Connect failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -173,7 +173,7 @@ export function registerBrokerIPC(
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
       return { success: true, accounts: await opendClient.getAccounts() };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
 
@@ -184,7 +184,7 @@ export function registerBrokerIPC(
       const funds = await opendClient.getFunds(accountId);
       riskEngine?.updateTotalAssets(funds?.totalAssets || 0);
       return { success: true, funds };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
 
@@ -193,7 +193,7 @@ export function registerBrokerIPC(
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
       return { success: true, positions: await opendClient.getPositions(accountId) };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
 
@@ -203,7 +203,7 @@ export function registerBrokerIPC(
     try {
       const quoteList = (!codes || codes.length === 0) ? WATCHLIST : codes;
       return { success: true, quotes: await opendClient.getQuotes(quoteList) };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   // ── Subscribe / Unsubscribe (WP1: 动态监控列表) ────────────────────
@@ -221,7 +221,7 @@ export function registerBrokerIPC(
       db?.saveWatchlist(WATCHLIST);
       log.info('[Broker] Subscribed:', codes);
       return { success: true, watchlist: WATCHLIST };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
 
@@ -234,7 +234,7 @@ export function registerBrokerIPC(
       db?.saveWatchlist(WATCHLIST);
       log.info('[Broker] Unsubscribed:', codes);
       return { success: true, watchlist: WATCHLIST };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
 
@@ -253,7 +253,7 @@ export function registerBrokerIPC(
         db.saveKlines(code, period || 'daily', klines);
       }
       return { success: true, klines };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   // ── Order Placement (with input validation) ─────────────────────────
@@ -288,7 +288,7 @@ export function registerBrokerIPC(
       db?.saveTrade({ ...order, orderId: result.orderId, status: 'submitted' });
       mainWindow?.webContents.send('order-update', { ...order, orderId: result.orderId, status: 'submitted' });
       return { success: true, ...result };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
 
@@ -298,7 +298,7 @@ export function registerBrokerIPC(
     try {
       await opendClient.cancelOrder(orderId, accountId, code);
       return { success: true };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
 
@@ -307,7 +307,7 @@ export function registerBrokerIPC(
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
       return { success: true, orders: await opendClient.getOrders(accountId) };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   // ── Broker Manager (Sprint1: multi-broker) ──────────────────────────
@@ -327,7 +327,7 @@ export function registerBrokerIPC(
       brokerManager?.addConfig(cfg);
       db?.saveBrokerConfig(cfg);
       return { success: true };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
 
@@ -337,7 +337,7 @@ export function registerBrokerIPC(
       brokerManager?.removeConfig(id);
       db?.deleteBrokerConfig(id);
       return { success: true };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
 
@@ -346,7 +346,7 @@ export function registerBrokerIPC(
     try {
       brokerManager?.setActiveBroker(id);
       return { success: true, activeBroker: id };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   // ── Broker Switching (Sprint1) ───────────────────────────────────────
@@ -387,7 +387,7 @@ export function registerBrokerIPC(
       log.info(`[Broker] Switched to ${id}, connected=${switched?.connected}`);
       mainWindow?.webContents.send('broker:switched', { activeBroker: activeId, status });
       return { success: true, activeBroker: activeId, brokerStatus: switched };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Broker] Switch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -415,7 +415,7 @@ export function registerBrokerIPC(
       const scorer = new SignalQualityScorer();
       const report = scorer.score(signalType, marketContext, backtestHistory, signalParams);
       return { success: true, report };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -437,7 +437,7 @@ export function registerBrokerIPC(
       const alerts = positions.map(pos => engine.checkPosition(pos, accountFunds));
       const summary = engine.getSummary();
       return { success: true, alerts, summary };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

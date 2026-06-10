@@ -16,7 +16,7 @@ export function registerPyIPC(
       const proxy = getPythonProxy();
       const result = await proxy.callSkill(skillName, query, options);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -27,7 +27,7 @@ export function registerPyIPC(
     try {
       const proxy = getPythonProxy();
       return { success: true, skills: proxy.listAvailableSkills() };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -38,7 +38,7 @@ export function registerPyIPC(
     try {
       const proxy = getPythonProxy();
       return { success: true, status: proxy.getStatus() };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });

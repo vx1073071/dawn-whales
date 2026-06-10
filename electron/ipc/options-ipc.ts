@@ -16,7 +16,7 @@ export function registerOptionsIPC(
     try {
       const result = analyzeOptionsChain(contracts, symbol, historicalIVRange);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[OptionsChain] Error:', err);
       return { success: false, error: err.message };
     }
@@ -28,7 +28,7 @@ export function registerOptionsIPC(
     try {
       const result = await analyzeBatchOptionsChain(symbols);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[OptionsChainBatch] Error:', err);
       return { success: false, error: err.message };
     }
@@ -47,7 +47,7 @@ export function registerOptionsIPC(
       const builder = new OptionsStrategyBuilder(underlying, spotPrice);
       const result = builder.buildStrategy(strategyType, targetParams, legs);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -63,7 +63,7 @@ export function registerOptionsIPC(
       const builder = new OptionsStrategyBuilder(strategy.underlying || 'UNKNOWN', spotPrice);
       const result = builder.analyzeStrategy(strategy, { spotPrice, volatility, riskFreeRate, dividends });
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -79,7 +79,7 @@ export function registerOptionsIPC(
     try {
       const greeks = calcGreeksJS(params.spot, params.strike, params.vol, params.days, params.rate || 0.05, params.type);
       return { success: true, greeks };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Greeks] Calculation failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -112,7 +112,7 @@ export function registerOptionsIPC(
         netTheta: portfolio.reduce((s: number, p: any) => s + parseFloat(p.totalTheta), 0).toFixed(2),
       };
       return { success: true, portfolio: { positions: portfolio, totals } };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Greeks] Portfolio calc failed:', err.message);
       return { success: false, error: err.message };
     }

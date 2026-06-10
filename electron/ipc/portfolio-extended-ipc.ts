@@ -63,7 +63,7 @@ export function registerPortfolioExtendedIPC(
         currency: funds?.currency || 'HKD',
         count: positions.length,
       };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[portfolio:getPositions]', err);
       return { success: false, error: err.message };
     }
@@ -129,7 +129,7 @@ export function registerPortfolioExtendedIPC(
           currency: toArray(currencyMap, totalMV),
         },
       };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[portfolio:getAllocation]', err);
       return { success: false, error: err.message };
     }
@@ -204,7 +204,7 @@ export function registerPortfolioExtendedIPC(
           equityCurve,
         },
       };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[portfolio:getPerformance]', err);
       return { success: false, error: err.message };
     }
@@ -244,7 +244,7 @@ export function registerPortfolioExtendedIPC(
           cashRatio: totalAssets > 0 ? (funds?.cash || 0) / totalAssets * 100 : 0,
         },
       };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[portfolio:getRiskMetrics]', err);
       return { success: false, error: err.message };
     }
