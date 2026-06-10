@@ -170,6 +170,7 @@ export const LLMCreatorConfigPanel: React.FC<LLMCreatorConfigPanelProps> = ({
   onProviderChange,
   onTopUp,
 }) => {
+  const { t } = useTranslation();
   const [provider, setProvider] = useState<LLMProvider>(initialProvider);
   const [model, setModel] = useState(initialModel);
   const [_expandedProvider, setExpandedProvider] = useState<LLMProvider | null>('deepseek');

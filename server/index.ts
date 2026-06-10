@@ -1,5 +1,6 @@
 import express from 'express';
 import { createServer } from 'http';
+import { registerApiRoutes } from '../electron/api-routes';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -17,6 +18,19 @@ app.get('/api/health', (_req, res) => {
     version: process.env.APP_VERSION || '1.9.0',
   });
 });
+
+// AI Gateway status endpoint
+app.get('/api/ai/status', (_req, res) => {
+  res.json({
+    gateway: 'ready',
+    providers: ['deepseek-v4-pro', 'deepseek-flash', 'minimax-abab'],
+    cacheEnabled: true,
+    gatewayUrl: process.env.AI_GATEWAY_URL || 'http://localhost:11434/v1',
+  });
+});
+
+// Mount all API routes (AI chat, report, billing, wallet, auth)
+registerApiRoutes(app);
 
 // ── Health check middleware for other routes ───────────────────────────────
 

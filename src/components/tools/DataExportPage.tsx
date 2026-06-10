@@ -116,6 +116,7 @@ function nextResultId(): string {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const DataExportPage: React.FC = () => {
+  const { t } = useTranslation();
   // State: target selection
   const [selectedTargets, setSelectedTargets] = useState<Set<ExportTarget>>(
     new Set(['trades']),

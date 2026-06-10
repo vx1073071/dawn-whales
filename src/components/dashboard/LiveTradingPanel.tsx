@@ -65,6 +65,7 @@ interface AuditEntry {
 // ── Sub-components ──────────────────────────────────────────────────────
 
 const StatusBadge: React.FC<{ status: OrderStatus }> = ({ status }) => {
+  const { t } = useTranslation();
   const colors: Record<OrderStatus, string> = {
     PENDING: 'bg-gray-500/20 text-gray-400',
     SUBMITTED: 'bg-blue-500/20 text-blue-400',

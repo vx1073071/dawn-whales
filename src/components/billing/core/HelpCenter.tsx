@@ -127,7 +127,7 @@ export default function HelpCenter({ articles: propArticles, className = '' }: H
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{t('帮助中心 — DAWN WHALES | Help Center')}</title>
-        <meta name="description" content="DAWN WHALES 帮助中心: 安装/注册/充值/AI分析/交易/钱包/提现 完整指南。FAQ常见问题解答。" />
+        <meta name="description" content={t('DAWN WHALES 帮助中心: 安装/注册/充值/AI分析/交易/钱包/提现 完整指南。FAQ常见问题解答。')} />
         <meta name="robots" content="index, follow" />
         <FAQJsonLd articles={articles} />
       </head>
@@ -148,7 +148,7 @@ export default function HelpCenter({ articles: propArticles, className = '' }: H
           <div style={{ maxWidth: 500, margin: '0 auto', position: 'relative' }}>
             <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: 16 }}>🔍</span>
             <input type="search" value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="搜索问题... Search..."
+              placeholder={t('搜索问题... Search...')}
               style={{ width: '100%', padding: '14px 14px 14px 44px', fontSize: 15, border: 'none', borderRadius: 12, outline: 'none', background: 'rgba(255,255,255,0.1)', color: '#fff' }}
             />
           </div>

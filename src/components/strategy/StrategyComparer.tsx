@@ -69,6 +69,7 @@ const RadarChart: React.FC<{
   const n = data.length;
 
   const getPoint = (index: number, value: number, maxVal: number) => {
+  const { t } = useTranslation();
     const angle = (index / n) * 2 * Math.PI - Math.PI / 2;
     const r = (value / maxVal) * radius;
     return {

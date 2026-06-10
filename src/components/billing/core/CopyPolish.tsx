@@ -75,6 +75,7 @@ const FEATURES_FINAL = [
 // ── Highlight Badge ──────────────────────────────────────────────────────
 
 function HighlightBadge({ text }: { text: string }) {
+  const { t } = useTranslation();
   return (
     <span style={{
       fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 10,

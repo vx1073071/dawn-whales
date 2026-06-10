@@ -1,6 +1,7 @@
 // ClosedLoopConfigPanel — StrategyPage 闭环配置 UI
 // Phase 4.3 R36 ML-36-02: Control panel for ClosedLoopExecutor + RebalanceEngine config
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface LoopConfig {
   mode: 'immediate' | 'triggered' | 'scheduled';
@@ -58,7 +59,9 @@ const REBALANCE_LABELS: Record<LoopConfig['rebalanceMethod'], string> = {
 };
 
 export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, strategyId }: Props) {
-  const [config, setConfig] = useState<LoopConfig>({ ...DEFAULT_CONFIG, ...initialConfig });
+  const { t } = useTranslation();
+  const [config, setConfig] = useState<LoopConfig>({
+  ...DEFAULT_CONFIG, ...initialConfig });
   const [saved, setSaved] = useState(false);
 
   function update<K extends keyof LoopConfig>(key: K, value: LoopConfig[K]) {

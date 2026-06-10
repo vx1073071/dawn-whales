@@ -20,6 +20,7 @@ const FILTER_OPTIONS = [
 ];
 
 export const MarketplaceSearch: React.FC<MarketplaceSearchProps> = ({ onSearch, onFilterChange, className }) => {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [activeFilters, setActiveFilters] = useState<Record<string, string>>({});
   const [expandedFilter, setExpandedFilter] = useState<string | null>(null);

@@ -1,5 +1,6 @@
 ﻿import { useState, useEffect } from 'react';
 import { getMarketHotspot } from '../../lib/bridge-api';
+import { useTranslation } from 'react-i18next';
 
 interface DailyReport {
   date: string;
@@ -18,6 +19,8 @@ interface DailyReport {
 }
 
 export default function DailyReportPage() {
+  const { t } = useTranslation();
+
   const [report, setReport] = useState<DailyReport | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

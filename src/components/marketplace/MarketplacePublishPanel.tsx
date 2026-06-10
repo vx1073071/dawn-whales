@@ -54,6 +54,7 @@ interface MarketplacePublishPanelProps {
 }
 
 export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = ({ className }) => {
+  const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<PublishForm>({
     strategyId: '',

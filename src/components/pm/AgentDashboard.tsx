@@ -45,6 +45,7 @@ const DEFAULT_AGENTS: AgentStatus[] = [
 ];
 
 const StatusIcon = ({ status }: { status: AgentStatus['status'] }) => {
+  const { t } = useTranslation();
   switch (status) {
     case 'online': return <CheckCircleOutlined style={{ color: '#52c41a' }} />;
     case 'offline': return <CloseCircleOutlined style={{ color: '#ff4d4f' }} />;

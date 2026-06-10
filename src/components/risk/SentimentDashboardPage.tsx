@@ -144,6 +144,7 @@ const MoodGauge: React.FC<{ score: number }> = ({ score }) => {
   // (angle removed, unused)
 
   const arcPath = (startAngle: number, endAngle: number, radius: number, cx: number, cy: number) => {
+  const { t } = useTranslation();
     const s = (startAngle * Math.PI) / 180;
     const e = (endAngle * Math.PI) / 180;
     const x1 = cx + radius * Math.cos(s);

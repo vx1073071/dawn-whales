@@ -75,6 +75,7 @@ const MOCK_REPORT: WFAReport = {
 // ── Sub-components ──────────────────────────────────────────────────────
 
 const OverfitIndicator: React.FC<{ ratio: number }> = ({ ratio }) => {
+  const { t } = useTranslation();
   const color = ratio >= 0.85 ? 'bg-emerald-500' : ratio >= 0.7 ? 'bg-amber-500' : ratio >= 0.5 ? 'bg-orange-500' : 'bg-red-500';
   const label = ratio >= 0.85 ? '低' : ratio >= 0.7 ? '中' : ratio >= 0.5 ? '高' : '严重';
   return (

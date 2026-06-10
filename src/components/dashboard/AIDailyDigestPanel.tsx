@@ -131,6 +131,7 @@ const ALERT_COLORS = {
 };
 
 export const AIDailyDigestPanel: React.FC<AIDailyDigestPanelProps> = ({ className }) => {
+  const { t } = useTranslation();
   const [digestType, setDigestType] = useState<DigestType>('daily');
   const [regenerating, setRegenerating] = useState(false);
 

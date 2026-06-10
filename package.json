@@ -18,6 +18,7 @@
     "release:check": "npx tsx scripts/v1-release-build.ts",
     "lint": "eslint src --ext .ts,.tsx",
     "test": "node --no-warnings node_modules/vitest/vitest.mjs run",
+    "test:benchmark": "node scripts/benchmark.js",
     "test:market": "vitest run tests/market/",
     "test:account": "vitest run tests/account/",
     "test:broker": "vitest run tests/broker/",

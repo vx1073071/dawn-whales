@@ -32,7 +32,7 @@ interface SourceStatus {
 interface QuoteComparison {
   symbol: string;
   sources: {
-    source: SourceKey;
+  source: SourceKey;
     price: number;
     volume: number;
     timestamp: number;
@@ -79,6 +79,7 @@ interface MultiSourceDataPanelProps {
 }
 
 export const MultiSourceDataPanel: React.FC<MultiSourceDataPanelProps> = ({ className }) => {
+  const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState<'overview' | 'quotes'>('overview');
 
   const sources = MOCK_SOURCES;

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Trade {
   id: number;
@@ -17,6 +18,8 @@ interface MonthlyReturnsHeatmapProps {
 }
 
 export default function MonthlyReturnsHeatmap({ trades }: MonthlyReturnsHeatmapProps) {
+  const { t } = useTranslation();
+
   const monthlyData = useMemo(() => {
     if (trades.length === 0) return [];
 

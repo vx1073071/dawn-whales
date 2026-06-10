@@ -173,6 +173,7 @@ export const MultiTimeframePanel: React.FC<MultiTimeframePanelProps> = ({
   onConfigChange,
   onModeChange,
 }) => {
+  const { t } = useTranslation();
   const [fusionMode, setFusionMode] = useState<FusionMode>('weighted');
   const [tfConfig, setTfConfig] = useState<TimeframeConfig[]>(externalConfig ?? DEFAULT_CONFIG);
   const [refreshKey, setRefreshKey] = useState(0);

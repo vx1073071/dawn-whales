@@ -53,6 +53,7 @@ const MOCK_DETAIL: StrategyDetail = {
 };
 
 export const MarketplaceDetail: React.FC<MarketplaceDetailProps> = ({ strategyId: _id, onClose, className }) => {
+  const { t } = useTranslation();
   const [subscribed, setSubscribed] = useState(false);
   const detail = MOCK_DETAIL;
 
