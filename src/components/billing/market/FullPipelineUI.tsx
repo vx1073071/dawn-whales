@@ -38,10 +38,10 @@ export interface FullPipelineUIProps {
 const mockStages: StageInfo[] = [
   { id: 'register', step: 1, icon: '📝', title: '注册 Register', subtitle: '邮箱注册+7天免费试用', done: true, progress: 100, actions: ['查看账户', '完善资料'] },
   { id: 'connect', step: 2, icon: '🔌', title: '连接券商 Connect', subtitle: 'Futu OpenD / IBKR Gateway', done: true, progress: 100, actions: ['切换券商', '查看费率'] },
-  { id: 'topup', step: 3, icon: '💰', title: '充值 Top Up', subtitle: 'TRC-20 USDT 充值', done: true, progress: 100, actions: [t('components.deposit'), '查看余额'] },
+  { id: 'topup', step: 3, icon: '💰', title: '充值 Top Up', subtitle: 'TRC-20 USDT 充值', done: true, progress: 100, actions: ['充值', '查看余额'] },
   { id: 'ai', step: 4, icon: '🤖', title: 'AI 分析 Analyze', subtitle: '自然语言→4 Agent→信号', done: false, progress: 65, actions: ['去AI分析', '查看信号'] },
   { id: 'trade', step: 5, icon: '💹', title: '交易 Trade', subtitle: '下单+碎股+部分成交', done: false, progress: 40, actions: ['去交易台', '查看订单'] },
-  { id: 'withdraw', step: 6, icon: '💸', title: '提现 Withdraw', subtitle: 'USDT提现+2FA验证', done: false, progress: 0, actions: [t('components.withdraw'), 'P2P转账'] },
+  { id: 'withdraw', step: 6, icon: '💸', title: '提现 Withdraw', subtitle: 'USDT提现+2FA验证', done: false, progress: 0, actions: ['提现', 'P2P转账'] },
 ];
 
 // ── Progress Dot ────────────────────────────────────────────────────────

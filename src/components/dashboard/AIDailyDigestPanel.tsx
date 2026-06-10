@@ -57,7 +57,7 @@ const MOCK_DIGEST: Record<DigestType, DailyDigest> = {
     activeSignals: [
       { strategy: '双均线交叉', symbol: 'US.AAPL', signal: '买入', time: '09:35' },
       { strategy: '均值回归', symbol: 'HK.00700', signal: '卖出', time: '10:12' },
-      { strategy: '动量突破', symbol: 'US.NVDA', signal: t('components.positions'), time: '08:00' },
+      { strategy: '动量突破', symbol: 'US.NVDA', signal: '持仓', time: '08:00' },
     ],
     riskAlerts: [
       { level: 'info', message: '组合VaR在正常范围内' },

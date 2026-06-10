@@ -60,7 +60,7 @@ type LeaderboardDimension = 'totalReturn' | 'return30d' | 'sharpe' | 'subscriber
 type TimeRange = 'weekly' | 'monthly' | 'all';
 
 const DIMENSIONS: { key: LeaderboardDimension; label: string; icon: string }[] = [
-  { key: 'totalReturn', label: t('components.totalReturn'), icon: '📈' },
+  { key: 'totalReturn', label: '总收益', icon: '📈' },
   { key: 'return30d',   label: '30日收益', icon: '🔥' },
   { key: 'sharpe',      label: '夏普比率', icon: '🎯' },
   { key: 'subscribers', label: '订阅数', icon: '👥' },

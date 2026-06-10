@@ -28,10 +28,10 @@ interface MobileNavigationProps {
 
 const NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', icon: '📊', label: '仪表盘', badge: 0 },
-  { id: 'strategy', icon: '🎯', label: t('components.strategy'), badge: 3 },
-  { id: 'market', icon: '📈', label: t('components.market') },
-  { id: 'portfolio', icon: '💰', label: t('components.positions') },
-  { id: 'more', icon: '⋮', label: t('components.more') },
+  { id: 'strategy', icon: '🎯', label: '策略', badge: 3 },
+  { id: 'market', icon: '📈', label: '行情' },
+  { id: 'portfolio', icon: '💰', label: '持仓' },
+  { id: 'more', icon: '⋮', label: '更多' },
 ];
 
 export const MobileNavigation: React.FC<MobileNavigationProps> = ({

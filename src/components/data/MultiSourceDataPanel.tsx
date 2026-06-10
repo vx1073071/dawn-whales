@@ -69,7 +69,7 @@ const SOURCE_ICONS: Record<SourceKey, string> = {
   eastmoney: '📊', sina: '📰', tencent: '📡', xueqiu: '❄️',
 };
 const HEALTH_LABELS: Record<SourceHealth, string> = {
-  healthy: '正常', degraded: t('components.downgrade'), down: '中断',
+  healthy: '正常', degraded: '降级', down: '中断',
 };
 
 // ── Main Component ──────────────────────────────────────────────────────

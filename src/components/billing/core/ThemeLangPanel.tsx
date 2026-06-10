@@ -49,9 +49,9 @@ const THEMES: Record<Theme, ThemeColors> = {
 
 const STRINGS: Record<Lang, LangStrings> = {
   'zh-CN': {
-    appName: 'Dawn Whales', settings: t('components.settings'),
-    darkMode: t('components.darkMode'), lightMode: t('components.lightMode'), followSystem: t('跟随系统'), themeLabel: t('components.theme'),
-    langLabel: t('components.language'),
+    appName: 'Dawn Whales', settings: '设置',
+    darkMode: '深色模式', lightMode: '浅色模式', followSystem: t('跟随系统'), themeLabel: '主题',
+    langLabel: '语言',
     errCodeFormat: t('代码格式错误'), errParamRange: t('参数超出范围'), errNetwork: t('网络错误'), errServer: t('服务器错误'),
     friendlyCodeHK: t('港股代码是5位数字哦（如 00700），试试重新输入？'),
     friendlyCodeUS: t('美股代码是英文字母（如 AAPL），大小写都可以~'),
@@ -59,12 +59,12 @@ const STRINGS: Record<Lang, LangStrings> = {
     friendlyParamLong: t('慢线20~200适合中长期趋势，再试试？'),
     friendlyNetwork: t('网络不太稳定，检查一下连接后重试？'),
     friendlyServer: t('服务器繁忙中，稍等片刻自动恢复~'),
-    save: t('components.save'), cancel: t('components.cancel'), confirm: t('components.confirm'), close: t('components.close'),
-    loading: t('components.loading'), empty: t('components.noData'), error: t('出错了'),
+    save: '保存', cancel: '取消', confirm: '确认', close: '关闭',
+    loading: '加载中...', empty: '暂无数据', error: t('出错了'),
   },
   'zh-TW': {
     appName: 'Dawn Whales', settings: t('設定'),
-    darkMode: t('components.darkMode'), lightMode: t('淺色模式'), followSystem: t('跟隨系統'), themeLabel: t('主題'),
+    darkMode: '深色模式', lightMode: t('淺色模式'), followSystem: t('跟隨系統'), themeLabel: t('主題'),
     langLabel: t('語言'),
     errCodeFormat: t('代碼格式錯誤'), errParamRange: t('參數超出範圍'), errNetwork: t('網路錯誤'), errServer: t('伺服器錯誤'),
     friendlyCodeHK: t('港股代碼是5位數字喔（如 00700），試試重新輸入？'),
@@ -73,7 +73,7 @@ const STRINGS: Record<Lang, LangStrings> = {
     friendlyParamLong: t('慢線20~200適合中長期趨勢，再試試？'),
     friendlyNetwork: t('網路不太穩定，檢查一下連線後重試？'),
     friendlyServer: t('伺服器繁忙中，稍等片刻自動恢復~'),
-    save: t('儲存'), cancel: t('components.cancel'), confirm: t('確認'), close: t('關閉'),
+    save: t('儲存'), cancel: '取消', confirm: t('確認'), close: t('關閉'),
     loading: t('載入中...'), empty: t('暫無資料'), error: t('出錯了'),
   },
   'en': {
@@ -101,7 +101,7 @@ const STRINGS: Record<Lang, LangStrings> = {
     friendlyParamLong: t('長期MA 20-200はトレンドフォロー向けです。もう一度！'),
     friendlyNetwork: t('ネットワークが不安定です。接続を確認してください。'),
     friendlyServer: t('サーバーが混雑しています。しばらくお待ちください〜'),
-    save: t('components.save'), cancel: t('キャンセル'), confirm: t('確認'), close: t('閉じる'),
+    save: '保存', cancel: t('キャンセル'), confirm: t('確認'), close: t('閉じる'),
     loading: t('読み込み中...'), empty: t('データなし'), error: t('エラー'),
   },
   'ko': {

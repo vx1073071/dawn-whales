@@ -21,10 +21,10 @@ interface NotificationCenterProps {
 
 const TYPE_CONFIG: Record<string, { icon: string; label: string; color: string }> = {
   risk: { icon: '🛡️', label: '风控', color: 'text-red-400' },
-  order: { icon: '📋', label: t('components.orders'), color: 'text-blue-400' },
-  signal: { icon: '📡', label: t('components.signal'), color: 'text-[#D4A853]' },
-  system: { icon: '⚙️', label: t('components.system'), color: 'text-gray-400' },
-  market: { icon: '📈', label: t('components.markets'), color: 'text-emerald-400' },
+  order: { icon: '📋', label: '订单', color: 'text-blue-400' },
+  signal: { icon: '📡', label: '信号', color: 'text-[#D4A853]' },
+  system: { icon: '⚙️', label: '系统', color: 'text-gray-400' },
+  market: { icon: '📈', label: '市场', color: 'text-emerald-400' },
 };
 
 const SEVERITY_CONFIG: Record<string, { bg: string; border: string }> = {
