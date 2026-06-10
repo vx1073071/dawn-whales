@@ -3,6 +3,7 @@
 
 import { useState, useCallback } from 'react';
 import type { ConditionRule, PriceCondition, TriggerEvent } from '../../../electron/types/condition.js';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   onBack?: () => void;
@@ -270,6 +271,7 @@ function CreateRuleForm({ onSubmit, onCancel }: {
 // ── Main component ─────────────────────────────────────────────────────────────
 
 export default function ConditionRulePanel({ onBack }: Props) {
+  const { t } = useTranslation();
   const [rules, setRules] = useState<ConditionRule[]>([]);
   const [history, setHistory] = useState<TriggerEvent[]>([]);
   const [showCreate, setShowCreate] = useState(false);
@@ -313,7 +315,7 @@ export default function ConditionRulePanel({ onBack }: Props) {
             {onBack && (
               <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm">{t("components.back")}</button>
             )}
-            <h1 className="text-xl font-bold">条件规则</h1>
+            <h1 className="text-xl font-bold">{t("components.conditionRule")}</h1>
             <span className="text-xs bg-[#C9A046]/20 text-[#C9A046] px-2 py-0.5 rounded">Phase 4.2</span>
           </div>
           <div className="flex gap-2">
@@ -355,7 +357,7 @@ export default function ConditionRulePanel({ onBack }: Props) {
           <div className="text-center py-16 text-gray-500">
             <div className="text-4xl mb-3">📋</div>
             <div className="text-sm">暂无规则</div>
-            <div className="text-xs mt-1">点击右上角"新建规则"创建第一个条件</div>
+            <div className="text-xs mt-1">点击右上角t("components.newRule")创建第一个条件</div>
           </div>
         ) : (
           <div className="flex flex-col gap-3">

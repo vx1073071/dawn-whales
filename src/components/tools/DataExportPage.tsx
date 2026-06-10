@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -343,7 +344,7 @@ const DataExportPage: React.FC = () => {
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-white">数据导出</h1>
+            <h1 className="text-2xl font-bold text-white">{t("components.dataExport")}</h1>
             <p className="text-sm text-gray-400 mt-1">
               选择目标数据、导出格式与筛选条件，一键导出或生成汇总报告
             </p>
@@ -422,7 +423,7 @@ const DataExportPage: React.FC = () => {
 
             {/* Format Selector */}
             <section className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-              <h2 className="text-base font-semibold mb-4">导出格式</h2>
+              <h2 className="text-base font-semibold mb-4">{t("components.exportFormat")}</h2>
               <div className="flex gap-4">
                 {FORMAT_OPTIONS.map((opt) => (
                   <label

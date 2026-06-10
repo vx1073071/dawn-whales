@@ -15,6 +15,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import DOMPurify from 'dompurify';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '@/stores/appStore';
+import { useTranslation } from 'react-i18next';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -68,7 +69,7 @@ const zhSuggestions: Suggestion[] = [
   {
     id: 's5',
     icon: '💡',
-    label: '策略建议',
+    label: t("components.strategySuggestion"),
     prompt: '根据当前市场高波动的环境，推荐适合的量化策略',
     category: 'strategy',
   },

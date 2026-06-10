@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 // ============================================================
 // JVS-R16-P1: Data Quality Monitor Page
@@ -53,10 +54,10 @@ interface DataQualityState {
 // --- Constants ---
 
 const DIMENSION_CONFIG: { key: string; label: string; weight: number }[] = [
-  { key: 'completeness', label: '完整性', weight: 15 },
-  { key: 'accuracy', label: '准确性', weight: 20 },
+  { key: 'completeness', label: t("components.completeness"), weight: 15 },
+  { key: 'accuracy', label: t("components.accuracy"), weight: 20 },
   { key: 'timeliness', label: '时效性', weight: 12 },
-  { key: 'consistency', label: '一致性', weight: 15 },
+  { key: 'consistency', label: t("components.consistency"), weight: 15 },
   { key: 'uniqueness', label: '唯一性', weight: 10 },
   { key: 'validity', label: '有效性', weight: 13 },
   { key: 'uniformity', label: '均匀性', weight: 8 },

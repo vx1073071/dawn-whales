@@ -795,7 +795,16 @@
     "signalAnalysis": "信号分析",
     "portfolio": "持仓管理",
     "aiAssistant": "AI 助理",
-    "trade": "交易"
+    "trade": "交易",
+    "pushMode": "Push 模式 · <50ms",
+    "opendDisconnected": "OpenD 未连接",
+    "watchlistCount": "自选 {{count}} 只",
+    "collapseSidebar": "折叠侧边栏 (Ctrl+B)",
+    "appFullName": "道鲸·AI量化系统",
+    "switchToLight": "切换到浅色模式",
+    "switchToDark": "切换到深色模式",
+    "languageSelector": "语言 / Language",
+    "emergencyStopAll": "紧急停止所有策略"
   },
   "notifications_title": "通知",
   "notifications_empty": "暂无通知",

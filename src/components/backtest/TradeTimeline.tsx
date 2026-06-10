@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Trade {
   id: number;
@@ -17,6 +18,7 @@ interface TradeTimelineProps {
 }
 
 export default function TradeTimeline({ trades }: TradeTimelineProps) {
+  const { t } = useTranslation();
   const timelineData = useMemo(() => {
     if (trades.length === 0) return [];
 
@@ -80,11 +82,11 @@ export default function TradeTimeline({ trades }: TradeTimelineProps) {
           <div className="text-lg font-bold text-white">{stats.maxDuration}天</div>
         </div>
         <div className="p-3 bg-[#1a1a25] rounded-lg border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">盈利交易</div>
+          <div className="text-xs text-gray-500 mb-1">{t("components.winTrades")}</div>
           <div className="text-lg font-bold text-emerald-400">{stats.winTrades}</div>
         </div>
         <div className="p-3 bg-[#1a1a25] rounded-lg border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">亏损交易</div>
+          <div className="text-xs text-gray-500 mb-1">{t("components.lossTrades")}</div>
           <div className="text-lg font-bold text-red-400">{stats.lossTrades}</div>
         </div>
       </div>

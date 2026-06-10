@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import { useTranslation } from 'react-i18next';
 
 interface BacktestResult {
   strategyName: string;
@@ -108,6 +109,7 @@ function generateEquityCurve(initial: number, annualReturn: number, volatility: 
 }
 
 export default function BacktestComparisonPage() {
+  const { t } = useTranslation();
   const [results] = useState<BacktestResult[]>(MOCK_RESULTS);
   const [loading, setLoading] = useState(false);
   const [selectedStrategies, setSelectedStrategies] = useState<Set<string>>(new Set(MOCK_RESULTS.map(r => r.strategyId)));
@@ -277,7 +279,7 @@ export default function BacktestComparisonPage() {
                 { label: '总收益率', key: 'totalReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
                 { label: '年化收益率', key: 'annualReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
                 { label: t('components.maxDrawdown'), key: 'maxDrawdown', fmt: (v: number) => `${v.toFixed(2)}%`, color: true, inverse: true },
-                { label: '夏普比率', key: 'sharpeRatio', fmt: (v: number) => v.toFixed(2) },
+                { label: t("components.sharpe"), key: 'sharpeRatio', fmt: (v: number) => v.toFixed(2) },
                 { label: '卡玛比率', key: 'calmarRatio', fmt: (v: number) => v.toFixed(2) },
                 { label: '索提诺比率', key: 'sortinoRatio', fmt: (v: number) => v.toFixed(2) },
                 { label: t('components.winRate'), key: 'winRate', fmt: (v: number) => `${v.toFixed(1)}%` },
@@ -322,7 +324,7 @@ export default function BacktestComparisonPage() {
                   chartType === t ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-500 hover:text-gray-300'
                 }`}
               >
-                {t === 'equity' ? '净值曲线' : '月度收益'}
+                {t === 'equity' ? '净值曲线' : t("components.monthlyRet")}
               </button>
             ))}
           </div>
