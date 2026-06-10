@@ -74,7 +74,7 @@ const LEVEL_CONFIG: Record<CreatorLevel, { label: string; icon: string; color: s
 };
 
 const PRICE_RANGES = [
-  { label: t('components.all'), min: 0, max: Infinity },
+  { label: '全部', min: 0, max: Infinity },
   { label: '免费', min: 0, max: 0 },
   { label: '1-50 USDT', min: 1, max: 50 },
   { label: '50-200 USDT', min: 50, max: 200 },
@@ -88,10 +88,7 @@ const SORT_OPTIONS: { key: SortKey; label: string }[] = [
   { key: 'subscribers', label: '订阅最多' },
   { key: 'rating', label: '评分最高' },
   { key: 'newest', label: '最新发布' },
-  { key: 'price', label: t('components.price') },
-];
-
-// ── Mock Data ────────────────────────────────────────────────────────────
+  { key: 'price', label: t('components.p'价格'ock Data ────────────────────────────────────────────────────────────
 
 const mockStrategies: StrategyCard[] = [
   {
@@ -121,7 +118,7 @@ const mockStrategies: StrategyCard[] = [
     creatorId: 'c-05', creatorName: 'VolArb', creatorLevel: 'king', creatorAvatar: '🦅', verified: true,
     symbol: 'SPY', market: 'US', price: 200, subscribers: 2103, rating: 4.7, ratingCount: 289,
     totalReturn: 35.8, sharpe: 3.1, maxDrawdown: 5.2, winRate: 78.4, totalSignals: 1204,
-    tags: [t('components.volatility'), '期权', '低相关'], createdAt: '2025-11-05', updatedAt: '2026-06-07',
+    tags: [t('components.volatility'), '期权''波动率'-11-05', updatedAt: '2026-06-07',
   },
   {
     id: 's-006', name: 'MACD金叉死叉经典', description: '经典MACD信号+成交量过滤，适合新手入门',

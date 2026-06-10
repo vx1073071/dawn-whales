@@ -94,7 +94,6 @@ function RuleCard({ rule, onDelete, onToggle, onViewHistory }: {
             className={`text-xs px-2 py-1 rounded ${rule.enabled ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30' : 'bg-green-500/20 text-green-400 hover:bg-green-500/30'} transition-colors`}
           >
             {rule.enabled ? t('components.disable') : t('components.enable')}
-          </button>
           <button
             onClick={() => onViewHistory(rule.id)}
             className="text-xs px-2 py-1 bg-blue-500/20 text-blue-400 rounded hover:bg-blue-500/30 transition-colors"

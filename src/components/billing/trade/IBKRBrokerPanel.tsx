@@ -93,7 +93,7 @@ function PingBadge({ connected, latency }: { connected: boolean; latency: number
     <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium"
           style={{ background: `${color}15`, color, border: `1px solid ${color}30` }}>
       <span className="w-1.5 h-1.5 rounded-full" style={{ background: color, animation: connected ? 'pulse 2s infinite' : 'none' }} />
-      {connected ? `${latency}ms` : t('components.disconnect')}
+      {connected ? `${latency}ms` : '断开'}
     </span>
   );
 }

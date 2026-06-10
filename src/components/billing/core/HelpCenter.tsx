@@ -67,14 +67,12 @@ const HELP_ARTICLES: HelpArticle[] = [
 ];
 
 const CATEGORIES = [
-  { id: 'all', label: t('components.all'), icon: '📚' },
+  { id: 'all', label: '全部', icon: '📚' },
   { id: 'install', label: t('components.install'), icon: '💻' },
-  { id: 'register', label: t('components.register'), icon: '📝' },
-  { id: 'topup', label: t('components.deposit'), icon: '💰' },
-  { id: 'ai', label: 'AI分析', icon: '🤖' },
+  { id: 'register', label: t('components.r'注册'  { id: 'topup', label: t('components.deposit'), icon: '💰' '充值' 'AI分析', icon: '🤖' },
   { id: 'trade', label: '交易', icon: '📈' },
   { id: 'wallet', label: t('components.wallet'), icon: '👛' },
-  { id: 'creator', label: '创作者', icon: '⭐' },
+  { id: 'creator''钱包''⭐' },
 ];
 
 // ── SEO FAQPage JSON-LD ─────────────────────────────────────────────────

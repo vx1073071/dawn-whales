@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 // ── R81: ML-81-01 GA 最终打磨 — 深浅走查+响应式+数字缩写+GA RN ──
 
 const FINAL_CHECKLIST = [
-  { category: t('components.darkMode'), items: ['私行深色 #0A0A10 背景全页面', '金色 #D4A853 标题/高亮统一', '8px 基础栅格 间距/字号/圆角', '无荧光色(>#00FF00)', '等宽数字 tabular-nums'], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },
-  { category: t('components.lightMode'), items: ['浅色 #F9FAFB 背景', '深色文字 #111827', '表单对比度 ≥4.5:1 WCAG AA', '图表配色可读', '边框 #D1D5DB'], status: ['pass', 'pass', 'pass', 'warn', 'pass'] },
+  { category: '深色模式', items: ['私行深色 #0A0A10 背景全页面', '金色 #D4A853 标题/高亮统一', '8px 基础栅格 间距/字号/圆角', '无荧光色(>#00FF00)', '等宽数字 tabular-nums'], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },
+  { category: t('components.ligh'浅色模式'AFB 背景', '深色文字 #111827', '表单对比度 ≥4.5:1 WCAG AA', '图表配色可读', '边框 #D1D5DB'], status: ['pass', 'pass', 'pass', 'warn', 'pass'] },
   { category: '响应式 1366×768', items: ['全页面无横滚 (overflow-x:hidden)', 'K线图表自适应宽度', '表格不溢出', '侧边栏折叠', '模态框不超出视口'], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },
   { category: '触控/移动端', items: ['按钮≥44px 最小触控区', '输入框≥44px', '双指缩放 K线手势', '长按十字线移动端'], status: ['pass', 'pass', 'warn', 'warn'] },
   { category: 'a11y 无障碍', items: ['aria-label 关键按钮覆盖', 'Tab 键盘导航顺序', 'focus ring 可见 (2px solid)', 'SkipLink 跳转主内容', 'role=status/alert 语义'], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },

@@ -26,7 +26,7 @@ const TYPE_LABELS: Record<string, string> = {
   limit_down: '跌停',
   volume_surge: '放量异动',
   rapid_change: '快速拉升/跳水',
-  breakout: t('components.breakout'),
+  breakout: '突破',
   breakdown: '跌破',
   unusual_activity: '异常交易',
   large_order: '大单异动',

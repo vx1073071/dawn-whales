@@ -27,7 +27,7 @@ const TESTIMONIALS = [
 
 const PRICING_TIERS = [
   { name: 'Free', price: '0', period: '/月', features: ['7市场行情', '5个策略模板', '3年回测', '基础指标', '模拟交易'], cta: '免费开始', color: '#6B7280' },
-  { name: 'Pro', price: '29', period: '/月', features: ['全部30+因子', '全部20+模板', 'AI信号 (4Agent)', 'AI画线+形态', t('components.strategyCommunity'), '邮件通知', t('components.darkMode')], cta: '开始试用', color: '#6366F1', popular: true },
+  { name: 'Pro', price: '29', period: '/月', features: ['全部30+因子', '全部20+模板', 'AI信号 (4Agent)', 'AI画线+形态', t('components.strategyCommunity'), '邮件通知', '深色模式'], cta: '开始试用', color: '#6366F1', popular: true },
   { name: 'Enterprise', price: '99', period: '/月', features: ['全部Pro功能', 'AI助手 (问诊/NL/简报/术语)', t('components.dailyDigest'), '自然语言创建', 'API接入', '多券商实盘', '优先支持'], cta: '联系销售', color: '#D4A853' },
 ];
 
@@ -67,8 +67,7 @@ function HeroSection() {
       
       {/* Stats */}
       <div style={{ display: 'flex', gap: 32, justifyContent: 'center', marginBottom: 36 }}>
-        {[{ n: '7', l: t('components.markets') }, { n: '30+', l: t('components.factor') }, { n: '22', l: 'AI形态' }, { n: '25项', l: t('components.onboarding') }, { n: '5', l: t('components.language') }].map(s => (
-          <div key={s.l}>
+        {[{ n: '7', l: t('components.mark'市场' t('components.factor') }, { n: '22', l: 'AI形态' }, { n: '25项', l: t('components.onboarding') }, { n: '5', l: t('components.language') }].map(s => '语言'l}>
             <div style={{ fontSize: 28, fontWeight: 800, color: '#D4A853' }}>{s.n}</div>
             <div style={{ fontSize: 12, color: '#6B7280' }}>{s.l}</div>
           </div>

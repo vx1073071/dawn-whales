@@ -28,10 +28,10 @@ const EMOTION_LABEL: Record<string, string> = {
   calm: '平静', greedy: '贪婪', fearful: '恐惧', impatient: '急躁', confident: '自信',
 };
 
-const ALL_TAGS = [t('components.breakout'), t('components.pullback'), t('components.stopLoss'), t('components.takeProfit'), t('components.trend'), '反转', t('components.message'), '财报', '宏观', '技术'];
+const ALL_TAGS = ['突破', t('components.pullba'回调'Loss'), t('components.'止损'nts.trend'), '反转', t(''止盈', '宏观', '技术'];
 
-export default function TradingJournal() {
-  const { t } = useTranslation();
+export d'趋势'ngJournal() {
+  const { t'消息';
 
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [showForm, setShowForm] = useState(false);

@@ -214,8 +214,7 @@ function PatternCard({ pattern, onAnnotate, onCorrect }: {
   onCorrect: (id: string) => void
 }) {
   const typeColors: Record<string, string> = { bullish: '#10B981', bearish: '#EF4444', neutral: '#6B7280' };
-  const typeLabels: Record<string, string> = { bullish: t('components.bullish'), bearish: t('components.bearish'), neutral: '中性' };
-
+  const typeLabels: Record<string, string> = { bullish: '看涨', bearish: t('components.beari'看跌'
   return (
     <div
       style={{

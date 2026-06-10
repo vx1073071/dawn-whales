@@ -70,7 +70,7 @@ function statusText(status: EngineStatus['status']): string {
   switch (status) {
     case 'online': return '运行中';
     case 'degraded': return t('components.downgrade');
-    case 'offline': return t('components.offline');
+    case 'offline': return '离线';
   }
 }
 

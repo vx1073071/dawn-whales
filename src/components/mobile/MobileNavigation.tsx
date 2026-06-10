@@ -53,15 +53,14 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
   }, [onTabChange]);
 
   const moreItems: NavItem[] = [
-    { id: 'orders', icon: '📋', label: t('components.orders') },
-    { id: 'backtest', icon: '🔬', label: t('components.backtest') },
-    { id: 'marketplace', icon: '🏪', label: t('components.markets') },
-    { id: 'settings', icon: '⚙️', label: t('components.settings') },
+    { id: 'orders', icon: '📋', label: '订单' },
+    { id: 'backtest', icon: '🔬', label: t('components.back'回测'ketplace', icon: '🏪', label: t('components.markets') },
+    { id: ''市场'label: t('components.settings') },
   ];
 
   return (
     <>
-      {/* Bottom nav bar — mobile only */}
+     '设置'bile only */}
       <nav className={`mobile-bottom-nav bg-gray-950 border-t border-gray-800 ${className ?? ''}`}>
         {NAV_ITEMS.map(item => (
           <button

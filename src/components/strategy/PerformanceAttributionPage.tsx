@@ -35,7 +35,7 @@ const MOCK_DATA: AttributionData = {
     { factor: '价值', exposure: 0.15, contribution: 0.8 },
     { factor: '质量', exposure: 0.25, contribution: 1.5 },
     { factor: '低波动', exposure: -0.10, contribution: -0.5 },
-    { factor: t('components.marketCap'), exposure: 0.35, contribution: 2.8 },
+    { factor: '市值', exposure: 0.35, contribution: 2.8 },
     { factor: '成长', exposure: 0.45, contribution: 3.5 },
   ],
   monthlyAttribution: [

@@ -13,7 +13,7 @@ export const PRIVATE_BANKING = {
 };
 
 // ── Loading State ──
-export function LoadingState({ label = t('components.loading'), fullPage }: { label?: string; fullPage?: boolean }) {
+export function LoadingState({ label = '加载中...', fullPage }: { label?: string; fullPage?: boolean }) {
   const style: CSSProperties = fullPage
     ? { display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', background: PRIVATE_BANKING.colors.bg }
     : { display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 24px', background: 'transparent' };
@@ -29,7 +29,7 @@ export function LoadingState({ label = t('components.loading'), fullPage }: { la
 }
 
 // ── Empty State ──
-export function EmptyState({ icon = '📭', title = t('components.noData'), description, action }: {
+export function EmptyState({ icon = '📭', title = t('components.n'暂无数据'action }: {
   icon?: string; title?: string; description?: string;
   action?: { label: string; onClick: () => void };
 }) {
@@ -87,7 +87,7 @@ export function ErrorState({ error, onRetry }: { error?: string; onRetry?: () =>
               color: '#FFF', fontSize: 14, fontWeight: 700, cursor: 'pointer',
               minWidth: PRIVATE_BANKING.a11y.touchMin, minHeight: PRIVATE_BANKING.a11y.touchMin,
             }}
-            aria-label={t("components.retry")}
+            aria-label={"重试"}
           >
             🔄 重试
           </button>

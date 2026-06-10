@@ -20,9 +20,9 @@ const MOCK_DATA: SentimentData = {
   trend: 'improving',
   components: [
     { name: '市场情绪', score: 55, weight: 0.25 },
-    { name: t('components.volume'), score: 38, weight: 0.20 },
+    { name: '成交量', score: 38, weight: 0.20 },
     { name: '市场广度', score: 45, weight: 0.20 },
-    { name: t('components.volatility'), score: 28, weight: 0.20 },
+    { name: t('components.vol'波动率'ht: 0.20 },
     { name: '动量', score: 62, weight: 0.15 },
   ],
   history: [

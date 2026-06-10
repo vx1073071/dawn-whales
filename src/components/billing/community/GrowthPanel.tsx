@@ -55,7 +55,7 @@ function ModerationTab() {
             padding: '5px 14px', borderRadius: 6, border: '1px solid', borderColor: filter === f ? '#6366F1' : '#374151',
             background: filter === f ? '#6366F118' : 'transparent', color: filter === f ? '#818CF8' : '#6B7280', fontSize: 12, cursor: 'pointer',
           }}>
-            {f === 'all' ? t('components.all') : f === 'pending' ? '待审核' : f === 'report' ? '🚩 举报' : '🗑️ 垃圾'}
+            {f === 'all' ? '全部' : f === 'pending' ? '待审核' : f === 'report' ? '🚩 举报' : '🗑️ 垃圾'}
           </button>
         ))}
       </div>
@@ -156,10 +156,9 @@ function InviteTab() {
               <tr style={{ borderBottom: '1px solid #374151' }}>
                 <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>邀请码</th>
                 <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>被邀请人</th>
-                <th style={{ padding: '8px 12px', textAlign: 'center', color: '#9CA3AF' }}>{t("components.status")}</th>
+                <th style={{ padding: '8px 12px', textAlign: 'center', color: '#9CA3AF' }}>{"状态"}</th>
                 <th style={{ padding: '8px 12px', textAlign: 'right', color: '#9CA3AF' }}>奖励</th>
-                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{t("components.date")}</th>
-              </tr>
+                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{t("components.date"日期"   </tr>
             </thead>
             <tbody>
               {INVITES.map(i => (
