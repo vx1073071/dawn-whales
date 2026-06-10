@@ -9,7 +9,7 @@ interface RebalanceSuggestion {
   targetWeight: number;
   currentShares: number;
   targetShares: number;
-  action: t('components.increaseHolding') | t('components.decreaseHolding') | t('components.newlyAdded') | t('components.delete');
+  action: 'increaseHolding' | 'decreaseHolding' | 'newlyAdded' | 'delete';
   diffShares: number;
   diffAmount: number;
   price: number;

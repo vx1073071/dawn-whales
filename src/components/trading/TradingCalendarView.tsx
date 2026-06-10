@@ -7,6 +7,7 @@
 
 
 import { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -300,6 +301,7 @@ type CalendarView = 'month' | 'week';
 
 
 export default function TradingCalendarView() {
+  const { t } = useTranslation();
 
   const now = new Date();
 

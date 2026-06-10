@@ -35,7 +35,7 @@ interface KeywordItem {
   sentiment: 'positive' | 'negative';
 }
 
-type SentimentLabel = '极度乐观' | '乐观' | '偏乐观' | t('components.neutral') | '偏悲观' | '悲观' | '极度悲观';
+type SentimentLabel = '极度乐观' | '乐观' | '偏乐观' | '中性' | '偏悲观' | '悲观' | '极度悲观';
 type TimeRange = '1h' | '4h' | '1d' | '7d';
 
 // ─── Constants ───────────────────────────────────────────────────────────────

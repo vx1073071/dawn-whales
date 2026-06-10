@@ -4,6 +4,11 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      'electron-log': path.resolve(__dirname, 'tests/helpers/electron-log-mock.ts'),
+    },
+  },
   test: {
     environment: 'jsdom',
     globals: true,
