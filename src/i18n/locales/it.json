@@ -516,5 +516,20 @@
   "wallet_deposit": "Deposita",
   "wallet_withdraw": "Preleva",
   "wallet_history": "Cronologia",
-  "wallet_noHistory": "Nessuna transazione"
+  "wallet_noHistory": "Nessuna transazione",
+  "confirm_delete": "Eliminare definitivamente?",
+  "confirm_logout": "Disconnettersi?",
+  "confirm_discard": "Annullare modifiche?",
+  "error_network": "Errore di rete — riprova",
+  "error_timeout": "Timeout richiesta",
+  "error_unknown": "Errore sconosciuto",
+  "time_seconds": "sec",
+  "time_minutes": "min",
+  "time_hours": "h",
+  "time_days": "gg",
+  "week_monday": "Lun",
+  "week_friday": "Ven",
+  "strategy_hedge": "Hedge",
+  "strategy_arbitrage": "Arbitraggio",
+  "strategy_market_neutral": "Market Neutral"
 }

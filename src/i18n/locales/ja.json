@@ -516,5 +516,20 @@
   "wallet_deposit": "入金",
   "wallet_withdraw": "出金",
   "wallet_history": "取引履歴",
-  "wallet_noHistory": "取引履歴なし"
+  "wallet_noHistory": "取引履歴なし",
+  "confirm_delete": "完全に削除しますか？",
+  "confirm_logout": "ログアウトしますか？",
+  "confirm_discard": "変更を破棄しますか？",
+  "error_network": "ネットワークエラー — 再試行",
+  "error_timeout": "リクエストタイムアウト",
+  "error_unknown": "不明なエラー",
+  "time_seconds": "秒",
+  "time_minutes": "分",
+  "time_hours": "時間",
+  "time_days": "日",
+  "week_monday": "月",
+  "week_friday": "金",
+  "strategy_hedge": "ヘッジ",
+  "strategy_arbitrage": "アービトラージ",
+  "strategy_market_neutral": "マーケットニュートラル"
 }

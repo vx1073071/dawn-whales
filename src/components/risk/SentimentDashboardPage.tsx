@@ -35,7 +35,7 @@ interface KeywordItem {
   sentiment: 'positive' | 'negative';
 }
 
-type SentimentLabel = '极度乐观' | '乐观' | '偏乐观' | '中性' | '偏悲观' | '悲观' | '极度悲观';
+type SentimentLabel = '极度乐观' | '乐观' | '偏乐观' | t('components.neutral') | '偏悲观' | '悲观' | '极度悲观';
 type TimeRange = '1h' | '4h' | '1d' | '7d';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -520,7 +520,7 @@ const SentimentDashboardPage: React.FC = () => {
     setLoading(true);
     try {
       // Try IPC first
-      const api = (window as any).api;
+      const api = window.api;
       let newsData: NewsItem[] = [];
       let anomalyData: AnomalySignal[] = [];
 
@@ -568,7 +568,7 @@ const SentimentDashboardPage: React.FC = () => {
   // ─── Real-time Signal Listener ───────────────────────────────────────────
 
   useEffect(() => {
-    const api = (window as any).api;
+    const api = window.api;
     if (api?.on) {
       const handler = (_event: any, signal: any) => {
         if (signal?.type === 'sentiment_update' || signal?.type === 'signal') {

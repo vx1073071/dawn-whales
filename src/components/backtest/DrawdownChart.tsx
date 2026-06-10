@@ -68,15 +68,13 @@ export default function DrawdownChart({ equityCurve }: DrawdownChartProps) {
 
   if (!svgData) {
     return (
-      <div className="bg-[#12121a] rounded-xl border border-white/5 p-8 text-center text-gray-500">
-        无回撤数据
-      </div>
+      <div className="bg-[#12121a] rounded-xl border border-white/5 p-8 text-center text-gray-500">{t('noDrawdownData')}</div>
     );
   }
 
   return (
     <div className="bg-[#12121a] rounded-xl border border-white/5 p-4">
-      <div className="text-sm font-medium text-white mb-3">回撤分析</div>
+      <div className="text-sm font-medium text-white mb-3">{t('drawdownAnalysis')}</div>
       
       <svg viewBox={`0 0 800 220`} className="w-full h-56" preserveAspectRatio="none">
         <defs>
@@ -112,7 +110,7 @@ export default function DrawdownChart({ equityCurve }: DrawdownChartProps) {
       </svg>
 
       <div className="flex justify-center gap-6 mt-3 text-xs text-gray-500">
-        <span>最大回撤: <span className="text-red-400 font-medium">{maxDrawdown.toFixed(2)}%</span></span>
+        <span>{t('maxDrawdownLabel')}<span className="text-red-400 font-medium">{maxDrawdown.toFixed(2)}%</span></span>
         <span>数据点: {drawdownData.length}</span>
       </div>
     </div>

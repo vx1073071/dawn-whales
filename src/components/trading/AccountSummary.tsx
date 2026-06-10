@@ -164,7 +164,7 @@ export default function AccountSummary() {
     try {
       setError(null);
 
-      const api = (window as any).api;
+      const api = window.api;
       if (!api?.broker) {
         setError('Broker API not available (not running in Electron)');
         setLoading(false);

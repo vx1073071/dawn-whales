@@ -49,20 +49,18 @@ export default function MonthlyReturnsHeatmap({ trades }: MonthlyReturnsHeatmapP
 
   if (monthlyData.length === 0) {
     return (
-      <div className="bg-[#12121a] rounded-xl border border-white/5 p-8 text-center text-gray-500">
-        无月度收益数据
-      </div>
+      <div className="bg-[#12121a] rounded-xl border border-white/5 p-8 text-center text-gray-500">{t('noMonthlyData')}</div>
     );
   }
 
   return (
     <div className="bg-[#12121a] rounded-xl border border-white/5 p-4">
-      <div className="text-sm font-medium text-white mb-3">月度收益热力图</div>
+      <div className="text-sm font-medium text-white mb-3">{t('monthlyHeatmap')}</div>
 
       {/* Stats Summary */}
       <div className="grid grid-cols-5 gap-3 mb-4">
         <div className="p-3 bg-[#1a1a25] rounded-lg border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">最佳月份</div>
+          <div className="text-xs text-gray-500 mb-1">{t('bestMonth')}</div>
           <div className="text-lg font-bold text-emerald-400">
             +${stats.max.toFixed(0)}
           </div>

@@ -1,4 +1,5 @@
 ﻿// T61: Error Boundary + Retry Middleware + Error Reporter
+import log from 'electron-log';
 
 export interface ErrorReport {
   id: string;

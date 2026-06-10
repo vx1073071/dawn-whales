@@ -1,4 +1,5 @@
 // JVS-102: Parameter Optimization Visualization
+import log from 'electron-log';
 // Visualize parameter optimization results with interactive charts
 
 export interface ParameterOptimizationConfig {

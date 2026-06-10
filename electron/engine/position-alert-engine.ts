@@ -1,4 +1,5 @@
 // ── Q68: Position Alert Engine ────────────────────────────────────────────────
+import log from 'electron-log';
 // Real-time monitoring of position-level alerts
 // Price alerts / Volume alerts / VaR alerts / P&L alerts / Risk limit alerts
 

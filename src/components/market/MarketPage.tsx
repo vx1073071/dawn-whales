@@ -37,7 +37,7 @@ export default function MarketPage() {
   const addWatch = useMarketStore((s) => s.addWatch);
   const removeWatch = useMarketStore((s) => s.removeWatch);
   const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
-  const [klineData, setKlineData] = useState<any[]>([]);
+  const [klineData, setKlineData] = useState<unknown[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [klineLoading, setKlineLoading] = useState(false);

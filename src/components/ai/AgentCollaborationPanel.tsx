@@ -83,11 +83,11 @@ const TIER_CONFIG: Record<Tier, { label: string; agents: number; rounds: number;
 };
 
 const RECOMMENDATION_LABELS: Record<string, string> = {
-  strong_buy: '强烈买入',
+  strong_buy: t('strongBuy'),
   buy: t('components.buy'),
-  hold: '持有',
+  hold: t('hold'),
   sell: t('components.sell'),
-  strong_sell: '强烈卖出',
+  strong_sell: t('strongSell'),
 };
 
 const RECOMMENDATION_COLORS: Record<string, string> = {
@@ -503,7 +503,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
                 <div key={agent} style={styles.voteItem}>
                   <span>{def?.emoji}</span>
                   <span style={{ color: vote === 'buy' ? '#4CAF50' : vote === 'sell' ? '#F44336' : '#FFC107' }}>
-                    {vote === 'buy' ? t('components.buy') : vote === 'sell' ? t('components.sell') : '持有'}
+                    {vote === 'buy' ? t('components.buy') : vote === 'sell' ? t('components.sell') : t('hold')}
                   </span>
                 </div>
               );

@@ -46,7 +46,7 @@ export default function BrokerStatusBar({ onBrokerChange, onConnectionChange, co
   // Load broker status
   const loadStatus = useCallback(async () => {
     try {
-      const api = (window as any).api;
+      const api = window.api;
       if (!api?.broker) return;
 
       const brokerList: BrokerConfig[] = await api.broker.list();
@@ -85,7 +85,7 @@ export default function BrokerStatusBar({ onBrokerChange, onConnectionChange, co
   const handleSwitchBroker = async (brokerId: string) => {
     try {
       setLoading(true);
-      const api = (window as any).api;
+      const api = window.api;
       await api.broker.setActive(brokerId);
       setActiveBrokerId(brokerId);
       setShowDropdown(false);
@@ -110,7 +110,7 @@ export default function BrokerStatusBar({ onBrokerChange, onConnectionChange, co
   const handleToggleConnection = async () => {
     try {
       setLoading(true);
-      const api = (window as any).api;
+      const api = window.api;
 
       if (connected) {
         await api.broker.disconnect();

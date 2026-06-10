@@ -48,7 +48,7 @@ export default function MarketplacePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showPublish, setShowPublish] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
-  const [myStrategies, setMyStrategies] = useState<any[]>([]);
+  const [myStrategies, setMyStrategies] = useState<unknown[]>([]);
   const [marketStrategies, setMarketStrategies] = useState<MarketplaceStrategy[]>([]);
   const [loading, setLoading] = useState(true);
 

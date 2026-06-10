@@ -16,7 +16,7 @@ export default function StrategyExplainCard({ strategy, onExplain }: Props) {
     setLoading(true);
     setError('');
     try {
-      const result = await (window as any).api.strategy.explain(strategy);
+      const result = await window.api.strategy.explain(strategy);
       if (result.success) {
         setExplanation(result.explanation);
         onExplain?.(result.explanation);
@@ -35,7 +35,7 @@ export default function StrategyExplainCard({ strategy, onExplain }: Props) {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <span className="text-lg">🤖</span>
-          <h3 className="text-white font-semibold text-sm">AI 策略解读</h3>
+          <h3 className="text-white font-semibold text-sm">{t('aiStrategyExplain')}</h3>
         </div>
         <div className="flex items-center gap-2">
           {!explanation && !loading && (
@@ -51,7 +51,7 @@ export default function StrategyExplainCard({ strategy, onExplain }: Props) {
               onClick={() => setCollapsed(!collapsed)}
               className="text-gray-500 hover:text-gray-300 text-xs"
             >
-              {collapsed ? t('components.expand') : '收起'}
+              {collapsed ? t('components.expand') : t('collapse')}
             </button>
           )}
         </div>

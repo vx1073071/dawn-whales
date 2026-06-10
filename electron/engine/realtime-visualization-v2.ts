@@ -1,4 +1,5 @@
 // JVS-101: Real-time Data Visualization Service
+import log from 'electron-log';
 // Real-time market data stream with WebSocket push
 
 export interface RealtimeVisualizationConfig {

@@ -189,7 +189,7 @@ const DataExportPage: React.FC = () => {
       fmt: ExportFormat,
     ): Promise<ExportApiResponse> => {
       try {
-        const api = (window as any).api?.export;
+        const api = window.api?.export;
         if (!api) {
           return { success: false, error: 'Bridge API 不可用' };
         }
@@ -213,7 +213,7 @@ const DataExportPage: React.FC = () => {
   const callBatchApi = useCallback(
     async (payload: BatchExportPayload): Promise<ExportApiResponse> => {
       try {
-        const api = (window as any).api?.export;
+        const api = window.api?.export;
         if (!api || typeof api.batch !== 'function') {
           return { success: false, error: 'Batch API 不可用' };
         }
@@ -227,7 +227,7 @@ const DataExportPage: React.FC = () => {
 
   const callSummaryApi = useCallback(async (): Promise<ExportApiResponse> => {
     try {
-      const api = (window as any).api?.export;
+      const api = window.api?.export;
       if (!api || typeof api.summaryReport !== 'function') {
         return { success: false, error: 'Summary API 不可用' };
       }
@@ -314,7 +314,7 @@ const DataExportPage: React.FC = () => {
   // ─── Open folder ──────────────────────────────────────────────────────────
 
   const handleOpenFolder = useCallback((filePath: string) => {
-    const api = (window as any).api?.shell;
+    const api = window.api?.shell;
     if (api && typeof api.showItemInFolder === 'function') {
       api.showItemInFolder(filePath);
     } else if (api && typeof api.openPath === 'function') {

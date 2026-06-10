@@ -66,7 +66,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await (window as any).api.getTemplates();
+        const raw = await window.api.getTemplates();
         const data = raw?.templates ?? raw;
         setTemplates(Array.isArray(data) ? data : []);
       } catch (e: unknown) {
@@ -109,7 +109,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
     setInstantiating(true);
     setInstantiateError(null);
     try {
-      const result = await (window as any).api.instantiateTemplate(selectedId, paramOverrides);
+      const result = await window.api.instantiateTemplate(selectedId, paramOverrides);
       if (!result?.success) {
         setInstantiateError(result?.error ?? '实例化失败');
         setInstantiating(false);
@@ -127,9 +127,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <button onClick={onBack} className="text-gray-400 hover:text-white text-sm flex items-center gap-1 transition-colors">
-          ← 返回
-        </button>
+        <button onClick={onBack} className="text-gray-400 hover:text-white text-sm flex items-center gap-1 transition-colors">{t('back')}</button>
         <div>
           <h2 className="text-lg font-semibold text-white">策略模板</h2>
           <p className="text-gray-400 text-xs">选择一个模板，快速创建策略</p>

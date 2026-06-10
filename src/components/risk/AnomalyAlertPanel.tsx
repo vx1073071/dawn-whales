@@ -33,7 +33,7 @@ const TYPE_LABELS: Record<string, string> = {
 
 export default function AnomalyAlertPanel() {
   const [alerts, setAlerts] = useState<AnomalyAlert[]>([]);
-  const [summary, setSummary] = useState<any>(null);
+  const [summary, setSummary] = useState<unknown>(null);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<'all' | 'high' | 'medium' | 'low' | 'unacknowledged'>('all');
 

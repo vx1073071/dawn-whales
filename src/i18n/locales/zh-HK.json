@@ -577,5 +577,20 @@
   "wallet_deposit": "充值",
   "wallet_withdraw": "提現",
   "wallet_history": "交易記錄",
-  "wallet_noHistory": "暫無交易記錄"
+  "wallet_noHistory": "暫無交易記錄",
+  "confirm_delete": "確認永久刪除？",
+  "confirm_logout": "確認退出？",
+  "confirm_discard": "放棄修改？",
+  "error_network": "網絡錯誤 — 請重試",
+  "error_timeout": "請求超時",
+  "error_unknown": "未知錯誤",
+  "time_seconds": "秒",
+  "time_minutes": "分",
+  "time_hours": "時",
+  "time_days": "日",
+  "week_monday": "週一",
+  "week_friday": "週五",
+  "strategy_hedge": "對沖",
+  "strategy_arbitrage": "套利",
+  "strategy_market_neutral": "市場中性"
 }

@@ -12,10 +12,10 @@ interface AIAdvice {
 }
 
 const RECOMMENDATION_MAP: Record<string, { label: string; color: string; bg: string }> = {
-  strong_buy: { label: '强烈买入', color: 'text-red-500', bg: 'bg-red-500/10 border-red-500/20' },
+  strong_buy: { label: t('strongBuy'), color: 'text-red-500', bg: 'bg-red-500/10 border-red-500/20' },
   buy: { label: t('components.buy'), color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20' },
-  hold: { label: '持有', color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20' },
-  reduce: { label: '减仓', color: 'text-orange-400', bg: 'bg-orange-500/10 border-orange-500/20' },
+  hold: { label: t('hold'), color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20' },
+  reduce: { label: t('reduce'), color: 'text-orange-400', bg: 'bg-orange-500/10 border-orange-500/20' },
   sell: { label: t('components.sell'), color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
 };
 
@@ -27,7 +27,7 @@ const MOCK_ADVICE: AIAdvice = {
     { action: t('components.increaseHolding'), code: 'NVDA', name: '英伟达', reason: 'AI芯片需求持续强劲，Blackwell架构推出带来新增长点' },
     { action: t('components.increaseHolding'), code: 'AVGO', name: '博通', reason: 'AI定制芯片业务快速增长，VMware整合效应显现' },
     { action: t('components.decreaseHolding'), code: 'TSLA', name: '特斯拉', reason: '价格战压缩利润率，FSD商业化进度慢于预期' },
-    { action: '持有', code: 'AAPL', name: '苹果', reason: '服务收入稳健增长，Vision Pro长期看好但短期影响有限' },
+    { action: t('hold'), code: 'AAPL', name: '苹果', reason: '服务收入稳健增长，Vision Pro长期看好但短期影响有限' },
     { action: '关注', code: 'SMCI', name: '超微电脑', reason: 'AI服务器需求爆发，但估值较高需等待回调' },
   ],
   riskWarnings: [

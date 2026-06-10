@@ -49,7 +49,7 @@ export default function BrokerConfigSelector({ onBrokerChange, onConnectionChang
       setLoading(true);
       setError('');
 
-      const api = (window as any).api;
+      const api = window.api;
       if (!api?.broker) {
         setError('Broker API not available');
         setLoading(false);
@@ -99,7 +99,7 @@ export default function BrokerConfigSelector({ onBrokerChange, onConnectionChang
   const handleBrokerSelect = async (brokerId: string) => {
     try {
       setError('');
-      const api = (window as any).api;
+      const api = window.api;
       await api.broker.setActive(brokerId);
       setActiveBrokerId(brokerId);
 
@@ -122,7 +122,7 @@ export default function BrokerConfigSelector({ onBrokerChange, onConnectionChang
   const handleConnectionToggle = async () => {
     try {
       setError('');
-      const api = (window as any).api;
+      const api = window.api;
 
       if (connected) {
         await api.broker.disconnect();

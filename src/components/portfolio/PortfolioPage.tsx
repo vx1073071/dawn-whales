@@ -13,7 +13,7 @@ interface FundsInfo {
 export default function PortfolioPage() {
   const [accountId, setAccountId] = useState<string>('');
   const [funds, setFunds] = useState<FundsInfo | null>(null);
-  const [positions, setPositions] = useState<any[]>([]);
+  const [positions, setPositions] = useState<unknown[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [autoRefresh, setAutoRefresh] = useState(true);

@@ -24,13 +24,13 @@ export default function SettingsPage() {
   const [connected, setConnected] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [connectError, setConnectError] = useState('');
-  const [riskConfig, setRiskConfig] = useState<any>(null);
-  const [alerts, setAlerts] = useState<any[]>([]);
-  const [appInfo, setAppInfo] = useState<any>(null);
+  const [riskConfig, setRiskConfig] = useState<unknown>(null);
+  const [alerts, setAlerts] = useState<unknown[]>([]);
+  const [appInfo, setAppInfo] = useState<unknown>(null);
 
   // ── Broker Manager (Sprint2) ────────────────────────────────────────
   const [brokers, setBrokers] = useState<BrokerItem[]>([]);
-  const [brokerStatus, setBrokerStatus] = useState<any[]>([]);
+  const [brokerStatus, setBrokerStatus] = useState<unknown[]>([]);
   const [showAddBroker, setShowAddBroker] = useState(false);
   const [newBroker, setNewBroker] = useState({ name: '', type: 'futu', host: '127.0.0.1', port: '11111' });
   const [brokerActionLoading, setBrokerActionLoading] = useState<string | null>(null);

@@ -22,7 +22,7 @@ const SENTIMENT_LABELS = {
 export default function NewsDashboardPage() {
   const [query, setQuery] = useState('');
   const [articles, setArticles] = useState<NewsArticle[]>([]);
-  const [mood, setMood] = useState<any>(null);
+  const [mood, setMood] = useState<unknown>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [filter, setFilter] = useState<'all' | 'positive' | 'negative' | 'neutral'>('all');

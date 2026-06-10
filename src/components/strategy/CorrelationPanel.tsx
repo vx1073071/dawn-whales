@@ -16,7 +16,7 @@ export default function CorrelationPanel({ result }: { result?: any }) {
   if (!result?.success) {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h3 className="text-white font-semibold text-sm mb-2">📊 策略相关性</h3>
+        <h3 className="text-white font-semibold text-sm mb-2">{t('strategyCorrelation')}</h3>
         <div className="text-gray-500 text-sm text-center py-6">
           运行多个策略回测后，可查看策略间的相关性矩阵
         </div>
@@ -27,7 +27,7 @@ export default function CorrelationPanel({ result }: { result?: any }) {
   const data: CorrelationResult = result;
   const score = data.diversificationScore;
   const scoreColor = score > 0.5 ? 'text-emerald-400' : score > 0.3 ? 'text-yellow-400' : 'text-red-400';
-  const scoreLabel = score > 0.5 ? '高度分散' : score > 0.3 ? '中度分散' : '高度集中';
+  const scoreLabel = score > 0.5 ? t('highlyDiversified') : score > 0.3 ? t('moderatelyDiversified') : t('highlyConcentrated');
 
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">

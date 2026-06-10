@@ -43,15 +43,15 @@ type SortField = 'entryDate' | 'exitDate' | 'pnl' | 'pnlPercent' | 'holdingDays'
 type SortDir = 'asc' | 'desc';
 
 export default function BacktestReportPage() {
-  const [strategies, setStrategies] = useState<any[]>([]);
+  const [strategies, setStrategies] = useState<unknown[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [result, setResult] = useState<BacktestResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [tradeSort, setTradeSort] = useState<{ field: SortField; dir: SortDir }>({ field: 'entryDate', dir: 'desc' });
   const [days, setDays] = useState(365);
   const [tab, setTab] = useState<'overview' | 'trades' | 'equity' | 'enhanced'>('overview');
-  const [paramScanResult, setParamScanResult] = useState<any>(null);
-  const [wfaResult, setWfaResult] = useState<any>(null);
+  const [paramScanResult, setParamScanResult] = useState<unknown>(null);
+  const [wfaResult, setWfaResult] = useState<unknown>(null);
   const [paramScanLoading, setParamScanLoading] = useState(false);
   const [wfaLoading, setWfaLoading] = useState(false);
 
@@ -312,9 +312,7 @@ export default function BacktestReportPage() {
               </div>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => setSelectedId(null)} className="px-4 py-2 border border-white/5 rounded-lg text-sm text-gray-400 hover:bg-white/5">
-                返回
-              </button>
+              <button onClick={() => setSelectedId(null)} className="px-4 py-2 border border-white/5 rounded-lg text-sm text-gray-400 hover:bg-white/5">{t('goBack')}</button>
               <button
                 onClick={runBacktest}
                 disabled={loading}
@@ -412,7 +410,7 @@ export default function BacktestReportPage() {
                     onClick={async () => {
                       try {
                         const taskName = `Auto-${result.strategyName || result.targetCode}`;
-                        const resp = await (window as any).api?.cron?.schedule({
+                        const resp = await window.api?.cron?.schedule({
                           name: taskName,
                           strategyId: result.strategyId,
                           schedule: { type: 'cron', expression: '0 21 * * 1-5' },

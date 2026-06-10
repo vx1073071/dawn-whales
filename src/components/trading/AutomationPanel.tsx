@@ -356,8 +356,8 @@ export default function AutomationPanel({ className }: { className?: string }) {
   // ── Data Fetching ────────────────────────────────────────────────────────
 
   const getApi = useCallback(() => {
-    const w = window as any;
-    return w?.api ?? w?.electron?.api;
+    // R84: typed WindowApi — no more as any
+    return window.api;
   }, []);
 
   const fetchData = useCallback(async () => {

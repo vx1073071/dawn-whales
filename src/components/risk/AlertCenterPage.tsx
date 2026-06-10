@@ -165,7 +165,7 @@ export default function AlertCenterPage() {
   const [filter, setFilter] = useState<'all' | 'active' | 'critical'>('all');
   const [acknowledging, setAcknowledging] = useState<Set<string>>(new Set());
 
-  const api = (window as any).api;
+  const api = window.api;
 
   const fetchData = useCallback(async () => {
     try {

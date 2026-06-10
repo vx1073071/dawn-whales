@@ -37,7 +37,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
     setError('');
     setComparison(null);
     try {
-      const result = await (window as any).api.strategy.compare(strategyA, strategyB);
+      const result = await window.api.strategy.compare(strategyA, strategyB);
       if (result.success) {
         setComparison(result.comparison);
       } else {

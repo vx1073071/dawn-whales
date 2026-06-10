@@ -147,7 +147,7 @@ export default function RiskDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const api = (window as any).api;
+  const api = window.api;
 
   const fetchData = useCallback(async () => {
     try {

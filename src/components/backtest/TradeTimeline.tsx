@@ -57,20 +57,18 @@ export default function TradeTimeline({ trades }: TradeTimelineProps) {
 
   if (timelineData.length === 0) {
     return (
-      <div className="bg-[#12121a] rounded-xl border border-white/5 p-8 text-center text-gray-500">
-        无交易记录
-      </div>
+      <div className="bg-[#12121a] rounded-xl border border-white/5 p-8 text-center text-gray-500">{t('noTradeRecords')}</div>
     );
   }
 
   return (
     <div className="bg-[#12121a] rounded-xl border border-white/5 p-4">
-      <div className="text-sm font-medium text-white mb-3">交易时间线</div>
+      <div className="text-sm font-medium text-white mb-3">{t('tradeTimeline')}</div>
 
       {/* Stats Summary */}
       <div className="grid grid-cols-5 gap-3 mb-4">
         <div className="p-3 bg-[#1a1a25] rounded-lg border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">总交易次数</div>
+          <div className="text-xs text-gray-500 mb-1">{t('totalTradesLabel')}</div>
           <div className="text-lg font-bold text-white">{stats.totalTrades}</div>
         </div>
         <div className="p-3 bg-[#1a1a25] rounded-lg border border-white/5">

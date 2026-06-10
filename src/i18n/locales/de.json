@@ -516,5 +516,20 @@
   "wallet_deposit": "Einzahlen",
   "wallet_withdraw": "Auszahlen",
   "wallet_history": "Transaktionsverlauf",
-  "wallet_noHistory": "Keine Transaktionen"
+  "wallet_noHistory": "Keine Transaktionen",
+  "confirm_delete": "Endgültig löschen?",
+  "confirm_logout": "Abmelden?",
+  "confirm_discard": "Änderungen verwerfen?",
+  "error_network": "Netzwerkfehler — wiederholen",
+  "error_timeout": "Zeitüberschreitung",
+  "error_unknown": "Unbekannter Fehler",
+  "time_seconds": "Sek",
+  "time_minutes": "Min",
+  "time_hours": "Std",
+  "time_days": "Tg",
+  "week_monday": "Mo",
+  "week_friday": "Fr",
+  "strategy_hedge": "Hedge",
+  "strategy_arbitrage": "Arbitrage",
+  "strategy_market_neutral": "Marktneutral"
 }

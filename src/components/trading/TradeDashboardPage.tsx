@@ -144,9 +144,8 @@ export default function TradeDashboardPage() {
 
   const fetchData = useCallback(async () => {
     try {
-      // In production, these call IPC handlers registered by trade-executor-ipc.ts
-      const w = (window as any);
-      const api = w?.api ?? w?.electron?.api;
+      // R84: typed WindowApi — no more as any
+      const api = window.api;
 
       if (api?.trade) {
         const [posResult, ordersResult, statsResult, dailyResult, modeResult] = await Promise.all([

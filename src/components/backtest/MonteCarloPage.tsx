@@ -393,7 +393,7 @@ function ProbabilityGauge({ prob }: { prob: number }) {
       <text x={cx} y={cy + 8} textAnchor="middle" fill={color} fontSize={20} fontWeight="bold">
         {(prob * 100).toFixed(0)}%
       </text>
-      <text x={cx} y={cy + 22} textAnchor="middle" fill="#9CA3AF" fontSize={9}>盈利概率</text>
+      <text x={cx} y={cy + 22} textAnchor="middle" fill="#9CA3AF" fontSize={9}>{t('profitProbability')}</text>
     </svg>
   );
 }
@@ -438,7 +438,7 @@ export default function MonteCarloPage() {
     setServerRiskMetrics(null);
 
     // R18: Try server-side MonteCarlo engine first (JVS-100)
-    const api = (window as any).api;
+    const api = window.api;
     if (api?.monteCarlo?.simulate) {
       const serverConfig = {
         initialCapital: config.initialCapital,
@@ -525,7 +525,7 @@ export default function MonteCarloPage() {
   // ─── Fetch server-side risk metrics via IPC after client-side computation ───
   useEffect(() => {
     if (!results) return;
-    const api = (window as any).api;
+    const api = window.api;
     if (!api?.backtest?.riskMetrics) return;
 
     setEngineLoading(true);
@@ -711,7 +711,7 @@ export default function MonteCarloPage() {
             <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-4 flex items-center gap-6">
               <ProbabilityGauge prob={results.stats.probProfit} />
               <div>
-                <p className="text-sm text-gray-400">盈利概率</p>
+                <p className="text-sm text-gray-400">{t('profitProbability')}</p>
                 <p className="text-2xl font-bold" style={{ color: results.stats.probProfit >= 0.7 ? '#10B981' : results.stats.probProfit >= 0.5 ? '#F59E0B' : '#EF4444' }}>
                   {pct(results.stats.probProfit)}
                 </p>
@@ -751,7 +751,7 @@ export default function MonteCarloPage() {
                 )}
                 {serverRiskMetrics.maxDrawdown != null && (
                   <StatCard
-                    label="最大回撤"
+                    label=t('maxDrawdown')
                     value={`${(serverRiskMetrics.maxDrawdown * 100).toFixed(2)}%`}
                     variant="danger"
                     sub="Engine 计算"
@@ -851,7 +851,7 @@ export default function MonteCarloPage() {
                     <th className="py-2 px-3 text-right">中位数终值</th>
                     <th className="py-2 px-3 text-right">均值终值</th>
                     <th className="py-2 px-3 text-right">VaR 95%</th>
-                    <th className="py-2 px-3 text-right">盈利概率</th>
+                    <th className="py-2 px-3 text-right">{t('profitProbability')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -883,12 +883,12 @@ export default function MonteCarloPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-gray-400 border-b border-gray-700">
-                    <th className="py-2 px-3 text-left">参数</th>
+                    <th className="py-2 px-3 text-left">{t('parameters')}</th>
                     <th className="py-2 px-3 text-right">取值</th>
                     <th className="py-2 px-3 text-right">中位数</th>
                     <th className="py-2 px-3 text-right">均值</th>
                     <th className="py-2 px-3 text-right">VaR 95%</th>
-                    <th className="py-2 px-3 text-right">盈利概率</th>
+                    <th className="py-2 px-3 text-right">{t('profitProbability')}</th>
                   </tr>
                 </thead>
                 <tbody>

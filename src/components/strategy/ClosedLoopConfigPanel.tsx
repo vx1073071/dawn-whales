@@ -40,9 +40,9 @@ const DEFAULT_CONFIG: LoopConfig = {
 };
 
 const MODE_LABELS: Record<LoopConfig['mode'], { icon: string; title: string; desc: string }> = {
-  immediate: { icon: '⚡', title: '立即执行', desc: '手动触发，立即下单' },
-  triggered: { icon: '🎯', title: '条件触发', desc: '满足条件后自动执行' },
-  scheduled: { icon: '⏰', title: '定时调度', desc: '按 Cron 表达式定时执行' },
+  immediate: { icon: '⚡', title: t('immediateExec'), desc: '手动触发，立即下单' },
+  triggered: { icon: '🎯', title: t('triggeredExec'), desc: '满足条件后自动执行' },
+  scheduled: { icon: '⏰', title: t('scheduledExec'), desc: '按 Cron 表达式定时执行' },
 };
 
 const RETRY_LABELS: Record<LoopConfig['retryStrategy'], string> = {
@@ -83,9 +83,7 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
         </div>
         <div className="flex gap-2">
           {onBack && (
-            <button onClick={onBack} className="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition-colors">
-              返回
-            </button>
+            <button onClick={onBack} className="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition-colors">{t('goBack')}</button>
           )}
           <button
             onClick={handleSave}

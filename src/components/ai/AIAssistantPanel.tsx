@@ -363,7 +363,7 @@ const AIAssistantPanel: React.FC = () => {
             onClick={() => navigateTo('strategy')}
             className="px-2.5 py-1 text-[10px] rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-colors"
           >
-            {lang === 'zh' ? '策略工坊' : 'Strategy Lab'}
+            {lang === 'zh' ? t('strategyWorkshop') : 'Strategy Lab'}
           </button>
           <button
             onClick={() => navigateTo('risk')}

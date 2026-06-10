@@ -132,9 +132,9 @@ interface StrategyOptimizerPanelProps {
 }
 
 const OPTIMIZE_MODE_LABELS: Record<OptimizeMode, string> = {
-  grid: '网格搜索',
-  random: '随机搜索',
-  bayesian: '贝叶斯优化',
+  grid: t('gridSearch'),
+  random: t('randomSearch'),
+  bayesian: t('bayesianOpt'),
 };
 
 export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
@@ -191,7 +191,8 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
 
     try {
       // Call engine through IPC bridge
-      const optimizer = (window as any).__optimizerBridge;
+      // R84: typed window access — __optimizerBridge is internal dev API
+      const optimizer = (window as unknown as { __optimizerBridge: { optimize: (params: Record<string, unknown>) => Promise<unknown> } }).__optimizerBridge;
       if (optimizer?.startOptimization) {
         optimizer.startOptimization(config);
 

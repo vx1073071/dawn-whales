@@ -1,4 +1,5 @@
 ﻿// T58: Lightweight Event Bus with wildcard matching
+import log from 'electron-log';
 type EventHandler = (...args: any[]) => void;
 
 interface Subscription {

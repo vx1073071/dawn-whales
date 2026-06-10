@@ -21,7 +21,7 @@ interface Order {
 export default function OrdersPage() {
   const [tab, setTab] = useState<Tab>('active');
   const [orders, setOrders] = useState<Order[]>([]);
-  const [dbTrades, setDbTrades] = useState<any[]>([]);
+  const [dbTrades, setDbTrades] = useState<unknown[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<string>('');
 

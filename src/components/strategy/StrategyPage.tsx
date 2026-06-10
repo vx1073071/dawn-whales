@@ -35,14 +35,15 @@ interface BacktestResult {
 }
 
 export default function StrategyPage() {
+  const { t } = (() => { try { return require('react-i18next').useTranslation(); } catch { return { t: (k: string) => k }; } })();
   const [mode, setMode] = useState<CreateMode>(null);
-  const [strategies, setStrategies] = useState<any[]>([]);
+  const [strategies, setStrategies] = useState<unknown[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [nlPrefill, setNlPrefill] = useState<ParsedStrategy | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const [compareOpen, setCompareOpen] = useState(false);
-  const [compareDefaultA, setCompareDefaultA] = useState<any>(null);
+  const [compareDefaultA, setCompareDefaultA] = useState<unknown>(null);
 
   const loadStrategies = useCallback(async () => {
     const list = await getAllStrategies();
@@ -58,11 +59,11 @@ export default function StrategyPage() {
       {/* Page header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">策略工坊</h1>
-          <p className="text-gray-400 text-sm">创建、回测、运行你的量化策略</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{t('strategyWorkshop')}</h1>
+          <p className="text-gray-400 text-sm">{t('strategyWorkshopDesc')}</p>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-gray-500">{strategies.length} 个策略</span>
+          <span className="text-xs text-gray-500">{t('strategyCount', { count: strategies.length })}</span>
         </div>
       </div>
 
@@ -383,9 +384,9 @@ function BacktestPanel({ result }: { result: BacktestResult }) {
         <MetricCard label="总收益" value={`${result.totalReturn > 0 ? '+' : ''}${result.totalReturn}%`} color={returnColor} />
         <MetricCard label="年化收益" value={`${result.annualReturn > 0 ? '+' : ''}${result.annualReturn}%`} color={returnColor} />
         <MetricCard label="夏普比率" value={result.sharpeRatio.toFixed(2)} color={result.sharpeRatio > 1 ? 'text-emerald-400' : result.sharpeRatio > 0 ? 'text-yellow-400' : 'text-red-400'} />
-        <MetricCard label="最大回撤" value={`-${result.maxDrawdown}%`} color="text-red-400" />
-        <MetricCard label="胜率" value={`${result.winRate}%`} color={result.winRate > 50 ? 'text-emerald-400' : 'text-yellow-400'} />
-        <MetricCard label="盈亏比" value={result.profitFactor === Infinity ? '∞' : result.profitFactor.toFixed(2)} color={result.profitFactor > 1.5 ? 'text-emerald-400' : 'text-yellow-400'} />
+        <MetricCard label=t('maxDrawdown') value={`-${result.maxDrawdown}%`} color="text-red-400" />
+        <MetricCard label=t('winRate') value={`${result.winRate}%`} color={result.winRate > 50 ? 'text-emerald-400' : 'text-yellow-400'} />
+        <MetricCard label=t('profitFactor') value={result.profitFactor === Infinity ? '∞' : result.profitFactor.toFixed(2)} color={result.profitFactor > 1.5 ? 'text-emerald-400' : 'text-yellow-400'} />
       </div>
 
       {/* Equity curve */}
@@ -475,7 +476,7 @@ function EquityChart({ data }: { data: { time: number; value: number }[] }) {
 // ── Template Browser ───────────────────────────────────────────────────────
 
 function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated: () => void }) {
-  const [templates, setTemplates] = useState<any[]>([]);
+  const [templates, setTemplates] = useState<unknown[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -630,7 +631,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
 
         {/* Strategy name */}
         <div>
-          <label className="block text-gray-400 text-xs mb-1">策略名称</label>
+          <label className="block text-gray-400 text-xs mb-1">{t('strategyName')}</label>
           <input
             type="text"
             value={strategyName}
@@ -676,8 +677,8 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
         <div className="border-t border-white/5 pt-4">
           <h3 className="text-gray-300 text-xs font-medium uppercase tracking-wider mb-3">风控参数</h3>
           <div className="grid grid-cols-2 gap-4">
-            <SliderInput label="止损" value={stopLoss} min={1} max={30} onChange={setStopLoss} unit="%" />
-            <SliderInput label="止盈" value={takeProfit} min={5} max={100} onChange={setTakeProfit} unit="%" />
+            <SliderInput label=t('stopLoss') value={stopLoss} min={1} max={30} onChange={setStopLoss} unit="%" />
+            <SliderInput label=t('takeProfit') value={takeProfit} min={5} max={100} onChange={setTakeProfit} unit="%" />
           </div>
         </div>
 
@@ -713,7 +714,7 @@ function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { s
   };
 
   const statusLabels: Record<string, string> = {
-    draft: '草稿', backtested: '已回测', live: '🟢 运行中', stopped: '已停止', simulating: '模拟中',
+    draft: '草稿', backtested: '已回测', live: '🟢 运行中', stopped: t('stopped'), simulating: '模拟中',
   };
 
   if (strategies.length === 0) {
@@ -776,7 +777,7 @@ function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { s
 // ── Strategy Detail ────────────────────────────────────────────────────────
 
 function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string; onBack: () => void; onRefresh: () => void }) {
-  const [strategy, setStrategy] = useState<any>(null);
+  const [strategy, setStrategy] = useState<unknown>(null);
   const [backtestResult, setBacktestResult] = useState<BacktestResult | null>(null);
   const [backtestLoading, setBacktestLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);

@@ -54,6 +54,7 @@ export interface StrategySignalPreviewProps {
 // ── Component ──────────────────────────────────────────────────────────
 
 export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
+  const { t } = useTranslation();
   preview,
   onSave,
   onEdit,
@@ -98,7 +99,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
     <div style={styles.container}>
       {/* Header */}
       <div style={styles.header}>
-        <h3 style={styles.title}>📋 策略信号预览</h3>
+        <h3 style={styles.title}>{t('strategySignalPreview')}</h3>
         <span style={styles.symbol}>{preview.symbol}</span>
       </div>
 
@@ -119,7 +120,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
                     }}
                     onClick={() => setEditedDirection(d)}
                   >
-                    {d === 'BUY' ? t('components.buy') : d === 'SELL' ? t('components.sell') : '持有'}
+                    {d === 'BUY' ? t('components.buy') : d === 'SELL' ? t('components.sell') : t('hold')}
                   </button>
                 ))}
               </div>
@@ -274,9 +275,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
             </>
           ) : (
             <>
-              <button style={styles.cancelBtn} onClick={() => setEditing(false)}>
-                取消
-              </button>
+              <button style={styles.cancelBtn} onClick={() => setEditing(false)}>{t('cancel')}</button>
               <button style={styles.confirmBtn} onClick={() => {
                 setEditing(false);
                 handleSave();

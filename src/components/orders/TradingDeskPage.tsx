@@ -49,7 +49,7 @@ function AccountSummary({ fund, connected }: { fund: AccountFund | null; connect
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-white font-medium text-sm">账户资金</h3>
+          <h3 className="text-white font-medium text-sm">{t('accountCapital')}</h3>
           <span className="text-xs text-red-400">{connected ? t('components.loading') : t('components.disconnected')}</span>
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -69,8 +69,8 @@ function AccountSummary({ fund, connected }: { fund: AccountFund | null; connect
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-white font-medium text-sm">账户资金</h3>
-        <span className="text-xs text-emerald-400">● 实时</span>
+        <h3 className="text-white font-medium text-sm">{t('accountCapital')}</h3>
+        <span className="text-xs text-emerald-400">{t('liveRealtime')}</span>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
@@ -193,17 +193,13 @@ function QuickTradeForm({
           className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
             side === 'BUY' ? 'bg-emerald-500 text-white' : 'bg-[#12121a] text-gray-400 hover:text-white'
           }`}
-        >
-          买入
-        </button>
+        >{t('buy')}</button>
         <button
           onClick={() => setSide('SELL')}
           className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
             side === 'SELL' ? 'bg-red-500 text-white' : 'bg-[#12121a] text-gray-400 hover:text-white'
           }`}
-        >
-          卖出
-        </button>
+        >{t('sell')}</button>
       </div>
 
       {/* Order type */}
@@ -291,7 +287,7 @@ export default function TradingDeskPage() {
   const [fund, setFund] = useState<AccountFund | null>(null);
   const [positions, setPositions] = useState<Position[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [dbTrades, setDbTrades] = useState<any[]>([]);
+  const [dbTrades, setDbTrades] = useState<unknown[]>([]);
   const [loading, setLoading] = useState(false);
   const [lastRefresh, setLastRefresh] = useState('');
 
