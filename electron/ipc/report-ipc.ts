@@ -37,7 +37,7 @@ export function registerReportIPC(
 
 
   // ── Brinson Attribution (JVS-54) ───────────────────────────────────────
-  ipcMain.handle('report:brinson-attribution', async (_e, holdings: any[], benchmark: any[], benchmarkReturn: number) => {
+  ipcMain.handle('report:brinson-attribution', async (_e, holdings: unknown[], benchmark: any[], benchmarkReturn: number) => {
     try {
       const result = generateBrinsonReport(holdings, benchmark, benchmarkReturn);
       return { success: true, result };
@@ -82,7 +82,7 @@ export function registerReportIPC(
     const vErr = validate(ReportQuickSchema, raw);
     if (vErr) return vErr;
     /** @deprecated R83 — use server-side AI Gateway token */
-    const { result, apiKey } = raw as { result: any; apiKey?: string };
+    const { result, apiKey } = raw as { result: unknown; apiKey?: string };
     const report = await generateQuickReport(result, apiKey);
     return { success: true, report };
   });

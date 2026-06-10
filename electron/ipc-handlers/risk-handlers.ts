@@ -17,14 +17,14 @@ export function registerRiskHandlers() {
       }
       const config = typeof re.getConfig === 'function' ? re.getConfig() : getDefaultRiskConfig();
       return { success: true, data: config };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[risk:getConfig]', err.message);
       return { success: false, error: err.message, data: getDefaultRiskConfig() };
     }
   });
 
   // ── risk:updateConfig ──────────────────────────────────────────────────
-  ipcMain.handle('risk:updateConfig', async (_e, config: any) => {
+  ipcMain.handle('risk:updateConfig', async (_e, config: unknown) => {
     try {
       const re = shared.riskEngine;
       if (!re) return { success: false, error: 'RiskEngine not initialized' };
@@ -32,7 +32,7 @@ export function registerRiskHandlers() {
         re.updateConfig(config);
       }
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[risk:updateConfig]', err.message);
       return { success: false, error: err.message };
     }
@@ -63,7 +63,7 @@ export function registerRiskHandlers() {
       }
 
       return { success: true, data: alerts };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[risk:getAlerts]', err.message);
       return { success: true, data: [] };
     }
@@ -76,7 +76,7 @@ export function registerRiskHandlers() {
       const broker = shared.brokerManager;
 
       // Try to get real data from broker
-      let accountData: any = null;
+      let accountData: unknown = null;
       if (broker && typeof broker.getAccounts === 'function') {
         try {
           const accounts = await broker.getAccounts();
@@ -101,7 +101,7 @@ export function registerRiskHandlers() {
         todayPnl: accountData?.funds?.todayPnl || accountData?.funds?.realizedPnl || 0,
         unrealizedPnl: accountData?.funds?.unrealizedPnl || 0,
         buyingPower: accountData?.funds?.buyingPower || accountData?.funds?.maxPowerLong || 0,
-        positions: (accountData?.positions || []).map((p: any) => ({
+        positions: (accountData?.positions || []).map((p: unknown) => ({
           code: p.code || p.symbol,
           name: p.name || '',
           qty: p.qty || p.quantity || 0,
@@ -134,7 +134,7 @@ export function registerRiskHandlers() {
       else snapshot.riskLevel = 'low';
 
       return { success: true, data: snapshot };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[risk:getStatusSnapshot]', err.message);
       return { success: false, error: err.message };
     }
@@ -148,7 +148,7 @@ export function registerRiskHandlers() {
         return { success: true, data: getDefaultKellyStats() };
       }
 
-      let stats: any = getDefaultKellyStats();
+      let stats: unknown = getDefaultKellyStats();
       if (typeof re.getKellyStats === 'function') {
         stats = re.getKellyStats();
       } else if (typeof re.calculateKelly === 'function') {
@@ -156,7 +156,7 @@ export function registerRiskHandlers() {
       }
 
       return { success: true, data: stats || getDefaultKellyStats() };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[risk:getKellyStats]', err.message);
       return { success: true, data: getDefaultKellyStats() };
     }
@@ -170,13 +170,13 @@ export function registerRiskHandlers() {
         return { success: true, data: getDefaultDrawdown() };
       }
 
-      let state: any = getDefaultDrawdown();
+      let state: unknown = getDefaultDrawdown();
       if (typeof re.getDrawdownState === 'function') {
         state = re.getDrawdownState();
       }
 
       return { success: true, data: state || getDefaultDrawdown() };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[risk:getDrawdownState]', err.message);
       return { success: true, data: getDefaultDrawdown() };
     }
@@ -191,7 +191,7 @@ export function registerRiskHandlers() {
         re.updateVix(vix);
       }
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[risk:updateVix]', err.message);
       return { success: false, error: err.message };
     }

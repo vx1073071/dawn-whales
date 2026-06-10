@@ -13,6 +13,7 @@
 import log from 'electron-log';
 import https from 'https';
 import http from 'http';
+import { httpGet } from '../utils/http';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -138,33 +139,14 @@ const MACRO_TTL = 60 * 60 * 1000; // 1 hour (macro data rarely changes intra-day
 
 // ── HTTP Helper ────────────────────────────────────────────────────────────
 
-function httpGet(url: string, timeoutMs = 15000): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const client = url.startsWith('https') ? https : http;
-    const req = client.get(url, { timeout: timeoutMs }, (res) => {
-      const chunks: Buffer[] = [];
-      res.on('data', (chunk: Buffer) => chunks.push(chunk));
-      res.on('end', () => {
-        const body = Buffer.concat(chunks).toString('utf-8');
-        if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
-          resolve(body);
-        } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${body.slice(0, 200)}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
-  });
-}
 
 // ── Macro Data Provider ────────────────────────────────────────────────────
 
 export class MacroDataProvider {
   private memoryCache = new Map<string, { data: MacroIndicatorSummary; expires: number }>();
-  private db: any = null;
+  private db: unknown = null;
 
-  initialize(db: any): void {
+  initialize(db: unknown): void {
     this.db = db;
     this.createTables();
     log.info('[MacroDataProvider] Initialized — macro dashboard ready');
@@ -209,7 +191,7 @@ export class MacroDataProvider {
       ).all(type, limit) as any[];
 
       if (rows && rows.length >= 3) { // At least 3 data points
-        const history = rows.reverse().map((r: any) => ({
+        const history = rows.reverse().map((r: unknown) => ({
           indicator: r.indicator,
           date: r.date,
           value: r.value ?? 0,
@@ -243,7 +225,7 @@ export class MacroDataProvider {
         this.memoryCache.set(cacheKey, { data: summary, expires: now + MACRO_TTL });
       }
       return summary;
-    } catch (err: any) {
+    } catch (err) {
       log.warn(`[MacroDataProvider] API fetch failed for ${type}:`, err.message);
       return this.getStaleData(type, limit) || this.emptyIndicator(type);
     }
@@ -369,7 +351,7 @@ export class MacroDataProvider {
 
     if (!rows || rows.length === 0) return null;
 
-    const history = rows.reverse().map((r: any) => ({
+    const history = rows.reverse().map((r: unknown) => ({
       indicator: r.indicator,
       date: r.date,
       value: r.value ?? 0,
@@ -420,7 +402,7 @@ export class MacroDataProvider {
     };
   }
 
-  private safeNum(v: any): number {
+  private safeNum(v: unknown): number {
     if (v === null || v === undefined || v === '-') return 0;
     const n = Number(v);
     return isNaN(n) ? 0 : n;

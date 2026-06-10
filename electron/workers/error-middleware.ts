@@ -75,7 +75,7 @@ export async function withRetry<T>(
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       return await fn();
-    } catch (e: any) {
+    } catch (e) {
       lastError = e;
       if (attempt < maxRetries && shouldRetry(e)) {
         const delay = Math.min(baseDelayMs * Math.pow(2, attempt), maxDelayMs);
@@ -101,7 +101,7 @@ export async function safeAsync<T>(
 ): Promise<T> {
   try {
     return await fn();
-  } catch (e: any) {
+  } catch (e) {
     errorReporter.report(e, context);
     return fallback;
   }

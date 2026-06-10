@@ -11,7 +11,7 @@ export function registerAlertNotificationIPC(
 
 
   // ── Macro Alert (JVS-51) ────────────────────────────────────────────────
-  ipcMain.handle('alert:macro', async (_e, currentData: any[], historicalData: any) => {
+  ipcMain.handle('alert:macro', async (_e, currentData: any[], historicalData: unknown) => {
     try {
       const historicalMap = new Map(Object.entries(historicalData || {}) as [string, number[]][]);
       const result = await detectMacroAnomalies(currentData, historicalMap);
@@ -38,7 +38,7 @@ export function registerAlertNotificationIPC(
 
 
   // ── Correlation Alert (JVS-52) ─────────────────────────────────────────
-  ipcMain.handle('alert:correlation', async (_e, snapshots: any[], historicalData: any) => {
+  ipcMain.handle('alert:correlation', async (_e, snapshots: any[], historicalData: unknown) => {
     try {
       const histMap = new Map(Object.entries(historicalData || {}) as [string, number[]][]);
       const result = await detectCorrelationAnomalies(snapshots, histMap);
@@ -51,7 +51,7 @@ export function registerAlertNotificationIPC(
 
 
 
-  ipcMain.handle('alert:correlation-matrix', async (_e, matrix: number[][], codes: string[], prevMatrix?: number[][], histMatrices?: any) => {
+  ipcMain.handle('alert:correlation-matrix', async (_e, matrix: number[][], codes: string[], prevMatrix?: number[][], histMatrices?: unknown) => {
     try {
       const histMap = histMatrices ? new Map(Object.entries(histMatrices) as [string, number[]][]) : undefined;
       const result = await analyzeCorrelationMatrix(matrix, codes, prevMatrix, histMap);

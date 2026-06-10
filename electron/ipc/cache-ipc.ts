@@ -59,7 +59,7 @@ export function registerCacheIPC(
 
 
 
-  ipcMain.handle('cache:set', async (_e, namespace: string, key: string, value: any, ttl?: number) => {
+  ipcMain.handle('cache:set', async (_e, namespace: string, key: string, value: unknown, ttl?: number) => {
     try {
       const manager = getSmartCacheManager();
       const cache = manager.getCache(namespace);

@@ -24,7 +24,7 @@ export class FileCleanup {
     for (const rule of this.rules) {
       try {
         deleted += await this._cleanDir(rule.dir, rule);
-      } catch (e: any) {
+      } catch (e) {
         errors.push(`${rule.dir}: ${e.message}`);
       }
     }

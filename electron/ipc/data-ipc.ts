@@ -7,15 +7,14 @@ import log from 'electron-log';
 import { validate } from '../ipc-schemas';
 
 export function registerDataIPC(
-  orderRouter: any,
-  flowPredictor: any,
-  dataProvider: any,
-  stockScreener: any,
-  dataScheduler: any,
-  mainWindow: any
-) {
+  orderRouter: unknown,
+  flowPredictor: unknown,
+  dataProvider: unknown,
+  stockScreener: unknown,
+  dataScheduler: unknown,
+  mainWindow: unknown) {
 
-  ipcMain.handle('predict:capital-flow', async (_e, params: any) => {
+  ipcMain.handle('predict:capital-flow', async (_e, params: unknown) => {
     try {
       const result = flowPredictor.predict(params);
       return { success: true, result };
@@ -56,7 +55,7 @@ export function registerDataIPC(
 
 
   // ── Sector Comparison (JVS-50) ──────────────────────────────────────────
-  ipcMain.handle('data:sector-compare', async (_e, stocks: any[], financialData: any) => {
+  ipcMain.handle('data:sector-compare', async (_e, stocks: unknown[], financialData: unknown) => {
     try {
       const financialMap = new Map(Object.entries(financialData || {}));
       const result = await compareSectorStocks(stocks, financialMap);
@@ -69,7 +68,7 @@ export function registerDataIPC(
 
 
 
-  ipcMain.handle('data:sector-compare-multiple', async (_e, sectors: any[], financialData: any) => {
+  ipcMain.handle('data:sector-compare-multiple', async (_e, sectors: unknown[], financialData: unknown) => {
     try {
       const financialMap = new Map(Object.entries(financialData || {}));
       const result = await compareMultipleSectors(sectors, financialMap);
@@ -82,7 +81,7 @@ export function registerDataIPC(
 
 
 
-  ipcMain.handle('data:sector-rank', async (_e, metrics: any[], weights?: any) => {
+  ipcMain.handle('data:sector-rank', async (_e, metrics: unknown[], weights?: unknown) => {
     try {
       const result = rankSectorStocks(metrics, weights);
       return { success: true, result };
@@ -96,7 +95,7 @@ export function registerDataIPC(
 
 
   // ── Multi-Factor Selector (JVS-56) ─────────────────────────────────────
-  ipcMain.handle('factor:score', async (_e, stocks: any[], factorWeights?: any) => {
+  ipcMain.handle('factor:score', async (_e, stocks: unknown[], factorWeights?: unknown) => {
     try {
       const result = scoreAndRankStocks(stocks, factorWeights);
       return { success: true, result };
@@ -108,7 +107,7 @@ export function registerDataIPC(
 
 
 
-  ipcMain.handle('factor:screen', async (_e, stocks: any[], criteria: any, factorWeights?: any) => {
+  ipcMain.handle('factor:screen', async (_e, stocks: unknown[], criteria: unknown, factorWeights?: unknown) => {
     try {
       const result = screenStocks(stocks, criteria, factorWeights);
       return { success: true, result };
@@ -120,7 +119,7 @@ export function registerDataIPC(
 
 
 
-  ipcMain.handle('factor:screen-batch', async (_e, batches: any[]) => {
+  ipcMain.handle('factor:screen-batch', async (_e, batches: unknown[]) => {
     try {
       const result = await batchScreenStocks(batches);
       return { success: true, result };
@@ -255,7 +254,7 @@ export function registerDataIPC(
 
 
 
-  ipcMain.handle('data:save-fundamental', async (_e, data: any) => {
+  ipcMain.handle('data:save-fundamental', async (_e, data: unknown) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
       dataProvider.saveFundamental(data);
@@ -267,7 +266,7 @@ export function registerDataIPC(
 
 
 
-  ipcMain.handle('data:save-capital-flow', async (_e, data: any) => {
+  ipcMain.handle('data:save-capital-flow', async (_e, data: unknown) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
       dataProvider.saveCapitalFlow(data);
@@ -279,7 +278,7 @@ export function registerDataIPC(
 
 
 
-  ipcMain.handle('data:save-regime', async (_e, regime: any) => {
+  ipcMain.handle('data:save-regime', async (_e, regime: unknown) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
       dataProvider.saveMarketRegime(regime);
@@ -291,7 +290,7 @@ export function registerDataIPC(
 
 
 
-  ipcMain.handle('data:compute-regime', async (_e, factors: any) => {
+  ipcMain.handle('data:compute-regime', async (_e, factors: unknown) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
       const regime = dataProvider.computeRegime(factors);
@@ -303,7 +302,7 @@ export function registerDataIPC(
 
 
 
-  ipcMain.handle('data:save-anomaly', async (_e, signal: any) => {
+  ipcMain.handle('data:save-anomaly', async (_e, signal: unknown) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
       dataProvider.saveAnomaly(signal);
@@ -315,7 +314,7 @@ export function registerDataIPC(
 
 
 
-  ipcMain.handle('data:save-news', async (_e, symbol: string, items: any[]) => {
+  ipcMain.handle('data:save-news', async (_e, symbol: string, items: unknown[]) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
       dataProvider.saveNews(symbol, items);
@@ -341,7 +340,7 @@ export function registerDataIPC(
 
 
   // ── Stock Screener (JVS-4) ─────────────────────────────────────────────
-  ipcMain.handle('screener:search', async (_e, request: any) => {
+  ipcMain.handle('screener:search', async (_e, request: unknown) => {
     if (!stockScreener) return { success: false, error: 'StockScreener not initialized' };
     try {
       const result = await stockScreener.search(request || { query: '' });
@@ -546,7 +545,7 @@ export function registerDataIPC(
 
 
   // ── Data Export Service (JVS-37) ──────────────────────────────────────
-  ipcMain.handle('data:export', async (_e, request: any) => {
+  ipcMain.handle('data:export', async (_e, request: unknown) => {
     try {
       const result = await exportData(request);
       return result;

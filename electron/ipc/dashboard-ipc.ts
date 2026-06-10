@@ -30,7 +30,7 @@ export function registerDashboardIPC(
       const acc = accounts[0];
       const funds = getAccountFunds(acc.accountId);
       const positions = getAccountPositions(acc.accountId);
-      const totalMV = positions.reduce((s: number, p: any) => s + (p.marketValue || 0), 0);
+      const totalMV = positions.reduce((s: number, p: unknown) => s + (p.marketValue || 0), 0);
 
       const summary = {
         connected: true,
@@ -114,8 +114,8 @@ export function registerDashboardIPC(
       const positions = getAccountPositions(acc.accountId);
       const quotes = getCachedQuotes();
 
-      const totalMV = positions.reduce((s: number, p: any) => s + (p.marketValue || 0), 0);
-      const enriched = positions.map((p: any) => {
+      const totalMV = positions.reduce((s: number, p: unknown) => s + (p.marketValue || 0), 0);
+      const enriched = positions.map((p: unknown) => {
         const q = quotes?.get(p.code) || {};
         return {
           code: p.code,

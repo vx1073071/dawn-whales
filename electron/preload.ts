@@ -4,7 +4,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 contextBridge.exposeInMainWorld('api', {
   // ── Broker ────────────────────────────────────────────────────────
   broker: {
-    connect: (config: any) => ipcRenderer.invoke('broker:connect', config),
+    connect: (config: unknown) => ipcRenderer.invoke('broker:connect', config),
     disconnect: () => ipcRenderer.invoke('broker:disconnect'),
     getAccounts: () => ipcRenderer.invoke('broker:getAccounts'),
     getFunds: (accountId: string) => ipcRenderer.invoke('broker:getFunds', accountId),
@@ -13,12 +13,12 @@ contextBridge.exposeInMainWorld('api', {
     getKlines: (code: string, period: string, count: number) => ipcRenderer.invoke('broker:getKlines', code, period, count),
     subscribe: (codes: string[]) => ipcRenderer.invoke('broker:subscribe', codes),
     unsubscribe: (codes: string[]) => ipcRenderer.invoke('broker:unsubscribe', codes),
-    placeOrder: (order: any) => ipcRenderer.invoke('broker:placeOrder', order),
+    placeOrder: (order: unknown) => ipcRenderer.invoke('broker:placeOrder', order),
     cancelOrder: (orderId: string) => ipcRenderer.invoke('broker:cancelOrder', orderId),
     getOrders: (accountId: string) => ipcRenderer.invoke('broker:getOrders', accountId),
     // Sprint1: multi-broker management
     list: () => ipcRenderer.invoke('broker:list'),
-    add: (cfg: any) => ipcRenderer.invoke('broker:add', cfg),
+    add: (cfg: unknown) => ipcRenderer.invoke('broker:add', cfg),
     remove: (id: string) => ipcRenderer.invoke('broker:remove', id),
     setActive: (id: string) => ipcRenderer.invoke('broker:setActive', id),
     getStatus: () => ipcRenderer.invoke('broker:getStatus'),
@@ -26,17 +26,17 @@ contextBridge.exposeInMainWorld('api', {
 
   // ── Strategy ──────────────────────────────────────────────────────
   strategy: {
-    create: (dsl: any) => ipcRenderer.invoke('strategy:create', dsl),
+    create: (dsl: unknown) => ipcRenderer.invoke('strategy:create', dsl),
     getAll: () => ipcRenderer.invoke('strategy:getAll'),
     get: (id: string) => ipcRenderer.invoke('strategy:get', id),
-    update: (id: string, updates: any) => ipcRenderer.invoke('strategy:update', id, updates),
+    update: (id: string, updates: unknown) => ipcRenderer.invoke('strategy:update', id, updates),
     delete: (id: string) => ipcRenderer.invoke('strategy:delete', id),
-    backtest: (config: any) => ipcRenderer.invoke('strategy:backtest', config),
+    backtest: (config: unknown) => ipcRenderer.invoke('strategy:backtest', config),
     startLive: (id: string) => ipcRenderer.invoke('strategy:startLive', id),
     stopLive: (id: string) => ipcRenderer.invoke('strategy:stopLive', id),
-    explain: (strategy: any) => ipcRenderer.invoke('strategy:explain', strategy),
-    compare: (s1: any, s2: any) => ipcRenderer.invoke('strategy:compare', s1, s2),
-    optimize: (strategyDSL: any, backtestResult: any) => ipcRenderer.invoke('strategy:optimize', { strategyDSL, backtestResult }),
+    explain: (strategy: unknown) => ipcRenderer.invoke('strategy:explain', strategy),
+    compare: (s1: unknown, s2: unknown) => ipcRenderer.invoke('strategy:compare', s1, s2),
+    optimize: (strategyDSL: unknown, backtestResult: unknown) => ipcRenderer.invoke('strategy:optimize', { strategyDSL, backtestResult }),
   },
 
   // ── NL Parser ─────────────────────────────────────────────────────
@@ -48,7 +48,7 @@ contextBridge.exposeInMainWorld('api', {
   // ── Risk ──────────────────────────────────────────────────────────
   risk: {
     getConfig: () => ipcRenderer.invoke('risk:getConfig'),
-    updateConfig: (config: any) => ipcRenderer.invoke('risk:updateConfig', config),
+    updateConfig: (config: unknown) => ipcRenderer.invoke('risk:updateConfig', config),
     getAlerts: () => ipcRenderer.invoke('risk:getAlerts'),
     getStatusSnapshot: () => ipcRenderer.invoke('risk:getStatusSnapshot'),
     getKellyStats: () => ipcRenderer.invoke('risk:getKellyStats'),
@@ -59,9 +59,9 @@ contextBridge.exposeInMainWorld('api', {
   // ── Database ──────────────────────────────────────────────────────
   db: {
     getStrategies: () => ipcRenderer.invoke('db:getStrategies'),
-    saveStrategy: (s: any) => ipcRenderer.invoke('db:saveStrategy', s),
+    saveStrategy: (s: unknown) => ipcRenderer.invoke('db:saveStrategy', s),
     getSettings: () => ipcRenderer.invoke('db:getSettings'),
-    saveSettings: (s: any) => ipcRenderer.invoke('db:saveSettings', s),
+    saveSettings: (s: unknown) => ipcRenderer.invoke('db:saveSettings', s),
     getTrades: (strategyId?: string) => ipcRenderer.invoke('db:getTrades', strategyId),
     getBacktestResults: (strategyId: string) => ipcRenderer.invoke('db:getBacktestResults', strategyId),
     getWatchlist: () => ipcRenderer.invoke('db:getWatchlist'),
@@ -84,7 +84,7 @@ contextBridge.exposeInMainWorld('api', {
 
   // ── Greeks ────────────────────────────────────────────────────────
   greeks: {
-    calculate: (params: any) => ipcRenderer.invoke('greeks:calculate', params),
+    calculate: (params: unknown) => ipcRenderer.invoke('greeks:calculate', params),
     portfolio: (positions: any[]) => ipcRenderer.invoke('greeks:portfolio', positions),
   },
 
@@ -94,7 +94,7 @@ contextBridge.exposeInMainWorld('api', {
     getRating: (strategyId: string) => ipcRenderer.invoke('marketplace:getRating', strategyId),
     comment: (strategyId: string, content: string, parentId?: number) => ipcRenderer.invoke('marketplace:comment', strategyId, content, parentId),
     getComments: (strategyId: string) => ipcRenderer.invoke('marketplace:getComments', strategyId),
-    savePerformance: (data: any) => ipcRenderer.invoke('marketplace:savePerformance', data),
+    savePerformance: (data: unknown) => ipcRenderer.invoke('marketplace:savePerformance', data),
     getPerformance: (strategyId: string) => ipcRenderer.invoke('marketplace:getPerformance', strategyId),
     list: (sortBy?: string, limit?: number) => ipcRenderer.invoke('marketplace:list', sortBy, limit),
     score: (strategyId: string) => ipcRenderer.invoke('marketplace:score', strategyId),
@@ -110,34 +110,34 @@ contextBridge.exposeInMainWorld('api', {
     getAnomalies: (symbol: string) => ipcRenderer.invoke('data:anomalies', symbol),
     getNews: (symbol: string, limit?: number) => ipcRenderer.invoke('data:news', symbol, limit),
     getCompositeScore: (symbol: string) => ipcRenderer.invoke('data:composite-score', symbol),
-    saveFundamental: (data: any) => ipcRenderer.invoke('data:save-fundamental', data),
-    saveCapitalFlow: (data: any) => ipcRenderer.invoke('data:save-capital-flow', data),
-    saveRegime: (regime: any) => ipcRenderer.invoke('data:save-regime', regime),
-    computeRegime: (factors: any) => ipcRenderer.invoke('data:compute-regime', factors),
-    saveAnomaly: (signal: any) => ipcRenderer.invoke('data:save-anomaly', signal),
+    saveFundamental: (data: unknown) => ipcRenderer.invoke('data:save-fundamental', data),
+    saveCapitalFlow: (data: unknown) => ipcRenderer.invoke('data:save-capital-flow', data),
+    saveRegime: (regime: unknown) => ipcRenderer.invoke('data:save-regime', regime),
+    computeRegime: (factors: unknown) => ipcRenderer.invoke('data:compute-regime', factors),
+    saveAnomaly: (signal: unknown) => ipcRenderer.invoke('data:save-anomaly', signal),
     saveNews: (symbol: string, items: any[]) => ipcRenderer.invoke('data:save-news', symbol, items),
     clearCache: () => ipcRenderer.invoke('data:clear-cache'),
   },
 
   // ── Backtest Enhancement (Sprint 2) ──────────────────────────────
   backtest: {
-    multiPeriod: (config: any) => ipcRenderer.invoke('backtest:multiPeriod', config),
-    paramSweep: (config: any) => ipcRenderer.invoke('backtest:paramSweep', config),
-    walkForward: (config: any) => ipcRenderer.invoke('backtest:walkForward', config),
+    multiPeriod: (config: unknown) => ipcRenderer.invoke('backtest:multiPeriod', config),
+    paramSweep: (config: unknown) => ipcRenderer.invoke('backtest:paramSweep', config),
+    walkForward: (config: unknown) => ipcRenderer.invoke('backtest:walkForward', config),
     riskMetrics: (equityCurve: number[], riskFreeRate?: number) => ipcRenderer.invoke('backtest:riskMetrics', equityCurve, riskFreeRate),
-    walkForwardV2: (config: any) => ipcRenderer.invoke('backtest:walk-forward', config),
-    paramScan: (config: any) => ipcRenderer.invoke('backtest:param-scan', config),
-    multiTimeframe: (config: any) => ipcRenderer.invoke('backtest:multi-timeframe', config),
+    walkForwardV2: (config: unknown) => ipcRenderer.invoke('backtest:walk-forward', config),
+    paramScan: (config: unknown) => ipcRenderer.invoke('backtest:param-scan', config),
+    multiTimeframe: (config: unknown) => ipcRenderer.invoke('backtest:multi-timeframe', config),
   },
 
   // ── Trade Executor (Sprint 2 Phase 2) ─────────────────────────────
   trade: {
-    execute: (signal: any) => ipcRenderer.invoke('trade:execute', signal),
+    execute: (signal: unknown) => ipcRenderer.invoke('trade:execute', signal),
     cancel: (orderId: string) => ipcRenderer.invoke('trade:cancel', orderId),
-    'get-orders': (filter?: any) => ipcRenderer.invoke('trade:get-orders', filter),
+    'get-orders': (filter?: unknown) => ipcRenderer.invoke('trade:get-orders', filter),
     history: (limit?: number) => ipcRenderer.invoke('trade:get-history', limit),
     'get-config': () => ipcRenderer.invoke('trade:get-config'),
-    'update-config': (updates: any) => ipcRenderer.invoke('trade:update-config', updates),
+    'update-config': (updates: unknown) => ipcRenderer.invoke('trade:update-config', updates),
     'emergency-stop': () => ipcRenderer.invoke('trade:emergency-stop'),
     'set-mode': (mode: string) => ipcRenderer.invoke('trade:set-mode', mode),
     confirm: (signalId: string) => ipcRenderer.invoke('trade:confirm-signal', signalId),
@@ -152,7 +152,7 @@ contextBridge.exposeInMainWorld('api', {
 
   // ── WebSocket Market Data (Sprint 2 Phase 1) ─────────────────────
   ws: {
-    connect: (config?: any) => ipcRenderer.invoke('ws:connect', config),
+    connect: (config?: unknown) => ipcRenderer.invoke('ws:connect', config),
     disconnect: () => ipcRenderer.invoke('ws:disconnect'),
     subscribe: (codes: string[], type?: string) => ipcRenderer.invoke('ws:subscribe', codes, type),
     unsubscribe: (subscriptionId: string) => ipcRenderer.invoke('ws:unsubscribe', subscriptionId),
@@ -164,7 +164,7 @@ contextBridge.exposeInMainWorld('api', {
   },
 
   // ── Events (Main → Renderer) ─────────────────────────────────────
-  on: (channel: string, callback: (...args: any[]) => void) => {
+  on: (channel: string, callback: (...args: unknown[]) => void) => {
     const allowed = [
       'quotes:push',
       'quote-update',
@@ -193,7 +193,7 @@ contextBridge.exposeInMainWorld('api', {
     }
   },
 
-  off: (channel: string, callback: (...args: any[]) => void) => {
+  off: (channel: string, callback: (...args: unknown[]) => void) => {
     ipcRenderer.removeListener(channel, callback);
   },
 });

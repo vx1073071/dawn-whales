@@ -11,7 +11,7 @@ export function registerPortfolioIPC(
 
 
   // ── Portfolio Optimizer (JVS-57) ────────────────────────────────────────
-  ipcMain.handle('portfolio:optimize', async (_e, assets: any[], constraints?: any) => {
+  ipcMain.handle('portfolio:optimize', async (_e, assets: unknown[], constraints?: unknown) => {
     try {
       const result = optimizePortfolio(assets, constraints);
       return { success: true, result };
@@ -23,7 +23,7 @@ export function registerPortfolioIPC(
 
 
 
-  ipcMain.handle('portfolio:efficient-frontier', async (_e, assets: any[], points?: number, constraints?: any) => {
+  ipcMain.handle('portfolio:efficient-frontier', async (_e, assets: unknown[], points?: number, constraints?: unknown) => {
     try {
       const result = generateEfficientFrontier(assets, points, constraints);
       return { success: true, result };
@@ -35,7 +35,7 @@ export function registerPortfolioIPC(
 
 
 
-  ipcMain.handle('portfolio:risk-parity', async (_e, assets: any[], constraints?: any) => {
+  ipcMain.handle('portfolio:risk-parity', async (_e, assets: unknown[], constraints?: unknown) => {
     try {
       const result = riskParityPortfolio(assets, constraints);
       return { success: true, result };
@@ -47,7 +47,7 @@ export function registerPortfolioIPC(
 
 
 
-  ipcMain.handle('portfolio:optimize-batch', async (_e, scenarios: any[]) => {
+  ipcMain.handle('portfolio:optimize-batch', async (_e, scenarios: unknown[]) => {
     try {
       const result = await batchOptimizePortfolios(scenarios);
       return { success: true, result };
@@ -64,7 +64,7 @@ export function registerPortfolioIPC(
   ipcMain.handle('portfolio:cost-analyze', async (_e, raw: unknown) => {
     try {
       const { positions, trades, periodDays } = raw as {
-        positions: any[]; trades: any[]; periodDays?: number;
+        positions: unknown[]; trades: unknown[]; periodDays?: number;
       };
       const { PortfolioCostAnalytics } = await import('./engine/portfolio-cost-analytics.js');
       const result = new PortfolioCostAnalytics().analyze(positions, trades, periodDays);
@@ -81,7 +81,7 @@ export function registerPortfolioIPC(
   ipcMain.handle('portfolio:rar-optimize', async (_e, raw: unknown) => {
     try {
       const { positions, marketData, riskAppetite, constraints } = raw as {
-        positions: any[]; marketData?: any; riskAppetite?: string; constraints?: any;
+        positions: unknown[]; marketData?: unknown; riskAppetite?: string; constraints?: unknown;
       };
       const { RAROptimizer } = await import('./engine/rar-optimizer.js');
       const optimizer = new RAROptimizer();
@@ -99,7 +99,7 @@ export function registerPortfolioIPC(
   ipcMain.handle('portfolio:rebalance', async (_e, raw: unknown) => {
     try {
       const { positions, targetWeights, dryRun, driftThreshold, maxTurnover } = raw as {
-        positions: any[]; targetWeights: Record<string, number>; dryRun?: boolean;
+        positions: unknown[]; targetWeights: Record<string, number>; dryRun?: boolean;
         driftThreshold?: number; maxTurnover?: number;
       };
       const { getPortfolioRebalancer } = await import('./engine/portfolio-rebalancer.js');
@@ -116,7 +116,7 @@ export function registerPortfolioIPC(
   ipcMain.handle('portfolio:rebalance-kelly', async (_e, raw: unknown) => {
     try {
       const { positions, kellyFraction, maxTurnover } = raw as {
-        positions: any[]; kellyFraction?: number; maxTurnover?: number;
+        positions: unknown[]; kellyFraction?: number; maxTurnover?: number;
       };
       const { getPortfolioRebalancer } = await import('./engine/portfolio-rebalancer.js');
       const rebalancer = getPortfolioRebalancer();

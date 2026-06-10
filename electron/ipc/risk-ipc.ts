@@ -7,11 +7,10 @@ import log from 'electron-log';
 import { validate } from '../ipc-schemas';
 
 export function registerRiskIPC(
-  unifiedRiskDash: any,
-  riskEngine: any
-) {
+  unifiedRiskDash: unknown,
+  riskEngine: unknown) {
 
-  ipcMain.handle('risk:dashboard', async (_e, params?: any) => {
+  ipcMain.handle('risk:dashboard', async (_e, params?: unknown) => {
     try {
       const result = unifiedRiskDash.generate(params);
       return { success: true, result };
@@ -28,7 +27,7 @@ export function registerRiskIPC(
   ipcMain.handle('risk:cross-asset', async (_e, raw: unknown) => {
     try {
       const { portfolios, confidenceLevel, method } = raw as {
-        portfolios: any[]; confidenceLevel?: number; method?: string;
+        portfolios: unknown[]; confidenceLevel?: number; method?: string;
       };
       const { CrossAssetRiskEngine } = await import('./engine/cross-asset-risk.js');
       const engine = new CrossAssetRiskEngine();
@@ -47,7 +46,7 @@ export function registerRiskIPC(
     try {
       const { equityCurve, positions, confidenceLevel } = raw as {
         equityCurve: number[];
-        positions?: any[];
+        positions?: unknown[];
         confidenceLevel?: number;
       };
       if (!equityCurve || equityCurve.length < 20) {
@@ -86,7 +85,7 @@ export function registerRiskIPC(
   ipcMain.handle('risk:position-size', async (_e, raw: unknown) => {
     try {
       const { calcPositionSize, calcQuickSize, calcPortfolioSizes } = require('./engine/dynamic-sizer');
-      const req = raw as any;
+      const req = raw as unknown;
       if (req.strategies != null) {
         // Portfolio mode
         const result = await calcPortfolioSizes(req);
@@ -113,7 +112,7 @@ export function registerRiskIPC(
 
       }
 
-      const req = raw as any;
+      const req = raw as unknown;
 
       const result = await sizer.calculateSize(req);
 
@@ -147,7 +146,7 @@ export function registerRiskIPC(
 
       }
 
-      const req = raw as any;
+      const req = raw as unknown;
 
       const result = await sizer.calculatePortfolioSizes(req);
 
@@ -181,7 +180,7 @@ export function registerRiskIPC(
 
       }
 
-      const trade = raw as any;
+      const trade = raw as unknown;
 
       sizer.recordTrade(trade);
 
@@ -250,9 +249,9 @@ export function registerRiskIPC(
     try {
       const { runStressTest, runCustomShock, HISTORICAL_SCENARIOS } = require('./engine/stress-tester');
       const { positions, scenarioName, customFactors, portfolio } = raw as {
-        positions: any[];
+        positions: unknown[];
         scenarioName?: string;
-        customFactors?: any[];
+        customFactors?: unknown[];
         portfolio?: { totalValue: number; dailyVol: number };
       };
       if (!positions || positions.length === 0) {
@@ -262,9 +261,9 @@ export function registerRiskIPC(
       if (customFactors) {
         result = runCustomShock(positions, customFactors, portfolio ?? { totalValue: 0, dailyVol: 0.02 });
       } else {
-        const scenario = HISTORICAL_SCENARIOS.find((s: any) => s.name === scenarioName);
+        const scenario = HISTORICAL_SCENARIOS.find((s: unknown) => s.name === scenarioName);
         if (!scenario) {
-          return { success: false, error: 'Scenario not found: ' + scenarioName + '. Available: ' + HISTORICAL_SCENARIOS.map((s: any) => s.name).join(', ') };
+          return { success: false, error: 'Scenario not found: ' + scenarioName + '. Available: ' + HISTORICAL_SCENARIOS.map((s: unknown) => s.name).join(', ') };
         }
         result = runStressTest(positions, scenario);
       }
@@ -284,7 +283,7 @@ export function registerRiskIPC(
 
 
 
-  ipcMain.handle('risk:updateConfig', async (_e, config: any) => {
+  ipcMain.handle('risk:updateConfig', async (_e, config: unknown) => {
     riskEngine?.updateConfig(config);
     return { success: true };
   });
@@ -330,9 +329,9 @@ export function registerRiskIPC(
   ipcMain.handle('risk:portfolio-calculate', async (_e, raw: unknown) => {
     try {
       const { positions, historicalReturns, config } = raw as {
-        positions: any[];
+        positions: unknown[];
         historicalReturns?: Map<string, number[]>;
-        config?: any;
+        config?: unknown;
       };
       if (!positions || positions.length === 0) {
         return { success: false, error: 'At least one position required' };

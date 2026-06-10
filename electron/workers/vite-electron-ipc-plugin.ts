@@ -47,7 +47,7 @@ function generatePreloadTypes(handlers: IpcHandler[]): string {
     out += `  ${domain}: {\n`;
     for (const ch of channels) {
       const method = ch.split(':').slice(1).join(':').replace(/-/g, '_');
-      out += `    ${method}(...args: any[]): Promise<any>;\n`;
+      out += `    ${method}(...args: unknown[]): Promise<any>;\n`;
     }
     out += `  };\n`;
   }
@@ -76,7 +76,7 @@ function generateBridgeAPI(handlers: IpcHandler[]): string {
     out += `// ── ${domain} ──\n`;
     for (const ch of channels) {
       const method = ch.split(':').slice(1).join(':').replace(/-/g, '_');
-      out += `export async function ${domain}_${method}(...args: any[]): Promise<any> {\n`;
+      out += `export async function ${domain}_${method}(...args: unknown[]): Promise<any> {\n`;
       out += `  if (!ipc) return { success: false, error: 'IPC not available' };\n`;
       out += `  return ipc.invoke('${ch}', ...args);\n`;
       out += `}\n\n`;

@@ -4,7 +4,7 @@ import { RateLimiter } from './rate-limiter';
 export interface RouteConfig {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   path: string;
-  handler: (params: any, body: any, headers: any) => Promise<any>;
+  handler: (params: unknown, body: unknown, headers: unknown) => Promise<any>;
   rateLimit?: { burst: number; refillRate: number };
   auth?: boolean;
 }
@@ -13,26 +13,26 @@ export interface GatewayRequest {
   method: string;
   path: string;
   params?: Record<string, string>;
-  body?: any;
+  body?: unknown;
   headers?: Record<string, string>;
 }
 
 export interface GatewayResponse {
   statusCode: number;
-  body: any;
+  body: unknown;
   headers?: Record<string, string>;
 }
 
 export class ApiGateway {
   private routes: RouteConfig[] = [];
   private rateLimiters = new Map<string, RateLimiter>();
-  private authHandler: ((headers: any) => Promise<{ userId: string } | null>) | null = null;
+  private authHandler: ((headers: unknown) => Promise<{ userId: string } | null>) | null = null;
 
   route(config: RouteConfig): void {
     this.routes.push(config);
   }
 
-  setAuthHandler(handler: (headers: any) => Promise<{ userId: string } | null>): void {
+  setAuthHandler(handler: (headers: unknown) => Promise<{ userId: string } | null>): void {
     this.authHandler = handler;
   }
 
@@ -73,7 +73,7 @@ export class ApiGateway {
     try {
       const result = await route.handler(params, req.body, req.headers);
       return { statusCode: 200, body: result };
-    } catch (e: any) {
+    } catch (e) {
       return { statusCode: 500, body: { error: e.message } };
     }
   }

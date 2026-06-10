@@ -11,7 +11,7 @@ export function registerSnapshotIPC(
 
 
   // ── JVS-39: Data Snapshot Service ──────────────────────────────────────
-  ipcMain.handle('snapshot:capture', async (_e, type: string, category: string, data: any, metadata?: any) => {
+  ipcMain.handle('snapshot:capture', async (_e, type: string, category: string, data: unknown, metadata?: unknown) => {
     try {
       const snapshot = await captureSnapshot(type, category, data, metadata);
       return { success: true, snapshot };
@@ -22,7 +22,7 @@ export function registerSnapshotIPC(
 
 
 
-  ipcMain.handle('snapshot:query', async (_e, query: any) => {
+  ipcMain.handle('snapshot:query', async (_e, query: unknown) => {
     try {
       const snapshots = await querySnapshots(query);
       return { success: true, snapshots };
@@ -88,7 +88,7 @@ export function registerSnapshotIPC(
 
 
 
-  ipcMain.handle('snapshot:export', async (_e, query?: any) => {
+  ipcMain.handle('snapshot:export', async (_e, query?: unknown) => {
     try {
       const json = await exportSnapshots(query);
       return { success: true, json };

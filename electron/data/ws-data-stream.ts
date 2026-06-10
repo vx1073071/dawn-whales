@@ -7,7 +7,7 @@ import { EventEmitter } from 'events';
 import log from 'electron-log';
 import { FutuOpenDClient } from '../broker/futu-opend';
 import { getPush2Proxy, Push2ProxyService } from './push2-proxy';
-import { StockAnomalyDetector } from '../engine/stock-anomaly-detector';
+import { StockAnomalyDetector } from '../engine/data/stock-anomaly-detector';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -106,7 +106,7 @@ export class WsDataStreamService extends EventEmitter {
       this.startTime = Date.now();
       log.info(`[WsDataStream] OpenD stream started: ${this.subscribedCodes.size} symbols`);
       return { success: true, mode: 'opend', message: `OpenD connected, ${this.subscribedCodes.size} symbols` };
-    } catch (err: any) {
+    } catch (err) {
       log.warn(`[WsDataStream] OpenD failed: ${err.message}, falling back to push2 polling`);
     }
 
@@ -131,7 +131,7 @@ export class WsDataStreamService extends EventEmitter {
       if (this.mode === 'opend' && this.opendClient?.connected) {
         try {
           await this.opendClient.subscribeAndPush(Array.from(this.subscribedCodes));
-        } catch (err: any) {
+        } catch (err) {
           log.warn(`[WsDataStream] OpenD subscribe failed: ${err.message}`);
         }
       }
@@ -197,7 +197,7 @@ export class WsDataStreamService extends EventEmitter {
     });
 
     this.opendClient.onQuotePush((quotes: any[]) => {
-      const ticks: StreamTick[] = quotes.map((q: any) => ({
+      const ticks: StreamTick[] = quotes.map((q: unknown) => ({
         code: q.code,
         name: q.name || q.code,
         price: q.price ?? 0,
@@ -263,7 +263,7 @@ export class WsDataStreamService extends EventEmitter {
       if (ticks.length > 0) {
         this.processTicks(ticks);
       }
-    } catch (err: any) {
+    } catch (err) {
       log.debug(`[WsDataStream] Push2 fetch error: ${err.message}`);
     }
   }
@@ -330,18 +330,18 @@ export function getWsDataStream(): WsDataStreamService {
 
 // ── IPC Handlers ───────────────────────────────────────────────────────────
 
-export function registerWsStreamIPC(ipcMain: any): void {
+export function registerWsStreamIPC(ipcMain: unknown): void {
   const service = getWsDataStream();
 
-  ipcMain.handle('ws:start-stream', async (_event: any, codes?: string[]) => {
+  ipcMain.handle('ws:start-stream', async (_event: unknown, codes?: string[]) => {
     return service.startStream(codes);
   });
 
-  ipcMain.handle('ws:subscribe', async (_event: any, codes: string[]) => {
+  ipcMain.handle('ws:subscribe', async (_event: unknown, codes: string[]) => {
     return service.subscribe(codes);
   });
 
-  ipcMain.handle('ws:unsubscribe', (_event: any, codes: string[]) => {
+  ipcMain.handle('ws:unsubscribe', (_event: unknown, codes: string[]) => {
     return service.unsubscribe(codes);
   });
 
@@ -380,7 +380,7 @@ export function registerWsStreamIPC(ipcMain: any): void {
     } catch (e) { logger.error('[backend:ws-data-stream]', e); }
   });
 
-  service.on('mode:changed', (info: any) => {
+  service.on('mode:changed', (info: unknown) => {
     try {
       const { BrowserWindow } = require('electron');
       const wins = BrowserWindow.getAllWindows();

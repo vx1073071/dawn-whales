@@ -7,15 +7,14 @@ import log from 'electron-log';
 import { validate } from '../ipc-schemas';
 
 export function registerEmIPC(
-  sentimentAttrEngine: any,
-  emDataProvider: any,
-  macroDataProvider: any,
-  newsAggregator: any,
-  sectorRotation: any,
-  stockAnomalyDetector: any,
-  marketHotspot: any,
-  mainWindow: any
-) {
+  sentimentAttrEngine: unknown,
+  emDataProvider: unknown,
+  macroDataProvider: unknown,
+  newsAggregator: unknown,
+  sectorRotation: unknown,
+  stockAnomalyDetector: unknown,
+  marketHotspot: unknown,
+  mainWindow: unknown) {
 
 
   // ── Financial Reports (JVS-41) ─────────────────────────────────────────
@@ -45,7 +44,7 @@ export function registerEmIPC(
 
 
   // ── Options Pricing Engine (JVS-44) ────────────────────────────────────
-  ipcMain.handle('em:price-option', async (_e, params: any) => {
+  ipcMain.handle('em:price-option', async (_e, params: unknown) => {
     try {
       return { success: true, ...blackScholesPrice(params) };
     } catch (err) {
@@ -56,7 +55,7 @@ export function registerEmIPC(
 
 
 
-  ipcMain.handle('em:calc-greeks', async (_e, params: any) => {
+  ipcMain.handle('em:calc-greeks', async (_e, params: unknown) => {
     try {
       return { success: true, ...calculateGreeks(params) };
     } catch (err) {
@@ -69,7 +68,7 @@ export function registerEmIPC(
 
   ipcMain.handle('em:implied-vol', async (_e, marketPrice: number, S: number, K: number, T: number, r: number, optionType: string, q?: number) => {
     try {
-      return { success: true, ...impliedVolatility(marketPrice, S, K, T, r, optionType as any, q) };
+      return { success: true, ...impliedVolatility(marketPrice, S, K, T, r, optionType as unknown, q) };
     } catch (err) {
       log.error('[OptionsPricing] IV error:', err);
       return { success: false, error: err.message };
@@ -90,7 +89,7 @@ export function registerEmIPC(
 
 
 
-  ipcMain.handle('em:price-and-greeks', async (_e, params: any) => {
+  ipcMain.handle('em:price-and-greeks', async (_e, params: unknown) => {
     try {
       return { success: true, ...priceAndGreeks(params) };
     } catch (err) {
@@ -103,7 +102,7 @@ export function registerEmIPC(
 
 
   // ── Risk Metrics Calculator (JVS-46) ───────────────────────────────────
-  ipcMain.handle('em:calc-risk-metrics', async (_e, params: any) => {
+  ipcMain.handle('em:calc-risk-metrics', async (_e, params: unknown) => {
     try {
       const result = calculateRiskMetrics(params);
       return { success: true, metrics: result };
@@ -147,7 +146,7 @@ export function registerEmIPC(
 
 
   // ── Performance Attribution (JVS-45) ─────────────────────────────────
-  ipcMain.handle('em:portfolio-attribution', async (_e, params: any) => {
+  ipcMain.handle('em:portfolio-attribution', async (_e, params: unknown) => {
     try {
       const result = brinsonAttribution(params);
       return { success: true, result };
@@ -159,7 +158,7 @@ export function registerEmIPC(
 
 
 
-  ipcMain.handle('em:time-series-attribution', async (_e, params: any) => {
+  ipcMain.handle('em:time-series-attribution', async (_e, params: unknown) => {
     try {
       const result = timeSeriesAttribution(params);
       return { success: true, result };
@@ -173,7 +172,7 @@ export function registerEmIPC(
 
 
   // ── Correlation Matrix v2 (JVS-47) ──────────────────────────────────────
-  ipcMain.handle('em:correlation-matrix', async (_e, params: any) => {
+  ipcMain.handle('em:correlation-matrix', async (_e, params: unknown) => {
     try {
       const result = correlationMatrix(params);
       return { success: true, result };
@@ -187,7 +186,7 @@ export function registerEmIPC(
 
 
   // ── Sector Rotation v2 (JVS-48) ─────────────────────────────────────────
-  ipcMain.handle('em:sector-rotation', async (_e, params: any) => {
+  ipcMain.handle('em:sector-rotation', async (_e, params: unknown) => {
     try {
       const result = detectSectorRotation(params);
       return { success: true, result };
@@ -234,7 +233,7 @@ export function registerEmIPC(
   ipcMain.handle('em:get-macro', async (_e, indicator?: string, limit?: number) => {
     if (!macroDataProvider) return { success: false, error: 'MacroDataProvider not initialized' };
     try {
-      const type = (indicator || 'GDP') as any;
+      const type = (indicator || 'GDP') as unknown;
       const result = await macroDataProvider.getIndicator(type, limit || 24);
       return { success: true, data: result };
     } catch (err) {
@@ -248,7 +247,7 @@ export function registerEmIPC(
   ipcMain.handle('em:get-macro-dashboard', async (_e, indicators?: string[]) => {
     if (!macroDataProvider) return { success: false, error: 'MacroDataProvider not initialized' };
     try {
-      const result = await macroDataProvider.getDashboard(indicators as any);
+      const result = await macroDataProvider.getDashboard(indicators as unknown);
       return { success: true, ...result };
     } catch (err) {
       log.error('[MacroDataProvider] Dashboard fetch failed:', err.message);
@@ -260,7 +259,7 @@ export function registerEmIPC(
 
 
   // ── Sentiment Index Engine (JVS-3) ──────────────────────────────────────
-  ipcMain.handle('em:get-sentiment', async (_e, input?: any) => {
+  ipcMain.handle('em:get-sentiment', async (_e, input?: unknown) => {
     try {
       const engine = new SentimentIndexEngine();
       const sentimentInput = input || {};
@@ -276,7 +275,7 @@ export function registerEmIPC(
 
 
   // ── News Aggregator (JVS-5) ────────────────────────────────────────────
-  ipcMain.handle('em:get-news-aggregate', async (_e, request: any) => {
+  ipcMain.handle('em:get-news-aggregate', async (_e, request: unknown) => {
     if (!newsAggregator) return { success: false, error: 'NewsAggregator not initialized' };
     try {
       const result = await newsAggregator.search(request || { query: '' });
@@ -317,7 +316,7 @@ export function registerEmIPC(
 
 
 
-  ipcMain.handle('em:record-sector-snapshot', async (_e, sectors: any[]) => {
+  ipcMain.handle('em:record-sector-snapshot', async (_e, sectors: unknown[]) => {
     if (!sectorRotation) return { success: false, error: 'SectorRotation not initialized' };
     try {
       sectorRotation.recordSnapshot(sectors || []);
@@ -343,7 +342,7 @@ export function registerEmIPC(
 
 
 
-  ipcMain.handle('em:get-anomaly-alerts', async (_e, options?: any) => {
+  ipcMain.handle('em:get-anomaly-alerts', async (_e, options?: unknown) => {
     if (!stockAnomalyDetector) return { success: false, error: 'AnomalyDetector not initialized' };
     try {
       const alerts = stockAnomalyDetector.getAlerts(options);
@@ -355,7 +354,7 @@ export function registerEmIPC(
 
 
 
-  ipcMain.handle('em:process-anomaly-quotes', async (_e, quotes: any[]) => {
+  ipcMain.handle('em:process-anomaly-quotes', async (_e, quotes: unknown[]) => {
     if (!stockAnomalyDetector) return { success: false, error: 'AnomalyDetector not initialized' };
     try {
       const newAlerts = stockAnomalyDetector.processQuotes(quotes || []);
@@ -381,7 +380,7 @@ export function registerEmIPC(
 
 
   // ── Market Hotspot (JVS-8) ─────────────────────────────────────────────
-  ipcMain.handle('em:get-hotspot', async (_e, query?: any) => {
+  ipcMain.handle('em:get-hotspot', async (_e, query?: unknown) => {
     if (!marketHotspot) return { success: false, error: 'MarketHotspot not initialized' };
     try {
       const report = await marketHotspot.getReport(query);
@@ -433,7 +432,7 @@ export function registerEmIPC(
   // ── Capital Flow Ranking — 资金流排行 (JVS-11) ──────────────────────
   ipcMain.handle('em:get-capital-flow-stock', async (_e, sortBy?: string, order?: string, limit?: number) => {
     try {
-      const result = await getStockCapitalFlowRank(sortBy as any, order as any, limit);
+      const result = await getStockCapitalFlowRank(sortBy as unknown, order as unknown, limit);
       return result;
     } catch (err) {
       return { success: false, items: [], total: 0, type: 'stock', error: err.message };
@@ -444,7 +443,7 @@ export function registerEmIPC(
 
   ipcMain.handle('em:get-capital-flow-sector', async (_e, sortBy?: string, order?: string, limit?: number) => {
     try {
-      const result = await getSectorCapitalFlowRank(sortBy as any, order as any, limit);
+      const result = await getSectorCapitalFlowRank(sortBy as unknown, order as unknown, limit);
       return result;
     } catch (err) {
       return { success: false, items: [], total: 0, type: 'sector', error: err.message };
@@ -455,7 +454,7 @@ export function registerEmIPC(
 
   ipcMain.handle('em:get-capital-flow-concept', async (_e, sortBy?: string, order?: string, limit?: number) => {
     try {
-      const result = await getConceptCapitalFlowRank(sortBy as any, order as any, limit);
+      const result = await getConceptCapitalFlowRank(sortBy as unknown, order as unknown, limit);
       return result;
     } catch (err) {
       return { success: false, items: [], total: 0, type: 'concept', error: err.message };
@@ -466,7 +465,7 @@ export function registerEmIPC(
 
 
   // ── Capital Flow Monitor — Real-time alerts (JVS-12) ─────────────────
-  ipcMain.handle('em:get-capital-flow-alerts', async (_e, items?: any[]) => {
+  ipcMain.handle('em:get-capital-flow-alerts', async (_e, items?: unknown[]) => {
     try {
       const monitor = getCapitalFlowMonitor();
       const alerts = items ? monitor.process(items) : [];
@@ -478,7 +477,7 @@ export function registerEmIPC(
 
 
 
-  ipcMain.handle('em:set-capital-flow-config', async (_e, config: any) => {
+  ipcMain.handle('em:set-capital-flow-config', async (_e, config: unknown) => {
     try {
       const monitor = getCapitalFlowMonitor();
       monitor.updateConfig(config);
@@ -549,7 +548,7 @@ export function registerEmIPC(
 
 
   // ── Stock Diagnosis — 个股诊断聚合器 (JVS-14) ──────────────────────
-  ipcMain.handle('em:diagnose-stock', async (_e, request: any) => {
+  ipcMain.handle('em:diagnose-stock', async (_e, request: unknown) => {
     try {
       const result = await diagnoseStock(request || { code: '' });
       return result;
@@ -560,7 +559,7 @@ export function registerEmIPC(
 
 
 
-  ipcMain.handle('em:batch-diagnose', async (_e, codes: string[], options?: any) => {
+  ipcMain.handle('em:batch-diagnose', async (_e, codes: string[], options?: unknown) => {
     try {
       const results = await batchDiagnose(codes || [], options);
       return { success: true, reports: results };
@@ -573,7 +572,7 @@ export function registerEmIPC(
 
 
   // ── Portfolio Risk — 组合风险计算器 (JVS-15) ─────────────────────
-  ipcMain.handle('em:portfolio-risk', async (_e, request: any) => {
+  ipcMain.handle('em:portfolio-risk', async (_e, request: unknown) => {
     try {
       const result = await calculatePortfolioRisk(request || { positions: [] });
       return result;
@@ -786,7 +785,7 @@ export function registerEmIPC(
   // ── Data Exporter (JVS-26 PM) ──────────────────────────────────────────
   ipcMain.handle('em:export-data', async (_e, type: string, format?: string) => {
     try {
-      const result = await exportData(type as any, (format as any) || 'json');
+      const result = await exportData(type as unknown, (format as unknown) || 'json');
       return result;
     } catch (err) {
       return { success: false, error: err.message };
@@ -797,7 +796,7 @@ export function registerEmIPC(
 
 
   // ── Smart Picker (JVS-25 PM Round 2) ───────────────────────────────────
-  ipcMain.handle('em:smart-pick', async (_e, request?: any) => {
+  ipcMain.handle('em:smart-pick', async (_e, request?: unknown) => {
     try {
       const picker = getSmartPicker();
       const result = await picker.pick(request || {});
@@ -811,7 +810,7 @@ export function registerEmIPC(
 
 
   // ── History Backfill (JVS-30) ──────────────────────────────────────────
-  ipcMain.handle('em:backfill-start', async (_e, config?: any) => {
+  ipcMain.handle('em:backfill-start', async (_e, config?: unknown) => {
     try {
       const backfill = getHistoryBackfill();
       const status = await backfill.start(config);

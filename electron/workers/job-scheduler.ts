@@ -1,13 +1,13 @@
 ﻿// T60: Priority-Based Job Scheduler
 export type JobStatus = 'pending' | 'running' | 'completed' | 'failed' | 'cancelled';
 
-export interface Job<T = any> {
+export interface Job<T = unknown> {
   id: string;
   name: string;
   priority: number; // higher = more important
   status: JobStatus;
   payload: T;
-  result?: any;
+  result?: unknown;
   error?: string;
   createdAt: number;
   startedAt?: number;
@@ -34,7 +34,7 @@ export class JobScheduler {
     this.handlers.set(type, handler);
   }
 
-  enqueue(name: string, payload: any, priority = 0, maxRetries = 1, timeoutMs?: number): Job {
+  enqueue(name: string, payload: unknown, priority = 0, maxRetries = 1, timeoutMs?: number): Job {
     const job: Job = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       name,
@@ -151,7 +151,7 @@ export class JobScheduler {
       }
       job.status = 'completed';
       job.completedAt = Date.now();
-    } catch (e: any) {
+    } catch (e) {
       if (job.retries < job.maxRetries) {
         job.retries++;
         job.status = 'pending';

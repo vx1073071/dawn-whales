@@ -7,12 +7,11 @@ import log from 'electron-log';
 import { validate } from '../ipc-schemas';
 
 export function registerSentimentIPC(
-  sentimentAttrEngine: any,
-  flowPredictor: any,
-  mainWindow: any
-) {
+  sentimentAttrEngine: unknown,
+  flowPredictor: unknown,
+  mainWindow: unknown) {
 
-  ipcMain.handle('sentiment:attribution', async (_e, params: any) => {
+  ipcMain.handle('sentiment:attribution', async (_e, params: unknown) => {
     try {
       const result = sentimentAttrEngine.attributeSentiment(params);
       return { success: true, result };

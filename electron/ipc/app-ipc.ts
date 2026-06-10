@@ -7,9 +7,8 @@ import log from 'electron-log';
 import { validate } from '../ipc-schemas';
 
 export function registerAppIPC(
-  mainWindow: any,
-  strategyEngine: any
-) {
+  mainWindow: unknown,
+  strategyEngine: unknown) {
 
 
   // ── App ─────────────────────────────────────────────────────────────

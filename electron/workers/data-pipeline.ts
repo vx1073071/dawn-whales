@@ -40,7 +40,7 @@ export class DataPipeline<T = any> {
         current = await this.hooks.before(current);
         logs.push(`before hook applied`);
       }
-    } catch (e: any) {
+    } catch (e) {
       const result: PipelineResult<T> = { success: false, error: e.message, step: 'before hook', logs };
       return this.hooks.after ? this.hooks.after(result) : result;
     }
@@ -60,7 +60,7 @@ export class DataPipeline<T = any> {
             return this.hooks.after ? this.hooks.after(result) : result;
           }
         }
-      } catch (e: any) {
+      } catch (e) {
         logs.push(`[${step.name}] ERROR: ${e.message} (${Date.now() - start}ms)`);
         const result: PipelineResult<T> = { success: false, error: e.message, step: step.name, logs };
         this.hooks.onError?.(e.message, step.name, current);

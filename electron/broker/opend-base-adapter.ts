@@ -220,7 +220,7 @@ export const DEFAULT_BASE_CONFIG: Required<OpenDBaseConfig> = {
 
 // ── Protobuf Loader (shared singleton) ──────────────────────────────────────
 
-let sharedProtoRoot: any = null;
+let sharedProtoRoot: unknown = null;
 let protoLoadAttempted = false;
 
 /**
@@ -234,7 +234,7 @@ export function loadProto(): any {
     sharedProtoRoot = require('futu-api/proto.js');
     if (sharedProtoRoot?.default) sharedProtoRoot = sharedProtoRoot.default;
     log.info('[OpenDBase] Protobuf definitions loaded');
-  } catch (e: any) {
+  } catch (e) {
     log.warn('[OpenDBase] Protobuf definitions not available:', e.message);
     sharedProtoRoot = null;
   }
@@ -451,7 +451,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
       }
 
       log.info(`[${this.getAdapterName()}] Disconnected`);
-    } catch (err: any) {
+    } catch (err) {
       log.error(`[${this.getAdapterName()}] Disconnect error: ${err.message}`);
     }
   }
@@ -533,11 +533,11 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
           try {
             await this.subscribeAndPush(this.subscribedCodes);
             log.info(`[${this.getAdapterName()}] Re-subscribed ${this.subscribedCodes.length} codes after reconnect`);
-          } catch (subErr: any) {
+          } catch (subErr) {
             log.warn(`[${this.getAdapterName()}] Re-subscribe failed: ${subErr.message}`);
           }
         }
-      } catch (err: any) {
+      } catch (err) {
         log.warn(`[${this.getAdapterName()}] Reconnect failed: ${err.message}`);
         this.scheduleReconnect();
       }
@@ -644,11 +644,11 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
 
       // Notify all registered callbacks
       for (const cb of this.quoteCallbacks) {
-        try { cb(quotes); } catch (err: any) {
+        try { cb(quotes); } catch (err) {
           log.error(`[${this.getAdapterName()}] Quote push callback error: ${err.message}`);
         }
       }
-    } catch (e: any) {
+    } catch (e) {
       log.warn(`[${this.getAdapterName()}] Quote push decode error: ${e.message}`);
     }
   }
@@ -733,9 +733,9 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
    * Works for both pull (Qot_GetBasicQot) and push (Qot_UpdateBasicQot) responses
    * since both contain s2c.basicQotList with the same structure.
    */
-  protected parseQuotesFromProto(decoded: any): QuoteInfo[] {
+  protected parseQuotesFromProto(decoded: unknown): QuoteInfo[] {
     const list = decoded?.s2c?.basicQotList ?? [];
-    return list.map((q: any): QuoteInfo => {
+    return list.map((q: unknown): QuoteInfo => {
       const prefix = MARKET_REV[q.security?.market] ?? 'US';
       const code = `${prefix}.${q.security?.code}`;
       const prevClose = toNum(q.prevClosePrice);
@@ -826,7 +826,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
       }
 
       for (const cb of this.quoteCallbacks) {
-        try { cb(quotes); } catch (err: any) {
+        try { cb(quotes); } catch (err) {
           log.error(`[${this.getAdapterName()}] Mock quote callback error: ${err.message}`);
         }
       }
@@ -904,7 +904,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
       }
 
       return quotes;
-    } catch (err: any) {
+    } catch (err) {
       log.error(`[${this.getAdapterName()}] getQuotes TCP error: ${err.message}`);
       this.fallbackToMock('getQuotes');
       return this.getQuotes(codes); // Retry in mock mode
@@ -940,7 +940,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
       }, 20000);
 
       return (res?.s2c?.kLineList ?? [])
-        .map((k: any): KlineInfo => ({
+        .map((k: unknown): KlineInfo => ({
           time: k.timeKey ? Math.floor(toNum(k.timeKey) / 1000) : 0,
           open: toNum(k.openPrice),
           high: toNum(k.highPrice),
@@ -949,7 +949,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
           volume: toNum(k.volume),
         }))
         .filter((k: KlineInfo) => k.open > 0);
-    } catch (err: any) {
+    } catch (err) {
       log.error(`[${this.getAdapterName()}] getKlines TCP error: ${err.message}`);
       this.fallbackToMock('getKlines');
       const contracts = this.getContractMapping();
@@ -993,7 +993,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
 
         log.info(`[${this.getAdapterName()}] TCP push subscription active for ${codes.length} symbols`);
         return;
-      } catch (err: any) {
+      } catch (err) {
         log.error(`[${this.getAdapterName()}] subscribeAndPush TCP error: ${err.message}`);
         this.fallbackToMock('subscribeAndPush');
       }
@@ -1024,8 +1024,8 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
       }, 10000);
 
       return (res?.s2c?.accList ?? [])
-        .filter((a: any) => a.trdEnv === 1) // REAL env only
-        .map((a: any): AccountInfo => ({
+        .filter((a: unknown) => a.trdEnv === 1) // REAL env only
+        .map((a: unknown): AccountInfo => ({
           accountId: String(a.accID),
           name: `${this.getAdapterName()} Account ${a.accID}`,
           currency: 'USD',
@@ -1034,7 +1034,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
           cash: 0,
           marketValue: 0,
         }));
-    } catch (err: any) {
+    } catch (err) {
       log.error(`[${this.getAdapterName()}] getAccounts TCP error: ${err.message}`);
       this.fallbackToMock('getAccounts');
       return this.getMockAccounts();
@@ -1073,7 +1073,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
         availableCash: toNum(f.cash) - toNum(f.frozenCash),
         currency: 'USD',
       };
-    } catch (err: any) {
+    } catch (err) {
       log.error(`[${this.getAdapterName()}] getFunds TCP error: ${err.message}`);
       this.fallbackToMock('getFunds');
       return this.getMockFunds();
@@ -1108,7 +1108,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
         },
       });
 
-      return (res?.s2c?.positionList ?? []).map((p: any): PositionInfo => {
+      return (res?.s2c?.positionList ?? []).map((p: unknown): PositionInfo => {
         const code = `${MARKET_REV[p.security?.market] ?? 'US'}.${p.security?.code}`;
         const qty = toNum(p.qty);
         const costPrice = toNum(p.costPrice);
@@ -1126,7 +1126,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
           marketValue, pnl, pnlPct, ratio,
         };
       });
-    } catch (err: any) {
+    } catch (err) {
       log.error(`[${this.getAdapterName()}] getPositions TCP error: ${err.message}`);
       this.fallbackToMock('getPositions');
       return this.getMockPositions();
@@ -1158,7 +1158,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
         c2s: { header: trdHeader },
       });
 
-      return (res?.s2c?.orderList ?? []).map((o: any): OrderInfo => ({
+      return (res?.s2c?.orderList ?? []).map((o: unknown): OrderInfo => ({
         orderId: String(o.orderID ?? o.orderIDEx ?? ''),
         code: `${MARKET_REV[o.security?.market] ?? 'US'}.${o.security?.code}`,
         side: o.trdSide === 1 ? 'BUY' as const : 'SELL' as const,
@@ -1170,7 +1170,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
         status: ORDER_STATUS_MAP[o.orderStatus ?? 0] ?? 'UNKNOWN',
         createdAt: o.createTime ?? new Date().toISOString(),
       }));
-    } catch (err: any) {
+    } catch (err) {
       log.error(`[${this.getAdapterName()}] getOrders TCP error: ${err.message}`);
       this.fallbackToMock('getOrders');
       return this.getMockOrders();
@@ -1212,7 +1212,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
         `[${this.getAdapterName()}] Order placed (TCP): ${orderId} ${request.side} ${request.qty} ${request.code}`
       );
       return { orderId };
-    } catch (err: any) {
+    } catch (err) {
       log.error(`[${this.getAdapterName()}] placeOrder TCP error: ${err.message}`);
       this.fallbackToMock('placeOrder');
       return this.mockPlaceOrder(request);
@@ -1246,7 +1246,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
       });
 
       log.info(`[${this.getAdapterName()}] Order cancelled (TCP): ${orderId} for ${code}`);
-    } catch (err: any) {
+    } catch (err) {
       log.error(`[${this.getAdapterName()}] cancelOrder TCP error: ${err.message}`);
       this.fallbackToMock('cancelOrder');
       log.info(`[${this.getAdapterName()}] Order cancelled (mock fallback): ${orderId}`);

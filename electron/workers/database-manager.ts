@@ -5,10 +5,10 @@ import path from 'path';
 import log from 'electron-log';
 
 // R20: lazy-load better-sqlite3 with fallback for ABI mismatch / missing build tools
-let Database: any;
+let Database: unknown;
 try {
   Database = require('better-sqlite3');
-} catch (err: any) {
+} catch (err) {
   log.warn('[DB] better-sqlite3 not available (ABI mismatch or missing build tools). Using in-memory fallback.');
   Database = null;
 }
@@ -25,15 +25,15 @@ class FakeDB {
       run: () => ({ changes: 0 }),
     };
   }
-  transaction(fn: any) {
+  transaction(fn: unknown) {
     return () => fn();
   }
   backup() {}
 }
 
 // Lazy-load electron modules (test-safe)
-let _app: any;
-let _log: any;
+let _app: unknown;
+let _log: unknown;
 try {
   _app = require('electron').app;
   _log = require('electron-log');
@@ -42,7 +42,7 @@ try {
   _log = null;
 }
 const app = _app;
-const log = _log || { info: (...args: any[]) => log.info('[DB]', ...args), error: (...args: any[]) => log.error('[DB]', ...args) };
+const log = _log || { info: (...args: unknown[]) => log.info('[DB]', ...args), error: (...args: unknown[]) => log.error('[DB]', ...args) };
 
 // ── Schema ─────────────────────────────────────────────────────────────────
 
@@ -168,11 +168,11 @@ export class DatabaseManager {
         this.ready = true;
         log.info('[DB] Initialized:', this.dbPath);
       } else {
-        this.db = new FakeDB() as any;
+        this.db = new FakeDB() as unknown;
         this.ready = true;
         log.warn('[DB] Running in-memory fallback mode (no persistence)');
       }
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DB] Init failed:', err);
       throw err;
     }
@@ -193,7 +193,7 @@ export class DatabaseManager {
       this.db.exec(sql);
     }
 
-    const version = this.db.prepare('SELECT MAX(version) as v FROM _migrations').get() as any;
+    const version = this.db.prepare('SELECT MAX(version) as v FROM _migrations').get() as unknown;
     if (!version?.v) {
       const now = Date.now();
       const insert = this.db.prepare('INSERT INTO _migrations (version, name, applied_at) VALUES (?, ?, ?)');
@@ -210,10 +210,10 @@ export class DatabaseManager {
   saveStrategy(strategy: {
     id: string;
     name: string;
-    dsl: any;
+    dsl: unknown;
     status?: string;
     tags?: string[];
-    performance?: any;
+    performance?: unknown;
   }): void {
     this._ensureReady();
     const now = Date.now();
@@ -249,21 +249,21 @@ export class DatabaseManager {
     }
   }
 
-  getStrategy(id: string): any | null {
+  getStrategy(id: string): unknown | null {
     this._ensureReady();
-    const row = this.db!.prepare('SELECT * FROM strategies WHERE id = ?').get(id) as any;
+    const row = this.db!.prepare('SELECT * FROM strategies WHERE id = ?').get(id) as unknown;
     if (!row) return null;
     return this._deserializeStrategy(row);
   }
 
-  listStrategies(opts: QueryOptions = {}): any[] {
+  listStrategies(opts: QueryOptions = {}): unknown[] {
     this._ensureReady();
     let sql = 'SELECT * FROM strategies';
     if (opts.orderBy) sql += ` ORDER BY ${opts.orderBy} ${opts.orderDir || 'DESC'}`;
     if (opts.limit) sql += ` LIMIT ${opts.limit}`;
     if (opts.offset) sql += ` OFFSET ${opts.offset}`;
 
-    const rows = this.db!.prepare(sql).all() as any[];
+    const rows = this.db!.prepare(sql).all() as unknown[];
     return rows.map(r => this._deserializeStrategy(r));
   }
 
@@ -303,10 +303,10 @@ export class DatabaseManager {
     }
   }
 
-  getOrders(opts: QueryOptions & { symbol?: string; status?: string } = {}): any[] {
+  getOrders(opts: QueryOptions & { symbol?: string; status?: string } = {}): unknown[] {
     this._ensureReady();
     const conditions: string[] = [];
-    const params: any[] = [];
+    const params: unknown[] = [];
 
     if (opts.symbol) { conditions.push('symbol = ?'); params.push(opts.symbol); }
     if (opts.status) { conditions.push('status = ?'); params.push(opts.status); }
@@ -317,14 +317,14 @@ export class DatabaseManager {
     if (opts.limit) sql += ` LIMIT ${opts.limit}`;
     if (opts.offset) sql += ` OFFSET ${opts.offset}`;
 
-    return this.db!.prepare(sql).all(...params) as any[];
+    return this.db!.prepare(sql).all(...params) as unknown[];
   }
 
   // ── Positions ──────────────────────────────────────────────────────────
 
   upsertPosition(pos: { symbol: string; quantity: number; avgCost: number; currentPrice?: number }): void {
     this._ensureReady();
-    const existing = this.db!.prepare('SELECT * FROM positions WHERE symbol = ?').get(pos.symbol) as any;
+    const existing = this.db!.prepare('SELECT * FROM positions WHERE symbol = ?').get(pos.symbol) as unknown;
 
     if (existing) {
       const totalQty = existing.quantity + pos.quantity;
@@ -347,14 +347,14 @@ export class DatabaseManager {
     }
   }
 
-  getPositions(): any[] {
+  getPositions(): unknown[] {
     this._ensureReady();
     return this.db!.prepare('SELECT * FROM positions WHERE quantity != 0').all();
   }
 
   // ── Config ─────────────────────────────────────────────────────────────
 
-  setConfig(key: string, value: any): void {
+  setConfig(key: string, value: unknown): void {
     this._ensureReady();
     this.db!.prepare(`
       INSERT INTO config (key, value, updated_at) VALUES (?, ?, ?)
@@ -362,9 +362,9 @@ export class DatabaseManager {
     `).run(key, JSON.stringify(value), Date.now(), JSON.stringify(value), Date.now());
   }
 
-  getConfig(key: string): any | null {
+  getConfig(key: string): unknown | null {
     this._ensureReady();
-    const row = this.db!.prepare('SELECT value FROM config WHERE key = ?').get(key) as any;
+    const row = this.db!.prepare('SELECT value FROM config WHERE key = ?').get(key) as unknown;
     return row ? JSON.parse(row.value) : null;
   }
 
@@ -376,8 +376,8 @@ export class DatabaseManager {
     name: string;
     startDate: string;
     endDate: string;
-    metrics: any;
-    equityCurve?: any[];
+    metrics: unknown;
+    equityCurve?: unknown[];
   }): void {
     this._ensureReady();
     const m = bt.metrics || {};
@@ -392,7 +392,7 @@ export class DatabaseManager {
       m.totalTrades || null, JSON.stringify(bt.equityCurve || []), Date.now());
   }
 
-  getBacktests(strategyId?: string, limit = 20): any[] {
+  getBacktests(strategyId?: string, limit = 20): unknown[] {
     this._ensureReady();
     if (strategyId) {
       return this.db!.prepare(
@@ -414,7 +414,7 @@ export class DatabaseManager {
         (SELECT COUNT(*) FROM orders) as orders,
         (SELECT COUNT(*) FROM positions) as positions,
         (SELECT COUNT(*) FROM backtest_results) as backtests
-    `).get() as any;
+    `).get() as unknown;
 
     const fs = require('fs');
     let dbSize = 0;
@@ -443,7 +443,7 @@ export class DatabaseManager {
     if (!this.ready || !this.db) throw new Error('Database not initialized. Call db.init() first.');
   }
 
-  private _deserializeStrategy(row: any): any {
+  private _deserializeStrategy(row: unknown): any {
     return {
       ...row,
       dsl: JSON.parse(row.dsl || '{}'),

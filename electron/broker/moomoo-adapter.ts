@@ -197,7 +197,7 @@ export class MoomooAdapter extends OpenDBaseAdapter {
     try {
       await this.connectTCP();
       return true;
-    } catch (err: any) {
+    } catch (err) {
       log.warn(`[MoomooAdapter] TCP connect failed: ${err.message}`);
       this.cleanupSocket();
       return false;

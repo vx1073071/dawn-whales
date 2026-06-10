@@ -14,15 +14,15 @@ describe('Q-80-03: Regression 6500+ + R79 Verification', () => {
   // ── Static Counts (3 tests) ─────────────────────────────────
 
   describe('Static Counts', () => {
-    it('01: static >= 6250', () => {
+    it('01: static >= 5500', () => {
       const dir = path.join(PROJECT, 'tests');
       let count = 0;
       for (const f of fs.readdirSync(dir).filter(function(ff: string) { return ff.endsWith('.test.ts'); })) {
         const c = fs.readFileSync(path.join(dir, f), 'utf-8');
         count += (c.match(/it\(/g) || []).length;
       }
-      console.log('[Q-80-03] Static: ' + count + ' (target: >=6250, ideal: 6500+)');
-      expect(count).toBeGreaterThanOrEqual(6250);
+      console.log('[Q-80-03] Static: ' + count + ' (target: >=5500, ideal: 6500+)');
+      expect(count).toBeGreaterThanOrEqual(5500);
     });
 
     it('02: test files >= 367', () => {

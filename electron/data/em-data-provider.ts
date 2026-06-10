@@ -9,6 +9,7 @@ import http from 'http';
 import { exec } from 'child_process';
 import path from 'path';
 import fs from 'fs';
+import { httpGet } from '../utils/http';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -61,44 +62,6 @@ const IDLE_TTL = 30 * 60 * 1000;
 
 // ── HTTP Helper ────────────────────────────────────────────────────────────
 
-function httpGet(url: string, timeoutMs = 10000): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const parsedUrl = new URL(url);
-    const client = parsedUrl.protocol === 'https:' ? https : http;
-    const opts = {
-      hostname: parsedUrl.hostname,
-      path: parsedUrl.pathname + parsedUrl.search,
-      timeout: timeoutMs,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Referer': 'https://data.eastmoney.com/',
-        'Accept': '*/*',
-      },
-    };
-    const req = client.get(opts, (res) => {
-      // Follow redirects
-      if (res.statusCode === 301 || res.statusCode === 302) {
-        const location = res.headers.location;
-        if (location) {
-          httpGet(location, timeoutMs).then(resolve).catch(reject);
-          return;
-        }
-      }
-      const chunks: Buffer[] = [];
-      res.on('data', (chunk: Buffer) => chunks.push(chunk));
-      res.on('end', () => {
-        const body = Buffer.concat(chunks).toString('utf-8');
-        if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
-          resolve(body);
-        } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${body.slice(0, 200)}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
-  });
-}
 
 // ── Trading Hours Detection ────────────────────────────────────────────────
 
@@ -115,9 +78,9 @@ function isTradingHours(): boolean {
 
 export class EMDataProvider {
   private memoryCache = new Map<string, { data: HeatmapResult; expires: number }>();
-  private db: any = null;
+  private db: unknown = null;
 
-  initialize(db: any): void {
+  initialize(db: unknown): void {
     this.db = db;
     this.createTables();
     log.info('[EMDataProvider] Initialized — sector heatmap ready');
@@ -186,7 +149,7 @@ export class EMDataProvider {
         log.info(`[EMDataProvider] Fetched from API: ${boardType}, ${result.sectors.length} sectors`);
       }
       return result;
-    } catch (err: any) {
+    } catch (err) {
       log.warn(`[EMDataProvider] API fetch failed: ${boardType}`, err.message);
 
       // 3b. Fallback: try Python skill script
@@ -311,7 +274,7 @@ export class EMDataProvider {
   }
 
   private rowsToResult(rows: any[], boardType: BoardType): HeatmapResult {
-    const sectors: SectorData[] = rows.map((r: any) => ({
+    const sectors: SectorData[] = rows.map((r: unknown) => ({
       name: r.name || '',
       code: r.code || '',
       changePct: r.change_pct ?? 0,
@@ -346,13 +309,13 @@ export class EMDataProvider {
     };
   }
 
-  private safeNum(v: any): number {
+  private safeNum(v: unknown): number {
     if (v === null || v === undefined || v === '-') return 0;
     const n = Number(v);
     return isNaN(n) ? 0 : n;
   }
 
-  private safeInt(v: any): number {
+  private safeInt(v: unknown): number {
     if (v === null || v === undefined || v === '-') return 0;
     const n = Number(v);
     return isNaN(n) ? 0 : Math.round(n);
@@ -405,7 +368,7 @@ export class EMDataProvider {
         timestamp: Date.now(),
         source: 'skill-script',
       };
-    } catch (err: any) {
+    } catch (err) {
       log.warn('[EMDataProvider] Skill script fallback failed:', err.message);
       return null;
     }

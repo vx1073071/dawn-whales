@@ -11,7 +11,7 @@
 export interface LRUCacheOptions {
   maxSize: number;           // 最大缓存条目数
   ttl?: number;             // 过期时间（毫秒），默认不过期
-  onEvict?: (key: string, value: any) => void;  // 淘汰回调
+  onEvict?: (key: string, value: unknown) => void;  // 淘汰回调
 }
 
 export interface CacheEntry<T> {
@@ -22,11 +22,11 @@ export interface CacheEntry<T> {
   accessCount: number;      // 访问次数
 }
 
-export class LRUCache<T = any> {
+export class LRUCache<T = unknown> {
   private cache: Map<string, CacheEntry<T>> = new Map();
   private maxSize: number;
   private ttl: number;
-  private onEvict?: (key: string, value: any) => void;
+  private onEvict?: (key: string, value: unknown) => void;
 
   // 统计信息
   private stats = {
@@ -198,7 +198,7 @@ export interface MultiLevelCacheOptions {
   l2TTL?: number;     // L2 缓存 TTL
 }
 
-export class MultiLevelCache<T = any> {
+export class MultiLevelCache<T = unknown> {
   private l1Cache: LRUCache<T>;  // 内存缓存（快速）
   private l2Cache: LRUCache<T>;  // 本地缓存（持久化）
 
@@ -270,8 +270,8 @@ export class MultiLevelCache<T = any> {
    * 获取统计信息
    */
   getStats(): {
-    l1: any;
-    l2: any;
+    l1: unknown;
+    l2: unknown;
   } {
     return {
       l1: this.l1Cache.getStats(),

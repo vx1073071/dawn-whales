@@ -173,7 +173,7 @@ export class DatabaseManager {
 
   // ── Strategies ──────────────────────────────────────────────────
 
-  getStrategies(): any[] {
+  getStrategies(): unknown[] {
     if (!this.db) return [];
     return this.db.prepare('SELECT * FROM strategies ORDER BY updated_at DESC').all();
   }
@@ -183,7 +183,7 @@ export class DatabaseManager {
     return this.db.prepare('SELECT * FROM strategies WHERE id = ?').get(id);
   }
 
-  saveStrategy(strategy: any): void {
+  saveStrategy(strategy: unknown): void {
     if (!this.db) return;
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO strategies (id, name, description, symbol, dsl_json, version, status, updated_at)
@@ -206,7 +206,7 @@ export class DatabaseManager {
 
   // ── Backtest Results ────────────────────────────────────────────
 
-  saveBacktestResult(run: any): void {
+  saveBacktestResult(run: unknown): void {
     if (!this.db) return;
     const id = `bt_${Date.now()}`;
     this.db.prepare(`
@@ -222,14 +222,14 @@ export class DatabaseManager {
     );
   }
 
-  getBacktestResults(strategyId: string): any[] {
+  getBacktestResults(strategyId: string): unknown[] {
     if (!this.db) return [];
     return this.db.prepare('SELECT * FROM backtest_runs WHERE strategy_id = ? ORDER BY created_at DESC LIMIT 10').all(strategyId);
   }
 
   // ── Trades ──────────────────────────────────────────────────────
 
-  saveTrade(trade: any): void {
+  saveTrade(trade: unknown): void {
     if (!this.db) return;
     const id = trade.id || `trade_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
     this.db.prepare(`
@@ -247,7 +247,7 @@ export class DatabaseManager {
     );
   }
 
-  getTrades(strategyId?: string, limit = 50): any[] {
+  getTrades(strategyId?: string, limit = 50): unknown[] {
     if (!this.db) return [];
     if (strategyId) {
       return this.db.prepare('SELECT * FROM trades WHERE strategy_id = ? ORDER BY created_at DESC LIMIT ?').all(strategyId, limit);
@@ -257,13 +257,13 @@ export class DatabaseManager {
 
   // ── K-Line Cache ────────────────────────────────────────────────
 
-  saveKlines(symbol: string, period: string, klines: any[]): void {
+  saveKlines(symbol: string, period: string, klines: unknown[]): void {
     if (!this.db || klines.length === 0) return;
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO kline_cache (symbol, period, timestamp, open, high, low, close, volume)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `);
-    const tx = this.db.transaction((items: any[]) => {
+    const tx = this.db.transaction((items: unknown[]) => {
       for (const k of items) {
         stmt.run(symbol, period, k.time, k.open, k.high, k.low, k.close, k.volume);
       }
@@ -271,7 +271,7 @@ export class DatabaseManager {
     tx(klines);
   }
 
-  getKlines(symbol: string, period: string, count = 200): any[] {
+  getKlines(symbol: string, period: string, count = 200): unknown[] {
     if (!this.db) return [];
     return this.db.prepare(
       'SELECT timestamp as time, open, high, low, close, volume FROM kline_cache WHERE symbol = ? AND period = ? ORDER BY timestamp DESC LIMIT ?'
@@ -280,7 +280,7 @@ export class DatabaseManager {
 
   // ── Signal Log ──────────────────────────────────────────────────
 
-  saveSignal(signal: any): void {
+  saveSignal(signal: unknown): void {
     if (!this.db) return;
     this.db.prepare(`
       INSERT INTO signal_log (strategy_id, signal, symbol, price, reason)
@@ -288,7 +288,7 @@ export class DatabaseManager {
     `).run(signal.strategyId, signal.signal, signal.symbol, signal.price, signal.reason);
   }
 
-  getSignals(strategyId?: string, limit = 100): any[] {
+  getSignals(strategyId?: string, limit = 100): unknown[] {
     if (!this.db) return [];
     if (strategyId) {
       return this.db.prepare('SELECT * FROM signal_log WHERE strategy_id = ? ORDER BY created_at DESC LIMIT ?').all(strategyId, limit);
@@ -298,7 +298,7 @@ export class DatabaseManager {
 
   // ── Watchlist ───────────────────────────────────────────────────
 
-  getWatchlist(): any[] {
+  getWatchlist(): unknown[] {
     if (!this.db) return [];
     return this.db.prepare('SELECT * FROM watchlist ORDER BY sort_order ASC').all();
   }
@@ -327,7 +327,7 @@ export class DatabaseManager {
     if (!this.db) return { avg: 0, count: 0 };
     const row = this.db.prepare(`
       SELECT AVG(rating) as avg, COUNT(*) as count FROM strategy_ratings WHERE strategy_id = ?
-    `).get(strategyId) as any;
+    `).get(strategyId) as unknown;
     return { avg: row?.avg ? Math.round(row.avg * 10) / 10 : 0, count: row?.count || 0 };
   }
 
@@ -335,7 +335,7 @@ export class DatabaseManager {
     if (!this.db) return 0;
     const row = this.db.prepare(
       'SELECT rating FROM strategy_ratings WHERE strategy_id = ? AND user_id = ?'
-    ).get(strategyId, userId) as any;
+    ).get(strategyId, userId) as unknown;
     return row?.rating || 0;
   }
 
@@ -349,7 +349,7 @@ export class DatabaseManager {
     `).run(strategyId, userId, content, parentId || null);
   }
 
-  getComments(strategyId: string, limit = 50): any[] {
+  getComments(strategyId: string, limit = 50): unknown[] {
     if (!this.db) return [];
     return this.db.prepare(`
       SELECT * FROM strategy_comments WHERE strategy_id = ? ORDER BY created_at DESC LIMIT ?
@@ -360,7 +360,7 @@ export class DatabaseManager {
     if (!this.db) return 0;
     const row = this.db.prepare(
       'SELECT COUNT(*) as count FROM strategy_comments WHERE strategy_id = ?'
-    ).get(strategyId) as any;
+    ).get(strategyId) as unknown;
     return row?.count || 0;
   }
 
@@ -386,14 +386,14 @@ export class DatabaseManager {
     );
   }
 
-  getStrategyPerformance(strategyId: string): any[] {
+  getStrategyPerformance(strategyId: string): unknown[] {
     if (!this.db) return [];
     return this.db.prepare(
       'SELECT * FROM strategy_performance WHERE strategy_id = ? ORDER BY period'
     ).all(strategyId);
   }
 
-  getMarketplaceStrategies(sortBy = 'rating', limit = 50): any[] {
+  getMarketplaceStrategies(sortBy = 'rating', limit = 50): unknown[] {
     if (!this.db) return [];
     const rows = this.db.prepare(`
       SELECT
@@ -424,7 +424,7 @@ export class DatabaseManager {
     return result;
   }
 
-  saveSettings(settings: Record<string, any>): void {
+  saveSettings(settings: Record<string, unknown>): void {
     if (!this.db) return;
     const stmt = this.db.prepare('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)');
     for (const [key, value] of Object.entries(settings)) {

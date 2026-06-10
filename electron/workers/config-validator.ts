@@ -6,7 +6,7 @@ export interface ConfigSchema {
 export interface ConfigField {
   type: 'string' | 'number' | 'boolean' | 'object' | 'array';
   required?: boolean;
-  default?: any;
+  default?: unknown;
   min?: number;
   max?: number;
   pattern?: string;
@@ -18,7 +18,7 @@ export interface ValidationError {
   path: string;
   message: string;
   expected?: string;
-  got?: any;
+  got?: unknown;
 }
 
 export class ConfigValidator {

@@ -56,12 +56,12 @@ interface DataQualityState {
 const DIMENSION_CONFIG: { key: string; label: string; weight: number }[] = [
   { key: 'completeness', label: t("components.completeness"), weight: 15 },
   { key: 'accuracy', label: t("components.accuracy"), weight: 20 },
-  { key: 'timeliness', label: '时效性', weight: 12 },
+  { key: 'timeliness', label: {t('时效性')}, weight: 12 },
   { key: 'consistency', label: t("components.consistency"), weight: 15 },
-  { key: 'uniqueness', label: '唯一性', weight: 10 },
-  { key: 'validity', label: '有效性', weight: 13 },
-  { key: 'uniformity', label: '均匀性', weight: 8 },
-  { key: 'coverage', label: '覆盖度', weight: 7 },
+  { key: 'uniqueness', label: {t('唯一性')}, weight: 10 },
+  { key: 'validity', label: {t('有效性')}, weight: 13 },
+  { key: 'uniformity', label: {t('均匀性')}, weight: 8 },
+  { key: 'coverage', label: {t('覆盖度')}, weight: 7 },
 ];
 
 const GRADE_COLORS: Record<string, string> = {
@@ -290,7 +290,7 @@ function getCriticalSuggestion(key: string): string {
     uniformity: '建议统一字段命名规范，增加数据清洗步骤。',
     coverage: '建议增加更多数据源接入，扩大信息采集范围。',
   };
-  return map[key] || '建议深入排查问题根因。';
+  return map[key] || {t('建议深入排查问题根因。')};
 }
 
 function getWarningSuggestion(key: string): string {
@@ -304,7 +304,7 @@ function getWarningSuggestion(key: string): string {
     uniformity: '建议规范化字段命名，统一大小写。',
     coverage: '建议逐步接入更多数据源提升覆盖率。',
   };
-  return map[key] || '建议持续关注该指标变化趋势。';
+  return map[key] || {t('建议持续关注该指标变化趋势。')};
 }
 
 function generateRecommendations(issues: QualityIssue[], dimensions: QualityDimension[]): Recommendation[] {
@@ -780,7 +780,7 @@ const DataQualityPage: React.FC = () => {
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                 />
               </svg>
-              {loading ? '评估中...' : '重新评估'}
+              {loading ? {t('评估中...')} : {t('重新评估')}}
             </button>
           </div>
         </div>
@@ -872,14 +872,14 @@ const DataQualityPage: React.FC = () => {
                     className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
                   >
                     {qualityState.issues.every((i) => expandedIssues.has(i.id))
-                      ? '全部收起'
-                      : '全部展开'}
+                      ? {t('全部收起')}
+                      : {t('全部展开')}}
                   </button>
                 )}
               </div>
               {qualityState.issues.length === 0 ? (
                 <div className="text-center text-gray-500 py-8 text-sm">
-                  {loading ? '正在评估数据质量...' : '暂无质量问题，数据质量优秀 🎉'}
+                  {loading ? {t('正在评估数据质量...')} : {t('暂无质量问题，数据质量优秀 🎉')}}
                 </div>
               ) : (
                 <div className="max-h-80 overflow-y-auto">
@@ -905,14 +905,14 @@ const DataQualityPage: React.FC = () => {
                   </span>
                 </h2>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-red-500" title="高优先级" />
-                  <span className="w-2 h-2 rounded-full bg-yellow-500" title="中优先级" />
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" title="低优先级" />
+                  <span className="w-2 h-2 rounded-full bg-red-500" title={t("高优先级")} />
+                  <span className="w-2 h-2 rounded-full bg-yellow-500" title={t("中优先级")} />
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" title={t("低优先级")} />
                 </div>
               </div>
               {qualityState.recommendations.length === 0 ? (
                 <div className="text-center text-gray-500 py-6 text-sm">
-                  {loading ? '正在生成建议...' : '运行评估后将显示改进建议'}
+                  {loading ? {t('正在生成建议...')} : {t('运行评估后将显示改进建议')}}
                 </div>
               ) : (
                 <div className="max-h-64 overflow-y-auto pr-1">

@@ -55,7 +55,7 @@ export class VersionChecker {
     return { checkedAt: now, info, fromCache: false };
   }
 
-  private _parse(data: any): VersionInfo {
+  private _parse(data: unknown): VersionInfo {
     const latest = data.version || data.tag_name?.replace('v', '') || '0.0.0';
     return {
       current: this.currentVersion,

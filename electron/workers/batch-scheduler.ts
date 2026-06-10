@@ -58,7 +58,7 @@ export class BatchScheduler {
       if (handler) await handler();
       job.status = 'success';
       job.duration = Date.now() - start;
-    } catch (e: any) {
+    } catch (e) {
       job.status = 'failed';
       job.error = e.message;
       job.duration = Date.now() - start;

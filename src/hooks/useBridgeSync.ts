@@ -8,7 +8,7 @@ import * as api from '@/lib/bridge-api';
 
 const HEALTH_CHECK_INTERVAL = 60000; // 60s lightweight health check
 
-function transformQuote(q: any) {
+function transformQuote(q: unknown) {
   return {
     code: q.code || '',
     name: q.name || q.code || '',
@@ -65,12 +65,12 @@ export function useBridgeSync() {
     };
 
     // Signal listener — show notification in UI
-    const onSignal = (_data: any) => {
+    const onSignal = (_data: unknown) => {
       // Strategy signal received — handled by StrategyPage
     };
 
     // Risk alert listener
-    const onRiskAlert = (_data: any) => {
+    const onRiskAlert = (_data: unknown) => {
       // Risk alert received — handled by SettingsPage
     };
 

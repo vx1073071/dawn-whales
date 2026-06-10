@@ -3,7 +3,7 @@
 
 import { ipcMain } from 'electron';
 import log from 'electron-log';
-import { MonteCarloSimulator, SimConfig } from '../engine/monte-carlo-simulator';
+import { MonteCarloSimulator, SimConfig } from '../engine/backtest/monte-carlo-simulator';
 
 const simulator = new MonteCarloSimulator();
 

@@ -63,7 +63,7 @@ export class DataSharding {
     }
   }
 
-  query(table: string, filter?: (row: any) => boolean): any[] {
+  query(table: string, filter?: (row: unknown) => boolean): any[] {
     const tableShards = this.shards.get(table);
     if (!tableShards) return [];
 

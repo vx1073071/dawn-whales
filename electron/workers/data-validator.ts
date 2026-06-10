@@ -2,7 +2,7 @@
 export interface ValidationRule {
   field: string;
   rule: 'required' | 'type' | 'range' | 'pattern' | 'custom' | 'unique' | 'foreign_key';
-  params?: any;
+  params?: unknown;
   message: string;
 }
 
@@ -11,7 +11,7 @@ export interface ValidationError {
   rule: string;
   message: string;
   row?: number;
-  value?: any;
+  value?: unknown;
 }
 
 export interface ValidationReport {
@@ -29,7 +29,7 @@ export interface ValidationReport {
 
 export class DataValidator {
   private rules: ValidationRule[] = [];
-  private validators = new Map<string, (value: any, params: any) => boolean>();
+  private validators = new Map<string, (value: unknown, params: unknown) => boolean>();
 
   constructor() {
     this.validators.set('required', (v) => v != null && v !== '');
@@ -44,7 +44,7 @@ export class DataValidator {
     this.rules.push(rule);
   }
 
-  addCustomValidator(name: string, fn: (value: any, params: any) => boolean): void {
+  addCustomValidator(name: string, fn: (value: unknown, params: unknown) => boolean): void {
     this.validators.set(name, fn);
   }
 

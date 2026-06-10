@@ -155,7 +155,7 @@ export class MarketplaceService {
     }
 
     // 取最近一次回测
-    const latest = backtests[0] as any;
+    const latest = backtests[0] as unknown;
     const annualReturn = latest.annual_return || 0;
     const sharpeRatio = latest.sharpe_ratio || 0;
     const maxDrawdown = latest.max_drawdown || 0;  // 负值
@@ -278,7 +278,7 @@ export class MarketplaceService {
       };
     }
 
-    const latest = backtests[0] as any;
+    const latest = backtests[0] as unknown;
     const backtestMetrics = {
       annualReturn: latest.annual_return || 0,
       sharpeRatio: latest.sharpe_ratio || 0,
@@ -289,7 +289,7 @@ export class MarketplaceService {
 
     // 2. 获取实盘交易记录
     const trades = this.db.getTrades(strategyId, 200);
-    const executedTrades = trades.filter((t: any) => t.status === 'filled' && t.executed_at);
+    const executedTrades = trades.filter((t: unknown) => t.status === 'filled' && t.executed_at);
 
     if (executedTrades.length < 5) {
       return {
@@ -327,7 +327,7 @@ export class MarketplaceService {
     return { verified, confidence, backtestMetrics, liveMetrics, deviation, badge, reason };
   }
 
-  private calculateLiveMetrics(trades: any[]): {
+  private calculateLiveMetrics(trades: unknown[]): {
     annualReturn: number;
     sharpeRatio: number;
     maxDrawdown: number;
@@ -335,26 +335,26 @@ export class MarketplaceService {
     totalTrades: number;
   } {
     // 简化计算：基于 trades 表的 pnl 和 pnl_pct
-    const wins = trades.filter((t: any) => t.pnl > 0);
-    const losses = trades.filter((t: any) => t.pnl <= 0);
+    const wins = trades.filter((t: unknown) => t.pnl > 0);
+    const losses = trades.filter((t: unknown) => t.pnl <= 0);
     const winRate = trades.length > 0 ? (wins.length / trades.length) * 100 : 0;
 
     // 总收益
-    const totalPnl = trades.reduce((sum: number, t: any) => sum + (t.pnl || 0), 0);
+    const totalPnl = trades.reduce((sum: number, t: unknown) => sum + (t.pnl || 0), 0);
     const avgPnlPct = trades.length > 0
-      ? trades.reduce((sum: number, t: any) => sum + (t.pnl_pct || 0), 0) / trades.length
+      ? trades.reduce((sum: number, t: unknown) => sum + (t.pnl_pct || 0), 0) / trades.length
       : 0;
 
     // 年化（简化：假设平均持仓 1 天）
-    const firstTrade = trades[trades.length - 1] as any;
-    const lastTrade = trades[0] as any;
+    const firstTrade = trades[trades.length - 1] as unknown;
+    const lastTrade = trades[0] as unknown;
     const days = firstTrade && lastTrade
       ? Math.max(1, (new Date(lastTrade.executed_at).getTime() - new Date(firstTrade.executed_at).getTime()) / 86400000)
       : 1;
     const annualReturn = (totalPnl / 100000) * (365 / days) * 100;  // 假设初始资金 10 万
 
     // 夏普（简化：日收益率标准差）
-    const dailyReturns = trades.map((t: any) => t.pnl_pct || 0);
+    const dailyReturns = trades.map((t: unknown) => t.pnl_pct || 0);
     const avgReturn = dailyReturns.reduce((a, b) => a + b, 0) / dailyReturns.length;
     const stdReturn = Math.sqrt(
       dailyReturns.reduce((sum, r) => sum + (r - avgReturn) ** 2, 0) / Math.max(1, dailyReturns.length - 1)
@@ -386,7 +386,7 @@ export class MarketplaceService {
     return Math.abs((live - backtest) / Math.abs(backtest)) * 100;
   }
 
-  private calculateConfidence(deviation: any, tradeCount: number): number {
+  private calculateConfidence(deviation: unknown, tradeCount: number): number {
     // 偏差越小 + 交易越多 → 可信度越高
     const avgDeviation = (
       deviation.annualReturn +
@@ -406,7 +406,7 @@ export class MarketplaceService {
     return Math.max(0, Math.min(1, Math.round(confidence * 100) / 100));
   }
 
-  private assignBadge(confidence: number, deviation: any): 'gold' | 'silver' | 'bronze' | 'unverified' {
+  private assignBadge(confidence: number, deviation: unknown): 'gold' | 'silver' | 'bronze' | 'unverified' {
     const avgDeviation = (
       deviation.annualReturn +
       deviation.sharpeRatio +
@@ -420,7 +420,7 @@ export class MarketplaceService {
     return 'unverified';                                             // 未验证
   }
 
-  private generateVerificationReason(confidence: number, deviation: any, tradeCount: number): string {
+  private generateVerificationReason(confidence: number, deviation: unknown, tradeCount: number): string {
     if (confidence >= 0.8) return `✅ 高可信度：${tradeCount} 笔实盘交易与回测高度一致（偏差 ${(deviation.annualReturn).toFixed(1)}%）`;
     if (confidence >= 0.6) return `⚠️ 中可信度：${tradeCount} 笔交易，部分指标与回测有偏差`;
     if (confidence >= 0.4) return `⚠️ 低可信度：实盘表现与回测差异较大，需谨慎参考`;
@@ -454,7 +454,7 @@ export class MarketplaceService {
     return '❌ 不推荐使用，风险过高或数据不足';
   }
 
-  private generateWarnings(backtest: any, verification: VerificationResult, tradeCount: number): string[] {
+  private generateWarnings(backtest: unknown, verification: VerificationResult, tradeCount: number): string[] {
     const warnings: string[] = [];
 
     if (tradeCount < 20) {
@@ -502,7 +502,7 @@ export class MarketplaceService {
         });
 
         updated++;
-      } catch (e: any) {
+      } catch (e) {
         errors.push(`${s.id}: ${e.message}`);
       }
     }

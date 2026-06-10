@@ -16,10 +16,26 @@ import { initReactI18next } from 'react-i18next';
 
 import zhCN from './zh-CN.json';
 import en from './en.json';
+import zhHK from './zh-HK.json';
+import zhTW from './zh-TW.json';
+import ja from './ja.json';
+import ko from './ko.json';
+import fr from './fr.json';
+import de from './de.json';
+import es from './es.json';
+import ru from './ru.json';
 
 const resources = {
   'zh-CN': { translation: zhCN },
   en: { translation: en },
+  'zh-HK': { translation: zhHK },
+  'zh-TW': { translation: zhTW },
+  ja: { translation: ja },
+  ko: { translation: ko },
+  fr: { translation: fr },
+  de: { translation: de },
+  es: { translation: es },
+  ru: { translation: ru },
 };
 
 const savedLang = (() => {

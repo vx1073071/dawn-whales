@@ -3,7 +3,7 @@
 
 import { ipcMain, BrowserWindow } from 'electron';
 import { shared } from './_import-shared';
-import { SmartMonitor, AlertQuery, AlertRule } from '../engine/smart-monitor';
+import { SmartMonitor, AlertQuery, AlertRule } from '../engine/core/smart-monitor';
 import log from 'electron-log';
 
 // Singleton monitor instance

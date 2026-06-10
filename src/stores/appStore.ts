@@ -19,7 +19,7 @@ export const useAppStore = create<AppStore>((set) => ({
   emergencyStop: () => {
     // Stop all live strategies
     if (typeof window !== 'undefined' && window.api?.strategy) {
-      window.api.strategy.getAll().then((result: any) => {
+      window.api.strategy.getAll().then((result: unknown) => {
         const strategies = result?.strategies || result || [];
         for (const s of strategies) {
           if (s.status === 'live') {

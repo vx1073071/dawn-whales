@@ -37,7 +37,7 @@ export class HealthChecker {
         try {
           const r = await fn();
           components.push({ name, ...r, lastChecked: Date.now() });
-        } catch (e: any) {
+        } catch (e) {
           components.push({
             name,
             status: 'unhealthy',

@@ -3,7 +3,7 @@
 
 export class OpenDClient {
   private ws: WebSocket | null = null;
-  private callbacks: Map<string, ((data: any) => void)[]> = new Map();
+  private callbacks: Map<string, ((data: unknown) => void)[]> = new Map();
 
   async connect(url: string, codes: string[]): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -31,13 +31,13 @@ export class OpenDClient {
     this.ws = null;
   }
 
-  on(type: string, callback: (data: any) => void): void {
+  on(type: string, callback: (data: unknown) => void): void {
     const handlers = this.callbacks.get(type) || [];
     handlers.push(callback);
     this.callbacks.set(type, handlers);
   }
 
-  off(type: string, callback: (data: any) => void): void {
+  off(type: string, callback: (data: unknown) => void): void {
     const handlers = this.callbacks.get(type) || [];
     this.callbacks.set(
       type,
@@ -57,7 +57,7 @@ export class OpenDClient {
       }));
     }
     return new Promise((resolve) => {
-      const handler = (data: any) => {
+      const handler = (data: unknown) => {
         if (data.type === 'quotes') {
           this.off('quotes', handler);
           resolve(data.quotes || []);

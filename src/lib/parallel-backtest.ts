@@ -6,9 +6,9 @@ const BATCH_SIZE = 4; // 同时并行4个回测
 interface WorkerMessage {
   type: 'run' | 'result' | 'error';
   id: number;
-  config?: any;
+  config?: unknown;
   klines?: any[];
-  data?: any;
+  data?: unknown;
   error?: string;
 }
 

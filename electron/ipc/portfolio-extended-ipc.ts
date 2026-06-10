@@ -27,9 +27,9 @@ export function registerPortfolioExtendedIPC(
       const quotes = getCachedQuotes();
       const funds = getAccountFunds(acc.accountId);
 
-      const totalMV = positions.reduce((s: number, p: any) => s + (p.marketValue || 0), 0);
+      const totalMV = positions.reduce((s: number, p: unknown) => s + (p.marketValue || 0), 0);
 
-      const enriched = positions.map((p: any) => {
+      const enriched = positions.map((p: unknown) => {
         const q = quotes?.get(p.code) || {};
         const mv = p.marketValue || p.qty * (q.lastPrice || p.marketPrice || 0);
         const costPrice = p.costPrice || p.avgCost || 0;
@@ -90,7 +90,7 @@ export function registerPortfolioExtendedIPC(
 
       let totalMV = 0;
 
-      positions.forEach((p: any) => {
+      positions.forEach((p: unknown) => {
         const mv = p.marketValue || p.qty * (quotes?.get(p.code)?.lastPrice || p.marketPrice || 0);
         totalMV += mv;
 
@@ -146,7 +146,7 @@ export function registerPortfolioExtendedIPC(
       const acc = accounts[0];
       const funds = getAccountFunds(acc.accountId);
       const positions = getAccountPositions(acc.accountId);
-      const totalMV = positions.reduce((s: number, p: any) => s + (p.marketValue || 0), 0);
+      const totalMV = positions.reduce((s: number, p: unknown) => s + (p.marketValue || 0), 0);
       const totalAssets = funds?.totalAssets || totalMV + (funds?.cash || 0);
 
       // Generate synthetic equity curve with realistic variance
@@ -220,7 +220,7 @@ export function registerPortfolioExtendedIPC(
       const acc = accounts[0];
       const funds = getAccountFunds(acc.accountId);
       const positions = getAccountPositions(acc.accountId);
-      const totalMV = positions.reduce((s: number, p: any) => s + (p.marketValue || 0), 0);
+      const totalMV = positions.reduce((s: number, p: unknown) => s + (p.marketValue || 0), 0);
       const totalAssets = funds?.totalAssets || totalMV + (funds?.cash || 0);
 
       // Concentration risk
@@ -229,7 +229,7 @@ export function registerPortfolioExtendedIPC(
       // Leverage detection
       const leveragedExposure = positions
         .filter(p => p.code?.match(/TQQQ|SQQQ|TMF|UVXY|UVIX|UDOW|SDOW/))
-        .reduce((s: number, p: any) => s + (p.marketValue || 0), 0);
+        .reduce((s: number, p: unknown) => s + (p.marketValue || 0), 0);
 
       return {
         success: true,

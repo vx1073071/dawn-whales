@@ -6,17 +6,16 @@ import { ipcMain, BrowserWindow, app } from "electron";
 import log from "electron-log";
 
 export function registerStrategyIPC(
-  strategyEngine: any,
-  db: any,
-  opendClient: any,
-  backtestEngine: any,
-  liveExecutor: any
-) {
+  strategyEngine: unknown,
+  db: unknown,
+  opendClient: unknown,
+  backtestEngine: unknown,
+  liveExecutor: unknown) {
 
 
 
   // ── Strategy Engine ─────────────────────────────────────────────────
-  ipcMain.handle('strategy:create', async (_e, dsl: any) => {
+  ipcMain.handle('strategy:create', async (_e, dsl: unknown) => {
     const vErr = validate(StrategyCreateSchema, { dsl });
     if (vErr) return vErr;
     try {
@@ -43,14 +42,14 @@ export function registerStrategyIPC(
   // ── Strategy Update (with field whitelist for security) ─────────────
   const STRATEGY_UPDATE_WHITELIST = ['name', 'description', 'params', 'stopLoss', 'takeProfit', 'symbol'];
 
-  ipcMain.handle('strategy:update', async (_e, id: string, updates: any) => {
+  ipcMain.handle('strategy:update', async (_e, id: string, updates: unknown) => {
     const vErr = validate(StrategyUpdateSchema, { updates });
     if (vErr) return vErr;
     try {
       const strategy = strategyEngine?.getStrategy(id);
       if (!strategy) return { success: false, error: 'Strategy not found' };
       // Security: only allow whitelisted fields
-      const sanitized: any = {};
+      const sanitized: unknown = {};
       for (const key of STRATEGY_UPDATE_WHITELIST) {
         if (key in updates) sanitized[key] = updates[key];
       }
@@ -70,7 +69,7 @@ export function registerStrategyIPC(
 
 
 
-  ipcMain.handle('strategy:backtest', async (_e, config: any) => {
+  ipcMain.handle('strategy:backtest', async (_e, config: unknown) => {
     if (!strategyEngine || !backtestEngine) {
       return { success: false, error: 'Engine not ready' };
     }
@@ -130,7 +129,7 @@ export function registerStrategyIPC(
 
 
   // ── Strategy AI — LLM-powered (Sprint 2 P1) ─────────────────────
-  ipcMain.handle('strategy:explain', async (_e, strategy: any) => {
+  ipcMain.handle('strategy:explain', async (_e, strategy: unknown) => {
     const prompt = `You are a quantitative trading strategy analyst. Explain the following strategy in clear, actionable English for a retail trader.
 
 Strategy:
@@ -167,8 +166,8 @@ Keep it under 200 words. Use bullet points.`;
 
 
 
-  ipcMain.handle('strategy:compare', async (_e, s1: any, s2: any) => {
-    const fmt = (s: any) => `Name: ${s.name || '?'} | Symbol: ${s.symbol || '?'} | Type: ${s.strategy?.type || '?'} | Params: ${JSON.stringify(s.strategy?.params || {})} | SL: ${s.strategy?.stopLoss || '?'}% | TP: ${s.strategy?.takeProfit || '?'}%`;
+  ipcMain.handle('strategy:compare', async (_e, s1: unknown, s2: unknown) => {
+    const fmt = (s: unknown) => `Name: ${s.name || '?'} | Symbol: ${s.symbol || '?'} | Type: ${s.strategy?.type || '?'} | Params: ${JSON.stringify(s.strategy?.params || {})} | SL: ${s.strategy?.stopLoss || '?'}% | TP: ${s.strategy?.takeProfit || '?'}%`;
     const prompt = `You are a quantitative trading strategy comparison tool. Compare these two strategies objectively.
 
 Strategy A: ${fmt(s1)}
@@ -289,7 +288,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     const { strategyType, ranges, klines, method, populationSize, generations, iterations } = raw as {
       strategyType: string;
       ranges: ParamRange[];
-      klines: any[];
+      klines: unknown[];
       method?: 'ga' | 'bayesian' | 'both';
       populationSize?: number;
       generations?: number;
@@ -322,7 +321,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   ipcMain.handle('paper:execute-signal', async (_e, raw: unknown) => {
     try {
       const { getPaperTrader } = require('./engine/paper-trader');
-      const signal = raw as any;
+      const signal = raw as unknown;
       const pt = getPaperTrader('default');
       const trade = pt.executeSignal(signal, signal.name);
       return { success: !!trade, trade };
@@ -490,7 +489,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
       const pt = getPaperTrader('default');
 
-      const order = raw as any;
+      const order = raw as unknown;
 
       const orderId = pt.submitOrder(order);
 
@@ -514,13 +513,13 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const req = raw as { stocks?: Array<{ code: string; name: string }>; preset?: string; limit?: number };
       if (req.limit != null) {
         // Top-A mode
-        const result = await scoreTopAStocks(req.limit, req.preset as any);
+        const result = await scoreTopAStocks(req.limit, req.preset as unknown);
         return { success: true, ...result };
       }
       if (!req.stocks || req.stocks.length === 0) {
         return { success: false, error: 'stocks array is required' };
       }
-      const result = await scoreStocks(req as any);
+      const result = await scoreStocks(req as unknown);
       return { success: true, ...result };
     } catch (err) {
       return { success: false, error: err.message };
@@ -534,7 +533,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   ipcMain.handle('strategy:compare', async (_e, raw: unknown) => {
     try {
       const { compareBacktests, summaryTable } = require('./engine/backtest-comparator');
-      const { results } = raw as { results: any[] };
+      const { results } = raw as { results: unknown[] };
       if (!results || results.length === 0) {
         return { success: false, error: 'At least one backtest result required' };
       }
@@ -604,7 +603,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
 
 
-  ipcMain.handle('live:add-strategy', async (_e, config: any) => {
+  ipcMain.handle('live:add-strategy', async (_e, config: unknown) => {
     try {
       if (!liveExecutor) return { success: false, error: 'LiveExecutor not initialized' };
       const { strategyId, symbol, signalType, price, quantity, stopLoss, takeProfit } = config;

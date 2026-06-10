@@ -9,7 +9,7 @@ import * as path from 'path';
 import log from 'electron-log';
 
 interface PrefsSection {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // In-memory cache
@@ -56,7 +56,7 @@ export function registerPrefsIPC() {
   });
 
   // ── prefs:set — set value for key ───────────────────────────────────
-  ipcMain.handle('prefs:set', async (_e, key: string, value: any) => {
+  ipcMain.handle('prefs:set', async (_e, key: string, value: unknown) => {
     if (key.includes('.')) {
       setNested(prefsCache, key, value);
     } else {
@@ -78,7 +78,7 @@ export function registerPrefsIPC() {
   });
 
   // ── prefs:set-section — replace entire section ─────────────────────
-  ipcMain.handle('prefs:set-section', async (_e, section: string, data: any) => {
+  ipcMain.handle('prefs:set-section', async (_e, section: string, data: unknown) => {
     prefsCache[section] = data;
     dirty = true;
     save();
@@ -86,13 +86,13 @@ export function registerPrefsIPC() {
   });
 
   // ── prefs:custom-get — custom key with default ──────────────────────
-  ipcMain.handle('prefs:custom-get', async (_e, key: string, defaultValue?: any) => {
+  ipcMain.handle('prefs:custom-get', async (_e, key: string, defaultValue?: unknown) => {
     const val = key.includes('.') ? getNested(prefsCache, key) : prefsCache[key];
     return { success: true, value: val ?? defaultValue ?? null };
   });
 
   // ── prefs:custom-set — custom key with options ──────────────────────
-  ipcMain.handle('prefs:custom-set', async (_e, key: string, value: any, options?: { merge?: boolean }) => {
+  ipcMain.handle('prefs:custom-set', async (_e, key: string, value: unknown, options?: { merge?: boolean }) => {
     if (options?.merge && !key.includes('.')) {
       prefsCache[key] = { ...prefsCache[key], ...value };
     } else if (key.includes('.')) {
@@ -139,11 +139,11 @@ export function registerPrefsIPC() {
 }
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
-function getNested(obj: any, path: string): any {
+function getNested(obj: unknown, path: string): any {
   return path.split('.').reduce((o, k) => (o && o[k] !== undefined ? o[k] : undefined), obj);
 }
 
-function setNested(obj: any, path: string, value: any) {
+function setNested(obj: unknown, path: string, value: unknown) {
   const keys = path.split('.');
   let curr = obj;
   for (let i = 0; i < keys.length - 1; i++) {

@@ -10,7 +10,7 @@ export interface TierRule {
 
 export interface TieredEntry {
   key: string;
-  data: any;
+  data: unknown;
   tier: TierLevel;
   createdAt: number;
   lastAccessed: number;
@@ -26,7 +26,7 @@ export class DataTiering {
   ];
   private stats = { promotions: 0, demotions: 0, evictions: 0 };
 
-  set(key: string, data: any): void {
+  set(key: string, data: unknown): void {
     const now = Date.now();
     if (this.entries.has(key)) {
       const entry = this.entries.get(key)!;
@@ -38,7 +38,7 @@ export class DataTiering {
     this.entries.set(key, { key, data, tier: 'hot', createdAt: now, lastAccessed: now, accessCount: 1 });
   }
 
-  get(key: string): any | null {
+  get(key: string): unknown | null {
     const entry = this.entries.get(key);
     if (!entry) return null;
     entry.lastAccessed = Date.now();

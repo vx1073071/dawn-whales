@@ -1,6 +1,6 @@
 ﻿// T58: Lightweight Event Bus with wildcard matching
 import log from 'electron-log';
-type EventHandler = (...args: any[]) => void;
+type EventHandler = (...args: unknown[]) => void;
 
 interface Subscription {
   pattern: RegExp;
@@ -25,7 +25,7 @@ export class EventBus {
     return () => { this.subs = this.subs.filter(s => s !== sub); };
   }
 
-  emit(event: string, ...args: any[]): void {
+  emit(event: string, ...args: unknown[]): void {
     for (const sub of [...this.subs]) {
       if (sub.pattern.test(event)) {
         sub.handler(...args);
@@ -34,7 +34,7 @@ export class EventBus {
     this.subs = this.subs.filter(s => !s.once || !s.pattern.test(event));
   }
 
-  async emitAsync(event: string, ...args: any[]): Promise<void> {
+  async emitAsync(event: string, ...args: unknown[]): Promise<void> {
     const promises: Promise<void>[] = [];
     for (const sub of [...this.subs]) {
       if (sub.pattern.test(event)) {

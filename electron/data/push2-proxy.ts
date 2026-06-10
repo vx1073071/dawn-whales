@@ -8,6 +8,7 @@ import https from 'https';
 import http from 'http';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import { httpGet } from '../utils/http';
 
 const execAsync = promisify(exec);
 
@@ -15,7 +16,7 @@ const execAsync = promisify(exec);
 
 export interface ProxyResult {
   success: boolean;
-  data: any;
+  data: unknown;
   source: 'push2' | 'datacenter' | 'python' | 'cache';
   latencyMs: number;
 }
@@ -40,33 +41,11 @@ export interface StockQuote {
 
 // ── Cache ──────────────────────────────────────────────────────────────────
 
-const cache = new Map<string, { data: any; expires: number; source: string }>();
+const cache = new Map<string, { data: unknown; expires: number; source: string }>();
 const DEFAULT_TTL = 5 * 60 * 1000; // 5 minutes
 
 // ── HTTP Helpers ───────────────────────────────────────────────────────────
 
-function httpGet(url: string, timeout = 10000): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const mod = url.startsWith('https') ? https : http;
-    const req = mod.get(url, { timeout }, (res) => {
-      if (res.statusCode === 302 && res.headers.location) {
-        httpGet(res.headers.location, timeout).then(resolve).catch(reject);
-        return;
-      }
-      let data = '';
-      res.on('data', (chunk: any) => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
-          resolve(data);
-        } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${data.substring(0, 200)}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
-  });
-}
 
 // ── Push2 Proxy Service ────────────────────────────────────────────────────
 
@@ -113,7 +92,7 @@ export class Push2ProxyService {
       const raw = await httpGet(url, 5000);
       const json = JSON.parse(raw);
       if (json.data?.diff) {
-        const sectors: SectorQuote[] = json.data.diff.map((item: any) => ({
+        const sectors: SectorQuote[] = json.data.diff.map((item: unknown) => ({
           code: item.f12,
           name: item.f14,
           changePct: item.f3,
@@ -124,7 +103,7 @@ export class Push2ProxyService {
         cache.set(cacheKey, { data: sectors, expires: Date.now() + DEFAULT_TTL, source: 'push2' });
         return { success: true, data: sectors, source: 'push2', latencyMs: Date.now() - start };
       }
-    } catch (err: any) {
+    } catch (err) {
       log.debug(`[Push2Proxy] push2 sector failed: ${err.message}`);
     }
 
@@ -149,7 +128,7 @@ export class Push2ProxyService {
         cache.set(cacheKey, { data: sectors, expires: Date.now() + DEFAULT_TTL, source: 'python' });
         return { success: true, data: sectors, source: 'python', latencyMs: Date.now() - start };
       }
-    } catch (err: any) {
+    } catch (err) {
       log.debug(`[Push2Proxy] Python sector failed: ${err.message}`);
     }
 
@@ -181,7 +160,7 @@ export class Push2ProxyService {
       const raw = await httpGet(url, 5000);
       const json = JSON.parse(raw);
       if (json.data?.diff) {
-        const items = json.data.diff.map((item: any) => ({
+        const items = json.data.diff.map((item: unknown) => ({
           code: item.f12,
           name: item.f14,
           changePct: item.f3,
@@ -195,7 +174,7 @@ export class Push2ProxyService {
         cache.set(cacheKey, { data: items, expires: Date.now() + DEFAULT_TTL, source: 'push2' });
         return { success: true, data: items, source: 'push2', latencyMs: Date.now() - start };
       }
-    } catch (err: any) {
+    } catch (err) {
       log.debug(`[Push2Proxy] push2 capital flow failed: ${err.message}`);
     }
 
@@ -230,7 +209,7 @@ export class Push2ProxyService {
         cache.set(cacheKey, { data: quote, expires: Date.now() + 60000, source: 'push2' }); // 1 min for quotes
         return { success: true, data: quote, source: 'push2', latencyMs: Date.now() - start };
       }
-    } catch (err: any) {
+    } catch (err) {
       log.debug(`[Push2Proxy] push2 quote failed: ${err.message}`);
     }
 
@@ -254,7 +233,7 @@ export class Push2ProxyService {
       const raw = await httpGet(url, 5000);
       const json = JSON.parse(raw);
       if (json.data?.diff) {
-        const sh = json.data.diff.find((d: any) => d.f12 === '000001');
+        const sh = json.data.diff.find((d: unknown) => d.f12 === '000001');
         const breadth = {
           advancing: sh?.f104 || 0,
           declining: sh?.f105 || 0,
@@ -264,7 +243,7 @@ export class Push2ProxyService {
         cache.set(cacheKey, { data: breadth, expires: Date.now() + DEFAULT_TTL, source: 'push2' });
         return { success: true, data: breadth, source: 'push2', latencyMs: Date.now() - start };
       }
-    } catch (err: any) {
+    } catch (err) {
       log.debug(`[Push2Proxy] push2 breadth failed: ${err.message}`);
     }
 

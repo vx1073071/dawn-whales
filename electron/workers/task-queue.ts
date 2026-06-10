@@ -7,7 +7,7 @@ export interface QueueTask<T = any> {
   id: string;
   priority: TaskPriority;
   module: string;
-  data: any;
+  data: unknown;
   resolve: (result: T) => void;
   reject: (err: Error) => void;
   createdAt: number;

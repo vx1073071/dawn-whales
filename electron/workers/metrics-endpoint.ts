@@ -29,7 +29,7 @@ export class MetricsEndpoint {
         }
       });
 
-      this.server.on('error', (err: any) => {
+      this.server.on('error', (err: unknown) => {
         if (err.code === 'EADDRINUSE') {
           log.warn(`[Metrics] Port ${this.port} in use, skipping`);
           resolve();

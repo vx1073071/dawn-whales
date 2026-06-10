@@ -215,7 +215,7 @@ export class WebSocketManager extends EventEmitter {
 
   // Public API
 
-  sendToClient(clientId: string, data: any): boolean {
+  sendToClient(clientId: string, data: unknown): boolean {
     const client = this.clients.get(clientId);
     if (!client || client.ws.readyState !== WebSocket.OPEN) {
       return false;
@@ -230,7 +230,7 @@ export class WebSocketManager extends EventEmitter {
     }
   }
 
-  broadcast(channel: string, data: any): number {
+  broadcast(channel: string, data: unknown): number {
     const message = JSON.stringify({ type: 'data', channel: channel, data });
     let sentCount = 0;
 

@@ -8,13 +8,13 @@
 
 import { ipcMain, IpcMainInvokeEvent, BrowserWindow } from 'electron';
 import log from 'electron-log';
-import { TradeExecutor, getTradeExecutor, TradeSignal, ExecutionConfig, TradeOrder } from '../engine/trade-executor';
+import { TradeExecutor, getTradeExecutor, TradeSignal, ExecutionConfig, TradeOrder } from '../engine/analysis/trade-executor';
 
 // ============================================================
 // Types
 // ============================================================
 
-interface IPCResponse<T = any> {
+interface IPCResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;
@@ -63,7 +63,7 @@ function createErrorResponse(error: string | Error): IPCResponse<null> {
 // Event Broadcasting
 // ============================================================
 
-function broadcastToRenderers(channel: string, data: any): void {
+function broadcastToRenderers(channel: string, data: unknown): void {
   for (const win of registeredWindows) {
     if (!win.isDestroyed()) {
       win.webContents.send(channel, data);
@@ -88,7 +88,7 @@ function setupEventForwarding(executor: TradeExecutor): void {
     broadcastToRenderers('trade:order-rejected', { order, reason });
   });
 
-  executor.on('risk:rejected', (signal: TradeSignal, riskCheck: any) => {
+  executor.on('risk:rejected', (signal: TradeSignal, riskCheck: unknown) => {
     broadcastToRenderers('trade:risk-rejected', { signal, riskCheck });
   });
 
@@ -104,7 +104,7 @@ function setupEventForwarding(executor: TradeExecutor): void {
     broadcastToRenderers('trade:emergency-stop', { cancelledCount });
   });
 
-  executor.on('position:updated', (position: any) => {
+  executor.on('position:updated', (position: unknown) => {
     broadcastToRenderers('trade:position-updated', position);
   });
 

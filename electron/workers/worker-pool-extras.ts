@@ -20,7 +20,7 @@ export interface PoolBenchmark {
 }
 
 export class WorkerPoolBenchmark {
-  async runBatch(pool: WorkerPool, taskData: any[], taskFn: (data: any) => any): Promise<PoolBenchmark> {
+  async runBatch(pool: WorkerPool, taskData: any[], taskFn: (data: unknown) => any): Promise<PoolBenchmark> {
     const latencies: number[] = [];
     const start = Date.now();
     let failures = 0;
@@ -77,7 +77,7 @@ export class WorkerPoolBenchmark {
 
       return pool.execute('stress-task', { id: i }).then(
         () => { completed++; active--; },
-        (err: any) => {
+        (err: unknown) => {
           if (err?.message?.includes('timeout')) timeout++;
           else failed++;
           active--;
@@ -183,7 +183,7 @@ export class PoolHealthMonitor {
 export interface PriorityTask {
   id: string;
   priority: number; // 0=low, 1=normal, 2=high, 3=critical
-  data: any;
+  data: unknown;
 }
 
 export class PriorityPoolScheduler {

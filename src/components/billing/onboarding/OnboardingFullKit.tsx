@@ -262,16 +262,16 @@ function FriendlyErrorBanner() {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
         <div style={{ fontSize: 11, color: '#EF4444' }}>
-          ❌ 旧: "代码格式错误, 请输入有效代码"
+          ❌ 旧: {t("代码格式错误, 请输入有效代码")}
         </div>
         <div style={{ fontSize: 11, color: '#34D399' }}>
-          ✅ 新: "港股代码是5位数字哦（如 00700），试试重新输入？"
+          ✅ 新: {t("港股代码是5位数字哦（如 00700），试试重新输入？")}
         </div>
         <div style={{ fontSize: 11, color: '#EF4444' }}>
-          ❌ 旧: "参数超出范围"
+          ❌ 旧: {t("参数超出范围")}
         </div>
         <div style={{ fontSize: 11, color: '#34D399' }}>
-          ✅ 新: "快线 5~20 适合短线快进快出, 慢线 20~200 适合中长期趋势——调整一下试试？"
+          ✅ 新: {t("快线 5~20 适合短线快进快出, 慢线 20~200 适合中长期趋势——调整一下试试？")}
         </div>
       </div>
     </div>
@@ -573,7 +573,7 @@ function BacktestAndSignals() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {BACKTEST_STORIES.map(s => <BacktestStoryRow key={s.title} story={s} />)}
           <div style={{ marginTop: 8, fontSize: 12, color: '#6B7280', textAlign: 'center' }}>
-            💡 回测故事化 — 把冷冰冰的数字变成"投入1万→变1.8万"的直观感受
+            💡 回测故事化 — 把冷冰冰的数字变成{t("投入1万→变1.8万")}的直观感受
           </div>
         </div>
       )}

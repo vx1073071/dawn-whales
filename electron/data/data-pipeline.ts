@@ -30,8 +30,8 @@ export interface CleaningResult {
 export interface Anomaly {
   field: string;
   type: 'outlier' | 'missing' | 'inconsistent';
-  originalValue: any;
-  cleanedValue: any;
+  originalValue: unknown;
+  cleanedValue: unknown;
   confidence: number;
   method: string;
 }

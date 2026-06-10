@@ -7,12 +7,11 @@ import log from 'electron-log';
 import { validate } from '../ipc-schemas';
 
 export function registerWsIPC(
-  mainWindow: any
-) {
+  mainWindow: unknown) {
 
 
   // ── WebSocket Real-time Data Enhancer (JVS-58) ──────────────────────────
-  ipcMain.handle('ws:connect', async (_e, config: any) => {
+  ipcMain.handle('ws:connect', async (_e, config: unknown) => {
     try {
       const result = await connectWebSocket(config);
       return { success: result };
@@ -234,7 +233,7 @@ export function registerWsIPC(
 
 
   // ── WS Data Stream (JVS-29) ────────────────────────────────────────────
-  ipcMain.handle('ws:start-stream', async (_e, config?: any) => {
+  ipcMain.handle('ws:start-stream', async (_e, config?: unknown) => {
     try {
       const stream = getWsDataStream();
       await stream.start();

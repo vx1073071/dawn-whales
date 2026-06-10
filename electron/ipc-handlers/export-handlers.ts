@@ -9,39 +9,39 @@ import {
   generateSummaryReport,
   ExportOptions,
   BatchExportRequest,
-} from '../engine/data-exporter';
+} from '../engine/data/data-exporter';
 import log from 'electron-log';
 
 export function registerExportHandlers() {
 
   // export:csv — 导出指定数据为 CSV
-  ipcMain.handle('export:csv', async (_e, target: string, filters?: any) => {
+  ipcMain.handle('export:csv', async (_e, target: string, filters?: unknown) => {
     try {
       const result = exportData({ target: target as any, format: 'csv', filters });
       return { success: result.success, data: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Export] CSV export failed:', err.message);
       return { success: false, error: err.message };
     }
   });
 
   // export:json — 导出指定数据为 JSON
-  ipcMain.handle('export:json', async (_e, target: string, filters?: any) => {
+  ipcMain.handle('export:json', async (_e, target: string, filters?: unknown) => {
     try {
       const result = exportData({ target: target as any, format: 'json', filters });
       return { success: result.success, data: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Export] JSON export failed:', err.message);
       return { success: false, error: err.message };
     }
   });
 
   // export:md — 导出指定数据为 Markdown
-  ipcMain.handle('export:md', async (_e, target: string, filters?: any) => {
+  ipcMain.handle('export:md', async (_e, target: string, filters?: unknown) => {
     try {
       const result = exportData({ target: target as any, format: 'md', filters });
       return { success: result.success, data: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Export] Markdown export failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -52,7 +52,7 @@ export function registerExportHandlers() {
     try {
       const result = batchExport(request);
       return { success: result.success, data: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Export] Batch export failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -87,7 +87,7 @@ export function registerExportHandlers() {
       });
 
       return { success: result.success, data: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Export] Save dialog failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -98,7 +98,7 @@ export function registerExportHandlers() {
     try {
       const report = generateSummaryReport();
       return { success: true, data: { report, generatedAt: new Date().toISOString() } };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Export] Summary report failed:', err.message);
       return { success: false, error: err.message };
     }

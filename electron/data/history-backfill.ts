@@ -6,6 +6,7 @@
 import log from 'electron-log';
 import https from 'https';
 import http from 'http';
+import { httpGet } from '../utils/http';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -91,34 +92,6 @@ const MODULES: ModuleDef[] = [
 
 // ── HTTP Helper ────────────────────────────────────────────────────────────
 
-function httpGet(url: string, timeout = 15000): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const mod = url.startsWith('https') ? https : http;
-    const req = mod.get(url, {
-      timeout,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Referer': 'https://data.eastmoney.com/',
-      },
-    }, (res) => {
-      if (res.statusCode === 302 && res.headers.location) {
-        httpGet(res.headers.location, timeout).then(resolve).catch(reject);
-        return;
-      }
-      let data = '';
-      res.on('data', (chunk: any) => data += chunk);
-      res.on('end', () => {
-        if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
-          resolve(data);
-        } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${data.substring(0, 200)}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
-  });
-}
 
 function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -270,7 +243,7 @@ export class HistoryBackfillService {
           endDate: records[records.length - 1]?.date,
           latencyMs: Date.now() - start,
         };
-      } catch (err: any) {
+      } catch (err) {
         if (attempt < this.config.retryCount) {
           await sleep(1000 * (attempt + 1));
           continue;
@@ -332,7 +305,7 @@ export class HistoryBackfillService {
 
     if (!json.result?.data) return [];
 
-    return json.result.data.map((item: any) => {
+    return json.result.data.map((item: unknown) => {
       const date = item.REPORT_DATE?.substring(0, 10) || '';
       const value = item.BASIC_SAME || item.SAME || item.NATIONAL_SAME || item.MAKE_INDEX || 0;
       return {
@@ -361,7 +334,7 @@ export class HistoryBackfillService {
 
     if (!json.result?.data) return [];
 
-    return json.result.data.map((item: any) => {
+    return json.result.data.map((item: unknown) => {
       const date = item.TRADE_DATE?.substring(0, 10) || '';
       return {
         date,
@@ -439,10 +412,10 @@ export function getHistoryBackfill(): HistoryBackfillService {
 
 // ── IPC Handlers ───────────────────────────────────────────────────────────
 
-export function registerHistoryBackfillIPC(ipcMain: any): void {
+export function registerHistoryBackfillIPC(ipcMain: unknown): void {
   const service = getHistoryBackfill();
 
-  ipcMain.handle('history:backfill-start', async (_event: any, moduleIds?: string[]) => {
+  ipcMain.handle('history:backfill-start', async (_event: unknown, moduleIds?: string[]) => {
     return service.startBackfill(moduleIds);
   });
 

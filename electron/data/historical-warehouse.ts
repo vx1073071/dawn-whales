@@ -144,7 +144,7 @@ export class HistoricalDataWarehouse {
       `);
 
       log.info(`[HistoricalWarehouse] Database initialized at ${this.dbPath}`);
-    } catch (err: any) {
+    } catch (err) {
       log.error('[HistoricalWarehouse] Database initialization failed:', err.message);
       throw err;
     }
@@ -193,7 +193,7 @@ export class HistoricalDataWarehouse {
 
       tx(points);
       log.info(`[HistoricalWarehouse] Inserted ${inserted} points, updated ${updated} points`);
-    } catch (err: any) {
+    } catch (err) {
       log.error('[HistoricalWarehouse] Insert failed:', err.message);
       throw err;
     }
@@ -221,7 +221,7 @@ export class HistoricalDataWarehouse {
       const stmt = this.db.prepare(sql);
       const rows = stmt.all(symbol, timeRange.start, timeRange.end);
 
-      return rows.map((row: any) => ({
+      return rows.map((row: unknown) => ({
         symbol: row.symbol,
         timestamp: row.timestamp,
         open: row.open,
@@ -233,7 +233,7 @@ export class HistoricalDataWarehouse {
         source: row.source,
         quality: row.quality,
       }));
-    } catch (err: any) {
+    } catch (err) {
       log.error('[HistoricalWarehouse] Query failed:', err.message);
       return [];
     }
@@ -325,7 +325,7 @@ export class HistoricalDataWarehouse {
         endTime: timeRange.end,
         dataPoints: data.length,
       };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[HistoricalWarehouse] Aggregation failed:', err.message);
       return {
         symbol,
@@ -381,12 +381,12 @@ export class HistoricalDataWarehouse {
 
       return {
         totalPoints: countResult.count,
-        symbols: symbolsResult.map((r: any) => r.symbol),
+        symbols: symbolsResult.map((r: unknown) => r.symbol),
         earliestTimestamp: timeRangeResult.earliest || 0,
         latestTimestamp: timeRangeResult.latest || 0,
         dbSizeMB: Math.round(dbSizeMB * 100) / 100,
       };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[HistoricalWarehouse] Stats query failed:', err.message);
       return {
         totalPoints: 0,
@@ -413,7 +413,7 @@ export class HistoricalDataWarehouse {
 
       log.info(`[HistoricalWarehouse] Cleaned ${result.changes} old data points`);
       return { deleted: result.changes };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[HistoricalWarehouse] Cleanup failed:', err.message);
       return { deleted: 0 };
     }

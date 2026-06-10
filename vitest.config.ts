@@ -29,7 +29,10 @@ export default defineConfig({
     // Exclude legacy main()-style test files (no top-level describe/test) and node-environment tests
     exclude: [
       // Legacy/empty test files (no vitest describe/it)
-      'tests/engine.test.ts',
+           // R86: QClaw snapshot/gate tests (environment-dependent)
+      'tests/q79-01-i18n-consistency.test.ts',
+      'tests/q79-03-excluded-migration.test.ts',
+ 'tests/engine.test.ts',
       'tests/e2e-pipeline.test.ts',
       'tests/kelly-sizing.test.ts',
       'tests/strategy-execute-integration.test.ts',

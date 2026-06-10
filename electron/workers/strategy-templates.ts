@@ -9,11 +9,11 @@ export interface StrategyTemplate {
     name: string;
     label: string;
     type: 'number' | 'select' | 'boolean';
-    default: any;
+    default: unknown;
     min?: number;
     max?: number;
     step?: number;
-    options?: { label: string; value: any }[];
+    options?: { label: string; value: unknown }[];
     description: string;
   }[];
   code?: string;

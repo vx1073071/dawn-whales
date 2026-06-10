@@ -11,7 +11,7 @@ export function registerVersionIPC(
 
 
   // ── JVS-40: Version Control Service ──────────────────────────────────────
-  ipcMain.handle('version:track', async (_e, entityId: string, entityType: string, data: any, changeType?: string, changeSummary?: string, userId?: string, tags?: string[]) => {
+  ipcMain.handle('version:track', async (_e, entityId: string, entityType: string, data: unknown, changeType?: string, changeSummary?: string, userId?: string, tags?: string[]) => {
     try {
       const version = await trackVersion(entityId, entityType, data, changeType as any, changeSummary, userId, tags);
       return { success: true, version };
@@ -77,7 +77,7 @@ export function registerVersionIPC(
 
 
 
-  ipcMain.handle('version:query', async (_e, query: any) => {
+  ipcMain.handle('version:query', async (_e, query: unknown) => {
     try {
       const versions = await queryVersions(query);
       return { success: true, versions };
@@ -121,7 +121,7 @@ export function registerVersionIPC(
 
 
 
-  ipcMain.handle('version:export', async (_e, query?: any) => {
+  ipcMain.handle('version:export', async (_e, query?: unknown) => {
     try {
       const json = await exportVersions(query);
       return { success: true, json };

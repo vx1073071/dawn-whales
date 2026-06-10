@@ -10,98 +10,98 @@ import { autoUpdater } from 'electron-updater';
 import { FutuOpenDClient } from './broker/futu-opend';
 import { BrokerManager } from './broker/BrokerManager';
 import type { BrokerConfig } from './broker/IBrokerAdapter';
-import { StrategyEngine } from './engine/strategy-engine';
-import { BacktestEngine } from './engine/backtest-engine';
+import { StrategyEngine } from './engine/analysis/strategy-engine';
+import { BacktestEngine } from './engine/backtest/backtest-engine';
 import { DatabaseManager } from './data/database';
-import { RiskEngine } from './engine/risk-engine';
-import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/nl-parser';
+import { RiskEngine } from './engine/risk/risk-engine';
+import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/agents/nl-parser';
 import { MarketplaceService } from './data/marketplace-service';
 import { DataProviderService } from './data/data-provider';
 import { EMDataProvider } from './data/em-data-provider';
 import { MacroDataProvider } from './data/macro-provider';
-import { SentimentIndexEngine } from './engine/sentiment-index';
-import { getRealtimeSentimentStream } from './engine/sentiment-stream';
-import { getDataQualityDashboard } from './engine/data-quality-dashboard';
-import { exploreCache, getCacheEntryDetail, getCacheKeys } from './engine/cache-explorer';
-import { getSentimentDashboard } from './engine/sentiment-dashboard';
-import { exportData, getAvailableModules } from './engine/data-export-service';
-import { getRateLimiterManager } from './engine/rate-limiter';
-import { runConsistencyCheck, getConsistencyRules } from './engine/data-consistency-checker';
-import { StockScreenerService } from './engine/stock-screener';
-import { NewsAggregatorService } from './engine/news-aggregator';
-import { SectorRotationMonitor } from './engine/sector-rotation';
-import { StockAnomalyDetector } from './engine/stock-anomaly-detector';
-import { MarketHotspotService } from './engine/market-hotspot';
-import { DataSchedulerService } from './engine/data-scheduler';
-import { initQuoteStream, getQuoteStream } from './engine/quote-stream';
-import { initLiveExecutor, getLiveExecutor, LiveExecutor } from './engine/live-executor';
-import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from './engine/dragon-tiger-list';
-import { getStockCapitalFlowRank, getSectorCapitalFlowRank, getConceptCapitalFlowRank } from './engine/capital-flow-rank';
-import { getCapitalFlowMonitor } from './engine/capital-flow-monitor';
-import { getFundHoldings, getStockFundOwnership, getFundIncreaseRank, getFundDecreaseRank } from './engine/fund-holdings';
-import { diagnoseStock, batchDiagnose } from './engine/stock-diagnosis';
-import { calculatePortfolioRisk } from './engine/portfolio-risk';
-import { getMarketBreadth } from './engine/market-breadth';
-import { getConsumerDataReport } from './engine/consumer-data';
-import { getMarginDataReport, getStockMargin, getMarginBalanceRanking, getShortInterestRanking } from './engine/margin-data';
-import { getStockOverview, getMarketOverview, getDailyReport } from './engine/emi-unified';
+import { SentimentIndexEngine } from './engine/analysis/sentiment-index';
+import { getRealtimeSentimentStream } from './engine/analysis/sentiment-stream';
+import { getDataQualityDashboard } from './engine/data/data-quality-dashboard';
+import { exploreCache, getCacheEntryDetail, getCacheKeys } from './engine/data/cache-explorer';
+import { getSentimentDashboard } from './engine/analysis/sentiment-dashboard';
+import { exportData, getAvailableModules } from './engine/data/data-export-service';
+import { getRateLimiterManager } from './engine/core/rate-limiter';
+import { runConsistencyCheck, getConsistencyRules } from './engine/data/data-consistency-checker';
+import { StockScreenerService } from './engine/data/stock-screener';
+import { NewsAggregatorService } from './engine/data/news-aggregator';
+import { SectorRotationMonitor } from './engine/data/sector-rotation';
+import { StockAnomalyDetector } from './engine/data/stock-anomaly-detector';
+import { MarketHotspotService } from './engine/data/market-hotspot';
+import { DataSchedulerService } from './engine/data/data-scheduler';
+import { initQuoteStream, getQuoteStream } from './engine/data/quote-stream';
+import { initLiveExecutor, getLiveExecutor, LiveExecutor } from './engine/analysis/live-executor';
+import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from './engine/data/dragon-tiger-list';
+import { getStockCapitalFlowRank, getSectorCapitalFlowRank, getConceptCapitalFlowRank } from './engine/analysis/capital-flow-rank';
+import { getCapitalFlowMonitor } from './engine/analysis/capital-flow-monitor';
+import { getFundHoldings, getStockFundOwnership, getFundIncreaseRank, getFundDecreaseRank } from './engine/data/fund-holdings';
+import { diagnoseStock, batchDiagnose } from './engine/data/stock-diagnosis';
+import { calculatePortfolioRisk } from './engine/portfolio/portfolio-risk';
+import { getMarketBreadth } from './engine/data/market-breadth';
+import { getConsumerDataReport } from './engine/data/consumer-data';
+import { getMarginDataReport, getStockMargin, getMarginBalanceRanking, getShortInterestRanking } from './engine/data/margin-data';
+import { getStockOverview, getMarketOverview, getDailyReport } from './engine/core/emi-unified';
 import { getPythonProxy } from './data/python-proxy';
 import { getPush2Proxy } from './data/push2-proxy';
-import { getDataQualityMonitor, registerModule } from './engine/data-quality-monitor';
-import { captureSnapshot, querySnapshots, getSnapshot, compareSnapshots, getSnapshotTimeline, getLatestSnapshot, cleanupOldSnapshots, exportSnapshots, importSnapshots, getSnapshotStats, deleteSnapshot, clearAllSnapshots } from './engine/snapshot-service';
-import { trackVersion, getEntityVersions, getVersion, getLatestVersion, diffVersions, rollback, queryVersions, getVersionStats, deleteVersion, clearAllVersions, exportVersions, importVersions } from './engine/version-control-service';
-import { setupI18nDataIPC } from './engine/i18n-data';
-import { getFinancialReports } from './engine/financial-reports';
-import { getValuationData } from './engine/valuation-data';
-import { computeIndicators } from './engine/technical-indicators';
-import { getRealtimeIndicatorCalculator } from './engine/realtime-indicators';
-import { blackScholesPrice, calculateGreeks, impliedVolatility, buildVolSurface, priceAndGreeks } from './engine/options-pricing';
-import { calculateRiskMetrics, calcSharpeRatio, calcMaxDrawdown, calcVaR } from './engine/risk-metrics';
-import { brinsonAttribution, timeSeriesAttribution } from './engine/performance-attribution';
-import { correlationMatrix } from './engine/correlation-matrix-v2';
-import { detectSectorRotation } from './engine/sector-rotation-v2';
-import { getDataQualityStream } from './engine/data-quality-stream';
-import { getSmartCacheManager } from './engine/smart-cache';
-import { getDragonTigerStream } from './engine/dragon-tiger-stream';
-import { getUnlockCalendar } from './engine/unlock-calendar';
-import { getDividendCalendar } from './engine/dividend-calendar';
-import { getEarningsCalendar } from './engine/earnings-calendar';
-import { exportData } from './engine/data-exporter';
-import { getSmartPicker } from './engine/smart-picker';
+import { getDataQualityMonitor, registerModule } from './engine/data/data-quality-monitor';
+import { captureSnapshot, querySnapshots, getSnapshot, compareSnapshots, getSnapshotTimeline, getLatestSnapshot, cleanupOldSnapshots, exportSnapshots, importSnapshots, getSnapshotStats, deleteSnapshot, clearAllSnapshots } from './engine/analysis/snapshot-service';
+import { trackVersion, getEntityVersions, getVersion, getLatestVersion, diffVersions, rollback, queryVersions, getVersionStats, deleteVersion, clearAllVersions, exportVersions, importVersions } from './engine/core/version-control-service';
+import { setupI18nDataIPC } from './engine/core/i18n-data';
+import { getFinancialReports } from './engine/data/financial-reports';
+import { getValuationData } from './engine/analysis/valuation-data';
+import { computeIndicators } from './engine/analysis/technical-indicators';
+import { getRealtimeIndicatorCalculator } from './engine/data/realtime-indicators';
+import { blackScholesPrice, calculateGreeks, impliedVolatility, buildVolSurface, priceAndGreeks } from './engine/analysis/options-pricing';
+import { calculateRiskMetrics, calcSharpeRatio, calcMaxDrawdown, calcVaR } from './engine/risk/risk-metrics';
+import { brinsonAttribution, timeSeriesAttribution } from './engine/portfolio/performance-attribution';
+import { correlationMatrix } from './engine/risk/correlation-matrix-v2';
+import { detectSectorRotation } from './engine/data/sector-rotation-v2';
+import { getDataQualityStream } from './engine/data/data-quality-stream';
+import { getSmartCacheManager } from './engine/core/smart-cache';
+import { getDragonTigerStream } from './engine/data/dragon-tiger-stream';
+import { getUnlockCalendar } from './engine/data/unlock-calendar';
+import { getDividendCalendar } from './engine/data/dividend-calendar';
+import { getEarningsCalendar } from './engine/data/earnings-calendar';
+import { exportData } from './engine/data/data-exporter';
+import { getSmartPicker } from './engine/agents/smart-picker';
 import { getWsDataStream } from './data/ws-data-stream';
 import { getHistoryBackfill } from './data/history-backfill';
 import { getOpenDHealthMonitor } from './data/opd-health-data';
 // QClaw Q57-Q60
-import SentimentAttributionEngine from './engine/sentiment-attribution';
-import CapitalFlowPredictor from './engine/capital-flow-predictor';
-import SmartOrderRouter from './engine/smart-order-router';
-import TCAV2Engine from './engine/tca-v3';
-import MultiBrokerPnLEngine from './engine/multi-broker-pnl';
-import UnifiedRiskDashboard from './engine/unified-risk-dashboard';
+import SentimentAttributionEngine from './engine/analysis/sentiment-attribution';
+import CapitalFlowPredictor from './engine/analysis/capital-flow-predictor';
+import SmartOrderRouter from './engine/analysis/smart-order-router';
+import TCAV2Engine from './engine/analysis/tca-v3';
+import MultiBrokerPnLEngine from './engine/analysis/multi-broker-pnl';
+import UnifiedRiskDashboard from './engine/risk/unified-risk-dashboard';
 import { z } from 'zod';
-import { WalkForwardEngine } from './engine/walk-forward';
-import { ParameterScanner } from './engine/parameter-scanner-v2';
-import { computeCorrelationMatrix } from './engine/correlation-matrix';
-import { generateSmartAlerts, generateAlertSummary, type NotificationContext } from './engine/notification-engine';
-import { generateBacktestReport, generateQuickReport } from './engine/ai-report-generator';
-import { autoTune, type ParamRange } from './engine/auto-tuner';
-import { detectRegime, type RegimeLabel } from './engine/regime-detector';
-import { decomposeRisk, runMonteCarlo } from './engine/risk-decomposition';
-import { detectAnomalies } from './engine/anomaly-detector';
-import { buildCorrelationVisualization } from './engine/correlation-visualizer';
-import { runStressTest, runCustomShock, HISTORICAL_SCENARIOS } from './engine/stress-tester';
-import { compareBacktests, summaryTable } from './engine/backtest-comparator';
-import { getValuationDashboard, getValuationDashboardBatch } from './engine/valuation-dashboard';
-import { compareSectorStocks, compareMultipleSectors, rankSectorStocks } from './engine/sector-comparison';
-import { detectMacroAnomalies, analyzeMultipleIndicators } from './engine/macro-alert';
-import { detectCorrelationAnomalies, analyzeCorrelationMatrix } from './engine/correlation-alert';
-import { generateWalkForwardReport, generateBatchWalkForwardReport } from './engine/walk-forward-report';
-import { generateBrinsonReport, generateBatchBrinsonReport } from './engine/brinson-attribution';
-import { analyzeOptionsChain, analyzeBatchOptionsChain } from './engine/options-chain-analyzer';
-import { scoreAndRankStocks, screenStocks, batchScreenStocks } from './engine/multi-factor-selector';
-import { optimizePortfolio, generateEfficientFrontier, riskParityPortfolio, batchOptimizePortfolios } from './engine/portfolio-optimizer';
-import { connectWebSocket, disconnectWebSocket, subscribeToSymbol, unsubscribeFromSymbol, getWebSocketStatus, subscribeToSymbols, unsubscribeFromSymbols, getStreamingStats } from './engine/websocket-enhancer';
-import { startBackfill, stopBackfill, getBackfillStatus, getBackfillStats, backfillSymbols, incrementalBackfill } from './engine/backfill-service';
+import { WalkForwardEngine } from './engine/backtest/walk-forward';
+import { ParameterScanner } from './engine/portfolio/parameter-scanner-v2';
+import { computeCorrelationMatrix } from './engine/risk/correlation-matrix';
+import { generateSmartAlerts, generateAlertSummary, type NotificationContext } from './engine/core/notification-engine';
+import { generateBacktestReport, generateQuickReport } from './engine/agents/ai-report-generator';
+import { autoTune, type ParamRange } from './engine/agents/auto-tuner';
+import { detectRegime, type RegimeLabel } from './engine/risk/regime-detector';
+import { decomposeRisk, runMonteCarlo } from './engine/risk/risk-decomposition';
+import { detectAnomalies } from './engine/analysis/anomaly-detector';
+import { buildCorrelationVisualization } from './engine/risk/correlation-visualizer';
+import { runStressTest, runCustomShock, HISTORICAL_SCENARIOS } from './engine/risk/stress-tester';
+import { compareBacktests, summaryTable } from './engine/backtest/backtest-comparator';
+import { getValuationDashboard, getValuationDashboardBatch } from './engine/analysis/valuation-dashboard';
+import { compareSectorStocks, compareMultipleSectors, rankSectorStocks } from './engine/data/sector-comparison';
+import { detectMacroAnomalies, analyzeMultipleIndicators } from './engine/risk/macro-alert';
+import { detectCorrelationAnomalies, analyzeCorrelationMatrix } from './engine/risk/correlation-alert';
+import { generateWalkForwardReport, generateBatchWalkForwardReport } from './engine/backtest/walk-forward-report';
+import { generateBrinsonReport, generateBatchBrinsonReport } from './engine/portfolio/brinson-attribution';
+import { analyzeOptionsChain, analyzeBatchOptionsChain } from './engine/analysis/options-chain-analyzer';
+import { scoreAndRankStocks, screenStocks, batchScreenStocks } from './engine/factors/multi-factor-selector';
+import { optimizePortfolio, generateEfficientFrontier, riskParityPortfolio, batchOptimizePortfolios } from './engine/portfolio/portfolio-optimizer';
+import { connectWebSocket, disconnectWebSocket, subscribeToSymbol, unsubscribeFromSymbol, getWebSocketStatus, subscribeToSymbols, unsubscribeFromSymbols, getStreamingStats } from './engine/data/websocket-enhancer';
+import { startBackfill, stopBackfill, getBackfillStatus, getBackfillStats, backfillSymbols, incrementalBackfill } from './engine/backtest/backfill-service';
 import { validate,
   BrokerConnectSchema,
   BrokerGetFundsSchema,
@@ -159,7 +159,7 @@ import { validate,
   StrategyAutoTuneSchema,
 } from './ipc-schemas';
 const _secureKey = require('./utils/secure-key');
-const getDeepSeekKey_ = (app: any) => _secureKey.getDeepSeekKey_(app);
+const getDeepSeekKey_ = (app: unknown) => _secureKey.getDeepSeekKey_(app);
 import log from 'electron-log';
 
 // 默认监控列表，连接时从 DB 读取用户配置
@@ -305,7 +305,7 @@ app.whenReady().then(async () => {
   try {
     db = new DatabaseManager();
     db.initialize();
-  } catch (err: any) {
+  } catch (err) {
     log.error('[App] Database init failed:', err.message);
   }
 
@@ -340,7 +340,7 @@ app.whenReady().then(async () => {
     const paperTrader = initPaperTrader();
     log.info('[App] PaperTrader initialized');
 
-  } catch (err: any) {
+  } catch (err) {
     log.error('[App] Engine init failed:', err.message);
   }
 
@@ -403,7 +403,7 @@ app.whenReady().then(async () => {
       );
       log.info('[App] QuoteStreamService initialized (JVS-9)');
     }
-  } catch (err: any) {
+  } catch (err) {
     log.error('[App] MarketplaceService init failed:', err.message);
   }
 
@@ -472,7 +472,7 @@ app.whenReady().then(async () => {
       await opendClient.subscribeAndPush(WATCHLIST);
       log.info('[App] OpenD auto-connected ✓ Push mode active');
     }
-  } catch (err: any) {
+  } catch (err) {
     log.warn('[App] OpenD auto-connect failed:', err.message);
     opendClient = null;
   }
@@ -499,7 +499,7 @@ app.whenReady().then(async () => {
           const result = await tradeBroker.placeOrder(order);
           db?.saveTrade({ ...order, orderId: result.orderId, status: 'submitted' });
           mainWindow?.webContents.send('order-update', { ...order, orderId: result.orderId, status: 'submitted' });
-        } catch (err: any) {
+        } catch (err) {
           log.error('[App] Auto-trade failed:', err.message);
           mainWindow?.webContents.send('notification', { type: 'error', message: `交易失败: ${err.message}` });
         }

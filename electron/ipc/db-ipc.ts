@@ -7,8 +7,7 @@ import log from 'electron-log';
 import { validate } from '../ipc-schemas';
 
 export function registerDbIPC(
-  db: any
-) {
+  db: unknown) {
 
 
   // ── Database ────────────────────────────────────────────────────────
@@ -18,7 +17,7 @@ export function registerDbIPC(
 
 
 
-  ipcMain.handle('db:saveStrategy', async (_e, strategy: any) => {
+  ipcMain.handle('db:saveStrategy', async (_e, strategy: unknown) => {
     db?.saveStrategy(strategy);
     return { success: true };
   });
@@ -31,7 +30,7 @@ export function registerDbIPC(
 
 
 
-  ipcMain.handle('db:saveSettings', async (_e, settings: any) => {
+  ipcMain.handle('db:saveSettings', async (_e, settings: unknown) => {
     db?.saveSettings(settings);
     return { success: true };
   });

@@ -23,7 +23,7 @@ import {
   destroyWsMarketDataEngine,
   WsConnectionConfig,
   MarketTick,
-} from '../engine/ws-market-data';
+} from '../engine/data/ws-market-data';
 
 // ---------------------------------------------------------------------------
 // Shared engine reference
@@ -43,7 +43,7 @@ const ipcSubscriptionCallbacks = new Map<
 
 function safeReply(
   event: Electron.IpcMainInvokeEvent,
-  data: any,
+  data: unknown,
 ): void {
   try {
     event.returnValue = data;
@@ -101,7 +101,7 @@ export function registerWsMarketIpcHandlers(): void {
         const { codes, type, replyChannel } = params;
 
         // Build a callback that forwards data to the renderer via send
-        const callback = (data: any) => {
+        const callback = (data: unknown) => {
           try {
             const win = getRendererWindow();
             if (win && replyChannel) {
@@ -216,7 +216,7 @@ function setupEventForwarding(): void {
     return;
   }
 
-  const forward = (channel: string) => (data: any) => {
+  const forward = (channel: string) => (data: unknown) => {
     try {
       win.webContents.send(`ws:event:${channel}`, data);
     } catch {

@@ -94,9 +94,9 @@ export class DataProviderService {
   private newsCache = new Map<string, { data: NewsItem[]; expires: number }>();
 
   // 数据库引用（从 DatabaseManager 注入）
-  private db: any = null;
+  private db: unknown = null;
 
-  initialize(db: any): void {
+  initialize(db: unknown): void {
     this.db = db;
     this.createTables();
     log.info('[DataProvider] Initialized with multi-source integration');
@@ -440,7 +440,7 @@ export class DataProviderService {
         'SELECT * FROM anomaly_signals WHERE symbol = ? AND created_at > ? ORDER BY created_at DESC LIMIT 20'
       ).all(symbol, now - DataProviderService.ANOMALY_TTL) as any[];
 
-      const signals: AnomalySignal[] = rows.map((r: any) => ({
+      const signals: AnomalySignal[] = rows.map((r: unknown) => ({
         symbol: r.symbol,
         type: r.type,
         level: r.level,
@@ -502,7 +502,7 @@ export class DataProviderService {
         'SELECT * FROM news_cache WHERE symbol = ? AND fetched_at > ? ORDER BY publish_time DESC LIMIT ?'
       ).all(symbol, now - DataProviderService.NEWS_TTL, limit) as any[];
 
-      const items: NewsItem[] = rows.map((r: any) => ({
+      const items: NewsItem[] = rows.map((r: unknown) => ({
         title: r.title,
         source: r.source,
         url: r.url,

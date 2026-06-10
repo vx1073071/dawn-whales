@@ -13,7 +13,7 @@ function getMainWindow(): BrowserWindow | null {
 }
 
 // Convert data to CSV string
-function toCSV(data: any[], columns?: string[]): string {
+function toCSV(data: unknown[], columns?: string[]): string {
   if (!data || data.length === 0) return '';
   const cols = columns || Object.keys(data[0]);
   const header = cols.join(',');
@@ -30,7 +30,7 @@ function toCSV(data: any[], columns?: string[]): string {
 }
 
 // Convert data to MD table
-function toMD(data: any[], columns?: string[]): string {
+function toMD(data: unknown[], columns?: string[]): string {
   if (!data || data.length === 0) return '';
   const cols = columns || Object.keys(data[0]);
   const header = `| ${cols.join(' | ')} |`;
@@ -44,7 +44,7 @@ function toMD(data: any[], columns?: string[]): string {
 // ── Register ────────────────────────────────────────────────────────────────
 export function registerExportIPC() {
   // ── export:csv ────────────────────────────────────────────────────────
-  ipcMain.handle('export:csv', async (_e, target: string, filters?: any) => {
+  ipcMain.handle('export:csv', async (_e, target: string, filters?: unknown) => {
     try {
       // target can be 'positions' | 'orders' | 'trades' | 'strategies' | 'equity'
       const data = getExportData(target, filters);
@@ -58,7 +58,7 @@ export function registerExportIPC() {
   });
 
   // ── export:json ────────────────────────────────────────────────────────
-  ipcMain.handle('export:json', async (_e, target: string, filters?: any) => {
+  ipcMain.handle('export:json', async (_e, target: string, filters?: unknown) => {
     try {
       const data = getExportData(target, filters);
       const json = JSON.stringify(data, null, 2);
@@ -71,7 +71,7 @@ export function registerExportIPC() {
   });
 
   // ── export:md ──────────────────────────────────────────────────────────
-  ipcMain.handle('export:md', async (_e, target: string, filters?: any) => {
+  ipcMain.handle('export:md', async (_e, target: string, filters?: unknown) => {
     try {
       const data = getExportData(target, filters);
       const md = toMD(data);
@@ -87,7 +87,7 @@ export function registerExportIPC() {
   ipcMain.handle('export:batch', async (_e, request: {
     targets: string[];
     format: 'csv' | 'json' | 'md';
-    filters?: any;
+    filters?: unknown;
     outputDir?: string;
   }) => {
     try {
@@ -162,7 +162,7 @@ export function registerExportIPC() {
 }
 
 // ── Data fetchers (stub implementations) ───────────────────────────────────
-function getExportData(target: string, _filters?: any): any[] {
+function getExportData(target: string, _filters?: unknown): any[] {
   switch (target) {
     case 'positions': return [];
     case 'orders': return [];

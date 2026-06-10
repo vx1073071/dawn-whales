@@ -11,7 +11,7 @@ export function registerPyIPC(
 
 
   // ── Python Script Proxy Layer (JVS-20) ──────────────────────────────────
-  ipcMain.handle('py:call-skill', async (_e, skillName: string, query: string, options?: any) => {
+  ipcMain.handle('py:call-skill', async (_e, skillName: string, query: string, options?: unknown) => {
     try {
       const proxy = getPythonProxy();
       const result = await proxy.callSkill(skillName, query, options);

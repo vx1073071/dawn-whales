@@ -10,20 +10,20 @@ import { autoUpdater } from 'electron-updater';
 import { FutuOpenDClient } from './broker/futu-opend';
 import { BrokerManager } from './broker/BrokerManager';
 import type { BrokerConfig } from './broker/IBrokerAdapter';
-import { StrategyEngine } from './engine/strategy-engine';
-import { BacktestEngine } from './engine/backtest-engine';
+import { StrategyEngine } from './engine/analysis/strategy-engine';
+import { BacktestEngine } from './engine/backtest/backtest-engine';
 import { DatabaseManager } from './data/database';
-import { RiskEngine } from './engine/risk-engine';
-import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/nl-parser';
+import { RiskEngine } from './engine/risk/risk-engine';
+import { parseNaturalLanguage, STRATEGY_TEMPLATES } from './engine/agents/nl-parser';
 import { MarketplaceService } from './data/marketplace-service';
 import { DataProviderService } from './data/data-provider';
 import { z } from 'zod';
-import { WalkForwardEngine } from './engine/walk-forward';
-import { ParameterScanner } from './engine/parameter-scanner';
-import { CronScheduler } from './engine/cron-scheduler';
-import type { StrategyRunnerInterface } from './engine/cron-scheduler';
-import { ConditionWatcher } from './engine/condition-watcher';
-import type { QuoteSnapshot, ConditionRule } from './engine/condition-watcher';
+import { WalkForwardEngine } from './engine/backtest/walk-forward';
+import { ParameterScanner } from './engine/portfolio/parameter-scanner';
+import { CronScheduler } from './engine/core/cron-scheduler';
+import type { StrategyRunnerInterface } from './engine/core/cron-scheduler';
+import { ConditionWatcher } from './engine/core/condition-watcher';
+import type { QuoteSnapshot, ConditionRule } from './engine/core/condition-watcher';
 import { registerStrategyExecuteHandler } from './ipc/strategy-execute-handler';
 import { validate,
   BrokerConnectSchema,
@@ -84,6 +84,9 @@ let WATCHLIST = ['US.TQQQ','US.SOXL','US.QQQ','US.SPY','US.AAPL','US.NVDA','US.S
 const execAsync = promisify(exec);
 
 // ── Configuration ──────────────────────────────────────────────────────────
+import { createWindow } from './main/browser';
+import { createTray } from './main/tray';
+
 
 const isDev = !app.isPackaged;
 const RESOURCES_PATH = isDev ? path.join(__dirname, '..') : path.join(process.resourcesPath, 'resources');
@@ -108,51 +111,8 @@ const quotePushHandler = (quotes: any[]) => {
   strategyEngine?.onQuoteUpdate(quotes);
 };
 
+
 // ── Window Creation ────────────────────────────────────────────────────────
-
-function createWindow() {
-  mainWindow = new BrowserWindow({
-    width: 1400,
-    height: 900,
-    minWidth: 1000,
-    minHeight: 600,
-    title: 'DAWN WHALES · 道鲸',
-    icon: path.join(RESOURCES_PATH, 'icons', 'icon.png'),
-    backgroundColor: '#0d1117',
-    show: false,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.cjs'),
-      contextIsolation: true,
-      nodeIntegration: false,
-      sandbox: false,
-      webSecurity: false,
-    },
-  });
-
-  // Load app — dev server in development, built files in production
-  const hasDevServer = !app.isPackaged && process.env.VITE_DEV_SERVER_URL;
-  if (hasDevServer) {
-    mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL!);
-    mainWindow.webContents.openDevTools({ mode: 'detach' });
-  } else {
-    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
-  }
-
-  // Log renderer console messages
-  mainWindow.webContents.on('console-message', (_event, level, message) => {
-    const levels = ['log', 'warn', 'error'];
-    log.info(`[Renderer:${levels[level] || 'log'}] ${message}`);
-  });
-
-  mainWindow.once('ready-to-show', () => mainWindow?.show());
-
-  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    shell.openExternal(url);
-    return { action: 'deny' };
-  });
-
-  mainWindow.on('closed', () => { mainWindow = null; });
-}
 
 // ── IPC Handlers ───────────────────────────────────────────────────────────
 
@@ -202,7 +162,7 @@ function setupIPC() {
       log.info('[Broker] Push mode active');
 
       return { success: true, host: config.host, port: config.port };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Broker] Connect failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -218,7 +178,7 @@ function setupIPC() {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
       return { success: true, accounts: await opendClient.getAccounts() };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getFunds', async (_e, accountId: string) => {
@@ -227,14 +187,14 @@ function setupIPC() {
       const funds = await opendClient.getFunds(accountId);
       riskEngine?.updateTotalAssets(funds?.totalAssets || 0);
       return { success: true, funds };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getPositions', async (_e, accountId: string) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
       return { success: true, positions: await opendClient.getPositions(accountId) };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getQuotes', async (_e, codes: string[]) => {
@@ -242,7 +202,7 @@ function setupIPC() {
     try {
       const quoteList = (!codes || codes.length === 0) ? WATCHLIST : codes;
       return { success: true, quotes: await opendClient.getQuotes(quoteList) };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   // ── Subscribe / Unsubscribe (WP1: 动态监控列表) ────────────────────
@@ -257,7 +217,7 @@ function setupIPC() {
       db?.saveWatchlist(WATCHLIST);
       log.info('[Broker] Subscribed:', codes);
       return { success: true, watchlist: WATCHLIST };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:unsubscribe', async (_e, codes: string[]) => {
@@ -268,7 +228,7 @@ function setupIPC() {
       db?.saveWatchlist(WATCHLIST);
       log.info('[Broker] Unsubscribed:', codes);
       return { success: true, watchlist: WATCHLIST };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getKlines', async (_e, code: string, period: string, count: number) => {
@@ -285,11 +245,11 @@ function setupIPC() {
         db.saveKlines(code, period || 'daily', klines);
       }
       return { success: true, klines };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   // ── Order Placement (with input validation) ─────────────────────────
-  ipcMain.handle('broker:placeOrder', async (_e, order: any) => {
+  ipcMain.handle('broker:placeOrder', async (_e, order: unknown) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     // Input validation
     if (!order || typeof order !== 'object') {
@@ -317,7 +277,7 @@ function setupIPC() {
       db?.saveTrade({ ...order, orderId: result.orderId, status: 'submitted' });
       mainWindow?.webContents.send('order-update', { ...order, orderId: result.orderId, status: 'submitted' });
       return { success: true, ...result };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:cancelOrder', async (_e, orderId: string, accountId: string, code: string) => {
@@ -325,14 +285,14 @@ function setupIPC() {
     try {
       await opendClient.cancelOrder(orderId, accountId, code);
       return { success: true };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getOrders', async (_e, accountId: string) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
       return { success: true, orders: await opendClient.getOrders(accountId) };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   // ── Broker Manager (Sprint1: multi-broker) ──────────────────────────
@@ -347,7 +307,7 @@ function setupIPC() {
       brokerManager?.addConfig(cfg);
       db?.saveBrokerConfig(cfg);
       return { success: true };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:remove', async (_e, id: string) => {
@@ -355,14 +315,14 @@ function setupIPC() {
       brokerManager?.removeConfig(id);
       db?.deleteBrokerConfig(id);
       return { success: true };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:setActive', async (_e, id: string) => {
     try {
       brokerManager?.setActiveBroker(id);
       return { success: true, activeBroker: id };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   // ── Broker Switching (Sprint1) ───────────────────────────────────────
@@ -373,7 +333,7 @@ function setupIPC() {
       const adapter = brokerManager?.getAdapters().get(id);
       if (!adapter) {
         // Broker not yet connected — connect first
-        const config = brokerManager?.getConfigs().find((c: any) => c.id === id);
+        const config = brokerManager?.getConfigs().find((c: unknown) => c.id === id);
         if (!config) return { success: false, error: `Broker config not found: ${id}` };
 
         brokerManager?.loadConfigs([config]);
@@ -395,12 +355,12 @@ function setupIPC() {
       }
 
       const status = brokerManager?.getStatus() || [];
-      const switched = status.find((s: any) => s.id === activeId);
+      const switched = status.find((s: unknown) => s.id === activeId);
 
       log.info(`[Broker] Switched to ${id}, connected=${switched?.connected}`);
       mainWindow?.webContents.send('broker:switched', { activeBroker: activeId, status });
       return { success: true, activeBroker: activeId, brokerStatus: switched };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Broker] Switch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -411,7 +371,7 @@ function setupIPC() {
   });
 
   // ── Strategy Engine ─────────────────────────────────────────────────
-  ipcMain.handle('strategy:create', async (_e, dsl: any) => {
+  ipcMain.handle('strategy:create', async (_e, dsl: unknown) => {
     const vErr = validate(StrategyCreateSchema, { dsl });
     if (vErr) return vErr;
     try {
@@ -419,7 +379,7 @@ function setupIPC() {
       const strategy = strategyEngine?.getStrategy(id!);
       if (strategy && db) db.saveStrategy(strategy);
       return { success: true, id, strategy };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('strategy:getAll', async () => {
@@ -433,21 +393,21 @@ function setupIPC() {
 
   // ── Strategy Update (with field whitelist for security) ─────────────
   const STRATEGY_UPDATE_WHITELIST = ['name', 'description', 'params', 'stopLoss', 'takeProfit', 'symbol'];
-  ipcMain.handle('strategy:update', async (_e, id: string, updates: any) => {
+  ipcMain.handle('strategy:update', async (_e, id: string, updates: unknown) => {
     const vErr = validate(StrategyUpdateSchema, { updates });
     if (vErr) return vErr;
     try {
       const strategy = strategyEngine?.getStrategy(id);
       if (!strategy) return { success: false, error: 'Strategy not found' };
       // Security: only allow whitelisted fields
-      const sanitized: any = {};
+      const sanitized: unknown = {};
       for (const key of STRATEGY_UPDATE_WHITELIST) {
         if (key in updates) sanitized[key] = updates[key];
       }
       Object.assign(strategy, sanitized, { updatedAt: new Date().toISOString() });
       if (db) db.saveStrategy(strategy);
       return { success: true, strategy };
-    } catch (err: any) { return { success: false, error: err.message }; }
+    } catch (err) { return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('strategy:delete', async (_e, id: string) => {
@@ -456,7 +416,7 @@ function setupIPC() {
     return { success: true };
   });
 
-  ipcMain.handle('strategy:backtest', async (_e, config: any) => {
+  ipcMain.handle('strategy:backtest', async (_e, config: unknown) => {
     if (!strategyEngine || !backtestEngine) {
       return { success: false, error: 'Engine not ready' };
     }
@@ -491,7 +451,7 @@ function setupIPC() {
       }
 
       return await backtestEngine.run({ ...config, klines });
-    } catch (err: any) {
+    } catch (err) {
       log.error('[IPC] Backtest error:', err.message);
       return { success: false, error: err.message };
     }
@@ -509,7 +469,7 @@ function setupIPC() {
 
   // ── Backtest Enhancement (Sprint 2: P1) ──────────────────────────
 
-  ipcMain.handle('backtest:multiPeriod', async (_e, config: any) => {
+  ipcMain.handle('backtest:multiPeriod', async (_e, config: unknown) => {
     const vErr = validate(BacktestMultiPeriodSchema, { config });
     if (vErr) return vErr;
     try {
@@ -519,12 +479,12 @@ function setupIPC() {
         config.klines, config.strategyConfig, config.periods
       );
       return { success: true, results };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
 
-  ipcMain.handle('backtest:paramSweep', async (_e, config: any) => {
+  ipcMain.handle('backtest:paramSweep', async (_e, config: unknown) => {
     const vErr = validate(BacktestParamSweepSchema, { config });
     if (vErr) return vErr;
     try {
@@ -534,7 +494,7 @@ function setupIPC() {
         config.klines, config.baseConfig, config.paramRanges, config.maxCombinations || 100
       );
       return { success: true, results };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -548,13 +508,13 @@ function setupIPC() {
       const enhancer = new BacktestEnhancer(backtestEngine);
       const metrics = enhancer.computeDeepRiskMetrics(equityCurve, riskFreeRate || 0.03);
       return { success: true, metrics };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
 
   // ── Strategy AI — LLM-powered (via server AI gateway, R83 P0-2b) ──
-  ipcMain.handle('strategy:explain', async (_e, strategy: any) => {
+  ipcMain.handle('strategy:explain', async (_e, strategy: unknown) => {
     const prompt = `You are a quantitative trading strategy analyst. Explain the following strategy in clear, actionable English for a retail trader.
 
 Strategy:
@@ -583,13 +543,13 @@ Keep it under 200 words. Use bullet points.`;
       });
       if (!result.success) return result;
       return { success: true, explanation: result.content };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
 
-  ipcMain.handle('strategy:compare', async (_e, s1: any, s2: any) => {
-    const fmt = (s: any) => `Name: ${s.name || '?'} | Symbol: ${s.symbol || '?'} | Type: ${s.strategy?.type || '?'} | Params: ${JSON.stringify(s.strategy?.params || {})} | SL: ${s.strategy?.stopLoss || '?'}% | TP: ${s.strategy?.takeProfit || '?'}%`;
+  ipcMain.handle('strategy:compare', async (_e, s1: unknown, s2: unknown) => {
+    const fmt = (s: unknown) => `Name: ${s.name || '?'} | Symbol: ${s.symbol || '?'} | Type: ${s.strategy?.type || '?'} | Params: ${JSON.stringify(s.strategy?.params || {})} | SL: ${s.strategy?.stopLoss || '?'}% | TP: ${s.strategy?.takeProfit || '?'}%`;
     const prompt = `You are a quantitative trading strategy comparison tool. Compare these two strategies objectively.
 
 Strategy A: ${fmt(s1)}
@@ -614,7 +574,7 @@ Keep it under 250 words. Be objective, not promotional.`;
       });
       if (!result.success) return result;
       return { success: true, comparison: result.content };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -672,7 +632,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       let suggestions = [];
       try { suggestions = JSON.parse(result.content).suggestions || []; } catch { suggestions = []; }
       return { success: true, suggestions };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -691,7 +651,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     return { success: true, config: riskEngine?.getConfig() };
   });
 
-  ipcMain.handle('risk:updateConfig', async (_e, config: any) => {
+  ipcMain.handle('risk:updateConfig', async (_e, config: unknown) => {
     riskEngine?.updateConfig(config);
     return { success: true };
   });
@@ -727,7 +687,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     return db?.getStrategies() || [];
   });
 
-  ipcMain.handle('db:saveStrategy', async (_e, strategy: any) => {
+  ipcMain.handle('db:saveStrategy', async (_e, strategy: unknown) => {
     db?.saveStrategy(strategy);
     return { success: true };
   });
@@ -736,7 +696,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     return db?.getSettings() || {};
   });
 
-  ipcMain.handle('db:saveSettings', async (_e, settings: any) => {
+  ipcMain.handle('db:saveSettings', async (_e, settings: unknown) => {
     db?.saveSettings(settings);
     return { success: true };
   });
@@ -797,7 +757,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
         });
       }
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[App] Emergency stop failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -829,7 +789,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const result = await autoUpdater.checkForUpdates();
       return { success: true, version: result?.updateInfo?.version || null };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -838,7 +798,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       await autoUpdater.downloadUpdate();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -874,7 +834,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const { stdout } = await execAsync(cmd, { encoding: 'utf-8', timeout: 5000 });
       const result = JSON.parse(stdout);
       return { success: true, greeks: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Greeks] Calculation failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -901,7 +861,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const { stdout } = await execAsync(cmd, { encoding: 'utf-8', timeout: 10000 });
       const result = JSON.parse(stdout);
       return { success: true, portfolio: result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Greeks] Portfolio calc failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -916,7 +876,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       db?.rateStrategy(strategyId, rating);
       const stats = db?.getStrategyRating(strategyId);
       return { success: true, ...stats };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -933,7 +893,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       db?.addComment(strategyId, content, parentId);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -943,13 +903,13 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     return { success: true, comments };
   });
 
-  ipcMain.handle('marketplace:savePerformance', async (_e, data: any) => {
+  ipcMain.handle('marketplace:savePerformance', async (_e, data: unknown) => {
     const vErr = validate(MarketplaceSavePerformanceSchema, { data });
     if (vErr) return vErr;
     try {
       db?.saveStrategyPerformance(data);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -970,7 +930,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const score = marketplaceService.calculateStrategyScore(strategyId);
       return { success: true, score };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Marketplace] Score calculation failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -981,7 +941,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const verification = marketplaceService.verifyPerformance(strategyId);
       return { success: true, verification };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Marketplace] Verification failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -992,7 +952,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const result = marketplaceService.updateAllScores();
       return { success: true, ...result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[Marketplace] Batch update failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -1004,7 +964,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const data = await dataProvider.getFundamental(symbol);
       return { success: true, data };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DataProvider] Fundamental fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -1015,7 +975,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const data = await dataProvider.getCapitalFlow(symbol);
       return { success: true, data };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DataProvider] Capital flow fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -1026,7 +986,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const regime = await dataProvider.getMarketRegime();
       return { success: true, regime };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DataProvider] Regime fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -1037,7 +997,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const signals = await dataProvider.getAnomalies(symbol);
       return { success: true, signals };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DataProvider] Anomalies fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -1048,7 +1008,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const items = await dataProvider.getNews(symbol, limit);
       return { success: true, items };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DataProvider] News fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -1059,58 +1019,58 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       const result = await dataProvider.getCompositeScore(symbol);
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[DataProvider] Composite score failed:', err.message);
       return { success: false, error: err.message };
     }
   });
 
-  ipcMain.handle('data:save-fundamental', async (_e, data: any) => {
+  ipcMain.handle('data:save-fundamental', async (_e, data: unknown) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
       dataProvider.saveFundamental(data);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
 
-  ipcMain.handle('data:save-capital-flow', async (_e, data: any) => {
+  ipcMain.handle('data:save-capital-flow', async (_e, data: unknown) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
       dataProvider.saveCapitalFlow(data);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
 
-  ipcMain.handle('data:save-regime', async (_e, regime: any) => {
+  ipcMain.handle('data:save-regime', async (_e, regime: unknown) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
       dataProvider.saveMarketRegime(regime);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
 
-  ipcMain.handle('data:compute-regime', async (_e, factors: any) => {
+  ipcMain.handle('data:compute-regime', async (_e, factors: unknown) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
       const regime = dataProvider.computeRegime(factors);
       return { success: true, regime };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
 
-  ipcMain.handle('data:save-anomaly', async (_e, signal: any) => {
+  ipcMain.handle('data:save-anomaly', async (_e, signal: unknown) => {
     if (!dataProvider) return { success: false, error: 'DataProvider not initialized' };
     try {
       dataProvider.saveAnomaly(signal);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -1120,7 +1080,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       dataProvider.saveNews(symbol, items);
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -1130,13 +1090,13 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     try {
       dataProvider.clearExpiredCache();
       return { success: true };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
 
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
-  ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
+  ipcMain.handle('backtest:walk-forward', async (_e, config: unknown) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
     if (vErr) return vErr;
     try {
@@ -1147,14 +1107,14 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       }
       const report = await wfa.run(config, klines);
       return { success: true, report };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[WFA] Failed:', err.message);
       return { success: false, error: err.message };
     }
   });
 
   // ── Parameter Scanner (Sprint 2 — JVS) ───────────────────────────────
-  ipcMain.handle('backtest:param-scan', async (_e, config: any) => {
+  ipcMain.handle('backtest:param-scan', async (_e, config: unknown) => {
     const vErr = validate(BacktestParamScanSchema, { config });
     if (vErr) return vErr;
     try {
@@ -1165,14 +1125,14 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       }
       const report = await scanner.run({ ...config, klines });
       return { success: true, report };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[ParamScan] Failed:', err.message);
       return { success: false, error: err.message };
     }
   });
 
   // ── Multi-timeframe comparison (Sprint 2 — JVS) ──────────────────────
-  ipcMain.handle('backtest:multi-timeframe', async (_e, config: any) => {
+  ipcMain.handle('backtest:multi-timeframe', async (_e, config: unknown) => {
     const vErr = validate(BacktestMultiTimeframeSchema, { config });
     if (vErr) return vErr;
     try {
@@ -1198,7 +1158,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       }
 
       return { success: true, results, timeframes };
-    } catch (err: any) {
+    } catch (err) {
       log.error('[MultiTF] Failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -1206,31 +1166,6 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 }
 
 // ── System Tray ────────────────────────────────────────────────────────────
-
-function createTray() {
-    const trayIconPath = path.join(RESOURCES_PATH, 'icons', 'tray-icon.png');
-    const icon = nativeImage.createFromPath(trayIconPath);
-    if (icon.isEmpty()) {
-      log.warn('[Tray] tray-icon.png not found, using fallback diamond');
-      const fallback = nativeImage.createFromBuffer(createDiamondIcon(16));
-      tray = new Tray(fallback);
-    } else {
-      tray = new Tray(icon);
-    }
-
-  const contextMenu = Menu.buildFromTemplate([
-    { label: 'DAWN WHALES · 道鲸', enabled: false },
-    { type: 'separator' },
-    { label: '显示主窗口', click: () => mainWindow?.show() },
-    { label: '紧急停止所有策略', click: () => strategyEngine?.emergencyStop() },
-    { type: 'separator' },
-    { label: '退出', click: () => app.quit() },
-  ]);
-
-  tray.setToolTip('DAWN WHALES · 道鲸');
-  tray.setContextMenu(contextMenu);
-  tray.on('double-click', () => mainWindow?.show());
-}
 
 // ── App Lifecycle ──────────────────────────────────────────────────────────
 
@@ -1241,7 +1176,7 @@ app.whenReady().then(async () => {
   try {
     db = new DatabaseManager();
     db.initialize();
-  } catch (err: any) {
+  } catch (err) {
     log.error('[App] Database init failed:', err.message);
   }
 
@@ -1255,7 +1190,7 @@ app.whenReady().then(async () => {
       log.info('[App] StrategyEngine ↔ RiskEngine connected');
     }
     brokerManager = new BrokerManager();
-  } catch (err: any) {
+  } catch (err) {
     log.error('[App] Engine init failed:', err.message);
   }
 
@@ -1268,7 +1203,7 @@ app.whenReady().then(async () => {
       dataProvider.initialize(db);
       log.info('[App] DataProviderService initialized');
     }
-  } catch (err: any) {
+  } catch (err) {
     log.error('[App] MarketplaceService init failed:', err.message);
   }
 
@@ -1314,7 +1249,7 @@ app.whenReady().then(async () => {
       await opendClient.subscribeAndPush(WATCHLIST);
       log.info('[App] OpenD auto-connected ✓ Push mode active');
     }
-  } catch (err: any) {
+  } catch (err) {
     log.warn('[App] OpenD auto-connect failed:', err.message);
     opendClient = null;
   }
@@ -1341,7 +1276,7 @@ app.whenReady().then(async () => {
           const result = await tradeBroker.placeOrder(order);
           db?.saveTrade({ ...order, orderId: result.orderId, status: 'submitted' });
           mainWindow?.webContents.send('order-update', { ...order, orderId: result.orderId, status: 'submitted' });
-        } catch (err: any) {
+        } catch (err) {
           log.error('[App] Auto-trade failed:', err.message);
           mainWindow?.webContents.send('notification', { type: 'error', message: `交易失败: ${err.message}` });
         }
@@ -1414,7 +1349,7 @@ app.whenReady().then(async () => {
         options: data.options || { dryRun: true, enabled: true },
       });
       return { success: true, task };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -1471,11 +1406,11 @@ app.whenReady().then(async () => {
   }
 
   // ConditionWatcher IPC handlers
-  ipcMain.handle('condition:addRule', async (_e, rule: any) => {
+  ipcMain.handle('condition:addRule', async (_e, rule: unknown) => {
     try {
       const r = conditionWatcher!.addRule(rule);
       return { success: true, rule: r };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -1523,21 +1458,3 @@ app.on('before-quit', () => {
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
-function createDiamondIcon(size: number): Buffer {
-  const pixels = Buffer.alloc(size * size * 4);
-  const cx = size / 2;
-  const cy = size / 2;
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-      const dist = Math.abs(x - cx) + Math.abs(y - cy);
-      const idx = (y * size + x) * 4;
-      if (dist < size / 2 - 1) {
-        pixels[idx] = 201;
-        pixels[idx + 1] = 169;
-        pixels[idx + 2] = 110;
-        pixels[idx + 3] = 255;
-      }
-    }
-  }
-  return pixels;
-}

@@ -20,7 +20,7 @@ function matrixMultiply(size: number): number {
   return c[0][0]; // return sample value
 }
 
-parentPort?.on('message', (msg: any) => {
+parentPort?.on('message', (msg: unknown) => {
   const { type, n, size } = msg;
   let result: number;
   if (type === 'fib') {

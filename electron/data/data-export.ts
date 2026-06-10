@@ -201,7 +201,7 @@ export async function exportToCSV(data: ExportData, options?: ExportOptions): Pr
       format: 'csv',
       rows,
     };
-  } catch (err: any) {
+  } catch (err) {
     log.error('[DataExport] CSV export error:', err);
     return {
       success: false,
@@ -231,7 +231,7 @@ export async function exportToExcel(data: ExportData, options?: ExportOptions): 
       rows: 0,
       error: 'Excel export not yet implemented',
     };
-  } catch (err: any) {
+  } catch (err) {
     log.error('[DataExport] Excel export error:', err);
     return {
       success: false,
@@ -261,7 +261,7 @@ export async function exportToPDF(data: ExportData, options?: ExportOptions): Pr
       rows: 0,
       error: 'PDF export not yet implemented',
     };
-  } catch (err: any) {
+  } catch (err) {
     log.error('[DataExport] PDF export error:', err);
     return {
       success: false,
@@ -372,7 +372,7 @@ export class DataExportService {
   /**
    * Export custom data
    */
-  async exportCustom(data: any[], format: 'csv' | 'excel' | 'pdf' = 'csv'): Promise<ExportResult> {
+  async exportCustom(data: unknown[], format: 'csv' | 'excel' | 'pdf' = 'csv'): Promise<ExportResult> {
     return this.export({
       format,
       data: {

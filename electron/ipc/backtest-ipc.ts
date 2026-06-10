@@ -7,13 +7,12 @@ import log from 'electron-log';
 import { validate } from '../ipc-schemas';
 
 export function registerBacktestIPC(
-  backtestEngine: any
-) {
+  backtestEngine: unknown) {
 
 
   // ── Backtest Enhancement (Sprint 2: P1) ──────────────────────────
 
-  ipcMain.handle('backtest:multiPeriod', async (_e, config: any) => {
+  ipcMain.handle('backtest:multiPeriod', async (_e, config: unknown) => {
     const vErr = validate(BacktestMultiPeriodSchema, { config });
     if (vErr) return vErr;
     try {
@@ -30,7 +29,7 @@ export function registerBacktestIPC(
 
 
 
-  ipcMain.handle('backtest:paramSweep', async (_e, config: any) => {
+  ipcMain.handle('backtest:paramSweep', async (_e, config: unknown) => {
     const vErr = validate(BacktestParamSweepSchema, { config });
     if (vErr) return vErr;
     try {
@@ -73,8 +72,8 @@ export function registerBacktestIPC(
       const { isReturns, oosReturns, paramGridResults, walkForwardResults, isPeriodDays, oosPeriodDays, tradingDays } = raw as {
         isReturns: number[];
         oosReturns: number[];
-        paramGridResults?: any[];
-        walkForwardResults?: any[];
+        paramGridResults?: unknown[];
+        walkForwardResults?: unknown[];
         isPeriodDays?: number;
         oosPeriodDays?: number;
         tradingDays?: number;
@@ -92,7 +91,7 @@ export function registerBacktestIPC(
 
 
   // ── Walk-Forward Analysis (Sprint 2 — JVS) ───────────────────────────
-  ipcMain.handle('backtest:walk-forward', async (_e, config: any) => {
+  ipcMain.handle('backtest:walk-forward', async (_e, config: unknown) => {
     const vErr = validate(BacktestWalkForwardSchema, { config });
     if (vErr) return vErr;
     try {
@@ -113,7 +112,7 @@ export function registerBacktestIPC(
 
 
   // ── Parameter Scanner (Sprint 2 — JVS) ───────────────────────────────
-  ipcMain.handle('backtest:param-scan', async (_e, config: any) => {
+  ipcMain.handle('backtest:param-scan', async (_e, config: unknown) => {
     const vErr = validate(BacktestParamScanSchema, { config });
     if (vErr) return vErr;
     try {
@@ -134,13 +133,13 @@ export function registerBacktestIPC(
 
 
   // ── Multi-timeframe comparison (Sprint 2 — JVS) ──────────────────────
-  ipcMain.handle('backtest:multi-timeframe', async (_e, config: any) => {
+  ipcMain.handle('backtest:multi-timeframe', async (_e, config: unknown) => {
     const vErr = validate(BacktestMultiTimeframeSchema, { config });
     if (vErr) return vErr;
     try {
       const engine = new BacktestEngine();
       const timeframes = config.timeframes || ['1m', '5m', '15m', '1h', 'daily'];
-      const results: Record<string, any> = {};
+      const results: Record<string, unknown> = {};
 
       for (const tf of timeframes) {
         const klines = config.klinesByTimeframe?.[tf] || [];
@@ -167,11 +166,11 @@ export function registerBacktestIPC(
   });
 
     // ── walkForward (alias for backtest:walk-forward) ─────────────────────
-  ipcMain.handle('backtest:walkForward', async (_e, config: any) => {
+  ipcMain.handle('backtest:walkForward', async (_e, config: unknown) => {
     // Delegates to the main.ts inline backtest:walk-forward handler
     // This stub ensures the preload call resolves even if main.ts hasn't
     // registered the handler yet (registration order issue)
-    const WalkForwardEngine = (global as any).__walkForwardEngine;
+    const WalkForwardEngine = (global as unknown).__walkForwardEngine;
     if (WalkForwardEngine) {
       try {
         const result = await WalkForwardEngine.run(config);
@@ -184,7 +183,7 @@ export function registerBacktestIPC(
   });
 
   // ── parallel — parallel backtest execution ───────────────────────────
-  ipcMain.handle('backtest:parallel', async (_e, configs: any[]) => {
+  ipcMain.handle('backtest:parallel', async (_e, configs: unknown[]) => {
     if (!Array.isArray(configs) || configs.length === 0) {
       return { success: false, error: 'configs must be non-empty array' };
     }
@@ -194,19 +193,19 @@ export function registerBacktestIPC(
     return {
       success: true,
       results: results.map((r, i) =>
-        r.status === 'fulfilled' ? { index: i, ...(r.value as any) } : { index: i, error: (r as any).reason?.message }
+        r.status === 'fulfilled' ? { index: i, ...(r.value as unknown) } : { index: i, error: (r as unknown).reason?.message }
       ),
     };
   });
 
   // ── param-scan-parallel ───────────────────────────────────────────────
-  ipcMain.handle('backtest:param-scan-parallel', async (_e, config: any) => {
+  ipcMain.handle('backtest:param-scan-parallel', async (_e, config: unknown) => {
     const { paramGrid, baseConfig } = config || {};
     if (!paramGrid || !baseConfig) {
       return { success: false, error: 'paramGrid and baseConfig required' };
     }
     const keys = Object.keys(paramGrid);
-    const combos = keys.reduce((acc: any[][], k) => {
+    const combos = keys.reduce((acc: unknown[][], k) => {
       const vals = Array.isArray(paramGrid[k]) ? paramGrid[k] : [paramGrid[k]];
       return acc.length === 0 ? vals.map(v => ({ [k]: v })) :
         acc.flatMap(o => vals.map(v => ({ ...o, [k]: v })));
@@ -219,7 +218,7 @@ export function registerBacktestIPC(
     );
     const metrics = results.map((r, i) => ({
       params: combos[i],
-      ...(r.status === 'fulfilled' ? (r.value as any) : { error: (r as any).reason?.message }),
+      ...(r.status === 'fulfilled' ? (r.value as unknown) : { error: (r as unknown).reason?.message }),
     }));
     // Find best by Sharpe
     const valid = metrics.filter(m => m.sharpe !== undefined);
@@ -230,8 +229,8 @@ export function registerBacktestIPC(
   });
 
   // ── walk-forward-parallel ─────────────────────────────────────────────
-  ipcMain.handle('backtest:walk-forward-parallel', async (_e, config: any, numWindows?: number, trainRatio?: number) => {
-    const WalkForwardEngine = (global as any).__walkForwardEngine;
+  ipcMain.handle('backtest:walk-forward-parallel', async (_e, config: unknown, numWindows?: number, trainRatio?: number) => {
+    const WalkForwardEngine = (global as unknown).__walkForwardEngine;
     if (!WalkForwardEngine) {
       return { success: false, error: 'WalkForwardEngine not available' };
     }

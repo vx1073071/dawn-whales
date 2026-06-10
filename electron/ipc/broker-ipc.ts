@@ -7,22 +7,21 @@ import log from 'electron-log';
 import { validate } from '../ipc-schemas';
 
 export function registerBrokerIPC(
-  orderRouter: any,
-  tcaEngine: any,
-  multiBrokerPnL: any,
-  unifiedRiskDash: any,
-  opendClient: any,
-  brokerManager: any,
-  strategyEngine: any,
-  db: any,
-  watchlist: any,
-  mainWindow: any,
-  quotePushHandler: any,
-  BrokerConfig: any,
-  riskEngine: any
-) {
+  orderRouter: unknown,
+  tcaEngine: unknown,
+  multiBrokerPnL: unknown,
+  unifiedRiskDash: unknown,
+  opendClient: unknown,
+  brokerManager: unknown,
+  strategyEngine: unknown,
+  db: unknown,
+  watchlist: unknown,
+  mainWindow: unknown,
+  quotePushHandler: unknown,
+  BrokerConfig: unknown,
+  riskEngine: unknown) {
 
-  ipcMain.handle('order:route', async (_e, params: any) => {
+  ipcMain.handle('order:route', async (_e, params: unknown) => {
     try {
       const result = orderRouter.route(params);
       return { success: true, result };
@@ -35,7 +34,7 @@ export function registerBrokerIPC(
   // ── TCA V2 (QClaw Q60) ────────────────────────────────────────────────
   const localTCAV2Engine = new TCAV2Engine();
 
-  ipcMain.handle('order:tca', async (_e, params: any) => {
+  ipcMain.handle('order:tca', async (_e, params: unknown) => {
     try {
       const result = tcaEngine.analyze(params);
       return { success: true, result };
@@ -48,7 +47,7 @@ export function registerBrokerIPC(
   // ── Multi-Broker PnL (QClaw Q61) ──────────────────────────────────────
   const localMultiBrokerPnLEngine = new MultiBrokerPnLEngine();
 
-  ipcMain.handle('pnl:multi-broker', async (_e, params?: any) => {
+  ipcMain.handle('pnl:multi-broker', async (_e, params?: unknown) => {
     try {
       const result = multiBrokerPnL.consolidate(params);
       return { success: true, result };
@@ -66,7 +65,7 @@ export function registerBrokerIPC(
   ipcMain.handle('execution:analyze', async (_e, raw: unknown) => {
     try {
       const { executionRecords, marketData, benchmarkPrice, optionsScope } = raw as {
-        executionRecords: any[]; marketData?: any; benchmarkPrice?: number; optionsScope?: any;
+        executionRecords: unknown[]; marketData?: unknown; benchmarkPrice?: number; optionsScope?: unknown;
       };
       const { ExecutionAnalyticsEngine } = await import('./engine/execution-analytics.js');
       const engine = new ExecutionAnalyticsEngine();
@@ -83,7 +82,7 @@ export function registerBrokerIPC(
   // ── Q20: Real Trader ─────────────────────────────────────────────────────
   ipcMain.handle('trader:execute', async (_e, raw: unknown) => {
     try {
-      const { signal, paperMode } = raw as { signal: any; paperMode?: boolean };
+      const { signal, paperMode } = raw as { signal: unknown; paperMode?: boolean };
       const { getRealTrader } = await import('./engine/real-trader.js');
       const trader = getRealTrader();
       const result = await trader.executeSignal(signal, paperMode);
@@ -260,7 +259,7 @@ export function registerBrokerIPC(
 
 
   // ── Order Placement (with input validation) ─────────────────────────
-  ipcMain.handle('broker:placeOrder', async (_e, order: any) => {
+  ipcMain.handle('broker:placeOrder', async (_e, order: unknown) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     // Input validation
     if (!order || typeof order !== 'object') {
@@ -360,7 +359,7 @@ export function registerBrokerIPC(
       const adapter = brokerManager?.getAdapters().get(id);
       if (!adapter) {
         // Broker not yet connected — connect first
-        const config = brokerManager?.getConfigs().find((c: any) => c.id === id);
+        const config = brokerManager?.getConfigs().find((c: unknown) => c.id === id);
         if (!config) return { success: false, error: `Broker config not found: ${id}` };
 
         brokerManager?.loadConfigs([config]);
@@ -382,7 +381,7 @@ export function registerBrokerIPC(
       }
 
       const status = brokerManager?.getStatus() || [];
-      const switched = status.find((s: any) => s.id === activeId);
+      const switched = status.find((s: unknown) => s.id === activeId);
 
       log.info(`[Broker] Switched to ${id}, connected=${switched?.connected}`);
       mainWindow?.webContents.send('broker:switched', { activeBroker: activeId, status });
@@ -407,9 +406,9 @@ export function registerBrokerIPC(
     try {
       const { signalType, marketContext, backtestHistory, signalParams } = raw as {
         signalType: string;
-        marketContext?: any;
-        backtestHistory?: any[];
-        signalParams?: any;
+        marketContext?: unknown;
+        backtestHistory?: unknown[];
+        signalParams?: unknown;
       };
       const { SignalQualityScorer } = await import('./engine/signal-quality-scorer.js');
       const scorer = new SignalQualityScorer();
@@ -427,9 +426,9 @@ export function registerBrokerIPC(
   ipcMain.handle('position:check', async (_e, raw: unknown) => {
     try {
       const { positions, accountFunds, config } = raw as {
-        positions: any[];
+        positions: unknown[];
         accountFunds: number;
-        config?: any;
+        config?: unknown;
       };
       const { PositionAlertEngine } = await import('./engine/position-alert-engine.js');
       const engine = new PositionAlertEngine();

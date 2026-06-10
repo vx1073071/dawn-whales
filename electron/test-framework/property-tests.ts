@@ -10,10 +10,10 @@
 
 import log from 'electron-log';
 import fc, { Arbitrary, PrimitiveConstraint } from 'fast-check';
-import { calculateRSI } from '../engine/technical-indicators';
-import { getKellyFraction } from '../engine/dynamic-sizer';
-import { normalCDF, normalPDF } from '../engine/calendar-effects';
-import { RiskEngine, RiskConfig } from '../engine/risk-engine';
+import { calculateRSI } from '../engine/analysis/technical-indicators';
+import { getKellyFraction } from '../engine/portfolio/dynamic-sizer';
+import { normalCDF, normalPDF } from '../engine/data/calendar-effects';
+import { RiskEngine, RiskConfig } from '../engine/risk/risk-engine';
 
 // ─── Custom Arbitraries ───────────────────────────────────────────────────────
 
@@ -463,7 +463,7 @@ export async function propRiskMaxExposure(
             timeInForce: 'DAY' as const,
           };
 
-          const check: any = engine['checkOrder']
+          const check: unknown = engine['checkOrder']
             ? engine['checkOrder'](order, params.portfolioValue, 0)
             : { approved: true }; // fallback
 

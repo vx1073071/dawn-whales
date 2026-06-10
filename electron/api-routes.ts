@@ -59,7 +59,7 @@ export async function handleAiChat(body: Record<string, unknown>): Promise<ApiRe
       throw new EngineError(`AI Gateway returned ${res.status}`, { code: ErrorCode.ENGINE_AI_ERROR, statusCode: res.status });
     }
     
-    const data = await res.json() as any;
+    const data = await res.json() as unknown;
     return {
       success: true,
       data: {
@@ -207,9 +207,9 @@ export async function handleAuthDevice(body: Record<string, unknown>): Promise<A
  *   registerApiRoutes(app);
  *   app.listen(3001);
  */
-export function registerApiRoutes(app: any): void {
+export function registerApiRoutes(app: unknown): void {
   // POST /api/ai/chat
-  app.post('/api/ai/chat', async (req: any, res: any) => {
+  app.post('/api/ai/chat', async (req: unknown, res: unknown) => {
     try {
       const result = await handleAiChat(req.body);
       res.json(result);
@@ -219,7 +219,7 @@ export function registerApiRoutes(app: any): void {
   });
 
   // POST /api/ai/report
-  app.post('/api/ai/report', async (req: any, res: any) => {
+  app.post('/api/ai/report', async (req: unknown, res: unknown) => {
     try {
       const result = await handleAiReport(req.body);
       res.json(result);
@@ -229,7 +229,7 @@ export function registerApiRoutes(app: any): void {
   });
 
   // POST /api/billing/subscribe
-  app.post('/api/billing/subscribe', async (req: any, res: any) => {
+  app.post('/api/billing/subscribe', async (req: unknown, res: unknown) => {
     try {
       const result = await handleBillingSubscribe(req.body);
       res.json(result);
@@ -239,7 +239,7 @@ export function registerApiRoutes(app: any): void {
   });
 
   // GET /api/wallet/balance
-  app.get('/api/wallet/balance', async (req: any, res: any) => {
+  app.get('/api/wallet/balance', async (req: unknown, res: unknown) => {
     try {
       const userId = req.query.userId as string;
       const result = await handleWalletBalance(userId);
@@ -250,7 +250,7 @@ export function registerApiRoutes(app: any): void {
   });
 
   // POST /api/auth/device
-  app.post('/api/auth/device', async (req: any, res: any) => {
+  app.post('/api/auth/device', async (req: unknown, res: unknown) => {
     try {
       const result = await handleAuthDevice(req.body);
       res.json(result);
@@ -260,7 +260,7 @@ export function registerApiRoutes(app: any): void {
   });
 }
 
-function handleError(res: any, err: unknown): void {
+function handleError(res: unknown, err: unknown): void {
   if (err instanceof EngineError) {
     res.status(err.statusCode).json({
       success: false,

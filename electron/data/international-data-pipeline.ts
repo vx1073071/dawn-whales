@@ -56,7 +56,7 @@ export interface DataPipelineConfig {
 export class InternationalDataPipeline extends EventEmitter {
   private config: DataPipelineConfig;
   private exchangeRates: Map<string, ExchangeRate>;
-  private cache: Map<string, { data: any; timestamp: number }>;
+  private cache: Map<string, { data: unknown; timestamp: number }>;
   private timezoneOffsets: Map<Timezone, number>;
 
   constructor(config?: Partial<DataPipelineConfig>) {

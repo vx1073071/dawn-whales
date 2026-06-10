@@ -319,7 +319,7 @@ export class DataVersioningSystem {
     return `v_${timestamp}_${random}`;
   }
 
-  private calculateHash(data: any[]): string {
+  private calculateHash(data: unknown[]): string {
     const dataStr = JSON.stringify(data);
     return createHash('sha256').update(dataStr).digest('hex');
   }

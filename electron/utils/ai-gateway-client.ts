@@ -77,7 +77,7 @@ export function callChatCompletions(req: ChatCompletionRequest, timeoutMs = 3000
             'Authorization': `Bearer ${AI_GATEWAY_TOKEN}`,
           },
         },
-        (res: any) => {
+        (res: unknown) => {
           let data = '';
           res.on('data', (chunk: string) => { data += chunk; });
           res.on('end', () => {
@@ -104,7 +104,7 @@ export function callChatCompletions(req: ChatCompletionRequest, timeoutMs = 3000
 
       request.write(body);
       request.end();
-    } catch (err: any) {
+    } catch (err) {
       clearTimeout(timer);
       resolve({ success: false, error: `Gateway request error: ${err.message}` });
     }

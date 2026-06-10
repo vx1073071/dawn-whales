@@ -15,17 +15,17 @@ export interface GrpcServiceDefinition {
 export interface GrpcCall {
   service: string;
   method: string;
-  request: any;
+  request: unknown;
   metadata?: Record<string, string>;
 }
 
 export interface GrpcResponse {
-  data: any;
+  data: unknown;
   metadata?: Record<string, string>;
   status: { code: number; message: string };
 }
 
-type GrpcMethodImpl = (request: any) => Promise<any>;
+type GrpcMethodImpl = (request: unknown) => Promise<any>;
 
 export class GrpcServer {
   private services = new Map<string, Map<string, GrpcMethodImpl>>();
@@ -47,7 +47,7 @@ export class GrpcServer {
     try {
       const data = await handler(call.request);
       return { data, status: { code: 0, message: 'OK' } };
-    } catch (e: any) {
+    } catch (e) {
       return { data: null, status: { code: 2, message: e.message } };
     }
   }

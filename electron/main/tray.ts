@@ -1,11 +1,29 @@
-// ── DAWN WHALES — System Tray ──────────────────────────────────────────────
-import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron';
-import path from 'path';
-import log from 'electron-log';
+// ── System Tray ────────────────────────────────────────────────────────────
 
-/**
- * Create a diamond-shaped fallback tray icon.
- */
+export function createTray() {
+    const trayIconPath = path.join(RESOURCES_PATH, 'icons', 'tray-icon.png');
+    const icon = nativeImage.createFromPath(trayIconPath);
+    if (icon.isEmpty()) {
+      log.warn('[Tray] tray-icon.png not found, using fallback diamond');
+      const fallback = nativeImage.createFromBuffer(createDiamondIcon(16));
+      tray = new Tray(fallback);
+    } else {
+      tray = new Tray(icon);
+    }
+
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'DAWN WHALES · 道鲸', enabled: false },
+    { type: 'separator' },
+    { label: '显示主窗口', click: () => mainWindow?.show() },
+    { label: '紧急停止所有策略', click: () => strategyEngine?.emergencyStop() },
+    { type: 'separator' },
+    { label: '退出', click: () => app.quit() },
+  ]);
+
+  tray.setToolTip('DAWN WHALES · 道鲸');
+  tray.setContextMenu(contextMenu);
+  tray.on('double-click', () => mainWindow?.show());
+}
 export function createDiamondIcon(size: number): Buffer {
   const pixels = Buffer.alloc(size * size * 4);
   const cx = size / 2;
@@ -23,38 +41,4 @@ export function createDiamondIcon(size: number): Buffer {
     }
   }
   return pixels;
-}
-
-/**
- * Create the system tray icon and menu.
- * Requires RESOURCES_PATH, mainWindow, and strategyEngine from the calling context.
- */
-export function createTray(
-  RESOURCES_PATH: string,
-  mainWindowRef: { current: BrowserWindow | null },
-  strategyEngineRef: { current: any },
-  trayRef: { current: Tray | null },
-): void {
-  const trayIconPath = path.join(RESOURCES_PATH, 'icons', 'tray-icon.png');
-  const icon = nativeImage.createFromPath(trayIconPath);
-  if (icon.isEmpty()) {
-    log.warn('[Tray] tray-icon.png not found, using fallback diamond');
-    const fallback = nativeImage.createFromBuffer(createDiamondIcon(16));
-    trayRef.current = new Tray(fallback);
-  } else {
-    trayRef.current = new Tray(icon);
-  }
-
-  const contextMenu = Menu.buildFromTemplate([
-    { label: 'DAWN WHALES · 道鲸', enabled: false },
-    { type: 'separator' },
-    { label: '显示主窗口', click: () => mainWindowRef.current?.show() },
-    { label: '紧急停止所有策略', click: () => strategyEngineRef.current?.emergencyStop() },
-    { type: 'separator' },
-    { label: '退出', click: () => app.quit() },
-  ]);
-
-  trayRef.current.setToolTip('DAWN WHALES · 道鲸');
-  trayRef.current.setContextMenu(contextMenu);
-  trayRef.current.on('double-click', () => mainWindowRef.current?.show());
 }

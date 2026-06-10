@@ -6,7 +6,7 @@ export interface DimensionQuery {
     agg: 'sum' | 'avg' | 'count' | 'min' | 'max' | 'count_distinct';
     field: string;
   }[];
-  filters?: { field: string; op: string; value: any }[];
+  filters?: { field: string; op: string; value: unknown }[];
   orderBy?: { field: string; direction: 'asc' | 'desc' };
   limit?: number;
 }
@@ -79,7 +79,7 @@ export class DataWarehouse {
     return results;
   }
 
-  private _matchFilter(value: any, op: string, target: any): boolean {
+  private _matchFilter(value: unknown, op: string, target: unknown): boolean {
     switch (op) {
       case '=': return value == target;
       case '!=': return value != target;

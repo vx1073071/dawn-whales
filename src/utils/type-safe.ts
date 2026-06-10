@@ -44,7 +44,7 @@ export function hasKey<K extends string>(
 /** Safe property access with fallback */
 export function safeGet<T>(obj: unknown, path: string[], fallback: T): T {
   try {
-    let current: any = obj;
+    let current: unknown = obj;
     for (const key of path) {
       if (current == null) return fallback;
       current = current[key];

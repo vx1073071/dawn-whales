@@ -195,7 +195,7 @@ export class PythonProxyService {
       this.cache.set(cacheKey, { result, expires: Date.now() + this.config.cacheTtlMs });
       log.info(`[PythonProxy] ${skillName} done in ${durationMs}ms, files: ${outputFiles.length}`);
       return result;
-    } catch (err: any) {
+    } catch (err) {
       const durationMs = Date.now() - startTime;
       log.error(`[PythonProxy] ${skillName} failed:`, err.message);
       

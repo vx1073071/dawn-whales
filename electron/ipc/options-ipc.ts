@@ -7,12 +7,11 @@ import log from 'electron-log';
 import { validate } from '../ipc-schemas';
 
 export function registerOptionsIPC(
-  calcGreeksJS: any
-) {
+  calcGreeksJS: unknown) {
 
 
   // ── Options Chain Analyzer (JVS-55) ─────────────────────────────────
-  ipcMain.handle('options:chain-analyze', async (_e, contracts: any[], symbol: string, historicalIVRange?: any) => {
+  ipcMain.handle('options:chain-analyze', async (_e, contracts: unknown[], symbol: string, historicalIVRange?: unknown) => {
     try {
       const result = analyzeOptionsChain(contracts, symbol, historicalIVRange);
       return { success: true, result };
@@ -24,7 +23,7 @@ export function registerOptionsIPC(
 
 
 
-  ipcMain.handle('options:chain-batch', async (_e, symbols: any[]) => {
+  ipcMain.handle('options:chain-batch', async (_e, symbols: unknown[]) => {
     try {
       const result = await analyzeBatchOptionsChain(symbols);
       return { success: true, result };
@@ -41,7 +40,7 @@ export function registerOptionsIPC(
   ipcMain.handle('options:build', async (_e, raw: unknown) => {
     try {
       const { underlying, spotPrice, strategyType, targetParams, legs } = raw as {
-        underlying: string; spotPrice: number; strategyType?: string; targetParams?: any; legs?: any[];
+        underlying: string; spotPrice: number; strategyType?: string; targetParams?: unknown; legs?: unknown[];
       };
       const { OptionsStrategyBuilder } = await import('./engine/options-strategy-builder.js');
       const builder = new OptionsStrategyBuilder(underlying, spotPrice);
@@ -57,7 +56,7 @@ export function registerOptionsIPC(
   ipcMain.handle('options:analyze', async (_e, raw: unknown) => {
     try {
       const { strategy, spotPrice, volatility, riskFreeRate, dividends } = raw as {
-        strategy: any; spotPrice: number; volatility?: number; riskFreeRate?: number; dividends?: any;
+        strategy: unknown; spotPrice: number; volatility?: number; riskFreeRate?: number; dividends?: unknown;
       };
       const { OptionsStrategyBuilder } = await import('./engine/options-strategy-builder.js');
       const builder = new OptionsStrategyBuilder(strategy.underlying || 'UNKNOWN', spotPrice);
@@ -87,11 +86,11 @@ export function registerOptionsIPC(
 
 
 
-  ipcMain.handle('greeks:portfolio', async (_e, positions: any[]) => {
+  ipcMain.handle('greeks:portfolio', async (_e, positions: unknown[]) => {
     const vErr = validate(GreeksPortfolioSchema, { positions });
     if (vErr) return vErr;
     try {
-      const portfolio = positions.map((p: any) => {
+      const portfolio = positions.map((p: unknown) => {
         const g = calcGreeksJS(p.spot, p.strike, p.iv, p.dte, p.rate || 0.05, p.type);
         const mult = p.qty || 1;
         return {
@@ -107,9 +106,9 @@ export function registerOptionsIPC(
         };
       });
       const totals = {
-        netDelta: portfolio.reduce((s: number, p: any) => s + parseFloat(p.totalDelta), 0).toFixed(2),
-        netGamma: portfolio.reduce((s: number, p: any) => s + parseFloat(p.totalGamma), 0).toFixed(4),
-        netTheta: portfolio.reduce((s: number, p: any) => s + parseFloat(p.totalTheta), 0).toFixed(2),
+        netDelta: portfolio.reduce((s: number, p: unknown) => s + parseFloat(p.totalDelta), 0).toFixed(2),
+        netGamma: portfolio.reduce((s: number, p: unknown) => s + parseFloat(p.totalGamma), 0).toFixed(4),
+        netTheta: portfolio.reduce((s: number, p: unknown) => s + parseFloat(p.totalTheta), 0).toFixed(2),
       };
       return { success: true, portfolio: { positions: portfolio, totals } };
     } catch (err) {

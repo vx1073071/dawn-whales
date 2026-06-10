@@ -7,9 +7,8 @@ import log from 'electron-log';
 import { validate } from '../ipc-schemas';
 
 export function registerMarketplaceIPC(
-  db: any,
-  marketplaceService: any
-) {
+  db: unknown,
+  marketplaceService: unknown) {
 
 
   // ── Marketplace ───────────────────────────────────────────────────
@@ -56,7 +55,7 @@ export function registerMarketplaceIPC(
 
 
 
-  ipcMain.handle('marketplace:savePerformance', async (_e, data: any) => {
+  ipcMain.handle('marketplace:savePerformance', async (_e, data: unknown) => {
     const vErr = validate(MarketplaceSavePerformanceSchema, { data });
     if (vErr) return vErr;
     try {

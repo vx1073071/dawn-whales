@@ -9,11 +9,11 @@ export interface JsonRpcRequest {
 export interface JsonRpcResponse {
   jsonrpc: '2.0';
   id: string | number | null;
-  result?: any;
+  result?: unknown;
   error?: {
     code: number;
     message: string;
-    data?: any;
+    data?: unknown;
   };
 }
 
@@ -71,7 +71,7 @@ export class JsonRpcServer {
         id: req.id ?? null,
         result,
       };
-    } catch (e: any) {
+    } catch (e) {
       // Determine error code
       let code = e.code || ErrorCodes.INTERNAL_ERROR;
       if (!e.code) {

@@ -11,7 +11,7 @@ export function registerBackfillIPC(
 
 
   // ── Backfill Service (JVS-59) ───────────────────────────────────────────
-  ipcMain.handle('backfill:start', async (_e, config: any) => {
+  ipcMain.handle('backfill:start', async (_e, config: unknown) => {
     try {
       const result = await startBackfill(config);
       return { success: true, result };
@@ -59,7 +59,7 @@ export function registerBackfillIPC(
 
 
 
-  ipcMain.handle('backfill:symbols', async (_e, symbols: string[], startDate: string, endDate: string, interval?: any) => {
+  ipcMain.handle('backfill:symbols', async (_e, symbols: string[], startDate: string, endDate: string, interval?: unknown) => {
     try {
       const result = await backfillSymbols(symbols, startDate, endDate, interval);
       return { success: true, result };

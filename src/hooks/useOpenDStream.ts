@@ -55,7 +55,7 @@ export function useOpenDStream(codes: string[]) {
         });
         
         // Listen for real-time updates
-        window.api.stockStream.onQuote((data: any) => {
+        window.api.stockStream.onQuote((data: unknown) => {
           setQuotes(prev => {
             const existing = prev.findIndex(q => q.code === data.code);
             const quote: QuoteData = {
@@ -130,9 +130,9 @@ export function useOpenDStream(codes: string[]) {
 
 // ── IPC Handlers ───────────────────────────────────────────────────────────
 
-export function registerOpenDStreamIPC(ipcMain: any) {
+export function registerOpenDStreamIPC(ipcMain: unknown) {
   // Connect to OpenD WebSocket
-  ipcMain.handle('stock-stream:connect', async (_event: unknown, config: any) => {
+  ipcMain.handle('stock-stream:connect', async (_event: unknown, config: unknown) => {
     try {
       const { OpenDClient } = await import('../opend/opend-client');
       const client = new OpenDClient();
@@ -184,11 +184,11 @@ export function registerOpenDStreamIPC(ipcMain: any) {
 // ── Bridge API ─────────────────────────────────────────────────────────────
 
 export const openDStreamAPI = {
-  connect: (config: any) => window.api?.stockStream?.connect(config),
+  connect: (config: unknown) => window.api?.stockStream?.connect(config),
   disconnect: () => window.api?.stockStream?.disconnect(),
   getQuotes: (codes: string[]) => window.api?.stockStream?.getQuotes(codes),
   getStatus: () => window.api?.stockStream?.getStatus(),
-  onQuote: (callback: (data: any) => void) => {
+  onQuote: (callback: (data: unknown) => void) => {
     if (typeof window !== 'undefined' && window.api?.stockStream) {
       window.api.stockStream.onQuote(callback);
     }

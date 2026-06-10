@@ -2,7 +2,7 @@
 interface DeadLetter {
   id: string;
   topic: string;
-  payload: any;
+  payload: unknown;
   error: string;
   attempts: number;
   firstAttempt: number;
@@ -20,7 +20,7 @@ export class DeadLetterQueue {
     this.retryBackoff = retryBackoffMs;
   }
 
-  push(topic: string, payload: any, error: string): string {
+  push(topic: string, payload: unknown, error: string): string {
     const now = Date.now();
     const entry: DeadLetter = {
       id: `${now}-${Math.random().toString(36).slice(2, 8)}`,

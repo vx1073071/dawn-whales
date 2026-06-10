@@ -5,15 +5,15 @@ import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
-import { computeIndicators } from '../engine/technical-indicators';
-import { getRealtimeIndicatorCalculator } from '../engine/realtime-indicators';
+import { computeIndicators } from '../engine/analysis/technical-indicators';
+import { getRealtimeIndicatorCalculator } from '../engine/data/realtime-indicators';
 
 export function registerIndicatorIPC(
 ) {
 
 
   // ── Technical Indicators (JVS-43) ──────────────────────────────────────
-  ipcMain.handle('indicator:compute', async (_e, klines: any[], indicators?: string[], options?: any) => {
+  ipcMain.handle('indicator:compute', async (_e, klines: any[], indicators?: string[], options?: unknown) => {
     try {
       return computeIndicators(klines, indicators, options);
     } catch (err) {
@@ -26,7 +26,7 @@ export function registerIndicatorIPC(
 
 
   // ── Realtime Technical Indicators (JVS-36) ─────────────────────────────
-  ipcMain.handle('indicator:realtime-add', async (_e, symbol: string, kline: any) => {
+  ipcMain.handle('indicator:realtime-add', async (_e, symbol: string, kline: unknown) => {
     try {
       const calculator = getRealtimeIndicatorCalculator();
       return { success: true, indicators: calculator.addKLine(symbol, kline) };

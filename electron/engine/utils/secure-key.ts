@@ -57,7 +57,7 @@ export function setDeepSeekKey(key: string): void {
   const dir = path.dirname(configPath);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-  let config: any = {};
+  let config: unknown = {};
   try {
     if (fs.existsSync(configPath)) {
       config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));

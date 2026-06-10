@@ -46,7 +46,7 @@ export class LoadTester {
           await Promise.race([fn(id), timer]);
           latencies.push(Date.now() - reqStart);
           successCount++;
-        } catch (e: any) {
+        } catch (e) {
           failureCount++;
           const msg = e.message || 'Unknown error';
           errors.set(msg, (errors.get(msg) || 0) + 1);

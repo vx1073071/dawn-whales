@@ -2,7 +2,7 @@
 // JVS-108: User Preferences
 
 import { ipcMain, dialog, BrowserWindow } from 'electron';
-import { PreferencesManager } from '../engine/user-preferences';
+import { PreferencesManager } from '../engine/analysis/user-preferences';
 import log from 'electron-log';
 
 let prefsManager: PreferencesManager | null = null;
@@ -41,13 +41,13 @@ export function registerPreferencesHandlers() {
   });
 
   // prefs:set — 设置单个项
-  ipcMain.handle('prefs:set', async (_e, section: string, key: string, value: any) => {
+  ipcMain.handle('prefs:set', async (_e, section: string, key: string, value: unknown) => {
     const ok = p.set(section as any, key, value);
     return { success: ok };
   });
 
   // prefs:set-section — 批量设置某个分类
-  ipcMain.handle('prefs:set-section', async (_e, section: string, data: any) => {
+  ipcMain.handle('prefs:set-section', async (_e, section: string, data: unknown) => {
     const ok = p.setSection(section as any, data);
     return { success: ok };
   });
@@ -73,7 +73,7 @@ export function registerPreferencesHandlers() {
       }
       const outPath = p.exportToFile(filePath);
       return { success: true, data: { filePath: outPath } };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
@@ -94,13 +94,13 @@ export function registerPreferencesHandlers() {
       if (!filePath) return { success: false, error: 'No file specified' };
       const result = p.importFromFile(filePath);
       return { success: result.success, data: result.success ? p.getAll() : undefined, error: result.error };
-    } catch (err: any) {
+    } catch (err) {
       return { success: false, error: err.message };
     }
   });
 
   // prefs:custom-set — 设置自定义数据
-  ipcMain.handle('prefs:custom-set', async (_e, key: string, value: any) => {
+  ipcMain.handle('prefs:custom-set', async (_e, key: string, value: unknown) => {
     p.setCustom(key, value);
     return { success: true };
   });

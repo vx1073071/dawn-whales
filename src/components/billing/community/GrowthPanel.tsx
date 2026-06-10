@@ -9,26 +9,26 @@ interface InviteRecord { code: string; usedBy: string; status: 'pending' | 'comp
 interface Achievement { id: string; name: string; icon: string; description: string; progress: number; target: number; unlocked: boolean; reward: string }
 
 const MODERATION: ModerationItem[] = [
-  { id: 'm1', type: 'report', user: 'TraderX', content: '用户举报: "该策略信号连续3次误导"', status: 'pending', reportedAt: '2026-06-09 22:30' },
-  { id: 'm2', type: 'spam', user: 'Bot_User99', content: '"加我微信xxx，日赚1000U" (重复32次)', status: 'blocked', reportedAt: '2026-06-09 20:15' },
-  { id: 'm3', type: 'sensitive', user: 'Anonymous', content: '评论含敏感词: "xxx" → 需审核', status: 'pending', reportedAt: '2026-06-09 21:00' },
-  { id: 'm4', type: 'report', user: 'QuantKing', content: '举报: "用户 NewTrader88 虚假策略数据"', status: 'approved', reportedAt: '2026-06-08 18:00' },
+  { id: 'm1', type: 'report', user: 'TraderX', content: {t('用户举报: {t("该策略信号连续3次误导")}')}, status: 'pending', reportedAt: '2026-06-09 22:30' },
+  { id: 'm2', type: 'spam', user: 'Bot_User99', content: {t('{t("加我微信xxx，日赚1000U")} (重复32次)')}, status: 'blocked', reportedAt: '2026-06-09 20:15' },
+  { id: 'm3', type: 'sensitive', user: 'Anonymous', content: {t('评论含敏感词: "xxx" → 需审核')}, status: 'pending', reportedAt: '2026-06-09 21:00' },
+  { id: 'm4', type: 'report', user: 'QuantKing', content: {t('举报: {t("用户 NewTrader88 虚假策略数据")}')}, status: 'approved', reportedAt: '2026-06-08 18:00' },
 ];
 
 const INVITES: InviteRecord[] = [
   { code: 'DW-A3X7K', usedBy: 'Friend_Alpha', status: 'completed', reward: 1.0, date: '2026-06-09' },
   { code: 'DW-B9M2P', usedBy: 'Friend_Beta', status: 'completed', reward: 1.0, date: '2026-06-08' },
-  { code: 'DW-C5L8R', usedBy: '—', status: 'pending', reward: 0, date: '分享中' },
+  { code: 'DW-C5L8R', usedBy: '—', status: 'pending', reward: 0, date: {t('分享中')} },
 ];
 
 const ACHIEVEMENTS: Achievement[] = [
-  { id: 'a1', name: '首次回测', icon: '📈', description: '完成第一次策略回测', progress: 1, target: 1, unlocked: true, reward: '解锁2个模板' },
-  { id: 'a2', name: '首次订阅', icon: '🔔', description: '订阅一个创作者策略', progress: 1, target: 1, unlocked: true, reward: '免费AI分析×1' },
-  { id: 'a3', name: '首次盈利', icon: '💰', description: '单笔交易盈利 >5%', progress: 1, target: 1, unlocked: true, reward: '50 USDT信用额' },
-  { id: 'a4', name: '七日连续', icon: '🔥', description: '连续7天登录', progress: 5, target: 7, unlocked: false, reward: '解锁VIP模板' },
-  { id: 'a5', name: '信号达人', icon: '📡', description: '发布10个策略信号', progress: 6, target: 10, unlocked: false, reward: '创作者L1升级' },
-  { id: 'a6', name: '邀请3人', icon: '👥', description: '成功邀请3位好友', progress: 2, target: 3, unlocked: false, reward: '双方各得1次免费AI分析' },
-  { id: 'a7', name: '百笔交易', icon: '🏆', description: '累计完成100笔交易', progress: 87, target: 100, unlocked: false, reward: 'VIP创作者 L3' },
+  { id: 'a1', name: {t('首次回测')}, icon: '📈', description: {t('完成第一次策略回测')}, progress: 1, target: 1, unlocked: true, reward: {t('解锁2个模板')} },
+  { id: 'a2', name: {t('首次订阅')}, icon: '🔔', description: {t('订阅一个创作者策略')}, progress: 1, target: 1, unlocked: true, reward: {t('免费AI分析×1')} },
+  { id: 'a3', name: {t('首次盈利')}, icon: '💰', description: '单笔交易盈利 >5%', progress: 1, target: 1, unlocked: true, reward: {t('50 USDT信用额')} },
+  { id: 'a4', name: {t('七日连续')}, icon: '🔥', description: {t('连续7天登录')}, progress: 5, target: 7, unlocked: false, reward: {t('解锁VIP模板')} },
+  { id: 'a5', name: {t('信号达人')}, icon: '📡', description: {t('发布10个策略信号')}, progress: 6, target: 10, unlocked: false, reward: {t('创作者L1升级')} },
+  { id: 'a6', name: {t('邀请3人')}, icon: '👥', description: {t('成功邀请3位好友')}, progress: 2, target: 3, unlocked: false, reward: {t('双方各得1次免费AI分析')} },
+  { id: 'a7', name: {t('百笔交易')}, icon: '🏆', description: {t('累计完成100笔交易')}, progress: 87, target: 100, unlocked: false, reward: {t('VIP创作者 L3')} },
 ];
 
 // ── Tab: Content Moderation ──
@@ -37,14 +37,14 @@ function ModerationTab() {
   const filtered = filter === 'all' ? MODERATION : MODERATION.filter(m => m.status === filter || m.type === filter);
 
   const typeColors: Record<string, { label: string; color: string }> = {
-    report: { label: '举报', color: '#F59E0B' },
-    spam: { label: '垃圾', color: '#EF4444' },
-    sensitive: { label: '敏感', color: '#8B5CF6' },
+    report: { label: {t('举报')}, color: '#F59E0B' },
+    spam: { label: {t('垃圾')}, color: '#EF4444' },
+    sensitive: { label: {t('敏感')}, color: '#8B5CF6' },
   };
   const statusColors: Record<string, { label: string; color: string; bg: string }> = {
-    pending: { label: '待审核', color: '#F59E0B', bg: '#F59E0B22' },
-    approved: { label: '已通过', color: '#10B981', bg: '#10B98122' },
-    blocked: { label: '已屏蔽', color: '#EF4444', bg: '#EF444422' },
+    pending: { label: {t('待审核')}, color: '#F59E0B', bg: '#F59E0B22' },
+    approved: { label: {t('已通过')}, color: '#10B981', bg: '#10B98122' },
+    blocked: { label: {t('已屏蔽')}, color: '#EF4444', bg: '#EF444422' },
   };
 
   return (
@@ -55,7 +55,7 @@ function ModerationTab() {
             padding: '5px 14px', borderRadius: 6, border: '1px solid', borderColor: filter === f ? '#6366F1' : '#374151',
             background: filter === f ? '#6366F118' : 'transparent', color: filter === f ? '#818CF8' : '#6B7280', fontSize: 12, cursor: 'pointer',
           }}>
-            {f === 'all' ? '全部' : f === 'pending' ? '待审核' : f === 'report' ? '🚩 举报' : '🗑️ 垃圾'}
+            {f === 'all' ? {t('全部')} : f === 'pending' ? {t('待审核')} : f === 'report' ? {t('🚩 举报')} : {t('🗑️ 垃圾')}}
           </button>
         ))}
       </div>
@@ -156,7 +156,7 @@ function InviteTab() {
               <tr style={{ borderBottom: '1px solid #374151' }}>
                 <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>邀请码</th>
                 <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>被邀请人</th>
-                <th style={{ padding: '8px 12px', textAlign: 'center', color: '#9CA3AF' }}>{"状态"}</th>
+                <th style={{ padding: '8px 12px', textAlign: 'center', color: '#9CA3AF' }}>{{t("状态")}}</th>
                 <th style={{ padding: '8px 12px', textAlign: 'right', color: '#9CA3AF' }}>奖励</th>
                 <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{t("components.date"日期"   </tr>
             </thead>
@@ -167,7 +167,7 @@ function InviteTab() {
                   <td style={{ padding: '10px 12px', color: '#D1D5DB' }}>{i.usedBy}</td>
                   <td style={{ padding: '10px 12px', textAlign: 'center' }}>
                     <span style={{ padding: '2px 8px', borderRadius: 4, fontSize: 10, fontWeight: 600, background: i.status === 'completed' ? '#10B98122' : '#6B728022', color: i.status === 'completed' ? '#34D399' : '#6B7280' }}>
-                      {i.status === 'completed' ? '✅ 已得奖' : '⏳ 等待中'}
+                      {i.status === 'completed' ? {t('✅ 已得奖')} : {t('⏳ 等待中')}}
                     </span>
                   </td>
                   <td style={{ padding: '10px 12px', textAlign: 'right', fontFamily: 'monospace', color: '#D4A853', fontWeight: 600 }}>{i.reward > 0 ? `+${i.reward} USDT` : '—'}</td>
@@ -218,7 +218,7 @@ function AchievementTab() {
                 </div>
               </div>
               <span style={{ fontSize: 11, color: a.unlocked ? '#34D399' : '#F59E0B' }}>
-                {a.unlocked ? '✅ 已解锁' : `${a.progress}/${a.target}`}
+                {a.unlocked ? {t('✅ 已解锁')} : `${a.progress}/${a.target}`}
               </span>
             </div>
 

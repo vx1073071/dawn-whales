@@ -6,7 +6,7 @@ interface ReportData {
   sections: {
     heading: string;
     type: 'table' | 'metrics' | 'text' | 'chart';
-    data: any;
+    data: unknown;
   }[];
   footer?: string;
 }
@@ -120,7 +120,7 @@ function buildTableHTML(heading: string, data: { headers: string[]; rows: (strin
 
 // ── Helper: Convert backtest result to report format ──────────────────────
 
-export function backtestToReport(result: any): ReportData {
+export function backtestToReport(result: unknown): ReportData {
   const isProfit = result.totalReturn >= 0;
   return {
     title: `回测报告: ${result.strategyName || '策略'}`,
@@ -145,7 +145,7 @@ export function backtestToReport(result: any): ReportData {
         type: 'table',
         data: {
           headers: ['入场日期', '方向', '入场价', '出场日期', '出场价', '盈亏', '盈亏%', '持有天数'],
-          rows: (result.trades || []).map((t: any) => [
+          rows: (result.trades || []).map((t: unknown) => [
             t.entryDate, t.side, t.entryPrice.toFixed(2), t.exitDate, t.exitPrice.toFixed(2),
             `${t.pnl >= 0 ? '+' : ''}${t.pnl.toFixed(2)}`,
             `${(t.pnlPercent * 100).toFixed(2)}%`,

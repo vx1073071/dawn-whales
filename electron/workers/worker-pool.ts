@@ -35,7 +35,7 @@ interface PoolWorker {
 interface Task<T = any> {
   id: string;
   module: string;
-  data: any;
+  data: unknown;
   priority: number;
   submittedAt: number;
   resolve: (result: T) => void;
@@ -116,7 +116,7 @@ export class WorkerPool extends EventEmitter {
   /** Submit a task to be executed in a worker thread */
   async execute<T = any>(
     module: string,
-    data: any,
+    data: unknown,
     priority: number = 1,
     timeout?: number
   ): Promise<T> {

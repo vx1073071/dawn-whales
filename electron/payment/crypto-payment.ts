@@ -69,7 +69,7 @@ export class CryptoPaymentService {
       // });
       // order.payAddress = payment.pay_address;
       log.info(`[Payment] Order created: ${orderId} (${req.amount} USDT on ${req.chain})`);
-    } catch (err: any) {
+    } catch (err) {
       log.warn('[Payment] NOWPayments API error, using self-hosted:', err.message);
     }
 

@@ -52,7 +52,7 @@ export class LicenseManager {
         this.license = JSON.parse(decrypted);
         log.info(`[License] Loaded: ${this.license.tier} (expires: ${this.license.expiresAt || 'never'})`);
         return this.license;
-      } catch (err: any) {
+      } catch (err) {
         log.warn('[License] Failed to load license, starting trial:', err.message);
       }
     }

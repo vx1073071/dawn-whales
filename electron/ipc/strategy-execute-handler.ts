@@ -9,10 +9,10 @@
 // 4. 运行回测
 // 5. 返回结果（如果回测成功，可选启动模拟交易）
 
-import { parseNaturalLanguage } from '../engine/nl-parser';
-import { StrategyEngine } from '../engine/strategy-engine';
-import { RiskEngine } from '../engine/risk-engine';
-import { BacktestEngine } from '../engine/backtest-engine';
+import { parseNaturalLanguage } from '../engine/agents/nl-parser';
+import { StrategyEngine } from '../engine/analysis/strategy-engine';
+import { RiskEngine } from '../engine/risk/risk-engine';
+import { BacktestEngine } from '../engine/backtest/backtest-engine';
 import log from 'electron-log';
 
 export interface StrategyExecuteRequest {
@@ -35,13 +35,13 @@ export interface StrategyExecuteResponse {
   parsed?: {
     name: string;
     description: string;
-    strategy: any;
+    strategy: unknown;
     symbol: string;
   };
   /** 创建的策略ID */
   strategyId?: string;
   /** 回测结果 */
-  backtest?: any;
+  backtest?: unknown;
   /** 错误信息 */
   error?: string;
 }
@@ -131,14 +131,14 @@ export async function handleStrategyExecute(
  * 注册 strategy:execute IPC handler
  */
 export function registerStrategyExecuteHandler(
-  ipcMain: any,
+  ipcMain: unknown,
   dependencies: {
     strategyEngine: StrategyEngine;
     riskEngine: RiskEngine;
     backtestEngine: BacktestEngine;
   }
 ) {
-  ipcMain.handle('strategy:execute', async (_event: any, request: StrategyExecuteRequest) => {
+  ipcMain.handle('strategy:execute', async (_event: unknown, request: StrategyExecuteRequest) => {
     return await handleStrategyExecute(request, dependencies);
   });
 

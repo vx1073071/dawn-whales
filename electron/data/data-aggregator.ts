@@ -6,6 +6,7 @@
 import log from 'electron-log';
 import https from 'https';
 import http from 'http';
+import { httpGet } from '../utils/http';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -16,7 +17,7 @@ export interface DataSource {
   enabled: boolean;
   timeoutMs: number;
   maxRetries: number;
-  config?: any;
+  config?: unknown;
 }
 
 export interface QuoteData {
@@ -126,46 +127,10 @@ const DEFAULT_CONFIG: AggregatorConfig = {
 
 // ── HTTP Helper ────────────────────────────────────────────────────────────
 
-function httpGet(url: string, timeoutMs = 10000): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const parsedUrl = new URL(url);
-    const client = parsedUrl.protocol === 'https:' ? https : http;
-    const opts = {
-      hostname: parsedUrl.hostname,
-      path: parsedUrl.pathname + parsedUrl.search,
-      timeout: timeoutMs,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Accept': 'application/json',
-      },
-    };
-    const req = client.get(opts, (res) => {
-      if (res.statusCode === 301 || res.statusCode === 302) {
-        const location = res.headers.location;
-        if (location) {
-          httpGet(location, timeoutMs).then(resolve).catch(reject);
-          return;
-        }
-      }
-      const chunks: Buffer[] = [];
-      res.on('data', (chunk: Buffer) => chunks.push(chunk));
-      res.on('end', () => {
-        const body = Buffer.concat(chunks).toString('utf-8');
-        if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
-          resolve(body);
-        } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${body.slice(0, 200)}`));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
-  });
-}
 
 // ── Data Fetchers ──────────────────────────────────────────────────────────
 
-async function fetchFromOpenD(codes: string[], config?: any): Promise<QuoteData[]> {
+async function fetchFromOpenD(codes: string[], config?: unknown): Promise<QuoteData[]> {
   // OpenD integration via TCP socket
   // For now, return empty array (requires OpenD connection)
   log.debug('[DataAggregator] OpenD fetch not implemented yet');
@@ -204,13 +169,13 @@ async function fetchFromYahoo(codes: string[]): Promise<QuoteData[]> {
             source: 'yahoo',
           });
         }
-      } catch (err: any) {
+      } catch (err) {
         log.debug(`[DataAggregator] Yahoo fetch failed for ${code}:`, err.message);
       }
     }
     
     return quotes;
-  } catch (err: any) {
+  } catch (err) {
     log.error('[DataAggregator] Yahoo fetch error:', err.message);
     return [];
   }
@@ -245,13 +210,13 @@ async function fetchFromAlphaVantage(codes: string[], apiKey: string): Promise<Q
             source: 'alphavantage',
           });
         }
-      } catch (err: any) {
+      } catch (err) {
         log.debug(`[DataAggregator] AlphaVantage fetch failed for ${code}:`, err.message);
       }
     }
     
     return quotes;
-  } catch (err: any) {
+  } catch (err) {
     log.error('[DataAggregator] AlphaVantage fetch error:', err.message);
     return [];
   }
@@ -307,8 +272,7 @@ export class DataAggregator {
   async fetchFromSources(
     codes: string[],
     sourceType: 'opend' | 'yahoo' | 'alphavantage' | 'cache',
-    config?: any
-  ): Promise<QuoteData[]> {
+    config?: unknown): Promise<QuoteData[]> {
     switch (sourceType) {
       case 'opend':
         return fetchFromOpenD(codes, config);
@@ -370,7 +334,7 @@ export class DataAggregator {
         } else {
           sourcesFailed.push(source.name);
         }
-      } catch (err: any) {
+      } catch (err) {
         log.error(`[DataAggregator] ${source.name} failed:`, err.message);
         sourcesFailed.push(source.name);
       }
