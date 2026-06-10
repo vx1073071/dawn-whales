@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback , useTranslation} from 'react';
 import * as api from '../../lib/bridge-api';
 
 interface GreeksResult {
@@ -21,6 +21,8 @@ interface GreeksInput {
 }
 
 export default function GreeksPanel() {
+  const { t } = useTranslation();
+
   const [input, setInput] = useState<GreeksInput>({
     spot: 8500,
     strike: 8500,

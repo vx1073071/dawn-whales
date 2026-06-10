@@ -10,6 +10,7 @@
  * - Audit log viewer
  */
 
+import { useTranslation } from "react-i18next";
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 
 // ── Types (mirrors bridge types) ────────────────────────────────────────

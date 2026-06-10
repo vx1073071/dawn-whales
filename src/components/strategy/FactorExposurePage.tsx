@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
@@ -63,6 +63,8 @@ const MOCK_DATA: FactorExposureResult = {
 };
 
 export default function FactorExposurePage() {
+  const { t } = useTranslation();
+
   const [data] = useState<FactorExposureResult>(MOCK_DATA);
   const [loading, setLoading] = useState(false);
 

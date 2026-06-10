@@ -1,4 +1,4 @@
-import { useState, useEffect, type CSSProperties } from 'react';
+import { useState, useEffect, type CSSProperties , useTranslation} from 'react';
 
 // ── Types ──
 interface DataSource {
@@ -44,6 +44,8 @@ const INITIAL_AGENTS: AgentStatus[] = [
 
 // ── Sub-components ──
 function StatusDot({ status }: { status: string }) {
+  const { t } = useTranslation();
+
   const colors: Record<string, string> = { online: '#10B981', degraded: '#F59E0B', offline: '#EF4444' };
   return (
     <span style={{

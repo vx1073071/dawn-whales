@@ -10,6 +10,7 @@
  * - Mobile-friendly compact mode
  */
 
+import { useTranslation } from "react-i18next";
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────

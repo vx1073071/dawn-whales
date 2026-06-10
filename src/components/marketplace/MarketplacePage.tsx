@@ -43,6 +43,8 @@ const DEMO_CHARTS: Record<string, number[]> = {
 };
 
 export default function MarketplacePage() {
+  const { t } = useTranslation();
+
   const [activeTab, setActiveTab] = useState<Tab>('rating');
   const [riskFilter, setRiskFilter] = useState<RiskFilter>('all');
   const [selectedId, setSelectedId] = useState<string | null>(null);

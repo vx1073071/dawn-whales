@@ -13,6 +13,7 @@
  * ≥250L
  */
 
+import { useTranslation } from "react-i18next";
 import React, { useState, useCallback, useMemo } from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────

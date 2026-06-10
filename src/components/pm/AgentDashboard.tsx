@@ -2,6 +2,7 @@
  * PM Agent Dashboard
  * Real-time monitoring panel for all 14 agents
  */
+import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from 'react';
 import { Card, Row, Col, Badge, Progress, Tag, Statistic, Alert } from 'antd';
 import {

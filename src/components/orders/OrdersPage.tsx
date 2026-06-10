@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react';
 import * as api from '@/lib/bridge-api';
 
 type Tab = 'active' | 'history' | 'trades';
@@ -19,6 +19,8 @@ interface Order {
 }
 
 export default function OrdersPage() {
+  const { t } = useTranslation();
+
   const [tab, setTab] = useState<Tab>('active');
   const [orders, setOrders] = useState<Order[]>([]);
   const [dbTrades, setDbTrades] = useState<unknown[]>([]);

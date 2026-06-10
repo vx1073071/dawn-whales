@@ -10,7 +10,7 @@
  * - Expandable accordion answers
  */
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback , useTranslation} from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -79,6 +79,8 @@ const CATEGORIES = [
 // ── SEO FAQPage JSON-LD ─────────────────────────────────────────────────
 
 function FAQJsonLd({ articles }: { articles: HelpArticle[] }) {
+  const { t } = useTranslation();
+
   const ld = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

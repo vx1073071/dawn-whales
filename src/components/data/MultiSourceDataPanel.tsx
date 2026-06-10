@@ -10,6 +10,7 @@
  * - Source priority & degradation indicators
  */
 
+import { useTranslation } from "react-i18next";
 import React, { useState, useMemo } from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────

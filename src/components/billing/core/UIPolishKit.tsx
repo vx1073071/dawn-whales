@@ -1,4 +1,4 @@
-import { useState, type ReactNode, type CSSProperties } from 'react';
+import { useState, type ReactNode, type CSSProperties , useTranslation} from 'react';
 
 // ── ML-79: UI 质量打磨 — 三态统一·私行风·a11y·触控 ──
 
@@ -101,6 +101,8 @@ export function ErrorState({ error, onRetry }: { error?: string; onRetry?: () =>
 
 // ── Offline Banner ──
 export function OfflineBanner() {
+  const { t } = useTranslation();
+
   const [dismissed, setDismissed] = useState(false);
   if (dismissed) return null;
 

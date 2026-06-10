@@ -10,7 +10,7 @@
  * - Max Sharpe / Min Variance / Equal Weight presets
  */
 
-import { useState } from 'react';
+import { useState , useTranslation} from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -80,6 +80,8 @@ const mockRebalance: RebalanceTrade[] = [
 // ── Efficient Frontier Chart (SVG) ───────────────────────────────────────
 
 function EfficientFrontier({ points }: { points: PortfolioPoint[] }) {
+  const { t } = useTranslation();
+
   const w = 260; const h = 180; const pad = { l: 40, r: 20, t: 15, b: 25 };
   const risks = points.map(p => p.risk);
   const returns = points.map(p => p.return_);

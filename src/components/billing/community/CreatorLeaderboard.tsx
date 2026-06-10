@@ -11,7 +11,7 @@
  * - Creator card with avatar, level badge, stats, rank badge
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo , useTranslation} from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -81,6 +81,8 @@ const mockProfiles: CreatorProfile[] = [
 // ── Rank Badge ──────────────────────────────────────────────────────────
 
 function RankBadge({ rank }: { rank: number }) {
+  const { t } = useTranslation();
+
   if (rank === 1) return <span className="text-lg">🥇</span>;
   if (rank === 2) return <span className="text-lg">🥈</span>;
   if (rank === 3) return <span className="text-lg">🥉</span>;

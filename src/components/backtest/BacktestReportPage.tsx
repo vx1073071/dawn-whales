@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo , useTranslation} from 'react';
 import * as api from '../../lib/bridge-api';
 import { generatePDFReport, backtestToReport } from '../../lib/pdf-report';
 import ParamScanPanel from './ParamScanPanel';
@@ -43,6 +43,8 @@ type SortField = 'entryDate' | 'exitDate' | 'pnl' | 'pnlPercent' | 'holdingDays'
 type SortDir = 'asc' | 'desc';
 
 export default function BacktestReportPage() {
+  const { t } = useTranslation();
+
   const [strategies, setStrategies] = useState<unknown[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [result, setResult] = useState<BacktestResult | null>(null);

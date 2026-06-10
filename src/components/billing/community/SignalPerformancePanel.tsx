@@ -11,7 +11,7 @@
  * - Signal calendar heatmap
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo , useTranslation} from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -131,6 +131,8 @@ function Gauge({ value, label, max, unit, colorRanges }: {
   value: number; label: string; max: number; unit: string;
   colorRanges: { min: number; max: number; color: string }[];
 }) {
+  const { t } = useTranslation();
+
   const pct = Math.min(100, (value / max) * 100);
   const activeRange = colorRanges.find((r) => value >= r.min && value <= r.max);
   const color = activeRange?.color ?? '#6B7280';

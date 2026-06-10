@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState , useTranslation} from 'react';
 
 interface Props {
   strategy: any;
@@ -7,6 +7,8 @@ interface Props {
 }
 
 export default function StrategyExplainCard({ strategy, onExplain }: Props) {
+  const { t } = useTranslation();
+
   const [explanation, setExplanation] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

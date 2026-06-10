@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo , useTranslation} from 'react';
 
 interface EquityPoint {
   date: string;
@@ -10,6 +10,8 @@ interface DrawdownChartProps {
 }
 
 export default function DrawdownChart({ equityCurve }: DrawdownChartProps) {
+  const { t } = useTranslation();
+
   const drawdownData = useMemo(() => {
     if (equityCurve.length === 0) return [];
 

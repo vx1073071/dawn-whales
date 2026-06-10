@@ -6,6 +6,7 @@
  * 5 tabs: Dashboard / Strategy / Market / Portfolio / More
  */
 
+import { useTranslation } from "react-i18next";
 import React, { useState, useCallback } from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
@@ -113,6 +114,8 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
 // ── Mobile touch optimizations hook ─────────────────────────────────────
 
 export function useMobileTouchOptimizations() {
+  const { t } = useTranslation();
+
   // Ensure minimum touch target size (44px)
   // Prevent double-tap zoom on interactive elements
   // Disable pull-to-refresh in PWA standalone mode

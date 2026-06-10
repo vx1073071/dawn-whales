@@ -128,7 +128,9 @@ interface ThemeLangContextType {
 }
 
 const ThemeLangContext = createContext<ThemeLangContextType>(null!);
-export function useThemeLang() { return useContext(ThemeLangContext); }
+export function useThemeLang() {
+  const { t } = useTranslation();
+ return useContext(ThemeLangContext); }
 
 export function ThemeLangProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>('dark');

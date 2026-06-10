@@ -49,6 +49,8 @@ const AUDIT_ITEMS: AuditItem[] = [
 
 // ── Stats badge ──
 function StatBadge({ label, value, color }: { label: string; value: string; color: string }) {
+  const { t } = useTranslation();
+
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px', borderRadius: 8, background: color + '14', border: `1px solid ${color}33` }}>
       <span style={{ fontSize: 11, color: '#9CA3AF' }}>{label}</span>

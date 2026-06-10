@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
@@ -62,6 +62,8 @@ const MOCK_DATA: AttributionData = {
 };
 
 export default function PerformanceAttributionPage() {
+  const { t } = useTranslation();
+
   const [data] = useState<AttributionData>(MOCK_DATA);
   const [loading, setLoading] = useState(false);
 

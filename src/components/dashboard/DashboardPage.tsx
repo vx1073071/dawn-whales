@@ -1,7 +1,7 @@
 // ── DAWN WHALES — Dashboard (v0.6.0) ────────────────────────────────────────
 // 总资产/持仓热力图/净值曲线/盈亏总览/最近信号
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo , useTranslation} from 'react';
 import {
   getAccounts, getFunds, getPositions, isConnected,
   getAllStrategies, getMarketplaceList,
@@ -40,6 +40,8 @@ interface StrategyStatus {
 }
 
 export default function DashboardPage() {
+  const { t } = useTranslation();
+
   const [account, setAccount] = useState<AccountSummary | null>(null);
   const [positions, setPositions] = useState<PositionCard[]>([]);
   const [strategies, setStrategies] = useState<StrategyStatus[]>([]);

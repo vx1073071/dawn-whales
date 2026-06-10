@@ -10,7 +10,7 @@
  * - Notification center: unread badge, categorized (signal/comment/system), mark read
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo , useTranslation} from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -100,6 +100,8 @@ const mockMyStrategies: MyStrategy[] = [
 // ── Stat Card ────────────────────────────────────────────────────────────
 
 function StatCard({ value, label }: { value: string | number; label: string }) {
+  const { t } = useTranslation();
+
   return (
     <div style={{ textAlign: 'center', padding: '8px 12px', background: 'rgba(255,255,255,0.02)', borderRadius: 10 }}>
       <div style={{ fontSize: 16, fontWeight: 700, color: '#e2e8f0' }}>{typeof value === 'number' ? value.toLocaleString() : value}</div>

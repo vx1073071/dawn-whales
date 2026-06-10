@@ -1,4 +1,4 @@
-import { useState, useMemo, type CSSProperties } from 'react';
+import { useState, useMemo, type CSSProperties , useTranslation} from 'react';
 
 // ── Types ──
 interface SignalTrade {
@@ -36,6 +36,8 @@ const NEWS_SAMPLES: NewsItem[] = [
 
 // ── Sub-components ──
 function PnLBadge({ pnl, pnlPct }: { pnl: number; pnlPct: number }) {
+  const { t } = useTranslation();
+
   const isWin = pnl > 0;
   return (
     <span style={{ fontWeight: 700, fontSize: 13, color: isWin ? '#34D399' : '#FCA5A5', fontFamily: 'monospace' }}>

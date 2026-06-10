@@ -10,6 +10,7 @@
  * - Timeframe stats table
  */
 
+import { useTranslation } from "react-i18next";
 import React, { useState, useMemo, useCallback } from 'react';
 
 // ── Types (mirrors engine types) ────────────────────────────────────────

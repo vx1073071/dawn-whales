@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties , useTranslation} from 'react';
 
 interface TxRecord { id: string; type: 'deposit' | 'withdraw' | 'revenue'; amount: number; status: 'pending' | 'confirmed' | 'failed'; txHash: string; date: string; note: string }
 
@@ -19,6 +19,8 @@ const REVENUE_TIERS: RevenueTier[] = [
 
 // ── Sub-components ──
 function TxStatusBadge({ status }: { status: string }) {
+  const { t } = useTranslation();
+
   const map: Record<string, { icon: string; color: string; bg: string; label: string }> = {
     pending: { icon: '⏳', color: '#F59E0B', bg: '#F59E0B22', label: '确认中' },
     confirmed: { icon: '✅', color: '#10B981', bg: '#10B98122', label: '已确认' },

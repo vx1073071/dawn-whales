@@ -11,7 +11,7 @@
  * - Partial fill history log
  */
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo , useTranslation} from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -88,6 +88,8 @@ const mockActiveOrder: FractionalOrder = {
 // ── Sub-components ──────────────────────────────────────────────────────
 
 function FillProgressBar({ filled, total, status }: { filled: number; total: number; status: string }) {
+  const { t } = useTranslation();
+
   const pct = Math.min(100, (filled / total) * 100);
   const color = status === 'filled' ? '#4ade80' : status === 'partial' ? '#fbbf24' : status === 'cancelled' ? '#ef4444' : '#475569';
   return (

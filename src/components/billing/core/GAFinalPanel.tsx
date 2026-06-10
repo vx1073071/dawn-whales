@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties , useTranslation} from 'react';
 import { PRIVATE_BANKING, MonoNumber } from './UIPolishKit';
 
 // ── R81: ML-81-01 GA 最终打磨 — 深浅走查+响应式+数字缩写+GA RN ──
@@ -27,6 +27,8 @@ const GA_SUMMARY = {
 };
 
 function StatusDot({ status }: { status: string }) {
+  const { t } = useTranslation();
+
   return <span style={{ color: status === 'pass' ? '#10B981' : status === 'warn' ? '#F59E0B' : '#EF4444' }}>
     {status === 'pass' ? '✅' : status === 'warn' ? '⚠️' : '❌'}
   </span>;

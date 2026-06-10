@@ -1,5 +1,5 @@
 // ── BrokerSelector — Sprint1: Multi-broker switcher UI ──────────────────────
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef , useTranslation} from 'react';
 import { getBrokerStatus, setActiveBroker } from '@/lib/bridge-api';
 
 interface BrokerStatus {
@@ -28,6 +28,8 @@ const BROKER_LABELS: Record<string, string> = {
 };
 
 export default function BrokerSelector() {
+  const { t } = useTranslation();
+
   const [open, setOpen] = useState(false);
   const [statuses, setStatuses] = useState<BrokerStatus[]>([]);
   const [loading, setLoading] = useState(false);

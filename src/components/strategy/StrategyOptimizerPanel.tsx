@@ -10,6 +10,7 @@
  * - Best parameters highlight with diff vs baseline
  */
 
+import { useTranslation } from "react-i18next";
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 
 // ── Types (mirrors engine types) ────────────────────────────────────────

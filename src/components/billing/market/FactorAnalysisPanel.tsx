@@ -10,7 +10,7 @@
  * - Factor decay + crowding indicators
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo , useTranslation} from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -90,6 +90,8 @@ const FACTOR_NAMES = ['MOM', 'VAL', 'QUAL', 'VOL', 'LIQ', 'SENT'];
 // ── Heatmap Cell ────────────────────────────────────────────────────────
 
 function HeatmapCell({ value }: { value: number }) {
+  const { t } = useTranslation();
+
   const intensity = Math.abs(value);
   const bg = value >= 0
     ? `rgba(34,197,94,${0.1 + intensity * 0.8})`

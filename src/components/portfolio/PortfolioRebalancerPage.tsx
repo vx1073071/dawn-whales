@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react';
 import { getFunds } from '@/lib/bridge-api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
@@ -34,6 +34,8 @@ const MOCK_SUGGESTIONS: RebalanceSuggestion[] = [
 ];
 
 export default function PortfolioRebalancerPage() {
+  const { t } = useTranslation();
+
   const [suggestions] = useState<RebalanceSuggestion[]>(MOCK_SUGGESTIONS);
   const [loading, setLoading] = useState(false);
   const [config, setConfig] = useState<RebalanceConfig>({

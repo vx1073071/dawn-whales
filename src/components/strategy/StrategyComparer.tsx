@@ -10,6 +10,7 @@
  * - Strategy selector dropdowns
  */
 
+import { useTranslation } from "react-i18next";
 import React, { useState, useMemo, useCallback } from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────

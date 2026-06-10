@@ -13,6 +13,8 @@
  */
 
 export default function DemoCasePage() {
+  const { t } = useTranslation();
+
   const cases = [
     {
       title: 'AAPL 趋势跟踪',

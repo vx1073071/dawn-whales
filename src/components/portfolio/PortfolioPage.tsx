@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react';
 import * as api from '@/lib/bridge-api';
 
 interface FundsInfo {
@@ -11,6 +11,8 @@ interface FundsInfo {
 }
 
 export default function PortfolioPage() {
+  const { t } = useTranslation();
+
   const [accountId, setAccountId] = useState<string>('');
   const [funds, setFunds] = useState<FundsInfo | null>(null);
   const [positions, setPositions] = useState<unknown[]>([]);

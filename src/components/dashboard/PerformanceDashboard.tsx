@@ -2,7 +2,7 @@
 // UIM-33-01: Sharpe/Sortino/Calmar/ProfitFactor dashboard
 // R33, 10-lobster architecture
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo , useTranslation} from 'react';
 
 interface PerformanceMetrics {
   totalReturn: number;
@@ -75,6 +75,8 @@ export default function PerformanceDashboard({
   drawdownCurve: _externalDD,
   strategyName = 'Portfolio',
 }: Props) {
+  const { t } = useTranslation();
+
   const metrics = useMemo(() => externalMetrics || generateMockMetrics(), [externalMetrics]);
   const equityCurve = useMemo(() => externalEquity || generateMockEquityCurve(), [externalEquity]);
 

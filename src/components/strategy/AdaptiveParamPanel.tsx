@@ -1,7 +1,7 @@
 // AdaptiveParamPanel — Strategy parameter self-learning UI
 // Phase 4.4 ML-38-02: Self-adaptive parameter adjustment for strategies
 // Connects to AdaptiveParamEngine + RewardEngine
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback , useTranslation} from 'react';
 
 // ── Types ─────────────────────────────────────────────────────────────────
 
@@ -102,6 +102,8 @@ function generateMockHistory(_strategyId: string, initialParams: Record<string, 
 // ── Component ──────────────────────────────────────────────────────────────
 
 export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, onBack, initialParams }: Props) {
+  const { t } = useTranslation();
+
   const [state, setState] = useState<AdaptiveState>(() => {
     const params = initialParams || { ...DEFAULT_PARAMS };
     const history = generateMockHistory(strategyId, params);

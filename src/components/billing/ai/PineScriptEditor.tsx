@@ -11,7 +11,7 @@
  * - Template gallery: SMA, EMA, RSI, MACD, Bollinger, custom
  */
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo , useTranslation} from 'react';
 import DOMPurify from 'dompurify';
 
 // ── Types ───────────────────────────────────────────────────────────────
@@ -68,6 +68,8 @@ export default function PineScriptEditor({
   onSave,
   className = '',
 }: PineScriptEditorProps) {
+  const { t } = useTranslation();
+
   const [code, setCode] = useState(initialCode ?? TEMPLATES[0].code);
   const [name, setName] = useState('');
   const [category, setCategory] = useState(t('components.all'));

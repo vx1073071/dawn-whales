@@ -3,6 +3,7 @@
  * (ML-46-01, R46 Phase 6.3)
  */
 
+import { useTranslation } from "react-i18next";
 import React, { useState, useCallback } from 'react';
 
 interface MarketplaceSearchProps {

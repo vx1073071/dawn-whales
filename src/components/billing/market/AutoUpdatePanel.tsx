@@ -13,7 +13,7 @@
  * - Auto-check toggle (every 4h)
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect , useTranslation} from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -72,6 +72,8 @@ export default function AutoUpdatePanel({
   onInstall,
   className = '',
 }: AutoUpdatePanelProps) {
+  const { t } = useTranslation();
+
   const [status, setStatus] = useState<UpdateStatus>('idle');
   const [downloadPct, setDownloadPct] = useState(0);
   const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(propUpdate ?? null);

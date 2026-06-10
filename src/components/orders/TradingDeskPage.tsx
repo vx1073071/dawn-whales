@@ -1,7 +1,7 @@
 ﻿// ── TradingDeskPage — IPC Full-Link (Round 16 P0) ────────────────────────
 // 全链路交易台: 账户资金 + 持仓 + 下单 + 委托管理 + 快速交易
 // >=500 lines | dark theme | production-ready
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react';
 import * as api from '@/lib/bridge-api';
 
 type Tab = 'trade' | 'positions' | 'orders' | 'history';
@@ -45,6 +45,8 @@ interface Order {
 
 // ── Account Summary Card ─────────────────────────────────────────────────
 function AccountSummary({ fund, connected }: { fund: AccountFund | null; connected: boolean }) {
+  const { t } = useTranslation();
+
   if (!fund) {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">

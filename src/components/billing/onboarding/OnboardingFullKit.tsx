@@ -73,6 +73,8 @@ const CONFLICT_RULES: ConflictRule[] = [
 
 // ── Sub-components ──
 function StepIndicator({ current }: { current: number }) {
+  const { t } = useTranslation();
+
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center', marginBottom: 32 }}>
       {ONBOARD_STEPS.map((s, i) => (

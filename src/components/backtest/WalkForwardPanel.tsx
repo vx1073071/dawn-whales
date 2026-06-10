@@ -10,6 +10,7 @@
  * - Window-by-window drill-down table
  */
 
+import { useTranslation } from "react-i18next";
 import React, { useState, useMemo } from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────

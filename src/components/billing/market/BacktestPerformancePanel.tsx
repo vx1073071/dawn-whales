@@ -11,7 +11,7 @@
  * - Per-strategy benchmark table
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo , useTranslation} from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -89,6 +89,8 @@ const mockWorkers: WorkerStats = { total: 4, active: 3, avgUtilization: 72.5, ma
 // ── Speedup Badge ───────────────────────────────────────────────────────
 
 function SpeedupBadge({ speedup }: { speedup: number }) {
+  const { t } = useTranslation();
+
   const c = speedup >= 4 ? 'text-green-400 bg-green-500/10' : speedup >= 3 ? 'text-[#D4A853] bg-[#C9A046]/10' : 'text-yellow-400 bg-yellow-500/10';
   return <span className={`px-2 py-0.5 rounded text-xs font-bold font-mono ${c}`}>{speedup.toFixed(1)}x</span>;
 }

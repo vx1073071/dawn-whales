@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useTranslation} from 'react';
 import { getAISuggest } from '@/lib/bridge-api';
 
 interface AIAdvice {
@@ -47,6 +47,8 @@ const MOCK_ADVICE: AIAdvice = {
 };
 
 export default function AIAdvisorPage() {
+  const { t } = useTranslation();
+
   const [advice, setAdvice] = useState<AIAdvice>(MOCK_ADVICE);
   const [loading, setLoading] = useState(false);
 

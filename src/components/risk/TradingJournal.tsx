@@ -1,7 +1,7 @@
 // ── DAWN WHALES — TradingJournal v2 (交易日志) ─────────────────────────────
 // v2: +日历热力图 +标签 +CSV导出 +日期筛选
 
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef , useTranslation} from 'react';
 import * as echarts from 'echarts';
 
 interface JournalEntry {
@@ -30,6 +30,8 @@ const EMOTION_LABEL: Record<string, string> = {
 const ALL_TAGS = [t('components.breakout'), t('components.pullback'), t('components.stopLoss'), t('components.takeProfit'), t('components.trend'), '反转', t('components.message'), '财报', '宏观', '技术'];
 
 export default function TradingJournal() {
+  const { t } = useTranslation();
+
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState<'all' | 'win' | 'loss' | 'pending'>('all');

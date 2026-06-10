@@ -1,7 +1,7 @@
 // ── DAWN WHALES — Strategy Correlation Panel (Q2 UI) ───────────────────────
 // 策略相关性矩阵 + 分散化评分
 
-// import { useState, useEffect } from 'react';
+// import { useState, useEffect , useTranslation} from 'react';
 
 interface CorrelationResult {
   ids: string[];
@@ -13,6 +13,8 @@ interface CorrelationResult {
 }
 
 export default function CorrelationPanel({ result }: { result?: any }) {
+  const { t } = useTranslation();
+
   if (!result?.success) {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">

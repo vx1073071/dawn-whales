@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef, useCallback } from 'react';
+﻿import { useState, useEffect, useRef, useCallback , useTranslation} from 'react';
 import * as api from '../../lib/bridge-api';
 
 interface SignalLog {
@@ -33,6 +33,8 @@ interface LiveQuote {
 }
 
 export default function LiveMonitorPage() {
+  const { t } = useTranslation();
+
   const [strategies, setStrategies] = useState<LiveStrategy[]>([]);
   const [signalLog, setSignalLog] = useState<SignalLog[]>([]);
   const [selectedStrategy, setSelectedStrategy] = useState<string | null>(null);

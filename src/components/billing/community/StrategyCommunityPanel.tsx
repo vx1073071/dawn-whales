@@ -10,7 +10,7 @@
  * - Comment input with submit
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback , useTranslation} from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -130,6 +130,8 @@ export default function StrategyCommunityPanel({
   onShare,
   className = '',
 }: StrategyCommunityPanelProps) {
+  const { t } = useTranslation();
+
   const [isFollowing, setIsFollowing] = useState(propFollow);
   const [comments, setComments] = useState(propComments ?? mockComments);
   const [newComment, setNewComment] = useState('');

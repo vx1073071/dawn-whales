@@ -9,6 +9,7 @@
  * - Phase 4.4 vs 5.0 comparison table
  */
 
+import { useTranslation } from "react-i18next";
 import React, { useState, useMemo } from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────

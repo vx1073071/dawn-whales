@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect , useTranslation} from 'react';
 
 // ============================================================
 // Monte Carlo Simulator Page
@@ -209,6 +209,8 @@ function pct(n: number): string {
 
 // --- SVG Sub-components ---
 function EquityCurvesChart({ paths, config }: { paths: number[][]; config: SimConfig }) {
+  const { t } = useTranslation();
+
   const W = 720, H = 320, PAD = 40;
   const samplePaths = useMemo(() => {
     if (paths.length <= 50) return paths;

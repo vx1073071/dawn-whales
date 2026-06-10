@@ -10,6 +10,7 @@
  * - Position-level risk contribution (bar chart)
  */
 
+import { useTranslation } from "react-i18next";
 import React, { useState, useMemo } from 'react';
 
 // ── Types (mirrors engine types) ────────────────────────────────────────

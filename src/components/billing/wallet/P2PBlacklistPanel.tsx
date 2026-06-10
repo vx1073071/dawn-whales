@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties , useTranslation} from 'react';
 
 // ── Types ──
 interface P2POrder { id: string; type: 'buy' | 'sell'; amount: number; price: number; total: number; status: 'active' | 'locked' | 'completed' | 'disputed'; counterparty: string; created: string; frozenUntil?: string }
@@ -20,6 +20,8 @@ const BLACKLIST: BlacklistEntry[] = [
 
 // ── Sub-components ──
 function StatusBadge({ status }: { status: string }) {
+  const { t } = useTranslation();
+
   const map: Record<string, { label: string; color: string; bg: string }> = {
     active: { label: '交易中', color: '#06B6D4', bg: '#06B6D422' },
     locked: { label: '已冻结', color: '#F59E0B', bg: '#F59E0B22' },

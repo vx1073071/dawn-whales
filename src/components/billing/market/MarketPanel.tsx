@@ -10,7 +10,7 @@
  * - Watchlist management (add/remove/reorder)
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo , useTranslation} from 'react';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -98,6 +98,8 @@ const mockWatchlist: WatchlistItem[] = [
 // ── Market Compatibility Badge ───────────────────────────────────────────
 
 function MarketBadges({ markets }: { markets: MarketCode[] }) {
+  const { t } = useTranslation();
+
   return (
     <div style={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
       {markets.map(m => {
