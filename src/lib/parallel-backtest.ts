@@ -22,7 +22,7 @@ self.onmessage = function(e) {
     const result = runBacktestSync(klines, config);
     self.postMessage({ type: 'result', id, data: result });
   } catch (err) {
-    self.postMessage({ type: 'error', id, error: err.message });
+    self.postMessage({ type: 'error', id, error: (err as any).message });
   }
 };
 
@@ -186,7 +186,7 @@ export async function parallelBacktest(
     const handler = (e: MessageEvent) => {
       const msg = e.data as WorkerMessage;
       if (msg.type === 'result') {
-        results[nextTaskIdx] = { ...msg.data, params: configs[nextTaskIdx]?.params };
+        results[nextTaskIdx] = { ...(msg as any).data, params: configs[nextTaskIdx]?.params };
         completed++;
         workerBusy[freeIdx] = false;
         worker.removeEventListener('message', handler);

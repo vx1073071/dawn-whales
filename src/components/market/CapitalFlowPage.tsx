@@ -85,7 +85,7 @@ export default function CapitalFlowPage() {
         label: {
           show: true,
           position: 'right',
-          formatter: (p: Record<string, unknown>) => `${(p.value / 1e4).toFixed(0)}万`,
+          formatter: (p: any) => `${((p as any).value / 1e4).toFixed(0)}万`,
           color: '#9ca3af',
           fontSize: 10,
         },

@@ -12,11 +12,11 @@ import {
   CacheOptimizer,
   getCacheOptimizer,
   resetCacheOptimizer,
-} from '../electron/engine/cache-optimizer';
+} from '../electron/engine/data/cache-optimizer';
 import {
   getMultiLLMRouter,
   resetMultiLLMRouter,
-} from '../electron/engine/multi-llm-router';
+} from '../electron/engine/agents/multi-llm-router';
 
 // ── Section 1: Cache Layer Structure ─────────────────────────────────
 

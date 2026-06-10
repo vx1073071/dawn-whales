@@ -19,6 +19,7 @@
 
 import log from 'electron-log';
 import { EventEmitter } from 'events';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -209,67 +210,67 @@ export class SentimentAgent extends EventEmitter {
   // ── Analysis Strings ──────────────────────────────────────────────────
 
   private socialStr(data: SentimentData): string {
-    const dir = data.socialVolumeChange >= 0 ? '上升' : '下降';
-    return `社交评分 ${data.socialScore.toFixed(0)}/100，讨论量 ${dir} ${Math.abs(data.socialVolumeChange)}%`;
+    const dir = data.socialVolumeChange >= 0 ? i18n.t('agentSentiment.k1') : i18n.t('agentSentiment.k2');
+    return i18n.t('agentSentiment.k3');
   }
 
   private newsStr(data: SentimentData): string {
-    return `正面${data.newsPositive}% / 中性${data.newsNeutral}% / 负面${data.newsNegative}% (共${data.newsCount}篇)`;
+    return i18n.t('agentSentiment.k4');
   }
 
   private fgStr(fg: number): string {
-    if (fg > 75) return `贪婪指数 ${fg} — 市场情绪过热`;
-    if (fg > 55) return `贪婪指数 ${fg} — 中性偏多`;
-    if (fg > 45) return `贪婪指数 ${fg} — 中性`;
-    if (fg > 25) return `贪婪指数 ${fg} — 中性偏空`;
-    return `恐慌指数 ${fg} — 市场恐慌`;
+    if (fg > 75) return i18n.t('agentSentiment.k5');
+    if (fg > 55) return i18n.t('agentSentiment.k6');
+    if (fg > 45) return i18n.t('agentSentiment.k7');
+    if (fg > 25) return i18n.t('agentSentiment.k8');
+    return i18n.t('agentSentiment.k9');
   }
 
   private analystStr(data: SentimentData): string {
     const total = data.analystBuy + data.analystHold + data.analystSell;
-    if (total === 0) return '无分析师覆盖';
-    return `${data.analystBuy}买/${data.analystHold}持/${data.analystSell}卖，目标价 ${data.analystTargetPrice.toFixed(1)}`;
+    if (total === 0) return i18n.t('agentSentiment.k10');
+    return i18n.t('agentSentiment.k11');
   }
 
   private insiderStr(netBuying: number): string {
-    if (netBuying > 0) return `内部人士净买入 $${(netBuying/1000000).toFixed(1)}M — 积极信号`;
-    if (netBuying < -5000000) return `内部人士净卖出 $${Math.abs(netBuying)/1000000 | 0}M — 谨慎信号`;
-    return '内部交易不显著';
+    if (netBuying > 0) return i18n.t('agentSentiment.k12');
+    if (netBuying < -5000000) return i18n.t('agentSentiment.k13');
+    return i18n.t('agentSentiment.k14');
   }
 
   private redditStr(score: number, volChange: number): string {
-    const dir = volChange > 0 ? '热度上升' : '热度下降';
-    return `Reddit/散户情绪 ${score.toFixed(0)}/100 (${dir})`;
+    const dir = volChange > 0 ? i18n.t('agentSentiment.k15') : i18n.t('agentSentiment.k16');
+    return i18n.t('agentSentiment.k17');
   }
 
   private trendStr(trend: string): string {
     switch (trend) {
-      case 'improving': return '情绪改善中 ↗';
-      case 'stable': return '情绪稳定 →';
-      case 'deteriorating': return '情绪恶化中 ↘';
-      default: return '趋势不明';
+      case 'improving': return i18n.t('agentSentiment.k18');
+      case 'stable': return i18n.t('agentSentiment.k19');
+      case 'deteriorating': return i18n.t('agentSentiment.k20');
+      default: return i18n.t('agentSentiment.k21');
     }
   }
 
   private summaryStr(data: SentimentData, score: number): string {
     const parts: string[] = [];
-    if (data.socialScore >= 70) parts.push('社交情绪积极');
-    if (data.newsPositive >= 60) parts.push('新闻面偏正面');
-    if (data.fearGreedIndex >= 60) parts.push('市场偏贪婪');
-    if (data.analystBuy >= 20) parts.push('分析师偏多');
-    if (score >= 65) parts.push('情绪综合看多');
-    return parts.join('; ') || '情绪面中性';
+    if (data.socialScore >= 70) parts.push(i18n.t('agentSentiment.k22'));
+    if (data.newsPositive >= 60) parts.push(i18n.t('agentSentiment.k23'));
+    if (data.fearGreedIndex >= 60) parts.push(i18n.t('agentSentiment.k24'));
+    if (data.analystBuy >= 20) parts.push(i18n.t('agentSentiment.k25'));
+    if (score >= 65) parts.push(i18n.t('agentSentiment.k26'));
+    return parts.join('; ') || i18n.t('agentSentiment.k27');
   }
 
   // ── Narrative ─────────────────────────────────────────────────────────
 
   private buildNarrative(symbol: string, data: SentimentData, rating: string): string {
     const templates: Record<string, string> = {
-      'strong_buy': `${symbol} 市场情绪极度乐观。社交媒体讨论活跃且正面，新闻面积极报道占比高，分析师一致看多，内部人士增持信号明确。综合情绪评分达到强烈买入区间。`,
-      'buy': `${symbol} 市场情绪偏正面。社交讨论热度上升，新闻面以正面为主，大部分分析师给出买入评级。情绪面支持看多。`,
-      'neutral': `${symbol} 市场情绪中性。多空消息交织，社交讨论热度一般，分析师意见分歧。建议观望等待情绪明朗。`,
-      'sell': `${symbol} 市场情绪偏负面。社交媒体负面讨论增多，新闻面负面报道上升，分析师下调评级。情绪面提示风险。`,
-      'strong_sell': `${symbol} 市场情绪极度悲观。社交媒体恐慌蔓延，新闻面负面报道激增，分析师集中下调，内部人士大量减持。强烈建议回避。`,
+      'strong_buy': i18n.t('agentSentiment.k28'),
+      'buy': i18n.t('agentSentiment.k29'),
+      'neutral': i18n.t('agentSentiment.k30'),
+      'sell': i18n.t('agentSentiment.k31'),
+      'strong_sell': i18n.t('agentSentiment.k32'),
     };
     return templates[rating] || templates['neutral'];
   }

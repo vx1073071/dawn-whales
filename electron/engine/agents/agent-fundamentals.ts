@@ -19,6 +19,7 @@
 import log from 'electron-log';
 import { EventEmitter } from 'events';
 import { getMultiLLMRouter } from './multi-llm-router';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -256,78 +257,78 @@ export class FundamentalsAgent extends EventEmitter implements IAnalyst {
   // ── Analysis Strings ──────────────────────────────────────────────────
 
   private peAnalysis(data: FundamentalsData): string {
-    if (data.pe < 15) return `PE ${data.pe.toFixed(1)} — 低估区间，价值洼地`;
-    if (data.pe < 25) return `PE ${data.pe.toFixed(1)} — 合理估值区间`;
-    if (data.pe < 40) return `PE ${data.pe.toFixed(1)} — 偏高，需关注成长性`;
-    return `PE ${data.pe.toFixed(1)} — 高估值，风险较大`;
+    if (data.pe < 15) return i18n.t('agentFundamentals.k1');
+    if (data.pe < 25) return i18n.t('agentFundamentals.k2');
+    if (data.pe < 40) return i18n.t('agentFundamentals.k3');
+    return i18n.t('agentFundamentals.k4');
   }
 
   private pbAnalysis(data: FundamentalsData): string {
-    if (data.pb < 3) return `PB ${data.pb.toFixed(1)} — 低PB，资产保护充足`;
-    if (data.pb < 5) return `PB ${data.pb.toFixed(1)} — 合理`;
-    return `PB ${data.pb.toFixed(1)} — 高PB，依赖品牌溢价`;
+    if (data.pb < 3) return i18n.t('agentFundamentals.k5');
+    if (data.pb < 5) return i18n.t('agentFundamentals.k6');
+    return i18n.t('agentFundamentals.k7');
   }
 
   private roeAnalysis(data: FundamentalsData): string {
-    if (data.roe >= 20) return `ROE ${data.roe.toFixed(1)}% — 优秀，资本运用高效`;
-    if (data.roe >= 10) return `ROE ${data.roe.toFixed(1)}% — 中等水平`;
-    return `ROE ${data.roe.toFixed(1)}% — 偏低，需改善`;
+    if (data.roe >= 20) return i18n.t('agentFundamentals.k8');
+    if (data.roe >= 10) return i18n.t('agentFundamentals.k9');
+    return i18n.t('agentFundamentals.k10');
   }
 
   private earningsQualityAnalysis(data: FundamentalsData): string {
-    if (data.profitYoY >= 15 && data.revenueYoY >= 10) return '盈利增长健康，收入利润双增';
-    if (data.profitYoY >= 0) return '盈利小幅增长';
-    return '盈利下滑，需警惕';
+    if (data.profitYoY >= 15 && data.revenueYoY >= 10) return i18n.t('agentFundamentals.k11');
+    if (data.profitYoY >= 0) return i18n.t('agentFundamentals.k12');
+    return i18n.t('agentFundamentals.k13');
   }
 
   private debtHealthAnalysis(data: FundamentalsData): string {
-    if (data.debtToEquity < 1 && data.currentRatio > 1.5) return '负债率低，流动性充足';
-    if (data.debtToEquity < 2 && data.currentRatio > 1) return '负债可控';
-    return '负债率偏高，关注偿债能力';
+    if (data.debtToEquity < 1 && data.currentRatio > 1.5) return i18n.t('agentFundamentals.k14');
+    if (data.debtToEquity < 2 && data.currentRatio > 1) return i18n.t('agentFundamentals.k15');
+    return i18n.t('agentFundamentals.k16');
   }
 
   private cashFlowAnalysis(data: FundamentalsData): string {
-    if (data.freeCashFlow > 0) return `自由现金流 ${data.freeCashFlow.toFixed(1)}亿，充裕`;
-    return '自由现金流为负，需关注';
+    if (data.freeCashFlow > 0) return i18n.t('agentFundamentals.k17');
+    return i18n.t('agentFundamentals.k18');
   }
 
   private generateValuationModel(data: FundamentalsData, price?: number): string {
     const dcf: number = data.freeCashFlow > 0 ? (data.freeCashFlow * 15 / (data.marketCap || 1)) * 100 : 0;
     const peg = data.pe > 0 ? data.pe / Math.max(data.profitYoY, 1) : 0;
     const parts: string[] = [];
-    if (dcf > 5) parts.push('DCF估值低估');
-    else if (dcf > 1) parts.push('DCF估值合理');
-    else parts.push('DCF估值偏高');
+    if (dcf > 5) parts.push(i18n.t('agentFundamentals.k19'));
+    else if (dcf > 1) parts.push(i18n.t('agentFundamentals.k20'));
+    else parts.push(i18n.t('agentFundamentals.k21'));
     if (peg !== 0) parts.push(`PEG=${peg.toFixed(2)}`);
     return parts.join(', ');
   }
 
   private generatePeerComparison(data: FundamentalsData): string {
-    if (data.marketCap > 10000) return `${data.symbol} 大市值龙头，行业领先地位`;
-    if (data.marketCap > 1000) return `${data.symbol} 中市值成长型`;
-    return `${data.symbol} 中小市值标的`;
+    if (data.marketCap > 10000) return i18n.t('agentFundamentals.k22');
+    if (data.marketCap > 1000) return i18n.t('agentFundamentals.k23');
+    return i18n.t('agentFundamentals.k24');
   }
 
   private identifyRisks(data: FundamentalsData, score: number): string[] {
     const risks: string[] = [];
-    if (data.pe > 50) risks.push('PE过高，估值风险');
-    if (data.debtToEquity > 2) risks.push('高负债风险');
-    if (data.profitYoY < 0) risks.push('利润下滑风险');
-    if (data.currentRatio < 1) risks.push('流动性风险');
-    if (data.revenueYoY < 0) risks.push('收入萎缩风险');
-    if (score < 40) risks.push('综合基本面偏弱');
+    if (data.pe > 50) risks.push(i18n.t('agentFundamentals.k25'));
+    if (data.debtToEquity > 2) risks.push(i18n.t('agentFundamentals.k26'));
+    if (data.profitYoY < 0) risks.push(i18n.t('agentFundamentals.k27'));
+    if (data.currentRatio < 1) risks.push(i18n.t('agentFundamentals.k28'));
+    if (data.revenueYoY < 0) risks.push(i18n.t('agentFundamentals.k29'));
+    if (score < 40) risks.push(i18n.t('agentFundamentals.k30'));
     return risks;
   }
 
   private identifyHighlights(data: FundamentalsData, score: number): string[] {
     const highlights: string[] = [];
-    if (data.roe >= 20) highlights.push(`高ROE ${data.roe.toFixed(1)}%`);
-    if (data.profitYoY >= 15) highlights.push(`利润增长 ${data.profitYoY.toFixed(0)}%`);
-    if (data.revenueYoY >= 10) highlights.push(`收入增长 ${data.revenueYoY.toFixed(0)}%`);
-    if (data.debtToEquity < 1) highlights.push('低负债');
-    if (data.freeCashFlow > 100) highlights.push('充裕自由现金流');
-    if (data.dividendYield > 2) highlights.push(`高股息 ${data.dividendYield.toFixed(1)}%`);
-    if (highlightedByScore(score)) highlights.push('基本面综合评分优秀');
+    if (data.roe >= 20) highlights.push(i18n.t('agentFundamentals.k31'));
+    if (data.profitYoY >= 15) highlights.push(i18n.t('agentFundamentals.k32'));
+    if (data.revenueYoY >= 10) highlights.push(i18n.t('agentFundamentals.k33'));
+    if (data.debtToEquity < 1) highlights.push(i18n.t('agentFundamentals.k34'));
+    if (data.freeCashFlow > 100) highlights.push(i18n.t('agentFundamentals.k35'));
+    if (data.dividendYield > 2) highlights.push(i18n.t('agentFundamentals.k36'));
+    if (highlightedByScore(score)) highlights.push(i18n.t('agentFundamentals.k37'));
     return highlights;
   }
 
@@ -373,11 +374,11 @@ Provide a 3-sentence Chinese analysis.`;
 
   private deterministicNarrative(symbol: string, data: FundamentalsData, rating: string): string {
     const templates: Record<string, string> = {
-      'strong_buy': `${symbol} 基本面表现优异。PE=${data.pe.toFixed(1)}, ROE=${data.roe.toFixed(1)}%, 盈利增长势头强劲, 现金流充裕, 综合评分达到强烈买入区间。建议作为核心持仓配置。`,
-      'buy': `${symbol} 基本面整体健康。PE=${data.pe.toFixed(1)}处于合理水平, ROE=${data.roe.toFixed(1)}%表现良好, 具备投资价值。建议逢低加仓。`,
-      'neutral': `${symbol} 基本面表现中性。估值与成长性基本匹配, 缺乏明显催化剂。建议观望等待更好的介入时机。`,
-      'sell': `${symbol} 基本面存在明显隐患。估值偏高而增长放缓, 部分财务指标不理想。建议减仓或回避。`,
-      'strong_sell': `${symbol} 基本面严重恶化。高估值叠加盈利下滑, 财务风险逐步暴露。强烈建议离场。`,
+      'strong_buy': i18n.t('agentFundamentals.k38'),
+      'buy': i18n.t('agentFundamentals.k39'),
+      'neutral': i18n.t('agentFundamentals.k40'),
+      'sell': i18n.t('agentFundamentals.k41'),
+      'strong_sell': i18n.t('agentFundamentals.k42'),
     };
     return templates[rating] || templates['neutral'];
   }

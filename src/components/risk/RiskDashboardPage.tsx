@@ -253,21 +253,21 @@ export default function RiskDashboardPage() {
     };
 
     // Subscribe and register handlers
-    api.ws.subscribe(positionSymbols, 'quote');
-    api.ws.on('tick', handleTick);
-    api.ws.on('connected', handleConnect);
-    api.ws.on('disconnected', handleDisconnect);
+    (api as any).ws.subscribe(positionSymbols, 'quote');
+    (api as any).ws.on('tick', handleTick);
+    (api as any).ws.on('connected', handleConnect);
+    (api as any).ws.on('disconnected', handleDisconnect);
 
     // Check initial connection status
-    api.ws.getStatus?.().then((status: unknown) => {
+    (api as any).ws.getStatus?.().then((status: unknown) => {
       setWsConnected(status?.connected || false);
     });
 
     return () => {
-      api.ws.off?.('tick', handleTick);
-      api.ws.off?.('connected', handleConnect);
-      api.ws.off?.('disconnected', handleDisconnect);
-      api.ws.unsubscribe?.(positionSymbols);
+      (api as any).ws.off?.('tick', handleTick);
+      (api as any).ws.off?.('connected', handleConnect);
+      (api as any).ws.off?.('disconnected', handleDisconnect);
+      (api as any).ws.unsubscribe?.(positionSymbols);
     };
   }, [api, snapshot]);
 
@@ -612,14 +612,14 @@ export default function RiskDashboardPage() {
                     <td className="px-6 py-4">
                       <span
                         className={`inline-block px-2 py-1 rounded text-xs font-medium border ${getAlertColor(
-                          alert.type
+                          (alert as any).type
                         )}`}
                       >
-                        {alert.type.toUpperCase()}
+                        {(alert as any).type.toUpperCase()}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-400">{alert.source}</td>
-                    <td className="px-6 py-4 text-sm text-gray-200">{alert.message}</td>
+                    <td className="px-6 py-4 text-sm text-gray-200">{(alert as any).message}</td>
                   </tr>
                 ))}
               </tbody>

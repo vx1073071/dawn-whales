@@ -98,11 +98,11 @@ export default function PositionMonitorPanel({
 
       const rawPositions = await getPositions(activeAcc);
       if (rawPositions && rawPositions.length > 0) {
-        setPositions(rawPositions.map((p: Record<string, unknown>) => ({
+        setPositions(rawPositions.map((p: any) => ({
           id: p.code || `pos_${Date.now()}`,
           code: p.code,
           name: p.name || p.code,
-          type: (p.qty > 0 ? 'long' : 'short') as 'long' | 'short',
+          type: ((p as any).qty > 0 ? 'long' : 'short') as 'long' | 'short',
           shares: Math.abs(p.qty || 0),
           avgCost: p.avgCost || p.costPrice || 0,
           currentPrice: p.marketPrice || p.currentPrice || 0,

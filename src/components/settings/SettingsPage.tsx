@@ -162,7 +162,7 @@ export default function SettingsPage() {
     init(); // Refresh risk config and app info
   }
 
-  const activeBrokerId = brokerStatus.find((s: Record<string, unknown>) => s.active)?.id || brokerStatus[0]?.id;
+  const activeBrokerId = brokerStatus.find((s: any) => s.active)?.id || brokerStatus[0]?.id;
 
   const tabs: { id: SettingsTab; label: string; icon: string }[] = [
     { id: 'broker-mgmt', label: 'settings.brokerManagement', icon: '🏦' },
@@ -278,7 +278,7 @@ export default function SettingsPage() {
                 <p className="text-gray-500 text-sm py-4 text-center">{"settings.noBroker"}</p>
               )}
               {brokers.map((broker) => {
-                const status = brokerStatus.find((s: Record<string, unknown>) => s.id === broker.id);
+                const status = brokerStatus.find((s: any) => s.id === broker.id);
                 const isConnected = status?.connected || false;
                 const isActive = activeBrokerId === broker.id;
                 const isLoading = brokerActionLoading === broker.id;

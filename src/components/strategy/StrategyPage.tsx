@@ -111,8 +111,8 @@ export default function StrategyPage() {
 
       {compareOpen && (
         <StrategyCompareModal
-          strategies={strategies}
-          defaultStrategyA={compareDefaultA}
+          strategies = {strategies} as any
+          defaultStrategyA = {compareDefaultA} as any
           onClose={() => setCompareOpen(false)}
         />
       )}
@@ -568,7 +568,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
       const load = async () => {
         try {
           const list = await getAllStrategies();
-          const existing = list.find((s: Record<string, unknown>) => s.id === editId);
+          const existing = list.find((s: any) => s.id === editId);
           if (existing) {
             setStrategyName(existing.name || '');
             setSymbol(existing.symbol || existing.targetCode || 'US.TQQQ');
@@ -787,7 +787,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
 
   async function loadDetail() {
     const list = await getAllStrategies();
-    const found = list.find((s: Record<string, unknown>) => s.id === strategyId);
+    const found = list.find((s: any) => s.id === strategyId);
     setStrategy(found || null);
     if (found?.backtestResult) {
       setBacktestResult(found.backtestResult);

@@ -141,6 +141,15 @@ declare global {
       };
       on: (channel: string, callback: (...args: any[]) => void) => void;
       off?: (channel: string, callback: (...args: any[]) => void) => void;
+      // Extended IPC modules (lazy-registered by engine)
+      monitor: any;
+      export: any;
+      shell: any;
+      trade: any;
+      monteCarlo: any;
+      ws: any;
+      automation: any;
+      [key: string]: any;
     };
   }
 }

@@ -16,12 +16,12 @@ import {
   resetAgentOrchestrator,
   type AgentReport,
   type SessionResult,
-} from '../electron/engine/agent-orchestrator';
+} from '../electron/engine/agents/agent-orchestrator';
 import {
   MultiLLMRouter,
   getMultiLLMRouter,
   resetMultiLLMRouter,
-} from '../electron/engine/multi-llm-router';
+} from '../electron/engine/agents/multi-llm-router';
 
 // ── Mock Data ───────────────────────────────────────────────────────────────
 

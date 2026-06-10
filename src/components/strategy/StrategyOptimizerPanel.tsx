@@ -194,21 +194,21 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
     try {
       // Call engine through IPC bridge
       // R84: typed window access — __optimizerBridge is internal dev API
-      const optimizer = (window as unknown as { __optimizerBridge: { optimize: (params: Record<string, unknown>) => Promise<unknown> } }).__optimizerBridge;
+      const optimizer = (window as unknown as { __optimizerBridge: { optimize: (params: any) => Promise<unknown> } }).__optimizerBridge;
       if (optimizer?.startOptimization) {
-        optimizer.startOptimization(config);
+        (optimizer as any).startOptimization(config);
 
         // Poll for updates
         await new Promise<void>((resolve, reject) => {
           intervalRef.current = setInterval(() => {
-            const status_ = optimizer.getStatus();
-            const prog = optimizer.getProgress();
+            const status_ = (optimizer as any).getStatus();
+            const prog = (optimizer as any).getProgress();
             setProgress(prog?.progress ?? 0);
 
             if (status_ === 'completed' || status_ === 'cancelled' || status_ === 'error') {
               if (intervalRef.current) clearInterval(intervalRef.current);
               if (status_ === 'completed') {
-                const res = optimizer.getResult();
+                const res = (optimizer as any).getResult();
                 setResult(res as OptimizationResult);
                 setStatus('completed');
                 resolve();

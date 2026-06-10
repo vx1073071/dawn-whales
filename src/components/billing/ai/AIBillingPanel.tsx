@@ -14,7 +14,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import billingEn from '../../i18n/locales/billing-en.json';
+const billingEn: any = require('../../i18n/locales/billing-en.json');
 
 type TBilling = typeof billingEn;
 

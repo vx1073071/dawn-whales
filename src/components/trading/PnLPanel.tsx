@@ -43,14 +43,14 @@ export default function PnLPanel() {
         unrealizedPnl: unrealized,
         dailyPnl: daily,
         dailyPnlPct: (daily / totalAssets) * 100,
-        winCount: positions?.filter((p: Record<string, unknown>) => (p.pnl || 0) > 0).length || 0,
-        lossCount: positions?.filter((p: Record<string, unknown>) => (p.pnl || 0) < 0).length || 0,
+        winCount: positions?.filter((p: any) => (p.pnl || 0) > 0).length || 0,
+        lossCount: positions?.filter((p: any) => (p.pnl || 0) < 0).length || 0,
         winRate: positions?.length > 0
-          ? (positions.filter((p: Record<string, unknown>) => (p.pnl || 0) > 0).length / positions.length) * 100
+          ? (positions.filter((p: any) => (p.pnl || 0) > 0).length / positions.length) * 100
           : 0,
       });
     } catch (e: unknown) {
-      setError(e?.message || t('common.loadingFailed'));
+      setError((e as any)?.message || t('common.loadingFailed'));
     } finally {
       setLoading(false);
     }

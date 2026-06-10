@@ -452,7 +452,7 @@ export default function MonteCarloPage() {
         distribution: config.distribution,
         riskFreeRate: config.riskFreeRate / 100,
       };
-      api.monteCarlo.simulate(serverConfig)
+      (api as any).monteCarlo.simulate(serverConfig)
         .then((res: unknown) => {
           if (res?.success && (res as any).result) {
             const r = (res as any).result;
@@ -541,7 +541,7 @@ export default function MonteCarloPage() {
     api.backtest.riskMetrics(sampledCurve, config.riskFreeRate / 100)
       .then((data: unknown) => {
         if (data && typeof data === 'object') {
-          setServerRiskMetrics(data);
+          setServerRiskMetrics(data as any);
         }
       })
       .catch(() => {
@@ -739,15 +739,15 @@ export default function MonteCarloPage() {
                 {serverRiskMetrics.annualizedReturn != null && (
                   <StatCard
                     label="年化收益"
-                    value={`${(serverRiskMetrics.annualizedReturn * 100).toFixed(2)}%`}
-                    variant={serverRiskMetrics.annualizedReturn > 0 ? 'success' : 'danger'}
+                    value={`${(Number(serverRiskMetrics.annualizedReturn) * 100).toFixed(2)}%`}
+                    variant={Number(serverRiskMetrics.annualizedReturn) > 0 ? 'success' : 'danger'}
                     sub="Engine 计算"
                   />
                 )}
                 {serverRiskMetrics.annualizedVolatility != null && (
                   <StatCard
                     label="年化波动率"
-                    value={`${(serverRiskMetrics.annualizedVolatility * 100).toFixed(2)}%`}
+                    value={`${(Number(serverRiskMetrics.annualizedVolatility) * 100).toFixed(2)}%`}
                     variant="warning"
                     sub="Engine 计算"
                   />
@@ -755,7 +755,7 @@ export default function MonteCarloPage() {
                 {serverRiskMetrics.maxDrawdown != null && (
                   <StatCard
                     label={'maxDrawdown'}
-                    value={`${(serverRiskMetrics.maxDrawdown * 100).toFixed(2)}%`}
+                    value={`${(Number(serverRiskMetrics.maxDrawdown) * 100).toFixed(2)}%`}
                     variant="danger"
                     sub="Engine 计算"
                   />
@@ -794,22 +794,22 @@ export default function MonteCarloPage() {
                 {serverRiskMetrics.tailRatio != null && (
                   <StatCard
                     label="尾部比率"
-                    value={serverRiskMetrics.(tailRatio as any).toFixed(3)}
+                    value={Number(serverRiskMetrics.tailRatio).toFixed(3)}
                     sub="右尾/左尾比"
                   />
                 )}
                 {serverRiskMetrics.skewness != null && (
                   <StatCard
                     label="偏度"
-                    value={serverRiskMetrics.(skewness as any).toFixed(3)}
-                    sub={serverRiskMetrics.skewness > 0 ? '右偏 (正)' : '左偏 (负)'}
+                    value={Number(serverRiskMetrics.skewness).toFixed(3)}
+                    sub={Number(serverRiskMetrics.skewness) > 0 ? '右偏 (正)' : '左偏 (负)'}
                   />
                 )}
                 {serverRiskMetrics.kurtosis != null && (
                   <StatCard
                     label="峰度"
-                    value={serverRiskMetrics.(kurtosis as any).toFixed(3)}
-                    sub={serverRiskMetrics.kurtosis > 3 ? '尖峰 (厚尾)' : '扁平'}
+                    value={Number(serverRiskMetrics.kurtosis).toFixed(3)}
+                    sub={Number(serverRiskMetrics.kurtosis) > 3 ? '尖峰 (厚尾)' : '扁平'}
                   />
                 )}
               </div>

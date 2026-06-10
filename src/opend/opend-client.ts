@@ -60,7 +60,7 @@ export class OpenDClient {
       const handler = (data: Record<string, unknown>) => {
         if (data.type === 'quotes') {
           this.off('quotes', handler);
-          resolve(data.quotes || []);
+          resolve((data.quotes as any[]) || []);
         }
       };
       this.on('quotes', handler);

@@ -69,7 +69,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await window.api.getTemplates();
+        const raw = await (window.api as any).getTemplates();
         const data = raw?.templates ?? raw;
         setTemplates(Array.isArray(data) ? data : []);
       } catch (e: unknown) {
@@ -112,7 +112,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
     setInstantiating(true);
     setInstantiateError(null);
     try {
-      const result = await window.api.instantiateTemplate(selectedId, paramOverrides);
+      const result = await (window.api as any).instantiateTemplate(selectedId, paramOverrides);
       if (!result?.success) {
         setInstantiateError(result?.error ?? '实例化失败');
         setInstantiating(false);

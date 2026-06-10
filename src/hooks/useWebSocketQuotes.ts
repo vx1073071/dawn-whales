@@ -99,8 +99,8 @@ export function useWebSocketQuotes(options: UseWsQuotesOptions): UseWsQuotesResu
         if (result?.success && Array.isArray(result.quotes)) {
           setQuotes(prev => {
             const next = new Map(prev);
-            result.quotes.forEach((q: Record<string, unknown>) => {
-              next.set(q.code, {
+            result.quotes.forEach((q: any) => {
+              next.set(String(q.code), {
                 code: q.code,
                 price: q.price ?? q.last,
                 bid: q.bid ?? 0,

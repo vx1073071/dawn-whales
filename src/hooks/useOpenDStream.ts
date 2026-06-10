@@ -55,15 +55,15 @@ export function useOpenDStream(codes: string[]) {
         });
         
         // Listen for real-time updates
-        window.api.stockStream.onQuote((data: Record<string, unknown>) => {
+        window.api.stockStream.onQuote((data: any) => {
           setQuotes(prev => {
             const existing = prev.findIndex(q => q.code === data.code);
             const quote: QuoteData = {
-              code: data.code,
-              price: data.price,
-              change: data.change,
-              changePct: data.changePct,
-              volume: data.volume,
+              code: String(data.code),
+              price: Number(data.price),
+              change: Number(data.change),
+              changePct: Number(data.changePct),
+              volume: Number(data.volume),
               timestamp: Date.now(),
             };
             
@@ -136,7 +136,7 @@ export function registerOpenDStreamIPC(ipcMain: unknown) {
     try {
       const { OpenDClient } = await import('../opend/opend-client');
       const client = new OpenDClient();
-      await client.connect(config.url, config.codes);
+      await client.connect(String(config.url), config.codes as string[]);
       return { success: true };
     } catch (error: unknown) {
       return { success: false, error: (error as Error).message };

@@ -173,13 +173,13 @@ export default function AlertCenterPage() {
       let alertStats: AlertStats;
 
       if (api?.monitor?.getActive) {
-        activeAlerts = await api.monitor.getActive();
+        activeAlerts = await (api as any).monitor.getActive();
       } else {
         activeAlerts = MOCK_ALERTS;
       }
 
       if (api?.monitor?.stats) {
-        alertStats = await api.monitor.stats();
+        alertStats = await (api as any).monitor.stats();
       } else {
         alertStats = MOCK_STATS;
       }
@@ -187,7 +187,7 @@ export default function AlertCenterPage() {
       // Also fetch critical for enrichment
       if (api?.monitor?.getCritical) {
         try {
-          const critical = await api.monitor.getCritical();
+          const critical = await (api as any).monitor.getCritical();
           // Merge critical alerts that might not be in active list
           const criticalIds = new Set(activeAlerts.map((a) => a.id));
           for (const ca of critical) {
@@ -211,7 +211,7 @@ export default function AlertCenterPage() {
       setLastUpdate(new Date());
       setError(null);
     } catch (err: unknown) {
-      setError(err?.message || 'Failed to fetch alerts');
+      setError((err as any)?.message || 'Failed to fetch alerts');
       setAlerts(MOCK_ALERTS);
       setStats(MOCK_STATS);
       setLastUpdate(new Date());
@@ -244,7 +244,7 @@ export default function AlertCenterPage() {
       });
       // Refresh stats
       if (api?.monitor?.stats) {
-        api.monitor.stats().then(setStats).catch(() => {});
+        (api as any).monitor.stats().then(setStats).catch(() => {});
       }
     });
 
@@ -257,7 +257,7 @@ export default function AlertCenterPage() {
     setAcknowledging((prev) => new Set(prev).add(id));
     try {
       if (api?.monitor?.acknowledge) {
-        await api.monitor.acknowledge(id);
+        await (api as any).monitor.acknowledge(id);
       }
       setAlerts((prev) =>
         prev.map((a) => (a.id === id ? { ...a, acknowledged: true } : a))
@@ -276,7 +276,7 @@ export default function AlertCenterPage() {
   const acknowledgeAll = async () => {
     try {
       if (api?.monitor?.acknowledgeAll) {
-        await api.monitor.acknowledgeAll();
+        await (api as any).monitor.acknowledgeAll();
       }
       setAlerts((prev) => prev.map((a) => ({ ...a, acknowledged: true })));
     } catch (err: unknown) {

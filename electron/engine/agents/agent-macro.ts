@@ -20,6 +20,7 @@
 
 import log from 'electron-log';
 import { EventEmitter } from 'events';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -222,28 +223,28 @@ export class MacroAgent extends EventEmitter {
 
   // ── Analysis Strings ──────────────────────────────────────────────────
 
-  private gdpStr(data: MacroData): string { return `GDP同比 ${data.gdpYoY.toFixed(1)}%，经济${data.gdpYoY >= 3 ? '稳健增长' : data.gdpYoY >= 1 ? '温和增长' : '增速放缓'}`; }
-  private inflationStr(data: MacroData): string { return `CPI ${data.cpi.toFixed(1)}%，${data.cpi >= 2 && data.cpi <= 3 ? '通胀温和适中' : data.cpi > 4 ? '通胀偏高' : data.cpi < 0 ? '通缩风险' : '通胀偏低'}`; }
-  private pmiStr(pmi: number): string { return `PMI ${pmi.toFixed(1)}，${pmi >= 50 ? '制造业扩张' : '制造业收缩'}`; }
+  private gdpStr(data: MacroData): string { return i18n.t('agentMacro.k4'); }
+  private inflationStr(data: MacroData): string { return `CPI ${data.cpi.toFixed(1)}%，${data.cpi >= 2 && data.cpi <= 3 ? i18n.t('agentMacro.k5') : data.cpi > 4 ? i18n.t('agentMacro.k6') : data.cpi < 0 ? i18n.t('agentMacro.k7') : i18n.t('agentMacro.k8')}`; }
+  private pmiStr(pmi: number): string { return `PMI ${pmi.toFixed(1)}，${pmi >= 50 ? i18n.t('agentMacro.k9') : i18n.t('agentMacro.k10')}`; }
   private rateStr(data: MacroData): string {
-    const curveStatus = data.yieldCurveSlope < 0 ? '倒挂(衰退信号)' : '正常';
-    return `利率 ${data.interestRate.toFixed(2)}%，10Y ${data.tenYearYield.toFixed(2)}%，收益率曲线${curveStatus}`;
+    const curveStatus = data.yieldCurveSlope < 0 ? i18n.t('agentMacro.k11') : i18n.t('agentMacro.k12');
+    return i18n.t('agentMacro.k13');
   }
-  private currencyStr(data: MacroData): string { return `USD指数 ${data.usdIndex.toFixed(1)}, USD/CNY ${data.cnyPerUSD.toFixed(2)}, 美元${data.currencyTrend}`; }
-  private sectorStr(data: MacroData): string { return `板块轮动: ${data.sectorRotation}，市场广度 ${data.marketBreadth.toFixed(0)}%`; }
-  private riskStr(data: MacroData): string { return `VIX ${data.vix.toFixed(1)}，地缘风险: ${data.geopoliticalRisk}`; }
+  private currencyStr(data: MacroData): string { return i18n.t('agentMacro.k14'); }
+  private sectorStr(data: MacroData): string { return i18n.t('agentMacro.k15'); }
+  private riskStr(data: MacroData): string { return i18n.t('agentMacro.k16'); }
   private cycleStr(cycle: string): string {
-    const map: Record<string, string> = { expansion: '扩张期 → 股市强势', peak: '顶峰期 → 防御配置', contraction: '收缩期 → 现金为王', trough: '谷底期 → 逐步建仓', recovery: '复苏期 → 积极布局' };
-    return map[cycle] || `周期: ${cycle}`;
+    const map: Record<string, string> = { expansion: i18n.t('agentMacro.k17'), peak: i18n.t('agentMacro.k18'), contraction: i18n.t('agentMacro.k19'), trough: i18n.t('agentMacro.k20'), recovery: i18n.t('agentMacro.k21') };
+    return map[cycle] || i18n.t('agentMacro.k22');
   }
 
   private implications(data: MacroData, score: number): string {
     const parts: string[] = [];
-    if (data.macroCycle === 'expansion' || data.macroCycle === 'recovery') parts.push('宏观环境利好权益资产');
-    if (data.macroCycle === 'contraction') parts.push('建议增加防御性配置');
-    if (data.geopoliticalRisk === 'high') parts.push('地缘政治风险高，注意仓位');
-    if (score >= 65) parts.push('宏观综合评分偏积极');
-    return parts.join('; ') || '宏观面中性';
+    if (data.macroCycle === 'expansion' || data.macroCycle === 'recovery') parts.push(i18n.t('agentMacro.k23'));
+    if (data.macroCycle === 'contraction') parts.push(i18n.t('agentMacro.k24'));
+    if (data.geopoliticalRisk === 'high') parts.push(i18n.t('agentMacro.k25'));
+    if (score >= 65) parts.push(i18n.t('agentMacro.k26'));
+    return parts.join('; ') || i18n.t('agentMacro.k27');
   }
 
   // ── Debate Questions ──────────────────────────────────────────────────
@@ -255,10 +256,10 @@ export class MacroAgent extends EventEmitter {
       questions.push({
         id: `dq_${Date.now()}_1`,
         targetAgent: 'fundamentals',
-        question: `收益率曲线倒挂(${data.yieldCurveSlope}bp)，你对该标的基本面评估是否考虑经济衰退风险？`,
+        question: i18n.t('agentMacro.k28'),
         context: `10Y-2Y spread = ${data.yieldCurveSlope}bp`,
         severity: 'warn',
-        suggestedAction: '需调整基本面评分中的增长假设'
+        suggestedAction: i18n.t('agentMacro.k29')
       });
     }
 
@@ -266,10 +267,10 @@ export class MacroAgent extends EventEmitter {
       questions.push({
         id: `dq_${Date.now()}_2`,
         targetAgent: 'technical',
-        question: `高通胀环境下(CPI ${data.cpi}%)，技术面信号是否需要考虑政策干预的风险？`,
+        question: i18n.t('agentMacro.k30'),
         context: `CPI = ${data.cpi}%, Rate = ${data.interestRate}%`,
         severity: 'warn',
-        suggestedAction: '技术面加权通胀因子'
+        suggestedAction: i18n.t('agentMacro.k31')
       });
     }
 
@@ -277,10 +278,10 @@ export class MacroAgent extends EventEmitter {
       questions.push({
         id: `dq_${Date.now()}_3`,
         targetAgent: 'sentiment',
-        question: `经济处于收缩期，市场情绪是否过度悲观或存在反转可能？`,
+        question: i18n.t('agentMacro.k32'),
         context: `Cycle: ${data.macroCycle}, VIX: ${data.vix}`,
         severity: 'critical',
-        suggestedAction: '检查情绪面是否存在过度反应'
+        suggestedAction: i18n.t('agentMacro.k33')
       });
     }
 
@@ -291,11 +292,11 @@ export class MacroAgent extends EventEmitter {
 
   private buildNarrative(data: MacroData, rating: string): string {
     const templates: Record<string, string> = {
-      'strong_buy': `${data.country} 宏观经济环境非常有利。GDP增长${data.gdpYoY.toFixed(1)}%，通胀温和，PMI扩张，货币环境支持股市。经济处于${data.macroCycle}阶段，建议积极配置权益资产。`,
-      'buy': `${data.country} 宏观经济环境偏积极。GDP增长稳健，通胀可控，PMI在扩张区间。${data.macroCycle}阶段适合逢低布局。`,
-      'neutral': `${data.country} 宏观经济环境中性。增长与风险交织，部分指标需关注。建议均衡配置，控制仓位。`,
-      'sell': `${data.country} 宏观经济环境存在风险。增长放缓，通胀压力或政策收紧。建议降低风险敞口。`,
-      'strong_sell': `${data.country} 宏观经济环境恶化。经济收缩，风险指标攀升，政策不确定性高。强烈建议转为现金或防御性资产。`,
+      'strong_buy': i18n.t('agentMacro.k34'),
+      'buy': i18n.t('agentMacro.k35'),
+      'neutral': i18n.t('agentMacro.k36'),
+      'sell': i18n.t('agentMacro.k37'),
+      'strong_sell': i18n.t('agentMacro.k38'),
     };
     return templates[rating] || templates['neutral'];
   }

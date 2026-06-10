@@ -191,7 +191,7 @@ export default function BacktestComparisonPage() {
         backgroundColor: '#1a1a25',
         borderColor: 'rgba(255,255,255,0.1)',
         textStyle: { color: '#e5e7eb' },
-        formatter: (p: Record<string, unknown>) => `${filtered[p.data[1]]?.strategyName}<br/>${monthlyHeatmapData.months[p.data[0]]}: ${p.data[2]}%`,
+        formatter: (p: any) => `${filtered[(p as any).data[1]]?.strategyName}<br/>${monthlyHeatmapData.months[(p as any).data[0]]}: ${(p as any).data[2]}%`,
       },
       grid: { left: 120, right: 20, top: 10, bottom: 30 },
       xAxis: { type: 'category', data: monthlyHeatmapData.months, axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#6b7280', fontSize: 10 } },
@@ -208,7 +208,7 @@ export default function BacktestComparisonPage() {
       series: [{
         type: 'heatmap',
         data: monthlyHeatmapData.data,
-        label: { show: true, color: '#e5e7eb', fontSize: 10, formatter: (p: Record<string, unknown>) => `${p.data[2]}%` },
+        label: { show: true, color: '#e5e7eb', fontSize: 10, formatter: (p: any) => `${(p as any).data[2]}%` },
         itemStyle: { borderColor: 'rgba(255,255,255,0.05)', borderWidth: 1 },
       }],
     });

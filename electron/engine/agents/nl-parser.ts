@@ -6,6 +6,7 @@
 import log from 'electron-log';
 import { spawn } from 'child_process';
 import path from 'path';
+import i18n from '../../../src/i18n';
 
 export interface PriceConditionOutput {
   type: 'price';
@@ -34,58 +35,58 @@ interface ParsedStrategy {
 
 const SYNONYM_MAP: Record<string, string> = {
   // 均线 / MA 同义词
-  '均线': 'MA',
-  '均线交叉': 'MA 交叉',
-  '均线金叉': 'MA 金叉',
-  '均线死叉': 'MA 死叉',
-  '平均线': 'MA',
-  '移动平均线': 'MA',
+  i18n.t('nlParser.k1'): 'MA',
+  i18n.t('nlParser.k2'): i18n.t('nlParser.k3'),
+  i18n.t('nlParser.k4'): i18n.t('nlParser.k5'),
+  i18n.t('nlParser.k6'): i18n.t('nlParser.k7'),
+  i18n.t('nlParser.k8'): 'MA',
+  i18n.t('nlParser.k9'): 'MA',
   // MACD 同义词
-  'macd金叉': 'MACD 金叉',
-  'macd死叉': 'MACD 死叉',
-  'macd看涨': 'MACD 金叉',
-  'macd看跌': 'MACD 死叉',
-  'dif线上穿dea线': 'MACD 金叉',
-  'dif线下穿dea线': 'MACD 死叉',
+  i18n.t('nlParser.k10'): i18n.t('nlParser.k11'),
+  i18n.t('nlParser.k12'): i18n.t('nlParser.k13'),
+  i18n.t('nlParser.k14'): i18n.t('nlParser.k15'),
+  i18n.t('nlParser.k16'): i18n.t('nlParser.k17'),
+  i18n.t('nlParser.k18'): i18n.t('nlParser.k19'),
+  i18n.t('nlParser.k20'): i18n.t('nlParser.k21'),
   // RSI 同义词
-  '相对强弱指标': 'RSI',
-  '相对强弱': 'RSI',
-  '超卖买入': 'RSI 超卖',
-  '超买卖出': 'RSI 超买',
-  'rsi低位': 'RSI 低于 30',
-  'rsi高位': 'RSI 高于 70',
+  i18n.t('nlParser.k22'): 'RSI',
+  i18n.t('nlParser.k23'): 'RSI',
+  i18n.t('nlParser.k24'): i18n.t('nlParser.k25'),
+  i18n.t('nlParser.k26'): i18n.t('nlParser.k27'),
+  i18n.t('nlParser.k28'): i18n.t('nlParser.k29'),
+  i18n.t('nlParser.k30'): i18n.t('nlParser.k31'),
   // 布林带同义词
-  '布林轨道': '布林带',
-  'boll': '布林带',
-  'bollinger band': '布林带',
+  i18n.t('nlParser.k32'): i18n.t('nlParser.k33'),
+  'boll': i18n.t('nlParser.k34'),
+  'bollinger band': i18n.t('nlParser.k35'),
   // 动量同义词
-  '动量策略': 'momentum',
-  '动量指标': 'momentum',
-  '动能': 'momentum',
+  i18n.t('nlParser.k36'): 'momentum',
+  i18n.t('nlParser.k37'): 'momentum',
+  i18n.t('nlParser.k38'): 'momentum',
   ' momentum ': ' momentum ',
   // 止损止盈同义词
-  '止损': 'stop loss',
-  '止盈': 'take profit',
-  '亏损': 'stop loss',
-  '盈利': 'take profit',
-  '赔': 'stop loss',
-  '赚': 'take profit',
+  i18n.t('nlParser.k39'): 'stop loss',
+  i18n.t('nlParser.k40'): 'take profit',
+  i18n.t('nlParser.k41'): 'stop loss',
+  i18n.t('nlParser.k42'): 'take profit',
+  i18n.t('nlParser.k43'): 'stop loss',
+  i18n.t('nlParser.k44'): 'take profit',
   // 趋势同义词
-  '趋势跟踪': 'trend following',
-  '趋势追踪': 'trend following',
-  '顺势': 'trend following',
+  i18n.t('nlParser.k45'): 'trend following',
+  i18n.t('nlParser.k46'): 'trend following',
+  i18n.t('nlParser.k47'): 'trend following',
   // 其他常见词
-  '买入': 'BUY',
-  '买进': 'BUY',
-  '做多': 'BUY',
-  '买入开多': 'BUY',
-  '卖出': 'SELL',
-  '卖空': 'SELL',
-  '做空': 'SELL',
-  '多头': 'BUY',
-  '空头': 'SELL',
-  '平仓': 'SELL',
-  '止损平仓': 'SELL',
+  i18n.t('nlParser.k48'): 'BUY',
+  i18n.t('nlParser.k49'): 'BUY',
+  i18n.t('nlParser.k50'): 'BUY',
+  i18n.t('nlParser.k51'): 'BUY',
+  i18n.t('nlParser.k52'): 'SELL',
+  i18n.t('nlParser.k53'): 'SELL',
+  i18n.t('nlParser.k54'): 'SELL',
+  i18n.t('nlParser.k55'): 'BUY',
+  i18n.t('nlParser.k56'): 'SELL',
+  i18n.t('nlParser.k57'): 'SELL',
+  i18n.t('nlParser.k58'): 'SELL',
 };
 
 /**
@@ -180,8 +181,8 @@ function matchMACross(text: string): MatcherResult | null {
       const long = parseInt(m[2]);
       if (short > 0 && long > 0 && short < long) {
         return {
-          name: `MA${short}/MA${long} 均线交叉`,
-          description: `当 MA${short} 上穿 MA${long} 时买入，下穿时卖出`,
+          name: i18n.t('nlParser.k59'),
+          description: i18n.t('nlParser.k60'),
           strategy: { type: 'ma_cross', params: { shortPeriod: short, longPeriod: long } },
         };
       }
@@ -199,8 +200,8 @@ function matchRSI(text: string): MatcherResult | null {
     const oversold = parseInt(buyMatch[1]);
     const overbought = sellMatch ? parseInt(sellMatch[1]) : 70;
     return {
-      name: `RSI 超买超卖`,
-      description: `RSI < ${oversold} 买入，RSI > ${overbought} 卖出`,
+      name: i18n.t('nlParser.k61'),
+      description: i18n.t('nlParser.k62'),
       strategy: { type: 'rsi', params: { oversold, overbought, rsiPeriod: 14 } },
     };
   }
@@ -208,8 +209,8 @@ function matchRSI(text: string): MatcherResult | null {
   // "RSI 超卖" shorthand
   if (/RSI\s*超卖/i.test(text)) {
     return {
-      name: `RSI 超卖反弹`,
-      description: `RSI < 30 买入，RSI > 70 卖出`,
+      name: i18n.t('nlParser.k63'),
+      description: i18n.t('nlParser.k64'),
       strategy: { type: 'rsi', params: { oversold: 30, overbought: 70, rsiPeriod: 14 } },
     };
   }
@@ -223,8 +224,8 @@ function matchMACD(text: string): MatcherResult | null {
     const fast = extractNumber(text, /快线\s*(\d+)/i) ?? 12;
     const slow = extractNumber(text, /慢线\s*(\d+)/i) ?? 26;
     return {
-      name: `MACD 金叉`,
-      description: `MACD 柱状图由负转正时买入，由正转负时卖出`,
+      name: i18n.t('nlParser.k65'),
+      description: i18n.t('nlParser.k66'),
       strategy: { type: 'macd', params: { macdFast: fast, macdSlow: slow, macdSignal: 9 } },
     };
   }
@@ -238,8 +239,8 @@ function matchMomentum(text: string): MatcherResult | null {
 
   if (/\d+\s*日?\s*(?:新高|突破|高点)/i.test(text) || /momentum|动量/i.test(text)) {
     return {
-      name: `动量突破 (${lookback}日)`,
-      description: `过去${lookback}日涨幅超过 ${threshold}% 时买入`,
+      name: i18n.t('nlParser.k67'),
+      description: i18n.t('nlParser.k68'),
       strategy: { type: 'momentum', params: { lookback, threshold } },
     };
   }
@@ -250,8 +251,8 @@ function matchBollinger(text: string): MatcherResult | null {
   // "布林带下轨买入" / "Bollinger lower band buy" / "触及布林下轨"
   if (/布林|bollinger|boll/i.test(text) && /(下轨|lower|底部|支撑)/i.test(text)) {
     return {
-      name: `布林带突破`,
-      description: `价格触及布林带下轨买入，触及上轨卖出`,
+      name: i18n.t('nlParser.k69'),
+      description: i18n.t('nlParser.k70'),
       strategy: { type: 'bollinger', params: { bbPeriod: 20, bbStdDev: 2 } },
     };
   }
@@ -292,8 +293,8 @@ function matchPriceCondition(text: string): PriceConditionResult | null {
   // 1. crosses_above: crossing UP through the price level
   if (/上穿|涨破|突破|升穿|crosses?\s*above|cross.*up/i.test(text)) {
     return {
-      name: `${symbol || ''} 上穿 ${price}`,
-      description: `当${symbol || '标的'}价格上穿 ${price} 时触发`,
+      name: i18n.t('nlParser.k71'),
+      description: i18n.t('nlParser.k73'),
       strategy: { type: 'ma_cross', params: {} },
       condition: { type: 'price', operator: 'crosses_above', targetPrice: price, reference: 'close', symbol },
     };
@@ -302,8 +303,8 @@ function matchPriceCondition(text: string): PriceConditionResult | null {
   // 2. crosses_below: crossing DOWN through the price level
   if (/下穿|跌破|跌穿|降穿|crosses?\s*below|cross.*down/i.test(text)) {
     return {
-      name: `${symbol || ''} 下穿 ${price}`,
-      description: `当${symbol || '标的'}价格下穿 ${price} 时触发`,
+      name: i18n.t('nlParser.k74'),
+      description: i18n.t('nlParser.k76'),
       strategy: { type: 'ma_cross', params: {} },
       condition: { type: 'price', operator: 'crosses_below', targetPrice: price, reference: 'close', symbol },
     };
@@ -312,8 +313,8 @@ function matchPriceCondition(text: string): PriceConditionResult | null {
   // 3. steady above: price is already above the target
   if (/超过|高于|涨到|升到|价格超过|价格高于|above\b|\+\s*\$/i.test(text)) {
     return {
-      name: `${symbol || ''} 高于 ${price}`,
-      description: `当${symbol || '标的'}价格高于 ${price} 时触发`,
+      name: i18n.t('nlParser.k77'),
+      description: i18n.t('nlParser.k79'),
       strategy: { type: 'ma_cross', params: {} },
       condition: { type: 'price', operator: 'above', targetPrice: price, reference: 'close', symbol },
     };
@@ -322,8 +323,8 @@ function matchPriceCondition(text: string): PriceConditionResult | null {
   // 4. steady below: price is already below the target
   if (/低于|价格低于|价格\s*<|price\s*<|\s<\s|below\b/i.test(text)) {
     return {
-      name: `${symbol || ''} 低于 ${price}`,
-      description: `当${symbol || '标的'}价格低于 ${price} 时触发`,
+      name: i18n.t('nlParser.k80'),
+      description: i18n.t('nlParser.k82'),
       strategy: { type: 'ma_cross', params: {} },
       condition: { type: 'price', operator: 'below', targetPrice: price, reference: 'close', symbol },
     };
@@ -331,8 +332,8 @@ function matchPriceCondition(text: string): PriceConditionResult | null {
 
   // 5. Generic fallback: any number present but no clear operator → treat as 'above'
   return {
-    name: `${symbol || ''} 超过 ${price}`,
-    description: `当${symbol || '标的'}价格超过 ${price} 时触发`,
+    name: i18n.t('nlParser.k83'),
+    description: i18n.t('nlParser.k85'),
     strategy: { type: 'ma_cross', params: {} },
     condition: { type: 'price', operator: 'above', targetPrice: price, reference: 'close', symbol },
   };
@@ -397,7 +398,7 @@ const LLM_PROMPT_TEMPLATE = `你是一个量化交易策略解析器。请从用
   "stopLoss": 数字（百分比），无则null,
   "takeProfit": 数字（百分比），无则null,
   "symbol": "US.XXX"格式，无则null,
-  "reason": "信号理由"
+  "reason": i18n.t('nlParser.k86')
 }
 
 用户输入：{{INPUT}}
@@ -459,7 +460,7 @@ function callLLM(input: string): Promise<LLMParseResult | null> {
 export function parseNaturalLanguage(input: string): ParsedStrategy {
   const text = input.trim();
   if (!text) {
-    return { success: false, name: '', description: '', strategy: { type: 'ma_cross', params: {} }, error: '输入为空' };
+    return { success: false, name: '', description: '', strategy: { type: 'ma_cross', params: {} }, error: i18n.t('nlParser.k87') };
   }
 
   // Phase 3: 同义词规范化
@@ -499,15 +500,15 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
 
       // Append risk info to description
       if (result.strategy.stopLoss !== undefined && result.strategy.stopLoss !== -1) {
-        result.description += `，止损 ${result.strategy.stopLoss}%`;
+        result.description += i18n.t('nlParser.k88');
       } else if (result.strategy.stopLoss === -1) {
-        result.description += `，ATR 动态止损`;
+        result.description += i18n.t('nlParser.k89');
       }
       if (result.strategy.takeProfit) {
-        result.description += `，止盈 ${result.strategy.takeProfit}%`;
+        result.description += i18n.t('nlParser.k90');
       }
       if (symbol) {
-        result.description += `，标的 ${symbol}`;
+        result.description += i18n.t('nlParser.k91');
       }
 
       log.info('[NLParser] Matched (rule-based):', result.strategy.type, result.name);
@@ -533,10 +534,10 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
       description: '',
       strategy: { type: 'ma_cross', params: {} },
       error: `检测到指标但无法解析具体模式。请尝试更明确的表达，如：
-• "MA5 上穿 MA20 买入 TQQQ"
-• "RSI 低于 30 买入，止损 3%"
-• "MACD 金叉买入，2倍ATR止损"
-• "布林带下轨买入"`,
+• i18n.t('nlParser.k92')
+• i18n.t('nlParser.k93')
+• i18n.t('nlParser.k94')
+• i18n.t('nlParser.k95')`,
     };
   }
 
@@ -545,7 +546,7 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
     name: '',
     description: '',
     strategy: { type: 'ma_cross', params: {} },
-    error: '无法识别策略模式。试试：\n• "MA5 上穿 MA20 买入 TQQQ"\n• "RSI 低于 30 买入"\n• "MACD 金叉买入"\n• "布林带下轨买入"',
+    error: '无法识别策略模式。试试：\n• i18n.t('nlParser.k96')\n• i18n.t('nlParser.k97')\n• i18n.t('nlParser.k98')\n• i18n.t('nlParser.k99')',
   };
 }
 
@@ -554,124 +555,124 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
 export const STRATEGY_TEMPLATES = [
   {
     id: 'ma_cross_10_30',
-    name: 'MA10/MA30 均线交叉',
-    description: '短期均线上穿长期均线时买入，下穿时卖出。经典趋势跟踪策略。',
-    category: '趋势跟踪',
-    risk: '中',
+    name: i18n.t('nlParser.k100'),
+    description: i18n.t('nlParser.k101'),
+    category: i18n.t('nlParser.k102'),
+    risk: i18n.t('nlParser.k103'),
     strategy: { type: 'ma_cross' as const, params: { shortPeriod: 10, longPeriod: 30 } },
   },
   {
     id: 'ma_cross_5_20',
-    name: 'MA5/MA20 均线交叉',
-    description: '快速均线交叉，适合短线交易，信号更频繁但假信号更多。',
-    category: '趋势跟踪',
-    risk: '高',
+    name: i18n.t('nlParser.k104'),
+    description: i18n.t('nlParser.k105'),
+    category: i18n.t('nlParser.k106'),
+    risk: i18n.t('nlParser.k107'),
     strategy: { type: 'ma_cross' as const, params: { shortPeriod: 5, longPeriod: 20 } },
   },
   {
     id: 'rsi_30_70',
-    name: 'RSI 超买超卖',
-    description: 'RSI < 30 买入，RSI > 70 卖出。经典均值回归策略。',
-    category: '均值回归',
-    risk: '中',
+    name: i18n.t('nlParser.k108'),
+    description: i18n.t('nlParser.k109'),
+    category: i18n.t('nlParser.k110'),
+    risk: i18n.t('nlParser.k111'),
     strategy: { type: 'rsi' as const, params: { oversold: 30, overbought: 70, rsiPeriod: 14 } },
   },
   {
     id: 'rsi_20_80',
-    name: 'RSI 极端反转',
-    description: 'RSI < 20 买入，RSI > 80 卖出。更保守的均值回归。',
-    category: '均值回归',
-    risk: '低',
+    name: i18n.t('nlParser.k112'),
+    description: i18n.t('nlParser.k113'),
+    category: i18n.t('nlParser.k114'),
+    risk: i18n.t('nlParser.k115'),
     strategy: { type: 'rsi' as const, params: { oversold: 20, overbought: 80, rsiPeriod: 14 } },
   },
   {
     id: 'macd_cross',
-    name: 'MACD 金叉/死叉',
-    description: 'MACD 柱状图由负转正买入，由正转负卖出。中长期趋势策略。',
-    category: '趋势跟踪',
-    risk: '中',
+    name: i18n.t('nlParser.k116'),
+    description: i18n.t('nlParser.k117'),
+    category: i18n.t('nlParser.k118'),
+    risk: i18n.t('nlParser.k119'),
     strategy: { type: 'macd' as const, params: { macdFast: 12, macdSlow: 26, macdSignal: 9 } },
   },
   {
     id: 'momentum_20d',
-    name: '20日动量突破',
-    description: '过去20日涨幅超过5%时买入，跌超5%时卖出。',
-    category: '动量',
-    risk: '高',
+    name: i18n.t('nlParser.k120'),
+    description: i18n.t('nlParser.k121'),
+    category: i18n.t('nlParser.k122'),
+    risk: i18n.t('nlParser.k123'),
     strategy: { type: 'momentum' as const, params: { lookback: 20, threshold: 5 } },
   },
   {
     id: 'bollinger_lower',
-    name: '布林带突破',
-    description: '价格触及布林带下轨买入，触及上轨卖出。',
-    category: '均值回归',
-    risk: '中',
+    name: i18n.t('nlParser.k124'),
+    description: i18n.t('nlParser.k125'),
+    category: i18n.t('nlParser.k126'),
+    risk: i18n.t('nlParser.k127'),
     strategy: { type: 'bollinger' as const, params: { bbPeriod: 20, bbStdDev: 2 } },
   },
   {
     id: 'tqqq_momentum',
-    name: 'TQQQ 趋势跟踪',
-    description: 'MA10/MA30 均线交叉 + 5% 止损，专为 TQQQ 设计。',
-    category: '趋势跟踪',
-    risk: '高',
+    name: i18n.t('nlParser.k128'),
+    description: i18n.t('nlParser.k129'),
+    category: i18n.t('nlParser.k130'),
+    risk: i18n.t('nlParser.k131'),
     strategy: { type: 'ma_cross' as const, params: { shortPeriod: 10, longPeriod: 30 }, stopLoss: 5 },
     symbol: 'US.TQQQ',
   },
   {
     id: 'ma_cross_20_50',
-    name: 'MA20/MA50 慢速交叉',
-    description: '中长期均线交叉，信号少但可靠。适合大资金趋势跟踪。',
-    category: '趋势跟踪',
-    risk: '低',
+    name: i18n.t('nlParser.k132'),
+    description: i18n.t('nlParser.k133'),
+    category: i18n.t('nlParser.k134'),
+    risk: i18n.t('nlParser.k135'),
     strategy: { type: 'ma_cross' as const, params: { shortPeriod: 20, longPeriod: 50 } },
   },
   {
     id: 'rsi_40_60_tight',
-    name: 'RSI 窄幅波段',
-    description: 'RSI < 40 买入，RSI > 60 卖出。适合震荡市高频交易。',
-    category: '均值回归',
-    risk: '高',
+    name: i18n.t('nlParser.k136'),
+    description: i18n.t('nlParser.k137'),
+    category: i18n.t('nlParser.k138'),
+    risk: i18n.t('nlParser.k139'),
     strategy: { type: 'rsi' as const, params: { oversold: 40, overbought: 60, rsiPeriod: 14 } },
   },
   {
     id: 'macd_fast',
-    name: 'MACD 快速信号',
-    description: '快线6/慢线13/信号线5，更灵敏的MACD变体。',
-    category: '趋势跟踪',
-    risk: '高',
+    name: i18n.t('nlParser.k140'),
+    description: i18n.t('nlParser.k141'),
+    category: i18n.t('nlParser.k142'),
+    risk: i18n.t('nlParser.k143'),
     strategy: { type: 'macd' as const, params: { macdFast: 6, macdSlow: 13, macdSignal: 5 } },
   },
   {
     id: 'momentum_5d_short',
-    name: '5日短线动量',
-    description: '5日内涨幅超3%买入，跌超3%卖出。超短线动量策略。',
-    category: '动量',
-    risk: '高',
+    name: i18n.t('nlParser.k144'),
+    description: i18n.t('nlParser.k145'),
+    category: i18n.t('nlParser.k146'),
+    risk: i18n.t('nlParser.k147'),
     strategy: { type: 'momentum' as const, params: { lookback: 5, threshold: 3 } },
   },
   {
     id: 'bollinger_narrow',
-    name: '布林带收窄 (1.5σ)',
-    description: '1.5倍标准差布林带，信号更频繁。适合波动较小的标的。',
-    category: '均值回归',
-    risk: '中',
+    name: i18n.t('nlParser.k148'),
+    description: i18n.t('nlParser.k149'),
+    category: i18n.t('nlParser.k150'),
+    risk: i18n.t('nlParser.k151'),
     strategy: { type: 'bollinger' as const, params: { bbPeriod: 20, bbStdDev: 1.5 } },
   },
   {
     id: 'spy_conservative',
-    name: 'SPY 稳健趋势',
-    description: 'MA20/MA50 均线交叉 + 3% 止损 + 10% 止盈，为 SPY 优化。',
-    category: '趋势跟踪',
-    risk: '低',
+    name: i18n.t('nlParser.k152'),
+    description: i18n.t('nlParser.k153'),
+    category: i18n.t('nlParser.k154'),
+    risk: i18n.t('nlParser.k155'),
     strategy: { type: 'ma_cross' as const, params: { shortPeriod: 20, longPeriod: 50 }, stopLoss: 3, takeProfit: 10 },
     symbol: 'US.SPY',
   },
   {
     id: 'soxl_aggressive',
-    name: 'SOXL 激进跟踪',
-    description: 'MA5/MA20 快速交叉 + 8% 止损，适合半导体3x杠杆ETF。',
-    category: '趋势跟踪',
-    risk: '高',
+    name: i18n.t('nlParser.k156'),
+    description: i18n.t('nlParser.k157'),
+    category: i18n.t('nlParser.k158'),
+    risk: i18n.t('nlParser.k159'),
     strategy: { type: 'ma_cross' as const, params: { shortPeriod: 5, longPeriod: 20 }, stopLoss: 8 },
     symbol: 'US.SOXL',
   },

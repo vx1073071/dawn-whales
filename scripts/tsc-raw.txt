@@ -1,480 +1,59 @@
-﻿src/components/backtest/BacktestComparisonPage.tsx(194,64): error TS18046: 'p.data' is of type 'unknown'.
-src/components/backtest/BacktestComparisonPage.tsx(194,122): error TS18046: 'p.data' is of type 'unknown'.
-src/components/backtest/BacktestComparisonPage.tsx(194,137): error TS18046: 'p.data' is of type 'unknown'.
-src/components/backtest/BacktestComparisonPage.tsx(211,108): error TS18046: 'p.data' is of type 'unknown'.
-src/components/backtest/BacktestComparisonPage.tsx(327,44): error TS2349: This expression is not callable.
-  Type 'String' has no call signatures.
-src/components/backtest/BacktestReportPage.tsx(277,29): error TS2345: Argument of type '(s: Record<string, unknown>) => JSX.Element' is not assignable to parameter of type '(value: unknown, index: number, array: unknown[]) => Element'.
-  Types of parameters 's' and 'value' are incompatible.
-    Type 'unknown' is not assignable to type 'Record<string, unknown>'.
-src/components/backtest/BacktestReportPage.tsx(279,17): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
-src/components/backtest/BacktestReportPage.tsx(280,46): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'SetStateAction<string | null>'.
-src/components/backtest/BacktestReportPage.tsx(283,62): error TS2322: Type 'unknown' is not assignable to type 'ReactI18NextChildren | Iterable<ReactI18NextChildren>'.
-src/components/backtest/BacktestReportPage.tsx(284,56): error TS2322: Type 'unknown' is not assignable to type 'string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined'.
-src/components/backtest/BacktestReportPage.tsx(284,73): error TS2322: Type 'unknown' is not assignable to type 'string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined'.
-src/components/backtest/BacktestReportPage.tsx(301,67): error TS18046: 's' is of type 'unknown'.
-src/components/backtest/BacktestReportPage.tsx(301,89): error TS2339: Property 'name' does not exist on type '{}'.
-src/components/backtest/BacktestReportPage.tsx(416,56): error TS2339: Property 'cron' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/backtest/BacktestReportPage.tsx(547,31): error TS2322: Type 'unknown' is not assignable to type '{ success: boolean; results?: ParamResult[] | undefined; config?: ParamSweepConfig | undefined; } | null | undefined'.
-src/components/backtest/BacktestReportPage.tsx(550,33): error TS2322: Type 'unknown' is not assignable to type 'WFAReport | undefined'.
-src/components/backtest/MonteCarloPage.tsx(445,14): error TS2339: Property 'monteCarlo' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/backtest/MonteCarloPage.tsx(455,11): error TS2339: Property 'monteCarlo' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/backtest/MonteCarloPage.tsx(457,20): error TS2339: Property 'success' does not exist on type '{}'.
-src/components/backtest/MonteCarloPage.tsx(457,35): error TS2339: Property 'result' does not exist on type '{}'.
-src/components/backtest/MonteCarloPage.tsx(458,27): error TS2339: Property 'result' does not exist on type '{}'.
-src/components/backtest/MonteCarloPage.tsx(544,32): error TS2345: Argument of type 'object' is not assignable to parameter of type 'SetStateAction<Record<string, unknown> | null>'.
-src/components/backtest/MonteCarloPage.tsx(742,32): error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
-src/components/backtest/MonteCarloPage.tsx(743,30): error TS2365: Operator '>' cannot be applied to types '{}' and 'number'.
-src/components/backtest/MonteCarloPage.tsx(750,32): error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
-src/components/backtest/MonteCarloPage.tsx(758,32): error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
-src/components/backtest/MonteCarloPage.tsx(766,58): error TS2339: Property 'toFixed' does not exist on type '{}'.
-src/components/backtest/MonteCarloPage.tsx(767,30): error TS2365: Operator '>' cannot be applied to types '{}' and 'number'.
-src/components/backtest/MonteCarloPage.tsx(774,59): error TS2339: Property 'toFixed' does not exist on type '{}'.
-src/components/backtest/MonteCarloPage.tsx(775,30): error TS2365: Operator '>' cannot be applied to types '{}' and 'number'.
-src/components/backtest/MonteCarloPage.tsx(782,63): error TS2339: Property 'toFixed' does not exist on type '{}'.
-src/components/backtest/MonteCarloPage.tsx(789,57): error TS2339: Property 'toFixed' does not exist on type '{}'.
-src/components/backtest/MonteCarloPage.tsx(790,30): error TS2365: Operator '>' cannot be applied to types '{}' and 'number'.
-src/components/backtest/MonteCarloPage.tsx(797,56): error TS2339: Property 'toFixed' does not exist on type '{}'.
-src/components/backtest/MonteCarloPage.tsx(804,55): error TS2339: Property 'toFixed' does not exist on type '{}'.
-src/components/backtest/MonteCarloPage.tsx(805,26): error TS2365: Operator '>' cannot be applied to types '{}' and 'number'.
-src/components/backtest/MonteCarloPage.tsx(811,55): error TS2339: Property 'toFixed' does not exist on type '{}'.
-src/components/backtest/MonteCarloPage.tsx(812,26): error TS2365: Operator '>' cannot be applied to types '{}' and 'number'.
-src/components/billing/ai/AIBillingPanel.tsx(17,23): error TS2307: Cannot find module '../../i18n/locales/billing-en.json' or its corresponding type declarations.
-src/components/billing/ai/AIBillingPanel.tsx(86,22): error TS2345: Argument of type 'string | number | symbol' is not assignable to parameter of type 'string'.
-  Type 'number' is not assignable to type 'string'.
-src/components/billing/ai/AIBillingPanel.tsx(266,40): error TS2345: Argument of type '[string | number | symbol]' is not assignable to parameter of type '[key: string | string[], options: TOptionsBase & $Dictionary & { defaultValue: string; }] | [key: string | string[], defaultValue: string, options?: (TOptionsBase & $Dictionary) | undefined] | [key: ...]'.
-  Type '[string | number | symbol]' is not assignable to type '[key: string | TemplateStringsArray | (string | TemplateStringsArray)[], options?: (TOptionsBase & $Dictionary & { ...; }) | undefined]'.
-    Type at position 0 in source is not compatible with type at position 0 in target.
-      Type 'string | number | symbol' is not assignable to type 'string | TemplateStringsArray | (string | TemplateStringsArray)[]'.
-        Type 'number' is not assignable to type 'string | TemplateStringsArray | (string | TemplateStringsArray)[]'.
-src/components/dashboard/DashboardPage.tsx(140,24): error TS2345: Argument of type '{ code: unknown; name: unknown; qty: unknown; marketPrice: {}; marketValue: {}; pnl: {}; pnlPct: {}; ratio: number; }[]' is not assignable to parameter of type 'SetStateAction<PositionCard[]>'.
-  Type '{ code: unknown; name: unknown; qty: unknown; marketPrice: {}; marketValue: {}; pnl: {}; pnlPct: {}; ratio: number; }[]' is not assignable to type 'PositionCard[]'.
-    Type '{ code: unknown; name: unknown; qty: unknown; marketPrice: {}; marketValue: {}; pnl: {}; pnlPct: {}; ratio: number; }' is not assignable to type 'PositionCard'.
-      Types of property 'code' are incompatible.
-        Type 'unknown' is not assignable to type 'string'.
-src/components/dashboard/DashboardPage.tsx(148,34): error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
-src/components/dashboard/DashboardPage.tsx(156,11): error TS2345: Argument of type '{ id: unknown; name: {}; status: "running"; totalReturn: {}; signals: {}; }[]' is not assignable to parameter of type 'SetStateAction<StrategyStatus[]>'.
-  Type '{ id: unknown; name: {}; status: "running"; totalReturn: {}; signals: {}; }[]' is not assignable to type 'StrategyStatus[]'.
-    Type '{ id: unknown; name: {}; status: "running"; totalReturn: {}; signals: {}; }' is not assignable to type 'StrategyStatus'.
-      Types of property 'id' are incompatible.
-        Type 'unknown' is not assignable to type 'string'.
-src/components/layout/StatusBar.tsx(18,21): error TS2339: Property 'total' does not exist on type '{}'.
-src/components/layout/StatusBar.tsx(18,40): error TS2339: Property 'total' does not exist on type '{}'.
-src/components/live/GreeksPanel.tsx(50,16): error TS18046: 'e' is of type 'unknown'.
-src/components/live/LiveMonitorPage.tsx(55,9): error TS2322: Type '{}' is not assignable to type 'string'.
-src/components/live/LiveMonitorPage.tsx(56,9): error TS2322: Type '{}' is not assignable to type 'number'.
-src/components/live/LiveMonitorPage.tsx(57,9): error TS2322: Type '{}' is not assignable to type 'number'.
-src/components/live/LiveMonitorPage.tsx(58,9): error TS2322: Type '{}' is not assignable to type 'number'.
-src/components/live/LiveMonitorPage.tsx(59,9): error TS2322: Type '{}' is not assignable to type 'number'.
-src/components/live/LiveMonitorPage.tsx(62,29): error TS2345: Argument of type '{}' is not assignable to parameter of type 'string'.
-src/components/live/LiveMonitorPage.tsx(64,20): error TS2345: Argument of type '{}' is not assignable to parameter of type 'number'.
-src/components/live/LiveMonitorPage.tsx(70,11): error TS2322: Type '{}' is not assignable to type 'string'.
-src/components/live/LiveMonitorPage.tsx(71,36): error TS18046: 'q.changePct' is of type 'unknown'.
-src/components/live/LiveMonitorPage.tsx(71,84): error TS2339: Property 'toFixed' does not exist on type '{}'.
-src/components/live/LiveMonitorPage.tsx(83,7): error TS2322: Type '{}' is not assignable to type '"BUY" | "SELL" | "STOP_LOSS" | "TAKE_PROFIT" | "ALERT" | "ERROR"'.
-src/components/live/LiveMonitorPage.tsx(84,7): error TS2322: Type '{}' is not assignable to type 'string'.
-src/components/live/LiveMonitorPage.tsx(85,7): error TS2322: Type '{}' is not assignable to type 'string'.
-src/components/live/LiveMonitorPage.tsx(86,7): error TS2322: Type '{}' is not assignable to type 'string'.
-src/components/live/LiveMonitorPage.tsx(127,13): error TS2322: Type '{ id: unknown; name: unknown; code: {}; type: {}; status: "running" | "stopped"; signals: {}; trades: {}; pnl: {}; startTime: {}; lastSignal: {}; }[]' is not assignable to type 'LiveStrategy[]'.
-  Type '{ id: unknown; name: unknown; code: {}; type: {}; status: "running" | "stopped"; signals: {}; trades: {}; pnl: {}; startTime: {}; lastSignal: {}; }' is not assignable to type 'LiveStrategy'.
-    Types of property 'id' are incompatible.
-      Type 'unknown' is not assignable to type 'string'.
-src/components/live/LiveMonitorPage.tsx(245,65): error TS18046: 'a' is of type 'unknown'.
-src/components/market/CapitalFlowPage.tsx(43,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/CapitalFlowPage.tsx(78,7): error TS2322: Type '{ type: "bar"; data: { value: number; itemStyle: { color: string; }; }[]; barWidth: number; label: { show: true; position: "right"; formatter: (p: Record<string, unknown>) => string; color: string; fontSize: number; }; }[]' is not assignable to type 'SeriesOption$1 | SeriesOption$1[] | undefined'.
-  Type '{ type: "bar"; data: { value: number; itemStyle: { color: string; }; }[]; barWidth: number; label: { show: true; position: "right"; formatter: (p: Record<string, unknown>) => string; color: string; fontSize: number; }; }[]' is not assignable to type 'CustomSeriesOption$1 | MapSeriesOption$1 | LineSeriesOption$1 | HeatmapSeriesOption$1 | ... 18 more ... | SeriesOption$1[]'.
-    Type '{ type: "bar"; data: { value: number; itemStyle: { color: string; }; }[]; barWidth: number; label: { show: true; position: "right"; formatter: (p: Record<string, unknown>) => string; color: string; fontSize: number; }; }' is not assignable to type 'SeriesOption$1'.
-      Types of property 'label' are incompatible.
-        Type '{ show: true; position: "right"; formatter: (p: Record<string, unknown>) => string; color: string; fontSize: number; }' is not assignable to type 'BarSeriesLabelOption'.
-          Type '{ show: true; position: "right"; formatter: (p: Record<string, unknown>) => string; color: string; fontSize: number; }' is not assignable to type 'Omit<SeriesLabelOption<CallbackDataParams>, "position">'.
-            Types of property 'formatter' are incompatible.
-              Type '(p: Record<string, unknown>) => string' is not assignable to type 'string | LabelFormatterCallback<CallbackDataParams> | undefined'.
-                Type '(p: Record<string, unknown>) => string' is not assignable to type 'LabelFormatterCallback<CallbackDataParams>'.
-                  Types of parameters 'p' and 'params' are incompatible.
-                    Type 'CallbackDataParams' is not assignable to type 'Record<string, unknown>'.
-                      Index signature for type 'string' is missing in type 'CallbackDataParams'.
-src/components/market/CapitalFlowPage.tsx(88,58): error TS18046: 'p.value' is of type 'unknown'.
-src/components/market/ConsumerDashboard.tsx(65,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/DailyReportPage.tsx(55,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/DragonTigerPage.tsx(48,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/DragonTigerPage.tsx(61,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/DragonTigerPage.tsx(78,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/FundHoldingsPage.tsx(54,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/FundHoldingsPage.tsx(69,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/FundHoldingsPage.tsx(86,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/KLineChart.tsx(28,22): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'number'.
-src/components/market/KLineChart.tsx(29,21): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'number'.
-src/components/market/MarginDashboard.tsx(47,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/MarketPage.tsx(70,9): error TS2698: Spread types may only be created from object types.
-src/components/market/MarketPage.tsx(95,75): error TS2769: No overload matches this call.
-  Overload 1 of 4, '(value: string | number | Date): Date', gave the following error.
-    Argument of type 'unknown' is not assignable to parameter of type 'string | number | Date'.
-  Overload 2 of 4, '(value: string | number): Date', gave the following error.
-    Argument of type 'unknown' is not assignable to parameter of type 'string | number'.
-src/components/market/MarketPage.tsx(219,36): error TS2339: Property 'change' does not exist on type '{}'.
-src/components/market/MarketPage.tsx(219,77): error TS2339: Property 'change' does not exist on type '{}'.
-src/components/market/MarketPage.tsx(222,24): error TS2339: Property 'price' does not exist on type '{}'.
-src/components/market/MarketPage.tsx(222,45): error TS2339: Property 'change' does not exist on type '{}'.
-src/components/market/MarketPage.tsx(222,70): error TS2339: Property 'changePct' does not exist on type '{}'.
-src/components/market/MarketPage.tsx(243,25): error TS2322: Type 'unknown[]' is not assignable to type '{ time: number; open: number; high: number; low: number; close: number; volume?: number | undefined; }[]'.
-  Type 'unknown' is not assignable to type '{ time: number; open: number; high: number; low: number; close: number; volume?: number | undefined; }'.
-src/components/market/NewsDashboardPage.tsx(52,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/NewsDashboardPage.tsx(77,7): error TS2322: Type 'unknown' is not assignable to type 'string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined'.
-src/components/market/NewsDashboardPage.tsx(96,55): error TS2339: Property 'overall' does not exist on type '{}'.
-src/components/market/NewsDashboardPage.tsx(96,102): error TS2339: Property 'overall' does not exist on type '{}'.
-src/components/market/NewsDashboardPage.tsx(97,21): error TS2339: Property 'overall' does not exist on type '{}'.
-src/components/market/NewsDashboardPage.tsx(97,58): error TS2339: Property 'overall' does not exist on type '{}'.
-src/components/market/NewsDashboardPage.tsx(102,65): error TS2339: Property 'score' does not exist on type '{}'.
-src/components/market/NewsDashboardPage.tsx(106,65): error TS2339: Property 'articleCount' does not exist on type '{}'.
-src/components/market/NewsDashboardPage.tsx(110,80): error TS2339: Property 'topTopic' does not exist on type '{}'.
-src/components/market/RealTimeMarketDashboard.tsx(110,15): error TS2538: Type 'unknown' cannot be used as an index type.
-src/components/market/RealTimeMarketDashboard.tsx(119,27): error TS18046: 'q.price' is of type 'unknown'.
-src/components/market/RealTimeMarketDashboard.tsx(120,27): error TS18046: 'q.price' is of type 'unknown'.
-src/components/market/RealTimeMarketDashboard.tsx(127,42): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'number'.
-src/components/market/SectorRotationPage.tsx(45,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/StockOverviewPage.tsx(48,16): error TS18046: 'e' is of type 'unknown'.
-src/components/market/StockScreenerPage.tsx(70,16): error TS18046: 'e' is of type 'unknown'.
-src/components/NotificationToast.tsx(34,16): error TS2345: Argument of type '{}' is not assignable to parameter of type '"error" | "success" | "warning" | "info"'.
-src/components/NotificationToast.tsx(37,97): error TS2339: Property 'toFixed' does not exist on type '{}'.
-src/components/orders/OrdersPage.tsx(227,80): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(228,79): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(230,83): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(231,26): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(234,91): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(235,92): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(236,79): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(237,24): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(237,35): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(237,60): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(240,84): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(241,39): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(241,52): error TS18046: 't' is of type 'unknown'.
-src/components/orders/OrdersPage.tsx(244,93): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(154,35): error TS18046: 'err' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(368,22): error TS2345: Argument of type '{ code: unknown; name: unknown; qty: {}; avgCost: {}; marketPrice: unknown; marketVal: {}; pnl: {}; pnlPct: {}; unrealizedPnl: unknown; }[]' is not assignable to parameter of type 'SetStateAction<Position[]>'.
-  Type '{ code: unknown; name: unknown; qty: {}; avgCost: {}; marketPrice: unknown; marketVal: {}; pnl: {}; pnlPct: {}; unrealizedPnl: unknown; }[]' is not assignable to type 'Position[]'.
-    Type '{ code: unknown; name: unknown; qty: {}; avgCost: {}; marketPrice: unknown; marketVal: {}; pnl: {}; pnlPct: {}; unrealizedPnl: unknown; }' is not assignable to type 'Position'.
-      Types of property 'code' are incompatible.
-        Type 'unknown' is not assignable to type 'string'.
-src/components/orders/TradingDeskPage.tsx(720,80): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(721,79): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(723,83): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(724,26): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(727,77): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(728,92): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(729,79): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(730,24): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(730,35): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(730,60): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(733,84): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(734,39): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(734,52): error TS18046: 't' is of type 'unknown'.
-src/components/orders/TradingDeskPage.tsx(737,93): error TS18046: 't' is of type 'unknown'.
-src/components/portfolio/PortfolioPage.tsx(55,16): error TS18046: 'e' is of type 'unknown'.
-src/components/portfolio/PortfolioPage.tsx(65,56): error TS18046: 'p' is of type 'unknown'.
-src/components/portfolio/PortfolioPage.tsx(67,5): error TS2698: Spread types may only be created from object types.
-src/components/portfolio/PortfolioPage.tsx(68,10): error TS18046: 'totalVal' is of type 'unknown'.
-src/components/portfolio/PortfolioPage.tsx(68,27): error TS18046: 'p' is of type 'unknown'.
-src/components/portfolio/PortfolioPage.tsx(68,47): error TS18046: 'totalVal' is of type 'unknown'.
-src/components/portfolio/PortfolioPage.tsx(137,41): error TS18046: 'totalVal' is of type 'unknown'.
-src/components/portfolio/PortfolioPage.tsx(139,51): error TS18046: 'totalVal' is of type 'unknown'.
-src/components/portfolio/PortfolioPage.tsx(141,47): error TS18046: 'totalVal' is of type 'unknown'.
-src/components/portfolio/PortfolioRebalancerPage.tsx(27,111): error TS2322: Type '"澧炴寔"' is not assignable to type '"delete" | "increaseHolding" | "decreaseHolding" | "newlyAdded"'.
-src/components/portfolio/PortfolioRebalancerPage.tsx(28,110): error TS2322: Type '"澧炴寔"' is not assignable to type '"delete" | "increaseHolding" | "decreaseHolding" | "newlyAdded"'.
-src/components/portfolio/PortfolioRebalancerPage.tsx(29,109): error TS2322: Type '"澧炴寔"' is not assignable to type '"delete" | "increaseHolding" | "decreaseHolding" | "newlyAdded"'.
-src/components/portfolio/PortfolioRebalancerPage.tsx(30,109): error TS2322: Type '"澧炴寔"' is not assignable to type '"delete" | "increaseHolding" | "decreaseHolding" | "newlyAdded"'.
-src/components/portfolio/PortfolioRebalancerPage.tsx(31,108): error TS2322: Type '"鍑忔寔"' is not assignable to type '"delete" | "increaseHolding" | "decreaseHolding" | "newlyAdded"'.
-src/components/portfolio/PortfolioRebalancerPage.tsx(32,109): error TS2322: Type '"澧炴寔"' is not assignable to type '"delete" | "increaseHolding" | "decreaseHolding" | "newlyAdded"'.
-src/components/portfolio/PortfolioRebalancerPage.tsx(33,104): error TS2322: Type '"鏂板"' is not assignable to type '"delete" | "increaseHolding" | "decreaseHolding" | "newlyAdded"'.
-src/components/portfolio/PortfolioRebalancerPage.tsx(34,106): error TS2322: Type '"鍒犻櫎"' is not assignable to type '"delete" | "increaseHolding" | "decreaseHolding" | "newlyAdded"'.
-src/components/risk/AlertCenterPage.tsx(175,16): error TS2339: Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/AlertCenterPage.tsx(176,34): error TS2339: Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/AlertCenterPage.tsx(181,16): error TS2339: Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/AlertCenterPage.tsx(182,32): error TS2339: Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/AlertCenterPage.tsx(188,16): error TS2339: Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/AlertCenterPage.tsx(190,38): error TS2339: Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/AlertCenterPage.tsx(214,21): error TS2339: Property 'message' does not exist on type '{}'.
-src/components/risk/AlertCenterPage.tsx(246,16): error TS2339: Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/AlertCenterPage.tsx(247,13): error TS2339: Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/AlertCenterPage.tsx(252,46): error TS2349: This expression is not callable.
-  Type 'never' has no call signatures.
-src/components/risk/AlertCenterPage.tsx(259,16): error TS2339: Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/AlertCenterPage.tsx(260,19): error TS2339: Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/AlertCenterPage.tsx(278,16): error TS2339: Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/AlertCenterPage.tsx(279,19): error TS2339: Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/AnomalyAlertPanel.tsx(85,7): error TS2322: Type 'unknown' is not assignable to type 'string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined'.
-src/components/risk/AnomalyAlertPanel.tsx(108,68): error TS2339: Property 'todayCount' does not exist on type '{}'.
-src/components/risk/AnomalyAlertPanel.tsx(112,70): error TS2339: Property 'highSeverityCount' does not exist on type '{}'.
-src/components/risk/AnomalyAlertPanel.tsx(116,73): error TS2339: Property 'unacknowledgedCount' does not exist on type '{}'.
-src/components/risk/AnomalyAlertPanel.tsx(120,72): error TS2339: Property 'activeStocksCount' does not exist on type '{}'.
-src/components/risk/EquityChart.tsx(81,7): error TS2322: Type '{ trigger: "axis"; backgroundColor: string; borderColor: string; textStyle: { color: string; fontSize: number; }; formatter: (params: Record<string, unknown>) => string; }' is not assignable to type 'TooltipOption | TooltipOption[] | undefined'.
-  Types of property 'formatter' are incompatible.
-    Type '(params: Record<string, unknown>) => string' is not assignable to type 'string | TooltipFormatterCallback<TopLevelFormatterParams> | undefined'.
-      Type '(params: Record<string, unknown>) => string' is not assignable to type 'TooltipFormatterCallback<TopLevelFormatterParams>'.
-        Types of parameters 'params' and 'params' are incompatible.
-          Type 'TopLevelFormatterParams' is not assignable to type 'Record<string, unknown>'.
-            Type 'CallbackDataParams' is not assignable to type 'Record<string, unknown>'.
-              Index signature for type 'string' is missing in type 'CallbackDataParams'.
-src/components/risk/EquityChart.tsx(91,76): error TS7053: Element implicitly has an 'any' type because expression of type '1' can't be used to index type '{}'.
-  Property '1' does not exist on type '{}'.
-src/components/risk/NotificationCenter.tsx(52,11): error TS2322: Type '{}' is not assignable to type '"market" | "risk" | "signal" | "order" | "system"'.
-src/components/risk/NotificationCenter.tsx(53,11): error TS2322: Type '{}' is not assignable to type 'string'.
-src/components/risk/NotificationCenter.tsx(54,11): error TS2322: Type '{}' is not assignable to type 'string'.
-src/components/risk/NotificationCenter.tsx(57,11): error TS2322: Type '{}' is not assignable to type '"warning" | "info" | "critical"'.
-src/components/risk/PortfolioAllocationChart.tsx(59,7): error TS2322: Type '{ trigger: "item"; backgroundColor: string; borderColor: string; textStyle: { color: string; fontSize: number; }; formatter: (params: Record<string, unknown>) => string; }' is not assignable to type 'TooltipOption | TooltipOption[] | undefined'.
-  Types of property 'formatter' are incompatible.
-    Type '(params: Record<string, unknown>) => string' is not assignable to type 'string | TooltipFormatterCallback<TopLevelFormatterParams> | undefined'.
-      Type '(params: Record<string, unknown>) => string' is not assignable to type 'TooltipFormatterCallback<TopLevelFormatterParams>'.
-        Types of parameters 'params' and 'params' are incompatible.
-          Type 'TopLevelFormatterParams' is not assignable to type 'Record<string, unknown>'.
-            Type 'CallbackDataParams' is not assignable to type 'Record<string, unknown>'.
-src/components/risk/PortfolioAllocationChart.tsx(67,28): error TS18046: 'd' is of type 'unknown'.
-src/components/risk/PortfolioAllocationChart.tsx(69,40): error TS18046: 'd' is of type 'unknown'.
-src/components/risk/PortfolioAllocationChart.tsx(70,24): error TS18046: 'pct' is of type 'unknown'.
-src/components/risk/PortfolioAllocationChart.tsx(71,25): error TS18046: 'd' is of type 'unknown'.
-src/components/risk/PortfolioAllocationChart.tsx(72,50): error TS18046: 'd' is of type 'unknown'.
-src/components/risk/PortfolioAllocationChart.tsx(72,75): error TS18046: 'd' is of type 'unknown'.
-src/components/risk/PortfolioAllocationChart.tsx(72,96): error TS18046: 'd' is of type 'unknown'.
-src/components/risk/PortfolioStressTest.tsx(67,7): error TS2322: Type '{ type: "bar"; data: { value: number; itemStyle: { color: string; }; }[]; barWidth: number; label: { show: true; position: "right"; color: string; fontSize: number; formatter: (params: Record<string, unknown>) => string; }; }[]' is not assignable to type 'SeriesOption$1 | SeriesOption$1[] | undefined'.
-  Type '{ type: "bar"; data: { value: number; itemStyle: { color: string; }; }[]; barWidth: number; label: { show: true; position: "right"; color: string; fontSize: number; formatter: (params: Record<string, unknown>) => string; }; }[]' is not assignable to type 'CustomSeriesOption$1 | MapSeriesOption$1 | LineSeriesOption$1 | HeatmapSeriesOption$1 | ... 18 more ... | SeriesOption$1[]'.
-    Type '{ type: "bar"; data: { value: number; itemStyle: { color: string; }; }[]; barWidth: number; label: { show: true; position: "right"; color: string; fontSize: number; formatter: (params: Record<string, unknown>) => string; }; }' is not assignable to type 'SeriesOption$1'.
-      Types of property 'label' are incompatible.
-        Type '{ show: true; position: "right"; color: string; fontSize: number; formatter: (params: Record<string, unknown>) => string; }' is not assignable to type 'BarSeriesLabelOption'.
-          Type '{ show: true; position: "right"; color: string; fontSize: number; formatter: (params: Record<string, unknown>) => string; }' is not assignable to type 'Omit<SeriesLabelOption<CallbackDataParams>, "position">'.
-            Types of property 'formatter' are incompatible.
-              Type '(params: Record<string, unknown>) => string' is not assignable to type 'string | LabelFormatterCallback<CallbackDataParams> | undefined'.
-                Type '(params: Record<string, unknown>) => string' is not assignable to type 'LabelFormatterCallback<CallbackDataParams>'.
-                  Types of parameters 'params' and 'params' are incompatible.
-                    Type 'CallbackDataParams' is not assignable to type 'Record<string, unknown>'.
-src/components/risk/PortfolioStressTest.tsx(83,77): error TS18046: 'params.dataIndex' is of type 'unknown'.
-src/components/risk/RiskDashboardPage.tsx(190,21): error TS2339: Property 'message' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(218,15): error TS2339: Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/RiskDashboardPage.tsx(218,38): error TS2339: Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/RiskDashboardPage.tsx(224,17): error TS2339: Property 'code' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(224,31): error TS2339: Property 'price' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(227,17): error TS2339: Property 'code' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(227,29): error TS2339: Property 'price' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(231,43): error TS2339: Property 'code' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(236,38): error TS2339: Property 'price' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(256,9): error TS2339: Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/RiskDashboardPage.tsx(257,9): error TS2339: Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/RiskDashboardPage.tsx(258,9): error TS2339: Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/RiskDashboardPage.tsx(259,9): error TS2339: Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/RiskDashboardPage.tsx(262,9): error TS2339: Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/RiskDashboardPage.tsx(263,30): error TS2339: Property 'connected' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(267,11): error TS2339: Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/RiskDashboardPage.tsx(268,11): error TS2339: Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/RiskDashboardPage.tsx(269,11): error TS2339: Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/RiskDashboardPage.tsx(270,11): error TS2339: Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/risk/RiskDashboardPage.tsx(280,18): error TS2339: Property 'type' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(280,33): error TS2339: Property 'message' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(283,23): error TS2339: Property 'id' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(284,30): error TS2339: Property 'timestamp' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(285,25): error TS2339: Property 'type' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(286,28): error TS2339: Property 'message' does not exist on type '{}'.
-src/components/risk/RiskDashboardPage.tsx(287,27): error TS2339: Property 'source' does not exist on type '{}'.
-src/components/risk/SentimentDashboardPage.tsx(534,19): error TS18046: 'item' is of type 'unknown'.
-src/components/risk/SentimentDashboardPage.tsx(535,22): error TS18046: 'item' is of type 'unknown'.
-src/components/risk/SentimentDashboardPage.tsx(535,36): error TS18046: 'item' is of type 'unknown'.
-src/components/risk/SentimentDashboardPage.tsx(536,24): error TS18046: 'item' is of type 'unknown'.
-src/components/risk/SentimentDashboardPage.tsx(536,40): error TS18046: 'item' is of type 'unknown'.
-src/components/risk/SentimentDashboardPage.tsx(537,23): error TS18046: 'item' is of type 'unknown'.
-src/components/risk/SentimentDashboardPage.tsx(538,20): error TS18046: 'item' is of type 'unknown'.
-src/components/risk/SentimentDashboardPage.tsx(539,28): error TS18046: 'item' is of type 'unknown'.
-src/components/risk/SentimentDashboardPage.tsx(539,48): error TS18046: 'item' is of type 'unknown'.
-src/components/risk/SentimentDashboardPage.tsx(540,26): error TS18046: 'item' is of type 'unknown'.
-src/components/risk/SentimentDashboardPage.tsx(541,25): error TS18046: 'item' is of type 'unknown'.
-src/components/risk/SentimentDashboardPage.tsx(542,23): error TS18046: 'item' is of type 'unknown'.
-src/components/risk/SentimentGauge.tsx(129,32): error TS18046: 'p' is of type 'unknown'.
-src/components/risk/SentimentGauge.tsx(130,21): error TS18046: 'p' is of type 'unknown'.
-src/components/risk/SentimentGauge.tsx(130,77): error TS18046: 'p' is of type 'unknown'.
-src/components/risk/SignalTimeline.tsx(40,64): error TS2538: Type 'unknown' cannot be used as an index type.
-src/components/risk/SignalTimeline.tsx(48,33): error TS2538: Type 'unknown' cannot be used as an index type.
-src/components/risk/SignalTimeline.tsx(50,35): error TS2339: Property 'toUpperCase' does not exist on type '{}'.
-src/components/risk/SignalTimeline.tsx(57,15): error TS2345: Argument of type '(a: SignalItem, b: SignalItem) => number' is not assignable to parameter of type '(a: { id: {}; strategyId: {}; strategyName: any; symbol: {}; side: "BUY" | "SELL"; price: {}; qty: {}; reason: {}; timestamp: {}; status: {}; }, b: { id: {}; strategyId: {}; strategyName: any; symbol: {}; side: "BUY" | "SELL"; ... 4 more ...; status: {}; }) => number'.
-  Types of parameters 'a' and 'a' are incompatible.
-    Type '{ id: {}; strategyId: {}; strategyName: any; symbol: {}; side: "BUY" | "SELL"; price: {}; qty: {}; reason: {}; timestamp: {}; status: {}; }' is not assignable to type 'SignalItem'.
-      Types of property 'id' are incompatible.
-        Type '{}' is not assignable to type 'string'.
-src/components/risk/SignalTimeline.tsx(59,18): error TS2345: Argument of type '{ id: {}; strategyId: {}; strategyName: any; symbol: {}; side: "BUY" | "SELL"; price: {}; qty: {}; reason: {}; timestamp: {}; status: {}; }[]' is not assignable to parameter of type 'SetStateAction<SignalItem[]>'.
-  Type '{ id: {}; strategyId: {}; strategyName: any; symbol: {}; side: "BUY" | "SELL"; price: {}; qty: {}; reason: {}; timestamp: {}; status: {}; }[]' is not assignable to type 'SignalItem[]'.
-    Type '{ id: {}; strategyId: {}; strategyName: any; symbol: {}; side: "BUY" | "SELL"; price: {}; qty: {}; reason: {}; timestamp: {}; status: {}; }' is not assignable to type 'SignalItem'.
-src/components/settings/SettingsPage.tsx(84,23): error TS18046: 'e' is of type 'unknown'.
-src/components/settings/SettingsPage.tsx(111,13): error TS18046: 'e' is of type 'unknown'.
-src/components/settings/SettingsPage.tsx(124,13): error TS18046: 'e' is of type 'unknown'.
-src/components/settings/SettingsPage.tsx(136,13): error TS18046: 'e' is of type 'unknown'.
-src/components/settings/SettingsPage.tsx(165,44): error TS2769: No overload matches this call.
-  Overload 1 of 2, '(predicate: (value: unknown, index: number, obj: unknown[]) => value is unknown, thisArg?: any): unknown', gave the following error.
-    Argument of type '(s: Record<string, unknown>) => unknown' is not assignable to parameter of type '(value: unknown, index: number, obj: unknown[]) => value is unknown'.
-      Types of parameters 's' and 'value' are incompatible.
-        Type 'unknown' is not assignable to type 'Record<string, unknown>'.
-  Overload 2 of 2, '(predicate: (value: unknown, index: number, obj: unknown[]) => unknown, thisArg?: any): unknown', gave the following error.
-    Argument of type '(s: Record<string, unknown>) => unknown' is not assignable to parameter of type '(value: unknown, index: number, obj: unknown[]) => unknown'.
-      Types of parameters 's' and 'value' are incompatible.
-        Type 'unknown' is not assignable to type 'Record<string, unknown>'.
-src/components/settings/SettingsPage.tsx(165,87): error TS2339: Property 'id' does not exist on type '{}'.
-src/components/settings/SettingsPage.tsx(165,110): error TS2339: Property 'id' does not exist on type '{}'.
-src/components/settings/SettingsPage.tsx(281,50): error TS2769: No overload matches this call.
-  Overload 1 of 2, '(predicate: (value: unknown, index: number, obj: unknown[]) => value is unknown, thisArg?: any): unknown', gave the following error.
-    Argument of type '(s: Record<string, unknown>) => boolean' is not assignable to parameter of type '(value: unknown, index: number, obj: unknown[]) => value is unknown'.
-      Types of parameters 's' and 'value' are incompatible.
-        Type 'unknown' is not assignable to type 'Record<string, unknown>'.
-  Overload 2 of 2, '(predicate: (value: unknown, index: number, obj: unknown[]) => unknown, thisArg?: any): unknown', gave the following error.
-    Argument of type '(s: Record<string, unknown>) => boolean' is not assignable to parameter of type '(value: unknown, index: number, obj: unknown[]) => unknown'.
-      Types of parameters 's' and 'value' are incompatible.
-        Type 'unknown' is not assignable to type 'Record<string, unknown>'.
-src/components/settings/SettingsPage.tsx(282,45): error TS2339: Property 'connected' does not exist on type '{}'.
-src/components/settings/SettingsPage.tsx(416,73): error TS2339: Property 'dailyLossLimitPct' does not exist on type '{}'.
-src/components/settings/SettingsPage.tsx(417,75): error TS2339: Property 'maxSinglePositionPct' does not exist on type '{}'.
-src/components/settings/SettingsPage.tsx(418,73): error TS2339: Property 'maxTotalPositionPct' does not exist on type '{}'.
-src/components/settings/SettingsPage.tsx(419,63): error TS2339: Property 'maxOrdersPerMinute' does not exist on type '{}'.
-src/components/settings/SettingsPage.tsx(433,53): error TS18046: 'a' is of type 'unknown'.
-src/components/settings/SettingsPage.tsx(434,61): error TS18046: 'a' is of type 'unknown'.
-src/components/settings/SettingsPage.tsx(435,54): error TS18046: 'a' is of type 'unknown'.
-src/components/settings/SettingsPage.tsx(435,72): error TS18046: 'a' is of type 'unknown'.
-src/components/settings/SettingsPage.tsx(449,49): error TS2339: Property 'version' does not exist on type '{}'.
-src/components/settings/SettingsPage.tsx(450,52): error TS2339: Property 'platform' does not exist on type '{}'.
-src/components/settings/SettingsPage.tsx(450,84): error TS2339: Property 'arch' does not exist on type '{}'.
-src/components/settings/SettingsPage.tsx(451,55): error TS2339: Property 'electronVersion' does not exist on type '{}'.
-src/components/settings/SettingsPage.tsx(452,54): error TS2339: Property 'nodeVersion' does not exist on type '{}'.
-src/components/settings/SettingsPage.tsx(453,53): error TS2339: Property 'chromeVersion' does not exist on type '{}'.
-src/components/strategy/StrategyCompareModal.tsx(47,16): error TS18046: 'e' is of type 'unknown'.
-src/components/strategy/StrategyExplainCard.tsx(30,16): error TS18046: 'e' is of type 'unknown'.
-src/components/strategy/StrategyOptimizerPanel.tsx(198,22): error TS2339: Property 'startOptimization' does not exist on type '{ optimize: (params: Record<string, unknown>) => Promise<unknown>; }'.
-src/components/strategy/StrategyOptimizerPanel.tsx(199,19): error TS2339: Property 'startOptimization' does not exist on type '{ optimize: (params: Record<string, unknown>) => Promise<unknown>; }'.
-src/components/strategy/StrategyOptimizerPanel.tsx(204,39): error TS2339: Property 'getStatus' does not exist on type '{ optimize: (params: Record<string, unknown>) => Promise<unknown>; }'.
-src/components/strategy/StrategyOptimizerPanel.tsx(205,36): error TS2339: Property 'getProgress' does not exist on type '{ optimize: (params: Record<string, unknown>) => Promise<unknown>; }'.
-src/components/strategy/StrategyOptimizerPanel.tsx(211,39): error TS2339: Property 'getResult' does not exist on type '{ optimize: (params: Record<string, unknown>) => Promise<unknown>; }'.
-src/components/strategy/StrategyPage.tsx(114,11): error TS2322: Type 'unknown[]' is not assignable to type 'Strategy[]'.
-  Type 'unknown' is not assignable to type 'Strategy'.
-src/components/strategy/StrategyPage.tsx(115,11): error TS2322: Type 'unknown' is not assignable to type 'Strategy | undefined'.
-src/components/strategy/StrategyPage.tsx(224,16): error TS18046: 'e' is of type 'unknown'.
-src/components/strategy/StrategyPage.tsx(244,16): error TS18046: 'e' is of type 'unknown'.
-src/components/strategy/StrategyPage.tsx(520,18): error TS18046: 't' is of type 'unknown'.
-src/components/strategy/StrategyPage.tsx(521,40): error TS18046: 't' is of type 'unknown'.
-src/components/strategy/StrategyPage.tsx(521,67): error TS18046: 't' is of type 'unknown'.
-src/components/strategy/StrategyPage.tsx(523,28): error TS18046: 't' is of type 'unknown'.
-src/components/strategy/StrategyPage.tsx(527,63): error TS18046: 't' is of type 'unknown'.
-src/components/strategy/StrategyPage.tsx(528,74): error TS18046: 't' is of type 'unknown'.
-src/components/strategy/StrategyPage.tsx(528,120): error TS18046: 't' is of type 'unknown'.
-src/components/strategy/StrategyPage.tsx(530,72): error TS18046: 't' is of type 'unknown'.
-src/components/strategy/StrategyPage.tsx(532,89): error TS18046: 't' is of type 'unknown'.
-src/components/strategy/StrategyPage.tsx(534,27): error TS18046: 't' is of type 'unknown'.
-src/components/strategy/StrategyPage.tsx(802,27): error TS2339: Property 'symbol' does not exist on type '{}'.
-src/components/strategy/StrategyPage.tsx(805,29): error TS2339: Property 'strategy' does not exist on type '{}'.
-src/components/strategy/StrategyPage.tsx(847,27): error TS2339: Property 'status' does not exist on type '{}'.
-src/components/strategy/StrategyPage.tsx(856,72): error TS2339: Property 'name' does not exist on type '{}'.
-src/components/strategy/StrategyPage.tsx(857,65): error TS2339: Property 'description' does not exist on type '{}'.
-src/components/strategy/StrategyPage.tsx(860,43): error TS2339: Property 'status' does not exist on type '{}'.
-src/components/strategy/StrategyPage.tsx(867,73): error TS2339: Property 'symbol' does not exist on type '{}'.
-src/components/strategy/StrategyPage.tsx(871,62): error TS2339: Property 'strategy' does not exist on type '{}'.
-src/components/strategy/StrategyPage.tsx(873,21): error TS2339: Property 'strategy' does not exist on type '{}'.
-src/components/strategy/StrategyPage.tsx(876,63): error TS2339: Property 'strategy' does not exist on type '{}'.
-src/components/strategy/StrategyPage.tsx(879,21): error TS2339: Property 'strategy' does not exist on type '{}'.
-src/components/strategy/StrategyPage.tsx(882,67): error TS2339: Property 'strategy' does not exist on type '{}'.
-src/components/strategy/TemplateBrowser.tsx(72,38): error TS2339: Property 'getTemplates' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/strategy/TemplateBrowser.tsx(76,18): error TS18046: 'e' is of type 'unknown'.
-src/components/strategy/TemplateBrowser.tsx(115,39): error TS2339: Property 'instantiateTemplate' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/strategy/TemplateBrowser.tsx(124,27): error TS18046: 'e' is of type 'unknown'.
-src/components/tools/DataExportPage.tsx(194,33): error TS2339: Property 'export' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/tools/DataExportPage.tsx(209,46): error TS2339: Property 'message' does not exist on type '{}'.
-src/components/tools/DataExportPage.tsx(218,33): error TS2339: Property 'export' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/tools/DataExportPage.tsx(224,46): error TS2339: Property 'message' does not exist on type '{}'.
-src/components/tools/DataExportPage.tsx(232,31): error TS2339: Property 'export' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/tools/DataExportPage.tsx(238,44): error TS2339: Property 'message' does not exist on type '{}'.
-src/components/tools/DataExportPage.tsx(319,29): error TS2339: Property 'shell' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/tools/DataQualityPage.tsx(597,22): error TS2345: Argument of type '{}[]' is not assignable to parameter of type 'SetStateAction<string[]>'.
-  Type '{}[]' is not assignable to type 'string[]'.
-    Type '{}' is not assignable to type 'string'.
-src/components/tools/DataQualityPage.tsx(599,31): error TS2345: Argument of type '{}' is not assignable to parameter of type 'SetStateAction<string>'.
-src/components/trading/AutomationPanel.tsx(390,25): error TS2339: Property 'getExecutionHistory' does not exist on type '{ create: (dsl: any) => Promise<any>; getAll: () => Promise<any>; get: (id: string) => Promise<any>; update: (id: string, updates: any) => Promise<any>; ... 6 more ...; optimize: (strategyDSL: any, backtestResult: any) => Promise<...>; }'.
-src/components/trading/AutomationPanel.tsx(391,47): error TS2339: Property 'getExecutionHistory' does not exist on type '{ create: (dsl: any) => Promise<any>; getAll: () => Promise<any>; get: (id: string) => Promise<any>; update: (id: string, updates: any) => Promise<any>; ... 6 more ...; optimize: (strategyDSL: any, backtestResult: any) => Promise<...>; }'.
-src/components/trading/AutomationPanel.tsx(398,25): error TS2339: Property 'getAutomationRules' does not exist on type '{ create: (dsl: any) => Promise<any>; getAll: () => Promise<any>; get: (id: string) => Promise<any>; update: (id: string, updates: any) => Promise<any>; ... 6 more ...; optimize: (strategyDSL: any, backtestResult: any) => Promise<...>; }'.
-src/components/trading/AutomationPanel.tsx(399,48): error TS2339: Property 'getAutomationRules' does not exist on type '{ create: (dsl: any) => Promise<any>; getAll: () => Promise<any>; get: (id: string) => Promise<any>; update: (id: string, updates: any) => Promise<any>; ... 6 more ...; optimize: (strategyDSL: any, backtestResult: any) => Promise<...>; }'.
-src/components/trading/AutomationPanel.tsx(424,16): error TS2339: Property 'success' does not exist on type '{}'.
-src/components/trading/AutomationPanel.tsx(437,16): error TS2339: Property 'success' does not exist on type '{}'.
-src/components/trading/BrokerConfigSelector.tsx(86,16): error TS18046: 'err' is of type 'unknown'.
-src/components/trading/BrokerConfigSelector.tsx(117,16): error TS18046: 'err' is of type 'unknown'.
-src/components/trading/BrokerConfigSelector.tsx(152,16): error TS18046: 'err' is of type 'unknown'.
-src/components/trading/PnLPanel.tsx(46,69): error TS2365: Operator '>' cannot be applied to types '{}' and 'number'.
-src/components/trading/PnLPanel.tsx(47,70): error TS2365: Operator '<' cannot be applied to types '{}' and 'number'.
-src/components/trading/PnLPanel.tsx(49,63): error TS2365: Operator '>' cannot be applied to types '{}' and 'number'.
-src/components/trading/PnLPanel.tsx(53,19): error TS2339: Property 'message' does not exist on type '{}'.
-src/components/trading/PositionMonitor.tsx(34,20): error TS2345: Argument of type '{ code: unknown; name: unknown; qty: {}; marketPrice: {}; marketValue: {}; pnl: {}; pnlPct: {}; }[]' is not assignable to parameter of type 'SetStateAction<Position[]>'.
-  Type '{ code: unknown; name: unknown; qty: {}; marketPrice: {}; marketValue: {}; pnl: {}; pnlPct: {}; }[]' is not assignable to type 'Position[]'.
-    Type '{ code: unknown; name: unknown; qty: {}; marketPrice: {}; marketValue: {}; pnl: {}; pnlPct: {}; }' is not assignable to type 'Position'.
-      Types of property 'code' are incompatible.
-        Type 'unknown' is not assignable to type 'string'.
-src/components/trading/PositionMonitor.tsx(44,19): error TS2339: Property 'message' does not exist on type '{}'.
-src/components/trading/PositionMonitorPanel.tsx(101,22): error TS2345: Argument of type '{ id: {}; code: unknown; name: unknown; type: "long" | "short"; shares: number; avgCost: {}; currentPrice: {}; pnl: {}; pnlPct: {}; stopLoss: unknown; takeProfit: unknown; openTime: number; strategyId: unknown; }[]' is not assignable to parameter of type 'SetStateAction<Position[]>'.
-  Type '{ id: {}; code: unknown; name: unknown; type: "long" | "short"; shares: number; avgCost: {}; currentPrice: {}; pnl: {}; pnlPct: {}; stopLoss: unknown; takeProfit: unknown; openTime: number; strategyId: unknown; }[]' is not assignable to type 'Position[]'.
-    Type '{ id: {}; code: unknown; name: unknown; type: "long" | "short"; shares: number; avgCost: {}; currentPrice: {}; pnl: {}; pnlPct: {}; stopLoss: unknown; takeProfit: unknown; openTime: number; strategyId: unknown; }' is not assignable to type 'Position'.
-      Types of property 'id' are incompatible.
-        Type '{}' is not assignable to type 'string'.
-src/components/trading/PositionMonitorPanel.tsx(105,18): error TS18046: 'p.qty' is of type 'unknown'.
-src/components/trading/PositionMonitorPanel.tsx(106,28): error TS2345: Argument of type '{}' is not assignable to parameter of type 'number'.
-src/components/trading/QuickOrderPanel.tsx(28,43): error TS2339: Property 'message' does not exist on type '{}'.
-src/components/trading/TradeAlertPanel.tsx(20,19): error TS2339: Property 'id' does not exist on type '{}'.
-src/components/trading/TradeAlertPanel.tsx(21,21): error TS2339: Property 'type' does not exist on type '{}'.
-src/components/trading/TradeAlertPanel.tsx(22,23): error TS2339: Property 'symbol' does not exist on type '{}'.
-src/components/trading/TradeAlertPanel.tsx(23,24): error TS2339: Property 'message' does not exist on type '{}'.
-src/components/trading/TradeDashboardPage.tsx(150,16): error TS2339: Property 'trade' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/trading/TradeDashboardPage.tsx(152,15): error TS2339: Property 'trade' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/trading/TradeDashboardPage.tsx(153,15): error TS2339: Property 'trade' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/trading/TradeDashboardPage.tsx(154,15): error TS2339: Property 'trade' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/trading/TradeDashboardPage.tsx(155,15): error TS2339: Property 'trade' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/trading/TradeDashboardPage.tsx(156,15): error TS2339: Property 'trade' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'.
-src/components/trading/TradeExecutionPanel.tsx(128,16): error TS18046: 'e' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(13,11): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(14,11): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(14,21): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(16,12): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(17,16): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(18,11): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(19,11): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(20,10): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(21,13): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(22,15): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(23,13): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(24,16): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(25,16): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useBridgeSync.ts(26,17): error TS18046: 'q' is of type 'unknown'.
-src/hooks/useOpenDStream.ts(62,15): error TS2322: Type 'unknown' is not assignable to type 'string'.
-src/hooks/useOpenDStream.ts(63,15): error TS2322: Type 'unknown' is not assignable to type 'number'.
-src/hooks/useOpenDStream.ts(64,15): error TS2322: Type 'unknown' is not assignable to type 'number'.
-src/hooks/useOpenDStream.ts(65,15): error TS2322: Type 'unknown' is not assignable to type 'number'.
-src/hooks/useOpenDStream.ts(66,15): error TS2322: Type 'unknown' is not assignable to type 'number'.
-src/hooks/useOpenDStream.ts(135,3): error TS18046: 'ipcMain' is of type 'unknown'.
-src/hooks/useOpenDStream.ts(139,28): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'string'.
-src/hooks/useOpenDStream.ts(147,3): error TS18046: 'ipcMain' is of type 'unknown'.
-src/hooks/useOpenDStream.ts(157,3): error TS18046: 'ipcMain' is of type 'unknown'.
-src/hooks/useOpenDStream.ts(170,3): error TS18046: 'ipcMain' is of type 'unknown'.
-src/hooks/useWebSocketQuotes.ts(103,24): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'string'.
-src/lib/parallel-backtest.ts(189,34): error TS2698: Spread types may only be created from object types.
-src/lib/pdf-report.ts(45,48): error TS2345: Argument of type 'unknown' is not assignable to parameter of type '{ headers: string[]; rows: (string | number)[][]; }'.
-src/lib/pdf-report.ts(124,20): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(126,21): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(127,18): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(127,41): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(127,63): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(133,38): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(134,39): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(135,39): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(136,35): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(136,73): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(137,37): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(138,34): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(139,37): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(140,39): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(148,18): error TS18046: 'result' is of type 'unknown'.
-src/lib/pdf-report.ts(149,34): error TS18046: 't.entryPrice' is of type 'unknown'.
-src/lib/pdf-report.ts(149,71): error TS18046: 't.exitPrice' is of type 'unknown'.
-src/lib/pdf-report.ts(150,16): error TS18046: 't.pnl' is of type 'unknown'.
-src/lib/pdf-report.ts(150,40): error TS18046: 't.pnl' is of type 'unknown'.
-src/lib/pdf-report.ts(151,17): error TS18046: 't.pnlPercent' is of type 'unknown'.
-src/opend/opend-client.ts(63,19): error TS2345: Argument of type '{}' is not assignable to parameter of type 'any[] | PromiseLike<any[]>'.
-src/stores/appStore.ts(23,36): error TS2339: Property 'strategies' does not exist on type '{}'.
-src/utils/type-safe.ts(50,17): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
-  No index signature with a parameter of type 'string' was found on type '{}'.
-src/utils/type-safe.ts(52,5): error TS2322: Type '{} | T' is not assignable to type 'T'.
-  'T' could be instantiated with an arbitrary type which could be unrelated to '{} | T'.
+﻿src/components/live/LiveMonitorPage.tsx(6,15): error TS1005: ';' expected.
+src/components/live/LiveMonitorPage.tsx(6,24): error TS1134: Variable declaration expected.
+src/components/live/LiveMonitorPage.tsx(10,1): error TS1128: Declaration or statement expected.
+src/components/NotificationToast.tsx(37,100): error TS1005: ':' expected.
+src/components/NotificationToast.tsx(37,117): error TS1127: Invalid character.
+src/components/NotificationToast.tsx(37,120): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(37,125): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(40,28): error TS1127: Invalid character.
+src/components/NotificationToast.tsx(40,30): error TS1127: Invalid character.
+src/components/NotificationToast.tsx(40,36): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(40,39): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(40,44): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(43,28): error TS1127: Invalid character.
+src/components/NotificationToast.tsx(43,34): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(43,35): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(43,40): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(43,49): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(43,52): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(43,57): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(43,64): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(43,65): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(43,70): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(43,77): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(43,78): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(43,83): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(80,23): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(80,30): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(80,41): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(80,46): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(80,51): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(80,68): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(80,78): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(80,92): error TS1109: Expression expected.
+src/components/NotificationToast.tsx(80,96): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(80,103): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(80,111): error TS1005: ':' expected.
+src/components/NotificationToast.tsx(84,31): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(84,39): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(84,46): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(84,47): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(84,58): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(84,66): error TS1005: ':' expected.
+src/components/NotificationToast.tsx(94,9): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(94,19): error TS1109: Expression expected.
+src/components/NotificationToast.tsx(94,20): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(94,28): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(95,16): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(95,28): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(95,54): error TS1351: An identifier or keyword cannot immediately follow a numeric literal.
+src/components/NotificationToast.tsx(95,57): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(96,11): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(96,14): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(96,26): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(96,52): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(97,9): error TS1005: ',' expected.
+src/components/NotificationToast.tsx(102,1): error TS1160: Unterminated template literal.
+src/components/risk/NotificationCenter.tsx(8,16): error TS1005: ';' expected.
+src/components/risk/NotificationCenter.tsx(8,25): error TS1134: Variable declaration expected.
+src/components/risk/NotificationCenter.tsx(14,1): error TS1128: Declaration or statement expected.

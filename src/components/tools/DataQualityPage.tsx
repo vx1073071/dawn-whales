@@ -594,9 +594,9 @@ const DataQualityPage: React.FC = () => {
         const watchlist = await window.api?.db?.getWatchlist?.();
         if (watchlist && Array.isArray(watchlist) && watchlist.length > 0) {
           const syms = watchlist.map((w: Record<string, unknown>) => w.symbol || w).filter(Boolean);
-          setSymbols(syms);
+          setSymbols(syms as any);
           if (syms.length > 0 && !selectedSymbol) {
-            setSelectedSymbol(syms[0]);
+            setSelectedSymbol(syms[0] as any);
           }
         } else {
           const defaults = ['AAPL', 'MSFT', 'GOOGL', 'TSLA', 'NVDA'];

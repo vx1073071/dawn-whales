@@ -274,14 +274,14 @@ export default function BacktestReportPage() {
         <div className="bg-[#12121a] rounded-xl border border-white/5 p-6">
           <div className="text-lg font-medium text-white mb-4">{t('选择策略进行回测')}</div>
           <div className="grid grid-cols-2 gap-3">
-            {strategies.map((s: Record<string, unknown>) => (
+            {strategies.map((s: any) => (
               <button
-                key={s.id}
-                onClick={() => setSelectedId(s.id)}
+                key = {s.id} as any
+                onClick={() => setSelectedId(s.id as any)}
                 className="p-4 rounded-xl border border-white/5 bg-[#1a1a25] hover:border-amber-500/30 text-left transition-colors"
               >
-                <div className="text-white font-medium mb-1">{s.name}</div>
-                <div className="text-xs text-gray-500">{s.targetCode} · {s.strategyType}</div>
+                <div className = "text-white font-medium mb-1">{String(s.name)}</div> as any
+                <div className = "text-xs text-gray-500">{s.targetCode} · {s.strategyType}</div> as any
               </button>
             ))}
           </div>
@@ -413,7 +413,7 @@ export default function BacktestReportPage() {
                     onClick={async () => {
                       try {
                         const taskName = `Auto-${result.strategyName || result.targetCode}`;
-                        const resp = await window.api?.cron?.schedule({
+                        const resp = await (window.api as any)?.cron?.schedule({
                           name: taskName,
                           strategyId: result.strategyId,
                           schedule: { type: 'cron', expression: '0 21 * * 1-5' },
@@ -544,10 +544,10 @@ export default function BacktestReportPage() {
               </div>
 
               {/* Param Scan */}
-              <ParamScanPanel result={paramScanResult} loading={paramScanLoading} />
+              <ParamScanPanel result = {paramScanResult} loading={paramScanLoading} /> as any
 
               {/* Walk-Forward */}
-              <WalkForwardPanel result={wfaResult} loading={wfaLoading} />
+              <WalkForwardPanel result = {wfaResult} loading={wfaLoading} /> as any
             </div>
           )}
         </>

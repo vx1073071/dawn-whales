@@ -149,11 +149,11 @@ export default function TradeDashboardPage() {
 
       if (api?.trade) {
         const [posResult, ordersResult, statsResult, dailyResult, modeResult] = await Promise.all([
-          api.trade.getPositions?.().catch(() => null),
-          api.trade.getOrders?.().catch(() => null),
-          api.trade.getStats?.().catch(() => null),
-          api.trade.getDailyPnL?.().catch(() => null),
-          api.trade.getExecutionMode?.().catch(() => 'paper'),
+          (api as any).trade.getPositions?.().catch(() => null),
+          (api as any).trade.getOrders?.().catch(() => null),
+          (api as any).trade.getStats?.().catch(() => null),
+          (api as any).trade.getDailyPnL?.().catch(() => null),
+          (api as any).trade.getExecutionMode?.().catch(() => 'paper'),
         ]);
 
         if (posResult?.success) setPositions(posResult.data ?? []);

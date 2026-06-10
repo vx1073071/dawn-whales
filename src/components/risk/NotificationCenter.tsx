@@ -49,12 +49,12 @@ export default function NotificationCenter({
       const handler = (data: Record<string, unknown>) => {
         const newItem: NotificationItem = {
           id: `notif-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-          type: data.type || 'system',
-          title: data.title || t('components.notification'),
-          message: data.message || '',
+          type: (data.type as NotificationItem['type']) || 'system',
+          title: String(data.title || t('components.notification')),
+          message: String(data.message || ''),
           timestamp: Date.now(),
           read: false,
-          severity: data.severity || 'info',
+          severity: (data.severity as NotificationItem['severity']) || 'info',
         };
         setItems((prev) => [newItem, ...prev].slice(0, 100));
       };

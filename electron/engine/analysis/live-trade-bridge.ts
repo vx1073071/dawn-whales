@@ -14,6 +14,7 @@
  */
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -330,7 +331,7 @@ export class LiveTradeBridge {
       auditEntries: [],
     };
     this.orders.set(order.id, bridgeOrder);
-    this.addAudit(bridgeOrder, 'order_received', `收到模拟盘订单: ${order.side} ${order.quantity} ${order.symbol}`);
+    this.addAudit(bridgeOrder, 'order_received', i18n.t('liveTradeBridge.k1'));
     this.emit('order:received', bridgeOrder);
 
     // ── 风控校验 ──
@@ -340,7 +341,7 @@ export class LiveTradeBridge {
         bridgeOrder.status = 'rejected';
         bridgeOrder.riskPassed = false;
         bridgeOrder.riskReason = riskResult.reason;
-        this.addAudit(bridgeOrder, 'risk_check_failed', `风控拒绝: ${riskResult.reason}`);
+        this.addAudit(bridgeOrder, 'risk_check_failed', i18n.t('liveTradeBridge.k2'));
         this.emit('order:risk_failed', bridgeOrder);
         log.warn('[LiveTradeBridge] Order rejected by risk', { orderId: order.id, reason: riskResult.reason });
         return bridgeOrder;
@@ -351,7 +352,7 @@ export class LiveTradeBridge {
     }
 
     bridgeOrder.riskPassed = true;
-    this.addAudit(bridgeOrder, 'risk_check_passed', '风控校验通过');
+    this.addAudit(bridgeOrder, 'risk_check_passed', i18n.t('liveTradeBridge.k3'));
     this.emit('order:risk_passed', bridgeOrder);
 
     // ── 执行订单 ──
@@ -361,7 +362,7 @@ export class LiveTradeBridge {
       if (order.type === 'MARKET') {
         bridgeOrder.status = 'filled';
         bridgeOrder.liveOrder = this.createDryRunLiveOrder(order);
-        this.addAudit(bridgeOrder, 'dry_run_skipped', 'Dry-run 模式，跳过实盘提交');
+        this.addAudit(bridgeOrder, 'dry_run_skipped', i18n.t('liveTradeBridge.k4'));
         this.handleOrderFilled(bridgeOrder, bridgeOrder.liveOrder);
         this.dailyStats.orderCount++;
         log.info('[LiveTradeBridge] Dry-run order completed', { orderId: order.id });
@@ -370,7 +371,7 @@ export class LiveTradeBridge {
         bridgeOrder.status = 'pending';
         bridgeOrder.liveOrder = this.createDryRunLiveOrder(order);
         bridgeOrder.liveOrder.status = 'pending';
-        this.addAudit(bridgeOrder, 'dry_run_skipped', 'Dry-run 模式，LIMIT/STOP 订单保持 pending');
+        this.addAudit(bridgeOrder, 'dry_run_skipped', i18n.t('liveTradeBridge.k5'));
         this.dailyStats.orderCount++;
         log.info('[LiveTradeBridge] Dry-run LIMIT/STOP order pending', { orderId: order.id });
       }
@@ -380,7 +381,7 @@ export class LiveTradeBridge {
     if (!this.broker) {
       bridgeOrder.status = 'failed';
       bridgeOrder.riskReason = 'No broker adapter configured';
-      this.addAudit(bridgeOrder, 'order_failed', '未配置券商适配器');
+      this.addAudit(bridgeOrder, 'order_failed', i18n.t('liveTradeBridge.k6'));
       this.emit('order:failed', bridgeOrder);
       return bridgeOrder;
     }
@@ -390,7 +391,7 @@ export class LiveTradeBridge {
       const liveOrder = await this.broker.submitOrder(order);
       bridgeOrder.liveOrder = liveOrder;
       bridgeOrder.status = liveOrder.status;
-      this.addAudit(bridgeOrder, 'order_submitted', `订单已提交至券商: ${liveOrder.brokerOrderId}`);
+      this.addAudit(bridgeOrder, 'order_submitted', i18n.t('liveTradeBridge.k7'));
       this.emit('order:submitted', bridgeOrder);
 
       // 处理即时成交 / 部分成交
@@ -400,12 +401,12 @@ export class LiveTradeBridge {
         this.handlePartialFill(bridgeOrder, liveOrder);
       } else if (liveOrder.status === 'rejected') {
         bridgeOrder.status = 'rejected';
-        this.addAudit(bridgeOrder, 'order_rejected', `券商拒绝: ${liveOrder.error || 'unknown'}`);
+        this.addAudit(bridgeOrder, 'order_rejectedi18n.t('liveTradeBridge.k8')unknown'}`);
         this.emit('order:rejected', bridgeOrder);
       }
     } catch (err: unknown) {
       bridgeOrder.status = 'failed';
-      this.addAudit(bridgeOrder, 'order_failed', `提交异常: ${err.message}`);
+      this.addAudit(bridgeOrder, 'order_failed', i18n.t('liveTradeBridge.k9'));
       this.emit('order:failed', bridgeOrder);
       this.emit('bridge:error', err);
       log.error('[LiveTradeBridge] Order submission failed', err);
@@ -436,13 +437,13 @@ export class LiveTradeBridge {
         await this.broker.cancelOrder(bridgeOrder.liveOrder.brokerOrderId);
       } catch (err: unknown) {
         log.error('[LiveTradeBridge] Cancel live order failed', err);
-        this.addAudit(bridgeOrder, 'order_failed', `实盘取消失败: ${err.message}`);
+        this.addAudit(bridgeOrder, 'order_failed', i18n.t('liveTradeBridge.k10'));
         return false;
       }
     }
 
     bridgeOrder.status = 'cancelled';
-    this.addAudit(bridgeOrder, 'order_cancelled', '订单已取消');
+    this.addAudit(bridgeOrder, 'order_cancelled', i18n.t('liveTradeBridge.k11'));
     this.emit('order:cancelled', bridgeOrder);
     return true;
   }
@@ -456,7 +457,7 @@ export class LiveTradeBridge {
     this.addAudit(
       bridgeOrder,
       'order_partial_fill',
-      `部分成交: ${liveOrder.filledQuantity}/${liveOrder.quantity} @ ${liveOrder.averageFillPrice}`,
+      i18n.t('liveTradeBridge.k12'),
     );
     this.emit('order:partial_fill', bridgeOrder);
   }
@@ -489,7 +490,7 @@ export class LiveTradeBridge {
     this.addAudit(
       bridgeOrder,
       'order_filled',
-      `完全成交: ${liveOrder.filledQuantity} @ ${liveOrder.averageFillPrice}`,
+      i18n.t('liveTradeBridge.k13'),
     );
     this.emit('order:filled', bridgeOrder);
   }
@@ -504,18 +505,18 @@ export class LiveTradeBridge {
 
     // 检查每日订单上限
     if (this.dailyStats.orderCount >= this.config.maxDailyOrders) {
-      return { pass: false, reason: `达到每日订单上限 (${this.config.maxDailyOrders})` };
+      return { pass: false, reason: i18n.t('liveTradeBridge.k14') };
     }
 
     // 检查最小下单间隔 (使用订单时间戳而非当前时间，并排除当前订单)
     if (ctx.lastOrderTimestamp && order.timestamp - ctx.lastOrderTimestamp < this.config.minOrderIntervalMs) {
-      return { pass: false, reason: `下单间隔过短 (< ${this.config.minOrderIntervalMs}ms)` };
+      return { pass: false, reason: i18n.t('liveTradeBridge.k15') };
     }
 
     // 检查单笔最大金额
     const orderValue = order.quantity * (order.price || 0);
     if (orderValue > this.config.maxOrderValue) {
-      return { pass: false, reason: `单笔金额 ${orderValue} 超过上限 ${this.config.maxOrderValue}` };
+      return { pass: false, reason: i18n.t('liveTradeBridge.k16') };
     }
 
     // 逐一检查自定义风控规则
@@ -867,7 +868,7 @@ export class LiveTradeBridge {
     // 规则 1: 单品种持仓集中度
     this.riskRules.push({
       id: 'concentration',
-      name: '单品种持仓集中度',
+      name: i18n.t('liveTradeBridge.k17'),
       enabled: true,
       check: (order: PaperOrder, ctx: RiskContext) => {
         if (order.side !== 'BUY') return { pass: true };
@@ -880,7 +881,7 @@ export class LiveTradeBridge {
         const equityBaseline = ctx.accountEquity > 0 ? ctx.accountEquity : 1_000_000;
         const pct = newValue / equityBaseline;
         if (pct > this.config.maxSinglePositionPct) {
-          return { pass: false, reason: `买入后 ${order.symbol} 占比 ${(pct * 100).toFixed(1)}% 超过上限 ${(this.config.maxSinglePositionPct * 100).toFixed(0)}%` };
+          return { pass: false, reason: i18n.t('liveTradeBridge.k18') };
         }
         return { pass: true };
       },
@@ -889,11 +890,11 @@ export class LiveTradeBridge {
     // 规则 2: 日内亏损限制
     this.riskRules.push({
       id: 'daily_loss',
-      name: '日内亏损限制',
+      name: i18n.t('liveTradeBridge.k19'),
       enabled: true,
       check: (_order: PaperOrder, ctx: RiskContext) => {
         if (ctx.dailyPnl < 0 && Math.abs(ctx.dailyPnl) > ctx.accountEquity * 0.05) {
-          return { pass: false, reason: `日内亏损 ${ctx.dailyPnl.toFixed(2)} 超过 5% 限制` };
+          return { pass: false, reason: i18n.t('liveTradeBridge.k20') };
         }
         return { pass: true };
       },
@@ -902,11 +903,11 @@ export class LiveTradeBridge {
     // 规则 3: 最小下单量
     this.riskRules.push({
       id: 'min_qty',
-      name: '最小下单量',
+      name: i18n.t('liveTradeBridge.k21'),
       enabled: true,
       check: (order: PaperOrder) => {
         if (order.quantity < 1) {
-          return { pass: false, reason: `下单数量 ${order.quantity} 小于最小值 1` };
+          return { pass: false, reason: i18n.t('liveTradeBridge.k22') };
         }
         return { pass: true };
       },

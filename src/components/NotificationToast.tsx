@@ -31,10 +31,10 @@ export default function NotificationToast() {
     // Listen for IPC notifications
     if (typeof window !== 'undefined' && window.api?.on) {
       window.api.on('notification', (data: Record<string, unknown>) => {
-        notify(data.type || 'info', data.message || '');
+        notify((data.type as Toast['type']) || 'info', data.message || '');
       });
       window.api.on('strategy-signal', (data: Record<string, unknown>) => {
-        notify('info', `📡 ${data.strategyName}: ${data.signal} ${data.symbol} @ $${data.price?.toFixed(2)} — ${data.reason}`);
+        notify('info', `📡 ${data.strategyName}: ${data.signal} ${data.symbol} @ $${Number(data.price).toFixed(2)} — ${data.reason}`);
       });
       window.api.on('risk-alert', (data: Record<string, unknown>) => {
         notify('warning', `🛡️ 风控拦截: ${data.reason || '未知原因'}`);

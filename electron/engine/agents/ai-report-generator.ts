@@ -6,6 +6,7 @@ import { EngineError, ErrorCode } from '../../errors';
 
 import log from 'electron-log';
 import type { BacktestResult } from '../backtest/backtest-engine';
+import i18n from '../../../src/i18n';
 
 export interface ReportSection {
   heading: string;
@@ -43,12 +44,12 @@ function extractMetrics(result: BacktestResult) {
 function strategyTypeLabel(config: BacktestResult['result']['config']): string {
   const t = config?.strategy?.type ?? 'unknown';
   const labels: Record<string, string> = {
-    ma_cross: '均线交叉 (MA Cross)',
-    rsi: 'RSI 超买超卖',
-    macd: 'MACD 金叉死叉',
-    momentum: '动量突破',
-    bollinger: '布林带突破',
-    custom: '自定义策略',
+    ma_cross: i18n.t('aiReportGenerator.k1'),
+    rsi: i18n.t('aiReportGenerator.k2'),
+    macd: i18n.t('aiReportGenerator.k3'),
+    momentum: i18n.t('aiReportGenerator.k4'),
+    bollinger: i18n.t('aiReportGenerator.k5'),
+    custom: i18n.t('aiReportGenerator.k6'),
   };
   return labels[t] ?? t;
 }

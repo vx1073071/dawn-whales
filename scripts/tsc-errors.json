@@ -1,2669 +1,415 @@
 [
   {
-    "file": "src/components/backtest/BacktestComparisonPage.tsx",
-    "line": 194,
-    "col": 64,
-    "code": "18046",
-    "message": "'p.data' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/backtest/BacktestComparisonPage.tsx",
-    "line": 194,
-    "col": 122,
-    "code": "18046",
-    "message": "'p.data' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/backtest/BacktestComparisonPage.tsx",
-    "line": 194,
-    "col": 137,
-    "code": "18046",
-    "message": "'p.data' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/backtest/BacktestComparisonPage.tsx",
-    "line": 211,
-    "col": 108,
-    "code": "18046",
-    "message": "'p.data' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/backtest/BacktestComparisonPage.tsx",
-    "line": 327,
-    "col": 44,
-    "code": "2349",
-    "message": "This expression is not callable."
-  },
-  {
-    "file": "src/components/backtest/BacktestReportPage.tsx",
-    "line": 277,
-    "col": 29,
-    "code": "2345",
-    "message": "Argument of type '(s: Record<string, unknown>) => JSX.Element' is not assignable to parameter of type '(value: unknown, index: number, array: unknown[]) => Element'."
-  },
-  {
-    "file": "src/components/backtest/BacktestReportPage.tsx",
-    "line": 279,
-    "col": 17,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'Key | null | undefined'."
-  },
-  {
-    "file": "src/components/backtest/BacktestReportPage.tsx",
-    "line": 280,
-    "col": 46,
-    "code": "2345",
-    "message": "Argument of type 'unknown' is not assignable to parameter of type 'SetStateAction<string | null>'."
-  },
-  {
-    "file": "src/components/backtest/BacktestReportPage.tsx",
-    "line": 283,
-    "col": 62,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'ReactI18NextChildren | Iterable<ReactI18NextChildren>'."
-  },
-  {
-    "file": "src/components/backtest/BacktestReportPage.tsx",
-    "line": 284,
-    "col": 56,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined'."
-  },
-  {
-    "file": "src/components/backtest/BacktestReportPage.tsx",
-    "line": 284,
-    "col": 73,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined'."
-  },
-  {
-    "file": "src/components/backtest/BacktestReportPage.tsx",
-    "line": 301,
-    "col": 67,
-    "code": "18046",
-    "message": "'s' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/backtest/BacktestReportPage.tsx",
-    "line": 301,
-    "col": 89,
-    "code": "2339",
-    "message": "Property 'name' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/backtest/BacktestReportPage.tsx",
-    "line": 416,
-    "col": 56,
-    "code": "2339",
-    "message": "Property 'cron' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/backtest/BacktestReportPage.tsx",
-    "line": 547,
-    "col": 31,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type '{ success: boolean; results?: ParamResult[] | undefined; config?: ParamSweepConfig | undefined; } | null | undefined'."
-  },
-  {
-    "file": "src/components/backtest/BacktestReportPage.tsx",
-    "line": 550,
-    "col": 33,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'WFAReport | undefined'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 445,
-    "col": 14,
-    "code": "2339",
-    "message": "Property 'monteCarlo' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 455,
-    "col": 11,
-    "code": "2339",
-    "message": "Property 'monteCarlo' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 457,
-    "col": 20,
-    "code": "2339",
-    "message": "Property 'success' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 457,
-    "col": 35,
-    "code": "2339",
-    "message": "Property 'result' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 458,
-    "col": 27,
-    "code": "2339",
-    "message": "Property 'result' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 544,
-    "col": 32,
-    "code": "2345",
-    "message": "Argument of type 'object' is not assignable to parameter of type 'SetStateAction<Record<string, unknown> | null>'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 742,
-    "col": 32,
-    "code": "2362",
-    "message": "The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 743,
-    "col": 30,
-    "code": "2365",
-    "message": "Operator '>' cannot be applied to types '{}' and 'number'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 750,
-    "col": 32,
-    "code": "2362",
-    "message": "The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 758,
-    "col": 32,
-    "code": "2362",
-    "message": "The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 766,
-    "col": 58,
-    "code": "2339",
-    "message": "Property 'toFixed' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 767,
-    "col": 30,
-    "code": "2365",
-    "message": "Operator '>' cannot be applied to types '{}' and 'number'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 774,
-    "col": 59,
-    "code": "2339",
-    "message": "Property 'toFixed' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 775,
-    "col": 30,
-    "code": "2365",
-    "message": "Operator '>' cannot be applied to types '{}' and 'number'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 782,
-    "col": 63,
-    "code": "2339",
-    "message": "Property 'toFixed' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 789,
-    "col": 57,
-    "code": "2339",
-    "message": "Property 'toFixed' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 790,
-    "col": 30,
-    "code": "2365",
-    "message": "Operator '>' cannot be applied to types '{}' and 'number'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 797,
-    "col": 56,
-    "code": "2339",
-    "message": "Property 'toFixed' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 804,
-    "col": 55,
-    "code": "2339",
-    "message": "Property 'toFixed' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 805,
-    "col": 26,
-    "code": "2365",
-    "message": "Operator '>' cannot be applied to types '{}' and 'number'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 811,
-    "col": 55,
-    "code": "2339",
-    "message": "Property 'toFixed' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/backtest/MonteCarloPage.tsx",
-    "line": 812,
-    "col": 26,
-    "code": "2365",
-    "message": "Operator '>' cannot be applied to types '{}' and 'number'."
-  },
-  {
-    "file": "src/components/billing/ai/AIBillingPanel.tsx",
-    "line": 17,
-    "col": 23,
-    "code": "2307",
-    "message": "Cannot find module '../../i18n/locales/billing-en.json' or its corresponding type declarations."
-  },
-  {
-    "file": "src/components/billing/ai/AIBillingPanel.tsx",
-    "line": 86,
-    "col": 22,
-    "code": "2345",
-    "message": "Argument of type 'string | number | symbol' is not assignable to parameter of type 'string'."
-  },
-  {
-    "file": "src/components/billing/ai/AIBillingPanel.tsx",
-    "line": 266,
-    "col": 40,
-    "code": "2345",
-    "message": "Argument of type '[string | number | symbol]' is not assignable to parameter of type '[key: string | string[], options: TOptionsBase & $Dictionary & { defaultValue: string; }] | [key: string | string[], defaultValue: string, options?: (TOptionsBase & $Dictionary) | undefined] | [key: ...]'."
-  },
-  {
-    "file": "src/components/dashboard/DashboardPage.tsx",
-    "line": 140,
-    "col": 24,
-    "code": "2345",
-    "message": "Argument of type '{ code: unknown; name: unknown; qty: unknown; marketPrice: {}; marketValue: {}; pnl: {}; pnlPct: {}; ratio: number; }[]' is not assignable to parameter of type 'SetStateAction<PositionCard[]>'."
-  },
-  {
-    "file": "src/components/dashboard/DashboardPage.tsx",
-    "line": 148,
-    "col": 34,
-    "code": "2362",
-    "message": "The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type."
-  },
-  {
-    "file": "src/components/dashboard/DashboardPage.tsx",
-    "line": 156,
-    "col": 11,
-    "code": "2345",
-    "message": "Argument of type '{ id: unknown; name: {}; status: \"running\"; totalReturn: {}; signals: {}; }[]' is not assignable to parameter of type 'SetStateAction<StrategyStatus[]>'."
-  },
-  {
-    "file": "src/components/layout/StatusBar.tsx",
-    "line": 18,
-    "col": 21,
-    "code": "2339",
-    "message": "Property 'total' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/layout/StatusBar.tsx",
-    "line": 18,
-    "col": 40,
-    "code": "2339",
-    "message": "Property 'total' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/live/GreeksPanel.tsx",
-    "line": 50,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
     "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 55,
-    "col": 9,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type 'string'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 56,
-    "col": 9,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type 'number'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 57,
-    "col": 9,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type 'number'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 58,
-    "col": 9,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type 'number'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 59,
-    "col": 9,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type 'number'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 62,
-    "col": 29,
-    "code": "2345",
-    "message": "Argument of type '{}' is not assignable to parameter of type 'string'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 64,
-    "col": 20,
-    "code": "2345",
-    "message": "Argument of type '{}' is not assignable to parameter of type 'number'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 70,
-    "col": 11,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type 'string'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 71,
-    "col": 36,
-    "code": "18046",
-    "message": "'q.changePct' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 71,
-    "col": 84,
-    "code": "2339",
-    "message": "Property 'toFixed' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 83,
-    "col": 7,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type '\"BUY\" | \"SELL\" | \"STOP_LOSS\" | \"TAKE_PROFIT\" | \"ALERT\" | \"ERROR\"'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 84,
-    "col": 7,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type 'string'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 85,
-    "col": 7,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type 'string'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 86,
-    "col": 7,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type 'string'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 127,
-    "col": 13,
-    "code": "2322",
-    "message": "Type '{ id: unknown; name: unknown; code: {}; type: {}; status: \"running\" | \"stopped\"; signals: {}; trades: {}; pnl: {}; startTime: {}; lastSignal: {}; }[]' is not assignable to type 'LiveStrategy[]'."
-  },
-  {
-    "file": "src/components/live/LiveMonitorPage.tsx",
-    "line": 245,
-    "col": 65,
-    "code": "18046",
-    "message": "'a' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/CapitalFlowPage.tsx",
-    "line": 43,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/CapitalFlowPage.tsx",
-    "line": 78,
-    "col": 7,
-    "code": "2322",
-    "message": "Type '{ type: \"bar\"; data: { value: number; itemStyle: { color: string; }; }[]; barWidth: number; label: { show: true; position: \"right\"; formatter: (p: Record<string, unknown>) => string; color: string; fontSize: number; }; }[]' is not assignable to type 'SeriesOption$1 | SeriesOption$1[] | undefined'."
-  },
-  {
-    "file": "src/components/market/CapitalFlowPage.tsx",
-    "line": 88,
-    "col": 58,
-    "code": "18046",
-    "message": "'p.value' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/ConsumerDashboard.tsx",
-    "line": 65,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/DailyReportPage.tsx",
-    "line": 55,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/DragonTigerPage.tsx",
-    "line": 48,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/DragonTigerPage.tsx",
-    "line": 61,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/DragonTigerPage.tsx",
-    "line": 78,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/FundHoldingsPage.tsx",
-    "line": 54,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/FundHoldingsPage.tsx",
-    "line": 69,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/FundHoldingsPage.tsx",
-    "line": 86,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/KLineChart.tsx",
-    "line": 28,
-    "col": 22,
-    "code": "2345",
-    "message": "Argument of type 'unknown' is not assignable to parameter of type 'number'."
-  },
-  {
-    "file": "src/components/market/KLineChart.tsx",
-    "line": 29,
-    "col": 21,
-    "code": "2345",
-    "message": "Argument of type 'unknown' is not assignable to parameter of type 'number'."
-  },
-  {
-    "file": "src/components/market/MarginDashboard.tsx",
-    "line": 47,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/MarketPage.tsx",
-    "line": 70,
-    "col": 9,
-    "code": "2698",
-    "message": "Spread types may only be created from object types."
-  },
-  {
-    "file": "src/components/market/MarketPage.tsx",
-    "line": 95,
-    "col": 75,
-    "code": "2769",
-    "message": "No overload matches this call."
-  },
-  {
-    "file": "src/components/market/MarketPage.tsx",
-    "line": 219,
-    "col": 36,
-    "code": "2339",
-    "message": "Property 'change' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/market/MarketPage.tsx",
-    "line": 219,
-    "col": 77,
-    "code": "2339",
-    "message": "Property 'change' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/market/MarketPage.tsx",
-    "line": 222,
-    "col": 24,
-    "code": "2339",
-    "message": "Property 'price' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/market/MarketPage.tsx",
-    "line": 222,
-    "col": 45,
-    "code": "2339",
-    "message": "Property 'change' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/market/MarketPage.tsx",
-    "line": 222,
-    "col": 70,
-    "code": "2339",
-    "message": "Property 'changePct' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/market/MarketPage.tsx",
-    "line": 243,
-    "col": 25,
-    "code": "2322",
-    "message": "Type 'unknown[]' is not assignable to type '{ time: number; open: number; high: number; low: number; close: number; volume?: number | undefined; }[]'."
-  },
-  {
-    "file": "src/components/market/NewsDashboardPage.tsx",
-    "line": 52,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/NewsDashboardPage.tsx",
-    "line": 77,
-    "col": 7,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined'."
-  },
-  {
-    "file": "src/components/market/NewsDashboardPage.tsx",
-    "line": 96,
-    "col": 55,
-    "code": "2339",
-    "message": "Property 'overall' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/market/NewsDashboardPage.tsx",
-    "line": 96,
-    "col": 102,
-    "code": "2339",
-    "message": "Property 'overall' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/market/NewsDashboardPage.tsx",
-    "line": 97,
-    "col": 21,
-    "code": "2339",
-    "message": "Property 'overall' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/market/NewsDashboardPage.tsx",
-    "line": 97,
-    "col": 58,
-    "code": "2339",
-    "message": "Property 'overall' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/market/NewsDashboardPage.tsx",
-    "line": 102,
-    "col": 65,
-    "code": "2339",
-    "message": "Property 'score' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/market/NewsDashboardPage.tsx",
-    "line": 106,
-    "col": 65,
-    "code": "2339",
-    "message": "Property 'articleCount' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/market/NewsDashboardPage.tsx",
-    "line": 110,
-    "col": 80,
-    "code": "2339",
-    "message": "Property 'topTopic' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/market/RealTimeMarketDashboard.tsx",
-    "line": 110,
+    "line": 6,
     "col": 15,
-    "code": "2538",
-    "message": "Type 'unknown' cannot be used as an index type."
+    "code": "1005",
+    "message": "';' expected."
   },
   {
-    "file": "src/components/market/RealTimeMarketDashboard.tsx",
-    "line": 119,
-    "col": 27,
-    "code": "18046",
-    "message": "'q.price' is of type 'unknown'."
+    "file": "src/components/live/LiveMonitorPage.tsx",
+    "line": 6,
+    "col": 24,
+    "code": "1134",
+    "message": "Variable declaration expected."
   },
   {
-    "file": "src/components/market/RealTimeMarketDashboard.tsx",
-    "line": 120,
-    "col": 27,
-    "code": "18046",
-    "message": "'q.price' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/RealTimeMarketDashboard.tsx",
-    "line": 127,
-    "col": 42,
-    "code": "2345",
-    "message": "Argument of type 'unknown' is not assignable to parameter of type 'number'."
-  },
-  {
-    "file": "src/components/market/SectorRotationPage.tsx",
-    "line": 45,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/StockOverviewPage.tsx",
-    "line": 48,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/market/StockScreenerPage.tsx",
-    "line": 70,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/NotificationToast.tsx",
-    "line": 34,
-    "col": 16,
-    "code": "2345",
-    "message": "Argument of type '{}' is not assignable to parameter of type '\"error\" | \"success\" | \"warning\" | \"info\"'."
+    "file": "src/components/live/LiveMonitorPage.tsx",
+    "line": 10,
+    "col": 1,
+    "code": "1128",
+    "message": "Declaration or statement expected."
   },
   {
     "file": "src/components/NotificationToast.tsx",
     "line": 37,
-    "col": 97,
-    "code": "2339",
-    "message": "Property 'toFixed' does not exist on type '{}'."
+    "col": 100,
+    "code": "1005",
+    "message": "':' expected."
   },
   {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 227,
-    "col": 80,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
+    "file": "src/components/NotificationToast.tsx",
+    "line": 37,
+    "col": 117,
+    "code": "1127",
+    "message": "Invalid character."
   },
   {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 228,
-    "col": 79,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 230,
-    "col": 83,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 231,
-    "col": 26,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 234,
-    "col": 91,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 235,
-    "col": 92,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 236,
-    "col": 79,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 237,
-    "col": 24,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 237,
-    "col": 35,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 237,
-    "col": 60,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 240,
-    "col": 84,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 241,
-    "col": 39,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 241,
-    "col": 52,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/OrdersPage.tsx",
-    "line": 244,
-    "col": 93,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 154,
-    "col": 35,
-    "code": "18046",
-    "message": "'err' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 368,
-    "col": 22,
-    "code": "2345",
-    "message": "Argument of type '{ code: unknown; name: unknown; qty: {}; avgCost: {}; marketPrice: unknown; marketVal: {}; pnl: {}; pnlPct: {}; unrealizedPnl: unknown; }[]' is not assignable to parameter of type 'SetStateAction<Position[]>'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 720,
-    "col": 80,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 721,
-    "col": 79,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 723,
-    "col": 83,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 724,
-    "col": 26,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 727,
-    "col": 77,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 728,
-    "col": 92,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 729,
-    "col": 79,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 730,
-    "col": 24,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 730,
-    "col": 35,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 730,
-    "col": 60,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 733,
-    "col": 84,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 734,
-    "col": 39,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 734,
-    "col": 52,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/orders/TradingDeskPage.tsx",
-    "line": 737,
-    "col": 93,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioPage.tsx",
-    "line": 55,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioPage.tsx",
-    "line": 65,
-    "col": 56,
-    "code": "18046",
-    "message": "'p' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioPage.tsx",
-    "line": 67,
-    "col": 5,
-    "code": "2698",
-    "message": "Spread types may only be created from object types."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioPage.tsx",
-    "line": 68,
-    "col": 10,
-    "code": "18046",
-    "message": "'totalVal' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioPage.tsx",
-    "line": 68,
-    "col": 27,
-    "code": "18046",
-    "message": "'p' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioPage.tsx",
-    "line": 68,
-    "col": 47,
-    "code": "18046",
-    "message": "'totalVal' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioPage.tsx",
-    "line": 137,
-    "col": 41,
-    "code": "18046",
-    "message": "'totalVal' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioPage.tsx",
-    "line": 139,
-    "col": 51,
-    "code": "18046",
-    "message": "'totalVal' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioPage.tsx",
-    "line": 141,
-    "col": 47,
-    "code": "18046",
-    "message": "'totalVal' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioRebalancerPage.tsx",
-    "line": 27,
-    "col": 111,
-    "code": "2322",
-    "message": "Type '\"澧炴寔\"' is not assignable to type '\"delete\" | \"increaseHolding\" | \"decreaseHolding\" | \"newlyAdded\"'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioRebalancerPage.tsx",
-    "line": 28,
-    "col": 110,
-    "code": "2322",
-    "message": "Type '\"澧炴寔\"' is not assignable to type '\"delete\" | \"increaseHolding\" | \"decreaseHolding\" | \"newlyAdded\"'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioRebalancerPage.tsx",
-    "line": 29,
-    "col": 109,
-    "code": "2322",
-    "message": "Type '\"澧炴寔\"' is not assignable to type '\"delete\" | \"increaseHolding\" | \"decreaseHolding\" | \"newlyAdded\"'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioRebalancerPage.tsx",
-    "line": 30,
-    "col": 109,
-    "code": "2322",
-    "message": "Type '\"澧炴寔\"' is not assignable to type '\"delete\" | \"increaseHolding\" | \"decreaseHolding\" | \"newlyAdded\"'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioRebalancerPage.tsx",
-    "line": 31,
-    "col": 108,
-    "code": "2322",
-    "message": "Type '\"鍑忔寔\"' is not assignable to type '\"delete\" | \"increaseHolding\" | \"decreaseHolding\" | \"newlyAdded\"'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioRebalancerPage.tsx",
-    "line": 32,
-    "col": 109,
-    "code": "2322",
-    "message": "Type '\"澧炴寔\"' is not assignable to type '\"delete\" | \"increaseHolding\" | \"decreaseHolding\" | \"newlyAdded\"'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioRebalancerPage.tsx",
-    "line": 33,
-    "col": 104,
-    "code": "2322",
-    "message": "Type '\"鏂板\"' is not assignable to type '\"delete\" | \"increaseHolding\" | \"decreaseHolding\" | \"newlyAdded\"'."
-  },
-  {
-    "file": "src/components/portfolio/PortfolioRebalancerPage.tsx",
-    "line": 34,
-    "col": 106,
-    "code": "2322",
-    "message": "Type '\"鍒犻櫎\"' is not assignable to type '\"delete\" | \"increaseHolding\" | \"decreaseHolding\" | \"newlyAdded\"'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 175,
-    "col": 16,
-    "code": "2339",
-    "message": "Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 176,
-    "col": 34,
-    "code": "2339",
-    "message": "Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 181,
-    "col": 16,
-    "code": "2339",
-    "message": "Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 182,
-    "col": 32,
-    "code": "2339",
-    "message": "Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 188,
-    "col": 16,
-    "code": "2339",
-    "message": "Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 190,
-    "col": 38,
-    "code": "2339",
-    "message": "Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 214,
-    "col": 21,
-    "code": "2339",
-    "message": "Property 'message' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 246,
-    "col": 16,
-    "code": "2339",
-    "message": "Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 247,
-    "col": 13,
-    "code": "2339",
-    "message": "Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 252,
-    "col": 46,
-    "code": "2349",
-    "message": "This expression is not callable."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 259,
-    "col": 16,
-    "code": "2339",
-    "message": "Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 260,
-    "col": 19,
-    "code": "2339",
-    "message": "Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 278,
-    "col": 16,
-    "code": "2339",
-    "message": "Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/AlertCenterPage.tsx",
-    "line": 279,
-    "col": 19,
-    "code": "2339",
-    "message": "Property 'monitor' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/AnomalyAlertPanel.tsx",
-    "line": 85,
-    "col": 7,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined'."
-  },
-  {
-    "file": "src/components/risk/AnomalyAlertPanel.tsx",
-    "line": 108,
-    "col": 68,
-    "code": "2339",
-    "message": "Property 'todayCount' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/AnomalyAlertPanel.tsx",
-    "line": 112,
-    "col": 70,
-    "code": "2339",
-    "message": "Property 'highSeverityCount' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/AnomalyAlertPanel.tsx",
-    "line": 116,
-    "col": 73,
-    "code": "2339",
-    "message": "Property 'unacknowledgedCount' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/AnomalyAlertPanel.tsx",
-    "line": 120,
-    "col": 72,
-    "code": "2339",
-    "message": "Property 'activeStocksCount' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/EquityChart.tsx",
-    "line": 81,
-    "col": 7,
-    "code": "2322",
-    "message": "Type '{ trigger: \"axis\"; backgroundColor: string; borderColor: string; textStyle: { color: string; fontSize: number; }; formatter: (params: Record<string, unknown>) => string; }' is not assignable to type 'TooltipOption | TooltipOption[] | undefined'."
-  },
-  {
-    "file": "src/components/risk/EquityChart.tsx",
-    "line": 91,
-    "col": 76,
-    "code": "7053",
-    "message": "Element implicitly has an 'any' type because expression of type '1' can't be used to index type '{}'."
-  },
-  {
-    "file": "src/components/risk/NotificationCenter.tsx",
-    "line": 52,
-    "col": 11,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type '\"market\" | \"risk\" | \"signal\" | \"order\" | \"system\"'."
-  },
-  {
-    "file": "src/components/risk/NotificationCenter.tsx",
-    "line": 53,
-    "col": 11,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type 'string'."
-  },
-  {
-    "file": "src/components/risk/NotificationCenter.tsx",
-    "line": 54,
-    "col": 11,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type 'string'."
-  },
-  {
-    "file": "src/components/risk/NotificationCenter.tsx",
-    "line": 57,
-    "col": 11,
-    "code": "2322",
-    "message": "Type '{}' is not assignable to type '\"warning\" | \"info\" | \"critical\"'."
-  },
-  {
-    "file": "src/components/risk/PortfolioAllocationChart.tsx",
-    "line": 59,
-    "col": 7,
-    "code": "2322",
-    "message": "Type '{ trigger: \"item\"; backgroundColor: string; borderColor: string; textStyle: { color: string; fontSize: number; }; formatter: (params: Record<string, unknown>) => string; }' is not assignable to type 'TooltipOption | TooltipOption[] | undefined'."
-  },
-  {
-    "file": "src/components/risk/PortfolioAllocationChart.tsx",
-    "line": 67,
-    "col": 28,
-    "code": "18046",
-    "message": "'d' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/PortfolioAllocationChart.tsx",
-    "line": 69,
-    "col": 40,
-    "code": "18046",
-    "message": "'d' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/PortfolioAllocationChart.tsx",
-    "line": 70,
-    "col": 24,
-    "code": "18046",
-    "message": "'pct' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/PortfolioAllocationChart.tsx",
-    "line": 71,
-    "col": 25,
-    "code": "18046",
-    "message": "'d' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/PortfolioAllocationChart.tsx",
-    "line": 72,
-    "col": 50,
-    "code": "18046",
-    "message": "'d' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/PortfolioAllocationChart.tsx",
-    "line": 72,
-    "col": 75,
-    "code": "18046",
-    "message": "'d' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/PortfolioAllocationChart.tsx",
-    "line": 72,
-    "col": 96,
-    "code": "18046",
-    "message": "'d' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/PortfolioStressTest.tsx",
-    "line": 67,
-    "col": 7,
-    "code": "2322",
-    "message": "Type '{ type: \"bar\"; data: { value: number; itemStyle: { color: string; }; }[]; barWidth: number; label: { show: true; position: \"right\"; color: string; fontSize: number; formatter: (params: Record<string, unknown>) => string; }; }[]' is not assignable to type 'SeriesOption$1 | SeriesOption$1[] | undefined'."
-  },
-  {
-    "file": "src/components/risk/PortfolioStressTest.tsx",
-    "line": 83,
-    "col": 77,
-    "code": "18046",
-    "message": "'params.dataIndex' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 190,
-    "col": 21,
-    "code": "2339",
-    "message": "Property 'message' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 218,
-    "col": 15,
-    "code": "2339",
-    "message": "Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 218,
-    "col": 38,
-    "code": "2339",
-    "message": "Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 224,
-    "col": 17,
-    "code": "2339",
-    "message": "Property 'code' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 224,
-    "col": 31,
-    "code": "2339",
-    "message": "Property 'price' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 227,
-    "col": 17,
-    "code": "2339",
-    "message": "Property 'code' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 227,
-    "col": 29,
-    "code": "2339",
-    "message": "Property 'price' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 231,
-    "col": 43,
-    "code": "2339",
-    "message": "Property 'code' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 236,
-    "col": 38,
-    "code": "2339",
-    "message": "Property 'price' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 256,
-    "col": 9,
-    "code": "2339",
-    "message": "Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 257,
-    "col": 9,
-    "code": "2339",
-    "message": "Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 258,
-    "col": 9,
-    "code": "2339",
-    "message": "Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 259,
-    "col": 9,
-    "code": "2339",
-    "message": "Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 262,
-    "col": 9,
-    "code": "2339",
-    "message": "Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 263,
-    "col": 30,
-    "code": "2339",
-    "message": "Property 'connected' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 267,
-    "col": 11,
-    "code": "2339",
-    "message": "Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 268,
-    "col": 11,
-    "code": "2339",
-    "message": "Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 269,
-    "col": 11,
-    "code": "2339",
-    "message": "Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 270,
-    "col": 11,
-    "code": "2339",
-    "message": "Property 'ws' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 280,
-    "col": 18,
-    "code": "2339",
-    "message": "Property 'type' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 280,
-    "col": 33,
-    "code": "2339",
-    "message": "Property 'message' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 283,
-    "col": 23,
-    "code": "2339",
-    "message": "Property 'id' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 284,
-    "col": 30,
-    "code": "2339",
-    "message": "Property 'timestamp' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 285,
-    "col": 25,
-    "code": "2339",
-    "message": "Property 'type' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 286,
-    "col": 28,
-    "code": "2339",
-    "message": "Property 'message' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/RiskDashboardPage.tsx",
-    "line": 287,
-    "col": 27,
-    "code": "2339",
-    "message": "Property 'source' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/SentimentDashboardPage.tsx",
-    "line": 534,
-    "col": 19,
-    "code": "18046",
-    "message": "'item' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentDashboardPage.tsx",
-    "line": 535,
-    "col": 22,
-    "code": "18046",
-    "message": "'item' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentDashboardPage.tsx",
-    "line": 535,
-    "col": 36,
-    "code": "18046",
-    "message": "'item' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentDashboardPage.tsx",
-    "line": 536,
-    "col": 24,
-    "code": "18046",
-    "message": "'item' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentDashboardPage.tsx",
-    "line": 536,
-    "col": 40,
-    "code": "18046",
-    "message": "'item' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentDashboardPage.tsx",
-    "line": 537,
-    "col": 23,
-    "code": "18046",
-    "message": "'item' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentDashboardPage.tsx",
-    "line": 538,
-    "col": 20,
-    "code": "18046",
-    "message": "'item' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentDashboardPage.tsx",
-    "line": 539,
-    "col": 28,
-    "code": "18046",
-    "message": "'item' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentDashboardPage.tsx",
-    "line": 539,
-    "col": 48,
-    "code": "18046",
-    "message": "'item' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentDashboardPage.tsx",
-    "line": 540,
-    "col": 26,
-    "code": "18046",
-    "message": "'item' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentDashboardPage.tsx",
-    "line": 541,
-    "col": 25,
-    "code": "18046",
-    "message": "'item' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentDashboardPage.tsx",
-    "line": 542,
-    "col": 23,
-    "code": "18046",
-    "message": "'item' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentGauge.tsx",
-    "line": 129,
-    "col": 32,
-    "code": "18046",
-    "message": "'p' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentGauge.tsx",
-    "line": 130,
-    "col": 21,
-    "code": "18046",
-    "message": "'p' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SentimentGauge.tsx",
-    "line": 130,
-    "col": 77,
-    "code": "18046",
-    "message": "'p' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/risk/SignalTimeline.tsx",
-    "line": 40,
-    "col": 64,
-    "code": "2538",
-    "message": "Type 'unknown' cannot be used as an index type."
-  },
-  {
-    "file": "src/components/risk/SignalTimeline.tsx",
-    "line": 48,
-    "col": 33,
-    "code": "2538",
-    "message": "Type 'unknown' cannot be used as an index type."
-  },
-  {
-    "file": "src/components/risk/SignalTimeline.tsx",
-    "line": 50,
-    "col": 35,
-    "code": "2339",
-    "message": "Property 'toUpperCase' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/risk/SignalTimeline.tsx",
-    "line": 57,
-    "col": 15,
-    "code": "2345",
-    "message": "Argument of type '(a: SignalItem, b: SignalItem) => number' is not assignable to parameter of type '(a: { id: {}; strategyId: {}; strategyName: any; symbol: {}; side: \"BUY\" | \"SELL\"; price: {}; qty: {}; reason: {}; timestamp: {}; status: {}; }, b: { id: {}; strategyId: {}; strategyName: any; symbol: {}; side: \"BUY\" | \"SELL\"; ... 4 more ...; status: {}; }) => number'."
-  },
-  {
-    "file": "src/components/risk/SignalTimeline.tsx",
-    "line": 59,
-    "col": 18,
-    "code": "2345",
-    "message": "Argument of type '{ id: {}; strategyId: {}; strategyName: any; symbol: {}; side: \"BUY\" | \"SELL\"; price: {}; qty: {}; reason: {}; timestamp: {}; status: {}; }[]' is not assignable to parameter of type 'SetStateAction<SignalItem[]>'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 84,
-    "col": 23,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 111,
-    "col": 13,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 124,
-    "col": 13,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 136,
-    "col": 13,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 165,
-    "col": 44,
-    "code": "2769",
-    "message": "No overload matches this call."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 165,
-    "col": 87,
-    "code": "2339",
-    "message": "Property 'id' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 165,
-    "col": 110,
-    "code": "2339",
-    "message": "Property 'id' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 281,
-    "col": 50,
-    "code": "2769",
-    "message": "No overload matches this call."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 282,
-    "col": 45,
-    "code": "2339",
-    "message": "Property 'connected' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 416,
-    "col": 73,
-    "code": "2339",
-    "message": "Property 'dailyLossLimitPct' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 417,
-    "col": 75,
-    "code": "2339",
-    "message": "Property 'maxSinglePositionPct' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 418,
-    "col": 73,
-    "code": "2339",
-    "message": "Property 'maxTotalPositionPct' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 419,
-    "col": 63,
-    "code": "2339",
-    "message": "Property 'maxOrdersPerMinute' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 433,
-    "col": 53,
-    "code": "18046",
-    "message": "'a' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 434,
-    "col": 61,
-    "code": "18046",
-    "message": "'a' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 435,
-    "col": 54,
-    "code": "18046",
-    "message": "'a' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 435,
-    "col": 72,
-    "code": "18046",
-    "message": "'a' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 449,
-    "col": 49,
-    "code": "2339",
-    "message": "Property 'version' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 450,
-    "col": 52,
-    "code": "2339",
-    "message": "Property 'platform' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 450,
-    "col": 84,
-    "code": "2339",
-    "message": "Property 'arch' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 451,
-    "col": 55,
-    "code": "2339",
-    "message": "Property 'electronVersion' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 452,
-    "col": 54,
-    "code": "2339",
-    "message": "Property 'nodeVersion' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/settings/SettingsPage.tsx",
-    "line": 453,
-    "col": 53,
-    "code": "2339",
-    "message": "Property 'chromeVersion' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/StrategyCompareModal.tsx",
-    "line": 47,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/StrategyExplainCard.tsx",
-    "line": 30,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/StrategyOptimizerPanel.tsx",
-    "line": 198,
-    "col": 22,
-    "code": "2339",
-    "message": "Property 'startOptimization' does not exist on type '{ optimize: (params: Record<string, unknown>) => Promise<unknown>; }'."
-  },
-  {
-    "file": "src/components/strategy/StrategyOptimizerPanel.tsx",
-    "line": 199,
-    "col": 19,
-    "code": "2339",
-    "message": "Property 'startOptimization' does not exist on type '{ optimize: (params: Record<string, unknown>) => Promise<unknown>; }'."
-  },
-  {
-    "file": "src/components/strategy/StrategyOptimizerPanel.tsx",
-    "line": 204,
-    "col": 39,
-    "code": "2339",
-    "message": "Property 'getStatus' does not exist on type '{ optimize: (params: Record<string, unknown>) => Promise<unknown>; }'."
-  },
-  {
-    "file": "src/components/strategy/StrategyOptimizerPanel.tsx",
-    "line": 205,
-    "col": 36,
-    "code": "2339",
-    "message": "Property 'getProgress' does not exist on type '{ optimize: (params: Record<string, unknown>) => Promise<unknown>; }'."
-  },
-  {
-    "file": "src/components/strategy/StrategyOptimizerPanel.tsx",
-    "line": 211,
-    "col": 39,
-    "code": "2339",
-    "message": "Property 'getResult' does not exist on type '{ optimize: (params: Record<string, unknown>) => Promise<unknown>; }'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 114,
-    "col": 11,
-    "code": "2322",
-    "message": "Type 'unknown[]' is not assignable to type 'Strategy[]'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 115,
-    "col": 11,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'Strategy | undefined'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 224,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 244,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 520,
-    "col": 18,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 521,
-    "col": 40,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 521,
-    "col": 67,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 523,
-    "col": 28,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 527,
-    "col": 63,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 528,
-    "col": 74,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 528,
+    "file": "src/components/NotificationToast.tsx",
+    "line": 37,
     "col": 120,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
+    "code": "1005",
+    "message": "',' expected."
   },
   {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 530,
-    "col": 72,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
+    "file": "src/components/NotificationToast.tsx",
+    "line": 37,
+    "col": 125,
+    "code": "1005",
+    "message": "',' expected."
   },
   {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 532,
-    "col": 89,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 534,
-    "col": 27,
-    "code": "18046",
-    "message": "'t' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 802,
-    "col": 27,
-    "code": "2339",
-    "message": "Property 'symbol' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 805,
-    "col": 29,
-    "code": "2339",
-    "message": "Property 'strategy' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 847,
-    "col": 27,
-    "code": "2339",
-    "message": "Property 'status' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 856,
-    "col": 72,
-    "code": "2339",
-    "message": "Property 'name' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 857,
-    "col": 65,
-    "code": "2339",
-    "message": "Property 'description' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 860,
-    "col": 43,
-    "code": "2339",
-    "message": "Property 'status' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 867,
-    "col": 73,
-    "code": "2339",
-    "message": "Property 'symbol' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 871,
-    "col": 62,
-    "code": "2339",
-    "message": "Property 'strategy' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 873,
-    "col": 21,
-    "code": "2339",
-    "message": "Property 'strategy' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 876,
-    "col": 63,
-    "code": "2339",
-    "message": "Property 'strategy' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 879,
-    "col": 21,
-    "code": "2339",
-    "message": "Property 'strategy' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/StrategyPage.tsx",
-    "line": 882,
-    "col": 67,
-    "code": "2339",
-    "message": "Property 'strategy' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/strategy/TemplateBrowser.tsx",
-    "line": 72,
-    "col": 38,
-    "code": "2339",
-    "message": "Property 'getTemplates' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/strategy/TemplateBrowser.tsx",
-    "line": 76,
-    "col": 18,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/strategy/TemplateBrowser.tsx",
-    "line": 115,
-    "col": 39,
-    "code": "2339",
-    "message": "Property 'instantiateTemplate' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/strategy/TemplateBrowser.tsx",
-    "line": 124,
-    "col": 27,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/tools/DataExportPage.tsx",
-    "line": 194,
-    "col": 33,
-    "code": "2339",
-    "message": "Property 'export' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/tools/DataExportPage.tsx",
-    "line": 209,
-    "col": 46,
-    "code": "2339",
-    "message": "Property 'message' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/tools/DataExportPage.tsx",
-    "line": 218,
-    "col": 33,
-    "code": "2339",
-    "message": "Property 'export' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/tools/DataExportPage.tsx",
-    "line": 224,
-    "col": 46,
-    "code": "2339",
-    "message": "Property 'message' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/tools/DataExportPage.tsx",
-    "line": 232,
-    "col": 31,
-    "code": "2339",
-    "message": "Property 'export' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/tools/DataExportPage.tsx",
-    "line": 238,
-    "col": 44,
-    "code": "2339",
-    "message": "Property 'message' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/tools/DataExportPage.tsx",
-    "line": 319,
-    "col": 29,
-    "code": "2339",
-    "message": "Property 'shell' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/tools/DataQualityPage.tsx",
-    "line": 597,
-    "col": 22,
-    "code": "2345",
-    "message": "Argument of type '{}[]' is not assignable to parameter of type 'SetStateAction<string[]>'."
-  },
-  {
-    "file": "src/components/tools/DataQualityPage.tsx",
-    "line": 599,
-    "col": 31,
-    "code": "2345",
-    "message": "Argument of type '{}' is not assignable to parameter of type 'SetStateAction<string>'."
-  },
-  {
-    "file": "src/components/trading/AutomationPanel.tsx",
-    "line": 390,
-    "col": 25,
-    "code": "2339",
-    "message": "Property 'getExecutionHistory' does not exist on type '{ create: (dsl: any) => Promise<any>; getAll: () => Promise<any>; get: (id: string) => Promise<any>; update: (id: string, updates: any) => Promise<any>; ... 6 more ...; optimize: (strategyDSL: any, backtestResult: any) => Promise<...>; }'."
-  },
-  {
-    "file": "src/components/trading/AutomationPanel.tsx",
-    "line": 391,
-    "col": 47,
-    "code": "2339",
-    "message": "Property 'getExecutionHistory' does not exist on type '{ create: (dsl: any) => Promise<any>; getAll: () => Promise<any>; get: (id: string) => Promise<any>; update: (id: string, updates: any) => Promise<any>; ... 6 more ...; optimize: (strategyDSL: any, backtestResult: any) => Promise<...>; }'."
-  },
-  {
-    "file": "src/components/trading/AutomationPanel.tsx",
-    "line": 398,
-    "col": 25,
-    "code": "2339",
-    "message": "Property 'getAutomationRules' does not exist on type '{ create: (dsl: any) => Promise<any>; getAll: () => Promise<any>; get: (id: string) => Promise<any>; update: (id: string, updates: any) => Promise<any>; ... 6 more ...; optimize: (strategyDSL: any, backtestResult: any) => Promise<...>; }'."
-  },
-  {
-    "file": "src/components/trading/AutomationPanel.tsx",
-    "line": 399,
-    "col": 48,
-    "code": "2339",
-    "message": "Property 'getAutomationRules' does not exist on type '{ create: (dsl: any) => Promise<any>; getAll: () => Promise<any>; get: (id: string) => Promise<any>; update: (id: string, updates: any) => Promise<any>; ... 6 more ...; optimize: (strategyDSL: any, backtestResult: any) => Promise<...>; }'."
-  },
-  {
-    "file": "src/components/trading/AutomationPanel.tsx",
-    "line": 424,
-    "col": 16,
-    "code": "2339",
-    "message": "Property 'success' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/trading/AutomationPanel.tsx",
-    "line": 437,
-    "col": 16,
-    "code": "2339",
-    "message": "Property 'success' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/trading/BrokerConfigSelector.tsx",
-    "line": 86,
-    "col": 16,
-    "code": "18046",
-    "message": "'err' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/trading/BrokerConfigSelector.tsx",
-    "line": 117,
-    "col": 16,
-    "code": "18046",
-    "message": "'err' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/trading/BrokerConfigSelector.tsx",
-    "line": 152,
-    "col": 16,
-    "code": "18046",
-    "message": "'err' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/trading/PnLPanel.tsx",
-    "line": 46,
-    "col": 69,
-    "code": "2365",
-    "message": "Operator '>' cannot be applied to types '{}' and 'number'."
-  },
-  {
-    "file": "src/components/trading/PnLPanel.tsx",
-    "line": 47,
-    "col": 70,
-    "code": "2365",
-    "message": "Operator '<' cannot be applied to types '{}' and 'number'."
-  },
-  {
-    "file": "src/components/trading/PnLPanel.tsx",
-    "line": 49,
-    "col": 63,
-    "code": "2365",
-    "message": "Operator '>' cannot be applied to types '{}' and 'number'."
-  },
-  {
-    "file": "src/components/trading/PnLPanel.tsx",
-    "line": 53,
-    "col": 19,
-    "code": "2339",
-    "message": "Property 'message' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/trading/PositionMonitor.tsx",
-    "line": 34,
-    "col": 20,
-    "code": "2345",
-    "message": "Argument of type '{ code: unknown; name: unknown; qty: {}; marketPrice: {}; marketValue: {}; pnl: {}; pnlPct: {}; }[]' is not assignable to parameter of type 'SetStateAction<Position[]>'."
-  },
-  {
-    "file": "src/components/trading/PositionMonitor.tsx",
-    "line": 44,
-    "col": 19,
-    "code": "2339",
-    "message": "Property 'message' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/trading/PositionMonitorPanel.tsx",
-    "line": 101,
-    "col": 22,
-    "code": "2345",
-    "message": "Argument of type '{ id: {}; code: unknown; name: unknown; type: \"long\" | \"short\"; shares: number; avgCost: {}; currentPrice: {}; pnl: {}; pnlPct: {}; stopLoss: unknown; takeProfit: unknown; openTime: number; strategyId: unknown; }[]' is not assignable to parameter of type 'SetStateAction<Position[]>'."
-  },
-  {
-    "file": "src/components/trading/PositionMonitorPanel.tsx",
-    "line": 105,
-    "col": 18,
-    "code": "18046",
-    "message": "'p.qty' is of type 'unknown'."
-  },
-  {
-    "file": "src/components/trading/PositionMonitorPanel.tsx",
-    "line": 106,
+    "file": "src/components/NotificationToast.tsx",
+    "line": 40,
     "col": 28,
-    "code": "2345",
-    "message": "Argument of type '{}' is not assignable to parameter of type 'number'."
+    "code": "1127",
+    "message": "Invalid character."
   },
   {
-    "file": "src/components/trading/QuickOrderPanel.tsx",
-    "line": 28,
-    "col": 43,
-    "code": "2339",
-    "message": "Property 'message' does not exist on type '{}'."
+    "file": "src/components/NotificationToast.tsx",
+    "line": 40,
+    "col": 30,
+    "code": "1127",
+    "message": "Invalid character."
   },
   {
-    "file": "src/components/trading/TradeAlertPanel.tsx",
-    "line": 20,
-    "col": 19,
-    "code": "2339",
-    "message": "Property 'id' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/trading/TradeAlertPanel.tsx",
-    "line": 21,
-    "col": 21,
-    "code": "2339",
-    "message": "Property 'type' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/trading/TradeAlertPanel.tsx",
-    "line": 22,
-    "col": 23,
-    "code": "2339",
-    "message": "Property 'symbol' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/trading/TradeAlertPanel.tsx",
-    "line": 23,
-    "col": 24,
-    "code": "2339",
-    "message": "Property 'message' does not exist on type '{}'."
-  },
-  {
-    "file": "src/components/trading/TradeDashboardPage.tsx",
-    "line": 150,
-    "col": 16,
-    "code": "2339",
-    "message": "Property 'trade' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/trading/TradeDashboardPage.tsx",
-    "line": 152,
-    "col": 15,
-    "code": "2339",
-    "message": "Property 'trade' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/trading/TradeDashboardPage.tsx",
-    "line": 153,
-    "col": 15,
-    "code": "2339",
-    "message": "Property 'trade' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/trading/TradeDashboardPage.tsx",
-    "line": 154,
-    "col": 15,
-    "code": "2339",
-    "message": "Property 'trade' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/trading/TradeDashboardPage.tsx",
-    "line": 155,
-    "col": 15,
-    "code": "2339",
-    "message": "Property 'trade' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/trading/TradeDashboardPage.tsx",
-    "line": 156,
-    "col": 15,
-    "code": "2339",
-    "message": "Property 'trade' does not exist on type '{ broker: { connect: (config: any) => Promise<any>; disconnect: () => Promise<any>; getAccounts: () => Promise<any>; getFunds: (accountId: string) => Promise<any>; ... 12 more ...; getStatus: () => Promise<...>; }; ... 13 more ...; off?: ((channel: string, callback: (...args: any[]) => void) => void) | undefined; }'."
-  },
-  {
-    "file": "src/components/trading/TradeExecutionPanel.tsx",
-    "line": 128,
-    "col": 16,
-    "code": "18046",
-    "message": "'e' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 13,
-    "col": 11,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 14,
-    "col": 11,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 14,
-    "col": 21,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 16,
-    "col": 12,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 17,
-    "col": 16,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 18,
-    "col": 11,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 19,
-    "col": 11,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 20,
-    "col": 10,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 21,
-    "col": 13,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 22,
-    "col": 15,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 23,
-    "col": 13,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 24,
-    "col": 16,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 25,
-    "col": 16,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useBridgeSync.ts",
-    "line": 26,
-    "col": 17,
-    "code": "18046",
-    "message": "'q' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useOpenDStream.ts",
-    "line": 62,
-    "col": 15,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'string'."
-  },
-  {
-    "file": "src/hooks/useOpenDStream.ts",
-    "line": 63,
-    "col": 15,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'number'."
-  },
-  {
-    "file": "src/hooks/useOpenDStream.ts",
-    "line": 64,
-    "col": 15,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'number'."
-  },
-  {
-    "file": "src/hooks/useOpenDStream.ts",
-    "line": 65,
-    "col": 15,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'number'."
-  },
-  {
-    "file": "src/hooks/useOpenDStream.ts",
-    "line": 66,
-    "col": 15,
-    "code": "2322",
-    "message": "Type 'unknown' is not assignable to type 'number'."
-  },
-  {
-    "file": "src/hooks/useOpenDStream.ts",
-    "line": 135,
-    "col": 3,
-    "code": "18046",
-    "message": "'ipcMain' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useOpenDStream.ts",
-    "line": 139,
-    "col": 28,
-    "code": "2345",
-    "message": "Argument of type 'unknown' is not assignable to parameter of type 'string'."
-  },
-  {
-    "file": "src/hooks/useOpenDStream.ts",
-    "line": 147,
-    "col": 3,
-    "code": "18046",
-    "message": "'ipcMain' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useOpenDStream.ts",
-    "line": 157,
-    "col": 3,
-    "code": "18046",
-    "message": "'ipcMain' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useOpenDStream.ts",
-    "line": 170,
-    "col": 3,
-    "code": "18046",
-    "message": "'ipcMain' is of type 'unknown'."
-  },
-  {
-    "file": "src/hooks/useWebSocketQuotes.ts",
-    "line": 103,
-    "col": 24,
-    "code": "2345",
-    "message": "Argument of type 'unknown' is not assignable to parameter of type 'string'."
-  },
-  {
-    "file": "src/lib/parallel-backtest.ts",
-    "line": 189,
-    "col": 34,
-    "code": "2698",
-    "message": "Spread types may only be created from object types."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 45,
-    "col": 48,
-    "code": "2345",
-    "message": "Argument of type 'unknown' is not assignable to parameter of type '{ headers: string[]; rows: (string | number)[][]; }'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 124,
-    "col": 20,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 126,
-    "col": 21,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 127,
-    "col": 18,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 127,
-    "col": 41,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 127,
-    "col": 63,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 133,
-    "col": 38,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 134,
-    "col": 39,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 135,
-    "col": 39,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 136,
-    "col": 35,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 136,
-    "col": 73,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 137,
-    "col": 37,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 138,
-    "col": 34,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 139,
-    "col": 37,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 140,
-    "col": 39,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 148,
-    "col": 18,
-    "code": "18046",
-    "message": "'result' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 149,
-    "col": 34,
-    "code": "18046",
-    "message": "'t.entryPrice' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 149,
-    "col": 71,
-    "code": "18046",
-    "message": "'t.exitPrice' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 150,
-    "col": 16,
-    "code": "18046",
-    "message": "'t.pnl' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 150,
-    "col": 40,
-    "code": "18046",
-    "message": "'t.pnl' is of type 'unknown'."
-  },
-  {
-    "file": "src/lib/pdf-report.ts",
-    "line": 151,
-    "col": 17,
-    "code": "18046",
-    "message": "'t.pnlPercent' is of type 'unknown'."
-  },
-  {
-    "file": "src/opend/opend-client.ts",
-    "line": 63,
-    "col": 19,
-    "code": "2345",
-    "message": "Argument of type '{}' is not assignable to parameter of type 'any[] | PromiseLike<any[]>'."
-  },
-  {
-    "file": "src/stores/appStore.ts",
-    "line": 23,
+    "file": "src/components/NotificationToast.tsx",
+    "line": 40,
     "col": 36,
-    "code": "2339",
-    "message": "Property 'strategies' does not exist on type '{}'."
+    "code": "1005",
+    "message": "',' expected."
   },
   {
-    "file": "src/utils/type-safe.ts",
-    "line": 50,
-    "col": 17,
-    "code": "7053",
-    "message": "Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'."
+    "file": "src/components/NotificationToast.tsx",
+    "line": 40,
+    "col": 39,
+    "code": "1005",
+    "message": "',' expected."
   },
   {
-    "file": "src/utils/type-safe.ts",
-    "line": 52,
-    "col": 5,
-    "code": "2322",
-    "message": "Type '{} | T' is not assignable to type 'T'."
+    "file": "src/components/NotificationToast.tsx",
+    "line": 40,
+    "col": 44,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 28,
+    "code": "1127",
+    "message": "Invalid character."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 34,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 35,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 40,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 49,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 52,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 57,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 64,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 65,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 70,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 77,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 78,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 43,
+    "col": 83,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 80,
+    "col": 23,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 80,
+    "col": 30,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 80,
+    "col": 41,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 80,
+    "col": 46,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 80,
+    "col": 51,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 80,
+    "col": 68,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 80,
+    "col": 78,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 80,
+    "col": 92,
+    "code": "1109",
+    "message": "Expression expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 80,
+    "col": 96,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 80,
+    "col": 103,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 80,
+    "col": 111,
+    "code": "1005",
+    "message": "':' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 84,
+    "col": 31,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 84,
+    "col": 39,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 84,
+    "col": 46,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 84,
+    "col": 47,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 84,
+    "col": 58,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 84,
+    "col": 66,
+    "code": "1005",
+    "message": "':' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 94,
+    "col": 9,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 94,
+    "col": 19,
+    "code": "1109",
+    "message": "Expression expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 94,
+    "col": 20,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 94,
+    "col": 28,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 95,
+    "col": 16,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 95,
+    "col": 28,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 95,
+    "col": 54,
+    "code": "1351",
+    "message": "An identifier or keyword cannot immediately follow a numeric literal."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 95,
+    "col": 57,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 96,
+    "col": 11,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 96,
+    "col": 14,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 96,
+    "col": 26,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 96,
+    "col": 52,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 97,
+    "col": 9,
+    "code": "1005",
+    "message": "',' expected."
+  },
+  {
+    "file": "src/components/NotificationToast.tsx",
+    "line": 102,
+    "col": 1,
+    "code": "1160",
+    "message": "Unterminated template literal."
+  },
+  {
+    "file": "src/components/risk/NotificationCenter.tsx",
+    "line": 8,
+    "col": 16,
+    "code": "1005",
+    "message": "';' expected."
+  },
+  {
+    "file": "src/components/risk/NotificationCenter.tsx",
+    "line": 8,
+    "col": 25,
+    "code": "1134",
+    "message": "Variable declaration expected."
+  },
+  {
+    "file": "src/components/risk/NotificationCenter.tsx",
+    "line": 14,
+    "col": 1,
+    "code": "1128",
+    "message": "Declaration or statement expected."
   }
 ]

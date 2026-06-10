@@ -42,7 +42,7 @@ function buildReportHTML(report: ReportData, timestamp: string): string {
       case 'metrics':
         return buildMetricsHTML(section.heading, section.data as MetricItem[]);
       case 'table':
-        return buildTableHTML(section.heading, section.data);
+        return buildTableHTML(section.heading, section.data as { headers: string[]; rows: (string | number)[][] });
       case 'text':
         return `<h3>${section.heading}</h3><p>${section.data}</p>`;
       default:
@@ -146,9 +146,9 @@ export function backtestToReport(result: unknown): ReportData {
         data: {
           headers: ['入场日期', '方向', '入场价', '出场日期', '出场价', '盈亏', '盈亏%', '持有天数'],
           rows: ((result as any).trades || []).map((t: Record<string, unknown>) => [
-            t.entryDate, t.side, t.entryPrice.toFixed(2), t.exitDate, t.exitPrice.toFixed(2),
-            `${t.pnl >= 0 ? '+' : ''}${t.pnl.toFixed(2)}`,
-            `${(t.pnlPercent * 100).toFixed(2)}%`,
+            t.entryDate, t.side, (t as any).entryPrice.toFixed(2), t.exitDate, (t as any).exitPrice.toFixed(2),
+            `${(t as any).pnl >= 0 ? '+' : ''}${(t as any).pnl.toFixed(2)}`,
+            `${((t as any).pnlPercent * 100).toFixed(2)}%`,
             t.holdingDays,
           ]),
         },

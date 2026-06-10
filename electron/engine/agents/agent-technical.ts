@@ -19,6 +19,7 @@
 
 import log from 'electron-log';
 import { EventEmitter } from 'events';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -215,8 +216,8 @@ export class TechnicalAgent extends EventEmitter {
   }
 
   private scorePatterns(patterns: string[]): number {
-    const positive = ['黄金交叉','MACD金叉','上升通道','放量突破','W底','杯柄形态','V形反转'];
-    const negative = ['死叉','MACD死叉','跌破均线','M头','头肩顶','下降通道'];
+    const positive = [i18n.t('agentTechnical.k1'),i18n.t('agentTechnical.k2'),i18n.t('agentTechnical.k3'),i18n.t('agentTechnical.k4'),i18n.t('agentTechnical.k5'),i18n.t('agentTechnical.k6'),i18n.t('agentTechnical.k7')];
+    const negative = [i18n.t('agentTechnical.k8'),i18n.t('agentTechnical.k9'),i18n.t('agentTechnical.k10'),i18n.t('agentTechnical.k11'),i18n.t('agentTechnical.k12'),i18n.t('agentTechnical.k13')];
     let score = 50;
     for (const p of patterns) {
       if (positive.some(pp => p.includes(pp) || pp.includes(p))) score += 10;
@@ -236,70 +237,70 @@ export class TechnicalAgent extends EventEmitter {
   // ── Analysis Strings ──────────────────────────────────────────────────
 
   private trendStr(data: TechnicalData): string {
-    const above20 = data.price > data.ma20 ? '价格在MA20上方' : '价格在MA20下方';
+    const above20 = data.price > data.ma20 ? i18n.t('agentTechnical.k14') : i18n.t('agentTechnical.k15');
     const maAlign = data.ma5 > data.ma20 && data.ma20 > data.ma60
-      ? '多头排列' : (data.ma5 < data.ma20 && data.ma20 < data.ma60 ? '空头排列' : '均线缠绕');
+      ? i18n.t('agentTechnical.k16') : (data.ma5 < data.ma20 && data.ma20 < data.ma60 ? i18n.t('agentTechnical.k17') : i18n.t('agentTechnical.k18'));
     return `${above20}, ${maAlign}`;
   }
 
   private rsiStr(rsi14: number, rsi28: number): string {
-    if (rsi14 > 70) return `RSI14=${rsi14.toFixed(1)} 超买区，短期或有回调`;
-    if (rsi14 < 30) return `RSI14=${rsi14.toFixed(1)} 超卖区，短期或有反弹`;
-    if (rsi14 > 60) return `RSI14=${rsi14.toFixed(1)} 偏强`;
-    if (rsi14 < 40) return `RSI14=${rsi14.toFixed(1)} 偏弱`;
-    return `RSI14=${rsi14.toFixed(1)} 中性`;
+    if (rsi14 > 70) return i18n.t('agentTechnical.k19');
+    if (rsi14 < 30) return i18n.t('agentTechnical.k20');
+    if (rsi14 > 60) return i18n.t('agentTechnical.k21');
+    if (rsi14 < 40) return i18n.t('agentTechnical.k22');
+    return i18n.t('agentTechnical.k23');
   }
 
   private macdStr(data: TechnicalData): string {
-    if (data.macd > data.macdSignal && data.macdHistogram > 0) return 'MACD金叉，动能增强';
-    if (data.macd < data.macdSignal && data.macdHistogram < 0) return 'MACD死叉，动能减弱';
-    return 'MACD信号模糊';
+    if (data.macd > data.macdSignal && data.macdHistogram > 0) return i18n.t('agentTechnical.k24');
+    if (data.macd < data.macdSignal && data.macdHistogram < 0) return i18n.t('agentTechnical.k25');
+    return i18n.t('agentTechnical.k26');
   }
 
   private volumeStr(data: TechnicalData): string {
-    if (data.volumeRatio > 1.5) return '成交量显著放大';
-    if (data.volumeRatio > 1.2) return '成交量温和放大';
-    if (data.volumeRatio < 0.7) return '成交量萎缩';
-    return '成交量正常';
+    if (data.volumeRatio > 1.5) return i18n.t('agentTechnical.k27');
+    if (data.volumeRatio > 1.2) return i18n.t('agentTechnical.k28');
+    if (data.volumeRatio < 0.7) return i18n.t('agentTechnical.k29');
+    return i18n.t('agentTechnical.k30');
   }
 
   private supportStr(data: TechnicalData): string {
     const nearestSupport = data.supportLevels.length > 0 ? Math.max(...data.supportLevels) : data.price;
     const nearestResistance = data.resistanceLevels.length > 0 ? Math.min(...data.resistanceLevels) : data.price;
-    return `支撑 ${nearestSupport.toFixed(1)} / 阻力 ${nearestResistance.toFixed(1)}`;
+    return i18n.t('agentTechnical.k31');
   }
 
   private patternStr(patterns: string[]): string {
-    return patterns.length > 0 ? patterns.join(', ') : '无明显形态';
+    return patterns.length > 0 ? patterns.join(', ') : i18n.t('agentTechnical.k32');
   }
 
   private bollingerStr(data: TechnicalData): string {
     const position = ((data.price - data.bollingerLower) / (data.bollingerUpper - data.bollingerLower)) * 100;
-    if (position > 80) return '布林带上轨附近，超买';
-    if (position < 20) return '布林带下轨附近，超卖';
-    return `布林带中轨附近 (${position.toFixed(0)}%)`;
+    if (position > 80) return i18n.t('agentTechnical.k33');
+    if (position < 20) return i18n.t('agentTechnical.k34');
+    return i18n.t('agentTechnical.k35');
   }
 
   // ── Signals & Risks ───────────────────────────────────────────────────
 
   private generateSignals(data: TechnicalData, scores: Record<string, number>): string[] {
     const sigs: string[] = [];
-    if (data.price > data.ma20 && data.ma5 > data.ma10) sigs.push('短期均线多头排列，偏多');
-    if (data.macd > data.macdSignal && data.macdHistogram > 0) sigs.push('MACD金叉买入信号');
-    if (data.rsi14 < 30) sigs.push('RSI超卖，反弹信号');
-    if (data.volumeRatio > 1.5 && data.price > data.ma10) sigs.push('放量突破，趋势确认');
-    if (data.price < data.ma60 && data.macd < data.macdSignal) sigs.push('均线空头+MACD死叉，偏空');
-    if (scores.trend >= 70 && scores.macd >= 70) sigs.push('技术面强势，顺势做多');
-    return sigs.length > 0 ? sigs : ['无明确交易信号'];
+    if (data.price > data.ma20 && data.ma5 > data.ma10) sigs.push(i18n.t('agentTechnical.k36'));
+    if (data.macd > data.macdSignal && data.macdHistogram > 0) sigs.push(i18n.t('agentTechnical.k37'));
+    if (data.rsi14 < 30) sigs.push(i18n.t('agentTechnical.k38'));
+    if (data.volumeRatio > 1.5 && data.price > data.ma10) sigs.push(i18n.t('agentTechnical.k39'));
+    if (data.price < data.ma60 && data.macd < data.macdSignal) sigs.push(i18n.t('agentTechnical.k40'));
+    if (scores.trend >= 70 && scores.macd >= 70) sigs.push(i18n.t('agentTechnical.k41'));
+    return sigs.length > 0 ? sigs : [i18n.t('agentTechnical.k42')];
   }
 
   private identifyRisks(data: TechnicalData): string[] {
     const risks: string[] = [];
-    if (data.rsi14 > 75) risks.push('RSI超买回调风险');
-    if (data.rsi14 < 25) risks.push('RSI超卖继续下探风险');
-    if (Math.abs(data.price - data.ma20) / data.ma20 > 0.15) risks.push('价格偏离均线过大');
-    if (data.volumeRatio > 2) risks.push('异常放量，需警惕');
-    if (data.price < data.ma250) risks.push('跌破年线，长期趋势偏弱');
+    if (data.rsi14 > 75) risks.push(i18n.t('agentTechnical.k43'));
+    if (data.rsi14 < 25) risks.push(i18n.t('agentTechnical.k44'));
+    if (Math.abs(data.price - data.ma20) / data.ma20 > 0.15) risks.push(i18n.t('agentTechnical.k45'));
+    if (data.volumeRatio > 2) risks.push(i18n.t('agentTechnical.k46'));
+    if (data.price < data.ma250) risks.push(i18n.t('agentTechnical.k47'));
     return risks;
   }
 
@@ -307,11 +308,11 @@ export class TechnicalAgent extends EventEmitter {
 
   private buildNarrative(symbol: string, data: TechnicalData, rating: string, scores: Record<string, number>): string {
     const templates: Record<string, string> = {
-      'strong_buy': `${symbol} 技术面强势。均线多头排列，MACD金叉放量，RSI偏强但不极端，布林带中轨上方运行。综合技术评分${Object.values(scores).reduce((a,b)=>a+b,0)/6 | 0}分，强烈看多。`,
-      'buy': `${symbol} 技术面偏多。主要均线支撑有效，成交量温和，技术指标中性偏强。建议回调后介入。`,
-      'neutral': `${symbol} 技术面中性。多空力量均衡，无明显方向性信号。建议等待方向确认。`,
-      'sell': `${symbol} 技术面偏空。均线承压，技术指标走弱，成交量配合下跌。建议减仓。`,
-      'strong_sell': `${symbol} 技术面恶化。均线空头排列，MACD死叉放量下跌，RSI弱势。强烈建议回避。`,
+      'strong_buy': i18n.t('agentTechnical.k48'),
+      'buy': i18n.t('agentTechnical.k49'),
+      'neutral': i18n.t('agentTechnical.k50'),
+      'sell': i18n.t('agentTechnical.k51'),
+      'strong_sell': i18n.t('agentTechnical.k52'),
     };
     return templates[rating] || templates['neutral'];
   }

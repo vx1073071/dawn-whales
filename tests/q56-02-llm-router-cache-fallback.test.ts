@@ -22,7 +22,7 @@ import {
   getMultiLLMRouter,
   resetMultiLLMRouter,
   V18_MODEL_CHAIN,
-} from '../electron/engine/multi-llm-router';
+} from '../electron/engine/agents/multi-llm-router';
 
 // ── Section 1: 11 LLM Provider Routing ─────────────────────────────────────
 

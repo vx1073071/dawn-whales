@@ -11,8 +11,8 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { AIUsageBillingContract, resetBillingContract } from "../electron/engine/ai-usage-billing-contract";
-import type { BillingTier, CreatorWallet } from "../electron/engine/ai-usage-billing-contract";
+import { AIUsageBillingContract, resetBillingContract } from "../electron/engine/agents/ai-usage-billing-contract";
+import type { BillingTier, CreatorWallet } from "../electron/engine/agents/ai-usage-billing-contract";
 
 describe("Q-59-01-01: Tier Pricing", () => {
   let engine: AIUsageBillingContract;

@@ -4,6 +4,7 @@
 
 import log from 'electron-log';
 import type { DatabaseManager } from './database';
+import i18n from '../../src/i18n';
 
 // ── 评分配置 ──────────────────────────────────────────────────────────────
 
@@ -149,8 +150,8 @@ export class MarketplaceService {
         totalScore: 0,
         dimensions: { annualReturn: 0, sharpeRatio: 0, maxDrawdown: 0, winRate: 0, tradeCount: 0 },
         grade: 'F',
-        recommendation: '无回测数据，无法评分',
-        warnings: ['该策略尚未进行回测'],
+        recommendation: i18n.t('marketplace.k1'),
+        warnings: [i18n.t('marketplace.k2')],
       };
     }
 
@@ -274,7 +275,7 @@ export class MarketplaceService {
         liveMetrics: null,
         deviation: null,
         badge: 'unverified',
-        reason: '无回测数据',
+        reason: i18n.t('marketplace.k3'),
       };
     }
 
@@ -299,7 +300,7 @@ export class MarketplaceService {
         liveMetrics: null,
         deviation: null,
         badge: 'unverified',
-        reason: `实盘交易不足（${executedTrades.length}/5 笔），需至少 5 笔交易才能验证`,
+        reason: i18n.t('marketplace.k4'),
       };
     }
 
@@ -421,10 +422,10 @@ export class MarketplaceService {
   }
 
   private generateVerificationReason(confidence: number, deviation: unknown, tradeCount: number): string {
-    if (confidence >= 0.8) return `✅ 高可信度：${tradeCount} 笔实盘交易与回测高度一致（偏差 ${(deviation.annualReturn).toFixed(1)}%）`;
-    if (confidence >= 0.6) return `⚠️ 中可信度：${tradeCount} 笔交易，部分指标与回测有偏差`;
-    if (confidence >= 0.4) return `⚠️ 低可信度：实盘表现与回测差异较大，需谨慎参考`;
-    return `❌ 未验证：实盘交易数据不足或与回测严重不符`;
+    if (confidence >= 0.8) return i18n.t('marketplace.k5');
+    if (confidence >= 0.6) return i18n.t('marketplace.k6');
+    if (confidence >= 0.4) return i18n.t('marketplace.k7');
+    return i18n.t('marketplace.k8');
   }
 
   // ── 辅助函数 ──────────────────────────────────────────────────────
@@ -440,36 +441,36 @@ export class MarketplaceService {
 
   private generateRecommendation(score: number, verification: VerificationResult): string {
     if (score >= 85 && verification.badge === 'gold') {
-      return '🏆 优秀策略，回测与实盘表现一致，推荐关注';
+      return i18n.t('marketplace.k9');
     }
     if (score >= 75) {
-      return '👍 良好策略，风险收益比合理';
+      return i18n.t('marketplace.k10');
     }
     if (score >= 60) {
-      return '⚠️ 中等策略，建议小仓位试用';
+      return i18n.t('marketplace.k11');
     }
     if (score >= 40) {
-      return '⚠️ 风险较高，建议谨慎使用';
+      return i18n.t('marketplace.k12');
     }
-    return '❌ 不推荐使用，风险过高或数据不足';
+    return i18n.t('marketplace.k13');
   }
 
   private generateWarnings(backtest: unknown, verification: VerificationResult, tradeCount: number): string[] {
     const warnings: string[] = [];
 
     if (tradeCount < 20) {
-      warnings.push(`⚠️ 回测交易次数不足（${tradeCount} 笔），统计意义有限`);
+      warnings.push(i18n.t('marketplace.k14'));
     }
     if (backtest.max_drawdown && backtest.max_drawdown < -25) {
-      warnings.push(`⚠️ 最大回撤 ${backtest.max_drawdown.toFixed(1)}% 过大`);
+      warnings.push(i18n.t('marketplace.k15'));
     }
     if (backtest.sharpe_ratio && backtest.sharpe_ratio < 0.5) {
-      warnings.push(`⚠️ 夏普比率 ${backtest.sharpe_ratio.toFixed(2)} 过低，风险收益比差`);
+      warnings.push(i18n.t('marketplace.k16'));
     }
     if (verification.badge === 'unverified') {
-      warnings.push('⚠️ 无实盘验证数据');
+      warnings.push(i18n.t('marketplace.k17'));
     } else if (verification.confidence < 0.6) {
-      warnings.push(`⚠️ 实盘验证可信度低（${(verification.confidence * 100).toFixed(0)}%）`);
+      warnings.push(i18n.t('marketplace.k18'));
     }
 
     return warnings;

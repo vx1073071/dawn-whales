@@ -37,12 +37,12 @@ export default function SignalTimeline({
     try {
       const strats = await getAllStrategies();
       const nameMap: Record<string, string> = {};
-      strats.forEach((s: Record<string, unknown>) => { nameMap[s.id] = s.name || s.id; });
+      strats.forEach((s: any) => { nameMap[s.id] = s.name || s.id; });
       setStrategies(nameMap);
 
       const result = await getSignals(strategyId);
       const items = (result || [])
-        .map((s: Record<string, unknown>) => ({
+        .map((s: any) => ({
           id: s.id || `${s.strategyId}-${s.timestamp}`,
           strategyId: s.strategyId || '',
           strategyName: nameMap[s.strategyId] || s.strategyId || '未知策略',
@@ -56,7 +56,7 @@ export default function SignalTimeline({
         }))
         .sort((a: SignalItem, b: SignalItem) => b.timestamp - a.timestamp)
         .slice(0, maxItems);
-      setSignals(items);
+      setSignals(items as any);
     } catch (err) {
       console.error('[SignalTimeline] load error:', err);
     }

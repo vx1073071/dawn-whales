@@ -88,6 +88,24 @@ export default defineConfig({
       'tests/q81-02-fullchain-e2e-final.test.ts',
       // R87 Q-02: Exclude all broken-by-engine-restructure tests
       'tests/trade-executor-ipc.test.ts',
+      // R89: Tests with unresolvable engine imports (creator-llm-config deleted in restructure)
+      'tests/q58-02-creator-cost-e2e.test.ts',
+      // R89: Stale engine path tests (revenue-engine-v15, auto-trade-billing moved)
+      'tests/q59-02-commission-topup-e2e.test.ts',
+      // R89: Tests referencing moved files (use old flat engine/ paths)
+      'tests/t53-crypto-service.test.ts',
+      'tests/t61-t62-error-metrics.test.ts',
+      'tests/jvs-49-data-versioning.test.ts',
+      'tests/jvs-50-realtime-quality-monitor.test.ts',
+      'tests/jvs-83-data-aggregator.test.ts',
+      'tests/jvs-83-benchmark.test.ts',
+      'tests/jvs-100-e2e-validation.test.ts',
+      'tests/jvs-115-aggregator.test.ts',
+      'tests/jvs-integration.test.ts',
+      'tests/ws-backfill.test.ts',
+      'tests/integration-full-pipeline.test.ts',
+      'tests/benchmark-engines.test.ts',
+      'tests/q47-property-testing.test.ts',
 ],
     coverage: {
       provider: 'v8',

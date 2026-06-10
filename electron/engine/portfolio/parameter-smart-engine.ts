@@ -1,3 +1,4 @@
+import i18n from '../../../src/i18n';
 // ── J-73-04 R73 V19: Parameter Smart Engine ────────────────────────────
 // Preset definitions (conservative/balanced/aggressive) + AI recommendation + safety bounds + impact preview
 
@@ -61,22 +62,22 @@ export interface AIRecommendation {
 // ── Parameter Definitions ─────────────────────────────────────────────────
 
 export const STANDARD_PARAMETERS: ParameterDefinition[] = [
-  { name: "Bollinger Period", key: "bbPeriod", type: "integer", default: 20, min: 5, max: 100, step: 5, description: "BB calculation period", descriptionCN: "布林带计算周期", unit: "bars" },
-  { name: "Bollinger Sigma", key: "bbSigma", type: "number", default: 2.0, min: 1.0, max: 4.0, step: 0.5, description: "BB standard deviation multiplier", descriptionCN: "布林带标准差倍数", unit: "σ" },
-  { name: "RSI Period", key: "rsiPeriod", type: "integer", default: 14, min: 5, max: 50, step: 1, description: "RSI calculation period", descriptionCN: "RSI 计算周期", unit: "bars" },
-  { name: "RSI Oversold", key: "rsiOversold", type: "integer", default: 30, min: 10, max: 50, step: 1, description: "RSI oversold threshold", descriptionCN: "RSI 超卖阈值", unit: "" },
-  { name: "RSI Overbought", key: "rsiOverbought", type: "integer", default: 70, min: 50, max: 90, step: 1, description: "RSI overbought threshold", descriptionCN: "RSI 超买阈值", unit: "" },
-  { name: "MACD Fast", key: "macdFast", type: "integer", default: 12, min: 3, max: 50, step: 1, description: "MACD fast EMA period", descriptionCN: "MACD 快线周期", unit: "bars" },
-  { name: "MACD Slow", key: "macdSlow", type: "integer", default: 26, min: 10, max: 100, step: 1, description: "MACD slow EMA period", descriptionCN: "MACD 慢线周期", unit: "bars" },
-  { name: "MACD Signal", key: "macdSignal", type: "integer", default: 9, min: 3, max: 30, step: 1, description: "MACD signal EMA period", descriptionCN: "MACD 信号线周期", unit: "bars" },
-  { name: "MA Short", key: "maShort", type: "integer", default: 5, min: 2, max: 50, step: 1, description: "Short moving average period", descriptionCN: "短期均线周期", unit: "bars" },
-  { name: "MA Long", key: "maLong", type: "integer", default: 20, min: 10, max: 200, step: 5, description: "Long moving average period", descriptionCN: "长期均线周期", unit: "bars" },
-  { name: "Stop Loss %", key: "stopLoss", type: "number", default: 5, min: 1, max: 30, step: 1, description: "Stop loss percentage", descriptionCN: "止损百分比", unit: "%" },
-  { name: "Take Profit %", key: "takeProfit", type: "number", default: 15, min: 2, max: 100, step: 1, description: "Take profit percentage", descriptionCN: "止盈百分比", unit: "%" },
-  { name: "Position Size %", key: "positionSize", type: "number", default: 10, min: 1, max: 50, step: 5, description: "Max position as % of portfolio", descriptionCN: "最大仓位占组合比例", unit: "%" },
-  { name: "Max Positions", key: "maxPositions", type: "integer", default: 10, min: 1, max: 50, step: 1, description: "Maximum concurrent positions", descriptionCN: "最大同时持仓数", unit: "个" },
-  { name: "Volume Threshold", key: "volumeMultiplier", type: "number", default: 1.5, min: 1.0, max: 5.0, step: 0.5, description: "Minimum volume vs 20d avg", descriptionCN: "最低成交量 vs 20日均量", unit: "×" },
-  { name: "Trailing Stop", key: "trailingStop", type: "number", default: 3, min: 0, max: 20, step: 1, description: "Trailing stop distance (% from peak, 0=off)", descriptionCN: "移动止损距离 (0=关闭)", unit: "%" },
+  { name: "Bollinger Period", key: "bbPeriod", type: "integer", default: 20, min: 5, max: 100, step: 5, description: "BB calculation period", descriptionCN: i18n.t('parameterSmartEngine.k1'), unit: "bars" },
+  { name: "Bollinger Sigma", key: "bbSigma", type: "number", default: 2.0, min: 1.0, max: 4.0, step: 0.5, description: "BB standard deviation multiplier", descriptionCN: i18n.t('parameterSmartEngine.k2'), unit: "σ" },
+  { name: "RSI Period", key: "rsiPeriod", type: "integer", default: 14, min: 5, max: 50, step: 1, description: "RSI calculation period", descriptionCN: i18n.t('parameterSmartEngine.k3'), unit: "bars" },
+  { name: "RSI Oversold", key: "rsiOversold", type: "integer", default: 30, min: 10, max: 50, step: 1, description: "RSI oversold threshold", descriptionCN: i18n.t('parameterSmartEngine.k4'), unit: "" },
+  { name: "RSI Overbought", key: "rsiOverbought", type: "integer", default: 70, min: 50, max: 90, step: 1, description: "RSI overbought threshold", descriptionCN: i18n.t('parameterSmartEngine.k5'), unit: "" },
+  { name: "MACD Fast", key: "macdFast", type: "integer", default: 12, min: 3, max: 50, step: 1, description: "MACD fast EMA period", descriptionCN: i18n.t('parameterSmartEngine.k6'), unit: "bars" },
+  { name: "MACD Slow", key: "macdSlow", type: "integer", default: 26, min: 10, max: 100, step: 1, description: "MACD slow EMA period", descriptionCN: i18n.t('parameterSmartEngine.k7'), unit: "bars" },
+  { name: "MACD Signal", key: "macdSignal", type: "integer", default: 9, min: 3, max: 30, step: 1, description: "MACD signal EMA period", descriptionCN: i18n.t('parameterSmartEngine.k8'), unit: "bars" },
+  { name: "MA Short", key: "maShort", type: "integer", default: 5, min: 2, max: 50, step: 1, description: "Short moving average period", descriptionCN: i18n.t('parameterSmartEngine.k9'), unit: "bars" },
+  { name: "MA Long", key: "maLong", type: "integer", default: 20, min: 10, max: 200, step: 5, description: "Long moving average period", descriptionCN: i18n.t('parameterSmartEngine.k10'), unit: "bars" },
+  { name: "Stop Loss %", key: "stopLoss", type: "number", default: 5, min: 1, max: 30, step: 1, description: "Stop loss percentage", descriptionCN: i18n.t('parameterSmartEngine.k11'), unit: "%" },
+  { name: "Take Profit %", key: "takeProfit", type: "number", default: 15, min: 2, max: 100, step: 1, description: "Take profit percentage", descriptionCN: i18n.t('parameterSmartEngine.k12'), unit: "%" },
+  { name: "Position Size %", key: "positionSize", type: "number", default: 10, min: 1, max: 50, step: 5, description: "Max position as % of portfolio", descriptionCN: i18n.t('parameterSmartEngine.k13'), unit: "%" },
+  { name: "Max Positions", key: "maxPositions", type: "integer", default: 10, min: 1, max: 50, step: 1, description: "Maximum concurrent positions", descriptionCN: i18n.t('parameterSmartEngine.k14'), unit: i18n.t('parameterSmartEngine.k15') },
+  { name: "Volume Threshold", key: "volumeMultiplier", type: "number", default: 1.5, min: 1.0, max: 5.0, step: 0.5, description: "Minimum volume vs 20d avg", descriptionCN: i18n.t('parameterSmartEngine.k16'), unit: "×" },
+  { name: "Trailing Stop", key: "trailingStop", type: "number", default: 3, min: 0, max: 20, step: 1, description: "Trailing stop distance (% from peak, 0=off)", descriptionCN: i18n.t('parameterSmartEngine.k17'), unit: "%" },
 ];
 
 // ── Preset Definitions ──────────────────────────────────────────────────
@@ -85,9 +86,9 @@ export const PARAMETER_PRESETS: ParameterPreset[] = [
   {
     profile: "conservative",
     label: "Conservative",
-    labelCN: "保守",
+    labelCN: i18n.t('parameterSmartEngine.k18'),
     description: "Low risk, suitable for long-term holding and dividend strategies. Tighter stops, smaller positions.",
-    descriptionCN: "低风险，适合长期持有和股息策略。严格止损，小仓位。",
+    descriptionCN: i18n.t('parameterSmartEngine.k19'),
     parameters: {
       bbPeriod: 20, bbSigma: 2.0,
       rsiPeriod: 14, rsiOversold: 25, rsiOverbought: 75,
@@ -101,9 +102,9 @@ export const PARAMETER_PRESETS: ParameterPreset[] = [
   {
     profile: "balanced",
     label: "Balanced",
-    labelCN: "均衡",
+    labelCN: i18n.t('parameterSmartEngine.k20'),
     description: "Moderate risk-reward, suitable for most traders. Balanced stops and position sizing.",
-    descriptionCN: "中等风险回报，适合大多数交易者。均衡止损和仓位。",
+    descriptionCN: i18n.t('parameterSmartEngine.k21'),
     parameters: {
       bbPeriod: 20, bbSigma: 2.0,
       rsiPeriod: 14, rsiOversold: 30, rsiOverbought: 70,
@@ -117,9 +118,9 @@ export const PARAMETER_PRESETS: ParameterPreset[] = [
   {
     profile: "aggressive",
     label: "Aggressive",
-    labelCN: "激进",
+    labelCN: i18n.t('parameterSmartEngine.k22'),
     description: "High risk-reward, suitable for active swing trading. Wider stops, larger positions, faster entries.",
-    descriptionCN: "高风险回报，适合活跃波段交易。宽止损，大仓位，快入场。",
+    descriptionCN: i18n.t('parameterSmartEngine.k23'),
     parameters: {
       bbPeriod: 10, bbSigma: 1.5,
       rsiPeriod: 7, rsiOversold: 20, rsiOverbought: 80,
@@ -150,7 +151,7 @@ function checkSafetyBounds(
       value,
       severity: "danger",
       message: `${paramDef.name} is dangerously low (${value}${paramDef.unit ?? ""}). Falls below safe minimum of ${Math.ceil(warningLow)}.`,
-      messageCN: `${paramDef.descriptionCN}过低 (${value}${paramDef.unit ?? ""})，低于安全下限 ${Math.ceil(warningLow)}。可能导致频繁假信号。`,
+      messageCN: i18n.t('parameterSmartEngine.k24'),
       limit: warningLow,
     };
   }
@@ -160,7 +161,7 @@ function checkSafetyBounds(
       value,
       severity: "danger",
       message: `${paramDef.name} is dangerously high (${value}${paramDef.unit ?? ""}). Exceeds safe maximum of ${Math.floor(warningHigh)}.`,
-      messageCN: `${paramDef.descriptionCN}过高 (${value}${paramDef.unit ?? ""})，超过安全上限 ${Math.floor(warningHigh)}。可能导致信号滞后/错过机会。`,
+      messageCN: i18n.t('parameterSmartEngine.k25'),
       limit: warningHigh,
     };
   }
@@ -170,7 +171,7 @@ function checkSafetyBounds(
       value,
       severity: "warning",
       message: `${paramDef.name} is near lower bound (${value}${paramDef.unit ?? ""}). Consider increasing to avoid noise.`,
-      messageCN: `${paramDef.descriptionCN}接近下限 (${value}${paramDef.unit ?? ""})。建议适当上调以减少噪音。`,
+      messageCN: i18n.t('parameterSmartEngine.k26'),
       limit: warningLow,
     };
   }
@@ -180,7 +181,7 @@ function checkSafetyBounds(
       value,
       severity: "warning",
       message: `${paramDef.name} is near upper bound (${value}${paramDef.unit ?? ""}). Consider decreasing to avoid lag.`,
-      messageCN: `${paramDef.descriptionCN}接近上限 (${value}${paramDef.unit ?? ""})。建议适当下调以避免滞后。`,
+      messageCN: i18n.t('parameterSmartEngine.k27'),
       limit: warningHigh,
     };
   }
@@ -190,7 +191,7 @@ function checkSafetyBounds(
     value,
     severity: "ok",
     message: `${paramDef.name} is within safe range.`,
-    messageCN: `${paramDef.descriptionCN}在安全范围内。`,
+    messageCN: i18n.t('parameterSmartEngine.k28'),
     limit: 0,
   };
 }
@@ -223,7 +224,7 @@ function recommendParameters(
       positionSize: isUS ? 20 : 15, maxPositions: 12,
       volumeMultiplier: 1.0, trailingStop: 4,
     };
-    reasoningCN = `${market}市场低波动+强趋势，</br>建议采用激进趋势跟踪策略。利用MACD快线(6/13)捕捉早期信号，配合移动止损(4%)保护利润。`;
+    reasoningCN = i18n.t('parameterSmartEngine.k29');
   } else if (volatility === "high" || trendStrength === "weak") {
     // High vol or weak trend → conservative mean reversion
     profile = "conservative";
@@ -236,7 +237,7 @@ function recommendParameters(
       positionSize: isUS ? 8 : 5, maxPositions: 5,
       volumeMultiplier: 2.0, trailingStop: 2,
     };
-    reasoningCN = `${market}市场高波动/弱趋势，</br>建议采用保守均值回归策略。更大布林带宽度(2.5σ)+更严格成交量过滤(2×)，等待极端偏差后进场。`;
+    reasoningCN = i18n.t('parameterSmartEngine.k30');
   } else {
     // Everything else → balanced
     profile = "balanced";
@@ -249,7 +250,7 @@ function recommendParameters(
       positionSize: isUS ? 15 : 10, maxPositions: 10,
       volumeMultiplier: isAsia ? 1.8 : 1.5, trailingStop: 3,
     };
-    reasoningCN = `${market}市场中等波动，</br>建议采用均衡策略。${isUS ? "美股高流动性可略激进" : "亚洲市场建议更保守仓位"}`;
+    reasoningCN = i18n.t('parameterSmartEngine.k33');
   }
 
   return {
@@ -307,7 +308,7 @@ function previewParameterImpact(
 
     return {
       value: v,
-      label: v === paramDef.min ? "保守" : v === paramDef.max ? "激进" : "当前",
+      label: v === paramDef.min ? i18n.t('parameterSmartEngine.k34') : v === paramDef.max ? i18n.t('parameterSmartEngine.k35') : i18n.t('parameterSmartEngine.k36'),
       estimatedReturn: Math.round(estReturn * 100) / 100,
       estimatedRisk: Math.round(estRisk * 100) / 100,
       estimatedWinRate: Math.round(estWinRate * 100) / 100,
@@ -354,7 +355,7 @@ export class ParameterSmartEngine {
       label: name,
       labelCN: name,
       description: `Custom preset: ${name}`,
-      descriptionCN: `自定义预设: ${name}`,
+      descriptionCN: i18n.t('parameterSmartEngine.k37'),
       parameters: { ...params },
     });
   }
@@ -393,7 +394,7 @@ export class ParameterSmartEngine {
     const takeProfit = Number(params.takeProfit);
     if (stopLoss >= takeProfit) {
       conflictWarnings.push(
-        `止损(${stopLoss}%) ≥ 止盈(${takeProfit}%)，风险回报比不合理。建议止盈至少为止损的2-3倍。`,
+        i18n.t('parameterSmartEngine.k38'),
       );
     }
 
@@ -401,7 +402,7 @@ export class ParameterSmartEngine {
     const rsiUnder = Number(params.rsiOversold);
     if (rsiOver - rsiUnder < 30) {
       conflictWarnings.push(
-        `RSI超买(${rsiOver})和超卖(${rsiUnder})差距过小。建议至少相差30点以减少假信号。`,
+        i18n.t('parameterSmartEngine.k39'),
       );
     }
 
@@ -409,7 +410,7 @@ export class ParameterSmartEngine {
     const maLong = Number(params.maLong);
     if (maShort >= maLong) {
       conflictWarnings.push(
-        `短周期均线(${maShort}) ≥ 长周期均线(${maLong})。短周期应该小于长周期。`,
+        i18n.t('parameterSmartEngine.k40'),
       );
     }
 
@@ -417,7 +418,7 @@ export class ParameterSmartEngine {
     const maxPos = Number(params.maxPositions);
     if (posSize * maxPos > 100) {
       conflictWarnings.push(
-        `总仓位占用(${posSize}% × ${maxPos}个 = ${posSize * maxPos}%) 可能超过100%。建议调整仓位大小或最大持仓数。`,
+        i18n.t('parameterSmartEngine.k41'),
       );
     }
 

@@ -4,6 +4,7 @@
 // 每笔订单必须通过风控才能提交
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -135,26 +136,26 @@ export class RiskEngine {
     const now = Date.now();
     this.orderTimestamps = this.orderTimestamps.filter((t) => now - t < 60000);
     if (this.orderTimestamps.length >= this.config.maxOrdersPerMinute) {
-      this.addAlert('RATE_LIMIT', '下单频率过高（每分钟最多10单）');
-      return { pass: false, reason: '下单频率过高（每分钟最多10单）' };
+      this.addAlert('RATE_LIMIT', i18n.t('riskEngine.k1'));
+      return { pass: false, reason: i18n.t('riskEngine.k2') };
     }
 
     // 2. Basic sanity checks
-    if (!order.qty || order.qty <= 0) return { pass: false, reason: '数量必须大于0' };
-    if (order.qty < this.config.minOrderQty) return { pass: false, reason: `数量不得少于 ${this.config.minOrderQty}` };
-    if (order.qty > this.config.maxOrderQty) return { pass: false, reason: `数量不得超过 ${this.config.maxOrderQty}` };
+    if (!order.qty || order.qty <= 0) return { pass: false, reason: i18n.t('riskEngine.k3') };
+    if (order.qty < this.config.minOrderQty) return { pass: false, reason: i18n.t('riskEngine.k4') };
+    if (order.qty > this.config.maxOrderQty) return { pass: false, reason: i18n.t('riskEngine.k5') };
 
-    if (order.price && order.price <= 0) return { pass: false, reason: '价格必须大于0' };
+    if (order.price && order.price <= 0) return { pass: false, reason: i18n.t('riskEngine.k6') };
 
     // 3. Order value check
     const orderValue = (order.price || 0) * order.qty;
     if (orderValue > this.config.maxOrderValue) {
-      return { pass: false, reason: `单笔金额 $${orderValue.toFixed(0)} 超过上限 $${this.config.maxOrderValue}` };
+      return { pass: false, reason: i18n.t('riskEngine.k7') };
     }
 
     // 4. Blacklist check
     if (order.code && this.config.blacklist.includes(order.code)) {
-      return { pass: false, reason: `${order.code} 在禁止交易名单中` };
+      return { pass: false, reason: i18n.t('riskEngine.k8') };
     }
 
     // 5. Daily loss limit
@@ -162,11 +163,11 @@ export class RiskEngine {
     if (this.totalAssets > 0 && this.dailyPnl < 0) {
       const lossPct = Math.abs(this.dailyPnl) / this.totalAssets;
       if (lossPct >= this.config.dailyLossLimitPct) {
-        this.addAlert('DAILY_LOSS', `日亏损 ${(lossPct * 100).toFixed(2)}% 已达上限`);
-        return { pass: false, reason: `日亏损 ${(lossPct * 100).toFixed(1)}% 已超过 ${this.config.dailyLossLimitPct * 100}% 上限` };
+        this.addAlert('DAILY_LOSS', i18n.t('riskEngine.k9'));
+        return { pass: false, reason: i18n.t('riskEngine.k10') };
       }
       if (lossPct >= this.config.dailyLossLimitPct * 0.8) {
-        warnings.push(`⚠️ 日亏损 ${(lossPct * 100).toFixed(1)}%，接近上限`);
+        warnings.push(i18n.t('riskEngine.k11'));
       }
     }
 
@@ -174,10 +175,10 @@ export class RiskEngine {
     if (this.totalAssets > 0 && orderValue > 0) {
       const positionPct = orderValue / this.totalAssets;
       if (positionPct > this.config.maxSinglePositionPct) {
-        return { pass: false, reason: `单品种占比 ${(positionPct * 100).toFixed(1)}% 超过 ${this.config.maxSinglePositionPct * 100}% 上限` };
+        return { pass: false, reason: i18n.t('riskEngine.k12') };
       }
       if (positionPct > this.config.maxSinglePositionPct * 0.8) {
-        warnings.push(`⚠️ 单品种占比 ${(positionPct * 100).toFixed(1)}%，接近上限`);
+        warnings.push(i18n.t('riskEngine.k13'));
       }
     }
 
@@ -193,9 +194,9 @@ export class RiskEngine {
       const day = now2.getUTCDay();
 
       if (day === 0 || day === 6) {
-        warnings.push('⚠️ 周末，市场休市');
+        warnings.push(i18n.t('riskEngine.k14'));
       } else if (etMinutes < marketOpen || etMinutes > marketClose) {
-        warnings.push('⚠️ 非交易时段，订单将在开盘后执行');
+        warnings.push(i18n.t('riskEngine.k15'));
       }
     }
 
@@ -203,15 +204,15 @@ export class RiskEngine {
 
     // 8. 滚动回撤检查
     if (this.drawdownState.isReduced) {
-      warnings.push(`🔴 回撤降仓模式: 仓位限制为 ${this.drawdownState.reductionFactor * 100}%`);
+      warnings.push(i18n.t('riskEngine.k16'));
     }
 
     // 9. 高波动率警告
     if (this.config.volAdjustEnabled && this.currentVix !== null) {
       if (this.currentVix >= this.config.vixExtremeThreshold) {
-        warnings.push(`🔴 VIX=${this.currentVix.toFixed(1)} 极端波动，仓位限制 ${(1 - this.config.vixExtremeReduction) * 100}%`);
+        warnings.push(i18n.t('riskEngine.k17'));
       } else if (this.currentVix >= this.config.vixHighThreshold) {
-        warnings.push(`🟡 VIX=${this.currentVix.toFixed(1)} 高波动，仓位限制 ${(1 - this.config.vixHighReduction) * 100}%`);
+        warnings.push(i18n.t('riskEngine.k18'));
       }
     }
 
@@ -235,7 +236,7 @@ export class RiskEngine {
     stopPrice?: number,
   ): PositionSizeResult {
     if (this.totalAssets <= 0 || price <= 0) {
-      return { qty: 0, method: 'fixed_pct', reasoning: '资产或价格为零' };
+      return { qty: 0, method: 'fixed_pct', reasoning: i18n.t('riskEngine.k19') };
     }
 
     // 获取基础可用资金
@@ -280,7 +281,7 @@ export class RiskEngine {
 
     if (history.length < 10) {
       // 交易历史不足，降级为 fixed_pct
-      log.info('[RiskEngine] Kelly: 历史不足10笔，降级为 fixed_pct');
+      log.info(i18n.t('riskEngine.k20'));
       return this.fixedPctSizing(price, availableCapital);
     }
 
@@ -328,7 +329,7 @@ export class RiskEngine {
       method: 'kelly',
       kellyFraction,
       riskAmount,
-      reasoning: `Kelly f*=${(kellyFraction * 100).toFixed(1)}%, 胜率=${(winRate * 100).toFixed(1)}%, 赔率=${b.toFixed(2)}`,
+      reasoning: i18n.t('riskEngine.k21'),
     };
   }
 
@@ -342,7 +343,7 @@ export class RiskEngine {
     atr?: number,
   ): PositionSizeResult {
     if (!atr || atr <= 0) {
-      log.info('[RiskEngine] ATR sizing: ATR 不可用，降级为 fixed_pct');
+      log.info(i18n.t('riskEngine.k22'));
       return this.fixedPctSizing(price, availableCapital);
     }
 
@@ -363,7 +364,7 @@ export class RiskEngine {
       qty: Math.max(finalQty, 0),
       method: 'atr',
       riskAmount,
-      reasoning: `ATR=${atr.toFixed(2)}, 风险=$${riskAmount.toFixed(0)} (${(this.config.atrRiskPerTrade * 100).toFixed(1)}% 资产)`,
+      reasoning: i18n.t('riskEngine.k23'),
     };
   }
 
@@ -381,7 +382,7 @@ export class RiskEngine {
       qty: Math.max(qty, 0),
       method: 'fixed_pct',
       riskAmount,
-      reasoning: `固定比例 ${(this.config.fixedPositionPct * 100).toFixed(0)}%, 可用资金=$${availableCapital.toFixed(0)}`,
+      reasoning: i18n.t('riskEngine.k24'),
     };
   }
 
@@ -436,13 +437,13 @@ export class RiskEngine {
     if (side === 'LONG') {
       const newStop = currentPrice - offset;
       if (newStop > currentStop) {
-        log.info(`[RiskEngine] Trailing Stop 上移: ${currentStop.toFixed(2)} → ${newStop.toFixed(2)}`);
+        log.info(i18n.t('riskEngine.k25'));
         return newStop;
       }
     } else {
       const newStop = currentPrice + offset;
       if (newStop < currentStop) {
-        log.info(`[RiskEngine] Trailing Stop 下移: ${currentStop.toFixed(2)} → ${newStop.toFixed(2)}`);
+        log.info(i18n.t('riskEngine.k26'));
         return newStop;
       }
     }
@@ -484,7 +485,7 @@ export class RiskEngine {
       dd.reductionFactor = this.config.drawdownReduceFactor;
       this.addAlert(
         'DRAWDOWN_REDUCE',
-        `回撤 ${(dd.currentDrawdownPct * 100).toFixed(1)}% 达到阈值，仓位降至 ${(dd.reductionFactor * 100).toFixed(0)}%`
+        i18n.t('riskEngine.k27')
       );
       log.warn(
         `[RiskEngine] 🔴 Drawdown ${(dd.currentDrawdownPct * 100).toFixed(1)}% → ` +
@@ -498,7 +499,7 @@ export class RiskEngine {
       dd.reductionFactor = 1.0;
       this.addAlert(
         'DRAWDOWN_RECOVERY',
-        `回撤恢复至 ${(dd.currentDrawdownPct * 100).toFixed(1)}%，仓位限制解除`
+        i18n.t('riskEngine.k28')
       );
       log.info(`[RiskEngine] ✅ Drawdown recovered → Position limits removed`);
     }

@@ -17,6 +17,7 @@
 import log from 'electron-log';
 import { AuditTrailEngine, AuditLog, AuditAction, AuditSeverity } from '../portfolio/audit-trail-engine';
 import { EngineError, ErrorCode } from '../../errors';
+import i18n from '../../../src/i18n';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -138,8 +139,8 @@ export class ComplianceReportEngine {
     // 数据隐私规则
     this.addRule({
       id: 'DATA_PRIVACY_001',
-      name: '数据访问审计',
-      description: '所有数据访问操作必须记录审计日志',
+      name: i18n.t('compliance.k1'),
+      description: i18n.t('compliance.k2'),
       type: 'DATA_PRIVACY',
       severity: 'CRITICAL',
       checkFunction: (context) => this.checkDataAccessAudit(context),
@@ -149,8 +150,8 @@ export class ComplianceReportEngine {
     // 风险管理规则
     this.addRule({
       id: 'RISK_MGMT_001',
-      name: '风险预警响应',
-      description: '风险预警必须在 24 小时内响应',
+      name: i18n.t('compliance.k3'),
+      description: i18n.t('compliance.k4'),
       type: 'RISK_MANAGEMENT',
       severity: 'HIGH',
       checkFunction: (context) => this.checkRiskAlertResponse(context),
@@ -160,8 +161,8 @@ export class ComplianceReportEngine {
     // 审计要求规则
     this.addRule({
       id: 'AUDIT_REQ_001',
-      name: '审计日志完整性',
-      description: '审计日志必须完整，不可篡改',
+      name: i18n.t('compliance.k5'),
+      description: i18n.t('compliance.k6'),
       type: 'AUDIT_REQUIREMENT',
       severity: 'CRITICAL',
       checkFunction: (context) => this.checkAuditLogIntegrity(context),
@@ -171,8 +172,8 @@ export class ComplianceReportEngine {
     // 安全策略规则
     this.addRule({
       id: 'SECURITY_001',
-      name: '登录失败监控',
-      description: '连续登录失败超过 5 次必须告警',
+      name: i18n.t('compliance.k7'),
+      description: i18n.t('compliance.k8'),
       type: 'SECURITY_POLICY',
       severity: 'HIGH',
       checkFunction: (context) => this.checkLoginFailureMonitor(context),
@@ -182,8 +183,8 @@ export class ComplianceReportEngine {
     // 操作流程规则
     this.addRule({
       id: 'OPERATION_001',
-      name: '关键操作审批',
-      description: '关键操作必须有审批记录',
+      name: i18n.t('compliance.k9'),
+      description: i18n.t('compliance.k10'),
       type: 'OPERATIONAL_PROCEDURE',
       severity: 'MEDIUM',
       checkFunction: (context) => this.checkCriticalOperationApproval(context),
@@ -235,12 +236,12 @@ export class ComplianceReportEngine {
       ruleId: 'DATA_PRIVACY_001',
       status: allLogged ? 'COMPLIANT' : 'NON_COMPLIANT',
       message: allLogged 
-        ? '所有数据访问操作已记录审计日志'
-        : '发现未记录的数据访问操作',
+        ? i18n.t('compliance.k11')
+        : i18n.t('compliance.k12'),
       details: {
         totalDataAccess: dataAccessLogs.length,
       },
-      recommendations: allLogged ? [] : ['确保所有数据访问操作都记录审计日志'],
+      recommendations: allLogged ? [] : [i18n.t('compliance.k13')],
     };
   }
 
@@ -270,14 +271,14 @@ export class ComplianceReportEngine {
     return {
       ruleId: 'RISK_MGMT_001',
       status,
-      message: `风险预警响应率: ${complianceRate.toFixed(1)}%`,
+      message: i18n.t('compliance.k14'),
       details: {
         totalAlerts: riskAlerts.length,
         respondedAlerts: respondedAlerts.length,
         complianceRate,
       },
       recommendations: complianceRate < 100 
-        ? ['加强风险预警响应流程', '设置自动提醒机制']
+        ? [i18n.t('compliance.k15'), i18n.t('compliance.k16')]
         : [],
     };
   }
@@ -292,13 +293,13 @@ export class ComplianceReportEngine {
       ruleId: 'AUDIT_REQ_001',
       status: chainValid ? 'COMPLIANT' : 'NON_COMPLIANT',
       message: chainValid 
-        ? '审计日志链完整，未被篡改'
-        : '审计日志链被篡改',
+        ? i18n.t('compliance.k17')
+        : i18n.t('compliance.k18'),
       details: {
         totalLogs: context.auditLogs.length,
         chainValid,
       },
-      recommendations: chainValid ? [] : ['立即调查日志篡改事件', '加强日志保护机制'],
+      recommendations: chainValid ? [] : [i18n.t('compliance.k19'), i18n.t('compliance.k20')],
     };
   }
 
@@ -328,15 +329,15 @@ export class ComplianceReportEngine {
       ruleId: 'SECURITY_001',
       status,
       message: status === 'COMPLIANT'
-        ? '无异常登录失败'
-        : `发现 ${usersWithExcessiveFailures.length} 个用户登录失败超过 5 次`,
+        ? i18n.t('compliance.k21')
+        : i18n.t('compliance.k22'),
       details: {
         totalLoginFailures: loginFailures.length,
         usersWithExcessiveFailures,
       },
       recommendations: status === 'COMPLIANT'
         ? []
-        : ['启用账户锁定机制', '添加多因素认证', '监控异常登录行为'],
+        : [i18n.t('compliance.k23'), i18n.t('compliance.k24'), i18n.t('compliance.k25')],
     };
   }
 
@@ -367,14 +368,14 @@ export class ComplianceReportEngine {
     return {
       ruleId: 'OPERATION_001',
       status,
-      message: `关键操作审批率: ${approvalRate.toFixed(1)}%`,
+      message: i18n.t('compliance.k26'),
       details: {
         totalCriticalOps: criticalOps.length,
         approvedOps: approvedOps.length,
         approvalRate,
       },
       recommendations: approvalRate < 100
-        ? ['完善关键操作审批流程', '添加审批记录字段']
+        ? [i18n.t('compliance.k27'), i18n.t('compliance.k28')]
         : [],
     };
   }
@@ -566,47 +567,47 @@ export class ComplianceReportEngine {
    */
   private generatePdfReport(report: ComplianceReport): string {
     const lines = [
-      '合规性报告',
+      i18n.t('compliance.k29'),
       '==========',
       '',
-      `报告 ID: ${report.id}`,
-      `生成时间: ${new Date(report.generatedAt).toISOString()}`,
-      `报告期间: ${new Date(report.period.startDate).toISOString()} - ${new Date(report.period.endDate).toISOString()}`,
+      i18n.t('compliance.k30'),
+      i18n.t('compliance.k31'),
+      i18n.t('compliance.k32'),
       '',
-      '摘要',
+      i18n.t('compliance.k33'),
       '----',
-      `总规则数: ${report.summary.totalRules}`,
-      `合规规则: ${report.summary.compliantRules}`,
-      `不合规规则: ${report.summary.nonCompliantRules}`,
-      `部分合规: ${report.summary.partialRules}`,
-      `整体状态: ${report.summary.overallStatus}`,
-      `风险分数: ${report.summary.riskScore}/100`,
+      i18n.t('compliance.k34'),
+      i18n.t('compliance.k35'),
+      i18n.t('compliance.k36'),
+      i18n.t('compliance.k37'),
+      i18n.t('compliance.k38'),
+      i18n.t('compliance.k39'),
       '',
-      '检查结果',
+      i18n.t('compliance.k40'),
       '--------',
     ];
 
     for (const result of report.checkResults) {
-      lines.push(`\n规则: ${result.ruleId}`);
-      lines.push(`状态: ${result.status}`);
-      lines.push(`说明: ${result.message}`);
+      lines.push(i18n.t('compliance.k41'));
+      lines.push(i18n.t('compliance.k42'));
+      lines.push(i18n.t('compliance.k43'));
       if (result.recommendations && result.recommendations.length > 0) {
-        lines.push('建议:');
+        lines.push(i18n.t('compliance.k44'));
         result.recommendations.forEach(rec => lines.push(`  - ${rec}`));
       }
     }
 
-    lines.push('\n风险事件', '--------');
+    lines.push(i18n.t('compliance.k45'), '--------');
     for (const event of report.riskEvents) {
-      lines.push(`\n事件 ID: ${event.id}`);
-      lines.push(`类型: ${event.type}`);
-      lines.push(`严重性: ${event.severity}`);
-      lines.push(`影响: ${event.impact}`);
-      lines.push(`状态: ${event.status}`);
-      lines.push(`描述: ${event.description}`);
+      lines.push(i18n.t('compliance.k46'));
+      lines.push(i18n.t('compliance.k47'));
+      lines.push(i18n.t('compliance.k48'));
+      lines.push(i18n.t('compliance.k49'));
+      lines.push(i18n.t('compliance.k50'));
+      lines.push(i18n.t('compliance.k51'));
     }
 
-    lines.push('\n建议', '----');
+    lines.push(i18n.t('compliance.k52'), '----');
     report.recommendations.forEach((rec, index) => {
       lines.push(`${index + 1}. ${rec}`);
     });

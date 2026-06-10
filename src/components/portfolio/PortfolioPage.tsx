@@ -62,9 +62,9 @@ export default function PortfolioPage() {
   const fmt = (n: number) => n?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ?? '--';
 
   // Calculate portfolio allocation
-  const totalVal = positions.reduce((sum, p) => sum + ((p as any).marketVal || 0), 0);
+  const totalVal: any = positions.reduce((sum, p) => sum + ((p as any).marketVal || 0), 0);
   const allocation = positions.map((p) => ({
-    ...p,
+    ...(p as any),
     pct: totalVal > 0 ? (((p as any).marketVal || 0) / totalVal * 100) : 0,
   })).sort((a, b) => b.pct - a.pct);
 
@@ -134,11 +134,11 @@ export default function PortfolioPage() {
                 />
               );
             })}
-            {funds && funds.cash > 0 && totalVal > 0 && (
+            {funds && funds.cash > 0 && (totalVal as any) > 0 && (
               <div
-                style={{ width: `${(funds.cash / (totalVal + funds.cash)) * 100}%` }}
+                style={{ width: `${(funds.cash / ((totalVal as any) + funds.cash)) * 100}%` }}
                 className="bg-gray-700 transition-all duration-500"
-                title={`现金: ${((funds.cash / (totalVal + funds.cash)) * 100).toFixed(1)}%`}
+                title={`现金: ${((funds.cash / ((totalVal as any) + funds.cash)) * 100).toFixed(1)}%`}
               />
             )}
           </div>

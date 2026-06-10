@@ -9,6 +9,7 @@
 // 4. 统一接口，策略引擎不需要知道数据来自哪个源
 
 import log from 'electron-log';
+import i18n from '../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -328,7 +329,7 @@ export class DataProviderService {
       state: 'unknown',
       confidence: 0,
       factors: { gdpGrowth: null, cpi: null, interestRate: null, vix: null, marketSentiment: '' },
-      recommendation: '数据不足，无法判断市场状态',
+      recommendation: i18n.t('dataProvider.k1'),
       updatedAt: now,
     };
   }
@@ -408,11 +409,11 @@ export class DataProviderService {
     }
 
     const recommendations: Record<string, string> = {
-      bull: '牛市环境：趋势跟踪策略优先，可增加仓位',
-      bear: '熊市环境：均值回归策略优先，降低仓位，增加止损',
-      sideways: '震荡市：区间交易策略，控制仓位在50%以下',
-      volatile: '高波动：大幅降仓，宽止损，避免频繁交易',
-      unknown: '数据不足：保持默认风控参数',
+      bull: i18n.t('dataProvider.k2'),
+      bear: i18n.t('dataProvider.k3'),
+      sideways: i18n.t('dataProvider.k4'),
+      volatile: i18n.t('dataProvider.k5'),
+      unknown: i18n.t('dataProvider.k6'),
     };
 
     return {

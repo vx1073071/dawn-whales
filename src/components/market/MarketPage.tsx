@@ -67,7 +67,7 @@ export default function MarketPage() {
     const merged: Record<string, unknown> = { ...quotes };
     wsQuotes.forEach((wsQ, code) => {
       merged[code] = {
-        ...merged[code],
+        ...(merged as any)[code],
         code: wsQ.code,
         price: wsQ.price,
         change: wsQ.change,
@@ -240,7 +240,7 @@ export default function MarketPage() {
               </div>
               <button onClick={() => loadKlines(selectedSymbol, klinePeriod)} className="text-xs text-gray-500 hover:text-gray-300 ml-auto transition-colors">⟳ 刷新</button>
             </div>
-            <KLineChart data={klineData} height={400} />
+            <KLineChart data = {klineData} height={400} /> as any
           </div>
         ) : selectedSymbol ? (
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">

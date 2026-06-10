@@ -388,7 +388,7 @@ export default function AutomationPanel({ className }: { className?: string }) {
 
       // Fetch execution history if available
       if (api.strategy?.getExecutionHistory) {
-        const execResult = await api.strategy.getExecutionHistory().catch(() => null);
+        const execResult = await (api.strategy as any).getExecutionHistory().catch(() => null);
         if (execResult?.success) {
           setExecutions(execResult.data ?? []);
         }
@@ -396,7 +396,7 @@ export default function AutomationPanel({ className }: { className?: string }) {
 
       // Fetch automation rules if available
       if (api.strategy?.getAutomationRules) {
-        const rulesResult = await api.strategy.getAutomationRules().catch(() => null);
+        const rulesResult = await (api.strategy as any).getAutomationRules().catch(() => null);
         if (rulesResult?.success) {
           setRules(rulesResult.data ?? []);
         }

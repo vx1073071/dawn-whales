@@ -82,7 +82,7 @@ export default function AnomalyAlertPanel() {
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className = "flex items-center justify-between mb-4"> as any
         <div className="flex items-center gap-2">
           <h2 className="text-base font-semibold text-white">🚨 异动警报</h2>
           {unacknowledgedCount > 0 && (

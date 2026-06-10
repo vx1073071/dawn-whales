@@ -18,7 +18,7 @@ import {
   resetAgentOrchestrator,
   type AgentReport,
   type SessionResult,
-} from '../electron/engine/agent-orchestrator';
+} from '../electron/engine/agents/agent-orchestrator';
 
 // ── Mock Data ───────────────────────────────────────────────────────────────
 

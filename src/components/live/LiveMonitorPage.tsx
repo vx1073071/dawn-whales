@@ -47,28 +47,28 @@ export default function LiveMonitorPage() {
   const [showAddInput, setShowAddInput] = useState(false);
 
   // ── Stable handlers via useCallback (avoids re-registering IPC listeners) ──
-  const handleQuotePush = useCallback((data: Record<string, unknown>) => {
+  const handleQuotePush = useCallback((data: any) => {
     const quoteList = Array.isArray(data) ? data : [data];
-    quoteList.forEach((q: Record<string, unknown>) => {
+    quoteList.forEach((q: any) => {
       if (!q || !q.code) return;
       const quote: LiveQuote = {
-        code: q.code,
-        price: q.price || 0,
-        change: q.change || 0,
-        changePct: q.changePct || 0,
-        volume: q.volume || 0,
+        code: String(q.code),
+        price: Number(q.price) || 0,
+        change: Number(q.change) || 0,
+        changePct: Number(q.changePct) || 0,
+        volume: Number(q.volume) || 0,
         updateTime: Date.now(),
       };
-      quotesRef.current.set(q.code, quote);
+      quotesRef.current.set(String(q.code), quote);
       // Log significant moves (>2%)
-      if (Math.abs(q.changePct || 0) > 2) {
+      if (Math.abs(Number(q.changePct) || 0) > 2) {
         const log: SignalLog = {
           id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
           time: new Date().toLocaleTimeString(),
-          type: 'ALERT',
+          type: 'ALERT' as const,
           strategy: 'Market',
-          code: q.code || '',
-          message: `${q.code} 异动 ${q.changePct > 0 ? '+' : ''}${(q.changePct || 0).toFixed(2)}%`,
+          code: String(q.code || ''),
+          message: `${q.code} 异动 ${Number(q.changePct) > 0 ? '+' : ''}${(Number(q.changePct) || 0).toFixed(2)}%`,
         };
         setSignalLog((prev) => [log, ...prev].slice(0, 500));
       }
@@ -76,14 +76,14 @@ export default function LiveMonitorPage() {
     setQuotes(new Map(quotesRef.current));
   }, []);
 
-  const handleSignalPush = useCallback((data: Record<string, unknown>) => {
+  const handleSignalPush = useCallback((data: any) => {
     const log: SignalLog = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       time: new Date().toLocaleTimeString(),
-      type: data.type || 'ALERT',
-      strategy: data.strategy || 'Unknown',
-      code: data.code || '',
-      message: data.message || JSON.stringify(data),
+      type: (data.type as SignalLog['type']) || 'ALERT',
+      strategy: String(data.strategy || 'Unknown'),
+      code: String(data.code || ''),
+      message: String(data.message || JSON.stringify(data)),
     };
     setSignalLog((prev) => [log, ...prev].slice(0, 500));
   }, []);
@@ -124,17 +124,17 @@ export default function LiveMonitorPage() {
   async function loadStrategies() {
     try {
       const all = await api.getStrategies();
-      const live: LiveStrategy[] = (all || []).map((s: Record<string, unknown>) => ({
-        id: s.id,
-        name: s.name,
-        code: s.targetCode || s.code || '',
-        type: s.strategyType || s.type || 'unknown',
+      const live: LiveStrategy[] = (all || []).map((s: any) => ({
+        id: String(s.id),
+        name: String(s.name),
+        code: String(s.targetCode || s.code || ''),
+        type: String(s.strategyType || s.type || 'unknown'),
         status: s.liveRunning ? 'running' : 'stopped',
-        signals: s.signalCount || 0,
-        trades: s.tradeCount || 0,
-        pnl: s.totalPnl || 0,
-        startTime: s.liveStartTime || '-',
-        lastSignal: s.lastSignalTime || '-',
+        signals: Number(s.signalCount) || 0,
+        trades: Number(s.tradeCount) || 0,
+        pnl: Number(s.totalPnl) || 0,
+        startTime: String(s.liveStartTime || '-'),
+        lastSignal: String(s.lastSignalTime || '-'),
       }));
       setStrategies(live);
     } catch {

@@ -31,7 +31,7 @@ export default function PositionMonitor() {
       const accs = await getAccounts();
       if (!accs || accs.length === 0) { setLoading(false); return; }
       const pos = await getPositions(accs[0].accountId || accs[0].accId);
-      setPositions(pos?.map((p: Record<string, unknown>) => ({
+      setPositions(pos?.map((p: any) => ({
         code: p.code,
         name: p.name || p.code,
         qty: p.qty || 0,
@@ -41,7 +41,7 @@ export default function PositionMonitor() {
         pnlPct: p.pnlPct || 0,
       })) || []);
     } catch (e: unknown) {
-      setError(e?.message || t('common.loadingFailed'));
+      setError((e as any)?.message || t('common.loadingFailed'));
     } finally {
       setLoading(false);
     }

@@ -5,6 +5,7 @@
  */
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
 
@@ -57,125 +58,125 @@ const DEFAULT_CONFIG: SentimentConfig = {
 // ─── Chinese Positive Lexicon (50+ terms) ─────────────────────────────────────
 
 const ZH_POSITIVE_LEXICON: Map<string, number> = new Map([
-  ['上涨', 0.6],
-  ['涨停', 0.9],
-  ['大涨', 0.8],
-  ['反弹', 0.5],
-  ['利好', 0.7],
-  ['看涨', 0.7],
-  ['突破', 0.6],
-  ['新高', 0.8],
-  ['增长', 0.6],
-  ['盈利', 0.7],
-  ['超预期', 0.8],
-  ['超出预期', 0.8],
-  ['超出', 0.5],
-  ['强劲', 0.7],
-  ['复苏', 0.6],
-  ['回暖', 0.5],
-  ['景气', 0.6],
-  ['看好', 0.7],
-  ['买入', 0.6],
-  ['增持', 0.5],
-  ['推荐', 0.5],
-  ['跑赢', 0.6],
-  ['领先', 0.5],
-  ['创新', 0.5],
-  ['扩张', 0.5],
-  ['分红', 0.5],
-  ['回购', 0.6],
-  ['并购', 0.4],
-  ['合作', 0.4],
-  ['获批', 0.6],
-  ['中标', 0.6],
-  ['签约', 0.5],
-  ['订单', 0.5],
-  ['放量', 0.4],
-  ['放量上涨', 0.7],
-  ['金叉', 0.6],
-  ['底部', 0.4],
-  ['企稳', 0.5],
-  ['止跌', 0.5],
-  ['转好', 0.5],
-  ['改善', 0.5],
-  ['优化', 0.4],
-  ['提升', 0.5],
-  ['加速', 0.5],
-  ['翻倍', 0.8],
-  ['暴涨', 0.9],
-  ['飙升', 0.9],
-  ['热销', 0.6],
-  ['供不应求', 0.7],
-  ['利润增长', 0.7],
-  ['业绩预增', 0.8],
-  ['扭亏为盈', 0.7],
-  ['高送转', 0.6],
-  ['优质', 0.5],
-  ['稳健', 0.5],
-  ['龙头', 0.5],
-  ['稀缺', 0.5],
-  ['核心资产', 0.6],
+  [i18n.t('nlpSentimentEngine.k1'), 0.6],
+  [i18n.t('nlpSentimentEngine.k2'), 0.9],
+  [i18n.t('nlpSentimentEngine.k3'), 0.8],
+  [i18n.t('nlpSentimentEngine.k4'), 0.5],
+  [i18n.t('nlpSentimentEngine.k5'), 0.7],
+  [i18n.t('nlpSentimentEngine.k6'), 0.7],
+  [i18n.t('nlpSentimentEngine.k7'), 0.6],
+  [i18n.t('nlpSentimentEngine.k8'), 0.8],
+  [i18n.t('nlpSentimentEngine.k9'), 0.6],
+  [i18n.t('nlpSentimentEngine.k10'), 0.7],
+  [i18n.t('nlpSentimentEngine.k11'), 0.8],
+  [i18n.t('nlpSentimentEngine.k12'), 0.8],
+  [i18n.t('nlpSentimentEngine.k13'), 0.5],
+  [i18n.t('nlpSentimentEngine.k14'), 0.7],
+  [i18n.t('nlpSentimentEngine.k15'), 0.6],
+  [i18n.t('nlpSentimentEngine.k16'), 0.5],
+  [i18n.t('nlpSentimentEngine.k17'), 0.6],
+  [i18n.t('nlpSentimentEngine.k18'), 0.7],
+  [i18n.t('nlpSentimentEngine.k19'), 0.6],
+  [i18n.t('nlpSentimentEngine.k20'), 0.5],
+  [i18n.t('nlpSentimentEngine.k21'), 0.5],
+  [i18n.t('nlpSentimentEngine.k22'), 0.6],
+  [i18n.t('nlpSentimentEngine.k23'), 0.5],
+  [i18n.t('nlpSentimentEngine.k24'), 0.5],
+  [i18n.t('nlpSentimentEngine.k25'), 0.5],
+  [i18n.t('nlpSentimentEngine.k26'), 0.5],
+  [i18n.t('nlpSentimentEngine.k27'), 0.6],
+  [i18n.t('nlpSentimentEngine.k28'), 0.4],
+  [i18n.t('nlpSentimentEngine.k29'), 0.4],
+  [i18n.t('nlpSentimentEngine.k30'), 0.6],
+  [i18n.t('nlpSentimentEngine.k31'), 0.6],
+  [i18n.t('nlpSentimentEngine.k32'), 0.5],
+  [i18n.t('nlpSentimentEngine.k33'), 0.5],
+  [i18n.t('nlpSentimentEngine.k34'), 0.4],
+  [i18n.t('nlpSentimentEngine.k35'), 0.7],
+  [i18n.t('nlpSentimentEngine.k36'), 0.6],
+  [i18n.t('nlpSentimentEngine.k37'), 0.4],
+  [i18n.t('nlpSentimentEngine.k38'), 0.5],
+  [i18n.t('nlpSentimentEngine.k39'), 0.5],
+  [i18n.t('nlpSentimentEngine.k40'), 0.5],
+  [i18n.t('nlpSentimentEngine.k41'), 0.5],
+  [i18n.t('nlpSentimentEngine.k42'), 0.4],
+  [i18n.t('nlpSentimentEngine.k43'), 0.5],
+  [i18n.t('nlpSentimentEngine.k44'), 0.5],
+  [i18n.t('nlpSentimentEngine.k45'), 0.8],
+  [i18n.t('nlpSentimentEngine.k46'), 0.9],
+  [i18n.t('nlpSentimentEngine.k47'), 0.9],
+  [i18n.t('nlpSentimentEngine.k48'), 0.6],
+  [i18n.t('nlpSentimentEngine.k49'), 0.7],
+  [i18n.t('nlpSentimentEngine.k50'), 0.7],
+  [i18n.t('nlpSentimentEngine.k51'), 0.8],
+  [i18n.t('nlpSentimentEngine.k52'), 0.7],
+  [i18n.t('nlpSentimentEngine.k53'), 0.6],
+  [i18n.t('nlpSentimentEngine.k54'), 0.5],
+  [i18n.t('nlpSentimentEngine.k55'), 0.5],
+  [i18n.t('nlpSentimentEngine.k56'), 0.5],
+  [i18n.t('nlpSentimentEngine.k57'), 0.5],
+  [i18n.t('nlpSentimentEngine.k58'), 0.6],
 ]);
 
 // ─── Chinese Negative Lexicon (50+ terms) ─────────────────────────────────────
 
 const ZH_NEGATIVE_LEXICON: Map<string, number> = new Map([
-  ['下跌', 0.6],
-  ['跌停', 0.9],
-  ['大跌', 0.8],
-  ['暴跌', 0.9],
-  ['利空', 0.7],
-  ['看跌', 0.7],
-  ['破位', 0.6],
-  ['新低', 0.8],
-  ['下滑', 0.6],
-  ['亏损', 0.7],
-  ['不及预期', 0.8],
-  ['疲软', 0.6],
-  ['衰退', 0.7],
-  ['恶化', 0.7],
-  ['萎缩', 0.6],
-  ['看空', 0.7],
-  ['卖出', 0.6],
-  ['减持', 0.5],
-  ['跑输', 0.6],
-  ['落后', 0.5],
-  ['违规', 0.6],
-  ['处罚', 0.6],
-  ['退市', 0.9],
-  ['爆雷', 0.9],
-  ['暴雷', 0.9],
-  ['质押', 0.4],
-  ['平仓', 0.6],
-  ['强平', 0.8],
-  ['死叉', 0.6],
-  ['套牢', 0.7],
-  ['割肉', 0.7],
-  ['缩量', 0.4],
-  ['破发', 0.7],
-  ['腰斩', 0.9],
-  ['崩盘', 0.9],
-  ['闪崩', 0.9],
-  ['跳水', 0.8],
-  ['高估', 0.5],
-  ['泡沫', 0.7],
-  ['风险', 0.5],
-  ['危机', 0.8],
-  ['诉讼', 0.5],
-  ['调查', 0.5],
-  ['监管', 0.4],
-  ['处罚通知', 0.7],
-  ['业绩预减', 0.8],
-  ['业绩预亏', 0.8],
-  ['商誉减值', 0.7],
-  ['坏账', 0.7],
-  ['资不抵债', 0.9],
-  ['拖欠', 0.7],
-  ['违约', 0.8],
-  ['停产', 0.7],
-  ['裁员', 0.6],
-  ['缩减', 0.5],
-  ['流失', 0.6],
+  [i18n.t('nlpSentimentEngine.k59'), 0.6],
+  [i18n.t('nlpSentimentEngine.k60'), 0.9],
+  [i18n.t('nlpSentimentEngine.k61'), 0.8],
+  [i18n.t('nlpSentimentEngine.k62'), 0.9],
+  [i18n.t('nlpSentimentEngine.k63'), 0.7],
+  [i18n.t('nlpSentimentEngine.k64'), 0.7],
+  [i18n.t('nlpSentimentEngine.k65'), 0.6],
+  [i18n.t('nlpSentimentEngine.k66'), 0.8],
+  [i18n.t('nlpSentimentEngine.k67'), 0.6],
+  [i18n.t('nlpSentimentEngine.k68'), 0.7],
+  [i18n.t('nlpSentimentEngine.k69'), 0.8],
+  [i18n.t('nlpSentimentEngine.k70'), 0.6],
+  [i18n.t('nlpSentimentEngine.k71'), 0.7],
+  [i18n.t('nlpSentimentEngine.k72'), 0.7],
+  [i18n.t('nlpSentimentEngine.k73'), 0.6],
+  [i18n.t('nlpSentimentEngine.k74'), 0.7],
+  [i18n.t('nlpSentimentEngine.k75'), 0.6],
+  [i18n.t('nlpSentimentEngine.k76'), 0.5],
+  [i18n.t('nlpSentimentEngine.k77'), 0.6],
+  [i18n.t('nlpSentimentEngine.k78'), 0.5],
+  [i18n.t('nlpSentimentEngine.k79'), 0.6],
+  [i18n.t('nlpSentimentEngine.k80'), 0.6],
+  [i18n.t('nlpSentimentEngine.k81'), 0.9],
+  [i18n.t('nlpSentimentEngine.k82'), 0.9],
+  [i18n.t('nlpSentimentEngine.k83'), 0.9],
+  [i18n.t('nlpSentimentEngine.k84'), 0.4],
+  [i18n.t('nlpSentimentEngine.k85'), 0.6],
+  [i18n.t('nlpSentimentEngine.k86'), 0.8],
+  [i18n.t('nlpSentimentEngine.k87'), 0.6],
+  [i18n.t('nlpSentimentEngine.k88'), 0.7],
+  [i18n.t('nlpSentimentEngine.k89'), 0.7],
+  [i18n.t('nlpSentimentEngine.k90'), 0.4],
+  [i18n.t('nlpSentimentEngine.k91'), 0.7],
+  [i18n.t('nlpSentimentEngine.k92'), 0.9],
+  [i18n.t('nlpSentimentEngine.k93'), 0.9],
+  [i18n.t('nlpSentimentEngine.k94'), 0.9],
+  [i18n.t('nlpSentimentEngine.k95'), 0.8],
+  [i18n.t('nlpSentimentEngine.k96'), 0.5],
+  [i18n.t('nlpSentimentEngine.k97'), 0.7],
+  [i18n.t('nlpSentimentEngine.k98'), 0.5],
+  [i18n.t('nlpSentimentEngine.k99'), 0.8],
+  [i18n.t('nlpSentimentEngine.k100'), 0.5],
+  [i18n.t('nlpSentimentEngine.k101'), 0.5],
+  [i18n.t('nlpSentimentEngine.k102'), 0.4],
+  [i18n.t('nlpSentimentEngine.k103'), 0.7],
+  [i18n.t('nlpSentimentEngine.k104'), 0.8],
+  [i18n.t('nlpSentimentEngine.k105'), 0.8],
+  [i18n.t('nlpSentimentEngine.k106'), 0.7],
+  [i18n.t('nlpSentimentEngine.k107'), 0.7],
+  [i18n.t('nlpSentimentEngine.k108'), 0.9],
+  [i18n.t('nlpSentimentEngine.k109'), 0.7],
+  [i18n.t('nlpSentimentEngine.k110'), 0.8],
+  [i18n.t('nlpSentimentEngine.k111'), 0.7],
+  [i18n.t('nlpSentimentEngine.k112'), 0.6],
+  [i18n.t('nlpSentimentEngine.k113'), 0.5],
+  [i18n.t('nlpSentimentEngine.k114'), 0.6],
 ]);
 
 // ─── English Positive Lexicon (50+ terms) ─────────────────────────────────────
@@ -301,24 +302,24 @@ const EN_NEGATIVE_LEXICON: Map<string, number> = new Map([
 
 // ─── Negation & Intensifier Patterns ──────────────────────────────────────────
 
-const ZH_NEGATION_PATTERNS = ['不', '没', '未', '无', '非', '别'];
+const ZH_NEGATION_PATTERNS = [i18n.t('nlpSentimentEngine.k115'), i18n.t('nlpSentimentEngine.k116'), i18n.t('nlpSentimentEngine.k117'), i18n.t('nlpSentimentEngine.k118'), i18n.t('nlpSentimentEngine.k119'), i18n.t('nlpSentimentEngine.k120')];
 const EN_NEGATION_PATTERNS = ['not', 'no', 'never', 'neither', 'nor', "don't", "doesn't", "didn't", "won't", "can't", "cannot", 'hardly', 'barely'];
 
 const ZH_INTENSIFIERS: Map<string, number> = new Map([
-  ['非常', 1.5],
-  ['极其', 1.8],
-  ['十分', 1.5],
-  ['特别', 1.4],
-  ['格外', 1.4],
-  ['相当', 1.3],
-  ['很', 1.3],
-  ['太', 1.4],
-  ['最', 1.6],
-  ['超级', 1.6],
-  ['大幅', 1.5],
-  ['小幅', 0.8],
-  ['略微', 0.7],
-  ['稍微', 0.7],
+  [i18n.t('nlpSentimentEngine.k121'), 1.5],
+  [i18n.t('nlpSentimentEngine.k122'), 1.8],
+  [i18n.t('nlpSentimentEngine.k123'), 1.5],
+  [i18n.t('nlpSentimentEngine.k124'), 1.4],
+  [i18n.t('nlpSentimentEngine.k125'), 1.4],
+  [i18n.t('nlpSentimentEngine.k126'), 1.3],
+  [i18n.t('nlpSentimentEngine.k127'), 1.3],
+  [i18n.t('nlpSentimentEngine.k128'), 1.4],
+  [i18n.t('nlpSentimentEngine.k129'), 1.6],
+  [i18n.t('nlpSentimentEngine.k130'), 1.6],
+  [i18n.t('nlpSentimentEngine.k131'), 1.5],
+  [i18n.t('nlpSentimentEngine.k132'), 0.8],
+  [i18n.t('nlpSentimentEngine.k133'), 0.7],
+  [i18n.t('nlpSentimentEngine.k134'), 0.7],
 ]);
 
 const EN_INTENSIFIERS: Map<string, number> = new Map([
@@ -855,26 +856,26 @@ export class NLPSentimentEngine {
     let summary: string;
 
     if (avgScore > 0.5 && bullishRatio > 0.7) {
-      mood = '极度乐观';
-      summary = `市场情绪极度乐观，${bullishCount}/${totalCount}条信息呈看涨态势，平均得分${avgScore.toFixed(2)}`;
+      mood = i18n.t('nlpSentimentEngine.k135');
+      summary = i18n.t('nlpSentimentEngine.k136');
     } else if (avgScore > 0.2 && bullishRatio > 0.5) {
-      mood = '乐观';
-      summary = `市场情绪偏乐观，${bullishCount}/${totalCount}条信息呈看涨态势，平均得分${avgScore.toFixed(2)}`;
+      mood = i18n.t('nlpSentimentEngine.k137');
+      summary = i18n.t('nlpSentimentEngine.k138');
     } else if (avgScore > 0.05) {
-      mood = '谨慎乐观';
-      summary = `市场情绪谨慎乐观，看涨(${bullishCount})略多于看跌(${bearishCount})，平均得分${avgScore.toFixed(2)}`;
+      mood = i18n.t('nlpSentimentEngine.k139');
+      summary = i18n.t('nlpSentimentEngine.k140');
     } else if (avgScore < -0.5 && bearishRatio > 0.7) {
-      mood = '极度悲观';
-      summary = `市场情绪极度悲观，${bearishCount}/${totalCount}条信息呈看跌态势，平均得分${avgScore.toFixed(2)}`;
+      mood = i18n.t('nlpSentimentEngine.k141');
+      summary = i18n.t('nlpSentimentEngine.k142');
     } else if (avgScore < -0.2 && bearishRatio > 0.5) {
-      mood = '悲观';
-      summary = `市场情绪偏悲观，${bearishCount}/${totalCount}条信息呈看跌态势，平均得分${avgScore.toFixed(2)}`;
+      mood = i18n.t('nlpSentimentEngine.k143');
+      summary = i18n.t('nlpSentimentEngine.k144');
     } else if (avgScore < -0.05) {
-      mood = '谨慎悲观';
-      summary = `市场情绪谨慎悲观，看跌(${bearishCount})略多于看涨(${bullishCount})，平均得分${avgScore.toFixed(2)}`;
+      mood = i18n.t('nlpSentimentEngine.k145');
+      summary = i18n.t('nlpSentimentEngine.k146');
     } else {
-      mood = '中性';
-      summary = `市场情绪中性，看涨(${bullishCount})、中性(${neutralCount})、看跌(${bearishCount})分布均匀，平均得分${avgScore.toFixed(2)}`;
+      mood = i18n.t('nlpSentimentEngine.k147');
+      summary = i18n.t('nlpSentimentEngine.k148');
     }
 
     // Confidence: based on consensus (how much results agree)

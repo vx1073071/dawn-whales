@@ -191,7 +191,7 @@ const DataExportPage: React.FC = () => {
       fmt: ExportFormat,
     ): Promise<ExportApiResponse> => {
       try {
-        const api = window.api?.export;
+        const api = (window.api as any)?.export;
         if (!api) {
           return { success: false, error: 'Bridge API 不可用' };
         }
@@ -206,7 +206,7 @@ const DataExportPage: React.FC = () => {
         }
         return await fn(target, filters);
       } catch (err: unknown) {
-        return { success: false, error: err?.message || '未知错误' };
+        return { success: false, error: (err as any)?.message || '未知错误' };
       }
     },
     [filters],
@@ -215,13 +215,13 @@ const DataExportPage: React.FC = () => {
   const callBatchApi = useCallback(
     async (payload: BatchExportPayload): Promise<ExportApiResponse> => {
       try {
-        const api = window.api?.export;
+        const api = (window.api as any)?.export;
         if (!api || typeof api.batch !== 'function') {
           return { success: false, error: 'Batch API 不可用' };
         }
         return await api.batch(payload);
       } catch (err: unknown) {
-        return { success: false, error: err?.message || '批量导出失败' };
+        return { success: false, error: (err as any)?.message || '批量导出失败' };
       }
     },
     [],
@@ -229,13 +229,13 @@ const DataExportPage: React.FC = () => {
 
   const callSummaryApi = useCallback(async (): Promise<ExportApiResponse> => {
     try {
-      const api = window.api?.export;
+      const api = (window.api as any)?.export;
       if (!api || typeof api.summaryReport !== 'function') {
         return { success: false, error: 'Summary API 不可用' };
       }
       return await api.summaryReport();
     } catch (err: unknown) {
-      return { success: false, error: err?.message || '生成报告失败' };
+      return { success: false, error: (err as any)?.message || '生成报告失败' };
     }
   }, []);
 
@@ -316,7 +316,7 @@ const DataExportPage: React.FC = () => {
   // ─── Open folder ──────────────────────────────────────────────────────────
 
   const handleOpenFolder = useCallback((filePath: string) => {
-    const api = window.api?.shell;
+    const api = (window.api as any)?.shell;
     if (api && typeof api.showItemInFolder === 'function') {
       api.showItemInFolder(filePath);
     } else if (api && typeof api.openPath === 'function') {
