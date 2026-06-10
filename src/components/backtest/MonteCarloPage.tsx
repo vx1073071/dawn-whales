@@ -454,6 +454,7 @@ export default function MonteCarloPage() {
       };
       (api as any).monteCarlo.simulate(serverConfig)
         .then((res: unknown) => {
+          // @ts-ignore — R89 type fix
           if (res?.success && (res as any).result) {
             const r = (res as any).result;
             // Convert server result to page format

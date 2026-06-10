@@ -3,7 +3,6 @@
 // Phase 4.2: PriceCondition evaluate + cooldown + maxTriggersPerDay
 
 import {
-import { generateId } from '../utils/id';
   ConditionRule,
   Condition,
   PriceCondition,
@@ -11,6 +10,7 @@ import { generateId } from '../utils/id';
   MarketSnapshot,
   TriggerEvent,
 } from '../../types/condition.js';
+import { generateId } from '../utils/id';
 
 
 function isPriceCondition(c: Condition): c is PriceCondition {

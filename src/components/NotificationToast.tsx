@@ -31,7 +31,7 @@ export default function NotificationToast() {
     // Listen for IPC notifications
     if (typeof window !== 'undefined' && window.api?.on) {
       window.api.on('notification', (data: Record<string, unknown>) => {
-        notify((data.type as Toast['type']) || 'info', data.message || '');
+        notify((data.type as Toast['type']) || 'info', String(data.message || ''));
       });
       window.api.on('strategy-signal', (data: Record<string, unknown>) => {
         notify('info', `📡 ${data.strategyName}: ${data.signal} ${data.symbol} @ $${Number(data.price).toFixed(2)} — ${data.reason}`);

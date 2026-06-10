@@ -16,11 +16,12 @@ export default function TradeAlertPanel() {
 
   useEffect(() => {
     const handler = (data: unknown) => {
+      const d = data as any;
       setAlerts((prev) => [{
-        id: data?.id || String(Date.now()),
-        type: data?.type || 'price',
-        symbol: data?.symbol || '',
-        message: data?.message || '',
+        id: d?.id || String(Date.now()),
+        type: d?.type || 'price',
+        symbol: d?.symbol || '',
+        message: d?.message || '',
         triggeredAt: new Date().toISOString(),
         read: false,
       }, ...prev].slice(0, 50));

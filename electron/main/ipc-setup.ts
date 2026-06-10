@@ -20,7 +20,6 @@ import { z } from 'zod';
 import { WalkForwardEngine } from '../engine/backtest/walk-forward';
 import { ParameterScanner } from '../engine/portfolio/parameter-scanner';
 import { validate,
-import i18n from '../../src/i18n';
   BrokerSwitchSchema,
   BrokerAddSchema,
   StrategyCreateSchema,
@@ -36,6 +35,7 @@ import i18n from '../../src/i18n';
   GreeksPortfolioSchema,
   StrategyOptimizeSchema,
 } from '../ipc-schemas';
+import i18n from '../../src/i18n';
 
 const execAsync = promisify(exec);
 

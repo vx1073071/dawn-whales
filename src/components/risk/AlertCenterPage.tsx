@@ -249,7 +249,7 @@ export default function AlertCenterPage() {
     });
 
     return () => {
-      if (typeof unsubscribe === 'function') unsubscribe();
+      if (typeof unsubscribe === 'function') (unsubscribe as Function)();
     };
   }, [api]);
 

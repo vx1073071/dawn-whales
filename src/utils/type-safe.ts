@@ -47,7 +47,7 @@ export function safeGet<T>(obj: unknown, path: string[], fallback: T): T {
     let current: unknown = obj;
     for (const key of path) {
       if (current == null) return fallback;
-      current = current[key as any];
+      current = (current as Record<string, unknown>)[key];
     }
     return (current ?? fallback) as any;
   } catch {

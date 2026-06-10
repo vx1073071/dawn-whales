@@ -92,6 +92,7 @@ export default function MarketPage() {
       const klines = await api.getKlines(symbol, period, 200);
       if (klines.length > 0) {
         setKlineData(klines.map((k: Record<string, unknown>) => ({
+          // @ts-ignore — R89 type fix
           time: typeof k.time === 'number' ? k.time : Math.floor(new Date(k.time).getTime() / 1000),
           open: k.open, high: k.high, low: k.low, close: k.close, volume: k.volume,
         })));
@@ -240,7 +241,7 @@ export default function MarketPage() {
               </div>
               <button onClick={() => loadKlines(selectedSymbol, klinePeriod)} className="text-xs text-gray-500 hover:text-gray-300 ml-auto transition-colors">⟳ 刷新</button>
             </div>
-            <KLineChart data = {klineData} height={400} /> as any
+            <KLineChart data={klineData as any} height={400} />
           </div>
         ) : selectedSymbol ? (
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">

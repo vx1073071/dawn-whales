@@ -3,12 +3,11 @@
 // Provides timeline view of market conditions and strategy performance
 
 import type { 
-import log from 'electron-log';
-
   Strategy, 
   BacktestResult, 
   RiskMetrics 
 } from '../../types';
+import log from 'electron-log';
 
 export interface DataSnapshot {
   id: string;

@@ -316,15 +316,15 @@ export default function BacktestComparisonPage() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm font-semibold text-white">净值曲线对比</h2>
           <div className="flex gap-1">
-            {(['equity', 'monthly'] as const).map((t) => (
+            {(['equity', 'monthly'] as const).map((ct) => (
               <button
-                key={t}
-                onClick={() => setChartType(t)}
+                key={ct}
+                onClick={() => setChartType(ct)}
                 className={`text-xs px-3 py-1 rounded-lg transition-colors ${
-                  chartType === t ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-500 hover:text-gray-300'
+                  chartType === ct ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-500 hover:text-gray-300'
                 }`}
               >
-                {t === 'equity' ? '净值曲线' : t("components.monthlyRet")}
+                {ct === 'equity' ? '净值曲线' : t("components.monthlyRet")}
               </button>
             ))}
           </div>

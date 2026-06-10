@@ -53,55 +53,55 @@ export interface ScreenerResult {
 
 const COLUMN_MAP: Record<string, keyof StockRecord> = {
   // Common
-  i18n.t('stockScreener.k7'): 'code',
-  i18n.t('stockScreener.k8'): 'code',
-  i18n.t('stockScreener.k9'): 'name',
-  i18n.t('stockScreener.k10'): 'name',
-  i18n.t('stockScreener.k11'): 'price',
-  i18n.t('stockScreener.k12'): 'changePct',
-  i18n.t('stockScreener.k13'): 'changeAmt',
-  i18n.t('stockScreener.k14'): 'volume',
-  i18n.t('stockScreener.k15'): 'turnoverRate',
+  [i18n.t('stockScreener.k7')]: 'code',
+  [i18n.t('stockScreener.k8')]: 'code',
+  [i18n.t('stockScreener.k9')]: 'name',
+  [i18n.t('stockScreener.k10')]: 'name',
+  [i18n.t('stockScreener.k11')]: 'price',
+  [i18n.t('stockScreener.k12')]: 'changePct',
+  [i18n.t('stockScreener.k13')]: 'changeAmt',
+  [i18n.t('stockScreener.k14')]: 'volume',
+  [i18n.t('stockScreener.k15')]: 'turnoverRate',
 
   // Valuation
-  i18n.t('stockScreener.k16'): 'pe',
-  i18n.t('stockScreener.k17'): 'pe',
+  [i18n.t('stockScreener.k16')]: 'pe',
+  [i18n.t('stockScreener.k17')]: 'pe',
   'PE': 'pe',
-  i18n.t('stockScreener.k18'): 'pb',
+  [i18n.t('stockScreener.k18')]: 'pb',
   'PB': 'pb',
-  i18n.t('stockScreener.k19'): 'marketCap',
-  i18n.t('stockScreener.k20'): 'marketCap',
+  [i18n.t('stockScreener.k19')]: 'marketCap',
+  [i18n.t('stockScreener.k20')]: 'marketCap',
 
   // Shares
-  i18n.t('stockScreener.k21'): 'totalShares',
-  i18n.t('stockScreener.k22'): 'floatShares',
-  i18n.t('stockScreener.k23'): 'extra', // Will be put in extra
+  [i18n.t('stockScreener.k21')]: 'totalShares',
+  [i18n.t('stockScreener.k22')]: 'floatShares',
+  [i18n.t('stockScreener.k23')]: 'extra', // Will be put in extra
 
   // Sector
-  i18n.t('stockScreener.k24'): 'industry',
-  i18n.t('stockScreener.k25'): 'industry',
-  i18n.t('stockScreener.k26'): 'industry',
+  [i18n.t('stockScreener.k24')]: 'industry',
+  [i18n.t('stockScreener.k25')]: 'industry',
+  [i18n.t('stockScreener.k26')]: 'industry',
 
   // ETF/Fund specific
-  i18n.t('stockScreener.k27'): 'code',
-  i18n.t('stockScreener.k28'): 'name',
-  i18n.t('stockScreener.k29'): 'extra',
-  i18n.t('stockScreener.k30'): 'marketCap',
-  i18n.t('stockScreener.k31'): 'changePct',
+  [i18n.t('stockScreener.k27')]: 'code',
+  [i18n.t('stockScreener.k28')]: 'name',
+  [i18n.t('stockScreener.k29')]: 'extra',
+  [i18n.t('stockScreener.k30')]: 'marketCap',
+  [i18n.t('stockScreener.k31')]: 'changePct',
 
   // Bond specific
-  i18n.t('stockScreener.k32'): 'code',
-  i18n.t('stockScreener.k33'): 'name',
-  i18n.t('stockScreener.k34'): 'name',
-  i18n.t('stockScreener.k35'): 'price',
-  i18n.t('stockScreener.k36'): 'extra',
+  [i18n.t('stockScreener.k32')]: 'code',
+  [i18n.t('stockScreener.k33')]: 'name',
+  [i18n.t('stockScreener.k34')]: 'name',
+  [i18n.t('stockScreener.k35')]: 'price',
+  [i18n.t('stockScreener.k36')]: 'extra',
 
   // Sector/Board specific
-  i18n.t('stockScreener.k37'): 'code',
-  i18n.t('stockScreener.k38'): 'name',
-  i18n.t('stockScreener.k39'): 'extra',
-  i18n.t('stockScreener.k40'): 'extra',
-  i18n.t('stockScreener.k41'): 'extra',
+  [i18n.t('stockScreener.k37')]: 'code',
+  [i18n.t('stockScreener.k38')]: 'name',
+  [i18n.t('stockScreener.k39')]: 'extra',
+  [i18n.t('stockScreener.k40')]: 'extra',
+  [i18n.t('stockScreener.k41')]: 'extra',
 };
 
 // ── Script Paths ───────────────────────────────────────────────────────────

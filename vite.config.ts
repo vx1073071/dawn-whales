@@ -11,6 +11,7 @@ export default defineConfig({
         entry: 'electron/main.ts',
         vite: {
           build: {
+            target: 'node22',
             outDir: 'dist-electron',
             minify: false,
             ssr: true,
@@ -31,6 +32,7 @@ export default defineConfig({
         },
         vite: {
           build: {
+            target: 'node22',
             outDir: 'dist-electron',
             ssr: true,
             rollupOptions: {
@@ -55,6 +57,7 @@ export default defineConfig({
     strictPort: true,
   },
   build: {
+    target: 'es2022',
     outDir: 'dist',
     sourcemap: true,
   },

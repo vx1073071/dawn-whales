@@ -79,7 +79,7 @@ export const MACRO_INDICATORS: TranslationMap = {
     'it': 'Tasso Prime sui Prestiti',
     'de': 'Leitzins für Kredite',
   },
-  i18n.t('i18nData.k18'): {
+  [i18n.t('i18nData.k18')]: {
     'zh-CN': i18n.t('i18nData.k19'),
     'zh-TW': i18n.t('i18nData.k20'),
     'en': 'Unemployment Rate',
@@ -89,7 +89,7 @@ export const MACRO_INDICATORS: TranslationMap = {
     'it': 'Tasso di Disoccupazione',
     'de': 'Arbeitslosenquote',
   },
-  i18n.t('i18nData.k22'): {
+  [i18n.t('i18nData.k22')]: {
     'zh-CN': i18n.t('i18nData.k23'),
     'zh-TW': i18n.t('i18nData.k24'),
     'en': 'Industrial Value Added',
@@ -104,7 +104,7 @@ export const MACRO_INDICATORS: TranslationMap = {
 // ── Industry Names Translation ─────────────────────────────────────────────
 
 export const INDUSTRY_NAMES: TranslationMap = {
-  i18n.t('i18nData.k26'): {
+  [i18n.t('i18nData.k26')]: {
     'zh-CN': i18n.t('i18nData.k27'),
     'zh-TW': i18n.t('i18nData.k28'),
     'en': 'Banking',
@@ -114,7 +114,7 @@ export const INDUSTRY_NAMES: TranslationMap = {
     'it': 'Banca',
     'de': 'Bankwesen',
   },
-  i18n.t('i18nData.k30'): {
+  [i18n.t('i18nData.k30')]: {
     'zh-CN': i18n.t('i18nData.k31'),
     'zh-TW': i18n.t('i18nData.k32'),
     'en': 'Real Estate',
@@ -124,7 +124,7 @@ export const INDUSTRY_NAMES: TranslationMap = {
     'it': 'Immobiliare',
     'de': 'Immobilien',
   },
-  i18n.t('i18nData.k34'): {
+  [i18n.t('i18nData.k34')]: {
     'zh-CN': i18n.t('i18nData.k35'),
     'zh-TW': i18n.t('i18nData.k36'),
     'en': 'Food & Beverage',
@@ -134,7 +134,7 @@ export const INDUSTRY_NAMES: TranslationMap = {
     'it': 'Alimenti e Bevande',
     'de': 'Lebensmittel und Getränke',
   },
-  i18n.t('i18nData.k38'): {
+  [i18n.t('i18nData.k38')]: {
     'zh-CN': i18n.t('i18nData.k39'),
     'zh-TW': i18n.t('i18nData.k40'),
     'en': 'Pharmaceutical & Biotech',
@@ -144,7 +144,7 @@ export const INDUSTRY_NAMES: TranslationMap = {
     'it': 'Farmaceutico e Biotecnologie',
     'de': 'Pharma und Biotechnologie',
   },
-  i18n.t('i18nData.k42'): {
+  [i18n.t('i18nData.k42')]: {
     'zh-CN': i18n.t('i18nData.k43'),
     'zh-TW': i18n.t('i18nData.k44'),
     'en': 'Electronics',
@@ -154,7 +154,7 @@ export const INDUSTRY_NAMES: TranslationMap = {
     'it': 'Elettronica',
     'de': 'Elektronik',
   },
-  i18n.t('i18nData.k46'): {
+  [i18n.t('i18nData.k46')]: {
     'zh-CN': i18n.t('i18nData.k47'),
     'zh-TW': i18n.t('i18nData.k48'),
     'en': 'Computer',
@@ -164,7 +164,7 @@ export const INDUSTRY_NAMES: TranslationMap = {
     'it': 'Informatica',
     'de': 'Computer',
   },
-  i18n.t('i18nData.k49'): {
+  [i18n.t('i18nData.k49')]: {
     'zh-CN': i18n.t('i18nData.k50'),
     'zh-TW': i18n.t('i18nData.k51'),
     'en': 'Telecommunications',
@@ -174,7 +174,7 @@ export const INDUSTRY_NAMES: TranslationMap = {
     'it': 'Telecomunicazioni',
     'de': 'Telekommunikation',
   },
-  i18n.t('i18nData.k53'): {
+  [i18n.t('i18nData.k53')]: {
     'zh-CN': i18n.t('i18nData.k54'),
     'zh-TW': i18n.t('i18nData.k55'),
     'en': 'Automotive',
@@ -189,7 +189,7 @@ export const INDUSTRY_NAMES: TranslationMap = {
 // ── Sentiment Labels Translation ───────────────────────────────────────────
 
 export const SENTIMENT_LABELS: TranslationMap = {
-  i18n.t('i18nData.k57'): {
+  [i18n.t('i18nData.k57')]: {
     'zh-CN': i18n.t('i18nData.k58'),
     'zh-TW': i18n.t('i18nData.k59'),
     'en': 'Extreme Greed',
@@ -199,7 +199,7 @@ export const SENTIMENT_LABELS: TranslationMap = {
     'it': 'Avidità Estrema',
     'de': 'Extreme Gier',
   },
-  i18n.t('i18nData.k61'): {
+  [i18n.t('i18nData.k61')]: {
     'zh-CN': i18n.t('i18nData.k62'),
     'zh-TW': i18n.t('i18nData.k63'),
     'en': 'Greed',
@@ -209,7 +209,7 @@ export const SENTIMENT_LABELS: TranslationMap = {
     'it': 'Avidità',
     'de': 'Gier',
   },
-  i18n.t('i18nData.k65'): {
+  [i18n.t('i18nData.k65')]: {
     'zh-CN': i18n.t('i18nData.k66'),
     'zh-TW': i18n.t('i18nData.k67'),
     'en': 'Neutral',
@@ -219,7 +219,7 @@ export const SENTIMENT_LABELS: TranslationMap = {
     'it': 'Neutro',
     'de': 'Neutral',
   },
-  i18n.t('i18nData.k69'): {
+  [i18n.t('i18nData.k69')]: {
     'zh-CN': i18n.t('i18nData.k70'),
     'zh-TW': i18n.t('i18nData.k71'),
     'en': 'Fear',
@@ -229,7 +229,7 @@ export const SENTIMENT_LABELS: TranslationMap = {
     'it': 'Paura',
     'de': 'Angst',
   },
-  i18n.t('i18nData.k73'): {
+  [i18n.t('i18nData.k73')]: {
     'zh-CN': i18n.t('i18nData.k74'),
     'zh-TW': i18n.t('i18nData.k75'),
     'en': 'Extreme Fear',
@@ -239,7 +239,7 @@ export const SENTIMENT_LABELS: TranslationMap = {
     'it': 'Paura Estrema',
     'de': 'Extreme Angst',
   },
-  i18n.t('i18nData.k77'): {
+  [i18n.t('i18nData.k77')]: {
     'zh-CN': i18n.t('i18nData.k78'),
     'zh-TW': i18n.t('i18nData.k79'),
     'en': 'Bullish',
@@ -249,7 +249,7 @@ export const SENTIMENT_LABELS: TranslationMap = {
     'it': 'Rialzista',
     'de': 'Bullisch',
   },
-  i18n.t('i18nData.k81'): {
+  [i18n.t('i18nData.k81')]: {
     'zh-CN': i18n.t('i18nData.k82'),
     'zh-TW': i18n.t('i18nData.k83'),
     'en': 'Bearish',

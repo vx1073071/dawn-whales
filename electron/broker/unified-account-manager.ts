@@ -6,14 +6,13 @@
 import log from 'electron-log';
 import type { BrokerManager } from './BrokerManager';
 import type {
-import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
-
   IBrokerAdapter,
   AccountInfo,
   FundsInfo,
   PositionInfo,
   PlaceOrderRequest,
 } from './IBrokerAdapter';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
 
 // ── FX Rates (Hardcoded, to USD) ─────────────────────────────────────────────
 
