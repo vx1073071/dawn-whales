@@ -73,7 +73,7 @@ const LEVEL_CONFIG: Record<CreatorLevel, { label: string; icon: string; color: s
 };
 
 const PRICE_RANGES = [
-  { label: '全部', min: 0, max: Infinity },
+  { label: t('components.all'), min: 0, max: Infinity },
   { label: '免费', min: 0, max: 0 },
   { label: '1-50 USDT', min: 1, max: 50 },
   { label: '50-200 USDT', min: 50, max: 200 },
@@ -87,7 +87,7 @@ const SORT_OPTIONS: { key: SortKey; label: string }[] = [
   { key: 'subscribers', label: '订阅最多' },
   { key: 'rating', label: '评分最高' },
   { key: 'newest', label: '最新发布' },
-  { key: 'price', label: '价格' },
+  { key: 'price', label: t('components.price') },
 ];
 
 // ── Mock Data ────────────────────────────────────────────────────────────
@@ -120,7 +120,7 @@ const mockStrategies: StrategyCard[] = [
     creatorId: 'c-05', creatorName: 'VolArb', creatorLevel: 'king', creatorAvatar: '🦅', verified: true,
     symbol: 'SPY', market: 'US', price: 200, subscribers: 2103, rating: 4.7, ratingCount: 289,
     totalReturn: 35.8, sharpe: 3.1, maxDrawdown: 5.2, winRate: 78.4, totalSignals: 1204,
-    tags: ['波动率', '期权', '低相关'], createdAt: '2025-11-05', updatedAt: '2026-06-07',
+    tags: [t('components.volatility'), '期权', '低相关'], createdAt: '2025-11-05', updatedAt: '2026-06-07',
   },
   {
     id: 's-006', name: 'MACD金叉死叉经典', description: '经典MACD信号+成交量过滤，适合新手入门',
@@ -377,7 +377,7 @@ export default function StrategyMarketplace({
       <div className="p-5 border-b border-white/5">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-xl font-bold">策略市场</h2>
+            <h2 className="text-xl font-bold">{t("components.strategyMarketplace")}</h2>
             <p className="text-gray-500 text-xs mt-0.5">发现、购买、加载优质量化策略</p>
           </div>
           <div className="flex items-center gap-2 text-xs text-gray-500">
@@ -467,13 +467,13 @@ export default function StrategyMarketplace({
                 {/* Stats grid */}
                 <div className="grid grid-cols-3 gap-2 mb-3 text-center">
                   <div className="bg-white/[0.03] rounded p-1.5">
-                    <div className="text-xs text-gray-500">收益</div>
+                    <div className="text-xs text-gray-500">{t("components.returnRate")}</div>
                     <div className={`text-sm font-semibold ${s.totalReturn >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                       {s.totalReturn >= 0 ? '+' : ''}{s.totalReturn}%
                     </div>
                   </div>
                   <div className="bg-white/[0.03] rounded p-1.5">
-                    <div className="text-xs text-gray-500">胜率</div>
+                    <div className="text-xs text-gray-500">{t("components.winRate")}</div>
                     <div className="text-sm font-semibold text-gray-200">{s.winRate}%</div>
                   </div>
                   <div className="bg-white/[0.03] rounded p-1.5">
@@ -559,11 +559,11 @@ export default function StrategyMarketplace({
                   <div className="text-lg font-bold text-white">{detailStrategy.sharpe}</div>
                 </div>
                 <div className="p-3 bg-white/[0.03] rounded-lg">
-                  <div className="text-xs text-gray-500">最大回撤</div>
+                  <div className="text-xs text-gray-500">{t("components.maxDrawdown")}</div>
                   <div className="text-lg font-bold text-red-400">{detailStrategy.maxDrawdown}%</div>
                 </div>
                 <div className="p-3 bg-white/[0.03] rounded-lg">
-                  <div className="text-xs text-gray-500">胜率</div>
+                  <div className="text-xs text-gray-500">{t("components.winRate")}</div>
                   <div className="text-lg font-bold text-white">{detailStrategy.winRate}%</div>
                 </div>
               </div>

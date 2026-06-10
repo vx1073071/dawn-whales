@@ -222,12 +222,12 @@ export default function DataQualityMonitorPage() {
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                 <th className="px-4 py-3 text-left">股票</th>
-                <th className="px-4 py-3 text-center">状态</th>
+                <th className="px-4 py-3 text-center">{t("components.status")}</th>
                 <th className="px-4 py-3 text-right">延迟</th>
                 <th className="px-4 py-3 text-right">最后更新</th>
                 <th className="px-4 py-3 text-center">格式</th>
-                <th className="px-4 py-3 text-center">价格</th>
-                <th className="px-4 py-3 text-center">成交量</th>
+                <th className="px-4 py-3 text-center">{t("components.price")}</th>
+                <th className="px-4 py-3 text-center">{t("components.volume")}</th>
                 <th className="px-4 py-3 text-center">时间戳</th>
                 <th className="px-4 py-3 text-center">新鲜度</th>
               </tr>

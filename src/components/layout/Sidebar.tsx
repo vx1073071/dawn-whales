@@ -14,7 +14,7 @@ const navItems: NavItem[] = [
   { id: 'market', icon: '📈', label: '行情中心', section: '交易' },
   { id: 'strategy', icon: '🧠', label: '策略工坊' },
   { id: 'ai', icon: '🐋', label: 'AI 助理' },
-  { id: 'marketplace', icon: '🏪', label: '策略市场' },
+  { id: 'marketplace', icon: '🏪', label: t('components.strategyMarketplace') },
   { id: 'creator', icon: '⭐', label: '创作者中心' },
   { id: 'signals', icon: '📡', label: '信号分析' },
   { id: 'backtest', icon: '🔬', label: '回测报告' },
@@ -24,7 +24,7 @@ const navItems: NavItem[] = [
   { id: 'risk', icon: '🛡️', label: '风控面板' },
   { id: 'riskviz', icon: '📉', label: '风险可视化' },
   { id: 'alert', icon: '🔔', label: '告警中心' },
-  { id: 'settings', icon: '⚙️', label: '系统设置', section: '系统' },
+  { id: 'settings', icon: '⚙️', label: '系统设置', section: t('components.system') },
 ];
 
 interface SidebarProps {

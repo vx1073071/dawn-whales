@@ -71,19 +71,19 @@ export default function DemoCasePage() {
                 <div className="bg-red-500/[0.05] border border-red-500/10 rounded-xl p-4">
                   <div className="text-[10px] text-red-400 mb-2 font-semibold">🔴 优化前 Before</div>
                   <div className="space-y-1 text-xs">
-                    <div className="flex justify-between"><span className="text-gray-500">收益</span><span className="text-red-400">{c.before.return_}%</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">最大回撤</span><span className="text-red-400">{c.before.drawdown}%</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">夏普</span><span className="text-gray-400">{c.before.sharpe}</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">胜率</span><span className="text-gray-400">{c.before.winRate}%</span></div>
+                    <div className="flex justify-between"><span className="text-gray-500">{t("components.returnRate")}</span><span className="text-red-400">{c.before.return_}%</span></div>
+                    <div className="flex justify-between"><span className="text-gray-500">{t("components.maxDrawdown")}</span><span className="text-red-400">{c.before.drawdown}%</span></div>
+                    <div className="flex justify-between"><span className="text-gray-500">{t("components.sharpeRatio")}</span><span className="text-gray-400">{c.before.sharpe}</span></div>
+                    <div className="flex justify-between"><span className="text-gray-500">{t("components.winRate")}</span><span className="text-gray-400">{c.before.winRate}%</span></div>
                   </div>
                 </div>
                 <div className="bg-green-500/[0.05] border border-green-500/10 rounded-xl p-4">
                   <div className="text-[10px] text-green-400 mb-2 font-semibold">🟢 优化后 After</div>
                   <div className="space-y-1 text-xs">
-                    <div className="flex justify-between"><span className="text-gray-500">收益</span><span className="text-green-400 font-bold">+{c.after.return_}%</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">最大回撤</span><span className="text-green-400">{c.after.drawdown}%</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">夏普</span><span className="text-green-400 font-bold">{c.after.sharpe}</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">胜率</span><span className="text-green-400">{c.after.winRate}%</span></div>
+                    <div className="flex justify-between"><span className="text-gray-500">{t("components.returnRate")}</span><span className="text-green-400 font-bold">+{c.after.return_}%</span></div>
+                    <div className="flex justify-between"><span className="text-gray-500">{t("components.maxDrawdown")}</span><span className="text-green-400">{c.after.drawdown}%</span></div>
+                    <div className="flex justify-between"><span className="text-gray-500">{t("components.sharpeRatio")}</span><span className="text-green-400 font-bold">{c.after.sharpe}</span></div>
+                    <div className="flex justify-between"><span className="text-gray-500">{t("components.winRate")}</span><span className="text-green-400">{c.after.winRate}%</span></div>
                   </div>
                 </div>
               </div>

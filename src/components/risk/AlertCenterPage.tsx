@@ -210,7 +210,7 @@ export default function AlertCenterPage() {
       setStats(alertStats);
       setLastUpdate(new Date());
       setError(null);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err?.message || 'Failed to fetch alerts');
       setAlerts(MOCK_ALERTS);
       setStats(MOCK_STATS);
@@ -262,7 +262,7 @@ export default function AlertCenterPage() {
       setAlerts((prev) =>
         prev.map((a) => (a.id === id ? { ...a, acknowledged: true } : a))
       );
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to acknowledge alert:', err);
     } finally {
       setAcknowledging((prev) => {
@@ -279,7 +279,7 @@ export default function AlertCenterPage() {
         await api.monitor.acknowledgeAll();
       }
       setAlerts((prev) => prev.map((a) => ({ ...a, acknowledged: true })));
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to acknowledge all:', err);
     }
   };

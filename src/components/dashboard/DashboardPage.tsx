@@ -134,7 +134,7 @@ export default function DashboardPage() {
         const pos = await getPositions(accs[0].accountId);
         if (pos && pos.length > 0) {
           const totalMV = pos.reduce((s: number, p: any) => s + (p.marketValue || 0), 0);
-          setPositions(pos.map((p: any) => ({
+          setPositions(pos.map((p: unknown) => ({
             code: p.code,
             name: p.name || p.code,
             qty: p.qty,
@@ -150,7 +150,7 @@ export default function DashboardPage() {
       const strats = await getAllStrategies();
       if (strats) {
         setStrategies(
-          strats.filter((s: any) => s.status === 'running').slice(0, 5).map((s: any) => ({
+          strats.filter((s: unknown) => s.status === 'running').slice(0, 5).map((s: unknown) => ({
             id: s.id,
             name: s.name || '未命名',
             status: 'running' as const,
@@ -174,7 +174,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="p-6 flex items-center justify-center h-64">
-        <div className="text-gray-500">加载中...</div>
+        <div className="text-gray-500">{t("components.loading")}</div>
       </div>
     );
   }

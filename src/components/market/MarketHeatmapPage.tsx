@@ -91,7 +91,7 @@ export default function MarketHeatmapPage() {
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🗺️ 板块热力图</h1>
           <p className="text-gray-400 text-sm">
-            {lastUpdate ? `最后更新: ${lastUpdate.toLocaleTimeString('zh-CN')}` : '加载中...'}
+            {lastUpdate ? `最后更新: ${lastUpdate.toLocaleTimeString('zh-CN')}` : t('components.loading')}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -176,8 +176,8 @@ export default function MarketHeatmapPage() {
               <thead>
                 <tr className="text-gray-500 border-b border-white/5">
                   <th className="text-left px-4 py-2">排名</th>
-                  <th className="text-left px-4 py-2">板块</th>
-                  <th className="text-right px-4 py-2">涨跌幅</th>
+                  <th className="text-left px-4 py-2">{t("components.sector")}</th>
+                  <th className="text-right px-4 py-2">{t("components.priceChange")}</th>
                   <th className="text-right px-4 py-2">涨跌额</th>
                   <th className="text-left px-4 py-2">领涨股</th>
                 </tr>

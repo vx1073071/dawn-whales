@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 /**
  * J-68-01 [P0] IBKR Broker Adapter — IB Gateway API (tws-api)
  *
@@ -205,11 +206,11 @@ export class IBKRBrokerAdapter implements IExecutionBroker {
     price?: number,
   ): Promise<{ orderId: string; status: string }> {
     if (!this.connection.isConnected) {
-      throw new Error("IBKR not connected");
+      throw new EngineError("IBKR not connected", { code: ErrorCode.ENGINE_BROKER_ERROR });
     }
 
     if (quantity <= 0) {
-      throw new Error("Quantity must be positive");
+      throw new EngineError("Quantity must be positive", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     }
 
     const orderId = this.connection.getNextOrderId();
@@ -255,7 +256,7 @@ export class IBKRBrokerAdapter implements IExecutionBroker {
     { symbol: string; quantity: number; avgPrice: number }[]
   > {
     if (!this.connection.isConnected) {
-      throw new Error("IBKR not connected");
+      throw new EngineError("IBKR not connected", { code: ErrorCode.ENGINE_BROKER_ERROR });
     }
 
     const result: { symbol: string; quantity: number; avgPrice: number }[] =
@@ -276,7 +277,7 @@ export class IBKRBrokerAdapter implements IExecutionBroker {
     frozenCash: number;
   }> {
     if (!this.connection.isConnected) {
-      throw new Error("IBKR not connected");
+      throw new EngineError("IBKR not connected", { code: ErrorCode.ENGINE_BROKER_ERROR });
     }
 
     // In production: reqAccountSummary from IB API
@@ -352,7 +353,7 @@ export class IBKRBrokerAdapter implements IExecutionBroker {
   }> {
     const order = this.orders.get(orderId);
     if (!order) {
-      throw new Error(`Order ${orderId} not found`);
+      throw new EngineError("`Order ${orderId} not found`", { code: ErrorCode.ENGINE_ORDER_REJECTED });
     }
 
     order.status = "Filled";
@@ -447,7 +448,7 @@ export class BrokerRegistry {
 
   setActive(type: BrokerType): void {
     if (!this.brokers.has(type)) {
-      throw new Error(`Broker ${type} not registered`);
+      throw new EngineError("`Broker ${type} not registered`", { code: ErrorCode.ENGINE_BROKER_ERROR });
     }
     this.active = type;
   }
@@ -455,7 +456,7 @@ export class BrokerRegistry {
   getActive(): IExecutionBroker {
     const entry = this.brokers.get(this.active);
     if (!entry) {
-      throw new Error(`Active broker ${this.active} not found`);
+      throw new EngineError("`Active broker ${this.active} not found`", { code: ErrorCode.ENGINE_BROKER_ERROR });
     }
     return entry.broker;
   }

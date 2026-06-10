@@ -24,7 +24,7 @@ export default function QuickOrderPanel({ symbol, price }: { symbol?: string; pr
         orderType,
       });
       setResult({ success: res?.success, msg: res?.success ? t('trading.orderSubmitted') : (res?.error || t('common.unknownError')) });
-    } catch (e: any) {
+    } catch (e: unknown) {
       setResult({ success: false, msg: e?.message || t('common.loadingFailed') });
     } finally {
       setSubmitting(false);

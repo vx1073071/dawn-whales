@@ -56,7 +56,7 @@ function P2POrdersTab() {
             background: filter === f ? '#6366F118' : 'transparent', color: filter === f ? '#818CF8' : '#6B7280',
             fontSize: 12, cursor: 'pointer',
           }}>
-            {f === 'all' ? '全部' : f === 'active' ? '交易中' : f === 'locked' ? '冻结中' : f === 'completed' ? '已完成' : '争议中'}
+            {f === 'all' ? t('components.all') : f === 'active' ? '交易中' : f === 'locked' ? '冻结中' : f === 'completed' ? '已完成' : '争议中'}
           </button>
         ))}
       </div>
@@ -67,11 +67,11 @@ function P2POrdersTab() {
             <tr style={{ borderBottom: '1px solid #374151' }}>
               <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>ID</th>
               <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>交易方</th>
-              <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>数量</th>
+              <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>{t("components.quantity")}</th>
               <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>单价</th>
               <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>总额</th>
-              <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>状态</th>
-              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>时间</th>
+              <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>{t("components.status")}</th>
+              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{t("components.time")}</th>
             </tr>
           </thead>
           <tbody>
@@ -142,8 +142,8 @@ function BlacklistTab() {
               <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>原因</th>
               <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>操作人</th>
               <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>添加时间</th>
-              <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>状态</th>
-              <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>操作</th>
+              <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>{t("components.status")}</th>
+              <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>{t("components.actions")}</th>
             </tr>
           </thead>
           <tbody>

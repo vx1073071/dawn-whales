@@ -186,7 +186,7 @@ export default function BacktestPerformancePanel({
               <table className="w-full text-xs">
                 <thead>
                   <tr className="bg-white/[0.02] text-gray-500">
-                    <th className="text-left px-4 py-2 font-medium">策略</th>
+                    <th className="text-left px-4 py-2 font-medium">{t("components.strategy")}</th>
                     <th className="text-left px-4 py-2 font-medium">标的</th>
                     <th className="text-left px-4 py-2 font-medium">周期</th>
                     <th className="text-right px-4 py-2 font-medium">优化前</th>
@@ -280,10 +280,10 @@ export default function BacktestPerformancePanel({
                 <tr className="bg-white/[0.02] text-gray-500">
                   <th className="text-center px-3 py-2 font-medium w-10">#</th>
                   <th className="text-left px-3 py-2 font-medium">参数 Params</th>
-                  <th className="text-right px-3 py-2 font-medium">夏普</th>
-                  <th className="text-right px-3 py-2 font-medium">收益</th>
+                  <th className="text-right px-3 py-2 font-medium">{t("components.sharpeRatio")}</th>
+                  <th className="text-right px-3 py-2 font-medium">{t("components.returnRate")}</th>
                   <th className="text-right px-3 py-2 font-medium">回撤</th>
-                  <th className="text-right px-3 py-2 font-medium">胜率</th>
+                  <th className="text-right px-3 py-2 font-medium">{t("components.winRate")}</th>
                   <th className="text-right px-3 py-2 font-medium">交易</th>
                 </tr>
               </thead>

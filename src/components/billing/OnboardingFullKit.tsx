@@ -98,7 +98,7 @@ function StepIndicator({ current }: { current: number }) {
 
 function IndicatorCardC({ card }: { card: IndicatorCard }) {
   const catColors: Record<string, string> = { trend: '#3B82F6', momentum: '#10B981', volatility: '#F59E0B', volume: '#EF4444' };
-  const catLabels: Record<string, string> = { trend: '趋势', momentum: '动量', volatility: '波动', volume: '成交量' };
+  const catLabels: Record<string, string> = { trend: t('components.trend'), momentum: '动量', volatility: '波动', volume: t('components.volume') };
 
   return (
     <div style={{
@@ -222,10 +222,10 @@ function ConflictRuleCard({ rule }: { rule: ConflictRule }) {
 
 function HealthCheckDemo() {
   const checks = [
-    { label: '胜率', value: '61%', verdict: '✅ 良好', color: '#10B981' },
-    { label: '最大回撤', value: '-34%', verdict: '⚠️ 偏高', color: '#F59E0B' },
+    { label: t('components.winRate'), value: '61%', verdict: '✅ 良好', color: '#10B981' },
+    { label: t('components.maxDrawdown'), value: '-34%', verdict: '⚠️ 偏高', color: '#F59E0B' },
     { label: '夏普比率', value: '1.42', verdict: '✅ 优秀', color: '#10B981' },
-    { label: '盈亏比', value: '2.3:1', verdict: '✅ 良好', color: '#10B981' },
+    { label: t('components.profitLossRatio'), value: '2.3:1', verdict: '✅ 良好', color: '#10B981' },
     { label: '最大持仓', value: 'HK$68万', verdict: '⚠️ 建议不超总资金20%', color: '#F59E0B' },
     { label: '连续亏损', value: '4次', verdict: '✅ 可接受', color: '#10B981' },
   ];

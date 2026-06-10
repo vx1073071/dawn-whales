@@ -265,7 +265,7 @@ export default function SignalPerformancePanel({
             <div className="text-[10px] text-gray-600">{perf.closedSignals} 已平仓</div>
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4 text-center">
-            <div className="text-[10px] text-gray-600 mb-1">盈亏比</div>
+            <div className="text-[10px] text-gray-600 mb-1">{t("components.profitLossRatio")}</div>
             <div className={`text-xl font-bold ${perf.profitFactor >= 1.5 ? 'text-green-400' : perf.profitFactor >= 1 ? 'text-yellow-400' : 'text-red-400'}`}>
               {perf.profitFactor.toFixed(2)}
             </div>
@@ -353,7 +353,7 @@ export default function SignalPerformancePanel({
               {(['all', 'WIN', 'LOSS', 'PENDING'] as const).map((f) => (
                 <button key={f} onClick={() => setSignalFilter(f)}
                         className={`px-2.5 py-1 rounded text-xs transition-colors ${signalFilter === f ? 'bg-white/[0.06] text-white' : 'text-gray-500 hover:text-gray-300'}`}>
-                  {f === 'all' ? '全部' : f === 'WIN' ? '✅ 盈利' : f === 'LOSS' ? '❌ 亏损' : '⏳ 持仓'}
+                  {f === 'all' ? t('components.all') : f === 'WIN' ? '✅ 盈利' : f === 'LOSS' ? '❌ 亏损' : '⏳ 持仓'}
                 </button>
               ))}
             </div>
@@ -377,7 +377,7 @@ export default function SignalPerformancePanel({
                     </div>
                     {/* Direction */}
                     <span className={`text-xs font-semibold w-10 flex-shrink-0 ${sig.direction === 'BUY' ? 'text-green-400' : 'text-red-400'}`}>
-                      {sig.direction === 'BUY' ? '做多' : '做空'}
+                      {sig.direction === 'BUY' ? t('components.long') : t('components.short')}
                     </span>
                     {/* Price */}
                     <div className="text-xs text-gray-400 w-24 flex-shrink-0">
@@ -419,7 +419,7 @@ export default function SignalPerformancePanel({
             })}
             {filteredSignals.length === 0 && (
               <div className="p-10 text-center text-gray-600 text-sm">
-                暂无{signalFilter === 'WIN' ? '盈利' : signalFilter === 'LOSS' ? '亏损' : '持仓'}信号
+                暂无{signalFilter === 'WIN' ? '盈利' : signalFilter === 'LOSS' ? '亏损' : t('components.positions')}信号
               </div>
             )}
           </div>

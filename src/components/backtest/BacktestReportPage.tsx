@@ -102,7 +102,7 @@ export default function BacktestReportPage() {
   function exportCSV() {
     if (!result) return;
     const rows = [
-      ['日期', '方向', '入场价', '出场价', '盈亏', '盈亏%', '持有天数'],
+      [t('components.date'), t('components.direction'), '入场价', '出场价', '盈亏', '盈亏%', '持有天数'],
       ...result.trades.map((t) => [
         t.entryDate, t.side, t.entryPrice.toFixed(2), t.exitPrice.toFixed(2),
         t.pnl.toFixed(2), (t.pnlPercent * 100).toFixed(2) + '%', t.holdingDays,
@@ -271,7 +271,7 @@ export default function BacktestReportPage() {
         <div className="bg-[#12121a] rounded-xl border border-white/5 p-6">
           <div className="text-lg font-medium text-white mb-4">选择策略进行回测</div>
           <div className="grid grid-cols-2 gap-3">
-            {strategies.map((s: any) => (
+            {strategies.map((s: unknown) => (
               <button
                 key={s.id}
                 onClick={() => setSelectedId(s.id)}
@@ -294,7 +294,7 @@ export default function BacktestReportPage() {
           <div className="text-lg font-medium text-white mb-4">回测配置</div>
           <div className="space-y-4">
             <div>
-              <label className="text-sm text-gray-400 block mb-1">策略</label>
+              <label className="text-sm text-gray-400 block mb-1">{t("components.strategy")}</label>
               <div className="text-white">{strategies.find((s) => s.id === selectedId)?.name}</div>
             </div>
             <div>
@@ -351,12 +351,12 @@ export default function BacktestReportPage() {
             <div className="space-y-4">
               <div className="grid grid-cols-4 gap-3">
                 {[
-                  ['总收益', `${(result.totalReturn * 100).toFixed(2)}%`, result.totalReturn >= 0 ? 'text-emerald-400' : 'text-red-400'],
+                  [t('components.totalReturn'), `${(result.totalReturn * 100).toFixed(2)}%`, result.totalReturn >= 0 ? 'text-emerald-400' : 'text-red-400'],
                   ['年化收益', `${(result.annualizedReturn * 100).toFixed(2)}%`, result.annualizedReturn >= 0 ? 'text-emerald-400' : 'text-red-400'],
-                  ['最大回撤', `${(result.maxDrawdown * 100).toFixed(2)}%`, 'text-red-400'],
+                  [t('components.maxDrawdown'), `${(result.maxDrawdown * 100).toFixed(2)}%`, 'text-red-400'],
                   ['夏普比率', result.sharpeRatio.toFixed(2), result.sharpeRatio >= 1 ? 'text-emerald-400' : result.sharpeRatio >= 0 ? 'text-yellow-400' : 'text-red-400'],
-                  ['胜率', `${(result.winRate * 100).toFixed(1)}%`, result.winRate >= 0.5 ? 'text-emerald-400' : 'text-red-400'],
-                  ['盈亏比', result.profitLossRatio.toFixed(2), result.profitLossRatio >= 1.5 ? 'text-emerald-400' : 'text-yellow-400'],
+                  [t('components.winRate'), `${(result.winRate * 100).toFixed(1)}%`, result.winRate >= 0.5 ? 'text-emerald-400' : 'text-red-400'],
+                  [t('components.profitLossRatio'), result.profitLossRatio.toFixed(2), result.profitLossRatio >= 1.5 ? 'text-emerald-400' : 'text-yellow-400'],
                   ['总交易', `${result.totalTrades}`, 'text-white'],
                   ['最终资金', `$${result.finalCapital.toFixed(0)}`, result.finalCapital >= result.initialCapital ? 'text-emerald-400' : 'text-red-400'],
                 ].map(([label, value, color], i) => (
@@ -423,7 +423,7 @@ export default function BacktestReportPage() {
                         } else {
                           alert(`❌ 创建失败: ${resp?.error || '未知错误'}`);
                         }
-                      } catch (err: any) {
+                      } catch (err: unknown) {
                         alert('❌ CronScheduler 尚未初始化，请先启动应用');
                       }
                     }}
@@ -468,7 +468,7 @@ export default function BacktestReportPage() {
                       <th className="px-4 py-3 text-left cursor-pointer hover:text-gray-300" onClick={() => handleSort('entryDate')}>
                         入场日期{sortIcon('entryDate')}
                       </th>
-                      <th className="px-4 py-3 text-left">方向</th>
+                      <th className="px-4 py-3 text-left">{t("components.direction")}</th>
                       <th className="px-4 py-3 text-right">入场价</th>
                       <th className="px-4 py-3 text-left cursor-pointer hover:text-gray-300" onClick={() => handleSort('exitDate')}>
                         出场日期{sortIcon('exitDate')}

@@ -10,8 +10,8 @@ const FEATURES = [
   { icon: '🤖', title: '4Agent AI信号', desc: '基本面·技术面·情绪面·宏观面 四引擎协同 · 真实数据源', highlight: 'useMock=false' },
   { icon: '📈', title: 'K线图表 TV级', desc: '蜡烛图+成交量+MA叠加+9周期+Crosehair+滚轮缩放+<100ms渲染', highlight: '对标TradingView' },
   { icon: '📐', title: 'AI画线+形态', desc: '6画线工具 · 22种K线形态 · 半透明标注 · 置信度评分 · 可修正', highlight: 'AI识别' },
-  { icon: '💬', title: '策略社区', desc: '评论/点赞/关注/动态流/通知/创作者主页 · 策略分享与讨论', highlight: 'WebSocket实时' },
-  { icon: '🎓', title: '新手引导', desc: '5步交互教程 · 8项指标卡片 · 4个因子故事 · 回测健康检查', highlight: '30秒上手' },
+  { icon: '💬', title: t('components.strategyCommunity'), desc: '评论/点赞/关注/动态流/通知/创作者主页 · 策略分享与讨论', highlight: 'WebSocket实时' },
+  { icon: '🎓', title: t('components.onboarding'), desc: '5步交互教程 · 8项指标卡片 · 4个因子故事 · 回测健康检查', highlight: '30秒上手' },
   { icon: '🎨', title: '私行级UI', desc: '深色+金色主题 · 深浅双模式切换 · 5语言 · 友好错误文案', highlight: '8px网格' },
   { icon: '🛡️', title: '风控引擎', desc: '日亏损上限·单笔仓位限制·凯利公式·保证金监控·熔断机制', highlight: '7项检查' },
   { icon: '🔔', title: '监控告警', desc: 'SLO仪表板·P95延迟·错误率·多渠道通知·静默规则', highlight: '分钟级聚合' },
@@ -26,8 +26,8 @@ const TESTIMONIALS = [
 
 const PRICING_TIERS = [
   { name: 'Free', price: '0', period: '/月', features: ['7市场行情', '5个策略模板', '3年回测', '基础指标', '模拟交易'], cta: '免费开始', color: '#6B7280' },
-  { name: 'Pro', price: '29', period: '/月', features: ['全部30+因子', '全部20+模板', 'AI信号 (4Agent)', 'AI画线+形态', '策略社区', '邮件通知', '深色模式'], cta: '开始试用', color: '#6366F1', popular: true },
-  { name: 'Enterprise', price: '99', period: '/月', features: ['全部Pro功能', 'AI助手 (问诊/NL/简报/术语)', '每日简报', '自然语言创建', 'API接入', '多券商实盘', '优先支持'], cta: '联系销售', color: '#D4A853' },
+  { name: 'Pro', price: '29', period: '/月', features: ['全部30+因子', '全部20+模板', 'AI信号 (4Agent)', 'AI画线+形态', t('components.strategyCommunity'), '邮件通知', t('components.darkMode')], cta: '开始试用', color: '#6366F1', popular: true },
+  { name: 'Enterprise', price: '99', period: '/月', features: ['全部Pro功能', 'AI助手 (问诊/NL/简报/术语)', t('components.dailyDigest'), '自然语言创建', 'API接入', '多券商实盘', '优先支持'], cta: '联系销售', color: '#D4A853' },
 ];
 
 // ── Sub-components ──
@@ -66,7 +66,7 @@ function HeroSection() {
       
       {/* Stats */}
       <div style={{ display: 'flex', gap: 32, justifyContent: 'center', marginBottom: 36 }}>
-        {[{ n: '7', l: '市场' }, { n: '30+', l: '因子' }, { n: '22', l: 'AI形态' }, { n: '25项', l: '新手引导' }, { n: '5', l: '语言' }].map(s => (
+        {[{ n: '7', l: t('components.markets') }, { n: '30+', l: t('components.factor') }, { n: '22', l: 'AI形态' }, { n: '25项', l: t('components.onboarding') }, { n: '5', l: t('components.language') }].map(s => (
           <div key={s.l}>
             <div style={{ fontSize: 28, fontWeight: 800, color: '#D4A853' }}>{s.n}</div>
             <div style={{ fontSize: 12, color: '#6B7280' }}>{s.l}</div>

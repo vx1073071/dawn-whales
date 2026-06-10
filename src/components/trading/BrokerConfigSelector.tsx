@@ -81,7 +81,7 @@ export default function BrokerConfigSelector({ onBrokerChange, onConnectionChang
       }
 
       setLoading(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[BrokerSelector] Load error:', err);
       setError(err.message || 'Failed to load broker status');
       setLoading(false);
@@ -112,7 +112,7 @@ export default function BrokerConfigSelector({ onBrokerChange, onConnectionChang
         const accs: AccountInfo[] = await api.broker.getAccounts();
         setAccounts(accs);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[BrokerSelector] Switch error:', err);
       setError(err.message || 'Failed to switch broker');
     }
@@ -147,7 +147,7 @@ export default function BrokerConfigSelector({ onBrokerChange, onConnectionChang
         const accs: AccountInfo[] = await api.broker.getAccounts();
         setAccounts(accs);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[BrokerSelector] Connection error:', err);
       setError(err.message || 'Connection failed');
     }

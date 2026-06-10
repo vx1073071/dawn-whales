@@ -305,7 +305,7 @@ export const MultiTimeframePanel: React.FC<MultiTimeframePanelProps> = ({
             <span className="text-2xl">{SIGNAL_ICONS[signal.fusedDirection]}</span>
             <div>
               <div className="text-lg font-bold text-white">
-                {signal.fusedDirection === 'BUY' ? '做多' : signal.fusedDirection === 'SELL' ? '做空' : '观望'}
+                {signal.fusedDirection === 'BUY' ? t('components.long') : signal.fusedDirection === 'SELL' ? t('components.short') : '观望'}
               </div>
               <div className="text-xs text-gray-500">
                 强度 {signal.fusedStrength.toFixed(0)}% · 置信度 {(signal.fusedConfidence * 100).toFixed(0)}%
@@ -417,7 +417,7 @@ export const MultiTimeframePanel: React.FC<MultiTimeframePanelProps> = ({
                   <th className="text-right py-1.5 pr-3">信号数</th>
                   <th className="text-right py-1.5 pr-3">买入比例</th>
                   <th className="text-right py-1.5 pr-3">均强</th>
-                  <th className="text-right py-1.5">状态</th>
+                  <th className="text-right py-1.5">{t("components.status")}</th>
                 </tr>
               </thead>
               <tbody>

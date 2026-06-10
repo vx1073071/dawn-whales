@@ -220,7 +220,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
       if (!result.success) {
         setError(result.error || '无法识别策略模式');
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '解析失败');
     } finally {
       setLoading(false);
@@ -240,7 +240,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
         setStrategyId(result.id);
         onCreated();
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message);
     } finally {
       setLoading(false);
@@ -264,7 +264,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
       if (result.success) {
         setBacktestResult(result.result);
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       // silent
     } finally {
       setBacktestLoading(false);
@@ -273,7 +273,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
 
   return (
     <div className="mb-8">
-      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">← 返回</button>
+      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{t("components.back")}</button>
 
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
         <h2 className="text-white font-semibold mb-1 flex items-center gap-2">💬 用自然语言描述你的策略</h2>
@@ -502,13 +502,13 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
 
   return (
     <div className="mb-8">
-      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">← 返回</button>
+      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{t("components.back")}</button>
 
       <div className="flex items-center gap-3 mb-4">
         <h2 className="text-white font-semibold">📋 策略模板库</h2>
         <div className="flex gap-2 text-xs">
-          <button className="px-3 py-1 bg-[#C9A046]/20 text-[#D4A853] rounded-full">全部</button>
-          <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">趋势</button>
+          <button className="px-3 py-1 bg-[#C9A046]/20 text-[#D4A853] rounded-full">{t("components.all")}</button>
+          <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">{t("components.trend")}</button>
           <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">动量</button>
           <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">均值回归</button>
         </div>
@@ -568,7 +568,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
       const load = async () => {
         try {
           const list = await getAllStrategies();
-          const existing = list.find((s: any) => s.id === editId);
+          const existing = list.find((s: unknown) => s.id === editId);
           if (existing) {
             setStrategyName(existing.name || '');
             setSymbol(existing.symbol || existing.targetCode || 'US.TQQQ');
@@ -623,7 +623,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
 
   return (
     <div className="mb-8">
-      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">← 返回</button>
+      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{t("components.back")}</button>
 
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 space-y-5">
         <h2 className="text-white font-semibold">{editId ? '✏️ 编辑策略' : '📊 表单模式 — 精确配置'}</h2>
@@ -703,7 +703,7 @@ function SliderInput({ label, value, min, max, onChange, unit = '' }: { label: s
 
 // ── My Strategies ──────────────────────────────────────────────────────────
 
-function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { strategies: any[]; onSelect: (id: string) => void; onEdit: (id: string) => void; onDelete: (id: string) => void; onCompare: (strategy: any) => void }) {
+function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { strategies: any[]; onSelect: (id: string) => void; onEdit: (id: string) => void; onDelete: (id: string) => void; onCompare: (strategy: unknown) => void }) {
   const statusColors: Record<string, string> = {
     draft: 'text-gray-400 bg-gray-500/20',
     backtested: 'text-blue-400 bg-blue-500/20',
@@ -787,7 +787,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
 
   async function loadDetail() {
     const list = await getAllStrategies();
-    const found = list.find((s: any) => s.id === strategyId);
+    const found = list.find((s: unknown) => s.id === strategyId);
     setStrategy(found || null);
     if (found?.backtestResult) {
       setBacktestResult(found.backtestResult);
@@ -838,8 +838,8 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
   if (!strategy) {
     return (
       <div>
-        <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">← 返回</button>
-        <p className="text-gray-500">加载中...</p>
+        <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{t("components.back")}</button>
+        <p className="text-gray-500">{t("components.loading")}</p>
       </div>
     );
   }
@@ -848,7 +848,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
 
   return (
     <div>
-      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">← 返回</button>
+      <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{t("components.back")}</button>
 
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
         <div className="flex items-center justify-between mb-4">
@@ -867,18 +867,18 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
             <div className="text-[#D4A853] font-mono text-sm">{strategy.symbol}</div>
           </div>
           <div className="bg-[#12121a] rounded-lg p-3">
-            <div className="text-gray-500 text-xs mb-1">类型</div>
+            <div className="text-gray-500 text-xs mb-1">{t("components.type")}</div>
             <div className="text-gray-200 text-sm">{strategy.strategy?.type}</div>
           </div>
           {strategy.strategy?.stopLoss && (
             <div className="bg-[#12121a] rounded-lg p-3">
-              <div className="text-gray-500 text-xs mb-1">止损</div>
+              <div className="text-gray-500 text-xs mb-1">{t("components.stopLoss")}</div>
               <div className="text-red-400 text-sm">{strategy.strategy.stopLoss}%</div>
             </div>
           )}
           {strategy.strategy?.takeProfit && (
             <div className="bg-[#12121a] rounded-lg p-3">
-              <div className="text-gray-500 text-xs mb-1">止盈</div>
+              <div className="text-gray-500 text-xs mb-1">{t("components.takeProfit")}</div>
               <div className="text-emerald-400 text-sm">{strategy.strategy.takeProfit}%</div>
             </div>
           )}

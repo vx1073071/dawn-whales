@@ -36,12 +36,12 @@ export default function SignalTimeline({
     try {
       const strats = await getAllStrategies();
       const nameMap: Record<string, string> = {};
-      strats.forEach((s: any) => { nameMap[s.id] = s.name || s.id; });
+      strats.forEach((s: unknown) => { nameMap[s.id] = s.name || s.id; });
       setStrategies(nameMap);
 
       const result = await getSignals(strategyId);
       const items = (result || [])
-        .map((s: any) => ({
+        .map((s: unknown) => ({
           id: s.id || `${s.strategyId}-${s.timestamp}`,
           strategyId: s.strategyId || '',
           strategyName: nameMap[s.strategyId] || s.strategyId || '未知策略',
@@ -99,7 +99,7 @@ export default function SignalTimeline({
                   : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              {f === 'all' ? '全部' : f === 'BUY' ? '买入' : '卖出'}
+              {f === 'all' ? t('components.all') : f === 'BUY' ? t('components.buy') : t('components.sell')}
             </button>
           ))}
         </div>
@@ -141,7 +141,7 @@ export default function SignalTimeline({
                     <span className={`text-[10px] px-1.5 py-0.5 rounded ${
                       isBuy ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'
                     }`}>
-                      {isBuy ? '买入' : '卖出'}
+                      {isBuy ? t('components.buy') : t('components.sell')}
                     </span>
                     <span className="text-gray-500 text-[10px]">{s.strategyName}</span>
                     {isNew && (
@@ -167,8 +167,8 @@ export default function SignalTimeline({
                     'text-yellow-400'
                   }`}>
                     {s.status === 'executed' ? '已执行' :
-                     s.status === 'rejected' ? '已拒绝' :
-                     s.status === 'cancelled' ? '已撤销' : '待处理'}
+                     s.status === 'rejected' ? t('components.tradeRejected') :
+                     s.status === 'cancelled' ? '已撤销' : t('components.pending')}
                   </div>
                 </div>
               </div>

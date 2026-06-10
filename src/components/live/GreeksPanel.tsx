@@ -43,7 +43,7 @@ export default function GreeksPanel() {
       } else {
         setError(res?.error || '计算失败');
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '计算异常');
     } finally {
       setLoading(false);
@@ -51,7 +51,7 @@ export default function GreeksPanel() {
   }, [input]);
 
   const greeksItems = result ? [
-    { label: '价格', key: 'price', format: (v: number) => v.toFixed(3) },
+    { label: t('components.price'), key: 'price', format: (v: number) => v.toFixed(3) },
     { label: 'Delta', key: 'delta', format: (v: number) => v.toFixed(4) },
     { label: 'Gamma', key: 'gamma', format: (v: number) => v.toFixed(4) },
     { label: 'Theta', key: 'theta', format: (v: number) => v.toFixed(4) },
@@ -86,7 +86,7 @@ export default function GreeksPanel() {
           />
         </div>
         <div>
-          <label className="text-[10px] text-gray-500 block mb-1">波动率</label>
+          <label className="text-[10px] text-gray-500 block mb-1">{t("components.volatility")}</label>
           <input
             type="number"
             step="0.01"
@@ -115,7 +115,7 @@ export default function GreeksPanel() {
           />
         </div>
         <div>
-          <label className="text-[10px] text-gray-500 block mb-1">类型</label>
+          <label className="text-[10px] text-gray-500 block mb-1">{t("components.type")}</label>
           <select
             value={input.type}
             onChange={(e) => setInput({ ...input, type: e.target.value as 'CALL' | 'PUT' })}

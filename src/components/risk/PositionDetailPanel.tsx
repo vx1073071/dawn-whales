@@ -71,8 +71,8 @@ export default function PositionDetailPanel({
       <div className="flex gap-1 mb-4 bg-[#12121a] rounded-lg p-0.5 w-fit">
         {([
           { key: 'overview' as const, label: '概览' },
-          { key: 'history' as const, label: '历史' },
-          { key: 'risk' as const, label: '风险' },
+          { key: 'history' as const, label: t('components.history') },
+          { key: 'risk' as const, label: t('components.risk') },
         ]).map((t) => (
           <button
             key={t.key}

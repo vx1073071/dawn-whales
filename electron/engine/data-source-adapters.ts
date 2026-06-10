@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 // ── J-75-02 R75 V19: Data Source Adapters ───────────────────────────────
 // Unified IDataSourceAdapter interface × 4 concrete adapters
 // Yahoo Finance, Alpha Vantage, NewsAPI, Reddit/StockTwits
@@ -176,11 +177,11 @@ export class YahooFinanceAdapter extends BaseAdapter {
       headers: { "User-Agent": "DawnWhales/1.8" },
     });
 
-    if (!response.ok) throw new Error(`Yahoo returned ${response.status}`);
+    if (!response.ok) throw new EngineError("`Yahoo returned ${response.status}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     const json = await response.json();
 
     const result = json?.chart?.result?.[0];
-    if (!result) throw new Error(`No data for ${symbol}`);
+    if (!result) throw new EngineError("`No data for ${symbol}`", { code: ErrorCode.ENGINE_DATA_ERROR });
 
     const meta = result.meta;
     const quote = result.indicators?.quote?.[0];
@@ -210,10 +211,10 @@ export class YahooFinanceAdapter extends BaseAdapter {
       headers: { "User-Agent": "DawnWhales/1.8" },
     });
 
-    if (!response.ok) throw new Error(`Yahoo history failed: ${response.status}`);
+    if (!response.ok) throw new EngineError("`Yahoo history failed: ${response.status}`", { code: ErrorCode.ENGINE_AI_ERROR });
     const json = await response.json();
     const result = json?.chart?.result?.[0];
-    if (!result) throw new Error(`No history for ${symbol}`);
+    if (!result) throw new EngineError("`No history for ${symbol}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
 
     const timestamps: number[] = result.timestamp ?? [];
     const quote = result.indicators?.quote?.[0];
@@ -270,10 +271,10 @@ export class AlphaVantageAdapter extends BaseAdapter {
     const url = `${this.config.baseUrl}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`;
 
     const response = await fetch(url);
-    if (!response.ok) throw new Error(`AV returned ${response.status}`);
+    if (!response.ok) throw new EngineError("`AV returned ${response.status}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     const json = await response.json();
     const quote = json?.["Global Quote"];
-    if (!quote || !quote["05. price"]) throw new Error(`No quote for ${symbol}`);
+    if (!quote || !quote["05. price"]) throw new EngineError("`No quote for ${symbol}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
 
     return {
       symbol,
@@ -293,10 +294,10 @@ export class AlphaVantageAdapter extends BaseAdapter {
     const url = `${this.config.baseUrl}?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=compact&apikey=${key}`;
 
     const response = await fetch(url);
-    if (!response.ok) throw new Error(`AV history failed: ${response.status}`);
+    if (!response.ok) throw new EngineError("`AV history failed: ${response.status}`", { code: ErrorCode.ENGINE_AI_ERROR });
     const json = await response.json();
     const series = json?.["Time Series (Daily)"];
-    if (!series) throw new Error(`No history for ${symbol}`);
+    if (!series) throw new EngineError("`No history for ${symbol}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
 
     return Object.entries(series).slice(0, 30).map(([date, row]: [string, any]) => ({
       time: new Date(date).getTime(),
@@ -340,22 +341,22 @@ export class NewsAPIAdapter extends BaseAdapter {
   }
 
   async doFetchQuote(_s: string, _m: string): Promise<unknown> {
-    throw new Error("NewsAPI does not provide quotes");
+    throw new EngineError("NewsAPI does not provide quotes", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
   }
   async doFetchHistory(_s: string, _m: string, _start: string, _end: string): Promise<unknown> {
-    throw new Error("NewsAPI does not provide history");
+    throw new EngineError("NewsAPI does not provide history", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
   }
 
   private async doFetchNews(symbol: string, keywords: string[]): Promise<unknown> {
     const key = this.config.apiKey;
-    if (!key) throw new Error("NewsAPI key not configured");
+    if (!key) throw new EngineError("NewsAPI key not configured", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
 
     const query = [symbol, ...keywords].filter(Boolean).join(" OR ");
     const yesterday = new Date(Date.now() - 86400_000).toISOString().split("T")[0];
     const url = `${this.config.baseUrl}?q=${encodeURIComponent(query)}&from=${yesterday}&sortBy=publishedAt&language=en&pageSize=10&apiKey=${key}`;
 
     const response = await fetch(url);
-    if (!response.ok) throw new Error(`NewsAPI returned ${response.status}`);
+    if (!response.ok) throw new EngineError("`NewsAPI returned ${response.status}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     const json = await response.json();
 
     return (json?.articles ?? []).map((a: any) => ({
@@ -420,7 +421,7 @@ export class SocialSentimentAdapter extends BaseAdapter {
   }
 
   protected async doFetchHistory(_s: string, _m: string, _start: string, _end: string): Promise<unknown> {
-    throw new Error("Social sentiment does not provide price history");
+    throw new EngineError("Social sentiment does not provide price history", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
   }
 
   private async doFetchSentiment(symbol: string): Promise<unknown> {

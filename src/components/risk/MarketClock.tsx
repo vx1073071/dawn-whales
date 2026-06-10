@@ -56,10 +56,10 @@ function getMarketStatus(market: MarketSession): {
     return { status: 'pre', label: '盘前', color: 'text-yellow-400', nextEvent: '开市', minutesUntil: openMinutes - minutes };
   }
   if (minutes < openMinutes) {
-    return { status: 'pre', label: '即将开盘', color: 'text-[#D4A853]', nextEvent: '开盘', minutesUntil: openMinutes - minutes };
+    return { status: 'pre', label: '即将开盘', color: 'text-[#D4A853]', nextEvent: t('components.openPrice'), minutesUntil: openMinutes - minutes };
   }
   if (minutes < closeMinutes) {
-    return { status: 'open', label: '交易中', color: 'text-emerald-400', nextEvent: '收盘', minutesUntil: closeMinutes - minutes };
+    return { status: 'open', label: '交易中', color: 'text-emerald-400', nextEvent: t('components.closePrice'), minutesUntil: closeMinutes - minutes };
   }
   if (minutes < closeMinutes + 120) {
     return { status: 'post', label: '盘后', color: 'text-blue-400', nextEvent: '收盘结束', minutesUntil: closeMinutes + 120 - minutes };

@@ -37,7 +37,7 @@ export default function OrdersPage() {
   // Listen for real-time order updates
   useEffect(() => {
     if (typeof window !== 'undefined' && window.api?.on) {
-      window.api.on('order-update', (_data: any) => {
+      window.api.on('order-update', (_data: unknown) => {
         loadOrders();
         loadTrades();
       });
@@ -90,9 +90,9 @@ export default function OrdersPage() {
   };
 
   const statusLabels: Record<string, string> = {
-    SUBMITTED: '已提交', WAITING: '等待中', FILLED: '已成交', PARTIAL: '部分成交',
-    CANCELLED: '已撤销', REJECTED: '已拒绝', UNKNOWN: '未知',
-    submitted: '已提交', pending: '待处理',
+    SUBMITTED: '已提交', WAITING: '等待中', FILLED: t('components.tradeFilled'), PARTIAL: t('components.partialFill'),
+    CANCELLED: '已撤销', REJECTED: t('components.tradeRejected'), UNKNOWN: '未知',
+    submitted: '已提交', pending: t('components.pending'),
   };
 
   const tabs: { key: Tab; label: string; icon: string }[] = [
@@ -139,7 +139,7 @@ export default function OrdersPage() {
       {(tab === 'active' || tab === 'history') && (
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           {loading && displayOrders.length === 0 ? (
-            <div className="p-8 text-center text-gray-500 text-sm">加载中...</div>
+            <div className="p-8 text-center text-gray-500 text-sm">{t("components.loading")}</div>
           ) : displayOrders.length === 0 ? (
             <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">{tab === 'active' ? '📋' : '📜'}</div>
@@ -150,15 +150,15 @@ export default function OrdersPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">时间</th>
-                  <th className="px-4 py-3 text-left">代码</th>
-                  <th className="px-4 py-3 text-center">方向</th>
-                  <th className="px-4 py-3 text-right">数量</th>
+                  <th className="px-4 py-3 text-left">{t("components.time")}</th>
+                  <th className="px-4 py-3 text-left">{t("components.code")}</th>
+                  <th className="px-4 py-3 text-center">{t("components.direction")}</th>
+                  <th className="px-4 py-3 text-right">{t("components.quantity")}</th>
                   <th className="px-4 py-3 text-right">委托价</th>
                   <th className="px-4 py-3 text-right">成交数</th>
                   <th className="px-4 py-3 text-right">成交价</th>
-                  <th className="px-4 py-3 text-center">状态</th>
-                  {tab === 'active' && <th className="px-4 py-3 text-center">操作</th>}
+                  <th className="px-4 py-3 text-center">{t("components.status")}</th>
+                  {tab === 'active' && <th className="px-4 py-3 text-center">{t("components.actions")}</th>}
                 </tr>
               </thead>
               <tbody>
@@ -168,7 +168,7 @@ export default function OrdersPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{o.code?.replace('US.', '') || '--'}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${o.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {o.side === 'BUY' ? '买入' : '卖出'}
+                        {o.side === 'BUY' ? t('components.buy') : t('components.sell')}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{o.qty}</td>
@@ -208,14 +208,14 @@ export default function OrdersPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">时间</th>
-                  <th className="px-4 py-3 text-left">代码</th>
-                  <th className="px-4 py-3 text-center">方向</th>
-                  <th className="px-4 py-3 text-right">数量</th>
-                  <th className="px-4 py-3 text-right">价格</th>
+                  <th className="px-4 py-3 text-left">{t("components.time")}</th>
+                  <th className="px-4 py-3 text-left">{t("components.code")}</th>
+                  <th className="px-4 py-3 text-center">{t("components.direction")}</th>
+                  <th className="px-4 py-3 text-right">{t("components.quantity")}</th>
+                  <th className="px-4 py-3 text-right">{t("components.price")}</th>
                   <th className="px-4 py-3 text-right">盈亏</th>
-                  <th className="px-4 py-3 text-center">状态</th>
-                  <th className="px-4 py-3 text-left">备注</th>
+                  <th className="px-4 py-3 text-center">{t("components.status")}</th>
+                  <th className="px-4 py-3 text-left">{t("components.remarks")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -225,7 +225,7 @@ export default function OrdersPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{t.symbol?.replace('US.', '')}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${t.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {t.side === 'BUY' ? '买入' : '卖出'}
+                        {t.side === 'BUY' ? t('components.buy') : t('components.sell')}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{t.quantity}</td>

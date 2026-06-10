@@ -212,7 +212,7 @@ export default function StrategyCommunityPanel({
         {replyTo && (
           <div className="flex items-center gap-2 mb-2 text-[10px] text-gray-500">
             <span>回复中...</span>
-            <button onClick={() => setReplyTo(null)} className="text-gray-600 hover:text-gray-400">取消</button>
+            <button onClick={() => setReplyTo(null)} className="text-gray-600 hover:text-gray-400">{t("components.cancel")}</button>
           </div>
         )}
         <div className="flex gap-2">

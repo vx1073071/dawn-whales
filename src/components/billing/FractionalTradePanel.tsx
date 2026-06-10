@@ -245,7 +245,7 @@ export default function FractionalTradePanel({
           {/* Submit */}
           <button onClick={handleSubmit} disabled={hasActiveOrder}
                   className="w-full py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-            {direction === 'BUY' ? '买入' : '卖出'} {totalQty} 股 {symbol} · {rule.currency} {notional.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            {direction === 'BUY' ? t('components.buy') : t('components.sell')} {totalQty} 股 {symbol} · {rule.currency} {notional.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </button>
         </div>
 
@@ -275,7 +275,7 @@ export default function FractionalTradePanel({
             {/* Stats */}
             <div className="grid grid-cols-3 gap-3 mb-4 text-center">
               <div className="bg-white/[0.03] rounded-lg p-2">
-                <div className="text-[10px] text-gray-600">已成交</div>
+                <div className="text-[10px] text-gray-600">{t("components.tradeFilled")}</div>
                 <div className="text-sm font-semibold text-green-400">{activeOrder.filledQty}</div>
               </div>
               <div className="bg-white/[0.03] rounded-lg p-2">
@@ -329,11 +329,11 @@ export default function FractionalTradePanel({
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-white/[0.02] text-gray-500">
-                <th className="text-left px-5 py-2 font-medium">市场</th>
+                <th className="text-left px-5 py-2 font-medium">{t("components.markets")}</th>
                 <th className="text-left px-5 py-2 font-medium">整手</th>
                 <th className="text-left px-5 py-2 font-medium">碎股范围</th>
                 <th className="text-left px-5 py-2 font-medium">最小碎股</th>
-                <th className="text-left px-5 py-2 font-medium">佣金</th>
+                <th className="text-left px-5 py-2 font-medium">{t("components.commission")}</th>
                 <th className="text-left px-5 py-2 font-medium">最低佣金</th>
               </tr>
             </thead>

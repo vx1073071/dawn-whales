@@ -130,7 +130,7 @@ export default function PerformanceDashboard({
       {/* KPI Cards */}
       <div className="grid grid-cols-4 gap-3">
         <MetricCard label="总收益" value={formatPct(metrics.totalReturn)} color={metrics.totalReturn >= 0 ? 'green' : 'red'} subtitle="累计" />
-        <MetricCard label="年化收益" value={formatPct(metrics.annualizedReturn)} color={metrics.annualizedReturn >= 0 ? 'green' : 'red'} subtitle="年化" />
+        <MetricCard label="年化收益" value={formatPct(metrics.annualizedReturn)} color={metrics.annualizedReturn >= 0 ? 'green' : 'red'} subtitle={t("components.annualized")} />
         <MetricCard label="最大回撤" value={formatPct(metrics.maxDrawdown)} color="red" subtitle="历史最大" />
         <MetricCard label="胜率" value={`${metrics.winRate.toFixed(1)}%`} color={metrics.winRate > 50 ? 'green' : 'yellow'} subtitle={`${metrics.winningTrades}W / ${metrics.losingTrades}L`} />
       </div>
@@ -210,10 +210,10 @@ export default function PerformanceDashboard({
           </div>
 
           <div className="mt-4 pt-3 border-t border-white/5">
-            <div className="text-xs text-gray-500 mb-2">波动率</div>
+            <div className="text-xs text-gray-500 mb-2">{t("components.volatility")}</div>
             <div className="flex items-center gap-3">
               <span className="text-lg font-mono font-bold text-white">{metrics.volatility.toFixed(1)}%</span>
-              <span className="text-xs text-gray-500">年化</span>
+              <span className="text-xs text-gray-500">{t("components.annualized")}</span>
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@ interface NewsArticle {
 const SENTIMENT_LABELS = {
   positive: { text: '正面', bg: 'bg-red-500/10', textColor: 'text-red-400', border: 'border-red-500/20' },
   negative: { text: '负面', bg: 'bg-emerald-500/10', textColor: 'text-emerald-400', border: 'border-emerald-500/20' },
-  neutral: { text: '中性', bg: 'bg-gray-500/10', textColor: 'text-gray-400', border: 'border-gray-500/20' },
+  neutral: { text: t('components.neutral'), bg: 'bg-gray-500/10', textColor: 'text-gray-400', border: 'border-gray-500/20' },
 };
 
 export default function NewsDashboardPage() {
@@ -33,7 +33,7 @@ export default function NewsDashboardPage() {
     try {
       const [newsRes, moodRes] = await Promise.all([
         searchNews({
-          query: query.trim() || '市场',
+          query: query.trim() || t('components.markets'),
           limit: 50,
           hoursBack: 24,
         }),
@@ -47,7 +47,7 @@ export default function NewsDashboardPage() {
       if (moodRes?.success) {
         setMood(moodRes.report);
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '获取新闻失败');
     } finally {
       setLoading(false);
@@ -93,7 +93,7 @@ export default function NewsDashboardPage() {
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
             <div className="text-xs text-gray-500 mb-1">市场情绪</div>
             <div className={`text-lg font-bold ${mood.overall === 'positive' ? 'text-red-400' : mood.overall === 'negative' ? 'text-emerald-400' : 'text-gray-300'}`}>
-              {mood.overall === 'positive' ? '偏多' : mood.overall === 'negative' ? '偏空' : '中性'}
+              {mood.overall === 'positive' ? '偏多' : mood.overall === 'negative' ? '偏空' : t('components.neutral')}
             </div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
@@ -126,7 +126,7 @@ export default function NewsDashboardPage() {
                     : 'bg-transparent border-white/10 text-gray-400 hover:text-white'
                 }`}
               >
-                {f === 'all' ? '全部' : f === 'positive' ? '正面' : f === 'negative' ? '负面' : '中性'}
+                {f === 'all' ? t('components.all') : f === 'positive' ? '正面' : f === 'negative' ? '负面' : t('components.neutral')}
                 {' '}
                 {f === 'all' ? articles.length : sentimentCounts[f]}
               </button>

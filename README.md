@@ -1,230 +1,172 @@
-# 🐋 DAWN WHALES · 道鲸
+# 🐋 DAWN WHALES
 
-**AI 量化交易系统 — 说人话就能做量化**
+**全球首个四 Agent AI 协作量化交易平台**
 
-🌐 **官网：https://vx1073071.github.io/dawn-whales/**
-📥 **下载：[v0.7.0 Windows 安装包](https://github.com/vx1073071/dawn-whales/releases)**
-⚙️ **测试**: 259/259 passed | **构建**: 0 errors | **TSC**: 0 errors
+[![Version](https://img.shields.io/badge/version-1.9.0%20GA-blue)](https://github.com/vx1073071/dawn-whales/releases)
+[![Tests](https://img.shields.io/badge/tests-6500%2B%20%7C%200%20fail-brightgreen)]()
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/license-Proprietary-red)]()
 
-零代码散户量化平台，支持 **Futu + Moomoo + IB** 三券商同时交易，自然语言创建策略、实时行情推送、回测引擎、多券商风控和策略市场。
+🌐 **官网**: [dawnwhales.com](https://dawnwhales.com) · 📥 **下载**: [最新版本](https://github.com/vx1073071/dawn-whales/releases)
 
----
-
-## ✨ 核心特性
-
-### 📊 实时行情
-- **Push 模式**（<50ms 延迟）直连富途 OpenD
-- 支持美股、港股、A股、加密货币
-- TradingView Lightweight Charts K线图
-- 自选股搜索 + 一键添加（24 只热门标的）
-- **断线自动重连**（指数退避，50 次尝试，自动重新订阅 Push）
-
-### 🤖 AI 策略创建（三种方式）
-1. **自然语言** — "RSI 低于 30 时买入 TQQQ，涨 5% 卖出"
-2. **模板选择** — 8 个预置经典策略（均线交叉、RSI、MACD、动量、布林带）
-3. **表单配置** — 动态参数调整（根据策略类型自动切换）
-
-### 📈 回测引擎
-- 6 种技术指标：SMA、EMA、RSI、MACD、布林带、ATR
-- 5 种策略类型：均线交叉、RSI 超买超卖、MACD 信号、动量突破、布林带突破
-- 完整绩效指标：年化收益、夏普比率、最大回撤、胜率、盈亏比
-- 权益曲线可视化 + 交易明细
-- 止损 / 止盈支持
-- K 线缓存加速（10x 回测速度）
-
-### 🏪 策略市场
-- 社区策略排名（热度/收益/稳健/新星/免费）
-- 风险等级筛选（低/中/高）
-- 收益曲线预览
-- 发布策略：选策略 → 设价格 → 提交审核
-- 创作者 70% 收入分成
-
-### 🛡️ 风控系统
-- 7 项盘前检查：频率、数量、价格、金额、黑名单、日亏损、集中度
-- 日最大亏损限制
-- 每分钟最大下单数
-- 交易时段检测（美股 ET 时间）
-- 告警历史记录
-- 紧急止损（一键全平所有策略）
-
-### 💼 账户管理
-- 实时资金概览（总资产/今日盈亏/持仓市值/可用资金/购买力）
-- 持仓明细 + 盈亏百分比
-- 资产配置可视化（彩色条形图）
-- 自动刷新（30 秒间隔）
-
-### 📋 订单管理
-- 当前委托 / 历史委托 / 策略交易记录三标签页
-- 实时订单推送（IPC 事件）
-- 一键撤单
-- 策略自动交易记录
-
-### 🔔 通知系统
-- 全局 Toast 通知（成功/错误/警告/信息）
-- 策略信号推送
-- 风控拦截告警
-- 订单状态更新
-- 自动更新提醒
+> 选市场 → 套模板 → 一键回测 → AI 保驾护航。你的策略，你的收益。
 
 ---
 
-## 🏗️ 技术架构
+## 核心能力
 
-```
-┌─────────────────────────────────────────────┐
-│              Electron 33                     │
-│  ┌───────────────┐   ┌──────────────────┐   │
-│  │  Main Process │   │ Renderer Process │   │
-│  │               │   │                  │   │
-│  │  ┌──────────┐ │   │  React 18 + TS   │   │
-│  │  │FutuOpenD │ │   │  Tailwind CSS    │   │
-│  │  │TCP Client│◄├───┤  TradingView     │   │
-│  │  │+ Reconnect│   │  Lightweight     │   │
-│  │  └──────────┘ │   │  Charts          │   │
-│  │  ┌──────────┐ │   └──────────────────┘   │
-│  │  │ Engines  │ │         IPC Bridge       │
-│  │  │ Backtest │ │   (30 handlers +         │
-│  │  │ Strategy │ │    push events)          │
-│  │  │ NL Parse │ │                          │
-│  │  │ Risk     │ │                          │
-│  │  └──────────┘ │                          │
-│  │  ┌──────────┐ │                          │
-│  │  │ SQLite   │ │                          │
-│  │  │ (7 tables)│                          │
-│  │  └──────────┘ │                          │
-│  └───────────────┘                          │
-└─────────────────────────────────────────────┘
-         │
-         ▼ TCP (127.0.0.1:11111)
-    ┌──────────┐
-    │ Futu OpenD│
-    └──────────┘
-```
+### 🤖 4Agent AI 协作
+自研 TypeScript 原生 AI Agent 系统，4 个 Agent 协同分析，圆桌辩论 + Arena 投票：
+- **基本面分析师** — 财报/估值/行业对比
+- **技术面分析师** — K线/指标/趋势判断
+- **情绪分析师** — 新闻/社交媒体/市场情绪
+- **宏观分析师** — 利率/汇率/政策环境
 
-| 组件 | 技术 |
+### 🎨 AI 画线 + 形态识别
+- 自动画线: 趋势线/支撑阻力/通道/斐波那契/江恩
+- 22 种 K 线形态自动识别 + 置信度评分
+- 创作者可拖拽修正、删除、确认
+
+### 📊 策略工场
+- 3 种创建方式: 模板套用 / AI 语音 / 手动填参
+- 20+ 策略模板: 动量/均值回归/双均线/海龟/网格/DCA/期权跨式...
+- 25+ 技术指标 + PineScript 风格编辑器
+- 一键回测 → 发布到市场 → 赚取订阅收入
+
+### 🌍 七市场全覆盖
+| 市场 | 品种 |
 |------|------|
-| 桌面框架 | Electron 33 |
-| 前端 | React 18 + TypeScript |
-| 样式 | Tailwind CSS 3 |
-| 图表 | TradingView Lightweight Charts 4.2 |
-| 数据库 | better-sqlite3 (WAL mode, 7 tables) |
-| 行情 | Futu OpenD TCP 直连 (protobuf) + Push |
-| 更新 | electron-updater + GitHub Releases |
-| CI/CD | GitHub Actions |
-| 测试 | tsx (38 unit tests) |
-| 打包 | electron-builder (NSIS) |
+| 🇭🇰 港股 (HKEX) | 正股/ETF/REIT/牛熊证/涡轮/期货/期权 |
+| 🇺🇸 美股 (NYSE/NASDAQ) | 正股/ETF/ADR/期权/期货 |
+| 🇸🇬 新加坡 (SGX) · 🇯🇵 日本 (TSE) | 正股/ETF/REIT |
+| 🇦🇺 澳洲 (ASX) · 🇨🇦 加拿大 (TSX) · 🇲🇾 马来西亚 (Bursa) | 正股/ETF |
+
+### 💰 策略市场
+- 发布你的策略 → 别人订阅 → 你拿分成
+- 6 级创作者体系: 青铜(70%)→王者(90%)
+- 策略定价 50-1000 USDT
+- 创作者成就徽章 + 排行榜
+
+### 🔒 安全架构
+- DeepSeek API Key **仅在服务器**暴露
+- 桌面端不存 AI Key / 计费逻辑 / 钱包密钥
+- child_process 沙箱 + CSRF + XSS + CSP 全防护
+- npm audit: 0 vulnerabilities
 
 ---
 
-## 🚀 快速开始
+## 技术栈
 
-### 前置条件
-- Node.js 22+
-- [富途 OpenD](https://openapi.futunn.com/futu-api-doc/opend/opend-cmd.html) 运行中（默认端口 11111）
+| 层 | 技术 |
+|----|------|
+| 桌面端 | Electron + React 18 + TypeScript strict |
+| 构建 | Vite + esbuild + electron-builder |
+| 服务端 | Node.js + PostgreSQL + Redis + Nginx |
+| AI | DeepSeek V4 Pro (99% cache discount, 4-tier fallback) |
+| 测试 | Vitest (6500+ tests) + Playwright (E2E) + Lighthouse |
+| i18n | react-i18next (9 语言: zh-CN/zh-HK/zh-TW/en/ja/ko/fr/de/it) |
+| 券商 | Futu OpenD / Interactive Brokers |
+| 支付 | USDT TRC-20 only |
 
-### 开发
+---
+
+## 快速开始
+
+### 用户
+1. 下载桌面端: [dawnwhales.com/download](https://dawnwhales.com/download) (Win/Mac/Linux)
+2. 注册 → 连接券商 (Futu OpenD 或 IBKR)
+3. 选市场 → 套模板 → 回测 → 发布
+4. 新用户赠送 3 次免费 AI 分析
+
+### 开发者
 
 ```bash
-git clone https://github.com/vx1073071/dawn-whales.git
+git clone <repo>
 cd dawn-whales
-npm install
-npm run dev
+npm ci
+npm run dev          # 启动开发模式
+npm run build        # 构建
+npm test             # 运行测试 (6500+)
+npm run lint         # ESLint
+npm run typecheck    # TypeScript
 ```
 
-### 测试
+### 服务器部署
 
 ```bash
-npm test          # 运行 38 个单元测试
+cp .env.example .env    # 配置环境变量
+npm run build:server
+npm run db:migrate
+npm run start:server    # /api :3001, /admin :3002
 ```
 
-### 打包
-
-```bash
-npm run dist:win   # Windows .exe (NSIS installer)
-npm run dist:mac   # macOS .dmg
-npm run dist:linux # Linux .AppImage
-```
-
-### 发布
-
-```bash
-git tag v0.3.0
-git push origin v0.3.0   # GitHub Actions 自动构建 + Release
-```
+详见 [部署手册](docs/guides/deploy-license-guide.md)
 
 ---
 
-## 💰 定价
-
-| 套餐 | 价格 | 功能 |
-|------|------|------|
-| **免费版** | ¥0 | 1 个策略，仅模拟盘 |
-| **Starter** | ¥99/月 | 5 个策略，实盘交易 |
-| **Pro** | ¥299/月 | 无限策略 + AI 助手 + 策略市场优先展示 |
-
-**策略市场收入分成：** 创作者 70% · 平台 30%
-
----
-
-## 📂 项目结构
+## 项目结构
 
 ```
 dawn-whales/
-├── electron/                  # Electron 主进程
-│   ├── main.ts               # 应用入口 + 30 IPC handlers + auto-updater
-│   ├── preload.ts            # IPC Bridge (安全暴露 API)
-│   ├── broker/
-│   │   └── futu-opend.ts     # OpenD TCP 客户端 (protobuf + 自动重连)
-│   ├── engine/
-│   │   ├── backtest-engine.ts # 回测引擎 (6指标 + 5策略)
-│   │   ├── strategy-engine.ts # 策略执行引擎 (实时信号 + 自动交易)
-│   │   ├── nl-parser.ts       # 自然语言策略解析器
-│   │   └── risk-engine.ts     # 风控引擎 (7项检查)
-│   └── data/
-│       └── database.ts        # SQLite (7张表 + K线缓存)
-├── src/                       # React 渲染进程
-│   ├── components/
-│   │   ├── layout/           # Header, Sidebar, StatusBar
-│   │   ├── market/           # 行情页面 + K线图
-│   │   ├── strategy/         # 策略工坊 (NL/模板/表单)
-│   │   ├── portfolio/        # 持仓管理 + 资产配置
-│   │   ├── orders/           # 订单管理
-│   │   ├── marketplace/      # 策略市场 + 发布
-│   │   ├── settings/         # 系统设置
-│   │   ├── OnboardingModal   # 新用户引导
-│   │   └── NotificationToast # 全局通知
-│   ├── hooks/                # useBridgeSync (Push 行情)
-│   ├── stores/               # Zustand 状态管理
-│   └── lib/                  # bridge-api (IPC 客户端)
-├── tests/                     # 单元测试 (38 tests)
-├── site/                      # Landing Page 源文件
-├── docs/                      # GitHub Pages + 架构文档
-├── .github/workflows/         # CI/CD (GitHub Actions)
-└── build/                     # 打包图标
+├── src/                    # 前端 (React)
+│   ├── components/         # UI 组件 (30+ 目录)
+│   ├── i18n/               # 国际化 (9 语言)
+│   └── hooks/              # React Hooks
+├── electron/               # 桌面端 (Electron)
+│   ├── engine/             # 320+ 引擎 (策略/AI/风控/交易/回测...)
+│   ├── main.ts             # Electron 主进程
+│   └── preload.ts          # IPC 桥接
+├── server/                 # 服务端
+│   ├── api/                # REST API (/api/*)
+│   └── admin/              # 管理后台 (/admin/*)
+├── tests/                  # 测试 (374 测试套件)
+├── docs/                   # 文档 (22+ 篇)
+│   ├── guides/             # 用户指南
+│   ├── api/                # API 参考
+│   ├── releases/           # Release Notes
+│   └── architecture/       # 架构文档
+└── site/                   # 落地页 (静态)
 ```
 
 ---
 
-## 🔧 环境变量
+## 路线图
 
-| 变量 | 默认值 | 说明 |
-|------|--------|------|
-| `VITE_DEV_SERVER_URL` | - | 开发模式下 Vite 服务器 URL |
-| `OPEND_HOST` | `127.0.0.1` | OpenD 地址 |
-| `OPEND_PORT` | `11111` | OpenD 端口 |
+| 阶段 | 轮次 | 版本 | 里程碑 |
+|------|:---:|------|------|
+| Sprint 2 | R52-R60 | v1.3.0 GA | 港股 GA + 策略引擎 |
+| 功能扩张 | R61-R67 | v1.6.0 GA | 多市场 + P2P + 服务器化 + /admin + 落地页 |
+| GA 前夜 | R68-R73 | v1.8.0 GA | IBKR + i18n + 社区 + 7市场 + AI 画线形态 |
+| 5 轮收官 | R77-R81 | v1.9.0 GA | 安全→引擎→质量→增长→收尾 |
+| 质量巩固 | R82-R86 | v1.9.x | ESLint/Mock/A股清理/any类型/i18n 50% |
 
----
-
-## 📋 更新日志
-
-详见 [CHANGELOG.md](./CHANGELOG.md)
+**31 轮迭代 · 6500+ 测试 · 320+ 引擎 · 5 只虾**
 
 ---
 
-## 📄 License
+## 贡献指南
 
-MIT
+1. Fork → Clone → `npm ci`
+2. 创建分支: `feature/xxx` 或 `fix/xxx`
+3. 确保: `npm test` 0 fail · `npm run lint` 0 error · `npm run typecheck` 0 error
+4. Commit: `feat:` / `fix:` / `refactor:` / `docs:` / `chore:`
+5. 提交 PR 到 `master`
+
+详见 [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 
-**Built with 🐋 by DAWN WHALES Team**
+## 文档索引
+
+| 角色 | 文档 |
+|------|------|
+| 🆕 新手 | [完整用户手册 v3](docs/guides/complete-user-manual-v3.md) · [快速入门](docs/guides/quickstart-guide.md) |
+| 🎨 创作者 | [创作者指南 v2](docs/guides/ops-manual-v2-creator-growth.md) · [因子手册](docs/guides/factor-template-guide.md) |
+| 🔧 运维 | [GA 公告 + 运营手册](docs/guides/ga-announcement-ops-manual.md) · [部署清单](docs/releases/v1.8.1-deploy-packaging-checklist.md) |
+| 📝 开发者 | [API 文档](docs/api/) · [架构文档](docs/architecture/) · [安全加固报告](docs/reports/r77-security-hardening-report.md) |
+
+---
+
+## 许可证
+
+Proprietary. Copyright © 2026 DAWN WHALES.

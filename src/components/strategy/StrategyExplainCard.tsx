@@ -23,7 +23,7 @@ export default function StrategyExplainCard({ strategy, onExplain }: Props) {
       } else {
         setError(result.error || '解释生成失败');
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '调用失败');
     } finally {
       setLoading(false);
@@ -51,7 +51,7 @@ export default function StrategyExplainCard({ strategy, onExplain }: Props) {
               onClick={() => setCollapsed(!collapsed)}
               className="text-gray-500 hover:text-gray-300 text-xs"
             >
-              {collapsed ? '展开' : '收起'}
+              {collapsed ? t('components.expand') : '收起'}
             </button>
           )}
         </div>

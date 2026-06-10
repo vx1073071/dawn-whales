@@ -106,7 +106,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
       <div style={styles.signalCard}>
         <div style={styles.signalRow}>
           <div style={styles.signalMain}>
-            <span style={styles.label}>方向</span>
+            <span style={styles.label}>{t("components.direction")}</span>
             {editing ? (
               <div style={styles.directionBtns}>
                 {(['BUY', 'SELL', 'HOLD'] as const).map(d => (
@@ -119,7 +119,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
                     }}
                     onClick={() => setEditedDirection(d)}
                   >
-                    {d === 'BUY' ? '买入' : d === 'SELL' ? '卖出' : '持有'}
+                    {d === 'BUY' ? t('components.buy') : d === 'SELL' ? t('components.sell') : '持有'}
                   </button>
                 ))}
               </div>
@@ -216,7 +216,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
               <span style={styles.agentEmoji}>{ad.emoji}</span>
               <span style={styles.agentName}>{ad.agentName}</span>
               <span style={{ ...styles.agentVote, color: getDirectionColor(ad.recommendation === 'buy' ? 'BUY' : ad.recommendation === 'sell' ? 'SELL' : 'HOLD') }}>
-                {ad.recommendation === 'buy' ? '看多' : ad.recommendation === 'sell' ? '看空' : '中性'}
+                {ad.recommendation === 'buy' ? '看多' : ad.recommendation === 'sell' ? '看空' : t('components.neutral')}
               </span>
               <span style={{
                 ...styles.agentConf,

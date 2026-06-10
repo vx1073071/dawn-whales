@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 /**
  * Strategy Optimizer Engine
  * Dawn Whales Project (J-39-01, R39)
@@ -255,10 +256,10 @@ export class StrategyOptimizer extends EventEmitterPolyfill {
    */
   async optimize(): Promise<OptimizationResult> {
     if (this.paramSpecs.length === 0) {
-      throw new Error('No parameter specs configured');
+      throw new EngineError("No parameter specs configured", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     }
     if (!this.evaluateFn) {
-      throw new Error('No evaluation function configured');
+      throw new EngineError("No evaluation function configured", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     }
 
     this.reset();
@@ -278,7 +279,7 @@ export class StrategyOptimizer extends EventEmitterPolyfill {
           await this.runBayesianOptimization();
           break;
         default:
-          throw new Error(`Unknown optimization mode: ${this.config.mode}`);
+          throw new EngineError("`Unknown optimization mode: ${this.config.mode}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
       }
 
       this.status = 'completed';

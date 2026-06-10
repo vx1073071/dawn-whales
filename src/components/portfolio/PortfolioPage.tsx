@@ -48,7 +48,7 @@ export default function PortfolioPage() {
       ]);
       if (fundsData) setFunds({ ...fundsData, currency: fundsData.currency || 'USD' });
       setPositions(pos || []);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '加载失败');
     } finally {
       setLoading(false);
@@ -162,20 +162,20 @@ export default function PortfolioPage() {
         {positions.length === 0 ? (
           <div className="p-8 text-center text-gray-500">
             <div className="text-3xl mb-2 opacity-40">💼</div>
-            <p className="text-sm">{loading ? '加载中...' : '暂无持仓'}</p>
+            <p className="text-sm">{loading ? t('components.loading') : '暂无持仓'}</p>
           </div>
         ) : (
           <table className="w-full">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                <th className="px-4 py-3 text-left">代码</th>
-                <th className="px-4 py-3 text-left">名称</th>
-                <th className="px-4 py-3 text-right">持仓</th>
+                <th className="px-4 py-3 text-left">{t("components.code")}</th>
+                <th className="px-4 py-3 text-left">{t("components.name")}</th>
+                <th className="px-4 py-3 text-right">{t("components.positions")}</th>
                 <th className="px-4 py-3 text-right">均价</th>
                 <th className="px-4 py-3 text-right">现价</th>
                 <th className="px-4 py-3 text-right">盈亏</th>
                 <th className="px-4 py-3 text-right">盈亏%</th>
-                <th className="px-4 py-3 text-right">市值</th>
+                <th className="px-4 py-3 text-right">{t("components.marketCap")}</th>
                 <th className="px-4 py-3 text-right">占比</th>
               </tr>
             </thead>

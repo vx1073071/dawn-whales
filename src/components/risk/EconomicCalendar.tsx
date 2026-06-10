@@ -65,7 +65,7 @@ export default function EconomicCalendar() {
                 filter === f ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              {f === 'all' ? '全部' : f === 'high' ? '高影响' : '中影响'}
+              {f === 'all' ? t('components.all') : f === 'high' ? '高影响' : '中影响'}
             </button>
           ))}
         </div>

@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 /**
  * J-63-01: AI Gateway /api (R63 v19 — v1.5.0-rc 服务器化)
  *
@@ -166,7 +167,7 @@ export class AIGatewayServer {
     // 1. License check
     const license = this.checkLicense(licenseId);
     if (!license.valid) {
-      throw new Error(`License invalid: ${license.reason}`);
+      throw new EngineError("`License invalid: ${license.reason}`", { code: ErrorCode.ENGINE_VALIDATION_ERROR });
     }
 
     // 2. Cache check
@@ -219,7 +220,7 @@ export class AIGatewayServer {
       }
     }
 
-    throw new Error('No LLM provider available');
+    throw new EngineError("No LLM provider available", { code: ErrorCode.ENGINE_AI_ERROR });
   }
 
   // ── AI Execution (simulated) ───────────────────────────────────────────

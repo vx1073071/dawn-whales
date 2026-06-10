@@ -213,7 +213,7 @@ function PatternCard({ pattern, onAnnotate, onCorrect }: {
   onCorrect: (id: string) => void
 }) {
   const typeColors: Record<string, string> = { bullish: '#10B981', bearish: '#EF4444', neutral: '#6B7280' };
-  const typeLabels: Record<string, string> = { bullish: '看涨', bearish: '看跌', neutral: '中性' };
+  const typeLabels: Record<string, string> = { bullish: t('components.bullish'), bearish: t('components.bearish'), neutral: t('components.neutral') };
 
   return (
     <div
@@ -437,7 +437,7 @@ export default function AIDrawingPatternPanel() {
                     color: filterType === f ? '#818CF8' : '#6B7280', fontSize: 12, cursor: 'pointer',
                   }}
                 >
-                  {f === 'all' ? '全部' : f === 'bullish' ? '🟢 看涨' : f === 'bearish' ? '🔴 看跌' : '⚪ 中性'}
+                  {f === 'all' ? t('components.all') : f === 'bullish' ? '🟢 看涨' : f === 'bearish' ? '🔴 看跌' : '⚪ 中性'}
                 </button>
               ))}
               <select

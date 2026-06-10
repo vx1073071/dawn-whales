@@ -97,8 +97,8 @@ export const MarketplaceDetail: React.FC<MarketplaceDetailProps> = ({ strategyId
         {([
           ['Sharpe', detail.sharpe.toFixed(1), 'text-amber-400'],
           ['年化收益', `${(detail.totalReturn * 100).toFixed(0)}%`, 'text-emerald-400'],
-          ['最大回撤', `${(detail.maxDrawdown * 100).toFixed(0)}%`, 'text-red-400'],
-          ['胜率', `${(detail.winRate * 100).toFixed(0)}%`, 'text-blue-400'],
+          [t('components.maxDrawdown'), `${(detail.maxDrawdown * 100).toFixed(0)}%`, 'text-red-400'],
+          [t('components.winRate'), `${(detail.winRate * 100).toFixed(0)}%`, 'text-blue-400'],
           ['年化波动', `${(detail.annualVol * 100).toFixed(0)}%`, 'text-purple-400'],
           ['Calmar', detail.calmarRatio.toFixed(1), 'text-cyan-400'],
           ['交易次数', String(detail.tradeCount), 'text-gray-400'],

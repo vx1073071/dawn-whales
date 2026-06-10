@@ -9,7 +9,7 @@ interface RebalanceSuggestion {
   targetWeight: number;
   currentShares: number;
   targetShares: number;
-  action: '增持' | '减持' | '新增' | '删除';
+  action: t('components.increaseHolding') | t('components.decreaseHolding') | t('components.newlyAdded') | t('components.delete');
   diffShares: number;
   diffAmount: number;
   price: number;
@@ -23,14 +23,14 @@ interface RebalanceConfig {
 }
 
 const MOCK_SUGGESTIONS: RebalanceSuggestion[] = [
-  { code: 'AAPL', name: '苹果', currentWeight: 12.5, targetWeight: 15.0, currentShares: 100, targetShares: 120, action: '增持', diffShares: 20, diffAmount: 3790, price: 189.50 },
-  { code: 'NVDA', name: '英伟达', currentWeight: 18.2, targetWeight: 20.0, currentShares: 50, targetShares: 55, action: '增持', diffShares: 5, diffAmount: 4376, price: 875.28 },
-  { code: 'MSFT', name: '微软', currentWeight: 15.0, targetWeight: 15.0, currentShares: 60, targetShares: 60, action: '增持', diffShares: 0, diffAmount: 0, price: 412.20 },
-  { code: 'AVGO', name: '博通', currentWeight: 10.8, targetWeight: 12.0, currentShares: 25, targetShares: 28, action: '增持', diffShares: 3, diffAmount: 3841, price: 1280.45 },
-  { code: 'TSLA', name: '特斯拉', currentWeight: 8.5, targetWeight: 5.0, currentShares: 80, targetShares: 47, action: '减持', diffShares: -33, diffAmount: -5697, price: 172.63 },
-  { code: 'META', name: 'Meta', currentWeight: 5.2, targetWeight: 8.0, currentShares: 20, targetShares: 31, action: '增持', diffShares: 11, diffAmount: 5218, price: 474.35 },
-  { code: 'AMD', name: 'AMD', currentWeight: 0, targetWeight: 5.0, currentShares: 0, targetShares: 50, action: '新增', diffShares: 50, diffAmount: 7413, price: 148.25 },
-  { code: 'INTC', name: '英特尔', currentWeight: 4.5, targetWeight: 0, currentShares: 150, targetShares: 0, action: '删除', diffShares: -150, diffAmount: -4350, price: 29.00 },
+  { code: 'AAPL', name: '苹果', currentWeight: 12.5, targetWeight: 15.0, currentShares: 100, targetShares: 120, action: t('components.increaseHolding'), diffShares: 20, diffAmount: 3790, price: 189.50 },
+  { code: 'NVDA', name: '英伟达', currentWeight: 18.2, targetWeight: 20.0, currentShares: 50, targetShares: 55, action: t('components.increaseHolding'), diffShares: 5, diffAmount: 4376, price: 875.28 },
+  { code: 'MSFT', name: '微软', currentWeight: 15.0, targetWeight: 15.0, currentShares: 60, targetShares: 60, action: t('components.increaseHolding'), diffShares: 0, diffAmount: 0, price: 412.20 },
+  { code: 'AVGO', name: '博通', currentWeight: 10.8, targetWeight: 12.0, currentShares: 25, targetShares: 28, action: t('components.increaseHolding'), diffShares: 3, diffAmount: 3841, price: 1280.45 },
+  { code: 'TSLA', name: '特斯拉', currentWeight: 8.5, targetWeight: 5.0, currentShares: 80, targetShares: 47, action: t('components.decreaseHolding'), diffShares: -33, diffAmount: -5697, price: 172.63 },
+  { code: 'META', name: 'Meta', currentWeight: 5.2, targetWeight: 8.0, currentShares: 20, targetShares: 31, action: t('components.increaseHolding'), diffShares: 11, diffAmount: 5218, price: 474.35 },
+  { code: 'AMD', name: 'AMD', currentWeight: 0, targetWeight: 5.0, currentShares: 0, targetShares: 50, action: t('components.newlyAdded'), diffShares: 50, diffAmount: 7413, price: 148.25 },
+  { code: 'INTC', name: '英特尔', currentWeight: 4.5, targetWeight: 0, currentShares: 150, targetShares: 0, action: t('components.delete'), diffShares: -150, diffAmount: -4350, price: 29.00 },
 ];
 
 export default function PortfolioRebalancerPage() {
@@ -58,7 +58,7 @@ export default function PortfolioRebalancerPage() {
 
   useEffect(() => { load(); }, []);
 
-  const activeSuggestions = suggestions.filter(s => s.action !== '增持' || s.diffShares > 0);
+  const activeSuggestions = suggestions.filter(s => s.action !== t('components.increaseHolding') || s.diffShares > 0);
   const totalBuy = activeSuggestions.filter(s => s.diffAmount > 0).reduce((s, i) => s + i.diffAmount, 0);
   const totalSell = activeSuggestions.filter(s => s.diffAmount < 0).reduce((s, i) => s + i.diffAmount, 0);
   // const netFlow = totalBuy + totalSell;
@@ -84,7 +84,7 @@ export default function PortfolioRebalancerPage() {
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">总资产</div>
+          <div className="text-xs text-gray-500 mb-1">{t("components.totalAssets")}</div>
           <div className="text-xl font-bold font-mono text-white">${totalAssets.toLocaleString()}</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
@@ -96,7 +96,7 @@ export default function PortfolioRebalancerPage() {
           <div className="text-xl font-bold font-mono text-emerald-400">${Math.abs(totalSell).toLocaleString()}</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">换手率</div>
+          <div className="text-xs text-gray-500 mb-1">{t("components.turnoverRate")}</div>
           <div className={`text-xl font-bold font-mono ${turnover > config.maxTurnover ? 'text-red-400' : 'text-white'}`}>
             {turnover.toFixed(1)}%
           </div>
@@ -167,7 +167,7 @@ export default function PortfolioRebalancerPage() {
                 <th className="px-4 py-3 text-right">目标权重</th>
                 <th className="px-4 py-3 text-right">当前股数</th>
                 <th className="px-4 py-3 text-right">目标股数</th>
-                <th className="px-4 py-3 text-center">操作</th>
+                <th className="px-4 py-3 text-center">{t("components.actions")}</th>
                 <th className="px-4 py-3 text-right">调整股数</th>
                 <th className="px-4 py-3 text-right">调整金额</th>
               </tr>
@@ -185,8 +185,8 @@ export default function PortfolioRebalancerPage() {
                   <td className="px-4 py-3 text-right font-mono text-white">{s.targetShares}</td>
                   <td className="px-4 py-3 text-center">
                     <span className={`text-xs font-bold px-2 py-1 rounded ${
-                      s.action === '增持' || s.action === '新增' ? 'bg-red-500/20 text-red-400' :
-                      s.action === '减持' || s.action === '删除' ? 'bg-emerald-500/20 text-emerald-400' :
+                      s.action === t('components.increaseHolding') || s.action === t('components.newlyAdded') ? 'bg-red-500/20 text-red-400' :
+                      s.action === t('components.decreaseHolding') || s.action === t('components.delete') ? 'bg-emerald-500/20 text-emerald-400' :
                       'bg-gray-500/20 text-gray-400'
                     }`}>
                       {s.action}

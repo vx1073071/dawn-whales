@@ -84,9 +84,9 @@ const TIER_CONFIG: Record<Tier, { label: string; agents: number; rounds: number;
 
 const RECOMMENDATION_LABELS: Record<string, string> = {
   strong_buy: '强烈买入',
-  buy: '买入',
+  buy: t('components.buy'),
   hold: '持有',
-  sell: '卖出',
+  sell: t('components.sell'),
   strong_sell: '强烈卖出',
 };
 
@@ -337,7 +337,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
             <div style={styles.agentSummary}>{agent.summary}</div>
             <div style={styles.agentRecBadge}>
               <span style={{ color: agent.recommendation === 'buy' ? '#4CAF50' : agent.recommendation === 'sell' ? '#F44336' : '#FFC107' }}>
-                {agent.recommendation === 'buy' ? '看多' : agent.recommendation === 'sell' ? '看空' : '中性'}
+                {agent.recommendation === 'buy' ? '看多' : agent.recommendation === 'sell' ? '看空' : t('components.neutral')}
               </span>
               <span style={styles.confidenceBadge}>{agent.confidence}%</span>
             </div>
@@ -503,7 +503,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
                 <div key={agent} style={styles.voteItem}>
                   <span>{def?.emoji}</span>
                   <span style={{ color: vote === 'buy' ? '#4CAF50' : vote === 'sell' ? '#F44336' : '#FFC107' }}>
-                    {vote === 'buy' ? '买入' : vote === 'sell' ? '卖出' : '持有'}
+                    {vote === 'buy' ? t('components.buy') : vote === 'sell' ? t('components.sell') : '持有'}
                   </span>
                 </div>
               );

@@ -98,7 +98,7 @@ export default function PositionMonitorPanel({
 
       const rawPositions = await getPositions(activeAcc);
       if (rawPositions && rawPositions.length > 0) {
-        setPositions(rawPositions.map((p: any) => ({
+        setPositions(rawPositions.map((p: unknown) => ({
           id: p.code || `pos_${Date.now()}`,
           code: p.code,
           name: p.name || p.code,

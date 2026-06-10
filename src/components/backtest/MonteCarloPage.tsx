@@ -426,7 +426,7 @@ export default function MonteCarloPage() {
   });
   const [results, setResults] = useState<SimResults | null>(null);
   const [loading, setLoading] = useState(false);
-  const [serverRiskMetrics, setServerRiskMetrics] = useState<Record<string, any> | null>(null);
+  const [serverRiskMetrics, setServerRiskMetrics] = useState<Record<string, unknown> | null>(null);
   const [engineLoading, setEngineLoading] = useState(false);
 
   const updateConfig = useCallback((key: keyof SimConfig, value: number | string) => {
@@ -450,7 +450,7 @@ export default function MonteCarloPage() {
         riskFreeRate: config.riskFreeRate / 100,
       };
       api.monteCarlo.simulate(serverConfig)
-        .then((res: any) => {
+        .then((res: unknown) => {
           if (res?.success && res.result) {
             const r = res.result;
             // Convert server result to page format
@@ -536,7 +536,7 @@ export default function MonteCarloPage() {
       : curve;
 
     api.backtest.riskMetrics(sampledCurve, config.riskFreeRate / 100)
-      .then((data: any) => {
+      .then((data: unknown) => {
         if (data && typeof data === 'object') {
           setServerRiskMetrics(data);
         }
@@ -847,7 +847,7 @@ export default function MonteCarloPage() {
                   <tr className="text-gray-400 border-b border-gray-700">
                     <th className="py-2 px-3 text-left">情景</th>
                     <th className="py-2 px-3 text-right">期望收益</th>
-                    <th className="py-2 px-3 text-right">波动率</th>
+                    <th className="py-2 px-3 text-right">{t("components.volatility")}</th>
                     <th className="py-2 px-3 text-right">中位数终值</th>
                     <th className="py-2 px-3 text-right">均值终值</th>
                     <th className="py-2 px-3 text-right">VaR 95%</th>
@@ -893,7 +893,7 @@ export default function MonteCarloPage() {
                 </thead>
                 <tbody>
                   {results.sensitivity.map((row, i) => {
-                    const paramLabel = row.param === 'expectedReturn' ? '期望收益' : row.param === 'volatility' ? '波动率' : '投资期限';
+                    const paramLabel = row.param === 'expectedReturn' ? '期望收益' : row.param === 'volatility' ? t('components.volatility') : '投资期限';
                     const prevRow = i > 0 ? results.sensitivity[i - 1] : null;
                     const isGroupStart = !prevRow || prevRow.param !== row.param;
                     return (

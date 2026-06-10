@@ -20,7 +20,7 @@ interface SentimentData {
 const SENTIMENT_LEVELS = [
   { min: 0, max: 20, label: '极度恐慌', color: '#dc2626', emoji: '😱' },
   { min: 20, max: 40, label: '恐慌', color: '#ef4444', emoji: '😰' },
-  { min: 40, max: 60, label: '中性', color: '#f59e0b', emoji: '😐' },
+  { min: 40, max: 60, label: t('components.neutral'), color: '#f59e0b', emoji: '😐' },
   { min: 60, max: 80, label: '贪婪', color: '#22c55e', emoji: '😏' },
   { min: 80, max: 100, label: '极度贪婪', color: '#16a34a', emoji: '🤑' },
 ];
@@ -121,7 +121,7 @@ export default function SentimentGauge() {
         backgroundColor: '#1a1a25',
         borderColor: '#333',
         textStyle: { color: '#e6edf3', fontSize: 11 },
-        formatter: (params: any) => {
+        formatter: (params: unknown) => {
           const p = params[0];
           const lvl = getLevel(p.value);
           return `${p.name}<br/><span style="color:${lvl.color}">●</span> ${p.value} — ${lvl.label}`;
@@ -271,7 +271,7 @@ function generateDemoSentiment(): SentimentData {
         : '情绪中性，关注结构性机会。'
     }`,
     components: [
-      { name: '波动率', weight: 0.25, score: Math.round(Math.random() * 100) },
+      { name: t('components.volatility'), weight: 0.25, score: Math.round(Math.random() * 100) },
       { name: '动量', weight: 0.20, score: Math.round(Math.random() * 100) },
       { name: '资金流向', weight: 0.20, score: Math.round(Math.random() * 100) },
       { name: '情绪面', weight: 0.20, score: Math.round(Math.random() * 100) },

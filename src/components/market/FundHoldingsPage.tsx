@@ -49,7 +49,7 @@ export default function FundHoldingsPage() {
       const res = await getFundHoldings(fundCode.trim());
       if (res?.success) setHoldings(res.items || []);
       else setError(res?.error || '获取失败');
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '获取失败');
     } finally {
       setLoading(false);
@@ -64,7 +64,7 @@ export default function FundHoldingsPage() {
       const res = await getStockFundOwnership(stockCode.trim());
       if (res?.success) setOwnership(res.items || []);
       else setError(res?.error || '获取失败');
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '获取失败');
     } finally {
       setLoading(false);
@@ -81,7 +81,7 @@ export default function FundHoldingsPage() {
       ]);
       if (incRes?.success) setIncreaseRank(incRes.items || []);
       if (decRes?.success) setDecreaseRank(decRes.items || []);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '获取失败');
     } finally {
       setLoading(false);
@@ -152,7 +152,7 @@ export default function FundHoldingsPage() {
                   <th className="px-4 py-3 text-left">股票代码</th>
                   <th className="px-4 py-3 text-left">股票名称</th>
                   <th className="px-4 py-3 text-right">持股数</th>
-                  <th className="px-4 py-3 text-right">市值</th>
+                  <th className="px-4 py-3 text-right">{t("components.marketCap")}</th>
                   <th className="px-4 py-3 text-right">占净值</th>
                   <th className="px-4 py-3 text-right">较上期变化</th>
                 </tr>
@@ -224,7 +224,7 @@ export default function FundHoldingsPage() {
                         o.changeDirection === 'decrease' ? 'bg-emerald-500/10 text-emerald-400' :
                         'bg-gray-500/10 text-gray-400'
                       }`}>
-                        {o.changeDirection === 'increase' ? '增持' : o.changeDirection === 'decrease' ? '减持' : '持平'}
+                        {o.changeDirection === 'increase' ? t('components.increaseHolding') : o.changeDirection === 'decrease' ? t('components.decreaseHolding') : '持平'}
                       </span>
                     </td>
                   </tr>
@@ -247,7 +247,7 @@ export default function FundHoldingsPage() {
                 <th className="px-4 py-3 text-left">排名</th>
                 <th className="px-4 py-3 text-left">基金代码</th>
                 <th className="px-4 py-3 text-left">基金名称</th>
-                <th className="px-4 py-3 text-right">持仓市值</th>
+                <th className="px-4 py-3 text-right">{t("components.positionValue")}</th>
                 <th className="px-4 py-3 text-right">变动金额</th>
                 <th className="px-4 py-3 text-right">变动比例</th>
                 <th className="px-4 py-3 text-left">重仓股</th>
@@ -274,7 +274,7 @@ export default function FundHoldingsPage() {
             </tbody>
           </table>
           {(tab === 'increase' ? increaseRank : decreaseRank).length === 0 && !loading && (
-            <div className="text-gray-500 text-sm py-8 text-center">暂无数据</div>
+            <div className="text-gray-500 text-sm py-8 text-center">{t("components.noData")}</div>
           )}
         </div>
       )}

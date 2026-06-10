@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 // ── J-73-01 R73 V19: 4Agent Real Data Connector ─────────────────────────
 // Connects 4Agent orchestration to real data sources
 // Connects Yahoo Finance, Alpha Vantage, NewsAPI, Reddit/StockTwits + proprietary
@@ -221,7 +222,7 @@ export class RealDataOrchestrator {
       }
     }
 
-    throw new Error(`All data sources exhausted for ${market}:${symbol}`);
+    throw new EngineError("`All data sources exhausted for ${market}:${symbol}`", { code: ErrorCode.ENGINE_DATA_ERROR });
   }
 
   private async fetchFromProprietary(symbol: string, market: string): Promise<MarketDataResult> {
@@ -669,7 +670,7 @@ export class RealDataOrchestrator {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        throw new EngineError("`HTTP ${response.status}: ${response.statusText}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
       }
 
       return await response.json();

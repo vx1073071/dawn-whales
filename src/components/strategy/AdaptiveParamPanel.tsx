@@ -276,7 +276,7 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
             onClick={() => setShowHistory(!showHistory)}
             className="text-xs text-gray-500 hover:text-gray-300"
           >
-            {showHistory ? '隐藏' : '显示全部'}
+            {showHistory ? t('components.hide') : '显示全部'}
           </button>
         </div>
 

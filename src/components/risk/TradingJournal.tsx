@@ -27,7 +27,7 @@ const EMOTION_LABEL: Record<string, string> = {
   calm: '平静', greedy: '贪婪', fearful: '恐惧', impatient: '急躁', confident: '自信',
 };
 
-const ALL_TAGS = ['突破', '回调', '止损', '止盈', '趋势', '反转', '消息', '财报', '宏观', '技术'];
+const ALL_TAGS = [t('components.breakout'), t('components.pullback'), t('components.stopLoss'), t('components.takeProfit'), t('components.trend'), '反转', t('components.message'), '财报', '宏观', '技术'];
 
 export default function TradingJournal() {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
@@ -101,7 +101,7 @@ export default function TradingJournal() {
 
   // Export CSV
   const exportCSV = useCallback(() => {
-    const headers = ['日期', '代码', '方向', '价格', '数量', '理由', '情绪', '结果', '盈亏', '反思', '标签'];
+    const headers = [t('components.date'), t('components.code'), t('components.direction'), t('components.price'), t('components.quantity'), '理由', '情绪', t('components.result'), '盈亏', '反思', '标签'];
     const rows = filtered.map((e) => [
       new Date(e.date).toLocaleDateString('zh-CN'),
       e.symbol,
@@ -137,7 +137,7 @@ export default function TradingJournal() {
           </div>
           <button onClick={exportCSV} className="px-2 py-1.5 text-[10px] text-gray-400 hover:text-gray-200 border border-white/10 rounded-lg">导出 CSV</button>
           <button onClick={() => setShowForm(!showForm)} className="px-3 py-1.5 bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 rounded-lg text-xs font-medium hover:bg-[#C9A046]/20 transition-colors">
-            {showForm ? '取消' : '+ 记一笔'}
+            {showForm ? t('components.cancel') : '+ 记一笔'}
           </button>
         </div>
       </div>
@@ -150,7 +150,7 @@ export default function TradingJournal() {
         <div className="flex items-center gap-1">
           {(['all', 'win', 'loss', 'pending'] as const).map((f) => (
             <button key={f} onClick={() => setFilter(f)} className={`px-2 py-1 rounded text-[10px] ${filter === f ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'}`}>
-              {f === 'all' ? '全部' : f === 'win' ? '盈利' : f === 'loss' ? '亏损' : '待定'}
+              {f === 'all' ? t('components.all') : f === 'win' ? '盈利' : f === 'loss' ? '亏损' : '待定'}
             </button>
           ))}
         </div>
@@ -192,7 +192,7 @@ export default function TradingJournal() {
                     <div className="text-right flex-shrink-0 ml-3">
                       {entry.outcome && <div className={`text-xs font-mono font-medium ${entry.outcome === 'win' ? 'text-emerald-400' : entry.outcome === 'loss' ? 'text-red-400' : 'text-yellow-400'}`}>{entry.outcome === 'win' ? '✓ 盈利' : entry.outcome === 'loss' ? '✗ 亏损' : '⏳ 待定'}</div>}
                       {entry.pnl !== undefined && <div className={`text-xs font-mono ${entry.pnl >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>{entry.pnl >= 0 ? '+' : ''}${entry.pnl.toFixed(0)}</div>}
-                      <button onClick={() => deleteEntry(entry.id)} className="text-[10px] text-gray-600 hover:text-red-400 mt-1">删除</button>
+                      <button onClick={() => deleteEntry(entry.id)} className="text-[10px] text-gray-600 hover:text-red-400 mt-1">{t("components.delete")}</button>
                     </div>
                   </div>
                 </div>
@@ -293,12 +293,12 @@ function JournalForm({ onSubmit, onCancel }: {
   return (
     <form onSubmit={handleSubmit} className="bg-[#12121a] rounded-lg p-4 border border-white/5 mb-4 space-y-3">
       <div className="grid grid-cols-4 gap-2">
-        <input value={symbol} onChange={(e) => setSymbol(e.target.value)} placeholder="代码" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" required />
+        <input value={symbol} onChange={(e) => setSymbol(e.target.value)} placeholder={t("components.code")} className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" required />
         <select value={action} onChange={(e) => setAction(e.target.value as any)} className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white">
-          <option value="BUY">买入</option><option value="SELL">卖出</option><option value="HOLD">持有</option><option value="WATCH">观望</option>
+          <option value="BUY">{t("components.buy")}</option><option value="SELL">{t("components.sell")}</option><option value="HOLD">持有</option><option value="WATCH">观望</option>
         </select>
-        <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="价格" type="number" step="0.01" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" required />
-        <input value={qty} onChange={(e) => setQty(e.target.value)} placeholder="数量" type="number" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" />
+        <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder={t("components.price")} type="number" step="0.01" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" required />
+        <input value={qty} onChange={(e) => setQty(e.target.value)} placeholder={t("components.quantity")} type="number" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" />
       </div>
       <textarea value={reasoning} onChange={(e) => setReasoning(e.target.value)} placeholder="交易理由..." rows={2} className="w-full bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" required />
       <div className="grid grid-cols-3 gap-2">
@@ -320,8 +320,8 @@ function JournalForm({ onSubmit, onCancel }: {
       </div>
       <textarea value={lessons} onChange={(e) => setLessons(e.target.value)} placeholder="反思与教训 (可选)..." rows={2} className="w-full bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" />
       <div className="flex gap-2">
-        <button type="submit" className="flex-1 px-3 py-1.5 bg-[#C9A046] text-black text-xs font-medium rounded hover:bg-[#D4A853] transition-colors">保存</button>
-        <button type="button" onClick={onCancel} className="px-3 py-1.5 text-gray-400 text-xs hover:text-gray-200 transition-colors">取消</button>
+        <button type="submit" className="flex-1 px-3 py-1.5 bg-[#C9A046] text-black text-xs font-medium rounded hover:bg-[#D4A853] transition-colors">{t("components.save")}</button>
+        <button type="button" onClick={onCancel} className="px-3 py-1.5 text-gray-400 text-xs hover:text-gray-200 transition-colors">{t("components.cancel")}</button>
       </div>
     </form>
   );

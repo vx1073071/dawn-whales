@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 /**
  * Trade Execution Engine
  * Sprint 2 Phase 2 - Dawn Whales
@@ -747,9 +748,9 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
     };
 
     // Validate order fields
-    if (!order.code) throw new Error('Order code is required');
-    if (order.quantity <= 0) throw new Error('Order quantity must be positive');
-    if (order.price < 0) throw new Error('Order price cannot be negative');
+    if (!order.code) throw new EngineError("Order code is required", { code: ErrorCode.ENGINE_ORDER_REJECTED });
+    if (order.quantity <= 0) throw new EngineError("Order quantity must be positive", { code: ErrorCode.ENGINE_ORDER_REJECTED });
+    if (order.price < 0) throw new EngineError("Order price cannot be negative", { code: ErrorCode.ENGINE_ORDER_REJECTED });
 
     // Store order
     this.orders.set(order.id, order);
@@ -1293,35 +1294,35 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
 
     if (updates.maxPositionSizePct !== undefined) {
       if (updates.maxPositionSizePct <= 0 || updates.maxPositionSizePct > 100) {
-        throw new Error('maxPositionSizePct must be between 0 and 100');
+        throw new EngineError("maxPositionSizePct must be between 0 and 100", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
       }
       this.config.maxPositionSizePct = updates.maxPositionSizePct;
     }
 
     if (updates.maxDailyLossPct !== undefined) {
       if (updates.maxDailyLossPct <= 0 || updates.maxDailyLossPct > 100) {
-        throw new Error('maxDailyLossPct must be between 0 and 100');
+        throw new EngineError("maxDailyLossPct must be between 0 and 100", { code: ErrorCode.ENGINE_AI_ERROR });
       }
       this.config.maxDailyLossPct = updates.maxDailyLossPct;
     }
 
     if (updates.maxOpenOrders !== undefined) {
       if (updates.maxOpenOrders <= 0 || updates.maxOpenOrders > 1000) {
-        throw new Error('maxOpenOrders must be between 1 and 1000');
+        throw new EngineError("maxOpenOrders must be between 1 and 1000", { code: ErrorCode.ENGINE_ORDER_REJECTED });
       }
       this.config.maxOpenOrders = updates.maxOpenOrders;
     }
 
     if (updates.defaultCommission !== undefined) {
       if (updates.defaultCommission < 0 || updates.defaultCommission > 0.01) {
-        throw new Error('defaultCommission must be between 0 and 0.01');
+        throw new EngineError("defaultCommission must be between 0 and 0.01", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
       }
       this.config.defaultCommission = updates.defaultCommission;
     }
 
     if (updates.slippageBps !== undefined) {
       if (updates.slippageBps < 0 || updates.slippageBps > 1000) {
-        throw new Error('slippageBps must be between 0 and 1000');
+        throw new EngineError("slippageBps must be between 0 and 1000", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
       }
       this.config.slippageBps = updates.slippageBps;
     }
@@ -1340,7 +1341,7 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
   }
 
   setTotalCapital(capital: number): void {
-    if (capital <= 0) throw new Error('Capital must be positive');
+    if (capital <= 0) throw new EngineError("Capital must be positive", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     this.totalCapital = capital;
     log.info(`[TradeExecutor] Total capital set to: ${capital}`);
   }

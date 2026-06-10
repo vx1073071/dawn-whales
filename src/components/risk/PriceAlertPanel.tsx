@@ -70,7 +70,7 @@ export default function PriceAlertPanel() {
         <input
           value={symbol}
           onChange={(e) => setSymbol(e.target.value)}
-          placeholder="代码"
+          placeholder={t("components.code")}
           className="flex-1 bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-600 focus:border-[#C9A046] focus:outline-none"
         />
         <select
@@ -86,7 +86,7 @@ export default function PriceAlertPanel() {
           onChange={(e) => setPrice(e.target.value)}
           type="number"
           step="0.01"
-          placeholder="价格"
+          placeholder={t("components.price")}
           className="w-24 bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-600 focus:border-[#C9A046] focus:outline-none"
         />
         <button

@@ -184,7 +184,7 @@ export default function AutoUpdatePanel({
 
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="bg-white/[0.02] rounded-lg p-3">
-                <div className="text-[10px] text-gray-600 mb-1">版本</div>
+                <div className="text-[10px] text-gray-600 mb-1">{t("components.version")}</div>
                 <div className="text-lg font-bold text-white">{updateInfo.version}</div>
               </div>
               <div className="bg-white/[0.02] rounded-lg p-3">

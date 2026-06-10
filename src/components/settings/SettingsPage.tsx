@@ -80,7 +80,7 @@ export default function SettingsPage() {
       } else {
         setConnectError(result?.error || '连接失败');
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setConnectError(e.message || '连接异常');
     } finally {
       setConnecting(false);
@@ -107,7 +107,7 @@ export default function SettingsPage() {
       } else {
         alert(result?.error || '添加失败');
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       alert(e.message || '添加异常');
     } finally {
       setBrokerActionLoading(null);
@@ -120,7 +120,7 @@ export default function SettingsPage() {
     try {
       await removeBroker(id);
       await refreshBrokers();
-    } catch (e: any) {
+    } catch (e: unknown) {
       alert(e.message || '删除失败');
     } finally {
       setBrokerActionLoading(null);
@@ -132,7 +132,7 @@ export default function SettingsPage() {
     try {
       await setActiveBroker(id);
       await refreshBrokers();
-    } catch (e: any) {
+    } catch (e: unknown) {
       alert(e.message || '切换失败');
     } finally {
       setBrokerActionLoading(null);
@@ -162,7 +162,7 @@ export default function SettingsPage() {
     init(); // Refresh risk config and app info
   }
 
-  const activeBrokerId = brokerStatus.find((s: any) => s.active)?.id || brokerStatus[0]?.id;
+  const activeBrokerId = brokerStatus.find((s: unknown) => s.active)?.id || brokerStatus[0]?.id;
 
   const tabs: { id: SettingsTab; label: string; icon: string }[] = [
     { id: 'broker-mgmt', label: '券商管理', icon: '🏦' },
@@ -213,7 +213,7 @@ export default function SettingsPage() {
                 onClick={() => setShowAddBroker(!showAddBroker)}
                 className="text-xs bg-[#C9A046]/20 text-[#C9A046] hover:bg-[#C9A046]/30 px-3 py-1.5 rounded-lg transition-colors"
               >
-                {showAddBroker ? '取消' : '+ 添加券商'}
+                {showAddBroker ? t('components.cancel') : '+ 添加券商'}
               </button>
             </div>
 
@@ -222,7 +222,7 @@ export default function SettingsPage() {
               <div className="bg-[#12121a] rounded-lg p-4 mb-4 space-y-3">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-gray-400 text-xs mb-1">名称</label>
+                    <label className="block text-gray-400 text-xs mb-1">{t("components.name")}</label>
                     <input
                       value={newBroker.name}
                       onChange={(e) => setNewBroker({ ...newBroker, name: e.target.value })}
@@ -231,7 +231,7 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-400 text-xs mb-1">类型</label>
+                    <label className="block text-gray-400 text-xs mb-1">{t("components.type")}</label>
                     <select
                       value={newBroker.type}
                       onChange={(e) => setNewBroker({ ...newBroker, type: e.target.value })}
@@ -278,7 +278,7 @@ export default function SettingsPage() {
                 <p className="text-gray-500 text-sm py-4 text-center">暂无券商配置，点击右上角添加</p>
               )}
               {brokers.map((broker) => {
-                const status = brokerStatus.find((s: any) => s.id === broker.id);
+                const status = brokerStatus.find((s: unknown) => s.id === broker.id);
                 const isConnected = status?.connected || false;
                 const isActive = activeBrokerId === broker.id;
                 const isLoading = brokerActionLoading === broker.id;
@@ -312,7 +312,7 @@ export default function SettingsPage() {
                         <span className="font-mono">{broker.host}:{broker.port}</span>
                         <span>·</span>
                         <span className={isConnected ? 'text-emerald-400' : 'text-gray-600'}>
-                          {isConnected ? '已连接' : '未连接'}
+                          {isConnected ? t('components.connected') : t('components.disconnected')}
                         </span>
                       </div>
                     </div>
@@ -325,7 +325,7 @@ export default function SettingsPage() {
                           disabled={isLoading}
                           className="text-xs bg-white/5 hover:bg-white/10 text-gray-300 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40"
                         >
-                          {isLoading ? '...' : '切换'}
+                          {isLoading ? '...' : t('components.switch')}
                         </button>
                       )}
                       <button
@@ -333,7 +333,7 @@ export default function SettingsPage() {
                         disabled={isLoading}
                         className="text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-40"
                       >
-                        {isLoading ? '...' : '删除'}
+                        {isLoading ? '...' : t('components.delete')}
                       </button>
                     </div>
                   </div>
@@ -473,7 +473,7 @@ function RiskSlider({ label, value, max, unit, onSave }: { label: string; value:
           onChange={(e) => setVal(Number(e.target.value))}
           className="flex-1 h-1.5 bg-[#12121a] rounded-lg appearance-none cursor-pointer accent-[#C9A046]"
         />
-        <button onClick={() => onSave(val)} className="text-xs text-[#C9A046] hover:text-[#D4A853] px-2 py-1 rounded transition-colors">保存</button>
+        <button onClick={() => onSave(val)} className="text-xs text-[#C9A046] hover:text-[#D4A853] px-2 py-1 rounded transition-colors">{t("components.save")}</button>
       </div>
     </div>
   );

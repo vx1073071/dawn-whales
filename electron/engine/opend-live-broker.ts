@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 /**
  * J-60-01: Futu OpenD LiveBroker (R60 v19 — v1.3.0 GA)
  * Implements IExecutionBroker for real Futu OpenD trading
@@ -342,7 +343,7 @@ export class OpenDLiveBroker extends EventEmitter implements IExecutionBroker {
   }
 
   private validateQuantity(symbol: string, quantity: number, market: 'HK' | 'CN' | 'US'): void {
-    if (quantity <= 0) throw new Error('Quantity must be positive');
+    if (quantity <= 0) throw new EngineError("Quantity must be positive", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     if (!this.isValidLot(symbol, quantity)) {
       const lotSize = this.getLotSize(symbol);
       throw new Error(`Quantity ${quantity} not a valid lot (lot size: ${lotSize})`);
@@ -351,7 +352,7 @@ export class OpenDLiveBroker extends EventEmitter implements IExecutionBroker {
 
   private validatePrice(side: 'buy' | 'sell', price?: number): void {
     if (price !== undefined && price <= 0) {
-      throw new Error('Price must be positive');
+      throw new EngineError("Price must be positive", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     }
   }
 

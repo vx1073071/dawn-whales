@@ -74,8 +74,8 @@ const StatusBadge: React.FC<{ status: OrderStatus }> = ({ status }) => {
     EXPIRED: 'bg-gray-600/20 text-gray-500',
   };
   const labels: Record<OrderStatus, string> = {
-    PENDING: '待处理', SUBMITTED: '已提交', FILLED: '已成交',
-    PARTIALLY_FILLED: '部分成交', CANCELLED: '已取消', REJECTED: '已拒绝', EXPIRED: '已过期',
+    PENDING: t('components.pending'), SUBMITTED: '已提交', FILLED: t('components.tradeFilled'),
+    PARTIALLY_FILLED: t('components.partialFill'), CANCELLED: t('components.tradeCancelled'), REJECTED: t('components.tradeRejected'), EXPIRED: '已过期',
   };
   return (
     <span className={`px-2 py-0.5 rounded text-[10px] font-medium ${colors[status]}`}>
@@ -282,12 +282,12 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
               <tr className="text-gray-500 border-b border-gray-700/50">
                 <th className="text-left py-2 pr-3">订单ID</th>
                 <th className="text-left py-2 pr-3">标的</th>
-                <th className="text-right py-2 pr-3">方向</th>
-                <th className="text-right py-2 pr-3">数量</th>
-                <th className="text-right py-2 pr-3">价格</th>
-                <th className="text-right py-2 pr-3">已成交</th>
+                <th className="text-right py-2 pr-3">{t("components.direction")}</th>
+                <th className="text-right py-2 pr-3">{t("components.quantity")}</th>
+                <th className="text-right py-2 pr-3">{t("components.price")}</th>
+                <th className="text-right py-2 pr-3">{t("components.tradeFilled")}</th>
                 <th className="text-right py-2 pr-3">均价</th>
-                <th className="text-center py-2">状态</th>
+                <th className="text-center py-2">{t("components.status")}</th>
               </tr>
             </thead>
             <tbody>
@@ -351,7 +351,7 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
                   <th className="text-left py-2 pr-3">标的</th>
                   <th className="text-right py-2 pr-3">持仓量</th>
                   <th className="text-right py-2 pr-3">均价</th>
-                  <th className="text-right py-2 pr-3">市值</th>
+                  <th className="text-right py-2 pr-3">{t("components.marketCap")}</th>
                   <th className="text-right py-2 pr-3">未实现</th>
                   <th className="text-right py-2">已实现</th>
                 </tr>

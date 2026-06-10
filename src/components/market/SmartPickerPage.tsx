@@ -117,7 +117,7 @@ export default function SmartPickerPage() {
             disabled={loading}
             className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-1.5 rounded-lg transition-colors"
           >
-            {loading ? '刷新中...' : '刷新'}
+            {loading ? '刷新中...' : t('components.refresh')}
           </button>
         </div>
       </div>
@@ -131,12 +131,12 @@ export default function SmartPickerPage() {
                 <th className="px-4 py-3 text-left">排名</th>
                 <th className="px-4 py-3 text-left">股票</th>
                 <th className="px-4 py-3 text-right">评分</th>
-                <th className="px-4 py-3 text-right">价格</th>
-                <th className="px-4 py-3 text-right">涨跌幅</th>
-                <th className="px-4 py-3 text-right">PE</th>
-                <th className="px-4 py-3 text-right">市值</th>
+                <th className="px-4 py-3 text-right">{t("components.price")}</th>
+                <th className="px-4 py-3 text-right">{t("components.priceChange")}</th>
+                <th className="px-4 py-3 text-right">{t("components.peRatio")}</th>
+                <th className="px-4 py-3 text-right">{t("components.marketCap")}</th>
                 <th className="px-4 py-3 text-left">推荐理由</th>
-                <th className="px-4 py-3 text-center">操作</th>
+                <th className="px-4 py-3 text-center">{t("components.actions")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">

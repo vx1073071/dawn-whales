@@ -92,7 +92,7 @@ function RuleCard({ rule, onDelete, onToggle, onViewHistory }: {
             onClick={() => onToggle(rule.id, !rule.enabled)}
             className={`text-xs px-2 py-1 rounded ${rule.enabled ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30' : 'bg-green-500/20 text-green-400 hover:bg-green-500/30'} transition-colors`}
           >
-            {rule.enabled ? '禁用' : '启用'}
+            {rule.enabled ? t('components.disable') : t('components.enable')}
           </button>
           <button
             onClick={() => onViewHistory(rule.id)}
@@ -311,7 +311,7 @@ export default function ConditionRulePanel({ onBack }: Props) {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             {onBack && (
-              <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm">← 返回</button>
+              <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm">{t("components.back")}</button>
             )}
             <h1 className="text-xl font-bold">条件规则</h1>
             <span className="text-xs bg-[#C9A046]/20 text-[#C9A046] px-2 py-0.5 rounded">Phase 4.2</span>
@@ -322,7 +322,7 @@ export default function ConditionRulePanel({ onBack }: Props) {
               onChange={e => setFilter(e.target.value as any)}
               className="bg-[#1a1a25] border border-white/10 rounded px-3 py-1.5 text-sm text-gray-300 focus:border-[#C9A046] focus:outline-none"
             >
-              <option value="all">全部</option>
+              <option value="all">{t("components.all")}</option>
               <option value="active">仅启用</option>
               <option value="disabled">仅禁用</option>
             </select>

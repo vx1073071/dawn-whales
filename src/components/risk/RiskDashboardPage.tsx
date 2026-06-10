@@ -186,7 +186,7 @@ export default function RiskDashboardPage() {
       setAlerts(alertList);
       setLastUpdate(new Date());
       setError(null);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err?.message || 'Failed to fetch risk data');
       // Fallback to mock
       setSnapshot(MOCK_SNAPSHOT);
@@ -220,7 +220,7 @@ export default function RiskDashboardPage() {
     // Subscribe to position symbols for real-time price updates
     const positionSymbols = ['US.TQQQ', 'US.SPY', 'US.AAPL', 'US.NVDA', 'US.MSFT']; // Example positions
     
-    const handleTick = (data: any) => {
+    const handleTick = (data: unknown) => {
       if (data?.code && data?.price) {
         setLivePrices(prev => ({
           ...prev,
@@ -259,7 +259,7 @@ export default function RiskDashboardPage() {
     api.ws.on('disconnected', handleDisconnect);
 
     // Check initial connection status
-    api.ws.getStatus?.().then((status: any) => {
+    api.ws.getStatus?.().then((status: unknown) => {
       setWsConnected(status?.connected || false);
     });
 
@@ -276,7 +276,7 @@ export default function RiskDashboardPage() {
   useEffect(() => {
     if (!api?.on) return;
 
-    const handleRiskAlert = (alert: any) => {
+    const handleRiskAlert = (alert: unknown) => {
       if (alert?.type && alert?.message) {
         setAlerts(prev => [
           {

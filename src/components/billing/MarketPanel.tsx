@@ -73,19 +73,19 @@ const MARKETS: MarketInfo[] = [
 ];
 
 const mockFactors: FactorItem[] = [
-  { id: 'mom', name: '动量 Momentum', category: '价格', description: '12-1月收益差，跨界动量', markets: ['HK','US','SG','JP','AU','CA','MY'], ic: 0.042, usage: 8542 },
+  { id: 'mom', name: '动量 Momentum', category: t('components.price'), description: '12-1月收益差，跨界动量', markets: ['HK','US','SG','JP','AU','CA','MY'], ic: 0.042, usage: 8542 },
   { id: 'val', name: '价值 Value', category: '估值', description: 'B/P 账面市值比', markets: ['HK','US','JP','AU','CA','SG','MY'], ic: 0.031, usage: 6201 },
   { id: 'qual', name: '质量 Quality', category: '质量', description: 'ROE+负债率+毛利率综合', markets: ['HK','US','SG','JP','AU','CA','MY'], ic: 0.038, usage: 7812 },
-  { id: 'vol', name: '低波 Low Vol', category: '风险', description: '60日波动率倒数', markets: ['HK','US','JP','AU','CA'], ic: -0.028, usage: 4320 },
+  { id: 'vol', name: '低波 Low Vol', category: t('components.risk'), description: '60日波动率倒数', markets: ['HK','US','JP','AU','CA'], ic: -0.028, usage: 4320 },
   { id: 'growth', name: '成长 Growth', category: '成长', description: '营收增长率+EPS增长', markets: ['HK','US','SG','JP','AU'], ic: 0.025, usage: 5800 },
   { id: 'senti', name: '情绪 Sentiment', category: '情绪', description: '新闻正负比+社交热度', markets: ['US','HK','JP'], ic: 0.035, usage: 3600 },
 ];
 
 const mockTemplates: TemplateItem[] = [
-  { id: 't1', name: '双均线交叉', category: '趋势', description: '经典MA5/20金叉死叉', markets: ['HK','US','JP','AU','CA','SG'], difficulty: 'beginner', usage: 12000 },
-  { id: 't2', name: 'RSI超卖反弹', category: '震荡', description: 'RSI<30入场+ATR止损', markets: ['HK','US','SG','JP'], difficulty: 'beginner', usage: 8500 },
-  { id: 't3', name: 'MACD背离', category: '震荡', description: 'MACD顶底背离信号', markets: ['HK','US','JP','AU','CA','SG','MY'], difficulty: 'intermediate', usage: 7200 },
-  { id: 't4', name: '布林带突破', category: '趋势', description: '布林带上轨突破+量确认', markets: ['HK','US','CA','AU'], difficulty: 'intermediate', usage: 5600 },
+  { id: 't1', name: '双均线交叉', category: t('components.trend'), description: '经典MA5/20金叉死叉', markets: ['HK','US','JP','AU','CA','SG'], difficulty: 'beginner', usage: 12000 },
+  { id: 't2', name: 'RSI超卖反弹', category: t('components.consolidation'), description: 'RSI<30入场+ATR止损', markets: ['HK','US','SG','JP'], difficulty: 'beginner', usage: 8500 },
+  { id: 't3', name: 'MACD背离', category: t('components.consolidation'), description: 'MACD顶底背离信号', markets: ['HK','US','JP','AU','CA','SG','MY'], difficulty: 'intermediate', usage: 7200 },
+  { id: 't4', name: '布林带突破', category: t('components.trend'), description: '布林带上轨突破+量确认', markets: ['HK','US','CA','AU'], difficulty: 'intermediate', usage: 5600 },
   { id: 't5', name: '多因子轮动', category: '多因子', description: '月度调仓30+因子选股', markets: ['HK','US','JP','AU','CA','SG','MY'], difficulty: 'advanced', usage: 4200 },
 ];
 

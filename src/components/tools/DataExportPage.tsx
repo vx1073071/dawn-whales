@@ -203,7 +203,7 @@ const DataExportPage: React.FC = () => {
           return { success: false, error: `不支持的导出格式: ${fmt}` };
         }
         return await fn(target, filters);
-      } catch (err: any) {
+      } catch (err: unknown) {
         return { success: false, error: err?.message || '未知错误' };
       }
     },
@@ -218,7 +218,7 @@ const DataExportPage: React.FC = () => {
           return { success: false, error: 'Batch API 不可用' };
         }
         return await api.batch(payload);
-      } catch (err: any) {
+      } catch (err: unknown) {
         return { success: false, error: err?.message || '批量导出失败' };
       }
     },
@@ -232,7 +232,7 @@ const DataExportPage: React.FC = () => {
         return { success: false, error: 'Summary API 不可用' };
       }
       return await api.summaryReport();
-    } catch (err: any) {
+    } catch (err: unknown) {
       return { success: false, error: err?.message || '生成报告失败' };
     }
   }, []);

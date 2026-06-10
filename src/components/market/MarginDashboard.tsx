@@ -42,7 +42,7 @@ export default function MarginDashboard() {
       if (marginRes?.success) setBalanceHistory(marginRes.history || []);
       if (balanceRes?.success) setMarginRank(balanceRes.data || []);
       if (shortRes?.success) setShortRank(shortRes.data || []);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '获取数据失败');
     } finally {
       setLoading(false);
@@ -176,7 +176,7 @@ export default function MarginDashboard() {
                 </div>
               </div>
             ))}
-            {marginRank.length === 0 && <div className="text-gray-500 text-sm py-4 text-center">暂无数据</div>}
+            {marginRank.length === 0 && <div className="text-gray-500 text-sm py-4 text-center">{t("components.noData")}</div>}
           </div>
         </div>
 
@@ -199,7 +199,7 @@ export default function MarginDashboard() {
                 </div>
               </div>
             ))}
-            {shortRank.length === 0 && <div className="text-gray-500 text-sm py-4 text-center">暂无数据</div>}
+            {shortRank.length === 0 && <div className="text-gray-500 text-sm py-4 text-center">{t("components.noData")}</div>}
           </div>
         </div>
       </div>

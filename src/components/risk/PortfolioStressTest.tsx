@@ -15,9 +15,9 @@ interface Scenario {
 const SCENARIOS: Scenario[] = [
   { name: '黑天鹅', description: '市场崩盘 -30%', shockPct: -0.30, probability: 0.05, impact: 'high' },
   { name: '熊市', description: '持续下跌 -15%', shockPct: -0.15, probability: 0.15, impact: 'high' },
-  { name: '回调', description: '正常回调 -8%', shockPct: -0.08, probability: 0.30, impact: 'medium' },
-  { name: '震荡', description: '横盘震荡 ±2%', shockPct: -0.02, probability: 0.35, impact: 'low' },
-  { name: '反弹', description: '快速反弹 +10%', shockPct: 0.10, probability: 0.12, impact: 'medium' },
+  { name: t('components.pullback'), description: '正常回调 -8%', shockPct: -0.08, probability: 0.30, impact: 'medium' },
+  { name: t('components.consolidation'), description: '横盘震荡 ±2%', shockPct: -0.02, probability: 0.35, impact: 'low' },
+  { name: t('components.rebound'), description: '快速反弹 +10%', shockPct: 0.10, probability: 0.12, impact: 'medium' },
   { name: '牛市', description: '强劲上涨 +20%', shockPct: 0.20, probability: 0.03, impact: 'low' },
 ];
 
@@ -76,7 +76,7 @@ export default function PortfolioStressTest() {
             position: 'right',
             color: '#e5e7eb',
             fontSize: 10,
-            formatter: (params: any) => {
+            formatter: (params: unknown) => {
               const scenario = scenarioResults[scenarioResults.length - 1 - params.dataIndex];
               return `${scenario.shockPct >= 0 ? '+' : ''}${(scenario.shockPct * 100).toFixed(0)}%`;
             },

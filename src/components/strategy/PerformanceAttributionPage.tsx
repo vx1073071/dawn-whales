@@ -34,7 +34,7 @@ const MOCK_DATA: AttributionData = {
     { factor: '价值', exposure: 0.15, contribution: 0.8 },
     { factor: '质量', exposure: 0.25, contribution: 1.5 },
     { factor: '低波动', exposure: -0.10, contribution: -0.5 },
-    { factor: '市值', exposure: 0.35, contribution: 2.8 },
+    { factor: t('components.marketCap'), exposure: 0.35, contribution: 2.8 },
     { factor: '成长', exposure: 0.45, contribution: 3.5 },
   ],
   monthlyAttribution: [
@@ -237,7 +237,7 @@ export default function PerformanceAttributionPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                <th className="px-4 py-3 text-left">行业</th>
+                <th className="px-4 py-3 text-left">{t("components.industry")}</th>
                 <th className="px-4 py-3 text-right">组合权重</th>
                 <th className="px-4 py-3 text-right">基准权重</th>
                 <th className="px-4 py-3 text-right">组合收益</th>

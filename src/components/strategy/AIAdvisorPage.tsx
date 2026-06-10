@@ -13,10 +13,10 @@ interface AIAdvice {
 
 const RECOMMENDATION_MAP: Record<string, { label: string; color: string; bg: string }> = {
   strong_buy: { label: '强烈买入', color: 'text-red-500', bg: 'bg-red-500/10 border-red-500/20' },
-  buy: { label: '买入', color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20' },
+  buy: { label: t('components.buy'), color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20' },
   hold: { label: '持有', color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20' },
   reduce: { label: '减仓', color: 'text-orange-400', bg: 'bg-orange-500/10 border-orange-500/20' },
-  sell: { label: '卖出', color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
+  sell: { label: t('components.sell'), color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
 };
 
 const MOCK_ADVICE: AIAdvice = {
@@ -24,9 +24,9 @@ const MOCK_ADVICE: AIAdvice = {
   score: 62,
   recommendation: 'hold',
   portfolioSuggestions: [
-    { action: '增持', code: 'NVDA', name: '英伟达', reason: 'AI芯片需求持续强劲，Blackwell架构推出带来新增长点' },
-    { action: '增持', code: 'AVGO', name: '博通', reason: 'AI定制芯片业务快速增长，VMware整合效应显现' },
-    { action: '减持', code: 'TSLA', name: '特斯拉', reason: '价格战压缩利润率，FSD商业化进度慢于预期' },
+    { action: t('components.increaseHolding'), code: 'NVDA', name: '英伟达', reason: 'AI芯片需求持续强劲，Blackwell架构推出带来新增长点' },
+    { action: t('components.increaseHolding'), code: 'AVGO', name: '博通', reason: 'AI定制芯片业务快速增长，VMware整合效应显现' },
+    { action: t('components.decreaseHolding'), code: 'TSLA', name: '特斯拉', reason: '价格战压缩利润率，FSD商业化进度慢于预期' },
     { action: '持有', code: 'AAPL', name: '苹果', reason: '服务收入稳健增长，Vision Pro长期看好但短期影响有限' },
     { action: '关注', code: 'SMCI', name: '超微电脑', reason: 'AI服务器需求爆发，但估值较高需等待回调' },
   ],
@@ -88,7 +88,7 @@ export default function AIAdvisorPage() {
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
           <div className="text-xs text-gray-500 mb-1">市场情绪</div>
-          <div className="text-2xl font-bold text-white">{advice.score >= 70 ? '乐观' : advice.score >= 50 ? '中性' : '谨慎'}</div>
+          <div className="text-2xl font-bold text-white">{advice.score >= 70 ? '乐观' : advice.score >= 50 ? t('components.neutral') : '谨慎'}</div>
           <div className="w-full bg-white/5 rounded-full h-2 mt-2">
             <div
               className="h-2 rounded-full transition-all"
@@ -122,9 +122,9 @@ export default function AIAdvisorPage() {
           {advice.portfolioSuggestions.map((s, idx) => (
             <div key={idx} className="flex items-start gap-3 bg-deep rounded-lg p-3">
               <span className={`text-xs font-bold px-2 py-1 rounded flex-shrink-0 ${
-                s.action === '增持' ? 'bg-red-500/20 text-red-400' :
-                s.action === '减持' ? 'bg-emerald-500/20 text-emerald-400' :
-                s.action === '卖出' ? 'bg-emerald-500/20 text-emerald-400' :
+                s.action === t('components.increaseHolding') ? 'bg-red-500/20 text-red-400' :
+                s.action === t('components.decreaseHolding') ? 'bg-emerald-500/20 text-emerald-400' :
+                s.action === t('components.sell') ? 'bg-emerald-500/20 text-emerald-400' :
                 'bg-yellow-500/20 text-yellow-400'
               }`}>
                 {s.action}

@@ -50,10 +50,10 @@ function AccountSummary({ fund, connected }: { fund: AccountFund | null; connect
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-white font-medium text-sm">账户资金</h3>
-          <span className="text-xs text-red-400">{connected ? '加载中...' : '未连接'}</span>
+          <span className="text-xs text-red-400">{connected ? t('components.loading') : t('components.disconnected')}</span>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          {['总资产', '可用资金', '持仓市值', '购买力'].map((label) => (
+          {[t('components.totalAssets'), t('components.availableFunds'), t('components.positionValue'), t('components.buyingPower')].map((label) => (
             <div key={label}>
               <div className="text-gray-500 text-xs mb-1">{label}</div>
               <div className="text-gray-600 font-mono text-sm">--</div>
@@ -74,19 +74,19 @@ function AccountSummary({ fund, connected }: { fund: AccountFund | null; connect
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <div className="text-gray-500 text-xs mb-1">总资产</div>
+          <div className="text-gray-500 text-xs mb-1">{t("components.totalAssets")}</div>
           <div className="text-white font-mono text-lg font-semibold">{fmt(fund.totalAssets)}</div>
         </div>
         <div>
-          <div className="text-gray-500 text-xs mb-1">可用资金</div>
+          <div className="text-gray-500 text-xs mb-1">{t("components.availableFunds")}</div>
           <div className="text-emerald-400 font-mono text-sm">{fmt(fund.cash)}</div>
         </div>
         <div>
-          <div className="text-gray-500 text-xs mb-1">持仓市值</div>
+          <div className="text-gray-500 text-xs mb-1">{t("components.positionValue")}</div>
           <div className="text-gray-300 font-mono text-sm">{fmt(fund.marketVal)}</div>
         </div>
         <div>
-          <div className="text-gray-500 text-xs mb-1">购买力</div>
+          <div className="text-gray-500 text-xs mb-1">{t("components.buyingPower")}</div>
           <div className="text-cyan-400 font-mono text-sm">{fmt(fund.buyingPower)}</div>
         </div>
       </div>
@@ -145,12 +145,12 @@ function QuickTradeForm({
 
       const res = await api.placeOrder(order);
       if (res?.success || res?.orderId) {
-        setResult({ ok: true, msg: `下单成功: ${side === 'BUY' ? '买入' : '卖出'} ${qty} ${symbol.replace('US.', '')}` });
+        setResult({ ok: true, msg: `下单成功: ${side === 'BUY' ? t('components.buy') : t('components.sell')} ${qty} ${symbol.replace('US.', '')}` });
         onOrderPlaced();
       } else {
         setResult({ ok: false, msg: res?.error || '下单失败' });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setResult({ ok: false, msg: err.message || '下单异常' });
     } finally {
       setLoading(false);
@@ -216,14 +216,14 @@ function QuickTradeForm({
               orderType === t ? 'bg-white/10 text-white' : 'bg-[#12121a] text-gray-500'
             }`}
           >
-            {t === 'MARKET' ? '市价' : '限价'}
+            {t === 'MARKET' ? t('components.marketPrice') : t('components.limitPrice')}
           </button>
         ))}
       </div>
 
       {/* Quantity */}
       <div className="mb-3">
-        <label className="text-gray-500 text-xs mb-1 block">数量</label>
+        <label className="text-gray-500 text-xs mb-1 block">{t("components.quantity")}</label>
         <input
           type="number"
           value={qty}
@@ -270,7 +270,7 @@ function QuickTradeForm({
               : 'bg-red-500 hover:bg-red-600 text-white'
         } ${loading ? 'opacity-60' : ''}`}
       >
-        {loading ? '下单中...' : !connected ? '请先连接 OpenD' : `${side === 'BUY' ? '买入' : '卖出'} ${symbol.replace('US.', '')} × ${qty}`}
+        {loading ? '下单中...' : !connected ? '请先连接 OpenD' : `${side === 'BUY' ? t('components.buy') : t('components.sell')} ${symbol.replace('US.', '')} × ${qty}`}
       </button>
 
       {/* Result message */}
@@ -369,7 +369,7 @@ export default function TradingDeskPage() {
     try {
       const result = await api.getPositions(id);
       if (Array.isArray(result)) {
-        setPositions(result.map((p: any) => ({
+        setPositions(result.map((p: unknown) => ({
           code: p.code || p.symbol,
           name: p.name,
           qty: p.qty || p.quantity || 0,
@@ -426,7 +426,7 @@ export default function TradingDeskPage() {
 
   const tabs: { key: Tab; label: string; icon: string }[] = [
     { key: 'trade', label: '交易台', icon: '📈' },
-    { key: 'positions', label: '持仓', icon: '💼' },
+    { key: 'positions', label: t('components.positions'), icon: '💼' },
     { key: 'orders', label: '委托', icon: '📋' },
     { key: 'history', label: '成交记录', icon: '📜' },
   ];
@@ -442,9 +442,9 @@ export default function TradingDeskPage() {
     submitted: 'text-blue-400 bg-blue-500/20', pending: 'text-yellow-400 bg-yellow-500/20',
   };
   const statusLabels: Record<string, string> = {
-    SUBMITTED: '已提交', WAITING: '等待中', FILLED: '已成交', PARTIAL: '部分成交',
-    CANCELLED: '已撤销', REJECTED: '已拒绝', UNKNOWN: '未知',
-    submitted: '已提交', pending: '待处理',
+    SUBMITTED: '已提交', WAITING: '等待中', FILLED: t('components.tradeFilled'), PARTIAL: t('components.partialFill'),
+    CANCELLED: '已撤销', REJECTED: t('components.tradeRejected'), UNKNOWN: '未知',
+    submitted: '已提交', pending: t('components.pending'),
   };
 
   return (
@@ -459,7 +459,7 @@ export default function TradingDeskPage() {
           <div className="flex items-center gap-2 text-xs">
             <div className={`w-2 h-2 rounded-full ${connected ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`} />
             <span className={connected ? 'text-emerald-400' : 'text-red-400'}>
-              {connected ? 'OpenD 已连接' : '未连接'}
+              {connected ? 'OpenD 已连接' : t('components.disconnected')}
             </span>
           </div>
           {lastRefresh && <span className="text-gray-600 text-xs">刷新: {lastRefresh}</span>}
@@ -512,13 +512,13 @@ export default function TradingDeskPage() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                      <th className="px-3 py-2 text-left">代码</th>
-                      <th className="px-3 py-2 text-center">方向</th>
-                      <th className="px-3 py-2 text-right">数量</th>
+                      <th className="px-3 py-2 text-left">{t("components.code")}</th>
+                      <th className="px-3 py-2 text-center">{t("components.direction")}</th>
+                      <th className="px-3 py-2 text-right">{t("components.quantity")}</th>
                       <th className="px-3 py-2 text-right">委托价</th>
-                      <th className="px-3 py-2 text-right">成交</th>
-                      <th className="px-3 py-2 text-center">状态</th>
-                      <th className="px-3 py-2 text-center">操作</th>
+                      <th className="px-3 py-2 text-right">{t("components.filled")}</th>
+                      <th className="px-3 py-2 text-center">{t("components.status")}</th>
+                      <th className="px-3 py-2 text-center">{t("components.actions")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -557,10 +557,10 @@ export default function TradingDeskPage() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                      <th className="px-3 py-2 text-left">代码</th>
-                      <th className="px-3 py-2 text-right">数量</th>
+                      <th className="px-3 py-2 text-left">{t("components.code")}</th>
+                      <th className="px-3 py-2 text-right">{t("components.quantity")}</th>
                       <th className="px-3 py-2 text-right">成本</th>
-                      <th className="px-3 py-2 text-right">市价</th>
+                      <th className="px-3 py-2 text-right">{t("components.marketPrice")}</th>
                       <th className="px-3 py-2 text-right">盈亏</th>
                     </tr>
                   </thead>
@@ -600,12 +600,12 @@ export default function TradingDeskPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">代码</th>
-                  <th className="px-4 py-3 text-left">名称</th>
-                  <th className="px-4 py-3 text-right">数量</th>
+                  <th className="px-4 py-3 text-left">{t("components.code")}</th>
+                  <th className="px-4 py-3 text-left">{t("components.name")}</th>
+                  <th className="px-4 py-3 text-right">{t("components.quantity")}</th>
                   <th className="px-4 py-3 text-right">成本价</th>
-                  <th className="px-4 py-3 text-right">市价</th>
-                  <th className="px-4 py-3 text-right">市值</th>
+                  <th className="px-4 py-3 text-right">{t("components.marketPrice")}</th>
+                  <th className="px-4 py-3 text-right">{t("components.marketCap")}</th>
                   <th className="px-4 py-3 text-right">盈亏</th>
                   <th className="px-4 py-3 text-right">盈亏%</th>
                 </tr>
@@ -642,7 +642,7 @@ export default function TradingDeskPage() {
       {(tab === 'orders') && (
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           {loading && orders.length === 0 ? (
-            <div className="p-8 text-center text-gray-500 text-sm">加载中...</div>
+            <div className="p-8 text-center text-gray-500 text-sm">{t("components.loading")}</div>
           ) : orders.length === 0 ? (
             <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">📋</div>
@@ -652,15 +652,15 @@ export default function TradingDeskPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">时间</th>
-                  <th className="px-4 py-3 text-left">代码</th>
-                  <th className="px-4 py-3 text-center">方向</th>
-                  <th className="px-4 py-3 text-right">数量</th>
+                  <th className="px-4 py-3 text-left">{t("components.time")}</th>
+                  <th className="px-4 py-3 text-left">{t("components.code")}</th>
+                  <th className="px-4 py-3 text-center">{t("components.direction")}</th>
+                  <th className="px-4 py-3 text-right">{t("components.quantity")}</th>
                   <th className="px-4 py-3 text-right">委托价</th>
                   <th className="px-4 py-3 text-right">成交数</th>
                   <th className="px-4 py-3 text-right">成交价</th>
-                  <th className="px-4 py-3 text-center">状态</th>
-                  <th className="px-4 py-3 text-center">操作</th>
+                  <th className="px-4 py-3 text-center">{t("components.status")}</th>
+                  <th className="px-4 py-3 text-center">{t("components.actions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -670,7 +670,7 @@ export default function TradingDeskPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{o.code?.replace('US.', '') || '--'}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${o.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {o.side === 'BUY' ? '买入' : '卖出'}
+                        {o.side === 'BUY' ? t('components.buy') : t('components.sell')}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm">{o.qty}</td>
@@ -708,14 +708,14 @@ export default function TradingDeskPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                  <th className="px-4 py-3 text-left">时间</th>
-                  <th className="px-4 py-3 text-left">代码</th>
-                  <th className="px-4 py-3 text-center">方向</th>
-                  <th className="px-4 py-3 text-right">数量</th>
-                  <th className="px-4 py-3 text-right">价格</th>
+                  <th className="px-4 py-3 text-left">{t("components.time")}</th>
+                  <th className="px-4 py-3 text-left">{t("components.code")}</th>
+                  <th className="px-4 py-3 text-center">{t("components.direction")}</th>
+                  <th className="px-4 py-3 text-right">{t("components.quantity")}</th>
+                  <th className="px-4 py-3 text-right">{t("components.price")}</th>
                   <th className="px-4 py-3 text-right">盈亏</th>
-                  <th className="px-4 py-3 text-center">状态</th>
-                  <th className="px-4 py-3 text-left">备注</th>
+                  <th className="px-4 py-3 text-center">{t("components.status")}</th>
+                  <th className="px-4 py-3 text-left">{t("components.remarks")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -725,7 +725,7 @@ export default function TradingDeskPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{t.symbol?.replace('US.', '')}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${t.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {t.side === 'BUY' ? '买入' : '卖出'}
+                        {t.side === 'BUY' ? t('components.buy') : t('components.sell')}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm">{t.quantity}</td>

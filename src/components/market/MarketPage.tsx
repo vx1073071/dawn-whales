@@ -61,7 +61,7 @@ export default function MarketPage() {
 
   // Merge WS quotes with store quotes (WS takes priority)
   const mergedQuotes = useMemo(() => {
-    const merged: Record<string, any> = { ...quotes };
+    const merged: Record<string, unknown> = { ...quotes };
     wsQuotes.forEach((wsQ, code) => {
       merged[code] = {
         ...merged[code],
@@ -88,7 +88,7 @@ export default function MarketPage() {
     try {
       const klines = await api.getKlines(symbol, period, 200);
       if (klines.length > 0) {
-        setKlineData(klines.map((k: any) => ({
+        setKlineData(klines.map((k: unknown) => ({
           time: typeof k.time === 'number' ? k.time : Math.floor(new Date(k.time).getTime() / 1000),
           open: k.open, high: k.high, low: k.low, close: k.close, volume: k.volume,
         })));
@@ -175,12 +175,12 @@ export default function MarketPage() {
         <table className="w-full">
           <thead>
             <tr className="border-b border-white/5">
-              <th className="px-4 py-3 text-left text-xs text-gray-500 font-medium uppercase tracking-wide">代码</th>
-              <th className="px-4 py-3 text-left text-xs text-gray-500 font-medium uppercase tracking-wide">名称</th>
+              <th className="px-4 py-3 text-left text-xs text-gray-500 font-medium uppercase tracking-wide">{t("components.code")}</th>
+              <th className="px-4 py-3 text-left text-xs text-gray-500 font-medium uppercase tracking-wide">{t("components.name")}</th>
               <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">最新价</th>
               <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">涨跌额</th>
-              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">涨跌幅</th>
-              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">成交量</th>
+              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">{t("components.priceChange")}</th>
+              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">{t("components.volume")}</th>
               <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide">标签</th>
               <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide w-12"></th>
             </tr>

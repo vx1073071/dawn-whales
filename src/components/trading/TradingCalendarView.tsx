@@ -637,7 +637,7 @@ export default function TradingCalendarView() {
 
           <div className="w-3 h-3 rounded-full bg-[#C9A046]/30" />
 
-          <span>今日</span>
+          <span>{t("components.today")}</span>
 
         </div>
 

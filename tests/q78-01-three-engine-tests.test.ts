@@ -194,7 +194,7 @@ describe('Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)', (
         const fp = path.join(ENGINE, f);
         if (fs.existsSync(fp)) {
           const c = fs.readFileSync(fp, 'utf-8');
-          if (/14.*day|14 天|14 \* 24/.test(c)) has14Days = true;
+          if (/14.*day|14 天|14 \* 24|freezePeriodDays\s*=\s*14|14\s*\*\s*24\s*\*/i.test(c)) has14Days = true;
         }
       }
       console.log('[Q-78-01] 14-day freeze: ' + (has14Days ? 'confirmed' : 'pending JVS'));

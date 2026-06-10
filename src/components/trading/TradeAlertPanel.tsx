@@ -15,7 +15,7 @@ export default function TradeAlertPanel() {
   const [alerts, setAlerts] = useState<TradeAlert[]>([]);
 
   useEffect(() => {
-    const handler = (data: any) => {
+    const handler = (data: unknown) => {
       setAlerts((prev) => [{
         id: data?.id || String(Date.now()),
         type: data?.type || 'price',

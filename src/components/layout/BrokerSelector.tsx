@@ -78,7 +78,7 @@ export default function BrokerSelector() {
     return (
       <div className="flex items-center gap-1.5 text-xs">
         <span className={`w-1.5 h-1.5 rounded-full ${activeBroker ? 'bg-emerald-400' : 'bg-gray-500'}`} />
-        <span className="text-gray-400">{activeBroker ? (BROKER_LABELS[activeBroker.type] || activeBroker.name) : '未连接'}</span>
+        <span className="text-gray-400">{activeBroker ? (BROKER_LABELS[activeBroker.type] || activeBroker.name) : t('components.disconnected')}</span>
       </div>
     );
   }
@@ -126,7 +126,7 @@ export default function BrokerSelector() {
                     {broker.name}
                   </div>
                   <div className="text-[10px] text-gray-500">
-                    {broker.connected ? '已连接' : '未连接'}
+                    {broker.connected ? t('components.connected') : t('components.disconnected')}
                     {!broker.connected && broker.lastError && (
                       <span className="text-red-400 ml-1">· {broker.lastError}</span>
                     )}

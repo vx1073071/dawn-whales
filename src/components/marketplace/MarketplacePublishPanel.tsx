@@ -339,8 +339,8 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
                 {([
                   ['Sharpe', selectedStrategy.sharpe.toFixed(1), 'text-amber-400'],
                   ['年化收益', `${(selectedStrategy.annualReturn * 100).toFixed(0)}%`, 'text-emerald-400'],
-                  ['最大回撤', `${(selectedStrategy.maxDrawdown * 100).toFixed(0)}%`, 'text-red-400'],
-                  ['胜率', `${(selectedStrategy.winRate * 100).toFixed(0)}%`, 'text-blue-400'],
+                  [t('components.maxDrawdown'), `${(selectedStrategy.maxDrawdown * 100).toFixed(0)}%`, 'text-red-400'],
+                  [t('components.winRate'), `${(selectedStrategy.winRate * 100).toFixed(0)}%`, 'text-blue-400'],
                 ] as const).map(([label, val, color]) => (
                   <div key={label} className="text-center">
                     <div className="text-[10px] text-gray-600">{label}</div>

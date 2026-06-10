@@ -35,7 +35,7 @@ interface KeywordItem {
   sentiment: 'positive' | 'negative';
 }
 
-type SentimentLabel = '极度乐观' | '乐观' | '偏乐观' | '中性' | '偏悲观' | '悲观' | '极度悲观';
+type SentimentLabel = '极度乐观' | '乐观' | '偏乐观' | t('components.neutral') | '偏悲观' | '悲观' | '极度悲观';
 type TimeRange = '1h' | '4h' | '1d' | '7d';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -47,13 +47,13 @@ const TIME_RANGES: { value: TimeRange; label: string }[] = [
   { value: '1d', label: '1天' },
   { value: '7d', label: '7天' },
 ];
-const SOURCES = ['全部', '新闻', '社交媒体', '公告', '研报'];
+const SOURCES = [t('components.all'), '新闻', '社交媒体', '公告', '研报'];
 
 const MOOD_LABELS: { min: number; max: number; label: SentimentLabel; color: string }[] = [
   { min: 0.7, max: 1.0, label: '极度乐观', color: '#22c55e' },
   { min: 0.4, max: 0.7, label: '乐观', color: '#4ade80' },
   { min: 0.15, max: 0.4, label: '偏乐观', color: '#86efac' },
-  { min: -0.15, max: 0.15, label: '中性', color: '#94a3b8' },
+  { min: -0.15, max: 0.15, label: t('components.neutral'), color: '#94a3b8' },
   { min: -0.4, max: -0.15, label: '偏悲观', color: '#fca5a5' },
   { min: -0.7, max: -0.4, label: '悲观', color: '#f87171' },
   { min: -1.0, max: -0.7, label: '极度悲观', color: '#ef4444' },
@@ -65,7 +65,7 @@ function getSentimentLabel(score: number): { label: SentimentLabel; color: strin
   for (const m of MOOD_LABELS) {
     if (score >= m.min && score <= m.max) return { label: m.label, color: m.color };
   }
-  return { label: '中性', color: '#94a3b8' };
+  return { label: t('components.neutral'), color: '#94a3b8' };
 }
 
 function getSentimentBadgeColor(score: number): string {
@@ -113,7 +113,7 @@ function generateMockNews(symbol: string, count: number): NewsItem[] {
     `${symbol} 宣布裁员计划，市场反应积极`,
   ];
   const sources = ['新闻', '社交媒体', '公告', '研报'];
-  const keywordPool = ['财报', '增长', '回购', '监管', '风险', '突破', '合作', '增持', '扩张', '评级', '看空', '补贴', '空头', '政策', '裁员'];
+  const keywordPool = ['财报', '增长', '回购', '监管', t('components.risk'), t('components.breakout'), '合作', t('components.increaseHolding'), '扩张', '评级', '看空', '补贴', '空头', '政策', '裁员'];
 
   return Array.from({ length: count }, (_, i) => ({
     id: `news-${i}-${Date.now()}`,
@@ -188,7 +188,7 @@ const MoodGauge: React.FC<{ score: number }> = ({ score }) => {
         <circle cx={cx} cy={cy} r="5" fill="white" />
         {/* Labels */}
         <text x="25" y="130" fill="#ef4444" fontSize="9" textAnchor="middle">极度悲观</text>
-        <text x="120" y="25" fill="#94a3b8" fontSize="9" textAnchor="middle">中性</text>
+        <text x="120" y="25" fill="#94a3b8" fontSize="9" textAnchor="middle">{t("components.neutral")}</text>
         <text x="215" y="130" fill="#22c55e" fontSize="9" textAnchor="middle">极度乐观</text>
       </svg>
       <div className="mt-2 text-center">
@@ -204,9 +204,9 @@ const MoodGauge: React.FC<{ score: number }> = ({ score }) => {
 const SentimentPie: React.FC<{ bullish: number; neutral: number; bearish: number }> = ({ bullish, neutral, bearish }) => {
   const total = bullish + neutral + bearish || 1;
   const slices = [
-    { value: bullish, color: '#22c55e', label: '看涨' },
-    { value: neutral, color: '#94a3b8', label: '中性' },
-    { value: bearish, color: '#ef4444', label: '看跌' },
+    { value: bullish, color: '#22c55e', label: t('components.bullish') },
+    { value: neutral, color: '#94a3b8', label: t('components.neutral') },
+    { value: bearish, color: '#ef4444', label: t('components.bearish') },
   ];
 
   let cumAngle = -90;
@@ -384,7 +384,7 @@ const KeywordCloud: React.FC<{ keywords: KeywordItem[] }> = ({ keywords }) => {
 
 const NewsFeedItem: React.FC<{ item: NewsItem }> = ({ item }) => {
   const badge = getSentimentBadgeColor(item.sentiment ?? 0);
-  const sentimentText = item.sentiment && item.sentiment > 0.2 ? '看涨' : item.sentiment && item.sentiment < -0.2 ? '看跌' : '中性';
+  const sentimentText = item.sentiment && item.sentiment > 0.2 ? t('components.bullish') : item.sentiment && item.sentiment < -0.2 ? t('components.bearish') : t('components.neutral');
 
   return (
     <div className="flex gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group">
@@ -507,7 +507,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 const SentimentDashboardPage: React.FC = () => {
   const [symbol, setSymbol] = useState('AAPL');
   const [timeRange, setTimeRange] = useState<TimeRange>('1d');
-  const [sourceFilter, setSourceFilter] = useState('全部');
+  const [sourceFilter, setSourceFilter] = useState(t('components.all'));
   const [news, setNews] = useState<NewsItem[]>([]);
   const [anomalies, setAnomalies] = useState<AnomalySignal[]>([]);
   const [loading, setLoading] = useState(false);
@@ -528,7 +528,7 @@ const SentimentDashboardPage: React.FC = () => {
         try {
           const raw = await api.dataProvider.getNews(symbol, 50);
           if (Array.isArray(raw) && raw.length > 0) {
-            newsData = raw.map((item: any, idx: number) => ({
+            newsData = raw.map((item: unknown, idx: number) => ({
               id: item.id || `news-${idx}`,
               title: item.title || item.headline || '无标题',
               summary: item.summary || item.body || '',
@@ -593,7 +593,7 @@ const SentimentDashboardPage: React.FC = () => {
 
   const filteredNews = useMemo(() => {
     let items = [...news];
-    if (sourceFilter !== '全部') {
+    if (sourceFilter !== t('components.all')) {
       items = items.filter(n => n.source === sourceFilter);
     }
     // Time range filter
@@ -675,7 +675,7 @@ const SentimentDashboardPage: React.FC = () => {
     });
     // Add synthetic keywords if empty
     if (freqMap.size === 0) {
-      const synth = ['财报超预期', '利好政策', '机构增持', '业绩增长', '技术突破', '行业整合', '风险预警', '监管收紧', '资金外流', '估值过高', '减持', '盈利下滑'];
+      const synth = ['财报超预期', '利好政策', '机构增持', '业绩增长', '技术突破', '行业整合', '风险预警', '监管收紧', '资金外流', '估值过高', t('components.decreaseHolding'), '盈利下滑'];
       synth.forEach(kw => {
         freqMap.set(kw, { count: Math.floor(Math.random() * 15) + 1, sentimentSum: (Math.random() - 0.5) * 4 });
       });

@@ -48,7 +48,7 @@ export default function DailyReportPage() {
           },
         });
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '获取简报失败');
     } finally {
       setLoading(false);

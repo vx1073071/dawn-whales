@@ -14,8 +14,8 @@ interface MarketplaceSearchProps {
 const FILTER_OPTIONS = [
   { key: 'category', label: '分类', options: ['趋势跟踪', '均值回归', '动量', '套利', '多因子', 'AI/ML'] },
   { key: 'timeframe', label: '周期', options: ['日内', '中频', '低频'] },
-  { key: 'market', label: '市场', options: ['A股', '港股', '美股'] },
-  { key: 'price', label: '价格', options: ['免费', '付费'] },
+  { key: 'market', label: t('components.markets'), options: ['A股', '港股', '美股'] },
+  { key: 'price', label: t('components.price'), options: ['免费', '付费'] },
 ];
 
 export const MarketplaceSearch: React.FC<MarketplaceSearchProps> = ({ onSearch, onFilterChange, className }) => {
@@ -126,7 +126,7 @@ export const MarketplaceSearch: React.FC<MarketplaceSearchProps> = ({ onSearch, 
               onClick={() => onSearch(sort)}
               className="px-2 py-0.5 rounded text-[10px] text-gray-500 hover:text-gray-300 hover:bg-gray-800"
             >
-              {sort === 'rating' ? '评分' : sort === 'return' ? '收益' : '最新'}
+              {sort === 'rating' ? '评分' : sort === 'return' ? t('components.returnRate') : '最新'}
             </button>
           ))}
         </div>

@@ -48,9 +48,9 @@ const THEMES: Record<Theme, ThemeColors> = {
 
 const STRINGS: Record<Lang, LangStrings> = {
   'zh-CN': {
-    appName: 'Dawn Whales', settings: '设置',
-    darkMode: '深色模式', lightMode: '浅色模式', followSystem: '跟随系统', themeLabel: '主题',
-    langLabel: '语言',
+    appName: 'Dawn Whales', settings: t('components.settings'),
+    darkMode: t('components.darkMode'), lightMode: t('components.lightMode'), followSystem: '跟随系统', themeLabel: t('components.theme'),
+    langLabel: t('components.language'),
     errCodeFormat: '代码格式错误', errParamRange: '参数超出范围', errNetwork: '网络错误', errServer: '服务器错误',
     friendlyCodeHK: '港股代码是5位数字哦（如 00700），试试重新输入？',
     friendlyCodeUS: '美股代码是英文字母（如 AAPL），大小写都可以~',
@@ -58,12 +58,12 @@ const STRINGS: Record<Lang, LangStrings> = {
     friendlyParamLong: '慢线20~200适合中长期趋势，再试试？',
     friendlyNetwork: '网络不太稳定，检查一下连接后重试？',
     friendlyServer: '服务器繁忙中，稍等片刻自动恢复~',
-    save: '保存', cancel: '取消', confirm: '确认', close: '关闭',
-    loading: '加载中...', empty: '暂无数据', error: '出错了',
+    save: t('components.save'), cancel: t('components.cancel'), confirm: t('components.confirm'), close: t('components.close'),
+    loading: t('components.loading'), empty: t('components.noData'), error: '出错了',
   },
   'zh-TW': {
     appName: 'Dawn Whales', settings: '設定',
-    darkMode: '深色模式', lightMode: '淺色模式', followSystem: '跟隨系統', themeLabel: '主題',
+    darkMode: t('components.darkMode'), lightMode: '淺色模式', followSystem: '跟隨系統', themeLabel: '主題',
     langLabel: '語言',
     errCodeFormat: '代碼格式錯誤', errParamRange: '參數超出範圍', errNetwork: '網路錯誤', errServer: '伺服器錯誤',
     friendlyCodeHK: '港股代碼是5位數字喔（如 00700），試試重新輸入？',
@@ -72,7 +72,7 @@ const STRINGS: Record<Lang, LangStrings> = {
     friendlyParamLong: '慢線20~200適合中長期趨勢，再試試？',
     friendlyNetwork: '網路不太穩定，檢查一下連線後重試？',
     friendlyServer: '伺服器繁忙中，稍等片刻自動恢復~',
-    save: '儲存', cancel: '取消', confirm: '確認', close: '關閉',
+    save: '儲存', cancel: t('components.cancel'), confirm: '確認', close: '關閉',
     loading: '載入中...', empty: '暫無資料', error: '出錯了',
   },
   'en': {
@@ -100,7 +100,7 @@ const STRINGS: Record<Lang, LangStrings> = {
     friendlyParamLong: '長期MA 20-200はトレンドフォロー向けです。もう一度！',
     friendlyNetwork: 'ネットワークが不安定です。接続を確認してください。',
     friendlyServer: 'サーバーが混雑しています。しばらくお待ちください〜',
-    save: '保存', cancel: 'キャンセル', confirm: '確認', close: '閉じる',
+    save: t('components.save'), cancel: 'キャンセル', confirm: '確認', close: '閉じる',
     loading: '読み込み中...', empty: 'データなし', error: 'エラー',
   },
   'ko': {
@@ -158,7 +158,7 @@ function ThemeToggle() {
           color: theme === 'dark' ? '#FFF' : colors.textMuted, fontSize: 14,
           transition: 'all 0.2s',
         }}
-        title="深色模式"
+        title={t("components.darkMode")}
       >
         🌙
       </button>
@@ -170,7 +170,7 @@ function ThemeToggle() {
           color: theme === 'light' ? '#FFF' : colors.textMuted, fontSize: 14,
           transition: 'all 0.2s',
         }}
-        title="浅色模式"
+        title={t("components.lightMode")}
       >
         ☀️
       </button>

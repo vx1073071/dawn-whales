@@ -118,7 +118,7 @@ export const AgentDashboard: React.FC = () => {
         </Col>
         <Col span={4}>
           <Card>
-            <Statistic title="版本" value="0.7.0" />
+            <Statistic title={t("components.version")} value="0.7.0" />
           </Card>
         </Col>
       </Row>

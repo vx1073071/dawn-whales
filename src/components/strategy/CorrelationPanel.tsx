@@ -43,7 +43,7 @@ export default function CorrelationPanel({ result }: { result?: any }) {
         <table className="w-full text-xs">
           <thead>
             <tr>
-              <th className="p-1.5 text-gray-500 text-left">策略</th>
+              <th className="p-1.5 text-gray-500 text-left">{t("components.strategy")}</th>
               {data.ids.map((id) => (
                 <th key={id} className="p-1.5 text-gray-500 text-center">{id.slice(0, 8)}</th>
               ))}

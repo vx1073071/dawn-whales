@@ -22,7 +22,7 @@ function TxStatusBadge({ status }: { status: string }) {
   const map: Record<string, { icon: string; color: string; bg: string; label: string }> = {
     pending: { icon: '⏳', color: '#F59E0B', bg: '#F59E0B22', label: '确认中' },
     confirmed: { icon: '✅', color: '#10B981', bg: '#10B98122', label: '已确认' },
-    failed: { icon: '❌', color: '#EF4444', bg: '#EF444422', label: '失败' },
+    failed: { icon: '❌', color: '#EF4444', bg: '#EF444422', label: t('components.failed') },
   };
   const s = map[status] || map.failed;
   return (
@@ -221,12 +221,12 @@ function HistoryTab() {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
           <thead>
             <tr style={{ borderBottom: '1px solid #374151' }}>
-              <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>类型</th>
+              <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{t("components.type")}</th>
               <th style={{ padding: '8px 12px', textAlign: 'right', color: '#9CA3AF' }}>金额</th>
-              <th style={{ padding: '8px 12px', textAlign: 'center', color: '#9CA3AF' }}>状态</th>
+              <th style={{ padding: '8px 12px', textAlign: 'center', color: '#9CA3AF' }}>{t("components.status")}</th>
               <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>TxHash</th>
-              <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>日期</th>
-              <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>备注</th>
+              <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{t("components.date")}</th>
+              <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{t("components.remarks")}</th>
             </tr>
           </thead>
           <tbody>

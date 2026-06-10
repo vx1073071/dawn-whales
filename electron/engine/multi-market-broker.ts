@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 /**
  * J-61-01: A/美股 MultiMarketBroker (R61 v19 — v1.4.0-beta)
  *
@@ -249,15 +250,13 @@ export class MultiMarketBroker extends EventEmitter implements IExecutionBroker 
   async placeOrder(order: MultiMarketOrder): Promise<MultiMarketResult> {
     const market = this.markets.get(order.market);
     if (!market) {
-      throw new Error(`Unknown market region: ${order.market}`);
+      throw new EngineError("`Unknown market region: ${order.market}`", { code: ErrorCode.ENGINE_ORDER_REJECTED });
     }
 
     // Validate order size
     const quantity = order.quantity ?? 0;
     if (quantity < market.minShares) {
-      throw new Error(
-        `${order.market} minimum shares: ${market.minShares}, got ${quantity}`
-      );
+      throw new EngineError("`${order.market} minimum shares: ${market.minShares}, got ${quantity}`", { code: ErrorCode.ENGINE_ORDER_REJECTED });
     }
 
     // Check daily limit for A-shares
@@ -268,7 +267,7 @@ export class MultiMarketBroker extends EventEmitter implements IExecutionBroker 
         order.referencePrice, market, isChiNext
       );
       if (!limitCheck.passed) {
-        throw new Error(limitCheck.reason!);
+        throw new EngineError("limitCheck.reason!", { code: ErrorCode.ENGINE_RATE_LIMIT });
       }
     }
 
@@ -276,7 +275,7 @@ export class MultiMarketBroker extends EventEmitter implements IExecutionBroker 
     if ((order.market === 'US-NYSE' || order.market === 'US-NASDAQ') && order.prePostMarket) {
       const session = getUSTradingSession();
       if (!session.isOpen) {
-        throw new Error('US market closed and pre/post not specified');
+        throw new EngineError("US market closed and pre/post not specified", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
       }
     }
 
@@ -338,13 +337,13 @@ export class MultiMarketBroker extends EventEmitter implements IExecutionBroker 
 
   getFeeForTrade(tradeValue: number, quantity: number, region: MarketRegion): MarketFeeBreakdown {
     const market = this.markets.get(region);
-    if (!market) throw new Error(`Unknown market: ${region}`);
+    if (!market) throw new EngineError("`Unknown market: ${region}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     return calculateMarketFee(tradeValue, quantity, market);
   }
 
   checkPriceLimit(symbol: string, side: 'buy' | 'sell', price: number, referencePrice: number, region: MarketRegion): { passed: boolean; limitPrice: number; reason?: string } {
     const market = this.markets.get(region);
-    if (!market) throw new Error(`Unknown market: ${region}`);
+    if (!market) throw new EngineError("`Unknown market: ${region}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     const isChiNext = symbol.startsWith('300') || symbol.startsWith('688');
     return checkDailyLimit(symbol, side, price, referencePrice, market, isChiNext);
   }

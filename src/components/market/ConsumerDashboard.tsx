@@ -61,7 +61,7 @@ export default function ConsumerDashboard() {
       } else {
         setError(res?.error || '获取数据失败');
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '获取数据失败');
     } finally {
       setLoading(false);

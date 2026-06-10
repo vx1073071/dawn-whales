@@ -237,7 +237,7 @@ export default function PortfolioOptimizationPanel({
                   <th className="text-left px-4 py-2">资产</th>
                   <th className="text-right px-4 py-2">当前</th>
                   <th className="text-right px-4 py-2">目标</th>
-                  <th className="text-center px-4 py-2">操作</th>
+                  <th className="text-center px-4 py-2">{t("components.actions")}</th>
                   <th className="text-right px-4 py-2">金额</th>
                   <th className="text-left px-4 py-2">理由</th>
                 </tr>

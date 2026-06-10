@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 // ── AI Report Generator ─────────────────────────────────────────────────────
 // Q4: Backtest Result AI Interpretation
 // Input: backtest results array → DeepSeek LLM → Markdown report
@@ -205,13 +206,13 @@ ${compTable}
         temperature: 0.25,
         max_tokens: 600,
       }, timeoutMs);
-      if (!result.success) throw new Error(result.error);
+      if (!result.success) throw new EngineError("result.error", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
       raw = result.content;
     } catch (e) {
-      throw new Error('AI Gateway error: ' + e.message);
+      throw new EngineError("AI Gateway error: ' + e.message", { code: ErrorCode.ENGINE_AI_ERROR });
     }
 
-    if (!raw?.trim()) throw new Error('Empty LLM response');
+    if (!raw?.trim()) throw new EngineError("Empty LLM response", { code: ErrorCode.ENGINE_AI_ERROR });
 
     // Parse sections from LLM output (split by ## headings)
     const sectionBlocks = raw.split(/(?=^#{1,3}\s)/m);
@@ -305,13 +306,13 @@ ${data.worstPerformers.slice(0, 3).map(p => `- ${p.symbol}: $${p.pnl.toFixed(2)}
         temperature: 0.25,
         max_tokens: 600,
       }, timeoutMs);
-      if (!result.success) throw new Error(result.error);
+      if (!result.success) throw new EngineError("result.error", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
       raw = result.content;
     } catch (e) {
-      throw new Error('AI Gateway error: ' + e.message);
+      throw new EngineError("AI Gateway error: ' + e.message", { code: ErrorCode.ENGINE_AI_ERROR });
     }
 
-    if (!raw?.trim()) throw new Error('Empty LLM response');
+    if (!raw?.trim()) throw new EngineError("Empty LLM response", { code: ErrorCode.ENGINE_AI_ERROR });
 
     const sectionBlocks = raw.split(/(?=^#{1,3}\s)/m);
     const sections: ReportSection[] = sectionBlocks
@@ -444,13 +445,13 @@ ${data.worstStrategies.slice(0, 3).map(s => `- ${s.name}: $${s.pnl.toFixed(2)} (
         temperature: 0.25,
         max_tokens: 600,
       }, timeoutMs);
-      if (!result.success) throw new Error(result.error);
+      if (!result.success) throw new EngineError("result.error", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
       raw = result.content;
     } catch (e) {
-      throw new Error('AI Gateway error: ' + e.message);
+      throw new EngineError("AI Gateway error: ' + e.message", { code: ErrorCode.ENGINE_AI_ERROR });
     }
 
-    if (!raw?.trim()) throw new Error('Empty LLM response');
+    if (!raw?.trim()) throw new EngineError("Empty LLM response", { code: ErrorCode.ENGINE_AI_ERROR });
 
     const sectionBlocks = raw.split(/(?=^#{1,3}\s)/m);
     const sections: ReportSection[] = sectionBlocks
@@ -576,13 +577,13 @@ ${data.strategyRanking.slice(0, 5).map(s => `- ${s.name}: $${s.pnl.toFixed(2)} (
         temperature: 0.25,
         max_tokens: 600,
       }, timeoutMs);
-      if (!result.success) throw new Error(result.error);
+      if (!result.success) throw new EngineError("result.error", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
       raw = result.content;
     } catch (e) {
-      throw new Error('AI Gateway error: ' + e.message);
+      throw new EngineError("AI Gateway error: ' + e.message", { code: ErrorCode.ENGINE_AI_ERROR });
     }
 
-    if (!raw?.trim()) throw new Error('Empty LLM response');
+    if (!raw?.trim()) throw new EngineError("Empty LLM response", { code: ErrorCode.ENGINE_AI_ERROR });
 
     const sectionBlocks = raw.split(/(?=^#{1,3}\s)/m);
     const sections: ReportSection[] = sectionBlocks

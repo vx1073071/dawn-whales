@@ -25,7 +25,7 @@ const TYPE_LABELS: Record<string, string> = {
   limit_down: '跌停',
   volume_surge: '放量异动',
   rapid_change: '快速拉升/跳水',
-  breakout: '突破',
+  breakout: t('components.breakout'),
   breakdown: '跌破',
   unusual_activity: '异常交易',
   large_order: '大单异动',
@@ -103,7 +103,7 @@ export default function AnomalyAlertPanel() {
       {summary && (
         <div className="grid grid-cols-4 gap-2 mb-4">
           <div className="bg-card rounded-lg p-2 text-center">
-            <div className="text-xs text-gray-500">今日</div>
+            <div className="text-xs text-gray-500">{t("components.today")}</div>
             <div className="text-sm font-bold text-white">{summary.todayCount ?? 0}</div>
           </div>
           <div className="bg-card rounded-lg p-2 text-center">
@@ -111,7 +111,7 @@ export default function AnomalyAlertPanel() {
             <div className="text-sm font-bold text-red-400">{summary.highSeverityCount ?? 0}</div>
           </div>
           <div className="bg-card rounded-lg p-2 text-center">
-            <div className="text-xs text-gray-500">待处理</div>
+            <div className="text-xs text-gray-500">{t("components.pending")}</div>
             <div className="text-sm font-bold text-yellow-400">{summary.unacknowledgedCount ?? 0}</div>
           </div>
           <div className="bg-card rounded-lg p-2 text-center">
@@ -133,7 +133,7 @@ export default function AnomalyAlertPanel() {
                 : 'bg-transparent border-white/10 text-gray-500 hover:text-gray-300'
             }`}
           >
-            {f === 'all' ? '全部' : f === 'unacknowledged' ? '未处理' : f === 'high' ? '高危' : f === 'medium' ? '中危' : '低危'}
+            {f === 'all' ? t('components.all') : f === 'unacknowledged' ? '未处理' : f === 'high' ? '高危' : f === 'medium' ? '中危' : '低危'}
           </button>
         ))}
       </div>

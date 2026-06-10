@@ -43,7 +43,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
       } else {
         setError(result.error || '对比生成失败');
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '调用失败');
     } finally {
       setLoading(false);

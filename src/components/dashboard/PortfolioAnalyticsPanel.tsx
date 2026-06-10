@@ -353,7 +353,7 @@ export const PortfolioAnalyticsPanel: React.FC<PortfolioRiskPanelProps> = ({
             {([
               { label: 'Sharpe Ratio', value: riskMetrics.sharpeRatio.toFixed(2), color: 'text-amber-400' },
               { label: 'Sortino Ratio', value: riskMetrics.sortinoRatio.toFixed(2), color: 'text-emerald-400' },
-              { label: '最大回撤', value: `${(riskMetrics.maxDrawdown * 100).toFixed(1)}%`, color: 'text-red-400' },
+              { label: t('components.maxDrawdown'), value: `${(riskMetrics.maxDrawdown * 100).toFixed(1)}%`, color: 'text-red-400' },
               { label: '年化收益', value: `${(riskMetrics.annualizedReturn * 100).toFixed(1)}%`, color: 'text-emerald-400' },
               { label: '年化波动', value: `${(riskMetrics.annualizedVolatility * 100).toFixed(1)}%`, color: 'text-blue-400' },
               { label: 'Beta', value: riskMetrics.beta.toFixed(2), color: 'text-purple-400' },

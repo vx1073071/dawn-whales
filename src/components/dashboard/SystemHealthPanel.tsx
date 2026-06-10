@@ -68,8 +68,8 @@ function statusColor(status: EngineStatus['status']): string {
 function statusText(status: EngineStatus['status']): string {
   switch (status) {
     case 'online': return '运行中';
-    case 'degraded': return '降级';
-    case 'offline': return '离线';
+    case 'degraded': return t('components.downgrade');
+    case 'offline': return t('components.offline');
   }
 }
 

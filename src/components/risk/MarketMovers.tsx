@@ -54,7 +54,7 @@ export default function MarketMovers({
           {([
             { key: 'gainers' as const, label: '涨幅榜', color: 'text-emerald-400' },
             { key: 'losers' as const, label: '跌幅榜', color: 'text-red-400' },
-            { key: 'volume' as const, label: '成交量', color: 'text-[#D4A853]' },
+            { key: 'volume' as const, label: t('components.volume'), color: 'text-[#D4A853]' },
           ]).map((t) => (
             <button
               key={t.key}

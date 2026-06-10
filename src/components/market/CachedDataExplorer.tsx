@@ -81,7 +81,7 @@ export default function CachedDataExplorer() {
           itemStyle: { color: n.hitRate >= 90 ? '#16a34a' : n.hitRate >= 75 ? '#C9A046' : '#dc2626' },
         })),
         barWidth: '60%',
-        label: { show: true, position: 'right', color: '#e5e7eb', fontSize: 10, formatter: (p: any) => `${p.value}%` },
+        label: { show: true, position: 'right', color: '#e5e7eb', fontSize: 10, formatter: (p: unknown) => `${p.value}%` },
       }],
     });
 

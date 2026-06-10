@@ -515,9 +515,9 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
                   <thead>
                     <tr className="text-gray-500 border-b border-gray-700/50">
                       <th className="text-left py-1.5 pr-3">Sharpe</th>
-                      <th className="text-left py-1.5 pr-3">收益</th>
+                      <th className="text-left py-1.5 pr-3">{t("components.returnRate")}</th>
                       <th className="text-left py-1.5 pr-3">回撤</th>
-                      <th className="text-left py-1.5 pr-3">胜率</th>
+                      <th className="text-left py-1.5 pr-3">{t("components.winRate")}</th>
                       <th className="text-left py-1.5">Fitness</th>
                     </tr>
                   </thead>

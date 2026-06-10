@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 // ── Risk Metrics Calculator (JVS-46) ────────────────────────────────────────
 // VaR / CVaR / Sharpe / Sortino / Information Ratio / Max Drawdown
 // IPC: em:calc-risk-metrics
@@ -60,7 +61,7 @@ export function calculateRiskMetrics(params: RiskMetricsParams): RiskMetricsResu
   } = params;
 
   if (!returns || returns.length === 0) {
-    throw new Error('Returns array is required and must not be empty');
+    throw new EngineError("Returns array is required and must not be empty", { code: ErrorCode.ENGINE_VALIDATION_ERROR });
   }
 
   const n = returns.length;

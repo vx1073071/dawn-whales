@@ -54,9 +54,9 @@ const MOCK_DIGEST: Record<DigestType, DailyDigest> = {
       { symbol: '01211', name: '比亚迪', change: -0.5 },
     ],
     activeSignals: [
-      { strategy: '双均线交叉', symbol: 'US.AAPL', signal: '买入', time: '09:35' },
-      { strategy: '均值回归', symbol: 'HK.00700', signal: '卖出', time: '10:12' },
-      { strategy: '动量突破', symbol: 'US.NVDA', signal: '持仓', time: '08:00' },
+      { strategy: '双均线交叉', symbol: 'US.AAPL', signal: t('components.buy'), time: '09:35' },
+      { strategy: '均值回归', symbol: 'HK.00700', signal: t('components.sell'), time: '10:12' },
+      { strategy: '动量突破', symbol: 'US.NVDA', signal: t('components.positions'), time: '08:00' },
     ],
     riskAlerts: [
       { level: 'info', message: '组合VaR在正常范围内' },
@@ -80,8 +80,8 @@ const MOCK_DIGEST: Record<DigestType, DailyDigest> = {
       { symbol: '01810', name: '小米集团', change: -2.1 },
     ],
     activeSignals: [
-      { strategy: '双均线交叉', symbol: 'US.AAPL', signal: '买入', time: '周一' },
-      { strategy: '均值回归', symbol: 'HK.00700', signal: '卖出', time: '周四' },
+      { strategy: '双均线交叉', symbol: 'US.AAPL', signal: t('components.buy'), time: '周一' },
+      { strategy: '均值回归', symbol: 'HK.00700', signal: t('components.sell'), time: '周四' },
     ],
     riskAlerts: [
       { level: 'info', message: '周度VaR稳定在0.8%以内' },
@@ -117,7 +117,7 @@ const SENTIMENT_ICONS: Record<string, string> = {
   bullish: '🐂', bearish: '🐻', neutral: '😐',
 };
 const SENTIMENT_LABELS: Record<string, string> = {
-  bullish: '看多', bearish: '看空', neutral: '中性',
+  bullish: '看多', bearish: '看空', neutral: t('components.neutral'),
 };
 const SENTIMENT_COLORS: Record<string, string> = {
   bullish: 'text-emerald-400', bearish: 'text-red-400', neutral: 'text-gray-400',
@@ -255,8 +255,8 @@ export const AIDailyDigestPanel: React.FC<AIDailyDigestPanelProps> = ({ classNam
                   </div>
                   <div className="flex items-center gap-2">
                     <span className={`text-[10px] px-1.5 py-0.5 rounded ${
-                      s.signal === '买入' ? 'bg-emerald-500/10 text-emerald-400' :
-                      s.signal === '卖出' ? 'bg-red-500/10 text-red-400' :
+                      s.signal === t('components.buy') ? 'bg-emerald-500/10 text-emerald-400' :
+                      s.signal === t('components.sell') ? 'bg-red-500/10 text-red-400' :
                       'bg-gray-500/10 text-gray-400'
                     }`}>
                       {s.signal}

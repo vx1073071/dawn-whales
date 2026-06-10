@@ -68,7 +68,7 @@ const SOURCE_ICONS: Record<SourceKey, string> = {
   eastmoney: '📊', sina: '📰', tencent: '📡', xueqiu: '❄️',
 };
 const HEALTH_LABELS: Record<SourceHealth, string> = {
-  healthy: '正常', degraded: '降级', down: '中断',
+  healthy: '正常', degraded: t('components.downgrade'), down: '中断',
 };
 
 // ── Main Component ──────────────────────────────────────────────────────
@@ -110,7 +110,7 @@ export const MultiSourceDataPanel: React.FC<MultiSourceDataPanelProps> = ({ clas
         {([
           { label: '数据源', value: sources.length, color: 'text-white' },
           { label: '正常', value: healthyCount, color: 'text-emerald-400' },
-          { label: '降级', value: sources.filter(s => s.health === 'degraded').length, color: 'text-amber-400' },
+          { label: t('components.downgrade'), value: sources.filter(s => s.health === 'degraded').length, color: 'text-amber-400' },
           { label: '中断', value: sources.filter(s => s.health === 'down').length, color: 'text-red-400' },
         ] as const).map(c => (
           <div key={c.label} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/30 text-center">
@@ -230,8 +230,8 @@ export const MultiSourceDataPanel: React.FC<MultiSourceDataPanelProps> = ({ clas
                 <thead>
                   <tr className="text-gray-500 border-b border-gray-700/50">
                     <th className="text-left py-1.5 pr-3">数据源</th>
-                    <th className="text-right py-1.5 pr-3">价格</th>
-                    <th className="text-right py-1.5 pr-3">成交量</th>
+                    <th className="text-right py-1.5 pr-3">{t("components.price")}</th>
+                    <th className="text-right py-1.5 pr-3">{t("components.volume")}</th>
                     <th className="text-right py-1.5 pr-3">偏离</th>
                     <th className="text-right py-1.5">延迟</th>
                   </tr>

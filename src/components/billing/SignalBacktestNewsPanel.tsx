@@ -84,15 +84,15 @@ function SignalBacktestTab() {
           <div style={{ fontSize: 24, fontWeight: 900, color: '#818CF8' }}>{summary.totalSignals}</div>
         </div>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>胜率</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t("components.winRate")}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#10B981' }}>{summary.winRate.toFixed(0)}%</div>
         </div>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>盈亏比</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t("components.profitLossRatio")}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#D4A853' }}>{summary.profitFactor.toFixed(2)}</div>
         </div>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>夏普</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t("components.sharpeRatio")}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#34D399' }}>{summary.sharpe.toFixed(2)}</div>
         </div>
       </div>
@@ -123,9 +123,9 @@ function SignalBacktestTab() {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
           <thead>
             <tr style={{ borderBottom: '1px solid #374151' }}>
-              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>日期</th>
+              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{t("components.date")}</th>
               <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>标的</th>
-              <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>方向</th>
+              <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>{t("components.direction")}</th>
               <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>入场</th>
               <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>出场</th>
               <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>PnL</th>
@@ -139,7 +139,7 @@ function SignalBacktestTab() {
                 <td style={{ padding: '10px 10px', color: '#D1D5DB', fontWeight: 600 }}>{t.symbol}</td>
                 <td style={{ padding: '10px 10px', textAlign: 'center' }}>
                   <span style={{ padding: '2px 8px', borderRadius: 4, fontSize: 10, fontWeight: 700, background: t.side === 'BUY' ? '#10B98122' : '#EF444422', color: t.side === 'BUY' ? '#34D399' : '#FCA5A5' }}>
-                    {t.side === 'BUY' ? '买入' : '卖出'}
+                    {t.side === 'BUY' ? t('components.buy') : t('components.sell')}
                   </span>
                 </td>
                 <td style={{ padding: '10px 10px', textAlign: 'right', fontFamily: 'monospace', color: '#D1D5DB' }}>{t.entryPrice}</td>
@@ -181,7 +181,7 @@ function RealtimeNewsTab() {
             background: sentimentFilter === f ? '#6366F118' : 'transparent', color: sentimentFilter === f ? '#818CF8' : '#6B7280',
             fontSize: 12, cursor: 'pointer',
           }}>
-            {f === 'all' ? '全部' : f === 'positive' ? '😊 正面' : f === 'negative' ? '😟 负面' : '😐 中性'}
+            {f === 'all' ? t('components.all') : f === 'positive' ? '😊 正面' : f === 'negative' ? '😟 负面' : '😐 中性'}
           </button>
         ))}
       </div>

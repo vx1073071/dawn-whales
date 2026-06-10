@@ -27,10 +27,10 @@ interface MobileNavigationProps {
 
 const NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', icon: '📊', label: '仪表盘', badge: 0 },
-  { id: 'strategy', icon: '🎯', label: '策略', badge: 3 },
-  { id: 'market', icon: '📈', label: '行情' },
-  { id: 'portfolio', icon: '💰', label: '持仓' },
-  { id: 'more', icon: '⋮', label: '更多' },
+  { id: 'strategy', icon: '🎯', label: t('components.strategy'), badge: 3 },
+  { id: 'market', icon: '📈', label: t('components.market') },
+  { id: 'portfolio', icon: '💰', label: t('components.positions') },
+  { id: 'more', icon: '⋮', label: t('components.more') },
 ];
 
 export const MobileNavigation: React.FC<MobileNavigationProps> = ({
@@ -52,10 +52,10 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
   }, [onTabChange]);
 
   const moreItems: NavItem[] = [
-    { id: 'orders', icon: '📋', label: '订单' },
-    { id: 'backtest', icon: '🔬', label: '回测' },
-    { id: 'marketplace', icon: '🏪', label: '市场' },
-    { id: 'settings', icon: '⚙️', label: '设置' },
+    { id: 'orders', icon: '📋', label: t('components.orders') },
+    { id: 'backtest', icon: '🔬', label: t('components.backtest') },
+    { id: 'marketplace', icon: '🏪', label: t('components.markets') },
+    { id: 'settings', icon: '⚙️', label: t('components.settings') },
   ];
 
   return (

@@ -269,7 +269,7 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
             {([
               ['Sharpe', selectedW.trainSharpe.toFixed(2), selectedW.testSharpe.toFixed(2)],
               ['回撤', `${(selectedW.trainMaxDD * 100).toFixed(1)}%`, `${(selectedW.testMaxDD * 100).toFixed(1)}%`],
-              ['胜率', `${(selectedW.trainWinRate * 100).toFixed(0)}%`, `${(selectedW.testWinRate * 100).toFixed(0)}%`],
+              [t('components.winRate'), `${(selectedW.trainWinRate * 100).toFixed(0)}%`, `${(selectedW.testWinRate * 100).toFixed(0)}%`],
               ['过拟合比', '', `${(selectedW.overfitRatio * 100).toFixed(0)}%`],
             ] as const).map(([label, train, test]) => (
               <div key={label} className="bg-gray-800/50 rounded p-2 text-center">

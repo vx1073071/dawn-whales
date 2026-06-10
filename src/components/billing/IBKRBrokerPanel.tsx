@@ -92,7 +92,7 @@ function PingBadge({ connected, latency }: { connected: boolean; latency: number
     <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium"
           style={{ background: `${color}15`, color, border: `1px solid ${color}30` }}>
       <span className="w-1.5 h-1.5 rounded-full" style={{ background: color, animation: connected ? 'pulse 2s infinite' : 'none' }} />
-      {connected ? `${latency}ms` : '断开'}
+      {connected ? `${latency}ms` : t('components.disconnect')}
     </span>
   );
 }
@@ -166,9 +166,9 @@ export default function IBKRBrokerPanel({
             </div>
             {futuStatus && (
               <div className="space-y-1.5 text-xs text-gray-500">
-                <div className="flex justify-between"><span>账户</span><span className="text-gray-300">{futuStatus.accountId}</span></div>
+                <div className="flex justify-between"><span>{t("components.account")}</span><span className="text-gray-300">{futuStatus.accountId}</span></div>
                 <div className="flex justify-between"><span>余额</span><span className="text-gray-200">{futuStatus.balance.toLocaleString()} {futuStatus.currency}</span></div>
-                <div className="flex justify-between"><span>购买力</span><span className="text-gray-300">{futuStatus.buyingPower.toLocaleString()}</span></div>
+                <div className="flex justify-between"><span>{t("components.buyingPower")}</span><span className="text-gray-300">{futuStatus.buyingPower.toLocaleString()}</span></div>
               </div>
             )}
           </div>
@@ -181,7 +181,7 @@ export default function IBKRBrokerPanel({
             </div>
             {ibkrStatus && isIbkrConnected ? (
               <div className="space-y-1.5 text-xs text-gray-500">
-                <div className="flex justify-between"><span>账户</span><span className="text-gray-300">{ibkrStatus.accountId}</span></div>
+                <div className="flex justify-between"><span>{t("components.account")}</span><span className="text-gray-300">{ibkrStatus.accountId}</span></div>
                 <div className="flex justify-between"><span>余额</span><span className="text-gray-200">{ibkrStatus.balance.toLocaleString()} {ibkrStatus.currency}</span></div>
                 <div className="flex justify-between"><span>保证金使用率</span>
                   <span className={ibkrStatus.marginUtilization > 0.7 ? 'text-red-400' : 'text-green-400'}>
@@ -190,7 +190,7 @@ export default function IBKRBrokerPanel({
                 </div>
               </div>
             ) : (
-              <div className="text-xs text-gray-600 text-center py-4">未连接</div>
+              <div className="text-xs text-gray-600 text-center py-4">{t("components.disconnected")}</div>
             )}
           </div>
         </div>
@@ -261,7 +261,7 @@ export default function IBKRBrokerPanel({
           <table className="w-full text-xs">
             <thead>
               <tr className="bg-white/[0.02] text-gray-500">
-                <th className="text-left px-5 py-2.5 font-medium">市场</th>
+                <th className="text-left px-5 py-2.5 font-medium">{t("components.markets")}</th>
                 <th className="text-left px-5 py-2.5 font-medium">🐂 Futu 佣金</th>
                 <th className="text-left px-5 py-2.5 font-medium">Futu 最低</th>
                 <th className="text-left px-5 py-2.5 font-medium">🏦 IBKR 佣金</th>
@@ -320,7 +320,7 @@ export default function IBKRBrokerPanel({
             </div>
             <div className="flex gap-3">
               <button onClick={() => setShowSwitchConfirm(false)}
-                      className="flex-1 py-2.5 rounded-lg border border-white/10 text-gray-400 hover:text-white text-sm">取消</button>
+                      className="flex-1 py-2.5 rounded-lg border border-white/10 text-gray-400 hover:text-white text-sm">{t("components.cancel")}</button>
               <button onClick={() => handleSwitch(activeBroker === 'futu' ? 'ibkr' : 'futu')}
                       className="flex-1 py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm">
                 确认切换

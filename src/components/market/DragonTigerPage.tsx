@@ -43,7 +43,7 @@ export default function DragonTigerPage() {
       const res = await getDragonTigerList(selectedDate || undefined);
       if (res?.success) setEntries(res.entries || []);
       else setError(res?.error || '获取失败');
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '获取失败');
     } finally {
       setLoading(false);
@@ -56,7 +56,7 @@ export default function DragonTigerPage() {
     try {
       const res = await getInstitutionalTrades(selectedDate || undefined);
       if (res?.success) setInstitutional(res.entries || []);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '获取失败');
     } finally {
       setLoading(false);
@@ -73,7 +73,7 @@ export default function DragonTigerPage() {
         setSelectedCode(code);
         setTab('detail');
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '获取失败');
     } finally {
       setLoading(false);
@@ -140,12 +140,12 @@ export default function DragonTigerPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-card text-gray-400 text-xs">
-                <th className="px-4 py-3 text-left">代码</th>
-                <th className="px-4 py-3 text-left">名称</th>
-                <th className="px-4 py-3 text-right">涨跌幅</th>
+                <th className="px-4 py-3 text-left">{t("components.code")}</th>
+                <th className="px-4 py-3 text-left">{t("components.name")}</th>
+                <th className="px-4 py-3 text-right">{t("components.priceChange")}</th>
                 <th className="px-4 py-3 text-right">净买额</th>
                 <th className="px-4 py-3 text-left">上榜原因</th>
-                <th className="px-4 py-3 text-center">操作</th>
+                <th className="px-4 py-3 text-center">{t("components.actions")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -173,7 +173,7 @@ export default function DragonTigerPage() {
             </tbody>
           </table>
           {entries.length === 0 && !loading && (
-            <div className="text-gray-500 text-sm py-8 text-center">暂无数据</div>
+            <div className="text-gray-500 text-sm py-8 text-center">{t("components.noData")}</div>
           )}
         </div>
       )}
@@ -184,9 +184,9 @@ export default function DragonTigerPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-card text-gray-400 text-xs">
-                <th className="px-4 py-3 text-left">代码</th>
-                <th className="px-4 py-3 text-left">名称</th>
-                <th className="px-4 py-3 text-right">涨跌幅</th>
+                <th className="px-4 py-3 text-left">{t("components.code")}</th>
+                <th className="px-4 py-3 text-left">{t("components.name")}</th>
+                <th className="px-4 py-3 text-right">{t("components.priceChange")}</th>
                 <th className="px-4 py-3 text-right">机构净买</th>
                 <th className="px-4 py-3 text-left">原因</th>
               </tr>
@@ -208,7 +208,7 @@ export default function DragonTigerPage() {
             </tbody>
           </table>
           {institutional.length === 0 && !loading && (
-            <div className="text-gray-500 text-sm py-8 text-center">暂无数据</div>
+            <div className="text-gray-500 text-sm py-8 text-center">{t("components.noData")}</div>
           )}
         </div>
       )}
@@ -217,7 +217,7 @@ export default function DragonTigerPage() {
       {tab === 'detail' && detail && (
         <div className="space-y-5">
           <div className="flex items-center gap-3">
-            <button onClick={() => setTab('daily')} className="text-xs text-gray-500 hover:text-white">← 返回</button>
+            <button onClick={() => setTab('daily')} className="text-xs text-gray-500 hover:text-white">{t("components.back")}</button>
             <span className="text-white font-medium">{detail.name} ({detail.code})</span>
             <span className="text-xs text-gray-500">{detail.date}</span>
           </div>

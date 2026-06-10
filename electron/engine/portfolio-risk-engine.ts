@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 /**
  * Portfolio Risk Engine
  * Dawn Whales Project (J-39-03, R39)
@@ -211,7 +212,7 @@ export class PortfolioRiskEngine extends EventEmitterPolyfill {
    */
   calculateHistoricalVaR(horizon = 1, confidence = 95): VaRResult {
     if (!this.portfolio) {
-      throw new Error('Portfolio not set');
+      throw new EngineError("Portfolio not set", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     }
 
     // Get portfolio returns
@@ -252,7 +253,7 @@ export class PortfolioRiskEngine extends EventEmitterPolyfill {
    */
   calculateParametricVaR(horizon = 1): VaRResult {
     if (!this.portfolio) {
-      throw new Error('Portfolio not set');
+      throw new EngineError("Portfolio not set", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     }
 
     const portfolioReturns = this.calculatePortfolioReturns();
@@ -351,7 +352,7 @@ export class PortfolioRiskEngine extends EventEmitterPolyfill {
    */
   calculateCorrelationMatrix(): CorrelationMatrix {
     if (!this.portfolio) {
-      throw new Error('Portfolio not set');
+      throw new EngineError("Portfolio not set", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     }
 
     const symbols = this.portfolio.positions.map(p => p.symbol);
@@ -415,7 +416,7 @@ export class PortfolioRiskEngine extends EventEmitterPolyfill {
    */
   runStressTest(scenario: StressScenario): StressTestResult {
     if (!this.portfolio) {
-      throw new Error('Portfolio not set');
+      throw new EngineError("Portfolio not set", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     }
 
     const positionImpacts: StressTestResult['positionImpacts'] = [];
@@ -479,7 +480,7 @@ export class PortfolioRiskEngine extends EventEmitterPolyfill {
    */
   calculateRiskMetrics(): RiskMetrics {
     if (!this.portfolio) {
-      throw new Error('Portfolio not set');
+      throw new EngineError("Portfolio not set", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     }
 
     const portfolioReturns = this.calculatePortfolioReturns();
@@ -638,7 +639,7 @@ export class PortfolioRiskEngine extends EventEmitterPolyfill {
    */
   calculateRiskBudget(targetWeights?: Record<string, number>): RiskBudget[] {
     if (!this.portfolio) {
-      throw new Error('Portfolio not set');
+      throw new EngineError("Portfolio not set", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     }
 
     const budgets: RiskBudget[] = [];

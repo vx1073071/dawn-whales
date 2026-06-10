@@ -189,7 +189,7 @@ export default function BacktestComparisonPage() {
         backgroundColor: '#1a1a25',
         borderColor: 'rgba(255,255,255,0.1)',
         textStyle: { color: '#e5e7eb' },
-        formatter: (p: any) => `${filtered[p.data[1]]?.strategyName}<br/>${monthlyHeatmapData.months[p.data[0]]}: ${p.data[2]}%`,
+        formatter: (p: unknown) => `${filtered[p.data[1]]?.strategyName}<br/>${monthlyHeatmapData.months[p.data[0]]}: ${p.data[2]}%`,
       },
       grid: { left: 120, right: 20, top: 10, bottom: 30 },
       xAxis: { type: 'category', data: monthlyHeatmapData.months, axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#6b7280', fontSize: 10 } },
@@ -206,7 +206,7 @@ export default function BacktestComparisonPage() {
       series: [{
         type: 'heatmap',
         data: monthlyHeatmapData.data,
-        label: { show: true, color: '#e5e7eb', fontSize: 10, formatter: (p: any) => `${p.data[2]}%` },
+        label: { show: true, color: '#e5e7eb', fontSize: 10, formatter: (p: unknown) => `${p.data[2]}%` },
         itemStyle: { borderColor: 'rgba(255,255,255,0.05)', borderWidth: 1 },
       }],
     });
@@ -276,12 +276,12 @@ export default function BacktestComparisonPage() {
               {[
                 { label: '总收益率', key: 'totalReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
                 { label: '年化收益率', key: 'annualReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
-                { label: '最大回撤', key: 'maxDrawdown', fmt: (v: number) => `${v.toFixed(2)}%`, color: true, inverse: true },
+                { label: t('components.maxDrawdown'), key: 'maxDrawdown', fmt: (v: number) => `${v.toFixed(2)}%`, color: true, inverse: true },
                 { label: '夏普比率', key: 'sharpeRatio', fmt: (v: number) => v.toFixed(2) },
                 { label: '卡玛比率', key: 'calmarRatio', fmt: (v: number) => v.toFixed(2) },
                 { label: '索提诺比率', key: 'sortinoRatio', fmt: (v: number) => v.toFixed(2) },
-                { label: '胜率', key: 'winRate', fmt: (v: number) => `${v.toFixed(1)}%` },
-                { label: '盈亏比', key: 'profitFactor', fmt: (v: number) => v.toFixed(2) },
+                { label: t('components.winRate'), key: 'winRate', fmt: (v: number) => `${v.toFixed(1)}%` },
+                { label: t('components.profitLossRatio'), key: 'profitFactor', fmt: (v: number) => v.toFixed(2) },
                 { label: '交易次数', key: 'totalTrades', fmt: (v: number) => `${v}` },
               ].map((row) => (
                 <tr key={row.label} className="hover:bg-white/[0.02]">

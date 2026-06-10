@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 /**
  * J-60-03: Order State Machine & Audit Trail (R60 v19 — v1.3.0 GA)
  *
@@ -113,7 +114,7 @@ export class OrderStateManager extends EventEmitter {
    */
   transition(orderId: string, toState: OrderState, reason: string, metadata?: Record<string, string | number>): LiveOrder {
     const order = this.orders.get(orderId);
-    if (!order) throw new Error(`Order not found: ${orderId}`);
+    if (!order) throw new EngineError("`Order not found: ${orderId}`", { code: ErrorCode.ENGINE_ORDER_REJECTED });
 
     const fromState = order.state;
     const allowed = VALID_TRANSITIONS[fromState];
@@ -140,7 +141,7 @@ export class OrderStateManager extends EventEmitter {
    */
   updateFill(orderId: string, filledQuantity: number, fillPrice: number): LiveOrder {
     const order = this.orders.get(orderId);
-    if (!order) throw new Error(`Order not found: ${orderId}`);
+    if (!order) throw new EngineError("`Order not found: ${orderId}`", { code: ErrorCode.ENGINE_ORDER_REJECTED });
 
     order.filledQuantity = filledQuantity;
     order.remainingQuantity = order.quantity - filledQuantity;

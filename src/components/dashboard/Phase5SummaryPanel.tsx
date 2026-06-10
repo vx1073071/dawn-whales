@@ -68,7 +68,7 @@ const DEPLOY_HISTORY: DeployEvent[] = [
 
 const StatusBadge: React.FC<{ status: EngineKPI['status'] }> = ({ status }) => {
   const colors = { stable: 'bg-emerald-500/10 text-emerald-400', active: 'bg-blue-500/10 text-blue-400', beta: 'bg-amber-500/10 text-amber-400' };
-  const labels = { stable: '稳定', active: '活跃', beta: '测试' };
+  const labels = { stable: '稳定', active: '活跃', beta: t('components.test') };
   return <span className={`px-2 py-0.5 rounded text-[10px] ${colors[status]}`}>{labels[status]}</span>;
 };
 

@@ -127,7 +127,7 @@ export default function FactorExposurePage() {
           itemStyle: { color: f.contribution >= 0 ? '#ef4444' : '#10b981' },
         })),
         barWidth: '60%',
-        label: { show: true, position: 'right', color: '#e5e7eb', fontSize: 10, formatter: (p: any) => `$${p.value}` },
+        label: { show: true, position: 'right', color: '#e5e7eb', fontSize: 10, formatter: (p: unknown) => `$${p.value}` },
       }],
     });
 
@@ -223,7 +223,7 @@ export default function FactorExposurePage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                <th className="px-4 py-3 text-left">因子</th>
+                <th className="px-4 py-3 text-left">{t("components.factor")}</th>
                 <th className="px-4 py-3 text-right">暴露值</th>
                 <th className="px-4 py-3 text-right">贡献度</th>
                 <th className="px-4 py-3 text-right">t 统计量</th>

@@ -413,7 +413,7 @@ const DimensionCard: React.FC<{ dimension: QualityDimension }> = ({ dimension })
     warning: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
     fail: 'bg-red-500/20 text-red-400 border-red-500/30',
   };
-  const statusLabels = { pass: '正常', warning: '警告', fail: '异常' };
+  const statusLabels = { pass: '正常', warning: t('components.warning'), fail: '异常' };
   const barColor =
     dimension.score >= 80
       ? 'bg-emerald-500'
@@ -465,7 +465,7 @@ const IssueRow: React.FC<{
     warning: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
     info: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   };
-  const severityLabels = { critical: '严重', warning: '警告', info: '提示' };
+  const severityLabels = { critical: '严重', warning: t('components.warning'), info: '提示' };
 
   return (
     <div className="border-b border-white/5 last:border-0">
@@ -519,7 +519,7 @@ const HistoryTable: React.FC<{ history: EvaluationRecord[] }> = ({ history }) =>
             <th className="pb-2 font-medium">标的</th>
             <th className="pb-2 font-medium">评分</th>
             <th className="pb-2 font-medium">等级</th>
-            <th className="pb-2 font-medium text-right">时间</th>
+            <th className="pb-2 font-medium text-right">{t("components.time")}</th>
           </tr>
         </thead>
         <tbody>
@@ -594,7 +594,7 @@ const DataQualityPage: React.FC = () => {
       try {
         const watchlist = await window.api?.db?.getWatchlist?.();
         if (watchlist && Array.isArray(watchlist) && watchlist.length > 0) {
-          const syms = watchlist.map((w: any) => w.symbol || w).filter(Boolean);
+          const syms = watchlist.map((w: unknown) => w.symbol || w).filter(Boolean);
           setSymbols(syms);
           if (syms.length > 0 && !selectedSymbol) {
             setSelectedSymbol(syms[0]);
@@ -820,7 +820,7 @@ const DataQualityPage: React.FC = () => {
               </div>
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-3 text-center">
                 <div className="text-2xl font-bold text-yellow-400">{stats.warningCount}</div>
-                <div className="text-[10px] text-gray-500 mt-1">警告</div>
+                <div className="text-[10px] text-gray-500 mt-1">{t("components.warning")}</div>
               </div>
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-3 text-center">
                 <div className="text-2xl font-bold text-blue-400">{stats.infoCount}</div>

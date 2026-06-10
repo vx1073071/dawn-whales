@@ -88,7 +88,7 @@ export default function RiskConfigEditor() {
             disabled={saving}
             className="px-3 py-1.5 bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 rounded-lg text-xs font-medium hover:bg-[#C9A046]/20 transition-colors disabled:opacity-30"
           >
-            {saving ? '保存中...' : '保存'}
+            {saving ? '保存中...' : t('components.save')}
           </button>
         </div>
       </div>

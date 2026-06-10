@@ -94,7 +94,7 @@ export default function SystemLog() {
               filter === f ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'
             }`}
           >
-            {f === 'all' ? '全部' : f === 'info' ? '信息' : f === 'warn' ? '警告' : '错误'}
+            {f === 'all' ? t('components.all') : f === 'info' ? '信息' : f === 'warn' ? t('components.warning') : t('components.error')}
           </button>
         ))}
       </div>

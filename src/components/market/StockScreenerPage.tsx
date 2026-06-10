@@ -65,7 +65,7 @@ export default function StockScreenerPage() {
         setResults([]);
         setError(res?.error || '未找到匹配结果');
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || '查询失败');
       setResults([]);
     } finally {
@@ -122,7 +122,7 @@ export default function StockScreenerPage() {
             disabled={loading}
             className="bg-[#C9A046] hover:bg-[#b8933f] text-sidebar font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
           >
-            {loading ? '搜索中...' : '搜索'}
+            {loading ? '搜索中...' : t('components.search')}
           </button>
         </div>
 
@@ -190,7 +190,7 @@ export default function StockScreenerPage() {
               />
             </div>
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">行业</label>
+              <label className="text-xs text-gray-500 mb-1 block">{t("components.industry")}</label>
               <input
                 type="text"
                 value={filters.sector}
@@ -244,7 +244,7 @@ export default function StockScreenerPage() {
                   <th className="px-4 py-3 text-right font-medium cursor-pointer hover:text-white" onClick={() => toggleSort('roe')}>
                     ROE {sortKey === 'roe' && (sortDesc ? '↓' : '↑')}
                   </th>
-                  <th className="px-4 py-3 text-left font-medium">行业</th>
+                  <th className="px-4 py-3 text-left font-medium">{t("components.industry")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">

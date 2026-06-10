@@ -12,7 +12,7 @@ export const PRIVATE_BANKING = {
 };
 
 // ── Loading State ──
-export function LoadingState({ label = '加载中...', fullPage }: { label?: string; fullPage?: boolean }) {
+export function LoadingState({ label = t('components.loading'), fullPage }: { label?: string; fullPage?: boolean }) {
   const style: CSSProperties = fullPage
     ? { display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', background: PRIVATE_BANKING.colors.bg }
     : { display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 24px', background: 'transparent' };
@@ -28,7 +28,7 @@ export function LoadingState({ label = '加载中...', fullPage }: { label?: str
 }
 
 // ── Empty State ──
-export function EmptyState({ icon = '📭', title = '暂无数据', description, action }: {
+export function EmptyState({ icon = '📭', title = t('components.noData'), description, action }: {
   icon?: string; title?: string; description?: string;
   action?: { label: string; onClick: () => void };
 }) {
@@ -86,7 +86,7 @@ export function ErrorState({ error, onRetry }: { error?: string; onRetry?: () =>
               color: '#FFF', fontSize: 14, fontWeight: 700, cursor: 'pointer',
               minWidth: PRIVATE_BANKING.a11y.touchMin, minHeight: PRIVATE_BANKING.a11y.touchMin,
             }}
-            aria-label="重试"
+            aria-label={t("components.retry")}
           >
             🔄 重试
           </button>
@@ -270,8 +270,8 @@ export default function UIPolishKit() {
                 <div style={{ padding: '12px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.bg, border: `1px solid ${PRIVATE_BANKING.colors.border}` }}>
                   <div style={{ fontSize: 13, color: PRIVATE_BANKING.colors.textMuted, marginBottom: 6 }}>🎯 a11y: 屏幕阅读器友好 + 键盘导航</div>
                   <div style={{ display: 'flex', gap: 6 }}>
-                    <button style={{ padding: '8px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.accent, color: '#FFF', border: 'none', cursor: 'pointer', minWidth: 44, minHeight: 44, fontSize: 14 }} aria-label="买入腾讯股份">买入</button>
-                    <button style={{ padding: '8px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.surface, color: PRIVATE_BANKING.colors.textSecondary, border: `1px solid ${PRIVATE_BANKING.colors.border}`, cursor: 'pointer', minWidth: 44, minHeight: 44, fontSize: 14 }} aria-label="卖出腾讯股份">卖出</button>
+                    <button style={{ padding: '8px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.accent, color: '#FFF', border: 'none', cursor: 'pointer', minWidth: 44, minHeight: 44, fontSize: 14 }} aria-label="买入腾讯股份">{t("components.buy")}</button>
+                    <button style={{ padding: '8px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.surface, color: PRIVATE_BANKING.colors.textSecondary, border: `1px solid ${PRIVATE_BANKING.colors.border}`, cursor: 'pointer', minWidth: 44, minHeight: 44, fontSize: 14 }} aria-label="卖出腾讯股份">{t("components.sell")}</button>
                     <span style={{ fontSize: 12, color: PRIVATE_BANKING.colors.textMuted, display: 'flex', alignItems: 'center' }}>← 44px 触控区</span>
                   </div>
                 </div>

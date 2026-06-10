@@ -1,3 +1,4 @@
+import { EngineError, ErrorCode } from '../errors';
 // ── Strategy Engine — 策略执行引擎 v2 ──────────────────────────────────────
 // 管理策略生命周期：创建 → 回测 → 模拟 → 实盘 → 停止
 // 实时行情驱动信号评估，触发交易指令
@@ -180,7 +181,7 @@ export class StrategyEngine {
     } else if (input.templateId) {
       // Template selection
       const template = STRATEGY_TEMPLATES.find((t) => t.id === input.templateId);
-      if (!template) throw new Error(`Template not found: ${input.templateId}`);
+      if (!template) throw new EngineError("`Template not found: ${input.templateId}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
       name = template.name;
       description = template.description;
       config = template.strategy;
@@ -192,7 +193,7 @@ export class StrategyEngine {
       config = input.strategy;
       symbol = input.symbol || 'US.TQQQ';
     } else {
-      throw new Error('Invalid strategy input');
+      throw new EngineError("Invalid strategy input", { code: ErrorCode.ENGINE_VALIDATION_ERROR });
     }
 
     // Allow overriding brokerId from input (top-level field takes precedence)
@@ -247,7 +248,7 @@ export class StrategyEngine {
 
   async runBacktest(strategyId: string, klines: any[]): Promise<any> {
     const strategy = this.strategies.get(strategyId);
-    if (!strategy) throw new Error(`Strategy not found: ${strategyId}`);
+    if (!strategy) throw new EngineError("`Strategy not found: ${strategyId}`", { code: ErrorCode.ENGINE_RATE_LIMIT });
 
     const result = await this.backtestEngine.run({
       strategyId,

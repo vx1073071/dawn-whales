@@ -59,7 +59,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [paramOverrides, setParamOverrides] = useState<Record<string, any>>({});
+  const [paramOverrides, setParamOverrides] = useState<Record<string, unknown>>({});
   const [instantiating, setInstantiating] = useState(false);
   const [instantiateError, setInstantiateError] = useState<string | null>(null);
 
@@ -69,7 +69,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
         const raw = await (window as any).api.getTemplates();
         const data = raw?.templates ?? raw;
         setTemplates(Array.isArray(data) ? data : []);
-      } catch (e: any) {
+      } catch (e: unknown) {
         setError(e.message ?? '加载失败');
       } finally {
         setLoading(false);
@@ -96,7 +96,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
   // Init param overrides when template selected
   useEffect(() => {
     if (selected) {
-      const init: Record<string, any> = {};
+      const init: Record<string, unknown> = {};
       for (const p of selected.parameters) {
         init[p.name] = p.default;
       }
@@ -117,7 +117,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
       }
       // Open the instantiated strategy in creation form
       onCreated();
-    } catch (e: any) {
+    } catch (e: unknown) {
       setInstantiateError(e.message ?? '实例化失败');
       setInstantiating(false);
     }
@@ -162,12 +162,12 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
                 : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
             }`}
           >
-            {cat === 'all' ? '全部' : (CATEGORY_LABELS[cat] ?? cat)}
+            {cat === 'all' ? t('components.all') : (CATEGORY_LABELS[cat] ?? cat)}
           </button>
         ))}
       </div>
 
-      {loading && <div className="text-center text-gray-400 py-12">加载中...</div>}
+      {loading && <div className="text-center text-gray-400 py-12">{t("components.loading")}</div>}
       {error && <div className="text-red-400 text-sm py-4 px-4 bg-red-900/20 rounded-lg border border-red-500/20">{error}</div>}
 
       {!loading && !error && (
@@ -227,12 +227,12 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
             </div>
             {selected.rules.stopLoss && (
               <div className="text-xs text-gray-400">
-                <span className="text-yellow-400 font-medium">止损</span>：{selected.rules.stopLoss}
+                <span className="text-yellow-400 font-medium">{t("components.stopLoss")}</span>：{selected.rules.stopLoss}
               </div>
             )}
             {selected.rules.takeProfit && (
               <div className="text-xs text-gray-400">
-                <span className="text-blue-400 font-medium">止盈</span>：{selected.rules.takeProfit}
+                <span className="text-blue-400 font-medium">{t("components.takeProfit")}</span>：{selected.rules.takeProfit}
               </div>
             )}
           </div>

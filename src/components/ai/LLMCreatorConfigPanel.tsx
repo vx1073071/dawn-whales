@@ -246,7 +246,7 @@ export const LLMCreatorConfigPanel: React.FC<LLMCreatorConfigPanelProps> = ({
       <div style={styles.balanceRow}>
         <span>💳 余额</span>
         <span style={styles.balanceAmount}>{balanceUSDT.toFixed(2)} USDT</span>
-        <button style={styles.topUpBtn} onClick={onTopUp}>充值</button>
+        <button style={styles.topUpBtn} onClick={onTopUp}>{t("components.deposit")}</button>
       </div>
 
       {/* Provider list */}
@@ -294,7 +294,7 @@ export const LLMCreatorConfigPanel: React.FC<LLMCreatorConfigPanelProps> = ({
                 <div style={styles.modelInfo}>
                   <div style={styles.modelNameRow}>
                     <span style={styles.modelName}>{m.displayName}</span>
-                    {m.recommended && <span style={styles.recommendedBadge}>推荐</span>}
+                    {m.recommended && <span style={styles.recommendedBadge}>{t("components.recommend")}</span>}
                     {m.cacheDiscountPct && <span style={styles.cacheBadge}>缓存{m.cacheDiscountPct}%off</span>}
                   </div>
                   <div style={styles.modelMeta}>
@@ -334,7 +334,7 @@ export const LLMCreatorConfigPanel: React.FC<LLMCreatorConfigPanelProps> = ({
               <th style={styles.th}>LLM成本</th>
               <th style={styles.th}>售价</th>
               <th style={styles.th}>毛利</th>
-              <th style={styles.th}>毛利率</th>
+              <th style={styles.th}>{t("components.grossMargin")}</th>
             </tr>
           </thead>
           <tbody>

@@ -52,7 +52,7 @@ export default function Header() {
 
       {/* Actions */}
       <div className="flex items-center gap-1 ml-1">
-        <button className="text-gray-400 hover:text-gray-200 p-1.5 rounded hover:bg-white/5 transition-colors" title="通知">🔔</button>
+        <button className="text-gray-400 hover:text-gray-200 p-1.5 rounded hover:bg-white/5 transition-colors" title={t("components.notification")}>🔔</button>
         <button onClick={emergencyStop} className="text-gray-400 hover:text-red-400 p-1.5 rounded hover:bg-red-500/10 transition-colors" title="紧急停止所有策略">⏸️</button>
       </div>
     </header>

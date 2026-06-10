@@ -113,7 +113,7 @@ export default function MarketplacePage() {
         </div>
 
         <div className="flex gap-1 text-xs">
-          {([['all', '全部'], ['low', '低风险'], ['medium', '中风险'], ['high', '高风险']] as [RiskFilter, string][]).map(([key, label]) => (
+          {([['all', t('components.all')], ['low', '低风险'], ['medium', '中风险'], ['high', '高风险']] as [RiskFilter, string][]).map(([key, label]) => (
             <button
               key={key}
               onClick={() => setRiskFilter(key)}
@@ -206,11 +206,11 @@ function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: Market
       <div className="grid grid-cols-2 gap-2 mb-3 text-center">
         <div>
           <div className={`text-sm font-mono font-bold ${returnColor}`}>{returnPct > 0 ? '+' : ''}{returnPct.toFixed(1)}%</div>
-          <div className="text-[10px] text-gray-500">年化</div>
+          <div className="text-[10px] text-gray-500">{t("components.annualized")}</div>
         </div>
         <div>
           <div className="text-sm font-mono text-gray-200">{s.performance_sharpe ? s.performance_sharpe.toFixed(1) : '-'}</div>
-          <div className="text-[10px] text-gray-500">夏普</div>
+          <div className="text-[10px] text-gray-500">{t("components.sharpeRatio")}</div>
         </div>
       </div>
 

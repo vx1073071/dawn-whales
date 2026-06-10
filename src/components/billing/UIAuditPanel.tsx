@@ -10,18 +10,18 @@ interface AuditItem {
 
 const AUDIT_ITEMS: AuditItem[] = [
   { page: '落地页', component: 'LandingPageV18', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'SEO+OG+JSON-LD完整', loading: true, empty: true, error: true },
-  { page: '策略', component: 'StrategyPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: '浅色主题表单字段对比度', loading: true, empty: true },
-  { page: '市场', component: 'MarketPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'K线TV对标<100ms' },
-  { page: '订单', component: 'OrdersPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '实时订单+撤单' },
+  { page: t('components.strategy'), component: 'StrategyPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: '浅色主题表单字段对比度', loading: true, empty: true },
+  { page: t('components.markets'), component: 'MarketPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'K线TV对标<100ms' },
+  { page: t('components.orders'), component: 'OrdersPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '实时订单+撤单' },
   { page: '组合', component: 'PortfolioPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '自动刷新+资产配置' },
-  { page: '设置', component: 'SettingsPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '深浅主题+5语言切换' },
+  { page: t('components.settings'), component: 'SettingsPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '深浅主题+5语言切换' },
   { page: '交易仪表板', component: 'TradeDashboardPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: '浅色图表标签不可读', loading: true },
   { page: '风险仪表板', component: 'RiskDashboardPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: '风险热力图浅色需调' },
   { page: '回测报告', component: 'BacktestReportPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'warn', note: '权益曲线溢出1366', loading: true, empty: true },
   { page: '实时监控', component: 'LiveMonitorPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'WebSocket实时' },
   { page: '市场广场', component: 'MarketplacePage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '浏览筛选发布', loading: true, empty: true },
   { page: 'AI画线形态', component: 'AIDrawingPatternPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'Canvas+6工具+22形态' },
-  { page: '新手引导', component: 'OnboardingFullKit', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: '浅色步骤条对比度低' },
+  { page: t('components.onboarding'), component: 'OnboardingFullKit', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: '浅色步骤条对比度低' },
   { page: 'AI助手', component: 'AIAssistantPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '4入口USDT计费' },
   { page: '主题语言', component: 'ThemeLangPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '深浅双切+5语言' },
   { page: '监控告警', component: 'MonitoringAlertPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'SLO+6指标Gauge', loading: true },
@@ -120,7 +120,7 @@ export default function UIAuditPanel() {
       <div style={{ display: 'flex', gap: 6, marginBottom: 14, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', gap: 6 }}>
           {[
-            { key: 'all' as const, label: '全部', color: '#6B7280' },
+            { key: 'all' as const, label: t('components.all'), color: '#6B7280' },
             { key: 'pass' as const, label: '✅ 通过', color: '#10B981' },
             { key: 'warn' as const, label: '⚠️ 警告', color: '#F59E0B' },
             { key: 'fail' as const, label: '❌ 失败', color: '#EF4444' },
@@ -151,11 +151,11 @@ export default function UIAuditPanel() {
             <thead>
               <tr style={{ borderBottom: '1px solid #374151' }}>
                 <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>页面</th>
-                <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>状态</th>
+                <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>{t("components.status")}</th>
                 <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>🌙</th>
                 <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>☀️</th>
                 <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>📱</th>
-                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>备注</th>
+                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{t("components.remarks")}</th>
               </tr>
             </thead>
             <tbody>

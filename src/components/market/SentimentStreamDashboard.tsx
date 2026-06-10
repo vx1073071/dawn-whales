@@ -19,9 +19,9 @@ const MOCK_DATA: SentimentData = {
   trend: 'improving',
   components: [
     { name: '市场情绪', score: 55, weight: 0.25 },
-    { name: '成交量', score: 38, weight: 0.20 },
+    { name: t('components.volume'), score: 38, weight: 0.20 },
     { name: '市场广度', score: 45, weight: 0.20 },
-    { name: '波动率', score: 28, weight: 0.20 },
+    { name: t('components.volatility'), score: 28, weight: 0.20 },
     { name: '动量', score: 62, weight: 0.15 },
   ],
   history: [
@@ -151,7 +151,7 @@ export default function SentimentStreamDashboard() {
   const signalConfig = {
     bullish: { label: '看多', color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20', icon: '🐂' },
     bearish: { label: '看空', color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20', icon: '🐻' },
-    neutral: { label: '中性', color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20', icon: '➡️' },
+    neutral: { label: t('components.neutral'), color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20', icon: '➡️' },
   }[data.signal];
 
   const trendConfig = {
@@ -196,7 +196,7 @@ export default function SentimentStreamDashboard() {
             </div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">趋势</div>
+            <div className="text-xs text-gray-500 mb-1">{t("components.trend")}</div>
             <div className="flex items-center gap-2">
               <span className="text-lg">{trendConfig.icon}</span>
               <span className={`text-lg font-bold ${trendConfig.color}`}>{trendConfig.label}</span>
