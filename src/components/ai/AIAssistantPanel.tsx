@@ -15,7 +15,6 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import DOMPurify from 'dompurify';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '@/stores/appStore';
-import { useTranslation } from 'react-i18next';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -233,7 +232,7 @@ function detectCategory(text: string): Message['category'] {
 // ── Main Component ──────────────────────────────────────────────────────
 
 const AIAssistantPanel: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const setView = useAppStore((s) => s.setView);
   const lang = (i18n.language?.startsWith('zh') ? 'zh' : 'en') as 'zh' | 'en';
   const suggestions = lang === 'zh' ? zhSuggestions : enSuggestions;
