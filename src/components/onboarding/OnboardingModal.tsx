@@ -76,11 +76,15 @@ const ONBOARDING_STEPS: OnboardingStep[] = [
 interface OnboardingModalProps {
   onComplete?: () => void;
   className?: string;
+  open?: boolean;
+  onClose?: () => void;
+  onConnect?: () => Promise<boolean>;
+  connected?: boolean;
 }
 
 const STORAGE_KEY = 'dawn-whales-onboarding-done';
 
-export const OnboardingModal: React.FC<OnboardingModalProps> = ({ onComplete, className }) => {
+export const OnboardingModal: React.FC<OnboardingModalProps> = ({ onComplete, className, open: _open, onClose: _onClose, onConnect: _onConnect, connected: _connected }) => {
   const [step, setStep] = useState(1);
   const [visible, setVisible] = useState(false);
 
