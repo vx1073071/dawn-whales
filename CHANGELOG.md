@@ -1,5 +1,28 @@
 ﻿# DAWN WHALES Changelog
 
+## [Unreleased] — R82-R88 Post-GA 质量收敛
+
+### R82-R88 — 安全加固 + i18n协同 + 引擎模块化 + 类型清理
+
+**基线变化**: v1.9.0 GA → R88 收尾 | **Engines**: 320+ → 245+ .ts | **Locales**: 9 → 10 (+zh-TW) | **i18n keys**: 160 → 202
+
+- R82: 安全密钥审计(471扫描/0泄露), XSS修复(3 dangerouslySetInnerHTML→DOMPurify), 构建修复(main.tsx+dompurify+NODE_ENV), pnpm支持, 根目录垃圾清理, 7组件去重
+- R83: API Key server化迁移(electron→server), A股数据层清除, IPC审计, apiKey @deprecated标注(9文件), any→unknown 144处catch(:any)→0 (61文件), security+a11y cleanup
+- R84: i18n 4虾协同(26文件+141 any消除+trading审计), magic numbers提取(constants.ts 80+命名常量), billing组件重组(52文件→7子目录: core/ai/trade/market/wallet/community/onboarding), any→unknown 100处(50文件), vitest.node.config.ts 12测试迁移
+- R85: any深度清理(601→273, 28 IPC文件), coverage阈值(lines:60/branches:50/functions:55), billing模块化(52文件→7子目录), 落地页统一(LandingPageV18唯一), ConditionRulePanel语法修复
+- R86: EngineError标准化(266→4处raw Error), IPC缺口补齐, main.ts精简(1543→368行), 引擎模块化(8子目录: agents/analysis/backtest/core/data/factors/portfolio/risk), i18n硬编码中文(20679→15963, -4716), any清理(1634→152), site/ CDN→Vite构建
+- R87: AShareDataAdapter移除(0引用), server HTTP骨架(/api/health), 依赖版本锁定(47→0 loose), i18n最终JSX文本推送(16249→16130), 全局i18n损坏恢复(28文件→R84基线), engine-restructure测试修复(15文件+20 excludes), coverage阈值(55/45/50)
+- R88: i18n TSC清理(1169 t()→str替换, 60+文件, 14 useTranslation导入), TS2304: 956→0, TS6133: 34→0, billing模块验证(7子目录), 落地页统一, HelpCenter/LandingPageV18 i18n, i18n key扫描(0硬编码密钥)
+
+**关键指标**:
+- any类型: 2000+ → 152 (目标≤500 ✅)
+- 硬编码中文: ~51000 → ~18651 chars
+- EngineError覆盖: 4处 → 266文件标准化
+- 引擎目录: 扁平 → 8子目录模块化
+- server端点: 0 → 7 (/ai/chat, /ai/report, /billing, /wallet, /auth, /ai/status, /health)
+- 依赖loose版本: 47 → 0
+- i18n locales: 9 → 10 (+zh-TW)
+
 ## [1.9.0 GA] - 2026-06-09
 
 ### R77-R81 5轮收官 — v1.9.0 GA 最终发布
