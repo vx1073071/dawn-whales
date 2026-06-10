@@ -31,14 +31,9 @@ export interface ChatCompletionRequest {
   provider?: string;
 }
 
-export interface ChatCompletionResult {
-  success: true;
-  content: string;
-} | {
-  success: false;
-  error: string;
-  raw?: any;
-}
+export type ChatCompletionResult = 
+  | { success: true; content: string }
+  | { success: false; error: string; raw?: any };
 
 // ── Config ─────────────────────────────────────────────────────────────────
 

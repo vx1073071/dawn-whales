@@ -14,7 +14,7 @@ import { StockAnomalyDetector } from './stock-anomaly-detector';
 // ── Types ──────────────────────────────────────────────────────────────────
 
 export interface SmartPickRequest {
-  market?: 'A股' | 'all';
+  market?: 'HK' | 'US' | 'all';
   limit?: number;            // Top N results (default 10)
   minScore?: number;         // Minimum score threshold (0-100)
   weights?: {
@@ -81,7 +81,7 @@ export class SmartPickerService {
     const limit = request.limit || 10;
     const minScore = request.minScore || 0;
     const weights = { ...DEFAULT_WEIGHTS, ...request.weights };
-    const market = request.market || 'A股';
+    const market = request.market || 'HK';
 
     log.info(`[SmartPicker] Scoring stocks, market: ${market}, limit: ${limit}`);
 
@@ -136,7 +136,7 @@ export class SmartPickerService {
       } catch (e) { logger.error('[backend:smart-picker]', e); }
 
       // Step 2: Score sentiment and technical for all candidates
-      const newsResult = await this.newsAggregator.search({ query: 'A股市场', hoursBack: 24, limit: 5 });
+      const newsResult = await this.newsAggregator.search({ query: 'HK market', hoursBack: 24, limit: 5 });
       const marketSentiment = newsResult.sentimentSummary?.avgScore || 0;
 
       for (const [code, c] of candidates) {

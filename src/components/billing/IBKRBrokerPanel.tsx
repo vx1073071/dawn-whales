@@ -287,7 +287,7 @@ export default function IBKRBrokerPanel({
             </tbody>
           </table>
           <div className="px-5 py-2 text-[10px] text-gray-600 border-t border-white/5">
-            💡 IBKR阶梯式佣金在月交易量>30万股后更便宜。港股 Futu有绝对优势。
+            💡 IBKR阶梯式佣金在月交易量&gt;30万股后更便宜。港股 Futu有绝对优势。
           </div>
         </div>
 

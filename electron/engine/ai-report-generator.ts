@@ -127,24 +127,8 @@ function fallbackReport(results: BacktestResult[], symbol?: string): BacktestRep
   };
 }
 
-// ── LLM Report Generator ─────────────────────────────────────────────────────
-
-async function callDeepSeek(prompt: string, apiKey: string, signal?: AbortSignal): Promise<string> {
-  const resp = await fetch('https://api.deepseek.com/v1/chat/completions', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    signal,
-    body: JSON.stringify({
-      model: 'deepseek-chat',
-      messages: [{ role: 'user', content: prompt }],
-      max_tokens: 600,
-      temperature: 0.25,
-    }),
-  });
-  if (!resp.ok) throw new Error(`DeepSeek API error: ${resp.status}`);
-  const json = await resp.json() as any;
-  return (json?.choices?.[0]?.message?.content ?? '') as string;
-}
+// ── LLM Report Generator (via server AI gateway, R83 P0-2b) ────────────────
+// AI calls now routed through utils/ai-gateway-client.ts — no client-side API key
 
 // ── Multi-Strategy Comparison Table ─────────────────────────────────────────
 

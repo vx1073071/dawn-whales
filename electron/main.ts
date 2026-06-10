@@ -76,8 +76,6 @@ import { validate,
   StrategyCompareSchema,
   StrategyOptimizeSchema,
 } from './ipc-schemas';
-import { getDeepSeekKey } from './utils/secure-key';
-import log from 'electron-log';
 
 // 默认监控列表，连接时从 DB 读取用户配置
 let WATCHLIST = ['US.TQQQ','US.SOXL','US.QQQ','US.SPY','US.AAPL','US.NVDA','US.SQQQ','US.SOXS'];

@@ -42,7 +42,6 @@ export function registerAllIPC(services: {
   db: any;
   emDataProvider: any;
   flowPredictor: any;
-  getDeepSeekKey_: any;
   liveExecutor: any;
   macroDataProvider: any;
   mainWindow: any;
@@ -82,7 +81,7 @@ export function registerAllIPC(services: {
   registerRiskIPC(services.riskEngine, services.unifiedRiskDash);
   registerSentimentIPC(services.mainWindow, services.sentimentAttrEngine);
   registerSnapshotIPC(services._services);
-  registerStrategyIPC(services.strategyEngine, services.db, services.opendClient, services.backtestEngine, services.getDeepSeekKey_, services.liveExecutor, services.app, services.STRATEGY_UPDATE_WHITELIST);
+  registerStrategyIPC(services.strategyEngine, services.db, services.opendClient, services.backtestEngine, services.liveExecutor, services.app, services.STRATEGY_UPDATE_WHITELIST);
   registerSystemIPC(services._services);
   registerVersionIPC(services._services);
   registerWsIPC(services.mainWindow);

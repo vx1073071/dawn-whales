@@ -9,7 +9,6 @@ export function registerStrategyIPC(
   db: any,
   opendClient: any,
   backtestEngine: any,
-  getDeepSeekKey_: any,
   liveExecutor: any
 ) {
 
@@ -131,10 +130,6 @@ export function registerStrategyIPC(
 
   // ── Strategy AI — LLM-powered (Sprint 2 P1) ─────────────────────
   ipcMain.handle('strategy:explain', async (_e, strategy: any) => {
-    const apiKey = getDeepSeekKey_(app);
-    if (!apiKey) {
-      return { success: false, error: 'DeepSeek API key not configured. Use Settings to set your key.' };
-    }
     const prompt = `You are a quantitative trading strategy analyst. Explain the following strategy in clear, actionable English for a retail trader.
 
 Strategy:
@@ -155,15 +150,14 @@ Provide a concise explanation covering:
 Keep it under 200 words. Use bullet points.`;
 
     try {
-      const body = JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 400 });
-      const result = await new Promise<any>((resolve, reject) => {
-        const req = require('https').request(
-          { hostname: 'api.deepseek.com', path: '/v1/chat/completions', method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` } },
-          (res: any) => { let data = ''; res.on('data', (c: string) => data += c); res.on('end', () => { try { resolve(JSON.parse(data)); } catch { reject(new Error('Invalid JSON')); } }); }
-        );
-        req.on('error', reject); req.write(body); req.end();
-      });
-      const content = result.choices?.[0]?.message?.content || '';
+    const { callChatCompletions } = await import('../utils/ai-gateway-client');
+    const result = await callChatCompletions({
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.3,
+      max_tokens: 400,
+    });
+    if (!result.success) return result;
+    const content = result.content;
       return { success: true, explanation: content };
     } catch (err: any) {
       return { success: false, error: err.message };
@@ -173,10 +167,6 @@ Keep it under 200 words. Use bullet points.`;
 
 
   ipcMain.handle('strategy:compare', async (_e, s1: any, s2: any) => {
-    const apiKey = getDeepSeekKey_(app);
-    if (!apiKey) {
-      return { success: false, error: 'DeepSeek API key not configured. Use Settings to set your key.' };
-    }
     const fmt = (s: any) => `Name: ${s.name || '?'} | Symbol: ${s.symbol || '?'} | Type: ${s.strategy?.type || '?'} | Params: ${JSON.stringify(s.strategy?.params || {})} | SL: ${s.strategy?.stopLoss || '?'}% | TP: ${s.strategy?.takeProfit || '?'}%`;
     const prompt = `You are a quantitative trading strategy comparison tool. Compare these two strategies objectively.
 
@@ -194,15 +184,14 @@ Provide a structured comparison covering:
 Keep it under 250 words. Be objective, not promotional.`;
 
     try {
-      const body = JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: prompt }], temperature: 0.3, max_tokens: 500 });
-      const result = await new Promise<any>((resolve, reject) => {
-        const req = require('https').request(
-          { hostname: 'api.deepseek.com', path: '/v1/chat/completions', method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` } },
-          (res: any) => { let data = ''; res.on('data', (c: string) => data += c); res.on('end', () => { try { resolve(JSON.parse(data)); } catch { reject(new Error('Invalid JSON')); } }); }
-        );
-        req.on('error', reject); req.write(body); req.end();
-      });
-      const content = result.choices?.[0]?.message?.content || '';
+    const { callChatCompletions } = await import('../utils/ai-gateway-client');
+    const result = await callChatCompletions({
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.3,
+      max_tokens: 500,
+    });
+    if (!result.success) return result;
+    const content = result.content;
       return { success: true, comparison: content };
     } catch (err: any) {
       return { success: false, error: err.message };
@@ -220,9 +209,6 @@ Keep it under 250 words. Be objective, not promotional.`;
       strategyDSL: { name: string; symbol?: string; type: string; params: Record<string, unknown>; stopLoss?: number; takeProfit?: number };
       backtestResult: { totalReturn: number; sharpeRatio: number; maxDrawdown: number; winRate: number; tradeCount?: number; equityCurve?: number[] };
     };
-    const apiKey = getDeepSeekKey_(app);
-    if (!apiKey) return { success: false, error: 'DeepSeek API key not configured. Use Settings to set your key.' };
-
 
     const { totalReturn, sharpeRatio, maxDrawdown, winRate, tradeCount } = backtestResult;
     const metricSummary = `Total Return: ${totalReturn}%; Sharpe: ${sharpeRatio}; Max Drawdown: ${maxDrawdown}%; Win Rate: ${winRate}%${tradeCount !== undefined ? `; Trades: ${tradeCount}` : ''}`;
@@ -259,15 +245,14 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
 
     try {
-      const body = JSON.stringify({ model: 'deepseek-chat', messages: [{ role: 'user', content: prompt }], temperature: 0.4, max_tokens: 600 });
-      const result = await new Promise<any>((resolve, reject) => {
-        const req = require('https').request(
-          { hostname: 'api.deepseek.com', path: '/v1/chat/completions', method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` } },
-          (res: any) => { let data = ''; res.on('data', (c: string) => data += c); res.on('end', () => { try { resolve(JSON.parse(data)); } catch { reject(new Error('Invalid JSON')); } }); }
-        );
-        req.on('error', reject); req.write(body); req.end();
-      });
-      const rawContent = result.choices?.[0]?.message?.content || '';
+    const { callChatCompletions } = await import('../utils/ai-gateway-client');
+    const result = await callChatCompletions({
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.4,
+      max_tokens: 600,
+    });
+    if (!result.success) return result;
+    const rawContent = result.content;
       let suggestions = [];
       try { suggestions = JSON.parse(rawContent).suggestions || []; } catch { suggestions = []; }
       return { success: true, suggestions };
