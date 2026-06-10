@@ -1,4 +1,4 @@
-import { useState, useMemo, type CSSProperties } from 'react';
+﻿import { useState, useMemo, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // ── Types ──
@@ -115,15 +115,15 @@ function IndicatorCardC({ card }: { card: IndicatorCard }) {
         </span>
       </div>
       <div>
-        <span style={{ fontSize: 11, color: '#6B7280' }}>{t('一句话:')}</span>
+        <span style={{ fontSize: 11, color: '#6B7280' }}>一句话: </span>
         <span style={{ fontSize: 12, color: '#D1D5DB' }}>{card.short}</span>
       </div>
       <div>
-        <span style={{ fontSize: 11, color: '#6B7280' }}>{t('用法:')}</span>
+        <span style={{ fontSize: 11, color: '#6B7280' }}>用法: </span>
         <span style={{ fontSize: 12, color: '#34D399' }}>{card.usage}</span>
       </div>
       <div>
-        <span style={{ fontSize: 11, color: '#6B7280' }}>{t('⚠️ 风险:')}</span>
+        <span style={{ fontSize: 11, color: '#6B7280' }}>⚠️ 风险: </span>
         <span style={{ fontSize: 12, color: '#FCA5A5' }}>{card.risk}</span>
       </div>
     </div>
@@ -192,11 +192,11 @@ function SignalComparisonCard({ pair }: { pair: SignalPair }) {
         <span style={{ fontSize: 12, color: '#9CA3AF' }}>{pair.date}</span>
       </div>
       <div style={{ fontSize: 12, color: '#D1D5DB', marginBottom: 6 }}>
-        <strong>{t('信号:')}</strong> {pair.signal}
+        <strong>信号:</strong> {pair.signal}
       </div>
       <div style={{ display: 'flex', gap: 16, marginBottom: 6 }}>
-        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{t('入场:')}<span style={{ color: '#D1D5DB' }}>{pair.entry}</span></span>
-        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{t('出场:')}<span style={{ color: '#D1D5DB' }}>{pair.exit}</span></span>
+        <span style={{ fontSize: 12, color: '#9CA3AF' }}>入场: <span style={{ color: '#D1D5DB' }}>{pair.entry}</span></span>
+        <span style={{ fontSize: 12, color: '#9CA3AF' }}>出场: <span style={{ color: '#D1D5DB' }}>{pair.exit}</span></span>
         <span style={{ fontSize: 13, fontWeight: 700, color: isGood ? '#10B981' : '#EF4444' }}>{pair.pnl}</span>
       </div>
       <div style={{ fontSize: 11, color: '#6B7280', fontStyle: 'italic' }}>📝 {pair.reason}</div>
@@ -258,20 +258,20 @@ function FriendlyErrorBanner() {
       marginBottom: 12,
     }}>
       <div style={{ fontSize: 13, color: '#D1D5DB', marginBottom: 6 }}>
-        💡 <strong>{t('友好提示示例')}</strong> — 我们不说"Error: invalid_input_400", 我们说：
+        💡 <strong>友好提示示例</strong> — 我们不说"Error: invalid_input_400", 我们说：
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
         <div style={{ fontSize: 11, color: '#EF4444' }}>
-          ❌ 旧: {t("代码格式错误, 请输入有效代码")}
+          ❌ 旧: "代码格式错误, 请输入有效代码"
         </div>
         <div style={{ fontSize: 11, color: '#34D399' }}>
-          ✅ 新: {t("港股代码是5位数字哦（如 00700），试试重新输入？")}
+          ✅ 新: "港股代码是5位数字哦（如 00700），试试重新输入？"
         </div>
         <div style={{ fontSize: 11, color: '#EF4444' }}>
-          ❌ 旧: {t("参数超出范围")}
+          ❌ 旧: "参数超出范围"
         </div>
         <div style={{ fontSize: 11, color: '#34D399' }}>
-          ✅ 新: {t("快线 5~20 适合短线快进快出, 慢线 20~200 适合中长期趋势——调整一下试试？")}
+          ✅ 新: "快线 5~20 适合短线快进快出, 慢线 20~200 适合中长期趋势——调整一下试试？"
         </div>
       </div>
     </div>
@@ -441,9 +441,9 @@ function TutorialFlow({ onComplete, sliderVal, setSliderVal, selectedPreset, set
               style={{ width: '100%', accentColor: '#6366F1', height: 6 }}
             />
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#6B7280', marginTop: 2 }}>
-              <span>{t('3 (超短线)')}</span>
+              <span>3 (超短线)</span>
               <span style={{ fontWeight: 700, color: '#818CF8' }}>{sliderVal}</span>
-              <span>{t('50 (长线)')}</span>
+              <span>50 (长线)</span>
             </div>
 
             <div style={{ marginTop: 12, fontSize: 12, color: '#9CA3AF' }}>
@@ -456,16 +456,16 @@ function TutorialFlow({ onComplete, sliderVal, setSliderVal, selectedPreset, set
 
             {/* Param impact preview */}
             <div style={{ marginTop: 12, padding: '10px', borderRadius: 8, background: '#111827' }}>
-              <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t('📊 参数影响预览')}</div>
+              <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>📊 参数影响预览</div>
               <div style={{ display: 'flex', gap: 16 }}>
                 <div>
-                  <div style={{ fontSize: 10, color: '#6B7280' }}>{t('预期信号数/月')}</div>
+                  <div style={{ fontSize: 10, color: '#6B7280' }}>预期信号数/月</div>
                   <div style={{ fontSize: 16, fontWeight: 700, color: '#818CF8' }}>
                     {sliderVal <= 8 ? '15-25' : sliderVal <= 20 ? '8-15' : '3-8'}
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 10, color: '#6B7280' }}>{t('预期胜率')}</div>
+                  <div style={{ fontSize: 10, color: '#6B7280' }}>预期胜率</div>
                   <div style={{ fontSize: 16, fontWeight: 700, color: '#34D399' }}>
                     {sliderVal <= 8 ? '~45%' : sliderVal <= 20 ? '~55%' : '~65%'}
                   </div>
@@ -573,7 +573,7 @@ function BacktestAndSignals() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {BACKTEST_STORIES.map(s => <BacktestStoryRow key={s.title} story={s} />)}
           <div style={{ marginTop: 8, fontSize: 12, color: '#6B7280', textAlign: 'center' }}>
-            💡 回测故事化 — 把冷冰冰的数字变成{t("投入1万→变1.8万")}的直观感受
+            💡 回测故事化 — 把冷冰冰的数字变成"投入1万→变1.8万"的直观感受
           </div>
         </div>
       )}
@@ -588,7 +588,7 @@ function BacktestAndSignals() {
         <div>
           <HealthCheckDemo />
           <div style={{ marginTop: 12, padding: '12px 16px', borderRadius: 10, background: '#1F2937', border: '1px solid #374151', fontSize: 13, color: '#D1D5DB' }}>
-            <div style={{ fontWeight: 600, marginBottom: 4 }}>{t('📊 回测健康检查')}</div>
+            <div style={{ fontWeight: 600, marginBottom: 4 }}>📊 回测健康检查</div>
             <div style={{ lineHeight: 1.8 }}>
               不仅仅是看总收益！胜率、回撤、夏普、盈亏比、持仓集中度——<br />
               六维体检帮你发现策略的潜在风险。

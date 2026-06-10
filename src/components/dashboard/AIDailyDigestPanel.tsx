@@ -1,4 +1,4 @@
-/**
+﻿/**
  * AIDailyDigestPanel — AI-generated daily/weekly summary dashboard
  * (ML-44-02, R44 Phase 6.0)
  *
@@ -41,28 +41,28 @@ const MOCK_DIGEST: Record<DigestType, DailyDigest> = {
     generatedAt: Date.now(),
     marketSentiment: 'bullish',
     sections: [
-      { heading: {t('市场概览')}, content: {t('今日港股市场走强，恒指涨0.82%报19,450点，科指涨1.25%。成交额1,280亿港元，较昨日放量15%。南向资金净流入52.3亿港元，为连续第5日净流入。')}, icon: '📈' },
-      { heading: {t('组合表现')}, content: {t('主账户今日盈利+28,500 HKD (+0.16%)，跑赢恒指。最大贡献: 腾讯(+1.2%)、友邦(+1.5%)。拖累: 比亚迪(-0.5%)。API账户今日亏损-3,200 HKD (-0.21%)，主要受小米(-1.1%)拖累。')}, icon: '💰' },
-      { heading: {t('策略信号')}, content: {t('双均线交叉策略发出买入信号: US.AAPL @ $150.00，快线(10日均线)上穿慢线(30日均线)。动量突破策略维持持仓，未触发止损。均值回归策略触发卖出: HK.00700 @ $385.00，布林带上轨触及。')}, icon: '📊' },
-      { heading: {t('风险提醒')}, content: {t('组合整体VaR(95%)为-26.4万HKD，CVaR(95%)为-33.5万HKD。当前回撤-3.2%，远低于15%硬限制。多周期引擎显示4/7周期做多、2周期观望、1周期做空，整体偏多。')}, icon: '⚠️' },
-      { heading: {t('AI建议')}, content: {t('基于当前组合风险敞口和策略信号，建议: 1) 执行AAPL买入信号，仓位控制在5%以内; 2) 关注00700卖出信号，如确认可减仓至半仓; 3) 组合分散度72%，风险可控，暂不需要大规模调仓。')}, icon: '🤖' },
+      { heading: '市场概览', content: '今日港股市场走强，恒指涨0.82%报19,450点，科指涨1.25%。成交额1,280亿港元，较昨日放量15%。南向资金净流入52.3亿港元，为连续第5日净流入。', icon: '📈' },
+      { heading: '组合表现', content: '主账户今日盈利+28,500 HKD (+0.16%)，跑赢恒指。最大贡献: 腾讯(+1.2%)、友邦(+1.5%)。拖累: 比亚迪(-0.5%)。API账户今日亏损-3,200 HKD (-0.21%)，主要受小米(-1.1%)拖累。', icon: '💰' },
+      { heading: '策略信号', content: '双均线交叉策略发出买入信号: US.AAPL @ $150.00，快线(10日均线)上穿慢线(30日均线)。动量突破策略维持持仓，未触发止损。均值回归策略触发卖出: HK.00700 @ $385.00，布林带上轨触及。', icon: '📊' },
+      { heading: '风险提醒', content: '组合整体VaR(95%)为-26.4万HKD，CVaR(95%)为-33.5万HKD。当前回撤-3.2%，远低于15%硬限制。多周期引擎显示4/7周期做多、2周期观望、1周期做空，整体偏多。', icon: '⚠️' },
+      { heading: 'AI建议', content: '基于当前组合风险敞口和策略信号，建议: 1) 执行AAPL买入信号，仓位控制在5%以内; 2) 关注00700卖出信号，如确认可减仓至半仓; 3) 组合分散度72%，风险可控，暂不需要大规模调仓。', icon: '🤖' },
     ],
     topMovers: [
-      { symbol: '00700', name: {t('腾讯控股')}, change: 1.2 },
-      { symbol: '01299', name: {t('友邦保险')}, change: 1.5 },
-      { symbol: '09988', name: {t('阿里巴巴')}, change: 0.6 },
-      { symbol: '01810', name: {t('小米集团')}, change: -1.1 },
-      { symbol: '01211', name: {t('比亚迪')}, change: -0.5 },
+      { symbol: '00700', name: '腾讯控股', change: 1.2 },
+      { symbol: '01299', name: '友邦保险', change: 1.5 },
+      { symbol: '09988', name: '阿里巴巴', change: 0.6 },
+      { symbol: '01810', name: '小米集团', change: -1.1 },
+      { symbol: '01211', name: '比亚迪', change: -0.5 },
     ],
     activeSignals: [
-      { strategy: {t('双均线交叉')}, symbol: 'US.AAPL', signal: {t('买入')}, time: '09:35' },
-      { strategy: {t('均值回归')}, symbol: 'HK.00700', signal: {t('卖出')}, time: '10:12' },
-      { strategy: {t('动量突破')}, symbol: 'US.NVDA', signal: {t('持仓')}, time: '08:00' },
+      { strategy: '双均线交叉', symbol: 'US.AAPL', signal: '买入', time: '09:35' },
+      { strategy: '均值回归', symbol: 'HK.00700', signal: '卖出', time: '10:12' },
+      { strategy: '动量突破', symbol: 'US.NVDA', signal: t('components.positions'), time: '08:00' },
     ],
     riskAlerts: [
-      { level: 'info', message: {t('组合VaR在正常范围内')} },
-      { level: 'info', message: {t('多周期引擎 4/7 做多')} },
-      { level: 'warning', message: {t('API账户今日亏损-0.21%，关注小米走势')} },
+      { level: 'info', message: '组合VaR在正常范围内' },
+      { level: 'info', message: '多周期引擎 4/7 做多' },
+      { level: 'warning', message: 'API账户今日亏损-0.21%，关注小米走势' },
     ],
   },
   weekly: {
@@ -70,22 +70,22 @@ const MOCK_DIGEST: Record<DigestType, DailyDigest> = {
     generatedAt: Date.now(),
     marketSentiment: 'neutral',
     sections: [
-      { heading: {t('本周回顾')}, content: {t('本周港股震荡上行，恒指累计上涨1.6%，科指上涨3.2%。市场情绪从谨慎转向乐观，成交额稳步放大。')}, icon: '📅' },
-      { heading: {t('组合周报')}, content: {t('主账户本周累计盈利+15.2万HKD (+0.86%)。API账户本周累计亏损-1.8万HKD (-1.2%)。双账户合计+13.4万HKD。')}, icon: '💰' },
-      { heading: {t('策略表现')}, content: {t('双均线交叉策略本周胜率58%，累计收益+0.35%。均值回归策略胜率63%，累计收益+0.42%。动量突破策略表现最弱，胜率52%，收益+0.28%。')}, icon: '📊' },
-      { heading: {t('AI建议')}, content: {t('建议下周关注: 1) 动量突破策略参数可能需要重新优化; 2) 考虑增加均值回归策略的仓位分配; 3) 下周五非农数据公布，注意美股波动。')}, icon: '🤖' },
+      { heading: '本周回顾', content: '本周港股震荡上行，恒指累计上涨1.6%，科指上涨3.2%。市场情绪从谨慎转向乐观，成交额稳步放大。', icon: '📅' },
+      { heading: '组合周报', content: '主账户本周累计盈利+15.2万HKD (+0.86%)。API账户本周累计亏损-1.8万HKD (-1.2%)。双账户合计+13.4万HKD。', icon: '💰' },
+      { heading: '策略表现', content: '双均线交叉策略本周胜率58%，累计收益+0.35%。均值回归策略胜率63%，累计收益+0.42%。动量突破策略表现最弱，胜率52%，收益+0.28%。', icon: '📊' },
+      { heading: 'AI建议', content: '建议下周关注: 1) 动量突破策略参数可能需要重新优化; 2) 考虑增加均值回归策略的仓位分配; 3) 下周五非农数据公布，注意美股波动。', icon: '🤖' },
     ],
     topMovers: [
-      { symbol: '00700', name: {t('腾讯控股')}, change: 3.5 },
-      { symbol: '09988', name: {t('阿里巴巴')}, change: 2.8 },
-      { symbol: '01810', name: {t('小米集团')}, change: -2.1 },
+      { symbol: '00700', name: '腾讯控股', change: 3.5 },
+      { symbol: '09988', name: '阿里巴巴', change: 2.8 },
+      { symbol: '01810', name: '小米集团', change: -2.1 },
     ],
     activeSignals: [
-      { strategy: {t('双均线交叉')}, symbol: 'US.AAPL', signal: {t('买入')}, time: {t('周一')} },
-      { strategy: {t('均值回归')}, symbol: 'HK.00700', signal: {t('卖出')}, time: {t('周四')} },
+      { strategy: '双均线交叉', symbol: 'US.AAPL', signal: '买入', time: '周一' },
+      { strategy: '均值回归', symbol: 'HK.00700', signal: '卖出', time: '周四' },
     ],
     riskAlerts: [
-      { level: 'info', message: {t('周度VaR稳定在0.8%以内')} },
+      { level: 'info', message: '周度VaR稳定在0.8%以内' },
     ],
   },
   monthly: {
@@ -93,17 +93,17 @@ const MOCK_DIGEST: Record<DigestType, DailyDigest> = {
     generatedAt: Date.now(),
     marketSentiment: 'bullish',
     sections: [
-      { heading: {t('月度总结')}, content: {t('6月港股整体上涨，恒指上涨3.2%，科指上涨5.6%。流动性充裕，科技板块领涨。')}, icon: '📅' },
-      { heading: {t('组合月报')}, content: {t('主账户6月盈利+52.8万HKD (+3.0%)。年化Sharpe 2.1，最大回撤-4.2%，远优于基准。')}, icon: '💰' },
-      { heading: {t('AI展望')}, content: {t('7月展望: 1) 中报季来临，关注业绩超预期个股; 2) 关注美联储7月议息; 3) 建议保持当前仓位，不追高。')}, icon: '🤖' },
+      { heading: '月度总结', content: '6月港股整体上涨，恒指上涨3.2%，科指上涨5.6%。流动性充裕，科技板块领涨。', icon: '📅' },
+      { heading: '组合月报', content: '主账户6月盈利+52.8万HKD (+3.0%)。年化Sharpe 2.1，最大回撤-4.2%，远优于基准。', icon: '💰' },
+      { heading: 'AI展望', content: '7月展望: 1) 中报季来临，关注业绩超预期个股; 2) 关注美联储7月议息; 3) 建议保持当前仓位，不追高。', icon: '🤖' },
     ],
     topMovers: [
-      { symbol: '00700', name: {t('腾讯控股')}, change: 8.2 },
-      { symbol: '01299', name: {t('友邦保险')}, change: 6.8 },
+      { symbol: '00700', name: '腾讯控股', change: 8.2 },
+      { symbol: '01299', name: '友邦保险', change: 6.8 },
     ],
     activeSignals: [],
     riskAlerts: [
-      { level: 'info', message: {t('月度量化评分: A级 (综合92分)')} },
+      { level: 'info', message: '月度量化评分: A级 (综合92分)' },
     ],
   },
 };
@@ -161,9 +161,9 @@ export const AIDailyDigestPanel: React.FC<AIDailyDigestPanelProps> = ({ classNam
         <div className="flex items-center gap-2">
           {/* Digest type tabs */}
           {([
-            { key: 'daily' as const, label: {t('日报')} },
-            { key: 'weekly' as const, label: {t('周报')} },
-            { key: 'monthly' as const, label: {t('月报')} },
+            { key: 'daily' as const, label: '日报' },
+            { key: 'weekly' as const, label: '周报' },
+            { key: 'monthly' as const, label: '月报' },
           ]).map(t => (
             <button
               key={t.key}
@@ -187,7 +187,7 @@ export const AIDailyDigestPanel: React.FC<AIDailyDigestPanelProps> = ({ classNam
                 : 'bg-gray-800 border border-gray-700 text-gray-400 hover:text-gray-200'
             }`}
           >
-            {regenerating ? {t('⏳ 生成中...')} : {t('🔄 重新生成')}}
+            {regenerating ? '⏳ 生成中...' : '🔄 重新生成'}
           </button>
         </div>
       </div>
@@ -256,8 +256,8 @@ export const AIDailyDigestPanel: React.FC<AIDailyDigestPanelProps> = ({ classNam
                   </div>
                   <div className="flex items-center gap-2">
                     <span className={`text-[10px] px-1.5 py-0.5 rounded ${
-                      s.signal === {t('买入')} ? 'bg-emerald-500/10 text-emerald-400' :
-                      s.signal === {t('卖出')} ? 'bg-red-500/10 text-red-400' :
+                      s.signal === '买入' ? 'bg-emerald-500/10 text-emerald-400' :
+                      s.signal === '卖出' ? 'bg-red-500/10 text-red-400' :
                       'bg-gray-500/10 text-gray-400'
                     }`}>
                       {s.signal}

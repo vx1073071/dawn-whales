@@ -1,33 +1,33 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import { useState, type CSSProperties } from 'react';
 
 // v1.8.0 GA Landing Page — ML-74-01
 // SEO-optimized, feature-complete, deploy-ready
 
 const FEATURES = [
-  { icon: '🌍', title: {t('7大市场')}, desc: {t('港股·美股·新加坡·日本·澳洲·加拿大·马来西亚 · 全品种覆盖')}, highlight: {t('无A股')} },
-  { icon: '📊', title: {t('30+量化因子')}, desc: {t('价值/动量/质量/波动/股息/成长六维 · 市场兼容自动校验')}, highlight: {t('AI推荐')} },
-  { icon: '📋', title: {t('20+策略模板')}, desc: {t('MACD金叉·布林突破·双均线·RSI超卖·高股息防守·动量轮动')}, highlight: {t('一键套用')} },
-  { icon: '🤖', title: {t('4Agent AI信号')}, desc: {t('基本面·技术面·情绪面·宏观面 四引擎协同 · 真实数据源')}, highlight: 'useMock=false' },
-  { icon: '📈', title: {t('K线图表 TV级')}, desc: '蜡烛图+成交量+MA叠加+9周期+Crosehair+滚轮缩放+<100ms渲染', highlight: {t('对标TradingView')} },
-  { icon: '📐', title: {t('AI画线+形态')}, desc: {t('6画线工具 · 22种K线形态 · 半透明标注 · 置信度评分 · 可修正')}, highlight: {t('AI识别')} },
+  { icon: '🌍', title: '7大市场', desc: '港股·美股·新加坡·日本·澳洲·加拿大·马来西亚 · 全品种覆盖', highlight: '无A股' },
+  { icon: '📊', title: '30+量化因子', desc: '价值/动量/质量/波动/股息/成长六维 · 市场兼容自动校验', highlight: 'AI推荐' },
+  { icon: '📋', title: '20+策略模板', desc: 'MACD金叉·布林突破·双均线·RSI超卖·高股息防守·动量轮动', highlight: '一键套用' },
+  { icon: '🤖', title: '4Agent AI信号', desc: '基本面·技术面·情绪面·宏观面 四引擎协同 · 真实数据源', highlight: 'useMock=false' },
+  { icon: '📈', title: 'K线图表 TV级', desc: '蜡烛图+成交量+MA叠加+9周期+Crosehair+滚轮缩放+<100ms渲染', highlight: '对标TradingView' },
+  { icon: '📐', title: 'AI画线+形态', desc: '6画线工具 · 22种K线形态 · 半透明标注 · 置信度评分 · 可修正', highlight: 'AI识别' },
   { icon: '💬', title: t('components.strategyCommunity'), desc: '评论/点赞/关注/动态流/通知/创作者主页 · 策略分享与讨论', highlight: 'WebSocket实时' },
   { icon: '🎓', title: t('components.onboarding'), desc: '5步交互教程 · 8项指标卡片 · 4个因子故事 · 回测健康检查', highlight: '30秒上手' },
-  { icon: '🎨', title: {t('私行级UI')}, desc: {t('深色+金色主题 · 深浅双模式切换 · 5语言 · 友好错误文案')}, highlight: {t('8px网格')} },
-  { icon: '🛡️', title: {t('风控引擎')}, desc: {t('日亏损上限·单笔仓位限制·凯利公式·保证金监控·熔断机制')}, highlight: {t('7项检查')} },
-  { icon: '🔔', title: {t('监控告警')}, desc: {t('SLO仪表板·P95延迟·错误率·多渠道通知·静默规则')}, highlight: {t('分钟级聚合')} },
-  { icon: '⚡', title: {t('全链路')}, desc: {t('注册→券商→充值→AI选股→交易执行→提现 · 6步闭环')}, highlight: {t('一键自动化')} },
+  { icon: '🎨', title: '私行级UI', desc: '深色+金色主题 · 深浅双模式切换 · 5语言 · 友好错误文案', highlight: '8px网格' },
+  { icon: '🛡️', title: '风控引擎', desc: '日亏损上限·单笔仓位限制·凯利公式·保证金监控·熔断机制', highlight: '7项检查' },
+  { icon: '🔔', title: '监控告警', desc: 'SLO仪表板·P95延迟·错误率·多渠道通知·静默规则', highlight: '分钟级聚合' },
+  { icon: '⚡', title: '全链路', desc: '注册→券商→充值→AI选股→交易执行→提现 · 6步闭环', highlight: '一键自动化' },
 ];
 
 const TESTIMONIALS = [
-  { name: {t('港股趋势派')}, role: {t('个人投资者')}, quote: {t('用了MACD+RSI组合策略，3个月收益+18%。新手引导很友好，5分钟就建好了第一个策略。')} },
-  { name: {t('美股量化君')}, role: {t('量化爱好者')}, quote: {t('30个因子选股太强了！7市场全覆盖，港股美股一起跑，AI每日简报每天必看。')} },
-  { name: {t('新加坡REITs')}, role: {t('收息投资者')}, quote: {t('高股息模板一键套用，买入持有+自动再平衡。风控引擎让我睡得着觉。')} },
+  { name: '港股趋势派', role: '个人投资者', quote: '用了MACD+RSI组合策略，3个月收益+18%。新手引导很友好，5分钟就建好了第一个策略。' },
+  { name: '美股量化君', role: '量化爱好者', quote: '30个因子选股太强了！7市场全覆盖，港股美股一起跑，AI每日简报每天必看。' },
+  { name: '新加坡REITs', role: '收息投资者', quote: '高股息模板一键套用，买入持有+自动再平衡。风控引擎让我睡得着觉。' },
 ];
 
 const PRICING_TIERS = [
-  { name: 'Free', price: '0', period: {t('/月')}, features: [{t('7市场行情')}, {t('5个策略模板')}, {t('3年回测')}, {t('基础指标')}, {t('模拟交易')}], cta: {t('免费开始')}, color: '#6B7280' },
-  { name: 'Pro', price: '29', period: '/月', features: ['全部30+因子', '全部20+模板', 'AI信号 (4Agent)', 'AI画线+形态', t('components.strategyCommunity'), '邮件通知', '深色模式'], cta: '开始试用', color: '#6366F1', popular: true },
+  { name: 'Free', price: '0', period: '/月', features: ['7市场行情', '5个策略模板', '3年回测', '基础指标', '模拟交易'], cta: '免费开始', color: '#6B7280' },
+  { name: 'Pro', price: '29', period: '/月', features: ['全部30+因子', '全部20+模板', 'AI信号 (4Agent)', 'AI画线+形态', t('components.strategyCommunity'), '邮件通知', t('components.darkMode')], cta: '开始试用', color: '#6366F1', popular: true },
   { name: 'Enterprise', price: '99', period: '/月', features: ['全部Pro功能', 'AI助手 (问诊/NL/简报/术语)', t('components.dailyDigest'), '自然语言创建', 'API接入', '多券商实盘', '优先支持'], cta: '联系销售', color: '#D4A853' },
 ];
 
@@ -41,7 +41,7 @@ function NavBar() {
         <span style={{ padding: '2px 8px', borderRadius: 6, background: '#6366F122', color: '#818CF8', fontSize: 11, fontWeight: 700 }}>v1.8.0</span>
       </div>
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-        {[{t('功能')}, {t('定价')}, {t('社区')}, {t('文档')}].map(l => (
+        {['功能', '定价', '社区', '文档'].map(l => (
           <a key={l} href={`#${l}`} style={{ padding: '6px 12px', borderRadius: 6, color: '#9CA3AF', fontSize: 13, textDecoration: 'none' }}>{l}</a>
         ))}
         <button style={{ padding: '8px 20px', borderRadius: 8, border: 'none', background: '#6366F1', color: '#FFF', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
@@ -59,7 +59,7 @@ function HeroSection() {
         🎉 v1.8.0 GA 正式发布 — 7大市场 · 30+因子 · AI画线 · 策略社区
       </div>
       <h1 style={{ fontSize: 48, fontWeight: 900, color: '#F9FAFB', lineHeight: 1.15, margin: '0 0 16px' }}>
-        AI驱动的<br /><span style={{ background: 'linear-gradient(135deg, #818CF8, #D4A853)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{t('量化策略平台')}</span>
+        AI驱动的<br /><span style={{ background: 'linear-gradient(135deg, #818CF8, #D4A853)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>量化策略平台</span>
       </h1>
       <p style={{ fontSize: 18, color: '#9CA3AF', lineHeight: 1.7, maxWidth: 600, margin: '0 auto 32px' }}>
         无需编程 · 自然语言创建 · 30秒出策略 · AI选股 · 7市场全覆盖 · 私行级体验
@@ -67,7 +67,8 @@ function HeroSection() {
       
       {/* Stats */}
       <div style={{ display: 'flex', gap: 32, justifyContent: 'center', marginBottom: 36 }}>
-        {[{ n: '7', l: t('components.mark'市场' t('components.factor') }, { n: '22', l: 'AI形态' }, { n: '25项', l: t('components.onboarding') }, { n: '5', l: t('components.language') }].map(s => '语言'l}>
+        {[{ n: '7', l: t('components.markets') }, { n: '30+', l: t('components.factor') }, { n: '22', l: 'AI形态' }, { n: '25项', l: t('components.onboarding') }, { n: '5', l: t('components.language') }].map(s => (
+          <div key={s.l}>
             <div style={{ fontSize: 28, fontWeight: 800, color: '#D4A853' }}>{s.n}</div>
             <div style={{ fontSize: 12, color: '#6B7280' }}>{s.l}</div>
           </div>
@@ -82,17 +83,17 @@ function HeroSection() {
           📺 看演示 (60秒)
         </button>
       </div>
-      <div style={{ marginTop: 16, fontSize: 12, color: '#6B7280' }}>{t('无需信用卡 · 免费层永久可用 · Windows/macOS/Linux')}</div>
+      <div style={{ marginTop: 16, fontSize: 12, color: '#6B7280' }}>无需信用卡 · 免费层永久可用 · Windows/macOS/Linux</div>
     </section>
   );
 }
 
 function FeatureGrid() {
   return (
-    <section id={t("功能")} style={{ padding: '60px 24px', maxWidth: 1100, margin: '0 auto' }}>
+    <section id="功能" style={{ padding: '60px 24px', maxWidth: 1100, margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: 48 }}>
-        <h2 style={{ fontSize: 32, fontWeight: 800, color: '#F9FAFB', margin: '0 0 8px' }}>{t('全部功能一览')}</h2>
-        <p style={{ fontSize: 15, color: '#9CA3AF' }}>{t('R52→R74 · 25轮迭代 · 350+测试 · 12只虾协作')}</p>
+        <h2 style={{ fontSize: 32, fontWeight: 800, color: '#F9FAFB', margin: '0 0 8px' }}>全部功能一览</h2>
+        <p style={{ fontSize: 15, color: '#9CA3AF' }}>R52→R74 · 25轮迭代 · 350+测试 · 12只虾协作</p>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 14 }}>
         {FEATURES.map(f => (
@@ -115,12 +116,12 @@ function FeatureGrid() {
 function PricingSection() {
   const [yearly, setYearly] = useState(false);
   return (
-    <section id={t("定价")} style={{ padding: '60px 24px', maxWidth: 960, margin: '0 auto' }}>
+    <section id="定价" style={{ padding: '60px 24px', maxWidth: 960, margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: 40 }}>
-        <h2 style={{ fontSize: 32, fontWeight: 800, color: '#F9FAFB', margin: '0 0 8px' }}>{t('简单定价')}</h2>
+        <h2 style={{ fontSize: 32, fontWeight: 800, color: '#F9FAFB', margin: '0 0 8px' }}>简单定价</h2>
         <div style={{ display: 'inline-flex', gap: 2, background: '#1F2937', borderRadius: 10, padding: 3, marginTop: 12 }}>
-          <button onClick={() => setYearly(false)} style={{ padding: '6px 16px', borderRadius: 8, border: 'none', background: yearly ? 'transparent' : '#6366F1', color: yearly ? '#9CA3AF' : '#FFF', fontSize: 13, cursor: 'pointer' }}>{t('月付')}</button>
-          <button onClick={() => setYearly(true)} style={{ padding: '6px 16px', borderRadius: 8, border: 'none', background: yearly ? '#6366F1' : 'transparent', color: yearly ? '#FFF' : '#9CA3AF', fontSize: 13, cursor: 'pointer' }}>{t('年付')}<span style={{ color: '#34D399' }}>-20%</span></button>
+          <button onClick={() => setYearly(false)} style={{ padding: '6px 16px', borderRadius: 8, border: 'none', background: yearly ? 'transparent' : '#6366F1', color: yearly ? '#9CA3AF' : '#FFF', fontSize: 13, cursor: 'pointer' }}>月付</button>
+          <button onClick={() => setYearly(true)} style={{ padding: '6px 16px', borderRadius: 8, border: 'none', background: yearly ? '#6366F1' : 'transparent', color: yearly ? '#FFF' : '#9CA3AF', fontSize: 13, cursor: 'pointer' }}>年付 <span style={{ color: '#34D399' }}>-20%</span></button>
         </div>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 16, alignItems: 'start' }}>
@@ -131,7 +132,7 @@ function PricingSection() {
             position: 'relative',
           }}>
             {t.popular && (
-              <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', padding: '3px 14px', borderRadius: 8, background: '#6366F1', color: '#FFF', fontSize: 11, fontWeight: 700 }}>{t('最受欢迎')}</div>
+              <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', padding: '3px 14px', borderRadius: 8, background: '#6366F1', color: '#FFF', fontSize: 11, fontWeight: 700 }}>最受欢迎</div>
             )}
             <div style={{ fontSize: 18, fontWeight: 700, color: t.color, marginBottom: 8 }}>{t.name}</div>
             <div style={{ marginBottom: 20 }}>
@@ -163,7 +164,7 @@ function TestimonialsSection() {
   return (
     <section style={{ padding: '60px 24px', maxWidth: 900, margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: 36 }}>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#F9FAFB', margin: 0 }}>{t('交易者怎么说')}</h2>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#F9FAFB', margin: 0 }}>交易者怎么说</h2>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
         {TESTIMONIALS.map(t => (
@@ -187,7 +188,7 @@ function CTASection() {
   return (
     <section style={{ padding: '60px 24px', maxWidth: 700, margin: '0 auto', textAlign: 'center' }}>
       <div style={{ padding: '48px 32px', borderRadius: 20, background: 'linear-gradient(135deg, #6366F118, #D4A85314)', border: '1px solid #374151' }}>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#F9FAFB', margin: '0 0 12px' }}>{t('准备好开始量化了吗？')}</h2>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#F9FAFB', margin: '0 0 12px' }}>准备好开始量化了吗？</h2>
         <p style={{ fontSize: 15, color: '#9CA3AF', marginBottom: 28, lineHeight: 1.7 }}>
           30秒创建第一个策略 · 7市场全覆盖 · AI驱动 · 免费开始
         </p>
@@ -214,9 +215,9 @@ function Footer() {
         </div>
         <div style={{ display: 'flex', gap: 20 }}>
           <span>© 2026 Dawn Whales</span>
-          <span>{t('隐私政策')}</span>
-          <span>{t('服务条款')}</span>
-          <span>{t('联系我们')}</span>
+          <span>隐私政策</span>
+          <span>服务条款</span>
+          <span>联系我们</span>
         </div>
       </div>
     </footer>
@@ -241,14 +242,14 @@ function SEOHead() {
 
   return (
     <>
-      <title>{t('Dawn Whales — AI量化策略平台 | 7大市场·30+因子·无需编程')}</title>
-      <meta name="description" content={t("Dawn Whales v1.8.0 GA — AI驱动的量化策略平台。覆盖港股/美股/新加坡/日本/澳洲/加拿大/马来西亚7大市场，30+量化因子，AI画线形态识别，策略社区。免费开始，无需编程。")} />
-      <meta name="keywords" content={t("量化交易,AI选股,策略回测,港股量化,美股量化,技术分析,AI画线,K线形态,PineScript")} />
-      <meta property="og:title" content={t("Dawn Whales — AI量化策略平台")} />
-      <meta property="og:description" content={t("7大市场·30+因子·AI画线·策略社区。免费开始，无需编程。")} />
+      <title>Dawn Whales — AI量化策略平台 | 7大市场·30+因子·无需编程</title>
+      <meta name="description" content="Dawn Whales v1.8.0 GA — AI驱动的量化策略平台。覆盖港股/美股/新加坡/日本/澳洲/加拿大/马来西亚7大市场，30+量化因子，AI画线形态识别，策略社区。免费开始，无需编程。" />
+      <meta name="keywords" content="量化交易,AI选股,策略回测,港股量化,美股量化,技术分析,AI画线,K线形态,PineScript" />
+      <meta property="og:title" content="Dawn Whales — AI量化策略平台" />
+      <meta property="og:description" content="7大市场·30+因子·AI画线·策略社区。免费开始，无需编程。" />
       <meta property="og:type" content="website" />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={t("Dawn Whales — AI量化策略平台")} />
+      <meta name="twitter:title" content="Dawn Whales — AI量化策略平台" />
       <link rel="canonical" href="https://dawnwhales.com" />
       <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
     </>

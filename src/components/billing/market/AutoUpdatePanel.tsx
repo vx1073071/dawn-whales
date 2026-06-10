@@ -1,4 +1,4 @@
-/**
+﻿/**
  * AutoUpdatePanel — ML-70-02 [P1]
  * R70: v1.7.0 GA — Desktop version check + auto-update UI
  *
@@ -139,8 +139,8 @@ export default function AutoUpdatePanel({
       <div className="p-5 border-b border-white/5">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold">{t('版本更新')}</h2>
-            <p className="text-gray-500 text-xs mt-0.5">{t('自动更新 · 版本管理 · 更新日志')}</p>
+            <h2 className="text-xl font-bold">版本更新</h2>
+            <p className="text-gray-500 text-xs mt-0.5">自动更新 · 版本管理 · 更新日志</p>
           </div>
           {/* Channel selector */}
           <div className="flex bg-white/[0.04] rounded-lg p-0.5">
@@ -161,14 +161,14 @@ export default function AutoUpdatePanel({
         <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] text-gray-600 uppercase tracking-wider">{t('当前版本')}</div>
+              <div className="text-[10px] text-gray-600 uppercase tracking-wider">当前版本</div>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-2xl font-bold text-white">{currentVersion}</span>
                 <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${channel === 'stable' ? 'bg-green-500/10 text-green-400' : 'bg-blue-500/10 text-blue-400'}`}>
                   {channel}
                 </span>
               </div>
-              <div className="text-[10px] text-gray-600 mt-1">{t('发布于 {releaseDate}')}</div>
+              <div className="text-[10px] text-gray-600 mt-1">发布于 {releaseDate}</div>
             </div>
             <button onClick={handleCheck} disabled={status === 'checking' || status === 'downloading'}
               className={`px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors ${status === 'up-to-date' ? 'bg-green-500/10 text-green-400' : 'bg-[#C9A046] hover:bg-[#D4A853] text-black'} disabled:opacity-40`}>
@@ -182,7 +182,7 @@ export default function AutoUpdatePanel({
           <div className="bg-[#111119] border border-[#C9A046]/20 rounded-xl p-5">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-lg">🆕</span>
-              <span className="text-[#D4A853] font-semibold">{t('新版本可用')}</span>
+              <span className="text-[#D4A853] font-semibold">新版本可用</span>
             </div>
 
             <div className="grid grid-cols-2 gap-3 mb-4">
@@ -191,13 +191,13 @@ export default function AutoUpdatePanel({
                 <div className="text-lg font-bold text-white">{updateInfo.version}</div>
               </div>
               <div className="bg-white/[0.02] rounded-lg p-3">
-                <div className="text-[10px] text-gray-600 mb-1">{t('大小')}</div>
+                <div className="text-[10px] text-gray-600 mb-1">大小</div>
                 <div className="text-lg font-bold text-gray-300">{updateInfo.size}</div>
               </div>
             </div>
 
             <div className="mb-4">
-              <div className="text-[10px] text-gray-600 uppercase tracking-wider mb-2">{t('更新内容')}</div>
+              <div className="text-[10px] text-gray-600 uppercase tracking-wider mb-2">更新内容</div>
               <div className="space-y-1">
                 {updateInfo.changelog.map((line, i) => (
                   <div key={i} className="text-xs text-gray-400 flex items-start gap-2">
@@ -239,7 +239,7 @@ export default function AutoUpdatePanel({
         {/* ── Error ──────────────────────────────────────────────────────── */}
         {status === 'error' && (
           <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-4 text-center">
-            <span className="text-red-400 text-sm">{t("{errorMsg || '更新失败'}")}</span>
+            <span className="text-red-400 text-sm">{errorMsg || '更新失败'}</span>
             <button onClick={handleCheck}
               className="block mx-auto mt-2 px-4 py-1.5 rounded bg-red-500/10 text-red-400 text-xs font-semibold">
               重试
@@ -249,26 +249,26 @@ export default function AutoUpdatePanel({
 
         {/* ── Auto Check ─────────────────────────────────────────────────── */}
         <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
-          <h3 className="text-gray-300 font-semibold text-sm mb-3">{t('⚙️ 更新设置')}</h3>
+          <h3 className="text-gray-300 font-semibold text-sm mb-3">⚙️ 更新设置</h3>
           <div className="space-y-3">
             <label className="flex items-center justify-between py-2">
-              <span className="text-xs text-gray-400">{t('自动检查更新 (每4小时)')}</span>
+              <span className="text-xs text-gray-400">自动检查更新 (每4小时)</span>
               <input type="checkbox" defaultChecked={autoCheck} className="accent-[#C9A046]" />
             </label>
             <label className="flex items-center justify-between py-2">
-              <span className="text-xs text-gray-400">{t('自动下载更新')}</span>
+              <span className="text-xs text-gray-400">自动下载更新</span>
               <input type="checkbox" defaultChecked className="accent-[#C9A046]" />
             </label>
             <div className="flex items-center justify-between py-2">
-              <span className="text-xs text-gray-400">{t('更新频道')}</span>
-              <span className="text-xs text-gray-500">{t("{channel === 'stable' ? '稳定版 (推荐)' : 'Beta (测试版)'}")}</span>
+              <span className="text-xs text-gray-400">更新频道</span>
+              <span className="text-xs text-gray-500">{channel === 'stable' ? '稳定版 (推荐)' : 'Beta (测试版)'}</span>
             </div>
           </div>
         </div>
 
         {/* ── Version History ────────────────────────────────────────────── */}
         <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
-          <h3 className="text-gray-300 font-semibold text-sm mb-3">{t('📋 版本历史')}</h3>
+          <h3 className="text-gray-300 font-semibold text-sm mb-3">📋 版本历史</h3>
           <div className="space-y-2">
             {[
               ['v1.6.0 GA', '2026-06-09', '创作者增长飞轮 · 策略市场 · 等级排行榜 · 信号表现'],

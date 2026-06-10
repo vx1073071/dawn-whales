@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import { useState, useMemo, useRef, type CSSProperties } from 'react';
 
 // ── Types ──
@@ -214,7 +214,8 @@ function PatternCard({ pattern, onAnnotate, onCorrect }: {
   onCorrect: (id: string) => void
 }) {
   const typeColors: Record<string, string> = { bullish: '#10B981', bearish: '#EF4444', neutral: '#6B7280' };
-  const typeLabels: Record<string, string> = { bullish: '看涨', bearish: t('components.beari'看跌'
+  const typeLabels: Record<string, string> = { bullish: t('components.bullish'), bearish: t('components.bearish'), neutral: '中性' };
+
   return (
     <div
       style={{
@@ -292,7 +293,7 @@ function PatternCard({ pattern, onAnnotate, onCorrect }: {
           </button>
         )}
         {pattern.corrected && (
-          <span style={{ fontSize: 11, color: '#10B981' }}>{t('✅ 已修正')}</span>
+          <span style={{ fontSize: 11, color: '#10B981' }}>✅ 已修正</span>
         )}
       </div>
     </div>
@@ -302,10 +303,10 @@ function PatternCard({ pattern, onAnnotate, onCorrect }: {
 function PatternLegend() {
   return (
     <div style={{ display: 'flex', gap: 16, padding: '6px 0' }}>
-      <span style={{ fontSize: 12, color: '#10B981' }}>{t('🟢 看涨')}</span>
-      <span style={{ fontSize: 12, color: '#EF4444' }}>{t('🔴 看跌')}</span>
-      <span style={{ fontSize: 12, color: '#6B7280' }}>{t('⚪ 中性')}</span>
-      <span style={{ fontSize: 12, color: '#6366F1' }}>{t('✏️ 可标注/修正')}</span>
+      <span style={{ fontSize: 12, color: '#10B981' }}>🟢 看涨</span>
+      <span style={{ fontSize: 12, color: '#EF4444' }}>🔴 看跌</span>
+      <span style={{ fontSize: 12, color: '#6B7280' }}>⚪ 中性</span>
+      <span style={{ fontSize: 12, color: '#6366F1' }}>✏️ 可标注/修正</span>
     </div>
   );
 }
@@ -449,8 +450,8 @@ export default function AIDrawingPatternPanel() {
                   background: '#1F2937', color: '#D1D5DB', fontSize: 12,
                 }}
               >
-                <option value="confidence">{t('按置信度')}</option>
-                <option value="name">{t('按名称')}</option>
+                <option value="confidence">按置信度</option>
+                <option value="name">按名称</option>
               </select>
             </div>
           </div>

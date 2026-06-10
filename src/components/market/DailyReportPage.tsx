@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { getMarketHotspot } from '../../lib/bridge-api';
 
 interface DailyReport {
@@ -86,8 +86,8 @@ export default function DailyReportPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">{t('📋 每日简报')}</h1>
-          <p className="text-gray-400 text-sm">{t('自动生成市场日报')}</p>
+          <h1 className="text-2xl font-bold text-white mb-1">📋 每日简报</h1>
+          <p className="text-gray-400 text-sm">自动生成市场日报</p>
         </div>
         <button
           onClick={fetchReport}
@@ -131,7 +131,7 @@ export default function DailyReportPage() {
       {!report && !loading && !error && (
         <div className="flex flex-col items-center justify-center py-20 text-gray-500">
           <div className="text-4xl mb-3">📋</div>
-          <p className="text-sm">{t('点击刷新生成今日简报')}</p>
+          <p className="text-sm">点击刷新生成今日简报</p>
         </div>
       )}
     </div>

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * AgentCollaborationPanel — ML-56-01 [P0]
  * R56: v1.2.0-alpha — AI 协作按钮 + 4 Agent 状态可视化
  *
@@ -71,16 +71,16 @@ export interface AgentCollaborationPanelProps {
 // ── Agent Definitions ──────────────────────────────────────────────────
 
 const AGENT_DEFS: Omit<AgentState, 'status' | 'summary' | 'recommendation' | 'confidence' | 'keyFactors'>[] = [
-  { type: 'fundamentals', name: {t('基本面分析师')}, emoji: '📊', color: '#4CAF50' },
-  { type: 'sentiment', name: {t('情绪分析师')}, emoji: '😤', color: '#FF9800' },
-  { type: 'news', name: {t('新闻分析师')}, emoji: '📰', color: '#2196F3' },
-  { type: 'technical', name: {t('技术分析师')}, emoji: '📈', color: '#9C27B0' },
+  { type: 'fundamentals', name: '基本面分析师', emoji: '📊', color: '#4CAF50' },
+  { type: 'sentiment', name: '情绪分析师', emoji: '😤', color: '#FF9800' },
+  { type: 'news', name: '新闻分析师', emoji: '📰', color: '#2196F3' },
+  { type: 'technical', name: '技术分析师', emoji: '📈', color: '#9C27B0' },
 ];
 
 const TIER_CONFIG: Record<Tier, { label: string; agents: number; rounds: number; cost: number; price: number; emoji: string }> = {
-  standard: { label: {t('标准')}, agents: 2, rounds: 2, cost: 0.008, price: 1.0, emoji: '⚡' },
-  premium: { label: {t('高级')}, agents: 3, rounds: 2, cost: 0.012, price: 1.5, emoji: '🔥' },
-  flagship: { label: {t('旗舰')}, agents: 4, rounds: 2, cost: 0.016, price: 2.0, emoji: '👑' },
+  standard: { label: '标准', agents: 2, rounds: 2, cost: 0.008, price: 1.0, emoji: '⚡' },
+  premium: { label: '高级', agents: 3, rounds: 2, cost: 0.012, price: 1.5, emoji: '🔥' },
+  flagship: { label: '旗舰', agents: 4, rounds: 2, cost: 0.016, price: 2.0, emoji: '👑' },
 };
 
 // Moved: RECOMMENDATION_LABELS now inside component (needs useTranslation t())
@@ -132,14 +132,14 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
   const startCollaboration = useCallback(() => {
     if (!ticker.trim()) return;
     if (!isConnected) {
-      setProgressMessage({t('❌ 未连接到 AI 服务')});
+      setProgressMessage('❌ 未连接到 AI 服务');
       return;
     }
 
     const cfg = TIER_CONFIG[tier];
     setStage('initializing');
     setProgress(5);
-    setProgressMessage({t('正在初始化 AI Agent...')});
+    setProgressMessage('正在初始化 AI Agent...');
     setFinalDecision(null);
     setDebateRounds([]);
     setDegraded(false);
@@ -165,10 +165,10 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
         action: () => {
           setStage('debating');
           setProgress(10);
-          setProgressMessage({t('Agent 正在分析数据...')});
+          setProgressMessage('Agent 正在分析数据...');
           // Activate agents based on tier
           setAgents(prev => prev.map((a, i) => {
-            if (i < cfg.agents) return { ...a, status: 'running' as AgentStatus, summary: {t('分析中...')} };
+            if (i < cfg.agents) return { ...a, status: 'running' as AgentStatus, summary: '分析中...' };
             return a;
           }));
         },
@@ -176,36 +176,36 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
       // Step 2-5: Each agent completes (delay 800ms each)
       { delay: 800, action: () => {
         setProgress(25);
-        setProgressMessage({t('📊 基本面分析师 完成分析')});
+        setProgressMessage('📊 基本面分析师 完成分析');
         setAgents(prev => prev.map(a => a.type === 'fundamentals' && a.status === 'running' ? {
-          ...a, status: 'completed', summary: {t('PE 估值合理，营收增长稳定')}, recommendation: 'buy', confidence: 78,
-          keyFactors: [{t('PE 23x 低于行业均值')}, {t('营收 YoY +18%')}, 'ROE 15%'],
+          ...a, status: 'completed', summary: 'PE 估值合理，营收增长稳定', recommendation: 'buy', confidence: 78,
+          keyFactors: ['PE 23x 低于行业均值', '营收 YoY +18%', 'ROE 15%'],
         } : a));
       }},
       { delay: 800, action: () => {
         setProgress(40);
-        setProgressMessage({t('😤 情绪分析师 完成分析')});
+        setProgressMessage('😤 情绪分析师 完成分析');
         setAgents(prev => prev.map(a => a.type === 'sentiment' && a.status === 'running' ? {
-          ...a, status: 'completed', summary: {t('市场情绪中性偏多')}, recommendation: 'buy', confidence: 65,
-          keyFactors: [{t('社交媒体情绪 +0.3σ')}, {t('恐惧贪婪指数 62')}, {t('期权 Put/Call 0.85')}],
+          ...a, status: 'completed', summary: '市场情绪中性偏多', recommendation: 'buy', confidence: 65,
+          keyFactors: ['社交媒体情绪 +0.3σ', '恐惧贪婪指数 62', '期权 Put/Call 0.85'],
         } : a));
       }},
       { delay: 800, action: () => {
         if (cfg.agents < 3) return;
         setProgress(55);
-        setProgressMessage({t('📰 新闻分析师 完成分析')});
+        setProgressMessage('📰 新闻分析师 完成分析');
         setAgents(prev => prev.map(a => a.type === 'news' && a.status === 'running' ? {
-          ...a, status: 'completed', summary: {t('近期利好消息偏多')}, recommendation: 'buy', confidence: 72,
-          keyFactors: [{t('财报超预期')}, {t('新产品发布')}, {t('分析师上调目标价 +10%')}],
+          ...a, status: 'completed', summary: '近期利好消息偏多', recommendation: 'buy', confidence: 72,
+          keyFactors: ['财报超预期', '新产品发布', '分析师上调目标价 +10%'],
         } : a));
       }},
       { delay: 800, action: () => {
         if (cfg.agents < 4) return;
         setProgress(70);
-        setProgressMessage({t('📈 技术分析师 完成分析')});
+        setProgressMessage('📈 技术分析师 完成分析');
         setAgents(prev => prev.map(a => a.type === 'technical' && a.status === 'running' ? {
-          ...a, status: 'completed', summary: {t('技术面多头排列')}, recommendation: 'buy', confidence: 80,
-          keyFactors: [{t('MA20 上穿 MA60')}, {t('MACD 金叉')}, {t('布林带收窄即将突破')}],
+          ...a, status: 'completed', summary: '技术面多头排列', recommendation: 'buy', confidence: 80,
+          keyFactors: ['MA20 上穿 MA60', 'MACD 金叉', '布林带收窄即将突破'],
         } : a));
       }},
       // Step 6: Debate rounds (delay 1000ms each)
@@ -215,8 +215,8 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
         setProgressMessage(`正在辩论 (Round 1/${cfg.rounds})...`);
         setDebateRounds([{
           round: 1,
-          bullArguments: [{t('估值合理，上行空间 20%+')}, {t('技术面多头信号明确')}],
-          bearArguments: [{t('宏观不确定性仍存')}, {t('短期获利盘压力')}],
+          bullArguments: ['估值合理，上行空间 20%+', '技术面多头信号明确'],
+          bearArguments: ['宏观不确定性仍存', '短期获利盘压力'],
           bullScore: 65,
           bearScore: 35,
         }]);
@@ -227,8 +227,8 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
         setProgressMessage(`正在辩论 (Round 2/${cfg.rounds})...`);
         setDebateRounds(prev => [...prev, {
           round: 2,
-          bullArguments: [{t('行业景气度回升')}, {t('大资金持续流入')}],
-          bearArguments: [{t('估值已部分反映预期')}],
+          bullArguments: ['行业景气度回升', '大资金持续流入'],
+          bearArguments: ['估值已部分反映预期'],
           bullScore: 58,
           bearScore: 42,
         }]);
@@ -237,13 +237,13 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
       { delay: 600, action: () => {
         setStage('voting');
         setProgress(95);
-        setProgressMessage({t('Agent 正在投票...')});
+        setProgressMessage('Agent 正在投票...');
       }},
       // Step 8: Final result
       { delay: 800, action: () => {
         setStage('completed');
         setProgress(100);
-        setProgressMessage({t('✅ AI 协作完成')});
+        setProgressMessage('✅ AI 协作完成');
         const cacheRate = 87 + Math.floor(Math.random() * 10);
         setCacheHitRate(cacheRate);
 
@@ -334,7 +334,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
             <span style={styles.typingDot} />
             <span style={{ ...styles.typingDot, animationDelay: '0.2s' }} />
             <span style={{ ...styles.typingDot, animationDelay: '0.4s' }} />
-            <span style={styles.typingText}>{t('分析中...')}</span>
+            <span style={styles.typingText}>分析中...</span>
           </div>
         )}
         {agent.status === 'completed' && (
@@ -342,7 +342,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
             <div style={styles.agentSummary}>{agent.summary}</div>
             <div style={styles.agentRecBadge}>
               <span style={{ color: agent.recommendation === 'buy' ? '#4CAF50' : agent.recommendation === 'sell' ? '#F44336' : '#FFC107' }}>
-                {agent.recommendation === 'buy' ? {t('看多')} : agent.recommendation === 'sell' ? {t('看空')} : {t('中性')}}
+                {agent.recommendation === 'buy' ? '看多' : agent.recommendation === 'sell' ? '看空' : '中性'}
               </span>
               <span style={styles.confidenceBadge}>{agent.confidence}%</span>
             </div>
@@ -361,17 +361,17 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
 
   const renderDebate = (round: DebateRound) => (
     <div key={round.round} style={styles.debateRound}>
-      <div style={styles.debateTitle}>{t('🗣️ 辩论 Round {round.round}')}</div>
+      <div style={styles.debateTitle}>🗣️ 辩论 Round {round.round}</div>
       <div style={styles.debateBars}>
         <div style={styles.barSide}>
-          <span style={styles.bullLabel}>{t('🐂 多方')}</span>
+          <span style={styles.bullLabel}>🐂 多方</span>
           <div style={styles.barTrack}>
             <div style={{ ...styles.barFill, width: `${round.bullScore}%`, background: '#4CAF50' }} />
           </div>
           <span style={styles.barScore}>{round.bullScore}%</span>
         </div>
         <div style={styles.barSide}>
-          <span style={styles.bearLabel}>{t('🐻 空方')}</span>
+          <span style={styles.bearLabel}>🐻 空方</span>
           <div style={styles.barTrack}>
             <div style={{ ...styles.barFill, width: `${round.bearScore}%`, background: '#F44336' }} />
           </div>
@@ -402,7 +402,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
     <div style={styles.container}>
       {/* Header with tier selector */}
       <div style={styles.header}>
-        <h3 style={styles.title}>{t('🤖 AI 协作分析')}</h3>
+        <h3 style={styles.title}>🤖 AI 协作分析</h3>
         <div style={styles.tierSelector}>
           {(['standard', 'premium', 'flagship'] as Tier[]).map(t => (
             <button
@@ -426,7 +426,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
       <div style={styles.inputRow}>
         <input
           style={styles.symbolInput}
-          placeholder={t("输入股票代码，如 TQQQ、00700")}
+          placeholder="输入股票代码，如 TQQQ、00700"
           value={ticker}
           onChange={e => setTicker(e.target.value)}
           disabled={isRunning}
@@ -441,7 +441,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
           onClick={startCollaboration}
           disabled={isRunning || !ticker.trim() || !isConnected}
         >
-          {isRunning ? {t('⏳ 分析中...')} : {t('🚀 AI 协作')}}
+          {isRunning ? '⏳ 分析中...' : '🚀 AI 协作'}
         </button>
       </div>
 
@@ -452,7 +452,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
             <div style={{ ...styles.progressFill, width: `${progress}%` }} />
           </div>
           <div style={styles.progressText}>{progressMessage}</div>
-          <div style={styles.estimatedTime}>{t('预估耗时: 10-15 秒')}</div>
+          <div style={styles.estimatedTime}>预估耗时: 10-15 秒</div>
         </div>
       )}
 
@@ -480,11 +480,11 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
       {/* Cache info */}
       {stage === 'completed' && (
         <div style={styles.cacheInfo}>
-          <span>{t('💾 缓存命中率:')}<strong>{cacheHitRate}%</strong></span>
+          <span>💾 缓存命中率: <strong>{cacheHitRate}%</strong></span>
           <span style={cacheHitRate >= 90 ? styles.cacheGood : styles.cacheWarn}>
             {cacheHitRate >= 90 ? '✅ 达标 (>90%)' : `⚠️ 未达标 (目标 ≥90%)`}
           </span>
-          <span>{t('💰 本次费用:')}<strong>{costEstimate.toFixed(4)} USDT</strong></span>
+          <span>💰 本次费用: <strong>{costEstimate.toFixed(4)} USDT</strong></span>
         </div>
       )}
 
@@ -498,7 +498,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
             }}>
               {RECOMMENDATION_LABELS[finalDecision.recommendation]}
             </span>
-            <span style={styles.decisionConfidence}>{t('置信度 {finalDecision.confidence}%')}</span>
+            <span style={styles.decisionConfidence}>置信度 {finalDecision.confidence}%</span>
           </div>
           <div style={styles.decisionReasoning}>{finalDecision.reasoning}</div>
           <div style={styles.voteGrid}>
@@ -508,15 +508,15 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
                 <div key={agent} style={styles.voteItem}>
                   <span>{def?.emoji}</span>
                   <span style={{ color: vote === 'buy' ? '#4CAF50' : vote === 'sell' ? '#F44336' : '#FFC107' }}>
-                    {vote === 'buy' ? {t('买入')} : vote === 'sell' ? {t('卖出')} : {t('持有')}}
+                    {vote === 'buy' ? '买入' : vote === 'sell' ? '卖出' : '持有'}
                   </span>
                 </div>
               );
             })}
           </div>
           <div style={styles.decisionActions}>
-            <button style={styles.actionBtn}>{t('📋 复制策略')}</button>
-            <button style={{ ...styles.actionBtn, background: '#1a237e' }}>{t('📊 查看详情')}</button>
+            <button style={styles.actionBtn}>📋 复制策略</button>
+            <button style={{ ...styles.actionBtn, background: '#1a237e' }}>📊 查看详情</button>
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 /**
  * StrategyMarketplace — ML-66-01 [P0]
  * R66: v1.6.0 GA — Creator growth: strategy marketplace with purchase flow
@@ -65,17 +65,17 @@ export interface StrategyMarketplaceProps {
 // ── Constants ────────────────────────────────────────────────────────────
 
 const LEVEL_CONFIG: Record<CreatorLevel, { label: string; icon: string; color: string; bg: string }> = {
-  bronze:   { label: {t('青铜')}, icon: '🥉', color: '#CD7F32', bg: 'bg-amber-900/20' },
-  silver:   { label: {t('白银')}, icon: '🥈', color: '#C0C0C0', bg: 'bg-gray-400/10' },
-  gold:     { label: {t('黄金')}, icon: '🥇', color: '#FFD700', bg: 'bg-yellow-500/10' },
-  platinum: { label: {t('铂金')}, icon: '💎', color: '#E5E4E2', bg: 'bg-slate-300/10' },
-  diamond:  { label: {t('钻石')}, icon: '👑', color: '#B9F2FF', bg: 'bg-cyan-300/10' },
-  king:     { label: {t('王者')}, icon: '🏆', color: '#FF4500', bg: 'bg-orange-600/10' },
+  bronze:   { label: '青铜', icon: '🥉', color: '#CD7F32', bg: 'bg-amber-900/20' },
+  silver:   { label: '白银', icon: '🥈', color: '#C0C0C0', bg: 'bg-gray-400/10' },
+  gold:     { label: '黄金', icon: '🥇', color: '#FFD700', bg: 'bg-yellow-500/10' },
+  platinum: { label: '铂金', icon: '💎', color: '#E5E4E2', bg: 'bg-slate-300/10' },
+  diamond:  { label: '钻石', icon: '👑', color: '#B9F2FF', bg: 'bg-cyan-300/10' },
+  king:     { label: '王者', icon: '🏆', color: '#FF4500', bg: 'bg-orange-600/10' },
 };
 
 const PRICE_RANGES = [
-  { label: {t('全部')}, min: 0, max: Infinity },
-  { label: {t('免费')}, min: 0, max: 0 },
+  { label: t('components.all'), min: 0, max: Infinity },
+  { label: '免费', min: 0, max: 0 },
   { label: '1-50 USDT', min: 1, max: 50 },
   { label: '50-200 USDT', min: 50, max: 200 },
   { label: '200-1000 USDT', min: 200, max: 1000 },
@@ -84,55 +84,58 @@ const PRICE_RANGES = [
 type SortKey = 'return' | 'subscribers' | 'rating' | 'newest' | 'price';
 
 const SORT_OPTIONS: { key: SortKey; label: string }[] = [
-  { key: 'return', label: {t('收益最高')} },
-  { key: 'subscribers', label: {t('订阅最多')} },
-  { key: 'rating', label: {t('评分最高')} },
-  { key: 'newest', label: {t('最新发布')} },
-  { key: 'price', label: t('components.p'价格'ock Data ────────────────────────────────────────────────────────────
+  { key: 'return', label: '收益最高' },
+  { key: 'subscribers', label: '订阅最多' },
+  { key: 'rating', label: '评分最高' },
+  { key: 'newest', label: '最新发布' },
+  { key: 'price', label: t('components.price') },
+];
+
+// ── Mock Data ────────────────────────────────────────────────────────────
 
 const mockStrategies: StrategyCard[] = [
   {
-    id: 's-001', name: {t('趋势跟踪增强版')}, description: {t('双均线+RSI确认，适合震荡市和趋势市切换，3年回测年化42%')},
+    id: 's-001', name: '趋势跟踪增强版', description: '双均线+RSI确认，适合震荡市和趋势市切换，3年回测年化42%',
     creatorId: 'c-01', creatorName: 'QuantEdge Pro', creatorLevel: 'diamond', creatorAvatar: '🦊', verified: true,
     symbol: 'AAPL', market: 'US', price: 50, subscribers: 2847, rating: 4.8, ratingCount: 312,
     totalReturn: 42.3, sharpe: 2.1, maxDrawdown: 12.5, winRate: 68.2, totalSignals: 847,
-    tags: [{t('趋势跟踪')}, {t('双均线')}, 'RSI'], createdAt: '2026-03-15', updatedAt: '2026-06-01',
+    tags: ['趋势跟踪', '双均线', 'RSI'], createdAt: '2026-03-15', updatedAt: '2026-06-01',
   },
   {
-    id: 's-002', name: {t('均值回归狙击手')}, description: {t('布林带下轨+成交量确认反弹，持仓1-3天，胜率72%')},
+    id: 's-002', name: '均值回归狙击手', description: '布林带下轨+成交量确认反弹，持仓1-3天，胜率72%',
     creatorId: 'c-02', creatorName: 'MeanReversion', creatorLevel: 'gold', creatorAvatar: '🐺', verified: true,
     symbol: 'TSLA', market: 'US', price: 30, subscribers: 1523, rating: 4.5, ratingCount: 198,
     totalReturn: 28.1, sharpe: 1.8, maxDrawdown: 8.3, winRate: 72.1, totalSignals: 523,
-    tags: [{t('均值回归')}, {t('布林带')}, {t('短线')}], createdAt: '2026-02-20', updatedAt: '2026-05-28',
+    tags: ['均值回归', '布林带', '短线'], createdAt: '2026-02-20', updatedAt: '2026-05-28',
   },
   {
-    id: 's-003', name: {t('港股市值轮动')}, description: {t('月度调仓，选取市值前20%+动量前30%，年化31%')},
+    id: 's-003', name: '港股市值轮动', description: '月度调仓，选取市值前20%+动量前30%，年化31%',
     creatorId: 'c-03', creatorName: 'HK Whale', creatorLevel: 'platinum', creatorAvatar: '🐋', verified: true,
     symbol: 'HK.00700', market: 'HK', price: 80, subscribers: 982, rating: 4.9, ratingCount: 156,
     totalReturn: 31.2, sharpe: 2.4, maxDrawdown: 15.1, winRate: 65.8, totalSignals: 321,
-    tags: [{t('轮动')}, {t('港股')}, {t('动量')}], createdAt: '2026-01-10', updatedAt: '2026-06-05',
+    tags: ['轮动', '港股', '动量'], createdAt: '2026-01-10', updatedAt: '2026-06-05',
   },
 
   {
-    id: 's-005', name: {t('波动率套利模型')}, description: {t('VIX衍生品+期权跨式组合，低相关Alpha策略')},
+    id: 's-005', name: '波动率套利模型', description: 'VIX衍生品+期权跨式组合，低相关Alpha策略',
     creatorId: 'c-05', creatorName: 'VolArb', creatorLevel: 'king', creatorAvatar: '🦅', verified: true,
     symbol: 'SPY', market: 'US', price: 200, subscribers: 2103, rating: 4.7, ratingCount: 289,
     totalReturn: 35.8, sharpe: 3.1, maxDrawdown: 5.2, winRate: 78.4, totalSignals: 1204,
-    tags: [t('components.volatility'), '期权''波动率'-11-05', updatedAt: '2026-06-07',
+    tags: [t('components.volatility'), '期权', '低相关'], createdAt: '2025-11-05', updatedAt: '2026-06-07',
   },
   {
-    id: 's-006', name: {t('MACD金叉死叉经典')}, description: {t('经典MACD信号+成交量过滤，适合新手入门')},
+    id: 's-006', name: 'MACD金叉死叉经典', description: '经典MACD信号+成交量过滤，适合新手入门',
     creatorId: 'c-06', creatorName: 'NewbieTrader', creatorLevel: 'bronze', creatorAvatar: '🐣', verified: false,
     symbol: 'QQQ', market: 'US', price: 5, subscribers: 89, rating: 3.5, ratingCount: 24,
     totalReturn: 8.2, sharpe: 0.6, maxDrawdown: 28.5, winRate: 48.3, totalSignals: 56,
-    tags: ['MACD', {t('入门')}, {t('经典')}], createdAt: '2026-05-20', updatedAt: '2026-06-01',
+    tags: ['MACD', '入门', '经典'], createdAt: '2026-05-20', updatedAt: '2026-06-01',
   },
 ];
 
 // ── Mini Chart (Sparkline) ──────────────────────────────────────────────
 
 function MiniChart({ data, color }: { data?: number[]; color: string }) {
-  if (!data || data.length < 2) return <div className="h-8 text-gray-600 text-xs flex items-center">{t('无数据')}</div>;
+  if (!data || data.length < 2) return <div className="h-8 text-gray-600 text-xs flex items-center">无数据</div>;
   const min = Math.min(...data);
   const max = Math.max(...data);
   const range = max - min || 1;
@@ -197,11 +200,11 @@ function PurchaseModal({
         setTxHash(result.txHash || '0x' + Math.random().toString(16).slice(2, 42));
         setStep('success');
       } else {
-        setError({t('交易失败，请重试')});
+        setError('交易失败，请重试');
         setStep('confirm');
       }
     } catch {
-      setError({t('网络错误，请检查连接')});
+      setError('网络错误，请检查连接');
       setStep('confirm');
     }
   };
@@ -214,7 +217,7 @@ function PurchaseModal({
         <div className="p-5 border-b border-white/5">
           <div className="flex items-center justify-between">
             <h3 className="text-white font-semibold text-lg">
-              {step === 'confirm' ? {t('确认购买')} : step === 'processing' ? {t('处理中...')} : {t('购买成功')}}
+              {step === 'confirm' ? '确认购买' : step === 'processing' ? '处理中...' : '购买成功'}
             </h3>
             <button onClick={onClose} className="text-gray-500 hover:text-gray-300 text-xl leading-none">&times;</button>
           </div>
@@ -237,11 +240,11 @@ function PurchaseModal({
               <p className="text-sm text-gray-400">{strategy.description.slice(0, 120)}</p>
               {/* Price & Balance */}
               <div className="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg">
-                <span className="text-gray-400 text-sm">{t('策略价格')}</span>
+                <span className="text-gray-400 text-sm">策略价格</span>
                 <span className="text-[#D4A853] font-bold text-lg">{strategy.price} USDT</span>
               </div>
               <div className="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg">
-                <span className="text-gray-400 text-sm">{t('你的余额')}</span>
+                <span className="text-gray-400 text-sm">你的余额</span>
                 <span className={`font-medium ${userBalance >= strategy.price ? 'text-green-400' : 'text-red-400'}`}>
                   {userBalance.toLocaleString()} USDT
                 </span>
@@ -273,14 +276,14 @@ function PurchaseModal({
         {step === 'processing' && (
           <div className="p-10 flex flex-col items-center gap-4">
             <div className="w-10 h-10 border-2 border-[#D4A853] border-t-transparent rounded-full animate-spin" />
-            <span className="text-gray-300 text-sm">{t('区块链确认中...')}</span>
+            <span className="text-gray-300 text-sm">区块链确认中...</span>
           </div>
         )}
 
         {step === 'success' && (
           <div className="p-10 flex flex-col items-center gap-4">
             <span className="text-5xl">✅</span>
-            <div className="text-white font-semibold">{t('购买成功！')}</div>
+            <div className="text-white font-semibold">购买成功！</div>
             <div className="text-gray-400 text-xs text-center break-all px-2">
               TX: {txHash.slice(0, 20)}...
             </div>
@@ -377,10 +380,10 @@ export default function StrategyMarketplace({
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-xl font-bold">{t("components.strategyMarketplace")}</h2>
-            <p className="text-gray-500 text-xs mt-0.5">{t('发现、购买、加载优质量化策略')}</p>
+            <p className="text-gray-500 text-xs mt-0.5">发现、购买、加载优质量化策略</p>
           </div>
           <div className="flex items-center gap-2 text-xs text-gray-500">
-            <span>{t('💰 余额:')}</span>
+            <span>💰 余额:</span>
             <span className="text-[#D4A853] font-semibold">{userBalance.toLocaleString()} USDT</span>
           </div>
         </div>
@@ -394,7 +397,7 @@ export default function StrategyMarketplace({
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder={t("搜索策略、创作者、标签...")}
+              placeholder="搜索策略、创作者、标签..."
               className="w-full pl-9 pr-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50"
             />
           </div>
@@ -402,9 +405,9 @@ export default function StrategyMarketplace({
           {/* Market */}
           <select value={marketFilter} onChange={(e) => setMarketFilter(e.target.value)}
                   className="px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-gray-300">
-            <option value="all">{t('🌍 全部市场')}</option>
-            <option value="US">{t('🇺🇸 美股')}</option>
-            <option value="HK">{t('🇭🇰 港股')}</option>
+            <option value="all">🌍 全部市场</option>
+            <option value="US">🇺🇸 美股</option>
+            <option value="HK">🇭🇰 港股</option>
 
           </select>
 
@@ -431,8 +434,8 @@ export default function StrategyMarketplace({
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-600 gap-2">
             <span className="text-4xl">🏪</span>
-            <span>{t('没有找到匹配的策略')}</span>
-            <span className="text-xs">{t('试试调整筛选条件')}</span>
+            <span>没有找到匹配的策略</span>
+            <span className="text-xs">试试调整筛选条件</span>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -449,7 +452,7 @@ export default function StrategyMarketplace({
                       <LevelBadge level={s.creatorLevel} />
                     </div>
                   </div>
-                  {s.verified && <span className="text-blue-400 text-xs" title={t("认证创作者")}>✓ 认证</span>}
+                  {s.verified && <span className="text-blue-400 text-xs" title="认证创作者">✓ 认证</span>}
                 </div>
 
                 {/* Name + description */}
@@ -476,7 +479,7 @@ export default function StrategyMarketplace({
                     <div className="text-sm font-semibold text-gray-200">{s.winRate}%</div>
                   </div>
                   <div className="bg-white/[0.03] rounded p-1.5">
-                    <div className="text-xs text-gray-500">{t('回撤')}</div>
+                    <div className="text-xs text-gray-500">回撤</div>
                     <div className="text-sm font-semibold text-red-400">{s.maxDrawdown}%</div>
                   </div>
                 </div>
@@ -485,7 +488,7 @@ export default function StrategyMarketplace({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <span className="text-[#D4A853] font-bold text-lg">
-                      {s.price === 0 ? {t('免费')} : `${s.price} USDT`}
+                      {s.price === 0 ? '免费' : `${s.price} USDT`}
                     </span>
                     <div className="flex items-center gap-1 text-gray-500 text-xs">
                       <span>👥 {s.subscribers.toLocaleString()}</span>
@@ -499,7 +502,7 @@ export default function StrategyMarketplace({
                     </button>
                     <button onClick={(e) => { e.stopPropagation(); setPurchasing(s); }}
                             className="px-3 py-1.5 rounded-lg bg-[#C9A046]/20 hover:bg-[#C9A046]/30 text-[#D4A853] text-xs font-medium transition-colors">
-                      {s.price === 0 ? {t('免费获取')} : {t('购买')}}
+                      {s.price === 0 ? '免费获取' : '购买'}
                     </button>
                   </div>
                 </div>
@@ -533,7 +536,7 @@ export default function StrategyMarketplace({
                   <div className="flex items-center gap-2 mt-0.5">
                     <LevelBadge level={detailStrategy.creatorLevel} />
                     <span className="text-gray-400 text-sm">{detailStrategy.creatorName}</span>
-                    {detailStrategy.verified && <span className="text-blue-400 text-xs">{t('✓ 认证')}</span>}
+                    {detailStrategy.verified && <span className="text-blue-400 text-xs">✓ 认证</span>}
                   </div>
                 </div>
               </div>
@@ -548,13 +551,13 @@ export default function StrategyMarketplace({
               {/* Performance */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-3 bg-white/[0.03] rounded-lg">
-                  <div className="text-xs text-gray-500">{t('累计收益')}</div>
+                  <div className="text-xs text-gray-500">累计收益</div>
                   <div className={`text-lg font-bold ${detailStrategy.totalReturn >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {detailStrategy.totalReturn >= 0 ? '+' : ''}{detailStrategy.totalReturn}%
                   </div>
                 </div>
                 <div className="p-3 bg-white/[0.03] rounded-lg">
-                  <div className="text-xs text-gray-500">{t('夏普比率')}</div>
+                  <div className="text-xs text-gray-500">夏普比率</div>
                   <div className="text-lg font-bold text-white">{detailStrategy.sharpe}</div>
                 </div>
                 <div className="p-3 bg-white/[0.03] rounded-lg">
@@ -569,9 +572,9 @@ export default function StrategyMarketplace({
 
               {/* Meta */}
               <div className="flex flex-wrap gap-2 text-xs text-gray-500">
-                <span>{t('👥 {detailStrategy.subscribers.toLocaleString()} 订阅')}</span>
-                <span>{t('🔔 {detailStrategy.totalSignals} 信号')}</span>
-                <span>{t('📅 {detailStrategy.updatedAt} 更新')}</span>
+                <span>👥 {detailStrategy.subscribers.toLocaleString()} 订阅</span>
+                <span>🔔 {detailStrategy.totalSignals} 信号</span>
+                <span>📅 {detailStrategy.updatedAt} 更新</span>
                 <span>⭐ {detailStrategy.rating}({detailStrategy.ratingCount})</span>
               </div>
 
@@ -587,11 +590,11 @@ export default function StrategyMarketplace({
             <div className="p-5 border-t border-white/5 flex gap-3">
               <button onClick={() => handleFavorite(detailStrategy.id)}
                       className={`px-4 py-2.5 rounded-lg border text-sm transition-colors ${favorites.has(detailStrategy.id) ? 'border-red-400/30 text-red-400 bg-red-400/5' : 'border-white/10 text-gray-400 hover:text-white'}`}>
-                {favorites.has(detailStrategy.id) ? {t('❤️ 已收藏')} : {t('🤍 收藏')}}
+                {favorites.has(detailStrategy.id) ? '❤️ 已收藏' : '🤍 收藏'}
               </button>
               <button onClick={() => { setDetailStrategy(null); setPurchasing(detailStrategy); }}
                       className="flex-1 py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors">
-                {detailStrategy.price === 0 ? {t('免费获取')} : `购买 — ${detailStrategy.price} USDT`}
+                {detailStrategy.price === 0 ? '免费获取' : `购买 — ${detailStrategy.price} USDT`}
               </button>
             </div>
           </div>

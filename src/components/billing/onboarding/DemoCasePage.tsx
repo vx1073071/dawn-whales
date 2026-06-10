@@ -1,4 +1,4 @@
-/**
+﻿/**
  * DemoCasePage — ML-73-03 [P1]
  * R73: v1.8.0-beta — GTM: 3 trading case studies + before/after + profit curves
  *
@@ -52,8 +52,8 @@ export default function DemoCasePage() {
     <div className="h-full flex flex-col bg-[#0D0D14] text-white overflow-y-auto">
       {/* Hero */}
       <div className="p-8 text-center" style={{ background: 'linear-gradient(135deg,#0f172a,#1e3a5f)' }}>
-        <h1 className="text-2xl font-black mb-2">{t('真实案例 · 策略对比')}</h1>
-        <p className="text-sm text-gray-400">{t('Before DAWN WHALES vs After — 数据说话')}</p>
+        <h1 className="text-2xl font-black mb-2">真实案例 · 策略对比</h1>
+        <p className="text-sm text-gray-400">Before DAWN WHALES vs After — 数据说话</p>
       </div>
 
       {/* Cases */}
@@ -64,14 +64,14 @@ export default function DemoCasePage() {
             <div className="p-5 border-b border-white/5">
               <h3 className="text-lg font-bold">{c.title}</h3>
               <p className="text-xs text-gray-500">{c.subtitle} · {c.period}</p>
-              <p className="text-[10px] text-gray-600 mt-1">{t('策略: {c.strategy}')}</p>
+              <p className="text-[10px] text-gray-600 mt-1">策略: {c.strategy}</p>
             </div>
 
             {/* Before/After metrics */}
             <div className="p-5">
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="bg-red-500/[0.05] border border-red-500/10 rounded-xl p-4">
-                  <div className="text-[10px] text-red-400 mb-2 font-semibold">{t('🔴 优化前 Before')}</div>
+                  <div className="text-[10px] text-red-400 mb-2 font-semibold">🔴 优化前 Before</div>
                   <div className="space-y-1 text-xs">
                     <div className="flex justify-between"><span className="text-gray-500">{t("components.returnRate")}</span><span className="text-red-400">{c.before.return_}%</span></div>
                     <div className="flex justify-between"><span className="text-gray-500">{t("components.maxDrawdown")}</span><span className="text-red-400">{c.before.drawdown}%</span></div>
@@ -80,7 +80,7 @@ export default function DemoCasePage() {
                   </div>
                 </div>
                 <div className="bg-green-500/[0.05] border border-green-500/10 rounded-xl p-4">
-                  <div className="text-[10px] text-green-400 mb-2 font-semibold">{t('🟢 优化后 After')}</div>
+                  <div className="text-[10px] text-green-400 mb-2 font-semibold">🟢 优化后 After</div>
                   <div className="space-y-1 text-xs">
                     <div className="flex justify-between"><span className="text-gray-500">{t("components.returnRate")}</span><span className="text-green-400 font-bold">+{c.after.return_}%</span></div>
                     <div className="flex justify-between"><span className="text-gray-500">{t("components.maxDrawdown")}</span><span className="text-green-400">{c.after.drawdown}%</span></div>
@@ -92,7 +92,7 @@ export default function DemoCasePage() {
 
               {/* Insight */}
               <div className="bg-white/[0.02] rounded-lg p-3 mb-3">
-                <div className="text-[10px] text-[#D4A853] font-semibold mb-1">{t('💡 关键洞察')}</div>
+                <div className="text-[10px] text-[#D4A853] font-semibold mb-1">💡 关键洞察</div>
                 <p className="text-xs text-gray-400 leading-relaxed">{c.insight}</p>
               </div>
 
@@ -121,8 +121,8 @@ export default function DemoCasePage() {
 
       {/* CTA */}
       <div className="p-8 text-center" style={{ background: 'linear-gradient(135deg,#3b82f6,#2563eb)' }}>
-        <h2 className="text-xl font-black mb-2">{t('用数据说话')}</h2>
-        <p className="text-sm opacity-80 mb-4">{t('3个真实案例, 收益平均+33.9%, 回撤平均-55%')}</p>
+        <h2 className="text-xl font-black mb-2">用数据说话</h2>
+        <p className="text-sm opacity-80 mb-4">3个真实案例, 收益平均+33.9%, 回撤平均-55%</p>
         <button className="px-8 py-3 bg-white text-[#3b82f6] rounded-xl text-sm font-bold">
           🚀 开始免费试用 · Start Free Trial
         </button>

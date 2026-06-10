@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+﻿import React, { useState, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -375,7 +375,7 @@ const DataExportPage: React.FC = () => {
             {/* Target Selector */}
             <section className="bg-gray-800 rounded-xl border border-gray-700 p-5">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-semibold">{t('导出目标')}</h2>
+                <h2 className="text-base font-semibold">导出目标</h2>
                 <div className="flex gap-2">
                   <button
                     onClick={selectAllTargets}
@@ -459,7 +459,7 @@ const DataExportPage: React.FC = () => {
             {/* Filter Panel */}
             <section className="bg-gray-800 rounded-xl border border-gray-700 p-5">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-semibold">{t('筛选条件')}</h2>
+                <h2 className="text-base font-semibold">筛选条件</h2>
                 {hasActiveFilters && (
                   <button
                     onClick={resetFilters}
@@ -625,7 +625,7 @@ const DataExportPage: React.FC = () => {
 
             {/* Per-target export cards */}
             <section className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-              <h2 className="text-base font-semibold mb-4">{t('单项导出')}</h2>
+              <h2 className="text-base font-semibold mb-4">单项导出</h2>
               <div className="space-y-2">
                 {EXPORT_TARGETS.map((t) => {
                   const loadingKey = `${t.key}-${format}`;
@@ -698,11 +698,11 @@ const DataExportPage: React.FC = () => {
           <div className="space-y-6">
             {/* Results List */}
             <section className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-              <h2 className="text-base font-semibold mb-4">{t('导出记录')}</h2>
+              <h2 className="text-base font-semibold mb-4">导出记录</h2>
               {results.length === 0 ? (
                 <div className="text-center py-10 text-gray-500">
                   <div className="text-3xl mb-2">📭</div>
-                  <p className="text-sm">{t('暂无导出记录')}</p>
+                  <p className="text-sm">暂无导出记录</p>
                   <p className="text-xs text-gray-600 mt-1">
                     选择目标并点击导出后，结果将显示在此处
                   </p>
@@ -756,7 +756,7 @@ const DataExportPage: React.FC = () => {
                       {r.success && (
                         <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
                           {r.rowCount != null && (
-                            <span>{t('{r.rowCount.toLocaleString()} 行')}</span>
+                            <span>{r.rowCount.toLocaleString()} 行</span>
                           )}
                           {r.fileSizeBytes != null && (
                             <span>{formatBytes(r.fileSizeBytes)}</span>
@@ -781,7 +781,7 @@ const DataExportPage: React.FC = () => {
             {summaryReport && (
               <section className="bg-gray-800 rounded-xl border border-gray-700 p-5">
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-base font-semibold">{t('汇总报告')}</h2>
+                  <h2 className="text-base font-semibold">汇总报告</h2>
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(summaryReport);
