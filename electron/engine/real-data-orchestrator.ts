@@ -1,5 +1,5 @@
 // ── J-73-01 R73 V19: 4Agent Real Data Connector ─────────────────────────
-// Switches 4Agent orchestration from useMock=false to real data sources
+// Connects 4Agent orchestration to real data sources
 // Connects Yahoo Finance, Alpha Vantage, NewsAPI, Reddit/StockTwits + proprietary
 // v1.9.0: Live orchestrator replaces MOCK constants with real API responses
 

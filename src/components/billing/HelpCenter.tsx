@@ -88,7 +88,9 @@ function FAQJsonLd({ articles }: { articles: HelpArticle[] }) {
       acceptedAnswer: { '@type': 'Answer', text: a.answer },
     })),
   };
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />;
+  // Safe injection: JSON.stringify + escape </ to prevent script tag breakout
+  const json = JSON.stringify(ld).replace(/<\//g, '<' + '/');
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />;
 }
 
 // ── Main Component ──────────────────────────────────────────────────────

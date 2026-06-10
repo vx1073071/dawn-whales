@@ -93,11 +93,11 @@ export class ParameterOptimizationVisualizer {
    * Run parameter optimization
    */
   async optimize(): Promise<ParameterOptimizationVisualization> {
-    console.log(`[ParameterOptimization] Starting optimization for ${this.config.symbol}`);
+    log.info(`[ParameterOptimization] Starting optimization for ${this.config.symbol}`);
 
     // Generate all parameter combinations
     const combinations = this.generateCombinations();
-    console.log(`[ParameterOptimization] Generated ${combinations.length} parameter combinations`);
+    log.info(`[ParameterOptimization] Generated ${combinations.length} parameter combinations`);
 
     // Run backtests for all combinations
     const results = await this.runBacktests(combinations);

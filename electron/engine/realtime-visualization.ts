@@ -7,6 +7,7 @@
 import { EventEmitter } from 'events';
 import { getSlidingWindowAggregator } from './sliding-window-aggregator';
 import { getPerformanceMonitor } from './performance-monitor';
+import log from 'electron-log';
 
 export interface VisualizationDataPoint {
   timestamp: number;
@@ -64,7 +65,7 @@ export class RealtimeVisualizationService extends EventEmitter {
       });
     }
 
-    console.log('[RealtimeVisualization] Started with', this.config.symbols.length, 'symbols');
+    log.info('[RealtimeVisualization] Started with', this.config.symbols.length, 'symbols');
   }
 
   /**
@@ -79,7 +80,7 @@ export class RealtimeVisualizationService extends EventEmitter {
       this.updateTimer = null;
     }
 
-    console.log('[RealtimeVisualization] Stopped');
+    log.info('[RealtimeVisualization] Stopped');
   }
 
   /**

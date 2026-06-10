@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import log from 'electron-log';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -51,8 +52,8 @@ export class GlobalErrorBoundary extends React.Component<ErrorBoundaryProps, Err
     const errorCount = this.errorWindow.length;
     this.setState({ errorCount, lastErrorTime: now });
 
-    console.error('[ErrorBoundary] Caught error:', error.message);
-    console.error('[ErrorBoundary] Component stack:', errorInfo.componentStack);
+    log.error('[ErrorBoundary] Caught error:', error.message);
+    log.error('[ErrorBoundary] Component stack:', errorInfo.componentStack);
 
     this.props.onError?.(error, errorInfo);
 
@@ -150,7 +151,7 @@ export function wrapEngineCall<T extends (...args: any[]) => any>(
     try {
       return fn(...args);
     } catch (err) {
-      console.error(`[${engineName}] Engine call failed:`, (err as Error).message);
+      log.error(`[${engineName}] Engine call failed:`, (err as Error).message);
       // Allow crash-protection to handle
       throw err;
     }

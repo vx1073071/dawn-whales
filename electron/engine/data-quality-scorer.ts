@@ -1364,7 +1364,7 @@ interface GradeHistoryEntry {
  *   dataType: 'ohlcv',
  *   expectedInterval: '1m',
  * });
- * console.log(report.overallScore, report.grade);
+ * log.info(report.overallScore, report.grade);
  * ```
  */
 export class DataQualityScorer {

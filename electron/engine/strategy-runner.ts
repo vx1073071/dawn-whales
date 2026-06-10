@@ -190,7 +190,7 @@ interface RunningState {
  * ```ts
  * const runner = new StrategyRunner(strategyEngine, tradeExecutor, uam, quoteFetcher);
  * runner.start('strat_abc123', 'live-run');
- * runner.on('order-filled', (rec) => console.log('Filled:', rec));
+ * runner.on('order-filled', (rec) => log.info('Filled:', rec));
  * // later...
  * runner.stop('strat_abc123');
  * ```

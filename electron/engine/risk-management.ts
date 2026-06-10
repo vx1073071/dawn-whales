@@ -12,6 +12,7 @@
  */
 
 import { EventEmitter } from 'events';
+import log from 'electron-log';
 
 export interface RiskMetrics {
   var95: number;           // Value at Risk (95%)
@@ -135,7 +136,7 @@ export class RiskManagementDashboard extends EventEmitter {
       this.checkAllRisks();
     }, this.config.checkInterval);
 
-    console.log(`[RiskManagement] Started with interval ${this.config.checkInterval}ms`);
+    log.info(`[RiskManagement] Started with interval ${this.config.checkInterval}ms`);
   }
 
   /**
@@ -145,7 +146,7 @@ export class RiskManagementDashboard extends EventEmitter {
     if (this.checkTimer) {
       clearInterval(this.checkTimer);
       this.checkTimer = undefined;
-      console.log('[RiskManagement] Stopped');
+      log.info('[RiskManagement] Stopped');
     }
   }
 
@@ -399,7 +400,7 @@ export class RiskManagementDashboard extends EventEmitter {
   private checkAllRisks(): void {
     // This method should be called periodically to check for risk limit breaches
     // Implementation would integrate with portfolio data
-    console.log('[RiskManagement] Checking all risks...');
+    log.info('[RiskManagement] Checking all risks...');
   }
 
   /**

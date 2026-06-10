@@ -65,19 +65,14 @@ export interface IAnalyst {
   analyze(symbol: string, price?: number): Promise<FundamentalsAnalysis | null>;
 }
 
-// ── REAL DATA SOURCE (R76: useMock=false) ─────────────────────────────────
-// Data fetched via YahooFinanceAdapter from data-source-adapters.ts
-
 // ── Fundamentals Agent ─────────────────────────────────────────────────────
 
 export class FundamentalsAgent extends EventEmitter implements IAnalyst {
   public readonly agentType = 'fundamentals';
-  private useMock: boolean;
   private cache: Map<string, FundamentalsAnalysis> = new Map();
 
-  constructor(options?: { useMock?: boolean }) {
+  constructor() {
     super();
-    this.useMock = options?.useMock ?? false;
     log.info('[FundamentalsAgent] Initialized');
   }
 
@@ -94,10 +89,7 @@ export class FundamentalsAgent extends EventEmitter implements IAnalyst {
 
     try {
       // 1. Fetch fundamentals data
-      let data = this.getFundamentalsData(symbol);
-      if (!data && !this.useMock) {
-        data = await this.getFundamentalsDataReal(symbol);
-      }
+      const data = await this.getFundamentalsDataReal(symbol);
       if (!data) return null;
 
       // 2. Score based on known metrics
@@ -183,22 +175,6 @@ export class FundamentalsAgent extends EventEmitter implements IAnalyst {
       return null;
     }
   }
-
-  private getFundamentalsData(symbol: string): FundamentalsData | null {
-    if (this.useMock) {
-      // Test-only path
-      return {
-        symbol: symbol.substring(0, 6),
-        pe: 20, pb: 3, roe: 15, eps: 5, bvps: 10,
-        revenueYoY: 10, profitYoY: 10, debtToEquity: 1,
-        currentRatio: 1.5, dividendYield: 2, marketCap: 1000, freeCashFlow: 100,
-      };
-    }
-    // R76: useMock=false — fetch from real adapter (async called from analyze())
-    return null; // Signal to caller to use getFundamentalsDataReal
-  }
-
-  // ── Scoring ───────────────────────────────────────────────────────────
 
   private evaluateScores(data: FundamentalsData) {
     return {
@@ -416,8 +392,8 @@ Provide a 3-sentence Chinese analysis.`;
 
 let _instance: FundamentalsAgent | null = null;
 
-export function getFundamentalsAgent(options?: { useMock?: boolean }): FundamentalsAgent {
-  if (!_instance) _instance = new FundamentalsAgent(options);
+export function getFundamentalsAgent(): FundamentalsAgent {
+  if (!_instance) _instance = new FundamentalsAgent();
   return _instance;
 }
 

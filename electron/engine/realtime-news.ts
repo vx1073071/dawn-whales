@@ -187,7 +187,7 @@ export class RealtimeNewsEngine implements RealtimeNewsService {
       if (source.name === 'newsapi') await this.fetchNewsAPI(source);
       else if (source.name === 'eastmoney') await this.fetchEastmoney(source);
     } catch (err) {
-      console.warn(`[RealtimeNews] Fetch failed for ${source.name}:`, (err as Error).message);
+      log.warn(`[RealtimeNews] Fetch failed for ${source.name}:`, (err as Error).message);
     }
   }
 

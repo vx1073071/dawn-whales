@@ -2,6 +2,7 @@
 // Comprehensive error handling, boundary condition validation, and error reporting
 
 import { EventEmitter } from 'events';
+import log from 'electron-log';
 
 export type ErrorSeverity = 'low' | 'medium' | 'high' | 'critical';
 export type ErrorCategory = 'validation' | 'boundary' | 'system' | 'network' | 'timeout';
@@ -96,7 +97,7 @@ export class ErrorHandler extends EventEmitter {
    */
   private logError(error: ErrorInfo): void {
     const logMessage = `[ErrorHandler] [${error.category}] ${error.message}`;
-    console.log(logMessage);
+    log.info(logMessage);
   }
 
   /**

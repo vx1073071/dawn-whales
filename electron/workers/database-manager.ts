@@ -2,13 +2,14 @@
 // T105: Strategy/Config/Order persistent storage with better-sqlite3
 
 import path from 'path';
+import log from 'electron-log';
 
 // R20: lazy-load better-sqlite3 with fallback for ABI mismatch / missing build tools
 let Database: any;
 try {
   Database = require('better-sqlite3');
 } catch (err: any) {
-  console.warn('[DB] better-sqlite3 not available (ABI mismatch or missing build tools). Using in-memory fallback.');
+  log.warn('[DB] better-sqlite3 not available (ABI mismatch or missing build tools). Using in-memory fallback.');
   Database = null;
 }
 
@@ -41,7 +42,7 @@ try {
   _log = null;
 }
 const app = _app;
-const log = _log || { info: (...args: any[]) => console.log('[DB]', ...args), error: (...args: any[]) => console.error('[DB]', ...args) };
+const log = _log || { info: (...args: any[]) => log.info('[DB]', ...args), error: (...args: any[]) => log.error('[DB]', ...args) };
 
 // ── Schema ─────────────────────────────────────────────────────────────────
 

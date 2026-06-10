@@ -39,7 +39,7 @@ export class EventBus {
       if (sub.pattern.test(event)) {
         promises.push(
           Promise.resolve(sub.handler(...args)).catch(e =>
-            console.error(`EventBus handler error [${event}]:`, e)
+            log.error(`EventBus handler error [${event}]:`, e)
           )
         );
       }

@@ -5,6 +5,7 @@
 import type { Plugin, ResolvedConfig } from 'vite';
 import fs from 'fs';
 import path from 'path';
+import log from 'electron-log';
 
 interface IpcHandler {
   channel: string;
@@ -109,9 +110,9 @@ export function electronIPCPlugin(options?: { outputDir?: string }): Plugin {
       fs.writeFileSync(path.join(genDir, 'electron-api.d.ts'), types);
       fs.writeFileSync(path.join(genDir, 'bridge-api.gen.ts'), bridge);
       
-      console.log(`[vite-plugin-electron-ipc] Generated ${handlers.length} IPC handlers`);
-      console.log(`  -> ${path.join(outDir, 'electron-api.d.ts')}`);
-      console.log(`  -> ${path.join(outDir, 'bridge-api.gen.ts')}`);
+      log.info(`[vite-plugin-electron-ipc] Generated ${handlers.length} IPC handlers`);
+      log.info(`  -> ${path.join(outDir, 'electron-api.d.ts')}`);
+      log.info(`  -> ${path.join(outDir, 'bridge-api.gen.ts')}`);
     },
   };
 }

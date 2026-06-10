@@ -3,6 +3,7 @@
 // v1.8.0 GA: production-grade resilience
 
 import { EventEmitter } from "events";
+import log from 'electron-log';
 
 // ── Types ─────────────────────────────────────────────────────────────────
 
@@ -96,14 +97,14 @@ export class ErrorBoundaryEngine extends EventEmitter {
 
     // Log
     if (!this.config.silent) {
-      console.error(`[CrashProtection] Error captured:`, error.message);
-      if (componentStack) console.error(`[CrashProtection] Component:`, componentStack);
+      log.error(`[CrashProtection] Error captured:`, error.message);
+      if (componentStack) log.error(`[CrashProtection] Component:`, componentStack);
     }
 
     // Check crash storm
     if (this.crashHistory.length >= this.config.maxCrashCount) {
       this.emit("crash-storm", { count: this.crashHistory.length, windowMs: this.config.windowMs });
-      console.error(`[CrashProtection] Crash storm detected: ${this.crashHistory.length} crashes in ${this.config.windowMs}ms`);
+      log.error(`[CrashProtection] Crash storm detected: ${this.crashHistory.length} crashes in ${this.config.windowMs}ms`);
     }
 
     // Send to crash reporting if configured
@@ -224,7 +225,7 @@ export class ErrorBoundaryEngine extends EventEmitter {
     if (result.success) {
       return { data: result.data, error: null, recovered: false };
     }
-    console.error(`[SafeEngine] ${engineName} failed:`, result.error);
+    log.error(`[SafeEngine] ${engineName} failed:`, result.error);
     return { data: fallback, error: result.error, recovered: true };
   }
 

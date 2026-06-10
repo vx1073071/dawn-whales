@@ -17,6 +17,7 @@
  */
 
 import { EventEmitter } from 'events';
+import log from 'electron-log';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -406,4 +407,4 @@ export function getRateLimiter(config?: Partial<RateLimitConfig>): RateLimiterMa
 export default RateLimiterManager;
 
 // Stub
-export function getRateLimiterManager(...args: any[]): any { console.warn("[getRateLimiterManager] Stub"); return undefined; }
+export function getRateLimiterManager(...args: any[]): any { log.warn("[getRateLimiterManager] Stub"); return undefined; }

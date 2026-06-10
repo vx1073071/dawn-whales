@@ -2,6 +2,7 @@
 // Extends existing worker-pool.ts with benchmark + health metrics
 
 import { WorkerPool, getWorkerPool } from './worker-pool';
+import log from 'electron-log';
 
 export interface PoolBenchmark {
   name: string;
@@ -125,11 +126,11 @@ export class PoolHealthMonitor {
 
       // Log health
       if (stats.busyWorkers / Math.max(stats.totalWorkers, 1) > 0.9) {
-        console.warn('[PoolHealth] High utilization:', stats);
+        log.warn('[PoolHealth] High utilization:', stats);
       }
 
       if (stats.queueLength > 100) {
-        console.warn('[PoolHealth] Large queue:', stats.queueLength);
+        log.warn('[PoolHealth] Large queue:', stats.queueLength);
 
       // Auto-scale suggestion
       if (stats.queueLength > 50 && stats.totalWorkers < 8) {

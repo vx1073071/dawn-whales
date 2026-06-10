@@ -2,6 +2,7 @@
 // T50: Performance benchmark for multithreaded computation
 
 import { WorkerPool } from './worker-pool';
+import log from 'electron-log';
 
 async function bench(label: string, fn: () => Promise<any>, iterations = 5) {
   const times: number[] = [];
@@ -13,12 +14,12 @@ async function bench(label: string, fn: () => Promise<any>, iterations = 5) {
   const avg = times.reduce((a, b) => a + b, 0) / times.length;
   const min = Math.min(...times);
   const max = Math.max(...times);
-  console.log(`${label}: avg=${avg.toFixed(1)}ms min=${min.toFixed(1)}ms max=${max.toFixed(1)}ms (${iterations} runs)`);
+  log.info(`${label}: avg=${avg.toFixed(1)}ms min=${min.toFixed(1)}ms max=${max.toFixed(1)}ms (${iterations} runs)`);
   return { avg, min, max, times };
 }
 
 async function main() {
-  console.log('=== WorkerPool Benchmark ===\n');
+  log.info('=== WorkerPool Benchmark ===\n');
   const pool = new WorkerPool(4);
   
   // Benchmark 1: Fibonacci CPU load
@@ -38,7 +39,7 @@ async function main() {
   });
 
   // Benchmark 3: Serial vs Parallel comparison
-  console.log('\n--- Serial vs Parallel ---');
+  log.info('\n--- Serial vs Parallel ---');
   const fib = (n: number): number => n <= 1 ? n : fib(n-1) + fib(n-2);
   await bench('fib(40) x 4 SERIAL', async () => {
     for (let i = 0; i < 4; i++) fib(40);
@@ -51,8 +52,8 @@ async function main() {
     await Promise.all(tasks);
   });
 
-  console.log(`\nPool stats: ${JSON.stringify(pool.stats)}`);
+  log.info(`\nPool stats: ${JSON.stringify(pool.stats)}`);
   await pool.terminate();
 }
 
-main().catch(console.error);
+main().catch((err) => { log.error('Benchmark failed:', err); process.exit(1); });

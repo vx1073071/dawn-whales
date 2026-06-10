@@ -12,6 +12,7 @@
  */
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import DOMPurify from 'dompurify';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '@/stores/appStore';
 
@@ -419,7 +420,7 @@ const AIAssistantPanel: React.FC = () => {
                   return (
                     <span
                       key={i}
-                      dangerouslySetInnerHTML={{ __html: bolded }}
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(bolded, { ALLOWED_TAGS: ['strong'], ALLOWED_ATTR: ['class'] }) }}
                       className={line.startsWith('•') || line.startsWith('-') ? 'block ml-2' : 'block'}
                     />
                   );

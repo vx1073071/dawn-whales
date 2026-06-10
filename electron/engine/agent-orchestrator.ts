@@ -128,8 +128,7 @@ export class AgentOrchestrator extends EventEmitter {
   private requestLog: Array<{ timestamp: string; method: string; url: string; status: number; durationMs: number }> = [];
   private idCounter = 1;
 
-  // Mock HTTP client (in production, this would be fetch/axios)
-  private mockResponses: Map<string, { status: number; data: unknown; delayMs: number }> = new Map();
+  // Mock HTTP client (removed — R82 cleanup)
   private mockHealthy: boolean = true;
 
   constructor(config?: Partial<OrchestratorConfig>) {
@@ -420,16 +419,6 @@ export class AgentOrchestrator extends EventEmitter {
     const url = `${this.config.baseUrl}${path}`;
     const startTime = Date.now();
 
-    // Check mock first (for testing)
-    const mockKey = `${method}:${path}`;
-    const mock = this.mockResponses.get(mockKey);
-    if (mock) {
-      if (mock.delayMs > 0) await new Promise(r => setTimeout(r, mock.delayMs));
-      this.logRequest(method, path, mock.status, Date.now() - startTime);
-      if (mock.status >= 400) throw new Error(`HTTP ${mock.status}`);
-      return { status: mock.status, data: mock.data };
-    }
-
     // In production: use fetch/axios
     // For now, simulate healthy service
     if (!this.mockHealthy) {
@@ -465,20 +454,6 @@ export class AgentOrchestrator extends EventEmitter {
     throw lastError;
   }
 
-  // ── Mock Control (for testing) ────────────────────────────────────────
-
-  setMockResponse(method: string, path: string, status: number, data: unknown, delayMs: number = 0): void {
-    this.mockResponses.set(`${method}:${path}`, { status, data, delayMs });
-  }
-
-  clearMockResponses(): void {
-    this.mockResponses.clear();
-  }
-
-  setMockHealthy(healthy: boolean): void {
-    this.mockHealthy = healthy;
-  }
-
   // ── Request Log ───────────────────────────────────────────────────────
 
   private logRequest(method: string, path: string, status: number, durationMs: number): void {
@@ -504,7 +479,6 @@ export class AgentOrchestrator extends EventEmitter {
     this.healthCache = null;
     this.wsMock = { connected: false, messages: [] };
     this.requestLog = [];
-    this.mockResponses.clear();
     this.mockHealthy = true;
     this.idCounter = 1;
     log.info('[AgentOrchestrator] Reset');

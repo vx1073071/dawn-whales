@@ -12,6 +12,7 @@
  */
 
 import { useState, useCallback, useMemo } from 'react';
+import DOMPurify from 'dompurify';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -195,7 +196,7 @@ export default function PineScriptEditor({
           <div style={{ background: '#0E0E18', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 16, padding: 24, maxWidth: 500, width: '100%' }}>
             <h3 style={{ fontSize: 14, fontWeight: 700, color: '#D4A853', marginBottom: 12 }}>▶ 公式预览</h3>
             <pre style={{ fontSize: 11, color: '#94A3B8', whiteSpace: 'pre-wrap', background: 'rgba(0,0,0,0.3)', padding: 12, borderRadius: 8, maxHeight: 300, overflow: 'auto' }}
-              dangerouslySetInnerHTML={{ __html: highlight(code) }} />
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(highlight(code)) }} />
             <p style={{ fontSize: 10, color: '#22C55E', marginTop: 12 }}>✅ 语法检查通过 · 指标名称: {code.match(/indicator\("([^"]+)"/)?.[1] ?? '未命名'}</p>
             <button onClick={() => setShowPreview(false)}
               style={{ marginTop: 12, width: '100%', padding: '8px 0', background: 'rgba(255,255,255,0.06)', color: '#94A3B8', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 12, cursor: 'pointer' }}>

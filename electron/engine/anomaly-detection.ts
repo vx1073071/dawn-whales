@@ -7,6 +7,7 @@
 
 import { EventEmitter } from 'events';
 import { AnomalyDetector } from './anomaly-detector';
+import log from 'electron-log';
 
 export interface AnomalyAlert {
   id: string;
@@ -83,7 +84,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
       this.checkAllAnomalies();
     }, this.config.checkInterval);
 
-    console.log(`[AnomalyDetection] Started with interval ${this.config.checkInterval}ms`);
+    log.info(`[AnomalyDetection] Started with interval ${this.config.checkInterval}ms`);
   }
 
   /**
@@ -93,7 +94,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
     if (this.checkTimer) {
       clearInterval(this.checkTimer);
       this.checkTimer = undefined;
-      console.log('[AnomalyDetection] Stopped');
+      log.info('[AnomalyDetection] Stopped');
     }
   }
 
@@ -144,7 +145,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
   private checkAllAnomalies(): void {
     // 这个方法应该从实时数据源获取数据
     // 这里只是占位符，实际实现需要从数据管道获取数据
-    console.log('[AnomalyDetection] Checking all anomalies...');
+    log.info('[AnomalyDetection] Checking all anomalies...');
   }
 
   /**

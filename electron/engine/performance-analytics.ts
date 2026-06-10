@@ -12,6 +12,7 @@
  */
 
 import { EventEmitter } from 'events';
+import log from 'electron-log';
 
 export interface PerformanceMetrics {
   totalReturn: number;         // Total return percentage
@@ -117,7 +118,7 @@ export class PerformanceAnalyticsDashboard extends EventEmitter {
       this.updateAnalytics();
     }, this.config.checkInterval);
 
-    console.log(`[PerformanceAnalytics] Started with interval ${this.config.checkInterval}ms`);
+    log.info(`[PerformanceAnalytics] Started with interval ${this.config.checkInterval}ms`);
   }
 
   /**
@@ -127,7 +128,7 @@ export class PerformanceAnalyticsDashboard extends EventEmitter {
     if (this.checkTimer) {
       clearInterval(this.checkTimer);
       this.checkTimer = undefined;
-      console.log('[PerformanceAnalytics] Stopped');
+      log.info('[PerformanceAnalytics] Stopped');
     }
   }
 
@@ -508,7 +509,7 @@ export class PerformanceAnalyticsDashboard extends EventEmitter {
   private updateAnalytics(): void {
     // This method should be called periodically to update analytics
     // Implementation would integrate with portfolio data
-    console.log('[PerformanceAnalytics] Updating analytics...');
+    log.info('[PerformanceAnalytics] Updating analytics...');
   }
 
   /**

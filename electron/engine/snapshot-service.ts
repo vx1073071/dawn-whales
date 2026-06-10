@@ -3,6 +3,8 @@
 // Provides timeline view of market conditions and strategy performance
 
 import type { 
+import log from 'electron-log';
+
   Strategy, 
   BacktestResult, 
   RiskMetrics 
@@ -214,7 +216,7 @@ export class DataSnapshotService {
 
       return imported;
     } catch (error) {
-      console.error('Failed to import snapshots:', error);
+      log.error('Failed to import snapshots:', error);
       return 0;
     }
   }

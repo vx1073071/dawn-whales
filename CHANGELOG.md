@@ -1,5 +1,101 @@
 ﻿# DAWN WHALES Changelog
 
+## [1.9.0 GA] - 2026-06-09
+
+### R77-R81 5轮收官 — v1.9.0 GA 最终发布
+
+**Tests**: 6500+ / 0 fail / 0 flaky | **Engines**: 320+ | **Locales**: 9 | **Docs**: 22+
+
+**5轮路线**: R77(安全清理)→R78(引擎补全)→R79(测试打磨)→R80(增长上线)→R81(最终收尾)
+
+- R77: API Key 泄露修复, child_process 沙箱, CSRF/XSS/CSP, 硬编码端口→环境变量, zh-HK 5 section 补全
+- R78: signal-backtesting 27L→260L, realtime-news 40L→300L, P2P 1→4 拆分, A股代码清除, 性能基准
+- R79: i18n 9语言对齐, coverage 60%, ESLint/Prettier, a11y WCAG AA, 私行UI统一, excluded 28→8
+- R80: 用户漏斗+7日留存+邀请裂变, 创作者6级体系(青铜→王者), 成就徽章, 邮件模板, PWA+Docker
+- R81: npm audit 0, 全量6500+ 5轮全绿, 全链路E2E(注册→交易→钱包), version bump 1.9.0, GA tag
+
+**发布**: v1.9.0 GA GitHub Release — 31轮/5虾/1产品
+
+## [1.8.0 GA] - 2026-06-09
+
+### R71-R76 — 社区+7市场+AI画线形态+私行UI+新手引导
+
+- R71-R73: 7市场全覆盖(HK/US/SG/JP/AU/CA/MY), 30+因子×市场兼容矩阵, 20+模板, 25+指标+PineScript
+- AI自动画线(趋势/SR/通道/斐波那契/江恩), AI形态识别22种+置信度
+- 创作者社区(评论/点赞/关注/Feed/通知), 分析(IC/IR/雷达/有效前沿), 监控(SLO/告警)
+- 私行级UI(深色#0A0A10+金色#D4A853/浅色双主题), 五语言(简/繁/EN/JP/KO), K线TradingView级
+- 新手引导25项(5步引导/指标说明/参数预设/回测故事/4AI工具), 4Agent真实数据(useMock=false)
+- R74-R76: flaky清零, 三平台打包, ErrorBoundary全局覆盖, 社区内容安全, 支付+崩溃修复
+
+## [1.7.0 GA] - 2026-06-09
+
+### R68-R70 — IBKR+i18n+访客+性能+部署上线
+
+- R68: IBKR broker支持+碎股交易, i18n(zh/en/ja/ko), 回测速度+76%
+- R69: flaky zero, 访客模式, 性能基准报告
+- R70: 服务器部署, 三平台打包(Win/Mac/Linux), 落地页部署, 全链路验证, 最终创作者指南+部署手册
+- 基线: 5550+ tests / 0 fail
+
+## [1.6.0 GA] - 2026-06-09
+
+### R64-R67 — /admin Web后台+落地页+免费下载+创作者增长
+
+- R64: /admin Web后台(2FA登录), 10数据源融合, MOCK全部清除
+- R65: 落地页dawnwhales.com, 免费下载+USDT付费模型(无激活码/无试用/无许可证锁)
+- R66: 创作者增长飞轮: 6级(青铜→王者)+5徽章+4维排行榜+信号回测
+- R67: GA发布准备: flaky修复+三平台打包+部署, 完整创作者指南
+- 基线: 5428 tests / 0 fail
+
+## [1.5.0] - 2026-06-09
+
+### R62-R63 — P2P+安全+服务器化(防破解)
+
+- R62(v1.5.0-alpha): P2P 0.3%双向+14天冻结+4种申诉+黑名单+2FA(TOTP)
+- R63(v1.5.0-rc): 服务器化: AI/计费/钱包/license→/api, 桌面端=远程控制, DeepSeek key仅服务器
+- 基线: 5138 tests / 0 fail
+
+## [1.4.0-beta] - 2026-06-09
+
+### R61 — 多市场扩展
+
+- A/US stocks + cloud OpenD + fractional shares, USDT only(无Stripe)
+- 多市场指南 + v1.4.0-beta Release Notes
+- 基线: ~4946 tests / 0 fail
+
+## [1.3.0 GA] - 2026-06-09
+
+### R52-R60 — 港股GA + 市场扩展
+
+- R52-R56: 策略优化器, 多周期引擎, 组合风险, 实盘交易桥接, Walk-Forward, 策略排名
+- R57-R60: 闭环执行器, 再平衡引擎, 自适应参数引擎, 回测回放, 奖励引擎, 策略导入导出
+- v1.3.0 GA Release — 多源聚合, 策略市场, 多账户, 性能监控, 实时数据流
+
+## [1.2.0] - 2026-06-08
+
+### R49-R51 — 策略排名+风险+性能监控
+
+- R49: StrategyRankingEngine(多维度评分), NotificationEngine增强
+- R50: 自适应参数引擎(在线学习), 奖励引擎(PnL+Sharpe), 回测回放
+- R51: 策略导入导出, 多源聚合修复, Walk-Forward引擎
+
+## [1.1.0] - 2026-06-08
+
+### R47-R48 — 闭环执行+风险+再平衡
+
+- R47: ClosedLoopExecutor(paper→live桥接), RiskEngine v2(VaR/CVaR/stress test)
+- R48: RebalanceEngine(组合再平衡), 实盘交易桥接, PerformanceDashboard
+- TradingCalendar(节假日+交易日), 多账户适配器
+
+## [1.0.0 GA] - 2026-06-08
+
+### R47 — v1.0.0 GA 正式发布
+
+- **v1.0.0 GA Release**: 首个正式版, 5虾协作R37-R46合入
+- Futu OpenD 完整支持, IB/Moomoo适配器
+- StrategyEngine(实时信号/止盈止损), NLParser(5模式), RiskEngine(7检查)
+- 策略市场(发布/订阅/搜索/评分), PWA部署, 移动端导航
+- 测试: 3054+ / 0 fail
+
 ## [0.12.0] - 2026-06-07
 
 ### Sprint 2 Phase 6.3 Complete (R46) — Marketplace+性能+技术债务

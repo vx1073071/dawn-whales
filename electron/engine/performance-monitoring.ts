@@ -13,6 +13,7 @@
 import { EventEmitter } from 'events';
 import * as os from 'os';
 import * as process from 'process';
+import log from 'electron-log';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -134,7 +135,7 @@ export class PerformanceMonitoringDashboard extends EventEmitter {
       this.collectMetrics();
     }, this.config.interval);
 
-    console.log(`[PerformanceMonitoring] Started with interval ${this.config.interval}ms`);
+    log.info(`[PerformanceMonitoring] Started with interval ${this.config.interval}ms`);
   }
 
   /**
@@ -144,7 +145,7 @@ export class PerformanceMonitoringDashboard extends EventEmitter {
     if (this.collectionTimer) {
       clearInterval(this.collectionTimer);
       this.collectionTimer = undefined;
-      console.log('[PerformanceMonitoring] Stopped');
+      log.info('[PerformanceMonitoring] Stopped');
     }
   }
 

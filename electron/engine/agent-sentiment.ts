@@ -61,18 +61,14 @@ export interface SentimentAnalysis {
   completedAt: string;
 }
 
-// ── REAL DATA SOURCE (R76: useMock=false) ─────────────────────────────────
-
 // ── Sentiment Agent ────────────────────────────────────────────────────────
 
 export class SentimentAgent extends EventEmitter {
   public readonly agentType = 'sentiment';
   private cache: Map<string, SentimentAnalysis> = new Map();
-  private useMock: boolean;
 
-  constructor(options?: { useMock?: boolean }) {
+  constructor() {
     super();
-    this.useMock = options?.useMock ?? false;
     log.info('[SentimentAgent] Initialized');
   }
 
@@ -84,10 +80,7 @@ export class SentimentAgent extends EventEmitter {
     }
 
     try {
-      let data = this.getSentimentData(symbol);
-    if (!data && !this.useMock) {
-      data = await this.getSentimentDataReal(symbol);
-    }
+      const data = await this.getSentimentDataReal(symbol);
       if (!data) return null;
 
       const scores = {
@@ -157,19 +150,6 @@ export class SentimentAgent extends EventEmitter {
         sentimentTrend: d.sentiment === "bullish" ? "improving" : d.sentiment === "bearish" ? "deteriorating" : "stable",
       };
     } catch { return null; }
-  }
-
-  private getSentimentData(symbol: string): SentimentData | null {
-    if (!this.useMock) return null; // use async path
-    return {
-      symbol: symbol.substring(0, 6),
-      socialScore: 50, socialVolume: 50000, socialVolumeChange: 0,
-      newsPositive: 40, newsNeutral: 40, newsNegative: 20,
-      newsCount: 50, fearGreedIndex: 50,
-      analystBuy: 0, analystHold: 0, analystSell: 0,
-      analystTargetPrice: 0, insiderNetBuying: 0,
-      redditScore: 50, sentimentTrend: "stable",
-    };
   }
 
   // ── Scoring ───────────────────────────────────────────────────────────
@@ -304,8 +284,8 @@ export class SentimentAgent extends EventEmitter {
 
 let _instance: SentimentAgent | null = null;
 
-export function getSentimentAgent(options?: { useMock?: boolean }): SentimentAgent {
-  if (!_instance) _instance = new SentimentAgent(options);
+export function getSentimentAgent(): SentimentAgent {
+  if (!_instance) _instance = new SentimentAgent();
   return _instance;
 }
 

@@ -73,18 +73,14 @@ export interface MacroAnalysis {
   completedAt: string;
 }
 
-// ── REAL DATA SOURCE (R76: useMock=false) ─────────────────────────────────
-
 // ── Macro Agent ────────────────────────────────────────────────────────────
 
 export class MacroAgent extends EventEmitter {
   public readonly agentType = 'macro';
   private cache: Map<string, MacroAnalysis> = new Map();
-  private useMock: boolean;
 
-  constructor(options?: { useMock?: boolean }) {
+  constructor() {
     super();
-    this.useMock = options?.useMock ?? false;
     log.info('[MacroAgent] Initialized');
   }
 
@@ -97,10 +93,7 @@ export class MacroAgent extends EventEmitter {
     }
 
     try {
-      let data = this.getMacroData(country);
-    if (!data && !this.useMock) {
-      data = await this.getMacroDataReal(country);
-    }
+      const data = await this.getMacroDataReal(country);
       if (!data) return null;
 
       const scores = {
@@ -165,17 +158,6 @@ export class MacroAgent extends EventEmitter {
         marketBreadth: 55, vix: 18, geopoliticalRisk: "medium", macroCycle: "peak",
       };
     } catch { return null; }
-  }
-
-  private getMacroData(country: string): MacroData | null {
-    if (!this.useMock) return null; // use async path
-    return {
-      country: country.substring(0, 2),
-      gdpYoY: 3, cpi: 3, pmi: 50, unemployment: 4, interestRate: 5,
-      tenYearYield: 4, yieldCurveSlope: 0, usdIndex: 104, cnyPerUSD: 7.2,
-      currencyTrend: "stable", sectorRotation: "Mixed",
-      marketBreadth: 55, vix: 18, geopoliticalRisk: "medium", macroCycle: "peak",
-    };
   }
 
   // ── Scoring ───────────────────────────────────────────────────────────
@@ -328,8 +310,8 @@ export class MacroAgent extends EventEmitter {
 
 let _instance: MacroAgent | null = null;
 
-export function getMacroAgent(options?: { useMock?: boolean }): MacroAgent {
-  if (!_instance) _instance = new MacroAgent(options);
+export function getMacroAgent(): MacroAgent {
+  if (!_instance) _instance = new MacroAgent();
   return _instance;
 }
 

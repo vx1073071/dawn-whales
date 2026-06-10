@@ -35,7 +35,7 @@ class ErrorReporter {
     for (const h of this.handlers) h(report);
 
     if (severity === 'error') {
-      console.error('[ErrorReporter]', report);
+      log.error('[ErrorReporter]', report);
     }
   }
 

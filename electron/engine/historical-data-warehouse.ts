@@ -6,6 +6,7 @@ import { createGzip, createGunzip } from 'zlib';
 import { createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, statSync } from 'fs';
 import { pipeline } from 'stream/promises';
 import { join } from 'path';
+import log from 'electron-log';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -96,7 +97,7 @@ export class HistoricalDataWarehouse {
         CREATE INDEX IF NOT EXISTS idx_historical_composite ON historical_data(symbol, timestamp);
       `);
     } catch (err) {
-      console.error('[HistoricalDataWarehouse] Failed to init database:', err);
+      log.error('[HistoricalDataWarehouse] Failed to init database:', err);
     }
   }
 
@@ -233,7 +234,7 @@ export class HistoricalDataWarehouse {
         Date.now()
       );
     } catch (err) {
-      console.error('[HistoricalDataWarehouse] Failed to save to warm DB:', err);
+      log.error('[HistoricalDataWarehouse] Failed to save to warm DB:', err);
     }
   }
 
@@ -268,7 +269,7 @@ export class HistoricalDataWarehouse {
 
       tx(points);
     } catch (err) {
-      console.error('[HistoricalDataWarehouse] Failed to save batch to warm DB:', err);
+      log.error('[HistoricalDataWarehouse] Failed to save batch to warm DB:', err);
     }
   }
 
@@ -316,7 +317,7 @@ export class HistoricalDataWarehouse {
         turnover: row.turnover,
       }));
     } catch (err) {
-      console.error('[HistoricalDataWarehouse] Failed to query warm DB:', err);
+      log.error('[HistoricalDataWarehouse] Failed to query warm DB:', err);
       return [];
     }
   }
@@ -408,7 +409,7 @@ export class HistoricalDataWarehouse {
         const oldestResult = oldestStmt.get() as any;
         oldestWarmData = oldestResult.oldest;
       } catch (err) {
-        console.error('[HistoricalDataWarehouse] Failed to get stats:', err);
+        log.error('[HistoricalDataWarehouse] Failed to get stats:', err);
       }
     }
 
@@ -433,9 +434,9 @@ export class HistoricalDataWarehouse {
       try {
         const stmt = this.warmDB.prepare('DELETE FROM historical_data WHERE timestamp < ?');
         const result = stmt.run(cutoff);
-        console.log(`[HistoricalDataWarehouse] Cleaned ${result.changes} old records from warm DB`);
+        log.info(`[HistoricalDataWarehouse] Cleaned ${result.changes} old records from warm DB`);
       } catch (err) {
-        console.error('[HistoricalDataWarehouse] Failed to cleanup warm DB:', err);
+        log.error('[HistoricalDataWarehouse] Failed to cleanup warm DB:', err);
       }
     }
 
@@ -462,13 +463,13 @@ export class HistoricalDataWarehouse {
           fs.unlinkSync(filePath);
           deleted++;
         } catch (err) {
-          console.error(`[HistoricalDataWarehouse] Failed to delete archive ${file}:`, err);
+          log.error(`[HistoricalDataWarehouse] Failed to delete archive ${file}:`, err);
         }
       }
     }
 
     if (deleted > 0) {
-      console.log(`[HistoricalDataWarehouse] Deleted ${deleted} old archive files`);
+      log.info(`[HistoricalDataWarehouse] Deleted ${deleted} old archive files`);
     }
   }
 

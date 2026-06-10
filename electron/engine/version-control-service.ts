@@ -3,6 +3,7 @@
 // Supports: version tracking, change detection, rollback, audit trail
 
 import { getSnapshotService, type DataSnapshot } from './snapshot-service';
+import log from 'electron-log';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -338,7 +339,7 @@ export class DataVersionControlService {
 
       return imported;
     } catch (error) {
-      console.error('Failed to import versions:', error);
+      log.error('Failed to import versions:', error);
       return 0;
     }
   }

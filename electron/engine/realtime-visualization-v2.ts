@@ -29,7 +29,7 @@ export class RealtimeVisualizationService {
       this.fetchAndBroadcast();
     }, this.config.updateInterval);
 
-    console.log(`[RealtimeVisualization] Started with ${this.config.symbols.length} symbols`);
+    log.info(`[RealtimeVisualization] Started with ${this.config.symbols.length} symbols`);
   }
 
   stop(): void {
@@ -41,17 +41,17 @@ export class RealtimeVisualizationService {
       this.updateTimer = null;
     }
 
-    console.log('[RealtimeVisualization] Stopped');
+    log.info('[RealtimeVisualization] Stopped');
   }
 
   addWebSocketClient(client: any): void {
     this.wsClients.add(client);
-    console.log(`[RealtimeVisualization] Client connected, total: ${this.wsClients.size}`);
+    log.info(`[RealtimeVisualization] Client connected, total: ${this.wsClients.size}`);
   }
 
   removeWebSocketClient(client: any): void {
     this.wsClients.delete(client);
-    console.log(`[RealtimeVisualization] Client disconnected, total: ${this.wsClients.size}`);
+    log.info(`[RealtimeVisualization] Client disconnected, total: ${this.wsClients.size}`);
   }
 
   private async fetchAndBroadcast(): Promise<void> {
@@ -62,7 +62,7 @@ export class RealtimeVisualizationService {
       // Broadcast to all WebSocket clients
       this.broadcast(data);
     } catch (err) {
-      console.error('[RealtimeVisualization] Fetch error:', err);
+      log.error('[RealtimeVisualization] Fetch error:', err);
     }
   }
 
@@ -88,7 +88,7 @@ export class RealtimeVisualizationService {
           client.send(message);
         }
       } catch (err) {
-        console.error('[RealtimeVisualization] Broadcast error:', err);
+        log.error('[RealtimeVisualization] Broadcast error:', err);
       }
     });
   }

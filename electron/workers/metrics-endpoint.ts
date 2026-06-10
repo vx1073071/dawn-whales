@@ -1,6 +1,7 @@
 ﻿// T84: Prometheus metrics HTTP endpoint
 import * as http from 'http';
 import { MetricsCollector } from './metrics-collector';
+import log from 'electron-log';
 
 export class MetricsEndpoint {
   private server: http.Server | null = null;
@@ -30,7 +31,7 @@ export class MetricsEndpoint {
 
       this.server.on('error', (err: any) => {
         if (err.code === 'EADDRINUSE') {
-          console.warn(`[Metrics] Port ${this.port} in use, skipping`);
+          log.warn(`[Metrics] Port ${this.port} in use, skipping`);
           resolve();
         } else {
           reject(err);
@@ -38,7 +39,7 @@ export class MetricsEndpoint {
       });
 
       this.server.listen(this.port, '0.0.0.0', () => {
-        console.log(`[Metrics] Endpoint ready on :${this.port}`);
+        log.info(`[Metrics] Endpoint ready on :${this.port}`);
         resolve();
       });
     });

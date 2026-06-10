@@ -70,18 +70,14 @@ export interface TechnicalAnalysis {
   completedAt: string;
 }
 
-// ── REAL DATA SOURCE (R76: useMock=false) ─────────────────────────────────
-
 // ── Technical Agent ────────────────────────────────────────────────────────
 
 export class TechnicalAgent extends EventEmitter {
   public readonly agentType = 'technical';
   private cache: Map<string, TechnicalAnalysis> = new Map();
-  private useMock: boolean;
 
-  constructor(options?: { useMock?: boolean }) {
+  constructor() {
     super();
-    this.useMock = options?.useMock ?? false;
     log.info('[TechnicalAgent] Initialized');
   }
 
@@ -93,10 +89,7 @@ export class TechnicalAgent extends EventEmitter {
     }
 
     try {
-      let data = this.getTechnicalData(symbol, price);
-    if (!data && !this.useMock) {
-      data = await this.getTechnicalDataReal(symbol, price);
-    }
+      const data = await this.getTechnicalDataReal(symbol, price);
       if (!data) return null;
 
       // Multi-factor scoring
@@ -172,28 +165,6 @@ export class TechnicalAgent extends EventEmitter {
         recentHigh: p * 1.05, recentLow: p * 0.95, patterns: [],
       };
     } catch { return null; }
-  }
-
-  private getTechnicalData(symbol: string, price?: number): TechnicalData | null {
-    if (this.useMock) {
-      const p = price || 100;
-      return {
-        symbol: symbol.substring(0, 6), price: p,
-        ma5: p*0.99, ma10: p*0.98, ma20: p*0.97, ma60: p*0.95, ma120: p*0.90, ma250: p*0.85,
-        rsi14: 50, rsi28: 50, macd: 0, macdSignal: 0, macdHistogram: 0,
-        bollingerUpper: p*1.08, bollingerMiddle: p, bollingerLower: p*0.92,
-        volume: 10000000, avgVolume20: 10000000, volumeRatio: 1,
-        supportLevels: [Math.round(p*0.9)], resistanceLevels: [Math.round(p*1.08)],
-        recentHigh: p*1.05, recentLow: p*0.95, patterns: [],
-      };
-    }
-    // R76: useMock=false → caller uses async getTechnicalDataReal
-    return null;
-  }
-      recentHigh: Math.round(p * 1.1 * 100) / 100,
-      recentLow: Math.round(p * 0.88 * 100) / 100,
-      patterns: ['区间震荡'],
-    };
   }
 
   // ── Scoring ───────────────────────────────────────────────────────────
@@ -355,8 +326,8 @@ export class TechnicalAgent extends EventEmitter {
 
 let _instance: TechnicalAgent | null = null;
 
-export function getTechnicalAgent(options?: { useMock?: boolean }): TechnicalAgent {
-  if (!_instance) _instance = new TechnicalAgent(options);
+export function getTechnicalAgent(): TechnicalAgent {
+  if (!_instance) _instance = new TechnicalAgent();
   return _instance;
 }
 

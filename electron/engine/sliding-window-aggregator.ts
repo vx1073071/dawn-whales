@@ -10,6 +10,7 @@
  */
 
 import { EventEmitter } from 'events';
+import log from 'electron-log';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -73,7 +74,7 @@ export class SlidingWindowAggregator extends EventEmitter {
       this.processUpdates();
     }, this.config.updateInterval);
 
-    console.log(`[SlidingWindowAggregator] Started with interval ${this.config.updateInterval}ms`);
+    log.info(`[SlidingWindowAggregator] Started with interval ${this.config.updateInterval}ms`);
   }
 
   /**
@@ -83,7 +84,7 @@ export class SlidingWindowAggregator extends EventEmitter {
     if (this.updateTimer) {
       clearInterval(this.updateTimer);
       this.updateTimer = undefined;
-      console.log('[SlidingWindowAggregator] Stopped');
+      log.info('[SlidingWindowAggregator] Stopped');
     }
   }
 

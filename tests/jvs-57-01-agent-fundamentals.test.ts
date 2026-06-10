@@ -35,7 +35,7 @@ describe('J-57-01-01: Core Analysis', () => {
 
   it.skip('03: returns null for unknown symbol in non-mock mode', async () => {
     resetFundamentalsAgent();
-    const strict = new FundamentalsAgent({ useMock: true });
+    const strict = new FundamentalsAgent();
     const result = await strict.analyze('UNKNOWN_STOCK');
     expect(result).toBeNull();
   });

@@ -14,7 +14,7 @@ describe('J-57-04: MacroAgent', () => {
 
   beforeEach(() => {
     resetMacroAgent();
-    agent = getMacroAgent({ useMock: true });
+    agent = getMacroAgent();
   });
 
   // ── Core ─────────────────────────────────────────────────────────────

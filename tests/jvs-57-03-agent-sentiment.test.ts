@@ -43,7 +43,7 @@ describe('J-57-03: SentimentAgent', () => {
   });
 
   it.skip('05: null for unknown in strict mode', async () => {
-    const strict = new SentimentAgent({ useMock: true });
+    const strict = new SentimentAgent();
     const r = await strict.analyze('UNKNOWN');
     expect(r).toBeNull();
   });
