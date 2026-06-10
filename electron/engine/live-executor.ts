@@ -281,7 +281,7 @@ export class LiveExecutor extends EventEmitter {
     if (this.broker) {
       try {
         await this.submitToBroker(order);
-      } catch (err: any) {
+      } catch (err: unknown) {
         order.status = 'rejected';
         order.updatedAt = Date.now();
         this.emit('order:rejected', order);
@@ -317,7 +317,7 @@ export class LiveExecutor extends EventEmitter {
     if (this.broker) {
       try {
         await this.submitToBroker(order);
-      } catch (err: any) {
+      } catch (err: unknown) {
         order.status = 'rejected';
         order.updatedAt = Date.now();
         this.emit('order:rejected', order);

@@ -351,7 +351,7 @@ export class CorrelationMonitor {
       try {
         const snapshots = await fetchSnapshots();
         await this.checkAnomalies(snapshots);
-      } catch (err: any) {
+      } catch (err: unknown) {
         log.error('[CorrelationMonitor] Check failed:', err);
       }
     }, this.config.checkInterval);

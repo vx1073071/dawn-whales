@@ -218,7 +218,7 @@ export class MultiFactorModel {
         timestamp: Date.now(),
         config,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[MultiFactor] Scoring failed:', err.message);
       return { success: false, scores: [], timestamp: Date.now(), config, error: err.message };
     }
@@ -245,7 +245,7 @@ export class MultiFactorModel {
           scores.set(code, score);
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[MultiFactor] Sentiment fetch failed:', err.message);
     }
 
@@ -276,7 +276,7 @@ export class MultiFactorModel {
           }
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[MultiFactor] Capital flow fetch failed:', err.message);
     }
 
@@ -307,7 +307,7 @@ export class MultiFactorModel {
           }
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[MultiFactor] Dragon Tiger fetch failed:', err.message);
     }
 
@@ -337,7 +337,7 @@ export class MultiFactorModel {
           }
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[MultiFactor] Fund holdings fetch failed:', err.message);
     }
 
@@ -368,7 +368,7 @@ export class MultiFactorModel {
           }
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[MultiFactor] Diagnosis fetch failed:', err.message);
     }
 

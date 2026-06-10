@@ -107,7 +107,7 @@ export async function getMarketMarginBalance(days = 30): Promise<MarginBalance[]
     cache.set(cacheKey, { data: balances, expires: Date.now() + CACHE_TTL });
     log.info(`[MarginData] Market margin balance: ${balances.length} days`);
     return balances;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[MarginData] Market margin balance error:', err.message);
     return [];
   }
@@ -153,7 +153,7 @@ export async function getStockMargin(code: string, days = 30): Promise<StockMarg
     cache.set(cacheKey, { data: margins, expires: Date.now() + CACHE_TTL });
     log.info(`[MarginData] Stock ${code} margin: ${margins.length} days`);
     return margins;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error(`[MarginData] Stock ${code} margin error:`, err.message);
     return [];
   }
@@ -194,7 +194,7 @@ export async function getMarginBalanceRanking(limit = 30): Promise<MarginRanking
     cache.set(cacheKey, { data: rankings, expires: Date.now() + CACHE_TTL });
     log.info(`[MarginData] Margin ranking: ${rankings.length} stocks`);
     return rankings;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[MarginData] Margin ranking error:', err.message);
     return [];
   }
@@ -235,7 +235,7 @@ export async function getShortInterestRanking(limit = 30): Promise<MarginRanking
     cache.set(cacheKey, { data: rankings, expires: Date.now() + CACHE_TTL });
     log.info(`[MarginData] Short ranking: ${rankings.length} stocks`);
     return rankings;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[MarginData] Short ranking error:', err.message);
     return [];
   }
@@ -269,7 +269,7 @@ export async function getMarginDataReport(): Promise<MarginDataReport> {
     cache.set(cacheKey, { data: report, expires: Date.now() + CACHE_TTL });
     log.info('[MarginData] Full report generated');
     return report;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[MarginData] Report error:', err.message);
     return {
       success: false,

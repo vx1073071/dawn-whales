@@ -426,7 +426,7 @@ export class RiskEngineV3 extends EventEmitter {
             positions: aggPositions,
           });
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         errors.push({ brokerId, error: err.message || String(err) });
         log.warn(`[RiskEngineV3] Failed to aggregate ${brokerId}: ${err.message}`);
       }
@@ -500,7 +500,7 @@ export class RiskEngineV3 extends EventEmitter {
 
         accounts.push(info);
         this.marginCache.set(cacheKey, { data: info, timestamp: now });
-      } catch (err: any) {
+      } catch (err: unknown) {
         log.warn(`[RiskEngineV3] Failed to get margin for ${brokerId}: ${err.message}`);
       }
     }

@@ -292,7 +292,7 @@ export class RLTradingAgent {
         `episodesTrained=${this.episodesTrained}`
       );
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error(`[RLTradingAgent] Failed to load model: ${err.message}`);
       return false;
     }

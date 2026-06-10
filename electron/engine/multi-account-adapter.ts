@@ -84,8 +84,8 @@ export interface AccountConfig {
   type: AccountType;
   broker: string;
   credentials?: Record<string, string>;
-  /** Optional convenience fields — flattened into `credentials` on add. */
-  apiKey?: string;
+  /** Optional convenience fields — flattened into `credentials` on add. */\1/** @deprecated R83 — use server-side AI Gateway token */
+\1\2
   apiSecret?: string;
   /** Optional metadata bag — non-credential view used by the dashboard. */
   metadata?: Record<string, unknown>;
@@ -420,7 +420,7 @@ export class MultiAccountAdapter extends SimpleEventEmitter {
       );
       this.emit('sync-complete', result);
       return result;
-    } catch (err: any) {
+    } catch (err: unknown) {
       entry.status = 'error';
       const result: SyncResult = {
         accountId,

@@ -157,7 +157,7 @@ export class DataSchedulerService {
       this.refreshCount.set(module, (this.refreshCount.get(module) || 0) + 1);
       log.info(`[DataScheduler] Manual refresh: ${module}`);
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn(`[DataScheduler] Manual refresh failed: ${module}`, err.message);
       return false;
     }
@@ -228,7 +228,7 @@ export class DataSchedulerService {
       await callback();
       this.lastRefresh.set(module, Date.now());
       this.refreshCount.set(module, (this.refreshCount.get(module) || 0) + 1);
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn(`[DataScheduler] Refresh error: ${module}`, err.message);
     }
   }

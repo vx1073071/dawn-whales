@@ -771,7 +771,7 @@ export class AsyncIOScheduler {
           retries: retriesUsed,
         });
         return;
-      } catch (err: any) {
+      } catch (err: unknown) {
         lastError = err?.message ?? String(err);
         const isTimeout = err?.name === 'TimeoutError' || lastError.includes('timeout');
         const isAbort = err?.name === 'AbortError' || lastError.includes('Aborted');

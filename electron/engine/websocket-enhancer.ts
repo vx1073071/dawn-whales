@@ -38,8 +38,8 @@ export interface WebSocketStatus {
 }
 
 export interface WebSocketConfig {
-  url: string;
-  apiKey?: string;
+  url: string;\1/** @deprecated R83 — use server-side AI Gateway token */
+\1\2
   heartbeatInterval?: number;
   reconnectInterval?: number;
   maxReconnectAttempts?: number;
@@ -100,7 +100,7 @@ class WebSocketManager {
       }, this.config.heartbeatInterval!);
 
       return true;
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[WebSocket] Connection failed:', err.message);
       return false;
     }

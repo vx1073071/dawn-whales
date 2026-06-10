@@ -102,7 +102,7 @@ export async function getFundHoldings(
     cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
     log.info(`[FundHoldings] Fund ${fundCode}: ${items.length} holdings`);
     return result;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[FundHoldings] Fetch error:', err.message);
     return { success: false, items: [], total: 0, type: 'fund_holdings', reportDate: targetDate, error: err.message };
   }
@@ -157,7 +157,7 @@ export async function getStockFundOwnership(
     cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
     log.info(`[FundHoldings] Stock ${stockCode}: held by ${items.length} funds`);
     return result;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[FundHoldings] Stock ownership error:', err.message);
     return { success: false, items: [], total: 0, type: 'stock_ownership', reportDate: targetDate, error: err.message };
   }
@@ -210,7 +210,7 @@ export async function getFundIncreaseRank(
     cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
     log.info(`[FundHoldings] Increase rank: ${items.length} stocks`);
     return result;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[FundHoldings] Increase rank error:', err.message);
     return { success: false, items: [], total: 0, type: 'stock_ownership', reportDate: targetDate, error: err.message };
   }
@@ -263,7 +263,7 @@ export async function getFundDecreaseRank(
     cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
     log.info(`[FundHoldings] Decrease rank: ${items.length} stocks`);
     return result;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[FundHoldings] Decrease rank error:', err.message);
     return { success: false, items: [], total: 0, type: 'stock_ownership', reportDate: targetDate, error: err.message };
   }

@@ -144,7 +144,7 @@ async function fetchIncomeStatement(code: string, quarters: number): Promise<Inc
       eps: safeNum(item.BASIC_EPS),
       dilutedEps: safeNum(item.DILUTED_EPS),
     }));
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn(`[FinancialReports] Income fetch failed for ${code}: ${err.message}`);
     return [];
   }
@@ -175,7 +175,7 @@ async function fetchBalanceSheet(code: string, quarters: number): Promise<Balanc
       inventory: safeNum(item.INVENTORY),
       goodwill: safeNum(item.GOODWILL),
     }));
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn(`[FinancialReports] Balance sheet fetch failed for ${code}: ${err.message}`);
     return [];
   }
@@ -202,7 +202,7 @@ async function fetchCashFlowStatement(code: string, quarters: number): Promise<C
       capex: safeNum(item.FIXED_ASSET_INVEST),
       dividendsPaid: safeNum(item.DIVIDEND_PAY),
     }));
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn(`[FinancialReports] Cash flow fetch failed for ${code}: ${err.message}`);
     return [];
   }

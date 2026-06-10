@@ -117,7 +117,7 @@ export async function getDragonTigerList(date?: string): Promise<DragonTigerResu
     log.info(`[DragonTiger] Fetched ${entries.length} entries for ${targetDate}`);
     
     return result;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[DragonTiger] Fetch error:', err.message);
     return {
       success: false,
@@ -179,7 +179,7 @@ export async function getDragonTigerDetail(code: string, date: string): Promise<
     log.info(`[DragonTiger] Detail fetched: ${code} on ${date}`);
 
     return result;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[DragonTiger] Detail fetch error:', err.message);
     return null;
   }

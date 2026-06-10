@@ -128,7 +128,7 @@ export async function exportData(request: ExportRequest): Promise<ExportResult> 
       for (const [name, fetcher] of Object.entries(DATA_SOURCES)) {
         try {
           rawData[name] = await fetcher();
-        } catch (err: any) {
+        } catch (err: unknown) {
           log.warn(`[DataExport] Failed to fetch ${name}: ${err.message}`);
           rawData[name] = { error: err.message };
         }
@@ -212,7 +212,7 @@ export async function exportData(request: ExportRequest): Promise<ExportResult> 
       fileSize: stats.size,
       duration,
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     const duration = Date.now() - startTime;
     log.error(`[DataExport] Export failed: ${err.message}`);
     return {

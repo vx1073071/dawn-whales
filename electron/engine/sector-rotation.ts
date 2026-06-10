@@ -130,7 +130,7 @@ export class SectorRotationMonitor {
       }
 
       log.info(`[SectorRotation] Loaded ${this.history.size} sectors from history`);
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn('[SectorRotation] Failed to load history:', err.message);
     }
   }

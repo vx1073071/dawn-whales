@@ -233,7 +233,7 @@ export class SmartPickerService {
         timestamp: Date.now(),
         summary,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[SmartPicker] Error:', err.message);
       return {
         success: false,

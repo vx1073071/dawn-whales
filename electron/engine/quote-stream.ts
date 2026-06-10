@@ -186,7 +186,7 @@ export class QuoteStreamService extends EventEmitter {
         }
       }
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[QuoteStream] Fetch error:', err.message);
       this.emit('error', err);
     }

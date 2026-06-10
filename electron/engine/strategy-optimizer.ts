@@ -282,7 +282,7 @@ export class StrategyOptimizer extends EventEmitterPolyfill {
       }
 
       this.status = 'completed';
-    } catch (err: any) {
+    } catch (err: unknown) {
       this.status = 'error';
       log.error('[StrategyOptimizer] Optimization error:', err);
       this.emit('optimization:error', { error: err.message });

@@ -178,7 +178,7 @@ export async function calculatePortfolioRisk(
           }
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn('[PortfolioRisk] Correlation calc error:', err.message);
     }
   }
@@ -200,7 +200,7 @@ export async function calculatePortfolioRisk(
       sentimentScore = sentimentResult.score;
       sentimentLevel = sentimentResult.level;
       sentimentSignal = sentimentResult.signal;
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn('[PortfolioRisk] Sentiment error:', err.message);
     }
   }

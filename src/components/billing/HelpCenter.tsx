@@ -51,9 +51,9 @@ const HELP_ARTICLES: HelpArticle[] = [
   { id: 'ai-3', category: 'ai', categoryIcon: '🤖', question: 'AI密钥安全吗?', answer: '安全。所有AI密钥(DeepSeek)存储在服务器端，通过环境变量注入。桌面端是React瘦客户端——破解只能拿到UI代码，无法获取密钥。' },
 
   // ── 交易 ──
-  { id: 'trade-1', category: 'trade', categoryIcon: '📈', question: '支持哪些市场?', answer: '港股(HKEX) · 美股(NYSE/NASDAQ) · A股(沪深)。通过Futu OpenD或IBKR Gateway实盘交易。支持市价单/限价单/止损单。' },
-  { id: 'trade-2', category: 'trade', categoryIcon: '📈', question: '费用怎么算?', answer: '券商佣金: Futu美股$0.0049/股, 港股0.03%, A股0.03%。平台不额外收费。完整费率表见[券商管理]页面。' },
-  { id: 'trade-3', category: 'trade', categoryIcon: '📈', question: '支持碎股交易吗?', answer: '支持。美股碎股: 0.01-1.00股。A股碎股: 1-99股。部分成交自动跟踪，剩余股数继续挂单。' },
+  { id: 'trade-1', category: 'trade', categoryIcon: '📈', question: '支持哪些市场?', answer: '港股(HKEX) · 美股(NYSE/NASDAQ)。通过Futu OpenD或IBKR Gateway实盘交易。支持市价单/限价单/止损单。' },
+  { id: 'trade-2', category: 'trade', categoryIcon: '📈', question: '费用怎么算?', answer: '券商佣金: Futu美股$0.0049/股, 港股0.03%。平台不额外收费。完整费率表见[券商管理]页面。' },
+  { id: 'trade-3', category: 'trade', categoryIcon: '📈', question: '支持碎股交易吗?', answer: '支持。美股碎股: 0.01-1.00股。部分成交自动跟踪，剩余股数继续挂单。' },
 
   // ── 钱包 ──
   { id: 'wallet-1', category: 'wallet', categoryIcon: '👛', question: '如何提现 USDT?', answer: '进入[钱包]页面 → 点击"提现" → 输入TRC-20地址 → 输入金额 → 2FA验证 → 确认。最低提现10 USDT。P2P转账: 0.3%双向，14天冻结期。' },

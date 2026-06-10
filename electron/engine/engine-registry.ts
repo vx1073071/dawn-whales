@@ -157,7 +157,7 @@ export class EngineRegistry {
         entry.status = 'running';
         entry.startTime = Date.now();
         log.info(`[EngineRegistry] Started: ${entry.name}`);
-      } catch (err: any) {
+      } catch (err: unknown) {
         entry.status = 'error';
         log.error(`[EngineRegistry] Failed to start ${entry.name}: ${err.message}`);
       }
@@ -174,7 +174,7 @@ export class EngineRegistry {
         entry.instance.stop?.();
         entry.status = 'stopped';
         log.info(`[EngineRegistry] Stopped: ${entry.name}`);
-      } catch (err: any) {
+      } catch (err: unknown) {
         log.error(`[EngineRegistry] Error stopping ${entry.name}: ${err.message}`);
       }
     }
@@ -188,7 +188,7 @@ export class EngineRegistry {
       try {
         entry.instance.destroy?.();
         log.info(`[EngineRegistry] Destroyed: ${entry.name}`);
-      } catch (err: any) {
+      } catch (err: unknown) {
         log.error(`[EngineRegistry] Error destroying ${entry.name}: ${err.message}`);
       }
     }

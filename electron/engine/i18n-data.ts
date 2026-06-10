@@ -414,7 +414,7 @@ export function setupI18nDataIPC(): void {
         lang as SupportedLanguage
       );
       return { success: true, translation };
-    } catch (err: any) {
+    } catch (err: unknown) {
       return { success: false, error: err.message };
     }
   });
@@ -427,7 +427,7 @@ export function setupI18nDataIPC(): void {
         lang as SupportedLanguage
       );
       return { success: true, translations };
-    } catch (err: any) {
+    } catch (err: unknown) {
       return { success: false, error: err.message };
     }
   });
@@ -436,7 +436,7 @@ export function setupI18nDataIPC(): void {
     try {
       const translations = getAllTranslations(category as any);
       return { success: true, translations };
-    } catch (err: any) {
+    } catch (err: unknown) {
       return { success: false, error: err.message };
     }
   });
@@ -445,7 +445,7 @@ export function setupI18nDataIPC(): void {
     try {
       const languages = getSupportedLanguages();
       return { success: true, languages };
-    } catch (err: any) {
+    } catch (err: unknown) {
       return { success: false, error: err.message };
     }
   });

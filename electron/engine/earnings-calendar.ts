@@ -100,7 +100,7 @@ export async function getEarningsCalendar(days = 30): Promise<EarningsCalendarRe
     cache = { data: result, expires: Date.now() + CACHE_TTL };
     log.info(`[EarningsCalendar] ${events.length} events: +${summary.predictIncrease} -${summary.predictDecrease}`);
     return result;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[EarningsCalendar] Error:', err.message);
     return {
       success: false, events: [], total: 0,

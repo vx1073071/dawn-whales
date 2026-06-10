@@ -26,8 +26,8 @@ export interface RealtimeNewsItem {
 
 export interface NewsSourceConfig {
   name: string;
-  enabled: boolean;
-  apiKey?: string;
+  enabled: boolean;\1/** @deprecated R83 — use server-side AI Gateway token */
+\1\2
   baseUrl?: string;
   fetchIntervalMs: number;
   maxItemsPerFetch: number;

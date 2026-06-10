@@ -332,7 +332,7 @@ export class ConditionWatcher {
           });
           log.info(`[ConditionWatcher] Triggered strategy: ${action.strategyId}`);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         log.error(`[ConditionWatcher] Strategy execution failed: ${err.message}`);
       }
     } else if (action.type === 'pause_strategy' && action.strategyId) {

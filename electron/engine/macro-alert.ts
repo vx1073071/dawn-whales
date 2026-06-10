@@ -343,7 +343,7 @@ export class MacroMonitor {
       try {
         const currentData = await fetchData();
         await this.checkAnomalies(currentData);
-      } catch (err: any) {
+      } catch (err: unknown) {
         log.error('[MacroMonitor] Check failed:', err);
       }
     }, this.config.checkInterval);

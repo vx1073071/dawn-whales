@@ -250,7 +250,7 @@ export class WalkForwardEngine {
             totalTrades: btResult.result.totalTrades,
           });
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         log.warn(`[WalkForward] Param test failed:`, params, err.message);
       }
     }

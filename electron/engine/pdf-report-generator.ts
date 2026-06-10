@@ -803,7 +803,7 @@ export function generateBatchReports(config: BatchReportConfig): BatchResult {
       // Override filename if specified
       report.filename = item.filename || report.filename;
       reports.push(report);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errMsg = `Failed to generate ${item.filename}: ${err.message}`;
       log.error(`[PDFReportGenerator] ${errMsg}`);
       errors.push(errMsg);
@@ -879,7 +879,7 @@ export function exportReportsToFileSystem(
       files.push(filePath);
       // In production, this would use fs.writeFileSync
       log.info(`[PDFReportGenerator] Exported: ${filePath}`);
-    } catch (err: any) {
+    } catch (err: unknown) {
       errors.push(`Failed to export ${report.filename}: ${err.message}`);
     }
   }

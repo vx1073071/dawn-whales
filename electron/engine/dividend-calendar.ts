@@ -76,7 +76,7 @@ export async function getDividendCalendar(days = 30): Promise<DividendCalendarRe
     cache = { data: result, expires: Date.now() + CACHE_TTL };
     log.info(`[DividendCalendar] ${events.length} events from ${fromDate} to ${toDate}`);
     return result;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[DividendCalendar] Error:', err.message);
     return { success: false, events: [], total: 0, dateRange: { from: fromDate, to: toDate }, error: err.message };
   }

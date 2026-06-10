@@ -1,6 +1,7 @@
 /**
- * AIBillingPanel — ML-59-01 [P0]
- * R59: v1.3.0-alpha — Pay-per-use AI analysis billing
+ * AIBillingPanel — R83 P1-5c i18n 化
+ * All hardcoded strings replaced with t() calls.
+ * Billing translations: src/i18n/locales/billing-*.json (9 languages)
  *
  * Features:
  * - 3 pricing tiers: Standard (1.0) / Premium (1.5) / Flagship (2.0) USDT/analysis
@@ -12,14 +13,16 @@
  */
 
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import billingEn from '../../i18n/locales/billing-en.json';
+
+type TBilling = typeof billingEn;
 
 // ── Types ───────────────────────────────────────────────────────────────
 
 export interface PricingTier {
   id: string;
-  name: string;
-  price: number;          // USDT per analysis
-  features: string[];
+  price: number;
   recommended?: boolean;
 }
 
@@ -47,10 +50,16 @@ export interface AIBillingPanelProps {
 // ── Mock data ───────────────────────────────────────────────────────────
 
 const mockTiers: PricingTier[] = [
-  { id: 'standard', name: 'Standard', price: 1.0, features: ['1 model', '4 agents', 'No debate', 'Basic cache'], recommended: false },
-  { id: 'premium', name: 'Premium', price: 1.5, features: ['2 models', '4 agents', '2 debate rounds', 'Priority cache', 'Cost dashboard'], recommended: true },
-  { id: 'flagship', name: 'Flagship', price: 2.0, features: ['3 models (Arena)', '4 agents', '3 debate rounds', '99% cache discount', 'All dashboards', 'Export reports'], recommended: false },
+  { id: 'standard', price: 1.0, recommended: false },
+  { id: 'premium', price: 1.5, recommended: true },
+  { id: 'flagship', price: 2.0, recommended: false },
 ];
+
+const tierFeatureKeys: Record<string, string[]> = {
+  standard: ['standard_1','standard_2','standard_3','standard_4'],
+  premium: ['premium_1','premium_2','premium_3','premium_4','premium_5'],
+  flagship: ['flagship_1','flagship_2','flagship_3','flagship_4','flagship_5','flagship_6'],
+};
 
 const mockBilling: BillingState = {
   balance: 28.50,
@@ -70,38 +79,40 @@ const TierCard: React.FC<{
   selected: boolean;
   freeRemaining: number;
   onSelect: () => void;
-}> = ({ tier, selected, freeRemaining, onSelect }) => {
+  t: (key: string, opts?: Record<string, unknown>) => string;
+}> = ({ tier, selected, freeRemaining, onSelect, t }) => {
   const isFree = freeRemaining > 0;
   const displayPrice = isFree ? 0 : tier.price;
+  const tierName = t(tier.id as keyof TBilling) as string;
 
   return (
     <div className={`billing-tier-card ${selected ? 'selected' : ''} ${tier.recommended ? 'recommended' : ''}`}
       onClick={onSelect}>
-      {tier.recommended && <div className="billing-tier-badge">★ Recommended</div>}
+      {tier.recommended && <div className="billing-tier-badge">{t('recommended')}</div>}
       <div className="billing-tier-header">
-        <h3 className="billing-tier-name">{tier.name}</h3>
+        <h3 className="billing-tier-name">{tierName}</h3>
         <div className="billing-tier-price">
           {isFree ? (
             <>
-              <span className="billing-price-free">FREE</span>
-              <span className="billing-price-remaining">({freeRemaining} left)</span>
+              <span className="billing-price-free">{t('free')}</span>
+              <span className="billing-price-remaining">({t('freeRemaining', { count: freeRemaining, context: freeRemaining === 1 ? t('freeSingular') : t('freePlural') })})</span>
             </>
           ) : (
             <>
               <span className="billing-price-value">${displayPrice.toFixed(1)}</span>
-              <span className="billing-price-unit">/analysis</span>
+              <span className="billing-price-unit">{t('perAnalysis')}</span>
             </>
           )}
         </div>
       </div>
       <ul className="billing-tier-features">
-        {tier.features.map((f, i) => (
-          <li key={i}>{f}</li>
+        {(tierFeatureKeys[tier.id] || []).map((fk) => (
+          <li key={fk}>{t(`features.${fk}`)}</li>
         ))}
       </ul>
       {!isFree && (
         <div className="billing-tier-addons">
-          <small>+ Debate: $0.5/round · Arena: base ×0.3</small>
+          <small>{t('debateSurcharge')}</small>
         </div>
       )}
     </div>
@@ -119,45 +130,45 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
   onRecharge,
   className = '',
 }) => {
+  const { t } = useTranslation();
   const tiers = propTiers || mockTiers;
   const billing = propBilling || mockBilling;
   const [localTier, setLocalTier] = useState(billing.selectedTier);
   const [localBudget, setLocalBudget] = useState(billing.monthlyBudget);
 
-  const selectedTier = tiers.find((t) => t.id === localTier) || tiers[1];
+  const selectedTier = tiers.find((ti) => ti.id === localTier) || tiers[1];
   const budgetPct = billing.monthlyBudget > 0 ? (billing.monthlyUsed / billing.monthlyBudget) * 100 : 0;
   const budgetColor = budgetPct >= 100 ? '#ef4444' : budgetPct >= 80 ? '#f59e0b' : '#22c55e';
   const remainingAnalyses = selectedTier.price > 0 ? Math.floor(billing.balance / selectedTier.price) : 99;
 
-  // Sort agents by usage count (descending)
   const agentUsage = useMemo(() => {
     const raw = [
-      { name: 'Fundamentals', count: 8, color: '#3b82f6' },
-      { name: 'Technical', count: 6, color: '#8b5cf6' },
-      { name: 'Sentiment', count: 5, color: '#ec4899' },
-      { name: 'Macro', count: 4, color: '#f59e0b' },
+      { name: t('agentFundamentals'), count: 8, color: '#3b82f6' },
+      { name: t('agentTechnical'), count: 6, color: '#8b5cf6' },
+      { name: t('agentSentiment'), count: 5, color: '#ec4899' },
+      { name: t('agentMacro'), count: 4, color: '#f59e0b' },
     ];
     const max = Math.max(...raw.map(a => a.count));
     return raw.sort((a, b) => b.count - a.count).map(a => ({ ...a, pct: (a.count / max) * 100 }));
-  }, []);
+  }, [t]);
 
-  const freeQuotaTip = billing.freeRemaining === 3 ? 'All 3 free — make them count!' : billing.freeRemaining === 1 ? 'Last free analysis! Top up after this.' : billing.freeRemaining === 0 ? 'Free quota used. Recharge to continue.' : '';
+  const freeQuotaTip = billing.freeRemaining === 3 ? t('freeAllLeft', { count: 3 }) : billing.freeRemaining === 1 ? t('freeLastOne') : billing.freeRemaining === 0 ? t('freeUsedUp') : '';
 
   return (
     <div className={`ai-billing-panel ${className}`}>
-      <h2 className="billing-title">💳 AI Analysis Billing</h2>
+      <h2 className="billing-title">{t('title')}</h2>
 
       {/* ── Balance Card ──────────────────────────── */}
       <div className="billing-balance-card">
         <div className="billing-balance-main">
-          <span className="billing-balance-label">Balance</span>
+          <span className="billing-balance-label">{t('balance')}</span>
           <span className="billing-balance-value">${billing.balance.toFixed(2)} USDT</span>
-          <span className="billing-balance-sub">≈ {remainingAnalyses} analyses available</span>
+          <span className="billing-balance-sub">{t('balanceAvailable', { count: remainingAnalyses })}</span>
         </div>
         <div className="billing-balance-actions">
-          <button className="billing-btn-recharge" onClick={onRecharge}>+ Recharge</button>
+          <button className="billing-btn-recharge" onClick={onRecharge}>{t('recharge')}</button>
           <button className="billing-btn-analyze" onClick={onAnalyze} disabled={billing.balance < selectedTier.price && billing.freeRemaining === 0}>
-            {billing.freeRemaining > 0 ? `⚡ Analyze (Free ×${billing.freeRemaining})` : `Analyze $${selectedTier.price.toFixed(1)}`}
+            {billing.freeRemaining > 0 ? t('analyzeFree', { count: billing.freeRemaining }) : t('analyze', { price: selectedTier.price.toFixed(1) })}
           </button>
         </div>
       </div>
@@ -165,26 +176,26 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
       {/* ── Free Quota Banner ─────────────────────── */}
       {billing.freeRemaining > 0 && (
         <div className="billing-free-banner">
-          🎉 <strong>{billing.freeRemaining} free {billing.freeRemaining === 1 ? 'analysis' : 'analyses'}</strong> remaining
+          🎉 <strong>{t('freeRemaining', { count: billing.freeRemaining, context: billing.freeRemaining === 1 ? t('freeSingular') : t('freePlural') })}</strong>
           {freeQuotaTip && <span className="billing-free-tip"> — {freeQuotaTip}</span>}
           {billing.freeRemaining <= 1 && (
-            <span className="billing-free-upgrade"> · <button onClick={onRecharge} style={{ background: 'none', border: 'none', color: '#3b82f6', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit' }}>Recharge now →</button></span>
+            <span className="billing-free-upgrade"> · <button onClick={onRecharge} style={{ background: 'none', border: 'none', color: '#3b82f6', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit' }}>{t('rechargeNow')}</button></span>
           )}
         </div>
       )}
       {billing.freeRemaining === 0 && (
         <div className="billing-free-banner" style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)', color: '#ef4444' }}>
-          ⚡ Free quota used up — <strong>recharge to continue analyzing</strong>
+          ⚡ {t('freeQuotaUsed')}
         </div>
       )}
 
       {/* ── Budget Progress ───────────────────────── */}
       <div className="billing-section">
-        <h3 className="billing-section-title">Monthly Budget</h3>
+        <h3 className="billing-section-title">{t('monthlyBudget')}</h3>
         <div className="billing-budget-bar-container">
           <div className="billing-budget-labels">
-            <span>${billing.monthlyUsed.toFixed(2)} used</span>
-            <span>${billing.monthlyBudget.toFixed(2)} limit</span>
+            <span>${billing.monthlyUsed.toFixed(2)} {t('used')}</span>
+            <span>${billing.monthlyBudget.toFixed(2)} {t('limit')}</span>
           </div>
           <div className="billing-budget-bar">
             <div className="billing-budget-fill" style={{ width: `${Math.min(budgetPct, 100)}%`, backgroundColor: budgetColor }} />
@@ -199,25 +210,25 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
         <div className="billing-usage-grid">
           <div className="billing-usage-item">
             <span className="billing-usage-value">{billing.totalAnalyses}</span>
-            <span className="billing-usage-label">Total Analyses</span>
+            <span className="billing-usage-label">{t('totalAnalyses')}</span>
           </div>
           <div className="billing-usage-item">
             <span className="billing-usage-value">${billing.totalCost.toFixed(2)}</span>
-            <span className="billing-usage-label">Total Cost</span>
+            <span className="billing-usage-label">{t('totalCost')}</span>
           </div>
           <div className="billing-usage-item">
             <span className="billing-usage-value">${billing.totalAnalyses > 0 ? (billing.totalCost / billing.totalAnalyses).toFixed(3) : '0'}</span>
-            <span className="billing-usage-label">Avg/Analysis</span>
+            <span className="billing-usage-label">{t('avgPerAnalysis')}</span>
           </div>
           <div className="billing-usage-item">
             <span className="billing-usage-value">{billing.freeRemaining + billing.totalAnalyses}</span>
-            <span className="billing-usage-label">All-Time</span>
+            <span className="billing-usage-label">{t('allTime')}</span>
           </div>
         </div>
 
         {/* ── Usage by Agent ──────────────────────── */}
         <div className="billing-agent-usage">
-          <h4 className="billing-agent-title">Usage by Agent (sorted)</h4>
+          <h4 className="billing-agent-title">{t('usageByAgent')}</h4>
           {agentUsage.map((agent) => (
             <div key={agent.name} className="billing-agent-row">
               <span className="billing-agent-name">{agent.name}</span>
@@ -232,7 +243,7 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
 
       {/* ── Tier Selection ────────────────────────── */}
       <div className="billing-section">
-        <h3 className="billing-section-title">Pricing Plan</h3>
+        <h3 className="billing-section-title">{t('pricingPlan')}</h3>
         <div className="billing-tier-grid">
           {tiers.map((tier) => (
             <TierCard
@@ -241,6 +252,7 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
               selected={tier.id === localTier}
               freeRemaining={tier.id === localTier ? billing.freeRemaining : 0}
               onSelect={() => { setLocalTier(tier.id); onTierChange?.(tier.id); }}
+              t={t}
             />
           ))}
         </div>
@@ -248,19 +260,19 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
 
       {/* ── Cost Estimator ────────────────────────── */}
       <div className="billing-section">
-        <h3 className="billing-section-title">Cost Summary</h3>
+        <h3 className="billing-section-title">{t('costSummary')}</h3>
         <div className="billing-cost-breakdown">
           <div className="billing-cost-row">
-            <span>Base ({selectedTier.name})</span>
-            <span>{billing.freeRemaining > 0 ? 'FREE' : `$${selectedTier.price.toFixed(1)}`}</span>
+            <span>{t('base', { tier: t(selectedTier.id as keyof TBilling) as string })}</span>
+            <span>{billing.freeRemaining > 0 ? t('free') : `$${selectedTier.price.toFixed(1)}`}</span>
           </div>
           <div className="billing-cost-row">
-            <span title="Cached responses skip LLM API calls, saving 95%">Cache discount (95%) ⓘ</span>
+            <span title={t('cacheTooltip')}>{t('cacheDiscount')} ⓘ</span>
             <span className="text-green">-${billing.freeRemaining > 0 ? '0.00' : (selectedTier.price * 0.95).toFixed(2)}</span>
           </div>
           <div className="billing-cost-row total">
-            <span>Estimated per analysis</span>
-            <span>{billing.freeRemaining > 0 ? 'FREE' : `$${(selectedTier.price * 0.05).toFixed(3)}`}</span>
+            <span>{t('estimatedPer')}</span>
+            <span>{billing.freeRemaining > 0 ? t('free') : `$${(selectedTier.price * 0.05).toFixed(3)}`}</span>
           </div>
         </div>
       </div>
@@ -276,7 +288,7 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
 
       {/* ── Billing History ──────────────────────── */}
       <div className="billing-section">
-        <h3 className="billing-section-title">Recent Billing</h3>
+        <h3 className="billing-section-title">{t('recentBilling')}</h3>
         <div className="billing-history-list">
           <div className="billing-history-row">
             <span>🤖</span>
@@ -301,17 +313,17 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
 
       {/* ── Tier Upgrade Simulator ────────────────── */}
       <div className="billing-section">
-        <h3 className="billing-section-title">🔮 Upgrade Simulator</h3>
+        <h3 className="billing-section-title">{t('upgradeSimulator')}</h3>
         <div className="billing-simulator">
           <div className="billing-sim-row">
-            <span>Standard → Premium</span>
-            <span className="text-green">Save $0.15/analysis</span>
-            <span>Break-even: 20 analyses</span>
+            <span>{t('standardToPremium')}</span>
+            <span className="text-green">{t('savePerAnalysis')}</span>
+            <span>{t('breakEven')}</span>
           </div>
           <div className="billing-sim-row">
-            <span>Premium → Flagship</span>
-            <span className="text-green">+Arena +3 debate</span>
-            <span>$0.50 more/analysis</span>
+            <span>{t('premiumToFlagship')}</span>
+            <span className="text-green">{t('plusArena')}</span>
+            <span>{t('morePerAnalysis')}</span>
           </div>
         </div>
       </div>

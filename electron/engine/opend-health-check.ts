@@ -66,7 +66,7 @@ async function checkLatency(host: string, port: number, timeout = 5000): Promise
         resolve({ name: 'Latency', status: 'FAIL', value: null, message: `连接失败: ${err.message}`, ms: Date.now() - start });
       });
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return { name: 'Latency', status: 'FAIL', value: null, message: `检查失败: ${e.message}`, ms: Date.now() - start };
   }
 }
@@ -87,7 +87,7 @@ async function checkQuoteStream(): Promise<HealthCheck> {
       return { name: 'Quote Stream', status: 'WARN', value: subscribed, message: `订阅 ${subscribed} 个标的，平均延迟 ${latency}ms (偏高)`, ms };
     }
     return { name: 'Quote Stream', status: 'PASS', value: subscribed, message: `已订阅 ${subscribed} 个标的，延迟 ${latency ?? '?'}ms`, ms };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return { name: 'Quote Stream', status: 'WARN', value: null, message: `行情流检查失败: ${e.message}`, ms: Date.now() - start };
   }
 }
@@ -109,7 +109,7 @@ async function checkDataFreshness(): Promise<HealthCheck> {
       return { name: 'Data Freshness', status: 'FAIL', value: Math.round(ageSeconds), message: `行情数据 ${Math.round(ageSeconds)}秒 未更新`, ms };
     }
     return { name: 'Data Freshness', status: 'PASS', value: Math.round(ageSeconds), message: `最后更新 ${Math.round(ageSeconds)}秒前`, ms };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return { name: 'Data Freshness', status: 'SKIP', value: null, message: `数据新鲜度检查跳过: ${e.message}`, ms: Date.now() - start };
   }
 }
@@ -129,7 +129,7 @@ async function checkRiskEngine(): Promise<HealthCheck> {
       return { name: 'Risk Engine', status: 'WARN', value: drawdown, message: `回撤 ${drawdown.toFixed(2)}% (偏高)`, ms };
     }
     return { name: 'Risk Engine', status: 'PASS', value: drawdown, message: `风控正常，回撤 ${drawdown.toFixed(2)}%`, ms };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return { name: 'Risk Engine', status: 'WARN', value: null, message: `风控引擎检查失败: ${e.message}`, ms: Date.now() - start };
   }
 }
@@ -146,7 +146,7 @@ async function checkSubscriptions(): Promise<HealthCheck> {
       return { name: 'Subscriptions', status: 'WARN', value: 0, message: '未订阅任何标的', ms };
     }
     return { name: 'Subscriptions', status: 'PASS', value: symbols.length, message: `已订阅 ${symbols.length} 个标的: ${symbols.slice(0, 5).join(', ')}${symbols.length > 5 ? '...' : ''}`, ms };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return { name: 'Subscriptions', status: 'SKIP', value: null, message: `订阅检查跳过: ${e.message}`, ms: Date.now() - start };
   }
 }

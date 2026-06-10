@@ -160,8 +160,7 @@ const templateResponses: Record<string, Record<string, string>> = {
       '📊 **市场概览**\n\n' +
       '当前建议关注：\n' +
       '- 美股：关注FOMC政策、VIX波动率\n' +
-      '- 港股：关注南向资金流向、恒指支撑位\n' +
-      '- A股：关注北向资金、融资余额\n\n' +
+      '- 港股：关注南向资金流向、恒指支撑位\n\n' +
       '💡 查看**行情中心**获取实时报价，**宏观数据**了解经济指标。',
     general:
       '🤖 **DAWN WHALES AI 助手**\n\n' +

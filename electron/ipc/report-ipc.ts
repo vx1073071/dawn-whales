@@ -68,8 +68,8 @@ export function registerReportIPC(
     if (vErr) return vErr;
     const { results, symbol, apiKey, timeoutMs } = raw as {
       results: any[];
-      symbol?: string;
-      apiKey?: string;
+      symbol?: string;\1/** @deprecated R83 — use server-side AI Gateway token */
+\1\2
       timeoutMs?: number;
     };
     const report = await generateBacktestReport(results, symbol, apiKey, timeoutMs ?? 20000);
@@ -81,6 +81,7 @@ export function registerReportIPC(
   ipcMain.handle('report:quick', async (_e, raw: unknown) => {
     const vErr = validate(ReportQuickSchema, raw);
     if (vErr) return vErr;
+    /** @deprecated R83 — use server-side AI Gateway token */
     const { result, apiKey } = raw as { result: any; apiKey?: string };
     const report = await generateQuickReport(result, apiKey);
     return { success: true, report };

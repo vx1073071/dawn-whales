@@ -76,10 +76,12 @@ export function registerAlertNotificationIPC(
 
 
 
+  /** @deprecated R83 — migrate to server-side AI Gateway; apiKey param retained for backward compat */
   ipcMain.handle('notification:summary', async (_e, alerts: SmartAlert[], apiKey?: string) => {
     if (!Array.isArray(alerts) || alerts.length === 0) {
       return { success: true, summary: '暂无活跃警报。' };
     }
+    // R83: server-side auth — apiKey fallback kept for transition; remove in R84
     const summary = await generateAlertSummary(alerts, apiKey ?? '');
     return { success: true, summary };
   });

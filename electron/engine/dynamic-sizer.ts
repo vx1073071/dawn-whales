@@ -249,7 +249,7 @@ export class DynamicSizer {
         expectedValue,
         debug,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[DynamicSizer] Calculation failed:', err.message);
       return {
         success: false,
@@ -355,7 +355,7 @@ export class DynamicSizer {
         totalExposurePct: newExposure,
         positionSizes: results,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[DynamicSizer] Portfolio calculation failed:', err.message);
       return {
         success: false,
@@ -427,7 +427,7 @@ export class DynamicSizer {
     try {
       const result = await this.regimeDetector.detect();
       return result.regime || 'neutral';
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[DynamicSizer] Regime detection failed:', err.message);
       return 'neutral';
     }
@@ -443,7 +443,7 @@ export class DynamicSizer {
     try {
       const result = await this.sentimentEngine.compute();
       return result.index?.overallScore || 50;
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[DynamicSizer] Sentiment fetch failed:', err.message);
       return 50;
     }

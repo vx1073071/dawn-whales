@@ -352,7 +352,7 @@ export class StrategyEngine {
 
       // Notify listeners
       for (const cb of this.signalCallbacks) {
-        try { cb(event); } catch (e: any) { log.error('[StrategyEngine] Signal callback error:', e.message); }
+        try { cb(event); } catch (e: unknown) { log.error('[StrategyEngine] Signal callback error:', e.message); }
       }
 
       // Generate trade order if applicable
@@ -378,7 +378,7 @@ export class StrategyEngine {
           brokerId: strategy.strategy.brokerId,
         };
         for (const cb of this.tradeCallbacks) {
-          try { cb(order); } catch (e: any) { log.error('[StrategyEngine] Trade callback error:', e.message); }
+          try { cb(order); } catch (e: unknown) { log.error('[StrategyEngine] Trade callback error:', e.message); }
         }
       } else if (signal === 'SELL' && strategy.position && strategy.position.qty > 0) {
         // v2: Record trade for Kelly calculation
@@ -399,7 +399,7 @@ export class StrategyEngine {
           brokerId: strategy.strategy.brokerId,
         };
         for (const cb of this.tradeCallbacks) {
-          try { cb(order); } catch (e: any) { log.error('[StrategyEngine] Trade callback error:', e.message); }
+          try { cb(order); } catch (e: unknown) { log.error('[StrategyEngine] Trade callback error:', e.message); }
         }
       }
 

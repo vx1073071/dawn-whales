@@ -3,10 +3,10 @@
  * R68: v1.7.0-alpha — Enhanced fractional share trading with partial fill support
  *
  * Features:
- * - Fractional share input (A股 1-99碎股, 美股 0.01-1.00)
+ * - Fractional share input (美股 0.01-1.00)
  * - Partial fill status tracking: ordered→partial→filled→remaining
  * - Real-time fee calculator per fractional lot
- * - Market-specific rules (A股100整手+碎股, 美股任意小数)
+ * - Market-specific rules (美股任意小数)
  * - Fill progress bar with ordered/filled/remaining breakdown
  * - Partial fill history log
  */
@@ -20,7 +20,7 @@ export interface FractionalOrder {
   market: 'HK' | 'US' | 'CN';
   direction: 'BUY' | 'SELL';
   totalQty: number;        // includes fractional part
-  wholeLots: number;       // integer lots (A股: 100股/lot)
+  wholeLots: number;       // integer lots
   fractionalQty: number;   // fractional remainder
   price: number;
   filledQty: number;
@@ -66,7 +66,7 @@ export interface FractionalTradePanelProps {
 const MARKET_RULES: MarketRule[] = [
   { market: 'US', flag: '🇺🇸', currency: 'USD', lotSize: 1, minFractional: 0.01, fractionalStep: 0.01, fractionalLabel: '可买碎股 (最小0.01股)', commissionPct: 0.0049, minCommission: 0.99, stampPct: 0.0008 },
   { market: 'HK', flag: '🇭🇰', currency: 'HKD', lotSize: 100, minFractional: 1, fractionalStep: 1, fractionalLabel: '碎股 (1-99股)', commissionPct: 0.03, minCommission: 3, stampPct: 0.13 },
-  { market: 'CN', flag: '🇨🇳', currency: 'CNY', lotSize: 100, minFractional: 1, fractionalStep: 1, fractionalLabel: '碎股 (1-99股)', commissionPct: 0.03, minCommission: 5, stampPct: 0.1 },
+
 ];
 
 // ── Mock Order ──────────────────────────────────────────────────────────
@@ -154,7 +154,7 @@ export default function FractionalTradePanel({
       {/* Header */}
       <div className="p-5 border-b border-white/5">
         <h2 className="text-xl font-bold">碎股交易</h2>
-        <p className="text-gray-500 text-xs mt-0.5">A股碎股(1-99股) · 美股碎股(0.01-1.00) · 部分成交跟踪</p>
+        <p className="text-gray-500 text-xs mt-0.5">美股碎股(0.01-1.00) · 部分成交跟踪</p>
       </div>
 
       <div className="flex-1 overflow-y-auto p-5 space-y-5">

@@ -35,7 +35,7 @@ const PRICING_FINAL = [
     agents: '4 Agent Arena (全维度 All 4)',
     cache: '99% 命中率 Hit rate',
     models: '三模型竞技 3-Model arena',
-    markets: '🇭🇰 港股 + 🇺🇸 美股 + 🇨🇳 A股',
+    markets: '🇭🇰 港股 + 🇺🇸 美股',
     highlight: false, badge: '👑 旗舰 Flagship' },
 ];
 
@@ -65,7 +65,7 @@ const PLATFORMS_FINAL = [
 const FEATURES_FINAL = [
   { icon: '🤖', title: '4 Agent AI', desc: '基本面·技术面·情绪·宏观 Agent 协作。自然语言→交易信号。Fundamentals · Technical · Sentiment · Macro.' },
   { icon: '📊', title: '策略因子引擎', desc: 'Fama-French 5因子 + Barra定制 + 自研选股。NL→DSL→Signal。' },
-  { icon: '🌍', title: '三市场双券商', desc: '港股HKEX·美股NYSE·A股沪深。Futu OpenD + IBKR Gateway 双通道。' },
+  { icon: '🌍', title: '双市场券商', desc: '港股HKEX·美股NYSE。Futu OpenD + IBKR Gateway 双通道。' },
   { icon: '💰', title: 'USDT按次付费', desc: 'Pay-per-use。不绑套餐。不强制订阅。TRC-20充值。P2P转账。' },
   { icon: '📡', title: '信号广场', desc: '发现·订阅·跟单。实时信号推送+质量评分(A+~F)+表现追踪。' },
   { icon: '🔒', title: '服务器端安全', desc: 'AI密钥仅在服务器。桌面端瘦客户端。破解=React组件。2FA保护。' },

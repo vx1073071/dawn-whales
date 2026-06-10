@@ -156,7 +156,7 @@ export async function getStockOverview(code: string): Promise<StockOverview> {
         summary: diag.overview.summary,
       };
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn('[EMI-Unified] Diagnosis error:', err.message);
   }
 
@@ -176,7 +176,7 @@ export async function getStockOverview(code: string): Promise<StockOverview> {
         };
       }
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn('[EMI-Unified] Capital flow error:', err.message);
   }
 
@@ -194,7 +194,7 @@ export async function getStockOverview(code: string): Promise<StockOverview> {
         };
       }
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn('[EMI-Unified] Dragon tiger error:', err.message);
   }
 
@@ -211,7 +211,7 @@ export async function getStockOverview(code: string): Promise<StockOverview> {
         signal: items.length > 20 ? 'institutional_favorite' : items.length > 5 ? 'moderate' : 'low_coverage',
       };
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn('[EMI-Unified] Fund holdings error:', err.message);
   }
 
@@ -226,7 +226,7 @@ export async function getStockOverview(code: string): Promise<StockOverview> {
         topHeadlines: newsResult.articles.slice(0, 5).map((a: any) => a.title),
       };
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn('[EMI-Unified] News error:', err.message);
   }
 
@@ -238,7 +238,7 @@ export async function getStockOverview(code: string): Promise<StockOverview> {
       criticalCount: alerts.filter(a => a.level === 'critical').length,
       types: [...new Set(alerts.map(a => a.type))],
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn('[EMI-Unified] Anomalies error:', err.message);
   }
 
@@ -269,7 +269,7 @@ export async function getMarketOverview(): Promise<MarketOverview> {
         leadingStock: s.leadingStock,
       }));
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn('[EMI-Unified] Heatmap error:', err.message);
   }
 
@@ -284,7 +284,7 @@ export async function getMarketOverview(): Promise<MarketOverview> {
         }
       }
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn('[EMI-Unified] Macro error:', err.message);
   }
 
@@ -296,7 +296,7 @@ export async function getMarketOverview(): Promise<MarketOverview> {
       level: sent.level,
       signal: sent.signal,
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn('[EMI-Unified] Sentiment error:', err.message);
   }
 
@@ -312,7 +312,7 @@ export async function getMarketOverview(): Promise<MarketOverview> {
         strength: breadth.indicators.strength,
       };
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn('[EMI-Unified] Breadth error:', err.message);
   }
 
@@ -327,7 +327,7 @@ export async function getMarketOverview(): Promise<MarketOverview> {
     if (outflowResult.success) {
       result.capitalFlow.topOutflowSectors = outflowResult.items.slice(0, 5).map((s: any) => s.name);
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn('[EMI-Unified] Sector flow error:', err.message);
   }
 

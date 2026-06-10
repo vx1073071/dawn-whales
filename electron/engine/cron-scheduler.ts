@@ -251,7 +251,7 @@ export class CronScheduler {
       this.scheduleTimer(task);
 
       return { success: true, result };
-    } catch (err: any) {
+    } catch (err: unknown) {
       task.status = 'failed';
       task.runCount++;
       task.updatedAt = Date.now();

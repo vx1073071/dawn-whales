@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,25 +14,136 @@
   <meta name="twitter:title" content="Dawn Whales — AI量化策略平台" />
   <link rel="canonical" href="https://dawnwhales.com" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config={theme:{extend:{colors:{dw:{bg:'#0A0A10',surface:'#111827',gold:'#D4A853',accent:'#6366F1'}}}}}</script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            dw: {
+              bg: 'var(--dw-bg)',
+              surface: 'var(--dw-surface)',
+              gold: '#D4A853',
+              accent: '#6366F1',
+              text: 'var(--dw-text)',
+              textMuted: 'var(--dw-text-muted)',
+              border: 'var(--dw-border)',
+            }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    body { background: #0A0A10; color: #E5E7EB; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-    .gradient-text { background: linear-gradient(135deg, #818CF8, #D4A853); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    :root {
+      --dw-bg: #0A0A10;
+      --dw-surface: #111827;
+      --dw-text: #E5E7EB;
+      --dw-text-muted: #9CA3AF;
+      --dw-border: #1F2937;
+      --dw-nav-bg: rgba(10, 10, 16, 0.9);
+      --dw-hero-badge-bg: rgba(99, 102, 241, 0.1);
+      --dw-hero-badge-border: rgba(99, 102, 241, 0.2);
+      --dw-card-bg: #111827;
+      --dw-card-border: #1F2937;
+      --dw-gold: #D4A853;
+      --dw-accent: #6366F1;
+    }
+    html[data-theme="light"] {
+      --dw-bg: #F9FAFB;
+      --dw-surface: #FFFFFF;
+      --dw-text: #111827;
+      --dw-text-muted: #6B7280;
+      --dw-border: #E5E7EB;
+      --dw-nav-bg: rgba(249, 250, 251, 0.9);
+      --dw-hero-badge-bg: rgba(99, 102, 241, 0.08);
+      --dw-hero-badge-border: rgba(99, 102, 241, 0.3);
+      --dw-card-bg: #FFFFFF;
+      --dw-card-border: #E5E7EB;
+    }
+    body {
+      background: var(--dw-bg);
+      color: var(--dw-text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #818CF8, #D4A853);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    /* Theme toggle button */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--dw-border);
+      background: var(--dw-surface);
+      color: var(--dw-text);
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle:hover {
+      border-color: var(--dw-gold);
+    }
+    /* Nav theme-aware */
+    .nav-container {
+      background: var(--dw-nav-bg);
+      border-bottom: 1px solid var(--dw-border);
+      backdrop-filter: blur(12px);
+    }
+    .nav-link {
+      color: var(--dw-text-muted);
+    }
+    .nav-link:hover {
+      color: var(--dw-text);
+    }
+    /* Card theme-aware */
+    .feature-card {
+      background: var(--dw-card-bg);
+      border: 1px solid var(--dw-card-border);
+    }
+    .pricing-card {
+      background: var(--dw-card-bg);
+      border: 1px solid var(--dw-card-border);
+    }
+    /* hero badge */
+    .hero-badge {
+      background: var(--dw-hero-badge-bg);
+      border: 1px solid var(--dw-hero-badge-border);
+    }
+    /* download section */
+    .download-section {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(212, 168, 83, 0.05));
+      border: 1px solid var(--dw-border);
+    }
+    /* footer */
+    .site-footer {
+      border-top: 1px solid var(--dw-border);
+    }
   </style>
 </head>
 <body class="min-h-screen">
   <!-- Nav -->
-  <nav class="sticky top-0 z-50 bg-dw-bg/90 backdrop-blur border-b border-gray-800">
+  <nav class="sticky top-0 z-50 nav-container">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <span class="text-2xl">🐋</span>
-        <span class="text-xl font-extrabold text-white">Dawn Whales</span>
+        <span class="text-xl font-extrabold" style="color: var(--dw-text)">Dawn Whales</span>
         <span class="px-2 py-0.5 rounded-md bg-accent/20 text-blue-300 text-xs font-bold">v1.9.0 GA</span>
       </div>
       <div class="flex gap-3 items-center">
-        <a href="#features" class="px-3 py-1.5 text-sm text-gray-400 hover:text-white">功能</a>
-        <a href="#pricing" class="px-3 py-1.5 text-sm text-gray-400 hover:text-white">定价</a>
-        <a href="#download" class="px-3 py-1.5 text-sm text-gray-400 hover:text-white">下载</a>
+        <a href="#features" class="px-3 py-1.5 text-sm nav-link">功能</a>
+        <a href="#pricing" class="px-3 py-1.5 text-sm nav-link">定价</a>
+        <a href="#download" class="px-3 py-1.5 text-sm nav-link">下载</a>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" aria-label="切换主题">
+          <span class="dark-icon">☀️</span>
+          <span class="light-icon" style="display:none">🌙</span>
+        </button>
         <a href="/register" class="px-5 py-2 rounded-lg bg-accent text-white font-semibold text-sm hover:bg-indigo-600">🚀 免费开始</a>
       </div>
     </div>
@@ -40,97 +151,145 @@
 
   <!-- Hero -->
   <section class="max-w-4xl mx-auto px-6 py-24 text-center">
-    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 mb-6 text-sm text-blue-300">
-      🎉 v1.8.0 GA 正式发布 — 7大市场 · 30+因子 · AI画线 · 策略社区
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full hero-badge mb-6 text-sm text-blue-300">
+      🎉 v1.9.0 GA 正式发布 — 7大市场 · 30+因子 · AI画线 · 策略社区
     </div>
-    <h1 class="text-5xl font-black text-white leading-tight mb-4">
+    <h1 class="text-5xl font-black leading-tight mb-4" style="color: var(--dw-text)">
       AI驱动的<br/><span class="gradient-text">量化策略平台</span>
     </h1>
-    <p class="text-lg text-gray-400 max-w-xl mx-auto mb-8">
+    <p class="text-lg max-w-xl mx-auto mb-8" style="color: var(--dw-text-muted)">
       无需编程 · 自然语言创建 · 30秒出策略 · AI选股 · 7市场全覆盖 · 私行级体验
     </p>
     <div class="flex gap-6 justify-center mb-10">
-      <div><div class="text-2xl font-extrabold text-dw-gold">7</div><div class="text-xs text-gray-500">市场</div></div>
-      <div><div class="text-2xl font-extrabold text-dw-gold">30+</div><div class="text-xs text-gray-500">因子</div></div>
-      <div><div class="text-2xl font-extrabold text-dw-gold">22</div><div class="text-xs text-gray-500">AI形态</div></div>
-      <div><div class="text-2xl font-extrabold text-dw-gold">25项</div><div class="text-xs text-gray-500">新手引导</div></div>
-      <div><div class="text-2xl font-extrabold text-dw-gold">5</div><div class="text-xs text-gray-500">语言</div></div>
+      <div><div class="text-2xl font-extrabold" style="color: var(--dw-gold)">7</div><div class="text-xs" style="color: var(--dw-text-muted)">市场</div></div>
+      <div><div class="text-2xl font-extrabold" style="color: var(--dw-gold)">30+</div><div class="text-xs" style="color: var(--dw-text-muted)">因子</div></div>
+      <div><div class="text-2xl font-extrabold" style="color: var(--dw-gold)">22</div><div class="text-xs" style="color: var(--dw-text-muted)">AI形态</div></div>
+      <div><div class="text-2xl font-extrabold" style="color: var(--dw-gold)">25项</div><div class="text-xs" style="color: var(--dw-text-muted)">新手引导</div></div>
+      <div><div class="text-2xl font-extrabold" style="color: var(--dw-gold)">5</div><div class="text-xs" style="color: var(--dw-text-muted)">语言</div></div>
     </div>
     <div class="flex gap-3 justify-center flex-wrap">
       <a href="/download" class="px-8 py-3.5 rounded-xl bg-accent text-white font-bold text-lg hover:bg-indigo-600">🚀 免费开始使用</a>
-      <a href="#demo" class="px-8 py-3.5 rounded-xl border border-gray-700 text-gray-300 text-lg hover:bg-gray-800">📺 看演示 (60秒)</a>
+      <a href="#demo" class="px-8 py-3.5 rounded-xl border text-lg hover:opacity-80" style="border-color: var(--dw-border); color: var(--dw-text-muted)">📺 看演示 (60秒)</a>
     </div>
-    <p class="mt-4 text-xs text-gray-500">无需信用卡 · 免费层永久可用 · Windows / macOS / Linux</p>
+    <p class="mt-4 text-xs" style="color: var(--dw-text-muted)">无需信用卡 · 免费层永久可用 · Windows / macOS / Linux</p>
   </section>
 
   <!-- Features -->
   <section id="features" class="max-w-6xl mx-auto px-6 py-16">
-    <h2 class="text-3xl font-extrabold text-white text-center mb-12">全部功能一览</h2>
+    <h2 class="text-3xl font-extrabold text-center mb-12" style="color: var(--dw-text)">全部功能一览</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div class="p-6 rounded-xl bg-dw-surface border border-gray-800"><span class="text-2xl">🌍</span><h3 class="font-bold text-white mt-2">7大市场</h3><p class="text-sm text-gray-400 mt-1">港股·美股·新加坡·日本·澳洲·加拿大·马来西亚 · 全品种覆盖</p></div>
-      <div class="p-6 rounded-xl bg-dw-surface border border-gray-800"><span class="text-2xl">📊</span><h3 class="font-bold text-white mt-2">30+量化因子</h3><p class="text-sm text-gray-400 mt-1">价值/动量/质量/波动/股息/成长六维 · 市场兼容自动校验</p></div>
-      <div class="p-6 rounded-xl bg-dw-surface border border-gray-800"><span class="text-2xl">🤖</span><h3 class="font-bold text-white mt-2">4Agent AI信号</h3><p class="text-sm text-gray-400 mt-1">基本面·技术面·情绪面·宏观面 四引擎协同 · 真实数据源</p></div>
-      <div class="p-6 rounded-xl bg-dw-surface border border-gray-800"><span class="text-2xl">📈</span><h3 class="font-bold text-white mt-2">K线图表 TV级</h3><p class="text-sm text-gray-400 mt-1">蜡烛图+成交量+MA叠加+9周期+Crosshair+&lt;100ms渲染</p></div>
-      <div class="p-6 rounded-xl bg-dw-surface border border-gray-800"><span class="text-2xl">📐</span><h3 class="font-bold text-white mt-2">AI画线+形态</h3><p class="text-sm text-gray-400 mt-1">6画线工具 · 22种K线形态 · 半透明标注 · 置信度评分</p></div>
-      <div class="p-6 rounded-xl bg-dw-surface border border-gray-800"><span class="text-2xl">🎨</span><h3 class="font-bold text-white mt-2">私行级UI</h3><p class="text-sm text-gray-400 mt-1">深色+金色主题 · 深浅双模式 · 5语言 · 友好错误</p></div>
+      <div class="p-6 rounded-xl feature-card"><span class="text-2xl">🌍</span><h3 class="font-bold mt-2" style="color: var(--dw-text)">7大市场</h3><p class="text-sm mt-1" style="color: var(--dw-text-muted)">港股·美股·新加坡·日本·澳洲·加拿大·马来西亚 · 全品种覆盖</p></div>
+      <div class="p-6 rounded-xl feature-card"><span class="text-2xl">📊</span><h3 class="font-bold mt-2" style="color: var(--dw-text)">30+量化因子</h3><p class="text-sm mt-1" style="color: var(--dw-text-muted)">价值/动量/质量/波动/股息/成长六维 · 市场兼容自动校验</p></div>
+      <div class="p-6 rounded-xl feature-card"><span class="text-2xl">🤖</span><h3 class="font-bold mt-2" style="color: var(--dw-text)">4Agent AI信号</h3><p class="text-sm mt-1" style="color: var(--dw-text-muted)">基本面·技术面·情绪面·宏观面 四引擎协同 · 真实数据源</p></div>
+      <div class="p-6 rounded-xl feature-card"><span class="text-2xl">📈</span><h3 class="font-bold mt-2" style="color: var(--dw-text)">K线图表 TV级</h3><p class="text-sm mt-1" style="color: var(--dw-text-muted)">蜡烛图+成交量+MA叠加+9周期+Crosshair+&lt;100ms渲染</p></div>
+      <div class="p-6 rounded-xl feature-card"><span class="text-2xl">📐</span><h3 class="font-bold mt-2" style="color: var(--dw-text)">AI画线+形态</h3><p class="text-sm mt-1" style="color: var(--dw-text-muted)">6画线工具 · 22种K线形态 · 半透明标注 · 置信度评分</p></div>
+      <div class="p-6 rounded-xl feature-card"><span class="text-2xl">🎨</span><h3 class="font-bold mt-2" style="color: var(--dw-text)">私行级UI</h3><p class="text-sm mt-1" style="color: var(--dw-text-muted)">深色+金色主题 · 深浅双模式 · 5语言 · 友好错误</p></div>
     </div>
   </section>
 
   <!-- Pricing -->
   <section id="pricing" class="max-w-5xl mx-auto px-6 py-16">
-    <h2 class="text-3xl font-extrabold text-white text-center mb-12">简单定价 — 仅收 USDT</h2>
+    <h2 class="text-3xl font-extrabold text-center mb-12" style="color: var(--dw-text)">简单定价 — 仅收 USDT</h2>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-      <div class="p-8 rounded-2xl bg-dw-surface border border-gray-800 text-center">
-        <div class="text-lg font-bold text-gray-400 mb-2">Standard</div>
-        <div class="text-4xl font-black text-white mb-1">1.0<span class="text-base text-gray-500">/月</span></div>
-        <div class="text-xs text-gray-500 mb-6">USDT · TRC20</div>
-        <ul class="text-sm text-gray-300 space-y-2 mb-8 text-left">
+      <div class="p-8 rounded-2xl pricing-card text-center">
+        <div class="text-lg font-bold mb-2" style="color: var(--dw-text-muted)">Standard</div>
+        <div class="text-4xl font-black mb-1" style="color: var(--dw-text)">1.0<span class="text-base" style="color: var(--dw-text-muted)">/月</span></div>
+        <div class="text-xs mb-6" style="color: var(--dw-text-muted)">USDT · TRC20</div>
+        <ul class="text-sm space-y-2 mb-8 text-left" style="color: var(--dw-text)">
           <li>✅ 7市场行情</li><li>✅ 5个策略模板</li><li>✅ 3年回测</li><li>✅ 模拟交易</li>
         </ul>
-        <a href="/register" class="block w-full py-3 rounded-lg border border-gray-600 text-gray-300 font-semibold hover:bg-gray-800">免费开始</a>
+        <a href="/register" class="block w-full py-3 rounded-lg border font-semibold hover:opacity-80" style="border-color: var(--dw-border); color: var(--dw-text)">免费开始</a>
       </div>
-      <div class="p-8 rounded-2xl border-2 border-accent bg-accent/5 text-center relative">
+      <div class="p-8 rounded-2xl border-2 bg-accent/5 text-center relative" style="border-color: var(--dw-accent)">
         <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-accent text-white text-xs font-bold">最受欢迎</div>
         <div class="text-lg font-bold text-blue-300 mb-2">Premium</div>
-        <div class="text-4xl font-black text-white mb-1">1.5<span class="text-base text-gray-500">/月</span></div>
-        <div class="text-xs text-gray-500 mb-6">USDT · TRC20</div>
-        <ul class="text-sm text-gray-300 space-y-2 mb-8 text-left">
+        <div class="text-4xl font-black mb-1" style="color: var(--dw-text)">1.5<span class="text-base" style="color: var(--dw-text-muted)">/月</span></div>
+        <div class="text-xs mb-6" style="color: var(--dw-text-muted)">USDT · TRC20</div>
+        <ul class="text-sm space-y-2 mb-8 text-left" style="color: var(--dw-text)">
           <li>✅ 全部30+因子</li><li>✅ 全部20+模板</li><li>✅ AI信号 (4Agent)</li><li>✅ AI画线+形态</li><li>✅ 策略社区</li>
         </ul>
         <a href="/register" class="block w-full py-3 rounded-lg bg-accent text-white font-bold hover:bg-indigo-600">开始试用</a>
       </div>
-      <div class="p-8 rounded-2xl bg-dw-surface border border-gray-800 text-center">
-        <div class="text-lg font-bold text-dw-gold mb-2">Flagship</div>
-        <div class="text-4xl font-black text-white mb-1">2.0<span class="text-base text-gray-500">/月</span></div>
-        <div class="text-xs text-gray-500 mb-6">USDT · TRC20</div>
-        <ul class="text-sm text-gray-300 space-y-2 mb-8 text-left">
+      <div class="p-8 rounded-2xl pricing-card text-center">
+        <div class="text-lg font-bold mb-2" style="color: var(--dw-gold)">Flagship</div>
+        <div class="text-4xl font-black mb-1" style="color: var(--dw-text)">2.0<span class="text-base" style="color: var(--dw-text-muted)">/月</span></div>
+        <div class="text-xs mb-6" style="color: var(--dw-text-muted)">USDT · TRC20</div>
+        <ul class="text-sm space-y-2 mb-8 text-left" style="color: var(--dw-text)">
           <li>✅ 全部Premium功能</li><li>✅ AI助手 (4项收费)</li><li>✅ 每日简报</li><li>✅ 多券商实盘</li><li>✅ 优先支持</li>
         </ul>
-        <a href="/register" class="block w-full py-3 rounded-lg border border-dw-gold text-dw-gold font-bold hover:bg-dw-gold/10">联系销售</a>
+        <a href="/register" class="block w-full py-3 rounded-lg border font-bold hover:opacity-80" style="border-color: var(--dw-gold); color: var(--dw-gold)">联系销售</a>
       </div>
     </div>
   </section>
 
   <!-- Download -->
   <section id="download" class="max-w-4xl mx-auto px-6 py-16">
-    <div class="p-10 rounded-2xl bg-gradient-to-br from-accent/10 to-dw-gold/5 border border-gray-800 text-center">
-      <h2 class="text-3xl font-extrabold text-white mb-4">准备好开始量化了吗？</h2>
-      <p class="text-gray-400 mb-8">30秒创建第一个策略 · 7市场全覆盖 · AI驱动 · 免费开始</p>
+    <div class="p-10 rounded-2xl download-section text-center">
+      <h2 class="text-3xl font-extrabold mb-4" style="color: var(--dw-text)">准备好开始量化了吗？</h2>
+      <p class="mb-8" style="color: var(--dw-text-muted)">30秒创建第一个策略 · 7市场全覆盖 · AI驱动 · 免费开始</p>
       <div class="flex gap-4 justify-center flex-wrap">
         <a href="/download/win" class="px-8 py-3.5 rounded-xl bg-accent text-white font-bold text-lg">🖥️ Windows 下载</a>
-        <a href="/download/mac" class="px-8 py-3.5 rounded-xl border border-gray-700 text-gray-300 text-lg hover:bg-gray-800">🍎 macOS 下载</a>
-        <a href="/download/linux" class="px-8 py-3.5 rounded-xl border border-gray-700 text-gray-300 text-lg hover:bg-gray-800">🐧 Linux 下载</a>
+        <a href="/download/mac" class="px-8 py-3.5 rounded-xl border font-bold text-lg hover:opacity-80" style="border-color: var(--dw-border); color: var(--dw-text)">🍎 macOS 下载</a>
+        <a href="/download/linux" class="px-8 py-3.5 rounded-xl border font-bold text-lg hover:opacity-80" style="border-color: var(--dw-border); color: var(--dw-text)">🐧 Linux 下载</a>
       </div>
-      <p class="mt-4 text-xs text-gray-500">v1.8.0 · 支持 Windows 10+ / macOS 12+ / Ubuntu 20.04+</p>
+      <p class="mt-4 text-xs" style="color: var(--dw-text-muted)">v1.9.0 · 支持 Windows 10+ / macOS 12+ / Ubuntu 20.04+</p>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="border-t border-gray-800 py-8 px-6">
-    <div class="max-w-6xl mx-auto flex justify-between flex-wrap gap-4 text-xs text-gray-500">
-      <div><span class="mr-2">🐋</span><span class="text-gray-300 font-semibold">Dawn Whales</span> v1.8.0</div>
+  <footer class="site-footer py-8 px-6">
+    <div class="max-w-6xl mx-auto flex justify-between flex-wrap gap-4 text-xs" style="color: var(--dw-text-muted)">
+      <div><span class="mr-2">🐋</span><span class="font-semibold" style="color: var(--dw-text)">Dawn Whales</span> v1.9.0</div>
       <div class="flex gap-5">© 2026 · 隐私政策 · 服务条款 · 联系我们</div>
     </div>
   </footer>
+
+  <script>
+    // Theme toggle logic
+    (function() {
+      const html = document.documentElement;
+      const saved = localStorage.getItem('dw_theme');
+      if (saved === 'light') {
+        html.setAttribute('data-theme', 'light');
+        html.classList.add('light');
+      } else if (!saved && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        html.setAttribute('data-theme', 'light');
+        html.classList.add('light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        html.classList.remove('light');
+      }
+      updateToggleIcon();
+    })();
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      if (next === 'light') {
+        html.classList.add('light');
+      } else {
+        html.classList.remove('light');
+      }
+      localStorage.setItem('dw_theme', next);
+      updateToggleIcon();
+    }
+
+    function updateToggleIcon() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.querySelectorAll('.dark-icon').forEach(el => el.style.display = isDark ? '' : 'none');
+      document.querySelectorAll('.light-icon').forEach(el => el.style.display = isDark ? 'none' : '');
+    }
+
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+      if (!localStorage.getItem('dw_theme')) {
+        const next = e.matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', next);
+        updateToggleIcon();
+      }
+    });
+  </script>
 </body>
 </html>

@@ -171,7 +171,7 @@ class BackfillManager {
 
       log.info(`[Backfill] ${symbol}: ${records.length} records downloaded`);
       return result;
-    } catch (err: any) {
+    } catch (err: unknown) {
       progress.status = 'failed';
       progress.error = err.message;
       log.error(`[Backfill] ${symbol} failed:`, err.message);

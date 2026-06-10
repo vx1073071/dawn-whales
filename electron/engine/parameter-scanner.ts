@@ -141,7 +141,7 @@ export class ParameterScanner {
             avgHoldingBars: btResult.result.avgHoldingBars,
           });
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         log.warn('[ParameterScanner] Backtest failed for params:', params, err.message);
       }
     }

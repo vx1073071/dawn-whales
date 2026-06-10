@@ -926,7 +926,7 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
       // In real mode, we wait for broker confirmation via callback/webhook
       // For now, mark as submitted and let the broker callback handle fill updates
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error(`[TradeExecutor] [REAL] Order execution error:`, err);
       order.status = 'rejected';
       order.rejectionReason = err.message || 'Unknown broker error';

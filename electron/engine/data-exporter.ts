@@ -148,7 +148,7 @@ function queryTrades(filters?: ExportOptions['filters']): any[] {
 
   try {
     return db.getDb().prepare(sql).all(...params);
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[DataExporter] queryTrades error:', err.message);
     return [];
   }
@@ -183,7 +183,7 @@ function queryBacktestRuns(filters?: ExportOptions['filters']): any[] {
 
   try {
     return db.getDb().prepare(sql).all(...params);
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[DataExporter] queryBacktestRuns error:', err.message);
     return [];
   }
@@ -210,7 +210,7 @@ function queryStrategies(filters?: ExportOptions['filters']): any[] {
 
   try {
     return db.getDb().prepare(sql).all(...params);
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[DataExporter] queryStrategies error:', err.message);
     return [];
   }
@@ -239,7 +239,7 @@ function queryKlineCache(filters?: ExportOptions['filters']): any[] {
 
   try {
     return db.getDb().prepare(sql).all(...params);
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[DataExporter] queryKlineCache error:', err.message);
     return [];
   }
@@ -279,7 +279,7 @@ function queryPortfolio(): any[] {
       ORDER BY total_pnl DESC
     `;
     return db.getDb().prepare(sql).all();
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[DataExporter] queryPortfolio error:', err.message);
     return [];
   }
@@ -445,7 +445,7 @@ export function exportData(options: ExportOptions): ExportResult {
       format,
       target,
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[DataExporter] Write failed:', err.message);
     return { success: false, rowCount: rows.length, fileSizeBytes: 0, format, target, error: err.message };
   }
@@ -692,7 +692,7 @@ export function exportPdf(options: ExportOptions): ExportResult {
       format: 'pdf',
       target,
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[DataExporter] PDF write failed:', err.message);
     return { success: false, rowCount: rows.length, fileSizeBytes: 0, format: 'pdf', target, error: err.message };
   }
@@ -942,7 +942,7 @@ export function saveSchedules(filePath: string): boolean {
     fs.writeFileSync(filePath, data, 'utf-8');
     log.info(`[DataExporter] Saved ${schedules.size} schedules to ${filePath}`);
     return true;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[DataExporter] Failed to save schedules:', err.message);
     return false;
   }
@@ -961,7 +961,7 @@ export function loadSchedules(filePath: string): number {
     }
     log.info(`[DataExporter] Loaded ${entries.length} schedules from ${filePath}`);
     return entries.length;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[DataExporter] Failed to load schedules:', err.message);
     return 0;
   }

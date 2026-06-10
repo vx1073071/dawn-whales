@@ -221,7 +221,7 @@ export class NewsFetcher {
       
       // Apply filter
       return this.applyFilter(mockItems, filter);
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error(`[NewsFetcher] Error fetching from ${source.name}:`, err);
       return [];
     }

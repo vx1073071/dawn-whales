@@ -108,7 +108,7 @@ export async function getStockCapitalFlowRank(
     cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
     log.info(`[CapitalFlow] Stock rank: ${items.length} items, sorted by ${sortBy}`);
     return result;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[CapitalFlow] Stock rank error:', err.message);
     return { success: false, items: [], total: 0, type: 'stock', sortBy, error: err.message };
   }
@@ -165,7 +165,7 @@ export async function getSectorCapitalFlowRank(
     cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
     log.info(`[CapitalFlow] Sector rank: ${items.length} items, sorted by ${sortBy}`);
     return result;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[CapitalFlow] Sector rank error:', err.message);
     return { success: false, items: [], total: 0, type: 'sector', sortBy, error: err.message };
   }
@@ -222,7 +222,7 @@ export async function getConceptCapitalFlowRank(
     cache.set(cacheKey, { data: result, expires: Date.now() + CACHE_TTL });
     log.info(`[CapitalFlow] Concept rank: ${items.length} items, sorted by ${sortBy}`);
     return result;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[CapitalFlow] Concept rank error:', err.message);
     return { success: false, items: [], total: 0, type: 'concept', sortBy, error: err.message };
   }

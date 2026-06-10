@@ -946,7 +946,7 @@ export class DataFormatter {
         durationMs: duration,
         warnings,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       const duration = performance.now() - startTime;
       const errorMsg = err?.message ?? String(err);
       log.error(`[DataFormatter] Conversion failed: ${errorMsg}`);
@@ -1004,7 +1004,7 @@ export class DataFormatter {
         durationMs: duration,
         warnings,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       const duration = performance.now() - startTime;
       const errorMsg = err?.message ?? String(err);
       log.error(`[DataFormatter] Encoding failed: ${errorMsg}`);
@@ -1071,7 +1071,7 @@ export class DataFormatter {
         durationMs: duration,
         warnings,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       const duration = performance.now() - startTime;
       const errorMsg = err?.message ?? String(err);
       log.error(`[DataFormatter] Decoding failed: ${errorMsg}`);
@@ -1286,7 +1286,7 @@ export class DataFormatter {
     // Try encoding to verify it works
     try {
       format.encoder(data, {});
-    } catch (err: any) {
+    } catch (err: unknown) {
       errors.push(`Encoding test failed: ${err?.message ?? String(err)}`);
     }
 

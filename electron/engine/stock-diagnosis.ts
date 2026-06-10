@@ -119,7 +119,7 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
           }
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn('[StockDiagnosis] Capital flow error:', err.message);
     }
   }
@@ -149,7 +149,7 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
           dimensions.fundOwnership = { score: 20, grade: 'F', signal: 'bearish', detail: '基金持仓极少', available: true };
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn('[StockDiagnosis] Fund holdings error:', err.message);
     }
   }
@@ -177,7 +177,7 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
           dimensions.dragonTiger = { score: 50, grade: 'C', signal: 'neutral', detail: '未上龙虎榜', available: true };
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn('[StockDiagnosis] Dragon tiger error:', err.message);
     }
   }
@@ -205,7 +205,7 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
           }
         }
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn('[StockDiagnosis] News error:', err.message);
     }
   }
@@ -229,7 +229,7 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
       } else {
         dimensions.anomalies = { score: 70, grade: 'B', signal: 'stable', detail: '近期无异动', available: true };
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn('[StockDiagnosis] Anomalies error:', err.message);
     }
   }

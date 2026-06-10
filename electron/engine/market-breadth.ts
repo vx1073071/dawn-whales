@@ -153,7 +153,7 @@ export async function getMarketBreadth(): Promise<BreadthReport> {
     cache.set(cacheKey, { data: report, expires: Date.now() + CACHE_TTL });
     log.info(`[MarketBreadth] A/D: ${advancing}/${declining}, trend: ${indicators.trend}`);
     return report;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[MarketBreadth] Fetch error:', err.message);
     return emptyReport(err.message);
   }

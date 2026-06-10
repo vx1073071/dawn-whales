@@ -114,13 +114,7 @@ const mockStrategies: StrategyCard[] = [
     totalReturn: 31.2, sharpe: 2.4, maxDrawdown: 15.1, winRate: 65.8, totalSignals: 321,
     tags: ['轮动', '港股', '动量'], createdAt: '2026-01-10', updatedAt: '2026-06-05',
   },
-  {
-    id: 's-004', name: 'A股涨停板猎手', description: '涨停板次日溢价+集合竞价量比，快进快出',
-    creatorId: 'c-04', creatorName: 'DragonTiger', creatorLevel: 'silver', creatorAvatar: '🐉', verified: false,
-    symbol: 'SH.600519', market: 'CN', price: 0, subscribers: 341, rating: 3.9, ratingCount: 87,
-    totalReturn: 18.7, sharpe: 1.2, maxDrawdown: 22.3, winRate: 55.6, totalSignals: 198,
-    tags: ['涨停板', 'A股', '短线'], createdAt: '2026-04-01', updatedAt: '2026-06-02',
-  },
+
   {
     id: 's-005', name: '波动率套利模型', description: 'VIX衍生品+期权跨式组合，低相关Alpha策略',
     creatorId: 'c-05', creatorName: 'VolArb', creatorLevel: 'king', creatorAvatar: '🦅', verified: true,
@@ -412,7 +406,7 @@ export default function StrategyMarketplace({
             <option value="all">🌍 全部市场</option>
             <option value="US">🇺🇸 美股</option>
             <option value="HK">🇭🇰 港股</option>
-            <option value="CN">🇨🇳 A股</option>
+
           </select>
 
           {/* Price */}

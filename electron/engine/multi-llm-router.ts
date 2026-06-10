@@ -54,7 +54,9 @@ export interface LLMModel {
 
 export interface ProviderConfig {
   provider: LLMProvider;
-  apiKey?: string;            // stored encrypted, referenced by ID
+  /** @deprecated R83 — migrate to server-side AI Gateway; client must not hold plaintext keys */
+  apiKey?: string;
+  /** @deprecated R83 — migrate to server-side session token */
   apiKeyRef?: string;
   baseUrl?: string;
   enabled: boolean;

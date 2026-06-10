@@ -153,7 +153,7 @@ export class PreferencesManager {
       this.loadFromDB();
       this.initialized = true;
       log.info('[Preferences] Initialized');
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[Preferences] Init failed, using defaults:', err.message);
       this.prefs = getDefaultPreferences();
       this.initialized = true;
@@ -199,7 +199,7 @@ export class PreferencesManager {
         // Check backup
         this.loadFromBackup();
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn('[Preferences] DB load failed, trying backup:', err.message);
       this.loadFromBackup();
     }
@@ -222,7 +222,7 @@ export class PreferencesManager {
 
       // Also save backup
       this.saveToBackup();
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[Preferences] DB save failed:', err.message);
       this.saveToBackup();
     }
@@ -238,7 +238,7 @@ export class PreferencesManager {
         this.prefs = this.mergeWithDefaults(saved);
         log.info('[Preferences] Loaded from backup');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn('[Preferences] Backup load failed:', err.message);
     }
   }
@@ -250,7 +250,7 @@ export class PreferencesManager {
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
         fs.writeFileSync(this.backupPath, JSON.stringify(this.prefs, null, 2), 'utf-8');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[Preferences] Backup save failed:', err.message);
     }
   }
@@ -382,7 +382,7 @@ export class PreferencesManager {
 
       log.info(`[Preferences] Imported from ${filePath}`);
       return { success: true };
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[Preferences] Import failed:', err.message);
       return { success: false, error: err.message };
     }

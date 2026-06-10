@@ -26,8 +26,8 @@ export type ConnectionState = 'disconnected' | 'connecting' | 'connected' | 'deg
 
 export interface CloudOpenDConfig {
   host: string;
-  port: number;
-  apiKey?: string;
+  port: number;\1/** @deprecated R83 — use server-side AI Gateway token */
+\1\2
   instanceId?: string;        // cloud instance identifier
   region?: string;            // cloud region (e.g., 'hk', 'us-west')
   tlsEnabled?: boolean;
@@ -122,7 +122,7 @@ export class CloudOpenDManager extends EventEmitter {
       this.startHealthCheck();
       this.emit('status', 'connected');
       this.emit('connected', this.health);
-    } catch (err: any) {
+    } catch (err: unknown) {
       this.handleConnectionError(err);
       throw err;
     }
@@ -220,7 +220,7 @@ export class OpenDConnectionPool extends EventEmitter {
       try {
         const health = await manager.connect();
         results.set(market, health);
-      } catch (err: any) {
+      } catch (err: unknown) {
         this.emit('pool_error', market, err.message);
       }
     }

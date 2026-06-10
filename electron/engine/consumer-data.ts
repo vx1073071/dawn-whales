@@ -104,7 +104,7 @@ export async function getCPISubIndexes(months = 12): Promise<CPISubIndex[]> {
     cache.set(cacheKey, { data: indexes, expires: Date.now() + CACHE_TTL });
     log.info(`[ConsumerData] CPI sub-indexes: ${indexes.length} months`);
     return indexes;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[ConsumerData] CPI sub-index error:', err.message);
     return [];
   }
@@ -146,7 +146,7 @@ export async function getRetailSales(months = 12): Promise<RetailSales[]> {
     cache.set(cacheKey, { data: sales, expires: Date.now() + CACHE_TTL });
     log.info(`[ConsumerData] Retail sales: ${sales.length} months`);
     return sales;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[ConsumerData] Retail sales error:', err.message);
     return [];
   }
@@ -185,7 +185,7 @@ export async function getConsumerConfidence(months = 12): Promise<ConsumerConfid
     cache.set(cacheKey, { data: confidence, expires: Date.now() + CACHE_TTL });
     log.info(`[ConsumerData] Consumer confidence: ${confidence.length} months`);
     return confidence;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[ConsumerData] Consumer confidence error:', err.message);
     return [];
   }
@@ -219,7 +219,7 @@ export async function getConsumerDataReport(months = 12): Promise<ConsumerDataRe
     cache.set(cacheKey, { data: report, expires: Date.now() + CACHE_TTL });
     log.info('[ConsumerData] Full report generated');
     return report;
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.error('[ConsumerData] Report error:', err.message);
     return {
       success: false,

@@ -291,7 +291,7 @@ export class StrategyExportImport extends EventEmitter {
       } else {
         data = this.serializeYaml(strategies);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       this.exportStatus = 'error';
       return {
         success: false,
@@ -373,7 +373,7 @@ export class StrategyExportImport extends EventEmitter {
       strategies = format === 'json'
         ? this.deserializeJson(data)
         : this.deserializeYaml(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       this.importStatus = 'error';
       return {
         valid: false,

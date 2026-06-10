@@ -6,8 +6,8 @@
 
 export interface AdapterConfig {
   enabled: boolean;
-  baseUrl: string;
-  apiKey?: string;
+  baseUrl: string;\1/** @deprecated R83 — use server-side AI Gateway token */
+\1\2
   rateLimit_perMin: number;
   timeoutMs: number;
   retries: number;
@@ -122,7 +122,7 @@ abstract class BaseAdapter implements IDataSourceAdapter {
 
         this.cache.set(key, { data, ts: Date.now() });
         return { success: true, source: this.name, data, error: null, latencyMs, cached: false, timestamp: Date.now() };
-      } catch (e: any) {
+      } catch (e: unknown) {
         lastError = e;
         if (i < attempts - 1) {
           await this.sleep(200 * (i + 1)); // exponential-ish backoff

@@ -403,7 +403,7 @@ export class LiveTradeBridge {
         this.addAudit(bridgeOrder, 'order_rejected', `券商拒绝: ${liveOrder.error || 'unknown'}`);
         this.emit('order:rejected', bridgeOrder);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       bridgeOrder.status = 'failed';
       this.addAudit(bridgeOrder, 'order_failed', `提交异常: ${err.message}`);
       this.emit('order:failed', bridgeOrder);
@@ -434,7 +434,7 @@ export class LiveTradeBridge {
     if (bridgeOrder.liveOrder && this.broker && !this.config.dryRun) {
       try {
         await this.broker.cancelOrder(bridgeOrder.liveOrder.brokerOrderId);
-      } catch (err: any) {
+      } catch (err: unknown) {
         log.error('[LiveTradeBridge] Cancel live order failed', err);
         this.addAudit(bridgeOrder, 'order_failed', `实盘取消失败: ${err.message}`);
         return false;

@@ -40,15 +40,15 @@ const MOCK_DIGEST: Record<DigestType, DailyDigest> = {
     generatedAt: Date.now(),
     marketSentiment: 'bullish',
     sections: [
-      { heading: '市场概览', content: '今日A股三大指数集体收涨，沪指涨0.68%报3,245点，深成指涨1.12%，创业板指涨1.45%。两市成交额8,920亿元，较昨日放量12%。北向资金净流入52.3亿元，为连续第5日净流入。', icon: '📈' },
-      { heading: '组合表现', content: '主账户今日盈利+28,500 HKD (+0.16%)，跑赢恒指。最大贡献: 腾讯(+1.2%)、茅台(+0.8%)。拖累: 比亚迪(-0.5%)。API账户今日亏损-3,200 HKD (-0.21%)，主要受小米(-1.1%)拖累。', icon: '💰' },
+      { heading: '市场概览', content: '今日港股市场走强，恒指涨0.82%报19,450点，科指涨1.25%。成交额1,280亿港元，较昨日放量15%。南向资金净流入52.3亿港元，为连续第5日净流入。', icon: '📈' },
+      { heading: '组合表现', content: '主账户今日盈利+28,500 HKD (+0.16%)，跑赢恒指。最大贡献: 腾讯(+1.2%)、友邦(+1.5%)。拖累: 比亚迪(-0.5%)。API账户今日亏损-3,200 HKD (-0.21%)，主要受小米(-1.1%)拖累。', icon: '💰' },
       { heading: '策略信号', content: '双均线交叉策略发出买入信号: US.AAPL @ $150.00，快线(10日均线)上穿慢线(30日均线)。动量突破策略维持持仓，未触发止损。均值回归策略触发卖出: HK.00700 @ $385.00，布林带上轨触及。', icon: '📊' },
       { heading: '风险提醒', content: '组合整体VaR(95%)为-26.4万HKD，CVaR(95%)为-33.5万HKD。当前回撤-3.2%，远低于15%硬限制。多周期引擎显示4/7周期做多、2周期观望、1周期做空，整体偏多。', icon: '⚠️' },
       { heading: 'AI建议', content: '基于当前组合风险敞口和策略信号，建议: 1) 执行AAPL买入信号，仓位控制在5%以内; 2) 关注00700卖出信号，如确认可减仓至半仓; 3) 组合分散度72%，风险可控，暂不需要大规模调仓。', icon: '🤖' },
     ],
     topMovers: [
       { symbol: '00700', name: '腾讯控股', change: 1.2 },
-      { symbol: '600519', name: '贵州茅台', change: 0.8 },
+      { symbol: '01299', name: '友邦保险', change: 1.5 },
       { symbol: '09988', name: '阿里巴巴', change: 0.6 },
       { symbol: '01810', name: '小米集团', change: -1.1 },
       { symbol: '01211', name: '比亚迪', change: -0.5 },
@@ -69,8 +69,8 @@ const MOCK_DIGEST: Record<DigestType, DailyDigest> = {
     generatedAt: Date.now(),
     marketSentiment: 'neutral',
     sections: [
-      { heading: '本周回顾', content: '本周A股震荡上行，沪指累计上涨1.2%，深成指上涨2.1%。市场情绪从谨慎转向乐观，成交量稳步放大。', icon: '📅' },
-      { heading: '组合周报', content: '主账户本周累计盈利+12.5万HKD (+0.71%)。API账户本周累计亏损-1.8万HKD (-1.2%)。双账户合计+10.7万HKD。', icon: '💰' },
+      { heading: '本周回顾', content: '本周港股震荡上行，恒指累计上涨1.6%，科指上涨3.2%。市场情绪从谨慎转向乐观，成交额稳步放大。', icon: '📅' },
+      { heading: '组合周报', content: '主账户本周累计盈利+15.2万HKD (+0.86%)。API账户本周累计亏损-1.8万HKD (-1.2%)。双账户合计+13.4万HKD。', icon: '💰' },
       { heading: '策略表现', content: '双均线交叉策略本周胜率58%，累计收益+0.35%。均值回归策略胜率63%，累计收益+0.42%。动量突破策略表现最弱，胜率52%，收益+0.28%。', icon: '📊' },
       { heading: 'AI建议', content: '建议下周关注: 1) 动量突破策略参数可能需要重新优化; 2) 考虑增加均值回归策略的仓位分配; 3) 下周五非农数据公布，注意美股波动。', icon: '🤖' },
     ],
@@ -92,13 +92,13 @@ const MOCK_DIGEST: Record<DigestType, DailyDigest> = {
     generatedAt: Date.now(),
     marketSentiment: 'bullish',
     sections: [
-      { heading: '月度总结', content: '6月A股整体上涨，沪指上涨2.5%，深成指上涨3.8%。政策面持续利好，流动性充裕。', icon: '📅' },
-      { heading: '组合月报', content: '主账户6月盈利+48.2万HKD (+2.74%)。年化Sharpe 2.1，最大回撤-4.2%，远优于基准。', icon: '💰' },
+      { heading: '月度总结', content: '6月港股整体上涨，恒指上涨3.2%，科指上涨5.6%。流动性充裕，科技板块领涨。', icon: '📅' },
+      { heading: '组合月报', content: '主账户6月盈利+52.8万HKD (+3.0%)。年化Sharpe 2.1，最大回撤-4.2%，远优于基准。', icon: '💰' },
       { heading: 'AI展望', content: '7月展望: 1) 中报季来临，关注业绩超预期个股; 2) 关注美联储7月议息; 3) 建议保持当前仓位，不追高。', icon: '🤖' },
     ],
     topMovers: [
       { symbol: '00700', name: '腾讯控股', change: 8.2 },
-      { symbol: '600519', name: '贵州茅台', change: 5.1 },
+      { symbol: '01299', name: '友邦保险', change: 6.8 },
     ],
     activeSignals: [],
     riskAlerts: [

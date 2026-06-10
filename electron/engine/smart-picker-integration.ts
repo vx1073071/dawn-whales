@@ -275,7 +275,7 @@ export class SmartPickerIntegration {
         timestamp: Date.now(),
         sourcesQueried: ['SmartPicker (JVS-25)', 'MultiFactor (Q15)'],
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[SmartPickerIntegration] Error:', err.message);
       return {
         success: false,

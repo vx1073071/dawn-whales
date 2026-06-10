@@ -189,7 +189,7 @@ export class ErrorBoundaryEngine extends EventEmitter {
   static safeCall<T>(fn: () => T): { success: true; data: T; error: null } | { success: false; data: null; error: string } {
     try {
       return { success: true, data: fn(), error: null };
-    } catch (e: any) {
+    } catch (e: unknown) {
       return { success: false, data: null, error: e?.message ?? "Unknown error" };
     }
   }
@@ -204,7 +204,7 @@ export class ErrorBoundaryEngine extends EventEmitter {
         ),
       ]);
       return { success: true, data, error: null };
-    } catch (e: any) {
+    } catch (e: unknown) {
       return { success: false, data: null, error: e?.message ?? "Unknown error" };
     }
   }

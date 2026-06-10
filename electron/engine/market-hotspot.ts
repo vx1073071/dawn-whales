@@ -90,7 +90,7 @@ export class MarketHotspotService {
       const report = this.parseHotspotContent(rawContent);
       this.cache = { data: report, expires: now + MarketHotspotService.CACHE_TTL };
       return this.filterReport(report, query);
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn('[MarketHotspot] Fetch failed:', err.message);
       return {
         success: false,

@@ -158,7 +158,7 @@ export class ConditionTradeBridge extends EventEmitter {
           this.lastTrigger.set(signalKey, Date.now());
           this.emit('signal:executed', signal);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         signal.status = 'failed';
         signal.reason = err.message;
         this.stats.totalFailed++;
@@ -231,7 +231,7 @@ export class ConditionTradeBridge extends EventEmitter {
         // In production: call TradeExecutor.executeSignal() or placeOrder()
         await this.simulateExecution(signal);
         return true;
-      } catch (err: any) {
+      } catch (err: unknown) {
         lastError = err;
         if (attempt < this.config.maxRetries) {
           const delay = this.config.retryDelayMs * Math.pow(2, attempt);

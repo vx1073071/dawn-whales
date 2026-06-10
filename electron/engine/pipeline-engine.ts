@@ -280,7 +280,7 @@ export class PipelineEngine {
       if (run.status === 'running') {
         run.status = context.errors.length > 0 ? 'failed' : 'completed';
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (err?.name === 'AbortError') {
         if (run.status === 'running') {
           run.status = 'cancelled';
@@ -513,7 +513,7 @@ export class PipelineEngine {
         context.metadata[`step_${step.id}_attempts`] = attempt;
 
         return result;
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (err?.name === 'AbortError') {
           throw err; // Don't retry cancellations
         }
@@ -800,7 +800,7 @@ export const StepTemplates = {
             try {
               const extra = await enricher(row, context);
               return { ...row, ...extra };
-            } catch (err: any) {
+            } catch (err: unknown) {
               context.errors.push({
                 step: id,
                 error: `Enrichment failed for row: ${err?.message ?? String(err)}`,

@@ -265,7 +265,7 @@ export class StockScreenerService {
         description: description || `${records.length} results for "${request.query}"`,
         csvPath,
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       const durationMs = Date.now() - startTime;
       log.error('[StockScreener] Error:', err.message);
       return {

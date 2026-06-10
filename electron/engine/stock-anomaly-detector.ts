@@ -167,7 +167,7 @@ export class StockAnomalyDetector {
       }
 
       log.info(`[StockAnomaly] Loaded ${this.alerts.length} alerts, ${this.avgVolumes.size} avg volumes`);
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.warn('[StockAnomaly] Load failed:', err.message);
     }
   }

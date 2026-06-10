@@ -832,7 +832,7 @@ export class DataVersionController {
       try {
         const data = provider();
         this.createSnapshot(table, data, { auto: true });
-      } catch (err: any) {
+      } catch (err: unknown) {
         log.error('[DataVersionController] auto-snapshot failed', {
           table,
           error: err?.message ?? String(err),

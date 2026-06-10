@@ -256,7 +256,7 @@ export class RealTrader extends EventEmitter {
       log.info(`[RealTrader] Real order submitted: ${order.side} ${order.quantity} ${order.symbol} @ ${order.price || 'MKT'} → ${orderId}`);
       this.emit('realtrader:orderSubmitted', { orderId, order });
       return { success: true, orderId };
-    } catch (err: any) {
+    } catch (err: unknown) {
       this.recordRejection(`Broker rejection: ${err.message}`);
       this.rejectionCount++;
 

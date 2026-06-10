@@ -81,7 +81,7 @@ export class DragonTigerStream {
         log.info(`[DragonTigerStream] Fetched ${result.total} entries for ${result.date}`);
         return event;
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       log.error('[DragonTigerStream] Fetch error:', err.message);
     }
     return null;

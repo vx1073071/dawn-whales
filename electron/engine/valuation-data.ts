@@ -122,7 +122,7 @@ async function fetchValuationHistory(code: string, days: number): Promise<Valuat
       totalShares: safeNum(item.TOTAL_SHARES),
       floatShares: safeNum(item.FREE_SHARES),
     }));
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn(`[ValuationData] Fetch failed for ${code}: ${err.message}`);
     return fetchValuationFallback(code);
   }
@@ -159,7 +159,7 @@ async function fetchValuationFallback(code: string): Promise<ValuationSnapshot[]
       totalShares: safeNum(json.data.f117),
       floatShares: safeNum(json.data.f167),
     }];
-  } catch (err: any) {
+  } catch (err: unknown) {
     log.warn(`[ValuationData] Fallback fetch failed for ${code}: ${err.message}`);
     return [];
   }

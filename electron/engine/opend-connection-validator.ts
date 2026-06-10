@@ -93,7 +93,7 @@ export class OpenDConnectionValidator {
       } else {
         return { success: false, error: result?.error || 'Unknown error' };
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       return { success: false, error: err.message };
     }
   }
@@ -111,7 +111,7 @@ export class OpenDConnectionValidator {
       } else {
         return { success: false, error: result?.error || 'Unknown error' };
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       return { success: false, error: err.message };
     }
   }
@@ -152,7 +152,7 @@ export class OpenDConnectionValidator {
             error: result?.error || 'No data'
           });
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         results.push({ market, available: false, error: err.message });
       }
     }

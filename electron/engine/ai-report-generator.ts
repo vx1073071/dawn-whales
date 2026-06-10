@@ -165,8 +165,8 @@ function buildComparisonTable(results: BacktestResult[]): string {
 
 export async function generateBacktestReport(
   results: BacktestResult[],
-  symbol?: string,
-  apiKey?: string,
+  symbol?: string,\1/** @deprecated R83 — use server-side AI Gateway token */
+\1\2
   timeoutMs = 20000
 ): Promise<BacktestReport> {
   if (results.length === 0) {
@@ -212,16 +212,19 @@ ${compTable}
 请直接输出 Markdown 报告内容，不需要解释。`;
 
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
     let raw = '';
     try {
-      const { getDeepSeekKey } = await import('./utils/secure-key');
-      const key = apiKey || getDeepSeekKey();
-      if (!key) throw new Error('No DeepSeek API key');
-      raw = await callDeepSeek(prompt, key, controller.signal);
-    } finally {
-      clearTimeout(timer);
+      const { callChatCompletions } = await import('./utils/ai-gateway-client');
+      const result = await callChatCompletions({
+        messages: [{ role: 'user', content: prompt }],
+        model: 'deepseek-chat',
+        temperature: 0.25,
+        max_tokens: 600,
+      }, timeoutMs);
+      if (!result.success) throw new Error(result.error);
+      raw = result.content;
+    } catch (e) {
+      throw new Error('AI Gateway error: ' + e.message);
     }
 
     if (!raw?.trim()) throw new Error('Empty LLM response');
@@ -243,7 +246,7 @@ ${compTable}
       fallback: false,
       generatedAt: Date.now(),
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     const aborted = err.name === 'AbortError' || err.message?.includes('timeout');
     log.warn(`[AIReportGenerator] ${aborted ? 'Timeout' : 'LLM error'}: ${err.message}`);
     // Fallback to English template
@@ -253,6 +256,7 @@ ${compTable}
 
 // ── Quick single-result report ───────────────────────────────────────────────
 
+/** @deprecated R83 — use server-side AI Gateway token */
 export async function generateQuickReport(result: BacktestResult, apiKey?: string): Promise<BacktestReport> {
   return generateBacktestReport([result], result.result.config?.symbol, apiKey);
 }
@@ -272,8 +276,8 @@ export interface DailyReportData {
 }
 
 export async function generateDailyReport(
-  data: DailyReportData,
-  apiKey?: string,
+  data: DailyReportData,\1/** @deprecated R83 — use server-side AI Gateway token */
+\1\2
   timeoutMs = 15000
 ): Promise<BacktestReport> {
   log.info('[AIReportGenerator] Generating daily report for', data.date);
@@ -308,16 +312,19 @@ ${data.worstPerformers.slice(0, 3).map(p => `- ${p.symbol}: $${p.pnl.toFixed(2)}
 请直接输出 Markdown 日报内容。`;
 
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
     let raw = '';
     try {
-      const { getDeepSeekKey } = await import('./utils/secure-key');
-      const key = apiKey || getDeepSeekKey();
-      if (!key) throw new Error('No DeepSeek API key');
-      raw = await callDeepSeek(prompt, key, controller.signal);
-    } finally {
-      clearTimeout(timer);
+      const { callChatCompletions } = await import('./utils/ai-gateway-client');
+      const result = await callChatCompletions({
+        messages: [{ role: 'user', content: prompt }],
+        model: 'deepseek-chat',
+        temperature: 0.25,
+        max_tokens: 600,
+      }, timeoutMs);
+      if (!result.success) throw new Error(result.error);
+      raw = result.content;
+    } catch (e) {
+      throw new Error('AI Gateway error: ' + e.message);
     }
 
     if (!raw?.trim()) throw new Error('Empty LLM response');
@@ -338,7 +345,7 @@ ${data.worstPerformers.slice(0, 3).map(p => `- ${p.symbol}: $${p.pnl.toFixed(2)}
       fallback: false,
       generatedAt: Date.now(),
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     const aborted = err.name === 'AbortError' || err.message?.includes('timeout');
     log.warn(`[AIReportGenerator] Daily report ${aborted ? 'timeout' : 'error'}: ${err.message}`);
     return fallbackDailyReport(data);
@@ -414,8 +421,8 @@ export interface WeeklyReportData {
 }
 
 export async function generateWeeklyReport(
-  data: WeeklyReportData,
-  apiKey?: string,
+  data: WeeklyReportData,\1/** @deprecated R83 — use server-side AI Gateway token */
+\1\2
   timeoutMs = 15000
 ): Promise<BacktestReport> {
   log.info('[AIReportGenerator] Generating weekly report for', data.weekStart, 'to', data.weekEnd);
@@ -444,16 +451,19 @@ ${data.worstStrategies.slice(0, 3).map(s => `- ${s.name}: $${s.pnl.toFixed(2)} (
 请直接输出 Markdown 周报内容。`;
 
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
     let raw = '';
     try {
-      const { getDeepSeekKey } = await import('./utils/secure-key');
-      const key = apiKey || getDeepSeekKey();
-      if (!key) throw new Error('No DeepSeek API key');
-      raw = await callDeepSeek(prompt, key, controller.signal);
-    } finally {
-      clearTimeout(timer);
+      const { callChatCompletions } = await import('./utils/ai-gateway-client');
+      const result = await callChatCompletions({
+        messages: [{ role: 'user', content: prompt }],
+        model: 'deepseek-chat',
+        temperature: 0.25,
+        max_tokens: 600,
+      }, timeoutMs);
+      if (!result.success) throw new Error(result.error);
+      raw = result.content;
+    } catch (e) {
+      throw new Error('AI Gateway error: ' + e.message);
     }
 
     if (!raw?.trim()) throw new Error('Empty LLM response');
@@ -474,7 +484,7 @@ ${data.worstStrategies.slice(0, 3).map(s => `- ${s.name}: $${s.pnl.toFixed(2)} (
       fallback: false,
       generatedAt: Date.now(),
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     const aborted = err.name === 'AbortError' || err.message?.includes('timeout');
     log.warn(`[AIReportGenerator] Weekly report ${aborted ? 'timeout' : 'error'}: ${err.message}`);
     return fallbackWeeklyReport(data);
@@ -544,8 +554,8 @@ export interface MonthlyReportData {
 }
 
 export async function generateMonthlyReport(
-  data: MonthlyReportData,
-  apiKey?: string,
+  data: MonthlyReportData,\1/** @deprecated R83 — use server-side AI Gateway token */
+\1\2
   timeoutMs = 20000
 ): Promise<BacktestReport> {
   log.info('[AIReportGenerator] Generating monthly report for', data.month);
@@ -573,16 +583,19 @@ ${data.strategyRanking.slice(0, 5).map(s => `- ${s.name}: $${s.pnl.toFixed(2)} (
 请直接输出 Markdown 月报内容。`;
 
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
     let raw = '';
     try {
-      const { getDeepSeekKey } = await import('./utils/secure-key');
-      const key = apiKey || getDeepSeekKey();
-      if (!key) throw new Error('No DeepSeek API key');
-      raw = await callDeepSeek(prompt, key, controller.signal);
-    } finally {
-      clearTimeout(timer);
+      const { callChatCompletions } = await import('./utils/ai-gateway-client');
+      const result = await callChatCompletions({
+        messages: [{ role: 'user', content: prompt }],
+        model: 'deepseek-chat',
+        temperature: 0.25,
+        max_tokens: 600,
+      }, timeoutMs);
+      if (!result.success) throw new Error(result.error);
+      raw = result.content;
+    } catch (e) {
+      throw new Error('AI Gateway error: ' + e.message);
     }
 
     if (!raw?.trim()) throw new Error('Empty LLM response');
@@ -603,7 +616,7 @@ ${data.strategyRanking.slice(0, 5).map(s => `- ${s.name}: $${s.pnl.toFixed(2)} (
       fallback: false,
       generatedAt: Date.now(),
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     const aborted = err.name === 'AbortError' || err.message?.includes('timeout');
     log.warn(`[AIReportGenerator] Monthly report ${aborted ? 'timeout' : 'error'}: ${err.message}`);
     return fallbackMonthlyReport(data);

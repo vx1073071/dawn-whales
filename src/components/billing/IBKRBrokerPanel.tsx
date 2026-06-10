@@ -73,7 +73,6 @@ const DEFAULT_IBKR: IBKRConfig = {
 const FEE_COMPARISON: FeeComparison[] = [
   { market: '🇺🇸 美股 US', flag: 'US', futuCommission: '$0.0049/股', futuMin: '$0.99', ibkrCommission: '$0.005/股 (固定) / $0.0035 (阶梯)', ibkrMin: '$1.00 / $0.35', best: 'futu' },
   { market: '🇭🇰 港股 HK', flag: 'HK', futuCommission: '0.03%', futuMin: 'HK$3', ibkrCommission: '0.08%', ibkrMin: 'HK$18', best: 'futu' },
-  { market: '🇨🇳 A股 CN', flag: 'CN', futuCommission: '0.03%', futuMin: '¥3', ibkrCommission: '0.08%', ibkrMin: '¥15', best: 'futu' },
 ];
 
 const IBKR_FEATURES = [
@@ -288,7 +287,7 @@ export default function IBKRBrokerPanel({
             </tbody>
           </table>
           <div className="px-5 py-2 text-[10px] text-gray-600 border-t border-white/5">
-            💡 IBKR阶梯式佣金在月交易量&gt;30万股后更便宜。港股/A股Futu有绝对优势。
+            💡 IBKR阶梯式佣金在月交易量>30万股后更便宜。港股 Futu有绝对优势。
           </div>
         </div>
 
