@@ -73,8 +73,8 @@ interface StrategyImportExportProps {
   className?: string;
 }
 
-export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({
-  const { t } = useTranslation(); className }) => {
+export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ className }) => {
+  const { t } = useTranslation();
   const [activeStrategy, _setActiveStrategy] = useState<StrategyConfig>(MOCK_STRATEGY);
   const [importText, setImportText] = useState('');
   const [importError, setImportError] = useState<string | null>(null);

@@ -384,9 +384,9 @@ function BacktestPanel({ result }: { result: BacktestResult }) {
         <MetricCard label="总收益" value={`${result.totalReturn > 0 ? '+' : ''}${result.totalReturn}%`} color={returnColor} />
         <MetricCard label="年化收益" value={`${result.annualReturn > 0 ? '+' : ''}${result.annualReturn}%`} color={returnColor} />
         <MetricCard label="夏普比率" value={result.sharpeRatio.toFixed(2)} color={result.sharpeRatio > 1 ? 'text-emerald-400' : result.sharpeRatio > 0 ? 'text-yellow-400' : 'text-red-400'} />
-        <MetricCard label=t('maxDrawdown') value={`-${result.maxDrawdown}%`} color="text-red-400" />
-        <MetricCard label=t('winRate') value={`${result.winRate}%`} color={result.winRate > 50 ? 'text-emerald-400' : 'text-yellow-400'} />
-        <MetricCard label=t('profitFactor') value={result.profitFactor === Infinity ? '∞' : result.profitFactor.toFixed(2)} color={result.profitFactor > 1.5 ? 'text-emerald-400' : 'text-yellow-400'} />
+        <MetricCard label={t('maxDrawdown')} value={`-${result.maxDrawdown}%`} color="text-red-400" />
+        <MetricCard label={t('winRate')} value={`${result.winRate}%`} color={result.winRate > 50 ? 'text-emerald-400' : 'text-yellow-400'} />
+        <MetricCard label={t('profitFactor')} value={result.profitFactor === Infinity ? '∞' : result.profitFactor.toFixed(2)} color={result.profitFactor > 1.5 ? 'text-emerald-400' : 'text-yellow-400'} />
       </div>
 
       {/* Equity curve */}
@@ -677,8 +677,8 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
         <div className="border-t border-white/5 pt-4">
           <h3 className="text-gray-300 text-xs font-medium uppercase tracking-wider mb-3">风控参数</h3>
           <div className="grid grid-cols-2 gap-4">
-            <SliderInput label=t('stopLoss') value={stopLoss} min={1} max={30} onChange={setStopLoss} unit="%" />
-            <SliderInput label=t('takeProfit') value={takeProfit} min={5} max={100} onChange={setTakeProfit} unit="%" />
+            <SliderInput label={t('stopLoss')} value={stopLoss} min={1} max={30} onChange={setStopLoss} unit="%" />
+            <SliderInput label={t('takeProfit')} value={takeProfit} min={5} max={100} onChange={setTakeProfit} unit="%" />
           </div>
         </div>
 

@@ -751,7 +751,7 @@ export default function MonteCarloPage() {
                 )}
                 {serverRiskMetrics.maxDrawdown != null && (
                   <StatCard
-                    label=t('maxDrawdown')
+                    label={t('maxDrawdown')}
                     value={`${(serverRiskMetrics.maxDrawdown * 100).toFixed(2)}%`}
                     variant="danger"
                     sub="Engine 计算"

@@ -54,7 +54,6 @@ export interface StrategySignalPreviewProps {
 // ── Component ──────────────────────────────────────────────────────────
 
 export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
-  const { t } = useTranslation();
   preview,
   onSave,
   onEdit,
@@ -67,6 +66,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
   const [editedTakeProfit, setEditedTakeProfit] = useState(preview.takeProfit);
   const [expandedAgent, setExpandedAgent] = useState<AgentType | null>(null);
   const [saved, setSaved] = useState(false);
+  const { t } = useTranslation();
 
   const handleSave = useCallback(() => {
     const edited: SignalPreview = {

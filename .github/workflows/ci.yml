@@ -1,78 +1,63 @@
-name: DAWN WHALES CI
+name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, master]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 jobs:
-  typecheck:
-    name: TypeScript Check
-    runs-on: ubuntu-latest
+  lint:
+    name: Lint & Type Check
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 22
           cache: 'npm'
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
       - run: npx tsc --noEmit
+      - run: npx eslint .
 
   test:
-    name: Tests (${{ matrix.shard }})
-    runs-on: ubuntu-latest
-    needs: typecheck
+    name: Tests (${{ matrix.shard }}/${{ strategy.job-total }})
+    needs: lint
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
-        shard:
-          - market
-          - account
-          - broker
-          - strategy
-          - risk
-          - executor
-          - automation
-          - ui-trading
-          - ui-monitor
-          - ui-config
-          - integration
-          - performance
+        shard: [1, 2, 3]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 22
           cache: 'npm'
-      - run: npm ci
-      - name: Run ${{ matrix.shard }} tests
-        run: npm run test:${{ matrix.shard }}
+      - run: npm ci --legacy-peer-deps
+      - run: npx vitest run --shard=${{ matrix.shard }}/${{ strategy.job-total }}
 
   build:
     name: Build
-    runs-on: ubuntu-latest
-    needs: test
+    needs: lint
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 22
           cache: 'npm'
-      - run: npm ci
-      - run: npm run build
+      - run: npm ci --legacy-peer-deps
+      - run: npx vite build
 
-  release-check:
-    name: Release Readiness
-    runs-on: ubuntu-latest
-    needs: [typecheck, test, build]
-    if: github.ref == 'refs/heads/main'
+  audit:
+    name: Security Audit
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 22
           cache: 'npm'
-      - run: npm ci
-      - run: npm run build
-      - run: npx electron-builder --dir --publish never
+      - run: npm ci --legacy-peer-deps
+      - run: npm audit --audit-level=high
