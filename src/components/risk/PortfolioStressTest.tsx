@@ -1,10 +1,9 @@
 // ── DAWN WHALES — PortfolioStressTest (组合压力测试) ────────────────────────
 
 import { useState, useMemo } from 'react'
-import { useState, useMemo } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import * as echarts from 'echarts';
 import { useRef, useEffect } from 'react';
-import { useTranslation } from "react-i18next";
 
 interface Scenario {
   name: string;

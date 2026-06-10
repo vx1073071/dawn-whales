@@ -1,9 +1,8 @@
 // ── DAWN WHALES — RiskConfigEditor (风控配置编辑器) ─────────────────────────
 
 import { useState, useEffect } from 'react'
-import { useState, useEffect } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { getRiskConfig, updateRiskConfig } from '../../lib/bridge-api';
-import { useTranslation } from "react-i18next";
 
 interface RiskConfig {
   maxSinglePositionPct: number;

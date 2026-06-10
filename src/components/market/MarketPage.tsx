@@ -216,10 +216,10 @@ export default function MarketPage() {
               <h2 className="text-white font-semibold">{selectedSymbol.replace('US.', '')}</h2>
               {(() => {
                 const q = mergedQuotes[selectedSymbol];
-                const cls = q && q.change > 0 ? 'text-emerald-400' : q && q.change < 0 ? 'text-red-400' : 'text-gray-500';
+                const cls = q && (q as any).change > 0 ? 'text-emerald-400' : q && (q as any).change < 0 ? 'text-red-400' : 'text-gray-500';
                 return q ? (
                   <span className={`font-mono text-sm ${cls}`}>
-                    {q.price.toFixed(2)} {q.change > 0 ? '+' : ''}{q.changePct.toFixed(2)}%
+                    {(q as any).price.toFixed(2)} {(q as any).change > 0 ? '+' : ''}{(q as any).changePct.toFixed(2)}%
                   </span>
                 ) : null;
               })()}

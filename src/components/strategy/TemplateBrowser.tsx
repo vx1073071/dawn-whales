@@ -73,7 +73,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
         const data = raw?.templates ?? raw;
         setTemplates(Array.isArray(data) ? data : []);
       } catch (e: unknown) {
-        setError(e.message ?? '加载失败');
+        setError((e as any).message ?? '加载失败');
       } finally {
         setLoading(false);
       }
@@ -121,7 +121,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
       // Open the instantiated strategy in creation form
       onCreated();
     } catch (e: unknown) {
-      setInstantiateError(e.message ?? '实例化失败');
+      setInstantiateError((e as any).message ?? '实例化失败');
       setInstantiating(false);
     }
   }

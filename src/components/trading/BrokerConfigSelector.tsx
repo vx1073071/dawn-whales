@@ -83,7 +83,7 @@ export default function BrokerConfigSelector({ onBrokerChange, onConnectionChang
       setLoading(false);
     } catch (err: unknown) {
       console.error('[BrokerSelector] Load error:', err);
-      setError(err.message || 'Failed to load broker status');
+      setError((err as any).message || 'Failed to load broker status');
       setLoading(false);
     }
   }, [onConnectionChange]);
@@ -114,7 +114,7 @@ export default function BrokerConfigSelector({ onBrokerChange, onConnectionChang
       }
     } catch (err: unknown) {
       console.error('[BrokerSelector] Switch error:', err);
-      setError(err.message || 'Failed to switch broker');
+      setError((err as any).message || 'Failed to switch broker');
     }
   };
 
@@ -149,7 +149,7 @@ export default function BrokerConfigSelector({ onBrokerChange, onConnectionChang
       }
     } catch (err: unknown) {
       console.error('[BrokerSelector] Connection error:', err);
-      setError(err.message || 'Connection failed');
+      setError((err as any).message || 'Connection failed');
     }
   };
 

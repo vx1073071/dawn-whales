@@ -81,7 +81,7 @@ export default function SettingsPage() {
         setConnectError(result?.error || 'settings.connectionFailed');
       }
     } catch (e: unknown) {
-      setConnectError(e.message || 'settings.connectionError');
+      setConnectError((e as any).message || 'settings.connectionError');
     } finally {
       setConnecting(false);
     }
@@ -108,7 +108,7 @@ export default function SettingsPage() {
         alert(result?.error || '添加失败');
       }
     } catch (e: unknown) {
-      alert(e.message || '添加异常');
+      alert((e as any).message || '添加异常');
     } finally {
       setBrokerActionLoading(null);
     }
@@ -121,7 +121,7 @@ export default function SettingsPage() {
       await removeBroker(id);
       await refreshBrokers();
     } catch (e: unknown) {
-      alert(e.message || '删除失败');
+      alert((e as any).message || '删除失败');
     } finally {
       setBrokerActionLoading(null);
     }
@@ -133,7 +133,7 @@ export default function SettingsPage() {
       await setActiveBroker(id);
       await refreshBrokers();
     } catch (e: unknown) {
-      alert(e.message || '切换失败');
+      alert((e as any).message || '切换失败');
     } finally {
       setBrokerActionLoading(null);
     }
@@ -413,10 +413,10 @@ export default function SettingsPage() {
 
             {riskConfig ? (
               <div className="grid grid-cols-2 gap-4">
-                <RiskSlider label="日最大亏损" value={Math.round((riskConfig.dailyLossLimitPct || 0.05) * 100)} max={20} unit="%" onSave={(v) => handleRiskSave('dailyLossLimitPct', v)} />
-                <RiskSlider label="单品种最大仓位" value={Math.round((riskConfig.maxSinglePositionPct || 0.20) * 100)} max={50} unit="%" onSave={(v) => handleRiskSave('maxSinglePositionPct', v)} />
-                <RiskSlider label="总持仓上限" value={Math.round((riskConfig.maxTotalPositionPct || 0.95) * 100)} max={100} unit="%" onSave={(v) => handleRiskSave('maxTotalPositionPct', v)} />
-                <RiskSlider label="每分钟最大下单" value={riskConfig.maxOrdersPerMinute || 10} max={30} unit="笔" onSave={(v) => handleRiskSave('maxOrdersPerMinute', v)} />
+                <RiskSlider label="日最大亏损" value={Math.round(((riskConfig as any).dailyLossLimitPct || 0.05) * 100)} max={20} unit="%" onSave={(v) => handleRiskSave('dailyLossLimitPct', v)} />
+                <RiskSlider label="单品种最大仓位" value={Math.round(((riskConfig as any).maxSinglePositionPct || 0.20) * 100)} max={50} unit="%" onSave={(v) => handleRiskSave('maxSinglePositionPct', v)} />
+                <RiskSlider label="总持仓上限" value={Math.round(((riskConfig as any).maxTotalPositionPct || 0.95) * 100)} max={100} unit="%" onSave={(v) => handleRiskSave('maxTotalPositionPct', v)} />
+                <RiskSlider label="每分钟最大下单" value={(riskConfig as any).maxOrdersPerMinute || 10} max={30} unit="笔" onSave={(v) => handleRiskSave('maxOrdersPerMinute', v)} />
               </div>
             ) : (
               <p className="text-gray-500 text-sm">{"settings.connectHint"}</p>
@@ -430,9 +430,9 @@ export default function SettingsPage() {
               <div className="space-y-2 max-h-40 overflow-y-auto">
                 {alerts.slice(-10).reverse().map((a, i) => (
                   <div key={i} className="flex items-center gap-3 text-xs bg-red-500/10 rounded-lg px-3 py-2">
-                    <span className="text-red-400">{a.type}</span>
-                    <span className="text-gray-300 flex-1">{a.message}</span>
-                    <span className="text-gray-600">{a.time ? new Date(a.time).toLocaleTimeString() : ''}</span>
+                    <span className="text-red-400">{(a as any).type}</span>
+                    <span className="text-gray-300 flex-1">{(a as any).message}</span>
+                    <span className="text-gray-600">{(a as any).time ? new Date((a as any).time).toLocaleTimeString() : ''}</span>
                   </div>
                 ))}
               </div>

@@ -27,7 +27,7 @@ export default function StrategyExplainCard({ strategy, onExplain }: Props) {
         setError(result.error || '解释生成失败');
       }
     } catch (e: unknown) {
-      setError(e.message || '调用失败');
+      setError((e as any).message || '调用失败');
     } finally {
       setLoading(false);
     }

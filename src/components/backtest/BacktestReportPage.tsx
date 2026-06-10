@@ -298,7 +298,7 @@ export default function BacktestReportPage() {
           <div className="space-y-4">
             <div>
               <label className="text-sm text-gray-400 block mb-1">{t("components.strategy")}</label>
-              <div className="text-white">{strategies.find((s) => s.id === selectedId)?.name}</div>
+              <div className="text-white">{strategies.find((s: any) => s.id === selectedId)?.name}</div>
             </div>
             <div>
               <label className="text-sm text-gray-400 block mb-1">{t('回测周期')}</label>

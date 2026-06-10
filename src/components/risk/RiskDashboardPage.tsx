@@ -224,16 +224,16 @@ export default function RiskDashboardPage() {
       if (data?.code && data?.price) {
         setLivePrices(prev => ({
           ...prev,
-          [data.code]: data.price,
+          [(data as any).code]: (data as any).price,
         }));
         
         // Update snapshot with live price if this is a position we hold
-        if (positionSymbols.includes(data.code) && snapshot) {
+        if (positionSymbols.includes((data as any).code) && snapshot) {
           setSnapshot(prev => {
             if (!prev) return prev;
             // Recalculate totalAssets based on live prices
             // This is a simplified example - in production you'd track positions properly
-            const priceChange = data.price - (prev.totalAssets / positionSymbols.length);
+            const priceChange = (data as any).price - (prev.totalAssets / positionSymbols.length);
             return {
               ...prev,
               totalAssets: prev.totalAssets + priceChange * 0.01, // Scaled impact
@@ -280,11 +280,11 @@ export default function RiskDashboardPage() {
       if (alert?.type && alert?.message) {
         setAlerts(prev => [
           {
-            id: alert.id || `alert-${Date.now()}`,
-            timestamp: alert.timestamp || new Date().toISOString(),
-            type: alert.type,
-            message: alert.message,
-            source: alert.source || 'ws-risk-monitor',
+            id: (alert as any).id || `alert-${Date.now()}`,
+            timestamp: (alert as any).timestamp || new Date().toISOString(),
+            type: (alert as any).type,
+            message: (alert as any).message,
+            source: (alert as any).source || 'ws-risk-monitor',
           },
           ...prev.slice(0, 19), // Keep max 20 alerts
         ]);

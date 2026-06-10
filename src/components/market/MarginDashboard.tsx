@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { useState, useEffect, useRef } from 'react-i18next';
 import * as echarts from 'echarts';
 import { getMarginData, getMarginBalanceRank, getShortInterestRank } from '../../lib/bridge-api';
 
@@ -45,7 +44,7 @@ export default function MarginDashboard() {
       if (balanceRes?.success) setMarginRank(balanceRes.data || []);
       if (shortRes?.success) setShortRank(shortRes.data || []);
     } catch (e: unknown) {
-      setError(e.message || '获取数据失败');
+      setError((e as any).message || '获取数据失败');
     } finally {
       setLoading(false);
     }

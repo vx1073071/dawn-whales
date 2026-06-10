@@ -221,7 +221,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
         setError(result.error || '无法识别策略模式');
       }
     } catch (e: unknown) {
-      setError(e.message || '解析失败');
+      setError((e as any).message || '解析失败');
     } finally {
       setLoading(false);
     }
@@ -241,7 +241,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
         onCreated();
       }
     } catch (e: unknown) {
-      setError(e.message);
+      setError((e as any).message);
     } finally {
       setLoading(false);
     }
@@ -517,21 +517,21 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
         {templates.map((t) => (
           <button
-            key={t.id}
-            onClick={() => setSelected(t.id === selected ? null : t.id)}
+            key={(t as any).id}
+            onClick={() => setSelected((t as any).id === selected ? null : (t as any).id)}
             className={`bg-[#1a1a25] border rounded-lg p-4 text-left transition-all ${
-              selected === t.id ? 'border-[#C9A046]/50 bg-[#22222f]' : 'border-white/5 hover:border-white/10'
+              selected === (t as any).id ? 'border-[#C9A046]/50 bg-[#22222f]' : 'border-white/5 hover:border-white/10'
             }`}
           >
             <div className="flex items-center justify-between mb-2">
-              <h4 className="text-white text-sm font-medium">{t.name}</h4>
-              <span className={`text-xs px-2 py-0.5 rounded ${riskColors[t.risk] || 'text-gray-400 bg-gray-500/20'}`}>{t.risk}风险</span>
+              <h4 className="text-white text-sm font-medium">{(t as any).name}</h4>
+              <span className={`text-xs px-2 py-0.5 rounded ${riskColors[(t as any).risk] || 'text-gray-400 bg-gray-500/20'}`}>{(t as any).risk}风险</span>
             </div>
-            <p className="text-gray-400 text-xs mb-3 leading-relaxed">{t.description}</p>
+            <p className="text-gray-400 text-xs mb-3 leading-relaxed">{(t as any).description}</p>
             <div className="flex items-center justify-between">
-              <span className="text-xs text-gray-500 bg-[#22222f] px-2 py-0.5 rounded">{t.category}</span>
+              <span className="text-xs text-gray-500 bg-[#22222f] px-2 py-0.5 rounded">{(t as any).category}</span>
             </div>
-            {selected === t.id && (
+            {selected === (t as any).id && (
               <div className="mt-3 pt-3 border-t border-white/5">
                 <button onClick={(e) => { e.stopPropagation(); handleUse(t); }} disabled={loading} className="w-full px-3 py-2 bg-[#C9A046] text-black text-xs font-medium rounded-lg hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
                   {loading ? '创建中...' : '使用此模板 →'}
@@ -844,7 +844,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
     );
   }
 
-  const isLive = strategy.status === 'live';
+  const isLive = (strategy as any).status === 'live';
 
   return (
     <div>
@@ -853,33 +853,33 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-white font-semibold text-lg">{strategy.name}</h2>
-            <p className="text-gray-400 text-sm mt-1">{strategy.description}</p>
+            <h2 className="text-white font-semibold text-lg">{(strategy as any).name}</h2>
+            <p className="text-gray-400 text-sm mt-1">{(strategy as any).description}</p>
           </div>
           <span className={`text-xs px-3 py-1 rounded-lg ${isLive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-gray-500/20 text-gray-400'}`}>
-            {isLive ? '🟢 运行中' : strategy.status}
+            {isLive ? '🟢 运行中' : (strategy as any).status}
           </span>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
           <div className="bg-[#12121a] rounded-lg p-3">
             <div className="text-gray-500 text-xs mb-1">{'标的'}</div>
-            <div className="text-[#D4A853] font-mono text-sm">{strategy.symbol}</div>
+            <div className="text-[#D4A853] font-mono text-sm">{(strategy as any).symbol}</div>
           </div>
           <div className="bg-[#12121a] rounded-lg p-3">
             <div className="text-gray-500 text-xs mb-1">{"components.type"}</div>
-            <div className="text-gray-200 text-sm">{strategy.strategy?.type}</div>
+            <div className="text-gray-200 text-sm">{(strategy as any).strategy?.type}</div>
           </div>
-          {strategy.strategy?.stopLoss && (
+          {(strategy as any).strategy?.stopLoss && (
             <div className="bg-[#12121a] rounded-lg p-3">
               <div className="text-gray-500 text-xs mb-1">{"components.stopLoss"}</div>
-              <div className="text-red-400 text-sm">{strategy.strategy.stopLoss}%</div>
+              <div className="text-red-400 text-sm">{(strategy as any).strategy.stopLoss}%</div>
             </div>
           )}
-          {strategy.strategy?.takeProfit && (
+          {(strategy as any).strategy?.takeProfit && (
             <div className="bg-[#12121a] rounded-lg p-3">
               <div className="text-gray-500 text-xs mb-1">{"components.takeProfit"}</div>
-              <div className="text-emerald-400 text-sm">{strategy.strategy.takeProfit}%</div>
+              <div className="text-emerald-400 text-sm">{(strategy as any).strategy.takeProfit}%</div>
             </div>
           )}
         </div>

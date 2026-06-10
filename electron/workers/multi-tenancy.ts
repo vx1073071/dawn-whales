@@ -1,3 +1,4 @@
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
 ﻿// T88: Multi-tenancy Service
 export interface Tenant {
   id: string;
@@ -69,8 +70,8 @@ export class MultiTenancyService {
 
   setCurrentTenant(tenantId: string): void {
     const tenant = this.tenants.get(tenantId);
-    if (!tenant) throw new Error(`Tenant ${tenantId} not found`);
-    if (tenant.status !== 'active') throw new Error(`Tenant ${tenantId} is ${tenant.status}`);
+    if (!tenant) throw new EngineError(ErrorDomain.AUTH, ErrorCode.UNAUTHORIZED, `Tenant ${tenantId} not found`);
+    if (tenant.status !== 'active') throw new EngineError(ErrorDomain.AUTH, ErrorCode.UNAUTHORIZED, `Tenant ${tenantId} is ${tenant.status}`);
     this.currentTenantId = tenantId;
   }
 
@@ -92,7 +93,7 @@ export class MultiTenancyService {
 
   upgradeTier(tenantId: string, newTier: Tenant['tier']): Tenant {
     const tenant = this.tenants.get(tenantId);
-    if (!tenant) throw new Error('Tenant not found');
+    if (!tenant) throw new EngineError(ErrorDomain.AUTH, ErrorCode.UNAUTHORIZED, 'Tenant not found');
     tenant.tier = newTier;
     tenant.limits = { ...TIER_LIMITS[newTier] };
     return tenant;

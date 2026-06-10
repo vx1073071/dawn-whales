@@ -52,7 +52,7 @@ export default function DailyReportPage() {
         });
       }
     } catch (e: unknown) {
-      setError(e.message || '获取简报失败');
+      setError((e as any).message || '获取简报失败');
     } finally {
       setLoading(false);
     }

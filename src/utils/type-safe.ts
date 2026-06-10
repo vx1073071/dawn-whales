@@ -49,7 +49,7 @@ export function safeGet<T>(obj: unknown, path: string[], fallback: T): T {
       if (current == null) return fallback;
       current = current[key];
     }
-    return current ?? fallback;
+    return (current ?? fallback) as any;
   } catch {
     return fallback;
   }

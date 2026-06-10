@@ -121,23 +121,23 @@ function buildTableHTML(heading: string, data: { headers: string[]; rows: (strin
 // ── Helper: Convert backtest result to report format ──────────────────────
 
 export function backtestToReport(result: unknown): ReportData {
-  const isProfit = result.totalReturn >= 0;
+  const isProfit = (result as any).totalReturn >= 0;
   return {
-    title: `回测报告: ${result.strategyName || '策略'}`,
-    subtitle: `${result.targetCode} · ${result.startDate} ~ ${result.endDate}`,
+    title: `回测报告: ${(result as any).strategyName || '策略'}`,
+    subtitle: `${(result as any).targetCode} · ${(result as any).startDate} ~ ${(result as any).endDate}`,
     sections: [
       {
         heading: '绩效摘要',
         type: 'metrics',
         data: [
-          { label: '总收益', value: `${(result.totalReturn * 100).toFixed(2)}%`, color: isProfit ? 'green' : 'red' },
-          { label: '年化收益', value: `${(result.annualizedReturn * 100).toFixed(2)}%`, color: isProfit ? 'green' : 'red' },
-          { label: '最大回撤', value: `${(result.maxDrawdown * 100).toFixed(2)}%`, color: 'red' },
-          { label: '夏普比率', value: result.sharpeRatio.toFixed(2), color: result.sharpeRatio >= 1 ? 'green' : '' },
-          { label: '胜率', value: `${(result.winRate * 100).toFixed(1)}%` },
-          { label: '盈亏比', value: result.profitLossRatio.toFixed(2) },
-          { label: '总交易', value: `${result.totalTrades}` },
-          { label: '最终资金', value: `$${result.finalCapital.toFixed(0)}` },
+          { label: '总收益', value: `${((result as any).totalReturn * 100).toFixed(2)}%`, color: isProfit ? 'green' : 'red' },
+          { label: '年化收益', value: `${((result as any).annualizedReturn * 100).toFixed(2)}%`, color: isProfit ? 'green' : 'red' },
+          { label: '最大回撤', value: `${((result as any).maxDrawdown * 100).toFixed(2)}%`, color: 'red' },
+          { label: '夏普比率', value: (result as any).sharpeRatio.toFixed(2), color: (result as any).sharpeRatio >= 1 ? 'green' : '' },
+          { label: '胜率', value: `${((result as any).winRate * 100).toFixed(1)}%` },
+          { label: '盈亏比', value: (result as any).profitLossRatio.toFixed(2) },
+          { label: '总交易', value: `${(result as any).totalTrades}` },
+          { label: '最终资金', value: `$${(result as any).finalCapital.toFixed(0)}` },
         ],
       },
       {
@@ -145,7 +145,7 @@ export function backtestToReport(result: unknown): ReportData {
         type: 'table',
         data: {
           headers: ['入场日期', '方向', '入场价', '出场日期', '出场价', '盈亏', '盈亏%', '持有天数'],
-          rows: (result.trades || []).map((t: Record<string, unknown>) => [
+          rows: ((result as any).trades || []).map((t: Record<string, unknown>) => [
             t.entryDate, t.side, t.entryPrice.toFixed(2), t.exitDate, t.exitPrice.toFixed(2),
             `${t.pnl >= 0 ? '+' : ''}${t.pnl.toFixed(2)}`,
             `${(t.pnlPercent * 100).toFixed(2)}%`,

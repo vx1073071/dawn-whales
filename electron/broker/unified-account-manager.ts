@@ -6,6 +6,8 @@
 import log from 'electron-log';
 import type { BrokerManager } from './BrokerManager';
 import type {
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
+
   IBrokerAdapter,
   AccountInfo,
   FundsInfo,
@@ -855,7 +857,7 @@ export class UnifiedAccountManager {
       }
     }
 
-    throw new Error(`[UAM] No broker available to route order: ${order.side} ${order.qty} x ${order.code}`);
+    throw new EngineError(ErrorDomain.TRADE, ErrorCode.ORDER_REJECTED, `[UAM] No broker available to route order: ${order.side} ${order.qty} x ${order.code}`);
   }
 
   /**

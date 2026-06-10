@@ -1,5 +1,7 @@
 ﻿// Worker for benchmark tasks
 import { parentPort } from 'worker_threads';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
+
 
 function fib(n: number): number {
   return n <= 1 ? n : fib(n - 1) + fib(n - 2);
@@ -28,7 +30,7 @@ parentPort?.on('message', (msg: unknown) => {
   } else if (type === 'matrix') {
     result = matrixMultiply(size);
   } else {
-    throw new Error('Unknown bench type: ' + type);
+    throw new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, 'Unknown bench type: ' + type);
   }
   parentPort?.postMessage({ result, type, id: msg.id });
 });

@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useState, useEffect, useCallback } from 'react-i18next';
 import { searchStocks } from '../../lib/bridge-api';
 
 interface ScreenerResult {
@@ -68,7 +67,7 @@ export default function StockScreenerPage() {
         setError(res?.error || '未找到匹配结果');
       }
     } catch (e: unknown) {
-      setError(e.message || '查询失败');
+      setError((e as any).message || '查询失败');
       setResults([]);
     } finally {
       setLoading(false);

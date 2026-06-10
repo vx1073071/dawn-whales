@@ -1,3 +1,4 @@
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
 ﻿// T73: Prediction Model Engine
 export interface PredictionInput {
   features: number[];
@@ -42,7 +43,7 @@ export class LinearRegression {
   }
 
   predict(features: number[]): PredictionResult {
-    if (!this.trained) throw new Error('Model not trained');
+    if (!this.trained) throw new EngineError(ErrorDomain.AI, ErrorCode.AI_PARSE_ERROR, 'Model not trained');
     const value = this._predict(features);
     // Confidence: inverse of training error (capped)
     const mse = this.errors[this.errors.length - 1] || 1;

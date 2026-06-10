@@ -132,7 +132,7 @@ export function useOpenDStream(codes: string[]) {
 
 export function registerOpenDStreamIPC(ipcMain: unknown) {
   // Connect to OpenD WebSocket
-  ipcMain.handle('stock-stream:connect', async (_event: unknown, config: Record<string, unknown>) => {
+  (ipcMain as any).handle('stock-stream:connect', async (_event: unknown, config: Record<string, unknown>) => {
     try {
       const { OpenDClient } = await import('../opend/opend-client');
       const client = new OpenDClient();
@@ -144,7 +144,7 @@ export function registerOpenDStreamIPC(ipcMain: unknown) {
   });
 
   // Disconnect
-  ipcMain.handle('stock-stream:disconnect', async () => {
+  (ipcMain as any).handle('stock-stream:disconnect', async () => {
     try {
       // Disconnect logic
       return { success: true };
@@ -154,7 +154,7 @@ export function registerOpenDStreamIPC(ipcMain: unknown) {
   });
 
   // Get quotes (polling fallback)
-  ipcMain.handle('stock-stream:get-quotes', async (_event: unknown, codes: string[]) => {
+  (ipcMain as any).handle('stock-stream:get-quotes', async (_event: unknown, codes: string[]) => {
     try {
       // Fetch from OpenD API
       const { OpenDClient } = await import('../opend/opend-client');
@@ -167,7 +167,7 @@ export function registerOpenDStreamIPC(ipcMain: unknown) {
   });
 
   // Get stream status
-  ipcMain.handle('stock-stream:status', async () => {
+  (ipcMain as any).handle('stock-stream:status', async () => {
     try {
       // Return current stream status
       return {

@@ -1,0 +1,1660 @@
+﻿node.exe : [33mThe CJS build of Vite's Node API is deprecated. See 
+https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+所在位置 行:1 字符: 1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33mThe CJS bu...e details.[39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[33m[7m[33m Vitest [33m[27m "deps.external" is deprecated. If you rely on vite-node directly, use 
+"server.deps.external" instead. Otherwise, consider using "deps.optimizer.web.exclude"[39m
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90mC:/Users/vx107/.easyclaw/workspace/dawn-whales[39m
+
+ [33m鉂?[39m tests/jvs-integration.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/multi-source-aggregator.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/benchmark-engines.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/strategy-ranking-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q52-01-marketplace-api.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/condition-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/integration-full-pipeline.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/backtest-enhancer.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/trade-executor-expanded.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q53-01-social-trading-api.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-43-01-performance-monitor.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/risk-engine-v3.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-44-03-pdf-report.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/condition-trade-bridge.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/nl-parser.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-43-02-realtime-data-flow.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/trade-executor.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [2m[90m鈫?[39m[22m tests/jvs-e2e-validation.test.ts [2m ([22m[2m1 test[22m [2m|[22m [33m1 skipped[39m[2m)[22m
+ [32m鉁?[39m tests/strategy-nl-e2e.test.ts [2m ([22m[2m18 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-37-ipc-validation.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/ipc-full-link-smoke.test.ts [2m ([22m[2m140 tests[22m[2m)[22m[90m 238[2mms[22m[39m
+ [32m鉁?[39m tests/e2e-trade-executor.test.ts [2m ([22m[2m16 tests[22m[2m)[22m[33m 504[2mms[22m[39m
+ [32m鉁?[39m tests/e2e-full-pipeline-multi-broker.test.ts [2m ([22m[2m16 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [33m鉂?[39m tests/multi-timeframe-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/j-39-03-portfolio-risk.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q42-03-ipc-coverage.test.ts [2m ([22m[2m25 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+ [33m鉂?[39m tests/live-trade-bridge-enhanced.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-46-01-strategy-marketplace-search.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/strategy-export-import.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-47-01-i18n-data-pipeline.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-46-02-risk-engine-v3.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/walk-forward-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-46-03-data-pipeline-health.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/strategy-optimizer.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/condition-engine-pressure.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q53-03-social-trading-integration.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-57-01-four-agent-orchestrator.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q42-01-walkforward-integration.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-52-02-subscription-review.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/multi-broker-ipc.test.ts [2m ([22m[2m26 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [33m鉂?[39m tests/j-39-01-strategy-optimizer.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/e2e-sprint1-smoke.test.ts [2m ([22m[2m21 tests[22m[2m)[22m[90m 20[2mms[22m[39m
+ [32m鉁?[39m tests/jvs-bridge-api.test.ts [2m ([22m[2m21 tests[22m[2m)[22m[90m 69[2mms[22m[39m
+ [33m鉂?[39m tests/live-trade-bridge.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q43-01-ws-stress.test.ts [2m ([22m[2m54 tests[22m[2m)[22m[33m 2103[2mms[22m[39m
+ [33m鉂?[39m tests/strategy-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q17-paper-trader.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/ws-trade-e2e.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/d49-new-audit-trail-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-53-01-trader-profile.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/risk-engine-v2-scenarios.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/strategy-backtest-ipc.test.ts [2m ([22m[2m27 tests[22m[2m)[22m[90m 41[2mms[22m[39m
+ [33m鉂?[39m tests/d49-new-compliance-report-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-42-01-multi-account-adapter.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/portfolio-risk-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-50-02-error-handler.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-47-03-data-pipeline-reliability.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/e2e-multi-broker.test.ts [2m ([22m[2m13 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-50-01-performance-optimizer.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mInitialization[2m > [22m[2mshould initialize with default config[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m300000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mInitialization[2m > [22m[2mshould initialize with custom config[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'EUR'[39m,
+    defaultTimezone: [32m'Europe/London'[39m,
+    exchangeRateRefreshIntervalMs: [33m300000[39m,
+    maxCacheAge: [33m120000[39m,
+    enableAutoConversion: [33mfalse[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mInitialization[2m > [22m[2mshould initialize default exchange rates[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mCurrency Conversion[2m > [22m[2mshould convert USD to CNY[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mCurrency Conversion[2m > [22m[2mshould convert USD to EUR[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mCurrency Conversion[2m > [22m[2mshould convert CNY to USD[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mCurrency Conversion[2m > [22m[2mshould handle same currency conversion[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mCurrency Conversion[2m > [22m[2mshould convert through USD when direct rate not available[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mCurrency Conversion[2m > [22m[2mshould use cached exchange rates[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mTimezone Conversion[2m > [22m[2mshould convert Shanghai to New York[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mTimezone Conversion[2m > [22m[2mshould convert Shanghai to Tokyo[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mTimezone Conversion[2m > [22m[2mshould handle same timezone conversion[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mFinancial Data Processing[2m > [22m[2mshould process financial data with auto conversion[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mFinancial Data Processing[2m > [22m[2mshould convert currency automatically[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mFinancial Data Processing[2m > [22m[2mshould convert timezone automatically[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mFinancial Data Processing[2m > [22m[2mshould cache processed data[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mFinancial Data Processing[2m > [22m[2mshould not convert when auto conversion is disabled[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m300000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mfalse[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mCache Management[2m > [22m[2mshould cache processed data[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mCache Management[2m > [22m[2mshould clear cache[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Cache cleared
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mCache Management[2m > [22m[2mshould expire old cache entries[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m300000[39m,
+    maxCacheAge: [33m100[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+
+ [32m鉁?[39m tests/q50-01-user-acceptance.test.ts [2m ([22m[2m44 tests[22m[2m)[22m[90m 123[2mms[22m[39m
+ [33m鉂?[39m tests/q47-01-i18n-data.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-52-01-marketplace-core.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mCache Management[2m > [22m[2mshould expire old cache entries[22m[39m
+[InternationalDataPipeline] Destroyed
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mExchange Rate Management[2m > [22m[2mshould get exchange rate[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mExchange Rate Management[2m > [22m[2mshould return null for non-existent rate[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mExchange Rate Management[2m > [22m[2mshould refresh exchange rates periodically[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m100[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mExchange Rate Management[2m > [22m[2mshould refresh exchange rates periodically[22m[39m
+[InternationalDataPipeline] Exchange rates refreshed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mExchange Rate Management[2m > [22m[2mshould refresh exchange rates periodically[22m[39m
+[InternationalDataPipeline] Exchange rates refreshed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mExchange Rate Management[2m > [22m[2mshould refresh exchange rates periodically[22m[39m
+[InternationalDataPipeline] Destroyed
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mStatistics[2m > [22m[2mshould get pipeline stats[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mStatistics[2m > [22m[2mshould track processed data count[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mEvent Emission[2m > [22m[2mshould emit dataProcessed event[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mEvent Emission[2m > [22m[2mshould emit ratesUpdated event[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m100[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mEvent Emission[2m > [22m[2mshould emit ratesUpdated event[22m[39m
+[InternationalDataPipeline] Exchange rates refreshed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mEvent Emission[2m > [22m[2mshould emit ratesUpdated event[22m[39m
+[InternationalDataPipeline] Exchange rates refreshed
+
+ [32m鉁?[39m tests/q48-perf-benchmark.test.ts [2m ([22m[2m27 tests[22m[2m)[22m[33m 670[2mms[22m[39m
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mEvent Emission[2m > [22m[2mshould emit ratesUpdated event[22m[39m
+[InternationalDataPipeline] Destroyed
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mSingleton Pattern[2m > [22m[2mshould return singleton instance[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m300000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+[InternationalDataPipeline] Destroyed
+
+[90mstdout[2m | tests/jvs-47-01-international-data-pipeline.test.ts[2m > [22m[2mInternationalDataPipeline[2m > [22m[2mSingleton Pattern[2m > [22m[2mshould destroy singleton instance[22m[39m
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m60000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m300000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+[InternationalDataPipeline] Default exchange rates initialized { count: [33m8[39m }
+[InternationalDataPipeline] Initialized {
+  config: {
+    defaultCurrency: [32m'USD'[39m,
+    defaultTimezone: [32m'Asia/Shanghai'[39m,
+    exchangeRateRefreshIntervalMs: [33m300000[39m,
+    maxCacheAge: [33m60000[39m,
+    enableAutoConversion: [33mtrue[39m
+  }
+}
+[InternationalDataPipeline] Destroyed
+[InternationalDataPipeline] Destroyed
+
+ [32m鉁?[39m tests/jvs-47-01-international-data-pipeline.test.ts [2m ([22m[2m29 tests[22m[2m)[22m[33m 575[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-95-nlp-sentiment.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-45-02-marketplace-api.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q52-03-integration.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/j-39-02-multi-timeframe.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-53-02-signal-push.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q59-02-commission-topup-e2e.test.ts [2m ([22m[2m20 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+ [33m鉂?[39m tests/q53-02-social-trading-perf.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/j-40-03-strategy-export-import.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q42-02-live-trade-bridge-e2e.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q45-01-adaptive-param-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-42-02-mobile-data-adapter.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-100-e2e.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/condition-watcher.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q45-05-pwa-storage.test.ts [2m ([22m[2m23 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32m鉁?[39m tests/q48-contract-testing.test.ts [2m ([22m[2m17 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m鉁?[39m tests/jvs-83-data-aggregator.test.ts [2m ([22m[2m17 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+[90mstdout[2m | tests/jvs-83-data-aggregator.test.ts[2m > [22m[2mJVS-83: Data Aggregator Production Tests[2m > [22m[2mDataAggregator.aggregate[2m > [22m[2mshould aggregate quotes from multiple sources[22m[39m
+[DataAggregator] Aggregated 2/2 quotes from 1 sources in 0ms
+
+[90mstdout[2m | tests/jvs-83-data-aggregator.test.ts[2m > [22m[2mJVS-83: Data Aggregator Production Tests[2m > [22m[2mDataAggregator.aggregate[2m > [22m[2mshould use cache when enabled[22m[39m
+[DataAggregator] Aggregated 1/1 quotes from 1 sources in 0ms
+
+[90mstdout[2m | tests/jvs-83-data-aggregator.test.ts[2m > [22m[2mJVS-83: Data Aggregator Production Tests[2m > [22m[2mDataAggregator.aggregate[2m > [22m[2mshould fallback to secondary source on primary failure[22m[39m
+[DataAggregator] Aggregated 1/1 quotes from 1 sources in 0ms
+
+[90mstdout[2m | tests/jvs-83-data-aggregator.test.ts[2m > [22m[2mJVS-83: Data Aggregator Production Tests[2m > [22m[2mCache Management[2m > [22m[2mshould clear cache[22m[39m
+[DataAggregator] Cache cleared
+
+ [33m鉂?[39m tests/q52-02-perf-benchmark.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q48-03-coverage-gap.test.ts [2m ([22m[2m20 tests[22m[2m)[22m[90m 110[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-57-04-debate-arena.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-48-01-engine-stability.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/j-40-02-walk-forward-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-36-01-closed-loop-boundary.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/data-exporter.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-46-02-typescript-strict.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/performance-tracker.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q47-02-offline-publishing-e2e.test.ts [2m ([22m[2m14 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [33m鉂?[39m tests/position-monitor.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/engine-registry.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q46-03-data-consistency-checker.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-44-01-ai-report.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/closed-loop-integration.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q18-strategy-templates.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/nl-parser-extension.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-60-05-ga-stability-e2e.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q50-02-perf-benchmark.test.ts [2m ([22m[2m25 tests[22m[2m)[22m[90m 65[2mms[22m[39m
+ [32m鉁?[39m tests/mixed-trigger-e2e.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32m鉁?[39m tests/q56-q70-complete.test.ts [2m ([22m[2m16 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [33m鉂?[39m tests/q59-03-regression-validation.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-62-01-p2p-transfer.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/jvs-83-benchmark.test.ts[2m > [22m[2mJVS-83: Data Aggregator Benchmarks[2m > [22m[2mPerformance Benchmarks[2m > [22m[2mshould validate 1000 quotes in < 100ms[22m[39m
+Validated 1000 quotes in 0.13ms
+
+[90mstdout[2m | tests/jvs-83-benchmark.test.ts[2m > [22m[2mJVS-83: Data Aggregator Benchmarks[2m > [22m[2mPerformance Benchmarks[2m > [22m[2mshould normalize 1000 quotes in < 100ms[22m[39m
+Normalized 1000 quotes in 0.35ms
+
+[90mstdout[2m | tests/jvs-83-benchmark.test.ts[2m > [22m[2mJVS-83: Data Aggregator Benchmarks[2m > [22m[2mPerformance Benchmarks[2m > [22m[2mshould calculate quality for 1000 quotes in < 200ms[22m[39m
+Calculated quality for 1000 quotes in 4.02ms
+
+[90mstdout[2m | tests/jvs-83-benchmark.test.ts[2m > [22m[2mJVS-83: Data Aggregator Benchmarks[2m > [22m[2mPerformance Benchmarks[2m > [22m[2mshould cache 1000 quotes efficiently[22m[39m
+Cached 1000 quotes in 0.68ms
+
+[90mstdout[2m | tests/jvs-83-benchmark.test.ts[2m > [22m[2mJVS-83: Data Aggregator Benchmarks[2m > [22m[2mPerformance Benchmarks[2m > [22m[2mshould retrieve 1000 cached quotes efficiently[22m[39m
+Retrieved 1000 cached quotes in 2.86ms
+
+[90mstdout[2m | tests/jvs-83-benchmark.test.ts[2m > [22m[2mJVS-83: Data Aggregator Benchmarks[2m > [22m[2mMemory Benchmarks[2m > [22m[2mshould handle 10000 cached quotes[22m[39m
+Successfully cached 10000 quotes
+
+[90mstdout[2m | tests/jvs-83-benchmark.test.ts[2m > [22m[2mJVS-83: Data Aggregator Benchmarks[2m > [22m[2mMemory Benchmarks[2m > [22m[2mshould maintain cache performance with large cache[22m[39m
+Retrieved 1000 random quotes from 5000 cache in 0.91ms
+
+[90mstdout[2m | tests/jvs-83-benchmark.test.ts[2m > [22m[2mJVS-83: Data Aggregator Benchmarks[2m > [22m[2mStress Tests[2m > [22m[2mshould handle rapid cache updates[22m[39m
+Updated cache 1000 times in 0.26ms
+
+ [32m鉁?[39m tests/jvs-83-benchmark.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 33[2mms[22m[39m
+[90mstdout[2m | tests/jvs-83-benchmark.test.ts[2m > [22m[2mJVS-83: Data Aggregator Benchmarks[2m > [22m[2mStress Tests[2m > [22m[2mshould handle cache cleanup efficiently[22m[39m
+[DataAggregator] Cache cleared
+Cleared 1000 cached quotes in 0.08ms
+
+ [32m鉁?[39m tests/e2e-sprint1-full.test.ts [2m ([22m[2m30 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [33m鉂?[39m tests/q95-risk-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q44-03-backtest-comparator.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/notification-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q46-04-e2e-smoke.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q46-02-data-cleaning-pipeline.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-49-data-versioning.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-38-03-backtest-replay.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-53-04-mobile-api-adapter.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q48-01-e2e-scenarios.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-58-01-cache-optimizer.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-52-03-marketplace-models.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/condition-engine-integration.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-60-03-order-state-machine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-61-03-signal-square-api.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q48-01-marketplace-e2e.test.ts [2m ([22m[2m11 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [33m鉂?[39m tests/account-analytics.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-38-01-adaptive-param.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q47-02-i18n-switching-e2e.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-58-04-perf-benchmark.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/rebalance-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-45-01-echarts-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q45-04-async-io-scheduler.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/q50-load-testing.test.ts[2m > [22m[2mQ50: Load Testing[2m > [22m[2mstress test validates error rate threshold[22m[39m
+Running stress test with concurrency=10
+
+ [33m鉂?[39m tests/jvs-72-06-multi-market-quote.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/mobile-data-adapter.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q44-05-smart-cache.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/benchmark-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q50-03-coverage-boost.test.ts [2m ([22m[2m35 tests[22m[2m)[22m[33m 5021[2mms[22m[39m
+ [33m鉂?[39m tests/q19-opend-health.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q47-02-ai-assistant-e2e.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [33m鉂?[39m tests/q44-01-circuit-breaker.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/dynamic-sizer.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/multi-factor.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-63-02-billing-wallet.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q44-04-portfolio-optimizer-v2.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q44-05-memory-leak-detection.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-60-04-execution-billing-bridge.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-68-02-odd-lot-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-60-02-live-risk-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-63-01-ai-gateway.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-68-03-backtest-accelerator.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q44-04-engine-performance.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q46-01-i18n-data.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-42-03-account-analytics.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q48-02-stability-rounds.test.ts [2m ([22m[2m27 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-53-04-mobile-api.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q47-property-testing.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q53-cicd-pipeline.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m鉁?[39m tests/jvs-45-03-test-helpers.test.ts [2m ([22m[2m21 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [33m鉂?[39m tests/ws-backfill.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/closed-loop-executor.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/strategy-backtest-pipeline.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-72-01-factor-compatibility.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/q50-load-testing.test.ts[2m > [22m[2mQ50: Load Testing[2m > [22m[2mstress test validates error rate threshold[22m[39m
+Running stress test with concurrency=50
+
+ [33m鉂?[39m tests/jvs-38-02-reward-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/q50-load-testing.test.ts[2m > [22m[2mQ50: Load Testing[2m > [22m[2mstress test validates error rate threshold[22m[39m
+Running stress test with concurrency=100
+
+ [33m鉂?[39m tests/j-37-02-rebalance-boundary.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-61-01-multi-market-broker.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-66-02-signal-backtest-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-66-01-creator-tier-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-58-03-ai-cost-monitor.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q44-03-cleanup-methods.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-44-02-data-export.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q45-02-alert-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/q50-load-testing.test.ts[2m > [22m[2mQ50: Load Testing[2m > [22m[2mstress test validates error rate threshold[22m[39m
+Running stress test with concurrency=200
+
+ [32m鉁?[39m tests/jvs-86-macd-cross.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-68-01-ibkr-broker-adapter.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-72-01-community-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-59-01-ai-usage-billing.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-59-04-ai-execution-bridge.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-58-02-creator-llm-config.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q44-02-backfill-service.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/j-37-01-closedloop-boundary.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/q50-load-testing.test.ts[2m > [22m[2mQ50: Load Testing[2m > [22m[2mstress test validates error rate threshold[22m[39m
+Running stress test with concurrency=500
+
+[90mstdout[2m | tests/q50-load-testing.test.ts[2m > [22m[2mQ50: Load Testing[2m > [22m[2mstress test validates error rate threshold[22m[39m
+Running stress test with concurrency=20
+
+ [33m鉂?[39m tests/jvs-62-02-appeal-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-59-02-platform-commission.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-59-05-integration.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-73-02-ai-drawing-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/jvs-85-technical-indicators.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-72-04-strategy-optimizer.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-68-04-i18n-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-62-03-security-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q50-load-testing.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[33m 4702[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-65-01-download-registration.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/trade-executor-retry.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/j-37-03-condition-negative.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q54-code-review.test.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m鉁?[39m tests/preferences.test.ts [2m ([22m[2m20 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-72-03-factor-research.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-61-02-cloud-opend-fragment.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-60-01-opend-live-broker.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/smart-monitor.test.ts [2m ([22m[2m20 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-72-02-template-compatibility.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-65-03-auto-trade-billing-v2.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/nl-parser-compound.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-73-03-ai-pattern-recognition.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-73-04-parameter-smart-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-72-02-feed-notification.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q45-03-anomaly-detection-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-65-02-creator-onboarding.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-70-01-server-deployment.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-73-01-real-data-orchestrator.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-59-03-usdt-topup-gateway.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-62-04-business-risk-monitor.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-66-03-strategy-marketplace.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q49-snapshot-testing.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32m鉁?[39m tests/q52-pre-commit.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m鉁?[39m tests/q55-security-scan.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-66-04-creator-leaderboard.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/worker-pool.test.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 32[2mms[22m[39m
+ [32m鉁?[39m tests/t65-migration-engine.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-72-05-monitoring.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/t104-worker-pool-bench.test.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 40[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-64-02-factor-cloud.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/debug-signal.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-63-04-desktop-cleanup.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/frontend-pages.test.ts [2m ([22m[2m20 tests[22m[2m)[22m[90m 23[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-115-aggregator.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-64-01-template-encryption.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-50-realtime-quality-monitor.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-70-02-platform-packaging.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/t96-data-compressor.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 2[2mms[22m[39m
+ [32m鉁?[39m tests/t52-state-machine.test.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m鉁?[39m tests/exporter.test.ts [2m ([22m[2m19 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [2m[90m鈫?[39m[22m tests/t105-database-manager.test.ts [2m ([22m[2m8 tests[22m [2m|[22m [33m8 skipped[39m[2m)[22m
+ [33m鉂?[39m tests/jvs-71-02-deployment-docs.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/t87-api-gateway.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m鉁?[39m tests/t99-batch-scheduler.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m鉁?[39m tests/t90-load-tester.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 174[2mms[22m[39m
+ [32m鉁?[39m tests/t103-stream-batch.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m鉁?[39m tests/t94-data-sharding.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m鉁?[39m tests/t88-multi-tenancy.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m鉁?[39m tests/t86-grpc-service.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m鉁?[39m tests/t93-data-warehouse.test.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 2[2mms[22m[39m
+ [32m鉁?[39m tests/t53-crypto-service.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 41[2mms[22m[39m
+ [32m鉁?[39m tests/t102-data-tiering.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 2[2mms[22m[39m
+ [32m鉁?[39m tests/t68-data-pipeline.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m鉁?[39m tests/t97-query-optimizer.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-70-03-launch-checklist.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/t66-feature-flags.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m鉁?[39m tests/t76-signal-merger.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m鉁?[39m tests/t69-version-checker.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m鉁?[39m tests/t101-data-validator.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 2[2mms[22m[39m
+ [32m鉁?[39m tests/t73-prediction-engine.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+ [32m鉁?[39m tests/t67-json-rpc.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32m鉁?[39m tests/t75-account-aggregator.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+ [32m鉁?[39m tests/t71-notification-dispatcher.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m鉁?[39m tests/t63-audit-logger.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m鉁?[39m tests/t57-health-checker.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 35[2mms[22m[39m
+ [32m鉁?[39m tests/t80-market-scanner.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m鉁?[39m tests/q56-01-four-agent-collaboration.test.ts [2m ([22m[2m30 tests[22m[2m)[22m[90m 18[2mms[22m[39m
+[90mstderr[2m | tests/t61-t62-error-metrics.test.ts[2m > [22m[2merror-middleware[2m > [22m[2msafeAsync should 
+return fallback[22m[39m
+[ErrorReporter] {
+  id: [32m'1781119379750-xwzptb'[39m,
+  message: [32m'crash'[39m,
+  stack: [32m'Error: crash\n'[39m +
+    [32m'    at 
+C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\tests\\t61-t62-error-metrics.test.ts:32:27\n'[39m +
+    [32m'    at Module.safeAsync 
+(C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\electron\\workers\\error-middleware.ts:103:18)\n'[39m +
+    [32m'    at 
+C:\\Users\\vx107\\.easyclaw\\workspace\\dawn-whales\\tests\\t61-t62-error-metrics.test.ts:31:26\n'[39m +
+    [32m'    at 
+file:///C:/Users/vx107/.easyclaw/workspace/dawn-whales/node_modules/@vitest/runner/dist/index.js:135:14\n'[39m +
+    [32m'    at 
+file:///C:/Users/vx107/.easyclaw/workspace/dawn-whales/node_modules/@vitest/runner/dist/index.js:60:26\n'[39m +
+    [32m'    at runTest 
+(file:///C:/Users/vx107/.easyclaw/workspace/dawn-whales/node_modules/@vitest/runner/dist/index.js:781:17)\n'[39m +
+    [32m'    at runSuite 
+(file:///C:/Users/vx107/.easyclaw/workspace/dawn-whales/node_modules/@vitest/runner/dist/index.js:909:15)\n'[39m +
+    [32m'    at runSuite 
+(file:///C:/Users/vx107/.easyclaw/workspace/dawn-whales/node_modules/@vitest/runner/dist/index.js:909:15)\n'[39m +
+    [32m'    at runFiles 
+(file:///C:/Users/vx107/.easyclaw/workspace/dawn-whales/node_modules/@vitest/runner/dist/index.js:958:5)\n'[39m +
+    [32m'    at startTests 
+(file:///C:/Users/vx107/.easyclaw/workspace/dawn-whales/node_modules/@vitest/runner/dist/index.js:967:3)'[39m,
+  context: [90mundefined[39m,
+  severity: [32m'error'[39m,
+  timestamp: [33m1781119379755[39m
+}
+
+ [32m鉁?[39m tests/t61-t62-error-metrics.test.ts [2m ([22m[2m7 tests[22m[2m)[22m[33m 2459[2mms[22m[39m
+ [32m鉁?[39m tests/t60-job-scheduler.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 196[2mms[22m[39m
+ [32m鉁?[39m tests/t81-strategy-templates.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m鉁?[39m tests/t55-cache-service.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 107[2mms[22m[39m
+ [33m鉂?[39m tests/q56-03-e2e-4agent-flow.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q63-01-api-gateway.test.ts [2m ([22m[2m20 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m鉁?[39m tests/q64-01-admin-datafusion.test.ts [2m ([22m[2m20 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [33m鉂?[39m tests/q56-02-llm-router-cache-fallback.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q51-02-mutation-testing.test.ts [2m ([22m[2m24 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32m鉁?[39m tests/q51-03-coverage-visualization.test.ts [2m ([22m[2m30 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m鉁?[39m tests/t84-metrics-endpoint.test.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 2[2mms[22m[39m
+ [32m鉁?[39m tests/t64-file-cleanup.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m鉁?[39m tests/t77-backtest-formatter.test.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 2[2mms[22m[39m
+ [32m鉁?[39m tests/t54-rate-limiter.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 27[2mms[22m[39m
+ [32m鉁?[39m tests/t58-event-bus.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32m鉁?[39m tests/q62-01-p2p-scenarios.test.ts [2m ([22m[2m20 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32m鉁?[39m tests/t95-agg-pipeline.test.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 2[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-51-03-performance-benchmark.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA1: API Key Leak Detection[2m > [22m[2m01: no DEEPSEEK_API_KEY in nl-parser.ts (JVS J-77-01 target)[22m[39m
+[Q-77-01] nl-parser.ts not found
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA1: API Key Leak Detection[2m > [22m[2m02: no API_KEY pattern in electron/engine[22m[39m
+[Q-77-01] API_KEY hits engine: CLEAN
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA1: API Key Leak Detection[2m > [22m[2m03: no secret in dist/ build artifacts[22m[39m
+[Q-77-01] Secret-like in dist: 0
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA1: API Key Leak Detection[2m > [22m[2m04: no hardcoded LLM URLs in engine code[22m[39m
+[Q-77-01] Hardcoded LLM URLs: CLEAN
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA6: Command Injection Sandbox[2m > [22m[2m05: child_process spawn/exec engines identified[22m[39m
+[Q-77-01] spawn/exec engines: 
+[Q-77-01] Covered: 
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA6: Command Injection Sandbox[2m > [22m[2m06: input validation pattern present in spawn engines[22m[39m
+[Q-77-01] Validated/Total spawn engines: 0/0
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA6: Command Injection Sandbox[2m > [22m[2m07: timeout protection in spawn engines[22m[39m
+[Q-77-01] Timeout/Total spawn: 0/0
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA6: Command Injection Sandbox[2m > [22m[2m08: no eval() or Function() dynamic execution[22m[39m
+[Q-77-01] eval/Function: CLEAN
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA7: XSS/CSRF/CSP[2m > [22m[2m09: CSP header or meta tag in HTML[22m[39m
+[Q-77-01] CSP present: pending JVS J-77-03
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA7: XSS/CSRF/CSP[2m > [22m[2m10: XSS prevention: HTML encode in components[22m[39m
+[Q-77-01] 鈿狅笍 dangerouslySetInnerHTML in: AIAssistantPanel.tsx
+[Q-77-01] 鈿狅笍 dangerouslySetInnerHTML in: PineScriptEditor.tsx
+[Q-77-01] 鈿狅笍 dangerouslySetInnerHTML in: HelpCenter.tsx
+[Q-77-01] XSS-safe files: 2
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA7: XSS/CSRF/CSP[2m > [22m[2m11: CSRF token pattern on write endpoints[22m[39m
+[Q-77-01] CSRF in /api: pending JVS J-77-03
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA7: XSS/CSRF/CSP[2m > [22m[2m12: helmet/security headers in server config[22m[39m
+[Q-77-01] Helmet/security headers: pending JVS J-77-03
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA3/A4/A5: Deploy+Build+Landing[2m > [22m[2m13: build scripts for 3 platforms[22m[39m
+[Q-77-01] Build scripts: dist:win, dist:mac, dist:linux, dist:all
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA3/A4/A5: Deploy+Build+Landing[2m > [22m[2m14: landing page exists (dist/index.html or site/index.html)[22m[39m
+[Q-77-01] Landing page: C:\Users\vx107\.easyclaw\workspace\dawn-whales\dist\index.html, C:\Users\vx107\.easyclaw\workspace\dawn-whales\site\index.html
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA3/A4/A5: Deploy+Build+Landing[2m > [22m[2m15: SEO meta in landing page[22m[39m
+[Q-77-01] SEO meta: true
+
+[90mstdout[2m | tests/q77-01-security-e2e.test.ts[2m > [22m[2mQ-77-01: Security E2E Validation[2m > [22m[2mA3/A4/A5: Deploy+Build+Landing[2m > [22m[2m16: electron-builder config present[22m[39m
+[Q-77-01] Electron builder: electron-builder.json
+
+ [32m鉁?[39m tests/q77-01-security-e2e.test.ts [2m ([22m[2m16 tests[22m[2m)[22m[90m 69[2mms[22m[39m
+ [32m鉁?[39m tests/t79-strategy-optimizer.test.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32m鉁?[39m tests/t85-message-queue.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+ [32m鉁?[39m tests/t100-dedup-engine.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+ [32m鉁?[39m tests/t89-security-service.test.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m鉁?[39m tests/t72-plugin-manager.test.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m鉁?[39m tests/q66-02-backtest-marketplace.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m鉁?[39m tests/t56-config-validator.test.ts [2m ([22m[2m5 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m鉁?[39m tests/t78-heatmap.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m鉁?[39m tests/q63-02-billing-wallet.test.ts [2m ([22m[2m15 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m鉁?[39m tests/t59-dead-letter-queue.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m鉁?[39m tests/t70-time-series.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m鉁?[39m tests/t98-data-lineage.test.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m鉁?[39m tests/t51-vite-plugin.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 2[2mms[22m[39m
+ [33m鉂?[39m tests/q58-01-cache-accuracy.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q60-01-boundary.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-56-02-multi-llm-router.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q57-02-signal-closed-loop-e2e.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q62-02-dispute-2fa.test.ts [2m ([22m[2m15 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [33m鉂?[39m tests/q60-02-stress.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-v15-01-revenue-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q57-01-four-agent-real-engine.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/q78-01-three-engine-tests.test.ts[2m > [22m[2mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22m[2mP2P engine split (transfer + dispute + freeze + blacklist)[2m > [22m[2m14: p2p-dispute-engine.ts exists (JVS J-78-03 target)[22m[39m
+[Q-78-01] p2p-dispute: pending JVS J-78-03
+
+[90mstdout[2m | tests/q78-01-three-engine-tests.test.ts[2m > [22m[2mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22m[2mP2P engine split (transfer + dispute + freeze + blacklist)[2m > [22m[2m15: p2p-freeze-manager.ts exists (JVS J-78-03 target)[22m[39m
+[Q-78-01] p2p-freeze: pending JVS J-78-03
+
+[90mstdout[2m | tests/q78-01-three-engine-tests.test.ts[2m > [22m[2mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22m[2mP2P engine split (transfer + dispute + freeze + blacklist)[2m > [22m[2m16: blacklist-manager.ts exists (JVS J-78-03 target)[22m[39m
+[Q-78-01] blacklist: pending JVS J-78-03
+
+[90mstdout[2m | tests/q78-01-three-engine-tests.test.ts[2m > [22m[2mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22m[2mP2P engine split (transfer + dispute + freeze + blacklist)[2m > [22m[2m18: 14-day freeze preserved[22m[39m
+[Q-78-01] 14-day freeze: pending JVS
+
+[90mstdout[2m | tests/q78-01-three-engine-tests.test.ts[2m > [22m[2mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22m[2mP2P engine split (transfer + dispute + freeze + blacklist)[2m > [22m[2m19: 4 dispute reasons (JVS J-78-03 target)[22m[39m
+[Q-78-01] 4 reasons: engine pending
+
+ [33m鉂?[39m tests/q78-01-three-engine-tests.test.ts [2m ([22m[2m20 tests[22m [2m|[22m [31m16 failed[39m[2m)[22m[90m 25[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22msignal-backtesting engine[2m > [22m01: source file exists + has expected interface[39m
+[31m     鈫?expected false to be true // Object.is equality[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22msignal-backtesting engine[2m > [22m02: exports SignalBacktestResult type[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\signal-backtesting.ts'[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22msignal-backtesting engine[2m > [22m03: trades[] array in result[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\signal-backtesting.ts'[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22msignal-backtesting engine[2m > [22m04: single trade boundary[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\signal-backtesting.ts'[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22msignal-backtesting engine[2m > [22m05: empty signals boundary[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\signal-backtesting.ts'[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22msignal-backtesting engine[2m > [22m06: win rate + profit factor calculation[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\signal-backtesting.ts'[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22mrealtime-news engine[2m > [22m07: source file exists + has expected interface[39m
+[31m     鈫?expected false to be true // Object.is equality[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22mrealtime-news engine[2m > [22m08: dual source (NewsAPI + eastmoney) pattern[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\realtime-news.ts'[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22mrealtime-news engine[2m > [22m09: sentiment scoring -100 to +100[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\realtime-news.ts'[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22mrealtime-news engine[2m > [22m10: dedup + keyword filter[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\realtime-news.ts'[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22mrealtime-news engine[2m > [22m11: WebSocket realtime push[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\realtime-news.ts'[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22mrealtime-news engine[2m > [22m12: symbols[] tagging[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\realtime-news.ts'[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22mP2P engine split (transfer + dispute + freeze + blacklist)[2m > [22m13: p2p-transfer-engine.ts exists[39m
+[31m     鈫?expected false to be true // Object.is equality[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22mP2P engine split (transfer + dispute + freeze + blacklist)[2m > [22m17: 0.3% fee rate preserved[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\p2p-transfer-engine.ts'[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22mP2P engine split (transfer + dispute + freeze + blacklist)[2m > [22m18: 14-day freeze preserved[39m
+[31m     鈫?expected false to be true // Object.is equality[39m
+[31m   [33m鉂?[31m tests/q78-01-three-engine-tests.test.ts[2m > [22mQ-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P)[2m > [22mP2P engine split (transfer + dispute + freeze + blacklist)[2m > [22m20: buyer cancel unlocks freeze[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\p2p-transfer-engine.ts'[39m
+ [32m鉁?[39m tests/q65-01-register-onboarding.test.ts [2m ([22m[2m15 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mAdapter Architecture[2m > [22m[2m01: adapter files exist or interface pattern present[22m[39m
+[Q-75-02] Adapter files: pending JVS J-75-02
+
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mAdapter Architecture[2m > [22m[2m02: adapter requires common interface: fetch/query/getData[22m[39m
+[Q-75-02] Files with fetch methods: 0
+
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mAdapter Architecture[2m > [22m[2m03: adapter timeout guard or retry logic[22m[39m
+[Q-75-02] Timeout/retry: false
+
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mFallback Chain[2m > [22m[2m05: multi-source aggregation pattern[22m[39m
+[Q-75-02] Aggregation files: pending JVS J-75-03
+
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mFallback Chain[2m > [22m[2m06: source priority/ranking exists[22m[39m
+[Q-75-02] Priority patterns in: pending
+
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mCache Mechanism[2m > [22m[2m07: T+1 cache pattern or cache engine exists[22m[39m
+[Q-75-02] Cache files: pending JVS J-75-03
+[Q-75-02] Cache/ttl/expiry refs: 0
+
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mCache Mechanism[2m > [22m[2m08: cache key pattern exists (symbol+source+timestamp)[22m[39m
+[Q-75-02] Cache key: pending
+
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mCache Mechanism[2m > [22m[2m09: stale-while-revalidate or expiry strategy[22m[39m
+[Q-75-02] Expiry patterns: pending
+
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mMulti-Source Cross-Verification[2m > [22m[2m10: cross-source price divergence detection[22m[39m
+[Q-75-02] Cross-verify patterns: pending
+
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mMulti-Source Cross-Verification[2m > [22m[2m11: data freshness timestamp check[22m[39m
+[Q-75-02] Freshness patterns: pending
+
+ [33m鉂?[39m tests/q75-02-multisource-fallback-cache.test.ts [2m ([22m[2m12 tests[22m [2m|[22m [31m2 failed[39m[2m)[22m[90m 19[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + Cache[2m > [22mAdapter Architecture[2m > [22m02: adapter requires common interface: fetch/query/getData[39m
+[31m     鈫?expected 0 to be greater than or equal to 1[39m
+[31m   [33m鉂?[31m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + Cache[2m > [22mFallback Chain[2m > [22m04: fallback chain pattern exists in agent code[39m
+[31m     鈫?expected false to be true // Object.is equality[39m
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mMulti-Source Cross-Verification[2m > [22m[2m12: error isolation 鈥?one source fail does not kill all[22m[39m
+[Q-75-02] Error isolation: pending
+
+ [33m鉂?[39m tests/q58-02-creator-cost-e2e.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/q76-01-usemock-crash-recovery.test.ts[2m > [22m[2mQ-76-01: useMock=false + Crash Recovery[2m > [22m[2museMock=false Hard Gate[2m > [22m[2m05: useMock default = false in all 4 agents[22m[39m
+[Q-76-01] agent-fundamentals.ts not found
+[Q-76-01] agent-technical.ts not found
+[Q-76-01] agent-sentiment.ts not found
+[Q-76-01] agent-macro.ts not found
+
+[90mstdout[2m | tests/q76-01-usemock-crash-recovery.test.ts[2m > [22m[2mQ-76-01: useMock=false + Crash Recovery[2m > [22m[2museMock=false Hard Gate[2m > [22m[2m06: MOCK_ engine-wide audit (閳?JVS J-76-01)[22m[39m
+[Q-76-01] MOCK_ engine-wide: 0 (CLEAN)
+
+[90mstdout[2m | tests/q76-01-usemock-crash-recovery.test.ts[2m > [22m[2mQ-76-01: useMock=false + Crash Recovery[2m > [22m[2museMock=false Hard Gate[2m > [22m[2m07: MOCK_ src/ audit (閳?JVS J-76-01)[22m[39m
+[Q-76-01] MOCK_ in src: 88 (BacktestComparisonPage.tsx:3, WalkForwardPanel.tsx:2, AIDailyDigestPanel.tsx:2, LiveTradingPanel.tsx:6, PerformanceMonitorPanel.tsx:2, MultiSourceDataPanel.tsx:5, MultiAccountSwitcher.tsx:7, CachedDataExplorer.tsx:4, DataQualityMonitorPage.tsx:8, SentimentStreamDashboard.tsx:2, SmartPickerPage.tsx:2, MarketplaceDetail.tsx:2, MarketplacePublishPanel.tsx:3, PortfolioRebalancerPage.tsx:2, AlertCenterPage.tsx:6, RiskDashboardPage.tsx:12, AIAdvisorPage.tsx:2, FactorExposurePage.tsx:2, PerformanceAttributionPage.tsx:2, RegimeMonitorPage.tsx:3, StrategyComparer.tsx:7, StrategyImportExportUI.tsx:2, TradeHistoryPage.tsx:2)
+
+[90mstdout[2m | tests/q76-01-usemock-crash-recovery.test.ts[2m > [22m[2mQ-76-01: useMock=false + Crash Recovery[2m > [22m[2mErrorBoundary + Crash Recovery[2m > [22m[2m08: ErrorBoundary engine or pattern exists[22m[39m
+[Q-76-01] Error/crash files: error-boundary.tsx
+[Q-76-01] ErrorBoundary: pending
+
+[90mstdout[2m | tests/q76-01-usemock-crash-recovery.test.ts[2m > [22m[2mQ-76-01: useMock=false + Crash Recovery[2m > [22m[2mErrorBoundary + Crash Recovery[2m > [22m[2m09: crash auto-restart pattern[22m[39m
+[Q-76-01] Restart pattern in: main-slim.ts
+[Q-76-01] Auto-restart: true
+
+[90mstdout[2m | tests/q76-01-usemock-crash-recovery.test.ts[2m > [22m[2mQ-76-01: useMock=false + Crash Recovery[2m > [22m[2mErrorBoundary + Crash Recovery[2m > [22m[2m10: state recovery on restart[22m[39m
+[Q-76-01] State recovery: pending
+
+[90mstdout[2m | tests/q76-01-usemock-crash-recovery.test.ts[2m > [22m[2mQ-76-01: useMock=false + Crash Recovery[2m > [22m[2mErrorBoundary + Crash Recovery[2m > [22m[2m11: crash log/telemetry collection[22m[39m
+[Q-76-01] Crash logging: pending
+
+[90mstdout[2m | tests/q76-01-usemock-crash-recovery.test.ts[2m > [22m[2mQ-76-01: useMock=false + Crash Recovery[2m > [22m[2mErrorBoundary + Crash Recovery[2m > [22m[2m12: UI crash boundary component referenced in src[22m[39m
+[Q-76-01] UI boundary in: ErrorBoundary.tsx
+[Q-76-01] UI boundary in: DesktopShell.tsx
+[Q-76-01] UI boundary in: ErrorBoundary.tsx
+[Q-76-01] UI boundary in: MarketplaceWidgets.tsx
+[Q-76-01] UI ErrorBoundary: true
+
+[90mstdout[2m | tests/q76-01-usemock-crash-recovery.test.ts[2m > [22m[2mQ-76-01: useMock=false + Crash Recovery[2m > [22m[2mBundle Size Check[2m > [22m[2m13: package.json build config for tree-shaking[22m[39m
+[Q-76-01] Config: vite.config.ts exists
+[Q-76-01] Config: tsconfig.json exists
+[Q-76-01] Config: package.json exists
+
+[90mstdout[2m | tests/q76-01-usemock-crash-recovery.test.ts[2m > [22m[2mQ-76-01: useMock=false + Crash Recovery[2m > [22m[2mBundle Size Check[2m > [22m[2m14: icons/assets optimized[22m[39m
+[Q-76-01] Asset dirs: public, icons, build
+
+[90mstdout[2m | tests/q76-01-usemock-crash-recovery.test.ts[2m > [22m[2mQ-76-01: useMock=false + Crash Recovery[2m > [22m[2mBundle Size Check[2m > [22m[2m15: source map disabled for production[22m[39m
+[Q-76-01] sourceMap: undefined
+[Q-76-01] Prod sourcemap disabled: not found
+
+ [33m鉂?[39m tests/q76-01-usemock-crash-recovery.test.ts [2m ([22m[2m15 tests[22m [2m|[22m [31m5 failed[39m[2m)[22m[90m 119[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q76-01-usemock-crash-recovery.test.ts[2m > [22mQ-76-01: useMock=false + Crash Recovery[2m > [22museMock=false Hard Gate[2m > [22m01: MOCK_ = 0 in agent-fundamentals.ts[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-fundamentals.ts'[39m
+[31m   [33m鉂?[31m tests/q76-01-usemock-crash-recovery.test.ts[2m > [22mQ-76-01: useMock=false + Crash Recovery[2m > [22museMock=false Hard Gate[2m > [22m02: MOCK_ in agent-technical.ts (閳?JVS J-76-01)[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-technical.ts'[39m
+[31m   [33m鉂?[31m tests/q76-01-usemock-crash-recovery.test.ts[2m > [22mQ-76-01: useMock=false + Crash Recovery[2m > [22museMock=false Hard Gate[2m > [22m03: MOCK_ in agent-sentiment.ts (閳?JVS J-76-01)[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-sentiment.ts'[39m
+[31m   [33m鉂?[31m tests/q76-01-usemock-crash-recovery.test.ts[2m > [22mQ-76-01: useMock=false + Crash Recovery[2m > [22museMock=false Hard Gate[2m > [22m04: MOCK_ in agent-macro.ts (閳?JVS J-76-01)[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-macro.ts'[39m
+[31m   [33m鉂?[31m tests/q76-01-usemock-crash-recovery.test.ts[2m > [22mQ-76-01: useMock=false + Crash Recovery[2m > [22museMock=false Hard Gate[2m > [22m05: useMock default = false in all 4 agents[39m
+[31m     鈫?expected +0 to be 4 // Object.is equality[39m
+ [33m鉂?[39m tests/jvs-54-02-export-format-extender.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/t91-gitops-pipeline.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[33m 2155[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-54-01-trader-signal-bridge.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q66-01-creator-tier.test.ts [2m ([22m[2m12 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-v15-02-auto-trade-billing.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/q73-01-realdata-draw-pattern.test.ts[2m > [22m[2mQ-73-01: Real Data + AI Drawing + Pattern Recognition[2m > [22m[2m4Agent useMock=false Real Data[2m > [22m[2m01: 4 agent engine files all present[22m[39m
+[Q-73-01] 4Agent: missing=agent-fundamentals,agent-technical,agent-sentiment,agent-macro
+
+[90mstdout[2m | tests/q73-01-realdata-draw-pattern.test.ts[2m > [22m[2mQ-73-01: Real Data + AI Drawing + Pattern Recognition[2m > [22m[2m4Agent useMock=false Real Data[2m > [22m[2m04: MOCK_ purge status (鈫?JVS J-73-01)[22m[39m
+[Q-73-01] MOCK_ refs in agents: 0
+
+[90mstdout[2m | tests/q73-01-realdata-draw-pattern.test.ts[2m > [22m[2mQ-73-01: Real Data + AI Drawing + Pattern Recognition[2m > [22m[2mAI Drawing Engine[2m > [22m[2m06: AI draw/line engine files exist or expected[22m[39m
+[Q-73-01] Draw files: pending JVS
+
+[90mstdout[2m | tests/q73-01-realdata-draw-pattern.test.ts[2m > [22m[2mQ-73-01: Real Data + AI Drawing + Pattern Recognition[2m > [22m[2mAI Drawing Engine[2m > [22m[2m07: trend line + support/resistance algorithm concepts present[22m[39m
+[Q-73-01] Drawing engine: pending JVS
+
+[90mstdout[2m | tests/q73-01-realdata-draw-pattern.test.ts[2m > [22m[2mQ-73-01: Real Data + AI Drawing + Pattern Recognition[2m > [22m[2mAI Pattern Recognition[2m > [22m[2m09: 20+ chart patterns detectable[22m[39m
+[Q-73-01] Pattern engine: pending JVS
+
+ [33m鉂?[39m tests/q73-01-realdata-draw-pattern.test.ts [2m ([22m[2m10 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[90m 22[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q73-01-realdata-draw-pattern.test.ts[2m > [22mQ-73-01: Real Data + AI Drawing + Pattern Recognition[2m > [22m4Agent useMock=false Real Data[2m > [22m01: 4 agent engine files all present[39m
+[31m     鈫?expected 4 to be +0 // Object.is equality[39m
+锟斤拷时锟斤拷应锟斤拷 2>&锟斤拷
+ [32m鉁?[39m tests/q68-01-ibkr-fractional-boundary.test.ts [2m ([22m[2m21 tests[22m[2m)[22m[90m 76[2mms[22m[39m
+ [33m鉂?[39m tests/q59-01-billing-accuracy.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+锟斤拷时锟斤拷应锟斤拷 2>&锟斤拷
+锟斤拷时锟斤拷应锟斤拷 2>&锟斤拷
+ [32m鉁?[39m tests/q51-01-stability-guard.test.ts [2m ([22m[2m21 tests[22m[2m)[22m[90m 127[2mms[22m[39m
+[90mstdout[2m | tests/q80-01-growth-funnel-invite.test.ts[2m > [22m[2mQ-80-01: Growth Funnel + Invite E2E[2m > [22m[2mGrowth Funnel (J-80-01/02)[2m > [22m[2m01: funnel API endpoint exists in server routes[22m[39m
+[Q-80-01] Funnel API: PENDING (JVS J-80-01)
+
+[90mstdout[2m | tests/q80-01-growth-funnel-invite.test.ts[2m > [22m[2mQ-80-01: Growth Funnel + Invite E2E[2m > [22m[2mGrowth Funnel (J-80-01/02)[2m > [22m[2m02: retention API endpoint exists[22m[39m
+[Q-80-01] Retention API: PENDING (JVS J-80-02)
+
+[90mstdout[2m | tests/q80-01-growth-funnel-invite.test.ts[2m > [22m[2mQ-80-01: Growth Funnel + Invite E2E[2m > [22m[2mGrowth Funnel (J-80-01/02)[2m > [22m[2m03: analytics engine present[22m[39m
+[Q-80-01] Analytics engines: PENDING (JVS)
+
+[90mstdout[2m | tests/q80-01-growth-funnel-invite.test.ts[2m > [22m[2mQ-80-01: Growth Funnel + Invite E2E[2m > [22m[2mGrowth Funnel (J-80-01/02)[2m > [22m[2m04: funnel stages validated[22m[39m
+[Q-80-01] Stage references: 0
+
+[90mstdout[2m | tests/q80-01-growth-funnel-invite.test.ts[2m > [22m[2mQ-80-01: Growth Funnel + Invite E2E[2m > [22m[2mInvite Referral (J-80-03)[2m > [22m[2m05: invite engine present[22m[39m
+[Q-80-01] Invite engines: PENDING (JVS)
+
+[90mstdout[2m | tests/q80-01-growth-funnel-invite.test.ts[2m > [22m[2mQ-80-01: Growth Funnel + Invite E2E[2m > [22m[2mInvite Referral (J-80-03)[2m > [22m[2m06: invite test file exists[22m[39m
+[Q-80-01] Invite test: NOT YET CREATED (JVS target: >=8t)
+
+[90mstdout[2m | tests/q80-01-growth-funnel-invite.test.ts[2m > [22m[2mQ-80-01: Growth Funnel + Invite E2E[2m > [22m[2mInvite Referral (J-80-03)[2m > [22m[2m07: invite code generation logic[22m[39m
+[Q-80-01] Unique code: no
+[Q-80-01] Both-side reward: no
+
+[90mstdout[2m | tests/q80-01-growth-funnel-invite.test.ts[2m > [22m[2mQ-80-01: Growth Funnel + Invite E2E[2m > [22m[2mInvite Referral (J-80-03)[2m > [22m[2m08: anti-fraud logic (same IP/device 24h <=3)[22m[39m
+[Q-80-01] Anti-fraud: NOT YET (JVS)
+
+[90mstdout[2m | tests/q80-01-growth-funnel-invite.test.ts[2m > [22m[2mQ-80-01: Growth Funnel + Invite E2E[2m > [22m[2mZombie User (7d inactive)[2m > [22m[2m09: inactive user detection[22m[39m
+[Q-80-01] Zombie detection: PENDING
+
+[90mstdout[2m | tests/q80-01-growth-funnel-invite.test.ts[2m > [22m[2mQ-80-01: Growth Funnel + Invite E2E[2m > [22m[2mZombie User (7d inactive)[2m > [22m[2m10: data freshness endpoint (J-80-04)[22m[39m
+[Q-80-01] Data freshness: PENDING (J-80-04)
+
+ [32m鉁?[39m tests/q80-01-growth-funnel-invite.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-56-01-agent-orchestrator.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-54-03-stability-hardening.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-56-03-strategy-signal-converter.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q61-01-multimarket.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-v15-03-real-treasury.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q64-02-agent-realdata.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+[90mstdout[2m | tests/q72-01-community-e2e-feed.test.ts[2m > [22m[2mQ-72-01: Community E2E + Feed Tests[2m > [22m[2mCommunity Engine Files[2m > [22m[2m01: community interaction engine exists[22m[39m
+[Q-72-01] Community files: pending JVS
+
+[90mstdout[2m | tests/q72-01-community-e2e-feed.test.ts[2m > [22m[2mQ-72-01: Community E2E + Feed Tests[2m > [22m[2mCommunity Engine Files[2m > [22m[2m02: feed/notification engine exists[22m[39m
+[Q-72-01] Feed files: pending JVS
+
+[90mstdout[2m | tests/q72-01-community-e2e-feed.test.ts[2m > [22m[2mQ-72-01: Community E2E + Feed Tests[2m > [22m[2mCommunity Engine Files[2m > [22m[2m03: WebSocket realtime support present[22m[39m
+[Q-72-01] WebSocket: engine=, main=websocket
+
+[90mstdout[2m | tests/q72-01-community-e2e-feed.test.ts[2m > [22m[2mQ-72-01: Community E2E + Feed Tests[2m > [22m[2mComment & Like Models[2m > [22m[2m04: comment model supports nesting[22m[39m
+[Q-72-01] Comment engine: pending JVS
+
+[90mstdout[2m | tests/q72-01-community-e2e-feed.test.ts[2m > [22m[2mQ-72-01: Community E2E + Feed Tests[2m > [22m[2mComment & Like Models[2m > [22m[2m05: like/unlike toggle semantics defined[22m[39m
+[Q-72-01] Like files: pending JVS
+
+[90mstdout[2m | tests/q72-01-community-e2e-feed.test.ts[2m > [22m[2mQ-72-01: Community E2E + Feed Tests[2m > [22m[2mComment & Like Models[2m > [22m[2m06: follow/unfollow model supports mutual status[22m[39m
+[Q-72-01] Follow files: pending JVS
+
+[90mstdout[2m | tests/q72-01-community-e2e-feed.test.ts[2m > [22m[2mQ-72-01: Community E2E + Feed Tests[2m > [22m[2mContent Safety (QClaw supplement)[2m > [22m[2m07: report/flag mechanism defined[22m[39m
+[Q-72-01] Report files: pending JVS
+
+[90mstdout[2m | tests/q72-01-community-e2e-feed.test.ts[2m > [22m[2mQ-72-01: Community E2E + Feed Tests[2m > [22m[2mContent Safety (QClaw supplement)[2m > [22m[2m08: user blocking/mute model[22m[39m
+[Q-72-01] Block files: pending JVS
+
+[90mstdout[2m | tests/q72-01-community-e2e-feed.test.ts[2m > [22m[2mQ-72-01: Community E2E + Feed Tests[2m > [22m[2mContent Safety (QClaw supplement)[2m > [22m[2m09: content filter (spam/offensive) exists[22m[39m
+[Q-72-01] Content filter: pending JVS
+
+[90mstdout[2m | tests/q72-01-community-e2e-feed.test.ts[2m > [22m[2mQ-72-01: Community E2E + Feed Tests[2m > [22m[2mPrivacy Controls[2m > [22m[2m10: data export/delete model present[22m[39m
+[Q-72-01] Privacy: pending
+
+ [32m鉁?[39m tests/q72-01-community-e2e-feed.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [33m鉂?[39m tests/jvs-57-01-agent-fundamentals.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/q72-02-factor-compare-portfolio.test.ts[2m > [22m[2mQ-72-02: Factor + Comparison + Portfolio Analysis[2m > [22m[2mFactor Analysis[2m > [22m[2m01: factor research engine files exist[22m[39m
+[Q-72-02] Factor files: factors
+
+[90mstdout[2m | tests/q72-02-factor-compare-portfolio.test.ts[2m > [22m[2mQ-72-02: Factor + Comparison + Portfolio Analysis[2m > [22m[2mFactor Analysis[2m > [22m[2m03: factor decay/crowding analysis[22m[39m
+[Q-72-02] Factor decay: pending
+
+[90mstdout[2m | tests/q72-02-factor-compare-portfolio.test.ts[2m > [22m[2mQ-72-02: Factor + Comparison + Portfolio Analysis[2m > [22m[2mFactor Analysis[2m > [22m[2m04: multi-factor model supported[22m[39m
+[Q-72-02] Multi-factor: pending
+
+[90mstdout[2m | tests/q72-02-factor-compare-portfolio.test.ts[2m > [22m[2mQ-72-02: Factor + Comparison + Portfolio Analysis[2m > [22m[2mStrategy Comparison Radar[2m > [22m[2m05: strategy comparison engine exists[22m[39m
+[Q-72-02] Comparison files: pending JVS
+
+[90mstdout[2m | tests/q72-02-factor-compare-portfolio.test.ts[2m > [22m[2mQ-72-02: Factor + Comparison + Portfolio Analysis[2m > [22m[2mStrategy Comparison Radar[2m > [22m[2m06: 6-dimension radar metrics defined (returns/sharpe/drawdown/winrate/vol/alpha)[22m[39m
+[Q-72-02] Radar engine: pending JVS
+
+[90mstdout[2m | tests/q72-02-factor-compare-portfolio.test.ts[2m > [22m[2mQ-72-02: Factor + Comparison + Portfolio Analysis[2m > [22m[2mStrategy Comparison Radar[2m > [22m[2m07: strategy scoring/ranking mechanism[22m[39m
+[Q-72-02] Scoring files: pending
+
+[90mstdout[2m | tests/q72-02-factor-compare-portfolio.test.ts[2m > [22m[2mQ-72-02: Factor + Comparison + Portfolio Analysis[2m > [22m[2mPortfolio Optimization[2m > [22m[2m08: efficient frontier engine exists[22m[39m
+[Q-72-02] Portfolio files: portfolio
+
+[90mstdout[2m | tests/q72-02-factor-compare-portfolio.test.ts[2m > [22m[2mQ-72-02: Factor + Comparison + Portfolio Analysis[2m > [22m[2mPortfolio Optimization[2m > [22m[2m09: risk budget model[22m[39m
+[Q-72-02] Risk budget: pending
+
+[90mstdout[2m | tests/q72-02-factor-compare-portfolio.test.ts[2m > [22m[2mQ-72-02: Factor + Comparison + Portfolio Analysis[2m > [22m[2mPortfolio Optimization[2m > [22m[2m10: rebalance recommendation engine[22m[39m
+[Q-72-02] Rebalance: pending
+
+ [33m鉂?[39m tests/q72-02-factor-compare-portfolio.test.ts [2m ([22m[2m10 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[90m 11[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q72-02-factor-compare-portfolio.test.ts[2m > [22mQ-72-02: Factor + Comparison + Portfolio Analysis[2m > [22mFactor Analysis[2m > [22m02: IC (Information Coefficient) model defined[39m
+[31m     鈫?EISDIR: illegal operation on a directory, read[39m
+[90mstdout[2m | tests/q76-02-content-safety-gdpr.test.ts[2m > [22m[2mQ-76-02: Content Safety + GDPR[2m > [22m[2mContent Moderation[2m > [22m[2m01: sensitive word filter engine or module exists[22m[39m
+[Q-76-02] Filter files: pending JVS J-76-05
+[Q-76-02] Filter refs: 0
+
+[90mstdout[2m | tests/q76-02-content-safety-gdpr.test.ts[2m > [22m[2mQ-76-02: Content Safety + GDPR[2m > [22m[2mContent Moderation[2m > [22m[2m02: comment report/flag system referenced[22m[39m
+[Q-76-02] Report patterns in: pending
+
+[90mstdout[2m | tests/q76-02-content-safety-gdpr.test.ts[2m > [22m[2mQ-76-02: Content Safety + GDPR[2m > [22m[2mContent Moderation[2m > [22m[2m03: user block/灞忚斀 mechanism[22m[39m
+[Q-76-02] Block patterns in: pending
+
+[90mstdout[2m | tests/q76-02-content-safety-gdpr.test.ts[2m > [22m[2mQ-76-02: Content Safety + GDPR[2m > [22m[2mContent Moderation[2m > [22m[2m04: USDT payment flow engine references[22m[39m
+[Q-76-02] Payment files: 
+
+[90mstdout[2m | tests/q76-02-content-safety-gdpr.test.ts[2m > [22m[2mQ-76-02: Content Safety + GDPR[2m > [22m[2mContent Moderation[2m > [22m[2m05: L1/L2/L3 creator commission engine[22m[39m
+[Q-76-02] Commission files: found in code pattern
+
+[90mstdout[2m | tests/q76-02-content-safety-gdpr.test.ts[2m > [22m[2mQ-76-02: Content Safety + GDPR[2m > [22m[2mGDPR / Privacy[2m > [22m[2m06: cookie consent or privacy notice[22m[39m
+[Q-76-02] GDPR ref in: DownloadPage.tsx
+[Q-76-02] Consent/privacy: true
+
+[90mstdout[2m | tests/q76-02-content-safety-gdpr.test.ts[2m > [22m[2mQ-76-02: Content Safety + GDPR[2m > [22m[2mGDPR / Privacy[2m > [22m[2m07: data export (user data download) referenced[22m[39m
+[Q-76-02] Data export in: index.ts
+[Q-76-02] Data export: true
+
+[90mstdout[2m | tests/q76-02-content-safety-gdpr.test.ts[2m > [22m[2mQ-76-02: Content Safety + GDPR[2m > [22m[2mGDPR / Privacy[2m > [22m[2m08: account deletion / right to be forgotten[22m[39m
+[Q-76-02] Account deletion: pending
+
+[90mstdout[2m | tests/q76-02-content-safety-gdpr.test.ts[2m > [22m[2mQ-76-02: Content Safety + GDPR[2m > [22m[2mGDPR / Privacy[2m > [22m[2m09: data minimization 鈥?no PII in logs[22m[39m
+[Q-76-02] PII sanitize: pending
+
+ [33m鉂?[39m tests/q76-02-content-safety-gdpr.test.ts [2m ([22m[2m10 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[90m 75[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q76-02-content-safety-gdpr.test.ts[2m > [22mQ-76-02: Content Safety + GDPR[2m > [22mContent Moderation[2m > [22m04: USDT payment flow engine references[39m
+[31m     鈫?expected 0 to be greater than or equal to 1[39m
+[90mstdout[2m | tests/q76-02-content-safety-gdpr.test.ts[2m > [22m[2mQ-76-02: Content Safety + GDPR[2m > [22m[2mGDPR / Privacy[2m > [22m[2m10: terms of service / privacy policy referenced[22m[39m
+[Q-76-02] Legal docs: pending youdao
+
+ [33m鉂?[39m tests/q58-03-regression-validation.test.ts [2m ([22m[2m18 tests[22m [2m|[22m [31m4 failed[39m[2m)[22m[90m 76[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q58-03-regression-validation.test.ts[2m > [22mQ-58-03-01: Build Validation[2m > [22m03: engine directory exists with agent files[39m
+[31m     鈫?expected false to be true // Object.is equality[39m
+[31m   [33m鉂?[31m tests/q58-03-regression-validation.test.ts[2m > [22mQ-58-03-03: Engine Architecture[2m > [22m08: agent-orchestrator exists[39m
+[31m     鈫?expected false to be true // Object.is equality[39m
+[31m   [33m鉂?[31m tests/q58-03-regression-validation.test.ts[2m > [22mQ-58-03-03: Engine Architecture[2m > [22m09: multi-llm-router exists[39m
+[31m     鈫?expected false to be true // Object.is equality[39m
+[31m   [33m鉂?[31m tests/q58-03-regression-validation.test.ts[2m > [22mQ-58-03-03: Engine Architecture[2m > [22m10: strategy-signal-converter exists[39m
+[31m     鈫?expected false to be true // Object.is equality[39m
+[90mstdout[2m | tests/q72-03-monitoring-regression.test.ts[2m > [22m[2mQ-72-03: Monitoring Alerts + Regression 5650+[2m > [22m[2mMonitoring Engine[2m > [22m[2m01: monitoring/SLO engine files exist[22m[39m
+[Q-72-03] Monitor files: pending JVS
+
+[90mstdout[2m | tests/q72-03-monitoring-regression.test.ts[2m > [22m[2mQ-72-03: Monitoring Alerts + Regression 5650+[2m > [22m[2mMonitoring Engine[2m > [22m[2m02: latency P95 metric available[22m[39m
+[Q-72-03] Perf engine: pending JVS
+
+[90mstdout[2m | tests/q72-03-monitoring-regression.test.ts[2m > [22m[2mQ-72-03: Monitoring Alerts + Regression 5650+[2m > [22m[2mMonitoring Engine[2m > [22m[2m03: error/exception rate tracking[22m[39m
+[Q-72-03] Error tracking: error-boundary.tsx
+
+[90mstdout[2m | tests/q72-03-monitoring-regression.test.ts[2m > [22m[2mQ-72-03: Monitoring Alerts + Regression 5650+[2m > [22m[2mMonitoring Engine[2m > [22m[2m04: AI call failure rate + wallet anomaly detection[22m[39m
+[Q-72-03] AI monitors: 0, Wallet monitors: 0
+
+[90mstdout[2m | tests/q72-03-monitoring-regression.test.ts[2m > [22m[2mQ-72-03: Monitoring Alerts + Regression 5650+[2m > [22m[2mAlert System[2m > [22m[2m05: alert severity levels (WARNING/CRITICAL/EMERGENCY) defined[22m[39m
+[Q-72-03] Alert engine: pending JVS
+
+[90mstdout[2m | tests/q72-03-monitoring-regression.test.ts[2m > [22m[2mQ-72-03: Monitoring Alerts + Regression 5650+[2m > [22m[2mAlert System[2m > [22m[2m07: silence window (maintenance/non-trading hours) supported[22m[39m
+[Q-72-03] Schedule/window: pending
+
+[90mstdout[2m | tests/q72-03-monitoring-regression.test.ts[2m > [22m[2mQ-72-03: Monitoring Alerts + Regression 5650+[2m > [22m[2mRegression Gate 5650+[2m > [22m[2m08: static test count >= 5650[22m[39m
+[Q-72-03] Static test count: 6222
+
+[90mstdout[2m | tests/q72-03-monitoring-regression.test.ts[2m > [22m[2mQ-72-03: Monitoring Alerts + Regression 5650+[2m > [22m[2mRegression Gate 5650+[2m > [22m[2m09: test files >= 310[22m[39m
+[Q-72-03] Test files: 370
+
+ [32m鉁?[39m tests/q72-03-monitoring-regression.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 54[2mms[22m[39m
+[90mstdout[2m | tests/q72-03-monitoring-regression.test.ts[2m > [22m[2mQ-72-03: Monitoring Alerts + Regression 5650+[2m > [22m[2mRegression Gate 5650+[2m > [22m[2m10: all Q-72 test files present[22m[39m
+[Q-72-03] Q-72 files: q72-01-community-e2e-feed.test.ts, q72-02-factor-compare-portfolio.test.ts, q72-03-monitoring-regression.test.ts
+
+[90mstdout[2m | tests/q73-02-onboarding-param-e2e.test.ts[2m > [22m[2mQ-73-02: Onboarding + Param Intelligence E2E[2m > [22m[2mOnboarding Flow[2m > [22m[2m01: creator-onboarding engine exists[22m[39m
+[Q-73-02] Onboard files: pending
+
+[90mstdout[2m | tests/q73-02-onboarding-param-e2e.test.ts[2m > [22m[2mQ-73-02: Onboarding + Param Intelligence E2E[2m > [22m[2mOnboarding Flow[2m > [22m[2m04: indicator cards + factor storytelling[22m[39m
+[Q-73-02] Story/card files: pending ML
+
+[90mstdout[2m | tests/q73-02-onboarding-param-e2e.test.ts[2m > [22m[2mQ-73-02: Onboarding + Param Intelligence E2E[2m > [22m[2mOnboarding Flow[2m > [22m[2m05: friendly error messages referenced[22m[39m
+[Q-73-02] i18n files: pending
+
+[90mstdout[2m | tests/q73-02-onboarding-param-e2e.test.ts[2m > [22m[2mQ-73-02: Onboarding + Param Intelligence E2E[2m > [22m[2mParameter Intelligence[2m > [22m[2m07: presets: conservative/balanced/aggressive defined[22m[39m
+[Q-73-02] Param files: 
+
+[90mstdout[2m | tests/q73-02-onboarding-param-e2e.test.ts[2m > [22m[2mQ-73-02: Onboarding + Param Intelligence E2E[2m > [22m[2mTheme & i18n[2m > [22m[2m09: dark mode + system-follow support[22m[39m
+[Q-73-02] Theme files: 24 (ErrorBoundary.tsx,AIDrawingPatternPanel.tsx,GrowthPanel.tsx,GAFinalPanel.tsx,LandingPageV18.tsx...)
+
+[90mstdout[2m | tests/q73-02-onboarding-param-e2e.test.ts[2m > [22m[2mQ-73-02: Onboarding + Param Intelligence E2E[2m > [22m[2mTheme & i18n[2m > [22m[2m10: multi-lang: zh-CN/zh-TW/en/ja/ko[22m[39m
+[Q-73-02] i18n files: pending
+
+ [33m鉂?[39m tests/q73-02-onboarding-param-e2e.test.ts [2m ([22m[2m10 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[90m 87[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q73-02-onboarding-param-e2e.test.ts[2m > [22mQ-73-02: Onboarding + Param Intelligence E2E[2m > [22mParameter Intelligence[2m > [22m06: adaptive-param-engine exists[39m
+[31m     鈫?expected false to be true // Object.is equality[39m
+ [32m鉁?[39m tests/q80-02-docker-containerization.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 14[2mms[22m[39m
+[90mstdout[2m | tests/q80-02-docker-containerization.test.ts[2m > [22m[2mQ-80-02: Docker Containerization[2m > [22m[2mDockerfile[2m > [22m[2m01: Dockerfile exists and non-empty[22m[39m
+[Q-80-02] Dockerfile: EXISTS
+[Q-80-02] Dockerfile: 18 lines
+
+[90mstdout[2m | tests/q80-02-docker-containerization.test.ts[2m > [22m[2mQ-80-02: Docker Containerization[2m > [22m[2mDockerfile[2m > [22m[2m02: node:22-alpine base image[22m[39m
+[Q-80-02] node:22 base: yes
+
+[90mstdout[2m | tests/q80-02-docker-containerization.test.ts[2m > [22m[2mQ-80-02: Docker Containerization[2m > [22m[2mDockerfile[2m > [22m[2m03: WORKDIR set[22m[39m
+[Q-80-02] WORKDIR: yes
+
+[90mstdout[2m | tests/q80-02-docker-containerization.test.ts[2m > [22m[2mQ-80-02: Docker Containerization[2m > [22m[2mDockerfile[2m > [22m[2m04: EXPOSE or CMD defined[22m[39m
+[Q-80-02] EXPOSE: false CMD: true
+
+[90mstdout[2m | tests/q80-02-docker-containerization.test.ts[2m > [22m[2mQ-80-02: Docker Containerization[2m > [22m[2mdocker-compose.yml[2m > [22m[2m05: compose file exists[22m[39m
+[Q-80-02] docker-compose.yml: EXISTS
+
+[90mstdout[2m | tests/q80-02-docker-containerization.test.ts[2m > [22m[2mQ-80-02: Docker Containerization[2m > [22m[2mdocker-compose.yml[2m > [22m[2m06: app service defined[22m[39m
+[Q-80-02] app service: yes
+
+[90mstdout[2m | tests/q80-02-docker-containerization.test.ts[2m > [22m[2mQ-80-02: Docker Containerization[2m > [22m[2mdocker-compose.yml[2m > [22m[2m07: postgres or redis service[22m[39m
+[Q-80-02] postgres: false redis: true
+
+[90mstdout[2m | tests/q80-02-docker-containerization.test.ts[2m > [22m[2mQ-80-02: Docker Containerization[2m > [22m[2m.dockerignore[2m > [22m[2m08: .dockerignore exists[22m[39m
+[Q-80-02] .dockerignore: NOT FOUND
+
+[90mstdout[2m | tests/q80-02-docker-containerization.test.ts[2m > [22m[2mQ-80-02: Docker Containerization[2m > [22m[2mHealth Check[2m > [22m[2m09: health endpoint in server code[22m[39m
+[Q-80-02] Health route: index.ts
+[Q-80-02] /api/health: FOUND
+
+[90mstdout[2m | tests/q80-02-docker-containerization.test.ts[2m > [22m[2mQ-80-02: Docker Containerization[2m > [22m[2mHealth Check[2m > [22m[2m10: docker healthcheck or startup script[22m[39m
+[Q-80-02] HEALTHCHECK: no
+
+[90mstdout[2m | tests/q79-04-dark-light-responsive.test.ts[2m > [22m[2mQ-79-04: Dark/Light + Responsive Audit[2m > [22m[2mDark/Light Mode[2m > [22m[2m01: tailwind darkMode configured[22m[39m
+[Q-79-04] Dark mode: CONFIGURED
+
+[90mstdout[2m | tests/q79-04-dark-light-responsive.test.ts[2m > [22m[2mQ-79-04: Dark/Light + Responsive Audit[2m > [22m[2mDark/Light Mode[2m > [22m[2m02: dark: prefixed classes in components[22m[39m
+[Q-79-04] dark: classes: 37 (expected: >50 for full coverage)
+
+[90mstdout[2m | tests/q79-04-dark-light-responsive.test.ts[2m > [22m[2mQ-79-04: Dark/Light + Responsive Audit[2m > [22m[2mDark/Light Mode[2m > [22m[2m03: theme provider / toggle component[22m[39m
+[Q-79-04] Theme file: GAFinalPanel.tsx
+[Q-79-04] Theme file: LandingPageV18.tsx
+[Q-79-04] Theme file: ThemeLangPanel.tsx
+[Q-79-04] Theme file: Header.tsx
+[Q-79-04] Theme file: theme.ts
+[Q-79-04] Theme toggle: FOUND
+
+[90mstdout[2m | tests/q79-04-dark-light-responsive.test.ts[2m > [22m[2mQ-79-04: Dark/Light + Responsive Audit[2m > [22m[2mResponsive 3 Breakpoints (375/768/1024)[2m > [22m[2m04: tailwind screens configured[22m[39m
+[Q-79-04] Breakpoints: sm=false md=false lg=false
+
+[90mstdout[2m | tests/q79-04-dark-light-responsive.test.ts[2m > [22m[2mQ-79-04: Dark/Light + Responsive Audit[2m > [22m[2mResponsive 3 Breakpoints (375/768/1024)[2m > [22m[2m05: responsive classes in components[22m[39m
+[Q-79-04] Responsive: sm=13 md=87 lg=37
+
+[90mstdout[2m | tests/q79-04-dark-light-responsive.test.ts[2m > [22m[2mQ-79-04: Dark/Light + Responsive Audit[2m > [22m[2mResponsive 3 Breakpoints (375/768/1024)[2m > [22m[2m06: overflow-x:hidden checks in layout[22m[39m
+[Q-79-04] overflow-x:hidden: 45
+
+[90mstdout[2m | tests/q79-04-dark-light-responsive.test.ts[2m > [22m[2mQ-79-04: Dark/Light + Responsive Audit[2m > [22m[2mResponsive 3 Breakpoints (375/768/1024)[2m > [22m[2m07: viewport meta check[22m[39m
+[Q-79-04] Viewport meta: 3 files
+
+[90mstdout[2m | tests/q79-04-dark-light-responsive.test.ts[2m > [22m[2mQ-79-04: Dark/Light + Responsive Audit[2m > [22m[2mColor Audit[2m > [22m[2m08: no fluorescent colors (>#00FF00)[22m[39m
+[Q-79-04] FLUORESCENT: #00FF00 in GAFinalPanel.tsx
+[Q-79-04] Fluorescent colors: 1
+
+[90mstdout[2m | tests/q79-04-dark-light-responsive.test.ts[2m > [22m[2mQ-79-04: Dark/Light + Responsive Audit[2m > [22m[2mColor Audit[2m > [22m[2m09: gold/amber palette present[22m[39m
+[Q-79-04] Gold/amber: 99 refs
+
+[90mstdout[2m | tests/q79-04-dark-light-responsive.test.ts[2m > [22m[2mQ-79-04: Dark/Light + Responsive Audit[2m > [22m[2mColor Audit[2m > [22m[2m10: CSS custom properties for theming[22m[39m
+[Q-79-04] CSS custom properties: 3
+
+ [32m鉁?[39m tests/q79-04-dark-light-responsive.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[33m 334[2mms[22m[39m
+[90mstdout[2m | tests/q69-02-guest-perf-e2e.test.ts[2m > [22m[2mQ-69-02: Guest Mode + Performance E2E[2m > [22m[2mPerformance Benchmarks[2m > [22m[2m06: performance engine files exist[22m[39m
+[Q-69-02] Perf files found: 0/2 ()
+
+[90mstdout[2m | tests/q69-02-guest-perf-e2e.test.ts[2m > [22m[2mQ-69-02: Guest Mode + Performance E2E[2m > [22m[2mRegression Gate[2m > [22m[2m09: static test count >= 5500[22m[39m
+[Q-69-02] Static test count: 6222 (target: 5500+)
+
+ [33m鉂?[39m tests/q69-02-guest-perf-e2e.test.ts [2m ([22m[2m10 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[90m 58[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q69-02-guest-perf-e2e.test.ts[2m > [22mQ-69-02: Guest Mode + Performance E2E[2m > [22mPerformance Benchmarks[2m > [22m06: performance engine files exist[39m
+[31m     鈫?expected 0 to be greater than or equal to 1[39m
+[90mstdout[2m | tests/q75-01-real-vs-mock-compare.test.ts[2m > [22m[2mQ-75-01: Real vs Mock Data Comparison[2m > [22m[2mData Source References[2m > [22m[2mdata source adapter references (Yahoo/AV/NewsAPI/Reddit)[22m[39m
+[Q-75-01] Data source refs: {}
+
+[90mstdout[2m | tests/q75-01-real-vs-mock-compare.test.ts[2m > [22m[2mQ-75-01: Real vs Mock Data Comparison[2m > [22m[2mData Source References[2m > [22m[2mIDataSourceAdapter interface or equivalent exists[22m[39m
+[Q-75-01] Adapter files: none yet 鈥?JVS J-75-02 pending
+
+[90mstdout[2m | tests/q75-01-real-vs-mock-compare.test.ts[2m > [22m[2mQ-75-01: Real vs Mock Data Comparison[2m > [22m[2mData Source References[2m > [22m[2magent-orchestrator references data source config[22m[39m
+[Q-75-01] agent-orchestrator.ts not found 鈥?may use different name
+
+ [33m鉂?[39m tests/q75-01-real-vs-mock-compare.test.ts [2m ([22m[2m15 tests[22m [2m|[22m [31m13 failed[39m[2m)[22m[90m 21[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22museMock Parameter Audit[2m > [22mFundamentals: useMock param exists, defaults true[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-fundamentals.ts'[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22museMock Parameter Audit[2m > [22mTechnical: useMock param exists, defaults true[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-technical.ts'[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22museMock Parameter Audit[2m > [22mSentiment: useMock param exists, defaults true[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-sentiment.ts'[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22museMock Parameter Audit[2m > [22mMacro: useMock param exists, defaults true[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-macro.ts'[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22museMock=false Code Path Reachable[2m > [22mFundamentals: useMock=false branch exists[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-fundamentals.ts'[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22museMock=false Code Path Reachable[2m > [22mTechnical: useMock=false branch exists[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-technical.ts'[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22museMock=false Code Path Reachable[2m > [22mSentiment: useMock=false branch exists[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-sentiment.ts'[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22museMock=false Code Path Reachable[2m > [22mMacro: useMock=false branch exists[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-macro.ts'[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22mMOCK_ Constants Inventory[2m > [22mFundamentals: MOCK_ constants documented[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-fundamentals.ts'[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22mMOCK_ Constants Inventory[2m > [22mTechnical: MOCK_ constants documented[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-technical.ts'[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22mMOCK_ Constants Inventory[2m > [22mSentiment: MOCK_ constants documented[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-sentiment.ts'[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22mMOCK_ Constants Inventory[2m > [22mMacro: MOCK_ constants documented[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-macro.ts'[39m
+[31m   [33m鉂?[31m tests/q75-01-real-vs-mock-compare.test.ts[2m > [22mQ-75-01: Real vs Mock Data Comparison[2m > [22mData Source References[2m > [22mdata source adapter references (Yahoo/AV/NewsAPI/Reddit)[39m
+[31m     鈫?expected 0 to be greater than 0[39m
+ [33m鉂?[39m tests/q57-03-regression-coverage.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+[90mstdout[2m | tests/q77-02-etimedout-fix.test.ts[2m > [22m[2mQ-77-02: ETIMEDOUT Fixes + 5-round Gate[2m > [22m[2mETIMEDOUT Diagnostics[2m > [22m[2m01: PRE-CACHE file list (avoid git concurrency)[22m[39m
+[Q-77-02] Pre-cached 370 test files in 0ms
+
+[90mstdout[2m | tests/q77-02-etimedout-fix.test.ts[2m > [22m[2mQ-77-02: ETIMEDOUT Fixes + 5-round Gate[2m > [22m[2mETIMEDOUT Diagnostics[2m > [22m[2m02: git log fast (cached, no network)[22m[39m
+[Q-77-02] git HEAD read: 1ms 鈫?ref: refs/heads/master
+
+[90mstdout[2m | tests/q77-02-etimedout-fix.test.ts[2m > [22m[2mQ-77-02: ETIMEDOUT Fixes + 5-round Gate[2m > [22m[2mETIMEDOUT Diagnostics[2m > [22m[2m03: engine file count pre-cache[22m[39m
+[Q-77-02] Pre-cached 1 engine files in 0ms
+
+[90mstdout[2m | tests/q77-02-etimedout-fix.test.ts[2m > [22m[2mQ-77-02: ETIMEDOUT Fixes + 5-round Gate[2m > [22m[2mETIMEDOUT Diagnostics[2m > [22m[2m04: git concurrency guard: file lock approach[22m[39m
+[Q-77-02] Git lock: clear
+
+[90mstdout[2m | tests/q77-02-etimedout-fix.test.ts[2m > [22m[2mQ-77-02: ETIMEDOUT Fixes + 5-round Gate[2m > [22m[2mETIMEDOUT Diagnostics[2m > [22m[2m05: test all timeout config[22m[39m
+[Q-77-02] Timeout config: using default 5000ms
+[Q-77-02] test:all script: vitest run --reporter=verbose...
+
+[90mstdout[2m | tests/q77-02-etimedout-fix.test.ts[2m > [22m[2mQ-77-02: ETIMEDOUT Fixes + 5-round Gate[2m > [22m[2m5-round Zero ETIMEDOUT Gate[2m > [22m[2m06: round 1: file I/O fast[22m[39m
+[Q-77-02] R1: 1 files, 0ms
+
+[90mstdout[2m | tests/q77-02-etimedout-fix.test.ts[2m > [22m[2mQ-77-02: ETIMEDOUT Fixes + 5-round Gate[2m > [22m[2m5-round Zero ETIMEDOUT Gate[2m > [22m[2m07: round 2: read test files[22m[39m
+[Q-77-02] R2: 2825386 chars read, 36ms
+
+[90mstdout[2m | tests/q77-02-etimedout-fix.test.ts[2m > [22m[2mQ-77-02: ETIMEDOUT Fixes + 5-round Gate[2m > [22m[2m5-round Zero ETIMEDOUT Gate[2m > [22m[2m08: round 3: read engine files[22m[39m
+[Q-77-02] R3: 218 chars, 1ms
+
+[90mstdout[2m | tests/q77-02-etimedout-fix.test.ts[2m > [22m[2mQ-77-02: ETIMEDOUT Fixes + 5-round Gate[2m > [22m[2m5-round Zero ETIMEDOUT Gate[2m > [22m[2m09: round 4: mixed fast ops[22m[39m
+[Q-77-02] R4: 415 items, 0ms
+
+[90mstdout[2m | tests/q77-02-etimedout-fix.test.ts[2m > [22m[2mQ-77-02: ETIMEDOUT Fixes + 5-round Gate[2m > [22m[2m5-round Zero ETIMEDOUT Gate[2m > [22m[2m10: round 5: git refs cached read[22m[39m
+[Q-77-02] R5: 28 refs, 0ms
+
+ [33m鉂?[39m tests/q77-02-etimedout-fix.test.ts [2m ([22m[2m10 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[90m 53[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q77-02-etimedout-fix.test.ts[2m > [22mQ-77-02: ETIMEDOUT Fixes + 5-round Gate[2m > [22mETIMEDOUT Diagnostics[2m > [22m03: engine file count pre-cache[39m
+[31m     鈫?expected 1 to be greater than or equal to 310[39m
+[90mstdout[2m | tests/q74-01-build-deploy-verify.test.ts[2m > [22m[2mQ-74-01: Build Artifact + Deploy Verification[2m > [22m[2mBuild Artifacts[2m > [22m[2m01: dist build scripts present[22m[39m
+[Q-74-01] Dist scripts: build, dist, dist:win, dist:mac, dist:linux, dist:all
+
+[90mstdout[2m | tests/q74-01-build-deploy-verify.test.ts[2m > [22m[2mQ-74-01: Build Artifact + Deploy Verification[2m > [22m[2mBuild Artifacts[2m > [22m[2m02: dist output directory exists or scripts valid[22m[39m
+[Q-74-01] dist exists: true, files: assets, favicon.jpg, index.html, manifest.json, sw.js
+
+[90mstdout[2m | tests/q74-01-build-deploy-verify.test.ts[2m > [22m[2mQ-74-01: Build Artifact + Deploy Verification[2m > [22m[2mBuild Artifacts[2m > [22m[2m03: package.json version present (JVS bump 鈫?1.8.0)[22m[39m
+[Q-74-01] Version: 1.9.0
+
+[90mstdout[2m | tests/q74-01-build-deploy-verify.test.ts[2m > [22m[2mQ-74-01: Build Artifact + Deploy Verification[2m > [22m[2mLanding Page[2m > [22m[2m04: landing page HTML exists[22m[39m
+[Q-74-01] Landing pages: dist/index.html, docs/index.html
+
+[90mstdout[2m | tests/q74-01-build-deploy-verify.test.ts[2m > [22m[2mQ-74-01: Build Artifact + Deploy Verification[2m > [22m[2mLanding Page[2m > [22m[2m05: landing page references key features[22m[39m
+[Q-74-01] dist/index.html: AI=false, Market=false
+[Q-74-01] docs/index.html: AI=true, Market=true
+
+[90mstdout[2m | tests/q74-01-build-deploy-verify.test.ts[2m > [22m[2mQ-74-01: Build Artifact + Deploy Verification[2m > [22m[2mServer Deploy Health[2m > [22m[2m06: /api gateway engine file exists[22m[39m
+[Q-74-01] API files: 
+
+[90mstdout[2m | tests/q74-01-build-deploy-verify.test.ts[2m > [22m[2mQ-74-01: Build Artifact + Deploy Verification[2m > [22m[2mServer Deploy Health[2m > [22m[2m07: /admin backend support[22m[39m
+[Q-74-01] Admin files: pending ML
+
+[90mstdout[2m | tests/q74-01-build-deploy-verify.test.ts[2m > [22m[2mQ-74-01: Build Artifact + Deploy Verification[2m > [22m[2mFull Pipeline Verification[2m > [22m[2m08: register/onboard 鈫?wallet 鈫?AI 鈫?trade engines exist[22m[39m
+[Q-74-01] Pipeline: register=0, wallet=0, ai=0, trade=0
+
+[90mstdout[2m | tests/q74-01-build-deploy-verify.test.ts[2m > [22m[2mQ-74-01: Build Artifact + Deploy Verification[2m > [22m[2mFull Pipeline Verification[2m > [22m[2m09: pre-commit quality gate script[22m[39m
+[Q-74-01] Test: true, TSC: false
+
+[90mstdout[2m | tests/q74-01-build-deploy-verify.test.ts[2m > [22m[2mQ-74-01: Build Artifact + Deploy Verification[2m > [22m[2mFull Pipeline Verification[2m > [22m[2m10: GA release notes or CHANGELOG present[22m[39m
+[Q-74-01] Release docs: CHANGELOG.md, docs/releases/v1.8.0-ga-release-notes.md
+
+ [33m鉂?[39m tests/q74-01-build-deploy-verify.test.ts [2m ([22m[2m10 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[90m 17[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q74-01-build-deploy-verify.test.ts[2m > [22mQ-74-01: Build Artifact + Deploy Verification[2m > [22mServer Deploy Health[2m > [22m06: /api gateway engine file exists[39m
+[31m     鈫?expected 0 to be greater than or equal to 1[39m
+ [32m鉁?[39m tests/q65-02-trade-billing.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+[90mstdout[2m | tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22m[2mQ-70-02: Post-Deploy Full Chain E2E[2m > [22m[2mCore Feature Modules[2m > [22m[2m01: all required engine files exist[22m[39m
+[Q-70-02] Core engines: 0/6
+
+[90mstdout[2m | tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22m[2mQ-70-02: Post-Deploy Full Chain E2E[2m > [22m[2mCore Feature Modules[2m > [22m[2m02: broker adapters (futu + ibkr)[22m[39m
+[Q-70-02] Broker files: 
+
+[90mstdout[2m | tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22m[2mQ-70-02: Post-Deploy Full Chain E2E[2m > [22m[2mCore Feature Modules[2m > [22m[2m03: billing/payment engines[22m[39m
+[Q-70-02] Billing: 
+
+[90mstdout[2m | tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22m[2mQ-70-02: Post-Deploy Full Chain E2E[2m > [22m[2mPackage Scripts[2m > [22m[2m04: dev/start + dist scripts available[22m[39m
+[Q-70-02] Scripts: dev, build, preview, start, pack, dist, dist:win, dist:mac, dist:linux, dist:all, release:check, lint, test, test:benchmark, test:market, test:account, test:broker, test:strategy, test:risk, test:executor, test:automation, test:ui-trading, test:ui-monitor, test:integration, test:performance, test:all, test:ci, test:ui-config, dev:agent
+
+[90mstdout[2m | tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22m[2mQ-70-02: Post-Deploy Full Chain E2E[2m > [22m[2mPackage Scripts[2m > [22m[2m05: dist scripts cover all platforms[22m[39m
+[Q-70-02] Dist scripts: dist, dist:all, dist:win, dist:mac, dist:linux
+
+[90mstdout[2m | tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22m[2mQ-70-02: Post-Deploy Full Chain E2E[2m > [22m[2mSecurity Checklist[2m > [22m[2m06: no hardcoded DeepSeek/OpenAI keys[22m[39m
+[Q-70-02] Files with hardcoded keys: 0
+
+[90mstdout[2m | tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22m[2mQ-70-02: Post-Deploy Full Chain E2E[2m > [22m[2mSecurity Checklist[2m > [22m[2m07: .gitignore covers essentials[22m[39m
+[Q-70-02] .gitignore: {"node_modules":true,"dist":true,"env":true}
+
+[90mstdout[2m | tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22m[2mQ-70-02: Post-Deploy Full Chain E2E[2m > [22m[2mDeployment Readiness[2m > [22m[2m08: deploy config files[22m[39m
+[Q-70-02] Deploy files: Dockerfile, docker-compose.yml
+
+[90mstdout[2m | tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22m[2mQ-70-02: Post-Deploy Full Chain E2E[2m > [22m[2mDeployment Readiness[2m > [22m[2m09: server entry accessible[22m[39m
+[Q-70-02] Server entry: via electron main
+
+ [33m鉂?[39m tests/q70-02-deploy-fullchain-e2e.test.ts [2m ([22m[2m10 tests[22m [2m|[22m [31m3 failed[39m[2m)[22m[90m 56[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22mQ-70-02: Post-Deploy Full Chain E2E[2m > [22mCore Feature Modules[2m > [22m01: all required engine files exist[39m
+[31m     鈫?expected 0 to be greater than or equal to 4[39m
+[31m   [33m鉂?[31m tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22mQ-70-02: Post-Deploy Full Chain E2E[2m > [22mCore Feature Modules[2m > [22m02: broker adapters (futu + ibkr)[39m
+[31m     鈫?expected 0 to be greater than or equal to 2[39m
+[31m   [33m鉂?[31m tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22mQ-70-02: Post-Deploy Full Chain E2E[2m > [22mCore Feature Modules[2m > [22m03: billing/payment engines[39m
+[31m     鈫?expected 0 to be greater than or equal to 2[39m
+[90mstdout[2m | tests/q70-02-deploy-fullchain-e2e.test.ts[2m > [22m[2mQ-70-02: Post-Deploy Full Chain E2E[2m > [22m[2mRegression Gate[2m > [22m[2m10: static test count >= 5550[22m[39m
+[Q-70-02] Static test count: 6222
+
+ [33m鉂?[39m tests/jvs-57-04-agent-macro.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/jvs-57-03-agent-sentiment.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [32m鉁?[39m tests/q68-02-backtest-speed-benchmark.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [33m鉂?[39m tests/q61-02-cloud-frac-signal.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+ [33m鉂?[39m tests/q78-03-regression-6250.test.ts [2m ([22m[2m10 tests[22m [2m|[22m [31m4 failed[39m[2m)[22m[90m 49[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q78-03-regression-6250.test.ts[2m > [22mQ-78-03: Regression Gate 6250+[2m > [22mStatic Counts[2m > [22m03: engines >= 315[39m
+[31m     鈫?expected 1 to be greater than or equal to 315[39m
+[31m   [33m鉂?[31m tests/q78-03-regression-6250.test.ts[2m > [22mQ-78-03: Regression Gate 6250+[2m > [22mR78 Completion Gates[2m > [22m04: signal-backtesting (JVS J-78-01 target: 27L->350L)[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\signal-backtesting.ts'[39m
+[31m   [33m鉂?[31m tests/q78-03-regression-6250.test.ts[2m > [22mQ-78-03: Regression Gate 6250+[2m > [22mR78 Completion Gates[2m > [22m05: realtime-news (JVS J-78-02 target: 40L->350L)[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\realtime-news.ts'[39m
+[31m   [33m鉂?[31m tests/q78-03-regression-6250.test.ts[2m > [22mQ-78-03: Regression Gate 6250+[2m > [22mR78 Completion Gates[2m > [22m06: P2P split (JVS J-78-03 target: 1->4)[39m
+[31m     鈫?expected 0 to be greater than or equal to 1[39m
+[90mstdout[2m | tests/q78-03-regression-6250.test.ts[2m > [22m[2mQ-78-03: Regression Gate 6250+[2m > [22m[2mStatic Counts[2m > [22m[2m01: static >= 6180[22m[39m
+[Q-78-03] Static: 6222 (target: >=6180)
+
+[90mstdout[2m | tests/q78-03-regression-6250.test.ts[2m > [22m[2mQ-78-03: Regression Gate 6250+[2m > [22m[2mStatic Counts[2m > [22m[2m02: test files >= 361[22m[39m
+[Q-78-03] Files: 370 (target: >=361)
+
+[90mstdout[2m | tests/q78-03-regression-6250.test.ts[2m > [22m[2mQ-78-03: Regression Gate 6250+[2m > [22m[2mStatic Counts[2m > [22m[2m03: engines >= 315[22m[39m
+[Q-78-03] Engines: 1 (target: >=315)
+
+[90mstdout[2m | tests/q78-03-regression-6250.test.ts[2m > [22m[2mQ-78-03: Regression Gate 6250+[2m > [22m[2mR78 Completion Gates[2m > [22m[2m06: P2P split (JVS J-78-03 target: 1->4)[22m[39m
+[Q-78-03] P2P engines: 0/4 鈥?p2p-transfer-engine.ts, p2p-dispute-engine.ts, p2p-freeze-manager.ts, blacklist-manager.ts
+
+[90mstdout[2m | tests/q78-03-regression-6250.test.ts[2m > [22m[2mQ-78-03: Regression Gate 6250+[2m > [22m[2mQuality Gates[2m > [22m[2m08: TSC strict[22m[39m
+[Q-78-03] Strict: true
+
+[90mstdout[2m | tests/q78-03-regression-6250.test.ts[2m > [22m[2mQ-78-03: Regression Gate 6250+[2m > [22m[2mQuality Gates[2m > [22m[2m09: Q-78 files complete (3)[22m[39m
+[Q-78-03] Q-78 files: q78-01-three-engine-tests.test.ts, q78-02-perf-benchmark.test.ts, q78-03-regression-6250.test.ts (3)
+
+[90mstdout[2m | tests/q78-03-regression-6250.test.ts[2m > [22m[2mQ-78-03: Regression Gate 6250+[2m > [22m[2mQuality Gates[2m > [22m[2m10: no skips in Q-78[22m[39m
+[Q-78-03] Skips: 0
+
+[90mstdout[2m | tests/q79-02-coverage-gate-60.test.ts[2m > [22m[2mQ-79-02: Coverage Gate >=60%[2m > [22m[2mCoverage Data[2m > [22m[2m04: coverage summary JSON exists[22m[39m
+[Q-79-02] coverage-summary.json: not found
+
+[90mstdout[2m | tests/q79-02-coverage-gate-60.test.ts[2m > [22m[2mQ-79-02: Coverage Gate >=60%[2m > [22m[2mVitest Config Coverage Thresholds[2m > [22m[2m05: vitest.config has coverage thresholds[22m[39m
+[Q-79-02] Thresholds: PRESENT
+
+[90mstdout[2m | tests/q79-02-coverage-gate-60.test.ts[2m > [22m[2mQ-79-02: Coverage Gate >=60%[2m > [22m[2mVitest Config Coverage Thresholds[2m > [22m[2m06: coverage provider is v8 (fast)[22m[39m
+[Q-79-02] V8 coverage: yes
+
+[90mstdout[2m | tests/q79-02-coverage-gate-60.test.ts[2m > [22m[2mQ-79-02: Coverage Gate >=60%[2m > [22m[2mVitest Config Coverage Thresholds[2m > [22m[2m07: coverage include electron/engine[22m[39m
+[Q-79-02] Engine in coverage: yes
+
+[90mstdout[2m | tests/q79-02-coverage-gate-60.test.ts[2m > [22m[2mQ-79-02: Coverage Gate >=60%[2m > [22m[2mEngine Test Coverage Audit[2m > [22m[2m08: engines with tests[22m[39m
+[Q-79-02] Engines tested: 0/1 (0%)
+
+[90mstdout[2m | tests/q79-02-coverage-gate-60.test.ts[2m > [22m[2mQ-79-02: Coverage Gate >=60%[2m > [22m[2mEngine Test Coverage Audit[2m > [22m[2m09: test files count supports coverage growth[22m[39m
+[Q-79-02] Test files: 370 (more files = better coverage)
+
+[90mstdout[2m | tests/q79-02-coverage-gate-60.test.ts[2m > [22m[2mQ-79-02: Coverage Gate >=60%[2m > [22m[2mEngine Test Coverage Audit[2m > [22m[2m10: no test files with 0 tests[22m[39m
+[Q-79-02] Empty: jvs-37-ipc-validation.test.ts
+[Q-79-02] Empty files: 1
+
+ [33m鉂?[39m tests/q79-02-coverage-gate-60.test.ts [2m ([22m[2m10 tests[22m [2m|[22m [31m4 failed[39m[2m)[22m[90m 56[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q79-02-coverage-gate-60.test.ts[2m > [22mQ-79-02: Coverage Gate >=60%[2m > [22mCoverage Data[2m > [22m01: lcov data exists[39m
+[31m     鈫?expected false to be true // Object.is equality[39m
+[31m   [33m鉂?[31m tests/q79-02-coverage-gate-60.test.ts[2m > [22mQ-79-02: Coverage Gate >=60%[2m > [22mCoverage Data[2m > [22m02: lcov data non-empty[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\coverage\lcov.info'[39m
+[31m   [33m鉂?[31m tests/q79-02-coverage-gate-60.test.ts[2m > [22mQ-79-02: Coverage Gate >=60%[2m > [22mCoverage Data[2m > [22m03: coverage summary parse[39m
+[31m     鈫?ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\coverage\lcov.info'[39m
+[31m   [33m鉂?[31m tests/q79-02-coverage-gate-60.test.ts[2m > [22mQ-79-02: Coverage Gate >=60%[2m > [22mEngine Test Coverage Audit[2m > [22m08: engines with tests[39m
+[31m     鈫?expected 0 to be greater than 0.25[39m
+[90mstdout[2m | tests/q74-02-regression-gate-5800.test.ts[2m > [22m[2mQ-74-02: Full Regression Gate 5800+[2m > [22m[2mStatic Counts[2m > [22m[2m01: static test count >= 5800[22m[39m
+[Q-74-02] Static test count: 6222
+
+[90mstdout[2m | tests/q74-02-regression-gate-5800.test.ts[2m > [22m[2mQ-74-02: Full Regression Gate 5800+[2m > [22m[2mStatic Counts[2m > [22m[2m02: test files >= 350[22m[39m
+[Q-74-02] Test files: 370
+
+[90mstdout[2m | tests/q74-02-regression-gate-5800.test.ts[2m > [22m[2mQ-74-02: Full Regression Gate 5800+[2m > [22m[2mStatic Counts[2m > [22m[2m03: engine files >= 310[22m[39m
+[Q-74-02] Engine files: 1
+
+[90mstdout[2m | tests/q74-02-regression-gate-5800.test.ts[2m > [22m[2mQ-74-02: Full Regression Gate 5800+[2m > [22m[2mStatic Counts[2m > [22m[2m04: src files >= 220[22m[39m
+[Q-74-02] Source files: 226
+
+[90mstdout[2m | tests/q74-02-regression-gate-5800.test.ts[2m > [22m[2mQ-74-02: Full Regression Gate 5800+[2m > [22m[2mQuality Gates[2m > [22m[2m05: tsconfig.json strict mode[22m[39m
+[Q-74-02] TSC strict: true
+
+[90mstdout[2m | tests/q74-02-regression-gate-5800.test.ts[2m > [22m[2mQ-74-02: Full Regression Gate 5800+[2m > [22m[2mQuality Gates[2m > [22m[2m06: all Q-74 test files present[22m[39m
+[Q-74-02] Q-74 files: q74-01-build-deploy-verify.test.ts, q74-02-regression-gate-5800.test.ts
+
+[90mstdout[2m | tests/q74-02-regression-gate-5800.test.ts[2m > [22m[2mQ-74-02: Full Regression Gate 5800+[2m > [22m[2mQuality Gates[2m > [22m[2m07: no skipped QClaw tests in Q-74[22m[39m
+[Q-74-02] Skipped tests: 0
+
+[90mstdout[2m | tests/q74-02-regression-gate-5800.test.ts[2m > [22m[2mQ-74-02: Full Regression Gate 5800+[2m > [22m[2mGA Checklist[2m > [22m[2m08: test:all script exists[22m[39m
+[Q-74-02] test:all: true
+
+[90mstdout[2m | tests/q74-02-regression-gate-5800.test.ts[2m > [22m[2mQ-74-02: Full Regression Gate 5800+[2m > [22m[2mGA Checklist[2m > [22m[2m09: version string present (JVS to bump 鈫?1.8.0)[22m[39m
+[Q-74-02] Current version: 1.9.0
+
+[90mstdout[2m | tests/q74-02-regression-gate-5800.test.ts[2m > [22m[2mQ-74-02: Full Regression Gate 5800+[2m > [22m[2mGA Checklist[2m > [22m[2m10: CHANGELOG or release doc references v1.8[22m[39m
+[Q-74-02] CHANGELOG.md: 20713 chars, v1.8: true
+[Q-74-02] docs/releases/v1.8.0-ga-release-notes.md: 5259 chars, v1.8: true
+
+ [33m鉂?[39m tests/q74-02-regression-gate-5800.test.ts [2m ([22m[2m10 tests[22m [2m|[22m [31m1 failed[39m[2m)[22m[90m 57[2mms[22m[39m
+[31m   [33m鉂?[31m tests/q74-02-regression-gate-5800.test.ts[2m > [22mQ-74-02: Full Regression Gate 5800+[2m > [22mStatic Counts[2m > [22m03: engine files >= 310[39m
+[31m     鈫?expected 1 to be greater than or equal to 310[39m
+ [32m鉁?[39m tests/q78-02-perf-benchmark.test.ts [2m ([22m[2m10 tests[22m[2m)[22m[33m 466[2mms[22m[39m
+[90mstdout[2m | tests/q78-02-perf-benchmark.test.ts[2m > [22m[2mQ-78-02: Performance Benchmark[2m > [22m[2mK-line Rendering <100ms (1000 candles)[2m > [22m[2m01: K-line data generation benchmark[22m[39m
+[Q-78-02] K-line 1000 gen: 0ms (target: <100ms)
+
+[90mstdout[2m | tests/q78-02-perf-benchmark.test.ts[2m > [22m[2mQ-78-02: Performance Benchmark[2m > [22m[2mK-line Rendering <100ms (1000 candles)[2m > [22m[2m02: array operations on 1000 candles[22m[39m
+[Q-78-02] K-line ops (SMA+max+min+avg): 1ms (target: <100ms)
+
+[90mstdout[2m | tests/q78-02-perf-benchmark.test.ts[2m > [22m[2mQ-78-02: Performance Benchmark[2m > [22m[2m4Agent <12s (with API)[2m > [22m[2m03: 4Agent stub dispatch benchmark[22m[39m
+[Q-78-02] 4Agent dispatch: 376ms (target: <12000ms with real API)
+
+[90mstdout[2m | tests/q78-02-perf-benchmark.test.ts[2m > [22m[2mQ-78-02: Performance Benchmark[2m > [22m[2m4Agent <12s (with API)[2m > [22m[2m04: orchestrator result merge benchmark[22m[39m
+[Q-78-02] Merge: decision=STRONG_BUY, conf=0.64, 0ms
+
+[90mstdout[2m | tests/q78-02-perf-benchmark.test.ts[2m > [22m[2mQ-78-02: Performance Benchmark[2m > [22m[2mAPI /api/* P50/P95/P99[2m > [22m[2m05: mock API latency distribution[22m[39m
+[Q-78-02] API P50=0ms P95=0ms P99=1ms
+
+[90mstdout[2m | tests/q78-02-perf-benchmark.test.ts[2m > [22m[2mQ-78-02: Performance Benchmark[2m > [22m[2mAPI /api/* P50/P95/P99[2m > [22m[2m06: file I/O latency benchmark[22m[39m
+[Q-78-02] File I/O P50=0ms P95=1ms
+
+[90mstdout[2m | tests/q78-02-perf-benchmark.test.ts[2m > [22m[2mQ-78-02: Performance Benchmark[2m > [22m[2mBundle <150MB[2m > [22m[2m07: engine directory size[22m[39m
+[Q-78-02] Engine size: 0.00MB (218 bytes)
+
+[90mstdout[2m | tests/q78-02-perf-benchmark.test.ts[2m > [22m[2mQ-78-02: Performance Benchmark[2m > [22m[2mBundle <150MB[2m > [22m[2m08: source directory size[22m[39m
+[Q-78-02] Src size (no deps/build/git): 1569.8MB
+
+[90mstdout[2m | tests/q78-02-perf-benchmark.test.ts[2m > [22m[2mQ-78-02: Performance Benchmark[2m > [22m[2mBundle <150MB[2m > [22m[2m09: electron-builder config present[22m[39m
+[Q-78-02] Builder config: electron-builder.json
+
+[90mstdout[2m | tests/q78-02-perf-benchmark.test.ts[2m > [22m[2mQ-78-02: Performance Benchmark[2m > [22m[2mBundle <150MB[2m > [22m[2m10: tree-shaking hints[22m[39m
+[Q-78-02] sideEffects: not set
+

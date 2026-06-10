@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useState, useEffect, useCallback } from 'react-i18next';
 import { getAnomalySummary, getAnomalyAlerts, acknowledgeAnomalyAlert } from '../../lib/bridge-api';
 
 interface AnomalyAlert {
@@ -106,19 +105,19 @@ export default function AnomalyAlertPanel() {
         <div className="grid grid-cols-4 gap-2 mb-4">
           <div className="bg-card rounded-lg p-2 text-center">
             <div className="text-xs text-gray-500">{"components.today"}</div>
-            <div className="text-sm font-bold text-white">{summary.todayCount ?? 0}</div>
+            <div className="text-sm font-bold text-white">{(summary as any).todayCount ?? 0}</div>
           </div>
           <div className="bg-card rounded-lg p-2 text-center">
             <div className="text-xs text-gray-500">高危</div>
-            <div className="text-sm font-bold text-red-400">{summary.highSeverityCount ?? 0}</div>
+            <div className="text-sm font-bold text-red-400">{(summary as any).highSeverityCount ?? 0}</div>
           </div>
           <div className="bg-card rounded-lg p-2 text-center">
             <div className="text-xs text-gray-500">{"components.pending"}</div>
-            <div className="text-sm font-bold text-yellow-400">{summary.unacknowledgedCount ?? 0}</div>
+            <div className="text-sm font-bold text-yellow-400">{(summary as any).unacknowledgedCount ?? 0}</div>
           </div>
           <div className="bg-card rounded-lg p-2 text-center">
             <div className="text-xs text-gray-500">活跃</div>
-            <div className="text-sm font-bold text-[#C9A046]">{summary.activeStocksCount ?? 0}</div>
+            <div className="text-sm font-bold text-[#C9A046]">{(summary as any).activeStocksCount ?? 0}</div>
           </div>
         </div>
       )}

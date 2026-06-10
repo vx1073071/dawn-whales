@@ -1,8 +1,7 @@
 // ── DAWN WHALES — NotificationCenter (通知中心) ────────────────────────────
 
 import { useState, useEffect } from 'react'
-import { useState, useEffect } from 'react-i18next';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 export interface NotificationItem {
   id: string;

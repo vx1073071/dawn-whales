@@ -1,3 +1,4 @@
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
 ﻿// T99: Batch ETL Scheduler with DAG dependencies
 export interface BatchJob {
   id: string;
@@ -34,7 +35,7 @@ export class BatchScheduler {
 
   async execute(jobId: string): Promise<void> {
     const job = this.jobs.get(jobId);
-    if (!job) throw new Error(`Job ${jobId} not found`);
+    if (!job) throw new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `Job ${jobId} not found`);
 
     // Check dependencies
     for (const depId of job.dependencies) {

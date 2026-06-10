@@ -10,20 +10,20 @@ const HEALTH_CHECK_INTERVAL = 60000; // 60s lightweight health check
 
 function transformQuote(q: unknown) {
   return {
-    code: q.code || '',
-    name: q.name || q.code || '',
+    code: (q as any).code || '',
+    name: (q as any).name || (q as any).code || '',
     market: 'US' as const,
-    price: q.price || 0,
-    prevClose: q.prevClose || 0,
-    open: q.open || 0,
-    high: q.high || 0,
-    low: q.low || 0,
-    volume: q.volume || 0,
-    turnover: q.amount || 0,
-    change: q.change || 0,
-    changePct: q.changePct || 0,
-    amplitude: q.amplitude || 0,
-    updateTime: q.updateTime || new Date().toISOString(),
+    price: (q as any).price || 0,
+    prevClose: (q as any).prevClose || 0,
+    open: (q as any).open || 0,
+    high: (q as any).high || 0,
+    low: (q as any).low || 0,
+    volume: (q as any).volume || 0,
+    turnover: (q as any).amount || 0,
+    change: (q as any).change || 0,
+    changePct: (q as any).changePct || 0,
+    amplitude: (q as any).amplitude || 0,
+    updateTime: (q as any).updateTime || new Date().toISOString(),
   };
 }
 

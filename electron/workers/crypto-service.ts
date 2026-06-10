@@ -1,5 +1,7 @@
 ﻿// T53: AES-256-GCM Encryption Service
 import * as crypto from 'crypto';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
+
 
 const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 16;
@@ -17,7 +19,7 @@ export class CryptoService {
   }
 
   encrypt(plaintext: string): { iv: string; ciphertext: string; authTag: string } {
-    if (!this.masterKey) throw new Error('CryptoService not initialized');
+    if (!this.masterKey) throw new EngineError(ErrorDomain.AUTH, ErrorCode.UNAUTHORIZED, 'CryptoService not initialized');
     const iv = crypto.randomBytes(IV_LENGTH);
     const cipher = crypto.createCipheriv(ALGORITHM, this.masterKey, iv);
     let encrypted = cipher.update(plaintext, 'utf8', 'hex');
@@ -31,7 +33,7 @@ export class CryptoService {
   }
 
   decrypt(iv: string, ciphertext: string, authTag: string): string {
-    if (!this.masterKey) throw new Error('CryptoService not initialized');
+    if (!this.masterKey) throw new EngineError(ErrorDomain.AUTH, ErrorCode.UNAUTHORIZED, 'CryptoService not initialized');
     const decipher = crypto.createDecipheriv(ALGORITHM, this.masterKey, Buffer.from(iv, 'hex'));
     decipher.setAuthTag(Buffer.from(authTag, 'hex'));
     let decrypted = decipher.update(ciphertext, 'hex', 'utf8');

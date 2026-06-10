@@ -47,7 +47,7 @@ export default function GreeksPanel() {
         setError(res?.error || '计算失败');
       }
     } catch (e: unknown) {
-      setError(e.message || '计算异常');
+      setError((e as any).message || '计算异常');
     } finally {
       setLoading(false);
     }

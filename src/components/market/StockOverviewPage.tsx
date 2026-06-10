@@ -45,7 +45,7 @@ export default function StockOverviewPage() {
         setError(res?.error || '诊断失败');
       }
     } catch (e: unknown) {
-      setError(e.message || '诊断失败');
+      setError((e as any).message || '诊断失败');
     } finally {
       setLoading(false);
     }

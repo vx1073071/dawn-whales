@@ -1,3 +1,4 @@
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
 ﻿// T65: Database Schema Migration Engine
 export type MigrationDirection = 'up' | 'down';
 
@@ -23,7 +24,7 @@ export class MigrationEngine {
 
   register(migration: Migration): void {
     if (this.migrations.find(m => m.version === migration.version)) {
-      throw new Error(`Duplicate migration version: ${migration.version}`);
+      throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_CORRUPT, `Duplicate migration version: ${migration.version}`);
     }
     this.migrations.push(migration);
     this.migrations.sort((a, b) => a.version - b.version);
@@ -104,22 +105,22 @@ export class MigrationEngine {
   }
 
   private async _getApplied(): Promise<MigrationRecord[]> {
-    if (!this.appliedCallback) throw new Error('onApplied callback not set');
+    if (!this.appliedCallback) throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_CORRUPT, 'onApplied callback not set');
     return this.appliedCallback();
   }
 
   private async _execute(sql: string): Promise<void> {
-    if (!this.executeCallback) throw new Error('onExecute callback not set');
+    if (!this.executeCallback) throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_CORRUPT, 'onExecute callback not set');
     await this.executeCallback(sql);
   }
 
   private async _record(record: MigrationRecord): Promise<void> {
-    if (!this.recordCallback) throw new Error('onRecord callback not set');
+    if (!this.recordCallback) throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_CORRUPT, 'onRecord callback not set');
     await this.recordCallback(record);
   }
 
   private async _remove(version: number): Promise<void> {
-    if (!this.removeCallback) throw new Error('onRemove callback not set');
+    if (!this.removeCallback) throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_CORRUPT, 'onRemove callback not set');
     await this.removeCallback(version);
   }
 }

@@ -531,15 +531,15 @@ const SentimentDashboardPage: React.FC = () => {
           const raw = await api.dataProvider.getNews(symbol, 50);
           if (Array.isArray(raw) && raw.length > 0) {
             newsData = raw.map((item: unknown, idx: number) => ({
-              id: item.id || `news-${idx}`,
-              title: item.title || item.headline || '无标题',
-              summary: item.summary || item.body || '',
-              source: item.source || '未知',
-              url: item.url,
-              publishedAt: item.publishedAt || item.timestamp || new Date().toISOString(),
-              sentiment: item.sentiment ?? (Math.random() - 0.5) * 2,
-              keywords: item.keywords || [],
-              symbol: item.symbol || symbol,
+              id: (item as any).id || `news-${idx}`,
+              title: (item as any).title || (item as any).headline || '无标题',
+              summary: (item as any).summary || (item as any).body || '',
+              source: (item as any).source || '未知',
+              url: (item as any).url,
+              publishedAt: (item as any).publishedAt || (item as any).timestamp || new Date().toISOString(),
+              sentiment: (item as any).sentiment ?? (Math.random() - 0.5) * 2,
+              keywords: (item as any).keywords || [],
+              symbol: (item as any).symbol || symbol,
             }));
           }
         } catch { /* fallback to mock */ }

@@ -1,8 +1,7 @@
 ﻿import { useState, useEffect, useMemo } from 'react'
-import { useState, useEffect, useMemo } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import * as echarts from 'echarts';
 import { getSmartPick } from '@/lib/bridge-api';
-import { useTranslation } from "react-i18next";
 
 interface SmartPickItem {
   code: string;

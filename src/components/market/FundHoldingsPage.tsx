@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useState, useEffect } from 'react-i18next';
 import { getFundHoldings, getStockFundOwnership, getFundIncreaseRank, getFundDecreaseRank } from '../../lib/bridge-api';
 
 interface FundHolding {
@@ -52,7 +51,7 @@ export default function FundHoldingsPage() {
       if (res?.success) setHoldings(res.items || []);
       else setError(res?.error || '获取失败');
     } catch (e: unknown) {
-      setError(e.message || '获取失败');
+      setError((e as any).message || '获取失败');
     } finally {
       setLoading(false);
     }
@@ -67,7 +66,7 @@ export default function FundHoldingsPage() {
       if (res?.success) setOwnership(res.items || []);
       else setError(res?.error || '获取失败');
     } catch (e: unknown) {
-      setError(e.message || '获取失败');
+      setError((e as any).message || '获取失败');
     } finally {
       setLoading(false);
     }
@@ -84,7 +83,7 @@ export default function FundHoldingsPage() {
       if (incRes?.success) setIncreaseRank(incRes.items || []);
       if (decRes?.success) setDecreaseRank(decRes.items || []);
     } catch (e: unknown) {
-      setError(e.message || '获取失败');
+      setError((e as any).message || '获取失败');
     } finally {
       setLoading(false);
     }

@@ -2,10 +2,9 @@
 // 市场情绪指数仪表盘：0-100，恐慌/贪婪标签
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { useState, useEffect, useCallback, useMemo } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import ReactECharts from 'echarts-for-react';
 import { computeSentiment } from '../../lib/bridge-api';
-import { useTranslation } from "react-i18next";
 
 interface SentimentData {
   index: number; // 0-100
@@ -127,8 +126,8 @@ export default function SentimentGauge() {
         textStyle: { color: '#e6edf3', fontSize: 11 },
         formatter: (params: Record<string, unknown>) => {
           const p = params[0];
-          const lvl = getLevel(p.value);
-          return `${p.name}<br/><span style="color:${lvl.color}">●</span> ${p.value} — ${lvl.label}`;
+          const lvl = getLevel((p as any).value);
+          return `${(p as any).name}<br/><span style="color:${lvl.color}">●</span> ${(p as any).value} — ${lvl.label}`;
         },
       },
       xAxis: {

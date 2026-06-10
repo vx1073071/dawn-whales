@@ -120,7 +120,7 @@ export class OrderStateManager extends EventEmitter {
     const allowed = VALID_TRANSITIONS[fromState];
 
     if (!allowed.includes(toState)) {
-      throw new Error(`Invalid transition: ${fromState} → ${toState}. Allowed: ${allowed.join(', ')}`);
+      throw new EngineError(ErrorDomain.TRADE, ErrorCode.INVALID_PARAM, `Invalid transition: ${fromState} → ${toState}. Allowed: ${allowed.join(', ')}`);
     }
 
     // Update order

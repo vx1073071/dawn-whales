@@ -15,7 +15,7 @@ export default function StatusBar() {
       // Poll memory usage
       if (typeof window !== 'undefined' && window.api?.app) {
         window.api.app.getMemoryUsage().then((info: unknown) => {
-          if (info?.total) setMem(info.total);
+          if (info?.total) setMem((info as any).total);
         }).catch(() => {});
       }
     }, 5000);

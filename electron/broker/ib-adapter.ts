@@ -28,6 +28,8 @@ import {
   PlaceOrderRequest,
 } from './IBrokerAdapter';
 import log from 'electron-log';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
+
 
 // ── Constants ───────────────────────────────────────────────────────────────
 
@@ -1013,7 +1015,7 @@ export class IBAdapter implements IBrokerAdapter {
     timeout: number = REQUEST_TIMEOUT_MS,
     responseMsgId?: number,
   ): Promise<string[]> {
-    if (!this.socket) throw new Error('TCP socket not connected');
+    if (!this.socket) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'TCP socket not connected');
 
     const reqId = ++this.requestId;
 
@@ -1104,7 +1106,7 @@ export class IBAdapter implements IBrokerAdapter {
   // ════════════════════════════════════════════════════════════════════════
 
   async getQuotes(codes: string[]): Promise<QuoteInfo[]> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       return codes.map(code => {
@@ -1156,7 +1158,7 @@ export class IBAdapter implements IBrokerAdapter {
   }
 
   async getKlines(code: string, period: string, count: number): Promise<KlineInfo[]> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       return this.generateMockKlines(code, period, count);
@@ -1256,7 +1258,7 @@ export class IBAdapter implements IBrokerAdapter {
   // ════════════════════════════════════════════════════════════════════════
 
   async getAccounts(): Promise<AccountInfo[]> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       return [
@@ -1337,7 +1339,7 @@ export class IBAdapter implements IBrokerAdapter {
   }
 
   async getFunds(accountId: string): Promise<FundsInfo> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       return {
@@ -1388,7 +1390,7 @@ export class IBAdapter implements IBrokerAdapter {
   // ════════════════════════════════════════════════════════════════════════
 
   async getPositions(accountId: string): Promise<PositionInfo[]> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       return this.getMockPositions();
@@ -1475,7 +1477,7 @@ export class IBAdapter implements IBrokerAdapter {
   // ════════════════════════════════════════════════════════════════════════
 
   async getOrders(accountId: string): Promise<OrderInfo[]> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       return this.getMockOrders();
@@ -1561,7 +1563,7 @@ export class IBAdapter implements IBrokerAdapter {
   }
 
   async placeOrder(order: PlaceOrderRequest): Promise<{ orderId: string }> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       const orderId = `IB-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
@@ -1635,7 +1637,7 @@ export class IBAdapter implements IBrokerAdapter {
   }
 
   async cancelOrder(orderId: string, accountId: string, code: string): Promise<void> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       log.info(`[IBAdapter] Order cancelled (mock): ${orderId} for ${code}`);
@@ -1688,7 +1690,7 @@ export class IBAdapter implements IBrokerAdapter {
   // ════════════════════════════════════════════════════════════════════════
 
   async subscribeAndPush(codes: string[]): Promise<void> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     // Track for reconnect
     this.subscribedCodes = [...codes];

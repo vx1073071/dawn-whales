@@ -242,7 +242,7 @@ export default function LiveMonitorPage() {
 
   // Quote array is computed but rendered via quotes:push events (live grid updates)
   // Keeping sorted reference here for future extensibility
-  void Array.from(quotes.values()).sort((a: unknown, b: any) => a.code.localeCompare(b.code));
+  void Array.from(quotes.values()).sort((a: any, b: any) => a.code.localeCompare(b.code));
 
   return (
     <div className="p-6">

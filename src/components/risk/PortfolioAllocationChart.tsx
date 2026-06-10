@@ -64,12 +64,12 @@ export default function PortfolioAllocationChart({
         formatter: (params: Record<string, unknown>) => {
           const d = params.data;
           const pct = params.percent;
-          const pnlColor = d.pnl >= 0 ? '#34d399' : '#f87171';
+          const pnlColor = (d as any).pnl >= 0 ? '#34d399' : '#f87171';
           return `<div class="font-mono text-xs">
-            <div class="font-medium">${d.name}</div>
-            <div>占比: ${pct.toFixed(1)}%</div>
-            <div>市值: $${d.value.toLocaleString()}</div>
-            <div style="color:${pnlColor}">盈亏: ${d.pnl >= 0 ? '+' : ''}$${d.pnl.toFixed(0)} (${d.pnlPct.toFixed(1)}%)</div>
+            <div class="font-medium">${(d as any).name}</div>
+            <div>占比: ${(pct as any).toFixed(1)}%</div>
+            <div>市值: $${(d as any).value.toLocaleString()}</div>
+            <div style="color:${pnlColor}">盈亏: ${(d as any).pnl >= 0 ? '+' : ''}$${(d as any).pnl.toFixed(0)} (${(d as any).pnlPct.toFixed(1)}%)</div>
           </div>`;
         },
       },

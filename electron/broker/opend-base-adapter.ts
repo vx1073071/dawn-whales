@@ -25,6 +25,8 @@ import {
   PlaceOrderRequest,
 } from './IBrokerAdapter';
 import log from 'electron-log';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
+
 
 // ── Shared Constants ─────────────────────────────────────────────────────────
 
@@ -399,7 +401,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
    */
   protected async connectTCP(): Promise<void> {
     const proto = loadProto();
-    if (!proto) throw new Error('Protobuf definitions not loaded');
+    if (!proto) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Protobuf definitions not loaded');
 
     // 1. Raw TCP connect with timeout
     this.socket = await this.rawTcpConnect();
@@ -687,8 +689,8 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
     timeout: number = this.requestTimeoutMs,
   ): Promise<any> {
     const proto = loadProto();
-    if (!proto) throw new Error('Protobuf not loaded');
-    if (!this.socket) throw new Error('TCP socket not connected');
+    if (!proto) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Protobuf not loaded');
+    if (!this.socket) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'TCP socket not connected');
 
     // Encode protobuf body
     const RequestType = proto.lookup(`${cmd.name}.Request`);
@@ -719,7 +721,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
     // Decode and validate response
     const decoded = ResponseType.decode(rawBody);
     if (decoded?.retType !== 0) {
-      throw new Error(decoded?.retMsg ?? `${cmd.name} failed (retType=${decoded?.retType})`);
+      throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, decoded?.retMsg ?? `${cmd.name} failed (retType=${decoded?.retType})`);
     }
     return decoded;
   }
@@ -862,7 +864,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
    * In TCP mode, subscribes (no push) then pulls quotes via Qot_GetBasicQot.
    */
   async getQuotes(codes: string[]): Promise<QuoteInfo[]> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       return codes.map(code => {
@@ -917,7 +919,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
    * In TCP mode, queries Qot_GetKL with the specified period and count.
    */
   async getKlines(code: string, period: string = 'daily', count: number = 200): Promise<KlineInfo[]> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       const contracts = this.getContractMapping();
@@ -964,7 +966,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
    * In TCP mode, sends QotSub with push registration enabled.
    */
   async subscribeAndPush(codes: string[]): Promise<void> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     // Track for reconnect re-subscription
     this.subscribedCodes = [...codes];
@@ -1012,7 +1014,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
    * Subclasses may override for broker-specific mock data or account filtering.
    */
   async getAccounts(): Promise<AccountInfo[]> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       return this.getMockAccounts();
@@ -1046,7 +1048,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
    * Subclasses may override for broker-specific currency or field mapping.
    */
   async getFunds(accountId: string): Promise<FundsInfo> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       return this.getMockFunds();
@@ -1063,7 +1065,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
       });
 
       const f = res?.s2c?.funds;
-      if (!f) throw new Error('No funds data returned');
+      if (!f) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'No funds data returned');
 
       return {
         totalAssets: toNum(f.totalAssets),
@@ -1089,7 +1091,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
    * Parses the common OpenD position list format.
    */
   async getPositions(accountId: string): Promise<PositionInfo[]> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       return this.getMockPositions();
@@ -1142,7 +1144,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
    * Uses the common ORDER_STATUS_MAP for status translation.
    */
   async getOrders(accountId: string): Promise<OrderInfo[]> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       return this.getMockOrders();
@@ -1182,7 +1184,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
    * Builds the common trdHeader and order parameters.
    */
   async placeOrder(request: PlaceOrderRequest): Promise<{ orderId: string }> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       return this.mockPlaceOrder(request);
@@ -1223,7 +1225,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
    * Cancel an existing order via OpenD Trd_ModifyOrder (cancel operation).
    */
   async cancelOrder(orderId: string, accountId: string, code: string): Promise<void> {
-    if (!this.connected) throw new Error('Not connected');
+    if (!this.connected) throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Not connected');
 
     if (this.mockMode) {
       log.info(`[${this.getAdapterName()}] Order cancelled (mock): ${orderId} for ${code}`);

@@ -88,6 +88,8 @@ import { createWindow } from './main/browser';
 import { createTray } from './main/tray';
 import { setupIPC } from './main/ipc-setup';
 import type { IPCContext } from './main/ipc-setup';
+import { EngineError, ErrorDomain, ErrorCode } from './engine/core/engine-error';
+
 
 
 const isDev = !app.isPackaged;
@@ -284,7 +286,7 @@ app.whenReady().then(async () => {
     run: async (opts) => {
       log.info(`[CronScheduler] Running strategy: ${opts.strategyId}, dryRun=${opts.dryRun}`);
       const strategy = strategyEngine?.getStrategy(opts.strategyId);
-      if (!strategy) throw new Error(`Strategy not found: ${opts.strategyId}`);
+      if (!strategy) throw new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `Strategy not found: ${opts.strategyId}`);
 
       if (!opts.dryRun) {
         strategyEngine?.startLive(opts.strategyId);

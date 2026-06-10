@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useState, useEffect, useCallback } from 'react-i18next';
 import { searchNews, getMarketMood } from '../../lib/bridge-api';
 
 interface NewsArticle {
@@ -50,7 +49,7 @@ export default function NewsDashboardPage() {
         setMood(moodRes.report);
       }
     } catch (e: unknown) {
-      setError(e.message || '获取新闻失败');
+      setError((e as any).message || '获取新闻失败');
     } finally {
       setLoading(false);
     }
@@ -94,21 +93,21 @@ export default function NewsDashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
             <div className="text-xs text-gray-500 mb-1">市场情绪</div>
-            <div className={`text-lg font-bold ${mood.overall === 'positive' ? 'text-red-400' : mood.overall === 'negative' ? 'text-emerald-400' : 'text-gray-300'}`}>
-              {mood.overall === 'positive' ? '偏多' : mood.overall === 'negative' ? '偏空' : '中性'}
+            <div className={`text-lg font-bold ${(mood as any).overall === 'positive' ? 'text-red-400' : (mood as any).overall === 'negative' ? 'text-emerald-400' : 'text-gray-300'}`}>
+              {(mood as any).overall === 'positive' ? '偏多' : (mood as any).overall === 'negative' ? '偏空' : '中性'}
             </div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
             <div className="text-xs text-gray-500 mb-1">情绪得分</div>
-            <div className="text-lg font-bold text-white">{mood.score?.toFixed(1) ?? '-'}/100</div>
+            <div className="text-lg font-bold text-white">{(mood as any).score?.toFixed(1) ?? '-'}/100</div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
             <div className="text-xs text-gray-500 mb-1">新闻数量(24h)</div>
-            <div className="text-lg font-bold text-white">{mood.articleCount ?? articles.length}</div>
+            <div className="text-lg font-bold text-white">{(mood as any).articleCount ?? articles.length}</div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
             <div className="text-xs text-gray-500 mb-1">主导话题</div>
-            <div className="text-sm font-medium text-[#C9A046] truncate">{mood.topTopic || '-'}</div>
+            <div className="text-sm font-medium text-[#C9A046] truncate">{(mood as any).topTopic || '-'}</div>
           </div>
         </div>
       )}

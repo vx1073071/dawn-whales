@@ -52,7 +52,7 @@ export default function PortfolioPage() {
       if (fundsData) setFunds({ ...fundsData, currency: fundsData.currency || 'USD' });
       setPositions(pos || []);
     } catch (e: unknown) {
-      setError(e.message || '加载失败');
+      setError((e as any).message || '加载失败');
     } finally {
       setLoading(false);
     }
@@ -62,10 +62,10 @@ export default function PortfolioPage() {
   const fmt = (n: number) => n?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ?? '--';
 
   // Calculate portfolio allocation
-  const totalVal = positions.reduce((sum, p) => sum + (p.marketVal || 0), 0);
+  const totalVal = positions.reduce((sum, p) => sum + ((p as any).marketVal || 0), 0);
   const allocation = positions.map((p) => ({
     ...p,
-    pct: totalVal > 0 ? ((p.marketVal || 0) / totalVal * 100) : 0,
+    pct: totalVal > 0 ? (((p as any).marketVal || 0) / totalVal * 100) : 0,
   })).sort((a, b) => b.pct - a.pct);
 
   return (

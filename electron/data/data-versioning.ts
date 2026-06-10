@@ -5,6 +5,8 @@ import { Database } from 'better-sqlite3';
 import { createHash } from 'crypto';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
+
 
 export interface DataVersion {
   version_id: string;          // UUID
@@ -69,7 +71,7 @@ export class DataVersioningSystem {
     const rows = this.db.prepare(`SELECT * FROM ${tableName}`).all() as any[];
     
     if (rows.length === 0) {
-      throw new Error(`Table ${tableName} is empty or does not exist`);
+      throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_UNAVAILABLE, `Table ${tableName} is empty or does not exist`);
     }
 
     // 计算数据哈希

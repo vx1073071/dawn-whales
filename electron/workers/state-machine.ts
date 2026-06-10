@@ -1,3 +1,4 @@
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
 // T52: State Machine for OpenD Connection
 export type ConnState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'AUTHENTICATED' | 'STREAMING' | 'ERROR';
 
@@ -26,7 +27,7 @@ export class StateMachine {
     const from = this.state;
     const fromConfig = this.states.get(from);
     const toConfig = this.states.get(to);
-    if (!toConfig) throw new Error(`Unknown state: ${to}`);
+    if (!toConfig) throw new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `Unknown state: ${to}`);
     if (!fromConfig?.allowedTransitions.includes(to)) {
       return false; // invalid transition
     }

@@ -156,7 +156,7 @@ export class AppealEngine {
   resolveAppeal(appealId: string, resolvedBy: string, resolution: string): AppealRecord {
     const appeal = this.appeals.get(appealId);
     if (!appeal) throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_UNAVAILABLE, `Appeal ${appealId} not found`);
-    if (appeal.status === 'resolved') throw new Error(`Appeal already resolved`);
+    if (appeal.status === 'resolved') throw new EngineError(ErrorDomain.TRADE, ErrorCode.ORDER_REJECTED, `Appeal already resolved`);
 
     appeal.status = 'resolved';
     appeal.resolvedAt = new Date().toISOString();

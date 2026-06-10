@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useState, useEffect } from 'react-i18next';
 import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from '../../lib/bridge-api';
 
 interface DragonTigerEntry {
@@ -46,7 +45,7 @@ export default function DragonTigerPage() {
       if (res?.success) setEntries(res.entries || []);
       else setError(res?.error || '获取失败');
     } catch (e: unknown) {
-      setError(e.message || '获取失败');
+      setError((e as any).message || '获取失败');
     } finally {
       setLoading(false);
     }
@@ -59,7 +58,7 @@ export default function DragonTigerPage() {
       const res = await getInstitutionalTrades(selectedDate || undefined);
       if (res?.success) setInstitutional(res.entries || []);
     } catch (e: unknown) {
-      setError(e.message || '获取失败');
+      setError((e as any).message || '获取失败');
     } finally {
       setLoading(false);
     }
@@ -76,7 +75,7 @@ export default function DragonTigerPage() {
         setTab('detail');
       }
     } catch (e: unknown) {
-      setError(e.message || '获取失败');
+      setError((e as any).message || '获取失败');
     } finally {
       setLoading(false);
     }

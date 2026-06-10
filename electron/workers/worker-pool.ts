@@ -6,6 +6,8 @@ import { Worker } from 'worker_threads';
 import path from 'path';
 import log from 'electron-log';
 import { EventEmitter } from 'events';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -122,7 +124,7 @@ export class WorkerPool extends EventEmitter {
   ): Promise<T> {
     // Check queue size
     if (this.queue.length >= this.config.maxQueueSize) {
-      throw new Error(`Queue is full (${this.config.maxQueueSize} tasks)`);
+      throw new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `Queue is full (${this.config.maxQueueSize} tasks)`);
     }
 
     return new Promise((resolve, reject) => {

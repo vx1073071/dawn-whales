@@ -125,7 +125,7 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
         setError(res?.error || t('trading.orderFailed'));
       }
     } catch (e: unknown) {
-      setError(e.message || t('trading.orderFailed'));
+      setError((e as any).message || t('trading.orderFailed'));
     }
     setSubmitting(false);
   }

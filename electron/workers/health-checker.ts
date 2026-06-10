@@ -1,5 +1,7 @@
 ﻿// T57: IPC Health Check + Circuit Breaker
 import { ipcMain, ipcRenderer } from 'electron';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
+
 
 export type HealthStatus = 'healthy' | 'degraded' | 'unhealthy';
 
@@ -80,7 +82,7 @@ export class CircuitBreaker {
       if (Date.now() - this.lastFailure > this.resetTimeoutMs) {
         this.state = 'half-open';
       } else {
-        throw new Error('Circuit breaker is open');
+        throw new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, 'Circuit breaker is open');
       }
     }
 

@@ -1,3 +1,4 @@
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
 ﻿// T103: Lambda Architecture — Stream + Batch Unified Processor
 export interface StreamEvent {
   id: string;
@@ -49,14 +50,14 @@ export class StreamBatchProcessor {
 
   async processBatch(windowName: string): Promise<BatchResult> {
     const config = this.batchWindows.get(windowName);
-    if (!config) throw new Error(`Window ${windowName} not found`);
+    if (!config) throw new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `Window ${windowName} not found`);
 
     const now = Date.now();
     const start = now - config.windowMs;
     const events = this.buffer.filter(e => e.timestamp >= start && e.timestamp <= now);
 
     const handler = this.batchHandlers.get(config.handler);
-    if (!handler) throw new Error(`Handler ${config.handler} not found`);
+    if (!handler) throw new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `Handler ${config.handler} not found`);
 
     const aggregations = await handler(events);
 

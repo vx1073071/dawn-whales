@@ -224,24 +224,24 @@ export default function OrdersPage() {
               <tbody>
                 {dbTrades.map((t, i) => (
                   <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                    <td className="px-4 py-3 text-gray-400 text-xs font-mono">{t.created_at || '--'}</td>
-                    <td className="px-4 py-3 text-white text-sm font-medium">{t.symbol?.replace('US.', '')}</td>
+                    <td className="px-4 py-3 text-gray-400 text-xs font-mono">{(t as any).created_at || '--'}</td>
+                    <td className="px-4 py-3 text-white text-sm font-medium">{(t as any).symbol?.replace('US.', '')}</td>
                     <td className="px-4 py-3 text-center">
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded ${t.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {t.side === 'BUY' ? '买入' : '卖出'}
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded ${(t as any).side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
+                        {(t as any).side === 'BUY' ? '买入' : '卖出'}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{t.quantity}</td>
-                    <td className="px-4 py-3 text-right font-mono text-sm text-gray-400">${t.price?.toFixed(2)}</td>
-                    <td className={`px-4 py-3 text-right font-mono text-sm ${(t.pnl || 0) >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                      {t.pnl ? `${t.pnl >= 0 ? '+' : ''}$${t.pnl.toFixed(2)}` : '--'}
+                    <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{(t as any).quantity}</td>
+                    <td className="px-4 py-3 text-right font-mono text-sm text-gray-400">${(t as any).price?.toFixed(2)}</td>
+                    <td className={`px-4 py-3 text-right font-mono text-sm ${((t as any).pnl || 0) >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                      {(t as any).pnl ? `${(t as any).pnl >= 0 ? '+' : ''}$${(t as any).pnl.toFixed(2)}` : '--'}
                     </td>
                     <td className="px-4 py-3 text-center">
-                      <span className={`text-xs px-2 py-0.5 rounded ${statusColors[t.status] || 'text-gray-400 bg-gray-500/20'}`}>
-                        {statusLabels[t.status] || t.status}
+                      <span className={`text-xs px-2 py-0.5 rounded ${statusColors[(t as any).status] || 'text-gray-400 bg-gray-500/20'}`}>
+                        {statusLabels[(t as any).status] || (t as any).status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-gray-500 text-xs truncate max-w-[150px]">{t.remark || ''}</td>
+                    <td className="px-4 py-3 text-gray-500 text-xs truncate max-w-[150px]">{(t as any).remark || ''}</td>
                   </tr>
                 ))}
               </tbody>

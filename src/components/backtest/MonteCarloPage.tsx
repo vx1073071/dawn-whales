@@ -454,8 +454,8 @@ export default function MonteCarloPage() {
       };
       api.monteCarlo.simulate(serverConfig)
         .then((res: unknown) => {
-          if (res?.success && res.result) {
-            const r = res.result;
+          if (res?.success && (res as any).result) {
+            const r = (res as any).result;
             // Convert server result to page format
             const stats: SimStats = {
               mean: r.statistics.mean,
@@ -763,52 +763,52 @@ export default function MonteCarloPage() {
                 {serverRiskMetrics.calmarRatio != null && (
                   <StatCard
                     label="Calmar 比率"
-                    value={serverRiskMetrics.calmarRatio.toFixed(3)}
-                    variant={serverRiskMetrics.calmarRatio > 1 ? 'success' : 'warning'}
+                    value={Number(serverRiskMetrics.calmarRatio).toFixed(3)}
+                    variant={Number(serverRiskMetrics.calmarRatio) > 1 ? 'success' : 'warning'}
                     sub="收益/最大回撤"
                   />
                 )}
                 {serverRiskMetrics.sortinoRatio != null && (
                   <StatCard
                     label="Sortino 比率"
-                    value={serverRiskMetrics.sortinoRatio.toFixed(3)}
-                    variant={serverRiskMetrics.sortinoRatio > 1 ? 'success' : 'warning'}
+                    value={Number(serverRiskMetrics.sortinoRatio).toFixed(3)}
+                    variant={Number(serverRiskMetrics.sortinoRatio) > 1 ? 'success' : 'warning'}
                     sub="下行风险调整"
                   />
                 )}
                 {serverRiskMetrics.informationRatio != null && (
                   <StatCard
                     label="信息比率"
-                    value={serverRiskMetrics.informationRatio.toFixed(3)}
+                    value={Number(serverRiskMetrics.informationRatio).toFixed(3)}
                     sub="超额收益/跟踪误差"
                   />
                 )}
                 {serverRiskMetrics.omegaRatio != null && (
                   <StatCard
                     label="Omega 比率"
-                    value={serverRiskMetrics.omegaRatio.toFixed(3)}
-                    variant={serverRiskMetrics.omegaRatio > 1 ? 'success' : 'warning'}
+                    value={Number(serverRiskMetrics.omegaRatio).toFixed(3)}
+                    variant={Number(serverRiskMetrics.omegaRatio) > 1 ? 'success' : 'warning'}
                     sub="收益分布质量"
                   />
                 )}
                 {serverRiskMetrics.tailRatio != null && (
                   <StatCard
                     label="尾部比率"
-                    value={serverRiskMetrics.tailRatio.toFixed(3)}
+                    value={serverRiskMetrics.(tailRatio as any).toFixed(3)}
                     sub="右尾/左尾比"
                   />
                 )}
                 {serverRiskMetrics.skewness != null && (
                   <StatCard
                     label="偏度"
-                    value={serverRiskMetrics.skewness.toFixed(3)}
+                    value={serverRiskMetrics.(skewness as any).toFixed(3)}
                     sub={serverRiskMetrics.skewness > 0 ? '右偏 (正)' : '左偏 (负)'}
                   />
                 )}
                 {serverRiskMetrics.kurtosis != null && (
                   <StatCard
                     label="峰度"
-                    value={serverRiskMetrics.kurtosis.toFixed(3)}
+                    value={serverRiskMetrics.(kurtosis as any).toFixed(3)}
                     sub={serverRiskMetrics.kurtosis > 3 ? '尖峰 (厚尾)' : '扁平'}
                   />
                 )}

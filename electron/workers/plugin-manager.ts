@@ -1,3 +1,4 @@
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
 ﻿// T72: Plugin Manager
 export interface Plugin {
   id: string;
@@ -37,7 +38,7 @@ export class PluginManager {
 
   async load(id: string): Promise<void> {
     const state = this.plugins.get(id);
-    if (!state) throw new Error(`Plugin ${id} not registered`);
+    if (!state) throw new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `Plugin ${id} not registered`);
     if (state.loaded) return;
 
     state.api = await state.plugin.entry();
@@ -47,7 +48,7 @@ export class PluginManager {
 
   async enable(id: string): Promise<void> {
     const state = this.plugins.get(id);
-    if (!state) throw new Error(`Plugin ${id} not found`);
+    if (!state) throw new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `Plugin ${id} not found`);
     await this.load(id);
     if (state.enabled) return;
     if (state.api!.onEnable) await state.api!.onEnable();

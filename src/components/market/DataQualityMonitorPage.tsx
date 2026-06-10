@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import { useState, useEffect } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
-import { useTranslation } from "react-i18next";
 
 interface QualityCheck {
   type: string;

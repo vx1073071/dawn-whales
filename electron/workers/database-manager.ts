@@ -3,6 +3,8 @@
 
 import path from 'path';
 import log from 'electron-log';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
+
 
 // R20: lazy-load better-sqlite3 with fallback for ABI mismatch / missing build tools
 let Database: unknown;
@@ -440,7 +442,7 @@ export class DatabaseManager {
   // ── Helpers ────────────────────────────────────────────────────────────
 
   private _ensureReady(): void {
-    if (!this.ready || !this.db) throw new Error('Database not initialized. Call db.init() first.');
+    if (!this.ready || !this.db) throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_UNAVAILABLE, 'Database not initialized. Call db.init() first.');
   }
 
   private _deserializeStrategy(row: unknown): any {

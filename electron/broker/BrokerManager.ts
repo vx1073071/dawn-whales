@@ -4,6 +4,8 @@
 import log from 'electron-log';
 import { FutuOpenDClient } from './futu-opend';
 import type { BrokerConfig, IBrokerAdapter, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from './IBrokerAdapter';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
+
 
 // ── Futu/Moomoo Adapter (wrapper around FutuOpenDClient) ─────────────────
 
@@ -91,17 +93,17 @@ class FutuBrokerAdapter implements IBrokerAdapter {
   }
 
   async placeOrder(order: PlaceOrderRequest): Promise<{ orderId: string }> {
-    if (!this.client) throw new Error('Not connected');
+    if (!this.client) throw new EngineError(ErrorDomain.TRADE, ErrorCode.CONNECTION_FAILED, 'Not connected');
     return this.client.placeOrder(order);
   }
 
   async cancelOrder(orderId: string, accountId: string, code: string): Promise<void> {
-    if (!this.client) throw new Error('Not connected');
+    if (!this.client) throw new EngineError(ErrorDomain.TRADE, ErrorCode.CONNECTION_FAILED, 'Not connected');
     return this.client.cancelOrder(orderId, accountId, code);
   }
 
   async subscribeAndPush(codes: string[]): Promise<void> {
-    if (!this.client) throw new Error('Not connected');
+    if (!this.client) throw new EngineError(ErrorDomain.TRADE, ErrorCode.CONNECTION_FAILED, 'Not connected');
     return this.client.subscribeAndPush(codes);
   }
 }
@@ -132,7 +134,7 @@ export class BrokerManager {
 
   async connect(brokerId: string): Promise<void> {
     const config = this.configs.get(brokerId);
-    if (!config) throw new Error(`Broker config not found: ${brokerId}`);
+    if (!config) throw new EngineError(ErrorDomain.TRADE, ErrorCode.CONNECTION_FAILED, `Broker config not found: ${brokerId}`);
 
     // Disconnect old adapter to prevent socket leak
     if (this.brokers.has(brokerId)) {

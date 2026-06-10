@@ -331,7 +331,7 @@ export class OpenDLiveBroker extends EventEmitter implements IExecutionBroker {
 
   private ensureConnected(): void {
     if (this.status !== 'connected') {
-      throw new Error('OpenD broker not connected. Call connect() first.');
+      throw new EngineError(ErrorDomain.TRADE, ErrorCode.ORDER_REJECTED, 'OpenD broker not connected. Call connect() first.');
     }
   }
 
@@ -346,7 +346,7 @@ export class OpenDLiveBroker extends EventEmitter implements IExecutionBroker {
     if (quantity <= 0) throw new EngineError("Quantity must be positive", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
     if (!this.isValidLot(symbol, quantity)) {
       const lotSize = this.getLotSize(symbol);
-      throw new Error(`Quantity ${quantity} not a valid lot (lot size: ${lotSize})`);
+      throw new EngineError(ErrorDomain.TRADE, ErrorCode.ORDER_REJECTED, `Quantity ${quantity} not a valid lot (lot size: ${lotSize})`);
     }
   }
 

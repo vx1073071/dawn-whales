@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { useState, useEffect, useRef } from 'react-i18next';
 import * as echarts from 'echarts';
 import { getStockCapitalFlowRank, getSectorCapitalFlowRank, getConceptCapitalFlowRank } from '../../lib/bridge-api';
 
@@ -41,7 +40,7 @@ export default function CapitalFlowPage() {
       if (sectorRes?.success) setSectorData(sectorRes.items || []);
       if (conceptRes?.success) setConceptData(conceptRes.items || []);
     } catch (e: unknown) {
-      setError(e.message || '获取数据失败');
+      setError((e as any).message || '获取数据失败');
     } finally {
       setLoading(false);
     }

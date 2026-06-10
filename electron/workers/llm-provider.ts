@@ -1,3 +1,4 @@
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
 ﻿// T74: LLM Provider Abstraction
 export interface LLMMessage {
   role: 'system' | 'user' | 'assistant';
@@ -36,7 +37,7 @@ export class LLMRegistry {
 
   setActive(name: string): void {
     if (!this.providers.has(name)) {
-      throw new Error(`Provider ${name} not registered`);
+      throw new EngineError(ErrorDomain.AI, ErrorCode.AI_PARSE_ERROR, `Provider ${name} not registered`);
     }
     this.activeProvider = name;
   }
@@ -56,14 +57,14 @@ export class LLMRegistry {
 
   async chat(request: LLMRequest): Promise<LLMResponse> {
     const provider = this.getActive();
-    if (!provider) throw new Error('No active LLM provider');
+    if (!provider) throw new EngineError(ErrorDomain.AI, ErrorCode.AI_PARSE_ERROR, 'No active LLM provider');
     return provider.chat(request);
   }
 
   async chatStream(request: LLMRequest): Promise<AsyncGenerator<string>> {
     const provider = this.getActive();
     if (!provider || !provider.chatStream) {
-      throw new Error('Streaming not available');
+      throw new EngineError(ErrorDomain.AI, ErrorCode.AI_PARSE_ERROR, 'Streaming not available');
     }
     return provider.chatStream({ ...request, stream: true });
   }
