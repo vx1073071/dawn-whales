@@ -85,7 +85,7 @@ export const MultiAccountSwitcher: React.FC<MultiAccountSwitcherProps> = ({
   // Close on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
       }

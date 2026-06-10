@@ -129,7 +129,7 @@ interface ThemeLangContextType {
 
 const ThemeLangContext = createContext<ThemeLangContextType>(null!);
 export function useThemeLang() {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
  return useContext(ThemeLangContext); }
 
 export function ThemeLangProvider({ children }: { children: ReactNode }) {

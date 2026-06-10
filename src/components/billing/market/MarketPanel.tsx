@@ -99,7 +99,7 @@ const mockWatchlist: WatchlistItem[] = [
 // ── Market Compatibility Badge ───────────────────────────────────────────
 
 function MarketBadges({ markets }: { markets: MarketCode[] }) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   return (
     <div style={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>

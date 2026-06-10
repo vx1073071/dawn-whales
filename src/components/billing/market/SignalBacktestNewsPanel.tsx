@@ -37,7 +37,7 @@ const NEWS_SAMPLES: NewsItem[] = [
 
 // ── Sub-components ──
 function PnLBadge({ pnl, pnlPct }: { pnl: number; pnlPct: number }) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   const isWin = pnl > 0;
   return (

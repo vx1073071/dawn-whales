@@ -210,7 +210,7 @@ function pct(n: number): string {
 
 // --- SVG Sub-components ---
 function EquityCurvesChart({ paths, config }: { paths: number[][]; config: SimConfig }) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   const W = 720, H = 320, PAD = 40;
   const samplePaths = useMemo(() => {

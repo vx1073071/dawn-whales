@@ -27,7 +27,7 @@ const SENTIMENT_LEVELS = [
 ];
 
 function getLevel(index: number) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   return SENTIMENT_LEVELS.find((l) => index >= l.min && index <= l.max) || SENTIMENT_LEVELS[2];
 }

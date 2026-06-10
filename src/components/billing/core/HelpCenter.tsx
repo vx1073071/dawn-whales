@@ -80,7 +80,7 @@ const CATEGORIES = [
 // ── SEO FAQPage JSON-LD ─────────────────────────────────────────────────
 
 function FAQJsonLd({ articles }: { articles: HelpArticle[] }) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   const ld = {
     '@context': 'https://schema.org',

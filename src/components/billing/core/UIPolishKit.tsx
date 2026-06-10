@@ -102,7 +102,7 @@ export function ErrorState({ error, onRetry }: { error?: string; onRetry?: () =>
 
 // ── Offline Banner ──
 export function OfflineBanner() {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
   const [dismissed, setDismissed] = useState(false);
   if (dismissed) return null;
 

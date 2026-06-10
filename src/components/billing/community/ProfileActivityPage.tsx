@@ -101,7 +101,7 @@ const mockMyStrategies: MyStrategy[] = [
 // ── Stat Card ────────────────────────────────────────────────────────────
 
 function StatCard({ value, label }: { value: string | number; label: string }) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   return (
     <div style={{ textAlign: 'center', padding: '8px 12px', background: 'rgba(255,255,255,0.02)', borderRadius: 10 }}>

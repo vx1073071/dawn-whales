@@ -89,7 +89,7 @@ interface BarChartProps {
 }
 
 const BarChart: React.FC<BarChartProps> = ({ data, height = 120, showValues = true }) => {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
   const maxVal = Math.max(...data.map(d => Math.abs(d.value)), 1);
   return (
     <svg width="100%" height={height} viewBox={`0 0 ${data.length * 80} ${height}`}>

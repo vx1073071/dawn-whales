@@ -82,7 +82,7 @@ interface Props {
 }
 
 export default function SystemHealthPanel({ connected = false, compact = false }: Props) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   const [health, setHealth] = useState<SystemHealth>(generateMockHealth(connected));
   const [expanded, setExpanded] = useState(false);

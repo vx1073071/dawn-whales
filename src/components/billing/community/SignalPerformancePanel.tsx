@@ -132,7 +132,7 @@ function Gauge({ value, label, max, unit, colorRanges }: {
   value: number; label: string; max: number; unit: string;
   colorRanges: { min: number; max: number; color: string }[];
 }) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   const pct = Math.min(100, (value / max) * 100);
   const activeRange = colorRanges.find((r) => value >= r.min && value <= r.max);

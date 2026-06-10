@@ -77,7 +77,7 @@ interface PortfolioRiskPanelProps {
 // ── Color helpers ───────────────────────────────────────────────────────
 
 function correlationColor(corr: number): string {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
   if (corr >= 0.8) return 'bg-red-500/80';
   if (corr >= 0.5) return 'bg-orange-500/60';
   if (corr >= 0.3) return 'bg-yellow-500/50';

@@ -91,7 +91,7 @@ const FACTOR_NAMES = ['MOM', 'VAL', 'QUAL', 'VOL', 'LIQ', 'SENT'];
 // ── Heatmap Cell ────────────────────────────────────────────────────────
 
 function HeatmapCell({ value }: { value: number }) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   const intensity = Math.abs(value);
   const bg = value >= 0

@@ -32,7 +32,7 @@ export default function MarketBreadth({
   data = DEFAULT_DATA,
   title = '📊 市场广度',
 }: MarketBreadthProps) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   const total = data.advancing + data.declining + data.unchanged;
   const advanceDeclineRatio = data.declining > 0 ? data.advancing / data.declining : 0;

@@ -23,7 +23,7 @@ const SCENARIOS: Scenario[] = [
 ];
 
 export default function PortfolioStressTest() {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   const [selectedScenario, setSelectedScenario] = useState<Scenario>(SCENARIOS[2]);
   const chartRef = useRef<HTMLDivElement>(null);

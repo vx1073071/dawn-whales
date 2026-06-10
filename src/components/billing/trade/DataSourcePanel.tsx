@@ -45,7 +45,7 @@ const INITIAL_AGENTS: AgentStatus[] = [
 
 // ── Sub-components ──
 function StatusDot({ status }: { status: string }) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   const colors: Record<string, string> = { online: '#10B981', degraded: '#F59E0B', offline: '#EF4444' };
   return (

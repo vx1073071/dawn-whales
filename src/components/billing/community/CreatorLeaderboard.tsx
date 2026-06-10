@@ -82,7 +82,7 @@ const mockProfiles: CreatorProfile[] = [
 // ── Rank Badge ──────────────────────────────────────────────────────────
 
 function RankBadge({ rank }: { rank: number }) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   if (rank === 1) return <span className="text-lg">🥇</span>;
   if (rank === 2) return <span className="text-lg">🥈</span>;

@@ -33,7 +33,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ collapsed }: SidebarProps) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
   const view = useAppStore((s) => s.sidebarView);
   const setView = useAppStore((s) => s.setView);
 

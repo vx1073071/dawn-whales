@@ -28,7 +28,7 @@ const GA_SUMMARY = {
 };
 
 function StatusDot({ status }: { status: string }) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   return <span style={{ color: status === 'pass' ? '#10B981' : status === 'warn' ? '#F59E0B' : '#EF4444' }}>
     {status === 'pass' ? '✅' : status === 'warn' ? '⚠️' : '❌'}

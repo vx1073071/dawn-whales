@@ -47,7 +47,7 @@ const mockStages: StageInfo[] = [
 // ── Progress Dot ────────────────────────────────────────────────────────
 
 function ProgressDot({ done, active }: { done: boolean; active: boolean }) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   const color = done ? '#22C55E' : active ? '#D4A853' : '#334155';
   const bg = done ? 'rgba(34,197,94,0.15)' : active ? 'rgba(212,168,83,0.15)' : 'rgba(51,65,85,0.3)';

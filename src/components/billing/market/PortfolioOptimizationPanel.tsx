@@ -81,7 +81,7 @@ const mockRebalance: RebalanceTrade[] = [
 // ── Efficient Frontier Chart (SVG) ───────────────────────────────────────
 
 function EfficientFrontier({ points }: { points: PortfolioPoint[] }) {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   const w = 260; const h = 180; const pad = { l: 40, r: 20, t: 15, b: 25 };
   const risks = points.map(p => p.risk);
