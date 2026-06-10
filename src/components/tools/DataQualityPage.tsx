@@ -1,3 +1,4 @@
+import i18n from '../../i18n';
 ﻿import React, { useState, useEffect, useCallback, useMemo } from 'react';
 // ============================================================
 // JVS-R16-P1: Data Quality Monitor Page
@@ -54,12 +55,12 @@ interface DataQualityState {
 const DIMENSION_CONFIG: { key: string; label: string; weight: number }[] = [
   { key: 'completeness', label: "components.completeness", weight: 15 },
   { key: 'accuracy', label: "components.accuracy", weight: 20 },
-  { key: 'timeliness', label: '时效性', weight: 12 },
+  { key: 'timeliness', label: i18n.t('DataQualityPage.k1'), weight: 12 },
   { key: 'consistency', label: "components.consistency", weight: 15 },
-  { key: 'uniqueness', label: '唯一性', weight: 10 },
-  { key: 'validity', label: '有效性', weight: 13 },
-  { key: 'uniformity', label: '均匀性', weight: 8 },
-  { key: 'coverage', label: '覆盖度', weight: 7 },
+  { key: 'uniqueness', label: i18n.t('DataQualityPage.k2'), weight: 10 },
+  { key: 'validity', label: i18n.t('DataQualityPage.k3'), weight: 13 },
+  { key: 'uniformity', label: i18n.t('DataQualityPage.k4'), weight: 8 },
+  { key: 'coverage', label: i18n.t('DataQualityPage.k5'), weight: 7 },
 ];
 
 const GRADE_COLORS: Record<string, string> = {
@@ -266,7 +267,7 @@ function generateIssues(dimensions: QualityDimension[]): QualityIssue[] {
         severity: 'info',
         message: `${dim.label}存在 ${dim.issueCount} 个小问题`,
         affectedRows: dim.issueCount,
-        suggestion: '建议持续监控，确保数据质量不下降',
+        suggestion: i18n.t('DataQualityPage.k6'),
       });
     }
   });
@@ -279,30 +280,30 @@ function generateIssues(dimensions: QualityDimension[]): QualityIssue[] {
 
 function getCriticalSuggestion(key: string): string {
   const map: Record<string, string> = {
-    completeness: '建议检查数据源连接，确保所有必填字段都有值。考虑增加默认值填充策略。',
-    accuracy: '建议增加数据验证规则，过滤异常值。检查价格字段是否存在负值或零值。',
-    timeliness: '建议检查数据管道延迟，设置数据新鲜度告警阈值。',
-    consistency: '建议统一数据格式标准，增加格式转换中间层。',
-    uniqueness: '建议增加去重逻辑，检查数据源是否存在重复推送。',
-    validity: '建议增加 Schema 校验，拒绝不符合规范的数据入库。',
-    uniformity: '建议统一字段命名规范，增加数据清洗步骤。',
-    coverage: '建议增加更多数据源接入，扩大信息采集范围。',
+    completeness: i18n.t('DataQualityPage.k7'),
+    accuracy: i18n.t('DataQualityPage.k8'),
+    timeliness: i18n.t('DataQualityPage.k9'),
+    consistency: i18n.t('DataQualityPage.k10'),
+    uniqueness: i18n.t('DataQualityPage.k11'),
+    validity: i18n.t('DataQualityPage.k12'),
+    uniformity: i18n.t('DataQualityPage.k13'),
+    coverage: i18n.t('DataQualityPage.k14'),
   };
-  return map[key] || '建议深入排查问题根因。';
+  return map[key] || i18n.t('DataQualityPage.k15');
 }
 
 function getWarningSuggestion(key: string): string {
   const map: Record<string, string> = {
-    completeness: '建议对缺失字段增加默认值或标记为待补充。',
-    accuracy: '建议对异常值增加平滑处理逻辑。',
-    timeliness: '建议优化数据刷新频率，缩短延迟窗口。',
-    consistency: '建议逐步统一历史数据格式。',
-    uniqueness: '建议定期执行去重扫描任务。',
-    validity: '建议增加字段类型校验规则。',
-    uniformity: '建议规范化字段命名，统一大小写。',
-    coverage: '建议逐步接入更多数据源提升覆盖率。',
+    completeness: i18n.t('DataQualityPage.k16'),
+    accuracy: i18n.t('DataQualityPage.k17'),
+    timeliness: i18n.t('DataQualityPage.k18'),
+    consistency: i18n.t('DataQualityPage.k19'),
+    uniqueness: i18n.t('DataQualityPage.k20'),
+    validity: i18n.t('DataQualityPage.k21'),
+    uniformity: i18n.t('DataQualityPage.k22'),
+    coverage: i18n.t('DataQualityPage.k23'),
   };
-  return map[key] || '建议持续关注该指标变化趋势。';
+  return map[key] || i18n.t('DataQualityPage.k24');
 }
 
 function generateRecommendations(issues: QualityIssue[], dimensions: QualityDimension[]): Recommendation[] {
@@ -333,8 +334,8 @@ function generateRecommendations(issues: QualityIssue[], dimensions: QualityDime
     recs.push({
       id: generateId(),
       priority: 'high',
-      text: '严重问题超过3个，建议启动全面数据治理流程',
-      dimension: '全局',
+      text: i18n.t('DataQualityPage.k25'),
+      dimension: i18n.t('DataQualityPage.k26'),
     });
   }
 
@@ -342,8 +343,8 @@ function generateRecommendations(issues: QualityIssue[], dimensions: QualityDime
     recs.push({
       id: generateId(),
       priority: 'low',
-      text: '整体数据质量良好，建议保持当前数据治理标准',
-      dimension: '全局',
+      text: i18n.t('DataQualityPage.k27'),
+      dimension: i18n.t('DataQualityPage.k28'),
     });
   }
 
@@ -398,7 +399,7 @@ const ScoreGauge: React.FC<{ score: number; grade: string }> = ({ score, grade }
         <span className={`text-2xl font-semibold mt-1 ${GRADE_COLORS[grade] || 'text-white'}`}>
           {grade}
         </span>
-        <span className="text-xs text-gray-400 mt-2">{'综合评分'}</span>
+        <span className="text-xs text-gray-400 mt-2">{i18n.t('DataQualityPage.k29')}</span>
       </div>
     </div>
   );
@@ -412,7 +413,7 @@ const DimensionCard: React.FC<{ dimension: QualityDimension }> = ({ dimension })
     warning: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
     fail: 'bg-red-500/20 text-red-400 border-red-500/30',
   };
-  const statusLabels = { pass: '正常', warning: 'components.warning', fail: '异常' };
+  const statusLabels = { pass: i18n.t('DataQualityPage.k30'), warning: 'components.warning', fail: i18n.t('DataQualityPage.k31') };
   const barColor =
     dimension.score >= 80
       ? 'bg-emerald-500'
@@ -464,7 +465,7 @@ const IssueRow: React.FC<{
     warning: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
     info: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   };
-  const severityLabels = { critical: '严重', warning: 'components.warning', info: '提示' };
+  const severityLabels = { critical: i18n.t('DataQualityPage.k32'), warning: 'components.warning', info: i18n.t('DataQualityPage.k33') };
 
   return (
     <div className="border-b border-white/5 last:border-0">
@@ -487,11 +488,11 @@ const IssueRow: React.FC<{
         <div className="px-4 pb-3 pl-12">
           <div className="bg-white/5 rounded-lg p-3 text-sm">
             <p className="text-gray-400 mb-2">
-              <span className="text-gray-500">{'维度：'}</span>
+              <span className="text-gray-500">{i18n.t('DataQualityPage.k34')}</span>
               {issue.dimension}
             </p>
             <p className="text-gray-300">
-              <span className="text-gray-500">{'建议：'}</span>
+              <span className="text-gray-500">{i18n.t('DataQualityPage.k35')}</span>
               {issue.suggestion}
             </p>
           </div>
@@ -506,7 +507,7 @@ const IssueRow: React.FC<{
 const HistoryTable: React.FC<{ history: EvaluationRecord[] }> = ({ history }) => {
   if (history.length === 0) {
     return (
-      <div className="text-center text-gray-500 py-8 text-sm">{'暂无评估记录'}</div>
+      <div className="text-center text-gray-500 py-8 text-sm">{i18n.t('DataQualityPage.k36')}</div>
     );
   }
 
@@ -515,9 +516,9 @@ const HistoryTable: React.FC<{ history: EvaluationRecord[] }> = ({ history }) =>
       <table className="w-full text-sm">
         <thead>
           <tr className="text-left text-gray-400 border-b border-white/10">
-            <th className="pb-2 font-medium">{'标的'}</th>
-            <th className="pb-2 font-medium">{'评分'}</th>
-            <th className="pb-2 font-medium">{'等级'}</th>
+            <th className="pb-2 font-medium">{i18n.t('DataQualityPage.k37')}</th>
+            <th className="pb-2 font-medium">{i18n.t('DataQualityPage.k38')}</th>
+            <th className="pb-2 font-medium">{i18n.t('DataQualityPage.k39')}</th>
             <th className="pb-2 font-medium text-right">{"components.time"}</th>
           </tr>
         </thead>
@@ -546,7 +547,7 @@ const RecommendationItem: React.FC<{ rec: Recommendation }> = ({ rec }) => {
     medium: 'border-l-yellow-500 bg-yellow-500/5',
     low: 'border-l-emerald-500 bg-emerald-500/5',
   };
-  const priorityLabels = { high: '高', medium: '中', low: '低' };
+  const priorityLabels = { high: i18n.t('DataQualityPage.k40'), medium: i18n.t('DataQualityPage.k41'), low: i18n.t('DataQualityPage.k42') };
   const priorityBadge = {
     high: 'bg-red-500/20 text-red-400',
     medium: 'bg-yellow-500/20 text-yellow-400',
@@ -777,7 +778,7 @@ const DataQualityPage: React.FC = () => {
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                 />
               </svg>
-              {loading ? '评估中...' : '重新评估'}
+              {loading ? i18n.t('DataQualityPage.k43') : i18n.t('DataQualityPage.k44')}
             </button>
           </div>
         </div>
@@ -797,7 +798,7 @@ const DataQualityPage: React.FC = () => {
               className={`bg-gradient-to-br ${GRADE_BG[qualityState.grade] || 'from-blue-500/20 to-blue-600/5'}
                          backdrop-blur-xl border border-white/10 rounded-2xl p-6 flex flex-col items-center`}
             >
-              <h2 className="text-sm font-medium text-gray-400 mb-4">{'综合质量评分'}</h2>
+              <h2 className="text-sm font-medium text-gray-400 mb-4">{i18n.t('DataQualityPage.k45')}</h2>
               <ScoreGauge score={qualityState.overallScore} grade={qualityState.grade} />
               <div className="mt-4 flex items-center gap-4 text-xs text-gray-400">
                 <span>
@@ -815,7 +816,7 @@ const DataQualityPage: React.FC = () => {
             <div className="grid grid-cols-3 gap-3">
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-3 text-center">
                 <div className="text-2xl font-bold text-red-400">{stats.criticalCount}</div>
-                <div className="text-[10px] text-gray-500 mt-1">{'严重问题'}</div>
+                <div className="text-[10px] text-gray-500 mt-1">{i18n.t('DataQualityPage.k46')}</div>
               </div>
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-3 text-center">
                 <div className="text-2xl font-bold text-yellow-400">{stats.warningCount}</div>
@@ -823,13 +824,13 @@ const DataQualityPage: React.FC = () => {
               </div>
               <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-3 text-center">
                 <div className="text-2xl font-bold text-blue-400">{stats.infoCount}</div>
-                <div className="text-[10px] text-gray-500 mt-1">{'提示'}</div>
+                <div className="text-[10px] text-gray-500 mt-1">{i18n.t('DataQualityPage.k47')}</div>
               </div>
             </div>
 
             {/* Evaluation History */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-              <h2 className="text-sm font-medium text-gray-400 mb-4">{'评估历史'}</h2>
+              <h2 className="text-sm font-medium text-gray-400 mb-4">{i18n.t('DataQualityPage.k48')}</h2>
               <HistoryTable history={qualityState.history} />
             </div>
           </div>
@@ -838,7 +839,7 @@ const DataQualityPage: React.FC = () => {
           <div className="col-span-12 lg:col-span-8 space-y-6">
             {/* 8 Dimension Cards */}
             <div>
-              <h2 className="text-sm font-medium text-gray-400 mb-3">{'8维度评分'}</h2>
+              <h2 className="text-sm font-medium text-gray-400 mb-3">{i18n.t('DataQualityPage.k49')}</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {qualityState.dimensions.map((dim) => (
                   <DimensionCard key={dim.key} dimension={dim} />
@@ -869,14 +870,14 @@ const DataQualityPage: React.FC = () => {
                     className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
                   >
                     {qualityState.issues.every((i) => expandedIssues.has(i.id))
-                      ? '全部收起'
-                      : '全部展开'}
+                      ? i18n.t('DataQualityPage.k50')
+                      : i18n.t('DataQualityPage.k51')}
                   </button>
                 )}
               </div>
               {qualityState.issues.length === 0 ? (
                 <div className="text-center text-gray-500 py-8 text-sm">
-                  {loading ? '正在评估数据质量...' : '暂无质量问题，数据质量优秀 🎉'}
+                  {loading ? i18n.t('DataQualityPage.k52') : i18n.t('DataQualityPage.k53')}
                 </div>
               ) : (
                 <div className="max-h-80 overflow-y-auto">
@@ -902,14 +903,14 @@ const DataQualityPage: React.FC = () => {
                   </span>
                 </h2>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-red-500" title="高优先级" />
-                  <span className="w-2 h-2 rounded-full bg-yellow-500" title="中优先级" />
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" title="低优先级" />
+                  <span className="w-2 h-2 rounded-full bg-red-500" title={i18n.t('DataQualityPage.k54')} />
+                  <span className="w-2 h-2 rounded-full bg-yellow-500" title={i18n.t('DataQualityPage.k55')} />
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" title={i18n.t('DataQualityPage.k56')} />
                 </div>
               </div>
               {qualityState.recommendations.length === 0 ? (
                 <div className="text-center text-gray-500 py-6 text-sm">
-                  {loading ? '正在生成建议...' : '运行评估后将显示改进建议'}
+                  {loading ? i18n.t('DataQualityPage.k57') : i18n.t('DataQualityPage.k58')}
                 </div>
               ) : (
                 <div className="max-h-64 overflow-y-auto pr-1">
@@ -922,7 +923,7 @@ const DataQualityPage: React.FC = () => {
 
             {/* Weight Distribution Visual */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-              <h2 className="text-sm font-medium text-gray-400 mb-4">{'维度权重分布'}</h2>
+              <h2 className="text-sm font-medium text-gray-400 mb-4">{i18n.t('DataQualityPage.k59')}</h2>
               <div className="space-y-2">
                 {DIMENSION_CONFIG.map((cfg) => {
                   const dim = qualityState.dimensions.find((d) => d.key === cfg.key);
@@ -966,8 +967,8 @@ const DataQualityPage: React.FC = () => {
 
         {/* Footer */}
         <div className="mt-8 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-gray-600">
-          <span>{'JVS-R16-P1 · 数据质量监控引擎'}</span>
-          <span>{'8维度加权评估 · 实时分析'}</span>
+          <span>{i18n.t('DataQualityPage.k60')}</span>
+          <span>{i18n.t('DataQualityPage.k61')}</span>
         </div>
       </div>
     </div>

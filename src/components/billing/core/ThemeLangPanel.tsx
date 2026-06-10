@@ -1,5 +1,6 @@
 import { useState, createContext, useContext, type ReactNode, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../../i18n';
 
 // ── Types ──
 type Theme = 'dark' | 'light';
@@ -49,32 +50,32 @@ const THEMES: Record<Theme, ThemeColors> = {
 
 const STRINGS: Record<Lang, LangStrings> = {
   'zh-CN': {
-    appName: 'Dawn Whales', settings: '设置',
-    darkMode: '深色模式', lightMode: '浅色模式', followSystem: '跟随系统', themeLabel: '主题',
-    langLabel: '语言',
-    errCodeFormat: '代码格式错误', errParamRange: '参数超出范围', errNetwork: '网络错误', errServer: '服务器错误',
-    friendlyCodeHK: '港股代码是5位数字哦（如 00700），试试重新输入？',
-    friendlyCodeUS: '美股代码是英文字母（如 AAPL），大小写都可以~',
-    friendlyParamShort: '快线5~20适合短线快进快出，调整一下试试？',
-    friendlyParamLong: '慢线20~200适合中长期趋势，再试试？',
-    friendlyNetwork: '网络不太稳定，检查一下连接后重试？',
-    friendlyServer: '服务器繁忙中，稍等片刻自动恢复~',
-    save: '保存', cancel: '取消', confirm: '确认', close: '关闭',
-    loading: '加载中...', empty: '暂无数据', error: '出错了',
+    appName: 'Dawn Whales', settings: i18n.t('ThemeLangPanel.k1'),
+    darkMode: i18n.t('ThemeLangPanel.k2'), lightMode: i18n.t('ThemeLangPanel.k3'), followSystem: i18n.t('ThemeLangPanel.k4'), themeLabel: i18n.t('ThemeLangPanel.k5'),
+    langLabel: i18n.t('ThemeLangPanel.k6'),
+    errCodeFormat: i18n.t('ThemeLangPanel.k7'), errParamRange: i18n.t('ThemeLangPanel.k8'), errNetwork: i18n.t('ThemeLangPanel.k9'), errServer: i18n.t('ThemeLangPanel.k10'),
+    friendlyCodeHK: i18n.t('ThemeLangPanel.k11'),
+    friendlyCodeUS: i18n.t('ThemeLangPanel.k12'),
+    friendlyParamShort: i18n.t('ThemeLangPanel.k13'),
+    friendlyParamLong: i18n.t('ThemeLangPanel.k14'),
+    friendlyNetwork: i18n.t('ThemeLangPanel.k15'),
+    friendlyServer: i18n.t('ThemeLangPanel.k16'),
+    save: i18n.t('ThemeLangPanel.k17'), cancel: i18n.t('ThemeLangPanel.k18'), confirm: i18n.t('ThemeLangPanel.k19'), close: i18n.t('ThemeLangPanel.k20'),
+    loading: i18n.t('ThemeLangPanel.k21'), empty: i18n.t('ThemeLangPanel.k22'), error: i18n.t('ThemeLangPanel.k23'),
   },
   'zh-TW': {
-    appName: 'Dawn Whales', settings: '設定',
-    darkMode: '深色模式', lightMode: '淺色模式', followSystem: '跟隨系統', themeLabel: '主題',
-    langLabel: '語言',
-    errCodeFormat: '代碼格式錯誤', errParamRange: '參數超出範圍', errNetwork: '網路錯誤', errServer: '伺服器錯誤',
-    friendlyCodeHK: '港股代碼是5位數字喔（如 00700），試試重新輸入？',
-    friendlyCodeUS: '美股代碼是英文字母（如 AAPL），大小寫都可以~',
-    friendlyParamShort: '快線5~20適合短線快進快出，調整一下試試？',
-    friendlyParamLong: '慢線20~200適合中長期趨勢，再試試？',
-    friendlyNetwork: '網路不太穩定，檢查一下連線後重試？',
-    friendlyServer: '伺服器繁忙中，稍等片刻自動恢復~',
-    save: '儲存', cancel: '取消', confirm: '確認', close: '關閉',
-    loading: '載入中...', empty: '暫無資料', error: '出錯了',
+    appName: 'Dawn Whales', settings: i18n.t('ThemeLangPanel.k24'),
+    darkMode: i18n.t('ThemeLangPanel.k25'), lightMode: i18n.t('ThemeLangPanel.k26'), followSystem: i18n.t('ThemeLangPanel.k27'), themeLabel: i18n.t('ThemeLangPanel.k28'),
+    langLabel: i18n.t('ThemeLangPanel.k29'),
+    errCodeFormat: i18n.t('ThemeLangPanel.k30'), errParamRange: i18n.t('ThemeLangPanel.k31'), errNetwork: i18n.t('ThemeLangPanel.k32'), errServer: i18n.t('ThemeLangPanel.k33'),
+    friendlyCodeHK: i18n.t('ThemeLangPanel.k34'),
+    friendlyCodeUS: i18n.t('ThemeLangPanel.k35'),
+    friendlyParamShort: i18n.t('ThemeLangPanel.k36'),
+    friendlyParamLong: i18n.t('ThemeLangPanel.k37'),
+    friendlyNetwork: i18n.t('ThemeLangPanel.k38'),
+    friendlyServer: i18n.t('ThemeLangPanel.k39'),
+    save: i18n.t('ThemeLangPanel.k40'), cancel: i18n.t('ThemeLangPanel.k41'), confirm: i18n.t('ThemeLangPanel.k42'), close: i18n.t('ThemeLangPanel.k43'),
+    loading: i18n.t('ThemeLangPanel.k44'), empty: i18n.t('ThemeLangPanel.k45'), error: i18n.t('ThemeLangPanel.k46'),
   },
   'en': {
     appName: 'Dawn Whales', settings: 'Settings',
@@ -91,18 +92,18 @@ const STRINGS: Record<Lang, LangStrings> = {
     loading: 'Loading...', empty: 'No data', error: 'Error',
   },
   'ja': {
-    appName: 'Dawn Whales', settings: '設定',
+    appName: 'Dawn Whales', settings: i18n.t('ThemeLangPanel.k47'),
     darkMode: 'ダーク', lightMode: 'ライト', followSystem: 'システム', themeLabel: 'テーマ',
-    langLabel: '言語',
-    errCodeFormat: 'コード形式エラー', errParamRange: 'パラメータ範囲外', errNetwork: 'ネットワークエラー', errServer: 'サーバーエラー',
-    friendlyCodeHK: '香港株のコードは5桁の数字です（例：00700）。もう一度お試しください！',
-    friendlyCodeUS: '米国株のティッカーは英字です（例：AAPL）。大文字小文字は問いません〜',
-    friendlyParamShort: '短期MA 5-20は短期売買向けです。調整してみてください。',
-    friendlyParamLong: '長期MA 20-200はトレンドフォロー向けです。もう一度！',
-    friendlyNetwork: 'ネットワークが不安定です。接続を確認してください。',
-    friendlyServer: 'サーバーが混雑しています。しばらくお待ちください〜',
-    save: '保存', cancel: 'キャンセル', confirm: '確認', close: '閉じる',
-    loading: '読み込み中...', empty: 'データなし', error: 'エラー',
+    langLabel: i18n.t('ThemeLangPanel.k48'),
+    errCodeFormat: i18n.t('ThemeLangPanel.k49'), errParamRange: i18n.t('ThemeLangPanel.k50'), errNetwork: 'ネットワークエラー', errServer: 'サーバーエラー',
+    friendlyCodeHK: i18n.t('ThemeLangPanel.k51'),
+    friendlyCodeUS: i18n.t('ThemeLangPanel.k52'),
+    friendlyParamShort: i18n.t('ThemeLangPanel.k53'),
+    friendlyParamLong: i18n.t('ThemeLangPanel.k54'),
+    friendlyNetwork: i18n.t('ThemeLangPanel.k55'),
+    friendlyServer: i18n.t('ThemeLangPanel.k56'),
+    save: i18n.t('ThemeLangPanel.k57'), cancel: 'キャンセル', confirm: i18n.t('ThemeLangPanel.k58'), close: i18n.t('ThemeLangPanel.k59'),
+    loading: i18n.t('ThemeLangPanel.k60'), empty: 'データなし', error: 'エラー',
   },
   'ko': {
     appName: 'Dawn Whales', settings: '설정',
@@ -186,10 +187,10 @@ function LanguageSelector() {
   const { lang, setLang, colors } = useThemeLang();
 
   const options: { value: Lang; label: string; flag: string }[] = [
-    { value: 'zh-CN', label: '简体中文', flag: '🇨🇳' },
-    { value: 'zh-TW', label: '繁體中文', flag: '🇹🇼' },
+    { value: 'zh-CN', label: i18n.t('ThemeLangPanel.k61'), flag: '🇨🇳' },
+    { value: 'zh-TW', label: i18n.t('ThemeLangPanel.k62'), flag: '🇹🇼' },
     { value: 'en', label: 'English', flag: '🇺🇸' },
-    { value: 'ja', label: '日本語', flag: '🇯🇵' },
+    { value: 'ja', label: i18n.t('ThemeLangPanel.k63'), flag: '🇯🇵' },
     { value: 'ko', label: '한국어', flag: '🇰🇷' },
   ];
 
@@ -226,7 +227,7 @@ function FriendlyErrorDemo() {
   return (
     <div style={{ marginTop: 16 }}>
       <div style={{ fontSize: 14, fontWeight: 600, color: colors.text, marginBottom: 12 }}>
-        💡 {lang === 'zh-CN' ? '友好错误提示对比' : lang === 'zh-TW' ? '友善錯誤提示對比' : 'Friendly Error Messages'}
+        💡 {lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k64') : lang === 'zh-TW' ? i18n.t('ThemeLangPanel.k65') : 'Friendly Error Messages'}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {pairs.map((p, i) => (
@@ -282,7 +283,7 @@ export default function ThemeLangPanel() {
             ⚙️ {s.settings}
           </h2>
           <p style={{ margin: '4px 0 0', fontSize: 13, color: colors.textMuted }}>
-            {lang === 'zh-CN' ? '主题·语言·体验' : lang === 'zh-TW' ? '主題·語言·體驗' : 'Theme · Language · Experience'}
+            {lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k66') : lang === 'zh-TW' ? i18n.t('ThemeLangPanel.k67') : 'Theme · Language · Experience'}
           </p>
         </div>
       </div>
@@ -301,14 +302,14 @@ export default function ThemeLangPanel() {
 
         {/* Color preview */}
         <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
-          <ThemeSwatch label="背景" bg={colors.bg} text={colors.textSecondary} />
-          <ThemeSwatch label="表面" bg={colors.surface} text={colors.textSecondary} />
-          <ThemeSwatch label="文字" bg={colors.text} text={colors.textSecondary} />
-          <ThemeSwatch label="主色" bg={colors.accent} text={colors.textSecondary} />
+          <ThemeSwatch label={i18n.t('ThemeLangPanel.k68')} bg={colors.bg} text={colors.textSecondary} />
+          <ThemeSwatch label={i18n.t('ThemeLangPanel.k69')} bg={colors.surface} text={colors.textSecondary} />
+          <ThemeSwatch label={i18n.t('ThemeLangPanel.k70')} bg={colors.text} text={colors.textSecondary} />
+          <ThemeSwatch label={i18n.t('ThemeLangPanel.k71')} bg={colors.accent} text={colors.textSecondary} />
           <ThemeSwatch  label={"components.success"} bg={colors.success} text={colors.textSecondary} />
           <ThemeSwatch  label={"components.warning"} bg={colors.warning} text={colors.textSecondary} />
-          <ThemeSwatch label="危险" bg={colors.danger} text={colors.textSecondary} />
-          <ThemeSwatch label="图表" bg={colors.chartBg} text={colors.textSecondary} />
+          <ThemeSwatch label={i18n.t('ThemeLangPanel.k72')} bg={colors.danger} text={colors.textSecondary} />
+          <ThemeSwatch label={i18n.t('ThemeLangPanel.k73')} bg={colors.chartBg} text={colors.textSecondary} />
         </div>
 
         {/* Preview card */}
@@ -318,7 +319,7 @@ export default function ThemeLangPanel() {
         }}>
           <div style={{ fontSize: 14, fontWeight: 600, color: colors.text, marginBottom: 4 }}>{s.appName}</div>
           <div style={{ fontSize: 12, color: colors.textSecondary, marginBottom: 8 }}>
-            {theme === 'dark' ? (lang === 'zh-CN' ? 'AI驱动的量化策略平台' : 'AI-Powered Quant Strategy Platform') : (lang === 'zh-CN' ? 'AI驱动的量化策略平台' : 'AI-Powered Quant Strategy Platform')}
+            {theme === 'dark' ? (lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k74') : 'AI-Powered Quant Strategy Platform') : (lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k75') : 'AI-Powered Quant Strategy Platform')}
           </div>
           <div style={{ display: 'flex', gap: 6 }}>
             <span style={{ padding: '4px 10px', borderRadius: 6, background: colors.success + '22', color: colors.success, fontSize: 11 }}>
@@ -358,9 +359,9 @@ export default function ThemeLangPanel() {
         border: `1px solid ${colors.accent}33`, fontSize: 12, color: colors.textSecondary,
         lineHeight: 1.8,
       }}>
-        📋 <strong>{lang === 'zh-CN' ? '当前配置' : 'Current Config'}:</strong><br />
+        📋 <strong>{lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k76') : 'Current Config'}:</strong><br />
         {s.themeLabel}: <strong>{theme === 'dark' ? s.darkMode : s.lightMode}</strong> · {s.langLabel}: <strong>{lang}</strong><br />
-        {lang === 'zh-CN' ? '支持5种语言 · 深浅双主题 · 友好错误文案' : '5 languages supported · Dual theme · Friendly error messages'}
+        {lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k77') : '5 languages supported · Dual theme · Friendly error messages'}
       </div>
     </div>
   );

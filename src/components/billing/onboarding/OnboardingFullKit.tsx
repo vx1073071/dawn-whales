@@ -1,3 +1,4 @@
+import i18n from '../../../i18n';
 ﻿import { useState, useMemo, type CSSProperties } from 'react';
 // ── Types ──
 interface Step {
@@ -20,53 +21,53 @@ interface SignalPair { type: 'good' | 'bad'; date: string; signal: string; entry
 interface ConflictRule { signalA: string; signalB: string; meaning: string; action: string; color: string }
 
 const ONBOARD_STEPS: Step[] = [
-  { id: 1, title: '选择市场', subtitle: '港股·美股·新加坡·日本·澳洲·加拿大·马来西亚', icon: '🌍' },
-  { id: 2, title: '选择模板', subtitle: '20+量化模板·按市场和品种智能推荐', icon: '📋' },
-  { id: 3, title: '调整参数', subtitle: '保守/均衡/激进一键预设·滑块微调·AI推荐', icon: '🎚️' },
-  { id: 4, title: '回测验证', subtitle: '3年历史数据·实时收益曲线·健康检查', icon: '📈' },
-  { id: 5, title: '发布上线', subtitle: '模拟/实盘一键切换·信号广场分享', icon: '🚀' },
+  { id: 1, title: i18n.t('OnboardingFullKit.k1'), subtitle: i18n.t('OnboardingFullKit.k2'), icon: '🌍' },
+  { id: 2, title: i18n.t('OnboardingFullKit.k3'), subtitle: i18n.t('OnboardingFullKit.k4'), icon: '📋' },
+  { id: 3, title: i18n.t('OnboardingFullKit.k5'), subtitle: i18n.t('OnboardingFullKit.k6'), icon: '🎚️' },
+  { id: 4, title: i18n.t('OnboardingFullKit.k7'), subtitle: i18n.t('OnboardingFullKit.k8'), icon: '📈' },
+  { id: 5, title: i18n.t('OnboardingFullKit.k9'), subtitle: i18n.t('OnboardingFullKit.k10'), icon: '🚀' },
 ];
 
 const INDICATOR_CARDS: IndicatorCard[] = [
-  { name: 'MA 移动均线', short: '趋势跟踪', usage: '短买长卖：5日突破20日买入', risk: '震荡市频繁假突破', category: 'trend' },
-  { name: 'RSI 相对强弱', short: '超买超卖', usage: 'RSI<30超卖买入, RSI>70超买卖出', risk: '强趋势中RSI长时间极端', category: 'momentum' },
-  { name: 'MACD', short: '趋势+动能', usage: '金叉买入·死叉卖出', risk: '滞后指标, 拐点延迟', category: 'trend' },
-  { name: 'Bollinger 布林带', short: '波动率通道', usage: '触及下轨买入·触及上轨卖出', risk: '单边市突破后不止步', category: 'volatility' },
-  { name: 'Volume 成交量', short: '资金流向', usage: '放量突破确认趋势', risk: '主力对倒放量欺骗', category: 'volume' },
-  { name: 'ATR 真实波幅', short: '止损计算', usage: '2倍ATR止损·3倍ATR止盈', risk: '跳空缺口ATR失真', category: 'volatility' },
-  { name: 'SAR 抛物线', short: '反转止损', usage: 'SAR在价格上方→止损', risk: '盘整频繁反转', category: 'trend' },
-  { name: 'OBV 能量潮', short: '量价配合', usage: 'OBV与价格同向确认趋势', risk: '大单砸盘OBV骤降', category: 'volume' },
+  { name: i18n.t('OnboardingFullKit.k11'), short: i18n.t('OnboardingFullKit.k12'), usage: i18n.t('OnboardingFullKit.k13'), risk: i18n.t('OnboardingFullKit.k14'), category: 'trend' },
+  { name: i18n.t('OnboardingFullKit.k15'), short: i18n.t('OnboardingFullKit.k16'), usage: i18n.t('OnboardingFullKit.k17'), risk: i18n.t('OnboardingFullKit.k18'), category: 'momentum' },
+  { name: 'MACD', short: i18n.t('OnboardingFullKit.k19'), usage: i18n.t('OnboardingFullKit.k20'), risk: i18n.t('OnboardingFullKit.k21'), category: 'trend' },
+  { name: i18n.t('OnboardingFullKit.k22'), short: i18n.t('OnboardingFullKit.k23'), usage: i18n.t('OnboardingFullKit.k24'), risk: i18n.t('OnboardingFullKit.k25'), category: 'volatility' },
+  { name: i18n.t('OnboardingFullKit.k26'), short: i18n.t('OnboardingFullKit.k27'), usage: i18n.t('OnboardingFullKit.k28'), risk: i18n.t('OnboardingFullKit.k29'), category: 'volume' },
+  { name: i18n.t('OnboardingFullKit.k30'), short: i18n.t('OnboardingFullKit.k31'), usage: i18n.t('OnboardingFullKit.k32'), risk: i18n.t('OnboardingFullKit.k33'), category: 'volatility' },
+  { name: i18n.t('OnboardingFullKit.k34'), short: i18n.t('OnboardingFullKit.k35'), usage: i18n.t('OnboardingFullKit.k36'), risk: i18n.t('OnboardingFullKit.k37'), category: 'trend' },
+  { name: i18n.t('OnboardingFullKit.k38'), short: i18n.t('OnboardingFullKit.k39'), usage: i18n.t('OnboardingFullKit.k40'), risk: i18n.t('OnboardingFullKit.k41'), category: 'volume' },
 ];
 
 const FACTOR_STORIES: FactorStory[] = [
-  { factor: '高 ROE', story: 'ROE=净资产收益率, 代表公司用股东的每一块钱能赚多少。高ROE=赚钱能力强, 像一台高效的印钞机。', example: '腾讯ROE~18%, 每100块净资产年赚18块' },
-  { factor: '低 PE', story: 'PE=市盈率=股价÷每股收益。低PE=你很便宜地买到了同等利润。但注意：低PE可能是因为公司要不行了！', example: '银行股PE~5, 但不代表全部有价值陷阱' },
-  { factor: '高股息率', story: '股息率=每股分红÷股价。高股息=上市公司从口袋里掏出真金白银给你花。防御型投资者最爱。', example: '中移动股息率~7%, 存银行不如买它' },
-  { factor: '动量因子', story: '过去涨得好的, 近期还可能继续涨。就像赛跑中领跑的选手有惯性优势。但要提防"动量崩溃"！', example: '过去12个月涨幅前20%的股票, 下月平均仍跑赢' },
+  { factor: i18n.t('OnboardingFullKit.k42'), story: i18n.t('OnboardingFullKit.k43'), example: i18n.t('OnboardingFullKit.k44') },
+  { factor: i18n.t('OnboardingFullKit.k45'), story: i18n.t('OnboardingFullKit.k46'), example: i18n.t('OnboardingFullKit.k47') },
+  { factor: i18n.t('OnboardingFullKit.k48'), story: i18n.t('OnboardingFullKit.k49'), example: i18n.t('OnboardingFullKit.k50') },
+  { factor: i18n.t('OnboardingFullKit.k51'), story: i18n.t('OnboardingFullKit.k52'), example: i18n.t('OnboardingFullKit.k53') },
 ];
 
 const PRESETS: ParameterPreset[] = [
-  { label: '保守', icon: '🛡️', fast: 5, slow: 20, signal: 9, description: '信号少, 胜率高, 适合大盘股' },
-  { label: '均衡', icon: '⚖️', fast: 12, slow: 26, signal: 9, description: '经典MACD参数, 通用性强' },
-  { label: '激进', icon: '🔥', fast: 3, slow: 10, signal: 5, description: '高频信号, 适合短线波段' },
+  { label: i18n.t('OnboardingFullKit.k54'), icon: '🛡️', fast: 5, slow: 20, signal: 9, description: i18n.t('OnboardingFullKit.k55') },
+  { label: i18n.t('OnboardingFullKit.k56'), icon: '⚖️', fast: 12, slow: 26, signal: 9, description: i18n.t('OnboardingFullKit.k57') },
+  { label: i18n.t('OnboardingFullKit.k58'), icon: '🔥', fast: 3, slow: 10, signal: 5, description: i18n.t('OnboardingFullKit.k59') },
 ];
 
 const BACKTEST_STORIES: BacktestStory[] = [
-  { title: '快手-W (01024)', initial: 'HK$100,000', final: 'HK$183,000', maxDrawdown: '-34%', winRate: '61%', verdict: '优秀 ⭐', verdictColor: '#10B981' },
-  { title: '小米集团 (01810)', initial: 'HK$100,000', final: 'HK$128,000', maxDrawdown: '-18%', winRate: '55%', verdict: '良好 ✅', verdictColor: '#10B981' },
-  { title: '恒生ETF (02800)', initial: 'HK$100,000', final: 'HK$91,000', maxDrawdown: '-22%', winRate: '42%', verdict: '谨慎 ⚠️', verdictColor: '#F59E0B' },
+  { title: i18n.t('OnboardingFullKit.k60'), initial: 'HK$100,000', final: 'HK$183,000', maxDrawdown: '-34%', winRate: '61%', verdict: i18n.t('OnboardingFullKit.k61'), verdictColor: '#10B981' },
+  { title: i18n.t('OnboardingFullKit.k62'), initial: 'HK$100,000', final: 'HK$128,000', maxDrawdown: '-18%', winRate: '55%', verdict: i18n.t('OnboardingFullKit.k63'), verdictColor: '#10B981' },
+  { title: i18n.t('OnboardingFullKit.k64'), initial: 'HK$100,000', final: 'HK$91,000', maxDrawdown: '-22%', winRate: '42%', verdict: i18n.t('OnboardingFullKit.k65'), verdictColor: '#F59E0B' },
 ];
 
 const SIGNAL_DEMOS: SignalPair[] = [
-  { type: 'good', date: '2026-03-15', signal: 'MACD金叉 + RSI<30超卖', entry: 'HK$68.50', exit: 'HK$82.30', pnl: '+20.1%', reason: 'RSI超卖后反弹, MACD金叉确认上涨' },
-  { type: 'bad', date: '2026-04-02', signal: 'MA5突破MA20 + 放量', entry: 'HK$75.00', exit: 'HK$66.00', pnl: '-12.0%', reason: '假突破: 次日成交量骤缩, 主力诱多' },
+  { type: 'good', date: '2026-03-15', signal: i18n.t('OnboardingFullKit.k66'), entry: 'HK$68.50', exit: 'HK$82.30', pnl: '+20.1%', reason: i18n.t('OnboardingFullKit.k67') },
+  { type: 'bad', date: '2026-04-02', signal: i18n.t('OnboardingFullKit.k68'), entry: 'HK$75.00', exit: 'HK$66.00', pnl: '-12.0%', reason: i18n.t('OnboardingFullKit.k69') },
 ];
 
 const CONFLICT_RULES: ConflictRule[] = [
-  { signalA: 'RSI超买 (>70)', signalB: 'MACD死叉', meaning: '双重看跌确认', action: '强烈卖出信号, 减仓/清仓', color: '#EF4444' },
-  { signalA: 'RSI超卖 (<30)', signalB: 'MACD金叉', meaning: '双重看涨确认', action: '强烈买入信号, 分批建仓', color: '#10B981' },
-  { signalA: 'MA金叉 (买入)', signalB: 'RSI超买 (卖出)', meaning: '指标冲突', action: '观望, 等一方确认后再操作', color: '#F59E0B' },
-  { signalA: '放量突破', signalB: 'OBV下降', meaning: '量价背离', action: '谨慎, 可能主力对倒出货', color: '#F59E0B' },
+  { signalA: i18n.t('OnboardingFullKit.k70'), signalB: i18n.t('OnboardingFullKit.k71'), meaning: i18n.t('OnboardingFullKit.k72'), action: i18n.t('OnboardingFullKit.k73'), color: '#EF4444' },
+  { signalA: i18n.t('OnboardingFullKit.k74'), signalB: i18n.t('OnboardingFullKit.k75'), meaning: i18n.t('OnboardingFullKit.k76'), action: i18n.t('OnboardingFullKit.k77'), color: '#10B981' },
+  { signalA: i18n.t('OnboardingFullKit.k78'), signalB: i18n.t('OnboardingFullKit.k79'), meaning: i18n.t('OnboardingFullKit.k80'), action: i18n.t('OnboardingFullKit.k81'), color: '#F59E0B' },
+  { signalA: i18n.t('OnboardingFullKit.k82'), signalB: i18n.t('OnboardingFullKit.k83'), meaning: i18n.t('OnboardingFullKit.k84'), action: i18n.t('OnboardingFullKit.k85'), color: '#F59E0B' },
 ];
 
 // ── Sub-components ──
@@ -98,7 +99,7 @@ function StepIndicator({ current }: { current: number }) {
 
 function IndicatorCardC({ card }: { card: IndicatorCard }) {
   const catColors: Record<string, string> = { trend: '#3B82F6', momentum: '#10B981', volatility: '#F59E0B', volume: '#EF4444' };
-  const catLabels: Record<string, string> = { trend: 'components.trend', momentum: '动量', volatility: '波动', volume: 'components.volume' };
+  const catLabels: Record<string, string> = { trend: 'components.trend', momentum: i18n.t('OnboardingFullKit.k86'), volatility: i18n.t('OnboardingFullKit.k87'), volume: 'components.volume' };
 
   return (
     <div style={{
@@ -112,15 +113,15 @@ function IndicatorCardC({ card }: { card: IndicatorCard }) {
         </span>
       </div>
       <div>
-        <span style={{ fontSize: 11, color: '#6B7280' }}>{'一句话:'}</span>
+        <span style={{ fontSize: 11, color: '#6B7280' }}>{i18n.t('OnboardingFullKit.k88')}</span>
         <span style={{ fontSize: 12, color: '#D1D5DB' }}>{card.short}</span>
       </div>
       <div>
-        <span style={{ fontSize: 11, color: '#6B7280' }}>{'用法:'}</span>
+        <span style={{ fontSize: 11, color: '#6B7280' }}>{i18n.t('OnboardingFullKit.k89')}</span>
         <span style={{ fontSize: 12, color: '#34D399' }}>{card.usage}</span>
       </div>
       <div>
-        <span style={{ fontSize: 11, color: '#6B7280' }}>{'⚠️ 风险:'}</span>
+        <span style={{ fontSize: 11, color: '#6B7280' }}>{i18n.t('OnboardingFullKit.k90')}</span>
         <span style={{ fontSize: 12, color: '#FCA5A5' }}>{card.risk}</span>
       </div>
     </div>
@@ -184,16 +185,16 @@ function SignalComparisonCard({ pair }: { pair: SignalPair }) {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
         <span style={{ fontSize: 14, fontWeight: 700, color: isGood ? '#34D399' : '#FCA5A5' }}>
-          {isGood ? '🟢 盈利信号' : '🔴 亏损信号'}
+          {isGood ? i18n.t('OnboardingFullKit.k91') : i18n.t('OnboardingFullKit.k92')}
         </span>
         <span style={{ fontSize: 12, color: '#9CA3AF' }}>{pair.date}</span>
       </div>
       <div style={{ fontSize: 12, color: '#D1D5DB', marginBottom: 6 }}>
-        <strong>{'信号:'}</strong> {pair.signal}
+        <strong>{i18n.t('OnboardingFullKit.k93')}</strong> {pair.signal}
       </div>
       <div style={{ display: 'flex', gap: 16, marginBottom: 6 }}>
-        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{'入场:'}<span style={{ color: '#D1D5DB' }}>{pair.entry}</span></span>
-        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{'出场:'}<span style={{ color: '#D1D5DB' }}>{pair.exit}</span></span>
+        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{i18n.t('OnboardingFullKit.k94')}<span style={{ color: '#D1D5DB' }}>{pair.entry}</span></span>
+        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{i18n.t('OnboardingFullKit.k95')}<span style={{ color: '#D1D5DB' }}>{pair.exit}</span></span>
         <span style={{ fontSize: 13, fontWeight: 700, color: isGood ? '#10B981' : '#EF4444' }}>{pair.pnl}</span>
       </div>
       <div style={{ fontSize: 11, color: '#6B7280', fontStyle: 'italic' }}>📝 {pair.reason}</div>
@@ -222,12 +223,12 @@ function ConflictRuleCard({ rule }: { rule: ConflictRule }) {
 
 function HealthCheckDemo() {
   const checks = [
-    { label: 'components.winRate', value: '61%', verdict: '✅ 良好', color: '#10B981' },
-    { label: 'components.maxDrawdown', value: '-34%', verdict: '⚠️ 偏高', color: '#F59E0B' },
-    { label: '夏普比率', value: '1.42', verdict: '✅ 优秀', color: '#10B981' },
-    { label: 'components.profitLossRatio', value: '2.3:1', verdict: '✅ 良好', color: '#10B981' },
-    { label: '最大持仓', value: 'HK$68万', verdict: '⚠️ 建议不超总资金20%', color: '#F59E0B' },
-    { label: '连续亏损', value: '4次', verdict: '✅ 可接受', color: '#10B981' },
+    { label: 'components.winRate', value: '61%', verdict: i18n.t('OnboardingFullKit.k96'), color: '#10B981' },
+    { label: 'components.maxDrawdown', value: '-34%', verdict: i18n.t('OnboardingFullKit.k97'), color: '#F59E0B' },
+    { label: i18n.t('OnboardingFullKit.k98'), value: '1.42', verdict: i18n.t('OnboardingFullKit.k99'), color: '#10B981' },
+    { label: 'components.profitLossRatio', value: '2.3:1', verdict: i18n.t('OnboardingFullKit.k100'), color: '#10B981' },
+    { label: i18n.t('OnboardingFullKit.k101'), value: i18n.t('OnboardingFullKit.k102'), verdict: i18n.t('OnboardingFullKit.k103'), color: '#F59E0B' },
+    { label: i18n.t('OnboardingFullKit.k104'), value: i18n.t('OnboardingFullKit.k105'), verdict: i18n.t('OnboardingFullKit.k106'), color: '#10B981' },
   ];
 
   return (
@@ -255,20 +256,20 @@ function FriendlyErrorBanner() {
       marginBottom: 12,
     }}>
       <div style={{ fontSize: 13, color: '#D1D5DB', marginBottom: 6 }}>
-        💡 <strong>{'友好提示示例'}</strong> — 我们不说"Error: invalid_input_400", 我们说：
+        💡 <strong>{i18n.t('OnboardingFullKit.k107')}</strong> — 我们不说"Error: invalid_input_400", 我们说：
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
         <div style={{ fontSize: 11, color: '#EF4444' }}>
-          ❌ 旧: "代码格式错误, 请输入有效代码"
+          ❌ 旧: i18n.t('OnboardingFullKit.k108')
         </div>
         <div style={{ fontSize: 11, color: '#34D399' }}>
-          ✅ 新: "港股代码是5位数字哦（如 00700），试试重新输入？"
+          ✅ 新: i18n.t('OnboardingFullKit.k109')
         </div>
         <div style={{ fontSize: 11, color: '#EF4444' }}>
-          ❌ 旧: "参数超出范围"
+          ❌ 旧: i18n.t('OnboardingFullKit.k110')
         </div>
         <div style={{ fontSize: 11, color: '#34D399' }}>
-          ✅ 新: "快线 5~20 适合短线快进快出, 慢线 20~200 适合中长期趋势——调整一下试试？"
+          ✅ 新: i18n.t('OnboardingFullKit.k111')
         </div>
       </div>
     </div>
@@ -306,12 +307,12 @@ export default function OnboardingFullKit() {
             🎓 新手引导中心
           </h2>
           <p style={{ margin: '4px 0 0', fontSize: 13, color: '#9CA3AF' }}>
-            {step === 0 ? '5步上手，30秒创建第一个策略' : step === 1 ? '跟做模式：边学边做' : step === 2 ? '指标卡片·因子故事·参数说明' : step === 3 ? '回测解读·信号对比·健康检查' : '🎉 恭喜出师！'}
+            {step === 0 ? i18n.t('OnboardingFullKit.k112') : step === 1 ? i18n.t('OnboardingFullKit.k113') : step === 2 ? i18n.t('OnboardingFullKit.k114') : step === 3 ? i18n.t('OnboardingFullKit.k115') : i18n.t('OnboardingFullKit.k116')}
           </p>
         </div>
         {/* Nav */}
         <div style={{ display: 'flex', gap: 4 }}>
-          {['📋 引导', '🎚️ 教程', '📖 指标', '📊 回测', '✅ 完成'].map((label, i) => (
+          {[i18n.t('OnboardingFullKit.k117'), i18n.t('OnboardingFullKit.k118'), i18n.t('OnboardingFullKit.k119'), i18n.t('OnboardingFullKit.k120'), i18n.t('OnboardingFullKit.k121')].map((label, i) => (
             <button
               key={i}
               onClick={() => setStep(i)}
@@ -438,31 +439,31 @@ function TutorialFlow({ onComplete, sliderVal, setSliderVal, selectedPreset, set
               style={{ width: '100%', accentColor: '#6366F1', height: 6 }}
             />
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#6B7280', marginTop: 2 }}>
-              <span>{'3 (超短线)'}</span>
+              <span>{i18n.t('OnboardingFullKit.k122')}</span>
               <span style={{ fontWeight: 700, color: '#818CF8' }}>{sliderVal}</span>
-              <span>{'50 (长线)'}</span>
+              <span>{i18n.t('OnboardingFullKit.k123')}</span>
             </div>
 
             <div style={{ marginTop: 12, fontSize: 12, color: '#9CA3AF' }}>
               💡 <span style={{ color: '#D1D5DB' }}>
-                {sliderVal <= 8 ? '"快线5-20适合快进快出做短线，信号密集但假信号多。"' :
-                 sliderVal <= 20 ? '"快线8-20是短线常用区间，捕捉1-3周趋势。"' :
-                 '"慢线20-200适合中长期趋势跟踪，信号少但准。"'}
+                {sliderVal <= 8 ? i18n.t('OnboardingFullKit.k124') :
+                 sliderVal <= 20 ? i18n.t('OnboardingFullKit.k125') :
+                 i18n.t('OnboardingFullKit.k126')}
               </span>
             </div>
 
             {/* Param impact preview */}
             <div style={{ marginTop: 12, padding: '10px', borderRadius: 8, background: '#111827' }}>
-              <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{'📊 参数影响预览'}</div>
+              <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{i18n.t('OnboardingFullKit.k127')}</div>
               <div style={{ display: 'flex', gap: 16 }}>
                 <div>
-                  <div style={{ fontSize: 10, color: '#6B7280' }}>{'预期信号数/月'}</div>
+                  <div style={{ fontSize: 10, color: '#6B7280' }}>{i18n.t('OnboardingFullKit.k128')}</div>
                   <div style={{ fontSize: 16, fontWeight: 700, color: '#818CF8' }}>
                     {sliderVal <= 8 ? '15-25' : sliderVal <= 20 ? '8-15' : '3-8'}
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 10, color: '#6B7280' }}>{'预期胜率'}</div>
+                  <div style={{ fontSize: 10, color: '#6B7280' }}>{i18n.t('OnboardingFullKit.k129')}</div>
                   <div style={{ fontSize: 16, fontWeight: 700, color: '#34D399' }}>
                     {sliderVal <= 8 ? '~45%' : sliderVal <= 20 ? '~55%' : '~65%'}
                   </div>
@@ -501,9 +502,9 @@ function MetricsAndFactors() {
     <div>
       <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
         {[
-          { key: 'indicators' as const, label: '📊 指标卡片' },
-          { key: 'factors' as const, label: '📖 因子故事' },
-          { key: 'conflicts' as const, label: '⚠️ 冲突规则' },
+          { key: 'indicators' as const, label: i18n.t('OnboardingFullKit.k130') },
+          { key: 'factors' as const, label: i18n.t('OnboardingFullKit.k131') },
+          { key: 'conflicts' as const, label: i18n.t('OnboardingFullKit.k132') },
         ].map(t => (
           <button
             key={t.key}
@@ -548,9 +549,9 @@ function BacktestAndSignals() {
     <div>
       <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
         {[
-          { key: 'stories' as const, label: '📈 回测故事' },
-          { key: 'signals' as const, label: '🟢🔴 信号对比' },
-          { key: 'health' as const, label: '🩺 健康检查' },
+          { key: 'stories' as const, label: i18n.t('OnboardingFullKit.k133') },
+          { key: 'signals' as const, label: i18n.t('OnboardingFullKit.k134') },
+          { key: 'health' as const, label: i18n.t('OnboardingFullKit.k135') },
         ].map(t => (
           <button
             key={t.key}
@@ -570,7 +571,7 @@ function BacktestAndSignals() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {BACKTEST_STORIES.map(s => <BacktestStoryRow key={s.title} story={s} />)}
           <div style={{ marginTop: 8, fontSize: 12, color: '#6B7280', textAlign: 'center' }}>
-            💡 回测故事化 — 把冷冰冰的数字变成"投入1万→变1.8万"的直观感受
+            💡 回测故事化 — 把冷冰冰的数字变成i18n.t('OnboardingFullKit.k136')的直观感受
           </div>
         </div>
       )}
@@ -585,7 +586,7 @@ function BacktestAndSignals() {
         <div>
           <HealthCheckDemo />
           <div style={{ marginTop: 12, padding: '12px 16px', borderRadius: 10, background: '#1F2937', border: '1px solid #374151', fontSize: 13, color: '#D1D5DB' }}>
-            <div style={{ fontWeight: 600, marginBottom: 4 }}>{'📊 回测健康检查'}</div>
+            <div style={{ fontWeight: 600, marginBottom: 4 }}>{i18n.t('OnboardingFullKit.k137')}</div>
             <div style={{ lineHeight: 1.8 }}>
               不仅仅是看总收益！胜率、回撤、夏普、盈亏比、持仓集中度——<br />
               六维体检帮你发现策略的潜在风险。

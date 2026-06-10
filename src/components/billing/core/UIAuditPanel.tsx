@@ -1,5 +1,6 @@
 import { useState, useMemo, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../../i18n';
 
 // ── Types ──
 interface AuditItem {
@@ -10,41 +11,41 @@ interface AuditItem {
 }
 
 const AUDIT_ITEMS: AuditItem[] = [
-  { page: '落地页', component: 'LandingPageV18', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'SEO+OG+JSON-LD完整', loading: true, empty: true, error: true },
-  { page: '策略', component: 'StrategyPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: '浅色主题表单字段对比度', loading: true, empty: true },
-  { page: '市场', component: 'MarketPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'K线TV对标<100ms' },
-  { page: '订单', component: 'OrdersPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '实时订单+撤单' },
-  { page: '组合', component: 'PortfolioPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '自动刷新+资产配置' },
-  { page: '设置', component: 'SettingsPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '深浅主题+5语言切换' },
-  { page: '交易仪表板', component: 'TradeDashboardPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: '浅色图表标签不可读', loading: true },
-  { page: '风险仪表板', component: 'RiskDashboardPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: '风险热力图浅色需调' },
-  { page: '回测报告', component: 'BacktestReportPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'warn', note: '权益曲线溢出1366', loading: true, empty: true },
-  { page: '实时监控', component: 'LiveMonitorPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'WebSocket实时' },
-  { page: '市场广场', component: 'MarketplacePage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '浏览筛选发布', loading: true, empty: true },
-  { page: 'AI画线形态', component: 'AIDrawingPatternPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'Canvas+6工具+22形态' },
-  { page: '新手引导', component: 'OnboardingFullKit', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: '浅色步骤条对比度低' },
-  { page: 'AI助手', component: 'AIAssistantPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '4入口USDT计费' },
-  { page: '主题语言', component: 'ThemeLangPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '深浅双切+5语言' },
-  { page: '监控告警', component: 'MonitoringAlertPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'SLO+6指标Gauge', loading: true },
-  { page: '成就引导', component: 'AchievementOnboarding', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '7成就+3步' },
-  { page: 'Demo案例', component: 'DemoCasePage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '3案例before/after' },
-  { page: '私行UI', component: 'PrivateBankingUI', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '深色+金#D4A853+8px', loading: true },
-  { page: 'K线图表', component: 'AdvancedKLineChart', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: 'TV对标<100ms' },
-  { page: '公式编辑', component: 'PineScriptEditor', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '6模板+语法高亮' },
-  { page: '市场面板', component: 'MarketPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '7市场+因子模板市场' },
-  { page: '全链路UI', component: 'FullPipelineUI', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '6步注册→提现' },
-  { page: '社区面板', component: 'StrategyCommunityPanel', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: '浅色评论框对比度+窄屏', loading: true, empty: true, error: true },
-  { page: '因子分析', component: 'FactorAnalysisPanel', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: '浅色图表配色', loading: true },
-  { page: '组合优化', component: 'PortfolioOptimizationPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '有效前沿+风险预算' },
-  { page: '创作者排行', component: 'CreatorLeaderboard', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '排行榜+徽章' },
-  { page: '信号表现', component: 'SignalPerformancePanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '信号统计+准确率', loading: true },
-  { page: '帮助中心', component: 'HelpCenter', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '搜索+分类' },
-  { page: '管理后台', component: 'AdminDashboard', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: '浅色表格+窄屏横滚', loading: true },
-  { page: 'USDT钱包', component: 'USDTWalletPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '充值提现TRC20', loading: true, empty: true },
-  { page: '创者入驻', component: 'CreatorOnboardingGuide', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '三步入驻' },
-  { page: '安全中心', component: 'SecurityCenter', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '2FA+设备管理' },
-  { page: 'IBKR面板', component: 'IBKRBrokerPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '碎股+多市场' },
-  { page: '信号广场', component: 'SignalSquare', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: '信号发布+订阅', loading: true, empty: true },
+  { page: i18n.t('UIAuditPanel.k1'), component: 'LandingPageV18', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k2'), loading: true, empty: true, error: true },
+  { page: i18n.t('UIAuditPanel.k3'), component: 'StrategyPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: i18n.t('UIAuditPanel.k4'), loading: true, empty: true },
+  { page: i18n.t('UIAuditPanel.k5'), component: 'MarketPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k6') },
+  { page: i18n.t('UIAuditPanel.k7'), component: 'OrdersPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k8') },
+  { page: i18n.t('UIAuditPanel.k9'), component: 'PortfolioPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k10') },
+  { page: i18n.t('UIAuditPanel.k11'), component: 'SettingsPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k12') },
+  { page: i18n.t('UIAuditPanel.k13'), component: 'TradeDashboardPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: i18n.t('UIAuditPanel.k14'), loading: true },
+  { page: i18n.t('UIAuditPanel.k15'), component: 'RiskDashboardPage', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: i18n.t('UIAuditPanel.k16') },
+  { page: i18n.t('UIAuditPanel.k17'), component: 'BacktestReportPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'warn', note: i18n.t('UIAuditPanel.k18'), loading: true, empty: true },
+  { page: i18n.t('UIAuditPanel.k19'), component: 'LiveMonitorPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k20') },
+  { page: i18n.t('UIAuditPanel.k21'), component: 'MarketplacePage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k22'), loading: true, empty: true },
+  { page: i18n.t('UIAuditPanel.k23'), component: 'AIDrawingPatternPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k24') },
+  { page: i18n.t('UIAuditPanel.k25'), component: 'OnboardingFullKit', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: i18n.t('UIAuditPanel.k26') },
+  { page: i18n.t('UIAuditPanel.k27'), component: 'AIAssistantPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k28') },
+  { page: i18n.t('UIAuditPanel.k29'), component: 'ThemeLangPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k30') },
+  { page: i18n.t('UIAuditPanel.k31'), component: 'MonitoringAlertPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k32'), loading: true },
+  { page: i18n.t('UIAuditPanel.k33'), component: 'AchievementOnboarding', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k34') },
+  { page: i18n.t('UIAuditPanel.k35'), component: 'DemoCasePage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k36') },
+  { page: i18n.t('UIAuditPanel.k37'), component: 'PrivateBankingUI', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k38'), loading: true },
+  { page: i18n.t('UIAuditPanel.k39'), component: 'AdvancedKLineChart', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k40') },
+  { page: i18n.t('UIAuditPanel.k41'), component: 'PineScriptEditor', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k42') },
+  { page: i18n.t('UIAuditPanel.k43'), component: 'MarketPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k44') },
+  { page: i18n.t('UIAuditPanel.k45'), component: 'FullPipelineUI', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k46') },
+  { page: i18n.t('UIAuditPanel.k47'), component: 'StrategyCommunityPanel', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: i18n.t('UIAuditPanel.k48'), loading: true, empty: true, error: true },
+  { page: i18n.t('UIAuditPanel.k49'), component: 'FactorAnalysisPanel', status: 'pass', dark: 'pass', light: 'warn', responsive: 'pass', note: i18n.t('UIAuditPanel.k50'), loading: true },
+  { page: i18n.t('UIAuditPanel.k51'), component: 'PortfolioOptimizationPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k52') },
+  { page: i18n.t('UIAuditPanel.k53'), component: 'CreatorLeaderboard', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k54') },
+  { page: i18n.t('UIAuditPanel.k55'), component: 'SignalPerformancePanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k56'), loading: true },
+  { page: i18n.t('UIAuditPanel.k57'), component: 'HelpCenter', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k58') },
+  { page: i18n.t('UIAuditPanel.k59'), component: 'AdminDashboard', status: 'pass', dark: 'pass', light: 'warn', responsive: 'warn', note: i18n.t('UIAuditPanel.k60'), loading: true },
+  { page: i18n.t('UIAuditPanel.k61'), component: 'USDTWalletPage', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k62'), loading: true, empty: true },
+  { page: i18n.t('UIAuditPanel.k63'), component: 'CreatorOnboardingGuide', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k64') },
+  { page: i18n.t('UIAuditPanel.k65'), component: 'SecurityCenter', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k66') },
+  { page: i18n.t('UIAuditPanel.k67'), component: 'IBKRBrokerPanel', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k68') },
+  { page: i18n.t('UIAuditPanel.k69'), component: 'SignalSquare', status: 'pass', dark: 'pass', light: 'pass', responsive: 'pass', note: i18n.t('UIAuditPanel.k70'), loading: true, empty: true },
 ];
 
 // ── Stats badge ──
@@ -109,11 +110,11 @@ export default function UIAuditPanel() {
 
       {/* Stats */}
       <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
-        <StatBadge label="总组件" value={stats.total.toString()} color="#6366F1" />
-        <StatBadge label="✅ 通过" value={stats.pass.toString()} color="#10B981" />
-        <StatBadge label="深色" value={`${stats.darkPass}/${stats.total}`} color="#818CF8" />
-        <StatBadge label="浅色" value={`${stats.lightPass}/${stats.total}`} color="#F59E0B" />
-        <StatBadge label="响应式" value={`${stats.respPass}/${stats.total}`} color="#10B981" />
+        <StatBadge label={i18n.t('UIAuditPanel.k71')} value={stats.total.toString()} color="#6366F1" />
+        <StatBadge label={i18n.t('UIAuditPanel.k72')} value={stats.pass.toString()} color="#10B981" />
+        <StatBadge label={i18n.t('UIAuditPanel.k73')} value={`${stats.darkPass}/${stats.total}`} color="#818CF8" />
+        <StatBadge label={i18n.t('UIAuditPanel.k74')} value={`${stats.lightPass}/${stats.total}`} color="#F59E0B" />
+        <StatBadge label={i18n.t('UIAuditPanel.k75')} value={`${stats.respPass}/${stats.total}`} color="#10B981" />
         <StatBadge label="Loading" value={`${stats.hasLoading}/${stats.total}`} color="#06B6D4" />
         <StatBadge label="Empty" value={`${stats.hasEmpty}/${stats.total}`} color="#06B6D4" />
         <StatBadge label="Error" value={`${stats.hasError}/${stats.total}`} color="#06B6D4" />
@@ -124,9 +125,9 @@ export default function UIAuditPanel() {
         <div style={{ display: 'flex', gap: 6 }}>
           {[
             { key: 'all' as const, label: 'components.all', color: '#6B7280' },
-            { key: 'pass' as const, label: '✅ 通过', color: '#10B981' },
-            { key: 'warn' as const, label: '⚠️ 警告', color: '#F59E0B' },
-            { key: 'fail' as const, label: '❌ 失败', color: '#EF4444' },
+            { key: 'pass' as const, label: i18n.t('UIAuditPanel.k76'), color: '#10B981' },
+            { key: 'warn' as const, label: i18n.t('UIAuditPanel.k77'), color: '#F59E0B' },
+            { key: 'fail' as const, label: i18n.t('UIAuditPanel.k78'), color: '#EF4444' },
           ].map(f => (
             <button
               key={f.key}

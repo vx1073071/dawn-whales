@@ -1,5 +1,6 @@
 ﻿import { useTranslation } from "react-i18next";
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import i18n from '../../i18n';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -36,28 +37,28 @@ interface KeywordItem {
   sentiment: 'positive' | 'negative';
 }
 
-type SentimentLabel = '极度乐观' | '乐观' | '偏乐观' | '中性' | '偏悲观' | '悲观' | '极度悲观';
+type SentimentLabel = string;
 type TimeRange = '1h' | '4h' | '1d' | '7d';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const SYMBOLS = ['AAPL', 'TSLA', 'NVDA', 'MSFT', 'GOOGL', 'AMZN', 'META', 'BTC', 'ETH', 'SPY'];
 const TIME_RANGES: { value: TimeRange; label: string }[] = [
-  { value: '1h', label: '1小时' },
-  { value: '4h', label: '4小时' },
-  { value: '1d', label: '1天' },
-  { value: '7d', label: '7天' },
+  { value: '1h', label: i18n.t('SentimentDashboardPage.k8') },
+  { value: '4h', label: i18n.t('SentimentDashboardPage.k9') },
+  { value: '1d', label: i18n.t('SentimentDashboardPage.k10') },
+  { value: '7d', label: i18n.t('SentimentDashboardPage.k11') },
 ];
-const SOURCES = ['components.all', '新闻', '社交媒体', '公告', '研报'];
+const SOURCES = ['components.all', i18n.t('SentimentDashboardPage.k12'), i18n.t('SentimentDashboardPage.k13'), i18n.t('SentimentDashboardPage.k14'), i18n.t('SentimentDashboardPage.k15')];
 
 const MOOD_LABELS: { min: number; max: number; label: SentimentLabel; color: string }[] = [
-  { min: 0.7, max: 1.0, label: '极度乐观', color: '#22c55e' },
-  { min: 0.4, max: 0.7, label: '乐观', color: '#4ade80' },
-  { min: 0.15, max: 0.4, label: '偏乐观', color: '#86efac' },
-  { min: -0.15, max: 0.15, label: '中性', color: '#94a3b8' },
-  { min: -0.4, max: -0.15, label: '偏悲观', color: '#fca5a5' },
-  { min: -0.7, max: -0.4, label: '悲观', color: '#f87171' },
-  { min: -1.0, max: -0.7, label: '极度悲观', color: '#ef4444' },
+  { min: 0.7, max: 1.0, label: i18n.t('SentimentDashboardPage.k16'), color: '#22c55e' },
+  { min: 0.4, max: 0.7, label: i18n.t('SentimentDashboardPage.k17'), color: '#4ade80' },
+  { min: 0.15, max: 0.4, label: i18n.t('SentimentDashboardPage.k18'), color: '#86efac' },
+  { min: -0.15, max: 0.15, label: i18n.t('SentimentDashboardPage.k19'), color: '#94a3b8' },
+  { min: -0.4, max: -0.15, label: i18n.t('SentimentDashboardPage.k20'), color: '#fca5a5' },
+  { min: -0.7, max: -0.4, label: i18n.t('SentimentDashboardPage.k21'), color: '#f87171' },
+  { min: -1.0, max: -0.7, label: i18n.t('SentimentDashboardPage.k22'), color: '#ef4444' },
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -66,7 +67,7 @@ function getSentimentLabel(score: number): { label: SentimentLabel; color: strin
   for (const m of MOOD_LABELS) {
     if (score >= m.min && score <= m.max) return { label: m.label, color: m.color };
   }
-  return { label: '中性', color: '#94a3b8' };
+  return { label: i18n.t('SentimentDashboardPage.k23'), color: '#94a3b8' };
 }
 
 function getSentimentBadgeColor(score: number): string {
@@ -80,7 +81,7 @@ function formatTime(dateStr: string): string {
   const now = new Date();
   const diffMs = now.getTime() - d.getTime();
   const diffMin = Math.floor(diffMs / 60000);
-  if (diffMin < 1) return '刚刚';
+  if (diffMin < 1) return i18n.t('SentimentDashboardPage.k24');
   if (diffMin < 60) return `${diffMin}分钟前`;
   const diffHr = Math.floor(diffMin / 60);
   if (diffHr < 24) return `${diffHr}小时前`;
@@ -113,8 +114,8 @@ function generateMockNews(symbol: string, count: number): NewsItem[] {
     `${symbol} 行业政策利好频出`,
     `${symbol} 宣布裁员计划，市场反应积极`,
   ];
-  const sources = ['新闻', '社交媒体', '公告', '研报'];
-  const keywordPool = ['财报', '增长', '回购', '监管', 'components.risk', 'components.breakout', '合作', 'components.increaseHolding', '扩张', '评级', '看空', '补贴', '空头', '政策', '裁员'];
+  const sources = [i18n.t('SentimentDashboardPage.k25'), i18n.t('SentimentDashboardPage.k26'), i18n.t('SentimentDashboardPage.k27'), i18n.t('SentimentDashboardPage.k28')];
+  const keywordPool = [i18n.t('SentimentDashboardPage.k29'), i18n.t('SentimentDashboardPage.k30'), i18n.t('SentimentDashboardPage.k31'), i18n.t('SentimentDashboardPage.k32'), 'components.risk', 'components.breakout', i18n.t('SentimentDashboardPage.k33'), 'components.increaseHolding', i18n.t('SentimentDashboardPage.k34'), i18n.t('SentimentDashboardPage.k35'), i18n.t('SentimentDashboardPage.k36'), i18n.t('SentimentDashboardPage.k37'), i18n.t('SentimentDashboardPage.k38'), i18n.t('SentimentDashboardPage.k39'), i18n.t('SentimentDashboardPage.k40')];
 
   return Array.from({ length: count }, (_, i) => ({
     id: `news-${i}-${Date.now()}`,
@@ -189,9 +190,9 @@ const MoodGauge: React.FC<{ score: number }> = ({ score }) => {
         <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="white" strokeWidth="2.5" strokeLinecap="round" />
         <circle cx={cx} cy={cy} r="5" fill="white" />
         {/* Labels */}
-        <text x="25" y="130" fill="#ef4444" fontSize="9" textAnchor="middle">{'极度悲观'}</text>
+        <text x="25" y="130" fill="#ef4444" fontSize="9" textAnchor="middle">{i18n.t('SentimentDashboardPage.k41')}</text>
         <text x="120" y="25" fill="#94a3b8" fontSize="9" textAnchor="middle">{"components.neutral"}</text>
-        <text x="215" y="130" fill="#22c55e" fontSize="9" textAnchor="middle">{'极度乐观'}</text>
+        <text x="215" y="130" fill="#22c55e" fontSize="9" textAnchor="middle">{i18n.t('SentimentDashboardPage.k42')}</text>
       </svg>
       <div className="mt-2 text-center">
         <span className="text-2xl font-bold" style={{ color }}>{label}</span>
@@ -207,7 +208,7 @@ const SentimentPie: React.FC<{ bullish: number; neutral: number; bearish: number
   const total = bullish + neutral + bearish || 1;
   const slices = [
     { value: bullish, color: '#22c55e', label: 'components.bullish' },
-    { value: neutral, color: '#94a3b8', label: '中性' },
+    { value: neutral, color: '#94a3b8', label: i18n.t('SentimentDashboardPage.k43') },
     { value: bearish, color: '#ef4444', label: 'components.bearish' },
   ];
 
@@ -261,7 +262,7 @@ const SentimentPie: React.FC<{ bullish: number; neutral: number; bearish: number
 
 const SentimentTimeline: React.FC<{ data: { time: string; score: number }[] }> = ({ data }) => {
   if (data.length < 2) {
-    return <div className="text-gray-500 text-sm text-center py-8">{'暂无时间线数据'}</div>;
+    return <div className="text-gray-500 text-sm text-center py-8">{i18n.t('SentimentDashboardPage.k44')}</div>;
   }
 
   const width = 600;
@@ -386,7 +387,7 @@ const KeywordCloud: React.FC<{ keywords: KeywordItem[] }> = ({ keywords }) => {
 
 const NewsFeedItem: React.FC<{ item: NewsItem }> = ({ item }) => {
   const badge = getSentimentBadgeColor(item.sentiment ?? 0);
-  const sentimentText = item.sentiment && item.sentiment > 0.2 ? 'components.bullish' : item.sentiment && item.sentiment < -0.2 ? 'components.bearish' : '中性';
+  const sentimentText = item.sentiment && item.sentiment > 0.2 ? 'components.bullish' : item.sentiment && item.sentiment < -0.2 ? 'components.bearish' : i18n.t('SentimentDashboardPage.k45');
 
   return (
     <div className="flex gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group">
@@ -439,7 +440,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   <GlassCard className="p-3 flex flex-wrap items-center gap-3">
     {/* Symbol selector */}
     <div className="flex items-center gap-1.5">
-      <span className="text-xs text-gray-400">{'标的'}</span>
+      <span className="text-xs text-gray-400">{i18n.t('SentimentDashboardPage.k46')}</span>
       <select
         value={symbol}
         onChange={(e) => onSymbolChange(e.target.value)}
@@ -468,7 +469,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     {/* Source filter */}
     <div className="flex items-center gap-1.5">
-      <span className="text-xs text-gray-400">{'来源'}</span>
+      <span className="text-xs text-gray-400">{i18n.t('SentimentDashboardPage.k47')}</span>
       <select
         value={source}
         onChange={(e) => onSourceChange(e.target.value)}
@@ -486,7 +487,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
         <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
       </span>
-      <span>{'实时更新'}</span>
+      <span>{i18n.t('SentimentDashboardPage.k48')}</span>
       {lastUpdate && <span>· 最后更新 {lastUpdate.toLocaleTimeString('zh-CN')}</span>}
     </div>
 
@@ -495,7 +496,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       onClick={onRefresh}
       disabled={loading}
       className={`p-1.5 rounded-lg border border-white/10 text-gray-400 hover:text-white hover:bg-white/5 transition-all ${loading ? 'animate-spin' : ''}`}
-      title="刷新数据"
+      title={i18n.t('SentimentDashboardPage.k49')}
     >
       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -532,9 +533,9 @@ const SentimentDashboardPage: React.FC = () => {
           if (Array.isArray(raw) && raw.length > 0) {
             newsData = raw.map((item: unknown, idx: number) => ({
               id: (item as any).id || `news-${idx}`,
-              title: (item as any).title || (item as any).headline || '无标题',
+              title: (item as any).title || (item as any).headline || i18n.t('SentimentDashboardPage.k50'),
               summary: (item as any).summary || (item as any).body || '',
-              source: (item as any).source || '未知',
+              source: (item as any).source || i18n.t('SentimentDashboardPage.k51'),
               url: (item as any).url,
               publishedAt: (item as any).publishedAt || (item as any).timestamp || new Date().toISOString(),
               sentiment: (item as any).sentiment ?? (Math.random() - 0.5) * 2,
@@ -654,7 +655,7 @@ const SentimentDashboardPage: React.FC = () => {
       map.set(sym, entry);
     });
     // Also generate synthetic entities for demonstration
-    const synthEntities = ['半导体', '新能源', 'AI概念', '医药生物', '消费', '金融', '地产'];
+    const synthEntities = [i18n.t('SentimentDashboardPage.k52'), i18n.t('SentimentDashboardPage.k53'), i18n.t('SentimentDashboardPage.k54'), i18n.t('SentimentDashboardPage.k55'), i18n.t('SentimentDashboardPage.k56'), i18n.t('SentimentDashboardPage.k57'), i18n.t('SentimentDashboardPage.k58')];
     synthEntities.forEach(e => {
       map.set(e, { total: (Math.random() - 0.5) * 3, count: Math.floor(Math.random() * 20) + 5 });
     });
@@ -677,7 +678,7 @@ const SentimentDashboardPage: React.FC = () => {
     });
     // Add synthetic keywords if empty
     if (freqMap.size === 0) {
-      const synth = ['财报超预期', '利好政策', '机构增持', '业绩增长', '技术突破', '行业整合', '风险预警', '监管收紧', '资金外流', '估值过高', 'components.decreaseHolding', '盈利下滑'];
+      const synth = [i18n.t('SentimentDashboardPage.k59'), i18n.t('SentimentDashboardPage.k60'), i18n.t('SentimentDashboardPage.k61'), i18n.t('SentimentDashboardPage.k62'), i18n.t('SentimentDashboardPage.k63'), i18n.t('SentimentDashboardPage.k64'), i18n.t('SentimentDashboardPage.k65'), i18n.t('SentimentDashboardPage.k66'), i18n.t('SentimentDashboardPage.k67'), i18n.t('SentimentDashboardPage.k68'), 'components.decreaseHolding', i18n.t('SentimentDashboardPage.k69')];
       synth.forEach(kw => {
         freqMap.set(kw, { count: Math.floor(Math.random() * 15) + 1, sentimentSum: (Math.random() - 0.5) * 4 });
       });
@@ -742,11 +743,11 @@ const SentimentDashboardPage: React.FC = () => {
       {/* Stats Row */}
       <div className="grid grid-cols-5 gap-3">
         {[
-          { label: '资讯总量', value: stats.total.toString(), sub: '条' },
-          { label: '平均情绪', value: (stats.avg > 0 ? '+' : '') + stats.avg.toFixed(3), sub: '', color: stats.avg > 0 ? 'text-green-400' : stats.avg < 0 ? 'text-red-400' : 'text-gray-400' },
-          { label: '情绪波动', value: stats.stdDev.toFixed(3), sub: 'σ' },
-          { label: '最高情绪', value: stats.maxScore.toFixed(2), sub: '', color: 'text-green-400' },
-          { label: '最低情绪', value: stats.minScore.toFixed(2), sub: '', color: 'text-red-400' },
+          { label: i18n.t('SentimentDashboardPage.k70'), value: stats.total.toString(), sub: i18n.t('SentimentDashboardPage.k71') },
+          { label: i18n.t('SentimentDashboardPage.k72'), value: (stats.avg > 0 ? '+' : '') + stats.avg.toFixed(3), sub: '', color: stats.avg > 0 ? 'text-green-400' : stats.avg < 0 ? 'text-red-400' : 'text-gray-400' },
+          { label: i18n.t('SentimentDashboardPage.k73'), value: stats.stdDev.toFixed(3), sub: 'σ' },
+          { label: i18n.t('SentimentDashboardPage.k74'), value: stats.maxScore.toFixed(2), sub: '', color: 'text-green-400' },
+          { label: i18n.t('SentimentDashboardPage.k75'), value: stats.minScore.toFixed(2), sub: '', color: 'text-red-400' },
         ].map((stat) => (
           <GlassCard key={stat.label} className="p-3 text-center">
             <div className="text-[11px] text-gray-500 mb-1">{stat.label}</div>
@@ -763,11 +764,11 @@ const SentimentDashboardPage: React.FC = () => {
           {/* Overview Panel */}
           <div className="grid grid-cols-2 gap-4">
             <GlassCard className="p-4">
-              <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">{'市场情绪仪表盘'}</h3>
+              <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">{i18n.t('SentimentDashboardPage.k76')}</h3>
               <MoodGauge score={overallScore} />
             </GlassCard>
             <GlassCard className="p-4">
-              <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">{'情绪分布'}</h3>
+              <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">{i18n.t('SentimentDashboardPage.k77')}</h3>
               <div className="flex items-center justify-center h-36">
                 <SentimentPie {...sentimentDistribution} />
               </div>
@@ -776,13 +777,13 @@ const SentimentDashboardPage: React.FC = () => {
 
           {/* Sentiment Timeline */}
           <GlassCard className="p-4">
-            <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">{'情绪时间线'}</h3>
+            <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">{i18n.t('SentimentDashboardPage.k78')}</h3>
             <SentimentTimeline data={timelineData} />
           </GlassCard>
 
           {/* Entity Sentiment */}
           <GlassCard className="p-4">
-            <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">{'实体情绪排行'}</h3>
+            <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">{i18n.t('SentimentDashboardPage.k79')}</h3>
             <EntitySentimentChart entities={entitySentiments} />
           </GlassCard>
         </div>
@@ -791,18 +792,18 @@ const SentimentDashboardPage: React.FC = () => {
         <div className="col-span-4 space-y-4">
           {/* Keyword Cloud */}
           <GlassCard className="p-4">
-            <h3 className="text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">{'关键词云'}</h3>
+            <h3 className="text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">{i18n.t('SentimentDashboardPage.k80')}</h3>
             <KeywordCloud keywords={keywordCloud} />
             <div className="flex justify-center gap-4 mt-2 text-[10px] text-gray-500">
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-400" />{'正面'}</span>
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-400" />{'负面'}</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-400" />{i18n.t('SentimentDashboardPage.k81')}</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-400" />{i18n.t('SentimentDashboardPage.k82')}</span>
             </div>
           </GlassCard>
 
           {/* News Feed */}
           <GlassCard className="p-4">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider">{'资讯流'}</h3>
+              <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider">{i18n.t('SentimentDashboardPage.k83')}</h3>
               <span className="text-[10px] text-gray-600">{filteredNews.length} 条</span>
             </div>
             <div className="space-y-1 max-h-[500px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
@@ -815,7 +816,7 @@ const SentimentDashboardPage: React.FC = () => {
                   <svg className="w-10 h-10 mx-auto mb-2 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                   </svg>
-                  <p className="text-sm">{'暂无相关资讯'}</p>
+                  <p className="text-sm">{i18n.t('SentimentDashboardPage.k84')}</p>
                 </div>
               )}
             </div>

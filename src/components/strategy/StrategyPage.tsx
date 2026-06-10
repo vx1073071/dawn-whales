@@ -5,6 +5,7 @@ import StrategyCompareModal from './StrategyCompareModal';
 import ConditionRulePanel from '../trading/ConditionRulePanel';
 import ClosedLoopConfigPanel from './ClosedLoopConfigPanel';
 import AdaptiveParamPanel from './AdaptiveParamPanel';
+import i18n from '../../i18n';
 type CreateMode = null | 'ai' | 'template' | 'form' | 'condition' | 'closedLoop' | 'adaptive';
 
 interface ParsedStrategy {
@@ -128,21 +129,21 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
       <div className="grid grid-cols-3 gap-4">
         <button onClick={() => onSelect('ai')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
           <div className="text-3xl mb-3">💬</div>
-          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{'说出来'}</h3>
-          <p className="text-gray-400 text-xs leading-relaxed">{'用自然语言描述你的策略'}<br/>{'AI 帮你自动生成可执行策略'}</p>
-          <div className="mt-3 text-[#D4A853] text-xs font-medium">{'推荐新手 →'}</div>
+          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{i18n.t('StrategyPage.k1')}</h3>
+          <p className="text-gray-400 text-xs leading-relaxed">{i18n.t('StrategyPage.k2')}<br/>{i18n.t('StrategyPage.k3')}</p>
+          <div className="mt-3 text-[#D4A853] text-xs font-medium">{i18n.t('StrategyPage.k4')}</div>
         </button>
         <button onClick={() => onSelect('template')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
           <div className="text-3xl mb-3">📋</div>
-          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{'选模板'}</h3>
-          <p className="text-gray-400 text-xs leading-relaxed">{'经典策略模板库'}<br/>{'选一个改改参数就能用'}</p>
-          <div className="mt-3 text-gray-500 text-xs">{'8 个策略模板'}</div>
+          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{i18n.t('StrategyPage.k5')}</h3>
+          <p className="text-gray-400 text-xs leading-relaxed">{i18n.t('StrategyPage.k6')}<br/>{i18n.t('StrategyPage.k7')}</p>
+          <div className="mt-3 text-gray-500 text-xs">{i18n.t('StrategyPage.k8')}</div>
         </button>
         <button onClick={() => onSelect('form')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
           <div className="text-3xl mb-3">📊</div>
-          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{'填表单'}</h3>
-          <p className="text-gray-400 text-xs leading-relaxed">{'精确控制每个参数'}<br/>{'完全自定义策略'}</p>
-          <div className="mt-3 text-gray-500 text-xs">{'完全自定义'}</div>
+          <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{i18n.t('StrategyPage.k9')}</h3>
+          <p className="text-gray-400 text-xs leading-relaxed">{i18n.t('StrategyPage.k10')}<br/>{i18n.t('StrategyPage.k11')}</p>
+          <div className="mt-3 text-gray-500 text-xs">{i18n.t('StrategyPage.k12')}</div>
         </button>
       </div>
       {/* Phase 4.2: Condition Rules */}
@@ -151,8 +152,8 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
           <div className="flex items-center gap-3">
             <div className="text-2xl">⚡</div>
             <div>
-              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">{'条件规则'}</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">{'价格/指标自动触发 · 无需手动盯盘 · 智能条件执行'}</p>
+              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">{i18n.t('StrategyPage.k13')}</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">{i18n.t('StrategyPage.k14')}</p>
             </div>
           </div>
           <span className="text-[#D4A853] text-xs font-medium">Phase 4.2 →</span>
@@ -164,8 +165,8 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
           <div className="flex items-center gap-3">
             <div className="text-2xl">🔄</div>
             <div>
-              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">{'闭环执行'}</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">{'止损止盈 · 追踪止损 · 再平衡 · 全自动闭环交易'}</p>
+              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">{i18n.t('StrategyPage.k15')}</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">{i18n.t('StrategyPage.k16')}</p>
             </div>
           </div>
           <span className="text-[#D4A853] text-xs font-medium">Phase 4.3 →</span>
@@ -177,8 +178,8 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
           <div className="flex items-center gap-3">
             <div className="text-2xl">🧬</div>
             <div>
-              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">{'自适应学习'}</h3>
-              <p className="text-gray-400 text-xs leading-relaxed">{'参数自优化 · 奖励函数 · 探索/利用平衡 · 持续进化'}</p>
+              <h3 className="text-white font-semibold text-sm group-hover:text-[#D4A853] transition-colors">{i18n.t('StrategyPage.k17')}</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">{i18n.t('StrategyPage.k18')}</p>
             </div>
           </div>
           <span className="text-[#D4A853] text-xs font-medium">Phase 4.4 →</span>
@@ -200,11 +201,11 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
   const [strategyId, setStrategyId] = useState<string | null>(null);
 
   const examples = [
-    'MA5 上穿 MA20 买入 TQQQ，止损 5%',
-    'RSI 低于 30 买入 AAPL，RSI 高于 70 卖出',
-    'MACD 金叉买入 QQQ，止盈 10% 止损 3%',
-    '布林带下轨买入 NVDA，上轨卖出',
-    '20日动量突破 5% 买入 SOXL',
+    i18n.t('StrategyPage.k19'),
+    i18n.t('StrategyPage.k20'),
+    i18n.t('StrategyPage.k21'),
+    i18n.t('StrategyPage.k22'),
+    i18n.t('StrategyPage.k23'),
   ];
 
   const handleParse = useCallback(async () => {
@@ -218,10 +219,10 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
       const result = await parseNL(input);
       setParsed(result);
       if (!result.success) {
-        setError(result.error || '无法识别策略模式');
+        setError(result.error || i18n.t('StrategyPage.k24'));
       }
     } catch (e: unknown) {
-      setError((e as any).message || '解析失败');
+      setError((e as any).message || i18n.t('StrategyPage.k25'));
     } finally {
       setLoading(false);
     }
@@ -276,8 +277,8 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
       <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{"components.back"}</button>
 
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
-        <h2 className="text-white font-semibold mb-1 flex items-center gap-2">{'💬 用自然语言描述你的策略'}</h2>
-        <p className="text-gray-400 text-xs mb-4">{'像跟朋友聊天一样说就行，AI 自动解析成可执行策略'}</p>
+        <h2 className="text-white font-semibold mb-1 flex items-center gap-2">{i18n.t('StrategyPage.k26')}</h2>
+        <p className="text-gray-400 text-xs mb-4">{i18n.t('StrategyPage.k27')}</p>
 
         <textarea
           value={input}
@@ -289,9 +290,9 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
 
         <div className="flex items-center gap-2 mt-3">
           <button onClick={handleParse} disabled={!input.trim() || loading} className="px-4 py-2 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
-            {loading ? '解析中...' : '🤖 解析策略'}
+            {loading ? i18n.t('StrategyPage.k28') : i18n.t('StrategyPage.k29')}
           </button>
-          <span className="text-gray-500 text-xs">{'或试试：'}</span>
+          <span className="text-gray-500 text-xs">{i18n.t('StrategyPage.k30')}</span>
         </div>
 
         <div className="flex flex-wrap gap-2 mt-2">
@@ -323,7 +324,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm mb-4">
             <div className="bg-[#12121a] rounded-lg p-3">
-              <div className="text-gray-500 text-xs mb-1">{'策略类型'}</div>
+              <div className="text-gray-500 text-xs mb-1">{i18n.t('StrategyPage.k31')}</div>
               <div className="text-gray-200 font-mono text-xs">{parsed.strategy.type}</div>
             </div>
             {Object.entries(parsed.strategy.params).slice(0, 3).map(([k, v]) => (
@@ -347,10 +348,10 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
 
           <div className="flex gap-3">
             <button onClick={handleCreate} disabled={loading || !!strategyId} className="px-4 py-2 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
-              {strategyId ? '✓ 已保存' : '💾 保存策略'}
+              {strategyId ? i18n.t('StrategyPage.k32') : i18n.t('StrategyPage.k33')}
             </button>
             <button onClick={handleBacktest} disabled={backtestLoading} className="px-4 py-2 bg-[#22222f] text-gray-300 rounded-lg text-sm hover:bg-[#2a2a3a] transition-colors">
-              {backtestLoading ? '⏳ 回测中...' : '📈 回测 200 天'}
+              {backtestLoading ? i18n.t('StrategyPage.k34') : i18n.t('StrategyPage.k35')}
             </button>
             {onFillForm && (
               <button onClick={() => onFillForm(parsed)} className="px-4 py-2 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-lg text-sm hover:bg-blue-500/30 transition-colors">
@@ -380,9 +381,9 @@ function BacktestPanel({ result }: { result: BacktestResult }) {
 
       {/* Metrics grid */}
       <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-4">
-        <MetricCard label="总收益" value={`${result.totalReturn > 0 ? '+' : ''}${result.totalReturn}%`} color={returnColor} />
-        <MetricCard label="年化收益" value={`${result.annualReturn > 0 ? '+' : ''}${result.annualReturn}%`} color={returnColor} />
-        <MetricCard label="夏普比率" value={result.sharpeRatio.toFixed(2)} color={result.sharpeRatio > 1 ? 'text-emerald-400' : result.sharpeRatio > 0 ? 'text-yellow-400' : 'text-red-400'} />
+        <MetricCard label={i18n.t('StrategyPage.k36')} value={`${result.totalReturn > 0 ? '+' : ''}${result.totalReturn}%`} color={returnColor} />
+        <MetricCard label={i18n.t('StrategyPage.k37')} value={`${result.annualReturn > 0 ? '+' : ''}${result.annualReturn}%`} color={returnColor} />
+        <MetricCard label={i18n.t('StrategyPage.k38')} value={result.sharpeRatio.toFixed(2)} color={result.sharpeRatio > 1 ? 'text-emerald-400' : result.sharpeRatio > 0 ? 'text-yellow-400' : 'text-red-400'} />
         <MetricCard label={'maxDrawdown'} value={`-${result.maxDrawdown}%`} color="text-red-400" />
         <MetricCard label={'winRate'} value={`${result.winRate}%`} color={result.winRate > 50 ? 'text-emerald-400' : 'text-yellow-400'} />
         <MetricCard label={'profitFactor'} value={result.profitFactor === Infinity ? '∞' : result.profitFactor.toFixed(2)} color={result.profitFactor > 1.5 ? 'text-emerald-400' : 'text-yellow-400'} />
@@ -498,19 +499,19 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
     }
   }
 
-  const riskColors: Record<string, string> = { '低': 'text-emerald-400 bg-emerald-500/20', '中': 'text-yellow-400 bg-yellow-500/20', '高': 'text-red-400 bg-red-500/20' };
+  const riskColors: Record<string, string> = { [i18n.t('StrategyPage.k39')]: 'text-emerald-400 bg-emerald-500/20', [i18n.t('StrategyPage.k40')]: 'text-yellow-400 bg-yellow-500/20', [i18n.t('StrategyPage.k41')]: 'text-red-400 bg-red-500/20' };
 
   return (
     <div className="mb-8">
       <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{"components.back"}</button>
 
       <div className="flex items-center gap-3 mb-4">
-        <h2 className="text-white font-semibold">{'📋 策略模板库'}</h2>
+        <h2 className="text-white font-semibold">{i18n.t('StrategyPage.k42')}</h2>
         <div className="flex gap-2 text-xs">
           <button className="px-3 py-1 bg-[#C9A046]/20 text-[#D4A853] rounded-full">{"components.all"}</button>
           <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">{"components.trend"}</button>
-          <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">{'动量'}</button>
-          <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">{'均值回归'}</button>
+          <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">{i18n.t('StrategyPage.k43')}</button>
+          <button className="px-3 py-1 bg-[#22222f] text-gray-400 rounded-full hover:text-gray-200">{i18n.t('StrategyPage.k44')}</button>
         </div>
       </div>
 
@@ -534,14 +535,14 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
             {selected === (t as any).id && (
               <div className="mt-3 pt-3 border-t border-white/5">
                 <button onClick={(e) => { e.stopPropagation(); handleUse(t); }} disabled={loading} className="w-full px-3 py-2 bg-[#C9A046] text-black text-xs font-medium rounded-lg hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
-                  {loading ? '创建中...' : '使用此模板 →'}
+                  {loading ? i18n.t('StrategyPage.k45') : i18n.t('StrategyPage.k46')}
                 </button>
               </div>
             )}
           </button>
         ))}
         {templates.length === 0 && (
-          <div className="col-span-3 text-center py-8 text-gray-500 text-sm">{'加载模板中...'}</div>
+          <div className="col-span-3 text-center py-8 text-gray-500 text-sm">{i18n.t('StrategyPage.k47')}</div>
         )}
       </div>
     </div>
@@ -617,8 +618,8 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
   }
 
   const typeLabels: Record<string, string> = {
-    ma_cross: '均线交叉', rsi: 'RSI 超买超卖', macd: 'MACD 金叉死叉',
-    momentum: '动量突破', bollinger: '布林带突破',
+    ma_cross: i18n.t('StrategyPage.k48'), rsi: i18n.t('StrategyPage.k49'), macd: i18n.t('StrategyPage.k50'),
+    momentum: i18n.t('StrategyPage.k51'), bollinger: i18n.t('StrategyPage.k52'),
   };
 
   return (
@@ -626,7 +627,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
       <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{"components.back"}</button>
 
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 space-y-5">
-        <h2 className="text-white font-semibold">{editId ? '✏️ 编辑策略' : '📊 表单模式 — 精确配置'}</h2>
+        <h2 className="text-white font-semibold">{editId ? i18n.t('StrategyPage.k53') : i18n.t('StrategyPage.k54')}</h2>
 
         {/* Strategy name */}
         <div>
@@ -642,7 +643,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
 
         {/* Strategy type */}
         <div>
-          <label className="block text-gray-400 text-xs mb-1">{'策略类型'}</label>
+          <label className="block text-gray-400 text-xs mb-1">{i18n.t('StrategyPage.k55')}</label>
           <select value={strategyType} onChange={(e) => setStrategyType(e.target.value)} className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50">
             {Object.entries(typeLabels).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
@@ -650,7 +651,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
 
         {/* Symbol */}
         <div>
-          <label className="block text-gray-400 text-xs mb-1">{'交易标的'}</label>
+          <label className="block text-gray-400 text-xs mb-1">{i18n.t('StrategyPage.k56')}</label>
           <select value={symbol} onChange={(e) => setSymbol(e.target.value)} className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50">
             {['US.TQQQ','US.SQQQ','US.QQQ','US.SPY','US.SOXL','US.AAPL','US.NVDA','US.MSFT','US.TSLA','US.AMD'].map((s) => (
               <option key={s} value={s}>{s}</option>
@@ -661,20 +662,20 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
         {/* Parameters (dynamic based on type) */}
         {strategyType === 'ma_cross' && (
           <div className="grid grid-cols-2 gap-4">
-            <SliderInput label="快速均线" value={shortPeriod} min={2} max={50} onChange={setShortPeriod} />
-            <SliderInput label="慢速均线" value={longPeriod} min={10} max={200} onChange={setLongPeriod} />
+            <SliderInput label={i18n.t('StrategyPage.k57')} value={shortPeriod} min={2} max={50} onChange={setShortPeriod} />
+            <SliderInput label={i18n.t('StrategyPage.k58')} value={longPeriod} min={10} max={200} onChange={setLongPeriod} />
           </div>
         )}
         {strategyType === 'rsi' && (
           <div className="grid grid-cols-2 gap-4">
-            <SliderInput label="超卖线" value={rsiOversold} min={10} max={45} onChange={setRsiOversold} />
-            <SliderInput label="超买线" value={rsiOverbought} min={55} max={90} onChange={setRsiOverbought} />
+            <SliderInput label={i18n.t('StrategyPage.k59')} value={rsiOversold} min={10} max={45} onChange={setRsiOversold} />
+            <SliderInput label={i18n.t('StrategyPage.k60')} value={rsiOverbought} min={55} max={90} onChange={setRsiOverbought} />
           </div>
         )}
 
         {/* Risk management */}
         <div className="border-t border-white/5 pt-4">
-          <h3 className="text-gray-300 text-xs font-medium uppercase tracking-wider mb-3">{'风控参数'}</h3>
+          <h3 className="text-gray-300 text-xs font-medium uppercase tracking-wider mb-3">{i18n.t('StrategyPage.k61')}</h3>
           <div className="grid grid-cols-2 gap-4">
             <SliderInput label={'stopLoss'} value={stopLoss} min={1} max={30} onChange={setStopLoss} unit="%" />
             <SliderInput label={'takeProfit'} value={takeProfit} min={5} max={100} onChange={setTakeProfit} unit="%" />
@@ -682,7 +683,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
         </div>
 
         <button onClick={handleCreate} disabled={creating} className="px-5 py-2.5 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
-          {creating ? (editId ? '保存中...' : '创建中...') : (editId ? '💾 保存修改' : '✅ 创建策略')}
+          {creating ? (editId ? i18n.t('StrategyPage.k62') : i18n.t('StrategyPage.k63')) : (editId ? i18n.t('StrategyPage.k64') : i18n.t('StrategyPage.k65'))}
         </button>
       </div>
     </div>
@@ -713,17 +714,17 @@ function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { s
   };
 
   const statusLabels: Record<string, string> = {
-    draft: '草稿', backtested: '已回测', live: '🟢 运行中', stopped: 'stopped', simulating: '模拟中',
+    draft: i18n.t('StrategyPage.k66'), backtested: i18n.t('StrategyPage.k67'), live: i18n.t('StrategyPage.k68'), stopped: 'stopped', simulating: i18n.t('StrategyPage.k69'),
   };
 
   if (strategies.length === 0) {
     return (
       <div>
-        <h2 className="text-white font-semibold mb-3">{'我的策略'}</h2>
+        <h2 className="text-white font-semibold mb-3">{i18n.t('StrategyPage.k70')}</h2>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
           <div className="text-3xl mb-2 opacity-40">🐋</div>
-          <p className="text-gray-400 text-sm">{'还没有策略'}</p>
-          <p className="text-gray-500 text-xs mt-1">{'用上面三种方式创建你的第一个策略'}</p>
+          <p className="text-gray-400 text-sm">{i18n.t('StrategyPage.k71')}</p>
+          <p className="text-gray-500 text-xs mt-1">{i18n.t('StrategyPage.k72')}</p>
         </div>
       </div>
     );
@@ -731,7 +732,7 @@ function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { s
 
   return (
     <div>
-      <h2 className="text-white font-semibold mb-3">{'我的策略'}</h2>
+      <h2 className="text-white font-semibold mb-3">{i18n.t('StrategyPage.k73')}</h2>
       <div className="space-y-2">
         {strategies.map((s) => (
           <button
@@ -741,7 +742,7 @@ function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { s
           >
             <div className="flex items-center gap-4">
               <div>
-                <h4 className="text-white text-sm font-medium">{s.name || '未命名策略'}</h4>
+                <h4 className="text-white text-sm font-medium">{s.name || i18n.t('StrategyPage.k74')}</h4>
                 <p className="text-gray-500 text-xs mt-0.5">{s.symbol || 'US.TQQQ'} · {s.strategy?.type || 'unknown'}</p>
               </div>
             </div>
@@ -753,17 +754,17 @@ function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { s
               <button
                 onClick={(e) => { e.stopPropagation(); onCompare(s); }}
                 className="text-xs px-2 py-1 rounded bg-[#C9A046]/10 text-[#D4A853] hover:bg-[#C9A046]/20"
-                title="AI 对比策略"
+                title={i18n.t('StrategyPage.k75')}
               >⚖️</button>
               <button
                 onClick={(e) => { e.stopPropagation(); onEdit(s.id); }}
                 className="text-xs px-2 py-1 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
-                title="编辑策略"
+                title={i18n.t('StrategyPage.k76')}
               >✏️</button>
               <button
                 onClick={(e) => { e.stopPropagation(); if (confirm(`确认删除策略「${s.name}」？`)) onDelete(s.id); }}
                 className="text-xs px-2 py-1 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20"
-                title="删除策略"
+                title={i18n.t('StrategyPage.k77')}
               >🗑️</button>
             </div>
           </button>
@@ -860,13 +861,13 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
             <p className="text-gray-400 text-sm mt-1">{(strategy as any).description}</p>
           </div>
           <span className={`text-xs px-3 py-1 rounded-lg ${isLive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-gray-500/20 text-gray-400'}`}>
-            {isLive ? '🟢 运行中' : (strategy as any).status}
+            {isLive ? i18n.t('StrategyPage.k78') : (strategy as any).status}
           </span>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
           <div className="bg-[#12121a] rounded-lg p-3">
-            <div className="text-gray-500 text-xs mb-1">{'标的'}</div>
+            <div className="text-gray-500 text-xs mb-1">{i18n.t('StrategyPage.k79')}</div>
             <div className="text-[#D4A853] font-mono text-sm">{(strategy as any).symbol}</div>
           </div>
           <div className="bg-[#12121a] rounded-lg p-3">
@@ -889,7 +890,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
 
         <div className="flex gap-3">
           <button onClick={handleBacktest} disabled={backtestLoading} className="px-4 py-2 bg-[#22222f] text-gray-300 rounded-lg text-sm hover:bg-[#2a2a3a] transition-colors">
-            {backtestLoading ? '⏳ 回测中...' : '📈 回测'}
+            {backtestLoading ? i18n.t('StrategyPage.k80') : i18n.t('StrategyPage.k81')}
           </button>
           {isLive ? (
             <button onClick={handleStopLive} disabled={actionLoading} className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm hover:bg-red-500/30 transition-colors">

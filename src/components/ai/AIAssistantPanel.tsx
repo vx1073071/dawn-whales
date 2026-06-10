@@ -15,6 +15,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import DOMPurify from 'dompurify';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '@/stores/appStore';
+import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -40,43 +41,43 @@ const zhSuggestions: Suggestion[] = [
   {
     id: 's1',
     icon: '🧠',
-    label: '创建均线策略',
-    prompt: '帮我创建一个基于MA20和MA60的交叉策略，上穿买入TQQQ，下穿卖出，止损5%',
+    label: i18n.t('AIAssistantPanel.k1'),
+    prompt: i18n.t('AIAssistantPanel.k2'),
     category: 'strategy',
   },
   {
     id: 's2',
     icon: '🛡️',
-    label: '风险评估',
-    prompt: '分析我当前持仓的风险敞口，计算VaR和最大回撤',
+    label: i18n.t('AIAssistantPanel.k3'),
+    prompt: i18n.t('AIAssistantPanel.k4'),
     category: 'risk',
   },
   {
     id: 's3',
     icon: '🔬',
-    label: '回测分析',
-    prompt: '帮我分析最近的回测结果，看看哪条策略表现最好',
+    label: i18n.t('AIAssistantPanel.k5'),
+    prompt: i18n.t('AIAssistantPanel.k6'),
     category: 'backtest',
   },
   {
     id: 's4',
     icon: '📊',
-    label: '行情解读',
-    prompt: '分析当前纳指和恒指的走势，给出短期展望',
+    label: i18n.t('AIAssistantPanel.k7'),
+    prompt: i18n.t('AIAssistantPanel.k8'),
     category: 'market',
   },
   {
     id: 's5',
     icon: '💡',
     label: "components.strategySuggestion",
-    prompt: '根据当前市场高波动的环境，推荐适合的量化策略',
+    prompt: i18n.t('AIAssistantPanel.k9'),
     category: 'strategy',
   },
   {
     id: 's6',
     icon: '📈',
-    label: '持仓诊断',
-    prompt: '分析我的持仓组合，给出优化建议',
+    label: i18n.t('AIAssistantPanel.k10'),
+    prompt: i18n.t('AIAssistantPanel.k11'),
     category: 'risk',
   },
 ];
@@ -131,46 +132,46 @@ const enSuggestions: Suggestion[] = [
 const templateResponses: Record<string, Record<string, string>> = {
   zh: {
     strategy:
-      '📊 **策略分析框架**\n\n' +
-      '好的，让我帮你梳理策略逻辑：\n\n' +
-      '1. **入场条件**：明确触发买卖的条件（如技术指标交叉、突破等）\n' +
-      '2. **出场条件**：止损/止盈点位、持仓周期限制\n' +
-      '3. **仓位管理**：单笔仓位比例、最大持仓数\n' +
-      '4. **风控规则**：日亏损上限、回撤熔断\n\n' +
-      '💡 你可以用自然语言描述策略，我会自动解析。试试说："MA5上穿MA20买入TQQQ，止损5%"\n\n' +
-      '或者切换到**策略工坊**页面用表单精确配置。',
+      i18n.t('AIAssistantPanel.k12') +
+      i18n.t('AIAssistantPanel.k13') +
+      i18n.t('AIAssistantPanel.k14') +
+      i18n.t('AIAssistantPanel.k15') +
+      i18n.t('AIAssistantPanel.k16') +
+      i18n.t('AIAssistantPanel.k17') +
+      i18n.t('AIAssistantPanel.k18') +
+      i18n.t('AIAssistantPanel.k19'),
     risk:
-      '🛡️ **风险诊断结果**\n\n' +
-      '建议关注的指标：\n' +
-      '- **组合波动率**：年化标准差\n' +
-      '- **VaR (95%)**：在95%置信度下最大单日损失\n' +
-      '- **CVaR**：超过VaR时的平均损失\n' +
-      '- **最大回撤**：历史最大峰值到谷底\n' +
-      '- **相关性矩阵**：持仓间相关度\n\n' +
-      '🔔 前往**风控面板**查看完整风险仪表盘。',
+      i18n.t('AIAssistantPanel.k20') +
+      i18n.t('AIAssistantPanel.k21') +
+      i18n.t('AIAssistantPanel.k22') +
+      i18n.t('AIAssistantPanel.k23') +
+      i18n.t('AIAssistantPanel.k24') +
+      i18n.t('AIAssistantPanel.k25') +
+      i18n.t('AIAssistantPanel.k26') +
+      i18n.t('AIAssistantPanel.k27'),
     backtest:
-      '🔬 **回测解读**\n\n' +
-      '关键评估维度：\n' +
-      '- **夏普比率** > 1 及格，> 2 优秀\n' +
-      '- **最大回撤** < 20% 可控，> 30% 需警惕\n' +
-      '- **胜率** 不是唯一标准，盈亏比更重要\n' +
-      '- **样本外测试** 验证策略泛化能力\n\n' +
-      '📌 建议运行 Walk-Forward 分析检验策略稳定性。',
+      i18n.t('AIAssistantPanel.k28') +
+      i18n.t('AIAssistantPanel.k29') +
+      i18n.t('AIAssistantPanel.k30') +
+      i18n.t('AIAssistantPanel.k31') +
+      i18n.t('AIAssistantPanel.k32') +
+      i18n.t('AIAssistantPanel.k33') +
+      i18n.t('AIAssistantPanel.k34'),
     market:
-      '📊 **市场概览**\n\n' +
-      '当前建议关注：\n' +
-      '- 美股：关注FOMC政策、VIX波动率\n' +
-      '- 港股：关注南向资金流向、恒指支撑位\n\n' +
-      '💡 查看**行情中心**获取实时报价，**宏观数据**了解经济指标。',
+      i18n.t('AIAssistantPanel.k35') +
+      i18n.t('AIAssistantPanel.k36') +
+      i18n.t('AIAssistantPanel.k37') +
+      i18n.t('AIAssistantPanel.k38') +
+      i18n.t('AIAssistantPanel.k39'),
     general:
-      '🤖 **DAWN WHALES AI 助手**\n\n' +
-      '我可以帮你：\n' +
-      '• 🧠 **创建策略** — 用自然语言描述，自动生成\n' +
-      '• 🛡️ **风险评估** — 分析持仓敞口和VaR\n' +
-      '• 🔬 **回测分析** — 解读回测报告\n' +
-      '• 📊 **行情解读** — 市场趋势和热点\n' +
-      '• 💡 **策略建议** — 适配当前市场环境\n\n' +
-      '试试上面的快捷问题，或者直接在下方输入！',
+      i18n.t('AIAssistantPanel.k40') +
+      i18n.t('AIAssistantPanel.k41') +
+      i18n.t('AIAssistantPanel.k42') +
+      i18n.t('AIAssistantPanel.k43') +
+      i18n.t('AIAssistantPanel.k44') +
+      i18n.t('AIAssistantPanel.k45') +
+      i18n.t('AIAssistantPanel.k46') +
+      i18n.t('AIAssistantPanel.k47'),
   },
   en: {
     strategy:
@@ -243,7 +244,7 @@ const AIAssistantPanel: React.FC = () => {
       id: 'welcome',
       role: 'assistant',
       content: lang === 'zh'
-        ? '你好！我是 **DAWN WHALES AI 助手** 🐋\n\n我可以帮你创建策略、分析风险、解读回测报告。试试下面的快捷问题，或者直接输入你的需求！'
+        ? i18n.t('AIAssistantPanel.k48')
         : "Hi! I'm **DAWN WHALES AI Assistant** 🐋\n\nI can help create strategies, analyze risks, and interpret backtest reports. Try the quick prompts below or type your request!",
       timestamp: Date.now(),
       category: 'general',
@@ -351,10 +352,10 @@ const AIAssistantPanel: React.FC = () => {
           </div>
           <div>
             <h2 className="text-sm font-semibold text-gray-200">
-              {lang === 'zh' ? 'AI 助手' : 'AI Assistant'}
+              {lang === 'zh' ? i18n.t('AIAssistantPanel.k49') : 'AI Assistant'}
             </h2>
             <p className="text-[10px] text-gray-600">
-              {lang === 'zh' ? '策略建议 · 风险分析 · 市场解读' : 'Strategy · Risk · Market'}
+              {lang === 'zh' ? i18n.t('AIAssistantPanel.k50') : 'Strategy · Risk · Market'}
             </p>
           </div>
         </div>
@@ -369,7 +370,7 @@ const AIAssistantPanel: React.FC = () => {
             onClick={() => navigateTo('risk')}
             className="px-2.5 py-1 text-[10px] rounded bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-colors"
           >
-            {lang === 'zh' ? '风控面板' : 'Risk'}
+            {lang === 'zh' ? i18n.t('AIAssistantPanel.k51') : 'Risk'}
           </button>
         </div>
       </div>
@@ -398,7 +399,7 @@ const AIAssistantPanel: React.FC = () => {
                 <span className="text-[10px] text-gray-600">
                   {msg.role === 'user'
                     ? lang === 'zh'
-                      ? '你'
+                      ? i18n.t('AIAssistantPanel.k52')
                       : 'You'
                     : 'DAWN WHALES AI'}
                 </span>
@@ -452,7 +453,7 @@ const AIAssistantPanel: React.FC = () => {
       {messages.length <= 1 && (
         <div className="px-5 pb-3">
           <p className="text-[10px] text-gray-600 mb-2 uppercase tracking-wider">
-            {lang === 'zh' ? '快捷提问' : 'Quick Prompts'}
+            {lang === 'zh' ? i18n.t('AIAssistantPanel.k53') : 'Quick Prompts'}
           </p>
           <div className="grid grid-cols-2 gap-2">
             {suggestions.map((s) => (
@@ -483,7 +484,7 @@ const AIAssistantPanel: React.FC = () => {
             onKeyDown={handleKeyDown}
             placeholder={
               lang === 'zh'
-                ? '输入你的问题... (Enter 发送, Shift+Enter 换行)'
+                ? i18n.t('AIAssistantPanel.k54')
                 : 'Ask anything... (Enter to send, Shift+Enter for new line)'
             }
             className="flex-1 bg-transparent text-sm text-gray-200 placeholder-gray-600 resize-none outline-none min-h-[24px] max-h-[120px]"
@@ -502,7 +503,7 @@ const AIAssistantPanel: React.FC = () => {
         </div>
         <p className="text-[10px] text-gray-700 mt-2 text-center">
           {lang === 'zh'
-            ? 'AI 助手基于策略模板和规则引擎响应，不构成投资建议'
+            ? i18n.t('AIAssistantPanel.k55')
             : 'AI assistant responds based on strategy templates and rule engines. Not investment advice.'}
         </p>
       </div>
