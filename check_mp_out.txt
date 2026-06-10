@@ -1,8 +1,0 @@
-L92: 
-L93:   const PERIODS = [
-L94:     { key: '1m', label: '1分' },
-L95:     { key: '5m', label: '5分' },
-L96:     { key: '15m', label: '15分' },
-L97:     { key: '60m', label: '60分' },
-L98:     { key: 'daily', label: '日K' },
-L99:     { key: 'weekly', label: '周K' },

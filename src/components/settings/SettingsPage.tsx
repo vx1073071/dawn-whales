@@ -3,7 +3,7 @@ import {
   connectBroker, isConnected as checkConnected, getRiskConfig, getRiskAlerts,
   listBrokers, addBroker, removeBroker, setActiveBroker, getBrokerStatus,
 } from '@/lib/bridge-api';
-import BrokerSelector from '../trading/BrokerSelector';
+import BrokerConfigSelector from '../trading/BrokerConfigSelector';
 
 type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'info';
 
@@ -199,7 +199,7 @@ export default function SettingsPage() {
         <>
           {/* BrokerSelector Component */}
           <div className="mb-4">
-            <BrokerSelector
+            <BrokerConfigSelector
               onBrokerChange={handleBrokerSelectorChange}
               onConnectionChange={handleBrokerConnectionChange}
             />

@@ -34,7 +34,7 @@ interface BrokerSelectorProps {
   onConnectionChange?: (connected: boolean) => void;
 }
 
-export default function BrokerSelector({ onBrokerChange, onConnectionChange }: BrokerSelectorProps) {
+export default function BrokerConfigSelector({ onBrokerChange, onConnectionChange }: BrokerSelectorProps) {
   const [brokers, setBrokers] = useState<BrokerConfig[]>([]);
   const [activeBrokerId, setActiveBrokerId] = useState<string>('');
   const [connected, setConnected] = useState<boolean>(false);
