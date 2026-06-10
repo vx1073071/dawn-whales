@@ -568,19 +568,19 @@ export default function MonteCarloPage() {
           <span className="text-xl">🎲</span>
         </div>
         <div>
-          <h1 className="text-2xl font-bold">Monte Carlo 模拟器</h1>
-          <p className="text-sm text-gray-400">基于几何布朗运动的投资组合蒙特卡洛仿真</p>
+          <h1 className="text-2xl font-bold">{t('Monte Carlo 模拟器')}</h1>
+          <p className="text-sm text-gray-400">{t('基于几何布朗运动的投资组合蒙特卡洛仿真')}</p>
         </div>
       </div>
 
       {/* Config Panel */}
       <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-5">
-        <h2 className="text-lg font-semibold flex items-center gap-2">⚙️ 参数配置</h2>
+        <h2 className="text-lg font-semibold flex items-center gap-2">{t('⚙️ 参数配置')}</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Initial Capital */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">初始资金 (¥)</label>
+            <label className="block text-sm text-gray-400 mb-1">{t('初始资金 (¥)')}</label>
             <input
               type="number"
               value={config.initialCapital}
@@ -591,7 +591,7 @@ export default function MonteCarloPage() {
 
           {/* Risk-free Rate */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">无风险利率 (%)</label>
+            <label className="block text-sm text-gray-400 mb-1">{t('无风险利率 (%)')}</label>
             <input
               type="number"
               step="0.5"
@@ -603,7 +603,7 @@ export default function MonteCarloPage() {
 
           {/* Distribution */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">分布类型</label>
+            <label className="block text-sm text-gray-400 mb-1">{t('分布类型')}</label>
             <div className="flex gap-3 mt-1">
               {(['normal', 'lognormal', 'fat_tail'] as DistributionType[]).map(d => (
                 <label key={d} className="flex items-center gap-1.5 cursor-pointer">
@@ -622,7 +622,7 @@ export default function MonteCarloPage() {
 
           {/* Sliders */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">期望收益: <span className="text-blue-400 font-semibold">{config.expectedReturn}%</span></label>
+            <label className="block text-sm text-gray-400 mb-1">{t('期望收益:')}<span className="text-blue-400 font-semibold">{config.expectedReturn}%</span></label>
             <input
               type="range" min={0} max={50} step={1}
               value={config.expectedReturn}
@@ -632,7 +632,7 @@ export default function MonteCarloPage() {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1">波动率: <span className="text-yellow-400 font-semibold">{config.volatility}%</span></label>
+            <label className="block text-sm text-gray-400 mb-1">{t('波动率:')}<span className="text-yellow-400 font-semibold">{config.volatility}%</span></label>
             <input
               type="range" min={5} max={80} step={1}
               value={config.volatility}
@@ -642,7 +642,7 @@ export default function MonteCarloPage() {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1">投资期限: <span className="text-green-400 font-semibold">{config.timeHorizon} 年</span></label>
+            <label className="block text-sm text-gray-400 mb-1">{t('投资期限:')}<span className="text-green-400 font-semibold">{config.timeHorizon} 年</span></label>
             <input
               type="range" min={1} max={30} step={1}
               value={config.timeHorizon}
@@ -652,7 +652,7 @@ export default function MonteCarloPage() {
           </div>
 
           <div className="md:col-span-2 lg:col-span-3">
-            <label className="block text-sm text-gray-400 mb-1">模拟次数: <span className="text-purple-400 font-semibold">{config.numSimulations.toLocaleString()}</span></label>
+            <label className="block text-sm text-gray-400 mb-1">{t('模拟次数:')}<span className="text-purple-400 font-semibold">{config.numSimulations.toLocaleString()}</span></label>
             <input
               type="range" min={100} max={10000} step={100}
               value={config.numSimulations}
@@ -677,7 +677,7 @@ export default function MonteCarloPage() {
               模拟运行中...
             </>
           ) : (
-            <>🚀 运行模拟</>
+            <>{t('🚀 运行模拟')}</>
           )}
         </button>
       </div>
@@ -687,7 +687,7 @@ export default function MonteCarloPage() {
         <>
           {/* Stats Dashboard */}
           <div className="space-y-3">
-            <h2 className="text-lg font-semibold flex items-center gap-2">📊 统计结果</h2>
+            <h2 className="text-lg font-semibold flex items-center gap-2">{t('📊 统计结果')}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
               <StatCard label="均值 (Mean)" value={`¥${fmt(results.stats.mean)}`} />
               <StatCard label="中位数 (Median)" value={`¥${fmt(results.stats.median)}`} variant="success" />
@@ -823,36 +823,36 @@ export default function MonteCarloPage() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              <span className="text-sm text-indigo-400">正在从回测引擎获取增强风险指标...</span>
+              <span className="text-sm text-indigo-400">{t('正在从回测引擎获取增强风险指标...')}</span>
             </div>
           )}
 
           {/* Equity Curves */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-3">
-            <h2 className="text-lg font-semibold flex items-center gap-2">📈 权益曲线 (Equity Curves)</h2>
-            <p className="text-xs text-gray-400">50 条样本路径 + 中位数路径 (绿色)</p>
+            <h2 className="text-lg font-semibold flex items-center gap-2">{t('📈 权益曲线 (Equity Curves)')}</h2>
+            <p className="text-xs text-gray-400">{t('50 条样本路径 + 中位数路径 (绿色)')}</p>
             <EquityCurvesChart paths={results.paths} config={config} />
           </div>
 
           {/* Histogram */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-3">
-            <h2 className="text-lg font-semibold flex items-center gap-2">📉 终值分布 (Terminal Value Distribution)</h2>
-            <p className="text-xs text-gray-400">红色区域 = 低于 P5 (VaR 区域)</p>
+            <h2 className="text-lg font-semibold flex items-center gap-2">{t('📉 终值分布 (Terminal Value Distribution)')}</h2>
+            <p className="text-xs text-gray-400">{t('红色区域 = 低于 P5 (VaR 区域)')}</p>
             <HistogramChart values={results.terminalValues} initialCapital={config.initialCapital} />
           </div>
 
           {/* Scenario Comparison */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-3">
-            <h2 className="text-lg font-semibold flex items-center gap-2">🔀 情景对比 (Scenario Comparison)</h2>
+            <h2 className="text-lg font-semibold flex items-center gap-2">{t('🔀 情景对比 (Scenario Comparison)')}</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-gray-400 border-b border-gray-700">
-                    <th className="py-2 px-3 text-left">情景</th>
-                    <th className="py-2 px-3 text-right">期望收益</th>
+                    <th className="py-2 px-3 text-left">{t('情景')}</th>
+                    <th className="py-2 px-3 text-right">{t('期望收益')}</th>
                     <th className="py-2 px-3 text-right">{t("components.volatility")}</th>
-                    <th className="py-2 px-3 text-right">中位数终值</th>
-                    <th className="py-2 px-3 text-right">均值终值</th>
+                    <th className="py-2 px-3 text-right">{t('中位数终值')}</th>
+                    <th className="py-2 px-3 text-right">{t('均值终值')}</th>
                     <th className="py-2 px-3 text-right">VaR 95%</th>
                     <th className="py-2 px-3 text-right">{t('profitProbability')}</th>
                   </tr>
@@ -880,16 +880,16 @@ export default function MonteCarloPage() {
 
           {/* Sensitivity Analysis */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-3">
-            <h2 className="text-lg font-semibold flex items-center gap-2">🔬 敏感性分析 (Sensitivity Analysis)</h2>
-            <p className="text-xs text-gray-400">逐一改变参数，观察结果变化</p>
+            <h2 className="text-lg font-semibold flex items-center gap-2">{t('🔬 敏感性分析 (Sensitivity Analysis)')}</h2>
+            <p className="text-xs text-gray-400">{t('逐一改变参数，观察结果变化')}</p>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-gray-400 border-b border-gray-700">
                     <th className="py-2 px-3 text-left">{t('parameters')}</th>
-                    <th className="py-2 px-3 text-right">取值</th>
-                    <th className="py-2 px-3 text-right">中位数</th>
-                    <th className="py-2 px-3 text-right">均值</th>
+                    <th className="py-2 px-3 text-right">{t('取值')}</th>
+                    <th className="py-2 px-3 text-right">{t('中位数')}</th>
+                    <th className="py-2 px-3 text-right">{t('均值')}</th>
                     <th className="py-2 px-3 text-right">VaR 95%</th>
                     <th className="py-2 px-3 text-right">{t('profitProbability')}</th>
                   </tr>
@@ -925,8 +925,8 @@ export default function MonteCarloPage() {
       {!results && !loading && (
         <div className="flex flex-col items-center justify-center py-20 text-gray-500">
           <span className="text-5xl mb-4">🎲</span>
-          <p className="text-lg">配置参数后点击「运行模拟」开始蒙特卡洛仿真</p>
-          <p className="text-sm mt-2">支持正态分布、对数正态分布和厚尾分布</p>
+          <p className="text-lg">{t('配置参数后点击「运行模拟」开始蒙特卡洛仿真')}</p>
+          <p className="text-sm mt-2">{t('支持正态分布、对数正态分布和厚尾分布')}</p>
         </div>
       )}
     </div>

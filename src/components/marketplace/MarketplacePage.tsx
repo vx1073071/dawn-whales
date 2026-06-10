@@ -88,8 +88,8 @@ export default function MarketplacePage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">🏪 策略市场</h1>
-          <p className="text-gray-400 text-sm">发现优质策略，一键订阅跟单 · 创作者享 70% 收入</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{t('🏪 策略市场')}</h1>
+          <p className="text-gray-400 text-sm">{t('发现优质策略，一键订阅跟单 · 创作者享 70% 收入')}</p>
         </div>
         <button
           onClick={() => setShowPublish(true)}
@@ -141,7 +141,7 @@ export default function MarketplacePage() {
 
       {/* Content area */}
       {loading ? (
-        <div className="text-center py-12 text-gray-500">加载策略市场中...</div>
+        <div className="text-center py-12 text-gray-500">{t('加载策略市场中...')}</div>
       ) : (
         <div className="flex gap-4">
           <div className="flex-1 grid grid-cols-2 xl:grid-cols-3 gap-3 content-start">
@@ -223,8 +223,8 @@ function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: Market
       </div>
 
       <div className="flex items-center justify-between pt-2 border-t border-white/5">
-        <div className="text-gray-500 text-[11px]">📊 已认证</div>
-        <div className="text-sm font-bold text-[#D4A853]">查看详情 →</div>
+        <div className="text-gray-500 text-[11px]">{t('📊 已认证')}</div>
+        <div className="text-sm font-bold text-[#D4A853]">{t('查看详情 →')}</div>
       </div>
     </button>
   );
@@ -363,7 +363,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
         {/* Comment list */}
         <div className="space-y-2 max-h-48 overflow-y-auto">
           {comments.length === 0 && (
-            <div className="text-gray-600 text-[10px] text-center py-3">暂无评论，来发表第一条</div>
+            <div className="text-gray-600 text-[10px] text-center py-3">{t('暂无评论，来发表第一条')}</div>
           )}
           {comments.map((c) => (
             <div key={c.id} className="bg-[#12121a] rounded-lg p-2.5">
@@ -426,27 +426,27 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
 
       <div className="relative bg-[#12121a] border border-white/10 rounded-2xl w-full max-w-md mx-4 p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-white font-semibold text-lg">📤 发布策略到市场</h2>
+          <h2 className="text-white font-semibold text-lg">{t('📤 发布策略到市场')}</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-300">✕</button>
         </div>
 
         {myStrategies.length === 0 ? (
           <div className="text-center py-8">
             <div className="text-3xl mb-2 opacity-40">🧠</div>
-            <p className="text-gray-400 text-sm">你还没有创建任何策略</p>
-            <p className="text-gray-500 text-xs mt-1">先去策略工坊创建策略，再来发布</p>
+            <p className="text-gray-400 text-sm">{t('你还没有创建任何策略')}</p>
+            <p className="text-gray-500 text-xs mt-1">{t('先去策略工坊创建策略，再来发布')}</p>
           </div>
         ) : (
           <div className="space-y-4">
             {/* Strategy selection */}
             <div>
-              <label className="block text-gray-400 text-xs mb-1">选择策略</label>
+              <label className="block text-gray-400 text-xs mb-1">{t('选择策略')}</label>
               <select
                 value={selectedId}
                 onChange={(e) => setSelectedId(e.target.value)}
                 className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50"
               >
-                <option value="">-- 选择要发布的策略 --</option>
+                <option value="">{t('-- 选择要发布的策略 --')}</option>
                 {myStrategies.map((s) => (
                   <option key={s.id} value={s.id}>{s.name || t('未命名策略')}</option>
                 ))}
@@ -455,7 +455,7 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
 
             {/* Description */}
             <div>
-              <label className="block text-gray-400 text-xs mb-1">策略描述（向用户展示）</label>
+              <label className="block text-gray-400 text-xs mb-1">{t('策略描述（向用户展示）')}</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -466,7 +466,7 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
 
             {/* Price */}
             <div>
-              <label className="block text-gray-400 text-xs mb-1">月费（¥0 = 免费）</label>
+              <label className="block text-gray-400 text-xs mb-1">{t('月费（¥0 = 免费）')}</label>
               <input
                 type="number"
                 value={price}
@@ -482,7 +482,7 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
 
             {/* Revenue split info */}
             <div className="bg-[#C9A046]/10 border border-[#C9A046]/20 rounded-lg p-3">
-              <div className="text-[#D4A853] text-xs font-medium mb-1">💰 收入分成</div>
+              <div className="text-[#D4A853] text-xs font-medium mb-1">{t('💰 收入分成')}</div>
               <div className="text-gray-400 text-[11px]">
                 创作者 70% · 平台 30%。每月结算一次，满 ¥100 可提现。
               </div>

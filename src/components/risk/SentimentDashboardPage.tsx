@@ -188,9 +188,9 @@ const MoodGauge: React.FC<{ score: number }> = ({ score }) => {
         <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="white" strokeWidth="2.5" strokeLinecap="round" />
         <circle cx={cx} cy={cy} r="5" fill="white" />
         {/* Labels */}
-        <text x="25" y="130" fill="#ef4444" fontSize="9" textAnchor="middle">极度悲观</text>
+        <text x="25" y="130" fill="#ef4444" fontSize="9" textAnchor="middle">{t('极度悲观')}</text>
         <text x="120" y="25" fill="#94a3b8" fontSize="9" textAnchor="middle">{t("components.neutral")}</text>
-        <text x="215" y="130" fill="#22c55e" fontSize="9" textAnchor="middle">极度乐观</text>
+        <text x="215" y="130" fill="#22c55e" fontSize="9" textAnchor="middle">{t('极度乐观')}</text>
       </svg>
       <div className="mt-2 text-center">
         <span className="text-2xl font-bold" style={{ color }}>{label}</span>
@@ -260,7 +260,7 @@ const SentimentPie: React.FC<{ bullish: number; neutral: number; bearish: number
 
 const SentimentTimeline: React.FC<{ data: { time: string; score: number }[] }> = ({ data }) => {
   if (data.length < 2) {
-    return <div className="text-gray-500 text-sm text-center py-8">暂无时间线数据</div>;
+    return <div className="text-gray-500 text-sm text-center py-8">{t('暂无时间线数据')}</div>;
   }
 
   const width = 600;
@@ -438,7 +438,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   <GlassCard className="p-3 flex flex-wrap items-center gap-3">
     {/* Symbol selector */}
     <div className="flex items-center gap-1.5">
-      <span className="text-xs text-gray-400">标的</span>
+      <span className="text-xs text-gray-400">{t('标的')}</span>
       <select
         value={symbol}
         onChange={(e) => onSymbolChange(e.target.value)}
@@ -467,7 +467,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
     {/* Source filter */}
     <div className="flex items-center gap-1.5">
-      <span className="text-xs text-gray-400">来源</span>
+      <span className="text-xs text-gray-400">{t('来源')}</span>
       <select
         value={source}
         onChange={(e) => onSourceChange(e.target.value)}
@@ -485,7 +485,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
         <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
       </span>
-      <span>实时更新</span>
+      <span>{t('实时更新')}</span>
       {lastUpdate && <span>· 最后更新 {lastUpdate.toLocaleTimeString('zh-CN')}</span>}
     </div>
 
@@ -762,11 +762,11 @@ const SentimentDashboardPage: React.FC = () => {
           {/* Overview Panel */}
           <div className="grid grid-cols-2 gap-4">
             <GlassCard className="p-4">
-              <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">市场情绪仪表盘</h3>
+              <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">{t('市场情绪仪表盘')}</h3>
               <MoodGauge score={overallScore} />
             </GlassCard>
             <GlassCard className="p-4">
-              <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">情绪分布</h3>
+              <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">{t('情绪分布')}</h3>
               <div className="flex items-center justify-center h-36">
                 <SentimentPie {...sentimentDistribution} />
               </div>
@@ -775,13 +775,13 @@ const SentimentDashboardPage: React.FC = () => {
 
           {/* Sentiment Timeline */}
           <GlassCard className="p-4">
-            <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">情绪时间线</h3>
+            <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">{t('情绪时间线')}</h3>
             <SentimentTimeline data={timelineData} />
           </GlassCard>
 
           {/* Entity Sentiment */}
           <GlassCard className="p-4">
-            <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">实体情绪排行</h3>
+            <h3 className="text-xs font-medium text-gray-400 mb-3 uppercase tracking-wider">{t('实体情绪排行')}</h3>
             <EntitySentimentChart entities={entitySentiments} />
           </GlassCard>
         </div>
@@ -790,18 +790,18 @@ const SentimentDashboardPage: React.FC = () => {
         <div className="col-span-4 space-y-4">
           {/* Keyword Cloud */}
           <GlassCard className="p-4">
-            <h3 className="text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">关键词云</h3>
+            <h3 className="text-xs font-medium text-gray-400 mb-2 uppercase tracking-wider">{t('关键词云')}</h3>
             <KeywordCloud keywords={keywordCloud} />
             <div className="flex justify-center gap-4 mt-2 text-[10px] text-gray-500">
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-400" /> 正面</span>
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-400" /> 负面</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-400" />{t('正面')}</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-400" />{t('负面')}</span>
             </div>
           </GlassCard>
 
           {/* News Feed */}
           <GlassCard className="p-4">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider">资讯流</h3>
+              <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider">{t('资讯流')}</h3>
               <span className="text-[10px] text-gray-600">{filteredNews.length} 条</span>
             </div>
             <div className="space-y-1 max-h-[500px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
@@ -814,7 +814,7 @@ const SentimentDashboardPage: React.FC = () => {
                   <svg className="w-10 h-10 mx-auto mb-2 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                   </svg>
-                  <p className="text-sm">暂无相关资讯</p>
+                  <p className="text-sm">{t('暂无相关资讯')}</p>
                 </div>
               )}
             </div>

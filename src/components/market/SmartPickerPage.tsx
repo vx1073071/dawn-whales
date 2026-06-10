@@ -98,8 +98,8 @@ export default function SmartPickerPage() {
     <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">🎯 智能选股</h1>
-          <p className="text-gray-400 text-sm">基于多因子模型的 Top 10 推荐</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{t('🎯 智能选股')}</h1>
+          <p className="text-gray-400 text-sm">{t('基于多因子模型的 Top 10 推荐')}</p>
         </div>
         <div className="flex gap-2">
           {(['score', 'changePct', 'pe'] as const).map((k) => (
@@ -131,14 +131,14 @@ export default function SmartPickerPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                <th className="px-4 py-3 text-left">排名</th>
-                <th className="px-4 py-3 text-left">股票</th>
-                <th className="px-4 py-3 text-right">评分</th>
+                <th className="px-4 py-3 text-left">{t('排名')}</th>
+                <th className="px-4 py-3 text-left">{t('股票')}</th>
+                <th className="px-4 py-3 text-right">{t('评分')}</th>
                 <th className="px-4 py-3 text-right">{t("components.price")}</th>
                 <th className="px-4 py-3 text-right">{t("components.priceChange")}</th>
                 <th className="px-4 py-3 text-right">{t("components.peRatio")}</th>
                 <th className="px-4 py-3 text-right">{t("components.marketCap")}</th>
-                <th className="px-4 py-3 text-left">推荐理由</th>
+                <th className="px-4 py-3 text-left">{t('推荐理由')}</th>
                 <th className="px-4 py-3 text-center">{t("components.actions")}</th>
               </tr>
             </thead>
@@ -198,7 +198,7 @@ export default function SmartPickerPage() {
                 <h2 className="text-xl font-bold text-white">{selected.name} <span className="text-gray-500">({selected.code})</span></h2>
                 <div className="flex items-center gap-3 mt-1">
                   <span className="text-2xl font-bold text-[#D4A853]">{selected.score}</span>
-                  <span className="text-sm text-gray-400">综合评分</span>
+                  <span className="text-sm text-gray-400">{t('综合评分')}</span>
                   <span className={`text-sm font-mono ${selected.changePct >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
                     {selected.changePct >= 0 ? '+' : ''}{selected.changePct.toFixed(2)}%
                   </span>
@@ -231,7 +231,7 @@ export default function SmartPickerPage() {
 
             {/* Reasons */}
             <div className="mt-4">
-              <div className="text-xs text-gray-500 mb-2">推荐理由</div>
+              <div className="text-xs text-gray-500 mb-2">{t('推荐理由')}</div>
               <div className="flex flex-wrap gap-2">
                 {selected.reasons.map((r) => (
                   <span key={r} className="text-xs bg-[#C9A046]/10 text-[#D4A853] px-2 py-1 rounded-lg">{r}</span>

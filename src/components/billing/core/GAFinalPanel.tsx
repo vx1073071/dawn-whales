@@ -79,7 +79,7 @@ export default function GAFinalPanel() {
 
       {/* GA Stats */}
       <div style={sectionStyle}>
-        <div style={{ fontSize: 14, fontWeight: 600, color: colors.text, marginBottom: 12 }}>📊 v1.9.0 GA 发布数据</div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: colors.text, marginBottom: 12 }}>{t('📊 v1.9.0 GA 发布数据')}</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: 8 }}>
           {Object.entries(GA_SUMMARY).map(([k, v]) => (
             <div key={k} style={{ padding: '12px', borderRadius: 8, background: colors.bg, border: `1px solid ${colors.border}`, textAlign: 'center' }}>

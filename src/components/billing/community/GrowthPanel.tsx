@@ -82,8 +82,8 @@ function ModerationTab() {
               <div style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.6 }}>{m.content}</div>
               {m.status === 'pending' && (
                 <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
-                  <button style={{ padding: '5px 14px', borderRadius: 6, border: 'none', background: '#10B981', color: '#FFF', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>✅ 通过</button>
-                  <button style={{ padding: '5px 14px', borderRadius: 6, border: 'none', background: '#EF4444', color: '#FFF', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>🚫 屏蔽</button>
+                  <button style={{ padding: '5px 14px', borderRadius: 6, border: 'none', background: '#10B981', color: '#FFF', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>{t('✅ 通过')}</button>
+                  <button style={{ padding: '5px 14px', borderRadius: 6, border: 'none', background: '#EF4444', color: '#FFF', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>{t('🚫 屏蔽')}</button>
                 </div>
               )}
             </div>
@@ -109,9 +109,9 @@ function InviteTab() {
         border: '1px solid #374151', textAlign: 'center', marginBottom: 20,
       }}>
         <div style={{ fontSize: 32, marginBottom: 8 }}>👥</div>
-        <div style={{ fontSize: 16, fontWeight: 700, color: '#F9FAFB', marginBottom: 4 }}>邀请好友，双方各得奖励</div>
+        <div style={{ fontSize: 16, fontWeight: 700, color: '#F9FAFB', marginBottom: 4 }}>{t('邀请好友，双方各得奖励')}</div>
         <div style={{ fontSize: 13, color: '#9CA3AF', marginBottom: 16 }}>
-          每成功邀请 1 人 → 双方各得 <strong style={{ color: '#D4A853' }}>1 次免费 AI 分析</strong>（价值 1.0 USDT）
+          每成功邀请 1 人 → 双方各得 <strong style={{ color: '#D4A853' }}>{t('1 次免费 AI 分析')}</strong>（价值 1.0 USDT）
         </div>
 
         {/* Invite link */}
@@ -120,7 +120,7 @@ function InviteTab() {
             flex: 1, maxWidth: 340, padding: '10px 14px', borderRadius: 8, border: '1px solid #374151',
             background: '#111827', color: '#818CF8', fontSize: 13, fontFamily: 'monospace', outline: 'none',
           }} />
-          <button style={{ padding: '10px 18px', borderRadius: 8, border: 'none', background: '#6366F1', color: '#FFF', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>📋 复制</button>
+          <button style={{ padding: '10px 18px', borderRadius: 8, border: 'none', background: '#6366F1', color: '#FFF', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>{t('📋 复制')}</button>
         </div>
 
         <div style={{ fontSize: 11, color: '#6B7280' }}>
@@ -131,33 +131,33 @@ function InviteTab() {
       {/* Rewards summary */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginBottom: 20 }}>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>已获奖励</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t('已获奖励')}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#D4A853' }}>{totalRewards.toFixed(1)}</div>
-          <div style={{ fontSize: 10, color: '#6B7280' }}>USDT 等价</div>
+          <div style={{ fontSize: 10, color: '#6B7280' }}>{t('USDT 等价')}</div>
         </div>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>待完成</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t('待完成')}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#F59E0B' }}>{invitesPending}</div>
-          <div style={{ fontSize: 10, color: '#6B7280' }}>个邀请</div>
+          <div style={{ fontSize: 10, color: '#6B7280' }}>{t('个邀请')}</div>
         </div>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>排名</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t('排名')}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#818CF8' }}>#12</div>
-          <div style={{ fontSize: 10, color: '#6B7280' }}>邀请榜</div>
+          <div style={{ fontSize: 10, color: '#6B7280' }}>{t('邀请榜')}</div>
         </div>
       </div>
 
       {/* History */}
       <div>
-        <div style={{ fontSize: 14, fontWeight: 600, color: '#D1D5DB', marginBottom: 10 }}>📋 邀请记录</div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: '#D1D5DB', marginBottom: 10 }}>{t('📋 邀请记录')}</div>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
             <thead>
               <tr style={{ borderBottom: '1px solid #374151' }}>
-                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>邀请码</th>
-                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>被邀请人</th>
+                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{t('邀请码')}</th>
+                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{t('被邀请人')}</th>
                 <th style={{ padding: '8px 12px', textAlign: 'center', color: '#9CA3AF' }}>{t("components.status")}</th>
-                <th style={{ padding: '8px 12px', textAlign: 'right', color: '#9CA3AF' }}>奖励</th>
+                <th style={{ padding: '8px 12px', textAlign: 'right', color: '#9CA3AF' }}>{t('奖励')}</th>
                 <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{t("components.date")}</th>
               </tr>
             </thead>
@@ -193,11 +193,11 @@ function AchievementTab() {
       {/* Summary */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 16 }}>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>已解锁成就</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t('已解锁成就')}</div>
           <div style={{ fontSize: 32, fontWeight: 900, color: '#D4A853' }}>{unlocked}/{total}</div>
         </div>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>整体进度</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t('整体进度')}</div>
           <div style={{ fontSize: 32, fontWeight: 900, color: '#818CF8' }}>{Math.round(unlocked/total*100)}%</div>
         </div>
       </div>
@@ -273,17 +273,17 @@ export default function GrowthPanel() {
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'moderation' ? '#6366F1' : '#1F2937',
           color: tab === 'moderation' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>🛡️ 内容审核</button>
+        }}>{t('🛡️ 内容审核')}</button>
         <button onClick={() => setTab('invite')} style={{
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'invite' ? '#6366F1' : '#1F2937',
           color: tab === 'invite' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>👥 邀请裂变</button>
+        }}>{t('👥 邀请裂变')}</button>
         <button onClick={() => setTab('achievement')} style={{
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'achievement' ? '#6366F1' : '#1F2937',
           color: tab === 'achievement' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>🏆 成就系统</button>
+        }}>{t('🏆 成就系统')}</button>
       </div>
 
       {tab === 'moderation' && <ModerationTab />}

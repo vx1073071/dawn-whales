@@ -70,8 +70,8 @@ export default function AIAdvisorPage() {
     <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">🤖 AI 投顾</h1>
-          <p className="text-gray-400 text-sm">基于多维度数据分析的智能投资建议</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{t('🤖 AI 投顾')}</h1>
+          <p className="text-gray-400 text-sm">{t('基于多维度数据分析的智能投资建议')}</p>
         </div>
         <button
           onClick={load}
@@ -85,12 +85,12 @@ export default function AIAdvisorPage() {
       {/* Market Score */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className={`border rounded-xl p-5 ${rec.bg}`}>
-          <div className="text-xs text-gray-500 mb-1">市场建议</div>
+          <div className="text-xs text-gray-500 mb-1">{t('市场建议')}</div>
           <div className={`text-2xl font-bold ${rec.color}`}>{rec.label}</div>
           <div className="text-xs text-gray-400 mt-1">综合评分: {advice.score}/100</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-          <div className="text-xs text-gray-500 mb-1">市场情绪</div>
+          <div className="text-xs text-gray-500 mb-1">{t('市场情绪')}</div>
           <div className="text-2xl font-bold text-white">{advice.score >= 70 ? '乐观' : advice.score >= 50 ? '中性' : '谨慎'}</div>
           <div className="w-full bg-white/5 rounded-full h-2 mt-2">
             <div
@@ -103,7 +103,7 @@ export default function AIAdvisorPage() {
           </div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-          <div className="text-xs text-gray-500 mb-1">关键主题</div>
+          <div className="text-xs text-gray-500 mb-1">{t('关键主题')}</div>
           <div className="flex flex-wrap gap-1.5 mt-1">
             {advice.keyThemes.map((t) => (
               <span key={t} className="text-xs bg-[#C9A046]/10 text-[#D4A853] px-2 py-1 rounded-lg">{t}</span>
@@ -114,13 +114,13 @@ export default function AIAdvisorPage() {
 
       {/* Market View */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-lg font-semibold text-white mb-3">市场观点</h2>
+        <h2 className="text-lg font-semibold text-white mb-3">{t('市场观点')}</h2>
         <p className="text-sm text-gray-300 leading-relaxed">{advice.marketView}</p>
       </div>
 
       {/* Portfolio Suggestions */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-lg font-semibold text-white mb-4">调仓建议</h2>
+        <h2 className="text-lg font-semibold text-white mb-4">{t('调仓建议')}</h2>
         <div className="space-y-3">
           {advice.portfolioSuggestions.map((s, idx) => (
             <div key={idx} className="flex items-start gap-3 bg-deep rounded-lg p-3">
@@ -146,7 +146,7 @@ export default function AIAdvisorPage() {
 
       {/* Risk Warnings */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-lg font-semibold text-white mb-4">⚠️ 风险提示</h2>
+        <h2 className="text-lg font-semibold text-white mb-4">{t('⚠️ 风险提示')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {advice.riskWarnings.map((w, idx) => (
             <div key={idx} className="flex items-start gap-2 bg-deep rounded-lg p-3">
@@ -159,7 +159,7 @@ export default function AIAdvisorPage() {
 
       {/* Next Week Outlook */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-lg font-semibold text-white mb-3">下周展望</h2>
+        <h2 className="text-lg font-semibold text-white mb-3">{t('下周展望')}</h2>
         <p className="text-sm text-gray-300 leading-relaxed">{advice.nextWeekOutlook}</p>
       </div>
     </div>

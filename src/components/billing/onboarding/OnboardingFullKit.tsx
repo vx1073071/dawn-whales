@@ -115,15 +115,15 @@ function IndicatorCardC({ card }: { card: IndicatorCard }) {
         </span>
       </div>
       <div>
-        <span style={{ fontSize: 11, color: '#6B7280' }}>一句话: </span>
+        <span style={{ fontSize: 11, color: '#6B7280' }}>{t('一句话:')}</span>
         <span style={{ fontSize: 12, color: '#D1D5DB' }}>{card.short}</span>
       </div>
       <div>
-        <span style={{ fontSize: 11, color: '#6B7280' }}>用法: </span>
+        <span style={{ fontSize: 11, color: '#6B7280' }}>{t('用法:')}</span>
         <span style={{ fontSize: 12, color: '#34D399' }}>{card.usage}</span>
       </div>
       <div>
-        <span style={{ fontSize: 11, color: '#6B7280' }}>⚠️ 风险: </span>
+        <span style={{ fontSize: 11, color: '#6B7280' }}>{t('⚠️ 风险:')}</span>
         <span style={{ fontSize: 12, color: '#FCA5A5' }}>{card.risk}</span>
       </div>
     </div>
@@ -192,11 +192,11 @@ function SignalComparisonCard({ pair }: { pair: SignalPair }) {
         <span style={{ fontSize: 12, color: '#9CA3AF' }}>{pair.date}</span>
       </div>
       <div style={{ fontSize: 12, color: '#D1D5DB', marginBottom: 6 }}>
-        <strong>信号:</strong> {pair.signal}
+        <strong>{t('信号:')}</strong> {pair.signal}
       </div>
       <div style={{ display: 'flex', gap: 16, marginBottom: 6 }}>
-        <span style={{ fontSize: 12, color: '#9CA3AF' }}>入场: <span style={{ color: '#D1D5DB' }}>{pair.entry}</span></span>
-        <span style={{ fontSize: 12, color: '#9CA3AF' }}>出场: <span style={{ color: '#D1D5DB' }}>{pair.exit}</span></span>
+        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{t('入场:')}<span style={{ color: '#D1D5DB' }}>{pair.entry}</span></span>
+        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{t('出场:')}<span style={{ color: '#D1D5DB' }}>{pair.exit}</span></span>
         <span style={{ fontSize: 13, fontWeight: 700, color: isGood ? '#10B981' : '#EF4444' }}>{pair.pnl}</span>
       </div>
       <div style={{ fontSize: 11, color: '#6B7280', fontStyle: 'italic' }}>📝 {pair.reason}</div>
@@ -258,7 +258,7 @@ function FriendlyErrorBanner() {
       marginBottom: 12,
     }}>
       <div style={{ fontSize: 13, color: '#D1D5DB', marginBottom: 6 }}>
-        💡 <strong>友好提示示例</strong> — 我们不说"Error: invalid_input_400", 我们说：
+        💡 <strong>{t('友好提示示例')}</strong> — 我们不说"Error: invalid_input_400", 我们说：
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
         <div style={{ fontSize: 11, color: '#EF4444' }}>
@@ -441,9 +441,9 @@ function TutorialFlow({ onComplete, sliderVal, setSliderVal, selectedPreset, set
               style={{ width: '100%', accentColor: '#6366F1', height: 6 }}
             />
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#6B7280', marginTop: 2 }}>
-              <span>3 (超短线)</span>
+              <span>{t('3 (超短线)')}</span>
               <span style={{ fontWeight: 700, color: '#818CF8' }}>{sliderVal}</span>
-              <span>50 (长线)</span>
+              <span>{t('50 (长线)')}</span>
             </div>
 
             <div style={{ marginTop: 12, fontSize: 12, color: '#9CA3AF' }}>
@@ -456,16 +456,16 @@ function TutorialFlow({ onComplete, sliderVal, setSliderVal, selectedPreset, set
 
             {/* Param impact preview */}
             <div style={{ marginTop: 12, padding: '10px', borderRadius: 8, background: '#111827' }}>
-              <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>📊 参数影响预览</div>
+              <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{t('📊 参数影响预览')}</div>
               <div style={{ display: 'flex', gap: 16 }}>
                 <div>
-                  <div style={{ fontSize: 10, color: '#6B7280' }}>预期信号数/月</div>
+                  <div style={{ fontSize: 10, color: '#6B7280' }}>{t('预期信号数/月')}</div>
                   <div style={{ fontSize: 16, fontWeight: 700, color: '#818CF8' }}>
                     {sliderVal <= 8 ? '15-25' : sliderVal <= 20 ? '8-15' : '3-8'}
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 10, color: '#6B7280' }}>预期胜率</div>
+                  <div style={{ fontSize: 10, color: '#6B7280' }}>{t('预期胜率')}</div>
                   <div style={{ fontSize: 16, fontWeight: 700, color: '#34D399' }}>
                     {sliderVal <= 8 ? '~45%' : sliderVal <= 20 ? '~55%' : '~65%'}
                   </div>
@@ -588,7 +588,7 @@ function BacktestAndSignals() {
         <div>
           <HealthCheckDemo />
           <div style={{ marginTop: 12, padding: '12px 16px', borderRadius: 10, background: '#1F2937', border: '1px solid #374151', fontSize: 13, color: '#D1D5DB' }}>
-            <div style={{ fontWeight: 600, marginBottom: 4 }}>📊 回测健康检查</div>
+            <div style={{ fontWeight: 600, marginBottom: 4 }}>{t('📊 回测健康检查')}</div>
             <div style={{ lineHeight: 1.8 }}>
               不仅仅是看总收益！胜率、回撤、夏普、盈亏比、持仓集中度——<br />
               六维体检帮你发现策略的潜在风险。
