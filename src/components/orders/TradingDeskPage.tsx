@@ -145,7 +145,7 @@ function QuickTradeForm({
 
       const res = await api.placeOrder(order);
       if (res?.success || res?.orderId) {
-        setResult({ ok: true, msg: `下单成功: ${side === 'BUY' ? t('components.buy') : t('components.sell')} ${qty} ${symbol.replace('US.', '')}` });
+        setResult({ ok: true, msg: `下单成功: ${side === 'BUY' ? '买入' : '卖出'} ${qty} ${symbol.replace('US.', '')}` });
         onOrderPlaced();
       } else {
         setResult({ ok: false, msg: res?.error || '下单失败' });
@@ -266,7 +266,7 @@ function QuickTradeForm({
               : 'bg-red-500 hover:bg-red-600 text-white'
         } ${loading ? 'opacity-60' : ''}`}
       >
-        {loading ? '下单中...' : !connected ? '请先连接 OpenD' : `${side === 'BUY' ? t('components.buy') : t('components.sell')} ${symbol.replace('US.', '')} × ${qty}`}
+        {loading ? '下单中...' : !connected ? '请先连接 OpenD' : `${side === 'BUY' ? '买入' : '卖出'} ${symbol.replace('US.', '')} × ${qty}`}
       </button>
 
       {/* Result message */}
@@ -666,7 +666,7 @@ export default function TradingDeskPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{o.code?.replace('US.', '') || '--'}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${o.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {o.side === 'BUY' ? t('components.buy') : t('components.sell')}
+                        {o.side === 'BUY' ? '买入' : '卖出'}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm">{o.qty}</td>
@@ -721,7 +721,7 @@ export default function TradingDeskPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{t.symbol?.replace('US.', '')}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${t.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {t.side === 'BUY' ? t('components.buy') : t('components.sell')}
+                        {t.side === 'BUY' ? '买入' : '卖出'}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm">{t.quantity}</td>

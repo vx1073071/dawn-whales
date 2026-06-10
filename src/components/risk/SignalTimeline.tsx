@@ -102,7 +102,7 @@ export default function SignalTimeline({
                   : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              {f === 'all' ? t('components.all') : f === 'BUY' ? t('components.buy') : t('components.sell')}
+              {f === 'all' ? t('components.all') : f === 'BUY' ? '买入' : '卖出'}
             </button>
           ))}
         </div>
@@ -144,7 +144,7 @@ export default function SignalTimeline({
                     <span className={`text-[10px] px-1.5 py-0.5 rounded ${
                       isBuy ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'
                     }`}>
-                      {isBuy ? t('components.buy') : t('components.sell')}
+                      {isBuy ? '买入' : '卖出'}
                     </span>
                     <span className="text-gray-500 text-[10px]">{s.strategyName}</span>
                     {isNew && (

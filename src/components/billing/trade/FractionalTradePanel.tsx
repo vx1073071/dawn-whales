@@ -245,7 +245,7 @@ export default function FractionalTradePanel({
           {/* Submit */}
           <button onClick={handleSubmit} disabled={hasActiveOrder}
                   className="w-full py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-            {direction === 'BUY' ? t('components.buy') : t('components.sell')} {totalQty} 股 {symbol} · {rule.currency} {notional.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            {direction === 'BUY' ? '买入' : '卖出'} {totalQty} 股 {symbol} · {rule.currency} {notional.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </button>
         </div>
 

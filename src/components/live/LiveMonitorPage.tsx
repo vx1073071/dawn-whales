@@ -221,7 +221,7 @@ export default function LiveMonitorPage() {
   };
 
   const typeLabels: Record<string, string> = {
-    BUY: t('components.buy'), SELL: t('components.sell'), STOP_LOSS: t('components.stopLoss'),
+    BUY: '买入', SELL: '卖出', STOP_LOSS: t('components.stopLoss'),
     TAKE_PROFIT: t('components.takeProfit'), ALERT: '告警', ERROR: t('components.error'),
   };
 

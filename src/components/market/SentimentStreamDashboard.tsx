@@ -154,7 +154,7 @@ export default function SentimentStreamDashboard() {
   const signalConfig = {
     bullish: { label: '看多', color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20', icon: '🐂' },
     bearish: { label: '看空', color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20', icon: '🐻' },
-    neutral: { label: t('components.neutral'), color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20', icon: '➡️' },
+    neutral: { label: '中性', color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20', icon: '➡️' },
   }[data.signal];
 
   const trendConfig = {

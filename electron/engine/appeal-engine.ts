@@ -15,6 +15,8 @@
  * >=300L, 8 tests
  */
 
+import { EngineError, ErrorDomain, ErrorCode } from './engine-error';
+
 // ── Types ──────────────────────────────────────────────────────────────────
 
 export type AppealReason =

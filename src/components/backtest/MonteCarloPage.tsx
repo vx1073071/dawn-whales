@@ -1,5 +1,4 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 
 // ============================================================
 // Monte Carlo Simulator Page
@@ -416,7 +415,6 @@ function StatCard({ label, value, sub, variant = 'default' }: { label: string; v
 // Main Page Component
 // ============================================================
 export default function MonteCarloPage() {
-  const { t } = useTranslation();
   const [config, setConfig] = useState<SimConfig>({
     initialCapital: 100000,
     expectedReturn: 10,
@@ -737,7 +735,7 @@ export default function MonteCarloPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
                 {serverRiskMetrics.annualizedReturn != null && (
                   <StatCard
-                    label=t("components.annualR")
+                    label="年化收益"
                     value={`${(serverRiskMetrics.annualizedReturn * 100).toFixed(2)}%`}
                     variant={serverRiskMetrics.annualizedReturn > 0 ? 'success' : 'danger'}
                     sub="Engine 计算"

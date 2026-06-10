@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState, useMemo, useRef, type CSSProperties } from 'react';
 
 // ── Types ──
@@ -213,7 +214,7 @@ function PatternCard({ pattern, onAnnotate, onCorrect }: {
   onCorrect: (id: string) => void
 }) {
   const typeColors: Record<string, string> = { bullish: '#10B981', bearish: '#EF4444', neutral: '#6B7280' };
-  const typeLabels: Record<string, string> = { bullish: t('components.bullish'), bearish: t('components.bearish'), neutral: t('components.neutral') };
+  const typeLabels: Record<string, string> = { bullish: t('components.bullish'), bearish: t('components.bearish'), neutral: '中性' };
 
   return (
     <div
@@ -312,6 +313,7 @@ function PatternLegend() {
 
 // ── Main ──
 export default function AIDrawingPatternPanel() {
+  const { t } = useTranslation();
   const [tab, setTab] = useState<'drawing' | 'pattern'>('drawing');
   const [activeTool, setActiveTool] = useState<string | null>(null);
   const [drawings, setDrawings] = useState<Drawing[]>([

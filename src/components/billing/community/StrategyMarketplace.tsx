@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 /**
  * StrategyMarketplace — ML-66-01 [P0]
  * R66: v1.6.0 GA — Creator growth: strategy marketplace with purchase flow
@@ -307,6 +308,7 @@ export default function StrategyMarketplace({
   onFavorite,
   className = '',
 }: StrategyMarketplaceProps) {
+  const { t } = useTranslation();
   const strategies = propStrategies ?? mockStrategies;
 
   // ── State ─────────────────────────────────────────────────────────────

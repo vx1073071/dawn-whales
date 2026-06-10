@@ -139,7 +139,7 @@ function SignalBacktestTab() {
                 <td style={{ padding: '10px 10px', color: '#D1D5DB', fontWeight: 600 }}>{t.symbol}</td>
                 <td style={{ padding: '10px 10px', textAlign: 'center' }}>
                   <span style={{ padding: '2px 8px', borderRadius: 4, fontSize: 10, fontWeight: 700, background: t.side === 'BUY' ? '#10B98122' : '#EF444422', color: t.side === 'BUY' ? '#34D399' : '#FCA5A5' }}>
-                    {t.side === 'BUY' ? t('components.buy') : t('components.sell')}
+                    {t.side === 'BUY' ? '买入' : '卖出'}
                   </span>
                 </td>
                 <td style={{ padding: '10px 10px', textAlign: 'right', fontFamily: 'monospace', color: '#D1D5DB' }}>{t.entryPrice}</td>

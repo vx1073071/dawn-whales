@@ -21,7 +21,7 @@ interface SentimentData {
 const SENTIMENT_LEVELS = [
   { min: 0, max: 20, label: '极度恐慌', color: '#dc2626', emoji: '😱' },
   { min: 20, max: 40, label: '恐慌', color: '#ef4444', emoji: '😰' },
-  { min: 40, max: 60, label: t('components.neutral'), color: '#f59e0b', emoji: '😐' },
+  { min: 40, max: 60, label: '中性', color: '#f59e0b', emoji: '😐' },
   { min: 60, max: 80, label: '贪婪', color: '#22c55e', emoji: '😏' },
   { min: 80, max: 100, label: '极度贪婪', color: '#16a34a', emoji: '🤑' },
 ];

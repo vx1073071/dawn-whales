@@ -3,7 +3,6 @@ import * as api from '../../lib/bridge-api';
 import { generatePDFReport, backtestToReport } from '../../lib/pdf-report';
 import ParamScanPanel from './ParamScanPanel';
 import WalkForwardPanel from './WalkForwardPanel';
-import { useTranslation } from 'react-i18next';
 
 interface BacktestResult {
   strategyId: string;
@@ -44,7 +43,6 @@ type SortField = 'entryDate' | 'exitDate' | 'pnl' | 'pnlPercent' | 'holdingDays'
 type SortDir = 'asc' | 'desc';
 
 export default function BacktestReportPage() {
-  const { t } = useTranslation();
   const [strategies, setStrategies] = useState<unknown[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [result, setResult] = useState<BacktestResult | null>(null);
@@ -352,12 +350,12 @@ export default function BacktestReportPage() {
               <div className="grid grid-cols-4 gap-3">
                 {[
                   [t('components.totalReturn'), `${(result.totalReturn * 100).toFixed(2)}%`, result.totalReturn >= 0 ? 'text-emerald-400' : 'text-red-400'],
-                  [t("components.annualR"), `${(result.annualizedReturn * 100).toFixed(2)}%`, result.annualizedReturn >= 0 ? 'text-emerald-400' : 'text-red-400'],
+                  ['年化收益', `${(result.annualizedReturn * 100).toFixed(2)}%`, result.annualizedReturn >= 0 ? 'text-emerald-400' : 'text-red-400'],
                   [t('components.maxDrawdown'), `${(result.maxDrawdown * 100).toFixed(2)}%`, 'text-red-400'],
-                  [t("components.sharpe"), result.sharpeRatio.toFixed(2), result.sharpeRatio >= 1 ? 'text-emerald-400' : result.sharpeRatio >= 0 ? 'text-yellow-400' : 'text-red-400'],
+                  ['夏普比率', result.sharpeRatio.toFixed(2), result.sharpeRatio >= 1 ? 'text-emerald-400' : result.sharpeRatio >= 0 ? 'text-yellow-400' : 'text-red-400'],
                   [t('components.winRate'), `${(result.winRate * 100).toFixed(1)}%`, result.winRate >= 0.5 ? 'text-emerald-400' : 'text-red-400'],
                   [t('components.profitLossRatio'), result.profitLossRatio.toFixed(2), result.profitLossRatio >= 1.5 ? 'text-emerald-400' : 'text-yellow-400'],
-                  [t("components.totalTrades"), `${result.totalTrades}`, 'text-white'],
+                  ['总交易', `${result.totalTrades}`, 'text-white'],
                   ['最终资金', `$${result.finalCapital.toFixed(0)}`, result.finalCapital >= result.initialCapital ? 'text-emerald-400' : 'text-red-400'],
                 ].map(([label, value, color], i) => (
                   <div key={i} className="p-4 bg-[#12121a] rounded-xl border border-white/5">
@@ -370,7 +368,7 @@ export default function BacktestReportPage() {
               {/* Monthly returns */}
               {monthlyReturns.length > 0 && (
                 <div className="bg-[#12121a] rounded-xl border border-white/5 p-4">
-                  <div className="text-sm font-medium text-white mb-3">{t("components.monthlyRet")}</div>
+                  <div className="text-sm font-medium text-white mb-3">月度收益</div>
                   <div className="flex flex-wrap gap-2">
                     {monthlyReturns.map(([month, pnl]) => (
                       <div key={month} className={`px-3 py-1.5 rounded-lg text-xs font-medium ${pnl >= 0 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>

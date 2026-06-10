@@ -120,7 +120,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
                     }}
                     onClick={() => setEditedDirection(d)}
                   >
-                    {d === 'BUY' ? t('components.buy') : d === 'SELL' ? t('components.sell') : t('hold')}
+                    {d === 'BUY' ? '买入' : d === 'SELL' ? '卖出' : '持有'}
                   </button>
                 ))}
               </div>
@@ -217,7 +217,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
               <span style={styles.agentEmoji}>{ad.emoji}</span>
               <span style={styles.agentName}>{ad.agentName}</span>
               <span style={{ ...styles.agentVote, color: getDirectionColor(ad.recommendation === 'buy' ? 'BUY' : ad.recommendation === 'sell' ? 'SELL' : 'HOLD') }}>
-                {ad.recommendation === 'buy' ? '看多' : ad.recommendation === 'sell' ? '看空' : t('components.neutral')}
+                {ad.recommendation === 'buy' ? '看多' : ad.recommendation === 'sell' ? '看空' : '中性'}
               </span>
               <span style={{
                 ...styles.agentConf,

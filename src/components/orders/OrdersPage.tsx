@@ -168,7 +168,7 @@ export default function OrdersPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{o.code?.replace('US.', '') || '--'}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${o.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {o.side === 'BUY' ? t('components.buy') : t('components.sell')}
+                        {o.side === 'BUY' ? '买入' : '卖出'}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{o.qty}</td>
@@ -225,7 +225,7 @@ export default function OrdersPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{t.symbol?.replace('US.', '')}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${t.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {t.side === 'BUY' ? t('components.buy') : t('components.sell')}
+                        {t.side === 'BUY' ? '买入' : '卖出'}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{t.quantity}</td>

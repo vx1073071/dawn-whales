@@ -1,4 +1,5 @@
 ﻿import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getAllStrategies, getMarketplaceList, getStrategyRating, rateStrategy, addComment, getComments } from '@/lib/bridge-api';
 import { notify } from '@/components/NotificationToast';
 
@@ -99,7 +100,7 @@ export default function MarketplacePage() {
       {/* Tabs + Filters */}
       <div className="flex items-center gap-4 mb-4 flex-wrap">
         <div className="flex gap-1 bg-[#12121a] rounded-lg p-1">
-          {([['hot', '🔥 热度'], ['return', '📈 收益'], ['stable', '🛡️ 稳健'], ['new', '🆕 新星'], ['free', '🆓 免费']] as [Tab, string][]).map(([key, label]) => (
+          {([['hot', t('🔥 热度')], ['return', t('📈 收益')], ['stable', t('🛡️ 稳健')], ['new', t('🆕 新星')], ['free', t('🆓 免费')]] as [Tab, string][]).map(([key, label]) => (
             <button
               key={key}
               onClick={() => setActiveTab(key)}
@@ -113,7 +114,7 @@ export default function MarketplacePage() {
         </div>
 
         <div className="flex gap-1 text-xs">
-          {([['all', t('components.all')], ['low', '低风险'], ['medium', '中风险'], ['high', '高风险']] as [RiskFilter, string][]).map(([key, label]) => (
+          {([['all', t('components.all')], ['low', t('低风险')], ['medium', t('中风险')], ['high', t('高风险')]] as [RiskFilter, string][]).map(([key, label]) => (
             <button
               key={key}
               onClick={() => setRiskFilter(key)}
@@ -152,7 +153,7 @@ export default function MarketplacePage() {
             ))}
             {filtered.length === 0 && (
               <div className="col-span-3 text-center py-12 text-gray-500">
-                {marketStrategies.length === 0 ? '📭 市场暂未上架策略，去策略工坊创建第一个！' : '未找到匹配的策略'}
+                {marketStrategies.length === 0 ? t('📭 市场暂未上架策略，去策略工坊创建第一个！') : t('未找到匹配的策略')}
               </div>
             )}
           </div>
@@ -192,7 +193,7 @@ function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: Market
     >
       <div className="flex items-start justify-between mb-2">
         <div className="flex-1 min-w-0">
-          <h3 className="text-white text-sm font-medium truncate">{s.name || '未命名'}</h3>
+          <h3 className="text-white text-sm font-medium truncate">{s.name || t('未命名')}</h3>
           <div className="text-gray-500 text-[11px] mt-0.5">
             ⭐{s.avg_rating || 0} ({s.rating_count || 0}评) · 💬 {s.comment_count || 0}
           </div>
@@ -215,7 +216,7 @@ function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: Market
       </div>
 
       <div className="flex items-center gap-1.5 mb-3">
-        <span className="text-[10px] text-gray-500 bg-[#12121a] px-1.5 py-0.5 rounded">{s.symbol || '多市场'}</span>
+        <span className="text-[10px] text-gray-500 bg-[#12121a] px-1.5 py-0.5 rounded">{s.symbol || t('多市场')}</span>
         {s.description && <span className="text-[10px] text-gray-400 truncate">{s.description.slice(0, 30)}</span>}
       </div>
 
@@ -281,7 +282,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
     try {
       await rateStrategy(s.id, star);
       await loadRating();
-    } catch { notify('error', '评分失败'); }
+    } catch { notify('error', t('评分失败')); }
   }
 
   async function handleComment() {
@@ -290,7 +291,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
       await addComment(s.id, newComment.trim());
       setNewComment('');
       await loadComments();
-    } catch { notify('error', '评论失败'); }
+    } catch { notify('error', t('评论失败')); }
   }
 
   return (
@@ -329,7 +330,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
 
       {/* Strategy Info */}
       <div className="grid grid-cols-2 gap-2 mb-4">
-        <MetricBox label="标的" value={s.symbol || '多市场'} />
+        <MetricBox label="标的" value={s.symbol || t('多市场')} />
         <MetricBox label="年化收益" value={`${(s.performance_return || 0).toFixed(1)}%`} color={s.performance_return >= 0 ? 'text-emerald-400' : 'text-red-400'} />
         <MetricBox label="夏普" value={s.performance_sharpe ? s.performance_sharpe.toFixed(1) : '-'} />
         <MetricBox label="评论" value={String(s.comment_count || 0)} />
@@ -377,7 +378,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
       {/* Action */}
       <div className="border-t border-white/5 pt-4">
         <button
-          onClick={() => notify('info', '订阅功能即将上线，敬请期待')}
+          onClick={() => notify('info', t('订阅功能即将上线，敬请期待'))}
           className="w-full py-2.5 bg-[#C9A046] text-black font-semibold rounded-lg text-sm hover:bg-[#D4A853] transition-colors"
         >
           📥 使用此策略
@@ -410,7 +411,7 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
 
   function handlePublish() {
     if (!selected) {
-      notify('warning', '请先选择一个策略');
+      notify('warning', t('请先选择一个策略'));
       return;
     }
     notify('success', `策略 "${selected.name}" 已提交审核，预计 1-2 个工作日上线`);
@@ -445,7 +446,7 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
               >
                 <option value="">-- 选择要发布的策略 --</option>
                 {myStrategies.map((s) => (
-                  <option key={s.id} value={s.id}>{s.name || '未命名策略'}</option>
+                  <option key={s.id} value={s.id}>{s.name || t('未命名策略')}</option>
                 ))}
               </select>
             </div>
@@ -473,7 +474,7 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
                 className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50"
               />
               <div className="text-gray-500 text-[11px] mt-1">
-                {price === 0 ? '免费发布，积累口碑' : `你的收入: ¥${(price * 0.7).toFixed(0)}/月 (70%分成)`}
+                {price === 0 ? t('免费发布，积累口碑') : `你的收入: ¥${(price * 0.7).toFixed(0)}/月 (70%分成)`}
               </div>
             </div>
 

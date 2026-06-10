@@ -14,6 +14,7 @@
  */
 
 import { EventEmitter } from 'events';
+import { EngineError, ErrorDomain, ErrorCode } from './engine-error';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -310,7 +311,7 @@ export class AIUsageBillingContract extends EventEmitter {
    */
   setMonthlyCap(creator: string, capUSDT: number): void {
     if (!VALID_MONTHLY_CAPS.includes(capUSDT)) {
-      throw new Error(`Invalid monthly cap: ${capUSDT}. Valid: ${VALID_MONTHLY_CAPS.join(', ')}`);
+      throw new EngineError(ErrorDomain.VALIDATION, ErrorCode.INVALID_PARAM, `Invalid monthly cap: ${capUSDT}`, { context: { capUSDT, valid: VALID_MONTHLY_CAPS } });
     }
     const wallet = this.getWallet(creator);
     wallet.monthlySpendingCapUSDT = capUSDT;

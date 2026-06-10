@@ -19,6 +19,7 @@
 
 import log from 'electron-log';
 import { EventEmitter } from 'events';
+import { EngineError, ErrorDomain, ErrorCode } from './engine-error';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -224,7 +225,7 @@ export class AgentOrchestrator extends EventEmitter {
 
   async startAnalysis(request: Omit<AnalysisRequest, 'sessionId'>): Promise<string> {
     if (this.sessions.size >= this.config.maxConcurrentSessions) {
-      throw new Error(`Max concurrent sessions (${this.config.maxConcurrentSessions}) reached`);
+      throw new EngineError(ErrorDomain.SYSTEM, ErrorCode.POSITION_LIMIT, `Max concurrent sessions (${this.config.maxConcurrentSessions}) reached`);
     }
 
     const sessionId = `sess_${this.idCounter++}_${Date.now().toString(36)}`;
@@ -423,7 +424,7 @@ export class AgentOrchestrator extends EventEmitter {
     // For now, simulate healthy service
     if (!this.mockHealthy) {
       this.logRequest(method, path, 503, Date.now() - startTime);
-      throw new Error('Service unavailable');
+      throw new EngineError(ErrorDomain.NETWORK, ErrorCode.CONNECTION_FAILED, 'Service unavailable');
     }
 
     const latencyMs = Date.now() - startTime;

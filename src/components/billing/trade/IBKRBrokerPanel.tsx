@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 /**
  * IBKRBrokerPanel — ML-68-01 [P0]
  * R68: v1.7.0-alpha — IBKR (Interactive Brokers) broker configuration panel
@@ -109,6 +110,7 @@ export default function IBKRBrokerPanel({
   activeBroker = 'futu',
   className = '',
 }: IBKRBrokerPanelProps) {
+  const { t } = useTranslation();
   const [config, setConfig] = useState<IBKRConfig>(propConfig ?? DEFAULT_IBKR);
   const [connecting, setConnecting] = useState(false);
   const [connectingError, setConnectingError] = useState('');

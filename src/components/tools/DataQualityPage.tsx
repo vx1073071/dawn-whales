@@ -355,6 +355,7 @@ function generateRecommendations(issues: QualityIssue[], dimensions: QualityDime
 // --- SVG Gauge Component ---
 
 const ScoreGauge: React.FC<{ score: number; grade: string }> = ({ score, grade }) => {
+  const { t } = useTranslation();
   const radius = 90;
   const circumference = 2 * Math.PI * radius;
   const dashOffset = circumference - (score / 100) * circumference;

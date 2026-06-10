@@ -120,7 +120,7 @@ export default function QuickTrade({ onPlaceOrder }: QuickTradeProps) {
               : 'bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20'
           } disabled:opacity-30 disabled:cursor-not-allowed`}
         >
-          {side === 'BUY' ? t('components.buy') : t('components.sell')} {code.toUpperCase() || '---'}
+          {side === 'BUY' ? '买入' : '卖出'} {code.toUpperCase() || '---'}
         </button>
       </div>
 
@@ -131,7 +131,7 @@ export default function QuickTrade({ onPlaceOrder }: QuickTradeProps) {
           <div className="relative bg-[#12121a] border border-white/10 rounded-xl p-5 w-full max-w-sm mx-4">
             <h3 className="text-white font-semibold text-sm mb-3">确认下单</h3>
             <div className="space-y-2 text-xs mb-4">
-              <div className="flex justify-between"><span className="text-gray-500">{t("components.direction")}</span><span className={side === 'BUY' ? 'text-emerald-400' : 'text-red-400'}>{side === 'BUY' ? t('components.buy') : t('components.sell')}</span></div>
+              <div className="flex justify-between"><span className="text-gray-500">{t("components.direction")}</span><span className={side === 'BUY' ? 'text-emerald-400' : 'text-red-400'}>{side === 'BUY' ? '买入' : '卖出'}</span></div>
               <div className="flex justify-between"><span className="text-gray-500">{t("components.code")}</span><span className="text-white font-mono">{code.toUpperCase()}</span></div>
               <div className="flex justify-between"><span className="text-gray-500">{t("components.quantity")}</span><span className="text-white font-mono">{qty}</span></div>
               <div className="flex justify-between"><span className="text-gray-500">{t("components.price")}</span><span className="text-white font-mono">{orderType === 'MARKET' ? t('components.marketPrice') : `$${parseFloat(price).toFixed(2)}`}</span></div>
@@ -139,7 +139,7 @@ export default function QuickTrade({ onPlaceOrder }: QuickTradeProps) {
             </div>
             <div className="flex gap-2">
               <button onClick={handleSubmit} className={`flex-1 py-2 rounded-lg text-sm font-medium ${side === 'BUY' ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'}`}>
-                确认{side === 'BUY' ? t('components.buy') : t('components.sell')}
+                确认{side === 'BUY' ? '买入' : '卖出'}
               </button>
               <button onClick={() => setPreview(false)} className="px-4 py-2 text-gray-400 text-sm hover:text-gray-200">{t("components.cancel")}</button>
             </div>

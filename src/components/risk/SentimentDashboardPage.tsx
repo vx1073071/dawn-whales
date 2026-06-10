@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -54,7 +53,7 @@ const MOOD_LABELS: { min: number; max: number; label: SentimentLabel; color: str
   { min: 0.7, max: 1.0, label: '极度乐观', color: '#22c55e' },
   { min: 0.4, max: 0.7, label: '乐观', color: '#4ade80' },
   { min: 0.15, max: 0.4, label: '偏乐观', color: '#86efac' },
-  { min: -0.15, max: 0.15, label: t('components.neutral'), color: '#94a3b8' },
+  { min: -0.15, max: 0.15, label: '中性', color: '#94a3b8' },
   { min: -0.4, max: -0.15, label: '偏悲观', color: '#fca5a5' },
   { min: -0.7, max: -0.4, label: '悲观', color: '#f87171' },
   { min: -1.0, max: -0.7, label: '极度悲观', color: '#ef4444' },
@@ -66,7 +65,7 @@ function getSentimentLabel(score: number): { label: SentimentLabel; color: strin
   for (const m of MOOD_LABELS) {
     if (score >= m.min && score <= m.max) return { label: m.label, color: m.color };
   }
-  return { label: t('components.neutral'), color: '#94a3b8' };
+  return { label: '中性', color: '#94a3b8' };
 }
 
 function getSentimentBadgeColor(score: number): string {
@@ -206,7 +205,7 @@ const SentimentPie: React.FC<{ bullish: number; neutral: number; bearish: number
   const total = bullish + neutral + bearish || 1;
   const slices = [
     { value: bullish, color: '#22c55e', label: t('components.bullish') },
-    { value: neutral, color: '#94a3b8', label: t('components.neutral') },
+    { value: neutral, color: '#94a3b8', label: '中性' },
     { value: bearish, color: '#ef4444', label: t('components.bearish') },
   ];
 
@@ -385,7 +384,7 @@ const KeywordCloud: React.FC<{ keywords: KeywordItem[] }> = ({ keywords }) => {
 
 const NewsFeedItem: React.FC<{ item: NewsItem }> = ({ item }) => {
   const badge = getSentimentBadgeColor(item.sentiment ?? 0);
-  const sentimentText = item.sentiment && item.sentiment > 0.2 ? t('components.bullish') : item.sentiment && item.sentiment < -0.2 ? t('components.bearish') : t('components.neutral');
+  const sentimentText = item.sentiment && item.sentiment > 0.2 ? t('components.bullish') : item.sentiment && item.sentiment < -0.2 ? t('components.bearish') : '中性';
 
   return (
     <div className="flex gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group">

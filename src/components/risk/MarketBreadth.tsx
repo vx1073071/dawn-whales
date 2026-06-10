@@ -44,7 +44,7 @@ export default function MarketBreadth({
     if (breadth >= 55) return { label: '偏多', color: 'text-emerald-300', bg: 'bg-emerald-500/5' };
     if (breadth <= 40 && advanceDeclineRatio <= 0.7) return { label: '弱势', color: 'text-red-400', bg: 'bg-red-500/10' };
     if (breadth <= 45) return { label: '偏空', color: 'text-red-300', bg: 'bg-red-500/5' };
-    return { label: t('components.neutral'), color: 'text-[#D4A853]', bg: 'bg-[#D4A853]/10' };
+    return { label: '中性', color: 'text-[#D4A853]', bg: 'bg-[#D4A853]/10' };
   }, [breadth, advanceDeclineRatio]);
 
   return (

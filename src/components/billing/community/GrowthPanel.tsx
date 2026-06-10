@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState, type CSSProperties } from 'react';
 
 // ── R80: ML-80-01/02/03 综合 — 内容审核+邀请裂变+成就+PWA+GA打磨 ──
@@ -244,6 +245,7 @@ function AchievementTab() {
 
 // ── Main ──
 export default function GrowthPanel() {
+  const { t } = useTranslation();
   const [tab, setTab] = useState<'moderation' | 'invite' | 'achievement'>('moderation');
 
   const theme: CSSProperties = {

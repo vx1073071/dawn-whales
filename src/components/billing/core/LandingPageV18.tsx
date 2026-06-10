@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState, type CSSProperties } from 'react';
 
 // v1.8.0 GA Landing Page — ML-74-01
@@ -257,6 +258,7 @@ function SEOHead() {
 
 // ── Main ──
 export default function LandingPageV18() {
+  const { t } = useTranslation();
   const theme: CSSProperties = {
     background: '#0A0A10', color: '#E5E7EB',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif',

@@ -103,11 +103,11 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
   const { t } = useTranslation();
 
   const RECOMMENDATION_LABELS: Record<string, string> = {
-    strong_buy: t('strongBuy'),
-    buy: t('components.buy'),
-    hold: t('hold'),
-    sell: t('components.sell'),
-    strong_sell: t('strongSell'),
+    strong_buy: '强烈买入',
+    buy: '买入',
+    hold: '持有',
+    sell: '卖出',
+    strong_sell: '强烈卖出',
   };
 
   const [ticker, setTicker] = useState(symbol);
@@ -341,7 +341,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
             <div style={styles.agentSummary}>{agent.summary}</div>
             <div style={styles.agentRecBadge}>
               <span style={{ color: agent.recommendation === 'buy' ? '#4CAF50' : agent.recommendation === 'sell' ? '#F44336' : '#FFC107' }}>
-                {agent.recommendation === 'buy' ? '看多' : agent.recommendation === 'sell' ? '看空' : t('components.neutral')}
+                {agent.recommendation === 'buy' ? '看多' : agent.recommendation === 'sell' ? '看空' : '中性'}
               </span>
               <span style={styles.confidenceBadge}>{agent.confidence}%</span>
             </div>
@@ -507,7 +507,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
                 <div key={agent} style={styles.voteItem}>
                   <span>{def?.emoji}</span>
                   <span style={{ color: vote === 'buy' ? '#4CAF50' : vote === 'sell' ? '#F44336' : '#FFC107' }}>
-                    {vote === 'buy' ? t('components.buy') : vote === 'sell' ? t('components.sell') : t('hold')}
+                    {vote === 'buy' ? '买入' : vote === 'sell' ? '卖出' : '持有'}
                   </span>
                 </div>
               );
