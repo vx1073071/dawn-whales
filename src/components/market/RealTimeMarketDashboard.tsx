@@ -147,7 +147,7 @@ export default function RealTimeMarketDashboard() {
   useEffect(() => {
     if (typeof window === 'undefined' || !window.api) return;
 
-    const handleQuoteUpdate = (_event: any, quoteUpdates: any[]) => {
+    const handleQuoteUpdate = (_event: unknown, quoteUpdates: any[]) => {
       if (!Array.isArray(quoteUpdates) || quoteUpdates.length === 0) return;
 
       setQuotes(prev => {

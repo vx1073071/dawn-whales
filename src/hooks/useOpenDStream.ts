@@ -132,14 +132,14 @@ export function useOpenDStream(codes: string[]) {
 
 export function registerOpenDStreamIPC(ipcMain: any) {
   // Connect to OpenD WebSocket
-  ipcMain.handle('stock-stream:connect', async (_event: any, config: any) => {
+  ipcMain.handle('stock-stream:connect', async (_event: unknown, config: any) => {
     try {
       const { OpenDClient } = await import('../opend/opend-client');
       const client = new OpenDClient();
       await client.connect(config.url, config.codes);
       return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message };
+    } catch (error: unknown) {
+      return { success: false, error: (error as Error).message };
     }
   });
 
@@ -148,20 +148,20 @@ export function registerOpenDStreamIPC(ipcMain: any) {
     try {
       // Disconnect logic
       return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message };
+    } catch (error: unknown) {
+      return { success: false, error: (error as Error).message };
     }
   });
 
   // Get quotes (polling fallback)
-  ipcMain.handle('stock-stream:get-quotes', async (_event: any, codes: string[]) => {
+  ipcMain.handle('stock-stream:get-quotes', async (_event: unknown, codes: string[]) => {
     try {
       // Fetch from OpenD API
       const { OpenDClient } = await import('../opend/opend-client');
       const client = new OpenDClient();
       const quotes = await client.getQuotes(codes);
       return quotes;
-    } catch (error: any) {
+    } catch (error: unknown) {
       throw error;
     }
   });
@@ -175,7 +175,7 @@ export function registerOpenDStreamIPC(ipcMain: any) {
         mode: 'websocket',
         lastUpdate: Date.now(),
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return { connected: false, mode: 'polling', lastUpdate: Date.now() };
     }
   });

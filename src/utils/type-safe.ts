@@ -211,7 +211,7 @@ export async function tryCatch<T>(
   try {
     const value = await fn();
     return ok(value);
-  } catch (e: any) {
+  } catch (e: unknown) {
     return err(e instanceof Error ? e : new Error(String(e)));
   }
 }
