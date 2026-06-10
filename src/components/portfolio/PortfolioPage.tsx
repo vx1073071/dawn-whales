@@ -107,11 +107,11 @@ export default function PortfolioPage() {
       {/* Account Summary Cards */}
       {funds && (
         <div className="grid grid-cols-5 gap-3 mb-6">
-          <SummaryCard ={t("components.totalAssets")} value={`$${fmt(funds.totalAssets)}`} highlight />
+          <SummaryCard  label={t("components.totalAssets")} value={`$${fmt(funds.totalAssets)}`} highlight />
           <SummaryCard label="今日盈亏" value={`${funds.todayPnl >= 0 ? '+' : ''}$${fmt(funds.todayPnl)}`} className={pnlClass(funds.todayPnl)} />
-          <SummaryCard ={t("components.positionValue")} value={`$${fmt(funds.marketVal)}`} />
-          <SummaryCard ={t("components.availableFunds")} value={`$${fmt(funds.cash)}`} />
-          <SummaryCard ={t("components.buyingPower")} value={`$${fmt(funds.power)}`} />
+          <SummaryCard  label={t("components.positionValue")} value={`$${fmt(funds.marketVal)}`} />
+          <SummaryCard  label={t("components.availableFunds")} value={`$${fmt(funds.cash)}`} />
+          <SummaryCard  label={t("components.buyingPower")} value={`$${fmt(funds.power)}`} />
         </div>
       )}
 

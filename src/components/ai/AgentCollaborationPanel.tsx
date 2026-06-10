@@ -82,13 +82,7 @@ const TIER_CONFIG: Record<Tier, { label: string; agents: number; rounds: number;
   flagship: { label: '旗舰', agents: 4, rounds: 2, cost: 0.016, price: 2.0, emoji: '👑' },
 };
 
-const RECOMMENDATION_LABELS: Record<string, string> = {
-  strong_buy: t('strongBuy'),
-  buy: t('components.buy'),
-  hold: t('hold'),
-  sell: t('components.sell'),
-  strong_sell: t('strongSell'),
-};
+// Moved: RECOMMENDATION_LABELS now inside component (needs useTranslation t())
 
 const RECOMMENDATION_COLORS: Record<string, string> = {
   strong_buy: '#00C853',
@@ -106,6 +100,16 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
   onResult,
   isConnected = true,
 }) => {
+  const { t } = useTranslation();
+
+  const RECOMMENDATION_LABELS: Record<string, string> = {
+    strong_buy: t('strongBuy'),
+    buy: t('components.buy'),
+    hold: t('hold'),
+    sell: t('components.sell'),
+    strong_sell: t('strongSell'),
+  };
+
   const [ticker, setTicker] = useState(symbol);
   const [tier, setTier] = useState<Tier>('flagship');
   const [stage, setStage] = useState<SessionStage>('idle');

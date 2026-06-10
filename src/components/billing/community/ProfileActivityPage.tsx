@@ -153,8 +153,8 @@ export default function ProfileActivityPage({
         <div className="grid grid-cols-5 gap-2">
           <StatCard value={profile.followers} label="粉丝" />
           <StatCard value={profile.following} label="关注" />
-          <StatCard value={profile.strategies} ={t("components.strategy")} />
-          <StatCard value={profile.signals} ={t("components.signal")} />
+          <StatCard value={profile.strategies}  label={t("components.strategy")} />
+          <StatCard value={profile.signals}  label={t("components.signal")} />
           <StatCard value={`$${profile.totalRevenue.toLocaleString()}`} label="收入" />
         </div>
       </div>

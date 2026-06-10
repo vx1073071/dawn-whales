@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo, memo , useTranslation} from 'react'
-import { useState, useEffect, useMemo, memo } from 'react-i18next';
+import { useState, useEffect, useMemo, memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMarketStore } from '@/stores/marketStore';
 import { useWebSocketQuotes } from '@/hooks/useWebSocketQuotes';
 import KLineChart from './KLineChart';
