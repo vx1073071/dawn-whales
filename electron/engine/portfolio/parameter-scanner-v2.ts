@@ -9,6 +9,7 @@
 
 import log from 'electron-log';
 import { BacktestEngine, ParallelBacktestEngine } from '../backtest/backtest-engine-parallel';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -220,7 +221,7 @@ export class ParameterScanner {
     log.info(`[ParameterScanner v2] Scanning ${combinations.length} combinations (maxMemory=${maxMemory})`);
 
     if (combinations.length === 0) {
-      return this.emptyReport('参数范围未定义');
+      return this.emptyReport(i18n.t('parameterScannerV2.k1'));
     }
 
     // 分批处理（每批 maxMemory 个）
@@ -278,7 +279,7 @@ export class ParameterScanner {
     }
 
     if (validCount === 0) {
-      return this.emptyReport('所有参数组合回测失败');
+      return this.emptyReport(i18n.t('parameterScannerV2.k2'));
     }
 
     const sorted = topK.getAll();
@@ -485,14 +486,14 @@ export class ParameterScanner {
     if (neighborhood.robustnessGrade === 'S' || neighborhood.robustnessGrade === 'A') {
       const same = JSON.stringify(best.params) === JSON.stringify(robust.params);
       if (same) {
-        return `🏆 最优参数即最稳健参数 (Sharpe=${best.sharpe.toFixed(2)}, 邻域衰减比=${neighborhood.robustnessRatio.toFixed(2)})，强烈推荐`;
+        return i18n.t('parameterScannerV2.k3');
       }
-      return `👍 稳健参数与最优参数不同，建议使用稳健参数以降低过拟合风险`;
+      return i18n.t('parameterScannerV2.k4');
     }
     if (neighborhood.robustnessGrade === 'B' || neighborhood.robustnessGrade === 'C') {
-      return `⚠️ 最优参数邻域表现中等 (衰减比=${neighborhood.robustnessRatio.toFixed(2)})，建议配合 Walk-Forward 验证`;
+      return i18n.t('parameterScannerV2.k5');
     }
-    return `❌ 最优参数邻域衰减严重 (衰减比=${neighborhood.robustnessRatio.toFixed(2)})，参数敏感度过高，不建议使用`;
+    return i18n.t('parameterScannerV2.k6');
   }
 
   private generateWarnings(
@@ -503,20 +504,20 @@ export class ParameterScanner {
     const warnings: string[] = [];
 
     if (best.totalTrades < 20) {
-      warnings.push(`⚠️ 最优参数仅 ${best.totalTrades} 笔交易，统计意义有限`);
+      warnings.push(i18n.t('parameterScannerV2.k7'));
     }
 
     if (best.sharpe > 3) {
-      warnings.push(`⚠️ Sharpe ${best.sharpe.toFixed(2)} 异常高，可能存在前瞻偏差或过拟合`);
+      warnings.push(i18n.t('parameterScannerV2.k8'));
     }
 
     if (neighborhood.robustnessRatio < 0.5) {
-      warnings.push(`⚠️ 邻域衰减比 ${neighborhood.robustnessRatio.toFixed(2)} 过低，参数敏感度过高`);
+      warnings.push(i18n.t('parameterScannerV2.k9'));
     }
 
     const negativeResults = results.filter(r => r.totalReturn < 0).length;
     if (negativeResults > results.length * 0.7) {
-      warnings.push(`⚠️ ${negativeResults}/${results.length} 个参数组合亏损，策略整体盈利能力存疑`);
+      warnings.push(i18n.t('parameterScannerV2.k10'));
     }
 
     return warnings;

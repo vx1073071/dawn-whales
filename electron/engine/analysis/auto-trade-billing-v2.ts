@@ -17,6 +17,7 @@
  */
 
 import * as crypto from 'crypto';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -219,14 +220,14 @@ export class AutoTradeBillingV2 {
     const balance = this.getBalance(trade.userId);
     const { fee } = this.calculateFee(trade);
 
-    if (balance <= 0) return '余额为零, 请充值 USDT 后再交易';
-    if (balance < fee) return `余额不足: 需要 ${fee} USDT, 当前余额 ${balance} USDT`;
-    if (balance < fee * 10) return `余额偏低: 本次交易后将剩余 ${roundUSDT(balance - fee)} USDT`;
+    if (balance <= 0) return i18n.t('autoTradeBillingV2.k1');
+    if (balance < fee) return i18n.t('autoTradeBillingV2.k2');
+    if (balance < fee * 10) return i18n.t('autoTradeBillingV2.k3');
 
     // Daily limit warning
     const today = trade.executedAt.substring(0, 10);
     const todayCount = this.getUserTradeCount(trade.userId, today);
-    if (todayCount >= 50) return `今日交易次数已达50次, 请注意费率累计`;
+    if (todayCount >= 50) return i18n.t('autoTradeBillingV2.k4');
 
     return null;
   }

@@ -7,6 +7,7 @@ import { exec } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { EngineError, ErrorCode } from '../../errors';
+import i18n from '../../../src/i18n';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -116,7 +117,7 @@ export class MarketHotspotService {
       throw new EngineError(ErrorCode.INTERNAL_ERROR, 'Hotspot script not found');
     }
 
-    const cmd = `python3 "${this.scriptPath}" --query "今日热点"`;
+    const cmd = `python3 "${this.scriptPath}" --query i18n.t('marketHotspot.k1')`;
 
     return new Promise((resolve, reject) => {
       exec(cmd, {
@@ -148,7 +149,7 @@ export class MarketHotspotService {
       const content = lines.slice(1).join('\n').trim();
 
       // Detect section type
-      if (title.includes('热点') || title.includes('板块') || title.includes('赛道')) {
+      if (title.includes(i18n.t('marketHotspot.k2')) || title.includes(i18n.t('marketHotspot.k3')) || title.includes(i18n.t('marketHotspot.k4'))) {
         const items = this.parseBulletItems(content);
         for (const item of items) {
           const category = this.detectCategory(item.title);
@@ -170,7 +171,7 @@ export class MarketHotspotService {
         }
       }
 
-      if (title.includes('热股') || title.includes('活跃') || title.includes('龙头')) {
+      if (title.includes(i18n.t('marketHotspot.k5')) || title.includes(i18n.t('marketHotspot.k6')) || title.includes(i18n.t('marketHotspot.k7'))) {
         const stockItems = this.parseStockList(content);
         hotStocks.push(...stockItems);
       }
@@ -254,22 +255,22 @@ export class MarketHotspotService {
   }
 
   private detectCategory(title: string): HotspotItem['category'] {
-    if (title.includes('板块') || title.includes('行业') || title.includes('产业')) return 'sector';
-    if (title.includes('概念') || title.includes('主题') || title.includes('题材')) return 'theme';
-    if (title.includes('股') || title.includes('公司') || title.match(/[036]\d{5}/)) return 'stock';
-    if (title.includes('政策') || title.includes('监管') || title.includes('法规')) return 'policy';
+    if (title.includes(i18n.t('marketHotspot.k8')) || title.includes(i18n.t('marketHotspot.k9')) || title.includes(i18n.t('marketHotspot.k10'))) return 'sector';
+    if (title.includes(i18n.t('marketHotspot.k11')) || title.includes(i18n.t('marketHotspot.k12')) || title.includes(i18n.t('marketHotspot.k13'))) return 'theme';
+    if (title.includes(i18n.t('marketHotspot.k14')) || title.includes(i18n.t('marketHotspot.k15')) || title.match(/[036]\d{5}/)) return 'stock';
+    if (title.includes(i18n.t('marketHotspot.k16')) || title.includes(i18n.t('marketHotspot.k17')) || title.includes(i18n.t('marketHotspot.k18'))) return 'policy';
     return 'event';
   }
 
   private estimateHeat(text: string): number {
     let heat = 50; // Base
     // Boost for hot keywords
-    const hotWords = ['暴涨', '涨停', '突破', '新高', '爆发', '井喷', '火爆', '大涨', '领涨'];
+    const hotWords = [i18n.t('marketHotspot.k19'), i18n.t('marketHotspot.k20'), i18n.t('marketHotspot.k21'), i18n.t('marketHotspot.k22'), i18n.t('marketHotspot.k23'), i18n.t('marketHotspot.k24'), i18n.t('marketHotspot.k25'), i18n.t('marketHotspot.k26'), i18n.t('marketHotspot.k27')];
     for (const w of hotWords) {
       if (text.includes(w)) heat += 10;
     }
     // Reduce for cool words
-    const coolWords = ['下跌', '回调', '调整', '走弱'];
+    const coolWords = [i18n.t('marketHotspot.k28'), i18n.t('marketHotspot.k29'), i18n.t('marketHotspot.k30'), i18n.t('marketHotspot.k31')];
     for (const w of coolWords) {
       if (text.includes(w)) heat -= 5;
     }

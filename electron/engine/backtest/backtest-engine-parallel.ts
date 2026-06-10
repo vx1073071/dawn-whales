@@ -5,6 +5,7 @@
 import { Worker, isMainThread, parentPort, workerData } from 'worker_threads';
 import log from 'electron-log';
 import path from 'path';
+import i18n from '../../../src/i18n';
 
 // ── Types (与主引擎一致) ───────────────────────────────────────────────────
 
@@ -106,7 +107,7 @@ class BacktestEngineCore {
     if (klines.length < 50) {
       return { 
         success: false, 
-        result: this.emptyResult(config, 'K 线数据不足（需要至少 50 根）')
+        result: this.emptyResult(config, i18n.t('backtestEngineParallel.k1'))
       } as any;
     }
 
@@ -525,17 +526,17 @@ export class ParallelBacktestEngine {
         if (result.success) {
           results.push(result);
         } else {
-          failedJobs.push(`Job ${i + idx}: ${result.result?.reason || '未知错误'}`);
+          failedJobs.push(`Job ${i + idx}: ${result.result?.reason || i18n.t('backtestEngineParallel.k2')}`);
         }
       });
     }
 
     const durationMs = Date.now() - startTime;
     
-    log.info(`[ParallelBacktestEngine] 完成：${results.length}/${configs.length} 成功，耗时 ${durationMs}ms`);
+    log.info(i18n.t('backtestEngineParallel.k3'));
     
     if (failedJobs.length > 0) {
-      log.warn('[ParallelBacktestEngine] 失败任务:', failedJobs.join(', '));
+      log.warn(i18n.t('backtestEngineParallel.k4'), failedJobs.join(', '));
     }
 
     return {
@@ -562,7 +563,7 @@ export class ParallelBacktestEngine {
         worker.terminate();
         resolve({ 
           success: false, 
-          result: { reason: '超时' } as any
+          result: { reason: i18n.t('backtestEngineParallel.k5') } as any
         });
       }, 60000); // 60 秒超时
 
@@ -594,7 +595,7 @@ export class BacktestEngine {
   }
 
   async run(config: BacktestConfig): Promise<BacktestResult> {
-    log.info('[BacktestEngine v2] 单任务运行（兼容模式）:', config.strategy?.type, config.symbol);
+    log.info(i18n.t('backtestEngineParallel.k6'), config.strategy?.type, config.symbol);
     
     // 单任务时直接使用核心引擎，避免 worker 开销
     const core = new BacktestEngineCore();
@@ -605,7 +606,7 @@ export class BacktestEngine {
    * 并行运行多个回测
    */
   async runBatch(configs: BacktestConfig[]): Promise<ParallelBacktestResult> {
-    log.info('[BacktestEngine v2] 并行运行:', configs.length, '个任务');
+    log.info(i18n.t('backtestEngineParallel.k7'), configs.length, i18n.t('backtestEngineParallel.k8'));
     return this.parallelEngine.runParallel(configs);
   }
 }

@@ -8,6 +8,7 @@
 import { EventEmitter } from 'events';
 import { AnomalyDetector } from '../analysis/anomaly-detector';
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 export interface AnomalyAlert {
   id: string;
@@ -167,7 +168,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
         type: 'price_anomaly',
         severity: this.getSeverity(zscore),
         symbol,
-        description: `价格异常: ${price.toFixed(2)} (Z-Score: ${zscore.toFixed(2)})`,
+        description: i18n.t('anomalyDetection.k1'),
         value: price,
         threshold: this.config.thresholds.price,
         metadata: { zscore, method: 'zscore' },
@@ -196,7 +197,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
         type: 'volume_anomaly',
         severity: this.getSeverity(zscore),
         symbol,
-        description: `成交量异常: ${volume.toLocaleString()} (Z-Score: ${zscore.toFixed(2)})`,
+        description: i18n.t('anomalyDetection.k2'),
         value: volume,
         threshold: this.config.thresholds.volume,
         metadata: { zscore, method: 'zscore' },
@@ -224,7 +225,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
         type: 'volatility_anomaly',
         severity: this.getSeverity(zscore),
         symbol,
-        description: `波动率异常: ${volatility.toFixed(2)}% (Z-Score: ${zscore.toFixed(2)})`,
+        description: i18n.t('anomalyDetection.k3'),
         value: volatility,
         threshold: this.config.thresholds.volatility,
         metadata: { zscore, method: 'zscore' },

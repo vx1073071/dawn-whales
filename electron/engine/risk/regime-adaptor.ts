@@ -45,9 +45,9 @@ export interface AdaptorStatus {
 const REGIME_STYLES: Record<RegimeType, RegimeStyle> = {
   BULL: {
     regime: 'BULL',
-    label: '上涨趋势',
+    label: i18n.t('regimeAdaptor.k1'),
     emoji: '📈',
-    description: '顺势而为，积极做多',
+    description: i18n.t('regimeAdaptor.k2'),
     config: {
       stopLossPct: 0.05,      // Tight stop - protect gains
       takeProfitPct: 0.20,     // Let winners run
@@ -63,9 +63,9 @@ const REGIME_STYLES: Record<RegimeType, RegimeStyle> = {
   },
   BEAR: {
     regime: 'BEAR',
-    label: '下跌趋势',
+    label: i18n.t('regimeAdaptor.k3'),
     emoji: '📉',
-    description: '谨慎防守，空头对冲',
+    description: i18n.t('regimeAdaptor.k4'),
     config: {
       stopLossPct: 0.03,      // Very tight
       takeProfitPct: 0.10,     // Take profit quickly
@@ -81,9 +81,9 @@ const REGIME_STYLES: Record<RegimeType, RegimeStyle> = {
   },
   RANGE: {
     regime: 'RANGE',
-    label: '区间震荡',
+    label: i18n.t('regimeAdaptor.k5'),
     emoji: '↔️',
-    description: '高抛低吸，均值回归',
+    description: i18n.t('regimeAdaptor.k6'),
     config: {
       stopLossPct: 0.04,
       takeProfitPct: 0.08,
@@ -99,9 +99,9 @@ const REGIME_STYLES: Record<RegimeType, RegimeStyle> = {
   },
   VOLATILE: {
     regime: 'VOLATILE',
-    label: '剧烈波动',
+    label: i18n.t('regimeAdaptor.k7'),
     emoji: '⚡',
-    description: '降低仓位，等待稳定',
+    description: i18n.t('regimeAdaptor.k8'),
     config: {
       stopLossPct: 0.08,      // Wider stop
       takeProfitPct: 0.15,
@@ -117,9 +117,9 @@ const REGIME_STYLES: Record<RegimeType, RegimeStyle> = {
   },
   UNKNOWN: {
     regime: 'UNKNOWN',
-    label: '未确定',
+    label: i18n.t('regimeAdaptor.k9'),
     emoji: '❓',
-    description: '观望为主，控制风险',
+    description: i18n.t('regimeAdaptor.k10'),
     config: {
       stopLossPct: 0.05,
       takeProfitPct: 0.10,
@@ -306,6 +306,7 @@ export class RegimeAdaptor {
 // ── Extend EventEmitter ────────────────────────────────────────────────────
 
 import { EventEmitter } from 'events';
+import i18n from '../../../src/i18n';
 (RegimeAdaptor as any).prototype.__proto__ = EventEmitter.prototype;
 (RegimeAdaptor as any).prototype.emit = EventEmitter.prototype.emit;
 (RegimeAdaptor as any).prototype.on = EventEmitter.prototype.on;

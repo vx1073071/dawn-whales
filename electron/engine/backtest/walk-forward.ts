@@ -4,6 +4,7 @@
 
 import log from 'electron-log';
 import { BacktestEngine } from './backtest-engine';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -111,8 +112,8 @@ export class WalkForwardEngine {
         summary: { totalWindows: 0, avgOosSharpe: 0, avgOosReturn: 0, avgDecayRatio: 0, stabilityScore: 0, robustnessGrade: 'F' },
         windows: [],
         heatmap: { paramX: '', paramY: '', xValues: [], yValues: [], matrix: [] },
-        recommendation: 'K线数据不足，需要更多历史数据',
-        warnings: [`K线数量 ${klines.length} 不足以执行 WFA (需至少 ${config.inSampleBars + config.outOfSampleBars + 50})`],
+        recommendation: i18n.t('walkForward.k1'),
+        warnings: [i18n.t('walkForward.k2')],
       };
     }
 
@@ -167,8 +168,8 @@ export class WalkForwardEngine {
         summary: { totalWindows: 0, avgOosSharpe: 0, avgOosReturn: 0, avgDecayRatio: 0, stabilityScore: 0, robustnessGrade: 'F' },
         windows: [],
         heatmap: { paramX: '', paramY: '', xValues: [], yValues: [], matrix: [] },
-        recommendation: '无法生成任何窗口，请检查参数配置',
-        warnings: ['窗口数量为零'],
+        recommendation: i18n.t('walkForward.k3'),
+        warnings: [i18n.t('walkForward.k4')],
       };
     }
 
@@ -343,33 +344,33 @@ export class WalkForwardEngine {
 
   private generateRecommendation(stabilityScore: number, avgOosSharpe: number, avgDecayRatio: number): string {
     if (stabilityScore >= 80 && avgDecayRatio >= 0.7) {
-      return '🏆 策略稳健性优秀：OOS表现与IS高度一致，过拟合风险低，建议实盘部署';
+      return i18n.t('walkForward.k5');
     }
     if (stabilityScore >= 60 && avgDecayRatio >= 0.5) {
-      return '👍 策略稳健性良好：OOS衰减可控，可小仓位实盘验证';
+      return i18n.t('walkForward.k6');
     }
     if (stabilityScore >= 40) {
-      return '⚠️ 策略稳健性一般：OOS衰减明显，建议优化参数或增加训练数据';
+      return i18n.t('walkForward.k7');
     }
-    return '❌ 策略过拟合风险高：IS与OOS差异过大，不建议使用';
+    return i18n.t('walkForward.k8');
   }
 
   private generateWarnings(windows: WindowResult[], avgDecayRatio: number, stabilityScore: number): string[] {
     const warnings: string[] = [];
 
     if (avgDecayRatio < 0.3) {
-      warnings.push('⚠️ 严重过拟合：OOS Sharpe 衰减超过 70%');
+      warnings.push(i18n.t('walkForward.k9'));
     } else if (avgDecayRatio < 0.5) {
-      warnings.push('⚠️ 中度过拟合：OOS Sharpe 衰减超过 50%');
+      warnings.push(i18n.t('walkForward.k10'));
     }
 
     if (stabilityScore < 40) {
-      warnings.push('⚠️ 策略稳定性差：不同窗口表现差异过大');
+      warnings.push(i18n.t('walkForward.k11'));
     }
 
     const negativeWindows = windows.filter(w => w.oosReturn < 0).length;
     if (negativeWindows > windows.length * 0.4) {
-      warnings.push(`⚠️ ${negativeWindows}/${windows.length} 个窗口 OOS 亏损`);
+      warnings.push(i18n.t('walkForward.k12'));
     }
 
     return warnings;

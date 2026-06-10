@@ -20,6 +20,7 @@ import { z } from 'zod';
 import { WalkForwardEngine } from '../engine/backtest/walk-forward';
 import { ParameterScanner } from '../engine/portfolio/parameter-scanner';
 import { validate,
+import i18n from '../../src/i18n';
   BrokerSwitchSchema,
   BrokerAddSchema,
   StrategyCreateSchema,
@@ -203,7 +204,7 @@ export function setupIPC(ctx: IPCContext): void {
     const riskResult = ctx.riskEngine?.checkOrder(order);
     if (riskResult && !riskResult.pass) {
       ctx.mainWindow?.webContents.send('risk-alert', { order, reason: riskResult.reason });
-      return { success: false, error: `风控拦截: ${riskResult.reason}` };
+      return { success: false, error: i18n.t('ipcSetup.k1') };
     }
     try {
       const result = await ctx.opendClient.placeOrder(order);
@@ -366,7 +367,7 @@ export function setupIPC(ctx: IPCContext): void {
       }
 
       if (!klines || klines.length < 50) {
-        return { success: false, error: 'K线数据不足（需要至少50根），请确认 OpenD 已连接' };
+        return { success: false, error: i18n.t('ipcSetup.k2') };
       }
 
       const strategyId = config.strategyId;
@@ -688,8 +689,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       if (ctx.mainWindow && !ctx.mainWindow.isDestroyed()) {
         ctx.mainWindow.webContents.send('notification', {
           type: 'error',
-          title: '紧急停止',
-          message: '所有策略已停止',
+          title: i18n.t('ipcSetup.k3'),
+          message: i18n.t('ipcSetup.k4'),
         });
       }
       return { success: true };
@@ -1036,7 +1037,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const wfa = new WalkForwardEngine();
       const klines = config.klines || [];
       if (klines.length < 100) {
-        return { success: false, error: 'K线数据不足 (需至少100根)' };
+        return { success: false, error: i18n.t('ipcSetup.k5') };
       }
       const report = await wfa.run(config, klines);
       return { success: true, report };
@@ -1054,7 +1055,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const scanner = new ParameterScanner();
       const klines = config.klines || [];
       if (klines.length < 50) {
-        return { success: false, error: 'K线数据不足 (需至少50根)' };
+        return { success: false, error: i18n.t('ipcSetup.k6') };
       }
       const report = await scanner.run({ ...config, klines });
       return { success: true, report };
@@ -1076,7 +1077,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       for (const tf of timeframes) {
         const klines = config.klinesByTimeframe?.[tf] || [];
         if (klines.length < 50) {
-          results[tf] = { success: false, error: 'K线不足' };
+          results[tf] = { success: false, error: i18n.t('ipcSetup.k7') };
           continue;
         }
         const btResult = await engine.run({

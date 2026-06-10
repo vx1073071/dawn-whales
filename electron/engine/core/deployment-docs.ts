@@ -1,3 +1,4 @@
+import i18n from '../../../src/i18n';
 // ── J-71-02: Packaging & Deployment Guide (v1.7.0 GA) ─────────────────────
 // Generates Win/Mac/Linux installation instructions + API deployment manual.
 
@@ -30,16 +31,16 @@ export class DeploymentGuide {
   generateWindowsGuide(): InstallGuide {
     return {
       platform: "Windows",
-      title: `Dawn Whales v${this.version} — Windows 安装指南`,
+      title: i18n.t('deploymentDocs.k1'),
       steps: [
-        `1. 下载 Dawn-Whales-Setup-${this.version}.exe`,
-        "2. 双击 .exe 运行安装程序",
-        "3. 如 SmartScreen 拦截，点击「更多信息」→「仍要运行」",
-        "4. 选择安装目录（默认 C:\\Program Files\\Dawn Whales）",
-        "5. 勾选「创建桌面快捷方式」",
-        "6. 安装完成后启动，进入注册/登录页",
-        "7. 首次启动自动激活 7 天免费试用",
-        "8. 系统要求: Windows 10+ / x64 / 4GB RAM+",
+        i18n.t('deploymentDocs.k2'),
+        i18n.t('deploymentDocs.k3'),
+        i18n.t('deploymentDocs.k4'),
+        i18n.t('deploymentDocs.k5'),
+        i18n.t('deploymentDocs.k6'),
+        i18n.t('deploymentDocs.k7'),
+        i18n.t('deploymentDocs.k8'),
+        i18n.t('deploymentDocs.k9'),
       ],
     };
   }
@@ -47,15 +48,15 @@ export class DeploymentGuide {
   generateMacGuide(): InstallGuide {
     return {
       platform: "macOS",
-      title: `Dawn Whales v${this.version} — macOS 安装指南`,
+      title: i18n.t('deploymentDocs.k10'),
       steps: [
-        `1. 下载 Dawn-Whales-${this.version}.dmg`,
-        "2. 双击 .dmg 挂载镜像",
-        "3. 将「Dawn Whales」拖入 Applications 文件夹",
-        `4. 首次打开若提示「无法验证开发者」，前往 系统设置→隐私与安全性→仍要打开`,
-        "5. 双击 Applications 中的 Dawn Whales 启动",
-        "6. 进入注册/登录页，首次启动自动激活 7 天免费试用",
-        "7. 系统要求: macOS 12+ / Apple Silicon 或 Intel / 4GB RAM+",
+        i18n.t('deploymentDocs.k11'),
+        i18n.t('deploymentDocs.k12'),
+        i18n.t('deploymentDocs.k13'),
+        i18n.t('deploymentDocs.k14'),
+        i18n.t('deploymentDocs.k15'),
+        i18n.t('deploymentDocs.k16'),
+        i18n.t('deploymentDocs.k17'),
       ],
     };
   }
@@ -63,15 +64,15 @@ export class DeploymentGuide {
   generateLinuxGuide(): InstallGuide {
     return {
       platform: "Linux",
-      title: `Dawn Whales v${this.version} — Linux 安装指南`,
+      title: i18n.t('deploymentDocs.k18'),
       steps: [
-        `1. 下载 Dawn-Whales-${this.version}.AppImage`,
-        "2. 打开终端，进入下载目录: cd ~/Downloads",
-        `3. 赋予执行权限: chmod +x Dawn-Whales-${this.version}.AppImage`,
-        `4. 运行: ./Dawn-Whales-${this.version}.AppImage`,
-        "5. 如需桌面集成，安装 AppImageLauncher: sudo apt install appimagelauncher",
-        "6. 进入注册/登录页，首次启动自动激活 7 天免费试用",
-        "7. 系统要求: Ubuntu 22.04+ / x64 / 4GB RAM+",
+        i18n.t('deploymentDocs.k19'),
+        i18n.t('deploymentDocs.k20'),
+        i18n.t('deploymentDocs.k21'),
+        i18n.t('deploymentDocs.k22'),
+        i18n.t('deploymentDocs.k23'),
+        i18n.t('deploymentDocs.k24'),
+        i18n.t('deploymentDocs.k25'),
       ],
     };
   }
@@ -94,68 +95,68 @@ export class DeploymentGuide {
       sections: [
         {
           id: "prerequisites",
-          title: "前置要求",
+          title: i18n.t('deploymentDocs.k26'),
           content:
-            "服务器: Ubuntu 22.04+ / CentOS 8+，Node.js 20+，Nginx 1.24+，PM2 (npm i -g pm2)，域名已解析到服务器 IP，SSL 证书 (推荐 Let's Encrypt / certbot)",
+            i18n.t('deploymentDocs.k27'),
         },
         {
           id: "deploy-steps",
-          title: "部署步骤",
+          title: i18n.t('deploymentDocs.k28'),
           content: "",
           subsections: [
             {
               id: "step-1-clone",
-              title: "步骤 1: 获取代码",
+              title: i18n.t('deploymentDocs.k29'),
               content: `git clone https://github.com/dawn-whales/dawn-whales.git && cd dawn-whales && git checkout v${v} && npm ci`,
             },
             {
               id: "step-2-env",
-              title: "步骤 2: 环境变量",
-              content: `cp .env.example .env\n# 编辑 .env:\nDEEPSEEK_API_KEY=sk-your-key\nJWT_SECRET=<随机128字符>\nADMIN_API_TOKEN=<随机64字符>\nPORT=3000\nADMIN_PORT=3001\nDOMAIN=dawnwhales.com`,
+              title: i18n.t('deploymentDocs.k30'),
+              content: i18n.t('deploymentDocs.k31'),
             },
             {
               id: "step-3-build",
-              title: "步骤 3: 构建",
+              title: i18n.t('deploymentDocs.k32'),
               content: "npm run build && mkdir -p logs public",
             },
             {
               id: "step-4-pm2",
-              title: "步骤 4: PM2 启动",
-              content: `pm2 start ecosystem.config.json --env production\npm2 save\npm2 startup  # 开机自启`,
+              title: i18n.t('deploymentDocs.k33'),
+              content: i18n.t('deploymentDocs.k34'),
             },
             {
               id: "step-5-nginx",
-              title: "步骤 5: Nginx 反向代理",
+              title: i18n.t('deploymentDocs.k35'),
               content: `cp nginx/dawnwhales.conf /etc/nginx/sites-available/ && ln -s /etc/nginx/sites-available/dawnwhales.conf /etc/nginx/sites-enabled/ && nginx -t && systemctl reload nginx`,
             },
             {
               id: "step-6-ssl",
-              title: "步骤 6: SSL 证书",
+              title: i18n.t('deploymentDocs.k36'),
               content: "certbot --nginx -d dawnwhales.com -d api.dawnwhales.com",
             },
             {
               id: "step-7-verify",
-              title: "步骤 7: 验证",
-              content: `curl https://api.dawnwhales.com/api/health\n# 返回 {"status":"ok","version":"${v}"}`,
+              title: i18n.t('deploymentDocs.k37'),
+              content: i18n.t('deploymentDocs.k38'),
             },
           ],
         },
         {
           id: "update",
-          title: "更新流程",
+          title: i18n.t('deploymentDocs.k39'),
           content: `git pull origin master && git checkout v<new-version> && npm ci && npm run build && pm2 reload dawn-whales-api`,
         },
         {
           id: "troubleshoot",
-          title: "常见问题",
+          title: i18n.t('deploymentDocs.k40'),
           content:
-            "- PM2 进程未启动: pm2 logs dawn-whales-api 查看日志\n- Nginx 502: 确认 Node 进程在监听 localhost:3000\n- SSL 证书过期: certbot renew\n- DeepSeek 调用失败: 检查 .env 中 DEEPSEEK_API_KEY 是否有效",
+            i18n.t('deploymentDocs.k41'),
         },
         {
           id: "monitoring",
-          title: "监控建议",
+          title: i18n.t('deploymentDocs.k42'),
           content:
-            "- PM2: pm2 monit (CPU/内存实时)\n- 日志: pm2 logs dawn-whales-api --lines 100\n- 健康检查: GET /api/health (建议每 30s)\n- 限流监控: PM2 日志中搜索 '429'\n- 磁盘: 日志目录 logs/ 建议 logrotate 配置",
+            i18n.t('deploymentDocs.k43'),
         },
       ],
     };
@@ -167,15 +168,15 @@ export class DeploymentGuide {
     const guides = this.getAllGuides();
     const manual = this.generateDeployManual();
     return [
-      `# Dawn Whales v${this.version} GA 部署文档`,
+      i18n.t('deploymentDocs.k44'),
       "",
-      `## 桌面端安装`,
+      i18n.t('deploymentDocs.k45'),
       ...guides.map(
         (g) =>
           `### ${g.platform}\n${g.steps.map((s) => `- ${s}`).join("\n")}`,
       ),
       "",
-      `## 服务器部署`,
+      i18n.t('deploymentDocs.k46'),
       ...manual.sections.map((s) => {
         let sec = `### ${s.title}\n${s.content}`;
         if (s.subsections) {

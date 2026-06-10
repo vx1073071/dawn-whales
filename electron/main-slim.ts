@@ -234,7 +234,7 @@ function createWindow() {
     height: 900,
     minWidth: 1000,
     minHeight: 600,
-    title: 'DAWN WHALES · 道鲸',
+    title: i18n.t('mainSlim.k1'),
     icon: path.join(RESOURCES_PATH, 'icons', 'icon.png'),
     backgroundColor: '#0d1117',
     show: false,
@@ -275,21 +275,22 @@ function createWindow() {
 // ── IPC Handlers ───────────────────────────────────────────────────────────
 
 import { registerAllIPC } from './ipc/index';
+import i18n from '../src/i18n';
 
   const iconSize = 16;
   const icon = nativeImage.createFromBuffer(createDiamondIcon(iconSize));
   tray = new Tray(icon);
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'DAWN WHALES · 道鲸', enabled: false },
+    { label: i18n.t('mainSlim.k2'), enabled: false },
     { type: 'separator' },
-    { label: '显示主窗口', click: () => mainWindow?.show() },
-    { label: '紧急停止所有策略', click: () => strategyEngine?.emergencyStop() },
+    { label: i18n.t('mainSlim.k3'), click: () => mainWindow?.show() },
+    { label: i18n.t('mainSlim.k4'), click: () => strategyEngine?.emergencyStop() },
     { type: 'separator' },
-    { label: '退出', click: () => app.quit() },
+    { label: i18n.t('mainSlim.k5'), click: () => app.quit() },
   ]);
 
-  tray.setToolTip('DAWN WHALES · 道鲸');
+  tray.setToolTip(i18n.t('mainSlim.k6'));
   tray.setContextMenu(contextMenu);
   tray.on('double-click', () => mainWindow?.show());
 }
@@ -386,7 +387,7 @@ app.whenReady().then(async () => {
         if (macroDataProvider) await macroDataProvider.getDashboard();
       });
       dataScheduler.register('news', async () => {
-        if (newsAggregator) await newsAggregator.search({ query: 'A股市场' });
+        if (newsAggregator) await newsAggregator.search({ query: i18n.t('mainSlim.k7') });
       });
       dataScheduler.register('hotspot', async () => {
         if (marketHotspot) await marketHotspot.getReport();
@@ -451,7 +452,7 @@ app.whenReady().then(async () => {
       const adapter = brokerManager.getActiveBroker();
       adapter?.onDisconnect(() => {
         if (!mainWindow || mainWindow.isDestroyed()) return;
-        mainWindow.webContents.send('notification', { type: 'warning', message: 'OpenD 连接断开，正在重连...' });
+        mainWindow.webContents.send('notification', { type: 'warning', message: i18n.t('mainSlim.k8') });
       });
       await brokerManager.subscribeAndPush('futu-default', WATCHLIST);
       log.info('[App] BrokerManager auto-connected ✓ Push mode active');
@@ -459,7 +460,7 @@ app.whenReady().then(async () => {
       // Legacy fallback
       opendClient = new FutuOpenDClient('127.0.0.1', 11111);
       opendClient.onDisconnect(() => {
-        mainWindow?.webContents.send('notification', { type: 'warning', message: 'OpenD 连接断开，正在重连...' });
+        mainWindow?.webContents.send('notification', { type: 'warning', message: i18n.t('mainSlim.k9') });
       });
       await opendClient.connect();
       opendClient.onQuotePush((quotes) => {
@@ -498,7 +499,7 @@ app.whenReady().then(async () => {
           mainWindow?.webContents.send('order-update', { ...order, orderId: result.orderId, status: 'submitted' });
         } catch (err) {
           log.error('[App] Auto-trade failed:', err.message);
-          mainWindow?.webContents.send('notification', { type: 'error', message: `交易失败: ${err.message}` });
+          mainWindow?.webContents.send('notification', { type: 'error', message: i18n.t('mainSlim.k10') });
         }
       }
     });
@@ -512,11 +513,11 @@ app.whenReady().then(async () => {
     autoUpdater.autoDownload = false;
     autoUpdater.on('update-available', (info) => {
       log.info('[Updater] New version available:', info.version);
-      mainWindow?.webContents.send('notification', { type: 'info', message: `新版本 ${info.version} 可用，请在设置中更新` });
+      mainWindow?.webContents.send('notification', { type: 'info', message: i18n.t('mainSlim.k11') });
     });
     autoUpdater.on('update-downloaded', () => {
       log.info('[Updater] Update downloaded, ready to install');
-      mainWindow?.webContents.send('notification', { type: 'success', message: '更新已下载，重启即可安装' });
+      mainWindow?.webContents.send('notification', { type: 'success', message: i18n.t('mainSlim.k12') });
     });
     autoUpdater.on('error', (err) => {
       log.warn('[Updater] Error:', err.message);

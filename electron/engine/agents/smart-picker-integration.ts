@@ -6,6 +6,7 @@
 import log from 'electron-log';
 import { SmartPickerService, SmartPickResult } from './smart-picker';
 import { scoreTopAStocks } from '../factors/multi-factor';
+import i18n from '../../../src/i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -130,14 +131,14 @@ export class SmartPickerIntegration {
       // Signals
       const signals: string[] = [
         ...(sp?.signals || []),
-        ...(mfEntry && mfEntry.capitalFlowScore > 70 ? ['资金面强势'] : []),
-        ...(mfEntry && mfEntry.sentimentScore > 70 ? ['情绪面正面'] : []),
+        ...(mfEntry && mfEntry.capitalFlowScore > 70 ? [i18n.t('smartPickerIntegration.k1')] : []),
+        ...(mfEntry && mfEntry.sentimentScore > 70 ? [i18n.t('smartPickerIntegration.k2')] : []),
       ];
 
       // Risks
       const risks: string[] = [
         ...(sp?.risks || []),
-        ...(mfEntry && mfEntry.diagnosisScore < 40 ? ['基本面较弱'] : []),
+        ...(mfEntry && mfEntry.diagnosisScore < 40 ? [i18n.t('smartPickerIntegration.k3')] : []),
       ];
 
       results.push({
@@ -204,22 +205,22 @@ export class SmartPickerIntegration {
 
     // Momentum strategy
     if (tech >= 75 && sp >= 70) {
-      return 'MA5/MA20 动量突破 (MACD 金叉确认)';
+      return i18n.t('smartPickerIntegration.k4');
     }
     // Value + sentiment strategy
     if (stock.multiFactorFactors.diagnosis > 70 && stock.smartPickerScore >= 65) {
-      return '价值回归策略 (基本面+舆情共振)';
+      return i18n.t('smartPickerIntegration.k5');
     }
     // Capital flow driven
     if (stock.multiFactorFactors.capitalFlow >= 75) {
-      return '资金流向策略 (主力持续买入跟进)';
+      return i18n.t('smartPickerIntegration.k6');
     }
     // Breakout
     if (tech >= 65) {
-      return '布林带突破策略 (ATR 动态止损)';
+      return i18n.t('smartPickerIntegration.k7');
     }
     // Default
-    return '双均线交叉策略 (MA5/MA20)';
+    return i18n.t('smartPickerIntegration.k8');
   }
 
   private assessConfidence(stock: BlendedScore): 'HIGH' | 'MEDIUM' | 'LOW' {
@@ -252,9 +253,9 @@ export class SmartPickerIntegration {
   private generateReason(stock: BlendedScore, strategy: string): string {
     const reasons = stock.smartPickerReasons.slice(0, 2);
     if (reasons.length > 0) {
-      return `${stock.name}(${stock.code})综合评分${stock.blendedScore}分，${reasons.join('、')}，推荐${strategy}策略。`;
+      return i18n.t('smartPickerIntegration.k9');
     }
-    return `${stock.name}(${stock.code})综合评分${stock.blendedScore}分（SmartPicker ${stock.smartPickerScore} + MultiFactor ${stock.multiFactorScore})，推荐${strategy}。`;
+    return i18n.t('smartPickerIntegration.k10');
   }
 
   // ── Report ─────────────────────────────────────────────────────────────

@@ -3,6 +3,7 @@
 // IPC: options:chain-analyze, options:iv-surface, options:put-call-ratio
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -333,23 +334,23 @@ export function analyzeOptionsChain(
   const recommendations: string[] = [];
 
   if (putCallVolumeRatio > 1.5) {
-    recommendations.push(`Put/Call ratio ${putCallVolumeRatio.toFixed(2)} 极端看空，可能存在反向机会。`);
+    recommendations.push(i18n.t('optionsChainAnalyzer.k1'));
   } else if (putCallVolumeRatio < 0.5) {
-    recommendations.push(`Put/Call ratio ${putCallVolumeRatio.toFixed(2)} 极端看多，注意回调风险。`);
+    recommendations.push(i18n.t('optionsChainAnalyzer.k2'));
   }
 
   if (ivRank > 80) {
-    recommendations.push(`IV Rank ${ivRank}% 处于高位，考虑卖出策略 (iron condor, credit spread)。`);
+    recommendations.push(i18n.t('optionsChainAnalyzer.k3'));
   } else if (ivRank < 20) {
-    recommendations.push(`IV Rank ${ivRank}% 处于低位，考虑买入策略 (long straddle, debit spread)。`);
+    recommendations.push(i18n.t('optionsChainAnalyzer.k4'));
   }
 
   if (Math.abs(ivSkew) > 0.05) {
-    recommendations.push(`IV Skew ${ivSkew.toFixed(4)} ${ivSkew > 0 ? '看跌保护需求强' : '看涨情绪主导'}。`);
+    recommendations.push(`IV Skew ${ivSkew.toFixed(4)} ${ivSkew > 0 ? i18n.t('optionsChainAnalyzer.k5') : i18n.t('optionsChainAnalyzer.k6')}。`);
   }
 
-  recommendations.push(`Max Pain: $${maxPainStrike}，Max Gamma: $${maxGammaStrike}，期权到期可能向此价位收敛。`);
-  recommendations.push(`期权支撑: $${support} (max put OI)，阻力: $${resistance} (max call OI)。`);
+  recommendations.push(i18n.t('optionsChainAnalyzer.k7'));
+  recommendations.push(i18n.t('optionsChainAnalyzer.k8'));
 
   const result: ChainAnalysisResult = {
     success: true,

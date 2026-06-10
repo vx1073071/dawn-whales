@@ -4,6 +4,7 @@
 // IPC: report:walk-forward
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -103,29 +104,29 @@ function generateRecommendations(summary: WalkForwardReport['summary'], paramSta
   const recs: string[] = [];
 
   if (summary.grade === 'A' || summary.grade === 'B') {
-    recs.push(`策略稳健性评级 ${summary.grade}，Walk-Forward验证通过，可用于实盘。`);
+    recs.push(i18n.t('walkForwardReport.k1'));
   } else if (summary.grade === 'C') {
-    recs.push(`策略稳健性评级 ${summary.grade}，建议缩小参数范围或增加训练窗口。`);
+    recs.push(i18n.t('walkForwardReport.k2'));
   } else {
-    recs.push(`策略稳健性评级 ${summary.grade}，不建议用于实盘，需要重新优化。`);
+    recs.push(i18n.t('walkForwardReport.k3'));
   }
 
   if (summary.returnConsistency < 0.5) {
-    recs.push(`OOS盈利窗口仅 ${Math.round(summary.returnConsistency * 100)}%，策略一致性较差。`);
+    recs.push(i18n.t('walkForwardReport.k4'));
   }
 
   if (summary.avgEfficiency < 0.3) {
-    recs.push(`Walk-Forward效率 ${Math.round(summary.avgEfficiency * 100)}%，过拟合风险较高。`);
+    recs.push(i18n.t('walkForwardReport.k5'));
   }
 
   // Check parameter stability
   const unstableParams = paramStability.filter(p => !p.stable);
   if (unstableParams.length > 0) {
-    recs.push(`参数不稳定: ${unstableParams.map(p => `${p.param} (CV=${p.cv.toFixed(2)})`).join(', ')}。建议收紧参数范围。`);
+    recs.push(i18n.t('walkForwardReport.k6')${p.param} (CV=${p.cv.toFixed(2)})i18n.t('walkForwardReport.k7'));
   }
 
   if (summary.avgOosMaxDD > 15) {
-    recs.push(`平均OOS最大回撤 ${summary.avgOosMaxDD.toFixed(1)}%，风险较高。`);
+    recs.push(i18n.t('walkForwardReport.k8'));
   }
 
   return recs;

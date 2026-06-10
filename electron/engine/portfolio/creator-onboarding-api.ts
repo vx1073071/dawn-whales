@@ -16,6 +16,7 @@
 
 import * as crypto from 'crypto';
 import { EngineError, ErrorCode } from '../../errors';
+import i18n from '../../../src/i18n';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -67,9 +68,9 @@ export interface SignalConfig {
 }
 
 export const SIGNAL_PRICING: Record<SignalTier, { price: number; billing: string }> = {
-  free: { price: 0, billing: '永久免费' },
-  pro: { price: 5, billing: '买断' },
-  elite: { price: 1, billing: '月订阅' },
+  free: { price: 0, billing: i18n.t('creatorOnboardingApi.k1') },
+  pro: { price: 5, billing: i18n.t('creatorOnboardingApi.k2') },
+  elite: { price: 1, billing: i18n.t('creatorOnboardingApi.k3') },
 };
 
 export const DEFAULT_AGENT_PARAMS: Record<AgentType, AgentParams> = {

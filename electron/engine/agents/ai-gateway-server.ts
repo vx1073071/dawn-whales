@@ -19,6 +19,7 @@ import { EngineError, ErrorCode } from '../../errors';
  */
 
 import * as crypto from 'crypto';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -46,12 +47,12 @@ export const ALL_PROVIDERS: { id: LLMProvider; label: string; tier: number }[] =
   { id: 'deepseek-flash', label: 'DeepSeek Flash', tier: 2 },
   { id: 'minimax-abab', label: 'MiniMax ABAB', tier: 2 },
   { id: 'moonshot-v1', label: 'Moonshot V1', tier: 3 },
-  { id: 'zhipu-glm4', label: '智谱 GLM-4', tier: 3 },
-  { id: 'qwen-max', label: '通义千问 Max', tier: 3 },
-  { id: 'ernie-4', label: '文心一言 4.0', tier: 3 },
-  { id: 'hunyuan-pro', label: '混元 Pro', tier: 3 },
-  { id: 'spark-v4', label: '讯飞星火 V4', tier: 3 },
-  { id: 'doubao-pro', label: '豆包 Pro', tier: 3 },
+  { id: 'zhipu-glm4', label: i18n.t('aiGatewayServer.k1'), tier: 3 },
+  { id: 'qwen-max', label: i18n.t('aiGatewayServer.k2'), tier: 3 },
+  { id: 'ernie-4', label: i18n.t('aiGatewayServer.k3'), tier: 3 },
+  { id: 'hunyuan-pro', label: i18n.t('aiGatewayServer.k4'), tier: 3 },
+  { id: 'spark-v4', label: i18n.t('aiGatewayServer.k5'), tier: 3 },
+  { id: 'doubao-pro', label: i18n.t('aiGatewayServer.k6'), tier: 3 },
   { id: 'yi-large', label: 'Yi-Large', tier: 3 },
 ];
 

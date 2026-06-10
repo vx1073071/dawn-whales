@@ -15,6 +15,7 @@ import { StockAnomalyDetector } from '../data/stock-anomaly-detector';
 import { getMarketBreadth } from '../data/market-breadth';
 import { MacroDataProvider } from '../data/macro-provider';
 import { EMDataProvider } from '../data/em-data-provider';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -344,29 +345,29 @@ export async function getDailyReport(): Promise<DailyReport> {
   const dateStr = now.toISOString().split('T')[0];
 
   const lines: string[] = [];
-  lines.push(`# 📊 DAWN WHALES 每日市场简报`);
-  lines.push(`**日期**: ${dateStr}  `);
-  lines.push(`**生成时间**: ${now.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}`);
+  lines.push(i18n.t('emiUnified.k1'));
+  lines.push(i18n.t('emiUnified.k2'));
+  lines.push(i18n.t('emiUnified.k3'));
   lines.push('');
 
   // Sentiment
   const sent = marketOverview.sentiment;
   const sentEmoji = sent.score >= 60 ? '🟢' : sent.score >= 40 ? '🟡' : '🔴';
-  lines.push(`## ${sentEmoji} 市场情绪`);
-  lines.push(`- **情绪指数**: ${sent.score}/100 (${sent.level})`);
-  lines.push(`- **逆向信号**: ${sent.signal}`);
+  lines.push(i18n.t('emiUnified.k4'));
+  lines.push(i18n.t('emiUnified.k5'));
+  lines.push(i18n.t('emiUnified.k6'));
   lines.push('');
 
   // Market breadth
   const b = marketOverview.breadth;
-  lines.push(`## 📈 市场广度`);
-  lines.push(`- **上涨/下跌**: ${b.advancing} / ${b.declining} (A/D: ${b.adRatio})`);
-  lines.push(`- **趋势**: ${b.trend} | **强度**: ${b.strength}/100`);
+  lines.push(i18n.t('emiUnified.k7'));
+  lines.push(i18n.t('emiUnified.k8'));
+  lines.push(i18n.t('emiUnified.k9'));
   lines.push('');
 
   // Macro
   const m = marketOverview.macro;
-  lines.push(`## 🏛️ 宏观经济`);
+  lines.push(i18n.t('emiUnified.k10'));
   lines.push(`- **GDP**: ${m.gdp !== null ? m.gdp + '%' : 'N/A'}`);
   lines.push(`- **CPI**: ${m.cpi !== null ? m.cpi + '%' : 'N/A'}`);
   lines.push(`- **PMI**: ${m.pmi !== null ? m.pmi.toString() : 'N/A'}`);
@@ -375,10 +376,10 @@ export async function getDailyReport(): Promise<DailyReport> {
 
   // Sectors
   if (marketOverview.topSectors.length > 0) {
-    lines.push(`## 🔥 热门板块 Top 5`);
+    lines.push(i18n.t('emiUnified.k11'));
     for (const s of marketOverview.topSectors) {
       const arrow = s.changePct > 0 ? '📈' : s.changePct < 0 ? '📉' : '➡️';
-      lines.push(`- ${arrow} **${s.name}** ${s.changePct > 0 ? '+' : ''}${s.changePct}% (领涨: ${s.leadingStock})`);
+      lines.push(i18n.t('emiUnified.k12'));
     }
     lines.push('');
   }
@@ -386,19 +387,19 @@ export async function getDailyReport(): Promise<DailyReport> {
   // Capital flow
   const cf = marketOverview.capitalFlow;
   if (cf.topInflowSectors.length > 0) {
-    lines.push(`## 💰 资金流向`);
-    lines.push(`- **净流入 Top**: ${cf.topInflowSectors.join(', ')}`);
+    lines.push(i18n.t('emiUnified.k13'));
+    lines.push(i18n.t('emiUnified.k14'));
     if (cf.topOutflowSectors.length > 0) {
-      lines.push(`- **净流出 Top**: ${cf.topOutflowSectors.join(', ')}`);
+      lines.push(i18n.t('emiUnified.k15'));
     }
     lines.push('');
   }
 
   // News
   try {
-    const newsResult = await newsAggregator.search({ query: 'A股市场', hoursBack: 24, limit: 5 });
+    const newsResult = await newsAggregator.search({ query: i18n.t('emiUnified.k16'), hoursBack: 24, limit: 5 });
     if (newsResult.success && newsResult.articles.length > 0) {
-      lines.push(`## 📰 今日要闻`);
+      lines.push(i18n.t('emiUnified.k17'));
       for (const a of newsResult.articles.slice(0, 5)) {
         lines.push(`- ${a.title}`);
       }
@@ -412,9 +413,9 @@ export async function getDailyReport(): Promise<DailyReport> {
     const hotspotService = new MarketHotspotService();
     const hotspot = await hotspotService.getReport({ limit: 5 });
     if (hotspot.success && hotspot.hotspots.length > 0) {
-      lines.push(`## 🔍 市场热点`);
+      lines.push(i18n.t('emiUnified.k18'));
       for (const h of hotspot.hotspots.slice(0, 5)) {
-        lines.push(`- [${h.category}] ${h.title} (热度: ${h.heat})`);
+        lines.push(i18n.t('emiUnified.k19'));
       }
       lines.push('');
     }

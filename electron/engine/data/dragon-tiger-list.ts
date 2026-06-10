@@ -6,6 +6,7 @@ import log from 'electron-log';
 import https from 'https';
 import http from 'http';
 import { httpGet } from '../utils/http';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -195,7 +196,7 @@ export async function getInstitutionalTrades(date?: string): Promise<DragonTiger
 
   // Filter entries where institutional traders appear
   return result.entries.filter(e => 
-    e.netBuyAmount > 0 || e.reason.includes('机构')
+    e.netBuyAmount > 0 || e.reason.includes(i18n.t('dragonTigerList.k1'))
   );
 }
 

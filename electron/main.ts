@@ -89,6 +89,7 @@ import { createTray } from './main/tray';
 import { setupIPC } from './main/ipc-setup';
 import type { IPCContext } from './main/ipc-setup';
 import { EngineError, ErrorDomain, ErrorCode } from './engine/core/engine-error';
+import i18n from '../src/i18n';
 
 
 
@@ -197,14 +198,14 @@ app.whenReady().then(async () => {
       const adapter = brokerManager.getActiveBroker();
       adapter?.onDisconnect(() => {
         if (!mainWindow || mainWindow.isDestroyed()) return;
-        mainWindow.webContents.send('notification', { type: 'warning', message: 'OpenD 连接断开，正在重连...' });
+        mainWindow.webContents.send('notification', { type: 'warning', message: i18n.t('main.k1') });
       });
       await brokerManager.subscribeAndPush('futu-default', WATCHLIST);
       log.info('[App] BrokerManager auto-connected ✓ Push mode active');
     } else {
       opendClient = new FutuOpenDClient('127.0.0.1', 11111);
       opendClient.onDisconnect(() => {
-        mainWindow?.webContents.send('notification', { type: 'warning', message: 'OpenD 连接断开，正在重连...' });
+        mainWindow?.webContents.send('notification', { type: 'warning', message: i18n.t('main.k2') });
       });
       await opendClient.connect();
       opendClient.onQuotePush((quotes) => {
@@ -243,7 +244,7 @@ app.whenReady().then(async () => {
           mainWindow?.webContents.send('order-update', { ...order, orderId: result.orderId, status: 'submitted' });
         } catch (err) {
           log.error('[App] Auto-trade failed:', err.message);
-          mainWindow?.webContents.send('notification', { type: 'error', message: `交易失败: ${err.message}` });
+          mainWindow?.webContents.send('notification', { type: 'error', message: i18n.t('main.k3') });
         }
       }
     });
@@ -257,11 +258,11 @@ app.whenReady().then(async () => {
     autoUpdater.autoDownload = false;
     autoUpdater.on('update-available', (info) => {
       log.info('[Updater] New version available:', info.version);
-      mainWindow?.webContents.send('notification', { type: 'info', message: `新版本 ${info.version} 可用，请在设置中更新` });
+      mainWindow?.webContents.send('notification', { type: 'info', message: i18n.t('main.k4') });
     });
     autoUpdater.on('update-downloaded', () => {
       log.info('[Updater] Update downloaded, ready to install');
-      mainWindow?.webContents.send('notification', { type: 'success', message: '更新已下载，重启即可安装' });
+      mainWindow?.webContents.send('notification', { type: 'success', message: i18n.t('main.k5') });
     });
     autoUpdater.on('error', (err) => {
       log.warn('[Updater] Error:', err.message);

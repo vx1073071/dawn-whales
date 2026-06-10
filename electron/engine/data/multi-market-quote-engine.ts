@@ -1,3 +1,4 @@
+import i18n from '../../../src/i18n';
 // ── J-72-06 R72 AUTHORITATIVE: Multi-Market Quote Engine + K-line ────────
 // 7-market real-time quote aggregation + 9-period K-line
 // TradingView-grade: <100ms draw, inertial zoom, crosshair, level2 depth
@@ -341,56 +342,56 @@ export interface MarketInfo {
 
 export const MARKET_REGISTRY: Record<string, MarketInfo> = {
   HKEX: {
-    code: "HKEX", name: "Hong Kong Exchange", nameCN: "香港交易所",
+    code: "HKEX", name: "Hong Kong Exchange", nameCN: i18n.t('multiMarketQuoteEngine.k1'),
     currency: "HKD", timezone: "Asia/Hong_Kong",
-    tradingHours: "09:30-12:00, 13:00-16:00 (盘前09:00-09:30)",
+    tradingHours: i18n.t('multiMarketQuoteEngine.k2'),
     lotSize: 100, commission: 0.001,
     instruments: ["stock", "etf", "reit", "cbcs", "warrant", "future", "option"],
   },
   NYSE: {
-    code: "NYSE", name: "New York Stock Exchange", nameCN: "纽约证券交易所",
+    code: "NYSE", name: "New York Stock Exchange", nameCN: i18n.t('multiMarketQuoteEngine.k3'),
     currency: "USD", timezone: "America/New_York",
-    tradingHours: "09:30-16:00 (盘前04:00-09:30, 盘后16:00-20:00)",
+    tradingHours: i18n.t('multiMarketQuoteEngine.k4'),
     lotSize: 1, commission: 0,
     instruments: ["stock", "etf", "option"],
   },
   NASDAQ: {
-    code: "NASDAQ", name: "NASDAQ", nameCN: "纳斯达克",
+    code: "NASDAQ", name: "NASDAQ", nameCN: i18n.t('multiMarketQuoteEngine.k5'),
     currency: "USD", timezone: "America/New_York",
-    tradingHours: "09:30-16:00 (盘前04:00-09:30, 盘后16:00-20:00)",
+    tradingHours: i18n.t('multiMarketQuoteEngine.k6'),
     lotSize: 1, commission: 0,
     instruments: ["stock", "etf", "option"],
   },
   SGX: {
-    code: "SGX", name: "Singapore Exchange", nameCN: "新加坡交易所",
+    code: "SGX", name: "Singapore Exchange", nameCN: i18n.t('multiMarketQuoteEngine.k7'),
     currency: "SGD", timezone: "Asia/Singapore",
     tradingHours: "09:00-12:00, 13:00-17:00",
     lotSize: 100, commission: 0.00275,
     instruments: ["stock", "etf", "future"],
   },
   TSE: {
-    code: "TSE", name: "Tokyo Stock Exchange", nameCN: "东京证券交易所",
+    code: "TSE", name: "Tokyo Stock Exchange", nameCN: i18n.t('multiMarketQuoteEngine.k8'),
     currency: "JPY", timezone: "Asia/Tokyo",
     tradingHours: "09:00-11:30, 12:30-15:00",
     lotSize: 100, commission: 0.001,
     instruments: ["stock", "etf", "future"],
   },
   ASX: {
-    code: "ASX", name: "Australian Securities Exchange", nameCN: "澳大利亚证券交易所",
+    code: "ASX", name: "Australian Securities Exchange", nameCN: i18n.t('multiMarketQuoteEngine.k9'),
     currency: "AUD", timezone: "Australia/Sydney",
     tradingHours: "10:00-16:00",
     lotSize: 1, commission: 0.001,
     instruments: ["stock", "etf", "option"],
   },
   TSX: {
-    code: "TSX", name: "Toronto Stock Exchange", nameCN: "多伦多证券交易所",
+    code: "TSX", name: "Toronto Stock Exchange", nameCN: i18n.t('multiMarketQuoteEngine.k10'),
     currency: "CAD", timezone: "America/Toronto",
     tradingHours: "09:30-16:00",
     lotSize: 1, commission: 0.001,
     instruments: ["stock", "etf", "option"],
   },
   BURSA: {
-    code: "BURSA", name: "Bursa Malaysia", nameCN: "马来西亚交易所",
+    code: "BURSA", name: "Bursa Malaysia", nameCN: i18n.t('multiMarketQuoteEngine.k11'),
     currency: "MYR", timezone: "Asia/Kuala_Lumpur",
     tradingHours: "09:00-12:30, 14:30-17:00",
     lotSize: 100, commission: 0.001,

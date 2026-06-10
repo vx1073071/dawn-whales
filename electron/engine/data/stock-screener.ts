@@ -6,10 +6,11 @@ import log from 'electron-log';
 import { exec } from 'child_process';
 import path from 'path';
 import fs from 'fs';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
-export type SelectType = 'A股' | '港股' | '美股' | '板块' | '基金' | 'ETF' | '可转债';
+export type SelectType = i18n.t('stockScreener.k1') | i18n.t('stockScreener.k2') | i18n.t('stockScreener.k3') | i18n.t('stockScreener.k4') | i18n.t('stockScreener.k5') | 'ETF' | i18n.t('stockScreener.k6');
 
 export interface ScreenerRequest {
   query: string;
@@ -52,55 +53,55 @@ export interface ScreenerResult {
 
 const COLUMN_MAP: Record<string, keyof StockRecord> = {
   // Common
-  '代码': 'code',
-  '股票代码': 'code',
-  '名称': 'name',
-  '股票名称': 'name',
-  '最新价': 'price',
-  '涨跌幅': 'changePct',
-  '涨跌额': 'changeAmt',
-  '成交额': 'volume',
-  '换手率': 'turnoverRate',
+  i18n.t('stockScreener.k7'): 'code',
+  i18n.t('stockScreener.k8'): 'code',
+  i18n.t('stockScreener.k9'): 'name',
+  i18n.t('stockScreener.k10'): 'name',
+  i18n.t('stockScreener.k11'): 'price',
+  i18n.t('stockScreener.k12'): 'changePct',
+  i18n.t('stockScreener.k13'): 'changeAmt',
+  i18n.t('stockScreener.k14'): 'volume',
+  i18n.t('stockScreener.k15'): 'turnoverRate',
 
   // Valuation
-  '市盈率': 'pe',
-  '市盈率(动态)': 'pe',
+  i18n.t('stockScreener.k16'): 'pe',
+  i18n.t('stockScreener.k17'): 'pe',
   'PE': 'pe',
-  '市净率': 'pb',
+  i18n.t('stockScreener.k18'): 'pb',
   'PB': 'pb',
-  '总市值': 'marketCap',
-  '总市值(元)': 'marketCap',
+  i18n.t('stockScreener.k19'): 'marketCap',
+  i18n.t('stockScreener.k20'): 'marketCap',
 
   // Shares
-  '总股本': 'totalShares',
-  '流通股本': 'floatShares',
-  '流通市值': 'extra', // Will be put in extra
+  i18n.t('stockScreener.k21'): 'totalShares',
+  i18n.t('stockScreener.k22'): 'floatShares',
+  i18n.t('stockScreener.k23'): 'extra', // Will be put in extra
 
   // Sector
-  '所属行业': 'industry',
-  '行业': 'industry',
-  '所属板块': 'industry',
+  i18n.t('stockScreener.k24'): 'industry',
+  i18n.t('stockScreener.k25'): 'industry',
+  i18n.t('stockScreener.k26'): 'industry',
 
   // ETF/Fund specific
-  '基金代码': 'code',
-  '基金名称': 'name',
-  '基金类型': 'extra',
-  '最新规模': 'marketCap',
-  '近1年收益': 'changePct',
+  i18n.t('stockScreener.k27'): 'code',
+  i18n.t('stockScreener.k28'): 'name',
+  i18n.t('stockScreener.k29'): 'extra',
+  i18n.t('stockScreener.k30'): 'marketCap',
+  i18n.t('stockScreener.k31'): 'changePct',
 
   // Bond specific
-  '债券代码': 'code',
-  '债券名称': 'name',
-  '债券简称': 'name',
-  '转债价格': 'price',
-  '转股溢价率': 'extra',
+  i18n.t('stockScreener.k32'): 'code',
+  i18n.t('stockScreener.k33'): 'name',
+  i18n.t('stockScreener.k34'): 'name',
+  i18n.t('stockScreener.k35'): 'price',
+  i18n.t('stockScreener.k36'): 'extra',
 
   // Sector/Board specific
-  '板块代码': 'code',
-  '板块名称': 'name',
-  '领涨股': 'extra',
-  '上涨家数': 'extra',
-  '下跌家数': 'extra',
+  i18n.t('stockScreener.k37'): 'code',
+  i18n.t('stockScreener.k38'): 'name',
+  i18n.t('stockScreener.k39'): 'extra',
+  i18n.t('stockScreener.k40'): 'extra',
+  i18n.t('stockScreener.k41'): 'extra',
 };
 
 // ── Script Paths ───────────────────────────────────────────────────────────
@@ -202,7 +203,7 @@ export class StockScreenerService {
    */
   async search(request: ScreenerRequest): Promise<ScreenerResult> {
     const startTime = Date.now();
-    const selectType = request.selectType || 'A股';
+    const selectType = request.selectType || i18n.t('stockScreener.k42');
     const limit = request.limit || 50;
     const timeout = request.timeout || 30000;
 

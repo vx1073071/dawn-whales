@@ -14,6 +14,7 @@ import { StrategyEngine } from '../engine/analysis/strategy-engine';
 import { RiskEngine } from '../engine/risk/risk-engine';
 import { BacktestEngine } from '../engine/backtest/backtest-engine';
 import log from 'electron-log';
+import i18n from '../../src/i18n';
 
 export interface StrategyExecuteRequest {
   /** 自然语言策略描述 */
@@ -68,7 +69,7 @@ export async function handleStrategyExecute(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error || '无法解析策略描述',
+        error: parsed.error || i18n.t('strategyExecuteHandler.k1'),
       };
     }
 

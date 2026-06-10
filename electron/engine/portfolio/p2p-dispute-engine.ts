@@ -1,5 +1,6 @@
 /**
 import { EngineError, ErrorCode } from '../../errors';
+import i18n from '../../../src/i18n';
 
  * J-78-03-2: p2p-dispute-engine.ts — P2P争议申诉引擎
  * v1.9.0: 拆分自p2p-transfer-engine
@@ -25,11 +26,11 @@ export interface DisputeRecord {
 }
 
 const DISPUTE_REASON_LABELS: Record<DisputeReason, string> = {
-  goods_not_received: '未收到商品/服务',
-  goods_damaged: '商品/服务与描述不符',
-  wrong_amount: '金额不正确',
-  fraud_suspected: '疑似欺诈',
-  other: '其他原因',
+  goods_not_received: i18n.t('p2pDisputeEngine.k1'),
+  goods_damaged: i18n.t('p2pDisputeEngine.k2'),
+  wrong_amount: i18n.t('p2pDisputeEngine.k3'),
+  fraud_suspected: i18n.t('p2pDisputeEngine.k4'),
+  other: i18n.t('p2pDisputeEngine.k5'),
 };
 
 export class P2PDisputeEngine {

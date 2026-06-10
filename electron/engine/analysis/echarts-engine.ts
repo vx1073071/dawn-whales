@@ -4,6 +4,7 @@
  */
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -88,7 +89,7 @@ export class EChartsEngine {
 
   // ── K-Line Chart ─────────────────────────────────────────────────────────
 
-  generateKlineChart(data: KlineData[], title: string = 'K线图'): ChartOption {
+  generateKlineChart(data: KlineData[], title: string = i18n.t('echartsEngine.k1')): ChartOption {
     const times = data.map(d => this.formatTime(d.time));
     const ohlc = data.map(d => [d.open, d.close, d.low, d.high]);
     const volumes = data.map(d => d.volume);
@@ -107,7 +108,7 @@ export class EChartsEngine {
       ],
       series: [
         {
-          name: 'K线',
+          name: i18n.t('echartsEngine.k2'),
           type: 'candlestick',
           data: ohlc,
           itemStyle: {
@@ -118,7 +119,7 @@ export class EChartsEngine {
           },
         },
         {
-          name: '成交量',
+          name: i18n.t('echartsEngine.k3'),
           type: 'bar',
           data: volumes,
           yAxisIndex: 1,
@@ -126,7 +127,7 @@ export class EChartsEngine {
         },
       ],
       tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
-      legend: { show: true, data: ['K线', '成交量'] },
+      legend: { show: true, data: [i18n.t('echartsEngine.k4'), i18n.t('echartsEngine.k5')] },
       grid: this.defaultGrid,
       dataZoom: [
         { type: 'inside', start: 0, end: 100 },
@@ -150,7 +151,7 @@ export class EChartsEngine {
   generateLineChart(
     labels: string[],
     series: ChartSeries[],
-    title: string = '折线图'
+    title: string = i18n.t('echartsEngine.k6')
   ): ChartOption {
     const option: ChartOption = {
       type: 'line',
@@ -182,7 +183,7 @@ export class EChartsEngine {
   generateBarChart(
     labels: string[],
     series: ChartSeries[],
-    title: string = '柱状图'
+    title: string = i18n.t('echartsEngine.k7')
   ): ChartOption {
     const option: ChartOption = {
       type: 'bar',
@@ -210,7 +211,7 @@ export class EChartsEngine {
 
   generatePieChart(
     data: { name: string; value: number }[],
-    title: string = '饼图'
+    title: string = i18n.t('echartsEngine.k8')
   ): ChartOption {
     const option: ChartOption = {
       type: 'pie',
@@ -243,7 +244,7 @@ export class EChartsEngine {
     data: number[][],
     xLabels: string[],
     yLabels: string[],
-    title: string = '热力图'
+    title: string = i18n.t('echartsEngine.k9')
   ): ChartOption {
     const heatData: number[][] = [];
     data.forEach((row, yi) => {
@@ -270,7 +271,7 @@ export class EChartsEngine {
       },
       series: [
         {
-          name: '热力图',
+          name: i18n.t('echartsEngine.k10'),
           type: 'heatmap',
           data: heatData,
           itemStyle: { borderColor: '#fff', borderWidth: 1 },
@@ -291,7 +292,7 @@ export class EChartsEngine {
 
   generateScatterChart(
     data: [number, number][],
-    title: string = '散点图'
+    title: string = i18n.t('echartsEngine.k11')
   ): ChartOption {
     const option: ChartOption = {
       type: 'scatter',
@@ -300,7 +301,7 @@ export class EChartsEngine {
       yAxis: { type: 'value', name: 'Y' },
       series: [
         {
-          name: '数据点',
+          name: i18n.t('echartsEngine.k12'),
           type: 'scatter',
           data: data,
           symbolSize: 10,
@@ -320,14 +321,14 @@ export class EChartsEngine {
   generateRadarChart(
     indicators: RadarIndicator[],
     series: ChartSeries[],
-    title: string = '雷达图'
+    title: string = i18n.t('echartsEngine.k13')
   ): ChartOption {
     const option: ChartOption = {
       type: 'radar',
       title,
       series: [
         {
-          name: '雷达图',
+          name: i18n.t('echartsEngine.k14'),
           type: 'radar',
           data: series.map((s, i) => ({
             name: s.name,
@@ -368,7 +369,7 @@ export class EChartsEngine {
 
     const option: ChartOption = {
       type: 'line',
-      title: '策略收益对比',
+      title: i18n.t('echartsEngine.k15'),
       xAxis: {
         type: 'category',
         data: compareData.labels,
@@ -402,7 +403,7 @@ export class EChartsEngine {
       value: p.value,
     }));
 
-    return this.generatePieChart(data, '资产配置');
+    return this.generatePieChart(data, i18n.t('echartsEngine.k16'));
   }
 
   // ── Helper Methods ───────────────────────────────────────────────────────

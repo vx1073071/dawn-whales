@@ -1,3 +1,4 @@
+import i18n from '../../../src/i18n';
 // ── J-73-03 R73 V19: AI Pattern Recognition Engine ─────────────────────
 // 20+ candlestick & chart patterns with confidence scoring
 // Semi-transparent overlay annotations, creator-correctable
@@ -34,49 +35,49 @@ export interface DetectedPattern {
 const PATTERN_LIBRARY: PatternDefinition[] = [
   // ═══ Reversal: Bullish ═══
   {
-    id: "HAMMER", name: "Hammer", nameCN: "锤子线",
+    id: "HAMMER", name: "Hammer", nameCN: i18n.t('aiPatternRecognition.k1'),
     category: "reversal_bullish",
     description: "Small body at top, long lower shadow (>=2× body), little/no upper shadow. Bullish reversal at downtrend bottom.",
     candleCount: 1, reliability: 0.60,
   },
   {
-    id: "INVERTED_HAMMER", name: "Inverted Hammer", nameCN: "倒锤子",
+    id: "INVERTED_HAMMER", name: "Inverted Hammer", nameCN: i18n.t('aiPatternRecognition.k2'),
     category: "reversal_bullish",
     description: "Small body at bottom, long upper shadow (>=2× body). Bullish reversal signal.",
     candleCount: 1, reliability: 0.55,
   },
   {
-    id: "BULLISH_ENGULFING", name: "Bullish Engulfing", nameCN: "看涨吞没",
+    id: "BULLISH_ENGULFING", name: "Bullish Engulfing", nameCN: i18n.t('aiPatternRecognition.k3'),
     category: "reversal_bullish",
     description: "Bullish candle body completely engulfs previous bearish candle body. Strong reversal at bottom.",
     candleCount: 2, reliability: 0.63,
   },
   {
-    id: "PIERCING_LINE", name: "Piercing Line", nameCN: "刺透形态",
+    id: "PIERCING_LINE", name: "Piercing Line", nameCN: i18n.t('aiPatternRecognition.k4'),
     category: "reversal_bullish",
     description: "Bearish candle followed by bullish opening below prior close, closing above prior midpoint.",
     candleCount: 2, reliability: 0.61,
   },
   {
-    id: "MORNING_STAR", name: "Morning Star", nameCN: "启明星",
+    id: "MORNING_STAR", name: "Morning Star", nameCN: i18n.t('aiPatternRecognition.k5'),
     category: "reversal_bullish",
     description: "Bearish large → small body (gap down) → bullish large (gap up). 3-candle bottom reversal.",
     candleCount: 3, reliability: 0.68,
   },
   {
-    id: "THREE_WHITE_SOLDIERS", name: "Three White Soldiers", nameCN: "三个白武士",
+    id: "THREE_WHITE_SOLDIERS", name: "Three White Soldiers", nameCN: i18n.t('aiPatternRecognition.k6'),
     category: "reversal_bullish",
     description: "Three consecutive bullish candles with higher closes, each opening within prior body.",
     candleCount: 3, reliability: 0.65,
   },
   {
-    id: "DOJI_DRAGONFLY", name: "Dragonfly Doji", nameCN: "蜻蜓十字",
+    id: "DOJI_DRAGONFLY", name: "Dragonfly Doji", nameCN: i18n.t('aiPatternRecognition.k7'),
     category: "reversal_bullish",
     description: "Open=Close=High with long lower shadow. Classic bottom reversal.",
     candleCount: 1, reliability: 0.58,
   },
   {
-    id: "BULLISH_HARAMI", name: "Bullish Harami", nameCN: "看涨孕线",
+    id: "BULLISH_HARAMI", name: "Bullish Harami", nameCN: i18n.t('aiPatternRecognition.k8'),
     category: "reversal_bullish",
     description: "Large bearish candle followed by small bullish candle completely inside prior body.",
     candleCount: 2, reliability: 0.53,
@@ -84,49 +85,49 @@ const PATTERN_LIBRARY: PatternDefinition[] = [
 
   // ═══ Reversal: Bearish ═══
   {
-    id: "SHOOTING_STAR", name: "Shooting Star", nameCN: "射击之星",
+    id: "SHOOTING_STAR", name: "Shooting Star", nameCN: i18n.t('aiPatternRecognition.k9'),
     category: "reversal_bearish",
     description: "Small body at bottom, long upper shadow (>=2× body). Bearish reversal at uptrend top.",
     candleCount: 1, reliability: 0.59,
   },
   {
-    id: "HANGING_MAN", name: "Hanging Man", nameCN: "上吊线",
+    id: "HANGING_MAN", name: "Hanging Man", nameCN: i18n.t('aiPatternRecognition.k10'),
     category: "reversal_bearish",
     description: "Small body at top, long lower shadow. Bearish reversal at uptrend top.",
     candleCount: 1, reliability: 0.57,
   },
   {
-    id: "BEARISH_ENGULFING", name: "Bearish Engulfing", nameCN: "看跌吞没",
+    id: "BEARISH_ENGULFING", name: "Bearish Engulfing", nameCN: i18n.t('aiPatternRecognition.k11'),
     category: "reversal_bearish",
     description: "Bearish candle body completely engulfs previous bullish candle body. Strong reversal at top.",
     candleCount: 2, reliability: 0.64,
   },
   {
-    id: "DARK_CLOUD_COVER", name: "Dark Cloud Cover", nameCN: "乌云盖顶",
+    id: "DARK_CLOUD_COVER", name: "Dark Cloud Cover", nameCN: i18n.t('aiPatternRecognition.k12'),
     category: "reversal_bearish",
     description: "Bullish candle followed by bearish opening above prior high, closing below prior midpoint.",
     candleCount: 2, reliability: 0.62,
   },
   {
-    id: "EVENING_STAR", name: "Evening Star", nameCN: "黄昏星",
+    id: "EVENING_STAR", name: "Evening Star", nameCN: i18n.t('aiPatternRecognition.k13'),
     category: "reversal_bearish",
     description: "Bullish large → small body (gap up) → bearish large (gap down). 3-candle top reversal.",
     candleCount: 3, reliability: 0.67,
   },
   {
-    id: "THREE_BLACK_CROWS", name: "Three Black Crows", nameCN: "三只乌鸦",
+    id: "THREE_BLACK_CROWS", name: "Three Black Crows", nameCN: i18n.t('aiPatternRecognition.k14'),
     category: "reversal_bearish",
     description: "Three consecutive bearish candles with lower closes, each opening within prior body.",
     candleCount: 3, reliability: 0.64,
   },
   {
-    id: "DOJI_GRAVESTONE", name: "Gravestone Doji", nameCN: "墓碑十字",
+    id: "DOJI_GRAVESTONE", name: "Gravestone Doji", nameCN: i18n.t('aiPatternRecognition.k15'),
     category: "reversal_bearish",
     description: "Open=Close=Low with long upper shadow. Classic top reversal.",
     candleCount: 1, reliability: 0.56,
   },
   {
-    id: "BEARISH_HARAMI", name: "Bearish Harami", nameCN: "看跌孕线",
+    id: "BEARISH_HARAMI", name: "Bearish Harami", nameCN: i18n.t('aiPatternRecognition.k16'),
     category: "reversal_bearish",
     description: "Large bullish candle followed by small bearish candle completely inside prior body.",
     candleCount: 2, reliability: 0.52,
@@ -134,13 +135,13 @@ const PATTERN_LIBRARY: PatternDefinition[] = [
 
   // ═══ Continuation: Bullish ═══
   {
-    id: "BULLISH_MARUBOZU", name: "Bullish Marubozu", nameCN: "光头光脚阳线",
+    id: "BULLISH_MARUBOZU", name: "Bullish Marubozu", nameCN: i18n.t('aiPatternRecognition.k17'),
     category: "continuation_bullish",
     description: "Long bullish candle with no/small shadows. Strong bullish momentum.",
     candleCount: 1, reliability: 0.55,
   },
   {
-    id: "RISING_THREE", name: "Rising Three Methods", nameCN: "上升三法",
+    id: "RISING_THREE", name: "Rising Three Methods", nameCN: i18n.t('aiPatternRecognition.k18'),
     category: "continuation_bullish",
     description: "Long bullish + 3 small bearish (inside range) + long bullish. Continuation after consolidation.",
     candleCount: 5, reliability: 0.66,
@@ -148,13 +149,13 @@ const PATTERN_LIBRARY: PatternDefinition[] = [
 
   // ═══ Continuation: Bearish ═══
   {
-    id: "BEARISH_MARUBOZU", name: "Bearish Marubozu", nameCN: "光头光脚阴线",
+    id: "BEARISH_MARUBOZU", name: "Bearish Marubozu", nameCN: i18n.t('aiPatternRecognition.k19'),
     category: "continuation_bearish",
     description: "Long bearish candle with no/small shadows. Strong bearish momentum.",
     candleCount: 1, reliability: 0.54,
   },
   {
-    id: "FALLING_THREE", name: "Falling Three Methods", nameCN: "下降三法",
+    id: "FALLING_THREE", name: "Falling Three Methods", nameCN: i18n.t('aiPatternRecognition.k20'),
     category: "continuation_bearish",
     description: "Long bearish + 3 small bullish (inside range) + long bearish. Bearish continuation.",
     candleCount: 5, reliability: 0.65,
@@ -162,13 +163,13 @@ const PATTERN_LIBRARY: PatternDefinition[] = [
 
   // ═══ Indecision ═══
   {
-    id: "DOJI", name: "Doji", nameCN: "十字星",
+    id: "DOJI", name: "Doji", nameCN: i18n.t('aiPatternRecognition.k21'),
     category: "indecision",
     description: "Open ≈ Close with small shadows. Market indecision, potential reversal.",
     candleCount: 1, reliability: 0.45,
   },
   {
-    id: "SPINNING_TOP", name: "Spinning Top", nameCN: "纺锤线",
+    id: "SPINNING_TOP", name: "Spinning Top", nameCN: i18n.t('aiPatternRecognition.k22'),
     category: "indecision",
     description: "Small body with long upper and lower shadows. Indecision/consolidation.",
     candleCount: 1, reliability: 0.40,
@@ -406,7 +407,7 @@ function makePattern(
       },
       color: categoryColors[pattern.category],
       label: pattern.nameCN,
-      annotation: `${pattern.nameCN} (置信度${Math.round(confidence * pattern.reliability * 100)}%)`,
+      annotation: i18n.t('aiPatternRecognition.k23'),
     },
     userCorrected: false,
     detectedAt: Date.now(),

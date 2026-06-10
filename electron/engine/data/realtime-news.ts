@@ -1,3 +1,4 @@
+import i18n from '../../../src/i18n';
 /**
  * J-78-02: realtime-news.ts 完整引擎 (~300L)
  * replaces 40-line stub
@@ -68,35 +69,35 @@ const DEFAULT_SOURCES: NewsSourceConfig[] = [
 
 // ── Sentiment keywords ────────────────────────────────────────────────────
 const BULLISH_WORDS = [
-  '暴涨',
-  '突破',
-  '利好',
-  '飙升',
-  '强劲',
-  '牛市',
-  '抢购',
-  '创新高',
-  '增持',
-  '盈利大增',
-  '政策支持',
-  '超预期',
-  '回购',
+  i18n.t('realtimeNews.k1'),
+  i18n.t('realtimeNews.k2'),
+  i18n.t('realtimeNews.k3'),
+  i18n.t('realtimeNews.k4'),
+  i18n.t('realtimeNews.k5'),
+  i18n.t('realtimeNews.k6'),
+  i18n.t('realtimeNews.k7'),
+  i18n.t('realtimeNews.k8'),
+  i18n.t('realtimeNews.k9'),
+  i18n.t('realtimeNews.k10'),
+  i18n.t('realtimeNews.k11'),
+  i18n.t('realtimeNews.k12'),
+  i18n.t('realtimeNews.k13'),
 ];
 const BEARISH_WORDS = [
-  '暴跌',
-  '崩盘',
-  '利空',
-  '风险',
-  '抛售',
-  '熊市',
-  '亏损',
-  '踩雷',
-  '减持',
-  '监管',
-  '制裁',
-  '贸易战',
-  '通胀',
-  '加息',
+  i18n.t('realtimeNews.k14'),
+  i18n.t('realtimeNews.k15'),
+  i18n.t('realtimeNews.k16'),
+  i18n.t('realtimeNews.k17'),
+  i18n.t('realtimeNews.k18'),
+  i18n.t('realtimeNews.k19'),
+  i18n.t('realtimeNews.k20'),
+  i18n.t('realtimeNews.k21'),
+  i18n.t('realtimeNews.k22'),
+  i18n.t('realtimeNews.k23'),
+  i18n.t('realtimeNews.k24'),
+  i18n.t('realtimeNews.k25'),
+  i18n.t('realtimeNews.k26'),
+  i18n.t('realtimeNews.k27'),
 ];
 
 // ── News Engine ───────────────────────────────────────────────────────────
@@ -237,8 +238,8 @@ export class RealtimeNewsEngine implements RealtimeNewsService {
       {
         id: '',
         source: 'eastmoney',
-        title: '新能源政策利好，光伏板块大涨',
-        summary: '国家发布新一批新能源补贴政策，光伏、风电板块迎利好。',
+        title: i18n.t('realtimeNews.k28'),
+        summary: i18n.t('realtimeNews.k29'),
         sentiment: 70,
         symbols: ['CN.601012', 'CN.688599'],
         categories: ['policy', 'newenergy', 'CN'],
@@ -248,8 +249,8 @@ export class RealtimeNewsEngine implements RealtimeNewsService {
       {
         id: '',
         source: 'eastmoney',
-        title: '恒生指数盘中震荡，科技股承压',
-        summary: '港股科技板块受外围影响走弱，恒生指数跌幅扩大。',
+        title: i18n.t('realtimeNews.k30'),
+        summary: i18n.t('realtimeNews.k31'),
         sentiment: -40,
         symbols: ['HK.0700', 'HK.9988'],
         categories: ['market', 'tech', 'HK'],
@@ -259,8 +260,8 @@ export class RealtimeNewsEngine implements RealtimeNewsService {
       {
         id: '',
         source: 'eastmoney',
-        title: 'A股成交额突破万亿',
-        summary: '沪深两市成交额连续第5日突破1万亿元，北向资金净流入。',
+        title: i18n.t('realtimeNews.k32'),
+        summary: i18n.t('realtimeNews.k33'),
         sentiment: 40,
         symbols: ['CN.000001'],
         categories: ['market', 'volume'],
@@ -270,8 +271,8 @@ export class RealtimeNewsEngine implements RealtimeNewsService {
       {
         id: '',
         source: 'eastmoney',
-        title: '半导体板块持续走强',
-        summary: '芯片需求回暖，国产替代加速推进，多股涨停。',
+        title: i18n.t('realtimeNews.k34'),
+        summary: i18n.t('realtimeNews.k35'),
         sentiment: 75,
         symbols: ['CN.688981', 'CN.002049'],
         categories: ['tech', 'semiconductor', 'CN'],

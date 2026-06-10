@@ -18,6 +18,7 @@
 
 import * as crypto from 'crypto';
 import { EngineError, ErrorCode } from '../../errors';
+import i18n from '../../../src/i18n';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -34,9 +35,9 @@ export interface PriceConfig {
 }
 
 export const PRICING: PriceConfig[] = [
-  { tier: 'basic', pricePerCall: 1.0, maxTokensPerCall: 4096, features: ['AI分析', '基础信号'] },
-  { tier: 'pro', pricePerCall: 1.5, maxTokensPerCall: 8192, features: ['AI分析', '高级信号', '策略回测'] },
-  { tier: 'elite', pricePerCall: 2.0, maxTokensPerCall: 16384, features: ['AI分析', '高级信号', '策略回测', 'VIP客服'] },
+  { tier: 'basic', pricePerCall: 1.0, maxTokensPerCall: 4096, features: [i18n.t('billingWalletServer.k1'), i18n.t('billingWalletServer.k2')] },
+  { tier: 'pro', pricePerCall: 1.5, maxTokensPerCall: 8192, features: [i18n.t('billingWalletServer.k3'), i18n.t('billingWalletServer.k4'), i18n.t('billingWalletServer.k5')] },
+  { tier: 'elite', pricePerCall: 2.0, maxTokensPerCall: 16384, features: [i18n.t('billingWalletServer.k6'), i18n.t('billingWalletServer.k7'), i18n.t('billingWalletServer.k8'), i18n.t('billingWalletServer.k9')] },
 ];
 
 export interface Transaction {

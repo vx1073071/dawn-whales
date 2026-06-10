@@ -3,6 +3,7 @@
 // Source weighting + Time decay + Event-driven sentiment shift
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -20,7 +21,7 @@ export interface NewsItem {
 
 export type NewsSource =
   | 'Reuters' | 'Bloomberg' | 'WSJ' | 'CNBC' | 'FT'
-  | 'Sina' | 'Caixin' | 'SecuritiesTimes' | '经济日报'
+  | 'Sina' | 'Caixin' | 'SecuritiesTimes' | i18n.t('newsSentimentV2.k1')
   | 'AAstocks' | 'eastmoney' | 'futunn'
   | 'Twitter' | 'Reddit' | 'forum';
 
@@ -84,7 +85,7 @@ const BULLISH_KEYWORDS = [
   'upgrade', 'upgraded', 'buy', 'outperform', 'positive', 'optimistic',
   'record', 'high', 'recovery', 'gains', 'profit', 'profitable', 'breakthrough',
   'expansion', 'boom', 'soar', 'jump', 'climb', 'rise', 'increase',
-  '突破', '增长', '超预期', '利好', '买入', '增持', '上调', '强劲', '盈利', '新高',
+  i18n.t('newsSentimentV2.k2'), i18n.t('newsSentimentV2.k3'), i18n.t('newsSentimentV2.k4'), i18n.t('newsSentimentV2.k5'), i18n.t('newsSentimentV2.k6'), i18n.t('newsSentimentV2.k7'), i18n.t('newsSentimentV2.k8'), i18n.t('newsSentimentV2.k9'), i18n.t('newsSentimentV2.k10'), i18n.t('newsSentimentV2.k11'),
 ];
 
 const BEARISH_KEYWORDS = [
@@ -92,7 +93,7 @@ const BEARISH_KEYWORDS = [
   'downgrade', 'downgraded', 'sell', 'underperform', 'negative', 'pessimistic',
   'loss', 'losses', 'cut', 'warning', 'risk', 'fear', 'concern',
   'recession', 'slowdown', 'bankruptcy', 'fraud', 'investigation',
-  '下跌', '亏损', '减持', '下调', '利空', '风险', '疲弱', '违约', '危机',
+  i18n.t('newsSentimentV2.k12'), i18n.t('newsSentimentV2.k13'), i18n.t('newsSentimentV2.k14'), i18n.t('newsSentimentV2.k15'), i18n.t('newsSentimentV2.k16'), i18n.t('newsSentimentV2.k17'), i18n.t('newsSentimentV2.k18'), i18n.t('newsSentimentV2.k19'), i18n.t('newsSentimentV2.k20'),
 ];
 
 // ── Simple Sentiment Scoring ─────────────────────────────────────────────
@@ -121,7 +122,7 @@ function scoreTextSentiment(text: string): number {
 const DEFAULT_EVENT_SHIFTS: EventSentimentShift[] = [
   {
     event: 'Earnings Beat',
-    pattern: 'beats earnings|eps beat|q[1-4] profit|超预期',
+    pattern: i18n.t('newsSentimentV2.k21'),
     sentimentShift: 0.3,
     confidence: 0.9,
     examples: ['EPS beat by 15%', 'Q2 profit soars 40%'],
@@ -149,28 +150,28 @@ const DEFAULT_EVENT_SHIFTS: EventSentimentShift[] = [
   },
   {
     event: 'M&A Rumor',
-    pattern: 'acquisition|merger|takeover|bids for|收购',
+    pattern: i18n.t('newsSentimentV2.k22'),
     sentimentShift: 0.2,
     confidence: 0.7,
     examples: ['In talks for acquisition', 'Merger speculation'],
   },
   {
     event: 'Regulatory Investigation',
-    pattern: 'investigation|probe|regulatory|监管',
+    pattern: i18n.t('newsSentimentV2.k23'),
     sentimentShift: -0.25,
     confidence: 0.85,
     examples: ['Under SEC investigation', 'Regulatory probe'],
   },
   {
     event: 'Product Launch Success',
-    pattern: 'launch|launches|releases|发布',
+    pattern: i18n.t('newsSentimentV2.k24'),
     sentimentShift: 0.15,
     confidence: 0.7,
     examples: ['Product launch exceeds targets', 'New model sold out'],
   },
   {
     event: 'Macro Risk-Off',
-    pattern: 'trade war|tariff|sanctions|衰退',
+    pattern: i18n.t('newsSentimentV2.k25'),
     sentimentShift: -0.2,
     confidence: 0.75,
     examples: ['Trade war escalation', 'New tariff announced'],

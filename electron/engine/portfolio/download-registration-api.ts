@@ -19,6 +19,7 @@
 
 import * as crypto from 'crypto';
 import { EngineError, ErrorCode } from '../../errors';
+import i18n from '../../../src/i18n';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -101,7 +102,7 @@ export class DownloadRegistrationServer {
       buildNumber: 10600,
       channel: 'beta',
       releaseDate: '2026-06-09',
-      changelog: '落地页+免费下载+USDT付费。桌面端免激活码, AI分析首3次免费。',
+      changelog: i18n.t('downloadRegistrationApi.k1'),
       minOSVersion: { windows: '10.0.19041', mac: '12.0', linux: '5.15' },
       downloads: { ...DEFAULT_DOWNLOADS },
       hash: { ...DEFAULT_HASHES },
@@ -113,7 +114,7 @@ export class DownloadRegistrationServer {
       buildNumber: 10500,
       channel: 'stable',
       releaseDate: '2026-06-08',
-      changelog: 'R62 P2P转账+申诉+黑名单+2FA',
+      changelog: i18n.t('downloadRegistrationApi.k2'),
       minOSVersion: { windows: '10.0.19041', mac: '12.0', linux: '5.15' },
       downloads: { ...DEFAULT_DOWNLOADS },
       hash: { ...DEFAULT_HASHES },
@@ -278,7 +279,7 @@ export class DownloadRegistrationServer {
       buildNumber: 10600,
       channel: 'beta',
       releaseDate: '2026-06-09',
-      changelog: '落地页+免费下载+USDT付费。桌面端免激活码, AI分析首3次免费。',
+      changelog: i18n.t('downloadRegistrationApi.k3'),
       minOSVersion: { windows: '10.0.19041', mac: '12.0', linux: '5.15' },
       downloads: { ...DEFAULT_DOWNLOADS },
       hash: { ...DEFAULT_HASHES },
@@ -288,7 +289,7 @@ export class DownloadRegistrationServer {
       buildNumber: 10500,
       channel: 'stable',
       releaseDate: '2026-06-08',
-      changelog: 'R62 P2P转账+申诉+黑名单+2FA',
+      changelog: i18n.t('downloadRegistrationApi.k4'),
       minOSVersion: { windows: '10.0.19041', mac: '12.0', linux: '5.15' },
       downloads: { ...DEFAULT_DOWNLOADS },
       hash: { ...DEFAULT_HASHES },

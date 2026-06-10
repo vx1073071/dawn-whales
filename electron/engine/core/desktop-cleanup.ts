@@ -1,5 +1,6 @@
 /**
 import { EngineError, ErrorCode } from '../../errors';
+import i18n from '../../../src/i18n';
 
  * J-63-04: 桌面端清洁引擎 (R63 v19 — v1.5.0-rc 服务器化)
  *
@@ -173,11 +174,11 @@ export function generateMigrationSummary(): ServerMigrationSummary {
     ],
     deletedFromDesktop: DESKTOP_CLEANUP_PLAN.filter(c => c.action === 'delete').map(c => c.source),
     apiEndpoints: [
-      'POST /api/ai/gateway - AI分析调用',
-      'GET  /api/billing/balance - 余额查询',
-      'POST /api/wallet/topup - 充值',
-      'POST /api/wallet/withdraw - 提现',
-      'POST /api/license/validate - 许可证验证',
+      i18n.t('desktopCleanup.k1'),
+      i18n.t('desktopCleanup.k2'),
+      i18n.t('desktopCleanup.k3'),
+      i18n.t('desktopCleanup.k4'),
+      i18n.t('desktopCleanup.k5'),
     ],
     desktopState: 'clean',
   };

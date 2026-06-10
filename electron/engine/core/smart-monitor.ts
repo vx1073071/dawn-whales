@@ -5,6 +5,7 @@
 
 import log from 'electron-log';
 import { EventEmitter } from 'events';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -96,7 +97,7 @@ export class SmartMonitor extends EventEmitter {
     this.rules = [
       {
         id: 'rule-price-surge',
-        name: '价格急涨',
+        name: i18n.t('smartMonitor.k1'),
         enabled: true,
         source: 'market',
         category: 'price_anomaly',
@@ -107,7 +108,7 @@ export class SmartMonitor extends EventEmitter {
       },
       {
         id: 'rule-price-crash',
-        name: '价格急跌',
+        name: i18n.t('smartMonitor.k2'),
         enabled: true,
         source: 'market',
         category: 'price_anomaly',
@@ -118,7 +119,7 @@ export class SmartMonitor extends EventEmitter {
       },
       {
         id: 'rule-volume-spike',
-        name: '成交量异常',
+        name: i18n.t('smartMonitor.k3'),
         enabled: true,
         source: 'market',
         category: 'volume_anomaly',
@@ -129,7 +130,7 @@ export class SmartMonitor extends EventEmitter {
       },
       {
         id: 'rule-drawdown',
-        name: '策略回撤过大',
+        name: i18n.t('smartMonitor.k4'),
         enabled: true,
         source: 'risk',
         category: 'drawdown',
@@ -140,7 +141,7 @@ export class SmartMonitor extends EventEmitter {
       },
       {
         id: 'rule-daily-loss',
-        name: '日亏损超限',
+        name: i18n.t('smartMonitor.k5'),
         enabled: true,
         source: 'risk',
         category: 'daily_loss',
@@ -151,7 +152,7 @@ export class SmartMonitor extends EventEmitter {
       },
       {
         id: 'rule-connection-lost',
-        name: '行情连接断开',
+        name: i18n.t('smartMonitor.k6'),
         enabled: true,
         source: 'system',
         category: 'connection',
@@ -162,7 +163,7 @@ export class SmartMonitor extends EventEmitter {
       },
       {
         id: 'rule-broker-error',
-        name: '券商接口错误',
+        name: i18n.t('smartMonitor.k7'),
         enabled: true,
         source: 'broker',
         category: 'broker_error',
@@ -173,7 +174,7 @@ export class SmartMonitor extends EventEmitter {
       },
       {
         id: 'rule-data-stale',
-        name: '数据过期',
+        name: i18n.t('smartMonitor.k8'),
         enabled: true,
         source: 'data',
         category: 'data_freshness',
@@ -184,7 +185,7 @@ export class SmartMonitor extends EventEmitter {
       },
       {
         id: 'rule-strategy-signal',
-        name: '策略交易信号',
+        name: i18n.t('smartMonitor.k9'),
         enabled: true,
         source: 'strategy',
         category: 'trade_signal',
@@ -195,7 +196,7 @@ export class SmartMonitor extends EventEmitter {
       },
       {
         id: 'rule-order-rejected',
-        name: '订单被拒',
+        name: i18n.t('smartMonitor.k10'),
         enabled: true,
         source: 'broker',
         category: 'order_rejection',
@@ -294,8 +295,8 @@ export class SmartMonitor extends EventEmitter {
         level: 'warning',
         source: 'market',
         category: 'price_anomaly',
-        title: `${symbol} 价格急涨 ${changePct.toFixed(2)}%`,
-        message: `${symbol} 在 ${windowMinutes} 分钟内上涨 ${changePct.toFixed(2)}%，当前价 ${currentPrice}`,
+        title: i18n.t('smartMonitor.k11'),
+        message: i18n.t('smartMonitor.k12'),
         data: { symbol, currentPrice, previousPrice, changePct, windowMinutes },
         relatedEntityId: symbol,
       });
@@ -306,8 +307,8 @@ export class SmartMonitor extends EventEmitter {
         level: 'critical',
         source: 'market',
         category: 'price_anomaly',
-        title: `${symbol} 价格急跌 ${changePct.toFixed(2)}%`,
-        message: `${symbol} 在 ${windowMinutes} 分钟内下跌 ${changePct.toFixed(2)}%，当前价 ${currentPrice}`,
+        title: i18n.t('smartMonitor.k13'),
+        message: i18n.t('smartMonitor.k14'),
         data: { symbol, currentPrice, previousPrice, changePct, windowMinutes },
         relatedEntityId: symbol,
       });
@@ -323,8 +324,8 @@ export class SmartMonitor extends EventEmitter {
         level: 'warning',
         source: 'market',
         category: 'volume_anomaly',
-        title: `${symbol} 成交量异常 (${ratio.toFixed(1)}x)`,
-        message: `${symbol} 当前成交量为均量的 ${ratio.toFixed(1)} 倍`,
+        title: i18n.t('smartMonitor.k15'),
+        message: i18n.t('smartMonitor.k16'),
         data: { symbol, currentVolume, avgVolume, ratio },
         relatedEntityId: symbol,
       });
@@ -339,8 +340,8 @@ export class SmartMonitor extends EventEmitter {
         level: 'critical',
         source: 'risk',
         category: 'drawdown',
-        title: `策略 "${strategyName}" 回撤 ${drawdownPct.toFixed(1)}%`,
-        message: `策略 ${strategyName} (${strategyId}) 最大回撤已达 ${drawdownPct.toFixed(1)}%，超过 10% 阈值`,
+        title: i18n.t('smartMonitor.k17'),
+        message: i18n.t('smartMonitor.k18'),
         data: { strategyId, strategyName, drawdownPct },
         relatedEntityId: strategyId,
       });
@@ -353,8 +354,8 @@ export class SmartMonitor extends EventEmitter {
         level: 'critical',
         source: 'risk',
         category: 'daily_loss',
-        title: `日亏损超限: ${dailyPnlPct.toFixed(2)}%`,
-        message: `今日亏损 ¥${dailyPnl.toFixed(2)} (${dailyPnlPct.toFixed(2)}%)，超过 -3% 日亏损限制`,
+        title: i18n.t('smartMonitor.k19'),
+        message: i18n.t('smartMonitor.k20'),
         data: { dailyPnl, dailyPnlPct, totalCapital },
       });
     }
@@ -368,8 +369,8 @@ export class SmartMonitor extends EventEmitter {
         level: 'critical',
         source: 'system',
         category: 'connection',
-        title: `${source} 连接断开`,
-        message: `${source} 连接已断开，请检查网络和服务状态`,
+        title: i18n.t('smartMonitor.k21'),
+        message: i18n.t('smartMonitor.k22'),
         data: { source, connected },
         relatedEntityId: source,
       });
@@ -386,8 +387,8 @@ export class SmartMonitor extends EventEmitter {
         level: 'warning',
         source: 'data',
         category: 'data_freshness',
-        title: `${source} 数据过期 (${Math.round(age)}s)`,
-        message: `${source} 最后更新距今 ${Math.round(age)} 秒，超过 ${maxAgeSeconds} 秒阈值`,
+        title: i18n.t('smartMonitor.k23'),
+        message: i18n.t('smartMonitor.k24'),
         data: { source, lastUpdateTime, ageSeconds: age, maxAgeSeconds },
         relatedEntityId: source,
       });
@@ -401,8 +402,8 @@ export class SmartMonitor extends EventEmitter {
       level: 'info',
       source: 'strategy',
       category: 'trade_signal',
-      title: `策略信号: ${strategyName} ${signal}`,
-      message: `${strategyName} 对 ${symbol} 发出 ${signal} 信号`,
+      title: i18n.t('smartMonitor.k25'),
+      message: i18n.t('smartMonitor.k26'),
       data: { strategyId, strategyName, signal, symbol },
       relatedEntityId: strategyId,
     });

@@ -3,6 +3,7 @@
 // Integrates with QuoteStream (JVS-9) for tick-level updates
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -46,7 +47,7 @@ export class CapitalFlowMonitor {
       ...config,
     };
 
-    log.info(`[CapitalFlowMonitor] Initialized: main=${this.config.mainForceThreshold}万, large=${this.config.largeOrderThreshold}万`);
+    log.info(i18n.t('capitalFlowMonitor.k1'));
   }
 
   /**
@@ -70,8 +71,8 @@ export class CapitalFlowMonitor {
             amount: Math.abs(item.mainNetInflow),
             changePct: item.changePct || 0,
             description: item.mainNetInflow > 0
-              ? `主力净流入 ${this.formatAmount(item.mainNetInflow)}万`
-              : `主力净流出 ${this.formatAmount(Math.abs(item.mainNetInflow))}万`,
+              ? i18n.t('capitalFlowMonitor.k2')
+              : i18n.t('capitalFlowMonitor.k3'),
             timestamp: Date.now(),
             severity: Math.abs(item.mainNetInflow) > 10000 ? 'high' : 'medium',
           };
@@ -92,7 +93,7 @@ export class CapitalFlowMonitor {
             name: item.name,
             amount: Math.abs(item.superLargeIn),
             changePct: item.changePct || 0,
-            description: `超大单 ${item.superLargeIn > 0 ? '流入' : '流出'} ${this.formatAmount(item.superLargeIn)}万`,
+            description: `超大单 ${item.superLargeIn > 0 ? i18n.t('capitalFlowMonitor.k4') : i18n.t('capitalFlowMonitor.k5')} ${this.formatAmount(item.superLargeIn)}万`,
             timestamp: Date.now(),
             severity: Math.abs(item.superLargeIn) > 5000 ? 'high' : 'medium',
           };
@@ -115,7 +116,7 @@ export class CapitalFlowMonitor {
               name: item.name,
               amount: Math.abs(item.mainNetInflow),
               changePct: item.changePct || 0,
-              description: `异常资金活动：主力占比 ${(ratio * 100).toFixed(1)}%，成交额 ${this.formatAmount(item.turnover)}万`,
+              description: i18n.t('capitalFlowMonitor.k6'),
               timestamp: Date.now(),
               severity: 'high',
             };
@@ -161,7 +162,7 @@ export class CapitalFlowMonitor {
    */
   updateConfig(config: Partial<FlowMonitorConfig>): void {
     this.config = { ...this.config, ...config };
-    log.info(`[CapitalFlowMonitor] Config updated: main=${this.config.mainForceThreshold}万`);
+    log.info(i18n.t('capitalFlowMonitor.k7'));
   }
 
   /**
@@ -198,7 +199,7 @@ export class CapitalFlowMonitor {
 
   private formatAmount(amount: number): string {
     if (Math.abs(amount) >= 10000) {
-      return (amount / 10000).toFixed(2) + '亿';
+      return (amount / 10000).toFixed(2) + i18n.t('capitalFlowMonitor.k8');
     }
     return amount.toFixed(0);
   }

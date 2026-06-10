@@ -11,6 +11,7 @@ import {
   BatchExportRequest,
 } from '../engine/data/data-exporter';
 import log from 'electron-log';
+import i18n from '../../src/i18n';
 
 export function registerExportHandlers() {
 
@@ -66,17 +67,17 @@ export function registerExportHandlers() {
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 
       const { filePath, canceled } = await dialog.showSaveDialog(win!, {
-        title: '导出数据',
+        title: i18n.t('exportHandlers.k1'),
         defaultPath: `dawn-whales-${options.target}-${timestamp}.${ext}`,
         filters: [
-          { name: 'CSV 文件', extensions: ['csv'] },
-          { name: 'JSON 文件', extensions: ['json'] },
-          { name: 'Markdown 文件', extensions: ['md'] },
+          { name: i18n.t('exportHandlers.k2'), extensions: ['csv'] },
+          { name: i18n.t('exportHandlers.k3'), extensions: ['json'] },
+          { name: i18n.t('exportHandlers.k4'), extensions: ['md'] },
         ],
       });
 
       if (canceled || !filePath) {
-        return { success: false, error: '用户取消' };
+        return { success: false, error: i18n.t('exportHandlers.k5') };
       }
 
       const result = exportData({

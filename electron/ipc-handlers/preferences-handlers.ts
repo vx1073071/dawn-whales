@@ -4,6 +4,7 @@
 import { ipcMain, dialog, BrowserWindow } from 'electron';
 import { PreferencesManager } from '../engine/analysis/user-preferences';
 import log from 'electron-log';
+import i18n from '../../src/i18n';
 
 let prefsManager: PreferencesManager | null = null;
 
@@ -64,11 +65,11 @@ export function registerPreferencesHandlers() {
       const win = BrowserWindow.getFocusedWindow();
       if (!filePath && win) {
         const { filePath: chosen, canceled } = await dialog.showSaveDialog(win, {
-          title: '导出配置',
+          title: i18n.t('preferencesHandlers.k1'),
           defaultPath: `dawn-whales-prefs-${new Date().toISOString().slice(0, 10)}.json`,
           filters: [{ name: 'JSON', extensions: ['json'] }],
         });
-        if (canceled || !chosen) return { success: false, error: '用户取消' };
+        if (canceled || !chosen) return { success: false, error: i18n.t('preferencesHandlers.k2') };
         filePath = chosen;
       }
       const outPath = p.exportToFile(filePath);
@@ -84,11 +85,11 @@ export function registerPreferencesHandlers() {
       const win = BrowserWindow.getFocusedWindow();
       if (!filePath && win) {
         const { filePaths, canceled } = await dialog.showOpenDialog(win, {
-          title: '导入配置',
+          title: i18n.t('preferencesHandlers.k3'),
           filters: [{ name: 'JSON', extensions: ['json'] }],
           properties: ['openFile'],
         });
-        if (canceled || !filePaths.length) return { success: false, error: '用户取消' };
+        if (canceled || !filePaths.length) return { success: false, error: i18n.t('preferencesHandlers.k4') };
         filePath = filePaths[0];
       }
       if (!filePath) return { success: false, error: 'No file specified' };

@@ -6,6 +6,7 @@ import log from 'electron-log';
 import https from 'https';
 import http from 'http';
 import { httpGet } from '../utils/http';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -85,11 +86,11 @@ export async function getEarningsCalendar(days = 30): Promise<EarningsCalendarRe
 
     // Summary
     const summary = {
-      predictIncrease: events.filter(e => ['预增', '略增', '续盈'].includes(e.predictType)).length,
-      predictDecrease: events.filter(e => ['预减', '略减'].includes(e.predictType)).length,
-      predictTurnaround: events.filter(e => e.predictType === '扭亏').length,
-      predictFirstLoss: events.filter(e => e.predictType === '首亏').length,
-      predictContinuedLoss: events.filter(e => e.predictType === '续亏').length,
+      predictIncrease: events.filter(e => [i18n.t('earningsCalendar.k1'), i18n.t('earningsCalendar.k2'), i18n.t('earningsCalendar.k3')].includes(e.predictType)).length,
+      predictDecrease: events.filter(e => [i18n.t('earningsCalendar.k4'), i18n.t('earningsCalendar.k5')].includes(e.predictType)).length,
+      predictTurnaround: events.filter(e => e.predictType === i18n.t('earningsCalendar.k6')).length,
+      predictFirstLoss: events.filter(e => e.predictType === i18n.t('earningsCalendar.k7')).length,
+      predictContinuedLoss: events.filter(e => e.predictType === i18n.t('earningsCalendar.k8')).length,
     };
 
     const result: EarningsCalendarResult = {

@@ -4,6 +4,7 @@
 // IPC: report:brinson-attribution
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -196,21 +197,21 @@ export function generateBrinsonReport(
   const recommendations: string[] = [];
 
   if (Math.abs(totalAllocation) > Math.abs(totalSelection)) {
-    recommendations.push(`配置效应主导业绩 (${summary.allocationContribution.toFixed(1)}%)，建议优化板块配置。`);
+    recommendations.push(i18n.t('brinsonAttribution.k1'));
   } else {
-    recommendations.push(`选股效应主导业绩 (${summary.selectionContribution.toFixed(1)}%)，选股能力较强。`);
+    recommendations.push(i18n.t('brinsonAttribution.k2'));
   }
 
   if (topContributor) {
-    recommendations.push(`最大贡献板块: ${topContributor}，考虑保持或增加配置。`);
+    recommendations.push(i18n.t('brinsonAttribution.k3'));
   }
 
   if (topDetractor) {
-    recommendations.push(`最大拖累板块: ${topDetractor}，考虑减仓或替换持仓。`);
+    recommendations.push(i18n.t('brinsonAttribution.k4'));
   }
 
   if (Math.abs(activeReturn) < 0.5) {
-    recommendations.push(`超额收益仅 ${activeReturn.toFixed(2)}%，接近基准，可考虑增加主动管理。`);
+    recommendations.push(i18n.t('brinsonAttribution.k5'));
   }
 
   const result: BrinsonReport = {

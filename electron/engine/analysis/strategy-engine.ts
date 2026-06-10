@@ -8,6 +8,7 @@ import log from 'electron-log';
 import { parseNaturalLanguage, STRATEGY_TEMPLATES } from '../agents/nl-parser';
 import { BacktestEngine } from '../backtest/backtest-engine';
 import type { RiskEngine } from '../risk/risk-engine';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -64,7 +65,7 @@ class StreamingIndicators {
 
   getSignal(): { signal: 'BUY' | 'SELL' | 'HOLD'; reason: string } {
     const n = this.closes.length;
-    if (n < 30) return { signal: 'HOLD', reason: '数据不足' };
+    if (n < 30) return { signal: 'HOLD', reason: i18n.t('strategyEngine.k1') };
 
     const p = this.config.params;
 
@@ -72,7 +73,7 @@ class StreamingIndicators {
       case 'ma_cross': {
         const shortP = p.shortPeriod ?? 10;
         const longP = p.longPeriod ?? 30;
-        if (n < longP + 1) return { signal: 'HOLD', reason: '均线数据不足' };
+        if (n < longP + 1) return { signal: 'HOLD', reason: i18n.t('strategyEngine.k2') };
 
         const smaShort = this.closes.slice(-shortP).reduce((a, b) => a + b, 0) / shortP;
         const smaLong = this.closes.slice(-longP).reduce((a, b) => a + b, 0) / longP;
@@ -83,17 +84,17 @@ class StreamingIndicators {
         const currCross = smaShort - smaLong;
 
         if (prevCross <= 0 && currCross > 0) {
-          return { signal: 'BUY', reason: `MA${shortP} 上穿 MA${longP}` };
+          return { signal: 'BUY', reason: i18n.t('strategyEngine.k3') };
         }
         if (prevCross >= 0 && currCross < 0) {
-          return { signal: 'SELL', reason: `MA${shortP} 下穿 MA${longP}` };
+          return { signal: 'SELL', reason: i18n.t('strategyEngine.k4') };
         }
         return { signal: 'HOLD', reason: `MA${shortP}=${smaShort.toFixed(2)}, MA${longP}=${smaLong.toFixed(2)}` };
       }
 
       case 'rsi': {
         const period = p.rsiPeriod ?? 14;
-        if (n < period + 2) return { signal: 'HOLD', reason: 'RSI 数据不足' };
+        if (n < period + 2) return { signal: 'HOLD', reason: i18n.t('strategyEngine.k5') };
 
         const changes = [];
         for (let i = n - period; i < n; i++) {
@@ -122,16 +123,16 @@ class StreamingIndicators {
         const overbought = p.overbought ?? 70;
 
         if (prevRSI <= oversold && rsiVal > oversold) {
-          return { signal: 'BUY', reason: `RSI 从 ${prevRSI.toFixed(1)} 突破超卖线 ${oversold} → ${rsiVal.toFixed(1)}` };
+          return { signal: 'BUY', reason: i18n.t('strategyEngine.k6') };
         }
         if (prevRSI >= overbought && rsiVal < overbought) {
-          return { signal: 'SELL', reason: `RSI 从 ${prevRSI.toFixed(1)} 跌破超买线 ${overbought} → ${rsiVal.toFixed(1)}` };
+          return { signal: 'SELL', reason: i18n.t('strategyEngine.k7') };
         }
         return { signal: 'HOLD', reason: `RSI = ${rsiVal.toFixed(1)}` };
       }
 
       default:
-        return { signal: 'HOLD', reason: '未实现的策略类型' };
+        return { signal: 'HOLD', reason: i18n.t('strategyEngine.k8') };
     }
   }
 }
@@ -168,7 +169,7 @@ export class StrategyEngine {
       if (!parsed.success) {
         log.warn('[StrategyEngine] NL parse failed:', parsed.error);
         // Create anyway as draft
-        name = '未命名策略';
+        name = i18n.t('strategyEngine.k9');
         description = text;
         config = { type: 'ma_cross', params: { shortPeriod: 10, longPeriod: 30 } };
         symbol = parsed.symbol || 'US.TQQQ';
@@ -188,7 +189,7 @@ export class StrategyEngine {
       symbol = template.symbol || input.symbol || 'US.TQQQ';
     } else if (input.strategy) {
       // Direct config
-      name = input.name || '自定义策略';
+      name = input.name || i18n.t('strategyEngine.k10');
       description = input.description || '';
       config = input.strategy;
       symbol = input.symbol || 'US.TQQQ';
@@ -420,7 +421,7 @@ export class StrategyEngine {
           const order = {
             code: strategy.symbol, side: 'SELL', orderType: 'MARKET',
             qty: strategy.position.qty, price: quote.price,
-            strategyId: id, reason: `止损触发 (${pnlPct.toFixed(1)}%)`,
+            strategyId: id, reason: i18n.t('strategyEngine.k11'),
             brokerId: strategy.strategy.brokerId,
           };
           for (const cb of this.tradeCallbacks) { try { cb(order); } catch {} }
@@ -436,7 +437,7 @@ export class StrategyEngine {
           const order = {
             code: strategy.symbol, side: 'SELL', orderType: 'MARKET',
             qty: strategy.position.qty, price: quote.price,
-            strategyId: id, reason: `止盈触发 (${pnlPct.toFixed(1)}%)`,
+            strategyId: id, reason: i18n.t('strategyEngine.k12'),
             brokerId: strategy.strategy.brokerId,
           };
           for (const cb of this.tradeCallbacks) { try { cb(order); } catch {} }

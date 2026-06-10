@@ -7,6 +7,7 @@ import log from 'electron-log';
 import fs from 'fs';
 import path from 'path';
 import { app } from 'electron';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -86,14 +87,14 @@ function toMarkdownTable(headers: string[], rows: unknown[][], title?: string): 
   const lines: string[] = [];
   if (title) {
     lines.push(`# ${title}`);
-    lines.push(`\n> 导出时间: ${new Date().toLocaleString('zh-CN')}\n`);
+    lines.push(i18n.t('dataExporter.k1'));
   }
   lines.push('| ' + headers.join(' | ') + ' |');
   lines.push('| ' + headers.map(() => '---').join(' | ') + ' |');
   for (const row of rows) {
     lines.push('| ' + row.map(v => v === null || v === undefined ? '' : String(v)).join(' | ') + ' |');
   }
-  lines.push(`\n---\n*共 ${rows.length} 条记录*`);
+  lines.push(i18n.t('dataExporter.k2'));
   return lines.join('\n');
 }
 
@@ -288,7 +289,7 @@ function queryPortfolio(): unknown[] {
 // ── Format Renderers ───────────────────────────────────────────────────────
 
 function renderTrades(rows: unknown[], format: ExportFormat): string {
-  const headers = ['ID', '策略ID', '股票', '方向', '类型', '数量', '价格', '成交价', '手续费', '盈亏', '盈亏%', '状态', '时间'];
+  const headers = ['ID', i18n.t('dataExporter.k3'), i18n.t('dataExporter.k4'), i18n.t('dataExporter.k5'), i18n.t('dataExporter.k6'), i18n.t('dataExporter.k7'), i18n.t('dataExporter.k8'), i18n.t('dataExporter.k9'), i18n.t('dataExporter.k10'), i18n.t('dataExporter.k11'), i18n.t('dataExporter.k12'), i18n.t('dataExporter.k13'), i18n.t('dataExporter.k14')];
   const data = rows.map(r => [
     r.id, r.strategy_id, r.symbol, r.side, r.order_type,
     r.quantity, r.price, r.filled_price, r.commission,
@@ -297,14 +298,14 @@ function renderTrades(rows: unknown[], format: ExportFormat): string {
 
   switch (format) {
     case 'csv': return toCsv(headers, data);
-    case 'md': return toMarkdownTable(headers, data, '交易记录导出');
-    case 'pdf': return toMarkdownTable(headers, data, '交易记录导出'); // PDF uses text extraction
+    case 'md': return toMarkdownTable(headers, data, i18n.t('dataExporter.k15'));
+    case 'pdf': return toMarkdownTable(headers, data, i18n.t('dataExporter.k16')); // PDF uses text extraction
     case 'json': return JSON.stringify(rows, null, 2);
   }
 }
 
 function renderBacktestRuns(rows: unknown[], format: ExportFormat): string {
-  const headers = ['ID', '策略ID', '起始日期', '结束日期', '初始资金', '总收益%', '年化%', '夏普比率', '最大回撤%', '胜率%', '交易数', '时间'];
+  const headers = ['ID', i18n.t('dataExporter.k17'), i18n.t('dataExporter.k18'), i18n.t('dataExporter.k19'), i18n.t('dataExporter.k20'), i18n.t('dataExporter.k21'), i18n.t('dataExporter.k22'), i18n.t('dataExporter.k23'), i18n.t('dataExporter.k24'), i18n.t('dataExporter.k25'), i18n.t('dataExporter.k26'), i18n.t('dataExporter.k27')];
   const data = rows.map(r => [
     r.id, r.strategy_id, r.start_date, r.end_date, r.initial_capital,
     r.total_return?.toFixed(2), r.annual_return?.toFixed(2),
@@ -314,56 +315,56 @@ function renderBacktestRuns(rows: unknown[], format: ExportFormat): string {
 
   switch (format) {
     case 'csv': return toCsv(headers, data);
-    case 'md': return toMarkdownTable(headers, data, '回测结果导出');
-    case 'pdf': return toMarkdownTable(headers, data, '回测结果导出');
+    case 'md': return toMarkdownTable(headers, data, i18n.t('dataExporter.k28'));
+    case 'pdf': return toMarkdownTable(headers, data, i18n.t('dataExporter.k29'));
     case 'json': return JSON.stringify(rows, null, 2);
   }
 }
 
 function renderStrategies(rows: unknown[], format: ExportFormat): string {
-  const headers = ['ID', '名称', '描述', '股票', '版本', '状态', '创建时间', '更新时间'];
+  const headers = ['ID', i18n.t('dataExporter.k30'), i18n.t('dataExporter.k31'), i18n.t('dataExporter.k32'), i18n.t('dataExporter.k33'), i18n.t('dataExporter.k34'), i18n.t('dataExporter.k35'), i18n.t('dataExporter.k36')];
   const data = rows.map(r => [
     r.id, r.name, r.description, r.symbol, r.version, r.status, r.created_at, r.updated_at
   ]);
 
   switch (format) {
     case 'csv': return toCsv(headers, data);
-    case 'md': return toMarkdownTable(headers, data, '策略列表导出');
-    case 'pdf': return toMarkdownTable(headers, data, '策略列表导出');
+    case 'md': return toMarkdownTable(headers, data, i18n.t('dataExporter.k37'));
+    case 'pdf': return toMarkdownTable(headers, data, i18n.t('dataExporter.k38'));
     case 'json': return JSON.stringify(rows, null, 2);
   }
 }
 
 function renderKlineCache(rows: unknown[], format: ExportFormat): string {
-  const headers = ['股票', '周期', '时间', '开', '高', '低', '收', '成交量'];
+  const headers = [i18n.t('dataExporter.k39'), i18n.t('dataExporter.k40'), i18n.t('dataExporter.k41'), i18n.t('dataExporter.k42'), i18n.t('dataExporter.k43'), i18n.t('dataExporter.k44'), i18n.t('dataExporter.k45'), i18n.t('dataExporter.k46')];
   const data = rows.map(r => [
     r.symbol, r.interval, r.time, r.open, r.high, r.low, r.close, r.volume
   ]);
 
   switch (format) {
     case 'csv': return toCsv(headers, data);
-    case 'md': return toMarkdownTable(headers, data, 'K线缓存导出');
-    case 'pdf': return toMarkdownTable(headers, data, 'K线缓存导出');
+    case 'md': return toMarkdownTable(headers, data, i18n.t('dataExporter.k47'));
+    case 'pdf': return toMarkdownTable(headers, data, i18n.t('dataExporter.k48'));
     case 'json': return JSON.stringify(rows, null, 2);
   }
 }
 
 function renderAlerts(rows: unknown[], format: ExportFormat): string {
-  const headers = ['ID', '级别', '类型', '消息', '状态', '时间'];
+  const headers = ['ID', i18n.t('dataExporter.k49'), i18n.t('dataExporter.k50'), i18n.t('dataExporter.k51'), i18n.t('dataExporter.k52'), i18n.t('dataExporter.k53')];
   const data = rows.map(r => [
     r.id, r.level, r.type, r.message, r.status || 'unread', r.created_at
   ]);
 
   switch (format) {
     case 'csv': return toCsv(headers, data);
-    case 'md': return toMarkdownTable(headers, data, '告警记录导出');
-    case 'pdf': return toMarkdownTable(headers, data, '告警记录导出');
+    case 'md': return toMarkdownTable(headers, data, i18n.t('dataExporter.k54'));
+    case 'pdf': return toMarkdownTable(headers, data, i18n.t('dataExporter.k55'));
     case 'json': return JSON.stringify(rows, null, 2);
   }
 }
 
 function renderPortfolio(rows: unknown[], format: ExportFormat): string {
-  const headers = ['股票', '方向', '持仓数量', '均价', '总盈亏', '总手续费', '交易次数', '首次交易', '最近交易'];
+  const headers = [i18n.t('dataExporter.k56'), i18n.t('dataExporter.k57'), i18n.t('dataExporter.k58'), i18n.t('dataExporter.k59'), i18n.t('dataExporter.k60'), i18n.t('dataExporter.k61'), i18n.t('dataExporter.k62'), i18n.t('dataExporter.k63'), i18n.t('dataExporter.k64')];
   const data = rows.map(r => [
     r.symbol, r.side, r.total_qty, r.avg_price,
     r.total_pnl?.toFixed(2), r.total_commission?.toFixed(2),
@@ -372,8 +373,8 @@ function renderPortfolio(rows: unknown[], format: ExportFormat): string {
 
   switch (format) {
     case 'csv': return toCsv(headers, data);
-    case 'md': return toMarkdownTable(headers, data, '持仓汇总导出');
-    case 'pdf': return toMarkdownTable(headers, data, '持仓汇总导出');
+    case 'md': return toMarkdownTable(headers, data, i18n.t('dataExporter.k65'));
+    case 'pdf': return toMarkdownTable(headers, data, i18n.t('dataExporter.k66'));
     case 'json': return JSON.stringify(rows, null, 2);
   }
 }
@@ -483,7 +484,7 @@ export function batchExport(request: BatchExportRequest): BatchExportResult {
 
 export function generateSummaryReport(): string {
   const db = getDb();
-  if (!db) return '# 数据摘要报告\n\n数据库未初始化。';
+  if (!db) return i18n.t('dataExporter.k67');
 
   const strategyCount = (() => {
     try { return db.getDb().prepare('SELECT COUNT(*) as c FROM strategies').get()?.c || 0; } catch { return 0; }

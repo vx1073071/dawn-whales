@@ -10,6 +10,7 @@ import { getFundIncreaseRank } from '../data/fund-holdings';
 import { SentimentIndexEngine } from '../analysis/sentiment-index';
 import { NewsAggregatorService } from '../data/news-aggregator';
 import { StockAnomalyDetector } from '../data/stock-anomaly-detector';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -99,8 +100,8 @@ export class SmartPickerService {
           }
           const c = candidates.get(code)!;
           c.scores.capitalFlow = this.scoreCapitalFlow(item);
-          if (item.mainNetInflow > 5000) c.signals.push(`主力净流入${(item.mainNetInflow/10000).toFixed(1)}亿`);
-          if (item.mainNetInflow > 0 && item.changePct > 3) c.signals.push('资金+涨幅共振');
+          if (item.mainNetInflow > 5000) c.signals.push(i18n.t('smartPicker.k1'));
+          if (item.mainNetInflow > 0 && item.changePct > 3) c.signals.push(i18n.t('smartPicker.k2'));
         }
       }
 
@@ -114,8 +115,8 @@ export class SmartPickerService {
           }
           const c = candidates.get(code)!;
           c.scores.dragonTiger = this.scoreDragonTiger(item);
-          if (item.netBuyAmount > 0) c.signals.push(`龙虎榜净买入${(item.netBuyAmount/10000).toFixed(1)}亿`);
-          if (item.reason) c.signals.push(`上榜原因: ${item.reason}`);
+          if (item.netBuyAmount > 0) c.signals.push(i18n.t('smartPicker.k3'));
+          if (item.reason) c.signals.push(i18n.t('smartPicker.k4'));
         }
       }
 
@@ -130,7 +131,7 @@ export class SmartPickerService {
             }
             const c = candidates.get(code)!;
             c.scores.fundHolding = this.scoreFundHolding(item);
-            if (item.fundCount > 10) c.signals.push(`${item.fundCount}家基金增持`);
+            if (item.fundCount > 10) c.signals.push(i18n.t('smartPicker.k5'));
           }
         }
       } catch (e) { logger.error('[backend:smart-picker]', e); }
@@ -183,18 +184,18 @@ export class SmartPickerService {
 
         // Reasons
         const reasons: string[] = [];
-        if (c.scores.capitalFlow >= 70) reasons.push('主力资金持续流入');
-        if (c.scores.dragonTiger >= 70) reasons.push('龙虎榜机构买入');
-        if (c.scores.fundHolding >= 70) reasons.push('多家基金增持');
-        if (c.scores.sentiment >= 70) reasons.push('舆情正面');
-        if (c.scores.technical >= 70) reasons.push('技术面强势');
-        if (reasons.length === 0) reasons.push('综合评分达标');
+        if (c.scores.capitalFlow >= 70) reasons.push(i18n.t('smartPicker.k6'));
+        if (c.scores.dragonTiger >= 70) reasons.push(i18n.t('smartPicker.k7'));
+        if (c.scores.fundHolding >= 70) reasons.push(i18n.t('smartPicker.k8'));
+        if (c.scores.sentiment >= 70) reasons.push(i18n.t('smartPicker.k9'));
+        if (c.scores.technical >= 70) reasons.push(i18n.t('smartPicker.k10'));
+        if (reasons.length === 0) reasons.push(i18n.t('smartPicker.k11'));
 
         // Risks
         const risks: string[] = [];
-        if (c.scores.capitalFlow < 30) risks.push('主力资金流出');
-        if (c.scores.sentiment < 30) risks.push('舆情负面');
-        if (c.scores.technical < 30) risks.push('技术面弱势');
+        if (c.scores.capitalFlow < 30) risks.push(i18n.t('smartPicker.k12'));
+        if (c.scores.sentiment < 30) risks.push(i18n.t('smartPicker.k13'));
+        if (c.scores.technical < 30) risks.push(i18n.t('smartPicker.k14'));
 
         results.push({
           code,
@@ -221,7 +222,7 @@ export class SmartPickerService {
       // Summary
       const sCount = topPicks.filter(p => p.grade === 'S').length;
       const aCount = topPicks.filter(p => p.grade === 'A').length;
-      const summary = `从${candidates.size}只候选股中筛选出Top ${topPicks.length}，其中S级${sCount}只，A级${aCount}只。`;
+      const summary = i18n.t('smartPicker.k15');
 
       log.info(`[SmartPicker] Done: ${topPicks.length} picks from ${candidates.size} candidates`);
 

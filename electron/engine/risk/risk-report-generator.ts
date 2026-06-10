@@ -4,6 +4,7 @@
 // Branding + Charts placeholder + Full P&L attribution
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -139,7 +140,7 @@ export class RiskReportGenerator {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${zh('Risk Report', '风险报告')} — ${data.portfolioName} — ${data.reportDate}</title>
+<title>${zh('Risk Report', i18n.t('riskReportGenerator.k1'))} — ${data.portfolioName} — ${data.reportDate}</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a2e; background: #f8f9fa; font-size: 13px; }
@@ -190,55 +191,55 @@ export class RiskReportGenerator {
 <div class="header">
   <div>
     <div class="firm">${firm}</div>
-    <div class="report-title">${zh('Portfolio Risk Report', '组合风险报告')}</div>
+    <div class="report-title">${zh('Portfolio Risk Report', i18n.t('riskReportGenerator.k2'))}</div>
   </div>
   <div class="report-meta">
     <div><strong>${data.portfolioName}</strong> (${data.portfolioId})</div>
-    <div>${zh('Report Date', '报告日期')}: ${data.reportDate}</div>
-    <div>${zh('Generated', '生成时间')}: ${data.generatedAt}</div>
-    <div>${zh('Period', '报告周期')}: ${data.period}</div>
+    <div>${zh('Report Date', i18n.t('riskReportGenerator.k3'))}: ${data.reportDate}</div>
+    <div>${zh('Generated', i18n.t('riskReportGenerator.k4'))}: ${data.generatedAt}</div>
+    <div>${zh('Period', i18n.t('riskReportGenerator.k5'))}: ${data.period}</div>
   </div>
 </div>
 
 <!-- Key Metrics -->
 <div class="grid">
   <div class="card">
-    <div class="card-title">${zh('Portfolio Value', '组合价值')}</div>
-    <div class="metric"><span class="metric-label">${zh('Total Value', '总市值')}</span><span class="metric-value">HK$${(data.totalValue / 10000).toFixed(1)}万</span></div>
-    <div class="metric"><span class="metric-label">${zh('Day P&L', '当日盈亏')}</span><span class="metric-value ${dayClass}">${sign(data.dayPnL, 'HK$')} (${(data.dayPnL / data.totalValue * 100).toFixed(2)}%)</span></div>
-    <div class="metric"><span class="metric-label">${zh('Total P&L', '累计盈亏')}</span><span class="metric-value ${pnlClass}">${sign(data.totalPnL, 'HK$')} (${sign(data.totalPnLPct)}%)</span></div>
-    <div class="metric"><span class="metric-label">${zh('Unrealized', '未实现盈亏')}</span><span class="metric-value">${sign(data.unrealizedPnL, 'HK$')}</span></div>
-    <div class="metric"><span class="metric-label">${zh('Realized', '已实现盈亏')}</span><span class="metric-value">${sign(data.realizedPnL, 'HK$')}</span></div>
+    <div class="card-title">${zh('Portfolio Value', i18n.t('riskReportGenerator.k6'))}</div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k7')metric-value">HK$${(data.totalValue / 10000).toFixed(1)}万</span></div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k8')metric-value ${dayClass}">${sign(data.dayPnL, 'HK$')} (${(data.dayPnL / data.totalValue * 100).toFixed(2)}%)</span></div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k9')metric-value ${pnlClass}">${sign(data.totalPnL, 'HK$')} (${sign(data.totalPnLPct)}%)</span></div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k10')metric-value">${sign(data.unrealizedPnL, 'HK$')}</span></div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k11')metric-value">${sign(data.realizedPnL, 'HK$')}</span></div>
   </div>
   <div class="card">
-    <div class="card-title">${zh('Risk Metrics', '风险指标')}</div>
+    <div class="card-title">${zh('Risk Metrics', i18n.t('riskReportGenerator.k12'))}</div>
     <div class="metric"><span class="metric-label">VaR (95%)</span><span class="metric-value ${varClass}">HK$${(data.portfolioVaR / 10000).toFixed(1)}万</span></div>
     <div class="metric"><span class="metric-label">CVaR (95%)</span><span class="metric-value">HK$${(data.portfolioCVaR / 10000).toFixed(1)}万</span></div>
-    <div class="metric"><span class="metric-label">${zh('Volatility', '波动率')}</span><span class="metric-value">${(data.volatility * 100).toFixed(2)}%</span></div>
-    <div class="metric"><span class="metric-label">${zh('Max Drawdown', '最大回撤')}</span><span class="metric-value negative">${(data.maxDrawdown).toFixed(2)}%</span></div>
-    <div class="metric"><span class="metric-label">${zh('Sharpe Ratio', '夏普比率')}</span><span class="metric-value">${data.sharpeRatio.toFixed(2)}</span></div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k13')metric-value">${(data.volatility * 100).toFixed(2)}%</span></div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k14')metric-value negative">${(data.maxDrawdown).toFixed(2)}%</span></div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k15')metric-value">${data.sharpeRatio.toFixed(2)}</span></div>
     <div class="metric"><span class="metric-label">Beta</span><span class="metric-value">${data.beta.toFixed(2)}</span></div>
-    <div class="metric"><span class="metric-label">${zh('Leverage', '杠杆')}</span><span class="metric-value">${data.leverage.toFixed(2)}x</span></div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k16')metric-value">${data.leverage.toFixed(2)}x</span></div>
   </div>
   <div class="card">
-    <div class="card-title">${zh('Exposure Summary', '敞口摘要')}</div>
-    <div class="metric"><span class="metric-label">${zh('Largest Position', '最大持仓')}</span><span class="metric-value">${data.largestPosition} (${data.largestPositionPct.toFixed(1)}%)</span></div>
-    <div class="metric"><span class="metric-label">${zh('Net Exposure', '净敞口')}</span><span class="metric-value">${(data.netExposure * 100).toFixed(1)}%</span></div>
-    <div class="metric"><span class="metric-label">${zh('Gross Exposure', '总敞口')}</span><span class="metric-value">${(data.grossExposure * 100).toFixed(1)}%</span></div>
+    <div class="card-title">${zh('Exposure Summary', i18n.t('riskReportGenerator.k17'))}</div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k18')metric-value">${data.largestPosition} (${data.largestPositionPct.toFixed(1)}%)</span></div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k19')metric-value">${(data.netExposure * 100).toFixed(1)}%</span></div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k20')metric-value">${(data.grossExposure * 100).toFixed(1)}%</span></div>
   </div>
 </div>
 
 <!-- Risk Alerts -->
 ${alerts.length > 0 ? `
 <div class="section">
-  <div class="section-title">⚠️ ${zh('Risk Alerts', '风险预警')}</div>
+  <div class="section-title">⚠️ ${zh('Risk Alerts', i18n.t('riskReportGenerator.k21'))}</div>
   ${alerts.map(a => `<div class="alert alert-${a.severity}">${a.severity === 'CRITICAL' ? '🚨' : a.severity === 'WARNING' ? '⚠️' : 'ℹ️'} ${a.message}</div>`).join('\n  ')}
 </div>` : ''}
 
 <!-- Greeks -->
 ${config.includeGreeks && data.greeks ? `
 <div class="section">
-  <div class="section-title">${zh('Options Greeks', '期权 Greeks')}</div>
+  <div class="section-title">${zh('Options Greeks', i18n.t('riskReportGenerator.k22'))}</div>
   <div class="greeks-grid">
     <div class="greek-box"><div class="greek-label">Delta (Δ)</div><div class="greek-value">${data.greeks.delta.toFixed(1)}</div></div>
     <div class="greek-box"><div class="greek-label">Gamma (Γ)</div><div class="greek-value">${data.greeks.gamma.toFixed(2)}</div></div>
@@ -251,7 +252,7 @@ ${config.includeGreeks && data.greeks ? `
 
 <!-- Exposure Breakdown -->
 <div class="section">
-  <div class="section-title">${zh('Asset Exposure', '资产敞口')}</div>
+  <div class="section-title">${zh('Asset Exposure', i18n.t('riskReportGenerator.k23'))}</div>
   <div class="bar-chart">
     ${Object.entries(data.exposureByAsset).sort((a,b) => b[1]-a[1]).slice(0,8).map(([sym, pct]) => `
     <div class="bar-row">
@@ -265,7 +266,7 @@ ${config.includeGreeks && data.greeks ? `
 <!-- Positions -->
 ${config.includeIndividualPositions && positions.length > 0 ? `
 <div class="section">
-  <div class="section-title">${zh('Positions Detail', '持仓明细')}</div>
+  <div class="section-title">${zh('Positions Detail', i18n.t('riskReportGenerator.k24'))}</div>
   <table>
     <thead><tr><th>Symbol</th><th>Qty</th><th>Avg Cost</th><th>Current</th><th>Market Value</th><th>P&L</th><th>Weight</th></tr></thead>
     <tbody>
@@ -288,7 +289,7 @@ ${config.includeIndividualPositions && positions.length > 0 ? `
 <!-- Stress Tests -->
 ${config.includeStressTests && data.stressResults && data.stressResults.length > 0 ? `
 <div class="section">
-  <div class="section-title">${zh('Stress Test Results', '压力测试结果')}</div>
+  <div class="section-title">${zh('Stress Test Results', i18n.t('riskReportGenerator.k25'))}</div>
   <table>
     <thead><tr><th>Scenario</th><th>Severity</th><th>P&L Impact</th></tr></thead>
     <tbody>
@@ -307,15 +308,15 @@ ${config.includeStressTests && data.stressResults && data.stressResults.length >
 <!-- Recommendations -->
 ${data.recommendations.length > 0 ? `
 <div class="section">
-  <div class="section-title">${zh('Recommendations', '建议')}</div>
+  <div class="section-title">${zh('Recommendations', i18n.t('riskReportGenerator.k26'))}</div>
   ${data.recommendations.map(r => `<div style="padding:6px 0;font-size:13px;">• ${r}</div>`).join('\n')}
 </div>` : ''}
 
 <!-- Footer -->
 <div class="footer">
-  ${zh('Generated by DAWN WHALES Risk Engine', '由 DAWN WHALES 风险引擎生成')} · ${new Date().toISOString()}
+  ${zh('Generated by DAWN WHALES Risk Engine', i18n.t('riskReportGenerator.k27'))} · ${new Date().toISOString()}
   <div class="disclaimer">
-    ${zh('This report is for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results.', '本报告仅供参考，不构成投资建议。过往业绩不代表未来表现。')}
+    ${zh('This report is for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results.', i18n.t('riskReportGenerator.k28'))}
   </div>
 </div>
 
@@ -332,43 +333,43 @@ ${data.recommendations.length > 0 ? `
     const sign = (n: number) => n >= 0 ? `+${n.toFixed(2)}` : n.toFixed(2);
 
     const lines = [
-      `# ${zh('Portfolio Risk Report', '组合风险报告')}`,
+      `# ${zh('Portfolio Risk Report', i18n.t('riskReportGenerator.k29'))}`,
       `**${data.portfolioName}** (${data.portfolioId})  ·  ${data.reportDate}`,
       '',
-      `## ${zh('Performance', '业绩表现')}`,
+      `## ${zh('Performance', i18n.t('riskReportGenerator.k30'))}`,
       `| Metric | Value |`,
       `|--------|-------|`,
-      `| ${zh('Total Value', '总市值')} | HK$${(data.totalValue/10000).toFixed(1)}万 |`,
-      `| ${zh('Day P&L', '当日盈亏')} | ${sign(data.dayPnL)} (${sign(data.dayPnL/data.totalValue*100)}%) |`,
-      `| ${zh('Total P&L', '累计盈亏')} | ${sign(data.totalPnL)} (${sign(data.totalPnLPct)}%) |`,
-      `| ${zh('Unrealized', '未实现')} | ${sign(data.unrealizedPnL)} |`,
-      `| ${zh('Realized', '已实现')} | ${sign(data.realizedPnL)} |`,
+      `| ${zh('Total Value', i18n.t('riskReportGenerator.k31'))} | HK$${(data.totalValue/10000).toFixed(1)}万 |`,
+      `| ${zh('Day P&L', i18n.t('riskReportGenerator.k32'))} | ${sign(data.dayPnL)} (${sign(data.dayPnL/data.totalValue*100)}%) |`,
+      `| ${zh('Total P&L', i18n.t('riskReportGenerator.k33'))} | ${sign(data.totalPnL)} (${sign(data.totalPnLPct)}%) |`,
+      `| ${zh('Unrealized', i18n.t('riskReportGenerator.k34'))} | ${sign(data.unrealizedPnL)} |`,
+      `| ${zh('Realized', i18n.t('riskReportGenerator.k35'))} | ${sign(data.realizedPnL)} |`,
       '',
-      `## ${zh('Risk Metrics', '风险指标')}`,
+      `## ${zh('Risk Metrics', i18n.t('riskReportGenerator.k36'))}`,
       `| Metric | Value |`,
       `|--------|-------|`,
-      `| VaR (95%) | HK$${(data.portfolioVaR/10000).toFixed(1)}万 |`,
-      `| CVaR (95%) | HK$${(data.portfolioCVaR/10000).toFixed(1)}万 |`,
-      `| ${zh('Volatility', '波动率')} | ${(data.volatility*100).toFixed(2)}% |`,
-      `| ${zh('Max Drawdown', '最大回撤')} | ${data.maxDrawdown.toFixed(2)}% |`,
-      `| ${zh('Sharpe Ratio', '夏普比率')} | ${data.sharpeRatio.toFixed(2)} |`,
+      i18n.t('riskReportGenerator.k37'),
+      i18n.t('riskReportGenerator.k38'),
+      `| ${zh('Volatility', i18n.t('riskReportGenerator.k39'))} | ${(data.volatility*100).toFixed(2)}% |`,
+      `| ${zh('Max Drawdown', i18n.t('riskReportGenerator.k40'))} | ${data.maxDrawdown.toFixed(2)}% |`,
+      `| ${zh('Sharpe Ratio', i18n.t('riskReportGenerator.k41'))} | ${data.sharpeRatio.toFixed(2)} |`,
       `| Beta | ${data.beta.toFixed(2)} |`,
-      `| ${zh('Leverage', '杠杆')} | ${data.leverage.toFixed(2)}x |`,
+      `| ${zh('Leverage', i18n.t('riskReportGenerator.k42'))} | ${data.leverage.toFixed(2)}x |`,
       '',
-      `## ${zh('Exposure', '敞口')}`,
+      `## ${zh('Exposure', i18n.t('riskReportGenerator.k43'))}`,
       ...Object.entries(data.exposureByAsset)
         .sort((a,b) => b[1]-a[1])
         .slice(0, 10)
         .map(([sym, pct]) => `- **${sym}**: ${pct.toFixed(1)}%`),
       '',
-      `## ${zh('Risk Alerts', '风险预警')}`,
+      `## ${zh('Risk Alerts', i18n.t('riskReportGenerator.k44'))}`,
       ...(data.riskAlerts ?? []).map(a => `- **${a.severity}**: ${a.message}`),
       '',
-      `## ${zh('Recommendations', '建议')}`,
+      `## ${zh('Recommendations', i18n.t('riskReportGenerator.k45'))}`,
       ...data.recommendations.map(r => `- ${r}`),
       '',
       `---`,
-      `*${zh('Generated by DAWN WHALES Risk Engine', '由 DAWN WHALES 风险引擎生成')} · ${new Date().toISOString()}*`,
+      `*${zh('Generated by DAWN WHALES Risk Engine', i18n.t('riskReportGenerator.k46'))} · ${new Date().toISOString()}*`,
     ];
 
     return lines.join('\n');

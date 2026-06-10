@@ -3,6 +3,7 @@
 // Phase 1: TypeScript | Phase 2: Rust N-API（性能热点）
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -313,7 +314,7 @@ export class BacktestEngine {
 
     const klines = config.klines || [];
     if (klines.length < 50) {
-      return { success: false, result: this.emptyResult(config, 'K线数据不足（需要至少50根）') } as any;
+      return { success: false, result: this.emptyResult(config, i18n.t('backtestEngine.k1')) } as any;
     }
 
     const { initialCapital, commission, slippage, strategy } = config;

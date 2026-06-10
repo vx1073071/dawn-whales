@@ -3,6 +3,7 @@
 // IPC: alert:macro
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -116,23 +117,23 @@ function generateAlertMessage(
   currentValue: number,
   changePercent: number
 ): string {
-  const direction = changePercent > 0 ? '上升' : '下降';
+  const direction = changePercent > 0 ? i18n.t('macroAlert.k1') : i18n.t('macroAlert.k2');
   const absChange = Math.abs(changePercent).toFixed(2);
 
   const severityText = {
-    low: '轻微',
-    medium: '中等',
-    high: '显著',
-    critical: '严重',
+    low: i18n.t('macroAlert.k3'),
+    medium: i18n.t('macroAlert.k4'),
+    high: i18n.t('macroAlert.k5'),
+    critical: i18n.t('macroAlert.k6'),
   }[severity];
 
   const typeText = {
-    anomaly: '异常波动',
-    trend_break: '趋势突破',
-    threshold_breach: '阈值突破',
+    anomaly: i18n.t('macroAlert.k7'),
+    trend_break: i18n.t('macroAlert.k8'),
+    threshold_breach: i18n.t('macroAlert.k9'),
   }[type];
 
-  return `${indicator} ${severityText}${typeText}: 当前值 ${currentValue.toFixed(2)}, ${direction} ${absChange}%`;
+  return i18n.t('macroAlert.k10');
 }
 
 function generateContext(
@@ -146,10 +147,10 @@ function generateContext(
   const stdDevText = historicalStdDev.toFixed(2);
   const zScoreText = zScore.toFixed(2);
 
-  let context = `历史均值: ${avgText}, 标准差: ${stdDevText}, Z-Score: ${zScoreText}`;
+  let context = i18n.t('macroAlert.k11');
 
   if (Math.abs(zScore) >= 2) {
-    context += ` (${zScore > 0 ? '高于' : '低于'}均值 ${Math.abs(zScore).toFixed(1)} 个标准差)`;
+    context += ` (${zScore > 0 ? i18n.t('macroAlert.k12') : i18n.t('macroAlert.k13')}均值 ${Math.abs(zScore).toFixed(1)} 个标准差)`;
   }
 
   return context;

@@ -1,5 +1,6 @@
 /**
 import { EngineError, ErrorCode } from '../../errors';
+import i18n from '../../../src/i18n';
 
  * J-66-01 [P0]: 创作者等级引擎 (R66 v19 — v1.6.0 GA)
  *
@@ -55,12 +56,12 @@ export interface TierChange {
 // ── Tier Configuration ────────────────────────────────────────────────────
 
 export const TIER_CONFIGS: Record<CreatorTier, TierConfig> = {
-  bronze:    { tier: 'bronze',    name: '青铜', minXp: 0,     revenueShare: 0.70, badgeSlots: 1, minSubscribers: 0,  icon: '🥉' },
-  silver:    { tier: 'silver',    name: '白银', minXp: 500,   revenueShare: 0.70, badgeSlots: 2, minSubscribers: 5,  icon: '🥈' },
-  gold:      { tier: 'gold',      name: '黄金', minXp: 1500,  revenueShare: 0.80, badgeSlots: 3, minSubscribers: 15, icon: '🥇' },
-  platinum:  { tier: 'platinum',  name: '铂金', minXp: 3500,  revenueShare: 0.80, badgeSlots: 4, minSubscribers: 30, icon: '💎' },
-  diamond:   { tier: 'diamond',   name: '钻石', minXp: 7500,  revenueShare: 0.90, badgeSlots: 5, minSubscribers: 60, icon: '👑' },
-  king:      { tier: 'king',      name: '王者', minXp: 15000, revenueShare: 0.90, badgeSlots: 6, minSubscribers: 100, icon: '🏆' },
+  bronze:    { tier: 'bronze',    name: i18n.t('creatorTierEngine.k1'), minXp: 0,     revenueShare: 0.70, badgeSlots: 1, minSubscribers: 0,  icon: '🥉' },
+  silver:    { tier: 'silver',    name: i18n.t('creatorTierEngine.k2'), minXp: 500,   revenueShare: 0.70, badgeSlots: 2, minSubscribers: 5,  icon: '🥈' },
+  gold:      { tier: 'gold',      name: i18n.t('creatorTierEngine.k3'), minXp: 1500,  revenueShare: 0.80, badgeSlots: 3, minSubscribers: 15, icon: '🥇' },
+  platinum:  { tier: 'platinum',  name: i18n.t('creatorTierEngine.k4'), minXp: 3500,  revenueShare: 0.80, badgeSlots: 4, minSubscribers: 30, icon: '💎' },
+  diamond:   { tier: 'diamond',   name: i18n.t('creatorTierEngine.k5'), minXp: 7500,  revenueShare: 0.90, badgeSlots: 5, minSubscribers: 60, icon: '👑' },
+  king:      { tier: 'king',      name: i18n.t('creatorTierEngine.k6'), minXp: 15000, revenueShare: 0.90, badgeSlots: 6, minSubscribers: 100, icon: '🏆' },
 };
 
 export const TIER_ORDER: CreatorTier[] = ['bronze', 'silver', 'gold', 'platinum', 'diamond', 'king'];
@@ -101,18 +102,18 @@ function shouldDemote(profile: CreatorProfile): { demote: boolean; reason: strin
 
   // 连续7天亏损 → 降1级
   if (stats.consecutiveLossDays >= 7) {
-    return { demote: true, reason: `连续${stats.consecutiveLossDays}天亏损, 降级` };
+    return { demote: true, reason: i18n.t('creatorTierEngine.k7') };
   }
 
   // 订阅数跌破最低要求
   const config = TIER_CONFIGS[tier];
   if (stats.signalSubscribers < config.minSubscribers && tier !== 'bronze') {
-    return { demote: true, reason: `订阅数${stats.signalSubscribers}低于${config.minSubscribers}要求` };
+    return { demote: true, reason: i18n.t('creatorTierEngine.k8') };
   }
 
   // XP 跌破当前等级最低要求
   if (xp < config.minXp && tier !== 'bronze') {
-    return { demote: true, reason: `经验${xp}低于${config.minXp}门槛` };
+    return { demote: true, reason: i18n.t('creatorTierEngine.k9') };
   }
 
   return { demote: false, reason: '' };
@@ -191,7 +192,7 @@ export class CreatorTierEngine {
       profile.tierHistory.push({
         from: profile.tier, to: newTier,
         at: new Date().toISOString(),
-        reason: `经验${xp}达到${TIER_CONFIGS[newTier].name}门槛${TIER_CONFIGS[newTier].minXp}`,
+        reason: i18n.t('creatorTierEngine.k10'),
       });
       profile.tier = newTier;
       profile.revenueShare = TIER_CONFIGS[newTier].revenueShare;

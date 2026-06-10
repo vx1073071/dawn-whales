@@ -5,6 +5,7 @@
 import log from 'electron-log';
 import { getQuoteStreamStatus } from './quote-stream';
 import { getRiskStatus } from '../risk/risk-engine';
+import i18n from '../../../src/i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -47,7 +48,7 @@ async function checkLatency(host: string, port: number, timeout = 5000): Promise
       const client = new net.Socket();
       const deadline = setTimeout(() => {
         client.destroy();
-        resolve({ name: 'Latency', status: 'FAIL', value: null, message: `连接超时 (${timeout}ms)`, ms: timeout });
+        resolve({ name: 'Latency', status: 'FAIL', value: null, message: i18n.t('opendHealthCheck.k1'), ms: timeout });
       }, timeout);
       client.connect(port, host, () => {
         clearTimeout(deadline);
@@ -57,17 +58,17 @@ async function checkLatency(host: string, port: number, timeout = 5000): Promise
           name: 'Latency',
           status: ms < 200 ? 'PASS' : ms < 1000 ? 'WARN' : 'FAIL',
           value: ms,
-          message: `TCP 连接延迟 ${ms}ms`,
+          message: i18n.t('opendHealthCheck.k2'),
           ms,
         });
       });
       client.on('error', (err: unknown) => {
         clearTimeout(deadline);
-        resolve({ name: 'Latency', status: 'FAIL', value: null, message: `连接失败: ${err.message}`, ms: Date.now() - start });
+        resolve({ name: 'Latency', status: 'FAIL', value: null, message: i18n.t('opendHealthCheck.k3'), ms: Date.now() - start });
       });
     });
   } catch (e: unknown) {
-    return { name: 'Latency', status: 'FAIL', value: null, message: `检查失败: ${e.message}`, ms: Date.now() - start };
+    return { name: 'Latency', status: 'FAIL', value: null, message: i18n.t('opendHealthCheck.k4'), ms: Date.now() - start };
   }
 }
 
@@ -81,14 +82,14 @@ async function checkQuoteStream(): Promise<HealthCheck> {
     const latency = status?.avgLatencyMs ?? null;
     const ms = Date.now() - start;
     if (subscribed === 0) {
-      return { name: 'Quote Stream', status: 'WARN', value: subscribed, message: '行情订阅数: 0 (可能未启动订阅)', ms };
+      return { name: 'Quote Stream', status: 'WARN', value: subscribed, message: i18n.t('opendHealthCheck.k5'), ms };
     }
     if (latency != null && latency > 5000) {
-      return { name: 'Quote Stream', status: 'WARN', value: subscribed, message: `订阅 ${subscribed} 个标的，平均延迟 ${latency}ms (偏高)`, ms };
+      return { name: 'Quote Stream', status: 'WARN', value: subscribed, message: i18n.t('opendHealthCheck.k6'), ms };
     }
-    return { name: 'Quote Stream', status: 'PASS', value: subscribed, message: `已订阅 ${subscribed} 个标的，延迟 ${latency ?? '?'}ms`, ms };
+    return { name: 'Quote Stream', status: 'PASSi18n.t('opendHealthCheck.k7')?'}ms`, ms };
   } catch (e: unknown) {
-    return { name: 'Quote Stream', status: 'WARN', value: null, message: `行情流检查失败: ${e.message}`, ms: Date.now() - start };
+    return { name: 'Quote Stream', status: 'WARN', value: null, message: i18n.t('opendHealthCheck.k8'), ms: Date.now() - start };
   }
 }
 
@@ -102,15 +103,15 @@ async function checkDataFreshness(): Promise<HealthCheck> {
     const lastUpdate = status?.lastUpdateTime ?? null;
     const ms = Date.now() - start;
     if (!lastUpdate) {
-      return { name: 'Data Freshness', status: 'SKIP', value: null, message: '无最近更新时间记录', ms };
+      return { name: 'Data Freshness', status: 'SKIP', value: null, message: i18n.t('opendHealthCheck.k9'), ms };
     }
     const ageSeconds = (Date.now() - lastUpdate) / 1000;
     if (ageSeconds > 60) {
-      return { name: 'Data Freshness', status: 'FAIL', value: Math.round(ageSeconds), message: `行情数据 ${Math.round(ageSeconds)}秒 未更新`, ms };
+      return { name: 'Data Freshness', status: 'FAIL', value: Math.round(ageSeconds), message: i18n.t('opendHealthCheck.k10'), ms };
     }
-    return { name: 'Data Freshness', status: 'PASS', value: Math.round(ageSeconds), message: `最后更新 ${Math.round(ageSeconds)}秒前`, ms };
+    return { name: 'Data Freshness', status: 'PASS', value: Math.round(ageSeconds), message: i18n.t('opendHealthCheck.k11'), ms };
   } catch (e: unknown) {
-    return { name: 'Data Freshness', status: 'SKIP', value: null, message: `数据新鲜度检查跳过: ${e.message}`, ms: Date.now() - start };
+    return { name: 'Data Freshness', status: 'SKIP', value: null, message: i18n.t('opendHealthCheck.k12'), ms: Date.now() - start };
   }
 }
 
@@ -122,15 +123,15 @@ async function checkRiskEngine(): Promise<HealthCheck> {
     const status = await getRiskStatus();
     const ms = Date.now() - start;
     if (!status || status.error) {
-      return { name: 'Risk Engine', status: 'WARN', value: null, message: `风控引擎状态异常: ${status?.error ?? 'unknown'}`, ms };
+      return { name: 'Risk Engine', status: 'WARNi18n.t('opendHealthCheck.k13')unknown'}`, ms };
     }
     const drawdown = status.drawdownPct ?? 0;
     if (drawdown > 15) {
-      return { name: 'Risk Engine', status: 'WARN', value: drawdown, message: `回撤 ${drawdown.toFixed(2)}% (偏高)`, ms };
+      return { name: 'Risk Engine', status: 'WARN', value: drawdown, message: i18n.t('opendHealthCheck.k14'), ms };
     }
-    return { name: 'Risk Engine', status: 'PASS', value: drawdown, message: `风控正常，回撤 ${drawdown.toFixed(2)}%`, ms };
+    return { name: 'Risk Engine', status: 'PASS', value: drawdown, message: i18n.t('opendHealthCheck.k15'), ms };
   } catch (e: unknown) {
-    return { name: 'Risk Engine', status: 'WARN', value: null, message: `风控引擎检查失败: ${e.message}`, ms: Date.now() - start };
+    return { name: 'Risk Engine', status: 'WARN', value: null, message: i18n.t('opendHealthCheck.k16'), ms: Date.now() - start };
   }
 }
 
@@ -143,11 +144,11 @@ async function checkSubscriptions(): Promise<HealthCheck> {
     const symbols = status?.symbols ?? [];
     const ms = Date.now() - start;
     if (symbols.length === 0) {
-      return { name: 'Subscriptions', status: 'WARN', value: 0, message: '未订阅任何标的', ms };
+      return { name: 'Subscriptions', status: 'WARN', value: 0, message: i18n.t('opendHealthCheck.k17'), ms };
     }
-    return { name: 'Subscriptions', status: 'PASS', value: symbols.length, message: `已订阅 ${symbols.length} 个标的: ${symbols.slice(0, 5).join(', ')}${symbols.length > 5 ? '...' : ''}`, ms };
+    return { name: 'Subscriptions', status: 'PASSi18n.t('opendHealthCheck.k18'), ')}${symbols.length > 5 ? '...' : ''}`, ms };
   } catch (e: unknown) {
-    return { name: 'Subscriptions', status: 'SKIP', value: null, message: `订阅检查跳过: ${e.message}`, ms: Date.now() - start };
+    return { name: 'Subscriptions', status: 'SKIP', value: null, message: i18n.t('opendHealthCheck.k19'), ms: Date.now() - start };
   }
 }
 
@@ -199,17 +200,17 @@ export async function runOpenDHealthCheck(config?: Partial<OpenDConfig>): Promis
   const { overall, score } = calcScore(checks);
 
   const recommendations: string[] = [];
-  if (latency.status === 'FAIL') recommendations.push('OpenD 连接失败，检查 Futu OpenD 是否启动');
-  if (quoteStream.status === 'WARN') recommendations.push('行情流订阅异常，重新连接 OpenD');
-  if (dataFreshness.status === 'FAIL') recommendations.push('行情数据陈旧，考虑重新订阅');
-  if (riskEngine.status === 'WARN') recommendations.push('回撤超标，关注风控信号');
-  if (subscriptions.status === 'WARN') recommendations.push('未订阅任何标的，请配置自选股');
+  if (latency.status === 'FAIL') recommendations.push(i18n.t('opendHealthCheck.k20'));
+  if (quoteStream.status === 'WARN') recommendations.push(i18n.t('opendHealthCheck.k21'));
+  if (dataFreshness.status === 'FAIL') recommendations.push(i18n.t('opendHealthCheck.k22'));
+  if (riskEngine.status === 'WARN') recommendations.push(i18n.t('opendHealthCheck.k23'));
+  if (subscriptions.status === 'WARN') recommendations.push(i18n.t('opendHealthCheck.k24'));
 
   const summary = {
-    HEALTHY:   `✅ OpenD 健康 (${score}/100) — ${host}:${port}`,
-    DEGRADED:  `⚠️  OpenD 降级 (${score}/100) — 部分检查未通过`,
-    UNHEALTHY: `❌ OpenD 异常 (${score}/100) — 需立即处理`,
-    UNKNOWN:   `❓ OpenD 状态未知 (${score}/100)`,
+    HEALTHY:   i18n.t('opendHealthCheck.k25'),
+    DEGRADED:  i18n.t('opendHealthCheck.k26'),
+    UNHEALTHY: i18n.t('opendHealthCheck.k27'),
+    UNKNOWN:   i18n.t('opendHealthCheck.k28'),
   }[overall];
 
   log.info(`[OpenDHealth] ${summary}`);

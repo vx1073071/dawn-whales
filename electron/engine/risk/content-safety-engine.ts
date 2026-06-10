@@ -1,3 +1,4 @@
+import i18n from '../../../src/i18n';
 // ── J-76-05 R76 VFINAL: Content Safety Engine ─────────────────────────────
 // Sensitive word filtering + comment moderation + user blocking
 // v1.8.0 GA: community safety baseline
@@ -51,14 +52,14 @@ export interface ReportItem {
 
 const DEFAULT_RULES: SafetyRule[] = [
   // Financial scam patterns (Chinese)
-  { id: "SW-001", type: "sensitive_word", pattern: "稳赚不赔", severity: "block", description: "Guaranteed profit claim — scam indicator" },
-  { id: "SW-002", type: "sensitive_word", pattern: "内幕消息", severity: "block", description: "Insider information claim" },
-  { id: "SW-003", type: "sensitive_word", pattern: "涨停推荐", severity: "high", description: "Daily limit recommendation" },
-  { id: "SW-004", type: "sensitive_word", pattern: "推荐股票", severity: "medium", description: "Stock recommendation (unqualified)" },
-  { id: "SW-005", type: "sensitive_word", pattern: "加群", severity: "medium", description: "Group invite — potential fraud" },
-  { id: "SW-006", type: "sensitive_word", pattern: "跟着买", severity: "high", description: "Follow-me buying signal" },
-  { id: "SW-007", type: "sensitive_word", pattern: "包赚", severity: "block", description: "Profit guarantee" },
-  { id: "SW-008", type: "sensitive_word", pattern: "免费推荐", severity: "low", description: "Free recommendation (could be legit or spam)" },
+  { id: "SW-001", type: "sensitive_word", pattern: i18n.t('contentSafetyEngine.k1'), severity: "block", description: "Guaranteed profit claim — scam indicator" },
+  { id: "SW-002", type: "sensitive_word", pattern: i18n.t('contentSafetyEngine.k2'), severity: "block", description: "Insider information claim" },
+  { id: "SW-003", type: "sensitive_word", pattern: i18n.t('contentSafetyEngine.k3'), severity: "high", description: "Daily limit recommendation" },
+  { id: "SW-004", type: "sensitive_word", pattern: i18n.t('contentSafetyEngine.k4'), severity: "medium", description: "Stock recommendation (unqualified)" },
+  { id: "SW-005", type: "sensitive_word", pattern: i18n.t('contentSafetyEngine.k5'), severity: "medium", description: "Group invite — potential fraud" },
+  { id: "SW-006", type: "sensitive_word", pattern: i18n.t('contentSafetyEngine.k6'), severity: "high", description: "Follow-me buying signal" },
+  { id: "SW-007", type: "sensitive_word", pattern: i18n.t('contentSafetyEngine.k7'), severity: "block", description: "Profit guarantee" },
+  { id: "SW-008", type: "sensitive_word", pattern: i18n.t('contentSafetyEngine.k8'), severity: "low", description: "Free recommendation (could be legit or spam)" },
 
   // General scam/fraud
   { id: "SW-009", type: "sensitive_word", pattern: "guaranteed return", severity: "block", description: "Guaranteed return claim" },
@@ -68,7 +69,7 @@ const DEFAULT_RULES: SafetyRule[] = [
   // Spam patterns
   { id: "SP-001", type: "regex", pattern: "(https?://t\\.me|https?://telegram\\.me)", severity: "block", description: "Telegram group link" },
   { id: "SP-002", type: "regex", pattern: "(https?://wa\\.me|https?://chat\\.whatsapp\\.com)", severity: "block", description: "WhatsApp group link" },
-  { id: "SP-003", type: "spam_pattern", pattern: "重复内容", severity: "low", description: "Duplicate content detection" },
+  { id: "SP-003", type: "spam_pattern", pattern: i18n.t('contentSafetyEngine.k9'), severity: "low", description: "Duplicate content detection" },
 ];
 
 // ── Content Safety Engine ──────────────────────────────────────────────────
@@ -92,7 +93,7 @@ export class ContentSafetyEngine {
         return {
           passed: false,
           flags: [{ ruleId: "USER_BLOCKED", severity: "block", matchedWord: "", position: [-1, -1] }],
-          filteredText: "[内容已屏蔽]",
+          filteredText: i18n.t('contentSafetyEngine.k10'),
           action: "block",
         };
       }
@@ -139,7 +140,7 @@ export class ContentSafetyEngine {
     return {
       passed: action !== "block",
       flags,
-      filteredText: action === "block" ? "[内容已过滤]" : filteredText,
+      filteredText: action === "block" ? i18n.t('contentSafetyEngine.k11') : filteredText,
       action,
     };
   }
@@ -151,31 +152,31 @@ export class ContentSafetyEngine {
     // Content safety check
     const check = this.checkContent(comment, userId);
     if (check.action === "block") {
-      return { approved: false, reason: "包含违规内容", action: "block", warnings };
+      return { approved: false, reason: i18n.t('contentSafetyEngine.k12'), action: "block", warnings };
     }
 
     // Spam detection: duplicate content
     const isDuplicate = history.some((h) => h.text === comment && Date.now() - h.time < 60_000);
     if (isDuplicate) {
-      warnings.push("短时间内重复发送相同内容");
+      warnings.push(i18n.t('contentSafetyEngine.k13'));
     }
 
     // Spam detection: rate limiting (5 comments in 1 minute)
     const recentCount = history.filter((h) => Date.now() - h.time < 60_000).length;
     if (recentCount >= 5) {
-      return { approved: false, reason: "发送频率过高", action: "block", warnings };
+      return { approved: false, reason: i18n.t('contentSafetyEngine.k14'), action: "block", warnings };
     }
 
     // Length check
     if (comment.length < 1) {
-      return { approved: false, reason: "评论不能为空", action: "block", warnings };
+      return { approved: false, reason: i18n.t('contentSafetyEngine.k15'), action: "block", warnings };
     }
     if (comment.length > 2000) {
-      return { approved: false, reason: "评论过长 (上限2000字)", action: "block", warnings };
+      return { approved: false, reason: i18n.t('contentSafetyEngine.k16'), action: "block", warnings };
     }
 
     const action = warnings.length > 0 ? "review" : "allow";
-    return { approved: action !== "block", reason: warnings.join("; ") || "通过", action, warnings };
+    return { approved: action !== "block", reason: warnings.join("; ") || i18n.t('contentSafetyEngine.k17'), action, warnings };
   }
 
   // ── User Blocking ─────────────────────────────────────────────────────

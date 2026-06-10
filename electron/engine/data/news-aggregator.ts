@@ -2,6 +2,7 @@
 // Aggregate news from multiple sources with sentiment analysis
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -58,14 +59,14 @@ export interface NewsAggregationResult {
 
 export class SentimentAnalyzer {
   private positiveKeywords = [
-    '利好', '上涨', '涨停', '突破', '增长', '盈利', '超预期', '创新高',
-    '买入', '推荐', '增持', '强劲', '乐观', '利好', '突破', '反弹',
+    i18n.t('newsAggregator.k1'), i18n.t('newsAggregator.k2'), i18n.t('newsAggregator.k3'), i18n.t('newsAggregator.k4'), i18n.t('newsAggregator.k5'), i18n.t('newsAggregator.k6'), i18n.t('newsAggregator.k7'), i18n.t('newsAggregator.k8'),
+    i18n.t('newsAggregator.k9'), i18n.t('newsAggregator.k10'), i18n.t('newsAggregator.k11'), i18n.t('newsAggregator.k12'), i18n.t('newsAggregator.k13'), i18n.t('newsAggregator.k14'), i18n.t('newsAggregator.k15'), i18n.t('newsAggregator.k16'),
     'positive', 'bullish', 'up', 'gain', 'growth', 'profit'
   ];
 
   private negativeKeywords = [
-    '利空', '下跌', '跌停', '下跌', '亏损', '下滑', '不及预期', '暴跌',
-    '卖出', '减持', '减持', '疲软', '悲观', '利空', '崩盘', '暴跌',
+    i18n.t('newsAggregator.k17'), i18n.t('newsAggregator.k18'), i18n.t('newsAggregator.k19'), i18n.t('newsAggregator.k20'), i18n.t('newsAggregator.k21'), i18n.t('newsAggregator.k22'), i18n.t('newsAggregator.k23'), i18n.t('newsAggregator.k24'),
+    i18n.t('newsAggregator.k25'), i18n.t('newsAggregator.k26'), i18n.t('newsAggregator.k27'), i18n.t('newsAggregator.k28'), i18n.t('newsAggregator.k29'), i18n.t('newsAggregator.k30'), i18n.t('newsAggregator.k31'), i18n.t('newsAggregator.k32'),
     'negative', 'bearish', 'down', 'loss', 'decline', 'loss'
   ];
 
@@ -116,7 +117,7 @@ export class SentimentAnalyzer {
     
     // Simple keyword extraction (can be enhanced with NLP)
     const words = text.split(/\s+/);
-    const stopWords = new Set(['的', '了', '是', '在', '和', '与', '及', '等', 'the', 'a', 'an', 'the', 'and', 'or']);
+    const stopWords = new Set([i18n.t('newsAggregator.k33'), i18n.t('newsAggregator.k34'), i18n.t('newsAggregator.k35'), i18n.t('newsAggregator.k36'), i18n.t('newsAggregator.k37'), i18n.t('newsAggregator.k38'), i18n.t('newsAggregator.k39'), i18n.t('newsAggregator.k40'), 'the', 'a', 'an', 'the', 'and', 'or']);
 
     for (const word of words) {
       const clean = word.replace(/[^\w\u4e00-\u9fa5]/g, '');
@@ -142,8 +143,8 @@ export class SentimentAnalyzer {
 
     // Match common stock names
     const stockNames = [
-      '贵州茅台', '五粮液', '中国平安', '招商银行', '腾讯', '阿里巴巴',
-      '宁德时代', '比亚迪', '美团', '京东', '小米', '百度'
+      i18n.t('newsAggregator.k41'), i18n.t('newsAggregator.k42'), i18n.t('newsAggregator.k43'), i18n.t('newsAggregator.k44'), i18n.t('newsAggregator.k45'), i18n.t('newsAggregator.k46'),
+      i18n.t('newsAggregator.k47'), i18n.t('newsAggregator.k48'), i18n.t('newsAggregator.k49'), i18n.t('newsAggregator.k50'), i18n.t('newsAggregator.k51'), i18n.t('newsAggregator.k52')
     ];
 
     for (const name of stockNames) {
@@ -168,19 +169,19 @@ export class NewsFetcher {
   private initDefaultSources(): void {
     this.sources = [
       {
-        name: '东方财富',
+        name: i18n.t('newsAggregator.k53'),
         type: 'eastmoney',
         endpoint: 'https://push2.eastmoney.com/api/qt/clist/get',
         enabled: true,
       },
       {
-        name: '新浪财经',
+        name: i18n.t('newsAggregator.k54'),
         type: 'sina',
         endpoint: 'https://feed.mix.sina.com.cn/api/roll/get',
         enabled: true,
       },
       {
-        name: '雪球',
+        name: i18n.t('newsAggregator.k55'),
         type: 'xueqiu',
         endpoint: 'https://xueqiu.com/statuses/search.json',
         enabled: true,
@@ -235,11 +236,11 @@ export class NewsFetcher {
     const items: NewsItem[] = [];
 
     const titles = [
-      '贵州茅台发布 quarterly 报告，净利润超预期增长',
-      '五粮液宣布扩大产能，市场反应积极',
-      '中国平安股价下跌，市场担忧经济放缓',
-      '招商银行宣布分红方案，投资者信心增强',
-      '腾讯发布新产品，市场预期乐观',
+      i18n.t('newsAggregator.k56'),
+      i18n.t('newsAggregator.k57'),
+      i18n.t('newsAggregator.k58'),
+      i18n.t('newsAggregator.k59'),
+      i18n.t('newsAggregator.k60'),
     ];
 
     for (let i = 0; i < count; i++) {
@@ -251,7 +252,7 @@ export class NewsFetcher {
       items.push({
         id: `${source}-${Date.now()}-${i}`,
         title,
-        summary: `这是关于${title}的详细报道...`,
+        summary: i18n.t('newsAggregator.k61'),
         source,
         publishTime: Date.now() - Math.random() * 86400000, // Random time in last 24h
         url: `https://example.com/news/${i}`,

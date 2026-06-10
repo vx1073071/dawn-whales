@@ -4,6 +4,7 @@
 // IPC: alert:correlation
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -130,16 +131,16 @@ function generateAlertMessage(
   currentCorrelation: number,
   change: number
 ): string {
-  const severityText = { low: '轻微', medium: '中等', high: '显著', critical: '严重' }[severity] || '';
+  const severityText = { low: i18n.t('correlationAlert.k1'), medium: i18n.t('correlationAlert.k2'), high: i18n.t('correlationAlert.k3'), critical: i18n.t('correlationAlert.k4') }[severity] || '';
   const typeText = {
-    breakdown: '相关性崩溃',
-    spike: '相关性飙升',
-    regime_shift: '关系反转',
-    divergence: '偏离历史',
-  }[type] || '异常';
+    breakdown: i18n.t('correlationAlert.k5'),
+    spike: i18n.t('correlationAlert.k6'),
+    regime_shift: i18n.t('correlationAlert.k7'),
+    divergence: i18n.t('correlationAlert.k8'),
+  }[type] || i18n.t('correlationAlert.k9');
 
-  const direction = change > 0 ? '上升' : '下降';
-  return `${codeA}/${codeB} ${severityText}${typeText}: 当前 ${currentCorrelation.toFixed(3)}, ${direction} ${Math.abs(change).toFixed(3)}`;
+  const direction = change > 0 ? i18n.t('correlationAlert.k10') : i18n.t('correlationAlert.k11');
+  return i18n.t('correlationAlert.k12');
 }
 
 function generateContext(
@@ -148,10 +149,10 @@ function generateContext(
   historicalStdDev: number,
   zScore: number
 ): string {
-  let context = `历史均值: ${historicalAvg.toFixed(3)}, 标准差: ${historicalStdDev.toFixed(3)}, Z-Score: ${zScore.toFixed(2)}`;
+  let context = i18n.t('correlationAlert.k13');
 
   if (Math.abs(zScore) >= 2) {
-    context += ` (${zScore > 0 ? '高于' : '低于'}均值 ${Math.abs(zScore).toFixed(1)} 个标准差)`;
+    context += ` (${zScore > 0 ? i18n.t('correlationAlert.k14') : i18n.t('correlationAlert.k15')}均值 ${Math.abs(zScore).toFixed(1)} 个标准差)`;
   }
 
   return context;

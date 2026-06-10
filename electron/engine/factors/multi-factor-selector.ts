@@ -4,6 +4,7 @@
 // IPC: factor:score, factor:rank, factor:screen
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -299,23 +300,23 @@ export function scoreAndRankStocks(
   const recommendations: string[] = [];
 
   if (top10.length > 0) {
-    recommendations.push(`Top 10 股票平均综合评分: ${top10.reduce((s, s2) => s + s2.compositeScore, 0) / top10.length}`);
+    recommendations.push(i18n.t('multiFactorSelector.k1'));
     const topSectors = [...new Set(top10.map(s => s.sector).filter(Boolean))];
     if (topSectors.length > 0) {
-      recommendations.push(`Top 10 涵盖板块: ${topSectors.join(', ')}`);
+      recommendations.push(i18n.t('multiFactorSelector.k2'));
     }
   }
 
   if (top10[0] && top10[0].momentumScore > 70) {
-    recommendations.push(`动量因子强势，市场趋势明确。`);
+    recommendations.push(i18n.t('multiFactorSelector.k3'));
   }
 
   if (top10[0] && top10[0].valueScore > 70) {
-    recommendations.push(`价值因子突出，低估值机会多。`);
+    recommendations.push(i18n.t('multiFactorSelector.k4'));
   }
 
   if (top10[0] && top10[0].qualityScore > 70) {
-    recommendations.push(`质量因子领先，优质公司集中。`);
+    recommendations.push(i18n.t('multiFactorSelector.k5'));
   }
 
   const result: FactorScreenResult = {
@@ -423,7 +424,7 @@ export function screenStocks(
     bottom10,
     recommendations: [
       ...result.recommendations,
-      `筛选后剩余 ${scores.length} 只股票 (原始 ${stocks.length} 只)`,
+      i18n.t('multiFactorSelector.k6'),
     ],
   };
 }

@@ -9,6 +9,7 @@ import { getDragonTigerList, getDragonTigerDetail } from './dragon-tiger-list';
 import { SentimentIndexEngine } from '../analysis/sentiment-index';
 import { StockAnomalyDetector } from './stock-anomaly-detector';
 import { NewsAggregatorService } from './news-aggregator';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -107,15 +108,15 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
           const mainNet = (stockFlow as any).mainNetInflow || 0;
 
           if (mainNet > 10000) {
-            dimensions.capitalFlow = { score: 85, grade: 'A', signal: 'bullish', detail: `主力净流入 ${(mainNet / 10000).toFixed(2)}亿`, available: true };
+            dimensions.capitalFlow = { score: 85, grade: 'A', signal: 'bullish', detail: i18n.t('stockDiagnosis.k1'), available: true };
           } else if (mainNet > 3000) {
-            dimensions.capitalFlow = { score: 65, grade: 'B', signal: 'mild_bullish', detail: `主力净流入 ${mainNet.toFixed(0)}万`, available: true };
+            dimensions.capitalFlow = { score: 65, grade: 'B', signal: 'mild_bullish', detail: i18n.t('stockDiagnosis.k2'), available: true };
           } else if (mainNet > -3000) {
-            dimensions.capitalFlow = { score: 50, grade: 'C', signal: 'neutral', detail: `主力资金持平`, available: true };
+            dimensions.capitalFlow = { score: 50, grade: 'C', signal: 'neutral', detail: i18n.t('stockDiagnosis.k3'), available: true };
           } else if (mainNet > -10000) {
-            dimensions.capitalFlow = { score: 35, grade: 'D', signal: 'mild_bearish', detail: `主力净流出 ${Math.abs(mainNet).toFixed(0)}万`, available: true };
+            dimensions.capitalFlow = { score: 35, grade: 'D', signal: 'mild_bearish', detail: i18n.t('stockDiagnosis.k4'), available: true };
           } else {
-            dimensions.capitalFlow = { score: 15, grade: 'F', signal: 'bearish', detail: `主力净流出 ${(Math.abs(mainNet) / 10000).toFixed(2)}亿`, available: true };
+            dimensions.capitalFlow = { score: 15, grade: 'F', signal: 'bearish', detail: i18n.t('stockDiagnosis.k5'), available: true };
           }
         }
       }
@@ -138,15 +139,15 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
         const decreaseCount = items.filter(i => i.sharesChange < 0).length;
 
         if (totalFunds > 50 && increaseCount > decreaseCount * 2) {
-          dimensions.fundOwnership = { score: 80, grade: 'A', signal: 'bullish', detail: `${totalFunds}家基金持仓，${increaseCount}家增持`, available: true };
+          dimensions.fundOwnership = { score: 80, grade: 'A', signal: 'bullish', detail: i18n.t('stockDiagnosis.k6'), available: true };
         } else if (totalFunds > 20 && increaseCount > decreaseCount) {
-          dimensions.fundOwnership = { score: 60, grade: 'B', signal: 'mild_bullish', detail: `${totalFunds}家基金持仓，增持居多`, available: true };
+          dimensions.fundOwnership = { score: 60, grade: 'B', signal: 'mild_bullish', detail: i18n.t('stockDiagnosis.k7'), available: true };
         } else if (totalFunds > 10) {
-          dimensions.fundOwnership = { score: 50, grade: 'C', signal: 'neutral', detail: `${totalFunds}家基金持仓`, available: true };
+          dimensions.fundOwnership = { score: 50, grade: 'C', signal: 'neutral', detail: i18n.t('stockDiagnosis.k8'), available: true };
         } else if (totalFunds > 0 && decreaseCount > increaseCount) {
-          dimensions.fundOwnership = { score: 30, grade: 'D', signal: 'bearish', detail: `${totalFunds}家基金持仓，减持居多`, available: true };
+          dimensions.fundOwnership = { score: 30, grade: 'D', signal: 'bearish', detail: i18n.t('stockDiagnosis.k9'), available: true };
         } else {
-          dimensions.fundOwnership = { score: 20, grade: 'F', signal: 'bearish', detail: '基金持仓极少', available: true };
+          dimensions.fundOwnership = { score: 20, grade: 'F', signal: 'bearish', detail: i18n.t('stockDiagnosis.k10'), available: true };
         }
       }
     } catch (err: unknown) {
@@ -167,14 +168,14 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
           const netBuy = (dtEntry as any).netBuyAmount || 0;
 
           if (netBuy > 10000) {
-            dimensions.dragonTiger = { score: 85, grade: 'A', signal: 'bullish', detail: `龙虎榜净买入 ${(netBuy / 10000).toFixed(2)}亿`, available: true };
+            dimensions.dragonTiger = { score: 85, grade: 'A', signal: 'bullish', detail: i18n.t('stockDiagnosis.k11'), available: true };
           } else if (netBuy > 0) {
-            dimensions.dragonTiger = { score: 65, grade: 'B', signal: 'mild_bullish', detail: `龙虎榜净买入 ${netBuy.toFixed(0)}万`, available: true };
+            dimensions.dragonTiger = { score: 65, grade: 'B', signal: 'mild_bullish', detail: i18n.t('stockDiagnosis.k12'), available: true };
           } else {
-            dimensions.dragonTiger = { score: 35, grade: 'D', signal: 'bearish', detail: `龙虎榜净卖出 ${Math.abs(netBuy).toFixed(0)}万`, available: true };
+            dimensions.dragonTiger = { score: 35, grade: 'D', signal: 'bearish', detail: i18n.t('stockDiagnosis.k13'), available: true };
           }
         } else {
-          dimensions.dragonTiger = { score: 50, grade: 'C', signal: 'neutral', detail: '未上龙虎榜', available: true };
+          dimensions.dragonTiger = { score: 50, grade: 'C', signal: 'neutral', detail: i18n.t('stockDiagnosis.k14'), available: true };
         }
       }
     } catch (err: unknown) {
@@ -193,15 +194,15 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
         const summary = newsResult.sentimentSummary;
         if (summary) {
           if (summary.overallMood === 'bullish' && summary.avgScore > 0.3) {
-            dimensions.news = { score: 80, grade: 'A', signal: 'bullish', detail: `舆情积极 (${summary.positive}正面 vs ${summary.negative}负面)`, available: true };
+            dimensions.news = { score: 80, grade: 'A', signal: 'bullish', detail: i18n.t('stockDiagnosis.k15'), available: true };
           } else if (summary.overallMood === 'bullish') {
-            dimensions.news = { score: 65, grade: 'B', signal: 'mild_bullish', detail: `舆情偏正面`, available: true };
+            dimensions.news = { score: 65, grade: 'B', signal: 'mild_bullish', detail: i18n.t('stockDiagnosis.k16'), available: true };
           } else if (summary.overallMood === 'mixed') {
-            dimensions.news = { score: 50, grade: 'C', signal: 'neutral', detail: `舆情中性`, available: true };
+            dimensions.news = { score: 50, grade: 'C', signal: 'neutral', detail: i18n.t('stockDiagnosis.k17'), available: true };
           } else if (summary.avgScore < -0.3) {
-            dimensions.news = { score: 20, grade: 'F', signal: 'bearish', detail: `舆情消极 (${summary.negative}负面消息)`, available: true };
+            dimensions.news = { score: 20, grade: 'F', signal: 'bearish', detail: i18n.t('stockDiagnosis.k18'), available: true };
           } else {
-            dimensions.news = { score: 35, grade: 'D', signal: 'mild_bearish', detail: `舆情偏负面`, available: true };
+            dimensions.news = { score: 35, grade: 'D', signal: 'mild_bearish', detail: i18n.t('stockDiagnosis.k19'), available: true };
           }
         }
       }
@@ -221,13 +222,13 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
       const warningCount = alerts.filter(a => a.level === 'warning').length;
 
       if (criticalCount > 0) {
-        dimensions.anomalies = { score: 20, grade: 'F', signal: 'danger', detail: `${criticalCount}个严重异动警报`, available: true };
+        dimensions.anomalies = { score: 20, grade: 'F', signal: 'danger', detail: i18n.t('stockDiagnosis.k20'), available: true };
       } else if (warningCount > 2) {
-        dimensions.anomalies = { score: 35, grade: 'D', signal: 'caution', detail: `${warningCount}个异动预警`, available: true };
+        dimensions.anomalies = { score: 35, grade: 'D', signal: 'caution', detail: i18n.t('stockDiagnosis.k21'), available: true };
       } else if (warningCount > 0) {
-        dimensions.anomalies = { score: 45, grade: 'C', signal: 'neutral', detail: `${warningCount}个异动提醒`, available: true };
+        dimensions.anomalies = { score: 45, grade: 'C', signal: 'neutral', detail: i18n.t('stockDiagnosis.k22'), available: true };
       } else {
-        dimensions.anomalies = { score: 70, grade: 'B', signal: 'stable', detail: '近期无异动', available: true };
+        dimensions.anomalies = { score: 70, grade: 'B', signal: 'stable', detail: i18n.t('stockDiagnosis.k23'), available: true };
       }
     } catch (err: unknown) {
       log.warn('[StockDiagnosis] Anomalies error:', err.message);
@@ -275,7 +276,7 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
       score: overallScore,
       grade,
       recommendation,
-      summary: `综合评分 ${overallScore}/100 (${grade}) — ${recommendation}`,
+      summary: i18n.t('stockDiagnosis.k24'),
     },
     dimensions,
     rawData,
