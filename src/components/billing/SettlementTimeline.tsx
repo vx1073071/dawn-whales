@@ -12,7 +12,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCredits, type CreditTransaction, type CreditFilter } from '@/hooks/useCredits';
-import { formatTime } from '@/utils/formatTime';
+import { formatDateTime } from '@/utils/formatTime';
 import i18n from '../../i18n';
 
 const FILTER_TABS: { key: CreditFilter; label: string; icon: string }[] = [
@@ -182,7 +182,7 @@ function TimelineRow({ tx, isFirst, typeIcon }: { tx: CreditTransaction; isFirst
           <div className="flex-1 min-w-0">
             <div className="text-white text-sm font-medium truncate">{tx.source}</div>
             <div className="text-gray-500 text-xs mt-0.5">
-              {formatTime(tx.timestamp)}
+              {formatDateTime(tx.timestamp)}
             </div>
           </div>
           <div className="text-right flex-shrink-0">
