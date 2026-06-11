@@ -50,7 +50,7 @@ export const PRODUCTS: Product[] = [
     id: 'dw_pro_yearly',
     name: i18n.t('payment.k5'),
     description: i18n.t('payment.k6'),
-    price: 29900, // ¥299/年
+    price: 29900, // $299/yr
     currency: 'cny',
     interval: 'year',
   },

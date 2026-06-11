@@ -5635,5 +5635,45 @@
   "TradingCalendarView.r92_1dfc": "📅 月",
   "TradingCalendarView.r92_2710": "📋 周",
   "theme.r92_8874": "🌙 深色",
-  "theme.r92_f744": "☀️ 浅色"
+  "theme.r92_f744": "☀️ 浅色",
+  "LandingPageV18.v110_1": "USDT Wallet & P2P",
+  "LandingPageV18.v110_2": "Built-in USDT wallet with P2P transfer, 14-day freeze, and dispute resolution. Multi-chain support (TRC20/ERC20/BEP20).",
+  "LandingPageV18.v110_3": "P2P Marketplace",
+  "LandingPageV18.v110_4": "Peer-to-peer USDT trading with 0.3% fee, escrow protection, and 4-option dispute arbitration.",
+  "LandingPageV18.v110_5": "2FA Security",
+  "LandingPageV18.v110_6": "TOTP-based 2FA (Google Authenticator) with 8 backup codes. Required for login and withdrawals.",
+  "LandingPageV18.v110_7": "Storybook UI Docs",
+  "LandingPageV18.v110_8": "15 interactive component stories with props docs, dark/light theme toggle, and live previews.",
+  "LandingPageV18.v110_download": "Download v1.10.0",
+  "LandingPageV18.v110_changelog": "View Changelog",
+  "LandingPageV18.v110_win": "Windows 10/11 (x64)",
+  "LandingPageV18.v110_release": "Released June 2026",
+  "ai": {
+    "title": "AI 助手",
+    "subtitle": "策略建議 · 風險分析 · 市場解讀",
+    "placeholder": "輸入你嘅問題... (Enter 發送, Shift+Enter 換行)",
+    "quickPrompts": "快捷提問",
+    "disclaimer": "AI 助手基於策略模板同規則引擎回應，不構成投資建議",
+    "strategyLab": "策略工場",
+    "riskPanel": "風險面板"
+  },
+  "orders": {
+    "title": "交易指示",
+    "activeOrders": "當前指示",
+    "historyOrders": "歷史指示",
+    "strategyTrades": "策略交易紀錄",
+    "noActiveOrders": "暫無活躍指示",
+    "noHistoryOrders": "暫無歷史指示",
+    "noStrategyTrades": "暫無策略交易紀錄",
+    "strategyTradesHint": "策略執行後自動記錄喺呢度",
+    "subtitle": "當前指示、歷史成交同策略交易紀錄"
+  },
+  "pwa": {
+    "offline": "離線模式",
+    "online": "已重新連接",
+    "cachedData": "顯示快取數據",
+    "install": "安裝應用程式",
+    "updateAvailable": "有新版本可用",
+    "pullToRefresh": "下拉更新"
+  }
 }

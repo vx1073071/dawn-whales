@@ -148,7 +148,7 @@ export const MultiAccountSwitcher: React.FC<MultiAccountSwitcherProps> = ({
               {activeAccount.name}
             </span>
             <span className="text-[10px] text-gray-600 bg-gray-800/50 px-1 rounded flex-shrink-0">
-              {activeAccount.type === 'main' ? '主' : activeAccount.type === 'api' ? 'API' : 'components.simulation'}
+              {activeAccount.type === 'main' ? 'Main' : activeAccount.type === 'api' ? 'API' : 'components.simulation'}
             </span>
           </div>
           <div className="text-[10px] text-gray-500">

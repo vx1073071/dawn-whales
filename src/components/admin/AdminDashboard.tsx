@@ -56,7 +56,7 @@ const AdminDashboard: React.FC = () => {
       <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>{i18n.t('AdminDashboard.k0')}</h3>
       <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
         <StatCard title={i18n.t('AdminDashboard.k1')} value={stats.funnel.visits} />
-        <StatCard title={i18n.t('AdminDashboard.k2')} value={stats.funnel.downloads} sub={`转化率 ${stats.funnel.visits > 0 ? ((stats.funnel.downloads / stats.funnel.visits) * 100).toFixed(1) : 0}%`} />
+        <StatCard title={i18n.t('AdminDashboard.k2')} value={stats.funnel.downloads} sub={`CVR ${stats.funnel.visits > 0 ? ((stats.funnel.downloads / stats.funnel.visits) * 100).toFixed(1) : 0}%`} />
         <StatCard title={i18n.t('AdminDashboard.k3')} value={stats.funnel.registrations} />
         <StatCard title={i18n.t('AdminDashboard.k4')} value={stats.funnel.active} />
       </div>

@@ -4868,5 +4868,17 @@
   "StrategyImportExportUI": {
     "r92_0": "JSON 导出预览",
     "r92_1": "✓ 验证通过"
-  }
+  },
+  "LandingPageV18.v110_1": "USDT錢包 & P2P",
+  "LandingPageV18.v110_2": "內建USDT錢包，支援P2P轉賬、14天凍結和爭議解決。多鏈支援(TRC20/ERC20/BEP20)。",
+  "LandingPageV18.v110_3": "P2P交易市場",
+  "LandingPageV18.v110_4": "點對點USDT交易，0.3%手續費，託管保護和4選1爭議仲裁。",
+  "LandingPageV18.v110_5": "雙因素認證",
+  "LandingPageV18.v110_6": "基於TOTP的2FA(Google Authenticator)，8個備份碼。登入和提現必需。",
+  "LandingPageV18.v110_7": "Storybook UI文檔",
+  "LandingPageV18.v110_8": "15個互動式組件故事，含Props文檔、暗色/亮色主題切換和實時預覽。",
+  "LandingPageV18.v110_download": "下載 v1.10.0",
+  "LandingPageV18.v110_changelog": "查看更新日誌",
+  "LandingPageV18.v110_win": "Windows 10/11 (x64)",
+  "LandingPageV18.v110_release": "2026年6月發佈"
 }

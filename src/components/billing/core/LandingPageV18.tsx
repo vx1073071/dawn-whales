@@ -17,7 +17,11 @@ const FEATURES = [
 { icon: '🎨', title: i18n.t('LandingPageV18.k22'), desc: i18n.t('LandingPageV18.k23'), highlight: i18n.t('LandingPageV18.k24') },
 { icon: '🛡️', title: i18n.t('LandingPageV18.k25'), desc: i18n.t('LandingPageV18.k26'), highlight: i18n.t('LandingPageV18.k27') },
 { icon: '🔔', title: i18n.t('LandingPageV18.k28'), desc: i18n.t('LandingPageV18.k29'), highlight: i18n.t('LandingPageV18.k30') },
-{ icon: '⚡', title: i18n.t('LandingPageV18.k31'), desc: i18n.t('LandingPageV18.k32'), highlight: i18n.t('LandingPageV18.k33') }];
+{ icon: '⚡', title: i18n.t('LandingPageV18.k31'), desc: i18n.t('LandingPageV18.k32'), highlight: i18n.t('LandingPageV18.k33') },
+{ icon: '💰', title: i18n.t('LandingPageV18.v110_1') || 'USDT Wallet & P2P', desc: i18n.t('LandingPageV18.v110_2') || 'Built-in USDT wallet with P2P transfer, 14-day freeze, and dispute resolution. Multi-chain support (TRC20/ERC20/BEP20).', highlight: 'v1.10.0' },
+{ icon: '🤝', title: i18n.t('LandingPageV18.v110_3') || 'P2P Marketplace', desc: i18n.t('LandingPageV18.v110_4') || 'Peer-to-peer USDT trading with 0.3% fee, escrow protection, and 4-option dispute arbitration.', highlight: 'v1.10.0' },
+{ icon: '🔐', title: i18n.t('LandingPageV18.v110_5') || '2FA Security', desc: i18n.t('LandingPageV18.v110_6') || 'TOTP-based 2FA (Google Authenticator) with 8 backup codes. Required for login and withdrawals.', highlight: 'v1.10.0' },
+{ icon: '📚', title: i18n.t('LandingPageV18.v110_7') || 'Storybook UI Docs', desc: i18n.t('LandingPageV18.v110_8') || '15 interactive component stories with props docs, dark/light theme toggle, and live previews.', highlight: 'v1.10.0' }];
 
 
 const TESTIMONIALS = [
@@ -206,6 +210,44 @@ function CTASection() {
 
 }
 
+function DownloadSection() {
+  return (
+    <section id="download" style={{ padding: '60px 24px', maxWidth: 800, margin: '0 auto' }}>
+      <div style={{ padding: '40px 32px', borderRadius: 20, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#F9FAFB', margin: '0 0 8px' }}>{i18n.t('LandingPageV18.v110_download')}</h2>
+        <p style={{ fontSize: 14, color: '#9CA3AF', marginBottom: 24 }}>{i18n.t('LandingPageV18.v110_release')}</p>
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 24 }}>
+          <a href="https://github.com/nicnoc/dawn-whales/releases/tag/v1.10.0" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, background: '#6366F1', color: '#FFF', fontSize: 16, fontWeight: 700, textDecoration: 'none', cursor: 'pointer' }}>
+            <span>📦</span> {i18n.t('LandingPageV18.v110_download')}
+          </a>
+          <a href="https://github.com/nicnoc/dawn-whales/blob/master/CHANGELOG.md" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, border: '1px solid #374151', background: '#1F2937', color: '#D1D5DB', fontSize: 16, textDecoration: 'none', cursor: 'pointer' }}>
+            <span>📋</span> {i18n.t('LandingPageV18.v110_changelog')}
+          </a>
+        </div>
+        <div style={{ display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap', fontSize: 12, color: '#6B7280' }}>
+          <span>🪟 {i18n.t('LandingPageV18.v110_win')}</span>
+          <span>📐 SHA256 verified</span>
+          <span>🔓 Open Source (MIT)</span>
+          <span>📦 ~85MB installer</span>
+        </div>
+        <div style={{ marginTop: 20, padding: '12px 16px', borderRadius: 10, background: '#0F1117', border: '1px solid #1F2937', textAlign: 'left' }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#D4A853', marginBottom: 8 }}>✨ v1.10.0 Highlights</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '4px 16px', fontSize: 12, color: '#9CA3AF' }}>
+            <span>✅ USDT Wallet + P2P Marketplace</span>
+            <span>✅ 2FA (TOTP) Security</span>
+            <span>✅ 8-language i18n (996 CJK)</span>
+            <span>✅ Storybook 15 components</span>
+            <span>✅ AI Assistant Panel</span>
+            <span>✅ Loading/Error/Empty states</span>
+            <span>✅ 5144 tests / 0 fail</span>
+            <span>✅ EngineError 61.3% coverage</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer style={{ padding: '32px 24px', borderTop: '1px solid #1F2937', background: '#0A0A10', fontSize: 12, color: '#6B7280' }}>
@@ -275,6 +317,7 @@ export default function LandingPageV18() {
       <PricingSection />
       <TestimonialsSection />
       <CTASection />
+      <DownloadSection />
       <Footer />
     </div>);
 
