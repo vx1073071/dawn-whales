@@ -13,6 +13,7 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
+import { sanitizeText } from '@/lib/dompurify';
 void EngineError; // [EngineError:DATA] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
@@ -79,7 +80,7 @@ const StrategyCardView: React.FC<{ item: StrategyCard; onDetail: (id: string) =>
       </div>
       <StarRating rating={item.rating} />
     </div>
-    <p className="text-xs text-gray-500 mb-3 line-clamp-2">{item.description}</p>
+    <p className="text-xs text-gray-500 mb-3 line-clamp-2">{sanitizeText(item.description)}</p>
     <div className="flex flex-wrap gap-1 mb-3">
       {item.tags.map((t) => (
         <span key={t} className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.04] text-gray-500">{t}</span>

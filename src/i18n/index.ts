@@ -1,15 +1,12 @@
+// ── DAWN WHALES — i18n with lazy locale loading (R92 J-02) ─────────────────
+// Only zh-CN is loaded eagerly (default); other locales lazy-loaded on demand.
+// This reduces the initial bundle from ~2.4MB (9 locales) to ~300KB (1 locale).
+
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+// Eagerly load only the default/fallback locale
 import zhCN from './locales/zh-CN.json';
-import zhHK from './locales/zh-HK.json';
-import zhTW from './locales/zh-TW.json';
-import en from './locales/en.json';
-import ja from './locales/ja.json';
-import ko from './locales/ko.json';
-import fr from './locales/fr.json';
-import it from './locales/it.json';
-import de from './locales/de.json';
 
 export const supportedLanguages = [
   { code: 'zh-CN', label: '简体中文' },
@@ -25,23 +22,40 @@ export const supportedLanguages = [
 
 export type SupportedLang = (typeof supportedLanguages)[number]['code'];
 
-const resources = {
-  'zh-CN': { translation: zhCN },
-  'zh-HK': { translation: zhHK },
-  'zh-TW': { translation: zhTW },
-  en: { translation: en },
-  ja: { translation: ja },
-  ko: { translation: ko },
-  fr: { translation: fr },
-  it: { translation: it },
-  de: { translation: de },
+// Dynamic import map for lazy locale loading (R92 J-02)
+const localeImporters: Record<string, () => Promise<{ default: Record<string, unknown> }>> = {
+  'zh-HK': () => import('./locales/zh-HK.json'),
+  'zh-TW': () => import('./locales/zh-TW.json'),
+  'en': () => import('./locales/en.json'),
+  'ja': () => import('./locales/ja.json'),
+  'ko': () => import('./locales/ko.json'),
+  'fr': () => import('./locales/fr.json'),
+  'it': () => import('./locales/it.json'),
+  'de': () => import('./locales/de.json'),
 };
 
-const savedLang = localStorage.getItem('dw_language') as SupportedLang | null;
-const defaultLang: SupportedLang = savedLang && (resources as any)[savedLang] ? savedLang : 'zh-CN';
+// Track which locales have been loaded
+const loadedLocales = new Set<string>(['zh-CN']);
 
+// Load a locale dynamically and add it to i18n
+async function loadLocale(lang: string): Promise<void> {
+  if (loadedLocales.has(lang)) return;
+  const importer = localeImporters[lang];
+  if (!importer) return;
+  const mod = await importer();
+  i18n.addResourceBundle(lang, 'translation', mod.default, true, true);
+  loadedLocales.add(lang);
+}
+
+const savedLang = localStorage.getItem('dw_language') as SupportedLang | null;
+const validLangCodes = Object.keys(localeImporters);
+const defaultLang: SupportedLang = savedLang && (validLangCodes.includes(savedLang) || savedLang === 'zh-CN') ? savedLang : 'zh-CN';
+
+// Initialize with only zh-CN loaded eagerly
 i18n.use(initReactI18next).init({
-  resources,
+  resources: {
+    'zh-CN': { translation: zhCN },
+  },
   lng: defaultLang,
   fallbackLng: 'zh-CN',
   interpolation: {
@@ -49,9 +63,22 @@ i18n.use(initReactI18next).init({
   },
 });
 
-export function changeLanguage(lang: SupportedLang) {
+// If user saved a non-default language, load it asynchronously
+if (defaultLang !== 'zh-CN') {
+  loadLocale(defaultLang).then(() => {
+    i18n.changeLanguage(defaultLang);
+  });
+}
+
+export async function changeLanguage(lang: SupportedLang) {
   localStorage.setItem('dw_language', lang);
+  await loadLocale(lang);
   return i18n.changeLanguage(lang);
+}
+
+// Preload a locale (e.g., on hover over language selector)
+export function preloadLocale(lang: SupportedLang) {
+  loadLocale(lang);
 }
 
 export default i18n;

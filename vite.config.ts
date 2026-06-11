@@ -63,7 +63,13 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (!id.includes('node_modules')) return undefined;
+          if (!id.includes('node_modules')) {
+            // R92 J-02: Split bridge-api into separate chunk (26KB)
+            if (id.includes('src/lib/bridge-api')) {
+              return 'bridge-api';
+            }
+            return undefined;
+          }
           // React ecosystem → vendor-react
           if (id.includes('/react/') || id.includes('/react-dom/') || id.includes('/react-router')) {
             return 'vendor-react';
@@ -79,6 +85,14 @@ export default defineConfig({
           // i18n → vendor-i18n
           if (id.includes('/i18next/') || id.includes('/react-i18next/')) {
             return 'vendor-i18n';
+          }
+          // Ant Design ecosystem → vendor-antd (R92 J-02: split from main)
+          if (id.includes('/antd/') || id.includes('/@ant-design/')) {
+            return 'vendor-antd';
+          }
+          // DOMPurify → vendor-security (R92 J-01: XSS protection)
+          if (id.includes('/dompurify/')) {
+            return 'vendor-security';
           }
           // Zustand + other small state/utils → vendor-utils
           if (id.includes('/zustand/') || id.includes('/immer/') || id.includes('/lodash') || id.includes('/date-fns/')) {

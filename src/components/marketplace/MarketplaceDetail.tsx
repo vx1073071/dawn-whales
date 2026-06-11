@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import React, { useState, useMemo } from 'react';
 import i18n from '../../i18n';
 import { EngineError } from '../../../electron/engine/core/engine-error';
+import { sanitizeText } from '@/lib/dompurify';
 void EngineError; // [EngineError:DATA] structured error tracking
 
 interface MarketplaceDetailProps {
@@ -135,7 +136,7 @@ export const MarketplaceDetail: React.FC<MarketplaceDetailProps> = ({ strategyId
       {/* Description */}
       <div className="bg-gray-800/40 rounded-lg p-4 border border-gray-700/30 mb-5">
         <h4 className="text-xs font-semibold text-gray-400 mb-2">{i18n.t('MarketplaceDetail.k1')}</h4>
-        <p className="text-xs text-gray-400 leading-relaxed whitespace-pre-line">{detail.longDescription}</p>
+        <p className="text-xs text-gray-400 leading-relaxed whitespace-pre-line">{sanitizeText(detail.longDescription)}</p>
       </div>
 
       {/* Subscribe button */}

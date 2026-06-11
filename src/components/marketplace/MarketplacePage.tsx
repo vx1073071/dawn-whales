@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getAllStrategies, getMarketplaceList, getStrategyRating, rateStrategy, addComment, getComments } from '@/lib/bridge-api';
 import { EngineError } from '../../../electron/engine/core/engine-error';
+import { sanitizeText } from '@/lib/dompurify';
 
 import { notify } from '@/components/NotificationToast';
 import i18n from '../../i18n';
@@ -373,7 +374,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: {strategy: MarketplaceStr
                 <span className="text-gray-400 text-[10px]">{c.user_id}</span>
                 <span className="text-gray-600 text-[9px]">{c.created_at?.slice(0, 16)}</span>
               </div>
-              <div className="text-gray-300 text-xs">{c.content}</div>
+              <div className="text-gray-300 text-xs">{sanitizeText(c.content)}</div>
             </div>
           )}
         </div>
