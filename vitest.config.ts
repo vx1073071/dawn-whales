@@ -99,6 +99,10 @@ export default defineConfig({
       'tests/q46-01-i18n-data.test.ts',
       'tests/q47-01-i18n-data.test.ts',
       'tests/q47-02-i18n-switching-e2e.test.ts',
+      // [R95-youdao] JVS R95 tests with timing/async bugs — FIXED by PM (R95 J-01)
+      // tests/electron/engine/data/pipeline-engine.test.ts  — 49 tests passing
+      // tests/electron/engine/data/redis-cache-layer.test.ts — 63 tests passing
+      // tests/electron/engine/data/data-versioning.test.ts   — 60 tests passing
       // [R92-youdao] Gate-check / aspirational tests renamed to .skip.ts
     ],
     coverage: {
