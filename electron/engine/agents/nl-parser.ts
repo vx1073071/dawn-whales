@@ -394,19 +394,19 @@ interface LLMParseResult {
 const AI_GATEWAY_URL = process.env.AI_GATEWAY_URL || 'http://localhost:3001/api/ai/gateway';
 const AI_GATEWAY_TOKEN = process.env.AI_GATEWAY_TOKEN || '';
 
-const LLM_PROMPT_TEMPLATE = `你是一个量化交易策略解析器。请从用户输入中提取策略参数，返回 JSON：
+const LLM_PROMPT_TEMPLATE = `${i18n.t('NlParser.k0')}
 {
   "type": "ma_cross|rsi|macd|momentum|bollinger|combined",
-  "params": { /* 指标参数 */ },
-  "stopLoss": 数字（百分比），无则null,
-  "takeProfit": 数字（百分比），无则null,
-  "symbol": "US.XXX"格式，无则null,
+  ${i18n.t('NlParser.k1')}
+  ${i18n.t('NlParser.k2')}
+  ${i18n.t('NlParser.k3')}
+  ${i18n.t('NlParser.k4')}
   "reason": i18n.t('nlParser.k86')
 }
 
-用户输入：{{INPUT}}
+${i18n.t('NlParser.k5')}
 
-只返回 JSON，不要其他文字。`;
+${i18n.t('NlParser.k6')}`;
 
 function callLLM(input: string): Promise<LLMParseResult | null> {
   return new Promise((resolve) => {
@@ -536,7 +536,7 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
       name: '',
       description: '',
       strategy: { type: 'ma_cross', params: {} },
-      error: `检测到指标但无法解析具体模式。请尝试更明确的表达，如：
+      error: `${i18n.t('NlParser.k7')}
 • i18n.t('nlParser.k92')
 • i18n.t('nlParser.k93')
 • i18n.t('nlParser.k94')
@@ -549,7 +549,7 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
     name: '',
     description: '',
     strategy: { type: 'ma_cross', params: {} },
-    error: `无法识别策略模式。试试：\n• ${i18n.t('nlParser.k96')}\n• ${i18n.t('nlParser.k97')}\n• ${i18n.t('nlParser.k98')}\n• ${i18n.t('nlParser.k99')}`,
+    error: `${i18n.t('NlParser.k8')} ${i18n.t('nlParser.k96')}\n• ${i18n.t('nlParser.k97')}\n• ${i18n.t('nlParser.k98')}\n• ${i18n.t('nlParser.k99')}`,
   };
 }
 

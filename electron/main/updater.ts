@@ -23,7 +23,7 @@ export function setupAutoUpdater(
     log.info('[Updater] New version available:', info.version);
     mainWindowRef.current?.webContents.send('notification', {
       type: 'info',
-      message: `新版本 ${info.version} 可用，请在设置中更新`,
+      message: `${i18n.t('Updater.k0')} ${info.version} ${i18n.t('Updater.k1')}`,
     });
   });
 

@@ -106,7 +106,7 @@ export class DataProviderService {
   private createTables(): void {
     if (!this.db) return;
     this.db.exec(`
-      -- ── 基本面数据缓存表 ───────────────────────────────
+      ${i18n.t('DataProvider.k0')}
       CREATE TABLE IF NOT EXISTS fundamental_cache (
         symbol TEXT PRIMARY KEY,
         pe REAL,
@@ -121,7 +121,7 @@ export class DataProviderService {
         updated_at INTEGER NOT NULL
       );
 
-      -- ── 资金流数据缓存表 ───────────────────────────────
+      ${i18n.t('DataProvider.k1')}
       CREATE TABLE IF NOT EXISTS capital_flow_cache (
         symbol TEXT PRIMARY KEY,
         main_net_inflow REAL,
@@ -132,7 +132,7 @@ export class DataProviderService {
         updated_at INTEGER NOT NULL
       );
 
-      -- ── 市场 Regime 状态表 ─────────────────────────────
+      ${i18n.t('DataProvider.k2')}
       CREATE TABLE IF NOT EXISTS market_regime (
         id INTEGER PRIMARY KEY CHECK (id = 1),
         state TEXT NOT NULL DEFAULT 'unknown',
@@ -142,7 +142,7 @@ export class DataProviderService {
         updated_at INTEGER NOT NULL
       );
 
-      -- ── 异动信号表 ─────────────────────────────────────
+      ${i18n.t('DataProvider.k3')}
       CREATE TABLE IF NOT EXISTS anomaly_signals (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         symbol TEXT NOT NULL,
@@ -153,7 +153,7 @@ export class DataProviderService {
         created_at INTEGER NOT NULL
       );
 
-      -- ── 新闻缓存表 ────────────────────────────────────
+      ${i18n.t('DataProvider.k4')}
       CREATE TABLE IF NOT EXISTS news_cache (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         symbol TEXT NOT NULL,
@@ -166,7 +166,7 @@ export class DataProviderService {
         fetched_at INTEGER NOT NULL
       );
 
-      -- ── 索引 ──────────────────────────────────────────
+      ${i18n.t('DataProvider.k5')}
       CREATE INDEX IF NOT EXISTS idx_anomaly_symbol ON anomaly_signals(symbol);
       CREATE INDEX IF NOT EXISTS idx_anomaly_time ON anomaly_signals(created_at);
       CREATE INDEX IF NOT EXISTS idx_news_symbol ON news_cache(symbol);

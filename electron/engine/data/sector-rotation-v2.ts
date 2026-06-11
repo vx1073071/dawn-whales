@@ -157,7 +157,7 @@ export function detectSectorRotation(params: SectorRotationParams): SectorRotati
       fromSectors: losingSectors.slice(0, 5).map(s => s.sector),
       toSectors: gainingSectors.slice(0, 5).map(s => s.sector),
       strength: Math.min(100, gainingSectors.length * 15 + losingSectors.length * 10),
-      description: `资金从 [${losingSectors.slice(0, 3).map(s => s.sector).join(', i18n.t('SectorRotationV2.k0'), ')}]`,
+      description: `${i18n.t('SectorRotationV2.k0')}${losingSectors.slice(0, 3).map(s => s.sector).join(', i18n.t('SectorRotationV2.k0'), ')}]`,
     });
   }
 
@@ -171,7 +171,7 @@ export function detectSectorRotation(params: SectorRotationParams): SectorRotati
       fromSectors: decelerating.slice(0, 5).map(s => s.sector),
       toSectors: accelerating.slice(0, 5).map(s => s.sector),
       strength: Math.min(100, (accelerating.length + decelerating.length) * 12),
-      description: `动量转移: ${accelerating.slice(0, 3).map(s => s.sector).join(', i18n.t('SectorRotationV2.k1'), ')} 减速`,
+      description: `${i18n.t('SectorRotationV2.k1')} ${accelerating.slice(0, 3).map(s => s.sector).join(', i18n.t('SectorRotationV2.k1'), ')} ${i18n.t('SectorRotationV2.k2')}`,
     });
   }
 
@@ -185,7 +185,7 @@ export function detectSectorRotation(params: SectorRotationParams): SectorRotati
       fromSectors: bottomRS.map(s => s.sector),
       toSectors: topRS.map(s => s.sector),
       strength: Math.min(100, (topRS[0].relativeStrength - bottomRS[bottomRS.length - 1].relativeStrength)),
-      description: `相对强弱: ${topRS.map(s => s.sector).join(', i18n.t('SectorRotationV2.k2'), ')} 落后`,
+      description: `${i18n.t('SectorRotationV2.k3')} ${topRS.map(s => s.sector).join(', i18n.t('SectorRotationV2.k2'), ')} ${i18n.t('SectorRotationV2.k4')}`,
     });
   }
 
@@ -203,13 +203,13 @@ export function detectSectorRotation(params: SectorRotationParams): SectorRotati
   // Summary
   const summaryParts: string[] = [];
   if (signals.length > 0) {
-    summaryParts.push(`检测到 ${signals.length} 个轮动信号`);
+    summaryParts.push(`${i18n.t('SectorRotationV2.k5')} ${signals.length} ${i18n.t('SectorRotationV2.k6')}`);
     summaryParts.push(signals[0].description);
   } else {
     summaryParts.push(i18n.t('sectorRotationV2.k1'));
   }
   if (rankings.topInflow.length > 0) {
-    summaryParts.push(`资金流入前3: ${rankings.topInflow.slice(0, 3).join(', ')}`);
+    summaryParts.push(`${i18n.t('SectorRotationV2.k7')} ${rankings.topInflow.slice(0, 3).join(', ')}`);
   }
 
   log.info(`[SectorRotation] ${allSectors.size} sectors, ${signals.length} signals`);

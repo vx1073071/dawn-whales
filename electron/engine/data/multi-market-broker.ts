@@ -19,6 +19,7 @@ import { EngineError, ErrorCode } from '../../errors';
 
 import { EventEmitter } from 'events';
 import {
+import i18n from '../../../src/i18n';
   IExecutionBroker,
   ExecutionOrder,
   ExecutionResult,
@@ -208,12 +209,12 @@ export function checkDailyLimit(
   if (side === 'buy') {
     const limitPrice = referencePrice * (1 + limitPct);
     if (price > limitPrice) {
-      return { passed: false, limitPrice, reason: `涨停 ${symbol}: price ${price} > ${limitPrice}` };
+      return { passed: false, limitPrice, reason: `${i18n.t('MultiMarketBroker.k0')} ${symbol}: price ${price} > ${limitPrice}` };
     }
   } else {
     const limitPrice = referencePrice * (1 - (market.dailyDownLimit || limitPct));
     if (price < limitPrice) {
-      return { passed: false, limitPrice, reason: `跌停 ${symbol}: price ${price} < ${limitPrice}` };
+      return { passed: false, limitPrice, reason: `${i18n.t('MultiMarketBroker.k1')} ${symbol}: price ${price} < ${limitPrice}` };
     }
   }
 

@@ -205,7 +205,7 @@ export class RiskReportGenerator {
 <div class="grid">
   <div class="card">
     <div class="card-title">${zh('Portfolio Value', i18n.t('riskReportGenerator.k6'))}</div>
-    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k7')metric-value">HK$${(data.totalValue / 10000).toFixed(1)}万</span></div>
+    <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k7')metric-value">HK$${(data.totalValue / 10000).toFixed(1)}${i18n.t('RiskReportGenerator.k0')}
     <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k8')metric-value ${dayClass}">${sign(data.dayPnL, 'HK$')} (${(data.dayPnL / data.totalValue * 100).toFixed(2)}%)</span></div>
     <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k9')metric-value ${pnlClass}">${sign(data.totalPnL, 'HK$')} (${sign(data.totalPnLPct)}%)</span></div>
     <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k10')metric-value">${sign(data.unrealizedPnL, 'HK$')}</span></div>
@@ -213,8 +213,8 @@ export class RiskReportGenerator {
   </div>
   <div class="card">
     <div class="card-title">${zh('Risk Metrics', i18n.t('riskReportGenerator.k12'))}</div>
-    <div class="metric"><span class="metric-label">VaR (95%)</span><span class="metric-value ${varClass}">HK$${(data.portfolioVaR / 10000).toFixed(1)}万</span></div>
-    <div class="metric"><span class="metric-label">CVaR (95%)</span><span class="metric-value">HK$${(data.portfolioCVaR / 10000).toFixed(1)}万</span></div>
+    <div class="metric"><span class="metric-label">VaR (95%)</span><span class="metric-value ${varClass}">HK$${(data.portfolioVaR / 10000).toFixed(1)}${i18n.t('RiskReportGenerator.k1')}
+    <div class="metric"><span class="metric-label">CVaR (95%)</span><span class="metric-value">HK$${(data.portfolioCVaR / 10000).toFixed(1)}${i18n.t('RiskReportGenerator.k2')}
     <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k13')metric-value">${(data.volatility * 100).toFixed(2)}%</span></div>
     <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k14')metric-value negative">${(data.maxDrawdown).toFixed(2)}%</span></div>
     <div class="metric"><span class="metric-labeli18n.t('riskReportGenerator.k15')metric-value">${data.sharpeRatio.toFixed(2)}</span></div>

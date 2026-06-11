@@ -377,7 +377,7 @@ export class PortfolioRiskCalculator {
         const posPercent = (pos.quantity * pos.currentPrice / totalValue) * 100;
         warnings.push({
           level: posPercent > 30 ? 'critical' : 'warning',
-          message: `${pos.symbol} 持仓占比 ${posPercent.toFixed(1)}%，超过 ${this.config.maxPositionPercent}% 阈值`,
+          message: `${pos.symbol} ${i18n.t('PortfolioRiskCalculator.k0')} ${posPercent.toFixed(1)}${i18n.t('PortfolioRiskCalculator.k1')} ${this.config.maxPositionPercent}${i18n.t('PortfolioRiskCalculator.k2')}`,
           symbol: pos.symbol,
           value: posPercent,
         });
@@ -389,7 +389,7 @@ export class PortfolioRiskCalculator {
     if (volatility > 0.30) {
       warnings.push({
         level: volatility > 0.40 ? 'critical' : 'warning',
-        message: `组合波动率 ${(volatility * 100).toFixed(1)}% 较高`,
+        message: `${i18n.t('PortfolioRiskCalculator.k3')} ${(volatility * 100).toFixed(1)}${i18n.t('PortfolioRiskCalculator.k4')}`,
         value: volatility,
       });
     }
@@ -399,7 +399,7 @@ export class PortfolioRiskCalculator {
     if (maxDrawdown > 20) {
       warnings.push({
         level: maxDrawdown > 30 ? 'critical' : 'warning',
-        message: `最大回撤 ${maxDrawdown.toFixed(1)}% 较大`,
+        message: `${i18n.t('PortfolioRiskCalculator.k5')} ${maxDrawdown.toFixed(1)}${i18n.t('PortfolioRiskCalculator.k6')}`,
         value: maxDrawdown,
       });
     }

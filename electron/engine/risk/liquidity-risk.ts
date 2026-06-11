@@ -2,6 +2,7 @@
 // LCR + Funding gap + Liquidation cost estimation + Fire sale cascade
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -114,7 +115,7 @@ export class LiquidityRiskEngine {
       if (daysNeeded > liquidationTargetDays) {
         criticalPositions.push({
           symbol: pos.symbol,
-          issue: `需要 ${Math.ceil(daysNeeded)}天 超过目标${liquidationTargetDays}天`,
+          issue: `${i18n.t('LiquidityRisk.k0')} ${Math.ceil(daysNeeded)}${i18n.t('LiquidityRisk.k1')}${liquidationTargetDays}${i18n.t('LiquidityRisk.k2')}`,
           daysToLiquidate: Math.ceil(daysNeeded),
         });
       }
@@ -132,12 +133,12 @@ export class LiquidityRiskEngine {
     if (lcr < 80) riskFlags.push(`⚠️ LCR ${lcr.toFixed(0)}% below 100% minimum`);
     if (liquidationCostBp > 50) riskFlags.push(`💸 High liquidation cost: ${liquidationCostBp.toFixed(1)}bps`);
     if (maxLiqDays > 30) riskFlags.push(`⚠️ ${maxLiqDays} days to fully liquidate — extreme illiquidity`);
-    if (fundingGap7d > this.portfolioValue * 0.1) riskFlags.push(`💰 7-day funding gap HK$${(fundingGap7d/10000).toFixed(1)}万 exceeds 10% of portfolio`);
+    if (fundingGap7d > this.portfolioValue * 0.1) riskFlags.push(`💰 7-day funding gap HK$${(fundingGap7d/10000).toFixed(1)}${i18n.t('LiquidityRisk.k3')}`);
     if (criticalPositions.length > 0) riskFlags.push(`🔴 ${criticalPositions.length} positions difficult to liquidate`);
 
     // Recommendations
     const recommendations: string[] = [];
-    if (lcr < 100) recommendations.push(`Increase HQLA by HK$${Math.max(0, (fundingGap30d - hqla)/10000).toFixed(1)}万 to meet LCR requirement`);
+    if (lcr < 100) recommendations.push(`Increase HQLA by HK$${Math.max(0, (fundingGap30d - hqla)/10000).toFixed(1)}${i18n.t('LiquidityRisk.k4')}`);
     if (totalLiqCost > this.portfolioValue * 0.02) recommendations.push(`⚠️ Pre-liquidate illiquid positions gradually to reduce cascade risk`);
     if (fundingGap30d > this.portfolioValue * 0.2) recommendations.push(`💰 Arrange credit lines for ${(fundingGap30d/this.portfolioValue*100).toFixed(0)}% of portfolio in 30d obligations`);
     if (recommendations.length === 0) recommendations.push('✅ Liquidity profile adequate — maintain HQLA buffer');

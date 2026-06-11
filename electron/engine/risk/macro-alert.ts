@@ -152,7 +152,7 @@ function generateContext(
   let context = i18n.t('macroAlert.k11');
 
   if (Math.abs(zScore) >= 2) {
-    context += ` (${zScore > 0 ? i18n.t('macroAlert.k12') : i18n.t('macroAlert.k13')}均值 ${Math.abs(zScore).toFixed(1)} 个标准差)`;
+    context += ` (${zScore > 0 ? i18n.t('macroAlert.k12') : i18n.t('macroAlert.k13')}${i18n.t('MacroAlert.k0')} ${Math.abs(zScore).toFixed(1)} ${i18n.t('MacroAlert.k1')}`;
   }
 
   return context;

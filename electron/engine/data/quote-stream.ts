@@ -8,6 +8,7 @@ import log from 'electron-log';
 import https from 'https';
 import http from 'http';
 import { StockAnomalyDetector } from './stock-anomaly-detector';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -284,7 +285,7 @@ export class QuoteStreamService extends EventEmitter {
 
       quotes.push({
         code: symbol,
-        name: `模拟股票 ${symbol}`,
+        name: `${i18n.t('QuoteStream.k0')} ${symbol}`,
         price: Math.round(price * 100) / 100,
         changePct: Math.round(changePct * 100) / 100,
         volume: Math.floor(Math.random() * 10000000),

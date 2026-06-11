@@ -342,7 +342,7 @@ export class EMDataProvider {
     if (!scriptPath) return null;
 
     const boardTypeCN = boardType === 'industry' ? i18n.t('EmDataProvider.k0') : boardType === 'concept' ? i18n.t('EmDataProvider.k1') : i18n.t('EmDataProvider.k2');
-    const query = `今日${boardTypeCN}涨跌幅排名`;
+    const query = `${i18n.t('EmDataProvider.k0')}${boardTypeCN}${i18n.t('EmDataProvider.k1')}`;
 
     try {
       const stdout = await new Promise<string>((resolve, reject) => {

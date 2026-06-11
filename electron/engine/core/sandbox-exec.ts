@@ -8,6 +8,7 @@
 import { spawn, SpawnOptions } from 'child_process';
 import { createHash } from 'crypto';
 import { EngineError, ErrorCode } from '../../errors';
+import i18n from '../../../src/i18n';
 
 
 // ── 白名单：允许的命令（绝对路径安全） ──────────────────────
@@ -54,9 +55,9 @@ const MAX_INPUT_LENGTH = 8192;
 const DEFAULT_TIMEOUT_MS = 30_000;
 
 export interface SandboxOptions extends SpawnOptions {
-  /** 超时(ms), 默认30000 */
+  ${i18n.t('SandboxExec.k0')}
   timeoutMs?: number;
-  /** 跳过白名单检查（仅用于已知内部工具） */
+  ${i18n.t('SandboxExec.k1')}
   skipAllowlist?: boolean;
 }
 
@@ -69,7 +70,7 @@ export interface SandboxResult {
 }
 
 /**
- * 安全校验输入参数
+ ${i18n.t('SandboxExec.k2')}
  */
 function validateInputs(args: string[]): void {
   if (!args || args.length === 0) return;
@@ -93,7 +94,7 @@ function validateInputs(args: string[]): void {
 }
 
 /**
- * 白名单检查
+ ${i18n.t('SandboxExec.k3')}
  */
 function checkAllowlist(command: string, skipAllowlist: boolean): void {
   if (skipAllowlist) return;
@@ -112,7 +113,7 @@ function checkAllowlist(command: string, skipAllowlist: boolean): void {
 }
 
 /**
- * 安全 spawn — 替代 node:child_process.spawn
+ ${i18n.t('SandboxExec.k4')}
  */
 export function safeSpawn(
   command: string,
@@ -178,7 +179,7 @@ export function safeSpawn(
 }
 
 /**
- * 生成命令执行指纹（审计日志用）
+ ${i18n.t('SandboxExec.k5')}
  */
 export function commandFingerprint(command: string, args: string[]): string {
   return createHash('sha256').update(`${command}|${args.join('|')}`).digest('hex').substring(0, 16);

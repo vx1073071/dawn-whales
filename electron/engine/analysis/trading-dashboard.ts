@@ -3,6 +3,7 @@
 // Key risk metrics + Alerts + End-of-day report generation
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -182,7 +183,7 @@ export class TradingDashboard {
         id: 'var-breach',
         severity: 'CRITICAL',
         category: 'risk',
-        message: `VaR exceeds limit: HK$${(portfolioVaR / 10000).toFixed(1)}万`,
+        message: `VaR exceeds limit: HK$${(portfolioVaR / 10000).toFixed(1)}${i18n.t('TradingDashboard.k0')}`,
         timestamp: Date.now(),
         acknowledged: false,
       });
@@ -192,7 +193,7 @@ export class TradingDashboard {
         id: 'dd-warning',
         severity: 'WARNING',
         category: 'pnl',
-        message: `Unrealized loss ${(unrealizedPnL / 10000).toFixed(1)}万 exceeds 5% threshold`,
+        message: `Unrealized loss ${(unrealizedPnL / 10000).toFixed(1)}${i18n.t('TradingDashboard.k1')}`,
         timestamp: Date.now(),
         acknowledged: false,
       });
@@ -224,14 +225,14 @@ export class TradingDashboard {
     const suggestions: string[] = [];
     if (totalPnLPct > 3) suggestions.push('📈 Strong performance: consider locking in profits');
     if (totalPnLPct < -3) suggestions.push('📉 Significant drawdown: review positions and risk limits');
-    if (unrealizedPnL > 0) suggestions.push(`💰 Unrealized gain: HK$${(unrealizedPnL / 10000).toFixed(1)}万`);
+    if (unrealizedPnL > 0) suggestions.push(`💰 Unrealized gain: HK$${(unrealizedPnL / 10000).toFixed(1)}${i18n.t('TradingDashboard.k2')}`);
     if (greeks.thetaDaily > 0) suggestions.push(`⏰ Positive theta: collecting premium daily`);
     if (greeks.gammaExposure > 500) suggestions.push('⚠️ High gamma: consider delta hedging');
     if (activeAlerts === 0) suggestions.push('✅ All risk metrics within limits');
 
     // EOD Report
     const eodReport: DashboardReport['eodReport'] = {
-      summary: `Day P&L: HK$${(dayPnL / 10000).toFixed(1)}万 (${dayPnLPct.toFixed(2)}%). Total P&L: HK$${(totalPnL / 10000).toFixed(1)}万 (${totalPnLPct.toFixed(2)}%). ${positions.length} open positions.`,
+      summary: `Day P&L: HK$${(dayPnL / 10000).toFixed(1)}${i18n.t('TradingDashboard.k3')}${dayPnLPct.toFixed(2)}%). Total P&L: HK$${(totalPnL / 10000).toFixed(1)}${i18n.t('TradingDashboard.k4')}${totalPnLPct.toFixed(2)}%). ${positions.length} open positions.`,
       topWinner: largest && largest.unrealizedPnL > 0
         ? { symbol: largest.symbol, pnl: largest.unrealizedPnL }
         : { symbol: '--', pnl: 0 },
@@ -277,11 +278,11 @@ export class TradingDashboard {
     const lines = [
       `📊 Trading Dashboard (${report.lastUpdate.slice(11, 19)})`,
       `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`,
-      `💰 Equity: HK$${(report.currentEquity / 10000).toFixed(1)}万`,
-      `   Day P&L: HK$${(report.dayPnL / 10000).toFixed(1)}万 (${report.dayPnLPct >= 0 ? '+' : ''}${report.dayPnLPct.toFixed(2)}%)`,
-      `   Total P&L: HK$${(report.totalPnL / 10000).toFixed(1)}万 (${report.totalPnLPct >= 0 ? '+' : ''}${report.totalPnLPct.toFixed(2)}%)`,
-      `   Unrealized: HK$${(report.unrealizedPnL / 10000).toFixed(1)}万`,
-      `   Realized: HK$${(report.realizedPnL / 10000).toFixed(1)}万`,
+      `💰 Equity: HK$${(report.currentEquity / 10000).toFixed(1)}${i18n.t('TradingDashboard.k5')}`,
+      `   Day P&L: HK$${(report.dayPnL / 10000).toFixed(1)}${i18n.t('TradingDashboard.k6')}${report.dayPnLPct >= 0 ? '+' : ''}${report.dayPnLPct.toFixed(2)}%)`,
+      `   Total P&L: HK$${(report.totalPnL / 10000).toFixed(1)}${i18n.t('TradingDashboard.k7')}${report.totalPnLPct >= 0 ? '+' : ''}${report.totalPnLPct.toFixed(2)}%)`,
+      `   Unrealized: HK$${(report.unrealizedPnL / 10000).toFixed(1)}${i18n.t('TradingDashboard.k8')}`,
+      `   Realized: HK$${(report.realizedPnL / 10000).toFixed(1)}${i18n.t('TradingDashboard.k9')}`,
       ``,
       `📈 Greeks:`,
       `   Δ ${report.greeks.delta.toFixed(0)}  Γ ${report.greeks.gamma.toFixed(0)}  Θ ${report.greeks.theta.toFixed(0)}  ν ${report.greeks.vega.toFixed(0)}`,
@@ -292,7 +293,7 @@ export class TradingDashboard {
         .slice(0, 3)
         .map(a => `   ${a.severity} ${a.message}`),
       ``,
-      `🏦 VaR: HK$${(report.portfolioVaR / 10000).toFixed(1)}万  CVaR: HK$${(report.portfolioCVaR / 10000).toFixed(1)}万`,
+      `🏦 VaR: HK$${(report.portfolioVaR / 10000).toFixed(1)}${i18n.t('TradingDashboard.k10')}${(report.portfolioCVaR / 10000).toFixed(1)}${i18n.t('TradingDashboard.k11')}`,
       `📍 Largest: ${report.largestPosition} (${report.largestPositionPct.toFixed(1)}%)`,
     ];
     return lines.join('\n');

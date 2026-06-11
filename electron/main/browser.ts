@@ -1,4 +1,5 @@
 // ── Window Creation ────────────────────────────────────────────────────────
+import i18n from '../../src/i18n';
 
 export function createWindow() {
   mainWindow = new BrowserWindow({
@@ -6,7 +7,7 @@ export function createWindow() {
     height: 900,
     minWidth: 1000,
     minHeight: 600,
-    title: 'DAWN WHALES · 道鲸',
+    title: i18n.t('Browser.k0'),
     icon: path.join(RESOURCES_PATH, 'icons', 'icon.png'),
     backgroundColor: '#0d1117',
     show: false,

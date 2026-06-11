@@ -93,7 +93,7 @@ export class CapitalFlowMonitor {
             name: item.name,
             amount: Math.abs(item.superLargeIn),
             changePct: item.changePct || 0,
-            description: `超大单 ${item.superLargeIn > 0 ? i18n.t('capitalFlowMonitor.k4') : i18n.t('capitalFlowMonitor.k5')} ${this.formatAmount(item.superLargeIn)}万`,
+            description: `${i18n.t('CapitalFlowMonitor.k0')} ${item.superLargeIn > 0 ? i18n.t('capitalFlowMonitor.k4') : i18n.t('capitalFlowMonitor.k5')} ${this.formatAmount(item.superLargeIn)}${i18n.t('CapitalFlowMonitor.k1')}`,
             timestamp: Date.now(),
             severity: Math.abs(item.superLargeIn) > 5000 ? 'high' : 'medium',
           };

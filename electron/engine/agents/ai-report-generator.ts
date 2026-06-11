@@ -168,34 +168,34 @@ export async function generateBacktestReport(
   const typeStr = strategyTypeLabel(primary.result.config);
 
   // Priority instructions
-  const prompt = `你是一个量化策略分析师。请为以下回测结果生成一份专业的 Markdown 格式分析报告。
+  const prompt = `${i18n.t('AiReportGenerator.k0')}
 
-**要求：**
-- 语言：中文（简单易懂，避免过多术语）
-- 格式：Markdown，含标题和 bullet points
-- 包含：收益摘要、风险评估、策略评级、优化建议（3-5条具体可行的建议）
-- 每个建议要具体、可操作
-- 总体评价一段话（50字以内）
+${i18n.t('AiReportGenerator.k1')}
+${i18n.t('AiReportGenerator.k2')}
+${i18n.t('AiReportGenerator.k3')}
+${i18n.t('AiReportGenerator.k4')}
+${i18n.t('AiReportGenerator.k5')}
+${i18n.t('AiReportGenerator.k6')}
 
-**回测数据：**
-策略类型：${typeStr}
-标的：${symbol ?? primary.result.config?.symbol ?? 'N/A'}
+${i18n.t('AiReportGenerator.k7')}
+${i18n.t('AiReportGenerator.k8')}${typeStr}
+${i18n.t('AiReportGenerator.k9')}${symbol ?? primary.result.config?.symbol ?? 'N/A'}
 
-=== 单策略详情 ===
-总收益率：${m.totalReturn}%
-年化收益率：${m.annualReturn}%
-夏普比率：${m.sharpeRatio}
-最大回撤：${m.maxDrawdown}%
-胜率：${m.winRate}%
-盈亏比：${m.profitFactor}
-总交易次数：${m.totalTrades}
-平均每笔收益：${m.avgTradePnl}%
-平均持仓周期：${m.avgHoldingBars} 根K线
+${i18n.t('AiReportGenerator.k10')}
+${i18n.t('AiReportGenerator.k11')}${m.totalReturn}%
+${i18n.t('AiReportGenerator.k12')}${m.annualReturn}%
+${i18n.t('AiReportGenerator.k13')}${m.sharpeRatio}
+${i18n.t('AiReportGenerator.k14')}${m.maxDrawdown}%
+${i18n.t('AiReportGenerator.k15')}${m.winRate}%
+${i18n.t('AiReportGenerator.k16')}${m.profitFactor}
+${i18n.t('AiReportGenerator.k17')}${m.totalTrades}
+${i18n.t('AiReportGenerator.k18')}${m.avgTradePnl}%
+${i18n.t('AiReportGenerator.k19')}${m.avgHoldingBars} ${i18n.t('AiReportGenerator.k20')}
 
-=== 多策略对比（如适用）===
+${i18n.t('AiReportGenerator.k21')}
 ${compTable}
 
-请直接输出 Markdown 报告内容，不需要解释。`;
+${i18n.t('AiReportGenerator.k22')}`;
 
   try {
     let raw = '';
@@ -268,34 +268,34 @@ export async function generateDailyReport(
 ): Promise<BacktestReport> {
   log.info('[AIReportGenerator] Generating daily report for', data.date);
 
-  const prompt = `你是一个量化交易分析师。请为以下每日交易数据生成简洁的日报。
+  const prompt = `${i18n.t('AiReportGenerator.k23')}
 
-**要求：**
-- 语言：中文（简洁明了）
-- 格式：Markdown，含标题和 bullet points
-- 包含：今日盈亏、表现最佳/最差标的、信号摘要、风险提示
-- 每个部分2-3句话
+${i18n.t('AiReportGenerator.k24')}
+${i18n.t('AiReportGenerator.k25')}
+${i18n.t('AiReportGenerator.k26')}
+${i18n.t('AiReportGenerator.k27')}
+${i18n.t('AiReportGenerator.k28')}
 
-**今日数据：**
-日期：${data.date}
-组合总值：$${data.portfolioValue.toFixed(2)}
-今日盈亏：$${data.dailyPnl.toFixed(2)} (${data.dailyPnlPct.toFixed(2)}%)
+${i18n.t('AiReportGenerator.k29')}
+${i18n.t('AiReportGenerator.k30')}${data.date}
+${i18n.t('AiReportGenerator.k31')}${data.portfolioValue.toFixed(2)}
+${i18n.t('AiReportGenerator.k32')}${data.dailyPnl.toFixed(2)} (${data.dailyPnlPct.toFixed(2)}%)
 
-表现最佳：
+${i18n.t('AiReportGenerator.k33')}
 ${data.topPerformers.slice(0, 3).map(p => `- ${p.symbol}: $${p.pnl.toFixed(2)} (${p.pnlPct.toFixed(2)}%)`).join('\n')}
 
-表现最差：
+${i18n.t('AiReportGenerator.k34')}
 ${data.worstPerformers.slice(0, 3).map(p => `- ${p.symbol}: $${p.pnl.toFixed(2)} (${p.pnlPct.toFixed(2)}%)`).join('\n')}
 
-信号摘要：
-- 买入信号：${data.signals.buy} 个
-- 卖出信号：${data.signals.sell} 个
-- 持有信号：${data.signals.hold} 个
+${i18n.t('AiReportGenerator.k35')}
+${i18n.t('AiReportGenerator.k36')}${data.signals.buy} ${i18n.t('AiReportGenerator.k37')}
+${i18n.t('AiReportGenerator.k38')}${data.signals.sell} ${i18n.t('AiReportGenerator.k39')}
+${i18n.t('AiReportGenerator.k40')}${data.signals.hold} ${i18n.t('AiReportGenerator.k41')}
 
-风险等级：${data.riskLevel}
-触发告警：${data.alertsTriggered} 个
+${i18n.t('AiReportGenerator.k42')}${data.riskLevel}
+${i18n.t('AiReportGenerator.k43')}${data.alertsTriggered} ${i18n.t('AiReportGenerator.k44')}
 
-请直接输出 Markdown 日报内容。`;
+${i18n.t('AiReportGenerator.k45')}`;
 
   try {
     let raw = '';
@@ -413,28 +413,28 @@ export async function generateWeeklyReport(
 ): Promise<BacktestReport> {
   log.info('[AIReportGenerator] Generating weekly report for', data.weekStart, 'to', data.weekEnd);
 
-  const prompt = `你是一个量化交易分析师。请为以下每周交易数据生成简洁的周报。
+  const prompt = `${i18n.t('AiReportGenerator.k46')}
 
-**要求：**
-- 语言：中文（简洁明了）
-- 格式：Markdown，含标题和 bullet points
-- 包含：本周盈亏、最佳/最差策略、周环比变化、建议
-- 每个部分2-3句话
+${i18n.t('AiReportGenerator.k47')}
+${i18n.t('AiReportGenerator.k48')}
+${i18n.t('AiReportGenerator.k49')}
+${i18n.t('AiReportGenerator.k50')}
+${i18n.t('AiReportGenerator.k51')}
 
-**本周数据：**
-周期：${data.weekStart} 至 ${data.weekEnd}
-本周盈亏：$${data.weeklyPnl.toFixed(2)} (${data.weeklyPnlPct.toFixed(2)}%)
-本周胜率：${data.weeklyWinRate.toFixed(1)}%
+${i18n.t('AiReportGenerator.k52')}
+${i18n.t('AiReportGenerator.k53')}${data.weekStart} ${i18n.t('AiReportGenerator.k54')} ${data.weekEnd}
+${i18n.t('AiReportGenerator.k55')}${data.weeklyPnl.toFixed(2)} (${data.weeklyPnlPct.toFixed(2)}%)
+${i18n.t('AiReportGenerator.k56')}${data.weeklyWinRate.toFixed(1)}%
 
-最佳策略：
+${i18n.t('AiReportGenerator.k57')}
 ${data.bestStrategies.slice(0, 3).map(s => `- ${s.name}: $${s.pnl.toFixed(2)} (${s.pnlPct.toFixed(2)}%)`).join('\n')}
 
-最差策略：
+${i18n.t('AiReportGenerator.k58')}
 ${data.worstStrategies.slice(0, 3).map(s => `- ${s.name}: $${s.pnl.toFixed(2)} (${s.pnlPct.toFixed(2)}%)`).join('\n')}
 
-周环比变化：${data.weekOverWeekChange > 0 ? '+' : ''}${data.weekOverWeekChange.toFixed(2)}%
+${i18n.t('AiReportGenerator.k59')}${data.weekOverWeekChange > 0 ? '+' : ''}${data.weekOverWeekChange.toFixed(2)}%
 
-请直接输出 Markdown 周报内容。`;
+${i18n.t('AiReportGenerator.k60')}`;
 
   try {
     let raw = '';
@@ -546,27 +546,27 @@ export async function generateMonthlyReport(
 ): Promise<BacktestReport> {
   log.info('[AIReportGenerator] Generating monthly report for', data.month);
 
-  const prompt = `你是一个量化交易分析师。请为以下每月交易数据生成专业的月报。
+  const prompt = `${i18n.t('AiReportGenerator.k61')}
 
-**要求：**
-- 语言：中文（专业但易懂）
-- 格式：Markdown，含标题和 bullet points
-- 包含：本月表现、风险指标、策略排名、月环比、建议（3-5条）
-- 每个建议要具体可行
+${i18n.t('AiReportGenerator.k62')}
+${i18n.t('AiReportGenerator.k63')}
+${i18n.t('AiReportGenerator.k64')}
+${i18n.t('AiReportGenerator.k65')}
+${i18n.t('AiReportGenerator.k66')}
 
-**本月数据：**
-月份：${data.month}
-本月盈亏：$${data.monthlyPnl.toFixed(2)} (${data.monthlyPnlPct.toFixed(2)}%)
-夏普比率：${data.monthlySharpe.toFixed(2)}
-索提诺比率：${data.monthlySortino.toFixed(2)}
-最大回撤：${data.maxDrawdown.toFixed(2)}%
+${i18n.t('AiReportGenerator.k67')}
+${i18n.t('AiReportGenerator.k68')}${data.month}
+${i18n.t('AiReportGenerator.k69')}${data.monthlyPnl.toFixed(2)} (${data.monthlyPnlPct.toFixed(2)}%)
+${i18n.t('AiReportGenerator.k70')}${data.monthlySharpe.toFixed(2)}
+${i18n.t('AiReportGenerator.k71')}${data.monthlySortino.toFixed(2)}
+${i18n.t('AiReportGenerator.k72')}${data.maxDrawdown.toFixed(2)}%
 
-策略排名：
+${i18n.t('AiReportGenerator.k73')}
 ${data.strategyRanking.slice(0, 5).map(s => `- ${s.name}: $${s.pnl.toFixed(2)} (${s.pnlPct.toFixed(2)}%, Sharpe: ${s.sharpe.toFixed(2)})`).join('\n')}
 
-月环比变化：${data.monthOverMonthChange > 0 ? '+' : ''}${data.monthOverMonthChange.toFixed(2)}%
+${i18n.t('AiReportGenerator.k74')}${data.monthOverMonthChange > 0 ? '+' : ''}${data.monthOverMonthChange.toFixed(2)}%
 
-请直接输出 Markdown 月报内容。`;
+${i18n.t('AiReportGenerator.k75')}`;
 
   try {
     let raw = '';

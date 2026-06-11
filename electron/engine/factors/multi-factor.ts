@@ -410,10 +410,10 @@ export class MultiFactorModel {
     if (diagnosisScore >= 70) factors.push(i18n.t('multiFactor.k5'));
 
     if (factors.length === 0) {
-      return `${code} 综合评分中等，建议观望`;
+      return `${code} ${i18n.t('MultiFactor.k0')}`;
     }
 
-    return `${code} 看好: ${factors.join('、')}`;
+    return `${code} ${i18n.t('MultiFactor.k1')} ${factors.join('、')}`;
   }
 
   private validateConfig(): void {

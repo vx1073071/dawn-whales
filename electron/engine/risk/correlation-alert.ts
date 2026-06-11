@@ -154,7 +154,7 @@ function generateContext(
   let context = i18n.t('correlationAlert.k13');
 
   if (Math.abs(zScore) >= 2) {
-    context += ` (${zScore > 0 ? i18n.t('correlationAlert.k14') : i18n.t('correlationAlert.k15')}均值 ${Math.abs(zScore).toFixed(1)} 个标准差)`;
+    context += ` (${zScore > 0 ? i18n.t('correlationAlert.k14') : i18n.t('correlationAlert.k15')}${i18n.t('CorrelationAlert.k0')} ${Math.abs(zScore).toFixed(1)} ${i18n.t('CorrelationAlert.k1')}`;
   }
 
   return context;

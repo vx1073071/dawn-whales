@@ -6,6 +6,7 @@ import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
+import i18n from '../../src/i18n';
 
 export function registerBrokerIPC(
   orderRouter: unknown,
@@ -303,7 +304,7 @@ export function registerBrokerIPC(
     const riskResult = riskEngine?.checkOrder(order);
     if (riskResult && !riskResult.pass) {
       mainWindow?.webContents.send('risk-alert', { order, reason: riskResult.reason });
-      return { success: false, error: `风控拦截: ${riskResult.reason}` };
+      return { success: false, error: `${i18n.t('BrokerIpc.k0')} ${riskResult.reason}` };
     }
     try {
       const result = await opendClient.placeOrder(order);

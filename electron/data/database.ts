@@ -3,6 +3,7 @@ import Database from 'better-sqlite3';
 import path from 'path';
 import { app } from 'electron';
 import log from 'electron-log';
+import i18n from '../../src/i18n';
 
 const DB_NAME = 'dawn-whales.db';
 
@@ -25,7 +26,7 @@ export class DatabaseManager {
   private createTables() {
     if (!this.db) return;
     this.db.exec(`
-      -- ── 策略表 ──────────────────────────────────────────
+      ${i18n.t('Database.k0')}
       CREATE TABLE IF NOT EXISTS strategies (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
@@ -38,7 +39,7 @@ export class DatabaseManager {
         updated_at TEXT DEFAULT (datetime('now'))
       );
 
-      -- ── 回测结果表 ──────────────────────────────────────
+      ${i18n.t('Database.k1')}
       CREATE TABLE IF NOT EXISTS backtest_runs (
         id TEXT PRIMARY KEY,
         strategy_id TEXT REFERENCES strategies(id) ON DELETE CASCADE,
@@ -55,7 +56,7 @@ export class DatabaseManager {
         created_at TEXT DEFAULT (datetime('now'))
       );
 
-      -- ── 交易记录表 ──────────────────────────────────────
+      ${i18n.t('Database.k2')}
       CREATE TABLE IF NOT EXISTS trades (
         id TEXT PRIMARY KEY,
         strategy_id TEXT REFERENCES strategies(id),
@@ -77,7 +78,7 @@ export class DatabaseManager {
         executed_at TEXT
       );
 
-      -- ── K线缓存表（减少 OpenD 请求，加速回测）─────────
+      ${i18n.t('Database.k3')}
       CREATE TABLE IF NOT EXISTS kline_cache (
         symbol TEXT NOT NULL,
         period TEXT NOT NULL,
@@ -90,7 +91,7 @@ export class DatabaseManager {
         PRIMARY KEY (symbol, period, timestamp)
       );
 
-      -- ── 信号日志表 ──────────────────────────────────────
+      ${i18n.t('Database.k4')}
       CREATE TABLE IF NOT EXISTS signal_log (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         strategy_id TEXT REFERENCES strategies(id),
@@ -101,7 +102,7 @@ export class DatabaseManager {
         created_at TEXT DEFAULT (datetime('now'))
       );
 
-      -- ── 自选股表 ────────────────────────────────────────
+      ${i18n.t('Database.k5')}
       CREATE TABLE IF NOT EXISTS watchlist (
         code TEXT PRIMARY KEY,
         name TEXT,
@@ -109,7 +110,7 @@ export class DatabaseManager {
         added_at TEXT DEFAULT (datetime('now'))
       );
 
-      -- ── 策略评分表 (Marketplace) ────────────────────────
+      ${i18n.t('Database.k6')}
       CREATE TABLE IF NOT EXISTS strategy_ratings (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         strategy_id TEXT NOT NULL REFERENCES strategies(id) ON DELETE CASCADE,
@@ -119,7 +120,7 @@ export class DatabaseManager {
         UNIQUE(strategy_id, user_id)
       );
 
-      -- ── 策略评论表 (Marketplace) ────────────────────────
+      ${i18n.t('Database.k7')}
       CREATE TABLE IF NOT EXISTS strategy_comments (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         strategy_id TEXT NOT NULL REFERENCES strategies(id) ON DELETE CASCADE,
@@ -129,7 +130,7 @@ export class DatabaseManager {
         created_at TEXT DEFAULT (datetime('now'))
       );
 
-      -- ── 策略收益认证表 (Marketplace) ────────────────────
+      ${i18n.t('Database.k8')}
       CREATE TABLE IF NOT EXISTS strategy_performance (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         strategy_id TEXT NOT NULL REFERENCES strategies(id) ON DELETE CASCADE,
@@ -145,13 +146,13 @@ export class DatabaseManager {
         updated_at TEXT DEFAULT (datetime('now'))
       );
 
-      -- ── 设置表 ──────────────────────────────────────────
+      ${i18n.t('Database.k9')}
       CREATE TABLE IF NOT EXISTS settings (
         key TEXT PRIMARY KEY,
         value TEXT
       );
 
-      -- ── 索引 ────────────────────────────────────────────
+      ${i18n.t('Database.k10')}
       CREATE INDEX IF NOT EXISTS idx_trades_strategy ON trades(strategy_id);
       CREATE INDEX IF NOT EXISTS idx_trades_symbol ON trades(symbol);
       CREATE INDEX IF NOT EXISTS idx_trades_created ON trades(created_at);

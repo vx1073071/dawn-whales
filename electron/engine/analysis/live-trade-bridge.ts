@@ -418,7 +418,7 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 取消订单 — 同时在模拟和实盘两侧取消
+   ${i18n.t('LiveTradeBridge.k0')}
    */
   async cancelOrder(orderId: string): Promise<boolean> {
     const bridgeOrder = this.orders.get(orderId);
@@ -432,7 +432,7 @@ export class LiveTradeBridge {
       return false;
     }
 
-    // 取消实盘订单
+    ${i18n.t('LiveTradeBridge.k1')}
     if (bridgeOrder.liveOrder && this.broker && !this.config.dryRun) {
       try {
         await this.broker.cancelOrder(bridgeOrder.liveOrder.brokerOrderId);
@@ -450,7 +450,7 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 处理部分成交
+   ${i18n.t('LiveTradeBridge.k2')}
    */
   handlePartialFill(bridgeOrder: BridgeOrder, liveOrder: LiveOrder): void {
     bridgeOrder.status = 'partial_fill';
@@ -464,7 +464,7 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 更新部分成交状态（由外部轮询或推送调用）
+   ${i18n.t('LiveTradeBridge.k3')}
    */
   updatePartialFill(orderId: string, filledQuantity: number, averageFillPrice: number): void {
     const bridgeOrder = this.orders.get(orderId);
@@ -483,7 +483,7 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 处理完全成交
+   ${i18n.t('LiveTradeBridge.k4')}
    */
   private handleOrderFilled(bridgeOrder: BridgeOrder, liveOrder: LiveOrder): void {
     bridgeOrder.status = 'filled';
@@ -499,28 +499,28 @@ export class LiveTradeBridge {
   // ── Risk Validation ──────────────────────────────────────────────────────
 
   /**
-   * 校验订单是否通过所有风控规则
+   ${i18n.t('LiveTradeBridge.k5')}
    */
   validateOrder(order: PaperOrder): { pass: boolean; reason?: string; warning?: string } {
     const ctx = this.buildRiskContext(order.id);
 
-    // 检查每日订单上限
+    ${i18n.t('LiveTradeBridge.k6')}
     if (this.dailyStats.orderCount >= this.config.maxDailyOrders) {
       return { pass: false, reason: i18n.t('liveTradeBridge.k14') };
     }
 
-    // 检查最小下单间隔 (使用订单时间戳而非当前时间，并排除当前订单)
+    ${i18n.t('LiveTradeBridge.k7')}
     if (ctx.lastOrderTimestamp && order.timestamp - ctx.lastOrderTimestamp < this.config.minOrderIntervalMs) {
       return { pass: false, reason: i18n.t('liveTradeBridge.k15') };
     }
 
-    // 检查单笔最大金额
+    ${i18n.t('LiveTradeBridge.k8')}
     const orderValue = order.quantity * (order.price || 0);
     if (orderValue > this.config.maxOrderValue) {
       return { pass: false, reason: i18n.t('liveTradeBridge.k16') };
     }
 
-    // 逐一检查自定义风控规则
+    ${i18n.t('LiveTradeBridge.k9')}
     for (const rule of this.riskRules) {
       if (!rule.enabled) continue;
       const result = rule.check(order, ctx);
@@ -533,14 +533,14 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 获取所有风控规则
+   ${i18n.t('LiveTradeBridge.k10')}
    */
   getRiskRules(): RiskRule[] {
     return [...this.riskRules];
   }
 
   /**
-   * 添加自定义风控规则
+   ${i18n.t('LiveTradeBridge.k11')}
    */
   addRiskRule(rule: RiskRule): void {
     this.riskRules.push(rule);
@@ -548,14 +548,14 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 添加自定义风控规则 (alias for addRiskRule)
+   ${i18n.t('LiveTradeBridge.k12')}
    */
   addCustomRiskRule(rule: RiskRule): void {
     this.addRiskRule(rule);
   }
 
   /**
-   * 移除风控规则
+   ${i18n.t('LiveTradeBridge.k13')}
    */
   removeRiskRule(ruleId: string): boolean {
     const idx = this.riskRules.findIndex((r) => r.id === ruleId);
@@ -565,7 +565,7 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 设置风控规则启用/禁用状态
+   ${i18n.t('LiveTradeBridge.k14')}
    */
   setRiskRuleEnabled(ruleId: string, enabled: boolean): boolean {
     const rule = this.riskRules.find((r) => r.id === ruleId);
@@ -576,14 +576,14 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 获取当前生效的风控规则列表（返回副本）
+   ${i18n.t('LiveTradeBridge.k15')}
    */
   getRiskRules(): RiskRule[] {
     return this.riskRules.map((r) => ({ ...r }));
   }
 
   /**
-   * 按 ID 获取订单（alias for getOrder）
+   ${i18n.t('LiveTradeBridge.k16')}
    */
   getOrderById(orderId: string): BridgeOrder | undefined {
     return this.getOrder(orderId);
@@ -592,7 +592,7 @@ export class LiveTradeBridge {
   // ── Position Reconciliation ──────────────────────────────────────────────
 
   /**
-   * 对账：比较模拟盘和实盘仓位，返回差异列表
+   ${i18n.t('LiveTradeBridge.k17')}
    */
   async reconcilePositions(): Promise<ReconciliationResult[]> {
     if (!this.broker || this.config.dryRun) {
@@ -616,7 +616,7 @@ export class LiveTradeBridge {
 
       let action: ReconciliationResult['action'] = 'none';
       if (delta !== 0) {
-        action = 'manual_review'; // 默认需要人工审核
+        ${i18n.t('LiveTradeBridge.k18')}
       }
 
       const result: ReconciliationResult = {
@@ -639,7 +639,7 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 启动定时对账
+   ${i18n.t('LiveTradeBridge.k19')}
    */
   startReconciliationTimer(): void {
     if (this.reconciliationTimer) return;
@@ -652,7 +652,7 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 停止定时对账
+   ${i18n.t('LiveTradeBridge.k20')}
    */
   stopReconciliationTimer(): void {
     if (this.reconciliationTimer) {
@@ -662,7 +662,7 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 更新模拟盘仓位（由外部同步模块调用）
+   ${i18n.t('LiveTradeBridge.k21')}
    */
   updatePaperPosition(position: PaperPosition): void {
     this.paperPositions.set(position.symbol, position);
@@ -671,7 +671,7 @@ export class LiveTradeBridge {
   // ── Audit Trail ──────────────────────────────────────────────────────────
 
   /**
-   * 获取完整审计日志
+   ${i18n.t('LiveTradeBridge.k22')}
    */
   getAuditTrail(orderId?: string): AuditEntry[] {
     if (orderId) {
@@ -681,7 +681,7 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 添加审计日志条目
+   ${i18n.t('LiveTradeBridge.k23')}
    */
   private addAuditEntry(action: AuditAction, message: string, meta?: Record<string, unknown>): void {
     this.auditLog.push({
@@ -695,28 +695,28 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 获取指定订单
+   ${i18n.t('LiveTradeBridge.k24')}
    */
   getOrder(orderId: string): BridgeOrder | undefined {
     return this.orders.get(orderId);
   }
 
   /**
-   * 获取指定订单 (alias for getOrder)
+   ${i18n.t('LiveTradeBridge.k25')}
    */
   getOrderById(orderId: string): BridgeOrder | undefined {
     return this.getOrder(orderId);
   }
 
   /**
-   * 获取所有订单
+   ${i18n.t('LiveTradeBridge.k26')}
    */
   getAllOrders(): BridgeOrder[] {
     return Array.from(this.orders.values());
   }
 
   /**
-   * 获取统计摘要
+   ${i18n.t('LiveTradeBridge.k27')}
    */
   getStats(): {
     totalOrders: number;
@@ -742,7 +742,7 @@ export class LiveTradeBridge {
   // ── Broker Adapter ────────────────────────────────────────────────────────
 
   /**
-   * 设置券商适配器
+   ${i18n.t('LiveTradeBridge.k28')}
    */
   setBrokerAdapter(adapter: BrokerAdapter): void {
     this.broker = adapter;
@@ -774,7 +774,7 @@ export class LiveTradeBridge {
   }
 
   /**
-   * 销毁桥接器，清理资源
+   ${i18n.t('LiveTradeBridge.k29')}
    */
   destroy(): void {
     this.stopReconciliationTimer();
