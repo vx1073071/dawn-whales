@@ -276,22 +276,22 @@ function createWindow() {
 // ── IPC Handlers ───────────────────────────────────────────────────────────
 
 import { registerAllIPC } from './ipc/index';
-import i18n from '../src/i18n';
 
+function createTray() {
   const iconSize = 16;
   const icon = nativeImage.createFromBuffer(createDiamondIcon(iconSize));
   tray = new Tray(icon);
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: i18n.t('mainSlim.k2'), enabled: false },
+    { label: 'DAWN WHALES', enabled: false },
     { type: 'separator' },
-    { label: i18n.t('mainSlim.k3'), click: () => mainWindow?.show() },
-    { label: i18n.t('mainSlim.k4'), click: () => strategyEngine?.emergencyStop() },
+    { label: 'Show', click: () => mainWindow?.show() },
+    { label: 'Emergency Stop', click: () => strategyEngine?.emergencyStop() },
     { type: 'separator' },
-    { label: i18n.t('mainSlim.k5'), click: () => app.quit() },
+    { label: 'Quit', click: () => app.quit() },
   ]);
 
-  tray.setToolTip(i18n.t('mainSlim.k6'));
+  tray.setToolTip('DAWN WHALES');
   tray.setContextMenu(contextMenu);
   tray.on('double-click', () => mainWindow?.show());
 }

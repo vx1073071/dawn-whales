@@ -1,4 +1,3 @@
-// @ts-nocheck — R89 type cleanup pending
 /**
  * AIBillingPanel — R83 P1-5c i18n 
  * All hardcoded strings replaced with t() calls.
@@ -86,7 +85,7 @@ const TierCard: React.FC<{
 }> = ({ tier, selected, freeRemaining, onSelect, t }) => {
   const isFree = freeRemaining > 0;
   const displayPrice = isFree ? 0 : tier.price;
-  const tierName = t(String(tier.id) as keyof TBilling) as string;
+  const tierName = t(String(tier.id) as unknown as keyof TBilling) as string;
 
   return (
     <div className={`billing-tier-card ${selected ? 'selected' : ''} ${tier.recommended ? 'recommended' : ''}`}
@@ -266,7 +265,7 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
         <h3 className="billing-section-title">{t('costSummary')}</h3>
         <div className="billing-cost-breakdown">
           <div className="billing-cost-row">
-            <span>{t('base', { tier: t(String(selectedTier.id) as keyof TBilling) as string })}</span>
+            <span>{t('base', { tier: t(String(selectedTier.id) as unknown as keyof TBilling) as string })}</span>
             <span>{billing.freeRemaining > 0 ? t('free') : `$${selectedTier.price.toFixed(1)}`}</span>
           </div>
           <div className="billing-cost-row">

@@ -1,4 +1,3 @@
-// @ts-nocheck — R89 type cleanup pending
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
@@ -112,25 +111,26 @@ export default function RealTimeMarketDashboard() {
         res.forEach((q: Record<string, unknown>) => {
           const code = q.code as string;
           const stock = WATCHLIST.find(s => s.code === code);
+          const price = q.price as number;
           map[code] = {
             code,
             name: stock?.name || (q.name as string) || code,
-            price: q.price as number,
-            prevClose: q.prevClose,
-            change: q.change,
-            changePct: q.changePct,
-            volume: q.volume,
-            turnover: q.turnover,
-            bid: q.bid || (q as any).price * 0.999,
-            ask: q.ask || (q as any).price * 1.001,
-            bidVol: q.bidVol || 0,
-            askVol: q.askVol || 0,
-            high: q.high,
-            low: q.low,
-            open: q.open,
-            updateTime: q.updateTime,
+            price,
+            prevClose: q.prevClose as number,
+            change: q.change as number,
+            changePct: q.changePct as number,
+            volume: q.volume as number,
+            turnover: q.turnover as number,
+            bid: (q.bid as number) || price * 0.999,
+            ask: (q.ask as number) || price * 1.001,
+            bidVol: (q.bidVol as number) || 0,
+            askVol: (q.askVol as number) || 0,
+            high: q.high as number,
+            low: q.low as number,
+            open: q.open as number,
+            updateTime: q.updateTime as string,
             sparkline: generateSparkline(q.prevClose as number),
-            dataQuality: 'good',
+            dataQuality: 'good' as const,
           };
         });
         setQuotes(map);

@@ -1,4 +1,3 @@
-// @ts-nocheck — R89 type cleanup pending
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
@@ -389,16 +388,20 @@ export default function AutomationPanel({ className }: { className?: string }) {
       }
 
       // Fetch execution history if available
-      if (api.strategy?.getExecutionHistory as any as any) {
-        const execResult = await (api.strategy as any).getExecutionHistory().catch((_: unknown) => null);
+      // @ts-expect-error — getExecutionHistory is a runtime-extended method not in Window.api type
+      if (api.strategy?.getExecutionHistory) {
+        // @ts-expect-error — TSC cannot infer Window.api extended methods
+        const execResult = await api.strategy.getExecutionHistory().catch((_: unknown) => null);
         if (execResult?.success) {
           setExecutions(execResult.data ?? []);
         }
       }
 
       // Fetch automation rules if available
-      if (api.strategy?.getAutomationRules as any as any) {
-        const rulesResult = await (api.strategy as any).getAutomationRules().catch((_: unknown) => null);
+      // @ts-expect-error — getAutomationRules is a runtime-extended method not in Window.api type
+      if (api.strategy?.getAutomationRules) {
+        // @ts-expect-error — TSC cannot infer Window.api extended methods
+        const rulesResult = await api.strategy.getAutomationRules().catch((_: unknown) => null);
         if (rulesResult?.success) {
           setRules(rulesResult.data ?? []);
         }

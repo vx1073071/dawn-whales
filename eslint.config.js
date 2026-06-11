@@ -23,10 +23,7 @@ export default [
       '**/*.tgz',
       '**/*.bak.ts',
       // R82: broken sources to fix later
-      'electron/engine/snapshot-service.ts',
-      'electron/ipc-handlers/_import-shared.ts',
-      'electron/ipc/strategy-ipc.ts',
-      'electron/main-slim.ts',
+      // 'electron/ipc/strategy-ipc.ts',  (R105: paren imbalance, needs full rewrite R106)
     ],
   },
   // TypeScript + React files

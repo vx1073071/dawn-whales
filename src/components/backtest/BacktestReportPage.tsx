@@ -1,4 +1,3 @@
-// @ts-nocheck — R89 type cleanup pending
 import { useState, useEffect, useMemo } from 'react';
 import * as api from '../../lib/bridge-api';
 import { EngineError } from '../../../electron/engine/core/engine-error';

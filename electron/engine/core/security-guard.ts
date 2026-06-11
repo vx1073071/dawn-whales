@@ -33,6 +33,13 @@ export function sanitizeInput(input: unknown): string {
   // Remove on* event handlers
   sanitized = sanitized.replace(/\bon\w+\s*=\s*"[^"]*"/gi, '');
   sanitized = sanitized.replace(/\bon\w+\s*=\s*'[^']*'/gi, '');
+  return sanitized;
+}
+
+export function sanitizeObject(obj: Record<string, unknown>): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (typeof value === 'string') {
       result[key] = sanitizeInput(value);
     } else if (value && typeof value === 'object' && !Array.isArray(value)) {
       result[key] = sanitizeObject(value as Record<string, unknown>);
