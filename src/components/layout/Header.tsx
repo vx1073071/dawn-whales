@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo.svg';
 import BrokerSelector from './BrokerSelector';
 import LanguageSwitcher from '@/components/common/LanguageSwitcher';
+import CreditsBalance from './CreditsBalance';
 import i18n from '../../i18n';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 void EngineError; // [EngineError:SYSTEM] structured error tracking
@@ -32,6 +33,9 @@ export default function Header() {
       <div className="flex items-center gap-4 text-xs">
         <BrokerSelector />
       </div>
+
+      {/* USDT Credits Balance (R102 M-01) */}
+      <CreditsBalance />
 
       {/* Theme toggle */}
       <button

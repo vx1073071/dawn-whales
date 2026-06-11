@@ -6042,5 +6042,15 @@
   "LandingPageV18.v111_5": "智能数字格式",
   "LandingPageV18.v111_6": "按语言自适应的成交量单位（万/亿/K/M/B）、百分比和紧凑显示。",
   "LandingPageV18.v111_7": "11种语言",
-  "LandingPageV18.v111_8": "完整国际化：简/繁/英/日/韩/法/意/德/西/俄。全代码零CJK。"
+  "LandingPageV18.v111_8": "完整国际化：简/繁/英/日/韩/法/意/德/西/俄。全代码零CJK。",
+  "settings.credits": "USDT积分",
+  "credits.balance": "余额",
+  "credits.all": "全部",
+  "credits.income": "收入",
+  "credits.expense": "支出",
+  "credits.p2p": "P2P",
+  "credits.noTransactions": "暂无交易记录",
+  "credits.feeDeducted": "手续费已扣",
+  "credits.records": "条记录",
+  "credits.page": "页"
 }

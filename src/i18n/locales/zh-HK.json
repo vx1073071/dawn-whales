@@ -5722,5 +5722,15 @@
   "LandingPageV18.v111_5": "Smart Number Format",
   "LandingPageV18.v111_6": "Locale-aware volume units, percentage formatting, and compact display.",
   "LandingPageV18.v111_7": "11 Languages",
-  "LandingPageV18.v111_8": "Full i18n: zh-CN/HK/TW, en, ja, ko, fr, it, de, es, ru. Zero CJK in entire codebase."
+  "LandingPageV18.v111_8": "Full i18n: zh-CN/HK/TW, en, ja, ko, fr, it, de, es, ru. Zero CJK in entire codebase.",
+  "settings.credits": "USDT Credits",
+  "credits.balance": "Balance",
+  "credits.all": "All",
+  "credits.income": "Income",
+  "credits.expense": "Expense",
+  "credits.p2p": "P2P",
+  "credits.noTransactions": "No transactions yet",
+  "credits.feeDeducted": "Fee Deducted",
+  "credits.records": "records",
+  "credits.page": "Page"
 }

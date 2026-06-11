@@ -5684,5 +5684,15 @@
   "LandingPageV18.v111_5": "スマート数値フォーマット",
   "LandingPageV18.v111_6": "ロケール対応の取引量単位、パーセント、コンパクト表示。",
   "LandingPageV18.v111_7": "11言語",
-  "LandingPageV18.v111_8": "完全なi18n: 簡/繁/英/日/韓/佛/伊/独/西/俄。コードベースCJKゼロ。"
+  "LandingPageV18.v111_8": "完全なi18n: 簡/繁/英/日/韓/佛/伊/独/西/俄。コードベースCJKゼロ。",
+  "settings.credits": "USDTクレジット",
+  "credits.balance": "残高",
+  "credits.all": "すべて",
+  "credits.income": "収入",
+  "credits.expense": "支出",
+  "credits.p2p": "P2P",
+  "credits.noTransactions": "取引記録なし",
+  "credits.feeDeducted": "手数料控除済み",
+  "credits.records": "件",
+  "credits.page": "ページ"
 }

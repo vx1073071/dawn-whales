@@ -11,8 +11,9 @@ import i18n from '../../i18n';
 
 import TimezoneSelector from './TimezoneSelector';
 import CurrencySelector from './CurrencySelector';
+import CreditsHistoryPage from '../billing/CreditsHistoryPage';
 
-type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'currency' | 'update' | 'info';
+type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'currency' | 'credits' | 'update' | 'info';
 
 interface BrokerItem {
   id: string;
@@ -179,6 +180,7 @@ export default function SettingsPage() {
   { id: 'risk', label: 'settings.globalRisk', icon: '🛡️' },
   { id: 'timezone', label: 'settings.timezone', icon: '🌍' },
   { id: 'currency', label: 'settings.currency', icon: '💱' },
+  { id: 'credits', label: 'settings.credits', icon: '💰' },
   { id: 'update', label: 'settings.softwareUpdate', icon: '🔄' },
   { id: 'info', label: 'settings.systemInfo', icon: 'ℹ️' }];
 
@@ -476,6 +478,8 @@ export default function SettingsPage() {
           <CurrencySelector />
         </div>
       }
+
+      {activeTab === 'credits' && <CreditsHistoryPage />}
 
       {activeTab === 'info' &&
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">

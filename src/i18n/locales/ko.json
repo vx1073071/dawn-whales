@@ -5684,5 +5684,15 @@
   "LandingPageV18.v111_5": "Smart Number Format",
   "LandingPageV18.v111_6": "Locale-aware volume units, percentage formatting, and compact display.",
   "LandingPageV18.v111_7": "11 Languages",
-  "LandingPageV18.v111_8": "Full i18n: zh-CN/HK/TW, en, ja, ko, fr, it, de, es, ru. Zero CJK in entire codebase."
+  "LandingPageV18.v111_8": "Full i18n: zh-CN/HK/TW, en, ja, ko, fr, it, de, es, ru. Zero CJK in entire codebase.",
+  "settings.credits": "USDT 크레딧",
+  "credits.balance": "잔액",
+  "credits.all": "전체",
+  "credits.income": "수입",
+  "credits.expense": "지출",
+  "credits.p2p": "P2P",
+  "credits.noTransactions": "거래 기록 없음",
+  "credits.feeDeducted": "수수료 공제",
+  "credits.records": "건",
+  "credits.page": "페이지"
 }
