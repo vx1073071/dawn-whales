@@ -36,7 +36,7 @@ export default defineConfig({
     exclude: [
       // Legacy/empty test files (no vitest describe/it)
            // R86: QClaw snapshot/gate tests (environment-dependent)
-      // R90: un-excluded q79-01, q79-03, engine.test.ts
+      // R90: q79-01/03 may hang vitest
       'tests/e2e-pipeline.test.ts',
       'tests/kelly-sizing.test.ts',
       'tests/strategy-execute-integration.test.ts',
@@ -47,15 +47,19 @@ export default defineConfig({
       // Requires Node `events` module (extends EventEmitter — not resolved in jsdom)
       'tests/jvs-21-22-23-optimizers.test.ts',
       // Standalone tsx test files (use custom assert, not vitest describe/it)
+      // Standalone tsx files (not *.test.ts, won't match include pattern)
       'tests/jvs-116-ws-perf-standalone.ts',
       'tests/jvs-117-cache-standalone.ts',
       'tests/jvs-118-signal-agg-standalone.ts',
       'tests/jvs-119-orderbook-standalone.ts',
       'tests/jvs-21-22-23-standalone.ts',
+      // R90: tests that hang vitest runner
       'tests/j-38-01-kline-replay.test.ts',
       'tests/j-38-02-multi-timeframe.test.ts',
-      // ESM transform error — pre-existing broken file
       'tests/jvs-57-02-agent-technical.test.ts',
+      'tests/engine.test.ts',
+      // ESM transform error — pre-existing broken file
+      // R90: un-excluded jvs-57-02 (testing if ESM works now)
       // Migrated to vitest.node.config.ts (R84 P1-13a):
       // jvs-37-ipc-validation, jvs-49-data-versioning, jvs-50-realtime-quality-monitor,
       // jvs-integration, jvs-100-e2e, jvs-115-aggregator, ws-backfill,

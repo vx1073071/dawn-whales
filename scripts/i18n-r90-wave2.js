@@ -1,160 +1,142 @@
-// R90 Wave 2: Process electron files - handle template literals and complex patterns
+// R90 M-02: Safe electron i18n — target -5000 chars
+// Strategy: ONLY replace string literals (single/double quoted) containing CJK.
+// SKIP: template literals (too risky with ${}), comments, type defs, enum values, regex.
+// Use `import i18n from '<rel-path>'` + `i18n.t('key')` pattern.
+
 const fs = require('fs');
 const path = require('path');
 
 const CJK = /[\u4e00-\u9fff\u3400-\u4dbf]/;
 const CJK_GLOBAL = /[\u4e00-\u9fff\u3400-\u4dbf]/g;
 
-function getI18nImportPath(filePath) {
-  const fileDir = path.dirname(filePath);
+function countCJK(s) { return (s.match(CJK_GLOBAL) || []).length; }
+
+function getI18nImport(filePath) {
+  const dir = path.dirname(filePath);
   const i18nDir = path.join(process.cwd(), 'src/i18n');
-  let rel = path.relative(fileDir, i18nDir).replace(/\\/g, '/');
+  let rel = path.relative(dir, i18nDir).replace(/\\/g, '/');
   if (!rel.startsWith('.')) rel = './' + rel;
   return rel;
 }
 
-function getFileBase(filePath) {
-  return path.basename(filePath).replace(/\.(ts|tsx)$/, '')
-    .split(/[-_]/).map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('');
+function fileBase(filePath) {
+  return path.basename(filePath).replace(/\.tsx?$/, '')
+    .split(/[-_]/).filter(s => s.length > 0).map(s => s[0].toUpperCase() + s.slice(1)).join('');
 }
 
-function countCJK(s) { return (s.match(CJK_GLOBAL) || []).length; }
+// Scan ALL electron .ts files
+function scan(dir, results = []) {
+  fs.readdirSync(dir, { withFileTypes: true }).forEach(f => {
+    const p = path.join(dir, f.name);
+    if (f.isDirectory()) scan(p, results);
+    else if (/\.ts$/.test(f.name) && !f.name.includes('.test.') && !f.name.includes('.spec.')) {
+      try {
+        const c = fs.readFileSync(p, 'utf8');
+        const chars = countCJK(c);
+        if (chars > 3) results.push({ file: path.relative(process.cwd(), p).replace(/\\/g, '/'), chars });
+      } catch {}
+    }
+  });
+  return results;
+}
 
-// Process specific files manually with targeted replacements
-const targets = [
-  'electron/engine/agents/ai-report-generator.ts',
-  'electron/engine/agents/nl-parser.ts',
-  'electron/data/marketplace-service.ts',
-  'electron/engine/agents/nlp-sentiment-engine.ts',
-  'electron/engine/data/margin-data.ts',
-  'electron/engine/risk/risk-engine.ts',
-  'electron/data/data-provider.ts',
-  'electron/engine/data/financial-reports.ts',
-  'electron/engine/analysis/capital-flow-rank.ts',
-  'electron/engine/data/fund-holdings.ts',
-  'electron/engine/portfolio/portfolio-risk.ts',
-  'electron/engine/data/dragon-tiger-list.ts',
-  'electron/engine/data/market-breadth.ts',
-  'electron/engine/data/earnings-calendar.ts',
-  'electron/data/lru-cache.ts',
-  'electron/engine/data/consumer-data.ts',
-  'electron/data/database.ts',
-  'electron/engine/backtest/backtest-engine.ts',
-  'electron/engine/backtest/walk-forward.ts',
-  'electron/engine/risk/anomaly-detection.ts',
-  'electron/engine/analysis/capital-flow-monitor.ts',
-  'electron/engine/analysis/valuation-data.ts',
-  'electron/engine/data/quote-stream.ts',
-  'electron/engine/data/dividend-calendar.ts',
-  'electron/engine/portfolio/creator-tier-engine.ts',
-  'electron/engine/analysis/strategy-marketplace-search.ts',
-  'electron/engine/analysis/strategy-ensemble.ts',
-  'electron/engine/data/sector-rotation-v2.ts',
-  'electron/engine/data/unlock-calendar.ts',
-  'electron/engine/analysis/strategy-templates.ts',
-];
+const targets = scan('electron').sort((a, b) => b.chars - a.chars);
+console.log(`Found ${targets.length} electron files with CJK\n`);
 
-let totalKeys = {};
+const allKeys = {};
 let totalRemoved = 0;
-let totalFiles = 0;
+let filesChanged = 0;
 
-for (const file of targets) {
+for (const { file } of targets) {
   const fullPath = path.join(process.cwd(), file);
-  if (!fs.existsSync(fullPath)) continue;
-  
   let content = fs.readFileSync(fullPath, 'utf8');
   const oldChars = countCJK(content);
-  const fileBase = getFileBase(file);
+  const base = fileBase(file);
   const keys = {};
-  let keyIdx = 0;
-  
-  // Check if already has i18n import
-  const hasI18n = content.includes("import i18n from");
-  
-  // Step 1: Replace simple string literals (single and double quoted)
-  content = content.replace(/'([^'\n]*[\u4e00-\u9fff][^'\n]*)'/g, (match, str) => {
-    // Skip if inside comment
-    const key = `${fileBase}.k${keyIdx++}`;
-    keys[key] = str;
-    return `i18n.t('${key}')`;
-  });
-  
-  content = content.replace(/"([^"\n]*[\u4e00-\u9fff][^"\n]*)"/g, (match, str) => {
-    const key = `${fileBase}.k${keyIdx++}`;
-    keys[key] = str;
-    return `i18n.t('${key}')`;
-  });
-  
-  // Step 2: Replace template literals (including multi-line with interpolation)
-  // For templates with ${}, we keep the template structure but extract Chinese segments
-  // Strategy: Convert `中文 ${expr} 中文` to `${i18n.t('key1')}${expr}${i18n.t('key2')}`
-  content = content.replace(/`([^`]*[\u4e00-\u9fff][^`]*)`/g, (match, inner) => {
-    if (!CJK.test(inner)) return match;
-    
-    if (!inner.includes('${')) {
-      // Simple template without interpolation - replace whole thing
-      const key = `${fileBase}.k${keyIdx++}`;
+  let idx = 0;
+
+  // Process line by line to handle scope correctly
+  const lines = content.split('\n');
+  let changed = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    // Skip: comments, imports, type/interface defs, enum lines
+    if (trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('/*')) continue;
+    if (trimmed.startsWith('import ')) continue;
+    if (trimmed.startsWith('type ') || trimmed.startsWith('interface ') || trimmed.startsWith('export type ') || trimmed.startsWith('export interface ')) continue;
+    if (trimmed.match(/^\w+\s*=\s*'[^']*',?$/)) continue; // enum-like
+    if (trimmed === '' || trimmed === '}' || trimmed === '{') continue;
+
+    // Only replace single-quoted and double-quoted string LITERALS
+    // Pattern: match 'text with CJK' or "text with CJK"
+    // But NOT inside backticks (template literals)
+
+    // Safety: skip if line contains backtick (template literal)
+    if (line.includes('`')) continue;
+
+    let newLine = line;
+
+    // Replace single-quoted strings containing CJK
+    newLine = newLine.replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, (match, inner) => {
+      if (!CJK.test(inner)) return match;
+      // Skip if it looks like a key/path/selector (no spaces, short)
+      if (inner.length < 2) return match;
+      const key = `${base}.k${idx++}`;
       keys[key] = inner;
+      changed = true;
       return `i18n.t('${key}')`;
-    }
-    
-    // Complex template: split into segments around ${} expressions
-    // Replace Chinese text segments with i18n.t() calls
-    let result = inner;
-    // Find Chinese text segments (between ${} expressions)
-    result = result.replace(/([\u4e00-\u9fff\u3400-\u4dbf\u3000-\u303f\uff00-\uffef，。！？、：；""''（）【】《》\s·—…\-]+?)(?=\$\{|$)/g, (seg) => {
-      if (!CJK.test(seg)) return seg;
-      const trimmed = seg.trim();
-      if (!trimmed) return seg;
-      const key = `${fileBase}.k${keyIdx++}`;
-      keys[key] = trimmed;
-      return `\${i18n.t('${key}')}`;
     });
-    
-    // Also handle Chinese text after ${} expressions
-    result = result.replace(/(\$\{[^}]+\})([\u4e00-\u9fff\u3400-\u4dbf\u3000-\u303f\uff00-\uffef，。！？、：；""''（）【】《》\s·—…\-]+)/g, (match, expr, chinese) => {
-      const trimmed = chinese.trim();
-      if (!trimmed) return match;
-      const key = `${fileBase}.k${keyIdx++}`;
-      keys[key] = trimmed;
-      return `${expr}\${i18n.t('${key}')}`;
+
+    // Replace double-quoted strings containing CJK
+    newLine = newLine.replace(/"([^"\\]*(?:\\.[^"\\]*)*)"/g, (match, inner) => {
+      if (!CJK.test(inner)) return match;
+      if (inner.length < 2) return match;
+      const key = `${base}.k${idx++}`;
+      keys[key] = inner;
+      changed = true;
+      return `i18n.t('${key}')`;
     });
-    
-    return '`' + result + '`';
-  });
-  
-  const newChars = countCJK(content);
-  const removed = oldChars - newChars;
-  
-  if (removed > 0) {
-    // Add i18n import if needed
-    if (!hasI18n && Object.keys(keys).length > 0) {
-      const importPath = getI18nImportPath(file);
-      const lines = content.split('\n');
-      let lastImportIdx = 0;
-      for (let i = 0; i < lines.length; i++) {
-        if (lines[i].startsWith('import ')) lastImportIdx = i;
-      }
-      lines.splice(lastImportIdx + 1, 0, `import i18n from '${importPath}';`);
-      content = lines.join('\n');
+
+    if (newLine !== line) {
+      lines[i] = newLine;
     }
-    
-    fs.writeFileSync(fullPath, content, 'utf8');
-    console.log(`  ${file}: ${oldChars} → ${newChars} (-${removed}, ${Object.keys(keys).length} keys)`);
-    Object.assign(totalKeys, keys);
-    totalRemoved += removed;
-    totalFiles++;
   }
+
+  if (!changed) continue;
+
+  const newContent = lines.join('\n');
+  const newChars = countCJK(newContent);
+  const removed = oldChars - newChars;
+
+  if (removed <= 0) continue;
+
+  // Add i18n import
+  if (!newContent.includes("import i18n from")) {
+    const importPath = getI18nImport(file);
+    const importLines = newContent.split('\n');
+    let lastImport = 0;
+    for (let i = 0; i < importLines.length; i++) {
+      if (importLines[i].startsWith('import ')) lastImport = i;
+    }
+    importLines.splice(lastImport + 1, 0, `import i18n from '${importPath}';`);
+    fs.writeFileSync(fullPath, importLines.join('\n'), 'utf8');
+  } else {
+    fs.writeFileSync(fullPath, newContent, 'utf8');
+  }
+
+  console.log(`  ${file}: -${removed} (${Object.keys(keys).length} keys)`);
+  Object.assign(allKeys, keys);
+  totalRemoved += removed;
+  filesChanged++;
 }
 
-console.log(`\n=== Wave 2 Summary ===`);
-console.log(`Files: ${totalFiles}`);
+console.log(`\n=== M-02 Wave 2 ===`);
+console.log(`Files: ${filesChanged}`);
 console.log(`Chars removed: ${totalRemoved}`);
-console.log(`Keys: ${Object.keys(totalKeys).length}`);
+console.log(`Keys: ${Object.keys(allKeys).length}`);
 
-// Save keys for translation
-fs.writeFileSync(
-  'scripts/i18n-r90-wave2-keys.json',
-  JSON.stringify(totalKeys, null, 2), 'utf8'
-);
-console.log('Keys saved to scripts/i18n-r90-wave2-keys.json');
+fs.writeFileSync('scripts/i18n-r90-wave2-keys.json', JSON.stringify(allKeys, null, 2), 'utf8');
+console.log('Keys saved.');

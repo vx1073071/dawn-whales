@@ -23,23 +23,34 @@ describe('Q-70-02: Post-Deploy Full Chain E2E', () => {
     it('01: all required engine files exist', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
       const required = ['backtest-engine.ts', 'agent-orchestrator.ts', 'multi-llm-router.ts', 'risk-engine.ts', 'benchmark.ts', 'performance-monitor.ts'];
-      const found = required.filter(f => fs.existsSync(path.join(engineDir, f)));
+      const fileExists = (dir: string, name: string): boolean => {
+        const walk = (d: string): boolean => {
+          try { for (const f of fs.readdirSync(d, { withFileTypes: true })) { if (f.isDirectory()) { if (walk(path.join(d, f.name))) return true; } else if (f.name === name) return true; } } catch (_e) {}
+          return false;
+        };
+        return walk(dir);
+      };
+      const found = required.filter(f => fileExists(engineDir, f));
       console.log(`[Q-70-02] Core engines: ${found.length}/${required.length}`);
       expect(found.length).toBeGreaterThanOrEqual(4);
     });
 
     it('02: broker adapters (futu + ibkr)', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir);
-      const brokers = files.filter(f => f.includes('broker') || f.includes('futu') || f.includes('ibkr'));
+      const allFiles: string[] = [];
+      const walk = (d: string) => { try { for (const f of fs.readdirSync(d, { withFileTypes: true })) { if (f.isDirectory()) walk(path.join(d, f.name)); else if (f.name.endsWith('.ts')) allFiles.push(f.name); } } catch (_e) {} };
+      walk(engineDir);
+      const brokers = allFiles.filter(f => f.includes('broker') || f.includes('futu') || f.includes('ibkr'));
       console.log(`[Q-70-02] Broker files: ${brokers.join(', ')}`);
       expect(brokers.length).toBeGreaterThanOrEqual(2);
     });
 
     it('03: billing/payment engines', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir);
-      const billing = files.filter(f => f.includes('bill') || f.includes('wallet') || f.includes('payment') || f.includes('revenue') || f.includes('usdt'));
+      const allFiles: string[] = [];
+      const walk = (d: string) => { try { for (const f of fs.readdirSync(d, { withFileTypes: true })) { if (f.isDirectory()) walk(path.join(d, f.name)); else if (f.name.endsWith('.ts')) allFiles.push(f.name); } } catch (_e) {} };
+      walk(engineDir);
+      const billing = allFiles.filter(f => f.includes('bill') || f.includes('wallet') || f.includes('payment') || f.includes('revenue') || f.includes('usdt'));
       console.log(`[Q-70-02] Billing: ${billing.join(', ')}`);
       expect(billing.length).toBeGreaterThanOrEqual(2);
     });
