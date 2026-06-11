@@ -3,10 +3,13 @@
 // Shows institutional and major trader buy/sell activities
 
 import log from 'electron-log';
+
 import https from 'https';
 import http from 'http';
 import { httpGet } from '../utils/http';
 import i18n from '../../../src/i18n';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -237,7 +240,6 @@ function buildDetailUrl(code: string, date: string): string {
 
   return `https://datacenter-web.eastmoney.com/api/data/v1/get?${params.toString()}`;
 }
-
 
 /**
  * Clear cache

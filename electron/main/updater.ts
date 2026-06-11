@@ -1,7 +1,9 @@
 // ── DAWN WHALES — Auto-Updater Setup ───────────────────────────────────────
 import { BrowserWindow } from 'electron';
+
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import i18n from '../../src/i18n';
 
 /**
  * Configure and start the auto-updater.
@@ -29,7 +31,7 @@ export function setupAutoUpdater(
     log.info('[Updater] Update downloaded, ready to install');
     mainWindowRef.current?.webContents.send('notification', {
       type: 'success',
-      message: '更新已下载，重启即可安装',
+      message: i18n.t('Updater.k0'),
     });
   });
 
@@ -38,6 +40,6 @@ export function setupAutoUpdater(
   });
 
   // Check for updates 10s after launch, then every 4 hours
-  setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 10000);
-  setInterval(() => autoUpdater.checkForUpdates().catch(() => {}), 4 * 60 * 60 * 1000);
+  setTimeout(() => autoUpdater.checkForUpdates().catch((_: unknown) => {}), 10000);
+  setInterval(() => autoUpdater.checkForUpdates().catch((_: unknown) => {}), 4 * 60 * 60 * 1000);
 }

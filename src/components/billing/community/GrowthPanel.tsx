@@ -1,3 +1,4 @@
+import i18n from '../../../i18n';
 ﻿import { useState, type CSSProperties } from 'react';
 
 // ── R80: ML-80-01/02/03 综合 — 内容审核+邀请裂变+成就+PWA+GA打磨 ──
@@ -8,26 +9,26 @@ interface InviteRecord { code: string; usedBy: string; status: 'pending' | 'comp
 interface Achievement { id: string; name: string; icon: string; description: string; progress: number; target: number; unlocked: boolean; reward: string }
 
 const MODERATION: ModerationItem[] = [
-  { id: 'm1', type: 'report', user: 'TraderX', content: '用户举报: "该策略信号连续3次误导"', status: 'pending', reportedAt: '2026-06-09 22:30' },
-  { id: 'm2', type: 'spam', user: 'Bot_User99', content: '"加我微信xxx，日赚1000U" (重复32次)', status: 'blocked', reportedAt: '2026-06-09 20:15' },
-  { id: 'm3', type: 'sensitive', user: 'Anonymous', content: '评论含敏感词: "xxx" → 需审核', status: 'pending', reportedAt: '2026-06-09 21:00' },
-  { id: 'm4', type: 'report', user: 'QuantKing', content: '举报: "用户 NewTrader88 虚假策略数据"', status: 'approved', reportedAt: '2026-06-08 18:00' },
+  { id: 'm1', type: 'report', user: 'TraderX', content: i18n.t('GrowthPanel.k1'), status: 'pending', reportedAt: '2026-06-09 22:30' },
+  { id: 'm2', type: 'spam', user: 'Bot_User99', content: i18n.t('GrowthPanel.k2'), status: 'blocked', reportedAt: '2026-06-09 20:15' },
+  { id: 'm3', type: 'sensitive', user: 'Anonymous', content: i18n.t('GrowthPanel.k3'), status: 'pending', reportedAt: '2026-06-09 21:00' },
+  { id: 'm4', type: 'report', user: 'QuantKing', content: i18n.t('GrowthPanel.k4'), status: 'approved', reportedAt: '2026-06-08 18:00' },
 ];
 
 const INVITES: InviteRecord[] = [
   { code: 'DW-A3X7K', usedBy: 'Friend_Alpha', status: 'completed', reward: 1.0, date: '2026-06-09' },
   { code: 'DW-B9M2P', usedBy: 'Friend_Beta', status: 'completed', reward: 1.0, date: '2026-06-08' },
-  { code: 'DW-C5L8R', usedBy: '—', status: 'pending', reward: 0, date: '分享中' },
+  { code: 'DW-C5L8R', usedBy: '—', status: 'pending', reward: 0, date: i18n.t('GrowthPanel.k5') },
 ];
 
 const ACHIEVEMENTS: Achievement[] = [
-  { id: 'a1', name: '首次回测', icon: '📈', description: '完成第一次策略回测', progress: 1, target: 1, unlocked: true, reward: '解锁2个模板' },
-  { id: 'a2', name: '首次订阅', icon: '🔔', description: '订阅一个创作者策略', progress: 1, target: 1, unlocked: true, reward: '免费AI分析×1' },
-  { id: 'a3', name: '首次盈利', icon: '💰', description: '单笔交易盈利 >5%', progress: 1, target: 1, unlocked: true, reward: '50 USDT信用额' },
-  { id: 'a4', name: '七日连续', icon: '🔥', description: '连续7天登录', progress: 5, target: 7, unlocked: false, reward: '解锁VIP模板' },
-  { id: 'a5', name: '信号达人', icon: '📡', description: '发布10个策略信号', progress: 6, target: 10, unlocked: false, reward: '创作者L1升级' },
-  { id: 'a6', name: '邀请3人', icon: '👥', description: '成功邀请3位好友', progress: 2, target: 3, unlocked: false, reward: '双方各得1次免费AI分析' },
-  { id: 'a7', name: '百笔交易', icon: '🏆', description: '累计完成100笔交易', progress: 87, target: 100, unlocked: false, reward: 'VIP创作者 L3' },
+  { id: 'a1', name: i18n.t('GrowthPanel.k6'), icon: '📈', description: i18n.t('GrowthPanel.k7'), progress: 1, target: 1, unlocked: true, reward: i18n.t('GrowthPanel.k8') },
+  { id: 'a2', name: i18n.t('GrowthPanel.k9'), icon: '🔔', description: i18n.t('GrowthPanel.k10'), progress: 1, target: 1, unlocked: true, reward: i18n.t('GrowthPanel.k11') },
+  { id: 'a3', name: i18n.t('GrowthPanel.k12'), icon: '💰', description: i18n.t('GrowthPanel.k13'), progress: 1, target: 1, unlocked: true, reward: i18n.t('GrowthPanel.k14') },
+  { id: 'a4', name: i18n.t('GrowthPanel.k15'), icon: '🔥', description: i18n.t('GrowthPanel.k16'), progress: 5, target: 7, unlocked: false, reward: i18n.t('GrowthPanel.k17') },
+  { id: 'a5', name: i18n.t('GrowthPanel.k18'), icon: '📡', description: i18n.t('GrowthPanel.k19'), progress: 6, target: 10, unlocked: false, reward: i18n.t('GrowthPanel.k20') },
+  { id: 'a6', name: i18n.t('GrowthPanel.k21'), icon: '👥', description: i18n.t('GrowthPanel.k22'), progress: 2, target: 3, unlocked: false, reward: i18n.t('GrowthPanel.k23') },
+  { id: 'a7', name: i18n.t('GrowthPanel.k24'), icon: '🏆', description: i18n.t('GrowthPanel.k25'), progress: 87, target: 100, unlocked: false, reward: i18n.t('GrowthPanel.k26') },
 ];
 
 // ── Tab: Content Moderation ──
@@ -36,14 +37,14 @@ function ModerationTab() {
   const filtered = filter === 'all' ? MODERATION : MODERATION.filter(m => m.status === filter || m.type === filter);
 
   const typeColors: Record<string, { label: string; color: string }> = {
-    report: { label: '举报', color: '#F59E0B' },
-    spam: { label: '垃圾', color: '#EF4444' },
-    sensitive: { label: '敏感', color: '#8B5CF6' },
+    report: { label: i18n.t('GrowthPanel.k27'), color: '#F59E0B' },
+    spam: { label: i18n.t('GrowthPanel.k28'), color: '#EF4444' },
+    sensitive: { label: i18n.t('GrowthPanel.k29'), color: '#8B5CF6' },
   };
   const statusColors: Record<string, { label: string; color: string; bg: string }> = {
-    pending: { label: '待审核', color: '#F59E0B', bg: '#F59E0B22' },
-    approved: { label: '已通过', color: '#10B981', bg: '#10B98122' },
-    blocked: { label: '已屏蔽', color: '#EF4444', bg: '#EF444422' },
+    pending: { label: i18n.t('GrowthPanel.k30'), color: '#F59E0B', bg: '#F59E0B22' },
+    approved: { label: i18n.t('GrowthPanel.k31'), color: '#10B981', bg: '#10B98122' },
+    blocked: { label: i18n.t('GrowthPanel.k32'), color: '#EF4444', bg: '#EF444422' },
   };
 
   return (
@@ -54,7 +55,7 @@ function ModerationTab() {
             padding: '5px 14px', borderRadius: 6, border: '1px solid', borderColor: filter === f ? '#6366F1' : '#374151',
             background: filter === f ? '#6366F118' : 'transparent', color: filter === f ? '#818CF8' : '#6B7280', fontSize: 12, cursor: 'pointer',
           }}>
-            {f === 'all' ? 'components.all' : f === 'pending' ? '待审核' : f === 'report' ? '🚩 举报' : '🗑️ 垃圾'}
+            {f === 'all' ? 'components.all' : f === 'pending' ? i18n.t('GrowthPanel.k33') : f === 'report' ? i18n.t('GrowthPanel.k34') : i18n.t('GrowthPanel.k35')}
           </button>
         ))}
       </div>
@@ -81,8 +82,8 @@ function ModerationTab() {
               <div style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.6 }}>{m.content}</div>
               {m.status === 'pending' && (
                 <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
-                  <button style={{ padding: '5px 14px', borderRadius: 6, border: 'none', background: '#10B981', color: '#FFF', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>{'✅ 通过'}</button>
-                  <button style={{ padding: '5px 14px', borderRadius: 6, border: 'none', background: '#EF4444', color: '#FFF', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>{'🚫 屏蔽'}</button>
+                  <button style={{ padding: '5px 14px', borderRadius: 6, border: 'none', background: '#10B981', color: '#FFF', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>{i18n.t('GrowthPanel.k36')}</button>
+                  <button style={{ padding: '5px 14px', borderRadius: 6, border: 'none', background: '#EF4444', color: '#FFF', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>{i18n.t('GrowthPanel.k37')}</button>
                 </div>
               )}
             </div>
@@ -108,9 +109,9 @@ function InviteTab() {
         border: '1px solid #374151', textAlign: 'center', marginBottom: 20,
       }}>
         <div style={{ fontSize: 32, marginBottom: 8 }}>👥</div>
-        <div style={{ fontSize: 16, fontWeight: 700, color: '#F9FAFB', marginBottom: 4 }}>{'邀请好友，双方各得奖励'}</div>
+        <div style={{ fontSize: 16, fontWeight: 700, color: '#F9FAFB', marginBottom: 4 }}>{i18n.t('GrowthPanel.k38')}</div>
         <div style={{ fontSize: 13, color: '#9CA3AF', marginBottom: 16 }}>
-          每成功邀请 1 人 → 双方各得 <strong style={{ color: '#D4A853' }}>{'1 次免费 AI 分析'}</strong>（价值 1.0 USDT）
+          每成功邀请 1 人 → 双方各得 <strong style={{ color: '#D4A853' }}>{i18n.t('GrowthPanel.k39')}</strong>（价值 1.0 USDT）
         </div>
 
         {/* Invite link */}
@@ -119,7 +120,7 @@ function InviteTab() {
             flex: 1, maxWidth: 340, padding: '10px 14px', borderRadius: 8, border: '1px solid #374151',
             background: '#111827', color: '#818CF8', fontSize: 13, fontFamily: 'monospace', outline: 'none',
           }} />
-          <button style={{ padding: '10px 18px', borderRadius: 8, border: 'none', background: '#6366F1', color: '#FFF', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>{'📋 复制'}</button>
+          <button style={{ padding: '10px 18px', borderRadius: 8, border: 'none', background: '#6366F1', color: '#FFF', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>{i18n.t('GrowthPanel.k40')}</button>
         </div>
 
         <div style={{ fontSize: 11, color: '#6B7280' }}>
@@ -130,33 +131,33 @@ function InviteTab() {
       {/* Rewards summary */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginBottom: 20 }}>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{'已获奖励'}</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{i18n.t('GrowthPanel.k41')}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#D4A853' }}>{totalRewards.toFixed(1)}</div>
-          <div style={{ fontSize: 10, color: '#6B7280' }}>{'USDT 等价'}</div>
+          <div style={{ fontSize: 10, color: '#6B7280' }}>{i18n.t('GrowthPanel.k42')}</div>
         </div>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{'待完成'}</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{i18n.t('GrowthPanel.k43')}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#F59E0B' }}>{invitesPending}</div>
-          <div style={{ fontSize: 10, color: '#6B7280' }}>{'个邀请'}</div>
+          <div style={{ fontSize: 10, color: '#6B7280' }}>{i18n.t('GrowthPanel.k44')}</div>
         </div>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{'排名'}</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{i18n.t('GrowthPanel.k45')}</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: '#818CF8' }}>#12</div>
-          <div style={{ fontSize: 10, color: '#6B7280' }}>{'邀请榜'}</div>
+          <div style={{ fontSize: 10, color: '#6B7280' }}>{i18n.t('GrowthPanel.k46')}</div>
         </div>
       </div>
 
       {/* History */}
       <div>
-        <div style={{ fontSize: 14, fontWeight: 600, color: '#D1D5DB', marginBottom: 10 }}>{'📋 邀请记录'}</div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: '#D1D5DB', marginBottom: 10 }}>{i18n.t('GrowthPanel.k47')}</div>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
             <thead>
               <tr style={{ borderBottom: '1px solid #374151' }}>
-                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{'邀请码'}</th>
-                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{'被邀请人'}</th>
+                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{i18n.t('GrowthPanel.k48')}</th>
+                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{i18n.t('GrowthPanel.k49')}</th>
                 <th style={{ padding: '8px 12px', textAlign: 'center', color: '#9CA3AF' }}>{"components.status"}</th>
-                <th style={{ padding: '8px 12px', textAlign: 'right', color: '#9CA3AF' }}>{'奖励'}</th>
+                <th style={{ padding: '8px 12px', textAlign: 'right', color: '#9CA3AF' }}>{i18n.t('GrowthPanel.k50')}</th>
                 <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{"components.date"}</th>
               </tr>
             </thead>
@@ -167,7 +168,7 @@ function InviteTab() {
                   <td style={{ padding: '10px 12px', color: '#D1D5DB' }}>{i.usedBy}</td>
                   <td style={{ padding: '10px 12px', textAlign: 'center' }}>
                     <span style={{ padding: '2px 8px', borderRadius: 4, fontSize: 10, fontWeight: 600, background: i.status === 'completed' ? '#10B98122' : '#6B728022', color: i.status === 'completed' ? '#34D399' : '#6B7280' }}>
-                      {i.status === 'completed' ? '✅ 已得奖' : '⏳ 等待中'}
+                      {i.status === 'completed' ? i18n.t('GrowthPanel.k51') : i18n.t('GrowthPanel.k52')}
                     </span>
                   </td>
                   <td style={{ padding: '10px 12px', textAlign: 'right', fontFamily: 'monospace', color: '#D4A853', fontWeight: 600 }}>{i.reward > 0 ? `+${i.reward} USDT` : '—'}</td>
@@ -192,11 +193,11 @@ function AchievementTab() {
       {/* Summary */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 16 }}>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{'已解锁成就'}</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{i18n.t('GrowthPanel.k53')}</div>
           <div style={{ fontSize: 32, fontWeight: 900, color: '#D4A853' }}>{unlocked}/{total}</div>
         </div>
         <div style={{ padding: '16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
-          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{'整体进度'}</div>
+          <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 4 }}>{i18n.t('GrowthPanel.k54')}</div>
           <div style={{ fontSize: 32, fontWeight: 900, color: '#818CF8' }}>{Math.round(unlocked/total*100)}%</div>
         </div>
       </div>
@@ -218,7 +219,7 @@ function AchievementTab() {
                 </div>
               </div>
               <span style={{ fontSize: 11, color: a.unlocked ? '#34D399' : '#F59E0B' }}>
-                {a.unlocked ? '✅ 已解锁' : `${a.progress}/${a.target}`}
+                {a.unlocked ? i18n.t('GrowthPanel.k55') : `${a.progress}/${a.target}`}
               </span>
             </div>
 
@@ -271,17 +272,17 @@ export default function GrowthPanel() {
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'moderation' ? '#6366F1' : '#1F2937',
           color: tab === 'moderation' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>{'🛡️ 内容审核'}</button>
+        }}>{i18n.t('GrowthPanel.k56')}</button>
         <button onClick={() => setTab('invite')} style={{
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'invite' ? '#6366F1' : '#1F2937',
           color: tab === 'invite' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>{'👥 邀请裂变'}</button>
+        }}>{i18n.t('GrowthPanel.k57')}</button>
         <button onClick={() => setTab('achievement')} style={{
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'achievement' ? '#6366F1' : '#1F2937',
           color: tab === 'achievement' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>{'🏆 成就系统'}</button>
+        }}>{i18n.t('GrowthPanel.k58')}</button>
       </div>
 
       {tab === 'moderation' && <ModerationTab />}

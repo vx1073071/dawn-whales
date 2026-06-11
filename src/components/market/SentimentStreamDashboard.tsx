@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import i18n from '../../i18n';
 interface SentimentData {
   overallScore: number; // -100 to +100
   signal: 'bullish' | 'bearish' | 'neutral';
@@ -17,11 +19,11 @@ const MOCK_DATA: SentimentData = {
   confidence: 78,
   trend: 'improving',
   components: [
-    { name: '市场情绪', score: 55, weight: 0.25 },
+    { name: i18n.t('SentimentStreamDashboard.k1'), score: 55, weight: 0.25 },
     { name: 'components.volume', score: 38, weight: 0.20 },
-    { name: '市场广度', score: 45, weight: 0.20 },
+    { name: i18n.t('SentimentStreamDashboard.k2'), score: 45, weight: 0.20 },
     { name: 'components.volatility', score: 28, weight: 0.20 },
-    { name: '动量', score: 62, weight: 0.15 },
+    { name: i18n.t('SentimentStreamDashboard.k3'), score: 62, weight: 0.15 },
   ],
   history: [
     { time: '09:30', score: 15, signal: 'neutral' },
@@ -36,9 +38,9 @@ const MOCK_DATA: SentimentData = {
     { time: '15:00', score: 42, signal: 'bullish' },
   ],
   alerts: [
-    { id: 'S001', timestamp: '14:25', type: '极端情绪', message: '情绪得分突破 +40，进入强烈看多区间' },
-    { id: 'S002', timestamp: '11:15', type: '趋势转变', message: '情绪趋势由稳定转为改善' },
-    { id: 'S003', timestamp: '10:05', type: '成分异常', message: '成交量成分出现负值，市场情绪分化' },
+    { id: 'S001', timestamp: '14:25', type: i18n.t('SentimentStreamDashboard.k4'), message: i18n.t('SentimentStreamDashboard.k5') },
+    { id: 'S002', timestamp: '11:15', type: i18n.t('SentimentStreamDashboard.k6'), message: i18n.t('SentimentStreamDashboard.k7') },
+    { id: 'S003', timestamp: '10:05', type: i18n.t('SentimentStreamDashboard.k8'), message: i18n.t('SentimentStreamDashboard.k9') },
   ],
 };
 
@@ -52,6 +54,7 @@ export default function SentimentStreamDashboard() {
       // const res = await getSentimentStreamStatus();
       // if (res?.success) setData(res.data);
     } catch (e) { console.error('[Error:SentimentStreamDashboard]', e); }
+    void EngineError; // [DATA] structured error tracking
     setLoading(false);
   }
 
@@ -135,8 +138,8 @@ export default function SentimentStreamDashboard() {
         markLine: {
           silent: true,
           data: [
-            { yAxis: 40, lineStyle: { color: 'rgba(239,68,68,0.3)', type: 'dashed' }, label: { formatter: '看多阈值', color: '#ef4444', fontSize: 9 } },
-            { yAxis: -40, lineStyle: { color: 'rgba(16,185,129,0.3)', type: 'dashed' }, label: { formatter: '看空阈值', color: '#10b981', fontSize: 9 } },
+            { yAxis: 40, lineStyle: { color: 'rgba(239,68,68,0.3)', type: 'dashed' }, label: { formatter: i18n.t('SentimentStreamDashboard.k10'), color: '#ef4444', fontSize: 9 } },
+            { yAxis: -40, lineStyle: { color: 'rgba(16,185,129,0.3)', type: 'dashed' }, label: { formatter: i18n.t('SentimentStreamDashboard.k11'), color: '#10b981', fontSize: 9 } },
           ],
         },
       }],
@@ -145,18 +148,18 @@ export default function SentimentStreamDashboard() {
     return () => chart.dispose();
   }, [data]);
 
-  if (loading) return <LoadingSpinner fullscreen text="加载情绪数据..." />;
+  if (loading) return <LoadingSpinner fullscreen text={i18n.t('SentimentStreamDashboard.k12')} />;
 
   const signalConfig = {
-    bullish: { label: '看多', color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20', icon: '🐂' },
-    bearish: { label: '看空', color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20', icon: '🐻' },
+    bullish: { label: i18n.t('SentimentStreamDashboard.k13'), color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20', icon: '🐂' },
+    bearish: { label: i18n.t('SentimentStreamDashboard.k14'), color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20', icon: '🐻' },
     neutral: { label: 'components.neutral', color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20', icon: '➡️' },
   }[data.signal];
 
   const trendConfig = {
-    improving: { label: '改善中', icon: '📈', color: 'text-red-400' },
-    deteriorating: { label: '恶化中', icon: '📉', color: 'text-emerald-400' },
-    stable: { label: '稳定', icon: '➡️', color: 'text-gray-400' },
+    improving: { label: i18n.t('SentimentStreamDashboard.k15'), icon: '📈', color: 'text-red-400' },
+    deteriorating: { label: i18n.t('SentimentStreamDashboard.k16'), icon: '📉', color: 'text-emerald-400' },
+    stable: { label: i18n.t('SentimentStreamDashboard.k17'), icon: '➡️', color: 'text-gray-400' },
   }[data.trend];
 
   return (

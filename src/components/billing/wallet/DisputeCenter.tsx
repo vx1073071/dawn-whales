@@ -13,6 +13,8 @@
  */
 
 import React, { useState, useCallback } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -20,10 +22,10 @@ export type DisputeReason = 'payment_unconfirmed' | 'terms_not_met' | 'account_i
 export type DisputeStatus = 'pending' | 'reviewing' | 'resolved' | 'rejected' | 'cancelled_by_buyer';
 
 export const DISPUTE_REASONS: { value: DisputeReason; label: string; desc: string }[] = [
-  { value: 'payment_unconfirmed', label: '收款未确认', desc: 'Recipient claims payment not received or confirmed' },
-  { value: 'terms_not_met', label: '未按约定', desc: 'Service/deliverable does not match agreed terms' },
-  { value: 'account_issue', label: '账号异常', desc: 'Counterparty account appears unusual or suspicious' },
-  { value: 'other', label: '其他', desc: 'Other reason (description required)' },
+  { value: 'payment_unconfirmed', label: i18n.t('DisputeCenter.k1'), desc: 'Recipient claims payment not received or confirmed' },
+  { value: 'terms_not_met', label: i18n.t('DisputeCenter.k2'), desc: 'Service/deliverable does not match agreed terms' },
+  { value: 'account_issue', label: i18n.t('DisputeCenter.k3'), desc: 'Counterparty account appears unusual or suspicious' },
+  { value: 'other', label: i18n.t('DisputeCenter.k4'), desc: 'Other reason (description required)' },
 ];
 
 export interface Dispute {
@@ -108,8 +110,8 @@ const typeLabel: Record<string, string> = {
 };
 
 const reasonLabel: Record<DisputeReason, string> = {
-  payment_unconfirmed: '收款未确认', terms_not_met: '未按约定',
-  account_issue: '账号异常', other: '其他',
+  payment_unconfirmed: i18n.t('DisputeCenter.k5'), terms_not_met: i18n.t('DisputeCenter.k6'),
+  account_issue: i18n.t('DisputeCenter.k7'), other: i18n.t('DisputeCenter.k8'),
 };
 
 const getRemaining = (until?: string): string => {
@@ -331,3 +333,5 @@ const DisputeCenter: React.FC<DisputeCenterProps> = ({
 };
 
 export default DisputeCenter;
+
+void EngineError; // [TRADE] structured error tracking

@@ -1,4 +1,5 @@
 /**
+import i18n from '../../../src/i18n';
  * J-80-01: 用户漏斗埋点 F4
  * v1.9.0 GA — Growth analytics: registration→activation→deposit→payment funnel
  *
@@ -116,10 +117,10 @@ export class UserFunnelTracker {
     const activeRecords = [...this.records.values()].filter((r) => r.registration >= cutoff);
 
     const steps: FunnelStep[] = [
-      this.buildStep(activeRecords, 'registration', '注册', null),
-      this.buildStep(activeRecords, 'activation', '激活(首次AI分析)', 'registration'),
-      this.buildStep(activeRecords, 'first_deposit', '首次充值', 'activation'),
-      this.buildStep(activeRecords, 'first_payment', '首次付费', 'first_deposit'),
+      this.buildStep(activeRecords, 'registration', i18n.t('UserFunnel.k0'), null),
+      this.buildStep(activeRecords, 'activation', i18n.t('UserFunnel.k1'), 'registration'),
+      this.buildStep(activeRecords, 'first_deposit', i18n.t('UserFunnel.k2'), 'activation'),
+      this.buildStep(activeRecords, 'first_payment', i18n.t('UserFunnel.k3'), 'first_deposit'),
     ];
 
     const totalEntered = steps[0].total;

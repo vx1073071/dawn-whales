@@ -1,3 +1,4 @@
+import { EngineError } from './engine/core/engine-error';
 ﻿// T63: Immutable Audit Logger
 export type AuditAction =
   | 'user.login'

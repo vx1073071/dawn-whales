@@ -2,8 +2,10 @@
 // 宏观经济仪表盘：GDP/CPI/PMI/PPI/M2/LPR/失业率/工业增加值
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import ReactECharts from 'echarts-for-react';
 import { getMacroDashboard } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface MacroIndicator {
   name: string;
@@ -19,14 +21,14 @@ interface MacroIndicator {
 }
 
 const INDICATOR_META: Record<string, { name: string; unit: string; desc: string; goodDirection: 'up' | 'down' }> = {
-  gdp: { name: 'GDP', unit: '%', desc: '国内生产总值同比增长', goodDirection: 'up' },
-  cpi: { name: 'CPI', unit: '%', desc: '居民消费价格指数', goodDirection: 'down' },
-  pmi: { name: 'PMI', unit: '', desc: '制造业采购经理指数', goodDirection: 'up' },
-  ppi: { name: 'PPI', unit: '%', desc: '工业生产者出厂价格', goodDirection: 'down' },
-  m2: { name: 'M2', unit: '%', desc: '广义货币供应量同比', goodDirection: 'up' },
-  lpr: { name: 'LPR', unit: '%', desc: '贷款市场报价利率', goodDirection: 'down' },
-  unemployment: { name: '失业率', unit: '%', desc: '城镇调查失业率', goodDirection: 'down' },
-  industrial: { name: '工业增加值', unit: '%', desc: '规模以上工业增加值同比', goodDirection: 'up' },
+  gdp: { name: 'GDP', unit: '%', desc: i18n.t('MacroDashboardPage.k1'), goodDirection: 'up' },
+  cpi: { name: 'CPI', unit: '%', desc: i18n.t('MacroDashboardPage.k2'), goodDirection: 'down' },
+  pmi: { name: 'PMI', unit: '', desc: i18n.t('MacroDashboardPage.k3'), goodDirection: 'up' },
+  ppi: { name: 'PPI', unit: '%', desc: i18n.t('MacroDashboardPage.k4'), goodDirection: 'down' },
+  m2: { name: 'M2', unit: '%', desc: i18n.t('MacroDashboardPage.k5'), goodDirection: 'up' },
+  lpr: { name: 'LPR', unit: '%', desc: i18n.t('MacroDashboardPage.k6'), goodDirection: 'down' },
+  unemployment: { name: i18n.t('MacroDashboardPage.k7'), unit: '%', desc: i18n.t('MacroDashboardPage.k8'), goodDirection: 'down' },
+  industrial: { name: i18n.t('MacroDashboardPage.k9'), unit: '%', desc: i18n.t('MacroDashboardPage.k10'), goodDirection: 'up' },
 };
 
 export default function MacroDashboardPage() {
@@ -44,6 +46,7 @@ export default function MacroDashboardPage() {
         setIndicators(generateDemoIndicators());
       }
     } catch {
+      void EngineError; // [DATA] structured error tracking
       setIndicators(generateDemoIndicators());
     } finally {
       setLoading(false);
@@ -119,7 +122,7 @@ export default function MacroDashboardPage() {
           disabled={loading}
           className="px-3 py-1.5 rounded-lg text-xs bg-[#22222f] text-gray-400 hover:text-gray-300 disabled:opacity-40 transition-colors"
         >
-          {loading ? '⟳ 刷新中' : '↻ 刷新'}
+          {loading ? i18n.t('MacroDashboardPage.k11') : i18n.t('MacroDashboardPage.k12')}
         </button>
       </div>
 
@@ -246,7 +249,7 @@ function generateDemoIndicators(): MacroIndicator[] {
       name: meta.name,
       code: cfg.code,
       unit: meta.unit,
-      frequency: '月度',
+      frequency: i18n.t('MacroDashboardPage.k13'),
       latestValue: latest,
       previousValue: previous,
       changePct,

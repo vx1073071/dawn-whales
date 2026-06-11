@@ -3,6 +3,7 @@
 // electron/data/ and electron/engine/.
 
 import http from 'http';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
 import https from 'https';
 
 const DEFAULT_TIMEOUT_MS = 10000;
@@ -40,7 +41,7 @@ export function httpGet(url: string, options: HttpGetOptions = {}): Promise<stri
           }
         }
         if (res.statusCode !== 200) {
-          reject(new Error(`HTTP ${res.statusCode}: ${url}`));
+          reject(new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `HTTP ${res.statusCode}: ${url}`));
           return;
         }
         let body = '';
@@ -51,7 +52,7 @@ export function httpGet(url: string, options: HttpGetOptions = {}): Promise<stri
     );
     req.on('timeout', () => {
       req.destroy();
-      reject(new Error(`HTTP timeout: ${url}`));
+      reject(new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `HTTP timeout: ${url}`));
     });
     req.on('error', reject);
   });
@@ -83,7 +84,7 @@ export function httpPost(url: string, body: unknown, options: HttpGetOptions = {
       },
       (res) => {
         if (res.statusCode !== 200 && res.statusCode !== 201) {
-          reject(new Error(`HTTP ${res.statusCode}: ${url}`));
+          reject(new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `HTTP ${res.statusCode}: ${url}`));
           return;
         }
         let body = '';
@@ -94,7 +95,7 @@ export function httpPost(url: string, body: unknown, options: HttpGetOptions = {
     );
     req.on('timeout', () => {
       req.destroy();
-      reject(new Error(`HTTP timeout: ${url}`));
+      reject(new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `HTTP timeout: ${url}`));
     });
     req.on('error', reject);
     req.write(payload);

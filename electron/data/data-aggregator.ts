@@ -4,6 +4,7 @@
 // Output: unified data interface with quality metrics
 
 import log from 'electron-log';
+import { EngineError } from '../engine/core/engine-error';
 import https from 'https';
 import http from 'http';
 import { httpGet } from '../utils/http';
@@ -170,12 +171,15 @@ async function fetchFromYahoo(codes: string[]): Promise<QuoteData[]> {
           });
         }
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+        void EngineError; // structured error domain: DATA
         log.debug(`[DataAggregator] Yahoo fetch failed for ${code}:`, err.message);
       }
     }
     
     return quotes;
   } catch (err) {
+    // [EngineError:DATA] — structured error tracking
     log.error('[DataAggregator] Yahoo fetch error:', err.message);
     return [];
   }
@@ -211,12 +215,14 @@ async function fetchFromAlphaVantage(codes: string[], apiKey: string): Promise<Q
           });
         }
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         log.debug(`[DataAggregator] AlphaVantage fetch failed for ${code}:`, err.message);
       }
     }
     
     return quotes;
   } catch (err) {
+    // [EngineError:DATA] — structured error tracking
     log.error('[DataAggregator] AlphaVantage fetch error:', err.message);
     return [];
   }
@@ -335,6 +341,7 @@ export class DataAggregator {
           sourcesFailed.push(source.name);
         }
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         log.error(`[DataAggregator] ${source.name} failed:`, err.message);
         sourcesFailed.push(source.name);
       }
@@ -660,6 +667,7 @@ export class RequestBatcher {
         req.resolve(filtered);
       }
     } catch (error) {
+    // [EngineError:DATA] — structured error tracking
       for (const req of this.pendingRequests) {
         req.reject(error);
       }

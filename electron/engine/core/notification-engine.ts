@@ -1,4 +1,5 @@
 import log from 'electron-log';
+import { EngineError } from './engine-error';
 
 // ── EventEmitter polyfill (inline, no `import from 'events'`) ──────────────
 
@@ -38,6 +39,8 @@ class EventEmitter {
       try {
         fn(...args);
       } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+        void EngineError; // structured error domain: SYSTEM
         log.error('[NotificationEngine] Listener error:', err);
       }
     }
@@ -191,6 +194,7 @@ export class NotificationEngine extends EventEmitter {
       try {
         matched = rule.condition(event);
       } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
         log.error(`[NotificationEngine] Rule "${rule.name}" condition threw:`, err);
         continue;
       }

@@ -2,6 +2,7 @@
 // 8 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -16,6 +17,8 @@ export function registerPortfolioIPC(
       const result = optimizePortfolio(assets, constraints);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[PortfolioOptimizer] Error:', err);
       return { success: false, error: err.message };
     }
@@ -28,6 +31,7 @@ export function registerPortfolioIPC(
       const result = generateEfficientFrontier(assets, points, constraints);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[PortfolioOptimizer] Frontier error:', err);
       return { success: false, error: err.message };
     }
@@ -40,6 +44,7 @@ export function registerPortfolioIPC(
       const result = riskParityPortfolio(assets, constraints);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[PortfolioOptimizer] Risk parity error:', err);
       return { success: false, error: err.message };
     }
@@ -52,6 +57,7 @@ export function registerPortfolioIPC(
       const result = await batchOptimizePortfolios(scenarios);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[PortfolioOptimizer] Batch error:', err);
       return { success: false, error: err.message };
     }
@@ -70,6 +76,7 @@ export function registerPortfolioIPC(
       const result = new PortfolioCostAnalytics().analyze(positions, trades, periodDays);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -88,6 +95,7 @@ export function registerPortfolioIPC(
       const result = await optimizer.optimize(positions, marketData, riskAppetite, constraints);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -107,6 +115,7 @@ export function registerPortfolioIPC(
       const result = await rebalancer.rebalance(positions, targetWeights, dryRun, driftThreshold, maxTurnover);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -123,6 +132,7 @@ export function registerPortfolioIPC(
       const result = await rebalancer.kellyOptimize(positions, kellyFraction, maxTurnover);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });

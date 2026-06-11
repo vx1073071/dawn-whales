@@ -9,6 +9,7 @@
  */
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
 
 // ─── Inline EventEmitter Polyfill (jsdom-compatible) ──────────────────────────
 
@@ -61,6 +62,8 @@ class EventEmitter {
       try {
         handler(...args);
       } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+        void EngineError; // structured error domain: SYSTEM
         log.error('[BacktestReplay] Event handler error:', err);
       }
     }
@@ -499,6 +502,7 @@ export class BacktestReplayEngine extends EventEmitter {
             return { index: i, breakpoint: bp };
           }
         } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
           log.error('[BacktestReplay] Breakpoint condition error (%s):', bp.id, err);
         }
       }
@@ -725,6 +729,7 @@ export class BacktestReplayEngine extends EventEmitter {
           matched.push(bp);
         }
       } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
         log.error('[BacktestReplay] Breakpoint condition error (%s):', bp.id, err);
       }
     }

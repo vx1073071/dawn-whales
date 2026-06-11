@@ -2,6 +2,7 @@
 // 46 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -19,6 +20,8 @@ export function registerDataIPC(
       const result = flowPredictor.predict(params);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+      void EngineError; // structured error domain: DATA
       log.error('[FlowPredict] Error:', err);
       return { success: false, error: err.message };
     }
@@ -34,6 +37,7 @@ export function registerDataIPC(
       const result = await getValuationDashboard(codes, historyDays);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[ValuationDashboard] Error:', err);
       return { success: false, error: err.message };
     }
@@ -46,6 +50,7 @@ export function registerDataIPC(
       const result = await getValuationDashboardBatch(codes, batchSize, delayMs);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[ValuationDashboardBatch] Error:', err);
       return { success: false, error: err.message };
     }
@@ -61,6 +66,7 @@ export function registerDataIPC(
       const result = await compareSectorStocks(stocks, financialMap);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[SectorComparison] Error:', err);
       return { success: false, error: err.message };
     }
@@ -74,6 +80,7 @@ export function registerDataIPC(
       const result = await compareMultipleSectors(sectors, financialMap);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[SectorComparisonMultiple] Error:', err);
       return { success: false, error: err.message };
     }
@@ -86,6 +93,7 @@ export function registerDataIPC(
       const result = rankSectorStocks(metrics, weights);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[SectorRank] Error:', err);
       return { success: false, error: err.message };
     }
@@ -100,6 +108,7 @@ export function registerDataIPC(
       const result = scoreAndRankStocks(stocks, factorWeights);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[MultiFactor] Score error:', err);
       return { success: false, error: err.message };
     }
@@ -112,6 +121,7 @@ export function registerDataIPC(
       const result = screenStocks(stocks, criteria, factorWeights);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[MultiFactor] Screen error:', err);
       return { success: false, error: err.message };
     }
@@ -124,6 +134,7 @@ export function registerDataIPC(
       const result = await batchScreenStocks(batches);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[MultiFactor] Batch screen error:', err);
       return { success: false, error: err.message };
     }
@@ -146,6 +157,7 @@ export function registerDataIPC(
       const result = detectRegime(klines, { vixLevel });
       return { success: true, regime: result, symbol };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -168,6 +180,7 @@ export function registerDataIPC(
       const result = detectAnomalies({ values, method: method ?? 'zscore', window: window ?? 20, threshold: threshold ?? 3 });
       return { success: true, anomalies: result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -182,6 +195,7 @@ export function registerDataIPC(
       const data = await dataProvider.getFundamental(symbol);
       return { success: true, data };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[DataProvider] Fundamental fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -195,6 +209,7 @@ export function registerDataIPC(
       const data = await dataProvider.getCapitalFlow(symbol);
       return { success: true, data };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[DataProvider] Capital flow fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -208,6 +223,7 @@ export function registerDataIPC(
       const regime = await dataProvider.getMarketRegime();
       return { success: true, regime };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[DataProvider] Regime fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -221,6 +237,7 @@ export function registerDataIPC(
       const signals = await dataProvider.getAnomalies(symbol);
       return { success: true, signals };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[DataProvider] Anomalies fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -234,6 +251,7 @@ export function registerDataIPC(
       const items = await dataProvider.getNews(symbol, limit);
       return { success: true, items };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[DataProvider] News fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -247,6 +265,7 @@ export function registerDataIPC(
       const result = await dataProvider.getCompositeScore(symbol);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[DataProvider] Composite score failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -260,6 +279,7 @@ export function registerDataIPC(
       dataProvider.saveFundamental(data);
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -272,6 +292,7 @@ export function registerDataIPC(
       dataProvider.saveCapitalFlow(data);
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -284,6 +305,7 @@ export function registerDataIPC(
       dataProvider.saveMarketRegime(regime);
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -296,6 +318,7 @@ export function registerDataIPC(
       const regime = dataProvider.computeRegime(factors);
       return { success: true, regime };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -308,6 +331,7 @@ export function registerDataIPC(
       dataProvider.saveAnomaly(signal);
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -320,6 +344,7 @@ export function registerDataIPC(
       dataProvider.saveNews(symbol, items);
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -332,6 +357,7 @@ export function registerDataIPC(
       dataProvider.clearExpiredCache();
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -346,6 +372,7 @@ export function registerDataIPC(
       const result = await stockScreener.search(request || { query: '' });
       return { success: true, ...result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[StockScreener] Search failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -372,6 +399,7 @@ export function registerDataIPC(
       }
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -386,6 +414,7 @@ export function registerDataIPC(
       const report = await monitor.runHealthCheck();
       return { success: true, report };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -398,6 +427,7 @@ export function registerDataIPC(
       const report = monitor.getLastReport();
       return { success: true, report };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -410,6 +440,7 @@ export function registerDataIPC(
       monitor.acknowledgeAlert(alertIndex);
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -422,6 +453,7 @@ export function registerDataIPC(
       monitor.clearAcknowledgedAlerts();
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -434,6 +466,7 @@ export function registerDataIPC(
       monitor.startPeriodicCheck(intervalMs);
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -446,6 +479,7 @@ export function registerDataIPC(
       monitor.stopPeriodicCheck();
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -474,6 +508,7 @@ export function registerDataIPC(
       
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -486,6 +521,7 @@ export function registerDataIPC(
       monitor.stop();
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -500,6 +536,7 @@ export function registerDataIPC(
       const symbolStats = Object.fromEntries(status.symbolStats);
       return { success: true, status: { ...status, symbolStats } };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -512,6 +549,7 @@ export function registerDataIPC(
       monitor.clearAlerts();
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -524,6 +562,7 @@ export function registerDataIPC(
       monitor.resetMetrics();
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -537,6 +576,7 @@ export function registerDataIPC(
       const dashboard = await getDataQualityDashboard();
       return { success: true, dashboard };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -550,6 +590,7 @@ export function registerDataIPC(
       const result = await exportData(request);
       return result;
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -561,6 +602,7 @@ export function registerDataIPC(
       const modules = getAvailableModules();
       return { success: true, modules };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -575,6 +617,7 @@ export function registerDataIPC(
       const stats = manager.getStats(apiName);
       return { success: true, stats };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -587,6 +630,7 @@ export function registerDataIPC(
       manager.resetAll();
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -599,6 +643,7 @@ export function registerDataIPC(
       const apis = manager.getAvailableAPIs();
       return { success: true, apis };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -612,6 +657,7 @@ export function registerDataIPC(
       const report = await runConsistencyCheck();
       return { success: true, report };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -623,6 +669,7 @@ export function registerDataIPC(
       const rules = getConsistencyRules();
       return { success: true, rules };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });

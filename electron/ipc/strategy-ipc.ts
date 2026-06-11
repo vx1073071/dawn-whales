@@ -1,9 +1,11 @@
-import { EngineError, ErrorCode } from '../errors';
 // ── DAWN WHALES IPC: strategy ────────────────────────────────────────────
 // 38 handlers — strategy/live/paper/nl domains
 
 import { ipcMain, BrowserWindow, app } from "electron";
 import log from "electron-log";
+import i18n from '../../src/i18n';
+import { EngineError } from './engine/core/engine-error';
+
 
 export function registerStrategyIPC(
   strategyEngine: unknown,
@@ -88,7 +90,7 @@ export function registerStrategyIPC(
       }
 
       if (!klines || klines.length < 50) {
-        return { success: false, error: 'K线数据不足（需要至少50根），请确认 OpenD 已连接' };
+        return { success: false, error: i18n.t('strategyIpc.k1') };
       }
 
       const strategyId = config.strategyId;
@@ -674,15 +676,15 @@ function createTray() {
   tray = new Tray(icon);
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'DAWN WHALES · 道鲸', enabled: false },
+    { label: i18n.t('strategyIpc.k2'), enabled: false },
     { type: 'separator' },
-    { label: '显示主窗口', click: () => mainWindow?.show() },
-    { label: '紧急停止所有策略', click: () => strategyEngine?.emergencyStop() },
+    { label: i18n.t('strategyIpc.k3'), click: () => mainWindow?.show() },
+    { label: i18n.t('strategyIpc.k4'), click: () => strategyEngine?.emergencyStop() },
     { type: 'separator' },
-    { label: '退出', click: () => app.quit() },
+    { label: i18n.t('strategyIpc.k5'), click: () => app.quit() },
   ]);
 
-  tray.setToolTip('DAWN WHALES · 道鲸');
+  tray.setToolTip(i18n.t('strategyIpc.k6'));
   tray.setContextMenu(contextMenu);
   tray.on('double-click', () => mainWindow?.show());
 }

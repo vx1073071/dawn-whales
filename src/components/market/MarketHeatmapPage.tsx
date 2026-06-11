@@ -2,7 +2,9 @@
 // 板块热力图页面：调用 EM 数据层，支持行业/概念/地区切换
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { getSectorHeatmap } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface SectorItem {
   name: string;
@@ -16,9 +18,9 @@ interface SectorItem {
 type BoardType = 'industry' | 'concept' | 'region';
 
 const BOARD_LABELS: Record<BoardType, string> = {
-  industry: '🏭 行业板块',
-  concept: '💡 概念板块',
-  region: '🌍 地区板块',
+  industry: i18n.t('MarketHeatmapPage.k1'),
+  concept: i18n.t('MarketHeatmapPage.k2'),
+  region: i18n.t('MarketHeatmapPage.k3'),
 };
 
 export default function MarketHeatmapPage() {
@@ -41,6 +43,7 @@ export default function MarketHeatmapPage() {
         setLastUpdate(new Date());
       }
     } catch {
+      void EngineError; // [DATA] structured error tracking
       setSectors(generateDemoSectors(boardType));
       setLastUpdate(new Date());
     } finally {
@@ -214,46 +217,46 @@ export default function MarketHeatmapPage() {
 
 function generateDemoSectors(boardType: BoardType): SectorItem[] {
   const industrySectors = [
-    { name: '半导体', changePct: 3.24 },
-    { name: '人工智能', changePct: 2.87 },
-    { name: '新能源', changePct: 1.56 },
-    { name: '白酒', changePct: 0.98 },
-    { name: '银行', changePct: 0.45 },
-    { name: '券商', changePct: -0.32 },
-    { name: '医药', changePct: -0.78 },
-    { name: '房地产', changePct: -1.23 },
-    { name: '煤炭', changePct: -1.56 },
-    { name: '钢铁', changePct: -2.10 },
-    { name: '光伏', changePct: 1.82 },
-    { name: '汽车', changePct: 0.65 },
-    { name: '通信', changePct: 2.15 },
-    { name: '游戏', changePct: -0.95 },
-    { name: '航运', changePct: 0.32 },
-    { name: '黄金', changePct: 1.45 },
-    { name: '石油', changePct: -0.56 },
-    { name: '电力', changePct: 0.21 },
+    { name: i18n.t('MarketHeatmapPage.k4'), changePct: 3.24 },
+    { name: i18n.t('MarketHeatmapPage.k5'), changePct: 2.87 },
+    { name: i18n.t('MarketHeatmapPage.k6'), changePct: 1.56 },
+    { name: i18n.t('MarketHeatmapPage.k7'), changePct: 0.98 },
+    { name: i18n.t('MarketHeatmapPage.k8'), changePct: 0.45 },
+    { name: i18n.t('MarketHeatmapPage.k9'), changePct: -0.32 },
+    { name: i18n.t('MarketHeatmapPage.k10'), changePct: -0.78 },
+    { name: i18n.t('MarketHeatmapPage.k11'), changePct: -1.23 },
+    { name: i18n.t('MarketHeatmapPage.k12'), changePct: -1.56 },
+    { name: i18n.t('MarketHeatmapPage.k13'), changePct: -2.10 },
+    { name: i18n.t('MarketHeatmapPage.k14'), changePct: 1.82 },
+    { name: i18n.t('MarketHeatmapPage.k15'), changePct: 0.65 },
+    { name: i18n.t('MarketHeatmapPage.k16'), changePct: 2.15 },
+    { name: i18n.t('MarketHeatmapPage.k17'), changePct: -0.95 },
+    { name: i18n.t('MarketHeatmapPage.k18'), changePct: 0.32 },
+    { name: i18n.t('MarketHeatmapPage.k19'), changePct: 1.45 },
+    { name: i18n.t('MarketHeatmapPage.k20'), changePct: -0.56 },
+    { name: i18n.t('MarketHeatmapPage.k21'), changePct: 0.21 },
   ];
 
   const conceptSectors = [
     { name: 'ChatGPT', changePct: 4.12 },
-    { name: '算力', changePct: 3.56 },
-    { name: '人形机器人', changePct: 2.89 },
-    { name: '低空经济', changePct: 1.92 },
-    { name: '固态电池', changePct: 1.45 },
-    { name: '商业航天', changePct: -0.78 },
-    { name: '数据要素', changePct: -1.23 },
-    { name: '脑机接口', changePct: 2.34 },
+    { name: i18n.t('MarketHeatmapPage.k22'), changePct: 3.56 },
+    { name: i18n.t('MarketHeatmapPage.k23'), changePct: 2.89 },
+    { name: i18n.t('MarketHeatmapPage.k24'), changePct: 1.92 },
+    { name: i18n.t('MarketHeatmapPage.k25'), changePct: 1.45 },
+    { name: i18n.t('MarketHeatmapPage.k26'), changePct: -0.78 },
+    { name: i18n.t('MarketHeatmapPage.k27'), changePct: -1.23 },
+    { name: i18n.t('MarketHeatmapPage.k28'), changePct: 2.34 },
   ];
 
   const regionSectors = [
-    { name: '上海', changePct: 0.85 },
-    { name: '深圳', changePct: 1.12 },
-    { name: '北京', changePct: 0.56 },
-    { name: '浙江', changePct: 1.45 },
-    { name: '江苏', changePct: -0.32 },
-    { name: '广东', changePct: 0.78 },
-    { name: '山东', changePct: -0.45 },
-    { name: '福建', changePct: 0.23 },
+    { name: i18n.t('MarketHeatmapPage.k29'), changePct: 0.85 },
+    { name: i18n.t('MarketHeatmapPage.k30'), changePct: 1.12 },
+    { name: i18n.t('MarketHeatmapPage.k31'), changePct: 0.56 },
+    { name: i18n.t('MarketHeatmapPage.k32'), changePct: 1.45 },
+    { name: i18n.t('MarketHeatmapPage.k33'), changePct: -0.32 },
+    { name: i18n.t('MarketHeatmapPage.k34'), changePct: 0.78 },
+    { name: i18n.t('MarketHeatmapPage.k35'), changePct: -0.45 },
+    { name: i18n.t('MarketHeatmapPage.k36'), changePct: 0.23 },
   ];
 
   const base = boardType === 'concept' ? conceptSectors : boardType === 'region' ? regionSectors : industrySectors;

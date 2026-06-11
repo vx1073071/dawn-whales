@@ -4,6 +4,8 @@
 
 import log from 'electron-log';
 import i18n from '../../../src/i18n';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

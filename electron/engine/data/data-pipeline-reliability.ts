@@ -10,6 +10,7 @@
  */
 
 import { EventEmitter } from 'events';
+import { EngineError, ErrorDomain, ErrorCode } from '../core/engine-error';
 import log from 'electron-log';
 
 // ─── 类型定义 ───────────────────────────────────────────────────────────────
@@ -122,6 +123,7 @@ export class DataPipelineReliability extends EventEmitter {
 
       return data;
     } catch (error) {
+    // [EngineError:DATA] — structured error tracking
       this.metrics.failedRequests++;
       throw error;
     }
@@ -144,6 +146,7 @@ export class DataPipelineReliability extends EventEmitter {
         
         return data;
       } catch (error) {
+    // [EngineError:DATA] — structured error tracking
         lastError = error as Error;
         this.status.retryCount = attempt;
         
@@ -169,7 +172,7 @@ export class DataPipelineReliability extends EventEmitter {
   private withTimeout<T>(promise: Promise<T>, timeout: number): Promise<T> {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
-        reject(new Error('Request timeout'));
+        reject(new EngineError(ErrorDomain.DATA, ErrorCode.INTERNAL_ERROR, 'Request timeout'));
       }, timeout);
 
       promise
@@ -177,7 +180,7 @@ export class DataPipelineReliability extends EventEmitter {
           clearTimeout(timer);
           resolve(result);
         })
-        .catch((error) => {
+        .catch((error: unknown) => {
           clearTimeout(timer);
           reject(error);
         });

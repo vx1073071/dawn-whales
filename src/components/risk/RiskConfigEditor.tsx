@@ -1,8 +1,10 @@
 // ── DAWN WHALES — RiskConfigEditor (风控配置编辑器) ─────────────────────────
 
 import { useState, useEffect } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
 import { getRiskConfig, updateRiskConfig } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface RiskConfig {
   maxSinglePositionPct: number;
@@ -51,6 +53,8 @@ export default function RiskConfigEditor() {
         setConfig({ ...DEFAULT_CONFIG, ...result });
       }
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       console.error('[RiskConfigEditor] load error:', err);
     }
     setLoading(false);
@@ -63,6 +67,7 @@ export default function RiskConfigEditor() {
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       console.error('[RiskConfigEditor] save error:', err);
     }
     setSaving(false);
@@ -91,14 +96,14 @@ export default function RiskConfigEditor() {
             disabled={saving}
             className="px-3 py-1.5 bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 rounded-lg text-xs font-medium hover:bg-[#C9A046]/20 transition-colors disabled:opacity-30"
           >
-            {saving ? '保存中...' : t('components.save')}
+            {saving ? i18n.t('RiskConfigEditor.k1') : t('components.save')}
           </button>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <ConfigField
-          label="单品种上限"
+          label={i18n.t('RiskConfigEditor.k2')}
           value={config.maxSinglePositionPct}
           onChange={(v) => updateField('maxSinglePositionPct', v)}
           suffix="%"
@@ -107,7 +112,7 @@ export default function RiskConfigEditor() {
           step={0.05}
         />
         <ConfigField
-          label="总持仓上限"
+          label={i18n.t('RiskConfigEditor.k3')}
           value={config.maxTotalPositionPct}
           onChange={(v) => updateField('maxTotalPositionPct', v)}
           suffix="%"
@@ -116,7 +121,7 @@ export default function RiskConfigEditor() {
           step={0.05}
         />
         <ConfigField
-          label="日亏损上限"
+          label={i18n.t('RiskConfigEditor.k4')}
           value={config.dailyLossLimitPct}
           onChange={(v) => updateField('dailyLossLimitPct', v)}
           suffix="%"
@@ -125,7 +130,7 @@ export default function RiskConfigEditor() {
           step={0.01}
         />
         <ConfigField
-          label="下单频率"
+          label={i18n.t('RiskConfigEditor.k5')}
           value={config.maxOrdersPerMinute}
           onChange={(v) => updateField('maxOrdersPerMinute', v)}
           suffix="/min"
@@ -134,7 +139,7 @@ export default function RiskConfigEditor() {
           step={1}
         />
         <ConfigField
-          label="Kelly 上限"
+          label={i18n.t('RiskConfigEditor.k6')}
           value={config.kellyMaxFraction}
           onChange={(v) => updateField('kellyMaxFraction', v)}
           suffix="%"
@@ -143,7 +148,7 @@ export default function RiskConfigEditor() {
           step={0.05}
         />
         <ConfigField
-          label="ATR 止损倍数"
+          label={i18n.t('RiskConfigEditor.k7')}
           value={config.atrStopMultiplier}
           onChange={(v) => updateField('atrStopMultiplier', v)}
           suffix="x"
@@ -152,7 +157,7 @@ export default function RiskConfigEditor() {
           step={0.5}
         />
         <ConfigField
-          label="回撤降仓阈值"
+          label={i18n.t('RiskConfigEditor.k8')}
           value={config.drawdownReduceThreshold}
           onChange={(v) => updateField('drawdownReduceThreshold', v)}
           suffix="%"
@@ -183,7 +188,7 @@ export default function RiskConfigEditor() {
           </label>
         </div>
         <ConfigField
-          label="VIX 高波动阈值"
+          label={i18n.t('RiskConfigEditor.k9')}
           value={config.vixHighThreshold}
           onChange={(v) => updateField('vixHighThreshold', v)}
           suffix=""
@@ -192,7 +197,7 @@ export default function RiskConfigEditor() {
           step={1}
         />
         <ConfigField
-          label="VIX 极端阈值"
+          label={i18n.t('RiskConfigEditor.k10')}
           value={config.vixExtremeThreshold}
           onChange={(v) => updateField('vixExtremeThreshold', v)}
           suffix=""

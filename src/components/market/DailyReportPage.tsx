@@ -1,6 +1,9 @@
 ﻿import { useState, useEffect } from 'react';
 import { getMarketHotspot } from '../../lib/bridge-api';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface DailyReport {
   date: string;
@@ -38,21 +41,22 @@ export default function DailyReportPage() {
         setReport({
           date: today,
           title: `道鲸每日市场简报 · ${today}`,
-          summary: '今日市场宽幅震荡，北向资金净流入，科技板块表现活跃。',
+          summary: i18n.t('DailyReportPage.k1'),
           sections: {
-            marketOverview: '上证指数收涨0.5%，深证成指涨0.8%，创业板指涨1.2%。两市成交额约8500亿元，较上一交易日放大约10%。',
-            sectorPerformance: '涨幅居前的板块：半导体(+3.2%)、新能源(+2.1%)、医药(+1.8%)。跌幅居前的板块：银行(-0.5%)、地产(-0.3%)。',
-            macroData: '最新宏观数据：GDP 5.0%，CPI 1.2%，PMI 50.0。经济数据整体平稳，通胀温和。',
-            sentiment: '市场情绪指数：65/100（偏多）。投资者情绪较昨日有所回暖，风险偏好上升。',
-            capitalFlow: '北向资金净流入 +45.2亿。主力资金流向：半导体、新能源、消费电子。',
-            topMovers: '涨停个股：12只。跌幅超过5%：8只。市场整体涨多跌少。',
-            anomalies: '今日异动：2只个股触发异动检测（放量突破）。无重大异常交易。',
-            outlook: '短期展望：市场或维持震荡格局，关注半导体和新能源板块的持续性。建议控制仓位，精选个股。',
+            marketOverview: i18n.t('DailyReportPage.k2'),
+            sectorPerformance: i18n.t('DailyReportPage.k3'),
+            macroData: i18n.t('DailyReportPage.k4'),
+            sentiment: i18n.t('DailyReportPage.k5'),
+            capitalFlow: i18n.t('DailyReportPage.k6'),
+            topMovers: i18n.t('DailyReportPage.k7'),
+            anomalies: i18n.t('DailyReportPage.k8'),
+            outlook: i18n.t('DailyReportPage.k9'),
           },
         });
       }
     } catch (e: unknown) {
-      setError((e as any).message || '获取简报失败');
+      void EngineError; // [DATA] structured error tracking
+      setError((e as any).message || i18n.t('DailyReportPage.k10'));
     } finally {
       setLoading(false);
     }
@@ -74,14 +78,14 @@ export default function DailyReportPage() {
   };
 
   const sectionTitles: Record<string, string> = {
-    marketOverview: '市场概览',
-    sectorPerformance: '板块表现',
-    macroData: '宏观数据',
-    sentiment: '市场情绪',
-    capitalFlow: '资金流向',
-    topMovers: '涨跌排行',
-    anomalies: '异动监控',
-    outlook: '短期展望',
+    marketOverview: i18n.t('DailyReportPage.k11'),
+    sectorPerformance: i18n.t('DailyReportPage.k12'),
+    macroData: i18n.t('DailyReportPage.k13'),
+    sentiment: i18n.t('DailyReportPage.k14'),
+    capitalFlow: i18n.t('DailyReportPage.k15'),
+    topMovers: i18n.t('DailyReportPage.k16'),
+    anomalies: i18n.t('DailyReportPage.k17'),
+    outlook: i18n.t('DailyReportPage.k18'),
   };
 
   return (
@@ -89,15 +93,15 @@ export default function DailyReportPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">{t('📋 每日简报')}</h1>
-          <p className="text-gray-400 text-sm">{t('自动生成市场日报')}</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{t(i18n.t('DailyReportPage.k19'))}</h1>
+          <p className="text-gray-400 text-sm">{t(i18n.t('DailyReportPage.k20'))}</p>
         </div>
         <button
           onClick={fetchReport}
           disabled={loading}
           className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors"
         >
-          {loading ? '生成中...' : '🔄 刷新'}
+          {loading ? i18n.t('DailyReportPage.k21') : i18n.t('DailyReportPage.k22')}
         </button>
       </div>
 
@@ -134,7 +138,7 @@ export default function DailyReportPage() {
       {!report && !loading && !error && (
         <div className="flex flex-col items-center justify-center py-20 text-gray-500">
           <div className="text-4xl mb-3">📋</div>
-          <p className="text-sm">{t('点击刷新生成今日简报')}</p>
+          <p className="text-sm">{t(i18n.t('DailyReportPage.k23'))}</p>
         </div>
       )}
     </div>

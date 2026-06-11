@@ -8,6 +8,8 @@ import type {
   RiskMetrics 
 } from '../../types';
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
+
 
 export interface DataSnapshot {
   id: string;

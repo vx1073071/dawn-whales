@@ -1,17 +1,18 @@
 // ── useKeyboardShortcuts — Global hotkeys for DAWN WHALES ──────────────────
 import { useEffect } from 'react';
 import { useAppStore } from '@/stores/appStore';
+import i18n from '../i18n';
 
 const SHORTCUTS: Record<string, { view?: string; action?: () => void; label: string }> = {
-  '1': { view: 'market', label: '行情中心' },
-  '2': { view: 'strategy', label: '策略工坊' },
-  '3': { view: 'marketplace', label: '策略市场' },
-  '4': { view: 'live', label: '实盘监控' },
-  '5': { view: 'backtest', label: '回测报告' },
-  '6': { view: 'portfolio', label: '持仓管理' },
-  '7': { view: 'orders', label: '委托订单' },
-  '8': { view: 'risk', label: '风控设置' },
-  '9': { view: 'settings', label: '系统设置' },
+  '1': { view: 'market', label: i18n.t('useKeyboardShortcuts.k1') },
+  '2': { view: 'strategy', label: i18n.t('useKeyboardShortcuts.k2') },
+  '3': { view: 'marketplace', label: i18n.t('useKeyboardShortcuts.k3') },
+  '4': { view: 'live', label: i18n.t('useKeyboardShortcuts.k4') },
+  '5': { view: 'backtest', label: i18n.t('useKeyboardShortcuts.k5') },
+  '6': { view: 'portfolio', label: i18n.t('useKeyboardShortcuts.k6') },
+  '7': { view: 'orders', label: i18n.t('useKeyboardShortcuts.k7') },
+  '8': { view: 'risk', label: i18n.t('useKeyboardShortcuts.k8') },
+  '9': { view: 'settings', label: i18n.t('useKeyboardShortcuts.k9') },
 };
 
 export function useKeyboardShortcuts() {
@@ -63,17 +64,17 @@ export function useKeyboardShortcuts() {
 
 // Export shortcut map for help dialog
 export const SHORTCUT_MAP = {
-  'Ctrl+B': '切换侧边栏',
-  'Ctrl+N': '新建策略',
-  'Ctrl+K': '跳转行情',
-  '1': '行情中心',
-  '2': '策略工坊',
-  '3': '策略市场',
-  '4': '实盘监控',
-  '5': '回测报告',
-  '6': '持仓管理',
-  '7': '委托订单',
-  '8': '风控设置',
-  '9': '系统设置',
-  'Esc': '关闭弹窗',
+  'Ctrl+B': i18n.t('useKeyboardShortcuts.k10'),
+  'Ctrl+N': i18n.t('useKeyboardShortcuts.k11'),
+  'Ctrl+K': i18n.t('useKeyboardShortcuts.k12'),
+  '1': i18n.t('useKeyboardShortcuts.k13'),
+  '2': i18n.t('useKeyboardShortcuts.k14'),
+  '3': i18n.t('useKeyboardShortcuts.k15'),
+  '4': i18n.t('useKeyboardShortcuts.k16'),
+  '5': i18n.t('useKeyboardShortcuts.k17'),
+  '6': i18n.t('useKeyboardShortcuts.k18'),
+  '7': i18n.t('useKeyboardShortcuts.k19'),
+  '8': i18n.t('useKeyboardShortcuts.k20'),
+  '9': i18n.t('useKeyboardShortcuts.k21'),
+  'Esc': i18n.t('useKeyboardShortcuts.k22'),
 };

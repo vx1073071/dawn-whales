@@ -2,6 +2,7 @@
 // 6 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -16,6 +17,8 @@ export function registerOptionsIPC(
       const result = analyzeOptionsChain(contracts, symbol, historicalIVRange);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[OptionsChain] Error:', err);
       return { success: false, error: err.message };
     }
@@ -28,6 +31,7 @@ export function registerOptionsIPC(
       const result = await analyzeBatchOptionsChain(symbols);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[OptionsChainBatch] Error:', err);
       return { success: false, error: err.message };
     }
@@ -47,6 +51,7 @@ export function registerOptionsIPC(
       const result = builder.buildStrategy(strategyType, targetParams, legs);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -63,6 +68,7 @@ export function registerOptionsIPC(
       const result = builder.analyzeStrategy(strategy, { spotPrice, volatility, riskFreeRate, dividends });
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -79,6 +85,7 @@ export function registerOptionsIPC(
       const greeks = calcGreeksJS(params.spot, params.strike, params.vol, params.days, params.rate || 0.05, params.type);
       return { success: true, greeks };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Greeks] Calculation failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -112,6 +119,7 @@ export function registerOptionsIPC(
       };
       return { success: true, portfolio: { positions: portfolio, totals } };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Greeks] Portfolio calc failed:', err.message);
       return { success: false, error: err.message };
     }

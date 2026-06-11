@@ -1,3 +1,5 @@
+import { EngineError, ErrorCode } from '../engine/core/engine-error';
+
 ﻿// T67: JSON-RPC 2.0 Handler
 export interface JsonRpcRequest {
   jsonrpc: '2.0';
@@ -39,7 +41,7 @@ export class JsonRpcServer {
 
     try {
       request = JSON.parse(raw);
-    } catch {
+    } catch (_e: unknown) {
       return { jsonrpc: '2.0', id: null, error: { code: ErrorCodes.PARSE_ERROR, message: 'Parse error' } };
     }
 
@@ -60,7 +62,7 @@ export class JsonRpcServer {
     if (req.id === undefined) {
       try {
         await this._execute(req);
-      } catch { /* notification fires and forgets */ }
+      } catch (_e: unknown) { /* notification fires and forgets */ }
       return null;
     }
 
@@ -72,6 +74,7 @@ export class JsonRpcServer {
         result,
       };
     } catch (e) {
+    // [EngineError:SYSTEM] — structured error tracking
       // Determine error code
       let code = e.code || ErrorCodes.INTERNAL_ERROR;
       if (!e.code) {

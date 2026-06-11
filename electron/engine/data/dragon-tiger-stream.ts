@@ -4,6 +4,8 @@
 
 import log from 'electron-log';
 import { getDragonTigerList } from './dragon-tiger-list';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

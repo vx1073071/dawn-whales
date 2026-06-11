@@ -3,9 +3,12 @@
 // Provides institutional ownership data for stock selection
 
 import log from 'electron-log';
+
 import https from 'https';
 import http from 'http';
 import { httpGet } from '../utils/http';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -291,7 +294,6 @@ function getLatestReportDate(): string {
 
   return quarter;
 }
-
 
 export function clearFundHoldingsCache(): void {
   cache.clear();

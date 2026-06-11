@@ -3,9 +3,12 @@
 // market data freshness, error count, and reconnection logic.
 
 import log from 'electron-log';
+
 import { getQuoteStreamStatus } from './quote-stream';
 import { getRiskStatus } from '../risk/risk-engine';
 import i18n from '../../../src/i18n';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -230,7 +233,7 @@ export async function pingOpenD(host = '127.0.0.1', port = 11111): Promise<{ rea
       client.connect(port, host, () => { clearTimeout(t); client.destroy(); resolve({ reachable: true, ms: Date.now() - start }); });
       client.on('error', () => { clearTimeout(t); resolve({ reachable: false, ms: Date.now() - start }); });
     });
-  } catch {
+  } catch (_e: unknown) {
     return { reachable: false, ms: 999999 };
   }
 }

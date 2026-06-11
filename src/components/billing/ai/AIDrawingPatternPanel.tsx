@@ -1,3 +1,4 @@
+import i18n from '../../../i18n';
 ﻿import { useState, useMemo, useRef, type CSSProperties } from 'react';
 
 // ── Types ──
@@ -27,35 +28,35 @@ interface Pattern {
 }
 
 const DRAWING_PRESETS = [
-  { type: 'trendline' as const, label: '趋势线', icon: '📈', color: '#3B82F6' },
-  { type: 'horizontal' as const, label: '支撑阻力', icon: '➖', color: '#F59E0B' },
-  { type: 'channel' as const, label: '通道', icon: '⫼', color: '#10B981' },
-  { type: 'fibonacci' as const, label: '斐波那契', icon: '🌀', color: '#8B5CF6' },
-  { type: 'gann' as const, label: '江恩', icon: '📐', color: '#EC4899' },
-  { type: 'ray' as const, label: '射线', icon: '➡', color: '#06B6D4' },
+  { type: 'trendline' as const, label: i18n.t('AIDrawingPatternPanel.k1'), icon: '📈', color: '#3B82F6' },
+  { type: 'horizontal' as const, label: i18n.t('AIDrawingPatternPanel.k2'), icon: '➖', color: '#F59E0B' },
+  { type: 'channel' as const, label: i18n.t('AIDrawingPatternPanel.k3'), icon: '⫼', color: '#10B981' },
+  { type: 'fibonacci' as const, label: i18n.t('AIDrawingPatternPanel.k4'), icon: '🌀', color: '#8B5CF6' },
+  { type: 'gann' as const, label: i18n.t('AIDrawingPatternPanel.k5'), icon: '📐', color: '#EC4899' },
+  { type: 'ray' as const, label: i18n.t('AIDrawingPatternPanel.k6'), icon: '➡', color: '#06B6D4' },
 ];
 
 const PATTERN_PRESETS: Pattern[] = [
-  { id: 'p1', name: '头肩顶', type: 'bearish', confidence: 0.87, points: [], description: '市场见顶信号', annotated: false, corrected: false },
-  { id: 'p2', name: '头肩底', type: 'bullish', confidence: 0.82, points: [], description: '市场见底反转', annotated: false, corrected: false },
-  { id: 'p3', name: '双顶', type: 'bearish', confidence: 0.79, points: [], description: 'M型顶部结构', annotated: false, corrected: false },
-  { id: 'p4', name: '双底', type: 'bullish', confidence: 0.84, points: [], description: 'W型底部结构', annotated: false, corrected: false },
-  { id: 'p5', name: '上升三角形', type: 'bullish', confidence: 0.76, points: [], description: '突破向上盘整', annotated: false, corrected: false },
-  { id: 'p6', name: '下降三角形', type: 'bearish', confidence: 0.74, points: [], description: '跌破向下盘整', annotated: false, corrected: false },
-  { id: 'p7', name: '上升楔形', type: 'bearish', confidence: 0.71, points: [], description: '末端加速见顶', annotated: false, corrected: false },
-  { id: 'p8', name: '下降楔形', type: 'bullish', confidence: 0.73, points: [], description: '末端加速见底', annotated: false, corrected: false },
-  { id: 'p9', name: '杯柄形态', type: 'bullish', confidence: 0.68, points: [], description: '中长期看涨', annotated: false, corrected: false },
-  { id: 'p10', name: '旗形整理', type: 'neutral', confidence: 0.65, points: [], description: '趋势中途整理', annotated: false, corrected: false },
-  { id: 'p11', name: '菱形顶', type: 'bearish', confidence: 0.62, points: [], description: '宽幅震荡见顶', annotated: false, corrected: false },
-  { id: 'p12', name: '圆弧底', type: 'bullish', confidence: 0.70, points: [], description: '缓慢筑底反转', annotated: false, corrected: false },
-  { id: 'p13', name: '三白兵', type: 'bullish', confidence: 0.78, points: [], description: '连续三日强势', annotated: false, corrected: false },
-  { id: 'p14', name: '三乌鸦', type: 'bearish', confidence: 0.77, points: [], description: '连续三日弱势', annotated: false, corrected: false },
-  { id: 'p15', name: '十字星', type: 'neutral', confidence: 0.60, points: [], description: '犹豫不决信号', annotated: false, corrected: false },
-  { id: 'p16', name: '锤子线', type: 'bullish', confidence: 0.69, points: [], description: '下影长阳反', annotated: false, corrected: false },
-  { id: 'p17', name: '上吊线', type: 'bearish', confidence: 0.67, points: [], description: '高尾见顶', annotated: false, corrected: false },
-  { id: 'p18', name: '吞没形态', type: 'bullish', confidence: 0.75, points: [], description: '多空争夺反转', annotated: false, corrected: false },
-  { id: 'p19', name: '孕线', type: 'neutral', confidence: 0.58, points: [], description: '趋势可能转变', annotated: false, corrected: false },
-  { id: 'p20', name: '启明星', type: 'bullish', confidence: 0.72, points: [], description: '底部分离信号', annotated: false, corrected: false },
+  { id: 'p1', name: i18n.t('AIDrawingPatternPanel.k7'), type: 'bearish', confidence: 0.87, points: [], description: i18n.t('AIDrawingPatternPanel.k8'), annotated: false, corrected: false },
+  { id: 'p2', name: i18n.t('AIDrawingPatternPanel.k9'), type: 'bullish', confidence: 0.82, points: [], description: i18n.t('AIDrawingPatternPanel.k10'), annotated: false, corrected: false },
+  { id: 'p3', name: i18n.t('AIDrawingPatternPanel.k11'), type: 'bearish', confidence: 0.79, points: [], description: i18n.t('AIDrawingPatternPanel.k12'), annotated: false, corrected: false },
+  { id: 'p4', name: i18n.t('AIDrawingPatternPanel.k13'), type: 'bullish', confidence: 0.84, points: [], description: i18n.t('AIDrawingPatternPanel.k14'), annotated: false, corrected: false },
+  { id: 'p5', name: i18n.t('AIDrawingPatternPanel.k15'), type: 'bullish', confidence: 0.76, points: [], description: i18n.t('AIDrawingPatternPanel.k16'), annotated: false, corrected: false },
+  { id: 'p6', name: i18n.t('AIDrawingPatternPanel.k17'), type: 'bearish', confidence: 0.74, points: [], description: i18n.t('AIDrawingPatternPanel.k18'), annotated: false, corrected: false },
+  { id: 'p7', name: i18n.t('AIDrawingPatternPanel.k19'), type: 'bearish', confidence: 0.71, points: [], description: i18n.t('AIDrawingPatternPanel.k20'), annotated: false, corrected: false },
+  { id: 'p8', name: i18n.t('AIDrawingPatternPanel.k21'), type: 'bullish', confidence: 0.73, points: [], description: i18n.t('AIDrawingPatternPanel.k22'), annotated: false, corrected: false },
+  { id: 'p9', name: i18n.t('AIDrawingPatternPanel.k23'), type: 'bullish', confidence: 0.68, points: [], description: i18n.t('AIDrawingPatternPanel.k24'), annotated: false, corrected: false },
+  { id: 'p10', name: i18n.t('AIDrawingPatternPanel.k25'), type: 'neutral', confidence: 0.65, points: [], description: i18n.t('AIDrawingPatternPanel.k26'), annotated: false, corrected: false },
+  { id: 'p11', name: i18n.t('AIDrawingPatternPanel.k27'), type: 'bearish', confidence: 0.62, points: [], description: i18n.t('AIDrawingPatternPanel.k28'), annotated: false, corrected: false },
+  { id: 'p12', name: i18n.t('AIDrawingPatternPanel.k29'), type: 'bullish', confidence: 0.70, points: [], description: i18n.t('AIDrawingPatternPanel.k30'), annotated: false, corrected: false },
+  { id: 'p13', name: i18n.t('AIDrawingPatternPanel.k31'), type: 'bullish', confidence: 0.78, points: [], description: i18n.t('AIDrawingPatternPanel.k32'), annotated: false, corrected: false },
+  { id: 'p14', name: i18n.t('AIDrawingPatternPanel.k33'), type: 'bearish', confidence: 0.77, points: [], description: i18n.t('AIDrawingPatternPanel.k34'), annotated: false, corrected: false },
+  { id: 'p15', name: i18n.t('AIDrawingPatternPanel.k35'), type: 'neutral', confidence: 0.60, points: [], description: i18n.t('AIDrawingPatternPanel.k36'), annotated: false, corrected: false },
+  { id: 'p16', name: i18n.t('AIDrawingPatternPanel.k37'), type: 'bullish', confidence: 0.69, points: [], description: i18n.t('AIDrawingPatternPanel.k38'), annotated: false, corrected: false },
+  { id: 'p17', name: i18n.t('AIDrawingPatternPanel.k39'), type: 'bearish', confidence: 0.67, points: [], description: i18n.t('AIDrawingPatternPanel.k40'), annotated: false, corrected: false },
+  { id: 'p18', name: i18n.t('AIDrawingPatternPanel.k41'), type: 'bullish', confidence: 0.75, points: [], description: i18n.t('AIDrawingPatternPanel.k42'), annotated: false, corrected: false },
+  { id: 'p19', name: i18n.t('AIDrawingPatternPanel.k43'), type: 'neutral', confidence: 0.58, points: [], description: i18n.t('AIDrawingPatternPanel.k44'), annotated: false, corrected: false },
+  { id: 'p20', name: i18n.t('AIDrawingPatternPanel.k45'), type: 'bullish', confidence: 0.72, points: [], description: i18n.t('AIDrawingPatternPanel.k46'), annotated: false, corrected: false },
 ];
 
 // ── Sub-components ──
@@ -213,7 +214,7 @@ function PatternCard({ pattern, onAnnotate, onCorrect }: {
   onCorrect: (id: string) => void
 }) {
   const typeColors: Record<string, string> = { bullish: '#10B981', bearish: '#EF4444', neutral: '#6B7280' };
-  const typeLabels: Record<string, string> = { bullish: 'components.bullish', bearish: 'components.bearish', neutral: '中性' };
+  const typeLabels: Record<string, string> = { bullish: 'components.bullish', bearish: 'components.bearish', neutral: i18n.t('AIDrawingPatternPanel.k47') };
 
   return (
     <div
@@ -292,7 +293,7 @@ function PatternCard({ pattern, onAnnotate, onCorrect }: {
           </button>
         )}
         {pattern.corrected && (
-          <span style={{ fontSize: 11, color: '#10B981' }}>{'✅ 已修正'}</span>
+          <span style={{ fontSize: 11, color: '#10B981' }}>{i18n.t('AIDrawingPatternPanel.k48')}</span>
         )}
       </div>
     </div>
@@ -302,10 +303,10 @@ function PatternCard({ pattern, onAnnotate, onCorrect }: {
 function PatternLegend() {
   return (
     <div style={{ display: 'flex', gap: 16, padding: '6px 0' }}>
-      <span style={{ fontSize: 12, color: '#10B981' }}>{'🟢 看涨'}</span>
-      <span style={{ fontSize: 12, color: '#EF4444' }}>{'🔴 看跌'}</span>
-      <span style={{ fontSize: 12, color: '#6B7280' }}>{'⚪ 中性'}</span>
-      <span style={{ fontSize: 12, color: '#6366F1' }}>{'✏️ 可标注/修正'}</span>
+      <span style={{ fontSize: 12, color: '#10B981' }}>{i18n.t('AIDrawingPatternPanel.k49')}</span>
+      <span style={{ fontSize: 12, color: '#EF4444' }}>{i18n.t('AIDrawingPatternPanel.k50')}</span>
+      <span style={{ fontSize: 12, color: '#6B7280' }}>{i18n.t('AIDrawingPatternPanel.k51')}</span>
+      <span style={{ fontSize: 12, color: '#6366F1' }}>{i18n.t('AIDrawingPatternPanel.k52')}</span>
     </div>
   );
 }
@@ -315,8 +316,8 @@ export default function AIDrawingPatternPanel() {
     const [tab, setTab] = useState<'drawing' | 'pattern'>('drawing');
   const [activeTool, setActiveTool] = useState<string | null>(null);
   const [drawings, setDrawings] = useState<Drawing[]>([
-    { id: 'd0', type: 'trendline', color: '#3B82F6', width: 2, editable: true, visible: true, label: '上升趋势', points: [{ x: 40, y: 320, price: 18500, time: 0 }, { x: 720, y: 100, price: 21000, time: 1 }] },
-    { id: 'd1', type: 'horizontal', color: '#F59E0B', width: 1, dash: [6, 3], editable: true, visible: true, label: '支撑 19000', points: [{ x: 0, y: 280, price: 19000, time: 0 }, { x: 780, y: 280, price: 19000, time: 1 }] },
+    { id: 'd0', type: 'trendline', color: '#3B82F6', width: 2, editable: true, visible: true, label: i18n.t('AIDrawingPatternPanel.k53'), points: [{ x: 40, y: 320, price: 18500, time: 0 }, { x: 720, y: 100, price: 21000, time: 1 }] },
+    { id: 'd1', type: 'horizontal', color: '#F59E0B', width: 1, dash: [6, 3], editable: true, visible: true, label: i18n.t('AIDrawingPatternPanel.k54'), points: [{ x: 0, y: 280, price: 19000, time: 0 }, { x: 780, y: 280, price: 19000, time: 1 }] },
     { id: 'd2', type: 'fibonacci', color: '#8B5CF6', width: 1, dash: [4, 4], editable: true, visible: true, label: 'Fib 0.618', points: [{ x: 0, y: 350, price: 18000, time: 0 }, { x: 0, y: 60, price: 22000, time: 1 }] },
   ]);
   const [patterns, setPatterns] = useState<Pattern[]>(PATTERN_PRESETS.map(p => ({
@@ -393,12 +394,12 @@ export default function AIDrawingPatternPanel() {
 
       {/* Stats bar */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
-        <StatBadge label="总形态" value={stats.total.toString()} color="#6366F1" />
+        <StatBadge label={i18n.t('AIDrawingPatternPanel.k55')} value={stats.total.toString()} color="#6366F1" />
         <StatBadge  label={"components.bullish"} value={stats.bullish.toString()} color="#10B981" />
         <StatBadge  label={"components.bearish"} value={stats.bearish.toString()} color="#EF4444" />
         <StatBadge  label={"components.neutral"} value={stats.neutral.toString()} color="#6B7280" />
-        <StatBadge label="已标注" value={stats.annotated.toString()} color="#F59E0B" />
-        <StatBadge label="高置信" value={stats.highConf.toString()} color="#10B981" />
+        <StatBadge label={i18n.t('AIDrawingPatternPanel.k56')} value={stats.annotated.toString()} color="#F59E0B" />
+        <StatBadge label={i18n.t('AIDrawingPatternPanel.k57')} value={stats.highConf.toString()} color="#10B981" />
       </div>
 
       {/* Drawing tab */}
@@ -437,7 +438,7 @@ export default function AIDrawingPatternPanel() {
                     color: filterType === f ? '#818CF8' : '#6B7280', fontSize: 12, cursor: 'pointer',
                   }}
                 >
-                  {f === 'all' ? 'components.all' : f === 'bullish' ? '🟢 看涨' : f === 'bearish' ? '🔴 看跌' : '⚪ 中性'}
+                  {f === 'all' ? 'components.all' : f === 'bullish' ? i18n.t('AIDrawingPatternPanel.k58') : f === 'bearish' ? i18n.t('AIDrawingPatternPanel.k59') : i18n.t('AIDrawingPatternPanel.k60')}
                 </button>
               ))}
               <select
@@ -448,8 +449,8 @@ export default function AIDrawingPatternPanel() {
                   background: '#1F2937', color: '#D1D5DB', fontSize: 12,
                 }}
               >
-                <option value="confidence">{'按置信度'}</option>
-                <option value="name">{'按名称'}</option>
+                <option value="confidence">{i18n.t('AIDrawingPatternPanel.k61')}</option>
+                <option value="name">{i18n.t('AIDrawingPatternPanel.k62')}</option>
               </select>
             </div>
           </div>

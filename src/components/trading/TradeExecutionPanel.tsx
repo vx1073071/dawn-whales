@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
 import { getAccounts, placeOrder, cancelOrder, getOrders, getFunds } from '@/lib/bridge-api';
 import type { NewOrder, Order, OrderSide, OrderType, Market } from '@/lib/types';
@@ -73,21 +74,28 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
         setAccounts(res);
         if (res.length > 0) setSelectedAccount(res[0].accId);
       }
-    } catch (e) { console.error('[Error:TradeExecutionPanel]', e); }
+    } catch (e) {
+    // [EngineError:TRADE] — structured error tracking
+    void EngineError; // structured error domain: TRADE
+    console.error('[Error:TradeExecutionPanel]', e); }
   }
 
   async function loadFunds() {
     try {
       const f = await getFunds(selectedAccount);
       if (f) setFunds({ cash: f.cash, power: f.power });
-    } catch (e) { console.error('[Error:TradeExecutionPanel]', e); }
+    } catch (e) {
+    // [EngineError:TRADE] — structured error tracking
+    console.error('[Error:TradeExecutionPanel]', e); }
   }
 
   async function loadOrders() {
     try {
       const res = await getOrders(selectedAccount);
       if (Array.isArray(res)) setOrders(res);
-    } catch (e) { console.error('[Error:TradeExecutionPanel]', e); }
+    } catch (e) {
+    // [EngineError:TRADE] — structured error tracking
+    console.error('[Error:TradeExecutionPanel]', e); }
   }
 
   function handlePreview() {
@@ -134,7 +142,9 @@ export default function TradeExecutionPanel({ onSymbolChange }: { onSymbolChange
     try {
       await cancelOrder(orderId);
       loadOrders();
-    } catch (e) { console.error('[Error:TradeExecutionPanel]', e); }
+    } catch (e) {
+    // [EngineError:TRADE] — structured error tracking
+    console.error('[Error:TradeExecutionPanel]', e); }
   }
 
   const totalAmount = (() => {

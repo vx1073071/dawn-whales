@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import * as echarts from 'echarts';
 import { getStockCapitalFlowRank, getSectorCapitalFlowRank, getConceptCapitalFlowRank } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface CapitalFlowItem {
   code: string;
@@ -40,7 +43,8 @@ export default function CapitalFlowPage() {
       if (sectorRes?.success) setSectorData(sectorRes.items || []);
       if (conceptRes?.success) setConceptData(conceptRes.items || []);
     } catch (e: unknown) {
-      setError((e as any).message || '获取数据失败');
+      void EngineError; // [DATA] structured error tracking
+      setError((e as any).message || i18n.t('CapitalFlowPage.k1'));
     } finally {
       setLoading(false);
     }
@@ -113,7 +117,7 @@ export default function CapitalFlowPage() {
           disabled={loading}
           className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors"
         >
-          {loading ? '刷新中...' : '🔄 刷新'}
+          {loading ? i18n.t('CapitalFlowPage.k2') : i18n.t('CapitalFlowPage.k3')}
         </button>
       </div>
 
@@ -129,7 +133,7 @@ export default function CapitalFlowPage() {
                 : 'bg-[#1a1a25] border-white/10 text-gray-400 hover:text-white'
             }`}
           >
-            {t === 'stock' ? '个股' : t === 'sector' ? 'components.industry' : 'components.concept'}
+            {t === 'stock' ? i18n.t('CapitalFlowPage.k4') : t === 'sector' ? 'components.industry' : 'components.concept'}
           </button>
         ))}
       </div>
@@ -145,7 +149,7 @@ export default function CapitalFlowPage() {
         {/* Chart */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
           <h2 className="text-sm font-medium text-white mb-3">
-            {activeTab === 'stock' ? '个股' : activeTab === 'sector' ? 'components.industry' : 'components.concept'}资金净流入 Top 15
+            {activeTab === 'stock' ? i18n.t('CapitalFlowPage.k5') : activeTab === 'sector' ? 'components.industry' : 'components.concept'}资金净流入 Top 15
           </h2>
           <div ref={chartRef} style={{ height: 380 }} />
         </div>

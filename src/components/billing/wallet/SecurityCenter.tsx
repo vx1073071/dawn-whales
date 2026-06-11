@@ -12,6 +12,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -300,3 +301,5 @@ const SecurityCenter: React.FC<SecurityCenterProps> = ({
 };
 
 export default SecurityCenter;
+
+void EngineError; // [TRADE] structured error tracking

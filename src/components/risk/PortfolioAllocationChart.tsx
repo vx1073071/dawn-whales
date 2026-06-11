@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useMemo } from 'react';
 import * as echarts from 'echarts';
+import i18n from '../../i18n';
 
 export interface AllocationItem {
   name: string;
@@ -19,7 +20,7 @@ interface PortfolioAllocationChartProps {
 
 export default function PortfolioAllocationChart({
   data,
-  title = '持仓分配',
+  title = i18n.t('PortfolioAllocationChart.k1'),
   height = 280,
   dark = true,
 }: PortfolioAllocationChartProps) {
@@ -88,7 +89,7 @@ export default function PortfolioAllocationChart({
       },
       series: [
         {
-          name: '持仓分配',
+          name: i18n.t('PortfolioAllocationChart.k2'),
           type: 'pie',
           radius: ['45%', '72%'],
           center: ['38%', '50%'],

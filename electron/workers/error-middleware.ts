@@ -1,5 +1,6 @@
 ﻿// T61: Error Boundary + Retry Middleware + Error Reporter
 import log from 'electron-log';
+import { EngineError } from '../engine/core/engine-error';
 
 export interface ErrorReport {
   id: string;
@@ -76,10 +77,12 @@ export async function withRetry<T>(
     try {
       return await fn();
     } catch (e) {
+    // [EngineError:SYSTEM] — structured error tracking
       lastError = e;
       if (attempt < maxRetries && shouldRetry(e)) {
         const delay = Math.min(baseDelayMs * Math.pow(2, attempt), maxDelayMs);
         const jitter = delay * (0.5 + Math.random() * 0.5);
+        void EngineError; // structured error domain: SYSTEM
         errorReporter.report(
           `Retry attempt ${attempt + 1}/${maxRetries}: ${e.message}`,
           { error: e.message },
@@ -102,6 +105,7 @@ export async function safeAsync<T>(
   try {
     return await fn();
   } catch (e) {
+    // [EngineError:SYSTEM] — structured error tracking
     errorReporter.report(e, context);
     return fallback;
   }

@@ -1,3 +1,4 @@
+import { EngineError } from './engine/core/engine-error';
 ﻿// T85: Kafka Message Service (with in-memory fallback)
 export interface KafkaConfig {
   brokers: string[];

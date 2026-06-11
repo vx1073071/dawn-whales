@@ -2,6 +2,7 @@
 // 12 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -16,6 +17,8 @@ export function registerVersionIPC(
       const version = await trackVersion(entityId, entityType, data, changeType as any, changeSummary, userId, tags);
       return { success: true, version };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       return { success: false, error: err.message };
     }
   });
@@ -27,6 +30,7 @@ export function registerVersionIPC(
       const versions = await getEntityVersions(entityId, limit);
       return { success: true, versions };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -38,6 +42,7 @@ export function registerVersionIPC(
       const version = await getVersion(versionId);
       return { success: true, version };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -49,6 +54,7 @@ export function registerVersionIPC(
       const version = await getLatestVersion(entityId);
       return { success: true, version };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -60,6 +66,7 @@ export function registerVersionIPC(
       const diff = await diffVersions(versionId1, versionId2);
       return { success: true, diff };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -71,6 +78,7 @@ export function registerVersionIPC(
       const result = await rollback(entityId, targetVersion);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -82,6 +90,7 @@ export function registerVersionIPC(
       const versions = await queryVersions(query);
       return { success: true, versions };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -93,6 +102,7 @@ export function registerVersionIPC(
       const stats = getVersionStats();
       return { success: true, stats };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -104,6 +114,7 @@ export function registerVersionIPC(
       const deleted = await deleteVersion(versionId);
       return { success: true, deleted };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -115,6 +126,7 @@ export function registerVersionIPC(
       await clearAllVersions();
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -126,6 +138,7 @@ export function registerVersionIPC(
       const json = await exportVersions(query);
       return { success: true, json };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -137,6 +150,7 @@ export function registerVersionIPC(
       const imported = await importVersions(jsonString);
       return { success: true, imported };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });

@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface MoverItem {
   symbol: string;
@@ -20,24 +21,24 @@ interface MarketMoversProps {
 
 const DEFAULT_GAINERS: MoverItem[] = [
   { symbol: 'MSTR', name: 'MicroStrategy', price: 185.42, change: 24.56, changePct: 15.26, volume: 28.5e6 },
-  { symbol: 'SOXL', name: '半导体3倍做多', price: 42.18, change: 4.32, changePct: 11.41, volume: 45.2e6 },
-  { symbol: 'TQQQ', name: '纳斯达克3倍做多', price: 78.95, change: 6.78, changePct: 9.40, volume: 62.1e6 },
+  { symbol: 'SOXL', name: i18n.t('MarketMovers.k1'), price: 42.18, change: 4.32, changePct: 11.41, volume: 45.2e6 },
+  { symbol: 'TQQQ', name: i18n.t('MarketMovers.k2'), price: 78.95, change: 6.78, changePct: 9.40, volume: 62.1e6 },
   { symbol: 'COIN', name: 'Coinbase', price: 245.80, change: 18.90, changePct: 8.33, volume: 15.8e6 },
-  { symbol: 'NVDA', name: '英伟达', price: 148.20, change: 9.85, changePct: 7.12, volume: 85.4e6 },
+  { symbol: 'NVDA', name: i18n.t('MarketMovers.k3'), price: 148.20, change: 9.85, changePct: 7.12, volume: 85.4e6 },
 ];
 
 const DEFAULT_LOSERS: MoverItem[] = [
-  { symbol: 'SQQQ', name: '纳斯达克3倍做空', price: 12.45, change: -1.28, changePct: -9.32, volume: 55.3e6 },
-  { symbol: 'SOXS', name: '半导体3倍做空', price: 18.92, change: -1.85, changePct: -8.91, volume: 32.1e6 },
-  { symbol: 'TLT', name: '20+年国债', price: 88.45, change: -2.15, changePct: -2.37, volume: 22.7e6 },
-  { symbol: 'GLD', name: '黄金ETF', price: 228.60, change: -3.40, changePct: -1.46, volume: 8.5e6 },
-  { symbol: 'XLE', name: '能源ETF', price: 92.15, change: -1.05, changePct: -1.13, volume: 12.3e6 },
+  { symbol: 'SQQQ', name: i18n.t('MarketMovers.k4'), price: 12.45, change: -1.28, changePct: -9.32, volume: 55.3e6 },
+  { symbol: 'SOXS', name: i18n.t('MarketMovers.k5'), price: 18.92, change: -1.85, changePct: -8.91, volume: 32.1e6 },
+  { symbol: 'TLT', name: i18n.t('MarketMovers.k6'), price: 88.45, change: -2.15, changePct: -2.37, volume: 22.7e6 },
+  { symbol: 'GLD', name: i18n.t('MarketMovers.k7'), price: 228.60, change: -3.40, changePct: -1.46, volume: 8.5e6 },
+  { symbol: 'XLE', name: i18n.t('MarketMovers.k8'), price: 92.15, change: -1.05, changePct: -1.13, volume: 12.3e6 },
 ];
 
 export default function MarketMovers({
   gainers = DEFAULT_GAINERS,
   losers = DEFAULT_LOSERS,
-  title = '🔥 市场异动',
+  title = i18n.t('MarketMovers.k9'),
 }: MarketMoversProps) {
   const { t } = useTranslation();
 
@@ -55,8 +56,8 @@ export default function MarketMovers({
         <h2 className="text-white font-semibold text-sm">{title}</h2>
         <div className="flex items-center gap-1 bg-[#12121a] rounded-lg p-0.5">
           {([
-            { key: 'gainers' as const, label: '涨幅榜', color: 'text-emerald-400' },
-            { key: 'losers' as const, label: '跌幅榜', color: 'text-red-400' },
+            { key: 'gainers' as const, label: i18n.t('MarketMovers.k10'), color: 'text-emerald-400' },
+            { key: 'losers' as const, label: i18n.t('MarketMovers.k11'), color: 'text-red-400' },
             { key: 'volume' as const, label: t('components.volume'), color: 'text-[#D4A853]' },
           ]).map((t) => (
             <button

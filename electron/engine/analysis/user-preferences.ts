@@ -3,9 +3,12 @@
 // 存储: SQLite (通过 DatabaseManager) + JSON 文件备份
 
 import log from 'electron-log';
+
 import fs from 'fs';
 import path from 'path';
 import { app } from 'electron';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -166,7 +169,7 @@ export class PreferencesManager {
     try {
       const { shared } = require('../ipc-handlers/_import-shared');
       return shared.db?.getDb?.() || null;
-    } catch {
+    } catch (_e: unknown) {
       return null;
     }
   }

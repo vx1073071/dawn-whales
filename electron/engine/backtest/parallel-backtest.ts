@@ -3,6 +3,7 @@
 // Fallback to serial when Worker threads unavailable (renderer/Sandbox)
 
 import { Worker } from 'worker_threads';
+import { EngineError, ErrorDomain, ErrorCode } from '../core/engine-error';
 import path from 'path';
 import type { BacktestConfig, BacktestResult } from './backtest-engine';
 
@@ -38,14 +39,14 @@ export async function runParallelBacktests(
 
         worker.on('error', reject);
         worker.on('exit', (code) => {
-          if (code !== 0) reject(new Error(`Worker ${idx} stopped with code ${code}`));
+          if (code !== 0) reject(new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `Worker ${idx} stopped with code ${code}`));
         });
       });
     });
 
     const allResults = await Promise.all(promises);
     return allResults.flat();
-  } catch {
+  } catch (_e: unknown) {
     // Run serial fallback (used in tests/CI without tsx worker support)
     const { runBacktestSync } = await import('./parallel-backtest.worker');
     return configs.map(cfg => ({

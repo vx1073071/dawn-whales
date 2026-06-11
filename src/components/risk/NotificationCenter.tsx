@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 export interface NotificationItem {
   id: string;
@@ -20,11 +21,11 @@ interface NotificationCenterProps {
 }
 
 const TYPE_CONFIG: Record<string, { icon: string; label: string; color: string }> = {
-  risk: { icon: '🛡️', label: '风控', color: 'text-red-400' },
-  order: { icon: '📋', label: '订单', color: 'text-blue-400' },
-  signal: { icon: '📡', label: '信号', color: 'text-[#D4A853]' },
-  system: { icon: '⚙️', label: '系统', color: 'text-gray-400' },
-  market: { icon: '📈', label: '市场', color: 'text-emerald-400' },
+  risk: { icon: '🛡️', label: i18n.t('NotificationCenter.k1'), color: 'text-red-400' },
+  order: { icon: '📋', label: i18n.t('NotificationCenter.k2'), color: 'text-blue-400' },
+  signal: { icon: '📡', label: i18n.t('NotificationCenter.k3'), color: 'text-[#D4A853]' },
+  system: { icon: '⚙️', label: i18n.t('NotificationCenter.k4'), color: 'text-gray-400' },
+  market: { icon: '📈', label: i18n.t('NotificationCenter.k5'), color: 'text-emerald-400' },
 };
 
 const SEVERITY_CONFIG: Record<string, { bg: string; border: string }> = {
@@ -115,7 +116,7 @@ export default function NotificationCenter({
         {([
           { key: 'all' as const, label: t('components.all') },
           { key: 'unread' as const, label: `未读${unreadCount > 0 ? `(${unreadCount})` : ''}` },
-          { key: 'risk' as const, label: '风控' },
+          { key: 'risk' as const, label: i18n.t('NotificationCenter.k6') },
           { key: 'order' as const, label: t('components.orders') },
           { key: 'signal' as const, label: t('components.signal') },
         ]).map((f) => (

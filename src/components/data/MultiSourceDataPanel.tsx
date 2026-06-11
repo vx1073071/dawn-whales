@@ -11,7 +11,9 @@
  */
 
 import { useTranslation } from "react-i18next";
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import React, { useState, useMemo } from 'react';
+import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -44,10 +46,10 @@ interface QuoteComparison {
 // ── Mock data ────────────────────────────────────────────────────────────
 
 const MOCK_SOURCES: SourceStatus[] = [
-  { key: 'eastmoney', name: '东方财富', health: 'healthy', latencyMs: 45, coverageRate: 0.98, lastUpdateMs: 2000, errorCount: 0, priority: 1 },
-  { key: 'sina', name: '新浪财经', health: 'healthy', latencyMs: 78, coverageRate: 0.95, lastUpdateMs: 3500, errorCount: 1, priority: 2 },
-  { key: 'tencent', name: '腾讯财经', health: 'degraded', latencyMs: 320, coverageRate: 0.88, lastUpdateMs: 8000, errorCount: 5, priority: 3 },
-  { key: 'xueqiu', name: '雪球', health: 'healthy', latencyMs: 95, coverageRate: 0.92, lastUpdateMs: 5000, errorCount: 2, priority: 4 },
+  { key: 'eastmoney', name: i18n.t('MultiSourceDataPanel.k1'), health: 'healthy', latencyMs: 45, coverageRate: 0.98, lastUpdateMs: 2000, errorCount: 0, priority: 1 },
+  { key: 'sina', name: i18n.t('MultiSourceDataPanel.k2'), health: 'healthy', latencyMs: 78, coverageRate: 0.95, lastUpdateMs: 3500, errorCount: 1, priority: 2 },
+  { key: 'tencent', name: i18n.t('MultiSourceDataPanel.k3'), health: 'degraded', latencyMs: 320, coverageRate: 0.88, lastUpdateMs: 8000, errorCount: 5, priority: 3 },
+  { key: 'xueqiu', name: i18n.t('MultiSourceDataPanel.k4'), health: 'healthy', latencyMs: 95, coverageRate: 0.92, lastUpdateMs: 5000, errorCount: 2, priority: 4 },
 ];
 
 const MOCK_QUOTES: QuoteComparison[] = [
@@ -69,7 +71,7 @@ const SOURCE_ICONS: Record<SourceKey, string> = {
   eastmoney: '📊', sina: '📰', tencent: '📡', xueqiu: '❄️',
 };
 const HEALTH_LABELS: Record<SourceHealth, string> = {
-  healthy: '正常', degraded: '降级', down: '中断',
+  healthy: i18n.t('MultiSourceDataPanel.k5'), degraded: i18n.t('MultiSourceDataPanel.k6'), down: i18n.t('MultiSourceDataPanel.k7'),
 };
 
 // ── Main Component ──────────────────────────────────────────────────────
@@ -110,10 +112,10 @@ export const MultiSourceDataPanel: React.FC<MultiSourceDataPanelProps> = ({ clas
       {/* Top stats */}
       <div className="grid grid-cols-4 gap-3 mb-5">
         {([
-          { label: '数据源', value: sources.length, color: 'text-white' },
-          { label: '正常', value: healthyCount, color: 'text-emerald-400' },
+          { label: i18n.t('MultiSourceDataPanel.k8'), value: sources.length, color: 'text-white' },
+          { label: i18n.t('MultiSourceDataPanel.k9'), value: healthyCount, color: 'text-emerald-400' },
           { label: t('components.downgrade'), value: sources.filter(s => s.health === 'degraded').length, color: 'text-amber-400' },
-          { label: '中断', value: sources.filter(s => s.health === 'down').length, color: 'text-red-400' },
+          { label: i18n.t('MultiSourceDataPanel.k10'), value: sources.filter(s => s.health === 'down').length, color: 'text-red-400' },
         ] as const).map(c => (
           <div key={c.label} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/30 text-center">
             <div className={`text-lg font-bold ${c.color}`}>{c.value}</div>
@@ -125,8 +127,8 @@ export const MultiSourceDataPanel: React.FC<MultiSourceDataPanelProps> = ({ clas
       {/* Tab bar */}
       <div className="flex gap-1 mb-4 bg-gray-800/40 rounded-lg p-1">
         {([
-          { key: 'overview', label: '数据源状态' },
-          { key: 'quotes', label: '行情对比' },
+          { key: 'overview', label: i18n.t('MultiSourceDataPanel.k11') },
+          { key: 'quotes', label: i18n.t('MultiSourceDataPanel.k12') },
         ] as const).map(tab => (
           <button
             key={tab.key}
@@ -168,7 +170,7 @@ export const MultiSourceDataPanel: React.FC<MultiSourceDataPanelProps> = ({ clas
                       <span className="text-[10px] text-gray-600">优先级 P{src.priority}</span>
                     </div>
                     <div className="text-[10px] text-gray-600 mt-0.5">
-                      {src.lastUpdateMs < 3000 ? '🟢 实时' : src.lastUpdateMs < 6000 ? '🟡 略有延迟' : '🟠 延迟较大'}
+                      {src.lastUpdateMs < 3000 ? i18n.t('MultiSourceDataPanel.k13') : src.lastUpdateMs < 6000 ? i18n.t('MultiSourceDataPanel.k14') : i18n.t('MultiSourceDataPanel.k15')}
                       {' · '}错误 {src.errorCount} 次
                     </div>
                   </div>
@@ -272,3 +274,5 @@ export const MultiSourceDataPanel: React.FC<MultiSourceDataPanelProps> = ({ clas
 };
 
 export default MultiSourceDataPanel;
+
+void EngineError; // [DATA] structured error tracking

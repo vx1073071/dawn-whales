@@ -1,7 +1,9 @@
 ﻿import { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import * as echarts from 'echarts';
 import { getSmartPick } from '@/lib/bridge-api';
+import i18n from '../../i18n';
 
 interface SmartPickItem {
   code: string;
@@ -17,16 +19,16 @@ interface SmartPickItem {
 }
 
 const MOCK_DATA: SmartPickItem[] = [
-  { code: 'NVDA', name: '英伟达', score: 94, reasons: ['AI芯片龙头', '财报超预期', '机构增持'], dimensions: { value: 75, growth: 98, momentum: 92, quality: 90, sentiment: 95 }, price: 875.28, changePct: 2.35, pe: 65.2, pb: 42.1, marketCap: 2150000000000 },
-  { code: 'MSFT', name: '微软', score: 91, reasons: ['云计算增长', 'AI Copilot 变现', '稳健现金流'], dimensions: { value: 82, growth: 88, momentum: 85, quality: 95, sentiment: 90 }, price: 412.20, changePct: 0.85, pe: 36.1, pb: 12.8, marketCap: 3050000000000 },
-  { code: 'AAPL', name: '苹果', score: 88, reasons: ['服务收入占比提升', '回购力度大', '品牌护城河'], dimensions: { value: 85, growth: 72, momentum: 78, quality: 96, sentiment: 85 }, price: 189.52, changePct: -0.42, pe: 29.3, pb: 45.2, marketCap: 2900000000000 },
-  { code: 'AVGO', name: '博通', score: 87, reasons: ['AI芯片需求', 'VMware整合', '高股息'], dimensions: { value: 80, growth: 85, momentum: 88, quality: 88, sentiment: 82 }, price: 1280.45, changePct: 1.92, pe: 48.5, pb: 18.3, marketCap: 590000000000 },
-  { code: 'META', name: 'Meta', score: 86, reasons: ['Reels变现', 'AI降本增效', '元宇宙收缩止损'], dimensions: { value: 78, growth: 80, momentum: 90, quality: 82, sentiment: 88 }, price: 474.35, changePct: 1.15, pe: 25.8, pb: 6.7, marketCap: 1210000000000 },
-  { code: 'AMZN', name: '亚马逊', score: 84, reasons: ['AWS增速回升', '零售利润率改善', '物流优化'], dimensions: { value: 72, growth: 82, momentum: 80, quality: 85, sentiment: 80 }, price: 178.15, changePct: 0.55, pe: 58.2, pb: 6.2, marketCap: 1850000000000 },
-  { code: 'GOOGL', name: '谷歌', score: 83, reasons: ['搜索广告韧性', '云业务减亏', 'AI整合搜索'], dimensions: { value: 76, growth: 75, momentum: 82, quality: 90, sentiment: 78 }, price: 165.85, changePct: -0.22, pe: 24.5, pb: 5.8, marketCap: 2050000000000 },
-  { code: 'TSLA', name: '特斯拉', score: 79, reasons: ['FSD进展', '储能增长', '价格战趋缓'], dimensions: { value: 65, growth: 88, momentum: 85, quality: 70, sentiment: 75 }, price: 172.63, changePct: 3.12, pe: 42.1, pb: 8.5, marketCap: 550000000000 },
-  { code: 'AMD', name: 'AMD', score: 77, reasons: ['MI300需求', 'PC市场复苏', '服务器份额提升'], dimensions: { value: 68, growth: 85, momentum: 80, quality: 72, sentiment: 78 }, price: 148.25, changePct: -1.05, pe: 185.3, pb: 3.8, marketCap: 239000000000 },
-  { code: 'CRM', name: 'Salesforce', score: 75, reasons: ['AI Einstein增长', '利润率提升', 'CRM市场领先'], dimensions: { value: 70, growth: 72, momentum: 75, quality: 80, sentiment: 72 }, price: 298.45, changePct: 0.28, pe: 62.5, pb: 4.2, marketCap: 288000000000 },
+  { code: 'NVDA', name: i18n.t('SmartPickerPage.k1'), score: 94, reasons: [i18n.t('SmartPickerPage.k2'), i18n.t('SmartPickerPage.k3'), i18n.t('SmartPickerPage.k4')], dimensions: { value: 75, growth: 98, momentum: 92, quality: 90, sentiment: 95 }, price: 875.28, changePct: 2.35, pe: 65.2, pb: 42.1, marketCap: 2150000000000 },
+  { code: 'MSFT', name: i18n.t('SmartPickerPage.k5'), score: 91, reasons: [i18n.t('SmartPickerPage.k6'), i18n.t('SmartPickerPage.k7'), i18n.t('SmartPickerPage.k8')], dimensions: { value: 82, growth: 88, momentum: 85, quality: 95, sentiment: 90 }, price: 412.20, changePct: 0.85, pe: 36.1, pb: 12.8, marketCap: 3050000000000 },
+  { code: 'AAPL', name: i18n.t('SmartPickerPage.k9'), score: 88, reasons: [i18n.t('SmartPickerPage.k10'), i18n.t('SmartPickerPage.k11'), i18n.t('SmartPickerPage.k12')], dimensions: { value: 85, growth: 72, momentum: 78, quality: 96, sentiment: 85 }, price: 189.52, changePct: -0.42, pe: 29.3, pb: 45.2, marketCap: 2900000000000 },
+  { code: 'AVGO', name: i18n.t('SmartPickerPage.k13'), score: 87, reasons: [i18n.t('SmartPickerPage.k14'), i18n.t('SmartPickerPage.k15'), i18n.t('SmartPickerPage.k16')], dimensions: { value: 80, growth: 85, momentum: 88, quality: 88, sentiment: 82 }, price: 1280.45, changePct: 1.92, pe: 48.5, pb: 18.3, marketCap: 590000000000 },
+  { code: 'META', name: 'Meta', score: 86, reasons: [i18n.t('SmartPickerPage.k17'), i18n.t('SmartPickerPage.k18'), i18n.t('SmartPickerPage.k19')], dimensions: { value: 78, growth: 80, momentum: 90, quality: 82, sentiment: 88 }, price: 474.35, changePct: 1.15, pe: 25.8, pb: 6.7, marketCap: 1210000000000 },
+  { code: 'AMZN', name: i18n.t('SmartPickerPage.k20'), score: 84, reasons: [i18n.t('SmartPickerPage.k21'), i18n.t('SmartPickerPage.k22'), i18n.t('SmartPickerPage.k23')], dimensions: { value: 72, growth: 82, momentum: 80, quality: 85, sentiment: 80 }, price: 178.15, changePct: 0.55, pe: 58.2, pb: 6.2, marketCap: 1850000000000 },
+  { code: 'GOOGL', name: i18n.t('SmartPickerPage.k24'), score: 83, reasons: [i18n.t('SmartPickerPage.k25'), i18n.t('SmartPickerPage.k26'), i18n.t('SmartPickerPage.k27')], dimensions: { value: 76, growth: 75, momentum: 82, quality: 90, sentiment: 78 }, price: 165.85, changePct: -0.22, pe: 24.5, pb: 5.8, marketCap: 2050000000000 },
+  { code: 'TSLA', name: i18n.t('SmartPickerPage.k28'), score: 79, reasons: [i18n.t('SmartPickerPage.k29'), i18n.t('SmartPickerPage.k30'), i18n.t('SmartPickerPage.k31')], dimensions: { value: 65, growth: 88, momentum: 85, quality: 70, sentiment: 75 }, price: 172.63, changePct: 3.12, pe: 42.1, pb: 8.5, marketCap: 550000000000 },
+  { code: 'AMD', name: 'AMD', score: 77, reasons: [i18n.t('SmartPickerPage.k32'), i18n.t('SmartPickerPage.k33'), i18n.t('SmartPickerPage.k34')], dimensions: { value: 68, growth: 85, momentum: 80, quality: 72, sentiment: 78 }, price: 148.25, changePct: -1.05, pe: 185.3, pb: 3.8, marketCap: 239000000000 },
+  { code: 'CRM', name: 'Salesforce', score: 75, reasons: [i18n.t('SmartPickerPage.k35'), i18n.t('SmartPickerPage.k36'), i18n.t('SmartPickerPage.k37')], dimensions: { value: 70, growth: 72, momentum: 75, quality: 80, sentiment: 72 }, price: 298.45, changePct: 0.28, pe: 62.5, pb: 4.2, marketCap: 288000000000 },
 ];
 
 export default function SmartPickerPage() {
@@ -43,6 +45,7 @@ export default function SmartPickerPage() {
       const res = await getSmartPick();
       if (res?.success && Array.isArray(res.data)) setData(res.data);
     } catch (e) { console.error('[Error:SmartPickerPage]', e); }
+    void EngineError; // [DATA] structured error tracking
     setLoading(false);
   }
 
@@ -63,11 +66,11 @@ export default function SmartPickerPage() {
       backgroundColor: 'transparent',
       radar: {
         indicator: [
-          { name: '价值', max: 100 },
-          { name: '成长', max: 100 },
-          { name: '动量', max: 100 },
-          { name: '质量', max: 100 },
-          { name: '情绪', max: 100 },
+          { name: i18n.t('SmartPickerPage.k38'), max: 100 },
+          { name: i18n.t('SmartPickerPage.k39'), max: 100 },
+          { name: i18n.t('SmartPickerPage.k40'), max: 100 },
+          { name: i18n.t('SmartPickerPage.k41'), max: 100 },
+          { name: i18n.t('SmartPickerPage.k42'), max: 100 },
         ],
         radius: '65%',
         axisName: { color: '#9ca3af', fontSize: 10 },
@@ -98,8 +101,8 @@ export default function SmartPickerPage() {
     <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">{t('🎯 智能选股')}</h1>
-          <p className="text-gray-400 text-sm">{t('基于多因子模型的 Top 10 推荐')}</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{t(i18n.t('SmartPickerPage.k43'))}</h1>
+          <p className="text-gray-400 text-sm">{t(i18n.t('SmartPickerPage.k44'))}</p>
         </div>
         <div className="flex gap-2">
           {(['score', 'changePct', 'pe'] as const).map((k) => (
@@ -112,7 +115,7 @@ export default function SmartPickerPage() {
                   : 'bg-[#1a1a25] border-white/5 text-gray-400 hover:text-gray-200'
               }`}
             >
-              {k === 'score' ? '按评分' : k === 'changePct' ? '按涨跌幅' : '按PE'}
+              {k === 'score' ? i18n.t('SmartPickerPage.k45') : k === 'changePct' ? i18n.t('SmartPickerPage.k46') : i18n.t('SmartPickerPage.k47')}
             </button>
           ))}
           <button
@@ -120,7 +123,7 @@ export default function SmartPickerPage() {
             disabled={loading}
             className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-1.5 rounded-lg transition-colors"
           >
-            {loading ? '刷新中...' : t('components.refresh')}
+            {loading ? i18n.t('SmartPickerPage.k48') : t('components.refresh')}
           </button>
         </div>
       </div>
@@ -131,14 +134,14 @@ export default function SmartPickerPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                <th className="px-4 py-3 text-left">{t('排名')}</th>
-                <th className="px-4 py-3 text-left">{t('股票')}</th>
-                <th className="px-4 py-3 text-right">{t('评分')}</th>
+                <th className="px-4 py-3 text-left">{t(i18n.t('SmartPickerPage.k49'))}</th>
+                <th className="px-4 py-3 text-left">{t(i18n.t('SmartPickerPage.k50'))}</th>
+                <th className="px-4 py-3 text-right">{t(i18n.t('SmartPickerPage.k51'))}</th>
                 <th className="px-4 py-3 text-right">{t("components.price")}</th>
                 <th className="px-4 py-3 text-right">{t("components.priceChange")}</th>
                 <th className="px-4 py-3 text-right">{t("components.peRatio")}</th>
                 <th className="px-4 py-3 text-right">{t("components.marketCap")}</th>
-                <th className="px-4 py-3 text-left">{t('推荐理由')}</th>
+                <th className="px-4 py-3 text-left">{t(i18n.t('SmartPickerPage.k52'))}</th>
                 <th className="px-4 py-3 text-center">{t("components.actions")}</th>
               </tr>
             </thead>
@@ -198,7 +201,7 @@ export default function SmartPickerPage() {
                 <h2 className="text-xl font-bold text-white">{selected.name} <span className="text-gray-500">({selected.code})</span></h2>
                 <div className="flex items-center gap-3 mt-1">
                   <span className="text-2xl font-bold text-[#D4A853]">{selected.score}</span>
-                  <span className="text-sm text-gray-400">{t('综合评分')}</span>
+                  <span className="text-sm text-gray-400">{t(i18n.t('SmartPickerPage.k53'))}</span>
                   <span className={`text-sm font-mono ${selected.changePct >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
                     {selected.changePct >= 0 ? '+' : ''}{selected.changePct.toFixed(2)}%
                   </span>
@@ -213,11 +216,11 @@ export default function SmartPickerPage() {
             {/* Dimension Breakdown */}
             <div className="grid grid-cols-5 gap-2 mt-4">
               {[
-                { label: '价值', val: selected.dimensions.value },
-                { label: '成长', val: selected.dimensions.growth },
-                { label: '动量', val: selected.dimensions.momentum },
-                { label: '质量', val: selected.dimensions.quality },
-                { label: '情绪', val: selected.dimensions.sentiment },
+                { label: i18n.t('SmartPickerPage.k54'), val: selected.dimensions.value },
+                { label: i18n.t('SmartPickerPage.k55'), val: selected.dimensions.growth },
+                { label: i18n.t('SmartPickerPage.k56'), val: selected.dimensions.momentum },
+                { label: i18n.t('SmartPickerPage.k57'), val: selected.dimensions.quality },
+                { label: i18n.t('SmartPickerPage.k58'), val: selected.dimensions.sentiment },
               ].map((d) => (
                 <div key={d.label} className="bg-deep rounded-lg p-3 text-center">
                   <div className="text-lg font-bold text-white">{d.val}</div>
@@ -231,7 +234,7 @@ export default function SmartPickerPage() {
 
             {/* Reasons */}
             <div className="mt-4">
-              <div className="text-xs text-gray-500 mb-2">{t('推荐理由')}</div>
+              <div className="text-xs text-gray-500 mb-2">{t(i18n.t('SmartPickerPage.k59'))}</div>
               <div className="flex flex-wrap gap-2">
                 {selected.reasons.map((r) => (
                   <span key={r} className="text-xs bg-[#C9A046]/10 text-[#D4A853] px-2 py-1 rounded-lg">{r}</span>

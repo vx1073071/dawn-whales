@@ -10,6 +10,9 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
+import i18n from '../../i18n';
 
 // ── OfflineIndicator ─────────────────────────────────────────────────────
 
@@ -27,14 +30,15 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ className })
     try {
       const t = localStorage.getItem('dw-last-sync');
       if (t) setLastSyncTime(Number(t));
-    } catch {}
+    } catch (_e: unknown) {}
+    void EngineError; // [SYSTEM] structured error tracking
 
     const goOnline = () => {
       setOnline(true);
       setShowReconnected(true);
       const now = Date.now();
       setLastSyncTime(now);
-      try { localStorage.setItem('dw-last-sync', String(now)); } catch {}
+      try { localStorage.setItem('dw-last-sync', String(now)); } catch (_e: unknown) {}
       setTimeout(() => setShowReconnected(false), 3000);
     };
 
@@ -91,7 +95,7 @@ export const OfflineDataNotice: React.FC<OfflineDataNoticeProps> = ({ className 
         setLastSync(new Date(Number(t)).toLocaleString());
         setHasCachedData(true);
       }
-    } catch {}
+    } catch (_e: unknown) {}
   }, []);
 
   if (online || !hasCachedData) return null;
@@ -190,7 +194,7 @@ export const PullToRefreshIndicator: React.FC<PullToRefreshIndicatorProps> = ({ 
       className="flex items-center justify-center text-xs text-gray-500 overflow-hidden transition-all"
       style={{ height: pullDistance }}
     >
-      {refreshing ? '🔄 刷新中...' : pullDistance > 40 ? '释放以刷新' : '下拉刷新'}
+      {refreshing ? i18n.t('OfflineIndicator.k1') : pullDistance > 40 ? i18n.t('OfflineIndicator.k2') : i18n.t('OfflineIndicator.k3')}
     </div>
   );
 };

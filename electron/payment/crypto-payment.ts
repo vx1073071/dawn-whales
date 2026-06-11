@@ -3,6 +3,8 @@
 // No KYC, no real-name requirements
 
 import log from 'electron-log';
+import { EngineError } from './engine/core/engine-error';
+
 
 export interface PaymentRequest {
   tier: 'starter' | 'pro' | 'lifetime';

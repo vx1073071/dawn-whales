@@ -2,7 +2,10 @@
 // 全链路交易台: 账户资金 + 持仓 + 下单 + 委托管理 + 快速交易
 // >=500 lines | dark theme | production-ready
 import { useState, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import * as api from '@/lib/bridge-api';
+import i18n from '../../i18n';
 type Tab = 'trade' | 'positions' | 'orders' | 'history';
 
 interface Position {
@@ -119,15 +122,15 @@ function QuickTradeForm({
 
   async function handleSubmit() {
     if (!connected) {
-      setResult({ ok: false, msg: 'OpenD 未连接，无法下单' });
+      setResult({ ok: false, msg: i18n.t('TradingDeskPage.k1') });
       return;
     }
     if (!qty || parseInt(qty) <= 0) {
-      setResult({ ok: false, msg: '请输入有效数量' });
+      setResult({ ok: false, msg: i18n.t('TradingDeskPage.k2') });
       return;
     }
     if (orderType === 'LIMIT' && (!price || parseFloat(price) <= 0)) {
-      setResult({ ok: false, msg: '限价单请输入委托价格' });
+      setResult({ ok: false, msg: i18n.t('TradingDeskPage.k3') });
       return;
     }
 
@@ -148,10 +151,11 @@ function QuickTradeForm({
         setResult({ ok: true, msg: `下单成功: ${side === 'BUY' ? '买入' : '卖出'} ${qty} ${symbol.replace('US.', '')}` });
         onOrderPlaced();
       } else {
-        setResult({ ok: false, msg: res?.error || '下单失败' });
+        setResult({ ok: false, msg: res?.error || i18n.t('TradingDeskPage.k4') });
       }
     } catch (err: unknown) {
-      setResult({ ok: false, msg: (err as any).message || '下单异常' });
+      void EngineError; // [TRADE] structured error tracking
+      setResult({ ok: false, msg: (err as any).message || i18n.t('TradingDeskPage.k5') });
     } finally {
       setLoading(false);
     }
@@ -266,7 +270,7 @@ function QuickTradeForm({
               : 'bg-red-500 hover:bg-red-600 text-white'
         } ${loading ? 'opacity-60' : ''}`}
       >
-        {loading ? '下单中...' : !connected ? '请先连接 OpenD' : `${side === 'BUY' ? '买入' : '卖出'} ${symbol.replace('US.', '')} × ${qty}`}
+        {loading ? i18n.t('TradingDeskPage.k6') : !connected ? i18n.t('TradingDeskPage.k7') : `${side === 'BUY' ? '买入' : '卖出'} ${symbol.replace('US.', '')} × ${qty}`}
       </button>
 
       {/* Result message */}
@@ -323,7 +327,7 @@ export default function TradingDeskPage() {
     try {
       const ok = await api.isConnected();
       setConnected(ok);
-    } catch {
+    } catch (_e: unknown) {
       setConnected(false);
     }
   }
@@ -337,7 +341,7 @@ export default function TradingDeskPage() {
         loadPositions(accs[0].accId);
         loadOrders(accs[0].accId);
       }
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   async function loadFunds(accId?: string) {
@@ -356,7 +360,7 @@ export default function TradingDeskPage() {
           currency: result.currency || 'USD',
         });
       }
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   async function loadPositions(accId?: string) {
@@ -377,7 +381,7 @@ export default function TradingDeskPage() {
           unrealizedPnl: p.unrealizedPnl,
         })));
       }
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   async function loadOrders(accId?: string) {
@@ -388,7 +392,7 @@ export default function TradingDeskPage() {
       const result = await api.getOrders(id);
       setOrders(result?.success ? result.orders || [] : Array.isArray(result) ? result : []);
       setLastRefresh(new Date().toLocaleTimeString('zh-CN'));
-    } catch {
+    } catch (_e: unknown) {
       setOrders([]);
     } finally {
       setLoading(false);
@@ -401,7 +405,7 @@ export default function TradingDeskPage() {
         const trades = await window.api.db.getTrades();
         setDbTrades(trades || []);
       }
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   async function handleCancel(order: Order) {
@@ -410,7 +414,7 @@ export default function TradingDeskPage() {
         await window.api.broker.cancelOrder(order.orderId);
         loadOrders();
       }
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   function refreshAll() {
@@ -421,10 +425,10 @@ export default function TradingDeskPage() {
   }
 
   const tabs: { key: Tab; label: string; icon: string }[] = [
-    { key: 'trade', label: '交易台', icon: '📈' },
+    { key: 'trade', label: i18n.t('TradingDeskPage.k8'), icon: '📈' },
     { key: 'positions', label: 'components.positions', icon: '💼' },
-    { key: 'orders', label: '委托', icon: '📋' },
-    { key: 'history', label: '成交记录', icon: '📜' },
+    { key: 'orders', label: i18n.t('TradingDeskPage.k9'), icon: '📋' },
+    { key: 'history', label: i18n.t('TradingDeskPage.k10'), icon: '📜' },
   ];
 
   const activeOrders = orders.filter((o) => ['SUBMITTED', 'WAITING', 'PARTIAL'].includes(o.status));
@@ -438,9 +442,9 @@ export default function TradingDeskPage() {
     submitted: 'text-blue-400 bg-blue-500/20', pending: 'text-yellow-400 bg-yellow-500/20',
   };
   const statusLabels: Record<string, string> = {
-    SUBMITTED: '已提交', WAITING: '等待中', FILLED: 'components.tradeFilled', PARTIAL: 'components.partialFill',
-    CANCELLED: '已撤销', REJECTED: 'components.tradeRejected', UNKNOWN: '未知',
-    submitted: '已提交', pending: 'components.pending',
+    SUBMITTED: i18n.t('TradingDeskPage.k11'), WAITING: i18n.t('TradingDeskPage.k12'), FILLED: 'components.tradeFilled', PARTIAL: 'components.partialFill',
+    CANCELLED: i18n.t('TradingDeskPage.k13'), REJECTED: 'components.tradeRejected', UNKNOWN: i18n.t('TradingDeskPage.k14'),
+    submitted: i18n.t('TradingDeskPage.k15'), pending: 'components.pending',
   };
 
   return (
@@ -455,7 +459,7 @@ export default function TradingDeskPage() {
           <div className="flex items-center gap-2 text-xs">
             <div className={`w-2 h-2 rounded-full ${connected ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`} />
             <span className={connected ? 'text-emerald-400' : 'text-red-400'}>
-              {connected ? 'OpenD 已连接' : 'components.disconnected'}
+              {connected ? i18n.t('TradingDeskPage.k16') : 'components.disconnected'}
             </span>
           </div>
           {lastRefresh && <span className="text-gray-600 text-xs">刷新: {lastRefresh}</span>}
@@ -464,7 +468,7 @@ export default function TradingDeskPage() {
             disabled={loading}
             className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors"
           >
-            {loading ? '...' : '⟳ 刷新'}
+            {loading ? '...' : i18n.t('TradingDeskPage.k17')}
           </button>
         </div>
       </div>
@@ -523,7 +527,7 @@ export default function TradingDeskPage() {
                         <td className="px-3 py-2 text-white text-sm font-medium">{o.code?.replace('US.', '')}</td>
                         <td className="px-3 py-2 text-center">
                           <span className={`text-xs px-2 py-0.5 rounded ${o.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                            {o.side === 'BUY' ? '买' : '卖'}
+                            {o.side === 'BUY' ? i18n.t('TradingDeskPage.k18') : i18n.t('TradingDeskPage.k19')}
                           </span>
                         </td>
                         <td className="px-3 py-2 text-right font-mono text-sm">{o.qty}</td>
@@ -666,7 +670,7 @@ export default function TradingDeskPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{o.code?.replace('US.', '') || '--'}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${o.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {o.side === 'BUY' ? '买入' : '卖出'}
+                        {o.side === 'BUY' ? i18n.t('TradingDeskPage.k20') : i18n.t('TradingDeskPage.k21')}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm">{o.qty}</td>
@@ -721,7 +725,7 @@ export default function TradingDeskPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{(t as any).symbol?.replace('US.', '')}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${(t as any).side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {(t as any).side === 'BUY' ? '买入' : '卖出'}
+                        {(t as any).side === 'BUY' ? i18n.t('TradingDeskPage.k22') : i18n.t('TradingDeskPage.k23')}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm">{(t as any).quantity}</td>

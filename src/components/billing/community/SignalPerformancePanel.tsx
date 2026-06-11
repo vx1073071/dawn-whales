@@ -13,6 +13,7 @@
 
 import { useState, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -85,18 +86,18 @@ function computeGrade(winRate: number, sharpe: number, maxDD: number): SignalGra
 // ── Mock ────────────────────────────────────────────────────────────────
 
 const mockSignals: SignalRecord[] = [
-  { id: 'sig-001', symbol: 'AAPL', market: 'US', direction: 'BUY', entryPrice: 195.2, exitPrice: 202.5, entryDate: '2026-06-07', exitDate: '2026-06-08', pnl: 3.74, result: 'WIN', confidence: 0.88, reason: 'PE低位+50MA金叉', agent: 'Fundamentals' },
-  { id: 'sig-002', symbol: 'TSLA', market: 'US', direction: 'SELL', entryPrice: 248.0, exitPrice: 252.3, entryDate: '2026-06-06', exitDate: '2026-06-07', pnl: -1.73, result: 'LOSS', confidence: 0.72, reason: '布林带上轨+RSI超买', agent: 'Technical' },
-  { id: 'sig-003', symbol: 'NVDA', market: 'US', direction: 'BUY', entryPrice: 142.5, exitPrice: 151.8, entryDate: '2026-06-05', exitDate: '2026-06-06', pnl: 6.53, result: 'WIN', confidence: 0.91, reason: 'AI算力需求+突破前高', agent: 'Sentiment' },
-  { id: 'sig-004', symbol: 'HK.00700', market: 'HK', direction: 'BUY', entryPrice: 420.0, exitPrice: 438.5, entryDate: '2026-06-04', exitDate: '2026-06-05', pnl: 4.40, result: 'WIN', confidence: 0.85, reason: '回购+南向资金持续流入', agent: 'Fundamentals' },
-  { id: 'sig-005', symbol: 'MSFT', market: 'US', direction: 'SELL', entryPrice: 478.0, exitPrice: 465.2, entryDate: '2026-06-03', exitDate: '2026-06-04', pnl: 2.68, result: 'WIN', confidence: 0.79, reason: 'MACD顶背离', agent: 'Technical' },
-  { id: 'sig-006', symbol: 'SH.600519', market: 'CN', direction: 'BUY', entryPrice: 1680.0, exitPrice: 1645.0, entryDate: '2026-06-02', exitDate: '2026-06-04', pnl: -2.08, result: 'LOSS', confidence: 0.65, reason: '消费复苏预期', agent: 'Macro' },
-  { id: 'sig-007', symbol: 'GOOGL', market: 'US', direction: 'BUY', entryPrice: 195.0, exitPrice: 201.2, entryDate: '2026-06-01', exitDate: '2026-06-02', pnl: 3.18, result: 'WIN', confidence: 0.83, reason: 'AI搜索发布+平台突破', agent: 'Sentiment' },
-  { id: 'sig-008', symbol: 'META', market: 'US', direction: 'BUY', entryPrice: 632.0, exitPrice: 648.5, entryDate: '2026-05-30', exitDate: '2026-06-01', pnl: 2.61, result: 'WIN', confidence: 0.77, reason: '广告收入超预期', agent: 'Fundamentals' },
-  { id: 'sig-009', symbol: 'HK.09988', market: 'HK', direction: 'BUY', entryPrice: 125.0, entryDate: '2026-06-08', result: 'PENDING', confidence: 0.74, reason: '618大促+云业务加速', agent: 'Fundamentals' },
-  { id: 'sig-010', symbol: 'AMD', market: 'US', direction: 'SELL', entryPrice: 185.0, exitPrice: 178.5, entryDate: '2026-05-29', exitDate: '2026-05-30', pnl: 3.51, result: 'WIN', confidence: 0.81, reason: '竞争加剧+估值过高', agent: 'Technical' },
-  { id: 'sig-011', symbol: 'TSM', market: 'US', direction: 'BUY', entryPrice: 168.0, exitPrice: 163.4, entryDate: '2026-05-28', exitDate: '2026-05-29', pnl: -2.74, result: 'LOSS', confidence: 0.70, reason: '产能扩张利好', agent: 'Macro' },
-  { id: 'sig-012', symbol: 'SH.000858', market: 'CN', direction: 'BUY', entryPrice: 198.0, exitPrice: 208.5, entryDate: '2026-05-27', exitDate: '2026-05-28', pnl: 5.30, result: 'WIN', confidence: 0.87, reason: '白酒旺季+分红预期', agent: 'Fundamentals' },
+  { id: 'sig-001', symbol: 'AAPL', market: 'US', direction: 'BUY', entryPrice: 195.2, exitPrice: 202.5, entryDate: '2026-06-07', exitDate: '2026-06-08', pnl: 3.74, result: 'WIN', confidence: 0.88, reason: i18n.t('SignalPerformancePanel.k1'), agent: 'Fundamentals' },
+  { id: 'sig-002', symbol: 'TSLA', market: 'US', direction: 'SELL', entryPrice: 248.0, exitPrice: 252.3, entryDate: '2026-06-06', exitDate: '2026-06-07', pnl: -1.73, result: 'LOSS', confidence: 0.72, reason: i18n.t('SignalPerformancePanel.k2'), agent: 'Technical' },
+  { id: 'sig-003', symbol: 'NVDA', market: 'US', direction: 'BUY', entryPrice: 142.5, exitPrice: 151.8, entryDate: '2026-06-05', exitDate: '2026-06-06', pnl: 6.53, result: 'WIN', confidence: 0.91, reason: i18n.t('SignalPerformancePanel.k3'), agent: 'Sentiment' },
+  { id: 'sig-004', symbol: 'HK.00700', market: 'HK', direction: 'BUY', entryPrice: 420.0, exitPrice: 438.5, entryDate: '2026-06-04', exitDate: '2026-06-05', pnl: 4.40, result: 'WIN', confidence: 0.85, reason: i18n.t('SignalPerformancePanel.k4'), agent: 'Fundamentals' },
+  { id: 'sig-005', symbol: 'MSFT', market: 'US', direction: 'SELL', entryPrice: 478.0, exitPrice: 465.2, entryDate: '2026-06-03', exitDate: '2026-06-04', pnl: 2.68, result: 'WIN', confidence: 0.79, reason: i18n.t('SignalPerformancePanel.k5'), agent: 'Technical' },
+  { id: 'sig-006', symbol: 'SH.600519', market: 'CN', direction: 'BUY', entryPrice: 1680.0, exitPrice: 1645.0, entryDate: '2026-06-02', exitDate: '2026-06-04', pnl: -2.08, result: 'LOSS', confidence: 0.65, reason: i18n.t('SignalPerformancePanel.k6'), agent: 'Macro' },
+  { id: 'sig-007', symbol: 'GOOGL', market: 'US', direction: 'BUY', entryPrice: 195.0, exitPrice: 201.2, entryDate: '2026-06-01', exitDate: '2026-06-02', pnl: 3.18, result: 'WIN', confidence: 0.83, reason: i18n.t('SignalPerformancePanel.k7'), agent: 'Sentiment' },
+  { id: 'sig-008', symbol: 'META', market: 'US', direction: 'BUY', entryPrice: 632.0, exitPrice: 648.5, entryDate: '2026-05-30', exitDate: '2026-06-01', pnl: 2.61, result: 'WIN', confidence: 0.77, reason: i18n.t('SignalPerformancePanel.k8'), agent: 'Fundamentals' },
+  { id: 'sig-009', symbol: 'HK.09988', market: 'HK', direction: 'BUY', entryPrice: 125.0, entryDate: '2026-06-08', result: 'PENDING', confidence: 0.74, reason: i18n.t('SignalPerformancePanel.k9'), agent: 'Fundamentals' },
+  { id: 'sig-010', symbol: 'AMD', market: 'US', direction: 'SELL', entryPrice: 185.0, exitPrice: 178.5, entryDate: '2026-05-29', exitDate: '2026-05-30', pnl: 3.51, result: 'WIN', confidence: 0.81, reason: i18n.t('SignalPerformancePanel.k10'), agent: 'Technical' },
+  { id: 'sig-011', symbol: 'TSM', market: 'US', direction: 'BUY', entryPrice: 168.0, exitPrice: 163.4, entryDate: '2026-05-28', exitDate: '2026-05-29', pnl: -2.74, result: 'LOSS', confidence: 0.70, reason: i18n.t('SignalPerformancePanel.k11'), agent: 'Macro' },
+  { id: 'sig-012', symbol: 'SH.000858', market: 'CN', direction: 'BUY', entryPrice: 198.0, exitPrice: 208.5, entryDate: '2026-05-27', exitDate: '2026-05-28', pnl: 5.30, result: 'WIN', confidence: 0.87, reason: i18n.t('SignalPerformancePanel.k12'), agent: 'Fundamentals' },
 ];
 
 const mockPerformance: SignalPerformance = {
@@ -295,7 +296,7 @@ export default function SignalPerformancePanel({
                    colorRanges={[{ min: 0, max: 40, color: '#EF4444' }, { min: 40, max: 55, color: '#F97316' }, { min: 55, max: 70, color: '#FACC15' }, { min: 70, max: 100, color: '#22C55E' }]} />
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4 flex flex-col items-center">
-            <Gauge value={perf.sharpeRatio} label="夏普比率" max={4} unit=""
+            <Gauge value={perf.sharpeRatio} label={i18n.t('SignalPerformancePanel.k13')} max={4} unit=""
                    colorRanges={[{ min: -10, max: 0.5, color: '#EF4444' }, { min: 0.5, max: 1.5, color: '#FACC15' }, { min: 1.5, max: 2.5, color: '#22C55E' }, { min: 2.5, max: 10, color: '#3B82F6' }]} />
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4 flex flex-col items-center">
@@ -356,7 +357,7 @@ export default function SignalPerformancePanel({
               {(['all', 'WIN', 'LOSS', 'PENDING'] as const).map((f) => (
                 <button key={f} onClick={() => setSignalFilter(f)}
                         className={`px-2.5 py-1 rounded text-xs transition-colors ${signalFilter === f ? 'bg-white/[0.06] text-white' : 'text-gray-500 hover:text-gray-300'}`}>
-                  {f === 'all' ? 'components.all' : f === 'WIN' ? '✅ 盈利' : f === 'LOSS' ? '❌ 亏损' : '⏳ 持仓'}
+                  {f === 'all' ? 'components.all' : f === 'WIN' ? i18n.t('SignalPerformancePanel.k14') : f === 'LOSS' ? i18n.t('SignalPerformancePanel.k15') : i18n.t('SignalPerformancePanel.k16')}
                 </button>
               ))}
             </div>
@@ -422,7 +423,7 @@ export default function SignalPerformancePanel({
             })}
             {filteredSignals.length === 0 && (
               <div className="p-10 text-center text-gray-600 text-sm">
-                暂无{signalFilter === 'WIN' ? '盈利' : signalFilter === 'LOSS' ? '亏损' : 'components.positions'}信号
+                暂无{signalFilter === 'WIN' ? i18n.t('SignalPerformancePanel.k17') : signalFilter === 'LOSS' ? i18n.t('SignalPerformancePanel.k18') : 'components.positions'}信号
               </div>
             )}
           </div>

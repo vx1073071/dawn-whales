@@ -8,6 +8,8 @@ import { QuoteStreamService, QuoteTick } from '../data/quote-stream';
 import { StrategyEngine, SignalEvent } from './strategy-engine';
 import type { RiskEngine } from '../risk/risk-engine';
 import type { IBrokerAdapter, Order, Position } from '../../broker/IBrokerAdapter';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ───────────────────────────────────────────────────────────────────
 

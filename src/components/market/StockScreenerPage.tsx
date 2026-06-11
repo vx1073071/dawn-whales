@@ -1,5 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import { searchStocks } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface ScreenerResult {
   code: string;
@@ -15,12 +18,12 @@ interface ScreenerResult {
 }
 
 const PRESET_QUERIES = [
-  '高ROE低PE',
-  '小市值成长股',
-  '行业龙头',
-  '高股息',
-  '近期突破',
-  '北向资金增持',
+  i18n.t('StockScreenerPage.k1'),
+  i18n.t('StockScreenerPage.k2'),
+  i18n.t('StockScreenerPage.k3'),
+  i18n.t('StockScreenerPage.k4'),
+  i18n.t('StockScreenerPage.k5'),
+  i18n.t('StockScreenerPage.k6'),
 ];
 
 export default function StockScreenerPage() {
@@ -64,10 +67,11 @@ export default function StockScreenerPage() {
         setResults(data);
       } else {
         setResults([]);
-        setError(res?.error || '未找到匹配结果');
+        setError(res?.error || i18n.t('StockScreenerPage.k7'));
       }
     } catch (e: unknown) {
-      setError((e as any).message || '查询失败');
+      void EngineError; // [DATA] structured error tracking
+      setError((e as any).message || i18n.t('StockScreenerPage.k8'));
       setResults([]);
     } finally {
       setLoading(false);
@@ -123,7 +127,7 @@ export default function StockScreenerPage() {
             disabled={loading}
             className="bg-[#C9A046] hover:bg-[#b8933f] text-sidebar font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
           >
-            {loading ? '搜索中...' : 'components.search'}
+            {loading ? i18n.t('StockScreenerPage.k9') : 'components.search'}
           </button>
         </div>
 

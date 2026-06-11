@@ -3,6 +3,7 @@
 // v1.8.0 GA: production-grade resilience
 
 import { EventEmitter } from "events";
+import { EngineError, ErrorDomain, ErrorCode } from './engine-error';
 import log from 'electron-log';
 
 // ── Types ─────────────────────────────────────────────────────────────────
@@ -109,7 +110,7 @@ export class ErrorBoundaryEngine extends EventEmitter {
 
     // Send to crash reporting if configured
     if (this.config.reportUrl) {
-      this.sendCrashReport(report).catch(() => {
+      this.sendCrashReport(report).catch((_: unknown) => {
         // Silent fail — don't crash the crash reporter
       });
     }
@@ -200,7 +201,7 @@ export class ErrorBoundaryEngine extends EventEmitter {
       const data = await Promise.race([
         fn(),
         new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error(`Timeout after ${timeoutMs}ms`)), timeoutMs),
+          setTimeout(() => reject(new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `Timeout after ${timeoutMs}ms`)), timeoutMs),
         ),
       ]);
       return { success: true, data, error: null };
@@ -245,7 +246,7 @@ export class ErrorBoundaryEngine extends EventEmitter {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(report),
       });
-    } catch {
+    } catch (_e: unknown) {
       // Crash reporting failure should not propagate
     }
   }

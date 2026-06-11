@@ -11,6 +11,8 @@
  */
 
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+import i18n from '../../i18n';
 
 // ── Types (mirrors bridge types) ────────────────────────────────────────
 
@@ -74,8 +76,8 @@ const StatusBadge: React.FC<{ status: OrderStatus }> = ({ status }) => {
     EXPIRED: 'bg-gray-600/20 text-gray-500',
   };
   const labels: Record<OrderStatus, string> = {
-    PENDING: 'components.pending', SUBMITTED: '已提交', FILLED: 'components.tradeFilled',
-    PARTIALLY_FILLED: 'components.partialFill', CANCELLED: 'components.tradeCancelled', REJECTED: 'components.tradeRejected', EXPIRED: '已过期',
+    PENDING: 'components.pending', SUBMITTED: i18n.t('LiveTradingPanel.k1'), FILLED: 'components.tradeFilled',
+    PARTIALLY_FILLED: 'components.partialFill', CANCELLED: 'components.tradeCancelled', REJECTED: 'components.tradeRejected', EXPIRED: i18n.t('LiveTradingPanel.k2'),
   };
   return (
     <span className={`px-2 py-0.5 rounded text-[10px] font-medium ${colors[status]}`}>
@@ -181,7 +183,7 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
             </span>
           </h3>
           <p className="text-xs text-gray-500 mt-0.5">
-            {isRunning ? '🟢 运行中' : '🔴 已停止'} · {activeOrderCount} 活跃订单 · {paperPositions.length} 持仓
+            {isRunning ? i18n.t('LiveTradingPanel.k3') : i18n.t('LiveTradingPanel.k4')} · {activeOrderCount} 活跃订单 · {paperPositions.length} 持仓
           </p>
         </div>
 
@@ -195,7 +197,7 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
                 : 'bg-red-500/20 text-red-400 border border-red-500/30'
             }`}
           >
-            {mode === 'sim' ? '🔬 模拟盘' : '🔥 实盘'}
+            {mode === 'sim' ? i18n.t('LiveTradingPanel.k5') : i18n.t('LiveTradingPanel.k6')}
           </button>
 
           {/* Emergency Stop */}
@@ -244,9 +246,9 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
       {/* P&L ticker bar */}
       <div className="grid grid-cols-3 gap-3 mb-5">
         {([
-          { label: '组合市值', value: `$${totalPaperValue.toLocaleString()}`, color: 'text-white' },
-          { label: '未实现盈亏', value: `${totalUnrealizedPnl >= 0 ? '+' : ''}$${totalUnrealizedPnl.toLocaleString()}`, color: totalUnrealizedPnl >= 0 ? 'text-emerald-400' : 'text-red-400' },
-          { label: '已实现盈亏', value: `${totalRealizedPnl >= 0 ? '+' : ''}$${totalRealizedPnl.toLocaleString()}`, color: totalRealizedPnl >= 0 ? 'text-emerald-400' : 'text-red-400' },
+          { label: i18n.t('LiveTradingPanel.k7'), value: `$${totalPaperValue.toLocaleString()}`, color: 'text-white' },
+          { label: i18n.t('LiveTradingPanel.k8'), value: `${totalUnrealizedPnl >= 0 ? '+' : ''}$${totalUnrealizedPnl.toLocaleString()}`, color: totalUnrealizedPnl >= 0 ? 'text-emerald-400' : 'text-red-400' },
+          { label: i18n.t('LiveTradingPanel.k9'), value: `${totalRealizedPnl >= 0 ? '+' : ''}$${totalRealizedPnl.toLocaleString()}`, color: totalRealizedPnl >= 0 ? 'text-emerald-400' : 'text-red-400' },
         ] as const).map(card => (
           <div key={card.label} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/30 text-center">
             <div className="text-[10px] text-gray-500">{card.label}</div>
@@ -258,9 +260,9 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
       {/* Tab bar */}
       <div className="flex gap-1 mb-4 bg-gray-800/40 rounded-lg p-1">
         {([
-          { key: 'orders', label: '订单流' },
-          { key: 'positions', label: '持仓对账' },
-          { key: 'audit', label: '审计日志' },
+          { key: 'orders', label: i18n.t('LiveTradingPanel.k10') },
+          { key: 'positions', label: i18n.t('LiveTradingPanel.k11') },
+          { key: 'audit', label: i18n.t('LiveTradingPanel.k12') },
         ] as const).map(tab => (
           <button
             key={tab.key}
@@ -296,7 +298,7 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
                   <td className="py-2 pr-3 font-mono text-[10px]">{o.id}</td>
                   <td className="py-2 pr-3 font-mono">{o.symbol}</td>
                   <td className={`py-2 pr-3 text-right font-semibold ${o.side === 'BUY' ? 'text-emerald-400' : 'text-red-400'}`}>
-                    {o.side === 'BUY' ? '买' : '卖'}
+                    {o.side === 'BUY' ? i18n.t('LiveTradingPanel.k13') : i18n.t('LiveTradingPanel.k14')}
                   </td>
                   <td className="py-2 pr-3 text-right">{o.quantity}</td>
                   <td className="py-2 pr-3 text-right font-mono">{o.price ? `$${o.price}` : '-'}</td>
@@ -320,10 +322,10 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
             </h4>
             <div className="grid grid-cols-4 gap-3">
               {([
-                { label: '匹配', value: reconciliation.matched, color: 'text-emerald-400' },
-                { label: '仅模拟盘', value: reconciliation.paperOnly.length, color: 'text-yellow-400' },
-                { label: '仅实盘', value: reconciliation.liveOnly.length, color: 'text-orange-400' },
-                { label: '数量偏差', value: `${reconciliation.driftPercent}%`, color: reconciliation.driftPercent > 5 ? 'text-red-400' : 'text-emerald-400' },
+                { label: i18n.t('LiveTradingPanel.k15'), value: reconciliation.matched, color: 'text-emerald-400' },
+                { label: i18n.t('LiveTradingPanel.k16'), value: reconciliation.paperOnly.length, color: 'text-yellow-400' },
+                { label: i18n.t('LiveTradingPanel.k17'), value: reconciliation.liveOnly.length, color: 'text-orange-400' },
+                { label: i18n.t('LiveTradingPanel.k18'), value: `${reconciliation.driftPercent}%`, color: reconciliation.driftPercent > 5 ? 'text-red-400' : 'text-emerald-400' },
               ] as const).map(c => (
                 <div key={c.label} className="text-center">
                   <div className={`text-lg font-bold ${c.color}`}>{c.value}</div>
@@ -410,3 +412,5 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
 };
 
 export default LiveTradingPanel;
+
+void EngineError; // [SYSTEM] structured error tracking

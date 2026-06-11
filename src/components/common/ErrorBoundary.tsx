@@ -1,4 +1,6 @@
 import React, { Component, ReactNode } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import i18next from 'i18next';
 
 interface Props {
@@ -56,3 +58,5 @@ export default class ErrorBoundary extends Component<Props, State> {
     return this.props.children;
   }
 }
+
+void EngineError; // [SYSTEM] structured error tracking

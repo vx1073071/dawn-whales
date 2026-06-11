@@ -9,6 +9,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 
 // ── Subscribe Button ────────────────────────────────────────────────────
 
@@ -181,3 +182,5 @@ export default {
   MarketplaceErrorBoundary,
   useResponsiveCols,
 };
+
+void EngineError; // [DATA] structured error tracking

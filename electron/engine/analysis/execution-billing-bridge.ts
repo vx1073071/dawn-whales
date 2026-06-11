@@ -11,8 +11,11 @@
  */
 
 import { EventEmitter } from 'events';
+
 import { getBillingContract } from '../agents/ai-usage-billing-contract';
 import { getCommissionEngine } from './platform-commission-engine';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -113,7 +116,7 @@ export class ExecutionBillingBridge extends EventEmitter {
         billing.settleSession(params.analysisSessionId);
         const session = billing.getSession(params.analysisSessionId);
         if (session?.actualCostUSDT) aiAnalysisCost = session.actualCostUSDT;
-      } catch {
+      } catch (_e: unknown) {
         // Session may have been settled already
       }
     }
@@ -156,7 +159,7 @@ export class ExecutionBillingBridge extends EventEmitter {
       try {
         const commission = getCommissionEngine();
         commission.settle(entry.id, params.creator, totalAIFee);
-      } catch {
+      } catch (_e: unknown) {
         this.emit('settle:error', { entry, error: 'Commission engine unavailable' });
       }
     }

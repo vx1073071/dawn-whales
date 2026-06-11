@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 interface PositionDetail {
   symbol: string;
@@ -37,7 +38,7 @@ const DEMO_POSITION: PositionDetail = {
   dayPnl: 450,
   dayPnlPct: 1.15,
   beta: 3.0,
-  sector: '科技',
+  sector: i18n.t('PositionDetailPanel.k1'),
   pe: 25.4,
   dividendYield: 0.02,
 };
@@ -73,7 +74,7 @@ export default function PositionDetailPanel({
       {/* Tabs */}
       <div className="flex gap-1 mb-4 bg-[#12121a] rounded-lg p-0.5 w-fit">
         {([
-          { key: 'overview' as const, label: '概览' },
+          { key: 'overview' as const, label: i18n.t('PositionDetailPanel.k2') },
           { key: 'history' as const, label: t('components.history') },
           { key: 'risk' as const, label: t('components.risk') },
         ]).map((t) => (
@@ -93,12 +94,12 @@ export default function PositionDetailPanel({
       {tab === 'overview' && (
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-2">
-            <MetricBox label="持仓数量" value={position.qty.toString()} />
-            <MetricBox label="平均成本" value={`$${position.avgCost.toFixed(2)}`} />
+            <MetricBox label={i18n.t('PositionDetailPanel.k3')} value={position.qty.toString()} />
+            <MetricBox label={i18n.t('PositionDetailPanel.k4')} value={`$${position.avgCost.toFixed(2)}`} />
             <MetricBox label={t("components.marketPrice")} value={`$${position.marketPrice.toFixed(2)}`} />
             <MetricBox label={t("components.marketCap")} value={`$${position.marketValue.toLocaleString()}`} />
-            <MetricBox label="总盈亏" value={`${isProfit ? '+' : ''}$${position.totalPnl.toFixed(0)}`} color={isProfit ? 'text-emerald-400' : 'text-red-400'} />
-            <MetricBox label="今日盈亏" value={`${dayIsProfit ? '+' : ''}$${position.dayPnl.toFixed(0)}`} color={dayIsProfit ? 'text-emerald-400' : 'text-red-400'} />
+            <MetricBox label={i18n.t('PositionDetailPanel.k5')} value={`${isProfit ? '+' : ''}$${position.totalPnl.toFixed(0)}`} color={isProfit ? 'text-emerald-400' : 'text-red-400'} />
+            <MetricBox label={i18n.t('PositionDetailPanel.k6')} value={`${dayIsProfit ? '+' : ''}$${position.dayPnl.toFixed(0)}`} color={dayIsProfit ? 'text-emerald-400' : 'text-red-400'} />
           </div>
           {position.sector && (
             <div className="flex items-center gap-2 text-[10px]">
@@ -121,10 +122,10 @@ export default function PositionDetailPanel({
       {/* Risk Tab */}
       {tab === 'risk' && (
         <div className="space-y-2">
-          <RiskRow label="品种集中度" value={`${((position.marketValue / 100000) * 100).toFixed(1)}%`} threshold={20} />
-          <RiskRow label="Beta 暴露" value={position.beta?.toFixed(1) || 'N/A'} threshold={3} />
-          <RiskRow label="波动率贡献" value="中" threshold={0} />
-          <RiskRow label="止损距离" value={`${(((position.marketPrice - position.avgCost * 0.95) / position.marketPrice) * 100).toFixed(1)}%`} threshold={5} />
+          <RiskRow label={i18n.t('PositionDetailPanel.k7')} value={`${((position.marketValue / 100000) * 100).toFixed(1)}%`} threshold={20} />
+          <RiskRow label={i18n.t('PositionDetailPanel.k8')} value={position.beta?.toFixed(1) || 'N/A'} threshold={3} />
+          <RiskRow label={i18n.t('PositionDetailPanel.k9')} value={i18n.t('PositionDetailPanel.k10')} threshold={0} />
+          <RiskRow label={i18n.t('PositionDetailPanel.k11')} value={`${(((position.marketPrice - position.avgCost * 0.95) / position.marketPrice) * 100).toFixed(1)}%`} threshold={5} />
         </div>
       )}
     </div>

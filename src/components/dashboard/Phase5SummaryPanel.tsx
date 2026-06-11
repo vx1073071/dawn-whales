@@ -11,6 +11,7 @@
 
 import { useTranslation } from "react-i18next";
 import React, { useState, useMemo } from 'react';
+import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -59,7 +60,7 @@ const TEST_TREND: TestTrend[] = [
 ];
 
 const DEPLOY_HISTORY: DeployEvent[] = [
-  { version: 'v0.7.0', date: '06-06', milestone: 'Phase 4.3 闭环交易', tag: 'v0.7.0' },
+  { version: 'v0.7.0', date: '06-06', milestone: i18n.t('Phase5SummaryPanel.k1'), tag: 'v0.7.0' },
   { version: 'v0.7.0-R38', date: '06-06', milestone: 'AdaptiveParam + Reward + BacktestReplay' },
   { version: 'v0.7.0-R39', date: '06-07', milestone: 'StrategyOptimizer + MultiTimeframe + PortfolioRisk' },
   { version: 'v0.8.0', date: '06-07', milestone: 'LiveTradeBridge + v0.8.0 Release ✅', tag: 'v0.8.0' },
@@ -70,7 +71,7 @@ const DEPLOY_HISTORY: DeployEvent[] = [
 const StatusBadge: React.FC<{ status: EngineKPI['status'] }> = ({ status }) => {
   const { t } = useTranslation();
   const colors = { stable: 'bg-emerald-500/10 text-emerald-400', active: 'bg-blue-500/10 text-blue-400', beta: 'bg-amber-500/10 text-amber-400' };
-  const labels = { stable: '稳定', active: '活跃', beta: t('components.test') };
+  const labels = { stable: i18n.t('Phase5SummaryPanel.k2'), active: i18n.t('Phase5SummaryPanel.k3'), beta: t('components.test') };
   return <span className={`px-2 py-0.5 rounded text-[10px] ${colors[status]}`}>{labels[status]}</span>;
 };
 
@@ -117,10 +118,10 @@ export const Phase5SummaryPanel: React.FC<Phase5SummaryPanelProps> = ({ classNam
       {/* Summary cards */}
       <div className="grid grid-cols-4 gap-3 mb-5">
         {([
-          { label: '引擎总数', value: ENGINE_KPIS.length, color: 'text-white' },
-          { label: '总代码', value: `${(totalLines / 1000).toFixed(1)}K`, color: 'text-blue-400' },
-          { label: '引擎测试', value: totalTests, color: 'text-emerald-400' },
-          { label: '均P95延迟', value: `${avgP95}ms`, color: avgP95 < 100 ? 'text-emerald-400' : 'text-amber-400' },
+          { label: i18n.t('Phase5SummaryPanel.k4'), value: ENGINE_KPIS.length, color: 'text-white' },
+          { label: i18n.t('Phase5SummaryPanel.k5'), value: `${(totalLines / 1000).toFixed(1)}K`, color: 'text-blue-400' },
+          { label: i18n.t('Phase5SummaryPanel.k6'), value: totalTests, color: 'text-emerald-400' },
+          { label: i18n.t('Phase5SummaryPanel.k7'), value: `${avgP95}ms`, color: avgP95 < 100 ? 'text-emerald-400' : 'text-amber-400' },
         ] as const).map(c => (
           <div key={c.label} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/30 text-center">
             <div className={`text-lg font-bold ${c.color}`}>{c.value}</div>

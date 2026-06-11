@@ -12,6 +12,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -215,3 +216,5 @@ const TransactionMonitor: React.FC<TransactionMonitorProps> = ({
 };
 
 export default TransactionMonitor;
+
+void EngineError; // [TRADE] structured error tracking

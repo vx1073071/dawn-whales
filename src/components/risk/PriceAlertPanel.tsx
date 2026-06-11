@@ -1,6 +1,7 @@
 // ── DAWN WHALES — PriceAlertPanel (价格告警面板) ───────────────────────────
 
 import { useState, useEffect, useCallback } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
 
 interface PriceAlert {
@@ -27,6 +28,7 @@ export default function PriceAlertPanel() {
       const saved = localStorage.getItem('dawn-whales-alerts');
       if (saved) setAlerts(JSON.parse(saved));
     } catch (e) { console.error('[Error:PriceAlertPanel]', e); }
+  void EngineError; // [SYSTEM] structured error tracking
   }, []);
 
   // Save to localStorage

@@ -10,6 +10,8 @@ import type { WsMarketDataEngine, TickData } from './ws-market-data';
 import type { TradeExecutor, TradeSignal } from '../analysis/trade-executor';
 import { EventEmitter } from 'events';
 import { v4 as uuidv4 } from 'uuid';
+import { EngineError } from '../core/engine-error';
+
 
 // ─── Interfaces ───────────────────────────────────────────────
 

@@ -2,6 +2,7 @@
 // 板块涨跌全景 — 中国惯例: 红涨绿跌
 
 import { useState, useMemo } from 'react';
+import i18n from '../../i18n';
 
 interface SectorItem {
   name: string;
@@ -17,27 +18,27 @@ interface MarketHeatmapProps {
 }
 
 const DEFAULT_SECTORS: SectorItem[] = [
-  { name: '半导体', changePct: 3.24, marketCap: 2800, leaders: ['中芯国际', '韦尔股份'] },
-  { name: '人工智能', changePct: 2.87, marketCap: 3200, leaders: ['科大讯飞', '海康威视'] },
-  { name: '新能源', changePct: 1.56, marketCap: 4500, leaders: ['宁德时代', '比亚迪'] },
-  { name: '白酒', changePct: 0.98, marketCap: 3800, leaders: ['贵州茅台', '五粮液'] },
-  { name: '银行', changePct: 0.45, marketCap: 5200, leaders: ['工商银行', '招商银行'] },
-  { name: '券商', changePct: -0.32, marketCap: 1800, leaders: ['中信证券', '东方财富'] },
-  { name: '医药', changePct: -0.78, marketCap: 2900, leaders: ['恒瑞医药', '药明康德'] },
-  { name: '房地产', changePct: -1.23, marketCap: 1500, leaders: ['万科A', '保利发展'] },
-  { name: '煤炭', changePct: -1.56, marketCap: 900, leaders: ['中国神华', '陕西煤业'] },
-  { name: '钢铁', changePct: -2.10, marketCap: 600, leaders: ['宝钢股份', '鞍钢股份'] },
-  { name: '光伏', changePct: 1.82, marketCap: 2100, leaders: ['隆基绿能', '通威股份'] },
-  { name: '汽车', changePct: 0.65, marketCap: 2400, leaders: ['比亚迪', '长城汽车'] },
-  { name: '通信', changePct: 2.15, marketCap: 1700, leaders: ['中国移动', '中兴通讯'] },
-  { name: '游戏', changePct: -0.95, marketCap: 800, leaders: ['腾讯控股', '网易'] },
-  { name: '航运', changePct: 0.32, marketCap: 500, leaders: ['中远海控', '招商轮船'] },
-  { name: '黄金', changePct: 1.45, marketCap: 400, leaders: ['山东黄金', '紫金矿业'] },
+  { name: i18n.t('MarketHeatmap.k1'), changePct: 3.24, marketCap: 2800, leaders: [i18n.t('MarketHeatmap.k2'), i18n.t('MarketHeatmap.k3')] },
+  { name: i18n.t('MarketHeatmap.k4'), changePct: 2.87, marketCap: 3200, leaders: [i18n.t('MarketHeatmap.k5'), i18n.t('MarketHeatmap.k6')] },
+  { name: i18n.t('MarketHeatmap.k7'), changePct: 1.56, marketCap: 4500, leaders: [i18n.t('MarketHeatmap.k8'), i18n.t('MarketHeatmap.k9')] },
+  { name: i18n.t('MarketHeatmap.k10'), changePct: 0.98, marketCap: 3800, leaders: [i18n.t('MarketHeatmap.k11'), i18n.t('MarketHeatmap.k12')] },
+  { name: i18n.t('MarketHeatmap.k13'), changePct: 0.45, marketCap: 5200, leaders: [i18n.t('MarketHeatmap.k14'), i18n.t('MarketHeatmap.k15')] },
+  { name: i18n.t('MarketHeatmap.k16'), changePct: -0.32, marketCap: 1800, leaders: [i18n.t('MarketHeatmap.k17'), i18n.t('MarketHeatmap.k18')] },
+  { name: i18n.t('MarketHeatmap.k19'), changePct: -0.78, marketCap: 2900, leaders: [i18n.t('MarketHeatmap.k20'), i18n.t('MarketHeatmap.k21')] },
+  { name: i18n.t('MarketHeatmap.k22'), changePct: -1.23, marketCap: 1500, leaders: [i18n.t('MarketHeatmap.k23'), i18n.t('MarketHeatmap.k24')] },
+  { name: i18n.t('MarketHeatmap.k25'), changePct: -1.56, marketCap: 900, leaders: [i18n.t('MarketHeatmap.k26'), i18n.t('MarketHeatmap.k27')] },
+  { name: i18n.t('MarketHeatmap.k28'), changePct: -2.10, marketCap: 600, leaders: [i18n.t('MarketHeatmap.k29'), i18n.t('MarketHeatmap.k30')] },
+  { name: i18n.t('MarketHeatmap.k31'), changePct: 1.82, marketCap: 2100, leaders: [i18n.t('MarketHeatmap.k32'), i18n.t('MarketHeatmap.k33')] },
+  { name: i18n.t('MarketHeatmap.k34'), changePct: 0.65, marketCap: 2400, leaders: [i18n.t('MarketHeatmap.k35'), i18n.t('MarketHeatmap.k36')] },
+  { name: i18n.t('MarketHeatmap.k37'), changePct: 2.15, marketCap: 1700, leaders: [i18n.t('MarketHeatmap.k38'), i18n.t('MarketHeatmap.k39')] },
+  { name: i18n.t('MarketHeatmap.k40'), changePct: -0.95, marketCap: 800, leaders: [i18n.t('MarketHeatmap.k41'), i18n.t('MarketHeatmap.k42')] },
+  { name: i18n.t('MarketHeatmap.k43'), changePct: 0.32, marketCap: 500, leaders: [i18n.t('MarketHeatmap.k44'), i18n.t('MarketHeatmap.k45')] },
+  { name: i18n.t('MarketHeatmap.k46'), changePct: 1.45, marketCap: 400, leaders: [i18n.t('MarketHeatmap.k47'), i18n.t('MarketHeatmap.k48')] },
 ];
 
 export default function MarketHeatmap({
   data = DEFAULT_SECTORS,
-  title = '🗺️ 市场板块热力图',
+  title = i18n.t('MarketHeatmap.k49'),
   onSectorClick,
 }: MarketHeatmapProps) {
   const [selectedSector, setSelectedSector] = useState<string | null>(null);

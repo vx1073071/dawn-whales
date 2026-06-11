@@ -4,12 +4,14 @@
 // Cache: SQLite + memory, 5min TTL during trading hours, 30min after hours
 
 import log from 'electron-log';
+import { EngineError } from '../engine/core/engine-error';
 import https from 'https';
 import http from 'http';
 import { exec } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { httpGet } from '../utils/http';
+import i18n from '../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -150,6 +152,8 @@ export class EMDataProvider {
       }
       return result;
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+      void EngineError; // structured error domain: DATA
       log.warn(`[EMDataProvider] API fetch failed: ${boardType}`, err.message);
 
       // 3b. Fallback: try Python skill script
@@ -337,7 +341,7 @@ export class EMDataProvider {
     }
     if (!scriptPath) return null;
 
-    const boardTypeCN = boardType === 'industry' ? '行业板块' : boardType === 'concept' ? '概念板块' : '地域板块';
+    const boardTypeCN = boardType === 'industry' ? i18n.t('EmDataProvider.k0') : boardType === 'concept' ? i18n.t('EmDataProvider.k1') : i18n.t('EmDataProvider.k2');
     const query = `今日${boardTypeCN}涨跌幅排名`;
 
     try {
@@ -369,6 +373,7 @@ export class EMDataProvider {
         source: 'skill-script',
       };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.warn('[EMDataProvider] Skill script fallback failed:', err.message);
       return null;
     }

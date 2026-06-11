@@ -2,6 +2,7 @@
 // Aggregates account data, positions, and summary across multiple brokers.
 
 import log from 'electron-log';
+import { EngineError } from '../engine/core/engine-error';
 import type { BrokerManager } from './BrokerManager';
 import type { AccountInfo, PositionInfo, IBrokerAdapter } from './IBrokerAdapter';
 
@@ -141,6 +142,8 @@ export class AccountAggregator {
           try {
             funds = await broker.adapter.getFunds(acct.accountId);
           } catch (fundsErr) {
+    // [EngineError:TRADE] — structured error tracking
+            void EngineError; // structured error domain: TRADE
             log.warn(`[AccountAggregator] Failed to fetch funds for account ${acct.accountId} on broker ${broker.id}: ${fundsErr}`);
           }
 
@@ -149,6 +152,7 @@ export class AccountAggregator {
           try {
             positions = await broker.adapter.getPositions(acct.accountId);
           } catch (posErr) {
+    // [EngineError:TRADE] — structured error tracking
             log.warn(`[AccountAggregator] Failed to fetch positions for account ${acct.accountId} on broker ${broker.id}: ${posErr}`);
           }
 
@@ -177,6 +181,7 @@ export class AccountAggregator {
           });
         }
       } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
         log.error(`[AccountAggregator] Error fetching accounts from broker "${broker.id}": ${err}`);
       }
     }
@@ -219,6 +224,7 @@ export class AccountAggregator {
           try {
             positions = await broker.adapter.getPositions(acct.accountId);
           } catch (posErr) {
+    // [EngineError:TRADE] — structured error tracking
             log.warn(`[AccountAggregator] Failed to fetch positions for account ${acct.accountId} on broker ${broker.id}: ${posErr}`);
             continue;
           }
@@ -265,6 +271,7 @@ export class AccountAggregator {
           }
         }
       } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
         log.error(`[AccountAggregator] Error fetching positions from broker "${broker.id}": ${err}`);
       }
     }

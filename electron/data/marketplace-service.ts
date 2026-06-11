@@ -5,6 +5,8 @@
 import log from 'electron-log';
 import type { DatabaseManager } from './database';
 import i18n from '../../src/i18n';
+import { EngineError } from './engine/core/engine-error';
+
 
 // ── 评分配置 ──────────────────────────────────────────────────────────────
 

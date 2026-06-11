@@ -1,3 +1,4 @@
+import { EngineError } from './engine/core/engine-error';
 ﻿// T60: Priority-Based Job Scheduler
 export type JobStatus = 'pending' | 'running' | 'completed' | 'failed' | 'cancelled';
 

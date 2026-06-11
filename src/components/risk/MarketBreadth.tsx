@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface MarketBreadthData {
   advancing: number;
@@ -30,7 +31,7 @@ const DEFAULT_DATA: MarketBreadthData = {
 
 export default function MarketBreadth({
   data = DEFAULT_DATA,
-  title = '📊 市场广度',
+  title = i18n.t('MarketBreadth.k1'),
 }: MarketBreadthProps) {
   const { t: _t } = useTranslation();
 
@@ -40,11 +41,11 @@ export default function MarketBreadth({
   const breadth = total > 0 ? (data.advancing / total) * 100 : 0;
 
   const sentiment = useMemo(() => {
-    if (breadth >= 60 && advanceDeclineRatio >= 1.5) return { label: '强势', color: 'text-emerald-400', bg: 'bg-emerald-500/10' };
-    if (breadth >= 55) return { label: '偏多', color: 'text-emerald-300', bg: 'bg-emerald-500/5' };
-    if (breadth <= 40 && advanceDeclineRatio <= 0.7) return { label: '弱势', color: 'text-red-400', bg: 'bg-red-500/10' };
-    if (breadth <= 45) return { label: '偏空', color: 'text-red-300', bg: 'bg-red-500/5' };
-    return { label: '中性', color: 'text-[#D4A853]', bg: 'bg-[#D4A853]/10' };
+    if (breadth >= 60 && advanceDeclineRatio >= 1.5) return { label: i18n.t('MarketBreadth.k2'), color: 'text-emerald-400', bg: 'bg-emerald-500/10' };
+    if (breadth >= 55) return { label: i18n.t('MarketBreadth.k3'), color: 'text-emerald-300', bg: 'bg-emerald-500/5' };
+    if (breadth <= 40 && advanceDeclineRatio <= 0.7) return { label: i18n.t('MarketBreadth.k4'), color: 'text-red-400', bg: 'bg-red-500/10' };
+    if (breadth <= 45) return { label: i18n.t('MarketBreadth.k5'), color: 'text-red-300', bg: 'bg-red-500/5' };
+    return { label: i18n.t('MarketBreadth.k6'), color: 'text-[#D4A853]', bg: 'bg-[#D4A853]/10' };
   }, [breadth, advanceDeclineRatio]);
 
   return (
@@ -108,7 +109,7 @@ export default function MarketBreadth({
         <div className="flex items-center justify-between text-[10px]">
           <span className="text-gray-500">量价配合</span>
           <span className={volumeRatio >= 1 ? 'text-emerald-400' : 'text-red-400'}>
-            {volumeRatio >= 1 ? '✓ 量涨价涨' : '✗ 量跌价涨'}
+            {volumeRatio >= 1 ? i18n.t('MarketBreadth.k7') : i18n.t('MarketBreadth.k8')}
           </span>
         </div>
       </div>

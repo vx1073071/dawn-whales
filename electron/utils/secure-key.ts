@@ -1,3 +1,5 @@
+import { EngineError } from './engine/core/engine-error';
+
 /**
  * Secure Key Manager — DAWN WHALES
  * Uses DPAPI (Windows only) to encrypt API keys at rest.
@@ -60,7 +62,7 @@ function _dpapiProtect(data) {
       `powershell -NoProfile -NonInteractive -Command "${ps.replace(/\n/g, ' ')}"`,
       { encoding: 'utf8', timeout: 5_000 }
     ).trim();
-  } catch {
+  } catch (_e: unknown) {
     return null;
   }
 }
@@ -78,7 +80,7 @@ function _dpapiUnprotect(b64data) {
       `powershell -NoProfile -NonInteractive -Command "${ps.replace(/\n/g, ' ')}"`,
       { encoding: 'utf8', timeout: 5_000 }
     ).trim();
-  } catch {
+  } catch (_e: unknown) {
     return null;
   }
 }
@@ -106,7 +108,7 @@ function _loadKeystore(app) {
   if (!fs.existsSync(p)) return {};
   try {
     return JSON.parse(fs.readFileSync(p, 'utf8'));
-  } catch {
+  } catch (_e: unknown) {
     return {};
   }
 }
@@ -153,7 +155,7 @@ export function storeKey(app, name, key) {
     ks[name] = { scheme: SCHEME_V1, iv: iv.toString('base64'), ct: enc.toString('base64'), tag: tag.toString('base64') };
     _saveKeystore(app, ks);
     return true;
-  } catch {
+  } catch (_e: unknown) {
     return false;
   }
 }
@@ -195,7 +197,7 @@ export function getKey(app, name) {
       const decipher = crypto.createDecipheriv('aes-256-gcm', key32, iv);
       decipher.setAuthTag(tag);
       return Buffer.concat([decipher.update(ct), decipher.final()]).toString('utf8');
-    } catch {
+    } catch (_e: unknown) {
       return process.env[name] || null;
     }
   }

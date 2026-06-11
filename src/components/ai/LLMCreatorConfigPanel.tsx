@@ -15,6 +15,7 @@
 
 import { useTranslation } from "react-i18next";
 import React, { useState, useCallback, useMemo } from 'react';
+import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -83,7 +84,7 @@ const PROVIDER_CATALOG: ProviderInfo[] = [
     ],
   },
   {
-    id: 'qwen', name: 'Qwen (通义千问)', logo: '☁️',
+    id: 'qwen', name: i18n.t('LLMCreatorConfigPanel.k1'), logo: '☁️',
     enabled: true, defaultModel: 'qwen-turbo',
     models: [
       { id: 'qwen-turbo', name: 'Turbo', displayName: 'Qwen Turbo', inputCostPer1M: 0.2, outputCostPer1M: 0.6, contextWindow: 128000, capabilities: ['chat', 'analysis'], recommended: false },
@@ -94,12 +95,12 @@ const PROVIDER_CATALOG: ProviderInfo[] = [
     id: 'minimax', name: 'MiniMax', logo: '⚡',
     enabled: true, defaultModel: 'minimax-m3',
     models: [
-      { id: 'minimax-m3', name: 'M3', displayName: 'MiniMax M3 (免费)', inputCostPer1M: 0, outputCostPer1M: 0, contextWindow: 204800, capabilities: ['chat', 'analysis', 'code'], recommended: false },
+      { id: 'minimax-m3', name: 'M3', displayName: i18n.t('LLMCreatorConfigPanel.k2'), inputCostPer1M: 0, outputCostPer1M: 0, contextWindow: 204800, capabilities: ['chat', 'analysis', 'code'], recommended: false },
       { id: 'minimax-abab6', name: 'ABAB6', displayName: 'ABAB6.5', inputCostPer1M: 1.0, outputCostPer1M: 1.0, contextWindow: 32768, capabilities: ['chat', 'analysis'], recommended: false },
     ],
   },
   {
-    id: 'zhipu', name: '智谱 GLM', logo: '🧠',
+    id: 'zhipu', name: i18n.t('LLMCreatorConfigPanel.k3'), logo: '🧠',
     enabled: true, defaultModel: 'glm-4',
     models: [
       { id: 'glm-4', name: 'GLM-4', displayName: 'GLM-4', inputCostPer1M: 1.0, outputCostPer1M: 1.0, contextWindow: 128000, capabilities: ['chat', 'analysis', 'code'], recommended: false },
@@ -128,10 +129,10 @@ const PROVIDER_CATALOG: ProviderInfo[] = [
     ],
   },
   {
-    id: 'ollama', name: 'Ollama (本地)', logo: '🦙',
+    id: 'ollama', name: i18n.t('LLMCreatorConfigPanel.k4'), logo: '🦙',
     enabled: true, defaultModel: 'llama3-8b',
     models: [
-      { id: 'llama3-8b', name: 'Llama3 8B', displayName: 'Llama3 8B (本地免费)', inputCostPer1M: 0, outputCostPer1M: 0, contextWindow: 8192, capabilities: ['chat'], recommended: false },
+      { id: 'llama3-8b', name: 'Llama3 8B', displayName: i18n.t('LLMCreatorConfigPanel.k5'), inputCostPer1M: 0, outputCostPer1M: 0, contextWindow: 8192, capabilities: ['chat'], recommended: false },
     ],
   },
   {
@@ -142,14 +143,14 @@ const PROVIDER_CATALOG: ProviderInfo[] = [
     ],
   },
   {
-    id: 'baichuan', name: '百川', logo: '💧',
+    id: 'baichuan', name: i18n.t('LLMCreatorConfigPanel.k6'), logo: '💧',
     enabled: true, defaultModel: 'baichuan4',
     models: [
-      { id: 'baichuan4', name: 'Baichuan4', displayName: '百川 4', inputCostPer1M: 1.0, outputCostPer1M: 1.0, contextWindow: 32768, capabilities: ['chat', 'analysis'], recommended: false },
+      { id: 'baichuan4', name: 'Baichuan4', displayName: i18n.t('LLMCreatorConfigPanel.k7'), inputCostPer1M: 1.0, outputCostPer1M: 1.0, contextWindow: 32768, capabilities: ['chat', 'analysis'], recommended: false },
     ],
   },
   {
-    id: 'yi', name: '零一万物', logo: '01️⃣',
+    id: 'yi', name: i18n.t('LLMCreatorConfigPanel.k8'), logo: '01️⃣',
     enabled: true, defaultModel: 'yi-large',
     models: [
       { id: 'yi-large', name: 'Yi Large', displayName: 'Yi Large', inputCostPer1M: 1.5, outputCostPer1M: 1.5, contextWindow: 32768, capabilities: ['chat', 'analysis', 'reasoning'], recommended: false },
@@ -343,7 +344,7 @@ export const LLMCreatorConfigPanel: React.FC<LLMCreatorConfigPanelProps> = ({
             {costEstimates.map(est => (
               <tr key={est.tier} style={styles.tableRow}>
                 <td style={styles.td}>
-                  {est.tier === 'flagship' ? '👑 旗舰' : est.tier === 'premium' ? '🔥 高级' : '⚡ 标准'}
+                  {est.tier === 'flagship' ? i18n.t('LLMCreatorConfigPanel.k9') : est.tier === 'premium' ? i18n.t('LLMCreatorConfigPanel.k10') : i18n.t('LLMCreatorConfigPanel.k11')}
                 </td>
                 <td style={styles.td}>{est.agentCount} 位</td>
                 <td style={styles.td}>{est.llmCost.toFixed(4)} USDT</td>

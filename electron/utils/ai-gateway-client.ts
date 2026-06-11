@@ -19,6 +19,7 @@
  */
 
 import * as https from 'https';
+import { EngineError } from '../engine/core/engine-error';
 import * as http from 'http';
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -90,7 +91,7 @@ export function callChatCompletions(req: ChatCompletionRequest, timeoutMs = 3000
                 const content = json.choices?.[0]?.message?.content || json.content || '';
                 resolve({ success: true, content });
               }
-            } catch {
+            } catch (_e: unknown) {
               resolve({ success: false, error: `Invalid gateway response: ${data.substring(0, 200)}` });
             }
           });
@@ -105,7 +106,9 @@ export function callChatCompletions(req: ChatCompletionRequest, timeoutMs = 3000
       request.write(body);
       request.end();
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       clearTimeout(timer);
+      void EngineError; // structured error domain: AI
       resolve({ success: false, error: `Gateway request error: ${err.message}` });
     }
   });

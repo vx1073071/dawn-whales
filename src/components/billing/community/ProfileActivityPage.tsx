@@ -12,6 +12,7 @@
 
 import { useState, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -71,31 +72,31 @@ export interface ProfileActivityPageProps {
 // ── Mock ────────────────────────────────────────────────────────────────
 
 const mockProfile: Profile = {
-  name: 'QuantEdge Pro', avatar: '🦊', level: '钻石 Diamond', levelColor: '#B9F2FF',
-  bio: '量化交易5年 · 专注美股趋势跟踪 · 双均线+RSI · 年化42%',
+  name: 'QuantEdge Pro', avatar: '🦊', level: i18n.t('ProfileActivityPage.k1'), levelColor: '#B9F2FF',
+  bio: i18n.t('ProfileActivityPage.k2'),
   followers: 2847, following: 52, strategies: 6, signals: 847,
   totalRevenue: 14250, joinedAt: '2025-11',
 };
 
 const mockActivities: Activity[] = [
-  { id: 'a1', type: 'signal', user: 'QuantEdge Pro', avatar: '🦊', content: '发布了新信号: AAPL BUY @195.25 (信心度88%)', time: '2小时前' },
-  { id: 'a2', type: 'trade', user: 'QuantEdge Pro', avatar: '🦊', content: 'AAPL 止盈 +3.74%, 盈利 $1,245', time: '4小时前' },
-  { id: 'a3', type: 'subscribe', user: 'CryptoWhale', avatar: '🐋', content: '订阅了 趋势跟踪增强版', time: '5小时前' },
-  { id: 'a4', type: 'levelup', user: 'QuantEdge Pro', avatar: '🦊', content: '🎉 晋升到 钻石等级! 分成比例提升至 85/15', time: '昨天' },
-  { id: 'a5', type: 'comment', user: 'TraderJoe', avatar: '🐂', content: '评论了 趋势跟踪增强版: "这个策略太好用了!"', time: '昨天' },
+  { id: 'a1', type: 'signal', user: 'QuantEdge Pro', avatar: '🦊', content: i18n.t('ProfileActivityPage.k3'), time: i18n.t('ProfileActivityPage.k4') },
+  { id: 'a2', type: 'trade', user: 'QuantEdge Pro', avatar: '🦊', content: i18n.t('ProfileActivityPage.k5'), time: i18n.t('ProfileActivityPage.k6') },
+  { id: 'a3', type: 'subscribe', user: 'CryptoWhale', avatar: '🐋', content: i18n.t('ProfileActivityPage.k7'), time: i18n.t('ProfileActivityPage.k8') },
+  { id: 'a4', type: 'levelup', user: 'QuantEdge Pro', avatar: '🦊', content: i18n.t('ProfileActivityPage.k9'), time: i18n.t('ProfileActivityPage.k10') },
+  { id: 'a5', type: 'comment', user: 'TraderJoe', avatar: '🐂', content: i18n.t('ProfileActivityPage.k11'), time: i18n.t('ProfileActivityPage.k12') },
 ];
 
 const mockNotifications: Notification[] = [
-  { id: 'n1', type: 'signal', icon: '📡', title: '信号提醒', body: 'QuantEdge Pro 发布了 AAPL BUY 信号', time: '2小时前', read: false },
-  { id: 'n2', type: 'comment', icon: '💬', title: '新评论', body: 'TraderJoe 评论了你的策略', time: '5小时前', read: false },
-  { id: 'n3', type: 'system', icon: '🔔', title: '收益周报', body: '本周收益 +5.2%, 胜率 78.4%', time: '昨天', read: true },
-  { id: 'n4', type: 'comment', icon: '💬', title: '新评论', body: 'CryptoWhale 回复了你的评论', time: '昨天', read: true },
+  { id: 'n1', type: 'signal', icon: '📡', title: i18n.t('ProfileActivityPage.k13'), body: i18n.t('ProfileActivityPage.k14'), time: i18n.t('ProfileActivityPage.k15'), read: false },
+  { id: 'n2', type: 'comment', icon: '💬', title: i18n.t('ProfileActivityPage.k16'), body: i18n.t('ProfileActivityPage.k17'), time: i18n.t('ProfileActivityPage.k18'), read: false },
+  { id: 'n3', type: 'system', icon: '🔔', title: i18n.t('ProfileActivityPage.k19'), body: i18n.t('ProfileActivityPage.k20'), time: i18n.t('ProfileActivityPage.k21'), read: true },
+  { id: 'n4', type: 'comment', icon: '💬', title: i18n.t('ProfileActivityPage.k22'), body: i18n.t('ProfileActivityPage.k23'), time: i18n.t('ProfileActivityPage.k24'), read: true },
 ];
 
 const mockMyStrategies: MyStrategy[] = [
-  { id: 's1', name: '趋势跟踪增强版', status: 'live', return_: 42.3, sharpe: 2.1, subscribers: 2847, revenue: 14200 },
-  { id: 's2', name: '均值回归狙击手', status: 'live', return_: 28.1, sharpe: 1.8, subscribers: 1523, revenue: 5100 },
-  { id: 's3', name: 'MACD金叉经典', status: 'paused', return_: 8.2, sharpe: 0.6, subscribers: 89, revenue: 320 },
+  { id: 's1', name: i18n.t('ProfileActivityPage.k25'), status: 'live', return_: 42.3, sharpe: 2.1, subscribers: 2847, revenue: 14200 },
+  { id: 's2', name: i18n.t('ProfileActivityPage.k26'), status: 'live', return_: 28.1, sharpe: 1.8, subscribers: 1523, revenue: 5100 },
+  { id: 's3', name: i18n.t('ProfileActivityPage.k27'), status: 'paused', return_: 8.2, sharpe: 0.6, subscribers: 89, revenue: 320 },
 ];
 
 // ── Stat Card ────────────────────────────────────────────────────────────
@@ -154,18 +155,18 @@ export default function ProfileActivityPage({
           </div>
         </div>
         <div className="grid grid-cols-5 gap-2">
-          <StatCard value={profile.followers} label="粉丝" />
-          <StatCard value={profile.following} label="关注" />
+          <StatCard value={profile.followers} label={i18n.t('ProfileActivityPage.k28')} />
+          <StatCard value={profile.following} label={i18n.t('ProfileActivityPage.k29')} />
           <StatCard value={profile.strategies}  label={"components.strategy"} />
           <StatCard value={profile.signals}  label={"components.signal"} />
-          <StatCard value={`$${profile.totalRevenue.toLocaleString()}`} label="收入" />
+          <StatCard value={`$${profile.totalRevenue.toLocaleString()}`} label={i18n.t('ProfileActivityPage.k30')} />
         </div>
       </div>
 
       {/* Tabs */}
       <div className="flex border-b border-white/5">
-        <TabBtn active={tab === 'activity'} onClick={() => setTab('activity')} label="📡 动态" />
-        <TabBtn active={tab === 'strategies'} onClick={() => setTab('strategies')} label="📊 策略" />
+        <TabBtn active={tab === 'activity'} onClick={() => setTab('activity')} label={i18n.t('ProfileActivityPage.k31')} />
+        <TabBtn active={tab === 'strategies'} onClick={() => setTab('strategies')} label={i18n.t('ProfileActivityPage.k32')} />
         <TabBtn active={tab === 'notifications'} onClick={() => setTab('notifications')} label={`🔔 通知${unreadCount > 0 ? ` (${unreadCount})` : ''}`} badge={unreadCount} />
       </div>
 
@@ -194,7 +195,7 @@ export default function ProfileActivityPage({
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-semibold text-gray-200">{s.name}</span>
                   <span className={`text-[10px] font-semibold px-2 py-0.5 rounded ${s.status === 'live' ? 'bg-green-500/10 text-green-400' : s.status === 'paused' ? 'bg-yellow-500/10 text-yellow-400' : 'bg-gray-500/10 text-gray-400'}`}>
-                    {s.status === 'live' ? '🟢 运行中' : s.status === 'paused' ? '⏸ 暂停' : '🔬 回测'}
+                    {s.status === 'live' ? i18n.t('ProfileActivityPage.k33') : s.status === 'paused' ? i18n.t('ProfileActivityPage.k34') : i18n.t('ProfileActivityPage.k35')}
                   </span>
                 </div>
                 <div className="grid grid-cols-4 gap-2 text-center text-xs">

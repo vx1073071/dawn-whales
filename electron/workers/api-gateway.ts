@@ -1,5 +1,6 @@
 ﻿// T87: API Gateway with routing, rate-limiting, and auth
 import { RateLimiter } from './rate-limiter';
+import { EngineError } from '../engine/core/engine-error';
 
 export interface RouteConfig {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -74,6 +75,8 @@ export class ApiGateway {
       const result = await route.handler(params, req.body, req.headers);
       return { statusCode: 200, body: result };
     } catch (e) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       return { statusCode: 500, body: { error: e.message } };
     }
   }

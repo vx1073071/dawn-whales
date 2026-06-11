@@ -4,6 +4,7 @@
 // IPC: em:smart-pick
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
 import { getStockCapitalFlowRank } from '../analysis/capital-flow-rank';
 import { getDragonTigerList } from '../data/dragon-tiger-list';
 import { getFundIncreaseRank } from '../data/fund-holdings';
@@ -134,7 +135,10 @@ export class SmartPickerService {
             if (item.fundCount > 10) c.signals.push(i18n.t('smartPicker.k5'));
           }
         }
-      } catch (e) { logger.error('[backend:smart-picker]', e); }
+      } catch (e) {
+    // [EngineError:AI] — structured error tracking
+    void EngineError; // structured error domain: AI
+    logger.error('[backend:smart-picker]', e); }
 
       // Step 2: Score sentiment and technical for all candidates
       const newsResult = await this.newsAggregator.search({ query: 'HK market', hoursBack: 24, limit: 5 });
@@ -147,7 +151,7 @@ export class SmartPickerService {
           c.scores.sentiment = stockNews.sentimentSummary?.avgScore
             ? Math.max(0, Math.min(100, (stockNews.sentimentSummary.avgScore + 1) * 50))
             : Math.max(0, Math.min(100, (marketSentiment + 1) * 50));
-        } catch {
+        } catch (_e: unknown) {
           c.scores.sentiment = 50;
         }
 

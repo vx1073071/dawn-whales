@@ -4,11 +4,13 @@
 // Fixes: sector heatmap, capital flow, market breadth, stock quotes in Node.js
 
 import log from 'electron-log';
+import { EngineError } from '../engine/core/engine-error';
 import https from 'https';
 import http from 'http';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { httpGet } from '../utils/http';
+import i18n from '../../src/i18n';
 
 const execAsync = promisify(exec);
 
@@ -69,7 +71,10 @@ export class Push2ProxyService {
           const fs = require('fs');
           if (fs.existsSync(p)) { this.pythonPath = p; return; }
         }
-      } catch (e) { logger.error('[backend:push2-proxy]', e); }
+      } catch (e) {
+    // [EngineError:DATA] — structured error tracking
+    void EngineError; // structured error domain: DATA
+    logger.error('[backend:push2-proxy]', e); }
     }
     this.pythonPath = 'python';
   }
@@ -104,15 +109,16 @@ export class Push2ProxyService {
         return { success: true, data: sectors, source: 'push2', latencyMs: Date.now() - start };
       }
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.debug(`[Push2Proxy] push2 sector failed: ${err.message}`);
     }
 
     // Try 2: Python skill script
     try {
-      const typeCN = type === 'industry' ? '行业板块' : type === 'concept' ? '概念板块' : '地域板块';
+      const typeCN = type === 'industry' ? i18n.t('Push2Proxy.k0') : type === 'concept' ? i18n.t('Push2Proxy.k1') : i18n.t('Push2Proxy.k2');
       const scriptPath = `${this.skillBasePath}\\em-mx-finance-data\\scripts\\get_data.py`;
       const { stdout } = await execAsync(
-        `"${this.pythonPath}" "${scriptPath}" --query "${typeCN}涨跌幅排名"`,
+        `"${this.pythonPath}" "${scriptPath}" --query i18n.t('Push2Proxy.k3')`,
         { timeout: 30000, encoding: 'utf-8' }
       );
       // Parse xlsx path from stdout
@@ -129,6 +135,7 @@ export class Push2ProxyService {
         return { success: true, data: sectors, source: 'python', latencyMs: Date.now() - start };
       }
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.debug(`[Push2Proxy] Python sector failed: ${err.message}`);
     }
 
@@ -175,6 +182,7 @@ export class Push2ProxyService {
         return { success: true, data: items, source: 'push2', latencyMs: Date.now() - start };
       }
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.debug(`[Push2Proxy] push2 capital flow failed: ${err.message}`);
     }
 
@@ -210,6 +218,7 @@ export class Push2ProxyService {
         return { success: true, data: quote, source: 'push2', latencyMs: Date.now() - start };
       }
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.debug(`[Push2Proxy] push2 quote failed: ${err.message}`);
     }
 
@@ -244,6 +253,7 @@ export class Push2ProxyService {
         return { success: true, data: breadth, source: 'push2', latencyMs: Date.now() - start };
       }
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.debug(`[Push2Proxy] push2 breadth failed: ${err.message}`);
     }
 

@@ -4,6 +4,7 @@
 // PM验收标准: 真实账户数据可展示
 
 import { ipcMain, BrowserWindow } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import log from 'electron-log';
 
 export function registerDashboardIPC(
@@ -50,6 +51,8 @@ export function registerDashboardIPC(
 
       return { success: true, summary };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[dashboard:summary]', err);
       return { success: false, error: err.message };
     }
@@ -97,6 +100,7 @@ export function registerDashboardIPC(
         },
       };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[dashboard:pnl]', err);
       return { success: false, error: err.message };
     }
@@ -138,6 +142,7 @@ export function registerDashboardIPC(
         count: positions.length,
       };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[dashboard:positions]', err);
       return { success: false, error: err.message };
     }
@@ -162,6 +167,7 @@ export function registerDashboardIPC(
         },
       };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });

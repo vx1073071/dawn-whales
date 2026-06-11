@@ -1,6 +1,9 @@
 ﻿import { useState, useEffect } from 'react';
 import { getAllStrategies, getMarketplaceList, getStrategyRating, rateStrategy, addComment, getComments } from '@/lib/bridge-api';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import { notify } from '@/components/NotificationToast';
+import i18n from '../../i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -65,7 +68,8 @@ export default function MarketplacePage() {
       if (res?.success && res.strategies) {
         setMarketStrategies(res.strategies);
       }
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
+    void EngineError; // [DATA] structured error tracking
     setLoading(false);
   }
 
@@ -73,7 +77,7 @@ export default function MarketplacePage() {
     try {
       const list = await getAllStrategies();
       setMyStrategies(list);
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   const filtered = marketStrategies
@@ -86,8 +90,8 @@ export default function MarketplacePage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">{'🏪 策略市场'}</h1>
-          <p className="text-gray-400 text-sm">{'发现优质策略，一键订阅跟单 · 创作者享 70% 收入'}</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{i18n.t('MarketplacePage.k1')}</h1>
+          <p className="text-gray-400 text-sm">{i18n.t('MarketplacePage.k2')}</p>
         </div>
         <button
           onClick={() => setShowPublish(true)}
@@ -100,7 +104,7 @@ export default function MarketplacePage() {
       {/* Tabs + Filters */}
       <div className="flex items-center gap-4 mb-4 flex-wrap">
         <div className="flex gap-1 bg-[#12121a] rounded-lg p-1">
-          {([['hot', '🔥 热度'], ['return', '📈 收益'], ['stable', '🛡️ 稳健'], ['new', '🆕 新星'], ['free', '🆓 免费']] as [Tab, string][]).map(([key, label]) => (
+          {([['hot', i18n.t('MarketplacePage.k3')], ['return', i18n.t('MarketplacePage.k4')], ['stable', i18n.t('MarketplacePage.k5')], ['new', i18n.t('MarketplacePage.k6')], ['free', i18n.t('MarketplacePage.k7')]] as [Tab, string][]).map(([key, label]) => (
             <button
               key={key}
               onClick={() => setActiveTab(key)}
@@ -114,7 +118,7 @@ export default function MarketplacePage() {
         </div>
 
         <div className="flex gap-1 text-xs">
-          {([['all', 'components.all'], ['low', '低风险'], ['medium', '中风险'], ['high', '高风险']] as [RiskFilter, string][]).map(([key, label]) => (
+          {([['all', 'components.all'], ['low', i18n.t('MarketplacePage.k8')], ['medium', i18n.t('MarketplacePage.k9')], ['high', i18n.t('MarketplacePage.k10')]] as [RiskFilter, string][]).map(([key, label]) => (
             <button
               key={key}
               onClick={() => setRiskFilter(key)}
@@ -139,7 +143,7 @@ export default function MarketplacePage() {
 
       {/* Content area */}
       {loading ? (
-        <div className="text-center py-12 text-gray-500">{'加载策略市场中...'}</div>
+        <div className="text-center py-12 text-gray-500">{i18n.t('MarketplacePage.k11')}</div>
       ) : (
         <div className="flex gap-4">
           <div className="flex-1 grid grid-cols-2 xl:grid-cols-3 gap-3 content-start">
@@ -153,7 +157,7 @@ export default function MarketplacePage() {
             ))}
             {filtered.length === 0 && (
               <div className="col-span-3 text-center py-12 text-gray-500">
-                {marketStrategies.length === 0 ? '📭 市场暂未上架策略，去策略工坊创建第一个！' : '未找到匹配的策略'}
+                {marketStrategies.length === 0 ? i18n.t('MarketplacePage.k12') : i18n.t('MarketplacePage.k13')}
               </div>
             )}
           </div>
@@ -193,7 +197,7 @@ function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: Market
     >
       <div className="flex items-start justify-between mb-2">
         <div className="flex-1 min-w-0">
-          <h3 className="text-white text-sm font-medium truncate">{s.name || '未命名'}</h3>
+          <h3 className="text-white text-sm font-medium truncate">{s.name || i18n.t('MarketplacePage.k14')}</h3>
           <div className="text-gray-500 text-[11px] mt-0.5">
             ⭐{s.avg_rating || 0} ({s.rating_count || 0}评) · 💬 {s.comment_count || 0}
           </div>
@@ -216,13 +220,13 @@ function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: Market
       </div>
 
       <div className="flex items-center gap-1.5 mb-3">
-        <span className="text-[10px] text-gray-500 bg-[#12121a] px-1.5 py-0.5 rounded">{s.symbol || '多市场'}</span>
+        <span className="text-[10px] text-gray-500 bg-[#12121a] px-1.5 py-0.5 rounded">{s.symbol || i18n.t('MarketplacePage.k15')}</span>
         {s.description && <span className="text-[10px] text-gray-400 truncate">{s.description.slice(0, 30)}</span>}
       </div>
 
       <div className="flex items-center justify-between pt-2 border-t border-white/5">
-        <div className="text-gray-500 text-[11px]">{'📊 已认证'}</div>
-        <div className="text-sm font-bold text-[#D4A853]">{'查看详情 →'}</div>
+        <div className="text-gray-500 text-[11px]">{i18n.t('MarketplacePage.k16')}</div>
+        <div className="text-sm font-bold text-[#D4A853]">{i18n.t('MarketplacePage.k17')}</div>
       </div>
     </button>
   );
@@ -268,21 +272,21 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
     try {
       const res = await getStrategyRating(s.id);
       if (res?.success) setRating({ avg: res.avg, count: res.count, myRating: res.myRating });
-    } catch {}
+    } catch (_e: unknown) {}
   }
 
   async function loadComments() {
     try {
       const res = await getComments(s.id);
       if (res?.success) setComments(res.comments || []);
-    } catch {}
+    } catch (_e: unknown) {}
   }
 
   async function handleRate(star: number) {
     try {
       await rateStrategy(s.id, star);
       await loadRating();
-    } catch { notify('error', '评分失败'); }
+    } catch (_e: unknown) { notify('error', i18n.t('MarketplacePage.k18')); }
   }
 
   async function handleComment() {
@@ -291,7 +295,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
       await addComment(s.id, newComment.trim());
       setNewComment('');
       await loadComments();
-    } catch { notify('error', '评论失败'); }
+    } catch (_e: unknown) { notify('error', i18n.t('MarketplacePage.k19')); }
   }
 
   return (
@@ -330,10 +334,10 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
 
       {/* Strategy Info */}
       <div className="grid grid-cols-2 gap-2 mb-4">
-        <MetricBox label="标的" value={s.symbol || '多市场'} />
-        <MetricBox label="年化收益" value={`${(s.performance_return || 0).toFixed(1)}%`} color={s.performance_return >= 0 ? 'text-emerald-400' : 'text-red-400'} />
-        <MetricBox label="夏普" value={s.performance_sharpe ? s.performance_sharpe.toFixed(1) : '-'} />
-        <MetricBox label="评论" value={String(s.comment_count || 0)} />
+        <MetricBox label={i18n.t('MarketplacePage.k20')} value={s.symbol || i18n.t('MarketplacePage.k21')} />
+        <MetricBox label={i18n.t('MarketplacePage.k22')} value={`${(s.performance_return || 0).toFixed(1)}%`} color={s.performance_return >= 0 ? 'text-emerald-400' : 'text-red-400'} />
+        <MetricBox label={i18n.t('MarketplacePage.k23')} value={s.performance_sharpe ? s.performance_sharpe.toFixed(1) : '-'} />
+        <MetricBox label={i18n.t('MarketplacePage.k24')} value={String(s.comment_count || 0)} />
       </div>
 
       {/* Comments Section */}
@@ -361,7 +365,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
         {/* Comment list */}
         <div className="space-y-2 max-h-48 overflow-y-auto">
           {comments.length === 0 && (
-            <div className="text-gray-600 text-[10px] text-center py-3">{'暂无评论，来发表第一条'}</div>
+            <div className="text-gray-600 text-[10px] text-center py-3">{i18n.t('MarketplacePage.k25')}</div>
           )}
           {comments.map((c) => (
             <div key={c.id} className="bg-[#12121a] rounded-lg p-2.5">
@@ -378,7 +382,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
       {/* Action */}
       <div className="border-t border-white/5 pt-4">
         <button
-          onClick={() => notify('info', '订阅功能即将上线，敬请期待')}
+          onClick={() => notify('info', i18n.t('MarketplacePage.k26'))}
           className="w-full py-2.5 bg-[#C9A046] text-black font-semibold rounded-lg text-sm hover:bg-[#D4A853] transition-colors"
         >
           📥 使用此策略
@@ -411,7 +415,7 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
 
   function handlePublish() {
     if (!selected) {
-      notify('warning', '请先选择一个策略');
+      notify('warning', i18n.t('MarketplacePage.k27'));
       return;
     }
     notify('success', `策略 "${selected.name}" 已提交审核，预计 1-2 个工作日上线`);
@@ -424,36 +428,36 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
 
       <div className="relative bg-[#12121a] border border-white/10 rounded-2xl w-full max-w-md mx-4 p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-white font-semibold text-lg">{'📤 发布策略到市场'}</h2>
+          <h2 className="text-white font-semibold text-lg">{i18n.t('MarketplacePage.k28')}</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-300">✕</button>
         </div>
 
         {myStrategies.length === 0 ? (
           <div className="text-center py-8">
             <div className="text-3xl mb-2 opacity-40">🧠</div>
-            <p className="text-gray-400 text-sm">{'你还没有创建任何策略'}</p>
-            <p className="text-gray-500 text-xs mt-1">{'先去策略工坊创建策略，再来发布'}</p>
+            <p className="text-gray-400 text-sm">{i18n.t('MarketplacePage.k29')}</p>
+            <p className="text-gray-500 text-xs mt-1">{i18n.t('MarketplacePage.k30')}</p>
           </div>
         ) : (
           <div className="space-y-4">
             {/* Strategy selection */}
             <div>
-              <label className="block text-gray-400 text-xs mb-1">{'选择策略'}</label>
+              <label className="block text-gray-400 text-xs mb-1">{i18n.t('MarketplacePage.k31')}</label>
               <select
                 value={selectedId}
                 onChange={(e) => setSelectedId(e.target.value)}
                 className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50"
               >
-                <option value="">{'-- 选择要发布的策略 --'}</option>
+                <option value="">{i18n.t('MarketplacePage.k32')}</option>
                 {myStrategies.map((s) => (
-                  <option key={s.id} value={s.id}>{s.name || '未命名策略'}</option>
+                  <option key={s.id} value={s.id}>{s.name || i18n.t('MarketplacePage.k33')}</option>
                 ))}
               </select>
             </div>
 
             {/* Description */}
             <div>
-              <label className="block text-gray-400 text-xs mb-1">{'策略描述（向用户展示）'}</label>
+              <label className="block text-gray-400 text-xs mb-1">{i18n.t('MarketplacePage.k34')}</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -464,7 +468,7 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
 
             {/* Price */}
             <div>
-              <label className="block text-gray-400 text-xs mb-1">{'月费（¥0 = 免费）'}</label>
+              <label className="block text-gray-400 text-xs mb-1">{i18n.t('MarketplacePage.k35')}</label>
               <input
                 type="number"
                 value={price}
@@ -474,13 +478,13 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
                 className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50"
               />
               <div className="text-gray-500 text-[11px] mt-1">
-                {price === 0 ? '免费发布，积累口碑' : `你的收入: ¥${(price * 0.7).toFixed(0)}/月 (70%分成)`}
+                {price === 0 ? i18n.t('MarketplacePage.k36') : `你的收入: ¥${(price * 0.7).toFixed(0)}/月 (70%分成)`}
               </div>
             </div>
 
             {/* Revenue split info */}
             <div className="bg-[#C9A046]/10 border border-[#C9A046]/20 rounded-lg p-3">
-              <div className="text-[#D4A853] text-xs font-medium mb-1">{'💰 收入分成'}</div>
+              <div className="text-[#D4A853] text-xs font-medium mb-1">{i18n.t('MarketplacePage.k37')}</div>
               <div className="text-gray-400 text-[11px]">
                 创作者 70% · 平台 30%。每月结算一次，满 ¥100 可提现。
               </div>

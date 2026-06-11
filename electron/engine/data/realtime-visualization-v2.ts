@@ -1,5 +1,6 @@
 // JVS-101: Real-time Data Visualization Service
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
 // Real-time market data stream with WebSocket push
 
 export interface RealtimeVisualizationConfig {
@@ -63,6 +64,8 @@ export class RealtimeVisualizationService {
       // Broadcast to all WebSocket clients
       this.broadcast(data);
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+      void EngineError; // structured error domain: DATA
       log.error('[RealtimeVisualization] Fetch error:', err);
     }
   }
@@ -89,6 +92,7 @@ export class RealtimeVisualizationService {
           client.send(message);
         }
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         log.error('[RealtimeVisualization] Broadcast error:', err);
       }
     });

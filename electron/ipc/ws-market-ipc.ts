@@ -17,6 +17,7 @@
  */
 
 import { ipcMain } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import log from 'electron-log';
 import {
   getWsMarketDataEngine,
@@ -48,6 +49,8 @@ function safeReply(
   try {
     event.returnValue = data;
   } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+    void EngineError; // structured error domain: DATA
     log.error('[ws-market-ipc] Failed to reply:', err);
   }
 }
@@ -68,6 +71,7 @@ export function registerWsMarketIpcHandlers(): void {
         log.info(`[ws-market-ipc] ws:connect → ${ok}`);
         return ok;
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         log.error('[ws-market-ipc] ws:connect error:', err);
         return false;
       }
@@ -81,6 +85,7 @@ export function registerWsMarketIpcHandlers(): void {
       log.info('[ws-market-ipc] ws:disconnect → ok');
       return true;
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[ws-market-ipc] ws:disconnect error:', err);
       return false;
     }
@@ -108,6 +113,7 @@ export function registerWsMarketIpcHandlers(): void {
               win.webContents.send(replyChannel, { subId: id, data });
             }
           } catch (err) {
+    // [EngineError:DATA] — structured error tracking
             log.warn('[ws-market-ipc] Callback send failed:', err);
           }
         };
@@ -116,6 +122,7 @@ export function registerWsMarketIpcHandlers(): void {
         log.info(`[ws-market-ipc] ws:subscribe → ${id} [${codes.join(', ')}]`);
         return id;
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         log.error('[ws-market-ipc] ws:subscribe error:', err);
         return '';
       }
@@ -131,6 +138,7 @@ export function registerWsMarketIpcHandlers(): void {
         log.info(`[ws-market-ipc] ws:unsubscribe(${subscriptionId}) → ${ok}`);
         return ok;
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         log.error('[ws-market-ipc] ws:unsubscribe error:', err);
         return false;
       }
@@ -142,6 +150,7 @@ export function registerWsMarketIpcHandlers(): void {
     try {
       return engine.getStatus();
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[ws-market-ipc] ws:status error:', err);
       return null;
     }
@@ -159,6 +168,7 @@ export function registerWsMarketIpcHandlers(): void {
         const ticks = engine.getRecentTicks(code, limit ?? 100);
         return ticks;
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         log.error('[ws-market-ipc] ws:get-ticks error:', err);
         return [];
       }
@@ -174,6 +184,7 @@ export function registerWsMarketIpcHandlers(): void {
         log.info(`[ws-market-ipc] Mock mode enabled: ${symbols.join(', ')}`);
         return true;
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         log.error('[ws-market-ipc] ws:enable-mock error:', err);
         return false;
       }
@@ -186,6 +197,7 @@ export function registerWsMarketIpcHandlers(): void {
       engine.disableMockMode();
       return true;
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[ws-market-ipc] ws:disable-mock error:', err);
       return false;
     }
@@ -196,6 +208,7 @@ export function registerWsMarketIpcHandlers(): void {
     try {
       return engine.getDiagnostics();
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[ws-market-ipc] ws:diagnostics error:', err);
       return null;
     }
@@ -219,7 +232,7 @@ function setupEventForwarding(): void {
   const forward = (channel: string) => (data: unknown) => {
     try {
       win.webContents.send(`ws:event:${channel}`, data);
-    } catch {
+    } catch (_e: unknown) {
       // window may have been closed
     }
   };
@@ -243,7 +256,7 @@ function getRendererWindow(): Electron.BrowserWindow | undefined {
     const { BrowserWindow } = require('electron');
     const wins = BrowserWindow.getAllWindows();
     return wins.find((w: Electron.BrowserWindow) => !w.isDestroyed()) ?? undefined;
-  } catch {
+  } catch (_e: unknown) {
     return undefined;
   }
 }

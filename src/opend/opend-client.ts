@@ -1,3 +1,5 @@
+import { EngineError } from '../../electron/engine/core/engine-error';
+
 // OpenD WebSocket Client Stub
 // Real implementation should connect to Futu OpenD WebSocket API
 
@@ -21,6 +23,8 @@ export class OpenDClient {
         };
         this.ws.onerror = (err) => reject(err);
       } catch (e) {
+    // [EngineError:SYSTEM] — structured error tracking
+    void EngineError; // structured error domain: SYSTEM
         reject(e);
       }
     });

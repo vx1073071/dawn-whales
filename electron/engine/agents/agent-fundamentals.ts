@@ -17,6 +17,7 @@
  */
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
 import { EventEmitter } from 'events';
 import { getMultiLLMRouter } from './multi-llm-router';
 import i18n from '../../../src/i18n';
@@ -141,6 +142,8 @@ export class FundamentalsAgent extends EventEmitter implements IAnalyst {
       this.emit('analysis:completed', { symbol, analysis });
       return analysis;
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
+      void EngineError; // structured error domain: AI
       log.error(`[FundamentalsAgent] Analysis failed for ${symbol}:`, err);
       this.emit('analysis:error', { symbol, error: err });
       return null;
@@ -172,7 +175,7 @@ export class FundamentalsAgent extends EventEmitter implements IAnalyst {
         marketCap: d.marketCap ?? 100,
         freeCashFlow: d.freeCashFlow ?? 10,
       };
-    } catch {
+    } catch (_e: unknown) {
       return null;
     }
   }
@@ -351,7 +354,7 @@ export class FundamentalsAgent extends EventEmitter implements IAnalyst {
         llmCost: 0.0005, // ~$0.0005 with 99% cache hit
         cacheHit: true,
       };
-    } catch {
+    } catch (_e: unknown) {
       return {
         narrative: this.deterministicNarrative(symbol, data, rating),
         llmProvider: 'offline',

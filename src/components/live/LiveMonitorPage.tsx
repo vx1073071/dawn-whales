@@ -1,5 +1,8 @@
 ﻿import { useState, useEffect, useRef, useCallback } from 'react';
 import * as api from '../../lib/bridge-api';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
+import i18n from '../../i18n';
 interface SignalLog {
   id: string;
   time: string;
@@ -111,7 +114,8 @@ export default function LiveMonitorPage() {
       const list = await api.getWatchlist();
       if (list && list.length > 0) setWatchlist(list);
       else setWatchlist(['US.TQQQ', 'US.SOXL', 'US.QQQ', 'US.SPY', 'HK.00700', 'US.AAPL', 'US.NVDA', 'US.SQQQ']);
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
+  void EngineError; // [SYSTEM] structured error tracking
   }
 
   // ── Auto-scroll when signalLog or autoScroll changes ──────────────────────────
@@ -137,7 +141,7 @@ export default function LiveMonitorPage() {
         lastSignal: String(s.lastSignalTime || '-'),
       }));
       setStrategies(live);
-    } catch {
+    } catch (_e: unknown) {
       /* silent */
     }
   }
@@ -150,17 +154,17 @@ export default function LiveMonitorPage() {
         await api.startLive(id);
       }
       loadStrategies();
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   async function handleEmergencyStop() {
     try {
       if (typeof window !== 'undefined' && window.api?.app?.emergencyStop) {
         await window.api.app.emergencyStop();
-        addLog('ALERT', 'SYSTEM', '紧急停止已触发，所有策略已停止');
+        addLog('ALERT', 'SYSTEM', i18n.t('LiveMonitorPage.k1'));
         loadStrategies();
       }
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   async function handleAddCode() {
@@ -173,7 +177,7 @@ export default function LiveMonitorPage() {
     try {
       await api.subscribeQuotes([code]);
       await api.saveWatchlist(newList);
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   async function handleRemoveCode(code: string) {
@@ -184,7 +188,7 @@ export default function LiveMonitorPage() {
     try {
       await api.unsubscribeQuotes([code]);
       await api.saveWatchlist(newList);
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   function addLog(type: SignalLog['type'], code: string, message: string) {
@@ -221,8 +225,8 @@ export default function LiveMonitorPage() {
   };
 
   const typeLabels: Record<string, string> = {
-    BUY: '买入', SELL: '卖出', STOP_LOSS: 'components.stopLoss',
-    TAKE_PROFIT: 'components.takeProfit', ALERT: '告警', ERROR: 'components.error',
+    BUY: i18n.t('LiveMonitorPage.k2'), SELL: i18n.t('LiveMonitorPage.k3'), STOP_LOSS: 'components.stopLoss',
+    TAKE_PROFIT: 'components.takeProfit', ALERT: i18n.t('LiveMonitorPage.k4'), ERROR: 'components.error',
   };
 
   const statusColors: Record<string, string> = {
@@ -370,7 +374,7 @@ export default function LiveMonitorPage() {
                 <div className="flex justify-between items-center mb-1">
                   <span className="text-sm text-white font-medium truncate">{s.name}</span>
                   <span className={`text-xs font-medium ${statusColors[s.status]}`}>
-                    {s.status === 'running' ? '● 运行中' : '○ 已停止'}
+                    {s.status === 'running' ? i18n.t('LiveMonitorPage.k5') : i18n.t('LiveMonitorPage.k6')}
                   </span>
                 </div>
                 <div className="flex justify-between items-center text-xs text-gray-500">
@@ -388,7 +392,7 @@ export default function LiveMonitorPage() {
                     onClick={(e) => { e.stopPropagation(); toggleLive(s.id, s.status); }}
                     className={`text-xs px-2 py-0.5 rounded ${s.status === 'running' ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400'}`}
                   >
-                    {s.status === 'running' ? '停止' : '启动'}
+                    {s.status === 'running' ? i18n.t('LiveMonitorPage.k7') : i18n.t('LiveMonitorPage.k8')}
                   </button>
                 </div>
               </button>

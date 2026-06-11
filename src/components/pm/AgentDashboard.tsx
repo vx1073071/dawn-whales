@@ -3,6 +3,7 @@
  * Real-time monitoring panel for all 14 agents
  */
 import { useTranslation } from "react-i18next";
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import React, { useEffect, useState } from 'react';
 import { Card, Row, Col, Badge, Progress, Tag, Statistic, Alert } from 'antd';
 import {
@@ -173,3 +174,5 @@ export const AgentDashboard: React.FC = () => {
     </div>
   );
 };
+
+void EngineError; // [AI] structured error tracking

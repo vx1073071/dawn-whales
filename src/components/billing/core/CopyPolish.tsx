@@ -8,6 +8,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -20,41 +21,41 @@ export interface CopyPolishProps {
 // ── Definitive Pricing ──────────────────────────────────────────────────
 
 const PRICING_FINAL = [
-  { tier: '标准 Standard', price: '1.0', currency: 'USDT', unit: '/次 per analysis',
-    agents: '2 Agent (基本面+技术面)',
-    cache: '基础缓存 Basic',
-    models: '单模型 Single model',
-    markets: '🇭🇰 港股 HK',
+  { tier: i18n.t('CopyPolish.k1'), price: '1.0', currency: 'USDT', unit: i18n.t('CopyPolish.k2'),
+    agents: i18n.t('CopyPolish.k3'),
+    cache: i18n.t('CopyPolish.k4'),
+    models: i18n.t('CopyPolish.k5'),
+    markets: i18n.t('CopyPolish.k6'),
     highlight: false },
-  { tier: '高级 Premium', price: '1.5', currency: 'USDT', unit: '/次 per analysis',
-    agents: '3 Agent (基本面+技术面+情绪)',
-    cache: '95% 命中率 Hit rate',
-    models: '双模型辩论 2-Model debate',
-    markets: '🇭🇰 港股 + 🇺🇸 美股',
-    highlight: true, badge: '🔥 推荐 Recommended' },
-  { tier: '旗舰 Flagship', price: '2.0', currency: 'USDT', unit: '/次 per analysis',
-    agents: '4 Agent Arena (全维度 All 4)',
-    cache: '99% 命中率 Hit rate',
-    models: '三模型竞技 3-Model arena',
-    markets: '🇭🇰 港股 + 🇺🇸 美股',
-    highlight: false, badge: '👑 旗舰 Flagship' },
+  { tier: i18n.t('CopyPolish.k7'), price: '1.5', currency: 'USDT', unit: i18n.t('CopyPolish.k8'),
+    agents: i18n.t('CopyPolish.k9'),
+    cache: i18n.t('CopyPolish.k10'),
+    models: i18n.t('CopyPolish.k11'),
+    markets: i18n.t('CopyPolish.k12'),
+    highlight: true, badge: i18n.t('CopyPolish.k13') },
+  { tier: i18n.t('CopyPolish.k14'), price: '2.0', currency: 'USDT', unit: i18n.t('CopyPolish.k15'),
+    agents: i18n.t('CopyPolish.k16'),
+    cache: i18n.t('CopyPolish.k17'),
+    models: i18n.t('CopyPolish.k18'),
+    markets: i18n.t('CopyPolish.k19'),
+    highlight: false, badge: i18n.t('CopyPolish.k20') },
 ];
 
 const FREE_VS_PAID_FINAL = [
-  { feature: '行情查看 Market Quotes', free: '✅ 实时 Realtime', paid: '✅' },
-  { feature: '技术指标 Technical Indicators', free: '✅ 12 指标 All', paid: '✅' },
-  { feature: 'K线图表 Charting', free: '✅ 多周期 Multi', paid: '✅' },
-  { feature: '基础回测 Basic Backtest', free: '✅ 无限 Unlimited', paid: '✅ 高级 Advanced' },
-  { feature: 'AI策略分析 AI Analysis', free: '🆓 3次/终身 3 free', paid: '💰 1.0-2.0 USDT/次' },
-  { feature: '实盘交易 Live Trading', free: '✅ Futu + IBKR', paid: '✅' },
-  { feature: '信号广场浏览 Browse Signals', free: '✅ 只读 Read-only', paid: '✅ 完整 Full' },
-  { feature: '信号订阅 Signal Subscribe', free: '❌', paid: '✅ 创作者定价' },
-  { feature: '策略模板购买 Strategy Templates', free: '❌', paid: '✅ 0-1000 USDT' },
-  { feature: '创作者发布 Creator Publishing', free: '❌', paid: '✅ L1-L3 分成' },
-  { feature: 'P2P转账 P2P Transfer', free: '❌', paid: '✅ 0.3% 双向' },
-  { feature: '数据导出 Data Export', free: '❌', paid: '✅ CSV/JSON/PDF' },
+  { feature: i18n.t('CopyPolish.k21'), free: i18n.t('CopyPolish.k22'), paid: '✅' },
+  { feature: i18n.t('CopyPolish.k23'), free: i18n.t('CopyPolish.k24'), paid: '✅' },
+  { feature: i18n.t('CopyPolish.k25'), free: i18n.t('CopyPolish.k26'), paid: '✅' },
+  { feature: i18n.t('CopyPolish.k27'), free: i18n.t('CopyPolish.k28'), paid: i18n.t('CopyPolish.k29') },
+  { feature: i18n.t('CopyPolish.k30'), free: i18n.t('CopyPolish.k31'), paid: i18n.t('CopyPolish.k32') },
+  { feature: i18n.t('CopyPolish.k33'), free: '✅ Futu + IBKR', paid: '✅' },
+  { feature: i18n.t('CopyPolish.k34'), free: i18n.t('CopyPolish.k35'), paid: i18n.t('CopyPolish.k36') },
+  { feature: i18n.t('CopyPolish.k37'), free: '❌', paid: i18n.t('CopyPolish.k38') },
+  { feature: i18n.t('CopyPolish.k39'), free: '❌', paid: '✅ 0-1000 USDT' },
+  { feature: i18n.t('CopyPolish.k40'), free: '❌', paid: i18n.t('CopyPolish.k41') },
+  { feature: i18n.t('CopyPolish.k42'), free: '❌', paid: i18n.t('CopyPolish.k43') },
+  { feature: i18n.t('CopyPolish.k44'), free: '❌', paid: '✅ CSV/JSON/PDF' },
   { feature: '4 Agent Arena', free: '❌', paid: '✅ Premium/Flagship' },
-  { feature: '访客模式 Guest Mode', free: '✅ 浏览+5次回测/天', paid: '—' },
+  { feature: i18n.t('CopyPolish.k45'), free: i18n.t('CopyPolish.k46'), paid: '—' },
 ];
 
 const PLATFORMS_FINAL = [
@@ -64,12 +65,12 @@ const PLATFORMS_FINAL = [
 ];
 
 const FEATURES_FINAL = [
-  { icon: '🤖', title: '4 Agent AI', desc: '基本面·技术面·情绪·宏观 Agent 协作。自然语言→交易信号。Fundamentals · Technical · Sentiment · Macro.' },
-  { icon: '📊', title: '策略因子引擎', desc: 'Fama-French 5因子 + Barra定制 + 自研选股。NL→DSL→Signal。' },
-  { icon: '🌍', title: '双市场券商', desc: '港股HKEX·美股NYSE。Futu OpenD + IBKR Gateway 双通道。' },
-  { icon: '💰', title: 'USDT按次付费', desc: 'Pay-per-use。不绑套餐。不强制订阅。TRC-20充值。P2P转账。' },
-  { icon: '📡', title: '信号广场', desc: '发现·订阅·跟单。实时信号推送+质量评分(A+~F)+表现追踪。' },
-  { icon: '🔒', title: '服务器端安全', desc: 'AI密钥仅在服务器。桌面端瘦客户端。破解=React组件。2FA保护。' },
+  { icon: '🤖', title: '4 Agent AI', desc: i18n.t('CopyPolish.k47') },
+  { icon: '📊', title: i18n.t('CopyPolish.k48'), desc: i18n.t('CopyPolish.k49') },
+  { icon: '🌍', title: i18n.t('CopyPolish.k50'), desc: i18n.t('CopyPolish.k51') },
+  { icon: '💰', title: i18n.t('CopyPolish.k52'), desc: i18n.t('CopyPolish.k53') },
+  { icon: '📡', title: i18n.t('CopyPolish.k54'), desc: i18n.t('CopyPolish.k55') },
+  { icon: '🔒', title: i18n.t('CopyPolish.k56'), desc: i18n.t('CopyPolish.k57') },
 ];
 
 // ── Highlight Badge ──────────────────────────────────────────────────────
@@ -104,7 +105,7 @@ export default function CopyPolish({ className = '' }: CopyPolishProps) {
             {(['pricing', 'download', 'freevspaid', 'features'] as CopySection[]).map(s => (
               <button key={s} onClick={() => setSection(s)}
                 className={`px-3 py-1.5 rounded-md text-xs font-medium ${section === s ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-600'}`}>
-                {s === 'pricing' ? '💰 定价' : s === 'download' ? '📦 下载' : s === 'freevspaid' ? '🆓vs💰' : '📋 功能'}
+                {s === 'pricing' ? i18n.t('CopyPolish.k58') : s === 'download' ? i18n.t('CopyPolish.k59') : s === 'freevspaid' ? '🆓vs💰' : i18n.t('CopyPolish.k60')}
               </button>
             ))}
           </div>

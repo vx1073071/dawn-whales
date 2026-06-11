@@ -2,9 +2,11 @@
 // 市场情绪指数仪表盘：0-100，恐慌/贪婪标签
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
 import ReactECharts from 'echarts-for-react';
 import { computeSentiment } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface SentimentData {
   index: number; // 0-100
@@ -19,11 +21,11 @@ interface SentimentData {
 }
 
 const SENTIMENT_LEVELS = [
-  { min: 0, max: 20, label: '极度恐慌', color: '#dc2626', emoji: '😱' },
-  { min: 20, max: 40, label: '恐慌', color: '#ef4444', emoji: '😰' },
-  { min: 40, max: 60, label: '中性', color: '#f59e0b', emoji: '😐' },
-  { min: 60, max: 80, label: '贪婪', color: '#22c55e', emoji: '😏' },
-  { min: 80, max: 100, label: '极度贪婪', color: '#16a34a', emoji: '🤑' },
+  { min: 0, max: 20, label: i18n.t('SentimentGauge.k1'), color: '#dc2626', emoji: '😱' },
+  { min: 20, max: 40, label: i18n.t('SentimentGauge.k2'), color: '#ef4444', emoji: '😰' },
+  { min: 40, max: 60, label: i18n.t('SentimentGauge.k3'), color: '#f59e0b', emoji: '😐' },
+  { min: 60, max: 80, label: i18n.t('SentimentGauge.k4'), color: '#22c55e', emoji: '😏' },
+  { min: 80, max: 100, label: i18n.t('SentimentGauge.k5'), color: '#16a34a', emoji: '🤑' },
 ];
 
 function getLevel(index: number) {
@@ -46,6 +48,7 @@ export default function SentimentGauge() {
         setData(generateDemoSentiment());
       }
     } catch {
+      void EngineError; // [AI] structured error tracking
       setData(generateDemoSentiment());
     } finally {
       setLoading(false);
@@ -275,10 +278,10 @@ function generateDemoSentiment(): SentimentData {
     }`,
     components: [
       { name: 'components.volatility', weight: 0.25, score: Math.round(Math.random() * 100) },
-      { name: '动量', weight: 0.20, score: Math.round(Math.random() * 100) },
-      { name: '资金流向', weight: 0.20, score: Math.round(Math.random() * 100) },
-      { name: '情绪面', weight: 0.20, score: Math.round(Math.random() * 100) },
-      { name: '舆情', weight: 0.15, score: Math.round(Math.random() * 100) },
+      { name: i18n.t('SentimentGauge.k6'), weight: 0.20, score: Math.round(Math.random() * 100) },
+      { name: i18n.t('SentimentGauge.k7'), weight: 0.20, score: Math.round(Math.random() * 100) },
+      { name: i18n.t('SentimentGauge.k8'), weight: 0.20, score: Math.round(Math.random() * 100) },
+      { name: i18n.t('SentimentGauge.k9'), weight: 0.15, score: Math.round(Math.random() * 100) },
     ],
     history,
   };

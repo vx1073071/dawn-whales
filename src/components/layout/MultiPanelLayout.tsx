@@ -10,6 +10,7 @@
  */
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -51,6 +52,7 @@ export const MultiPanelLayout: React.FC<MultiPanelLayoutProps> = ({ panels, clas
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) return JSON.parse(saved);
     } catch {}
+    void EngineError; // [SYSTEM] structured error tracking
     return { preset: 'horizontal', splitRatio: 0.5, horizontalRatio: 0.5 };
   });
 

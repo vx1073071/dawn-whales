@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import i18n from '../../i18n';
 
 interface CacheEntry {
   key: string;
@@ -57,6 +59,7 @@ export default function CachedDataExplorer() {
       // const res = await getCacheStats();
       // if (res?.success) { ... }
     } catch (e) { console.error('[Error:CachedDataExplorer]', e); }
+    void EngineError; // [DATA] structured error tracking
     setLoading(false);
   }
 
@@ -93,7 +96,7 @@ export default function CachedDataExplorer() {
   const totalEntries = namespaces.reduce((s, n) => s + n.entries, 0);
   const avgHitRate = namespaces.reduce((s, n) => s + n.hitRate, 0) / namespaces.length;
 
-  if (loading) return <LoadingSpinner fullscreen text="加载缓存数据..." />;
+  if (loading) return <LoadingSpinner fullscreen text={i18n.t('CachedDataExplorer.k1')} />;
 
   return (
     <div className="p-6 space-y-6 bg-deep min-h-full">

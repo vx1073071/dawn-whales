@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface EconomicEvent {
   id: string;
@@ -16,14 +17,14 @@ interface EconomicEvent {
 }
 
 const DEMO_EVENTS: EconomicEvent[] = [
-  { id: '1', date: '2026-06-05', time: '20:30', country: '🇺🇸', event: '非农就业人数', importance: 'high', forecast: '18.5万', previous: '17.5万' },
-  { id: '2', date: '2026-06-05', time: '20:30', country: '🇺🇸', event: '失业率', importance: 'high', forecast: '3.8%', previous: '3.9%' },
-  { id: '3', date: '2026-06-10', time: '20:30', country: '🇺🇸', event: 'CPI月率', importance: 'high', forecast: '0.3%', previous: '0.4%' },
-  { id: '4', date: '2026-06-10', time: '02:00', country: '🇺🇸', event: '美联储利率决议', importance: 'high', forecast: '5.50%', previous: '5.50%' },
-  { id: '5', date: '2026-06-12', time: '20:30', country: '🇺🇸', event: 'PPI月率', importance: 'medium', forecast: '0.2%', previous: '0.3%' },
-  { id: '6', date: '2026-06-13', time: '22:00', country: '🇺🇸', event: '密歇根消费者信心指数', importance: 'medium', forecast: '68.5', previous: '67.4' },
-  { id: '7', date: '2026-06-15', time: '09:30', country: '🇨🇳', event: '工业增加值', importance: 'medium', forecast: '5.8%', previous: '5.6%' },
-  { id: '8', date: '2026-06-18', time: '20:30', country: '🇺🇸', event: '初请失业金人数', importance: 'medium', forecast: '21.5万', previous: '21.8万' },
+  { id: '1', date: '2026-06-05', time: '20:30', country: '🇺🇸', event: i18n.t('EconomicCalendar.k1'), importance: 'high', forecast: i18n.t('EconomicCalendar.k2'), previous: i18n.t('EconomicCalendar.k3') },
+  { id: '2', date: '2026-06-05', time: '20:30', country: '🇺🇸', event: i18n.t('EconomicCalendar.k4'), importance: 'high', forecast: '3.8%', previous: '3.9%' },
+  { id: '3', date: '2026-06-10', time: '20:30', country: '🇺🇸', event: i18n.t('EconomicCalendar.k5'), importance: 'high', forecast: '0.3%', previous: '0.4%' },
+  { id: '4', date: '2026-06-10', time: '02:00', country: '🇺🇸', event: i18n.t('EconomicCalendar.k6'), importance: 'high', forecast: '5.50%', previous: '5.50%' },
+  { id: '5', date: '2026-06-12', time: '20:30', country: '🇺🇸', event: i18n.t('EconomicCalendar.k7'), importance: 'medium', forecast: '0.2%', previous: '0.3%' },
+  { id: '6', date: '2026-06-13', time: '22:00', country: '🇺🇸', event: i18n.t('EconomicCalendar.k8'), importance: 'medium', forecast: '68.5', previous: '67.4' },
+  { id: '7', date: '2026-06-15', time: '09:30', country: '🇨🇳', event: i18n.t('EconomicCalendar.k9'), importance: 'medium', forecast: '5.8%', previous: '5.6%' },
+  { id: '8', date: '2026-06-18', time: '20:30', country: '🇺🇸', event: i18n.t('EconomicCalendar.k10'), importance: 'medium', forecast: i18n.t('EconomicCalendar.k11'), previous: i18n.t('EconomicCalendar.k12') },
 ];
 
 export default function EconomicCalendar() {
@@ -43,9 +44,9 @@ export default function EconomicCalendar() {
   const nextEvent = filtered.find((e) => new Date(e.date + 'T' + e.time) > now);
 
   const importanceConfig = {
-    high: { dot: 'bg-red-500', label: '高', bg: 'bg-red-500/10', text: 'text-red-400' },
-    medium: { dot: 'bg-[#D4A853]', label: '中', bg: 'bg-[#D4A853]/10', text: 'text-[#D4A853]' },
-    low: { dot: 'bg-gray-500', label: '低', bg: 'bg-gray-500/10', text: 'text-gray-400' },
+    high: { dot: 'bg-red-500', label: i18n.t('EconomicCalendar.k13'), bg: 'bg-red-500/10', text: 'text-red-400' },
+    medium: { dot: 'bg-[#D4A853]', label: i18n.t('EconomicCalendar.k14'), bg: 'bg-[#D4A853]/10', text: 'text-[#D4A853]' },
+    low: { dot: 'bg-gray-500', label: i18n.t('EconomicCalendar.k15'), bg: 'bg-gray-500/10', text: 'text-gray-400' },
   };
 
   return (
@@ -68,7 +69,7 @@ export default function EconomicCalendar() {
                 filter === f ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              {f === 'all' ? t('components.all') : f === 'high' ? '高影响' : '中影响'}
+              {f === 'all' ? t('components.all') : f === 'high' ? i18n.t('EconomicCalendar.k16') : i18n.t('EconomicCalendar.k17')}
             </button>
           ))}
         </div>

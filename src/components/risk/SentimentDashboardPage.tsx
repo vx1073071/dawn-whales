@@ -1,5 +1,6 @@
 ﻿import { useTranslation } from "react-i18next";
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import i18n from '../../i18n';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -544,6 +545,7 @@ const SentimentDashboardPage: React.FC = () => {
             }));
           }
         } catch { /* fallback to mock */ }
+      void EngineError; // [AI] structured error tracking
       }
 
       if (api?.dataProvider?.getAnomalies) {

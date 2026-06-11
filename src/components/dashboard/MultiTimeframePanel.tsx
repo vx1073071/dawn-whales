@@ -12,6 +12,7 @@
 
 import { useTranslation } from "react-i18next";
 import React, { useState, useMemo, useCallback } from 'react';
+import i18n from '../../i18n';
 
 // ── Types (mirrors engine types) ────────────────────────────────────────
 
@@ -76,19 +77,19 @@ const TIMEFRAME_COLORS: Record<TimeframeKey, string> = {
 };
 
 const TIMEFRAME_LABELS: Record<TimeframeKey, string> = {
-  '1m': '1分钟',
-  '5m': '5分钟',
-  '15m': '15分钟',
-  '30m': '30分钟',
-  '1h': '1小时',
-  '4h': '4小时',
-  '1d': '日线',
+  '1m': i18n.t('MultiTimeframePanel.k1'),
+  '5m': i18n.t('MultiTimeframePanel.k2'),
+  '15m': i18n.t('MultiTimeframePanel.k3'),
+  '30m': i18n.t('MultiTimeframePanel.k4'),
+  '1h': i18n.t('MultiTimeframePanel.k5'),
+  '4h': i18n.t('MultiTimeframePanel.k6'),
+  '1d': i18n.t('MultiTimeframePanel.k7'),
 };
 
 const FUSION_MODE_LABELS: Record<FusionMode, string> = {
-  majority: '多数投票',
-  weighted: '加权融合',
-  any: '任一触发',
+  majority: i18n.t('MultiTimeframePanel.k8'),
+  weighted: i18n.t('MultiTimeframePanel.k9'),
+  any: i18n.t('MultiTimeframePanel.k10'),
 };
 
 const SIGNAL_COLORS: Record<SignalDirection, string> = {
@@ -307,7 +308,7 @@ export const MultiTimeframePanel: React.FC<MultiTimeframePanelProps> = ({
             <span className="text-2xl">{SIGNAL_ICONS[signal.fusedDirection]}</span>
             <div>
               <div className="text-lg font-bold text-white">
-                {signal.fusedDirection === 'BUY' ? t('components.long') : signal.fusedDirection === 'SELL' ? t('components.short') : '观望'}
+                {signal.fusedDirection === 'BUY' ? t('components.long') : signal.fusedDirection === 'SELL' ? t('components.short') : i18n.t('MultiTimeframePanel.k11')}
               </div>
               <div className="text-xs text-gray-500">
                 强度 {signal.fusedStrength.toFixed(0)}% · 置信度 {(signal.fusedConfidence * 100).toFixed(0)}%

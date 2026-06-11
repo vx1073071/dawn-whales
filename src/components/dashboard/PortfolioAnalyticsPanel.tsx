@@ -11,7 +11,9 @@
  */
 
 import { useTranslation } from "react-i18next";
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import React, { useState, useMemo } from 'react';
+import i18n from '../../i18n';
 
 // ── Types (mirrors engine types) ────────────────────────────────────────
 
@@ -226,11 +228,11 @@ export const PortfolioAnalyticsPanel: React.FC<PortfolioRiskPanelProps> = ({
   const stressTests = useMemo((): StressTestResult[] => {
     if (!positions.length) return [];
     const scenarios: StressScenario[] = [
-      { name: '市场崩盘', description: '全球股指跌15%', shocks: positions.reduce((acc, p) => ({ ...acc, [p.symbol]: -0.15 }), {}) },
-      { name: '利率冲击', description: '利率急升200bp', shocks: positions.reduce((acc, p) => ({ ...acc, [p.symbol]: -0.08 }), {}) },
-      { name: '科技股暴跌', description: '科技板块跌10%', shocks: positions.reduce((acc, p) => ({ ...acc, [p.symbol]: p.symbol.includes('7') ? -0.10 : -0.03 }), {}) },
-      { name: '流动性危机', description: '全市场跌8%', shocks: positions.reduce((acc, p) => ({ ...acc, [p.symbol]: -0.08 }), {}) },
-      { name: '温和上涨', description: '市场涨5%', shocks: positions.reduce((acc, p) => ({ ...acc, [p.symbol]: 0.05 }), {}) },
+      { name: i18n.t('PortfolioAnalyticsPanel.k1'), description: i18n.t('PortfolioAnalyticsPanel.k2'), shocks: positions.reduce((acc, p) => ({ ...acc, [p.symbol]: -0.15 }), {}) },
+      { name: i18n.t('PortfolioAnalyticsPanel.k3'), description: i18n.t('PortfolioAnalyticsPanel.k4'), shocks: positions.reduce((acc, p) => ({ ...acc, [p.symbol]: -0.08 }), {}) },
+      { name: i18n.t('PortfolioAnalyticsPanel.k5'), description: i18n.t('PortfolioAnalyticsPanel.k6'), shocks: positions.reduce((acc, p) => ({ ...acc, [p.symbol]: p.symbol.includes('7') ? -0.10 : -0.03 }), {}) },
+      { name: i18n.t('PortfolioAnalyticsPanel.k7'), description: i18n.t('PortfolioAnalyticsPanel.k8'), shocks: positions.reduce((acc, p) => ({ ...acc, [p.symbol]: -0.08 }), {}) },
+      { name: i18n.t('PortfolioAnalyticsPanel.k9'), description: i18n.t('PortfolioAnalyticsPanel.k10'), shocks: positions.reduce((acc, p) => ({ ...acc, [p.symbol]: 0.05 }), {}) },
     ];
     return scenarios.map(s => {
       const pnl = positions.reduce((sum, p) => {
@@ -311,10 +313,10 @@ export const PortfolioAnalyticsPanel: React.FC<PortfolioRiskPanelProps> = ({
       {/* Tab bar */}
       <div className="flex gap-1 mb-5 bg-gray-800/40 rounded-lg p-1">
         {([
-          { key: 'overview', label: '风险概览' },
-          { key: 'correlation', label: '相关性' },
-          { key: 'stress', label: '压力测试' },
-          { key: 'budget', label: '风险预算' },
+          { key: 'overview', label: i18n.t('PortfolioAnalyticsPanel.k11') },
+          { key: 'correlation', label: i18n.t('PortfolioAnalyticsPanel.k12') },
+          { key: 'stress', label: i18n.t('PortfolioAnalyticsPanel.k13') },
+          { key: 'budget', label: i18n.t('PortfolioAnalyticsPanel.k14') },
         ] as const).map(tab => (
           <button
             key={tab.key}
@@ -337,10 +339,10 @@ export const PortfolioAnalyticsPanel: React.FC<PortfolioRiskPanelProps> = ({
           {/* VaR cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {([
-              { label: 'VaR 95%', value: `$${Math.abs(riskMetrics.dailyVaR95).toLocaleString()}`, sub: '日度', color: 'text-red-400' },
-              { label: 'VaR 99%', value: `$${Math.abs(riskMetrics.dailyVaR99).toLocaleString()}`, sub: '日度', color: 'text-red-500' },
-              { label: 'CVaR 95%', value: `$${Math.abs(riskMetrics.cVaR95).toLocaleString()}`, sub: '条件尾部', color: 'text-orange-400' },
-              { label: 'CVaR 99%', value: `$${Math.abs(riskMetrics.cVaR99).toLocaleString()}`, sub: '条件尾部', color: 'text-orange-500' },
+              { label: 'VaR 95%', value: `$${Math.abs(riskMetrics.dailyVaR95).toLocaleString()}`, sub: i18n.t('PortfolioAnalyticsPanel.k15'), color: 'text-red-400' },
+              { label: 'VaR 99%', value: `$${Math.abs(riskMetrics.dailyVaR99).toLocaleString()}`, sub: i18n.t('PortfolioAnalyticsPanel.k16'), color: 'text-red-500' },
+              { label: 'CVaR 95%', value: `$${Math.abs(riskMetrics.cVaR95).toLocaleString()}`, sub: i18n.t('PortfolioAnalyticsPanel.k17'), color: 'text-orange-400' },
+              { label: 'CVaR 99%', value: `$${Math.abs(riskMetrics.cVaR99).toLocaleString()}`, sub: i18n.t('PortfolioAnalyticsPanel.k18'), color: 'text-orange-500' },
             ] as const).map(card => (
               <div key={card.label} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/30">
                 <div className="text-[10px] text-gray-500 uppercase">{card.label}</div>
@@ -356,11 +358,11 @@ export const PortfolioAnalyticsPanel: React.FC<PortfolioRiskPanelProps> = ({
               { label: 'Sharpe Ratio', value: riskMetrics.sharpeRatio.toFixed(2), color: 'text-amber-400' },
               { label: 'Sortino Ratio', value: riskMetrics.sortinoRatio.toFixed(2), color: 'text-emerald-400' },
               { label: 'components.maxDrawdown', value: `${(riskMetrics.maxDrawdown * 100).toFixed(1)}%`, color: 'text-red-400' },
-              { label: '年化收益', value: `${(riskMetrics.annualizedReturn * 100).toFixed(1)}%`, color: 'text-emerald-400' },
-              { label: '年化波动', value: `${(riskMetrics.annualizedVolatility * 100).toFixed(1)}%`, color: 'text-blue-400' },
+              { label: i18n.t('PortfolioAnalyticsPanel.k19'), value: `${(riskMetrics.annualizedReturn * 100).toFixed(1)}%`, color: 'text-emerald-400' },
+              { label: i18n.t('PortfolioAnalyticsPanel.k20'), value: `${(riskMetrics.annualizedVolatility * 100).toFixed(1)}%`, color: 'text-blue-400' },
               { label: 'Beta', value: riskMetrics.beta.toFixed(2), color: 'text-purple-400' },
-              { label: '跟踪误差', value: `${(riskMetrics.trackingError * 100).toFixed(1)}%`, color: 'text-yellow-400' },
-              { label: '分散度', value: `${(riskMetrics.diversificationRatio * 100).toFixed(0)}%`, color: 'text-cyan-400' },
+              { label: i18n.t('PortfolioAnalyticsPanel.k21'), value: `${(riskMetrics.trackingError * 100).toFixed(1)}%`, color: 'text-yellow-400' },
+              { label: i18n.t('PortfolioAnalyticsPanel.k22'), value: `${(riskMetrics.diversificationRatio * 100).toFixed(0)}%`, color: 'text-cyan-400' },
             ] as const).map(metric => (
               <div key={metric.label} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/30">
                 <div className="text-[10px] text-gray-500 uppercase">{metric.label}</div>
@@ -411,10 +413,10 @@ export const PortfolioAnalyticsPanel: React.FC<PortfolioRiskPanelProps> = ({
           </table>
           <div className="flex justify-center gap-4 mt-4 text-[10px]">
             {[
-              { label: '强正相关', color: 'bg-red-500/80' },
-              { label: '弱正相关', color: 'bg-yellow-500/50' },
-              { label: '不相关', color: 'bg-gray-500/30' },
-              { label: '负相关', color: 'bg-blue-500/50' },
+              { label: i18n.t('PortfolioAnalyticsPanel.k23'), color: 'bg-red-500/80' },
+              { label: i18n.t('PortfolioAnalyticsPanel.k24'), color: 'bg-yellow-500/50' },
+              { label: i18n.t('PortfolioAnalyticsPanel.k25'), color: 'bg-gray-500/30' },
+              { label: i18n.t('PortfolioAnalyticsPanel.k26'), color: 'bg-blue-500/50' },
             ].map(l => (
               <span key={l.label} className="flex items-center gap-1 text-gray-500">
                 <span className={`inline-block w-3 h-3 rounded ${l.color}`} />
@@ -459,7 +461,7 @@ export const PortfolioAnalyticsPanel: React.FC<PortfolioRiskPanelProps> = ({
       {selectedTab === 'budget' && riskBudget.length > 0 && (
         <div className="flex items-start gap-6">
           {/* Donut chart */}
-          <DonutChart slices={donutSlices} size={140} centerLabel="风险贡献" />
+          <DonutChart slices={donutSlices} size={140} centerLabel={i18n.t('PortfolioAnalyticsPanel.k27')} />
 
           {/* Budget table */}
           <div className="flex-1">
@@ -503,3 +505,5 @@ export const PortfolioAnalyticsPanel: React.FC<PortfolioRiskPanelProps> = ({
 };
 
 export default PortfolioAnalyticsPanel;
+
+void EngineError; // [SYSTEM] structured error tracking

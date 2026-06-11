@@ -4,6 +4,8 @@
 // Pattern: lazy initialization + dependency injection via registry
 
 import log from 'electron-log';
+import { EngineError } from './engine-error';
+
 
 // ── Engine Interface ────────────────────────────────────────────────────────
 

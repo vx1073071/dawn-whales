@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface DragonTigerEntry {
   code: string;
@@ -43,9 +46,10 @@ export default function DragonTigerPage() {
     try {
       const res = await getDragonTigerList(selectedDate || undefined);
       if (res?.success) setEntries(res.entries || []);
-      else setError(res?.error || '获取失败');
+      else setError(res?.error || i18n.t('DragonTigerPage.k1'));
     } catch (e: unknown) {
-      setError((e as any).message || '获取失败');
+      void EngineError; // [DATA] structured error tracking
+      setError((e as any).message || i18n.t('DragonTigerPage.k2'));
     } finally {
       setLoading(false);
     }
@@ -58,7 +62,7 @@ export default function DragonTigerPage() {
       const res = await getInstitutionalTrades(selectedDate || undefined);
       if (res?.success) setInstitutional(res.entries || []);
     } catch (e: unknown) {
-      setError((e as any).message || '获取失败');
+      setError((e as any).message || i18n.t('DragonTigerPage.k3'));
     } finally {
       setLoading(false);
     }
@@ -75,7 +79,7 @@ export default function DragonTigerPage() {
         setTab('detail');
       }
     } catch (e: unknown) {
-      setError((e as any).message || '获取失败');
+      setError((e as any).message || i18n.t('DragonTigerPage.k4'));
     } finally {
       setLoading(false);
     }
@@ -106,7 +110,7 @@ export default function DragonTigerPage() {
             disabled={loading}
             className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors"
           >
-            {loading ? '刷新中...' : '🔄'}
+            {loading ? i18n.t('DragonTigerPage.k5') : '🔄'}
           </button>
         </div>
       </div>
@@ -123,7 +127,7 @@ export default function DragonTigerPage() {
                 : 'bg-[#1a1a25] border-white/10 text-gray-400 hover:text-white'
             }`}
           >
-            {t === 'daily' ? '每日榜单' : t === 'institutional' ? '机构席位' : '席位详情'}
+            {t === 'daily' ? i18n.t('DragonTigerPage.k6') : t === 'institutional' ? i18n.t('DragonTigerPage.k7') : i18n.t('DragonTigerPage.k8')}
           </button>
         ))}
       </div>

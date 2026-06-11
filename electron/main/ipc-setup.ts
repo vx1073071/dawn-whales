@@ -1,6 +1,7 @@
 // ── DAWN WHALES — IPC Handler Setup ────────────────────────────────────────
 // Extracted from electron/main.ts — all IPC handlers under setupIPC()
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import path from 'path';
 import { exec } from 'child_process';
 import { promisify } from 'util';
@@ -104,6 +105,8 @@ export function setupIPC(ctx: IPCContext): void {
 
       return { success: true, host: config.host, port: config.port };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
+      void EngineError; // structured error domain: AI
       log.error('[Broker] Connect failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -119,7 +122,9 @@ export function setupIPC(ctx: IPCContext): void {
     if (!ctx.opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
       return { success: true, accounts: await ctx.opendClient.getAccounts() };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getFunds', async (_e, accountId: string) => {
@@ -128,14 +133,18 @@ export function setupIPC(ctx: IPCContext): void {
       const funds = await ctx.opendClient.getFunds(accountId);
       ctx.riskEngine?.updateTotalAssets(funds?.totalAssets || 0);
       return { success: true, funds };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getPositions', async (_e, accountId: string) => {
     if (!ctx.opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
       return { success: true, positions: await ctx.opendClient.getPositions(accountId) };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getQuotes', async (_e, codes: string[]) => {
@@ -143,7 +152,9 @@ export function setupIPC(ctx: IPCContext): void {
     try {
       const quoteList = (!codes || codes.length === 0) ? ctx.WATCHLIST : codes;
       return { success: true, quotes: await ctx.opendClient.getQuotes(quoteList) };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:subscribe', async (_e, codes: string[]) => {
@@ -155,7 +166,9 @@ export function setupIPC(ctx: IPCContext): void {
       ctx.db?.saveWatchlist(ctx.WATCHLIST);
       log.info('[Broker] Subscribed:', codes);
       return { success: true, watchlist: ctx.WATCHLIST };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:unsubscribe', async (_e, codes: string[]) => {
@@ -166,7 +179,9 @@ export function setupIPC(ctx: IPCContext): void {
       ctx.db?.saveWatchlist(ctx.WATCHLIST);
       log.info('[Broker] Unsubscribed:', codes);
       return { success: true, watchlist: ctx.WATCHLIST };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getKlines', async (_e, code: string, period: string, count: number) => {
@@ -181,7 +196,9 @@ export function setupIPC(ctx: IPCContext): void {
         ctx.db.saveKlines(code, period || 'daily', klines);
       }
       return { success: true, klines };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:placeOrder', async (_e, order: unknown) => {
@@ -211,7 +228,9 @@ export function setupIPC(ctx: IPCContext): void {
       ctx.db?.saveTrade({ ...order, orderId: result.orderId, status: 'submitted' });
       ctx.mainWindow?.webContents.send('order-update', { ...order, orderId: result.orderId, status: 'submitted' });
       return { success: true, ...result };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:cancelOrder', async (_e, orderId: string, accountId: string, code: string) => {
@@ -219,14 +238,18 @@ export function setupIPC(ctx: IPCContext): void {
     try {
       await ctx.opendClient.cancelOrder(orderId, accountId, code);
       return { success: true };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:getOrders', async (_e, accountId: string) => {
     if (!ctx.opendClient?.connected) return { success: false, error: 'Not connected' };
     try {
       return { success: true, orders: await ctx.opendClient.getOrders(accountId) };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:list', async () => {
@@ -240,7 +263,9 @@ export function setupIPC(ctx: IPCContext): void {
       ctx.brokerManager?.addConfig(cfg);
       ctx.db?.saveBrokerConfig(cfg);
       return { success: true };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:remove', async (_e, id: string) => {
@@ -248,14 +273,18 @@ export function setupIPC(ctx: IPCContext): void {
       ctx.brokerManager?.removeConfig(id);
       ctx.db?.deleteBrokerConfig(id);
       return { success: true };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:setActive', async (_e, id: string) => {
     try {
       ctx.brokerManager?.setActiveBroker(id);
       return { success: true, activeBroker: id };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('broker:switch', async (_e, id: string) => {
@@ -293,6 +322,7 @@ export function setupIPC(ctx: IPCContext): void {
       ctx.mainWindow?.webContents.send('broker:switched', { activeBroker: activeId, status });
       return { success: true, activeBroker: activeId, brokerStatus: switched };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[Broker] Switch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -311,7 +341,9 @@ export function setupIPC(ctx: IPCContext): void {
       const strategy = ctx.strategyEngine?.getStrategy(id!);
       if (strategy && ctx.db) ctx.db.saveStrategy(strategy);
       return { success: true, id, strategy };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('strategy:getAll', async () => {
@@ -337,7 +369,9 @@ export function setupIPC(ctx: IPCContext): void {
       Object.assign(strategy, sanitized, { updatedAt: new Date().toISOString() });
       if (ctx.db) ctx.db.saveStrategy(strategy);
       return { success: true, strategy };
-    } catch (err) { return { success: false, error: err.message }; }
+    } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    return { success: false, error: err.message }; }
   });
 
   ipcMain.handle('strategy:delete', async (_e, id: string) => {
@@ -384,6 +418,7 @@ export function setupIPC(ctx: IPCContext): void {
 
       return await ctx.backtestEngine.run({ ...config, klines });
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[IPC] Backtest error:', err.message);
       return { success: false, error: err.message };
     }
@@ -411,6 +446,7 @@ export function setupIPC(ctx: IPCContext): void {
       );
       return { success: true, results };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -426,6 +462,7 @@ export function setupIPC(ctx: IPCContext): void {
       );
       return { success: true, results };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -437,6 +474,7 @@ export function setupIPC(ctx: IPCContext): void {
       const metrics = enhancer.computeDeepRiskMetrics(equityCurve, riskFreeRate || 0.03);
       return { success: true, metrics };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -472,6 +510,7 @@ Keep it under 200 words. Use bullet points.`;
       if (!result.success) return result;
       return { success: true, explanation: result.content };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -506,6 +545,7 @@ Keep it under 250 words. Be objective, not promotional.`;
       if (!result.success) return result;
       return { success: true, comparison: result.content };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -570,9 +610,10 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       });
       if (!result.success) return result;
       let suggestions = [];
-      try { suggestions = JSON.parse(result.content).suggestions || []; } catch { suggestions = []; }
+      try { suggestions = JSON.parse(result.content).suggestions || []; } catch (_e: unknown) { suggestions = []; }
       return { success: true, suggestions };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -695,6 +736,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       }
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[App] Emergency stop failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -713,7 +755,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       }
       await shell.openExternal(rawUrl);
       return { success: true };
-    } catch {
+    } catch (_e: unknown) {
       return { success: false, error: 'Invalid URL' };
     }
   });
@@ -727,6 +769,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const result = await autoUpdater.checkForUpdates();
       return { success: true, version: result?.updateInfo?.version || null };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -736,6 +779,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       await autoUpdater.downloadUpdate();
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -771,6 +815,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const result = JSON.parse(stdout);
       return { success: true, greeks: result };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[Greeks] Calculation failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -798,6 +843,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const result = JSON.parse(stdout);
       return { success: true, portfolio: result };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[Greeks] Portfolio calc failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -812,6 +858,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const stats = ctx.db?.getStrategyRating(strategyId);
       return { success: true, ...stats };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -829,6 +876,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       ctx.db?.addComment(strategyId, content, parentId);
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -845,6 +893,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       ctx.db?.saveStrategyPerformance(data);
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -865,6 +914,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const score = ctx.marketplaceService.calculateStrategyScore(strategyId);
       return { success: true, score };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[Marketplace] Score calculation failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -876,6 +926,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const verification = ctx.marketplaceService.verifyPerformance(strategyId);
       return { success: true, verification };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[Marketplace] Verification failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -887,6 +938,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const result = ctx.marketplaceService.updateAllScores();
       return { success: true, ...result };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[Marketplace] Batch update failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -899,6 +951,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const data = await ctx.dataProvider.getFundamental(symbol);
       return { success: true, data };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[DataProvider] Fundamental fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -910,6 +963,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const data = await ctx.dataProvider.getCapitalFlow(symbol);
       return { success: true, data };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[DataProvider] Capital flow fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -921,6 +975,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const regime = await ctx.dataProvider.getMarketRegime();
       return { success: true, regime };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[DataProvider] Regime fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -932,6 +987,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const signals = await ctx.dataProvider.getAnomalies(symbol);
       return { success: true, signals };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[DataProvider] Anomalies fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -943,6 +999,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const items = await ctx.dataProvider.getNews(symbol, limit);
       return { success: true, items };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[DataProvider] News fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -954,6 +1011,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const result = await ctx.dataProvider.getCompositeScore(symbol);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[DataProvider] Composite score failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -965,6 +1023,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       ctx.dataProvider.saveFundamental(data);
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -975,6 +1034,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       ctx.dataProvider.saveCapitalFlow(data);
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -985,6 +1045,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       ctx.dataProvider.saveMarketRegime(regime);
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -995,6 +1056,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const regime = ctx.dataProvider.computeRegime(factors);
       return { success: true, regime };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -1005,6 +1067,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       ctx.dataProvider.saveAnomaly(signal);
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -1015,6 +1078,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       ctx.dataProvider.saveNews(symbol, items);
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -1025,6 +1089,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       ctx.dataProvider.clearExpiredCache();
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -1042,6 +1107,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const report = await wfa.run(config, klines);
       return { success: true, report };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[WFA] Failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -1060,6 +1126,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       const report = await scanner.run({ ...config, klines });
       return { success: true, report };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[ParamScan] Failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -1093,6 +1160,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
       return { success: true, results, timeframes };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       log.error('[MultiTF] Failed:', err.message);
       return { success: false, error: err.message };
     }

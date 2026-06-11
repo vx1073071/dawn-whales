@@ -1,11 +1,14 @@
 ﻿import { useState, useEffect, useCallback } from 'react';
 import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates, deleteStrategy } from '../../lib/bridge-api';
+
 import StrategyExplainCard from './StrategyExplainCard';
 import StrategyCompareModal from './StrategyCompareModal';
 import ConditionRulePanel from '../trading/ConditionRulePanel';
 import ClosedLoopConfigPanel from './ClosedLoopConfigPanel';
 import AdaptiveParamPanel from './AdaptiveParamPanel';
 import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 type CreateMode = null | 'ai' | 'template' | 'form' | 'condition' | 'closedLoop' | 'adaptive';
 
 interface ParsedStrategy {
@@ -35,7 +38,7 @@ interface BacktestResult {
 }
 
 export default function StrategyPage() {
-  const { t } = (() => { try { return require('react-i18next').useTranslation(); } catch { return { t: (k: string) => k }; } })();
+  const { t } = (() => { try { return require('react-i18next').useTranslation(); } catch (_e: unknown) { return { t: (k: string) => k }; } })();
   const [mode, setMode] = useState<CreateMode>(null);
   const [strategies, setStrategies] = useState<unknown[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -494,7 +497,7 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
     try {
       await createStrategy({ templateId: template.id, symbol: template.symbol || 'US.TQQQ' });
       onCreated();
-    } catch { /* silent */ } finally {
+    } catch (_e: unknown) { /* silent */ } finally {
       setLoading(false);
     }
   }
@@ -584,7 +587,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
             if (st.stopLoss) setStopLoss(st.stopLoss);
             if (st.takeProfit) setTakeProfit(st.takeProfit);
           }
-        } catch { /* silent */ }
+        } catch (_e: unknown) { /* silent */ }
       };
       load();
     }
@@ -612,7 +615,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
         await createStrategy(config);
       }
       onCreated();
-    } catch { /* silent */ } finally {
+    } catch (_e: unknown) { /* silent */ } finally {
       setCreating(false);
     }
   }
@@ -812,7 +815,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
         slippage: 0.0005,
       });
       if (result.success) setBacktestResult(result.result);
-    } catch { /* silent */ } finally {
+    } catch (_e: unknown) { /* silent */ } finally {
       setBacktestLoading(false);
     }
   }
@@ -823,7 +826,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       await startLive(strategyId);
       onRefresh();
       loadDetail();
-    } catch { /* silent */ } finally {
+    } catch (_e: unknown) { /* silent */ } finally {
       setActionLoading(false);
     }
   }
@@ -834,7 +837,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       await stopLive(strategyId);
       onRefresh();
       loadDetail();
-    } catch { /* silent */ } finally {
+    } catch (_e: unknown) { /* silent */ } finally {
       setActionLoading(false);
     }
   }

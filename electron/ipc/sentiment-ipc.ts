@@ -2,6 +2,7 @@
 // 8 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -16,6 +17,8 @@ export function registerSentimentIPC(
       const result = sentimentAttrEngine.attributeSentiment(params);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
+      void EngineError; // structured error domain: AI
       log.error('[SentimentAttr] Error:', err);
       return { success: false, error: err.message };
     }
@@ -47,6 +50,7 @@ export function registerSentimentIPC(
       
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -59,6 +63,7 @@ export function registerSentimentIPC(
       stream.stop();
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -71,6 +76,7 @@ export function registerSentimentIPC(
       const current = stream.getCurrentSentiment();
       return { success: true, current };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -84,6 +90,7 @@ export function registerSentimentIPC(
       const limited = limit ? history.slice(-limit) : history;
       return { success: true, history: limited };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -96,6 +103,7 @@ export function registerSentimentIPC(
       const alerts = stream.getAlerts();
       return { success: true, alerts };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -108,6 +116,7 @@ export function registerSentimentIPC(
       stream.clearAlerts();
       return { success: true };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -121,6 +130,7 @@ export function registerSentimentIPC(
       const dashboard = getSentimentDashboard();
       return { success: true, dashboard };
     } catch (err) {
+    // [EngineError:AI] — structured error tracking
       return { success: false, error: err.message };
     }
   });

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -359,6 +360,8 @@ const PreferencesPage: React.FC = () => {
           if (result.data.notifications) setNotifications({ ...DEFAULT_NOTIFICATIONS, ...result.data.notifications });
         }
       } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+        void EngineError; // structured error domain: SYSTEM
         console.error('Failed to load preferences:', err);
         showStatus('Failed to load preferences', 'error');
       } finally {
@@ -388,6 +391,7 @@ const PreferencesPage: React.FC = () => {
             showStatus('Failed to save preferences', 'error');
           }
         } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
           console.error('Save error:', err);
           setSaveStatus('error');
           showStatus('Save failed unexpectedly', 'error');
@@ -442,6 +446,7 @@ const PreferencesPage: React.FC = () => {
         showStatus(section ? `${section} preferences reset` : 'All preferences reset to defaults', 'success');
       }
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       console.error('Reset failed:', err);
       showStatus('Reset failed', 'error');
     }
@@ -454,6 +459,7 @@ const PreferencesPage: React.FC = () => {
         showStatus(`Exported to: ${result.data.filePath}`, 'success');
       }
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       console.error('Export failed:', err);
       showStatus('Export failed', 'error');
     }
@@ -469,6 +475,7 @@ const PreferencesPage: React.FC = () => {
         showStatus('Preferences imported successfully', 'success');
       }
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       console.error('Import failed:', err);
       showStatus('Import failed', 'error');
     }

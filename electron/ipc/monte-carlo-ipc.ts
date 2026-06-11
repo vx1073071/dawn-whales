@@ -4,6 +4,8 @@
 import { ipcMain } from 'electron';
 import log from 'electron-log';
 import { MonteCarloSimulator, SimConfig } from '../engine/backtest/monte-carlo-simulator';
+import { EngineError } from './engine/core/engine-error';
+
 
 const simulator = new MonteCarloSimulator();
 

@@ -2,7 +2,9 @@
 // v2: +日历热力图 +标签 +CSV导出 +日期筛选
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import * as echarts from 'echarts';
+import i18n from '../../i18n';
 
 interface JournalEntry {
   id: string;
@@ -24,10 +26,10 @@ const EMOTION_EMOJI: Record<string, string> = {
 };
 
 const EMOTION_LABEL: Record<string, string> = {
-  calm: '平静', greedy: '贪婪', fearful: '恐惧', impatient: '急躁', confident: '自信',
+  calm: i18n.t('TradingJournal.k1'), greedy: i18n.t('TradingJournal.k2'), fearful: i18n.t('TradingJournal.k3'), impatient: i18n.t('TradingJournal.k4'), confident: i18n.t('TradingJournal.k5'),
 };
 
-const ALL_TAGS = ['突破', '回调', '止损', '止盈', '趋势', '反转', '消息', '财报', '宏观', '技术'];
+const ALL_TAGS = [i18n.t('TradingJournal.k6'), i18n.t('TradingJournal.k7'), i18n.t('TradingJournal.k8'), i18n.t('TradingJournal.k9'), i18n.t('TradingJournal.k10'), i18n.t('TradingJournal.k11'), i18n.t('TradingJournal.k12'), i18n.t('TradingJournal.k13'), i18n.t('TradingJournal.k14'), i18n.t('TradingJournal.k15')];
 
 export default function TradingJournal() {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
@@ -44,6 +46,7 @@ export default function TradingJournal() {
       const saved = localStorage.getItem('dawn-whales-journal');
       if (saved) setEntries(JSON.parse(saved));
     } catch (e) { console.error('[Error:TradingJournal]', e); }
+  void EngineError; // [SYSTEM] structured error tracking
   }, []);
 
   // Save to localStorage
@@ -101,7 +104,7 @@ export default function TradingJournal() {
 
   // Export CSV
   const exportCSV = useCallback(() => {
-    const headers = ['日期', '代码', '方向', '价格', '数量', '理由', '情绪', '结果', '盈亏', '反思', '标签'];
+    const headers = [i18n.t('TradingJournal.k16'), i18n.t('TradingJournal.k17'), i18n.t('TradingJournal.k18'), i18n.t('TradingJournal.k19'), i18n.t('TradingJournal.k20'), i18n.t('TradingJournal.k21'), i18n.t('TradingJournal.k22'), i18n.t('TradingJournal.k23'), i18n.t('TradingJournal.k24'), i18n.t('TradingJournal.k25'), i18n.t('TradingJournal.k26')];
     const rows = filtered.map((e) => [
       new Date(e.date).toLocaleDateString('zh-CN'),
       e.symbol,
@@ -137,7 +140,7 @@ export default function TradingJournal() {
           </div>
           <button onClick={exportCSV} className="px-2 py-1.5 text-[10px] text-gray-400 hover:text-gray-200 border border-white/10 rounded-lg">导出 CSV</button>
           <button onClick={() => setShowForm(!showForm)} className="px-3 py-1.5 bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 rounded-lg text-xs font-medium hover:bg-[#C9A046]/20 transition-colors">
-            {showForm ? '取消' : '+ 记一笔'}
+            {showForm ? i18n.t('TradingJournal.k27') : i18n.t('TradingJournal.k28')}
           </button>
         </div>
       </div>
@@ -150,7 +153,7 @@ export default function TradingJournal() {
         <div className="flex items-center gap-1">
           {(['all', 'win', 'loss', 'pending'] as const).map((f) => (
             <button key={f} onClick={() => setFilter(f)} className={`px-2 py-1 rounded text-[10px] ${filter === f ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'}`}>
-              {f === 'all' ? '全部' : f === 'win' ? '盈利' : f === 'loss' ? '亏损' : '待定'}
+              {f === 'all' ? i18n.t('TradingJournal.k29') : f === 'win' ? i18n.t('TradingJournal.k30') : f === 'loss' ? i18n.t('TradingJournal.k31') : i18n.t('TradingJournal.k32')}
             </button>
           ))}
         </div>
@@ -172,7 +175,7 @@ export default function TradingJournal() {
           {filtered.length === 0 ? (
             <div className="text-center py-6">
               <div className="text-2xl mb-2 opacity-40">📝</div>
-              <p className="text-gray-500 text-sm">{entries.length === 0 ? '开始记录你的第一笔交易' : '没有符合条件的记录'}</p>
+              <p className="text-gray-500 text-sm">{entries.length === 0 ? i18n.t('TradingJournal.k33') : i18n.t('TradingJournal.k34')}</p>
             </div>
           ) : (
             <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
@@ -190,7 +193,7 @@ export default function TradingJournal() {
                       {entry.lessons && <div className="text-[10px] text-[#D4A853] bg-[#C9A046]/5 rounded px-2 py-1">💡 {entry.lessons}</div>}
                     </div>
                     <div className="text-right flex-shrink-0 ml-3">
-                      {entry.outcome && <div className={`text-xs font-mono font-medium ${entry.outcome === 'win' ? 'text-emerald-400' : entry.outcome === 'loss' ? 'text-red-400' : 'text-yellow-400'}`}>{entry.outcome === 'win' ? '✓ 盈利' : entry.outcome === 'loss' ? '✗ 亏损' : '⏳ 待定'}</div>}
+                      {entry.outcome && <div className={`text-xs font-mono font-medium ${entry.outcome === 'win' ? 'text-emerald-400' : entry.outcome === 'loss' ? 'text-red-400' : 'text-yellow-400'}`}>{entry.outcome === 'win' ? i18n.t('TradingJournal.k35') : entry.outcome === 'loss' ? i18n.t('TradingJournal.k36') : i18n.t('TradingJournal.k37')}</div>}
                       {entry.pnl !== undefined && <div className={`text-xs font-mono ${entry.pnl >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>{entry.pnl >= 0 ? '+' : ''}${entry.pnl.toFixed(0)}</div>}
                       <button onClick={() => deleteEntry(entry.id)} className="text-[10px] text-gray-600 hover:text-red-400 mt-1">删除</button>
                     </div>

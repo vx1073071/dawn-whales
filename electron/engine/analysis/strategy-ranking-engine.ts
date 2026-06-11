@@ -13,6 +13,8 @@
  * - Strategy Lifecycle Stage detection (new / growing / mature / declining)
  */
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
+
 
 // ─── Inline EventEmitter polyfill ────────────────────────────────────────────
 type EventListener = (...args: unknown[]) => void;

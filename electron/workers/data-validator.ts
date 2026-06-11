@@ -1,3 +1,4 @@
+
 ﻿// T101: Schema + Business Rule Data Validator
 export interface ValidationRule {
   field: string;

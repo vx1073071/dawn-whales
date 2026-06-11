@@ -4,6 +4,7 @@
 // Systematic vs idiosyncratic decomposition
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -54,16 +55,16 @@ export interface FactorRiskReport {
 // ── Factor Definitions ──────────────────────────────────────────────────
 
 const FACTOR_LABELS: Record<FactorName, string> = {
-  MKT: '市场因子 (MKT)',
-  SMB: '规模因子 (SMB)',
-  HML: '价值因子 (HML)',
-  MOM: '动量因子 (MOM)',
-  LIQ: '流动性因子 (LIQ)',
-  VOL: '波动率因子 (VOL)',
-  GROWTH: '成长因子 (GROWTH)',
-  QUALITY: '质量因子 (QUALITY)',
-  SIZE: '市值因子 (SIZE)',
-  YIELD: '收益因子 (YIELD)',
+  MKT: i18n.t('factorRiskModel.k1'),
+  SMB: i18n.t('factorRiskModel.k2'),
+  HML: i18n.t('factorRiskModel.k3'),
+  MOM: i18n.t('factorRiskModel.k4'),
+  LIQ: i18n.t('factorRiskModel.k5'),
+  VOL: i18n.t('factorRiskModel.k6'),
+  GROWTH: i18n.t('factorRiskModel.k7'),
+  QUALITY: i18n.t('factorRiskModel.k8'),
+  SIZE: i18n.t('factorRiskModel.k9'),
+  YIELD: i18n.t('factorRiskModel.k10'),
 };
 
 // ── Standard Factor Returns (proxy, from historical data) ──────────────────

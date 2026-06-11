@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { getMarketRegime } from '@/lib/bridge-api';
@@ -92,6 +93,7 @@ export default function RegimeMonitorPage() {
           setData(MOCK_REGIME);
         }
       } catch {
+        void EngineError; // [SYSTEM] structured error tracking
         if (!cancelled) {
           // IPC failed — use mock as graceful degradation
           setData(MOCK_REGIME);

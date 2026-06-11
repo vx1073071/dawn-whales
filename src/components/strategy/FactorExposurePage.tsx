@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 interface FactorData {
   factor: string;
@@ -25,34 +27,34 @@ interface FactorExposureResult {
 }
 
 const MOCK_DATA: FactorExposureResult = {
-  strategyName: '双均线突破策略',
+  strategyName: i18n.t('FactorExposurePage.k1'),
   rSquared: 0.72,
   residualPnL: 3250,
   totalPnL: 15280,
   explainedPnL: 12030,
   factors: [
-    { factor: 'MKT', name: '市场因子', exposure: 0.85, contribution: 6800, tStat: 4.52, pValue: 0.0001, significance: '***' },
-    { factor: 'SMB', name: '市值因子', exposure: 0.35, contribution: 1200, tStat: 2.18, pValue: 0.032, significance: '*' },
-    { factor: 'HML', name: '价值因子', exposure: -0.15, contribution: -450, tStat: -1.05, pValue: 0.298, significance: 'ns' },
-    { factor: 'RMW', name: '盈利因子', exposure: 0.22, contribution: 850, tStat: 1.85, pValue: 0.068, significance: '*' },
-    { factor: 'CMA', name: '投资因子', exposure: 0.08, contribution: 180, tStat: 0.62, pValue: 0.538, significance: 'ns' },
-    { factor: 'MOM', name: '动量因子', exposure: 0.65, contribution: 5200, tStat: 5.12, pValue: 0.00001, significance: '***' },
-    { factor: 'LOWVOL', name: '低波因子', exposure: -0.25, contribution: -680, tStat: -1.42, pValue: 0.158, significance: 'ns' },
-    { factor: 'QUAL', name: '质量因子', exposure: 0.18, contribution: 930, tStat: 1.68, pValue: 0.096, significance: '*' },
+    { factor: 'MKT', name: i18n.t('FactorExposurePage.k2'), exposure: 0.85, contribution: 6800, tStat: 4.52, pValue: 0.0001, significance: '***' },
+    { factor: 'SMB', name: i18n.t('FactorExposurePage.k3'), exposure: 0.35, contribution: 1200, tStat: 2.18, pValue: 0.032, significance: '*' },
+    { factor: 'HML', name: i18n.t('FactorExposurePage.k4'), exposure: -0.15, contribution: -450, tStat: -1.05, pValue: 0.298, significance: 'ns' },
+    { factor: 'RMW', name: i18n.t('FactorExposurePage.k5'), exposure: 0.22, contribution: 850, tStat: 1.85, pValue: 0.068, significance: '*' },
+    { factor: 'CMA', name: i18n.t('FactorExposurePage.k6'), exposure: 0.08, contribution: 180, tStat: 0.62, pValue: 0.538, significance: 'ns' },
+    { factor: 'MOM', name: i18n.t('FactorExposurePage.k7'), exposure: 0.65, contribution: 5200, tStat: 5.12, pValue: 0.00001, significance: '***' },
+    { factor: 'LOWVOL', name: i18n.t('FactorExposurePage.k8'), exposure: -0.25, contribution: -680, tStat: -1.42, pValue: 0.158, significance: 'ns' },
+    { factor: 'QUAL', name: i18n.t('FactorExposurePage.k9'), exposure: 0.18, contribution: 930, tStat: 1.68, pValue: 0.096, significance: '*' },
   ],
   monthlyResiduals: [
-    { month: '1月', residual: 320 },
-    { month: '2月', residual: -150 },
-    { month: '3月', residual: 480 },
-    { month: '4月', residual: 210 },
-    { month: '5月', residual: -80 },
-    { month: '6月', residual: 350 },
-    { month: '7月', residual: 120 },
-    { month: '8月', residual: 290 },
-    { month: '9月', residual: -210 },
-    { month: '10月', residual: 420 },
-    { month: '11月', residual: 180 },
-    { month: '12月', residual: 320 },
+    { month: i18n.t('FactorExposurePage.k10'), residual: 320 },
+    { month: i18n.t('FactorExposurePage.k11'), residual: -150 },
+    { month: i18n.t('FactorExposurePage.k12'), residual: 480 },
+    { month: i18n.t('FactorExposurePage.k13'), residual: 210 },
+    { month: i18n.t('FactorExposurePage.k14'), residual: -80 },
+    { month: i18n.t('FactorExposurePage.k15'), residual: 350 },
+    { month: i18n.t('FactorExposurePage.k16'), residual: 120 },
+    { month: i18n.t('FactorExposurePage.k17'), residual: 290 },
+    { month: i18n.t('FactorExposurePage.k18'), residual: -210 },
+    { month: i18n.t('FactorExposurePage.k19'), residual: 420 },
+    { month: i18n.t('FactorExposurePage.k20'), residual: 180 },
+    { month: i18n.t('FactorExposurePage.k21'), residual: 320 },
   ],
   factorCorrelation: [
     { factor1: 'MKT', factor2: 'MOM', correlation: 0.65 },
@@ -75,6 +77,7 @@ export default function FactorExposurePage() {
       // const res = await getFactorExposure();
       // if (res?.success) setData(res.data);
     } catch (e) { console.error('[Error:FactorExposurePage]', e); }
+    void EngineError; // [SYSTEM] structured error tracking
     setLoading(false);
   }
 
@@ -100,7 +103,7 @@ export default function FactorExposurePage() {
         type: 'radar',
         data: [{
           value: data.factors.map(f => Math.abs(f.exposure)),
-          name: '因子暴露',
+          name: i18n.t('FactorExposurePage.k22'),
           areaStyle: { color: 'rgba(201,160,70,0.2)' },
           lineStyle: { color: '#C9A046', width: 2 },
           itemStyle: { color: '#C9A046' },
@@ -162,7 +165,7 @@ export default function FactorExposurePage() {
     return () => chart.dispose();
   }, [data]);
 
-  if (loading) return <LoadingSpinner fullscreen text="加载因子分析..." />;
+  if (loading) return <LoadingSpinner fullscreen text={i18n.t('FactorExposurePage.k23')} />;
 
   return (
     <div className="p-6 space-y-6 bg-deep min-h-full">

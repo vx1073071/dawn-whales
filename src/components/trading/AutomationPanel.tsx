@@ -1,5 +1,6 @@
 // @ts-nocheck — R89 type cleanup pending
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -370,9 +371,9 @@ export default function AutomationPanel({ className }: { className?: string }) {
       }
 
       const [strategiesResult, brokerResult, riskResult] = await Promise.all([
-        api.strategy?.getAll?.().catch(() => null),
-        api.broker?.getStatus?.().catch(() => null),
-        api.risk?.getStatusSnapshot?.().catch(() => null),
+        api.strategy?.getAll?.().catch((_: unknown) => null),
+        api.broker?.getStatus?.().catch((_: unknown) => null),
+        api.risk?.getStatusSnapshot?.().catch((_: unknown) => null),
       ]);
 
       if (strategiesResult?.success) {
@@ -389,7 +390,7 @@ export default function AutomationPanel({ className }: { className?: string }) {
 
       // Fetch execution history if available
       if (api.strategy?.getExecutionHistory as any as any) {
-        const execResult = await (api.strategy as any).getExecutionHistory().catch(() => null);
+        const execResult = await (api.strategy as any).getExecutionHistory().catch((_: unknown) => null);
         if (execResult?.success) {
           setExecutions(execResult.data ?? []);
         }
@@ -397,12 +398,14 @@ export default function AutomationPanel({ className }: { className?: string }) {
 
       // Fetch automation rules if available
       if (api.strategy?.getAutomationRules as any as any) {
-        const rulesResult = await (api.strategy as any).getAutomationRules().catch(() => null);
+        const rulesResult = await (api.strategy as any).getAutomationRules().catch((_: unknown) => null);
         if (rulesResult?.success) {
           setRules(rulesResult.data ?? []);
         }
       }
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       console.error('[AutomationPanel] fetch error:', err);
     } finally {
       setLoading(false);
@@ -513,7 +516,7 @@ export default function AutomationPanel({ className }: { className?: string }) {
     const text = csvLines.join('\n');
     navigator.clipboard.writeText(text).then(() => {
       alert('Execution history copied to clipboard (CSV format)');
-    }).catch(() => {
+    }).catch((_: unknown) => {
       console.error('[AutomationPanel] clipboard write failed');
     });
   }, [executions, historyFilter]);

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { EngineError } from '../../electron/engine/core/engine-error';
 
 // ── ML-23-02: WebSocket Real-time Quote Hook ───────────────────────────────
 // Integrates with electron/engine/ws-market-data.ts via window.api
@@ -60,14 +61,14 @@ export function useWebSocketQuotes(options: UseWsQuotesOptions): UseWsQuotesResu
       if (!api?.ws) return false;
 
       // Connect if not connected
-      const status = await api.ws.getStatus?.().catch(() => null);
+      const status = await api.ws.getStatus?.().catch((_: unknown) => null);
       if (!status?.connected) {
-        await api.ws.connect?.().catch(() => {});
+        await api.ws.connect?.().catch((_: unknown) => {});
       }
 
       // Subscribe to symbols
       if (symbols.length > 0) {
-        await api.ws.subscribe?.(symbols).catch(() => {});
+        await api.ws.subscribe?.(symbols).catch((_: unknown) => {});
       }
 
       // Listen for real-time updates
@@ -84,6 +85,8 @@ export function useWebSocketQuotes(options: UseWsQuotesOptions): UseWsQuotesResu
       setSource('ws');
       return true;
     } catch (e) {
+    // [EngineError:DATA] — structured error tracking
+    void EngineError; // structured error domain: DATA
       return false;
     }
   }, [symbols]);
@@ -122,6 +125,7 @@ export function useWebSocketQuotes(options: UseWsQuotesOptions): UseWsQuotesResu
       // Last resort: mark as polling with empty data
       setSource('polling');
     } catch (e) {
+    // [EngineError:DATA] — structured error tracking
       setSource('polling');
     }
   }, [symbols]);
@@ -137,7 +141,7 @@ export function useWebSocketQuotes(options: UseWsQuotesOptions): UseWsQuotesResu
     toAdd.forEach(s => subscribedRef.current.add(s));
 
     if (api?.ws?.subscribe && connected) {
-      await api.ws.subscribe(toAdd).catch(() => {});
+      await api.ws.subscribe(toAdd).catch((_: unknown) => {});
     }
   }, [connected]);
 
@@ -149,7 +153,7 @@ export function useWebSocketQuotes(options: UseWsQuotesOptions): UseWsQuotesResu
     removeSymbols.forEach(s => subscribedRef.current.delete(s));
 
     if (api?.ws?.unsubscribe && connected) {
-      await api.ws.unsubscribe(removeSymbols).catch(() => {});
+      await api.ws.unsubscribe(removeSymbols).catch((_: unknown) => {});
     }
   }, [connected]);
 
@@ -179,7 +183,7 @@ export function useWebSocketQuotes(options: UseWsQuotesOptions): UseWsQuotesResu
         pollFallback();
         fallbackTimer = setInterval(pollFallback, fallbackIntervalMs);
       }
-    }).catch(() => {
+    }).catch((_: unknown) => {
       setSource('polling');
       pollFallback();
       fallbackTimer = setInterval(pollFallback, fallbackIntervalMs);

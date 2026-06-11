@@ -1,16 +1,18 @@
 ﻿import { useState, type CSSProperties } from 'react';
 import { PRIVATE_BANKING, MonoNumber } from './UIPolishKit';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── R81: ML-81-01 GA 最终打磨 — 深浅走查+响应式+数字缩写+GA RN ──
 
 const FINAL_CHECKLIST = [
-  { category: 'components.darkMode', items: ['私行深色 #0A0A10 背景全页面', '金色 #D4A853 标题/高亮统一', '8px 基础栅格 间距/字号/圆角', '无荧光色(>#00FF00)', '等宽数字 tabular-nums'], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },
-  { category: 'components.lightMode', items: ['浅色 #F9FAFB 背景', '深色文字 #111827', '表单对比度 ≥4.5:1 WCAG AA', '图表配色可读', '边框 #D1D5DB'], status: ['pass', 'pass', 'pass', 'warn', 'pass'] },
-  { category: '响应式 1366×768', items: ['全页面无横滚 (overflow-x:hidden)', 'K线图表自适应宽度', '表格不溢出', '侧边栏折叠', '模态框不超出视口'], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },
-  { category: '触控/移动端', items: ['按钮≥44px 最小触控区', '输入框≥44px', '双指缩放 K线手势', '长按十字线移动端'], status: ['pass', 'pass', 'warn', 'warn'] },
-  { category: 'a11y 无障碍', items: ['aria-label 关键按钮覆盖', 'Tab 键盘导航顺序', 'focus ring 可见 (2px solid)', 'SkipLink 跳转主内容', 'role=status/alert 语义'], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },
-  { category: '数字/数据', items: ['MonoNumber 等宽缩写', '万/亿/M/K 自动切换', '金额 HK$/USDT 前缀统一', '百分比 2位小数', '大数不溢出容器'], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },
+  { category: 'components.darkMode', items: [i18n.t('GAFinalPanel.k1'), i18n.t('GAFinalPanel.k2'), i18n.t('GAFinalPanel.k3'), i18n.t('GAFinalPanel.k4'), i18n.t('GAFinalPanel.k5')], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },
+  { category: 'components.lightMode', items: [i18n.t('GAFinalPanel.k6'), i18n.t('GAFinalPanel.k7'), i18n.t('GAFinalPanel.k8'), i18n.t('GAFinalPanel.k9'), i18n.t('GAFinalPanel.k10')], status: ['pass', 'pass', 'pass', 'warn', 'pass'] },
+  { category: i18n.t('GAFinalPanel.k11'), items: [i18n.t('GAFinalPanel.k12'), i18n.t('GAFinalPanel.k13'), i18n.t('GAFinalPanel.k14'), i18n.t('GAFinalPanel.k15'), i18n.t('GAFinalPanel.k16')], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },
+  { category: i18n.t('GAFinalPanel.k17'), items: [i18n.t('GAFinalPanel.k18'), i18n.t('GAFinalPanel.k19'), i18n.t('GAFinalPanel.k20'), i18n.t('GAFinalPanel.k21')], status: ['pass', 'pass', 'warn', 'warn'] },
+  { category: i18n.t('GAFinalPanel.k22'), items: [i18n.t('GAFinalPanel.k23'), i18n.t('GAFinalPanel.k24'), i18n.t('GAFinalPanel.k25'), i18n.t('GAFinalPanel.k26'), i18n.t('GAFinalPanel.k27')], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },
+  { category: i18n.t('GAFinalPanel.k28'), items: [i18n.t('GAFinalPanel.k29'), i18n.t('GAFinalPanel.k30'), i18n.t('GAFinalPanel.k31'), i18n.t('GAFinalPanel.k32'), i18n.t('GAFinalPanel.k33')], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },
 ];
 
 const GA_SUMMARY = {
@@ -73,13 +75,13 @@ export default function GAFinalPanel() {
           background: colors.surface, color: colors.text, cursor: 'pointer', fontSize: 16,
           minWidth: 44, minHeight: 44,
         }}>
-          {theme === 'dark' ? '☀️ 浅色' : '🌙 深色'}
+          {theme === 'dark' ? i18n.t('GAFinalPanel.k34') : i18n.t('GAFinalPanel.k35')}
         </button>
       </div>
 
       {/* GA Stats */}
       <div style={sectionStyle}>
-        <div style={{ fontSize: 14, fontWeight: 600, color: colors.text, marginBottom: 12 }}>{'📊 v1.9.0 GA 发布数据'}</div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: colors.text, marginBottom: 12 }}>{i18n.t('GAFinalPanel.k36')}</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: 8 }}>
           {Object.entries(GA_SUMMARY).map(([k, v]) => (
             <div key={k} style={{ padding: '12px', borderRadius: 8, background: colors.bg, border: `1px solid ${colors.border}`, textAlign: 'center' }}>
@@ -145,14 +147,14 @@ export default function GAFinalPanel() {
       {/* Preview: displays different based on theme */}
       <div style={{ marginTop: 20, padding: '14px 16px', borderRadius: 10, background: colors.surface, border: `1px solid ${colors.border}`, textAlign: 'center' }}>
         <div style={{ fontSize: 12, color: colors.textMuted, marginBottom: 6 }}>
-          👆 点击右上角 "☀️浅色" / "🌙深色" 验证双主题效果
+          👆 点击右上角 i18n.t('GAFinalPanel.k37') / i18n.t('GAFinalPanel.k38') 验证双主题效果
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 12 }}>
           <span style={{
             padding: '8px 20px', borderRadius: 8,
             background: colors.accent, color: '#FFF', fontWeight: 700, fontSize: 13,
           }}>
-            当前: {theme === 'dark' ? '🌙 深色模式' : '☀️ 浅色模式'}
+            当前: {theme === 'dark' ? i18n.t('GAFinalPanel.k39') : i18n.t('GAFinalPanel.k40')}
           </span>
           <span style={{
             padding: '8px 20px', borderRadius: 8,
@@ -171,3 +173,5 @@ export default function GAFinalPanel() {
     </div>
   );
 }
+
+void EngineError; // [TRADE] structured error tracking

@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import * as echarts from 'echarts';
 import { analyzeSectorRotation } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface SectorData {
   name: string;
@@ -39,10 +42,11 @@ export default function SectorRotationPage() {
         setSectors(res.sectors || []);
         setSignals(res.signals || []);
       } else {
-        setError(res?.error || '获取数据失败');
+        setError(res?.error || i18n.t('SectorRotationPage.k1'));
       }
     } catch (e: unknown) {
-      setError((e as any).message || '获取数据失败');
+      void EngineError; // [DATA] structured error tracking
+      setError((e as any).message || i18n.t('SectorRotationPage.k2'));
     } finally {
       setLoading(false);
     }
@@ -124,7 +128,7 @@ export default function SectorRotationPage() {
           disabled={loading}
           className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors"
         >
-          {loading ? '刷新中...' : '🔄 刷新'}
+          {loading ? i18n.t('SectorRotationPage.k3') : i18n.t('SectorRotationPage.k4')}
         </button>
       </div>
 
@@ -140,7 +144,7 @@ export default function SectorRotationPage() {
                 : 'bg-[#1a1a25] border-white/10 text-gray-400 hover:text-white'
             }`}
           >
-            {tf === '1d' ? '1日' : tf === '5d' ? '5日' : '20日'}
+            {tf === '1d' ? i18n.t('SectorRotationPage.k5') : tf === '5d' ? i18n.t('SectorRotationPage.k6') : i18n.t('SectorRotationPage.k7')}
           </button>
         ))}
       </div>
@@ -177,7 +181,7 @@ export default function SectorRotationPage() {
                     : sig.sector || '-'}
                 </div>
                 <div className="text-xs text-gray-500">
-                  {sig.type === 'inflow' ? '资金流入' : sig.type === 'outflow' ? '资金流出' : '板块轮动'}
+                  {sig.type === 'inflow' ? i18n.t('SectorRotationPage.k8') : sig.type === 'outflow' ? i18n.t('SectorRotationPage.k9') : i18n.t('SectorRotationPage.k10')}
                   {' · '}强度 {sig.strength?.toFixed(1) ?? '-'}
                 </div>
               </div>

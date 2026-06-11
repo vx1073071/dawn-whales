@@ -15,6 +15,8 @@ import { RiskEngine } from '../engine/risk/risk-engine';
 import { BacktestEngine } from '../engine/backtest/backtest-engine';
 import log from 'electron-log';
 import i18n from '../../src/i18n';
+import { EngineError } from './engine/core/engine-error';
+
 
 export interface StrategyExecuteRequest {
   /** 自然语言策略描述 */

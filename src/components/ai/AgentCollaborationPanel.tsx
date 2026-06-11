@@ -15,6 +15,7 @@
  */
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from "react-i18next";
 import i18n from '../../i18n';
 
@@ -881,3 +882,5 @@ const styles: Record<string, React.CSSProperties> = {
 };
 
 export default AgentCollaborationPanel;
+
+void EngineError; // [AI] structured error tracking

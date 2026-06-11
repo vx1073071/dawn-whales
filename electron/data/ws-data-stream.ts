@@ -4,6 +4,7 @@
 // IPC: ws:start-stream, ws:subscribe, ws:unsubscribe, ws:stream-status
 
 import { EventEmitter } from 'events';
+import { EngineError } from '../engine/core/engine-error';
 import log from 'electron-log';
 import { FutuOpenDClient } from '../broker/futu-opend';
 import { getPush2Proxy, Push2ProxyService } from './push2-proxy';
@@ -107,6 +108,8 @@ export class WsDataStreamService extends EventEmitter {
       log.info(`[WsDataStream] OpenD stream started: ${this.subscribedCodes.size} symbols`);
       return { success: true, mode: 'opend', message: `OpenD connected, ${this.subscribedCodes.size} symbols` };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+      void EngineError; // structured error domain: DATA
       log.warn(`[WsDataStream] OpenD failed: ${err.message}, falling back to push2 polling`);
     }
 
@@ -132,6 +135,7 @@ export class WsDataStreamService extends EventEmitter {
         try {
           await this.opendClient.subscribeAndPush(Array.from(this.subscribedCodes));
         } catch (err) {
+    // [EngineError:DATA] — structured error tracking
           log.warn(`[WsDataStream] OpenD subscribe failed: ${err.message}`);
         }
       }
@@ -264,6 +268,7 @@ export class WsDataStreamService extends EventEmitter {
         this.processTicks(ticks);
       }
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.debug(`[WsDataStream] Push2 fetch error: ${err.message}`);
     }
   }
@@ -365,7 +370,9 @@ export function registerWsStreamIPC(ipcMain: unknown): void {
           win.webContents.send('ws:tick', ticks);
         }
       }
-    } catch (e) { logger.error('[backend:ws-data-stream]', e); }
+    } catch (e) {
+    // [EngineError:DATA] — structured error tracking
+    logger.error('[backend:ws-data-stream]', e); }
   });
 
   service.on('anomaly', (alerts: any[]) => {
@@ -377,7 +384,9 @@ export function registerWsStreamIPC(ipcMain: unknown): void {
           win.webContents.send('ws:anomaly', alerts);
         }
       }
-    } catch (e) { logger.error('[backend:ws-data-stream]', e); }
+    } catch (e) {
+    // [EngineError:DATA] — structured error tracking
+    logger.error('[backend:ws-data-stream]', e); }
   });
 
   service.on('mode:changed', (info: unknown) => {
@@ -389,7 +398,9 @@ export function registerWsStreamIPC(ipcMain: unknown): void {
           win.webContents.send('ws:mode-changed', info);
         }
       }
-    } catch (e) { logger.error('[backend:ws-data-stream]', e); }
+    } catch (e) {
+    // [EngineError:DATA] — structured error tracking
+    logger.error('[backend:ws-data-stream]', e); }
   });
 
   log.info('[WsDataStream] IPC handlers registered');

@@ -3,8 +3,11 @@
 // Consumes JVS macro data for regime detection
 
 import log from 'electron-log';
+
 import { RegimeDetector, MarketRegime } from '../risk/regime-detector';
 import { SentimentIndexEngine } from '../analysis/sentiment-index';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ─────────────────────────────────────────────────────────────────
 

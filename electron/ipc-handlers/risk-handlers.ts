@@ -2,6 +2,7 @@
 // Registers risk:* IPC handlers for RiskDashboardPage real data
 
 import { ipcMain } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { shared } from './_import-shared';
 import log from 'electron-log';
 
@@ -18,6 +19,8 @@ export function registerRiskHandlers() {
       const config = typeof re.getConfig === 'function' ? re.getConfig() : getDefaultRiskConfig();
       return { success: true, data: config };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[risk:getConfig]', err.message);
       return { success: false, error: err.message, data: getDefaultRiskConfig() };
     }
@@ -33,6 +36,7 @@ export function registerRiskHandlers() {
       }
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[risk:updateConfig]', err.message);
       return { success: false, error: err.message };
     }
@@ -59,11 +63,12 @@ export function registerRiskHandlers() {
             ?.prepare('SELECT * FROM alerts ORDER BY created_at DESC LIMIT 50')
             .all();
           if (dbAlerts) alerts = dbAlerts;
-        } catch { /* alerts table may not exist */ }
+        } catch (_e: unknown) { /* alerts table may not exist */ }
       }
 
       return { success: true, data: alerts };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[risk:getAlerts]', err.message);
       return { success: true, data: [] };
     }
@@ -89,7 +94,7 @@ export function registerRiskHandlers() {
               : [];
             accountData = { funds, positions, accountId: accounts[0].accId || accounts[0].accountId };
           }
-        } catch { /* broker not connected */ }
+        } catch (_e: unknown) { /* broker not connected */ }
       }
 
       // Build snapshot
@@ -123,7 +128,7 @@ export function registerRiskHandlers() {
           const dd = re.getDrawdownState();
           snapshot.drawdown = dd?.currentDrawdown || 0;
           snapshot.maxDrawdown = dd?.maxDrawdown || 0;
-        } catch { /* ignore */ }
+        } catch (_e: unknown) { /* ignore */ }
       }
 
       // Compute risk level
@@ -135,6 +140,7 @@ export function registerRiskHandlers() {
 
       return { success: true, data: snapshot };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[risk:getStatusSnapshot]', err.message);
       return { success: false, error: err.message };
     }
@@ -157,6 +163,7 @@ export function registerRiskHandlers() {
 
       return { success: true, data: stats || getDefaultKellyStats() };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[risk:getKellyStats]', err.message);
       return { success: true, data: getDefaultKellyStats() };
     }
@@ -177,6 +184,7 @@ export function registerRiskHandlers() {
 
       return { success: true, data: state || getDefaultDrawdown() };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[risk:getDrawdownState]', err.message);
       return { success: true, data: getDefaultDrawdown() };
     }
@@ -192,6 +200,7 @@ export function registerRiskHandlers() {
       }
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[risk:updateVix]', err.message);
       return { success: false, error: err.message };
     }

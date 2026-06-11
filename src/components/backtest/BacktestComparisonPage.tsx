@@ -1,7 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface BacktestResult {
   strategyName: string;
@@ -24,7 +26,7 @@ const COLORS = ['#C9A046', '#16a34a', '#3b82f6', '#dc2626', '#8b5cf6', '#06b6d4'
 
 const MOCK_RESULTS: BacktestResult[] = [
   {
-    strategyName: '双均线突破策略',
+    strategyName: i18n.t('BacktestComparisonPage.k1'),
     strategyId: 'strategy-001',
     totalReturn: 28.5,
     annualReturn: 14.2,
@@ -40,7 +42,7 @@ const MOCK_RESULTS: BacktestResult[] = [
     color: COLORS[0],
   },
   {
-    strategyName: '动量轮动策略',
+    strategyName: i18n.t('BacktestComparisonPage.k2'),
     strategyId: 'strategy-002',
     totalReturn: 35.2,
     annualReturn: 17.6,
@@ -56,7 +58,7 @@ const MOCK_RESULTS: BacktestResult[] = [
     color: COLORS[1],
   },
   {
-    strategyName: '价值投资策略',
+    strategyName: i18n.t('BacktestComparisonPage.k3'),
     strategyId: 'strategy-003',
     totalReturn: 18.3,
     annualReturn: 9.1,
@@ -72,7 +74,7 @@ const MOCK_RESULTS: BacktestResult[] = [
     color: COLORS[2],
   },
   {
-    strategyName: '网格交易策略',
+    strategyName: i18n.t('BacktestComparisonPage.k4'),
     strategyId: 'strategy-004',
     totalReturn: 15.8,
     annualReturn: 7.9,
@@ -121,6 +123,7 @@ export default function BacktestComparisonPage() {
       // In real implementation, call: const res = await compareBacktests(strategyIds);
       // For now use mock data
     } catch (e) { console.error('[Error:BacktestComparisonPage]', e); }
+    void EngineError; // [SYSTEM] structured error tracking
     setLoading(false);
   }
 
@@ -169,7 +172,7 @@ export default function BacktestComparisonPage() {
 
   // Monthly returns heatmap
   const monthlyHeatmapData = useMemo(() => {
-    const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+    const months = [i18n.t('BacktestComparisonPage.k5'), i18n.t('BacktestComparisonPage.k6'), i18n.t('BacktestComparisonPage.k7'), i18n.t('BacktestComparisonPage.k8'), i18n.t('BacktestComparisonPage.k9'), i18n.t('BacktestComparisonPage.k10'), i18n.t('BacktestComparisonPage.k11'), i18n.t('BacktestComparisonPage.k12'), i18n.t('BacktestComparisonPage.k13'), i18n.t('BacktestComparisonPage.k14'), i18n.t('BacktestComparisonPage.k15'), i18n.t('BacktestComparisonPage.k16')];
     const data: [number, number, number][] = [];
     filtered.forEach((r, rowIdx) => {
       r.monthlyReturns.forEach((val, colIdx) => {
@@ -216,7 +219,7 @@ export default function BacktestComparisonPage() {
     return () => chart.dispose();
   }, [monthlyHeatmapData, filtered]);
 
-  if (loading) return <LoadingSpinner fullscreen text="加载回测数据..." />;
+  if (loading) return <LoadingSpinner fullscreen text={i18n.t('BacktestComparisonPage.k17')} />;
 
   return (
     <div className="p-6 space-y-6 bg-deep min-h-full">
@@ -276,15 +279,15 @@ export default function BacktestComparisonPage() {
             </thead>
             <tbody className="divide-y divide-white/5">
               {[
-                { label: '总收益率', key: 'totalReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
-                { label: '年化收益率', key: 'annualReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
+                { label: i18n.t('BacktestComparisonPage.k18'), key: 'totalReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
+                { label: i18n.t('BacktestComparisonPage.k19'), key: 'annualReturn', fmt: (v: number) => `${v >= 0 ? '+' : ''}${v.toFixed(2)}%`, color: true },
                 { label: t('components.maxDrawdown'), key: 'maxDrawdown', fmt: (v: number) => `${v.toFixed(2)}%`, color: true, inverse: true },
                 { label: t("components.sharpe"), key: 'sharpeRatio', fmt: (v: number) => v.toFixed(2) },
-                { label: '卡玛比率', key: 'calmarRatio', fmt: (v: number) => v.toFixed(2) },
-                { label: '索提诺比率', key: 'sortinoRatio', fmt: (v: number) => v.toFixed(2) },
+                { label: i18n.t('BacktestComparisonPage.k20'), key: 'calmarRatio', fmt: (v: number) => v.toFixed(2) },
+                { label: i18n.t('BacktestComparisonPage.k21'), key: 'sortinoRatio', fmt: (v: number) => v.toFixed(2) },
                 { label: t('components.winRate'), key: 'winRate', fmt: (v: number) => `${v.toFixed(1)}%` },
                 { label: t('components.profitLossRatio'), key: 'profitFactor', fmt: (v: number) => v.toFixed(2) },
-                { label: '交易次数', key: 'totalTrades', fmt: (v: number) => `${v}` },
+                { label: i18n.t('BacktestComparisonPage.k22'), key: 'totalTrades', fmt: (v: number) => `${v}` },
               ].map((row) => (
                 <tr key={row.label} className="hover:bg-white/[0.02]">
                   <td className="px-4 py-3 text-gray-400">{row.label}</td>
@@ -324,7 +327,7 @@ export default function BacktestComparisonPage() {
                   chartType === ct ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-500 hover:text-gray-300'
                 }`}
               >
-                {ct === 'equity' ? '净值曲线' : t("components.monthlyRet")}
+                {ct === 'equity' ? i18n.t('BacktestComparisonPage.k23') : t("components.monthlyRet")}
               </button>
             ))}
           </div>

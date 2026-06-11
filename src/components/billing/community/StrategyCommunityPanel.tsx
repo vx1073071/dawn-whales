@@ -12,6 +12,7 @@
 
 import { useState, useCallback } from 'react';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -45,13 +46,13 @@ export interface StrategyCommunityPanelProps {
 // ── Mock ────────────────────────────────────────────────────────────────
 
 const mockComments: Comment[] = [
-  { id: 'c1', author: 'TraderJoe', avatar: '🐂', content: '这个策略的胜率真的高！跟了3周收益+15%。感谢创作者！', time: '2小时前', likes: 24, liked: true, replies: [
-    { id: 'c1r1', author: 'QuantEdge Pro', avatar: '🦊', content: '谢谢！继续保持，注意控制仓位。', time: '1小时前', likes: 8, liked: false, replies: [], level: 1 },
+  { id: 'c1', author: 'TraderJoe', avatar: '🐂', content: i18n.t('StrategyCommunityPanel.k1'), time: i18n.t('StrategyCommunityPanel.k2'), likes: 24, liked: true, replies: [
+    { id: 'c1r1', author: 'QuantEdge Pro', avatar: '🦊', content: i18n.t('StrategyCommunityPanel.k3'), time: i18n.t('StrategyCommunityPanel.k4'), likes: 8, liked: false, replies: [], level: 1 },
   ], level: 0 },
-  { id: 'c2', author: 'CryptoWhale', avatar: '🐋', content: '止损设置偏紧，建议用ATR 2x代替固定百分比。', time: '5小时前', likes: 15, liked: false, replies: [], level: 0 },
-  { id: 'c3', author: 'NewTrader88', avatar: '🐣', content: '刚入门量化，这个策略适合新手吗？需要多少资金起步？', time: '8小时前', likes: 3, liked: false, replies: [
-    { id: 'c3r1', author: 'QuantEdge Pro', avatar: '🦊', content: '建议至少$5000。策略自动计算仓位，可以在设置里调整风险偏好。', time: '7小时前', likes: 5, liked: true, replies: [], level: 1 },
-    { id: 'c3r2', author: 'TraderJoe', avatar: '🐂', content: '我$3000开始的，完全够用。先模拟盘跑一周熟悉节奏。', time: '6小时前', likes: 7, liked: false, replies: [], level: 1 },
+  { id: 'c2', author: 'CryptoWhale', avatar: '🐋', content: i18n.t('StrategyCommunityPanel.k5'), time: i18n.t('StrategyCommunityPanel.k6'), likes: 15, liked: false, replies: [], level: 0 },
+  { id: 'c3', author: 'NewTrader88', avatar: '🐣', content: i18n.t('StrategyCommunityPanel.k7'), time: i18n.t('StrategyCommunityPanel.k8'), likes: 3, liked: false, replies: [
+    { id: 'c3r1', author: 'QuantEdge Pro', avatar: '🦊', content: i18n.t('StrategyCommunityPanel.k9'), time: i18n.t('StrategyCommunityPanel.k10'), likes: 5, liked: true, replies: [], level: 1 },
+    { id: 'c3r2', author: 'TraderJoe', avatar: '🐂', content: i18n.t('StrategyCommunityPanel.k11'), time: i18n.t('StrategyCommunityPanel.k12'), likes: 7, liked: false, replies: [], level: 1 },
   ], level: 0 },
 ];
 
@@ -149,7 +150,7 @@ export default function StrategyCommunityPanel({
     const c: Comment = {
       id: `c-new-${Date.now()}`,
       author: 'You', avatar: '👤', content: newComment,
-      time: '刚刚', likes: 0, liked: false,
+      time: i18n.t('StrategyCommunityPanel.k13'), likes: 0, liked: false,
       replies: [], level: replyTo ? 1 : 0,
     };
     if (replyTo) {
@@ -174,7 +175,7 @@ export default function StrategyCommunityPanel({
   }, [onLike]);
 
   const handleShare = useCallback((p: 'twitter' | 'telegram' | 'copy') => {
-    setShared(p === 'copy' ? '链接已复制!' : `已分享到${p === 'twitter' ? 'Twitter' : 'Telegram'}`);
+    setShared(p === 'copy' ? i18n.t('StrategyCommunityPanel.k14') : `已分享到${p === 'twitter' ? 'Twitter' : 'Telegram'}`);
     setTimeout(() => setShared(''), 2000);
     onShare?.(p);
   }, [onShare]);
@@ -193,7 +194,7 @@ export default function StrategyCommunityPanel({
           </div>
           <button onClick={handleFollow}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-colors ${isFollowing ? 'bg-white/[0.06] text-gray-400 border border-white/10' : 'bg-[#3b82f6] text-white'}`}>
-            {isFollowing ? '✓ 已关注' : '+ 关注'}
+            {isFollowing ? i18n.t('StrategyCommunityPanel.k15') : i18n.t('StrategyCommunityPanel.k16')}
           </button>
         </div>
         <ShareMenu onShare={handleShare} />

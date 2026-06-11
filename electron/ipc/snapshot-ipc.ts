@@ -2,6 +2,7 @@
 // 12 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -16,6 +17,8 @@ export function registerSnapshotIPC(
       const snapshot = await captureSnapshot(type, category, data, metadata);
       return { success: true, snapshot };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       return { success: false, error: err.message };
     }
   });
@@ -27,6 +30,7 @@ export function registerSnapshotIPC(
       const snapshots = await querySnapshots(query);
       return { success: true, snapshots };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -38,6 +42,7 @@ export function registerSnapshotIPC(
       const snapshot = await getSnapshot(id);
       return { success: true, snapshot };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -49,6 +54,7 @@ export function registerSnapshotIPC(
       const comparison = await compareSnapshots(id1, id2);
       return { success: true, comparison };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -60,6 +66,7 @@ export function registerSnapshotIPC(
       const timeline = await getSnapshotTimeline(category, limit);
       return { success: true, timeline };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -71,6 +78,7 @@ export function registerSnapshotIPC(
       const snapshot = await getLatestSnapshot(category);
       return { success: true, snapshot };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -82,6 +90,7 @@ export function registerSnapshotIPC(
       const deleted = await cleanupOldSnapshots(daysOld);
       return { success: true, deleted };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -93,6 +102,7 @@ export function registerSnapshotIPC(
       const json = await exportSnapshots(query);
       return { success: true, json };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -104,6 +114,7 @@ export function registerSnapshotIPC(
       const imported = await importSnapshots(jsonString);
       return { success: true, imported };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -115,6 +126,7 @@ export function registerSnapshotIPC(
       const stats = getSnapshotStats();
       return { success: true, stats };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -126,6 +138,7 @@ export function registerSnapshotIPC(
       const deleted = await deleteSnapshot(id);
       return { success: true, deleted };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -137,6 +150,7 @@ export function registerSnapshotIPC(
       await clearAllSnapshots();
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });

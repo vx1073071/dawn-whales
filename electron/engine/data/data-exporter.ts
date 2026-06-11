@@ -4,10 +4,13 @@
 // 新增：批量导出、导出调度、导出模板
 
 import log from 'electron-log';
+
 import fs from 'fs';
 import path from 'path';
 import { app } from 'electron';
 import i18n from '../../../src/i18n';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -105,7 +108,7 @@ function getDb(): any {
   try {
     const { shared } = require('../ipc-handlers/_import-shared');
     return shared.db;
-  } catch {
+  } catch (_e: unknown) {
     return null;
   }
 }
@@ -253,7 +256,7 @@ function queryAlerts(): unknown[] {
   try {
     // alerts table may not exist in all versions
     return db.getDb().prepare('SELECT * FROM alerts ORDER BY created_at DESC LIMIT 500').all();
-  } catch {
+  } catch (_e: unknown) {
     return [];
   }
 }
@@ -487,22 +490,22 @@ export function generateSummaryReport(): string {
   if (!db) return i18n.t('dataExporter.k67');
 
   const strategyCount = (() => {
-    try { return db.getDb().prepare('SELECT COUNT(*) as c FROM strategies').get()?.c || 0; } catch { return 0; }
+    try { return db.getDb().prepare('SELECT COUNT(*) as c FROM strategies').get()?.c || 0; } catch (_e: unknown) { return 0; }
   })();
   const backtestCount = (() => {
-    try { return db.getDb().prepare('SELECT COUNT(*) as c FROM backtest_runs').get()?.c || 0; } catch { return 0; }
+    try { return db.getDb().prepare('SELECT COUNT(*) as c FROM backtest_runs').get()?.c || 0; } catch (_e: unknown) { return 0; }
   })();
   const tradeCount = (() => {
-    try { return db.getDb().prepare('SELECT COUNT(*) as c FROM trades').get()?.c || 0; } catch { return 0; }
+    try { return db.getDb().prepare('SELECT COUNT(*) as c FROM trades').get()?.c || 0; } catch (_e: unknown) { return 0; }
   })();
   const filledTrades = (() => {
-    try { return db.getDb().prepare("SELECT COUNT(*) as c FROM trades WHERE status IN ('filled','executed')").get()?.c || 0; } catch { return 0; }
+    try { return db.getDb().prepare("SELECT COUNT(*) as c FROM trades WHERE status IN ('filled','executed')").get()?.c || 0; } catch (_e: unknown) { return 0; }
   })();
   const totalPnl = (() => {
-    try { return db.getDb().prepare("SELECT ROUND(SUM(pnl), 2) as s FROM trades WHERE status IN ('filled','executed')").get()?.s || 0; } catch { return 0; }
+    try { return db.getDb().prepare("SELECT ROUND(SUM(pnl), 2) as s FROM trades WHERE status IN ('filled','executed')").get()?.s || 0; } catch (_e: unknown) { return 0; }
   })();
   const totalCommission = (() => {
-    try { return db.getDb().prepare("SELECT ROUND(SUM(commission), 2) as s FROM trades WHERE status IN ('filled','executed')").get()?.s || 0; } catch { return 0; }
+    try { return db.getDb().prepare("SELECT ROUND(SUM(commission), 2) as s FROM trades WHERE status IN ('filled','executed')").get()?.s || 0; } catch (_e: unknown) { return 0; }
   })();
 
   const topStrategies = (() => {
@@ -515,31 +518,10 @@ export function generateSummaryReport(): string {
         ORDER BY total_pnl DESC
         LIMIT 5
       `).all();
-    } catch { return []; }
+    } catch (_e: unknown) { return []; }
   })();
 
-  const now = new Date().toLocaleString('zh-CN');
-
-  return `# 🐋 Dawn Whales 数据摘要报告
-
-> 生成时间: ${now}
-
-## 📊 概览
-
-| 指标 | 数值 |
-|------|------|
-| 策略总数 | ${strategyCount} |
-| 回测次数 | ${backtestCount} |
-| 交易总数 | ${tradeCount} |
-| 已成交 | ${filledTrades} |
-| 总盈亏 | ¥${totalPnl} |
-| 总手续费 | ¥${totalCommission} |
-
-## 🏆 Top 策略 (按盈亏排序)
-
-| 策略 | 交易数 | 总盈亏 |
-|------|--------|--------|
-${topStrategies.map((s: unknown) => `| ${s.name} | ${s.trades} | ¥${s.total_pnl} |`).join('\n')}
+  const now = new Date().toLocaleString('zh-CNi18n.t('dataExporter.k1')\n')}
 
 ---
 *Dawn Whales Data Exporter v1.0*

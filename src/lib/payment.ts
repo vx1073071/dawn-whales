@@ -5,6 +5,8 @@
 // WECHAT_PAY_APP_ID=wx...
 // WECHAT_PAY_MCH_ID=...
 // WECHAT_PAY_API_KEY=...
+import { EngineError, ErrorDomain, ErrorCode } from '../../electron/engine/core/engine-error';
+import i18n from '../i18n';
 
 export type PaymentProvider = 'stripe' | 'wechat' | 'alipay';
 
@@ -31,31 +33,31 @@ export interface CheckoutSession {
 export const PRODUCTS: Product[] = [
   {
     id: 'dw_free',
-    name: '免费版',
-    description: '基础行情 + 3个策略 + 回测',
+    name: i18n.t('payment.k1'),
+    description: i18n.t('payment.k2'),
     price: 0,
     currency: 'cny',
   },
   {
     id: 'dw_pro_monthly',
-    name: '专业版 · 月付',
-    description: '无限策略 + 实盘 + 高级指标',
+    name: i18n.t('payment.k3'),
+    description: i18n.t('payment.k4'),
     price: 9900, // ¥99
     currency: 'cny',
     interval: 'month',
   },
   {
     id: 'dw_pro_yearly',
-    name: '专业版 · 年付',
-    description: '无限策略 + 实盘 + 高级指标 (省33%)',
+    name: i18n.t('payment.k5'),
+    description: i18n.t('payment.k6'),
     price: 29900, // ¥299/年
     currency: 'cny',
     interval: 'year',
   },
   {
     id: 'dw_marketplace_commission',
-    name: '策略市场抽成',
-    description: '平台收取30%交易手续费',
+    name: i18n.t('payment.k7'),
+    description: i18n.t('payment.k8'),
     price: 0,
     currency: 'cny',
   },
@@ -65,7 +67,7 @@ export const PRODUCTS: Product[] = [
 
 export async function createStripeCheckout(productId: string): Promise<CheckoutSession> {
   const product = PRODUCTS.find((p) => p.id === productId);
-  if (!product) throw new Error('Product not found');
+  if (!product) throw new EngineError(ErrorDomain.TRADE, ErrorCode.DATA_UNAVAILABLE, 'Product not found');
 
   // TODO: Replace with actual Stripe API call
   // const session = await stripe.checkout.sessions.create({ ... });
@@ -84,7 +86,7 @@ export async function createStripeCheckout(productId: string): Promise<CheckoutS
 
 export async function createWechatPayOrder(productId: string): Promise<CheckoutSession> {
   const product = PRODUCTS.find((p) => p.id === productId);
-  if (!product) throw new Error('Product not found');
+  if (!product) throw new EngineError(ErrorDomain.TRADE, ErrorCode.DATA_UNAVAILABLE, 'Product not found');
 
   // TODO: Replace with actual WeChat Pay API call
   // const order = await wechatPay.createOrder({ ... });

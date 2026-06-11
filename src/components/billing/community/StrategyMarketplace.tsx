@@ -12,6 +12,9 @@
  */
 
 import { useState, useCallback, useMemo } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -64,17 +67,17 @@ export interface StrategyMarketplaceProps {
 // ── Constants ────────────────────────────────────────────────────────────
 
 const LEVEL_CONFIG: Record<CreatorLevel, { label: string; icon: string; color: string; bg: string }> = {
-  bronze:   { label: '青铜', icon: '🥉', color: '#CD7F32', bg: 'bg-amber-900/20' },
-  silver:   { label: '白银', icon: '🥈', color: '#C0C0C0', bg: 'bg-gray-400/10' },
-  gold:     { label: '黄金', icon: '🥇', color: '#FFD700', bg: 'bg-yellow-500/10' },
-  platinum: { label: '铂金', icon: '💎', color: '#E5E4E2', bg: 'bg-slate-300/10' },
-  diamond:  { label: '钻石', icon: '👑', color: '#B9F2FF', bg: 'bg-cyan-300/10' },
-  king:     { label: '王者', icon: '🏆', color: '#FF4500', bg: 'bg-orange-600/10' },
+  bronze:   { label: i18n.t('StrategyMarketplace.k1'), icon: '🥉', color: '#CD7F32', bg: 'bg-amber-900/20' },
+  silver:   { label: i18n.t('StrategyMarketplace.k2'), icon: '🥈', color: '#C0C0C0', bg: 'bg-gray-400/10' },
+  gold:     { label: i18n.t('StrategyMarketplace.k3'), icon: '🥇', color: '#FFD700', bg: 'bg-yellow-500/10' },
+  platinum: { label: i18n.t('StrategyMarketplace.k4'), icon: '💎', color: '#E5E4E2', bg: 'bg-slate-300/10' },
+  diamond:  { label: i18n.t('StrategyMarketplace.k5'), icon: '👑', color: '#B9F2FF', bg: 'bg-cyan-300/10' },
+  king:     { label: i18n.t('StrategyMarketplace.k6'), icon: '🏆', color: '#FF4500', bg: 'bg-orange-600/10' },
 };
 
 const PRICE_RANGES = [
   { label: 'components.all', min: 0, max: Infinity },
-  { label: '免费', min: 0, max: 0 },
+  { label: i18n.t('StrategyMarketplace.k7'), min: 0, max: 0 },
   { label: '1-50 USDT', min: 1, max: 50 },
   { label: '50-200 USDT', min: 50, max: 200 },
   { label: '200-1000 USDT', min: 200, max: 1000 },
@@ -83,10 +86,10 @@ const PRICE_RANGES = [
 type SortKey = 'return' | 'subscribers' | 'rating' | 'newest' | 'price';
 
 const SORT_OPTIONS: { key: SortKey; label: string }[] = [
-  { key: 'return', label: '收益最高' },
-  { key: 'subscribers', label: '订阅最多' },
-  { key: 'rating', label: '评分最高' },
-  { key: 'newest', label: '最新发布' },
+  { key: 'return', label: i18n.t('StrategyMarketplace.k8') },
+  { key: 'subscribers', label: i18n.t('StrategyMarketplace.k9') },
+  { key: 'rating', label: i18n.t('StrategyMarketplace.k10') },
+  { key: 'newest', label: i18n.t('StrategyMarketplace.k11') },
   { key: 'price', label: 'components.price' },
 ];
 
@@ -94,47 +97,47 @@ const SORT_OPTIONS: { key: SortKey; label: string }[] = [
 
 const mockStrategies: StrategyCard[] = [
   {
-    id: 's-001', name: '趋势跟踪增强版', description: '双均线+RSI确认，适合震荡市和趋势市切换，3年回测年化42%',
+    id: 's-001', name: i18n.t('StrategyMarketplace.k12'), description: i18n.t('StrategyMarketplace.k13'),
     creatorId: 'c-01', creatorName: 'QuantEdge Pro', creatorLevel: 'diamond', creatorAvatar: '🦊', verified: true,
     symbol: 'AAPL', market: 'US', price: 50, subscribers: 2847, rating: 4.8, ratingCount: 312,
     totalReturn: 42.3, sharpe: 2.1, maxDrawdown: 12.5, winRate: 68.2, totalSignals: 847,
-    tags: ['趋势跟踪', '双均线', 'RSI'], createdAt: '2026-03-15', updatedAt: '2026-06-01',
+    tags: [i18n.t('StrategyMarketplace.k14'), i18n.t('StrategyMarketplace.k15'), 'RSI'], createdAt: '2026-03-15', updatedAt: '2026-06-01',
   },
   {
-    id: 's-002', name: '均值回归狙击手', description: '布林带下轨+成交量确认反弹，持仓1-3天，胜率72%',
+    id: 's-002', name: i18n.t('StrategyMarketplace.k16'), description: i18n.t('StrategyMarketplace.k17'),
     creatorId: 'c-02', creatorName: 'MeanReversion', creatorLevel: 'gold', creatorAvatar: '🐺', verified: true,
     symbol: 'TSLA', market: 'US', price: 30, subscribers: 1523, rating: 4.5, ratingCount: 198,
     totalReturn: 28.1, sharpe: 1.8, maxDrawdown: 8.3, winRate: 72.1, totalSignals: 523,
-    tags: ['均值回归', '布林带', '短线'], createdAt: '2026-02-20', updatedAt: '2026-05-28',
+    tags: [i18n.t('StrategyMarketplace.k18'), i18n.t('StrategyMarketplace.k19'), i18n.t('StrategyMarketplace.k20')], createdAt: '2026-02-20', updatedAt: '2026-05-28',
   },
   {
-    id: 's-003', name: '港股市值轮动', description: '月度调仓，选取市值前20%+动量前30%，年化31%',
+    id: 's-003', name: i18n.t('StrategyMarketplace.k21'), description: i18n.t('StrategyMarketplace.k22'),
     creatorId: 'c-03', creatorName: 'HK Whale', creatorLevel: 'platinum', creatorAvatar: '🐋', verified: true,
     symbol: 'HK.00700', market: 'HK', price: 80, subscribers: 982, rating: 4.9, ratingCount: 156,
     totalReturn: 31.2, sharpe: 2.4, maxDrawdown: 15.1, winRate: 65.8, totalSignals: 321,
-    tags: ['轮动', '港股', '动量'], createdAt: '2026-01-10', updatedAt: '2026-06-05',
+    tags: [i18n.t('StrategyMarketplace.k23'), i18n.t('StrategyMarketplace.k24'), i18n.t('StrategyMarketplace.k25')], createdAt: '2026-01-10', updatedAt: '2026-06-05',
   },
 
   {
-    id: 's-005', name: '波动率套利模型', description: 'VIX衍生品+期权跨式组合，低相关Alpha策略',
+    id: 's-005', name: i18n.t('StrategyMarketplace.k26'), description: i18n.t('StrategyMarketplace.k27'),
     creatorId: 'c-05', creatorName: 'VolArb', creatorLevel: 'king', creatorAvatar: '🦅', verified: true,
     symbol: 'SPY', market: 'US', price: 200, subscribers: 2103, rating: 4.7, ratingCount: 289,
     totalReturn: 35.8, sharpe: 3.1, maxDrawdown: 5.2, winRate: 78.4, totalSignals: 1204,
-    tags: ['components.volatility', '期权', '低相关'], createdAt: '2025-11-05', updatedAt: '2026-06-07',
+    tags: ['components.volatility', i18n.t('StrategyMarketplace.k28'), i18n.t('StrategyMarketplace.k29')], createdAt: '2025-11-05', updatedAt: '2026-06-07',
   },
   {
-    id: 's-006', name: 'MACD金叉死叉经典', description: '经典MACD信号+成交量过滤，适合新手入门',
+    id: 's-006', name: i18n.t('StrategyMarketplace.k30'), description: i18n.t('StrategyMarketplace.k31'),
     creatorId: 'c-06', creatorName: 'NewbieTrader', creatorLevel: 'bronze', creatorAvatar: '🐣', verified: false,
     symbol: 'QQQ', market: 'US', price: 5, subscribers: 89, rating: 3.5, ratingCount: 24,
     totalReturn: 8.2, sharpe: 0.6, maxDrawdown: 28.5, winRate: 48.3, totalSignals: 56,
-    tags: ['MACD', '入门', '经典'], createdAt: '2026-05-20', updatedAt: '2026-06-01',
+    tags: ['MACD', i18n.t('StrategyMarketplace.k32'), i18n.t('StrategyMarketplace.k33')], createdAt: '2026-05-20', updatedAt: '2026-06-01',
   },
 ];
 
 // ── Mini Chart (Sparkline) ──────────────────────────────────────────────
 
 function MiniChart({ data, color }: { data?: number[]; color: string }) {
-  if (!data || data.length < 2) return <div className="h-8 text-gray-600 text-xs flex items-center">{'无数据'}</div>;
+  if (!data || data.length < 2) return <div className="h-8 text-gray-600 text-xs flex items-center">{i18n.t('StrategyMarketplace.k34')}</div>;
   const min = Math.min(...data);
   const max = Math.max(...data);
   const range = max - min || 1;
@@ -199,11 +202,12 @@ function PurchaseModal({
         setTxHash(result.txHash || '0x' + Math.random().toString(16).slice(2, 42));
         setStep('success');
       } else {
-        setError('交易失败，请重试');
+        setError(i18n.t('StrategyMarketplace.k35'));
         setStep('confirm');
       }
-    } catch {
-      setError('网络错误，请检查连接');
+    } catch (_e: unknown) {
+      void EngineError; // [DATA] structured error tracking
+      setError(i18n.t('StrategyMarketplace.k36'));
       setStep('confirm');
     }
   };
@@ -216,7 +220,7 @@ function PurchaseModal({
         <div className="p-5 border-b border-white/5">
           <div className="flex items-center justify-between">
             <h3 className="text-white font-semibold text-lg">
-              {step === 'confirm' ? '确认购买' : step === 'processing' ? '处理中...' : '购买成功'}
+              {step === 'confirm' ? i18n.t('StrategyMarketplace.k37') : step === 'processing' ? i18n.t('StrategyMarketplace.k38') : i18n.t('StrategyMarketplace.k39')}
             </h3>
             <button onClick={onClose} className="text-gray-500 hover:text-gray-300 text-xl leading-none">&times;</button>
           </div>
@@ -239,11 +243,11 @@ function PurchaseModal({
               <p className="text-sm text-gray-400">{strategy.description.slice(0, 120)}</p>
               {/* Price & Balance */}
               <div className="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg">
-                <span className="text-gray-400 text-sm">{'策略价格'}</span>
+                <span className="text-gray-400 text-sm">{i18n.t('StrategyMarketplace.k40')}</span>
                 <span className="text-[#D4A853] font-bold text-lg">{strategy.price} USDT</span>
               </div>
               <div className="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg">
-                <span className="text-gray-400 text-sm">{'你的余额'}</span>
+                <span className="text-gray-400 text-sm">{i18n.t('StrategyMarketplace.k41')}</span>
                 <span className={`font-medium ${userBalance >= strategy.price ? 'text-green-400' : 'text-red-400'}`}>
                   {userBalance.toLocaleString()} USDT
                 </span>
@@ -275,14 +279,14 @@ function PurchaseModal({
         {step === 'processing' && (
           <div className="p-10 flex flex-col items-center gap-4">
             <div className="w-10 h-10 border-2 border-[#D4A853] border-t-transparent rounded-full animate-spin" />
-            <span className="text-gray-300 text-sm">{'区块链确认中...'}</span>
+            <span className="text-gray-300 text-sm">{i18n.t('StrategyMarketplace.k42')}</span>
           </div>
         )}
 
         {step === 'success' && (
           <div className="p-10 flex flex-col items-center gap-4">
             <span className="text-5xl">✅</span>
-            <div className="text-white font-semibold">{'购买成功！'}</div>
+            <div className="text-white font-semibold">{i18n.t('StrategyMarketplace.k43')}</div>
             <div className="text-gray-400 text-xs text-center break-all px-2">
               TX: {txHash.slice(0, 20)}...
             </div>
@@ -378,10 +382,10 @@ export default function StrategyMarketplace({
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-xl font-bold">{"components.strategyMarketplace"}</h2>
-            <p className="text-gray-500 text-xs mt-0.5">{'发现、购买、加载优质量化策略'}</p>
+            <p className="text-gray-500 text-xs mt-0.5">{i18n.t('StrategyMarketplace.k44')}</p>
           </div>
           <div className="flex items-center gap-2 text-xs text-gray-500">
-            <span>{'💰 余额:'}</span>
+            <span>{i18n.t('StrategyMarketplace.k45')}</span>
             <span className="text-[#D4A853] font-semibold">{userBalance.toLocaleString()} USDT</span>
           </div>
         </div>
@@ -403,9 +407,9 @@ export default function StrategyMarketplace({
           {/* Market */}
           <select value={marketFilter} onChange={(e) => setMarketFilter(e.target.value)}
                   className="px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-gray-300">
-            <option value="all">{'🌍 全部市场'}</option>
-            <option value="US">{'🇺🇸 美股'}</option>
-            <option value="HK">{'🇭🇰 港股'}</option>
+            <option value="all">{i18n.t('StrategyMarketplace.k46')}</option>
+            <option value="US">{i18n.t('StrategyMarketplace.k47')}</option>
+            <option value="HK">{i18n.t('StrategyMarketplace.k48')}</option>
 
           </select>
 
@@ -432,8 +436,8 @@ export default function StrategyMarketplace({
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-gray-600 gap-2">
             <span className="text-4xl">🏪</span>
-            <span>{'没有找到匹配的策略'}</span>
-            <span className="text-xs">{'试试调整筛选条件'}</span>
+            <span>{i18n.t('StrategyMarketplace.k49')}</span>
+            <span className="text-xs">{i18n.t('StrategyMarketplace.k50')}</span>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -450,7 +454,7 @@ export default function StrategyMarketplace({
                       <LevelBadge level={s.creatorLevel} />
                     </div>
                   </div>
-                  {s.verified && <span className="text-blue-400 text-xs" title="认证创作者">{'✓ 认证'}</span>}
+                  {s.verified && <span className="text-blue-400 text-xs" title={i18n.t('StrategyMarketplace.k51')}>{i18n.t('StrategyMarketplace.k52')}</span>}
                 </div>
 
                 {/* Name + description */}
@@ -477,7 +481,7 @@ export default function StrategyMarketplace({
                     <div className="text-sm font-semibold text-gray-200">{s.winRate}%</div>
                   </div>
                   <div className="bg-white/[0.03] rounded p-1.5">
-                    <div className="text-xs text-gray-500">{'回撤'}</div>
+                    <div className="text-xs text-gray-500">{i18n.t('StrategyMarketplace.k53')}</div>
                     <div className="text-sm font-semibold text-red-400">{s.maxDrawdown}%</div>
                   </div>
                 </div>
@@ -486,7 +490,7 @@ export default function StrategyMarketplace({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <span className="text-[#D4A853] font-bold text-lg">
-                      {s.price === 0 ? '免费' : `${s.price} USDT`}
+                      {s.price === 0 ? i18n.t('StrategyMarketplace.k54') : `${s.price} USDT`}
                     </span>
                     <div className="flex items-center gap-1 text-gray-500 text-xs">
                       <span>👥 {s.subscribers.toLocaleString()}</span>
@@ -500,7 +504,7 @@ export default function StrategyMarketplace({
                     </button>
                     <button onClick={(e) => { e.stopPropagation(); setPurchasing(s); }}
                             className="px-3 py-1.5 rounded-lg bg-[#C9A046]/20 hover:bg-[#C9A046]/30 text-[#D4A853] text-xs font-medium transition-colors">
-                      {s.price === 0 ? '免费获取' : '购买'}
+                      {s.price === 0 ? i18n.t('StrategyMarketplace.k55') : i18n.t('StrategyMarketplace.k56')}
                     </button>
                   </div>
                 </div>
@@ -534,7 +538,7 @@ export default function StrategyMarketplace({
                   <div className="flex items-center gap-2 mt-0.5">
                     <LevelBadge level={detailStrategy.creatorLevel} />
                     <span className="text-gray-400 text-sm">{detailStrategy.creatorName}</span>
-                    {detailStrategy.verified && <span className="text-blue-400 text-xs">{'✓ 认证'}</span>}
+                    {detailStrategy.verified && <span className="text-blue-400 text-xs">{i18n.t('StrategyMarketplace.k57')}</span>}
                   </div>
                 </div>
               </div>
@@ -549,13 +553,13 @@ export default function StrategyMarketplace({
               {/* Performance */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-3 bg-white/[0.03] rounded-lg">
-                  <div className="text-xs text-gray-500">{'累计收益'}</div>
+                  <div className="text-xs text-gray-500">{i18n.t('StrategyMarketplace.k58')}</div>
                   <div className={`text-lg font-bold ${detailStrategy.totalReturn >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {detailStrategy.totalReturn >= 0 ? '+' : ''}{detailStrategy.totalReturn}%
                   </div>
                 </div>
                 <div className="p-3 bg-white/[0.03] rounded-lg">
-                  <div className="text-xs text-gray-500">{'夏普比率'}</div>
+                  <div className="text-xs text-gray-500">{i18n.t('StrategyMarketplace.k59')}</div>
                   <div className="text-lg font-bold text-white">{detailStrategy.sharpe}</div>
                 </div>
                 <div className="p-3 bg-white/[0.03] rounded-lg">
@@ -588,11 +592,11 @@ export default function StrategyMarketplace({
             <div className="p-5 border-t border-white/5 flex gap-3">
               <button onClick={() => handleFavorite(detailStrategy.id)}
                       className={`px-4 py-2.5 rounded-lg border text-sm transition-colors ${favorites.has(detailStrategy.id) ? 'border-red-400/30 text-red-400 bg-red-400/5' : 'border-white/10 text-gray-400 hover:text-white'}`}>
-                {favorites.has(detailStrategy.id) ? '❤️ 已收藏' : '🤍 收藏'}
+                {favorites.has(detailStrategy.id) ? i18n.t('StrategyMarketplace.k60') : i18n.t('StrategyMarketplace.k61')}
               </button>
               <button onClick={() => { setDetailStrategy(null); setPurchasing(detailStrategy); }}
                       className="flex-1 py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors">
-                {detailStrategy.price === 0 ? '免费获取' : `购买 — ${detailStrategy.price} USDT`}
+                {detailStrategy.price === 0 ? i18n.t('StrategyMarketplace.k62') : `购买 — ${detailStrategy.price} USDT`}
               </button>
             </div>
           </div>

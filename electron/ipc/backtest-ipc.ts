@@ -2,9 +2,11 @@
 // 7 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
+import i18n from '../../src/i18n';
 
 export function registerBacktestIPC(
   backtestEngine: unknown) {
@@ -23,6 +25,7 @@ export function registerBacktestIPC(
       );
       return { success: true, results };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -40,6 +43,7 @@ export function registerBacktestIPC(
       );
       return { success: true, results };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -59,6 +63,7 @@ export function registerBacktestIPC(
       const metrics = enhancer.computeDeepRiskMetrics(equityCurve, riskFreeRate || 0.03);
       return { success: true, metrics };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -83,6 +88,7 @@ export function registerBacktestIPC(
       const result = checker.analyzeStability({ isReturns, oosReturns, paramGridResults, walkForwardResults, isPeriodDays, oosPeriodDays, tradingDays });
       return { success: true, ...result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -98,11 +104,12 @@ export function registerBacktestIPC(
       const wfa = new WalkForwardEngine();
       const klines = config.klines || [];
       if (klines.length < 100) {
-        return { success: false, error: 'K线数据不足 (需至少100根)' };
+        return { success: false, error: i18n.t('BacktestIpc.k0') };
       }
       const report = await wfa.run(config, klines);
       return { success: true, report };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[WFA] Failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -119,11 +126,12 @@ export function registerBacktestIPC(
       const scanner = new ParameterScanner();
       const klines = config.klines || [];
       if (klines.length < 50) {
-        return { success: false, error: 'K线数据不足 (需至少50根)' };
+        return { success: false, error: i18n.t('BacktestIpc.k1') };
       }
       const report = await scanner.run({ ...config, klines });
       return { success: true, report };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[ParamScan] Failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -144,7 +152,7 @@ export function registerBacktestIPC(
       for (const tf of timeframes) {
         const klines = config.klinesByTimeframe?.[tf] || [];
         if (klines.length < 50) {
-          results[tf] = { success: false, error: 'K线不足' };
+          results[tf] = { success: false, error: i18n.t('BacktestIpc.k2') };
           continue;
         }
         const btResult = await engine.run({
@@ -160,6 +168,7 @@ export function registerBacktestIPC(
 
       return { success: true, results, timeframes };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[MultiTF] Failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -176,6 +185,7 @@ export function registerBacktestIPC(
         const result = await WalkForwardEngine.run(config);
         return { success: true, result };
       } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
         return { success: false, error: err.message };
       }
     }
@@ -188,7 +198,7 @@ export function registerBacktestIPC(
       return { success: false, error: 'configs must be non-empty array' };
     }
     const results = await Promise.allSettled(
-      configs.map(cfg => backtestEngine ? backtestEngine.run(cfg) : Promise.reject(new Error('No engine')))
+      configs.map(cfg => backtestEngine ? backtestEngine.run(cfg) : Promise.reject(new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, 'No engine')))
     );
     return {
       success: true,
@@ -213,7 +223,7 @@ export function registerBacktestIPC(
     const results = await Promise.allSettled(
       combos.map(combo => {
         const cfg = { ...baseConfig, ...combo };
-        return backtestEngine ? backtestEngine.run(cfg) : Promise.reject(new Error('No engine'));
+        return backtestEngine ? backtestEngine.run(cfg) : Promise.reject(new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, 'No engine'));
       })
     );
     const metrics = results.map((r, i) => ({
@@ -239,6 +249,7 @@ export function registerBacktestIPC(
       const result = await engine.run({ ...config, numWindows: numWindows || 5, trainRatio: trainRatio || 0.7 });
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });

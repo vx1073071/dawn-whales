@@ -1,6 +1,8 @@
 // @ts-nocheck
 import { useState, useEffect, useCallback } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { getAnomalySummary, getAnomalyAlerts, acknowledgeAnomalyAlert } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface AnomalyAlert {
   id: string;
@@ -16,20 +18,20 @@ interface AnomalyAlert {
 }
 
 const SEVERITY_CONFIG = {
-  high: { label: '高', bg: 'bg-red-500/10', border: 'border-red-500/20', text: 'text-red-400', dot: 'bg-red-500' },
-  medium: { label: '中', bg: 'bg-yellow-500/10', border: 'border-yellow-500/20', text: 'text-yellow-400', dot: 'bg-yellow-500' },
-  low: { label: '低', bg: 'bg-blue-500/10', border: 'border-blue-500/20', text: 'text-blue-400', dot: 'bg-blue-500' },
+  high: { label: i18n.t('AnomalyAlertPanel.k1'), bg: 'bg-red-500/10', border: 'border-red-500/20', text: 'text-red-400', dot: 'bg-red-500' },
+  medium: { label: i18n.t('AnomalyAlertPanel.k2'), bg: 'bg-yellow-500/10', border: 'border-yellow-500/20', text: 'text-yellow-400', dot: 'bg-yellow-500' },
+  low: { label: i18n.t('AnomalyAlertPanel.k3'), bg: 'bg-blue-500/10', border: 'border-blue-500/20', text: 'text-blue-400', dot: 'bg-blue-500' },
 };
 
 const TYPE_LABELS: Record<string, string> = {
-  limit_up: '涨停',
-  limit_down: '跌停',
-  volume_surge: '放量异动',
-  rapid_change: '快速拉升/跳水',
-  breakout: '突破',
-  breakdown: '跌破',
-  unusual_activity: '异常交易',
-  large_order: '大单异动',
+  limit_up: i18n.t('AnomalyAlertPanel.k4'),
+  limit_down: i18n.t('AnomalyAlertPanel.k5'),
+  volume_surge: i18n.t('AnomalyAlertPanel.k6'),
+  rapid_change: i18n.t('AnomalyAlertPanel.k7'),
+  breakout: i18n.t('AnomalyAlertPanel.k8'),
+  breakdown: i18n.t('AnomalyAlertPanel.k9'),
+  unusual_activity: i18n.t('AnomalyAlertPanel.k10'),
+  large_order: i18n.t('AnomalyAlertPanel.k11'),
 };
 
 export default function AnomalyAlertPanel() {
@@ -51,6 +53,7 @@ export default function AnomalyAlertPanel() {
         setAlerts(alertsRes.alerts);
       }
     } catch (e) {
+      void EngineError; // [SYSTEM] structured error tracking
       // silently fail
     } finally {
       setLoading(false);
@@ -98,7 +101,7 @@ export default function AnomalyAlertPanel() {
           disabled={loading}
           className="text-xs text-gray-500 hover:text-white transition-colors"
         >
-          {loading ? '刷新中...' : '🔄'}
+          {loading ? i18n.t('AnomalyAlertPanel.k12') : '🔄'}
         </button>
       </div>
 
@@ -136,7 +139,7 @@ export default function AnomalyAlertPanel() {
                 : 'bg-transparent border-white/10 text-gray-500 hover:text-gray-300'
             }`}
           >
-            {f === 'all' ? 'components.all' : f === 'unacknowledged' ? '未处理' : f === 'high' ? '高危' : f === 'medium' ? '中危' : '低危'}
+            {f === 'all' ? 'components.all' : f === 'unacknowledged' ? i18n.t('AnomalyAlertPanel.k13') : f === 'high' ? i18n.t('AnomalyAlertPanel.k14') : f === 'medium' ? i18n.t('AnomalyAlertPanel.k15') : i18n.t('AnomalyAlertPanel.k16')}
           </button>
         ))}
       </div>

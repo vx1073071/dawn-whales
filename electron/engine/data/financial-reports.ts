@@ -3,9 +3,12 @@
 // IPC: em:get-financials
 
 import log from 'electron-log';
+
 import https from 'https';
 import http from 'http';
 import { httpGet } from '../utils/http';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -66,7 +69,6 @@ const CACHE_TTL = 4 * 60 * 60 * 1000; // 4 hours
 const cache = new Map<string, { data: FinancialReportsResult; expires: number }>();
 
 // ── HTTP Helper ────────────────────────────────────────────────────────────
-
 
 function safeNum(v: unknown): number {
   if (v === null || v === undefined || v === '' || v === '--') return 0;

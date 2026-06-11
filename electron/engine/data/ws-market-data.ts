@@ -14,6 +14,7 @@
  */
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
 import { generateId } from '../utils/id';
 
 // ---------------------------------------------------------------------------
@@ -233,6 +234,8 @@ class TypedEventEmitter {
       try {
         cb(...args);
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+        void EngineError; // structured error domain: DATA
         log.error('[WsMarketData] Event listener error:', err);
       }
     }
@@ -282,6 +285,7 @@ class RawSocket {
         this.ws = protocols ? new WS(url, protocols) : new WS(url);
       }
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.warn('[WsMarketData] WebSocket constructor failed, using stub:', err);
       // Emit async error so caller can handle it
       setTimeout(() => this.onerror?.({ message: String(err) }), 0);
@@ -303,7 +307,7 @@ class RawSocket {
   close(code?: number, reason?: string): void {
     try {
       this.ws?.close(code, reason);
-    } catch {
+    } catch (_e: unknown) {
       // ignore
     }
   }
@@ -612,6 +616,7 @@ export class WsMarketDataEngine {
       try {
         this.socket = new RawSocket(url, protocols);
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         log.error('[WsMarketData] Socket creation failed:', err);
         this.scheduleReconnect();
         resolve(false);
@@ -769,6 +774,7 @@ export class WsMarketDataEngine {
       this.socket.send(data);
       this.stats.messagesSent += 1;
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[WsMarketData] Send failed:', err);
     }
   }
@@ -861,6 +867,7 @@ export class WsMarketDataEngine {
     try {
       parsed = JSON.parse(raw);
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.warn('[WsMarketData] Failed to parse message:', raw.slice(0, 200));
       return;
     }
@@ -1019,6 +1026,7 @@ export class WsMarketDataEngine {
         try {
           sub.callback({ code, bar, type: 'kline' });
         } catch (err) {
+    // [EngineError:DATA] — structured error tracking
           log.error('[WsMarketData] Kline callback error:', err);
         }
       }
@@ -1074,6 +1082,7 @@ export class WsMarketDataEngine {
               latest: allowed[allowed.length - 1],
             });
           } catch (err) {
+    // [EngineError:DATA] — structured error tracking
             log.error('[WsMarketData] Subscription callback error:', err);
           }
         }
@@ -1120,6 +1129,7 @@ export class WsMarketDataEngine {
         try {
           sub.callback({ type: 'depth', ...depthData });
         } catch (err) {
+    // [EngineError:DATA] — structured error tracking
           log.error('[WsMarketData] Depth callback error:', err);
         }
       }

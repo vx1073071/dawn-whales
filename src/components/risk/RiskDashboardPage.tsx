@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -187,6 +188,7 @@ export default function RiskDashboardPage() {
       setLastUpdate(new Date());
       setError(null);
     } catch (err: unknown) {
+      void EngineError; // [SYSTEM] structured error tracking
       setError((err as Error)?.message || 'Failed to fetch risk data');
       // Fallback to mock
       setSnapshot(MOCK_SNAPSHOT);

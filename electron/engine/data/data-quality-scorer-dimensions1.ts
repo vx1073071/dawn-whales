@@ -5,6 +5,7 @@
 
 import type { DimensionResult, QualityContext, QualityIssue } from './data-quality-scorer-types';
 import { intervalToMs, numField, extractTimestamp, clamp } from './data-quality-scorer-utils';
+import i18n from '../../../src/i18n';
 
 // ──────────────────────── Built-in Dimension Scorers (Part 1) ────────────────────────
 
@@ -24,7 +25,7 @@ function scoreCompleteness(data: unknown[], context: QualityContext): DimensionR
         {
           type: 'empty_dataset',
           severity: 'critical',
-          message: 'Dataset is empty 鈥?no data points provided.',
+          message: i18n.t('DataQualityScorerDimensions1.k0'),
           affectedRows: 0,
           percentage: 100,
           suggestion: 'Verify the data source is connected and returning data.',
@@ -218,7 +219,7 @@ function scoreAccuracy(data: unknown[], _context: QualityContext): DimensionResu
       message: `High < Low in ${highLowViolations} row(s).`,
       affectedRows: highLowViolations,
       percentage: parseFloat(((highLowViolations / total) * 100).toFixed(2)),
-      suggestion: 'Verify OHLC data source 鈥?High must always be >= Low.',
+      suggestion: i18n.t('DataQualityScorerDimensions1.k1'),
     });
   }
 
@@ -264,7 +265,7 @@ function scoreAccuracy(data: unknown[], _context: QualityContext): DimensionResu
       message: `${zeroRange} row(s) have zero price range (H=L=O=C).`,
       affectedRows: zeroRange,
       percentage: parseFloat(((zeroRange / total) * 100).toFixed(2)),
-      suggestion: 'May indicate stale data or halted trading 鈥?verify with source.',
+      suggestion: i18n.t('DataQualityScorerDimensions1.k2'),
     });
   }
 
@@ -457,7 +458,7 @@ function scoreConsistency(data: unknown[], _context: QualityContext): DimensionR
       message: `${schemaVariants} different schema variants detected across ${schemaInconsistentRows} row(s).`,
       affectedRows: schemaInconsistentRows,
       percentage: parseFloat(((schemaInconsistentRows / total) * 100).toFixed(2)),
-      suggestion: 'Normalize data schema 鈥?ensure all rows have the same fields.',
+      suggestion: i18n.t('DataQualityScorerDimensions1.k3'),
     });
   }
 

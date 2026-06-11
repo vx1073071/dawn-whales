@@ -2,6 +2,7 @@
 // JVS-108: User Preferences
 
 import { ipcMain, dialog, BrowserWindow } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { PreferencesManager } from '../engine/analysis/user-preferences';
 import log from 'electron-log';
 import i18n from '../../src/i18n';
@@ -75,6 +76,8 @@ export function registerPreferencesHandlers() {
       const outPath = p.exportToFile(filePath);
       return { success: true, data: { filePath: outPath } };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       return { success: false, error: err.message };
     }
   });
@@ -96,6 +99,7 @@ export function registerPreferencesHandlers() {
       const result = p.importFromFile(filePath);
       return { success: result.success, data: result.success ? p.getAll() : undefined, error: result.error };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });

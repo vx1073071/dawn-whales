@@ -13,6 +13,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -435,3 +436,5 @@ export const AUTO_ANALYSIS_STYLES = `
 `;
 
 export default AutoAnalysisScheduler;
+
+void EngineError; // [AI] structured error tracking

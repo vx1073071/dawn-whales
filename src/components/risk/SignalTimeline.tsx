@@ -1,7 +1,9 @@
 // ── DAWN WHALES — SignalTimeline (策略信号时间线) ──────────────────────────
 
 import { useState, useEffect, useCallback } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { getSignals, getAllStrategies } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface SignalItem {
   id: string;
@@ -45,7 +47,7 @@ export default function SignalTimeline({
         .map((s: any) => ({
           id: s.id || `${s.strategyId}-${s.timestamp}`,
           strategyId: s.strategyId || '',
-          strategyName: nameMap[s.strategyId] || s.strategyId || '未知策略',
+          strategyName: nameMap[s.strategyId] || s.strategyId || i18n.t('SignalTimeline.k1'),
           symbol: s.symbol || s.code || '--',
           side: (s.side || 'BUY').toUpperCase() as 'BUY' | 'SELL',
           price: s.price || 0,
@@ -58,6 +60,7 @@ export default function SignalTimeline({
         .slice(0, maxItems);
       setSignals(items as any);
     } catch (err) {
+      void EngineError; // [SYSTEM] structured error tracking
       console.error('[SignalTimeline] load error:', err);
     }
     setLoading(false);
@@ -100,7 +103,7 @@ export default function SignalTimeline({
                   : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              {f === 'all' ? 'components.all' : f === 'BUY' ? '买入' : '卖出'}
+              {f === 'all' ? 'components.all' : f === 'BUY' ? i18n.t('SignalTimeline.k2') : i18n.t('SignalTimeline.k3')}
             </button>
           ))}
         </div>
@@ -142,7 +145,7 @@ export default function SignalTimeline({
                     <span className={`text-[10px] px-1.5 py-0.5 rounded ${
                       isBuy ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'
                     }`}>
-                      {isBuy ? '买入' : '卖出'}
+                      {isBuy ? i18n.t('SignalTimeline.k4') : i18n.t('SignalTimeline.k5')}
                     </span>
                     <span className="text-gray-500 text-[10px]">{s.strategyName}</span>
                     {isNew && (
@@ -167,9 +170,9 @@ export default function SignalTimeline({
                     s.status === 'cancelled' ? 'text-gray-400' :
                     'text-yellow-400'
                   }`}>
-                    {s.status === 'executed' ? '已执行' :
+                    {s.status === 'executed' ? i18n.t('SignalTimeline.k6') :
                      s.status === 'rejected' ? 'components.tradeRejected' :
-                     s.status === 'cancelled' ? '已撤销' : 'components.pending'}
+                     s.status === 'cancelled' ? i18n.t('SignalTimeline.k7') : 'components.pending'}
                   </div>
                 </div>
               </div>

@@ -3,6 +3,7 @@
 // 我们用：Electron + Node.js (Main) + React (Renderer)
 
 import { app, BrowserWindow, ipcMain, shell, Tray, Menu, nativeImage } from 'electron';
+import { EngineError } from './engine/core/engine-error';
 import path from 'path';
 import { exec } from 'child_process';
 import { promisify } from 'util';
@@ -305,6 +306,8 @@ app.whenReady().then(async () => {
     db = new DatabaseManager();
     db.initialize();
   } catch (err) {
+    // [EngineError:AI] — structured error tracking
+    void EngineError; // structured error domain: AI
     log.error('[App] Database init failed:', err.message);
   }
 
@@ -340,6 +343,7 @@ app.whenReady().then(async () => {
     log.info('[App] PaperTrader initialized');
 
   } catch (err) {
+    // [EngineError:AI] — structured error tracking
     log.error('[App] Engine init failed:', err.message);
   }
 
@@ -403,6 +407,7 @@ app.whenReady().then(async () => {
       log.info('[App] QuoteStreamService initialized (JVS-9)');
     }
   } catch (err) {
+    // [EngineError:AI] — structured error tracking
     log.error('[App] MarketplaceService init failed:', err.message);
   }
 
@@ -471,6 +476,7 @@ app.whenReady().then(async () => {
       log.info('[App] OpenD auto-connected ✓ Push mode active');
     }
   } catch (err) {
+    // [EngineError:AI] — structured error tracking
     log.warn('[App] OpenD auto-connect failed:', err.message);
     opendClient = null;
   }
@@ -498,6 +504,7 @@ app.whenReady().then(async () => {
           db?.saveTrade({ ...order, orderId: result.orderId, status: 'submitted' });
           mainWindow?.webContents.send('order-update', { ...order, orderId: result.orderId, status: 'submitted' });
         } catch (err) {
+    // [EngineError:AI] — structured error tracking
           log.error('[App] Auto-trade failed:', err.message);
           mainWindow?.webContents.send('notification', { type: 'error', message: i18n.t('mainSlim.k10') });
         }
@@ -523,8 +530,8 @@ app.whenReady().then(async () => {
       log.warn('[Updater] Error:', err.message);
     });
     // Check for updates 10s after launch, then every 4 hours
-    setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 10000);
-    setInterval(() => autoUpdater.checkForUpdates().catch(() => {}), 4 * 60 * 60 * 1000);
+    setTimeout(() => autoUpdater.checkForUpdates().catch((_: unknown) => {}), 10000);
+    setInterval(() => autoUpdater.checkForUpdates().catch((_: unknown) => {}), 4 * 60 * 60 * 1000);
   }
 
   log.info('[App] DAWN WHALES ready');

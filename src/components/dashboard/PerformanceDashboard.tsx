@@ -4,6 +4,7 @@
 
 import { useState, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 interface PerformanceMetrics {
   totalReturn: number;
@@ -132,18 +133,18 @@ export default function PerformanceDashboard({
 
       {/* KPI Cards */}
       <div className="grid grid-cols-4 gap-3">
-        <MetricCard label="总收益" value={formatPct(metrics.totalReturn)} color={metrics.totalReturn >= 0 ? 'green' : 'red'} subtitle="累计" />
-        <MetricCard label="年化收益" value={formatPct(metrics.annualizedReturn)} color={metrics.annualizedReturn >= 0 ? 'green' : 'red'} subtitle={t("components.annualized")} />
-        <MetricCard label="最大回撤" value={formatPct(metrics.maxDrawdown)} color="red" subtitle="历史最大" />
-        <MetricCard label="胜率" value={`${metrics.winRate.toFixed(1)}%`} color={metrics.winRate > 50 ? 'green' : 'yellow'} subtitle={`${metrics.winningTrades}W / ${metrics.losingTrades}L`} />
+        <MetricCard label={i18n.t('PerformanceDashboard.k1')} value={formatPct(metrics.totalReturn)} color={metrics.totalReturn >= 0 ? 'green' : 'red'} subtitle={i18n.t('PerformanceDashboard.k2')} />
+        <MetricCard label={i18n.t('PerformanceDashboard.k3')} value={formatPct(metrics.annualizedReturn)} color={metrics.annualizedReturn >= 0 ? 'green' : 'red'} subtitle={t("components.annualized")} />
+        <MetricCard label={i18n.t('PerformanceDashboard.k4')} value={formatPct(metrics.maxDrawdown)} color="red" subtitle={i18n.t('PerformanceDashboard.k5')} />
+        <MetricCard label={i18n.t('PerformanceDashboard.k6')} value={`${metrics.winRate.toFixed(1)}%`} color={metrics.winRate > 50 ? 'green' : 'yellow'} subtitle={`${metrics.winningTrades}W / ${metrics.losingTrades}L`} />
       </div>
 
       {/* Risk-Adjusted Metrics */}
       <div className="grid grid-cols-4 gap-3">
-        <MetricCard label="夏普比" value={formatNum(metrics.sharpe)} color={metrics.sharpe > 1 ? 'green' : metrics.sharpe > 0.5 ? 'yellow' : 'red'} subtitle="Sharpe" highlight={selectedMetric === 'sharpe'} onClick={() => setSelectedMetric('sharpe')} />
-        <MetricCard label="索提诺" value={formatNum(metrics.sortino)} color={metrics.sortino > 1.5 ? 'green' : metrics.sortino > 0.8 ? 'yellow' : 'red'} subtitle="Sortino" highlight={selectedMetric === 'sortino'} onClick={() => setSelectedMetric('sortino')} />
-        <MetricCard label="卡玛比" value={formatNum(metrics.calmar)} color={metrics.calmar > 1 ? 'green' : metrics.calmar > 0.5 ? 'yellow' : 'red'} subtitle="Calmar" highlight={selectedMetric === 'calmar'} onClick={() => setSelectedMetric('calmar')} />
-        <MetricCard label="利润因子" value={formatNum(metrics.profitFactor)} color={metrics.profitFactor > 1.5 ? 'green' : metrics.profitFactor > 1 ? 'yellow' : 'red'} subtitle="Profit Factor" />
+        <MetricCard label={i18n.t('PerformanceDashboard.k7')} value={formatNum(metrics.sharpe)} color={metrics.sharpe > 1 ? 'green' : metrics.sharpe > 0.5 ? 'yellow' : 'red'} subtitle="Sharpe" highlight={selectedMetric === 'sharpe'} onClick={() => setSelectedMetric('sharpe')} />
+        <MetricCard label={i18n.t('PerformanceDashboard.k8')} value={formatNum(metrics.sortino)} color={metrics.sortino > 1.5 ? 'green' : metrics.sortino > 0.8 ? 'yellow' : 'red'} subtitle="Sortino" highlight={selectedMetric === 'sortino'} onClick={() => setSelectedMetric('sortino')} />
+        <MetricCard label={i18n.t('PerformanceDashboard.k9')} value={formatNum(metrics.calmar)} color={metrics.calmar > 1 ? 'green' : metrics.calmar > 0.5 ? 'yellow' : 'red'} subtitle="Calmar" highlight={selectedMetric === 'calmar'} onClick={() => setSelectedMetric('calmar')} />
+        <MetricCard label={i18n.t('PerformanceDashboard.k10')} value={formatNum(metrics.profitFactor)} color={metrics.profitFactor > 1.5 ? 'green' : metrics.profitFactor > 1 ? 'yellow' : 'red'} subtitle="Profit Factor" />
       </div>
 
       {/* Equity Curve (sparkline) */}
@@ -176,13 +177,13 @@ export default function PerformanceDashboard({
         <div className="bg-[#12121a] rounded-xl p-4 border border-white/5">
           <h3 className="text-sm text-gray-400 mb-3">交易统计</h3>
           <div className="space-y-2">
-            <StatRow label="总交易次数" value={String(metrics.totalTrades)} />
-            <StatRow label="盈利次数" value={String(metrics.winningTrades)} color="green" />
-            <StatRow label="亏损次数" value={String(metrics.losingTrades)} color="red" />
-            <StatRow label="平均盈利" value={formatPct(metrics.avgWin)} color="green" />
-            <StatRow label="平均亏损" value={formatPct(metrics.avgLoss)} color="red" />
-            <StatRow label="连赢记录" value={`${metrics.consecutiveWins} 笔`} color="green" />
-            <StatRow label="连亏记录" value={`${metrics.consecutiveLosses} 笔`} color="red" />
+            <StatRow label={i18n.t('PerformanceDashboard.k11')} value={String(metrics.totalTrades)} />
+            <StatRow label={i18n.t('PerformanceDashboard.k12')} value={String(metrics.winningTrades)} color="green" />
+            <StatRow label={i18n.t('PerformanceDashboard.k13')} value={String(metrics.losingTrades)} color="red" />
+            <StatRow label={i18n.t('PerformanceDashboard.k14')} value={formatPct(metrics.avgWin)} color="green" />
+            <StatRow label={i18n.t('PerformanceDashboard.k15')} value={formatPct(metrics.avgLoss)} color="red" />
+            <StatRow label={i18n.t('PerformanceDashboard.k16')} value={`${metrics.consecutiveWins} 笔`} color="green" />
+            <StatRow label={i18n.t('PerformanceDashboard.k17')} value={`${metrics.consecutiveLosses} 笔`} color="red" />
           </div>
         </div>
 
@@ -225,9 +226,9 @@ export default function PerformanceDashboard({
       {/* Risk metric explanation */}
       <div className="bg-[#12121a] rounded-xl p-4 border border-white/5 text-xs text-gray-500">
         <p>
-          {selectedMetric === 'sharpe' && '夏普比率(Sharpe): 衡量每单位风险带来的超额回报，>1为良好，>2为优秀。'}
-          {selectedMetric === 'sortino' && '索提诺比率(Sortino): 仅考虑下行风险，比夏普更关注亏损，>1.5为优秀。'}
-          {selectedMetric === 'calmar' && '卡玛比率(Calmar): 年化收益/最大回撤，>1为良好，衡量"每1%回撤能挣多少"。'}
+          {selectedMetric === 'sharpe' && i18n.t('PerformanceDashboard.k18')}
+          {selectedMetric === 'sortino' && i18n.t('PerformanceDashboard.k19')}
+          {selectedMetric === 'calmar' && i18n.t('PerformanceDashboard.k20')}
           {selectedMetric === 'drawdown' && `最大回撤: ${formatPct(metrics.maxDrawdown)}，代表历史上从最高点到最低点的最大跌幅。`}
         </p>
       </div>

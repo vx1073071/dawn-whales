@@ -1,6 +1,10 @@
 ﻿import React, { useState, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type ExportTarget =
@@ -53,22 +57,22 @@ interface ExportApiResponse {
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const EXPORT_TARGETS: { key: ExportTarget; label: string; icon: string }[] = [
-  { key: 'trades', label: '交易记录', icon: '📈' },
-  { key: 'backtest_runs', label: '回测运行', icon: '🔄' },
-  { key: 'strategies', label: '策略列表', icon: '🧠' },
-  { key: 'kline_cache', label: 'K线缓存', icon: '📊' },
-  { key: 'alerts', label: '预警记录', icon: '🔔' },
-  { key: 'portfolio', label: '组合持仓', icon: '💼' },
+  { key: 'trades', label: i18n.t('DataExportPage.k1'), icon: '📈' },
+  { key: 'backtest_runs', label: i18n.t('DataExportPage.k2'), icon: '🔄' },
+  { key: 'strategies', label: i18n.t('DataExportPage.k3'), icon: '🧠' },
+  { key: 'kline_cache', label: i18n.t('DataExportPage.k4'), icon: '📊' },
+  { key: 'alerts', label: i18n.t('DataExportPage.k5'), icon: '🔔' },
+  { key: 'portfolio', label: i18n.t('DataExportPage.k6'), icon: '💼' },
 ];
 
 const FORMAT_OPTIONS: { value: ExportFormat; label: string; desc: string }[] = [
-  { value: 'csv', label: 'CSV', desc: '通用表格格式，Excel 可直接打开' },
-  { value: 'json', label: 'JSON', desc: '结构化数据，适合程序解析' },
-  { value: 'md', label: 'Markdown', desc: '可读性强的文档格式' },
+  { value: 'csv', label: 'CSV', desc: i18n.t('DataExportPage.k7') },
+  { value: 'json', label: 'JSON', desc: i18n.t('DataExportPage.k8') },
+  { value: 'md', label: 'Markdown', desc: i18n.t('DataExportPage.k9') },
 ];
 
 const STATUS_OPTIONS = [
-  { value: '', label: '全部状态' },
+  { value: '', label: i18n.t('DataExportPage.k10') },
   { value: 'open', label: 'Open' },
   { value: 'closed', label: 'Closed' },
   { value: 'pending', label: 'Pending' },
@@ -193,7 +197,7 @@ const DataExportPage: React.FC = () => {
       try {
         const api = (window.api as any)?.export;
         if (!api) {
-          return { success: false, error: 'Bridge API 不可用' };
+          return { success: false, error: i18n.t('DataExportPage.k11') };
         }
         const methodMap: Record<ExportFormat, string> = {
           csv: 'csv',
@@ -206,7 +210,7 @@ const DataExportPage: React.FC = () => {
         }
         return await fn(target, filters);
       } catch (err: unknown) {
-        return { success: false, error: (err as any)?.message || '未知错误' };
+        return { success: false, error: (err as any)?.message || i18n.t('DataExportPage.k12') };
       }
     },
     [filters],
@@ -217,11 +221,11 @@ const DataExportPage: React.FC = () => {
       try {
         const api = (window.api as any)?.export;
         if (!api || typeof api.batch !== 'function') {
-          return { success: false, error: 'Batch API 不可用' };
+          return { success: false, error: i18n.t('DataExportPage.k13') };
         }
         return await api.batch(payload);
       } catch (err: unknown) {
-        return { success: false, error: (err as any)?.message || '批量导出失败' };
+        return { success: false, error: (err as any)?.message || i18n.t('DataExportPage.k14') };
       }
     },
     [],
@@ -231,11 +235,11 @@ const DataExportPage: React.FC = () => {
     try {
       const api = (window.api as any)?.export;
       if (!api || typeof api.summaryReport !== 'function') {
-        return { success: false, error: 'Summary API 不可用' };
+        return { success: false, error: i18n.t('DataExportPage.k15') };
       }
       return await api.summaryReport();
     } catch (err: unknown) {
-      return { success: false, error: (err as any)?.message || '生成报告失败' };
+      return { success: false, error: (err as any)?.message || i18n.t('DataExportPage.k16') };
     }
   }, []);
 
@@ -376,7 +380,7 @@ const DataExportPage: React.FC = () => {
             {/* Target Selector */}
             <section className="bg-gray-800 rounded-xl border border-gray-700 p-5">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-semibold">{t('导出目标')}</h2>
+                <h2 className="text-base font-semibold">{t(i18n.t('DataExportPage.k17'))}</h2>
                 <div className="flex gap-2">
                   <button
                     onClick={selectAllTargets}
@@ -460,7 +464,7 @@ const DataExportPage: React.FC = () => {
             {/* Filter Panel */}
             <section className="bg-gray-800 rounded-xl border border-gray-700 p-5">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-semibold">{t('筛选条件')}</h2>
+                <h2 className="text-base font-semibold">{t(i18n.t('DataExportPage.k18'))}</h2>
                 {hasActiveFilters && (
                   <button
                     onClick={resetFilters}
@@ -626,7 +630,7 @@ const DataExportPage: React.FC = () => {
 
             {/* Per-target export cards */}
             <section className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-              <h2 className="text-base font-semibold mb-4">{t('单项导出')}</h2>
+              <h2 className="text-base font-semibold mb-4">{t(i18n.t('DataExportPage.k19'))}</h2>
               <div className="space-y-2">
                 {EXPORT_TARGETS.map((t) => {
                   const loadingKey = `${t.key}-${format}`;
@@ -699,11 +703,11 @@ const DataExportPage: React.FC = () => {
           <div className="space-y-6">
             {/* Results List */}
             <section className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-              <h2 className="text-base font-semibold mb-4">{t('导出记录')}</h2>
+              <h2 className="text-base font-semibold mb-4">{t(i18n.t('DataExportPage.k20'))}</h2>
               {results.length === 0 ? (
                 <div className="text-center py-10 text-gray-500">
                   <div className="text-3xl mb-2">📭</div>
-                  <p className="text-sm">{t('暂无导出记录')}</p>
+                  <p className="text-sm">{t(i18n.t('DataExportPage.k21'))}</p>
                   <p className="text-xs text-gray-600 mt-1">
                     选择目标并点击导出后，结果将显示在此处
                   </p>
@@ -730,7 +734,7 @@ const DataExportPage: React.FC = () => {
                                 r.success ? 'text-emerald-400' : 'text-red-400'
                               }`}
                             >
-                              {r.success ? '✓ 成功' : '✗ 失败'}
+                              {r.success ? i18n.t('DataExportPage.k22') : i18n.t('DataExportPage.k23')}
                             </span>
                             <span className="text-xs text-gray-500">
                               {r.target} · {r.format.toUpperCase()}
@@ -782,7 +786,7 @@ const DataExportPage: React.FC = () => {
             {summaryReport && (
               <section className="bg-gray-800 rounded-xl border border-gray-700 p-5">
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-base font-semibold">{t('汇总报告')}</h2>
+                  <h2 className="text-base font-semibold">{t(i18n.t('DataExportPage.k24'))}</h2>
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(summaryReport);

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import * as api from '@/lib/bridge-api';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 interface FundsInfo {
   totalAssets: number;
@@ -37,7 +40,8 @@ export default function PortfolioPage() {
     try {
       const accs = await api.getAccounts();
       if (accs.length > 0) setAccountId(accs[0].accId);
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
+  void EngineError; // [SYSTEM] structured error tracking
   }
 
   async function loadData() {
@@ -52,7 +56,7 @@ export default function PortfolioPage() {
       if (fundsData) setFunds({ ...fundsData, currency: fundsData.currency || 'USD' });
       setPositions(pos || []);
     } catch (e: unknown) {
-      setError((e as any).message || '加载失败');
+      setError((e as any).message || i18n.t('PortfolioPage.k1'));
     } finally {
       setLoading(false);
     }
@@ -111,7 +115,7 @@ export default function PortfolioPage() {
       {funds && (
         <div className="grid grid-cols-5 gap-3 mb-6">
           <SummaryCard  label={t("components.totalAssets")} value={`$${fmt(funds.totalAssets)}`} highlight />
-          <SummaryCard label="今日盈亏" value={`${funds.todayPnl >= 0 ? '+' : ''}$${fmt(funds.todayPnl)}`} className={pnlClass(funds.todayPnl)} />
+          <SummaryCard label={i18n.t('PortfolioPage.k2')} value={`${funds.todayPnl >= 0 ? '+' : ''}$${fmt(funds.todayPnl)}`} className={pnlClass(funds.todayPnl)} />
           <SummaryCard  label={t("components.positionValue")} value={`$${fmt(funds.marketVal)}`} />
           <SummaryCard  label={t("components.availableFunds")} value={`$${fmt(funds.cash)}`} />
           <SummaryCard  label={t("components.buyingPower")} value={`$${fmt(funds.power)}`} />
@@ -165,7 +169,7 @@ export default function PortfolioPage() {
         {positions.length === 0 ? (
           <div className="p-8 text-center text-gray-500">
             <div className="text-3xl mb-2 opacity-40">💼</div>
-            <p className="text-sm">{loading ? t('components.loading') : '暂无持仓'}</p>
+            <p className="text-sm">{loading ? t('components.loading') : i18n.t('PortfolioPage.k3')}</p>
           </div>
         ) : (
           <table className="w-full">

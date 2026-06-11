@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import { getFundHoldings, getStockFundOwnership, getFundIncreaseRank, getFundDecreaseRank } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface FundHolding {
   fundCode: string;
@@ -49,9 +52,10 @@ export default function FundHoldingsPage() {
     try {
       const res = await getFundHoldings(fundCode.trim());
       if (res?.success) setHoldings(res.items || []);
-      else setError(res?.error || '获取失败');
+      else setError(res?.error || i18n.t('FundHoldingsPage.k1'));
     } catch (e: unknown) {
-      setError((e as any).message || '获取失败');
+      void EngineError; // [DATA] structured error tracking
+      setError((e as any).message || i18n.t('FundHoldingsPage.k2'));
     } finally {
       setLoading(false);
     }
@@ -64,9 +68,9 @@ export default function FundHoldingsPage() {
     try {
       const res = await getStockFundOwnership(stockCode.trim());
       if (res?.success) setOwnership(res.items || []);
-      else setError(res?.error || '获取失败');
+      else setError(res?.error || i18n.t('FundHoldingsPage.k3'));
     } catch (e: unknown) {
-      setError((e as any).message || '获取失败');
+      setError((e as any).message || i18n.t('FundHoldingsPage.k4'));
     } finally {
       setLoading(false);
     }
@@ -83,7 +87,7 @@ export default function FundHoldingsPage() {
       if (incRes?.success) setIncreaseRank(incRes.items || []);
       if (decRes?.success) setDecreaseRank(decRes.items || []);
     } catch (e: unknown) {
-      setError((e as any).message || '获取失败');
+      setError((e as any).message || i18n.t('FundHoldingsPage.k5'));
     } finally {
       setLoading(false);
     }
@@ -113,7 +117,7 @@ export default function FundHoldingsPage() {
                 : 'bg-[#1a1a25] border-white/10 text-gray-400 hover:text-white'
             }`}
           >
-            {t === 'byFund' ? '按基金查询' : t === 'byStock' ? '按股票查询' : t === 'increase' ? '增持榜' : '减持榜'}
+            {t === 'byFund' ? i18n.t('FundHoldingsPage.k6') : t === 'byStock' ? i18n.t('FundHoldingsPage.k7') : t === 'increase' ? i18n.t('FundHoldingsPage.k8') : i18n.t('FundHoldingsPage.k9')}
           </button>
         ))}
       </div>
@@ -225,7 +229,7 @@ export default function FundHoldingsPage() {
                         o.changeDirection === 'decrease' ? 'bg-emerald-500/10 text-emerald-400' :
                         'bg-gray-500/10 text-gray-400'
                       }`}>
-                        {o.changeDirection === 'increase' ? 'components.increaseHolding' : o.changeDirection === 'decrease' ? 'components.decreaseHolding' : '持平'}
+                        {o.changeDirection === 'increase' ? 'components.increaseHolding' : o.changeDirection === 'decrease' ? 'components.decreaseHolding' : i18n.t('FundHoldingsPage.k10')}
                       </span>
                     </td>
                   </tr>

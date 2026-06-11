@@ -1,4 +1,5 @@
 // ── Portfolio Risk Calculator ─────────────────────────────────────────────
+import i18n from '../../../src/i18n';
 // Calculates portfolio risk metrics including VaR, CVaR, Sharpe ratio, etc.
 // Supports both historical and parametric methods
 
@@ -407,7 +408,7 @@ export class PortfolioRiskCalculator {
     if (positionAnalysis.diversifiedCount < 3 && positions.length > 3) {
       warnings.push({
         level: 'info',
-        message: `组合分散度较低，建议增加持仓数量`,
+        message: i18n.t('PortfolioRiskCalculator.k0'),
       });
     }
 

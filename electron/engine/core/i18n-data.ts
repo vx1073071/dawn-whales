@@ -4,7 +4,10 @@
 // Languages: zh-CN, zh-TW, en, ja, ko, fr, it, de
 
 import { ipcMain } from 'electron';
+
 import i18n from '../../../src/i18n';
+import { EngineError } from './engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

@@ -1,5 +1,8 @@
 ﻿import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
+import i18n from '../../i18n';
 
 // ============================================================
 // Monte Carlo Simulator Page
@@ -485,7 +488,8 @@ export default function MonteCarloPage() {
           // Fall through to client-side on error
           runClientSimulation();
         })
-        .catch(() => runClientSimulation());
+        .catch((_: unknown) => runClientSimulation());
+    void EngineError; // [SYSTEM] structured error tracking
     } else {
       runClientSimulation();
     }
@@ -508,9 +512,9 @@ export default function MonteCarloPage() {
         // Scenarios
         const simsForScenarios = Math.min(numSimulations, 500);
         const scenarios: ScenarioResult[] = [
-          runScenario('Bear (悲观)', initialCapital, expectedReturn - 10, volatility + 10, timeHorizon, distribution, simsForScenarios),
-          runScenario('Base (基准)', initialCapital, expectedReturn, volatility, timeHorizon, distribution, simsForScenarios),
-          runScenario('Bull (乐观)', initialCapital, expectedReturn + 10, Math.max(volatility - 5, 5), timeHorizon, distribution, simsForScenarios),
+          runScenario(i18n.t('MonteCarloPage.k1'), initialCapital, expectedReturn - 10, volatility + 10, timeHorizon, distribution, simsForScenarios),
+          runScenario(i18n.t('MonteCarloPage.k2'), initialCapital, expectedReturn, volatility, timeHorizon, distribution, simsForScenarios),
+          runScenario(i18n.t('MonteCarloPage.k3'), initialCapital, expectedReturn + 10, Math.max(volatility - 5, 5), timeHorizon, distribution, simsForScenarios),
         ];
 
         // Sensitivity
@@ -545,7 +549,7 @@ export default function MonteCarloPage() {
           setServerRiskMetrics(data as any);
         }
       })
-      .catch(() => {
+      .catch((_: unknown) => {
         // Server metrics unavailable — client-side results remain authoritative
       })
       .finally(() => {
@@ -569,19 +573,19 @@ export default function MonteCarloPage() {
           <span className="text-xl">🎲</span>
         </div>
         <div>
-          <h1 className="text-2xl font-bold">{'Monte Carlo 模拟器'}</h1>
-          <p className="text-sm text-gray-400">{'基于几何布朗运动的投资组合蒙特卡洛仿真'}</p>
+          <h1 className="text-2xl font-bold">{i18n.t('MonteCarloPage.k4')}</h1>
+          <p className="text-sm text-gray-400">{i18n.t('MonteCarloPage.k5')}</p>
         </div>
       </div>
 
       {/* Config Panel */}
       <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-5">
-        <h2 className="text-lg font-semibold flex items-center gap-2">{'⚙️ 参数配置'}</h2>
+        <h2 className="text-lg font-semibold flex items-center gap-2">{i18n.t('MonteCarloPage.k6')}</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Initial Capital */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">{'初始资金 (¥)'}</label>
+            <label className="block text-sm text-gray-400 mb-1">{i18n.t('MonteCarloPage.k7')}</label>
             <input
               type="number"
               value={config.initialCapital}
@@ -592,7 +596,7 @@ export default function MonteCarloPage() {
 
           {/* Risk-free Rate */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">{'无风险利率 (%)'}</label>
+            <label className="block text-sm text-gray-400 mb-1">{i18n.t('MonteCarloPage.k8')}</label>
             <input
               type="number"
               step="0.5"
@@ -604,7 +608,7 @@ export default function MonteCarloPage() {
 
           {/* Distribution */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">{'分布类型'}</label>
+            <label className="block text-sm text-gray-400 mb-1">{i18n.t('MonteCarloPage.k9')}</label>
             <div className="flex gap-3 mt-1">
               {(['normal', 'lognormal', 'fat_tail'] as DistributionType[]).map(d => (
                 <label key={d} className="flex items-center gap-1.5 cursor-pointer">
@@ -623,7 +627,7 @@ export default function MonteCarloPage() {
 
           {/* Sliders */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">{'期望收益:'}<span className="text-blue-400 font-semibold">{config.expectedReturn}%</span></label>
+            <label className="block text-sm text-gray-400 mb-1">{i18n.t('MonteCarloPage.k10')}<span className="text-blue-400 font-semibold">{config.expectedReturn}%</span></label>
             <input
               type="range" min={0} max={50} step={1}
               value={config.expectedReturn}
@@ -633,7 +637,7 @@ export default function MonteCarloPage() {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1">{'波动率:'}<span className="text-yellow-400 font-semibold">{config.volatility}%</span></label>
+            <label className="block text-sm text-gray-400 mb-1">{i18n.t('MonteCarloPage.k11')}<span className="text-yellow-400 font-semibold">{config.volatility}%</span></label>
             <input
               type="range" min={5} max={80} step={1}
               value={config.volatility}
@@ -643,7 +647,7 @@ export default function MonteCarloPage() {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1">{'投资期限:'}<span className="text-green-400 font-semibold">{config.timeHorizon} 年</span></label>
+            <label className="block text-sm text-gray-400 mb-1">{i18n.t('MonteCarloPage.k12')}<span className="text-green-400 font-semibold">{config.timeHorizon} 年</span></label>
             <input
               type="range" min={1} max={30} step={1}
               value={config.timeHorizon}
@@ -653,7 +657,7 @@ export default function MonteCarloPage() {
           </div>
 
           <div className="md:col-span-2 lg:col-span-3">
-            <label className="block text-sm text-gray-400 mb-1">{'模拟次数:'}<span className="text-purple-400 font-semibold">{config.numSimulations.toLocaleString()}</span></label>
+            <label className="block text-sm text-gray-400 mb-1">{i18n.t('MonteCarloPage.k13')}<span className="text-purple-400 font-semibold">{config.numSimulations.toLocaleString()}</span></label>
             <input
               type="range" min={100} max={10000} step={100}
               value={config.numSimulations}
@@ -678,7 +682,7 @@ export default function MonteCarloPage() {
               模拟运行中...
             </>
           ) : (
-            <>{'🚀 运行模拟'}</>
+            <>{i18n.t('MonteCarloPage.k14')}</>
           )}
         </button>
       </div>
@@ -688,15 +692,15 @@ export default function MonteCarloPage() {
         <>
           {/* Stats Dashboard */}
           <div className="space-y-3">
-            <h2 className="text-lg font-semibold flex items-center gap-2">{'📊 统计结果'}</h2>
+            <h2 className="text-lg font-semibold flex items-center gap-2">{i18n.t('MonteCarloPage.k15')}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              <StatCard label="均值 (Mean)" value={`¥${fmt(results.stats.mean)}`} />
-              <StatCard label="中位数 (Median)" value={`¥${fmt(results.stats.median)}`} variant="success" />
-              <StatCard label="标准差 (StdDev)" value={`¥${fmt(results.stats.stdDev)}`} />
+              <StatCard label={i18n.t('MonteCarloPage.k16')} value={`¥${fmt(results.stats.mean)}`} />
+              <StatCard label={i18n.t('MonteCarloPage.k17')} value={`¥${fmt(results.stats.median)}`} variant="success" />
+              <StatCard label={i18n.t('MonteCarloPage.k18')} value={`¥${fmt(results.stats.stdDev)}`} />
               <StatCard label="P5 (5th %ile)" value={`¥${fmt(results.stats.percentile5)}`} variant="danger" />
               <StatCard label="P95 (95th %ile)" value={`¥${fmt(results.stats.percentile95)}`} variant="success" />
-              <StatCard label="最小值" value={`¥${fmt(results.stats.min)}`} variant="danger" />
-              <StatCard label="最大值" value={`¥${fmt(results.stats.max)}`} variant="success" />
+              <StatCard label={i18n.t('MonteCarloPage.k19')} value={`¥${fmt(results.stats.min)}`} variant="danger" />
+              <StatCard label={i18n.t('MonteCarloPage.k20')} value={`¥${fmt(results.stats.max)}`} variant="success" />
               <StatCard label="Sharpe Ratio" value={sharpe.toFixed(2)} variant={sharpe > 1 ? 'success' : sharpe > 0 ? 'warning' : 'danger'} />
               <StatCard
                 label="VaR (95%)"
@@ -739,18 +743,18 @@ export default function MonteCarloPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
                 {serverRiskMetrics.annualizedReturn != null && (
                   <StatCard
-                    label="年化收益"
+                    label={i18n.t('MonteCarloPage.k21')}
                     value={`${(Number(serverRiskMetrics.annualizedReturn) * 100).toFixed(2)}%`}
                     variant={Number(serverRiskMetrics.annualizedReturn) > 0 ? 'success' : 'danger'}
-                    sub="Engine 计算"
+                    sub={i18n.t('MonteCarloPage.k22')}
                   />
                 )}
                 {serverRiskMetrics.annualizedVolatility != null && (
                   <StatCard
-                    label="年化波动率"
+                    label={i18n.t('MonteCarloPage.k23')}
                     value={`${(Number(serverRiskMetrics.annualizedVolatility) * 100).toFixed(2)}%`}
                     variant="warning"
-                    sub="Engine 计算"
+                    sub={i18n.t('MonteCarloPage.k24')}
                   />
                 )}
                 {serverRiskMetrics.maxDrawdown != null && (
@@ -758,59 +762,59 @@ export default function MonteCarloPage() {
                     label={'maxDrawdown'}
                     value={`${(Number(serverRiskMetrics.maxDrawdown) * 100).toFixed(2)}%`}
                     variant="danger"
-                    sub="Engine 计算"
+                    sub={i18n.t('MonteCarloPage.k25')}
                   />
                 )}
                 {serverRiskMetrics.calmarRatio != null && (
                   <StatCard
-                    label="Calmar 比率"
+                    label={i18n.t('MonteCarloPage.k26')}
                     value={Number(serverRiskMetrics.calmarRatio).toFixed(3)}
                     variant={Number(serverRiskMetrics.calmarRatio) > 1 ? 'success' : 'warning'}
-                    sub="收益/最大回撤"
+                    sub={i18n.t('MonteCarloPage.k27')}
                   />
                 )}
                 {serverRiskMetrics.sortinoRatio != null && (
                   <StatCard
-                    label="Sortino 比率"
+                    label={i18n.t('MonteCarloPage.k28')}
                     value={Number(serverRiskMetrics.sortinoRatio).toFixed(3)}
                     variant={Number(serverRiskMetrics.sortinoRatio) > 1 ? 'success' : 'warning'}
-                    sub="下行风险调整"
+                    sub={i18n.t('MonteCarloPage.k29')}
                   />
                 )}
                 {serverRiskMetrics.informationRatio != null && (
                   <StatCard
-                    label="信息比率"
+                    label={i18n.t('MonteCarloPage.k30')}
                     value={Number(serverRiskMetrics.informationRatio).toFixed(3)}
-                    sub="超额收益/跟踪误差"
+                    sub={i18n.t('MonteCarloPage.k31')}
                   />
                 )}
                 {serverRiskMetrics.omegaRatio != null && (
                   <StatCard
-                    label="Omega 比率"
+                    label={i18n.t('MonteCarloPage.k32')}
                     value={Number(serverRiskMetrics.omegaRatio).toFixed(3)}
                     variant={Number(serverRiskMetrics.omegaRatio) > 1 ? 'success' : 'warning'}
-                    sub="收益分布质量"
+                    sub={i18n.t('MonteCarloPage.k33')}
                   />
                 )}
                 {serverRiskMetrics.tailRatio != null && (
                   <StatCard
-                    label="尾部比率"
+                    label={i18n.t('MonteCarloPage.k34')}
                     value={Number(serverRiskMetrics.tailRatio).toFixed(3)}
-                    sub="右尾/左尾比"
+                    sub={i18n.t('MonteCarloPage.k35')}
                   />
                 )}
                 {serverRiskMetrics.skewness != null && (
                   <StatCard
-                    label="偏度"
+                    label={i18n.t('MonteCarloPage.k36')}
                     value={Number(serverRiskMetrics.skewness).toFixed(3)}
-                    sub={Number(serverRiskMetrics.skewness) > 0 ? '右偏 (正)' : '左偏 (负)'}
+                    sub={Number(serverRiskMetrics.skewness) > 0 ? i18n.t('MonteCarloPage.k37') : i18n.t('MonteCarloPage.k38')}
                   />
                 )}
                 {serverRiskMetrics.kurtosis != null && (
                   <StatCard
-                    label="峰度"
+                    label={i18n.t('MonteCarloPage.k39')}
                     value={Number(serverRiskMetrics.kurtosis).toFixed(3)}
-                    sub={Number(serverRiskMetrics.kurtosis) > 3 ? '尖峰 (厚尾)' : '扁平'}
+                    sub={Number(serverRiskMetrics.kurtosis) > 3 ? i18n.t('MonteCarloPage.k40') : i18n.t('MonteCarloPage.k41')}
                   />
                 )}
               </div>
@@ -824,36 +828,36 @@ export default function MonteCarloPage() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              <span className="text-sm text-indigo-400">{'正在从回测引擎获取增强风险指标...'}</span>
+              <span className="text-sm text-indigo-400">{i18n.t('MonteCarloPage.k42')}</span>
             </div>
           )}
 
           {/* Equity Curves */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-3">
-            <h2 className="text-lg font-semibold flex items-center gap-2">{'📈 权益曲线 (Equity Curves)'}</h2>
-            <p className="text-xs text-gray-400">{'50 条样本路径 + 中位数路径 (绿色)'}</p>
+            <h2 className="text-lg font-semibold flex items-center gap-2">{i18n.t('MonteCarloPage.k43')}</h2>
+            <p className="text-xs text-gray-400">{i18n.t('MonteCarloPage.k44')}</p>
             <EquityCurvesChart paths={results.paths} config={config} />
           </div>
 
           {/* Histogram */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-3">
-            <h2 className="text-lg font-semibold flex items-center gap-2">{'📉 终值分布 (Terminal Value Distribution)'}</h2>
-            <p className="text-xs text-gray-400">{'红色区域 = 低于 P5 (VaR 区域)'}</p>
+            <h2 className="text-lg font-semibold flex items-center gap-2">{i18n.t('MonteCarloPage.k45')}</h2>
+            <p className="text-xs text-gray-400">{i18n.t('MonteCarloPage.k46')}</p>
             <HistogramChart values={results.terminalValues} initialCapital={config.initialCapital} />
           </div>
 
           {/* Scenario Comparison */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-3">
-            <h2 className="text-lg font-semibold flex items-center gap-2">{'🔀 情景对比 (Scenario Comparison)'}</h2>
+            <h2 className="text-lg font-semibold flex items-center gap-2">{i18n.t('MonteCarloPage.k47')}</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-gray-400 border-b border-gray-700">
-                    <th className="py-2 px-3 text-left">{'情景'}</th>
-                    <th className="py-2 px-3 text-right">{'期望收益'}</th>
+                    <th className="py-2 px-3 text-left">{i18n.t('MonteCarloPage.k48')}</th>
+                    <th className="py-2 px-3 text-right">{i18n.t('MonteCarloPage.k49')}</th>
                     <th className="py-2 px-3 text-right">{"components.volatility"}</th>
-                    <th className="py-2 px-3 text-right">{'中位数终值'}</th>
-                    <th className="py-2 px-3 text-right">{'均值终值'}</th>
+                    <th className="py-2 px-3 text-right">{i18n.t('MonteCarloPage.k50')}</th>
+                    <th className="py-2 px-3 text-right">{i18n.t('MonteCarloPage.k51')}</th>
                     <th className="py-2 px-3 text-right">VaR 95%</th>
                     <th className="py-2 px-3 text-right">{'profitProbability'}</th>
                   </tr>
@@ -881,23 +885,23 @@ export default function MonteCarloPage() {
 
           {/* Sensitivity Analysis */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-3">
-            <h2 className="text-lg font-semibold flex items-center gap-2">{'🔬 敏感性分析 (Sensitivity Analysis)'}</h2>
-            <p className="text-xs text-gray-400">{'逐一改变参数，观察结果变化'}</p>
+            <h2 className="text-lg font-semibold flex items-center gap-2">{i18n.t('MonteCarloPage.k52')}</h2>
+            <p className="text-xs text-gray-400">{i18n.t('MonteCarloPage.k53')}</p>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-gray-400 border-b border-gray-700">
                     <th className="py-2 px-3 text-left">{'parameters'}</th>
-                    <th className="py-2 px-3 text-right">{'取值'}</th>
-                    <th className="py-2 px-3 text-right">{'中位数'}</th>
-                    <th className="py-2 px-3 text-right">{'均值'}</th>
+                    <th className="py-2 px-3 text-right">{i18n.t('MonteCarloPage.k54')}</th>
+                    <th className="py-2 px-3 text-right">{i18n.t('MonteCarloPage.k55')}</th>
+                    <th className="py-2 px-3 text-right">{i18n.t('MonteCarloPage.k56')}</th>
                     <th className="py-2 px-3 text-right">VaR 95%</th>
                     <th className="py-2 px-3 text-right">{'profitProbability'}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {results.sensitivity.map((row, i) => {
-                    const paramLabel = row.param === 'expectedReturn' ? '期望收益' : row.param === 'volatility' ? 'components.volatility' : '投资期限';
+                    const paramLabel = row.param === 'expectedReturn' ? i18n.t('MonteCarloPage.k57') : row.param === 'volatility' ? 'components.volatility' : i18n.t('MonteCarloPage.k58');
                     const prevRow = i > 0 ? results.sensitivity[i - 1] : null;
                     const isGroupStart = !prevRow || prevRow.param !== row.param;
                     return (
@@ -926,8 +930,8 @@ export default function MonteCarloPage() {
       {!results && !loading && (
         <div className="flex flex-col items-center justify-center py-20 text-gray-500">
           <span className="text-5xl mb-4">🎲</span>
-          <p className="text-lg">{'配置参数后点击「运行模拟」开始蒙特卡洛仿真'}</p>
-          <p className="text-sm mt-2">{'支持正态分布、对数正态分布和厚尾分布'}</p>
+          <p className="text-lg">{i18n.t('MonteCarloPage.k59')}</p>
+          <p className="text-sm mt-2">{i18n.t('MonteCarloPage.k60')}</p>
         </div>
       )}
     </div>

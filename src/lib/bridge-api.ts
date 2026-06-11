@@ -1,3 +1,4 @@
+
 // ── DAWN WHALES — IPC API Client (直连 OpenD，通过 Electron IPC) ──────────────
 // R89: Window.api uses `any` types to avoid cascading TS18046/TS2339/TS2345/TS2322
 // in 80+ consumer files. Internal type safety maintained by wrapper functions.
@@ -247,7 +248,7 @@ export async function isConnected(): Promise<boolean> {
   try {
     const result = await window.api.broker.getAccounts();
     return result?.success === true;
-  } catch { return false; }
+  } catch (_e: unknown) { return false; }
 }
 
 // ── Broker Manager (Sprint1: multi-broker) ───────────────────────────────

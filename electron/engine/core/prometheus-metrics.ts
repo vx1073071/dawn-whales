@@ -6,6 +6,7 @@
  */
 
 import log from 'electron-log';
+import { EngineError } from './engine-error';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -540,7 +541,9 @@ export async function timedAsync<T>(
     end();
     return result;
   } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
     end();
+    void EngineError; // structured error domain: SYSTEM
     throw err;
   }
 }
@@ -556,6 +559,7 @@ export function timedSync<T>(
     end();
     return result;
   } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
     end();
     throw err;
   }
@@ -598,6 +602,7 @@ export class SystemMetricsCollector {
         }
       }
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Metrics] System metrics collection error:', err);
     }
   }

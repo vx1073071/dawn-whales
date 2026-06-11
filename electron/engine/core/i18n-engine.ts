@@ -1,4 +1,7 @@
 import i18n from '../../../src/i18n';
+import { EngineError } from './engine-error';
+
+
 /**
  * J-68-04 [P1] i18n 引擎完善 — 英/日/韩 翻译 + 日期/货币格式化
  *
@@ -459,7 +462,7 @@ export function formatDate(
     return d.toLocaleDateString(localeMap[locale] ?? "en-US", {
       dateStyle: style,
     });
-  } catch {
+  } catch (_e: unknown) {
     return d.toISOString().split("T")[0]!;
   }
 }
@@ -480,7 +483,7 @@ export function formatDateTime(
 
   try {
     return d.toLocaleString(localeMap[locale] ?? "en-US");
-  } catch {
+  } catch (_e: unknown) {
     return d.toISOString();
   }
 }
@@ -503,7 +506,7 @@ export function formatTime(
     return d.toLocaleTimeString(localeMap[locale] ?? "en-US", {
       timeStyle: "medium",
     });
-  } catch {
+  } catch (_e: unknown) {
     return d.toTimeString().split(" ")[0]!;
   }
 }
@@ -540,7 +543,7 @@ export function formatCurrency(
       minimumFractionDigits: options.minimumFractionDigits ?? 2,
       maximumFractionDigits: options.maximumFractionDigits ?? 2,
     }).format(amount);
-  } catch {
+  } catch (_e: unknown) {
     return `${amount.toFixed(2)} ${options.currency}`;
   }
 }
@@ -564,7 +567,7 @@ export function formatNumber(
       minimumFractionDigits,
       maximumFractionDigits,
     }).format(amount);
-  } catch {
+  } catch (_e: unknown) {
     return amount.toString();
   }
 }

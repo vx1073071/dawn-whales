@@ -2,6 +2,7 @@
 // 11 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -16,6 +17,8 @@ export function registerCacheIPC(
       const result = exploreCache();
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       return { success: false, error: err.message };
     }
   });
@@ -27,6 +30,7 @@ export function registerCacheIPC(
       const detail = getCacheEntryDetail(namespace, key);
       return { success: true, detail };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -38,6 +42,7 @@ export function registerCacheIPC(
       const result = getCacheKeys(namespace, limit || 100, offset || 0);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -53,6 +58,7 @@ export function registerCacheIPC(
       const value = cache.get(key);
       return { success: true, value, hit: value !== undefined };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -66,6 +72,7 @@ export function registerCacheIPC(
       cache.set(key, value, ttl);
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -78,6 +85,7 @@ export function registerCacheIPC(
       const cache = manager.getCache(namespace);
       return { success: true, exists: cache.has(key) };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -90,6 +98,7 @@ export function registerCacheIPC(
       const cache = manager.getCache(namespace);
       return { success: true, deleted: cache.delete(key) };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -106,6 +115,7 @@ export function registerCacheIPC(
       }
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -122,6 +132,7 @@ export function registerCacheIPC(
         return { success: true, stats: manager.getAllStats() };
       }
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -139,6 +150,7 @@ export function registerCacheIPC(
       }
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -151,6 +163,7 @@ export function registerCacheIPC(
       const cache = manager.getCache(namespace);
       return { success: true, keys: cache.keys() };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });

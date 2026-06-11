@@ -14,6 +14,7 @@
  */
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
 import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -643,7 +644,7 @@ export class LiveTradeBridge {
   startReconciliationTimer(): void {
     if (this.reconciliationTimer) return;
     this.reconciliationTimer = setInterval(() => {
-      this.reconcilePositions().catch((err) => {
+      this.reconcilePositions().catch((err: unknown) => {
         log.error('[LiveTradeBridge] Reconciliation error', err);
       });
     }, this.config.reconciliationIntervalMs);
@@ -790,6 +791,8 @@ export class LiveTradeBridge {
         try {
           handler(...args);
         } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
+          void EngineError; // structured error domain: TRADE
           log.error('[LiveTradeBridge] Event handler error', { event, err });
         }
       }

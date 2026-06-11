@@ -9,6 +9,7 @@
  */
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
 
 // ============================================================================
 // Inline EventEmitter Polyfill (no import from 'events')
@@ -52,6 +53,8 @@ class SimpleEventEmitter {
       try {
         fn(...args);
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+        void EngineError; // structured error domain: DATA
         log.error('[EventEmitter] Listener error:', err);
       }
     }

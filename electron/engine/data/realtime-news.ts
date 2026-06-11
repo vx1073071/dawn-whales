@@ -1,4 +1,6 @@
 import i18n from '../../../src/i18n';
+import { EngineError } from '../core/engine-error';
+
 /**
  * J-78-02: realtime-news.ts 完整引擎 (~300L)
  * replaces 40-line stub

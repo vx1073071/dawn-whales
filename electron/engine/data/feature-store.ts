@@ -5,6 +5,8 @@
 import { Database } from 'better-sqlite3';
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

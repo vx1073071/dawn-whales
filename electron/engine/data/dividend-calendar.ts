@@ -3,9 +3,12 @@
 // IPC: em:get-dividend-calendar
 
 import log from 'electron-log';
+
 import https from 'https';
 import http from 'http';
 import { httpGet } from '../utils/http';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -82,6 +85,5 @@ export async function getDividendCalendar(days = 30): Promise<DividendCalendarRe
     return { success: false, events: [], total: 0, dateRange: { from: fromDate, to: toDate }, error: err.message };
   }
 }
-
 
 export function clearDividendCalendarCache(): void { cache = null; }

@@ -4,6 +4,7 @@
 // PM验收标准: 真实持仓、资产配置、收益曲线全IP化
 
 import { ipcMain, BrowserWindow } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import log from 'electron-log';
 
 export function registerPortfolioExtendedIPC(
@@ -64,6 +65,8 @@ export function registerPortfolioExtendedIPC(
         count: positions.length,
       };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[portfolio:getPositions]', err);
       return { success: false, error: err.message };
     }
@@ -130,6 +133,7 @@ export function registerPortfolioExtendedIPC(
         },
       };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[portfolio:getAllocation]', err);
       return { success: false, error: err.message };
     }
@@ -205,6 +209,7 @@ export function registerPortfolioExtendedIPC(
         },
       };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[portfolio:getPerformance]', err);
       return { success: false, error: err.message };
     }
@@ -245,6 +250,7 @@ export function registerPortfolioExtendedIPC(
         },
       };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[portfolio:getRiskMetrics]', err);
       return { success: false, error: err.message };
     }

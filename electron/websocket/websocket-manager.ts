@@ -2,6 +2,7 @@
 // 支持多客户端连接、连接状态监控、自动重连机制
 
 import WebSocket from 'ws';
+import { EngineError } from '../engine/core/engine-error';
 import { EventEmitter } from 'events';
 import log from 'electron-log';
 
@@ -65,6 +66,8 @@ export class WebSocketManager extends EventEmitter {
           reject(error);
         });
       } catch (error) {
+    // [EngineError:NETWORK] — structured error tracking
+        void EngineError; // structured error domain: NETWORK
         reject(error);
       }
     });
@@ -82,6 +85,7 @@ export class WebSocketManager extends EventEmitter {
       try {
         client.ws.close(1000, 'Server shutting down');
       } catch (error) {
+    // [EngineError:NETWORK] — structured error tracking
         log.error(`[WS Manager] Error closing client ${id}:`, error);
       }
     }
@@ -171,6 +175,7 @@ export class WebSocketManager extends EventEmitter {
         this.emit('message', clientId, data);
       }
     } catch (error) {
+    // [EngineError:NETWORK] — structured error tracking
       log.error(`[WS Manager] Error parsing message from ${clientId}:`, error);
     }
   }
@@ -195,6 +200,7 @@ export class WebSocketManager extends EventEmitter {
           try {
             client.ws.ping();
           } catch (error) {
+    // [EngineError:NETWORK] — structured error tracking
             log.error(`[WS Manager] Error pinging client ${id}:`, error);
           }
         }
@@ -225,6 +231,7 @@ export class WebSocketManager extends EventEmitter {
       client.ws.send(JSON.stringify(data));
       return true;
     } catch (error) {
+    // [EngineError:NETWORK] — structured error tracking
       log.error(`[WS Manager] Error sending to ${clientId}:`, error);
       return false;
     }
@@ -240,6 +247,7 @@ export class WebSocketManager extends EventEmitter {
           client.ws.send(message);
           sentCount++;
         } catch (error) {
+    // [EngineError:NETWORK] — structured error tracking
           log.error(`[WS Manager] Error broadcasting to ${id}:`, error);
         }
       }

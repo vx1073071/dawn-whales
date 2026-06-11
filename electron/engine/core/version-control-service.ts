@@ -4,6 +4,8 @@
 
 import { getSnapshotService, type DataSnapshot } from '../analysis/snapshot-service';
 import log from 'electron-log';
+import { EngineError } from './engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

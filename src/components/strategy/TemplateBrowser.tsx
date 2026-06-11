@@ -2,7 +2,11 @@
 // Displays 8 pre-built strategy templates with search, category filter, and instantiating.
 
 import { useState, useEffect } from 'react';
+
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 
 interface ParameterDef {
   name: string;
@@ -31,12 +35,12 @@ interface StrategyTemplate {
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
-  momentum: '🌀 动量',
-  mean_reversion: '↔️ 均值回归',
-  breakout: '📈 突破',
-  pairs: '🔗 配对',
-  options: '📋 期权',
-  multi_factor: '🔢 多因子',
+  momentum: i18n.t('TemplateBrowser.k1'),
+  mean_reversion: i18n.t('TemplateBrowser.k2'),
+  breakout: i18n.t('TemplateBrowser.k3'),
+  pairs: i18n.t('TemplateBrowser.k4'),
+  options: i18n.t('TemplateBrowser.k5'),
+  multi_factor: i18n.t('TemplateBrowser.k6'),
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -73,7 +77,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
         const data = raw?.templates ?? raw;
         setTemplates(Array.isArray(data) ? data : []);
       } catch (e: unknown) {
-        setError((e as any).message ?? '加载失败');
+        setError((e as any).message ?? i18n.t('TemplateBrowser.k7'));
       } finally {
         setLoading(false);
       }
@@ -114,14 +118,14 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
     try {
       const result = await (window.api as any).instantiateTemplate(selectedId, paramOverrides);
       if (!result?.success) {
-        setInstantiateError(result?.error ?? '实例化失败');
+        setInstantiateError(result?.error ?? i18n.t('TemplateBrowser.k8'));
         setInstantiating(false);
         return;
       }
       // Open the instantiated strategy in creation form
       onCreated();
     } catch (e: unknown) {
-      setInstantiateError((e as any).message ?? '实例化失败');
+      setInstantiateError((e as any).message ?? i18n.t('TemplateBrowser.k9'));
       setInstantiating(false);
     }
   }
@@ -311,7 +315,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
             disabled={instantiating}
             className="w-full bg-[#C9A046] hover:bg-[#D4A853] disabled:opacity-50 text-black font-semibold text-sm rounded-lg py-2.5 transition-colors"
           >
-            {instantiating ? '创建中...' : '使用此模板创建策略 →'}
+            {instantiating ? i18n.t('TemplateBrowser.k10') : i18n.t('TemplateBrowser.k11')}
           </button>
         </div>
       )}

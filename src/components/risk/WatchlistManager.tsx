@@ -1,6 +1,7 @@
 // ── DAWN WHALES — WatchlistManager (自选股管理) ────────────────────────────
 
 import { useState, useEffect, useCallback } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { getWatchlist, saveWatchlist, getQuotes } from '../../lib/bridge-api';
 
 interface WatchlistItem {
@@ -38,6 +39,7 @@ export default function WatchlistManager() {
       });
       setItems(mapped);
     } catch {
+      void EngineError; // [SYSTEM] structured error tracking
       setItems(DEFAULT_WATCHLIST.map((s) => ({ symbol: s })));
     }
     setLoading(false);

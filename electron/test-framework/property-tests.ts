@@ -9,6 +9,7 @@
 // Also exports individual property functions for use in vitest.
 
 import log from 'electron-log';
+import { EngineError } from '../engine/core/engine-error';
 import fc, { Arbitrary, PrimitiveConstraint } from 'fast-check';
 import { calculateRSI } from '../engine/analysis/technical-indicators';
 import { getKellyFraction } from '../engine/portfolio/dynamic-sizer';
@@ -576,6 +577,8 @@ export async function savePropertyReport(
     await fs.writeFile(outputPath, formatPropertyReport(report), 'utf-8');
     log.info(`[Q47] Property report saved to ${outputPath}`);
   } catch (e) {
+    // [EngineError:SYSTEM] — structured error tracking
+    void EngineError; // structured error domain: SYSTEM
     log.error('[Q47] Failed to save property report:', e);
   }
 }

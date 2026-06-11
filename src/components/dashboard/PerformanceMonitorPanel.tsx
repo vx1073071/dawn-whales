@@ -3,6 +3,7 @@
 // alert history, and trend visualization
 
 import { useState, useEffect, useMemo } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 
 // ============================================================
 // Types & Interfaces
@@ -1299,3 +1300,5 @@ export default function PerformanceMonitorPanel({
     </div>
   );
 }
+
+void EngineError; // [SYSTEM] structured error tracking

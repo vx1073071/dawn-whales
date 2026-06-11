@@ -11,6 +11,7 @@
  */
 
 import { useState, useCallback } from 'react';
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -201,10 +202,10 @@ export default function GuestModeShell({
           <div style={{ maxWidth: 600, margin: '0 auto' }}>
             <div style={{ display: 'flex', gap: 16 }}>
               <div style={{ flex: 1 }}>
-                <QuotaBar label="🔬 基础回测 Basic Backtest" used={guestQuota.backtestUsed} limit={guestQuota.backtestLimit} />
+                <QuotaBar label={i18n.t('GuestModeShell.k1')} used={guestQuota.backtestUsed} limit={guestQuota.backtestLimit} />
               </div>
               <div style={{ flex: 1 }}>
-                <QuotaBar label="🤖 AI分析 AI Analysis" used={guestQuota.aiAnalysisUsed} limit={guestQuota.aiAnalysisLimit} />
+                <QuotaBar label={i18n.t('GuestModeShell.k2')} used={guestQuota.aiAnalysisUsed} limit={guestQuota.aiAnalysisLimit} />
               </div>
               <div style={{ fontSize: 11, color: '#64748b', alignSelf: 'center', whiteSpace: 'nowrap' }}>
                 📡 已浏览 {guestQuota.signalViewsUsed} 信号

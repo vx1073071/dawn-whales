@@ -6,9 +6,12 @@
 // - Market-wide margin trends
 
 import log from 'electron-log';
+
 import https from 'https';
 import http from 'http';
 import { httpGet } from '../utils/http';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -291,7 +294,6 @@ function getSecId(code: string): string {
   if (code.startsWith('4') || code.startsWith('8')) return `${code}.BJ`;
   return `${code}.SH`;
 }
-
 
 export function clearMarginDataCache(): void {
   cache.clear();

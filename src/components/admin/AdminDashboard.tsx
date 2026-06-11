@@ -3,6 +3,7 @@
  * Funnel, retention, and invitation data visualization.
  */
 import React, { useEffect, useState } from 'react';
+import i18n from '../../i18n';
 
 interface AdminStats {
   users: { total: number; active7d: number; active30d: number };
@@ -52,34 +53,34 @@ const AdminDashboard: React.FC = () => {
       {/* Funnel */}
       <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>用户漏斗</h3>
       <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
-        <StatCard title="访问量" value={stats.funnel.visits} />
-        <StatCard title="下载量" value={stats.funnel.downloads} sub={`转化率 ${stats.funnel.visits > 0 ? ((stats.funnel.downloads / stats.funnel.visits) * 100).toFixed(1) : 0}%`} />
-        <StatCard title="注册量" value={stats.funnel.registrations} />
-        <StatCard title="活跃用户" value={stats.funnel.active} />
+        <StatCard title={i18n.t('AdminDashboard.k1')} value={stats.funnel.visits} />
+        <StatCard title={i18n.t('AdminDashboard.k2')} value={stats.funnel.downloads} sub={`转化率 ${stats.funnel.visits > 0 ? ((stats.funnel.downloads / stats.funnel.visits) * 100).toFixed(1) : 0}%`} />
+        <StatCard title={i18n.t('AdminDashboard.k3')} value={stats.funnel.registrations} />
+        <StatCard title={i18n.t('AdminDashboard.k4')} value={stats.funnel.active} />
       </div>
 
       {/* Retention */}
       <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>用户留存</h3>
       <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
-        <StatCard title="次日留存" value={`${stats.retention.day1}%`} />
-        <StatCard title="7日留存" value={`${stats.retention.day7}%`} />
-        <StatCard title="30日留存" value={`${stats.retention.day30}%`} />
+        <StatCard title={i18n.t('AdminDashboard.k5')} value={`${stats.retention.day1}%`} />
+        <StatCard title={i18n.t('AdminDashboard.k6')} value={`${stats.retention.day7}%`} />
+        <StatCard title={i18n.t('AdminDashboard.k7')} value={`${stats.retention.day30}%`} />
       </div>
 
       {/* Users */}
       <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>用户概览</h3>
       <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
-        <StatCard title="总用户" value={stats.users.total} />
-        <StatCard title="7日活跃" value={stats.users.active7d} />
-        <StatCard title="30日活跃" value={stats.users.active30d} />
+        <StatCard title={i18n.t('AdminDashboard.k8')} value={stats.users.total} />
+        <StatCard title={i18n.t('AdminDashboard.k9')} value={stats.users.active7d} />
+        <StatCard title={i18n.t('AdminDashboard.k10')} value={stats.users.active30d} />
       </div>
 
       {/* Invitations */}
       <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>邀请裂变</h3>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-        <StatCard title="邀请发送" value={stats.invitations.sent} />
-        <StatCard title="邀请接受" value={stats.invitations.accepted} />
-        <StatCard title="邀请转化率" value={`${stats.invitations.rate}%`} />
+        <StatCard title={i18n.t('AdminDashboard.k11')} value={stats.invitations.sent} />
+        <StatCard title={i18n.t('AdminDashboard.k12')} value={stats.invitations.accepted} />
+        <StatCard title={i18n.t('AdminDashboard.k13')} value={`${stats.invitations.rate}%`} />
       </div>
     </div>
   );

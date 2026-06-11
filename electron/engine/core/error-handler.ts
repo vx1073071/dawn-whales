@@ -2,6 +2,7 @@
 // Comprehensive error handling, boundary condition validation, and error reporting
 
 import { EventEmitter } from 'events';
+
 import log from 'electron-log';
 
 export type ErrorSeverity = 'low' | 'medium' | 'high' | 'critical';

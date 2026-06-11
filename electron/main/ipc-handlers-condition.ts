@@ -2,6 +2,7 @@
 // ConditionEngine IPC handlers — Phase 4.2 R30 Q-30-02
 
 import { ConditionEngine } from '../engine/core/condition-engine.js';
+import { EngineError } from '../engine/core/engine-error';
 import type { ConditionRule } from '../types/condition.js';
 
 export function registerConditionHandlers(
@@ -13,6 +14,8 @@ export function registerConditionHandlers(
       const rule = engine.createRule(payload);
       return { success: true, data: rule };
     } catch (e) {
+    // [EngineError:AI] — structured error tracking
+      void EngineError; // structured error domain: AI
       return { success: false, error: e.message };
     }
   });

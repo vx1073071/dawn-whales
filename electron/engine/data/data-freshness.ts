@@ -1,3 +1,7 @@
+
+import i18n from '../../../src/i18n';
+import { EngineError } from '../core/engine-error';
+
 /**
  * J-80-04: 7市场数据新鲜度监控 G8
  * v1.9.0 GA — Data freshness monitoring for all 7 markets
@@ -40,13 +44,13 @@ const STALE_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes
 const OFFLINE_THRESHOLD_MS = 30 * 60 * 1000; // 30 minutes
 
 const MARKET_LABELS: Record<MarketCode, string> = {
-  US: '美股',
-  HK: '港股',
-  CN: 'A股',
-  JP: '日股',
-  UK: '英股',
-  EU: '欧股',
-  CRYPTO: '加密',
+  US: i18n.t('DataFreshness.k0'),
+  HK: i18n.t('DataFreshness.k1'),
+  CN: i18n.t('DataFreshness.k2'),
+  JP: i18n.t('DataFreshness.k3'),
+  UK: i18n.t('DataFreshness.k4'),
+  EU: i18n.t('DataFreshness.k5'),
+  CRYPTO: i18n.t('DataFreshness.k6'),
 };
 
 // ── Engine ─────────────────────────────────────────────────────────────────
@@ -144,7 +148,7 @@ export class DataFreshnessMonitor {
     for (const listener of this.listeners) {
       try {
         listener(report);
-      } catch {
+      } catch (_e: unknown) {
         /* ignore */
       }
     }

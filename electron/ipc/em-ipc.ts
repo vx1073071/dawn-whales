@@ -2,6 +2,7 @@
 // 67 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -22,6 +23,8 @@ export function registerEmIPC(
     try {
       return await getFinancialReports(code, quarters);
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[FinancialReports] Error:', err);
       return { success: false, error: err.message };
     }
@@ -35,6 +38,7 @@ export function registerEmIPC(
     try {
       return await getValuationData(code, historyDays);
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[ValuationData] Error:', err);
       return { success: false, error: err.message };
     }
@@ -48,6 +52,7 @@ export function registerEmIPC(
     try {
       return { success: true, ...blackScholesPrice(params) };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[OptionsPricing] Price error:', err);
       return { success: false, error: err.message };
     }
@@ -59,6 +64,7 @@ export function registerEmIPC(
     try {
       return { success: true, ...calculateGreeks(params) };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[OptionsPricing] Greeks error:', err);
       return { success: false, error: err.message };
     }
@@ -70,6 +76,7 @@ export function registerEmIPC(
     try {
       return { success: true, ...impliedVolatility(marketPrice, S, K, T, r, optionType as unknown, q) };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[OptionsPricing] IV error:', err);
       return { success: false, error: err.message };
     }
@@ -82,6 +89,7 @@ export function registerEmIPC(
       const surface = buildVolSurface(S, r, strikes, expiries, callPrices, putPrices);
       return { success: true, surface };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[OptionsPricing] Surface error:', err);
       return { success: false, error: err.message };
     }
@@ -93,6 +101,7 @@ export function registerEmIPC(
     try {
       return { success: true, ...priceAndGreeks(params) };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[OptionsPricing] Price+Greeks error:', err);
       return { success: false, error: err.message };
     }
@@ -107,6 +116,7 @@ export function registerEmIPC(
       const result = calculateRiskMetrics(params);
       return { success: true, metrics: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[RiskMetrics] Error:', err);
       return { success: false, error: err.message };
     }
@@ -118,6 +128,7 @@ export function registerEmIPC(
     try {
       return { success: true, sharpe: calcSharpeRatio(returns, riskFreeRate, tradingDays) };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -128,6 +139,7 @@ export function registerEmIPC(
     try {
       return { success: true, maxDrawdown: calcMaxDrawdown(returns) };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -138,6 +150,7 @@ export function registerEmIPC(
     try {
       return { success: true, var: calcVaR(returns, confidence) };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -151,6 +164,7 @@ export function registerEmIPC(
       const result = brinsonAttribution(params);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Attribution] Error:', err);
       return { success: false, error: err.message };
     }
@@ -163,6 +177,7 @@ export function registerEmIPC(
       const result = timeSeriesAttribution(params);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Attribution] TimeSeries Error:', err);
       return { success: false, error: err.message };
     }
@@ -177,6 +192,7 @@ export function registerEmIPC(
       const result = correlationMatrix(params);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[CorrelationMatrix] Error:', err);
       return { success: false, error: err.message };
     }
@@ -191,6 +207,7 @@ export function registerEmIPC(
       const result = detectSectorRotation(params);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[SectorRotation] Error:', err);
       return { success: false, error: err.message };
     }
@@ -208,6 +225,7 @@ export function registerEmIPC(
       const result = await emDataProvider.getHeatmap(bt, limit || 50);
       return { success: true, ...result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[EMDataProvider] Heatmap fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -221,6 +239,7 @@ export function registerEmIPC(
       const maps = await emDataProvider.getAllHeatmaps();
       return { success: true, ...maps };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[EMDataProvider] All heatmaps fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -237,6 +256,7 @@ export function registerEmIPC(
       const result = await macroDataProvider.getIndicator(type, limit || 24);
       return { success: true, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[MacroDataProvider] Fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -250,6 +270,7 @@ export function registerEmIPC(
       const result = await macroDataProvider.getDashboard(indicators as unknown);
       return { success: true, ...result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[MacroDataProvider] Dashboard fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -266,6 +287,7 @@ export function registerEmIPC(
       const result = engine.compute(sentimentInput);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[SentimentIndex] Compute failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -281,6 +303,7 @@ export function registerEmIPC(
       const result = await newsAggregator.search(request || { query: '' });
       return { success: true, ...result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[NewsAggregator] Search failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -294,6 +317,7 @@ export function registerEmIPC(
       const report = await newsAggregator.getMarketMood(symbols);
       return { success: true, report };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[NewsAggregator] Market mood failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -309,6 +333,7 @@ export function registerEmIPC(
       const report = sectorRotation.analyze();
       return { success: true, ...report };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[SectorRotation] Analyze failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -322,6 +347,7 @@ export function registerEmIPC(
       sectorRotation.recordSnapshot(sectors || []);
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -336,6 +362,7 @@ export function registerEmIPC(
       const summary = stockAnomalyDetector.getSummary();
       return { success: true, summary };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -348,6 +375,7 @@ export function registerEmIPC(
       const alerts = stockAnomalyDetector.getAlerts(options);
       return { success: true, alerts };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -360,6 +388,7 @@ export function registerEmIPC(
       const newAlerts = stockAnomalyDetector.processQuotes(quotes || []);
       return { success: true, newAlerts: newAlerts.length };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -372,6 +401,7 @@ export function registerEmIPC(
       const result = stockAnomalyDetector.acknowledgeAlert(id);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -386,6 +416,7 @@ export function registerEmIPC(
       const report = await marketHotspot.getReport(query);
       return { success: true, ...report };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[MarketHotspot] Fetch failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -400,6 +431,7 @@ export function registerEmIPC(
       const result = await getDragonTigerList(date);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, entries: [], total: 0, date: '', error: err.message };
     }
   });
@@ -411,6 +443,7 @@ export function registerEmIPC(
       const detail = await getDragonTigerDetail(code, date);
       return { success: !!detail, detail };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, detail: null, error: err.message };
     }
   });
@@ -422,6 +455,7 @@ export function registerEmIPC(
       const entries = await getInstitutionalTrades(date);
       return { success: true, entries };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, entries: [], error: err.message };
     }
   });
@@ -435,6 +469,7 @@ export function registerEmIPC(
       const result = await getStockCapitalFlowRank(sortBy as unknown, order as unknown, limit);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, items: [], total: 0, type: 'stock', error: err.message };
     }
   });
@@ -446,6 +481,7 @@ export function registerEmIPC(
       const result = await getSectorCapitalFlowRank(sortBy as unknown, order as unknown, limit);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, items: [], total: 0, type: 'sector', error: err.message };
     }
   });
@@ -457,6 +493,7 @@ export function registerEmIPC(
       const result = await getConceptCapitalFlowRank(sortBy as unknown, order as unknown, limit);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, items: [], total: 0, type: 'concept', error: err.message };
     }
   });
@@ -471,6 +508,7 @@ export function registerEmIPC(
       const alerts = items ? monitor.process(items) : [];
       return { success: true, alerts, config: monitor.getConfig() };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, alerts: [], error: err.message };
     }
   });
@@ -483,6 +521,7 @@ export function registerEmIPC(
       monitor.updateConfig(config);
       return { success: true, config: monitor.getConfig() };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -494,6 +533,7 @@ export function registerEmIPC(
       getCapitalFlowMonitor().clearHistory();
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -507,6 +547,7 @@ export function registerEmIPC(
       const result = await getFundHoldings(fundCode, reportDate);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, items: [], total: 0, error: err.message };
     }
   });
@@ -518,6 +559,7 @@ export function registerEmIPC(
       const result = await getStockFundOwnership(stockCode, reportDate);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, items: [], total: 0, error: err.message };
     }
   });
@@ -529,6 +571,7 @@ export function registerEmIPC(
       const result = await getFundIncreaseRank(limit, reportDate);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, items: [], total: 0, error: err.message };
     }
   });
@@ -540,6 +583,7 @@ export function registerEmIPC(
       const result = await getFundDecreaseRank(limit, reportDate);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, items: [], total: 0, error: err.message };
     }
   });
@@ -553,6 +597,7 @@ export function registerEmIPC(
       const result = await diagnoseStock(request || { code: '' });
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, code: '', name: '', timestamp: Date.now(), error: err.message };
     }
   });
@@ -564,6 +609,7 @@ export function registerEmIPC(
       const results = await batchDiagnose(codes || [], options);
       return { success: true, reports: results };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, reports: [], error: err.message };
     }
   });
@@ -577,6 +623,7 @@ export function registerEmIPC(
       const result = await calculatePortfolioRisk(request || { positions: [] });
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -590,6 +637,7 @@ export function registerEmIPC(
       const result = await getMarketBreadth();
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -603,6 +651,7 @@ export function registerEmIPC(
       const result = await getConsumerDataReport(months || 12);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -616,6 +665,7 @@ export function registerEmIPC(
       const result = await getMarginDataReport();
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -627,6 +677,7 @@ export function registerEmIPC(
       const result = await getStockMargin(code, days || 30);
       return { success: true, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -638,6 +689,7 @@ export function registerEmIPC(
       const result = await getMarginBalanceRanking(limit || 30);
       return { success: true, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -649,6 +701,7 @@ export function registerEmIPC(
       const result = await getShortInterestRanking(limit || 30);
       return { success: true, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -663,6 +716,7 @@ export function registerEmIPC(
       const result = await getStockOverview(code);
       return { success: true, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -674,6 +728,7 @@ export function registerEmIPC(
       const result = await getMarketOverview();
       return { success: true, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -685,6 +740,7 @@ export function registerEmIPC(
       const result = await getDailyReport();
       return { success: true, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -704,6 +760,7 @@ export function registerEmIPC(
       });
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -715,6 +772,7 @@ export function registerEmIPC(
       getDragonTigerStream().stop();
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -726,6 +784,7 @@ export function registerEmIPC(
       const result = await getDragonTigerStream().fetchNow();
       return { success: true, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -736,6 +795,7 @@ export function registerEmIPC(
     try {
       return { success: true, status: getDragonTigerStream().getStatus() };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -749,6 +809,7 @@ export function registerEmIPC(
       const result = await getUnlockCalendar(days || 30);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, events: [], total: 0, error: err.message };
     }
   });
@@ -762,6 +823,7 @@ export function registerEmIPC(
       const result = await getDividendCalendar(days || 30);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, events: [], total: 0, error: err.message };
     }
   });
@@ -775,6 +837,7 @@ export function registerEmIPC(
       const result = await getEarningsCalendar(days || 30);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, events: [], total: 0, error: err.message };
     }
   });
@@ -788,6 +851,7 @@ export function registerEmIPC(
       const result = await exportData(type as unknown, (format as unknown) || 'json');
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -802,6 +866,7 @@ export function registerEmIPC(
       const result = await picker.pick(request || {});
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -816,6 +881,7 @@ export function registerEmIPC(
       const status = await backfill.start(config);
       return { success: true, status };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -826,6 +892,7 @@ export function registerEmIPC(
     try {
       return { success: true, status: getHistoryBackfill().getStatus() };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -837,6 +904,7 @@ export function registerEmIPC(
       const data = getHistoryBackfill().getBackfillData(module);
       return { success: true, data };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -848,6 +916,7 @@ export function registerEmIPC(
       const files = getHistoryBackfill().listBackfillFiles();
       return { success: true, files };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });

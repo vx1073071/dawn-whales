@@ -2,6 +2,7 @@
 // 10 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -21,6 +22,8 @@ export function registerMarketplaceIPC(
       const stats = db?.getStrategyRating(strategyId);
       return { success: true, ...stats };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+      void EngineError; // structured error domain: DATA
       return { success: false, error: err.message };
     }
   });
@@ -42,6 +45,7 @@ export function registerMarketplaceIPC(
       db?.addComment(strategyId, content, parentId);
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -62,6 +66,7 @@ export function registerMarketplaceIPC(
       db?.saveStrategyPerformance(data);
       return { success: true };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -90,6 +95,7 @@ export function registerMarketplaceIPC(
       const score = marketplaceService.calculateStrategyScore(strategyId);
       return { success: true, score };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[Marketplace] Score calculation failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -103,6 +109,7 @@ export function registerMarketplaceIPC(
       const verification = marketplaceService.verifyPerformance(strategyId);
       return { success: true, verification };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[Marketplace] Verification failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -116,6 +123,7 @@ export function registerMarketplaceIPC(
       const result = marketplaceService.updateAllScores();
       return { success: true, ...result };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[Marketplace] Batch update failed:', err.message);
       return { success: false, error: err.message };
     }

@@ -1,3 +1,4 @@
+import { EngineError } from './engine/core/engine-error';
 ﻿// T90: Load Testing Framework
 export interface LoadTestConfig {
   concurrency: number;

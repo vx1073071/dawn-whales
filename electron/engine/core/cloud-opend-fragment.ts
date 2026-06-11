@@ -18,6 +18,8 @@
  */
 
 import { EventEmitter } from 'events';
+import { EngineError } from './engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -168,7 +170,7 @@ export class CloudOpenDManager extends EventEmitter {
       this.emit('reconnecting', { attempt: this.health.reconnectCount, delay });
 
       this.reconnectTimer = setTimeout(() => {
-        this.connect().catch(() => { /* handled internally */ });
+        this.connect().catch((_: unknown) => { /* handled internally */ });
       }, delay);
     } else {
       this.state = 'error';

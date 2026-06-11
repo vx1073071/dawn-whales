@@ -1,3 +1,4 @@
+import { EngineError } from './engine/core/engine-error';
 // ── DAWN WHALES — Standardized Error Types ────────────────────────────
 // P2-5: Error standardization for critical paths (engine/ + ipc/)
 //

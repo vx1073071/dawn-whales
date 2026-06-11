@@ -8,6 +8,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 
 
@@ -463,7 +464,7 @@ export default function TradingCalendarView() {
 
             <div className="text-sm text-gray-400">
 
-              {market === 'US' ? '美股 美东时间 (EST)' : '港股 HKT'}
+              {market === 'US' ? i18n.t('TradingCalendarView.k1') : i18n.t('TradingCalendarView.k2')}
 
             </div>
 
@@ -473,7 +474,7 @@ export default function TradingCalendarView() {
 
                 <span key={s.name} className={`text-xs px-3 py-1 rounded-full border ${currentSession?.name === s.name ? sessionBg(s.name) : 'bg-transparent border-white/10 text-gray-500'}`}>
 
-                  {s.name === 'pre-market' ? '盘前' : s.name === 'regular' ? '盘中' : '盘后'}
+                  {s.name === 'pre-market' ? i18n.t('TradingCalendarView.k3') : s.name === 'regular' ? i18n.t('TradingCalendarView.k4') : i18n.t('TradingCalendarView.k5')}
 
                   &nbsp;{s.start}-{s.end}
 
@@ -493,7 +494,7 @@ export default function TradingCalendarView() {
 
               <div className="text-xs text-gray-500 mb-1">
 
-                {countdown.isTrading ? '收盘倒计时' : `距${countdown.session === 'pre-market' ? '盘前' : countdown.session === 'regular' ? '盘中' : '盘后'}开盘`}
+                {countdown.isTrading ? i18n.t('TradingCalendarView.k6') : `距${countdown.session === 'pre-market' ? '盘前' : countdown.session === 'regular' ? '盘中' : '盘后'}开盘`}
 
               </div>
 
@@ -521,7 +522,7 @@ export default function TradingCalendarView() {
 
         <div className="grid grid-cols-7 border-b border-white/5">
 
-          {['日', '一', '二', '三', '四', '五', '六'].map(d => (
+          {[i18n.t('TradingCalendarView.k7'), i18n.t('TradingCalendarView.k8'), i18n.t('TradingCalendarView.k9'), i18n.t('TradingCalendarView.k10'), i18n.t('TradingCalendarView.k11'), i18n.t('TradingCalendarView.k12'), i18n.t('TradingCalendarView.k13')].map(d => (
 
             <div key={d} className="p-3 text-center text-xs text-gray-500 font-medium">{d}</div>
 
@@ -585,15 +586,15 @@ export default function TradingCalendarView() {
 
                       {sessions.some(s => s.name === 'pre-market') && (
 
-                        <div className="h-1 rounded bg-blue-500/30" title="盘前" />
+                        <div className="h-1 rounded bg-blue-500/30" title={i18n.t('TradingCalendarView.k14')} />
 
                       )}
 
-                      <div className="h-1.5 rounded bg-emerald-500/40" title="盘中 9:30-16:00" />
+                      <div className="h-1.5 rounded bg-emerald-500/40" title={i18n.t('TradingCalendarView.k15')} />
 
                       {sessions.some(s => s.name === 'after-hours') && (
 
-                        <div className="h-1 rounded bg-yellow-500/30" title="盘后" />
+                        <div className="h-1 rounded bg-yellow-500/30" title={i18n.t('TradingCalendarView.k16')} />
 
                       )}
 

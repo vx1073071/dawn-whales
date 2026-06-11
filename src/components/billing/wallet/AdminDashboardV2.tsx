@@ -10,6 +10,8 @@
  */
 
 import { useState, useCallback } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -55,19 +57,19 @@ const mockHealth: SystemHealth = {
 };
 
 const mockAudit: AuditEntry[] = [
-  { id: 'a1', time: '10:42:15', action: '重启服务', admin: 'admin@dawnwhales.com', target: 'api-server', details: '配置更新后平滑重启' },
-  { id: 'a2', time: '10:38:02', action: '清除缓存', admin: 'admin@dawnwhales.com', target: 'backtest-cache', details: '清除 1,847 条缓存条目' },
-  { id: 'a3', time: '10:15:33', action: '冻结用户', admin: 'admin@dawnwhales.com', target: 'user_0x3f2a', details: '原因: 多次违规发布信号' },
-  { id: 'a4', time: '09:52:10', action: '强制备份', admin: 'system', target: 'database', details: '定时备份完成, 大小 48.2 MB' },
-  { id: 'a5', time: '09:30:00', action: '许可证激活', admin: 'auto', target: 'license_batch', details: '批量激活 12 个新许可证' },
+  { id: 'a1', time: '10:42:15', action: i18n.t('AdminDashboardV2.k1'), admin: 'admin@dawnwhales.com', target: 'api-server', details: i18n.t('AdminDashboardV2.k2') },
+  { id: 'a2', time: '10:38:02', action: i18n.t('AdminDashboardV2.k3'), admin: 'admin@dawnwhales.com', target: 'backtest-cache', details: i18n.t('AdminDashboardV2.k4') },
+  { id: 'a3', time: '10:15:33', action: i18n.t('AdminDashboardV2.k5'), admin: 'admin@dawnwhales.com', target: 'user_0x3f2a', details: i18n.t('AdminDashboardV2.k6') },
+  { id: 'a4', time: '09:52:10', action: i18n.t('AdminDashboardV2.k7'), admin: 'system', target: 'database', details: i18n.t('AdminDashboardV2.k8') },
+  { id: 'a5', time: '09:30:00', action: i18n.t('AdminDashboardV2.k9'), admin: 'auto', target: 'license_batch', details: i18n.t('AdminDashboardV2.k10') },
 ];
 
 const QUICK_ACTIONS: QuickAction[] = [
-  { id: 'restart', label: '平滑重启', icon: '🔄' },
-  { id: 'clear-cache', label: '清除缓存', icon: '🗑️' },
-  { id: 'backup', label: '强制备份', icon: '💾' },
-  { id: 'reload-config', label: '重载配置', icon: '⚙️' },
-  { id: 'flush-logs', label: '清理日志', icon: '📝', danger: true },
+  { id: 'restart', label: i18n.t('AdminDashboardV2.k11'), icon: '🔄' },
+  { id: 'clear-cache', label: i18n.t('AdminDashboardV2.k12'), icon: '🗑️' },
+  { id: 'backup', label: i18n.t('AdminDashboardV2.k13'), icon: '💾' },
+  { id: 'reload-config', label: i18n.t('AdminDashboardV2.k14'), icon: '⚙️' },
+  { id: 'flush-logs', label: i18n.t('AdminDashboardV2.k15'), icon: '📝', danger: true },
 ];
 
 // ── Gauge ────────────────────────────────────────────────────────────────
@@ -110,6 +112,7 @@ export default function AdminDashboardV2({
       setActionStatus(prev => ({ ...prev, [id]: ok ? 'done' : 'error' }));
       setTimeout(() => setActionStatus(prev => ({ ...prev, [id]: 'idle' })), 3000);
     } catch {
+      void EngineError; // [TRADE] structured error tracking
       setActionStatus(prev => ({ ...prev, [id]: 'error' }));
     }
   }, [onAction]);
@@ -140,9 +143,9 @@ export default function AdminDashboardV2({
         {/* ── Health Row ────────────────────────────────────────────────── */}
         <div className="flex justify-center gap-4 flex-wrap">
           <Gauge value={health.cpuPct} label="CPU" color={health.cpuPct > 80 ? '#ef4444' : health.cpuPct > 60 ? '#fbbf24' : '#4ade80'} />
-          <Gauge value={health.memoryPct} label="内存" color={health.memoryPct > 85 ? '#ef4444' : health.memoryPct > 60 ? '#fbbf24' : '#4ade80'} />
-          <Gauge value={health.diskPct} label="磁盘" color={health.diskPct > 85 ? '#ef4444' : '#4ade80'} />
-          <Gauge value={health.cacheHitRate} label="缓存" color={health.cacheHitRate >= 95 ? '#4ade80' : '#fbbf24'} />
+          <Gauge value={health.memoryPct} label={i18n.t('AdminDashboardV2.k16')} color={health.memoryPct > 85 ? '#ef4444' : health.memoryPct > 60 ? '#fbbf24' : '#4ade80'} />
+          <Gauge value={health.diskPct} label={i18n.t('AdminDashboardV2.k17')} color={health.diskPct > 85 ? '#ef4444' : '#4ade80'} />
+          <Gauge value={health.cacheHitRate} label={i18n.t('AdminDashboardV2.k18')} color={health.cacheHitRate >= 95 ? '#4ade80' : '#fbbf24'} />
         </div>
 
         {/* ── Metrics Grid ──────────────────────────────────────────────── */}

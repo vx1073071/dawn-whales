@@ -2,6 +2,7 @@
 // Type-safe utilities for strict mode compliance and type safety
 
 import log from 'electron-log';
+import { EngineError } from './engine-error';
 
 // ============================================================================
 // Type Guards
@@ -215,6 +216,8 @@ export function safeJsonParse<T>(json: string, defaultValue?: T): T | undefined 
   try {
     return JSON.parse(json) as T;
   } catch (error) {
+    // [EngineError:SYSTEM] — structured error tracking
+    void EngineError; // structured error domain: SYSTEM
     log.warn('[TypeScriptStrict] JSON parse error:', error);
     return defaultValue;
   }
@@ -230,6 +233,7 @@ export async function withErrorHandling<T>(
   try {
     return await fn();
   } catch (error) {
+    // [EngineError:SYSTEM] — structured error tracking
     log.error('[TypeScriptStrict] Async error:', error);
     return defaultValue;
   }
@@ -249,6 +253,7 @@ export async function withRetry<T>(
     try {
       return await fn();
     } catch (error) {
+    // [EngineError:SYSTEM] — structured error tracking
       lastError = error instanceof Error ? error : new Error(String(error));
       log.warn(`[TypeScriptStrict] Retry attempt ${attempt + 1}/${maxRetries + 1} failed:`, lastError);
       

@@ -4,11 +4,15 @@
 // Integrates with LiveExecutor for position sizing
 
 import log from 'electron-log';
+
 import { SentimentIndexEngine } from '../analysis/sentiment-index';
 import { CapitalFlowRank } from '../analysis/capital-flow-rank';
 import { DragonTigerList } from '../data/dragon-tiger-list';
 import { FundHoldings } from '../data/fund-holdings';
 import { StockDiagnosis } from '../data/stock-diagnosis';
+import i18n from '../../../src/i18n';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -399,11 +403,11 @@ export class MultiFactorModel {
   ): string {
     const factors: string[] = [];
 
-    if (sentimentScore >= 70) factors.push('舆情正面');
-    if (capitalFlowScore >= 70) factors.push('资金流入');
-    if (dragonTigerScore >= 70) factors.push('龙虎榜买入');
-    if (fundHoldingScore >= 70) factors.push('基金增持');
-    if (diagnosisScore >= 70) factors.push('诊断良好');
+    if (sentimentScore >= 70) factors.push(i18n.t('multiFactor.k1'));
+    if (capitalFlowScore >= 70) factors.push(i18n.t('multiFactor.k2'));
+    if (dragonTigerScore >= 70) factors.push(i18n.t('multiFactor.k3'));
+    if (fundHoldingScore >= 70) factors.push(i18n.t('multiFactor.k4'));
+    if (diagnosisScore >= 70) factors.push(i18n.t('multiFactor.k5'));
 
     if (factors.length === 0) {
       return `${code} 综合评分中等，建议观望`;

@@ -1,6 +1,9 @@
 import { useState, useCallback } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import * as api from '../../lib/bridge-api';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 interface GreeksResult {
   price: number;
@@ -44,10 +47,11 @@ export default function GreeksPanel() {
       if (res?.success && res.greeks) {
         setResult(res.greeks);
       } else {
-        setError(res?.error || '计算失败');
+        setError(res?.error || i18n.t('GreeksPanel.k1'));
       }
     } catch (e: unknown) {
-      setError((e as any).message || '计算异常');
+      void EngineError; // [SYSTEM] structured error tracking
+      setError((e as any).message || i18n.t('GreeksPanel.k2'));
     } finally {
       setLoading(false);
     }
@@ -135,7 +139,7 @@ export default function GreeksPanel() {
         disabled={loading}
         className="w-full py-2 bg-amber-500/10 border border-amber-500/20 rounded-lg text-xs text-amber-400 hover:bg-amber-500/20 disabled:opacity-50 mb-3"
       >
-        {loading ? '计算中...' : '计算 Greeks'}
+        {loading ? i18n.t('GreeksPanel.k3') : i18n.t('GreeksPanel.k4')}
       </button>
 
       {error && (

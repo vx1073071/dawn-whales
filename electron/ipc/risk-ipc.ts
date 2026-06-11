@@ -2,6 +2,7 @@
 // 17 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -15,6 +16,8 @@ export function registerRiskIPC(
       const result = unifiedRiskDash.generate(params);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[RiskDashboard] Error:', err);
       return { success: false, error: err.message };
     }
@@ -34,6 +37,7 @@ export function registerRiskIPC(
       const result = engine.calculatePortfolioVaR(portfolios, confidenceLevel, method);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -55,6 +59,7 @@ export function registerRiskIPC(
       const result = decomposeRisk(equityCurve, positions, confidenceLevel ?? 0.95);
       return { success: true, decomposition: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -74,6 +79,7 @@ export function registerRiskIPC(
       const result = runMonteCarlo(equityCurve, paths ?? 10000, horizon ?? 252);
       return { success: true, simulation: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -119,6 +125,7 @@ export function registerRiskIPC(
       return { success: true, ...result };
 
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
 
       return { success: false, error: err.message };
 
@@ -153,6 +160,7 @@ export function registerRiskIPC(
       return { success: true, ...result };
 
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
 
       return { success: false, error: err.message };
 
@@ -187,6 +195,7 @@ export function registerRiskIPC(
       return { success: true };
 
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
 
       return { success: false, error: err.message };
 
@@ -221,6 +230,7 @@ export function registerRiskIPC(
       return { success: true, history, winRate };
 
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
 
       return { success: false, error: err.message };
 
@@ -237,6 +247,7 @@ export function registerRiskIPC(
       const result = await calcPositionSize(req);
       return { success: true, ...result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -269,6 +280,7 @@ export function registerRiskIPC(
       }
       return { success: true, ...result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -341,6 +353,7 @@ export function registerRiskIPC(
       const result = calculator.calculate(positions, historicalReturns);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });

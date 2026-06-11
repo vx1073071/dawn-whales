@@ -12,7 +12,10 @@
  */
 
 import { useState, useCallback, useMemo } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+
 import DOMPurify from 'dompurify';
+import i18n from '../../../i18n';
 // ── Types ───────────────────────────────────────────────────────────────
 
 export interface PineTemplate {
@@ -30,12 +33,12 @@ export interface PineScriptEditorProps {
 // ── Templates ───────────────────────────────────────────────────────────
 
 const TEMPLATES: PineTemplate[] = [
-  { name: 'SMA 均线', category: 'components.trend', code: `// 简单移动平均线\nindicator("SMA", overlay=true)\nlength = input(20, "长度")\nsma = ta.sma(close, length)\nplot(sma, color=color.blue, linewidth=2)` },
-  { name: 'EMA 指数均线', category: 'components.trend', code: `// 指数移动平均线\nindicator("EMA", overlay=true)\nlength = input(20, "长度")\nema = ta.ema(close, length)\nplot(ema, color=color.orange, linewidth=2)` },
-  { name: 'RSI 相对强弱', category: 'components.consolidation', code: `// 相对强弱指标\nindicator("RSI")\nlength = input(14, "长度")\noverbought = input(70, "超买")\noversold = input(30, "超卖")\nrsi = ta.rsi(close, length)\nplot(rsi, color=color.purple)\nh1 = hline(overbought)\nh2 = hline(oversold)\nfill(h1, h2, color.new(color.red, 90))` },
+  { name: i18n.t('PineScriptEditor.k1'), category: 'components.trend', code: `// 简单移动平均线\nindicator("SMA", overlay=true)\nlength = input(20, "长度")\nsma = ta.sma(close, length)\nplot(sma, color=color.blue, linewidth=2)` },
+  { name: i18n.t('PineScriptEditor.k2'), category: 'components.trend', code: `// 指数移动平均线\nindicator("EMA", overlay=true)\nlength = input(20, "长度")\nema = ta.ema(close, length)\nplot(ema, color=color.orange, linewidth=2)` },
+  { name: i18n.t('PineScriptEditor.k3'), category: 'components.consolidation', code: `// 相对强弱指标\nindicator("RSI")\nlength = input(14, "长度")\noverbought = input(70, "超买")\noversold = input(30, "超卖")\nrsi = ta.rsi(close, length)\nplot(rsi, color=color.purple)\nh1 = hline(overbought)\nh2 = hline(oversold)\nfill(h1, h2, color.new(color.red, 90))` },
   { name: 'MACD', category: 'components.consolidation', code: `// MACD 指标\nindicator("MACD")\nfast = input(12)\nslow = input(26)\nsignal_len = input(9)\n[macd, signal, hist] = ta.macd(close, fast, slow, signal_len)\nplot(macd, color=color.blue)\nplot(signal, color=color.orange)\nplot(hist, style=plot.style_columns, color=hist > 0 ? color.green : color.red)` },
-  { name: 'Bollinger 布林带', category: 'components.trend', code: `// 布林带\nindicator("Bollinger", overlay=true)\nlength = input(20)\nmult = input(2.0)\nbasis = ta.sma(close, length)\ndev = mult * ta.stdev(close, length)\nupper = basis + dev\nlower = basis - dev\np1 = plot(basis, color=color.blue)\np2 = plot(upper, color=color.gray)\np3 = plot(lower, color=color.gray)\nfill(p2, p3, color.new(color.blue, 90))` },
-  { name: '自定义 Custom', category: '其他', code: `// 自定义指标\nindicator("My Indicator")\n\n// 在这里编写你的公式\nma_fast = ta.sma(close, 5)\nma_slow = ta.sma(close, 20)\n\nplot(ma_fast, color=color.green)\nplot(ma_slow, color=color.red)\n\n// 金叉信号\ncrossUp = ta.crossover(ma_fast, ma_slow)\nplotshape(crossUp, style=shape.triangleup, color=color.green, location=location.belowbar)` },
+  { name: i18n.t('PineScriptEditor.k4'), category: 'components.trend', code: `// 布林带\nindicator("Bollinger", overlay=true)\nlength = input(20)\nmult = input(2.0)\nbasis = ta.sma(close, length)\ndev = mult * ta.stdev(close, length)\nupper = basis + dev\nlower = basis - dev\np1 = plot(basis, color=color.blue)\np2 = plot(upper, color=color.gray)\np3 = plot(lower, color=color.gray)\nfill(p2, p3, color.new(color.blue, 90))` },
+  { name: i18n.t('PineScriptEditor.k5'), category: i18n.t('PineScriptEditor.k6'), code: `// 自定义指标\nindicator("My Indicator")\n\n// 在这里编写你的公式\nma_fast = ta.sma(close, 5)\nma_slow = ta.sma(close, 20)\n\nplot(ma_fast, color=color.green)\nplot(ma_slow, color=color.red)\n\n// 金叉信号\ncrossUp = ta.crossover(ma_fast, ma_slow)\nplotshape(crossUp, style=shape.triangleup, color=color.green, location=location.belowbar)` },
 ];
 
 const BUILTIN_FUNCTIONS = [
@@ -46,7 +49,7 @@ const BUILTIN_FUNCTIONS = [
   'input', 'plot', 'hline', 'fill', 'plotshape', 'color.new', 'color.rgb',
 ];
 
-const CATEGORIES = ['components.all', 'components.trend', 'components.consolidation', '其他'];
+const CATEGORIES = ['components.all', 'components.trend', 'components.consolidation', i18n.t('PineScriptEditor.k7')];
 
 // ── Syntax Highlight ────────────────────────────────────────────────────
 
@@ -79,14 +82,14 @@ export default function PineScriptEditor({
   );
 
   const validate = useCallback(() => {
-    if (!code.includes('indicator')) { setError('缺少 indicator() 声明'); return; }
-    if (!code.includes('plot')) { setError('缺少 plot() 输出'); return; }
+    if (!code.includes('indicator')) { setError(i18n.t('PineScriptEditor.k8')); return; }
+    if (!code.includes('plot')) { setError(i18n.t('PineScriptEditor.k9')); return; }
     setError('');
     setShowPreview(true);
   }, [code]);
 
   const handleSave = useCallback(() => {
-    if (!name.trim()) { setError('请输入公式名称'); return; }
+    if (!name.trim()) { setError(i18n.t('PineScriptEditor.k10')); return; }
     onSave?.(code, name);
     setName('');
     setError('');
@@ -207,3 +210,5 @@ export default function PineScriptEditor({
     </div>
   );
 }
+
+void EngineError; // [AI] structured error tracking

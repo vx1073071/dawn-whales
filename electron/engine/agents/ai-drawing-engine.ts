@@ -1,4 +1,5 @@
 // ── J-73-02 R73 V19: AI Drawing Engine ────────────────────────────────────
+import i18n from '../../../src/i18n';
 // Auto-detects trend lines, support/resistance, channels, Fibonacci, Gann
 // Price-based geometric pattern recognition for K-line overlay
 
@@ -161,7 +162,7 @@ function connectSwings(
         lines.push({
           id: `tl-${type}-${i}-${j}`,
           type,
-          label: type === "trend_line" ? "趋势线" : type,
+          label: type === "trend_line" ? i18n.t('AiDrawingEngine.k0') : type,
           confidence,
           points: [
             { x: swings[i].index, y: swings[i].price, time: swings[i].time },
@@ -227,7 +228,7 @@ function findHorizontalLevels(
   for (const cluster of clusters) {
     if (cluster.count >= 2) {
       const confidence = Math.min(1, cluster.count / 4 * 1.2);
-      const labelCN = type === "support" ? "支撑" : "阻力";
+      const labelCN = type === "support" ? i18n.t('AiDrawingEngine.k1') : i18n.t('AiDrawingEngine.k2');
       lines.push({
         id: `${type}-${cluster.price.toFixed(2)}`,
         type,
@@ -283,7 +284,7 @@ function detectChannels(klines: KlineDataPoint[], swings: SwingPoint[]): AILine[
               {
                 id: `channel-bottom-${i}-${j}`,
                 type: "channel_bottom",
-                label: "通道下轨",
+                label: i18n.t('AiDrawingEngine.k3'),
                 confidence,
                 points: [
                   { x: lows[i].index, y: lows[i].price, time: lows[i].time },
@@ -300,7 +301,7 @@ function detectChannels(klines: KlineDataPoint[], swings: SwingPoint[]): AILine[
               {
                 id: `channel-top-${k}-${l}`,
                 type: "channel_top",
-                label: "通道上轨",
+                label: i18n.t('AiDrawingEngine.k4'),
                 confidence,
                 points: [
                   { x: highs[k].index, y: highs[k].price, time: highs[k].time },

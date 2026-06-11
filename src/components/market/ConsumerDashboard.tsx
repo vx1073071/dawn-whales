@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import * as echarts from 'echarts';
 import { getConsumerData } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface CPIData {
   month: string;
@@ -59,10 +62,11 @@ export default function ConsumerDashboard() {
         setRetailData(res.retail || []);
         setConfidenceData(res.confidence || []);
       } else {
-        setError(res?.error || '获取数据失败');
+        setError(res?.error || i18n.t('ConsumerDashboard.k1'));
       }
     } catch (e: unknown) {
-      setError((e as any).message || '获取数据失败');
+      void EngineError; // [DATA] structured error tracking
+      setError((e as any).message || i18n.t('ConsumerDashboard.k2'));
     } finally {
       setLoading(false);
     }
@@ -80,7 +84,7 @@ export default function ConsumerDashboard() {
     const option: echarts.EChartsOption = {
       backgroundColor: 'transparent',
       tooltip: { trigger: 'axis' },
-      legend: { data: ['CPI', '食品', '非食品', '服务'], textStyle: { color: '#9ca3af' } },
+      legend: { data: ['CPI', i18n.t('ConsumerDashboard.k3'), i18n.t('ConsumerDashboard.k4'), i18n.t('ConsumerDashboard.k5')], textStyle: { color: '#9ca3af' } },
       grid: { left: 50, right: 20, top: 40, bottom: 30 },
       xAxis: {
         type: 'category',
@@ -95,9 +99,9 @@ export default function ConsumerDashboard() {
       },
       series: [
         { name: 'CPI', type: 'line', data: cpiData.map((d) => d.cpi), smooth: true, itemStyle: { color: '#C9A046' } },
-        { name: '食品', type: 'line', data: cpiData.map((d) => d.food), smooth: true, itemStyle: { color: '#ef4444' } },
-        { name: '非食品', type: 'line', data: cpiData.map((d) => d.nonFood), smooth: true, itemStyle: { color: '#3b82f6' } },
-        { name: '服务', type: 'line', data: cpiData.map((d) => d.service), smooth: true, itemStyle: { color: '#10b981' } },
+        { name: i18n.t('ConsumerDashboard.k6'), type: 'line', data: cpiData.map((d) => d.food), smooth: true, itemStyle: { color: '#ef4444' } },
+        { name: i18n.t('ConsumerDashboard.k7'), type: 'line', data: cpiData.map((d) => d.nonFood), smooth: true, itemStyle: { color: '#3b82f6' } },
+        { name: i18n.t('ConsumerDashboard.k8'), type: 'line', data: cpiData.map((d) => d.service), smooth: true, itemStyle: { color: '#10b981' } },
       ],
     };
     cpiChart.current.setOption(option);
@@ -111,7 +115,7 @@ export default function ConsumerDashboard() {
     const option: echarts.EChartsOption = {
       backgroundColor: 'transparent',
       tooltip: { trigger: 'axis' },
-      legend: { data: ['零售总额', '城镇', '乡村', '网上零售'], textStyle: { color: '#9ca3af' } },
+      legend: { data: [i18n.t('ConsumerDashboard.k9'), i18n.t('ConsumerDashboard.k10'), i18n.t('ConsumerDashboard.k11'), i18n.t('ConsumerDashboard.k12')], textStyle: { color: '#9ca3af' } },
       grid: { left: 60, right: 20, top: 40, bottom: 30 },
       xAxis: {
         type: 'category',
@@ -124,10 +128,10 @@ export default function ConsumerDashboard() {
         splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
       },
       series: [
-        { name: '零售总额', type: 'bar', data: retailData.map((d) => d.total), itemStyle: { color: '#C9A046' } },
-        { name: '城镇', type: 'bar', data: retailData.map((d) => d.urban), itemStyle: { color: '#3b82f6' } },
-        { name: '乡村', type: 'bar', data: retailData.map((d) => d.rural), itemStyle: { color: '#10b981' } },
-        { name: '网上零售', type: 'line', data: retailData.map((d) => d.online), itemStyle: { color: '#ef4444' } },
+        { name: i18n.t('ConsumerDashboard.k13'), type: 'bar', data: retailData.map((d) => d.total), itemStyle: { color: '#C9A046' } },
+        { name: i18n.t('ConsumerDashboard.k14'), type: 'bar', data: retailData.map((d) => d.urban), itemStyle: { color: '#3b82f6' } },
+        { name: i18n.t('ConsumerDashboard.k15'), type: 'bar', data: retailData.map((d) => d.rural), itemStyle: { color: '#10b981' } },
+        { name: i18n.t('ConsumerDashboard.k16'), type: 'line', data: retailData.map((d) => d.online), itemStyle: { color: '#ef4444' } },
       ],
     };
     retailChart.current.setOption(option);
@@ -141,7 +145,7 @@ export default function ConsumerDashboard() {
     const option: echarts.EChartsOption = {
       backgroundColor: 'transparent',
       tooltip: { trigger: 'axis' },
-      legend: { data: ['消费者信心', '预期', '满意', '收入', '就业'], textStyle: { color: '#9ca3af' } },
+      legend: { data: [i18n.t('ConsumerDashboard.k17'), i18n.t('ConsumerDashboard.k18'), i18n.t('ConsumerDashboard.k19'), i18n.t('ConsumerDashboard.k20'), i18n.t('ConsumerDashboard.k21')], textStyle: { color: '#9ca3af' } },
       grid: { left: 50, right: 20, top: 40, bottom: 30 },
       xAxis: {
         type: 'category',
@@ -154,11 +158,11 @@ export default function ConsumerDashboard() {
         splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
       },
       series: [
-        { name: '消费者信心', type: 'line', data: confidenceData.map((d) => d.index), smooth: true, itemStyle: { color: '#C9A046' }, lineStyle: { width: 3 } },
-        { name: '预期', type: 'line', data: confidenceData.map((d) => d.expectation), smooth: true, itemStyle: { color: '#3b82f6' } },
-        { name: '满意', type: 'line', data: confidenceData.map((d) => d.satisfaction), smooth: true, itemStyle: { color: '#10b981' } },
-        { name: '收入', type: 'line', data: confidenceData.map((d) => d.income), smooth: true, itemStyle: { color: '#ef4444' } },
-        { name: '就业', type: 'line', data: confidenceData.map((d) => d.employment), smooth: true, itemStyle: { color: '#a855f7' } },
+        { name: i18n.t('ConsumerDashboard.k22'), type: 'line', data: confidenceData.map((d) => d.index), smooth: true, itemStyle: { color: '#C9A046' }, lineStyle: { width: 3 } },
+        { name: i18n.t('ConsumerDashboard.k23'), type: 'line', data: confidenceData.map((d) => d.expectation), smooth: true, itemStyle: { color: '#3b82f6' } },
+        { name: i18n.t('ConsumerDashboard.k24'), type: 'line', data: confidenceData.map((d) => d.satisfaction), smooth: true, itemStyle: { color: '#10b981' } },
+        { name: i18n.t('ConsumerDashboard.k25'), type: 'line', data: confidenceData.map((d) => d.income), smooth: true, itemStyle: { color: '#ef4444' } },
+        { name: i18n.t('ConsumerDashboard.k26'), type: 'line', data: confidenceData.map((d) => d.employment), smooth: true, itemStyle: { color: '#a855f7' } },
       ],
     };
     confidenceChart.current.setOption(option);
@@ -191,7 +195,7 @@ export default function ConsumerDashboard() {
           disabled={loading}
           className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors"
         >
-          {loading ? '刷新中...' : '🔄 刷新'}
+          {loading ? i18n.t('ConsumerDashboard.k27') : i18n.t('ConsumerDashboard.k28')}
         </button>
       </div>
 

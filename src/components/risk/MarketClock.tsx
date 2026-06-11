@@ -1,6 +1,7 @@
 // ── DAWN WHALES — MarketClock (全球市场时钟) ───────────────────────────────
 
 import { useState, useEffect } from 'react';
+import i18n from '../../i18n';
 
 interface MarketSession {
   name: string;
@@ -15,19 +16,19 @@ interface MarketSession {
 
 const MARKETS: MarketSession[] = [
   {
-    name: '美股', timezone: 'America/New_York', openHour: 9, openMin: 30,
+    name: i18n.t('MarketClock.k1'), timezone: 'America/New_York', openHour: 9, openMin: 30,
     closeHour: 16, closeMin: 0, emoji: '🇺🇸', days: [1, 2, 3, 4, 5],
   },
   {
-    name: '港股', timezone: 'Asia/Hong_Kong', openHour: 9, openMin: 30,
+    name: i18n.t('MarketClock.k2'), timezone: 'Asia/Hong_Kong', openHour: 9, openMin: 30,
     closeHour: 16, closeMin: 0, emoji: '🇭🇰', days: [1, 2, 3, 4, 5],
   },
   {
-    name: 'A股', timezone: 'Asia/Shanghai', openHour: 9, openMin: 30,
+    name: i18n.t('MarketClock.k3'), timezone: 'Asia/Shanghai', openHour: 9, openMin: 30,
     closeHour: 15, closeMin: 0, emoji: '🇨🇳', days: [1, 2, 3, 4, 5],
   },
   {
-    name: '加密货币', timezone: 'UTC', openHour: 0, openMin: 0,
+    name: i18n.t('MarketClock.k4'), timezone: 'UTC', openHour: 0, openMin: 0,
     closeHour: 24, closeMin: 0, emoji: '₿', days: [0, 1, 2, 3, 4, 5, 6],
   },
 ];
@@ -49,22 +50,22 @@ function getMarketStatus(market: MarketSession): {
   const closeMinutes = market.closeHour * 60 + market.closeMin;
 
   if (!market.days.includes(day)) {
-    return { status: 'closed', label: '休市', color: 'text-gray-500', nextEvent: '周一开市', minutesUntil: getMinutesUntil(day, 1, openMinutes, tzNow) };
+    return { status: 'closed', label: i18n.t('MarketClock.k5'), color: 'text-gray-500', nextEvent: i18n.t('MarketClock.k6'), minutesUntil: getMinutesUntil(day, 1, openMinutes, tzNow) };
   }
 
   if (minutes < openMinutes - 60) {
-    return { status: 'pre', label: '盘前', color: 'text-yellow-400', nextEvent: '开市', minutesUntil: openMinutes - minutes };
+    return { status: 'pre', label: i18n.t('MarketClock.k7'), color: 'text-yellow-400', nextEvent: i18n.t('MarketClock.k8'), minutesUntil: openMinutes - minutes };
   }
   if (minutes < openMinutes) {
-    return { status: 'pre', label: '即将开盘', color: 'text-[#D4A853]', nextEvent: '开盘', minutesUntil: openMinutes - minutes };
+    return { status: 'pre', label: i18n.t('MarketClock.k9'), color: 'text-[#D4A853]', nextEvent: i18n.t('MarketClock.k10'), minutesUntil: openMinutes - minutes };
   }
   if (minutes < closeMinutes) {
-    return { status: 'open', label: '交易中', color: 'text-emerald-400', nextEvent: '收盘', minutesUntil: closeMinutes - minutes };
+    return { status: 'open', label: i18n.t('MarketClock.k11'), color: 'text-emerald-400', nextEvent: i18n.t('MarketClock.k12'), minutesUntil: closeMinutes - minutes };
   }
   if (minutes < closeMinutes + 120) {
-    return { status: 'post', label: '盘后', color: 'text-blue-400', nextEvent: '收盘结束', minutesUntil: closeMinutes + 120 - minutes };
+    return { status: 'post', label: i18n.t('MarketClock.k13'), color: 'text-blue-400', nextEvent: i18n.t('MarketClock.k14'), minutesUntil: closeMinutes + 120 - minutes };
   }
-  return { status: 'closed', label: '已收盘', color: 'text-gray-500', nextEvent: '明日开盘', minutesUntil: getMinutesUntil(day, market.days.includes(day + 1) ? day + 1 : 1, openMinutes, tzNow) };
+  return { status: 'closed', label: i18n.t('MarketClock.k15'), color: 'text-gray-500', nextEvent: i18n.t('MarketClock.k16'), minutesUntil: getMinutesUntil(day, market.days.includes(day + 1) ? day + 1 : 1, openMinutes, tzNow) };
 }
 
 function getMinutesUntil(currentDay: number, targetDay: number, targetMinutes: number, now: Date): number {

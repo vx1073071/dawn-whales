@@ -3,10 +3,13 @@
 // IPC: em:get-earnings-calendar
 
 import log from 'electron-log';
+
 import https from 'https';
 import http from 'http';
 import { httpGet } from '../utils/http';
 import i18n from '../../../src/i18n';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -112,6 +115,5 @@ export async function getEarningsCalendar(days = 30): Promise<EarningsCalendarRe
     };
   }
 }
-
 
 export function clearEarningsCalendarCache(): void { cache = null; }

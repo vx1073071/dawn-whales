@@ -12,6 +12,7 @@
 
 import { useTranslation } from "react-i18next";
 import React, { useState, useMemo, useCallback } from 'react';
+import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -35,21 +36,21 @@ interface StrategySnapshot {
 
 const MOCK_STRATEGIES: StrategySnapshot[] = [
   {
-    id: 's1', name: '双均线交叉 v3', type: 'MA_CROSS',
+    id: 's1', name: i18n.t('StrategyComparer.k1'), type: 'MA_CROSS',
     sharpe: 2.1, totalReturn: 0.35, maxDrawdown: -0.12, winRate: 0.58,
     annualVol: 0.18, calmarRatio: 2.9, tradeCount: 245, avgHoldingDays: 7.2,
     profitFactor: 1.8,
     equityCurve: Array.from({ length: 100 }, (_, i) => 100 + Math.sin(i / 8) * 15 + i * 0.35 + Math.random() * 5),
   },
   {
-    id: 's2', name: '动量突破 v2', type: 'MOMENTUM',
+    id: 's2', name: i18n.t('StrategyComparer.k2'), type: 'MOMENTUM',
     sharpe: 1.8, totalReturn: 0.28, maxDrawdown: -0.18, winRate: 0.52,
     annualVol: 0.22, calmarRatio: 1.6, tradeCount: 180, avgHoldingDays: 4.5,
     profitFactor: 1.4,
     equityCurve: Array.from({ length: 100 }, (_, i) => 100 + Math.cos(i / 6) * 20 + i * 0.28 + Math.random() * 8),
   },
   {
-    id: 's3', name: '均值回归 v1', type: 'MEAN_REV',
+    id: 's3', name: i18n.t('StrategyComparer.k3'), type: 'MEAN_REV',
     sharpe: 2.4, totalReturn: 0.42, maxDrawdown: -0.09, winRate: 0.63,
     annualVol: 0.15, calmarRatio: 4.7, tradeCount: 320, avgHoldingDays: 3.1,
     profitFactor: 2.1,
@@ -186,7 +187,7 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
     const metrics: { key: string; label: string; maxVal: number; get: (s: StrategySnapshot) => number }[] = [
       { key: 'sharpe', label: 'Sharpe', maxVal: 3.5, get: s => s.sharpe },
       { key: 'return', label: 'components.returnRate', maxVal: 0.6, get: s => s.totalReturn },
-      { key: 'drawdown', label: '回撤', maxVal: 0.25, get: s => Math.abs(s.maxDrawdown) },
+      { key: 'drawdown', label: i18n.t('StrategyComparer.k4'), maxVal: 0.25, get: s => Math.abs(s.maxDrawdown) },
       { key: 'winRate', label: 'components.winRate', maxVal: 0.8, get: s => s.winRate },
     ];
     return metrics.map(m => ({
@@ -223,12 +224,12 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
       { label: 'components.totalReturn', valueA: strategyA.totalReturn, valueB: strategyB.totalReturn, format: v => `${(v * 100).toFixed(1)}%` },
       { label: 'components.maxDrawdown', valueA: strategyA.maxDrawdown, valueB: strategyB.maxDrawdown, format: v => `${(v * 100).toFixed(1)}%`, invert: true },
       { label: 'components.winRate', valueA: strategyA.winRate, valueB: strategyB.winRate, format: v => `${(v * 100).toFixed(1)}%` },
-      { label: '年化波动', valueA: strategyA.annualVol, valueB: strategyB.annualVol, format: v => `${(v * 100).toFixed(1)}%` },
+      { label: i18n.t('StrategyComparer.k5'), valueA: strategyA.annualVol, valueB: strategyB.annualVol, format: v => `${(v * 100).toFixed(1)}%` },
       { label: 'Calmar', valueA: strategyA.calmarRatio, valueB: strategyB.calmarRatio, format: v => v.toFixed(1) },
       { label: 'components.profitLossRatio', valueA: strategyA.profitFactor, valueB: strategyB.profitFactor, format: v => v.toFixed(1) },
-      { label: '交易次数', valueA: strategyA.tradeCount, valueB: strategyB.tradeCount, format: v => String(v) },
-      { label: '均持仓天数', valueA: strategyA.avgHoldingDays, valueB: strategyB.avgHoldingDays, format: v => v.toFixed(1) },
-      { label: '综合评分', valueA: scoreA, valueB: scoreB, format: v => v.toFixed(0) },
+      { label: i18n.t('StrategyComparer.k6'), valueA: strategyA.tradeCount, valueB: strategyB.tradeCount, format: v => String(v) },
+      { label: i18n.t('StrategyComparer.k7'), valueA: strategyA.avgHoldingDays, valueB: strategyB.avgHoldingDays, format: v => v.toFixed(1) },
+      { label: i18n.t('StrategyComparer.k8'), valueA: scoreA, valueB: scoreB, format: v => v.toFixed(0) },
     ];
     return list;
   }, [strategyA, strategyB, scoreA, scoreB]);

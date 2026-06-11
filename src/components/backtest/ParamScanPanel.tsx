@@ -2,6 +2,7 @@
 // Heatmap grid + robust region detection + Top 10 combos
 
 import { useState, useEffect } from 'react';
+import i18n from '../../i18n';
 
 interface ParamSweepConfig {
   klines: any[];
@@ -196,7 +197,7 @@ export default function ParamScanPanel({ result, loading }: ParamScanPanelProps)
                 ))}
               </div>
               <div className="mt-2 text-[#D4A853]">
-                夏普 {hoveredCell.value.toFixed(2)}{hoveredCell.isRobust ? ' · 🏆 稳健' : ''}
+                夏普 {hoveredCell.value.toFixed(2)}{hoveredCell.isRobust ? i18n.t('ParamScanPanel.k1') : ''}
               </div>
             </div>
           )}

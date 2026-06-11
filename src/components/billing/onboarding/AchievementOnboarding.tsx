@@ -12,6 +12,7 @@
  */
 
 import { useState } from 'react';
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -44,19 +45,19 @@ export interface AchievementOnboardingProps {
 // ── Mock ────────────────────────────────────────────────────────────────
 
 const mockAchievements: Achievement[] = [
-  { id: 'first-order', icon: '📋', title: '首单达成', description: '完成第一笔实盘交易', progress: 100, unlocked: true, unlockedAt: '2026-05-15', color: '#22C55E' },
-  { id: '10-streak', icon: '🔥', title: '十连胜', description: '连续10笔信号盈利', progress: 70, unlocked: false, color: '#f59e0b' },
-  { id: '100-ai', icon: '🤖', title: 'AI百次', description: '累计100次AI分析', progress: 84, unlocked: false, color: '#3b82f6' },
-  { id: 'published', icon: '📢', title: '首发策略', description: '发布第一个交易策略', progress: 100, unlocked: true, unlockedAt: '2026-06-01', color: '#8b5cf6' },
-  { id: '1k-sub', icon: '👥', title: '千人订阅', description: '策略累计1000人订阅', progress: 28, unlocked: false, color: '#06b6d4' },
-  { id: 'diamond', icon: '💎', title: '钻石等级', description: '晋升钻石创作者', progress: 100, unlocked: true, unlockedAt: '2026-06-08', color: '#B9F2FF' },
-  { id: '10k-rev', icon: '💰', title: '万元收入', description: '累计收入达到$10,000', progress: 42, unlocked: false, color: '#D4A853' },
+  { id: 'first-order', icon: '📋', title: i18n.t('AchievementOnboarding.k1'), description: i18n.t('AchievementOnboarding.k2'), progress: 100, unlocked: true, unlockedAt: '2026-05-15', color: '#22C55E' },
+  { id: '10-streak', icon: '🔥', title: i18n.t('AchievementOnboarding.k3'), description: i18n.t('AchievementOnboarding.k4'), progress: 70, unlocked: false, color: '#f59e0b' },
+  { id: '100-ai', icon: '🤖', title: i18n.t('AchievementOnboarding.k5'), description: i18n.t('AchievementOnboarding.k6'), progress: 84, unlocked: false, color: '#3b82f6' },
+  { id: 'published', icon: '📢', title: i18n.t('AchievementOnboarding.k7'), description: i18n.t('AchievementOnboarding.k8'), progress: 100, unlocked: true, unlockedAt: '2026-06-01', color: '#8b5cf6' },
+  { id: '1k-sub', icon: '👥', title: i18n.t('AchievementOnboarding.k9'), description: i18n.t('AchievementOnboarding.k10'), progress: 28, unlocked: false, color: '#06b6d4' },
+  { id: 'diamond', icon: '💎', title: i18n.t('AchievementOnboarding.k11'), description: i18n.t('AchievementOnboarding.k12'), progress: 100, unlocked: true, unlockedAt: '2026-06-08', color: '#B9F2FF' },
+  { id: '10k-rev', icon: '💰', title: i18n.t('AchievementOnboarding.k13'), description: i18n.t('AchievementOnboarding.k14'), progress: 42, unlocked: false, color: '#D4A853' },
 ];
 
 const mockSteps: OnboardingStep[] = [
-  { step: 1, icon: '🔌', title: '连接券商', description: '连接Futu OpenD或IBKR Gateway，获取实时行情', action: '去连接', done: true },
-  { step: 2, icon: '🤖', title: '首次AI分析', description: '用自然语言描述交易想法，4 Agent生成信号（免费3次）', action: '去分析', done: true },
-  { step: 3, icon: '💹', title: '完成首单', description: '基于AI信号下单交易，开启量化之旅', action: '去交易', done: false },
+  { step: 1, icon: '🔌', title: i18n.t('AchievementOnboarding.k15'), description: i18n.t('AchievementOnboarding.k16'), action: i18n.t('AchievementOnboarding.k17'), done: true },
+  { step: 2, icon: '🤖', title: i18n.t('AchievementOnboarding.k18'), description: i18n.t('AchievementOnboarding.k19'), action: i18n.t('AchievementOnboarding.k20'), done: true },
+  { step: 3, icon: '💹', title: i18n.t('AchievementOnboarding.k21'), description: i18n.t('AchievementOnboarding.k22'), action: i18n.t('AchievementOnboarding.k23'), done: false },
 ];
 
 // ── Milestone Popup ─────────────────────────────────────────────────────
@@ -177,7 +178,7 @@ export default function AchievementOnboarding({
               </div>
             ))}
             <div className="text-center text-[10px] text-gray-600">
-              完成全部3步引导，解锁 "新手毕业" 成就 🎓
+              完成全部3步引导，解锁 i18n.t('AchievementOnboarding.k24') 成就 🎓
             </div>
           </div>
         )}

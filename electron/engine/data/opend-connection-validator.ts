@@ -1,3 +1,5 @@
+import { EngineError } from '../core/engine-error';
+
 // ── OpenD Connection Validator (JVS-47) ─────────────────────────────────────
 // Validates futu-opend connectivity and basic API calls
 // Tests: connectivity, getGlobalState, getSnapshot, market availability

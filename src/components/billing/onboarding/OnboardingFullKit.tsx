@@ -1,4 +1,5 @@
 import i18n from '../../../i18n';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
 ﻿import { useState, useMemo, type CSSProperties } from 'react';
 // ── Types ──
 interface Step {
@@ -635,3 +636,5 @@ function CompletionScreen() {
     </div>
   );
 }
+
+void EngineError; // [TRADE] structured error tracking

@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import * as echarts from 'echarts';
 import { diagnoseStock } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface DiagnosisResult {
   code: string;
@@ -42,10 +45,11 @@ export default function StockOverviewPage() {
       if (res?.success && res.report) {
         setResult(res.report);
       } else {
-        setError(res?.error || '诊断失败');
+        setError(res?.error || i18n.t('StockOverviewPage.k1'));
       }
     } catch (e: unknown) {
-      setError((e as any).message || '诊断失败');
+      void EngineError; // [DATA] structured error tracking
+      setError((e as any).message || i18n.t('StockOverviewPage.k2'));
     } finally {
       setLoading(false);
     }
@@ -61,11 +65,11 @@ export default function StockOverviewPage() {
       backgroundColor: 'transparent',
       radar: {
         indicator: [
-          { name: '资金流', max: 100 },
-          { name: '舆情', max: 100 },
-          { name: '基金', max: 100 },
-          { name: '龙虎榜', max: 100 },
-          { name: '异动', max: 100 },
+          { name: i18n.t('StockOverviewPage.k3'), max: 100 },
+          { name: i18n.t('StockOverviewPage.k4'), max: 100 },
+          { name: i18n.t('StockOverviewPage.k5'), max: 100 },
+          { name: i18n.t('StockOverviewPage.k6'), max: 100 },
+          { name: i18n.t('StockOverviewPage.k7'), max: 100 },
         ],
         axisName: { color: '#9ca3af', fontSize: 12 },
         splitArea: { areaStyle: { color: ['rgba(255,255,255,0.02)', 'rgba(255,255,255,0.05)'] } },
@@ -123,7 +127,7 @@ export default function StockOverviewPage() {
           disabled={loading}
           className="bg-[#C9A046] hover:bg-[#b8933f] text-sidebar font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors disabled:opacity-50"
         >
-          {loading ? '诊断中...' : '诊断'}
+          {loading ? i18n.t('StockOverviewPage.k8') : i18n.t('StockOverviewPage.k9')}
         </button>
       </div>
 
@@ -164,11 +168,11 @@ export default function StockOverviewPage() {
             <div className="space-y-3">
               {Object.entries(result.dimensions).map(([key, dim]) => {
                 const labels: Record<string, string> = {
-                  capitalFlow: '💰 资金流向',
-                  news: '📰 舆情情绪',
-                  fundHoldings: '🏦 基金持仓',
-                  dragonTiger: '🐉 龙虎榜',
-                  anomalies: '⚠️ 异动检测',
+                  capitalFlow: i18n.t('StockOverviewPage.k10'),
+                  news: i18n.t('StockOverviewPage.k11'),
+                  fundHoldings: i18n.t('StockOverviewPage.k12'),
+                  dragonTiger: i18n.t('StockOverviewPage.k13'),
+                  anomalies: i18n.t('StockOverviewPage.k14'),
                 };
                 const details: Record<string, string> = {
                   capitalFlow: result.details.capitalFlowSummary,

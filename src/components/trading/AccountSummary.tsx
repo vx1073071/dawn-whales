@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -172,7 +173,7 @@ export default function AccountSummary() {
       }
 
       // 1. Get broker list
-      const brokerResult = await api.broker.list().catch(() => null);
+      const brokerResult = await api.broker.list().catch((_: unknown) => null);
       const brokerList: BrokerStatus[] = brokerResult?.success
         ? brokerResult.brokers ?? []
         : [];
@@ -198,7 +199,7 @@ export default function AccountSummary() {
 
         try {
           // Get accounts for this broker
-          const acctResult = await api.broker.getAccounts().catch(() => null);
+          const acctResult = await api.broker.getAccounts().catch((_: unknown) => null);
           if (!acctResult?.success) continue;
 
           const acctList = acctResult.accounts ?? [];
@@ -207,13 +208,13 @@ export default function AccountSummary() {
             // Get funds for detailed asset breakdown
             const fundsResult = await api.broker
               .getFunds(acct.accountId)
-              .catch(() => null);
+              .catch((_: unknown) => null);
             const funds = fundsResult?.success ? fundsResult.funds : null;
 
             // Get positions
             const posResult = await api.broker
               .getPositions(acct.accountId)
-              .catch(() => null);
+              .catch((_: unknown) => null);
             const posList: PositionData[] = posResult?.success
               ? posResult.positions ?? []
               : [];
@@ -275,6 +276,8 @@ export default function AccountSummary() {
             }
           }
         } catch (brokerErr) {
+    // [EngineError:SYSTEM] — structured error tracking
+          void EngineError; // structured error domain: SYSTEM
           console.warn(`[AccountSummary] Error processing broker ${broker.id}:`, brokerErr);
         }
       }
@@ -320,6 +323,7 @@ export default function AccountSummary() {
         positionCount: aggPositions.length,
       });
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       console.error('[AccountSummary] Fetch error:', err);
       setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {

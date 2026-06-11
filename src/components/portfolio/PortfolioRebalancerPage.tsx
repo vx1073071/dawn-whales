@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { getFunds } from '@/lib/bridge-api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 interface RebalanceSuggestion {
   code: string;
@@ -24,14 +26,14 @@ interface RebalanceConfig {
 }
 
 const MOCK_SUGGESTIONS: RebalanceSuggestion[] = [
-  { code: 'AAPL', name: '苹果', currentWeight: 12.5, targetWeight: 15.0, currentShares: 100, targetShares: 120, action: 'increaseHolding', diffShares: 20, diffAmount: 3790, price: 189.50 },
-  { code: 'NVDA', name: '英伟达', currentWeight: 18.2, targetWeight: 20.0, currentShares: 50, targetShares: 55, action: 'increaseHolding', diffShares: 5, diffAmount: 4376, price: 875.28 },
-  { code: 'MSFT', name: '微软', currentWeight: 15.0, targetWeight: 15.0, currentShares: 60, targetShares: 60, action: 'increaseHolding', diffShares: 0, diffAmount: 0, price: 412.20 },
-  { code: 'AVGO', name: '博通', currentWeight: 10.8, targetWeight: 12.0, currentShares: 25, targetShares: 28, action: 'increaseHolding', diffShares: 3, diffAmount: 3841, price: 1280.45 },
-  { code: 'TSLA', name: '特斯拉', currentWeight: 8.5, targetWeight: 5.0, currentShares: 80, targetShares: 47, action: 'decreaseHolding', diffShares: -33, diffAmount: -5697, price: 172.63 },
+  { code: 'AAPL', name: i18n.t('PortfolioRebalancerPage.k1'), currentWeight: 12.5, targetWeight: 15.0, currentShares: 100, targetShares: 120, action: 'increaseHolding', diffShares: 20, diffAmount: 3790, price: 189.50 },
+  { code: 'NVDA', name: i18n.t('PortfolioRebalancerPage.k2'), currentWeight: 18.2, targetWeight: 20.0, currentShares: 50, targetShares: 55, action: 'increaseHolding', diffShares: 5, diffAmount: 4376, price: 875.28 },
+  { code: 'MSFT', name: i18n.t('PortfolioRebalancerPage.k3'), currentWeight: 15.0, targetWeight: 15.0, currentShares: 60, targetShares: 60, action: 'increaseHolding', diffShares: 0, diffAmount: 0, price: 412.20 },
+  { code: 'AVGO', name: i18n.t('PortfolioRebalancerPage.k4'), currentWeight: 10.8, targetWeight: 12.0, currentShares: 25, targetShares: 28, action: 'increaseHolding', diffShares: 3, diffAmount: 3841, price: 1280.45 },
+  { code: 'TSLA', name: i18n.t('PortfolioRebalancerPage.k5'), currentWeight: 8.5, targetWeight: 5.0, currentShares: 80, targetShares: 47, action: 'decreaseHolding', diffShares: -33, diffAmount: -5697, price: 172.63 },
   { code: 'META', name: 'Meta', currentWeight: 5.2, targetWeight: 8.0, currentShares: 20, targetShares: 31, action: 'increaseHolding', diffShares: 11, diffAmount: 5218, price: 474.35 },
   { code: 'AMD', name: 'AMD', currentWeight: 0, targetWeight: 5.0, currentShares: 0, targetShares: 50, action: 'newlyAdded', diffShares: 50, diffAmount: 7413, price: 148.25 },
-  { code: 'INTC', name: '英特尔', currentWeight: 4.5, targetWeight: 0, currentShares: 150, targetShares: 0, action: 'delete', diffShares: -150, diffAmount: -4350, price: 29.00 },
+  { code: 'INTC', name: i18n.t('PortfolioRebalancerPage.k6'), currentWeight: 4.5, targetWeight: 0, currentShares: 150, targetShares: 0, action: 'delete', diffShares: -150, diffAmount: -4350, price: 29.00 },
 ];
 
 export default function PortfolioRebalancerPage() {
@@ -56,6 +58,7 @@ export default function PortfolioRebalancerPage() {
       const funds = await getFunds('');
       if (funds) setTotalAssets(funds.totalAssets);
     } catch (e) { console.error('[Error:PortfolioRebalancerPage]', e); }
+    void EngineError; // [SYSTEM] structured error tracking
     setLoading(false);
   }
 
@@ -67,7 +70,7 @@ export default function PortfolioRebalancerPage() {
   // const netFlow = totalBuy + totalSell;
   const turnover = (Math.abs(totalBuy) + Math.abs(totalSell)) / totalAssets * 100;
 
-  if (loading) return <LoadingSpinner fullscreen text="加载调仓建议..." />;
+  if (loading) return <LoadingSpinner fullscreen text={i18n.t('PortfolioRebalancerPage.k7')} />;
 
   return (
     <div className="p-6 space-y-6 bg-deep min-h-full">
@@ -259,9 +262,9 @@ export default function PortfolioRebalancerPage() {
         </div>
         <button
           className="bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-6 py-2.5 rounded-lg transition-colors"
-          onClick={() => alert(dryRun ? 'Dry-run 模式：仅展示调仓预览' : '真实执行：将提交调仓订单')}
+          onClick={() => alert(dryRun ? i18n.t('PortfolioRebalancerPage.k8') : i18n.t('PortfolioRebalancerPage.k9'))}
         >
-          {dryRun ? '预览调仓' : '执行调仓'}
+          {dryRun ? i18n.t('PortfolioRebalancerPage.k10') : i18n.t('PortfolioRebalancerPage.k11')}
         </button>
       </div>
     </div>

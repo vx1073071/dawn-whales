@@ -3,6 +3,7 @@
 // Integrates with StockAnomalyDetector for automatic anomaly detection
 
 import { EventEmitter } from 'events';
+import { EngineError, ErrorDomain, ErrorCode } from '../core/engine-error';
 import log from 'electron-log';
 import https from 'https';
 import http from 'http';
@@ -205,6 +206,7 @@ export class QuoteStreamService extends EventEmitter {
           quotes.push(quote);
         }
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         // Silent fail for individual quotes
       }
     }
@@ -309,7 +311,7 @@ export class QuoteStreamService extends EventEmitter {
           if (res.statusCode === 200) {
             resolve(data);
           } else {
-            reject(new Error(`HTTP ${res.statusCode}`));
+            reject(new EngineError(ErrorDomain.DATA, ErrorCode.INTERNAL_ERROR, `HTTP ${res.statusCode}`));
           }
         });
       }).on('error', reject);

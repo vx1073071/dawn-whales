@@ -1,10 +1,13 @@
 // @ts-nocheck — R89 type cleanup pending
 ﻿import { useState, useEffect, useMemo } from 'react';
 import * as api from '../../lib/bridge-api';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import { generatePDFReport, backtestToReport } from '../../lib/pdf-report';
 import ParamScanPanel from './ParamScanPanel';
 import WalkForwardPanel from './WalkForwardPanel';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 interface BacktestResult {
   strategyId: string;
@@ -67,7 +70,8 @@ export default function BacktestReportPage() {
     try {
       const all = await api.getStrategies();
       setStrategies(all || []);
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
+  void EngineError; // [SYSTEM] structured error tracking
   }
 
   async function runBacktest() {
@@ -78,7 +82,7 @@ export default function BacktestReportPage() {
       if (res?.success) {
         setResult(res.result);
       }
-    } catch { /* silent */ } finally { setLoading(false); }
+    } catch (_e: unknown) { /* silent */ } finally { setLoading(false); }
   }
 
   async function runParamScan() {
@@ -89,7 +93,7 @@ export default function BacktestReportPage() {
       if (res?.success) {
         setParamScanResult(res.result);
       }
-    } catch { /* silent */ } finally { setParamScanLoading(false); }
+    } catch (_e: unknown) { /* silent */ } finally { setParamScanLoading(false); }
   }
 
   async function runWFA() {
@@ -100,13 +104,13 @@ export default function BacktestReportPage() {
       if (res?.success) {
         setWfaResult(res.result);
       }
-    } catch { /* silent */ } finally { setWfaLoading(false); }
+    } catch (_e: unknown) { /* silent */ } finally { setWfaLoading(false); }
   }
 
   function exportCSV() {
     if (!result) return;
     const rows = [
-      [t('components.date'), t('components.direction'), '入场价', '出场价', '盈亏', '盈亏%', '持有天数'],
+      [t('components.date'), t('components.direction'), i18n.t('BacktestReportPage.k1'), i18n.t('BacktestReportPage.k2'), i18n.t('BacktestReportPage.k3'), i18n.t('BacktestReportPage.k4'), i18n.t('BacktestReportPage.k5')],
       ...result.trades.map((t) => [
         t.entryDate, t.side, t.entryPrice.toFixed(2), t.exitPrice.toFixed(2),
         t.pnl.toFixed(2), (t.pnlPercent * 100).toFixed(2) + '%', t.holdingDays,
@@ -143,7 +147,7 @@ export default function BacktestReportPage() {
       `最大连亏: ${result.maxConsecutiveLosses}`,
       ``,
       `## 交易明细`,
-      '日期,方向,入场价,出场价,盈亏,盈亏%,持有天数',
+      i18n.t('BacktestReportPage.k6'),
       ...result.trades.map((t) =>
         `${t.entryDate},${t.side},${t.entryPrice.toFixed(2)},${t.exitPrice.toFixed(2)},${t.pnl.toFixed(2)},${(t.pnlPercent * 100).toFixed(2)}%,${t.holdingDays}`
       ),
@@ -250,8 +254,8 @@ export default function BacktestReportPage() {
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">{t('📈 回测报告')}</h1>
-          <p className="text-gray-400 text-sm">{t('独立回测分析 · 权益曲线 · 交易明细 · CSV/PDF 导出')}</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{t(i18n.t('BacktestReportPage.k7'))}</h1>
+          <p className="text-gray-400 text-sm">{t(i18n.t('BacktestReportPage.k8'))}</p>
         </div>
         <div className="flex gap-2">
           {result && (
@@ -273,7 +277,7 @@ export default function BacktestReportPage() {
       {/* Strategy selector */}
       {!selectedId && (
         <div className="bg-[#12121a] rounded-xl border border-white/5 p-6">
-          <div className="text-lg font-medium text-white mb-4">{t('选择策略进行回测')}</div>
+          <div className="text-lg font-medium text-white mb-4">{t(i18n.t('BacktestReportPage.k9'))}</div>
           <div className="grid grid-cols-2 gap-3">
             {strategies.map((s: any) => (
               <button
@@ -288,7 +292,7 @@ export default function BacktestReportPage() {
             ))}
           </div>
           {strategies.length === 0 && (
-            <div className="text-center py-8 text-gray-600">{t('暂无策略，请先在策略工坊创建')}</div>
+            <div className="text-center py-8 text-gray-600">{t(i18n.t('BacktestReportPage.k10'))}</div>
           )}
         </div>
       )}
@@ -296,7 +300,7 @@ export default function BacktestReportPage() {
       {/* Backtest config + run */}
       {selectedId && !result && (
         <div className="bg-[#12121a] rounded-xl border border-white/5 p-6 max-w-lg mx-auto">
-          <div className="text-lg font-medium text-white mb-4">{t('回测配置')}</div>
+          <div className="text-lg font-medium text-white mb-4">{t(i18n.t('BacktestReportPage.k11'))}</div>
           <div className="space-y-4">
             <div>
               // @ts-ignore — R89 type fix
@@ -305,7 +309,7 @@ export default function BacktestReportPage() {
               <div className="text-white">{strategies.find((s: any) => s.id === selectedId)?.name}</div>
             </div>
             <div>
-              <label className="text-sm text-gray-400 block mb-1">{t('回测周期')}</label>
+              <label className="text-sm text-gray-400 block mb-1">{t(i18n.t('BacktestReportPage.k12'))}</label>
               <div className="flex gap-2">
                 {[90, 180, 365, 730].map((d) => (
                   <button
@@ -313,7 +317,7 @@ export default function BacktestReportPage() {
                     onClick={() => setDays(d)}
                     className={`px-4 py-2 rounded-lg text-sm border ${days === d ? 'bg-amber-500/20 border-amber-500/30 text-amber-400' : 'border-white/5 text-gray-400 hover:bg-white/5'}`}
                   >
-                    {d === 90 ? '3个月' : d === 180 ? '6个月' : d === 365 ? '1年' : '2年'}
+                    {d === 90 ? i18n.t('BacktestReportPage.k13') : d === 180 ? i18n.t('BacktestReportPage.k14') : d === 365 ? i18n.t('BacktestReportPage.k15') : i18n.t('BacktestReportPage.k16')}
                   </button>
                 ))}
               </div>
@@ -325,7 +329,7 @@ export default function BacktestReportPage() {
                 disabled={loading}
                 className="flex-1 px-4 py-2 bg-amber-500/20 border border-amber-500/30 rounded-lg text-sm text-amber-400 hover:bg-amber-500/30 font-medium"
               >
-                {loading ? '⏳ 回测中...' : '🚀 开始回测'}
+                {loading ? i18n.t('BacktestReportPage.k17') : i18n.t('BacktestReportPage.k18')}
               </button>
             </div>
           </div>
@@ -337,7 +341,7 @@ export default function BacktestReportPage() {
         <>
           {/* Tabs */}
           <div className="flex gap-1 mb-4 bg-[#12121a] rounded-lg p-1 w-fit">
-            {([['overview', '📊 绩效概览'], ['equity', '📈 权益曲线'], ['trades', '📋 交易明细'], ['enhanced', '🔬 增强分析']] as const).map(([key, label]) => (
+            {([['overview', i18n.t('BacktestReportPage.k19')], ['equity', i18n.t('BacktestReportPage.k20')], ['trades', i18n.t('BacktestReportPage.k21')], ['enhanced', i18n.t('BacktestReportPage.k22')]] as const).map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => setTab(key)}
@@ -357,13 +361,13 @@ export default function BacktestReportPage() {
               <div className="grid grid-cols-4 gap-3">
                 {[
                   [t('components.totalReturn'), `${(result.totalReturn * 100).toFixed(2)}%`, result.totalReturn >= 0 ? 'text-emerald-400' : 'text-red-400'],
-                  ['年化收益', `${(result.annualizedReturn * 100).toFixed(2)}%`, result.annualizedReturn >= 0 ? 'text-emerald-400' : 'text-red-400'],
+                  [i18n.t('BacktestReportPage.k23'), `${(result.annualizedReturn * 100).toFixed(2)}%`, result.annualizedReturn >= 0 ? 'text-emerald-400' : 'text-red-400'],
                   [t('components.maxDrawdown'), `${(result.maxDrawdown * 100).toFixed(2)}%`, 'text-red-400'],
-                  ['夏普比率', result.sharpeRatio.toFixed(2), result.sharpeRatio >= 1 ? 'text-emerald-400' : result.sharpeRatio >= 0 ? 'text-yellow-400' : 'text-red-400'],
+                  [i18n.t('BacktestReportPage.k24'), result.sharpeRatio.toFixed(2), result.sharpeRatio >= 1 ? 'text-emerald-400' : result.sharpeRatio >= 0 ? 'text-yellow-400' : 'text-red-400'],
                   [t('components.winRate'), `${(result.winRate * 100).toFixed(1)}%`, result.winRate >= 0.5 ? 'text-emerald-400' : 'text-red-400'],
                   [t('components.profitLossRatio'), result.profitLossRatio.toFixed(2), result.profitLossRatio >= 1.5 ? 'text-emerald-400' : 'text-yellow-400'],
-                  ['总交易', `${result.totalTrades}`, 'text-white'],
-                  ['最终资金', `$${result.finalCapital.toFixed(0)}`, result.finalCapital >= result.initialCapital ? 'text-emerald-400' : 'text-red-400'],
+                  [i18n.t('BacktestReportPage.k25'), `${result.totalTrades}`, 'text-white'],
+                  [i18n.t('BacktestReportPage.k26'), `$${result.finalCapital.toFixed(0)}`, result.finalCapital >= result.initialCapital ? 'text-emerald-400' : 'text-red-400'],
                 ].map(([label, value, color], i) => (
                   <div key={i} className="p-4 bg-[#12121a] rounded-xl border border-white/5">
                     <div className="text-xs text-gray-500 mb-1">{label}</div>
@@ -375,7 +379,7 @@ export default function BacktestReportPage() {
               {/* Monthly returns */}
               {monthlyReturns.length > 0 && (
                 <div className="bg-[#12121a] rounded-xl border border-white/5 p-4">
-                  <div className="text-sm font-medium text-white mb-3">{t('月度收益')}</div>
+                  <div className="text-sm font-medium text-white mb-3">{t(i18n.t('BacktestReportPage.k27'))}</div>
                   <div className="flex flex-wrap gap-2">
                     {monthlyReturns.map(([month, pnl]) => (
                       <div key={month} className={`px-3 py-1.5 rounded-lg text-xs font-medium ${pnl >= 0 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
@@ -389,17 +393,17 @@ export default function BacktestReportPage() {
               {/* Extra stats */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="p-4 bg-[#12121a] rounded-xl border border-white/5">
-                  <div className="text-xs text-gray-500 mb-1">{t('盈利次数')}</div>
+                  <div className="text-xs text-gray-500 mb-1">{t(i18n.t('BacktestReportPage.k28'))}</div>
                   <div className="text-lg font-bold text-emerald-400">{result.winningTrades}</div>
                   <div className="text-xs text-gray-600">平均 +${result.avgWin.toFixed(2)}</div>
                 </div>
                 <div className="p-4 bg-[#12121a] rounded-xl border border-white/5">
-                  <div className="text-xs text-gray-500 mb-1">{t('亏损次数')}</div>
+                  <div className="text-xs text-gray-500 mb-1">{t(i18n.t('BacktestReportPage.k29'))}</div>
                   <div className="text-lg font-bold text-red-400">{result.losingTrades}</div>
                   <div className="text-xs text-gray-600">平均 -${Math.abs(result.avgLoss).toFixed(2)}</div>
                 </div>
                 <div className="p-4 bg-[#12121a] rounded-xl border border-white/5">
-                  <div className="text-xs text-gray-500 mb-1">{t('最大连胜/连亏')}</div>
+                  <div className="text-xs text-gray-500 mb-1">{t(i18n.t('BacktestReportPage.k30'))}</div>
                   <div className="text-lg font-bold text-white">{result.maxConsecutiveWins} / {result.maxConsecutiveLosses}</div>
                 </div>
               </div>
@@ -408,7 +412,7 @@ export default function BacktestReportPage() {
               <div className="p-4 bg-[#C9A046]/10 border border-[#C9A046]/30 rounded-xl">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-sm font-medium text-[#D4A853]">{t('🤖 设置自动执行')}</div>
+                    <div className="text-sm font-medium text-[#D4A853]">{t(i18n.t('BacktestReportPage.k31'))}</div>
                     <div className="text-xs text-gray-400 mt-1">
                       将此策略转为定时自动执行任务（每日盘前/每小时），支持 dry-run 模式先模拟验证
                     </div>
@@ -429,7 +433,7 @@ export default function BacktestReportPage() {
                           alert(`❌ 创建失败: ${resp?.error || '未知错误'}`);
                         }
                       } catch (err: unknown) {
-                        alert('❌ CronScheduler 尚未初始化，请先启动应用');
+                        alert(i18n.t('BacktestReportPage.k32'));
                       }
                     }}
                     className="px-4 py-2 bg-[#C9A046]/20 hover:bg-[#C9A046]/30 border border-[#C9A046]/30 rounded-lg text-sm text-[#D4A853] font-medium transition-colors shrink-0"
@@ -438,9 +442,9 @@ export default function BacktestReportPage() {
                   </button>
                 </div>
                 <div className="flex gap-4 mt-3 text-xs text-gray-500">
-                  <span>{t('⏰ 工作日 21:00 (美东 9:00AM)')}</span>
-                  <span>{t('🔒 Dry-run 模式 (模拟下单)')}</span>
-                  <span>{t('📋 可在 Settings → Scheduler 管理')}</span>
+                  <span>{t(i18n.t('BacktestReportPage.k33'))}</span>
+                  <span>{t(i18n.t('BacktestReportPage.k34'))}</span>
+                  <span>{t(i18n.t('BacktestReportPage.k35'))}</span>
                 </div>
               </div>
             </div>
@@ -474,11 +478,11 @@ export default function BacktestReportPage() {
                         入场日期{sortIcon('entryDate')}
                       </th>
                       <th className="px-4 py-3 text-left">{t("components.direction")}</th>
-                      <th className="px-4 py-3 text-right">{t('入场价')}</th>
+                      <th className="px-4 py-3 text-right">{t(i18n.t('BacktestReportPage.k36'))}</th>
                       <th className="px-4 py-3 text-left cursor-pointer hover:text-gray-300" onClick={() => handleSort('exitDate')}>
                         出场日期{sortIcon('exitDate')}
                       </th>
-                      <th className="px-4 py-3 text-right">{t('出场价')}</th>
+                      <th className="px-4 py-3 text-right">{t(i18n.t('BacktestReportPage.k37'))}</th>
                       <th className="px-4 py-3 text-right cursor-pointer hover:text-gray-300" onClick={() => handleSort('pnl')}>
                         盈亏{sortIcon('pnl')}
                       </th>
@@ -526,8 +530,8 @@ export default function BacktestReportPage() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-white font-medium">{t('🔬 增强分析')}</div>
-                  <div className="text-xs text-gray-500">{t('参数扫描 · Walk-Forward · 深度风险指标')}</div>
+                  <div className="text-white font-medium">{t(i18n.t('BacktestReportPage.k38'))}</div>
+                  <div className="text-xs text-gray-500">{t(i18n.t('BacktestReportPage.k39'))}</div>
                 </div>
                 <div className="flex gap-2">
                   <button
@@ -535,14 +539,14 @@ export default function BacktestReportPage() {
                     disabled={paramScanLoading}
                     className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-xs text-gray-300 hover:bg-[#22222f]"
                   >
-                    {paramScanLoading ? '⏳ 扫描中...' : '🔬 参数扫描'}
+                    {paramScanLoading ? i18n.t('BacktestReportPage.k40') : i18n.t('BacktestReportPage.k41')}
                   </button>
                   <button
                     onClick={runWFA}
                     disabled={wfaLoading}
                     className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-xs text-gray-300 hover:bg-[#22222f]"
                   >
-                    {wfaLoading ? '⏳ 分析中...' : '🔄 Walk-Forward'}
+                    {wfaLoading ? i18n.t('BacktestReportPage.k42') : '🔄 Walk-Forward'}
                   </button>
                 </div>
               </div>

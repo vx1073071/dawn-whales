@@ -16,6 +16,8 @@
 
 import log from 'electron-log';
 import { EventEmitter } from 'events';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

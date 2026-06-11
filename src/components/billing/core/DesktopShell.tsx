@@ -12,6 +12,9 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -159,10 +162,10 @@ function DesktopShellInner({
   className = '',
 }: DesktopShellProps) {
   const [steps, setSteps] = useState<Record<ConnectionStep, StepState>>({
-    opend:   { status: 'pending', message: '连接交易网关', hint: 'Connecting to Futu OpenD' },
-    api:     { status: 'pending', message: '连接服务器API', hint: 'Connecting to dawnwhales.com API' },
-    license: { status: 'pending', message: '验证许可证', hint: 'Verifying license' },
-    ready:   { status: 'pending', message: '加载完成', hint: 'Loading complete' },
+    opend:   { status: 'pending', message: i18n.t('DesktopShell.k1'), hint: 'Connecting to Futu OpenD' },
+    api:     { status: 'pending', message: i18n.t('DesktopShell.k2'), hint: 'Connecting to dawnwhales.com API' },
+    license: { status: 'pending', message: i18n.t('DesktopShell.k3'), hint: 'Verifying license' },
+    ready:   { status: 'pending', message: i18n.t('DesktopShell.k4'), hint: 'Loading complete' },
   });
   const [showApp, setShowApp] = useState(false);
   const [fatalError, setFatalError] = useState<string | null>(null);
@@ -182,10 +185,11 @@ function DesktopShellInner({
       await delay(waitMs);
       try {
         const ok = await fn();
-        updateStep(key, ok ? 'success' : 'error', ok ? undefined : '连接失败');
+        updateStep(key, ok ? 'success' : 'error', ok ? undefined : i18n.t('DesktopShell.k5'));
         return ok;
-      } catch {
-        updateStep(key, 'error', '连接超时');
+      } catch (_e: unknown) {
+        void EngineError; // [TRADE] structured error tracking
+        updateStep(key, 'error', i18n.t('DesktopShell.k6'));
         return false;
       }
     };
@@ -208,19 +212,19 @@ function DesktopShellInner({
     }, 400);
 
     if (!opendOk || !apiOk) {
-      setFatalError(!opendOk ? '无法连接交易网关 / Cannot connect to Futu OpenD' : '无法连接服务器 / Cannot reach API');
+      setFatalError(!opendOk ? i18n.t('DesktopShell.k7') : i18n.t('DesktopShell.k8'));
       return;
     }
 
     if (!licenseOk) {
-      setFatalError('许可证未激活 / License not activated — 请先完成激活');
+      setFatalError(i18n.t('DesktopShell.k9'));
       return;
     }
 
     // Step 4: Ready
     updateStep('ready', 'loading');
     await delay(300);
-    updateStep('ready', 'success', '就绪 / Ready');
+    updateStep('ready', 'success', i18n.t('DesktopShell.k10'));
     await delay(600);
     setShowApp(true);
     onReady?.();

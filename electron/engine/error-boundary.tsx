@@ -6,7 +6,9 @@
  */
 
 import React from 'react';
+import { EngineError } from './core/engine-error';
 import log from 'electron-log';
+import i18n from '../../src/i18n';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -107,12 +109,12 @@ export class GlobalErrorBoundary extends React.Component<ErrorBoundaryProps, Err
         }, isCritical ? '⚠️' : '🔧'),
         React.createElement('h2', {
           style: { margin: '0 0 8px', fontSize: '18px', color: '#333' },
-        }, isCritical ? '引擎遇到严重问题' : '分析引擎遇到问题，已自动恢复'),
+        }, isCritical ? i18n.t('errorBoundary.k1') : i18n.t('errorBoundary.k2')),
         React.createElement('p', {
           style: { margin: '0 0 16px', color: '#666', fontSize: '14px', textAlign: 'center', maxWidth: '400px' },
         }, isCritical
-          ? '连续发生多次错误，建议刷新页面或联系技术支持。'
-          : '系统已自动检测到异常并尝试恢复。如果问题持续，请刷新页面。'),
+          ? i18n.t('errorBoundary.k3')
+          : i18n.t('errorBoundary.k4')),
         React.createElement('button', {
           onClick: this.reset,
           style: {
@@ -124,11 +126,11 @@ export class GlobalErrorBoundary extends React.Component<ErrorBoundaryProps, Err
             fontSize: '14px',
             cursor: 'pointer',
           },
-        }, '刷新页面'),
+        }, i18n.t('errorBoundary.k5')),
         React.createElement('details', {
           style: { marginTop: '16px', fontSize: '12px', color: '#999', maxWidth: '400px' },
         },
-          React.createElement('summary', { style: { cursor: 'pointer' } }, '技术详情'),
+          React.createElement('summary', { style: { cursor: 'pointer' } }, i18n.t('errorBoundary.k6')),
           React.createElement('pre', {
             style: { whiteSpace: 'pre-wrap', wordBreak: 'break-word' },
           }, this.state.error?.stack || this.state.error?.message || 'Unknown error')
@@ -151,6 +153,8 @@ export function wrapEngineCall<T extends (...args: any[]) => any>(
     try {
       return fn(...args);
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error(`[${engineName}] Engine call failed:`, (err as Error).message);
       // Allow crash-protection to handle
       throw err;

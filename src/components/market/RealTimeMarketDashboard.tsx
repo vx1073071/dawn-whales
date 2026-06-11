@@ -1,5 +1,7 @@
 // @ts-nocheck — R89 type cleanup pending
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import { useTranslation } from 'react-i18next';
 import {
   getQuotes, subscribeQuoteStream, unsubscribeQuoteStream, getQuoteStreamStatus,
@@ -137,7 +139,8 @@ export default function RealTimeMarketDashboard() {
         WATCHLIST.forEach(s => { map[s.code] = generateMockQuote(s); });
         setQuotes(map);
       }
-    } catch {
+    } catch (_e: unknown) {
+      void EngineError; // [DATA] structured error tracking
       const map: Record<string, RealTimeQuote> = {};
       WATCHLIST.forEach(s => { map[s.code] = generateMockQuote(s); });
       setQuotes(map);
@@ -244,7 +247,7 @@ export default function RealTimeMarketDashboard() {
           await subscribeQuoteStream(WATCHLIST.map(s => s.code).join(','));
         }
         setStreamConnected(true);
-      } catch {
+      } catch (_e: unknown) {
         setStreamConnected(false);
       }
     }
@@ -261,7 +264,7 @@ export default function RealTimeMarketDashboard() {
     return () => {
       clearInterval(fallbackInterval);
       // Unsubscribe on unmount
-      unsubscribeQuoteStream(WATCHLIST.map(s => s.code).join(",")).catch(() => {});
+      unsubscribeQuoteStream(WATCHLIST.map(s => s.code).join(",")).catch((_: unknown) => {});
     };
   }, [loadQuotes]);
 

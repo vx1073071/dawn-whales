@@ -1,3 +1,5 @@
+
+import i18n from '../../../src/i18n';
 // ── J-72-01: Community Interaction Engine ───────────────────────────────
 // Comment (multi-level replies) + Like + Follow/Unfollow + Signal Sharing
 // + Report/Block/Mute (QClaw supplement) + Content Moderation (sensitive word filter)
@@ -69,8 +71,8 @@ export class SensitiveWordFilter {
 
   constructor() {
     // Default CN/EN banned words
-    const banned = ["spam", "scam", "诈骗", "赌博", "色情", "违法", "porn", "fraud"];
-    const warned = ["guarantee", "保证", "100%", "必赚", "稳赚"];
+    const banned = ["spam", "scam", i18n.t('CommunityEngine.k0'), i18n.t('CommunityEngine.k1'), i18n.t('CommunityEngine.k2'), i18n.t('CommunityEngine.k3'), "porn", "fraud"];
+    const warned = ["guarantee", i18n.t('CommunityEngine.k4'), "100%", i18n.t('CommunityEngine.k5'), i18n.t('CommunityEngine.k6')];
     for (const w of banned) this.bannedWords.add(w.toLowerCase());
     for (const w of warned) this.warningWords.add(w.toLowerCase());
   }

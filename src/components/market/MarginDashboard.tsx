@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import * as echarts from 'echarts';
 import { getMarginData, getMarginBalanceRank, getShortInterestRank } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface MarginBalance {
   date: string;
@@ -44,7 +47,8 @@ export default function MarginDashboard() {
       if (balanceRes?.success) setMarginRank(balanceRes.data || []);
       if (shortRes?.success) setShortRank(shortRes.data || []);
     } catch (e: unknown) {
-      setError((e as any).message || '获取数据失败');
+      void EngineError; // [DATA] structured error tracking
+      setError((e as any).message || i18n.t('MarginDashboard.k1'));
     } finally {
       setLoading(false);
     }
@@ -62,7 +66,7 @@ export default function MarginDashboard() {
     const option: echarts.EChartsOption = {
       backgroundColor: 'transparent',
       tooltip: { trigger: 'axis' },
-      legend: { data: ['融资余额', '融券余额'], textStyle: { color: '#9ca3af' } },
+      legend: { data: [i18n.t('MarginDashboard.k2'), i18n.t('MarginDashboard.k3')], textStyle: { color: '#9ca3af' } },
       grid: { left: 60, right: 20, top: 40, bottom: 30 },
       xAxis: {
         type: 'category',
@@ -72,19 +76,19 @@ export default function MarginDashboard() {
       yAxis: [
         {
           type: 'value',
-          name: '融资(亿)',
+          name: i18n.t('MarginDashboard.k4'),
           axisLabel: { color: '#9ca3af', formatter: (v: number) => `${(v / 1e8).toFixed(0)}` },
           splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
         },
         {
           type: 'value',
-          name: '融券(亿)',
+          name: i18n.t('MarginDashboard.k5'),
           axisLabel: { color: '#9ca3af', formatter: (v: number) => `${(v / 1e8).toFixed(0)}` },
         },
       ],
       series: [
-        { name: '融资余额', type: 'line', data: balanceHistory.map((d) => d.marginBalance), smooth: true, itemStyle: { color: '#ef4444' }, areaStyle: { color: 'rgba(239,68,68,0.1)' } },
-        { name: '融券余额', type: 'line', yAxisIndex: 1, data: balanceHistory.map((d) => d.shortBalance), smooth: true, itemStyle: { color: '#3b82f6' } },
+        { name: i18n.t('MarginDashboard.k6'), type: 'line', data: balanceHistory.map((d) => d.marginBalance), smooth: true, itemStyle: { color: '#ef4444' }, areaStyle: { color: 'rgba(239,68,68,0.1)' } },
+        { name: i18n.t('MarginDashboard.k7'), type: 'line', yAxisIndex: 1, data: balanceHistory.map((d) => d.shortBalance), smooth: true, itemStyle: { color: '#3b82f6' } },
       ],
     };
     balanceChart.current.setOption(option);
@@ -111,7 +115,7 @@ export default function MarginDashboard() {
           disabled={loading}
           className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors"
         >
-          {loading ? '刷新中...' : '🔄 刷新'}
+          {loading ? i18n.t('MarginDashboard.k8') : i18n.t('MarginDashboard.k9')}
         </button>
       </div>
 

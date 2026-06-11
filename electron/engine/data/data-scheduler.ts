@@ -3,6 +3,8 @@
 // Ensures fresh data for heatmap, macro, sentiment, anomaly, and rotation
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

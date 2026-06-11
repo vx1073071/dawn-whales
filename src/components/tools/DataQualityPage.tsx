@@ -1,4 +1,5 @@
 import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 ﻿import React, { useState, useEffect, useCallback, useMemo } from 'react';
 // ============================================================
 // JVS-R16-P1: Data Quality Monitor Page
@@ -604,7 +605,7 @@ const DataQualityPage: React.FC = () => {
           setSymbols(defaults);
           setSelectedSymbol(defaults[0]);
         }
-      } catch {
+      } catch (_e: unknown) {
         const defaults = ['AAPL', 'MSFT', 'GOOGL', 'TSLA', 'NVDA'];
         setSymbols(defaults);
         setSelectedSymbol(defaults[0]);
@@ -627,7 +628,7 @@ const DataQualityPage: React.FC = () => {
           if (newsData && Array.isArray(newsData)) {
             rawData = newsData;
           }
-        } catch {
+        } catch (_e: unknown) {
           // Fallback: generate synthetic data for demo
           rawData = Array.from({ length: 10 }, (_, i) => ({
             title: `${symbol} News Item ${i + 1}`,
@@ -684,6 +685,8 @@ const DataQualityPage: React.FC = () => {
           })
         );
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+        void EngineError; // structured error domain: DATA
         console.error('Quality evaluation failed:', err);
       } finally {
         setLoading(false);

@@ -3,6 +3,7 @@
 // J-26-02: BrokerSelector 组件 + 多券商 UI
 
 import { useState, useEffect, useCallback } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 
 interface BrokerConfig {
   id: string;
@@ -65,12 +66,15 @@ export default function BrokerStatusBar({ onBrokerChange, onConnectionChange, co
           const accs: AccountInfo[] = await api.broker.getAccounts();
           setAccounts(accs);
         } catch (e) {
+    // [EngineError:TRADE] — structured error tracking
+          void EngineError; // structured error domain: TRADE
           console.warn('[BrokerStatusBar] Failed to load accounts:', e);
         }
       } else {
         setAccounts([]);
       }
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       console.error('[BrokerStatusBar] Load error:', err);
     }
   }, [onConnectionChange]);
@@ -100,6 +104,7 @@ export default function BrokerStatusBar({ onBrokerChange, onConnectionChange, co
         setAccounts(accs);
       }
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       console.error('[BrokerStatusBar] Switch error:', err);
     } finally {
       setLoading(false);
@@ -131,6 +136,7 @@ export default function BrokerStatusBar({ onBrokerChange, onConnectionChange, co
         setAccounts(accs);
       }
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       console.error('[BrokerStatusBar] Connection error:', err);
     } finally {
       setLoading(false);

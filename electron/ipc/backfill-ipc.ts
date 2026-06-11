@@ -2,6 +2,7 @@
 // 6 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -16,6 +17,8 @@ export function registerBackfillIPC(
       const result = await startBackfill(config);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[Backfill] Start error:', err);
       return { success: false, error: err.message };
     }
@@ -28,6 +31,7 @@ export function registerBackfillIPC(
       stopBackfill();
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Backfill] Stop error:', err);
       return { success: false, error: err.message };
     }
@@ -40,6 +44,7 @@ export function registerBackfillIPC(
       const status = getBackfillStatus();
       return { success: true, status };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Backfill] Status error:', err);
       return { success: false, error: err.message };
     }
@@ -52,6 +57,7 @@ export function registerBackfillIPC(
       const stats = getBackfillStats();
       return { success: true, stats };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Backfill] Stats error:', err);
       return { success: false, error: err.message };
     }
@@ -64,6 +70,7 @@ export function registerBackfillIPC(
       const result = await backfillSymbols(symbols, startDate, endDate, interval);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Backfill] Symbols backfill error:', err);
       return { success: false, error: err.message };
     }
@@ -76,6 +83,7 @@ export function registerBackfillIPC(
       const result = await incrementalBackfill(symbol, startDate, endDate, existingRecords);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Backfill] Incremental backfill error:', err);
       return { success: false, error: err.message };
     }

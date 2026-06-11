@@ -9,6 +9,7 @@
  */
 
 import React, { useState, useCallback, useMemo } from 'react';
+import i18n from '../../i18n';
 // ── Types ───────────────────────────────────────────────────────────────
 
 interface PublishStrategy {
@@ -37,13 +38,13 @@ interface PublishForm {
 // ── Mock strategies for selection ───────────────────────────────────────
 
 const MOCK_STRATEGIES: PublishStrategy[] = [
-  { id: 'strat-001', name: '双均线交叉 v3', type: 'MA_CROSS', description: '经典双均线交叉策略', sharpe: 2.1, annualReturn: 0.35, maxDrawdown: -0.12, winRate: 0.58, tradeCount: 245 },
-  { id: 'strat-002', name: '动量突破 v2', type: 'MOMENTUM', description: '20日动量突破+成交量确认', sharpe: 1.8, annualReturn: 0.28, maxDrawdown: -0.18, winRate: 0.52, tradeCount: 180 },
-  { id: 'strat-003', name: '均值回归 v1', type: 'MEAN_REV', description: '布林带上下轨回归', sharpe: 2.4, annualReturn: 0.42, maxDrawdown: -0.09, winRate: 0.63, tradeCount: 320 },
+  { id: 'strat-001', name: i18n.t('MarketplacePublishPanel.k1'), type: 'MA_CROSS', description: i18n.t('MarketplacePublishPanel.k2'), sharpe: 2.1, annualReturn: 0.35, maxDrawdown: -0.12, winRate: 0.58, tradeCount: 245 },
+  { id: 'strat-002', name: i18n.t('MarketplacePublishPanel.k3'), type: 'MOMENTUM', description: i18n.t('MarketplacePublishPanel.k4'), sharpe: 1.8, annualReturn: 0.28, maxDrawdown: -0.18, winRate: 0.52, tradeCount: 180 },
+  { id: 'strat-003', name: i18n.t('MarketplacePublishPanel.k5'), type: 'MEAN_REV', description: i18n.t('MarketplacePublishPanel.k6'), sharpe: 2.4, annualReturn: 0.42, maxDrawdown: -0.09, winRate: 0.63, tradeCount: 320 },
 ];
 
-const CATEGORIES = ['趋势跟踪', '均值回归', '动量', '套利', '事件驱动', '多因子', 'AI/ML', '自定义'];
-const SUGGESTED_TAGS = ['A股', '港股', '美股', '日内', '中频', '低频', '高Sharpe', '低回撤', '稳健', '激进'];
+const CATEGORIES = [i18n.t('MarketplacePublishPanel.k7'), i18n.t('MarketplacePublishPanel.k8'), i18n.t('MarketplacePublishPanel.k9'), i18n.t('MarketplacePublishPanel.k10'), i18n.t('MarketplacePublishPanel.k11'), i18n.t('MarketplacePublishPanel.k12'), 'AI/ML', i18n.t('MarketplacePublishPanel.k13')];
+const SUGGESTED_TAGS = [i18n.t('MarketplacePublishPanel.k14'), i18n.t('MarketplacePublishPanel.k15'), i18n.t('MarketplacePublishPanel.k16'), i18n.t('MarketplacePublishPanel.k17'), i18n.t('MarketplacePublishPanel.k18'), i18n.t('MarketplacePublishPanel.k19'), i18n.t('MarketplacePublishPanel.k20'), i18n.t('MarketplacePublishPanel.k21'), i18n.t('MarketplacePublishPanel.k22'), i18n.t('MarketplacePublishPanel.k23')];
 
 // ── Main Component ──────────────────────────────────────────────────────
 
@@ -58,7 +59,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
     title: '',
     description: '',
     tags: [],
-    category: '趋势跟踪',
+    category: i18n.t('MarketplacePublishPanel.k24'),
     price: 'free',
     priceAmount: 0,
     authorNote: '',
@@ -111,7 +112,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
             </span>
           </h3>
           <p className="text-xs text-gray-500 mt-0.5">
-            步骤 {step}/3 · {step === 1 ? '选择策略' : step === 2 ? '标签与定价' : '预览发布'}
+            步骤 {step}/3 · {step === 1 ? i18n.t('MarketplacePublishPanel.k25') : step === 2 ? i18n.t('MarketplacePublishPanel.k26') : i18n.t('MarketplacePublishPanel.k27')}
           </p>
         </div>
       </div>
@@ -263,9 +264,9 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
             <label className="text-xs text-gray-500 mb-1.5 block">定价模式</label>
             <div className="grid grid-cols-3 gap-2 mb-3">
               {([
-                { key: 'free', label: '免费', sub: '¥0' },
-                { key: 'one_time', label: '一次性', sub: '买断' },
-                { key: 'subscription', label: '订阅', sub: '月付' },
+                { key: 'free', label: i18n.t('MarketplacePublishPanel.k28'), sub: '¥0' },
+                { key: 'one_time', label: i18n.t('MarketplacePublishPanel.k29'), sub: i18n.t('MarketplacePublishPanel.k30') },
+                { key: 'subscription', label: i18n.t('MarketplacePublishPanel.k31'), sub: i18n.t('MarketplacePublishPanel.k32') },
               ] as const).map(p => (
                 <button
                   key={p.key}
@@ -291,7 +292,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
                   placeholder="0"
                   className="w-24 bg-gray-800 border border-gray-700 rounded-lg px-2 py-1.5 text-xs text-gray-300"
                 />
-                <span className="text-[10px] text-gray-600">{form.price === 'subscription' ? '/月' : ''}</span>
+                <span className="text-[10px] text-gray-600">{form.price === 'subscription' ? i18n.t('MarketplacePublishPanel.k33') : ''}</span>
               </div>
             )}
           </div>
@@ -324,7 +325,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
                   <span className={`text-[10px] px-1.5 py-0.5 rounded ${
                     form.price === 'free' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'
                   }`}>
-                    {form.price === 'free' ? '免费' : form.price === 'one_time' ? `¥${form.priceAmount}` : `¥${form.priceAmount}/月`}
+                    {form.price === 'free' ? i18n.t('MarketplacePublishPanel.k34') : form.price === 'one_time' ? `¥${form.priceAmount}` : `¥${form.priceAmount}/月`}
                   </span>
                 </div>
               </div>
@@ -337,7 +338,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
               <div className="grid grid-cols-4 gap-2 mb-4">
                 {([
                   ['Sharpe', selectedStrategy.sharpe.toFixed(1), 'text-amber-400'],
-                  ['年化收益', `${(selectedStrategy.annualReturn * 100).toFixed(0)}%`, 'text-emerald-400'],
+                  [i18n.t('MarketplacePublishPanel.k35'), `${(selectedStrategy.annualReturn * 100).toFixed(0)}%`, 'text-emerald-400'],
                   ['components.maxDrawdown', `${(selectedStrategy.maxDrawdown * 100).toFixed(0)}%`, 'text-red-400'],
                   ['components.winRate', `${(selectedStrategy.winRate * 100).toFixed(0)}%`, 'text-blue-400'],
                 ] as const).map(([label, val, color]) => (

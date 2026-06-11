@@ -3,6 +3,7 @@
 // Topic modeling + Sector exposure weighting + News情感的归因
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -204,7 +205,7 @@ export class SentimentAttributionEngine {
   private getSectorDrivers(sector: string, sentiment: number): string[] {
     if (sentiment <= 0) return [];
     const drivers: Record<string, string[]> = {
-      Technology: ['AI adoption加速', 'Cloud growth', 'Semiconductor cycle up'],
+      Technology: [i18n.t('SentimentAttribution.k0'), 'Cloud growth', 'Semiconductor cycle up'],
       Financials: ['NIM expansion', 'Credit growth', 'Fee income up'],
       Energy: ['Oil demand up', 'OPEC+ supply discipline', 'Clean energy investment'],
       Healthcare: ['Drug pipeline progress', 'Aging demographics', 'Innovation'],

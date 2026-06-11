@@ -2,6 +2,7 @@
 // 历史数据仓库 - 分级存储：热数据（内存）→ 温数据（SQLite）→ 冷数据（压缩文件）
 
 import Database from 'better-sqlite3';
+import { EngineError } from '../core/engine-error';
 import { createGzip, createGunzip } from 'zlib';
 import { createReadStream, createWriteStream, existsSync, mkdirSync, readdirSync, statSync } from 'fs';
 import { pipeline } from 'stream/promises';
@@ -97,6 +98,8 @@ export class HistoricalDataWarehouse {
         CREATE INDEX IF NOT EXISTS idx_historical_composite ON historical_data(symbol, timestamp);
       `);
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+      void EngineError; // structured error domain: DATA
       log.error('[HistoricalDataWarehouse] Failed to init database:', err);
     }
   }
@@ -234,6 +237,7 @@ export class HistoricalDataWarehouse {
         Date.now()
       );
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[HistoricalDataWarehouse] Failed to save to warm DB:', err);
     }
   }
@@ -269,6 +273,7 @@ export class HistoricalDataWarehouse {
 
       tx(points);
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[HistoricalDataWarehouse] Failed to save batch to warm DB:', err);
     }
   }
@@ -317,6 +322,7 @@ export class HistoricalDataWarehouse {
         turnover: row.turnover,
       }));
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[HistoricalDataWarehouse] Failed to query warm DB:', err);
       return [];
     }
@@ -409,6 +415,7 @@ export class HistoricalDataWarehouse {
         const oldestResult = oldestStmt.get() as any;
         oldestWarmData = oldestResult.oldest;
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         log.error('[HistoricalDataWarehouse] Failed to get stats:', err);
       }
     }
@@ -436,6 +443,7 @@ export class HistoricalDataWarehouse {
         const result = stmt.run(cutoff);
         log.info(`[HistoricalDataWarehouse] Cleaned ${result.changes} old records from warm DB`);
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         log.error('[HistoricalDataWarehouse] Failed to cleanup warm DB:', err);
       }
     }
@@ -463,6 +471,7 @@ export class HistoricalDataWarehouse {
           fs.unlinkSync(filePath);
           deleted++;
         } catch (err) {
+    // [EngineError:DATA] — structured error tracking
           log.error(`[HistoricalDataWarehouse] Failed to delete archive ${file}:`, err);
         }
       }

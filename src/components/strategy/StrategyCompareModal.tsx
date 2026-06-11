@@ -1,6 +1,8 @@
 'use client';
 import { useState, useRef } from 'react';
 
+import i18n from '../../i18n';
+
 interface Strategy {
   id: string;
   name: string;
@@ -30,7 +32,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
 
   async function handleCompare() {
     if (!strategyA || !strategyB) {
-      setError('请选择两个策略进行对比');
+      setError(i18n.t('StrategyCompareModal.k1'));
       return;
     }
     setLoading(true);
@@ -41,10 +43,10 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
       if (result.success) {
         setComparison(result.comparison);
       } else {
-        setError(result.error || '对比生成失败');
+        setError(result.error || i18n.t('StrategyCompareModal.k2'));
       }
     } catch (e: unknown) {
-      setError((e as any).message || '调用失败');
+      setError((e as any).message || i18n.t('StrategyCompareModal.k3'));
     } finally {
       setLoading(false);
     }
@@ -187,7 +189,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
 
         {!comparison && !loading && (
           <div className="p-5 text-center text-gray-500 text-xs">
-            选择两个策略，点击"开始对比"获取 AI 客观分析
+            选择两个策略，点击i18n.t('StrategyCompareModal.k4')获取 AI 客观分析
           </div>
         )}
       </div>

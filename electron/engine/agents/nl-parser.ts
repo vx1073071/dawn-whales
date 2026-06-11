@@ -4,9 +4,12 @@
 // Phase 3: 同义词映射 + 语义扩展 + LLM接口预留
 
 import log from 'electron-log';
+
 import { spawn } from 'child_process';
 import path from 'path';
 import i18n from '../../../src/i18n';
+import { EngineError } from '../core/engine-error';
+
 
 export interface PriceConditionOutput {
   type: 'price';
@@ -441,7 +444,7 @@ function callLLM(input: string): Promise<LLMParseResult | null> {
             } else {
               resolve(null);
             }
-          } catch {
+          } catch (_e: unknown) {
             resolve(null);
           }
         });
@@ -449,7 +452,7 @@ function callLLM(input: string): Promise<LLMParseResult | null> {
       req.on('error', () => resolve(null));
       req.write(body);
       req.end();
-    } catch {
+    } catch (_e: unknown) {
       resolve(null);
     }
   });
@@ -522,7 +525,7 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
     if (llmResult) {
       log.info('[NLParser] LLM matched:', llmResult.type, llmResult.reason);
     }
-  }).catch(() => {});
+  }).catch((_: unknown) => {});
 
   // Fallback: try to detect any indicator mention
   const hasIndicator = /RSI|MACD|MA|均线|布林|bollinger|动量|momentum/i.test(text);

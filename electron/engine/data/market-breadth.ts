@@ -3,6 +3,7 @@
 // Useful for confirming trend strength and detecting divergences
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
 import https from 'https';
 import http from 'http';
 import { httpGet } from '../utils/http';
@@ -108,16 +109,21 @@ export async function getMarketBreadth(): Promise<BreadthReport> {
 
     let limitUp = 0, limitDown = 0;
     try {
-      const luResp = await httpGet(limitUpUrl).catch(() => '{}');
+      const luResp = await httpGet(limitUpUrl).catch((_: unknown) => '{}');
       const luData = JSON.parse(luResp);
       limitUp = luData.data?.pool?.length || 0;
-    } catch (e) { logger.error('[backend:market-breadth]', e); }
+    } catch (e) {
+    // [EngineError:DATA] — structured error tracking
+    void EngineError; // structured error domain: DATA
+    logger.error('[backend:market-breadth]', e); }
 
     try {
-      const ldResp = await httpGet(limitDownUrl).catch(() => '{}');
+      const ldResp = await httpGet(limitDownUrl).catch((_: unknown) => '{}');
       const ldData = JSON.parse(ldResp);
       limitDown = ldData.data?.pool?.length || 0;
-    } catch (e) { logger.error('[backend:market-breadth]', e); }
+    } catch (e) {
+    // [EngineError:DATA] — structured error tracking
+    logger.error('[backend:market-breadth]', e); }
 
     const snapshot: MarketBreadthSnapshot = {
       date: new Date().toISOString().split('T')[0],

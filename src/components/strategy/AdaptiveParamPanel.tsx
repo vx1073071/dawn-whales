@@ -2,6 +2,7 @@
 // Phase 4.4 ML-38-02: Self-adaptive parameter adjustment for strategies
 // Connects to AdaptiveParamEngine + RewardEngine
 import { useState, useEffect, useCallback } from 'react';
+import i18n from '../../i18n';
 // ── Types ─────────────────────────────────────────────────────────────────
 
 interface ParameterHistory {
@@ -41,25 +42,25 @@ const STRATEGY_PARAMS: Record<string, { label: string; key: string; min: number;
     { label: 'fastPeriod', key: 'fastPeriod', min: 5, max: 50, step: 1, unit: '' },
     { label: 'slowPeriod', key: 'slowPeriod', min: 20, max: 200, step: 1, unit: '' },
     { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 20, step: 0.5, unit: '%' },
-    { label: '止盈(%)', key: 'takeProfit', min: 2, max: 50, step: 1, unit: '%' },
+    { label: i18n.t('AdaptiveParamPanel.k1'), key: 'takeProfit', min: 2, max: 50, step: 1, unit: '%' },
   ],
   'rsi': [
-    { label: 'RSI 周期', key: 'period', min: 7, max: 28, step: 1, unit: '' },
-    { label: '超卖阈值', key: 'oversold', min: 15, max: 40, step: 1, unit: '' },
-    { label: '超买阈值', key: 'overbought', min: 60, max: 85, step: 1, unit: '' },
+    { label: i18n.t('AdaptiveParamPanel.k2'), key: 'period', min: 7, max: 28, step: 1, unit: '' },
+    { label: i18n.t('AdaptiveParamPanel.k3'), key: 'oversold', min: 15, max: 40, step: 1, unit: '' },
+    { label: i18n.t('AdaptiveParamPanel.k4'), key: 'overbought', min: 60, max: 85, step: 1, unit: '' },
     { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
   ],
   'macd': [
-    { label: '快线', key: 'fast', min: 8, max: 20, step: 1, unit: '' },
-    { label: '慢线', key: 'slow', min: 21, max: 40, step: 1, unit: '' },
-    { label: '信号线', key: 'signal', min: 5, max: 15, step: 1, unit: '' },
+    { label: i18n.t('AdaptiveParamPanel.k5'), key: 'fast', min: 8, max: 20, step: 1, unit: '' },
+    { label: i18n.t('AdaptiveParamPanel.k6'), key: 'slow', min: 21, max: 40, step: 1, unit: '' },
+    { label: i18n.t('AdaptiveParamPanel.k7'), key: 'signal', min: 5, max: 15, step: 1, unit: '' },
     { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
   ],
   'bollinger': [
-    { label: '中轨周期', key: 'period', min: 10, max: 30, step: 1, unit: '' },
-    { label: '标准差倍数', key: 'stdDev', min: 1.5, max: 3.5, step: 0.1, unit: 'σ' },
+    { label: i18n.t('AdaptiveParamPanel.k8'), key: 'period', min: 10, max: 30, step: 1, unit: '' },
+    { label: i18n.t('AdaptiveParamPanel.k9'), key: 'stdDev', min: 1.5, max: 3.5, step: 0.1, unit: 'σ' },
     { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
-    { label: '止盈(%)', key: 'takeProfit', min: 2, max: 30, step: 1, unit: '%' },
+    { label: i18n.t('AdaptiveParamPanel.k10'), key: 'takeProfit', min: 2, max: 30, step: 1, unit: '%' },
   ],
 };
 
@@ -274,7 +275,7 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
             onClick={() => setShowHistory(!showHistory)}
             className="text-xs text-gray-500 hover:text-gray-300"
           >
-            {showHistory ? 'components.hide' : '显示全部'}
+            {showHistory ? 'components.hide' : i18n.t('AdaptiveParamPanel.k11')}
           </button>
         </div>
 

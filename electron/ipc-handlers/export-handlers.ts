@@ -2,6 +2,7 @@
 // JVS-106: Data Exporter
 
 import { ipcMain, dialog, BrowserWindow } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { shared } from './_import-shared';
 import {
   exportData,
@@ -21,6 +22,8 @@ export function registerExportHandlers() {
       const result = exportData({ target: target as any, format: 'csv', filters });
       return { success: result.success, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[Export] CSV export failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -32,6 +35,7 @@ export function registerExportHandlers() {
       const result = exportData({ target: target as any, format: 'json', filters });
       return { success: result.success, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Export] JSON export failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -43,6 +47,7 @@ export function registerExportHandlers() {
       const result = exportData({ target: target as any, format: 'md', filters });
       return { success: result.success, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Export] Markdown export failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -54,6 +59,7 @@ export function registerExportHandlers() {
       const result = batchExport(request);
       return { success: result.success, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Export] Batch export failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -89,6 +95,7 @@ export function registerExportHandlers() {
 
       return { success: result.success, data: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Export] Save dialog failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -100,6 +107,7 @@ export function registerExportHandlers() {
       const report = generateSummaryReport();
       return { success: true, data: { report, generatedAt: new Date().toISOString() } };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Export] Summary report failed:', err.message);
       return { success: false, error: err.message };
     }

@@ -1,3 +1,4 @@
+import i18n from '../i18n';
 // ── DAWN WHALES — PDF Report Generator (print-to-PDF) ──────────────────────
 
 interface ReportData {
@@ -127,24 +128,24 @@ export function backtestToReport(result: unknown): ReportData {
     subtitle: `${(result as any).targetCode} · ${(result as any).startDate} ~ ${(result as any).endDate}`,
     sections: [
       {
-        heading: '绩效摘要',
+        heading: i18n.t('pdfReport.k1'),
         type: 'metrics',
         data: [
-          { label: '总收益', value: `${((result as any).totalReturn * 100).toFixed(2)}%`, color: isProfit ? 'green' : 'red' },
-          { label: '年化收益', value: `${((result as any).annualizedReturn * 100).toFixed(2)}%`, color: isProfit ? 'green' : 'red' },
-          { label: '最大回撤', value: `${((result as any).maxDrawdown * 100).toFixed(2)}%`, color: 'red' },
-          { label: '夏普比率', value: (result as any).sharpeRatio.toFixed(2), color: (result as any).sharpeRatio >= 1 ? 'green' : '' },
-          { label: '胜率', value: `${((result as any).winRate * 100).toFixed(1)}%` },
-          { label: '盈亏比', value: (result as any).profitLossRatio.toFixed(2) },
-          { label: '总交易', value: `${(result as any).totalTrades}` },
-          { label: '最终资金', value: `$${(result as any).finalCapital.toFixed(0)}` },
+          { label: i18n.t('pdfReport.k2'), value: `${((result as any).totalReturn * 100).toFixed(2)}%`, color: isProfit ? 'green' : 'red' },
+          { label: i18n.t('pdfReport.k3'), value: `${((result as any).annualizedReturn * 100).toFixed(2)}%`, color: isProfit ? 'green' : 'red' },
+          { label: i18n.t('pdfReport.k4'), value: `${((result as any).maxDrawdown * 100).toFixed(2)}%`, color: 'red' },
+          { label: i18n.t('pdfReport.k5'), value: (result as any).sharpeRatio.toFixed(2), color: (result as any).sharpeRatio >= 1 ? 'green' : '' },
+          { label: i18n.t('pdfReport.k6'), value: `${((result as any).winRate * 100).toFixed(1)}%` },
+          { label: i18n.t('pdfReport.k7'), value: (result as any).profitLossRatio.toFixed(2) },
+          { label: i18n.t('pdfReport.k8'), value: `${(result as any).totalTrades}` },
+          { label: i18n.t('pdfReport.k9'), value: `$${(result as any).finalCapital.toFixed(0)}` },
         ],
       },
       {
-        heading: '交易明细',
+        heading: i18n.t('pdfReport.k10'),
         type: 'table',
         data: {
-          headers: ['入场日期', '方向', '入场价', '出场日期', '出场价', '盈亏', '盈亏%', '持有天数'],
+          headers: [i18n.t('pdfReport.k11'), i18n.t('pdfReport.k12'), i18n.t('pdfReport.k13'), i18n.t('pdfReport.k14'), i18n.t('pdfReport.k15'), i18n.t('pdfReport.k16'), i18n.t('pdfReport.k17'), i18n.t('pdfReport.k18')],
           rows: ((result as any).trades || []).map((t: Record<string, unknown>) => [
             t.entryDate, t.side, (t as any).entryPrice.toFixed(2), t.exitDate, (t as any).exitPrice.toFixed(2),
             `${(t as any).pnl >= 0 ? '+' : ''}${(t as any).pnl.toFixed(2)}`,

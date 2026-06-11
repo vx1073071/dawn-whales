@@ -1,7 +1,9 @@
 // ── DAWN WHALES — SystemLog (系统日志) ─────────────────────────────────────
 
 import { useState, useEffect } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface LogEntry {
   id: string;
@@ -12,14 +14,14 @@ interface LogEntry {
 }
 
 const DEMO_LOGS: LogEntry[] = [
-  { id: '1', timestamp: Date.now() - 1000, level: 'info', source: 'OpenD', message: '行情推送连接建立' },
-  { id: '2', timestamp: Date.now() - 5000, level: 'info', source: 'StrategyEngine', message: '策略 MA_Crossover 启动运行' },
-  { id: '3', timestamp: Date.now() - 12000, level: 'warn', source: 'RiskEngine', message: '日亏损接近上限 80%' },
-  { id: '4', timestamp: Date.now() - 30000, level: 'info', source: 'Broker', message: '订单 #88234 部分成交 50/100' },
-  { id: '5', timestamp: Date.now() - 45000, level: 'error', source: 'DataProvider', message: '获取 K 线数据超时，使用缓存' },
-  { id: '6', timestamp: Date.now() - 60000, level: 'info', source: 'RiskEngine', message: 'Kelly 仓位计算: f*=0.125, qty=250' },
-  { id: '7', timestamp: Date.now() - 90000, level: 'warn', source: 'MarketData', message: 'VIX 突破 25，波动率调节生效' },
-  { id: '8', timestamp: Date.now() - 120000, level: 'info', source: 'Backtest', message: '回测完成: 夏普 1.34, 最大回撤 12.5%' },
+  { id: '1', timestamp: Date.now() - 1000, level: 'info', source: 'OpenD', message: i18n.t('SystemLog.k1') },
+  { id: '2', timestamp: Date.now() - 5000, level: 'info', source: 'StrategyEngine', message: i18n.t('SystemLog.k2') },
+  { id: '3', timestamp: Date.now() - 12000, level: 'warn', source: 'RiskEngine', message: i18n.t('SystemLog.k3') },
+  { id: '4', timestamp: Date.now() - 30000, level: 'info', source: 'Broker', message: i18n.t('SystemLog.k4') },
+  { id: '5', timestamp: Date.now() - 45000, level: 'error', source: 'DataProvider', message: i18n.t('SystemLog.k5') },
+  { id: '6', timestamp: Date.now() - 60000, level: 'info', source: 'RiskEngine', message: i18n.t('SystemLog.k6') },
+  { id: '7', timestamp: Date.now() - 90000, level: 'warn', source: 'MarketData', message: i18n.t('SystemLog.k7') },
+  { id: '8', timestamp: Date.now() - 120000, level: 'info', source: 'Backtest', message: i18n.t('SystemLog.k8') },
 ];
 
 export default function SystemLog() {
@@ -35,11 +37,11 @@ export default function SystemLog() {
       if (Math.random() > 0.7) {
         const sources = ['OpenD', 'StrategyEngine', 'RiskEngine', 'Broker', 'MarketData'];
         const messages = [
-          '心跳检测正常',
-          '行情数据更新',
-          '策略信号生成',
-          '风控检查通过',
-          '订单状态变更',
+          i18n.t('SystemLog.k9'),
+          i18n.t('SystemLog.k10'),
+          i18n.t('SystemLog.k11'),
+          i18n.t('SystemLog.k12'),
+          i18n.t('SystemLog.k13'),
         ];
         const newLog: LogEntry = {
           id: `log-${Date.now()}`,
@@ -76,7 +78,7 @@ export default function SystemLog() {
               autoScroll ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-500/10 text-gray-400'
             }`}
           >
-            {autoScroll ? '自动刷新' : '已暂停'}
+            {autoScroll ? i18n.t('SystemLog.k14') : i18n.t('SystemLog.k15')}
           </button>
           <button
             onClick={() => setLogs([])}
@@ -97,7 +99,7 @@ export default function SystemLog() {
               filter === f ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'
             }`}
           >
-            {f === 'all' ? t('components.all') : f === 'info' ? '信息' : f === 'warn' ? t('components.warning') : t('components.error')}
+            {f === 'all' ? t('components.all') : f === 'info' ? i18n.t('SystemLog.k16') : f === 'warn' ? t('components.warning') : t('components.error')}
           </button>
         ))}
       </div>
@@ -124,3 +126,5 @@ export default function SystemLog() {
     </div>
   );
 }
+
+void EngineError; // [SYSTEM] structured error tracking

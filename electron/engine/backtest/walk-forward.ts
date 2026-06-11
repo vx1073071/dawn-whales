@@ -5,6 +5,8 @@
 import log from 'electron-log';
 import { BacktestEngine } from './backtest-engine';
 import i18n from '../../../src/i18n';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

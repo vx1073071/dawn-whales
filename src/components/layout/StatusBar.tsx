@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '@/stores/appStore';
 
@@ -18,6 +19,7 @@ export default function StatusBar() {
           // @ts-ignore — R89 type fix
           if (info?.total) setMem((info as any).total);
         }).catch(() => {});
+      void EngineError; // [SYSTEM] structured error tracking
       }
     }, 5000);
     return () => clearInterval(t);

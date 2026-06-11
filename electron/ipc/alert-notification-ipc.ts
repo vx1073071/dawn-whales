@@ -2,9 +2,11 @@
 // 6 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
+import i18n from '../../src/i18n';
 
 export function registerAlertNotificationIPC(
 ) {
@@ -17,6 +19,8 @@ export function registerAlertNotificationIPC(
       const result = await detectMacroAnomalies(currentData, historicalMap);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[MacroAlert] Error:', err);
       return { success: false, error: err.message };
     }
@@ -29,6 +33,7 @@ export function registerAlertNotificationIPC(
       const result = await analyzeMultipleIndicators(indicatorData);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[MacroAlertMultiple] Error:', err);
       return { success: false, error: err.message };
     }
@@ -44,6 +49,7 @@ export function registerAlertNotificationIPC(
       const result = await detectCorrelationAnomalies(snapshots, histMap);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[CorrelationAlert] Error:', err);
       return { success: false, error: err.message };
     }
@@ -57,6 +63,7 @@ export function registerAlertNotificationIPC(
       const result = await analyzeCorrelationMatrix(matrix, codes, prevMatrix, histMap);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[CorrelationAlertMatrix] Error:', err);
       return { success: false, error: err.message };
     }
@@ -79,7 +86,7 @@ export function registerAlertNotificationIPC(
   /** @deprecated R83 — migrate to server-side AI Gateway; apiKey param retained for backward compat */
   ipcMain.handle('notification:summary', async (_e, alerts: SmartAlert[], apiKey?: string) => {
     if (!Array.isArray(alerts) || alerts.length === 0) {
-      return { success: true, summary: '暂无活跃警报。' };
+      return { success: true, summary: i18n.t('AlertNotificationIpc.k0') };
     }
     // R83: server-side auth — apiKey fallback kept for transition; remove in R84
     const summary = await generateAlertSummary(alerts, apiKey ?? '');

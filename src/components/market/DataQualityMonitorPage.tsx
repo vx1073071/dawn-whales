@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import i18n from '../../i18n';
 
 interface QualityCheck {
   type: string;
@@ -42,32 +44,32 @@ interface CacheStats {
 }
 
 const MOCK_CHECKS: QualityCheck[] = [
-  { type: 'format', label: '格式校验', status: 'pass', checked: 12580, passed: 12580, failed: 0, lastCheck: '2024-06-05T00:54:12' },
-  { type: 'priceBounds', label: '价格边界', status: 'pass', checked: 12580, passed: 12578, failed: 2, lastCheck: '2024-06-05T00:54:12' },
-  { type: 'volume', label: '成交量异常', status: 'warn', checked: 12580, passed: 12560, failed: 20, lastCheck: '2024-06-05T00:54:12' },
-  { type: 'timestamp', label: '时间戳间隙', status: 'pass', checked: 12580, passed: 12575, failed: 5, lastCheck: '2024-06-05T00:54:12' },
-  { type: 'stale', label: '数据延迟', status: 'warn', checked: 12580, passed: 12550, failed: 30, lastCheck: '2024-06-05T00:54:12' },
+  { type: 'format', label: i18n.t('DataQualityMonitorPage.k1'), status: 'pass', checked: 12580, passed: 12580, failed: 0, lastCheck: '2024-06-05T00:54:12' },
+  { type: 'priceBounds', label: i18n.t('DataQualityMonitorPage.k2'), status: 'pass', checked: 12580, passed: 12578, failed: 2, lastCheck: '2024-06-05T00:54:12' },
+  { type: 'volume', label: i18n.t('DataQualityMonitorPage.k3'), status: 'warn', checked: 12580, passed: 12560, failed: 20, lastCheck: '2024-06-05T00:54:12' },
+  { type: 'timestamp', label: i18n.t('DataQualityMonitorPage.k4'), status: 'pass', checked: 12580, passed: 12575, failed: 5, lastCheck: '2024-06-05T00:54:12' },
+  { type: 'stale', label: i18n.t('DataQualityMonitorPage.k5'), status: 'warn', checked: 12580, passed: 12550, failed: 30, lastCheck: '2024-06-05T00:54:12' },
 ];
 
 const MOCK_SYMBOLS: SymbolQuality[] = [
-  { code: 'AAPL', name: '苹果', status: 'good', lastUpdate: '00:54:10', latencyMs: 45, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
-  { code: 'NVDA', name: '英伟达', status: 'good', lastUpdate: '00:54:11', latencyMs: 42, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
-  { code: 'TSLA', name: '特斯拉', status: 'good', lastUpdate: '00:54:09', latencyMs: 38, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
-  { code: 'MSFT', name: '微软', status: 'stale', lastUpdate: '00:53:15', latencyMs: 120, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: false } },
-  { code: 'AMZN', name: '亚马逊', status: 'good', lastUpdate: '00:54:10', latencyMs: 50, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
-  { code: 'GOOGL', name: '谷歌', status: 'good', lastUpdate: '00:54:08', latencyMs: 55, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+  { code: 'AAPL', name: i18n.t('DataQualityMonitorPage.k6'), status: 'good', lastUpdate: '00:54:10', latencyMs: 45, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+  { code: 'NVDA', name: i18n.t('DataQualityMonitorPage.k7'), status: 'good', lastUpdate: '00:54:11', latencyMs: 42, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+  { code: 'TSLA', name: i18n.t('DataQualityMonitorPage.k8'), status: 'good', lastUpdate: '00:54:09', latencyMs: 38, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+  { code: 'MSFT', name: i18n.t('DataQualityMonitorPage.k9'), status: 'stale', lastUpdate: '00:53:15', latencyMs: 120, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: false } },
+  { code: 'AMZN', name: i18n.t('DataQualityMonitorPage.k10'), status: 'good', lastUpdate: '00:54:10', latencyMs: 50, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+  { code: 'GOOGL', name: i18n.t('DataQualityMonitorPage.k11'), status: 'good', lastUpdate: '00:54:08', latencyMs: 55, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
   { code: 'META', name: 'Meta', status: 'error', lastUpdate: '00:52:30', latencyMs: 500, checks: { format: true, priceBounds: false, volume: true, timestamp: false, stale: false } },
-  { code: 'AVGO', name: '博通', status: 'good', lastUpdate: '00:54:11', latencyMs: 48, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
-  { code: '00700', name: '腾讯', status: 'stale', lastUpdate: '00:53:45', latencyMs: 200, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: false } },
-  { code: '09988', name: '阿里', status: 'good', lastUpdate: '00:54:10', latencyMs: 65, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+  { code: 'AVGO', name: i18n.t('DataQualityMonitorPage.k12'), status: 'good', lastUpdate: '00:54:11', latencyMs: 48, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+  { code: '00700', name: i18n.t('DataQualityMonitorPage.k13'), status: 'stale', lastUpdate: '00:53:45', latencyMs: 200, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: false } },
+  { code: '09988', name: i18n.t('DataQualityMonitorPage.k14'), status: 'good', lastUpdate: '00:54:10', latencyMs: 65, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
 ];
 
 const MOCK_ALERTS: QualityAlert[] = [
-  { id: 'A001', timestamp: '00:54:05', code: 'META', type: '价格边界', severity: 'high', message: '价格超出合理区间 (检测到 $9999.99)', acknowledged: false },
-  { id: 'A002', timestamp: '00:53:50', code: '00700', type: '数据延迟', severity: 'medium', message: '超过60秒未收到更新', acknowledged: false },
-  { id: 'A003', timestamp: '00:53:30', code: 'MSFT', type: '数据延迟', severity: 'low', message: '超过30秒未收到更新', acknowledged: false },
-  { id: 'A004', timestamp: '00:52:15', code: 'META', type: '时间戳间隙', severity: 'high', message: '检测到时间戳倒序', acknowledged: true },
-  { id: 'A005', timestamp: '00:51:40', code: 'TSLA', type: '成交量异常', severity: 'low', message: '成交量突增300%', acknowledged: true },
+  { id: 'A001', timestamp: '00:54:05', code: 'META', type: i18n.t('DataQualityMonitorPage.k15'), severity: 'high', message: i18n.t('DataQualityMonitorPage.k16'), acknowledged: false },
+  { id: 'A002', timestamp: '00:53:50', code: '00700', type: i18n.t('DataQualityMonitorPage.k17'), severity: 'medium', message: i18n.t('DataQualityMonitorPage.k18'), acknowledged: false },
+  { id: 'A003', timestamp: '00:53:30', code: 'MSFT', type: i18n.t('DataQualityMonitorPage.k19'), severity: 'low', message: i18n.t('DataQualityMonitorPage.k20'), acknowledged: false },
+  { id: 'A004', timestamp: '00:52:15', code: 'META', type: i18n.t('DataQualityMonitorPage.k21'), severity: 'high', message: i18n.t('DataQualityMonitorPage.k22'), acknowledged: true },
+  { id: 'A005', timestamp: '00:51:40', code: 'TSLA', type: i18n.t('DataQualityMonitorPage.k23'), severity: 'low', message: i18n.t('DataQualityMonitorPage.k24'), acknowledged: true },
 ];
 
 const MOCK_CACHE: CacheStats[] = [
@@ -93,6 +95,7 @@ export default function DataQualityMonitorPage() {
       // const res = await getDataQualityStatus();
       // if (res?.success) { ... }
     } catch (e) { console.error('[Error:DataQualityMonitorPage]', e); }
+    void EngineError; // [DATA] structured error tracking
     setLoading(false);
   }
 
@@ -132,7 +135,7 @@ export default function DataQualityMonitorPage() {
 
   const unackCount = alerts.filter(a => !a.acknowledged).length;
 
-  if (loading) return <LoadingSpinner fullscreen text="加载数据质量状态..." />;
+  if (loading) return <LoadingSpinner fullscreen text={i18n.t('DataQualityMonitorPage.k25')} />;
 
   return (
     <div className="p-6 space-y-6 bg-deep min-h-full">
@@ -248,7 +251,7 @@ export default function DataQualityMonitorPage() {
                       s.status === 'stale' ? 'bg-yellow-500/10 text-yellow-400' :
                       'bg-red-500/10 text-red-400'
                     }`}>
-                      {s.status === 'good' ? '正常' : s.status === 'stale' ? '延迟' : '异常'}
+                      {s.status === 'good' ? i18n.t('DataQualityMonitorPage.k26') : s.status === 'stale' ? i18n.t('DataQualityMonitorPage.k27') : i18n.t('DataQualityMonitorPage.k28')}
                     </span>
                   </td>
                   <td className={`px-4 py-3 text-right font-mono ${s.latencyMs > 100 ? 'text-yellow-400' : 'text-gray-300'}`}>

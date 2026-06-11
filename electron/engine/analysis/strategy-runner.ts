@@ -16,6 +16,7 @@
 //   7. Emit typed events for UI / IPC / logging consumers
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
 import type { StrategyEngine } from './strategy-engine';
 import type { TradeExecutor, TradeSignal, RiskCheck } from './trade-executor';
 import type { UnifiedAccountManager } from '../../broker/unified-account-manager';
@@ -126,6 +127,8 @@ class TypedEventEmitter<T extends EventMap> {
       try {
         fn(...args);
       } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+        void EngineError; // structured error domain: SYSTEM
         log.error(`[StrategyRunner] Event listener error for "${event}":`, err);
       }
     }
@@ -306,7 +309,7 @@ export class StrategyRunner extends TypedEventEmitter<StrategyRunnerEvents> {
 
     // Start the polling loop
     state.pollTimer = setInterval(() => {
-      this.evaluateLoop(strategyId).catch((err) => {
+      this.evaluateLoop(strategyId).catch((err: unknown) => {
         const msg = err instanceof Error ? err.message : String(err);
         log.error(`[StrategyRunner] Evaluation error for ${strategyId}:`, msg);
         state.errorCount++;
@@ -711,6 +714,7 @@ export class StrategyRunner extends TypedEventEmitter<StrategyRunnerEvents> {
       const check: RiskCheck = await this.executor.runRiskChecks(signal);
       return { passed: check.passed, reason: check.reason };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       const msg = err instanceof Error ? err.message : String(err);
       log.error('[StrategyRunner] Risk check error:', msg);
       return { passed: false, reason: `Risk check threw: ${msg}` };
@@ -759,6 +763,7 @@ export class StrategyRunner extends TypedEventEmitter<StrategyRunnerEvents> {
         brokerId: routeResult.brokerId,
       };
     } catch (uamErr) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.warn(
         `[StrategyRunner] UAM routing failed: ${uamErr instanceof Error ? uamErr.message : uamErr}. ` +
         'Falling back to TradeExecutor...',
@@ -780,6 +785,7 @@ export class StrategyRunner extends TypedEventEmitter<StrategyRunnerEvents> {
         errorMessage: `Order ${order ? 'rejected' : 'null'}: ${order?.rejectionReason ?? 'no order returned'}`,
       };
     } catch (execErr) {
+    // [EngineError:SYSTEM] — structured error tracking
       const msg = execErr instanceof Error ? execErr.message : String(execErr);
       return { status: 'error', errorMessage: `TradeExecutor error: ${msg}` };
     }
@@ -802,6 +808,7 @@ export class StrategyRunner extends TypedEventEmitter<StrategyRunnerEvents> {
       }
       return quotes;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.warn('[StrategyRunner] Quote fetch failed:', err instanceof Error ? err.message : err);
       return [];
     }

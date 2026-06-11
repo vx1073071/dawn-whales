@@ -2,6 +2,7 @@
 // Phase 5.0 ML-38-01: Replaces inline StatusRow components
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 interface EngineStatus {
   name: string;
@@ -68,9 +69,9 @@ function statusColor(status: EngineStatus['status']): string {
 
 function statusText(status: EngineStatus['status']): string {
   switch (status) {
-    case 'online': return '运行中';
+    case 'online': return i18n.t('SystemHealthPanel.k1');
     case 'degraded': return 'components.downgrade';
-    case 'offline': return '离线';
+    case 'offline': return i18n.t('SystemHealthPanel.k2');
   }
 }
 
@@ -145,12 +146,12 @@ export default function SystemHealthPanel({ connected = false, compact = false }
             onClick={() => setExpanded(!expanded)}
             className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
           >
-            {expanded ? '收起 ▲' : '展开 ▼'}
+            {expanded ? i18n.t('SystemHealthPanel.k3') : i18n.t('SystemHealthPanel.k4')}
           </button>
           <button
             onClick={refresh}
             className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
-            title="刷新状态"
+            title={i18n.t('SystemHealthPanel.k5')}
           >
             🔄
           </button>

@@ -4,6 +4,8 @@
 // IPC: ws:connect, ws:disconnect, ws:subscribe, ws:unsubscribe, ws:status
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

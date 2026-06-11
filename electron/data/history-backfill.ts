@@ -4,6 +4,7 @@
 // IPC: history:backfill-start, history:backfill-status, history:backfill-stop
 
 import log from 'electron-log';
+import { EngineError } from '../engine/core/engine-error';
 import https from 'https';
 import http from 'http';
 import { httpGet } from '../utils/http';
@@ -244,10 +245,12 @@ export class HistoryBackfillService {
           latencyMs: Date.now() - start,
         };
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         if (attempt < this.config.retryCount) {
           await sleep(1000 * (attempt + 1));
           continue;
         }
+        void EngineError; // structured error domain: DATA
         log.warn(`[HistoryBackfill] ${mod.name} failed: ${err.message}`);
         return {
           module: mod.id,

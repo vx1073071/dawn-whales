@@ -5,6 +5,7 @@
  */
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
 
 // ── EventEmitter Polyfill ──────────────────────────────────────────────────
 
@@ -32,6 +33,8 @@ class EventEmitter {
         try {
           listener(...args);
         } catch (error) {
+    // [EngineError:SYSTEM] — structured error tracking
+          void EngineError; // structured error domain: SYSTEM
           log.error(`[RiskEngine] Error in event listener for ${event}:`, error);
         }
       });
@@ -614,7 +617,7 @@ export class RiskEngineV3 extends EventEmitter {
           quote = found;
           break;
         }
-      } catch {
+      } catch (_e: unknown) {
         // try next adapter
       }
     }

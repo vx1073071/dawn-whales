@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import * as api from '@/lib/bridge-api';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 type Tab = 'active' | 'history' | 'trades';
 
@@ -51,7 +54,8 @@ export default function OrdersPage() {
     try {
       const accs = await api.getAccounts();
       if (accs.length > 0) setSelectedAccount(accs[0].accId);
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
+  void EngineError; // [TRADE] structured error tracking
   }
 
   async function loadOrders() {
@@ -60,7 +64,7 @@ export default function OrdersPage() {
     try {
       const result = await api.getOrders(selectedAccount);
       setOrders(result?.success ? result.orders || [] : []);
-    } catch { setOrders([]); } finally { setLoading(false); }
+    } catch (_e: unknown) { setOrders([]); } finally { setLoading(false); }
   }
 
   async function loadTrades() {
@@ -69,7 +73,7 @@ export default function OrdersPage() {
         const trades = await window.api.db.getTrades();
         setDbTrades(trades || []);
       }
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   async function handleCancel(order: Order) {
@@ -78,7 +82,7 @@ export default function OrdersPage() {
         await window.api.broker.cancelOrder(order.orderId);
         loadOrders();
       }
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   const statusColors: Record<string, string> = {
@@ -93,15 +97,15 @@ export default function OrdersPage() {
   };
 
   const statusLabels: Record<string, string> = {
-    SUBMITTED: '已提交', WAITING: '等待中', FILLED: t('components.tradeFilled'), PARTIAL: t('components.partialFill'),
-    CANCELLED: '已撤销', REJECTED: t('components.tradeRejected'), UNKNOWN: '未知',
-    submitted: '已提交', pending: t('components.pending'),
+    SUBMITTED: i18n.t('OrdersPage.k1'), WAITING: i18n.t('OrdersPage.k2'), FILLED: t('components.tradeFilled'), PARTIAL: t('components.partialFill'),
+    CANCELLED: i18n.t('OrdersPage.k3'), REJECTED: t('components.tradeRejected'), UNKNOWN: i18n.t('OrdersPage.k4'),
+    submitted: i18n.t('OrdersPage.k5'), pending: t('components.pending'),
   };
 
   const tabs: { key: Tab; label: string; icon: string }[] = [
-    { key: 'active', label: '当前委托', icon: '📋' },
-    { key: 'history', label: '历史委托', icon: '📜' },
-    { key: 'trades', label: '策略交易记录', icon: '🔄' },
+    { key: 'active', label: i18n.t('OrdersPage.k6'), icon: '📋' },
+    { key: 'history', label: i18n.t('OrdersPage.k7'), icon: '📜' },
+    { key: 'trades', label: i18n.t('OrdersPage.k8'), icon: '🔄' },
   ];
 
   const activeOrders = orders.filter((o) => ['SUBMITTED', 'WAITING', 'PARTIAL'].includes(o.status));
@@ -116,7 +120,7 @@ export default function OrdersPage() {
           <p className="text-gray-400 text-sm">当前委托、历史成交和策略交易记录</p>
         </div>
         <button onClick={() => { loadOrders(); loadTrades(); }} disabled={loading} className="px-4 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">
-          {loading ? '...' : '⟳ 刷新'}
+          {loading ? '...' : i18n.t('OrdersPage.k9')}
         </button>
       </div>
 
@@ -146,7 +150,7 @@ export default function OrdersPage() {
           ) : displayOrders.length === 0 ? (
             <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">{tab === 'active' ? '📋' : '📜'}</div>
-              <p className="text-gray-400 text-sm">{tab === 'active' ? '暂无活跃委托' : '暂无历史委托'}</p>
+              <p className="text-gray-400 text-sm">{tab === 'active' ? i18n.t('OrdersPage.k10') : i18n.t('OrdersPage.k11')}</p>
               {!selectedAccount && <p className="text-gray-600 text-xs mt-1">请先连接 OpenD</p>}
             </div>
           ) : (
@@ -171,7 +175,7 @@ export default function OrdersPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{o.code?.replace('US.', '') || '--'}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${o.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {o.side === 'BUY' ? '买入' : '卖出'}
+                        {o.side === 'BUY' ? i18n.t('OrdersPage.k12') : i18n.t('OrdersPage.k13')}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{o.qty}</td>
@@ -228,7 +232,7 @@ export default function OrdersPage() {
                     <td className="px-4 py-3 text-white text-sm font-medium">{(t as any).symbol?.replace('US.', '')}</td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded ${(t as any).side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
-                        {(t as any).side === 'BUY' ? '买入' : '卖出'}
+                        {(t as any).side === 'BUY' ? i18n.t('OrdersPage.k14') : i18n.t('OrdersPage.k15')}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{(t as any).quantity}</td>

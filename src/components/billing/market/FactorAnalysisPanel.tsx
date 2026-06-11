@@ -12,6 +12,7 @@
 
 import { useState, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -53,17 +54,17 @@ export interface FactorAnalysisPanelProps {
 // ── Mock ────────────────────────────────────────────────────────────────
 
 const mockFactors: FactorInfo[] = [
-  { name: 'MOM', label: '动量 Momentum', ic: 0.042, ir: 0.68, decay: 3, crowding: 0.72, longShortSpread: 8.5,
+  { name: 'MOM', label: i18n.t('FactorAnalysisPanel.k1'), ic: 0.042, ir: 0.68, decay: 3, crowding: 0.72, longShortSpread: 8.5,
     history: [0.03,0.05,0.04,0.06,0.03,0.07,0.04,0.05,0.03,0.06,0.04,0.04] },
-  { name: 'VAL', label: '价值 Value', ic: 0.031, ir: 0.52, decay: 6, crowding: 0.45, longShortSpread: 5.2,
+  { name: 'VAL', label: i18n.t('FactorAnalysisPanel.k2'), ic: 0.031, ir: 0.52, decay: 6, crowding: 0.45, longShortSpread: 5.2,
     history: [0.02,0.04,0.03,0.02,0.05,0.03,0.04,0.02,0.03,0.04,0.03,0.03] },
-  { name: 'QUAL', label: '质量 Quality', ic: 0.038, ir: 0.61, decay: 4, crowding: 0.38, longShortSpread: 6.8,
+  { name: 'QUAL', label: i18n.t('FactorAnalysisPanel.k3'), ic: 0.038, ir: 0.61, decay: 4, crowding: 0.38, longShortSpread: 6.8,
     history: [0.04,0.03,0.05,0.04,0.03,0.05,0.04,0.04,0.03,0.05,0.04,0.04] },
-  { name: 'VOL', label: '低波 Low Vol', ic: -0.028, ir: 0.44, decay: 5, crowding: 0.55, longShortSpread: 4.1,
+  { name: 'VOL', label: i18n.t('FactorAnalysisPanel.k4'), ic: -0.028, ir: 0.44, decay: 5, crowding: 0.55, longShortSpread: 4.1,
     history: [-0.02,-0.04,-0.03,-0.02,-0.03,-0.04,-0.02,-0.03,-0.02,-0.04,-0.03,-0.03] },
-  { name: 'LIQ', label: '流动性 Liquidity', ic: 0.019, ir: 0.31, decay: 2, crowding: 0.28, longShortSpread: 3.2,
+  { name: 'LIQ', label: i18n.t('FactorAnalysisPanel.k5'), ic: 0.019, ir: 0.31, decay: 2, crowding: 0.28, longShortSpread: 3.2,
     history: [0.01,0.03,0.02,0.01,0.03,0.02,0.01,0.02,0.01,0.03,0.02,0.02] },
-  { name: 'SENT', label: '情绪 Sentiment', ic: 0.035, ir: 0.55, decay: 1, crowding: 0.62, longShortSpread: 7.1,
+  { name: 'SENT', label: i18n.t('FactorAnalysisPanel.k6'), ic: 0.035, ir: 0.55, decay: 1, crowding: 0.62, longShortSpread: 7.1,
     history: [0.03,0.04,0.03,0.05,0.02,0.04,0.03,0.04,0.03,0.05,0.03,0.04] },
 ];
 
@@ -79,10 +80,10 @@ const mockExposures: FactorExposure[] = [
 ];
 
 const mockStrategies: StrategyRadar[] = [
-  { name: '趋势跟踪', color: '#3b82f6', return_: 42.3, sharpe: 2.1, maxDrawdown: 12.5, winRate: 68.2, volatility: 18.5, alpha: 8.2 },
-  { name: '均值回归', color: '#8b5cf6', return_: 28.1, sharpe: 1.8, maxDrawdown: 8.3, winRate: 72.1, volatility: 14.2, alpha: 5.1 },
-  { name: '动量轮动', color: '#f59e0b', return_: 35.8, sharpe: 2.4, maxDrawdown: 15.1, winRate: 65.8, volatility: 20.1, alpha: 10.3 },
-  { name: '多因子', color: '#10b981', return_: 48.5, sharpe: 2.8, maxDrawdown: 9.2, winRate: 74.5, volatility: 16.3, alpha: 12.7 },
+  { name: i18n.t('FactorAnalysisPanel.k7'), color: '#3b82f6', return_: 42.3, sharpe: 2.1, maxDrawdown: 12.5, winRate: 68.2, volatility: 18.5, alpha: 8.2 },
+  { name: i18n.t('FactorAnalysisPanel.k8'), color: '#8b5cf6', return_: 28.1, sharpe: 1.8, maxDrawdown: 8.3, winRate: 72.1, volatility: 14.2, alpha: 5.1 },
+  { name: i18n.t('FactorAnalysisPanel.k9'), color: '#f59e0b', return_: 35.8, sharpe: 2.4, maxDrawdown: 15.1, winRate: 65.8, volatility: 20.1, alpha: 10.3 },
+  { name: i18n.t('FactorAnalysisPanel.k10'), color: '#10b981', return_: 48.5, sharpe: 2.8, maxDrawdown: 9.2, winRate: 74.5, volatility: 16.3, alpha: 12.7 },
 ];
 
 const STOCKS = ['AAPL', 'TSLA', 'NVDA', 'MSFT'];
@@ -123,7 +124,7 @@ function ICSparkline({ data, color }: { data: number[]; color: string }) {
 // ── Radar Chart (simplified SVG) ─────────────────────────────────────────
 
 function RadarChart({ strategies }: { strategies: StrategyRadar[] }) {
-  const dims = ['components.returnRate', 'components.sharpeRatio', '回撤↓', 'components.winRate', '波动↓', 'Alpha'] as const;
+  const dims = ['components.returnRate', 'components.sharpeRatio', i18n.t('FactorAnalysisPanel.k11'), 'components.winRate', i18n.t('FactorAnalysisPanel.k12'), 'Alpha'] as const;
   const cx = 70; const cy = 70; const r = 55;
   const angles = [270, 330, 30, 90, 150, 210].map(a => (a * Math.PI) / 180);
 
@@ -185,7 +186,7 @@ export default function FactorAnalysisPanel({
             {(['icir', 'exposure', 'radar'] as const).map(t => (
               <button key={t} onClick={() => setTab(t)}
                 className={`px-3 py-1.5 rounded-md text-xs font-medium ${tab === t ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-600'}`}>
-                {t === 'icir' ? 'IC/IR' : t === 'exposure' ? '暴露' : '雷达'}
+                {t === 'icir' ? 'IC/IR' : t === 'exposure' ? i18n.t('FactorAnalysisPanel.k13') : i18n.t('FactorAnalysisPanel.k14')}
               </button>
             ))}
           </div>

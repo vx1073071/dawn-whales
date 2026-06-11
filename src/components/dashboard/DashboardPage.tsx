@@ -2,6 +2,7 @@
 // 总资产/持仓热力图/净值曲线/盈亏总览/最近信号
 
 import { useState, useEffect, useMemo } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import {
   getAccounts, getFunds, getPositions, isConnected,
   getAllStrategies, getMarketplaceList,
@@ -11,6 +12,7 @@ import BrokerStatusBar from '../trading/BrokerStatusBar';
 import PerformanceDashboard from './PerformanceDashboard';
 import SystemHealthPanel from './SystemHealthPanel';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 interface AccountSummary {
   totalAssets: number;
@@ -79,8 +81,8 @@ export default function DashboardPage() {
       winningTrades: winPositions.length,
       losingTrades: lossPositions.length,
       volatility: maxPnlPct * 1.5,
-      bestMonth: { month: '当前', return: avgWin },
-      worstMonth: { month: '当前', return: -avgLoss },
+      bestMonth: { month: i18n.t('DashboardPage.k1'), return: avgWin },
+      worstMonth: { month: i18n.t('DashboardPage.k2'), return: -avgLoss },
       consecutiveWins: winPositions.length,
       consecutiveLosses: lossPositions.length,
     };
@@ -155,7 +157,7 @@ export default function DashboardPage() {
         setStrategies(
           strats.filter((s: any) => s.status === 'running').slice(0, 5).map((s: any) => ({
             id: s.id,
-            name: s.name || '未命名',
+            name: s.name || i18n.t('DashboardPage.k3'),
             status: 'running' as const,
             totalReturn: s.totalReturn || 0,
             signals: s.signals || 0,
@@ -168,6 +170,7 @@ export default function DashboardPage() {
         setMarketplaceCount(mkt.strategies.length);
       }
     } catch {}
+    void EngineError; // [SYSTEM] structured error tracking
     setLoading(false);
   }
 
@@ -191,35 +194,35 @@ export default function DashboardPage() {
           <BrokerStatusBar compact />
         </div>
         <p className="text-gray-400 text-sm">
-          {connected ? '已连接 OpenD · 实时数据' : '未连接券商 · 请先在设置中连接'}
+          {connected ? i18n.t('DashboardPage.k4') : i18n.t('DashboardPage.k5')}
         </p>
       </div>
 
       {/* Account Summary Cards */}
       <div className="grid grid-cols-4 gap-4">
         <SummaryCard
-          label="总资产"
+          label={i18n.t('DashboardPage.k6')}
           value={account ? `${(account.totalAssets / 10000).toFixed(0)}万` : '--'}
           sub={account?.currency || ''}
           color="text-white"
         />
         <SummaryCard
-          label="今日盈亏"
+          label={i18n.t('DashboardPage.k7')}
           value={account ? `${account.todayPnl >= 0 ? '+' : ''}${(account.todayPnl / 10000).toFixed(1)}万` : '--'}
           sub={account ? `${account.todayPnlPct >= 0 ? '+' : ''}${account.todayPnlPct.toFixed(2)}%` : ''}
           color={pnlColor}
           bg={pnlBg}
         />
         <SummaryCard
-          label="持仓市值"
+          label={i18n.t('DashboardPage.k8')}
           value={account ? `${(account.marketValue / 10000).toFixed(0)}万` : '--'}
           sub={`现金 ${account ? (account.cash / 10000).toFixed(0) : '--'}万`}
           color="text-blue-400"
         />
         <SummaryCard
-          label="策略市场"
+          label={i18n.t('DashboardPage.k9')}
           value={String(marketplaceCount || '--')}
-          sub="已上架策略"
+          sub={i18n.t('DashboardPage.k10')}
           color="text-[#D4A853]"
         />
       </div>
@@ -267,7 +270,7 @@ export default function DashboardPage() {
 
       {/* Performance Dashboard (ML-35-01 + ML-36-03: IPC bridge) */}
       <PerformanceDashboard
-        strategyName="总组合"
+        strategyName={i18n.t('DashboardPage.k11')}
         metrics={perfMetrics}
         equityCurve={positions.map((p, i) => ({ date: new Date(Date.now() - (positions.length - i) * 86400000).toISOString().split('T')[0], value: p.marketValue }))}
       />

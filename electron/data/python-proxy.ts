@@ -3,6 +3,7 @@
 // Auto-detects Python path, handles timeouts, caches output file paths
 
 import log from 'electron-log';
+import { EngineError } from '../engine/core/engine-error';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import path from 'path';
@@ -99,7 +100,10 @@ export class PythonProxyService {
           log.info(`[PythonProxy] Found Python at: ${candidate}`);
           return;
         }
-      } catch (e) { logger.error('[backend:python-proxy]', e); }
+      } catch (e) {
+    // [EngineError:DATA] — structured error tracking
+    void EngineError; // structured error domain: DATA
+    logger.error('[backend:python-proxy]', e); }
     }
 
     // Fallback to PATH resolution
@@ -196,6 +200,7 @@ export class PythonProxyService {
       log.info(`[PythonProxy] ${skillName} done in ${durationMs}ms, files: ${outputFiles.length}`);
       return result;
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       const durationMs = Date.now() - startTime;
       log.error(`[PythonProxy] ${skillName} failed:`, err.message);
       

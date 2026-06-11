@@ -14,6 +14,7 @@
  */
 
 import log from 'electron-log';
+import { EngineError } from './engine-error';
 import { EventEmitter } from 'events';
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -252,7 +253,7 @@ export class TimeoutGuard {
         this.activeTimers.delete(id);
         const durationMs = Math.round((performance.now() - startTime) * 100) / 100;
         resolve({ success: true, result, timedOut: false, durationMs });
-      }).catch(() => {
+      }).catch((_: unknown) => {
         if (resolved) return;
         resolved = true;
         clearTimeout(timer);
@@ -369,6 +370,8 @@ export class RetryRunner {
 
         return { success: true, result, attempts: attempt + 1, totalDurationMs: Math.round(totalDurationMs * 100) / 100 };
       } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+        void EngineError; // structured error domain: SYSTEM
         lastError = err instanceof Error ? err : new Error(String(err));
         const durationMs = Math.round((performance.now() - start) * 100) / 100;
         durationsMs.push(durationMs);

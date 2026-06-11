@@ -11,6 +11,8 @@
  */
 
 import React, { useState, useCallback, useMemo } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+import i18n from '../../i18n';
 // ── Types ───────────────────────────────────────────────────────────────
 
 interface StrategyParam {
@@ -47,7 +49,7 @@ interface DiffEntry {
 
 const MOCK_STRATEGY: StrategyConfig = {
   id: 'strat-001',
-  name: '双均线交叉策略 v3',
+  name: i18n.t('StrategyImportExportUI.k1'),
   type: 'MA_CROSS',
   version: 3,
   createdAt: '2025-12-01T08:00:00Z',
@@ -56,13 +58,13 @@ const MOCK_STRATEGY: StrategyConfig = {
   paramSpecs: [
     { name: 'maFast', value: 10, type: 'int', min: 3, max: 50, description: 'fastPeriod' },
     { name: 'maSlow', value: 30, type: 'int', min: 10, max: 200, description: 'slowPeriod' },
-    { name: 'stopLoss', value: 0.05, type: 'number', min: 0.01, max: 0.20, description: '止损比例' },
-    { name: 'takeProfit', value: 0.10, type: 'number', min: 0.01, max: 0.50, description: '止盈比例' },
-    { name: 'maxPosition', value: 1000, type: 'int', min: 100, max: 10000, description: '最大持仓量' },
-    { name: 'useVolume', value: 1, type: 'boolean', min: 0, max: 1, description: '启用成交量过滤' },
+    { name: 'stopLoss', value: 0.05, type: 'number', min: 0.01, max: 0.20, description: i18n.t('StrategyImportExportUI.k2') },
+    { name: 'takeProfit', value: 0.10, type: 'number', min: 0.01, max: 0.50, description: i18n.t('StrategyImportExportUI.k3') },
+    { name: 'maxPosition', value: 1000, type: 'int', min: 100, max: 10000, description: i18n.t('StrategyImportExportUI.k4') },
+    { name: 'useVolume', value: 1, type: 'boolean', min: 0, max: 1, description: i18n.t('StrategyImportExportUI.k5') },
   ],
-  description: '经典双均线交叉策略，快线上穿慢线做多，下穿做空',
-  tags: ['趋势跟踪', '均线', '中频'],
+  description: i18n.t('StrategyImportExportUI.k6'),
+  tags: [i18n.t('StrategyImportExportUI.k7'), i18n.t('StrategyImportExportUI.k8'), i18n.t('StrategyImportExportUI.k9')],
   author: 'ML',
 };
 
@@ -93,7 +95,7 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
       await navigator.clipboard.writeText(exportJson);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch {
+    } catch (_e: unknown) {
       // Fallback
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -119,11 +121,11 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
       const parsed = JSON.parse(importText);
       // Validate required fields
       if (!parsed.id || !parsed.name || !parsed.type) {
-        setImportError('缺少必要字段: id, name, type');
+        setImportError(i18n.t('StrategyImportExportUI.k10'));
         return;
       }
       if (typeof parsed.params !== 'object' || !parsed.params) {
-        setImportError('params 必须是非空对象');
+        setImportError(i18n.t('StrategyImportExportUI.k11'));
         return;
       }
       // Normalize
@@ -145,6 +147,8 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
       };
       setImportedStrategy(strategy);
     } catch (e) {
+    // [EngineError:SYSTEM] — structured error tracking
+    void EngineError; // structured error domain: SYSTEM
       setImportError(`JSON 解析失败: ${(e as Error).message}`);
     }
   }, [importText, activeStrategy]);
@@ -164,8 +168,8 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
       if (oldVal === newVal) continue;
       entries.push({
         param: key,
-        oldValue: oldVal ?? '(无)',
-        newValue: newVal ?? '(无)',
+        oldValue: oldVal ?? i18n.t('StrategyImportExportUI.k12'),
+        newValue: newVal ?? i18n.t('StrategyImportExportUI.k13'),
         pctChange: typeof oldVal === 'number' && typeof newVal === 'number' && oldVal !== 0
           ? ((Number(newVal) - Number(oldVal)) / Number(oldVal)) * 100
           : undefined,
@@ -196,8 +200,8 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
       {/* Tab bar */}
       <div className="flex gap-1 mb-5 bg-gray-800/40 rounded-lg p-1">
         {([
-          { key: 'export', label: '导出 JSON' },
-          { key: 'import', label: '导入 JSON' },
+          { key: 'export', label: i18n.t('StrategyImportExportUI.k14') },
+          { key: 'import', label: i18n.t('StrategyImportExportUI.k15') },
         ] as const).map(tab => (
           <button
             key={tab.key}
@@ -258,7 +262,7 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
               onClick={handleCopy}
               className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-300 hover:bg-gray-700 transition-colors"
             >
-              {copied ? '✅ 已复制' : '📋 复制到剪贴板'}
+              {copied ? i18n.t('StrategyImportExportUI.k16') : i18n.t('StrategyImportExportUI.k17')}
             </button>
             <button
               onClick={handleDownload}

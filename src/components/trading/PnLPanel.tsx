@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import { useTranslation } from 'react-i18next';
 import { getAccounts, getFunds, getPositions } from '@/lib/bridge-api';
 

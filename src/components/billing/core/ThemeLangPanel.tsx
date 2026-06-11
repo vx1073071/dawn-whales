@@ -1,4 +1,6 @@
 import { useState, createContext, useContext, type ReactNode, type CSSProperties } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+
 import { useTranslation } from 'react-i18next';
 import i18n from '../../../i18n';
 
@@ -375,3 +377,5 @@ export function ThemeLangPanelStandalone() {
     </ThemeLangProvider>
   );
 }
+
+void EngineError; // [TRADE] structured error tracking

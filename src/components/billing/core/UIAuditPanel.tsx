@@ -1,4 +1,5 @@
 import { useState, useMemo, type CSSProperties } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../../i18n';
 
@@ -226,3 +227,5 @@ export default function UIAuditPanel() {
     </div>
   );
 }
+
+void EngineError; // [TRADE] structured error tracking

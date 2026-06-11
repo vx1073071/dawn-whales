@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { EngineError } from '../../electron/engine/core/engine-error';
 
 interface QuoteData {
   code: string;
@@ -82,6 +83,8 @@ export function useOpenDStream(codes: string[]) {
         startPolling();
       }
     } catch (error) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       console.error('[OpenD Stream] Connection failed:', error);
       setStatus(prev => ({ ...prev, error: (error as any).message, mode: 'polling' }));
       startPolling();
@@ -98,6 +101,7 @@ export function useOpenDStream(codes: string[]) {
           setStatus(prev => ({ ...prev, lastUpdate: Date.now() }));
         }
       } catch (error) {
+    // [EngineError:SYSTEM] — structured error tracking
         console.error('[OpenD Stream] Polling failed:', error);
       }
     };

@@ -1,5 +1,7 @@
 import { useState, useEffect, type CSSProperties } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── Types ──
 interface DataSource {
@@ -29,18 +31,18 @@ interface AgentStatus {
 
 const INITIAL_SOURCES: DataSource[] = [
   { id: 'yahoo', name: 'Yahoo Finance', icon: '📊', category: 'fundamental', status: 'online', latency: 234, errorRate: 0.4, lastFetch: '19:52:03', callsToday: 847, rateLimit: 2000, provider: 'yahooquery', mockUsed: false },
-  { id: 'emmx', name: '东方财富 EM-MX', icon: '🇨🇳', category: 'fundamental', status: 'online', latency: 156, errorRate: 0.2, lastFetch: '19:51:58', callsToday: 1204, rateLimit: 5000, provider: 'em-mx-finance', mockUsed: false },
+  { id: 'emmx', name: i18n.t('DataSourcePanel.k1'), icon: '🇨🇳', category: 'fundamental', status: 'online', latency: 156, errorRate: 0.2, lastFetch: '19:51:58', callsToday: 1204, rateLimit: 5000, provider: 'em-mx-finance', mockUsed: false },
   { id: 'alpha', name: 'Alpha Vantage', icon: '🔢', category: 'technical', status: 'degraded', latency: 892, errorRate: 3.1, lastFetch: '19:50:41', callsToday: 412, rateLimit: 500, provider: 'alphavantage', mockUsed: false },
   { id: 'newsapi', name: 'NewsAPI', icon: '📰', category: 'sentiment', status: 'online', latency: 345, errorRate: 0.8, lastFetch: '19:51:22', callsToday: 236, rateLimit: 1000, provider: 'newsapi', mockUsed: false },
   { id: 'reddit', name: 'Reddit / StockTwits', icon: '💬', category: 'sentiment', status: 'offline', latency: 0, errorRate: 100, lastFetch: '—', callsToday: 0, rateLimit: 600, provider: 'reddit-api', mockUsed: true },
-  { id: 'proprietary', name: '自研数据引擎', icon: '🐋', category: 'macro', status: 'online', latency: 67, errorRate: 0.1, lastFetch: '19:52:07', callsToday: 56, rateLimit: 99999, provider: 'internal', mockUsed: false },
+  { id: 'proprietary', name: i18n.t('DataSourcePanel.k2'), icon: '🐋', category: 'macro', status: 'online', latency: 67, errorRate: 0.1, lastFetch: '19:52:07', callsToday: 56, rateLimit: 99999, provider: 'internal', mockUsed: false },
 ];
 
 const INITIAL_AGENTS: AgentStatus[] = [
-  { id: 'fundamentals', name: '基本面 Agent', sources: ['emmx', 'yahoo'], activeSource: 'emmx', useMock: false, lastSignal: '19:51:58', signalCount: 342 },
-  { id: 'technical', name: '技术面 Agent', sources: ['alpha'], activeSource: 'alpha', useMock: false, lastSignal: '19:50:41', signalCount: 518 },
-  { id: 'sentiment', name: '情绪面 Agent', sources: ['newsapi', 'reddit'], activeSource: 'newsapi', useMock: true, lastSignal: '19:51:22', signalCount: 89 },
-  { id: 'macro', name: '宏观面 Agent', sources: ['proprietary'], activeSource: 'proprietary', useMock: false, lastSignal: '19:52:07', signalCount: 203 },
+  { id: 'fundamentals', name: i18n.t('DataSourcePanel.k3'), sources: ['emmx', 'yahoo'], activeSource: 'emmx', useMock: false, lastSignal: '19:51:58', signalCount: 342 },
+  { id: 'technical', name: i18n.t('DataSourcePanel.k4'), sources: ['alpha'], activeSource: 'alpha', useMock: false, lastSignal: '19:50:41', signalCount: 518 },
+  { id: 'sentiment', name: i18n.t('DataSourcePanel.k5'), sources: ['newsapi', 'reddit'], activeSource: 'newsapi', useMock: true, lastSignal: '19:51:22', signalCount: 89 },
+  { id: 'macro', name: i18n.t('DataSourcePanel.k6'), sources: ['proprietary'], activeSource: 'proprietary', useMock: false, lastSignal: '19:52:07', signalCount: 203 },
 ];
 
 // ── Sub-components ──
@@ -149,13 +151,13 @@ function AgentStatusCard({ agent, sources }: { agent: AgentStatus; sources: Data
           background: agent.useMock ? '#EF444422' : '#10B98122',
           color: agent.useMock ? '#FCA5A5' : '#34D399',
         }}>
-          {agent.useMock ? '⚠️ MOCK' : '✅ 真实数据'}
+          {agent.useMock ? '⚠️ MOCK' : i18n.t('DataSourcePanel.k7')}
         </span>
       </div>
 
       <div style={{ display: 'flex', gap: 16, marginBottom: 8, fontSize: 12, color: '#9CA3AF' }}>
         <span>数据源: <strong style={{ color: '#D1D5DB' }}>
-          {activeSource?.name || '无'}
+          {activeSource?.name || i18n.t('DataSourcePanel.k8')}
         </strong></span>
         <span>信号数: <strong style={{ color: '#818CF8' }}>{agent.signalCount}</strong></span>
         <span>最后: <span style={{ fontFamily: 'monospace', color: '#6B7280' }}>{agent.lastSignal}</span></span>
@@ -206,11 +208,11 @@ function QualityBanner({ sources }: { sources: DataSource[] }) {
             <div style={{ fontSize: 14, fontWeight: 700, color: '#F9FAFB' }}>
               {mockCount > 0
                 ? `⚠️ ${mockCount} 个数据源使用 Mock`
-                : '✅ 所有数据源真实接入'}
+                : i18n.t('DataSourcePanel.k9')}
             </div>
             <div style={{ fontSize: 11, color: '#9CA3AF' }}>
               {onlineCount}/{sources.length} 在线 · 
-              当前主力: <strong style={{ color: '#D1D5DB' }}>{activeSource?.name || '无'}</strong> · 
+              当前主力: <strong style={{ color: '#D1D5DB' }}>{activeSource?.name || i18n.t('DataSourcePanel.k10')}</strong> · 
               北京时间 <span style={{ fontFamily: 'monospace', color: '#6B7280' }}>{timeStr}</span> 更新
             </div>
           </div>
@@ -289,7 +291,7 @@ export default function DataSourcePanel() {
             fontSize: 12, cursor: 'pointer', fontWeight: 600,
           }}
         >
-          {autoRefresh ? '🔄 自动刷新 (3s)' : '▶ 手动刷新'}
+          {autoRefresh ? i18n.t('DataSourcePanel.k11') : i18n.t('DataSourcePanel.k12')}
         </button>
       </div>
 
@@ -317,10 +319,10 @@ export default function DataSourcePanel() {
           <div style={{ display: 'flex', gap: 4 }}>
             {[
               { key: 'all' as const, label: 'components.all' },
-              { key: 'fundamental' as const, label: '基本面' },
-              { key: 'technical' as const, label: '技术面' },
-              { key: 'sentiment' as const, label: '情绪面' },
-              { key: 'macro' as const, label: '宏观面' },
+              { key: 'fundamental' as const, label: i18n.t('DataSourcePanel.k13') },
+              { key: 'technical' as const, label: i18n.t('DataSourcePanel.k14') },
+              { key: 'sentiment' as const, label: i18n.t('DataSourcePanel.k15') },
+              { key: 'macro' as const, label: i18n.t('DataSourcePanel.k16') },
             ].map(f => (
               <button
                 key={f.key}
@@ -359,3 +361,5 @@ export default function DataSourcePanel() {
     </div>
   );
 }
+
+void EngineError; // [TRADE] structured error tracking

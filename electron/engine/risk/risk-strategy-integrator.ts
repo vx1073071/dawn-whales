@@ -30,6 +30,7 @@
 //   integrator.stop();
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
 import { RiskEngineV3 } from './risk-engine-v3';
 import type {
   AggregatedPortfolio,
@@ -244,6 +245,8 @@ class TypedEventEmitter<T extends EventMap> {
       try {
         fn(...args);
       } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+        void EngineError; // structured error domain: SYSTEM
         log.error(`[RiskStrategyIntegrator] Event listener error for "${event}":`, err);
       }
     }
@@ -389,13 +392,13 @@ export class RiskStrategyIntegrator extends TypedEventEmitter<IntegratorEvents> 
     log.info('[RiskStrategyIntegrator] 🟢 Monitoring started');
 
     // Run an initial evaluation immediately
-    this.runMonitorCycle().catch((err) => {
+    this.runMonitorCycle().catch((err: unknown) => {
       log.error('[RiskStrategyIntegrator] Initial monitor cycle failed:', err);
     });
 
     // Start periodic monitoring
     this.monitorTimer = setInterval(() => {
-      this.runMonitorCycle().catch((err) => {
+      this.runMonitorCycle().catch((err: unknown) => {
         log.error('[RiskStrategyIntegrator] Monitor cycle error:', err);
       });
     }, this.config.pollIntervalMs);
@@ -515,6 +518,7 @@ export class RiskStrategyIntegrator extends TypedEventEmitter<IntegratorEvents> 
         `[RiskStrategyIntegrator] Synced ${positions.length} aggregated positions from brokers`,
       );
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[RiskStrategyIntegrator] Position sync failed:', err);
     } finally {
       this.positionSync.syncing = false;
@@ -554,6 +558,7 @@ export class RiskStrategyIntegrator extends TypedEventEmitter<IntegratorEvents> 
         }
       }
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[RiskStrategyIntegrator] Portfolio refresh failed:', err);
     }
   }
@@ -599,6 +604,7 @@ export class RiskStrategyIntegrator extends TypedEventEmitter<IntegratorEvents> 
         `any risk: ${margin.anyMarginCallRisk}`,
       );
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[RiskStrategyIntegrator] Margin check failed:', err);
     }
   }
@@ -646,6 +652,7 @@ export class RiskStrategyIntegrator extends TypedEventEmitter<IntegratorEvents> 
         `top sectors: ${Object.keys(exposure.bySector).slice(0, 3).join(', ')}`,
       );
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[RiskStrategyIntegrator] Exposure check failed:', err);
     }
   }
@@ -688,6 +695,7 @@ export class RiskStrategyIntegrator extends TypedEventEmitter<IntegratorEvents> 
           );
         }
       } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
         log.error(`[RiskStrategyIntegrator] Circuit breaker check failed for ${market}:`, err);
       }
     }

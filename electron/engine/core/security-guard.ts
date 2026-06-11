@@ -32,19 +32,7 @@ export function sanitizeInput(input: unknown): string {
   let sanitized = input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
   // Remove on* event handlers
   sanitized = sanitized.replace(/\bon\w+\s*=\s*"[^"]*"/gi, '');
-  sanitized = sanitized.replace(/\bon\w+\s*=\s*'[^']*'/gi, '');
-  // Encode remaining HTML
-  return htmlEncode(sanitized.trim());
-}
-
-/**
- * 深递归清理对象中的所有字符串字段
- */
-export function sanitizeObject<T extends Record<string, unknown>>(obj: T): T {
-  const result = { ...obj };
-  for (const key of Object.keys(result)) {
-    const value = result[key];
-    if (typeof value === 'string') {
+  sanitized = sanitized.replace(/\bon\w+\s*=\s*'[^']*'/gi, 'i18n.t('securityGuard.k1')string') {
       result[key] = sanitizeInput(value);
     } else if (value && typeof value === 'object' && !Array.isArray(value)) {
       result[key] = sanitizeObject(value as Record<string, unknown>);
@@ -64,6 +52,10 @@ export function sanitizeObject<T extends Record<string, unknown>>(obj: T): T {
 // ── CSRF Token ────────────────────────────────────────────────
 
 import { randomBytes, timingSafeEqual } from 'crypto';
+
+import i18n from '../../../src/i18n';
+import { EngineError } from './engine-error';
+
 
 const CSRF_TOKEN_LENGTH = 32;
 const CSRF_HEADER = 'x-csrf-token';
@@ -91,7 +83,7 @@ export function validateCsrfToken(token: string, sessionId: string): boolean {
     const expectedBuf = Buffer.from(expected, 'hex');
     if (tokenBuf.length !== expectedBuf.length) return false;
     return timingSafeEqual(tokenBuf, expectedBuf);
-  } catch {
+  } catch (_e: unknown) {
     return false;
   }
 }

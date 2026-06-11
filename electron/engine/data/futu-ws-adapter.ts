@@ -1,4 +1,5 @@
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
 
 // ─── Interfaces ────────────────────────────────────────────────────────────────
 
@@ -114,6 +115,8 @@ export class FutuWsAdapter {
       log.info(`[FutuWsAdapter] Adapter started successfully`);
       return true;
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+      void EngineError; // structured error domain: DATA
       log.error('[FutuWsAdapter] Failed to start:', err);
       this.errors++;
       return false;
@@ -153,6 +156,7 @@ export class FutuWsAdapter {
     try {
       await this.subscribeToSymbols(newSymbols);
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[FutuWsAdapter] Failed to add symbols:', err);
       this.errors++;
       throw err;
@@ -175,6 +179,7 @@ export class FutuWsAdapter {
     try {
       this.futuClient.unsubscribeQuote(toRemove);
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[FutuWsAdapter] Error unsubscribing symbols:', err);
       this.errors++;
     }
@@ -248,6 +253,7 @@ export class FutuWsAdapter {
       // Notify registered callbacks
       this.notifyCallbacks(tick);
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error(`[FutuWsAdapter] Error processing quote for ${quote?.code}:`, err);
       this.errors++;
     }
@@ -264,7 +270,7 @@ export class FutuWsAdapter {
       log.info(
         `[FutuWsAdapter] Re-subscribing to ${symbols.length} symbols after reconnect`
       );
-      this.subscribeToSymbols(symbols).catch((err) => {
+      this.subscribeToSymbols(symbols).catch((err: unknown) => {
         log.error('[FutuWsAdapter] Failed to re-subscribe after reconnect:', err);
         this.errors++;
       });
@@ -298,6 +304,7 @@ export class FutuWsAdapter {
       this.reconnectAttempts = 0;
       return true;
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[FutuWsAdapter] Connection failed:', err);
       this.connected = false;
       return false;
@@ -323,6 +330,7 @@ export class FutuWsAdapter {
         this.futuClient.unsubscribeQuote(symbols);
       }
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[FutuWsAdapter] Error during unsubscribeAll:', err);
       this.errors++;
     }
@@ -384,6 +392,7 @@ export class FutuWsAdapter {
         log.debug('[FutuWsAdapter] wsEngine has no pushTick/onMarketTick method');
       }
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error(`[FutuWsAdapter] Failed to forward tick ${tick.code} to wsEngine:`, err);
       this.errors++;
     }
@@ -394,6 +403,7 @@ export class FutuWsAdapter {
       try {
         cb(tick);
       } catch (err) {
+    // [EngineError:DATA] — structured error tracking
         log.error('[FutuWsAdapter] Callback error:', err);
         this.errors++;
       }

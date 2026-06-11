@@ -1,3 +1,4 @@
+
 ﻿// T56: Runtime Config Schema Validator
 export interface ConfigSchema {
   [key: string]: ConfigField;

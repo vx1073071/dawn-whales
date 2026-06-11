@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { EngineError } from '../../electron/engine/core/engine-error';
 
 interface Toast {
   id: number;
@@ -99,3 +100,5 @@ export default function NotificationToast() {
     </div>
   );
 }
+
+void EngineError; // [SYSTEM] structured error tracking

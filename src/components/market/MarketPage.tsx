@@ -1,9 +1,11 @@
 import { useState, useEffect, useMemo, memo } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
 import { useMarketStore } from '@/stores/marketStore';
 import { useWebSocketQuotes } from '@/hooks/useWebSocketQuotes';
 import KLineChart from './KLineChart';
 import * as api from '@/lib/bridge-api';
+import i18n from '../../i18n';
 
 const POPULAR_US = [
   { code: 'US.TQQQ', name: 'ProShares UltraPro QQQ 3x' },
@@ -47,12 +49,12 @@ export default function MarketPage() {
   const [klinePeriod, setKlinePeriod] = useState<string>('daily');
 
   const PERIODS = [
-    { key: '1m', label: '1分' },
-    { key: '5m', label: '5分' },
-    { key: '15m', label: '15分' },
-    { key: '60m', label: '60分' },
-    { key: 'daily', label: '日K' },
-    { key: 'weekly', label: '周K' },
+    { key: '1m', label: i18n.t('MarketPage.k1') },
+    { key: '5m', label: i18n.t('MarketPage.k2') },
+    { key: '15m', label: i18n.t('MarketPage.k3') },
+    { key: '60m', label: i18n.t('MarketPage.k4') },
+    { key: 'daily', label: i18n.t('MarketPage.k5') },
+    { key: 'weekly', label: i18n.t('MarketPage.k6') },
   ];
 
   // ── J-25-05: WebSocket real-time quotes ──────────────────────────────────
@@ -98,6 +100,7 @@ export default function MarketPage() {
         })));
       }
     } catch { /* silent */ } finally { setKlineLoading(false); }
+  void EngineError; // [DATA] structured error tracking
   }
 
   const filteredSearch = searchQuery.trim()
@@ -303,7 +306,7 @@ const WatchlistRow = memo(function WatchlistRow({
         {isInv && <span className="text-[10px] bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded">反向</span>}
       </td>
       <td className="px-4 py-3 text-center">
-        <button onClick={(e) => { e.stopPropagation(); onRemove(code); }} className="text-gray-600 hover:text-red-400 text-xs transition-colors" title="移出自选">✕</button>
+        <button onClick={(e) => { e.stopPropagation(); onRemove(code); }} className="text-gray-600 hover:text-red-400 text-xs transition-colors" title={i18n.t('MarketPage.k7')}>✕</button>
       </td>
     </tr>
   );

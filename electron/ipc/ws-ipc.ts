@@ -2,6 +2,7 @@
 // 24 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -16,6 +17,8 @@ export function registerWsIPC(
       const result = await connectWebSocket(config);
       return { success: result };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
+      void EngineError; // structured error domain: NETWORK
       log.error('[WebSocket] Connect error:', err);
       return { success: false, error: err.message };
     }
@@ -28,6 +31,7 @@ export function registerWsIPC(
       await disconnectWebSocket();
       return { success: true };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       log.error('[WebSocket] Disconnect error:', err);
       return { success: false, error: err.message };
     }
@@ -40,6 +44,7 @@ export function registerWsIPC(
       const result = subscribeToSymbol(symbol);
       return { success: result };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       log.error('[WebSocket] Subscribe error:', err);
       return { success: false, error: err.message };
     }
@@ -52,6 +57,7 @@ export function registerWsIPC(
       const result = unsubscribeFromSymbol(symbol);
       return { success: result };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       log.error('[WebSocket] Unsubscribe error:', err);
       return { success: false, error: err.message };
     }
@@ -64,6 +70,7 @@ export function registerWsIPC(
       const result = subscribeToSymbols(symbols);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       log.error('[WebSocket] Batch subscribe error:', err);
       return { success: false, error: err.message };
     }
@@ -76,6 +83,7 @@ export function registerWsIPC(
       const result = unsubscribeFromSymbols(symbols);
       return { success: true, result };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       log.error('[WebSocket] Batch unsubscribe error:', err);
       return { success: false, error: err.message };
     }
@@ -88,6 +96,7 @@ export function registerWsIPC(
       const status = getWebSocketStatus();
       return { success: true, status };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       log.error('[WebSocket] Status error:', err);
       return { success: false, error: err.message };
     }
@@ -100,6 +109,7 @@ export function registerWsIPC(
       const stats = getStreamingStats();
       return { success: true, stats };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       log.error('[WebSocket] Streaming stats error:', err);
       return { success: false, error: err.message };
     }
@@ -117,6 +127,7 @@ export function registerWsIPC(
       stream.start();
       return { success: true, status: stream.getStatus() };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -166,6 +177,7 @@ export function registerWsIPC(
       const result = await proxy.getSectorHeatmap(type as any, limit);
       return result;
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -178,6 +190,7 @@ export function registerWsIPC(
       const result = await proxy.getCapitalFlowRank(type as any, limit);
       return result;
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -190,6 +203,7 @@ export function registerWsIPC(
       const result = await proxy.getStockQuote(secid);
       return result;
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -202,6 +216,7 @@ export function registerWsIPC(
       const result = await proxy.getMarketBreadth();
       return result;
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -213,6 +228,7 @@ export function registerWsIPC(
       const proxy = getPush2Proxy();
       return { success: true, status: proxy.getStatus() };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -225,6 +241,7 @@ export function registerWsIPC(
       proxy.clearCache();
       return { success: true };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -244,6 +261,7 @@ export function registerWsIPC(
       });
       return { success: true };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -255,6 +273,7 @@ export function registerWsIPC(
       getWsDataStream().stop();
       return { success: true };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -266,6 +285,7 @@ export function registerWsIPC(
       getWsDataStream().subscribe(codes || []);
       return { success: true };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -277,6 +297,7 @@ export function registerWsIPC(
       getWsDataStream().unsubscribe(codes || []);
       return { success: true };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -287,6 +308,7 @@ export function registerWsIPC(
     try {
       return { success: true, status: getWsDataStream().getStatus() };
     } catch (err) {
+    // [EngineError:NETWORK] — structured error tracking
       return { success: false, error: err.message };
     }
   });

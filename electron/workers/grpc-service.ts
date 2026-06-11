@@ -1,3 +1,4 @@
+import { EngineError } from './engine/core/engine-error';
 ﻿// T86: gRPC Service Prototype (with local stub implementation)
 // In production: @grpc/grpc-js + proto-loader for real gRPC
 

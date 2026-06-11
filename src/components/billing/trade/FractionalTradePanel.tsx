@@ -13,6 +13,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -65,8 +66,8 @@ export interface FractionalTradePanelProps {
 // ── Market Rules ────────────────────────────────────────────────────────
 
 const MARKET_RULES: MarketRule[] = [
-  { market: 'US', flag: '🇺🇸', currency: 'USD', lotSize: 1, minFractional: 0.01, fractionalStep: 0.01, fractionalLabel: '可买碎股 (最小0.01股)', commissionPct: 0.0049, minCommission: 0.99, stampPct: 0.0008 },
-  { market: 'HK', flag: '🇭🇰', currency: 'HKD', lotSize: 100, minFractional: 1, fractionalStep: 1, fractionalLabel: '碎股 (1-99股)', commissionPct: 0.03, minCommission: 3, stampPct: 0.13 },
+  { market: 'US', flag: '🇺🇸', currency: 'USD', lotSize: 1, minFractional: 0.01, fractionalStep: 0.01, fractionalLabel: i18n.t('FractionalTradePanel.k1'), commissionPct: 0.0049, minCommission: 0.99, stampPct: 0.0008 },
+  { market: 'HK', flag: '🇭🇰', currency: 'HKD', lotSize: 100, minFractional: 1, fractionalStep: 1, fractionalLabel: i18n.t('FractionalTradePanel.k2'), commissionPct: 0.03, minCommission: 3, stampPct: 0.13 },
 
 ];
 
@@ -248,7 +249,7 @@ export default function FractionalTradePanel({
           {/* Submit */}
           <button onClick={handleSubmit} disabled={hasActiveOrder}
                   className="w-full py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-            {direction === 'BUY' ? '买入' : '卖出'} {totalQty} 股 {symbol} · {rule.currency} {notional.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            {direction === 'BUY' ? i18n.t('FractionalTradePanel.k3') : i18n.t('FractionalTradePanel.k4')} {totalQty} 股 {symbol} · {rule.currency} {notional.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </button>
         </div>
 
@@ -264,9 +265,9 @@ export default function FractionalTradePanel({
                 activeOrder.status === 'partial' ? 'bg-yellow-500/10 text-yellow-400' :
                 activeOrder.status === 'cancelled' ? 'bg-red-500/10 text-red-400' :
                 'bg-gray-500/10 text-gray-400'}`}>
-                {activeOrder.status === 'filled' ? '✅ 全部成交' :
-                 activeOrder.status === 'partial' ? '⏳ 部分成交' :
-                 activeOrder.status === 'cancelled' ? '❌ 已取消' : '🕐 等待成交'}
+                {activeOrder.status === 'filled' ? i18n.t('FractionalTradePanel.k5') :
+                 activeOrder.status === 'partial' ? i18n.t('FractionalTradePanel.k6') :
+                 activeOrder.status === 'cancelled' ? i18n.t('FractionalTradePanel.k7') : i18n.t('FractionalTradePanel.k8')}
               </span>
             </div>
 

@@ -5,6 +5,8 @@ import { ipcMain, BrowserWindow, app, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
+import { EngineError } from './engine/core/engine-error';
+
 
 export function registerSystemIPC(
 ) {

@@ -1,27 +1,28 @@
 import { useState, type CSSProperties } from 'react';
+import i18n from '../../../i18n';
 interface TxRecord { id: string; type: 'deposit' | 'withdraw' | 'revenue'; amount: number; status: 'pending' | 'confirmed' | 'failed'; txHash: string; date: string; note: string }
 
 interface RevenueTier { level: number; name: string; minRevenue: string; share: number; commission: number }
 
 const INITIAL_TX: TxRecord[] = [
-  { id: 'tx1', type: 'deposit', amount: 500, status: 'confirmed', txHash: '0x3f8a...9c2b', date: '2026-06-09 18:30', note: 'TRC20充值' },
-  { id: 'tx2', type: 'withdraw', amount: 200, status: 'confirmed', txHash: '0x7d1e...4a6f', date: '2026-06-08 14:15', note: '提现到钱包' },
-  { id: 'tx3', type: 'revenue', amount: 35.70, status: 'confirmed', txHash: '—', date: '2026-06-07 00:00', note: '订阅收入分账 (70%)' },
-  { id: 'tx4', type: 'deposit', amount: 1000, status: 'pending', txHash: '0xab4c...f21d', date: '2026-06-09 20:28', note: 'TRC20充值 — 等待确认' },
+  { id: 'tx1', type: 'deposit', amount: 500, status: 'confirmed', txHash: '0x3f8a...9c2b', date: '2026-06-09 18:30', note: i18n.t('USDTPaymentPanel.k1') },
+  { id: 'tx2', type: 'withdraw', amount: 200, status: 'confirmed', txHash: '0x7d1e...4a6f', date: '2026-06-08 14:15', note: i18n.t('USDTPaymentPanel.k2') },
+  { id: 'tx3', type: 'revenue', amount: 35.70, status: 'confirmed', txHash: '—', date: '2026-06-07 00:00', note: i18n.t('USDTPaymentPanel.k3') },
+  { id: 'tx4', type: 'deposit', amount: 1000, status: 'pending', txHash: '0xab4c...f21d', date: '2026-06-09 20:28', note: i18n.t('USDTPaymentPanel.k4') },
 ];
 
 const REVENUE_TIERS: RevenueTier[] = [
-  { level: 1, name: '初级创作者', minRevenue: '$0', share: 70, commission: 30 },
-  { level: 2, name: '高级创作者', minRevenue: '$500/月', share: 75, commission: 25 },
-  { level: 3, name: 'VIP创作者', minRevenue: '$2000/月', share: 80, commission: 20 },
+  { level: 1, name: i18n.t('USDTPaymentPanel.k5'), minRevenue: '$0', share: 70, commission: 30 },
+  { level: 2, name: i18n.t('USDTPaymentPanel.k6'), minRevenue: i18n.t('USDTPaymentPanel.k7'), share: 75, commission: 25 },
+  { level: 3, name: i18n.t('USDTPaymentPanel.k8'), minRevenue: i18n.t('USDTPaymentPanel.k9'), share: 80, commission: 20 },
 ];
 
 // ── Sub-components ──
 function TxStatusBadge({ status }: { status: string }) {
   
   const map: Record<string, { icon: string; color: string; bg: string; label: string }> = {
-    pending: { icon: '⏳', color: '#F59E0B', bg: '#F59E0B22', label: '确认中' },
-    confirmed: { icon: '✅', color: '#10B981', bg: '#10B98122', label: '已确认' },
+    pending: { icon: '⏳', color: '#F59E0B', bg: '#F59E0B22', label: i18n.t('USDTPaymentPanel.k10') },
+    confirmed: { icon: '✅', color: '#10B981', bg: '#10B98122', label: i18n.t('USDTPaymentPanel.k11') },
     failed: { icon: '❌', color: '#EF4444', bg: '#EF444422', label: 'components.failed' },
   };
   const s = map[status] || map.failed;
@@ -234,7 +235,7 @@ function HistoryTab() {
               <tr key={tx.id} style={{ borderBottom: '1px solid #1F2937' }}>
                 <td style={{ padding: '10px 12px' }}>
                   <span style={{ color: tx.type === 'deposit' ? '#10B981' : tx.type === 'withdraw' ? '#EF4444' : '#D4A853', fontWeight: 600 }}>
-                    {tx.type === 'deposit' ? '📥 充值' : tx.type === 'withdraw' ? '📤 提现' : '💰 收益'}
+                    {tx.type === 'deposit' ? i18n.t('USDTPaymentPanel.k12') : tx.type === 'withdraw' ? i18n.t('USDTPaymentPanel.k13') : i18n.t('USDTPaymentPanel.k14')}
                   </span>
                 </td>
                 <td style={{ padding: '10px 12px', textAlign: 'right', fontFamily: 'monospace', color: '#D1D5DB', fontWeight: 600 }}>

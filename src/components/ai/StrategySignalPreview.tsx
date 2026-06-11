@@ -13,6 +13,7 @@
 
 import React, { useState, useCallback } from 'react';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -121,13 +122,13 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
                     }}
                     onClick={() => setEditedDirection(d)}
                   >
-                    {d === 'BUY' ? '买入' : d === 'SELL' ? '卖出' : '持有'}
+                    {d === 'BUY' ? i18n.t('StrategySignalPreview.k1') : d === 'SELL' ? i18n.t('StrategySignalPreview.k2') : i18n.t('StrategySignalPreview.k3')}
                   </button>
                 ))}
               </div>
             ) : (
               <span style={{ ...styles.signalValue, color: getDirectionColor(editedDirection), fontSize: 22 }}>
-                {editedDirection === 'BUY' ? '📈 买入' : editedDirection === 'SELL' ? '📉 卖出' : '⏸️ 持有'}
+                {editedDirection === 'BUY' ? i18n.t('StrategySignalPreview.k4') : editedDirection === 'SELL' ? i18n.t('StrategySignalPreview.k5') : i18n.t('StrategySignalPreview.k6')}
               </span>
             )}
           </div>
@@ -218,7 +219,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
               <span style={styles.agentEmoji}>{ad.emoji}</span>
               <span style={styles.agentName}>{ad.agentName}</span>
               <span style={{ ...styles.agentVote, color: getDirectionColor(ad.recommendation === 'buy' ? 'BUY' : ad.recommendation === 'sell' ? 'SELL' : 'HOLD') }}>
-                {ad.recommendation === 'buy' ? '看多' : ad.recommendation === 'sell' ? '看空' : '中性'}
+                {ad.recommendation === 'buy' ? i18n.t('StrategySignalPreview.k7') : ad.recommendation === 'sell' ? i18n.t('StrategySignalPreview.k8') : i18n.t('StrategySignalPreview.k9')}
               </span>
               <span style={{
                 ...styles.agentConf,

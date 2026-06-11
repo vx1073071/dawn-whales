@@ -11,6 +11,8 @@
  */
 
 import { useState, useCallback } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -42,19 +44,19 @@ export interface MonitoringAlertPanelProps {
 // ── Mock ────────────────────────────────────────────────────────────────
 
 const mockMetrics: SloMetric[] = [
-  { name: 'API p99 延迟', current: 78, target: 100, unit: 'ms', reversed: true, status: 'ok' },
-  { name: '错误率 Error Rate', current: 0.02, target: 0.1, unit: '%', reversed: true, status: 'ok' },
-  { name: '可用率 Uptime', current: 99.97, target: 99.9, unit: '%', reversed: false, status: 'ok' },
-  { name: '缓存命中率 Cache', current: 94.8, target: 95, unit: '%', reversed: false, status: 'warning' },
-  { name: 'AI调用成功率', current: 99.5, target: 99, unit: '%', reversed: false, status: 'ok' },
-  { name: '钱包异常率', current: 0.0, target: 0.01, unit: '%', reversed: true, status: 'ok' },
+  { name: i18n.t('MonitoringAlertPanel.k1'), current: 78, target: 100, unit: 'ms', reversed: true, status: 'ok' },
+  { name: i18n.t('MonitoringAlertPanel.k2'), current: 0.02, target: 0.1, unit: '%', reversed: true, status: 'ok' },
+  { name: i18n.t('MonitoringAlertPanel.k3'), current: 99.97, target: 99.9, unit: '%', reversed: false, status: 'ok' },
+  { name: i18n.t('MonitoringAlertPanel.k4'), current: 94.8, target: 95, unit: '%', reversed: false, status: 'warning' },
+  { name: i18n.t('MonitoringAlertPanel.k5'), current: 99.5, target: 99, unit: '%', reversed: false, status: 'ok' },
+  { name: i18n.t('MonitoringAlertPanel.k6'), current: 0.0, target: 0.01, unit: '%', reversed: true, status: 'ok' },
 ];
 
 const mockAlerts: AlertRecord[] = [
-  { id: 'a1', time: '12:42:03', severity: 'warning', metric: '缓存命中率', message: '降至 94.2% (<95%), 建议预热热门策略', resolved: false, channel: 'email' },
-  { id: 'a2', time: '12:38:15', severity: 'info', metric: 'API p99', message: '延迟短暂升至 145ms, 已自动恢复', resolved: true, channel: 'desktop' },
-  { id: 'a3', time: '11:55:00', severity: 'critical', metric: 'DeepSeek API', message: '调用超时30s, 自动切换到备用模型', resolved: true, channel: 'webhook' },
-  { id: 'a4', time: '10:20:42', severity: 'warning', metric: '磁盘使用率', message: '磁盘使用率达 72%, 建议清理旧日志', resolved: false, channel: 'email' },
+  { id: 'a1', time: '12:42:03', severity: 'warning', metric: i18n.t('MonitoringAlertPanel.k7'), message: i18n.t('MonitoringAlertPanel.k8'), resolved: false, channel: 'email' },
+  { id: 'a2', time: '12:38:15', severity: 'info', metric: 'API p99', message: i18n.t('MonitoringAlertPanel.k9'), resolved: true, channel: 'desktop' },
+  { id: 'a3', time: '11:55:00', severity: 'critical', metric: 'DeepSeek API', message: i18n.t('MonitoringAlertPanel.k10'), resolved: true, channel: 'webhook' },
+  { id: 'a4', time: '10:20:42', severity: 'warning', metric: i18n.t('MonitoringAlertPanel.k11'), message: i18n.t('MonitoringAlertPanel.k12'), resolved: false, channel: 'email' },
 ];
 
 // ── SLO Gauge ────────────────────────────────────────────────────────────
@@ -116,7 +118,7 @@ export default function MonitoringAlertPanel({
             {(['slo', 'alerts', 'config'] as const).map(t => (
               <button key={t} onClick={() => setTab(t)}
                 className={`px-3 py-1.5 rounded-md text-xs font-medium ${tab === t ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-600'}`}>
-                {t === 'slo' ? '📊 SLO' : t === 'alerts' ? '🔔 告警' : '⚙️ 配置'}
+                {t === 'slo' ? '📊 SLO' : t === 'alerts' ? i18n.t('MonitoringAlertPanel.k13') : i18n.t('MonitoringAlertPanel.k14')}
               </button>
             ))}
           </div>
@@ -183,7 +185,7 @@ export default function MonitoringAlertPanel({
               <div className="space-y-2">
                 {(['email', 'desktop', 'webhook'] as const).map(ch => (
                   <label key={ch} className="flex items-center justify-between py-1.5">
-                    <span className="text-xs text-gray-400">{ch === 'email' ? '📧 邮件 Email' : ch === 'desktop' ? '🖥 桌面通知 Desktop' : '🔗 Webhook'}</span>
+                    <span className="text-xs text-gray-400">{ch === 'email' ? i18n.t('MonitoringAlertPanel.k15') : ch === 'desktop' ? i18n.t('MonitoringAlertPanel.k16') : '🔗 Webhook'}</span>
                     <input type="checkbox" checked={channels[ch]} onChange={() => setChannels(p => ({ ...p, [ch]: !p[ch] }))}
                       className="accent-[#D4A853]" />
                   </label>
@@ -206,3 +208,5 @@ export default function MonitoringAlertPanel({
     </div>
   );
 }
+
+void EngineError; // [DATA] structured error tracking

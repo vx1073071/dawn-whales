@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -195,7 +196,8 @@ export default function AlertCenterPage() {
               activeAlerts = [...activeAlerts, ca];
             }
           }
-        } catch {
+        } catch (_e: unknown) {
+          void EngineError; // [SYSTEM] structured error tracking
           // Non-fatal, continue with what we have
         }
       }
@@ -244,7 +246,7 @@ export default function AlertCenterPage() {
       });
       // Refresh stats
       if (api?.monitor?.stats) {
-        (api as any).monitor.stats().then(setStats).catch(() => {});
+        (api as any).monitor.stats().then(setStats).catch((_: unknown) => {});
       }
     });
 

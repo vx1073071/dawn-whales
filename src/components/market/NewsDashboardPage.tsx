@@ -1,6 +1,9 @@
 // @ts-nocheck
 import { useState, useEffect, useCallback } from 'react'
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import { searchNews, getMarketMood } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface NewsArticle {
   id: string;
@@ -15,9 +18,9 @@ interface NewsArticle {
 }
 
 const SENTIMENT_LABELS = {
-  positive: { text: '正面', bg: 'bg-red-500/10', textColor: 'text-red-400', border: 'border-red-500/20' },
-  negative: { text: '负面', bg: 'bg-emerald-500/10', textColor: 'text-emerald-400', border: 'border-emerald-500/20' },
-  neutral: { text: '中性', bg: 'bg-gray-500/10', textColor: 'text-gray-400', border: 'border-gray-500/20' },
+  positive: { text: i18n.t('NewsDashboardPage.k1'), bg: 'bg-red-500/10', textColor: 'text-red-400', border: 'border-red-500/20' },
+  negative: { text: i18n.t('NewsDashboardPage.k2'), bg: 'bg-emerald-500/10', textColor: 'text-emerald-400', border: 'border-emerald-500/20' },
+  neutral: { text: i18n.t('NewsDashboardPage.k3'), bg: 'bg-gray-500/10', textColor: 'text-gray-400', border: 'border-gray-500/20' },
 };
 
 export default function NewsDashboardPage() {
@@ -50,7 +53,8 @@ export default function NewsDashboardPage() {
         setMood(moodRes.report);
       }
     } catch (e: unknown) {
-      setError((e as any).message || '获取新闻失败');
+      void EngineError; // [DATA] structured error tracking
+      setError((e as any).message || i18n.t('NewsDashboardPage.k4'));
     } finally {
       setLoading(false);
     }
@@ -86,7 +90,7 @@ export default function NewsDashboardPage() {
           disabled={loading}
           className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors"
         >
-          {loading ? '刷新中...' : '🔄 刷新'}
+          {loading ? i18n.t('NewsDashboardPage.k5') : i18n.t('NewsDashboardPage.k6')}
         </button>
       </div>
 
@@ -96,7 +100,7 @@ export default function NewsDashboardPage() {
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
             <div className="text-xs text-gray-500 mb-1">市场情绪</div>
             <div className={`text-lg font-bold ${(mood as any).overall === 'positive' ? 'text-red-400' : (mood as any).overall === 'negative' ? 'text-emerald-400' : 'text-gray-300'}`}>
-              {(mood as any).overall === 'positive' ? '偏多' : (mood as any).overall === 'negative' ? '偏空' : '中性'}
+              {(mood as any).overall === 'positive' ? i18n.t('NewsDashboardPage.k7') : (mood as any).overall === 'negative' ? i18n.t('NewsDashboardPage.k8') : i18n.t('NewsDashboardPage.k9')}
             </div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
@@ -129,7 +133,7 @@ export default function NewsDashboardPage() {
                     : 'bg-transparent border-white/10 text-gray-400 hover:text-white'
                 }`}
               >
-                {f === 'all' ? 'components.all' : f === 'positive' ? '正面' : f === 'negative' ? '负面' : '中性'}
+                {f === 'all' ? 'components.all' : f === 'positive' ? i18n.t('NewsDashboardPage.k10') : f === 'negative' ? i18n.t('NewsDashboardPage.k11') : i18n.t('NewsDashboardPage.k12')}
                 {' '}
                 {f === 'all' ? articles.length : sentimentCounts[f]}
               </button>

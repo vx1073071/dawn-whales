@@ -2,6 +2,7 @@
 // Phase 4.3 R32 ML-32-03 / R35 ML-35-02: IPC integration
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { getPositions, getAccounts, placeOrder } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface Position {
   id: string;
@@ -220,7 +221,7 @@ export default function PositionMonitorPanel({
           <h2 className="text-lg font-semibold text-white">持仓监控</h2>
           <p className="text-xs text-gray-500 mt-1">
             {positions.length} 个持仓 • {refreshInterval / 1000}s 刷新
-            {live && <span className="ml-2 text-green-500">{connected ? '● IPC 已连接' : '○ IPC 未连接'}</span>}
+            {live && <span className="ml-2 text-green-500">{connected ? i18n.t('PositionMonitorPanel.k1') : i18n.t('PositionMonitorPanel.k2')}</span>}
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -262,7 +263,7 @@ export default function PositionMonitorPanel({
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
                 <span className={`text-xs px-2 py-0.5 rounded ${pos.type === 'long' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
-                  {pos.type === 'long' ? '多' : '空'}
+                  {pos.type === 'long' ? i18n.t('PositionMonitorPanel.k3') : i18n.t('PositionMonitorPanel.k4')}
                 </span>
                 <span className="text-white font-mono font-semibold">{pos.code}</span>
                 <span className="text-gray-400 text-sm">{pos.name}</span>
@@ -336,7 +337,7 @@ export default function PositionMonitorPanel({
                         setEditTakeProfit(null);
                       }}
                     >
-                      {pos.stopLoss ? pos.stopLoss : '点击设置'}
+                      {pos.stopLoss ? pos.stopLoss : i18n.t('PositionMonitorPanel.k5')}
                     </span>
                   )}
                 </div>
@@ -384,7 +385,7 @@ export default function PositionMonitorPanel({
                         setEditStopLoss(null);
                       }}
                     >
-                      {pos.takeProfit ? pos.takeProfit : '点击设置'}
+                      {pos.takeProfit ? pos.takeProfit : i18n.t('PositionMonitorPanel.k6')}
                     </span>
                   )}
                 </div>
@@ -426,7 +427,7 @@ export default function PositionMonitorPanel({
           <div className="flex items-center gap-1">
             <span className={`w-2 h-2 rounded-full ${totalPnl >= 0 ? 'bg-green-500' : 'bg-red-500'}`} />
             <span className="text-gray-400">
-              {totalPnl >= 0 ? '盈利中' : totalPnl > -500 ? '注意风险' : '⚠ 高风险'}
+              {totalPnl >= 0 ? i18n.t('PositionMonitorPanel.k7') : totalPnl > -500 ? i18n.t('PositionMonitorPanel.k8') : i18n.t('PositionMonitorPanel.k9')}
             </span>
           </div>
         </div>

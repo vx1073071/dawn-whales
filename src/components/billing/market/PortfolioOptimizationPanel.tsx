@@ -12,6 +12,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -51,11 +52,11 @@ export interface PortfolioOptimizationPanelProps {
 // ── Mock ────────────────────────────────────────────────────────────────
 
 const mockFrontier: PortfolioPoint[] = [
-  { label: '最小方差', return_: 8.2, risk: 10.5, sharpe: 0.78 },
-  { label: '等权重', return_: 15.8, risk: 16.3, sharpe: 0.97 },
-  { label: '当前组合', return_: 22.3, risk: 18.5, sharpe: 1.21, highlight: true },
-  { label: '最大夏普', return_: 25.1, risk: 14.8, sharpe: 1.70 },
-  { label: '最大收益', return_: 42.3, risk: 22.1, sharpe: 1.91 },
+  { label: i18n.t('PortfolioOptimizationPanel.k1'), return_: 8.2, risk: 10.5, sharpe: 0.78 },
+  { label: i18n.t('PortfolioOptimizationPanel.k2'), return_: 15.8, risk: 16.3, sharpe: 0.97 },
+  { label: i18n.t('PortfolioOptimizationPanel.k3'), return_: 22.3, risk: 18.5, sharpe: 1.21, highlight: true },
+  { label: i18n.t('PortfolioOptimizationPanel.k4'), return_: 25.1, risk: 14.8, sharpe: 1.70 },
+  { label: i18n.t('PortfolioOptimizationPanel.k5'), return_: 42.3, risk: 22.1, sharpe: 1.91 },
   // Frontier curve points
   ...[...Array(15)].map((_, i) => ({ label: '', return_: 6 + i * 2.5, risk: 8 + (Math.sin(i * 0.8) * 6 + 8) * (1 + i * 0.08), sharpe: 0.5 + i * 0.1 })),
 ];
@@ -70,12 +71,12 @@ const mockRiskBudget: RiskBudget[] = [
 ];
 
 const mockRebalance: RebalanceTrade[] = [
-  { asset: 'AAPL', currentWeight: 25, targetWeight: 22, delta: -3, direction: 'SELL', amount: 5280, reason: '降低集中度' },
-  { asset: 'TSLA', currentWeight: 20, targetWeight: 15, delta: -5, direction: 'SELL', amount: 8800, reason: '高风险占比过高' },
-  { asset: 'NVDA', currentWeight: 18, targetWeight: 20, delta: 2, direction: 'BUY', amount: 3520, reason: '动量+AI主题延续' },
-  { asset: 'MSFT', currentWeight: 15, targetWeight: 18, delta: 3, direction: 'BUY', amount: 5280, reason: '低波动+稳定Alpha' },
-  { asset: 'HK.00700', currentWeight: 12, targetWeight: 10, delta: -2, direction: 'SELL', amount: 3520, reason: '港股回归均值' },
-  { asset: 'Cash', currentWeight: 10, targetWeight: 15, delta: 5, direction: 'BUY', amount: 8800, reason: '增加现金缓冲' },
+  { asset: 'AAPL', currentWeight: 25, targetWeight: 22, delta: -3, direction: 'SELL', amount: 5280, reason: i18n.t('PortfolioOptimizationPanel.k6') },
+  { asset: 'TSLA', currentWeight: 20, targetWeight: 15, delta: -5, direction: 'SELL', amount: 8800, reason: i18n.t('PortfolioOptimizationPanel.k7') },
+  { asset: 'NVDA', currentWeight: 18, targetWeight: 20, delta: 2, direction: 'BUY', amount: 3520, reason: i18n.t('PortfolioOptimizationPanel.k8') },
+  { asset: 'MSFT', currentWeight: 15, targetWeight: 18, delta: 3, direction: 'BUY', amount: 5280, reason: i18n.t('PortfolioOptimizationPanel.k9') },
+  { asset: 'HK.00700', currentWeight: 12, targetWeight: 10, delta: -2, direction: 'SELL', amount: 3520, reason: i18n.t('PortfolioOptimizationPanel.k10') },
+  { asset: 'Cash', currentWeight: 10, targetWeight: 15, delta: 5, direction: 'BUY', amount: 8800, reason: i18n.t('PortfolioOptimizationPanel.k11') },
 ];
 
 // ── Efficient Frontier Chart (SVG) ───────────────────────────────────────
@@ -193,7 +194,7 @@ export default function PortfolioOptimizationPanel({
             {(['frontier', 'risk', 'rebalance'] as const).map(t => (
               <button key={t} onClick={() => setTab(t)}
                 className={`px-3 py-1.5 rounded-md text-xs font-medium ${tab === t ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-600'}`}>
-                {t === 'frontier' ? '📈 有效前沿' : t === 'risk' ? '🎯 风险预算' : '🔄 再平衡'}
+                {t === 'frontier' ? i18n.t('PortfolioOptimizationPanel.k12') : t === 'risk' ? i18n.t('PortfolioOptimizationPanel.k13') : i18n.t('PortfolioOptimizationPanel.k14')}
               </button>
             ))}
           </div>
@@ -207,7 +208,7 @@ export default function PortfolioOptimizationPanel({
             <h4 className="text-gray-300 font-semibold text-sm mb-3">📈 有效前沿</h4>
             <EfficientFrontier points={frontier} />
             <div className="grid grid-cols-3 gap-2 mt-3">
-              {['最大夏普', '最小方差', '当前组合'].map(preset => {
+              {[i18n.t('PortfolioOptimizationPanel.k15'), i18n.t('PortfolioOptimizationPanel.k16'), i18n.t('PortfolioOptimizationPanel.k17')].map(preset => {
                 const pt = frontier.find(p => p.label === preset);
                 return (
                   <button key={preset} className={`py-1.5 rounded text-[10px] font-semibold border ${preset === '当前组合' ? 'border-[#D4A853]/30 bg-[#C9A046]/10 text-[#D4A853]' : 'border-white/5 text-gray-500 hover:text-gray-300'}`}>
@@ -253,7 +254,7 @@ export default function PortfolioOptimizationPanel({
                     <td className="px-4 py-2.5 text-right text-[#D4A853] font-semibold">{r.targetWeight}%</td>
                     <td className="px-4 py-2.5 text-center">
                       <span className={`text-[10px] font-bold ${r.direction === 'BUY' ? 'text-green-400' : r.direction === 'SELL' ? 'text-red-400' : 'text-gray-500'}`}>
-                        {r.direction === 'BUY' ? '🟢 买入' : r.direction === 'SELL' ? '🔴 卖出' : '—'}
+                        {r.direction === 'BUY' ? i18n.t('PortfolioOptimizationPanel.k18') : r.direction === 'SELL' ? i18n.t('PortfolioOptimizationPanel.k19') : '—'}
                       </span>
                     </td>
                     <td className={`px-4 py-2.5 text-right font-mono ${r.delta > 0 ? 'text-green-400' : r.delta < 0 ? 'text-red-400' : 'text-gray-500'}`}>

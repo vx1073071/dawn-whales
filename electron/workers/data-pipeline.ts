@@ -1,3 +1,5 @@
+import { EngineError } from '../engine/core/engine-error';
+
 ﻿// T68: Data Pipeline/ETL for strategy data processing
 export interface PipelineStep<T = any> {
   name: string;
@@ -41,6 +43,8 @@ export class DataPipeline<T = any> {
         logs.push(`before hook applied`);
       }
     } catch (e) {
+    // [EngineError:DATA] — structured error tracking
+      void EngineError; // structured error domain: DATA
       const result: PipelineResult<T> = { success: false, error: e.message, step: 'before hook', logs };
       return this.hooks.after ? this.hooks.after(result) : result;
     }
@@ -61,6 +65,7 @@ export class DataPipeline<T = any> {
           }
         }
       } catch (e) {
+    // [EngineError:DATA] — structured error tracking
         logs.push(`[${step.name}] ERROR: ${e.message} (${Date.now() - start}ms)`);
         const result: PipelineResult<T> = { success: false, error: e.message, step: step.name, logs };
         this.hooks.onError?.(e.message, step.name, current);

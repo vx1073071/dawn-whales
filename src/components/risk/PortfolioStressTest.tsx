@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next';
 import * as echarts from 'echarts';
 import { useRef, useEffect } from 'react';
+import i18n from '../../i18n';
 
 interface Scenario {
   name: string;
@@ -14,12 +15,12 @@ interface Scenario {
 }
 
 const SCENARIOS: Scenario[] = [
-  { name: '黑天鹅', description: '市场崩盘 -30%', shockPct: -0.30, probability: 0.05, impact: 'high' },
-  { name: '熊市', description: '持续下跌 -15%', shockPct: -0.15, probability: 0.15, impact: 'high' },
-  { name: '回调', description: '正常回调 -8%', shockPct: -0.08, probability: 0.30, impact: 'medium' },
-  { name: '震荡', description: '横盘震荡 ±2%', shockPct: -0.02, probability: 0.35, impact: 'low' },
-  { name: '反弹', description: '快速反弹 +10%', shockPct: 0.10, probability: 0.12, impact: 'medium' },
-  { name: '牛市', description: '强劲上涨 +20%', shockPct: 0.20, probability: 0.03, impact: 'low' },
+  { name: i18n.t('PortfolioStressTest.k1'), description: i18n.t('PortfolioStressTest.k2'), shockPct: -0.30, probability: 0.05, impact: 'high' },
+  { name: i18n.t('PortfolioStressTest.k3'), description: i18n.t('PortfolioStressTest.k4'), shockPct: -0.15, probability: 0.15, impact: 'high' },
+  { name: i18n.t('PortfolioStressTest.k5'), description: i18n.t('PortfolioStressTest.k6'), shockPct: -0.08, probability: 0.30, impact: 'medium' },
+  { name: i18n.t('PortfolioStressTest.k7'), description: i18n.t('PortfolioStressTest.k8'), shockPct: -0.02, probability: 0.35, impact: 'low' },
+  { name: i18n.t('PortfolioStressTest.k9'), description: i18n.t('PortfolioStressTest.k10'), shockPct: 0.10, probability: 0.12, impact: 'medium' },
+  { name: i18n.t('PortfolioStressTest.k11'), description: i18n.t('PortfolioStressTest.k12'), shockPct: 0.20, probability: 0.03, impact: 'low' },
 ];
 
 export default function PortfolioStressTest() {
@@ -133,7 +134,7 @@ export default function PortfolioStressTest() {
                       scenario.impact === 'medium' ? 'bg-yellow-500/10 text-yellow-400' :
                       'bg-emerald-500/10 text-emerald-400'
                     }`}>
-                      {scenario.impact === 'high' ? '高' : scenario.impact === 'medium' ? '中' : '低'}
+                      {scenario.impact === 'high' ? i18n.t('PortfolioStressTest.k13') : scenario.impact === 'medium' ? i18n.t('PortfolioStressTest.k14') : i18n.t('PortfolioStressTest.k15')}
                     </span>
                   </div>
                   <span className={`text-xs font-mono ${result.loss >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>

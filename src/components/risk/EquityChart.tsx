@@ -3,6 +3,7 @@
 
 import { useRef, useEffect, useMemo } from 'react';
 import * as echarts from 'echarts';
+import i18n from '../../i18n';
 
 export interface EquityPoint {
   time: string;        // ISO date or datetime string
@@ -21,10 +22,10 @@ interface EquityChartProps {
 
 export default function EquityChart({
   data,
-  title = '净值曲线',
+  title = i18n.t('EquityChart.k1'),
   height = 320,
   showDrawdown = true,
-  benchmarkLabel = '基准',
+  benchmarkLabel = i18n.t('EquityChart.k2'),
   dark = true,
 }: EquityChartProps) {
   const chartRef = useRef<HTMLDivElement>(null);
@@ -103,7 +104,7 @@ export default function EquityChart({
       yAxis: [
         {
           type: 'value',
-          name: '净值',
+          name: i18n.t('EquityChart.k3'),
           nameTextStyle: { color: '#6b7280', fontSize: 10 },
           axisLine: { show: false },
           axisLabel: { color: '#6b7280', fontSize: 10, formatter: (v: number) => v.toFixed(0) },
@@ -112,7 +113,7 @@ export default function EquityChart({
         showDrawdown
           ? {
               type: 'value',
-              name: '回撤%',
+              name: i18n.t('EquityChart.k4'),
               nameTextStyle: { color: '#6b7280', fontSize: 10 },
               axisLine: { show: false },
               axisLabel: { color: '#6b7280', fontSize: 10, formatter: (v: number) => `${v.toFixed(1)}%` },
@@ -123,7 +124,7 @@ export default function EquityChart({
       ].filter(Boolean) as any,
       series: [
         {
-          name: '净值',
+          name: i18n.t('EquityChart.k5'),
           type: 'line',
           data: equitySeries,
           smooth: true,
@@ -139,7 +140,7 @@ export default function EquityChart({
         ...(showDrawdown
           ? [
               {
-                name: '回撤',
+                name: i18n.t('EquityChart.k6'),
                 type: 'line',
                 yAxisIndex: 1,
                 data: drawdownSeries,

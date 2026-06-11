@@ -12,6 +12,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -36,12 +37,12 @@ export interface FullPipelineUIProps {
 // ── Mock ────────────────────────────────────────────────────────────────
 
 const mockStages: StageInfo[] = [
-  { id: 'register', step: 1, icon: '📝', title: '注册 Register', subtitle: '邮箱注册+7天免费试用', done: true, progress: 100, actions: ['查看账户', '完善资料'] },
-  { id: 'connect', step: 2, icon: '🔌', title: '连接券商 Connect', subtitle: 'Futu OpenD / IBKR Gateway', done: true, progress: 100, actions: ['切换券商', '查看费率'] },
-  { id: 'topup', step: 3, icon: '💰', title: '充值 Top Up', subtitle: 'TRC-20 USDT 充值', done: true, progress: 100, actions: ['充值', '查看余额'] },
-  { id: 'ai', step: 4, icon: '🤖', title: 'AI 分析 Analyze', subtitle: '自然语言→4 Agent→信号', done: false, progress: 65, actions: ['去AI分析', '查看信号'] },
-  { id: 'trade', step: 5, icon: '💹', title: '交易 Trade', subtitle: '下单+碎股+部分成交', done: false, progress: 40, actions: ['去交易台', '查看订单'] },
-  { id: 'withdraw', step: 6, icon: '💸', title: '提现 Withdraw', subtitle: 'USDT提现+2FA验证', done: false, progress: 0, actions: ['提现', 'P2P转账'] },
+  { id: 'register', step: 1, icon: '📝', title: i18n.t('FullPipelineUI.k1'), subtitle: i18n.t('FullPipelineUI.k2'), done: true, progress: 100, actions: [i18n.t('FullPipelineUI.k3'), i18n.t('FullPipelineUI.k4')] },
+  { id: 'connect', step: 2, icon: '🔌', title: i18n.t('FullPipelineUI.k5'), subtitle: 'Futu OpenD / IBKR Gateway', done: true, progress: 100, actions: [i18n.t('FullPipelineUI.k6'), i18n.t('FullPipelineUI.k7')] },
+  { id: 'topup', step: 3, icon: '💰', title: i18n.t('FullPipelineUI.k8'), subtitle: i18n.t('FullPipelineUI.k9'), done: true, progress: 100, actions: [i18n.t('FullPipelineUI.k10'), i18n.t('FullPipelineUI.k11')] },
+  { id: 'ai', step: 4, icon: '🤖', title: i18n.t('FullPipelineUI.k12'), subtitle: i18n.t('FullPipelineUI.k13'), done: false, progress: 65, actions: [i18n.t('FullPipelineUI.k14'), i18n.t('FullPipelineUI.k15')] },
+  { id: 'trade', step: 5, icon: '💹', title: i18n.t('FullPipelineUI.k16'), subtitle: i18n.t('FullPipelineUI.k17'), done: false, progress: 40, actions: [i18n.t('FullPipelineUI.k18'), i18n.t('FullPipelineUI.k19')] },
+  { id: 'withdraw', step: 6, icon: '💸', title: i18n.t('FullPipelineUI.k20'), subtitle: i18n.t('FullPipelineUI.k21'), done: false, progress: 0, actions: [i18n.t('FullPipelineUI.k22'), i18n.t('FullPipelineUI.k23')] },
 ];
 
 // ── Progress Dot ────────────────────────────────────────────────────────

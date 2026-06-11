@@ -10,6 +10,8 @@
  */
 
 import React, { useState, useCallback, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -76,7 +78,7 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
     if (result === 'granted') {
       // Send welcome notification
       new Notification('DAWN WHALES', {
-        body: '桌面通知已开启！你将收到策略信号和风控告警。',
+        body: i18n.t('DesktopNotificationPanel.k1'),
         icon: '/logo.png',
       });
     }
@@ -113,23 +115,24 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
           osc.start();
           osc.stop(ctx.currentTime + 0.15);
         } catch {}
+      void EngineError; // [SYSTEM] structured error tracking
       }
     }
   }, [enabled, sound]);
 
   // Demo buttons
   const testSignal = useCallback(() => {
-    sendNotification('signal', '📊 策略信号', '双均线交叉策略发出买入信号: US.AAPL @ $150.00');
+    sendNotification('signal', i18n.t('DesktopNotificationPanel.k2'), i18n.t('DesktopNotificationPanel.k3'));
     setShowTestSent(true);
     setTimeout(() => setShowTestSent(false), 2000);
   }, [sendNotification]);
 
   const testStopLoss = useCallback(() => {
-    sendNotification('stop_loss', '🛑 止损触发', 'HK.00700 触及止损价 $365.00，已自动平仓');
+    sendNotification('stop_loss', i18n.t('DesktopNotificationPanel.k4'), i18n.t('DesktopNotificationPanel.k5'));
   }, [sendNotification]);
 
   const testRisk = useCallback(() => {
-    sendNotification('risk_alert', '⚠️ 风控告警', '组合回撤已达 12%，接近 15% 硬限制');
+    sendNotification('risk_alert', i18n.t('DesktopNotificationPanel.k6'), i18n.t('DesktopNotificationPanel.k7'));
   }, [sendNotification]);
 
   const markAllRead = useCallback(() => {
@@ -156,10 +159,10 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
             </span>
           </h3>
           <p className="text-xs text-gray-500 mt-0.5">
-            {permission === 'granted' ? '🟢 已授权' :
-             permission === 'denied' ? '🔴 已拒绝' :
-             permission === 'unsupported' ? '⚠️ 浏览器不支持' :
-             '🟡 未授权'}
+            {permission === 'granted' ? i18n.t('DesktopNotificationPanel.k8') :
+             permission === 'denied' ? i18n.t('DesktopNotificationPanel.k9') :
+             permission === 'unsupported' ? i18n.t('DesktopNotificationPanel.k10') :
+             i18n.t('DesktopNotificationPanel.k11')}
             {unreadCount > 0 && <span className="ml-2 text-amber-400">{unreadCount} 条未读</span>}
           </p>
         </div>

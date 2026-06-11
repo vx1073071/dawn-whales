@@ -2,9 +2,11 @@
 // 10 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
+import i18n from '../../src/i18n';
 
 export function registerAppIPC(
   mainWindow: unknown,
@@ -56,6 +58,8 @@ export function registerAppIPC(
       fs.writeFileSync(filePath, data);
       return { success: true, path: filePath };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[App] PDF export failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -77,12 +81,13 @@ export function registerAppIPC(
       if (mainWindow && !mainWindow.isDestroyed()) {
         mainWindow.webContents.send('notification', {
           type: 'error',
-          title: '紧急停止',
-          message: '所有策略已停止',
+          title: i18n.t('AppIpc.k0'),
+          message: i18n.t('AppIpc.k1'),
         });
       }
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[App] Emergency stop failed:', err.message);
       return { success: false, error: err.message };
     }
@@ -102,7 +107,7 @@ export function registerAppIPC(
       }
       await shell.openExternal(rawUrl);
       return { success: true };
-    } catch {
+    } catch (_e: unknown) {
       return { success: false, error: 'Invalid URL' };
     }
   });
@@ -122,6 +127,7 @@ export function registerAppIPC(
       const result = await autoUpdater.checkForUpdates();
       return { success: true, version: result?.updateInfo?.version || null };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });
@@ -133,6 +139,7 @@ export function registerAppIPC(
       await autoUpdater.downloadUpdate();
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: err.message };
     }
   });

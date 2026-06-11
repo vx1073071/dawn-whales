@@ -13,6 +13,7 @@
 
 import { useState, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -48,22 +49,22 @@ export interface CreatorLeaderboardProps {
 // ── Constants ────────────────────────────────────────────────────────────
 
 const LEVELS: { key: CreatorLevel; label: string; icon: string; color: string; bg: string; xpMin: number; split: string }[] = [
-  { key: 'bronze',   label: '青铜', icon: '🥉', color: '#CD7F32', bg: 'bg-amber-900/20',   xpMin: 0,    split: '70/30' },
-  { key: 'silver',   label: '白银', icon: '🥈', color: '#C0C0C0', bg: 'bg-gray-400/10',    xpMin: 100,  split: '75/25' },
-  { key: 'gold',     label: '黄金', icon: '🥇', color: '#FFD700', bg: 'bg-yellow-500/10',  xpMin: 500,  split: '80/20' },
-  { key: 'platinum', label: '铂金', icon: '💎', color: '#E5E4E2', bg: 'bg-slate-300/10',   xpMin: 2000, split: '85/15' },
-  { key: 'diamond',  label: '钻石', icon: '👑', color: '#B9F2FF', bg: 'bg-cyan-300/10',    xpMin: 5000, split: '90/10' },
-  { key: 'king',     label: '王者', icon: '🏆', color: '#FF4500', bg: 'bg-orange-600/10',  xpMin: 10000,split: '90/10' },
+  { key: 'bronze',   label: i18n.t('CreatorLeaderboard.k1'), icon: '🥉', color: '#CD7F32', bg: 'bg-amber-900/20',   xpMin: 0,    split: '70/30' },
+  { key: 'silver',   label: i18n.t('CreatorLeaderboard.k2'), icon: '🥈', color: '#C0C0C0', bg: 'bg-gray-400/10',    xpMin: 100,  split: '75/25' },
+  { key: 'gold',     label: i18n.t('CreatorLeaderboard.k3'), icon: '🥇', color: '#FFD700', bg: 'bg-yellow-500/10',  xpMin: 500,  split: '80/20' },
+  { key: 'platinum', label: i18n.t('CreatorLeaderboard.k4'), icon: '💎', color: '#E5E4E2', bg: 'bg-slate-300/10',   xpMin: 2000, split: '85/15' },
+  { key: 'diamond',  label: i18n.t('CreatorLeaderboard.k5'), icon: '👑', color: '#B9F2FF', bg: 'bg-cyan-300/10',    xpMin: 5000, split: '90/10' },
+  { key: 'king',     label: i18n.t('CreatorLeaderboard.k6'), icon: '🏆', color: '#FF4500', bg: 'bg-orange-600/10',  xpMin: 10000,split: '90/10' },
 ];
 
 type LeaderboardDimension = 'totalReturn' | 'return30d' | 'sharpe' | 'subscribers';
 type TimeRange = 'weekly' | 'monthly' | 'all';
 
 const DIMENSIONS: { key: LeaderboardDimension; label: string; icon: string }[] = [
-  { key: 'totalReturn', label: '总收益', icon: '📈' },
-  { key: 'return30d',   label: '30日收益', icon: '🔥' },
-  { key: 'sharpe',      label: '夏普比率', icon: '🎯' },
-  { key: 'subscribers', label: '订阅数', icon: '👥' },
+  { key: 'totalReturn', label: i18n.t('CreatorLeaderboard.k7'), icon: '📈' },
+  { key: 'return30d',   label: i18n.t('CreatorLeaderboard.k8'), icon: '🔥' },
+  { key: 'sharpe',      label: i18n.t('CreatorLeaderboard.k9'), icon: '🎯' },
+  { key: 'subscribers', label: i18n.t('CreatorLeaderboard.k10'), icon: '👥' },
 ];
 
 // ── Mock ─────────────────────────────────────────────────────────────────
@@ -336,9 +337,9 @@ export default function CreatorLeaderboard({
                       </td>
                       <td className="px-5 py-3 text-gray-400 font-mono">{lvl.xpMin.toLocaleString()}</td>
                       <td className="px-5 py-3 text-[#D4A853] font-medium">{lvl.split}</td>
-                      <td className="px-5 py-3 text-gray-400">{lvl.key === 'bronze' ? 1 : lvl.key === 'silver' ? 3 : lvl.key === 'gold' ? 5 : lvl.key === 'platinum' ? 10 : lvl.key === 'diamond' ? 20 : '无限'}</td>
+                      <td className="px-5 py-3 text-gray-400">{lvl.key === 'bronze' ? 1 : lvl.key === 'silver' ? 3 : lvl.key === 'gold' ? 5 : lvl.key === 'platinum' ? 10 : lvl.key === 'diamond' ? 20 : i18n.t('CreatorLeaderboard.k11')}</td>
                       <td className="px-5 py-3 text-gray-400">
-                        {lvl.key === 'bronze' ? '基础' : lvl.key === 'silver' ? '标准' : '高级'}
+                        {lvl.key === 'bronze' ? i18n.t('CreatorLeaderboard.k12') : lvl.key === 'silver' ? i18n.t('CreatorLeaderboard.k13') : i18n.t('CreatorLeaderboard.k14')}
                       </td>
                       <td className="px-5 py-3">
                         {['bronze', 'silver'].includes(lvl.key) ? (

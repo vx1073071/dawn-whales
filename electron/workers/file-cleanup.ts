@@ -1,6 +1,8 @@
 ﻿// T64: Temporary file cleanup service
 import * as fs from 'fs';
 import * as path from 'path';
+import { EngineError } from './engine/core/engine-error';
+
 
 export interface CleanupRule {
   dir: string;

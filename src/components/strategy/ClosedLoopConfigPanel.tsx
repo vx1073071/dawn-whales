@@ -1,6 +1,7 @@
 // ClosedLoopConfigPanel — StrategyPage 闭环配置 UI
 // Phase 4.3 R36 ML-36-02: Control panel for ClosedLoopExecutor + RebalanceEngine config
 import { useState } from 'react';
+import i18n from '../../i18n';
 interface LoopConfig {
   mode: 'immediate' | 'triggered' | 'scheduled';
   stopLoss: number;
@@ -39,21 +40,21 @@ const DEFAULT_CONFIG: LoopConfig = {
 };
 
 const MODE_LABELS: Record<LoopConfig['mode'], { icon: string; title: string; desc: string }> = {
-  immediate: { icon: '⚡', title: 'immediateExec', desc: '手动触发，立即下单' },
-  triggered: { icon: '🎯', title: 'triggeredExec', desc: '满足条件后自动执行' },
-  scheduled: { icon: '⏰', title: 'scheduledExec', desc: '按 Cron 表达式定时执行' },
+  immediate: { icon: '⚡', title: 'immediateExec', desc: i18n.t('ClosedLoopConfigPanel.k1') },
+  triggered: { icon: '🎯', title: 'triggeredExec', desc: i18n.t('ClosedLoopConfigPanel.k2') },
+  scheduled: { icon: '⏰', title: 'scheduledExec', desc: i18n.t('ClosedLoopConfigPanel.k3') },
 };
 
 const RETRY_LABELS: Record<LoopConfig['retryStrategy'], string> = {
-  fixed: '固定间隔 (1s)',
-  exponential: '指数退避 (2^n × 1s)',
-  adaptive: '自适应 (根据错误类型)',
+  fixed: i18n.t('ClosedLoopConfigPanel.k4'),
+  exponential: i18n.t('ClosedLoopConfigPanel.k5'),
+  adaptive: i18n.t('ClosedLoopConfigPanel.k6'),
 };
 
 const REBALANCE_LABELS: Record<LoopConfig['rebalanceMethod'], string> = {
-  equal_weight: '等权重',
-  target_weight: '目标权重',
-  risk_parity: '风险平价',
+  equal_weight: i18n.t('ClosedLoopConfigPanel.k7'),
+  target_weight: i18n.t('ClosedLoopConfigPanel.k8'),
+  risk_parity: i18n.t('ClosedLoopConfigPanel.k9'),
 };
 
 export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, strategyId }: Props) {
@@ -93,7 +94,7 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
                 : 'bg-[#D4A853]/20 hover:bg-[#D4A853]/30 text-[#D4A853]'
             }`}
           >
-            {saved ? '✓ 已保存' : '保存配置'}
+            {saved ? i18n.t('ClosedLoopConfigPanel.k10') : i18n.t('ClosedLoopConfigPanel.k11')}
           </button>
         </div>
       </div>
@@ -125,27 +126,27 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
         <h3 className="text-sm text-gray-400 mb-3">风控参数</h3>
         <div className="grid grid-cols-2 gap-4">
           <NumberField
-            label="止损 (%)"
+            label={i18n.t('ClosedLoopConfigPanel.k12')}
             value={config.stopLoss}
             onChange={v => update('stopLoss', v)}
             min={0.5} max={20} step={0.5}
             color="text-yellow-400"
           />
           <NumberField
-            label="止盈 (%)"
+            label={i18n.t('ClosedLoopConfigPanel.k13')}
             value={config.takeProfit}
             onChange={v => update('takeProfit', v)}
             min={1} max={50} step={1}
             color="text-blue-400"
           />
           <NumberField
-            label="最大持仓时间 (小时)"
+            label={i18n.t('ClosedLoopConfigPanel.k14')}
             value={config.maxPositionTime}
             onChange={v => update('maxPositionTime', v)}
             min={1} max={720} step={1}
           />
           <NumberField
-            label="日亏损限制 (%)"
+            label={i18n.t('ClosedLoopConfigPanel.k15')}
             value={config.maxDailyLoss}
             onChange={v => update('maxDailyLoss', v)}
             min={0.5} max={20} step={0.5}
@@ -287,7 +288,7 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
           <div>
             <span className="text-gray-600">追踪止损: </span>
             <span className={config.trailingStop ? 'text-green-400' : 'text-gray-600'}>
-              {config.trailingStop ? '开' : '关'}
+              {config.trailingStop ? i18n.t('ClosedLoopConfigPanel.k16') : i18n.t('ClosedLoopConfigPanel.k17')}
             </span>
           </div>
         </div>

@@ -3,9 +3,12 @@
 // Provides ranking data for sector rotation and stock selection
 
 import log from 'electron-log';
+
 import https from 'https';
 import http from 'http';
 import { httpGet } from '../utils/http';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -271,7 +274,6 @@ function mapSectorSortField(sortBy: string): string {
     default: return 'f62';
   }
 }
-
 
 export function clearCapitalFlowCache(): void {
   cache.clear();

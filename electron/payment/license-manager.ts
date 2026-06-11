@@ -6,6 +6,8 @@ import path from 'path';
 import fs from 'fs';
 import { app } from 'electron';
 import log from 'electron-log';
+import { EngineError } from './engine/core/engine-error';
+
 
 export type LicenseTier = 'free' | 'starter' | 'pro' | 'lifetime';
 

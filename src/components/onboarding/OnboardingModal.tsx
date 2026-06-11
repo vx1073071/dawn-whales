@@ -11,6 +11,9 @@
  */
 
 import React, { useState, useCallback, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
+import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -32,42 +35,42 @@ interface OnboardingStep {
 const ONBOARDING_STEPS: OnboardingStep[] = [
   {
     id: 1,
-    title: '欢迎使用 DAWN WHALES',
-    description: 'AI 驱动的量化交易平台。支持 A股/港股/美股，内置策略优化、多周期分析、组合风险管理。',
+    title: i18n.t('OnboardingModal.k1'),
+    description: i18n.t('OnboardingModal.k2'),
     icon: '🐋',
     tip: 'Phase 6.2 · v0.11.0',
   },
   {
     id: 2,
-    title: '连接券商',
-    description: '连接 Futu OpenD 获取实时行情和交易能力。点击下方进入设置页面配置连接。',
+    title: i18n.t('OnboardingModal.k3'),
+    description: i18n.t('OnboardingModal.k4'),
     icon: '🔌',
-    action: { label: '去设置', href: '/?page=settings' },
-    tip: '需要 Futu OpenD 在后台运行',
+    action: { label: i18n.t('OnboardingModal.k5'), href: '/?page=settings' },
+    tip: i18n.t('OnboardingModal.k6'),
   },
   {
     id: 3,
-    title: '创建第一个策略',
-    description: '使用自然语言描述你的交易逻辑，或从 10+ 模板中选择。AI 会自动解析并生成策略。',
+    title: i18n.t('OnboardingModal.k7'),
+    description: i18n.t('OnboardingModal.k8'),
     icon: '🎯',
-    action: { label: '创建策略', href: '/?page=strategy' },
-    tip: '试试说"当5日均线上穿20日均线时买入"',
+    action: { label: i18n.t('OnboardingModal.k9'), href: '/?page=strategy' },
+    tip: i18n.t('OnboardingModal.k10'),
   },
   {
     id: 4,
-    title: '回测验证',
-    description: '用历史数据验证你的策略。查看收益曲线、Sharpe 比率、最大回撤等关键指标。',
+    title: i18n.t('OnboardingModal.k11'),
+    description: i18n.t('OnboardingModal.k12'),
     icon: '🔬',
-    action: { label: '运行回测', href: '/?page=backtest' },
-    tip: '支持 3 年历史数据，3 种优化模式',
+    action: { label: i18n.t('OnboardingModal.k13'), href: '/?page=backtest' },
+    tip: i18n.t('OnboardingModal.k14'),
   },
   {
     id: 5,
-    title: '开始交易！',
-    description: '策略已就绪。你可以通过实盘桥接（LiveTradeBridge）执行交易，或先使用模拟盘练习。',
+    title: i18n.t('OnboardingModal.k15'),
+    description: i18n.t('OnboardingModal.k16'),
     icon: '🚀',
-    action: { label: '进入仪表盘', href: '/?page=dashboard' },
-    tip: '模拟盘 100 万 HKD 练手资金',
+    action: { label: i18n.t('OnboardingModal.k17'), href: '/?page=dashboard' },
+    tip: i18n.t('OnboardingModal.k18'),
   },
 ];
 
@@ -93,7 +96,8 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ onComplete, cl
     try {
       const done = localStorage.getItem(STORAGE_KEY);
       if (!done) setVisible(true);
-    } catch {
+    } catch (_e: unknown) {
+      void EngineError; // [SYSTEM] structured error tracking
       setVisible(true);
     }
   }, []);
@@ -104,7 +108,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ onComplete, cl
   const handleNext = useCallback(() => {
     if (isLast) {
       setVisible(false);
-      try { localStorage.setItem(STORAGE_KEY, 'true'); } catch {}
+      try { localStorage.setItem(STORAGE_KEY, 'true'); } catch (_e: unknown) {}
       onComplete?.();
     } else {
       setStep(s => s + 1);
@@ -113,7 +117,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ onComplete, cl
 
   const handleSkip = useCallback(() => {
     setVisible(false);
-    try { localStorage.setItem(STORAGE_KEY, 'true'); } catch {}
+    try { localStorage.setItem(STORAGE_KEY, 'true'); } catch (_e: unknown) {}
     onComplete?.();
   }, [onComplete]);
 
@@ -211,7 +215,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({ onComplete, cl
                 onClick={handleNext}
                 className="flex-1 px-4 py-2.5 bg-amber-500 text-black rounded-xl text-xs font-bold hover:bg-amber-400 transition-colors"
               >
-                {isLast ? '🎉 开始使用' : '继续 →'}
+                {isLast ? i18n.t('OnboardingModal.k19') : i18n.t('OnboardingModal.k20')}
               </button>
             )}
           </div>

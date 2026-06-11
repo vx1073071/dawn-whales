@@ -7,7 +7,10 @@
  */
 
 import { ipcMain, BrowserWindow } from 'electron';
+
 import log from 'electron-log';
+import { EngineError } from './engine/core/engine-error';
+
 
 let connected = false;
 

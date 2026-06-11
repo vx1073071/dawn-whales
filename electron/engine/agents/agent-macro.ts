@@ -21,6 +21,8 @@
 import log from 'electron-log';
 import { EventEmitter } from 'events';
 import i18n from '../../../src/i18n';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

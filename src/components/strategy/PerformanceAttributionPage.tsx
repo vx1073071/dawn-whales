@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 interface AttributionData {
   strategyName: string;
@@ -22,7 +24,7 @@ interface AttributionData {
 }
 
 const MOCK_DATA: AttributionData = {
-  strategyName: '双均线突破策略',
+  strategyName: i18n.t('PerformanceAttributionPage.k1'),
   strategyId: 'strategy-001',
   totalReturn: 28.5,
   benchmarkReturn: 15.2,
@@ -31,34 +33,34 @@ const MOCK_DATA: AttributionData = {
   selectionEffect: 8.5,
   interactionEffect: 1.6,
   factorExposures: [
-    { factor: '动量', exposure: 0.65, contribution: 5.2 },
-    { factor: '价值', exposure: 0.15, contribution: 0.8 },
-    { factor: '质量', exposure: 0.25, contribution: 1.5 },
-    { factor: '低波动', exposure: -0.10, contribution: -0.5 },
-    { factor: '市值', exposure: 0.35, contribution: 2.8 },
-    { factor: '成长', exposure: 0.45, contribution: 3.5 },
+    { factor: i18n.t('PerformanceAttributionPage.k2'), exposure: 0.65, contribution: 5.2 },
+    { factor: i18n.t('PerformanceAttributionPage.k3'), exposure: 0.15, contribution: 0.8 },
+    { factor: i18n.t('PerformanceAttributionPage.k4'), exposure: 0.25, contribution: 1.5 },
+    { factor: i18n.t('PerformanceAttributionPage.k5'), exposure: -0.10, contribution: -0.5 },
+    { factor: i18n.t('PerformanceAttributionPage.k6'), exposure: 0.35, contribution: 2.8 },
+    { factor: i18n.t('PerformanceAttributionPage.k7'), exposure: 0.45, contribution: 3.5 },
   ],
   monthlyAttribution: [
-    { month: '1月', excessReturn: 2.1, allocation: 0.5, selection: 1.4, interaction: 0.2 },
-    { month: '2月', excessReturn: -1.5, allocation: -0.3, selection: -0.9, interaction: -0.3 },
-    { month: '3月', excessReturn: 3.2, allocation: 0.8, selection: 2.0, interaction: 0.4 },
-    { month: '4月', excessReturn: 1.8, allocation: 0.4, selection: 1.1, interaction: 0.3 },
-    { month: '5月', excessReturn: -0.5, allocation: -0.1, selection: -0.3, interaction: -0.1 },
-    { month: '6月', excessReturn: 2.8, allocation: 0.6, selection: 1.8, interaction: 0.4 },
-    { month: '7月', excessReturn: 1.2, allocation: 0.3, selection: 0.7, interaction: 0.2 },
-    { month: '8月', excessReturn: 3.5, allocation: 0.9, selection: 2.2, interaction: 0.4 },
-    { month: '9月', excessReturn: -2.1, allocation: -0.5, selection: -1.3, interaction: -0.3 },
-    { month: '10月', excessReturn: 4.2, allocation: 1.0, selection: 2.6, interaction: 0.6 },
-    { month: '11月', excessReturn: 1.5, allocation: 0.4, selection: 0.9, interaction: 0.2 },
-    { month: '12月', excessReturn: 2.8, allocation: 0.7, selection: 1.7, interaction: 0.4 },
+    { month: i18n.t('PerformanceAttributionPage.k8'), excessReturn: 2.1, allocation: 0.5, selection: 1.4, interaction: 0.2 },
+    { month: i18n.t('PerformanceAttributionPage.k9'), excessReturn: -1.5, allocation: -0.3, selection: -0.9, interaction: -0.3 },
+    { month: i18n.t('PerformanceAttributionPage.k10'), excessReturn: 3.2, allocation: 0.8, selection: 2.0, interaction: 0.4 },
+    { month: i18n.t('PerformanceAttributionPage.k11'), excessReturn: 1.8, allocation: 0.4, selection: 1.1, interaction: 0.3 },
+    { month: i18n.t('PerformanceAttributionPage.k12'), excessReturn: -0.5, allocation: -0.1, selection: -0.3, interaction: -0.1 },
+    { month: i18n.t('PerformanceAttributionPage.k13'), excessReturn: 2.8, allocation: 0.6, selection: 1.8, interaction: 0.4 },
+    { month: i18n.t('PerformanceAttributionPage.k14'), excessReturn: 1.2, allocation: 0.3, selection: 0.7, interaction: 0.2 },
+    { month: i18n.t('PerformanceAttributionPage.k15'), excessReturn: 3.5, allocation: 0.9, selection: 2.2, interaction: 0.4 },
+    { month: i18n.t('PerformanceAttributionPage.k16'), excessReturn: -2.1, allocation: -0.5, selection: -1.3, interaction: -0.3 },
+    { month: i18n.t('PerformanceAttributionPage.k17'), excessReturn: 4.2, allocation: 1.0, selection: 2.6, interaction: 0.6 },
+    { month: i18n.t('PerformanceAttributionPage.k18'), excessReturn: 1.5, allocation: 0.4, selection: 0.9, interaction: 0.2 },
+    { month: i18n.t('PerformanceAttributionPage.k19'), excessReturn: 2.8, allocation: 0.7, selection: 1.7, interaction: 0.4 },
   ],
   sectorAttribution: [
-    { sector: '科技', portfolioWeight: 35, benchmarkWeight: 28, portfolioReturn: 32.5, benchmarkReturn: 25.8, excessReturn: 6.7 },
-    { sector: '金融', portfolioWeight: 15, benchmarkWeight: 18, portfolioReturn: 12.3, benchmarkReturn: 14.5, excessReturn: -2.2 },
-    { sector: '消费', portfolioWeight: 20, benchmarkWeight: 22, portfolioReturn: 18.5, benchmarkReturn: 16.2, excessReturn: 2.3 },
-    { sector: '医药', portfolioWeight: 12, benchmarkWeight: 10, portfolioReturn: 15.8, benchmarkReturn: 12.5, excessReturn: 3.3 },
-    { sector: '能源', portfolioWeight: 8, benchmarkWeight: 12, portfolioReturn: 8.5, benchmarkReturn: 10.2, excessReturn: -1.7 },
-    { sector: '工业', portfolioWeight: 10, benchmarkWeight: 10, portfolioReturn: 16.2, benchmarkReturn: 14.8, excessReturn: 1.4 },
+    { sector: i18n.t('PerformanceAttributionPage.k20'), portfolioWeight: 35, benchmarkWeight: 28, portfolioReturn: 32.5, benchmarkReturn: 25.8, excessReturn: 6.7 },
+    { sector: i18n.t('PerformanceAttributionPage.k21'), portfolioWeight: 15, benchmarkWeight: 18, portfolioReturn: 12.3, benchmarkReturn: 14.5, excessReturn: -2.2 },
+    { sector: i18n.t('PerformanceAttributionPage.k22'), portfolioWeight: 20, benchmarkWeight: 22, portfolioReturn: 18.5, benchmarkReturn: 16.2, excessReturn: 2.3 },
+    { sector: i18n.t('PerformanceAttributionPage.k23'), portfolioWeight: 12, benchmarkWeight: 10, portfolioReturn: 15.8, benchmarkReturn: 12.5, excessReturn: 3.3 },
+    { sector: i18n.t('PerformanceAttributionPage.k24'), portfolioWeight: 8, benchmarkWeight: 12, portfolioReturn: 8.5, benchmarkReturn: 10.2, excessReturn: -1.7 },
+    { sector: i18n.t('PerformanceAttributionPage.k25'), portfolioWeight: 10, benchmarkWeight: 10, portfolioReturn: 16.2, benchmarkReturn: 14.8, excessReturn: 1.4 },
   ],
 };
 
@@ -74,6 +76,7 @@ export default function PerformanceAttributionPage() {
       // const res = await getPerformanceAttribution();
       // if (res?.success) setData(res.data);
     } catch (e) { console.error('[Error:PerformanceAttributionPage]', e); }
+    void EngineError; // [SYSTEM] structured error tracking
     setLoading(false);
   }
 
@@ -88,14 +91,14 @@ export default function PerformanceAttributionPage() {
     chart.setOption({
       backgroundColor: 'transparent',
       tooltip: { trigger: 'axis', backgroundColor: '#1a1a25', borderColor: 'rgba(255,255,255,0.1)', textStyle: { color: '#e5e7eb' } },
-      legend: { data: ['资产配置', '个股选择', '交互作用'], textStyle: { color: '#9ca3af' }, bottom: 0 },
+      legend: { data: [i18n.t('PerformanceAttributionPage.k26'), i18n.t('PerformanceAttributionPage.k27'), i18n.t('PerformanceAttributionPage.k28')], textStyle: { color: '#9ca3af' }, bottom: 0 },
       grid: { left: 50, right: 20, top: 20, bottom: 40 },
       xAxis: { type: 'category', data: data.monthlyAttribution.map(m => m.month), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#6b7280', fontSize: 10 } },
       yAxis: { type: 'value', axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#6b7280', fontSize: 10, formatter: '{value}%' }, splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } } },
       series: [
-        { name: '资产配置', type: 'bar', stack: 'total', data: data.monthlyAttribution.map(m => m.allocation), itemStyle: { color: '#3b82f6' } },
-        { name: '个股选择', type: 'bar', stack: 'total', data: data.monthlyAttribution.map(m => m.selection), itemStyle: { color: '#C9A046' } },
-        { name: '交互作用', type: 'bar', stack: 'total', data: data.monthlyAttribution.map(m => m.interaction), itemStyle: { color: '#8b5cf6' } },
+        { name: i18n.t('PerformanceAttributionPage.k29'), type: 'bar', stack: 'total', data: data.monthlyAttribution.map(m => m.allocation), itemStyle: { color: '#3b82f6' } },
+        { name: i18n.t('PerformanceAttributionPage.k30'), type: 'bar', stack: 'total', data: data.monthlyAttribution.map(m => m.selection), itemStyle: { color: '#C9A046' } },
+        { name: i18n.t('PerformanceAttributionPage.k31'), type: 'bar', stack: 'total', data: data.monthlyAttribution.map(m => m.interaction), itemStyle: { color: '#8b5cf6' } },
       ],
     });
 
@@ -122,7 +125,7 @@ export default function PerformanceAttributionPage() {
         type: 'radar',
         data: [{
           value: data.factorExposures.map(f => f.exposure),
-          name: '因子敞口',
+          name: i18n.t('PerformanceAttributionPage.k32'),
           areaStyle: { color: 'rgba(201,160,70,0.2)' },
           lineStyle: { color: '#C9A046', width: 2 },
           itemStyle: { color: '#C9A046' },
@@ -133,7 +136,7 @@ export default function PerformanceAttributionPage() {
     return () => chart.dispose();
   }, [data]);
 
-  if (loading) return <LoadingSpinner fullscreen text="加载归因数据..." />;
+  if (loading) return <LoadingSpinner fullscreen text={i18n.t('PerformanceAttributionPage.k33')} />;
 
   return (
     <div className="p-6 space-y-6 bg-deep min-h-full">
@@ -176,9 +179,9 @@ export default function PerformanceAttributionPage() {
           <h2 className="text-sm font-semibold text-white mb-4">Brinson 归因分解</h2>
           <div className="space-y-3">
             {[
-              { label: '资产配置效应', value: data.allocationEffect, desc: '行业配置带来的超额收益' },
-              { label: '个股选择效应', value: data.selectionEffect, desc: '行业内选股带来的超额收益' },
-              { label: '交互效应', value: data.interactionEffect, desc: '配置与选股的交叉影响' },
+              { label: i18n.t('PerformanceAttributionPage.k34'), value: data.allocationEffect, desc: i18n.t('PerformanceAttributionPage.k35') },
+              { label: i18n.t('PerformanceAttributionPage.k36'), value: data.selectionEffect, desc: i18n.t('PerformanceAttributionPage.k37') },
+              { label: i18n.t('PerformanceAttributionPage.k38'), value: data.interactionEffect, desc: i18n.t('PerformanceAttributionPage.k39') },
             ].map((item) => (
               <div key={item.label} className="flex items-center justify-between bg-deep rounded-lg p-3">
                 <div>

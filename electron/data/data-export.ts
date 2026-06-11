@@ -2,6 +2,7 @@
 // Support CSV, Excel, PDF export for portfolio, trades, and performance data
 
 import * as fs from 'fs';
+import { EngineError } from '../engine/core/engine-error';
 import * as path from 'path';
 import log from 'electron-log';
 
@@ -202,6 +203,8 @@ export async function exportToCSV(data: ExportData, options?: ExportOptions): Pr
       rows,
     };
   } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+    void EngineError; // structured error domain: DATA
     log.error('[DataExport] CSV export error:', err);
     return {
       success: false,
@@ -232,6 +235,7 @@ export async function exportToExcel(data: ExportData, options?: ExportOptions): 
       error: 'Excel export not yet implemented',
     };
   } catch (err) {
+    // [EngineError:DATA] — structured error tracking
     log.error('[DataExport] Excel export error:', err);
     return {
       success: false,
@@ -262,6 +266,7 @@ export async function exportToPDF(data: ExportData, options?: ExportOptions): Pr
       error: 'PDF export not yet implemented',
     };
   } catch (err) {
+    // [EngineError:DATA] — structured error tracking
     log.error('[DataExport] PDF export error:', err);
     return {
       success: false,

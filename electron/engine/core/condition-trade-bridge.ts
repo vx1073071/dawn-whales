@@ -3,6 +3,8 @@
 // Routes condition triggers to trade execution with safety checks
 
 import { EventEmitter } from 'events';
+import { EngineError } from './engine-error';
+
 
 // ── Types ─────────────────────────────────────────────────────────────────
 

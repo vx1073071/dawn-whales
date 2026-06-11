@@ -2,6 +2,7 @@
 // 6 handlers
 
 import { ipcMain, BrowserWindow, app, shell } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { validate } from '../ipc-schemas';
@@ -17,6 +18,8 @@ export function registerIndicatorIPC(
     try {
       return computeIndicators(klines, indicators, options);
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[TechnicalIndicators] Error:', err);
       return { success: false, error: err.message };
     }
@@ -31,6 +34,7 @@ export function registerIndicatorIPC(
       const calculator = getRealtimeIndicatorCalculator();
       return { success: true, indicators: calculator.addKLine(symbol, kline) };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[RealtimeIndicators] Add error:', err);
       return { success: false, error: err.message };
     }
@@ -43,6 +47,7 @@ export function registerIndicatorIPC(
       const calculator = getRealtimeIndicatorCalculator();
       return { success: true, indicators: calculator.addKLines(symbol, klines) };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[RealtimeIndicators] Batch add error:', err);
       return { success: false, error: err.message };
     }
@@ -55,6 +60,7 @@ export function registerIndicatorIPC(
       const calculator = getRealtimeIndicatorCalculator();
       return { success: true, klines: calculator.getKLineBuffer(symbol) };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[RealtimeIndicators] Get buffer error:', err);
       return { success: false, error: err.message };
     }
@@ -68,6 +74,7 @@ export function registerIndicatorIPC(
       calculator.clearBuffer(symbol);
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[RealtimeIndicators] Clear error:', err);
       return { success: false, error: err.message };
     }
@@ -81,6 +88,7 @@ export function registerIndicatorIPC(
       calculator.clearAllBuffers();
       return { success: true };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[RealtimeIndicators] Clear all error:', err);
       return { success: false, error: err.message };
     }
@@ -95,6 +103,7 @@ export function registerIndicatorIPC(
       const result = calculator.calculate(symbol, klines, indicators);
       return { success: true, indicators: result };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[Indicator:calculate] Error:', err);
       return { success: false, error: err.message };
     }

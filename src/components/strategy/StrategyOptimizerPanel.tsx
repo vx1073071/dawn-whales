@@ -11,7 +11,9 @@
  */
 
 import { useTranslation } from "react-i18next";
+import { EngineError, ErrorDomain, ErrorCode } from '../../../electron/engine/core/engine-error';
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
+import i18n from '../../i18n';
 
 // ── Types (mirrors engine types) ────────────────────────────────────────
 
@@ -215,7 +217,7 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
                 resolve();
               } else {
                 setStatus(status_);
-                reject(new Error(`Optimization ${status_}`));
+                reject(new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, `Optimization ${status_}`));
               }
             }
           }, 200);
@@ -225,6 +227,7 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
         await simulateOptimization(config);
       }
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       setStatus('error');
     }
   }, [mode, paramSpecs, maxIterations]);
@@ -353,7 +356,7 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
                 : 'bg-amber-500 text-black hover:bg-amber-400'}
             `}
           >
-            {isRunning ? '⏹ 停止' : '▶ 开始优化'}
+            {isRunning ? i18n.t('StrategyOptimizerPanel.k1') : i18n.t('StrategyOptimizerPanel.k2')}
           </button>
         </div>
       </div>
@@ -415,10 +418,10 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
           {/* Stats cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {([
-              { label: '最优 Fitness', value: result.bestFitness.toFixed(3), color: 'text-amber-400' },
-              { label: '总评估', value: String(result.totalEvaluations), color: 'text-blue-400' },
-              { label: '耗时', value: `${(result.durationMs / 1000).toFixed(1)}s`, color: 'text-emerald-400' },
-              { label: '收敛程度', value: result.statistics.improvementRate > 0
+              { label: i18n.t('StrategyOptimizerPanel.k3'), value: result.bestFitness.toFixed(3), color: 'text-amber-400' },
+              { label: i18n.t('StrategyOptimizerPanel.k4'), value: String(result.totalEvaluations), color: 'text-blue-400' },
+              { label: i18n.t('StrategyOptimizerPanel.k5'), value: `${(result.durationMs / 1000).toFixed(1)}s`, color: 'text-emerald-400' },
+              { label: i18n.t('StrategyOptimizerPanel.k6'), value: result.statistics.improvementRate > 0
                 ? `+${(result.statistics.improvementRate * 100).toFixed(1)}%`
                 : '0%', color: 'text-purple-400' },
             ] as const).map(s => (
@@ -562,7 +565,7 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
       {status === 'idle' && (
         <div className="text-center py-10 text-gray-600 text-sm">
           <div className="text-3xl mb-2">🎯</div>
-          <p>选择优化模式并点击"开始优化"</p>
+          <p>选择优化模式并点击i18n.t('StrategyOptimizerPanel.k7')</p>
           <p className="text-xs mt-1 text-gray-700">
             将自动寻找 {strategy.name} 的最优参数组合
           </p>

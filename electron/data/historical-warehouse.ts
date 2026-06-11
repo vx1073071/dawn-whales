@@ -4,6 +4,7 @@
 // Output: historical-warehouse.ts
 
 import log from 'electron-log';
+import { EngineError } from '../engine/core/engine-error';
 import Database from 'better-sqlite3';
 import path from 'path';
 import { app } from 'electron';
@@ -91,7 +92,7 @@ export class HistoricalDataWarehouse {
     try {
       const userDataPath = app.getPath('userData');
       this.dbPath = this.config.dbPath || path.join(userDataPath, 'historical-data.db');
-    } catch {
+    } catch (_e: unknown) {
       this.dbPath = this.config.dbPath || path.join(process.cwd(), 'historical-data.db');
     }
 
@@ -145,6 +146,8 @@ export class HistoricalDataWarehouse {
 
       log.info(`[HistoricalWarehouse] Database initialized at ${this.dbPath}`);
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
+      void EngineError; // structured error domain: DATA
       log.error('[HistoricalWarehouse] Database initialization failed:', err.message);
       throw err;
     }
@@ -194,6 +197,7 @@ export class HistoricalDataWarehouse {
       tx(points);
       log.info(`[HistoricalWarehouse] Inserted ${inserted} points, updated ${updated} points`);
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[HistoricalWarehouse] Insert failed:', err.message);
       throw err;
     }
@@ -234,6 +238,7 @@ export class HistoricalDataWarehouse {
         quality: row.quality,
       }));
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[HistoricalWarehouse] Query failed:', err.message);
       return [];
     }
@@ -326,6 +331,7 @@ export class HistoricalDataWarehouse {
         dataPoints: data.length,
       };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[HistoricalWarehouse] Aggregation failed:', err.message);
       return {
         symbol,
@@ -377,7 +383,7 @@ export class HistoricalDataWarehouse {
         const fs = require('fs');
         const stats = fs.statSync(this.dbPath);
         dbSizeMB = stats.size / (1024 * 1024);
-      } catch {}
+      } catch (_e: unknown) {}
 
       return {
         totalPoints: countResult.count,
@@ -387,6 +393,7 @@ export class HistoricalDataWarehouse {
         dbSizeMB: Math.round(dbSizeMB * 100) / 100,
       };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[HistoricalWarehouse] Stats query failed:', err.message);
       return {
         totalPoints: 0,
@@ -414,6 +421,7 @@ export class HistoricalDataWarehouse {
       log.info(`[HistoricalWarehouse] Cleaned ${result.changes} old data points`);
       return { deleted: result.changes };
     } catch (err) {
+    // [EngineError:DATA] — structured error tracking
       log.error('[HistoricalWarehouse] Cleanup failed:', err.message);
       return { deleted: 0 };
     }

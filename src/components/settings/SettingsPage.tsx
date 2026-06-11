@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+
 import {
   connectBroker, isConnected as checkConnected, getRiskConfig, getRiskAlerts,
   listBrokers, addBroker, removeBroker, setActiveBroker, getBrokerStatus,
 } from '@/lib/bridge-api';
 import BrokerConfigSelector from '../trading/BrokerConfigSelector';
+import i18n from '../../i18n';
 
 type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'info';
 
@@ -54,7 +57,8 @@ export default function SettingsPage() {
         const info = await window.api.app.getInfo();
         setAppInfo(info);
       }
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
+  void EngineError; // [SYSTEM] structured error tracking
   }
 
   async function refreshBrokers() {
@@ -63,7 +67,7 @@ export default function SettingsPage() {
       const status = await getBrokerStatus();
       setBrokers(list);
       setBrokerStatus(status);
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   async function handleConnect() {
@@ -105,10 +109,10 @@ export default function SettingsPage() {
         setNewBroker({ name: '', type: 'futu', host: '127.0.0.1', port: '11111' });
         await refreshBrokers();
       } else {
-        alert(result?.error || '添加失败');
+        alert(result?.error || i18n.t('SettingsPage.k1'));
       }
     } catch (e: unknown) {
-      alert((e as any).message || '添加异常');
+      alert((e as any).message || i18n.t('SettingsPage.k2'));
     } finally {
       setBrokerActionLoading(null);
     }
@@ -121,7 +125,7 @@ export default function SettingsPage() {
       await removeBroker(id);
       await refreshBrokers();
     } catch (e: unknown) {
-      alert((e as any).message || '删除失败');
+      alert((e as any).message || i18n.t('SettingsPage.k3'));
     } finally {
       setBrokerActionLoading(null);
     }
@@ -133,7 +137,7 @@ export default function SettingsPage() {
       await setActiveBroker(id);
       await refreshBrokers();
     } catch (e: unknown) {
-      alert((e as any).message || '切换失败');
+      alert((e as any).message || i18n.t('SettingsPage.k4'));
     } finally {
       setBrokerActionLoading(null);
     }
@@ -147,7 +151,7 @@ export default function SettingsPage() {
       if (typeof window !== 'undefined' && window.api?.risk) {
         await window.api.risk.updateConfig(updated);
       }
-    } catch { /* silent */ }
+    } catch (_e: unknown) { /* silent */ }
   }
 
   // Callbacks for BrokerSelector
@@ -214,7 +218,7 @@ export default function SettingsPage() {
                 onClick={() => setShowAddBroker(!showAddBroker)}
                 className="text-xs bg-[#C9A046]/20 text-[#C9A046] hover:bg-[#C9A046]/30 px-3 py-1.5 rounded-lg transition-colors"
               >
-                {showAddBroker ? 'components.cancel' : '+ 添加券商'}
+                {showAddBroker ? 'components.cancel' : i18n.t('SettingsPage.k5')}
               </button>
             </div>
 
@@ -414,10 +418,10 @@ export default function SettingsPage() {
 
             {riskConfig ? (
               <div className="grid grid-cols-2 gap-4">
-                <RiskSlider label="日最大亏损" value={Math.round(((riskConfig as any).dailyLossLimitPct || 0.05) * 100)} max={20} unit="%" onSave={(v) => handleRiskSave('dailyLossLimitPct', v)} />
-                <RiskSlider label="单品种最大仓位" value={Math.round(((riskConfig as any).maxSinglePositionPct || 0.20) * 100)} max={50} unit="%" onSave={(v) => handleRiskSave('maxSinglePositionPct', v)} />
-                <RiskSlider label="总持仓上限" value={Math.round(((riskConfig as any).maxTotalPositionPct || 0.95) * 100)} max={100} unit="%" onSave={(v) => handleRiskSave('maxTotalPositionPct', v)} />
-                <RiskSlider label="每分钟最大下单" value={(riskConfig as any).maxOrdersPerMinute || 10} max={30} unit="笔" onSave={(v) => handleRiskSave('maxOrdersPerMinute', v)} />
+                <RiskSlider label={i18n.t('SettingsPage.k6')} value={Math.round(((riskConfig as any).dailyLossLimitPct || 0.05) * 100)} max={20} unit="%" onSave={(v) => handleRiskSave('dailyLossLimitPct', v)} />
+                <RiskSlider label={i18n.t('SettingsPage.k7')} value={Math.round(((riskConfig as any).maxSinglePositionPct || 0.20) * 100)} max={50} unit="%" onSave={(v) => handleRiskSave('maxSinglePositionPct', v)} />
+                <RiskSlider label={i18n.t('SettingsPage.k8')} value={Math.round(((riskConfig as any).maxTotalPositionPct || 0.95) * 100)} max={100} unit="%" onSave={(v) => handleRiskSave('maxTotalPositionPct', v)} />
+                <RiskSlider label={i18n.t('SettingsPage.k9')} value={(riskConfig as any).maxOrdersPerMinute || 10} max={30} unit={i18n.t('SettingsPage.k10')} onSave={(v) => handleRiskSave('maxOrdersPerMinute', v)} />
               </div>
             ) : (
               <p className="text-gray-500 text-sm">{"settings.connectHint"}</p>
@@ -447,8 +451,8 @@ export default function SettingsPage() {
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
           <h2 className="text-white font-semibold mb-4 flex items-center gap-2">ℹ️ 系统信息</h2>
           <div className="grid grid-cols-2 gap-3 text-sm">
-            <InfoRow label="版本" value={(appInfo as any)?.version || '0.1.0'} />
-            <InfoRow label="平台" value={`${(appInfo as any)?.platform || 'win32'} ${(appInfo as any)?.arch || 'x64'}`} />
+            <InfoRow label={i18n.t('SettingsPage.k11')} value={(appInfo as any)?.version || '0.1.0'} />
+            <InfoRow label={i18n.t('SettingsPage.k12')} value={`${(appInfo as any)?.platform || 'win32'} ${(appInfo as any)?.arch || 'x64'}`} />
             <InfoRow label="Electron" value={(appInfo as any)?.electronVersion || '--'} />
             <InfoRow label="Node.js" value={(appInfo as any)?.nodeVersion || '--'} />
             <InfoRow label="Chrome" value={(appInfo as any)?.chromeVersion || '--'} />

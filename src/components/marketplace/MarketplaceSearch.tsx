@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
+import i18n from '../../i18n';
 
 interface MarketplaceSearchProps {
   onSearch: (query: string) => void;
@@ -12,10 +13,10 @@ interface MarketplaceSearchProps {
 }
 
 const FILTER_OPTIONS = [
-  { key: 'category', label: '分类', options: ['趋势跟踪', '均值回归', '动量', '套利', '多因子', 'AI/ML'] },
-  { key: 'timeframe', label: '周期', options: ['日内', '中频', '低频'] },
-  { key: 'market', label: 'components.markets', options: ['A股', '港股', '美股'] },
-  { key: 'price', label: 'components.price', options: ['免费', '付费'] },
+  { key: 'category', label: i18n.t('MarketplaceSearch.k1'), options: [i18n.t('MarketplaceSearch.k2'), i18n.t('MarketplaceSearch.k3'), i18n.t('MarketplaceSearch.k4'), i18n.t('MarketplaceSearch.k5'), i18n.t('MarketplaceSearch.k6'), 'AI/ML'] },
+  { key: 'timeframe', label: i18n.t('MarketplaceSearch.k7'), options: [i18n.t('MarketplaceSearch.k8'), i18n.t('MarketplaceSearch.k9'), i18n.t('MarketplaceSearch.k10')] },
+  { key: 'market', label: 'components.markets', options: [i18n.t('MarketplaceSearch.k11'), i18n.t('MarketplaceSearch.k12'), i18n.t('MarketplaceSearch.k13')] },
+  { key: 'price', label: 'components.price', options: [i18n.t('MarketplaceSearch.k14'), i18n.t('MarketplaceSearch.k15')] },
 ];
 
 export const MarketplaceSearch: React.FC<MarketplaceSearchProps> = ({ onSearch, onFilterChange, className }) => {
@@ -126,7 +127,7 @@ export const MarketplaceSearch: React.FC<MarketplaceSearchProps> = ({ onSearch, 
               onClick={() => onSearch(sort)}
               className="px-2 py-0.5 rounded text-[10px] text-gray-500 hover:text-gray-300 hover:bg-gray-800"
             >
-              {sort === 'rating' ? '评分' : sort === 'return' ? 'components.returnRate' : '最新'}
+              {sort === 'rating' ? i18n.t('MarketplaceSearch.k16') : sort === 'return' ? 'components.returnRate' : i18n.t('MarketplaceSearch.k17')}
             </button>
           ))}
         </div>

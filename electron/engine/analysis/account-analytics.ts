@@ -9,6 +9,8 @@
  */
 
 import log from 'electron-log';
+import { EngineError } from '../core/engine-error';
+
 
 // ============================================================================
 // Inline EventEmitter Polyfill

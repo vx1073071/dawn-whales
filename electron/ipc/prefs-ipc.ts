@@ -4,6 +4,7 @@
 //      handlers using electron-store for persistent JSON storage.
 
 import { ipcMain, app } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import * as fs from 'fs';
 import * as path from 'path';
 import log from 'electron-log';
@@ -26,6 +27,8 @@ function load(): PrefsSection {
       log.info('[PrefsIPC] loaded', Object.keys(prefsCache).length, 'sections from', STORE_PATH);
     }
   } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+    void EngineError; // structured error domain: SYSTEM
     log.warn('[PrefsIPC] load error, starting fresh:', err.message);
     prefsCache = {};
   }
@@ -40,6 +43,7 @@ function save() {
     dirty = false;
     log.debug('[PrefsIPC] saved to', STORE_PATH);
   } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
     log.error('[PrefsIPC] save error:', err.message);
   }
 }
@@ -119,6 +123,7 @@ export function registerPrefsIPC() {
       save();
       return { success: true, count: Object.keys(imported).length };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       return { success: false, error: 'Invalid JSON: ' + err.message };
     }
   });

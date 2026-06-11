@@ -6,6 +6,8 @@
 
 import log from 'electron-log';
 import type { StrategyRunnerInterface } from './cron-scheduler';
+import { EngineError } from './engine-error';
+
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

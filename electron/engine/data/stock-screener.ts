@@ -3,6 +3,7 @@
 // Calls Python script → parses CSV → maps Chinese columns → returns typed results
 
 import log from 'electron-log';
+import { EngineError, ErrorDomain, ErrorCode } from '../core/engine-error';
 import { exec } from 'child_process';
 import path from 'path';
 import fs from 'fs';
@@ -410,7 +411,7 @@ export class StockScreenerService {
       }, (error, stdout, stderr) => {
         if (error) {
           if (error.killed) {
-            reject(new Error(`Script timeout (${timeoutMs}ms)`));
+            reject(new EngineError(ErrorDomain.DATA, ErrorCode.INTERNAL_ERROR, `Script timeout (${timeoutMs}ms)`));
           } else {
             reject(new Error(stderr || error.message));
           }

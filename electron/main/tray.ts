@@ -1,4 +1,5 @@
 // ── System Tray ────────────────────────────────────────────────────────────
+import i18n from '../../src/i18n';
 
 export function createTray() {
     const trayIconPath = path.join(RESOURCES_PATH, 'icons', 'tray-icon.png');
@@ -12,15 +13,15 @@ export function createTray() {
     }
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'DAWN WHALES · 道鲸', enabled: false },
+    { label: i18n.t('Tray.k0'), enabled: false },
     { type: 'separator' },
-    { label: '显示主窗口', click: () => mainWindow?.show() },
-    { label: '紧急停止所有策略', click: () => strategyEngine?.emergencyStop() },
+    { label: i18n.t('Tray.k1'), click: () => mainWindow?.show() },
+    { label: i18n.t('Tray.k2'), click: () => strategyEngine?.emergencyStop() },
     { type: 'separator' },
-    { label: '退出', click: () => app.quit() },
+    { label: i18n.t('Tray.k3'), click: () => app.quit() },
   ]);
 
-  tray.setToolTip('DAWN WHALES · 道鲸');
+  tray.setToolTip(i18n.t('Tray.k4'));
   tray.setContextMenu(contextMenu);
   tray.on('double-click', () => mainWindow?.show());
 }

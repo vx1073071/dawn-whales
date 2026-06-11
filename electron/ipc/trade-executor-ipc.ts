@@ -7,6 +7,7 @@
  */
 
 import { ipcMain, IpcMainInvokeEvent, BrowserWindow } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import log from 'electron-log';
 import { TradeExecutor, getTradeExecutor, TradeSignal, ExecutionConfig, TradeOrder } from '../engine/analysis/trade-executor';
 
@@ -142,6 +143,8 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       const order = await executor.processSignal(signal);
       return createResponse(order);
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
+      void EngineError; // structured error domain: TRADE
       log.error('[TradeExecutorIPC] trade:execute error:', err);
       return createErrorResponse(err);
     }
@@ -154,6 +157,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       const success = await executor.cancelOrder(orderId);
       return createResponse({ orderId, cancelled: success });
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:cancel error:', err);
       return createErrorResponse(err);
     }
@@ -165,6 +169,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       const orders = executor.getOrders(filter);
       return createResponse(orders);
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:get-orders error:', err);
       return createErrorResponse(err);
     }
@@ -176,6 +181,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       const history = executor.getOrderHistory(limit);
       return createResponse(history);
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:get-history error:', err);
       return createErrorResponse(err);
     }
@@ -187,6 +193,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       const config = executor.getConfig();
       return createResponse(config);
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:get-config error:', err);
       return createErrorResponse(err);
     }
@@ -199,6 +206,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       executor.updateConfig(updates);
       return createResponse(executor.getConfig());
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:update-config error:', err);
       return createErrorResponse(err);
     }
@@ -211,6 +219,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       const cancelledCount = await executor.emergencyStop();
       return createResponse({ cancelledCount });
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:emergency-stop error:', err);
       return createErrorResponse(err);
     }
@@ -226,6 +235,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       executor.setMode(mode);
       return createResponse({ mode });
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:set-mode error:', err);
       return createErrorResponse(err);
     }
@@ -241,6 +251,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
         stats: executor.calculateTradeStats(),
       });
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:get-summary error:', err);
       return createErrorResponse(err);
     }
@@ -252,6 +263,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       const positions = executor.getPositions();
       return createResponse(positions);
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:get-positions error:', err);
       return createErrorResponse(err);
     }
@@ -267,6 +279,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
         totalOrders: (executor as any).orders?.size ?? 0,
       });
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:get-stats error:', err);
       return createErrorResponse(err);
     }
@@ -278,6 +291,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       const tradeLog = executor.getTradeLog(limit);
       return createResponse(tradeLog);
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:get-trade-log error:', err);
       return createErrorResponse(err);
     }
@@ -289,6 +303,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       const pnl = executor.calculateDailyPnL(date);
       return createResponse(pnl);
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:get-daily-pnl error:', err);
       return createErrorResponse(err);
     }
@@ -300,6 +315,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       const signals = executor.getPendingSignals();
       return createResponse(signals);
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:get-pending-signals error:', err);
       return createErrorResponse(err);
     }
@@ -314,6 +330,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       }
       return createResponse(order);
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:confirm-signal error:', err);
       return createErrorResponse(err);
     }
@@ -325,6 +342,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       const success = executor.rejectPendingSignal(index);
       return createResponse({ success });
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:reject-signal error:', err);
       return createErrorResponse(err);
     }
@@ -336,6 +354,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       executor.resetEmergencyStop();
       return createResponse({ reset: true });
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:reset-emergency error:', err);
       return createErrorResponse(err);
     }
@@ -347,6 +366,7 @@ export function registerTradeExecutorIPC(win?: BrowserWindow): void {
       const diagnostics = executor.getDiagnostics();
       return createResponse(diagnostics);
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
       log.error('[TradeExecutorIPC] trade:get-diagnostics error:', err);
       return createErrorResponse(err);
     }

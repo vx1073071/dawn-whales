@@ -16,6 +16,7 @@
  */
 
 import { EngineError, ErrorDomain, ErrorCode } from '../core/engine-error';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -26,10 +27,10 @@ export type AppealReason =
   | 'other';
 
 export const APPEAL_REASONS: { value: AppealReason; label: string }[] = [
-  { value: 'payment_not_confirmed', label: '收款未确认' },
-  { value: 'not_as_agreed', label: '未按约定' },
-  { value: 'account_abnormal', label: '账号异常' },
-  { value: 'other', label: '其他' },
+  { value: 'payment_not_confirmed', label: i18n.t('appealEngine.k1') },
+  { value: 'not_as_agreed', label: i18n.t('appealEngine.k2') },
+  { value: 'account_abnormal', label: i18n.t('appealEngine.k3') },
+  { value: 'other', label: i18n.t('appealEngine.k4') },
 ];
 
 export interface AppealRecord {

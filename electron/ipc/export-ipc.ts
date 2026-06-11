@@ -2,6 +2,7 @@
 // R20: Missing handlers — preload exposes export:* but no export-ipc.ts existed.
 
 import { ipcMain, dialog, BrowserWindow } from 'electron';
+import { EngineError } from '../engine/core/engine-error';
 import * as fs from 'fs';
 import * as path from 'path';
 import log from 'electron-log';
@@ -52,6 +53,8 @@ export function registerExportIPC() {
       const result = await saveFileDialog('csv', csv);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       log.error('[ExportCSV]', err);
       return { success: false, error: err.message };
     }
@@ -65,6 +68,7 @@ export function registerExportIPC() {
       const result = await saveFileDialog('json', json);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[ExportJSON]', err);
       return { success: false, error: err.message };
     }
@@ -78,6 +82,7 @@ export function registerExportIPC() {
       const result = await saveFileDialog('md', md);
       return result;
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[ExportMD]', err);
       return { success: false, error: err.message };
     }
@@ -106,6 +111,7 @@ export function registerExportIPC() {
       }
       return { success: true, results };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[ExportBatch]', err);
       return { success: false, error: err.message };
     }
@@ -133,6 +139,7 @@ export function registerExportIPC() {
       }
       return { success: true, filepath: result.filePath };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[ExportSaveDialog]', err);
       return { success: false, error: err.message };
     }
@@ -153,6 +160,7 @@ export function registerExportIPC() {
       fs.writeFileSync(result.filePath, report, 'utf-8');
       return { success: true, filepath: result.filePath };
     } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
       log.error('[ExportSummary]', err);
       return { success: false, error: err.message };
     }

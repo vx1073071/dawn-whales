@@ -6,6 +6,8 @@ import { Worker, isMainThread, parentPort, workerData } from 'worker_threads';
 import log from 'electron-log';
 import path from 'path';
 import i18n from '../../../src/i18n';
+import { EngineError } from '../core/engine-error';
+
 
 // ── Types (与主引擎一致) ───────────────────────────────────────────────────
 

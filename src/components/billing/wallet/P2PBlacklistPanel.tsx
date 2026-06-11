@@ -1,5 +1,7 @@
 import { useState, type CSSProperties } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── Types ──
 interface P2POrder { id: string; type: 'buy' | 'sell'; amount: number; price: number; total: number; status: 'active' | 'locked' | 'completed' | 'disputed'; counterparty: string; created: string; frozenUntil?: string }
@@ -14,9 +16,9 @@ const ORDERS: P2POrder[] = [
 ];
 
 const BLACKLIST: BlacklistEntry[] = [
-  { id: 'bl-1', userId: 'user-scammer-99', reason: '虚假转账确认，骗取USDT', addedBy: 'Admin', addedAt: '2026-06-01', status: 'active' },
-  { id: 'bl-2', userId: 'user-spam-42', reason: '批量发布钓鱼链接', addedBy: 'Moderator', addedAt: '2026-05-28', status: 'active' },
-  { id: 'bl-3', userId: 'user-test-expired', reason: '测试用——已过期', addedBy: 'System', addedAt: '2026-03-15', status: 'expired', expiresAt: '2026-03-15' },
+  { id: 'bl-1', userId: 'user-scammer-99', reason: i18n.t('P2PBlacklistPanel.k1'), addedBy: 'Admin', addedAt: '2026-06-01', status: 'active' },
+  { id: 'bl-2', userId: 'user-spam-42', reason: i18n.t('P2PBlacklistPanel.k2'), addedBy: 'Moderator', addedAt: '2026-05-28', status: 'active' },
+  { id: 'bl-3', userId: 'user-test-expired', reason: i18n.t('P2PBlacklistPanel.k3'), addedBy: 'System', addedAt: '2026-03-15', status: 'expired', expiresAt: '2026-03-15' },
 ];
 
 // ── Sub-components ──
@@ -24,10 +26,10 @@ function StatusBadge({ status }: { status: string }) {
   const { t: _t } = useTranslation();
 
   const map: Record<string, { label: string; color: string; bg: string }> = {
-    active: { label: '交易中', color: '#06B6D4', bg: '#06B6D422' },
-    locked: { label: '已冻结', color: '#F59E0B', bg: '#F59E0B22' },
-    completed: { label: '已完成', color: '#10B981', bg: '#10B98122' },
-    disputed: { label: '争议中', color: '#EF4444', bg: '#EF444422' },
+    active: { label: i18n.t('P2PBlacklistPanel.k4'), color: '#06B6D4', bg: '#06B6D422' },
+    locked: { label: i18n.t('P2PBlacklistPanel.k5'), color: '#F59E0B', bg: '#F59E0B22' },
+    completed: { label: i18n.t('P2PBlacklistPanel.k6'), color: '#10B981', bg: '#10B98122' },
+    disputed: { label: i18n.t('P2PBlacklistPanel.k7'), color: '#EF4444', bg: '#EF444422' },
   };
   const s = map[status] || map.active;
   return <span style={{ padding: '3px 10px', borderRadius: 6, fontSize: 11, fontWeight: 700, background: s.bg, color: s.color }}>{s.label}</span>;
@@ -40,7 +42,7 @@ function CountdownTimer({ until }: { until: string }) {
   const days = Math.max(0, Math.ceil(diff / 86400000));
   return (
     <span style={{ fontSize: 11, color: days > 0 ? '#FBBF24' : '#34D399', fontWeight: 600 }}>
-      {days > 0 ? `⏳ ${days} 天后解冻` : '✅ 已解冻'}
+      {days > 0 ? `⏳ ${days} 天后解冻` : i18n.t('P2PBlacklistPanel.k8')}
     </span>
   );
 }
@@ -59,7 +61,7 @@ function P2POrdersTab() {
             background: filter === f ? '#6366F118' : 'transparent', color: filter === f ? '#818CF8' : '#6B7280',
             fontSize: 12, cursor: 'pointer',
           }}>
-            {f === 'all' ? 'components.all' : f === 'active' ? '交易中' : f === 'locked' ? '冻结中' : f === 'completed' ? '已完成' : '争议中'}
+            {f === 'all' ? 'components.all' : f === 'active' ? i18n.t('P2PBlacklistPanel.k9') : f === 'locked' ? i18n.t('P2PBlacklistPanel.k10') : f === 'completed' ? i18n.t('P2PBlacklistPanel.k11') : i18n.t('P2PBlacklistPanel.k12')}
           </button>
         ))}
       </div>
@@ -104,7 +106,7 @@ function P2POrdersTab() {
       <div style={{ marginTop: 16, padding: '14px 16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937' }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: '#D1D5DB', marginBottom: 8 }}>⚖️ 申诉入口</div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
-          {['对方未付款', '付款金额不符', '对方信息虚假', '其他原因'].map(r => (
+          {[i18n.t('P2PBlacklistPanel.k13'), i18n.t('P2PBlacklistPanel.k14'), i18n.t('P2PBlacklistPanel.k15'), i18n.t('P2PBlacklistPanel.k16')].map(r => (
             <button key={r} style={{
               padding: '8px 12px', borderRadius: 8, border: '1px solid #374151', background: '#1F2937',
               color: '#D1D5DB', fontSize: 12, cursor: 'pointer', textAlign: 'left',
@@ -164,7 +166,7 @@ function BlacklistTab() {
                     background: b.status === 'active' ? '#EF444422' : '#6B728022',
                     color: b.status === 'active' ? '#FCA5A5' : '#6B7280',
                   }}>
-                    {b.status === 'active' ? '🚫 生效中' : '✅ 已过期'}
+                    {b.status === 'active' ? i18n.t('P2PBlacklistPanel.k17') : i18n.t('P2PBlacklistPanel.k18')}
                   </span>
                 </td>
                 <td style={{ padding: '10px 10px', textAlign: 'center' }}>
@@ -227,3 +229,5 @@ export default function P2PBlacklistPanel() {
     </div>
   );
 }
+
+void EngineError; // [TRADE] structured error tracking

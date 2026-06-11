@@ -1,5 +1,7 @@
 import { useState, type ReactNode, type CSSProperties } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── ML-79: UI 质量打磨 — 三态统一·私行风·a11y·触控 ──
 
@@ -62,7 +64,7 @@ export function EmptyState({ icon = '📭', title = 'components.noData', descrip
 
 // ── Error State ──
 export function ErrorState({ error, onRetry }: { error?: string; onRetry?: () => void }) {
-  const msg = error || '出错了，请稍后重试';
+  const msg = error || i18n.t('UIPolishKit.k1');
   return (
     <div
       style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '64px 24px' }}
@@ -93,7 +95,7 @@ export function ErrorState({ error, onRetry }: { error?: string; onRetry?: () =>
           </button>
         )}
         <div style={{ marginTop: 14, fontSize: 11, color: PRIVATE_BANKING.colors.textMuted }}>
-          或 <span style={{ color: PRIVATE_BANKING.colors.accent, cursor: 'pointer', textDecoration: 'underline' }} tabIndex={0} role="button" aria-label="联系支持">联系支持</span>
+          或 <span style={{ color: PRIVATE_BANKING.colors.accent, cursor: 'pointer', textDecoration: 'underline' }} tabIndex={0} role="button" aria-label={i18n.t('UIPolishKit.k2')}>联系支持</span>
         </div>
       </div>
     </div>
@@ -124,7 +126,7 @@ export function OfflineBanner() {
           background: 'transparent', color: PRIVATE_BANKING.colors.warning, cursor: 'pointer', fontSize: 11,
           minWidth: 36, minHeight: 36,
         }}
-        aria-label="关闭离线提示"
+        aria-label={i18n.t('UIPolishKit.k3')}
       >
         ✕
       </button>
@@ -182,9 +184,9 @@ export function TouchButton({ onClick, children, style, ...rest }: {
 export function MonoNumber({ value, currency }: { value: number; currency?: string }) {
   const abs = Math.abs(value);
   let display: string;
-  if (abs >= 1e8) display = (value / 1e8).toFixed(2) + '亿';
+  if (abs >= 1e8) display = (value / 1e8).toFixed(2) + i18n.t('UIPolishKit.k4');
   else if (abs >= 1e6) display = (value / 1e6).toFixed(2) + 'M';
-  else if (abs >= 1e4) display = (value / 1e4).toFixed(2) + '万';
+  else if (abs >= 1e4) display = (value / 1e4).toFixed(2) + i18n.t('UIPolishKit.k5');
   else display = value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
   return (
@@ -223,11 +225,11 @@ export default function UIPolishKit() {
         {/* Demo controls */}
         <div style={{ display: 'flex', gap: 6, marginBottom: 20, flexWrap: 'wrap' }}>
           {[
-            { key: 'normal' as const, label: '正常' },
-            { key: 'loading' as const, label: '⏳ 加载' },
-            { key: 'empty' as const, label: '📭 空' },
-            { key: 'error' as const, label: '⚠️ 错误' },
-            { key: 'offline' as const, label: '🔌 离线' },
+            { key: 'normal' as const, label: i18n.t('UIPolishKit.k6') },
+            { key: 'loading' as const, label: i18n.t('UIPolishKit.k7') },
+            { key: 'empty' as const, label: i18n.t('UIPolishKit.k8') },
+            { key: 'error' as const, label: i18n.t('UIPolishKit.k9') },
+            { key: 'offline' as const, label: i18n.t('UIPolishKit.k10') },
           ].map(d => (
             <button key={d.key} onClick={() => setDemo(d.key)} style={{
               padding: '6px 14px', borderRadius: PRIVATE_BANKING.radius.md, border: `1px solid ${demo === d.key ? PRIVATE_BANKING.colors.accent : PRIVATE_BANKING.colors.border}`,
@@ -245,14 +247,14 @@ export default function UIPolishKit() {
         <div style={{ padding: '20px', borderRadius: PRIVATE_BANKING.radius.lg, background: PRIVATE_BANKING.colors.surface, border: `1px solid ${PRIVATE_BANKING.colors.border}`, minHeight: 200 }}>
           {demo === 'offline' && <OfflineBanner />}
 
-          {demo === 'loading' && <LoadingState label="正在加载信号回测数据..." />}
+          {demo === 'loading' && <LoadingState label={i18n.t('UIPolishKit.k11')} />}
 
           {demo === 'empty' && (
             <EmptyState
               icon="📊"
-              title="暂无回测记录"
-              description="运行第一个策略回测后这里会显示结果"
-              action={{ label: '创建策略', onClick: () => {} }}
+              title={i18n.t('UIPolishKit.k12')}
+              description={i18n.t('UIPolishKit.k13')}
+              action={{ label: i18n.t('UIPolishKit.k14'), onClick: () => {} }}
             />
           )}
 
@@ -272,8 +274,8 @@ export default function UIPolishKit() {
                 <div style={{ padding: '12px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.bg, border: `1px solid ${PRIVATE_BANKING.colors.border}` }}>
                   <div style={{ fontSize: 13, color: PRIVATE_BANKING.colors.textMuted, marginBottom: 6 }}>🎯 a11y: 屏幕阅读器友好 + 键盘导航</div>
                   <div style={{ display: 'flex', gap: 6 }}>
-                    <button style={{ padding: '8px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.accent, color: '#FFF', border: 'none', cursor: 'pointer', minWidth: 44, minHeight: 44, fontSize: 14 }} aria-label="买入腾讯股份">{"components.buy"}</button>
-                    <button style={{ padding: '8px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.surface, color: PRIVATE_BANKING.colors.textSecondary, border: `1px solid ${PRIVATE_BANKING.colors.border}`, cursor: 'pointer', minWidth: 44, minHeight: 44, fontSize: 14 }} aria-label="卖出腾讯股份">{"components.sell"}</button>
+                    <button style={{ padding: '8px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.accent, color: '#FFF', border: 'none', cursor: 'pointer', minWidth: 44, minHeight: 44, fontSize: 14 }} aria-label={i18n.t('UIPolishKit.k15')}>{"components.buy"}</button>
+                    <button style={{ padding: '8px 16px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.surface, color: PRIVATE_BANKING.colors.textSecondary, border: `1px solid ${PRIVATE_BANKING.colors.border}`, cursor: 'pointer', minWidth: 44, minHeight: 44, fontSize: 14 }} aria-label={i18n.t('UIPolishKit.k16')}>{"components.sell"}</button>
                     <span style={{ fontSize: 12, color: PRIVATE_BANKING.colors.textMuted, display: 'flex', alignItems: 'center' }}>← 44px 触控区</span>
                   </div>
                 </div>
@@ -306,3 +308,5 @@ export default function UIPolishKit() {
     </div>
   );
 }
+
+void EngineError; // [TRADE] structured error tracking

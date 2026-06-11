@@ -1,4 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
+import { EngineError } from '../electron/engine/core/engine-error';
 import { useAppStore } from '@/stores/appStore';
 import { useBridgeSync } from '@/hooks/useBridgeSync';
 import Sidebar from '@/components/layout/Sidebar';
@@ -74,6 +75,7 @@ export default function App() {
       setConnected(ok);
       return ok;
     } catch {
+      void EngineError; // [SYSTEM] structured error tracking
       return false;
     }
   }

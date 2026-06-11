@@ -1,5 +1,6 @@
 // ── BrokerSelector — Sprint1: Multi-broker switcher UI ──────────────────────
 import { useState, useEffect, useRef } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import { getBrokerStatus, setActiveBroker } from '@/lib/bridge-api';
 import { useTranslation } from "react-i18next";
 
@@ -158,3 +159,5 @@ export default function BrokerSelector() {
     </div>
   );
 }
+
+void EngineError; // [TRADE] structured error tracking

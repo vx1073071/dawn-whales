@@ -7,6 +7,7 @@
 
 import log from 'electron-log';
 import { EngineError, ErrorCode } from '../../errors';
+import i18n from '../../../src/i18n';
 
 
 // ============================================================================
@@ -1348,7 +1349,7 @@ export function createDefaultAggregator(): MultiSourceAggregator {
   const defaultConfigs: DataSourceConfig[] = [
     {
       id: 'eastmoney',
-      name: 'EastMoney (东方财富)',
+      name: i18n.t('MultiSourceAggregator.k0'),
       priority: 1,
       enabled: true,
       timeoutMs: 5000,
@@ -1357,7 +1358,7 @@ export function createDefaultAggregator(): MultiSourceAggregator {
     },
     {
       id: 'sina',
-      name: 'Sina Finance (新浪财经)',
+      name: i18n.t('MultiSourceAggregator.k1'),
       priority: 2,
       enabled: true,
       timeoutMs: 5000,
@@ -1366,7 +1367,7 @@ export function createDefaultAggregator(): MultiSourceAggregator {
     },
     {
       id: 'tencent',
-      name: 'Tencent Finance (腾讯财经)',
+      name: i18n.t('MultiSourceAggregator.k2'),
       priority: 3,
       enabled: true,
       timeoutMs: 6000,
@@ -1375,7 +1376,7 @@ export function createDefaultAggregator(): MultiSourceAggregator {
     },
     {
       id: 'xueqiu',
-      name: 'Xueqiu (雪球)',
+      name: i18n.t('MultiSourceAggregator.k3'),
       priority: 4,
       enabled: true,
       timeoutMs: 8000,

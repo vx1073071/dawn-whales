@@ -12,6 +12,7 @@
 
 import { useTranslation } from "react-i18next";
 import React, { useState, useMemo } from 'react';
+import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -77,7 +78,7 @@ const MOCK_REPORT: WFAReport = {
 const OverfitIndicator: React.FC<{ ratio: number }> = ({ ratio }) => {
   const { t: _t } = useTranslation();
   const color = ratio >= 0.85 ? 'bg-emerald-500' : ratio >= 0.7 ? 'bg-amber-500' : ratio >= 0.5 ? 'bg-orange-500' : 'bg-red-500';
-  const label = ratio >= 0.85 ? '低' : ratio >= 0.7 ? '中' : ratio >= 0.5 ? '高' : '严重';
+  const label = ratio >= 0.85 ? i18n.t('WalkForwardPanel.k1') : ratio >= 0.7 ? i18n.t('WalkForwardPanel.k2') : ratio >= 0.5 ? i18n.t('WalkForwardPanel.k3') : i18n.t('WalkForwardPanel.k4');
   return (
     <span className={`inline-flex items-center gap-1 text-[10px]`}>
       <span className={`w-2 h-2 rounded-full ${color}`} />
@@ -137,21 +138,21 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
           onClick={() => setShowTest(s => !s)}
           className="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-400 hover:text-gray-200"
         >
-          {showTest ? '隐藏测试集' : '显示测试集'}
+          {showTest ? i18n.t('WalkForwardPanel.k5') : i18n.t('WalkForwardPanel.k6')}
         </button>
       </div>
 
       {/* Performance summary cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
         {([
-          { label: '训练均Sharpe', value: report.avgTrainSharpe.toFixed(2), color: 'text-blue-400' },
-          { label: '测试均Sharpe', value: report.avgTestSharpe.toFixed(2), color: 'text-amber-400' },
-          { label: '训练均收益', value: `${(report.avgTrainReturn * 100).toFixed(1)}%`, color: 'text-blue-400' },
-          { label: '测试均收益', value: `${(report.avgTestReturn * 100).toFixed(1)}%`, color: 'text-amber-400' },
-          { label: '过拟合比', value: `${(report.avgOverfitRatio * 100).toFixed(0)}%`, color: report.avgOverfitRatio >= 0.8 ? 'text-emerald-400' : 'text-red-400' },
-          { label: '稳定性', value: report.stabilityScore.toFixed(2), color: report.stabilityScore >= 0.7 ? 'text-emerald-400' : 'text-yellow-400' },
-          { label: '最佳窗口', value: `#${report.bestWindow.index}`, color: 'text-emerald-400' },
-          { label: '最差窗口', value: `#${report.worstWindow.index}`, color: 'text-red-400' },
+          { label: i18n.t('WalkForwardPanel.k7'), value: report.avgTrainSharpe.toFixed(2), color: 'text-blue-400' },
+          { label: i18n.t('WalkForwardPanel.k8'), value: report.avgTestSharpe.toFixed(2), color: 'text-amber-400' },
+          { label: i18n.t('WalkForwardPanel.k9'), value: `${(report.avgTrainReturn * 100).toFixed(1)}%`, color: 'text-blue-400' },
+          { label: i18n.t('WalkForwardPanel.k10'), value: `${(report.avgTestReturn * 100).toFixed(1)}%`, color: 'text-amber-400' },
+          { label: i18n.t('WalkForwardPanel.k11'), value: `${(report.avgOverfitRatio * 100).toFixed(0)}%`, color: report.avgOverfitRatio >= 0.8 ? 'text-emerald-400' : 'text-red-400' },
+          { label: i18n.t('WalkForwardPanel.k12'), value: report.stabilityScore.toFixed(2), color: report.stabilityScore >= 0.7 ? 'text-emerald-400' : 'text-yellow-400' },
+          { label: i18n.t('WalkForwardPanel.k13'), value: `#${report.bestWindow.index}`, color: 'text-emerald-400' },
+          { label: i18n.t('WalkForwardPanel.k14'), value: `#${report.worstWindow.index}`, color: 'text-red-400' },
         ] as const).map(card => (
           <div key={card.label} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/30 text-center">
             <div className="text-[10px] text-gray-500">{card.label}</div>
@@ -270,9 +271,9 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
           <div className="grid grid-cols-4 gap-2 mb-3">
             {([
               ['Sharpe', selectedW.trainSharpe.toFixed(2), selectedW.testSharpe.toFixed(2)],
-              ['回撤', `${(selectedW.trainMaxDD * 100).toFixed(1)}%`, `${(selectedW.testMaxDD * 100).toFixed(1)}%`],
+              [i18n.t('WalkForwardPanel.k15'), `${(selectedW.trainMaxDD * 100).toFixed(1)}%`, `${(selectedW.testMaxDD * 100).toFixed(1)}%`],
               ['components.winRate', `${(selectedW.trainWinRate * 100).toFixed(0)}%`, `${(selectedW.testWinRate * 100).toFixed(0)}%`],
-              ['过拟合比', '', `${(selectedW.overfitRatio * 100).toFixed(0)}%`],
+              [i18n.t('WalkForwardPanel.k16'), '', `${(selectedW.overfitRatio * 100).toFixed(0)}%`],
             ] as const).map(([label, train, test]) => (
               <div key={label} className="bg-gray-800/50 rounded p-2 text-center">
                 <div className="text-[10px] text-gray-600">{label}</div>

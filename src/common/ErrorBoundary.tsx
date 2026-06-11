@@ -1,4 +1,5 @@
 import { Component, type ReactNode, type CSSProperties } from 'react';
+import { EngineError, ErrorDomain, ErrorCode } from '../../electron/engine/core/engine-error';
 
 // ── Types ──
 interface ErrorBoundaryProps { children: ReactNode; fallback?: ReactNode }
@@ -29,7 +30,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       if (this.props.fallback) return this.props.fallback;
       return (
         <CrashScreen
-          error={this.state.error?.message || '未知错误'}
+          error={this.state.error?.message || i18n.t('ErrorBoundary.k1')}
           stack={this.state.errorInfo}
           onRetry={this.handleReset}
         />
@@ -104,7 +105,7 @@ function CrashScreen({ error, stack, onRetry }: { error: string; stack: string; 
             onClick={() => setShowStack(!showStack)}
             style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid #374151', background: 'transparent', color: '#6B7280', fontSize: 11, cursor: 'pointer', marginTop: 4 }}
           >
-            {showStack ? '隐藏堆栈' : '查看详情'}
+            {showStack ? i18n.t('ErrorBoundary.k2') : i18n.t('ErrorBoundary.k3')}
           </button>
         </div>
 
@@ -127,7 +128,7 @@ function CrashScreen({ error, stack, onRetry }: { error: string; stack: string; 
               color: countdown > 0 ? '#10B981' : '#D1D5DB', fontSize: 14, cursor: countdown > 0 ? 'default' : 'pointer',
             }}
           >
-            {countdown > 0 ? `⏳ ${countdown}秒后自动恢复` : '⏱️ 5秒自动恢复'}
+            {countdown > 0 ? `⏳ ${countdown}秒后自动恢复` : i18n.t('ErrorBoundary.k4')}
           </button>
         </div>
 
@@ -141,13 +142,14 @@ function CrashScreen({ error, stack, onRetry }: { error: string; stack: string; 
 
 // ── Crash Demo Trigger ──
 import { useState, useEffect, useRef } from 'react';
+import i18n from '../i18n';
 
 export function CrashDemo() {
   const [shouldCrash, setShouldCrash] = useState(false);
 
   if (shouldCrash) {
     // Simulate a render crash
-    throw new Error('Simulated crash: Division by zero in StrategyEngine.calculate()');
+    throw new EngineError(ErrorDomain.SYSTEM, ErrorCode.INTERNAL_ERROR, 'Simulated crash: Division by zero in StrategyEngine.calculate()');
   }
 
   return (

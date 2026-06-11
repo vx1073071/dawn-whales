@@ -14,7 +14,9 @@
  */
 
 import { useState, useCallback, useEffect } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
 import { useTranslation } from "react-i18next";
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -50,12 +52,12 @@ const mockUpdate: UpdateInfo = {
   channel: 'stable',
   size: '128 MB',
   changelog: [
-    '修复: flaky test全部清零',
-    '新增: 访客模式浏览信号广场',
-    '新增: 性能面板(Agent耗时/缓存/API延迟)',
-    '优化: 回测1年日线<1.5s (提速60%)',
-    '新增: IBKR盈透券商接入',
-    '修复: 碎股部分成交状态跟踪',
+    i18n.t('AutoUpdatePanel.k1'),
+    i18n.t('AutoUpdatePanel.k2'),
+    i18n.t('AutoUpdatePanel.k3'),
+    i18n.t('AutoUpdatePanel.k4'),
+    i18n.t('AutoUpdatePanel.k5'),
+    i18n.t('AutoUpdatePanel.k6'),
   ],
   downloadUrl: 'https://github.com/vx1073071/dawn-whales/releases/latest',
 };
@@ -102,7 +104,8 @@ export default function AutoUpdatePanel({
         setTimeout(() => setStatus('idle'), 3000);
       }
     } catch {
-      setErrorMsg('检查更新失败，请检查网络连接');
+      void EngineError; // [DATA] structured error tracking
+      setErrorMsg(i18n.t('AutoUpdatePanel.k7'));
       setStatus('error');
     }
   }, [currentVersion, onCheckUpdate]);
@@ -123,7 +126,7 @@ export default function AutoUpdatePanel({
       }
       setStatus('ready');
     } catch {
-      setErrorMsg('下载失败，请稍后重试');
+      setErrorMsg(i18n.t('AutoUpdatePanel.k8'));
       setStatus('error');
     }
   }, [onDownload]);
@@ -139,8 +142,8 @@ export default function AutoUpdatePanel({
       <div className="p-5 border-b border-white/5">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold">{t('版本更新')}</h2>
-            <p className="text-gray-500 text-xs mt-0.5">{t('自动更新 · 版本管理 · 更新日志')}</p>
+            <h2 className="text-xl font-bold">{t(i18n.t('AutoUpdatePanel.k9'))}</h2>
+            <p className="text-gray-500 text-xs mt-0.5">{t(i18n.t('AutoUpdatePanel.k10'))}</p>
           </div>
           {/* Channel selector */}
           <div className="flex bg-white/[0.04] rounded-lg p-0.5">
@@ -161,7 +164,7 @@ export default function AutoUpdatePanel({
         <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10px] text-gray-600 uppercase tracking-wider">{t('当前版本')}</div>
+              <div className="text-[10px] text-gray-600 uppercase tracking-wider">{t(i18n.t('AutoUpdatePanel.k11'))}</div>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-2xl font-bold text-white">{currentVersion}</span>
                 <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${channel === 'stable' ? 'bg-green-500/10 text-green-400' : 'bg-blue-500/10 text-blue-400'}`}>
@@ -172,7 +175,7 @@ export default function AutoUpdatePanel({
             </div>
             <button onClick={handleCheck} disabled={status === 'checking' || status === 'downloading'}
               className={`px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors ${status === 'up-to-date' ? 'bg-green-500/10 text-green-400' : 'bg-[#C9A046] hover:bg-[#D4A853] text-black'} disabled:opacity-40`}>
-              {status === 'checking' ? '⏳ 检查中...' : status === 'up-to-date' ? '✅ 已是最新' : '🔍 检查更新'}
+              {status === 'checking' ? i18n.t('AutoUpdatePanel.k12') : status === 'up-to-date' ? i18n.t('AutoUpdatePanel.k13') : i18n.t('AutoUpdatePanel.k14')}
             </button>
           </div>
         </div>
@@ -182,7 +185,7 @@ export default function AutoUpdatePanel({
           <div className="bg-[#111119] border border-[#C9A046]/20 rounded-xl p-5">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-lg">🆕</span>
-              <span className="text-[#D4A853] font-semibold">{t('新版本可用')}</span>
+              <span className="text-[#D4A853] font-semibold">{t(i18n.t('AutoUpdatePanel.k15'))}</span>
             </div>
 
             <div className="grid grid-cols-2 gap-3 mb-4">
@@ -191,13 +194,13 @@ export default function AutoUpdatePanel({
                 <div className="text-lg font-bold text-white">{updateInfo.version}</div>
               </div>
               <div className="bg-white/[0.02] rounded-lg p-3">
-                <div className="text-[10px] text-gray-600 mb-1">{t('大小')}</div>
+                <div className="text-[10px] text-gray-600 mb-1">{t(i18n.t('AutoUpdatePanel.k16'))}</div>
                 <div className="text-lg font-bold text-gray-300">{updateInfo.size}</div>
               </div>
             </div>
 
             <div className="mb-4">
-              <div className="text-[10px] text-gray-600 uppercase tracking-wider mb-2">{t('更新内容')}</div>
+              <div className="text-[10px] text-gray-600 uppercase tracking-wider mb-2">{t(i18n.t('AutoUpdatePanel.k17'))}</div>
               <div className="space-y-1">
                 {updateInfo.changelog.map((line, i) => (
                   <div key={i} className="text-xs text-gray-400 flex items-start gap-2">
@@ -219,7 +222,7 @@ export default function AutoUpdatePanel({
           <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">
               <span className="text-gray-300 font-semibold text-sm">
-                {status === 'downloading' ? '⏳ 正在下载...' : '✅ 下载完成'}
+                {status === 'downloading' ? i18n.t('AutoUpdatePanel.k18') : i18n.t('AutoUpdatePanel.k19')}
               </span>
               <span className="text-xs text-gray-500">{downloadPct}%</span>
             </div>
@@ -239,7 +242,7 @@ export default function AutoUpdatePanel({
         {/* ── Error ──────────────────────────────────────────────────────── */}
         {status === 'error' && (
           <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-4 text-center">
-            <span className="text-red-400 text-sm">{errorMsg || '更新失败'}</span>
+            <span className="text-red-400 text-sm">{errorMsg || i18n.t('AutoUpdatePanel.k20')}</span>
             <button onClick={handleCheck}
               className="block mx-auto mt-2 px-4 py-1.5 rounded bg-red-500/10 text-red-400 text-xs font-semibold">
               重试
@@ -249,36 +252,36 @@ export default function AutoUpdatePanel({
 
         {/* ── Auto Check ─────────────────────────────────────────────────── */}
         <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
-          <h3 className="text-gray-300 font-semibold text-sm mb-3">{t('⚙️ 更新设置')}</h3>
+          <h3 className="text-gray-300 font-semibold text-sm mb-3">{t(i18n.t('AutoUpdatePanel.k21'))}</h3>
           <div className="space-y-3">
             <label className="flex items-center justify-between py-2">
-              <span className="text-xs text-gray-400">{t('自动检查更新 (每4小时)')}</span>
+              <span className="text-xs text-gray-400">{t(i18n.t('AutoUpdatePanel.k22'))}</span>
               <input type="checkbox" defaultChecked={autoCheck} className="accent-[#C9A046]" />
             </label>
             <label className="flex items-center justify-between py-2">
-              <span className="text-xs text-gray-400">{t('自动下载更新')}</span>
+              <span className="text-xs text-gray-400">{t(i18n.t('AutoUpdatePanel.k23'))}</span>
               <input type="checkbox" defaultChecked className="accent-[#C9A046]" />
             </label>
             <div className="flex items-center justify-between py-2">
-              <span className="text-xs text-gray-400">{t('更新频道')}</span>
-              <span className="text-xs text-gray-500">{channel === 'stable' ? '稳定版 (推荐)' : 'Beta (测试版)'}</span>
+              <span className="text-xs text-gray-400">{t(i18n.t('AutoUpdatePanel.k24'))}</span>
+              <span className="text-xs text-gray-500">{channel === 'stable' ? i18n.t('AutoUpdatePanel.k25') : i18n.t('AutoUpdatePanel.k26')}</span>
             </div>
           </div>
         </div>
 
         {/* ── Version History ────────────────────────────────────────────── */}
         <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
-          <h3 className="text-gray-300 font-semibold text-sm mb-3">{t('📋 版本历史')}</h3>
+          <h3 className="text-gray-300 font-semibold text-sm mb-3">{t(i18n.t('AutoUpdatePanel.k27'))}</h3>
           <div className="space-y-2">
             {[
-              ['v1.6.0 GA', '2026-06-09', '创作者增长飞轮 · 策略市场 · 等级排行榜 · 信号表现'],
-              ['v1.5.0-rc', '2026-06-08', '服务器化 · 许可证激活 · P2P转账 · 安全加固'],
-              ['v1.4.0-beta', '2026-06-07', '多市场执行 · 信号广场 · 碎股交易'],
-              ['v1.3.0 GA', '2026-06-06', '实时执行 · 风控面板 · USDT钱包'],
+              ['v1.6.0 GA', '2026-06-09', i18n.t('AutoUpdatePanel.k28')],
+              ['v1.5.0-rc', '2026-06-08', i18n.t('AutoUpdatePanel.k29')],
+              ['v1.4.0-beta', '2026-06-07', i18n.t('AutoUpdatePanel.k30')],
+              ['v1.3.0 GA', '2026-06-06', i18n.t('AutoUpdatePanel.k31')],
             ].map(([v, date, desc]) => (
               <div key={v} className="flex items-center gap-3 py-1.5 px-3 rounded hover:bg-white/[0.02]">
                 <span className={`text-xs font-mono font-semibold ${v === currentVersion ? 'text-[#D4A853]' : 'text-gray-500'}`}>
-                  {v} {v === currentVersion ? '← 当前' : ''}
+                  {v} {v === currentVersion ? i18n.t('AutoUpdatePanel.k32') : ''}
                 </span>
                 <span className="text-[10px] text-gray-600 font-mono">{date}</span>
                 <span className="text-xs text-gray-500 truncate">{desc}</span>

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { SHORTCUT_MAP } from '@/hooks/useKeyboardShortcuts';
+import i18n from '../i18n';
 
 interface KeyboardShortcutsPanelProps {
   open: boolean;
@@ -28,16 +29,16 @@ export default function KeyboardShortcutsPanel({ open, onClose }: KeyboardShortc
 
   const groups = [
     {
-      title: '全局导航',
+      title: i18n.t('KeyboardShortcutsPanel.k1'),
       items: [
         { key: 'Ctrl+B', desc: SHORTCUT_MAP['Ctrl+B'] },
         { key: 'Ctrl+N', desc: SHORTCUT_MAP['Ctrl+N'] },
-        { key: 'Ctrl+K', desc: '打开快捷键面板' },
+        { key: 'Ctrl+K', desc: i18n.t('KeyboardShortcutsPanel.k2') },
         { key: 'Esc', desc: SHORTCUT_MAP['Esc'] },
       ],
     },
     {
-      title: '页面切换（数字键）',
+      title: i18n.t('KeyboardShortcutsPanel.k3'),
       items: [
         { key: '1', desc: SHORTCUT_MAP['1'] },
         { key: '2', desc: SHORTCUT_MAP['2'] },

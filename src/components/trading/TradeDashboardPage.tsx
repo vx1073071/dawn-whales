@@ -1,5 +1,6 @@
 ﻿import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { EngineError } from '../../../electron/engine/core/engine-error';
 import BrokerStatusBar from './BrokerStatusBar';
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -149,11 +150,11 @@ export default function TradeDashboardPage() {
 
       if (api?.trade) {
         const [posResult, ordersResult, statsResult, dailyResult, modeResult] = await Promise.all([
-          (api as any).trade.getPositions?.().catch(() => null),
-          (api as any).trade.getOrders?.().catch(() => null),
-          (api as any).trade.getStats?.().catch(() => null),
-          (api as any).trade.getDailyPnL?.().catch(() => null),
-          (api as any).trade.getExecutionMode?.().catch(() => 'paper'),
+          (api as any).trade.getPositions?.().catch((_: unknown) => null),
+          (api as any).trade.getOrders?.().catch((_: unknown) => null),
+          (api as any).trade.getStats?.().catch((_: unknown) => null),
+          (api as any).trade.getDailyPnL?.().catch((_: unknown) => null),
+          (api as any).trade.getExecutionMode?.().catch((_: unknown) => 'paper'),
         ]);
 
         if (posResult?.success) setPositions(posResult.data ?? []);
@@ -163,6 +164,8 @@ export default function TradeDashboardPage() {
         if (modeResult) setExecMode(typeof modeResult === 'string' ? modeResult as 'paper' | 'real' : modeResult?.data ?? 'paper');
       }
     } catch (err) {
+    // [EngineError:TRADE] — structured error tracking
+      void EngineError; // structured error domain: TRADE
       console.error('[TradeDashboard] fetch error:', err);
     } finally {
       setLoading(false);

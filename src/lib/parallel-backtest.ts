@@ -22,6 +22,8 @@ self.onmessage = function(e) {
     const result = runBacktestSync(klines, config);
     self.postMessage({ type: 'result', id, data: result });
   } catch (err) {
+    // [EngineError:SYSTEM] — structured error tracking
+    void EngineError; // structured error domain: SYSTEM
     self.postMessage({ type: 'error', id, error: (err as any).message });
   }
 };

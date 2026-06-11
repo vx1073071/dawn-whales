@@ -3,6 +3,7 @@
 
 import { useState, useCallback } from 'react';
 import type { ConditionRule, PriceCondition, TriggerEvent } from '../../../electron/types/condition.js';
+import i18n from '../../i18n';
 interface Props {
   onBack?: () => void;
 }
@@ -97,13 +98,13 @@ function RuleCard({ rule, onDelete, onToggle, onViewHistory }: {
             onClick={() => onViewHistory(rule.id)}
             className="text-xs px-2 py-1 bg-blue-500/20 text-blue-400 rounded hover:bg-blue-500/30 transition-colors"
           >
-            {"components.历史"}
+            {i18n.t('ConditionRulePanel.k1')}
           </button>
           <button
             onClick={() => onDelete(rule.id)}
             className="text-xs px-2 py-1 bg-white/5 text-gray-400 rounded hover:bg-red-500/20 hover:text-red-400 transition-colors"
           >
-            {"components.删除"}
+            {i18n.t('ConditionRulePanel.k2')}
           </button>
         </div>
       </div>
@@ -125,9 +126,9 @@ function HistoryModal({ ruleId, history, onClose }: {
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50" onClick={onClose}>
       <div className="bg-[#1a1a25] border border-white/10 rounded-xl p-6 max-w-lg w-full mx-4" onClick={e => e.stopPropagation()}>
-        <h3 className="text-white font-semibold mb-4">{"components.触发历史"}</h3>
+        <h3 className="text-white font-semibold mb-4">{i18n.t('ConditionRulePanel.k3')}</h3>
         {filtered.length === 0 ? (
-          <p className="text-gray-400 text-sm">{"components.暂无触发记录"}</p>
+          <p className="text-gray-400 text-sm">{i18n.t('ConditionRulePanel.k4')}</p>
         ) : (
           <div className="flex flex-col gap-2 max-h-64 overflow-y-auto">
             {filtered.slice().reverse().map((e, i) => (

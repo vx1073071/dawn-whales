@@ -3,6 +3,7 @@
 // IPC: em:sector-rotation
 
 import log from 'electron-log';
+import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -156,7 +157,7 @@ export function detectSectorRotation(params: SectorRotationParams): SectorRotati
       fromSectors: losingSectors.slice(0, 5).map(s => s.sector),
       toSectors: gainingSectors.slice(0, 5).map(s => s.sector),
       strength: Math.min(100, gainingSectors.length * 15 + losingSectors.length * 10),
-      description: `资金从 [${losingSectors.slice(0, 3).map(s => s.sector).join(', ')}] 轮动至 [${gainingSectors.slice(0, 3).map(s => s.sector).join(', ')}]`,
+      description: `资金从 [${losingSectors.slice(0, 3).map(s => s.sector).join(', i18n.t('SectorRotationV2.k0'), ')}]`,
     });
   }
 
@@ -170,7 +171,7 @@ export function detectSectorRotation(params: SectorRotationParams): SectorRotati
       fromSectors: decelerating.slice(0, 5).map(s => s.sector),
       toSectors: accelerating.slice(0, 5).map(s => s.sector),
       strength: Math.min(100, (accelerating.length + decelerating.length) * 12),
-      description: `动量转移: ${accelerating.slice(0, 3).map(s => s.sector).join(', ')} 加速流入, ${decelerating.slice(0, 3).map(s => s.sector).join(', ')} 减速`,
+      description: `动量转移: ${accelerating.slice(0, 3).map(s => s.sector).join(', i18n.t('SectorRotationV2.k1'), ')} 减速`,
     });
   }
 
@@ -184,7 +185,7 @@ export function detectSectorRotation(params: SectorRotationParams): SectorRotati
       fromSectors: bottomRS.map(s => s.sector),
       toSectors: topRS.map(s => s.sector),
       strength: Math.min(100, (topRS[0].relativeStrength - bottomRS[bottomRS.length - 1].relativeStrength)),
-      description: `相对强弱: ${topRS.map(s => s.sector).join(', ')} 领先, ${bottomRS.map(s => s.sector).join(', ')} 落后`,
+      description: `相对强弱: ${topRS.map(s => s.sector).join(', i18n.t('SectorRotationV2.k2'), ')} 落后`,
     });
   }
 
@@ -205,7 +206,7 @@ export function detectSectorRotation(params: SectorRotationParams): SectorRotati
     summaryParts.push(`检测到 ${signals.length} 个轮动信号`);
     summaryParts.push(signals[0].description);
   } else {
-    summaryParts.push('未检测到明显板块轮动');
+    summaryParts.push(i18n.t('sectorRotationV2.k1'));
   }
   if (rankings.topInflow.length > 0) {
     summaryParts.push(`资金流入前3: ${rankings.topInflow.slice(0, 3).join(', ')}`);
