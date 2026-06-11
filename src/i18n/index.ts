@@ -18,6 +18,8 @@ export const supportedLanguages = [
   { code: 'fr', label: 'Français' },
   { code: 'it', label: 'Italiano' },
   { code: 'de', label: 'Deutsch' },
+  { code: 'es', label: 'Español' },
+  { code: 'ru', label: 'Русский' },
 ];
 
 export type SupportedLang = (typeof supportedLanguages)[number]['code'];
@@ -32,6 +34,8 @@ const localeImporters: Record<string, () => Promise<{ default: Record<string, un
   'fr': () => import('./locales/fr.json'),
   'it': () => import('./locales/it.json'),
   'de': () => import('./locales/de.json'),
+  'es': () => import('./locales/es.json'),
+  'ru': () => import('./locales/ru.json'),
 };
 
 // Track which locales have been loaded
