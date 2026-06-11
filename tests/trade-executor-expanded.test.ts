@@ -553,7 +553,7 @@ describe('RiskEngine v2 Real-World (Q-24-02)', () => {
       re.updateConfig({ blacklist: ['US.BANNED'] });
       const result = re.checkOrder({ code: 'US.BANNED', qty: 100, price: 50 });
       expect(result.pass).toBe(false);
-      expect(result.reason).toContain('BANNED');
+      expect(result.reason).toMatch(/禁止|banned|黑名单|blacklist/i);
     });
 
     it('should reject order exceeding max order qty', () => {

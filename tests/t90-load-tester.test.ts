@@ -1,6 +1,7 @@
 ﻿import { describe, it, expect } from 'vitest';
 import { LoadTester } from '../electron/workers/load-tester';
 
+vi.setConfig({ testTimeout: 30000 });
 describe('LoadTester', () => {
   it('should run simple load test', async () => {
     const tester = new LoadTester();

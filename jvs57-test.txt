@@ -1,0 +1,312 @@
+﻿node : [33m[7m[33m Vitest [33m[27m "deps.external" is deprecated. If you rely on vite-node directly, use 
+"server.deps.external" instead. Otherwise, consider using "deps.optimizer.web.exclude"[39m
+所在位置 行:1 字符: 89
++ ... ing]::UTF8; node --max-old-space-size=4096 node_modules/vitest/vitest ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33m[7m[33m ...b.exclude"[39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[1m[46m RUN [49m[22m [36mv3.2.6 [39m[90mC:/Users/vx107/.easyclaw/workspace/dawn-whales[39m
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-01: Core Analysis[2m > [22m[2m01: analyzes AAPL and returns analysis
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstderr[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-01: Core Analysis[2m > 
+[22m[2m01: analyzes AAPL and returns analysis
+[22m[39mAgent returned null (no data source)
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-01: Core Analysis[2m > [22m[2m02: analyzes MSFT and returns analysis
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstderr[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-01: Core Analysis[2m > 
+[22m[2m02: analyzes MSFT and returns analysis
+[22m[39mAgent returned null (no data source)
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-01: Core Analysis[2m > [22m[2m05: rating is derived from score
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-02: Caching[2m > [22m[2m06: cache returns same result for same symbol
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-02: Caching[2m > [22m[2m07: clearCache removes cached results
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstderr[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-02: Caching[2m > [22m[2m07: 
+clearCache removes cached results
+[22m[39mAgent returned null, skipping
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-02: Caching[2m > [22m[2m08: reset clears all state
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstderr[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-02: Caching[2m > [22m[2m08: 
+reset clears all state
+[22m[39mAgent returned null, skipping
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-03: Scoring[2m > [22m[2m09: AAPL gets reasonable fundamental score
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-03: Scoring[2m > [22m[2m10: analysis includes PE valuation string
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-03: Scoring[2m > [22m[2m11: analysis includes ROE quality string
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-03: Scoring[2m > [22m[2m13: highlights array populated for quality stock
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-03: Scoring[2m > [22m[2m14: confidence is within valid range
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-04: LLM & Narrative[2m > [22m[2m15: narrative is generated (Chinese)
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-04: LLM & Narrative[2m > [22m[2m16: LLM provider is deepseek-v4-pro-cached
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-04: LLM & Narrative[2m > [22m[2m17: LLM cost is very low (cached)
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-04: LLM & Narrative[2m > [22m[2m18: cacheHit is true for cached LLM calls
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-05: Edge Cases[2m > [22m[2m19: completedAt is valid ISO date
+[22m[39m[FundamentalsAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22m[2mJ-57-01-05: Edge Cases[2m > [22m[2m20: agentType is fundamentals
+[22m[39m[FundamentalsAgent] Initialized
+
+ [31m❯[39m tests/jvs-57-01-agent-fundamentals.test.ts [2m([22m[2m20 tests[22m[2m | [22m[31m12 failed[39m[2m | [22m[33m3 skipped[39m[2m)[22m[32m 18[2mms[22m[39m
+   [32m✓[39m J-57-01-01: Core Analysis[2m > [22m01: analyzes AAPL and returns analysis[32m 4[2mms[22m[39m
+   [32m✓[39m J-57-01-01: Core Analysis[2m > [22m02: analyzes MSFT and returns analysis[32m 1[2mms[22m[39m
+   [2m[90m↓[39m[22m J-57-01-01: Core Analysis[2m > [22m03: returns null for unknown symbol in non-mock mode
+   [2m[90m↓[39m[22m J-57-01-01: Core Analysis[2m > [22m04: generates random data for unknown symbol in mock mode
+[31m   [31m×[31m J-57-01-01: Core Analysis[2m > [22m05: rating is derived from score[39m[32m 3[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'rating')[39m
+[31m   [31m×[31m J-57-01-02: Caching[2m > [22m06: cache returns same result for same symbol[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'score')[39m
+   [32m✓[39m J-57-01-02: Caching[2m > [22m07: clearCache removes cached results[32m 1[2mms[22m[39m
+   [32m✓[39m J-57-01-02: Caching[2m > [22m08: reset clears all state[32m 1[2mms[22m[39m
+[31m   [31m×[31m J-57-01-03: Scoring[2m > [22m09: AAPL gets reasonable fundamental score[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'score')[39m
+[31m   [31m×[31m J-57-01-03: Scoring[2m > [22m10: analysis includes PE valuation string[39m[32m 0[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'peValuation')[39m
+[31m   [31m×[31m J-57-01-03: Scoring[2m > [22m11: analysis includes ROE quality string[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'roeQuality')[39m
+   [2m[90m↓[39m[22m J-57-01-03: Scoring[2m > [22m12: risks array populated for high PE stock
+[31m   [31m×[31m J-57-01-03: Scoring[2m > [22m13: highlights array populated for quality stock[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'highlights')[39m
+[31m   [31m×[31m J-57-01-03: Scoring[2m > [22m14: confidence is within valid range[39m[32m 0[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'confidence')[39m
+[31m   [31m×[31m J-57-01-04: LLM & Narrative[2m > [22m15: narrative is generated (Chinese)[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'narrative')[39m
+[31m   [31m×[31m J-57-01-04: LLM & Narrative[2m > [22m16: LLM provider is deepseek-v4-pro-cached[39m[32m 0[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'llmProvider')[39m
+[31m   [31m×[31m J-57-01-04: LLM & Narrative[2m > [22m17: LLM cost is very low (cached)[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'llmCost')[39m
+[31m   [31m×[31m J-57-01-04: LLM & Narrative[2m > [22m18: cacheHit is true for cached LLM calls[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'cacheHit')[39m
+[31m   [31m×[31m J-57-01-05: Edge Cases[2m > [22m19: completedAt is valid ISO date[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'completedAt')[39m
+   [32m✓[39m J-57-01-05: Edge Cases[2m > [22m20: agentType is fundamentals[32m 0[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 12 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22mJ-57-01-01: Core Analysis[2m > 
+[22m05: rating is derived from score
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'rating')[39m
+[36m [2m❯[22m tests/jvs-57-01-agent-fundamentals.test.ts:[2m51:20[22m[39m
+    [90m 49| [39m  [34mit[39m([32m'05: rating is derived from score'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m 50| [39m    [35mconst[39m result [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m 51| [39m    
+[34mexpect[39m(result[33m![39m[33m.[39mrating)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 52| [39m    expect(['strong_buy','buy','neutral','sell','strong_sell']).toCont…
+    [90m 53| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22mJ-57-01-02: Caching[2m > [22m06: 
+cache returns same result for same symbol
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'score')[39m
+[36m [2m❯[22m tests/jvs-57-01-agent-fundamentals.test.ts:[2m69:16[22m[39m
+    [90m 67| [39m    [35mconst[39m r1 [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m 68| [39m    [35mconst[39m r2 [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m 69| [39m    
+[34mexpect[39m(r1[33m![39m[33m.[39mscore)[33m.[39m[34mtoBe[39m(r2[33m![39m[33m.[39mscore)[33m;[39m
+    [90m   | [39m               [31m^[39m
+    [90m 70| [39m    
+[34mexpect[39m(r2[33m![39m[33m.[39mcacheHit)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m 71| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22mJ-57-01-03: Scoring[2m > [22m09: 
+AAPL gets reasonable fundamental score
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'score')[39m
+[36m [2m❯[22m tests/jvs-57-01-agent-fundamentals.test.ts:[2m103:15[22m[39m
+    [90m101| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m102| [39m    [90m// AAPL: PE 28.5, ROE 145%, solid — should be buy territory[39m
+    [90m103| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mscore)[33m.[39m[34mtoBeGreaterThan[39m([34m50[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m104| [39m  })[33m;[39m
+    [90m105| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22mJ-57-01-03: Scoring[2m > [22m10: 
+analysis includes PE valuation string
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'peValuation')[39m
+[36m [2m❯[22m tests/jvs-57-01-agent-fundamentals.test.ts:[2m109:15[22m[39m
+    [90m107| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'TSLA'[39m)[33m;[39m
+    [90m108| [39m    [90m// TSLA PE 55.3 — high valuation[39m
+    [90m109| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mpeValuation)[33m.[39m[34mtoContain[39m([32m'PE'[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m110| [39m  })[33m;[39m
+    [90m111| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22mJ-57-01-03: Scoring[2m > [22m11: 
+analysis includes ROE quality string
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'roeQuality')[39m
+[36m [2m❯[22m tests/jvs-57-01-agent-fundamentals.test.ts:[2m114:15[22m[39m
+    [90m112| [39m  [34mit[39m([32m'11: analysis includes ROE quality string'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m113| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'GOOGL'[39m)[33m;[39m
+    [90m114| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mroeQuality)[33m.[39m[34mtoContain[39m([32m'ROE'[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m115| [39m  })[33m;[39m
+    [90m116| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22mJ-57-01-03: Scoring[2m > [22m13: 
+highlights array populated for quality stock
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'highlights')[39m
+[36m [2m❯[22m tests/jvs-57-01-agent-fundamentals.test.ts:[2m124:15[22m[39m
+    [90m122| [39m  [34mit[39m([32m'13: highlights array populated for quality stock'[39m[33m,[39m 
+[35masync[39m () [33m=>[39m {
+    [90m123| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m124| [39m    [34mexpect[39m(r[33m![39m[33m.[39mhighlights[33m.[39mlength)[33m.[39m[34mtoBeGreaterT
+han[39m([34m0[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m125| [39m  })[33m;[39m
+    [90m126| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22mJ-57-01-03: Scoring[2m > [22m14: 
+confidence is within valid range
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'confidence')[39m
+[36m [2m❯[22m tests/jvs-57-01-agent-fundamentals.test.ts:[2m129:15[22m[39m
+    [90m127| [39m  [34mit[39m([32m'14: confidence is within valid range'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m128| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'MSFT'[39m)[33m;[39m
+    [90m129| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mconfidence)[33m.[39m[34mtoBeGreaterThan[39m([34m0[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m130| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mconfidence)[33m.[39m[34mtoBeLessThanOrEqual[39m([34m100[39m)[33m;[39m
+    [90m131| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22mJ-57-01-04: LLM & Narrative[2m > 
+[22m15: narrative is generated (Chinese)
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'narrative')[39m
+[36m [2m❯[22m tests/jvs-57-01-agent-fundamentals.test.ts:[2m146:15[22m[39m
+    [90m144| [39m  [34mit[39m([32m'15: narrative is generated (Chinese)'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m145| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m146| [39m    [34mexpect[39m(r[33m![39m[33m.[39mnarrative)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m147| [39m    [34mexpect[39m(r[33m![39m[33m.[39mnarrative[33m.[39mlength)[33m.[39m[34mtoBeGreaterTh
+an[39m([34m20[39m)[33m;[39m
+    [90m148| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22mJ-57-01-04: LLM & Narrative[2m > 
+[22m16: LLM provider is deepseek-v4-pro-cached
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'llmProvider')[39m
+[36m [2m❯[22m tests/jvs-57-01-agent-fundamentals.test.ts:[2m152:15[22m[39m
+    [90m150| [39m  [34mit[39m([32m'16: LLM provider is deepseek-v4-pro-cached'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m151| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'MSFT'[39m)[33m;[39m
+    [90m152| [39m    [34mexpect[39m(r[33m![39m[33m.[39mllmProvider)[33m.[39m[34mtoBe[39m([32m'deepseek-v4-
+pro-cached'[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m153| [39m  })[33m;[39m
+    [90m154| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22mJ-57-01-04: LLM & Narrative[2m > 
+[22m17: LLM cost is very low (cached)
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'llmCost')[39m
+[36m [2m❯[22m tests/jvs-57-01-agent-fundamentals.test.ts:[2m157:15[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m12 failed[39m[22m[2m | [22m[1m[32m5 passed[39m[22m[2m | [22m[33m3 skipped[39m[90m (20)[39m
+[2m   Start at [22m 14:58:53
+[2m   Duration [22m 571ms[2m (transform 88ms, setup 13ms, collect 143ms, tests 18ms, environment 0ms, prepare 249ms)[22m
+
+    [90m155| [39m  [34mit[39m([32m'17: LLM cost is very low (cached)'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m156| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m157| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mllmCost)[33m.[39m[34mtoBeLessThan[39m([34m0.01[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m158| [39m  })[33m;[39m
+    [90m159| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22mJ-57-01-04: LLM & Narrative[2m > 
+[22m18: cacheHit is true for cached LLM calls
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'cacheHit')[39m
+[36m [2m❯[22m tests/jvs-57-01-agent-fundamentals.test.ts:[2m162:15[22m[39m
+    [90m160| [39m  [34mit[39m([32m'18: cacheHit is true for cached LLM calls'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m161| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'GOOGL'[39m)[33m;[39m
+    [90m162| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mcacheHit)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m163| [39m  })[33m;[39m
+    [90m164| [39m})[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-01-agent-fundamentals.test.ts[2m > [22mJ-57-01-05: Edge Cases[2m > [22m19: 
+completedAt is valid ISO date
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'completedAt')[39m
+[36m [2m❯[22m tests/jvs-57-01-agent-fundamentals.test.ts:[2m178:26[22m[39m
+    [90m176| [39m  [34mit[39m([32m'19: completedAt is valid ISO date'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m177| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m178| [39m    [34mexpect[39m([33mDate[39m[33m.[39m[34mparse[39m(r[33m![39m[33m.[39mcompletedAt))[
+33m.[39mnot[33m.[39m[34mtoBeNaN[39m()[33m;[39m
+    [90m   | [39m                         [31m^[39m
+    [90m179| [39m  })[33m;[39m
+    [90m180| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/12]⎯[22m[39m
+

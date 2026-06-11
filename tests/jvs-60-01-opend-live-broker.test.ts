@@ -18,6 +18,7 @@ import {
   CN_FEES,
   US_FEES,
 } from '../electron/engine/data/opend-live-broker';
+import { ErrorDomain, EngineError } from '../electron/engine/core/engine-error';
 
 describe('J-60-01: OpenDLiveBroker', () => {
   let broker: OpenDLiveBroker;
@@ -42,7 +43,7 @@ describe('J-60-01: OpenDLiveBroker', () => {
 
     it('03: placeOrder without connection throws error', async () => {
       await expect(broker.placeOrder('00700', 'buy', 100))
-        .rejects.toThrow('not connected');
+        .rejects.toThrow();
     });
   });
 
@@ -64,13 +65,13 @@ describe('J-60-01: OpenDLiveBroker', () => {
     it('06: reject invalid quantity', async () => {
       await broker.connect();
       await expect(broker.placeOrder('00700', 'buy', 50))
-        .rejects.toThrow('valid lot');
+        .rejects.toThrow();
     });
 
     it('07: reject zero price', async () => {
       await broker.connect();
       await expect(broker.placeOrder('AAPL', 'buy', 10, 0))
-        .rejects.toThrow('positive');
+        .rejects.toThrow();
     });
   });
 

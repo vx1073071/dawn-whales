@@ -74,17 +74,21 @@ describe('JVS-115: Real-time Aggregator', () => {
     expect(data?.signals?.length).toBe(10);
   });
 
-  it('should emit update events', (done) => {
-    aggregator.on('update', (symbol, data) => {
-      expect(symbol).toBe('600519');
-      expect(data).toBeDefined();
-      done();
+  it('should emit update events', async () => {
+    const updatePromise = new Promise<{ symbol: string; data: any }>((resolve) => {
+      aggregator.on('update', (symbol, data) => {
+        resolve({ symbol, data });
+      });
     });
 
     aggregator.handleQuoteUpdate('test-client', {
       symbol: '600519',
       price: 1800.50,
     });
+
+    const result = await updatePromise;
+    expect(result.symbol).toBe('600519');
+    expect(result.data).toBeDefined();
   });
 
   it('should clear all data', () => {

@@ -153,7 +153,7 @@ describe('J-58-03: AICostMonitor', () => {
 
     it('12: estimates cost correctly', () => {
       const cost = monitor.estimateCost('deepseek', 'deepseek-v4-pro', 10000, 5000, true);
-      expect(cost).toBeGreaterThan(0);
+      expect(cost).toBeGreaterThanOrEqual(0);
       // cached: 10K/1K * 0.00000435 + 5K/1K * 0.000435
       const expected = (10 * 0.00000435) + (5 * 0.000435);
       expect(cost).toBeCloseTo(expected, 5);

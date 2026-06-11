@@ -57,10 +57,10 @@ async function testJVSDataLayer() {
       limitUpCount: 20,
       limitDownCount: 3,
     });
-    assert(result.score >= 0 && result.score <= 100, 'Score in range');
+    assert(result?.score >= 0 && result?.score <= 100, 'Score in range');
     assert(result.signal !== undefined, 'Has signal');
     assert(result.level !== undefined, 'Has level');
-    console.log(`    Score: ${result.score} (${result.level}), signal: ${result.signal}`);
+    console.log(`    Score: ${result?.score} (${result.level}), signal: ${result.signal}`);
   });
 
   await test('AnomalyDetector: detect multiple anomaly types', async () => {

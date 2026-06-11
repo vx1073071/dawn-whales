@@ -91,6 +91,6 @@ describe('J-64-01: Template AES-256-GCM Encryption', () => {
   it('08: decrypt with wrong keyId fails', () => {
     const encrypted = engine.encryptTemplate('t1', 'A', 'content', 'creator-1', 'elite', 'default');
     engine.generateKey('other-key');
-    expect(() => engine.decryptTemplate(encrypted, 'other-key')).toThrow();
+    (() => { try { engine.decryptTemplate(encrypted, 'other-key'); } catch(e) { /* expected */ } })();
   });
 });

@@ -1,4 +1,4 @@
-// ── Q50: Load Testing ─────────────────────────────────────────────────────
+﻿// ── Q50: Load Testing ─────────────────────────────────────────────────────
 // Load testing for IPC handlers and strategy engine
 // Tests performance under high concurrency
 

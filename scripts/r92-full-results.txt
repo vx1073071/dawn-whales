@@ -1,0 +1,4 @@
+ Vitest  "deps.external" is deprecated. If you rely on vite-node directly, use "server.deps.external" instead. Otherwise, consider using "deps.optimizer.web.exclude"
+^C��ֹ������������(Y/N)? 
+^C^C^C(node:32460) [DEP0180] DeprecationWarning: fs.Stats constructor is deprecated.
+(Use `LobsterAI --trace-deprecation ...` to show where the warning was created)

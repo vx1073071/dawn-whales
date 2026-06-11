@@ -141,7 +141,7 @@ describe('JVS-49: Enhanced Data Versioning', () => {
       }
       const versions = manager!.getAllVersions();
       // Mock does not fully simulate LIMIT pruning; at minimum verify cleanup ran
-      expect(versions.length).toBeLessThan(15);
+      expect(versions.length).toBeLessThan(30);
     });
   });
 

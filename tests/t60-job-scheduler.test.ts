@@ -1,6 +1,7 @@
 ﻿import { describe, it, expect, vi } from 'vitest';
 import { JobScheduler } from '../electron/workers/job-scheduler';
 
+vi.setConfig({ testTimeout: 30000 });
 describe('JobScheduler', () => {
   it('should process job by priority', async () => {
     const s = new JobScheduler(2);

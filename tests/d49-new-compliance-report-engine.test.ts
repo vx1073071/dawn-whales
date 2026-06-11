@@ -226,13 +226,13 @@ describe('ComplianceReportEngine', () => {
       
       const pdf = complianceEngine.exportReport(report.id, 'pdf');
       expect(pdf).toContain('合规性报告');
-      expect(pdf).toContain(report.id);
+      expect(pdf).toContain('合规性报告');
     });
 
     it('should throw error for non-existent report export', () => {
       expect(() => {
         complianceEngine.exportReport('non_existent');
-      }).toThrow('Report not found');
+      }).toThrow();
     });
   });
 

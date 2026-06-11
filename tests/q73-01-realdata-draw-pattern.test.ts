@@ -13,6 +13,31 @@ import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
 
+// [R92] Recursive engine file helpers
+function _findEngineFile(name: string): string | null {
+  const ED = path.resolve(__dirname, '..', 'electron', 'engine');
+  function walk(dir: string): string | null {
+    try { for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const fp = path.join(dir, e.name);
+      if (e.isFile() && e.name === name) return fp;
+      if (e.isDirectory() && !e.name.startsWith('.') && e.name !== 'node_modules') { const r = walk(fp); if (r) return r; }
+    } } catch {} return null;
+  }
+  return walk(ED);
+}
+function _readEngineFile(name: string): string {
+  const fp = _findEngineFile(name); return fp ? fs.readFileSync(fp, 'utf-8') : '';
+}
+function _allTsFiles(dir: string): string[] {
+  const r: string[] = [];
+  function walk(d: string) { try { for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+    const fp = path.join(d, e.name);
+    if (e.isFile() && e.name.endsWith('.ts')) r.push(fp);
+    else if (e.isDirectory() && !e.name.startsWith('.') && e.name !== 'node_modules') walk(fp);
+  } } catch {} }
+  walk(dir); return r;
+}
+
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 
 describe('Q-73-01: Real Data + AI Drawing + Pattern Recognition', () => {
@@ -22,7 +47,7 @@ describe('Q-73-01: Real Data + AI Drawing + Pattern Recognition', () => {
     it('01: 4 agent engine files all present', () => {
       const dir = path.join(PROJECT_ROOT, 'electron', 'engine');
       const agents = ['agent-fundamentals', 'agent-technical', 'agent-sentiment', 'agent-macro'];
-      const files = fs.readdirSync(dir);
+      const files = _allTsFiles(dir).map((f: string) => path.basename(f));
       const missing = agents.filter(a => !files.some(f => f.includes(a)));
       console.log(`[Q-73-01] 4Agent: missing=${missing.join(',') || 'none'}`);
       expect(missing.length).toBe(0);
@@ -32,7 +57,7 @@ describe('Q-73-01: Real Data + AI Drawing + Pattern Recognition', () => {
       const dir = path.join(PROJECT_ROOT, 'electron', 'engine');
       const orchFiles = fs.readdirSync(dir).filter(f => f.includes('agent-orchestrator') || f.includes('four-agent'));
       for (const f of orchFiles) {
-        const c = fs.readFileSync(path.join(dir, f), 'utf-8');
+        const c = fs.readFileSync(f, "utf-8");
         const hasMock = /useMock|MOCK_|isMock|mock/i.test(c);
         console.log(`[Q-73-01] ${f}: useMock=${hasMock}`);
       }
@@ -43,7 +68,7 @@ describe('Q-73-01: Real Data + AI Drawing + Pattern Recognition', () => {
       const dir = path.join(PROJECT_ROOT, 'electron', 'engine');
       const dpFiles = fs.readdirSync(dir).filter(f => f.includes('data-pipeline') || f.includes('data-source'));
       for (const f of dpFiles) {
-        const c = fs.readFileSync(path.join(dir, f), 'utf-8');
+        const c = fs.readFileSync(f, "utf-8");
         const yahoo = /yahoo/i.test(c);
         const av = /alpha.?vantage|alphavantage/i.test(c);
         const news = /news/i.test(c);
@@ -62,7 +87,7 @@ describe('Q-73-01: Real Data + AI Drawing + Pattern Recognition', () => {
       );
       let mockCount = 0;
       for (const f of agentFiles) {
-        const c = fs.readFileSync(path.join(dir, f), 'utf-8');
+        const c = fs.readFileSync(f, "utf-8");
         mockCount += (c.match(/MOCK_/g) || []).length;
       }
       console.log(`[Q-73-01] MOCK_ refs in agents: ${mockCount}`);
@@ -74,7 +99,7 @@ describe('Q-73-01: Real Data + AI Drawing + Pattern Recognition', () => {
       const dir = path.join(PROJECT_ROOT, 'electron', 'engine');
       const cacheFiles = fs.readdirSync(dir).filter(f => f.includes('cache'));
       for (const f of cacheFiles) {
-        const c = fs.readFileSync(path.join(dir, f), 'utf-8');
+        const c = fs.readFileSync(f, "utf-8");
         const has95 = /95|0\.95/i.test(c);
         const hasTTL = /ttl|expir|max.?age/i.test(c);
         console.log(`[Q-73-01] ${f}: 95%=${has95}, TTL=${hasTTL}`);

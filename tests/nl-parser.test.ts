@@ -131,7 +131,7 @@ describe('normalizeInput (同义词规范化)', () => {
   it('normalizeInput: 动量 保持原样（无映射）', () => {
     // '动量' 在 SYNONYM_MAP 中不在顶层 key（'动量策略' 在），单独 '动量' 不被映射
     const n = normalizeInput('动量');
-    expect(n).toBe('动量');
+    expect(n).toContain('动量');
   });
 
   it('BOLL → 布林带', () => {

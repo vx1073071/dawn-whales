@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Q-76-01 [P0] useMock=false + 宕╂簝鎭㈠楠岃瘉 (PM R76缁堢増, 15t)
  *
  * 楠岃瘉:
@@ -12,6 +12,44 @@ import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
 
+// [R92] Recursive engine file finder
+function _findEngineFile(name: string): string | null {
+  const ENGINE_DIR = path.resolve(__dirname, '..', 'electron', 'engine');
+  function walk(dir: string): string | null {
+    try {
+      for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+        const fp = path.join(dir, e.name);
+        if (e.isFile() && e.name === name) return fp;
+        if (e.isDirectory() && !e.name.startsWith('.') && e.name !== 'node_modules') {
+          const r = walk(fp); if (r) return r;
+        }
+      }
+    } catch {}
+    return null;
+  }
+  return walk(ENGINE_DIR);
+}
+function _readEngineFile(name: string): string {
+  const fp = _findEngineFile(name);
+  if (fp) return fs.readFileSync(fp, 'utf-8');
+  return '';
+}
+function _allEngineFiles(dir?: string): string[] {
+  const ENGINE_DIR = dir || path.resolve(__dirname, '..', 'electron', 'engine');
+  const result: string[] = [];
+  function walk(d: string) {
+    try {
+      for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+        const fp = path.join(d, e.name);
+        if (e.isFile() && e.name.endsWith('.ts')) result.push(fp);
+        else if (e.isDirectory() && !e.name.startsWith('.') && e.name !== 'node_modules') walk(fp);
+      }
+    } catch {}
+  }
+  walk(ENGINE_DIR);
+  return result;
+}
+
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const ENGINE = path.join(PROJECT_ROOT, 'electron', 'engine');
 
@@ -20,28 +58,28 @@ describe('Q-76-01: useMock=false + Crash Recovery', () => {
 
   describe('useMock=false Hard Gate', () => {
     it('01: MOCK_ = 0 in agent-fundamentals.ts', () => {
-      const c = fs.readFileSync(path.join(ENGINE, 'agent-fundamentals.ts'), 'utf-8');
+      const c = _readEngineFile('agent-fundamentals.ts');
       const count = (c.match(/MOCK_/g) || []).length;
       console.log(`[Q-76-01] Fundamentals MOCK_: ${count}`);
       expect(count).toBe(0);
     });
 
     it('02: MOCK_ in agent-technical.ts (鈫?JVS J-76-01)', () => {
-      const c = fs.readFileSync(path.join(ENGINE, 'agent-technical.ts'), 'utf-8');
+      const c = _readEngineFile('agent-technical.ts');
       const count = (c.match(/MOCK_/g) || []).length;
       console.log(`[Q-76-01] Technical MOCK_: ${count} (JVS target: 0)`);
       expect(count).toBeLessThanOrEqual(2);
     });
 
     it('03: MOCK_ in agent-sentiment.ts (鈫?JVS J-76-01)', () => {
-      const c = fs.readFileSync(path.join(ENGINE, 'agent-sentiment.ts'), 'utf-8');
+      const c = _readEngineFile('agent-sentiment.ts');
       const count = (c.match(/MOCK_/g) || []).length;
       console.log(`[Q-76-01] Sentiment MOCK_: ${count} (JVS target: 0)`);
       expect(count).toBeLessThanOrEqual(2);
     });
 
     it('04: MOCK_ in agent-macro.ts (鈫?JVS J-76-01)', () => {
-      const c = fs.readFileSync(path.join(ENGINE, 'agent-macro.ts'), 'utf-8');
+      const c = _readEngineFile('agent-macro.ts');
       const count = (c.match(/MOCK_/g) || []).length;
       console.log(`[Q-76-01] Macro MOCK_: ${count} (JVS target: 0)`);
       expect(count).toBeLessThanOrEqual(2);
@@ -51,8 +89,8 @@ describe('Q-76-01: useMock=false + Crash Recovery', () => {
       const agents = ['agent-fundamentals.ts', 'agent-technical.ts', 'agent-sentiment.ts', 'agent-macro.ts'];
       let count = 0;
       for (const a of agents) {
-        const fp = path.join(ENGINE, a);
-        if (!fs.existsSync(fp)) { console.log(`[Q-76-01] ${a} not found`); continue; }
+        const fp = _findEngineFile(a);
+        if (!fp) { console.log('[Q-76-01] ' + a + ' not found'); continue; }
         const c = fs.readFileSync(fp, 'utf-8');
         const defaultFalse = /useMock\s*[?]?\s*[:=]\s*false/.test(c);
         const defaultTrue = /useMock\s*[?]?\s*[=:?]+\s*true/.test(c);
@@ -64,11 +102,11 @@ describe('Q-76-01: useMock=false + Crash Recovery', () => {
 
     it('06: MOCK_ engine-wide audit (鈫?JVS J-76-01)', () => {
       const dir = ENGINE;
-      const files = fs.readdirSync(dir).filter(f => f.endsWith('.ts'));
+      const files = _allEngineFiles(dir).map((f: string) => path.basename(f));
       let total = 0;
       const hits: string[] = [];
       for (const f of files) {
-        const c = fs.readFileSync(path.join(dir, f), 'utf-8');
+        const c = _readEngineFile(path.basename(f)) || '';
         const m = (c.match(/MOCK_/g) || []).length;
         if (m > 0) hits.push(`${f}:${m}`);
         total += m;
@@ -83,7 +121,7 @@ describe('Q-76-01: useMock=false + Crash Recovery', () => {
       const hits: string[] = [];
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _allEngineFiles(d).map((fp: string) => path.basename(fp))) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory() && !f.includes('node_modules')) walk(fp);
             else if (f.endsWith('.ts') || f.endsWith('.tsx')) {
@@ -106,7 +144,7 @@ describe('Q-76-01: useMock=false + Crash Recovery', () => {
   describe('ErrorBoundary + Crash Recovery', () => {
     it('08: ErrorBoundary engine or pattern exists', () => {
       const dir = ENGINE;
-      const files = fs.readdirSync(dir);
+      const files = _allEngineFiles(dir).map((f: string) => path.basename(f));
       const errFiles = files.filter(f =>
         f.includes('error') || f.includes('crash') || f.includes('boundary') || f.includes('recovery')
       );
@@ -116,7 +154,7 @@ describe('Q-76-01: useMock=false + Crash Recovery', () => {
       let found = false;
       for (const f of files) {
         if (!f.endsWith('.ts')) continue;
-        const c = fs.readFileSync(path.join(dir, f), 'utf-8');
+        const c = _readEngineFile(path.basename(f)) || '';
         if (/ErrorBoundar|crashRecover|CrashRecover|errorBoundar/i.test(c)) {
           found = true;
           console.log(`[Q-76-01] ErrorBoundary in: ${f}`);
@@ -133,7 +171,7 @@ describe('Q-76-01: useMock=false + Crash Recovery', () => {
       const restartPatterns = ['restart', 'relaunch', 'app.relaunch', 'app.quit'];
       let found = false;
       for (const f of files) {
-        const c = fs.readFileSync(path.join(dir, f), 'utf-8');
+        const c = _readEngineFile(path.basename(f)) || '';
         if (restartPatterns.some(p => c.includes(p))) {
           found = true;
           console.log(`[Q-76-01] Restart pattern in: ${f}`);
@@ -146,12 +184,12 @@ describe('Q-76-01: useMock=false + Crash Recovery', () => {
 
     it('10: state recovery on restart', () => {
       const dir = ENGINE;
-      const files = fs.readdirSync(dir);
+      const files = _allEngineFiles(dir).map((f: string) => path.basename(f));
       const statePatterns = ['saveState', 'restoreState', 'persistState', 'localStorage', 'session'];
       let found = false;
       for (const f of files) {
         if (!f.endsWith('.ts')) continue;
-        const c = fs.readFileSync(path.join(dir, f), 'utf-8');
+        const c = _readEngineFile(path.basename(f)) || '';
         if (statePatterns.some(p => c.includes(p))) {
           found = true;
           console.log(`[Q-76-01] State persist in: ${f}`);
@@ -164,12 +202,12 @@ describe('Q-76-01: useMock=false + Crash Recovery', () => {
 
     it('11: crash log/telemetry collection', () => {
       const dir = ENGINE;
-      const files = fs.readdirSync(dir);
+      const files = _allEngineFiles(dir).map((f: string) => path.basename(f));
       const logPatterns = ['crashReport', 'crashReporter', 'sentry', 'logger', 'logError'];
       let found = false;
       for (const f of files) {
         if (!f.endsWith('.ts')) continue;
-        const c = fs.readFileSync(path.join(dir, f), 'utf-8');
+        const c = _readEngineFile(path.basename(f)) || '';
         if (logPatterns.some(p => c.includes(p))) {
           found = true;
           console.log(`[Q-76-01] Crash log in: ${f}`);
@@ -185,7 +223,7 @@ describe('Q-76-01: useMock=false + Crash Recovery', () => {
       let found = false;
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _allEngineFiles(d).map((fp: string) => path.basename(fp))) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory() && !f.includes('node_modules')) walk(fp);
             else if (f.endsWith('.tsx') || f.endsWith('.ts')) {

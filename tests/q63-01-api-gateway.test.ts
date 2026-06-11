@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * Q-63-01: /api AI Gateway 安全+路由+缓存测试 (R63 v19 P0, 20 tests)
  *

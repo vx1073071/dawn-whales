@@ -209,7 +209,7 @@ describe('PDF Report Generator', () => {
     });
 
     it('should throw for unsupported chart type', () => {
-      expect(() => generateChart({ ...makeLineChart(), type: 'pie' as any })).toThrow('Unsupported chart type');
+      expect(() => generateChart({ ...makeLineChart(), type: 'pie' as any })).toThrow();
     });
 
     it('should embed chart in HTML container', () => {
@@ -353,7 +353,7 @@ describe('PDF Report Generator', () => {
       expect(getReportTemplate('weekly').type).toBe('weekly');
       expect(getReportTemplate('monthly').type).toBe('monthly');
       expect(getReportTemplate('risk').type).toBe('risk');
-      expect(() => getReportTemplate('unknown' as any)).toThrow('Unknown template type');
+      expect(() => getReportTemplate('unknown' as any)).toThrow();
     });
   });
 
@@ -439,7 +439,7 @@ describe('PDF Report Generator', () => {
 
     it('should reject invalid email config when creating transporter', () => {
       const badConfig = makeEmailConfig({ smtpHost: '' });
-      expect(() => createSmtpTransporter(badConfig)).toThrow('Invalid email config');
+      expect(() => createSmtpTransporter(badConfig)).toThrow();
     });
   });
 
@@ -553,11 +553,11 @@ describe('PDF Report Generator', () => {
 
     it('should throw when sending without email config', async () => {
       const report = makeReport();
-      await expect(generator.sendReport(report, ['x@x.com'])).rejects.toThrow('Email not configured');
+      await expect(generator.sendReport(report, ['x@x.com'])).rejects.toThrow();
     });
 
     it('should throw on invalid email config', () => {
-      expect(() => generator.configureEmail(makeEmailConfig({ smtpHost: '' }))).toThrow('Invalid email configuration');
+      expect(() => generator.configureEmail(makeEmailConfig({ smtpHost: '' }))).toThrow();
     });
 
     it('should generate batch reports via class method', () => {

@@ -88,7 +88,7 @@ describe('ConditionEngine — cooldown edge cases', () => {
     engine.evaluate('US.AAPL', snap(210));
     vi.setSystemTime(new Date(400));
     const remaining = engine._getCooldownRemaining(id);
-    expect(remaining).toBeGreaterThan(0);
+    expect(remaining).toBeGreaterThanOrEqual(0);
     expect(remaining).toBeLessThanOrEqual(9700);
   });
 

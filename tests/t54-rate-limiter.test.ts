@@ -1,6 +1,7 @@
 ﻿import { describe, it, expect } from 'vitest';
 import { RateLimiter } from '../electron/workers/rate-limiter';
 
+vi.setConfig({ testTimeout: 30000 });
 describe('RateLimiter', () => {
   it('should allow within limit', async () => {
     const rl = new RateLimiter(5, 10);

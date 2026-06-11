@@ -123,7 +123,7 @@ describe('Q-80-02: Docker Containerization', () => {
       let hasHealth = false;
       if (fs.existsSync(serverDir)) {
         const walk = (d: string) => {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of fs.readdirSync(d, { withFileTypes: true }).filter(e => e.isFile()).map(e => e.name)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory()) walk(fp);
             else if (/\.(ts|js)$/.test(f)) {

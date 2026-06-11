@@ -1,4 +1,4 @@
-// P0 Fixed: worker-pool tests — simplified to avoid worker_threads import issue
+﻿// P0 Fixed: worker-pool tests — simplified to avoid worker_threads import issue
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 // We use the extras module which does NOT import worker_threads directly

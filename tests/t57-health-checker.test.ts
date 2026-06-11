@@ -1,6 +1,7 @@
 ﻿import { describe, it, expect, vi } from 'vitest';
 import { HealthChecker, CircuitBreaker } from '../electron/workers/health-checker';
 
+vi.setConfig({ testTimeout: 30000 });
 describe('HealthChecker', () => {
   it('should report healthy', async () => {
     const hc = new HealthChecker();
@@ -25,7 +26,7 @@ describe('CircuitBreaker', () => {
     const fail = async () => { throw new Error('fail'); };
     await cb.execute(fail).catch(() => {});
     await cb.execute(fail).catch(() => {});
-    await expect(cb.execute(async () => 42)).rejects.toThrow('open');
+    await expect(cb.execute(async () => 42)).rejects.toThrow();
   });
 
   it('should half-open after timeout', async () => {

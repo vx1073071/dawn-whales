@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JVS-83: Data Aggregator Production-Ready Tests
  * Comprehensive tests for multi-source data aggregation with quality scoring
  */

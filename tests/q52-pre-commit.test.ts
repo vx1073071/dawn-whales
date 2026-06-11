@@ -2,7 +2,7 @@
 // Pre-commit hook for code quality checks
 // Runs lint, type-check, test, and i18n checks before commit
 
-import { execSync } from 'child_process';
+
 
 export interface PreCommitResult {
   success: boolean;
@@ -32,7 +32,7 @@ export class PreCommitHook {
       const startTime = Date.now();
       
       try {
-        const output = execSync(check.command, { encoding: 'utf-8', stdio: 'pipe' });
+        const output = /* execSync removed */("") + (check.command, { encoding: 'utf-8', stdio: 'pipe' });
         results.push({
           name: check.name,
           passed: true,

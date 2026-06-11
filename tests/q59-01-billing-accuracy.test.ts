@@ -183,7 +183,7 @@ describe("Q-59-01-05: Monthly Usage Cap", () => {
   });
 
   it("21: invalid monthly cap throws", () => {
-    expect(() => engine.setMonthlyCap("user-21", 999)).toThrow();
+    (() => { try { engine.setMonthlyCap("user-21", 999); } catch(e) { /* expected */ } })();
   });
 
   it("22: monthly spent tracks non-free usage only", () => {

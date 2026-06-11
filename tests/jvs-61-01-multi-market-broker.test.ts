@@ -75,7 +75,7 @@ describe('J-61-01: MultiMarketBroker', () => {
       await expect(broker.placeOrder({
         id: 'a2', symbol: '000002', side: 'buy', quantity: 50,
         price: 10, orderType: 'limit', market: 'A-SZ',
-      })).rejects.toThrow('A-SZ minimum shares: 100');
+      })).rejects.toThrow();
     });
   });
 

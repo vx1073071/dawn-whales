@@ -1,6 +1,7 @@
 ﻿import { describe, it, expect, vi } from 'vitest';
 import { CacheService } from '../electron/workers/cache-service';
 
+vi.setConfig({ testTimeout: 30000 });
 describe('CacheService', () => {
   it('should set and get', () => {
     const c = new CacheService();

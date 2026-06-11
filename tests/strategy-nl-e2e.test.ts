@@ -1,4 +1,4 @@
-// ── Strategy + NL Parser E2E Integration Tests ────────────────────────────────
+﻿// ── Strategy + NL Parser E2E Integration Tests ────────────────────────────────
 // Q-22-03: Strategy Engine + NL Parser 端到端集成测试
 // 端到端流程：自然语言 → NL Parser → 策略DSL → 创建策略 → 回测 → 信号 → TradeExecutor
 

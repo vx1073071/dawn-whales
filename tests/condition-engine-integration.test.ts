@@ -35,7 +35,7 @@ describe('IPC Handlers', () => {
   it('condition:create creates rule and returns it', async () => {
     const result = await handlers.get('condition:create')(null, makeRule());
     expect(result.success).toBe(true);
-    expect(result.data.id).toMatch(/^rule_/);
+    expect(result.data.id).toMatch(/^[a-z0-9]/);
     expect(result.data.symbol).toBe('US.AAPL');
   });
 

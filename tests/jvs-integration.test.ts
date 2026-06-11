@@ -1,10 +1,10 @@
-﻿// ── JVS Integration Test Suite ─────────────────────────────────────────────
+// ── JVS Integration Test Suite ─────────────────────────────────────────────
 // Validates JVS-1~18 modules with real scenarios
 // Run: npx tsx tests/jvs-integration.test.ts
 
 import { SentimentIndexEngine } from '../electron/engine/analysis/sentiment-index';
 import { StockAnomalyDetector } from '../electron/engine/data/stock-anomaly-detector';
-import { NewsAggregatorService } from '../electron/engine/data/news-aggregator';
+import { NewsAggregator } from '../electron/engine/data/news-aggregator';
 import { SectorRotationMonitor } from '../electron/engine/data/sector-rotation';
 import { MarketHotspotService } from '../electron/engine/data/market-hotspot';
 
@@ -56,7 +56,7 @@ async function testSentimentIndex() {
       declineCount: 2000,
       totalTurnover: 1000,
     });
-    assert(result.score >= 40 && result.score <= 60, `Score ${result.score} not in neutral range`);
+    assert(result?.score >= 40 && result?.score <= 60, `Score ${result?.score} not in neutral range`);
     assert(result.level === 'neutral', `Level ${result.level} should be neutral`);
   });
 
@@ -70,7 +70,7 @@ async function testSentimentIndex() {
       limitUpCount: 50,
       limitDownCount: 2,
     });
-    assert(result.score >= 60, `Score ${result.score} should be >= 60`);
+    assert(result?.score >= 60, `Score ${result?.score} should be >= 60`);
     assert(['greed', 'extreme_greed'].includes(result.level), `Level ${result.level} should be greed+`);
   });
 
@@ -84,7 +84,7 @@ async function testSentimentIndex() {
       limitUpCount: 2,
       limitDownCount: 50,
     });
-    assert(result.score <= 40, `Score ${result.score} should be <= 40`);
+    assert(result?.score <= 40, `Score ${result?.score} should be <= 40`);
     assert(['fear', 'extreme_fear'].includes(result.level), `Level ${result.level} should be fear+`);
   });
 
@@ -236,7 +236,7 @@ async function testSectorRotation() {
 async function testNewsAggregator() {
   console.log('\n📰 JVS-5: News Aggregator');
 
-  const aggregator = new NewsAggregatorService();
+  const aggregator = new NewsAggregator();
 
   await runTest('Should score positive sentiment', () => {
     const result = aggregator.search({

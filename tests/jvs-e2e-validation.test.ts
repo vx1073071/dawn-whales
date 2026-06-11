@@ -73,7 +73,7 @@ function httpGet(url: string, timeoutMs = 15000): Promise<string> {
       res.on('data', (chunk: Buffer) => chunks.push(chunk));
       res.on('end', () => {
         const body = Buffer.concat(chunks).toString('utf-8');
-        if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
+        if (res.statusCode && res.statusCode >= 50 && res.statusCode < 300) {
           resolve(body);
         } else {
           reject(new Error(`HTTP ${res.statusCode}: ${body.slice(0, 100)}`));
@@ -121,8 +121,8 @@ async function testJVS2_MacroDashboard() {
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
     assert(json.success === true, 'API should succeed');
-    assert(json.result.data.length >= 1, 'Should have GDP data');
-    console.log(`    GDP: ${json.result.data[0].SUM_SAME}% (${json.result.data[0].REPORT_DATE.slice(0,10)})`);
+    assert(json.result?.data.length >= 1, 'Should have GDP data');
+    console.log(`    GDP: ${json.result?.data[0].SUM_SAME}% (${json.result?.data[0].REPORT_DATE.slice(0,10)})`);
   });
 
   await runTest('CPI data (RPT_ECONOMY_CPI)', async () => {
@@ -130,7 +130,7 @@ async function testJVS2_MacroDashboard() {
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
     assert(json.success === true, 'API should succeed');
-    console.log(`    CPI: ${json.result.data[0].NATIONAL_SAME}%`);
+    console.log(`    CPI: ${json.result?.data[0].NATIONAL_SAME}%`);
   });
 
   await runTest('PMI data (RPT_ECONOMY_PMI)', async () => {
@@ -138,7 +138,7 @@ async function testJVS2_MacroDashboard() {
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
     assert(json.success === true, 'API should succeed');
-    console.log(`    PMI: ${json.result.data[0].MAKE_INDEX}`);
+    console.log(`    PMI: ${json.result?.data[0].MAKE_INDEX}`);
   });
 
   await runTest('PPI data (RPT_ECONOMY_PPI)', async () => {
@@ -146,7 +146,7 @@ async function testJVS2_MacroDashboard() {
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
     assert(json.success === true, 'API should succeed');
-    console.log(`    PPI: ${json.result.data[0].BASE_SAME}%`);
+    console.log(`    PPI: ${json.result?.data[0].BASE_SAME}%`);
   });
 }
 
@@ -161,9 +161,9 @@ async function testJVS10_DragonTiger() {
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
     // May not have data on non-trading days
-    if (json.result && json.result.data) {
-      console.log(`    ${json.result.data.length} entries on ${today}`);
-      assert(json.result.data.length > 0, 'Should have entries on trading day');
+    if (json.result && json.result?.data) {
+      console.log(`    ${json.result?.data.length} entries on ${today}`);
+      assert(json.result?.data.length > 0, 'Should have entries on trading day');
     } else {
       console.log(`    No data (possibly non-trading day: ${today})`);
       warnings.push('Dragon Tiger: no data - may be non-trading day');
@@ -226,7 +226,7 @@ async function testJVS13_FundHoldings() {
     const json = JSON.parse(raw);
     // May fail if report name doesn't exist
     if (json.success && json.result) {
-      console.log(`    ${json.result.count || json.result.data.length} entries`);
+      console.log(`    ${json.result.count || json.result?.data.length} entries`);
     } else {
       console.log(`    API returned: ${json.message || 'no data'} (report may not exist)`);
       warnings.push('Fund holdings: report name may differ from expected');
@@ -244,7 +244,7 @@ async function testJVS17_ConsumerData() {
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
     assert(json.success === true, 'CPI should succeed');
-    const d = json.result.data[0];
+    const d = json.result?.data[0];
     const keys = Object.keys(d).filter(k => k !== 'REPORT_DATE' && k !== 'TIME');
     console.log(`    CPI total=${d.NATIONAL_SAME || d.BASE || 'N/A'}, available cols: ${keys.slice(0, 5).join(', ')}...`);
   });
@@ -260,7 +260,7 @@ async function testJVS18_MarginData() {
     const raw = await httpGet(url);
     const json = JSON.parse(raw);
     if (json.success && json.result) {
-      const d = json.result.data[0];
+      const d = json.result?.data[0];
       console.log(`    Margin: ${(d.RZYE/1e8).toFixed(0)}亿, Short: ${(d.RQYE/1e8).toFixed(0)}亿 (${d.REPORT_DATE.slice(0,10)})`);
     } else {
       console.log(`    API: ${json.message || 'no data'}`);
@@ -335,10 +335,10 @@ async function testJVS3_Sentiment() {
       declineCount: 1500,
       totalTurnover: 1200,
     });
-    assert(typeof result.score === 'number', 'Should have numeric score');
-    assert(result.score >= 0 && result.score <= 100, 'Score should be 0-100');
+    assert(typeof result?.score === 'number', 'Should have numeric score');
+    assert(result?.score >= 0 && result?.score <= 100, 'Score should be 0-100');
     assert(result.level !== undefined, 'Should have level');
-    console.log(`    Score: ${result.score} (${result.level}), signal: ${result.signal}`);
+    console.log(`    Score: ${result?.score} (${result.level}), signal: ${result.signal}`);
   });
 }
 

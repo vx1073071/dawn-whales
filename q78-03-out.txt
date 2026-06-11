@@ -1,0 +1,49 @@
+﻿node : [33m[7m[33m Vitest [33m[27m "deps.external" is deprecated. If you rely on vite-node directly, use 
+"server.deps.external" instead. Otherwise, consider using "deps.optimizer.web.exclude"[39m
+所在位置 行:1 字符: 89
++ ... ing]::UTF8; node --max-old-space-size=4096 node_modules/vitest/vitest ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33m[7m[33m ...b.exclude"[39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[1m[46m RUN [49m[22m [36mv3.2.6 [39m[90mC:/Users/vx107/.easyclaw/workspace/dawn-whales[39m
+
+[31mNo test files found, exiting with code 1
+[39m
+[2mfilter: [22m[33mtests/q78-03-regression-6250.test.ts[39m
+[2minclude: [22m[33mtests/**/*.test.{ts,tsx}[39m
+[2mexclude:  [22m[33mtests/q75-02-multisource-fallback-cache.test.ts[2m, 
+[22mtests/jvs-62-01-p2p-transfer.test.ts[2m, [22mtests/jvs-62-02-appeal-engine.test.ts[2m, 
+[22mtests/jvs-56-01-agent-orchestrator.test.ts[2m, [22mtests/jvs-54-03-stability-hardening.test.ts[2m, 
+[22mtests/jvs-50-realtime-quality-monitor.test.ts[2m, [22mtests/jvs-47-03-data-pipeline-reliability.test.ts[2m, 
+[22mtests/jvs-71-02-deployment-docs.test.ts[2m, [22mtests/strategy-backtest-pipeline.test.ts[2m, 
+[22mtests/q42-01-walkforward-integration.test.ts[2m, [22mtests/q35-trading-components.test.tsx[2m, 
+[22mtests/benchmark-engines.test.ts[2m, [22mtests/ws-backfill.test.ts[2m, [22mtests/nl-parser.test.ts[2m, 
+[22mtests/nl-parser-extension.test.ts[2m, [22mtests/q51-01-stability-guard.test.ts[2m, 
+[22mtests/q51-02-mutation-testing.test.ts[2m, [22mtests/q52-pre-commit.test.ts[2m, 
+[22mtests/q55-security-scan.test.ts[2m, [22mtests/q60-03-regression.test.ts[2m, 
+[22mtests/q61-03-regression.test.ts[2m, [22mtests/q62-03-regression.test.ts[2m, 
+[22mtests/q63-03-regression.test.ts[2m, [22mtests/q64-03-regression.test.ts[2m, 
+[22mtests/q65-03-regression.test.ts[2m, [22mtests/q66-03-regression.test.ts[2m, 
+[22mtests/q67-01-regression-gate.test.ts[2m, [22mtests/q67-02-build-artifact.test.ts[2m, 
+[22mtests/q68-03-regression-gate.test.ts[2m, [22mtests/q69-01-flaky-fix-5round.test.ts[2m, 
+[22mtests/q71-01-r70-wrapup-ga-final.test.ts[2m, [22mtests/q71-02-regression-gate-5600.test.ts[2m, 
+[22mtests/q75-03-regression-gate-5800.test.ts[2m, [22mtests/t90-load-tester.test.ts[2m, 
+[22mtests/multi-source-aggregator.test.ts[2m, [22mtests/jvs-e2e-validation.test.ts[2m, 
+[22mtests/data-exporter.test.ts[2m, [22mtests/jvs-44-02-data-export.test.ts[2m, 
+[22mtests/integration-full-pipeline.test.ts[2m, [22mtests/jvs-37-ipc-validation.test.ts[2m, 
+[22mtests/jvs-42-01-multi-account-adapter.test.ts[2m, [22mtests/jvs-44-01-ai-report.test.ts[2m, 
+[22mtests/jvs-61-01-multi-market-broker.test.ts[2m, [22mtests/jvs-61-02-cloud-opend-fragment.test.ts[2m, 
+[22mtests/jvs-66-01-creator-tier-engine.test.ts[2m, [22mtests/jvs-integration.test.ts[2m, 
+[22mtests/live-trade-bridge-enhanced.test.ts[2m, [22mtests/live-trade-bridge.test.ts[2m, 
+[22mtests/q42-02-live-trade-bridge-e2e.test.ts[2m, [22mtests/q46-04-e2e-smoke.test.ts[2m, 
+[22mtests/q19-opend-health.test.ts[2m, [22mtests/q78-03-regression-6250.test.ts[2m, 
+[22mtests/q79-01-i18n-consistency.test.ts[2m, [22mtests/q79-02-coverage-gate-60.test.ts[2m, 
+[22mtests/q79-03-excluded-migration.test.ts[2m, [22mtests/q79-04-dark-light-responsive.test.ts[2m, 
+[22mtests/q79-05-regression-6400.test.ts[2m, [22mtests/q74-01-build-deploy-verify.test.ts[2m, 
+[22mtests/q74-02-regression-gate-5800.test.ts[2m, [22mtests/q76-03-regression-gate-6000.test.ts[2m, 
+[22mtests/q70-02-deploy-fullchain-e2e.test.ts[2m, [22mtests/q73-02-onboarding-param-e2e.test.ts[2m, 
+[22mtests/q80-03-regression-6500.test.ts[2m, [22mtests/q81-01-regression-6500-5r.test.ts[2m, 
+[22mtests/q59-03-regression-validation.test.ts[39m
+

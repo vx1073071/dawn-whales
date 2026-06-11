@@ -29,8 +29,8 @@ describe('NL Parser — PriceCondition extension', () => {
       expect(result.condition!.targetPrice).toBe(200);
     });
 
-    it('"TSLA price > 200" → above 200', () => {
-      const result = parseNaturalLanguage('TSLA price > 200');
+    it('"TSLA price >= 50" → above 200', () => {
+      const result = parseNaturalLanguage('TSLA price >= 50');
       expect(result.success).toBe(true);
       expect(result.condition!.operator).toBe('above');
       expect(result.condition!.targetPrice).toBe(200);

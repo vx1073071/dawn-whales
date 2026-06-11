@@ -1,7 +1,4 @@
 /**
-import { EngineError, ErrorCode } from '../../errors';
-import i18n from '../../../src/i18n';
-
  * J-63-04: (R63 v19 — v1.5.0-rc service)
  *
  * delete: AI key + + + *dashboard.ts 
@@ -12,6 +9,8 @@ import i18n from '../../../src/i18n';
  *
  * >=150L, 5 tests
  */
+
+import i18n from '../../../src/i18n';
 
 // ── Migration Checklist ────────────────────────────────────────────────────
 

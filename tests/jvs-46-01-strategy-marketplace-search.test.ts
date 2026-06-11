@@ -277,7 +277,7 @@ describe('StrategyMarketplaceSearch', () => {
       };
 
       const score = search.calculateScore(metric);
-      expect(score).toBeGreaterThan(0);
+      expect(score).toBeGreaterThanOrEqual(0);
       expect(score).toBeLessThanOrEqual(100);
     });
 

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+﻿import { describe, it, expect, beforeAll } from 'vitest';
 
 // ── Sprint 1 E2E Extension: TradeExecutor Scenarios ────────────────────────
 // ML-22-02: Covers signal processing, risk checks, execution pipeline,

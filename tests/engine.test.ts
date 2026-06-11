@@ -1,4 +1,4 @@
-// ── Unit Tests — Backtest Engine + Strategy Templates (vitest format) ────────
+﻿// ── Unit Tests — Backtest Engine + Strategy Templates (vitest format) ────────
 // Converted from custom assert format to vitest describe/it/expect [R92]
 // NL Parser tests removed: i18n refactoring broke rule engine pattern matching
 

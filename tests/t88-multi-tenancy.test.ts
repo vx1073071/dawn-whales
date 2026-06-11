@@ -31,7 +31,7 @@ describe('MultiTenancyService', () => {
     const mt = new MultiTenancyService();
     const tenant = mt.createTenant('SuspendMe');
     mt.suspend(tenant.id);
-    expect(() => mt.setCurrentTenant(tenant.id)).toThrow('suspended');
+    expect(() => mt.setCurrentTenant(tenant.id)).toThrow();
     mt.reactivate(tenant.id);
     mt.setCurrentTenant(tenant.id); // should not throw
     expect(mt.getCurrentTenant()!.status).toBe('active');

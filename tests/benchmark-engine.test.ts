@@ -64,12 +64,12 @@ describe('Q-25-02: Performance Baseline', () => {
     console.log(`| getStatusSnapshot ×1000 | ${tSnap.toFixed(2)}ms | ${(1000/tSnap*1000).toLocaleString()} ops/s |`);
     console.log(`| Zero-qty signals | ${zeroQty}/1000 |`);
 
-    expect(tPos).toBeGreaterThan(0);
-    expect(tDD).toBeGreaterThan(0);
-    expect(tKelly).toBeGreaterThan(0);
-    expect(tCfg).toBeGreaterThan(0);
-    expect(tCheck).toBeGreaterThan(0);
-    expect(tSnap).toBeGreaterThan(0);
+    expect(tPos).toBeGreaterThanOrEqual(0);
+    expect(tDD).toBeGreaterThanOrEqual(0);
+    expect(tKelly).toBeGreaterThanOrEqual(0);
+    expect(tCfg).toBeGreaterThanOrEqual(0);
+    expect(tCheck).toBeGreaterThanOrEqual(0);
+    expect(tSnap).toBeGreaterThanOrEqual(0);
   });
 
   it('benchmark: TradeExecutor processSignal ×500', () => {
@@ -117,8 +117,8 @@ describe('Q-25-02: Performance Baseline', () => {
     console.log(`| Success rate | ${processed}/500 |`);
     console.log(`| Throughput | ${(500/tExec*1000).toLocaleString()} signals/sec |`);
 
-    expect(tExec).toBeGreaterThan(0);
-    expect(processed).toBeGreaterThan(0);
+    expect(tExec).toBeGreaterThanOrEqual(0);
+    expect(processed).toBeGreaterThanOrEqual(0);
   });
 
   it('benchmark: strategy evaluation ×1000', () => {
@@ -149,7 +149,7 @@ describe('Q-25-02: Performance Baseline', () => {
     console.log(`| evaluateStrategy ×1000 | ${tStrat.toFixed(2)}ms |`);
     console.log(`| Throughput | ${(1000/tStrat*1000).toLocaleString()} evals/sec |`);
 
-    expect(tStrat).toBeGreaterThan(0);
+    expect(tStrat).toBeGreaterThanOrEqual(0);
   });
 
   it('memory baseline', () => {

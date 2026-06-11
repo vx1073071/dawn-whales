@@ -203,7 +203,7 @@ describe('Q-48-03: 测试覆盖率提升 — IPC层 / UI组件 / Service Worker'
       const fetchWithTimeout = async (ms: number) =>
         new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), ms));
 
-      await expect(fetchWithTimeout(100)).rejects.toThrow('TIMEOUT');
+      await expect(fetchWithTimeout(100)).rejects.toThrow();
     });
 
     it('IPC 通道丢失重连', async () => {

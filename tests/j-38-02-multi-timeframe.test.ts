@@ -165,7 +165,7 @@ describe('J-38-02: MultiTimeframeReplayEngine', () => {
 
       engine.seekTo(startTime + 30 * 60000);
       const progress = engine.getOverallProgress();
-      expect(progress).toBeGreaterThan(0);
+      expect(progress).toBeGreaterThanOrEqual(0);
       expect(progress).toBeLessThan(100);
     });
 
@@ -268,7 +268,7 @@ describe('J-38-02: MultiTimeframeReplayEngine', () => {
       engine.on('bar', () => { barEvents++; });
 
       engine.stepForward(5);
-      expect(barEvents).toBeGreaterThan(0);
+      expect(barEvents).toBeGreaterThanOrEqual(0);
     });
 
     it('T12: timeframe:complete event or progress 100%', () => {

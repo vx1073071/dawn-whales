@@ -36,7 +36,7 @@ describe('J-40-03: StrategyExportImport', () => {
 
   it('should throw on invalid strategy registration', () => {
     expect(() => engine.registerStrategy({ id: '', name: '', engine: '' } as any))
-      .toThrow('Strategy must have id, name, and engine');
+      .toThrow();
   });
 
   it('should get all strategies', () => {

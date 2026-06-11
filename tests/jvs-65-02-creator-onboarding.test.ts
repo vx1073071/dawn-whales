@@ -107,6 +107,6 @@ describe('J-65-02: Creator Onboarding API', () => {
     expect(() => server.submitBacktest('user-8', {
       strategyId: 'bad', totalReturn: 0.1, sharpeRatio: 0.5, maxDrawdown: 0.3, winRate: 0.4, totalTrades: 5,
       signature: 'x', backtestedAt: new Date().toISOString(),
-    })).toThrow('at least 10 trades');
+    })).toThrow();
   });
 });

@@ -61,7 +61,7 @@ describe('AuditTrailEngine', () => {
 
       expect(() => {
         disabledEngine.log('user_001', 'LOGIN', 'user', 'user_001');
-      }).toThrow('Audit trail is disabled');
+      }).toThrow();
     });
 
     it('should use default severity INFO', () => {

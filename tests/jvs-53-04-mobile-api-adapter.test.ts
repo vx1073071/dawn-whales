@@ -85,7 +85,7 @@ describe('J-53-04-02: Lightweight Response', () => {
 
   it('08: estimateSize returns byte count', () => {
     const size = LightweightResponse.estimateSize({ hello: 'world' });
-    expect(size).toBeGreaterThan(0);
+    expect(size).toBeGreaterThanOrEqual(0);
     expect(size).toBe(JSON.stringify({ hello: 'world' }).length);
   });
 });

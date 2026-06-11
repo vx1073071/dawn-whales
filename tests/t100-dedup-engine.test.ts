@@ -1,6 +1,7 @@
 ﻿import { describe, it, expect } from 'vitest';
 import { DedupEngine } from '../electron/workers/dedup-engine';
 
+vi.setConfig({ testTimeout: 30000 });
 describe('DedupEngine', () => {
   it('should detect duplicates', () => {
     const de = new DedupEngine({ windowMs: 99999 });

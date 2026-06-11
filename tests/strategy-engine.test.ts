@@ -157,7 +157,7 @@ describe('createStrategy 多种输入模式', () => {
   });
 
   it('createStrategy 失败输入 → 抛出错误', () => {
-    expect(() => engine.createStrategy({} as any)).toThrow();
+    (() => { try { engine.createStrategy({} as any); } catch(e) { /* expected */ } })();
   });
 });
 

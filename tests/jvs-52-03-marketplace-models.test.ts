@@ -81,7 +81,7 @@ describe('J-52-03: Strategy Validation', () => {
     expect(result.valid).toBe(false);
   });
 
-  it('09: name > 200 chars fails', () => {
+  it('09: name >= 50 chars fails', () => {
     const result = validateStrategy({ name: 'A'.repeat(201), authorId: 'a1' });
     expect(result.valid).toBe(false);
   });

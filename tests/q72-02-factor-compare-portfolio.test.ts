@@ -15,10 +15,17 @@ import fs from 'fs';
 // [R92] Recursive directory walker for restructured engine subdirs
 function _walkRecursive(dir: string): string[] {
   let r: string[] = [];
-  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
-    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
-    else r.push((e as any).name);
-  }
+  try {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        r = r.concat(_walkRecursive(fullPath));
+      } else if (entry.isFile()) {
+        r.push(fullPath);
+      }
+    }
+  } catch (_e) {}
   return r;
 }
 
@@ -30,7 +37,7 @@ describe('Q-72-02: Factor + Comparison + Portfolio Analysis', () => {
   describe('Factor Analysis', () => {
     it('01: factor research engine files exist', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir);
+      const files = fs.readdirSync(engineDir, { withFileTypes: true }).filter(e => e.isFile()).map(e => e.name);
       const factorFiles = files.filter(f =>
         f.includes('factor') || f.includes('ic-') || f.includes('ir-')
         || f.includes('exposure') || f.includes('alpha-')
@@ -41,7 +48,7 @@ describe('Q-72-02: Factor + Comparison + Portfolio Analysis', () => {
 
     it('02: IC (Information Coefficient) model defined', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir);
+      const files = fs.readdirSync(engineDir, { withFileTypes: true }).filter(e => e.isFile()).map(e => e.name);
       const factorFiles = files.filter(f => f.includes('factor') || f.includes('ic-') || f.includes('ic.'));
       if (factorFiles.length > 0) {
         const content = fs.readFileSync(path.join(engineDir, factorFiles[0]), 'utf-8');
@@ -55,7 +62,7 @@ describe('Q-72-02: Factor + Comparison + Portfolio Analysis', () => {
 
     it('03: factor decay/crowding analysis', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir);
+      const files = fs.readdirSync(engineDir, { withFileTypes: true }).filter(e => e.isFile()).map(e => e.name);
       const decayFiles = files.filter(f =>
         f.includes('decay') || f.includes('crowd') || f.includes('turnover')
       );
@@ -65,7 +72,7 @@ describe('Q-72-02: Factor + Comparison + Portfolio Analysis', () => {
 
     it('04: multi-factor model supported', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir);
+      const files = fs.readdirSync(engineDir, { withFileTypes: true }).filter(e => e.isFile()).map(e => e.name);
       const multiFactorFiles = files.filter(f =>
         f.includes('multi-factor') || f.includes('multi_factor') || f.includes('regression')
       );
@@ -79,7 +86,7 @@ describe('Q-72-02: Factor + Comparison + Portfolio Analysis', () => {
   describe('Strategy Comparison Radar', () => {
     it('05: strategy comparison engine exists', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir);
+      const files = fs.readdirSync(engineDir, { withFileTypes: true }).filter(e => e.isFile()).map(e => e.name);
       const compFiles = files.filter(f =>
         f.includes('compare') || f.includes('radar') || f.includes('rank') || f.includes('eval')
       );
@@ -89,7 +96,7 @@ describe('Q-72-02: Factor + Comparison + Portfolio Analysis', () => {
 
     it('06: 6-dimension radar metrics defined (returns/sharpe/drawdown/winrate/vol/alpha)', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir);
+      const files = fs.readdirSync(engineDir, { withFileTypes: true }).filter(e => e.isFile()).map(e => e.name);
       const radarFiles = files.filter(f => f.includes('radar') || f.includes('compare') || f.includes('score'));
       if (radarFiles.length > 0) {
         const content = fs.readFileSync(path.join(engineDir, radarFiles[0]), 'utf-8');
@@ -109,7 +116,7 @@ describe('Q-72-02: Factor + Comparison + Portfolio Analysis', () => {
 
     it('07: strategy scoring/ranking mechanism', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir);
+      const files = fs.readdirSync(engineDir, { withFileTypes: true }).filter(e => e.isFile()).map(e => e.name);
       const scoreFiles = files.filter(f => f.includes('score') || f.includes('rank') || f.includes('grade'));
       console.log(`[Q-72-02] Scoring files: ${scoreFiles.join(', ') || 'pending'}`);
       expect(true).toBe(true);
@@ -121,7 +128,7 @@ describe('Q-72-02: Factor + Comparison + Portfolio Analysis', () => {
   describe('Portfolio Optimization', () => {
     it('08: efficient frontier engine exists', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir);
+      const files = fs.readdirSync(engineDir, { withFileTypes: true }).filter(e => e.isFile()).map(e => e.name);
       const pfFiles = files.filter(f =>
         f.includes('frontier') || f.includes('mean-variance') || f.includes('markowitz')
         || f.includes('optimize') || f.includes('portfolio')
@@ -132,7 +139,7 @@ describe('Q-72-02: Factor + Comparison + Portfolio Analysis', () => {
 
     it('09: risk budget model', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir);
+      const files = fs.readdirSync(engineDir, { withFileTypes: true }).filter(e => e.isFile()).map(e => e.name);
       const budgetFiles = files.filter(f =>
         f.includes('budget') || f.includes('allocation') || f.includes('risk-budget')
       );
@@ -142,7 +149,7 @@ describe('Q-72-02: Factor + Comparison + Portfolio Analysis', () => {
 
     it('10: rebalance recommendation engine', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir);
+      const files = fs.readdirSync(engineDir, { withFileTypes: true }).filter(e => e.isFile()).map(e => e.name);
       const rebFiles = files.filter(f =>
         f.includes('rebalance') || f.includes('rebal-') || f.includes('rebal.')
       );

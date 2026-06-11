@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-50-01: User Acceptance Test Suite [P0]
  * R50 — v1.0.0 Final Acceptance
  * 目标: 30+ tests 完整用户旅程 + 多语言 + AI助理 + 离线
@@ -157,7 +157,7 @@ describe('L12: AI Assistant Panel', () => {
     });
     const result = await mockIPC.invoke('nl:parse', { text: 'Buy 100 shares of Tencent' });
     expect(result.parsed.code).toBe('HK.00700');
-    expect(result.confidence).toBeGreaterThan(0.9);
+    expect(result?.confidence).toBeGreaterThan(0.9);
   });
 
   it('L12-02: AI assistant — signal explanation provided', async () => {

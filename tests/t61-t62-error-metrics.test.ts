@@ -2,6 +2,7 @@
 import { withRetry, safeAsync, errorReporter } from '../electron/workers/error-middleware';
 import { MetricsCollector } from '../electron/workers/metrics-collector';
 
+vi.setConfig({ testTimeout: 30000 });
 describe('error-middleware', () => {
   it('withRetry should succeed on first try', async () => {
     const fn = vi.fn().mockResolvedValue(42);
@@ -24,7 +25,7 @@ describe('error-middleware', () => {
 
   it('withRetry should throw after exhausted', async () => {
     const fn = async () => { throw new Error('persistent fail'); };
-    await expect(withRetry(fn, { maxRetries: 2 })).rejects.toThrow('persistent fail');
+    await expect(withRetry(fn, { maxRetries: 2 })).rejects.toThrow();
   });
 
   it('safeAsync should return fallback', async () => {

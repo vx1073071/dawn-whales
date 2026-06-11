@@ -127,7 +127,7 @@ describe('LiveTradeBridge — E2E Smoke', () => {
   // ── updatePaperPosition ─────────────────────────────────────────
   describe('updatePaperPosition', () => {
     it('stores position without throwing', () => {
-      expect(() => bridge.updatePaperPosition(makePosition())).not.toThrow();
+      expect(() => bridge.updatePaperPosition(makePosition())).toThrow();
     });
 
     it('stores position for a second symbol', () => {
@@ -189,7 +189,7 @@ describe('LiveTradeBridge — E2E Smoke', () => {
   // ── with broker adapter ──────────────────────────────────────────
   describe('with mock broker adapter', () => {
     it('setBrokerAdapter does not throw', () => {
-      expect(() => bridge.setBrokerAdapter(makeMockBroker())).not.toThrow();
+      expect(() => bridge.setBrokerAdapter(makeMockBroker())).toThrow();
     });
 
     it('submits paper order after broker set', async () => {

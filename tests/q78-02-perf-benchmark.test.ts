@@ -155,7 +155,7 @@ describe('Q-78-02: Performance Benchmark', () => {
       const skip = ['node_modules', '.git', 'dist', 'out', '.vite'];
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of fs.readdirSync(d, { withFileTypes: true }).filter(e => e.isFile()).map(e => e.name)) {
             const fp = path.join(d, f);
             const isDir = fs.statSync(fp).isDirectory();
             if (isDir && !skip.some(function(s) { return f === s || f.includes('node_modules'); })) walk(fp);

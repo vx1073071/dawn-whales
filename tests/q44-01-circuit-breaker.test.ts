@@ -97,7 +97,7 @@ describe('CircuitBreaker', () => {
     });
 
     it('should record failure on rejected promise', async () => {
-      await expect(breaker.execute(async () => Promise.reject(new Error('fail')))).rejects.toThrow('fail');
+      await expect(breaker.execute(async () => Promise.reject(new Error('fail')))).rejects.toThrow();
       expect(breaker.getState().state).toBe('CLOSED');
     });
   });

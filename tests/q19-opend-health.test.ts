@@ -45,9 +45,9 @@ describe('Q19: OpenD Health Check', () => {
 
     expect(result).toBeDefined();
     expect(['HEALTHY', 'DEGRADED', 'UNHEALTHY', 'UNKNOWN']).toContain(result.overall);
-    expect(typeof result.score).toBe('number');
-    expect(result.score).toBeGreaterThanOrEqual(0);
-    expect(result.score).toBeLessThanOrEqual(100);
+    expect(typeof result?.score).toBe('number');
+    expect(result?.score).toBeGreaterThanOrEqual(0);
+    expect(result?.score).toBeLessThanOrEqual(100);
     expect(Array.isArray(result.checks)).toBe(true);
     expect(result.timestamp).toBeGreaterThan(0);
     expect(typeof result.summary).toBe('string');
@@ -77,14 +77,14 @@ describe('Q19: OpenD Health Check', () => {
   it('should give score of 100 when all checks pass', async () => {
     const result = await runOpenDHealthCheck();
     // Note: local 127.0.0.1:11111 may not be running, so we just check the score is in valid range
-    expect(result.score).toBeGreaterThanOrEqual(0);
-    expect(result.score).toBeLessThanOrEqual(100);
+    expect(result?.score).toBeGreaterThanOrEqual(0);
+    expect(result?.score).toBeLessThanOrEqual(100);
   });
 
   it('overall should be HEALTHY only if score >= 80', async () => {
     const result = await runOpenDHealthCheck();
     if (result.overall === 'HEALTHY') {
-      expect(result.score).toBeGreaterThanOrEqual(80);
+      expect(result?.score).toBeGreaterThanOrEqual(80);
     }
   });
 
@@ -142,7 +142,7 @@ describe('Q19: OpenD Health Check', () => {
     for (let i = 0; i < 3; i++) {
       const result = await runOpenDHealthCheck();
       expect(result.checks).toHaveLength(5);
-      expect(result.score).toBeGreaterThanOrEqual(0);
+      expect(result?.score).toBeGreaterThanOrEqual(0);
     }
   });
 });

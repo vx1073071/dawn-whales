@@ -1,0 +1,232 @@
+﻿node : [33m[7m[33m Vitest [33m[27m "deps.external" is deprecated. If you rely on vite-node directly, use 
+"server.deps.external" instead. Otherwise, consider using "deps.optimizer.web.exclude"[39m
+所在位置 行:1 字符: 89
++ ... ing]::UTF8; node --max-old-space-size=4096 node_modules/vitest/vitest ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33m[7m[33m ...b.exclude"[39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[1m[46m RUN [49m[22m [36mv3.2.6 [39m[90mC:/Users/vx107/.easyclaw/workspace/dawn-whales[39m
+
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mAdapter Architecture[2m > [22m[2m01: adapter files exist or interface pattern present
+[22m[39m[Q-75-02] Adapter files: C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\analysis\multi-account-adapter.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\data-source-adapters.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\futu-ws-adapter.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\ibkr-broker-adapter.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\mobile-api-adapter.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\mobile-data-adapter.ts
+
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mFallback Chain[2m > [22m[2m05: multi-source aggregation pattern
+[22m[39m[Q-75-02] Aggregation files: C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agents\multi-llm-router.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\analysis\greeks-aggregator.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\analysis\multi-account-adapter.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\analysis\multi-asset-connector.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\analysis\multi-broker-pnl.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\analysis\strategy-signal-aggregator.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\kline-aggregation-optimizer.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\multi-market-broker.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\multi-market-quote-engine.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\multi-source-aggregator.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\multi-timeframe-engine.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\multi-timeframe-replay.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\news-aggregator.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\realtime-aggregator.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\sliding-window-aggregator.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\factors\multi-factor-selector.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\factors\multi-factor.ts
+
+[90mstdout[2m | tests/q75-02-multisource-fallback-cache.test.ts[2m > [22m[2mQ-75-02: Multi-Source Fallback + Cache[2m > [22m[2mCache Mechanism[2m > [22m[2m07: T+1 cache pattern or cache engine exists
+[22m[39m[Q-75-02] Cache files: C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\core\smart-cache.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\cache-explorer.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\cache-optimizer.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\market-data-cache-manager.ts, C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\data\redis-cache-layer.ts
+
+ [31m❯[39m tests/q75-02-multisource-fallback-cache.test.ts [2m([22m[2m12 tests[22m[2m | [22m[31m11 failed[39m[2m)[22m[32m 22[2mms[22m[39m
+[31m   [31m×[31m Q-75-02: Multi-Source Fallback + Cache[2m > [22mAdapter Architecture[2m > [22m01: adapter files exist or interface pattern present[39m[32m 5[2mms[22m[39m
+[31m     → _readEngineFile is not defined[39m
+[31m   [31m×[31m Q-75-02: Multi-Source Fallback + Cache[2m > [22mAdapter Architecture[2m > [22m02: adapter requires common interface: fetch/query/getData[39m[32m 1[2mms[22m[39m
+[31m     → _readEngineFile is not defined[39m
+[31m   [31m×[31m Q-75-02: Multi-Source Fallback + Cache[2m > [22mAdapter Architecture[2m > [22m03: adapter timeout guard or retry logic[39m[32m 1[2mms[22m[39m
+[31m     → _readEngineFile is not defined[39m
+[31m   [31m×[31m Q-75-02: Multi-Source Fallback + Cache[2m > [22mFallback Chain[2m > [22m04: fallback chain pattern exists in agent code[39m[32m 3[2mms[22m[39m
+[31m     → expected false to be true // Object.is equality[39m
+   [32m✓[39m Q-75-02: Multi-Source Fallback + Cache[2m > [22mFallback Chain[2m > [22m05: multi-source aggregation pattern[32m 2[2mms[22m[39m
+[31m   [31m×[31m Q-75-02: Multi-Source Fallback + Cache[2m > [22mFallback Chain[2m > [22m06: source priority/ranking exists[39m[32m 1[2mms[22m[39m
+[31m     → _readEngineFile is not defined[39m
+[31m   [31m×[31m Q-75-02: Multi-Source Fallback + Cache[2m > [22mCache Mechanism[2m > [22m07: T+1 cache pattern or cache engine exists[39m[32m 1[2mms[22m[39m
+[31m     → _readEngineFile is not defined[39m
+[31m   [31m×[31m Q-75-02: Multi-Source Fallback + Cache[2m > [22mCache Mechanism[2m > [22m08: cache key pattern exists (symbol+source+timestamp)[39m[32m 1[2mms[22m[39m
+[31m     → _readEngineFile is not defined[39m
+[31m   [31m×[31m Q-75-02: Multi-Source Fallback + Cache[2m > [22mCache Mechanism[2m > [22m09: stale-while-revalidate or expiry strategy[39m[32m 1[2mms[22m[39m
+[31m     → _readEngineFile is not defined[39m
+[31m   [31m×[31m Q-75-02: Multi-Source Fallback + Cache[2m > [22mMulti-Source Cross-Verification[2m > [22m10: cross-source price divergence detection[39m[32m 1[2mms[22m[39m
+[31m     → _readEngineFile is not defined[39m
+[31m   [31m×[31m Q-75-02: Multi-Source Fallback + Cache[2m > [22mMulti-Source Cross-Verification[2m > [22m11: data freshness timestamp check[39m[32m 1[2mms[22m[39m
+[31m     → _readEngineFile is not defined[39m
+[31m   [31m×[31m Q-75-02: Multi-Source Fallback + Cache[2m > [22mMulti-Source Cross-Verification[2m > [22m12: error isolation — one source fail does not kill all[39m[32m 1[2mms[22m[39m
+[31m     → _readEngineFile is not defined[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 11 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + 
+Cache[2m > [22mAdapter Architecture[2m > [22m01: adapter files exist or interface pattern present
+[31m[1mReferenceError[22m: _readEngineFile is not defined[39m
+[36m [2m❯[22m tests/q75-02-multisource-fallback-cache.test.ts:[2m39:19[22m[39m
+    [90m 37| [39m      [35mfor[39m ([35mconst[39m f [35mof[39m files) {
+    [90m 38| [39m        [35mif[39m ([33m![39mf[33m.[39m[34mendsWith[39m([32m'.ts'[39m)) 
+[35mcontinue[39m[33m;[39m
+    [90m 39| [39m        [35mconst[39m c [33m=[39m 
+[34m_readEngineFile[39m(path[33m.[39m[34mbasename[39m(f)) [33m||[39m [32m''[39m[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m 40| [39m        [35mfor[39m ([35mconst[39m p [35mof[39m adapterPatterns) {
+    [90m 41| [39m          [35mif[39m ([35mnew[39m [33mRegExp[39m(p[33m,[39m 
+[32m'i'[39m)[33m.[39m[34mtest[39m(c)) {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + 
+Cache[2m > [22mAdapter Architecture[2m > [22m02: adapter requires common interface: fetch/query/getData
+[31m[1mReferenceError[22m: _readEngineFile is not defined[39m
+[36m [2m❯[22m tests/q75-02-multisource-fallback-cache.test.ts:[2m59:19[22m[39m
+    [90m 57| [39m      [35mfor[39m ([35mconst[39m f [35mof[39m files) {
+    [90m 58| [39m        if (!f.endsWith('.ts') || (!f.includes('adapter') && !f.includ…
+    [90m 59| [39m        [35mconst[39m c [33m=[39m 
+[34m_readEngineFile[39m(path[33m.[39m[34mbasename[39m(f)) [33m||[39m [32m''[39m[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m 60| [39m        [35mfor[39m ([35mconst[39m m [35mof[39m commonMethods) {
+    [90m 61| [39m          [35mif[39m ([35mnew[39m 
+[33mRegExp[39m([32m`\\b[39m[36m${[39mm[36m}[39m[32m\\b`[39m)[33m.[39m[34mtest[39m(c)) {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + 
+Cache[2m > [22mAdapter Architecture[2m > [22m03: adapter timeout guard or retry logic
+[31m[1mReferenceError[22m: _readEngineFile is not defined[39m
+[36m [2m❯[22m tests/q75-02-multisource-fallback-cache.test.ts:[2m81:19[22m[39m
+    [90m 79| [39m      [35mfor[39m ([35mconst[39m f [35mof[39m files) {
+    [90m 80| [39m        [35mif[39m ([33m![39mf[33m.[39m[34mendsWith[39m([32m'.ts'[39m)) 
+[35mcontinue[39m[33m;[39m
+    [90m 81| [39m        [35mconst[39m c [33m=[39m 
+[34m_readEngineFile[39m(path[33m.[39m[34mbasename[39m(f)) [33m||[39m [32m''[39m[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m 82| [39m        [35mif[39m (timeoutPatterns[33m.[39m[34msome[39m(p [33m=>[39m [35mnew[39m 
+[33mRegExp[39m(p[33m,[39m [32m'i'[39m)[33m.[39m[34mtest[39m(c))) {
+    [90m 83| [39m          hasTimeout [33m=[39m [35mtrue[39m[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + 
+Cache[2m > [22mFallback Chain[2m > [22m04: fallback chain pattern exists in agent code
+[31m[1mAssertionError[22m: expected false to be true // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+[36m [2m❯[22m tests/q75-02-multisource-fallback-cache.test.ts:[2m110:27[22m[39m
+    [90m108| [39m        }
+    [90m109| [39m      }
+    [90m110| [39m      [34mexpect[39m(hasFallback)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m   | [39m                          [31m^[39m
+    [90m111| [39m    })[33m;[39m
+    [90m112| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + 
+Cache[2m > [22mFallback Chain[2m > [22m06: source priority/ranking exists
+[31m[1mReferenceError[22m: _readEngineFile is not defined[39m
+[36m [2m❯[22m tests/q75-02-multisource-fallback-cache.test.ts:[2m135:19[22m[39m
+    [90m133| [39m      [35mfor[39m ([35mconst[39m f [35mof[39m files) {
+    [90m134| [39m        [35mif[39m ([33m![39mf[33m.[39m[34mendsWith[39m([32m'.ts'[39m)) 
+[35mcontinue[39m[33m;[39m
+    [90m135| [39m        [35mconst[39m c [33m=[39m 
+[34m_readEngineFile[39m(path[33m.[39m[34mbasename[39m(f)) [33m||[39m [32m''[39m[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m136| [39m        [35mfor[39m ([35mconst[39m p [35mof[39m priorityPatterns) {
+    [90m137| [39m          [35mif[39m ([35mnew[39m [33mRegExp[39m(p[33m,[39m 
+[32m'i'[39m)[33m.[39m[34mtest[39m(c)) {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + 
+Cache[2m > [22mCache Mechanism[2m > [22m07: T+1 cache pattern or cache engine exists
+[31m[1mReferenceError[22m: _readEngineFile is not defined[39m
+[36m [2m❯[22m tests/q75-02-multisource-fallback-cache.test.ts:[2m165:19[22m[39m
+    [90m163| [39m      [35mfor[39m ([35mconst[39m f [35mof[39m files) {
+    [90m164| [39m        [35mif[39m ([33m![39mf[33m.[39m[34mendsWith[39m([32m'.ts'[39m)) 
+[35mcontinue[39m[33m;[39m
+    [90m165| [39m        [35mconst[39m c [33m=[39m 
+[34m_readEngineFile[39m(path[33m.[39m[34mbasename[39m(f)) [33m||[39m [32m''[39m[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m166| [39m        cacheRefs [33m+=[39m 
+(c[33m.[39m[34mmatch[39m([36m/cache|ttl|expir/i[39m)[33m?.[39mlength [33m||[39m [34m0[39m)[33m;[39m
+    [90m167| [39m      }
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + 
+Cache[2m > [22mCache Mechanism[2m > [22m08: cache key pattern exists (symbol+source+timestamp)
+[31m[1mReferenceError[22m: _readEngineFile is not defined[39m
+[36m [2m❯[22m tests/q75-02-multisource-fallback-cache.test.ts:[2m182:19[22m[39m
+    [90m180| [39m      [35mfor[39m ([35mconst[39m f [35mof[39m files) {
+    [90m181| [39m        [35mif[39m ([33m![39mf[33m.[39m[34mendsWith[39m([32m'.ts'[39m)) 
+[35mcontinue[39m[33m;[39m
+    [90m182| [39m        [35mconst[39m c [33m=[39m 
+[34m_readEngineFile[39m(path[33m.[39m[34mbasename[39m(f)) [33m||[39m [32m''[39m[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m183| [39m        [35mif[39m (keyPatterns[33m.[39m[34msome[39m(p [33m=>[39m [35mnew[39m 
+[33mRegExp[39m(p[33m,[39m [32m'i'[39m)[33m.[39m[34mtest[39m(c))) {
+    [90m184| [39m          hasKey [33m=[39m [35mtrue[39m[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + 
+Cache[2m > [22mCache Mechanism[2m > [22m09: stale-while-revalidate or expiry strategy
+[31m[1mReferenceError[22m: _readEngineFile is not defined[39m
+[36m [2m❯[22m tests/q75-02-multisource-fallback-cache.test.ts:[2m203:19[22m[39m
+    [90m201| [39m      [35mfor[39m ([35mconst[39m f [35mof[39m files) {
+    [90m202| [39m        [35mif[39m ([33m![39mf[33m.[39m[34mendsWith[39m([32m'.ts'[39m)) 
+[35mcontinue[39m[33m;[39m
+    [90m203| [39m        [35mconst[39m c [33m=[39m 
+[34m_readEngineFile[39m(path[33m.[39m[34mbasename[39m(f)) [33m||[39m [32m''[39m[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m204| [39m        [35mfor[39m ([35mconst[39m p [35mof[39m staletPatterns) {
+    [90m205| [39m          [35mif[39m ([35mnew[39m [33mRegExp[39m(p[33m,[39m 
+[32m'i'[39m)[33m.[39m[34mtest[39m(c)) {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + 
+Cache[2m > [22mMulti-Source Cross-Verification[2m > [22m10: cross-source price divergence detection
+[31m[1mReferenceError[22m: _readEngineFile is not defined[39m
+[36m [2m❯[22m tests/q75-02-multisource-fallback-cache.test.ts:[2m229:19[22m[39m
+    [90m227| [39m      [35mfor[39m ([35mconst[39m f [35mof[39m files) {
+    [90m228| [39m        [35mif[39m ([33m![39mf[33m.[39m[34mendsWith[39m([32m'.ts'[39m)) 
+[35mcontinue[39m[33m;[39m
+    [90m229| [39m        [35mconst[39m c [33m=[39m 
+[34m_readEngineFile[39m(path[33m.[39m[34mbasename[39m(f)) [33m||[39m [32m''[39m[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m230| [39m        [35mfor[39m ([35mconst[39m p [35mof[39m patterns) {
+    [90m231| [39m          [35mif[39m ([35mnew[39m [33mRegExp[39m(p[33m,[39m 
+[32m'i'[39m)[33m.[39m[34mtest[39m(c)) {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + 
+Cache[2m > [22mMulti-Source Cross-Verification[2m > [22m11: data freshness timestamp check
+[31m[1mReferenceError[22m: _readEngineFile is not defined[39m
+[36m [2m❯[22m tests/q75-02-multisource-fallback-cache.test.ts:[2m251:19[22m[39m
+    [90m249| [39m      [35mfor[39m ([35mconst[39m f [35mof[39m files) {
+    [90m250| [39m        [35mif[39m ([33m![39mf[33m.[39m[34mendsWith[39m([32m'.ts'[39m)) 
+[35mcontinue[39m[33m;[39m
+    [90m251| [39m        [35mconst[39m c [33m=[39m 
+[34m_readEngineFile[39m(path[33m.[39m[34mbasename[39m(f)) [33m||[39m [32m''[39m[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m252| [39m        [35mfor[39m ([35mconst[39m p [35mof[39m freshness) {
+    [90m253| [39m          [35mif[39m ([35mnew[39m [33mRegExp[39m(p[33m,[39m 
+[32m'i'[39m)[33m.[39m[34mtest[39m(c)) {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/11]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q75-02-multisource-fallback-cache.test.ts[2m > [22mQ-75-02: Multi-Source Fallback + 
+Cache[2m > [22mMulti-Source Cross-Verification[2m > [22m12: error isolation — one source fail does not kill all
+[31m[1mReferenceError[22m: _readEngineFile is not defined[39m
+[36m [2m❯[22m tests/q75-02-multisource-fallback-cache.test.ts:[2m273:19[22m[39m
+    [90m271| [39m      [35mfor[39m ([35mconst[39m f [35mof[39m files) {
+    [90m272| [39m        [35mif[39m ([33m![39mf[33m.[39m[34mendsWith[39m([32m'.ts'[39m)) 
+[35mcontinue[39m[33m;[39m
+    [90m273| [39m        [35mconst[39m c [33m=[39m 
+[34m_readEngineFile[39m(path[33m.[39m[34mbasename[39m(f)) [33m||[39m [32m''[39m[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m274| [39m        [35mfor[39m ([35mconst[39m p [35mof[39m patterns) {
+    [90m275| [39m          [35mif[39m ([35mnew[39m [33mRegExp[39m(p[33m,[39m 
+[32m'i'[39m)[33m.[39m[34mtest[39m(c)) {
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/11]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m11 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 15:01:01
+[2m   Duration [22m 484ms[2m (transform 39ms, setup 13ms, collect 33ms, tests 22ms, environment 0ms, prepare 259ms)[22m
+

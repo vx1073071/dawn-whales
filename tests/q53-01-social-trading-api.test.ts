@@ -140,21 +140,21 @@ describe('Q-53-01-02: Signal Pusher', () => {
     expect(aaplHistory.every(h => h.signal.symbol === 'AAPL')).toBe(true);
   });
 
-  it('S02-04: subscribed client receives signal via event', (done) => {
+  it('S02-04: subscribed client receives signal via event', async () => {
     const sp = new SignalPusher();
     const signal = mkSignal({ symbol: 'AAPL', strength: 80 });
 
     sp.on('signals', (data: { clientId: string; signals: StrategySignal[] }) => {
       expect(data.clientId).toBe('client1');
       expect(data.signals.length).toBeGreaterThanOrEqual(1);
-      done();
+      
     });
 
     sp.subscribe('client1', { symbols: ['AAPL'], minStrength: 70 });
     sp.processSignal(signal);
   });
 
-  it('S02-05: minStrength filter blocks weak signals', (done) => {
+  it('S02-05: minStrength filter blocks weak signals', async () => {
     const sp = new SignalPusher();
     let receivedCount = 0;
 
@@ -171,7 +171,7 @@ describe('Q-53-01-02: Signal Pusher', () => {
       expect(receivedCount).toBeGreaterThanOrEqual(0); // at most 1 (from 80 strength)
       const metrics = sp.getPerformanceMetrics();
       expect(metrics.filteredSignals).toBeGreaterThanOrEqual(1);
-      done();
+      
     }, 1100);
   });
 

@@ -120,7 +120,7 @@ describe('J-56-03-02: Consensus', () => {
       'unanimous'
     );
     expect(result.side).toBe('buy');
-    expect(result.confidence).toBeGreaterThan(0);
+    expect(result?.confidence).toBeGreaterThan(0);
   });
 });
 

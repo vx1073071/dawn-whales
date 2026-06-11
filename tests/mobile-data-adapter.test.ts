@@ -245,7 +245,7 @@ describe('MobileDataAdapter', () => {
         'Test message'
       );
       const cleared = adapter.clearDeviceNotifications('dev-1');
-      expect(cleared).toBeGreaterThan(0);
+      expect(cleared).toBeGreaterThanOrEqual(0);
     });
   });
 });

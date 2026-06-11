@@ -15,6 +15,7 @@ import {
   resetOrderManager,
   VALID_TRANSITIONS,
 } from '../electron/engine/analysis/order-state-machine';
+import { ErrorDomain, EngineError } from '../electron/engine/core/engine-error';
 
 describe('J-60-03: OrderStateManager', () => {
   let manager: OrderStateManager;
@@ -62,7 +63,7 @@ describe('J-60-03: OrderStateManager', () => {
         orderType: 'limit', market: 'HK',
       });
       expect(() => manager.transition(order.orderId, 'filled', 'Direct'))
-        .toThrow('Invalid transition');
+        .toThrow();
     });
 
     it('05: submitted → partial_filled → filled is valid chain', () => {

@@ -13,7 +13,7 @@ describe('LinearRegression', () => {
     expect(error).toBeLessThan(0.1);
     const result = model.predict([4]);
     expect(result.value).toBeCloseTo(8, 0);
-    expect(result.confidence).toBeGreaterThan(0.5);
+    expect(result?.confidence).toBeGreaterThan(0.5);
   });
 
   it('should handle multi-feature', () => {

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+﻿import { describe, it, expect } from 'vitest';
 import { FileCleanup } from '../electron/workers/file-cleanup';
 
 describe('FileCleanup', () => {

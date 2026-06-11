@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Multi-Broker E2E Tests ──────────────────────────────────
+﻿// ── DAWN WHALES — Multi-Broker E2E Tests ──────────────────────────────────
 // ML-27-02: 10+ E2E scenarios for multi-broker integration
 // Target: npm test ≥ 159 pass
 

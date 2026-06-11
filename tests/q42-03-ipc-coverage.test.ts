@@ -1,4 +1,4 @@
-// ── QClaw R42: IPC Handler Coverage Test ─────────────────────────────────────────
+﻿// ── QClaw R42: IPC Handler Coverage Test ─────────────────────────────────────────
 // Verifies all 99 registered IPC handlers exist and return non-throwing responses.
 // Does NOT test business logic correctness — just handler availability + type sanity.
 import { describe, it, expect, vi, beforeEach } from 'vitest';

@@ -13,13 +13,58 @@
 import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+
+// [R92] Recursive engine file finder
+function _findEngineFile(name: string): string | null {
+  const ENGINE_DIR = path.resolve(__dirname, '..', 'electron', 'engine');
+  function walk(dir: string): string | null {
+    try {
+      for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+        const fp = path.join(dir, e.name);
+        if (e.isFile() && e.name === name) return fp;
+        if (e.isDirectory() && !e.name.startsWith('.') && e.name !== 'node_modules') {
+          const r = walk(fp); if (r) return r;
+        }
+      }
+    } catch {}
+    return null;
+  }
+  return walk(ENGINE_DIR);
+}
+function _readEngineFile(name: string): string {
+  const fp = _findEngineFile(name);
+  if (fp) return fs.readFileSync(fp, 'utf-8');
+  return '';
+}
+function _allEngineFiles(dir?: string): string[] {
+  const ENGINE_DIR = dir || path.resolve(__dirname, '..', 'electron', 'engine');
+  const result: string[] = [];
+  function walk(d: string) {
+    try {
+      for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+        const fp = path.join(d, e.name);
+        if (e.isFile() && e.name.endsWith('.ts')) result.push(fp);
+        else if (e.isDirectory() && !e.name.startsWith('.') && e.name !== 'node_modules') walk(fp);
+      }
+    } catch {}
+  }
+  walk(ENGINE_DIR);
+  return result;
+}
 // [R92] Recursive directory walker for restructured engine subdirs
 function _walkRecursive(dir: string): string[] {
   let r: string[] = [];
-  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
-    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
-    else r.push((e as any).name);
-  }
+  try {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        r = r.concat(_walkRecursive(fullPath));
+      } else if (entry.isFile()) {
+        r.push(fullPath);
+      }
+    }
+  } catch (_e) {}
   return r;
 }
 
@@ -33,7 +78,7 @@ describe('Q-77-01: Security E2E Validation', () => {
 
   describe('A1: API Key Leak Detection', () => {
     it('01: no DEEPSEEK_API_KEY in nl-parser.ts (JVS J-77-01 target)', () => {
-      const fp = path.join(ENGINE, 'nl-parser.ts');
+      const fp = _findEngineFile('nl-parser.ts') || path.join(ENGINE, 'nl-parser.ts');
       if (!fs.existsSync(fp)) { console.log('[Q-77-01] nl-parser.ts not found'); return; }
       const c = fs.readFileSync(fp, 'utf-8');
       const count = (c.match(/DEEPSEEK_API_KEY/gi) || []).length;
@@ -45,7 +90,7 @@ describe('Q-77-01: Security E2E Validation', () => {
       const files = _walkRecursive(ENGINE).filter(f => f.endsWith('.ts'));
       const hits: string[] = [];
       for (const f of files) {
-        const c = fs.readFileSync(path.join(ENGINE, f), 'utf-8');
+        const c = _readEngineFile(path.basename(f)) || '';
         const keys = ['DEEPSEEK_API_KEY', 'OPENAI_API_KEY', 'API_KEY="', "API_KEY='", 'sk-'];
         for (const k of keys) {
           if (c.includes(k)) { hits.push(`${f}(${k})`); break; }
@@ -65,10 +110,8 @@ describe('Q-77-01: Security E2E Validation', () => {
       let total = 0;
       const walk = (d: string) => {
         try {
-          for (const f of _walkRecursive(d)) {
-            const fp = path.join(d, f);
-            if (fs.statSync(fp).isDirectory()) walk(fp);
-            else if (f.endsWith('.js') || f.endsWith('.html')) {
+          for (const fp of _walkRecursive(d)) {
+            if (!fs.existsSync(fp) || fs.statSync(fp).isDirectory()) continue; else if (f.endsWith('.js') || f.endsWith('.html')) {
               const c = fs.readFileSync(fp, 'utf-8');
               total += (c.match(/sk-[a-zA-Z0-9]{20,}/g) || []).length;
             }
@@ -84,7 +127,7 @@ describe('Q-77-01: Security E2E Validation', () => {
       const files = _walkRecursive(ENGINE).filter(f => f.endsWith('.ts'));
       const hits: string[] = [];
       for (const f of files) {
-        const c = fs.readFileSync(path.join(ENGINE, f), 'utf-8');
+        const c = _readEngineFile(path.basename(f)) || '';
         if (/https:\/\/api\.openai\.com|https:\/\/api\.deepseek\.com/.test(c)) {
           hits.push(f);
         }
@@ -104,7 +147,7 @@ describe('Q-77-01: Security E2E Validation', () => {
       const files = _walkRecursive(ENGINE).filter(f => f.endsWith('.ts'));
       const spawners: string[] = [];
       for (const f of files) {
-        const c = fs.readFileSync(path.join(ENGINE, f), 'utf-8');
+        const c = _readEngineFile(path.basename(f)) || '';
         if (/\bspawn\b|\bexec\b|\bfork\b/.test(c)) spawners.push(f);
       }
       console.log(`[Q-77-01] spawn/exec engines: ${spawners.join(', ')}`);
@@ -120,7 +163,7 @@ describe('Q-77-01: Security E2E Validation', () => {
       let validated = 0;
       let total = 0;
       for (const f of files) {
-        const c = fs.readFileSync(path.join(ENGINE, f), 'utf-8');
+        const c = _readEngineFile(path.basename(f)) || '';
         if (/\bspawn\(|\bexec\(|\bfork\(/.test(c)) {
           total++;
           if (/sanitize|validate|escape|safeCommand|whitelist|allowlist/.test(c)) validated++;
@@ -135,7 +178,7 @@ describe('Q-77-01: Security E2E Validation', () => {
       let timed = 0;
       let total = 0;
       for (const f of files) {
-        const c = fs.readFileSync(path.join(ENGINE, f), 'utf-8');
+        const c = _readEngineFile(path.basename(f)) || '';
         if (/\bspawn\(|\bexec\(/.test(c)) {
           total++;
           if (/timeout|kill|abort|maxTime/.test(c)) timed++;
@@ -149,7 +192,7 @@ describe('Q-77-01: Security E2E Validation', () => {
       const files = _walkRecursive(ENGINE).filter(f => f.endsWith('.ts'));
       const hits: string[] = [];
       for (const f of files) {
-        const c = fs.readFileSync(path.join(ENGINE, f), 'utf-8');
+        const c = _readEngineFile(path.basename(f)) || '';
         if (/\beval\(/.test(c) || /new Function\(/.test(c)) hits.push(f);
       }
       console.log(`[Q-77-01] eval/Function: ${hits.join(', ') || 'CLEAN'}`);
@@ -204,10 +247,8 @@ describe('Q-77-01: Security E2E Validation', () => {
       if (fs.existsSync(apiDir)) {
         const walk = (d: string) => {
           try {
-            for (const f of _walkRecursive(d)) {
-              const fp = path.join(d, f);
-              if (fs.statSync(fp).isDirectory()) walk(fp);
-              else if (f.endsWith('.ts') || f.endsWith('.js')) {
+            for (const fp of _walkRecursive(d)) {
+            if (!fs.existsSync(fp) || fs.statSync(fp).isDirectory()) continue; else if (f.endsWith('.ts') || f.endsWith('.js')) {
                 const c = fs.readFileSync(fp, 'utf-8');
                 if (/csrf|_csrf|xsrf_token|X-CSRF/.test(c)) csrf = true;
               }

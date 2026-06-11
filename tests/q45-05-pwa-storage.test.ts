@@ -1,4 +1,4 @@
-// Q-45-02: PWA Storage & Cache test suite
+﻿// Q-45-02: PWA Storage & Cache test suite
 // Tests browser storage/cache APIs used by PWA features
 // These run in jsdom which provides localStorage/sessionStorage/IndexDB stubs
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';

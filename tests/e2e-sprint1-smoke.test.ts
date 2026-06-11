@@ -1,4 +1,4 @@
-// ── Sprint 1 E2E Smoke Test ────────────────────────────────────────────────
+﻿// ── Sprint 1 E2E Smoke Test ────────────────────────────────────────────────
 // End-to-end flow: Connect → Dashboard → Market → Strategy → Backtest → Trade → Risk
 // Verifies all core IPC paths are functional
 import { describe, it, expect, beforeAll } from 'vitest';

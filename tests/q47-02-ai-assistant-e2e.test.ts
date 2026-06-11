@@ -140,7 +140,7 @@ describe('Q-47-02: AI Assistant Panel E2E — NL解析 / 策略建议 / 风险�
 
       expect(result.success).toBe(true);
       expect(result.answer).toBeTruthy();
-      expect(result.confidence).toBeGreaterThan(0.8);
+      expect(result?.confidence).toBeGreaterThan(0.8);
     });
 
     it('风险问答返回中文回答', async () => {

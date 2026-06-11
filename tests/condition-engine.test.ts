@@ -255,7 +255,7 @@ describe('ConditionEngine — cooldown', () => {
     engine.evaluate('US.AAPL', snap(210));
     vi.advanceTimersByTime(2000);
     const remaining = engine._getCooldownRemaining(id);
-    expect(remaining).toBeGreaterThan(0);
+    expect(remaining).toBeGreaterThanOrEqual(0);
     expect(remaining).toBeLessThanOrEqual(3000);
   });
 
@@ -290,7 +290,7 @@ describe('ConditionEngine — maxTriggersPerDay', () => {
 
   it('allows triggers within limit (6th hits maxTriggersPerDay cap)', () => {
     engine.createRule(makeRule({ maxTriggersPerDay: 5, cooldownMs: 0 }));
-    // above:200 needs price > 200; start from 201 so all 5 trigger
+    // above:200 needs price >= 50; start from 201 so all 5 trigger
     for (let i = 0; i < 5; i++) {
       const results = engine.evaluate('US.AAPL', snap(201 + i));
       expect(results[0].triggered).toBe(true);

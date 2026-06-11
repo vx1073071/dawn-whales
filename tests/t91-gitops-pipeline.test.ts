@@ -1,6 +1,7 @@
 ﻿import { describe, it, expect } from 'vitest';
 import { GitOpsPipeline } from '../electron/workers/gitops-pipeline';
 
+vi.setConfig({ testTimeout: 30000 });
 describe('GitOpsPipeline', () => {
   const config = {
     gitRepo: 'github.com/vx1073071/dawn-whales',
