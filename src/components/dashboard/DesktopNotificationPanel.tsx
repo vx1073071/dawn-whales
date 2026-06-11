@@ -1,5 +1,5 @@
 /**
- * DesktopNotification â€” Browser Notification API bridge for trading alerts
+ * DesktopNotification â€?Browser Notification API bridge for trading alerts
  * (ML-43-03, R43 Phase 6.0)
  *
  * Features:
@@ -79,7 +79,7 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
       // Send welcome notification
       new Notification('DAWN WHALES', {
         body: i18n.t('DesktopNotificationPanel.k1'),
-        icon: '/logo.png'
+        icon: '/logo.svg'
       });
     }
   }, []);
@@ -97,7 +97,7 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
     if (enabled && 'Notification' in window) {
       new Notification(title, {
         body,
-        icon: '/logo.png',
+        icon: '/logo.svg',
         tag: type
       });
 

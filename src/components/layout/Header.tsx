@@ -2,7 +2,7 @@ import { useAppStore } from '@/stores/appStore';
 import { useThemeStore } from '@/lib/theme';
 import { useI18nStore, LOCALE_LABELS, type Locale } from '@/lib/i18n';
 import { useTranslation } from 'react-i18next';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo.svg';
 import BrokerSelector from './BrokerSelector';
 import i18n from '../../i18n';
 import { EngineError } from '../../../electron/engine/core/engine-error';

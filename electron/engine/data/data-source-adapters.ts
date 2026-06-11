@@ -7,8 +7,9 @@ import { EngineError, ErrorCode } from '../../errors';
 
 export interface AdapterConfig {
   enabled: boolean;
-  baseUrl: string;\1/** @deprecated R83 — use server-side AI Gateway token */
-\1\2
+  apiKey?: string;
+  /** @deprecated R83 — use server-side AI Gateway token */
+  baseUrl: string;
   rateLimit_perMin: number;
   timeoutMs: number;
   retries: number;
