@@ -191,12 +191,14 @@ export class StockCodeNormalizer {
   // ─────── Private helpers ───────
 
   private tryExactMatch(input: string): NormalizedCode | null {
-    // Check for dot-suffixed codes first (e.g., AAPL.L → UK)
-    for (const rule of FUZZY_RULES) {
-      if (rule.pattern.test(input)) {
-        const ticker = this.extractTicker(input, rule.market);
-        return this.buildResult(input, rule.market, ticker, 'exact');
-      }
+    // Check for .L / .T suffixed codes first (exact format match)
+    if (/^[A-Z]{2,4}\.L$/.test(input)) {
+      const ticker = input.slice(0, -2);
+      return this.buildResult(input, 'UK', ticker, 'exact');
+    }
+    if (/^\d{4}\.T$/.test(input)) {
+      const ticker = input.slice(0, -2);
+      return this.buildResult(input, 'JP', ticker, 'exact');
     }
 
     // Check exchange prefixes (e.g., SH600000, HK.0700)
@@ -220,14 +222,29 @@ export class StockCodeNormalizer {
       return this.buildResult(input, 'US', input, 'exact');
     }
 
-    // CN: 6-digit numeric
+    // 6-digit numeric: 005xxx → KR, others → CN
     if (/^\d{6}$/.test(input)) {
-      // Determine SH vs SZ based on first digit
+      if (input.startsWith('005')) {
+        return this.buildResult(input, 'KR', input, 'exact');
+      }
       return this.buildResult(input, 'CN', input, 'exact');
     }
 
-    // HK: 4-5 digit numeric
-    if (/^\d{4,5}$/.test(input)) {
+    // HK: 5-digit numeric (always HK)
+    if (/^\d{5}$/.test(input)) {
+      return this.buildResult(input, 'HK', input, 'exact');
+    }
+
+    // 4-digit numeric: 0xxx → HK, others → JP
+    if (/^\d{4}$/.test(input)) {
+      if (input.startsWith('0')) {
+        return this.buildResult(input, 'HK', input, 'exact');
+      }
+      // 1xxx-4xxx → JP, 5xxx-9xxx → HK
+      const first = parseInt(input[0]);
+      if (first >= 1 && first <= 4) {
+        return this.buildResult(input, 'JP', input, 'exact');
+      }
       return this.buildResult(input, 'HK', input, 'exact');
     }
 

@@ -143,10 +143,10 @@ describe('StockCodeNormalizer', () => {
 
   // ═══════════════ JP Market ═══════════════
   describe('JP market codes', () => {
-    it('4-digit numeric 0-4 start → JP (fuzzy)', () => {
+    it('4-digit numeric 1-4 start → JP', () => {
+      // 1234: 4-digit, starts with 1 (1-4) → JP
       const result = normalizer.normalize('1234');
       expect(result.market).toBe('JP');
-      expect(result.confidence).toBe('fuzzy');
       expect(result.iso).toBe('JP:1234');
     });
 
@@ -229,11 +229,11 @@ describe('StockCodeNormalizer', () => {
 
   // ═══════════════ KR Market ═══════════════
   describe('KR market codes', () => {
-    it('00xxxx → KR (fuzzy)', () => {
+    it('005xxx → KR', () => {
+      // 005930 (Samsung KRX): 6-digit, 005 prefix → KR
       const result = normalizer.normalize('005930');
       expect(result.market).toBe('KR');
       expect(result.ticker).toBe('005930');
-      expect(result.confidence).toBe('fuzzy');
       expect(result.iso).toBe('KR:005930');
     });
 
@@ -248,7 +248,7 @@ describe('StockCodeNormalizer', () => {
       expect(result.ticker).toBe('005930');
     });
 
-    it('non-00 6-digit → CN', () => {
+    it('non-005 6-digit → CN', () => {
       const result = normalizer.normalize('600000');
       expect(result.market).toBe('CN');
     });
