@@ -100,6 +100,7 @@ export interface PushNotification {
   priority: PushPriority;
   title: string;
   message: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: Record<string, any>;
   timestamp: number;
   compressed: boolean;
@@ -291,6 +292,7 @@ export class MobileDataAdapter extends SimpleEventEmitter {
     priority: PushPriority,
     title: string,
     message: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data?: Record<string, any>
   ): PushNotification | null {
     const device = this.devices.get(deviceId);
@@ -368,6 +370,7 @@ export class MobileDataAdapter extends SimpleEventEmitter {
     priority: PushPriority,
     title: string,
     message: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data?: Record<string, any>
   ): PushNotification[] {
     const notifications: PushNotification[] = [];
@@ -436,6 +439,7 @@ export class MobileDataAdapter extends SimpleEventEmitter {
   /**
    * Compress data payload
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private compressData(payload: DataPayload): any {
     // Simple compression: remove null/undefined values and shorten keys
     const compressed: unknown = {
@@ -450,6 +454,7 @@ export class MobileDataAdapter extends SimpleEventEmitter {
   /**
    * Minify object by removing null values and shortening keys
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private minifyObject(obj: unknown): any {
     if (obj === null || obj === undefined) return undefined;
     if (typeof obj !== 'object') return obj;

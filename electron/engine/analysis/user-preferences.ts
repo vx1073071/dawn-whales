@@ -71,6 +71,7 @@ export interface UserPreferences {
   trading: TradingPreferences;
   notifications: NotificationPreferences;
   layout: LayoutPreferences;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   customData: Record<string, any>; // user-defined key-value pairs
   updatedAt: string;
 }
@@ -165,6 +166,7 @@ export class PreferencesManager {
 
   // ── DB Operations ────────────────────────────────────────────────────
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getDb(): any {
     try {
       const { shared } = require('../ipc-handlers/shared-imports');
@@ -285,18 +287,21 @@ export class PreferencesManager {
   }
 
   get<T = unknown>(section: keyof UserPreferences, key: string): T {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const s = this.prefs[section] as any;
     return s?.[key];
   }
 
   set(section: keyof UserPreferences, key: string, value: unknown): boolean {
     if (!this.prefs[section]) return false;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (this.prefs[section] as any)[key] = value;
     this.prefs.updatedAt = new Date().toISOString();
     this.saveToDB();
     return true;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setSection(section: keyof UserPreferences, data: Partial<any>): boolean {
     if (!this.prefs[section]) return false;
     Object.assign(this.prefs[section], data);

@@ -108,6 +108,7 @@ export class SectorRotationMonitor {
     try {
       const rows = this.db.prepare(
         'SELECT * FROM sector_rotation_history WHERE recorded_at > ? ORDER BY recorded_at ASC'
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ).all(Date.now() - 7 * 24 * 60 * 60 * 1000) as any[];
 
       for (const r of rows) {

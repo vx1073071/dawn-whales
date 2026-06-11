@@ -13,6 +13,7 @@ import { intervalToMs, numField, extractTimestamp, clamp } from './data-quality-
  */
 export function scoreCompleteness(data: unknown[], context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const metadata: Record<string, any> = {};
   const total = data.length;
 
@@ -138,6 +139,7 @@ export function scoreCompleteness(data: unknown[], context: QualityContext): Dim
  */
 export function scoreAccuracy(data: unknown[], _context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const metadata: Record<string, any> = {};
   const total = data.length;
 

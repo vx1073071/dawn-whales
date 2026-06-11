@@ -118,6 +118,7 @@ export interface SourceDataPoint {
   bid?: number;
   ask?: number;
   value?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
 }
 
@@ -704,6 +705,7 @@ export class DataQualityMonitor {
     for (const p of dataPoints) {
       for (const field of this.expectedFields) {
         totalFields++;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((p as any)[field] != null) presentFields++;
       }
     }

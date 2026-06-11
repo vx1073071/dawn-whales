@@ -23,6 +23,7 @@ export interface StrategySignal {
   action: 'buy' | 'sell' | 'hold';
   confidence: number;      // 0-1
   timestamp: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
 }
 

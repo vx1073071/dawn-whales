@@ -159,6 +159,7 @@ export class FundamentalsAgent extends EventEmitter implements IAnalyst {
       adapter.configure({ enabled: true });
       const result = await adapter.fetchQuote(symbol, "NYSE");
       if (!result.success || !result.data) return null;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const d = result.data as any;
       return {
         symbol: d.symbol ?? symbol,

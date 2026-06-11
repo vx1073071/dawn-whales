@@ -314,6 +314,7 @@ export class BacktestEngine {
 
     const klines = config.klines || [];
     if (klines.length < 50) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return { success: false, result: this.emptyResult(config, i18n.t('backtestEngine.k1')) } as any;
     }
 

@@ -282,6 +282,7 @@ export class PerformanceMonitoringDashboard extends EventEmitter {
 
     for (const cpu of cpus) {
       for (const type in cpu.times) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         totalTick += (cpu.times as any)[type];
       }
       totalIdle += cpu.times.idle;

@@ -300,6 +300,7 @@ export class AlphaVantageAdapter extends BaseAdapter {
     const series = json?.["Time Series (Daily)"];
     if (!series) throw new EngineError("`No history for ${symbol}`", { code: ErrorCode.ENGINE_INTERNAL_ERROR });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return Object.entries(series).slice(0, 30).map(([date, row]: [string, any]) => ({
       time: new Date(date).getTime(),
       open: parseFloat(row["1. open"]),

@@ -21,6 +21,7 @@ export interface IOTask {
   id: string;
   label: string;
   priority: Priority;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fn: () => Promise<any>;
   timeoutMs: number;
   retryCount: number;
@@ -848,7 +849,9 @@ export class AsyncIOScheduler {
   private async executeWithTimeout(
     task: IOTask,
     signal: AbortSignal,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return new Promise<any>((resolve, reject) => {
       let settled = false;
 

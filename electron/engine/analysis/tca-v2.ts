@@ -156,6 +156,7 @@ export class TCAEngineV2 {
 
       venues.push({
         venue,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         region: (profile?.region as any) ?? 'INTL',
         avgCommission: Math.round(avgComm * 10000) / 100,
         avgSlippage: Math.round(avgSlip * 10000) / 100,

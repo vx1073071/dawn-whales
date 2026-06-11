@@ -6,6 +6,7 @@
  * context passing, and pre-built step templates.
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import log from 'electron-log';
 import { generateId } from '../utils/id';
 import { EngineError, ErrorCode } from '../../errors';

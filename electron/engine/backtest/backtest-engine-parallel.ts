@@ -95,6 +95,7 @@ if (!isMainThread && parentPort) {
   } catch (error) {
     parentPort.postMessage({ 
       jobId, 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       result: { success: false, result: null as any },
       error: error instanceof Error ? error.message : String(error)
     } as WorkerResponse);
@@ -110,6 +111,7 @@ class BacktestEngineCore {
       return { 
         success: false, 
         result: this.emptyResult(config, i18n.t('backtestEngineParallel.k1'))
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any;
     }
 
@@ -565,6 +567,7 @@ export class ParallelBacktestEngine {
         worker.terminate();
         resolve({ 
           success: false, 
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           result: { reason: i18n.t('backtestEngineParallel.k5') } as any
         });
       }, 60000); // 60 timeout
@@ -579,6 +582,7 @@ export class ParallelBacktestEngine {
         clearTimeout(timeout);
         resolve({ 
           success: false, 
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           result: { reason: error.message } as any
         });
         worker.terminate();

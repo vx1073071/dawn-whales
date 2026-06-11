@@ -23,6 +23,7 @@ export interface DataSnapshot {
   timestamp: string;
   rowCount: number;
   hash: string; // content hash for change detection
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata: Record<string, any>;
   parentId?: string; // previous snapshot ID
 }
@@ -178,6 +179,7 @@ export class DataVersionController {
   private autoSnapshotTimer: ReturnType<typeof setInterval> | null = null;
 
   /** Registry of auto-snapshot table sources. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private autoSnapshotSources: Map<string, () => any[]> = new Map();
 
   // -------------------------------------------------------------------------
@@ -229,6 +231,7 @@ export class DataVersionController {
   createSnapshot(
     table: string,
     data: unknown[],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     metadata?: Record<string, any>,
   ): DataSnapshot {
     if (!table || table.trim().length === 0) {
@@ -299,6 +302,7 @@ export class DataVersionController {
    * Restore the data captured in a given snapshot.
    * Returns a *copy* of the stored rows.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   restoreSnapshot(snapshotId: string): any[] {
     const stored = this.snapshots.get(snapshotId);
     if (!stored) {
@@ -773,6 +777,7 @@ export class DataVersionController {
    */
   registerAutoSnapshotSource(
     table: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dataProvider: () => any[],
   ): void {
     this.autoSnapshotSources.set(table, dataProvider);

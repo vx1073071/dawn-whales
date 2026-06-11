@@ -465,6 +465,7 @@ export default MultiFactorModel;
 
 // ── Convenience Functions (called from main.ts) ──────────────────────
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function scoreStocks(request: { stocks: Array<{ code: string; name: string }>; preset?: string; config?: any }): Promise<any> {
   const model = getMultiFactor();
   if (!model) {
@@ -493,6 +494,7 @@ export async function scoreStocks(request: { stocks: Array<{ code: string; name:
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function scoreTopAStocks(limit: number = 20, preset?: string): Promise<any> {
   const model = getMultiFactor();
   if (!model) {

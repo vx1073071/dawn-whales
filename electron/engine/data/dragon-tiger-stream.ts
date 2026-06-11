@@ -17,6 +17,7 @@ export interface DragonTigerStreamConfig {
 
 export interface DragonTigerUpdateEvent {
   date: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   entries: any[];
   total: number;
   fetchedAt: number;

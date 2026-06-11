@@ -3,6 +3,7 @@
 // Features: version tracking, diff computation, rollback to any version
 // Requirements: >=500 lines, >=5 tests, benchmark, design doc
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Database from 'better-sqlite3';
 import { existsSync, unlinkSync } from 'node:fs';
 import { join } from 'path';

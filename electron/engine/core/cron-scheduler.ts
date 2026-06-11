@@ -142,6 +142,7 @@ export class CronScheduler {
   }
 
   /** Force-run a task immediately (manual trigger) */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async trigger(taskId: string): Promise<{ success: boolean; error?: string; result?: any }> {
     const task = this.tasks.get(taskId);
     if (!task) return { success: false, error: 'Task not found' };
@@ -221,6 +222,7 @@ export class CronScheduler {
     this.timers.set(task.id, timer);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private async executeTask(task: CronTask): Promise<{ success: boolean; error?: string; result?: any }> {
     task.status = 'running';
     task.lastRun = Date.now();

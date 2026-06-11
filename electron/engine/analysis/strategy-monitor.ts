@@ -243,6 +243,7 @@ export class StrategyMonitor {
       s.status === 'LIVE' || s.status === 'PAPER_TESTING'
     );
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const lifecycleSummary: Record<StrategyStatus, number> = {} as any;
     for (const s of strategies) {
       lifecycleSummary[s.status] = (lifecycleSummary[s.status] ?? 0) + 1;

@@ -229,6 +229,7 @@ export class ExecutionAnalyticsEngine {
       gradeDist[e.scoreGrade] = (gradeDist[e.scoreGrade] ?? 0) + 1;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const byAlgoType: ExecutionAnalyticsReport['byAlgoType'] = {} as any;
     for (const e of executions) {
       const existing = byAlgoType[e.algoType] ?? { n: 0, avgSlippage: 0, avgScore: 0 };
@@ -307,6 +308,7 @@ export class ExecutionAnalyticsEngine {
       periodEnd: now.toISOString().slice(0, 10),
       nExecutions: 0, totalNotional: 0, avgSlippage: 0, avgMarketImpact: 0, avgQualityScore: 0,
       gradeDistribution: {},
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       byAlgoType: {} as any,
       byVenue: {},
       worstExecutions: [],

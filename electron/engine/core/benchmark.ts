@@ -15,6 +15,7 @@ interface BenchResult {
 
 export async function runBenchmarks(): Promise<BenchResult[]> {
   const results: BenchResult[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const engine = new BacktestEngine(null as any); // Engine uses klines inline, no DB needed
 
   const sizes = [50, 100, 200, 500, 1000, 2000, 5000];
@@ -60,6 +61,7 @@ export async function runBenchmarks(): Promise<BenchResult[]> {
 
 export async function runEnhancerBenchmarks(): Promise<BenchResult[]> {
   const results: BenchResult[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const engine = new BacktestEngine(null as any);
   const enhancer = new BacktestEnhancer(engine);
   const klines = generateBenchKlines(500);
@@ -113,7 +115,9 @@ export async function runEnhancerBenchmarks(): Promise<BenchResult[]> {
   return results;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function generateBenchKlines(count: number): any[] {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const klines: any[] = [];
   let price = 100;
   const now = Math.floor(Date.now() / 1000);

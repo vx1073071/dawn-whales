@@ -29,6 +29,7 @@ export interface CacheConfig {
   evictionPolicy: 'lru' | 'ttl' | 'random';
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class MarketDataCacheManager<T = any> extends EventEmitter {
   private config: Required<CacheConfig>;
   private cache: Map<string, CacheEntry<T>> = new Map();
@@ -287,6 +288,7 @@ export class MarketDataCacheManager<T = any> extends EventEmitter {
 // Singleton
 let cacheInstance: MarketDataCacheManager | null = null;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getMarketDataCacheManager<T = any>(
   config?: Partial<CacheConfig>
 ): MarketDataCacheManager<T> {

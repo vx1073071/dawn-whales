@@ -44,6 +44,7 @@ export interface ComplianceContext {
   endDate: number;
   userId?: string;
   resource?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
 }
 
@@ -51,6 +52,7 @@ export interface ComplianceCheckResult {
   ruleId: string;
   status: ComplianceStatus;
   message: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   details?: Record<string, any>;
   recommendations?: string[];
 }

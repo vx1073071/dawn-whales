@@ -21,6 +21,7 @@ export interface QualityAlert {
   severity: 'low' | 'medium' | 'high' | 'critical';
   message: string;
   metrics: DataQualityMetrics;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   details?: Record<string, any>;
 }
 

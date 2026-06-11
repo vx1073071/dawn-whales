@@ -501,6 +501,7 @@ export class DynamicSizer {
     log.info(`[DynamicSizer] Recorded trade: ${trade.strategyId}/${trade.symbol}, P&L: ¥${pnl.toFixed(2)} (${(pnlPct * 100).toFixed(2)}%)`);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getTradeHistory(strategyId?: string): Array<any> {
     if (strategyId) {
       return this.tradeHistory.filter((t) => t.strategyId === strategyId);

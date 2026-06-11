@@ -407,4 +407,5 @@ export function getRateLimiter(config?: Partial<RateLimitConfig>): RateLimiterMa
 export default RateLimiterManager;
 
 // Stub
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getRateLimiterManager(...args: unknown[]): any { log.warn("[getRateLimiterManager] Stub"); return undefined; }

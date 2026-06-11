@@ -13,6 +13,7 @@ export interface ErrorInfo {
   category: ErrorCategory;
   severity: ErrorSeverity;
   message: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   details?: Record<string, any>;
   timestamp: number;
   stack?: string;

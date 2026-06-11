@@ -42,6 +42,7 @@ export interface Signal {
   price: number;
   timestamp: number;
   confidence: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
 }
 

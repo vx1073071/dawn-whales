@@ -67,6 +67,7 @@ export class BacktestEnhancer {
   // ── Multi-Period Comparison ───────────────────────────────────────
 
   async multiPeriodBacktest(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     klines: any[],
     strategyConfig: unknown,
     periods: Array<{ label: string; startIdx: number; endIdx: number }>
@@ -101,6 +102,7 @@ export class BacktestEnhancer {
   // ── Parameter Sweep (Grid Search) ─────────────────────────────────
 
   async parameterSweep(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     klines: any[],
     baseConfig: unknown,
     paramRanges: Record<string, { min: number; max: number; step: number }>,
@@ -146,6 +148,7 @@ export class BacktestEnhancer {
   // ── Walk-Forward Analysis ─────────────────────────────────────────
 
   async walkForwardAnalysis(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     klines: any[],
     baseConfig: unknown,
     paramRanges: Record<string, { min: number; max: number; step: number }>,

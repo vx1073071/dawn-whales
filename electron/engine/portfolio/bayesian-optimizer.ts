@@ -22,6 +22,7 @@ export interface Parameter {
   min: number;
   max: number;
   type: 'int' | 'float' | 'categorical';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   values?: any[];
 }
 

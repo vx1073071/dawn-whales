@@ -172,10 +172,14 @@ export async function calculatePortfolioRisk(
 
         // Find high correlation pairs
         for (const entry of corrResult.entries) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if (Math.abs((entry as any).corr) > 0.7) {
             highCorrPairs.push({
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               codeA: (entry as any).idA,
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               codeB: (entry as any).idB,
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               corr: (entry as any).corr,
             });
           }

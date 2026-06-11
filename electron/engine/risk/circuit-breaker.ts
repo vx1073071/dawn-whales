@@ -270,6 +270,7 @@ export class CircuitBreaker extends EventEmitter {
     return Math.min(backoff, this.config.maxBackoff ?? 300000);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private getFromCache(endpoint: string): any {
     // Placeholder for cache implementation
     // In production, use Redis or similar

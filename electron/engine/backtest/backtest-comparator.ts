@@ -1,4 +1,4 @@
-﻿// ── Q13: Backtest Comparator ─────────────────────────────────────────────────
+// ── Q13: Backtest Comparator ─────────────────────────────────────────────────
 // Multi-strategy backtest comparison with radar chart data
 // IPC: strategy:compare
 
@@ -90,6 +90,7 @@ function getMetric(r: BacktestResult, key: string): number {
   switch (key) {
     case 'maxDrawdown': return r.maxDrawdown; // keep negative
     case 'beta':         return Math.abs(r.beta); // use absolute
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     default:             return (r as any)[key] ?? 0;
   }
 }

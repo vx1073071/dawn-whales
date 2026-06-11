@@ -39,6 +39,7 @@ export interface CleaningStage {
 export interface CleaningContext {
   symbol: string;
   previousClean?: CleanDataPoint[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata: Record<string, any>;
 }
 

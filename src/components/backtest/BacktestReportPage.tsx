@@ -304,8 +304,7 @@ export default function BacktestReportPage() {
             <div>
               // @ts-ignore — R89 type fix
               <label className="text-sm text-gray-400 block mb-1">{t("components.strategy")}</label>
-              // @ts-ignore — R89 type fix
-              <div className="text-white">{strategies.find((s: any) => s.id === selectedId)?.name}</div>
+              <div className="text-white">{(strategies as any[]).find((s: any) => s.id === selectedId)?.name ?? ''}</div>
             </div>
             <div>
               <label className="text-sm text-gray-400 block mb-1">{t(i18n.t('BacktestReportPage.k12'))}</label>
@@ -552,13 +551,12 @@ export default function BacktestReportPage() {
 // @ts-ignore — R89 type fix
 
               {/* Param Scan */}
-              // @ts-ignore — R89 type fix
-              // @ts-ignore — R89 type fix
-              <ParamScanPanel result as any={paramScanResult} loading={paramScanLoading} /> as any
-// @ts-ignore — R89 type fix
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              <ParamScanPanel result={((paramScanResult as any) ?? false) as any} loading={paramScanLoading} />
 
               {/* Walk-Forward */}
-              <WalkForwardPanel result as any={wfaResult} loading={wfaLoading} /> as any
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              <WalkForwardPanel result={((wfaResult as any) ?? false) as any} loading={wfaLoading} />
             </div>
         }
         </>

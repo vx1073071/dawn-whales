@@ -84,6 +84,7 @@ export interface TimeframeSignal {
   strength: number; // 0-100
   timestamp: number;
   strategy?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
 }
 

@@ -228,6 +228,7 @@ export class SmartPickerIntegration {
 
   private assessConfidence(stock: BlendedScore): 'HIGH' | 'MEDIUM' | 'LOW' {
     const score = stock.blendedScore;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const reasonsCount = stock.smartPickerReasons.length + Object.keys(stock.multiFactorFactors).filter(k => (stock.multiFactorFactors as any)[k] >= 65).length;
     const risksCount = stock.risks.length;
 

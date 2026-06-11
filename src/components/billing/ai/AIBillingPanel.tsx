@@ -16,9 +16,6 @@ import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EngineError } from '../../../../electron/engine/core/engine-error';
 void EngineError; // [EngineError:AI] structured error tracking
-const billingEn: any = require('../../i18n/locales/billing-en.json');
-
-type TBilling = typeof billingEn;
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -85,7 +82,7 @@ const TierCard: React.FC<{
 }> = ({ tier, selected, freeRemaining, onSelect, t }) => {
   const isFree = freeRemaining > 0;
   const displayPrice = isFree ? 0 : tier.price;
-  const tierName = t(String(tier.id) as unknown as keyof TBilling) as string;
+  const tierName = t(String(tier.id) as any) as string;
 
   return (
     <div className={`billing-tier-card ${selected ? 'selected' : ''} ${tier.recommended ? 'recommended' : ''}`}
@@ -265,7 +262,7 @@ const AIBillingPanel: React.FC<AIBillingPanelProps> = ({
         <h3 className="billing-section-title">{t('costSummary')}</h3>
         <div className="billing-cost-breakdown">
           <div className="billing-cost-row">
-            <span>{t('base', { tier: t(String(selectedTier.id) as unknown as keyof TBilling) as string })}</span>
+            <span>{t('base', { tier: t(String(selectedTier.id) as any) as string })}</span>
             <span>{billing.freeRemaining > 0 ? t('free') : `$${selectedTier.price.toFixed(1)}`}</span>
           </div>
           <div className="billing-cost-row">

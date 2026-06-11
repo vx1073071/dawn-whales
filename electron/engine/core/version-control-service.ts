@@ -2,6 +2,7 @@
 // Track and manage data changes with version history, diff, and rollback
 // Supports: version tracking, change detection, rollback, audit trail
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getSnapshotService, type DataSnapshot } from '../analysis/snapshot-service';
 import log from 'electron-log';
 import { EngineError } from './engine-error';

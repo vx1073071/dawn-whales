@@ -247,6 +247,7 @@ export class StrategyEngine {
 
   // ── Backtest ──────────────────────────────────────────────────────
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async runBacktest(strategyId: string, klines: any[]): Promise<any> {
     const strategy = this.strategies.get(strategyId);
     if (!strategy) throw new EngineError("`Strategy not found: ${strategyId}`", { code: ErrorCode.ENGINE_RATE_LIMIT });
@@ -310,6 +311,7 @@ export class StrategyEngine {
 
   // ── Real-time Quote Processing ────────────────────────────────────
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onQuoteUpdate(quotes: any[]) {
     for (const [id, strategy] of this.strategies) {
       if (strategy.status !== 'live') continue;

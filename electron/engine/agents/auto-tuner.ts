@@ -30,6 +30,7 @@ export interface TuningResult {
 
 // ── Fitness Function ─────────────────────────────────────────────────────────
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function fitness(params: Record<string, number>, strategyType: string, klines: any[]): Promise<number> {
   try {
     const result = await runBacktest({ strategy: { type: strategyType, params }, klines });
@@ -97,6 +98,7 @@ function tournament(population: { params: Record<string, number>; score: number 
 export async function geneticTune(
   strategyType: string,
   ranges: ParamRange[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   klines: any[],
   options: { populationSize?: number; generations?: number; eliteRatio?: number } = {}
 ): Promise<TuningResult> {
@@ -229,6 +231,7 @@ function sampleNextPoint(xs: DataPoint[], ranges: ParamRange[], nSamples = 500):
 export async function bayesianTune(
   strategyType: string,
   ranges: ParamRange[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   klines: any[],
   options: { iterations?: number; initialSamples?: number } = {}
 ): Promise<TuningResult> {
@@ -286,6 +289,7 @@ export async function bayesianTune(
 export async function autoTune(
   strategyType: string,
   ranges: ParamRange[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   klines: any[],
   options?: { method?: 'ga' | 'bayesian' | 'both'; populationSize?: number; generations?: number; iterations?: number }
 ): Promise<TuningResult | { ga: TuningResult; bayesian: TuningResult; best: TuningResult }> {

@@ -166,6 +166,7 @@ export class RLTradingAgent {
    * Train the Q-learning agent on historical kline data.
    * Each episode walks through the full kline series, simulating trades.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   train(klines: any[], config: RLConfig, episodes: number = 200): TrainingResult {
     log.info(`[RLTradingAgent] Starting training: ${klines.length} bars, ${episodes} episodes`);
     const startTime = Date.now();
@@ -331,6 +332,7 @@ export class RLTradingAgent {
    * Each dimension is binned into buckets to keep the state space manageable.
    * Accepts both MarketState and alternative state formats for backward compatibility.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   discretizeState(state: MarketState | any): string {
     const bins = DEFAULT_DISCRETIZATION;
 
@@ -768,6 +770,7 @@ export class RLTradingAgent {
    * Build a sequence of MarketState objects from raw kline data.
    * Computes technical indicators (RSI, MACD histogram, Bollinger position).
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildStateSequence(klines: any[]): MarketState[] {
     const states: MarketState[] = [];
     const closes: number[] = [];

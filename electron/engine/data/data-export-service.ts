@@ -2,6 +2,7 @@
 // Export any JVS module data as JSON, CSV, or Excel
 // IPC: data:export
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from 'fs';
 import path from 'path';
 import log from 'electron-log';

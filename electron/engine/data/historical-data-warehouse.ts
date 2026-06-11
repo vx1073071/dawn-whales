@@ -309,6 +309,7 @@ export class HistoricalDataWarehouse {
       }
 
       const stmt = this.warmDB.prepare(sql);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const rows = stmt.all(...params) as any[];
 
       return rows.map(row => ({
@@ -408,10 +409,12 @@ export class HistoricalDataWarehouse {
     if (this.warmDB) {
       try {
         const countStmt = this.warmDB.prepare('SELECT COUNT(*) as count FROM historical_data');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const result = countStmt.get() as any;
         warmDataPoints = result.count;
 
         const oldestStmt = this.warmDB.prepare('SELECT MIN(timestamp) as oldest FROM historical_data');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const oldestResult = oldestStmt.get() as any;
         oldestWarmData = oldestResult.oldest;
       } catch (err) {

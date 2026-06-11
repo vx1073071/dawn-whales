@@ -166,6 +166,7 @@ export async function getStockOverview(code: string): Promise<StockOverview> {
   try {
     const flowResult = await getStockCapitalFlowRank('mainNetInflow', 'desc', 500);
     if (flowResult.success) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const stockFlow = flowResult.items.find((item: unknown) => item.code === code) as any;
       if (stockFlow) {
         result.name = result.name || stockFlow.name;
@@ -186,6 +187,7 @@ export async function getStockOverview(code: string): Promise<StockOverview> {
   try {
     const dtResult = await getDragonTigerList();
     if (dtResult.success) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const dtEntry = dtResult.entries.find((e: unknown) => e.code === code) as any;
       if (dtEntry) {
         result.name = result.name || dtEntry.name;
@@ -204,6 +206,7 @@ export async function getStockOverview(code: string): Promise<StockOverview> {
   try {
     const fundResult = await getStockFundOwnership(code);
     if (fundResult.success) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const items = fundResult.items as any[];
       result.fundHoldings = {
         fundCount: items.length,
@@ -282,6 +285,7 @@ export async function getMarketOverview(): Promise<MarketOverview> {
       for (const ind of dashboard.indicators) {
         if (ind.latest) {
           const key = ind.indicator.toLowerCase() as keyof typeof result.macro;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (result.macro as any)[key] = ind.latest.value;
         }
       }

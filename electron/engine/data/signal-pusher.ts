@@ -10,6 +10,7 @@ export interface StrategySignal {
   signal: 'BUY' | 'SELL' | 'HOLD';
   strength: number; // 0-100
   strategy: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
 }
 

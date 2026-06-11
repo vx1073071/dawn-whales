@@ -69,6 +69,7 @@ function calculateAverage(values: number[]): number {
 
 export async function compareSectorStocks(
   stocks: { code: string; name: string; sector: string }[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   financialData: Map<string, any>
 ): Promise<SectorComparisonResult> {
   if (!stocks || stocks.length === 0) {
@@ -198,6 +199,7 @@ export async function compareSectorStocks(
 
 export async function compareMultipleSectors(
   sectors: { sector: string; stocks: { code: string; name: string }[] }[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   financialData: Map<string, any>
 ): Promise<SectorComparisonResult[]> {
   log.info(`[SectorComparison] Comparing ${sectors.length} sectors`);

@@ -103,6 +103,7 @@ function toMarkdownTable(headers: string[], rows: unknown[][], title?: string): 
 
 // ── DB Query Helper ────────────────────────────────────────────────────────
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getDb(): any {
   // Access shared db via lazy require to avoid circular deps
   try {

@@ -427,7 +427,7 @@ export default function AutomationPanel({ className }: { className?: string }) {
 
   const handleStartStrategy = useCallback((id: string) => {
     const api = getApi();
-    api?.strategy?.startLive?.(id).then((res: unknown) => {
+    api?.strategy?.startLive?.(id).then((res: Record<string, any>) => {
       if (res?.success) {
         setStrategies(prev => prev.map(s =>
           s.id === id ? { ...s, status: 'running' as const } : s
@@ -440,7 +440,7 @@ export default function AutomationPanel({ className }: { className?: string }) {
 
   const handleStopStrategy = useCallback((id: string) => {
     const api = getApi();
-    api?.strategy?.stopLive?.(id).then((res: unknown) => {
+    api?.strategy?.stopLive?.(id).then((res: Record<string, any>) => {
       if (res?.success) {
         setStrategies(prev => prev.map(s =>
           s.id === id ? { ...s, status: 'stopped' as const } : s

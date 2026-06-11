@@ -194,9 +194,11 @@ class BackfillManager {
     symbol: string,
     config: BackfillConfig,
     onProgress: (progress: number) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any[]> {
     // Simulate download with progress
     const totalSteps = 10;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const records: any[] = [];
 
     for (let i = 0; i < totalSteps; i++) {
@@ -221,6 +223,7 @@ class BackfillManager {
     return records;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private detectGaps(records: any[], config: BackfillConfig): DataGap[] {
     // Simplified gap detection
     const gaps: DataGap[] = [];
@@ -351,6 +354,7 @@ export interface GapAnalysis {
 
 export function analyzeDataGaps(
   symbol: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   records: any[],
   startDate: string,
   endDate: string
@@ -385,6 +389,7 @@ export async function incrementalBackfill(
   symbol: string,
   startDate: string,
   endDate: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   existingRecords: any[]
 ): Promise<BackfillResult> {
   // Detect gaps in existing records

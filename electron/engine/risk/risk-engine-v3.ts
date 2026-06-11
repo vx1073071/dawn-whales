@@ -225,6 +225,7 @@ export class RiskEngineV3 extends EventEmitter {
   private maxHistorySize: number = 1000;
   private maxAlertsSize: number = 100;
   private maxRebalanceSize: number = 50;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private brokerAdapters: any[] = [];
   private baseEngine: unknown = null;
 
@@ -239,6 +240,7 @@ export class RiskEngineV3 extends EventEmitter {
   private static readonly CIRCUIT_BREAKER_CACHE_TTL = 60_000; // 60s
   private static readonly EXPOSURE_CACHE_TTL = 30_000;     // 30s
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(brokers?: any[], baseEngine?: unknown) {
     super();
     this.brokerAdapters = brokers || [];
@@ -701,6 +703,7 @@ export class RiskEngineV3 extends EventEmitter {
     log.info('[RiskEngineV3] All caches invalidated');
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getBaseEngine(): any {
     return this.baseEngine;
   }

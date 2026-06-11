@@ -15,6 +15,7 @@ export interface FeatureDefinition {
   category: 'technical' | 'price_pattern' | 'volume' | 'volatility' | 'capital_flow' | 'macro';
   description: string;
   computeFunction: string;  // Function name
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parameters: Record<string, any>;
   enabled: boolean;
 }
@@ -302,6 +303,7 @@ export class FeatureStore {
   }
 
   private loadFeatureDefinitions(): void {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const definitions = this.db.prepare('SELECT * FROM feature_definitions').all() as any[];
     
     if (definitions.length === 0) {
@@ -379,6 +381,7 @@ export class FeatureStore {
   /**
    * Compute all features for a symbol
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   computeFeatures(symbol: string, klines: any[]): FeatureSet {
     const timestamp = Date.now();
     const features: Record<string, number> = {};
@@ -562,6 +565,7 @@ export class FeatureStore {
       LIMIT ?
     `);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rows = stmt.all(symbol, ...featureNames, limit) as any[];
     return rows.map(row => ({
       symbol: row.symbol,

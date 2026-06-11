@@ -108,6 +108,7 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
 
         if (stockFlow) {
           dimensions.capitalFlow.available = true;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const mainNet = (stockFlow as any).mainNetInflow || 0;
 
           if (mainNet > 10000) {
@@ -136,6 +137,7 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
         rawData.fundHoldings = ownershipResult;
         dimensions.fundOwnership.available = true;
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const items = ownershipResult.items as any[];
         const totalFunds = items.length;
         const increaseCount = items.filter(i => i.sharesChange > 0).length;
@@ -168,6 +170,7 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
         dimensions.dragonTiger.available = true;
 
         if (dtEntry) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const netBuy = (dtEntry as any).netBuyAmount || 0;
 
           if (netBuy > 10000) {
@@ -244,6 +247,7 @@ export async function diagnoseStock(request: StockDiagnosisRequest): Promise<Sto
   let weightedScore = 0;
 
   for (const [key, dim] of availableDimensions) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const weight = (WEIGHTS as any)[key] || 0.2;
     weightedScore += dim.score * weight;
     totalWeight += weight;

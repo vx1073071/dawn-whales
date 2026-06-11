@@ -197,6 +197,7 @@ function calcSpreadMetrics(ticks: TickData[]): SpreadMetrics {
 
   // Roll model realized spread
   const returns = midPrices.slice(1).map((p, i) => p - midPrices[i]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const serialCov = returns.length > 1 ? stdDev(returns.slice(0, -1) as any) : 0;
 
   const rollSpread = 2 * Math.sqrt(Math.max(0, -serialCov));

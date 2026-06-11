@@ -85,4 +85,10 @@ export function preloadLocale(lang: SupportedLang) {
   loadLocale(lang);
 }
 
+// S-23: Narrow i18n.t() return type from TFunctionResult (contains unknown) to string.
+// This prevents TS2322 errors in every component using i18n.t() in JSX children.
+// Original: i18n.t() → TFunctionResult = string | TemplateStringsArray | ...
+const _i18nT = i18n.t.bind(i18n) as (key: string | string[], options?: Record<string, unknown>) => string;
+(i18n as any).t = _i18nT;
+
 export default i18n;

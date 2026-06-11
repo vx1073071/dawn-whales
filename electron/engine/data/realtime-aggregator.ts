@@ -1,6 +1,7 @@
 // JVS-115: 
 // data source，APIinterface/API
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EventEmitter } from 'events';
 import log from 'electron-log';
 import { getWebSocketManager } from '../../websocket/websocket-manager';

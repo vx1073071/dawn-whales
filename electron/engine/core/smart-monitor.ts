@@ -20,6 +20,7 @@ export interface SmartAlert {
   category: string;       // e.g. 'price_anomaly', 'drawdown', 'connection'
   title: string;
   message: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: Record<string, any>;
   status: AlertStatus;
   createdAt: string;
@@ -216,6 +217,7 @@ export class SmartMonitor extends EventEmitter {
     category: string;
     title: string;
     message: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data?: Record<string, any>;
     relatedEntityId?: string;
     ttl?: number;

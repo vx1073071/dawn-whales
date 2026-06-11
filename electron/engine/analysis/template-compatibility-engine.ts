@@ -265,7 +265,9 @@ export class TemplateCompatibilityEngine {
       return { templateId, market, instrument, compatible: false, reason: i18n.t('templateCompatibilityEngine.k87') };
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const marketOk = tmpl.compatibleMarkets.includes(market as any);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const instOk = tmpl.compatibleInstruments.includes(instrument as any);
 
     if (!marketOk) {
@@ -281,6 +283,7 @@ export class TemplateCompatibilityEngine {
   /** Get all compatible templates */
   getCompatibleTemplates(market: string, instrument: string): TemplateDefinition[] {
     return [...this.templates.values()].filter(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (t) => t.compatibleMarkets.includes(market as any) && t.compatibleInstruments.includes(instrument as any),
     );
   }

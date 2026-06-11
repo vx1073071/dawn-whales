@@ -279,6 +279,7 @@ export class MultiAssetConnector {
     }
 
     // Asset class breakdown
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const assetClassBreakdown: Record<AssetClass, number> = {} as any;
     for (const pos of positions) {
       assetClassBreakdown[pos.assetClass] = (assetClassBreakdown[pos.assetClass] ?? 0) + pos.marketValueHKD;
@@ -293,6 +294,7 @@ export class MultiAssetConnector {
     }
 
     // Leverage by class
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const leverageByClass: Record<AssetClass, number> = {} as any;
     for (const pos of positions) {
       const notional = pos.notionalHKD ?? pos.marketValueHKD;

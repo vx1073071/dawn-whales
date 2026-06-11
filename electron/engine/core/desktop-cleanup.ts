@@ -90,18 +90,22 @@ export class APIClientBridge {
   }
 
   async aiGateway(agent: string, prompt: string): Promise<{ content: string; model: string; cost: number }> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return this.request('POST', '/api/ai/gateway', { agent, prompt }) as Promise<any>;
   }
 
   async getBillingBalance(): Promise<{ balance: number; frozenBalance: number; freeCallsLeft: number }> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return this.request('GET', '/api/billing/balance') as Promise<any>;
   }
 
   async getWalletBalance(): Promise<{ balance: number; availableBalance: number }> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return this.request('GET', '/api/wallet/balance') as Promise<any>;
   }
 
   async validateLicense(code: string, deviceId: string): Promise<{ valid: boolean; jwt?: string }> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return this.request('POST', '/api/license/validate', { code, deviceId }) as Promise<any>;
   }
 }

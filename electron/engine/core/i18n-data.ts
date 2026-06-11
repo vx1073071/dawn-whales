@@ -414,6 +414,7 @@ export function setupI18nDataIPC(): void {
     try {
       const translation = translateField(
         field,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         category as any,
         lang as SupportedLanguage
       );
@@ -427,6 +428,7 @@ export function setupI18nDataIPC(): void {
     try {
       const translations = translateFields(
         fields,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         category as any,
         lang as SupportedLanguage
       );
@@ -438,6 +440,7 @@ export function setupI18nDataIPC(): void {
 
   ipcMain.handle('i18n:get-all-translations', async (_event, category: string) => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const translations = getAllTranslations(category as any);
       return { success: true, translations };
     } catch (err: unknown) {

@@ -22,6 +22,7 @@ export interface DataSnapshot {
 
 export interface SnapshotMetadata {
   source: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parameters?: Record<string, any>;
   tags?: string[];
   description?: string;
@@ -40,6 +41,7 @@ export interface SnapshotQuery {
 export interface SnapshotComparison {
   snapshot1: DataSnapshot;
   snapshot2: DataSnapshot;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   differences: Record<string, any>;
   timeDelta: number;
 }
@@ -60,6 +62,7 @@ export class DataSnapshotService {
     const snapshot: DataSnapshot = {
       id: this.generateId(),
       timestamp: Date.now(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       type: type as any,
       category,
       data,
@@ -275,7 +278,9 @@ export class DataSnapshotService {
     return `snap_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private calculateDifferences(data1: unknown, data2: unknown): Record<string, any> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const diffs: Record<string, any> = {};
 
     const allKeys = new Set([...Object.keys(data1), ...Object.keys(data2)]);

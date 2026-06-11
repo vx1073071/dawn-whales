@@ -86,6 +86,7 @@ export class DataCompressionTransport extends EventEmitter {
   /**
    * Generate delta update between old and new data
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   generateDelta<T extends Record<string, any>>(
     channel: string,
     newData: T
@@ -134,6 +135,7 @@ export class DataCompressionTransport extends EventEmitter {
   /**
    * Apply delta update to reconstruct full data
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   applyDelta<T extends Record<string, any>>(
     base: T,
     delta: DeltaUpdate<T>

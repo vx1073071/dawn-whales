@@ -177,6 +177,7 @@ export class FactorRiskModel {
   } {
     // Factor variance (simplified: each factor contributes based on exposure²)
     let systematicRisk = 0;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const factorRiskContribution: Record<FactorName, number> = {} as any;
     const factorCovariance: FactorRiskReport['factorCovariance'] = [];
 

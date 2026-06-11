@@ -12,6 +12,7 @@ export interface SignalPayload {
   strength: number; // 0-100
   price?: number;
   timestamp: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
 }
 

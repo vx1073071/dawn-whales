@@ -297,6 +297,7 @@ export class StrategyRunner extends TypedEventEmitter<StrategyRunnerEvents> {
       strategyId,
       mode,
       symbol: strategy.symbol,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       brokerId: (strategy as any).strategy?.brokerId,
       startedAt: Date.now(),
       lastEvaluationAt: null,
@@ -628,6 +629,7 @@ export class StrategyRunner extends TypedEventEmitter<StrategyRunnerEvents> {
       symbol: strategy.symbol,
       mode,
       signal: lastSignal.type as 'BUY' | 'SELL',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       signalReason: `${lastSignal.type} ${strategy.symbol} @ ${price} — ${(strategy as any).lastSignal?.reason ?? 'signal'}`,
       price,
       quantity,
@@ -835,6 +837,7 @@ export class StrategyRunner extends TypedEventEmitter<StrategyRunnerEvents> {
     price: number,
     quantity: number,
   ): TradeSignal {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const brokerId = (strategy as any).strategy?.brokerId as string | undefined;
 
     return {
@@ -845,7 +848,9 @@ export class StrategyRunner extends TypedEventEmitter<StrategyRunnerEvents> {
       quantity,
       price,
       orderType: 'MARKET' as const,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       stopLoss: (strategy as any).strategy?.stopLoss,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       takeProfit: (strategy as any).strategy?.takeProfit,
       reason: `Strategy signal: ${lastSignal.type}`,
       confidence: DEFAULT_SIGNAL_CONFIDENCE,

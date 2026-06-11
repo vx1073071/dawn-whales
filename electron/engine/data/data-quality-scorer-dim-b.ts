@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Built-in dimension scorers: Timeliness, Consistency, Uniqueness.
  * @module engine/data-quality/data-quality-scorer-dim-b
  */
@@ -11,6 +11,7 @@ import { intervalToMs, extractTimestamp, clamp } from './data-quality-scorer-uti
 export function scoreTimeliness(data: unknown[], context: QualityContext): DimensionResult {
 
   const issues: QualityIssue[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const metadata: Record<string, any> = {};
   const total = data.length;
   const now = Date.now();
@@ -133,6 +134,7 @@ export function scoreTimeliness(data: unknown[], context: QualityContext): Dimen
  */
 export function scoreConsistency(data: unknown[], _context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const metadata: Record<string, any> = {};
   const total = data.length;
 
@@ -264,6 +266,7 @@ export function scoreConsistency(data: unknown[], _context: QualityContext): Dim
  */
 export function scoreUniqueness(data: unknown[], _context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const metadata: Record<string, any> = {};
   const total = data.length;
 

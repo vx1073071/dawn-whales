@@ -2,6 +2,7 @@
 // J-44-03: PDF Report Generator with Email Integration
 // Generates PDF reports from Markdown content with charts, templates, and batch support.
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import log from 'electron-log';
 import { EngineError, ErrorCode } from '../../errors';
 

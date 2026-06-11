@@ -24,12 +24,15 @@ export interface KlineData {
 export interface ChartOption {
   type: ChartType;
   title: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   xAxis?: { type: string; data?: any[]; axisLabel?: any };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   yAxis?: { type: string; min?: number; max?: number; axisLabel?: any };
   series: ChartSeries[];
   tooltip?: { trigger?: string; formatter?: string };
   legend?: { show: boolean; data?: string[] };
   grid?: { top: number; right: number; bottom: number; left: number };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dataZoom?: any[];
   toolbox?: unknown;
 }

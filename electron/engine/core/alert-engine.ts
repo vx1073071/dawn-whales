@@ -13,6 +13,7 @@ export interface AlertEvent {
   severity: 'info' | 'warning' | 'critical';
   message: string;
   timestamp: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: Record<string, any>;
 }
 

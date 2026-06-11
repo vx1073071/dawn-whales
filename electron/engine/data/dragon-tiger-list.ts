@@ -142,6 +142,7 @@ export async function getDragonTigerDetail(code: string, date: string): Promise<
   
   const cached = cache.get(cacheKey);
   if (cached && cached.expires > Date.now()) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return cached.data as any;
   }
 
@@ -180,6 +181,7 @@ export async function getDragonTigerDetail(code: string, date: string): Promise<
       sellSeats,
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cache.set(cacheKey, { data: result as any, expires: Date.now() + CACHE_TTL });
     log.info(`[DragonTiger] Detail fetched: ${code} on ${date}`);
 

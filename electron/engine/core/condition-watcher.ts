@@ -69,6 +69,7 @@ export interface ConditionAction {
   type: 'execute_strategy' | 'pause_strategy' | 'send_alert' | 'compound';
   strategyId?: string;
   brokerId?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params?: Record<string, any>;
   actions?: ConditionAction[]; // for compound
 }

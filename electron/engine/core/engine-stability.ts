@@ -179,6 +179,7 @@ export class StabilityTester {
       symbol: string;
       startDate?: string;
       endDate?: string;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       klines?: any[];
       strategy: unknown;
       runs: number;

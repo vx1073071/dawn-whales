@@ -89,11 +89,13 @@ export class SmartPickerService {
 
     try {
       // Step 1: Gather candidate stocks from multiple sources
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const candidates = new Map<string, { name: string; signals: string[]; scores: any }>();
 
       // Source 1: Capital flow top 100
       const cfResult = await getStockCapitalFlowRank('mainNetInflow', 'desc', 100);
       if (cfResult.success && cfResult.items) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         for (const item of cfResult.items as any[]) {
           const code = item.code;
           if (!candidates.has(code)) {
@@ -109,6 +111,7 @@ export class SmartPickerService {
       // Source 2: Dragon Tiger list
       const dtResult = await getDragonTigerList();
       if (dtResult.success && dtResult.entries) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         for (const item of dtResult.entries as any[]) {
           const code = item.code;
           if (!candidates.has(code)) {
@@ -125,6 +128,7 @@ export class SmartPickerService {
       try {
         const fundResult = await getFundIncreaseRank(50);
         if (Array.isArray(fundResult)) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           for (const item of fundResult as any[]) {
             const code = item.code;
             if (!candidates.has(code)) {

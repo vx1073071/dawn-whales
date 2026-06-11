@@ -303,11 +303,14 @@ export function searchTemplates(query: string): StrategyTemplate[] {
 
 export function instantiateTemplate(
   id: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   paramOverrides: Record<string, any> = {}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): { strategy: Partial<any>; error?: string } {
   const tmpl = getTemplate(id);
   if (!tmpl) return { strategy: {}, error: `Template ${id} not found` };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: Record<string, any> = {};
   for (const p of tmpl.parameters) {
     params[p.name] = paramOverrides[p.name] ?? p.default;

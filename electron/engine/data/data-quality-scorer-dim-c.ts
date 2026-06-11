@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Built-in dimension scorers: Validity, Uniformity.
  * @module engine/data-quality/data-quality-scorer-dim-c
  */
@@ -9,6 +9,7 @@ import { numField, clamp, extractTimestamp } from './data-quality-scorer-utils';
 // Built-in Dimension Scorers: Validity, Uniformity
 export function scoreValidity(data: unknown[], context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const metadata: Record<string, any> = {};
   const total = data.length;
 
@@ -205,6 +206,7 @@ export function scoreValidity(data: unknown[], context: QualityContext): Dimensi
  */
 export function scoreUniformity(data: unknown[], _context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const metadata: Record<string, any> = {};
   const total = data.length;
 

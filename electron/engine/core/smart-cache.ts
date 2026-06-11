@@ -265,6 +265,7 @@ class LRUCache<T> extends EventEmitter {
 // ── Smart Cache Manager ───────────────────────────────────────────────────
 
 class SmartCacheManager extends EventEmitter {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private caches = new Map<string, LRUCache<any>>();
   private defaultConfig: Partial<CacheConfig>;
 

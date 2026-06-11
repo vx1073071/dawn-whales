@@ -55,6 +55,7 @@ export class CapitalFlowMonitor {
   /**
    * Process capital flow data and generate alerts
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   process(items: any[]): CapitalFlowAlert[] {
     if (!this.config.enabled) return [];
 

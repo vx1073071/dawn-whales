@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EngineError, ErrorCode } from '../../errors';
 // ── J-73-01 R73 V19: 4Agent Real Data Connector ─────────────────────────
 // Connects 4Agent orchestration to real data sources

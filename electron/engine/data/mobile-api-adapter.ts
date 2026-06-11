@@ -13,6 +13,7 @@
  * - ≥ 10 tests, pass
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import log from 'electron-log';
 
 // ── Types ──────────────────────────────────────────────────────────────────

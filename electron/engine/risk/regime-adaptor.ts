@@ -307,8 +307,11 @@ export class RegimeAdaptor {
 
 import { EventEmitter } from 'events';
 import i18n from '../../../src/i18n';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (RegimeAdaptor as any).prototype.__proto__ = EventEmitter.prototype;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (RegimeAdaptor as any).prototype.emit = EventEmitter.prototype.emit;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (RegimeAdaptor as any).prototype.on = EventEmitter.prototype.on;
 
 // ── Singleton ────────────────────────────────────────────────────────────────

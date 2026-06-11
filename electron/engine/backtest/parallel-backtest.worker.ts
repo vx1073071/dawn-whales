@@ -58,6 +58,7 @@ function runBacktestSync(config: BacktestConfig): BacktestResult {
   }
 
   // ── Phase 3: Simulate trades ────────────────────────────────────────
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const trades: any[] = [];
   let inPosition = false;
   let entryPrice = 0;

@@ -13,6 +13,7 @@ export class RealtimeVisualizationService {
   private config: RealtimeVisualizationConfig;
   private isRunning: boolean = false;
   private updateTimer: NodeJS.Timeout | null = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private wsClients: Set<any> = new Set();
 
   constructor(config?: Partial<RealtimeVisualizationConfig>) {
@@ -70,6 +71,7 @@ export class RealtimeVisualizationService {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private async fetchRealtimeData(): Promise<any> {
     // v1.9.0: data fetching via real-data-orchestrator
     // For now, return mock data

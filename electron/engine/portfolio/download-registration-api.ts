@@ -152,6 +152,7 @@ export class DownloadRegistrationServer {
 
   checkUpdate(currentVersion: string, platform: Platform, channel?: Channel): UpdateCheckResult {
     const latest = this.getLatestVersion(channel);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (!latest) return { updateAvailable: false, currentVersion, latestVersion: null as any, downloadUrl: '', fileHash: '' };
 
     const updateAvailable = this.compareVersions(latest.version, currentVersion) > 0;

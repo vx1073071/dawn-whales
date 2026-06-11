@@ -54,6 +54,7 @@ export interface RiskAlert {
   description: string;
   value: number;
   threshold: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
 }
 

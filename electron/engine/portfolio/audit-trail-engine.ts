@@ -18,7 +18,7 @@ import log from 'electron-log';
 import { EngineError, ErrorCode } from '../../errors';
 
 // Node.js crypto — use require() to bypass vitest/jsdom Web Crypto API resolution
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-explicit-any
 const _crypto = typeof require !== 'undefined' ? require('crypto') : (globalThis as any).crypto;
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -40,6 +40,7 @@ export interface AuditLog {
   resource: string;
   resourceId: string;
   severity: AuditSeverity;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   details: Record<string, any>;
   previousHash: string;
   currentHash: string;
@@ -123,6 +124,7 @@ export class AuditTrailEngine {
     resource: string,
     resourceId: string,
     severity: AuditSeverity = 'INFO',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     details: Record<string, any> = {}
   ): AuditLog {
     if (!this.config.enabled) {
@@ -383,6 +385,7 @@ export class AuditTrailEngine {
  * info
    */
   getStats(): AuditStats {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const logsByAction: Record<AuditAction, number> = {} as any;
     for (const [action, logs] of this.logsByAction.entries()) {
       logsByAction[action] = logs.length;

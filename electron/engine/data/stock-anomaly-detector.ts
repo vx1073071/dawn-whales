@@ -145,6 +145,7 @@ export class StockAnomalyDetector {
     try {
       const rows = this.db.prepare(
         'SELECT * FROM stock_anomaly_alerts WHERE created_at > ? ORDER BY created_at DESC LIMIT ?'
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ).all(Date.now() - 24 * 60 * 60 * 1000, this.maxAlerts) as any[];
 
       this.alerts = rows.map((r: unknown) => ({
@@ -163,6 +164,7 @@ export class StockAnomalyDetector {
       }));
 
       // Load avg volumes
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const volRows = this.db.prepare('SELECT * FROM stock_avg_volumes').all() as any[];
       for (const r of volRows) {
         this.avgVolumes.set(r.code, r.avg_volume);

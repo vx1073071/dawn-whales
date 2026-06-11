@@ -33,6 +33,9 @@ export default [
       'electron/**/*.{ts,tsx,mts}',
       'tests/**/*.{ts,tsx,mts}',
     ],
+    ignores: [
+      'electron/engine/**/*.ts',  // R106: engine layer has stricter any rule below
+    ],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -119,6 +122,55 @@ export default [
       'react/no-danger': 'warn',
       'react/no-unescaped-entities': 'warn',
       'react/no-unknown-property': 'error',
+    },
+  },
+  // R106: Engine layer — strict no-explicit-any
+  {
+    files: ['electron/engine/**/*.ts'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      parser: tsparser,
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
+      },
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        Buffer: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        require: 'readonly',
+        module: 'readonly',
+        __dirname: 'readonly',
+        exports: 'readonly',
+        global: 'readonly',
+        Promise: 'readonly',
+        Map: 'readonly',
+        Set: 'readonly',
+        Date: 'readonly',
+        JSON: 'readonly',
+        Math: 'readonly',
+        Error: 'readonly',
+        Array: 'readonly',
+        Object: 'readonly',
+        String: 'readonly',
+        Number: 'readonly',
+        Boolean: 'readonly',
+        RegExp: 'readonly',
+        Symbol: 'readonly',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'error',
+      'no-console': 'warn',
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
   },
   // Plain JS scripts

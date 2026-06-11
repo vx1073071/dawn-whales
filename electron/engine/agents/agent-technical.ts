@@ -151,6 +151,7 @@ export class TechnicalAgent extends EventEmitter {
       adapter.configure({ enabled: true });
       const result = await adapter.fetchQuote(symbol, "NYSE");
       if (!result.success || !result.data) return null;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const d = result.data as any;
       const p = d.price ?? price ?? 100;
       return {

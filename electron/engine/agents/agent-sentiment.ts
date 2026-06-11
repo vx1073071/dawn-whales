@@ -137,6 +137,7 @@ export class SentimentAgent extends EventEmitter {
       adapter.configure({ enabled: true });
       const result = await adapter.fetchSentiment(symbol);
       if (!result.success || !result.data) return null;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const d = result.data as any;
       return {
         symbol: d.symbol ?? symbol,

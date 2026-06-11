@@ -73,11 +73,13 @@ export interface StrategyConfig {
   author?: string;
   tags?: string[];
   engine: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parameters: Record<string, any>;
   riskRules?: RiskRule[];
   indicators?: IndicatorConfig[];
   createdAt: number;
   updatedAt: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
 }
 
@@ -91,6 +93,7 @@ export interface RiskRule {
 export interface IndicatorConfig {
   name: string;
   type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parameters: Record<string, any>;
   timeframe?: string;
 }
@@ -588,6 +591,7 @@ export class StrategyExportImport extends EventEmitter {
     const lines = data.split('\n');
     let current: Partial<StrategyConfig> | null = null;
     let inParameters = false;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const parameters: Record<string, any> = {};
 
     for (const line of lines) {
@@ -598,6 +602,7 @@ export class StrategyExportImport extends EventEmitter {
           strategies.push(current as StrategyConfig);
           Object.keys(parameters).forEach(k => delete parameters[k]);
         }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         current = { id: this.extractYamlValue(trimmed, '- id:') } as any;
         inParameters = false;
       } else if (current) {

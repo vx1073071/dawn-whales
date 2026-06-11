@@ -213,6 +213,7 @@ export class VolatilityForecastEngine {
     };
     const methodWeights = { GARCH: 0.3, EWMA: 0.2, RV: 0.25, HAR: 0.25 };
     const ensemble = Object.entries(methods).reduce(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (s, [k, v]) => s + v * (methodWeights as any)[k], 0
     );
 

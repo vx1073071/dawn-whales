@@ -1637,6 +1637,7 @@ export class TradeExecutor extends TypedEventEmitter<TradeExecutorEvents> {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getDiagnostics(): Record<string, any> {
     return {
       config: this.getConfig(),
