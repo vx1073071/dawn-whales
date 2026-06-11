@@ -5675,5 +5675,6 @@
   "NotificationCenter.unread": "Unread",
   "TradingCalendarView.k7": "Until",
   "TradingCalendarView.k8": " opens",
-  "settings.timezone": "Fuso orario"
+  "settings.timezone": "Fuso orario",
+  "settings.currency": "Valuta"
 }

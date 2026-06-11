@@ -10,8 +10,9 @@ import UpdatePanel from './UpdatePanel';
 import i18n from '../../i18n';
 
 import TimezoneSelector from './TimezoneSelector';
+import CurrencySelector from './CurrencySelector';
 
-type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'update' | 'info';
+type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'currency' | 'update' | 'info';
 
 interface BrokerItem {
   id: string;
@@ -177,6 +178,7 @@ export default function SettingsPage() {
   { id: 'connect', label: 'settings.quickConnect', icon: '🔌' },
   { id: 'risk', label: 'settings.globalRisk', icon: '🛡️' },
   { id: 'timezone', label: 'settings.timezone', icon: '🌍' },
+  { id: 'currency', label: 'settings.currency', icon: '💱' },
   { id: 'update', label: 'settings.softwareUpdate', icon: '🔄' },
   { id: 'info', label: 'settings.systemInfo', icon: 'ℹ️' }];
 
@@ -463,6 +465,15 @@ export default function SettingsPage() {
           <h2 className="text-white font-semibold mb-4 flex items-center gap-2">🌍 Timezone Settings</h2>
           <p className="text-gray-400 text-sm mb-4">Select your timezone for time display across the application. All data is stored in UTC and converted to your local timezone.</p>
           <TimezoneSelector />
+        </div>
+      }
+
+      {/* ── Tab: Currency (R99 M-02) ─────────────────────── */}
+      {activeTab === 'currency' &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
+          <h2 className="text-white font-semibold mb-4 flex items-center gap-2">💱 Currency Settings</h2>
+          <p className="text-gray-400 text-sm mb-4">Select your display currency for prices and market values. All data is stored in original currency.</p>
+          <CurrencySelector />
         </div>
       }
 

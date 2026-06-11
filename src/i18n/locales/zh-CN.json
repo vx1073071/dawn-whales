@@ -6033,5 +6033,6 @@
   "NotificationCenter.unread": "未读",
   "TradingCalendarView.k7": "距",
   "TradingCalendarView.k8": "开盘",
-  "settings.timezone": "时区"
+  "settings.timezone": "时区",
+  "settings.currency": "货币"
 }

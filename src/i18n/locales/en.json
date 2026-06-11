@@ -5689,5 +5689,6 @@
   "NotificationCenter.unread": "Unread",
   "TradingCalendarView.k7": "Until",
   "TradingCalendarView.k8": " opens",
-  "settings.timezone": "Timezone"
+  "settings.timezone": "Timezone",
+  "settings.currency": "Currency"
 }
