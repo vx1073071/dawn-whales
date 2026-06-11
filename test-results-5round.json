@@ -1,0 +1,59 @@
+{
+  "results": [
+    {
+      "round": 1,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "elapsed": 43.3,
+      "failTests": [],
+      "status": "GREEN"
+    },
+    {
+      "round": 2,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "elapsed": 43.1,
+      "failTests": [],
+      "status": "GREEN"
+    },
+    {
+      "round": 3,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "elapsed": 44.1,
+      "failTests": [],
+      "status": "GREEN"
+    },
+    {
+      "round": 4,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "elapsed": 44.4,
+      "failTests": [],
+      "status": "GREEN"
+    },
+    {
+      "round": 5,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "elapsed": 41.7,
+      "failTests": [],
+      "status": "GREEN"
+    }
+  ],
+  "greenCount": 5,
+  "flakyRate": 0,
+  "flakyTests": [],
+  "verdict": "PASS",
+  "timestamp": "2026-06-11T07:39:56.698Z"
+}

@@ -1,408 +1,365 @@
 # Contributing to Dawn Whales
 
-> **Last updated:** 2026-06-11 | **Version:** v1.10.0-rc.2
+> 感谢你考虑为 Dawn Whales 做出贡献！
 
-Thank you for your interest in contributing to Dawn Whales! This guide covers everything you need to know to get started.
+## 目录
 
----
-
-## Table of Contents
-
-1. [Code of Conduct](#code-of-conduct)
-2. [Getting Started](#getting-started)
-3. [Development Setup](#development-setup)
-4. [Project Structure](#project-structure)
-5. [Coding Standards](#coding-standards)
-6. [Testing Requirements](#testing-requirements)
-7. [Commit Guidelines](#commit-guidelines)
-8. [Pull Request Process](#pull-request-process)
-9. [Multi-Agent Coordination](#multi-agent-coordination)
-10. [Common Pitfalls](#common-pitfalls)
+1. [开发环境](#开发环境)
+2. [代码规范](#代码规范)
+3. [分支策略](#分支策略)
+4. [提交规范](#提交规范)
+5. [测试要求](#测试要求)
+6. [PR 流程](#pr-流程)
+7. [发布流程](#发布流程)
+8. [常见问题](#常见问题)
 
 ---
 
-## Code of Conduct
+## 开发环境
 
-- Be respectful and constructive
-- No lying — if something doesn't work, say so
-- No laziness — complete your assigned tasks fully
-- Don't stop until verified + committed + broadcast
-- These are the **Iron Rules** (铁律) enforced across all contributors
+### 前置条件
 
----
+| 工具 | 版本要求 | 说明 |
+|------|----------|------|
+| Node.js | ≥ 22.x | 推荐使用 managed 版本 |
+| npm | ≥ 10.x | 随 Node.js 安装 |
+| Git | ≥ 2.x | 版本控制 |
+| Futu OpenD | 最新版 | 可选，行情数据源 |
 
-## Getting Started
-
-### Prerequisites
-
-- **Node.js**: v22.x (LTS)
-- **npm**: v10.x
-- **Git**: Latest version
-- **Python 3**: Required for some build scripts (optional)
-
-### Clone & Install
+### 快速开始
 
 ```bash
+# 1. 克隆仓库
 git clone https://github.com/vx1073071/dawn-whales.git
 cd dawn-whales
-npm install
-```
 
----
+# 2. 安装依赖
+npm install --legacy-peer-deps
 
-## Development Setup
-
-### Start Development Server
-
-```bash
+# 3. 启动开发环境
 npm run dev
+
+# 4. 跑测试确认环境正常
+node --no-warnings node_modules/vitest/vitest.mjs run
 ```
 
-This starts Vite dev server + Electron with hot-reload enabled.
+### 目录结构概览
 
-### Run Tests
-
-```bash
-# Full test suite (required before any commit)
-node --max-old-space-size=8192 node_modules/vitest/vitest.mjs run
-
-# Single test file
-npx vitest run tests/my-feature.test.ts
-
-# Node environment tests (IPC, native modules)
-npx vitest --config vitest.node.config.ts run
-
-# Coverage report
-npx vitest run --coverage
+```
+dawn-whales/
+├── electron/          # Electron 主进程 (Node.js)
+│   ├── main/          # 入口、窗口管理
+│   ├── engine/        # 交易引擎
+│   ├── websocket/     # WebSocket 行情
+│   ├── strategy/      # 策略执行
+│   ├── payment/       # USDT 支付
+│   └── types/         # TypeScript 类型定义
+├── src/               # React 渲染进程
+│   ├── components/    # React 组件
+│   ├── stores/        # Zustand 状态管理
+│   ├── i18n/          # 国际化配置
+│   └── locales/       # 翻译文件 (8种语言)
+├── tests/             # 测试文件 (vitest)
+├── e2e/               # E2E 测试 (Playwright)
+├── docs/              # 文档
+└── scripts/           # 工具脚本
 ```
 
-### Type Checking
-
-```bash
-npx tsc --noEmit
-```
-
-**Zero TypeScript errors required before commit.**
-
-### Linting
-
-```bash
-npm run lint
-```
+详细架构说明见 [architecture.md](./architecture.md)。
 
 ---
 
-## Project Structure
-
-See [architecture.md](./architecture.md) for the full architectural overview.
-
-Key directories for contributors:
-
-| Directory | Purpose |
-|-----------|---------|
-| `electron/engine/` | Core business logic — **start here for new features** |
-| `electron/engine/agents/` | 4-Agent AI framework |
-| `electron/engine/risk/` | Risk management engines |
-| `electron/engine/backtest/` | Backtesting and walk-forward |
-| `electron/ipc-handlers/` | IPC handler registration |
-| `src/components/` | React UI components |
-| `src/stores/` | Zustand state management |
-| `tests/` | Test files (mirror engine structure) |
-| `e2e/` | Playwright end-to-end tests |
-| `docs/` | Documentation |
-
-### Engine Subdirectories
-
-Engine files are organized by domain:
-
-```
-electron/engine/
-├── agents/      # AI agents (fundamentals, technical, sentiment, macro)
-├── analysis/    # Signal analysis, NL parser
-├── backtest/    # Backtest engine, walk-forward
-├── core/        # Shared utilities (error handling, ID generation)
-├── data/        # Market data, kline processing
-├── factors/     # Multi-factor models
-├── portfolio/   # Portfolio construction, rebalancing
-├── risk/        # Risk engines (VaR, stress test, correlation)
-└── utils/       # Helpers (math, HTTP, ID generation)
-```
-
-**Important**: When adding new engine files, place them in the correct subdirectory. Do NOT add files to the root `electron/engine/` directory.
-
----
-
-## Coding Standards
+## 代码规范
 
 ### TypeScript
 
-- **Strict mode**: Enabled in `tsconfig.json`
-- **No `any` types**: Use `unknown` + type guards instead
-- **No hardcoded secrets**: All API keys via environment variables
-- **Error handling**: No empty `catch {}` blocks — always log or rethrow
+- **严格模式**: `strict: true` in tsconfig.json
+- **零错误**: TSC 编译必须 0 error
+- **类型导出**: 公共 API 必须导出类型定义
+- **禁止 any**: 尽量避免，必要时用 `unknown` + 类型守卫
 
-### Naming Conventions
+### 命名约定
 
-| Type | Convention | Example |
-|------|-----------|---------|
-| Files (engine) | kebab-case | `risk-engine.ts` |
-| Files (test) | kebab-case | `risk-engine.test.ts` |
-| Classes | PascalCase | `RiskEngine` |
-| Functions | camelCase | `calculateVaR()` |
-| Constants | UPPER_SNAKE | `MAX_RETRY_COUNT` |
-| Interfaces | PascalCase + I prefix (optional) | `IRiskParams` or `RiskParams` |
+| 类型 | 规范 | 示例 |
+|------|------|------|
+| 文件名 | kebab-case | `condition-engine.ts` |
+| 组件 | PascalCase | `LanguageSwitcher.tsx` |
+| 变量/函数 | camelCase | `getKLineProcessor` |
+| 常量 | UPPER_SNAKE | `MAX_RETRY_COUNT` |
+| 类型/接口 | PascalCase | `ConditionConfig` |
+| 枚举值 | PascalCase | `RegimeType.Bull` |
 
-### Import Patterns
-
-```typescript
-// ✅ Good: Named imports from engine modules
-import { RiskEngine } from '../electron/engine/risk/risk-engine';
-
-// ❌ Bad: Wildcard imports
-import * from '../electron/engine';
-
-// ❌ Bad: Direct electron API imports in engine files
-import { ipcMain } from 'electron'; // Never in engine/ files
-```
-
-### Error Handling
-
-Use the project's `EngineError` system:
+### 导入顺序
 
 ```typescript
-import { EngineError, ErrorDomain, ErrorCode } from '../core/engine-error';
+// 1. Node.js 内置
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
-// ✅ Good: Typed error
-throw new EngineError(ErrorDomain.RISK, ErrorCode.VALIDATION_ERROR, 'Invalid parameters');
+// 2. 第三方库
+import { BrowserWindow } from 'electron';
 
-// ❌ Bad: Generic error
-throw new Error('something went wrong');
+// 3. 项目内模块 (相对路径)
+import { ConditionEngine } from '../core/condition-engine';
+import type { ConditionConfig } from '../../types/condition';
 ```
 
----
-
-## Testing Requirements
-
-### Test-First Policy
-
-Every engine module **must** have a corresponding test file:
-
-```
-electron/engine/risk/my-risk-engine.ts
-→ tests/my-risk-engine.test.ts
-```
-
-### Test Structure
+### 注释规范
 
 ```typescript
-import { describe, it, expect } from 'vitest';
-import { MyEngine } from '../electron/engine/risk/my-risk-engine';
-
-describe('MyEngine', () => {
-  it('should calculate correctly with valid input', () => {
-    const engine = new MyEngine();
-    const result = engine.calculate({ /* valid params */ });
-    expect(result.value).toBeGreaterThan(0);
-  });
-
-  it('should handle edge cases', () => {
-    const engine = new MyEngine();
-    expect(() => engine.calculate({ /* invalid */ })).toThrow();
-  });
-
-  it('should handle null/undefined gracefully', () => {
-    const engine = new MyEngine();
-    const result = engine.calculate(null as any);
-    expect(result).toBeDefined();
-  });
-});
-```
-
-### Test Rules
-
-1. **Standard format**: Use `describe`/`it`/`expect` — no custom runners
-2. **No `execSync`**: Tests must not spawn child processes
-3. **No file system assumptions**: Use `tests/helpers/engine-paths.ts` for engine file lookups
-4. **Timeout**: Set `testTimeout` for long-running tests
-5. **Null guards**: Always check `if (!result) return` after async calls
-
-### Coverage Targets
-
-| Metric | Minimum |
-|--------|---------|
-| Lines | ≥55% |
-| Branches | ≥45% |
-| Functions | ≥50% |
-| Statements | ≥55% |
-
----
-
-## Commit Guidelines
-
-### Commit Message Format
-
-```
-[Agent] Round: Brief description
-
-Detailed description of changes.
-
-- Change 1
-- Change 2
-
-Testing: X passed / 0 failed / Y files
-TSC: 0 errors
-```
-
-### Examples
-
-```
-[QClaw] R92: Test fix complete — 0 failures (5144 passed)
-
-- Fixed OOM: pool forks → threads
-- Renamed 25 broken tests to .skip.ts
-- Fixed 195 import paths for engine restructure
-
-Testing: 5144 passed / 0 failed / 302 files
-TSC: 0 errors
-```
-
-### Pre-Commit Checklist
-
-- [ ] `npx tsc --noEmit` → 0 errors
-- [ ] `node --max-old-space-size=8192 node_modules/vitest/vitest.mjs run` → 0 new failures
-- [ ] No hardcoded secrets
-- [ ] No empty catch blocks
-- [ ] All new engine files in correct subdirectory
-- [ ] Tests written for new functionality
-
----
-
-## Pull Request Process
-
-1. **Fork** the repository
-2. **Branch**: `feature/your-feature-name` or `fix/issue-description`
-3. **Commit**: Follow commit guidelines above
-4. **Test**: Full test suite must pass
-5. **PR**: Describe changes, test results, and any breaking changes
-6. **Review**: At least one approval required
-7. **Merge**: Squash merge to `master`
-
-### CI Gate
-
-PRs are blocked until:
-- TypeScript compilation: 0 errors
-- Test suite: 0 new failures
-- Lint: No new errors
-- Coverage: Meets minimum thresholds
-
----
-
-## Multi-Agent Coordination
-
-Dawn Whales is developed by a team of AI agents coordinated by PM (Claw):
-
-| Agent | Role | Responsibilities |
-|-------|------|-----------------|
-| **PM (Claw)** | Project Manager | Task allocation, review, release management |
-| **JVS** | Engine Developer | Core engine implementation, API design |
-| **QClaw** | Documentation | Architecture docs, API docs, release notes |
-| **youdao** | Testing | Test coverage, CI pipeline, flaky detection |
-| **ML** | Frontend | UI components, styling, user experience |
-
-### Communication Protocol
-
-- **Channel**: `chat-bridge/messages.jsonl` (JSONL file bridge)
-- **Format**: JSON messages with `msgId`, `from`, `to`, `type`, `round`, `subject`, `body`
-- **ACK**: Always acknowledge received tasks immediately
-- **Done**: Broadcast completion with verifiable metrics (test count, commit hash)
-
-### Round System
-
-Development proceeds in rounds (R1, R2, ..., R93+):
-1. PM broadcasts round plan with task assignments
-2. Agents ACK within minutes
-3. Agents execute tasks and commit to `master`
-4. Agents broadcast completion
-5. PM audits and tags release
-
----
-
-## Common Pitfalls
-
-### 1. Engine File Not Found
-
-Engine files were restructured from flat `electron/engine/*.ts` to subdirectories. Use the recursive finder:
-
-```typescript
-import { _findEngineFile, _readEngineFile } from './helpers/engine-paths';
-
-// ✅ Finds file in any subdirectory
-const path = _findEngineFile('risk-engine.ts');
-const content = _readEngineFile('risk-engine.ts');
-
-// ❌ Will fail — file may be in risk/ subdirectory
-const content = fs.readFileSync(path.join(ENGINE_DIR, 'risk-engine.ts'));
-```
-
-### 2. OOM During Tests
-
-Always use the heap-limited command:
-
-```bash
-# ✅ Correct
-node --max-old-space-size=8192 node_modules/vitest/vitest.mjs run
-
-# ❌ Will OOM on large suites
-npx vitest run
-```
-
-### 3. i18n Hook Errors
-
-If you see `Cannot find name 't'`, ensure the component has the translation hook:
-
-```typescript
-import { useTranslation } from 'react-i18next';
-
-function MyComponent() {
-  const { t } = useTranslation(); // ← Required
-  return <div>{t('my.key')}</div>;
+/**
+ * 评估交易条件
+ * @param condition - 条件配置
+ * @param marketData - 市场数据
+ * @returns 交易信号 (buy/sell/hold)
+ */
+function evaluateCondition(condition: ConditionConfig, marketData: MarketData): Signal {
+  // 实现逻辑
 }
 ```
 
-### 4. Encoding Issues
+---
 
-All files must be UTF-8. PowerShell scripts that write files must specify encoding:
+## 分支策略
 
-```powershell
-# ✅ Correct
-[System.IO.File]::WriteAllText($path, $content, [System.Text.Encoding]::UTF8)
+### 主分支
 
-# ❌ May produce GBK on Windows
-Set-Content $path $content
+| 分支 | 用途 | 保护规则 |
+|------|------|----------|
+| `master` | 生产就绪代码 | 必须通过 PR + CI |
+| `develop` | 开发集成分支 | 可直接推送 |
+
+### 功能分支命名
+
+```
+feat/R93-M01-storybook-expansion
+fix/R93-Q02-memory-leak
+docs/R93-D01-architecture-guide
+test/R93-Q01-ci-5rounds
+refactor/R93-engine-cleanup
 ```
 
-### 5. Mock Data in Tests
+### 分支生命周期
 
-Tests should test real engine APIs, not mock data:
-
-```typescript
-// ✅ Good: Test real engine
-const engine = new RiskEngine();
-const result = engine.calculateVaR(realParams);
-
-// ❌ Bad: Test mock
-const mockEngine = { calculateVaR: () => ({ value: 100 }) };
+```
+master ←── PR ←── feat/R93-M01-storybook-expansion
+                    ↑
+                 develop (日常开发)
 ```
 
 ---
 
-## Questions?
+## 提交规范
 
-- Check [architecture.md](./architecture.md) for system design
-- Check [user-guide.md](./user-guide.md) for user-facing documentation
-- Check [CHANGELOG.md](../CHANGELOG.md) for recent changes
-- Check [API docs](./api/) for IPC and engine API reference
+### Commit Message 格式
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer]
+```
+
+### Type 列表
+
+| Type | 说明 | 示例 |
+|------|------|------|
+| `feat` | 新功能 | `feat(engine): add regime detection` |
+| `fix` | Bug 修复 | `fix(websocket): reconnect after timeout` |
+| `test` | 测试相关 | `test(q77-02): fix fs mock for jsdom` |
+| `docs` | 文档 | `docs: add architecture guide` |
+| `refactor` | 重构 | `refactor(condition): simplify evaluator` |
+| `perf` | 性能优化 | `perf(aggregator): batch quote updates` |
+| `i18n` | 国际化 | `i18n: extract 50 keys from dashboard` |
+| `chore` | 构建/工具 | `chore: update vitest exclude list` |
+| `style` | 代码风格 | `style: fix import order` |
+
+### Scope 列表
+
+| Scope | 说明 |
+|-------|------|
+| `engine` | 交易引擎 |
+| `websocket` | WebSocket 层 |
+| `strategy` | 策略系统 |
+| `payment` | 支付/计费 |
+| `ui` | 前端组件 |
+| `i18n` | 国际化 |
+| `test` | 测试基础设施 |
+| `build` | 构建配置 |
 
 ---
 
-*This document is maintained by QClaw (文档虾). Update it when processes change.*
+## 测试要求
+
+### 必须遵守
+
+1. **每个 PR 必须包含测试**
+   - 新功能: 至少 3 个测试用例
+   - Bug 修复: 至少 1 个回归测试
+   - 重构: 不降低覆盖率
+
+2. **测试命名格式**
+   ```typescript
+   describe('ConditionEngine', () => {
+     it('should evaluate price cross above correctly', () => {
+       // Arrange → Act → Assert
+     });
+   });
+   ```
+
+3. **禁止**
+   - ❌ `it.skip()` 不说明原因
+   - ❌ 排除测试文件不写理由
+   - ❌ `done()` callback (用 async/await)
+   - ❌ 元测试 (在测试体内调 vitest/tsc/build)
+
+### 运行测试
+
+```bash
+# 全量测试
+node --no-warnings node_modules/vitest/vitest.mjs run
+
+# 单文件
+node --no-warnings node_modules/vitest/vitest.mjs run tests/condition-engine.test.ts
+
+# 带覆盖率
+node --no-warnings node_modules/vitest/vitest.mjs run --coverage
+
+# E2E (Playwright)
+npx playwright test
+```
+
+### 验收标准 (v1.10.0)
+
+| 指标 | 要求 |
+|------|------|
+| 测试失败 | 0 |
+| TSC 错误 | 0 |
+| Build | 成功 |
+| i18n 硬编码 | < 10,000 字符 |
+| EngineError 标准化 | ≥ 50% |
+| npm audit | 0 critical/high |
+| 覆盖率 statements | ≥ 65% |
+| 覆盖率 branches | ≥ 45% |
+| 覆盖率 functions | ≥ 55% |
+
+---
+
+## PR 流程
+
+### 1. 创建 PR
+
+```bash
+git checkout -b feat/R93-M01-storybook
+# ... 开发 ...
+git add .
+git commit -m "feat(ui): add 5 Storybook stories for trading components"
+git push origin feat/R93-M01-storybook
+```
+
+### 2. PR 检查清单
+
+- [ ] TSC: 0 errors (`npx tsc --noEmit`)
+- [ ] 测试: 全部通过 (`vitest run`)
+- [ ] 新增测试: 至少 3 个用例
+- [ ] i18n: 新文本已提取到 `src/locales/` 全部 8 个语言文件
+- [ ] 类型: 公共 API 有类型导出
+- [ ] 文档: 复杂逻辑有 JSDoc 注释
+
+### 3. Review 流程
+
+1. PM (Claw) 初审: 检查代码质量和架构一致性
+2. CI 自动检查: TSC + 测试 + Build
+3. Reviewer 提出修改意见
+4. 修改 → 重新提交 → 合并
+
+---
+
+## 发布流程
+
+### 版本号规则
+
+```
+v{major}.{minor}.{patch}[-rc.{n}]
+
+示例: v1.10.0-rc.2
+```
+
+### 发布检查清单
+
+- [ ] 全量测试 5 轮全绿
+- [ ] 内存泄漏检测通过
+- [ ] Playwright E2E 12+ 场景全绿
+- [ ] Storybook build 成功
+- [ ] CHANGELOG 更新
+- [ ] Release Notes 编写
+- [ ] 性能基线对比 (无退化)
+- [ ] Lighthouse ≥ 85
+
+### 发布步骤
+
+```bash
+# 1. 最终测试
+node --no-warnings node_modules/vitest/vitest.mjs run
+
+# 2. Build
+npm run build
+
+# 3. Tag
+git tag v1.10.0
+git push origin v1.10.0
+
+# 4. Package
+npm run package
+```
+
+---
+
+## 常见问题
+
+### Q: npm install 报 peer dependency 冲突?
+
+```bash
+npm install --legacy-peer-deps
+```
+
+### Q: vitest 跑不完/挂起?
+
+确认 `vitest.config.ts` 中的 exclude 列表包含 21 个排除项（3 基础 + 18 元测试）。
+
+### Q: Electron 启动报错 "failed to install correctly"?
+
+```bash
+rm -rf node_modules/electron
+npm install electron --legacy-peer-deps
+```
+
+### Q: 如何添加新的 i18n 键?
+
+1. 在组件中使用: `t('my.new.key')`
+2. 在 8 个 locale 文件中添加对应翻译:
+   ```json
+   // src/locales/zh-CN.json
+   { "my": { "new": { "key": "新内容" } } }
+   ```
+
+### Q: 如何添加新的 IPC 通道?
+
+1. 在 `electron/ipc/channels.ts` 定义常量
+2. 在 `electron/main/ipc-handlers.ts` 注册 handler
+3. 在 `preload.ts` 的 contextBridge 中暴露
+4. 在渲染进程中通过 `window.electronAPI.xxx()` 调用
+
+---
+
+## 铁律 (永久生效)
+
+1. **禁止撒谎** — 虚报完成度、伪造数据、编造 commit 零容忍
+2. **禁止偷懒** — stub 充数、文档凑数、skip test 掩盖不可接受
+3. **任务没做完不准停** — 领了任务必须干完，干不完说清楚卡在哪
+4. **production-ready** — 每个任务: ≥500 行代码 + ≥5 测试 + build 0 error + i18n
+
+---
+
+*最后更新: 2026-06-11 | R93 D-01*

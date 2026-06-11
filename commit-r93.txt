@@ -1,0 +1,12 @@
+QClaw R93: D-01 architecture.md (520L) + CONTRIBUTING.md (408L) + D-02 R92 Release Notes + Performance Report
+
+D-01: Developer guide - architecture.md (520 lines, 12 sections covering
+engine system, IPC layer, frontend, data flow, testing, security, deployment)
++ CONTRIBUTING.md (408 lines, 10 sections covering setup, standards,
+testing requirements, commit guidelines, multi-agent coordination)
+
+D-02: R92 Release Notes added to CHANGELOG.md (new section before R90)
++ docs/r92-performance-report.md (221 lines: before/after metrics,
+OOM fix details, esbuild phantom error analysis, 13-run iteration history)
+
+All docs based on actual project structure and real test run data.

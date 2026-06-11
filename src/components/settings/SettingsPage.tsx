@@ -6,9 +6,10 @@ import {
   listBrokers, addBroker, removeBroker, setActiveBroker, getBrokerStatus } from
 '@/lib/bridge-api';
 import BrokerConfigSelector from '../trading/BrokerConfigSelector';
+import UpdatePanel from './UpdatePanel';
 import i18n from '../../i18n';
 
-type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'info';
+type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'update' | 'info';
 
 interface BrokerItem {
   id: string;
@@ -173,6 +174,7 @@ export default function SettingsPage() {
   { id: 'broker-mgmt', label: 'settings.brokerManagement', icon: '🏦' },
   { id: 'connect', label: 'settings.quickConnect', icon: '🔌' },
   { id: 'risk', label: 'settings.globalRisk', icon: '🛡️' },
+  { id: 'update', label: 'settings.softwareUpdate', icon: '🔄' },
   { id: 'info', label: 'settings.systemInfo', icon: 'ℹ️' }];
 
 
@@ -444,6 +446,11 @@ export default function SettingsPage() {
             </div>
         }
         </>
+      }
+
+      {/* ── Tab: 软件更新 (Software Update) ──────────────────────────── */}
+      {activeTab === 'update' &&
+      <UpdatePanel />
       }
 
       {/* ── Tab: 系统信息 (App Info) ─────────────────────────────── */}

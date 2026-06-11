@@ -6,7 +6,8 @@ import { app, BrowserWindow, ipcMain, shell, Tray, Menu, nativeImage } from 'ele
 import path from 'path';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import { autoUpdater } from 'electron-updater';
+import { autoUpdater } from 'electron-updater'; // kept for type compatibility
+import { setupAutoUpdater } from './main/updater';
 import { FutuOpenDClient } from './broker/futu-opend';
 import { BrokerManager } from './broker/BrokerManager';
 import type { BrokerConfig } from './broker/IBrokerAdapter';
@@ -252,24 +253,8 @@ app.whenReady().then(async () => {
 
   createTray();
 
-  // Auto-updater (only in production)
-  if (!isDev) {
-    autoUpdater.logger = log;
-    autoUpdater.autoDownload = false;
-    autoUpdater.on('update-available', (info) => {
-      log.info('[Updater] New version available:', info.version);
-      mainWindow?.webContents.send('notification', { type: 'info', message: i18n.t('main.k4') });
-    });
-    autoUpdater.on('update-downloaded', () => {
-      log.info('[Updater] Update downloaded, ready to install');
-      mainWindow?.webContents.send('notification', { type: 'success', message: i18n.t('main.k5') });
-    });
-    autoUpdater.on('error', (err) => {
-      log.warn('[Updater] Error:', err.message);
-    });
-    setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 10000);
-    setInterval(() => autoUpdater.checkForUpdates().catch(() => {}), 4 * 60 * 60 * 1000);
-  }
+  // R93 J-02: Enhanced auto-updater with progress tracking, IPC bridge, and update UI
+  setupAutoUpdater(isDev, { current: mainWindow });
 
   // Register strategy:execute IPC handler
   if (strategyEngine && riskEngine) {

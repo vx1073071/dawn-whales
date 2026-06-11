@@ -46,3 +46,6 @@ install-*.ps1
 # random session artifacts in root
 *-task-summary.md
 session-artifact-*.md
+
+storybook-static/
+

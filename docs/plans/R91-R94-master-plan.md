@@ -124,7 +124,7 @@
 | J-01 | Playwright E2E 扩充到 12 个 | 覆盖核心用户流程: 启动→Dashboard→市场→策略→交易→钱包→设置。包含正向和异常路径 | ① 12个test cases ② 全部通过 ③ CI可跑 ④ git commit |
 | J-02 | Electron Auto-updater 集成 | electron-updater集成, 更新提示UI, 增量更新支持 | ① electron-updater集成 ② 更新UI提示 ③ TSC 0 ④ git commit |
 
-### 🦐PM代班youdao (🪦已阵亡) — 3 任务
+### 🦐youdao (测试虾) — 3 任务 (已复活)
 
 | ID | 任务 | 描述 | 验收标准 |
 |----|------|------|----------|
@@ -168,7 +168,7 @@
 | J-01 | v1.10.0 构建 + 安装包 | Windows安装包构建。输出installer .exe + 校验和SHA256 | ① installer构建成功 ② SHA256校验和文件 ③ 版本号1.10.0 ④ git tag v1.10.0 |
 | J-02 | 发布文档: 部署清单 + 回滚方案 | docs/release/v1.10.0.md: 构建步骤, 部署清单, 回滚方案, 已知问题 | ① 发布文档完整 ② 回滚方案可执行 ③ git commit |
 
-### 🦐PM代班youdao (🪦已阵亡) — 2 任务
+### 🦐youdao (测试虾) — 2 任务 (已复活)
 
 | ID | 任务 | 描述 | 验收标准 |
 |----|------|------|----------|
