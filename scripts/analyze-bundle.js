@@ -9,18 +9,24 @@ const content = fs.readFileSync(path.join(distPath, files[0]), 'utf8');
 const size = Buffer.byteLength(content, 'utf8');
 console.log('Size:', (size / 1024).toFixed(2), 'KB');
 
-// Find large string literals (potential inline data)
+// Find large string literals
 const largeStrings = content.match(/"[^"]{1000,}"/g) || [];
-console.log('Large strings (>1KB):', largeStrings.length);
+console.log('\nLarge strings (>1KB):', largeStrings.length);
+largeStrings.forEach((s, i) => {
+  console.log(`  ${i + 1}. Length: ${s.length} chars, Preview: ${s.substring(0, 80)}...`);
+});
 
-// Count import statements
-const imports = content.match(/from ['"][^'"]+['"]/g) || [];
-console.log('Import count:', imports.length);
+// Check for inline JSON
+const jsonMatches = content.match(/\{[^{}]{500,}\}/g) || [];
+console.log('\nLarge JSON objects (>500 chars):', jsonMatches.length);
 
-// Find potential optimization targets
+// Check for base64 data
+const base64Matches = content.match(/data:[^;]+;base64,[A-Za-z0-9+/=]{100,}/g) || [];
+console.log('Base64 data URLs:', base64Matches.length);
+
 console.log('\nOptimization suggestions:');
 if (size > 300 * 1024) {
-  console.log('- Main bundle exceeds 300KB target');
-  console.log('- Consider lazy loading for large components');
-  console.log('- Split vendor chunks more aggressively');
+  console.log('- Main bundle exceeds 300KB target by', ((size - 300 * 1024) / 1024).toFixed(2), 'KB');
+  console.log('- Consider extracting large strings to separate files');
+  console.log('- Use dynamic imports for non-critical code');
 }

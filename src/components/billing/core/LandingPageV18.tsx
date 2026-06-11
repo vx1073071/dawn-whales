@@ -72,7 +72,7 @@ function HeroSection() {
       
       {/* Stats */}
       <div style={{ display: 'flex', gap: 32, justifyContent: 'center', marginBottom: 36 }}>
-        {[{ n: '7', l: 'components.markets' }, { n: '30+', l: 'components.factor' }, { n: '22', l: i18n.t('LandingPageV18.k70') }, { n: i18n.t('LandingPageV18.k71'), l: 'components.onboarding' }, { n: '8', l: 'components.language' }, { n: '5144', l: 'components.tests' }, { n: '15', l: 'components.storybook' }].map((s) =>
+        {[{ n: '7', l: 'components.markets' }, { n: '30+', l: 'components.factor' }, { n: '22', l: i18n.t('LandingPageV18.k70') }, { n: i18n.t('LandingPageV18.k71'), l: 'components.onboarding' }, { n: '8', l: 'components.language' }, { n: '6293', l: 'components.tests' }, { n: '25', l: 'components.storybook' }].map((s) =>
         <div key={s.l}>
             <div style={{ fontSize: 28, fontWeight: 800, color: '#D4A853' }}>{s.n}</div>
             <div style={{ fontSize: 12, color: '#6B7280' }}>{s.l}</div>
