@@ -5688,5 +5688,6 @@
   "MarketplacePage.myRating": "My rating",
   "NotificationCenter.unread": "Unread",
   "TradingCalendarView.k7": "Until",
-  "TradingCalendarView.k8": " opens"
+  "TradingCalendarView.k8": " opens",
+  "settings.timezone": "Timezone"
 }

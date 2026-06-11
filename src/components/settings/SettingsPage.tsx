@@ -9,7 +9,9 @@ import BrokerConfigSelector from '../trading/BrokerConfigSelector';
 import UpdatePanel from './UpdatePanel';
 import i18n from '../../i18n';
 
-type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'update' | 'info';
+import TimezoneSelector from './TimezoneSelector';
+
+type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'update' | 'info';
 
 interface BrokerItem {
   id: string;
@@ -174,6 +176,7 @@ export default function SettingsPage() {
   { id: 'broker-mgmt', label: 'settings.brokerManagement', icon: '🏦' },
   { id: 'connect', label: 'settings.quickConnect', icon: '🔌' },
   { id: 'risk', label: 'settings.globalRisk', icon: '🛡️' },
+  { id: 'timezone', label: 'settings.timezone', icon: '🌍' },
   { id: 'update', label: 'settings.softwareUpdate', icon: '🔄' },
   { id: 'info', label: 'settings.systemInfo', icon: 'ℹ️' }];
 
@@ -454,6 +457,15 @@ export default function SettingsPage() {
       }
 
       {/* ── Tab: App Info ─────────────────────────────── */}
+      {/* ── Tab: Timezone (R98 M-01) ────────────────────────── */}
+      {activeTab === 'timezone' &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
+          <h2 className="text-white font-semibold mb-4 flex items-center gap-2">🌍 Timezone Settings</h2>
+          <p className="text-gray-400 text-sm mb-4">Select your timezone for time display across the application. All data is stored in UTC and converted to your local timezone.</p>
+          <TimezoneSelector />
+        </div>
+      }
+
       {activeTab === 'info' &&
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
           <h2 className="text-white font-semibold mb-4 flex items-center gap-2">{i18n.t("SettingsPage.r92_098a")}</h2>

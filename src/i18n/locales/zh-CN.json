@@ -6032,5 +6032,6 @@
   "MarketplacePage.myRating": "我的评分",
   "NotificationCenter.unread": "未读",
   "TradingCalendarView.k7": "距",
-  "TradingCalendarView.k8": "开盘"
+  "TradingCalendarView.k8": "开盘",
+  "settings.timezone": "时区"
 }
