@@ -32,5 +32,6 @@ export const generateKeyPair = nodeCrypto.generateKeyPair;
 export const generateKeyPairSync = nodeCrypto.generateKeyPairSync;
 export const publicEncrypt = nodeCrypto.publicEncrypt;
 export const privateDecrypt = nodeCrypto.privateDecrypt;
+export const randomUUID = nodeCrypto.randomUUID;
 
 export default nodeCrypto;

@@ -38,7 +38,7 @@ describe('ConditionEngine — CRUD', () => {
 
   it('createRule generates id and defaults', () => {
     const rule = engine.createRule(makeRule());
-    expect(rule.id).toMatch(/^rule_/);
+    expect(rule.id).toMatch(/^[a-f0-9]{16}$/);
     expect(rule.createdAt).toBeInstanceOf(Date);
     expect(rule.lastTriggeredAt).toBeUndefined();
     expect(rule.triggerCount).toBe(0);
