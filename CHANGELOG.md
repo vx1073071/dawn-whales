@@ -217,6 +217,76 @@ JVS R89 引擎目錄重構後，`readdirSync('electron/engine/')` 只返回 1 �
 - i18n locales: 9 → 10 (+zh-TW)
 
 
+## [1.10.0-alpha.2] — R91 角色互换 + 文档交付 + 安全审计
+
+### R91 — QClaw/youdao 角色互换 + R90 文档交付 + R91 测试修复
+
+**基线变化**: R90 → R91 | **Commits**: 4 | **角色**: QClaw=文档虾, youdao=测试虾 (永久)
+
+#### 概览
+
+R91 是角色互换后第一轮。5 虾按新角色运作：QClaw 转文档虾完成 R90 文档交付（Release Notes + API 文档），youdao 转测试虾执行测试任务，JVS 继续引擎开发，ML 继续 UI 开发，PM 统筹守护。
+
+#### 1. QClaw 文档交付 (D-01, D-02)
+
+**D-01: R90 Release Notes** (193 行, commit `a0c505eb`)
+- 完整的 R90 变更摘要：7 个 commit 详解
+- TSC 0 errors 确认（从 R88 的 729 → R89 0 → R90 0）
+- 测试路径修复详情（21+ 文件, 递归引擎搜索 helpers）
+- Playwright E2E 框架（playwright.config.ts + 3 smoke tests）
+- 覆盖率静态分析（333 引擎文件, 370 测试文件）
+- 角色变更声明（QClaw 测试虾→文档虾, R91 起永久）
+
+**D-02: API 文档** (885 行, commit `b5a7d66f`)
+- `docs/api/electron-ipc.md` (271 行): 11 channel group, 完整参数签名
+- `docs/api/engine-core.md` (614 行): 36 个引擎模块, TypeScript 接口
+
+#### 2. youdao 测试任务 (Y-01, Y-03)
+
+**Y-01: 测试 fail 修复** (commit `5a12d594`)
+- 修复 6 个测试文件的导入路径和 vi.mock 路径
+  - q56-01: vi.mock agent-orchestrator → agents/agent-orchestrator (30/30)
+  - q56-03: vi.mock path fix (27/27)
+  - q58-02: import path + toThrow assertion fix (15/15)
+  - q58-03: engine paths + recursive helpers (20/20)
+  - jvs-56: vi.mock path fix (17/20, 3 pre-existing JVS)
+  - q57-01/02/03: vi.mock path fix (blocked: localStorage engine dependency)
+
+**Y-03: Flaky test 治理**
+- 3 轮验证: 8 核心文件 188/188 全部通过, 0 flaky 检测
+- jvs-56: 3 deterministic failures (非 flaky)
+
+**Y-02: 覆盖率提升** — BLOCKED (系统 OOM, vitest coverage SIGKILL)
+
+#### 3. JVS/ML 贡献
+
+- JVS: 引擎开发持续
+- ML: UI 组件推进, i18n 收尾
+
+#### 4. 角色互换详情
+
+| 虾 | R90 角色 | R91 起角色 | 职责变化 |
+|----|----------|-----------|---------|
+| QClaw | 测试虾 | **文档虾** | 测试→文档/Release Notes/API/用户指南 |
+| youdao | 文档虾 | **测试虾** | 文档→测试/覆盖率/E2E/质量报告/Flaky治理 |
+| JVS | 引擎虾 | 引擎虾 | 不变 |
+| ML | 前端虾 | 前端虾 | 不变 |
+| PM | 守护虾 | 守护虾 | 不变 |
+
+#### 指标对比
+
+| 指标 | R90 基线 | R91 结果 | 状态 |
+|------|---------|---------|------|
+| TSC errors | 0 | **0** | ✅ |
+| CHANGELOG R90 section | — | **193 行** | ✅ |
+| API 文档 | 2 | **4** (+electron-ipc, +engine-core) | ✅ |
+| 测试文件路径修复 | — | **6 文件** | ✅ |
+| Flaky 验证 | — | **3 轮 0 flaky** | ✅ |
+| 测试 fail (Y-01) | ≤84 | **≤4 (q57 blocked)** | ⚠️ R92 |
+| 覆盖率 (Y-02) | — | **OOM blocked** | ⚠️ R92 |
+
+---
+
 ## [1.9.1-pre] — R89 i18n 大规模推进 + EngineError 标准化 + 依赖安全升级
 
 ### R89 — i18n 硬编码中文大幅消减 + 引擎错误类型体系建立 + 安全依赖升级
