@@ -1,8 +1,8 @@
 /**
  * JVS-36: Real-time Technical Indicator Calculator
- * 实时技术指标计算引擎
+ * technical indicator
  * 
- * 支持指标:
+ * metric:
  * - MA (Simple Moving Average)
  * - EMA (Exponential Moving Average)
  * - MACD (Moving Average Convergence Divergence)
@@ -11,10 +11,10 @@
  * - Bollinger Bands
  * - ATR (Average True Range)
  * 
- * 特性:
- * - 增量计算（避免重复计算）
- * - 多股票并行计算
- * - 实时推送更新
+ * :
+ *
+ *
+ * - update
  */
 
 import { EventEmitter } from 'events';
@@ -257,10 +257,10 @@ export class RealtimeIndicatorCalculator extends EventEmitter {
   }
 
   /**
-   * 添加新的K线数据并计算指标
+ * Kmetric
    */
   addKLine(symbol: string, kline: KLine): AllIndicators {
-    // 获取或创建K线缓冲区
+ // K
     if (!this.klineBuffer.has(symbol)) {
       this.klineBuffer.set(symbol, []);
     }
@@ -268,22 +268,22 @@ export class RealtimeIndicatorCalculator extends EventEmitter {
     const buffer = this.klineBuffer.get(symbol)!;
     buffer.push(kline);
     
-    // 保持缓冲区大小
+ //
     if (buffer.length > this.maxBufferSize) {
       buffer.shift();
     }
     
-    // 计算所有指标
+ // metric
     const indicators = this.calculateAllIndicators(symbol, buffer);
     
-    // 发送事件
+ // event
     this.emit('indicators-updated', symbol, indicators);
     
     return indicators;
   }
 
   /**
-   * 批量添加K线数据
+ * K
    */
   addKLines(symbol: string, klines: KLine[]): AllIndicators {
     if (!this.klineBuffer.has(symbol)) {
@@ -293,22 +293,22 @@ export class RealtimeIndicatorCalculator extends EventEmitter {
     const buffer = this.klineBuffer.get(symbol)!;
     buffer.push(...klines);
     
-    // 保持缓冲区大小
+ //
     while (buffer.length > this.maxBufferSize) {
       buffer.shift();
     }
     
-    // 计算所有指标
+ // metric
     const indicators = this.calculateAllIndicators(symbol, buffer);
     
-    // 发送事件
+ // event
     this.emit('indicators-updated', symbol, indicators);
     
     return indicators;
   }
 
   /**
-   * 计算单个股票的所有指标
+ * metric
    */
   private calculateAllIndicators(symbol: string, klines: KLine[]): AllIndicators {
     const closes = klines.map(k => k.close);
@@ -389,21 +389,21 @@ export class RealtimeIndicatorCalculator extends EventEmitter {
   }
 
   /**
-   * 获取股票的K线缓冲区
+ * K
    */
   getKLineBuffer(symbol: string): KLine[] {
     return this.klineBuffer.get(symbol) || [];
   }
 
   /**
-   * 清除股票的缓冲区
+ *
    */
   clearBuffer(symbol: string): void {
     this.klineBuffer.delete(symbol);
   }
 
   /**
-   * 清除所有缓冲区
+ *
    */
   clearAllBuffers(): void {
     this.klineBuffer.clear();

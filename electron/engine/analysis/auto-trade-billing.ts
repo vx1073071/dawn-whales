@@ -1,6 +1,6 @@
 /**
- * J-V15-02: Auto Trade Billing Engine (R53 v15 商业模型定版)
- * 自动交易计费: 0.1% taker / 0.02% maker / 0.04% taker (平台 100%)
+ * J-V15-02: Auto Trade Billing Engine (R53 v15 )
+ * : 0.1% taker / 0.02% maker / 0.04% taker ( 100%)
  *
  * Features:
  * - Trade fee calculation (maker/taker model)

@@ -1,17 +1,17 @@
 /**
- * Audit Trail Enhancement - 审计轨迹增强引擎
+ * Audit Trail Enhancement - audit
  * D-49-NEW [P0] - youdao
  * 
- * 功能:
- * - 完整审计轨迹记录
- * - 不可篡改记录 (哈希链)
- * - 审计日志查询 (< 100ms)
- * - 多维度查询支持
+ * :
+ * - audit
+ * - (hash)
+ * - audit logquery (< 100ms)
+ * - query
  * 
- * 验收标准:
- * - 代码量 >= 800L
- * - 查询响应 < 100ms
- * - 测试覆盖完整
+ * :
+ * - >= 800L
+ * - queryresponse < 100ms
+ *
  */
 
 import log from 'electron-log';
@@ -103,7 +103,7 @@ export class AuditTrailEngine {
       ...config,
     };
 
-    // 生成私钥用于签名
+ // sign
     this.privateKey = _crypto.randomBytes(32).toString('hex');
 
     log.info('[AuditTrailEngine] Initialized', {
@@ -115,7 +115,7 @@ export class AuditTrailEngine {
   // ── Log Creation ─────────────────────────────────────────────────────────
 
   /**
-   * 记录审计日志
+ * audit log
    */
   log(
     userId: string,
@@ -132,11 +132,11 @@ export class AuditTrailEngine {
     const timestamp = Date.now();
     const id = this.generateId();
 
-    // 计算哈希链
+ // hash
     const previousHash = this.lastHash;
     const currentHash = this.calculateHash(timestamp, userId, action, resource, resourceId, previousHash);
 
-    // 生成签名
+ // sign
     const signature = this.config.signatureEnabled
       ? this.sign(currentHash)
       : '';
@@ -155,11 +155,11 @@ export class AuditTrailEngine {
       signature,
     };
 
-    // 存储日志
+ // log
     this.logs.push(auditLog);
     this.lastHash = currentHash;
 
-    // 更新索引
+    // updateindex
     this.updateIndexes(auditLog);
 
     log.info('[AuditTrailEngine] Log recorded', {
@@ -174,14 +174,14 @@ export class AuditTrailEngine {
   }
 
   /**
-   * 生成唯一 ID
+ * ID
    */
   private generateId(): string {
     return `audit_${Date.now()}_${crypto.randomBytes(8).toString('hex')}`;
   }
 
   /**
-   * 计算哈希
+ * hash
    */
   private calculateHash(
     timestamp: number,
@@ -199,7 +199,7 @@ export class AuditTrailEngine {
   }
 
   /**
-   * 生成签名
+ * sign
    */
   private sign(hash: string): string {
     return crypto
@@ -209,7 +209,7 @@ export class AuditTrailEngine {
   }
 
   /**
-   * 验证签名
+ * sign
    */
   verifySignature(log: AuditLog): boolean {
     if (!this.config.signatureEnabled) {
@@ -221,7 +221,7 @@ export class AuditTrailEngine {
   }
 
   /**
-   * 验证哈希链
+ * hash
    */
   verifyChain(): boolean {
     let previousHash = '0'.repeat(64);
@@ -265,22 +265,22 @@ export class AuditTrailEngine {
   }
 
   /**
-   * 更新索引
+   * updateindex
    */
   private updateIndexes(auditLog: AuditLog): void {
-    // 按用户索引
+ // userindex
     if (!this.logsByUser.has(auditLog.userId)) {
       this.logsByUser.set(auditLog.userId, []);
     }
     this.logsByUser.get(auditLog.userId)!.push(auditLog);
 
-    // 按操作索引
+ // index
     if (!this.logsByAction.has(auditLog.action)) {
       this.logsByAction.set(auditLog.action, []);
     }
     this.logsByAction.get(auditLog.action)!.push(auditLog);
 
-    // 按资源索引
+ // index
     const resourceKey = `${auditLog.resource}:${auditLog.resourceId}`;
     if (!this.logsByResource.has(resourceKey)) {
       this.logsByResource.set(resourceKey, []);
@@ -291,14 +291,14 @@ export class AuditTrailEngine {
   // ── Query ────────────────────────────────────────────────────────────────
 
   /**
-   * 查询审计日志
+   * queryaudit log
    */
   query(query: AuditQuery): AuditQueryResult {
     const startTime = Date.now();
 
     let results = this.logs;
 
-    // 时间范围过滤
+ //
     if (query.startDate) {
       results = results.filter(log => log.timestamp >= query.startDate!);
     }
@@ -306,17 +306,17 @@ export class AuditTrailEngine {
       results = results.filter(log => log.timestamp <= query.endDate!);
     }
 
-    // 用户过滤
+ // user
     if (query.userId) {
       results = results.filter(log => log.userId === query.userId);
     }
 
-    // 操作过滤
+ //
     if (query.action) {
       results = results.filter(log => log.action === query.action);
     }
 
-    // 资源过滤
+ //
     if (query.resource) {
       results = results.filter(log => log.resource === query.resource);
     }
@@ -324,18 +324,18 @@ export class AuditTrailEngine {
       results = results.filter(log => log.resourceId === query.resourceId);
     }
 
-    // 严重性过滤
+ //
     if (query.severity) {
       results = results.filter(log => log.severity === query.severity);
     }
 
-    // 排序 (按时间倒序)
+ // sort ()
     results = results.sort((a, b) => b.timestamp - a.timestamp);
 
-    // 总数
+ //
     const total = results.length;
 
-    // 分页
+    // pagination
     const offset = query.offset || 0;
     const limit = Math.min(query.limit || 100, this.config.maxQueryLimit);
     results = results.slice(offset, offset + limit);
@@ -356,14 +356,14 @@ export class AuditTrailEngine {
   }
 
   /**
-   * 根据 ID 获取日志
+ * ID log
    */
   getById(id: string): AuditLog | null {
     return this.logs.find(log => log.id === id) || null;
   }
 
   /**
-   * 获取资源的所有日志
+ * log
    */
   getByResource(resource: string, resourceId: string): AuditLog[] {
     const key = `${resource}:${resourceId}`;
@@ -371,7 +371,7 @@ export class AuditTrailEngine {
   }
 
   /**
-   * 获取用户的所有日志
+ * userlog
    */
   getByUser(userId: string): AuditLog[] {
     return this.logsByUser.get(userId) || [];
@@ -380,7 +380,7 @@ export class AuditTrailEngine {
   // ── Statistics ───────────────────────────────────────────────────────────
 
   /**
-   * 获取统计信息
+ * info
    */
   getStats(): AuditStats {
     const logsByAction: Record<AuditAction, number> = {} as any;
@@ -415,7 +415,7 @@ export class AuditTrailEngine {
   // ── Maintenance ──────────────────────────────────────────────────────────
 
   /**
-   * 清理过期日志
+ * expirylog
    */
   cleanup(): number {
     const cutoffTime = Date.now() - (this.config.retentionDays * 24 * 60 * 60 * 1000);
@@ -423,7 +423,7 @@ export class AuditTrailEngine {
 
     this.logs = this.logs.filter(log => log.timestamp > cutoffTime);
 
-    // 重建索引
+ // index
     this.logsByUser.clear();
     this.logsByAction.clear();
     this.logsByResource.clear();
@@ -442,14 +442,14 @@ export class AuditTrailEngine {
   }
 
   /**
-   * 导出日志
+   * exportlog
    */
   export(format: 'json' | 'csv' = 'json'): string {
     if (format === 'json') {
       return JSON.stringify(this.logs, null, 2);
     }
 
-    // CSV 格式
+ // CSV 
     const headers = ['id', 'timestamp', 'userId', 'action', 'resource', 'resourceId', 'severity'];
     const rows = this.logs.map(log => 
       [log.id, log.timestamp, log.userId, log.action, log.resource, log.resourceId, log.severity].join(',')
@@ -458,7 +458,7 @@ export class AuditTrailEngine {
   }
 
   /**
-   * 导入日志
+   * importlog
    */
   import(data: string, format: 'json' | 'csv' = 'json'): number {
     let importedLogs: AuditLog[];
@@ -466,7 +466,7 @@ export class AuditTrailEngine {
     if (format === 'json') {
       importedLogs = JSON.parse(data);
     } else {
-      // CSV 解析
+ // CSV 
       const lines = data.split('\n');
       const headers = lines[0].split(',');
       importedLogs = lines.slice(1).map(line => {
@@ -490,7 +490,7 @@ export class AuditTrailEngine {
     const beforeCount = this.logs.length;
     this.logs.push(...importedLogs);
 
-    // 重建索引
+ // index
     for (const log of importedLogs) {
       this.updateIndexes(log);
     }
@@ -506,14 +506,14 @@ export class AuditTrailEngine {
   }
 
   /**
-   * 获取配置
+ * config
    */
   getConfig(): AuditConfig {
     return { ...this.config };
   }
 
   /**
-   * 更新配置
+   * updateconfig
    */
   updateConfig(config: Partial<AuditConfig>): void {
     this.config = { ...this.config, ...config };
@@ -521,7 +521,7 @@ export class AuditTrailEngine {
   }
 
   /**
-   * 重置 (仅用于测试)
+ * reset ()
    */
   reset(): void {
     this.logs = [];

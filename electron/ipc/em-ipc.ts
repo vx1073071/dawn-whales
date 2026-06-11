@@ -425,7 +425,7 @@ export function registerEmIPC(
   // ── Data Scheduler (auto-refresh) ─────────────────────────────────────
 
 
-  // ── Dragon Tiger List — 龙虎榜 (JVS-10) ─────────────────────────────
+  // ── Dragon Tiger List — Dragon-Tiger list (JVS-10) ─────────────────────────────
   ipcMain.handle('em:get-dragon-tiger', async (_e, date?: string) => {
     try {
       const result = await getDragonTigerList(date);
@@ -460,10 +460,10 @@ export function registerEmIPC(
     }
   });
 
-  // ── Capital Flow Ranking — 资金流排行 (JVS-11) ──────────────────────
+ // ── Capital Flow Ranking — capital flow (JVS-11) ──────────────────────
 
 
-  // ── Capital Flow Ranking — 资金流排行 (JVS-11) ──────────────────────
+ // ── Capital Flow Ranking — capital flow (JVS-11) ──────────────────────
   ipcMain.handle('em:get-capital-flow-stock', async (_e, sortBy?: string, order?: string, limit?: number) => {
     try {
       const result = await getStockCapitalFlowRank(sortBy as unknown, order as unknown, limit);
@@ -538,10 +538,10 @@ export function registerEmIPC(
     }
   });
 
-  // ── Fund Holdings — 基金持仓数据 (JVS-13) ────────────────────────
+ // ── Fund Holdings — fund holdings (JVS-13) ────────────────────────
 
 
-  // ── Fund Holdings — 基金持仓数据 (JVS-13) ────────────────────────
+ // ── Fund Holdings — fund holdings (JVS-13) ────────────────────────
   ipcMain.handle('em:get-fund-holdings', async (_e, fundCode: string, reportDate?: string) => {
     try {
       const result = await getFundHoldings(fundCode, reportDate);
@@ -588,10 +588,10 @@ export function registerEmIPC(
     }
   });
 
-  // ── Stock Diagnosis — 个股诊断聚合器 (JVS-14) ──────────────────────
+ // ── Stock Diagnosis — (JVS-14) ──────────────────────
 
 
-  // ── Stock Diagnosis — 个股诊断聚合器 (JVS-14) ──────────────────────
+ // ── Stock Diagnosis — (JVS-14) ──────────────────────
   ipcMain.handle('em:diagnose-stock', async (_e, request: unknown) => {
     try {
       const result = await diagnoseStock(request || { code: '' });
@@ -614,10 +614,10 @@ export function registerEmIPC(
     }
   });
 
-  // ── Portfolio Risk — 组合风险计算器 (JVS-15) ─────────────────────
+ // ── Portfolio Risk — (JVS-15) ─────────────────────
 
 
-  // ── Portfolio Risk — 组合风险计算器 (JVS-15) ─────────────────────
+ // ── Portfolio Risk — (JVS-15) ─────────────────────
   ipcMain.handle('em:portfolio-risk', async (_e, request: unknown) => {
     try {
       const result = await calculatePortfolioRisk(request || { positions: [] });
@@ -628,10 +628,10 @@ export function registerEmIPC(
     }
   });
 
-  // ── Market Breadth — 市场广度分析器 (JVS-16) ────────────────────
+ // ── Market Breadth — (JVS-16) ────────────────────
 
 
-  // ── Market Breadth — 市场广度分析器 (JVS-16) ────────────────────
+ // ── Market Breadth — (JVS-16) ────────────────────
   ipcMain.handle('em:get-market-breadth', async () => {
     try {
       const result = await getMarketBreadth();
@@ -642,10 +642,10 @@ export function registerEmIPC(
     }
   });
 
-  // ── Consumer Data — 消费者数据服务 (JVS-17) ────────────────────
+ // ── Consumer Data — service (JVS-17) ────────────────────
 
 
-  // ── Consumer Data — 消费者数据服务 (JVS-17) ────────────────────
+ // ── Consumer Data — service (JVS-17) ────────────────────
   ipcMain.handle('em:get-consumer-data', async (_e, months?: number) => {
     try {
       const result = await getConsumerDataReport(months || 12);
@@ -656,10 +656,10 @@ export function registerEmIPC(
     }
   });
 
-  // ── Margin Data — 融资融券数据服务 (JVS-18) ────────────────────
+ // ── Margin Data — margin tradingservice (JVS-18) ────────────────────
 
 
-  // ── Margin Data — 融资融券数据服务 (JVS-18) ────────────────────
+ // ── Margin Data — margin tradingservice (JVS-18) ────────────────────
   ipcMain.handle('em:get-margin-data', async () => {
     try {
       const result = await getMarginDataReport();

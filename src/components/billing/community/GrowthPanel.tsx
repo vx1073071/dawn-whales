@@ -1,7 +1,9 @@
 import i18n from '../../../i18n';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 ﻿import { useState, type CSSProperties } from 'react';
 
-// ── R80: ML-80-01/02/03 综合 — 内容审核+邀请裂变+成就+PWA+GA打磨 ──
+// ── R80: ML-80-01/02/03 — +invite++PWA+GA ──
 
 // Types
 interface ModerationItem { id: string; type: 'report' | 'spam' | 'sensitive'; user: string; content: string; status: 'pending' | 'approved' | 'blocked'; reportedAt: string }

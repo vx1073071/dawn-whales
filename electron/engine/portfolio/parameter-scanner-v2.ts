@@ -1,11 +1,11 @@
-// ── Parameter Scanner v2 — 内存优化 + 流式处理 ───────────────────────────
-// J3 优化：大规模参数扫描内存管理
-// 改进点：
-// 1. 流式处理（不一次性加载所有结果）
-// 2. TopK 堆（只保留最优 K 个结果，节省 99% 内存）
-// 3. 增量统计（在线计算均值/方差，不存储全部数据）
-// 4. 自动分页（超大数据集分批次处理）
-// 5. 并行回测（集成 ParallelBacktestEngine）
+// ── Parameter Scanner v2 — memory + ───────────────────────────
+// J3 ：parameter sweepmemory
+// ：
+// 1. （load）
+// 2. TopK （ K ， 99% memory）
+// 3. （/ 
+// 4. pagination 
+// 5. backtest（ ParallelBacktestEngine）
 
 import log from 'electron-log';
 import { BacktestEngine, ParallelBacktestEngine } from '../backtest/backtest-engine-parallel';
@@ -43,7 +43,7 @@ export interface ScannerConfig {
   slippage: number;
   klines: KLine[];
   optimizationTarget: 'sharpe' | 'return' | 'calmar' | 'profitFactor';
-  maxMemory?: number;  // 最大内存使用（结果数量），默认 1000
+  maxMemory?: number;  // 最大memory使用（结果数量），default 1000
 }
 
 interface ScanResult {
@@ -97,7 +97,7 @@ interface NeighborhoodResult {
   }[];
 }
 
-// ── TopK 堆（最小堆，保留最大的 K 个元素）─────────────────────────────────
+// ── TopK K ）─────────────────────────────────
 
 class TopKHeap {
   private heap: ScanResult[] = [];
@@ -168,7 +168,7 @@ class TopKHeap {
   }
 }
 
-// ── 增量统计计算器 ───────────────────────────────────────────────────────
+// ── ───────────────────────────────────────────────────────
 
 class IncrementalStats {
   private count = 0;
@@ -211,7 +211,7 @@ export class ParameterScanner {
   }
 
   /**
-   * 执行参数扫描（内存优化版）
+ * executeparameter sweep（memory）
    */
   async run(config: ScannerConfig): Promise<ScannerReport> {
     const startTime = Date.now();
@@ -224,7 +224,7 @@ export class ParameterScanner {
       return this.emptyReport(i18n.t('parameterScannerV2.k1'));
     }
 
-    // 分批处理（每批 maxMemory 个）
+ // （ maxMemory ）
     const batchSize = maxMemory;
     const topK = new TopKHeap(100, config.optimizationTarget);  // 保留 Top 100
     const allStats = new IncrementalStats();  // 增量统计
@@ -234,7 +234,7 @@ export class ParameterScanner {
     for (let i = 0; i < combinations.length; i += batchSize) {
       const batch = combinations.slice(i, i + batchSize);
       
-      // 并行回测当前批次
+ // backtestcurrent
       const batchConfigs = batch.map(params => ({
         symbol: config.symbol,
         initialCapital: config.initialCapital,
@@ -249,7 +249,7 @@ export class ParameterScanner {
 
       const batchResult = await this.parallelEngine.runParallel(batchConfigs);
       
-      // 处理结果
+ //
       for (const result of batchResult.results) {
         if (result.success && result.result) {
           const scanResult: ScanResult = {
@@ -274,7 +274,7 @@ export class ParameterScanner {
         }
       }
 
-      // 批次完成后释放内存（batchConfigs 会被 GC 回收）
+ // donememory（batchConfigs GC ）
       log.info(`[ParameterScanner v2] Batch ${Math.floor(i / batchSize) + 1} done, valid=${validCount}, topK=${topK.size()}`);
     }
 
@@ -286,7 +286,7 @@ export class ParameterScanner {
     const best = sorted[0];
     const top10 = sorted.slice(0, 10);
 
-    // 稳健参数筛选（使用 Top 100 而非全部结果）
+ // parameterfilter（ Top 100 ）
     const robust = this.findRobustParams(sorted, config.paramRanges);
     const heatmap = this.generateHeatmap(config.paramRanges, sorted, config.optimizationTarget);
     const neighborhood = this.analyzeNeighborhood(best, sorted, config.paramRanges);
@@ -317,7 +317,7 @@ export class ParameterScanner {
     };
   }
 
-  // ── 稳健参数筛选（优化：只搜索 TopK 结果）────────────────────────────────
+ // ── parameterfilter search TopK ）────────────────────────────────
 
   private findRobustParams(results: ScanResult[], ranges: ParamRange[]): ScanResult {
     if (results.length === 0) return { params: {}, sharpe: 0, totalReturn: 0, annualReturn: 0, maxDrawdown: 0, winRate: 0, profitFactor: 0, totalTrades: 0, avgHoldingBars: 0 };
@@ -366,7 +366,7 @@ export class ParameterScanner {
     });
   }
 
-  // ── 邻域分析 ──────────────────────────────────────────────────────────
+ // ── ──────────────────────────────────────────────────────────
 
   private analyzeNeighborhood(
     best: ScanResult,
@@ -412,7 +412,7 @@ export class ParameterScanner {
     };
   }
 
-  // ── 热力图 ────────────────────────────────────────────────────────────
+  // ── heatmap ────────────────────────────────────────────────────────────
 
   private generateHeatmap(
     ranges: ParamRange[],
@@ -456,7 +456,7 @@ export class ParameterScanner {
     };
   }
 
-  // ── 组合生成 ──────────────────────────────────────────────────────────
+ // ── ──────────────────────────────────────────────────────────
 
   private generateCombinations(ranges: ParamRange[]): Record<string, number>[] {
     if (ranges.length === 0) return [{}];
@@ -476,7 +476,7 @@ export class ParameterScanner {
     return combinations;
   }
 
-  // ── 建议和警告 ──────────────────────────────────────────────────────────
+ // ── warning ──────────────────────────────────────────────────────────
 
   private generateRecommendation(
     best: ScanResult,

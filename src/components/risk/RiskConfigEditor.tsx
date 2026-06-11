@@ -1,4 +1,4 @@
-// ── DAWN WHALES — RiskConfigEditor (风控配置编辑器) ─────────────────────────
+// ── DAWN WHALES — RiskConfigEditor (risk controlconfigedit) ─────────────────────────
 
 import { useState, useEffect } from 'react'
 import { EngineError } from '../../../electron/engine/core/engine-error';

@@ -41,6 +41,8 @@ export const RESPONSIVE = {
 };
 
 import { type CSSProperties } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // Number abbreviation helper
 export function abbreviateNumber(n: number): string {

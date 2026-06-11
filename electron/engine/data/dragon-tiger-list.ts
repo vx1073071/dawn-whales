@@ -1,4 +1,4 @@
-// ── JVS-10: Dragon Tiger List (龙虎榜) Data Service ────────────────────────
+// ── JVS-10: Dragon Tiger List (Dragon-Tiger list) Data Service ────────────────────────
 // Fetches daily Dragon Tiger List data from East Money
 // Shows institutional and major trader buy/sell activities
 
@@ -17,13 +17,13 @@ export interface DragonTigerEntry {
   code: string;           // 股票代码
   name: string;           // 股票名称
   close: number;          // 收盘价
-  changePct: number;      // 涨跌幅 %
-  netBuyAmount: number;   // 龙虎榜净买额 (万元)
+  changePct: number;      // price change % %
+  netBuyAmount: number;   // Dragon-Tiger list净买额 (万元)
   buyAmount: number;      // 买入额 (万元)
   sellAmount: number;     // 卖出额 (万元)
-  turnover: number;       // 成交额 (万元)
+  turnover: number;       // turnover (万元)
   netBuyRatio: number;    // 净买额占总成交比 %
-  turnoverRate: number;   // 换手率 %
+  turnoverRate: number;   // turnover rate %
   reason: string;         // 上榜原因
   date: string;           // 上榜日期
 }
@@ -66,7 +66,7 @@ const cache = new Map<string, CacheEntry>();
 // ── API Functions ──────────────────────────────────────────────────────────
 
 /**
- * 获取龙虎榜列表（当日或指定日期）
+ * Dragon-Tiger list 
  */
 export async function getDragonTigerList(date?: string): Promise<DragonTigerResult> {
   const targetDate = date || getTodayStr();
@@ -135,7 +135,7 @@ export async function getDragonTigerList(date?: string): Promise<DragonTigerResu
 }
 
 /**
- * 获取个股龙虎榜详情（买卖前五席位）
+ * Dragon-Tiger list 
  */
 export async function getDragonTigerDetail(code: string, date: string): Promise<DragonTigerDetail | null> {
   const cacheKey = `dtl-detail-${code}-${date}`;
@@ -191,7 +191,7 @@ export async function getDragonTigerDetail(code: string, date: string): Promise<
 }
 
 /**
- * 获取机构专用席位数据
+ *
  */
 export async function getInstitutionalTrades(date?: string): Promise<DragonTigerEntry[]> {
   const result = await getDragonTigerList(date);

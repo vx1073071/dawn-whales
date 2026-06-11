@@ -1,5 +1,5 @@
-// JVS-113: K线数据处理
-// 处理实时K线数据，支持多时间周期聚合和数据清洗
+// JVS-113: K
+// K，period
 
 import log from 'electron-log';
 
@@ -10,7 +10,7 @@ export interface KLineData {
   low: number;
   close: number;
   volume: number;
-  turnover?: number;       // 成交额
+  turnover?: number;       // turnover
 }
 
 export interface KLineProcessorConfig {

@@ -240,8 +240,8 @@ export class QuoteStreamService extends EventEmitter {
       code: d.f57 || symbol,
       name: d.f58 || '',
       price: this.parsePrice(d.f43),      // 最新价
-      changePct: this.parsePrice(d.f170),  // 涨跌幅
-      volume: d.f47 || 0,                  // 成交量
+      changePct: this.parsePrice(d.f170),  // price change %
+      volume: d.f47 || 0,                  // volume
       highPrice: this.parsePrice(d.f44),   // 最高价
       lowPrice: this.parsePrice(d.f45),    // 最低价
       openPrice: this.parsePrice(d.f46),   // 开盘价

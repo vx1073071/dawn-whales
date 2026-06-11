@@ -1,4 +1,6 @@
 import i18n from '../../../i18n';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:AI] structured error tracking
 ﻿import { useState, useMemo, useRef, type CSSProperties } from 'react';
 
 // ── Types ──

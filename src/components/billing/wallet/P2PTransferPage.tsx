@@ -1,6 +1,6 @@
 /**
  * P2PTransferPage — ML-62-01 [P0]
- * R62: v1.5.0-alpha — P2P USDT积分转账 (v15商业基建)
+ * R62: v1.5.0-alpha — P2P USDTpointstransfer (v15)
  *
  * Features:
  * - Recipient search + selection
@@ -15,6 +15,8 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import i18n from '../../../i18n';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 

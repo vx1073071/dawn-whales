@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from "react-i18next";
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 interface EquityPoint {
   date: string;

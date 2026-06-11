@@ -1,9 +1,9 @@
 /**
  * backtest-replay.ts
- * K-line Replay Engine — 历史 K 线回放引擎
+ * K-line Replay Engine — K
  *
- * 支持变速播放、断点设置、单步前进/后退、跳转、循环播放。
- * 使用内联 EventEmitter polyfill 以兼容 jsdom 环境（不依赖 Node 'events' 模块）。
+ * 、settings、/
+ * EventEmitter polyfill jsdom （ Node 'events' module
  *
  * @module electron/engine/backtest-replay
  */

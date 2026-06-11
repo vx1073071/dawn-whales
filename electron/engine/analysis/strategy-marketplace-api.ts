@@ -1,8 +1,8 @@
 /**
- * J-66-03 [P0]: 策略市场上架API (R66 v19 — v1.6.0 GA)
+ * J-66-03 [P0]: strategy marketplaceAPI (R66 v19 — v1.6.0 GA)
  *
- * 发布流程: 选策略→设价格(1-1000USDT)→写简介→上架
- * 搜索+筛选+排序(收益/订阅数/评分)
+ * release: strategy/policy→(1-1000USDT)→→
+ * search+filter+sort(/subscribe/)
  *
  * >=200L, 5 tests
  */

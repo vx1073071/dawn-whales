@@ -3,15 +3,17 @@
  * R69: v1.7.0-beta — Guest mode UI for unregistered user acquisition
  *
  * Features:
- * - "免费体验" entry button → enter read-only browse mode
- * - Top banner: "注册解锁AI分析+交易" with register CTA
- * - Usage limit prompts: "今日免费回测还剩X次"
+ * - "" entry button → enter read-only browse mode
+ * - Top banner: "registerlockAI+" with register CTA
+ * - Usage limit prompts: "backtestX"
  * - Guest session: signal square browse (read-only), basic backtest (5/day), market data, download
  * - Upgrade nudges at key interaction points
  */
 
 import { useState, useCallback } from 'react';
 import i18n from '../../../i18n';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -53,7 +55,7 @@ function GuestBanner({ onRegister, onUpgrade }: { onRegister?: () => void; onUpg
       padding: '10px 20px', background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', color: '#fff',
       fontSize: 13, fontWeight: 600,
     }}>
-      <span>👋 你正在以访客身份浏览 · 注册解锁AI分析+交易+信号订阅</span>
+      <span>{i18n.t('GuestModeShell.r92_0')}</span>
       <button onClick={onRegister}
         style={{ padding: '6px 18px', fontSize: 12, fontWeight: 700, background: '#fff', color: '#3b82f6', border: 'none', borderRadius: 8, cursor: 'pointer' }}>
         免费注册 → Register Free
@@ -213,7 +215,7 @@ export default function GuestModeShell({
             </div>
             {guestQuota.backtestUsed >= guestQuota.backtestLimit && (
               <div style={{ marginTop: 8, textAlign: 'center' }}>
-                <span style={{ fontSize: 11, color: '#fbbf24' }}>⚠️ 今日免费回测已用完 </span>
+                <span style={{ fontSize: 11, color: '#fbbf24' }}>{i18n.t('GuestModeShell.r92_1')}</span>
                 <button onClick={onUpgrade}
                   style={{ fontSize: 11, fontWeight: 700, background: 'none', color: '#3b82f6', border: 'none', cursor: 'pointer', marginLeft: 8 }}>
                   注册解锁无限 Backtest →

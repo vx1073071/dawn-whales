@@ -1,6 +1,6 @@
-// ── Backtest Engine — 回测引擎 v1 ──────────────────────────────────────────
-// 逐 bar 回放 K 线，评估策略信号，模拟成交，计算绩效指标
-// Phase 1: TypeScript | Phase 2: Rust N-API（性能热点）
+// ── Backtest Engine — backtest engine v1 ──────────────────────────────────────────
+// bar K ，strategy/policy metric
+// Phase 1: TypeScript | Phase 2: Rust N-API（performance）
 
 import log from 'electron-log';
 import i18n from '../../../src/i18n';
@@ -32,14 +32,14 @@ interface BacktestResult {
   success: boolean;
   result: {
     totalReturn: number;       // 总收益率 %
-    annualReturn: number;      // 年化收益率 %
-    sharpeRatio: number;       // 夏普比率
-    maxDrawdown: number;       // 最大回撤 %
-    winRate: number;           // 胜率 %
+    annualReturn: number;      // annualized return %
+    sharpeRatio: number;       // Sharpe ratio
+    maxDrawdown: number;       // max drawdown %
+    winRate: number;           // win rate %
     profitFactor: number;      // 盈亏比
     totalTrades: number;
     avgTradePnl: number;       // 平均交易收益 %
-    avgHoldingBars: number;    // 平均持仓 bar 数
+    avgHoldingBars: number;    // 平均position/holding bar 数
     equityCurve: { time: number; value: number }[];
     trades: Trade[];
     config: BacktestConfig;
@@ -62,8 +62,8 @@ interface BacktestConfig {
 interface StrategyConfig {
   type: 'ma_cross' | 'rsi' | 'macd' | 'momentum' | 'bollinger' | 'custom';
   params: Record<string, number>;
-  stopLoss?: number;           // 止损 %
-  takeProfit?: number;         // 止盈 %
+  stopLoss?: number;           // stop loss %
+  takeProfit?: number;         // take profit %
 }
 
 // ── Technical Indicators ───────────────────────────────────────────────────

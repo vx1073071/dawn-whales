@@ -1,5 +1,5 @@
-// JVS-114: 策略信号实时推送
-// 实时监控策略信号并通过WebSocket推送给订阅客户端
+// JVS-114: strategy/policy
+// strategy/policyWebSocketsubscribe
 
 import log from 'electron-log';
 import { EventEmitter } from 'events';
@@ -9,10 +9,10 @@ export interface StrategySignal {
   strategyName: string;
   symbol: string;
   signal: 'BUY' | 'SELL' | 'HOLD';
-  strength: number;          // 0-100 信号强度
+  strength: number;          // 0-100
   timestamp: number;
   price: number;
-  confidence: number;        // 0-100 置信度
+  confidence: number;        // 0-100
   metadata?: Record<string, any>;
 }
 
@@ -20,7 +20,7 @@ export interface SignalSubscription {
   clientId: string;
   symbols: string[];
   strategies: string[];
-  minStrength?: number;      // 最小信号强度过滤
+  minStrength?: number;
 }
 
 export interface SignalAlert {

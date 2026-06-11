@@ -1,5 +1,5 @@
 // ── DAWN WHALES — Broker Manager (Multi-Broker) ──────────────────────────────
-// Sprint 1: 多券商统一管理器
+// Sprint 1: 
 
 import log from 'electron-log';
 import { FutuOpenDClient } from './futu-opend';

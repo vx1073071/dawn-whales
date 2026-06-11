@@ -1,19 +1,19 @@
 /**
- * JVS-47-03: 数据管道可靠性
- * 实现断线重连+延迟监控+缓存命中>90%
+ * JVS-47-03: data pipelinereliability
+ * +latency+cache hit>90%
  * 
- * 特性:
- * - 自动断线重连机制
- * - 延迟监控和告警
- * - 智能缓存策略
- * - 缓存命中率统计
+ * :
+ *
+ * - latency
+ * - cachestrategy/policy
+ * - cache hit
  */
 
 import { EventEmitter } from 'events';
 import { EngineError, ErrorDomain, ErrorCode } from '../core/engine-error';
 import log from 'electron-log';
 
-// ─── 类型定义 ───────────────────────────────────────────────────────────────
+// ─── ───────────────────────────────────────────────────────────────
 
 export interface PipelineConfig {
   maxRetries: number;
@@ -43,7 +43,7 @@ export interface PipelineStatus {
   retryCount: number;
 }
 
-// ─── 数据管道可靠性管理器 ─────────────────────────────────────────────────────
+// ─── data pipelinereliability ─────────────────────────────────────────────────────
 
 export class DataPipelineReliability extends EventEmitter {
   private config: PipelineConfig;
@@ -90,13 +90,13 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 请求数据（带缓存和重试）
+ * request（cacheretry）
    */
   async requestData<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
     const startTime = Date.now();
     this.metrics.totalRequests++;
 
-    // 1. 检查缓存
+ // 1. cache
     if (this.config.cacheEnabled) {
       const cached = this.getCachedData<T>(key);
       if (cached) {
@@ -107,16 +107,16 @@ export class DataPipelineReliability extends EventEmitter {
       this.metrics.cacheMisses++;
     }
 
-    // 2. 请求数据（带重试）
+ // 2. request（retry）
     try {
       const data = await this.fetchWithRetry(fetcher);
       
-      // 缓存数据
+ // cache
       if (this.config.cacheEnabled) {
         this.cacheData(key, data);
       }
 
-      // 更新指标
+      // updatemetric
       this.metrics.successfulRequests++;
       const latency = Date.now() - startTime;
       this.updateLatency(latency);
@@ -130,7 +130,7 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 带重试的数据获取
+ * retry
    */
   private async fetchWithRetry<T>(fetcher: () => Promise<T>): Promise<T> {
     let lastError: Error | null = null;
@@ -139,7 +139,7 @@ export class DataPipelineReliability extends EventEmitter {
       try {
         const data = await this.withTimeout(fetcher(), this.config.timeout);
         
-        // 成功连接
+ // success
         this.status.connected = true;
         this.status.retryCount = 0;
         this.status.lastConnectionTime = Date.now();
@@ -157,7 +157,7 @@ export class DataPipelineReliability extends EventEmitter {
       }
     }
 
-    // 所有重试失败
+ // retryfailed
     this.status.connected = false;
     this.status.lastError = lastError?.message || 'Unknown error';
     this.metrics.reconnectionAttempts++;
@@ -167,7 +167,7 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 带超时控制的 Promise
+ * timeout Promise
    */
   private withTimeout<T>(promise: Promise<T>, timeout: number): Promise<T> {
     return new Promise((resolve, reject) => {
@@ -188,7 +188,7 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 获取缓存数据
+ * cache
    */
   private getCachedData<T>(key: string): T | null {
     const cached = this.cache.get(key);
@@ -204,7 +204,7 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 缓存数据
+ * cache
    */
   private cacheData(key: string, data: unknown): void {
     this.cache.set(key, {
@@ -212,7 +212,7 @@ export class DataPipelineReliability extends EventEmitter {
       timestamp: Date.now(),
     });
 
-    // 限制缓存大小
+ // limitcache
     if (this.cache.size > 1000) {
       const oldestKey = this.cache.keys().next().value;
       if (oldestKey) {
@@ -222,7 +222,7 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 更新延迟统计
+ * updatelatency
    */
   private updateLatency(latency: number): void {
     const totalRequests = this.metrics.successfulRequests + this.metrics.failedRequests;
@@ -232,7 +232,7 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 更新缓存命中率
+ * updatecache hit
    */
   private updateCacheHitRate(): void {
     const total = this.metrics.cacheHits + this.metrics.cacheMisses;
@@ -240,14 +240,14 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 延迟函数
+ * latency
    */
   private delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   /**
-   * 启动监控
+ *
    */
   private startMonitoring(): void {
     // Use real timers for monitoring to avoid conflicts with fake timers in tests
@@ -258,7 +258,7 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 获取当前指标
+ * currentmetric
    */
   getMetrics(): PipelineMetrics {
     this.updateCacheHitRate();
@@ -266,14 +266,14 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 获取当前状态
+ * current
    */
   getStatus(): PipelineStatus {
     return { ...this.status };
   }
 
   /**
-   * 手动重连
+ *
    */
   async reconnect(): Promise<void> {
     log.info('[Pipeline] Manual reconnection triggered');
@@ -283,7 +283,7 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 清理资源
+ *
    */
   destroy(): void {
     if (this.reconnectTimer) {
@@ -296,7 +296,7 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 获取缓存命中率
+ * cache hit
    */
   getCacheHitRate(): number {
     this.updateCacheHitRate();
@@ -304,14 +304,14 @@ export class DataPipelineReliability extends EventEmitter {
   }
 
   /**
-   * 检查缓存命中率是否达标（>90%）
+ * cache hit（>90%）
    */
   isCacheHitRateHealthy(): boolean {
     return this.getCacheHitRate() >= 90;
   }
 }
 
-// 单例导出
+// export
 let reliabilityInstance: DataPipelineReliability | null = null;
 
 export function getPipelineReliability(config?: Partial<PipelineConfig>): DataPipelineReliability {

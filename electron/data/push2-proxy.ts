@@ -79,7 +79,7 @@ export class Push2ProxyService {
     this.pythonPath = 'python';
   }
 
-  // ── Sector Heatmap (替代 push2 clist API) ──────────────────────────────
+ // ── Sector Heatmap ( push2 clist API) ──────────────────────────────
 
   async getSectorHeatmap(type: 'industry' | 'concept' | 'region' = 'industry', limit = 50): Promise<ProxyResult> {
     const cacheKey = `sector-heatmap-${type}`;
@@ -142,7 +142,7 @@ export class Push2ProxyService {
     return { success: false, data: [], source: 'push2', latencyMs: Date.now() - start };
   }
 
-  // ── Capital Flow (替代 push2 capital flow API) ─────────────────────────
+ // ── Capital Flow ( push2 capital flow API) ─────────────────────────
 
   async getCapitalFlowRank(type: 'stock' | 'sector' | 'concept' = 'stock', limit = 50): Promise<ProxyResult> {
     const cacheKey = `capital-flow-${type}`;
@@ -189,7 +189,7 @@ export class Push2ProxyService {
     return { success: false, data: [], source: 'push2', latencyMs: Date.now() - start };
   }
 
-  // ── Stock Quotes (替代 push2 stock/get API) ────────────────────────────
+ // ── Stock Quotes ( push2 stock/get API) ────────────────────────────
 
   async getStockQuote(secid: string): Promise<ProxyResult> {
     const cacheKey = `stock-quote-${secid}`;
@@ -225,7 +225,7 @@ export class Push2ProxyService {
     return { success: false, data: null, source: 'push2', latencyMs: Date.now() - start };
   }
 
-  // ── Market Breadth (替代 push2 ulist API) ──────────────────────────────
+ // ── Market Breadth ( push2 ulist API) ──────────────────────────────
 
   async getMarketBreadth(): Promise<ProxyResult> {
     const cacheKey = 'market-breadth';

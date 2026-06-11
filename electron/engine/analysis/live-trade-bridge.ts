@@ -1,7 +1,7 @@
 /**
- * LiveTradeBridge - 实盘交易桥接器 (Enhanced)
- * 将模拟盘（Paper Trading）与实盘（Live Trading）打通，
- * 提供订单同步、风控校验、仓位对账、审计追踪、模式切换和 Dry-run 能力。
+ * LiveTradeBridge - (Enhanced)
+ * （Paper Trading Live Trading
+ * ordersync、risk control audit trail、 Dry-run 。
  *
  * Enhanced features:
  *  - Paper/Live mode switching with full lifecycle management
@@ -320,7 +320,7 @@ export class LiveTradeBridge {
   // ── Public API ─────────────────────────────────────────────────────────────
 
   /**
-   * 提交模拟盘订单到桥接器，经风控校验后转发到实盘
+ * submitorder，risk control
    */
   async submitPaperOrder(order: PaperOrder): Promise<BridgeOrder> {
     this.resetDailyStatsIfNeeded();
@@ -335,7 +335,7 @@ export class LiveTradeBridge {
     this.addAudit(bridgeOrder, 'order_received', i18n.t('liveTradeBridge.k1'));
     this.emit('order:received', bridgeOrder);
 
-    // ── 风控校验 ──
+ // ── risk control ──
     if (this.config.riskCheckEnabled) {
       const riskResult = this.validateOrder(order);
       if (!riskResult.pass) {
@@ -356,7 +356,7 @@ export class LiveTradeBridge {
     this.addAudit(bridgeOrder, 'risk_check_passed', i18n.t('liveTradeBridge.k3'));
     this.emit('order:risk_passed', bridgeOrder);
 
-    // ── 执行订单 ──
+    // ── executeorder ──
     if (this.config.dryRun) {
       // MARKET orders are immediately filled in dry-run mode
       // LIMIT/STOP orders remain pending for testing cancellation
@@ -395,7 +395,7 @@ export class LiveTradeBridge {
       this.addAudit(bridgeOrder, 'order_submitted', i18n.t('liveTradeBridge.k7'));
       this.emit('order:submitted', bridgeOrder);
 
-      // 处理即时成交 / 部分成交
+ // /
       if (liveOrder.status === 'filled') {
         this.handleOrderFilled(bridgeOrder, liveOrder);
       } else if (liveOrder.status === 'partial_fill') {
@@ -868,7 +868,7 @@ export class LiveTradeBridge {
   }
 
   private initDefaultRiskRules(): void {
-    // 规则 1: 单品种持仓集中度
+ // rule 1: position/holding
     this.riskRules.push({
       id: 'concentration',
       name: i18n.t('liveTradeBridge.k17'),
@@ -890,7 +890,7 @@ export class LiveTradeBridge {
       },
     });
 
-    // 规则 2: 日内亏损限制
+ // rule 2: limit
     this.riskRules.push({
       id: 'daily_loss',
       name: i18n.t('liveTradeBridge.k19'),
@@ -903,7 +903,7 @@ export class LiveTradeBridge {
       },
     });
 
-    // 规则 3: 最小下单量
+ // rule 3:
     this.riskRules.push({
       id: 'min_qty',
       name: i18n.t('liveTradeBridge.k21'),

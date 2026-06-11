@@ -505,7 +505,7 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
               </svg>
               <div className="flex justify-between text-[10px] text-gray-600 mt-1">
                 <span>{i18n.t('StrategyOptimizerPanel.k1')}</span>
-                <span className="text-emerald-500">--- 最优线</span>
+                <span className="text-emerald-500">{i18n.t('StrategyOptimizerPanel.r92_0')}</span>
                 <span>{i18n.t('StrategyOptimizerPanel.k0')}{convergenceData.length}</span>
               </div>
             </div>
@@ -565,7 +565,7 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
       {status === 'idle' && (
         <div className="text-center py-10 text-gray-600 text-sm">
           <div className="text-3xl mb-2">🎯</div>
-          <p>选择优化模式并点击i18n.t('StrategyOptimizerPanel.k7')</p>
+          <p>{i18n.t('StrategyOptimizerPanel.r92_1')}</p>
           <p className="text-xs mt-1 text-gray-700">
             将自动寻找 {strategy.name} 的最优参数组合
           </p>

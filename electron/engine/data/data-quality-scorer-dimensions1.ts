@@ -56,7 +56,7 @@ function scoreCompleteness(data: unknown[], context: QualityContext): DimensionR
     if (rowHasMissing) rowsWithMissing.push(i);
   }
 
-  // Gap detection 鈥?check for timestamp gaps larger than 2x expected interval
+ // Gap detection ?check for timestamp gaps larger than 2x expected interval
   let gaps = 0;
   let maxGapMs = 0;
   const intervalMs = context.expectedInterval ? intervalToMs(context.expectedInterval) : null;
@@ -133,7 +133,7 @@ function scoreCompleteness(data: unknown[], context: QualityContext): DimensionR
 }
 
 /**
- * 2. Accuracy 鈥?OHLC consistency and positive prices.
+ * 2. Accuracy ?OHLC consistency and positive prices.
  */
 function scoreAccuracy(data: unknown[], _context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
@@ -290,7 +290,7 @@ function scoreAccuracy(data: unknown[], _context: QualityContext): DimensionResu
 }
 
 /**
- * 3. Timeliness 鈥?data freshness and update frequency vs expected.
+ * 3. Timeliness ?data freshness and update frequency vs expected.
  */
 function scoreTimeliness(data: unknown[], context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
@@ -412,7 +412,7 @@ function scoreTimeliness(data: unknown[], context: QualityContext): DimensionRes
 }
 
 /**
- * 4. Consistency 鈥?no contradictions, stable schema across rows.
+ * 4. Consistency ?no contradictions, stable schema across rows.
  */
 function scoreConsistency(data: unknown[], _context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
@@ -430,7 +430,7 @@ function scoreConsistency(data: unknown[], _context: QualityContext): DimensionR
     };
   }
 
-  // Check schema consistency 鈥?all rows should have the same keys
+ // Check schema consistency ?all rows should have the same keys
   const keySets = new Map<string, number>();
   for (let i = 0; i < total; i++) {
     const keys = Object.keys(data[i]).sort().join(',');
@@ -543,6 +543,6 @@ function scoreConsistency(data: unknown[], _context: QualityContext): DimensionR
 }
 
 /**
- * 5. Uniqueness 鈥?duplicate detection by timestamp.
+ * 5. Uniqueness ?duplicate detection by timestamp.
  */
 function scoreUniqueness(data: unknown[], _context: QualityContext): DimensionResult {

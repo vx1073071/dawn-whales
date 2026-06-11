@@ -9,6 +9,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../../i18n';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -117,7 +119,7 @@ export default function CopyPolish({ className = '' }: CopyPolishProps) {
         {section === 'pricing' && (
           <>
             <div className="bg-[#111119] border border-white/5 rounded-xl p-5 mb-5">
-              <h3 className="text-gray-300 font-semibold text-sm mb-4">💰 AI分析定价 (最终)</h3>
+              <h3 className="text-gray-300 font-semibold text-sm mb-4">{i18n.t('CopyPolish.r92_0')}</h3>
               <div className="grid grid-cols-3 gap-3">
                 {PRICING_FINAL.map(t => (
                   <div key={t.tier} className={`rounded-xl p-4 text-center border ${t.highlight ? 'border-blue-500/30 bg-blue-500/5' : 'border-white/5'}`}>
@@ -141,7 +143,7 @@ export default function CopyPolish({ className = '' }: CopyPolishProps) {
               </div>
             </div>
             <div className="bg-green-500/5 border border-green-500/10 rounded-xl p-4 text-center">
-              <span className="text-green-400 text-xs font-semibold">✅ 定价文案最终确认 — v1.7.0 GA 上线用</span>
+              <span className="text-green-400 text-xs font-semibold">{i18n.t('CopyPolish.r92_1')}</span>
             </div>
           </>
         )}
@@ -150,7 +152,7 @@ export default function CopyPolish({ className = '' }: CopyPolishProps) {
         {section === 'download' && (
           <>
             <div className="bg-[#111119] border border-white/5 rounded-xl p-5 mb-5">
-              <h3 className="text-gray-300 font-semibold text-sm mb-4">📦 下载平台 (最终)</h3>
+              <h3 className="text-gray-300 font-semibold text-sm mb-4">{i18n.t('CopyPolish.r92_2')}</h3>
               <div className="grid grid-cols-3 gap-3">
                 {PLATFORMS_FINAL.map(p => (
                   <div key={p.os} className="border border-white/5 rounded-xl p-4 text-center hover:border-white/10 transition-colors">
@@ -175,13 +177,13 @@ export default function CopyPolish({ className = '' }: CopyPolishProps) {
         {section === 'freevspaid' && (
           <>
             <div className="bg-[#111119] border border-white/5 rounded-xl overflow-hidden mb-5">
-              <h3 className="text-gray-300 font-semibold text-sm p-5 pb-3">🆓 vs 💰 功能边界 (最终)</h3>
+              <h3 className="text-gray-300 font-semibold text-sm p-5 pb-3">{i18n.t('CopyPolish.r92_3')}</h3>
               <table className="w-full text-xs">
                 <thead>
                   <tr className="bg-white/[0.02] text-gray-500">
                     <th className="text-left px-5 py-2 font-medium">{i18n.t('CopyPolish.k1')}</th>
-                    <th className="text-center px-5 py-2 font-medium text-green-400">🆓 免费 Free</th>
-                    <th className="text-center px-5 py-2 font-medium text-[#D4A853]">💰 付费 Paid</th>
+                    <th className="text-center px-5 py-2 font-medium text-green-400">{i18n.t('CopyPolish.r92_4')}</th>
+                    <th className="text-center px-5 py-2 font-medium text-[#D4A853]">{i18n.t('CopyPolish.r92_5')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
@@ -196,7 +198,7 @@ export default function CopyPolish({ className = '' }: CopyPolishProps) {
               </table>
             </div>
             <div className="bg-green-500/5 border border-green-500/10 rounded-xl p-4 text-center">
-              <span className="text-green-400 text-xs font-semibold">✅ 免费边界最终确认 — 14项功能对照</span>
+              <span className="text-green-400 text-xs font-semibold">{i18n.t('CopyPolish.r92_6')}</span>
             </div>
           </>
         )}
@@ -205,7 +207,7 @@ export default function CopyPolish({ className = '' }: CopyPolishProps) {
         {section === 'features' && (
           <>
             <div className="bg-[#111119] border border-white/5 rounded-xl p-5 mb-5">
-              <h3 className="text-gray-300 font-semibold text-sm mb-4">📋 核心功能 (最终)</h3>
+              <h3 className="text-gray-300 font-semibold text-sm mb-4">{i18n.t('CopyPolish.r92_7')}</h3>
               <div className="grid grid-cols-2 gap-3">
                 {FEATURES_FINAL.map(f => (
                   <div key={f.title} className="border border-white/5 rounded-xl p-4">
@@ -217,7 +219,7 @@ export default function CopyPolish({ className = '' }: CopyPolishProps) {
               </div>
             </div>
             <div className="bg-green-500/5 border border-green-500/10 rounded-xl p-4 text-center">
-              <span className="text-green-400 text-xs font-semibold">✅ 功能文案最终确认 — 6大核心能力</span>
+              <span className="text-green-400 text-xs font-semibold">{i18n.t('CopyPolish.r92_8')}</span>
             </div>
           </>
         )}

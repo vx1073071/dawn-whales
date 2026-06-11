@@ -1,5 +1,5 @@
 /**
- * J-57-04: 宏观 Agent 真实实现 (Macro Agent)
+ * J-57-04: Agent (Macro Agent)
  * Responsibilities: Macro indicators, interest rates, inflation, GDP,
  *   sector analysis, geopolitical risk, currency impact
  * LLM: DeepSeek V4 Pro (cached, 99% off)

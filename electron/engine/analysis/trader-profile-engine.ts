@@ -2,16 +2,16 @@
  * J-53-01: Trader Profile Engine [P0]
  * v1.1.0-beta — Social Trading Foundation
  *
- * 功能:
- * - 交易员档案 CRUD (TraderProfile)
- * - 绩效指标计算 (Sharpe/WinRate/MaxDrawdown/ProfitFactor)
- * - 多维度排名系统 (TraderRanking)
- * - 交易员认证机制 (TraderCertification)
+ * :
+ * - CRUD (TraderProfile)
+ * - metric (Sharpe/WinRate/MaxDrawdown/ProfitFactor)
+ * - (TraderRanking)
+ * - (TraderCertification)
  *
- * 验收标准:
- * - 代码量 ≥ 500L
- * - 测试 ≥ 30 tests, 全部 pass
- * - API 响应 < 150ms
+ * :
+ * - ≥ 500L
+ * - ≥ 30 tests, pass
+ * - API response < 150ms
  */
 
 import log from 'electron-log';

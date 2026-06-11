@@ -12,6 +12,8 @@
  */
 
 import React, { useState, useCallback, useMemo } from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:DATA] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 

@@ -1,4 +1,4 @@
-// ── DAWN WHALES — MarketMovers (市场异动) ──────────────────────────────────
+// ── DAWN WHALES — MarketMovers () ──────────────────────────────────
 
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next';

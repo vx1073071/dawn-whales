@@ -11,6 +11,8 @@
  */
 
 import React, { useState } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 

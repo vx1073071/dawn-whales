@@ -1,11 +1,11 @@
 /**
- * J-68-03 [P0] 回测加速引擎 — 并行+缓存+TopK
+ * J-68-03 [P0] backtest — +cache+TopK
  *
  * PM specs:
- * - 并行回测(worker_threads, 4核→4x速度)
- * - 结果缓存(TTL 1h, SHA256 key)
- * - TopK堆返回(只保留前100最优结果)
- * - 目标: 1年日线回测<2s (当前>5s)
+ * - backtest(worker_threads, 4→4x)
+ * - cache(TTL 1h, SHA256 key)
+ * - TopKback(100)
+ * - : 1backtest<2s (current>5s)
  * - >=250L, 7 tests
  */
 
@@ -24,10 +24,10 @@ export interface BacktestParams {
 
 export interface BacktestResult {
   symbol: string;
-  totalReturn: number;   // 总收益率 (0-1)
+  totalReturn: number;   // (0-1)
   sharpeRatio: number;
-  maxDrawdown: number;   // 最大回撤 (0-1, positive = worse)
-  winRate: number;       // 胜率 (0-1)
+  maxDrawdown: number;   // max drawdown (0-1, positive = worse)
+  winRate: number;       // win rate (0-1)
   totalTrades: number;
   finalCapital: number;
   annualReturn: number;

@@ -3,6 +3,8 @@ import type { SidebarView } from '@/lib/types';
 import AccountSummary from '@/components/trading/AccountSummary';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 interface NavItem {
   id: SidebarView;

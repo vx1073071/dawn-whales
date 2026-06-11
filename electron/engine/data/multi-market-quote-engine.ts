@@ -221,7 +221,7 @@ export class MultiMarketQuoteEngine {
     return cumVol > 0 ? cumValue / cumVol : 0;
   }
 
-  // ── Ticks (逐笔成交) ──────────────────────────────────────────────────
+ // ── Ticks () ──────────────────────────────────────────────────
 
   appendTick(tick: Tick): void {
     const key = this.symbolKey(tick.market, tick.symbol);

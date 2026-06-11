@@ -1,4 +1,4 @@
-// ── DAWN WHALES — PriceAlertPanel (价格告警面板) ───────────────────────────
+// ── DAWN WHALES — PriceAlertPanel () ───────────────────────────
 
 import { useState, useEffect, useCallback } from 'react'
 import { EngineError } from '../../../electron/engine/core/engine-error';

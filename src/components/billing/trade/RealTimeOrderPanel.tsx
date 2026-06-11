@@ -14,6 +14,8 @@
  */
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:TRADE] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 

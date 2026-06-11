@@ -1,6 +1,6 @@
 /**
  * DesktopCleanupShell — ML-63-02 [P0]
- * R63: v1.5.0-rc — Desktop thin-client refactor (服务器化防破解)
+ * R63: v1.5.0-rc — Desktop thin-client refactor (service)
  *
  * Features:
  * - API availability indicator (server /api connection status)

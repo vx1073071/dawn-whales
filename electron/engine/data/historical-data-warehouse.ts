@@ -1,5 +1,5 @@
 // ── Historical Data Warehouse (JVS-58) ─────────────────────────────────────
-// 历史数据仓库 - 分级存储：热数据（内存）→ 温数据（SQLite）→ 冷数据（压缩文件）
+// - memory）→ （SQLite）→ （compress）
 
 import Database from 'better-sqlite3';
 import { EngineError } from '../core/engine-error';

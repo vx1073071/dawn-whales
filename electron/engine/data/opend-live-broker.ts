@@ -7,7 +7,7 @@ import { EngineError, ErrorCode } from '../../errors';
  * - Real order placement via OpenD (127.0.0.1:11111)
  * - Cancel order + query positions + account info
  * - HK stock fee: 0.1% commission + exchange fee + stamp duty
- * - CN stock via Stock Connect (沪深港通)
+ * - CN stock via Stock Connect ()
  * - US stock: pre/post market support
  * - Market-specific lot size handling
  * - Auto-fallback to SimulationBroker if OpenD unavailable

@@ -1,10 +1,10 @@
 /**
- * J-65-01 [P0]: 下载+注册API (R65 FIX — v1.6.0-beta)
+ * J-65-01 [P0]: download+registerAPI (R65 FIX — v1.6.0-beta)
  *
- * 桌面端版本检测 + 下载链接分发 + 自动更新检测。
- * 注册: 邮箱+密码 → 完善创作者资料 → 充USDT → 开始使用。
- * 桌面端完全免费, 付费功能靠USDT积分。
- * NO激活码, NO试用期, NO到期锁定。
+ * version + download + update。
+ * register: email+password → creator → USDT → start。
+ * , USDTpoints。
+ * NO, NO, NOlock。
  *
  * Features:
  * - Version check + download links (Win/Mac/Linux)

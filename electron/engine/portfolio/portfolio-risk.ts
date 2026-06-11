@@ -1,4 +1,4 @@
-// ── JVS-15: Portfolio Risk Calculator (组合风险计算器) ────────────────────
+// ── JVS-15: Portfolio Risk Calculator () ────────────────────
 // Calculates portfolio risk metrics using JVS data modules
 // Integrates: correlation matrix, sentiment, anomaly, sector rotation
 
@@ -17,15 +17,15 @@ export interface PortfolioPosition {
   name: string;
   shares: number;          // 持有股数
   avgCost: number;         // 平均成本
-  currentPrice: number;    // 当前价格
-  weight?: number;         // 权重 (optional, will be calculated)
-  sector?: string;         // 所属板块
+  currentPrice: number;    // current价格
+  weight?: number;         // weight (optional, will be calculated)
+  sector?: string;         // 所属sector
 }
 
 export interface PortfolioRiskRequest {
   positions: PortfolioPosition[];
   riskFreeRate?: number;   // 无风险利率 (default 2.5%)
-  benchmarkCode?: string;  // 基准指数代码
+  benchmarkCode?: string;  // 基准index代码
   includeConcentration?: boolean;
   includeCorrelation?: boolean;
   includeSentiment?: boolean;
@@ -37,21 +37,21 @@ export interface PortfolioRiskReport {
 
   // Portfolio overview
   overview: {
-    totalValue: number;        // 总市值
+    totalValue: number;        // total market cap
     totalCost: number;         // 总成本
     totalPnl: number;          // 总盈亏
     totalPnlPct: number;       // 总盈亏比例 %
-    positionCount: number;     // 持仓数
-    topWeight: number;         // 最大持仓权重 %
+    positionCount: number;     // position/holding数
+    topWeight: number;         // 最大position/holdingweight %
   };
 
   // Concentration risk
   concentration: {
     hhi: number;               // Herfindahl-Hirschman Index (0-10000)
     hhiGrade: 'low' | 'medium' | 'high' | 'very_high';
-    top3Weight: number;        // 前3大持仓权重 %
-    top5Weight: number;        // 前5大持仓权重 %
-    sectorConcentration: Record<string, number>; // 板块分布
+    top3Weight: number;        // 前3大position/holdingweight %
+    top5Weight: number;        // 前5大position/holdingweight %
+    sectorConcentration: Record<string, number>; // sector分布
     risk: string;
   };
 

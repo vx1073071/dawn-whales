@@ -1,4 +1,4 @@
-// ── DAWN WHALES — MarketClock (全球市场时钟) ───────────────────────────────
+// ── DAWN WHALES — MarketClock () ───────────────────────────────
 
 import { useState, useEffect } from 'react';
 import i18n from '../../i18n';

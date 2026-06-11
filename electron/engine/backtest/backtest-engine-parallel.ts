@@ -1,6 +1,6 @@
-// ── Backtest Engine — 多线程并行版 v2 ──────────────────────────────────────
-// 使用 worker_threads 实现并行回测，大幅提升参数扫描和多策略评估性能
-// Phase 1: TypeScript Worker | Phase 2: Rust N-API（性能热点）
+// ── Backtest Engine — v2 ──────────────────────────────────────
+// worker_threads backtest，parameter sweepstrategy/policyperformance
+// Phase 1: TypeScript Worker | Phase 2: Rust N-API（performance）
 
 import { Worker, isMainThread, parentPort, workerData } from 'worker_threads';
 import log from 'electron-log';
@@ -9,7 +9,7 @@ import i18n from '../../../src/i18n';
 import { EngineError } from '../core/engine-error';
 
 
-// ── Types (与主引擎一致) ───────────────────────────────────────────────────
+// ── Types () ───────────────────────────────────────────────────
 
 interface KLine {
   time: number;
@@ -70,7 +70,7 @@ interface StrategyConfig {
   takeProfit?: number;
 }
 
-// ── Worker 消息协议 ────────────────────────────────────────────────────────
+// ── Worker message ────────────────────────────────────────────────────────
 
 interface WorkerRequest {
   jobId: string;
@@ -83,7 +83,7 @@ interface WorkerResponse {
   error?: string;
 }
 
-// ── Worker 入口（当作为 worker 运行时）──────────────────────────────────────
+// ── Worker （ worker ）──────────────────────────────────────
 
 if (!isMainThread && parentPort) {
   const { jobId, config } = workerData as WorkerRequest;
@@ -101,7 +101,7 @@ if (!isMainThread && parentPort) {
   }
 }
 
-// ── 核心回测引擎（可在线程中运行）──────────────────────────────────────────
+// ── backtest engine ──────────────────────────────────────────
 
 class BacktestEngineCore {
   run(config: BacktestConfig): BacktestResult {
@@ -485,10 +485,10 @@ class BacktestEngineCore {
   }
 }
 
-// ── 并行回测引擎（主线程使用）───────────────────────────────────────────────
+// ── backtest engine ───────────────────────────────────────────────
 
 export interface ParallelBacktestConfig extends BacktestConfig {
-  maxWorkers?: number;  // 最大工作线程数，默认 CPU 核心数
+  maxWorkers?: number;  // ，default CPU
 }
 
 export interface ParallelBacktestResult {
@@ -507,16 +507,16 @@ export class ParallelBacktestEngine {
   }
 
   /**
-   * 并行运行多个回测任务
-   * @param configs 多个回测配置数组
-   * @returns 所有回测结果
+ * backtest
+ * @param configs backtestconfig
+ * @returns backtest result
    */
   async runParallel(configs: BacktestConfig[]): Promise<ParallelBacktestResult> {
     const startTime = Date.now();
     const results: BacktestResult[] = [];
     const failedJobs: string[] = [];
 
-    // 分批处理，控制并发数
+ // ，concurrency
     const batchSize = this.maxWorkers;
     for (let i = 0; i < configs.length; i += batchSize) {
       const batch = configs.slice(i, i + batchSize);
@@ -551,7 +551,7 @@ export class ParallelBacktestEngine {
   }
 
   /**
-   * 单个工作线程运行
+ *
    */
   private runInWorker(config: BacktestConfig, jobId: number): Promise<BacktestResult> {
     return new Promise((resolve) => {
@@ -567,7 +567,7 @@ export class ParallelBacktestEngine {
           success: false, 
           result: { reason: i18n.t('backtestEngineParallel.k5') } as any
         });
-      }, 60000); // 60 秒超时
+      }, 60000); // 60 timeout
 
       worker.on('message', (response: WorkerResponse) => {
         clearTimeout(timeout);
@@ -587,7 +587,7 @@ export class ParallelBacktestEngine {
   }
 }
 
-// ── 导出兼容类（保持与原引擎 API 一致）──────────────────────────────────────
+// ── export（ API ）──────────────────────────────────────
 
 export class BacktestEngine {
   private parallelEngine: ParallelBacktestEngine;
@@ -599,13 +599,13 @@ export class BacktestEngine {
   async run(config: BacktestConfig): Promise<BacktestResult> {
     log.info(i18n.t('backtestEngineParallel.k6'), config.strategy?.type, config.symbol);
     
-    // 单任务时直接使用核心引擎，避免 worker 开销
+ // ， worker
     const core = new BacktestEngineCore();
     return core.run(config);
   }
 
   /**
-   * 并行运行多个回测
+ * backtest
    */
   async runBatch(configs: BacktestConfig[]): Promise<ParallelBacktestResult> {
     log.info(i18n.t('backtestEngineParallel.k7'), configs.length, i18n.t('backtestEngineParallel.k8'));

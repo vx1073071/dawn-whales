@@ -1,5 +1,5 @@
 // electron/engine/condition-engine.ts
-// ConditionEngine — 条件触发核心引擎
+// ConditionEngine — condition
 // Phase 4.2: PriceCondition evaluate + cooldown + maxTriggersPerDay
 
 import {
@@ -29,9 +29,9 @@ function isToday(ms: number): boolean {
 
 export class ConditionEngine {
   private rules: Map<string, ConditionRule> = new Map();
-  // 每 symbol 的上一个价格（用于 crosses 检测）
+ // symbol （ crosses ）
   private lastPrice: Map<string, number> = new Map();
-  // 触发历史
+ //
   private history: TriggerEvent[] = [];
 
   constructor() {}
@@ -105,14 +105,14 @@ export class ConditionEngine {
   // ── Evaluate ─────────────────────────────────────────
 
   /**
-   * 评估所有与 symbol 相关的规则，返回每个规则的触发结果
+ * symbol rule，backrule
    */
   evaluate(symbol: string, data: MarketSnapshot): TriggerResult[] {
     const rules = this.listRules({ symbol, enabled: true });
     const price = data.close;
     const now = Date.now();
 
-    // 更新 lastPrice（评估前先记录，便于 crosses 检测）
+ // update lastPrice crosses ）
     const prevPrice = this.lastPrice.get(symbol);
     this.lastPrice.set(symbol, price);
 
@@ -126,7 +126,7 @@ export class ConditionEngine {
     prevPrice: number | undefined,
     now: number
   ): TriggerResult {
-    // 1. cooldown 检查
+ // 1. cooldown 
     if (rule.lastTriggeredAt !== undefined) {
       const elapsed = now - rule.lastTriggeredAt;
       if (elapsed < rule.cooldownMs) {
@@ -139,7 +139,7 @@ export class ConditionEngine {
       }
     }
 
-    // 2. maxTriggersPerDay 检查
+ // 2. maxTriggersPerDay 
     const todayTriggers = this.history.filter(
       (e) => e.ruleId === rule.id && isToday(e.triggeredAt)
     ).length;
@@ -152,11 +152,11 @@ export class ConditionEngine {
       };
     }
 
-    // 3. 条件评估
+ // 3. condition
     const triggered = this.checkCondition(rule.condition, data, price, prevPrice);
 
     if (triggered) {
-      // 记录触发
+ //
       const updated: ConditionRule = {
         ...rule,
         lastTriggeredAt: now,
@@ -199,7 +199,7 @@ export class ConditionEngine {
     prevPrice: number | undefined
   ): boolean {
     if (!isPriceCondition(condition)) {
-      // 其他类型暂不支持（Phase 4.2 仅 PriceCondition）
+ // （Phase 4.2 PriceCondition）
       return false;
     }
 
@@ -255,12 +255,12 @@ export class ConditionEngine {
     return this.rules.get(ruleId);
   }
 
-  /** 仅供测试：直接注入上一笔价格（绕过 evaluate 先记录的问题） */
+ /** evaluate ） */
   _setLastPrice(symbol: string, price: number): void {
     this.lastPrice.set(symbol, price);
   }
 
-  /** 仅供测试：获取当前 cooldown 剩余 */
+ /** ：current cooldown */
   _getCooldownRemaining(ruleId: string): number {
     const rule = this.rules.get(ruleId);
     if (!rule || rule.lastTriggeredAt === undefined) return 0;

@@ -1,4 +1,4 @@
-// ClosedLoopConfigPanel — StrategyPage 闭环配置 UI
+// ClosedLoopConfigPanel — StrategyPage config UI
 // Phase 4.3 R36 ML-36-02: Control panel for ClosedLoopExecutor + RebalanceEngine config
 import { useState } from 'react';
 import i18n from '../../i18n';

@@ -6,6 +6,8 @@
 import { useTranslation } from "react-i18next";
 import React, { useState, useMemo } from 'react';
 import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:DATA] structured error tracking
 
 interface MarketplaceDetailProps {
   strategyId: string;

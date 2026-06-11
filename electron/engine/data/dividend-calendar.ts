@@ -1,4 +1,4 @@
-// ── JVS-24: Dividend Calendar (分红除权日历) ──────────────────────────────
+// ── JVS-24: Dividend Calendar () ──────────────────────────────
 // Fetches upcoming dividend ex-dates and record dates from East Money
 // IPC: em:get-dividend-calendar
 
@@ -15,15 +15,15 @@ import { EngineError } from '../core/engine-error';
 export interface DividendEvent {
   code: string;
   name: string;
-  planYear: string;           // 分配年度
-  bonusPerShare: number;      // 每股送股
-  dividendPerShare: number;   // 每股分红 (元)
-  convertPerShare: number;    // 每股转增
-  exDate: string;             // 除权除息日
-  recordDate: string;         // 股权登记日
-  payDate: string;            // 红利发放日
+  planYear: string;
+  bonusPerShare: number;      // per share
+  dividendPerShare: number;   // per share ()
+  convertPerShare: number;    // per share
+  exDate: string;
+  recordDate: string;
+  payDate: string;
   currentPrice: number;
-  dividendYield: number;      // 股息率 %
+  dividendYield: number;      // dividend yield %
 }
 
 export interface DividendCalendarResult {

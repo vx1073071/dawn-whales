@@ -1,4 +1,4 @@
-// ── Preload Script — IPC Bridge (安全暴露 API 给渲染进程) ──────────────────
+// ── Preload Script — IPC Bridge ( API ) ──────────────────
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('api', {

@@ -1,6 +1,6 @@
 // ── Real-time Feature Engineering Platform (JVS-60) ─────────────────────────
-// 实时特征工程平台 - 100+ 技术指标自动计算 + Feature Store
-// 支持：技术指标、价格形态、成交量特征、波动率指标、资金流指标
+// - 100+ technical indicator + Feature Store
+// ：technical indicator、pattern、volume、volatilitymetric、capital flowmetric
 
 import { Database } from 'better-sqlite3';
 import { readFileSync, existsSync } from 'fs';

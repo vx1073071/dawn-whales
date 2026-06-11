@@ -1,8 +1,8 @@
 /**
 import { EngineError, ErrorCode } from '../../errors';
 
- * J-78-03: P2P积分转账系统 (精简版 — 纯转账逻辑)
- * v1.9.0: 拆分自原p2p-transfer-engine, 争议→p2p-dispute, 冻结→p2p-freeze, 黑名单→blacklist-manager
+ * J-78-03: P2Ppointstransfer ( — transfer)
+ * v1.9.0: p2p-transfer-engine, →p2p-dispute, →p2p-freeze, →blacklist-manager
  */
 
 export interface P2PTransferRequest { fromUserId: string; toUserId: string; amount: number; note?: string; }

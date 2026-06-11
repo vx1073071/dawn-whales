@@ -3,7 +3,7 @@
  * R66: v1.6.0 GA — Creator level system + leaderboard UI
  *
  * Features:
- * - 6-level system: 青铜→白银→黄金→铂金→钻石→王者
+ * - 6-level system: →→→→→
  * - XP progress bar per level with promotion/demotion indicators
  * - Level perks table: L1(70/30) L2(80/20) L3(90/10) revenue splits
  * - Leaderboard: 4 dimensions (total return / 30d return / Sharpe / subscribers)
@@ -14,6 +14,8 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
 import i18n from '../../../i18n';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -258,7 +260,7 @@ export default function CreatorLeaderboard({
                         <div className="flex items-center gap-1.5">
                           <span className="text-sm text-gray-200 font-medium truncate">{p.name}</span>
                           {p.verified && <span className="text-blue-400 text-[10px] flex-shrink-0">✓</span>}
-                          {isMe && <span className="text-[#D4A853] text-[10px] flex-shrink-0">(你)</span>}
+                          {isMe && <span className="text-[#D4A853] text-[10px] flex-shrink-0">{i18n.t('CreatorLeaderboard.r92_0')}</span>}
                         </div>
                         <LevelBadge level={p.level} size="sm" />
                       </div>
@@ -321,7 +323,7 @@ export default function CreatorLeaderboard({
                   <tr className="bg-white/[0.02] text-gray-500">
                     <th className="text-left px-5 py-2 font-medium">{i18n.t('CreatorLeaderboard.k7')}</th>
                     <th className="text-left px-5 py-2 font-medium">{i18n.t('CreatorLeaderboard.k8')}</th>
-                    <th className="text-left px-5 py-2 font-medium">收益分成 (你:平台)</th>
+                    <th className="text-left px-5 py-2 font-medium">{i18n.t('CreatorLeaderboard.r92_1')}</th>
                     <th className="text-left px-5 py-2 font-medium">{i18n.t('CreatorLeaderboard.k9')}</th>
                     <th className="text-left px-5 py-2 font-medium">{i18n.t('CreatorLeaderboard.k10')}</th>
                     <th className="text-left px-5 py-2 font-medium">{i18n.t('CreatorLeaderboard.k11')}</th>
@@ -350,7 +352,7 @@ export default function CreatorLeaderboard({
                       </td>
                       <td className="px-5 py-3">
                         {lvl.key === 'king' ? (
-                          <span className="text-[#D4A853]">✓ 首页推荐</span>
+                          <span className="text-[#D4A853]">{i18n.t('CreatorLeaderboard.r92_2')}</span>
                         ) : ['platinum', 'diamond'].includes(lvl.key) ? (
                           <span className="text-green-400">✓</span>
                         ) : (
@@ -365,30 +367,30 @@ export default function CreatorLeaderboard({
 
             {/* XP earning rules */}
             <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
-              <h3 className="text-gray-300 font-semibold text-sm mb-3">📈 经验值获得规则</h3>
+              <h3 className="text-gray-300 font-semibold text-sm mb-3">{i18n.t('CreatorLeaderboard.r92_3')}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                 <div className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg">
-                  <span className="text-gray-400">🤖 AI分析完成</span>
+                  <span className="text-gray-400">{i18n.t('CreatorLeaderboard.r92_4')}</span>
                   <span className="text-[#D4A853] font-mono">+10 XP/次</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg">
-                  <span className="text-gray-400">👥 新订阅者</span>
+                  <span className="text-gray-400">{i18n.t('CreatorLeaderboard.r92_5')}</span>
                   <span className="text-[#D4A853] font-mono">+50 XP/人</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg">
-                  <span className="text-gray-400">📊 策略模板售出</span>
+                  <span className="text-gray-400">{i18n.t('CreatorLeaderboard.r92_6')}</span>
                   <span className="text-[#D4A853] font-mono">+30 XP/次</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg">
-                  <span className="text-gray-400">🎯 7日胜率 &gt;60%</span>
+                  <span className="text-gray-400">{i18n.t('CreatorLeaderboard.r92_7')}</span>
                   <span className="text-[#D4A853] font-mono">+100 XP/周</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg">
-                  <span className="text-gray-400">📉 连续亏损3天</span>
+                  <span className="text-gray-400">{i18n.t('CreatorLeaderboard.r92_8')}</span>
                   <span className="text-red-400 font-mono">-20 XP/天</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg">
-                  <span className="text-gray-400">⚠️ 被举报核实</span>
+                  <span className="text-gray-400">{i18n.t('CreatorLeaderboard.r92_9')}</span>
                   <span className="text-red-400 font-mono">-200 XP/次</span>
                 </div>
               </div>

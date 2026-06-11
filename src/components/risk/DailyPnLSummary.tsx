@@ -1,4 +1,4 @@
-// ── DAWN WHALES — DailyPnLSummary (每日盈亏汇总) ───────────────────────────
+// ── DAWN WHALES — DailyPnLSummary () ───────────────────────────
 
 import { useMemo } from 'react';
 import i18n from '../../i18n';

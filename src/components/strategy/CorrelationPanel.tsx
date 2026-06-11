@@ -1,5 +1,5 @@
 // ── DAWN WHALES — Strategy Correlation Panel (Q2 UI) ───────────────────────
-// 策略相关性矩阵 + 分散化评分
+// strategy/policy + 
 
 import { useTranslation } from 'react-i18next';
 

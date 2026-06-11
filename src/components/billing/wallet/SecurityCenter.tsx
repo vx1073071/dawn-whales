@@ -1,6 +1,6 @@
 /**
  * SecurityCenter — ML-62-03 [P1]
- * R62: v1.5.0-alpha — 2FA setup + security center (v15商业基建)
+ * R62: v1.5.0-alpha — 2FA setup + security center (v15)
  *
  * Features:
  * - TOTP 2FA setup flow: scan QR → enter code → enable

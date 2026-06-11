@@ -1,8 +1,8 @@
 /**
- * J-61-02: 云OpenD + 碎股 (R61 v19 — v1.4.0-beta)
+ * J-61-02: OpenD + (R61 v19 — v1.4.0-beta)
  *
  * Upgrades OpenD connection from local (127.0.0.1:11111) to cloud deployment.
- * Adds fragmented share (碎股) support for A/US markets.
+ * Adds fragmented share () support for A/US markets.
  *
  * Features:
  * - Cloud OpenD connection manager (remote host:port with auth)
@@ -54,7 +54,7 @@ export interface FragmentOrder {
   symbol: string;
   market: 'A-SH' | 'A-SZ' | 'US-NYSE' | 'US-NASDAQ';
   quantity: number;
-  isFragment: boolean;          // true = 碎股
+  isFragment: boolean;          // true =
   fragmentReason?: string;
 }
 

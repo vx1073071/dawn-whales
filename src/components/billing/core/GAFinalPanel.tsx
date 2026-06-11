@@ -4,7 +4,7 @@ import { EngineError } from '../../../../electron/engine/core/engine-error';
 import { useTranslation } from "react-i18next";
 import i18n from '../../../i18n';
 
-// ── R81: ML-81-01 GA 最终打磨 — 深浅走查+响应式+数字缩写+GA RN ──
+// ── R81: ML-81-01 GA — +response++GA RN ──
 
 const FINAL_CHECKLIST = [
   { category: 'components.darkMode', items: [i18n.t('GAFinalPanel.k1'), i18n.t('GAFinalPanel.k2'), i18n.t('GAFinalPanel.k3'), i18n.t('GAFinalPanel.k4'), i18n.t('GAFinalPanel.k5')], status: ['pass', 'pass', 'pass', 'pass', 'pass'] },

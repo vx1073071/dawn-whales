@@ -1,7 +1,7 @@
 // electron/engine/volume-trigger.ts
-// VolumeTriggerEngine — 成交量触发模块
-// J-30-01 ConditionEngine 子模块
-// 负责：volume_spike / volume_anomaly / volume_trend 三种成交量触发逻辑
+// VolumeTriggerEngine — volumemodule
+// J-30-01 ConditionEngine module
+// ：volume_spike / volume_anomaly / volume_trend volume
 
 import log from 'electron-log';
 import type { TriggerResult } from '../../types/condition.js';
@@ -16,18 +16,18 @@ export interface VolumeRule {
   code: string;
   operator: VolumeOperator;
 
-  /** volume_spike: 当前成交量 > multiplier * 平均成交量 */
-  multiplier?: number;        // 默认 2.0
-  /** volume_spike: 计算平均成交量的周期 */
-  avgPeriod?: number;         // 默认 20
+ /** volume_spike: currentvolume > multiplier * volume */
+  multiplier?: number;        // default 2.0
+ /** volume_spike: volumeperiod */
+  avgPeriod?: number;         // default 20
 
-  /** volume_anomaly: 成交量变化率阈值 (如 3.0 = 300%) */
-  anomalyThreshold?: number;  // 默认 3.0
+ /** volume_anomaly: volumethreshold ( 3.0 = 300%) */
+  anomalyThreshold?: number;  // default 3.0
 
-  /** volume_trend: 趋势方向 */
+ /** volume_trend: */
   trendDirection?: VolumeTrendDirection;
-  /** volume_trend: 连续观察期数 */
-  trendPeriods?: number;      // 默认 5
+ /** volume_trend: */
+  trendPeriods?: number;      // default 5
 
   cooldownMs?: number;
   maxTriggersPerDay?: number;
@@ -39,11 +39,11 @@ export interface VolumeTriggerResult extends TriggerResult {
   code: string;
   operator: VolumeOperator;
   currentVolume: number;
-  /** 参考值（如平均成交量） */
+ /** （volume） */
   referenceVolume?: number;
-  /** 比率（current / reference） */
+ /** （current / reference） */
   ratio?: number;
-  /** trend 方向（仅 volume_trend） */
+ /** trend （ volume_trend） */
   trendDirection?: VolumeTrendDirection;
 }
 
@@ -81,7 +81,7 @@ function isSameDay(ms: number): boolean {
 }
 
 /**
- * 计算数组的平均值
+ *
  */
 function average(arr: number[]): number {
   if (arr.length === 0) return 0;
@@ -89,7 +89,7 @@ function average(arr: number[]): number {
 }
 
 /**
- * 计算标准差
+ * standard deviation
  */
 function stdDev(arr: number[]): number {
   if (arr.length < 2) return 0;
@@ -99,7 +99,7 @@ function stdDev(arr: number[]): number {
 }
 
 /**
- * 判断成交量是否呈单调递增趋势
+ * volume
  */
 function isIncreasing(volumes: number[]): boolean {
   for (let i = 1; i < volumes.length; i++) {
@@ -109,7 +109,7 @@ function isIncreasing(volumes: number[]): boolean {
 }
 
 /**
- * 判断成交量是否呈单调递减趋势
+ * volume
  */
 function isDecreasing(volumes: number[]): boolean {
   for (let i = 1; i < volumes.length; i++) {
@@ -119,7 +119,7 @@ function isDecreasing(volumes: number[]): boolean {
 }
 
 /**
- * 检测成交量异常：当前成交量偏离历史均值超过 N 倍标准差
+ * volume：currentvolume N standard deviation
  */
 function isAnomaly(
   currentVolume: number,
@@ -149,7 +149,7 @@ export class VolumeTriggerEngine {
   // ── CRUD ─────────────────────────────────────────────
 
   /**
-   * 添加成交量触发规则，返回规则 ID
+ * volumerule，backrule ID
    */
   addRule(rule: VolumeRule): string {
     const id = rule.id ?? generateVolumeRuleId();
@@ -177,7 +177,7 @@ export class VolumeTriggerEngine {
   }
 
   /**
-   * 移除规则
+ * rule
    */
   removeRule(ruleId: string): boolean {
     const removed = this.rules.delete(ruleId);
@@ -188,7 +188,7 @@ export class VolumeTriggerEngine {
   }
 
   /**
-   * 获取所有规则
+ * rule
    */
   getRules(): VolumeRule[] {
     return Array.from(this.rules.values()).map((r) => ({
@@ -208,7 +208,7 @@ export class VolumeTriggerEngine {
   }
 
   /**
-   * 清空所有规则和历史
+ * clearrule
    */
   clearAll(): void {
     this.rules.clear();
@@ -219,10 +219,10 @@ export class VolumeTriggerEngine {
   // ── Evaluate ─────────────────────────────────────────
 
   /**
-   * 评估指定标的所有成交量规则
-   * @param code 标的代码
-   * @param currentVolume 当前成交量
-   * @param historicalVolumes 历史成交量数组（从旧到新排列）
+ * volumerule
+ * @param code 
+   * @param currentVolume currentvolume
+ * @param historicalVolumes volume 
    */
   evaluate(
     code: string,
@@ -255,7 +255,7 @@ export class VolumeTriggerEngine {
   ): VolumeTriggerResult | null {
     const now = Date.now();
 
-    // 冷却检查
+ //
     if (rule.lastTriggeredAt !== undefined && rule.cooldownMs > 0) {
       const elapsed = now - rule.lastTriggeredAt;
       if (elapsed < rule.cooldownMs) {
@@ -266,7 +266,7 @@ export class VolumeTriggerEngine {
       }
     }
 
-    // 每日最大触发检查
+ //
     if (rule.maxTriggersPerDay < Infinity) {
       const todayCount = this.triggerHistory.filter(
         (e) => e.ruleId === rule.id && isSameDay(e.triggeredAt ?? 0)
@@ -279,7 +279,7 @@ export class VolumeTriggerEngine {
       }
     }
 
-    // 按 operator 类型评估
+ // operator 
     let triggered = false;
     let referenceVolume: number | undefined;
     let ratio: number | undefined;
@@ -287,7 +287,7 @@ export class VolumeTriggerEngine {
 
     switch (rule.operator) {
       case 'volume_spike': {
-        // 取最近 avgPeriod 条历史成交量计算均值
+ // avgPeriod itemsvolume
         const period = Math.min(rule.avgPeriod, historicalVolumes.length);
         const recentVolumes = historicalVolumes.slice(-period);
         const avgVol = average(recentVolumes);
@@ -307,7 +307,7 @@ export class VolumeTriggerEngine {
         referenceVolume = avgVol;
         ratio = avgVol > 0 ? currentVolume / avgVol : 0;
         triggered = anomaly;
-        // 将 zScore 放入 ratio 作为额外信息
+ // zScore ratio info
         if (anomaly) {
           ratio = zScore;
         }
@@ -321,7 +321,7 @@ export class VolumeTriggerEngine {
         trendDirection = rule.trendDirection;
 
         if (rule.trendDirection === 'increasing') {
-          // 检查 recentVolumes + currentVolume 是否递增
+ // recentVolumes + currentVolume 
           const sequence = [...recentVolumes, currentVolume];
           triggered = isIncreasing(sequence);
         } else {

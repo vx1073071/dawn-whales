@@ -4,6 +4,8 @@
  */
 import React, { useEffect, useState } from 'react';
 import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 interface AdminStats {
   users: { total: number; active7d: number; active30d: number };

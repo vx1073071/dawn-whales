@@ -1,4 +1,4 @@
-// ── DAWN WHALES — PortfolioAllocationChart (持仓分配环形图) ────────────────
+// ── DAWN WHALES — PortfolioAllocationChart (position/holding) ────────────────
 
 import { useRef, useEffect, useMemo } from 'react';
 import * as echarts from 'echarts';

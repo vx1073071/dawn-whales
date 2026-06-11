@@ -1,9 +1,9 @@
 /**
- * J-65-03 [P1]: 自动交易计费完善 (R65 FIX — v1.6.0-beta)
+ * J-65-03 [P1]: (R65 FIX — v1.6.0-beta)
  *
- * 确保费率: 0.1% taker / 0.02% maker / 0.04% taker, 平台收取100%。
- * 用户用桌面端下单 → 扣USDT (免费功能不用)。
- * 用户自己券商App下单 → 不收费。
+ * : 0.1% taker / 0.02% maker / 0.04% taker, 100%。
+ * user → USDT ()。
+ * userApp → 。
  *
  * Features:
  * - Trade fee calculation v2: precise rounding (4 decimal USDT)

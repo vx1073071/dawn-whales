@@ -25,42 +25,42 @@ export function getPrefsManager(): PreferencesManager {
 export function registerPreferencesHandlers() {
   const p = getPrefs();
 
-  // prefs:get-all — 获取全部偏好设置
+ // prefs:get-all — settings
   ipcMain.handle('prefs:get-all', async () => {
     return { success: true, data: p.getAll() };
   });
 
-  // prefs:get-section — 获取某个分类的设置
+ // prefs:get-section — settings
   ipcMain.handle('prefs:get-section', async (_e, section: string) => {
     const data = p.getSection(section as any);
     return { success: true, data };
   });
 
-  // prefs:get — 获取单个设置项
+ // prefs:get — settings
   ipcMain.handle('prefs:get', async (_e, section: string, key: string) => {
     const value = p.get(section as any, key);
     return { success: true, data: { section, key, value } };
   });
 
-  // prefs:set — 设置单个项
+ // prefs:set — settings
   ipcMain.handle('prefs:set', async (_e, section: string, key: string, value: unknown) => {
     const ok = p.set(section as any, key, value);
     return { success: ok };
   });
 
-  // prefs:set-section — 批量设置某个分类
+ // prefs:set-section — settings
   ipcMain.handle('prefs:set-section', async (_e, section: string, data: unknown) => {
     const ok = p.setSection(section as any, data);
     return { success: ok };
   });
 
-  // prefs:reset — 重置为默认值
+ // prefs:reset — resetdefault
   ipcMain.handle('prefs:reset', async (_e, section?: string) => {
     const ok = p.reset(section as any);
     return { success: ok, data: p.getAll() };
   });
 
-  // prefs:export — 导出配置文件
+ // prefs:export — exportconfig
   ipcMain.handle('prefs:export', async (_e, filePath?: string) => {
     try {
       const win = BrowserWindow.getFocusedWindow();
@@ -82,7 +82,7 @@ export function registerPreferencesHandlers() {
     }
   });
 
-  // prefs:import — 导入配置文件
+ // prefs:import — importconfig
   ipcMain.handle('prefs:import', async (_e, filePath?: string) => {
     try {
       const win = BrowserWindow.getFocusedWindow();
@@ -104,13 +104,13 @@ export function registerPreferencesHandlers() {
     }
   });
 
-  // prefs:custom-set — 设置自定义数据
+ // prefs:custom-set — settings
   ipcMain.handle('prefs:custom-set', async (_e, key: string, value: unknown) => {
     p.setCustom(key, value);
     return { success: true };
   });
 
-  // prefs:custom-get — 获取自定义数据
+ // prefs:custom-get
   ipcMain.handle('prefs:custom-get', async (_e, key: string) => {
     const value = p.getCustom(key);
     return { success: true, data: { key, value } };

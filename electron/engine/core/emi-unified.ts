@@ -1,4 +1,4 @@
-// ── JVS-19: EMI Unified Service Layer (EMI数据统一服务层) ─────────────────
+// ── JVS-19: EMI Unified Service Layer (EMIservice) ─────────────────
 // Aggregates all 18 JVS modules into 3 convenient APIs:
 //   em:get-stock-overview(code) — one-stop stock data
 //   em:get-market-overview     — market panorama

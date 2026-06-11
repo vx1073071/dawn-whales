@@ -1,4 +1,4 @@
-// ── JVS-12: Real-time Capital Flow Push (实时资金流推送) ───────────────────
+// ── JVS-12: Real-time Capital Flow Push (capital flow) ───────────────────
 // Monitors real-time capital flow changes and pushes alerts
 // Integrates with QuoteStream (JVS-9) for tick-level updates
 
@@ -14,16 +14,16 @@ export interface CapitalFlowAlert {
   code: string;
   name: string;
   amount: number;          // 金额 (万元)
-  changePct: number;       // 涨跌幅 %
+  changePct: number;       // price change % %
   description: string;
   timestamp: number;
   severity: 'low' | 'medium' | 'high' | 'critical';
 }
 
 export interface FlowMonitorConfig {
-  mainForceThreshold: number;     // 主力净流入阈值 (万元), default 5000
-  largeOrderThreshold: number;    // 大单阈值 (万元), default 1000
-  alertInterval: number;          // 同一股票告警间隔 (ms), default 300000 (5min)
+  mainForceThreshold: number;     // major player净流入threshold (万元), default 5000
+  largeOrderThreshold: number;    // 大单threshold (万元), default 1000
+  alertInterval: number;          // 同一股票告警interval (ms), default 300000 (5min)
   enabled: boolean;
 }
 
@@ -108,7 +108,7 @@ export class CapitalFlowMonitor {
       // Check unusual activity (high turnover with large flow)
       if (item.turnover && item.mainNetInflow) {
         const ratio = Math.abs(item.mainNetInflow) / item.turnover;
-        if (ratio > 0.3 && item.turnover > 10000) {  // 主力占比>30% 且 成交额>1亿
+        if (ratio > 0.3 && item.turnover > 10000) {  // major player占比>30% 且 turnover>1亿
           const type = 'unusual_activity';
           
           if (!this.isAlertSuppressed(item.code, type)) {

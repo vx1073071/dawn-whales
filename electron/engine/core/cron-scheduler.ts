@@ -1,6 +1,6 @@
-// ── CronScheduler — 定时任务调度器 ────────────────────────────────────────
-// Phase 4.1: 自动化交易引擎核心
-// 支持 cron 表达式 + 简单间隔，触发 StrategyRunner
+// ── CronScheduler — scheduled taskscheduler ────────────────────────────────────────
+// Phase 4.1: 
+// cron + interval， StrategyRunner
 // ML-29-01 [P0]
 
 import log from 'electron-log';

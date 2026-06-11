@@ -1,9 +1,9 @@
-// ── Walk-Forward Engine — 步进式前推验证引擎 ─────────────────────────────────
-// 将历史数据切分为多个滚动/扩展窗口，在每个窗口内完成：
-//   1. In-Sample 参数优化
-//   2. Out-of-Sample 前推验证
-//   3. 效率评估 (OOS / IS)
-// Phase 1: TypeScript 实现
+// ── Walk-Forward Engine — ─────────────────────────────────
+// rolling/extension，done：
+//   1. In-Sample parameter optimization
+// 2. Out-of-Sample 
+// 3. (OOS / IS)
+// Phase 1: TypeScript 
 
 import log from 'electron-log';
 import { EngineError, ErrorCode } from '../../errors';

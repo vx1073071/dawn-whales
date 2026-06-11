@@ -2,15 +2,15 @@
  * J-53-04: Mobile API Adapter [P1]
  * v1.1.0-beta — Lightweight API responses for mobile clients
  *
- * 功能:
- * - 分页适配 (cursor-based + offset-based)
- * - 轻量响应 (field selection, compression hints)
- * - 响应缓存 (TTL-based, per-endpoint)
- * - 带宽优化 (delta sync, field stripping)
+ * :
+ * - pagination (cursor-based + offset-based)
+ * - response (field selection, compression hints)
+ * - responsecache (TTL-based, per-endpoint)
+ * - bandwidth (delta sync, field stripping)
  *
- * 验收标准:
- * - 代码量 ≥ 200L
- * - 测试 ≥ 10 tests, 全部 pass
+ * :
+ * - ≥ 200L
+ * - ≥ 10 tests, pass
  */
 
 import log from 'electron-log';

@@ -1,7 +1,7 @@
 /**
- * J-62-03: 黑名单+2FA安全系统 (R62 v19 — v1.5.0-alpha)
+ * J-62-03: +2FA (R62 v19 — v1.5.0-alpha)
  *
- * v15基建: Manual blacklist with P2P/withdrawal freeze + TOTP 2FA.
+ * v15: Manual blacklist with P2P/withdrawal freeze + TOTP 2FA.
  *
  * Features:
  * - Blacklist: 0-auto, admin manual add/remove only

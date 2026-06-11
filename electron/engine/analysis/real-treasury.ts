@@ -1,6 +1,6 @@
 /**
- * J-V15-03: Real Treasury Engine (R53 v15 商业模型定版)
- * 实时热/冷钱包余额监控 + 流动性安全管理
+ * J-V15-03: Real Treasury Engine (R53 v15 )
+ * /balance + 
  *
  * Features:
  * - Hot wallet: 20% of total treasury (for daily operations)

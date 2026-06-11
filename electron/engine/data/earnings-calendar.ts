@@ -1,4 +1,4 @@
-// ── JVS-25: Earnings Calendar (业绩预告聚合) ──────────────────────────────
+// ── JVS-25: Earnings Calendar () ──────────────────────────────
 // Fetches upcoming earnings disclosure dates + expectations from East Money
 // IPC: em:get-earnings-calendar
 
@@ -16,14 +16,14 @@ import { EngineError } from '../core/engine-error';
 export interface EarningsEvent {
   code: string;
   name: string;
-  reportDate: string;          // 报告期
-  disclosureDate: string;      // 披露日期
-  predictNetProfit: number;    // 预计净利润 (万元)
-  predictProfitChange: number; // 预计净利润变动幅度 %
-  predictType: string;         // 预告类型 (预增/预减/略增/略减/扭亏/续亏/首亏/不确定)
-  actualNetProfit: number;     // 实际净利润 (万元, if available)
-  eps: number;                 // 每股收益
-  pe: number;                  // 市盈率
+  reportDate: string;
+  disclosureDate: string;
+  predictNetProfit: number;    // net profit ()
+  predictProfitChange: number; // net profit %
+  predictType: string;         // (///////)
+  actualNetProfit: number;     // net profit (, if available)
+  eps: number;                 // EPS
+  pe: number;                  // P/E ratio
   currentPrice: number;
 }
 
@@ -33,11 +33,11 @@ export interface EarningsCalendarResult {
   total: number;
   dateRange: { from: string; to: string };
   summary: {
-    predictIncrease: number;   // 预增家数
-    predictDecrease: number;   // 预减家数
-    predictTurnaround: number; // 扭亏家数
-    predictFirstLoss: number;  // 首亏家数
-    predictContinuedLoss: number; // 续亏家数
+    predictIncrease: number;
+    predictDecrease: number;
+    predictTurnaround: number;
+    predictFirstLoss: number;
+    predictContinuedLoss: number;
   };
   error?: string;
 }

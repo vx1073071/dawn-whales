@@ -1,5 +1,5 @@
 // ── DAWN WHALES — License Management (Sprint 3: P2) ───────────────────────
-// 无实名，离线优先，仅定期在线验证
+//
 
 import crypto from 'crypto';
 import path from 'path';

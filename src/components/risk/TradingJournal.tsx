@@ -1,5 +1,5 @@
-// ── DAWN WHALES — TradingJournal v2 (交易日志) ─────────────────────────────
-// v2: +日历热力图 +标签 +CSV导出 +日期筛选
+// ── DAWN WHALES — TradingJournal v2 (log) ─────────────────────────────
+// v2: +heatmap + +CSVexport +filter
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';

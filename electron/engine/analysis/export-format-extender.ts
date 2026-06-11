@@ -1,6 +1,6 @@
 /**
  * J-54-02: Export Format Extender (R54 P0)
- * CSV/XLSX/PDF 数据导出引擎 + 模板系统
+ * CSV/XLSX/PDF export + 
  *
  * Features:
  * - CSV export with configurable delimiter, quoting, headers

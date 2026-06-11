@@ -26,8 +26,8 @@ export interface PaymentOrder {
 }
 
 const RECEIVE_ADDRESSES: Record<string, string> = {
-  TRC20: '',  // 待主人填入
-  ERC20: '',  // 待主人填入
+  TRC20: '',
+  ERC20: '',
   BEP20: '',
   SOL: '',
 };

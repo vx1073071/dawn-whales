@@ -1,4 +1,4 @@
-// ── DAWN WHALES — MarketBreadth (市场广度指标) ─────────────────────────────
+// ── DAWN WHALES — MarketBreadth (metric) ─────────────────────────────
 
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next';

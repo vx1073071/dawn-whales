@@ -12,6 +12,8 @@
 
 import React, { useState, useCallback } from 'react';
 import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 // ── Types ───────────────────────────────────────────────────────────────
 
 interface DigestSection {

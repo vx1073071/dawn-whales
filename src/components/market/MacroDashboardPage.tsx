@@ -1,5 +1,5 @@
 // ── DAWN WHALES — MacroDashboardPage (W27) ─────────────────────────────────
-// 宏观经济仪表盘：GDP/CPI/PMI/PPI/M2/LPR/失业率/工业增加值
+// dashboard：GDP/CPI/PMI/PPI/M2/LPR//
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';

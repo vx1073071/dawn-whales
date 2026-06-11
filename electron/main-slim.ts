@@ -1,6 +1,6 @@
 ﻿// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
-// 架构对齐：富途牛牛桌面端 (Electron + C++ core + React)
-// 我们用：Electron + Node.js (Main) + React (Renderer)
+// ： (Electron + C++ core + React)
+// ：Electron + Node.js (Main) + React (Renderer)
 
 import { app, BrowserWindow, ipcMain, shell, Tray, Menu, nativeImage } from 'electron';
 import { EngineError } from './engine/core/engine-error';
@@ -161,7 +161,7 @@ import { validate,
 } from './ipc-schemas';
 import log from 'electron-log';
 
-// 默认监控列表，连接时从 DB 读取用户配置
+// default， DB user config
 let WATCHLIST = ['US.TQQQ','US.SOXL','US.QQQ','US.SPY','US.AAPL','US.NVDA','US.SQQQ','US.SOXS'];
 
 // ── Utils ──────────────────────────────────────────────────────────────────

@@ -13,22 +13,22 @@ import { EngineError } from '../core/engine-error';
 
 export interface ValuationSnapshot {
   date: string;
-  pe: number;              // 市盈率
-  peTTM: number;           // 市盈率(TTM)
-  pb: number;              // 市净率
-  ps: number;              // 市销率
-  psTTM: number;           // 市销率(TTM)
-  pcf: number;             // 市现率
-  pcfTTM: number;          // 市现率(TTM)
-  dividendYield: number;   // 股息率 %
+  pe: number;              // P/E ratio
+  peTTM: number;           // P/E ratio(TTM)
+  pb: number;              // P/B ratio
+  ps: number;              // P/S ratio
+  psTTM: number;           // P/S ratio(TTM)
+  pcf: number;
+  pcfTTM: number;          // (TTM)
+  dividendYield: number;   // dividend yield %
   dividendYieldTTM: number;
-  ev: number;              // 企业价值 (EV)
+  ev: number;              // (EV)
   evEBITDA: number;        // EV/EBITDA
   roe: number;             // ROE %
   roa: number;             // ROA %
-  marketCap: number;       // 总市值
-  totalShares: number;     // 总股本
-  floatShares: number;     // 流通股本
+  marketCap: number;       // total market cap
+  totalShares: number;     // total shares
+  floatShares: number;     // float shares
 }
 
 export interface ValuationResult {

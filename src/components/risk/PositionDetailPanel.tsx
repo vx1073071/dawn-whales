@@ -1,4 +1,4 @@
-// ── DAWN WHALES — PositionDetailPanel (持仓详情面板) ───────────────────────
+// ── DAWN WHALES — PositionDetailPanel (position/holding) ───────────────────────
 
 import { useState } from 'react';
 import { useTranslation } from "react-i18next";

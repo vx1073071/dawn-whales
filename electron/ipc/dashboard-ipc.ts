@@ -1,7 +1,7 @@
 // ── DAWN WHALES IPC: dashboard ────────────────────────────────────────────
-// R18 P0-1: Dashboard 全链路 IPC — summary / pnl / positions / health
+// R18 P0-1: Dashboard IPC — summary / pnl / positions / health
 //
-// PM验收标准: 真实账户数据可展示
+// PM:
 
 import { ipcMain, BrowserWindow } from 'electron';
 import { EngineError } from '../engine/core/engine-error';

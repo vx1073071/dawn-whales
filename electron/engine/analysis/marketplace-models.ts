@@ -1,6 +1,6 @@
 /**
  * J-52-03: Strategy Marketplace Data Models (R52 P1)
- * 策略市场核心数据模型 + 验证 + 迁移脚本
+ * strategy marketplace + + migration
  *
  * Models: Strategy / Subscription / Review / Earnings
  * Validation: schema-level + field-level + cross-field

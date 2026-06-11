@@ -1,6 +1,6 @@
 // ── Walk-Forward Analysis Engine ────────────────────────────────────────────
-// 防止过拟合的核心武器：滚动窗口回测
-// IS(训练期) → OOS(测试期) → 滑动 → 汇总OOS表现
+// ：rollingbacktest
+// IS() → OOS() → → OOS
 
 import log from 'electron-log';
 import { BacktestEngine } from './backtest-engine';
@@ -27,14 +27,14 @@ interface StrategyConfig {
 }
 
 interface ParamRange {
-  name: string;          // 参数名 (如 'shortPeriod')
+  name: string;          // parameter名 (如 'shortPeriod')
   values: number[];      // 候选值 [5, 10, 15, 20]
 }
 
 export interface WFAConfig {
   symbol: string;
   strategy: StrategyConfig;
-  paramRanges: ParamRange[];        // 要扫描的参数范围
+  paramRanges: ParamRange[];        // 要扫描的parameter范围
   initialCapital: number;
   commission: number;
   slippage: number;
@@ -79,7 +79,7 @@ export interface WFAReport {
     robustnessGrade: string;        // S/A/B/C/D/F
   };
   windows: WindowResult[];
-  heatmap: HeatmapData;             // 参数热力图
+  heatmap: HeatmapData;             // parameterheatmap
   recommendation: string;
   warnings: string[];
 }
@@ -103,7 +103,7 @@ export class WalkForwardEngine {
   }
 
   /**
-   * 执行 Walk-Forward Analysis
+   * execute Walk-Forward Analysis
    */
   async run(config: WFAConfig, klines: KLine[]): Promise<WFAReport> {
     log.info(`[WalkForward] Starting WFA: ${klines.length} bars, IS=${config.inSampleBars}, OOS=${config.outOfSampleBars}, step=${config.stepSize}`);
@@ -122,7 +122,7 @@ export class WalkForwardEngine {
     const windows: WindowResult[] = [];
     let offset = 0;
 
-    // 滚动窗口
+ // rolling
     while (offset + config.inSampleBars + config.outOfSampleBars <= klines.length) {
       const isStart = offset;
       const isEnd = offset + config.inSampleBars;
@@ -134,15 +134,15 @@ export class WalkForwardEngine {
 
       log.info(`[WalkForward] Window ${windows.length + 1}: IS[${isStart}-${isEnd}] OOS[${oosStart}-${oosEnd}]`);
 
-      // Step 1: IS 上参数扫描，找最优参数
+ // Step 1: IS parameter sweep，parameter
       const isResults = await this.scanParameters(config, isKlines);
       const bestIS = isResults.reduce((a, b) => a.sharpe > b.sharpe ? a : b);
 
-      // Step 2: 用最优参数在 OOS 上验证
+ // Step 2: parameter OOS 
       const oosResults = await this.testParams(config, oosKlines, [bestIS.params]);
       const bestOOS = oosResults[0];
 
-      // Step 3: 计算衰减比
+ // Step 3: 
       const decayRatio = bestIS.sharpe > 0 ? bestOOS.sharpe / bestIS.sharpe : 0;
 
       windows.push({
@@ -175,22 +175,22 @@ export class WalkForwardEngine {
       };
     }
 
-    // 汇总统计
+ //
     const avgOosSharpe = windows.reduce((s, w) => s + w.oosSharpe, 0) / windows.length;
     const avgOosReturn = windows.reduce((s, w) => s + w.oosReturn, 0) / windows.length;
     const avgDecayRatio = windows.reduce((s, w) => s + w.decayRatio, 0) / windows.length;
 
-    // 稳定性评分 (0-100)
+ // (0-100)
     const decayScore = Math.min(100, Math.max(0, avgDecayRatio * 100));
     const consistencyScore = this.calculateConsistency(windows);
     const stabilityScore = Math.round(decayScore * 0.6 + consistencyScore * 0.4);
 
     const robustnessGrade = this.scoreToGrade(stabilityScore);
 
-    // 生成热力图 (取最后窗口的 IS 数据)
+ // heatmap ( IS )
     const heatmap = this.generateHeatmap(config, windows[windows.length - 1].allISResults);
 
-    // 生成建议和警告
+ // warning
     const recommendation = this.generateRecommendation(stabilityScore, avgOosSharpe, avgDecayRatio);
     const warnings = this.generateWarnings(windows, avgDecayRatio, stabilityScore);
 
@@ -213,7 +213,7 @@ export class WalkForwardEngine {
     };
   }
 
-  // ── 参数扫描 ──────────────────────────────────────────────────────────
+  // ── parameter sweep ──────────────────────────────────────────────────────────
 
   private async scanParameters(config: WFAConfig, klines: KLine[]): Promise<ParamResult[]> {
     const paramCombinations = this.generateParamCombinations(config.paramRanges);
@@ -280,29 +280,29 @@ export class WalkForwardEngine {
     return combinations;
   }
 
-  // ── 一致性计算 ──────────────────────────────────────────────────────────
+ // ── consistency ──────────────────────────────────────────────────────────
 
   private calculateConsistency(windows: WindowResult[]): number {
     if (windows.length < 2) return 50;
 
-    // 检查 OOS Sharpe 的一致性
+ // OOS Sharpe consistency
     const oosSharpes = windows.map(w => w.oosSharpe);
     const avg = oosSharpes.reduce((a, b) => a + b, 0) / oosSharpes.length;
     const variance = oosSharpes.reduce((s, v) => s + (v - avg) ** 2, 0) / oosSharpes.length;
     const stdDev = Math.sqrt(variance);
 
-    // CV = stdDev / |avg|，越小越一致
+ // CV = stdDev / |avg|，
     const cv = avg !== 0 ? stdDev / Math.abs(avg) : 1;
     const consistencyScore = Math.max(0, Math.min(100, 100 - cv * 50));
 
-    // 正收益窗口占比
+ //
     const positiveWindows = windows.filter(w => w.oosReturn > 0).length;
     const positiveRatio = positiveWindows / windows.length;
 
     return Math.round(consistencyScore * 0.5 + positiveRatio * 100 * 0.5);
   }
 
-  // ── 热力图生成 ──────────────────────────────────────────────────────────
+ // ── heatmap ──────────────────────────────────────────────────────────
 
   private generateHeatmap(config: WFAConfig, results: ParamResult[]): HeatmapData {
     if (config.paramRanges.length < 2 || results.length === 0) {
@@ -333,7 +333,7 @@ export class WalkForwardEngine {
     };
   }
 
-  // ── 评分和建议 ──────────────────────────────────────────────────────────
+ // ── ──────────────────────────────────────────────────────────
 
   private scoreToGrade(score: number): string {
     if (score >= 90) return 'S';

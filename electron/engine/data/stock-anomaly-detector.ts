@@ -58,7 +58,7 @@ export interface AnomalyConfig {
   gapThreshold: number;             // Default: 3.0 (%)
   limitUpPct: number;               // Default: 9.8 (%)
   limitDownPct: number;             // Default: -9.8 (%)
-  largeOrderThreshold: number;      // Default: 5000000 (500万 yuan)
+  largeOrderThreshold: number;      // Default: 5000000 (500 yuan)
   enabledTypes: AnomalyType[];
 }
 

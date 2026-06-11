@@ -1,8 +1,8 @@
 import { EngineError, ErrorCode } from '../../errors';
-// ── Strategy Engine — 策略执行引擎 v2 ──────────────────────────────────────
-// 管理策略生命周期：创建 → 回测 → 模拟 → 实盘 → 停止
-// 实时行情驱动信号评估，触发交易指令
-// v2: 接入风控引擎 (Kelly sizing / ATR trailing stop / equity tracking)
+// ── Strategy Engine — strategy/policyexecute v2 ──────────────────────────────────────
+// strategy/policylifecycle： → backtest → → → stop
+// ，
+// v2: risk engine (Kelly sizing / ATR trailing stop / equity tracking)
 
 import log from 'electron-log';
 import { parseNaturalLanguage, STRATEGY_TEMPLATES } from '../agents/nl-parser';

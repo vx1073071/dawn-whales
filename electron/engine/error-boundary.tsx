@@ -1,8 +1,8 @@
 /**
- * J-77-05: Global ErrorBoundary 崩溃保护
+ * J-77-05: Global ErrorBoundary
  * 
- * React ErrorBoundary 组件树包裹 → 友好提示 + 自动恢复
- * 基于 R76 crash-protection.ts 底座
+ * React ErrorBoundary component → hint + restore
+ * R76 crash-protection.ts
  */
 
 import React from 'react';
@@ -143,7 +143,7 @@ export class GlobalErrorBoundary extends React.Component<ErrorBoundaryProps, Err
 }
 
 /**
- * 引擎级错误包裹函数 — 用于非 React 的 try-catch 统一处理
+ * error — React try-catch
  */
 export function wrapEngineCall<T extends (...args: any[]) => any>(
   fn: T,

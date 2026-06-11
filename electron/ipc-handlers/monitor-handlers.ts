@@ -32,56 +32,56 @@ export function registerMonitorHandlers() {
     }
   });
 
-  // monitor:get-active — 获取所有活跃告警
+ // monitor:get-active
   ipcMain.handle('monitor:get-active', async () => {
     return { success: true, data: m.getActive() };
   });
 
-  // monitor:get-critical — 获取活跃的高级别告警
+ // monitor:get-critical
   ipcMain.handle('monitor:get-critical', async () => {
     return { success: true, data: m.getCritical() };
   });
 
-  // monitor:query — 查询告警历史
+ // monitor:query — query
   ipcMain.handle('monitor:query', async (_e, query: AlertQuery) => {
     return { success: true, data: m.query(query) };
   });
 
-  // monitor:stats — 获取告警统计
+ // monitor:stats
   ipcMain.handle('monitor:stats', async () => {
     return { success: true, data: m.getStats() };
   });
 
-  // monitor:acknowledge — 确认单个告警
+ // monitor:acknowledge — confirm
   ipcMain.handle('monitor:acknowledge', async (_e, alertId: string) => {
     const result = m.acknowledge(alertId);
     return { success: !!result, data: result };
   });
 
-  // monitor:acknowledge-all — 批量确认告警
+ // monitor:acknowledge-all — confirm
   ipcMain.handle('monitor:acknowledge-all', async (_e, level?: string) => {
     const count = m.acknowledgeAll(level as any);
     return { success: true, data: { acknowledged: count } };
   });
 
-  // monitor:resolve — 解决告警
+ // monitor:resolve
   ipcMain.handle('monitor:resolve', async (_e, alertId: string) => {
     const result = m.resolve(alertId);
     return { success: !!result, data: result };
   });
 
-  // monitor:suppress — 抑制告警
+ // monitor:suppress
   ipcMain.handle('monitor:suppress', async (_e, alertId: string) => {
     const result = m.suppress(alertId);
     return { success: !!result, data: result };
   });
 
-  // monitor:get-rules — 获取告警规则
+ // monitor:get-rules — rule
   ipcMain.handle('monitor:get-rules', async () => {
     return { success: true, data: m.getRules() };
   });
 
-  // monitor:update-rule — 更新告警规则
+ // monitor:update-rule — updaterule
   ipcMain.handle('monitor:update-rule', async (_e, ruleId: string, updates: Partial<AlertRule>) => {
     const result = m.updateRule(ruleId, updates);
     return { success: !!result, data: result };

@@ -1,4 +1,4 @@
-// ── DAWN WHALES — SignalTimeline (策略信号时间线) ──────────────────────────
+// ── DAWN WHALES — SignalTimeline (strategy/policy) ──────────────────────────
 
 import { useState, useEffect, useCallback } from 'react'
 import { EngineError } from '../../../electron/engine/core/engine-error';

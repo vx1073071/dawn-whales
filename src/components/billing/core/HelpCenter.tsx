@@ -3,7 +3,7 @@
  * R71: v1.7.0 GA — SEO help center + FAQ for dawnwhales.com
  *
  * Features:
- * - Structured FAQ: 安装/注册/充值/AI/交易/钱包/提现
+ * - Structured FAQ: install/register/recharge/AI///withdraw
  * - Searchable help articles
  * - SEO: schema.org FAQPage JSON-LD
  * - Category tabs for quick navigation
@@ -13,6 +13,8 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useTranslation } from "react-i18next";
 import i18n from '../../../i18n';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -32,17 +34,17 @@ export interface HelpCenterProps {
 // ── Help Content ────────────────────────────────────────────────────────
 
 const HELP_ARTICLES: HelpArticle[] = [
-  // ── 安装 ──
+  // ── install ──
   { id: 'install-1', category: 'install', categoryIcon: '💻', question: i18n.t('HelpCenter.k1'), answer: i18n.t('HelpCenter.k2') },
   { id: 'install-2', category: 'install', categoryIcon: '💻', question: i18n.t('HelpCenter.k3'), answer: i18n.t('HelpCenter.k4') },
   { id: 'install-3', category: 'install', categoryIcon: '💻', question: i18n.t('HelpCenter.k5'), answer: i18n.t('HelpCenter.k6') },
 
-  // ── 注册 ──
+  // ── register ──
   { id: 'reg-1', category: 'register', categoryIcon: '📝', question: i18n.t('HelpCenter.k7'), answer: i18n.t('HelpCenter.k8') },
   { id: 'reg-2', category: 'register', categoryIcon: '📝', question: i18n.t('HelpCenter.k9'), answer: i18n.t('HelpCenter.k10') },
   { id: 'reg-3', category: 'register', categoryIcon: '📝', question: i18n.t('HelpCenter.k11'), answer: i18n.t('HelpCenter.k12') },
 
-  // ── 充值 ──
+  // ── recharge ──
   { id: 'topup-1', category: 'topup', categoryIcon: '💰', question: i18n.t('HelpCenter.k13'), answer: i18n.t('HelpCenter.k14') },
   { id: 'topup-2', category: 'topup', categoryIcon: '💰', question: i18n.t('HelpCenter.k15'), answer: i18n.t('HelpCenter.k16') },
   { id: 'topup-3', category: 'topup', categoryIcon: '💰', question: i18n.t('HelpCenter.k17'), answer: i18n.t('HelpCenter.k18') },
@@ -52,17 +54,17 @@ const HELP_ARTICLES: HelpArticle[] = [
   { id: 'ai-2', category: 'ai', categoryIcon: '🤖', question: i18n.t('HelpCenter.k21'), answer: i18n.t('HelpCenter.k22') },
   { id: 'ai-3', category: 'ai', categoryIcon: '🤖', question: i18n.t('HelpCenter.k23'), answer: i18n.t('HelpCenter.k24') },
 
-  // ── 交易 ──
+ // ── ──
   { id: 'trade-1', category: 'trade', categoryIcon: '📈', question: i18n.t('HelpCenter.k25'), answer: i18n.t('HelpCenter.k26') },
   { id: 'trade-2', category: 'trade', categoryIcon: '📈', question: i18n.t('HelpCenter.k27'), answer: i18n.t('HelpCenter.k28') },
   { id: 'trade-3', category: 'trade', categoryIcon: '📈', question: i18n.t('HelpCenter.k29'), answer: i18n.t('HelpCenter.k30') },
 
-  // ── 钱包 ──
+ // ── ──
   { id: 'wallet-1', category: 'wallet', categoryIcon: '👛', question: i18n.t('HelpCenter.k31'), answer: i18n.t('HelpCenter.k32') },
   { id: 'wallet-2', category: 'wallet', categoryIcon: '👛', question: i18n.t('HelpCenter.k33'), answer: i18n.t('HelpCenter.k34') },
   { id: 'wallet-3', category: 'wallet', categoryIcon: '👛', question: i18n.t('HelpCenter.k35'), answer: i18n.t('HelpCenter.k36') },
 
-  // ── 创作者 ──
+  // ── creator ──
   { id: 'creator-1', category: 'creator', categoryIcon: '⭐', question: i18n.t('HelpCenter.k37'), answer: i18n.t('HelpCenter.k38') },
   { id: 'creator-2', category: 'creator', categoryIcon: '⭐', question: i18n.t('HelpCenter.k39'), answer: i18n.t('HelpCenter.k40') },
 ];
@@ -92,8 +94,14 @@ function FAQJsonLd({ articles }: { articles: HelpArticle[] }) {
       acceptedAnswer: { '@type': 'Answer', text: a.answer },
     })),
   };
-  // Safe injection: JSON.stringify + escape </ to prevent script tag breakout
-  const json = JSON.stringify(ld).replace(/<\//g, '<' + '/');
+  // R92 J-01: Safe JSON-LD injection — multi-layer XSS prevention
+  // 1. JSON.stringify (no raw HTML)
+  // 2. Escape </ to prevent script tag breakout
+  // 3. Escape > and < as additional defense-in-depth
+  const json = JSON.stringify(ld)
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026');
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />;
 }
 

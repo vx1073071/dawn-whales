@@ -1,6 +1,6 @@
 ﻿��// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
-// 架构对齐：富途牛牛桌面端 (Electron + C++ core + React)
-// 我们用：Electron + Node.js (Main) + React (Renderer)
+// ： (Electron + C++ core + React)
+// ：Electron + Node.js (Main) + React (Renderer)
 
 import { app, BrowserWindow, ipcMain, shell, Tray, Menu, nativeImage } from 'electron';
 import path from 'path';

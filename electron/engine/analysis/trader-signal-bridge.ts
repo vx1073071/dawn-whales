@@ -1,6 +1,6 @@
 /**
  * J-54-01: Trader Signal Bridge (R54 P0)
- * 信号→档案→跟单完整闭环桥接引擎
+ * →→
  *
  * Connects: TraderProfileEngine ↔ SignalPushEngine ↔ CopyTradeExecutor
  *

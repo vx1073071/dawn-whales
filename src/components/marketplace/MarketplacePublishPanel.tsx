@@ -10,6 +10,8 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:DATA] structured error tracking
 // ── Types ───────────────────────────────────────────────────────────────
 
 interface PublishStrategy {

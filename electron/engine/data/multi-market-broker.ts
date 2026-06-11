@@ -1,6 +1,6 @@
 import { EngineError, ErrorCode } from '../../errors';
 /**
- * J-61-01: A/美股 MultiMarketBroker (R61 v19 — v1.4.0-beta)
+ * J-61-01: A/ MultiMarketBroker (R61 v19 — v1.4.0-beta)
  *
  * Extends OpenDLiveBroker (R60 HK) to support:
  * - A-shares: Shenzhen (SZ), Shanghai (SH) markets
@@ -36,8 +36,8 @@ export interface MarketConfig {
   minShares: number;
   boardLot: number;          // 整手股数
   currency: string;
-  dailyUpLimit?: number;      // 涨停 (0 = no limit)
-  dailyDownLimit?: number;    // 跌停 (0 = no limit)
+  dailyUpLimit?: number;      // limit up (0 = no limit)
+  dailyDownLimit?: number;    // limit down (0 = no limit)
   stampDutyRate: number;
   brokerageRate: number;
   exchangeFeeRate: number;

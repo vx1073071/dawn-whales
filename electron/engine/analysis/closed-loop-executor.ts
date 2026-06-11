@@ -1,13 +1,13 @@
 /**
- * Closed-Loop Executor - 闭环交易执行器 (Phase 4.3)
- * 实现策略信号到交易执行的完整闭环
+ * Closed-Loop Executor - executor (Phase 4.3)
+ * strategy/policyexecute
  * 
- * 状态机: IDLE → CREATED → VALIDATING → VALIDATED → EXECUTING → ACTIVE → 
+ * state machine: IDLE → CREATED → VALIDATING → VALIDATED → EXECUTING → ACTIVE → 
  *         MONITORING → ADJUSTING → CLOSING → CLOSED → COMPLETED/FAILED/CANCELLED
  * 
- * 执行模式: immediate / triggered / scheduled
- * 风控前置: Pre-Flight 检查 + 持仓中持续风控
- * 重试机制: Fixed / Exponential / Adaptive
+ * execute: immediate / triggered / scheduled
+ * risk control: Pre-Flight + position/holdingrisk control
+ * retry: Fixed / Exponential / Adaptive
  */
 
 import log from 'electron-log';

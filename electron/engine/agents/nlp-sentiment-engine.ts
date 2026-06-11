@@ -956,11 +956,11 @@ export class NLPSentimentEngine {
 
     if (lang === 'zh') {
       // Count distinct negation occurrences (must be standalone, not part of another word)
-      // Skip 未来/未來 (not negation)
+ // Skip / (not negation)
       const negCounts: Record<string, number> = {};
       for (const neg of ZH_NEGATION_PATTERNS) {
         // Use word boundary: not followed/preceded by other Chinese chars that are part of words
-        // E.g. 不 in 未/来 is not a negation
+ // E.g. in / is not a negation
         const negPattern = new RegExp(`(?<![\\u4e00-\\u9fa5])${neg}(?![\\u4e00-\\u9fa5])`, 'g');
         const negMatches = text.match(negPattern);
         if (negMatches) negCounts[neg] = negMatches.length;

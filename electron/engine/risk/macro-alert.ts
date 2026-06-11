@@ -14,8 +14,8 @@ export interface MacroDataPoint {
   indicator: string;        // 'GDP' | 'CPI' | 'PMI'
   value: number;
   previousValue: number;
-  change: number;           // 变化值
-  changePercent: number;    // 变化百分比
+  change: number;
+  changePercent: number;
 }
 
 export interface MacroAlert {

@@ -1,6 +1,6 @@
 /**
  * J-52-02: Strategy Subscription + Earnings Engine (R52 P0)
- * 策略订阅管理 + 收益分成 + 结算系统
+ * strategy/policysubscribe + +
  *
  * Features:
  * - Subscribe/unsubscribe to strategies

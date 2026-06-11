@@ -1,9 +1,9 @@
 /**
- * J-63-02: 计费+钱包 /api (R63 v19 — v1.5.0-rc 服务器化)
+ * J-63-02: + /api (R63 v19 — v1.5.0-rc service)
  *
- * 计费引擎迁移: 按次扣费验证+余额冻结+退款。
- * 钱包服务迁移: 余额/充值确认/提现审核。
- * 桌面端: 删 billing-contract + wallet 逻辑 → 只调 /api。
+ * migration: +balance+。
+ * servicemigration: balance/rechargeconfirm/withdraw。
+ * : billing-contract + wallet → /api。
  *
  * Features:
  * - Usage billing: charge per AI call, 3-tier pricing (1.0/1.5/2.0 USDT)

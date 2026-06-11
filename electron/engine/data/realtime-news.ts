@@ -2,13 +2,13 @@ import i18n from '../../../src/i18n';
 import { EngineError } from '../core/engine-error';
 
 /**
- * J-78-02: realtime-news.ts 完整引擎 (~300L)
+ * J-78-02: realtime-news.ts (~300L)
  * replaces 40-line stub
  *
- * NewsAPI + 东方财富新闻 双源聚合
- * 关键词过滤+去重+按标的排序
- * 实时流: WebSocket/SSE 推送新新闻
- * 新闻→情绪打分 (-100~+100)
+ * NewsAPI + 
+ * ++sort
+ * : WebSocket/SSE 
+ * → (-100~+100)
  */
 
 // ── Types ──────────────────────────────────────────────────────────────────

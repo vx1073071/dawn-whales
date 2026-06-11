@@ -1,4 +1,4 @@
-// ── JVS-25 (PM Round 2): Smart Picker (智能选股助手) ──────────────────────
+// ── JVS-25 (PM Round 2): Smart Picker () ──────────────────────
 // Multi-dimensional stock scoring: fundamental + technical + capital flow + sentiment
 // Outputs Top 10 recommendations with reasoning
 // IPC: em:smart-pick

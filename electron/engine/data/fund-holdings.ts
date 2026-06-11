@@ -1,4 +1,4 @@
-// ── JVS-13: Fund Holdings Data (基金持仓数据) ──────────────────────────────
+// ── JVS-13: Fund Holdings Data (fund holdings) ──────────────────────────────
 // Fetches mutual fund holdings and position changes from East Money
 // Provides institutional ownership data for stock selection
 
@@ -15,11 +15,11 @@ import { EngineError } from '../core/engine-error';
 export interface FundHolding {
   fundCode: string;        // 基金代码
   fundName: string;        // 基金名称
-  fundType: string;        // 基金类型 (股票型/混合型/指数型)
-  stockCode: string;       // 持仓股票代码
-  stockName: string;       // 持仓股票名称
+  fundType: string;        // 基金类型 (股票型/hybrid型/index型)
+  stockCode: string;       // position/holding股票代码
+  stockName: string;       // position/holding股票名称
   shares: number;          // 持有股数 (万股)
-  marketValue: number;     // 持有市值 (万元)
+  marketValue: number;     // 持有market cap (万元)
   navRatio: number;        // 占净值比 %
   sharesChange: number;    // 持股变动 (万股, 正=增持, 负=减持)
   reportDate: string;      // 报告期
@@ -30,8 +30,8 @@ export interface StockFundOwnership {
   name: string;            // 股票名称
   fundCount: number;       // 持有基金数
   totalShares: number;     // 基金持股总数 (万股)
-  totalValue: number;      // 基金持股市值 (万元)
-  ratioOfFloat: number;    // 占流通股本比例 %
+  totalValue: number;      // 基金持股market cap (万元)
+  ratioOfFloat: number;    // 占float shares比例 %
   changeDirection: 'increase' | 'decrease' | 'new' | 'exit' | 'unchanged';
   reportDate: string;
 }
@@ -58,7 +58,7 @@ const cache = new Map<string, CacheEntry>();
 // ── API Functions ──────────────────────────────────────────────────────────
 
 /**
- * 获取基金持仓明细（按基金查）
+ * fund holdings 
  */
 export async function getFundHoldings(
   fundCode: string,
@@ -113,7 +113,7 @@ export async function getFundHoldings(
 }
 
 /**
- * 获取个股被基金持仓情况（按股票查）
+ * fund holdings 
  */
 export async function getStockFundOwnership(
   stockCode: string,
@@ -168,7 +168,7 @@ export async function getStockFundOwnership(
 }
 
 /**
- * 获取基金增持榜（机构看好信号）
+ *
  */
 export async function getFundIncreaseRank(
   limit = 30,
@@ -221,7 +221,7 @@ export async function getFundIncreaseRank(
 }
 
 /**
- * 获取基金减持榜（机构看空信号）
+ *
  */
 export async function getFundDecreaseRank(
   limit = 30,

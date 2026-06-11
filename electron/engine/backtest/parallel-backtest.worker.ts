@@ -1,6 +1,6 @@
 // ── DAWN WHALES — Parallel Backtest Worker (J2) ─────────────────────────────
-// 参数扫描 100 组合并行 → 10x 加速
-// 主线程把 (strategy, params[], klines[]) 切成 4 份，每个 Worker 处理 25 组合
+// parameter sweep 100 → 10x
+// (strategy, params[], klines[]) 4 ， Worker 25
 
 import { parentPort, workerData } from 'worker_threads';
 import type { BacktestConfig, BacktestResult } from './backtest-engine';

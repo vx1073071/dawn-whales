@@ -1,5 +1,5 @@
 // ── DAWN WHALES — Backtest Enhancement (Sprint 2: P1) ───────────────────────
-// 多周期对比 + 参数扫描 + Walk-Forward 分析 + 深度风险指标
+// period + parameter sweep + Walk-Forward + metric
 
 import { BacktestEngine } from './backtest-engine';
 

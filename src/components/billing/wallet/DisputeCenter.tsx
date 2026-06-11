@@ -1,6 +1,6 @@
 /**
  * DisputeCenter + TransactionHistory — ML-62-02 [P0]
- * R62: v1.5.0-alpha — Dispute filing & transaction records (v15商业基建)
+ * R62: v1.5.0-alpha — Dispute filing & transaction records (v15)
  *
  * Features:
  * - Dispute filing form: 4 reason types + description + evidence

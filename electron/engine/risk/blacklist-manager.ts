@@ -1,10 +1,10 @@
 /**
 import { EngineError, ErrorCode } from '../../errors';
 
- * J-78-03-4: blacklist-manager.ts — 黑名单管理引擎
- * v1.9.0: 拆分自p2p-transfer-engine
+ * J-78-03-4: blacklist-manager.ts
+ * v1.9.0: p2p-transfer-engine
  *
- * 黑名单: 手动添加/移除 + 冻结关联 + 批量导入 + 查询
+ * : / + + import + query
  */
 
 export interface BlacklistEntry {
@@ -12,11 +12,11 @@ export interface BlacklistEntry {
   reason: string;
   addedBy: string;
   addedAt: string;
-  expiresAt?: string; // 可选过期时间
+  expiresAt?: string; // 可选expiry时间
   removedAt?: string;
   removedBy?: string;
   status: 'active' | 'expired' | 'removed';
-  relatedTransfers: string[]; // 关联的转账ID
+  relatedTransfers: string[]; // 关联的transferID
   notes?: string;
 }
 
@@ -24,7 +24,7 @@ export class BlacklistManager {
   private blacklist = new Map<string, BlacklistEntry>();
   private whitelist = new Set<string>(); // 始终允许的地址
 
-  /** 添加用户到黑名单 */
+ /** user */
   add(userId: string, reason: string, addedBy: string, expiresInDays?: number, notes?: string): BlacklistEntry {
     if (this.whitelist.has(userId)) throw new EngineError(ErrorCode.SECURITY_VIOLATION, `User ${userId} is whitelisted, cannot blacklist`);
 
@@ -45,7 +45,7 @@ export class BlacklistManager {
     return entry;
   }
 
-  /** 移除黑名单 */
+ /** */
   remove(userId: string, removedBy: string): BlacklistEntry {
     const entry = this.blacklist.get(userId);
     if (!entry) throw new EngineError(ErrorCode.SECURITY_VIOLATION, `User ${userId} is not blacklisted`);
@@ -57,7 +57,7 @@ export class BlacklistManager {
     return entry;
   }
 
-  /** 检查是否黑名单 */
+ /** */
   isBlacklisted(userId: string): boolean {
     const entry = this.blacklist.get(userId);
     if (!entry || entry.status !== 'active') return false;
@@ -69,7 +69,7 @@ export class BlacklistManager {
     return true;
   }
 
-  /** 关联转账到黑名单 */
+ /** transfer */
   linkTransfer(userId: string, transferId: string): void {
     const entry = this.blacklist.get(userId);
     if (entry && !entry.relatedTransfers.includes(transferId)) {
@@ -78,22 +78,22 @@ export class BlacklistManager {
     }
   }
 
-  /** 获取黑名单详情 */
+ /** */
   getEntry(userId: string): BlacklistEntry | undefined {
     return this.blacklist.get(userId);
   }
 
-  /** 活跃黑名单列表 */
+ /** */
   getActiveList(): BlacklistEntry[] {
     return [...this.blacklist.values()].filter((e) => e.status === 'active');
   }
 
-  /** 全部黑名单 (含历史) */
+ /** () */
   getAll(): BlacklistEntry[] {
     return [...this.blacklist.values()].sort((a, b) => new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime());
   }
 
-  /** 批量导入 (CSV或数组) */
+ /** import (CSV) */
   importBatch(entries: Array<{ userId: string; reason: string; addedBy: string; notes?: string }>): number {
     let count = 0;
     for (const e of entries) {
@@ -107,7 +107,7 @@ export class BlacklistManager {
     return count;
   }
 
-  /** 白名单 */
+ /** */
   addWhitelist(userId: string): void {
     this.whitelist.add(userId);
   }

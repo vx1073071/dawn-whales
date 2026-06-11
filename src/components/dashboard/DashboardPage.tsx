@@ -1,5 +1,5 @@
 // ── DAWN WHALES — Dashboard (v0.6.0) ────────────────────────────────────────
-// 总资产/持仓热力图/净值曲线/盈亏总览/最近信号
+// /position/holdingheatmap///
 
 import { useState, useEffect, useMemo } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
@@ -325,7 +325,7 @@ function SummaryCard({ label, value, sub, color, bg }: {
 
 // StatusRow was replaced by SystemHealthPanel in ML-38-01 (v0.8.0).
 // Kept below as comment for reference; remove in v0.9.0 cleanup.
-// function StatusRow({ label, ok, okText = '正常', failText = '异常' }: {
+// function StatusRow({ label, ok, okText = '', failText = '' }: {
 //   label: string; ok: boolean; okText?: string; failText?: string;
 // }) {
 //   return (

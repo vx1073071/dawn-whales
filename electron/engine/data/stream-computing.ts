@@ -1,6 +1,6 @@
 // ── Stream Computing Engine (JVS-61) ─────────────────────────────────────────
-// 流式计算引擎 - 滑动窗口计算 + 实时聚合 (VWAP/TWAP)
-// 支持：滑动窗口、时间窗口、实时聚合、流式指标计算
+// - + (VWAP/TWAP)
+// metric
 
 import { EventEmitter } from 'events';
 

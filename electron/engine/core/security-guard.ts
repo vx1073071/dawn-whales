@@ -1,14 +1,14 @@
 /**
- * J-77-03: CSRF/XSS/CSP 安全防护中间件
+ * J-77-03: CSRF/XSS/CSP middleware
  * 
- * 用于 Express/Electron API 端的安全加固:
- * - XSS防护: 所有用户输入 HTML encode
- * - CSRF token: 写操作必须验证
- * - CSP header: 内容安全策略
+ * Express/Electron API :
+ * - XSS: user HTML encode
+ * - CSRF token:
+ * - CSP header: strategy/policy
  * - Helmet-like headers
  */
 
-// ── XSS 防护 ──────────────────────────────────────────────────
+// ── XSS ──────────────────────────────────────────────────
 
 const HTML_ENTITIES: Record<string, string> = {
   '&': '&amp;',

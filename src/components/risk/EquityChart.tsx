@@ -1,5 +1,5 @@
-// ── DAWN WHALES — EquityChart (净值曲线) ───────────────────────────────────
-// 展示策略/账户净值变化 + 回撤阴影
+// ── DAWN WHALES — EquityChart () ───────────────────────────────────
+// strategy/policy/ + 
 
 import { useRef, useEffect, useMemo } from 'react';
 import * as echarts from 'echarts';

@@ -9,6 +9,8 @@
  * - Animation performance (GPU-accelerated transforms)
  */
 import React from 'react';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:AI] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 

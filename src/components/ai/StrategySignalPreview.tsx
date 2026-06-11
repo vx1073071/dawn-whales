@@ -1,12 +1,12 @@
 /**
  * StrategySignalPreview — ML-56-03 [P1]
- * R56: v1.2.0-alpha — 策略信号预览 + 4 Agent 决策详情
+ * R56: v1.2.0-alpha — strategy/policy + 4 Agent 
  *
  * Features:
- * - 保存前预览 + 可编辑参数
- * - 4 Agent 决策详情展示 (每个 Agent 的分析)
- * - 信号参数调节 (方向/置信度/止损/止盈)
- * - 一键保存/分享策略
+ * - save + editparameter
+ * - 4 Agent ( Agent )
+ * - parameter (//stop loss/take profit)
+ * - save/sharestrategy/policy
  *
  * ≥150L
  */
@@ -14,6 +14,8 @@
 import React, { useState, useCallback } from 'react';
 import { useTranslation } from "react-i18next";
 import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:AI] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 

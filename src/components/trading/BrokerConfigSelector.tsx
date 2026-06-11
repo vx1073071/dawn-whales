@@ -1,6 +1,6 @@
 // ── BrokerSelector Component ───────────────────────────────────────────────
 // Multi-broker selector with connection status and account info
-// J-26-02: BrokerSelector 组件 + 多券商 UI
+// J-26-02: BrokerSelector component + UI
 
 import { useState, useEffect, useCallback } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';

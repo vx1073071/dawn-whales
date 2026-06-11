@@ -1,5 +1,5 @@
-// JVS-115: 实时数据聚合器
-// 统一聚合多个数据源的实时数据，提供统一API接口
+// JVS-115: 
+// data source，APIinterface/API
 
 import { EventEmitter } from 'events';
 import log from 'electron-log';

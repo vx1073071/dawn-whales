@@ -1,10 +1,10 @@
 /**
 import { EngineError, ErrorCode } from '../../errors';
 
- * J-78-03-3: p2p-freeze-manager.ts — P2P冻结管理引擎
- * v1.9.0: 拆分自p2p-transfer-engine
+ * J-78-03-3: p2p-freeze-manager.ts — P2P
+ * v1.9.0: p2p-transfer-engine
  *
- * 冻结管理: 14天计时 + 自动解冻 + 手动解冻 + 全局冻结/解冻用户
+ * : 14 + + + /user
  */
 
 export interface FreezeRecord {
@@ -32,7 +32,7 @@ export class P2PFreezeManager {
   private freezes = new Map<string, FreezeRecord>();
   private userFreezes = new Map<string, UserFreeze>();
 
-  /** 记录一笔转账冻结 */
+ /** transfer */
   freezeTransfer(
     transferId: string,
     fromUserId: string,
@@ -55,7 +55,7 @@ export class P2PFreezeManager {
     return record;
   }
 
-  /** 自动解冻到期的转账 */
+ /** transfer */
   releaseExpired(): FreezeRecord[] {
     const now = Date.now();
     const released: FreezeRecord[] = [];
@@ -71,7 +71,7 @@ export class P2PFreezeManager {
     return released;
   }
 
-  /** 手动解冻 (管理员) */
+ /** () */
   manualRelease(transferId: string, releasedBy: string): FreezeRecord {
     const f = this.freezes.get(transferId);
     if (!f) throw new EngineError(ErrorCode.INTERNAL_ERROR, `Freeze record for ${transferId} not found`);
@@ -84,7 +84,7 @@ export class P2PFreezeManager {
     return f;
   }
 
-  /** 申诉导致的永久冻结 */
+ /** */
   makePermanent(transferId: string): FreezeRecord {
     const f = this.freezes.get(transferId);
     if (!f) throw new EngineError(ErrorCode.INTERNAL_ERROR, `Freeze record for ${transferId} not found`);
@@ -93,19 +93,19 @@ export class P2PFreezeManager {
     return f;
   }
 
-  /** 查询冻结记录 */
+ /** query */
   getFreeze(transferId: string): FreezeRecord | undefined {
     return this.freezes.get(transferId);
   }
 
-  /** 用户的冻结列表 */
+ /** user */
   listByUser(userId: string): FreezeRecord[] {
     return [...this.freezes.values()]
       .filter((f) => (f.fromUserId === userId || f.toUserId === userId) && f.status === 'frozen')
       .sort((a, b) => new Date(a.frozenUntil).getTime() - new Date(b.frozenUntil).getTime());
   }
 
-  /** 即将到期的冻结 (24小时内) */
+ /** (24) */
   getExpiringSoon(hoursBefore = 24): FreezeRecord[] {
     const threshold = Date.now() + hoursBefore * 3600000;
     return [...this.freezes.values()].filter(
@@ -113,7 +113,7 @@ export class P2PFreezeManager {
     );
   }
 
-  /** 用户级别的全局冻结 */
+ /** user */
   freezeUser(userId: string, reason: string, frozenBy: string): UserFreeze {
     if (this.userFreezes.has(userId)) throw new EngineError(ErrorCode.INTERNAL_ERROR, `User ${userId} is already frozen`);
     const uf: UserFreeze = { userId, reason, frozenAt: new Date().toISOString(), frozenBy };

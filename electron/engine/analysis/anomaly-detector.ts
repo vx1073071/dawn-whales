@@ -1,13 +1,13 @@
 void EngineError; // [EngineError:SYSTEM] structured error tracking
 import { EngineError } from '../../../electron/engine/core/engine-error';
 /**
- * 异常检测器核心算法
+ * anomaly detection
  * 
- * 实现多种统计异常检测算法：
- * - Z-Score: 基于标准差的异常检测
- * - IQR (四分位距): 基于四分位数的异常检测
- * - MAD (中位数绝对偏差): 鲁棒的异常检测
- * - Isolation Forest: 基于隔离的异常检测（简化版）
+ * anomaly detection：
+ * - Z-Score: standard deviationanomaly detection
+ * - IQR (): anomaly detection
+ * - MAD (): anomaly detection
+ * - Isolation Forest: anomaly detection 
  */
 
 export class AnomalyDetector {
@@ -22,8 +22,8 @@ export class AnomalyDetector {
   }
 
   /**
-   * Z-Score 异常检测
-   * 基于标准差：|x - μ| / σ
+   * Z-Score anomaly detection
+ * standard deviation：|x - μ| / σ
    */
   zscore(value: number, history: number[]): number {
     if (history.length === 0) return 0;
@@ -38,8 +38,8 @@ export class AnomalyDetector {
   }
 
   /**
-   * IQR (四分位距) 异常检测
-   * 基于四分位数：Q1 - 1.5*IQR < x < Q3 + 1.5*IQR
+ * IQR () anomaly detection
+ * ：Q1 - 1.5*IQR < x < Q3 + 1.5*IQR
    */
   iqr(value: number, history: number[]): { isAnomaly: boolean; lower: number; upper: number } {
     if (history.length === 0) {
@@ -62,8 +62,8 @@ export class AnomalyDetector {
   }
 
   /**
-   * MAD (中位数绝对偏差) 异常检测
-   * 比标准差更鲁棒，对异常值不敏感
+ * MAD () anomaly detection
+ * standard deviation，outlier
    */
   mad(value: number, history: number[]): number {
     if (history.length === 0) return 0;
@@ -78,13 +78,13 @@ export class AnomalyDetector {
   }
 
   /**
-   * Isolation Forest (简化版)
-   * 基于隔离森林的异常检测
+ * Isolation Forest ()
+ * anomaly detection
    */
   isolationForest(value: number, history: number[]): number {
     if (history.length < 10) return 0;
 
-    // 简化版：使用多个随机分割来计算异常分数
+ // ：
     const numTrees = 10;
     let totalPathLength = 0;
 
@@ -103,7 +103,7 @@ export class AnomalyDetector {
   }
 
   /**
-   * 计算百分位数
+ *
    */
   private percentile(sortedArray: number[], p: number): number {
     if (sortedArray.length === 0) return 0;
@@ -122,7 +122,7 @@ export class AnomalyDetector {
   }
 
   /**
-   * 计算中位数
+ *
    */
   private median(array: number[]): number {
     if (array.length === 0) return 0;
@@ -137,7 +137,7 @@ export class AnomalyDetector {
   }
 
   /**
-   * 计算路径长度（Isolation Forest 简化版）
+ * path（Isolation Forest ）
    */
   private calculatePathLength(value: number, history: number[]): number {
     let depth = 0;
@@ -168,7 +168,7 @@ export class AnomalyDetector {
   }
 
   /**
-   * 计算期望路径长度
+ * path
    */
   private expectedPathLength(n: number): number {
     if (n <= 1) return 0;
@@ -180,8 +180,8 @@ export class AnomalyDetector {
   }
 
   /**
-   * 综合异常检测
-   * 使用多种方法的加权平均
+ * anomaly detection
+ * method
    */
   detect(value: number, history: number[]): {
     isAnomaly: boolean;
@@ -231,7 +231,7 @@ export class AnomalyDetector {
     const score = totalWeight > 0 ? weightedScore / totalWeight : 0;
 
     return {
-      isAnomaly: score > 0.7, // 阈值可以调整
+      isAnomaly: score > 0.7, // threshold可以调整
       score,
       details,
     };

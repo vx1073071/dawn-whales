@@ -1,5 +1,5 @@
 // ── DAWN WHALES — SentimentGauge (W28) ─────────────────────────────────────
-// 市场情绪指数仪表盘：0-100，恐慌/贪婪标签
+// indexdashboard：0-100，/
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { EngineError } from '../../../electron/engine/core/engine-error';

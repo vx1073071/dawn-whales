@@ -16,6 +16,8 @@ import DOMPurify from 'dompurify';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '@/stores/appStore';
 import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:AI] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 

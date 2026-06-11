@@ -1,6 +1,6 @@
 /**
  * J-56-01: Agent Orchestrator (R56 TradingAgents Integration)
- * TypeScript ↔ Python HTTP/WebSocket 通信层
+ * TypeScript ↔ Python HTTP/WebSocket 
  *
  * Features:
  * - HTTP client for TradingAgents FastAPI endpoints

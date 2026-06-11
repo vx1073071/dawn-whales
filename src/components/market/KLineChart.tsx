@@ -2,6 +2,8 @@
 import { useEffect, useRef, useMemo } from 'react';
 import { createChart, IChartApi, ISeriesApi } from 'lightweight-charts';
 import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:DATA] structured error tracking
 
 interface KLineChartProps {
   data: Array<{

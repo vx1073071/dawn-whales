@@ -1,7 +1,7 @@
 // electron/engine/indicator-trigger.ts
-// IndicatorTriggerEngine — 技术指标触发模块
-// J-30-01 ConditionEngine 子模块
-// 负责：RSI 超买超卖 / MACD 金叉死叉 / MA 交叉 / 布林带突破
+// IndicatorTriggerEngine — technical indicatormodule
+// J-30-01 ConditionEngine module
+// ：RSI / MACD / MA / Bollinger Bandsbreakout
 
 import log from 'electron-log';
 import type { TriggerResult } from '../../types/condition.js';
@@ -22,25 +22,25 @@ export interface KlineData {
 export type IndicatorType = 'rsi' | 'macd' | 'ma_crossover' | 'bollinger';
 
 export interface RsiRuleConfig {
-  overbought?: number;  // 默认 70
-  oversold?: number;    // 默认 30
-  period?: number;      // 默认 14
+  overbought?: number;  // default 70
+  oversold?: number;    // default 30
+  period?: number;      // default 14
 }
 
 export interface MacdRuleConfig {
-  fast?: number;    // 默认 12
-  slow?: number;    // 默认 26
-  signal?: number;  // 默认 9
+  fast?: number;    // default 12
+  slow?: number;    // default 26
+  signal?: number;  // default 9
 }
 
 export interface MaCrossoverRuleConfig {
-  shortPeriod?: number;  // 默认 5
-  longPeriod?: number;   // 默认 20
+  shortPeriod?: number;  // default 5
+  longPeriod?: number;   // default 20
 }
 
 export interface BollingerRuleConfig {
-  period?: number;    // 默认 20
-  multiplier?: number; // 默认 2
+  period?: number;    // default 20
+  multiplier?: number; // default 2
 }
 
 export type IndicatorSubCondition =
@@ -97,7 +97,7 @@ interface IndicatorRuleInternal {
 // ── Indicator Calculation Functions ───────────────────────────────────────
 
 /**
- * 计算简单移动平均线 (SMA)
+ * moving average (SMA)
  */
 export function calculateSMA(closes: number[], period: number): number[] {
   if (closes.length < period) return [];
@@ -116,7 +116,7 @@ export function calculateSMA(closes: number[], period: number): number[] {
 }
 
 /**
- * 计算 EMA (指数移动平均)
+ * EMA (indexmoving average)
  */
 export function calculateEMA(values: number[], period: number): number[] {
   if (values.length === 0) return [];
@@ -129,7 +129,7 @@ export function calculateEMA(values: number[], period: number): number[] {
 }
 
 /**
- * 计算 RSI
+ * RSI
  */
 export function calculateRSI(closes: number[], period: number): number[] {
   if (closes.length < period + 1) return [];
@@ -165,7 +165,7 @@ export function calculateRSI(closes: number[], period: number): number[] {
 }
 
 /**
- * 计算 MACD (DIF, DEA, Histogram)
+ * MACD (DIF, DEA, Histogram)
  */
 export function calculateMACD(
   closes: number[],
@@ -177,8 +177,8 @@ export function calculateMACD(
   const emaSlow = calculateEMA(closes, slow);
 
   const macdLine: number[] = [];
-  // 对齐：EMA 从 index 0 开始，但 fast 和 slow 的 EMA 长度不同
-  // 取较短长度对齐
+ // ：EMA index 0 start， fast slow EMA 
+ //
   const minLen = Math.min(emaFast.length, emaSlow.length);
   const offsetFast = emaFast.length - minLen;
   const offsetSlow = emaSlow.length - minLen;
@@ -199,7 +199,7 @@ export function calculateMACD(
 }
 
 /**
- * 计算布林带 (上轨、中轨、下轨)
+ * Bollinger Bands ( )
  */
 export function calculateBollingerBands(
   closes: number[],
@@ -244,11 +244,11 @@ function isSameDay(ms: number): boolean {
 
 export class IndicatorTriggerEngine {
   private rules: Map<string, IndicatorRuleInternal> = new Map();
-  /** 上次 MACD histogram 值（用于金叉/死叉检测） */
+ /** MACD histogram （/） */
   private lastHistogramMap: Map<string, number> = new Map();
-  /** 上次短 MA 值（用于 MA 交叉检测） */
+ /** MA （ MA ） */
   private lastShortMaMap: Map<string, number> = new Map();
-  /** 上次长 MA 值 */
+ /** MA */
   private lastLongMaMap: Map<string, number> = new Map();
 
   private triggerHistory: IndicatorTriggerResult[] = [];
@@ -334,9 +334,9 @@ export class IndicatorTriggerEngine {
   // ── Evaluate ─────────────────────────────────────────
 
   /**
-   * 评估指定标的所有指标规则
-   * @param code 标的代码
-   * @param klines K线数据数组（需要足够的历史数据）
+ * metricrule
+ * @param code 
+ * @param klines K 
    */
   evaluate(code: string, klines: KlineData[]): IndicatorTriggerResult[] {
     if (klines.length < 2) return [];
@@ -368,7 +368,7 @@ export class IndicatorTriggerEngine {
   ): IndicatorTriggerResult | null {
     const now = Date.now();
 
-    // 冷却检查
+ //
     if (rule.lastTriggeredAt !== undefined && rule.cooldownMs > 0) {
       const elapsed = now - rule.lastTriggeredAt;
       if (elapsed < rule.cooldownMs) {
@@ -379,7 +379,7 @@ export class IndicatorTriggerEngine {
       }
     }
 
-    // 每日最大触发检查
+ //
     if (rule.maxTriggersPerDay < Infinity) {
       const todayCount = this.triggerHistory.filter(
         (e) => e.ruleId === rule.id && isSameDay(e.triggeredAt ?? 0)
@@ -392,7 +392,7 @@ export class IndicatorTriggerEngine {
       }
     }
 
-    // 按指标类型分别评估
+ // metric
     let triggered = false;
     let indicatorValue: number | undefined;
     let indicatorDetails: Record<string, number> | undefined;
@@ -437,10 +437,10 @@ export class IndicatorTriggerEngine {
         if (prevHist === undefined) return null;
 
         if (rule.subCondition === 'macd_golden_cross') {
-          // histogram 从负转正 = MACD 金叉
+ // histogram = MACD 
           triggered = prevHist <= 0 && currentHist > 0;
         } else if (rule.subCondition === 'macd_death_cross') {
-          // histogram 从正转负 = MACD 死叉
+ // histogram = MACD 
           triggered = prevHist >= 0 && currentHist < 0;
         }
         break;
@@ -467,10 +467,10 @@ export class IndicatorTriggerEngine {
         if (prevShort === undefined || prevLong === undefined) return null;
 
         if (rule.subCondition === 'ma_golden_cross') {
-          // 短 MA 从下穿上长 MA
+ // MA MA
           triggered = prevShort <= prevLong && currentShort > currentLong;
         } else if (rule.subCondition === 'ma_death_cross') {
-          // 短 MA 从上穿下长 MA
+ // MA MA
           triggered = prevShort >= prevLong && currentShort < currentLong;
         }
         break;

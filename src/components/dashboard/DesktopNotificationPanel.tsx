@@ -247,7 +247,7 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
           }`}>
           ⚠️ 测试风控
         </button>
-        {showTestSent && <span className="text-[10px] text-emerald-400 py-1.5">✓ 已发送</span>}
+        {showTestSent && <span className="text-[10px] text-emerald-400 py-1.5">{i18n.t('DesktopNotificationPanel.r92_0')}</span>}
       </div>
 
       {/* Notification history */}

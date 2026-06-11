@@ -1,6 +1,6 @@
 /**
- * J-V15-01: Revenue Engine v15 (R53 v15 商业模型定版)
- * USDT 计价 + 创作者分级抽成 (L1/L2/L3)
+ * J-V15-01: Revenue Engine v15 (R53 v15 )
+ * USDT + creator (L1/L2/L3)
  *
  * Features:
  * - Creator tier system (L1: 70/30, L2: 80/20, L3: 90/10)

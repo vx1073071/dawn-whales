@@ -1,15 +1,15 @@
 ﻿/**
  * AgentCollaborationPanel — ML-56-01 [P0]
- * R56: v1.2.0-alpha — AI 协作按钮 + 4 Agent 状态可视化
+ * R56: v1.2.0-alpha — AI + 4 Agent 
  *
  * Features:
- * - "AI 协作" 触发按钮 (一键启动 4 Agent 圆桌辩论)
- * - 4 Agent 头像 + 实时状态 (基本面/情绪/新闻/技术)
- * - 辩论动画 (打字效果 + 进度条)
- * - 缓存命中提示 (创作者可见实时命中率)
- * - 降级提示 (LLM 降级时显示"正在使用备用模型")
- * - 最终决策展示 (推荐+置信度+投票明细)
- * - 3 档选择 (标准/高级/旗舰)
+ * - "AI " ( 4 Agent )
+ * - 4 Agent avatar + (fundamental///)
+ * - ( + items)
+ * - cache hithint (creator)
+ * - downgradehint (LLM downgrade"")
+ * - (++)
+ * - 3 (//)
  *
  * ≥300L
  */

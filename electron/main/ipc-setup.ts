@@ -3,6 +3,7 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
 import { withTimeout, ReentryGuard, ipcHealth, validateInput } from './ipc-hardening';
+import { sanitizeInput } from './ipc-input-sanitizer';
 import path from 'path';
 import { exec } from 'child_process';
 import { promisify } from 'util';
@@ -62,6 +63,35 @@ export interface IPCContext {
 // ── IPC Setup ────────────────────────────────────────────────────────────
 
 export function setupIPC(ctx: IPCContext): void {
+  // ── R92 J-01: Global IPC Input Sanitization Middleware ─────────────────
+  // Wraps ipcMain.handle to automatically sanitize all arguments.
+  // Strips HTML, enforces length/depth limits, prevents prototype pollution.
+  const originalHandle = ipcMain.handle.bind(ipcMain);
+  (ipcMain as any).handle = (channel: string, handler: (...args: any[]) => any) => {
+    return originalHandle(channel, async (event, rawArgs) => {
+      // Deep-sanitize all IPC input (skip for channels that need raw data)
+      const skipSanitize = ['ipc:health-stats', 'ipc:reentry-status', 'broker:disconnect'];
+      const sanitizedArgs = skipSanitize.includes(channel)
+        ? rawArgs
+        : (() => {
+            try {
+              return sanitizeInput(rawArgs);
+            } catch (err) {
+              if (err instanceof EngineError) throw err;
+              throw new EngineError(
+                ErrorDomain.VALIDATION,
+                ErrorCode.INVALID_PARAM,
+                `IPC input sanitization failed for '${channel}': ${err instanceof Error ? err.message : String(err)}`,
+                { context: { channel } }
+              );
+            }
+          })();
+      return handler(event, sanitizedArgs);
+    });
+  };
+
+  log.info('[IPC] R92 input sanitization middleware active (HTML strip, depth/length limits, prototype pollution guard)');
+
   // ── Broker: Multi-broker support (WP1 + Sprint1) ────────────────────
   ipcMain.handle('broker:connect', async (_e, config: { host: string; port: number; brokerId?: string }) => {
     try {

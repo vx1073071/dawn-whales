@@ -1,6 +1,6 @@
 // ── Q61: Sentiment Attribution Engine ──────────────────────────────────────────
 // Breaks composite sentiment into sector/stock level contributions
-// Topic modeling + Sector exposure weighting + News情感的归因
+// Topic modeling + Sector exposure weighting + News
 
 import log from 'electron-log';
 import i18n from '../../../src/i18n';

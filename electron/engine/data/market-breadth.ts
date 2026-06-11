@@ -1,4 +1,4 @@
-// ── JVS-16: Market Breadth Analyzer (市场广度分析器) ──────────────────────
+// ── JVS-16: Market Breadth Analyzer () ──────────────────────
 // Tracks market breadth indicators: A/D line, new highs/lows, breadth ratio
 // Useful for confirming trend strength and detecting divergences
 
@@ -12,38 +12,38 @@ import { httpGet } from '../utils/http';
 
 export interface MarketBreadthSnapshot {
   date: string;
-  advancing: number;       // 上涨家数
-  declining: number;       // 下跌家数
-  unchanged: number;       // 平盘家数
-  advVolume: number;       // 上涨成交额
-  decVolume: number;       // 下跌成交额
-  newHighs: number;        // 创新高数
-  newLows: number;         // 创新低数
-  limitUp: number;         // 涨停数
-  limitDown: number;       // 跌停数
-  totalStocks: number;     // 总股票数
+  advancing: number;       // advancing issues
+  declining: number;       // declining issues
+  unchanged: number;       // unchanged issues
+  advVolume: number;       // turnover
+  decVolume: number;       // turnover
+  newHighs: number;        // new high
+  newLows: number;         // new low
+  limitUp: number;         // limit up
+  limitDown: number;       // limit down
+  totalStocks: number;
 }
 
 export interface BreadthIndicators {
   // A/D Line
-  adLine: number;           // 累积 A/D 值
-  adLineChange: number;     // A/D 线变化
-  adRatio: number;          // 涨跌比 (advancing/declining)
+  adLine: number;           // A/D
+  adLineChange: number;     // A/D
+  adRatio: number;          // advance-decline ratio (advancing/declining)
 
   // Breadth Ratio
-  advanceRate: number;      // 上涨比例 %
-  declineRate: number;      // 下跌比例 %
+  advanceRate: number;      // %
+  declineRate: number;      // %
 
   // Volume breadth
-  volumeRatio: number;      // 上涨/下跌成交量比
+  volumeRatio: number;      // /volume
 
   // Highs/Lows
-  hlRatio: number;          // 新高/新低比
-  hlDiff: number;           // 新高-新低差
+  hlRatio: number;          // new high/new low
+  hlDiff: number;           // new high-new low
 
   // Extremes
-  limitUpRatio: number;     // 涨停比例
-  limitDownRatio: number;   // 跌停比例
+  limitUpRatio: number;     // limit up
+  limitDownRatio: number;   // limit down
 
   // Derived signals
   trend: 'strong_bull' | 'bull' | 'neutral' | 'bear' | 'strong_bear';
@@ -76,7 +76,7 @@ const MAX_HISTORY = 60; // Keep last 60 snapshots
 // ── API Functions ──────────────────────────────────────────────────────────
 
 /**
- * 获取当前市场广度数据
+ * current
  */
 export async function getMarketBreadth(): Promise<BreadthReport> {
   const cacheKey = 'market-breadth';

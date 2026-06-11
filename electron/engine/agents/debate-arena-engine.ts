@@ -1,6 +1,6 @@
 /**
  * J-57-04: DebateEngine + ModelArenaEngine (R57 v19)
- * 多空辩论协议 + 多模型竞技场（同题对比）
+ * long-short +
  *
  * Features:
  * - Multi-round bull vs bear debate protocol

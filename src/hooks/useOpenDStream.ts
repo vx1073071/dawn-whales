@@ -18,13 +18,13 @@ interface StreamStatus {
 }
 
 /**
- * OpenD Stream Hook - 实时行情推送消费
+ * OpenD Stream Hook
  * 
  * Features:
- * - 自动连接 OpenD WebSocket
- * - 失败时降级到轮询模式 (3s)
- * - 自动重连机制
- * - 实时推送消费
+ * - OpenD WebSocket
+ * - faileddowngrade (3s)
+ *
+ *
  * 
  * Usage:
  * ```tsx

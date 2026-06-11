@@ -1,4 +1,4 @@
-// ── JVS-17: Consumer Data Service (消费者数据服务) ──────────────────────
+// ── JVS-17: Consumer Data Service (service) ──────────────────────
 // Fetches detailed consumer economic indicators from East Money datacenter
 // - CPI sub-indexes (food/non-food/service breakdown)
 // - Retail sales by category
@@ -42,9 +42,9 @@ export interface RetailSales {
 
 export interface ConsumerConfidence {
   date: string;
-  index: number;          // 消费者信心指数
-  expectation: number;    // 预期指数
-  satisfaction: number;   // 满意指数
+  index: number;          // 消费者信心index
+  expectation: number;    // 预期index
+  satisfaction: number;   // 满意index
   income: number;         // 收入信心
   employment: number;     // 就业信心
 }
@@ -71,7 +71,7 @@ const cache = new Map<string, CacheEntry>();
 // ── API Functions ──────────────────────────────────────────────────────────
 
 /**
- * 获取 CPI 细项数据
+ * CPI 
  */
 export async function getCPISubIndexes(months = 12): Promise<CPISubIndex[]> {
   const cacheKey = `cpi-sub-${months}`;
@@ -115,7 +115,7 @@ export async function getCPISubIndexes(months = 12): Promise<CPISubIndex[]> {
 }
 
 /**
- * 获取社会消费品零售数据
+ *
  */
 export async function getRetailSales(months = 12): Promise<RetailSales[]> {
   const cacheKey = `retail-${months}`;
@@ -157,7 +157,7 @@ export async function getRetailSales(months = 12): Promise<RetailSales[]> {
 }
 
 /**
- * 获取消费者信心指数
+ * cancelindex
  */
 export async function getConsumerConfidence(months = 12): Promise<ConsumerConfidence[]> {
   const cacheKey = `confidence-${months}`;
@@ -196,7 +196,7 @@ export async function getConsumerConfidence(months = 12): Promise<ConsumerConfid
 }
 
 /**
- * 获取完整消费者数据报告
+ *
  */
 export async function getConsumerDataReport(months = 12): Promise<ConsumerDataReport> {
   const cacheKey = `consumer-report-${months}`;

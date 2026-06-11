@@ -1,5 +1,5 @@
-// JVS-46-01: 策略市场搜索/评分引擎
-// 多维度评分 (收益/风险/夏普) + 全文搜索
+// JVS-46-01: strategy marketplacesearch/
+// (//Sharpe) + search
 
 import { EventEmitter } from 'events';
 import log from 'electron-log';
@@ -9,13 +9,13 @@ export interface StrategyMetric {
   name: string;
   author: string;
   tags: string[];
-  returns: number; // 年化收益率 (%)
-  risk: number; // 最大回撤 (%)
-  sharpe: number; // 夏普比率
-  winRate: number; // 胜率 (%)
-  trades: number; // 交易次数
-  subscribers: number; // 订阅数
-  rating: number; // 用户评分 (1-5)
+  returns: number; // annualized return (%)
+  risk: number; // max drawdown (%)
+  sharpe: number; // Sharpe ratio
+  winRate: number; // win rate (%)
+  trades: number; // trade count
+  subscribers: number; // subscribe数
+  rating: number; // user评分 (1-5)
   createdAt: number;
   updatedAt: number;
 }
@@ -51,7 +51,7 @@ export class StrategyMarketplaceSearch extends EventEmitter {
   }
 
   /**
-   * 添加或更新策略
+ * updatestrategy/policy
    */
   addStrategy(metric: StrategyMetric): void {
     const isNew = !this.strategies.has(metric.strategyId);
@@ -61,21 +61,21 @@ export class StrategyMarketplaceSearch extends EventEmitter {
   }
 
   /**
-   * 批量添加策略
+ * strategy/policy
    */
   addStrategies(metrics: StrategyMetric[]): void {
     metrics.forEach(m => this.addStrategy(m));
   }
 
   /**
-   * 获取单个策略
+ * strategy/policy
    */
   getStrategy(strategyId: string): StrategyMetric | null {
     return this.strategies.get(strategyId) || null;
   }
 
   /**
-   * 删除策略
+   * deletestrategy/policy
    */
   removeStrategy(strategyId: string): boolean {
     const removed = this.strategies.delete(strategyId);
@@ -87,7 +87,7 @@ export class StrategyMarketplaceSearch extends EventEmitter {
   }
 
   /**
-   * 搜索策略
+   * searchstrategy/policy
    */
   search(query: SearchQuery): SearchResult {
     const {
@@ -108,7 +108,7 @@ export class StrategyMarketplaceSearch extends EventEmitter {
     const results: StrategyMetric[] = [];
 
     for (const strategy of this.strategies.values()) {
-      // 关键词搜索 (名称、作者、标签)
+ // search ( )
       if (keyword) {
         const nameMatch = strategy.name.toLowerCase().includes(keywordLower);
         const authorMatch = strategy.author.toLowerCase().includes(keywordLower);
@@ -118,14 +118,14 @@ export class StrategyMarketplaceSearch extends EventEmitter {
         }
       }
 
-      // 过滤条件
+ // condition
       if (strategy.returns < minReturn) continue;
       if (strategy.risk > maxRisk) continue;
       if (strategy.sharpe < minSharpe) continue;
       if (strategy.winRate < minWinRate) continue;
       if (strategy.rating < minRating) continue;
 
-      // 标签过滤
+ //
       if (tags.length > 0) {
         const hasTag = tags.some(t => strategy.tags.includes(t));
         if (!hasTag) continue;
@@ -134,7 +134,7 @@ export class StrategyMarketplaceSearch extends EventEmitter {
       results.push(strategy);
     }
 
-    // 排序
+    // sort
     results.sort((a, b) => {
       let aValue: number;
       let bValue: number;
@@ -170,7 +170,7 @@ export class StrategyMarketplaceSearch extends EventEmitter {
       return sortOrder === 'desc' ? bValue - aValue : aValue - bValue;
     });
 
-    // 分页
+    // pagination
     const total = results.length;
     const totalPages = Math.ceil(total / pageSize);
     const startIndex = (page - 1) * pageSize;
@@ -186,7 +186,7 @@ export class StrategyMarketplaceSearch extends EventEmitter {
   }
 
   /**
-   * 计算策略综合评分 (0-100)
+ * strategy/policy (0-100)
    */
   calculateScore(strategy: StrategyMetric): number {
     const weights = {
@@ -197,7 +197,7 @@ export class StrategyMarketplaceSearch extends EventEmitter {
       subscribers: 0.10
     };
 
-    // 归一化各项指标 (0-100)
+ // metric (0-100)
     const normalizedReturns = Math.min(100, Math.max(0, (strategy.returns + 50) / 2)); // -50%~100% -> 0~100
     const normalizedRisk = Math.max(0, 100 - strategy.risk); // 风险越低越好
     const normalizedSharpe = Math.min(100, Math.max(0, strategy.sharpe * 25)); // 0~4 -> 0~100
@@ -215,12 +215,12 @@ export class StrategyMarketplaceSearch extends EventEmitter {
   }
 
   /**
-   * 获取策略排名
+ * strategy ranking
    */
   getTopStrategies(limit: number = 10): StrategyMetric[] {
     const allStrategies = Array.from(this.strategies.values());
     
-    // 按综合评分排序
+ // sort
     const scored = allStrategies.map(s => ({
       ...s,
       score: this.calculateScore(s)
@@ -232,7 +232,7 @@ export class StrategyMarketplaceSearch extends EventEmitter {
   }
 
   /**
-   * 获取所有标签
+ *
    */
   getAllTags(): string[] {
     const tagSet = new Set<string>();
@@ -243,7 +243,7 @@ export class StrategyMarketplaceSearch extends EventEmitter {
   }
 
   /**
-   * 获取统计信息
+ * info
    */
   getStats(): {
     totalStrategies: number;
@@ -269,7 +269,7 @@ export class StrategyMarketplaceSearch extends EventEmitter {
     const totalRisk = allStrategies.reduce((sum, s) => sum + s.risk, 0);
     const totalSharpe = allStrategies.reduce((sum, s) => sum + s.sharpe, 0);
 
-    // 统计标签频率
+ // frequency
     const tagCounts = new Map<string, number>();
     for (const strategy of allStrategies) {
       for (const tag of strategy.tags) {
@@ -292,7 +292,7 @@ export class StrategyMarketplaceSearch extends EventEmitter {
   }
 
   /**
-   * 清空所有策略
+ * clearstrategy/policy
    */
   clear(): void {
     this.strategies.clear();
@@ -301,14 +301,14 @@ export class StrategyMarketplaceSearch extends EventEmitter {
   }
 
   /**
-   * 获取策略总数
+ * strategy/policy
    */
   get size(): number {
     return this.strategies.size;
   }
 }
 
-// 单例
+//
 let instance: StrategyMarketplaceSearch | null = null;
 
 export function getStrategyMarketplaceSearch(): StrategyMarketplaceSearch {

@@ -1,5 +1,5 @@
 // src/components/trading/ConditionRulePanel.tsx
-// 条件规则管理面板 — Phase 4.2 R30 Q-30-02
+// conditionrule — Phase 4.2 R30 Q-30-02
 
 import { useState, useCallback } from 'react';
 import type { ConditionRule, PriceCondition, TriggerEvent } from '../../../electron/types/condition.js';

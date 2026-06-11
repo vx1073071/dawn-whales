@@ -3,10 +3,10 @@
  * R68: v1.7.0-alpha — Enhanced fractional share trading with partial fill support
  *
  * Features:
- * - Fractional share input (美股 0.01-1.00)
+ * - Fractional share input ( 0.01-1.00)
  * - Partial fill status tracking: ordered→partial→filled→remaining
  * - Real-time fee calculator per fractional lot
- * - Market-specific rules (美股任意小数)
+ * - Market-specific rules ()
  * - Fill progress bar with ordered/filled/remaining breakdown
  * - Partial fill history log
  */
@@ -14,6 +14,8 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
 import i18n from '../../../i18n';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:TRADE] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 

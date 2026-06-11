@@ -1,5 +1,5 @@
 
-// ── DAWN WHALES — IPC API Client (直连 OpenD，通过 Electron IPC) ──────────────
+// ── DAWN WHALES — IPC API Client ( OpenD， Electron IPC) ──────────────
 // R89: Window.api uses `any` types to avoid cascading TS18046/TS2339/TS2345/TS2322
 // in 80+ consumer files. Internal type safety maintained by wrapper functions.
 /* eslint-disable @typescript-eslint/no-explicit-any */

@@ -1,6 +1,6 @@
 /**
  * Strategy Ensemble Engine - JVS-46-01
- * 多策略组合优化引擎，支持多种策略组合方法
+ * strategy/policy，strategy/policymethod
  */
 
 import log from 'electron-log';
@@ -30,17 +30,17 @@ export interface EnsembleSignal {
   symbol: string;
   action: 'buy' | 'sell' | 'hold';
   confidence: number;
-  consensus: number;       // 0-1, 策略一致性
+  consensus: number;       // 0-1, strategy/policyconsistency
   signals: StrategySignal[];
   timestamp: number;
 }
 
 export interface EnsembleConfig {
   strategies: Strategy[];
-  minConfidence: number;    // 最低置信度阈值
-  consensusThreshold: number; // 一致性阈值
+  minConfidence: number;    // 最低置信度threshold
+  consensusThreshold: number; // consistencythreshold
   rebalanceFrequency: 'daily' | 'weekly' | 'monthly';
-  maxDrawdown: number;      // 最大回撤限制
+  maxDrawdown: number;      // max drawdownlimit
   riskFreeRate: number;     // 无风险利率
 }
 
@@ -79,14 +79,14 @@ export class StrategyEnsemble {
   }
 
   /**
-   * 获取当前配置
+ * currentconfig
    */
   getConfig(): EnsembleConfig {
     return { ...this.config };
   }
 
   /**
-   * 更新配置
+   * updateconfig
    */
   updateConfig(config: Partial<EnsembleConfig>): void {
     this.config = { ...this.config, ...config };
@@ -98,7 +98,7 @@ export class StrategyEnsemble {
   }
 
   /**
-   * 添加策略
+ * strategy/policy
    */
   addStrategy(strategy: Strategy): void {
     this.strategies.set(strategy.id, strategy);
@@ -107,7 +107,7 @@ export class StrategyEnsemble {
   }
 
   /**
-   * 移除策略
+ * strategy/policy
    */
   removeStrategy(strategyId: string): boolean {
     const removed = this.strategies.delete(strategyId);
@@ -119,7 +119,7 @@ export class StrategyEnsemble {
   }
 
   /**
-   * 启用/禁用策略
+   * enable/disablestrategy/policy
    */
   setStrategyEnabled(strategyId: string, enabled: boolean): boolean {
     const strategy = this.strategies.get(strategyId);
@@ -136,26 +136,26 @@ export class StrategyEnsemble {
   }
 
   /**
-   * 获取所有策略
+ * strategy/policy
    */
   getStrategies(): Strategy[] {
     return Array.from(this.strategies.values());
   }
 
   /**
-   * 获取启用的策略
+ * enablestrategy/policy
    */
   getEnabledStrategies(): Strategy[] {
     return this.config.strategies.filter(s => s.enabled);
   }
 
   /**
-   * 聚合多个策略信号
+ * strategy/policy
    */
   aggregate(signals: StrategySignal[]): EnsembleSignal[] {
     const symbolSignals = new Map<string, StrategySignal[]>();
 
-    // 按符号分组
+ //
     signals.forEach(signal => {
       if (!symbolSignals.has(signal.symbol)) {
         symbolSignals.set(signal.symbol, []);
@@ -173,7 +173,7 @@ export class StrategyEnsemble {
       }
     });
 
-    // 限制历史记录大小
+ // limit
     if (this.signalHistory.length > this.maxHistorySize) {
       this.signalHistory = this.signalHistory.slice(-this.maxHistorySize);
     }
@@ -182,23 +182,23 @@ export class StrategyEnsemble {
   }
 
   /**
-   * 聚合单个符号的信号
+ *
    */
   private aggregateSymbolSignals(symbol: string, signals: StrategySignal[]): EnsembleSignal | null {
     if (signals.length === 0) return null;
 
-    // 过滤低于置信度阈值的信号
+ // threshold
     const validSignals = signals.filter(s => s.confidence >= this.config.minConfidence);
     if (validSignals.length === 0) return null;
 
-    // 计算投票
+ //
     const votes = new Map<string, number>();
     validSignals.forEach(signal => {
       const current = votes.get(signal.action) || 0;
       votes.set(signal.action, current + signal.confidence);
     });
 
-    // 找到最高投票的动作
+ //
     let bestAction: 'buy' | 'sell' | 'hold' = 'hold';
     let bestVote = 0;
     votes.forEach((vote, action) => {
@@ -208,14 +208,14 @@ export class StrategyEnsemble {
       }
     });
 
-    // 计算一致性
+ // consistency
     const totalVotes = Array.from(votes.values()).reduce((sum, v) => sum + v, 0);
     const consensus = totalVotes > 0 ? bestVote / totalVotes : 0;
 
-    // 计算平均置信度
+ //
     const avgConfidence = validSignals.reduce((sum, s) => sum + s.confidence, 0) / validSignals.length;
 
-    // 检查一致性阈值
+ // consistencythreshold
     if (consensus < this.config.consensusThreshold) {
       return null;
     }
@@ -231,16 +231,16 @@ export class StrategyEnsemble {
   }
 
   /**
-   * 生成再平衡信号
+ *
    */
   generateRebalanceSignals(
     currentWeights: Map<string, number>,
     targetWeights: Map<string, number>
   ): RebalanceSignal[] {
     const signals: RebalanceSignal[] = [];
-    const threshold = 0.05; // 5% 阈值
+    const threshold = 0.05; // 5% threshold
 
-    // 检查所有目标权重
+ // weight
     targetWeights.forEach((targetWeight, symbol) => {
       const currentWeight = currentWeights.get(symbol) || 0;
       const diff = Math.abs(targetWeight - currentWeight);
@@ -258,7 +258,7 @@ export class StrategyEnsemble {
       }
     });
 
-    // 检查当前持仓中不在目标中的
+ // currentposition/holding
     currentWeights.forEach((currentWeight, symbol) => {
       if (!targetWeights.has(symbol) && currentWeight > threshold) {
         signals.push({
@@ -276,21 +276,21 @@ export class StrategyEnsemble {
   }
 
   /**
-   * 获取信号历史
+ *
    */
   getSignalHistory(): EnsembleSignal[] {
     return [...this.signalHistory];
   }
 
   /**
-   * 清空信号历史
+ * clear
    */
   clearSignalHistory(): void {
     this.signalHistory = [];
   }
 
   /**
-   * 获取组合指标
+ * metric
    */
   getMetrics(): EnsembleMetrics {
     if (this.signalHistory.length === 0) {
@@ -319,7 +319,7 @@ export class StrategyEnsemble {
       else holdSignals++;
     });
 
-    // 计算最佳和最差策略
+ // strategy/policy
     const strategyPerformance = new Map<string, number[]>();
     this.signalHistory.forEach(signal => {
       signal.signals.forEach(s => {
@@ -360,7 +360,7 @@ export class StrategyEnsemble {
   }
 
   /**
-   * 重置
+   * reset
    */
   reset(): void {
     this.signalHistory = [];

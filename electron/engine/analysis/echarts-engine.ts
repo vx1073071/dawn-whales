@@ -1,6 +1,6 @@
 /**
- * JVS-45-01: ECharts Engine - 图表数据引擎
- * 生成 ECharts 图表配置，支持 K线图、折线图、柱状图、饼图等
+ * JVS-45-01: ECharts Engine - chart
+ * ECharts chartconfig， K、line chart、bar chart、pie chart
  */
 
 import log from 'electron-log';

@@ -1,5 +1,5 @@
 /**
- * J-80-02: 7日留存追踪 F5
+ * J-80-02: 7 F5
  * v1.9.0 GA — Retention analytics: Day1/Day3/Day7 retention rates
  *
  * Active definition: at least 1 AI analysis or 1 trade per day

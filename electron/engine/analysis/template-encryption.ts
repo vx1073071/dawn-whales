@@ -1,16 +1,16 @@
 /**
- * J-64-01 [P0]: 策略模板 AES-256 加密 (R64 v19 — v1.6.0-alpha)
+ * J-64-01 [P0]: strategy/policy AES-256 encrypt (R64 v19 — v1.6.0-alpha)
  *
- * 防破解核心: 创作者发布高级模板 → 自动 AES-256-GCM 加密 → 上传云端。
- * 用户购买 → 桌面端请求解密 key → 本地解密使用。
- * 破解者拿到加密模板: 无 key = 乱码。
+ * : creatorrelease → AES-256-GCM encrypt → uploadcloud。
+ * user → requestdecrypt key → localdecrypt。
+ * encrypt: key = 。
  *
  * Features:
  * - AES-256-GCM encrypt/decrypt with per-template unique key
  * - Server-side key store (keyId → encrypted AES key)
  * - Client-side decrypt request (JWT authenticated)
  * - Template integrity: SHA-256 hash embedded in ciphertext
- * - Template levels: free(不加密) / pro(加密, 本地key) / elite(加密, 云端key)
+ * - Template levels: free(encrypt) / pro(encrypt, localkey) / elite(encrypt, cloudkey)
  * - Key rotation support
  *
  * >=250L, 8 tests

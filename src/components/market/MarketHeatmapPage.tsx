@@ -1,5 +1,5 @@
 // ── DAWN WHALES — MarketHeatmapPage (W26) ──────────────────────────────────
-// 板块热力图页面：调用 EM 数据层，支持行业/概念/地区切换
+// sectorheatmappage： EM ，industry/concept/region
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { EngineError } from '../../../electron/engine/core/engine-error';

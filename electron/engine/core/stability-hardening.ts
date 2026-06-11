@@ -1,6 +1,6 @@
 /**
  * J-54-03: Stability Hardening (R54 P0)
- * Flaky 检测 + 超时保护 + Mock 标准化 + 重试机制
+ * Flaky + timeout + Mock + retry
  *
  * Features:
  * - FlakyTestDetector: identify flaky tests by variance in execution time

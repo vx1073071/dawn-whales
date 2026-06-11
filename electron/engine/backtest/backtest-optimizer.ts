@@ -1,6 +1,6 @@
 // ── Q25: Backtest Optimizer ────────────────────────────────────────────────
 // Genetic Algorithm + Bayesian Optimization for strategy parameter tuning
-// Supports: SMA/EMA/MACD/RSI/Bollinger/ATR/布林带 parameters
+// Supports: SMA/EMA/MACD/RSI/Bollinger/ATR/Bollinger Bands parameters
 // Walk-forward validation to prevent overfitting
 
 import log from 'electron-log';

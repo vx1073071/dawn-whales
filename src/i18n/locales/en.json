@@ -3644,7 +3644,9 @@
     "k89": "7大市场·30+因子·AI画线·策略社区。免费开始，无需编程。",
     "k90": "Dawn Whales — AI量化策略平台",
     "k91": "7大市场·30+因子·AI画线·策略社区。免费开始，无需编程。",
-    "k92": "Dawn Whales — AI量化策略平台"
+    "k92": "Dawn Whales — AI量化策略平台",
+    "r92_0": "Features",
+    "r92_1": "定价"
   },
   "AIDailyDigestPanel": {
     "k1": "市场概览",
@@ -4260,7 +4262,9 @@
     "k81": "📑 紧凑",
     "k82": "页面",
     "k83": "📋 v1.8.0 GA UI 走查总结",
-    "k84": "三态覆盖率"
+    "k84": "三态覆盖率",
+    "r92_0": "🔍 UI 走查面板 — v1.8.0 GA",
+    "r92_1": "📋 v1.8.0 GA UI 走查总结"
   },
   "i18n_k1": "70超买卖出', risk: '强趋势中RSI长时间极端', category: 'momentum' },\r\n  { name: 'MACD', short: '趋势+动能', usage: '金叉买入·死叉卖出', risk: '滞后指标, 拐点延迟', category: 'trend' },\r\n  { name: 'Bollinger 布林带', short: '波动率通道', usage: '触及下轨买入·触及上轨卖出', risk: '单边市突破后不止步', category: 'volatility' },\r\n  { name: 'Volume 成交量', short: '资金流向', usage: '放量突破确认趋势', risk: '主力对倒放量欺骗', category: 'volume' },\r\n  { name: 'ATR 真实波幅', short: '止损计算', usage: '2倍ATR止损·3倍ATR止盈', risk: '跳空缺口ATR失真', category: 'volatility' },\r\n  { name: 'SAR 抛物线', short: '反转止损', usage: 'SAR在价格上方→止损', risk: '盘整频繁反转', category: 'trend' },\r\n  { name: 'OBV 能量潮', short: '量价配合', usage: 'OBV与价格同向确认趋势', risk: '大单砸盘OBV骤降', category: 'volume' },\r\n];\r\n\r\nconst FACTOR_STORIES: FactorStory[] = [\r\n  { factor: '高 ROE', story: 'ROE=净资产收益率, 代表公司用股东的每一块钱能赚多少。高ROE=赚钱能力强, 像一台高效的印钞机。', example: '腾讯ROE~18%, 每100块净资产年赚18块' },\r\n  { factor: '低 PE', story: 'PE=市盈率=股价÷每股收益。低PE=你很便宜地买到了同等利润。但注意：低PE可能是因为公司要不行了！', example: '银行股PE~5, 但不代表全部有价值陷阱' },\r\n  { factor: '高股息率', story: '股息率=每股分红÷股价。高股息=上市公司从口袋里掏出真金白银给你花。防御型投资者最爱。', example: '中移动股息率~7%, 存银行不如买它' },\r\n  { factor: '动量因子', story: '过去涨得好的, 近期还可能继续涨。就像赛跑中领跑的选手有惯性优势。但要提防\"动量崩溃\"！', example: '过去12个月涨幅前20%的股票, 下月平均仍跑赢' },\r\n];\r\n\r\nconst PRESETS: ParameterPreset[] = [\r\n  { label: '保守', icon: '🛡️', fast: 5, slow: 20, signal: 9, description: '信号少, 胜率高, 适合大盘股' },\r\n  { label: '均衡', icon: '⚖️', fast: 12, slow: 26, signal: 9, description: '经典MACD参数, 通用性强' },\r\n  { label: '激进', icon: '🔥', fast: 3, slow: 10, signal: 5, description: '高频信号, 适合短线波段' },\r\n];\r\n\r\nconst BACKTEST_STORIES: BacktestStory[] = [\r\n  { title: '快手-W (01024)', initial: 'HK$100,000', final: 'HK$183,000', maxDrawdown: '-34%', winRate: '61%', verdict: '优秀 ⭐', verdictColor: '#10B981' },\r\n  { title: '小米集团 (01810)', initial: 'HK$100,000', final: 'HK$128,000', maxDrawdown: '-18%', winRate: '55%', verdict: '良好 ✅', verdictColor: '#10B981' },\r\n  { title: '恒生ETF (02800)', initial: 'HK$100,000', final: 'HK$91,000', maxDrawdown: '-22%', winRate: '42%', verdict: '谨慎 ⚠️', verdictColor: '#F59E0B' },\r\n];\r\n\r\nconst SIGNAL_DEMOS: SignalPair[] = [\r\n  { type: 'good', date: '2026-03-15', signal: 'MACD金叉 + RSI",
   "i18n_k2": "70)', signalB: 'MACD死叉', meaning: '双重看跌确认', action: '强烈卖出信号, 减仓/清仓', color: '#EF4444' },\r\n  { signalA: 'RSI超卖 (",
@@ -4794,5 +4798,89 @@
   "Updater": {
     "k0": "新版本",
     "k1": "可用，请在Settings中更新"
+  },
+  "ErrorBoundary": {
+    "r92_0": "📋 ErrorBoundary 能力",
+    "r92_1": "✅ 全局包裹 — 任何组件崩溃不白屏",
+    "r92_2": "✅ 友好展示 — 错误信息+堆栈+时间戳",
+    "r92_3": "✅ 自动恢复 — 5秒倒计时自动重试",
+    "r92_4": "✅ 手动恢复 — 点击按钮立即重置",
+    "r92_5": "✅ 错误上报 — console 输出+自动日志",
+    "r92_title": "Something went wrong",
+    "r92_desc1": "An unexpected error occurred. Your data has been auto-saved.",
+    "r92_desc2": "Click the button below to recover, or wait for auto-recovery.",
+    "r92_detail": "Error Details",
+    "r92_recover": "Recover Now",
+    "r92_safe": "Your strategies and funds are always safe",
+    "r92_reported": "Error auto-reported",
+    "r92_demo_title": "Crash Recovery Demo",
+    "r92_demo_desc": "Click button below to simulate app crash",
+    "r92_simulate": "Simulate Crash",
+    "r92_demo_hint": "After crash, a recovery page will appear. Click recover to return to normal.",
+    "r92_protection": "Crash Protection",
+    "r92_features": "Global Error Boundary · Friendly Crash Page · Auto Recovery · Error Reporting",
+    "r92_dataProtect": "Data Protection — Strategy/Fund state preserved"
+  },
+  "USDTPaymentPanel": {
+    "r92_0": "USDT 余额",
+    "r92_1": "📥 充值",
+    "r92_2": "📤 提现",
+    "r92_3": "提现金额 (USDT)",
+    "r92_4": "TRC20 收款地址",
+    "r92_5": "到手 (70%)",
+    "r92_6": "💳 钱包",
+    "r92_7": "📊 收益分账",
+    "r92_8": "📋 交易记录"
+  },
+  "CopyPolish": {
+    "r92_0": "💰 AI分析定价 (最终)",
+    "r92_1": "✅ 定价文案最终确认 — v1.7.0 GA 上线用",
+    "r92_2": "📦 下载平台 (最终)",
+    "r92_3": "🆓 vs 💰 功能边界 (最终)",
+    "r92_4": "🆓 免费 Free",
+    "r92_5": "💰 付费 Paid",
+    "r92_6": "✅ 免费边界最终确认 — 14项功能对照",
+    "r92_7": "📋 核心功能 (最终)",
+    "r92_8": "✅ 功能文案最终确认 — 6大核心能力"
+  },
+  "MarketplacePage": {
+    "r92_0": "搜索策略...",
+    "r92_1": "写评论...",
+    "r92_2": "描述你的策略逻辑、适用场景、风险特点..."
+  },
+  "GuestModeShell": {
+    "r92_0": "👋 你正在以访客身份浏览 · 注册解锁AI分析+交易+信号订阅",
+    "r92_1": "⚠️ 今日免费回测已用完"
+  },
+  "DesktopNotificationPanel": {
+    "r92_0": "✓ 已发送"
+  },
+  "CreatorLeaderboard": {
+    "r92_0": "(你)",
+    "r92_1": "收益分成 (你:平台)",
+    "r92_2": "✓ 首页推荐",
+    "r92_3": "📈 经验值获得规则",
+    "r92_4": "🤖 AI分析完成",
+    "r92_5": "👥 新订阅者",
+    "r92_6": "📊 策略模板售出",
+    "r92_7": "🎯 7日胜率 &gt;60%",
+    "r92_8": "📉 连续亏损3天",
+    "r92_9": "⚠️ 被举报核实"
+  },
+  "P2PBlacklistPanel": {
+    "r92_0": "⚖️ 申诉入口",
+    "r92_1": "💱 P2P 转账",
+    "r92_2": "🚫 黑名单"
+  },
+  "StrategyOptimizerPanel": {
+    "r92_0": "--- 最优线",
+    "r92_1": "选择优化模式并点击i18n.t('StrategyOptimizerPanel.k7')"
+  },
+  "DesktopShell": {
+    "r92_0": "应用崩溃 / App Crashed"
+  },
+  "StrategyImportExportUI": {
+    "r92_0": "JSON 导出预览",
+    "r92_1": "✓ 验证通过"
   }
 }

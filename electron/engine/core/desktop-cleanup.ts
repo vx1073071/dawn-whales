@@ -2,13 +2,13 @@
 import { EngineError, ErrorCode } from '../../errors';
 import i18n from '../../../src/i18n';
 
- * J-63-04: 桌面端清洁引擎 (R63 v19 — v1.5.0-rc 服务器化)
+ * J-63-04: (R63 v19 — v1.5.0-rc service)
  *
- * 删除: AI key引用 + 计费逻辑 + 钱包密钥 + *dashboard.ts 后台引擎
- * 保留: 页面渲染 + Futu OpenD + 缓存 + 本地策略计算
+ * delete: AI key + + + *dashboard.ts 
+ * : page + Futu OpenD + cache + localstrategy/policy
  * 
- * 该模块标记桌面端中需要迁移/删除的清单, 并提供迁移桥接函数。
- * 实际删除由 ML-63-02 (桌面端精简UI) 配合完成。
+ * modulemigration/delete, migration。
+ * delete ML-63-02 (UI) done。
  *
  * >=150L, 5 tests
  */
@@ -58,7 +58,7 @@ export const DESKTOP_CLEANUP_PLAN: CleanupItem[] = [
 // ── API Client Bridge ──────────────────────────────────────────────────────
 
 /**
- * Desktop端调/api的HTTP客户端 (简化版, 用于替换本地引擎调用)
+ * Desktop/apiHTTP (, local)
  */
 export class APIClientBridge {
   private baseUrl: string;
@@ -111,7 +111,7 @@ export class APIClientBridge {
 
 export class DesktopCleanupVerifier {
   /**
-   * Verify desktop端 has NO:
+ * Verify desktop has NO:
    * - API key strings
    * - Billing contract references
    * - Wallet secret references

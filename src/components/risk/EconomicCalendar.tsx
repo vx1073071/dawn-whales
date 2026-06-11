@@ -1,4 +1,4 @@
-// ── DAWN WHALES — EconomicCalendar (财经日历) ──────────────────────────────
+// ── DAWN WHALES — EconomicCalendar () ──────────────────────────────
 
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next';

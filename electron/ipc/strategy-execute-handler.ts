@@ -1,13 +1,13 @@
-// ── Strategy Execute Handler — 自然语言 → 策略 → 回测 → 结果 ─────────
-// R18 P1: Strategy Engine + NL Parser 集成
+// ── Strategy Execute Handler — language → strategy/policy → backtest → ─────────
+// R18 P1: Strategy Engine + NL Parser 
 // IPC Handler: strategy:execute
 //
-// 功能：
-// 1. 接受自然语言输入
-// 2. 使用 NL Parser 解析策略
-// 3. 创建策略
-// 4. 运行回测
-// 5. 返回结果（如果回测成功，可选启动模拟交易）
+// ：
+// 1. language
+// 2. NL Parser strategy/policy
+// 3. strategy/policy
+// 4. backtest
+// 5. back（backtestsuccess 
 
 import { parseNaturalLanguage } from '../engine/agents/nl-parser';
 import { StrategyEngine } from '../engine/analysis/strategy-engine';
@@ -19,38 +19,38 @@ import { EngineError } from './engine/core/engine-error';
 
 
 export interface StrategyExecuteRequest {
-  /** 自然语言策略描述 */
+ /** languagestrategy/policy */
   input: string;
-  /** 回测配置 */
+  /** backtestconfig */
   backtest?: {
-    /** K线数据 */
+ /** K */
     klines: any[];
-    /** 初始资金 */
+ /** */
     initialCapital?: number;
   };
-  /** 是否自动启动模拟交易（回测成功後） */
+ /** （backtestsuccess） */
   autoSimulate?: boolean;
 }
 
 export interface StrategyExecuteResponse {
   success: boolean;
-  /** 解析结果 */
+ /** */
   parsed?: {
     name: string;
     description: string;
     strategy: unknown;
     symbol: string;
   };
-  /** 创建的策略ID */
+ /** strategy/policyID */
   strategyId?: string;
-  /** 回测结果 */
+  /** backtest result */
   backtest?: unknown;
-  /** 错误信息 */
+  /** errorinfo */
   error?: string;
 }
 
 /**
- * 处理 strategy:execute IPC 请求
+ * strategy:execute IPC request
  */
 export async function handleStrategyExecute(
   request: StrategyExecuteRequest,
@@ -64,7 +64,7 @@ export async function handleStrategyExecute(
   const { strategyEngine, riskEngine } = dependencies;
 
   try {
-    // 1. 自然语言解析
+ // 1. language
     log.info(`[StrategyExecute] Parsing: "${input}"`);
     const parsed = parseNaturalLanguage(input);
     
@@ -77,7 +77,7 @@ export async function handleStrategyExecute(
 
     log.info(`[StrategyExecute] Parsed: ${parsed.strategy.type} - ${parsed.name}`);
 
-    // 2. 创建策略
+ // 2. strategy/policy
     const strategyId = strategyEngine.createStrategy({
       name: parsed.name,
       description: parsed.description,
@@ -87,7 +87,7 @@ export async function handleStrategyExecute(
 
     log.info(`[StrategyExecute] Created strategy: ${strategyId}`);
 
-    // 3. 运行回测（如果提供了回测数据）
+ // 3. backtest（backtest）
     let backtestResult = null;
     if (backtest && backtest.klines && backtest.klines.length > 0) {
       log.info(`[StrategyExecute] Running backtest with ${backtest.klines.length} bars...`);
@@ -98,7 +98,7 @@ export async function handleStrategyExecute(
         backtestResult = result.result;
         log.info(`[StrategyExecute] Backtest done: ${backtestResult.totalReturn}% return, ${backtestResult.totalTrades} trades`);
         
-        // 4. 可选：自动启动模拟交易
+ // 4. ：
         if (autoSimulate && backtestResult.totalReturn > 0) {
           log.info(`[StrategyExecute] Auto-starting simulation for ${strategyId}`);
           strategyEngine.startLive(strategyId);
@@ -108,7 +108,7 @@ export async function handleStrategyExecute(
       }
     }
 
-    // 5. 返回结果
+ // 5. back
     return {
       success: true,
       parsed: {
@@ -131,7 +131,7 @@ export async function handleStrategyExecute(
 }
 
 /**
- * 注册 strategy:execute IPC handler
+ * register strategy:execute IPC handler
  */
 export function registerStrategyExecuteHandler(
   ipcMain: unknown,

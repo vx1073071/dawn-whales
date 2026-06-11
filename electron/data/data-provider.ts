@@ -1,12 +1,12 @@
-// ── Data Provider Service — 多源数据集成层 ──────────────────────────────────
-// 统一数据接口，聚合 futu-api + 东方财富 + 宏观数据
-// 为策略引擎提供：行情 + 基本面 + 资金流 + 宏观regime + 异动信号
+// ── Data Provider Service — ──────────────────────────────────
+// interface/API， futu-api + + 
+// strategy/policy： + fundamental + capital flow + regime + 
 //
-// 设计原则：
-// 1. futu-api 为主数据源（实时行情/K线/交易）
-// 2. 东方财富为补充数据源（财报/估值/资金流向/新闻）
-// 3. 所有数据本地 SQLite 缓存，减少外部依赖
-// 4. 统一接口，策略引擎不需要知道数据来自哪个源
+// ：
+// 1. futu-api data source（/K/）
+// 2. data source（financial report//capital flow direction/）
+// 3. local SQLite cache，
+// 4. interface/API，strategy/policy
 
 import log from 'electron-log';
 import i18n from '../../src/i18n';
@@ -15,21 +15,21 @@ import i18n from '../../src/i18n';
 
 export interface FundamentalData {
   symbol: string;
-  pe: number | null;             // 市盈率
-  pb: number | null;             // 市净率
-  marketCap: number | null;      // 市值 (亿)
-  revenue: number | null;        // 营收 (亿)
-  netProfit: number | null;      // 净利润 (亿)
+  pe: number | null;             // P/E ratio
+  pb: number | null;             // P/B ratio
+  marketCap: number | null;      // market cap (亿)
+  revenue: number | null;        // revenue (亿)
+  netProfit: number | null;      // net profit (亿)
   roe: number | null;            // 净资产收益率
   debtRatio: number | null;      // 资产负债率
-  revenueGrowth: number | null;  // 营收增长率
+  revenueGrowth: number | null;  // revenue增长率
   profitGrowth: number | null;   // 利润增长率
   updatedAt: number;
 }
 
 export interface CapitalFlowData {
   symbol: string;
-  mainNetInflow: number | null;  // 主力净流入 (万)
+  mainNetInflow: number | null;  // major player净流入 (万)
   superLargeIn: number | null;   // 超大单流入
   largeIn: number | null;        // 大单流入
   mediumIn: number | null;       // 中单流入
@@ -80,21 +80,21 @@ export interface StockDigest {
 // ── Data Provider Service ──────────────────────────────────────────────────
 
 export class DataProviderService {
-  // 缓存 TTL（毫秒）
-  private static FUNDAMENTAL_TTL = 24 * 60 * 60 * 1000;    // 24h（财报不常变）
+ // cache TTL 
+  private static FUNDAMENTAL_TTL = 24 * 60 * 60 * 1000;    // 24h（financial report不常变）
   private static CAPITAL_FLOW_TTL = 5 * 60 * 1000;          // 5min
   private static REGIME_TTL = 60 * 60 * 1000;               // 1h
   private static ANOMALY_TTL = 15 * 60 * 1000;              // 15min
   private static NEWS_TTL = 30 * 60 * 1000;                 // 30min
 
-  // 内存缓存
+  // memorycache
   private fundamentalCache = new Map<string, { data: FundamentalData; expires: number }>();
   private capitalFlowCache = new Map<string, { data: CapitalFlowData; expires: number }>();
   private regimeCache: { data: MarketRegime; expires: number } | null = null;
   private anomalyCache = new Map<string, { data: AnomalySignal[]; expires: number }>();
   private newsCache = new Map<string, { data: NewsItem[]; expires: number }>();
 
-  // 数据库引用（从 DatabaseManager 注入）
+ // database（ DatabaseManager ）
   private db: unknown = null;
 
   initialize(db: unknown): void {
@@ -174,22 +174,22 @@ export class DataProviderService {
     `);
   }
 
-  // ── 基本面数据 ──────────────────────────────────────────────────
+ // ── fundamental ──────────────────────────────────────────────────
 
   /**
-   * 获取标的基本面数据。
-   * 优先内存缓存 → SQLite → 东方财富 API（通过外部调用）
+ * fundamental。
+ * memorycache → SQLite → API 
    */
   async getFundamental(symbol: string): Promise<FundamentalData | null> {
     const now = Date.now();
 
-    // 1. 内存缓存
+    // 1. memorycache
     const cached = this.fundamentalCache.get(symbol);
     if (cached && cached.expires > now) {
       return cached.data;
     }
 
-    // 2. SQLite 缓存
+    // 2. SQLite cache
     if (this.db) {
       const row = this.db.prepare(
         'SELECT * FROM fundamental_cache WHERE symbol = ? AND updated_at > ?'
@@ -214,13 +214,13 @@ export class DataProviderService {
       }
     }
 
-    // 3. 返回 null（由外部数据刷新模块填充）
+ // 3. back null（refreshmodule）
     log.info(`[DataProvider] Fundamental cache miss: ${symbol}`);
     return null;
   }
 
   /**
-   * 保存基本面数据到缓存（由数据刷新模块调用）
+ * savefundamentalcache（refreshmodule）
    */
   saveFundamental(data: FundamentalData): void {
     data.updatedAt = Date.now();
@@ -242,7 +242,7 @@ export class DataProviderService {
     }
   }
 
-  // ── 资金流数据 ──────────────────────────────────────────────────
+ // ── capital flow ──────────────────────────────────────────────────
 
   async getCapitalFlow(symbol: string): Promise<CapitalFlowData | null> {
     const now = Date.now();
@@ -292,11 +292,11 @@ export class DataProviderService {
     }
   }
 
-  // ── 市场 Regime 判断 ──────────────────────────────────────────
+ // ── Regime ──────────────────────────────────────────
 
   /**
-   * 获取当前市场状态（bull/bear/sideways/volatile）
-   * 基于宏观数据 + VIX + 市场情绪综合判断
+ * current（bull/bear/sideways/volatile）
+ * + VIX + 
    */
   async getMarketRegime(): Promise<MarketRegime> {
     const now = Date.now();
@@ -305,7 +305,7 @@ export class DataProviderService {
       return this.regimeCache.data;
     }
 
-    // 从 SQLite 读取
+ // SQLite 
     if (this.db) {
       const row = this.db.prepare(
         'SELECT * FROM market_regime WHERE id = 1 AND updated_at > ?'
@@ -324,7 +324,7 @@ export class DataProviderService {
       }
     }
 
-    // 默认值
+ // default
     return {
       state: 'unknown',
       confidence: 0,
@@ -335,13 +335,13 @@ export class DataProviderService {
   }
 
   /**
-   * 更新市场 Regime（由宏观数据刷新模块调用）
+ * update Regime（refreshmodule）
    *
-   * 判断逻辑：
-   * - GDP增长 > 2% + CPI温和(1-3%) + 低VIX → bull
-   * - GDP增长 < 0% + 高VIX → bear
+ * ：
+ * - GDP > 2% + CPI(1-3%) + VIX → bull
+ * - GDP < 0% + VIX → bear
    * - VIX > 25 → volatile
-   * - 其他 → sideways
+ * - → sideways
    */
   saveMarketRegime(regime: MarketRegime): void {
     regime.updatedAt = Date.now();
@@ -367,24 +367,24 @@ export class DataProviderService {
   }
 
   /**
-   * 根据宏观因子自动计算 Regime
+ * factor Regime
    */
   computeRegime(factors: MarketRegime['factors']): MarketRegime {
     let score = 0; // -3 to +3
 
-    // GDP 增长
+ // GDP 
     if (factors.gdpGrowth !== null) {
       if (factors.gdpGrowth > 2) score += 1;
       else if (factors.gdpGrowth < 0) score -= 1;
     }
 
-    // CPI（温和通胀利好，过高利空）
+ // CPI 
     if (factors.cpi !== null) {
       if (factors.cpi >= 1 && factors.cpi <= 3) score += 1;
       else if (factors.cpi > 5) score -= 1;
     }
 
-    // 利率（低利率利好）
+ //
     if (factors.interestRate !== null) {
       if (factors.interestRate < 3) score += 1;
       else if (factors.interestRate > 5) score -= 1;
@@ -425,10 +425,10 @@ export class DataProviderService {
     };
   }
 
-  // ── 异动信号 ──────────────────────────────────────────────────
+ // ── ──────────────────────────────────────────────────
 
   /**
-   * 获取标的近期异动信号
+ *
    */
   async getAnomalies(symbol: string): Promise<AnomalySignal[]> {
     const now = Date.now();
@@ -461,12 +461,12 @@ export class DataProviderService {
   }
 
   /**
-   * 记录异动信号
+ *
    */
   saveAnomaly(signal: AnomalySignal): void {
     signal.timestamp = Date.now();
 
-    // 更新缓存
+    // updatecache
     const existing = this.anomalyCache.get(signal.symbol);
     if (existing) {
       existing.data.unshift(signal);
@@ -490,7 +490,7 @@ export class DataProviderService {
     log.info(`[DataProvider] Anomaly: ${signal.level} ${signal.type} ${signal.symbol} — ${signal.message}`);
   }
 
-  // ── 新闻数据 ──────────────────────────────────────────────────
+ // ── ──────────────────────────────────────────────────
 
   async getNews(symbol: string, limit = 10): Promise<NewsItem[]> {
     const now = Date.now();
@@ -543,19 +543,19 @@ export class DataProviderService {
     }
   }
 
-  // ── 综合评估（供策略引擎使用） ──────────────────────────────
+ // ── （strategy/policy） ──────────────────────────────
 
   /**
-   * 获取标的综合评估（基本面 + 资金面 + 异动 + regime）
-   * 返回一个 0-100 的综合评分和维度分析
+ * （fundamental + + + regime）
+ * back 0-100 
    */
   async getCompositeScore(symbol: string): Promise<{
     score: number;           // 0-100
     dimensions: {
-      fundamental: number;   // 基本面 0-100
+      fundamental: number;   // fundamental 0-100
       capitalFlow: number;   // 资金面 0-100
       anomaly: number;       // 异动 0-100 (越高越危险)
-      regime: string;        // 当前 regime
+      regime: string;        // current regime
     };
     signals: AnomalySignal[];
     updatedAt: number;
@@ -567,8 +567,8 @@ export class DataProviderService {
       this.getMarketRegime(),
     ]);
 
-    // 基本面评分（PE/PB/ROE/增长率）
-    let fundamentalScore = 50; // 默认中性
+ // fundamental（PE/PB/ROE/）
+    let fundamentalScore = 50; // default中性
     if (fundamental) {
       if (fundamental.pe !== null && fundamental.pe > 0 && fundamental.pe < 20) fundamentalScore += 10;
       if (fundamental.roe !== null && fundamental.roe > 15) fundamentalScore += 15;
@@ -578,7 +578,7 @@ export class DataProviderService {
       fundamentalScore = Math.max(0, Math.min(100, fundamentalScore));
     }
 
-    // 资金面评分
+ //
     let capitalScore = 50;
     if (capitalFlow && capitalFlow.mainNetInflow !== null) {
       if (capitalFlow.mainNetInflow > 0) capitalScore += 20;
@@ -586,7 +586,7 @@ export class DataProviderService {
       capitalScore = Math.max(0, Math.min(100, capitalScore));
     }
 
-    // 异动评分（越高越危险）
+ //
     let anomalyScore = 0;
     for (const a of anomalies) {
       if (a.level === 'critical') anomalyScore += 30;
@@ -595,7 +595,7 @@ export class DataProviderService {
     }
     anomalyScore = Math.min(100, anomalyScore);
 
-    // 综合评分
+ //
     const composite = Math.round(
       fundamentalScore * 0.3 +
       capitalScore * 0.3 +
@@ -616,7 +616,7 @@ export class DataProviderService {
     };
   }
 
-  // ── 缓存清理 ──────────────────────────────────────────────────
+ // ── cache ──────────────────────────────────────────────────
 
   clearExpiredCache(): void {
     const now = Date.now();
@@ -637,7 +637,7 @@ export class DataProviderService {
       if (val.expires < now) this.newsCache.delete(key);
     }
 
-    // 清理 SQLite 过期数据
+ // SQLite expiry
     if (this.db) {
       this.db.prepare('DELETE FROM anomaly_signals WHERE created_at < ?').run(now - 7 * 24 * 60 * 60 * 1000);
       this.db.prepare('DELETE FROM news_cache WHERE fetched_at < ?').run(now - 7 * 24 * 60 * 60 * 1000);

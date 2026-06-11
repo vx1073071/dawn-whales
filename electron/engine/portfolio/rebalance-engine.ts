@@ -1,10 +1,10 @@
 ﻿/**
- * Rebalance Engine - 鎶曡祫缁勫悎鍐嶅钩琛″紩鎿?(Phase 4.3)
- * 鏍规嵁鐩爣鏉冮噸鑷姩璋冩暣鎸佷粨
+ * Rebalance Engine - ″?(Phase 4.3)
+ * 
  * 
- * 绛栫暐绫诲瀷: equal_weight / target_weight / risk_parity / minimum_variance / custom
- * 瑙﹀彂鏂瑰紡: periodic / threshold / signal / manual
- * 绾︽潫寮曟搸: min/max trade size, max positions, max turnover, cash buffer
+ * : equal_weight / target_weight / risk_parity / minimum_variance / custom
+ * ﹀: periodic / threshold / signal / manual
+ * ︽: min/max trade size, max positions, max turnover, cash buffer
  */
 
 import log from 'electron-log';
@@ -19,7 +19,7 @@ class TypedEventEmitter {
   removeAllListeners(event?: string) { if (event) delete this.listeners[event]; else this.listeners = {}; return this; }
 }
 
-// 鈹€鈹€ Types 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// €€ Types €€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€
 
 export type RebalanceMode = 'threshold' | 'periodic' | 'drift' | 'signal' | 'manual';
 export type RebalanceStrategy = 'equal_weight' | 'target_weight' | 'risk_parity' | 'minimum_variance' | 'custom';
@@ -96,7 +96,7 @@ export interface RebalanceStats {
   rebalancesByTrigger: Record<TriggerType, number>;
 }
 
-// 鈹€鈹€ RebalanceEngine Class 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// €€ RebalanceEngine Class €€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€
 
 export class RebalanceEngine extends EventEmitter {
   private config: RebalanceConfig;
@@ -130,7 +130,7 @@ export class RebalanceEngine extends EventEmitter {
     log.info('[RebalanceEngine] Initialized', this.config);
   }
 
-  // 鈹€鈹€ Target Management 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+ // €€ Target Management €€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€
 
   setTargets(targets: TargetWeight[]): void {
     const totalWeight = targets.reduce((sum, t) => sum + t.weight, 0);
@@ -167,7 +167,7 @@ export class RebalanceEngine extends EventEmitter {
     this.emit('targets:updated', this.targetWeights);
   }
 
-  // 鈹€鈹€ Position Management 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+ // €€ Position Management €€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€
 
   updatePositions(positions: Position[]): void {
     this.positions.clear();
@@ -185,7 +185,7 @@ export class RebalanceEngine extends EventEmitter {
     return this.positions.get(code);
   }
 
-  // 鈹€鈹€ Rebalance Logic 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+ // €€ Rebalance Logic €€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€
 
   shouldRebalance(triggerType?: TriggerType): boolean {
     const trigger = triggerType || this.mapModeToTrigger();
@@ -443,7 +443,7 @@ export class RebalanceEngine extends EventEmitter {
     return result;
   }
 
-  // 鈹€鈹€ Periodic Rebalance 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+ // €€ Periodic Rebalance €€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€
 
   startPeriodicRebalance(): void {
     if (this.periodicTimer) return;
@@ -467,7 +467,7 @@ export class RebalanceEngine extends EventEmitter {
     }
   }
 
-  // 鈹€鈹€ Queries 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+ // €€ Queries €€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€
 
   getRebalanceHistory(limit?: number): RebalanceResult[] {
     const sorted = [...this.rebalanceHistory].sort((a, b) => b.timestamp - a.timestamp);
@@ -524,7 +524,7 @@ export class RebalanceEngine extends EventEmitter {
     };
   }
 
-  // 鈹€鈹€ Control 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+ // €€ Control €€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€
 
   updateConfig(config: Partial<RebalanceConfig>): void {
     this.config = { ...this.config, ...config };

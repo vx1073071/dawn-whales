@@ -1,6 +1,6 @@
 /**
- * I18n Data Pipeline - 国际化数据管道
- * 支持多币种财报、多时区时间转换、多币种汇率换算
+ * I18n Data Pipeline - data pipeline
+ * financial report
  */
 
 import { EventEmitter } from 'events';

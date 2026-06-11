@@ -15,16 +15,16 @@ interface StockMetrics {
   pb: number;
   ps: number;
   // Growth
-  revenueGrowth: number;      // 营收增长率 %
-  profitGrowth: number;       // 净利润增长率 %
+  revenueGrowth: number;      // revenue %
+  profitGrowth: number;       // net profit %
   // Profitability
   roe: number;                // ROE %
   roa: number;                // ROA %
-  grossMargin: number;        // 毛利率 %
-  netMargin: number;          // 净利率 %
+  grossMargin: number;        // gross margin %
+  netMargin: number;          // net margin %
   // Scale
-  marketCap: number;          // 市值 (亿元)
-  revenue: number;            // 营收 (亿元)
+  marketCap: number;          // market cap ()
+  revenue: number;            // revenue ()
 }
 
 interface SectorComparisonResult {

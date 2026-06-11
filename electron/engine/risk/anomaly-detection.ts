@@ -1,8 +1,8 @@
 /**
- * JVS-89: 异常检测系统
+ * JVS-89: anomaly detection
  * 
- * 使用统计方法和机器学习算法检测市场数据异常
- * 包括：价格异常、成交量异常、波动率异常
+ * method
+ * volume、volatility
  */
 
 import { EventEmitter } from 'events';
@@ -26,12 +26,12 @@ export interface AnomalyConfig {
   enabled: boolean;
   methods: AnomalyMethod[];
   thresholds: {
-    price: number;      // 价格偏离标准差倍数
-    volume: number;     // 成交量偏离标准差倍数
-    volatility: number; // 波动率偏离标准差倍数
+    price: number;      // 价格偏离standard deviation倍数
+    volume: number;     // volume偏离standard deviation倍数
+    volatility: number; // volatility偏离standard deviation倍数
   };
   windowSize: number;   // 历史数据窗口大小
-  checkInterval: number; // 检查间隔（毫秒）
+  checkInterval: number; // 检查interval（毫秒）
 }
 
 export interface AnomalyMethod {
@@ -49,7 +49,7 @@ const DEFAULT_CONFIG: AnomalyConfig = {
     { name: 'isolation_forest', enabled: false, weight: 0.1 },
   ],
   thresholds: {
-    price: 3.0,      // 3个标准差
+    price: 3.0,      // 3个standard deviation
     volume: 3.0,
     volatility: 3.0,
   },
@@ -74,7 +74,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
   }
 
   /**
-   * 启动异常检测
+ * anomaly detection
    */
   start(): void {
     if (this.checkTimer) {
@@ -89,7 +89,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
   }
 
   /**
-   * 停止异常检测
+   * stopanomaly detection
    */
   stop(): void {
     if (this.checkTimer) {
@@ -100,7 +100,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
   }
 
   /**
-   * 检测单个股票的异常
+ *
    */
   detectAnomalies(symbol: string, data: {
     price: number;
@@ -109,22 +109,22 @@ export class AnomalyDetectionSystem extends EventEmitter {
   }): AnomalyAlert[] {
     const alerts: AnomalyAlert[] = [];
 
-    // 更新历史数据
+ // update
     this.updateHistory(symbol, data);
 
-    // 价格异常检测
+ // anomaly detection
     const priceAnomaly = this.detectPriceAnomaly(symbol, data.price);
     if (priceAnomaly) {
       alerts.push(priceAnomaly);
     }
 
-    // 成交量异常检测
+    // volumeanomaly detection
     const volumeAnomaly = this.detectVolumeAnomaly(symbol, data.volume);
     if (volumeAnomaly) {
       alerts.push(volumeAnomaly);
     }
 
-    // 波动率异常检测
+    // volatilityanomaly detection
     if (data.volatility !== undefined) {
       const volatilityAnomaly = this.detectVolatilityAnomaly(symbol, data.volatility);
       if (volatilityAnomaly) {
@@ -132,7 +132,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
       }
     }
 
-    // 发送事件
+ // event
     alerts.forEach(alert => {
       this.emit('anomaly', alert);
     });
@@ -141,16 +141,16 @@ export class AnomalyDetectionSystem extends EventEmitter {
   }
 
   /**
-   * 检测所有股票的异常
+ *
    */
   private checkAllAnomalies(): void {
-    // 这个方法应该从实时数据源获取数据
-    // 这里只是占位符，实际实现需要从数据管道获取数据
+ // methoddata source
+ // ，data pipeline
     log.info('[AnomalyDetection] Checking all anomalies...');
   }
 
   /**
-   * 检测价格异常
+ *
    */
   private detectPriceAnomaly(symbol: string, price: number): AnomalyAlert | null {
     const history = this.priceHistory.get(symbol) || [];
@@ -179,7 +179,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
   }
 
   /**
-   * 检测成交量异常
+ * volume
    */
   private detectVolumeAnomaly(symbol: string, volume: number): AnomalyAlert | null {
     const history = this.volumeHistory.get(symbol) || [];
@@ -208,7 +208,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
   }
 
   /**
-   * 检测波动率异常
+ * volatility
    */
   private detectVolatilityAnomaly(symbol: string, volatility: number): AnomalyAlert | null {
     const history = this.volatilityHistory.get(symbol) || [];
@@ -236,7 +236,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
   }
 
   /**
-   * 根据Z-Score确定严重程度
+ * Z-Score
    */
   private getSeverity(zscore: number): 'low' | 'medium' | 'high' | 'critical' {
     const abs = Math.abs(zscore);
@@ -247,14 +247,14 @@ export class AnomalyDetectionSystem extends EventEmitter {
   }
 
   /**
-   * 更新历史数据
+ * update
    */
   private updateHistory(symbol: string, data: {
     price: number;
     volume: number;
     volatility?: number;
   }): void {
-    // 价格历史
+ //
     const priceHistory = this.priceHistory.get(symbol) || [];
     priceHistory.push(data.price);
     if (priceHistory.length > this.maxHistory) {
@@ -262,7 +262,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
     }
     this.priceHistory.set(symbol, priceHistory);
 
-    // 成交量历史
+ // volume
     const volumeHistory = this.volumeHistory.get(symbol) || [];
     volumeHistory.push(data.volume);
     if (volumeHistory.length > this.maxHistory) {
@@ -270,7 +270,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
     }
     this.volumeHistory.set(symbol, volumeHistory);
 
-    // 波动率历史
+ // volatility
     if (data.volatility !== undefined) {
       const volatilityHistory = this.volatilityHistory.get(symbol) || [];
       volatilityHistory.push(data.volatility);
@@ -282,54 +282,54 @@ export class AnomalyDetectionSystem extends EventEmitter {
   }
 
   /**
-   * 生成告警ID
+ * ID
    */
   private generateAlertId(): string {
     return `anomaly-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 
   /**
-   * 获取所有告警
+ *
    */
   getAlerts(): AnomalyAlert[] {
     return [...this.alerts];
   }
 
   /**
-   * 获取特定股票的告警
+ *
    */
   getAlertsBySymbol(symbol: string): AnomalyAlert[] {
     return this.alerts.filter(alert => alert.symbol === symbol);
   }
 
   /**
-   * 获取特定类型的告警
+ *
    */
   getAlertsByType(type: AnomalyAlert['type']): AnomalyAlert[] {
     return this.alerts.filter(alert => alert.type === type);
   }
 
   /**
-   * 确认告警
+ * confirm
    */
   acknowledgeAlert(alertId: string): boolean {
     const alert = this.alerts.find(a => a.id === alertId);
     if (alert) {
-      // 标记为已确认（可以添加acknowledged字段）
+ // confirm（acknowledged）
       return true;
     }
     return false;
   }
 
   /**
-   * 清空告警
+ * clear
    */
   clearAlerts(): void {
     this.alerts = [];
   }
 
   /**
-   * 获取统计信息
+ * info
    */
   getStats(): {
     totalAlerts: number;
@@ -358,7 +358,7 @@ export class AnomalyDetectionSystem extends EventEmitter {
   }
 }
 
-// 单例
+//
 let anomalyDetectionInstance: AnomalyDetectionSystem | null = null;
 
 export function getAnomalyDetectionSystem(config?: Partial<AnomalyConfig>): AnomalyDetectionSystem {

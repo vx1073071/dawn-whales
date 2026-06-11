@@ -102,7 +102,7 @@ export default function UIAuditPanel() {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
         <div>
-          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#F9FAFB' }}>🔍 UI 走查面板 — v1.8.0 GA</h2>
+          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#F9FAFB' }}>{i18n.t('UIAuditPanel.r92_0')}</h2>
           <p style={{ margin: '4px 0 0', fontSize: 13, color: '#9CA3AF' }}>
             {AUDIT_ITEMS.length} 组件 · 私行风 · 深浅双主题 · 响应式 1366×768 · 三态走查
           </p>
@@ -207,7 +207,7 @@ export default function UIAuditPanel() {
 
       {/* Summary */}
       <div style={{ marginTop: 20, padding: '14px 18px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', fontSize: 12, color: '#D1D5DB', lineHeight: 1.8 }}>
-        <div style={{ fontWeight: 700, marginBottom: 6, color: '#F9FAFB' }}>📋 v1.8.0 GA UI 走查总结</div>
+        <div style={{ fontWeight: 700, marginBottom: 6, color: '#F9FAFB' }}>{i18n.t('UIAuditPanel.r92_1')}</div>
         <div>
           ✅ <strong>{i18n.t('UIAuditPanel.k0')}{stats.darkPass}/{stats.total}{i18n.t('UIAuditPanel.k1')}</strong> — 私行深色+#D4A853金色主题统一
         </div>

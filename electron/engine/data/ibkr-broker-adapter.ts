@@ -3,9 +3,9 @@ import { EngineError, ErrorCode } from '../../errors';
  * J-68-01 [P0] IBKR Broker Adapter — IB Gateway API (tws-api)
  *
  * PM specs:
- * - IB Gateway API (tws-api), 下单/撤单/持仓/账户
- * - 费率: US stock $0.005/share, HK 0.08%
- * - 与 LiveBroker 同接口 (IExecutionBroker), 可切换
+ * - IB Gateway API (tws-api), //position/holding/
+ * - : US stock $0.005/share, HK 0.08%
+ * - LiveBroker interface/API (IExecutionBroker), 
  * - >=350L, 10 tests
  */
 

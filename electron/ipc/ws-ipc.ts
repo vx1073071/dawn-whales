@@ -167,7 +167,7 @@ export function registerWsIPC(
     return { success: true, status: stream.getStatus() };
   });
 
-  // ── Dragon Tiger List — 龙虎榜 (JVS-10) ─────────────────────────────
+  // ── Dragon Tiger List — Dragon-Tiger list (JVS-10) ─────────────────────────────
 
 
   // ── Push2 Proxy Service (JVS-27) ─────────────────────────────────────────

@@ -1,6 +1,6 @@
 /**
 import i18n from '../../../src/i18n';
- * J-80-01: 用户漏斗埋点 F4
+ * J-80-01: user F4
  * v1.9.0 GA — Growth analytics: registration→activation→deposit→payment funnel
  *
  * @analytics tag: no personal data collection, aggregated counts only

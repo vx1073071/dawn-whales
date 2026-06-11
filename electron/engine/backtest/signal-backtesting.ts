@@ -1,9 +1,9 @@
 /**
- * J-78-01: signal-backtesting.ts 完整引擎 (~280L)
+ * J-78-01: signal-backtesting.ts (~280L)
  * replaces 27-line stub
  *
- * 历史信号与真实K线对齐回测 → BUY→SELL闭环PnL
- * 指标: 胜率/盈亏比/最大回撤/夏普比率/逐笔详情
+ * Kbacktest → BUY→SELLPnL
+ * metric: win rate//max drawdown/Sharpe ratio/
  */
 
 export interface SignalRecord {

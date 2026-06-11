@@ -1,4 +1,4 @@
-// ── JVS-20: Python Script Proxy Layer (Python脚本代理层) ──────────────────
+// ── JVS-20: Python Script Proxy Layer (Pythonproxy) ──────────────────
 // Unified interface for calling em-mx-* Python skill scripts
 // Auto-detects Python path, handles timeouts, caches output file paths
 

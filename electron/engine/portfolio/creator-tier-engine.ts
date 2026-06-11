@@ -2,11 +2,11 @@
 import { EngineError, ErrorCode } from '../../errors';
 import i18n from '../../../src/i18n';
 
- * J-66-01 [P0]: 创作者等级引擎 (R66 v19 — v1.6.0 GA)
+ * J-66-01 [P0]: creator tier (R66 v19 — v1.6.0 GA)
  *
- * 6级等级系统: 青铜→白银→黄金→铂金→钻石→王者
- * 经验值 = AI分析次数 + 信号订阅数 + 模板销量 + 7日胜率
- * 权益: L1(70/30) L2(80/20) L3(90/10) 自动晋升/降级
+ * 6: →→→→→
+ * = AI + subscribe + + 7win rate
+ * : L1(70/30) L2(80/20) L3(90/10) /downgrade
  *
  * >=350L, 10 tests
  */
@@ -18,9 +18,9 @@ export type CreatorTier = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond' 
 export interface CreatorStats {
   userId: string;
   aiAnalysisCount: number;       // 累计AI分析次数
-  signalSubscribers: number;     // 当前订阅数
+  signalSubscribers: number;     // currentsubscribe数
   templateSales: number;         // 累计模板销量
-  sevenDayWinRate: number;       // 7日胜率 (0-1)
+  sevenDayWinRate: number;       // 7日win rate (0-1)
   totalRevenue: number;          // 累计收益 USDT
   consecutiveLossDays: number;   // 连续亏损天数
 }
@@ -29,7 +29,7 @@ export interface TierConfig {
   tier: CreatorTier;
   name: string;
   minXp: number;
-  revenueShare: number;          // 创作者占比
+  revenueShare: number;          // creator占比
   badgeSlots: number;
   minSubscribers: number;
   icon: string;
@@ -69,19 +69,19 @@ export const TIER_ORDER: CreatorTier[] = ['bronze', 'silver', 'gold', 'platinum'
 // ── XP Calculation ────────────────────────────────────────────────────────
 
 export function calculateXP(stats: CreatorStats): number {
-  // AI分析次数 × 50 (上限500)
+ // AI × 50 (500)
   const aiXp = Math.min(stats.aiAnalysisCount * 50, 500);
 
-  // 信号订阅数 × 100 (上限1000)
+ // subscribe × 100 (1000)
   const subXp = Math.min(stats.signalSubscribers * 100, 1000);
 
-  // 模板销量 × 200 (上限2000)
+ // × 200 (2000)
   const saleXp = Math.min(stats.templateSales * 200, 2000);
 
-  // 7日胜率 × 3000 (0-1 → 0-3000)
+ // 7win rate × 3000 (0-1 → 0-3000)
   const winXp = Math.round(stats.sevenDayWinRate * 3000);
 
-  // 总收益 × 0.1 (上限1000)
+ // × 0.1 (1000)
   const revenueXp = Math.min(Math.round(stats.totalRevenue * 0.1), 1000);
 
   return aiXp + subXp + saleXp + winXp + revenueXp;
@@ -100,18 +100,18 @@ export function determineTier(xp: number): CreatorTier {
 function shouldDemote(profile: CreatorProfile): { demote: boolean; reason: string } {
   const { stats, tier, xp } = profile;
 
-  // 连续7天亏损 → 降1级
+ // 7 → 1
   if (stats.consecutiveLossDays >= 7) {
     return { demote: true, reason: i18n.t('creatorTierEngine.k7') };
   }
 
-  // 订阅数跌破最低要求
+ // subscribe
   const config = TIER_CONFIGS[tier];
   if (stats.signalSubscribers < config.minSubscribers && tier !== 'bronze') {
     return { demote: true, reason: i18n.t('creatorTierEngine.k8') };
   }
 
-  // XP 跌破当前等级最低要求
+ // XP current
   if (xp < config.minXp && tier !== 'bronze') {
     return { demote: true, reason: i18n.t('creatorTierEngine.k9') };
   }

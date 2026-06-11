@@ -1,7 +1,7 @@
 
 /**
- * J-79-02: 生产监控管线 F3
- * R76 monitoring 底座扩展: API延迟 P50/P95/P99 + 错误率 + 数据新鲜度
+ * J-79-02: F3
+ * R76 monitoring extension: APIlatency P50/P95/P99 + error +
  */
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -64,7 +64,7 @@ export class ProductionMonitor {
   private requestCount = 0;
   private errorCount = 0;
 
-  /** 记录 API 延迟 */
+ /** API latency */
   recordLatency(endpoint: string, method: string, durationMs: number, statusCode: number): void {
     this.requestCount++;
     if (statusCode >= 400) this.errorCount++;
@@ -83,7 +83,7 @@ export class ProductionMonitor {
     }
   }
 
-  /** 记录错误 */
+ /** error */
   recordError(endpoint: string, errorType: string, message: string): void {
     this.errorCount++;
     const key = `${endpoint}:${errorType}`;
@@ -108,7 +108,7 @@ export class ProductionMonitor {
     }
   }
 
-  /** 更新数据新鲜度 */
+ /** update */
   updateFreshness(dataSource: string, lastUpdate: number, staleThresholdMs = 300_000): void {
     const isStale = Date.now() - lastUpdate > staleThresholdMs;
     this.freshness.set(dataSource, {
@@ -119,14 +119,14 @@ export class ProductionMonitor {
     });
   }
 
-  /** 计算延迟百分位数 */
+ /** latency */
   private computePercentile(sorted: number[], pct: number): number {
     if (sorted.length === 0) return 0;
     const idx = Math.ceil((pct / 100) * sorted.length) - 1;
     return sorted[Math.max(0, idx)];
   }
 
-  /** 获取监控统计 */
+ /** */
   getStats(): MonitoringStats {
     const durations = this.latencySamples.map((s) => s.durationMs).sort((a, b) => a - b);
     const avgDuration = durations.length > 0 ? durations.reduce((a, b) => a + b, 0) / durations.length : 0;
@@ -157,7 +157,7 @@ export class ProductionMonitor {
     };
   }
 
-  /** Express middleware: 自动记录延迟 */
+ /** Express middleware: latency */
   middleware(): (req: unknown, res: unknown, next: () => void) => void {
     return (req: unknown, res: unknown, next: () => void) => {
       const start = Date.now();
@@ -173,7 +173,7 @@ export class ProductionMonitor {
     };
   }
 
-  /** 错误处理器 */
+ /** error */
   errorHandler(): (err: Error, req: unknown, res: unknown, next: () => void) => void {
     return (err: Error, req: unknown, _res: unknown, _next: () => void) => {
       this.recordError(req.path || '/', err.name || 'Error', err.message || 'Unknown error');
@@ -181,7 +181,7 @@ export class ProductionMonitor {
     };
   }
 
-  /** 重置 (仅测试用) */
+ /** reset () */
   reset(): void {
     this.latencySamples = [];
     this.errors.clear();

@@ -1,7 +1,7 @@
-// ── JVS-107: Smart Monitor — 统一智能监控告警系统 ─────────────────────────
-// 多级别告警: info / warning / critical
-// 告警源: 行情异动、风控事件、系统健康、策略信号
-// 支持: 订阅/查询/确认/历史/统计
+// ── JVS-107: Smart Monitor — ─────────────────────────
+// : info / warning / critical
+// : 、risk controlevent strategy/policy
+// : subscribe/query/confirm//
 
 import log from 'electron-log';
 import { EventEmitter } from 'events';

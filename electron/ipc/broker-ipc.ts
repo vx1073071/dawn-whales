@@ -223,10 +223,10 @@ export function registerBrokerIPC(
     return { success: false, error: err.message }; }
   });
 
-  // ── Subscribe / Unsubscribe (WP1: 动态监控列表) ────────────────────
+ // ── Subscribe / Unsubscribe (WP1: ) ────────────────────
 
 
-  // ── Subscribe / Unsubscribe (WP1: 动态监控列表) ────────────────────
+ // ── Subscribe / Unsubscribe (WP1: ) ────────────────────
   ipcMain.handle('broker:subscribe', async (_e, codes: string[]) => {
     if (!opendClient?.connected) return { success: false, error: 'Not connected' };
     try {

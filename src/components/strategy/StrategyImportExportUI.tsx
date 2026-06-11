@@ -248,7 +248,7 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
           {/* JSON preview */}
           <div className="bg-gray-950 rounded-lg border border-gray-700/50 p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] text-gray-500 uppercase tracking-wide">JSON 导出预览</span>
+              <span className="text-[10px] text-gray-500 uppercase tracking-wide">{i18n.t('StrategyImportExportUI.r92_0')}</span>
               <span className="text-[10px] text-gray-600">{exportJson.length} 字符</span>
             </div>
             <pre className="text-xs text-gray-400 font-mono max-h-64 overflow-y-auto whitespace-pre-wrap">
@@ -311,7 +311,7 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-emerald-400 font-bold text-sm">{importedStrategy.name}</span>
                   <span className="text-[10px] text-gray-500">v{importedStrategy.version}</span>
-                  <span className="text-[10px] text-emerald-600">✓ 验证通过</span>
+                  <span className="text-[10px] text-emerald-600">{i18n.t('StrategyImportExportUI.r92_1')}</span>
                 </div>
                 <p className="text-xs text-gray-500">{importedStrategy.description}</p>
               </div>

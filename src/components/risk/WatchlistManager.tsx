@@ -1,4 +1,4 @@
-// ── DAWN WHALES — WatchlistManager (自选股管理) ────────────────────────────
+// ── DAWN WHALES — WatchlistManager () ────────────────────────────
 
 import { useState, useEffect, useCallback } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';

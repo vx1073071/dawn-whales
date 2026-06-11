@@ -1,6 +1,6 @@
 /**
  * DownloadPage + OnboardingGuide — ML-63-03 [P1]
- * R63: v1.5.0-rc — Download page + new user onboarding (服务器化)
+ * R63: v1.5.0-rc — Download page + new user onboarding (service)
  *
  * Features:
  * - Platform download section (Windows/Mac/Linux)
@@ -12,6 +12,8 @@
  */
 
 import React, { useState } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 

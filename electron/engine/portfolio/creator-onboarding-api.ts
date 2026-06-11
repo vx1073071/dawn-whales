@@ -1,15 +1,15 @@
 /**
- * J-65-02 [P0]: 创作者入驻引导API (R65 FIX — v1.6.0-beta)
+ * J-65-02 [P0]: creatorAPI (R65 FIX — v1.6.0-beta)
  *
- * 新创作者5步引导:
- * 1. 选Agent (analyst/trader/strategist/risk-manager)
- * 2. 调参数 (温度/提示词/上下文长度)
- * 3. 回测 (本地引擎, 云端签名)
- * 4. 发布 (信号定价+描述)
- * 5. 定价 (Free/5 USDT买断/1 USDT月)
+ * creator5:
+ * 1. Agent (analyst/trader/strategist/risk-manager)
+ * 2. parameter (/hint/)
+ * 3. backtest (local, cloudsign)
+ * 4. release (+)
+ * 5. (Free/5 USDT/1 USDT)
  *
- * 新创作者赠送 3次免费AI分析。
- * 无激活码, 无试用期。
+ * creator 3AI。
+ * , 。
  *
  * >=300L, 5 tests
  */
@@ -108,7 +108,7 @@ export class CreatorOnboardingServer {
     return profile;
   }
 
-  // Step 2: 调参数
+ // Step 2: parameter
   setAgentParams(userId: string, params: Partial<AgentParams>, temperament?: AgentTemperament): OnboardingProfile {
     const profile = this.profiles.get(userId);
     if (!profile) throw new EngineError(ErrorCode.STRATEGY_CREATE_FAILED, 'Onboarding not started');
@@ -121,7 +121,7 @@ export class CreatorOnboardingServer {
     return profile;
   }
 
-  // Step 3: 回测
+  // Step 3: backtest
   submitBacktest(userId: string, result: BacktestResult): OnboardingProfile {
     const profile = this.profiles.get(userId);
     if (!profile) throw new EngineError(ErrorCode.STRATEGY_CREATE_FAILED, 'Onboarding not started');
@@ -137,7 +137,7 @@ export class CreatorOnboardingServer {
     return profile;
   }
 
-  // Step 4: 发布信号
+ // Step 4: release
   configureSignal(userId: string, config: { name: string; description: string; tier: SignalTier; interval: string }): OnboardingProfile {
     const profile = this.profiles.get(userId);
     if (!profile) throw new EngineError(ErrorCode.STRATEGY_CREATE_FAILED, 'Onboarding not started');
@@ -160,7 +160,7 @@ export class CreatorOnboardingServer {
     return profile;
   }
 
-  // Step 5: 发布
+  // Step 5: release
   publishSignal(userId: string): { profile: OnboardingProfile; signal: SignalConfig } {
     const profile = this.profiles.get(userId);
     if (!profile) throw new EngineError(ErrorCode.STRATEGY_CREATE_FAILED, 'Onboarding not started');

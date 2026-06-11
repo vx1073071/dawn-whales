@@ -1,5 +1,7 @@
 import { useState, type CSSProperties } from 'react';
 import i18n from '../../../i18n';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 interface TxRecord { id: string; type: 'deposit' | 'withdraw' | 'revenue'; amount: number; status: 'pending' | 'confirmed' | 'failed'; txHash: string; date: string; note: string }
 
 interface RevenueTier { level: number; name: string; minRevenue: string; share: number; commission: number }
@@ -68,7 +70,7 @@ function WalletTab() {
         padding: '24px', borderRadius: 14, background: 'linear-gradient(135deg, #6366F122, #D4A85314)',
         border: '1px solid #374151', textAlign: 'center', marginBottom: 20,
       }}>
-        <div style={{ fontSize: 12, color: '#9CA3AF', marginBottom: 4 }}>USDT 余额</div>
+        <div style={{ fontSize: 12, color: '#9CA3AF', marginBottom: 4 }}>{i18n.t('USDTPaymentPanel.r92_0')}</div>
         <div style={{ fontSize: 40, fontWeight: 900, color: '#F9FAFB', fontFamily: 'monospace' }}>
           {balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
         </div>
@@ -88,12 +90,12 @@ function WalletTab() {
           padding: '8px 20px', borderRadius: 8, border: 'none',
           background: tab === 'deposit' ? '#6366F1' : '#1F2937',
           color: tab === 'deposit' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>📥 充值</button>
+        }}>{i18n.t('USDTPaymentPanel.r92_1')}</button>
         <button onClick={() => setTab('withdraw')} style={{
           padding: '8px 20px', borderRadius: 8, border: 'none',
           background: tab === 'withdraw' ? '#6366F1' : '#1F2937',
           color: tab === 'withdraw' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>📤 提现</button>
+        }}>{i18n.t('USDTPaymentPanel.r92_2')}</button>
       </div>
 
       {/* Deposit form */}
@@ -121,7 +123,7 @@ function WalletTab() {
       {tab === 'withdraw' && (
         <div style={{ padding: '20px', borderRadius: 12, background: '#111827', border: '1px solid #1F2937' }}>
           <div style={{ marginBottom: 14 }}>
-            <label style={{ fontSize: 12, color: '#9CA3AF', display: 'block', marginBottom: 4 }}>提现金额 (USDT)</label>
+            <label style={{ fontSize: 12, color: '#9CA3AF', display: 'block', marginBottom: 4 }}>{i18n.t('USDTPaymentPanel.r92_3')}</label>
             <input
               value={amount}
               onChange={e => setAmount(e.target.value)}
@@ -137,7 +139,7 @@ function WalletTab() {
           </div>
 
           <div style={{ marginBottom: 14 }}>
-            <label style={{ fontSize: 12, color: '#9CA3AF', display: 'block', marginBottom: 4 }}>TRC20 收款地址</label>
+            <label style={{ fontSize: 12, color: '#9CA3AF', display: 'block', marginBottom: 4 }}>{i18n.t('USDTPaymentPanel.r92_4')}</label>
             <input
               value={address}
               onChange={e => setAddress(e.target.value)}
@@ -179,7 +181,7 @@ function RevenueTab() {
             <div style={{ fontSize: 24, fontWeight: 900, color: '#10B981' }}>$357</div>
           </div>
           <div>
-            <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 4 }}>到手 (70%)</div>
+            <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 4 }}>{i18n.t('USDTPaymentPanel.r92_5')}</div>
             <div style={{ fontSize: 24, fontWeight: 900, color: '#D4A853' }}>$249</div>
           </div>
           <div>
@@ -283,17 +285,17 @@ export default function USDTPaymentPanel() {
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'wallet' ? '#6366F1' : '#1F2937',
           color: tab === 'wallet' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>💳 钱包</button>
+        }}>{i18n.t('USDTPaymentPanel.r92_6')}</button>
         <button onClick={() => setTab('revenue')} style={{
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'revenue' ? '#6366F1' : '#1F2937',
           color: tab === 'revenue' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>📊 收益分账</button>
+        }}>{i18n.t('USDTPaymentPanel.r92_7')}</button>
         <button onClick={() => setTab('history')} style={{
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'history' ? '#6366F1' : '#1F2937',
           color: tab === 'history' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>📋 交易记录</button>
+        }}>{i18n.t('USDTPaymentPanel.r92_8')}</button>
       </div>
 
       {tab === 'wallet' && <WalletTab />}

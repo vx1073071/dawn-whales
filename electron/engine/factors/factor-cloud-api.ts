@@ -1,9 +1,9 @@
 /**
- * J-64-02 [P0]: 核心因子云端化+回测签名 (R64 v19 — v1.6.0-alpha)
+ * J-64-02 [P0]: factorcloud+backtestsign (R64 v19 — v1.6.0-alpha)
  *
- * 核心因子模型部署在 /api/factor。
- * 回测结果云端签名验证 (防篡改)。
- * 桌面端清洁: 删核心因子模型 + 高级回测引擎。
+ * factordeployment /api/factor。
+ * backtest resultcloudsign ()。
+ * : factor + backtest engine。
  *
  * >=200L, 7 tests
  */

@@ -1,6 +1,6 @@
-// ── JVS-108: User Preferences — 用户偏好系统 ───────────────────────────────
-// 持久化用户配置: UI偏好、交易偏好、通知偏好、布局设置
-// 存储: SQLite (通过 DatabaseManager) + JSON 文件备份
+// ── JVS-108: User Preferences — user ───────────────────────────────
+// user config: UI notification、settings
+// : SQLite ( DatabaseManager) + JSON backup
 
 import log from 'electron-log';
 

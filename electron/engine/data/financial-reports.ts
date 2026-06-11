@@ -14,28 +14,28 @@ import { EngineError } from '../core/engine-error';
 
 export interface IncomeStatement {
   reportDate: string;
-  revenue: number;          // 营业收入
-  revenueGrowth: number;    // 营收增长率 %
-  grossProfit: number;      // 毛利润
-  grossMargin: number;      // 毛利率 %
-  operatingProfit: number;  // 营业利润
-  operatingMargin: number;  // 营业利润率 %
-  netProfit: number;        // 净利润
-  netMargin: number;        // 净利润率 %
-  netProfitGrowth: number;  // 净利润增长率 %
-  eps: number;              // 每股收益
-  dilutedEps: number;       // 稀释每股收益
+  revenue: number;
+  revenueGrowth: number;    // revenue %
+  grossProfit: number;
+  grossMargin: number;      // gross margin %
+  operatingProfit: number;
+  operatingMargin: number;  // %
+  netProfit: number;        // net profit
+  netMargin: number;        // net profit %
+  netProfitGrowth: number;  // net profit %
+  eps: number;              // EPS
+  dilutedEps: number;       // EPS
 }
 
 export interface BalanceSheet {
   reportDate: string;
-  totalAssets: number;      // 总资产
-  totalLiabilities: number; // 总负债
-  totalEquity: number;      // 股东权益
-  debtToEquity: number;     // 资产负债率 %
-  currentRatio: number;     // 流动比率
-  quickRatio: number;       // 速动比率
-  cash: number;             // 现金及等价物
+  totalAssets: number;
+  totalLiabilities: number;
+  totalEquity: number;      // shareholder
+  debtToEquity: number;     // %
+  currentRatio: number;
+  quickRatio: number;
+  cash: number;
   accountsReceivable: number;
   inventory: number;
   goodwill: number;
@@ -43,13 +43,13 @@ export interface BalanceSheet {
 
 export interface CashFlowStatement {
   reportDate: string;
-  operatingCashFlow: number;   // 经营活动现金流
-  investingCashFlow: number;   // 投资活动现金流
-  financingCashFlow: number;   // 筹资活动现金流
-  netCashFlow: number;         // 净现金流
-  freeCashFlow: number;        // 自由现金流
-  capex: number;               // 资本支出
-  dividendsPaid: number;       // 分红支出
+  operatingCashFlow: number;   // activity
+  investingCashFlow: number;   // activity
+  financingCashFlow: number;   // activity
+  netCashFlow: number;
+  freeCashFlow: number;
+  capex: number;
+  dividendsPaid: number;
 }
 
 export interface FinancialReportsResult {

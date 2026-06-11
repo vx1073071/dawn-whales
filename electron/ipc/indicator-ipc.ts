@@ -96,7 +96,7 @@ export function registerIndicatorIPC(
 
   // ── Options Pricing Engine (JVS-44) ────────────────────────────────────
 
-  // JVS-44: 技术指标实时计算
+ // JVS-44: technical indicator
   ipcMain.handle('indicator:calculate', async (_e, symbol: string, klines: any[], indicators?: string[]) => {
     try {
       const calculator = getRealtimeIndicatorCalculator();

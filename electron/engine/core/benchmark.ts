@@ -1,5 +1,5 @@
 // ── DAWN WHALES — Performance Benchmark (J1: Backtest Engine) ──────────────
-// 测试回测引擎在不同数据量下的吞吐量
+// backtest enginethroughput
 
 import { BacktestEngine } from '../backtest/backtest-engine';
 import { BacktestEnhancer } from '../backtest/backtest-enhancer';

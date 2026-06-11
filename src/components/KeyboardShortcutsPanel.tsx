@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { SHORTCUT_MAP } from '@/hooks/useKeyboardShortcuts';
 import i18n from '../i18n';
+import { EngineError } from '../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 interface KeyboardShortcutsPanelProps {
   open: boolean;

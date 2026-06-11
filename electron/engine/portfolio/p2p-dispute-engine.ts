@@ -2,10 +2,10 @@
 import { EngineError, ErrorCode } from '../../errors';
 import i18n from '../../../src/i18n';
 
- * J-78-03-2: p2p-dispute-engine.ts — P2P争议申诉引擎
- * v1.9.0: 拆分自p2p-transfer-engine
+ * J-78-03-2: p2p-dispute-engine.ts — P2P
+ * v1.9.0: p2p-transfer-engine
  *
- * 争议申诉: 4选1原因 + 买方取消解锁 + 申诉流转
+ * : 41 + cancellock + 
  */
 
 export type DisputeReason = 'goods_not_received' | 'goods_damaged' | 'wrong_amount' | 'fraud_suspected' | 'other';
@@ -36,7 +36,7 @@ const DISPUTE_REASON_LABELS: Record<DisputeReason, string> = {
 export class P2PDisputeEngine {
   private disputes = new Map<string, DisputeRecord>();
 
-  /** 创建争议 — 买方发起申诉冻结中的转账 */
+ /** — transfer */
   createDispute(
     transferId: string,
     fromUserId: string,
@@ -45,7 +45,7 @@ export class P2PDisputeEngine {
     detail = '',
     evidenceUrls: string[] = [],
   ): DisputeRecord {
-    // 不允许同一转账多次申诉
+ // transfer
     const existing = [...this.disputes.values()].find((d) => d.transferId === transferId && d.status !== 'closed');
     if (existing) throw new EngineError(ErrorCode.INTERNAL_ERROR, `Dispute already exists for transfer ${transferId}: ${existing.status}`);
 
@@ -66,29 +66,29 @@ export class P2PDisputeEngine {
     return record;
   }
 
-  /** 获取争议 */
+ /** */
   getDispute(disputeId: string): DisputeRecord | undefined {
     return this.disputes.get(disputeId);
   }
 
-  /** 按转账ID查争议 */
+ /** transferID */
   getDisputeByTransfer(transferId: string): DisputeRecord | undefined {
     return [...this.disputes.values()].find((d) => d.transferId === transferId);
   }
 
-  /** 按用户查争议 */
+ /** user */
   listUserDisputes(userId: string, status?: DisputeRecord['status']): DisputeRecord[] {
     let list = [...this.disputes.values()].filter((d) => d.fromUserId === userId || d.toUserId === userId);
     if (status) list = list.filter((d) => d.status === status);
     return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
-  /** 所有活跃争议 */
+ /** */
   getOpenDisputes(): DisputeRecord[] {
     return [...this.disputes.values()].filter((d) => d.status === 'open');
   }
 
-  /** 管理员解决争议 */
+ /** */
   resolveByAdmin(disputeId: string, resolvedBy: string, adminNote: string, favor: 'buyer' | 'seller'): DisputeRecord {
     const d = this.disputes.get(disputeId);
     if (!d) throw new EngineError(ErrorCode.INTERNAL_ERROR, `Dispute ${disputeId} not found`);
@@ -101,7 +101,7 @@ export class P2PDisputeEngine {
     return d;
   }
 
-  /** 关闭争议 (双方协商一致) */
+ /** () */
   closeDispute(disputeId: string, closedBy: string): DisputeRecord {
     const d = this.disputes.get(disputeId);
     if (!d) throw new EngineError(ErrorCode.INTERNAL_ERROR, `Dispute ${disputeId} not found`);
@@ -112,7 +112,7 @@ export class P2PDisputeEngine {
     return d;
   }
 
-  /** 统计 */
+ /** */
   getStats(): { open: number; resolved: number; closed: number; byReason: Record<string, number> } {
     const byReason: Record<string, number> = {};
     let open = 0,

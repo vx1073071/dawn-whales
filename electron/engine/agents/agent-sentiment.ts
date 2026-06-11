@@ -1,9 +1,9 @@
 /**
- * J-57-03: 情绪面 Agent 真实实现 (Sentiment Agent)
+ * J-57-03: Agent (Sentiment Agent)
  * Responsibilities: Social media sentiment, news sentiment, fear & greed,
  *   analyst consensus, insider trading detection
  * LLM: DeepSeek V4 Pro (cached, 99% off)
- * Data source: 自研情绪分析 (mock for R57)
+ * Data source: (mock for R57)
  *
  * Features:
  * - Social media sentiment scoring (Weibo/Xueqiu/StockTwits)

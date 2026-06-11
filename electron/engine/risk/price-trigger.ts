@@ -1,7 +1,7 @@
 // electron/engine/price-trigger.ts
-// PriceTriggerEngine — 价格条件触发模块
-// J-30-01 ConditionEngine 子模块
-// 负责：above / below / crosses_above / crosses_below / breakout 五种价格触发逻辑
+// PriceTriggerEngine — conditionmodule
+// J-30-01 ConditionEngine module
+// ：above / below / crosses_above / crosses_below / breakout 
 
 import log from 'electron-log';
 import type { TriggerResult } from '../../types/condition.js';
@@ -19,17 +19,17 @@ export interface PriceRule {
   id?: string;
   code: string;
   operator: PriceOperator;
-  /** 触发阈值价格（breakout 时不使用） */
+ /** threshold（breakout ） */
   threshold?: number;
-  /** breakout 范围：[low, high] */
+ /** breakout ：[low, high] */
   range?: [number, number];
-  /** 冷却时间（ms），同一规则两次触发之间的最小间隔 */
+ /** （ms ruleinterval */
   cooldownMs?: number;
-  /** 每日最大触发次数 */
+ /** */
   maxTriggersPerDay?: number;
-  /** 是否启用 */
+ /** enable */
   enabled?: boolean;
-  /** 备注描述 */
+ /** */
   description?: string;
 }
 
@@ -75,13 +75,13 @@ function isSameDay(ms: number): boolean {
 // ── PriceTriggerEngine ────────────────────────────────────────────────────
 
 export class PriceTriggerEngine {
-  /** 所有规则 */
+ /** rule */
   private rules: Map<string, PriceRuleInternal> = new Map();
 
-  /** 每只标的上一次价格（用于 crosses 检测） */
+ /** （ crosses ） */
   private lastPriceMap: Map<string, number> = new Map();
 
-  /** 触发历史记录 */
+ /** */
   private triggerHistory: PriceTriggerResult[] = [];
 
   constructor() {
@@ -91,7 +91,7 @@ export class PriceTriggerEngine {
   // ── CRUD ─────────────────────────────────────────────
 
   /**
-   * 添加一条价格触发规则，返回规则 ID
+ * itemsrule，backrule ID
    */
   addRule(rule: PriceRule): string {
     const id = rule.id ?? generateRuleId();
@@ -115,7 +115,7 @@ export class PriceTriggerEngine {
   }
 
   /**
-   * 移除规则，返回是否成功
+ * rule，backsuccess
    */
   removeRule(ruleId: string): boolean {
     const removed = this.rules.delete(ruleId);
@@ -126,7 +126,7 @@ export class PriceTriggerEngine {
   }
 
   /**
-   * 获取所有规则（只读副本）
+ * rule 
    */
   getRules(): PriceRule[] {
     return Array.from(this.rules.values()).map((r) => ({
@@ -143,7 +143,7 @@ export class PriceTriggerEngine {
   }
 
   /**
-   * 清空所有状态（lastPrice 和 history），规则保留
+ * clear（lastPrice history rule
    */
   clearState(): void {
     this.lastPriceMap.clear();
@@ -152,7 +152,7 @@ export class PriceTriggerEngine {
   }
 
   /**
-   * 清空所有规则 + 状态
+ * clearrule + 
    */
   clearAll(): void {
     this.rules.clear();
@@ -164,7 +164,7 @@ export class PriceTriggerEngine {
   // ── Evaluate ─────────────────────────────────────────
 
   /**
-   * 评估指定标的所有价格规则，返回触发结果数组
+ * rule，back
    */
   evaluate(code: string, currentPrice: number): PriceTriggerResult[] {
     const prevPrice = this.lastPriceMap.get(code);
@@ -194,7 +194,7 @@ export class PriceTriggerEngine {
   ): PriceTriggerResult {
     const now = Date.now();
 
-    // 冷却检查
+ //
     if (rule.lastTriggeredAt !== undefined && rule.cooldownMs > 0) {
       const elapsed = now - rule.lastTriggeredAt;
       if (elapsed < rule.cooldownMs) {
@@ -205,7 +205,7 @@ export class PriceTriggerEngine {
       }
     }
 
-    // 每日最大触发次数检查
+ //
     if (rule.maxTriggersPerDay < Infinity) {
       const todayCount = this.triggerHistory.filter(
         (e) => e.ruleId === rule.id && isSameDay(e.triggeredAt ?? 0)
@@ -218,11 +218,11 @@ export class PriceTriggerEngine {
       }
     }
 
-    // 条件判断
+ // condition
     const triggered = this.checkCondition(rule, currentPrice, prevPrice);
 
     if (triggered) {
-      // 更新规则内部状态
+ // updaterule
       rule.lastTriggeredAt = now;
       rule.triggerCount += 1;
 
@@ -302,7 +302,7 @@ export class PriceTriggerEngine {
   // ── History ──────────────────────────────────────────
 
   /**
-   * 获取触发历史
+ *
    */
   getHistory(filter?: { ruleId?: string; code?: string }): PriceTriggerResult[] {
     let results = this.triggerHistory;
@@ -316,14 +316,14 @@ export class PriceTriggerEngine {
   }
 
   /**
-   * 获取某标的上一次记录的价格（用于外部调试）
+ *
    */
   getLastPrice(code: string): number | undefined {
     return this.lastPriceMap.get(code);
   }
 
   /**
-   * 获取规则详情
+ * rule
    */
   getRule(ruleId: string): PriceRule | undefined {
     const r = this.rules.get(ruleId);
@@ -342,7 +342,7 @@ export class PriceTriggerEngine {
   }
 
   /**
-   * 启用/禁用规则
+   * enable/disablerule
    */
   setEnabled(ruleId: string, enabled: boolean): boolean {
     const rule = this.rules.get(ruleId);
@@ -352,7 +352,7 @@ export class PriceTriggerEngine {
   }
 
   /**
-   * 获取规则总数
+ * rule
    */
   get ruleCount(): number {
     return this.rules.size;

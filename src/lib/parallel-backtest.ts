@@ -1,7 +1,7 @@
-// ── DAWN WHALES — Web Worker 并行回测 (v0.6.0) ─────────────────────────────
-// 参数扫描/多周期对比时用Worker并行加速
+// ── DAWN WHALES — Web Worker backtest (v0.6.0) ─────────────────────────────
+// parameter sweep/periodWorker
 
-const BATCH_SIZE = 4; // 同时并行4个回测
+const BATCH_SIZE = 4; // 4backtest
 
 interface WorkerMessage {
   type: 'run' | 'result' | 'error';
@@ -15,7 +15,7 @@ interface WorkerMessage {
 // Inline worker as blob (avoids build config issues)
 function createWorkerCode(): string {
   return `
-// Worker: 独立回测计算
+// Worker: backtest
 self.onmessage = function(e) {
   const { id, config, klines } = e.data;
   try {
@@ -139,7 +139,7 @@ function calcSMA(data, period) {
 `;
 }
 
-// 创建Worker池
+// Worker
 let workerPool: Worker[] = [];
 let workerBusy: boolean[] = [];
 let workerCode: string = '';
@@ -157,7 +157,7 @@ function ensureWorkers(): void {
   }
 }
 
-// 并行批量回测
+// backtest
 export async function parallelBacktest(
   klines: any[],
   configs: any[],
@@ -216,7 +216,7 @@ export async function parallelBacktest(
   return promise;
 }
 
-// 清理
+//
 export function terminateWorkers(): void {
   for (const w of workerPool) w.terminate();
   workerPool = [];

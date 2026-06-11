@@ -1,6 +1,6 @@
 /**
  * J-52-02: Review Manager (R52 P0)
- * 策略评价管理 + 审核系统 + 有用性排名
+ * strategy/policy + +
  *
  * Features:
  * - Create/edit/delete reviews

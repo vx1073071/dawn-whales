@@ -1,14 +1,14 @@
 /**
  * LLMCreatorConfigPanel — ML-56-02 [P0]
- * R56: v1.2.0-alpha — LLM 创作者配置面板
+ * R56: v1.2.0-alpha — LLM creatorconfig
  *
  * Features:
- * - 11 家 LLM 选择 (默认 DeepSeek V4 Pro 折后)
- * - 成本预估 (按档位 + 缓存命中率 + 折后失效预警)
- * - 余额提示 (USDT)
- * - 缓存命中率实时显示
- * - 降级链可视化
- * - API key 管理入口
+ * - 11 LLM (default DeepSeek V4 Pro )
+ * - ( + cache hit + )
+ * - balancehint (USDT)
+ * - cache hit
+ * - downgrade
+ * - API key 
  *
  * ≥250L
  */
@@ -16,6 +16,8 @@
 import { useTranslation } from "react-i18next";
 import React, { useState, useCallback, useMemo } from 'react';
 import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:AI] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 

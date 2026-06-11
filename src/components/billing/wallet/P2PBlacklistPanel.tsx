@@ -104,7 +104,7 @@ function P2POrdersTab() {
 
       {/* Appeal entry */}
       <div style={{ marginTop: 16, padding: '14px 16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937' }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: '#D1D5DB', marginBottom: 8 }}>⚖️ 申诉入口</div>
+        <div style={{ fontSize: 13, fontWeight: 600, color: '#D1D5DB', marginBottom: 8 }}>{i18n.t('P2PBlacklistPanel.r92_0')}</div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
           {[i18n.t('P2PBlacklistPanel.k13'), i18n.t('P2PBlacklistPanel.k14'), i18n.t('P2PBlacklistPanel.k15'), i18n.t('P2PBlacklistPanel.k16')].map(r => (
             <button key={r} style={{
@@ -216,12 +216,12 @@ export default function P2PBlacklistPanel() {
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'p2p' ? '#6366F1' : '#1F2937',
           color: tab === 'p2p' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>💱 P2P 转账</button>
+        }}>{i18n.t('P2PBlacklistPanel.r92_1')}</button>
         <button onClick={() => setTab('blacklist')} style={{
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'blacklist' ? '#6366F1' : '#1F2937',
           color: tab === 'blacklist' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-        }}>🚫 黑名单</button>
+        }}>{i18n.t('P2PBlacklistPanel.r92_2')}</button>
       </div>
 
       {tab === 'p2p' && <P2POrdersTab />}

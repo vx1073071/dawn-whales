@@ -1,5 +1,5 @@
 /**
- * J-80-03: 邀请裂变系统 G1
+ * J-80-03: invite G1
  * v1.9.0 GA — Invite referral engine: invite code → tracking → rewards
  *
  * Rules:

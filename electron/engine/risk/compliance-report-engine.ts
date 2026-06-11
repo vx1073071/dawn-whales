@@ -1,17 +1,17 @@
 /**
- * Compliance Report Engine - 合规性报告引擎
+ * Compliance Report Engine - compliance
  * D-49-NEW [P1] - youdao
  * 
- * 功能:
- * - 合规性报告生成
- * - 风险事件记录
- * - 合规性检查
- * - 多维度报告
+ * :
+ * - compliance
+ * - event
+ * - compliance
+ *
  * 
- * 验收标准:
- * - 代码量 >= 500L
- * - 报告格式完整
- * - 合规性检查通过
+ * :
+ * - >= 500L
+ *
+ * - compliance
  */
 
 import log from 'electron-log';
@@ -121,7 +121,7 @@ export class ComplianceReportEngine {
       ...config,
     };
 
-    // 初始化默认规则
+    // initializedefaultrule
     this.initializeDefaultRules();
 
     log.info('[ComplianceReportEngine] Initialized', {
@@ -133,10 +133,10 @@ export class ComplianceReportEngine {
   // ── Rule Management ──────────────────────────────────────────────────────
 
   /**
-   * 初始化默认合规规则
+   * initializedefaultcompliancerule
    */
   private initializeDefaultRules(): void {
-    // 数据隐私规则
+ // rule
     this.addRule({
       id: 'DATA_PRIVACY_001',
       name: i18n.t('compliance.k1'),
@@ -147,7 +147,7 @@ export class ComplianceReportEngine {
       enabled: true,
     });
 
-    // 风险管理规则
+    // risk managementrule
     this.addRule({
       id: 'RISK_MGMT_001',
       name: i18n.t('compliance.k3'),
@@ -158,7 +158,7 @@ export class ComplianceReportEngine {
       enabled: true,
     });
 
-    // 审计要求规则
+ // auditrule
     this.addRule({
       id: 'AUDIT_REQ_001',
       name: i18n.t('compliance.k5'),
@@ -169,7 +169,7 @@ export class ComplianceReportEngine {
       enabled: true,
     });
 
-    // 安全策略规则
+ // strategy/policyrule
     this.addRule({
       id: 'SECURITY_001',
       name: i18n.t('compliance.k7'),
@@ -180,7 +180,7 @@ export class ComplianceReportEngine {
       enabled: true,
     });
 
-    // 操作流程规则
+ // rule
     this.addRule({
       id: 'OPERATION_001',
       name: i18n.t('compliance.k9'),
@@ -193,7 +193,7 @@ export class ComplianceReportEngine {
   }
 
   /**
-   * 添加合规规则
+ * compliancerule
    */
   addRule(rule: ComplianceRule): void {
     this.rules.push(rule);
@@ -201,7 +201,7 @@ export class ComplianceReportEngine {
   }
 
   /**
-   * 移除合规规则
+ * compliancerule
    */
   removeRule(ruleId: string): void {
     this.rules = this.rules.filter(r => r.id !== ruleId);
@@ -209,7 +209,7 @@ export class ComplianceReportEngine {
   }
 
   /**
-   * 启用/禁用规则
+   * enable/disablerule
    */
   setRuleEnabled(ruleId: string, enabled: boolean): void {
     const rule = this.rules.find(r => r.id === ruleId);
@@ -222,7 +222,7 @@ export class ComplianceReportEngine {
   // ── Compliance Checks ────────────────────────────────────────────────────
 
   /**
-   * 检查数据访问审计
+ * audit
    */
   private checkDataAccessAudit(context: ComplianceContext): ComplianceCheckResult {
     const dataAccessActions: AuditAction[] = ['CREATE', 'UPDATE', 'DELETE'];
@@ -246,7 +246,7 @@ export class ComplianceReportEngine {
   }
 
   /**
-   * 检查风险预警响应
+ * response
    */
   private checkRiskAlertResponse(context: ComplianceContext): ComplianceCheckResult {
     const riskAlerts = context.auditLogs.filter(log => 
@@ -284,7 +284,7 @@ export class ComplianceReportEngine {
   }
 
   /**
-   * 检查审计日志完整性
+ * audit logintegrity
    */
   private checkAuditLogIntegrity(context: ComplianceContext): ComplianceCheckResult {
     const chainValid = this.auditEngine.verifyChain();
@@ -304,14 +304,14 @@ export class ComplianceReportEngine {
   }
 
   /**
-   * 检查登录失败监控
+ * loginfailed
    */
   private checkLoginFailureMonitor(context: ComplianceContext): ComplianceCheckResult {
     const loginFailures = context.auditLogs.filter(log => 
       log.action === 'LOGIN' && log.severity === 'WARNING'
     );
 
-    // 按用户分组统计
+ // user
     const failuresByUser: Record<string, number> = {};
     for (const log of loginFailures) {
       failuresByUser[log.userId] = (failuresByUser[log.userId] || 0) + 1;
@@ -342,7 +342,7 @@ export class ComplianceReportEngine {
   }
 
   /**
-   * 检查关键操作审批
+ *
    */
   private checkCriticalOperationApproval(context: ComplianceContext): ComplianceCheckResult {
     const criticalActions: AuditAction[] = ['DELETE', 'PUBLISH'];
@@ -350,7 +350,7 @@ export class ComplianceReportEngine {
       criticalActions.includes(log.action)
     );
 
-    // 检查是否有审批记录（简化检查）
+ //
     const approvedOps = criticalOps.filter(op => 
       op.details?.approved === true
     );
@@ -383,7 +383,7 @@ export class ComplianceReportEngine {
   // ── Risk Event Management ────────────────────────────────────────────────
 
   /**
-   * 记录风险事件
+ * event
    */
   recordRiskEvent(
     type: string,
@@ -414,7 +414,7 @@ export class ComplianceReportEngine {
   }
 
   /**
-   * 更新风险事件状态
+ * updateevent
    */
   updateRiskEventStatus(
     eventId: string,
@@ -437,7 +437,7 @@ export class ComplianceReportEngine {
   }
 
   /**
-   * 获取风险事件
+ * event
    */
   getRiskEvents(filter?: { status?: RiskEvent['status']; severity?: AuditSeverity }): RiskEvent[] {
     let events = this.riskEvents;
@@ -455,7 +455,7 @@ export class ComplianceReportEngine {
   // ── Report Generation ────────────────────────────────────────────────────
 
   /**
-   * 生成合规性报告
+ * compliance
    */
   generateReport(startDate: number, endDate: number, userId?: string): ComplianceReport {
     const auditLogs = this.auditEngine.query({ startDate, endDate, userId }).logs;
@@ -467,32 +467,32 @@ export class ComplianceReportEngine {
       userId,
     };
 
-    // 执行所有规则检查
+ // executerule
     const checkResults = this.rules
       .filter(rule => rule.enabled)
       .map(rule => rule.checkFunction(context));
 
-    // 计算统计
+ //
     const compliantRules = checkResults.filter(r => r.status === 'COMPLIANT').length;
     const nonCompliantRules = checkResults.filter(r => r.status === 'NON_COMPLIANT').length;
     const partialRules = checkResults.filter(r => r.status === 'PARTIAL').length;
 
-    // 计算整体状态
+ //
     const overallStatus: ComplianceStatus = nonCompliantRules > 0
       ? 'NON_COMPLIANT'
       : partialRules > 0
         ? 'PARTIAL'
         : 'COMPLIANT';
 
-    // 计算风险分数 (0-100, 越高越好)
+ // (0-100, )
     const riskScore = Math.max(0, 100 - (nonCompliantRules * 20) - (partialRules * 10));
 
-    // 收集所有建议
+ //
     const recommendations = checkResults
       .flatMap(r => r.recommendations || [])
       .filter((rec, index, self) => self.indexOf(rec) === index); // 去重
 
-    // 统计审计轨迹
+ // audit
     const criticalEvents = auditLogs.filter(log => log.severity === 'CRITICAL').length;
     const warningEvents = auditLogs.filter(log => log.severity === 'WARNING').length;
 
@@ -532,21 +532,21 @@ export class ComplianceReportEngine {
   }
 
   /**
-   * 获取报告
+ *
    */
   getReport(reportId: string): ComplianceReport | null {
     return this.reports.find(r => r.id === reportId) || null;
   }
 
   /**
-   * 获取所有报告
+ *
    */
   getAllReports(): ComplianceReport[] {
     return [...this.reports];
   }
 
   /**
-   * 导出报告
+ * export
    */
   exportReport(reportId: string, format: 'json' | 'pdf' = 'json'): string {
     const report = this.getReport(reportId);
@@ -558,12 +558,12 @@ export class ComplianceReportEngine {
       return JSON.stringify(report, null, 2);
     }
 
-    // PDF 格式 (简化版)
+ // PDF ()
     return this.generatePdfReport(report);
   }
 
   /**
-   * 生成 PDF 报告 (简化版)
+ * PDF ()
    */
   private generatePdfReport(report: ComplianceReport): string {
     const lines = [
@@ -618,7 +618,7 @@ export class ComplianceReportEngine {
   // ── Maintenance ──────────────────────────────────────────────────────────
 
   /**
-   * 清理过期数据
+ * expiry
    */
   cleanup(): { reportsRemoved: number; eventsRemoved: number } {
     const cutoffTime = Date.now() - (this.config.retentionDays * 24 * 60 * 60 * 1000);
@@ -640,14 +640,14 @@ export class ComplianceReportEngine {
   }
 
   /**
-   * 获取配置
+ * config
    */
   getConfig(): ComplianceConfig {
     return { ...this.config };
   }
 
   /**
-   * 更新配置
+   * updateconfig
    */
   updateConfig(config: Partial<ComplianceConfig>): void {
     this.config = { ...this.config, ...config };
@@ -655,14 +655,14 @@ export class ComplianceReportEngine {
   }
 
   /**
-   * 获取规则列表
+ * rule
    */
   getRules(): ComplianceRule[] {
     return [...this.rules];
   }
 
   /**
-   * 重置 (仅用于测试)
+ * reset ()
    */
   reset(): void {
     this.rules = [];

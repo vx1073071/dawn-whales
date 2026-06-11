@@ -1,9 +1,9 @@
 /**
- * J-66-02 [P0]: 信号回测引擎 (R66 v19 — v1.6.0 GA)
+ * J-66-02 [P0]: backtest engine (R66 v19 — v1.6.0 GA)
  *
- * 完整回测实现 (替换27行stub):
- * 回测维度: 胜率/夏普/最大回撤/盈亏比/连续亏损次数
- * 历史信号存档+回测对比+质量评分(A+~F)
+ * backtest (27stub):
+ * backtest: win rate/Sharpe/max drawdown//
+ * +backtest+(A+~F)
  *
  * >=300L, 7 tests
  */

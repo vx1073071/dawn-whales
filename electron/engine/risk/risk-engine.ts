@@ -1,7 +1,7 @@
-﻿// ── Risk Engine — 风控引擎 v2 ──────────────────────────────────────────────
-// v1: 7项静态检查
-// v2: + ATR动态止损 + 滚动回撤Caps + Kelly仓位 + 波动率调节
-// 每笔订单必须通过风控才能提交
+﻿// ── Risk Engine — risk engine v2 ──────────────────────────────────────────────
+// v1: 7
+// v2: + ATRstop loss + rollingCaps + Kelly + volatility
+// orderrisk controlsubmit
 
 import log from 'electron-log';
 import i18n from '../../../src/i18n';
@@ -32,44 +32,44 @@ interface DrawdownState {
 }
 
 interface RiskConfig {
-  // ── v1 静态检查 ──────────────────────────────────
+ // ── v1 ──────────────────────────────────
   maxSinglePositionPct: number;  // 单品种最大占比 (20%)
-  maxTotalPositionPct: number;   // 总持仓最大占比 (80%, v2 从95%降至80%)
+  maxTotalPositionPct: number;   // 总position/holding最大占比 (80%, v2 从95%降至80%)
   dailyLossLimitPct: number;     // 日最大亏损 (5%)
-  maxOrdersPerMinute: number;    // 频率限制 (10)
+  maxOrdersPerMinute: number;    // frequencylimit (10)
   maxOrderQty: number;           // 单笔最大数量
   minOrderQty: number;           // 单笔最小数量 (1)
   maxOrderValue: number;         // 单笔最大金额 (USD)
   tradingHoursOnly: boolean;     // 仅交易时段
   blacklist: string[];           // 禁止交易的标的
 
-  // ── v2 动态风控 ──────────────────────────────────
-  // ATR-based 动态止损
-  atrStopMultiplier: number;     // 止损 = ATR × 倍数 (2.0)
-  atrTrailingEnabled: boolean;   // 启用追踪止损
+ // ── v2 risk control ──────────────────────────────────
+ // ATR-based stop loss
+  atrStopMultiplier: number;     // stop loss = ATR × 倍数 (2.0)
+  atrTrailingEnabled: boolean;   // enable追踪stop loss
 
-  // 滚动回撤 Caps
+ // rolling Caps
   drawdownReduceThreshold: number;  // 回撤触发降仓 (15%)
   drawdownReduceFactor: number;     // 降仓至 (30%)
-  drawdownRecoveryThreshold: number; // 回撤恢复到 < 此值才解除降仓 (10%)
+  drawdownRecoveryThreshold: number; // 回撤restore到 < 此值才解除降仓 (10%)
 
-  // Kelly 仓位管理
+  // Kelly position management
   positionSizingMethod: 'kelly' | 'atr' | 'fixed_pct';
   kellyMaxFraction: number;      // Kelly 最大占比 (25%)
   kellyHalfEnabled: boolean;     // 使用 Half-Kelly（更保守）
   fixedPositionPct: number;      // 固定比例时每次用 (10%)
   atrRiskPerTrade: number;       // ATR-based: 每笔风险占比 (2%)
 
-  // 波动率调节
-  volAdjustEnabled: boolean;     // 启用波动率调节
-  vixHighThreshold: number;      // VIX 高波动率阈值 (25)
+ // volatility
+  volAdjustEnabled: boolean;     // enablevolatility调节
+  vixHighThreshold: number;      // VIX 高volatilitythreshold (25)
   vixHighReduction: number;      // 高 VIX 降仓比例 (50%)
-  vixExtremeThreshold: number;   // VIX 极端阈值 (35)
+  vixExtremeThreshold: number;   // VIX 极端threshold (35)
   vixExtremeReduction: number;   // 极端 VIX 降仓比例 (75%)
 }
 
 const DEFAULT_CONFIG: RiskConfig = {
-  // v1 默认值
+ // v1 default
   maxSinglePositionPct: 0.20,
   maxTotalPositionPct: 0.80,   // v2: 从 95% 降至 80%
   dailyLossLimitPct: 0.05,
@@ -80,7 +80,7 @@ const DEFAULT_CONFIG: RiskConfig = {
   tradingHoursOnly: true,
   blacklist: [],
 
-  // v2 默认值
+ // v2 default
   atrStopMultiplier: 2.0,
   atrTrailingEnabled: true,
 
@@ -111,7 +111,7 @@ export class RiskEngine {
   private totalAssets = 0;
   private alerts: { time: number; type: string; message: string }[] = [];
 
-  // ── v2: 新增状态 ────────────────────────────────
+ // ── v2: add new ────────────────────────────────
   private drawdownState: DrawdownState = {
     peakEquity: 0,
     currentDrawdownPct: 0,
@@ -120,14 +120,14 @@ export class RiskEngine {
     reductionFactor: 1.0,
   };
 
-  // 交易历史（用于 Kelly 计算）
+ // （ Kelly ）
   private tradeHistory: { pnl: number; isWin: boolean }[] = [];
   private readonly MAX_TRADE_HISTORY = 200;
 
-  // 当前 VIX 值
+ // current VIX 
   private currentVix: number | null = null;
 
-  // ── Order Check (v1 7项检查，保留) ──────────────────────────────
+ // ── Order Check (v1 7，) ──────────────────────────────
 
   checkOrder(order: unknown): RiskCheckResult {
     const warnings: string[] = [];
@@ -200,14 +200,14 @@ export class RiskEngine {
       }
     }
 
-    // ── v2: 动态风控检查 ──────────────────────────
+ // ── v2: risk check ──────────────────────────
 
-    // 8. 滚动回撤检查
+ // 8. rolling
     if (this.drawdownState.isReduced) {
       warnings.push(i18n.t('riskEngine.k16'));
     }
 
-    // 9. 高波动率警告
+ // 9. volatilitywarning
     if (this.config.volAdjustEnabled && this.currentVix !== null) {
       if (this.currentVix >= this.config.vixExtremeThreshold) {
         warnings.push(i18n.t('riskEngine.k17'));
@@ -220,14 +220,14 @@ export class RiskEngine {
     return { pass: true, warnings: warnings.length > 0 ? warnings : undefined };
   }
 
-  // ── v2: 仓位计算（核心新增） ──────────────────────────────────
+ // ── v2: （add new） ──────────────────────────────────
 
   /**
-   * 计算建议下单量。策略引擎生成 order.qty=0 时调用此方法。
+ * 。strategy/policy order.qty=0 method。
    *
-   * @param price       当前价格
-   * @param atr         当前 ATR 值（可选，用于 ATR-based sizing）
-   * @param stopPrice   止损价（可选，用于 Kelly 的 b 计算）
+ * @param price current
+ * @param atr current ATR ATR-based sizing）
+ * @param stopPrice stop loss Kelly b ）
    * @returns           PositionSizeResult
    */
   calculatePositionSize(
@@ -239,15 +239,15 @@ export class RiskEngine {
       return { qty: 0, method: 'fixed_pct', reasoning: i18n.t('riskEngine.k19') };
     }
 
-    // 获取基础可用资金
+ //
     let availableCapital = this.totalAssets * this.config.maxTotalPositionPct;
 
-    // 回撤降仓
+ //
     if (this.drawdownState.isReduced) {
       availableCapital *= this.drawdownState.reductionFactor;
     }
 
-    // 波动率调节
+ // volatility
     const volFactor = this.computeVolFactor();
     availableCapital *= volFactor;
 
@@ -266,11 +266,11 @@ export class RiskEngine {
 
   /**
    * Kelly Formula: f* = (bp - q) / b
-   * b = 赔率 (avgWin / avgLoss)
-   * p = 胜率
+ * b = (avgWin / avgLoss)
+   * p = win rate
    * q = 1 - p
    *
-   * 使用 Half-Kelly (f-star / 2) 更保守，避免 overbetting。
+ * Half-Kelly (f-star / 2) ， overbetting。
    */
   private kellySizing(
     price: number,
@@ -280,7 +280,7 @@ export class RiskEngine {
     const history = this.tradeHistory;
 
     if (history.length < 10) {
-      // 交易历史不足，降级为 fixed_pct
+ // ，downgrade fixed_pct
       log.info(i18n.t('riskEngine.k20'));
       return this.fixedPctSizing(price, availableCapital);
     }
@@ -307,11 +307,11 @@ export class RiskEngine {
     // Full Kelly
     let kellyFraction = (b * p - q) / b;
 
-    // 限制 Kelly 上限
+ // limit Kelly 
     kellyFraction = Math.min(kellyFraction, this.config.kellyMaxFraction);
     kellyFraction = Math.max(kellyFraction, 0); // 不允许负值
 
-    // Half-Kelly (更保守)
+ // Half-Kelly ()
     if (this.config.kellyHalfEnabled) {
       kellyFraction *= 0.5;
     }
@@ -335,7 +335,7 @@ export class RiskEngine {
 
   /**
    * ATR-based Sizing: qty = riskAmount / (ATR × multiplier)
-   * riskAmount = totalAssets × atrRiskPerTrade (默认2%)
+   * riskAmount = totalAssets × atrRiskPerTrade (default2%)
    */
   private atrSizing(
     price: number,
@@ -351,7 +351,7 @@ export class RiskEngine {
     const riskPerShare = atr * this.config.atrStopMultiplier;
     const qty = Math.floor(riskAmount / riskPerShare);
 
-    // 不超过可用资金
+ //
     const maxQty = Math.floor(availableCapital / price);
     const finalQty = Math.min(qty, maxQty);
 
@@ -369,7 +369,7 @@ export class RiskEngine {
   }
 
   /**
-   * Fixed Percentage: 每次用 availableCapital 的 fixedPositionPct (默认10%)
+ * Fixed Percentage: availableCapital fixedPositionPct (default10%)
    */
   private fixedPctSizing(
     price: number,
@@ -386,16 +386,16 @@ export class RiskEngine {
     };
   }
 
-  // ── v2: ATR 动态止损 ──────────────────────────────────────────
+ // ── v2: ATR stop loss ──────────────────────────────────────────
 
   /**
-   * 计算 ATR-based 止损价
-   * 止损价 = entryPrice - ATR × multiplier
+ * ATR-based stop loss
+ * stop loss = entryPrice - ATR × multiplier
    *
-   * @param entryPrice  入场价
-   * @param atr         当前 ATR
+ * @param entryPrice 
+   * @param atr         current ATR
    * @param side        'LONG' | 'SHORT'
-   * @returns           止损价
+ * @returns stop loss
    */
   calculateDynamicStopLoss(
     entryPrice: number,
@@ -416,13 +416,13 @@ export class RiskEngine {
   }
 
   /**
-   * 更新追踪止损价。只在有利方向移动止损，从不回退。
+ * updatestop loss。stop loss 
    *
-   * @param currentStop  当前止损价
-   * @param currentPrice 当前价格
-   * @param atr          当前 ATR
+ * @param currentStop currentstop loss
+ * @param currentPrice current
+   * @param atr          current ATR
    * @param side         'LONG' | 'SHORT'
-   * @returns            新的止损价
+ * @returns stop loss
    */
   updateTrailingStop(
     currentStop: number,
@@ -451,35 +451,35 @@ export class RiskEngine {
     return currentStop;
   }
 
-  // ── v2: 滚动回撤监控 ──────────────────────────────────────────
+ // ── v2: rolling ──────────────────────────────────────────
 
   /**
-   * 更新权益值并检查回撤状态。
-   * 策略引擎在每次 onQuoteUpdate 时调用。
+ * update。
+ * strategy/policy onQuoteUpdate 。
    *
-   * @param currentEquity 当前总权益 (cash + position value)
+ * @param currentEquity current (cash + position value)
    */
   updateEquity(currentEquity: number): void {
     const dd = this.drawdownState;
 
-    // 更新峰值
+ // update
     if (currentEquity > dd.peakEquity) {
       dd.peakEquity = currentEquity;
       dd.drawdownStart = undefined;
     }
 
-    // 计算当前回撤
+ // current
     if (dd.peakEquity > 0) {
       dd.currentDrawdownPct = (dd.peakEquity - currentEquity) / dd.peakEquity;
     }
 
-    // 更新历史最大回撤
+ // updatemax drawdown
     if (dd.currentDrawdownPct > dd.maxDrawdownPct) {
       dd.maxDrawdownPct = dd.currentDrawdownPct;
       if (!dd.drawdownStart) dd.drawdownStart = Date.now();
     }
 
-    // 检查是否需要降仓
+ //
     if (!dd.isReduced && dd.currentDrawdownPct >= this.config.drawdownReduceThreshold) {
       dd.isReduced = true;
       dd.reductionFactor = this.config.drawdownReduceFactor;
@@ -493,7 +493,7 @@ export class RiskEngine {
       );
     }
 
-    // 检查是否可以解除降仓
+ //
     if (dd.isReduced && dd.currentDrawdownPct < this.config.drawdownRecoveryThreshold) {
       dd.isReduced = false;
       dd.reductionFactor = 1.0;
@@ -506,26 +506,26 @@ export class RiskEngine {
   }
 
   /**
-   * 获取当前回撤状态（供 UI 展示）
+ * current（ UI ）
    */
   getDrawdownState(): DrawdownState {
     return { ...this.drawdownState };
   }
 
-  // ── v2: 波动率调节 ──────────────────────────────────────────
+ // ── v2: volatility ──────────────────────────────────────────
 
   /**
-   * 更新 VIX 值。由行情数据模块定期调用。
+ * update VIX 。market datamodule。
    */
   updateVix(vix: number): void {
     this.currentVix = vix;
   }
 
   /**
-   * 根据 VIX 计算仓位调节因子。
-   * VIX < 25 → factor = 1.0 (正常)
-   * VIX 25-35 → factor = 0.5 (降半仓)
-   * VIX > 35 → factor = 0.25 (降至1/4)
+ * VIX factor。
+ * VIX < 25 → factor = 1.0 ()
+ * VIX 25-35 → factor = 0.5 ()
+ * VIX > 35 → factor = 0.25 (1/4)
    */
   private computeVolFactor(): number {
     if (!this.config.volAdjustEnabled || this.currentVix === null) return 1.0;
@@ -536,16 +536,16 @@ export class RiskEngine {
   }
 
   /**
-   * 获取当前波动率调节因子（供 UI 展示）
+ * currentvolatilityfactor（ UI ）
    */
   getVolatilityFactor(): number {
     return this.computeVolFactor();
   }
 
-  // ── v2: 交易历史管理（Kelly 计算用） ──────────────────────────
+ // ── v2: （Kelly ） ──────────────────────────
 
   /**
-   * 记录交易结果。策略引擎在平仓时调用。
+ * 。strategy/policyclose position。
    */
   recordTrade(pnl: number): void {
     this.tradeHistory.push({ pnl, isWin: pnl > 0 });
@@ -555,7 +555,7 @@ export class RiskEngine {
   }
 
   /**
-   * 获取 Kelly 统计摘要（供 UI 展示）
+ * Kelly （ UI ）
    */
   getKellyStats(): {
     winRate: number;
@@ -587,7 +587,7 @@ export class RiskEngine {
     return { winRate, avgWin, avgLoss, profitFactor, kellyFraction, sampleSize: history.length };
   }
 
-  // ── State Updates (v1 保留) ──────────────────────────────────
+ // ── State Updates (v1 ) ──────────────────────────────────
 
   updateTotalAssets(value: number) {
     this.totalAssets = value;
@@ -633,7 +633,7 @@ export class RiskEngine {
     this.alerts = [];
   }
 
-  // ── v2: 完整状态快照（供 IPC 推送给 UI） ─────────────────────
+ // ── v2: （ IPC UI） ─────────────────────
 
   getStatusSnapshot(): {
     config: RiskConfig;

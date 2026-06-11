@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 import i18n from '../../../i18n';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 ﻿/**
  * DemoCasePage — ML-73-03 [P1]
  * R73: v1.8.0-beta — GTM: 3 trading case studies + before/after + profit curves

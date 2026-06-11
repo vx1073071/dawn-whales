@@ -3,7 +3,7 @@ import i18n from '../../../src/i18n';
 import { EngineError } from '../core/engine-error';
 
 /**
- * J-80-04: 7市场数据新鲜度监控 G8
+ * J-80-04: 7 G8
  * v1.9.0 GA — Data freshness monitoring for all 7 markets
  *
  * Alert: >5min stale → warning

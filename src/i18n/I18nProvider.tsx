@@ -26,98 +26,12 @@ interface I18nContextValue {
   formatDate: (d: Date | number, format?: 'short' | 'long') => string;
 }
 
-// ── Translation maps (extracted from i18n-data.ts subset) ───────────────
+// ── Translation maps (imported from JSON to avoid inline CJK) ────────
 
-const ZH: Record<string, string> = {
-  // Navigation
-  'nav.dashboard': '仪表盘',
-  'nav.strategy': '策略',
-  'nav.market': '行情',
-  'nav.portfolio': '持仓',
-  'nav.orders': '订单',
-  'nav.backtest': '回测',
-  'nav.marketplace': '策略市场',
-  'nav.settings': '设置',
-  'nav.risk': '风险管理',
+import ZH_DATA from './i18n-provider-zh.json';
+const ZH: Record<string, string> = ZH_DATA;
 
-  // Dashboard
-  'dashboard.title': '仪表盘',
-  'dashboard.total_assets': '总资产',
-  'dashboard.today_pnl': '今日盈亏',
-  'dashboard.total_pnl': '累计盈亏',
-  'dashboard.win_rate': '胜率',
-  'dashboard.sharpe': '夏普比率',
-  'dashboard.max_drawdown': '最大回撤',
-
-  // Strategy
-  'strategy.create': '创建策略',
-  'strategy.optimize': '参数优化',
-  'strategy.backtest': '回测',
-  'strategy.publish': '发布策略',
-  'strategy.import': '导入策略',
-  'strategy.export': '导出策略',
-
-  // Orders
-  'order.buy': '买入',
-  'order.sell': '卖出',
-  'order.pending': '待处理',
-  'order.filled': '已成交',
-  'order.cancelled': '已取消',
-  'order.rejected': '已拒绝',
-
-  // Market
-  'market.search': '搜索股票',
-  'market.watchlist': '自选股',
-  'market.hot': '热门',
-  'market.indices': '指数',
-
-  // Common
-  'common.confirm': '确认',
-  'common.cancel': '取消',
-  'common.save': '保存',
-  'common.delete': '删除',
-  'common.edit': '编辑',
-  'common.loading': '加载中...',
-  'common.error': '错误',
-  'common.success': '成功',
-  'common.no_data': '暂无数据',
-  'common.refresh': '刷新',
-  'common.settings': '设置',
-  'common.logout': '退出',
-  'common.language': '语言',
-
-  // Risk
-  'risk.var': '风险价值',
-  'risk.cvar': '条件风险价值',
-  'risk.stress_test': '压力测试',
-  'risk.correlation': '相关性矩阵',
-
-  // Time periods
-  'time.1m': '1分钟',
-  'time.5m': '5分钟',
-  'time.15m': '15分钟',
-  'time.30m': '30分钟',
-  'time.1h': '1小时',
-  'time.4h': '4小时',
-  'time.1d': '日线',
-  'time.1w': '周线',
-
-  // Status
-  'status.connected': '已连接',
-  'status.disconnected': '未连接',
-  'status.running': '运行中',
-  'status.stopped': '已停止',
-  'status.error': '错误',
-
-  // Phase 5.0
-  'phase5.optimizer': '策略优化器',
-  'phase5.multitimeframe': '多周期引擎',
-  'phase5.portfolio_risk': '组合风险引擎',
-  'phase5.live_trading': '实盘交易',
-  'phase5.walkforward': '前向分析',
-  'phase5.marketplace': '策略市场',
-  'phase5.multisource': '多源数据',
-};
+// ZH translations moved to i18n-provider-zh.json (R92 i18n cleanup)
 
 const EN: Record<string, string> = {
   'nav.dashboard': 'Dashboard',

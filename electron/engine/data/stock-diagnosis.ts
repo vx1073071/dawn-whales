@@ -1,4 +1,4 @@
-// ── JVS-14: Stock Diagnosis Aggregator (个股诊断聚合器) ────────────────────
+// ── JVS-14: Stock Diagnosis Aggregator () ────────────────────
 // Combines multiple JVS data modules into a comprehensive stock diagnosis
 // Integrates: anomaly, sentiment, capital flow, dragon tiger, fund holdings, news
 

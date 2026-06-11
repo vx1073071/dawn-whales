@@ -2,16 +2,16 @@
  * J-53-02: Signal Push Engine [P0]
  * v1.1.0-beta — Social Trading Signal Generation & Real-time Push
  *
- * 功能:
- * - 交易信号生成 (SignalGenerator)
- * - 信号去重 (SignalDeduplicator)
- * - 实时推送管理 (SignalPushManager)
- * - 信号质量评分 (SignalQualityScorer)
+ * :
+ * - (SignalGenerator)
+ * - (SignalDeduplicator)
+ * - (SignalPushManager)
+ * - (SignalQualityScorer)
  *
- * 验收标准:
- * - 代码量 ≥ 400L
- * - 测试 ≥ 25 tests, 全部 pass
- * - 信号推送延迟 < 500ms
+ * :
+ * - ≥ 400L
+ * - ≥ 25 tests, pass
+ * - latency < 500ms
  */
 
 import log from 'electron-log';

@@ -1,4 +1,4 @@
-// ── DAWN WHALES · 道鲸 — Core Type Definitions ─────────────────────────────
+// ── DAWN WHALES · — Core Type Definitions ─────────────────────────────
 
 // ── Broker Types ──────────────────────────────────────────────────────────
 

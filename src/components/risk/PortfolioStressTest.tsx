@@ -1,4 +1,4 @@
-// ── DAWN WHALES — PortfolioStressTest (组合压力测试) ────────────────────────
+// ── DAWN WHALES — PortfolioStressTest () ────────────────────────
 
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next';

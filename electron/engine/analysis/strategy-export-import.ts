@@ -1,5 +1,5 @@
 /**
- * StrategyExportImport - 策略导入导出引擎 (J-40-03, R40)
+ * StrategyExportImport - strategy/policyimportexport (J-40-03, R40)
  *
  * Provides strategy configuration export/import with:
  *  - JSON and YAML export formats

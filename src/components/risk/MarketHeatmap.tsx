@@ -1,5 +1,5 @@
-// ── DAWN WHALES — MarketHeatmap (市场板块热力图) ───────────────────────────
-// 板块涨跌全景 — 中国惯例: 红涨绿跌
+// ── DAWN WHALES — MarketHeatmap (sectorheatmap) ───────────────────────────
+// sector — : 
 
 import { useState, useMemo } from 'react';
 import i18n from '../../i18n';

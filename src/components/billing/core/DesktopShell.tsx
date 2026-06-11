@@ -89,7 +89,7 @@ function CrashScreen({ error, version, onRecover }: { error: string; version?: s
       minHeight: '100vh', background: '#0D0D14', color: '#fff', padding: 40, fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
     }}>
       <span style={{ fontSize: 64, marginBottom: 24 }}>⚠️</span>
-      <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>应用崩溃 / App Crashed</h1>
+      <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>{i18n.t('DesktopShell.r92_0')}</h1>
       <p style={{ fontSize: 14, color: '#94a3b8', marginBottom: 24, textAlign: 'center', maxWidth: 500 }}>
         DAWN WHALES 遇到了意外错误。请尝试恢复或重启应用。
         <br />An unexpected error occurred. Try recovering or restarting.

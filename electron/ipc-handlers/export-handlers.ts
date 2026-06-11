@@ -16,7 +16,7 @@ import i18n from '../../src/i18n';
 
 export function registerExportHandlers() {
 
-  // export:csv — 导出指定数据为 CSV
+ // export:csv — export CSV
   ipcMain.handle('export:csv', async (_e, target: string, filters?: unknown) => {
     try {
       const result = exportData({ target: target as any, format: 'csv', filters });
@@ -29,7 +29,7 @@ export function registerExportHandlers() {
     }
   });
 
-  // export:json — 导出指定数据为 JSON
+ // export:json — export JSON
   ipcMain.handle('export:json', async (_e, target: string, filters?: unknown) => {
     try {
       const result = exportData({ target: target as any, format: 'json', filters });
@@ -41,7 +41,7 @@ export function registerExportHandlers() {
     }
   });
 
-  // export:md — 导出指定数据为 Markdown
+ // export:md — export Markdown
   ipcMain.handle('export:md', async (_e, target: string, filters?: unknown) => {
     try {
       const result = exportData({ target: target as any, format: 'md', filters });
@@ -53,7 +53,7 @@ export function registerExportHandlers() {
     }
   });
 
-  // export:batch — 批量导出多个数据类型
+ // export:batch — export
   ipcMain.handle('export:batch', async (_e, request: BatchExportRequest) => {
     try {
       const result = batchExport(request);
@@ -65,7 +65,7 @@ export function registerExportHandlers() {
     }
   });
 
-  // export:save-dialog — 弹出保存对话框，让用户选择保存路径
+ // export:save-dialog — save，usersavepath
   ipcMain.handle('export:save-dialog', async (_e, options: { target: string; format: string; filters?: any }) => {
     try {
       const win = BrowserWindow.getFocusedWindow();
@@ -101,7 +101,7 @@ export function registerExportHandlers() {
     }
   });
 
-  // export:summary-report — 生成数据摘要报告 (Markdown)
+ // export:summary-report — (Markdown)
   ipcMain.handle('export:summary-report', async () => {
     try {
       const report = generateSummaryReport();

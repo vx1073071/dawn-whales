@@ -3,7 +3,7 @@ import { EngineError } from '../../../../electron/engine/core/engine-error';
 import { useTranslation } from "react-i18next";
 import i18n from '../../../i18n';
 
-// ── ML-79: UI 质量打磨 — 三态统一·私行风·a11y·触控 ──
+// ── ML-79: UI — ··a11y· ──
 
 // Shared polished constants
 export const PRIVATE_BANKING = {

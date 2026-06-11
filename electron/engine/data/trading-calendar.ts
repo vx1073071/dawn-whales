@@ -1,41 +1,41 @@
-// ── TradingCalendar — 交易日历引擎 ────────────────────────────────────────
-// J-31-02: 多市场交易时段管理
-// 支持 US (NYSE/NASDAQ), HK (HKEX), CN (SSE/SZSE), CRYPTO (24/7)
-// 内部使用 UTC，显示时转换为市场本地时区
+// ── TradingCalendar — ────────────────────────────────────────
+// J-31-02: 
+// US (NYSE/NASDAQ), HK (HKEX), CN (SSE/SZSE), CRYPTO (24/7)
+// UTC，local
 
 import log from 'electron-log';
 import i18n from '../../../src/i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
-/** 支持的市场类型 */
+/** */
 export type MarketType = 'US' | 'HK' | 'CN' | 'CRYPTO';
 
-/** 交易时段类型 */
+/** */
 export type SessionType = 'pre-market' | 'regular' | 'after-hours' | 'closed';
 
-/** 假期定义 */
+/** */
 export interface Holiday {
   date: string;   // 'YYYY-MM-DD' in market's local timezone
   name: string;   // English holiday name
   market: MarketType;
 }
 
-/** 交易时段定义（本地时间，分钟为单位） */
+/** （local */
 interface SessionDef {
   type: SessionType;
   open: number;   // minutes from midnight (local)
   close: number;  // minutes from midnight (local)
 }
 
-/** 时段详细信息（UTC Date 对象） */
+/** info（UTC Date ） */
 export interface SessionInfo {
   type: SessionType;
   openUTC: Date;
   closeUTC: Date;
 }
 
-/** 下一个开盘信息 */
+/** info */
 export interface NextOpenInfo {
   date: Date;
   session: SessionType;
@@ -50,7 +50,7 @@ const MAX_SEARCH_DAYS = 366;
 
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-/** 市场时区偏移（分钟），正数 = UTC 以东 */
+/** = UTC */
 const MARKET_TIMEZONES: Record<MarketType, string> = {
   US: 'America/New_York',
   HK: 'Asia/Hong_Kong',

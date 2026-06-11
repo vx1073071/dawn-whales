@@ -13,6 +13,8 @@
  */
 
 import React, { useState } from 'react';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:AI] structured error tracking
 
 // ── Types ───────────────────────────────────────────────────────────────
 

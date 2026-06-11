@@ -1,7 +1,7 @@
 /**
- * J-62-04: 业务风控+异常检测 (R62 v19 — v1.5.0-alpha)
+ * J-62-04: risk control+anomaly detection (R62 v19 — v1.5.0-alpha)
  *
- * v15基建: Large transfer alerts, high-frequency detection, new account limits.
+ * v15: Large transfer alerts, high-frequency detection, new account limits.
  *
  * Features:
  * - Large transfer alert: >1000 USDT → PM notification

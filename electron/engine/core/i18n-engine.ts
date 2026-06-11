@@ -3,12 +3,12 @@ import { EngineError } from './engine-error';
 
 
 /**
- * J-68-04 [P1] i18n 引擎完善 — 英/日/韩 翻译 + 日期/货币格式化
+ * J-68-04 [P1] i18n — // + /format
  *
  * PM specs:
- * - 新增: 英文/日文/韩文 翻译key补齐
- * - 引擎/策略/信号错误信息多语言
- * - 日期/货币格式化 (zh-CN/zh-TW/en/ja/ko)
+ * - add new: // key
+ * - /strategy/policy/errorinfolanguage
+ * - /format (zh-CN/zh-TW/en/ja/ko)
  * - >=200L, 5 tests
  */
 

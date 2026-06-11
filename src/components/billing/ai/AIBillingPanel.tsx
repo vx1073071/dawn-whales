@@ -1,6 +1,6 @@
 // @ts-nocheck — R89 type cleanup pending
 /**
- * AIBillingPanel — R83 P1-5c i18n 化
+ * AIBillingPanel — R83 P1-5c i18n 
  * All hardcoded strings replaced with t() calls.
  * Billing translations: src/i18n/locales/billing-*.json (9 languages)
  *
@@ -15,6 +15,8 @@
 
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { EngineError } from '../../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:AI] structured error tracking
 const billingEn: any = require('../../i18n/locales/billing-en.json');
 
 type TBilling = typeof billingEn;

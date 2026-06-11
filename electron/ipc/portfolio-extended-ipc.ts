@@ -1,7 +1,7 @@
 // ── DAWN WHALES IPC: portfolio (extended) ────────────────────────────────
 // R18 P0-2: Portfolio full-link IPC — getPositions / getAllocation / getPerformance / getRiskMetrics
 //
-// PM验收标准: 真实持仓、资产配置、收益曲线全IP化
+// PM: position/holding、config、IP
 
 import { ipcMain, BrowserWindow } from 'electron';
 import { EngineError } from '../engine/core/engine-error';

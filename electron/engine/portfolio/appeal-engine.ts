@@ -1,11 +1,11 @@
 /**
- * J-62-02: 申诉系统+管理员解冻 (R62 v19 — v1.5.0-alpha)
+ * J-62-02: + (R62 v19 — v1.5.0-alpha)
  *
- * v15基建: Appeal system with 4 selectable reasons, buyer-cancel unlock,
+ * v15: Appeal system with 4 selectable reasons, buyer-cancel unlock,
  * admin-hidden unfreeze, full audit trail.
  *
  * Features:
- * - 4 appeal reasons: 收款未确认/未按约定/账号异常/其他(必填描述)
+ * - 4 appeal reasons: receiveconfirm///()
  * - Interacts with P2P transfer freeze: appeal → permanent freeze
  * - Buyer cancel: unfreeze → auto-release funds to sender (no fee)
  * - Admin unfreeze: hidden backend, system-anomaly only, full audit log

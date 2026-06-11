@@ -1,5 +1,5 @@
 ﻿// ── TradingDeskPage — IPC Full-Link (Round 16 P0) ────────────────────────
-// 全链路交易台: 账户资金 + 持仓 + 下单 + 委托管理 + 快速交易
+// : + position/holding + + + 
 // >=500 lines | dark theme | production-ready
 import { useState, useEffect } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';

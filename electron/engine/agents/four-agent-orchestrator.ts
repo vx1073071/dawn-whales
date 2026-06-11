@@ -1,6 +1,6 @@
 /**
  * J-57-01: 4-Agent Orchestrator — v19 Self-Developed Pure TypeScript (R57 v19)
- * 去除 HTTP mock，改为纯 TypeScript 自研编排引擎
+ * HTTP mock， TypeScript orchestration
  *
  * Features:
  * - Unified IAnalyst interface (all 4 agents implement)

@@ -78,11 +78,11 @@ function CrashScreen({ error, stack, onRetry }: { error: string; stack: string; 
 
         {/* Title */}
         <h1 style={{ fontSize: 22, fontWeight: 700, color: '#F9FAFB', margin: '0 0 8px' }}>
-          出了点小问题 😅
+          {i18n.t('ErrorBoundary.r92_title')}
         </h1>
         <p style={{ fontSize: 14, color: '#9CA3AF', lineHeight: 1.7, marginBottom: 8 }}>
-          应用遇到意外错误，已自动保存你的数据。<br />
-          请点击下方按钮恢复，或稍等自动恢复。
+          {i18n.t('ErrorBoundary.r92_desc1')}<br />
+          {i18n.t('ErrorBoundary.r92_desc2')}
         </p>
 
         {/* Error info */}
@@ -91,7 +91,7 @@ function CrashScreen({ error, stack, onRetry }: { error: string; stack: string; 
           marginBottom: 24, textAlign: 'left',
         }}>
           <div style={{ fontSize: 12, color: '#6B7280', marginBottom: 4 }}>
-            ⚠️ {now} · 错误详情
+            ⚠️ {now} · {i18n.t('ErrorBoundary.r92_detail')}
           </div>
           <div style={{ fontSize: 13, color: '#FCA5A5', fontFamily: 'monospace', wordBreak: 'break-all', marginBottom: 8 }}>
             {error}
@@ -118,7 +118,7 @@ function CrashScreen({ error, stack, onRetry }: { error: string; stack: string; 
               color: '#FFF', fontSize: 15, fontWeight: 700, cursor: 'pointer',
             }}
           >
-            🔄 立即恢复
+            🔄 {i18n.t('ErrorBoundary.r92_recover')}
           </button>
           <button
             onClick={startAutoRetry}
@@ -133,7 +133,7 @@ function CrashScreen({ error, stack, onRetry }: { error: string; stack: string; 
         </div>
 
         <div style={{ marginTop: 24, fontSize: 11, color: '#6B7280' }}>
-          🛡️ 你的策略和资金始终安全 · 错误已自动上报
+          🛡️ {i18n.t('ErrorBoundary.r92_safe')} · {i18n.t('ErrorBoundary.r92_reported')}
         </div>
       </div>
     </div>
@@ -155,7 +155,7 @@ export function CrashDemo() {
   return (
     <div style={{ padding: '20px', borderRadius: 12, background: '#111827', border: '1px solid #1F2937', textAlign: 'center' }}>
       <div style={{ fontSize: 14, color: '#D1D5DB', marginBottom: 12 }}>
-        🧪 崩溃恢复演示 — 点击下方按钮模拟应用崩溃
+        🧪 {i18n.t('ErrorBoundary.r92_demo_title')} — {i18n.t('ErrorBoundary.r92_demo_desc')}
       </div>
       <button
         onClick={() => setShouldCrash(true)}
@@ -164,10 +164,10 @@ export function CrashDemo() {
           color: '#FFF', fontSize: 15, fontWeight: 700, cursor: 'pointer',
         }}
       >
-        💥 模拟崩溃
+        💥 {i18n.t('ErrorBoundary.r92_simulate')}
       </button>
       <div style={{ marginTop: 8, fontSize: 11, color: '#6B7280' }}>
-        崩溃后将展示友好恢复页面，点击恢复按钮即可回到正常
+        {i18n.t('ErrorBoundary.r92_demo_hint')}
       </div>
     </div>
   );
@@ -184,10 +184,10 @@ export default function ErrorBoundaryDemo() {
   return (
     <div style={theme}>
       <h2 style={{ margin: '0 0 8px', fontSize: 22, fontWeight: 700, color: '#F9FAFB' }}>
-        🛡️ ErrorBoundary 崩溃保护
+        🛡️ ErrorBoundary {i18n.t('ErrorBoundary.r92_protection')}
       </h2>
       <p style={{ margin: '0 0 20px', fontSize: 13, color: '#9CA3AF' }}>
-        全局错误边界 · 友好崩溃页 · 自动恢复 · 错误上报
+        {i18n.t('ErrorBoundary.r92_features')}
       </p>
 
       <ErrorBoundary>
@@ -195,13 +195,13 @@ export default function ErrorBoundaryDemo() {
       </ErrorBoundary>
 
       <div style={{ marginTop: 20, padding: '14px 16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', fontSize: 12, color: '#D1D5DB', lineHeight: 1.8 }}>
-        <div style={{ fontWeight: 600, color: '#F9FAFB', marginBottom: 8 }}>📋 ErrorBoundary 能力</div>
-        <div>✅ 全局包裹 — 任何组件崩溃不白屏</div>
-        <div>✅ 友好展示 — 错误信息+堆栈+时间戳</div>
-        <div>✅ 自动恢复 — 5秒倒计时自动重试</div>
-        <div>✅ 手动恢复 — 点击按钮立即重置</div>
-        <div>✅ 错误上报 — console 输出+自动日志</div>
-        <div>✅ 数据保护 — 策略/资金状态不丢失</div>
+        <div style={{ fontWeight: 600, color: '#F9FAFB', marginBottom: 8 }}>{i18n.t('ErrorBoundary.r92_0')}</div>
+        <div>{i18n.t('ErrorBoundary.r92_1')}</div>
+        <div>{i18n.t('ErrorBoundary.r92_2')}</div>
+        <div>{i18n.t('ErrorBoundary.r92_3')}</div>
+        <div>{i18n.t('ErrorBoundary.r92_4')}</div>
+        <div>{i18n.t('ErrorBoundary.r92_5')}</div>
+        <div>✅ {i18n.t('ErrorBoundary.r92_dataProtect')}</div>
       </div>
     </div>
   );

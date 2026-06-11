@@ -1,8 +1,8 @@
 /**
- * J-77-02: child_process 安全沙箱
+ * J-77-02: child_process 
  * 
- * 白名单命令 + 输入校验 + 超时自动kill
- * 用于替换引擎中 node:child_process spawn/exec 的直接调用
+ * + + timeoutkill
+ * node:child_process spawn/exec 
  */
 
 import { spawn, SpawnOptions } from 'child_process';
@@ -11,7 +11,7 @@ import { EngineError, ErrorCode } from '../../errors';
 import i18n from '../../../src/i18n';
 
 
-// ── 白名单：允许的命令（绝对路径安全） ──────────────────────
+// ── path） ──────────────────────
 const ALLOWED_COMMANDS: Set<string> = new Set([
   'python3',
   'python',
@@ -32,7 +32,7 @@ const ALLOWED_PATHS: Set<string> = new Set([
   '/usr/bin/git',
 ]);
 
-// ── 禁止的字符/模式（命令注入防护） ──────────────────────
+// ── / ──────────────────────
 const FORBIDDEN_PATTERNS = [
   /[;&|`$]/,
   /\.\.\//,

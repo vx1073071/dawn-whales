@@ -1,7 +1,7 @@
-// ── NL Parser — 自然语言策略解析器 v2 ──────────────────────────────────────
-// 规则引擎：正则 + 关键词匹配，支持 5 种模式 + 同义词映射
-// Phase 2: 接入 LLM API 做更复杂的解析
-// Phase 3: 同义词映射 + 语义扩展 + LLM接口预留
+// ── NL Parser — languagestrategy/policy v2 ──────────────────────────────────────
+// rule： + ， 5 + 
+// Phase 2: LLM API 
+// Phase 3: + extension + LLMinterface/API
 
 import log from 'electron-log';
 
@@ -34,51 +34,51 @@ interface ParsedStrategy {
 }
 
 // ── Synonym Mapping ─────────────────────────────────────────────────────
-// Phase 3: 将自然语言同义词映射到标准策略关键词
+// Phase 3: languagestrategy/policy
 
 const SYNONYM_MAP: Record<string, string> = {
-  // 均线 / MA 同义词
+ // moving average / MA 
   [i18n.t('nlParser.k1')]: 'MA',
   [i18n.t('nlParser.k2')]: i18n.t('nlParser.k3'),
   [i18n.t('nlParser.k4')]: i18n.t('nlParser.k5'),
   [i18n.t('nlParser.k6')]: i18n.t('nlParser.k7'),
   [i18n.t('nlParser.k8')]: 'MA',
   [i18n.t('nlParser.k9')]: 'MA',
-  // MACD 同义词
+ // MACD 
   [i18n.t('nlParser.k10')]: i18n.t('nlParser.k11'),
   [i18n.t('nlParser.k12')]: i18n.t('nlParser.k13'),
   [i18n.t('nlParser.k14')]: i18n.t('nlParser.k15'),
   [i18n.t('nlParser.k16')]: i18n.t('nlParser.k17'),
   [i18n.t('nlParser.k18')]: i18n.t('nlParser.k19'),
   [i18n.t('nlParser.k20')]: i18n.t('nlParser.k21'),
-  // RSI 同义词
+ // RSI 
   [i18n.t('nlParser.k22')]: 'RSI',
   [i18n.t('nlParser.k23')]: 'RSI',
   [i18n.t('nlParser.k24')]: i18n.t('nlParser.k25'),
   [i18n.t('nlParser.k26')]: i18n.t('nlParser.k27'),
   [i18n.t('nlParser.k28')]: i18n.t('nlParser.k29'),
   [i18n.t('nlParser.k30')]: i18n.t('nlParser.k31'),
-  // 布林带同义词
+ // Bollinger Bands
   [i18n.t('nlParser.k32')]: i18n.t('nlParser.k33'),
   'boll': i18n.t('nlParser.k34'),
   'bollinger band': i18n.t('nlParser.k35'),
-  // 动量同义词
+ // momentum
   [i18n.t('nlParser.k36')]: 'momentum',
   [i18n.t('nlParser.k37')]: 'momentum',
   [i18n.t('nlParser.k38')]: 'momentum',
   ' momentum ': ' momentum ',
-  // 止损止盈同义词
+ // stop losstake profit
   [i18n.t('nlParser.k39')]: 'stop loss',
   [i18n.t('nlParser.k40')]: 'take profit',
   [i18n.t('nlParser.k41')]: 'stop loss',
 [i18n.t()]: 'take profit',
 [i18n.t()]: 'stop loss',
 [i18n.t()]: 'take profit',
-  // 趋势同义词
+ //
 [i18n.t()]: 'trend following',
 [i18n.t()]: 'trend following',
 [i18n.t()]: 'trend following',
-  // 其他常见词
+ //
 [i18n.t()]: 'BUY',
 [i18n.t()]: 'BUY',
 [i18n.t()]: 'BUY',
@@ -93,11 +93,11 @@ const SYNONYM_MAP: Record<string, string> = {
 };
 
 /**
- * 将自然语言输入规范化：用同义词映射替换口语化表达
+ * language：
  */
 function normalizeInput(text: string): string {
   let normalized = text;
-  // 按长度降序排列（优先匹配最长词）
+ //
   const sorted = Object.keys(SYNONYM_MAP).sort((a, b) => b.length - a.length);
   for (const synonym of sorted) {
     const regex = new RegExp(synonym.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
@@ -140,15 +140,15 @@ function extractNumber(text: string, pattern: RegExp): number | undefined {
 }
 
 // ── ATR Parameter Extraction (Phase 3) ──────────────────────────────────────
-// 支持 "ATR 14" / "14日ATR" / "ATR止损" 等语义
+// "ATR 14" / "14ATR" / "ATRstop loss" 
 
 interface ATRConfig {
-  period: number;   // ATR 周期，默认14
-  multiplier: number; // ATR 倍数（用于动态止损），默认2
+  period: number;   // ATR period，default14
+  multiplier: number; // ATR 倍数（用于动态stop loss），default2
 }
 
 function extractATRConfig(text: string): ATRConfig | null {
-  // "ATR 14" / "14日ATR" / "ATR止损"
+ // "ATR 14" / "14ATR" / "ATRstop loss"
   const periodMatch = text.match(/ATR\s*(\d+)|(\d+)\s*日\s*ATR/i);
   const period = periodMatch
     ? parseInt(periodMatch[1] || periodMatch[2])
@@ -169,7 +169,7 @@ function extractATRConfig(text: string): ATRConfig | null {
 type MatcherResult = Omit<ParsedStrategy, 'success' | 'symbol'> & { symbol?: string };
 
 function matchMACross(text: string): MatcherResult | null {
-  // "MA5 上穿 MA20 买入" / "均线 MA10 交叉 MA30" / "5日均线上穿20日均线"
+ // "MA5 MA20 " / "moving average MA10 MA30" / "5moving average20moving average"
   const patterns = [
     /MA(\d+)\s*(?:上穿|金叉|cross.*up|crosses\s*above)\s*MA(\d+)/i,
     /均线?\s*(\d+)\s*(?:日)?\s*(?:上穿|金叉|交叉)\s*(?:均线?\s*)?(\d+)/i,
@@ -195,7 +195,7 @@ function matchMACross(text: string): MatcherResult | null {
 }
 
 function matchRSI(text: string): MatcherResult | null {
-  // "RSI 低于 30 买入" / "RSI < 30 买入, RSI > 70 卖出" / "RSI超卖买入"
+ // "RSI 30 " / "RSI < 30 , RSI > 70 " / "RSI"
   const buyMatch = text.match(/RSI\s*(?:低于|小于|<|<=|below)\s*(\d+)/i);
   const sellMatch = text.match(/RSI\s*(?:高于|大于|>|>=|above)\s*(\d+)/i);
 
@@ -209,7 +209,7 @@ function matchRSI(text: string): MatcherResult | null {
     };
   }
 
-  // "RSI 超卖" shorthand
+ // "RSI " shorthand
   if (/RSI\s*超卖/i.test(text)) {
     return {
       name: i18n.t('nlParser.k63'),
@@ -222,7 +222,7 @@ function matchRSI(text: string): MatcherResult | null {
 }
 
 function matchMACD(text: string): MatcherResult | null {
-  // "MACD 金叉买入" / "MACD 死叉卖出" / "MACD cross"
+ // "MACD " / "MACD " / "MACD cross"
   if (/MACD\s*(?:金叉|cross\s*up|bullish)/i.test(text)) {
     const fast = extractNumber(text, /快线\s*(\d+)/i) ?? 12;
     const slow = extractNumber(text, /慢线\s*(\d+)/i) ?? 26;
@@ -236,7 +236,7 @@ function matchMACD(text: string): MatcherResult | null {
 }
 
 function matchMomentum(text: string): MatcherResult | null {
-  // "涨 5% 卖出" / "20日新高买入" / "动量突破" / "N日突破"
+ // " 5% " / "20new high" / "momentumbreakout" / "Nbreakout"
   const lookback = extractNumber(text, /(\d+)\s*日/i) ?? 20;
   const threshold = extractNumber(text, /(?:涨|跌|突破|涨幅|变化)\s*(\d+)\s*%/i) ?? 5;
 
@@ -251,7 +251,7 @@ function matchMomentum(text: string): MatcherResult | null {
 }
 
 function matchBollinger(text: string): MatcherResult | null {
-  // "布林带下轨买入" / "Bollinger lower band buy" / "触及布林下轨"
+ // "Bollinger Bands" / "Bollinger lower band buy" / ""
   if (/布林|bollinger|boll/i.test(text) && /(下轨|lower|底部|支撑)/i.test(text)) {
     return {
       name: i18n.t('nlParser.k69'),
@@ -263,15 +263,15 @@ function matchBollinger(text: string): MatcherResult | null {
 }
 
 // ── PriceCondition Parser (Phase 4.2) ──────────────────────────────────────────
-// "AAPL 涨破 200" → above
-// "AAPL 跌破 200" → crosses_below (下穿)
-// "AAPL 上穿 200" → crosses_above
-// "AAPL 下穿 200" → crosses_below
-// "AAPL 超过 200" / "AAPL 涨到 200" → above
-// "AAPL 低于 200" → below
-// "AAPL 价格 > 200" / "AAPL > 200" → above
-// "AAPL 价格 < 200" / "AAPL < 200" → below
-// "AAPL 突破 200" → crosses_above (默认下穿为 above，歧义处理)
+// "AAPL 200" → above
+// "AAPL 200" → crosses_below ()
+// "AAPL 200" → crosses_above
+// "AAPL 200" → crosses_below
+// "AAPL 200" / "AAPL 200" → above
+// "AAPL 200" → below
+// "AAPL > 200" / "AAPL > 200" → above
+// "AAPL < 200" / "AAPL < 200" → below
+// "AAPL breakout 200" → crosses_above (default above，)
 
 interface PriceConditionResult extends MatcherResult {
   condition: {
@@ -348,21 +348,21 @@ function matchPriceCondition(text: string): PriceConditionResult | null {
  */
 function _stubMatchPriceCondition(_text: string): PriceConditionResult | null { return null; }
 
-// ── Stop Loss / Take Profit Extraction (Phase 3 增强) ─────────────────────
-// 支持：止损N%、亏N%止损、跌N%止损、N倍ATR止损、跟踪止损
+// ── Stop Loss / Take Profit Extraction (Phase 3 ) ─────────────────────
+// ：stop lossN%、N%stop loss、N%stop loss、NATRstop loss、stop loss
 
 function extractRiskManagement(text: string, strategy: ParsedStrategy['strategy']): void {
-  // "止损 3%" / "stop loss 3%" / "亏 3% 止损" / "赔 3%"
+ // "stop loss 3%" / "stop loss 3%" / " 3% stop loss" / " 3%"
   const slMatch = text.match(/(?:止损|stop\s*loss|亏(?:损)?|赔)\s*(\d+(?:\.\d+)?)\s*%/i);
   if (slMatch) strategy.stopLoss = parseFloat(slMatch[1]);
 
-  // "止盈 5%" / "涨 5% 卖出" / "take profit 5%" / "目标 5%" / "赚 5%"
+ // "take profit 5%" / " 5% " / "take profit 5%" / " 5%" / " 5%"
   const tpMatch = text.match(/(?:止盈|take\s*profit|目标|涨|赚)\s*(\d+(?:\.\d+)?)\s*%\s*(?:卖出|平仓|exit)?/i);
   if (tpMatch) {
     strategy.takeProfit = parseFloat(tpMatch[1]);
   }
 
-  // "涨 X% 卖出" as take-profit (only if no other SELL signal)
+ // " X% " as take-profit (only if no other SELL signal)
   if (!strategy.takeProfit) {
     const sellPctMatch = text.match(/涨\s*(\d+(?:\.\d+)?)\s*%\s*卖出/i);
     if (sellPctMatch) {
@@ -370,17 +370,17 @@ function extractRiskManagement(text: string, strategy: ParsedStrategy['strategy'
     }
   }
 
-  // "N倍ATR止损" / "ATR止损" — 标记为 ATR-based stop loss（由 risk-engine.ts 实现）
+ // "NATRstop loss" / "ATRstop loss" — ATR-based stop loss（ risk-engine.ts ）
   const atrMatch = text.match(/(\d+(?:\.\d+)?)\s*[倍×xX]?\s*ATR\s*(?:止损|止损平仓)/i)
     || text.match(/ATR\s*(?:止损)\s*(?:\d+(?:\.\d+)?)?\s*[倍×xX]?/i);
   if (atrMatch) {
-    // 标记：strategy.stopLoss = -1 表示使用 ATR 动态止损
+ // ：strategy.stopLoss = -1 ATR stop loss
     strategy.stopLoss = -1; // -1 表示由 ATR 引擎决定
   }
 }
 
-// ── LLM Fallback Interface (Phase 3 预留) ──────────────────────────────────
-// 当规则引擎无法解析时，调用 DeepSeek 或 Qwen API
+// ── LLM Fallback Interface (Phase 3 ) ──────────────────────────────────
+// rule， DeepSeek Qwen API
 
 interface LLMParseResult {
   type: 'ma_cross' | 'rsi' | 'macd' | 'momentum' | 'bollinger' | 'combined';
@@ -466,14 +466,14 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
     return { success: false, name: '', description: '', strategy: { type: 'ma_cross', params: {} }, error: i18n.t('nlParser.k87') };
   }
 
-  // Phase 3: 同义词规范化
+ // Phase 3: 
   const normalized = normalizeInput(text);
   log.info('[NLParser] Original:', text);
   log.info('[NLParser] Normalized:', normalized);
 
   // Phase 4.2: Try PriceCondition matcher.
   // Only match when an explicit stock symbol is present AND no risk-management keywords.
-  // This prevents false matches on: "RSI 低于 20", "止损 3%", "MA5上穿MA20买入TQQQ止损5%".
+ // This prevents false matches on: "RSI 20", "stop loss 3%", "MA5MA20TQQQstop loss5%".
   const hasRiskMgmt = /止损|止盈|stop\s*loss|take\s*profit/i.test(normalized);
   if (extractSymbol(normalized) && !hasRiskMgmt) {
     const priceResult = matchPriceCondition(normalized);
@@ -519,7 +519,7 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
     }
   }
 
-  // Phase 3: 规则引擎失败，尝试 LLM 兜底
+ // Phase 3: rulefailed， LLM 
   log.info('[NLParser] Rule engine failed, trying LLM fallback...');
   callLLM(text).then((llmResult) => {
     if (llmResult) {

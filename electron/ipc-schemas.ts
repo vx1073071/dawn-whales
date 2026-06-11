@@ -1,6 +1,6 @@
 // ── IPC Parameter Zod Schemas ───────────────────────────────────────────────
-// 所有 ipcMain.handle 的输入参数 schema，用于运行时校验
-// 规则：校验失败返回 { success: false, error: string }，不抛异常
+// ipcMain.handle parameter schema，
+// rule：failedback { success: false, error: string }，
 
 import { z } from 'zod';
 
@@ -351,7 +351,7 @@ export const StrategyOptimizeSchema = z.object({
 // ── Utility ────────────────────────────────────────────────────────────────
 
 /**
- * 通用校验函数：校验失败返回错误对象，成功返回 null
+ * ：failedbackerror，successback null
  * Usage in ipcMain.handle:
  *   const schema = BrokerPlaceOrderSchema;
  *   const result = validate(schema, order);

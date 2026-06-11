@@ -1,5 +1,5 @@
 // electron/types/condition.ts
-// 统一类型定义 — Phase 4.2 条件触发引擎
+// — Phase 4.2 condition
 
 export interface ConditionRule {
   id: string;
@@ -60,7 +60,7 @@ export interface TriggerResult {
   triggeredAt?: number; // unix ms
 }
 
-// --- MarketSnapshot (输入) ---
+// --- MarketSnapshot () --
 export interface MarketSnapshot {
   symbol: string;
   open?: number;
@@ -72,7 +72,7 @@ export interface MarketSnapshot {
   timestamp?: number;
 }
 
-// --- TriggerEvent (历史) ---
+// --- TriggerEvent () --
 export interface TriggerEvent {
   ruleId: string;
   symbol: string;

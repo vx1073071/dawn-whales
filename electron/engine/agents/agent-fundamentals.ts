@@ -1,5 +1,5 @@
 /**
- * J-57-01: 基本面 Agent 真实实现 (Fundamentals Agent)
+ * J-57-01: fundamental Agent (Fundamentals Agent)
  * Responsibilities: PE/PB/ROE analysis, earnings reports, valuation models
  * LLM: DeepSeek V4 Pro (cached, 99% off)
  * Data source: em-mx-finance-data (mock for R57, real in R58)
@@ -36,8 +36,8 @@ export interface FundamentalsData {
   debtToEquity: number;
   currentRatio: number;
   dividendYield: number; // %
-  marketCap: number;     // 亿
-  freeCashFlow: number;  // 亿
+  marketCap: number;
+  freeCashFlow: number;
 }
 
 export interface FundamentalsAnalysis {

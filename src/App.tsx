@@ -5,7 +5,7 @@ import { useBridgeSync } from '@/hooks/useBridgeSync';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
 import StatusBar from '@/components/layout/StatusBar';
-import OnboardingModal from '@/components/onboarding/OnboardingModal';
+const OnboardingModal = lazy(() => import('@/components/onboarding/OnboardingModal'));
 import NotificationToast from '@/components/NotificationToast';
 import { connectBroker } from '@/lib/bridge-api';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';

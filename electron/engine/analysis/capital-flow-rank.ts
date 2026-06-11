@@ -1,5 +1,5 @@
-// ── JVS-11: Capital Flow Ranking (资金流排行) ──────────────────────────────
-// Tracks main force (主力) capital inflows/outflows for stocks and sectors
+// ── JVS-11: Capital Flow Ranking (capital flow) ──────────────────────────────
+// Tracks main force (major player) capital inflows/outflows for stocks and sectors
 // Provides ranking data for sector rotation and stock selection
 
 import log from 'electron-log';
@@ -16,21 +16,21 @@ export interface StockCapitalFlow {
   code: string;            // 股票代码
   name: string;            // 股票名称
   close: number;           // 收盘价
-  changePct: number;       // 涨跌幅 %
-  mainNetInflow: number;   // 主力净流入 (万元)
+  changePct: number;       // price change % %
+  mainNetInflow: number;   // major player净流入 (万元)
   superLargeIn: number;    // 超大单净流入
   largeIn: number;         // 大单净流入
   mediumIn: number;        // 中单净流入
   smallIn: number;         // 小单净流入
-  mainNetRatio: number;    // 主力净流入占比 %
-  turnover: number;        // 成交额 (万元)
+  mainNetRatio: number;    // major player净流入占比 %
+  turnover: number;        // turnover (万元)
 }
 
 export interface SectorCapitalFlow {
-  code: string;            // 板块代码
-  name: string;            // 板块名称
-  changePct: number;       // 涨跌幅 %
-  mainNetInflow: number;   // 主力净流入 (万元)
+  code: string;            // sector代码
+  name: string;            // sector名称
+  changePct: number;       // price change % %
+  mainNetInflow: number;   // major player净流入 (万元)
   superLargeIn: number;    // 超大单净流入
   largeIn: number;         // 大单净流入
   mediumIn: number;        // 中单净流入
@@ -61,7 +61,7 @@ const cache = new Map<string, CacheEntry>();
 // ── API Functions ──────────────────────────────────────────────────────────
 
 /**
- * 个股资金流排行（今日）
+ * capital flow 
  */
 export async function getStockCapitalFlowRank(
   sortBy: 'mainNetInflow' | 'changePct' | 'turnover' = 'mainNetInflow',
@@ -119,7 +119,7 @@ export async function getStockCapitalFlowRank(
 }
 
 /**
- * 行业板块资金流排行
+ * industrysectorcapital flow
  */
 export async function getSectorCapitalFlowRank(
   sortBy: 'mainNetInflow' | 'changePct' = 'mainNetInflow',
@@ -176,7 +176,7 @@ export async function getSectorCapitalFlowRank(
 }
 
 /**
- * 概念板块资金流排行
+ * conceptsectorcapital flow
  */
 export async function getConceptCapitalFlowRank(
   sortBy: 'mainNetInflow' | 'changePct' = 'mainNetInflow',
@@ -233,7 +233,7 @@ export async function getConceptCapitalFlowRank(
 }
 
 /**
- * 获取主力净流入 Top N
+ * major player Top N
  */
 export async function getMainForceTopN(n = 10): Promise<StockCapitalFlow[]> {
   const result = await getStockCapitalFlowRank('mainNetInflow', 'desc', n);
@@ -241,7 +241,7 @@ export async function getMainForceTopN(n = 10): Promise<StockCapitalFlow[]> {
 }
 
 /**
- * 获取主力净流出 Top N
+ * major player Top N
  */
 export async function getMainForceBottomN(n = 10): Promise<StockCapitalFlow[]> {
   const result = await getStockCapitalFlowRank('mainNetInflow', 'asc', n);
@@ -249,7 +249,7 @@ export async function getMainForceBottomN(n = 10): Promise<StockCapitalFlow[]> {
 }
 
 /**
- * 获取行业资金流入 Top N（供 Sector Rotation 使用）
+ * industrycapital flow Top N（ Sector Rotation ）
  */
 export async function getSectorInflowTopN(n = 5): Promise<SectorCapitalFlow[]> {
   const result = await getSectorCapitalFlowRank('mainNetInflow', 'desc', n);

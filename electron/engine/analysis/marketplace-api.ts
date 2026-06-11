@@ -1,6 +1,6 @@
 /**
- * JVS-45-02 + J-52-01: Marketplace API - 策略市场引擎
- * 策略发布、审核、评分、下载、搜索、版本管理
+ * JVS-45-02 + J-52-01: Marketplace API - strategy marketplace
+ * strategy publish download、search、version
  *
  * J-52-01 R52 enhancements:
  * - Audit/review workflow (pending → approved/rejected)

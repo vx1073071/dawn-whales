@@ -1,5 +1,5 @@
 /**
- * J-57-02: 技术面 Agent 真实实现 (Technical Agent)
+ * J-57-02: technical Agent (Technical Agent)
  * Responsibilities: Moving averages, RSI, MACD, volume analysis, patterns
  * LLM: DeepSeek V4 Pro (cached, 99% off)
  * Data source: quant-strategy technical indicators (mock for R57)
@@ -199,9 +199,9 @@ export class TechnicalAgent extends EventEmitter {
   }
 
   private scoreVolume(data: TechnicalData): number {
-    if (data.volumeRatio > 1.2 && data.price > data.ma20) return 80; // 放量上涨
-    if (data.volumeRatio < 0.7) return 45; // 缩量
-    if (data.volumeRatio > 1.5 && data.price < data.ma20) return 25; // 放量下跌
+    if (data.volumeRatio > 1.2 && data.price > data.ma20) return 80;
+    if (data.volumeRatio < 0.7) return 45;
+    if (data.volumeRatio > 1.5 && data.price < data.ma20) return 25;
     return 55;
   }
 

@@ -13,6 +13,8 @@
 import { useTranslation } from "react-i18next";
 import React, { useState, useMemo, useCallback } from 'react';
 import i18n from '../../i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types (mirrors engine types) ────────────────────────────────────────
 

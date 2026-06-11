@@ -1,10 +1,10 @@
 import { EngineError, ErrorCode } from '../../errors';
 /**
- * J-63-01: AI Gateway /api (R63 v19 — v1.5.0-rc 服务器化)
+ * J-63-01: AI Gateway /api (R63 v19 — v1.5.0-rc service)
  *
- * 核心: 桌面端 multi-llm-router 迁移到服务器。
- * DeepSeek key 只在服务器暴露, 桌面端纯粹转发。
- * 许可证中间件每次AI调用前验证, 缓存≥95%命中率, 降级链 V4Pro→Flash→MiniMax。
+ * : multi-llm-router migrationservice。
+ * DeepSeek key service, 。
+ * middlewareAI, cache≥95%, downgrade V4Pro→Flash→MiniMax。
  *
  * Features:
  * - Express/Fastify-style API routes for 4 Agent AI calls

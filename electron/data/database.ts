@@ -1,4 +1,4 @@
-// ── Database Manager — SQLite（和富途一样的本地数据库选型）─────────────────
+// ── Database Manager — SQLite（localdatabase）─────────────────
 import Database from 'better-sqlite3';
 import path from 'path';
 import { app } from 'electron';

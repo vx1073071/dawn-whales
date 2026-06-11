@@ -1,6 +1,6 @@
 /**
  * J-56-03: Strategy Signal Converter (R56 TradingAgents Integration)
- * Agent 决策 → dawn-whales 策略信号格式转换
+ * Agent → dawn-whales strategy/policy
  *
  * Features:
  * - Convert TradingAgents analysis results to StrategyMarketplace format

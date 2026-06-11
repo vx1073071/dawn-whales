@@ -52,7 +52,7 @@ export interface StrategyTemplate {
 
 const TEMPLATES: StrategyTemplate[] = [
 
-  // ── 1. MACD 双均线 ──────────────────────────────────────────────────
+ // ── 1. MACD moving average ──────────────────────────────────────────────────
   {
     id: 'macd-dual-ma',
     name: 'MACD Dual Moving Average',
@@ -79,7 +79,7 @@ const TEMPLATES: StrategyTemplate[] = [
     tags: [i18n.t('strategyTemplates.k20'), 'MACD', i18n.t('strategyTemplates.k21')],
   },
 
-  // ── 2. 布林带均值回归 ─────────────────────────────────────────────
+ // ── 2. Bollinger Bands ─────────────────────────────────────────────
   {
     id: 'bollinger-mean-reversion',
     name: 'Bollinger Band Mean Reversion',
@@ -106,7 +106,7 @@ const TEMPLATES: StrategyTemplate[] = [
     tags: [i18n.t('strategyTemplates.k41'), i18n.t('strategyTemplates.k42'), 'RSI'],
   },
 
-  // ── 3. 突破策略 ────────────────────────────────────────────────────
+  // ── 3. breakoutstrategy/policy ────────────────────────────────────────────────────
   {
     id: 'breakout-20d',
     name: '20-Day Breakout',
@@ -133,7 +133,7 @@ const TEMPLATES: StrategyTemplate[] = [
     tags: [i18n.t('strategyTemplates.k62'), i18n.t('strategyTemplates.k63'), i18n.t('strategyTemplates.k64')],
   },
 
-  // ── 4. 备兑 Covered Call ─────────────────────────────────────────────
+ // ── 4. Covered Call ─────────────────────────────────────────────
   {
     id: 'covered-call',
     name: 'Covered Call (Options)',
@@ -160,7 +160,7 @@ const TEMPLATES: StrategyTemplate[] = [
     tags: [i18n.t('strategyTemplates.k83'), i18n.t('strategyTemplates.k84'), i18n.t('strategyTemplates.k85'), i18n.t('strategyTemplates.k86')],
   },
 
-  // ── 5. 多因子选股 ( Quantitative ) ──────────────────────────────────
+ // ── 5. factor ( Quantitative ) ──────────────────────────────────
   {
     id: 'quant-multi-factor',
     name: 'Multi-Factor Quantitative',
@@ -191,7 +191,7 @@ const TEMPLATES: StrategyTemplate[] = [
     tags: [i18n.t('strategyTemplates.k109'), i18n.t('strategyTemplates.k110'), i18n.t('strategyTemplates.k111'), i18n.t('strategyTemplates.k112')],
   },
 
-  // ── 6. Pairs Trading 配对交易 ─────────────────────────────────────────
+ // ── 6. Pairs Trading ─────────────────────────────────────────
   {
     id: 'pairs-trading',
     name: 'Pairs Trading',
@@ -218,7 +218,7 @@ const TEMPLATES: StrategyTemplate[] = [
     tags: [i18n.t('strategyTemplates.k131'), i18n.t('strategyTemplates.k132'), i18n.t('strategyTemplates.k133')],
   },
 
-  // ── 7. ATR 趋势跟踪 ────────────────────────────────────────────────
+ // ── 7. ATR ────────────────────────────────────────────────
   {
     id: 'atr-trend-following',
     name: 'ATR Trend Following',
@@ -244,7 +244,7 @@ const TEMPLATES: StrategyTemplate[] = [
     tags: [i18n.t('strategyTemplates.k151'), 'ATR', i18n.t('strategyTemplates.k152')],
   },
 
-  // ── 8. RSI 超买超卖 ─────────────────────────────────────────────────
+ // ── 8. RSI ─────────────────────────────────────────────────
   {
     id: 'rsi-oversold',
     name: 'RSI Oversold/Overbought',

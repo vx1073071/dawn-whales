@@ -1,8 +1,8 @@
-// ── ConditionWatcher — WebSocket行情 → 条件评估 → 自动触发策略 ────────────
-// Phase 4.2: 条件触发引擎核心集成层
+// ── ConditionWatcher — WebSocket → condition → strategy/policy ────────────
+// Phase 4.2: condition
 // ML-30-02 [P0]
-// 依赖: QClaw 的 ConditionEngine (condition-engine.ts)
-// 集成: StrategyRunner + CronScheduler + WebSocket feed
+// : QClaw ConditionEngine (condition-engine.ts)
+// : StrategyRunner + CronScheduler + WebSocket feed
 
 import log from 'electron-log';
 import type { StrategyRunnerInterface } from './cron-scheduler';

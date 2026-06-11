@@ -1,5 +1,5 @@
-// ── Parameter Scanner — 参数网格搜索 + 稳健性分析 ─────────────────────────
-// 不仅找最优参数，更要找稳健参数区间
+// ── Parameter Scanner — parametersearch + ─────────────────────────
+// parameter，parameter
 
 import log from 'electron-log';
 import { BacktestEngine } from '../backtest/backtest-engine';
@@ -57,10 +57,10 @@ export interface ScannerReport {
   success: boolean;
   totalCombinations: number;
   validResults: number;
-  best: ScanResult;                              // 最优参数
-  robust: ScanResult;                            // 最稳健参数
-  top10: ScanResult[];                           // Top 10 参数组合
-  heatmap: HeatmapData;                          // 参数热力图
+  best: ScanResult;                              // 最优parameter
+  robust: ScanResult;                            // 最稳健parameter
+  top10: ScanResult[];                           // Top 10 parameter组合
+  heatmap: HeatmapData;                          // parameterheatmap
   neighborhoodAnalysis: NeighborhoodResult;      // 邻域分析
   recommendation: string;
   warnings: string[];
@@ -98,7 +98,7 @@ export class ParameterScanner {
   }
 
   /**
-   * 执行参数扫描
+   * executeparameter sweep
    */
   async run(config: ScannerConfig): Promise<ScannerReport> {
     const combinations = this.generateCombinations(config.paramRanges);
@@ -112,7 +112,7 @@ export class ParameterScanner {
       log.warn(`[ParameterScanner] Large scan: ${combinations.length} combinations, may take time`);
     }
 
-    // 并行回测所有参数组合
+ // backtestparameter
     const results: ScanResult[] = [];
 
     for (const params of combinations) {
@@ -153,21 +153,21 @@ export class ParameterScanner {
       return this.emptyReport(i18n.t('parameterScanner.k2'));
     }
 
-    // 排序 (按优化目标)
+ // sort ()
     const sorted = this.sortByTarget(results, config.optimizationTarget);
     const best = sorted[0];
     const top10 = sorted.slice(0, Math.min(10, sorted.length));
 
-    // 找最稳健参数 (邻域平均最高)
+ // parameter ()
     const robust = this.findRobustParams(results, config.paramRanges);
 
-    // 热力图
+    // heatmap
     const heatmap = this.generateHeatmap(config.paramRanges, results, config.optimizationTarget);
 
-    // 邻域分析
+ //
     const neighborhood = this.analyzeNeighborhood(best, results, config.paramRanges);
 
-    // 建议和警告
+ // warning
     const recommendation = this.generateRecommendation(best, robust, neighborhood);
     const warnings = this.generateWarnings(results, best, neighborhood);
 
@@ -187,7 +187,7 @@ export class ParameterScanner {
     };
   }
 
-  // ── 排序 ──────────────────────────────────────────────────────────────
+  // ── sort ──────────────────────────────────────────────────────────────
 
   private sortByTarget(results: ScanResult[], target: string): ScanResult[] {
     const sorted = [...results];
@@ -209,10 +209,10 @@ export class ParameterScanner {
     }
   }
 
-  // ── 稳健参数筛选 ──────────────────────────────────────────────────────
+ // ── parameterfilter ──────────────────────────────────────────────────────
 
   private findRobustParams(results: ScanResult[], ranges: ParamRange[]): ScanResult {
-    // 对每个结果，计算其邻域平均 Sharpe
+ // ， Sharpe
     let bestRobust = results[0];
     let bestNeighborAvg = -Infinity;
 
@@ -253,12 +253,12 @@ export class ParameterScanner {
         }
       }
 
-      // 邻居 = 所有参数维度都相邻 (但不是自己)
+ // = parameter ()
       return adjacentCount === totalCount && JSON.stringify(r.params) !== JSON.stringify(params);
     });
   }
 
-  // ── 邻域分析 ──────────────────────────────────────────────────────────
+ // ── ──────────────────────────────────────────────────────────
 
   private analyzeNeighborhood(
     best: ScanResult,
@@ -305,7 +305,7 @@ export class ParameterScanner {
     };
   }
 
-  // ── 热力图 ────────────────────────────────────────────────────────────
+  // ── heatmap ────────────────────────────────────────────────────────────
 
   private generateHeatmap(
     ranges: ParamRange[],
@@ -349,7 +349,7 @@ export class ParameterScanner {
     };
   }
 
-  // ── 组合生成 ──────────────────────────────────────────────────────────
+ // ── ──────────────────────────────────────────────────────────
 
   private generateCombinations(ranges: ParamRange[]): Record<string, number>[] {
     if (ranges.length === 0) return [{}];
@@ -369,7 +369,7 @@ export class ParameterScanner {
     return combinations;
   }
 
-  // ── 建议和警告 ──────────────────────────────────────────────────────────
+ // ── warning ──────────────────────────────────────────────────────────
 
   private generateRecommendation(
     best: ScanResult,

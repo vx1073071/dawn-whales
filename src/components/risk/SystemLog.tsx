@@ -1,4 +1,4 @@
-// ── DAWN WHALES — SystemLog (系统日志) ─────────────────────────────────────
+// ── DAWN WHALES — SystemLog (log) ─────────────────────────────────────
 
 import { useState, useEffect } from 'react'
 import { EngineError } from '../../../electron/engine/core/engine-error';

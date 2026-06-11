@@ -1,7 +1,7 @@
-// ── JVS-106 + JVS-44-02: Data Exporter — 高级数据导出引擎 ──────────────────
-// 支持 CSV / JSON / Markdown / PDF 报告导出
-// 导出对象：交易记录、回测结果、持仓、策略列表、风控日志
-// 新增：批量导出、导出调度、导出模板
+// ── JVS-106 + JVS-44-02: Data Exporter — export ──────────────────
+// CSV / JSON / Markdown / PDF export
+// export：transaction history、backtest result、position/holding、strategy/policy、risk controllog
+// add new：export、exportschedule、export
 
 import log from 'electron-log';
 

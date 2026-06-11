@@ -1,4 +1,4 @@
-// ── JVS-23: Unlock Calendar (限售股解禁日历) ──────────────────────────────
+// ── JVS-23: Unlock Calendar () ──────────────────────────────
 // Fetches next 30 days of share unlock data from East Money
 // IPC: em:get-unlock-calendar
 
@@ -16,11 +16,11 @@ export interface UnlockEvent {
   code: string;
   name: string;
   unlockDate: string;
-  unlockShares: number;       // 解禁股数 (万股)
-  unlockMarketValue: number;   // 解禁市值 (万元)
-  unlockRatio: number;         // 解禁比例 %
+  unlockShares: number;       // ()
+  unlockMarketValue: number;   // market cap ()
+  unlockRatio: number;         // %
   currentPrice: number;
-  unlockType: string;          // 解禁类型 (首发/增发/股权激励等)
+  unlockType: string;          // (//)
 }
 
 export interface UnlockCalendarResult {

@@ -1,5 +1,5 @@
-// JVS-112: 实时WebSocket连接管理
-// 支持多客户端连接、连接状态监控、自动重连机制
+// JVS-112: WebSocket
+//
 
 import WebSocket from 'ws';
 import { EngineError } from '../engine/core/engine-error';

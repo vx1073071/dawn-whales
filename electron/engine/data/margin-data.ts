@@ -1,8 +1,8 @@
-// ── JVS-18: Margin Trading Data Service (融资融券数据服务) ────────────────
+// ── JVS-18: Margin Trading Data Service (margin tradingservice) ────────────────
 // Fetches margin balance and short interest data from East Money datacenter
-// - Margin balance history (融资余额)
-// - Short interest (融券余量)
-// - Margin trading by stock (个股融资融券)
+// - Margin balance history (margin balance)
+// - Short interest ()
+// - Margin trading by stock (margin trading)
 // - Market-wide margin trends
 
 import log from 'electron-log';
@@ -17,11 +17,11 @@ import { EngineError } from '../core/engine-error';
 
 export interface MarginBalance {
   date: string;
-  totalMarginBalance: number;      // 融资余额 (亿元)
-  totalShortBalance: number;       // 融券余额 (亿元)
-  totalBalance: number;            // 融资融券余额 (亿元)
-  marginChange: number;            // 融资余额变化 (亿元)
-  shortChange: number;             // 融券余额变化 (亿元)
+  totalMarginBalance: number;      // margin balance (亿元)
+  totalShortBalance: number;       // 融券balance (亿元)
+  totalBalance: number;            // margin tradingbalance (亿元)
+  marginChange: number;            // margin balance变化 (亿元)
+  shortChange: number;             // 融券balance变化 (亿元)
   marginBuyAmount: number;         // 融资买入额 (亿元)
   shortSellVolume: number;         // 融券卖出量 (亿股)
 }
@@ -30,7 +30,7 @@ export interface StockMargin {
   code: string;
   name: string;
   date: string;
-  marginBalance: number;           // 融资余额 (万元)
+  marginBalance: number;           // margin balance (万元)
   marginBuyAmount: number;         // 融资买入额 (万元)
   marginRepayAmount: number;       // 融资偿还额 (万元)
   marginNetBuy: number;            // 融资净买入 (万元)
@@ -38,18 +38,18 @@ export interface StockMargin {
   shortSellVolume: number;         // 融券卖出量 (股)
   shortRepayVolume: number;        // 融券偿还量 (股)
   shortNetSell: number;            // 融券净卖出 (股)
-  totalBalance: number;            // 融资融券余额 (万元)
+  totalBalance: number;            // margin tradingbalance (万元)
 }
 
 export interface MarginRanking {
   code: string;
   name: string;
-  marginBalance: number;           // 融资余额 (万元)
-  marginChange: number;            // 融资余额变化率 %
+  marginBalance: number;           // margin balance (万元)
+  marginChange: number;            // margin balance变化率 %
   marginNetBuy: number;            // 融资净买入 (万元)
   shortBalance: number;            // 融券余量 (万股)
   shortChange: number;             // 融券余量变化率 %
-  totalBalance: number;            // 融资融券余额 (万元)
+  totalBalance: number;            // margin tradingbalance (万元)
 }
 
 export interface MarginDataReport {
@@ -74,7 +74,7 @@ const cache = new Map<string, CacheEntry>();
 // ── API Functions ──────────────────────────────────────────────────────────
 
 /**
- * 获取市场融资融券余额历史
+ * margin tradingbalance
  */
 export async function getMarketMarginBalance(days = 30): Promise<MarginBalance[]> {
   const cacheKey = `market-margin-${days}`;
@@ -118,7 +118,7 @@ export async function getMarketMarginBalance(days = 30): Promise<MarginBalance[]
 }
 
 /**
- * 获取个股融资融券数据
+ * margin trading
  */
 export async function getStockMargin(code: string, days = 30): Promise<StockMargin[]> {
   const cacheKey = `stock-margin-${code}-${days}`;
@@ -164,7 +164,7 @@ export async function getStockMargin(code: string, days = 30): Promise<StockMarg
 }
 
 /**
- * 获取融资余额排行（Top N）
+ * margin balance（Top N）
  */
 export async function getMarginBalanceRanking(limit = 30): Promise<MarginRanking[]> {
   const cacheKey = `margin-rank-${limit}`;
@@ -205,7 +205,7 @@ export async function getMarginBalanceRanking(limit = 30): Promise<MarginRanking
 }
 
 /**
- * 获取融券余量排行（Top N）
+ * （Top N）
  */
 export async function getShortInterestRanking(limit = 30): Promise<MarginRanking[]> {
   const cacheKey = `short-rank-${limit}`;
@@ -246,7 +246,7 @@ export async function getShortInterestRanking(limit = 30): Promise<MarginRanking
 }
 
 /**
- * 获取完整融资融券报告
+ * margin trading
  */
 export async function getMarginDataReport(): Promise<MarginDataReport> {
   const cacheKey = 'margin-report';

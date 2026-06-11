@@ -1,5 +1,5 @@
 // ── Data Versioning System ─────────────────────────────────────────────────
-// JVS-59: 数据版本控制 - 每次数据更新创建版本快照，支持回滚
+// JVS-59: data version - updateversion，
 
 import { Database } from 'better-sqlite3';
 import { createHash } from 'crypto';
@@ -10,11 +10,11 @@ import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error
 
 export interface DataVersion {
   version_id: string;          // UUID
-  table_name: string;          // 表名
-  version_number: number;      // 版本号
+  table_name: string;
+  version_number: number;      // version
   created_at: number;          // Unix timestamp (ms)
-  data_hash: string;          // 数据哈希
-  row_count: number;          // 行数
+  data_hash: string;          // hash
+  row_count: number;
   metadata?: Record<string, any>;
 }
 
@@ -61,28 +61,28 @@ export class DataVersioningSystem {
   }
 
   /**
-   * 创建数据版本快照
+ * data version
    */
   createVersion(tableName: string, metadata?: Record<string, any>): string {
     const versionId = this.generateVersionId();
     const versionNumber = this.getNextVersionNumber(tableName);
     
-    // 获取当前表数据
+ // current
     const rows = this.db.prepare(`SELECT * FROM ${tableName}`).all() as any[];
     
     if (rows.length === 0) {
       throw new EngineError(ErrorDomain.DATA, ErrorCode.DATA_UNAVAILABLE, `Table ${tableName} is empty or does not exist`);
     }
 
-    // 计算数据哈希
+ // hash
     const dataHash = this.calculateHash(rows);
 
-    // 保存快照到文件
+ // save
     const snapshotFile = join(this.dataDir, 'versions', `${tableName}_${versionId}.json`);
     mkdirSync(join(this.dataDir, 'versions'), { recursive: true });
     writeFileSync(snapshotFile, JSON.stringify(rows, null, 2));
 
-    // 记录版本信息
+ // versioninfo
     this.db.prepare(`
       INSERT INTO data_versions 
       (version_id, table_name, version_number, created_at, data_hash, row_count, metadata)
@@ -101,7 +101,7 @@ export class DataVersioningSystem {
   }
 
   /**
-   * 获取表的所有版本
+ * version
    */
   getVersions(tableName: string, limit: number = 50): DataVersion[] {
     const rows = this.db.prepare(`
@@ -123,7 +123,7 @@ export class DataVersioningSystem {
   }
 
   /**
-   * 获取特定版本
+ * version
    */
   getVersion(versionId: string): DataVersion | null {
     const row = this.db.prepare(`
@@ -144,7 +144,7 @@ export class DataVersioningSystem {
   }
 
   /**
-   * 回滚到特定版本
+ * version
    */
   rollback(versionId: string): RollbackResult {
     const version = this.getVersion(versionId);
@@ -157,13 +157,13 @@ export class DataVersioningSystem {
       };
     }
 
-    // 在回滚前创建当前版本
+ // current version
     this.createVersion(version.table_name, { 
       rollback_reason: `Rollback to ${versionId}`,
       previous_version: versionId 
     });
 
-    // 读取快照文件
+ //
     const snapshotFile = join(this.dataDir, 'versions', `${version.table_name}_${versionId}.json`);
     if (!existsSync(snapshotFile)) {
       return {
@@ -176,7 +176,7 @@ export class DataVersioningSystem {
 
     const data = JSON.parse(readFileSync(snapshotFile, 'utf-8'));
 
-    // 清空表并恢复数据
+ // clearrestore
     this.db.prepare(`DELETE FROM ${version.table_name}`).run();
 
     if (data.length > 0) {
@@ -204,7 +204,7 @@ export class DataVersioningSystem {
   }
 
   /**
-   * 比较两个版本的差异
+ * version
    */
   compareVersions(versionId1: string, versionId2: string): VersionDiff | null {
     const version1 = this.getVersion(versionId1);
@@ -214,7 +214,7 @@ export class DataVersioningSystem {
       return null;
     }
 
-    // 读取两个版本的数据
+ // version
     const file1 = join(this.dataDir, 'versions', `${version1.table_name}_${versionId1}.json`);
     const file2 = join(this.dataDir, 'versions', `${version2.table_name}_${versionId2}.json`);
 
@@ -225,7 +225,7 @@ export class DataVersioningSystem {
     const data1 = JSON.parse(readFileSync(file1, 'utf-8'));
     const data2 = JSON.parse(readFileSync(file2, 'utf-8'));
 
-    // 简单的差异计算（假设第一列是主键）
+ //
     const primaryKey = Object.keys(data1[0] || {})[0];
     if (!primaryKey) {
       return {
@@ -243,7 +243,7 @@ export class DataVersioningSystem {
     const updated: any[] = [];
     const deleted: any[] = [];
 
-    // 查找新增和更新
+ // add newupdate
     for (const [key, row] of map2.entries()) {
       const oldRow = map1.get(key);
       if (!oldRow) {
@@ -253,7 +253,7 @@ export class DataVersioningSystem {
       }
     }
 
-    // 查找删除
+ // delete
     for (const key of map1.keys()) {
       if (!map2.has(key)) {
         deleted.push(map1.get(key));
@@ -269,7 +269,7 @@ export class DataVersioningSystem {
   }
 
   /**
-   * 删除旧版本（保留最近 N 个版本）
+ * deleteversion（ N version）
    */
   cleanupOldVersions(tableName: string, keepCount: number = 10): number {
     const versions = this.getVersions(tableName);
@@ -287,14 +287,14 @@ export class DataVersioningSystem {
     const deleteMany = this.db.transaction((versionIds: string[]) => {
       for (const versionId of versionIds) {
         deleteStmt.run(versionId);
-        // 删除快照文件
+ // delete
         const snapshotFile = join(this.dataDir, 'versions', `${tableName}_${versionId}.json`);
         if (existsSync(snapshotFile)) {
           try {
             const fs = require('fs');
             fs.unlinkSync(snapshotFile);
           } catch (err) {
-            // 忽略文件删除错误
+ // deleteerror
           }
         }
         deletedCount++;

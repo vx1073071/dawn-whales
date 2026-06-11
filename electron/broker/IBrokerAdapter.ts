@@ -1,5 +1,5 @@
 // ── DAWN WHALES — Broker Adapter Interface ──────────────────────────────────
-// 多券商统一接口 (Sprint 1: Multi-Broker)
+// interface/API (Sprint 1: Multi-Broker)
 
 export interface BrokerConfig {
   id: string;           // e.g. 'futu-default', 'moomoo-hk'

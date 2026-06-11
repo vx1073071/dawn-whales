@@ -1,5 +1,5 @@
 // ── DAWN WHALES — Worker Pool (Production Ready) ──────────────────────────
-// CPU密集型任务 offload 到 worker_threads
+// CPU offload worker_threads
 // JVS-51: Production-ready worker pool with monitoring and recovery
 
 import { Worker } from 'worker_threads';
