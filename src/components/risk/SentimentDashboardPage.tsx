@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import i18n from '../../i18n';
@@ -60,7 +59,6 @@ const MOOD_LABELS: {min: number;max: number;label: SentimentLabel;color: string;
 { min: -0.4, max: -0.15, label: i18n.t('SentimentDashboardPage.k20'), color: '#fca5a5' },
 { min: -0.7, max: -0.4, label: i18n.t('SentimentDashboardPage.k21'), color: '#f87171' },
 { min: -1.0, max: -0.7, label: i18n.t('SentimentDashboardPage.k22'), color: '#ef4444' }];
-
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -137,16 +135,14 @@ const GlassCard: React.FC<{children: React.ReactNode;className?: string;}> = ({ 
     {children}
   </div>;
 
-
 // ─── Mood Gauge (SVG arc) ────────────────────────────────────────────────────
 
 const MoodGauge: React.FC<{score: number;}> = ({ score }) => {
   const { label, color } = getSentimentLabel(score);
   const normalized = (score + 1) / 2; // 0..1
-  // (angle removed, unused)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
   const arcPath = (startAngle: number, endAngle: number, radius: number, cx: number, cy: number) => {
-    const { t: _t } = useTranslation();
     const s = startAngle * Math.PI / 180;
     const e = endAngle * Math.PI / 180;
     const x1 = cx + radius * Math.cos(s);
@@ -165,7 +161,6 @@ const MoodGauge: React.FC<{score: number;}> = ({ score }) => {
   { start: 282.8, end: 308.5, color: '#86efac' },
   { start: 308.5, end: 334.2, color: '#4ade80' },
   { start: 334.2, end: 360, color: '#22c55e' }];
-
 
   const needleAngle = (180 + normalized * 180) * (Math.PI / 180);
   const needleLen = 70;
@@ -212,7 +207,6 @@ const SentimentPie: React.FC<{bullish: number;neutral: number;bearish: number;}>
   { value: neutral, color: '#94a3b8', label: i18n.t('SentimentDashboardPage.k43') },
   { value: bearish, color: '#ef4444', label: 'components.bearish' }];
 
-
   let cumAngle = -90;
   const paths = slices.map((slice) => {
     const angle = slice.value / total * 360;
@@ -239,7 +233,6 @@ const SentimentPie: React.FC<{bullish: number;neutral: number;bearish: number;}>
         opacity={0.85}
         stroke="rgba(0,0,0,0.3)"
         strokeWidth="1" />);
-
 
   });
 
@@ -504,7 +497,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
       </svg>
     </button>
   </GlassCard>;
-
 
 // ─── Main Component ──────────────────────────────────────────────────────────
 

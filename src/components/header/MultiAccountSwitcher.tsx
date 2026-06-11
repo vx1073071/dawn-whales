@@ -10,7 +10,6 @@
  * - Mobile-friendly compact mode
  */
 
-import { useTranslation } from "react-i18next";
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import i18n from '../../i18n';
 import { EngineError } from '../../../electron/engine/core/engine-error';
@@ -67,7 +66,6 @@ const MOCK_ACCOUNTS: AccountInfo[] = [
   brokerInfo: 'Paper Trading'
 }];
 
-
 // ── Main Component ──────────────────────────────────────────────────────
 
 interface MultiAccountSwitcherProps {
@@ -87,9 +85,8 @@ export const MultiAccountSwitcher: React.FC<MultiAccountSwitcherProps> = ({
 
   // Close on outside click
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      const { t: _t } = useTranslation();
-      if (ref.current && !ref.current.contains(e.target as Node)) {
+    const handler = (_e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(_e.target as Node)) {
         setOpen(false);
       }
     };

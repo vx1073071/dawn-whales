@@ -60,12 +60,14 @@ export const CrashedWithCustomFallback: Story = {
 };
 
 export const WithReset: Story = {
-  render: () => {
-    const [key, setKey] = useState(0);
-    return (
-      <ErrorBoundary key={key} onReset={() => setKey(k => k + 1)}>
-        <RecoverableComponent />
-      </ErrorBoundary>
-    );
-  },
+  render: () => <WithResetStory />,
 };
+
+function WithResetStory() {
+  const [key, setKey] = useState(0);
+  return (
+    <ErrorBoundary key={key} onReset={() => setKey(k => k + 1)}>
+      <RecoverableComponent />
+    </ErrorBoundary>
+  );
+}

@@ -3,7 +3,20 @@ import Database from 'better-sqlite3';
 import path from 'path';
 import { app } from 'electron';
 import log from 'electron-log';
-import i18n from '../../src/i18n';
+
+// SQL table/index comments — English constants (was i18n.t() via renderer import, disallowed in main process)
+// TODO: R106-R107 migrate to main-i18n.ts when PM provides the module
+const SQL_COM_user_strategy_table = '-- user strategy table';
+const SQL_COM_backtest_runs_table = '-- backtest runs table';
+const SQL_COM_user_trade_log = '-- user trade log';
+const SQL_COM_cached_market_data = '-- cached market data';
+const SQL_COM_trade_signal_log = '-- trade signal log';
+const SQL_COM_user_watchlist = '-- user watchlist';
+const SQL_COM_strategy_scores = '-- strategy scores';
+const SQL_COM_strategy_board = '-- strategy board';
+const SQL_COM_strategy_stats = '-- strategy stats';
+const SQL_COM_user_settings = '-- user settings';
+const SQL_COM_performance_indexes = '-- performance indexes';
 
 const DB_NAME = 'dawn-whales.db';
 
@@ -26,7 +39,7 @@ export class DatabaseManager {
   private createTables() {
     if (!this.db) return;
     this.db.exec(`
-      ${i18n.t('Database.k0')}
+      ${SQL_COM_user_strategy_table}
       CREATE TABLE IF NOT EXISTS strategies (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
@@ -39,7 +52,7 @@ export class DatabaseManager {
         updated_at TEXT DEFAULT (datetime('now'))
       );
 
-      ${i18n.t('Database.k1')}
+      ${SQL_COM_backtest_runs_table}
       CREATE TABLE IF NOT EXISTS backtest_runs (
         id TEXT PRIMARY KEY,
         strategy_id TEXT REFERENCES strategies(id) ON DELETE CASCADE,
@@ -56,7 +69,7 @@ export class DatabaseManager {
         created_at TEXT DEFAULT (datetime('now'))
       );
 
-      ${i18n.t('Database.k2')}
+      ${SQL_COM_user_trade_log}
       CREATE TABLE IF NOT EXISTS trades (
         id TEXT PRIMARY KEY,
         strategy_id TEXT REFERENCES strategies(id),
@@ -78,7 +91,7 @@ export class DatabaseManager {
         executed_at TEXT
       );
 
-      ${i18n.t('Database.k3')}
+      ${SQL_COM_cached_market_data}
       CREATE TABLE IF NOT EXISTS kline_cache (
         symbol TEXT NOT NULL,
         period TEXT NOT NULL,
@@ -91,7 +104,7 @@ export class DatabaseManager {
         PRIMARY KEY (symbol, period, timestamp)
       );
 
-      ${i18n.t('Database.k4')}
+      ${SQL_COM_trade_signal_log}
       CREATE TABLE IF NOT EXISTS signal_log (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         strategy_id TEXT REFERENCES strategies(id),
@@ -102,7 +115,7 @@ export class DatabaseManager {
         created_at TEXT DEFAULT (datetime('now'))
       );
 
-      ${i18n.t('Database.k5')}
+      ${SQL_COM_user_watchlist}
       CREATE TABLE IF NOT EXISTS watchlist (
         code TEXT PRIMARY KEY,
         name TEXT,
@@ -110,7 +123,7 @@ export class DatabaseManager {
         added_at TEXT DEFAULT (datetime('now'))
       );
 
-      ${i18n.t('Database.k6')}
+      ${SQL_COM_strategy_scores}
       CREATE TABLE IF NOT EXISTS strategy_ratings (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         strategy_id TEXT NOT NULL REFERENCES strategies(id) ON DELETE CASCADE,
@@ -120,7 +133,7 @@ export class DatabaseManager {
         UNIQUE(strategy_id, user_id)
       );
 
-      ${i18n.t('Database.k7')}
+      ${SQL_COM_strategy_board}
       CREATE TABLE IF NOT EXISTS strategy_comments (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         strategy_id TEXT NOT NULL REFERENCES strategies(id) ON DELETE CASCADE,
@@ -130,7 +143,7 @@ export class DatabaseManager {
         created_at TEXT DEFAULT (datetime('now'))
       );
 
-      ${i18n.t('Database.k8')}
+      ${SQL_COM_strategy_stats}
       CREATE TABLE IF NOT EXISTS strategy_performance (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         strategy_id TEXT NOT NULL REFERENCES strategies(id) ON DELETE CASCADE,
@@ -146,13 +159,13 @@ export class DatabaseManager {
         updated_at TEXT DEFAULT (datetime('now'))
       );
 
-      ${i18n.t('Database.k9')}
+      ${SQL_COM_user_settings}
       CREATE TABLE IF NOT EXISTS settings (
         key TEXT PRIMARY KEY,
         value TEXT
       );
 
-      ${i18n.t('Database.k10')}
+      ${SQL_COM_performance_indexes}
       CREATE INDEX IF NOT EXISTS idx_trades_strategy ON trades(strategy_id);
       CREATE INDEX IF NOT EXISTS idx_trades_symbol ON trades(symbol);
       CREATE INDEX IF NOT EXISTS idx_trades_created ON trades(created_at);

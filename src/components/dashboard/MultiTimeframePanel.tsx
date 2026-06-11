@@ -181,14 +181,14 @@ export const MultiTimeframePanel: React.FC<MultiTimeframePanelProps> = ({
   const [tfConfig, setTfConfig] = useState<TimeframeConfig[]>(externalConfig ?? DEFAULT_CONFIG);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  // Use external or generate mock
-  const signal = externalSignal ?? useMemo(() => {
+  // Use external or generate mock — compute unconditionally, then use external if provided
+  const computedSignal = useMemo(() => {
     const signals = generateMockSignals();
     return computeFusion(signals, tfConfig, fusionMode);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshKey]);
+  }, [refreshKey, tfConfig, fusionMode]);
+  const signal = externalSignal ?? computedSignal;
 
-  const stats = externalStats ?? useMemo(() => {
+  const computedStats = useMemo(() => {
     return tfConfig.filter((c) => c.enabled).map((c) => ({
       timeframe: c.key,
       signalCount: 20 + Math.floor(Math.random() * 80),
@@ -197,8 +197,8 @@ export const MultiTimeframePanel: React.FC<MultiTimeframePanelProps> = ({
       lastUpdateMs: Date.now() - Math.random() * 180000,
       stale: Math.random() < 0.1
     }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshKey]);
+  }, [tfConfig, refreshKey]);
+  const stats = externalStats ?? computedStats;
 
   const handleModeChange = useCallback((mode: FusionMode) => {
     setFusionMode(mode);

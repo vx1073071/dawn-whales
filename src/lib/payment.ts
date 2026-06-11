@@ -1,4 +1,13 @@
+import electronLog from 'electron-log';
+
 // ── DAWN WHALES — Payment Integration (Scaffolding) ────────────────────────
+//
+// @deprecated Since v1.12.0 (2026-06-12).
+// The project has moved to USDT-only points system (see electron/engine/data/usdt-points-manager.ts).
+// This file was a scaffolding for Stripe/WeChat/Alipay integration that was never used in production.
+// Retained for historical reference; will be deleted in R106 after final audit confirms no remaining consumers.
+//
+// Original comments:
 // TODO: Configure API keys in .env for production use
 // STRIPE_SECRET_KEY=sk_test_...
 // STRIPE_WEBHOOK_SECRET=whsec_...
@@ -71,7 +80,7 @@ export async function createStripeCheckout(productId: string): Promise<CheckoutS
 
   // TODO: Replace with actual Stripe API call
   // const session = await stripe.checkout.sessions.create({ ... });
-  console.warn('[Payment] Stripe checkout not configured yet');
+  electronLog.warn('[Payment] Stripe checkout not configured yet');
   return {
     id: `cs_test_${Date.now()}`,
     url: '#',
@@ -90,7 +99,7 @@ export async function createWechatPayOrder(productId: string): Promise<CheckoutS
 
   // TODO: Replace with actual WeChat Pay API call
   // const order = await wechatPay.createOrder({ ... });
-  console.warn('[Payment] WeChat Pay not configured yet');
+  electronLog.warn('[Payment] WeChat Pay not configured yet');
   return {
     id: `wx_test_${Date.now()}`,
     url: '#',
@@ -114,7 +123,7 @@ export interface License {
 
 export async function verifyLicense(key: string): Promise<License | null> {
   // TODO: Replace with actual license server API
-  console.warn('[License] Verification server not configured');
+  electronLog.warn('[License] Verification server not configured');
   if (key.startsWith('DW-')) {
     return {
       key,

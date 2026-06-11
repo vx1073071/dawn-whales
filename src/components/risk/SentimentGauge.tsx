@@ -3,7 +3,6 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
-import { useTranslation } from 'react-i18next';
 import ReactECharts from 'echarts-for-react';
 import { computeSentiment } from '../../lib/bridge-api';
 import i18n from '../../i18n';
@@ -27,10 +26,7 @@ const SENTIMENT_LEVELS = [
 { min: 60, max: 80, label: i18n.t('SentimentGauge.k4'), color: '#22c55e', emoji: '😏' },
 { min: 80, max: 100, label: i18n.t('SentimentGauge.k5'), color: '#16a34a', emoji: '🤑' }];
 
-
 function getLevel(index: number) {
-  const { t: _t } = useTranslation();
-
   return SENTIMENT_LEVELS.find((l) => index >= l.min && index <= l.max) || SENTIMENT_LEVELS[2];
 }
 

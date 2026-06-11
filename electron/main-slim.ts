@@ -244,7 +244,7 @@ function createWindow() {
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: false,
-      webSecurity: false,
+      webSecurity: !app.isPackaged, /* dev:false for HMR/devtools, packaged:true */
     },
   });
 

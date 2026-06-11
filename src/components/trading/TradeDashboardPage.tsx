@@ -186,13 +186,13 @@ export default function TradeDashboardPage() {
   const totalPnL = positions.reduce((s, p) => s + p.totalPnL, 0);
   const todayDaily = daily[daily.length - 1];
 
-  if (loading) return <div className="flex items-center justify-center h-64"><div className="text-gray-500">Loading...</div></div>;
-
-  // Handle broker change — refresh all trade data
+  // Handle broker change — refresh all trade data (hoisted before early return)
   const handleBrokerChange = useCallback((brokerId: string) => {
-    console.log('[TradeDashboard] Broker changed:', brokerId, '— refreshing data');
+    void brokerId;
     fetchData();
   }, [fetchData]);
+
+  if (loading) return <div className="flex items-center justify-center h-64"><div className="text-gray-500">Loading...</div></div>;
 
   return (
     <div className="p-6 space-y-6">

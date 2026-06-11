@@ -10,7 +10,6 @@
  * - Strategy selector dropdowns
  */
 
-import { useTranslation } from "react-i18next";
 import React, { useState, useMemo, useCallback } from 'react';
 import i18n from '../../i18n';
 
@@ -57,7 +56,6 @@ const MOCK_STRATEGIES: StrategySnapshot[] = [
   equityCurve: Array.from({ length: 100 }, (_, i) => 100 + Math.sin(i / 10) * 8 + i * 0.42 + Math.random() * 3)
 }];
 
-
 // ── Radar chart sub-component ───────────────────────────────────────────
 
 const RadarChart: React.FC<{
@@ -70,7 +68,6 @@ const RadarChart: React.FC<{
   const n = data.length;
 
   const getPoint = (index: number, value: number, maxVal: number) => {
-    const { t: _t } = useTranslation();
     const angle = index / n * 2 * Math.PI - Math.PI / 2;
     const r = value / maxVal * radius;
     return {
@@ -99,7 +96,6 @@ const RadarChart: React.FC<{
             fill="none"
             stroke="#374151"
             strokeWidth="0.5" />);
-
 
       })}
 
