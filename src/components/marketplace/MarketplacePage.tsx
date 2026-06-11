@@ -137,7 +137,7 @@ export default function MarketplacePage() {
         <input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="搜索策略..."
+          placeholder={i18n.t('MarketplacePage.searchPlaceholder')}
           className="bg-[#12121a] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-200 placeholder-gray-500 w-48 focus:outline-none focus:border-[#C9A046]/50" />
         
       </div>
@@ -351,7 +351,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: {strategy: MarketplaceStr
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleComment()}
-            placeholder="写评论..."
+            placeholder={i18n.t('MarketplacePage.reviewPlaceholder')}
             className="flex-1 bg-[#12121a] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50" />
           
           <button
@@ -419,7 +419,7 @@ function PublishModal({ myStrategies, onClose }: {myStrategies: any[];onClose: (
       notify('warning', i18n.t('MarketplacePage.k27'));
       return;
     }
-    notify('success', `策略 "${selected.name}" 已提交审核，预计 1-2 个工作日上线`);
+    notify('success', `${i18n.t('MarketplacePage.submitted')} "${selected.name}"`);
     onClose();
   }
 
@@ -462,7 +462,7 @@ function PublishModal({ myStrategies, onClose }: {myStrategies: any[];onClose: (
               <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="描述你的策略逻辑、适用场景、风险特点..."
+              placeholder={i18n.t('MarketplacePage.descPlaceholder')}
               className="w-full h-20 bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 resize-none focus:outline-none focus:border-[#C9A046]/50" />
             
             </div>
@@ -479,7 +479,7 @@ function PublishModal({ myStrategies, onClose }: {myStrategies: any[];onClose: (
               className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50" />
             
               <div className="text-gray-500 text-[11px] mt-1">
-                {price === 0 ? i18n.t('MarketplacePage.k36') : `你的收入: ¥${(price * 0.7).toFixed(0)}/月 (70%分成)`}
+                {price === 0 ? i18n.t('MarketplacePage.k36') : `${i18n.t('MarketplacePage.revenue')}: $${(price * 0.7).toFixed(0)}/mo (70%)`}
               </div>
             </div>
 

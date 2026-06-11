@@ -5661,5 +5661,13 @@
     "install": "安裝應用程式",
     "updateAvailable": "有新版本可用",
     "pullToRefresh": "下拉更新"
-  }
+  },
+  "MarketplacePage.searchPlaceholder": "Search strategies...",
+  "MarketplacePage.reviewPlaceholder": "Write a review...",
+  "MarketplacePage.submitted": "Strategy submitted for review",
+  "MarketplacePage.descPlaceholder": "Describe your strategy logic, use cases, risk profile...",
+  "MarketplacePage.revenue": "Your revenue",
+  "PdfReport.k0": "Backtest Report",
+  "TradingDeskPage.k2": "Order placed",
+  "SentimentGauge.k1": "Market sentiment"
 }

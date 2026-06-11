@@ -148,7 +148,7 @@ function QuickTradeForm({
 
       const res = await api.placeOrder(order);
       if (res?.success || res?.orderId) {
-        setResult({ ok: true, msg: `下单成功: ${side === 'BUY' ? i18n.t('TradingDeskPage.k0') : i18n.t('TradingDeskPage.k1')} ${qty} ${symbol.replace('US.', '')}` });
+        setResult({ ok: true, msg: `${i18n.t('TradingDeskPage.k2')}: ${side === 'BUY' ? i18n.t('TradingDeskPage.k0') : i18n.t('TradingDeskPage.k1')} ${qty} ${symbol.replace('US.', '')}` });
         onOrderPlaced();
       } else {
         setResult({ ok: false, msg: res?.error || i18n.t('TradingDeskPage.k4') });

@@ -201,7 +201,7 @@ export default function SettingsPage() {
         )}
       </div>
 
-      {/* ── Tab: 券商管理 (Broker Management) ───────────────────── */}
+      {/* ── Tab: Broker Management ───────────────────── */}
       {activeTab === 'broker-mgmt' &&
       <>
           {/* BrokerSelector Component */}
@@ -351,7 +351,7 @@ export default function SettingsPage() {
         </>
       }
 
-      {/* ── Tab: 快速连接 (Quick Connect) ────────────────────────── */}
+      {/* ── Tab: Quick Connect ────────────────────────── */}
       {activeTab === 'connect' &&
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 mb-4">
           <h2 className="text-white font-semibold mb-4 flex items-center gap-2">{i18n.t("SettingsPage.r92_879b")}</h2>
@@ -411,7 +411,7 @@ export default function SettingsPage() {
         </div>
       }
 
-      {/* ── Tab: 全局风控 (Risk Config) ──────────────────────────── */}
+      {/* ── Tab: Risk Config ──────────────────────────── */}
       {activeTab === 'risk' &&
       <>
           {/* Risk config */}
@@ -448,12 +448,12 @@ export default function SettingsPage() {
         </>
       }
 
-      {/* ── Tab: 软件更新 (Software Update) ──────────────────────────── */}
+      {/* ── Tab: Software Update ──────────────────────────── */}
       {activeTab === 'update' &&
       <UpdatePanel />
       }
 
-      {/* ── Tab: 系统信息 (App Info) ─────────────────────────────── */}
+      {/* ── Tab: App Info ─────────────────────────────── */}
       {activeTab === 'info' &&
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
           <h2 className="text-white font-semibold mb-4 flex items-center gap-2">{i18n.t("SettingsPage.r92_098a")}</h2>

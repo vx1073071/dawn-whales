@@ -83,7 +83,7 @@ function buildReportHTML(report: ReportData, timestamp: string): string {
 </head>
 <body>
   <div class="header">
-    <div class="brand">DAWN WHALES · 道鲸</div>
+    <div class="brand">DAWN WHALES</div>
     <h1>${report.title}</h1>
     ${report.subtitle ? `<div class="subtitle">${report.subtitle}</div>` : ''}
     <div class="timestamp">{i18n.t('PdfReport.k0')}{timestamp}</div>
@@ -124,7 +124,7 @@ function buildTableHTML(heading: string, data: { headers: string[]; rows: (strin
 export function backtestToReport(result: unknown): ReportData {
   const isProfit = (result as any).totalReturn >= 0;
   return {
-    title: `回测报告: ${(result as any).strategyName || i18n.t('PdfReport.k1')}`,
+    title: `${i18n.t('PdfReport.k0')}: ${(result as any).strategyName || i18n.t('PdfReport.k1')}`,
     subtitle: `${(result as any).targetCode} · ${(result as any).startDate} ~ ${(result as any).endDate}`,
     sections: [
       {

@@ -430,7 +430,7 @@ export default function BacktestReportPage() {
                     if (resp?.success) {
                       alert(`${i18n.t('BacktestReportPage.k20')}${taskName}${i18n.t('BacktestReportPage.k21')}`);
                     } else {
-                      alert(`❌ 创建失败: ${resp?.error || i18n.t('BacktestReportPage.k3')}`);
+                      alert(`❌ ${i18n.t('BacktestReportPage.k3')}: ${resp?.error || 'Unknown error'}`);
                     }
                   } catch (err: unknown) {
                     alert(i18n.t('BacktestReportPage.k32'));

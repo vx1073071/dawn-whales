@@ -39,7 +39,7 @@ export default function NotificationToast() {
         notify('info', `📡 ${data.strategyName}: ${data.signal} ${data.symbol} @ $${Number(data.price).toFixed(2)} — ${data.reason}`);
       });
       window.api.on('risk-alert', (data: Record<string, unknown>) => {
-        notify('warning', `🛡️ 风控拦截: ${data.reason || i18n.t('NotificationToast.k0')}`);
+        notify('warning', `🛡️ ${i18n.t('NotificationToast.k0')}: ${data.reason || ''}`);
       });
       window.api.on('order-update', (data: Record<string, unknown>) => {
         notify('success', `${i18n.t('NotificationToast.k0')}${data.orderId}: ${data.code} ${data.side} ${data.qty}`);

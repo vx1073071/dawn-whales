@@ -193,6 +193,58 @@
 
 ---
 
+## 🦐 R95 — 覆盖率冲刺 + i18n 终极清零 🔥 CURRENT ROUND
+
+**版本**: v1.10.0-rc.3
+**主题**: 全员写测试，覆盖率 35.6%→65%+
+**启动时间**: 2026-06-11 21:35 GMT+8
+**核心目标**: 额外覆盖 27,675 行代码，覆盖率从 35.6% 提升到 ≥65%
+
+### 🦐ML (主龙虾) — 1 任务
+
+| ID | 任务 | 描述 | 验收标准 |
+|----|------|------|----------|
+| M-01 | i18n 终极冲刺: src/ 41,377→<1,000 CJK | 204个文件中硬编码中文全部替换为 t() 调用。逐文件: 提取中文→创建i18n key→替换为useTranslation。mock/注释/SQL模板中的中文除外 | ① i18n-scan <1,000 chars ② TSC 0 ③ Build 0 ④ git commit |
+
+### 🦐JVS (引擎虾) — 1 任务
+
+| ID | 任务 | 描述 | 验收标准 |
+|----|------|------|----------|
+| J-01 | 覆盖率: engine/data 模块 22.6%→≥60% | 为10个零覆盖大文件写测试: data-formatter(1131行), data-exporter(1129行), data-warehouse(891行), multi-source-aggregator(830行), data-versioning(722行), pipeline-engine(671行), redis-cache-layer(636行), trading-calendar(576行), data-quality-scorer(548行), data-source-adapters(502行) 等。目标额外覆盖 ~15,000行 | ① engine/data 覆盖率 ≥60% ② 0 fail ③ TSC 0 ④ git commit |
+
+### 🦐youdao (测试虾) — 1 任务
+
+| ID | 任务 | 描述 | 验收标准 |
+|----|------|------|----------|
+| Q-01 | 覆盖率: engine/risk(18.3%→≥50%) + engine/core(45.8%→≥65%) | risk: volatility-models(857行), risk-strategy-integrator(830行) 等。core: prometheus-metrics(477行), smart-monitor(433行) 等。目标额外覆盖 ~12,000行 | ① engine/risk ≥50% ② engine/core ≥65% ③ 0 fail ④ TSC 0 ⑤ git commit |
+
+### 🦐QClaw (文档虾) — 1 任务
+
+| ID | 任务 | 描述 | 验收标准 |
+|----|------|------|----------|
+| D-01 | 覆盖率: engine/portfolio(41.9%→≥60%) + engine/agents(47.8%→≥60%) | portfolio: bayesian-optimizer(813行), portfolio-optimizer(611行), performance-attribution(484行)。agents: ai-report-generator(669行), rl-trading-agent(579行), genetic-algorithm(460行)。目标额外覆盖 ~11,700行 | ① engine/portfolio ≥60% ② engine/agents ≥60% ③ 0 fail ④ TSC 0 ⑤ git commit |
+
+### 🦐PM (Claw/守护虾) — 1 任务
+
+| ID | 任务 | 描述 | 验收标准 |
+|----|------|------|----------|
+| P-01 | R95 守护 + 覆盖率验收审计 | 审计各虾覆盖率测试代码质量, 验证覆盖率数字真实, 跑全量测试确认0 fail | ① 各虾commit验证 ② 覆盖率真实输出 ③ 全量0 fail ④ git tag r95-complete |
+
+**R95 总任务: 5 个**
+
+### 📊 覆盖率目标分解
+
+| 模块 | 当前 | R95目标 | 负责虾 | 额外行数 |
+|------|------|---------|--------|----------|
+| engine/data | 22.6% | ≥60% | JVS | ~15,000 |
+| engine/risk | 18.3% | ≥50% | youdao | ~5,500 |
+| engine/core | 45.8% | ≥65% | youdao | ~6,500 |
+| engine/portfolio | 41.9% | ≥60% | QClaw | ~5,500 |
+| engine/agents | 47.8% | ≥60% | QClaw | ~6,200 |
+| **合计** | **35.6%** | **≥65%** | | **~38,700** |
+
+---
+
 ## 📈 指标演进路线图
 
 ```

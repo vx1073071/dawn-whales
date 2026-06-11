@@ -5699,5 +5699,13 @@
   "LandingPageV18.v110_download": "下載 v1.10.0",
   "LandingPageV18.v110_changelog": "查看更新日誌",
   "LandingPageV18.v110_win": "Windows 10/11 (x64)",
-  "LandingPageV18.v110_release": "2026年6月發佈"
+  "LandingPageV18.v110_release": "2026年6月發佈",
+  "MarketplacePage.searchPlaceholder": "搜尋策略...",
+  "MarketplacePage.reviewPlaceholder": "寫評論...",
+  "MarketplacePage.submitted": "策略已提交審核",
+  "MarketplacePage.descPlaceholder": "描述你的策略邏輯、適用場景、風險特點...",
+  "MarketplacePage.revenue": "你的收入",
+  "PdfReport.k0": "回測報告",
+  "TradingDeskPage.k2": "下單成功",
+  "SentimentGauge.k1": "當前市場情緒"
 }

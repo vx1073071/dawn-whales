@@ -7,8 +7,8 @@ import i18n from '../../i18n';
 
 export interface EquityPoint {
   time: string; // ISO date or datetime string
-  equity: number; // 净值
-  benchmark?: number; // 基准净值 (optional)
+  equity: number; // NAV
+  benchmark?: number; // Benchmark NAV (optional)
 }
 
 interface EquityChartProps {

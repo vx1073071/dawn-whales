@@ -269,7 +269,7 @@ function generateDemoSentiment(): SentimentData {
   return {
     index: currentIndex,
     label: lvl.label,
-    description: `当前市场情绪为"${lvl.label}"。${
+    description: `${i18n.t('SentimentGauge.k1')}: "${lvl.label}". ${
     currentIndex > 70 ?
     i18n.t('SentimentGauge.k2') :
     currentIndex < 30 ?
