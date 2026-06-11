@@ -1,13 +1,23 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-57-02: Technical Agent Tests (15+ tests)
  */
-import { describe, it, expect, beforeEach } from 'vitest';
+// [R92] Mock localStorage for i18n module that accesses it at module load
+import { vi, describe, it, expect, beforeEach } from 'vitest';
+const localStorageMock: Record<string, string> = {};
+(globalThis as any).localStorage = {
+  getItem: (k: string) => localStorageMock[k] ?? null,
+  setItem: (k: string, v: string) => { localStorageMock[k] = v; },
+  removeItem: (k: string) => { delete localStorageMock[k]; },
+  clear: () => { Object.keys(localStorageMock).forEach(k => delete localStorageMock[k]); },
+  get length() { return Object.keys(localStorageMock).length; },
+  key: (i: number) => Object.keys(localStorageMock)[i] ?? null,
+};
 import {
   TechnicalAgent,
   getTechnicalAgent,
   resetTechnicalAgent,
-} from '../electron/engine/agent-technical';
+} from '../electron/engine/agents/agent-technical';
 
 describe('J-57-02: TechnicalAgent', () => {
   let agent: TechnicalAgent;

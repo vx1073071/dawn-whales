@@ -1,9 +1,9 @@
-// J-38-02: MultiTimeframeReplayEngine Tests (12 tests)
+﻿// J-38-02: MultiTimeframeReplayEngine Tests (12 tests)
 // Converted from custom runner to standard vitest
 // Tests multi-timeframe synchronization, aggregation, and cross-timeframe events
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { MultiTimeframeReplayEngine, KLineBar } from '../electron/engine/multi-timeframe-replay';
+import { MultiTimeframeReplayEngine, KLineBar } from '../electron/engine/data/multi-timeframe-replay';
 
 // ── Test Fixtures ────────────────────────────────────────────────────────
 

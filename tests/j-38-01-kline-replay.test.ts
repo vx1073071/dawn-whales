@@ -1,9 +1,9 @@
-// J-38-01: KLine Replay Engine Tests (20 tests)
+﻿// J-38-01: KLine Replay Engine Tests (20 tests)
 // Converted from custom runner to standard vitest
 // Tests replay engine with speed control, breakpoints, and data loading
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { KLineReplayEngine, KLineBar } from '../electron/engine/kline-replay-engine';
+import { KLineReplayEngine, KLineBar } from '../electron/engine/backtest/kline-replay-engine';
 
 // ── Test Fixtures ────────────────────────────────────────────────────────
 

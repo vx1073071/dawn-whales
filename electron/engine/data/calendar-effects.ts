@@ -1,8 +1,9 @@
-// ── Q34: Calendar Effects Analyzer ────────────────────────────────────────────
+﻿// ── Q34: Calendar Effects Analyzer ────────────────────────────────────────────
 // Day-of-week / Month / Quarter / Holiday effects with statistical testing
 
 import log from 'electron-log';
 import { normalCDF } from '../utils/math';
+export { normalCDF };
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

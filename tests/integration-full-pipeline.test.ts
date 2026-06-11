@@ -1,23 +1,23 @@
-// ── JVS-28: Full Pipeline Integration Test ──────────────────────────────────
+﻿// ── JVS-28: Full Pipeline Integration Test ──────────────────────────────────
 // Validates: JVS data layer -> QClaw strategy engine -> WB frontend IPC
 // Run: npx tsx tests/integration-full-pipeline.test.ts
 
-import { SentimentIndexEngine } from '../electron/engine/sentiment-index';
-import { StockAnomalyDetector } from '../electron/engine/stock-anomaly-detector';
-import { SectorRotationMonitor } from '../electron/engine/sector-rotation';
-import { NewsAggregatorService } from '../electron/engine/news-aggregator';
-import { CapitalFlowMonitor } from '../electron/engine/capital-flow-monitor';
-import { SmartPickerService } from '../electron/engine/smart-picker';
-import { calculatePortfolioRisk } from '../electron/engine/portfolio-risk';
-import { diagnoseStock } from '../electron/engine/stock-diagnosis';
-import { getMarketBreadth } from '../electron/engine/market-breadth';
-import { getConsumerDataReport } from '../electron/engine/consumer-data';
-import { getMarginDataReport } from '../electron/engine/margin-data';
-import { getUnlockCalendar } from '../electron/engine/unlock-calendar';
-import { getDividendCalendar } from '../electron/engine/dividend-calendar';
-import { getEarningsCalendar } from '../electron/engine/earnings-calendar';
-import { DataQualityMonitor } from '../electron/engine/data-quality-monitor';
-import { getStockOverview, getMarketOverview, getDailyReport } from '../electron/engine/emi-unified';
+import { SentimentIndexEngine } from '../electron/engine/analysis/sentiment-index';
+import { StockAnomalyDetector } from '../electron/engine/data/stock-anomaly-detector';
+import { SectorRotationMonitor } from '../electron/engine/data/sector-rotation';
+import { NewsAggregatorService } from '../electron/engine/data/news-aggregator';
+import { CapitalFlowMonitor } from '../electron/engine/analysis/capital-flow-monitor';
+import { SmartPickerService } from '../electron/engine/agents/smart-picker';
+import { calculatePortfolioRisk } from '../electron/engine/portfolio/portfolio-risk';
+import { diagnoseStock } from '../electron/engine/data/stock-diagnosis';
+import { getMarketBreadth } from '../electron/engine/data/market-breadth';
+import { getConsumerDataReport } from '../electron/engine/data/consumer-data';
+import { getMarginDataReport } from '../electron/engine/data/margin-data';
+import { getUnlockCalendar } from '../electron/engine/data/unlock-calendar';
+import { getDividendCalendar } from '../electron/engine/data/dividend-calendar';
+import { getEarningsCalendar } from '../electron/engine/data/earnings-calendar';
+import { DataQualityMonitor } from '../electron/engine/data/data-quality-monitor';
+import { getStockOverview, getMarketOverview, getDailyReport } from '../electron/engine/core/emi-unified';
 
 // ── Test Framework ─────────────────────────────────────────────────────────
 

@@ -37,6 +37,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "5.6.1",
+    "@esbuild/win32-x64": "^0.28.0",
+    "@rollup/rollup-win32-x64-msvc": "^4.61.1",
     "antd": "5.29.3",
     "better-sqlite3": "11.10.0",
     "dayjs": "1.11.21",
@@ -59,6 +61,10 @@
     "zustand": "4.5.7"
   },
   "devDependencies": {
+    "@babel/generator": "^7.29.7",
+    "@babel/parser": "^7.29.7",
+    "@babel/traverse": "^7.29.7",
+    "@babel/types": "^7.29.7",
     "@eslint/js": "9.39.0",
     "@types/better-sqlite3": "7.6.11",
     "@types/dompurify": "3.0.5",
@@ -74,6 +80,7 @@
     "eslint": "9.39.0",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.1.1",
+    "fast-check": "^4.8.0",
     "globals": "17.6.0",
     "lighthouse": "12.8.2",
     "postcss": "^8.5.10",

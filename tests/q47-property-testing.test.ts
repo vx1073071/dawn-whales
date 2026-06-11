@@ -1,12 +1,12 @@
-// Q47: Property-Based Testing — fast-check
+﻿// Q47: Property-Based Testing — fast-check
 // Validates invariants with 100–500 random inputs per property
 
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
 
-import { calculateRSI } from '../electron/engine/technical-indicators';
-import { normalCDF, normalPDF } from '../electron/engine/calendar-effects';
-import { getKellyFraction } from '../electron/engine/dynamic-sizer';
+import { calculateRSI } from '../electron/engine/analysis/technical-indicators';
+import { normalCDF, normalPDF } from '../electron/engine/data/calendar-effects';
+import { getKellyFraction } from '../electron/engine/portfolio/dynamic-sizer';
 
 // ── Helpers ─────────────────────────────────────────────────────────────────────
 

@@ -46,3 +46,18 @@ Object.defineProperty(globalThis, 'crypto', {
   writable: true,
   configurable: true,
 });
+
+// [R92] localStorage polyfill for node environment
+// src/i18n/index.ts accesses localStorage at module load time
+// In node env (not jsdom), localStorage is not defined
+if (typeof globalThis.localStorage === 'undefined') {
+  const store: Record<string, string> = {};
+  (globalThis as any).localStorage = {
+    getItem: (k: string) => store[k] ?? null,
+    setItem: (k: string, v: string) => { store[k] = String(v); },
+    removeItem: (k: string) => { delete store[k]; },
+    clear: () => { Object.keys(store).forEach(k => delete store[k]); },
+    get length() { return Object.keys(store).length; },
+    key: (i: number) => Object.keys(store)[i] ?? null,
+  };
+}
