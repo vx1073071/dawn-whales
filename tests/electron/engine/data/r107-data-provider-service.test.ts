@@ -12,7 +12,7 @@ vi.mock('../i18n/main-i18n', () => ({
   default: { t: (k: string) => k },
 }));
 
-import { DataProviderService } from '../electron/data/data-provider';
+import { DataProviderService } from '../../../../electron/engine/data/data-provider';
 
 describe('DataProviderService', () => {
   let service: DataProviderService;

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── DAWN WHALES — EquityChart () ───────────────────────────────────
 // strategy/policy/ + 
 

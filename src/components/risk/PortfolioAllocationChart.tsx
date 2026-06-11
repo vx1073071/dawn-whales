@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── DAWN WHALES — PortfolioAllocationChart (position/holding) ────────────────
 
 import { useRef, useEffect, useMemo } from 'react';

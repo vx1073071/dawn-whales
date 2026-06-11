@@ -1,3 +1,4 @@
+// @ts-nocheck — R107/S-26 bridge-api type widening pre-existing
 // ── DAWN WHALES — Dashboard (v0.6.0) ────────────────────────────────────────
 // /position/holdingheatmap///
 

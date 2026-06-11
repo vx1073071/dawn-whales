@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Modal } from 'antd';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
@@ -17,7 +17,7 @@ import PointsTopUpPage from '../billing/PointsTopUpPage';
 import CreditsDashboard from '../billing/CreditsDashboard';
 import P2PTransferRecords from '../billing/P2PTransferRecords';
 
-type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'currency' | 'credits' | 'topup' | 'dashboard' | 'p2p' | 'update' | 'info';
+type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'currency' | 'credits' | 'topup' | 'dashboard' | 'p2p' | 'update' | 'info' | 'exchangeRate';
 
 interface BrokerItem {
   id: string;
@@ -187,6 +187,7 @@ export default function SettingsPage() {
   { id: 'topup', label: 'settings.topUp', icon: '💳' },
   { id: 'dashboard', label: 'settings.dashboard', icon: '📊' },
   { id: 'p2p', label: 'settings.p2p', icon: '🤝' },
+  { id: 'exchangeRate', label: 'settings.exchangeRate', icon: '💹' },
   { id: 'update', label: 'settings.softwareUpdate', icon: '🔄' },
   { id: 'info', label: 'settings.systemInfo', icon: 'ℹ️' }];
 
@@ -497,6 +498,8 @@ export default function SettingsPage() {
 
       {activeTab === 'p2p' && <P2PTransferRecords />}
 
+      {activeTab === 'exchangeRate' && <ExchangeRatePanel />}
+
       {activeTab === 'info' &&
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
           <h2 className="text-white font-semibold mb-4 flex items-center gap-2">{i18n.t("SettingsPage.r92_098a")}</h2>
@@ -541,4 +544,59 @@ function InfoRow({ label, value }: {label: string;value: string;}) {
       <span className="text-gray-200 font-mono text-xs">{value}</span>
     </div>);
 
+}
+
+// ══ R108 S-37: Exchange Rate Refresh Panel ══
+function ExchangeRatePanel() {
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState<string | null>(null);
+  const [rateInfo, setRateInfo] = useState<string>('');
+
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const { exchangeRateRun } = await import('../../../electron/cron/scheduler');
+      await exchangeRateRun();
+      const now = new Date().toLocaleString();
+      setLastUpdate(now);
+      setRateInfo('Rates refreshed from CoinGecko/Binance');
+    } catch {
+      setRateInfo('Refresh failed — using cached/static rates');
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
+  return (
+    <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
+      <h2 className="text-white font-semibold mb-4 flex items-center gap-2">💹 Exchange Rate Management</h2>
+      <p className="text-gray-400 text-sm mb-4">Exchange rates auto-refresh every 6 hours (CoinGecko → Binance → static fallback).</p>
+      <div className="space-y-3 mb-4">
+        <div className="flex items-center justify-between bg-[#12121a] rounded-lg px-3 py-2">
+          <span className="text-gray-500 text-sm">Auto-refresh</span>
+          <span className="text-green-400 text-sm">Every 6 hours</span>
+        </div>
+        <div className="flex items-center justify-between bg-[#12121a] rounded-lg px-3 py-2">
+          <span className="text-gray-500 text-sm">Last Update</span>
+          <span className="text-gray-200 text-sm font-mono">{lastUpdate || 'Never'}</span>
+        </div>
+        <div className="flex items-center justify-between bg-[#12121a] rounded-lg px-3 py-2">
+          <span className="text-gray-500 text-sm">Fallback Chain</span>
+          <span className="text-gray-200 text-sm">CoinGecko → Binance → Static</span>
+        </div>
+      </div>
+      <button
+        onClick={handleRefresh}
+        disabled={refreshing}
+        className="w-full py-3 rounded-lg bg-[#D4A853] text-[#0a0a10] font-bold text-sm hover:bg-[#D4A853]/90 disabled:opacity-50 transition-colors"
+      >
+        {refreshing ? '🔄 Refreshing...' : '🔄 Refresh Rates Now'}
+      </button>
+      {rateInfo && (
+        <p className={`text-xs mt-3 ${rateInfo.includes('failed') ? 'text-red-400' : 'text-green-400'}`}>
+          {rateInfo}
+        </p>
+      )}
+    </div>
+  );
 }

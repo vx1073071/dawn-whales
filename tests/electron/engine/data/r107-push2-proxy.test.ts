@@ -26,7 +26,7 @@ vi.mock('../i18n/main-i18n', () => ({
   default: { t: (k: string) => k },
 }));
 
-import { Push2ProxyService } from '../electron/data/push2-proxy';
+import { Push2ProxyService } from '../../../../electron/engine/data/push2-proxy';
 
 describe('Push2ProxyService', () => {
   let proxy: Push2ProxyService;

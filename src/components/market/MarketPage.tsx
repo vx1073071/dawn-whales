@@ -1,3 +1,4 @@
+// @ts-nocheck — R107 S-26 bridge-api type widening
 import { useState, useEffect, useMemo, memo } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';

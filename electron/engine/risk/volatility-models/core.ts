@@ -1,3 +1,6 @@
+import type { VolatilityResult, GARCHParams, GARCHResult, VolSurface } from './types';
+import { mean, variance, stdDev, logReturns, normalPDF, quantile, sortedCopy, covariance, correlation, blackScholesCallPrice } from './helpers';
+
 export class VolatilityModels {
   // ---------------------------------------------------------------------------
   // Historical Volatility

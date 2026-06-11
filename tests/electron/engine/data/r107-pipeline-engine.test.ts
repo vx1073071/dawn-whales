@@ -20,8 +20,8 @@ vi.mock('../utils/id', () => ({
   generateId: () => `pipeline-${Math.random().toString(36).slice(2, 10)}`,
 }));
 
-import { PipelineEngine } from '../electron/engine/data/pipeline-engine';
-import type { PipelineConfig, PipelineStep } from '../electron/engine/data/pipeline-engine';
+import { PipelineEngine } from '../../../../electron/engine/data/pipeline-engine';
+import type { PipelineConfig, PipelineStep } from '../../../../electron/engine/data/pipeline-engine';
 
 function makeConfig(overrides: Partial<PipelineConfig> = {}): PipelineConfig {
   return {

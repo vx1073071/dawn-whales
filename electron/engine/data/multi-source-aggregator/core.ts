@@ -1,3 +1,6 @@
+import type { DataSourceId, DataSourceConfig, DataPoint, SourceHealth, AggregationResult, SourceStats, RegisteredSource, FetchAttemptResult, DataQuality } from './types';
+import { SimpleEventEmitter } from './types';
+
 export class MultiSourceAggregator extends SimpleEventEmitter {
   private sources: Map<DataSourceId, RegisteredSource> = new Map();
 

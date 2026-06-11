@@ -1,3 +1,6 @@
+import type { FormatDefinition, FormatOptions, ConversionResult, FormatSummary, ValidationResult } from './types';
+import { escapeXmlEntities, unescapeXmlEntities, csvEscapeField, csvUnescapeField, escapeRegExp, formatNumber, formatDate, normalizeColumns, applyRename, filterAndRenameRow } from './helpers';
+
 export class DataFormatter {
   private formats: Map<string, FormatDefinition> = new Map();
 

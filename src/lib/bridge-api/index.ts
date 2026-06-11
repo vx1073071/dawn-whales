@@ -1,6 +1,11 @@
-// ── DAWN WHALES — Bridge API Index ────────────────────────────────────
-// S-15p1: Re-export all modules + types
-// Backward-compatible: import { x } from 'src/lib/bridge-api' still works.
+/**
+ * @deprecated Use src/services/ instead (R108 S-34).
+ * Service layer provides typed, domain-split interfaces.
+ *
+ * ── DAWN WHALES — Bridge API Index ────────────────────────────────────
+ * S-15p1: Re-export all modules + types
+ * Backward-compatible: import { x } from 'src/lib/bridge-api' still works.
+ */
 
 // Types
 export type { /* Window.api type is global, no named exports needed */ } from '../bridge-api-types';
