@@ -68,6 +68,12 @@ export default defineConfig({
             if (id.includes('src/lib/bridge-api')) {
               return 'bridge-api';
             }
+            // R96 M-02: Split strategy templates and AI prompts into separate chunk
+            if (id.includes('src/components/strategy/StrategyOptimizerPanel') ||
+                id.includes('src/components/ai/') ||
+                id.includes('src/lib/strategy-templates')) {
+              return 'vendor-strategy';
+            }
             return undefined;
           }
           // React ecosystem → vendor-react
