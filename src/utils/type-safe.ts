@@ -1,5 +1,3 @@
-import { EngineError } from '../../engine/core/engine-error';
-
 /**
  * Bundle & Type Optimization — ML-51-01 + ML-51-02 [P0]
  * R51: v1.0.1 Patch — Frontend type fixes + Dead code removal + Tree-shaking

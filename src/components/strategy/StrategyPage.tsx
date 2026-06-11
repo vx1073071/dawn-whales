@@ -7,7 +7,6 @@ import ConditionRulePanel from '../trading/ConditionRulePanel';
 import ClosedLoopConfigPanel from './ClosedLoopConfigPanel';
 import AdaptiveParamPanel from './AdaptiveParamPanel';
 import i18n from '../../i18n';
-import { EngineError } from '../../../electron/engine/core/engine-error';
 
 type CreateMode = null | 'ai' | 'template' | 'form' | 'condition' | 'closedLoop' | 'adaptive';
 

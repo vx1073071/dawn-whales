@@ -36,9 +36,7 @@ export default defineConfig({
     exclude: [
       // Legacy/empty test files (no vitest describe/it)
            // R86: QClaw snapshot/gate tests (environment-dependent)
-      'tests/q79-01-i18n-consistency.test.ts',
-      'tests/q79-03-excluded-migration.test.ts',
- 'tests/engine.test.ts',
+      // R90: un-excluded q79-01, q79-03, engine.test.ts
       'tests/e2e-pipeline.test.ts',
       'tests/kelly-sizing.test.ts',
       'tests/strategy-execute-integration.test.ts',
@@ -63,68 +61,15 @@ export default defineConfig({
       // jvs-integration, jvs-100-e2e, jvs-115-aggregator, ws-backfill,
       // integration-full-pipeline, t53-crypto-service, q47-property-testing,
       // jvs-83-benchmark, benchmark-engines
-          // R87: Outdated regression-gate tests broken by engine dir restructure (JVS R86)
-      'tests/q60-03-regression.test.ts',
-      'tests/q61-03-regression.test.ts',
-      'tests/q62-03-regression.test.ts',
-      'tests/q63-03-regression.test.ts',
-      'tests/q64-03-regression.test.ts',
-      'tests/q65-03-regression.test.ts',
-      'tests/q66-03-regression.test.ts',
-      'tests/q67-01-regression-gate.test.ts',
-      'tests/q67-02-build-artifact.test.ts',
-      'tests/q68-03-regression-gate.test.ts',
-      'tests/q69-03-regression-gate.test.ts',
-      'tests/q70-01-packaging-verification.test.ts',
-      'tests/q71-01-r70-wrapup-ga-final.test.ts',
-      'tests/q71-02-regression-gate-5600.test.ts',
-      'tests/q73-03-regression-gate-5800.test.ts',
-      'tests/q75-03-regression-gate-5800.test.ts',
-      'tests/q76-03-regression-gate-6000.test.ts',
-      'tests/q77-03-flaky-regression-6100.test.ts',
-      'tests/q79-05-regression-6400.test.ts',
-      'tests/q80-03-regression-6500.test.ts',
-      'tests/q81-01-regression-6500-5r.test.ts',
-      'tests/q81-02-fullchain-e2e-final.test.ts',
-      // R87 Q-02: Exclude all broken-by-engine-restructure tests
-      'tests/trade-executor-ipc.test.ts',
-      // R89: Tests broken by JVS engine dir restructure (flat→subdirs)
-      // These tests check readdirSync counts, flat file paths, or old engine APIs
-      'tests/q56-01-four-agent-collaboration.test.ts',   // agent API changed
-      'tests/q56-03-e2e-4agent-flow.test.ts',            // agent API changed
-      'tests/q58-02-creator-cost-e2e.test.ts',           // creator-llm-config deleted
-      'tests/q58-03-regression-validation.test.ts',      // engine path checks
-      'tests/q59-02-commission-topup-e2e.test.ts',       // stale paths
-      'tests/q69-02-guest-perf-e2e.test.ts',             // perf engine file check
-      'tests/q70-02-deploy-fullchain-e2e.test.ts',       // engine file count
-      'tests/q72-02-factor-compare-portfolio.test.ts',   // factor paths
-      'tests/q73-01-realdata-draw-pattern.test.ts',      // engine paths
-      'tests/q73-02-onboarding-param-e2e.test.ts',       // engine paths
-      'tests/q74-01-build-deploy-verify.test.ts',        // engine file checks
-      'tests/q74-02-regression-gate-5800.test.ts',       // engine count >=310
-      'tests/q75-01-real-vs-mock-compare.test.ts',       // MOCK_ in restructured paths
-      'tests/q75-02-multisource-fallback-cache.test.ts', // adapter architecture
-      'tests/q76-01-usemock-crash-recovery.test.ts',     // MOCK_ path checks
-      'tests/q76-02-content-safety-gdpr.test.ts',        // engine paths
-      'tests/q77-02-etimedout-fix.test.ts',              // engine count >=310
-      'tests/q78-01-three-engine-tests.test.ts',         // engine paths
-      'tests/q78-03-regression-6250.test.ts',            // engine count + ENOENT
-      'tests/q79-02-coverage-gate-60.test.ts',           // coverage data missing
-      'tests/q50-03-coverage-boost.test.ts',             // API timeout flaky
-      // R89: Tests referencing moved files (use old flat engine/ paths)
-      'tests/t53-crypto-service.test.ts',
-      'tests/t61-t62-error-metrics.test.ts',
-      'tests/jvs-49-data-versioning.test.ts',
-      'tests/jvs-50-realtime-quality-monitor.test.ts',
-      'tests/jvs-83-data-aggregator.test.ts',
-      'tests/jvs-83-benchmark.test.ts',
-      'tests/jvs-100-e2e-validation.test.ts',
-      'tests/jvs-115-aggregator.test.ts',
-      'tests/jvs-integration.test.ts',
-      'tests/ws-backfill.test.ts',
-      'tests/integration-full-pipeline.test.ts',
-      'tests/benchmark-engines.test.ts',
-      'tests/q47-property-testing.test.ts',
+      // R90: R87 regression-gate tests fixed with recursive engine paths
+      // Only keep tests that are truly unfixable (custom format, missing deps, hanging)
+      // R90: All R89-restructured tests have been fixed with recursive engine paths
+      // Removed 21 R89 exclusions — tests now use _findEngineFiles recursive search
+      // R90: Keep legacy broken tests (require major rewrite or deleted modules)
+      'tests/integration-full-pipeline.test.ts',    // requires full pipeline mock
+      'tests/benchmark-engines.test.ts',            // hangs in CI
+      'tests/q47-property-testing.test.ts',         // legacy
+      'tests/ws-backfill.test.ts',                  // requires WS server
 ],
     coverage: {
       provider: 'v8',
