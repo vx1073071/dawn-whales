@@ -5707,5 +5707,10 @@
   "MarketplacePage.revenue": "你的收入",
   "PdfReport.k0": "回測報告",
   "TradingDeskPage.k2": "下單成功",
-  "SentimentGauge.k1": "當前市場情緒"
+  "SentimentGauge.k1": "當前市場情緒",
+  "ProfileActivityPage.notifications": "通知",
+  "MarketplacePage.myRating": "我的評分",
+  "NotificationCenter.unread": "未讀",
+  "TradingCalendarView.k7": "距",
+  "TradingCalendarView.k8": "開盤"
 }

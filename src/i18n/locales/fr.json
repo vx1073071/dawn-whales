@@ -5669,5 +5669,10 @@
   "MarketplacePage.revenue": "Your revenue",
   "PdfReport.k0": "Backtest Report",
   "TradingDeskPage.k2": "Order placed",
-  "SentimentGauge.k1": "Market sentiment"
+  "SentimentGauge.k1": "Market sentiment",
+  "ProfileActivityPage.notifications": "Notifications",
+  "MarketplacePage.myRating": "My rating",
+  "NotificationCenter.unread": "Unread",
+  "TradingCalendarView.k7": "Until",
+  "TradingCalendarView.k8": " opens"
 }

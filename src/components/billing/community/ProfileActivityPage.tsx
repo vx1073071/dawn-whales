@@ -169,7 +169,7 @@ export default function ProfileActivityPage({
       <div className="flex border-b border-white/5">
         <TabBtn active={tab === 'activity'} onClick={() => setTab('activity')} label={i18n.t('ProfileActivityPage.k31')} />
         <TabBtn active={tab === 'strategies'} onClick={() => setTab('strategies')} label={i18n.t('ProfileActivityPage.k32')} />
-        <TabBtn active={tab === 'notifications'} onClick={() => setTab('notifications')} label={`🔔 通知${unreadCount > 0 ? ` (${unreadCount})` : ''}`} badge={unreadCount} />
+        <TabBtn active={tab === 'notifications'} onClick={() => setTab('notifications')} label={`${i18n.t('ProfileActivityPage.notifications')}${unreadCount > 0 ? ` (${unreadCount})` : ''}`} badge={unreadCount} />
       </div>
 
       <div className="flex-1 overflow-y-auto">

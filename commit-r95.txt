@@ -1,0 +1,18 @@
+QClaw R95: D-01 coverage sprint — portfolio + agents (6 test files, 104 tests, all passing)
+
+New test files:
+- q95-01: bayesian-optimizer (19 tests) — optimize/suggest/observe/getBest/suggestBatch/getSummary/edge cases
+- q95-02: portfolio-optimizer (22 tests) — equal_weight/min_variance/max_sharpe/mean_variance/risk_parity + constraints + efficientFrontier + analyzePortfolio + rebalance
+- q95-03: performance-attribution (21 tests) — attribute/fitFactorModel/getFactorExposure/getMetrics/reset/history/rollingBeta/rollingSharpe/IR/Calmar/tailRatio/winRate/profitFactor
+- q95-04: ai-report-extended (8 tests) — generateBacktestReport/generateQuickReport (extends jvs-44-01 daily/weekly/monthly)
+- q95-05: rl-trading-agent (20 tests) — constructor/getConfig/getMetrics/train/predict/save/load/getState/reset/discretizeState
+- q95-06: genetic-algorithm (14 tests) — optimize/step/getPopulation/getBestIndividual/reset/getFitnessHistory/getDiagnostics/getSummary/edge cases
+
+Source fix:
+- ai-report-generator.ts: removed corrupted control characters (\1\2) from 3 function signatures causing esbuild parse errors
+
+Verification:
+- TSC: 0 errors
+- 6 Q95 files: 104/104 passed, 0 failed
+- Full regression: 5224 passed / 5 failed (r95-data-warehouse, not QClaw) / 17 skipped
+- Duration: 53.85s, zero OOM

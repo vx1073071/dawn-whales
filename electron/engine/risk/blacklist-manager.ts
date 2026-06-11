@@ -1,11 +1,9 @@
 /**
-import { EngineError, ErrorCode } from '../../errors';
-
  * J-78-03-4: blacklist-manager.ts
  * v1.9.0: p2p-transfer-engine
- *
- * : / + + import + query
  */
+
+import { EngineError, ErrorCode } from '../../errors';
 
 export interface BlacklistEntry {
   userId: string;

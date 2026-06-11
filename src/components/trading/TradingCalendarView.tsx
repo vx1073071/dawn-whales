@@ -494,7 +494,7 @@ export default function TradingCalendarView() {
 
               <div className="text-xs text-gray-500 mb-1">
 
-                {countdown.isTrading ? i18n.t('TradingCalendarView.k6') : `距${countdown.session === 'pre-market' ? i18n.t('TradingCalendarView.k0') : countdown.session === 'regular' ? i18n.t('TradingCalendarView.k1') : i18n.t('TradingCalendarView.k2')}开盘`}
+                {countdown.isTrading ? i18n.t('TradingCalendarView.k6') : `${i18n.t('TradingCalendarView.k7')}${countdown.session === 'pre-market' ? i18n.t('TradingCalendarView.k0') : countdown.session === 'regular' ? i18n.t('TradingCalendarView.k1') : i18n.t('TradingCalendarView.k2')}${i18n.t('TradingCalendarView.k8')}`}
 
               </div>
 

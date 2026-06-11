@@ -225,10 +225,10 @@ const templateResponses: Record<string, Record<string, string>> = {
 
 function detectCategory(text: string): Message['category'] {
   const lower = text.toLowerCase();
-  if (/strategy|策略|创建|create|ma|crossover|交叉/.test(lower)) return 'strategy';
-  if (/risk|risk|风险|var|drawdown|回撤|exposure/.test(lower)) return 'risk';
-  if (/backtest|回测|report|报告/.test(lower)) return 'backtest';
-  if (/market|行情|market|trend|走势|index|指数/.test(lower)) return 'market';
+  if (/strategy|\u7b56\u7565|\u521b\u5efa|create|ma|crossover|\u4ea4\u53c9/.test(lower)) return 'strategy';
+  if (/risk|risk|\u98ce\u9669|var|drawdown|\u56de\u64a4|exposure/.test(lower)) return 'risk';
+  if (/backtest|\u56de\u6d4b|report|\u62a5\u544a/.test(lower)) return 'backtest';
+  if (/market|\u884c\u60c5|market|trend|\u8d70\u52bf|index|\u6307\u6570/.test(lower)) return 'market';
   return 'general';
 }
 

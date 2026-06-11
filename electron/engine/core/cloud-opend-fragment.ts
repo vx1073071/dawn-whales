@@ -28,8 +28,7 @@ export type ConnectionState = 'disconnected' | 'connecting' | 'connected' | 'deg
 
 export interface CloudOpenDConfig {
   host: string;
-  port: number;\1/** @deprecated R83 — use server-side AI Gateway token */
-\1\2
+  port: number;
   instanceId?: string;        // cloud instance identifier
   region?: string;            // cloud region (e.g., 'hk', 'us-west')
   tlsEnabled?: boolean;

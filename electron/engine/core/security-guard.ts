@@ -32,7 +32,7 @@ export function sanitizeInput(input: unknown): string {
   let sanitized = input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
   // Remove on* event handlers
   sanitized = sanitized.replace(/\bon\w+\s*=\s*"[^"]*"/gi, '');
-  sanitized = sanitized.replace(/\bon\w+\s*=\s*'[^']*'/gi, 'i18n.t('securityGuard.k1')string') {
+  sanitized = sanitized.replace(/\bon\w+\s*=\s*'[^']*'/gi, '');
       result[key] = sanitizeInput(value);
     } else if (value && typeof value === 'object' && !Array.isArray(value)) {
       result[key] = sanitizeObject(value as Record<string, unknown>);

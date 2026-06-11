@@ -328,7 +328,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: {strategy: MarketplaceStr
                 </button>
               )}
             </div>
-            <div className="text-gray-500 text-[10px]">{rating.count}{i18n.t("MarketplacePage.r92_4f6c")}{rating.myRating > 0 && ` · 我的: ${rating.myRating}星`}</div>
+            <div className="text-gray-500 text-[10px]">{rating.count}{i18n.t("MarketplacePage.r92_4f6c")}{rating.myRating > 0 && ` · ${i18n.t('MarketplacePage.myRating')}: ${rating.myRating}`}</div>
           </div>
         </div>
       </div>

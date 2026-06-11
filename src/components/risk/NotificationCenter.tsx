@@ -115,7 +115,7 @@ export default function NotificationCenter({
       <div className="flex items-center gap-1 mb-3">
         {[
         { key: 'all' as const, label: t('components.all') },
-        { key: 'unread' as const, label: `未读${unreadCount > 0 ? `(${unreadCount})` : ''}` },
+        { key: 'unread' as const, label: `${i18n.t('NotificationCenter.unread')}${unreadCount > 0 ? `(${unreadCount})` : ''}` },
         { key: 'risk' as const, label: i18n.t('NotificationCenter.k6') },
         { key: 'order' as const, label: t('components.orders') },
         { key: 'signal' as const, label: t('components.signal') }].
