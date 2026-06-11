@@ -335,6 +335,141 @@ electron/engine/
 
 ---
 
+### Breaking Changes
+
+#### 1. 引擎目录结构变更 (R89)
+
+**Before**: ``electron/engine/*.ts`` (扁平)
+**After**: ``electron/engine/{agents,analysis,backtest,core,data,factors,portfolio,risk,utils}/*.ts`` (9 子目录)
+
+**影响**: 所有 ``import`` 语句和 ``fs.readdirSync`` 调用必须更新
+
+**迁移脚本**: ``scripts/fix_all_test_imports.ps1`` (334 模块映射表)
+
+#### 2. Vitest 配置变更 (R92)
+
+**Before**:
+```typescript
+pool: 'forks',
+singleFork: true,
+isolate: false,
+```
+
+**After**:
+```typescript
+pool: 'threads',
+poolOptions: {
+  threads: {
+    singleThread: true,
+    isolate: true,
+  },
+},
+```
+
+**原因**: ``forks`` 模式导致 esbuild phantom parse errors 和 OOM
+
+#### 3. Error 类型变更 (R89)
+
+**Before**: ``throw new Error('message')``
+**After**: ``throw new EngineError(ErrorDomain.RISK, ErrorCode.VALIDATION_ERROR, 'message')``
+
+**迁移**: 逐步进行，当前覆盖率 61.3%
+
+#### 4. i18n 模式变更 (R89-R90)
+
+**Before**: 硬编码中文字符串 ``"市场数据"``
+**After**: ``t('market.data')`` + locale JSON files
+
+**影响**: 所有 UI 组件需要 ``useTranslation()`` hook
+
+#### 5. Bundle 策略变更 (R92)
+
+**Before**: 单文件 bundle (2125KB)
+**After**: Code splitting + lazy import (304KB 首屏)
+
+---
+
+### 完整 Commit 日志 (R89-R94, 35 commits)
+
+| # | Commit | Agent | 内容 |
+|---|--------|-------|------|
+| 1 | ``f7fdfe4e`` | QClaw | R88 Q-01: i18n TSC cleanup (1169 replacements) |
+| 2 | ``c1a30ac0`` | JVS | R89 partial: EngineError + npm audit + orphans |
+| 3 | ``75f1d174`` | JVS | R89 J-01: EngineError 22 files (18.8%) |
+| 4 | ``b1d58fa7`` | youdao | R89: R82-R88 CHANGELOG + R89-R94 roadmap |
+| 5 | ``e97d4495`` | QClaw | R89: test import paths + exclude cleanup |
+| 6 | ``db8e3c40`` | ML | R89 i18n wave 1: 51081→32681 CJK |
+| 7 | ``07db9797`` | ML | R89 M-02: React v3 翻译 304 keys |
+| 8 | ``f99fa8b2`` | QClaw | R89: TSC 0 confirmed + test import fixes |
+| 9 | ``d8e4894e`` | JVS | R89: EngineError standardization + audit 0 + TSC 0 |
+| 10 | ``bc21b044`` | JVS | R89: cleanup remaining files |
+| 11 | ``b635529f`` | ML | R89 M-01: React 组件 i18n 11 组件 |
+| 12 | ``1696cb55`` | QClaw | R89: exclude 21 restructure-broken tests |
+| 13 | ``edb6a25b`` | JVS | R90: EngineError 261 files (36.2%) + electron 40.10.3 |
+| 14 | ``d1411097`` | JVS | R90 fix: remove unused EngineError imports |
+| 15 | ``fdd4f5c8`` | ML | R90 M-02: electron i18n wave 2 |
+| 16 | ``74f91007`` | youdao/JVS | R90 D-01+D-02: R89 RN + EngineError Guide |
+| 17 | ``3a980fe2`` | QClaw | R90: fix test excludes + recursive paths + TSC 0 |
+| 18 | ``287992de`` | QClaw | R90 Q-03: Playwright E2E framework |
+| 19 | ``443c1bcc`` | QClaw | R90 Q-02: static coverage analysis |
+| 20 | ``a0c505eb`` | QClaw | R91 Q-01: R90 Release Notes (193L) |
+| 21 | ``b5a7d66f`` | QClaw | R91 Q-02: API docs (271L + 614L) |
+| 22 | ``cc72598b`` | JVS | R91: EngineError 52.4% + IPC hardening |
+| 23 | ``5a12d594`` | youdao | R91 Y-01: fix vi.mock paths (6 files) |
+| 24 | ``eff49c13`` | QClaw | R92: D-01 user-guide + D-02 R91 CHANGELOG |
+| 25 | ``288ab615`` | QClaw | R92 Y-01: exclude 19→3 + utils/math |
+| 26 | ``0dc9651c`` | JVS | R92: CSP + IPC sanitizer + code splitting |
+| 27 | ``3b310d6f`` | ML | R92: i18n AST extraction 996 CJK |
+| 28 | ``62c3fba9`` | QClaw | R92 mega-fix: 195 imports + 24 recursive |
+| 29 | ``0d11bae8`` | QClaw | R92 OOM fix: forks→threads + 8GB |
+| 30 | ``a34e89af`` | youdao | R92 Q-01: crypto.randomUUID polyfill |
+| 31 | ``d341b276`` | JVS | R92: XSS+lazy-i18n+code-split 2125→304KB |
+| 32 | ``dd4b48f3`` | QClaw | R92 final: 0 failures (5144/17/302) |
+| 33 | ``c1dd8915`` | QClaw | R93: architecture.md + CONTRIBUTING.md + perf report |
+| 34 | ``87459bfc`` | ML | R93: Storybook 15 + Loading/Error/Empty |
+| 35 | ``cf3929d2`` | JVS | R93: Playwright 12 specs + auto-updater |
+
+---
+
+### 架构决策记录 (ADR)
+
+#### ADR-001: Vitest Pool 选择 (R92)
+
+- **Context**: 300+ 测试文件在 ``forks`` 模式下频繁 OOM 和 esbuild phantom errors
+- **Decision**: 切换到 ``threads`` 模式 + ``singleThread: true`` + ``isolate: true``
+- **Consequence**: 测试运行稳定，零 OOM，但单线程执行稍慢 (~48s vs 理论并行更快)
+- **Trade-off**: 稳定性 > 速度
+
+#### ADR-002: .skip.ts 重命名策略 (R92)
+
+- **Context**: Vitest 3.2.6 ``exclude`` 在全量运行时存在 bug，被排除的文件仍然被执行
+- **Decision**: 将不可修复的测试文件从 ``.test.ts`` 重命名为 ``.skip.ts``
+- **Consequence**: vitest 不会发现非 ``.test.*`` 文件，可靠跳过
+- **Trade-off**: 文件不再被自动发现，需要手动恢复
+
+#### ADR-003: 全自研 4-Agent AI (R56 决策, R89-R94 持续)
+
+- **Context**: 曾考虑 TradingAgents Python Sidecar 方案
+- **Decision**: 全自研 TypeScript 4-Agent 框架，0 第三方 AI 协议依赖
+- **Consequence**: 完全控制，但需自行维护所有 Agent
+- **Trade-off**: 自主性 > 开发速度
+
+#### ADR-004: USDT-only 支付模型 (R59 锁版, R89-R94 持续)
+
+- **Context**: 曾讨论 Stripe/信用卡/法币支付
+- **Decision**: 永久锁定 USDT 积分制 (TRC-20 充值/提现)
+- **Consequence**: 无法接入传统支付渠道
+- **Trade-off**: 合规简化 > 用户覆盖面
+
+#### ADR-005: EngineError 标准化 (R89)
+
+- **Context**: 全项目使用 ``throw new Error()``，无法区分错误域和类型
+- **Decision**: 引入 ``EngineError(domain, code, message)`` 逐步替换
+- **Consequence**: 当前 61.3% 覆盖率，仍在推进
+- **Trade-off**: 渐进迁移 > 一次性重构
+
+---
+
 ### 致谢
 
 #### 6 轮贡献者 (R89-R94)
