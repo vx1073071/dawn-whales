@@ -180,8 +180,8 @@ describe('FeeCalculator', () => {
     it('very small amount (L2)', () => {
       const calc = makeCalculator();
       const result = calc.calcTradeFee(0.01, 'USD', 'L2');
-      expect(result.feeUSDT).toBe(0.01 * 0.0002); // 0.000002
-      expect(result.feeUSDT).toBe(0.000002);
+      // 0.01 * 0.02% = 0.000002 (floating point safe: use toBeCloseTo)
+      expect(result.feeUSDT).toBeCloseTo(0.000002, 6);
     });
 
     it('very large amount (L3)', () => {
