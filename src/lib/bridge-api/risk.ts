@@ -1,7 +1,12 @@
 // @ts-nocheck -- bridge-api IpcError widening (R107 S-26)
-// ── DAWN WHALES — Bridge API Risk Module ──────────────────────────────
-// S-15p1 split: NL Parser + Risk + Risk Config
-// S-15p2: Zod-derived types replaced all `any` usage
+/**
+ * @deprecated Use src/services/risk-service.ts instead (R108 S-34).
+ * Service layer provides typed interfaces and abstracts IPC calls.
+ *
+ * ── DAWN WHALES — Bridge API Risk Module ──────────────────────────────
+ * S-15p1 split: NL Parser + Risk + Risk Config
+ * S-15p2: Zod-derived types replaced all `any` usage
+ */
 
 import type {
   IpcResponse,

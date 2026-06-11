@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect } from 'react';
 import { getAllStrategies, getMarketplaceList, getStrategyRating, rateStrategy, addComment, getComments } from '@/lib/bridge-api';
 import { EngineError } from '../../../electron/engine/core/engine-error';

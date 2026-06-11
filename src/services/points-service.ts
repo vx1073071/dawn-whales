@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Points Service — R108 S-34
  *

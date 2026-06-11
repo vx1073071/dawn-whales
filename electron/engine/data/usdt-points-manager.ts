@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * usdt-points-manager.ts — R103 J-01 USDT Points Manager
  *

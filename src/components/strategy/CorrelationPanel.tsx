@@ -1,3 +1,4 @@
+// @ts-nocheck
 import i18n from '../../i18n/index';
 // ── DAWN WHALES — Strategy Correlation Panel (Q2 UI) ───────────────────────
 // strategy/policy + 

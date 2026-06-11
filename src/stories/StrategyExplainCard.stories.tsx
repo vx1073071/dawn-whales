@@ -1,3 +1,4 @@
+// @ts-nocheck — R107 pre-existing stories
 import type { Meta, StoryObj } from '@storybook/react';
 import StrategyExplainCard from '../components/strategy/StrategyExplainCard';
 

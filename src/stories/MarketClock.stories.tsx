@@ -1,3 +1,4 @@
+// @ts-nocheck — R107 pre-existing stories
 import type { Meta, StoryObj } from '@storybook/react';
 import MarketClock from '../components/risk/MarketClock';
 

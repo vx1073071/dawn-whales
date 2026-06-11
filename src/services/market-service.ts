@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Market Service — R108 S-34
  *

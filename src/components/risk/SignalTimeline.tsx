@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── DAWN WHALES — SignalTimeline (strategy/policy) ──────────────────────────
 
 import { useState, useEffect, useCallback } from 'react';

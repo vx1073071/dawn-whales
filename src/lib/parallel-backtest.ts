@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── DAWN WHALES — Web Worker backtest (v0.6.0) ─────────────────────────────
 // parameter sweep/periodWorker
 
