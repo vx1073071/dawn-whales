@@ -13,8 +13,10 @@ import TimezoneSelector from './TimezoneSelector';
 import CurrencySelector from './CurrencySelector';
 import CreditsHistoryPage from '../billing/CreditsHistoryPage';
 import PointsTopUpPage from '../billing/PointsTopUpPage';
+import CreditsDashboard from '../billing/CreditsDashboard';
+import P2PTransferRecords from '../billing/P2PTransferRecords';
 
-type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'currency' | 'credits' | 'topup' | 'update' | 'info';
+type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'currency' | 'credits' | 'topup' | 'dashboard' | 'p2p' | 'update' | 'info';
 
 interface BrokerItem {
   id: string;
@@ -183,6 +185,8 @@ export default function SettingsPage() {
   { id: 'currency', label: 'settings.currency', icon: '💱' },
   { id: 'credits', label: 'settings.credits', icon: '💰' },
   { id: 'topup', label: 'settings.topUp', icon: '💳' },
+  { id: 'dashboard', label: 'settings.dashboard', icon: '📊' },
+  { id: 'p2p', label: 'settings.p2p', icon: '🤝' },
   { id: 'update', label: 'settings.softwareUpdate', icon: '🔄' },
   { id: 'info', label: 'settings.systemInfo', icon: 'ℹ️' }];
 
@@ -484,6 +488,14 @@ export default function SettingsPage() {
       {activeTab === 'credits' && <CreditsHistoryPage />}
 
       {activeTab === 'topup' && <PointsTopUpPage />}
+
+      {activeTab === 'dashboard' && (
+        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
+          <CreditsDashboard />
+        </div>
+      )}
+
+      {activeTab === 'p2p' && <P2PTransferRecords />}
 
       {activeTab === 'info' &&
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">

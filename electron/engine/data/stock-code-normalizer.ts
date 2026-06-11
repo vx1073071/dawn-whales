@@ -81,17 +81,10 @@ const FUZZY_RULES: FuzzyRule[] = [
   { market: 'JP', pattern: /^\d{4}\.T$/, description: '4-digit.T format → JP' },
 ];
 
-/** Market display names by locale */
-const MARKET_NAMES: Record<MarketCode, Record<string, string>> = {
-  US:  { 'zh-CN': '美股', 'zh-TW': '美股', en: 'NYSE/NASDAQ', ja: '米国株', ko: '미국', fr: 'US', de: 'US', es: 'EE.UU.', ru: 'США', it: 'US', pt: 'EUA' },
-  CN:  { 'zh-CN': 'A股', 'zh-TW': 'A股', en: 'A-Share', ja: '中国株', ko: '중국', fr: 'Chine', de: 'China', es: 'China', ru: 'Китай', it: 'Cina', pt: 'China' },
-  HK:  { 'zh-CN': '港股', 'zh-TW': '港股', en: 'HKEX', ja: '香港株', ko: '홍콩', fr: 'HK', de: 'HK', es: 'HK', ru: 'Гонконг', it: 'HK', pt: 'HK' },
-  JP:  { 'zh-CN': '日股', 'zh-TW': '日股', en: 'TSE', ja: '東証', ko: '일본', fr: 'Japon', de: 'Japan', es: 'Japón', ru: 'Япония', it: 'Giappone', pt: 'Japão' },
-  UK:  { 'zh-CN': '英股', 'zh-TW': '英股', en: 'LSE', ja: '英株', ko: '영국', fr: 'RU', de: 'UK', es: 'RU', ru: 'Великобритания', it: 'UK', pt: 'RU' },
-  EU:  { 'zh-CN': '欧股', 'zh-TW': '歐股', en: 'Euronext', ja: '欧州株', ko: '유럽', fr: 'Europe', de: 'Europa', es: 'Europa', ru: 'Европа', it: 'Europa', pt: 'Europa' },
-  KR:  { 'zh-CN': '韩股', 'zh-TW': '韓股', en: 'KRX', ja: '韓国株', ko: '한국', fr: 'Corée', de: 'Korea', es: 'Corea', ru: 'Корея', it: 'Corea', pt: 'Coreia' },
-  CRYPTO: { 'zh-CN': '加密货币', 'zh-TW': '加密貨幣', en: 'Crypto', ja: '暗号資産', ko: '암호화폐', fr: 'Crypto', de: 'Krypto', es: 'Cripto', ru: 'Крипто', it: 'Cripto', pt: 'Cripto' },
-};
+/** Market display names by locale — externalized to market-names.json */
+import marketNamesData from './market-names.json';
+
+const MARKET_NAMES: Record<MarketCode, Record<string, string>> = marketNamesData;
 
 /** Market prefix for ISO code */
 const MARKET_ISO_PREFIX: Record<MarketCode, string> = {

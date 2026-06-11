@@ -1,6 +1,150 @@
 # DAWN WHALES Changelog
 
 
+## [1.12.0] — v1.12.0 积分结算版 (R102-R104 USDT 积分系统)
+
+> **发布日期**: 2026-06-12 | **版本**: v1.12.0 | **基线**: 6844 tests / 0 fail | TSC 0 | 9 commits
+
+### 总览
+
+v1.12.0 是 Dawn Whales 的**积分手续费结算**里程碑版本，在 v1.11.0 国际化基础上，完整构建了 USDT 积分系统的全闭环：从实时汇率获取→费率计算→原子扣费→自动扣费钩子→对账审计。历时 R102-R104 共 3 轮，5 虾协同交付。
+
+新增 5 个核心引擎模块（共 1081 行），全部集成到现有的交易流水线中，零侵入式设计。积分系统与用户资金完全隔离——用户用券商本地货币交易，平台只按成交额折算 USDT 积分扣手续费。
+
+### 核心架构
+
+```
+用户交易 (HKD/CNY/USD/JPY/EUR/GBP)
+    │
+    ▼
+ExchangeRateEngine (CoinGecko→Binance→static 三级降级链, 60s缓存)
+    │
+    ▼
+FeeCalculator (L1 0.1% / L2 0.02% / L3 0.04% / P2P 0.3%×2 / withdraw 0.1%)
+    │
+    ▼
+TradeFeeHook (onTradeComplete → atomic deduct → retry 3x → dead letter)
+    │
+    ▼
+USDTPointsManager (原子 check→deduct→ledger, 6位精度)
+    │
+    ▼
+ReconciliationEngine (账实核对/汇率异常/总量守恒/防重放)
+```
+
+### Breaking Changes
+
+| 变更 | 影响 | 迁移 |
+|------|------|------|
+| 新增积分系统 | 所有交易完成后自动扣积分手续费 | 用户需在积分钱包中充值 USDT 积分 |
+| 汇率依赖 | CoinGecko free API 网络可达 | 自动降级到 Binance→static，用户无感 |
+| 费率模型 | L1 0.1% → 创作者共享激励 | 已有费用继续适用，积分系统自动同步 |
+
+### 新增模块
+
+| 模块 | 文件 | 行数 | 功能 |
+|------|------|------|------|
+| ExchangeRateEngine | `electron/engine/data/exchange-rate-engine.ts` | 218 | 6种法币→USDT实时汇率，三级降级链，60s缓存 |
+| FeeCalculator | `electron/engine/data/fee-calculator.ts` | 201 | 3级创作者费率+ P2P双收+提现费率，6位精度 |
+| USDTPointsManager | `electron/engine/data/usdt-points-manager.ts` | 181 | 原子扣费/充值/账单，余额不足拒绝 |
+| TradeFeeHook | `electron/engine/data/trade-fee-hook.ts` | 203 | 交易完成自动扣费钩子，3次重试+死信队列 |
+| ReconciliationEngine | `electron/engine/data/reconciliation-engine.ts` | 278 | 账实核对/汇率异常检测/总量守恒/防重放 |
+| **合计** | | **1081** | |
+
+### 安全特性
+
+| 特性 | 机制 | 验证 |
+|------|------|------|
+| 原子扣费 | check→deduct→ledger 串行，余额不足抛 `PointsInsufficientError` | 并发扣费不超余额 ✅ |
+| 操作幂等 | `tradeId` Set 去重，重复 tradeId 自动跳过 | 防重放 ✅ |
+| 总量守恒 | `sum(balances) + sum(fees) = totalSupply` 定期验证 | diff ≤ 0.0001 ✅ |
+| 汇率异常检测 | 单次波动 > 5% → 拒绝使用，自动 fallback | 汇率尖刺防护 ✅ |
+| 账实核对 | ledger 重建 vs 实际余额，差 > 0.0001 → 告警 | 每用户对账 ✅ |
+| 死信机制 | 扣费 3 次重试 (100ms/200ms/400ms) 后仍失败 → 死信队列 | 非阻塞降级 ✅ |
+
+### R102 — 汇率引擎 + 费率计算 (第一轮)
+
+| 虾 | 任务 | 产出 | 状态 |
+|----|------|------|------|
+| JVS | J-01 ExchangeRateEngine + J-02 FeeCalculator | CoinGecko→Binance→static 三级降级链，6市场×3tier 费率 | ✅ |
+| ML | M-01 USDT余额UI + 扣费记录 | 积分余额显示+明细分页 | ✅ |
+| youdao | Q-01 汇率+费率测试 | 45 tests (汇率引擎15+费率计算25+边界5) | ✅ |
+| QClaw | D-01 费率体系文档 | fee-schedule.md (373 行, 13 节) | ✅ |
+| PM | P-01 降级链验证 | TSC 0 + 费率一致验证 | ✅ |
+
+### R103 — 积分系统 + 即时扣费 (第二轮)
+
+| 虾 | 任务 | 产出 | 状态 |
+|----|------|------|------|
+| JVS | J-01 USDTPointsManager + J-02 TradeFeeHook | 原子扣费+自动扣费钩子+重试+死信 | ✅ |
+| ML | M-01 充值页+确认弹窗+结算时间线 | 充值/确认/History Timeline(筛选+分页+CSV) | ✅ |
+| youdao | Q-01 积分系统测试 | 45 tests (积分管理20+扣费钩子15+集成5+边界5) | ✅ |
+| QClaw | D-01 USDT积分API文档 | usdt-points.md (608 行, 11 节) | ✅ |
+| PM | P-01 原子性验证 | 并发扣费不超余额 ✅ | ✅ |
+
+### R104 — E2E + 安全审计 + 最终验收 (收官轮)
+
+| 虾 | 任务 | 产出 | 状态 |
+|----|------|------|------|
+| JVS | J-01 ReconciliationEngine | 对账/汇率异常检测/总量守恒/防重放 (278行, 25 tests) | ✅ |
+| ML | M-01 CreditsDashboard + P2P记录 + 通知中心 | 创作者收益/Dashboard+通知 | ✅ |
+| youdao | Q-01 E2E + 全量回归 | Playwright 10/10 + vitest 6844/0 fail | ✅ |
+| QClaw | D-01 Release Notes + 审计摘要 | CHANGELOG v1.12.0 + v1.12.0-audit.md | ✅ |
+| PM | P-01 v1.12.0 最终验收 | git tag v1.12.0-final | ✅ |
+
+### 升级指南: v1.11.0 → v1.12.0
+
+1. **积分钱包初始化**: 首次启动后自动创建积分钱包，余额为 0
+2. **充值**: 通过积分充值页输入法币金额，系统按实时汇率折算 USDT 积分
+3. **自动扣费**: 无需配置，交易完成后自动从积分余额扣手续费
+4. **费率不变**: 已有费用模型不变，积分系统与现有交易流水完全兼容
+5. **汇率备份**: CoinGecko 不可用时自动切换至 Binance，无需手动干预
+6. **安全审计**: 可通过 `docs/quality/v1.12.0-audit.md` 了解完整安全审计结果
+
+### ADR (架构决策记录)
+
+- **ADR-012**: USDT 积分不与链上资产挂钩，为纯平台内部积分（避免上链复杂度和监管风险）
+- **ADR-013**: 积分扣费采用非侵入式钩子模式，挂载在现有 `trade-executor` pipeline（避免修改核心交易逻辑）
+- **ADR-014**: 汇率降级链 CoinGecko→Binance→static，static 为 2026-06 人工维护汇率（更新周期：月度）
+
+### Known Issues
+
+| 问题 | 严重度 | 状态 | 计划 |
+|------|--------|------|------|
+| static 汇率月度更新需人工 | 低 | 已知 | R105 增加汇率自动抓取 cron |
+| 死信队列需手动处理 | 低 | 已知 | R105 Admin 增加死信恢复面板 |
+| CoinGecko free API 有 RPS 限制 | 低 | 已处理 | 60s缓存+Binance fallback |
+
+### R102-R104 Commit Log
+
+| Commit | 轮次 | 作者 | 描述 |
+|--------|------|------|------|
+| `9deb8961` | R102 | JVS | J-01 ExchangeRateEngine + J-02 FeeCalculator |
+| `4bb3bd7a` | R102 | QClaw | D-01 fee-schedule.md (373L) + fix ML TS errors |
+| `efe58cf0` | R102 | youdao | Q-01 rate+fee test gallery (45 tests) |
+| `0f28278f` | R103 | JVS | J-01 USDTPointsManager + J-02 TradeFeeHook |
+| `92128937` | R103 | youdao | Q-01 points system test gallery (45 tests) |
+| `134bbd8d` | R103 | QClaw | D-01 usdt-points.md (608L) + fix ML TS errors |
+| `38e573d4` | R103 | ML | M-01 Points top-up + confirmation + settlement timeline |
+| `d88b9826` | R104 | JVS | J-01 ReconciliationEngine (278L, 25 tests) |
+| `205345ac` | R104 | youdao | Q-01 E2E 10/10 + full regression 6844/0 fail |
+
+### 版本元数据
+
+| 字段 | 值 |
+|------|-----|
+| 版本号 | v1.12.0 |
+| 发布日期 | 2026-06-12 |
+| 轮次 | R102-R104 (3 轮) |
+| Commits | 9 |
+| 新增引擎 | 5 模块, 1081 行 |
+| 测试基线 | 6844 passed / 0 failed |
+| TSC | 0 errors |
+| 新文档 | 3 份 (fee-schedule.md, usdt-points.md, v1.12.0-audit.md) |
+| 5 虾 | JVS / ML / youdao / QClaw / PM — 全员交付 |
+
+---
+
 ## [1.11.0] — v1.11.0 国际版 (R97-R100 国际化)
 
 > **发布日期**: 2026-06-12 | **版本**: v1.11.0 | **基线**: 705+ commits | 11 语言 | 7 市场完整覆盖
