@@ -521,10 +521,20 @@ export function generateSummaryReport(): string {
     } catch (_e: unknown) { return []; }
   })();
 
-  const now = new Date().toLocaleString('zh-CNi18n.t('dataExporter.k1')\n')}
+  const now = new Date().toLocaleString('zh-CN') + i18n.t('dataExporter.k1');
+
+  return `# ${i18n.t('dataExporter.k67')}
+
+${i18n.t('dataExporter.k17')}: ${strategyCount}
+${i18n.t('dataExporter.k28')}: ${backtestCount}
+${i18n.t('dataExporter.k15')}: ${tradeCount}
+${i18n.t('dataExporter.k54')}: ${filledTrades}
+Total PnL: ${totalPnl}
+Total Commission: ${totalCommission}
 
 ---
 *Dawn Whales Data Exporter v1.0*
+${now}
 `;
 }
 

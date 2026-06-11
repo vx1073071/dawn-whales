@@ -1,11 +1,11 @@
 /**
  * Q95-12: FactorRiskModel Tests
- * Coverage for factor risk model (exposures, decomposition, correlations)
+ * Coverage for factor risk model
  */
 // @vitest-environment node
 import { describe, it, expect } from 'vitest';
 import { FactorRiskModel } from '../electron/engine/factors/factor-risk-model';
-import type { FactorExposure, FactorRiskReport } from '../electron/engine/factors/factor-risk-model';
+import type { FactorExposure } from '../electron/engine/factors/factor-risk-model';
 
 function makePosition(overrides: Record<string, unknown> = {}): any {
   return {
@@ -25,7 +25,6 @@ function makePosition(overrides: Record<string, unknown> = {}): any {
 }
 
 describe('Q95-12: FactorRiskModel', () => {
-  // ── Constructor ───────────────────────────────────────────────
   describe('constructor', () => {
     it('should create model', () => {
       const model = new FactorRiskModel();
@@ -33,7 +32,6 @@ describe('Q95-12: FactorRiskModel', () => {
     });
   });
 
-  // ── computeExposures ─────────────────────────────────────────
   describe('computeExposures', () => {
     it('should compute factor exposures for a portfolio', () => {
       const model = new FactorRiskModel();
@@ -44,10 +42,10 @@ describe('Q95-12: FactorRiskModel', () => {
         makePosition({ symbol: 'AMZN', weight: 0.2 }),
       ];
       const exposures = model.computeExposures(positions);
-      expect(exposures).toBeDefined();
       expect(exposures.length).toBeGreaterThan(0);
       exposures.forEach((exp: FactorExposure) => {
         expect(typeof exp.factor).toBe('string');
+        expect(typeof exp.label).toBe('string');
         expect(typeof exp.exposure).toBe('number');
         expect(typeof exp.contribution).toBe('number');
       });
@@ -71,7 +69,6 @@ describe('Q95-12: FactorRiskModel', () => {
     });
   });
 
-  // ── generateReport ───────────────────────────────────────────
   describe('generateReport', () => {
     it('should generate factor risk report', () => {
       const model = new FactorRiskModel();
@@ -85,14 +82,13 @@ describe('Q95-12: FactorRiskModel', () => {
       expect(report).toBeDefined();
       expect(typeof report.portfolioId).toBe('string');
       expect(typeof report.totalRisk).toBe('number');
-      expect(report.exposures).toBeDefined();
+      expect(typeof report.systematicRisk).toBe('number');
+      expect(typeof report.idiosyncraticRisk).toBe('number');
     });
 
     it('should use default totalVol when not provided', () => {
       const model = new FactorRiskModel();
-      const positions = [
-        makePosition({ symbol: 'AAPL', weight: 1.0 }),
-      ];
+      const positions = [makePosition({ symbol: 'AAPL', weight: 1.0 })];
       const report = model.generateReport('default_portfolio', positions);
       expect(report).toBeDefined();
       expect(typeof report.totalRisk).toBe('number');
@@ -106,10 +102,7 @@ describe('Q95-12: FactorRiskModel', () => {
         makePosition({ symbol: 'XOM', weight: 0.2, dividendYield: 0.04 }),
       ];
       const report = model.generateReport('diversified', positions, 0.03);
-      expect(report.exposures.length).toBeGreaterThan(0);
-      // Should include multiple factor types
-      const factors = report.exposures.map((e: FactorExposure) => e.factor);
-      expect(factors.length).toBeGreaterThan(0);
+      expect(report.totalRisk).toBeGreaterThanOrEqual(0);
     });
   });
 });

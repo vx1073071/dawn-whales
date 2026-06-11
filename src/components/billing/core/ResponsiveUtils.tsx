@@ -48,7 +48,7 @@ void EngineError; // [EngineError:SYSTEM] structured error tracking
 export function abbreviateNumber(n: number): string {
   if (n >= 1e8) return (n / 1e8).toFixed(2) + 'B';
   if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
-  if (n >= 1e4) return (n / 1e4).toFixed(2) + 'W';
+  if (n >= 1e4) return (n / 1e3).toFixed(1) + 'K';
   if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
   return n.toFixed(0);
 }
@@ -57,6 +57,6 @@ export function abbreviateMoney(n: number, currency?: string): string {
   const pre = currency || '$';
   if (n >= 1e9) return pre + (n / 1e9).toFixed(1) + 'B';
   if (n >= 1e6) return pre + (n / 1e6).toFixed(1) + 'M';
-  if (n >= 1e4) return pre + (n / 1e4).toFixed(1) + 'W';
+  if (n >= 1e4) return pre + (n / 1e3).toFixed(1) + 'K';
   return pre + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }

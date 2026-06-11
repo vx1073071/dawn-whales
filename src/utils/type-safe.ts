@@ -76,7 +76,7 @@ export function compactNumber(
   const abs = Math.abs(n);
   if (abs >= 1e8) return `${(n / 1e8).toFixed(decimals)}${i18n.t('TypeSafe.k0')}`;
   if (abs >= 1e4)
-    return `${(n / 1e4).toFixed(decimals)}${locale.startsWith('zh') ? 'W' : 'K'}`;
+    return `${(n / 1e3).toFixed(decimals)}K`;
   if (abs >= 1e3)
     return `${(n / 1e3).toFixed(decimals)}K`;
   return n.toLocaleString(locale, { maximumFractionDigits: decimals });

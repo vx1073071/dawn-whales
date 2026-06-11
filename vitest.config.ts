@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      'electron': path.resolve(__dirname, 'tests/helpers/electron-mock.ts'),
       'electron-log': path.resolve(__dirname, 'tests/helpers/electron-log-mock.ts'),
       '@': path.resolve(__dirname, './src'),
       'react': path.resolve(__dirname, './node_modules/react'),
