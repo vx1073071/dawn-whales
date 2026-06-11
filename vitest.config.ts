@@ -75,6 +75,8 @@ export default defineConfig({
       'tests/q71-01-r70-wrapup-ga-final.test.ts',
       'tests/q71-02-regression-gate-5600.test.ts',
       'tests/q75-03-regression-gate-5800.test.ts',
+      // [R95.1] Circular dependency BacktestEngineCore (pre-existing)
+      'tests/q95-09-backtest-engine-parallel.test.ts',
       // [R92] Heavy / custom-runner files
       'tests/t90-load-tester.test.ts',
       'tests/multi-source-aggregator.test.ts',
