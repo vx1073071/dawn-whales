@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * Q-57-01: 4 Agent Real Engine Tests (R57 v19 P0)
  * IAnalyst 接口契约 + 4 Agent 单元 + orchestrator 集成
@@ -32,7 +32,7 @@ import {
   AgentOrchestrator,
   getAgentOrchestrator,
   resetAgentOrchestrator,
-} from '../electron/engine/agent-orchestrator';
+} from '../electron/engine/agents/agent-orchestrator';
 import {
   getMultiLLMRouter,
   resetMultiLLMRouter,

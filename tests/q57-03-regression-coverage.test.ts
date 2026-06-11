@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * Q-57-03: Full Regression + Coverage Supplement (R57 v19 P0)
  * 5轮全量回归 0 fail + 覆盖率缺口补充
@@ -27,7 +27,7 @@ import {
   AgentOrchestrator,
   getAgentOrchestrator,
   resetAgentOrchestrator,
-} from '../electron/engine/agent-orchestrator';
+} from '../electron/engine/agents/agent-orchestrator';
 import {
   getMultiLLMRouter,
   resetMultiLLMRouter,

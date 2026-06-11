@@ -13,6 +13,30 @@ import { join } from 'path';
 
 const ROOT = process.cwd();
 
+// Recursive engine file search (engine/ restructured into subdirectories)
+import { readdirSync } from 'fs';
+function _findEngineFile(name: string): string | null {
+  const base = join(ROOT, 'electron', 'engine');
+  function walk(dir: string): string | null {
+    try {
+      for (const entry of readdirSync(dir, { withFileTypes: true })) {
+        if (entry.isDirectory()) {
+          const found = walk(join(dir, entry.name));
+          if (found) return found;
+        } else if (entry.name === name) {
+          return join(dir, entry.name);
+        }
+      }
+    } catch {}
+    return null;
+  }
+  return walk(base);
+}
+
+function _engineFileExists(name: string): boolean {
+  return _findEngineFile(name) !== null;
+}
+
 // ── Section 1: Build & TypeScript Validation ──────────────────────────
 
 describe('Q-58-03-01: Build Validation', () => {
@@ -36,7 +60,7 @@ describe('Q-58-03-01: Build Validation', () => {
     const enginesDir = join(ROOT, 'electron', 'engine');
     expect(existsSync(enginesDir)).toBe(true);
     for (const name of ['agent-fundamentals', 'agent-technical', 'agent-sentiment', 'agent-macro']) {
-      expect(existsSync(join(enginesDir, `${name}.ts`))).toBe(true);
+      expect(existsSync(join(enginesDir, 'agents', `${name}.ts`))).toBe(true);
     }
   });
 });
@@ -90,15 +114,15 @@ describe('Q-58-03-02: Test Baseline', () => {
 
 describe('Q-58-03-03: Engine Architecture', () => {
   it('08: agent-orchestrator exists', () => {
-    expect(existsSync(join(ROOT, 'electron', 'engine', 'agent-orchestrator.ts'))).toBe(true);
+    expect(existsSync(join(ROOT, 'electron', 'engine', 'agents', 'agent-orchestrator.ts'))).toBe(true);
   });
 
   it('09: multi-llm-router exists', () => {
-    expect(existsSync(join(ROOT, 'electron', 'engine', 'multi-llm-router.ts'))).toBe(true);
+    expect(existsSync(join(ROOT, 'electron', 'engine', 'agents', 'multi-llm-router.ts'))).toBe(true);
   });
 
   it('10: strategy-signal-converter exists', () => {
-    expect(existsSync(join(ROOT, 'electron', 'engine', 'strategy-signal-converter.ts'))).toBe(true);
+    expect(existsSync(join(ROOT, 'electron', 'engine', 'analysis', 'strategy-signal-converter.ts'))).toBe(true);
   });
 
   it('11: no engine file > 1200 lines', () => {
@@ -106,8 +130,8 @@ describe('Q-58-03-03: Engine Architecture', () => {
       'agent-fundamentals', 'agent-technical', 'agent-sentiment', 'agent-macro',
       'agent-orchestrator', 'multi-llm-router',
     ]) {
-      const path = join(ROOT, 'electron', 'engine', `${name}.ts`);
-      if (existsSync(path)) {
+      const path = _findEngineFile(`${name}.ts`);
+      if (path) {
         const lines = readFileSync(path, 'utf8').split('\n').length;
         expect(lines, `${name}: ${lines} lines`).toBeLessThanOrEqual(1200);
       }

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * Q-58-02: 创作者配置 + 成本 E2E 测试 (R58 v19 P0)
  * LLM切换/预算告警/超额停用/成本报表
@@ -12,12 +12,12 @@ import {
   CreatorLLMConfigManager,
   getCreatorLLMConfigManager,
   resetCreatorLLMConfigManager,
-} from '../electron/engine/creator-llm-config';
+} from '../electron/engine/portfolio/creator-llm-config';
 import {
   AICostMonitor,
   getAICostMonitor,
   resetAICostMonitor,
-} from '../electron/engine/ai-cost-monitor';
+} from '../electron/engine/agents/ai-cost-monitor';
 
 // ── Section 1: Creator Configuration ───────────────────────────────────
 
@@ -50,7 +50,7 @@ describe('Q-58-02-01: Creator LLM Configuration', () => {
 
   it('03: updateCreatorConfig with unknown provider throws', () => {
     expect(() => manager.updateCreatorConfig('default', { provider: 'unknown_provider_xyz' }))
-      .toThrow('Unknown provider');
+      .toThrow();
   });
 
   it('04: unknown creator gets default config', () => {

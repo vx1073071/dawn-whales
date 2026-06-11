@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * Q-56-03: E2E Four Agent Collaboration Flow Tests (R56 v18 P1)
  * 创作者触发 → 4 Agent → 策略生成 完整流 + 异常场景
@@ -74,7 +74,7 @@ function mockResult(symbol: string, confidence = 82, cost = 0.015): SessionResul
 
 let mockSessionCounter = 0;
 
-vi.mock('../electron/engine/agent-orchestrator', () => {
+vi.mock('../electron/engine/agents/agent-orchestrator', () => {
   const mockRouter = {
     providerCount: 11,
     recordCacheHit: () => {},
@@ -120,7 +120,7 @@ vi.mock('../electron/engine/agent-orchestrator', () => {
 // ── Section 1: Happy Path E2E Flow ──────────────────────────────────────
 
 describe('Q-56-03-01: Happy Path E2E Flow', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();
@@ -173,7 +173,7 @@ describe('Q-56-03-01: Happy Path E2E Flow', () => {
 // ── Section 2: Creator Scenarios ────────────────────────────────────────
 
 describe('Q-56-03-02: Creator Scenarios', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();
@@ -212,7 +212,7 @@ describe('Q-56-03-02: Creator Scenarios', () => {
 // ── Section 3: Cache Hit Rate in E2E ───────────────────────────────────
 
 describe('Q-56-03-03: Cache Hit Rate in E2E (≥90% Target)', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
   let router: MultiLLMRouter;
 
   beforeEach(() => {
@@ -257,7 +257,7 @@ describe('Q-56-03-03: Cache Hit Rate in E2E (≥90% Target)', () => {
 // ── Section 4: Multi-Asset Flow ──────────────────────────────────────────
 
 describe('Q-56-03-04: Multi-Asset Flow', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();
@@ -293,7 +293,7 @@ describe('Q-56-03-04: Multi-Asset Flow', () => {
 // ── Section 5: Exception Scenarios ───────────────────────────────────────
 
 describe('Q-56-03-05: Exception Scenarios', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();
@@ -342,7 +342,7 @@ describe('Q-56-03-05: Exception Scenarios', () => {
 // ── Section 6: Data Consistency ───────────────────────────────────────────
 
 describe('Q-56-03-06: Data Consistency', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();

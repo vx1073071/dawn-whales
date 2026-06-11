@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-56-01: Agent Orchestrator Tests (20+ tests)
  */
@@ -8,7 +8,7 @@ import {
   getAgentOrchestrator,
   resetAgentOrchestrator,
   type AgentVote,
-} from '../electron/engine/agent-orchestrator';
+} from '../electron/engine/agents/agent-orchestrator';
 
 // ── Section 1: Connection Management ───────────────────────────────────────
 

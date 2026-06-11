@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * Q-56-01: Four Agent Collaboration Tests (R56 v18 P0)
  * 4 Agent 协作测试套件 — Creator / Market / Strategy / Executor
@@ -69,7 +69,7 @@ function mkResult(symbol: string, confidence = 82): SessionResult {
 
 // ── Mock ─────────────────────────────────────────────────────────────────
 
-vi.mock('../electron/engine/agent-orchestrator', () => {
+vi.mock('../electron/engine/agents/agent-orchestrator', () => {
   const sessions = new Map<string, SessionResult>();
   let mockConnected = false;
 
@@ -107,7 +107,7 @@ vi.mock('../electron/engine/agent-orchestrator', () => {
 // ── Section 1: Individual Agent Unit Tests ─────────────────────────────────
 
 describe('Q-56-01-01: Creator Agent (Fundamentals)', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();
@@ -149,7 +149,7 @@ describe('Q-56-01-01: Creator Agent (Fundamentals)', () => {
 });
 
 describe('Q-56-01-02: Market Agent (Sentiment)', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();
@@ -179,7 +179,7 @@ describe('Q-56-01-02: Market Agent (Sentiment)', () => {
 });
 
 describe('Q-56-01-03: Strategy Agent (News)', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();
@@ -202,7 +202,7 @@ describe('Q-56-01-03: Strategy Agent (News)', () => {
 });
 
 describe('Q-56-01-04: Executor Agent (Technical)', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();
@@ -232,7 +232,7 @@ describe('Q-56-01-04: Executor Agent (Technical)', () => {
 // ── Section 2: Interface Contract Tests ────────────────────────────────────
 
 describe('Q-56-01-05: Agent Interface Contract', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();
@@ -290,7 +290,7 @@ describe('Q-56-01-05: Agent Interface Contract', () => {
 // ── Section 3: Orchestration Tests ────────────────────────────────────────
 
 describe('Q-56-01-06: Orchestration', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();
@@ -326,7 +326,7 @@ describe('Q-56-01-06: Orchestration', () => {
 });
 
 describe('Q-56-01-07: Cache Hit Rate Validation (≥90% Target)', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();
@@ -356,7 +356,7 @@ describe('Q-56-01-07: Cache Hit Rate Validation (≥90% Target)', () => {
 // ── Section 4: Error Handling ─────────────────────────────────────────────
 
 describe('Q-56-01-08: Error Handling', () => {
-  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agent-orchestrator')>['getAgentOrchestrator']>;
+  let orch: ReturnType<typeof vi.mocked<typeof import('../electron/engine/agents/agent-orchestrator')>['getAgentOrchestrator']>;
 
   beforeEach(() => {
     resetAgentOrchestrator();

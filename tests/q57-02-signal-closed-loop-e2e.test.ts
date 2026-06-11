@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * Q-57-02: Signal Closed Loop E2E Tests (R57 v19 P0)
  * AI分析 → 信号 → 策略 → 执行 → 盈亏 完整流
@@ -31,7 +31,7 @@ import {
   AgentOrchestrator,
   getAgentOrchestrator,
   resetAgentOrchestrator,
-} from '../electron/engine/agent-orchestrator';
+} from '../electron/engine/agents/agent-orchestrator';
 import {
   getMultiLLMRouter,
   resetMultiLLMRouter,
