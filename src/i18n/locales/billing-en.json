@@ -63,5 +63,13 @@
     "flagship_4": "99% cache discount",
     "flagship_5": "All dashboards",
     "flagship_6": "Export reports"
-  }
+  },
+  "LandingPageV18.v111_1": "Global Timezone",
+  "LandingPageV18.v111_2": "7-market trading clock with DST-safe timezone conversion. Live status for US/HK/CN/JP/UK/EU/CRYPTO.",
+  "LandingPageV18.v111_3": "Multi-Currency",
+  "LandingPageV18.v111_4": "8 currencies with locale-aware formatting and precision by currency (JPY 0dp, USD 2dp, crypto 8dp).",
+  "LandingPageV18.v111_5": "Smart Number Format",
+  "LandingPageV18.v111_6": "Locale-aware volume units, percentage formatting, and compact display.",
+  "LandingPageV18.v111_7": "11 Languages",
+  "LandingPageV18.v111_8": "Full i18n: zh-CN/HK/TW, en, ja, ko, fr, it, de, es, ru. Zero CJK in entire codebase."
 }

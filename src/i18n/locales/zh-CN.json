@@ -6034,5 +6034,13 @@
   "TradingCalendarView.k7": "距",
   "TradingCalendarView.k8": "开盘",
   "settings.timezone": "时区",
-  "settings.currency": "货币"
+  "settings.currency": "货币",
+  "LandingPageV18.v111_1": "全球时区",
+  "LandingPageV18.v111_2": "7市场交易时钟，支持DST夏令时自动转换。美/港/中/日/英/欧/加密货币实时状态。",
+  "LandingPageV18.v111_3": "多币种显示",
+  "LandingPageV18.v111_4": "8种货币，按语言格式化，精度自适应（日元整数/USD 2位/加密 8位）。",
+  "LandingPageV18.v111_5": "智能数字格式",
+  "LandingPageV18.v111_6": "按语言自适应的成交量单位（万/亿/K/M/B）、百分比和紧凑显示。",
+  "LandingPageV18.v111_7": "11种语言",
+  "LandingPageV18.v111_8": "完整国际化：简/繁/英/日/韩/法/意/德/西/俄。全代码零CJK。"
 }

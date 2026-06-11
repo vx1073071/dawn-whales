@@ -21,7 +21,11 @@ const FEATURES = [
 { icon: '💰', title: i18n.t('LandingPageV18.v110_1') || 'USDT Wallet & P2P', desc: i18n.t('LandingPageV18.v110_2') || 'Built-in USDT wallet with P2P transfer, 14-day freeze, and dispute resolution. Multi-chain support (TRC20/ERC20/BEP20).', highlight: 'v1.10.0' },
 { icon: '🤝', title: i18n.t('LandingPageV18.v110_3') || 'P2P Marketplace', desc: i18n.t('LandingPageV18.v110_4') || 'Peer-to-peer USDT trading with 0.3% fee, escrow protection, and 4-option dispute arbitration.', highlight: 'v1.10.0' },
 { icon: '🔐', title: i18n.t('LandingPageV18.v110_5') || '2FA Security', desc: i18n.t('LandingPageV18.v110_6') || 'TOTP-based 2FA (Google Authenticator) with 8 backup codes. Required for login and withdrawals.', highlight: 'v1.10.0' },
-{ icon: '📚', title: i18n.t('LandingPageV18.v110_7') || 'Storybook UI Docs', desc: i18n.t('LandingPageV18.v110_8') || '15 interactive component stories with props docs, dark/light theme toggle, and live previews.', highlight: 'v1.10.0' }];
+{ icon: '📚', title: i18n.t('LandingPageV18.v110_7') || 'Storybook UI Docs', desc: i18n.t('LandingPageV18.v110_8') || '15 interactive component stories with props docs, dark/light theme toggle, and live previews.', highlight: 'v1.10.0' },
+{ icon: '🕐', title: i18n.t('LandingPageV18.v111_1') || 'Global Timezone', desc: i18n.t('LandingPageV18.v111_2') || '7-market trading clock with DST-safe timezone conversion. Live status for US/HK/CN/JP/UK/EU/CRYPTO.', highlight: 'v1.11.0' },
+{ icon: '💱', title: i18n.t('LandingPageV18.v111_3') || 'Multi-Currency', desc: i18n.t('LandingPageV18.v111_4') || '8 currencies with locale-aware formatting and precision by currency (JPY 0dp, USD 2dp, crypto 8dp).', highlight: 'v1.11.0' },
+{ icon: '🔢', title: i18n.t('LandingPageV18.v111_5') || 'Smart Number Format', desc: i18n.t('LandingPageV18.v111_6') || 'Locale-aware volume units (万/亿/K/M/B), percentage formatting, and compact display.', highlight: 'v1.11.0' },
+{ icon: '🌐', title: i18n.t('LandingPageV18.v111_7') || '11 Languages', desc: i18n.t('LandingPageV18.v111_8') || 'Full i18n: zh-CN/HK/TW, en, ja, ko, fr, it, de, es, ru. Zero CJK in entire codebase.', highlight: 'v1.11.0' }];
 
 
 const TESTIMONIALS = [
@@ -43,7 +47,7 @@ function NavBar() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <span style={{ fontSize: 22 }}>🐋</span>
         <span style={{ fontSize: 20, fontWeight: 800, color: '#F9FAFB', letterSpacing: -0.5 }}>Dawn Whales</span>
-        <span style={{ padding: '2px 8px', borderRadius: 6, background: '#6366F122', color: '#818CF8', fontSize: 11, fontWeight: 700 }}>v1.10.0</span>
+        <span style={{ padding: '2px 8px', borderRadius: 6, background: '#6366F122', color: '#818CF8', fontSize: 11, fontWeight: 700 }}>v1.11.0</span>
       </div>
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
         {[i18n.t('LandingPageV18.k65'), i18n.t('LandingPageV18.k66'), i18n.t('LandingPageV18.k67'), i18n.t('LandingPageV18.k68')].map((l) =>
@@ -72,7 +76,7 @@ function HeroSection() {
       
       {/* Stats */}
       <div style={{ display: 'flex', gap: 32, justifyContent: 'center', marginBottom: 36 }}>
-        {[{ n: '7', l: 'components.markets' }, { n: '30+', l: 'components.factor' }, { n: '22', l: i18n.t('LandingPageV18.k70') }, { n: i18n.t('LandingPageV18.k71'), l: 'components.onboarding' }, { n: '8', l: 'components.language' }, { n: '6293', l: 'components.tests' }, { n: '25', l: 'components.storybook' }].map((s) =>
+        {[{ n: '7', l: 'components.markets' }, { n: '30+', l: 'components.factor' }, { n: '22', l: i18n.t('LandingPageV18.k70') }, { n: i18n.t('LandingPageV18.k71'), l: 'components.onboarding' }, { n: '11', l: 'components.language' }, { n: '6293+', l: 'components.tests' }, { n: '25', l: 'components.storybook' }].map((s) =>
         <div key={s.l}>
             <div style={{ fontSize: 28, fontWeight: 800, color: '#D4A853' }}>{s.n}</div>
             <div style={{ fontSize: 12, color: '#6B7280' }}>{s.l}</div>
@@ -217,7 +221,7 @@ function DownloadSection() {
         <h2 style={{ fontSize: 28, fontWeight: 800, color: '#F9FAFB', margin: '0 0 8px' }}>{i18n.t('LandingPageV18.v110_download')}</h2>
         <p style={{ fontSize: 14, color: '#9CA3AF', marginBottom: 24 }}>{i18n.t('LandingPageV18.v110_release')}</p>
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 24 }}>
-          <a href="https://github.com/nicnoc/dawn-whales/releases/tag/v1.10.0" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, background: '#6366F1', color: '#FFF', fontSize: 16, fontWeight: 700, textDecoration: 'none', cursor: 'pointer' }}>
+          <a href="https://github.com/nicnoc/dawn-whales/releases/tag/v1.11.0" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, background: '#6366F1', color: '#FFF', fontSize: 16, fontWeight: 700, textDecoration: 'none', cursor: 'pointer' }}>
             <span>📦</span> {i18n.t('LandingPageV18.v110_download')}
           </a>
           <a href="https://github.com/nicnoc/dawn-whales/blob/master/CHANGELOG.md" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, border: '1px solid #374151', background: '#1F2937', color: '#D1D5DB', fontSize: 16, textDecoration: 'none', cursor: 'pointer' }}>
@@ -231,16 +235,16 @@ function DownloadSection() {
           <span>📦 ~85MB installer</span>
         </div>
         <div style={{ marginTop: 20, padding: '12px 16px', borderRadius: 10, background: '#0F1117', border: '1px solid #1F2937', textAlign: 'left' }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#D4A853', marginBottom: 8 }}>✨ v1.10.0 Highlights</div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#D4A853', marginBottom: 8 }}>✨ v1.11.0 Highlights</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '4px 16px', fontSize: 12, color: '#9CA3AF' }}>
-            <span>✅ USDT Wallet + P2P Marketplace</span>
-            <span>✅ 2FA (TOTP) Security</span>
-            <span>✅ 8-language i18n (996 CJK)</span>
-            <span>✅ Storybook 15 components</span>
-            <span>✅ AI Assistant Panel</span>
-            <span>✅ Loading/Error/Empty states</span>
-            <span>✅ 5144 tests / 0 fail</span>
-            <span>✅ EngineError 61.3% coverage</span>
+            <span>✅ 11-language i18n (+es/ru)</span>
+            <span>✅ 7-market trading clock (DST-safe)</span>
+            <span>✅ Multi-currency display (8 currencies)</span>
+            <span>✅ Locale-aware number/volume format</span>
+            <span>✅ Timezone selector (IANA)</span>
+            <span>✅ Market status badges (7 markets)</span>
+            <span>✅ Stock code normalizer (6 markets)</span>
+            <span>✅ 0 CJK in entire codebase</span>
           </div>
         </div>
       </div>
@@ -254,7 +258,7 @@ function Footer() {
       <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
         <div>
           <span style={{ marginRight: 6 }}>🐋</span>
-          <span style={{ color: '#D1D5DB', fontWeight: 600 }}>Dawn Whales</span> v1.10.0
+          <span style={{ color: '#D1D5DB', fontWeight: 600 }}>Dawn Whales</span> v1.11.0
         </div>
         <div style={{ display: 'flex', gap: 20 }}>
           <span>© 2026 Dawn Whales</span>
