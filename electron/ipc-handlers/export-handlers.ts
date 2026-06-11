@@ -12,7 +12,7 @@ import {
   BatchExportRequest,
 } from '../engine/data/data-exporter';
 import log from 'electron-log';
-import i18n from '../../src/i18n';
+import i18n from '../i18n/main-i18n';
 
 export function registerExportHandlers() {
 

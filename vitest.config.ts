@@ -50,7 +50,7 @@ export default defineConfig({
       // [R92-QClaw] Renamed to .skip.ts (no longer discovered by vitest)
 
       // [R92] 3 unfixable files
-      'tests/q35-trading-components.test.tsx',     // requires @testing-library/react
+      'tests/src/components/q35-trading-components.test.tsx',     // requires @testing-library/react
       'tests/benchmark-engines.test.ts',           // hangs vitest (heavy benchmark)
       'tests/ws-backfill.test.ts',                 // requires live WS server
       // [R92] Engine-level bugs (NL parser i18n regression)
@@ -85,8 +85,8 @@ export default defineConfig({
       // [R92-youdao] i18n migration corruption in engine source files (15 suites)
       'tests/data-exporter.test.ts',
       'tests/jvs-44-02-data-export.test.ts',
-      'tests/integration-full-pipeline.test.ts',
-      'tests/jvs-37-ipc-validation.test.ts',
+      'tests/e2e/integration-full-pipeline.test.ts',
+      'tests/electron/engine/core/jvs-37-ipc-validation.test.ts',
       'tests/jvs-42-01-multi-account-adapter.test.ts',
       'tests/jvs-44-01-ai-report.test.ts',
       'tests/jvs-61-01-multi-market-broker.test.ts',
@@ -115,7 +115,7 @@ export default defineConfig({
       // [R96] PM R95 date-exporter tests (pre-existing async/mock issues)
       'tests/electron/engine/data/r95-data-exporter.test.ts',
       // [R96] Q78 P2P test has 14 failures in full suite (pre-existing)
-      'tests/q78-01-three-engine-tests.test.ts',
+      'tests/electron/engine/core/q78-01-three-engine-tests.test.ts',
       // [R92-youdao] Gate-check / aspirational tests renamed to .skip.ts
     ],
     coverage: {

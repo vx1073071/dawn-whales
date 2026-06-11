@@ -9,7 +9,7 @@
 // 4. interface/API，strategy/policy
 
 import log from 'electron-log';
-import i18n from '../../src/i18n';
+import i18n from '../i18n/main-i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

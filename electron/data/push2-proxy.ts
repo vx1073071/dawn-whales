@@ -10,7 +10,7 @@ import http from 'http';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { httpGet } from '../utils/http';
-import i18n from '../../src/i18n';
+import i18n from '../i18n/main-i18n';
 
 const execAsync = promisify(exec);
 

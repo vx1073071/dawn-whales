@@ -11,7 +11,7 @@ import { exec } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { httpGet } from '../utils/http';
-import i18n from '../../src/i18n';
+import i18n from '../i18n/main-i18n';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

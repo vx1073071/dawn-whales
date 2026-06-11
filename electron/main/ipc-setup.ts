@@ -1268,4 +1268,14 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   (globalThis as any).__ipcHardenedHandle = hardenedHandle;
 
   log.info('[IPC] R91 hardening layer active: timeout + reentry guard + health tracking + EngineError wrapping');
+
+  // ── R107 S-28: Schema Coverage Validation ──────────────────────────
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { IPC_SCHEMA_COVERAGE, getCoverageStats } = require('../ipc-schema-coverage');
+    const stats = getCoverageStats();
+    log.info(`[IPC Schema] Coverage: ${stats.covered}/${stats.total} (${stats.coverageRate}), ${stats.uncovered - stats.exemptNoParams - stats.exemptIdOnly - stats.exemptEngine} truly missing`);
+  } catch (e) {
+    log.warn('[IPC Schema] Could not load coverage registry:', e);
+  }
 }

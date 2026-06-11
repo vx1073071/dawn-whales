@@ -5,7 +5,7 @@ import { ipcMain, dialog, BrowserWindow } from 'electron';
 import { EngineError } from '../engine/core/engine-error';
 import { PreferencesManager } from '../engine/analysis/user-preferences';
 import log from 'electron-log';
-import i18n from '../../src/i18n';
+import i18n from '../i18n/main-i18n';
 
 let prefsManager: PreferencesManager | null = null;
 

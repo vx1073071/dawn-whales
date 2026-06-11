@@ -1,6 +1,6 @@
 // ── Window Creation ────────────────────────────────────────────────────────
 import i18n from '../../src/i18n';
-import { session } from 'electron';
+import { session, app } from 'electron';
 
 /**
  * Content-Security-Policy for Electron renderer.
@@ -12,9 +12,13 @@ import { session } from 'electron';
  * - font-src 'self' data:: allow embedded fonts
  * - frame-src 'none': no iframes for security
  */
+const isProduction = app.isPackaged || process.env.NODE_ENV === 'production';
+
 const CSP_POLICY = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  isProduction
+    ? "script-src 'self' 'unsafe-inline'"       // Production: no unsafe-eval
+    : "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Dev: Vite HMR needs eval
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "connect-src 'self' ws://127.0.0.1:* wss://* http://127.0.0.1:* https://*",

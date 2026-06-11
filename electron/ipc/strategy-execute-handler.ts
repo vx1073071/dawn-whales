@@ -14,7 +14,7 @@ import { StrategyEngine } from '../engine/analysis/strategy-engine';
 import { RiskEngine } from '../engine/risk/risk-engine';
 import { BacktestEngine } from '../engine/backtest/backtest-engine';
 import log from 'electron-log';
-import i18n from '../../src/i18n';
+import i18n from '../i18n/main-i18n';
 import { EngineError } from './engine/core/engine-error';
 
 
