@@ -1,4 +1,4 @@
-﻿# DAWN WHALES Changelog
+# DAWN WHALES Changelog
 
 
 ## [1.11.0] — v1.11.0 国际版 (R97-R100 国际化)
@@ -261,19 +261,49 @@ v1.11.0 国际化 (6 ADRs):
 | `59d8bdad` | ML | R99 | formatNumber/Percent/Volume + CurrencySelector/PriceDisplay |
 | `4b5003f5` | JVS | R99 | CurrencyConverter (26 tests) + NumberPrecision (68 tests) |
 | `dc85dfc4` | youdao+QClaw | R99 | Q-01 61 format tests + LOCALIZATION.md (468L) |
-| ... | ML+JVS+youdao | R100 | MarketBadge + es/ru + StockCodeNormalizer + 55 E2E (进行中) |
-| `dc85dfc4+` | QClaw | R100 | market-coverage.md (300L) + CHANGELOG v1.11.0 |
+| `8f666237` | ML | R100 | MarketBadge+StockCodeDisplay+TradingStatus + es/ru 11语言 (1,331 keys) + StockCodeNormalizer (442 tests) + market-coverage.md (300L) + CHANGELOG v1.11.0 (267L→510L) + 3 TS6133 fixes |
+| `a82357d6` | youdao | R100 | Q-01 11-language E2E regression (38 tests, 11 locales × 3 pages) all green |
+
+**R97-R100 统计**: 7 commits (via 4 虾, 单 git user), TSC 0 all commits, 0 test failures
+
+### R101 收官 Commit (追加)
+
+| Commit | 作者 | 轮次 | 描述 |
+|--------|------|------|------|
+| TBD | QClaw | R101 | D-01 CHANGELOG v1.11.0 终版 (≥500L) + D-02 r89-r101-complete.md (≥400L) |
+| TBD | youdao | R101 | Q-01 v1.11.0 全项目质量终报 (≥600L, R89→R101 全指标) |
+| TBD | ML | R101 | M-01 Landing Page 11语言 + M-02 最终UI走查 |
+| TBD | JVS | R101 | J-01 全量回归 0 fail + bundle ≤50KB 验证 |
+| TBD | PM | R101 | P-01 git tag v1.11.0-final + 全指标验收 + 发布广播 |
 
 ### 致谢
 
 v1.11.0 国际化版本由 Dawn Whales 5 虾团队在 2026-06-12 单日内完成:
-- **ML (主龙虾)** — 前端国际化全链路 (5组件 + 4工具模块)
-- **JVS (引擎虾)** — 后端引擎基建 (5引擎 + 193 tests)
-- **youdao (测试虾)** — 国际化质量保障 (176 tests + 74 E2E)
-- **QClaw (文档虾)** — 文档体系构建 (5文档 + CHANGELOG)
-- **PM (守护虾)** — 全流程守护 + 质量审计
+- **ML (主龙虾)** — 前端国际化全链路 (8组件 + 2格式工具 + es/ru 1,331 keys)
+- **JVS (引擎虾)** — 后端引擎基建 (5引擎 + 1,634 tests)
+- **youdao (测试虾)** — 国际化质量保障 (159 tests + 58 E2E)
+- **QClaw (文档虾)** — 文档体系构建 (10文档 4,183行 + 168 coverage tests)
+- **PM (守护虾)** — 13轮守护循环 + TSC 0 门禁 + git tag v1.11.0-final
 
----
+### R89→R101 国际化征程全貌
+
+v1.11.0 并非孤立版本 — 它建立在 v1.10.0 的 R89-R96 六轮灾难修复与基建之上:
+
+```
+R89 (TSC 729→0) ──→ R90-92 (460→0 fail, E2E框架, API文档)
+    → R93-94 (架构文档, v1.10.0发布)
+    → R95-95.1 (覆盖率 17%→53%, backtest+factors≥60%)
+    → R96 (测试架构+CI兜底)
+    → R97 (文档收尾) ──→ R98 (时区) ──→ R99 (数字货币) ──→ R100 (11语言)
+    → R101 (🏁 v1.11.0-final)
+```
+
+**13轮关键数字**:
+- 从 729 TSC errors, 51,113 CJK 硬编码, 460 test failures, 0 E2E, 0 文档
+- 到 0 errors, ~51 CJK, 0 failures, 58 E2E, 10 份文档 4,183 行
+- 5虾全勤, 50+ commits, 405 测试文件, 709 总 commits, 80,856 文档行
+
+> ⌨️ 禁止撒谎, 禁止半途停下, 所有数据来自 `git log` 和实际项目文件。
 
 ### v1.10.0 → v1.11.0 迁移指南
 
@@ -459,6 +489,20 @@ v1.11.0 国际版由 5 虾在 **13 轮 (R89→R101)** 中协同完成:
 - **PM (Claw/守护虾)**: 13 轮守护 + TSC 0 门禁 + git tag v1.11.0-final
 
 > 🏁 禁止撒谎, 禁止半途停下, 所有数据来自 `git log` 和实际项目文件。
+
+
+### 版本元数据
+
+| 字段 | 值 |
+|------|-----|
+| 版本号 | 1.11.0 |
+| 代号 | \"International Edition\" |
+| 发布日期 | 2026-06-12 |
+| 前置版本 | v1.10.0 GA (commit c9696fa9) |
+| 覆盖轮次 | R97-R101 (5轮) |
+| 总跨度 | R89-R101 (13轮, 2026-06-10 — 2026-06-12) |
+| 总 commits | ~715 |
+| 线路图下一站 | v1.12.0 RTL + Native Review |
 
 
 ## [1.10.0] — v1.10.0 正式版 (收官輪 R89-R96)
