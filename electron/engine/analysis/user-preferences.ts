@@ -167,7 +167,7 @@ export class PreferencesManager {
 
   private getDb(): any {
     try {
-      const { shared } = require('../ipc-handlers/_import-shared');
+      const { shared } = require('../ipc-handlers/shared-imports');
       return shared.db?.getDb?.() || null;
     } catch (_e: unknown) {
       return null;

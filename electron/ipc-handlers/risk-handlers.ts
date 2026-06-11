@@ -3,7 +3,7 @@
 
 import { ipcMain } from 'electron';
 import { EngineError } from '../engine/core/engine-error';
-import { shared } from './_import-shared';
+import { shared } from './shared-imports';
 import log from 'electron-log';
 
 export function registerRiskHandlers() {

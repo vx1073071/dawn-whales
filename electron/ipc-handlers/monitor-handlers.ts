@@ -2,7 +2,7 @@
 // JVS-107: Smart Monitor
 
 import { ipcMain, BrowserWindow } from 'electron';
-import { shared } from './_import-shared';
+import { shared } from './shared-imports';
 import { SmartMonitor, AlertQuery, AlertRule } from '../engine/core/smart-monitor';
 import log from 'electron-log';
 

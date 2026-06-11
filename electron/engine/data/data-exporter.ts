@@ -106,7 +106,7 @@ function toMarkdownTable(headers: string[], rows: unknown[][], title?: string): 
 function getDb(): any {
   // Access shared db via lazy require to avoid circular deps
   try {
-    const { shared } = require('../ipc-handlers/_import-shared');
+    const { shared } = require('../ipc-handlers/shared-imports');
     return shared.db;
   } catch (_e: unknown) {
     return null;

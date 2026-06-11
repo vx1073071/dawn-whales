@@ -3,7 +3,7 @@
 
 import { ipcMain, dialog, BrowserWindow } from 'electron';
 import { EngineError } from '../engine/core/engine-error';
-import { shared } from './_import-shared';
+import { shared } from './shared-imports';
 import {
   exportData,
   batchExport,
