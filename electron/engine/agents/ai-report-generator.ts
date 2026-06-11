@@ -1,4 +1,4 @@
-import { EngineError, ErrorCode } from '../../errors';
+﻿import { EngineError, ErrorCode } from '../../errors';
 // ── AI Report Generator ─────────────────────────────────────────────────────
 // Q4: Backtest Result AI Interpretation
 // Input: backtest results array → DeepSeek LLM → Markdown report
@@ -151,8 +151,8 @@ function buildComparisonTable(results: BacktestResult[]): string {
 
 export async function generateBacktestReport(
   results: BacktestResult[],
-  symbol?: string,\1/** @deprecated R83 — use server-side AI Gateway token */
-\1\2
+  symbol?: string,
+
   timeoutMs = 20000
 ): Promise<BacktestReport> {
   if (results.length === 0) {
@@ -262,8 +262,7 @@ export interface DailyReportData {
 }
 
 export async function generateDailyReport(
-  data: DailyReportData,\1/** @deprecated R83 — use server-side AI Gateway token */
-\1\2
+  data: DailyReportData,
   timeoutMs = 15000
 ): Promise<BacktestReport> {
   log.info('[AIReportGenerator] Generating daily report for', data.date);
@@ -407,8 +406,7 @@ export interface WeeklyReportData {
 }
 
 export async function generateWeeklyReport(
-  data: WeeklyReportData,\1/** @deprecated R83 — use server-side AI Gateway token */
-\1\2
+  data: WeeklyReportData,
   timeoutMs = 15000
 ): Promise<BacktestReport> {
   log.info('[AIReportGenerator] Generating weekly report for', data.weekStart, 'to', data.weekEnd);
@@ -540,8 +538,7 @@ export interface MonthlyReportData {
 }
 
 export async function generateMonthlyReport(
-  data: MonthlyReportData,\1/** @deprecated R83 — use server-side AI Gateway token */
-\1\2
+  data: MonthlyReportData,
   timeoutMs = 20000
 ): Promise<BacktestReport> {
   log.info('[AIReportGenerator] Generating monthly report for', data.month);
