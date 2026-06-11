@@ -55,7 +55,7 @@ function saveState(state: CreditsState): void {
   }
 }
 
-export type CreditFilter = 'all' | 'income' | 'expense' | 'p2p';
+export type CreditFilter = 'all' | 'income' | 'expense' | 'p2p' | 'fee' | 'withdraw' | 'topup';
 
 export function useCredits() {
   const [state, setState] = useState<CreditsState>(loadState);
@@ -116,6 +116,9 @@ export function useCredits() {
     if (filter === 'income') return tx.amount > 0;
     if (filter === 'expense') return tx.amount < 0 && tx.type !== 'p2p';
     if (filter === 'p2p') return tx.type === 'p2p';
+    if (filter === 'fee') return tx.type === 'fee';
+    if (filter === 'withdraw') return tx.type === 'withdraw';
+    if (filter === 'topup') return tx.type === 'topup';
     return true;
   });
 
