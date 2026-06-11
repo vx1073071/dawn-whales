@@ -93,7 +93,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
         <div className="flex items-center justify-between p-5 border-b border-white/5">
           <div className="flex items-center gap-2">
             <span className="text-lg">⚖️</span>
-            <h2 className="text-white font-semibold text-base">策略对比</h2>
+            <h2 className="text-white font-semibold text-base">{i18n.t('StrategyCompareModal.k0')}</h2>
           </div>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-200 text-lg">✕</button>
         </div>
@@ -102,7 +102,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
         <div className="p-5 border-b border-white/5">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-gray-400 text-xs mb-2 block">策略 A</label>
+              <label className="text-gray-400 text-xs mb-2 block">{i18n.t('StrategyCompareModal.k1')}</label>
               <select
                 className={selectStyle}
                 value={strategyA?.id || ''}
@@ -112,7 +112,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
                   setComparison(null);
                 }}
               >
-                <option value="">选择策略...</option>
+                <option value="">{i18n.t('StrategyCompareModal.k2')}</option>
                 {strategies.filter(s => s.id !== strategyB?.id).map(s => (
                   <option key={s.id} value={s.id}>{s.name}</option>
                 ))}
@@ -126,7 +126,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
               )}
             </div>
             <div>
-              <label className="text-gray-400 text-xs mb-2 block">策略 B</label>
+              <label className="text-gray-400 text-xs mb-2 block">{i18n.t('StrategyCompareModal.k3')}</label>
               <select
                 className={selectStyle}
                 value={strategyB?.id || ''}
@@ -136,7 +136,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
                   setComparison(null);
                 }}
               >
-                <option value="">选择策略...</option>
+                <option value="">{i18n.t('StrategyCompareModal.k4')}</option>
                 {strategies.filter(s => s.id !== strategyA?.id).map(s => (
                   <option key={s.id} value={s.id}>{s.name}</option>
                 ))}
@@ -168,7 +168,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
             ) : (
               <>
                 <span>⚖️</span>
-                <span>开始对比</span>
+                <span>{i18n.t('StrategyCompareModal.k5')}</span>
               </>
             )}
           </button>
@@ -179,7 +179,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
           <div className="p-5 max-h-80 overflow-y-auto">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-green-400 text-sm">✓</span>
-              <h3 className="text-white text-sm font-medium">对比结果</h3>
+              <h3 className="text-white text-sm font-medium">{i18n.t('StrategyCompareModal.k6')}</h3>
             </div>
             <div className="space-y-0.5">
               {renderComparison(comparison)}

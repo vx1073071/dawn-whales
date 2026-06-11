@@ -156,11 +156,11 @@ export default function PerformanceAttributionPage() {
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">策略收益</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('PerformanceAttributionPage.k0')}</div>
           <div className="text-xl font-bold font-mono text-red-400">+{data.totalReturn.toFixed(2)}%</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">基准收益</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('PerformanceAttributionPage.k1')}</div>
           <div className="text-xl font-bold font-mono text-red-400">+{data.benchmarkReturn.toFixed(2)}%</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
@@ -197,20 +197,20 @@ export default function PerformanceAttributionPage() {
         </div>
 
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-          <h2 className="text-sm font-semibold text-white mb-4">因子敞口</h2>
+          <h2 className="text-sm font-semibold text-white mb-4">{i18n.t('PerformanceAttributionPage.k2')}</h2>
           <div id="factor-radar" className="w-full h-[240px]" />
         </div>
       </div>
 
       {/* Monthly Attribution Chart */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-white mb-4">月度归因分解</h2>
+        <h2 className="text-sm font-semibold text-white mb-4">{i18n.t('PerformanceAttributionPage.k3')}</h2>
         <div id="brinson-chart" className="w-full h-[280px]" />
       </div>
 
       {/* Factor Contribution */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-white mb-4">因子贡献度</h2>
+        <h2 className="text-sm font-semibold text-white mb-4">{i18n.t('PerformanceAttributionPage.k4')}</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {data.factorExposures.map((f) => (
             <div key={f.factor} className="bg-deep rounded-lg p-3">
@@ -237,17 +237,17 @@ export default function PerformanceAttributionPage() {
       {/* Sector Attribution Table */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/5">
-          <h2 className="text-sm font-semibold text-white">行业归因</h2>
+          <h2 className="text-sm font-semibold text-white">{i18n.t('PerformanceAttributionPage.k5')}</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                 <th className="px-4 py-3 text-left">{t("components.industry")}</th>
-                <th className="px-4 py-3 text-right">组合权重</th>
-                <th className="px-4 py-3 text-right">基准权重</th>
-                <th className="px-4 py-3 text-right">组合收益</th>
-                <th className="px-4 py-3 text-right">基准收益</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PerformanceAttributionPage.k6')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PerformanceAttributionPage.k7')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PerformanceAttributionPage.k8')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PerformanceAttributionPage.k9')}</th>
                 <th className="px-4 py-3 text-right">{t("components.excessReturn")}</th>
               </tr>
             </thead>

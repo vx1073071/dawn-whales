@@ -42,7 +42,7 @@ function CountdownTimer({ until }: { until: string }) {
   const days = Math.max(0, Math.ceil(diff / 86400000));
   return (
     <span style={{ fontSize: 11, color: days > 0 ? '#FBBF24' : '#34D399', fontWeight: 600 }}>
-      {days > 0 ? `⏳ ${days} 天后解冻` : i18n.t('P2PBlacklistPanel.k8')}
+      {days > 0 ? `⏳ ${days}${i18n.t('P2PBlacklistPanel.k0')}` : i18n.t('P2PBlacklistPanel.k8')}
     </span>
   );
 }
@@ -71,10 +71,10 @@ function P2POrdersTab() {
           <thead>
             <tr style={{ borderBottom: '1px solid #374151' }}>
               <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>ID</th>
-              <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>交易方</th>
+              <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>{i18n.t('P2PBlacklistPanel.k0')}</th>
               <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>{"components.quantity"}</th>
-              <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>单价</th>
-              <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>总额</th>
+              <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>{i18n.t('P2PBlacklistPanel.k1')}</th>
+              <th style={{ padding: '8px 10px', textAlign: 'right', color: '#9CA3AF' }}>{i18n.t('P2PBlacklistPanel.k2')}</th>
               <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>{"components.status"}</th>
               <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{"components.time"}</th>
             </tr>
@@ -143,10 +143,10 @@ function BlacklistTab() {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
           <thead>
             <tr style={{ borderBottom: '1px solid #374151' }}>
-              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>用户ID</th>
-              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>原因</th>
-              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>操作人</th>
-              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>添加时间</th>
+              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{i18n.t('P2PBlacklistPanel.k3')}</th>
+              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{i18n.t('P2PBlacklistPanel.k4')}</th>
+              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{i18n.t('P2PBlacklistPanel.k5')}</th>
+              <th style={{ padding: '8px 10px', textAlign: 'left', color: '#9CA3AF' }}>{i18n.t('P2PBlacklistPanel.k6')}</th>
               <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>{"components.status"}</th>
               <th style={{ padding: '8px 10px', textAlign: 'center', color: '#9CA3AF' }}>{"components.actions"}</th>
             </tr>

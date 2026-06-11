@@ -155,7 +155,7 @@ export default function UIAuditPanel() {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
             <thead>
               <tr style={{ borderBottom: '1px solid #374151' }}>
-                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>页面</th>
+                <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{i18n.t('UIAuditPanel.k0')}</th>
                 <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>{"components.status"}</th>
                 <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>🌙</th>
                 <th style={{ padding: '8px 8px', textAlign: 'center', color: '#9CA3AF' }}>☀️</th>
@@ -209,16 +209,16 @@ export default function UIAuditPanel() {
       <div style={{ marginTop: 20, padding: '14px 18px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937', fontSize: 12, color: '#D1D5DB', lineHeight: 1.8 }}>
         <div style={{ fontWeight: 700, marginBottom: 6, color: '#F9FAFB' }}>📋 v1.8.0 GA UI 走查总结</div>
         <div>
-          ✅ <strong>深色模式: {stats.darkPass}/{stats.total} 全部通过</strong> — 私行深色+#D4A853金色主题统一
+          ✅ <strong>{i18n.t('UIAuditPanel.k0')}{stats.darkPass}/{stats.total}{i18n.t('UIAuditPanel.k1')}</strong> — 私行深色+#D4A853金色主题统一
         </div>
         <div>
-          ⚠️ <strong>浅色模式: {stats.lightPass}/{stats.total} 通过</strong> — StrategyPage/TradeDashboard/RiskDashboard/Onboarding/Community/Admin 需调对比度
+          ⚠️ <strong>{i18n.t('UIAuditPanel.k2')}{stats.lightPass}/{stats.total}{i18n.t('UIAuditPanel.k3')}</strong> — StrategyPage/TradeDashboard/RiskDashboard/Onboarding/Community/Admin 需调对比度
         </div>
         <div>
-          ✅ <strong>响应式: {stats.respPass}/{stats.total} 通过</strong> — Strategy/Backtest/Community/Admin 需1366×768适配
+          ✅ <strong>{i18n.t('UIAuditPanel.k4')}{stats.respPass}/{stats.total}{i18n.t('UIAuditPanel.k5')}</strong> — Strategy/Backtest/Community/Admin 需1366×768适配
         </div>
         <div style={{ marginTop: 8 }}>
-          <strong>三态覆盖率</strong>: Loading {stats.hasLoading}/{stats.total} · Empty {stats.hasEmpty}/{stats.total} · Error {stats.hasError}/{stats.total}
+          <strong>{i18n.t('UIAuditPanel.k1')}</strong>: Loading {stats.hasLoading}/{stats.total} · Empty {stats.hasEmpty}/{stats.total} · Error {stats.hasError}/{stats.total}
         </div>
         <div style={{ marginTop: 8, color: '#6B7280' }}>
           💡 建议: GA前将浅色模式6项warn→pass, 响应式4项warn→pass, 三态补齐到≥80%

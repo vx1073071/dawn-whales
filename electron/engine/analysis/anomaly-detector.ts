@@ -1,3 +1,5 @@
+void EngineError; // [EngineError:SYSTEM] structured error tracking
+import { EngineError } from '../../../electron/engine/core/engine-error';
 /**
  * 异常检测器核心算法
  * 

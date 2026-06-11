@@ -4,6 +4,7 @@ import { useI18nStore, LOCALE_LABELS, type Locale } from '@/lib/i18n';
 import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo.png';
 import BrokerSelector from './BrokerSelector';
+import i18n from '../../i18n';
 
 export default function Header() {
   const { t } = useTranslation();
@@ -35,7 +36,7 @@ export default function Header() {
       <button
         onClick={toggleTheme}
         className="text-gray-400 hover:text-gray-200 p-1.5 rounded hover:bg-white/5 transition-colors text-sm"
-        title={theme === 'dark' ? '切换到浅色模式' : '切换到深色模式'}
+        title={theme === 'dark' ? i18n.t('Header.k0') : i18n.t('Header.k1')}
       >
         {theme === 'dark' ? '☀️' : '🌙'}
       </button>

@@ -139,7 +139,7 @@ const SignalBar: React.FC<SignalBarProps> = ({ strength, color, label, stale }) 
     <span className={`text-[10px] font-mono w-8 ${stale ? 'text-gray-600' : 'text-gray-400'}`}>
       {strength}%
     </span>
-    {stale && <span className="text-[9px] text-yellow-600">过期</span>}
+    {stale && <span className="text-[9px] text-yellow-600">{i18n.t('MultiTimeframePanel.k0')}</span>}
   </div>
 );
 
@@ -159,7 +159,7 @@ function generateMockSignals(): TimeframeSignal[] {
       confidence: 0.3 + Math.random() * 0.7,
       timestamp: now - Math.random() * 60000,
       engine: 'MA_CROSS',
-      reason: `${tf} 均线交叉信号`,
+      reason: `${tf}${i18n.t('MultiTimeframePanel.k0')}`,
     };
   });
 }
@@ -321,15 +321,15 @@ export const MultiTimeframePanel: React.FC<MultiTimeframePanelProps> = ({
             <div className="flex items-center gap-3 text-xs">
               <div className="text-center">
                 <div className="text-emerald-400 font-bold">{signal.voteCount.BUY}</div>
-                <div className="text-[10px] text-gray-600">买</div>
+                <div className="text-[10px] text-gray-600">{i18n.t('MultiTimeframePanel.k1')}</div>
               </div>
               <div className="text-center">
                 <div className="text-red-400 font-bold">{signal.voteCount.SELL}</div>
-                <div className="text-[10px] text-gray-600">卖</div>
+                <div className="text-[10px] text-gray-600">{i18n.t('MultiTimeframePanel.k2')}</div>
               </div>
               <div className="text-center">
                 <div className="text-gray-400 font-bold">{signal.voteCount.HOLD}</div>
-                <div className="text-[10px] text-gray-600">持</div>
+                <div className="text-[10px] text-gray-600">{i18n.t('MultiTimeframePanel.k3')}</div>
               </div>
             </div>
           )}
@@ -416,10 +416,10 @@ export const MultiTimeframePanel: React.FC<MultiTimeframePanelProps> = ({
             <table className="w-full text-xs">
               <thead>
                 <tr className="text-gray-500 border-b border-gray-700/50">
-                  <th className="text-left py-1.5 pr-3">周期</th>
-                  <th className="text-right py-1.5 pr-3">信号数</th>
-                  <th className="text-right py-1.5 pr-3">买入比例</th>
-                  <th className="text-right py-1.5 pr-3">均强</th>
+                  <th className="text-left py-1.5 pr-3">{i18n.t('MultiTimeframePanel.k4')}</th>
+                  <th className="text-right py-1.5 pr-3">{i18n.t('MultiTimeframePanel.k5')}</th>
+                  <th className="text-right py-1.5 pr-3">{i18n.t('MultiTimeframePanel.k6')}</th>
+                  <th className="text-right py-1.5 pr-3">{i18n.t('MultiTimeframePanel.k7')}</th>
                   <th className="text-right py-1.5">{t("components.status")}</th>
                 </tr>
               </thead>
@@ -434,9 +434,9 @@ export const MultiTimeframePanel: React.FC<MultiTimeframePanelProps> = ({
                     <td className="py-1.5 pr-3 text-right font-mono">{s.avgStrength.toFixed(1)}%</td>
                     <td className="py-1.5 text-right">
                       {s.stale ? (
-                        <span className="text-[10px] text-yellow-600 bg-yellow-500/10 px-1.5 py-0.5 rounded">过期</span>
+                        <span className="text-[10px] text-yellow-600 bg-yellow-500/10 px-1.5 py-0.5 rounded">{i18n.t('MultiTimeframePanel.k8')}</span>
                       ) : (
-                        <span className="text-[10px] text-emerald-500 bg-emerald-500/10 px-1.5 py-0.5 rounded">活跃</span>
+                        <span className="text-[10px] text-emerald-500 bg-emerald-500/10 px-1.5 py-0.5 rounded">{i18n.t('MultiTimeframePanel.k9')}</span>
                       )}
                     </td>
                   </tr>

@@ -89,8 +89,8 @@ export default function MarketHeatmap({
           </p>
         </div>
         <div className="flex items-center gap-2 text-[10px]">
-          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded bg-red-500/60" />涨</span>
-          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded bg-emerald-500/60" />跌</span>
+          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded bg-red-500/60" />{i18n.t('MarketHeatmap.k0')}</span>
+          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded bg-emerald-500/60" />{i18n.t('MarketHeatmap.k1')}</span>
         </div>
       </div>
 
@@ -137,7 +137,7 @@ export default function MarketHeatmap({
             if (!sector || !sector.leaders) return null;
             return (
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-gray-500 text-[10px]">龙头股:</span>
+                <span className="text-gray-500 text-[10px]">{i18n.t('MarketHeatmap.k2')}</span>
                 {sector.leaders.map((l) => (
                   <span key={l} className="text-[10px] bg-[#1a1a25] text-gray-300 px-2 py-0.5 rounded">{l}</span>
                 ))}

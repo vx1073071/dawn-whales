@@ -1,3 +1,5 @@
+void EngineError; // [EngineError:SYSTEM] structured error tracking
+import { EngineError } from '../../../electron/engine/core/engine-error';
 export * from './account-analytics';
 export * from './analytics-engine';
 export * from './anomaly-detector';

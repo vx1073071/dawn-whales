@@ -103,10 +103,10 @@ export default function PositionDetailPanel({
           </div>
           {position.sector && (
             <div className="flex items-center gap-2 text-[10px]">
-              <span className="bg-[#12121a] text-gray-400 px-2 py-1 rounded">板块: {position.sector}</span>
+              <span className="bg-[#12121a] text-gray-400 px-2 py-1 rounded">{i18n.t('PositionDetailPanel.k0')}{position.sector}</span>
               {position.beta && <span className="bg-[#12121a] text-gray-400 px-2 py-1 rounded">Beta: {position.beta}</span>}
               {position.pe && <span className="bg-[#12121a] text-gray-400 px-2 py-1 rounded">P/E: {position.pe}</span>}
-              {position.dividendYield && <span className="bg-[#12121a] text-gray-400 px-2 py-1 rounded">股息: {(position.dividendYield * 100).toFixed(2)}%</span>}
+              {position.dividendYield && <span className="bg-[#12121a] text-gray-400 px-2 py-1 rounded">{i18n.t('PositionDetailPanel.k1')}{(position.dividendYield * 100).toFixed(2)}%</span>}
             </div>
           )}
         </div>
@@ -115,7 +115,7 @@ export default function PositionDetailPanel({
       {/* History Tab */}
       {tab === 'history' && (
         <div className="space-y-2">
-          <p className="text-gray-500 text-xs text-center py-4">历史交易记录将显示在这里</p>
+          <p className="text-gray-500 text-xs text-center py-4">{i18n.t('PositionDetailPanel.k0')}</p>
         </div>
       )}
 

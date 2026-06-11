@@ -119,7 +119,7 @@ export default function ParamScanPanel({ result, loading }: ParamScanPanelProps)
       </div>
 
       {loading ? (
-        <div className="text-center py-8 text-gray-500 text-sm">正在扫描参数空间...</div>
+        <div className="text-center py-8 text-gray-500 text-sm">{i18n.t('ParamScanPanel.k0')}</div>
       ) : (
         <>
           {/* Heatmap */}
@@ -171,26 +171,26 @@ export default function ParamScanPanel({ result, loading }: ParamScanPanelProps)
           <div className="flex items-center gap-4 mb-4 text-[10px]">
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 rounded" style={{ backgroundColor: '#22c55e' }} />
-              <span className="text-gray-400">高夏普</span>
+              <span className="text-gray-400">{i18n.t('ParamScanPanel.k1')}</span>
             </div>
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 rounded" style={{ backgroundColor: '#C9A046' }} />
-              <span className="text-gray-400">中等</span>
+              <span className="text-gray-400">{i18n.t('ParamScanPanel.k2')}</span>
             </div>
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }} />
-              <span className="text-gray-400">低夏普</span>
+              <span className="text-gray-400">{i18n.t('ParamScanPanel.k3')}</span>
             </div>
             <div className="flex items-center gap-1 ml-2">
               <div className="w-2 h-2 rounded-full bg-[#D4A853] ring-1 ring-black/30" />
-              <span className="text-gray-400">稳健参数</span>
+              <span className="text-gray-400">{i18n.t('ParamScanPanel.k4')}</span>
             </div>
           </div>
 
           {/* Hover tooltip */}
           {hoveredCell && (
             <div className="bg-[#12121a] border border-white/10 rounded-lg p-3 mb-4 text-xs">
-              <div className="text-gray-400 mb-1">参数组合</div>
+              <div className="text-gray-400 mb-1">{i18n.t('ParamScanPanel.k5')}</div>
               <div className="grid grid-cols-2 gap-1">
                 {Object.entries(hoveredCell.params).map(([k, v]) => (
                   <div key={k} className="text-gray-200"><span className="text-gray-500">{k}:</span> {v}</div>
@@ -220,7 +220,7 @@ export default function ParamScanPanel({ result, loading }: ParamScanPanelProps)
                     <span className={`font-mono ${r.sharpeRatio > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
                       夏普 {r.sharpeRatio.toFixed(2)}
                     </span>
-                    <span className="text-gray-500">收益 {r.totalReturn.toFixed(1)}%</span>
+                    <span className="text-gray-500">{i18n.t('ParamScanPanel.k0')}{r.totalReturn.toFixed(1)}%</span>
                   </div>
                 ))}
               </div>

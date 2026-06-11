@@ -1,6 +1,7 @@
 // ── KLineChart — TradingView Lightweight Charts + MA Overlays ──────────────
 import { useEffect, useRef, useMemo } from 'react';
 import { createChart, IChartApi, ISeriesApi } from 'lightweight-charts';
+import i18n from '../../i18n';
 
 interface KLineChartProps {
   data: Array<{
@@ -169,7 +170,7 @@ export default function KLineChart({ data, height = 400, showMA = true }: KLineC
           <span className="text-[#D4A853]">MA5</span>
           <span className="text-[#60a5fa]">MA20</span>
           <span className="text-[#c084fc]">MA60</span>
-          {data.length > 1000 && <span className="text-gray-600">已降采样至1000根</span>}
+          {data.length > 1000 && <span className="text-gray-600">{i18n.t('KLineChart.k0')}</span>}
         </div>
       )}
       <div ref={containerRef} />

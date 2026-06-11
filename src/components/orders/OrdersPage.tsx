@@ -116,8 +116,8 @@ export default function OrdersPage() {
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">委托订单</h1>
-          <p className="text-gray-400 text-sm">当前委托、历史成交和策略交易记录</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{i18n.t('OrdersPage.k0')}</h1>
+          <p className="text-gray-400 text-sm">{i18n.t('OrdersPage.k1')}</p>
         </div>
         <button onClick={() => { loadOrders(); loadTrades(); }} disabled={loading} className="px-4 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">
           {loading ? '...' : i18n.t('OrdersPage.k9')}
@@ -151,7 +151,7 @@ export default function OrdersPage() {
             <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">{tab === 'active' ? '📋' : '📜'}</div>
               <p className="text-gray-400 text-sm">{tab === 'active' ? i18n.t('OrdersPage.k10') : i18n.t('OrdersPage.k11')}</p>
-              {!selectedAccount && <p className="text-gray-600 text-xs mt-1">请先连接 OpenD</p>}
+              {!selectedAccount && <p className="text-gray-600 text-xs mt-1">{i18n.t('OrdersPage.k2')}</p>}
             </div>
           ) : (
             <table className="w-full">
@@ -161,9 +161,9 @@ export default function OrdersPage() {
                   <th className="px-4 py-3 text-left">{t("components.code")}</th>
                   <th className="px-4 py-3 text-center">{t("components.direction")}</th>
                   <th className="px-4 py-3 text-right">{t("components.quantity")}</th>
-                  <th className="px-4 py-3 text-right">委托价</th>
-                  <th className="px-4 py-3 text-right">成交数</th>
-                  <th className="px-4 py-3 text-right">成交价</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('OrdersPage.k3')}</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('OrdersPage.k4')}</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('OrdersPage.k5')}</th>
                   <th className="px-4 py-3 text-center">{t("components.status")}</th>
                   {tab === 'active' && <th className="px-4 py-3 text-center">{t("components.actions")}</th>}
                 </tr>
@@ -208,8 +208,8 @@ export default function OrdersPage() {
           {dbTrades.length === 0 ? (
             <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">🔄</div>
-              <p className="text-gray-400 text-sm">暂无策略交易记录</p>
-              <p className="text-gray-600 text-xs mt-1">策略运行后自动记录在这里</p>
+              <p className="text-gray-400 text-sm">{i18n.t('OrdersPage.k6')}</p>
+              <p className="text-gray-600 text-xs mt-1">{i18n.t('OrdersPage.k7')}</p>
             </div>
           ) : (
             <table className="w-full">
@@ -220,7 +220,7 @@ export default function OrdersPage() {
                   <th className="px-4 py-3 text-center">{t("components.direction")}</th>
                   <th className="px-4 py-3 text-right">{t("components.quantity")}</th>
                   <th className="px-4 py-3 text-right">{t("components.price")}</th>
-                  <th className="px-4 py-3 text-right">盈亏</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('OrdersPage.k8')}</th>
                   <th className="px-4 py-3 text-center">{t("components.status")}</th>
                   <th className="px-4 py-3 text-left">{t("components.remarks")}</th>
                 </tr>

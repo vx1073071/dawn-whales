@@ -14,6 +14,7 @@
  */
 
 import React, { useState, useCallback, useMemo } from 'react';
+import i18n from '../../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -85,7 +86,7 @@ const mockTransfers: P2PTransfer[] = [
     direction: 'received', amount: 15, fee: 0.05, netAmount: 14.95,
     status: 'disputed', note: 'Quick scan purchase',
     createdAt: '2026-06-07T10:00:00Z', frozenUntil: '2026-06-21T10:00:00Z',
-    disputeReason: '收款未确认',
+    disputeReason: i18n.t('P2PTransferPage.k0'),
   },
 ];
 

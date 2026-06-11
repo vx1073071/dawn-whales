@@ -40,7 +40,7 @@ export default function DailyReportPage() {
         const today = new Date().toLocaleDateString('zh-CN');
         setReport({
           date: today,
-          title: `道鲸每日市场简报 · ${today}`,
+          title: `${i18n.t('DailyReportPage.k0')}${today}`,
           summary: i18n.t('DailyReportPage.k1'),
           sections: {
             marketOverview: i18n.t('DailyReportPage.k2'),

@@ -182,7 +182,7 @@ export default function SentimentGauge() {
   if (loading && !data) {
     return (
       <div className="bg-[#12121a] border border-white/5 rounded-xl p-4">
-        <div className="text-gray-500 text-sm animate-pulse">加载情绪指数...</div>
+        <div className="text-gray-500 text-sm animate-pulse">{i18n.t('SentimentGauge.k0')}</div>
       </div>
     );
   }
@@ -209,7 +209,7 @@ export default function SentimentGauge() {
           {/* Components Breakdown */}
           {data.components && data.components.length > 0 && (
             <div className="space-y-2">
-              <div className="text-xs text-gray-500">成分拆解</div>
+              <div className="text-xs text-gray-500">{i18n.t('SentimentGauge.k1')}</div>
               {data.components.map((comp) => (
                 <div key={comp.name} className="flex items-center gap-2">
                   <span className="text-xs text-gray-400 w-16 truncate">{comp.name}</span>
@@ -271,10 +271,10 @@ function generateDemoSentiment(): SentimentData {
     label: lvl.label,
     description: `当前市场情绪为"${lvl.label}"。${
       currentIndex > 70
-        ? '市场过度乐观，注意回调风险。'
+        ? i18n.t('SentimentGauge.k2')
         : currentIndex < 30
-        ? '市场恐慌情绪浓厚，可能存在反弹机会。'
-        : '情绪中性，关注结构性机会。'
+        ? i18n.t('SentimentGauge.k3')
+        : i18n.t('SentimentGauge.k4')
     }`,
     components: [
       { name: 'components.volatility', weight: 0.25, score: Math.round(Math.random() * 100) },

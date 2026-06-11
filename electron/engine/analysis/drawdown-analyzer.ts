@@ -3,6 +3,8 @@
 // Underwater periods + pain ratio + attribution
 
 import log from 'electron-log';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

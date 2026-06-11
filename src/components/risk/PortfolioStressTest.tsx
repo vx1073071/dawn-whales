@@ -106,7 +106,7 @@ export default function PortfolioStressTest() {
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-white font-semibold text-sm">🧪 组合压力测试</h2>
-        <span className="text-gray-500 text-[10px]">假设本金 ${portfolioValue.toLocaleString()}</span>
+        <span className="text-gray-500 text-[10px]">{i18n.t('PortfolioStressTest.k0')}{portfolioValue.toLocaleString()}</span>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -141,7 +141,7 @@ export default function PortfolioStressTest() {
                     {result.loss >= 0 ? '+' : ''}${result.loss.toFixed(0)}
                   </span>
                 </div>
-                <div className="text-gray-500 text-[10px] mt-0.5">{scenario.description} · 概率 {(scenario.probability * 100).toFixed(0)}%</div>
+                <div className="text-gray-500 text-[10px] mt-0.5">{scenario.description}{i18n.t('PortfolioStressTest.k1')}{(scenario.probability * 100).toFixed(0)}%</div>
               </button>
             );
           })}
@@ -151,7 +151,7 @@ export default function PortfolioStressTest() {
       {/* Selected Scenario Summary */}
       <div className="mt-4 bg-[#12121a] rounded-lg p-3 border border-white/5">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-gray-500">选中场景: <span className="text-white">{selectedScenario.name}</span></span>
+          <span className="text-gray-500">{i18n.t('PortfolioStressTest.k0')}<span className="text-white">{selectedScenario.name}</span></span>
           <span className="text-gray-500">
             组合价值: <span className={selectedResult.newValue >= portfolioValue ? 'text-emerald-400' : 'text-red-400'}>
               ${selectedResult.newValue.toLocaleString('en-US', { minimumFractionDigits: 0 })}

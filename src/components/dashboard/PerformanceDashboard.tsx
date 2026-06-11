@@ -111,7 +111,7 @@ export default function PerformanceDashboard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">绩效仪表盘</h2>
+          <h2 className="text-lg font-semibold text-white">{i18n.t('PerformanceDashboard.k0')}</h2>
           <p className="text-xs text-gray-500 mt-1">{strategyName} · {metrics.totalTrades}笔交易</p>
         </div>
         <div className="flex gap-2">
@@ -150,7 +150,7 @@ export default function PerformanceDashboard({
       {/* Equity Curve (sparkline) */}
       <div className="bg-[#12121a] rounded-xl p-4 border border-white/5">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm text-gray-400">权益曲线</span>
+          <span className="text-sm text-gray-400">{i18n.t('PerformanceDashboard.k1')}</span>
           <span className={`text-xs font-mono ${metrics.totalReturn >= 0 ? 'text-green-400' : 'text-red-400'}`}>
             {formatPct(metrics.totalReturn)}
           </span>
@@ -175,23 +175,23 @@ export default function PerformanceDashboard({
       {/* Trade Stats and Details */}
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-[#12121a] rounded-xl p-4 border border-white/5">
-          <h3 className="text-sm text-gray-400 mb-3">交易统计</h3>
+          <h3 className="text-sm text-gray-400 mb-3">{i18n.t('PerformanceDashboard.k2')}</h3>
           <div className="space-y-2">
             <StatRow label={i18n.t('PerformanceDashboard.k11')} value={String(metrics.totalTrades)} />
             <StatRow label={i18n.t('PerformanceDashboard.k12')} value={String(metrics.winningTrades)} color="green" />
             <StatRow label={i18n.t('PerformanceDashboard.k13')} value={String(metrics.losingTrades)} color="red" />
             <StatRow label={i18n.t('PerformanceDashboard.k14')} value={formatPct(metrics.avgWin)} color="green" />
             <StatRow label={i18n.t('PerformanceDashboard.k15')} value={formatPct(metrics.avgLoss)} color="red" />
-            <StatRow label={i18n.t('PerformanceDashboard.k16')} value={`${metrics.consecutiveWins} 笔`} color="green" />
-            <StatRow label={i18n.t('PerformanceDashboard.k17')} value={`${metrics.consecutiveLosses} 笔`} color="red" />
+            <StatRow label={i18n.t('PerformanceDashboard.k16')} value={`${metrics.consecutiveWins}${i18n.t('PerformanceDashboard.k0')}`} color="green" />
+            <StatRow label={i18n.t('PerformanceDashboard.k17')} value={`${metrics.consecutiveLosses}${i18n.t('PerformanceDashboard.k1')}`} color="red" />
           </div>
         </div>
 
         <div className="bg-[#12121a] rounded-xl p-4 border border-white/5">
-          <h3 className="text-sm text-gray-400 mb-3">极值月份</h3>
+          <h3 className="text-sm text-gray-400 mb-3">{i18n.t('PerformanceDashboard.k3')}</h3>
           <div className="space-y-4">
             <div>
-              <div className="text-xs text-gray-500 mb-1">最佳月份</div>
+              <div className="text-xs text-gray-500 mb-1">{i18n.t('PerformanceDashboard.k4')}</div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-white font-mono">{metrics.bestMonth.month}</span>
                 <span className="text-sm text-green-400 font-mono font-bold">{formatPct(metrics.bestMonth.return)}</span>
@@ -202,7 +202,7 @@ export default function PerformanceDashboard({
               </div>
             </div>
             <div>
-              <div className="text-xs text-gray-500 mb-1">最差月份</div>
+              <div className="text-xs text-gray-500 mb-1">{i18n.t('PerformanceDashboard.k5')}</div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-white font-mono">{metrics.worstMonth.month}</span>
                 <span className="text-sm text-red-400 font-mono font-bold">{formatPct(metrics.worstMonth.return)}</span>
@@ -229,7 +229,7 @@ export default function PerformanceDashboard({
           {selectedMetric === 'sharpe' && i18n.t('PerformanceDashboard.k18')}
           {selectedMetric === 'sortino' && i18n.t('PerformanceDashboard.k19')}
           {selectedMetric === 'calmar' && i18n.t('PerformanceDashboard.k20')}
-          {selectedMetric === 'drawdown' && `最大回撤: ${formatPct(metrics.maxDrawdown)}，代表历史上从最高点到最低点的最大跌幅。`}
+          {selectedMetric === 'drawdown' && `${i18n.t('PerformanceDashboard.k2')}${formatPct(metrics.maxDrawdown)}${i18n.t('PerformanceDashboard.k3')}`}
         </p>
       </div>
     </div>

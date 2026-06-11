@@ -171,7 +171,7 @@ export default function AutoUpdatePanel({
                   {channel}
                 </span>
               </div>
-              <div className="text-[10px] text-gray-600 mt-1">发布于 {releaseDate}</div>
+              <div className="text-[10px] text-gray-600 mt-1">{i18n.t('AutoUpdatePanel.k0')}{releaseDate}</div>
             </div>
             <button onClick={handleCheck} disabled={status === 'checking' || status === 'downloading'}
               className={`px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors ${status === 'up-to-date' ? 'bg-green-500/10 text-green-400' : 'bg-[#C9A046] hover:bg-[#D4A853] text-black'} disabled:opacity-40`}>

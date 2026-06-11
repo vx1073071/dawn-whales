@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface Trade {
   id: number;
@@ -74,11 +75,11 @@ export default function TradeTimeline({ trades }: TradeTimelineProps) {
           <div className="text-lg font-bold text-white">{stats.totalTrades}</div>
         </div>
         <div className="p-3 bg-[#1a1a25] rounded-lg border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">平均持仓</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('TradeTimeline.k0')}</div>
           <div className="text-lg font-bold text-white">{stats.avgDuration.toFixed(1)}天</div>
         </div>
         <div className="p-3 bg-[#1a1a25] rounded-lg border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">最长持仓</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('TradeTimeline.k1')}</div>
           <div className="text-lg font-bold text-white">{stats.maxDuration}天</div>
         </div>
         <div className="p-3 bg-[#1a1a25] rounded-lg border border-white/5">
@@ -130,11 +131,11 @@ export default function TradeTimeline({ trades }: TradeTimelineProps) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 text-xs">
                   <div>
-                    <span className="text-gray-500">入场: </span>
+                    <span className="text-gray-500">{i18n.t('TradeTimeline.k2')}</span>
                     <span className="text-gray-300 font-mono">${trade.entryPrice.toFixed(2)}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500">出场: </span>
+                    <span className="text-gray-500">{i18n.t('TradeTimeline.k3')}</span>
                     <span className="text-gray-300 font-mono">${trade.exitPrice.toFixed(2)}</span>
                   </div>
                 </div>

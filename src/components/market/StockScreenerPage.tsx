@@ -98,8 +98,8 @@ export default function StockScreenerPage() {
 
   const formatNumber = (n?: number) => {
     if (n == null) return '-';
-    if (n >= 1e8) return `${(n / 1e8).toFixed(1)}亿`;
-    if (n >= 1e4) return `${(n / 1e4).toFixed(1)}万`;
+    if (n >= 1e8) return `${(n / 1e8).toFixed(1)}${i18n.t('StockScreenerPage.k0')}`;
+    if (n >= 1e4) return `${(n / 1e4).toFixed(1)}${i18n.t('StockScreenerPage.k1')}`;
     return n.toFixed(2);
   };
 
@@ -119,7 +119,7 @@ export default function StockScreenerPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-            placeholder="输入选股条件，如：高ROE低PE、小市值成长股、行业龙头..."
+            placeholder={i18n.t('StockScreenerPage.k0')}
             className="flex-1 bg-card border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C9A046]/50"
           />
           <button
@@ -155,7 +155,7 @@ export default function StockScreenerPage() {
         {advancedOpen && (
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 pt-2 border-t border-white/5">
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">最小PE</label>
+              <label className="text-xs text-gray-500 mb-1 block">{i18n.t('StockScreenerPage.k1')}</label>
               <input
                 type="number"
                 value={filters.minPe}
@@ -165,7 +165,7 @@ export default function StockScreenerPage() {
               />
             </div>
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">最大PE</label>
+              <label className="text-xs text-gray-500 mb-1 block">{i18n.t('StockScreenerPage.k2')}</label>
               <input
                 type="number"
                 value={filters.maxPe}
@@ -200,7 +200,7 @@ export default function StockScreenerPage() {
                 type="text"
                 value={filters.sector}
                 onChange={(e) => setFilters({ ...filters, sector: e.target.value })}
-                placeholder="如：科技"
+                placeholder={i18n.t('StockScreenerPage.k3')}
                 className="w-full bg-card border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50"
               />
             </div>
@@ -219,7 +219,7 @@ export default function StockScreenerPage() {
       {sorted.length > 0 && (
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
-            <span className="text-sm text-gray-400">共找到 <span className="text-white font-semibold">{sorted.length}</span> 只符合条件的股票</span>
+            <span className="text-sm text-gray-400">{i18n.t('StockScreenerPage.k4')}<span className="text-white font-semibold">{sorted.length}</span>{i18n.t('StockScreenerPage.k5')}</span>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -278,16 +278,16 @@ export default function StockScreenerPage() {
       {!loading && !error && results.length === 0 && query.trim() && (
         <div className="flex flex-col items-center justify-center py-20 text-gray-500">
           <div className="text-4xl mb-3">🔍</div>
-          <p className="text-sm">未找到匹配的股票</p>
-          <p className="text-xs mt-1">尝试修改筛选条件或关键词</p>
+          <p className="text-sm">{i18n.t('StockScreenerPage.k6')}</p>
+          <p className="text-xs mt-1">{i18n.t('StockScreenerPage.k7')}</p>
         </div>
       )}
 
       {!query.trim() && (
         <div className="flex flex-col items-center justify-center py-20 text-gray-500">
           <div className="text-4xl mb-3">📋</div>
-          <p className="text-sm">输入选股条件开始搜索</p>
-          <p className="text-xs mt-1">支持自然语言，如：高ROE低PE、小市值成长股</p>
+          <p className="text-sm">{i18n.t('StockScreenerPage.k8')}</p>
+          <p className="text-xs mt-1">{i18n.t('StockScreenerPage.k9')}</p>
         </div>
       )}
     </div>

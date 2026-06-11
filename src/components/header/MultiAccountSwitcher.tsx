@@ -12,6 +12,7 @@
 
 import { useTranslation } from "react-i18next";
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -32,7 +33,7 @@ interface AccountInfo {
 const MOCK_ACCOUNTS: AccountInfo[] = [
   {
     id: '281756477617822986',
-    name: '主账户',
+    name: i18n.t('MultiAccountSwitcher.k0'),
     type: 'main',
     balance: 17600000,
     currency: 'HKD',
@@ -43,7 +44,7 @@ const MOCK_ACCOUNTS: AccountInfo[] = [
   },
   {
     id: '281756479319068137',
-    name: 'API 交易账户',
+    name: i18n.t('MultiAccountSwitcher.k1'),
     type: 'api',
     balance: 1490000,
     currency: 'HKD',
@@ -54,7 +55,7 @@ const MOCK_ACCOUNTS: AccountInfo[] = [
   },
   {
     id: 'paper-001',
-    name: '模拟盘',
+    name: i18n.t('MultiAccountSwitcher.k2'),
     type: 'paper',
     balance: 1000000,
     currency: 'HKD',
@@ -121,8 +122,8 @@ export const MultiAccountSwitcher: React.FC<MultiAccountSwitcherProps> = ({
   }, [onSwitch]);
 
   const formatBalance = (v: number) => {
-    if (Math.abs(v) >= 1e8) return `${(v / 1e8).toFixed(2)}亿`;
-    if (Math.abs(v) >= 1e4) return `${(v / 1e4).toFixed(0)}万`;
+    if (Math.abs(v) >= 1e8) return `${(v / 1e8).toFixed(2)}${i18n.t('MultiAccountSwitcher.k0')}`;
+    if (Math.abs(v) >= 1e4) return `${(v / 1e4).toFixed(0)}${i18n.t('MultiAccountSwitcher.k1')}`;
     return v.toLocaleString();
   };
 
@@ -204,7 +205,7 @@ export const MultiAccountSwitcher: React.FC<MultiAccountSwitcherProps> = ({
                     {account.name}
                   </span>
                   <span className="text-[10px] text-gray-600 bg-gray-800/50 px-1 rounded">
-                    {account.type === 'main' ? '主账户' : account.type === 'api' ? 'API' : 'components.simulation'}
+                    {account.type === 'main' ? i18n.t('MultiAccountSwitcher.k3') : account.type === 'api' ? 'API' : 'components.simulation'}
                   </span>
                 </div>
                 <div className="text-[10px] text-gray-500">

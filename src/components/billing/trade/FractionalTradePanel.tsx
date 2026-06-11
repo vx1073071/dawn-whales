@@ -97,9 +97,9 @@ function FillProgressBar({ filled, total, status }: { filled: number; total: num
   return (
     <div>
       <div className="flex justify-between text-[10px] text-gray-500 mb-1">
-        <span>成交 {filled.toLocaleString()}</span>
+        <span>{i18n.t('FractionalTradePanel.k0')}{filled.toLocaleString()}</span>
         <span style={{ color }}>{pct.toFixed(1)}%</span>
-        <span>总量 {total.toLocaleString()}</span>
+        <span>{i18n.t('FractionalTradePanel.k1')}{total.toLocaleString()}</span>
       </div>
       <div className="h-2 bg-white/[0.04] rounded-full overflow-hidden">
         <div className="h-full rounded-full transition-all duration-700" style={{ width: `${pct}%`, background: color }} />
@@ -157,7 +157,7 @@ export default function FractionalTradePanel({
     <div className={`h-full flex flex-col bg-[#0D0D14] text-white ${className}`}>
       {/* Header */}
       <div className="p-5 border-b border-white/5">
-        <h2 className="text-xl font-bold">碎股交易</h2>
+        <h2 className="text-xl font-bold">{i18n.t('FractionalTradePanel.k0')}</h2>
         <p className="text-gray-500 text-xs mt-0.5">美股碎股(0.01-1.00) · 部分成交跟踪</p>
       </div>
 
@@ -178,12 +178,12 @@ export default function FractionalTradePanel({
 
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div>
-              <label className="text-[10px] text-gray-600 uppercase tracking-wider">代码 Symbol</label>
+              <label className="text-[10px] text-gray-600 uppercase tracking-wider">{i18n.t('FractionalTradePanel.k1')}</label>
               <input type="text" value={symbol} onChange={e => setSymbol(e.target.value)}
                      className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
             </div>
             <div>
-              <label className="text-[10px] text-gray-600 uppercase tracking-wider">价格 Price</label>
+              <label className="text-[10px] text-gray-600 uppercase tracking-wider">{i18n.t('FractionalTradePanel.k2')}</label>
               <input type="number" value={price} onChange={e => setPrice(Number(e.target.value))} step={0.01}
                      className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
             </div>
@@ -214,7 +214,7 @@ export default function FractionalTradePanel({
             <div>
               <label className="text-[10px] text-gray-600 uppercase tracking-wider">
                 碎股 Fractional
-                <span className="text-gray-500 ml-1">(最小{rule.minFractional})</span>
+                <span className="text-gray-500 ml-1">{i18n.t('FractionalTradePanel.k2')}{rule.minFractional})</span>
               </label>
               <input type="number" value={fractionalQty} onChange={e => setFractionalQty(Number(e.target.value))}
                      min={rule.minFractional} max={rule.market === 'US' ? 1 : rule.lotSize - 1} step={rule.fractionalStep}
@@ -225,24 +225,24 @@ export default function FractionalTradePanel({
           {/* Summary */}
           <div className="flex items-center justify-between p-3 bg-white/[0.03] rounded-lg mb-4">
             <div>
-              <span className="text-xs text-gray-500">总股数 Total: </span>
+              <span className="text-xs text-gray-500">{i18n.t('FractionalTradePanel.k3')}</span>
               <span className="text-sm text-white font-semibold">{totalQty.toLocaleString()}</span>
               <span className="text-[10px] text-gray-600 ml-2">
                 ({wholeLots} 整手 + {fractionalQty} 碎股)
               </span>
             </div>
             <div className="text-right">
-              <span className="text-xs text-gray-500">预估金额: </span>
+              <span className="text-xs text-gray-500">{i18n.t('FractionalTradePanel.k4')}</span>
               <span className="text-sm text-[#D4A853] font-semibold">{rule.currency} {notional.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
             </div>
           </div>
 
           {/* Fee Breakdown */}
           <div className="space-y-1.5 text-xs text-gray-500 mb-4">
-            <div className="flex justify-between"><span>佣金 Commission</span><span>{rule.currency} {commission.toFixed(2)}</span></div>
-            <div className="flex justify-between"><span>印花税 Stamp</span><span>{rule.currency} {stamp.toFixed(2)}</span></div>
+            <div className="flex justify-between"><span>{i18n.t('FractionalTradePanel.k5')}</span><span>{rule.currency} {commission.toFixed(2)}</span></div>
+            <div className="flex justify-between"><span>{i18n.t('FractionalTradePanel.k6')}</span><span>{rule.currency} {stamp.toFixed(2)}</span></div>
             <div className="flex justify-between border-t border-white/5 pt-1.5 text-[#D4A853] font-medium">
-              <span>总费用 Total Fees</span><span>{rule.currency} {totalFees.toFixed(2)}</span>
+              <span>{i18n.t('FractionalTradePanel.k7')}</span><span>{rule.currency} {totalFees.toFixed(2)}</span>
             </div>
           </div>
 
@@ -283,13 +283,13 @@ export default function FractionalTradePanel({
                 <div className="text-sm font-semibold text-green-400">{activeOrder.filledQty}</div>
               </div>
               <div className="bg-white/[0.03] rounded-lg p-2">
-                <div className="text-[10px] text-gray-600">剩余</div>
+                <div className="text-[10px] text-gray-600">{i18n.t('FractionalTradePanel.k8')}</div>
                 <div className={`text-sm font-semibold ${activeOrder.remainingQty > 0 ? 'text-yellow-400' : 'text-gray-600'}`}>
                   {activeOrder.remainingQty}
                 </div>
               </div>
               <div className="bg-white/[0.03] rounded-lg p-2">
-                <div className="text-[10px] text-gray-600">均价</div>
+                <div className="text-[10px] text-gray-600">{i18n.t('FractionalTradePanel.k9')}</div>
                 <div className="text-sm font-semibold text-gray-200">
                   {activeOrder.avgFillPrice > 0 ? activeOrder.avgFillPrice.toFixed(2) : '—'}
                 </div>
@@ -299,15 +299,15 @@ export default function FractionalTradePanel({
             {/* Partial fill log */}
             {activeOrder.partialFills.length > 0 && (
               <div>
-                <div className="text-[10px] text-gray-600 uppercase tracking-wider mb-2">部分成交记录</div>
+                <div className="text-[10px] text-gray-600 uppercase tracking-wider mb-2">{i18n.t('FractionalTradePanel.k10')}</div>
                 <div className="space-y-1">
                   {activeOrder.partialFills.map((fill, i) => (
                     <div key={i} className="flex items-center justify-between py-1.5 px-3 bg-white/[0.02] rounded text-xs">
                       <span className="text-gray-500 font-mono">{fill.time}</span>
-                      <span className="text-gray-400 font-mono">{fill.qty}股 @ {fill.price}</span>
+                      <span className="text-gray-400 font-mono">{fill.qty}{i18n.t('FractionalTradePanel.k3')}{fill.price}</span>
                       <span className="text-gray-600 font-mono">费{fill.fee.toFixed(2)}</span>
                       {i === activeOrder.partialFills.length - 1 && activeOrder.remainingQty > 0 && (
-                        <span className="text-yellow-400 text-[10px]">← 剩余 {activeOrder.remainingQty} 股继续挂单</span>
+                        <span className="text-yellow-400 text-[10px]">{i18n.t('FractionalTradePanel.k4')}{activeOrder.remainingQty}{i18n.t('FractionalTradePanel.k5')}</span>
                       )}
                     </div>
                   ))}
@@ -334,11 +334,11 @@ export default function FractionalTradePanel({
             <thead>
               <tr className="bg-white/[0.02] text-gray-500">
                 <th className="text-left px-5 py-2 font-medium">{"components.markets"}</th>
-                <th className="text-left px-5 py-2 font-medium">整手</th>
-                <th className="text-left px-5 py-2 font-medium">碎股范围</th>
-                <th className="text-left px-5 py-2 font-medium">最小碎股</th>
+                <th className="text-left px-5 py-2 font-medium">{i18n.t('FractionalTradePanel.k11')}</th>
+                <th className="text-left px-5 py-2 font-medium">{i18n.t('FractionalTradePanel.k12')}</th>
+                <th className="text-left px-5 py-2 font-medium">{i18n.t('FractionalTradePanel.k13')}</th>
                 <th className="text-left px-5 py-2 font-medium">{"components.commission"}</th>
-                <th className="text-left px-5 py-2 font-medium">最低佣金</th>
+                <th className="text-left px-5 py-2 font-medium">{i18n.t('FractionalTradePanel.k14')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">

@@ -128,7 +128,7 @@ function CrashScreen({ error, stack, onRetry }: { error: string; stack: string; 
               color: countdown > 0 ? '#10B981' : '#D1D5DB', fontSize: 14, cursor: countdown > 0 ? 'default' : 'pointer',
             }}
           >
-            {countdown > 0 ? `⏳ ${countdown}秒后自动恢复` : i18n.t('ErrorBoundary.k4')}
+            {countdown > 0 ? `⏳ ${countdown}${i18n.t('ErrorBoundary.k0')}` : i18n.t('ErrorBoundary.k4')}
           </button>
         </div>
 

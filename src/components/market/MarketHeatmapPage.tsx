@@ -95,7 +95,7 @@ export default function MarketHeatmapPage() {
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🗺️ 板块热力图</h1>
           <p className="text-gray-400 text-sm">
-            {lastUpdate ? `最后更新: ${lastUpdate.toLocaleTimeString('zh-CN')}` : 'components.loading'}
+            {lastUpdate ? `${i18n.t('MarketHeatmapPage.k0')}${lastUpdate.toLocaleTimeString('zh-CN')}` : 'components.loading'}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -136,13 +136,13 @@ export default function MarketHeatmapPage() {
           <span className="w-2 h-2 rounded-full bg-gray-500" />
           平盘 <strong className="text-gray-400">{flatCount}</strong>
         </span>
-        <span className="text-gray-600">共 {sectors.length} 个板块</span>
+        <span className="text-gray-600">共 {sectors.length}{i18n.t('MarketHeatmapPage.k1')}</span>
       </div>
 
       {/* Heatmap Grid */}
       {loading && sectors.length === 0 ? (
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-500 animate-pulse">加载板块数据中...</div>
+          <div className="text-gray-500 animate-pulse">{i18n.t('MarketHeatmapPage.k0')}</div>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
@@ -179,11 +179,11 @@ export default function MarketHeatmapPage() {
             <table className="w-full text-xs">
               <thead>
                 <tr className="text-gray-500 border-b border-white/5">
-                  <th className="text-left px-4 py-2">排名</th>
+                  <th className="text-left px-4 py-2">{i18n.t('MarketHeatmapPage.k1')}</th>
                   <th className="text-left px-4 py-2">{"components.sector"}</th>
                   <th className="text-right px-4 py-2">{"components.priceChange"}</th>
-                  <th className="text-right px-4 py-2">涨跌额</th>
-                  <th className="text-left px-4 py-2">领涨股</th>
+                  <th className="text-right px-4 py-2">{i18n.t('MarketHeatmapPage.k2')}</th>
+                  <th className="text-left px-4 py-2">{i18n.t('MarketHeatmapPage.k3')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/[0.03]">
@@ -266,8 +266,8 @@ function generateDemoSectors(boardType: BoardType): SectorItem[] {
     changeAmount: s.changePct * 10,
     marketCap: 500 + Math.random() * 5000,
     leaders: [
-      { name: `领涨股${i}A`, code: `00${i.toString().padStart(3, '0')}`, changePct: s.changePct + 1 },
-      { name: `领涨股${i}B`, code: `00${(i + 1).toString().padStart(3, '0')}`, changePct: s.changePct + 0.5 },
+      { name: `${i18n.t('MarketHeatmapPage.k2')}${i}A`, code: `00${i.toString().padStart(3, '0')}`, changePct: s.changePct + 1 },
+      { name: `${i18n.t('MarketHeatmapPage.k3')}${i}B`, code: `00${(i + 1).toString().padStart(3, '0')}`, changePct: s.changePct + 0.5 },
     ],
   }));
 }

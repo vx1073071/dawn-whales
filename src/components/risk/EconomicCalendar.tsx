@@ -95,9 +95,9 @@ export default function EconomicCalendar() {
               <div className="flex-1 min-w-0">
                 <div className="text-white text-xs truncate">{event.event}</div>
                 <div className="flex items-center gap-2 text-[10px] text-gray-500">
-                  {event.forecast && <span>预期 {event.forecast}</span>}
-                  {event.previous && <span>前值 {event.previous}</span>}
-                  {event.actual && <span className="text-[#D4A853]">实际 {event.actual}</span>}
+                  {event.forecast && <span>{i18n.t('EconomicCalendar.k0')}{event.forecast}</span>}
+                  {event.previous && <span>{i18n.t('EconomicCalendar.k1')}{event.previous}</span>}
+                  {event.actual && <span className="text-[#D4A853]">{i18n.t('EconomicCalendar.k2')}{event.actual}</span>}
                 </div>
               </div>
               <span className={`text-[10px] px-1.5 py-0.5 rounded ${cfg.bg} ${cfg.text} flex-shrink-0`}>

@@ -249,12 +249,12 @@ export default function SignalPerformancePanel({
       <div className="p-5 border-b border-white/5">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold">信号表现</h2>
+            <h2 className="text-xl font-bold">{i18n.t('SignalPerformancePanel.k0')}</h2>
             {creatorName && <p className="text-gray-500 text-xs mt-0.5">{creatorName} 的信号表现分析</p>}
           </div>
           {/* Grade Badge */}
           <div className={`px-4 py-2 rounded-xl border ${gradeCfg.border} ${gradeCfg.bg} flex items-center gap-2`}>
-            <span className="text-xs text-gray-500">质量评分</span>
+            <span className="text-xs text-gray-500">{i18n.t('SignalPerformancePanel.k1')}</span>
             <span className="text-2xl font-bold" style={{ color: gradeCfg.color }}>{grade}</span>
           </div>
         </div>
@@ -264,7 +264,7 @@ export default function SignalPerformancePanel({
         {/* ── Top Stats ────────────────────────────────────────────────── */}
         <div className="grid grid-cols-4 gap-4">
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4 text-center">
-            <div className="text-[10px] text-gray-600 mb-1">总信号</div>
+            <div className="text-[10px] text-gray-600 mb-1">{i18n.t('SignalPerformancePanel.k2')}</div>
             <div className="text-xl font-bold text-gray-200">{perf.totalSignals}</div>
             <div className="text-[10px] text-gray-600">{perf.closedSignals} 已平仓</div>
           </div>
@@ -273,19 +273,19 @@ export default function SignalPerformancePanel({
             <div className={`text-xl font-bold ${perf.profitFactor >= 1.5 ? 'text-green-400' : perf.profitFactor >= 1 ? 'text-yellow-400' : 'text-red-400'}`}>
               {perf.profitFactor.toFixed(2)}
             </div>
-            <div className="text-[10px] text-gray-600">止</div>
+            <div className="text-[10px] text-gray-600">{i18n.t('SignalPerformancePanel.k3')}</div>
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4 text-center">
-            <div className="text-[10px] text-gray-600 mb-1">连赢</div>
+            <div className="text-[10px] text-gray-600 mb-1">{i18n.t('SignalPerformancePanel.k4')}</div>
             <div className="text-xl font-bold text-green-400">{perf.consecutiveWins}</div>
-            <div className="text-[10px] text-gray-600">次</div>
+            <div className="text-[10px] text-gray-600">{i18n.t('SignalPerformancePanel.k5')}</div>
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4 text-center">
-            <div className="text-[10px] text-gray-600 mb-1">连亏</div>
+            <div className="text-[10px] text-gray-600 mb-1">{i18n.t('SignalPerformancePanel.k6')}</div>
             <div className={`text-xl font-bold ${perf.consecutiveLosses <= 3 ? 'text-green-400' : 'text-red-400'}`}>
               {perf.consecutiveLosses}
             </div>
-            <div className="text-[10px] text-gray-600">次</div>
+            <div className="text-[10px] text-gray-600">{i18n.t('SignalPerformancePanel.k7')}</div>
           </div>
         </div>
 
@@ -308,21 +308,21 @@ export default function SignalPerformancePanel({
         {/* ── Trade Stats ───────────────────────────────────────────────── */}
         <div className="grid grid-cols-4 gap-4">
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4">
-            <div className="text-[10px] text-gray-600">平均收益</div>
+            <div className="text-[10px] text-gray-600">{i18n.t('SignalPerformancePanel.k8')}</div>
             <div className={`text-lg font-bold ${perf.avgReturn >= 0 ? 'text-green-400' : 'text-red-400'}`}>
               {perf.avgReturn >= 0 ? '+' : ''}{perf.avgReturn}%
             </div>
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4">
-            <div className="text-[10px] text-gray-600">平均盈利</div>
+            <div className="text-[10px] text-gray-600">{i18n.t('SignalPerformancePanel.k9')}</div>
             <div className="text-lg font-bold text-green-400">+{perf.avgWin}%</div>
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4">
-            <div className="text-[10px] text-gray-600">平均亏损</div>
+            <div className="text-[10px] text-gray-600">{i18n.t('SignalPerformancePanel.k10')}</div>
             <div className="text-lg font-bold text-red-400">{perf.avgLoss}%</div>
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-4">
-            <div className="text-[10px] text-gray-600">极值</div>
+            <div className="text-[10px] text-gray-600">{i18n.t('SignalPerformancePanel.k11')}</div>
             <div className="text-xs">
               <span className="text-green-400 font-bold">+{perf.bestTrade}%</span>
               <span className="text-gray-600 mx-1">/</span>
@@ -404,16 +404,16 @@ export default function SignalPerformancePanel({
                     <div className="px-5 py-3 bg-white/[0.02] border-t border-white/5">
                       <div className="grid grid-cols-2 gap-3 text-xs">
                         <div>
-                          <span className="text-gray-500">信心度: </span>
+                          <span className="text-gray-500">{i18n.t('SignalPerformancePanel.k12')}</span>
                           <span className="text-gray-300">{(sig.confidence * 100).toFixed(0)}%</span>
                         </div>
                         <div>
-                          <span className="text-gray-500">分析引擎: </span>
+                          <span className="text-gray-500">{i18n.t('SignalPerformancePanel.k13')}</span>
                           <span className="text-gray-300">{sig.agent}</span>
                         </div>
                       </div>
                       <div className="mt-2 text-xs text-gray-400">
-                        <span className="text-gray-500">理由: </span>
+                        <span className="text-gray-500">{i18n.t('SignalPerformancePanel.k14')}</span>
                         {sig.reason}
                       </div>
                     </div>

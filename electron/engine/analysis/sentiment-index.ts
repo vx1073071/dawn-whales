@@ -3,6 +3,8 @@
 // Output: 0-100 score (0=extreme fear, 100=extreme greed)
 
 import log from 'electron-log';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

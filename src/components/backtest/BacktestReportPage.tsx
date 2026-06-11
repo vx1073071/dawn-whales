@@ -123,30 +123,30 @@ export default function BacktestReportPage() {
   function exportReport() {
     if (!result) return;
     const lines = [
-      `# 回测报告: ${result.strategyName}`,
-      `标的: ${result.targetCode}`,
-      `周期: ${result.startDate} ~ ${result.endDate}`,
+      `${i18n.t('BacktestReportPage.k0')}${result.strategyName}`,
+      `${i18n.t('BacktestReportPage.k1')}${result.targetCode}`,
+      `${i18n.t('BacktestReportPage.k2')}${result.startDate} ~ ${result.endDate}`,
       ``,
-      `## 绩效摘要`,
-      `初始资金: $${result.initialCapital.toLocaleString()}`,
-      `最终资金: $${result.finalCapital.toFixed(2)}`,
-      `总收益: ${(result.totalReturn * 100).toFixed(2)}%`,
-      `年化收益: ${(result.annualizedReturn * 100).toFixed(2)}%`,
-      `最大回撤: ${(result.maxDrawdown * 100).toFixed(2)}%`,
-      `夏普比率: ${result.sharpeRatio.toFixed(2)}`,
-      `胜率: ${(result.winRate * 100).toFixed(1)}%`,
-      `盈亏比: ${result.profitLossRatio.toFixed(2)}`,
+      i18n.t('BacktestReportPage.k0'),
+      `${i18n.t('BacktestReportPage.k3')}${result.initialCapital.toLocaleString()}`,
+      `${i18n.t('BacktestReportPage.k4')}${result.finalCapital.toFixed(2)}`,
+      `${i18n.t('BacktestReportPage.k5')}${(result.totalReturn * 100).toFixed(2)}%`,
+      `${i18n.t('BacktestReportPage.k6')}${(result.annualizedReturn * 100).toFixed(2)}%`,
+      `${i18n.t('BacktestReportPage.k7')}${(result.maxDrawdown * 100).toFixed(2)}%`,
+      `${i18n.t('BacktestReportPage.k8')}${result.sharpeRatio.toFixed(2)}`,
+      `${i18n.t('BacktestReportPage.k9')}${(result.winRate * 100).toFixed(1)}%`,
+      `${i18n.t('BacktestReportPage.k10')}${result.profitLossRatio.toFixed(2)}`,
       ``,
-      `## 交易统计`,
-      `总交易次数: ${result.totalTrades}`,
-      `盈利次数: ${result.winningTrades}`,
-      `亏损次数: ${result.losingTrades}`,
-      `平均盈利: $${result.avgWin.toFixed(2)}`,
-      `平均亏损: $${result.avgLoss.toFixed(2)}`,
-      `最大连胜: ${result.maxConsecutiveWins}`,
-      `最大连亏: ${result.maxConsecutiveLosses}`,
+      i18n.t('BacktestReportPage.k1'),
+      `${i18n.t('BacktestReportPage.k11')}${result.totalTrades}`,
+      `${i18n.t('BacktestReportPage.k12')}${result.winningTrades}`,
+      `${i18n.t('BacktestReportPage.k13')}${result.losingTrades}`,
+      `${i18n.t('BacktestReportPage.k14')}${result.avgWin.toFixed(2)}`,
+      `${i18n.t('BacktestReportPage.k15')}${result.avgLoss.toFixed(2)}`,
+      `${i18n.t('BacktestReportPage.k16')}${result.maxConsecutiveWins}`,
+      `${i18n.t('BacktestReportPage.k17')}${result.maxConsecutiveLosses}`,
       ``,
-      `## 交易明细`,
+      i18n.t('BacktestReportPage.k2'),
       i18n.t('BacktestReportPage.k6'),
       ...result.trades.map((t) =>
         `${t.entryDate},${t.side},${t.entryPrice.toFixed(2)},${t.exitPrice.toFixed(2)},${t.pnl.toFixed(2)},${(t.pnlPercent * 100).toFixed(2)}%,${t.holdingDays}`
@@ -395,12 +395,12 @@ export default function BacktestReportPage() {
                 <div className="p-4 bg-[#12121a] rounded-xl border border-white/5">
                   <div className="text-xs text-gray-500 mb-1">{t(i18n.t('BacktestReportPage.k28'))}</div>
                   <div className="text-lg font-bold text-emerald-400">{result.winningTrades}</div>
-                  <div className="text-xs text-gray-600">平均 +${result.avgWin.toFixed(2)}</div>
+                  <div className="text-xs text-gray-600">{i18n.t('BacktestReportPage.k18')}{result.avgWin.toFixed(2)}</div>
                 </div>
                 <div className="p-4 bg-[#12121a] rounded-xl border border-white/5">
                   <div className="text-xs text-gray-500 mb-1">{t(i18n.t('BacktestReportPage.k29'))}</div>
                   <div className="text-lg font-bold text-red-400">{result.losingTrades}</div>
-                  <div className="text-xs text-gray-600">平均 -${Math.abs(result.avgLoss).toFixed(2)}</div>
+                  <div className="text-xs text-gray-600">{i18n.t('BacktestReportPage.k19')}{Math.abs(result.avgLoss).toFixed(2)}</div>
                 </div>
                 <div className="p-4 bg-[#12121a] rounded-xl border border-white/5">
                   <div className="text-xs text-gray-500 mb-1">{t(i18n.t('BacktestReportPage.k30'))}</div>
@@ -428,9 +428,9 @@ export default function BacktestReportPage() {
                           options: { dryRun: true, enabled: true },
                         });
                         if (resp?.success) {
-                          alert(`✅ 定时任务已创建: ${taskName}\n工作日21:00自动执行（dry-run）`);
+                          alert(`${i18n.t('BacktestReportPage.k20')}${taskName}${i18n.t('BacktestReportPage.k21')}`);
                         } else {
-                          alert(`❌ 创建失败: ${resp?.error || '未知错误'}`);
+                          alert(`❌ 创建失败: ${resp?.error || i18n.t('BacktestReportPage.k3')}`);
                         }
                       } catch (err: unknown) {
                         alert(i18n.t('BacktestReportPage.k32'));
@@ -458,8 +458,8 @@ export default function BacktestReportPage() {
               </div>
               {equitySvg}
               <div className="flex justify-center gap-6 mt-3 text-xs text-gray-500">
-                <span>初始: ${result.initialCapital.toLocaleString()}</span>
-                <span>最终: ${result.finalCapital.toFixed(2)}</span>
+                <span>{i18n.t('BacktestReportPage.k22')}{result.initialCapital.toLocaleString()}</span>
+                <span>{i18n.t('BacktestReportPage.k23')}{result.finalCapital.toFixed(2)}</span>
                 <span className={result.totalReturn >= 0 ? 'text-emerald-400' : 'text-red-400'}>
                   {(result.totalReturn * 100).toFixed(2)}%
                 </span>
@@ -519,8 +519,8 @@ export default function BacktestReportPage() {
                 </table>
               </div>
               <div className="px-4 py-2 border-t border-white/5 text-xs text-gray-600 flex justify-between">
-                <span>共 {result.trades.length} 笔交易</span>
-                <span>胜率 {(result.winRate * 100).toFixed(1)}% · 盈亏比 {result.profitLossRatio.toFixed(2)}</span>
+                <span>共 {result.trades.length}{i18n.t('BacktestReportPage.k24')}</span>
+                <span>{i18n.t('BacktestReportPage.k25')}{(result.winRate * 100).toFixed(1)}{i18n.t('BacktestReportPage.k26')}{result.profitLossRatio.toFixed(2)}</span>
               </div>
             </div>
           )}

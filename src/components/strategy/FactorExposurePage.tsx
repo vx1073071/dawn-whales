@@ -211,11 +211,11 @@ export default function FactorExposurePage() {
       {/* Factor Radar + Contribution */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-          <h2 className="text-sm font-semibold text-white mb-4">因子暴露雷达</h2>
+          <h2 className="text-sm font-semibold text-white mb-4">{i18n.t('FactorExposurePage.k0')}</h2>
           <div id="factor-radar-chart" className="w-full h-[280px]" />
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-          <h2 className="text-sm font-semibold text-white mb-4">因子贡献度</h2>
+          <h2 className="text-sm font-semibold text-white mb-4">{i18n.t('FactorExposurePage.k1')}</h2>
           <div id="factor-contribution-chart" className="w-full h-[280px]" />
         </div>
       </div>
@@ -223,18 +223,18 @@ export default function FactorExposurePage() {
       {/* Factor Detail Table */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/5">
-          <h2 className="text-sm font-semibold text-white">因子详情</h2>
+          <h2 className="text-sm font-semibold text-white">{i18n.t('FactorExposurePage.k2')}</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                 <th className="px-4 py-3 text-left">{t("components.factor")}</th>
-                <th className="px-4 py-3 text-right">暴露值</th>
-                <th className="px-4 py-3 text-right">贡献度</th>
+                <th className="px-4 py-3 text-right">{i18n.t('FactorExposurePage.k3')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('FactorExposurePage.k4')}</th>
                 <th className="px-4 py-3 text-right">t 统计量</th>
                 <th className="px-4 py-3 text-right">p 值</th>
-                <th className="px-4 py-3 text-center">显著性</th>
+                <th className="px-4 py-3 text-center">{i18n.t('FactorExposurePage.k5')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -269,13 +269,13 @@ export default function FactorExposurePage() {
 
       {/* Monthly Residuals */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-white mb-4">月度残差</h2>
+        <h2 className="text-sm font-semibold text-white mb-4">{i18n.t('FactorExposurePage.k6')}</h2>
         <div id="residual-chart" className="w-full h-[200px]" />
       </div>
 
       {/* Factor Correlation */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-white mb-4">因子相关性</h2>
+        <h2 className="text-sm font-semibold text-white mb-4">{i18n.t('FactorExposurePage.k7')}</h2>
         <div className="flex flex-wrap gap-3">
           {data.factorCorrelation.map((c, idx) => (
             <div key={idx} className="bg-deep rounded-lg px-3 py-2">

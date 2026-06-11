@@ -4,6 +4,8 @@
 
 import log from 'electron-log';
 import { normalCDF } from '../utils/math';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

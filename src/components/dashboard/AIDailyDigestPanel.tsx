@@ -255,8 +255,8 @@ export const AIDailyDigestPanel: React.FC<AIDailyDigestPanelProps> = ({ classNam
                   </div>
                   <div className="flex items-center gap-2">
                     <span className={`text-[10px] px-1.5 py-0.5 rounded ${
-                      s.signal === '买入' ? 'bg-emerald-500/10 text-emerald-400' :
-                      s.signal === '卖出' ? 'bg-red-500/10 text-red-400' :
+                      s.signal === i18n.t('AIDailyDigestPanel.k0') ? 'bg-emerald-500/10 text-emerald-400' :
+                      s.signal === i18n.t('AIDailyDigestPanel.k1') ? 'bg-red-500/10 text-red-400' :
                       'bg-gray-500/10 text-gray-400'
                     }`}>
                       {s.signal}

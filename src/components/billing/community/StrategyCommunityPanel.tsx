@@ -175,7 +175,7 @@ export default function StrategyCommunityPanel({
   }, [onLike]);
 
   const handleShare = useCallback((p: 'twitter' | 'telegram' | 'copy') => {
-    setShared(p === 'copy' ? i18n.t('StrategyCommunityPanel.k14') : `已分享到${p === 'twitter' ? 'Twitter' : 'Telegram'}`);
+    setShared(p === 'copy' ? i18n.t('StrategyCommunityPanel.k14') : `${i18n.t('StrategyCommunityPanel.k0')}${p === 'twitter' ? 'Twitter' : 'Telegram'}`);
     setTimeout(() => setShared(''), 2000);
     onShare?.(p);
   }, [onShare]);
@@ -203,7 +203,7 @@ export default function StrategyCommunityPanel({
 
       {/* Comments */}
       <div className="flex-1 overflow-y-auto p-5">
-        <h3 className="text-gray-400 font-semibold text-xs mb-3">💬 评论 ({comments.length})</h3>
+        <h3 className="text-gray-400 font-semibold text-xs mb-3">{i18n.t('StrategyCommunityPanel.k1')}{comments.length})</h3>
         <div className="space-y-0">
           {comments.map(c => (
             <CommentThread key={c.id} comment={c} onReply={setReplyTo} onLike={handleLike} depth={0} />
@@ -215,14 +215,14 @@ export default function StrategyCommunityPanel({
       <div className="p-4 border-t border-white/5">
         {replyTo && (
           <div className="flex items-center gap-2 mb-2 text-[10px] text-gray-500">
-            <span>回复中...</span>
+            <span>{i18n.t('StrategyCommunityPanel.k0')}</span>
             <button onClick={() => setReplyTo(null)} className="text-gray-600 hover:text-gray-400">{t("components.cancel")}</button>
           </div>
         )}
         <div className="flex gap-2">
           <input value={newComment} onChange={e => setNewComment(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleComment()}
-            placeholder="写下你的评论..."
+            placeholder={i18n.t('StrategyCommunityPanel.k1')}
             className="flex-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#3b82f6]/50" />
           <button onClick={handleComment}
             className="px-4 py-2 rounded-lg bg-[#3b82f6] text-white text-sm font-semibold">

@@ -187,7 +187,7 @@ export default function EquityChart({
   if (!data || data.length === 0) {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5 flex items-center justify-center" style={{ height }}>
-        <div className="text-gray-500 text-sm">暂无净值数据</div>
+        <div className="text-gray-500 text-sm">{i18n.t('EquityChart.k0')}</div>
       </div>
     );
   }

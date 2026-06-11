@@ -181,7 +181,7 @@ export default function FactorAnalysisPanel({
     <div className={`h-full flex flex-col bg-[#0D0D14] text-white ${className}`}>
       <div className="p-5 border-b border-white/5">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">因子分析</h2>
+          <h2 className="text-xl font-bold">{i18n.t('FactorAnalysisPanel.k0')}</h2>
           <div className="flex gap-1">
             {(['icir', 'exposure', 'radar'] as const).map(t => (
               <button key={t} onClick={() => setTab(t)}
@@ -202,7 +202,7 @@ export default function FactorAnalysisPanel({
               <thead>
                 <tr className="bg-white/[0.02] text-gray-500">
                   <th className="text-left px-4 py-2">{"components.factor"}</th><th className="text-right px-4 py-2">IC</th><th className="text-right px-4 py-2">IR</th>
-                  <th className="text-right px-4 py-2">衰减(月)</th><th className="text-right px-4 py-2">拥挤度</th>
+                  <th className="text-right px-4 py-2">衰减(月)</th><th className="text-right px-4 py-2">{i18n.t('FactorAnalysisPanel.k1')}</th>
                   <th className="text-right px-4 py-2">多空收益差%</th><th className="px-4 py-2">12月IC趋势</th>
                 </tr>
               </thead>
@@ -273,8 +273,8 @@ export default function FactorAnalysisPanel({
                 <thead>
                   <tr className="bg-white/[0.02] text-gray-500">
                     <th className="text-left px-4 py-2">{"components.strategy"}</th><th className="text-right px-4 py-2">{"components.returnRate"}</th><th className="text-right px-4 py-2">{"components.sharpeRatio"}</th>
-                    <th className="text-right px-4 py-2">回撤</th><th className="text-right px-4 py-2">{"components.winRate"}</th>
-                    <th className="text-right px-4 py-2">波动</th><th className="text-right px-4 py-2">Alpha</th>
+                    <th className="text-right px-4 py-2">{i18n.t('FactorAnalysisPanel.k2')}</th><th className="text-right px-4 py-2">{"components.winRate"}</th>
+                    <th className="text-right px-4 py-2">{i18n.t('FactorAnalysisPanel.k3')}</th><th className="text-right px-4 py-2">Alpha</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">

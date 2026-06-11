@@ -102,7 +102,7 @@ export default function FundHoldingsPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-white mb-1">🏦 基金持仓</h1>
-        <p className="text-gray-400 text-sm">基金重仓股 · 机构动向 · 增减持排行</p>
+        <p className="text-gray-400 text-sm">{i18n.t('FundHoldingsPage.k0')}</p>
       </div>
 
       {/* Tabs */}
@@ -138,7 +138,7 @@ export default function FundHoldingsPage() {
               value={fundCode}
               onChange={(e) => setFundCode(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && fetchByFund()}
-              placeholder="输入基金代码，如：110022"
+              placeholder={i18n.t('FundHoldingsPage.k1')}
               className="flex-1 bg-[#1a1a25] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C9A046]/50"
             />
             <button
@@ -154,12 +154,12 @@ export default function FundHoldingsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-card text-gray-400 text-xs">
-                  <th className="px-4 py-3 text-left">股票代码</th>
-                  <th className="px-4 py-3 text-left">股票名称</th>
-                  <th className="px-4 py-3 text-right">持股数</th>
+                  <th className="px-4 py-3 text-left">{i18n.t('FundHoldingsPage.k2')}</th>
+                  <th className="px-4 py-3 text-left">{i18n.t('FundHoldingsPage.k3')}</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('FundHoldingsPage.k4')}</th>
                   <th className="px-4 py-3 text-right">{"components.marketCap"}</th>
-                  <th className="px-4 py-3 text-right">占净值</th>
-                  <th className="px-4 py-3 text-right">较上期变化</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('FundHoldingsPage.k5')}</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('FundHoldingsPage.k6')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -178,7 +178,7 @@ export default function FundHoldingsPage() {
               </tbody>
             </table>
             {holdings.length === 0 && !loading && (
-              <div className="text-gray-500 text-sm py-8 text-center">输入基金代码查询持仓</div>
+              <div className="text-gray-500 text-sm py-8 text-center">{i18n.t('FundHoldingsPage.k7')}</div>
             )}
           </div>
         </div>
@@ -193,7 +193,7 @@ export default function FundHoldingsPage() {
               value={stockCode}
               onChange={(e) => setStockCode(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && fetchByStock()}
-              placeholder="输入股票代码，如：600519"
+              placeholder={i18n.t('FundHoldingsPage.k8')}
               className="flex-1 bg-[#1a1a25] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C9A046]/50"
             />
             <button
@@ -209,11 +209,11 @@ export default function FundHoldingsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-card text-gray-400 text-xs">
-                  <th className="px-4 py-3 text-left">基金代码</th>
-                  <th className="px-4 py-3 text-left">基金名称</th>
-                  <th className="px-4 py-3 text-right">持股数</th>
-                  <th className="px-4 py-3 text-right">占流通比</th>
-                  <th className="px-4 py-3 text-center">变动方向</th>
+                  <th className="px-4 py-3 text-left">{i18n.t('FundHoldingsPage.k9')}</th>
+                  <th className="px-4 py-3 text-left">{i18n.t('FundHoldingsPage.k10')}</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('FundHoldingsPage.k11')}</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('FundHoldingsPage.k12')}</th>
+                  <th className="px-4 py-3 text-center">{i18n.t('FundHoldingsPage.k13')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -237,7 +237,7 @@ export default function FundHoldingsPage() {
               </tbody>
             </table>
             {ownership.length === 0 && !loading && (
-              <div className="text-gray-500 text-sm py-8 text-center">输入股票代码查询基金持仓</div>
+              <div className="text-gray-500 text-sm py-8 text-center">{i18n.t('FundHoldingsPage.k14')}</div>
             )}
           </div>
         </div>
@@ -249,13 +249,13 @@ export default function FundHoldingsPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-card text-gray-400 text-xs">
-                <th className="px-4 py-3 text-left">排名</th>
-                <th className="px-4 py-3 text-left">基金代码</th>
-                <th className="px-4 py-3 text-left">基金名称</th>
+                <th className="px-4 py-3 text-left">{i18n.t('FundHoldingsPage.k15')}</th>
+                <th className="px-4 py-3 text-left">{i18n.t('FundHoldingsPage.k16')}</th>
+                <th className="px-4 py-3 text-left">{i18n.t('FundHoldingsPage.k17')}</th>
                 <th className="px-4 py-3 text-right">{"components.positionValue"}</th>
-                <th className="px-4 py-3 text-right">变动金额</th>
-                <th className="px-4 py-3 text-right">变动比例</th>
-                <th className="px-4 py-3 text-left">重仓股</th>
+                <th className="px-4 py-3 text-right">{i18n.t('FundHoldingsPage.k18')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('FundHoldingsPage.k19')}</th>
+                <th className="px-4 py-3 text-left">{i18n.t('FundHoldingsPage.k20')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">

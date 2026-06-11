@@ -218,7 +218,7 @@ export default function PositionMonitorPanel({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">持仓监控</h2>
+          <h2 className="text-lg font-semibold text-white">{i18n.t('PositionMonitorPanel.k0')}</h2>
           <p className="text-xs text-gray-500 mt-1">
             {positions.length} 个持仓 • {refreshInterval / 1000}s 刷新
             {live && <span className="ml-2 text-green-500">{connected ? i18n.t('PositionMonitorPanel.k1') : i18n.t('PositionMonitorPanel.k2')}</span>}
@@ -249,7 +249,7 @@ export default function PositionMonitorPanel({
         {positions.length === 0 && (
           <div className="bg-[#12121a] rounded-xl p-8 text-center border border-white/5">
             <div className="text-4xl mb-2">📭</div>
-            <p className="text-gray-400 text-sm">暂无持仓</p>
+            <p className="text-gray-400 text-sm">{i18n.t('PositionMonitorPanel.k1')}</p>
           </div>
         )}
 
@@ -280,14 +280,14 @@ export default function PositionMonitorPanel({
 
             {/* Details row */}
             <div className="flex items-center gap-4 text-xs text-gray-500">
-              <span>均价 {pos.avgCost}</span>
-              <span className="font-mono text-gray-300">现价 {pos.currentPrice}</span>
+              <span>{i18n.t('PositionMonitorPanel.k0')}{pos.avgCost}</span>
+              <span className="font-mono text-gray-300">{i18n.t('PositionMonitorPanel.k1')}{pos.currentPrice}</span>
               <span>{pos.shares} 股</span>
               {pos.stopLoss && (
-                <span className="text-yellow-500">止损 {pos.stopLoss}</span>
+                <span className="text-yellow-500">{i18n.t('PositionMonitorPanel.k2')}{pos.stopLoss}</span>
               )}
               {pos.takeProfit && (
-                <span className="text-blue-400">止盈 {pos.takeProfit}</span>
+                <span className="text-blue-400">{i18n.t('PositionMonitorPanel.k3')}{pos.takeProfit}</span>
               )}
             </div>
 
@@ -296,7 +296,7 @@ export default function PositionMonitorPanel({
               <div className="mt-3 pt-3 border-t border-white/5 space-y-2">
                 {/* Stop Loss */}
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-yellow-500 w-12">止损:</span>
+                  <span className="text-xs text-yellow-500 w-12">{i18n.t('PositionMonitorPanel.k2')}</span>
                   {editStopLoss === pos.id ? (
                     <>
                       <input
@@ -344,7 +344,7 @@ export default function PositionMonitorPanel({
 
                 {/* Take Profit */}
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-blue-400 w-12">止盈:</span>
+                  <span className="text-xs text-blue-400 w-12">{i18n.t('PositionMonitorPanel.k3')}</span>
                   {editTakeProfit === pos.id ? (
                     <>
                       <input
@@ -408,19 +408,19 @@ export default function PositionMonitorPanel({
         <div className="bg-[#12121a] rounded-xl p-3 flex items-center justify-between text-xs border border-white/5">
           <div className="flex items-center gap-6">
             <div>
-              <span className="text-gray-500">多仓: </span>
+              <span className="text-gray-500">{i18n.t('PositionMonitorPanel.k4')}</span>
               <span className="text-green-400">{positions.filter(p => p.type === 'long').length}</span>
             </div>
             <div>
-              <span className="text-gray-500">空仓: </span>
+              <span className="text-gray-500">{i18n.t('PositionMonitorPanel.k5')}</span>
               <span className="text-red-400">{positions.filter(p => p.type === 'short').length}</span>
             </div>
             <div>
-              <span className="text-gray-500">已设止损: </span>
+              <span className="text-gray-500">{i18n.t('PositionMonitorPanel.k6')}</span>
               <span className="text-yellow-400">{positions.filter(p => p.stopLoss).length}/{positions.length}</span>
             </div>
             <div>
-              <span className="text-gray-500">已设止盈: </span>
+              <span className="text-gray-500">{i18n.t('PositionMonitorPanel.k7')}</span>
               <span className="text-blue-400">{positions.filter(p => p.takeProfit).length}/{positions.length}</span>
             </div>
           </div>

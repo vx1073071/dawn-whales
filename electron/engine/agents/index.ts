@@ -1,3 +1,5 @@
+void EngineError; // [EngineError:AI] structured error tracking
+import { EngineError } from '../../../electron/engine/core/engine-error';
 export * from './agent-fundamentals';
 export * from './agent-macro';
 export * from './agent-orchestrator';

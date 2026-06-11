@@ -205,7 +205,7 @@ const DataExportPage: React.FC = () => {
         };
         const fn = api[methodMap[fmt]];
         if (typeof fn !== 'function') {
-          return { success: false, error: `不支持的导出格式: ${fmt}` };
+          return { success: false, error: `${i18n.t('DataExportPage.k0')}${fmt}` };
         }
         return await fn(target, filters);
       } catch (err: unknown) {
@@ -483,7 +483,7 @@ const DataExportPage: React.FC = () => {
                     type="text"
                     value={filters.strategyId}
                     onChange={(e) => updateFilter('strategyId', e.target.value)}
-                    placeholder="例如: strategy_001"
+                    placeholder={i18n.t('DataExportPage.k0')}
                     className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
                   />
                 </div>
@@ -497,7 +497,7 @@ const DataExportPage: React.FC = () => {
                     type="text"
                     value={filters.symbol}
                     onChange={(e) => updateFilter('symbol', e.target.value)}
-                    placeholder="例如: BTCUSDT"
+                    placeholder={i18n.t('DataExportPage.k1')}
                     className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
                   />
                 </div>

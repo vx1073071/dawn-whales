@@ -152,8 +152,8 @@ export default function CreatorLeaderboard({
       <div className="p-5 border-b border-white/5">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-xl font-bold">创作者中心</h2>
-            <p className="text-gray-500 text-xs mt-0.5">等级成长 · 排行榜 · 收益分成</p>
+            <h2 className="text-xl font-bold">{i18n.t('CreatorLeaderboard.k0')}</h2>
+            <p className="text-gray-500 text-xs mt-0.5">{i18n.t('CreatorLeaderboard.k1')}</p>
           </div>
           {/* Tabs */}
           <div className="flex bg-white/[0.04] rounded-lg p-0.5">
@@ -185,7 +185,7 @@ export default function CreatorLeaderboard({
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs text-gray-500">我的排名</div>
+                    <div className="text-xs text-gray-500">{i18n.t('CreatorLeaderboard.k2')}</div>
                     <div className="text-[#D4A853] font-bold text-2xl">#{currentProfile.rank}</div>
                     {currentProfile.rankChange !== undefined && currentProfile.rankChange !== 0 && (
                       <span className={`text-xs ${currentProfile.rankChange > 0 ? 'text-green-400' : 'text-red-400'}`}>
@@ -224,12 +224,12 @@ export default function CreatorLeaderboard({
             <div className="border border-white/5 rounded-xl overflow-hidden">
               {/* Header */}
               <div className="grid grid-cols-12 gap-2 px-4 py-2.5 bg-white/[0.03] text-[10px] text-gray-600 uppercase tracking-wider">
-                <div className="col-span-1">排名</div>
-                <div className="col-span-4">创作者</div>
+                <div className="col-span-1">{i18n.t('CreatorLeaderboard.k3')}</div>
+                <div className="col-span-4">{i18n.t('CreatorLeaderboard.k4')}</div>
                 <div className="col-span-2 text-right">{"components.returnRate"}</div>
                 <div className="col-span-1 text-right">{"components.sharpeRatio"}</div>
-                <div className="col-span-2 text-right">订阅数</div>
-                <div className="col-span-2 text-right">收入</div>
+                <div className="col-span-2 text-right">{i18n.t('CreatorLeaderboard.k5')}</div>
+                <div className="col-span-2 text-right">{i18n.t('CreatorLeaderboard.k6')}</div>
               </div>
 
               {ranked.map((p, i) => {
@@ -319,13 +319,13 @@ export default function CreatorLeaderboard({
               <table className="w-full text-xs">
                 <thead>
                   <tr className="bg-white/[0.02] text-gray-500">
-                    <th className="text-left px-5 py-2 font-medium">等级</th>
-                    <th className="text-left px-5 py-2 font-medium">所需XP</th>
+                    <th className="text-left px-5 py-2 font-medium">{i18n.t('CreatorLeaderboard.k7')}</th>
+                    <th className="text-left px-5 py-2 font-medium">{i18n.t('CreatorLeaderboard.k8')}</th>
                     <th className="text-left px-5 py-2 font-medium">收益分成 (你:平台)</th>
-                    <th className="text-left px-5 py-2 font-medium">每日发布上限</th>
-                    <th className="text-left px-5 py-2 font-medium">回测权限</th>
-                    <th className="text-left px-5 py-2 font-medium">认证标识</th>
-                    <th className="text-left px-5 py-2 font-medium">优先推荐</th>
+                    <th className="text-left px-5 py-2 font-medium">{i18n.t('CreatorLeaderboard.k9')}</th>
+                    <th className="text-left px-5 py-2 font-medium">{i18n.t('CreatorLeaderboard.k10')}</th>
+                    <th className="text-left px-5 py-2 font-medium">{i18n.t('CreatorLeaderboard.k11')}</th>
+                    <th className="text-left px-5 py-2 font-medium">{i18n.t('CreatorLeaderboard.k12')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
@@ -406,7 +406,7 @@ export default function CreatorLeaderboard({
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs text-gray-500">累计收入</div>
+                    <div className="text-xs text-gray-500">{i18n.t('CreatorLeaderboard.k13')}</div>
                     <div className="text-[#D4A853] font-bold text-xl">${currentProfile.revenue.toLocaleString()}</div>
                   </div>
                 </div>

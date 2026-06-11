@@ -83,11 +83,11 @@ function formatTime(dateStr: string): string {
   const diffMs = now.getTime() - d.getTime();
   const diffMin = Math.floor(diffMs / 60000);
   if (diffMin < 1) return i18n.t('SentimentDashboardPage.k24');
-  if (diffMin < 60) return `${diffMin}分钟前`;
+  if (diffMin < 60) return `${diffMin}${i18n.t('SentimentDashboardPage.k0')}`;
   const diffHr = Math.floor(diffMin / 60);
-  if (diffHr < 24) return `${diffHr}小时前`;
+  if (diffHr < 24) return `${diffHr}${i18n.t('SentimentDashboardPage.k1')}`;
   const diffDay = Math.floor(diffHr / 24);
-  if (diffDay < 7) return `${diffDay}天前`;
+  if (diffDay < 7) return `${diffDay}${i18n.t('SentimentDashboardPage.k2')}`;
   return d.toLocaleDateString('zh-CN');
 }
 
@@ -99,21 +99,21 @@ function clamp(v: number, min: number, max: number): number {
 
 function generateMockNews(symbol: string, count: number): NewsItem[] {
   const titles = [
-    `${symbol} 发布超预期财报，营收同比增长32%`,
-    `分析师上调 ${symbol} 目标价至新高`,
-    `${symbol} 宣布大规模回购计划`,
-    `${symbol} 面临监管审查，股价承压`,
-    `市场担忧 ${symbol} 供应链风险`,
-    `${symbol} 新产品线获得重大突破`,
-    `${symbol} 与行业巨头达成战略合作`,
-    `${symbol} CEO 增持公司股份`,
-    `${symbol} 海外市场扩张加速`,
-    `机构下调 ${symbol} 评级至"持有"`,
-    `${symbol} 技术面出现看空信号`,
-    `${symbol} 获得政府大额补贴`,
-    `空头持仓 ${symbol} 比例创新高`,
-    `${symbol} 行业政策利好频出`,
-    `${symbol} 宣布裁员计划，市场反应积极`,
+    `${symbol}${i18n.t('SentimentDashboardPage.k3')}`,
+    `${i18n.t('SentimentDashboardPage.k4')}${symbol}${i18n.t('SentimentDashboardPage.k5')}`,
+    `${symbol}${i18n.t('SentimentDashboardPage.k6')}`,
+    `${symbol}${i18n.t('SentimentDashboardPage.k7')}`,
+    `${i18n.t('SentimentDashboardPage.k8')}${symbol}${i18n.t('SentimentDashboardPage.k9')}`,
+    `${symbol}${i18n.t('SentimentDashboardPage.k10')}`,
+    `${symbol}${i18n.t('SentimentDashboardPage.k11')}`,
+    `${symbol}${i18n.t('SentimentDashboardPage.k12')}`,
+    `${symbol}${i18n.t('SentimentDashboardPage.k13')}`,
+    `${i18n.t('SentimentDashboardPage.k14')}${symbol}${i18n.t('SentimentDashboardPage.k15')}`,
+    `${symbol}${i18n.t('SentimentDashboardPage.k16')}`,
+    `${symbol}${i18n.t('SentimentDashboardPage.k17')}`,
+    `${i18n.t('SentimentDashboardPage.k18')}${symbol}${i18n.t('SentimentDashboardPage.k19')}`,
+    `${symbol}${i18n.t('SentimentDashboardPage.k20')}`,
+    `${symbol}${i18n.t('SentimentDashboardPage.k21')}`,
   ];
   const sources = [i18n.t('SentimentDashboardPage.k25'), i18n.t('SentimentDashboardPage.k26'), i18n.t('SentimentDashboardPage.k27'), i18n.t('SentimentDashboardPage.k28')];
   const keywordPool = [i18n.t('SentimentDashboardPage.k29'), i18n.t('SentimentDashboardPage.k30'), i18n.t('SentimentDashboardPage.k31'), i18n.t('SentimentDashboardPage.k32'), 'components.risk', 'components.breakout', i18n.t('SentimentDashboardPage.k33'), 'components.increaseHolding', i18n.t('SentimentDashboardPage.k34'), i18n.t('SentimentDashboardPage.k35'), i18n.t('SentimentDashboardPage.k36'), i18n.t('SentimentDashboardPage.k37'), i18n.t('SentimentDashboardPage.k38'), i18n.t('SentimentDashboardPage.k39'), i18n.t('SentimentDashboardPage.k40')];
@@ -121,7 +121,7 @@ function generateMockNews(symbol: string, count: number): NewsItem[] {
   return Array.from({ length: count }, (_, i) => ({
     id: `news-${i}-${Date.now()}`,
     title: titles[i % titles.length],
-    summary: `这是关于 ${symbol} 的最新资讯摘要，包含关键市场数据和分析师观点...`,
+    summary: `${i18n.t('SentimentDashboardPage.k22')}${symbol}${i18n.t('SentimentDashboardPage.k23')}`,
     source: sources[Math.floor(Math.random() * sources.length)],
     publishedAt: new Date(Date.now() - Math.random() * 7 * 24 * 3600000).toISOString(),
     sentiment: clamp((Math.random() - 0.5) * 2, -1, 1),
@@ -374,7 +374,7 @@ const KeywordCloud: React.FC<{ keywords: KeywordItem[] }> = ({ keywords }) => {
             key={kw.text}
             className={`${color} font-medium hover:scale-110 transition-transform cursor-default`}
             style={{ fontSize: `${size}px` }}
-            title={`频率: ${kw.frequency}`}
+            title={`${i18n.t('SentimentDashboardPage.k24')}${kw.frequency}`}
           >
             {kw.text}
           </span>
@@ -489,7 +489,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
         <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
       </span>
       <span>{i18n.t('SentimentDashboardPage.k48')}</span>
-      {lastUpdate && <span>· 最后更新 {lastUpdate.toLocaleTimeString('zh-CN')}</span>}
+      {lastUpdate && <span>{i18n.t('SentimentDashboardPage.k25')}{lastUpdate.toLocaleTimeString('zh-CN')}</span>}
     </div>
 
     {/* Refresh button */}

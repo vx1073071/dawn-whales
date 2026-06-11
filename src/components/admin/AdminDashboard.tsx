@@ -51,7 +51,7 @@ const AdminDashboard: React.FC = () => {
       </h2>
 
       {/* Funnel */}
-      <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>用户漏斗</h3>
+      <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>{i18n.t('AdminDashboard.k0')}</h3>
       <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
         <StatCard title={i18n.t('AdminDashboard.k1')} value={stats.funnel.visits} />
         <StatCard title={i18n.t('AdminDashboard.k2')} value={stats.funnel.downloads} sub={`转化率 ${stats.funnel.visits > 0 ? ((stats.funnel.downloads / stats.funnel.visits) * 100).toFixed(1) : 0}%`} />
@@ -60,7 +60,7 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Retention */}
-      <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>用户留存</h3>
+      <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>{i18n.t('AdminDashboard.k1')}</h3>
       <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
         <StatCard title={i18n.t('AdminDashboard.k5')} value={`${stats.retention.day1}%`} />
         <StatCard title={i18n.t('AdminDashboard.k6')} value={`${stats.retention.day7}%`} />
@@ -68,7 +68,7 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Users */}
-      <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>用户概览</h3>
+      <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>{i18n.t('AdminDashboard.k2')}</h3>
       <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
         <StatCard title={i18n.t('AdminDashboard.k8')} value={stats.users.total} />
         <StatCard title={i18n.t('AdminDashboard.k9')} value={stats.users.active7d} />
@@ -76,7 +76,7 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Invitations */}
-      <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>邀请裂变</h3>
+      <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 10, color: 'var(--dw-text, #E5E7EB)' }}>{i18n.t('AdminDashboard.k3')}</h3>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
         <StatCard title={i18n.t('AdminDashboard.k11')} value={stats.invitations.sent} />
         <StatCard title={i18n.t('AdminDashboard.k12')} value={stats.invitations.accepted} />

@@ -96,7 +96,7 @@ export default function DragonTigerPage() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🐉 龙虎榜</h1>
-          <p className="text-gray-400 text-sm">每日异动股 · 席位分析 · 机构动向</p>
+          <p className="text-gray-400 text-sm">{i18n.t('DragonTigerPage.k0')}</p>
         </div>
         <div className="flex items-center gap-2">
           <input
@@ -148,8 +148,8 @@ export default function DragonTigerPage() {
                 <th className="px-4 py-3 text-left">{"components.code"}</th>
                 <th className="px-4 py-3 text-left">{"components.name"}</th>
                 <th className="px-4 py-3 text-right">{"components.priceChange"}</th>
-                <th className="px-4 py-3 text-right">净买额</th>
-                <th className="px-4 py-3 text-left">上榜原因</th>
+                <th className="px-4 py-3 text-right">{i18n.t('DragonTigerPage.k1')}</th>
+                <th className="px-4 py-3 text-left">{i18n.t('DragonTigerPage.k2')}</th>
                 <th className="px-4 py-3 text-center">{"components.actions"}</th>
               </tr>
             </thead>
@@ -192,8 +192,8 @@ export default function DragonTigerPage() {
                 <th className="px-4 py-3 text-left">{"components.code"}</th>
                 <th className="px-4 py-3 text-left">{"components.name"}</th>
                 <th className="px-4 py-3 text-right">{"components.priceChange"}</th>
-                <th className="px-4 py-3 text-right">机构净买</th>
-                <th className="px-4 py-3 text-left">原因</th>
+                <th className="px-4 py-3 text-right">{i18n.t('DragonTigerPage.k3')}</th>
+                <th className="px-4 py-3 text-left">{i18n.t('DragonTigerPage.k4')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -230,7 +230,7 @@ export default function DragonTigerPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {/* Buy Seats */}
             <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-              <h3 className="text-sm font-medium text-red-400 mb-3">买入前五席位</h3>
+              <h3 className="text-sm font-medium text-red-400 mb-3">{i18n.t('DragonTigerPage.k5')}</h3>
               <div className="space-y-2">
                 {detail.buySeats.map((s) => (
                   <div key={s.rank} className="flex items-center justify-between p-2 bg-card rounded">
@@ -249,7 +249,7 @@ export default function DragonTigerPage() {
 
             {/* Sell Seats */}
             <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-              <h3 className="text-sm font-medium text-emerald-400 mb-3">卖出前五席位</h3>
+              <h3 className="text-sm font-medium text-emerald-400 mb-3">{i18n.t('DragonTigerPage.k6')}</h3>
               <div className="space-y-2">
                 {detail.sellSeats.map((s) => (
                   <div key={s.rank} className="flex items-center justify-between p-2 bg-card rounded">

@@ -234,7 +234,7 @@ function AchievementTab() {
             </div>
 
             <div style={{ fontSize: 11, color: '#6B7280' }}>
-              🎁 {a.unlocked ? `已获得: ${a.reward}` : `奖励: ${a.reward}`}
+              🎁 {a.unlocked ? `${i18n.t('GrowthPanel.k0')}${a.reward}` : `${i18n.t('GrowthPanel.k1')}${a.reward}`}
             </div>
           </div>
         ))}

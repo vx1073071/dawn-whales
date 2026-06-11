@@ -254,7 +254,7 @@ export const LLMCreatorConfigPanel: React.FC<LLMCreatorConfigPanelProps> = ({
 
       {/* Provider list */}
       <div style={styles.section}>
-        <div style={styles.sectionTitle}>选择 LLM 提供商</div>
+        <div style={styles.sectionTitle}>{i18n.t('LLMCreatorConfigPanel.k0')}</div>
         <div style={styles.providerGrid}>
           {PROVIDER_CATALOG.map(p => (
             <button
@@ -298,18 +298,18 @@ export const LLMCreatorConfigPanel: React.FC<LLMCreatorConfigPanelProps> = ({
                   <div style={styles.modelNameRow}>
                     <span style={styles.modelName}>{m.displayName}</span>
                     {m.recommended && <span style={styles.recommendedBadge}>{t("components.recommend")}</span>}
-                    {m.cacheDiscountPct && <span style={styles.cacheBadge}>缓存{m.cacheDiscountPct}%off</span>}
+                    {m.cacheDiscountPct && <span style={styles.cacheBadge}>{i18n.t('LLMCreatorConfigPanel.k0')}{m.cacheDiscountPct}%off</span>}
                   </div>
                   <div style={styles.modelMeta}>
                     <span>{m.contextWindow.toLocaleString()} tokens</span>
                     <span>•</span>
-                    <span>输入 ${m.inputCostPer1M}/M</span>
+                    <span>{i18n.t('LLMCreatorConfigPanel.k1')}{m.inputCostPer1M}/M</span>
                     <span>•</span>
-                    <span>输出 ${m.outputCostPer1M}/M</span>
+                    <span>{i18n.t('LLMCreatorConfigPanel.k2')}{m.outputCostPer1M}/M</span>
                     {m.cachedInputCostPer1M && (
                       <>
                         <span>•</span>
-                        <span style={{ color: '#4CAF50' }}>缓存 ${m.cachedInputCostPer1M}/M</span>
+                        <span style={{ color: '#4CAF50' }}>{i18n.t('LLMCreatorConfigPanel.k3')}{m.cachedInputCostPer1M}/M</span>
                       </>
                     )}
                   </div>
@@ -328,15 +328,15 @@ export const LLMCreatorConfigPanel: React.FC<LLMCreatorConfigPanelProps> = ({
 
       {/* Cost estimation table */}
       <div style={styles.section}>
-        <div style={styles.sectionTitle}>💰 成本预估 (缓存命中率 {cacheHitRate}%)</div>
+        <div style={styles.sectionTitle}>{i18n.t('LLMCreatorConfigPanel.k4')}{cacheHitRate}%)</div>
         <table style={styles.costTable}>
           <thead>
             <tr style={styles.tableHeaderRow}>
-              <th style={styles.th}>档位</th>
+              <th style={styles.th}>{i18n.t('LLMCreatorConfigPanel.k1')}</th>
               <th style={styles.th}>Agent</th>
               <th style={styles.th}>LLM成本</th>
-              <th style={styles.th}>售价</th>
-              <th style={styles.th}>毛利</th>
+              <th style={styles.th}>{i18n.t('LLMCreatorConfigPanel.k2')}</th>
+              <th style={styles.th}>{i18n.t('LLMCreatorConfigPanel.k3')}</th>
               <th style={styles.th}>{t("components.grossMargin")}</th>
             </tr>
           </thead>
@@ -402,7 +402,7 @@ export const LLMCreatorConfigPanel: React.FC<LLMCreatorConfigPanelProps> = ({
       {/* Usage summary */}
       <div style={styles.usageSummary}>
         <div style={styles.usageStat}>
-          <span style={styles.usageLabel}>缓存命中率</span>
+          <span style={styles.usageLabel}>{i18n.t('LLMCreatorConfigPanel.k4')}</span>
           <span style={{
             ...styles.usageValue,
             color: cacheHitRate >= 90 ? '#4CAF50' : '#FF9800',
@@ -411,11 +411,11 @@ export const LLMCreatorConfigPanel: React.FC<LLMCreatorConfigPanelProps> = ({
           </span>
         </div>
         <div style={styles.usageStat}>
-          <span style={styles.usageLabel}>当前模型</span>
+          <span style={styles.usageLabel}>{i18n.t('LLMCreatorConfigPanel.k5')}</span>
           <span style={styles.usageValue}>{currentModel.displayName}</span>
         </div>
         <div style={styles.usageStat}>
-          <span style={styles.usageLabel}>单次旗舰成本</span>
+          <span style={styles.usageLabel}>{i18n.t('LLMCreatorConfigPanel.k6')}</span>
           <span style={styles.usageValue}>{costEstimates.find(e => e.tier === 'flagship')?.llmCost.toFixed(4)} USDT</span>
         </div>
       </div>

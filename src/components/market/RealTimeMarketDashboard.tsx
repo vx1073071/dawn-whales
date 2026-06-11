@@ -7,6 +7,7 @@ import {
   getQuotes, subscribeQuoteStream, unsubscribeQuoteStream, getQuoteStreamStatus,
 } from '@/lib/bridge-api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import i18n from '../../i18n';
 
 interface RealTimeQuote {
   code: string;
@@ -31,18 +32,18 @@ interface RealTimeQuote {
 }
 
 const WATCHLIST = [
-  { code: 'US.AAPL', name: '苹果' },
-  { code: 'US.NVDA', name: '英伟达' },
-  { code: 'US.TSLA', name: '特斯拉' },
-  { code: 'US.MSFT', name: '微软' },
-  { code: 'US.AMZN', name: '亚马逊' },
-  { code: 'US.GOOGL', name: '谷歌' },
+  { code: 'US.AAPL', name: i18n.t('RealTimeMarketDashboard.k0') },
+  { code: 'US.NVDA', name: i18n.t('RealTimeMarketDashboard.k1') },
+  { code: 'US.TSLA', name: i18n.t('RealTimeMarketDashboard.k2') },
+  { code: 'US.MSFT', name: i18n.t('RealTimeMarketDashboard.k3') },
+  { code: 'US.AMZN', name: i18n.t('RealTimeMarketDashboard.k4') },
+  { code: 'US.GOOGL', name: i18n.t('RealTimeMarketDashboard.k5') },
   { code: 'US.META', name: 'Meta' },
-  { code: 'US.AVGO', name: '博通' },
-  { code: 'HK.00700', name: '腾讯' },
-  { code: 'HK.09988', name: '阿里' },
-  { code: 'US.BABA', name: '阿里(美)' },
-  { code: 'US.PDD', name: '拼多多' },
+  { code: 'US.AVGO', name: i18n.t('RealTimeMarketDashboard.k6') },
+  { code: 'HK.00700', name: i18n.t('RealTimeMarketDashboard.k7') },
+  { code: 'HK.09988', name: i18n.t('RealTimeMarketDashboard.k8') },
+  { code: 'US.BABA', name: i18n.t('RealTimeMarketDashboard.k9') },
+  { code: 'US.PDD', name: i18n.t('RealTimeMarketDashboard.k10') },
 ];
 
 function generateSparkline(basePrice: number): number[] {

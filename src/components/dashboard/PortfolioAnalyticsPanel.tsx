@@ -285,8 +285,8 @@ export const PortfolioAnalyticsPanel: React.FC<PortfolioRiskPanelProps> = ({
       <div className={`bg-gray-900 rounded-xl border border-gray-800 p-5 ${className ?? ''}`}>
         <div className="text-center py-10 text-gray-600 text-sm">
           <div className="text-3xl mb-2">📊</div>
-          <p>暂无常仓数据</p>
-          <p className="text-xs mt-1 text-gray-700">添加持仓后查看组合风险分析</p>
+          <p>{i18n.t('PortfolioAnalyticsPanel.k0')}</p>
+          <p className="text-xs mt-1 text-gray-700">{i18n.t('PortfolioAnalyticsPanel.k1')}</p>
         </div>
       </div>
     );
@@ -468,11 +468,11 @@ export const PortfolioAnalyticsPanel: React.FC<PortfolioRiskPanelProps> = ({
             <table className="w-full text-xs">
               <thead>
                 <tr className="text-gray-500 border-b border-gray-700/50">
-                  <th className="text-left py-1.5">标的</th>
-                  <th className="text-right py-1.5">权重</th>
-                  <th className="text-right py-1.5">风险贡献</th>
-                  <th className="text-right py-1.5">边际VaR</th>
-                  <th className="text-right py-1.5">成分VaR</th>
+                  <th className="text-left py-1.5">{i18n.t('PortfolioAnalyticsPanel.k2')}</th>
+                  <th className="text-right py-1.5">{i18n.t('PortfolioAnalyticsPanel.k3')}</th>
+                  <th className="text-right py-1.5">{i18n.t('PortfolioAnalyticsPanel.k4')}</th>
+                  <th className="text-right py-1.5">{i18n.t('PortfolioAnalyticsPanel.k5')}</th>
+                  <th className="text-right py-1.5">{i18n.t('PortfolioAnalyticsPanel.k6')}</th>
                 </tr>
               </thead>
               <tbody>

@@ -80,7 +80,7 @@ export default function RiskConfigEditor() {
   if (loading) {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <p className="text-gray-500 text-sm text-center py-4">加载配置...</p>
+        <p className="text-gray-500 text-sm text-center py-4">{i18n.t('RiskConfigEditor.k0')}</p>
       </div>
     );
   }
@@ -178,7 +178,7 @@ export default function RiskConfigEditor() {
         </div>
         <div className="bg-[#12121a] rounded-lg p-3">
           <label className="flex items-center justify-between cursor-pointer">
-            <span className="text-gray-400 text-xs">波动率调节</span>
+            <span className="text-gray-400 text-xs">{i18n.t('RiskConfigEditor.k1')}</span>
             <input
               type="checkbox"
               checked={config.volAdjustEnabled}

@@ -33,12 +33,12 @@ export interface PineScriptEditorProps {
 // ── Templates ───────────────────────────────────────────────────────────
 
 const TEMPLATES: PineTemplate[] = [
-  { name: i18n.t('PineScriptEditor.k1'), category: 'components.trend', code: `// 简单移动平均线\nindicator("SMA", overlay=true)\nlength = input(20, "长度")\nsma = ta.sma(close, length)\nplot(sma, color=color.blue, linewidth=2)` },
-  { name: i18n.t('PineScriptEditor.k2'), category: 'components.trend', code: `// 指数移动平均线\nindicator("EMA", overlay=true)\nlength = input(20, "长度")\nema = ta.ema(close, length)\nplot(ema, color=color.orange, linewidth=2)` },
-  { name: i18n.t('PineScriptEditor.k3'), category: 'components.consolidation', code: `// 相对强弱指标\nindicator("RSI")\nlength = input(14, "长度")\noverbought = input(70, "超买")\noversold = input(30, "超卖")\nrsi = ta.rsi(close, length)\nplot(rsi, color=color.purple)\nh1 = hline(overbought)\nh2 = hline(oversold)\nfill(h1, h2, color.new(color.red, 90))` },
-  { name: 'MACD', category: 'components.consolidation', code: `// MACD 指标\nindicator("MACD")\nfast = input(12)\nslow = input(26)\nsignal_len = input(9)\n[macd, signal, hist] = ta.macd(close, fast, slow, signal_len)\nplot(macd, color=color.blue)\nplot(signal, color=color.orange)\nplot(hist, style=plot.style_columns, color=hist > 0 ? color.green : color.red)` },
-  { name: i18n.t('PineScriptEditor.k4'), category: 'components.trend', code: `// 布林带\nindicator("Bollinger", overlay=true)\nlength = input(20)\nmult = input(2.0)\nbasis = ta.sma(close, length)\ndev = mult * ta.stdev(close, length)\nupper = basis + dev\nlower = basis - dev\np1 = plot(basis, color=color.blue)\np2 = plot(upper, color=color.gray)\np3 = plot(lower, color=color.gray)\nfill(p2, p3, color.new(color.blue, 90))` },
-  { name: i18n.t('PineScriptEditor.k5'), category: i18n.t('PineScriptEditor.k6'), code: `// 自定义指标\nindicator("My Indicator")\n\n// 在这里编写你的公式\nma_fast = ta.sma(close, 5)\nma_slow = ta.sma(close, 20)\n\nplot(ma_fast, color=color.green)\nplot(ma_slow, color=color.red)\n\n// 金叉信号\ncrossUp = ta.crossover(ma_fast, ma_slow)\nplotshape(crossUp, style=shape.triangleup, color=color.green, location=location.belowbar)` },
+  { name: i18n.t('PineScriptEditor.k1'), category: 'components.trend', code: i18n.t('PineScriptEditor.k0') },
+  { name: i18n.t('PineScriptEditor.k2'), category: 'components.trend', code: i18n.t('PineScriptEditor.k1') },
+  { name: i18n.t('PineScriptEditor.k3'), category: 'components.consolidation', code: i18n.t('PineScriptEditor.k2') },
+  { name: 'MACD', category: 'components.consolidation', code: i18n.t('PineScriptEditor.k3') },
+  { name: i18n.t('PineScriptEditor.k4'), category: 'components.trend', code: i18n.t('PineScriptEditor.k4') },
+  { name: i18n.t('PineScriptEditor.k5'), category: i18n.t('PineScriptEditor.k6'), code: i18n.t('PineScriptEditor.k5') },
 ];
 
 const BUILTIN_FUNCTIONS = [
@@ -146,7 +146,7 @@ export default function PineScriptEditor({
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           {/* Save name bar */}
           <div style={{ display: 'flex', gap: 8, padding: '8px 12px', borderBottom: '1px solid rgba(255,255,255,0.04)', background: 'rgba(255,255,255,0.01)' }}>
-            <input value={name} onChange={e => setName(e.target.value)} placeholder="公式名称 Formula name..."
+            <input value={name} onChange={e => setName(e.target.value)} placeholder={i18n.t('PineScriptEditor.k6')}
               style={{ flex: 1, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 6, padding: '4px 10px', fontSize: 12, color: '#E2E8F0', outline: 'none' }} />
           </div>
 
@@ -180,7 +180,7 @@ export default function PineScriptEditor({
 
           {/* Function reference */}
           <div style={{ padding: '6px 12px', borderTop: '1px solid rgba(255,255,255,0.04)', display: 'flex', gap: 6, flexWrap: 'wrap', background: 'rgba(255,255,255,0.01)' }}>
-            <span style={{ fontSize: 9, color: '#64748B' }}>内置函数:</span>
+            <span style={{ fontSize: 9, color: '#64748B' }}>{i18n.t('PineScriptEditor.k7')}</span>
             {BUILTIN_FUNCTIONS.slice(0, 15).map(f => (
               <button key={f} onClick={() => setCode(prev => prev + f + '(')}
                 style={{ fontSize: 9, color: '#3B82F6', background: 'rgba(59,130,246,0.08)', border: 'none', borderRadius: 3, padding: '1px 5px', cursor: 'pointer', fontFamily: 'monospace' }}>
@@ -199,7 +199,7 @@ export default function PineScriptEditor({
             <h3 style={{ fontSize: 14, fontWeight: 700, color: '#D4A853', marginBottom: 12 }}>▶ 公式预览</h3>
             <pre style={{ fontSize: 11, color: '#94A3B8', whiteSpace: 'pre-wrap', background: 'rgba(0,0,0,0.3)', padding: 12, borderRadius: 8, maxHeight: 300, overflow: 'auto' }}
               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(highlight(code)) }} />
-            <p style={{ fontSize: 10, color: '#22C55E', marginTop: 12 }}>✅ 语法检查通过 · 指标名称: {code.match(/indicator\("([^"]+)"/)?.[1] ?? '未命名'}</p>
+            <p style={{ fontSize: 10, color: '#22C55E', marginTop: 12 }}>{i18n.t('PineScriptEditor.k0')}{code.match(/indicator\("([^"]+)"/)?.[1] ?? i18n.t('PineScriptEditor.k8')}</p>
             <button onClick={() => setShowPreview(false)}
               style={{ marginTop: 12, width: '100%', padding: '8px 0', background: 'rgba(255,255,255,0.06)', color: '#94A3B8', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 12, cursor: 'pointer' }}>
               关闭 Close

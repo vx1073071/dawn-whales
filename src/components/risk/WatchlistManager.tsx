@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import { getWatchlist, saveWatchlist, getQuotes } from '../../lib/bridge-api';
+import i18n from '../../i18n';
 
 interface WatchlistItem {
   symbol: string;
@@ -83,7 +84,7 @@ export default function WatchlistManager() {
   if (loading) {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <p className="text-gray-500 text-sm text-center py-4">加载自选股...</p>
+        <p className="text-gray-500 text-sm text-center py-4">{i18n.t('WatchlistManager.k0')}</p>
       </div>
     );
   }
@@ -100,7 +101,7 @@ export default function WatchlistManager() {
             value={newSymbol}
             onChange={(e) => setNewSymbol(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && addItem()}
-            placeholder="添加代码"
+            placeholder={i18n.t('WatchlistManager.k1')}
             className="w-24 bg-[#12121a] border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white placeholder-gray-600 focus:border-[#C9A046] focus:outline-none"
           />
           <button

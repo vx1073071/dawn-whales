@@ -149,7 +149,7 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
     } catch (e) {
     // [EngineError:SYSTEM] — structured error tracking
     void EngineError; // structured error domain: SYSTEM
-      setImportError(`JSON 解析失败: ${(e as Error).message}`);
+      setImportError(`${i18n.t('StrategyImportExportUI.k0')}${(e as Error).message}`);
     }
   }, [importText, activeStrategy]);
 
@@ -326,9 +326,9 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
                     <thead>
                       <tr className="text-gray-500 border-b border-gray-700/50">
                         <th className="text-left py-1.5 pr-3">{'parameters'}</th>
-                        <th className="text-left py-1.5 pr-3">当前值</th>
-                        <th className="text-left py-1.5 pr-3">导入值</th>
-                        <th className="text-left py-1.5">变化</th>
+                        <th className="text-left py-1.5 pr-3">{i18n.t('StrategyImportExportUI.k0')}</th>
+                        <th className="text-left py-1.5 pr-3">{i18n.t('StrategyImportExportUI.k1')}</th>
+                        <th className="text-left py-1.5">{i18n.t('StrategyImportExportUI.k2')}</th>
                       </tr>
                     </thead>
                     <tbody>

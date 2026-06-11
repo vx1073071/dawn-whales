@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import { getBrokerStatus, setActiveBroker } from '@/lib/bridge-api';
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 interface BrokerStatus {
   id: string;
@@ -22,11 +23,11 @@ const BROKER_ICONS: Record<string, string> = {
 };
 
 const BROKER_LABELS: Record<string, string> = {
-  futu: '富途',
+  futu: i18n.t('BrokerSelector.k0'),
   moomoo: 'moomoo',
   ib: 'IBKR',
-  longbridge: '长桥',
-  custom: '自定义',
+  longbridge: i18n.t('BrokerSelector.k1'),
+  custom: i18n.t('BrokerSelector.k2'),
 };
 
 export default function BrokerSelector() {
@@ -93,10 +94,10 @@ export default function BrokerSelector() {
       <button
         onClick={() => setOpen((o) => !o)}
         className="flex items-center gap-1.5 text-xs px-2 py-1 rounded hover:bg-white/5 transition-colors text-gray-300 hover:text-white"
-        title="切换券商"
+        title={i18n.t('BrokerSelector.k3')}
       >
         <span className={`w-1.5 h-1.5 rounded-full ${activeBroker ? 'bg-emerald-400' : 'bg-gray-500'}`} />
-        <span>{activeBroker ? (BROKER_LABELS[activeBroker.type] || activeBroker.name) : '选择券商'}</span>
+        <span>{activeBroker ? (BROKER_LABELS[activeBroker.type] || activeBroker.name) : i18n.t('BrokerSelector.k4')}</span>
         <span className="text-gray-500 text-[10px]">▾</span>
       </button>
 
@@ -104,7 +105,7 @@ export default function BrokerSelector() {
       {open && (
         <div className="absolute right-0 top-full mt-1 w-52 bg-[#1e1e2e] border border-white/10 rounded-lg shadow-xl z-50 overflow-hidden">
           <div className="px-3 py-2 border-b border-white/5">
-            <span className="text-[10px] text-gray-500 uppercase tracking-wider">切换券商</span>
+            <span className="text-[10px] text-gray-500 uppercase tracking-wider">{i18n.t('BrokerSelector.k5')}</span>
           </div>
 
           {statuses.map((broker) => {

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface Trade {
   id: number;
@@ -69,23 +70,23 @@ export default function MonthlyReturnsHeatmap({ trades }: MonthlyReturnsHeatmapP
           </div>
         </div>
         <div className="p-3 bg-[#1a1a25] rounded-lg border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">最差月份</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('MonthlyReturnsHeatmap.k0')}</div>
           <div className="text-lg font-bold text-red-400">
             {stats.min >= 0 ? '+' : ''}${stats.min.toFixed(0)}
           </div>
         </div>
         <div className="p-3 bg-[#1a1a25] rounded-lg border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">月均收益</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('MonthlyReturnsHeatmap.k1')}</div>
           <div className={`text-lg font-bold ${stats.avg >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
             {stats.avg >= 0 ? '+' : ''}${stats.avg.toFixed(0)}
           </div>
         </div>
         <div className="p-3 bg-[#1a1a25] rounded-lg border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">盈利月份</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('MonthlyReturnsHeatmap.k2')}</div>
           <div className="text-lg font-bold text-emerald-400">{stats.positiveMonths}</div>
         </div>
         <div className="p-3 bg-[#1a1a25] rounded-lg border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">亏损月份</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('MonthlyReturnsHeatmap.k3')}</div>
           <div className="text-lg font-bold text-red-400">{stats.negativeMonths}</div>
         </div>
       </div>

@@ -214,7 +214,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
       { delay: 1000, action: () => {
         setStage('debating');
         setProgress(80);
-        setProgressMessage(`正在辩论 (Round 1/${cfg.rounds})...`);
+        setProgressMessage(`${i18n.t('AgentCollaborationPanel.k0')}${cfg.rounds})...`);
         setDebateRounds([{
           round: 1,
           bullArguments: [i18n.t('AgentCollaborationPanel.k36'), i18n.t('AgentCollaborationPanel.k37')],
@@ -226,7 +226,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
       { delay: cfg.rounds >= 2 ? 1000 : 0, action: () => {
         if (cfg.rounds < 2) return;
         setProgress(88);
-        setProgressMessage(`正在辩论 (Round 2/${cfg.rounds})...`);
+        setProgressMessage(`${i18n.t('AgentCollaborationPanel.k1')}${cfg.rounds})...`);
         setDebateRounds(prev => [...prev, {
           round: 2,
           bullArguments: [i18n.t('AgentCollaborationPanel.k40'), i18n.t('AgentCollaborationPanel.k41')],
@@ -363,7 +363,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
 
   const renderDebate = (round: DebateRound) => (
     <div key={round.round} style={styles.debateRound}>
-      <div style={styles.debateTitle}>🗣️ 辩论 Round {round.round}</div>
+      <div style={styles.debateTitle}>{i18n.t('AgentCollaborationPanel.k2')}{round.round}</div>
       <div style={styles.debateBars}>
         <div style={styles.barSide}>
           <span style={styles.bullLabel}>{t(i18n.t('AgentCollaborationPanel.k50'))}</span>
@@ -428,7 +428,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
       <div style={styles.inputRow}>
         <input
           style={styles.symbolInput}
-          placeholder="输入股票代码，如 TQQQ、00700"
+          placeholder={i18n.t('AgentCollaborationPanel.k0')}
           value={ticker}
           onChange={e => setTicker(e.target.value)}
           disabled={isRunning}
@@ -484,7 +484,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
         <div style={styles.cacheInfo}>
           <span>{t(i18n.t('AgentCollaborationPanel.k56'))}<strong>{cacheHitRate}%</strong></span>
           <span style={cacheHitRate >= 90 ? styles.cacheGood : styles.cacheWarn}>
-            {cacheHitRate >= 90 ? i18n.t('AgentCollaborationPanel.k57') : `⚠️ 未达标 (目标 ≥90%)`}
+            {cacheHitRate >= 90 ? i18n.t('AgentCollaborationPanel.k57') : i18n.t('AgentCollaborationPanel.k1')}
           </span>
           <span>{t(i18n.t('AgentCollaborationPanel.k58'))}<strong>{costEstimate.toFixed(4)} USDT</strong></span>
         </div>
@@ -500,7 +500,7 @@ export const AgentCollaborationPanel: React.FC<AgentCollaborationPanelProps> = (
             }}>
               {RECOMMENDATION_LABELS[finalDecision.recommendation]}
             </span>
-            <span style={styles.decisionConfidence}>置信度 {finalDecision.confidence}%</span>
+            <span style={styles.decisionConfidence}>{i18n.t('AgentCollaborationPanel.k3')}{finalDecision.confidence}%</span>
           </div>
           <div style={styles.decisionReasoning}>{finalDecision.reasoning}</div>
           <div style={styles.voteGrid}>

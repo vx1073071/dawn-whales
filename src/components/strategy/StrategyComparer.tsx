@@ -310,7 +310,7 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
           </svg>
           <div className="grid grid-cols-3 gap-1 mt-2 text-center text-[10px]">
             <div><span className="text-gray-600">Sharpe</span><br/><span className="text-amber-400">{strategyA.sharpe.toFixed(1)}</span></div>
-            <div><span className="text-gray-600">回撤</span><br/><span className="text-red-400">{(strategyA.maxDrawdown * 100).toFixed(0)}%</span></div>
+            <div><span className="text-gray-600">{i18n.t('StrategyComparer.k0')}</span><br/><span className="text-red-400">{(strategyA.maxDrawdown * 100).toFixed(0)}%</span></div>
             <div><span className="text-gray-600">{"components.winRate"}</span><br/><span className="text-gray-400">{(strategyA.winRate * 100).toFixed(0)}%</span></div>
           </div>
         </div>
@@ -327,7 +327,7 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
           </svg>
           <div className="grid grid-cols-3 gap-1 mt-2 text-center text-[10px]">
             <div><span className="text-gray-600">Sharpe</span><br/><span className="text-blue-400">{strategyB.sharpe.toFixed(1)}</span></div>
-            <div><span className="text-gray-600">回撤</span><br/><span className="text-red-400">{(strategyB.maxDrawdown * 100).toFixed(0)}%</span></div>
+            <div><span className="text-gray-600">{i18n.t('StrategyComparer.k1')}</span><br/><span className="text-red-400">{(strategyB.maxDrawdown * 100).toFixed(0)}%</span></div>
             <div><span className="text-gray-600">{"components.winRate"}</span><br/><span className="text-gray-400">{(strategyB.winRate * 100).toFixed(0)}%</span></div>
           </div>
         </div>
@@ -352,7 +352,7 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
                 <th className="text-left py-1.5 pr-3"></th>
                 <th className="text-right py-1.5 pr-3">A</th>
                 <th className="text-right py-1.5 pr-3">B</th>
-                <th className="text-right py-1.5">胜者</th>
+                <th className="text-right py-1.5">{i18n.t('StrategyComparer.k2')}</th>
               </tr>
             </thead>
             <tbody>

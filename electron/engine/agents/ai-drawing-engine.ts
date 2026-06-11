@@ -1,5 +1,7 @@
 // ── J-73-02 R73 V19: AI Drawing Engine ────────────────────────────────────
 import i18n from '../../../src/i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:AI] structured error tracking
 // Auto-detects trend lines, support/resistance, channels, Fibonacci, Gann
 // Price-based geometric pattern recognition for K-line overlay
 

@@ -77,9 +77,9 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">闭环执行配置</h2>
+          <h2 className="text-lg font-semibold text-white">{i18n.t('ClosedLoopConfigPanel.k0')}</h2>
           <p className="text-xs text-gray-500 mt-1">
-            {strategyId ? `策略: ${strategyId}` : 'Phase 4.3 — ClosedLoopExecutor'}
+            {strategyId ? `${i18n.t('ClosedLoopConfigPanel.k0')}${strategyId}` : 'Phase 4.3 — ClosedLoopExecutor'}
           </p>
         </div>
         <div className="flex gap-2">
@@ -101,7 +101,7 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
 
       {/* Execution Mode */}
       <div className="bg-[#12121a] border border-white/5 rounded-xl p-4">
-        <h3 className="text-sm text-gray-400 mb-3">执行模式</h3>
+        <h3 className="text-sm text-gray-400 mb-3">{i18n.t('ClosedLoopConfigPanel.k1')}</h3>
         <div className="grid grid-cols-3 gap-3">
           {(Object.entries(MODE_LABELS) as [LoopConfig['mode'], typeof MODE_LABELS['immediate']][]).map(([mode, info]) => (
             <button
@@ -123,7 +123,7 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
 
       {/* Risk Parameters */}
       <div className="bg-[#12121a] border border-white/5 rounded-xl p-4">
-        <h3 className="text-sm text-gray-400 mb-3">风控参数</h3>
+        <h3 className="text-sm text-gray-400 mb-3">{i18n.t('ClosedLoopConfigPanel.k2')}</h3>
         <div className="grid grid-cols-2 gap-4">
           <NumberField
             label={i18n.t('ClosedLoopConfigPanel.k12')}
@@ -162,7 +162,7 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
               onChange={e => update('trailingStop', e.target.checked)}
               className="rounded border-white/10 bg-[#0a0a12] accent-[#D4A853]"
             />
-            <span className="text-xs text-gray-400">启用追踪止损</span>
+            <span className="text-xs text-gray-400">{i18n.t('ClosedLoopConfigPanel.k3')}</span>
           </label>
         </div>
       </div>
@@ -186,10 +186,10 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
 
       {/* Retry Settings */}
       <div className="bg-[#12121a] border border-white/5 rounded-xl p-4">
-        <h3 className="text-sm text-gray-400 mb-3">重试策略</h3>
+        <h3 className="text-sm text-gray-400 mb-3">{i18n.t('ClosedLoopConfigPanel.k4')}</h3>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">最大重试次数</label>
+            <label className="text-xs text-gray-500 mb-1 block">{i18n.t('ClosedLoopConfigPanel.k5')}</label>
             <input
               type="number"
               value={config.maxRetries}
@@ -199,7 +199,7 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
             />
           </div>
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">重试算法</label>
+            <label className="text-xs text-gray-500 mb-1 block">{i18n.t('ClosedLoopConfigPanel.k6')}</label>
             <select
               value={config.retryStrategy}
               onChange={e => update('retryStrategy', e.target.value as LoopConfig['retryStrategy'])}
@@ -225,7 +225,7 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
 
       {/* Rebalance Settings */}
       <div className="bg-[#12121a] border border-white/5 rounded-xl p-4">
-        <h3 className="text-sm text-gray-400 mb-3">再平衡配置</h3>
+        <h3 className="text-sm text-gray-400 mb-3">{i18n.t('ClosedLoopConfigPanel.k7')}</h3>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="text-xs text-gray-500 mb-1 block">触发阈值 (%)</label>
@@ -236,10 +236,10 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
               min={1} max={30} step={1}
               className="w-24 bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-[#D4A853]/50 outline-none"
             />
-            <p className="text-[10px] text-gray-600 mt-0.5">仓位偏离超过此值触发再平衡</p>
+            <p className="text-[10px] text-gray-600 mt-0.5">{i18n.t('ClosedLoopConfigPanel.k8')}</p>
           </div>
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">再平衡方法</label>
+            <label className="text-xs text-gray-500 mb-1 block">{i18n.t('ClosedLoopConfigPanel.k9')}</label>
             <select
               value={config.rebalanceMethod}
               onChange={e => update('rebalanceMethod', e.target.value as LoopConfig['rebalanceMethod'])}
@@ -255,10 +255,10 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
 
       {/* Config Summary */}
       <div className="bg-[#0a0a12] border border-[#D4A853]/20 rounded-xl p-3">
-        <h3 className="text-xs text-[#D4A853] font-medium mb-2">配置摘要</h3>
+        <h3 className="text-xs text-[#D4A853] font-medium mb-2">{i18n.t('ClosedLoopConfigPanel.k10')}</h3>
         <div className="grid grid-cols-4 gap-2 text-xs">
           <div>
-            <span className="text-gray-600">模式: </span>
+            <span className="text-gray-600">{i18n.t('ClosedLoopConfigPanel.k11')}</span>
             <span className="text-white">{MODE_LABELS[config.mode].title}</span>
           </div>
           <div>
@@ -266,27 +266,27 @@ export default function ClosedLoopConfigPanel({ onSave, onBack, initialConfig, s
             <span className="text-white">-{config.stopLoss}% / +{config.takeProfit}%</span>
           </div>
           <div>
-            <span className="text-gray-600">日限: </span>
+            <span className="text-gray-600">{i18n.t('ClosedLoopConfigPanel.k12')}</span>
             <span className="text-white">-{config.maxDailyLoss}%</span>
           </div>
           <div>
-            <span className="text-gray-600">重试: </span>
-            <span className="text-white">{config.maxRetries}次 ({config.retryStrategy})</span>
+            <span className="text-gray-600">{i18n.t('ClosedLoopConfigPanel.k13')}</span>
+            <span className="text-white">{config.maxRetries}{i18n.t('ClosedLoopConfigPanel.k1')}{config.retryStrategy})</span>
           </div>
           <div>
-            <span className="text-gray-600">冷却: </span>
+            <span className="text-gray-600">{i18n.t('ClosedLoopConfigPanel.k14')}</span>
             <span className="text-white">{config.cooldownMs / 1000}s</span>
           </div>
           <div>
-            <span className="text-gray-600">超时: </span>
+            <span className="text-gray-600">{i18n.t('ClosedLoopConfigPanel.k15')}</span>
             <span className="text-white">{config.maxPositionTime}h</span>
           </div>
           <div>
-            <span className="text-gray-600">再平衡: </span>
+            <span className="text-gray-600">{i18n.t('ClosedLoopConfigPanel.k16')}</span>
             <span className="text-white">±{config.rebalanceThreshold}%</span>
           </div>
           <div>
-            <span className="text-gray-600">追踪止损: </span>
+            <span className="text-gray-600">{i18n.t('ClosedLoopConfigPanel.k17')}</span>
             <span className={config.trailingStop ? 'text-green-400' : 'text-gray-600'}>
               {config.trailingStop ? i18n.t('ClosedLoopConfigPanel.k16') : i18n.t('ClosedLoopConfigPanel.k17')}
             </span>

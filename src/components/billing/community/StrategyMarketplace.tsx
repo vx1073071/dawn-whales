@@ -399,7 +399,7 @@ export default function StrategyMarketplace({
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="搜索策略、创作者、标签..."
+              placeholder={i18n.t('StrategyMarketplace.k0')}
               className="w-full pl-9 pr-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50"
             />
           </div>
@@ -596,7 +596,7 @@ export default function StrategyMarketplace({
               </button>
               <button onClick={() => { setDetailStrategy(null); setPurchasing(detailStrategy); }}
                       className="flex-1 py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors">
-                {detailStrategy.price === 0 ? i18n.t('StrategyMarketplace.k62') : `购买 — ${detailStrategy.price} USDT`}
+                {detailStrategy.price === 0 ? i18n.t('StrategyMarketplace.k62') : `${i18n.t('StrategyMarketplace.k0')}${detailStrategy.price} USDT`}
               </button>
             </div>
           </div>

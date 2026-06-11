@@ -1,6 +1,7 @@
 // ── DAWN WHALES — DailyPnLSummary (每日盈亏汇总) ───────────────────────────
 
 import { useMemo } from 'react';
+import i18n from '../../i18n';
 
 interface PnLItem {
   symbol: string;
@@ -25,7 +26,7 @@ const DEMO_DATA: PnLItem[] = [
 
 export default function DailyPnLSummary({
   data = DEMO_DATA,
-  title = '💰 今日盈亏汇总',
+  title = i18n.t('DailyPnLSummary.k0'),
 }: DailyPnLSummaryProps) {
   const summary = useMemo(() => {
     const totalRealized = data.reduce((s, d) => s + d.realized, 0);
@@ -54,13 +55,13 @@ export default function DailyPnLSummary({
       {/* Summary Cards */}
       <div className="grid grid-cols-3 gap-2 mb-4">
         <div className="bg-[#12121a] rounded-lg p-2.5">
-          <div className="text-[10px] text-gray-500">已实现</div>
+          <div className="text-[10px] text-gray-500">{i18n.t('DailyPnLSummary.k1')}</div>
           <div className={`text-sm font-mono font-medium ${summary.totalRealized >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
             {summary.totalRealized >= 0 ? '+' : ''}${summary.totalRealized.toFixed(0)}
           </div>
         </div>
         <div className="bg-[#12121a] rounded-lg p-2.5">
-          <div className="text-[10px] text-gray-500">浮动</div>
+          <div className="text-[10px] text-gray-500">{i18n.t('DailyPnLSummary.k2')}</div>
           <div className={`text-sm font-mono font-medium ${summary.totalUnrealized >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
             {summary.totalUnrealized >= 0 ? '+' : ''}${summary.totalUnrealized.toFixed(0)}
           </div>

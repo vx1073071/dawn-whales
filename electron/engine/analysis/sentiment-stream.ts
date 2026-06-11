@@ -5,6 +5,8 @@ import { EventEmitter } from 'events';
 import log from 'electron-log';
 import { getSentimentEngine } from './sentiment-index';
 import { getWsDataStream } from '../data/ws-data-stream';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

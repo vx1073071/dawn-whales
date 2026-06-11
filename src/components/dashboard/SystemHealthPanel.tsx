@@ -125,7 +125,7 @@ export default function SystemHealthPanel({ connected = false, compact = false }
         <div className="flex items-center gap-3">
           {/* Resource meters */}
           <div className="flex items-center gap-1.5 text-xs text-gray-500">
-            <span>内存 {health.memoryMB}MB</span>
+            <span>{i18n.t('SystemHealthPanel.k0')}{health.memoryMB}MB</span>
             <div className="w-12 h-1.5 bg-[#0a0a12] rounded-full overflow-hidden">
               <div
                 className="h-full bg-blue-500 rounded-full transition-all"
@@ -205,8 +205,8 @@ export default function SystemHealthPanel({ connected = false, compact = false }
       {/* Footer stats */}
       <div className="flex items-center justify-between text-xs text-gray-600 pt-2 border-t border-white/5">
         <div className="flex items-center gap-4">
-          <span>版本: {health.version}</span>
-          <span>测试: {health.testCount} passed</span>
+          <span>{i18n.t('SystemHealthPanel.k1')}{health.version}</span>
+          <span>{i18n.t('SystemHealthPanel.k2')}{health.testCount} passed</span>
         </div>
         <button
           onClick={refresh}

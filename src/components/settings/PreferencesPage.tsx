@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
+import i18n from '../../i18n';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -544,9 +545,9 @@ const PreferencesPage: React.FC = () => {
           label="Language"
           value={ui.language}
           options={[
-            { value: 'zh-CN', label: '简体中文' },
+            { value: 'zh-CN', label: i18n.t('PreferencesPage.k0') },
             { value: 'en-US', label: 'English (US)' },
-            { value: 'zh-TW', label: '繁體中文' },
+            { value: 'zh-TW', label: i18n.t('PreferencesPage.k1') },
           ]}
           onChange={(v) => updateUI('language', v as Language)}
         />

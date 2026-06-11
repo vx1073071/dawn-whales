@@ -190,7 +190,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl font-bold text-white">📊 总览看板</h1>
+          <h1 className="text-2xl font-bold text-white">📊 {i18n.t('DashboardPage.k12')}</h1>
           <BrokerStatusBar compact />
         </div>
         <p className="text-gray-400 text-sm">
@@ -202,21 +202,21 @@ export default function DashboardPage() {
       <div className="grid grid-cols-4 gap-4">
         <SummaryCard
           label={i18n.t('DashboardPage.k6')}
-          value={account ? `${(account.totalAssets / 10000).toFixed(0)}万` : '--'}
+          value={account ? `${(account.totalAssets / 10000).toFixed(0)}${i18n.t('DashboardPage.k13')}` : '--'}
           sub={account?.currency || ''}
           color="text-white"
         />
         <SummaryCard
           label={i18n.t('DashboardPage.k7')}
-          value={account ? `${account.todayPnl >= 0 ? '+' : ''}${(account.todayPnl / 10000).toFixed(1)}万` : '--'}
+          value={account ? `${account.todayPnl >= 0 ? '+' : ''}${(account.todayPnl / 10000).toFixed(1)}${i18n.t('DashboardPage.k14')}` : '--'}
           sub={account ? `${account.todayPnlPct >= 0 ? '+' : ''}${account.todayPnlPct.toFixed(2)}%` : ''}
           color={pnlColor}
           bg={pnlBg}
         />
         <SummaryCard
           label={i18n.t('DashboardPage.k8')}
-          value={account ? `${(account.marketValue / 10000).toFixed(0)}万` : '--'}
-          sub={`现金 ${account ? (account.cash / 10000).toFixed(0) : '--'}万`}
+          value={account ? `${(account.marketValue / 10000).toFixed(0)}${i18n.t('DashboardPage.k15')}` : '--'}
+          sub={`${i18n.t('DashboardPage.k16')} ${account ? (account.cash / 10000).toFixed(0) : '--'}${i18n.t('DashboardPage.k17')}`}
           color="text-blue-400"
         />
         <SummaryCard
@@ -229,9 +229,9 @@ export default function DashboardPage() {
 
       {/* Position Heatmap */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-white font-semibold text-sm mb-4">🗺️ 持仓热力图</h2>
+        <h2 className="text-white font-semibold text-sm mb-4">🗺️ {i18n.t('DashboardPage.k18')}</h2>
         {livePositions.length === 0 ? (
-          <p className="text-gray-500 text-sm py-4 text-center">暂无持仓数据</p>
+          <p className="text-gray-500 text-sm py-4 text-center">{i18n.t('DashboardPage.k19')}</p>
         ) : (
           <div className="flex flex-wrap gap-2">
             {livePositions.map((p) => {
@@ -279,16 +279,16 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 gap-4">
         {/* Active Strategies */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-          <h2 className="text-white font-semibold text-sm mb-4">🧠 运行中的策略</h2>
+          <h2 className="text-white font-semibold text-sm mb-4">🧠 {i18n.t('DashboardPage.k20')}</h2>
           {strategies.length === 0 ? (
-            <p className="text-gray-500 text-sm py-4 text-center">暂无运行中的策略</p>
+            <p className="text-gray-500 text-sm py-4 text-center">{i18n.t('DashboardPage.k21')}</p>
           ) : (
             <div className="space-y-2">
               {strategies.map((s) => (
                 <div key={s.id} className="flex items-center justify-between bg-[#12121a] rounded-lg px-4 py-3">
                   <div>
                     <div className="text-white text-sm">{s.name}</div>
-                    <div className="text-gray-500 text-[10px]">{s.signals} 个信号</div>
+                    <div className="text-gray-500 text-[10px]">{s.signals} {i18n.t('DashboardPage.k22')}</div>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />

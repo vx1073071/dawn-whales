@@ -124,7 +124,7 @@ export default function ConsumerDashboard() {
       },
       yAxis: {
         type: 'value',
-        axisLabel: { color: '#9ca3af', formatter: (v: number) => `${(v / 10000).toFixed(0)}亿` },
+        axisLabel: { color: '#9ca3af', formatter: (v: number) => `${(v / 10000).toFixed(0)}${i18n.t('ConsumerDashboard.k0')}` },
         splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
       },
       series: [
@@ -210,14 +210,14 @@ export default function ConsumerDashboard() {
         )}
         {latestRetail && (
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">零售总额</div>
+            <div className="text-xs text-gray-500 mb-1">{i18n.t('ConsumerDashboard.k0')}</div>
             <div className="text-2xl font-bold text-white">{(latestRetail.total / 10000).toFixed(1)}亿</div>
             <div className="text-xs text-gray-500 mt-1">{latestRetail.month}</div>
           </div>
         )}
         {latestConfidence && (
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">消费者信心</div>
+            <div className="text-xs text-gray-500 mb-1">{i18n.t('ConsumerDashboard.k1')}</div>
             <div className="text-2xl font-bold text-white">{latestConfidence.index?.toFixed(1) ?? '-'}</div>
             <div className="text-xs text-gray-500 mt-1">{latestConfidence.month}</div>
           </div>
@@ -238,13 +238,13 @@ export default function ConsumerDashboard() {
           <div ref={cpiChartRef} style={{ height: 280 }} />
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <h2 className="text-sm font-medium text-white mb-3">零售销售</h2>
+          <h2 className="text-sm font-medium text-white mb-3">{i18n.t('ConsumerDashboard.k2')}</h2>
           <div ref={retailChartRef} style={{ height: 280 }} />
         </div>
       </div>
 
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-        <h2 className="text-sm font-medium text-white mb-3">消费者信心指数</h2>
+        <h2 className="text-sm font-medium text-white mb-3">{i18n.t('ConsumerDashboard.k3')}</h2>
         <div ref={confidenceChartRef} style={{ height: 280 }} />
       </div>
     </div>

@@ -68,7 +68,7 @@ export default function FullPipelineUI({ stages: propStages, className = '' }: F
     <div className={`h-full flex flex-col bg-[#0A0A10] text-white ${className}`}>
       <div style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
         <h2 style={{ fontSize: 16, fontWeight: 800, color: '#D4A853', margin: 0 }}>🚀 开始交易 · Get Started</h2>
-        <p style={{ fontSize: 10, color: '#64748B', marginTop: 4 }}>完成6步即可开始量化交易 · Complete 6 steps</p>
+        <p style={{ fontSize: 10, color: '#64748B', marginTop: 4 }}>{i18n.t('FullPipelineUI.k0')}</p>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4">
@@ -86,7 +86,7 @@ export default function FullPipelineUI({ stages: propStages, className = '' }: F
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
                       <span style={{ fontSize: 20 }}>{s.icon}</span>
                       <div>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: s.done ? '#22C55E' : '#E2E8F0' }}>第{s.step}步: {s.title}</div>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: s.done ? '#22C55E' : '#E2E8F0' }}>第{s.step}{i18n.t('FullPipelineUI.k0')}{s.title}</div>
                         <div style={{ fontSize: 10, color: '#64748B' }}>{s.subtitle}</div>
                       </div>
                     </div>
@@ -122,15 +122,15 @@ export default function FullPipelineUI({ stages: propStages, className = '' }: F
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, textAlign: 'center' }}>
             <div style={{ padding: 8, background: 'rgba(34,197,94,0.05)', borderRadius: 8 }}>
               <div style={{ fontSize: 18, fontWeight: 800, color: '#22C55E' }}>{stages.filter(s => s.done).length}</div>
-              <div style={{ fontSize: 9, color: '#64748B' }}>已完成 Done</div>
+              <div style={{ fontSize: 9, color: '#64748B' }}>{i18n.t('FullPipelineUI.k1')}</div>
             </div>
             <div style={{ padding: 8, background: 'rgba(251,191,36,0.05)', borderRadius: 8 }}>
               <div style={{ fontSize: 18, fontWeight: 800, color: '#FBBF24' }}>{stages.filter(s => !s.done).length}</div>
-              <div style={{ fontSize: 9, color: '#64748B' }}>进行中 In Progress</div>
+              <div style={{ fontSize: 9, color: '#64748B' }}>{i18n.t('FullPipelineUI.k2')}</div>
             </div>
             <div style={{ padding: 8, background: 'rgba(59,130,246,0.05)', borderRadius: 8 }}>
               <div style={{ fontSize: 18, fontWeight: 800, color: '#60A5FA' }}>3</div>
-              <div style={{ fontSize: 9, color: '#64748B' }}>免费AI分析剩余</div>
+              <div style={{ fontSize: 9, color: '#64748B' }}>{i18n.t('FullPipelineUI.k3')}</div>
             </div>
           </div>
         </div>

@@ -71,7 +71,7 @@ export default function LiveMonitorPage() {
           type: 'ALERT' as const,
           strategy: 'Market',
           code: String(q.code || ''),
-          message: `${q.code} 异动 ${Number(q.changePct) > 0 ? '+' : ''}${(Number(q.changePct) || 0).toFixed(2)}%`,
+          message: `${q.code}${i18n.t('LiveMonitorPage.k0')}${Number(q.changePct) > 0 ? '+' : ''}${(Number(q.changePct) || 0).toFixed(2)}%`,
         };
         setSignalLog((prev) => [log, ...prev].slice(0, 500));
       }
@@ -254,7 +254,7 @@ export default function LiveMonitorPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">⚡ 实盘监控</h1>
-          <p className="text-gray-400 text-sm">实时策略运行状态 · 信号推送日志 · 紧急停止</p>
+          <p className="text-gray-400 text-sm">{i18n.t('LiveMonitorPage.k0')}</p>
         </div>
         <div className="flex gap-2">
           <button onClick={exportLog} className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f]">
@@ -329,21 +329,21 @@ export default function LiveMonitorPage() {
       {/* Stats */}
       <div className="grid grid-cols-4 gap-3 mb-6">
         <div className="p-4 bg-[#12121a] rounded-xl border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">运行中策略</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('LiveMonitorPage.k1')}</div>
           <div className="text-2xl font-bold text-emerald-400">{runningCount}<span className="text-sm text-gray-500 ml-1">/ {strategies.length}</span></div>
         </div>
         <div className="p-4 bg-[#12121a] rounded-xl border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">今日盈亏</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('LiveMonitorPage.k2')}</div>
           <div className={`text-2xl font-bold ${totalPnl >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
             {totalPnl >= 0 ? '+' : ''}{totalPnl.toFixed(2)}
           </div>
         </div>
         <div className="p-4 bg-[#12121a] rounded-xl border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">信号总数</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('LiveMonitorPage.k3')}</div>
           <div className="text-2xl font-bold text-white">{totalSignals}</div>
         </div>
         <div className="p-4 bg-[#12121a] rounded-xl border border-white/5">
-          <div className="text-xs text-gray-500 mb-1">成交总数</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('LiveMonitorPage.k4')}</div>
           <div className="text-2xl font-bold text-white">{totalTrades}</div>
         </div>
       </div>
@@ -352,7 +352,7 @@ export default function LiveMonitorPage() {
         {/* Strategy List */}
         <div className="bg-[#12121a] rounded-xl border border-white/5 flex flex-col overflow-hidden">
           <div className="p-3 border-b border-white/5">
-            <div className="text-sm font-medium text-white">策略列表</div>
+            <div className="text-sm font-medium text-white">{i18n.t('LiveMonitorPage.k5')}</div>
           </div>
           <div className="flex-1 overflow-auto p-2 space-y-1">
             {/* All filter */}
@@ -361,7 +361,7 @@ export default function LiveMonitorPage() {
               className={`w-full text-left p-3 rounded-lg transition-colors ${!selectedStrategy ? 'bg-amber-500/10 border border-amber-500/20' : 'hover:bg-white/5'}`}
             >
               <div className="flex justify-between items-center">
-                <span className="text-sm text-white font-medium">全部策略</span>
+                <span className="text-sm text-white font-medium">{i18n.t('LiveMonitorPage.k6')}</span>
                 <span className="text-xs text-gray-500">{strategies.length} 个</span>
               </div>
             </button>
@@ -385,8 +385,8 @@ export default function LiveMonitorPage() {
                 </div>
                 <div className="flex justify-between items-center mt-1">
                   <div className="flex gap-3 text-xs text-gray-600">
-                    <span>信号 {s.signals}</span>
-                    <span>成交 {s.trades}</span>
+                    <span>{i18n.t('LiveMonitorPage.k1')}{s.signals}</span>
+                    <span>{i18n.t('LiveMonitorPage.k2')}{s.trades}</span>
                   </div>
                   <button
                     onClick={(e) => { e.stopPropagation(); toggleLive(s.id, s.status); }}
@@ -398,7 +398,7 @@ export default function LiveMonitorPage() {
               </button>
             ))}
             {strategies.length === 0 && (
-              <div className="text-center py-8 text-gray-600 text-sm">暂无策略<br />前往策略工坊创建</div>
+              <div className="text-center py-8 text-gray-600 text-sm">{i18n.t('LiveMonitorPage.k7')}<br />{i18n.t('LiveMonitorPage.k8')}</div>
             )}
           </div>
         </div>
@@ -414,7 +414,7 @@ export default function LiveMonitorPage() {
                 <input type="checkbox" checked={autoScroll} onChange={(e) => setAutoScroll(e.target.checked)} className="w-3 h-3 rounded" />
                 自动滚动
               </label>
-              <button onClick={() => setSignalLog([])} className="text-xs text-gray-500 hover:text-gray-300">清空</button>
+              <button onClick={() => setSignalLog([])} className="text-xs text-gray-500 hover:text-gray-300">{i18n.t('LiveMonitorPage.k9')}</button>
             </div>
           </div>
           <div ref={logRef} className="flex-1 overflow-auto">

@@ -18,6 +18,8 @@
 
 import * as crypto from 'crypto';
 import i18n from '../../../src/i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

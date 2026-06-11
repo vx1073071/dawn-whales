@@ -220,7 +220,7 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
         <div className="mb-5 bg-red-500/10 border border-red-500/30 rounded-lg p-4">
           <div className="flex items-start justify-between">
             <div>
-              <div className="text-red-400 font-bold text-sm">确认紧急停止？</div>
+              <div className="text-red-400 font-bold text-sm">{i18n.t('LiveTradingPanel.k0')}</div>
               <p className="text-red-400/70 text-xs mt-1">
                 所有未成交订单将被取消，交易引擎将停止。
               </p>
@@ -282,13 +282,13 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
           <table className="w-full text-xs">
             <thead>
               <tr className="text-gray-500 border-b border-gray-700/50">
-                <th className="text-left py-2 pr-3">订单ID</th>
-                <th className="text-left py-2 pr-3">标的</th>
+                <th className="text-left py-2 pr-3">{i18n.t('LiveTradingPanel.k1')}</th>
+                <th className="text-left py-2 pr-3">{i18n.t('LiveTradingPanel.k2')}</th>
                 <th className="text-right py-2 pr-3">{"components.direction"}</th>
                 <th className="text-right py-2 pr-3">{"components.quantity"}</th>
                 <th className="text-right py-2 pr-3">{"components.price"}</th>
                 <th className="text-right py-2 pr-3">{"components.tradeFilled"}</th>
-                <th className="text-right py-2 pr-3">均价</th>
+                <th className="text-right py-2 pr-3">{i18n.t('LiveTradingPanel.k3')}</th>
                 <th className="text-center py-2">{"components.status"}</th>
               </tr>
             </thead>
@@ -335,7 +335,7 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
             </div>
             {reconciliation.quantityMismatch.length > 0 && (
               <div className="mt-3 pt-3 border-t border-gray-700/30">
-                <div className="text-[10px] text-yellow-400 mb-2">数量不匹配：</div>
+                <div className="text-[10px] text-yellow-400 mb-2">{i18n.t('LiveTradingPanel.k4')}</div>
                 {reconciliation.quantityMismatch.map(m => (
                   <div key={m.symbol} className="text-[10px] text-yellow-400/70">
                     {m.symbol}: 模拟 {m.paperQty} vs 实盘 {m.liveQty}
@@ -350,12 +350,12 @@ export const LiveTradingPanel: React.FC<LiveTradingPanelProps> = ({ className })
             <table className="w-full text-xs">
               <thead>
                 <tr className="text-gray-500 border-b border-gray-700/50">
-                  <th className="text-left py-2 pr-3">标的</th>
-                  <th className="text-right py-2 pr-3">持仓量</th>
-                  <th className="text-right py-2 pr-3">均价</th>
+                  <th className="text-left py-2 pr-3">{i18n.t('LiveTradingPanel.k5')}</th>
+                  <th className="text-right py-2 pr-3">{i18n.t('LiveTradingPanel.k6')}</th>
+                  <th className="text-right py-2 pr-3">{i18n.t('LiveTradingPanel.k7')}</th>
                   <th className="text-right py-2 pr-3">{"components.marketCap"}</th>
-                  <th className="text-right py-2 pr-3">未实现</th>
-                  <th className="text-right py-2">已实现</th>
+                  <th className="text-right py-2 pr-3">{i18n.t('LiveTradingPanel.k8')}</th>
+                  <th className="text-right py-2">{i18n.t('LiveTradingPanel.k9')}</th>
                 </tr>
               </thead>
               <tbody>

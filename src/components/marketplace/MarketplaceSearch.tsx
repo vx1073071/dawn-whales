@@ -59,7 +59,7 @@ export const MarketplaceSearch: React.FC<MarketplaceSearchProps> = ({ onSearch, 
           type="text"
           value={query}
           onChange={handleSearch}
-          placeholder="搜索策略名称、标签、作者..."
+          placeholder={i18n.t('MarketplaceSearch.k0')}
           className="w-full bg-gray-800 border border-gray-700 rounded-lg pl-9 pr-4 py-2 text-xs text-gray-300 placeholder-gray-600 focus:border-amber-500/50 focus:outline-none"
         />
         {query && (
@@ -120,7 +120,7 @@ export const MarketplaceSearch: React.FC<MarketplaceSearchProps> = ({ onSearch, 
 
         {/* Sort */}
         <div className="ml-auto flex items-center gap-1.5">
-          <span className="text-[10px] text-gray-600">排序:</span>
+          <span className="text-[10px] text-gray-600">{i18n.t('MarketplaceSearch.k1')}</span>
           {(['rating' as const, 'return' as const, 'new' as const]).map(sort => (
             <button
               key={sort}

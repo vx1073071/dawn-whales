@@ -120,7 +120,7 @@ export default function MarketPage() {
     <div className="p-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">行情中心</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">{i18n.t('MarketPage.k0')}</h1>
           <div className="flex items-center gap-2">
             <p className="text-gray-400 text-sm">实时监控自选股行情 · Push 模式 &lt;50ms</p>
             <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full ${
@@ -145,7 +145,7 @@ export default function MarketPage() {
             autoFocus
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="搜索股票代码或名称..."
+            placeholder={i18n.t('MarketPage.k1')}
             className="w-full bg-[#12121a] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50 mb-3"
             onKeyDown={(e) => { if (e.key === 'Escape') setShowSearch(false); }}
           />
@@ -184,11 +184,11 @@ export default function MarketPage() {
             <tr className="border-b border-white/5">
               <th className="px-4 py-3 text-left text-xs text-gray-500 font-medium uppercase tracking-wide">{t("components.code")}</th>
               <th className="px-4 py-3 text-left text-xs text-gray-500 font-medium uppercase tracking-wide">{t("components.name")}</th>
-              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">最新价</th>
-              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">涨跌额</th>
+              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">{i18n.t('MarketPage.k2')}</th>
+              <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">{i18n.t('MarketPage.k3')}</th>
               <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">{t("components.priceChange")}</th>
               <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">{t("components.volume")}</th>
-              <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide">标签</th>
+              <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide">{i18n.t('MarketPage.k4')}</th>
               <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide w-12"></th>
             </tr>
           </thead>
@@ -212,7 +212,7 @@ export default function MarketPage() {
         {klineLoading ? (
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
             <div className="text-3xl mb-2 opacity-40">⏳</div>
-            <p className="text-gray-400 text-sm">加载 {selectedSymbol?.replace('US.', '')} K线数据...</p>
+            <p className="text-gray-400 text-sm">{i18n.t('MarketPage.k0')}{selectedSymbol?.replace('US.', '')}{i18n.t('MarketPage.k1')}</p>
           </div>
         ) : selectedSymbol && klineData.length > 0 ? (
           <div>
@@ -254,7 +254,7 @@ export default function MarketPage() {
         ) : (
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
             <div className="text-3xl mb-2 opacity-40">📈</div>
-            <p className="text-gray-400 text-sm">点击上面的股票查看 K 线图</p>
+            <p className="text-gray-400 text-sm">{i18n.t('MarketPage.k5')}</p>
           </div>
         )}
       </div>
@@ -303,7 +303,7 @@ const WatchlistRow = memo(function WatchlistRow({
       <td className="px-4 py-3 text-right font-mono text-xs text-gray-400">{quote ? fmtVol(quote.volume) : '--'}</td>
       <td className="px-4 py-3 text-center">
         {isLev && <span className="text-[10px] bg-yellow-500/10 text-yellow-400 px-1.5 py-0.5 rounded mr-1">3x</span>}
-        {isInv && <span className="text-[10px] bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded">反向</span>}
+        {isInv && <span className="text-[10px] bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded">{i18n.t('MarketPage.k6')}</span>}
       </td>
       <td className="px-4 py-3 text-center">
         <button onClick={(e) => { e.stopPropagation(); onRemove(code); }} className="text-gray-600 hover:text-red-400 text-xs transition-colors" title={i18n.t('MarketPage.k7')}>✕</button>

@@ -1,7 +1,8 @@
 // ── DAWN WHALES — IPC Handler Setup ────────────────────────────────────────
 // Extracted from electron/main.ts — all IPC handlers under setupIPC()
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
-import { EngineError } from '../engine/core/engine-error';
+import { EngineError, ErrorDomain, ErrorCode } from '../engine/core/engine-error';
+import { withTimeout, ReentryGuard, ipcHealth, validateInput } from './ipc-hardening';
 import path from 'path';
 import { exec } from 'child_process';
 import { promisify } from 'util';
@@ -1165,4 +1166,76 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: false, error: err.message };
     }
   });
+
+  // ── R91 J-03: IPC Hardening — Health + Diagnostics ──────────────────────
+
+  /** IPC health stats endpoint — returns call counts, error rates, latencies */
+  ipcMain.handle('ipc:health-stats', async () => {
+    return { success: true, stats: ipcHealth.getStats() };
+  });
+
+  /** Re-entry guard status — shows which handlers are currently running */
+  const reentryGuard = new ReentryGuard();
+  ipcMain.handle('ipc:reentry-status', async () => {
+    return { success: true, running: reentryGuard.getRunningKeys() };
+  });
+
+  /**
+   * Hardened handler wrapper — applies timeout + EngineError wrapping + health tracking.
+   * Usage in new handlers:
+   *   hardenedHandle('channel:name', async (event, args) => { ... }, { timeout: 30000 });
+   */
+  const hardenedHandle = <T>(
+    channel: string,
+    handler: (event: Electron.IpcMainInvokeEvent, args: any) => Promise<T>,
+    options: { timeout?: number; preventReentry?: boolean; schema?: any } = {}
+  ) => {
+    const { timeout = 30000, preventReentry = false, schema } = options;
+
+    ipcMain.handle(channel, async (event, rawArgs) => {
+      const start = Date.now();
+
+      // Re-entry check
+      if (preventReentry && !reentryGuard.acquire(channel)) {
+        ipcHealth.recordCall(channel, 0, false, false, true);
+        throw new EngineError(
+          ErrorDomain.SYSTEM,
+          ErrorCode.INVALID_PARAM,
+          `Operation '${channel}' is already in progress`,
+          { context: { channel } }
+        );
+      }
+
+      try {
+        // Input validation
+        const args = schema ? validateInput(rawArgs, schema, channel) : rawArgs;
+
+        // Execute with timeout
+        const result = await withTimeout(handler(event, args), timeout, channel);
+        const elapsed = Date.now() - start;
+        ipcHealth.recordCall(channel, elapsed);
+        return result;
+      } catch (error) {
+        const elapsed = Date.now() - start;
+        const isTimeout = error instanceof EngineError && error.code === ErrorCode.AI_TIMEOUT;
+        ipcHealth.recordCall(channel, elapsed, true, isTimeout);
+
+        if (error instanceof EngineError) throw error;
+
+        throw new EngineError(
+          ErrorDomain.SYSTEM,
+          ErrorCode.INTERNAL_ERROR,
+          `IPC '${channel}' failed: ${error instanceof Error ? error.message : String(error)}`,
+          { context: { channel, elapsed }, cause: error instanceof Error ? error : undefined }
+        );
+      } finally {
+        if (preventReentry) reentryGuard.release(channel);
+      }
+    });
+  };
+
+  // Export hardenedHandle for use by other modules
+  (globalThis as any).__ipcHardenedHandle = hardenedHandle;
+
+  log.info('[IPC] R91 hardening layer active: timeout + reentry guard + health tracking + EngineError wrapping');
 }

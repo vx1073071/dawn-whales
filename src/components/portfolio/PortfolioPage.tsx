@@ -76,8 +76,8 @@ export default function PortfolioPage() {
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">持仓管理</h1>
-          <p className="text-gray-400 text-sm">账户总览 · 持仓明细 · 资产配置</p>
+          <h1 className="text-2xl font-bold text-white">{i18n.t('PortfolioPage.k0')}</h1>
+          <p className="text-gray-400 text-sm">{i18n.t('PortfolioPage.k1')}</p>
         </div>
         <div className="flex items-center gap-2">
           <label className="flex items-center gap-1.5 text-xs text-gray-400 cursor-pointer">
@@ -106,8 +106,8 @@ export default function PortfolioPage() {
       {!accountId && !loading && (
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center mb-4">
           <div className="text-3xl mb-2 opacity-40">🔌</div>
-          <p className="text-gray-400 text-sm">未连接券商</p>
-          <p className="text-gray-500 text-xs mt-1">请先在系统设置中连接 OpenD</p>
+          <p className="text-gray-400 text-sm">{i18n.t('PortfolioPage.k2')}</p>
+          <p className="text-gray-500 text-xs mt-1">{i18n.t('PortfolioPage.k3')}</p>
         </div>
       )}
 
@@ -125,7 +125,7 @@ export default function PortfolioPage() {
       {/* Allocation Bar */}
       {allocation.length > 0 && (
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4 mb-4">
-          <h3 className="text-gray-300 text-xs font-medium mb-3">资产配置</h3>
+          <h3 className="text-gray-300 text-xs font-medium mb-3">{i18n.t('PortfolioPage.k4')}</h3>
           <div className="flex h-4 rounded-lg overflow-hidden mb-3">
             {allocation.slice(0, 8).map((p, i) => {
               const colors = ['#C9A046', '#22c55e', '#3b82f6', '#a855f7', '#ef4444', '#f97316', '#06b6d4', '#ec4899'];
@@ -142,7 +142,7 @@ export default function PortfolioPage() {
               <div
                 style={{ width: `${(funds.cash / ((totalVal as any) + funds.cash)) * 100}%` }}
                 className="bg-gray-700 transition-all duration-500"
-                title={`现金: ${((funds.cash / ((totalVal as any) + funds.cash)) * 100).toFixed(1)}%`}
+                title={`${i18n.t('PortfolioPage.k0')}${((funds.cash / ((totalVal as any) + funds.cash)) * 100).toFixed(1)}%`}
               />
             )}
           </div>
@@ -164,7 +164,7 @@ export default function PortfolioPage() {
       {/* Positions Table */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/5">
-          <h2 className="text-white font-medium text-sm">持仓明细 ({positions.length})</h2>
+          <h2 className="text-white font-medium text-sm">{i18n.t('PortfolioPage.k1')}{positions.length})</h2>
         </div>
         {positions.length === 0 ? (
           <div className="p-8 text-center text-gray-500">
@@ -178,12 +178,12 @@ export default function PortfolioPage() {
                 <th className="px-4 py-3 text-left">{t("components.code")}</th>
                 <th className="px-4 py-3 text-left">{t("components.name")}</th>
                 <th className="px-4 py-3 text-right">{t("components.positions")}</th>
-                <th className="px-4 py-3 text-right">均价</th>
-                <th className="px-4 py-3 text-right">现价</th>
-                <th className="px-4 py-3 text-right">盈亏</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PortfolioPage.k5')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PortfolioPage.k6')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PortfolioPage.k7')}</th>
                 <th className="px-4 py-3 text-right">盈亏%</th>
                 <th className="px-4 py-3 text-right">{t("components.marketCap")}</th>
-                <th className="px-4 py-3 text-right">占比</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PortfolioPage.k8')}</th>
               </tr>
             </thead>
             <tbody>

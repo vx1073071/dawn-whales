@@ -77,7 +77,7 @@ export default function PortfolioRebalancerPage() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">⚖️ 组合再平衡</h1>
-          <p className="text-gray-400 text-sm">定期调仓，维持目标权重</p>
+          <p className="text-gray-400 text-sm">{i18n.t('PortfolioRebalancerPage.k0')}</p>
         </div>
         <button
           onClick={load}
@@ -94,11 +94,11 @@ export default function PortfolioRebalancerPage() {
           <div className="text-xl font-bold font-mono text-white">${totalAssets.toLocaleString()}</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">预计买入</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('PortfolioRebalancerPage.k1')}</div>
           <div className="text-xl font-bold font-mono text-red-400">+${totalBuy.toLocaleString()}</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">预计卖出</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('PortfolioRebalancerPage.k2')}</div>
           <div className="text-xl font-bold font-mono text-emerald-400">${Math.abs(totalSell).toLocaleString()}</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
@@ -106,13 +106,13 @@ export default function PortfolioRebalancerPage() {
           <div className={`text-xl font-bold font-mono ${turnover > config.maxTurnover ? 'text-red-400' : 'text-white'}`}>
             {turnover.toFixed(1)}%
           </div>
-          {turnover > config.maxTurnover && <div className="text-[10px] text-red-400">超出上限 {config.maxTurnover}%</div>}
+          {turnover > config.maxTurnover && <div className="text-[10px] text-red-400">{i18n.t('PortfolioRebalancerPage.k0')}{config.maxTurnover}%</div>}
         </div>
       </div>
 
       {/* Config Panel */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-white mb-4">再平衡配置</h2>
+        <h2 className="text-sm font-semibold text-white mb-4">{i18n.t('PortfolioRebalancerPage.k3')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
             <label className="text-xs text-gray-500 mb-1 block">调仓阈值 (%)</label>
@@ -131,15 +131,15 @@ export default function PortfolioRebalancerPage() {
             />
           </div>
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">频率</label>
+            <label className="text-xs text-gray-500 mb-1 block">{i18n.t('PortfolioRebalancerPage.k4')}</label>
             <select
               value={config.frequency}
               onChange={(e) => setConfig({ ...config, frequency: e.target.value as any })}
               className="w-full bg-deep border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]"
             >
-              <option value="daily">每日</option>
-              <option value="weekly">每周</option>
-              <option value="monthly">每月</option>
+              <option value="daily">{i18n.t('PortfolioRebalancerPage.k5')}</option>
+              <option value="weekly">{i18n.t('PortfolioRebalancerPage.k6')}</option>
+              <option value="monthly">{i18n.t('PortfolioRebalancerPage.k7')}</option>
             </select>
           </div>
           <div className="flex items-end">
@@ -159,7 +159,7 @@ export default function PortfolioRebalancerPage() {
       {/* Rebalance Suggestions */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-white">调仓建议</h2>
+          <h2 className="text-sm font-semibold text-white">{i18n.t('PortfolioRebalancerPage.k8')}</h2>
           <div className="flex items-center gap-2">
             <span className="text-xs text-gray-500">{activeSuggestions.length} 项调整</span>
           </div>
@@ -168,14 +168,14 @@ export default function PortfolioRebalancerPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                <th className="px-4 py-3 text-left">股票</th>
-                <th className="px-4 py-3 text-right">当前权重</th>
-                <th className="px-4 py-3 text-right">目标权重</th>
-                <th className="px-4 py-3 text-right">当前股数</th>
-                <th className="px-4 py-3 text-right">目标股数</th>
+                <th className="px-4 py-3 text-left">{i18n.t('PortfolioRebalancerPage.k9')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PortfolioRebalancerPage.k10')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PortfolioRebalancerPage.k11')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PortfolioRebalancerPage.k12')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PortfolioRebalancerPage.k13')}</th>
                 <th className="px-4 py-3 text-center">{t("components.actions")}</th>
-                <th className="px-4 py-3 text-right">调整股数</th>
-                <th className="px-4 py-3 text-right">调整金额</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PortfolioRebalancerPage.k14')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('PortfolioRebalancerPage.k15')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -217,7 +217,7 @@ export default function PortfolioRebalancerPage() {
 
       {/* Weight Visualization */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-white mb-4">权重对比</h2>
+        <h2 className="text-sm font-semibold text-white mb-4">{i18n.t('PortfolioRebalancerPage.k16')}</h2>
         <div className="space-y-3">
           {activeSuggestions.map((s) => (
             <div key={s.code} className="flex items-center gap-3">
@@ -242,8 +242,8 @@ export default function PortfolioRebalancerPage() {
           ))}
         </div>
         <div className="flex items-center gap-4 mt-4 text-xs">
-          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-gray-600" />当前权重</span>
-          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-[#C9A046]" />目标权重</span>
+          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-gray-600" />{i18n.t('PortfolioRebalancerPage.k17')}</span>
+          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-[#C9A046]" />{i18n.t('PortfolioRebalancerPage.k18')}</span>
         </div>
       </div>
 
@@ -257,7 +257,7 @@ export default function PortfolioRebalancerPage() {
               onChange={(e) => setDryRun(e.target.checked)}
               className="w-4 h-4 rounded border-white/20 bg-deep text-[#C9A046] focus:ring-[#C9A046]"
             />
-            <span className="text-sm text-gray-300">仅预览（Dry-run）</span>
+            <span className="text-sm text-gray-300">{i18n.t('PortfolioRebalancerPage.k19')}</span>
           </label>
         </div>
         <button

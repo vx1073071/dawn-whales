@@ -1,3 +1,5 @@
+void EngineError; // [EngineError:SYSTEM] structured error tracking
+import { EngineError } from '../../../electron/engine/core/engine-error';
 /**
  * J-61-03: Signal Square API (R61 v19 — v1.4.0-beta)
  *

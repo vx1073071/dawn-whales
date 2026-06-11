@@ -187,8 +187,8 @@ export default function PortfolioOptimizationPanel({
       <div className="p-5 border-b border-white/5">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold">组合优化</h2>
-            <p className="text-gray-500 text-xs mt-0.5">总资产: ${totalValue.toLocaleString()}</p>
+            <h2 className="text-xl font-bold">{i18n.t('PortfolioOptimizationPanel.k0')}</h2>
+            <p className="text-gray-500 text-xs mt-0.5">{i18n.t('PortfolioOptimizationPanel.k0')}{totalValue.toLocaleString()}</p>
           </div>
           <div className="flex gap-1">
             {(['frontier', 'risk', 'rebalance'] as const).map(t => (
@@ -211,7 +211,7 @@ export default function PortfolioOptimizationPanel({
               {[i18n.t('PortfolioOptimizationPanel.k15'), i18n.t('PortfolioOptimizationPanel.k16'), i18n.t('PortfolioOptimizationPanel.k17')].map(preset => {
                 const pt = frontier.find(p => p.label === preset);
                 return (
-                  <button key={preset} className={`py-1.5 rounded text-[10px] font-semibold border ${preset === '当前组合' ? 'border-[#D4A853]/30 bg-[#C9A046]/10 text-[#D4A853]' : 'border-white/5 text-gray-500 hover:text-gray-300'}`}>
+                  <button key={preset} className={`py-1.5 rounded text-[10px] font-semibold border ${preset === i18n.t('PortfolioOptimizationPanel.k1') ? 'border-[#D4A853]/30 bg-[#C9A046]/10 text-[#D4A853]' : 'border-white/5 text-gray-500 hover:text-gray-300'}`}>
                     {preset} {pt ? `${pt.return_}%/${pt.risk}%` : ''}
                   </button>
                 );
@@ -238,12 +238,12 @@ export default function PortfolioOptimizationPanel({
             <table className="w-full text-xs">
               <thead>
                 <tr className="bg-white/[0.02] text-gray-500">
-                  <th className="text-left px-4 py-2">资产</th>
-                  <th className="text-right px-4 py-2">当前</th>
-                  <th className="text-right px-4 py-2">目标</th>
+                  <th className="text-left px-4 py-2">{i18n.t('PortfolioOptimizationPanel.k2')}</th>
+                  <th className="text-right px-4 py-2">{i18n.t('PortfolioOptimizationPanel.k3')}</th>
+                  <th className="text-right px-4 py-2">{i18n.t('PortfolioOptimizationPanel.k4')}</th>
                   <th className="text-center px-4 py-2">{"components.actions"}</th>
-                  <th className="text-right px-4 py-2">金额</th>
-                  <th className="text-left px-4 py-2">理由</th>
+                  <th className="text-right px-4 py-2">{i18n.t('PortfolioOptimizationPanel.k5')}</th>
+                  <th className="text-left px-4 py-2">{i18n.t('PortfolioOptimizationPanel.k6')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">

@@ -116,7 +116,7 @@ export const MarketplaceDetail: React.FC<MarketplaceDetailProps> = ({ strategyId
 
       {/* Weekly returns chart */}
       <div className="bg-gray-800/40 rounded-lg p-4 border border-gray-700/30 mb-5">
-        <h4 className="text-xs font-semibold text-gray-400 mb-3">周收益走势</h4>
+        <h4 className="text-xs font-semibold text-gray-400 mb-3">{i18n.t('MarketplaceDetail.k0')}</h4>
         <svg viewBox="0 0 100 100" className="w-full h-24">
           <polyline fill="none" stroke="#f59e0b" strokeWidth="1.5" points={weeklyChart} />
           <line x1="0" y1="50" x2="100" y2="50" stroke="#374151" strokeWidth="0.5" strokeDasharray="3,3" />
@@ -132,7 +132,7 @@ export const MarketplaceDetail: React.FC<MarketplaceDetailProps> = ({ strategyId
 
       {/* Description */}
       <div className="bg-gray-800/40 rounded-lg p-4 border border-gray-700/30 mb-5">
-        <h4 className="text-xs font-semibold text-gray-400 mb-2">策略说明</h4>
+        <h4 className="text-xs font-semibold text-gray-400 mb-2">{i18n.t('MarketplaceDetail.k1')}</h4>
         <p className="text-xs text-gray-400 leading-relaxed whitespace-pre-line">{detail.longDescription}</p>
       </div>
 

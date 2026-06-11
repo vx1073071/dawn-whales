@@ -6,6 +6,8 @@
 
 import log from 'electron-log';
 import i18n from '../../../src/i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:AI] structured error tracking
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
 

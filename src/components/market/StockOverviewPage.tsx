@@ -109,7 +109,7 @@ export default function StockOverviewPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-white mb-1">🔍 个股诊断</h1>
-        <p className="text-gray-400 text-sm">五维度综合评分 · 资金流向 · 舆情 · 基金 · 龙虎榜 · 异动</p>
+        <p className="text-gray-400 text-sm">{i18n.t('StockOverviewPage.k0')}</p>
       </div>
 
       {/* Search */}
@@ -119,7 +119,7 @@ export default function StockOverviewPage() {
           value={code}
           onChange={(e) => setCode(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleDiagnose()}
-          placeholder="输入股票代码，如：600519"
+          placeholder={i18n.t('StockOverviewPage.k1')}
           className="flex-1 bg-[#1a1a25] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C9A046]/50"
         />
         <button
@@ -153,7 +153,7 @@ export default function StockOverviewPage() {
               </div>
             </div>
             <div className="mt-4 p-3 bg-card rounded-lg">
-              <div className="text-sm text-[#C9A046] font-medium">投资建议</div>
+              <div className="text-sm text-[#C9A046] font-medium">{i18n.t('StockOverviewPage.k2')}</div>
               <div className="text-sm text-gray-300 mt-1">{result.recommendation}</div>
             </div>
           </div>
@@ -161,7 +161,7 @@ export default function StockOverviewPage() {
           {/* Radar + Details */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-              <h2 className="text-sm font-medium text-white mb-3">五维度雷达图</h2>
+              <h2 className="text-sm font-medium text-white mb-3">{i18n.t('StockOverviewPage.k3')}</h2>
               <div ref={radarRef} style={{ height: 320 }} />
             </div>
 
@@ -204,7 +204,7 @@ export default function StockOverviewPage() {
       {!result && !loading && (
         <div className="flex flex-col items-center justify-center py-20 text-gray-500">
           <div className="text-4xl mb-3">🔍</div>
-          <p className="text-sm">输入股票代码开始综合诊断</p>
+          <p className="text-sm">{i18n.t('StockOverviewPage.k4')}</p>
           <p className="text-xs mt-1">综合评估：资金流 + 舆情 + 基金 + 龙虎榜 + 异动</p>
         </div>
       )}

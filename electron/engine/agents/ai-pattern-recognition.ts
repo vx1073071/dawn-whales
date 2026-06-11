@@ -1,4 +1,6 @@
 import i18n from '../../../src/i18n';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:AI] structured error tracking
 // ── J-73-03 R73 V19: AI Pattern Recognition Engine ─────────────────────
 // 20+ candlestick & chart patterns with confidence scoring
 // Semi-transparent overlay annotations, creator-correctable

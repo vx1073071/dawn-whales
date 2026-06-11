@@ -400,7 +400,7 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
       {isRunning && (
         <div className="mb-5">
           <div className="flex justify-between text-xs text-gray-500 mb-1.5">
-            <span>优化中...</span>
+            <span>{i18n.t('StrategyOptimizerPanel.k0')}</span>
             <span>{progress}%</span>
           </div>
           <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
@@ -504,9 +504,9 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
                 />
               </svg>
               <div className="flex justify-between text-[10px] text-gray-600 mt-1">
-                <span>迭代 0</span>
+                <span>{i18n.t('StrategyOptimizerPanel.k1')}</span>
                 <span className="text-emerald-500">--- 最优线</span>
-                <span>迭代 {convergenceData.length}</span>
+                <span>{i18n.t('StrategyOptimizerPanel.k0')}{convergenceData.length}</span>
               </div>
             </div>
           )}
@@ -523,7 +523,7 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
                     <tr className="text-gray-500 border-b border-gray-700/50">
                       <th className="text-left py-1.5 pr-3">Sharpe</th>
                       <th className="text-left py-1.5 pr-3">{"components.returnRate"}</th>
-                      <th className="text-left py-1.5 pr-3">回撤</th>
+                      <th className="text-left py-1.5 pr-3">{i18n.t('StrategyOptimizerPanel.k2')}</th>
                       <th className="text-left py-1.5 pr-3">{"components.winRate"}</th>
                       <th className="text-left py-1.5">Fitness</th>
                     </tr>

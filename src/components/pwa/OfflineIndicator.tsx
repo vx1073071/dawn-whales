@@ -105,9 +105,9 @@ export const OfflineDataNotice: React.FC<OfflineDataNoticeProps> = ({ className 
       <div className="flex items-start gap-2 text-xs">
         <span>📦</span>
         <div>
-          <span className="text-amber-400 font-medium">离线数据可用</span>
+          <span className="text-amber-400 font-medium">{i18n.t('OfflineIndicator.k0')}</span>
           {lastSync && (
-            <span className="text-gray-500 ml-1">· 上次同步: {lastSync}</span>
+            <span className="text-gray-500 ml-1">{i18n.t('OfflineIndicator.k0')}{lastSync}</span>
           )}
           <p className="text-gray-600 text-[10px] mt-0.5">
             自选股和持仓数据已缓存。行情数据需要联网更新。

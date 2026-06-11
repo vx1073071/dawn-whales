@@ -142,7 +142,7 @@ export default function DataQualityMonitorPage() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">🔍 数据质量监控</h1>
-          <p className="text-gray-400 text-sm">实时数据验证与质量保障</p>
+          <p className="text-gray-400 text-sm">{i18n.t('DataQualityMonitorPage.k0')}</p>
         </div>
         <button
           onClick={load}
@@ -183,7 +183,7 @@ export default function DataQualityMonitorPage() {
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold text-white">质量告警</h2>
+            <h2 className="text-sm font-semibold text-white">{i18n.t('DataQualityMonitorPage.k1')}</h2>
             {unackCount > 0 && (
               <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">{unackCount} 未处理</span>
             )}
@@ -221,21 +221,21 @@ export default function DataQualityMonitorPage() {
       {/* Symbol Quality Table */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/5">
-          <h2 className="text-sm font-semibold text-white">个股数据质量</h2>
+          <h2 className="text-sm font-semibold text-white">{i18n.t('DataQualityMonitorPage.k2')}</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
-                <th className="px-4 py-3 text-left">股票</th>
+                <th className="px-4 py-3 text-left">{i18n.t('DataQualityMonitorPage.k3')}</th>
                 <th className="px-4 py-3 text-center">{t("components.status")}</th>
-                <th className="px-4 py-3 text-right">延迟</th>
-                <th className="px-4 py-3 text-right">最后更新</th>
-                <th className="px-4 py-3 text-center">格式</th>
+                <th className="px-4 py-3 text-right">{i18n.t('DataQualityMonitorPage.k4')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('DataQualityMonitorPage.k5')}</th>
+                <th className="px-4 py-3 text-center">{i18n.t('DataQualityMonitorPage.k6')}</th>
                 <th className="px-4 py-3 text-center">{t("components.price")}</th>
                 <th className="px-4 py-3 text-center">{t("components.volume")}</th>
-                <th className="px-4 py-3 text-center">时间戳</th>
-                <th className="px-4 py-3 text-center">新鲜度</th>
+                <th className="px-4 py-3 text-center">{i18n.t('DataQualityMonitorPage.k7')}</th>
+                <th className="px-4 py-3 text-center">{i18n.t('DataQualityMonitorPage.k8')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -286,7 +286,7 @@ export default function DataQualityMonitorPage() {
             <div key={c.namespace} className="bg-deep rounded-lg p-3">
               <div className="text-xs text-gray-500 mb-1 capitalize">{c.namespace}</div>
               <div className="text-lg font-bold font-mono text-white">{c.hitRate.toFixed(1)}%</div>
-              <div className="text-[10px] text-gray-500 mt-1">命中率</div>
+              <div className="text-[10px] text-gray-500 mt-1">{i18n.t('DataQualityMonitorPage.k9')}</div>
               <div className="w-full bg-white/5 rounded-full h-1 mt-2">
                 <div className="bg-[#C9A046] h-1 rounded-full" style={{ width: `${c.hitRate}%` }} />
               </div>

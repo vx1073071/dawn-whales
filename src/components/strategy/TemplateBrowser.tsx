@@ -135,8 +135,8 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
       <div className="flex items-center gap-4">
         <button onClick={onBack} className="text-gray-400 hover:text-white text-sm flex items-center gap-1 transition-colors">{t('back')}</button>
         <div>
-          <h2 className="text-lg font-semibold text-white">策略模板</h2>
-          <p className="text-gray-400 text-xs">选择一个模板，快速创建策略</p>
+          <h2 className="text-lg font-semibold text-white">{i18n.t('TemplateBrowser.k0')}</h2>
+          <p className="text-gray-400 text-xs">{i18n.t('TemplateBrowser.k1')}</p>
         </div>
       </div>
 
@@ -144,7 +144,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
       <div className="relative">
         <input
           type="text"
-          placeholder="搜索模板..."
+          placeholder={i18n.t('TemplateBrowser.k2')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full bg-card border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C9A046]/50"
@@ -205,7 +205,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
       )}
 
       {!loading && filtered.length === 0 && !error && (
-        <div className="text-center text-gray-500 py-12">没有找到匹配的模板</div>
+        <div className="text-center text-gray-500 py-12">{i18n.t('TemplateBrowser.k3')}</div>
       )}
 
       {/* Selected template detail panel */}
@@ -224,10 +224,10 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
           {/* Rules */}
           <div className="space-y-2">
             <div className="text-xs text-gray-400">
-              <span className="text-green-400 font-medium">入场</span>：{selected.rules.entry}
+              <span className="text-green-400 font-medium">{i18n.t('TemplateBrowser.k4')}</span>：{selected.rules.entry}
             </div>
             <div className="text-xs text-gray-400">
-              <span className="text-red-400 font-medium">出场</span>：{selected.rules.exit}
+              <span className="text-red-400 font-medium">{i18n.t('TemplateBrowser.k5')}</span>：{selected.rules.exit}
             </div>
             {selected.rules.stopLoss && (
               <div className="text-xs text-gray-400">
@@ -258,7 +258,7 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
           {/* Parameters */}
           {selected.parameters.length > 0 && (
             <div className="space-y-3">
-              <div className="text-xs text-gray-400 border-t border-white/5 pt-3">参数设置</div>
+              <div className="text-xs text-gray-400 border-t border-white/5 pt-3">{i18n.t('TemplateBrowser.k6')}</div>
               {selected.parameters.map((p) => (
                 <div key={p.name} className="flex items-center gap-3">
                   <label className="text-xs text-gray-300 w-32 shrink-0">{p.label}</label>
@@ -298,9 +298,9 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
 
           {/* Risk defaults */}
           <div className="flex gap-4 text-xs text-gray-500 border-t border-white/5 pt-3">
-            <span>默认止损: <b className="text-red-400">{(selected.risk.defaultStopLoss * 100).toFixed(1)}%</b></span>
-            <span>默认止盈: <b className="text-green-400">{(selected.risk.defaultTakeProfit * 100).toFixed(1)}%</b></span>
-            <span>最大仓位: <b className="text-yellow-400">{(selected.risk.maxPosition * 100).toFixed(0)}%</b></span>
+            <span>{i18n.t('TemplateBrowser.k7')}<b className="text-red-400">{(selected.risk.defaultStopLoss * 100).toFixed(1)}%</b></span>
+            <span>{i18n.t('TemplateBrowser.k8')}<b className="text-green-400">{(selected.risk.defaultTakeProfit * 100).toFixed(1)}%</b></span>
+            <span>{i18n.t('TemplateBrowser.k9')}<b className="text-yellow-400">{(selected.risk.maxPosition * 100).toFixed(0)}%</b></span>
           </div>
 
           {/* Error */}

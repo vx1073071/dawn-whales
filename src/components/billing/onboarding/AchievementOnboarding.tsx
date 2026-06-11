@@ -162,7 +162,7 @@ export default function AchievementOnboarding({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="text-lg">{s.icon}</span>
-                      <span className="text-sm font-semibold" style={{ color: s.done ? '#4ade80' : '#94a3b8' }}>第{s.step}步: {s.title}</span>
+                      <span className="text-sm font-semibold" style={{ color: s.done ? '#4ade80' : '#94a3b8' }}>第{s.step}{i18n.t('AchievementOnboarding.k0')}{s.title}</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">{s.description}</p>
                     {!s.done && (

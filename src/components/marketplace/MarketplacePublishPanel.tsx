@@ -138,7 +138,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
         <div className="space-y-4">
           {/* Strategy selection */}
           <div>
-            <label className="text-xs text-gray-500 mb-2 block">选择策略</label>
+            <label className="text-xs text-gray-500 mb-2 block">{i18n.t('MarketplacePublishPanel.k0')}</label>
             <div className="space-y-2">
               {MOCK_STRATEGIES.map(s => (
                 <button
@@ -178,7 +178,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
               type="text"
               value={form.title}
               onChange={e => updateForm('title', e.target.value)}
-              placeholder="给你的策略取个吸引人的标题"
+              placeholder={i18n.t('MarketplacePublishPanel.k1')}
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-300 focus:border-amber-500/50 focus:outline-none"
             />
           </div>
@@ -189,7 +189,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
             <textarea
               value={form.description}
               onChange={e => updateForm('description', e.target.value)}
-              placeholder="描述你的策略逻辑、适用场景..."
+              placeholder={i18n.t('MarketplacePublishPanel.k2')}
               rows={4}
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-300 resize-y focus:border-amber-500/50 focus:outline-none"
             />
@@ -209,7 +209,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
                 value={tagInput}
                 onChange={e => setTagInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && addTag()}
-                placeholder="输入标签后按回车"
+                placeholder={i18n.t('MarketplacePublishPanel.k3')}
                 className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-300 focus:border-amber-500/50 focus:outline-none"
               />
               <button onClick={addTag} className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-400 hover:text-gray-200">
@@ -226,7 +226,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
             </div>
             {/* Suggested tags */}
             <div className="flex flex-wrap gap-1">
-              <span className="text-[10px] text-gray-600 mr-1">推荐:</span>
+              <span className="text-[10px] text-gray-600 mr-1">{i18n.t('MarketplacePublishPanel.k4')}</span>
               {SUGGESTED_TAGS.filter(t => !form.tags.includes(t)).slice(0, 8).map(tag => (
                 <button
                   key={tag}
@@ -241,7 +241,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
 
           {/* Category */}
           <div>
-            <label className="text-xs text-gray-500 mb-1.5 block">分类</label>
+            <label className="text-xs text-gray-500 mb-1.5 block">{i18n.t('MarketplacePublishPanel.k5')}</label>
             <div className="flex flex-wrap gap-1.5">
               {CATEGORIES.map(cat => (
                 <button
@@ -261,7 +261,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
 
           {/* Pricing */}
           <div>
-            <label className="text-xs text-gray-500 mb-1.5 block">定价模式</label>
+            <label className="text-xs text-gray-500 mb-1.5 block">{i18n.t('MarketplacePublishPanel.k6')}</label>
             <div className="grid grid-cols-3 gap-2 mb-3">
               {([
                 { key: 'free', label: i18n.t('MarketplacePublishPanel.k28'), sub: '¥0' },
@@ -303,7 +303,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
             <textarea
               value={form.authorNote}
               onChange={e => updateForm('authorNote', e.target.value)}
-              placeholder="使用建议、风险提示..."
+              placeholder={i18n.t('MarketplacePublishPanel.k7')}
               rows={3}
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-300 resize-y focus:border-amber-500/50 focus:outline-none"
             />
@@ -325,7 +325,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
                   <span className={`text-[10px] px-1.5 py-0.5 rounded ${
                     form.price === 'free' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'
                   }`}>
-                    {form.price === 'free' ? i18n.t('MarketplacePublishPanel.k34') : form.price === 'one_time' ? `¥${form.priceAmount}` : `¥${form.priceAmount}/月`}
+                    {form.price === 'free' ? i18n.t('MarketplacePublishPanel.k34') : form.price === 'one_time' ? `¥${form.priceAmount}` : `¥${form.priceAmount}${i18n.t('MarketplacePublishPanel.k0')}`}
                   </span>
                 </div>
               </div>
@@ -370,7 +370,7 @@ export const MarketplacePublishPanel: React.FC<MarketplacePublishPanelProps> = (
       {published && (
         <div className="text-center py-10">
           <div className="text-4xl mb-3">🎉</div>
-          <div className="text-lg font-bold text-white">策略发布成功！</div>
+          <div className="text-lg font-bold text-white">{i18n.t('MarketplacePublishPanel.k8')}</div>
           <p className="text-sm text-gray-500 mt-1">{form.title}</p>
           <p className="text-xs text-gray-600 mt-3">
             你的策略已提交到策略市场，审核通过后将公开可见。

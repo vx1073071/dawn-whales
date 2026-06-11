@@ -3,6 +3,7 @@
  * Real-time monitoring panel for all 14 agents
  */
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import React, { useEffect, useState } from 'react';
 import { Card, Row, Col, Badge, Progress, Tag, Statistic, Alert } from 'antd';
@@ -89,34 +90,34 @@ export const AgentDashboard: React.FC = () => {
 
   return (
     <div style={{ padding: 24 }}>
-      <h1><TeamOutlined /> 14 虾实时监控面板</h1>
+      <h1><TeamOutlined /> 14 {i18n.t('AgentDashboard.k0')}</h1>
       <p>Last update: {lastUpdate}</p>
 
       {/* Summary Stats */}
       <Row gutter={16} style={{ marginBottom: 24 }}>
         <Col span={4}>
           <Card>
-            <Statistic title="在线虾" value={onlineCount} suffix={`/ ${agents.length}`} />
+            <Statistic title={i18n.t('AgentDashboard.k1')} value={onlineCount} suffix={`/ ${agents.length}`} />
           </Card>
         </Col>
         <Col span={4}>
           <Card>
-            <Statistic title="工作中" value={busyCount} />
+            <Statistic title={i18n.t('AgentDashboard.k2')} value={busyCount} />
           </Card>
         </Col>
         <Col span={4}>
           <Card>
-            <Statistic title="测试通过" value={totalTests} />
+            <Statistic title={i18n.t('AgentDashboard.k3')} value={totalTests} />
           </Card>
         </Col>
         <Col span={4}>
           <Card>
-            <Statistic title="测试失败" value={failedTests} valueStyle={{ color: failedTests > 0 ? '#ff4d4f' : '#52c41a' }} />
+            <Statistic title={i18n.t('AgentDashboard.k4')} value={failedTests} valueStyle={{ color: failedTests > 0 ? '#ff4d4f' : '#52c41a' }} />
           </Card>
         </Col>
         <Col span={4}>
           <Card>
-            <Statistic title="代码产出" value={totalLines} suffix="L" />
+            <Statistic title={i18n.t('AgentDashboard.k5')} value={totalLines} suffix="L" />
           </Card>
         </Col>
         <Col span={4}>

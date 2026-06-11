@@ -285,7 +285,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="例如：MA5 上穿 MA20 买入 TQQQ，止损 5%"
+          placeholder={i18n.t('StrategyPage.k0')}
           className="w-full h-28 bg-[#12121a] border border-white/10 rounded-lg p-4 text-sm text-gray-200 placeholder-gray-600 resize-none focus:outline-none focus:border-[#C9A046]/50"
           onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleParse(); }}
         />
@@ -340,10 +340,10 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
           {(parsed.strategy.stopLoss || parsed.strategy.takeProfit) && (
             <div className="flex gap-3 mb-4">
               {parsed.strategy.stopLoss && (
-                <span className="text-xs bg-red-500/20 text-red-400 px-3 py-1 rounded-lg">止损 {parsed.strategy.stopLoss}%</span>
+                <span className="text-xs bg-red-500/20 text-red-400 px-3 py-1 rounded-lg">{i18n.t('StrategyPage.k0')}{parsed.strategy.stopLoss}%</span>
               )}
               {parsed.strategy.takeProfit && (
-                <span className="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-lg">止盈 {parsed.strategy.takeProfit}%</span>
+                <span className="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-lg">{i18n.t('StrategyPage.k1')}{parsed.strategy.takeProfit}%</span>
               )}
             </div>
           )}
@@ -394,7 +394,7 @@ function BacktestPanel({ result }: { result: BacktestResult }) {
       {/* Equity curve */}
       {result.equityCurve.length > 0 && (
         <div className="bg-[#12121a] rounded-lg p-3 mb-4">
-          <div className="text-xs text-gray-500 mb-2">权益曲线 · {result.totalTrades} 笔交易</div>
+          <div className="text-xs text-gray-500 mb-2">{i18n.t('StrategyPage.k2')}{result.totalTrades}{i18n.t('StrategyPage.k3')}</div>
           <EquityChart data={result.equityCurve} />
         </div>
       )}
@@ -402,7 +402,7 @@ function BacktestPanel({ result }: { result: BacktestResult }) {
       {/* Recent trades */}
       {result.trades.length > 0 && (
         <div>
-          <div className="text-xs text-gray-500 mb-2">最近交易（共 {result.trades.length} 笔）</div>
+          <div className="text-xs text-gray-500 mb-2">{i18n.t('StrategyPage.k4')}{result.trades.length}{i18n.t('StrategyPage.k5')}</div>
           <div className="max-h-40 overflow-y-auto space-y-1">
             {result.trades.slice(-10).reverse().map((t, i) => (
               <div key={i} className="flex items-center justify-between text-xs bg-[#12121a] rounded px-3 py-2">
@@ -764,7 +764,7 @@ function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { s
                 title={i18n.t('StrategyPage.k76')}
               >✏️</button>
               <button
-                onClick={(e) => { e.stopPropagation(); if (confirm(`确认删除策略「${s.name}」？`)) onDelete(s.id); }}
+                onClick={(e) => { e.stopPropagation(); if (confirm(`${i18n.t('StrategyPage.k6')}${s.name}」？`)) onDelete(s.id); }}
                 className="text-xs px-2 py-1 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20"
                 title={i18n.t('StrategyPage.k77')}
               >🗑️</button>

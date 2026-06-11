@@ -94,7 +94,7 @@ function AccountSummary({ fund, connected }: { fund: AccountFund | null; connect
         </div>
       </div>
       {fund.frozenCash && fund.frozenCash > 0 && (
-        <div className="mt-2 text-xs text-yellow-400">冻结: {fmt(fund.frozenCash)}</div>
+        <div className="mt-2 text-xs text-yellow-400">{i18n.t('TradingDeskPage.k0')}{fmt(fund.frozenCash)}</div>
       )}
     </div>
   );
@@ -148,7 +148,7 @@ function QuickTradeForm({
 
       const res = await api.placeOrder(order);
       if (res?.success || res?.orderId) {
-        setResult({ ok: true, msg: `下单成功: ${side === 'BUY' ? '买入' : '卖出'} ${qty} ${symbol.replace('US.', '')}` });
+        setResult({ ok: true, msg: `下单成功: ${side === 'BUY' ? i18n.t('TradingDeskPage.k0') : i18n.t('TradingDeskPage.k1')} ${qty} ${symbol.replace('US.', '')}` });
         onOrderPlaced();
       } else {
         setResult({ ok: false, msg: res?.error || i18n.t('TradingDeskPage.k4') });
@@ -163,7 +163,7 @@ function QuickTradeForm({
 
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-      <h3 className="text-white font-medium text-sm mb-4">快速下单</h3>
+      <h3 className="text-white font-medium text-sm mb-4">{i18n.t('TradingDeskPage.k2')}</h3>
 
       {/* Quick symbol buttons */}
       <div className="flex flex-wrap gap-1 mb-3">
@@ -186,7 +186,7 @@ function QuickTradeForm({
           value={symbol}
           onChange={(e) => setSymbol(e.target.value.toUpperCase())}
           className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-[#C9A046]/50"
-          placeholder="输入股票代码"
+          placeholder={i18n.t('TradingDeskPage.k3')}
         />
       </div>
 
@@ -246,7 +246,7 @@ function QuickTradeForm({
       {/* Price (limit only) */}
       {orderType === 'LIMIT' && (
         <div className="mb-3">
-          <label className="text-gray-500 text-xs mb-1 block">委托价</label>
+          <label className="text-gray-500 text-xs mb-1 block">{i18n.t('TradingDeskPage.k4')}</label>
           <input
             type="number"
             step="0.01"
@@ -270,7 +270,7 @@ function QuickTradeForm({
               : 'bg-red-500 hover:bg-red-600 text-white'
         } ${loading ? 'opacity-60' : ''}`}
       >
-        {loading ? i18n.t('TradingDeskPage.k6') : !connected ? i18n.t('TradingDeskPage.k7') : `${side === 'BUY' ? '买入' : '卖出'} ${symbol.replace('US.', '')} × ${qty}`}
+        {loading ? i18n.t('TradingDeskPage.k6') : !connected ? i18n.t('TradingDeskPage.k7') : `${side === 'BUY' ? i18n.t('TradingDeskPage.k5') : i18n.t('TradingDeskPage.k6')} ${symbol.replace('US.', '')} × ${qty}`}
       </button>
 
       {/* Result message */}
@@ -452,7 +452,7 @@ export default function TradingDeskPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">交易台</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">{i18n.t('TradingDeskPage.k7')}</h1>
           <p className="text-gray-400 text-sm">IPC 全链路 · 下单/持仓/委托/成交</p>
         </div>
         <div className="flex items-center gap-4">
@@ -462,7 +462,7 @@ export default function TradingDeskPage() {
               {connected ? i18n.t('TradingDeskPage.k16') : 'components.disconnected'}
             </span>
           </div>
-          {lastRefresh && <span className="text-gray-600 text-xs">刷新: {lastRefresh}</span>}
+          {lastRefresh && <span className="text-gray-600 text-xs">{i18n.t('TradingDeskPage.k1')}{lastRefresh}</span>}
           <button
             onClick={refreshAll}
             disabled={loading}
@@ -504,10 +504,10 @@ export default function TradingDeskPage() {
             {/* Active orders */}
             <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
               <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
-                <h3 className="text-white text-sm font-medium">当前委托 ({activeOrders.length})</h3>
+                <h3 className="text-white text-sm font-medium">{i18n.t('TradingDeskPage.k2')}{activeOrders.length})</h3>
               </div>
               {activeOrders.length === 0 ? (
-                <div className="p-6 text-center text-gray-500 text-sm">暂无活跃委托</div>
+                <div className="p-6 text-center text-gray-500 text-sm">{i18n.t('TradingDeskPage.k8')}</div>
               ) : (
                 <table className="w-full">
                   <thead>
@@ -515,7 +515,7 @@ export default function TradingDeskPage() {
                       <th className="px-3 py-2 text-left">{"components.code"}</th>
                       <th className="px-3 py-2 text-center">{"components.direction"}</th>
                       <th className="px-3 py-2 text-right">{"components.quantity"}</th>
-                      <th className="px-3 py-2 text-right">委托价</th>
+                      <th className="px-3 py-2 text-right">{i18n.t('TradingDeskPage.k9')}</th>
                       <th className="px-3 py-2 text-right">{"components.filled"}</th>
                       <th className="px-3 py-2 text-center">{"components.status"}</th>
                       <th className="px-3 py-2 text-center">{"components.actions"}</th>
@@ -537,7 +537,7 @@ export default function TradingDeskPage() {
                           <span className={`text-xs px-2 py-0.5 rounded ${statusColors[o.status] || ''}`}>{statusLabels[o.status] || o.status}</span>
                         </td>
                         <td className="px-3 py-2 text-center">
-                          <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded">撤单</button>
+                          <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded">{i18n.t('TradingDeskPage.k10')}</button>
                         </td>
                       </tr>
                     ))}
@@ -549,19 +549,19 @@ export default function TradingDeskPage() {
             {/* Positions preview */}
             <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden mt-4">
               <div className="px-4 py-3 border-b border-white/5">
-                <h3 className="text-white text-sm font-medium">当前持仓 ({positions.length})</h3>
+                <h3 className="text-white text-sm font-medium">{i18n.t('TradingDeskPage.k3')}{positions.length})</h3>
               </div>
               {positions.length === 0 ? (
-                <div className="p-6 text-center text-gray-500 text-sm">暂无持仓</div>
+                <div className="p-6 text-center text-gray-500 text-sm">{i18n.t('TradingDeskPage.k11')}</div>
               ) : (
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                       <th className="px-3 py-2 text-left">{"components.code"}</th>
                       <th className="px-3 py-2 text-right">{"components.quantity"}</th>
-                      <th className="px-3 py-2 text-right">成本</th>
+                      <th className="px-3 py-2 text-right">{i18n.t('TradingDeskPage.k12')}</th>
                       <th className="px-3 py-2 text-right">{"components.marketPrice"}</th>
-                      <th className="px-3 py-2 text-right">盈亏</th>
+                      <th className="px-3 py-2 text-right">{i18n.t('TradingDeskPage.k13')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -593,8 +593,8 @@ export default function TradingDeskPage() {
           {positions.length === 0 ? (
             <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">💼</div>
-              <p className="text-gray-400 text-sm">暂无持仓</p>
-              {!selectedAccount && <p className="text-gray-600 text-xs mt-1">请先连接 OpenD</p>}
+              <p className="text-gray-400 text-sm">{i18n.t('TradingDeskPage.k14')}</p>
+              {!selectedAccount && <p className="text-gray-600 text-xs mt-1">{i18n.t('TradingDeskPage.k15')}</p>}
             </div>
           ) : (
             <table className="w-full">
@@ -603,10 +603,10 @@ export default function TradingDeskPage() {
                   <th className="px-4 py-3 text-left">{"components.code"}</th>
                   <th className="px-4 py-3 text-left">{"components.name"}</th>
                   <th className="px-4 py-3 text-right">{"components.quantity"}</th>
-                  <th className="px-4 py-3 text-right">成本价</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('TradingDeskPage.k16')}</th>
                   <th className="px-4 py-3 text-right">{"components.marketPrice"}</th>
                   <th className="px-4 py-3 text-right">{"components.marketCap"}</th>
-                  <th className="px-4 py-3 text-right">盈亏</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('TradingDeskPage.k17')}</th>
                   <th className="px-4 py-3 text-right">盈亏%</th>
                 </tr>
               </thead>
@@ -646,7 +646,7 @@ export default function TradingDeskPage() {
           ) : orders.length === 0 ? (
             <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">📋</div>
-              <p className="text-gray-400 text-sm">暂无委托记录</p>
+              <p className="text-gray-400 text-sm">{i18n.t('TradingDeskPage.k18')}</p>
             </div>
           ) : (
             <table className="w-full">
@@ -656,9 +656,9 @@ export default function TradingDeskPage() {
                   <th className="px-4 py-3 text-left">{"components.code"}</th>
                   <th className="px-4 py-3 text-center">{"components.direction"}</th>
                   <th className="px-4 py-3 text-right">{"components.quantity"}</th>
-                  <th className="px-4 py-3 text-right">委托价</th>
-                  <th className="px-4 py-3 text-right">成交数</th>
-                  <th className="px-4 py-3 text-right">成交价</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('TradingDeskPage.k19')}</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('TradingDeskPage.k20')}</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('TradingDeskPage.k21')}</th>
                   <th className="px-4 py-3 text-center">{"components.status"}</th>
                   <th className="px-4 py-3 text-center">{"components.actions"}</th>
                 </tr>
@@ -684,7 +684,7 @@ export default function TradingDeskPage() {
                     </td>
                     <td className="px-4 py-3 text-center">
                       {['SUBMITTED', 'WAITING', 'PARTIAL'].includes(o.status) && (
-                        <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded">撤单</button>
+                        <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded">{i18n.t('TradingDeskPage.k22')}</button>
                       )}
                     </td>
                   </tr>
@@ -701,8 +701,8 @@ export default function TradingDeskPage() {
           {dbTrades.length === 0 ? (
             <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">📜</div>
-              <p className="text-gray-400 text-sm">暂无成交记录</p>
-              <p className="text-gray-600 text-xs mt-1">策略运行后自动记录在这里</p>
+              <p className="text-gray-400 text-sm">{i18n.t('TradingDeskPage.k23')}</p>
+              <p className="text-gray-600 text-xs mt-1">{i18n.t('TradingDeskPage.k24')}</p>
             </div>
           ) : (
             <table className="w-full">
@@ -713,7 +713,7 @@ export default function TradingDeskPage() {
                   <th className="px-4 py-3 text-center">{"components.direction"}</th>
                   <th className="px-4 py-3 text-right">{"components.quantity"}</th>
                   <th className="px-4 py-3 text-right">{"components.price"}</th>
-                  <th className="px-4 py-3 text-right">盈亏</th>
+                  <th className="px-4 py-3 text-right">{i18n.t('TradingDeskPage.k25')}</th>
                   <th className="px-4 py-3 text-center">{"components.status"}</th>
                   <th className="px-4 py-3 text-left">{"components.remarks"}</th>
                 </tr>

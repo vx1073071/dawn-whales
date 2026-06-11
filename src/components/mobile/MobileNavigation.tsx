@@ -7,6 +7,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
+import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -26,11 +27,11 @@ interface MobileNavigationProps {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { id: 'dashboard', icon: '📊', label: '仪表盘', badge: 0 },
-  { id: 'strategy', icon: '🎯', label: '策略', badge: 3 },
-  { id: 'market', icon: '📈', label: '行情' },
-  { id: 'portfolio', icon: '💰', label: '持仓' },
-  { id: 'more', icon: '⋮', label: '更多' },
+  { id: 'dashboard', icon: '📊', label: i18n.t('MobileNavigation.k0'), badge: 0 },
+  { id: 'strategy', icon: '🎯', label: i18n.t('MobileNavigation.k1'), badge: 3 },
+  { id: 'market', icon: '📈', label: i18n.t('MobileNavigation.k2') },
+  { id: 'portfolio', icon: '💰', label: i18n.t('MobileNavigation.k3') },
+  { id: 'more', icon: '⋮', label: i18n.t('MobileNavigation.k4') },
 ];
 
 export const MobileNavigation: React.FC<MobileNavigationProps> = ({
@@ -52,10 +53,10 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
   }, [onTabChange]);
 
   const moreItems: NavItem[] = [
-    { id: 'orders', icon: '📋', label: '订单' },
-    { id: 'backtest', icon: '🔬', label: '回测' },
-    { id: 'marketplace', icon: '🏪', label: '市场' },
-    { id: 'settings', icon: '⚙️', label: '设置' },
+    { id: 'orders', icon: '📋', label: i18n.t('MobileNavigation.k5') },
+    { id: 'backtest', icon: '🔬', label: i18n.t('MobileNavigation.k6') },
+    { id: 'marketplace', icon: '🏪', label: i18n.t('MobileNavigation.k7') },
+    { id: 'settings', icon: '⚙️', label: i18n.t('MobileNavigation.k8') },
   ];
 
   return (

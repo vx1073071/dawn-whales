@@ -45,7 +45,7 @@ function TierCard({ tier, isActive }: { tier: RevenueTier; isActive: boolean }) 
       <div style={{ fontSize: 14, fontWeight: 700, color: '#F9FAFB', marginBottom: 4 }}>{tier.name}</div>
       <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 10 }}>{tier.minRevenue}</div>
       <div style={{ fontSize: 22, fontWeight: 900, color: '#D4A853' }}>{tier.share}%</div>
-      <div style={{ fontSize: 11, color: '#9CA3AF' }}>创作者分成</div>
+      <div style={{ fontSize: 11, color: '#9CA3AF' }}>{i18n.t('USDTPaymentPanel.k0')}</div>
       <div style={{ marginTop: 8, padding: '4px 10px', borderRadius: 6, background: '#374151', fontSize: 11, color: '#6B7280' }}>
         平台佣金 {tier.commission}%
       </div>
@@ -100,10 +100,10 @@ function WalletTab() {
       {tab === 'deposit' && (
         <div style={{ padding: '20px', borderRadius: 12, background: '#111827', border: '1px solid #1F2937' }}>
           <div style={{ fontSize: 13, color: '#D1D5DB', marginBottom: 12 }}>
-            仅支持 <strong style={{ color: '#F59E0B' }}>USDT-TRC20</strong> 网络 · 最低充值 <strong>10 USDT</strong> · 到账时间 1-3分钟
+            仅支持 <strong style={{ color: '#F59E0B' }}>USDT-TRC20</strong>{i18n.t('USDTPaymentPanel.k1')}<strong>10 USDT</strong> · 到账时间 1-3分钟
           </div>
           <div style={{ padding: '16px', borderRadius: 10, background: '#1F2937', border: '1px solid #374151', textAlign: 'center', marginBottom: 16 }}>
-            <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 8 }}>扫描或复制地址充值</div>
+            <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 8 }}>{i18n.t('USDTPaymentPanel.k2')}</div>
             <div style={{ fontSize: 14, color: '#D1D5DB', fontFamily: 'monospace', wordBreak: 'break-all', marginBottom: 8 }}>
               TXqYH2G3kD6mZ5nP8rA1sF7wV4jB9cLp
             </div>
@@ -125,7 +125,7 @@ function WalletTab() {
             <input
               value={amount}
               onChange={e => setAmount(e.target.value)}
-              placeholder="最低 50 USDT"
+              placeholder={i18n.t('USDTPaymentPanel.k3')}
               style={{
                 width: '100%', padding: '12px', borderRadius: 8, border: '1px solid #374151',
                 background: '#1F2937', color: '#E5E7EB', fontSize: 16, outline: 'none', boxSizing: 'border-box',
@@ -141,7 +141,7 @@ function WalletTab() {
             <input
               value={address}
               onChange={e => setAddress(e.target.value)}
-              placeholder="T开头 TRC20 地址"
+              placeholder={i18n.t('USDTPaymentPanel.k4')}
               style={{
                 width: '100%', padding: '12px', borderRadius: 8, border: '1px solid #374151',
                 background: '#1F2937', color: '#E5E7EB', fontSize: 14, outline: 'none', boxSizing: 'border-box',
@@ -175,7 +175,7 @@ function RevenueTab() {
       }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, textAlign: 'center' }}>
           <div>
-            <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 4 }}>本月收入</div>
+            <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 4 }}>{i18n.t('USDTPaymentPanel.k5')}</div>
             <div style={{ fontSize: 24, fontWeight: 900, color: '#10B981' }}>$357</div>
           </div>
           <div>
@@ -183,7 +183,7 @@ function RevenueTab() {
             <div style={{ fontSize: 24, fontWeight: 900, color: '#D4A853' }}>$249</div>
           </div>
           <div>
-            <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 4 }}>平台佣金</div>
+            <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 4 }}>{i18n.t('USDTPaymentPanel.k6')}</div>
             <div style={{ fontSize: 24, fontWeight: 900, color: '#6B7280' }}>$107</div>
           </div>
         </div>
@@ -223,7 +223,7 @@ function HistoryTab() {
           <thead>
             <tr style={{ borderBottom: '1px solid #374151' }}>
               <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{"components.type"}</th>
-              <th style={{ padding: '8px 12px', textAlign: 'right', color: '#9CA3AF' }}>金额</th>
+              <th style={{ padding: '8px 12px', textAlign: 'right', color: '#9CA3AF' }}>{i18n.t('USDTPaymentPanel.k7')}</th>
               <th style={{ padding: '8px 12px', textAlign: 'center', color: '#9CA3AF' }}>{"components.status"}</th>
               <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>TxHash</th>
               <th style={{ padding: '8px 12px', textAlign: 'left', color: '#9CA3AF' }}>{"components.date"}</th>

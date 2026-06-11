@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface PriceAlert {
   id: string;
@@ -105,7 +106,7 @@ export default function PriceAlertPanel() {
 
       {/* Active Alerts */}
       {activeAlerts.length === 0 ? (
-        <p className="text-gray-500 text-xs text-center py-3">暂无监控中的告警</p>
+        <p className="text-gray-500 text-xs text-center py-3">{i18n.t('PriceAlertPanel.k0')}</p>
       ) : (
         <div className="space-y-1 mb-3">
           {activeAlerts.map((alert) => (
@@ -133,7 +134,7 @@ export default function PriceAlertPanel() {
       {/* Triggered Alerts */}
       {triggeredAlerts.length > 0 && (
         <div className="pt-2 border-t border-white/5">
-          <div className="text-[10px] text-gray-500 mb-1">已触发</div>
+          <div className="text-[10px] text-gray-500 mb-1">{i18n.t('PriceAlertPanel.k1')}</div>
           <div className="space-y-1">
             {triggeredAlerts.slice(0, 3).map((alert) => (
               <div

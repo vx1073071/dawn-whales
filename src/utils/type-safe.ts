@@ -1,3 +1,4 @@
+import i18n from '../i18n';
 /**
  * Bundle & Type Optimization — ML-51-01 + ML-51-02 [P0]
  * R51: v1.0.1 Patch — Frontend type fixes + Dead code removal + Tree-shaking
@@ -73,7 +74,7 @@ export function compactNumber(
 ): string {
   if (!Number.isFinite(n)) return '—';
   const abs = Math.abs(n);
-  if (abs >= 1e8) return `${(n / 1e8).toFixed(decimals)}亿`;
+  if (abs >= 1e8) return `${(n / 1e8).toFixed(decimals)}${i18n.t('TypeSafe.k0')}`;
   if (abs >= 1e4)
     return `${(n / 1e4).toFixed(decimals)}${locale.startsWith('zh') ? '万' : 'K'}`;
   if (abs >= 1e3)
@@ -111,19 +112,19 @@ export function relativeTime(date: Date | number, locale = 'zh-CN'): string {
   const now = Date.now();
   const diffMs = now - d.getTime();
 
-  if (diffMs < 0) return locale.startsWith('zh') ? '刚刚' : 'just now';
+  if (diffMs < 0) return locale.startsWith('zh') ? i18n.t('TypeSafe.k0') : 'just now';
 
   const seconds = Math.floor(diffMs / 1000);
-  if (seconds < 60) return locale.startsWith('zh') ? `${seconds}秒前` : `${seconds}s ago`;
+  if (seconds < 60) return locale.startsWith('zh') ? `${seconds}${i18n.t('TypeSafe.k1')}` : `${seconds}s ago`;
 
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return locale.startsWith('zh') ? `${minutes}分钟前` : `${minutes}m ago`;
+  if (minutes < 60) return locale.startsWith('zh') ? `${minutes}${i18n.t('TypeSafe.k2')}` : `${minutes}m ago`;
 
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return locale.startsWith('zh') ? `${hours}小时前` : `${hours}h ago`;
+  if (hours < 24) return locale.startsWith('zh') ? `${hours}${i18n.t('TypeSafe.k3')}` : `${hours}h ago`;
 
   const days = Math.floor(hours / 24);
-  if (days < 30) return locale.startsWith('zh') ? `${days}天前` : `${days}d ago`;
+  if (days < 30) return locale.startsWith('zh') ? `${days}${i18n.t('TypeSafe.k4')}` : `${days}d ago`;
 
   return d.toLocaleDateString(locale);
 }

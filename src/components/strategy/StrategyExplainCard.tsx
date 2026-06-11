@@ -2,6 +2,7 @@
 import { useState } from 'react';
 
 import { useTranslation } from "react-i18next";
+import i18n from '../../i18n';
 
 interface Props {
   strategy: any;
@@ -25,10 +26,10 @@ export default function StrategyExplainCard({ strategy, onExplain }: Props) {
         setExplanation(result.explanation);
         onExplain?.(result.explanation);
       } else {
-        setError(result.error || '解释生成失败');
+        setError(result.error || i18n.t('StrategyExplainCard.k0'));
       }
     } catch (e: unknown) {
-      setError((e as any).message || '调用失败');
+      setError((e as any).message || i18n.t('StrategyExplainCard.k1'));
     } finally {
       setLoading(false);
     }

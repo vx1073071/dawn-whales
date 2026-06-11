@@ -77,7 +77,7 @@ function SLOGauge({ metric }: { metric: SloMetric }) {
       </svg>
       <div className="text-sm font-bold -mt-3" style={{ color }}>{metric.current}{metric.unit}</div>
       <div className="text-[9px] text-gray-600 mt-1">{metric.name}</div>
-      <div className="text-[8px] text-gray-700">目标: {metric.target}{metric.unit}</div>
+      <div className="text-[8px] text-gray-700">{i18n.t('MonitoringAlertPanel.k0')}{metric.target}{metric.unit}</div>
     </div>
   );
 }
@@ -111,7 +111,7 @@ export default function MonitoringAlertPanel({
       <div className="p-5 border-b border-white/5">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold">监控告警</h2>
+            <h2 className="text-xl font-bold">{i18n.t('MonitoringAlertPanel.k0')}</h2>
             <p className="text-gray-500 text-xs mt-0.5">SLO · 告警历史 · 静默规则</p>
           </div>
           <div className="flex gap-1">
@@ -156,7 +156,7 @@ export default function MonitoringAlertPanel({
                     {a.resolved ? <span className="text-[10px] text-green-400">✓ 已恢复</span> : <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />}
                   </div>
                   <p className="text-xs text-gray-500">{a.message}</p>
-                  <div className="text-[9px] text-gray-600 mt-1">通知渠道: {a.channel}</div>
+                  <div className="text-[9px] text-gray-600 mt-1">{i18n.t('MonitoringAlertPanel.k1')}{a.channel}</div>
                 </div>
               ))}
             </div>
@@ -169,7 +169,7 @@ export default function MonitoringAlertPanel({
             <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
               <h4 className="text-gray-300 font-semibold text-sm mb-3">🔕 静默规则</h4>
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-xs text-gray-400">静默时长:</span>
+                <span className="text-xs text-gray-400">{i18n.t('MonitoringAlertPanel.k1')}</span>
                 <input type="range" min={5} max={120} value={silenceMin} onChange={e => setSilenceMin(Number(e.target.value))}
                   className="flex-1 accent-[#D4A853]" />
                 <span className="text-xs text-[#D4A853] font-semibold w-16 text-right">{silenceMin} 分钟</span>
@@ -198,7 +198,7 @@ export default function MonitoringAlertPanel({
               {metrics.map(m => (
                 <div key={m.name} className="flex items-center justify-between py-1.5 text-xs">
                   <span className="text-gray-400">{m.name}</span>
-                  <span className="text-gray-600">阈值 {m.target}{m.unit}</span>
+                  <span className="text-gray-600">{i18n.t('MonitoringAlertPanel.k2')}{m.target}{m.unit}</span>
                 </div>
               ))}
             </div>

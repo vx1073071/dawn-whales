@@ -102,21 +102,21 @@ function SourceCard({ source }: { source: DataSource }) {
       {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
         <div>
-          <div style={{ fontSize: 10, color: '#6B7280' }}>延迟</div>
+          <div style={{ fontSize: 10, color: '#6B7280' }}>{i18n.t('DataSourcePanel.k0')}</div>
           <LatencyBar ms={source.latency} maxMs={1000} />
         </div>
         <div>
-          <div style={{ fontSize: 10, color: '#6B7280' }}>错误率</div>
+          <div style={{ fontSize: 10, color: '#6B7280' }}>{i18n.t('DataSourcePanel.k1')}</div>
           <div style={{ fontSize: 13, fontWeight: 600, color: source.errorRate > 5 ? '#EF4444' : source.errorRate > 1 ? '#F59E0B' : '#10B981' }}>
             {source.errorRate.toFixed(1)}%
           </div>
         </div>
         <div>
-          <div style={{ fontSize: 10, color: '#6B7280' }}>今日调用</div>
+          <div style={{ fontSize: 10, color: '#6B7280' }}>{i18n.t('DataSourcePanel.k2')}</div>
           <div style={{ fontSize: 12, color: '#D1D5DB' }}>{source.callsToday.toLocaleString()} / {source.rateLimit.toLocaleString()}</div>
         </div>
         <div>
-          <div style={{ fontSize: 10, color: '#6B7280' }}>上次获取</div>
+          <div style={{ fontSize: 10, color: '#6B7280' }}>{i18n.t('DataSourcePanel.k3')}</div>
           <div style={{ fontSize: 12, color: '#D1D5DB', fontFamily: 'monospace' }}>{source.lastFetch}</div>
         </div>
       </div>
@@ -156,11 +156,11 @@ function AgentStatusCard({ agent, sources }: { agent: AgentStatus; sources: Data
       </div>
 
       <div style={{ display: 'flex', gap: 16, marginBottom: 8, fontSize: 12, color: '#9CA3AF' }}>
-        <span>数据源: <strong style={{ color: '#D1D5DB' }}>
+        <span>{i18n.t('DataSourcePanel.k4')}<strong style={{ color: '#D1D5DB' }}>
           {activeSource?.name || i18n.t('DataSourcePanel.k8')}
         </strong></span>
-        <span>信号数: <strong style={{ color: '#818CF8' }}>{agent.signalCount}</strong></span>
-        <span>最后: <span style={{ fontFamily: 'monospace', color: '#6B7280' }}>{agent.lastSignal}</span></span>
+        <span>{i18n.t('DataSourcePanel.k5')}<strong style={{ color: '#818CF8' }}>{agent.signalCount}</strong></span>
+        <span>{i18n.t('DataSourcePanel.k6')}<span style={{ fontFamily: 'monospace', color: '#6B7280' }}>{agent.lastSignal}</span></span>
       </div>
 
       <div style={{ display: 'flex', gap: 4 }}>
@@ -207,7 +207,7 @@ function QualityBanner({ sources }: { sources: DataSource[] }) {
           <div>
             <div style={{ fontSize: 14, fontWeight: 700, color: '#F9FAFB' }}>
               {mockCount > 0
-                ? `⚠️ ${mockCount} 个数据源使用 Mock`
+                ? `⚠️ ${mockCount}${i18n.t('DataSourcePanel.k0')}`
                 : i18n.t('DataSourcePanel.k9')}
             </div>
             <div style={{ fontSize: 11, color: '#9CA3AF' }}>
@@ -354,8 +354,8 @@ export default function DataSourcePanel() {
         background: '#111827', border: '1px solid #1F2937',
         fontSize: 11, color: '#6B7280', lineHeight: 1.7,
       }}>
-        💡 <strong>数据质量提示</strong> — 当前使用 <span style={{ color: '#D1D5DB' }}>东方财富 EM-MX (港股)</span> + <span style={{ color: '#D1D5DB' }}>Yahoo Finance (美股)</span> 作为主要数据源 · 
-        Reddit/StockTwits 情绪数据暂用 Mock (<span style={{ color: '#F59E0B' }}>待 J-75-01 接入</span>) · 
+        💡 <strong>{i18n.t('DataSourcePanel.k7')}</strong> — 当前使用 <span style={{ color: '#D1D5DB' }}>东方财富 EM-MX (港股)</span> + <span style={{ color: '#D1D5DB' }}>Yahoo Finance (美股)</span> 作为主要数据源 · 
+        Reddit/StockTwits 情绪数据暂用 Mock (<span style={{ color: '#F59E0B' }}>{i18n.t('DataSourcePanel.k8')}</span>) · 
         数据更新频率: 基本面 T+1, 技术面实时, 情绪面 5min
       </div>
     </div>

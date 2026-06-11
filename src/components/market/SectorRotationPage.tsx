@@ -120,8 +120,8 @@ export default function SectorRotationPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">🔄 板块轮动</h1>
-          <p className="text-gray-400 text-sm">板块动量监测 + 轮动信号</p>
+          <h1 className="text-2xl font-bold text-white mb-1">🔄 {i18n.t('SectorRotationPage.k11')}</h1>
+          <p className="text-gray-400 text-sm">{i18n.t('SectorRotationPage.k12')}</p>
         </div>
         <button
           onClick={fetchData}
@@ -159,15 +159,15 @@ export default function SectorRotationPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Chart */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <h2 className="text-sm font-medium text-white mb-3">板块涨幅排行</h2>
+          <h2 className="text-sm font-medium text-white mb-3">{i18n.t('SectorRotationPage.k13')}</h2>
           <div ref={chartRef} style={{ height: 320 }} />
         </div>
 
         {/* Rotation Signals */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4 space-y-3">
-          <h2 className="text-sm font-medium text-white mb-1">轮动信号</h2>
+          <h2 className="text-sm font-medium text-white mb-1">{i18n.t('SectorRotationPage.k14')}</h2>
           {signals.length === 0 && (
-            <div className="text-gray-500 text-sm py-8 text-center">暂无轮动信号</div>
+            <div className="text-gray-500 text-sm py-8 text-center">{i18n.t('SectorRotationPage.k15')}</div>
           )}
           {signals.slice(0, 8).map((sig, i) => (
             <div key={i} className="flex items-center gap-3 p-2.5 bg-card rounded-lg">
@@ -182,7 +182,7 @@ export default function SectorRotationPage() {
                 </div>
                 <div className="text-xs text-gray-500">
                   {sig.type === 'inflow' ? i18n.t('SectorRotationPage.k8') : sig.type === 'outflow' ? i18n.t('SectorRotationPage.k9') : i18n.t('SectorRotationPage.k10')}
-                  {' · '}强度 {sig.strength?.toFixed(1) ?? '-'}
+                  {' · '}{i18n.t('SectorRotationPage.k16')} {sig.strength?.toFixed(1) ?? '-'}
                 </div>
               </div>
               <div className="text-xs text-gray-500">{sig.timestamp}</div>
@@ -195,7 +195,7 @@ export default function SectorRotationPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Heating */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <h2 className="text-sm font-medium text-red-400 mb-3">🔥 升温板块</h2>
+          <h2 className="text-sm font-medium text-red-400 mb-3">🔥 {i18n.t('SectorRotationPage.k17')}</h2>
           <div className="space-y-2">
             {heatingSectors.slice(0, 8).map((s) => (
               <div key={s.name} className="flex items-center justify-between p-2.5 bg-card rounded-lg">
@@ -204,20 +204,20 @@ export default function SectorRotationPage() {
                   <span className="text-sm text-white">{s.name}</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="text-xs text-gray-500">动量 {s.momentumScore?.toFixed(1)}</div>
+                  <div className="text-xs text-gray-500">{i18n.t('SectorRotationPage.k18')} {s.momentumScore?.toFixed(1)}</div>
                   <div className="text-sm font-medium text-red-400">+{s.changePct5d?.toFixed(1)}%</div>
                 </div>
               </div>
             ))}
             {heatingSectors.length === 0 && (
-              <div className="text-gray-500 text-sm py-4 text-center">暂无升温板块</div>
+              <div className="text-gray-500 text-sm py-4 text-center">{i18n.t('SectorRotationPage.k19')}</div>
             )}
           </div>
         </div>
 
         {/* Cooling */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <h2 className="text-sm font-medium text-emerald-400 mb-3">❄️ 降温板块</h2>
+          <h2 className="text-sm font-medium text-emerald-400 mb-3">❄️ {i18n.t('SectorRotationPage.k20')}</h2>
           <div className="space-y-2">
             {coolingSectors.slice(0, 8).map((s) => (
               <div key={s.name} className="flex items-center justify-between p-2.5 bg-card rounded-lg">
@@ -226,13 +226,13 @@ export default function SectorRotationPage() {
                   <span className="text-sm text-white">{s.name}</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="text-xs text-gray-500">动量 {s.momentumScore?.toFixed(1)}</div>
+                  <div className="text-xs text-gray-500">{i18n.t('SectorRotationPage.k21')} {s.momentumScore?.toFixed(1)}</div>
                   <div className="text-sm font-medium text-emerald-400">{s.changePct5d?.toFixed(1)}%</div>
                 </div>
               </div>
             ))}
             {coolingSectors.length === 0 && (
-              <div className="text-gray-500 text-sm py-4 text-center">暂无降温板块</div>
+              <div className="text-gray-500 text-sm py-4 text-center">{i18n.t('SectorRotationPage.k22')}</div>
             )}
           </div>
         </div>

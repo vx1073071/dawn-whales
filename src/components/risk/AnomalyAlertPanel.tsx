@@ -113,7 +113,7 @@ export default function AnomalyAlertPanel() {
             <div className="text-sm font-bold text-white">{(summary as any).todayCount ?? 0}</div>
           </div>
           <div className="bg-card rounded-lg p-2 text-center">
-            <div className="text-xs text-gray-500">高危</div>
+            <div className="text-xs text-gray-500">{i18n.t('AnomalyAlertPanel.k0')}</div>
             <div className="text-sm font-bold text-red-400">{(summary as any).highSeverityCount ?? 0}</div>
           </div>
           <div className="bg-card rounded-lg p-2 text-center">
@@ -121,7 +121,7 @@ export default function AnomalyAlertPanel() {
             <div className="text-sm font-bold text-yellow-400">{(summary as any).unacknowledgedCount ?? 0}</div>
           </div>
           <div className="bg-card rounded-lg p-2 text-center">
-            <div className="text-xs text-gray-500">活跃</div>
+            <div className="text-xs text-gray-500">{i18n.t('AnomalyAlertPanel.k1')}</div>
             <div className="text-sm font-bold text-[#C9A046]">{(summary as any).activeStocksCount ?? 0}</div>
           </div>
         </div>
@@ -147,7 +147,7 @@ export default function AnomalyAlertPanel() {
       {/* Alerts List */}
       <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
         {filtered.length === 0 && (
-          <div className="text-gray-500 text-sm py-6 text-center">暂无异动警报</div>
+          <div className="text-gray-500 text-sm py-6 text-center">{i18n.t('AnomalyAlertPanel.k2')}</div>
         )}
         {filtered.map((alert) => {
           const sev = SEVERITY_CONFIG[alert.severity];

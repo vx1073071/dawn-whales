@@ -65,12 +65,13 @@ export default function PortfolioAllocationChart({
         formatter: (params: any) => {
           const d = params.data;
           const pct = params.percent;
+          void pct; // used in tooltip template below
           const pnlColor = (d as any).pnl >= 0 ? '#34d399' : '#f87171';
           return `<div class="font-mono text-xs">
             <div class="font-medium">${(d as any).name}</div>
-            <div>占比: ${(pct as any).toFixed(1)}%</div>
-            <div>市值: $${(d as any).value.toLocaleString()}</div>
-            <div style="color:${pnlColor}">盈亏: ${(d as any).pnl >= 0 ? '+' : ''}$${(d as any).pnl.toFixed(0)} (${(d as any).pnlPct.toFixed(1)}%)</div>
+            <div>${i18n.t('PortfolioAllocationChart.k0')}${pct.toFixed(1)}%</div>
+            <div>${i18n.t('PortfolioAllocationChart.k1')}${(d as any).value.toLocaleString()}</div>
+            <div style="color:${pnlColor}">${i18n.t('PortfolioAllocationChart.k2')}${(d as any).pnl >= 0 ? '+' : ''}$${(d as any).pnl.toFixed(0)} (${(d as any).pnlPct.toFixed(1)}%)</div>
           </div>`;
         },
       },
@@ -135,7 +136,7 @@ export default function PortfolioAllocationChart({
   if (!data || data.length === 0) {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5 flex items-center justify-center" style={{ height }}>
-        <div className="text-gray-500 text-sm">暂无持仓数据</div>
+        <div className="text-gray-500 text-sm">{i18n.t('PortfolioAllocationChart.k0')}</div>
       </div>
     );
   }

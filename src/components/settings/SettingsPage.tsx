@@ -231,7 +231,7 @@ export default function SettingsPage() {
                     <input
                       value={newBroker.name}
                       onChange={(e) => setNewBroker({ ...newBroker, name: e.target.value })}
-                      placeholder="例如: 富途香港"
+                      placeholder={i18n.t('SettingsPage.k0')}
                       className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50"
                     />
                   </div>
@@ -357,7 +357,7 @@ export default function SettingsPage() {
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-gray-400 text-xs mb-1">券商</label>
+                <label className="block text-gray-400 text-xs mb-1">{i18n.t('SettingsPage.k1')}</label>
                 <select className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50">
                   <option>{"settings.brokerFutu"}</option>
                   <option>moomoo</option>
@@ -366,7 +366,7 @@ export default function SettingsPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-gray-400 text-xs mb-1">交易环境</label>
+                <label className="block text-gray-400 text-xs mb-1">{i18n.t('SettingsPage.k2')}</label>
                 <select className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50">
                   <option>{"settings.realTrading"}</option>
                   <option>{"settings.simulateTrading"}</option>

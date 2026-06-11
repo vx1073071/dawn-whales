@@ -115,7 +115,7 @@ export default function MacroDashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">📉 宏观经济仪表盘</h1>
-          <p className="text-gray-400 text-sm">实时跟踪中国经济核心指标</p>
+          <p className="text-gray-400 text-sm">{i18n.t('MacroDashboardPage.k0')}</p>
         </div>
         <button
           onClick={loadMacroData}
@@ -129,7 +129,7 @@ export default function MacroDashboardPage() {
       {/* Indicator Cards */}
       {loading && indicators.length === 0 ? (
         <div className="flex items-center justify-center h-32">
-          <div className="text-gray-500 animate-pulse">加载宏观数据中...</div>
+          <div className="text-gray-500 animate-pulse">{i18n.t('MacroDashboardPage.k1')}</div>
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

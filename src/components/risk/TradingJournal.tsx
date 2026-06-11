@@ -131,14 +131,14 @@ export default function TradingJournal() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-white font-semibold text-sm">📝 交易日志</h2>
-          <p className="text-gray-500 text-[10px] mt-0.5">{stats.total} 条记录 · 盈亏 {stats.totalPnl >= 0 ? '+' : ''}${stats.totalPnl.toFixed(0)}</p>
+          <p className="text-gray-500 text-[10px] mt-0.5">{stats.total}{i18n.t('TradingJournal.k0')}{stats.totalPnl >= 0 ? '+' : ''}${stats.totalPnl.toFixed(0)}</p>
         </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1 bg-[#12121a] rounded-lg p-0.5">
-            <button onClick={() => setView('list')} className={`px-2 py-1 rounded text-[10px] ${view === 'list' ? 'bg-[#C9A046] text-black' : 'text-gray-400'}`}>列表</button>
-            <button onClick={() => setView('calendar')} className={`px-2 py-1 rounded text-[10px] ${view === 'calendar' ? 'bg-[#C9A046] text-black' : 'text-gray-400'}`}>日历</button>
+            <button onClick={() => setView('list')} className={`px-2 py-1 rounded text-[10px] ${view === 'list' ? 'bg-[#C9A046] text-black' : 'text-gray-400'}`}>{i18n.t('TradingJournal.k0')}</button>
+            <button onClick={() => setView('calendar')} className={`px-2 py-1 rounded text-[10px] ${view === 'calendar' ? 'bg-[#C9A046] text-black' : 'text-gray-400'}`}>{i18n.t('TradingJournal.k1')}</button>
           </div>
-          <button onClick={exportCSV} className="px-2 py-1.5 text-[10px] text-gray-400 hover:text-gray-200 border border-white/10 rounded-lg">导出 CSV</button>
+          <button onClick={exportCSV} className="px-2 py-1.5 text-[10px] text-gray-400 hover:text-gray-200 border border-white/10 rounded-lg">{i18n.t('TradingJournal.k2')}</button>
           <button onClick={() => setShowForm(!showForm)} className="px-3 py-1.5 bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 rounded-lg text-xs font-medium hover:bg-[#C9A046]/20 transition-colors">
             {showForm ? i18n.t('TradingJournal.k27') : i18n.t('TradingJournal.k28')}
           </button>
@@ -148,7 +148,7 @@ export default function TradingJournal() {
       {/* Filters */}
       <div className="flex items-center gap-2 mb-4 flex-wrap">
         <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="bg-[#12121a] border border-white/10 rounded px-2 py-1 text-[10px] text-white" />
-        <span className="text-gray-500 text-[10px]">至</span>
+        <span className="text-gray-500 text-[10px]">{i18n.t('TradingJournal.k3')}</span>
         <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="bg-[#12121a] border border-white/10 rounded px-2 py-1 text-[10px] text-white" />
         <div className="flex items-center gap-1">
           {(['all', 'win', 'loss', 'pending'] as const).map((f) => (
@@ -158,7 +158,7 @@ export default function TradingJournal() {
           ))}
         </div>
         <select value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)} className="bg-[#12121a] border border-white/10 rounded px-2 py-1 text-[10px] text-white">
-          <option value="all">全部标签</option>
+          <option value="all">{i18n.t('TradingJournal.k4')}</option>
           {ALL_TAGS.map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
       </div>
@@ -195,7 +195,7 @@ export default function TradingJournal() {
                     <div className="text-right flex-shrink-0 ml-3">
                       {entry.outcome && <div className={`text-xs font-mono font-medium ${entry.outcome === 'win' ? 'text-emerald-400' : entry.outcome === 'loss' ? 'text-red-400' : 'text-yellow-400'}`}>{entry.outcome === 'win' ? i18n.t('TradingJournal.k35') : entry.outcome === 'loss' ? i18n.t('TradingJournal.k36') : i18n.t('TradingJournal.k37')}</div>}
                       {entry.pnl !== undefined && <div className={`text-xs font-mono ${entry.pnl >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>{entry.pnl >= 0 ? '+' : ''}${entry.pnl.toFixed(0)}</div>}
-                      <button onClick={() => deleteEntry(entry.id)} className="text-[10px] text-gray-600 hover:text-red-400 mt-1">删除</button>
+                      <button onClick={() => deleteEntry(entry.id)} className="text-[10px] text-gray-600 hover:text-red-400 mt-1">{i18n.t('TradingJournal.k5')}</button>
                     </div>
                   </div>
                 </div>
@@ -296,14 +296,14 @@ function JournalForm({ onSubmit, onCancel }: {
   return (
     <form onSubmit={handleSubmit} className="bg-[#12121a] rounded-lg p-4 border border-white/5 mb-4 space-y-3">
       <div className="grid grid-cols-4 gap-2">
-        <input value={symbol} onChange={(e) => setSymbol(e.target.value)} placeholder="代码" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" required />
+        <input value={symbol} onChange={(e) => setSymbol(e.target.value)} placeholder={i18n.t('TradingJournal.k6')} className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" required />
         <select value={action} onChange={(e) => setAction(e.target.value as any)} className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white">
-          <option value="BUY">买入</option><option value="SELL">卖出</option><option value="HOLD">持有</option><option value="WATCH">观望</option>
+          <option value="BUY">{i18n.t('TradingJournal.k7')}</option><option value="SELL">{i18n.t('TradingJournal.k8')}</option><option value="HOLD">{i18n.t('TradingJournal.k9')}</option><option value="WATCH">{i18n.t('TradingJournal.k10')}</option>
         </select>
-        <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="价格" type="number" step="0.01" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" required />
-        <input value={qty} onChange={(e) => setQty(e.target.value)} placeholder="数量" type="number" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" />
+        <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder={i18n.t('TradingJournal.k11')} type="number" step="0.01" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" required />
+        <input value={qty} onChange={(e) => setQty(e.target.value)} placeholder={i18n.t('TradingJournal.k12')} type="number" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" />
       </div>
-      <textarea value={reasoning} onChange={(e) => setReasoning(e.target.value)} placeholder="交易理由..." rows={2} className="w-full bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" required />
+      <textarea value={reasoning} onChange={(e) => setReasoning(e.target.value)} placeholder={i18n.t('TradingJournal.k13')} rows={2} className="w-full bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" required />
       <div className="grid grid-cols-3 gap-2">
         <select value={emotion} onChange={(e) => setEmotion(e.target.value as any)} className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white">
           <option value="calm">😌 平静</option><option value="confident">😎 自信</option><option value="greedy">🤤 贪婪</option><option value="fearful">😰 恐惧</option><option value="impatient">😤 急躁</option>
@@ -311,7 +311,7 @@ function JournalForm({ onSubmit, onCancel }: {
         <select value={outcome} onChange={(e) => setOutcome(e.target.value as any)} className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white">
           <option value="pending">⏳ 待定</option><option value="win">✓ 盈利</option><option value="loss">✗ 亏损</option>
         </select>
-        <input value={pnl} onChange={(e) => setPnl(e.target.value)} placeholder="盈亏 $" type="number" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" />
+        <input value={pnl} onChange={(e) => setPnl(e.target.value)} placeholder={i18n.t('TradingJournal.k14')} type="number" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" />
       </div>
       {/* Tags */}
       <div className="flex flex-wrap gap-1">
@@ -321,10 +321,10 @@ function JournalForm({ onSubmit, onCancel }: {
           </button>
         ))}
       </div>
-      <textarea value={lessons} onChange={(e) => setLessons(e.target.value)} placeholder="反思与教训 (可选)..." rows={2} className="w-full bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" />
+      <textarea value={lessons} onChange={(e) => setLessons(e.target.value)} placeholder={i18n.t('TradingJournal.k15')} rows={2} className="w-full bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" />
       <div className="flex gap-2">
-        <button type="submit" className="flex-1 px-3 py-1.5 bg-[#C9A046] text-black text-xs font-medium rounded hover:bg-[#D4A853] transition-colors">保存</button>
-        <button type="button" onClick={onCancel} className="px-3 py-1.5 text-gray-400 text-xs hover:text-gray-200 transition-colors">取消</button>
+        <button type="submit" className="flex-1 px-3 py-1.5 bg-[#C9A046] text-black text-xs font-medium rounded hover:bg-[#D4A853] transition-colors">{i18n.t('TradingJournal.k16')}</button>
+        <button type="button" onClick={onCancel} className="px-3 py-1.5 text-gray-400 text-xs hover:text-gray-200 transition-colors">{i18n.t('TradingJournal.k17')}</button>
       </div>
     </form>
   );

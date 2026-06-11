@@ -127,7 +127,7 @@ export default function AIAdvisorPage() {
               <span className={`text-xs font-bold px-2 py-1 rounded flex-shrink-0 ${
                 s.action === 'components.increaseHolding' ? 'bg-red-500/20 text-red-400' :
                 s.action === 'components.decreaseHolding' ? 'bg-emerald-500/20 text-emerald-400' :
-                s.action === '卖出' ? 'bg-emerald-500/20 text-emerald-400' :
+                s.action === i18n.t('AIAdvisorPage.k0') ? 'bg-emerald-500/20 text-emerald-400' :
                 'bg-yellow-500/20 text-yellow-400'
               }`}>
                 {s.action}

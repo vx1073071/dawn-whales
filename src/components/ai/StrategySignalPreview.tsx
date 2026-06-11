@@ -134,7 +134,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
           </div>
 
           <div style={styles.signalMain}>
-            <span style={styles.label}>置信度</span>
+            <span style={styles.label}>{i18n.t('StrategySignalPreview.k0')}</span>
             {editing ? (
               <div style={styles.confidenceSlider}>
                 <input

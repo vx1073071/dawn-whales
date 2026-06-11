@@ -13,6 +13,8 @@
 import { EventEmitter } from 'events';
 import { getCircuitBreaker } from '../risk/circuit-breaker';
 import { getRateLimiterManager } from '../core/rate-limiter';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

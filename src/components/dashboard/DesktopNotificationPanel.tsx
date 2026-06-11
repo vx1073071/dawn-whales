@@ -196,7 +196,7 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
         <div className="bg-amber-500/5 border border-amber-500/20 rounded-lg p-4 mb-5">
           <div className="flex items-start justify-between">
             <div>
-              <div className="text-amber-400 font-bold text-sm">开启桌面通知</div>
+              <div className="text-amber-400 font-bold text-sm">{i18n.t('DesktopNotificationPanel.k0')}</div>
               <p className="text-xs text-gray-500 mt-1">
                 策略信号、止损触发、风控告警将以桌面弹窗形式通知你。
               </p>
@@ -256,8 +256,8 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
           通知历史 ({history.length})
         </h4>
         <div className="flex gap-2">
-          <button onClick={markAllRead} className="text-[10px] text-gray-500 hover:text-gray-300">全部已读</button>
-          <button onClick={clearHistory} className="text-[10px] text-gray-600 hover:text-red-400">清空</button>
+          <button onClick={markAllRead} className="text-[10px] text-gray-500 hover:text-gray-300">{i18n.t('DesktopNotificationPanel.k1')}</button>
+          <button onClick={clearHistory} className="text-[10px] text-gray-600 hover:text-red-400">{i18n.t('DesktopNotificationPanel.k2')}</button>
         </div>
       </div>
 

@@ -60,7 +60,7 @@ export default function MarketBreadth({
       {/* A/D Ratio */}
       <div className="mb-4">
         <div className="flex items-center justify-between text-[10px] mb-1.5">
-          <span className="text-gray-500">涨跌比 {advanceDeclineRatio.toFixed(2)}</span>
+          <span className="text-gray-500">{i18n.t('MarketBreadth.k0')}{advanceDeclineRatio.toFixed(2)}</span>
           <span className="text-gray-500">{breadth.toFixed(1)}% 上涨</span>
         </div>
         <div className="w-full h-3 bg-[#12121a] rounded-full overflow-hidden flex">
@@ -87,19 +87,19 @@ export default function MarketBreadth({
       {/* Stats Grid */}
       <div className="grid grid-cols-4 gap-2">
         <div className="bg-[#12121a] rounded-lg p-2 text-center">
-          <div className="text-[10px] text-gray-500">创新高</div>
+          <div className="text-[10px] text-gray-500">{i18n.t('MarketBreadth.k0')}</div>
           <div className="text-emerald-400 text-sm font-mono font-bold">{data.newHighs}</div>
         </div>
         <div className="bg-[#12121a] rounded-lg p-2 text-center">
-          <div className="text-[10px] text-gray-500">创新低</div>
+          <div className="text-[10px] text-gray-500">{i18n.t('MarketBreadth.k1')}</div>
           <div className="text-red-400 text-sm font-mono font-bold">{data.newLows}</div>
         </div>
         <div className="bg-[#12121a] rounded-lg p-2 text-center">
-          <div className="text-[10px] text-gray-500">升量</div>
+          <div className="text-[10px] text-gray-500">{i18n.t('MarketBreadth.k2')}</div>
           <div className="text-emerald-400 text-sm font-mono font-bold">{(data.upVolume / 1e9).toFixed(1)}B</div>
         </div>
         <div className="bg-[#12121a] rounded-lg p-2 text-center">
-          <div className="text-[10px] text-gray-500">跌量</div>
+          <div className="text-[10px] text-gray-500">{i18n.t('MarketBreadth.k3')}</div>
           <div className="text-red-400 text-sm font-mono font-bold">{(data.downVolume / 1e9).toFixed(1)}B</div>
         </div>
       </div>
@@ -107,7 +107,7 @@ export default function MarketBreadth({
       {/* Volume Ratio */}
       <div className="mt-3 pt-3 border-t border-white/5">
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-gray-500">量价配合</span>
+          <span className="text-gray-500">{i18n.t('MarketBreadth.k4')}</span>
           <span className={volumeRatio >= 1 ? 'text-emerald-400' : 'text-red-400'}>
             {volumeRatio >= 1 ? i18n.t('MarketBreadth.k7') : i18n.t('MarketBreadth.k8')}
           </span>

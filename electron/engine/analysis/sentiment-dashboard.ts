@@ -2,6 +2,8 @@
 // Aggregates JVS-33 stream data + alerts + trend analysis for WB W53
 
 import { getRealtimeSentimentStream } from './sentiment-stream';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

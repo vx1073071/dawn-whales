@@ -66,7 +66,7 @@ export default function DemoCasePage() {
             <div className="p-5 border-b border-white/5">
               <h3 className="text-lg font-bold">{c.title}</h3>
               <p className="text-xs text-gray-500">{c.subtitle} · {c.period}</p>
-              <p className="text-[10px] text-gray-600 mt-1">策略: {c.strategy}</p>
+              <p className="text-[10px] text-gray-600 mt-1">{i18n.t('DemoCasePage.k0')}{c.strategy}</p>
             </div>
 
             {/* Before/After metrics */}

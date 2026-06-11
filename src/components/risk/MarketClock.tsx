@@ -78,8 +78,8 @@ function getMinutesUntil(currentDay: number, targetDay: number, targetMinutes: n
 function formatCountdown(minutes: number): string {
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
-  if (h > 0) return `${h}小时${m}分`;
-  return `${m}分钟`;
+  if (h > 0) return `${h}${i18n.t('MarketClock.k0')}${m}${i18n.t('MarketClock.k1')}`;
+  return `${m}${i18n.t('MarketClock.k2')}`;
 }
 
 export default function MarketClock() {

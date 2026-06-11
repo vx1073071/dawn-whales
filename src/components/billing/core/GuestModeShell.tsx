@@ -100,7 +100,7 @@ function UpgradeNudge({ feature, onUpgrade }: { feature: string; onUpgrade?: () 
     }}>
       <div>
         <div style={{ fontSize: 13, fontWeight: 600, color: '#60a5fa' }}>🔒 {feature}</div>
-        <div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>注册后解锁全部功能 · Unlock after registration</div>
+        <div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>{i18n.t('GuestModeShell.k0')}</div>
       </div>
       <button onClick={onUpgrade}
         style={{ padding: '6px 16px', fontSize: 12, fontWeight: 700, background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', whiteSpace: 'nowrap' }}>

@@ -108,7 +108,7 @@ export default function MarginDashboard() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">💳 融资融券</h1>
-          <p className="text-gray-400 text-sm">市场两融余额 · 个股排行</p>
+          <p className="text-gray-400 text-sm">{i18n.t('MarginDashboard.k0')}</p>
         </div>
         <button
           onClick={fetchData}
@@ -123,25 +123,25 @@ export default function MarginDashboard() {
       {latest && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">融资余额</div>
+            <div className="text-xs text-gray-500 mb-1">{i18n.t('MarginDashboard.k1')}</div>
             <div className="text-xl font-bold text-white">{(latest.marginBalance / 1e8).toFixed(0)}亿</div>
             <div className={`text-xs mt-1 ${latest.marginChange >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
               {latest.marginChange >= 0 ? '+' : ''}{(latest.marginChange / 1e8).toFixed(1)}亿
             </div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">融券余额</div>
+            <div className="text-xs text-gray-500 mb-1">{i18n.t('MarginDashboard.k2')}</div>
             <div className="text-xl font-bold text-white">{(latest.shortBalance / 1e8).toFixed(0)}亿</div>
             <div className={`text-xs mt-1 ${latest.shortChange >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
               {latest.shortChange >= 0 ? '+' : ''}{(latest.shortChange / 1e8).toFixed(1)}亿
             </div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">两融合计</div>
+            <div className="text-xs text-gray-500 mb-1">{i18n.t('MarginDashboard.k3')}</div>
             <div className="text-xl font-bold text-white">{((latest.marginBalance + latest.shortBalance) / 1e8).toFixed(0)}亿</div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">数据日期</div>
+            <div className="text-xs text-gray-500 mb-1">{i18n.t('MarginDashboard.k4')}</div>
             <div className="text-xl font-bold text-white">{latest.date}</div>
           </div>
         </div>
@@ -156,7 +156,7 @@ export default function MarginDashboard() {
 
       {/* Balance Chart */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-        <h2 className="text-sm font-medium text-white mb-3">两融余额走势</h2>
+        <h2 className="text-sm font-medium text-white mb-3">{i18n.t('MarginDashboard.k5')}</h2>
         <div ref={balanceChartRef} style={{ height: 300 }} />
       </div>
 

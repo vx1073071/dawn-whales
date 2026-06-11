@@ -98,13 +98,13 @@ export default function NewsDashboardPage() {
       {mood && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">市场情绪</div>
+            <div className="text-xs text-gray-500 mb-1">{i18n.t('NewsDashboardPage.k0')}</div>
             <div className={`text-lg font-bold ${(mood as any).overall === 'positive' ? 'text-red-400' : (mood as any).overall === 'negative' ? 'text-emerald-400' : 'text-gray-300'}`}>
               {(mood as any).overall === 'positive' ? i18n.t('NewsDashboardPage.k7') : (mood as any).overall === 'negative' ? i18n.t('NewsDashboardPage.k8') : i18n.t('NewsDashboardPage.k9')}
             </div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">情绪得分</div>
+            <div className="text-xs text-gray-500 mb-1">{i18n.t('NewsDashboardPage.k1')}</div>
             <div className="text-lg font-bold text-white">{(mood as any).score?.toFixed(1) ?? '-'}/100</div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
@@ -112,7 +112,7 @@ export default function NewsDashboardPage() {
             <div className="text-lg font-bold text-white">{(mood as any).articleCount ?? articles.length}</div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">主导话题</div>
+            <div className="text-xs text-gray-500 mb-1">{i18n.t('NewsDashboardPage.k2')}</div>
             <div className="text-sm font-medium text-[#C9A046] truncate">{(mood as any).topTopic || '-'}</div>
           </div>
         </div>
@@ -121,7 +121,7 @@ export default function NewsDashboardPage() {
       {/* Sentiment Distribution */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-medium text-white">情绪分布</span>
+          <span className="text-sm font-medium text-white">{i18n.t('NewsDashboardPage.k3')}</span>
           <div className="flex gap-2">
             {(['all', 'positive', 'negative', 'neutral'] as const).map((f) => (
               <button
@@ -146,9 +146,9 @@ export default function NewsDashboardPage() {
           <div className="bg-emerald-500/60" style={{ width: `${(sentimentCounts.negative / total) * 100}%` }} />
         </div>
         <div className="flex justify-between mt-2 text-xs text-gray-500">
-          <span className="text-red-400">正面 {sentimentCounts.positive}</span>
-          <span className="text-gray-400">中性 {sentimentCounts.neutral}</span>
-          <span className="text-emerald-400">负面 {sentimentCounts.negative}</span>
+          <span className="text-red-400">{i18n.t('NewsDashboardPage.k0')}{sentimentCounts.positive}</span>
+          <span className="text-gray-400">{i18n.t('NewsDashboardPage.k1')}{sentimentCounts.neutral}</span>
+          <span className="text-emerald-400">{i18n.t('NewsDashboardPage.k2')}{sentimentCounts.negative}</span>
         </div>
       </div>
 
@@ -159,7 +159,7 @@ export default function NewsDashboardPage() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && fetchNews()}
-          placeholder="搜索新闻关键词..."
+          placeholder={i18n.t('NewsDashboardPage.k4')}
           className="flex-1 bg-[#1a1a25] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C9A046]/50"
         />
         <button
@@ -220,7 +220,7 @@ export default function NewsDashboardPage() {
       {!loading && filtered.length === 0 && (
         <div className="flex flex-col items-center justify-center py-20 text-gray-500">
           <div className="text-4xl mb-3">📰</div>
-          <p className="text-sm">暂无新闻</p>
+          <p className="text-sm">{i18n.t('NewsDashboardPage.k5')}</p>
         </div>
       )}
     </div>

@@ -494,7 +494,7 @@ export default function TradingCalendarView() {
 
               <div className="text-xs text-gray-500 mb-1">
 
-                {countdown.isTrading ? i18n.t('TradingCalendarView.k6') : `距${countdown.session === 'pre-market' ? '盘前' : countdown.session === 'regular' ? '盘中' : '盘后'}开盘`}
+                {countdown.isTrading ? i18n.t('TradingCalendarView.k6') : `距${countdown.session === 'pre-market' ? i18n.t('TradingCalendarView.k0') : countdown.session === 'regular' ? i18n.t('TradingCalendarView.k1') : i18n.t('TradingCalendarView.k2')}开盘`}
 
               </div>
 
@@ -576,7 +576,7 @@ export default function TradingCalendarView() {
 
                     </span>
 
-                    {isHoliday && <span className="text-red-400" title={holidayName}>休</span>}
+                    {isHoliday && <span className="text-red-400" title={holidayName}>{i18n.t('TradingCalendarView.k3')}</span>}
 
                   </div>
 
@@ -614,7 +614,7 @@ export default function TradingCalendarView() {
 
                   {isWeekendDay && (
 
-                    <div className="text-[9px] text-gray-600 mt-2">休市</div>
+                    <div className="text-[9px] text-gray-600 mt-2">{i18n.t('TradingCalendarView.k4')}</div>
 
                   )}
 
@@ -648,23 +648,23 @@ export default function TradingCalendarView() {
 
           <div className="w-3 h-3 rounded bg-emerald-500/40" />
 
-          <span>交易时段</span>
+          <span>{i18n.t('TradingCalendarView.k5')}</span>
 
         </div>
 
         <div className="flex items-center gap-1.5">
 
-          <span className="text-red-400">休</span>
+          <span className="text-red-400">{i18n.t('TradingCalendarView.k6')}</span>
 
-          <span>假日</span>
+          <span>{i18n.t('TradingCalendarView.k7')}</span>
 
         </div>
 
         <div className="flex items-center gap-1.5">
 
-          <span className="text-gray-600">休市</span>
+          <span className="text-gray-600">{i18n.t('TradingCalendarView.k8')}</span>
 
-          <span>周末</span>
+          <span>{i18n.t('TradingCalendarView.k9')}</span>
 
         </div>
 

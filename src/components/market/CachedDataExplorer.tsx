@@ -116,15 +116,15 @@ export default function CachedDataExplorer() {
       {/* Summary */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">总条目数</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('CachedDataExplorer.k0')}</div>
           <div className="text-xl font-bold font-mono text-white">{totalEntries.toLocaleString()}</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">平均命中率</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('CachedDataExplorer.k1')}</div>
           <div className="text-xl font-bold font-mono text-[#D4A853]">{avgHitRate.toFixed(1)}%</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">内存占用</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t('CachedDataExplorer.k2')}</div>
           <div className="text-xl font-bold font-mono text-white">{totalMemory.toFixed(1)} MB</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
@@ -170,13 +170,13 @@ export default function CachedDataExplorer() {
       {/* Entries Table */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-white">缓存条目</h2>
+          <h2 className="text-sm font-semibold text-white">{i18n.t('CachedDataExplorer.k3')}</h2>
           <select
             value={selectedNs}
             onChange={(e) => setSelectedNs(e.target.value)}
             className="bg-deep border border-white/10 rounded-lg px-3 py-1 text-xs text-white focus:outline-none focus:border-[#C9A046]"
           >
-            <option value="all">全部 Namespace</option>
+            <option value="all">{i18n.t('CachedDataExplorer.k4')}</option>
             {namespaces.map((ns) => (
               <option key={ns.name} value={ns.name}>{ns.name}</option>
             ))}
@@ -188,11 +188,11 @@ export default function CachedDataExplorer() {
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                 <th className="px-4 py-3 text-left">Key</th>
                 <th className="px-4 py-3 text-left">Namespace</th>
-                <th className="px-4 py-3 text-right">大小</th>
-                <th className="px-4 py-3 text-right">命中次数</th>
+                <th className="px-4 py-3 text-right">{i18n.t('CachedDataExplorer.k5')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('CachedDataExplorer.k6')}</th>
                 <th className="px-4 py-3 text-right">TTL</th>
-                <th className="px-4 py-3 text-right">创建时间</th>
-                <th className="px-4 py-3 text-right">过期时间</th>
+                <th className="px-4 py-3 text-right">{i18n.t('CachedDataExplorer.k7')}</th>
+                <th className="px-4 py-3 text-right">{i18n.t('CachedDataExplorer.k8')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -211,7 +211,7 @@ export default function CachedDataExplorer() {
           </table>
         </div>
         {filteredEntries.length === 0 && (
-          <div className="text-gray-500 text-sm text-center py-8">无缓存条目</div>
+          <div className="text-gray-500 text-sm text-center py-8">{i18n.t('CachedDataExplorer.k9')}</div>
         )}
       </div>
 

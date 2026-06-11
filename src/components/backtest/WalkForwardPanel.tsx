@@ -82,7 +82,7 @@ const OverfitIndicator: React.FC<{ ratio: number }> = ({ ratio }) => {
   return (
     <span className={`inline-flex items-center gap-1 text-[10px]`}>
       <span className={`w-2 h-2 rounded-full ${color}`} />
-      <span className="text-gray-500">{label}过拟合 ({(ratio * 100).toFixed(0)}%)</span>
+      <span className="text-gray-500">{label}{i18n.t('WalkForwardPanel.k0')}{(ratio * 100).toFixed(0)}%)</span>
     </span>
   );
 };
@@ -248,19 +248,19 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
             <div>
-              <div className="text-[10px] text-gray-500">训练区间</div>
+              <div className="text-[10px] text-gray-500">{i18n.t('WalkForwardPanel.k0')}</div>
               <div className="text-xs text-gray-300">{selectedW.trainStart} → {selectedW.trainEnd}</div>
             </div>
             <div>
-              <div className="text-[10px] text-gray-500">测试区间</div>
+              <div className="text-[10px] text-gray-500">{i18n.t('WalkForwardPanel.k1')}</div>
               <div className="text-xs text-gray-300">{selectedW.testStart} → {selectedW.testEnd}</div>
             </div>
             <div>
-              <div className="text-[10px] text-gray-500">训练收益</div>
+              <div className="text-[10px] text-gray-500">{i18n.t('WalkForwardPanel.k2')}</div>
               <div className="text-xs text-blue-400 font-bold">{(selectedW.trainReturn * 100).toFixed(1)}%</div>
             </div>
             <div>
-              <div className="text-[10px] text-gray-500">测试收益</div>
+              <div className="text-[10px] text-gray-500">{i18n.t('WalkForwardPanel.k3')}</div>
               <div className={`text-xs font-bold ${selectedW.testReturn >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
                 {(selectedW.testReturn * 100).toFixed(1)}%
               </div>
@@ -295,12 +295,12 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
         <table className="w-full text-xs">
           <thead>
             <tr className="text-gray-500 border-b border-gray-700/50">
-              <th className="text-left py-2 pr-3">窗口</th>
-              <th className="text-left py-2 pr-3">训练Sharpe</th>
-              <th className="text-left py-2 pr-3">测试Sharpe</th>
-              <th className="text-left py-2 pr-3">测试收益</th>
-              <th className="text-left py-2 pr-3">测试回撤</th>
-              <th className="text-left py-2">过拟合</th>
+              <th className="text-left py-2 pr-3">{i18n.t('WalkForwardPanel.k4')}</th>
+              <th className="text-left py-2 pr-3">{i18n.t('WalkForwardPanel.k5')}</th>
+              <th className="text-left py-2 pr-3">{i18n.t('WalkForwardPanel.k6')}</th>
+              <th className="text-left py-2 pr-3">{i18n.t('WalkForwardPanel.k7')}</th>
+              <th className="text-left py-2 pr-3">{i18n.t('WalkForwardPanel.k8')}</th>
+              <th className="text-left py-2">{i18n.t('WalkForwardPanel.k9')}</th>
             </tr>
           </thead>
           <tbody>

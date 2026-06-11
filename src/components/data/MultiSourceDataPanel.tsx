@@ -167,7 +167,7 @@ export const MultiSourceDataPanel: React.FC<MultiSourceDataPanelProps> = ({ clas
                       }[src.health]}`}>
                         {HEALTH_LABELS[src.health]}
                       </span>
-                      <span className="text-[10px] text-gray-600">优先级 P{src.priority}</span>
+                      <span className="text-[10px] text-gray-600">{i18n.t('MultiSourceDataPanel.k0')}{src.priority}</span>
                     </div>
                     <div className="text-[10px] text-gray-600 mt-0.5">
                       {src.lastUpdateMs < 3000 ? i18n.t('MultiSourceDataPanel.k13') : src.lastUpdateMs < 6000 ? i18n.t('MultiSourceDataPanel.k14') : i18n.t('MultiSourceDataPanel.k15')}
@@ -183,7 +183,7 @@ export const MultiSourceDataPanel: React.FC<MultiSourceDataPanelProps> = ({ clas
               {/* Latency bar */}
               <div className="mb-2">
                 <div className="flex justify-between text-[10px] text-gray-500 mb-1">
-                  <span>延迟</span>
+                  <span>{i18n.t('MultiSourceDataPanel.k0')}</span>
                   <span>{src.latencyMs}ms</span>
                 </div>
                 <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
@@ -197,7 +197,7 @@ export const MultiSourceDataPanel: React.FC<MultiSourceDataPanelProps> = ({ clas
               {/* Coverage bar */}
               <div>
                 <div className="flex justify-between text-[10px] text-gray-500 mb-1">
-                  <span>覆盖率</span>
+                  <span>{i18n.t('MultiSourceDataPanel.k1')}</span>
                   <span>{(src.coverageRate * 100).toFixed(0)}%</span>
                 </div>
                 <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
@@ -220,7 +220,7 @@ export const MultiSourceDataPanel: React.FC<MultiSourceDataPanelProps> = ({ clas
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-sm font-bold text-white">{quote.symbol}</h4>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-500">共识价</span>
+                  <span className="text-xs text-gray-500">{i18n.t('MultiSourceDataPanel.k2')}</span>
                   <span className="text-sm font-mono text-amber-400">¥{quote.consensusPrice.toFixed(2)}</span>
                   <span className={`text-[10px] px-1.5 py-0.5 rounded ${
                     quote.spreadPercent < 0.1 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'
@@ -233,11 +233,11 @@ export const MultiSourceDataPanel: React.FC<MultiSourceDataPanelProps> = ({ clas
               <table className="w-full text-xs">
                 <thead>
                   <tr className="text-gray-500 border-b border-gray-700/50">
-                    <th className="text-left py-1.5 pr-3">数据源</th>
+                    <th className="text-left py-1.5 pr-3">{i18n.t('MultiSourceDataPanel.k3')}</th>
                     <th className="text-right py-1.5 pr-3">{t("components.price")}</th>
                     <th className="text-right py-1.5 pr-3">{t("components.volume")}</th>
-                    <th className="text-right py-1.5 pr-3">偏离</th>
-                    <th className="text-right py-1.5">延迟</th>
+                    <th className="text-right py-1.5 pr-3">{i18n.t('MultiSourceDataPanel.k4')}</th>
+                    <th className="text-right py-1.5">{i18n.t('MultiSourceDataPanel.k5')}</th>
                   </tr>
                 </thead>
                 <tbody>

@@ -123,7 +123,7 @@ export default function AdminDashboardV2({
       <div className="p-5 border-b border-white/5">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold">管理后台</h2>
+            <h2 className="text-xl font-bold">{i18n.t('AdminDashboardV2.k0')}</h2>
             <p className="text-gray-500 text-xs mt-0.5">v1.7.0 GA · 系统健康 · 审计日志</p>
           </div>
           <div className="flex bg-white/[0.04] rounded-lg p-0.5">
@@ -157,7 +157,7 @@ export default function AdminDashboardV2({
             </div>
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-3 text-center">
-            <div className="text-[10px] text-gray-600">在线用户</div>
+            <div className="text-[10px] text-gray-600">{i18n.t('AdminDashboardV2.k1')}</div>
             <div className="text-lg font-bold text-gray-200">{health.activeSessions}</div>
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-3 text-center">
@@ -167,7 +167,7 @@ export default function AdminDashboardV2({
             </div>
           </div>
           <div className="bg-[#111119] border border-white/5 rounded-xl p-3 text-center">
-            <div className="text-[10px] text-gray-600">运行时间</div>
+            <div className="text-[10px] text-gray-600">{i18n.t('AdminDashboardV2.k2')}</div>
             <div className="text-lg font-bold text-gray-200">{Math.floor(health.uptimeHours / 24)}d {health.uptimeHours % 24}h</div>
           </div>
         </div>
@@ -229,7 +229,7 @@ export default function AdminDashboardV2({
           <div className="bg-[#111119] border border-white/5 rounded-xl overflow-hidden">
             <div className="px-5 py-3 border-b border-white/5 flex items-center justify-between">
               <h3 className="text-gray-300 font-semibold text-sm">📋 审计日志</h3>
-              <span className="text-[10px] text-gray-600">最近 {auditLog.length} 条</span>
+              <span className="text-[10px] text-gray-600">{i18n.t('AdminDashboardV2.k0')}{auditLog.length} 条</span>
             </div>
             <div className="divide-y divide-white/5 max-h-96 overflow-y-auto">
               {auditLog.map(e => (

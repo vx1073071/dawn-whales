@@ -72,7 +72,7 @@ export function ErrorState({ error, onRetry }: { error?: string; onRetry?: () =>
     >
       <div style={{ textAlign: 'center', maxWidth: 380 }}>
         <div style={{ fontSize: 40, marginBottom: 12, opacity: 0.7 }}>⚠️</div>
-        <div style={{ fontSize: 16, fontWeight: 600, color: PRIVATE_BANKING.colors.warning, marginBottom: 8 }}>出了点问题</div>
+        <div style={{ fontSize: 16, fontWeight: 600, color: PRIVATE_BANKING.colors.warning, marginBottom: 8 }}>{i18n.t('UIPolishKit.k0')}</div>
         <div style={{
           fontSize: 13, color: PRIVATE_BANKING.colors.textMuted, lineHeight: 1.6, marginBottom: 18,
           padding: '10px 14px', borderRadius: PRIVATE_BANKING.radius.md, background: PRIVATE_BANKING.colors.surface,
@@ -95,7 +95,7 @@ export function ErrorState({ error, onRetry }: { error?: string; onRetry?: () =>
           </button>
         )}
         <div style={{ marginTop: 14, fontSize: 11, color: PRIVATE_BANKING.colors.textMuted }}>
-          或 <span style={{ color: PRIVATE_BANKING.colors.accent, cursor: 'pointer', textDecoration: 'underline' }} tabIndex={0} role="button" aria-label={i18n.t('UIPolishKit.k2')}>联系支持</span>
+          或 <span style={{ color: PRIVATE_BANKING.colors.accent, cursor: 'pointer', textDecoration: 'underline' }} tabIndex={0} role="button" aria-label={i18n.t('UIPolishKit.k2')}>{i18n.t('UIPolishKit.k1')}</span>
         </div>
       </div>
     </div>
@@ -118,7 +118,7 @@ export function OfflineBanner() {
       role="alert"
     >
       <span>🔌</span>
-      <span>网络连接已断开 — 数据显示可能不是最新的</span>
+      <span>{i18n.t('UIPolishKit.k2')}</span>
       <button
         onClick={() => setDismissed(true)}
         style={{

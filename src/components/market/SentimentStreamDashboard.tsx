@@ -184,14 +184,14 @@ export default function SentimentStreamDashboard() {
         </div>
         <div className="space-y-3">
           <div className={`border rounded-xl p-4 ${signalConfig.bg}`}>
-            <div className="text-xs text-gray-500 mb-1">当前信号</div>
+            <div className="text-xs text-gray-500 mb-1">{i18n.t('SentimentStreamDashboard.k0')}</div>
             <div className="flex items-center gap-2">
               <span className="text-2xl">{signalConfig.icon}</span>
               <span className={`text-xl font-bold ${signalConfig.color}`}>{signalConfig.label}</span>
             </div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">置信度</div>
+            <div className="text-xs text-gray-500 mb-1">{i18n.t('SentimentStreamDashboard.k1')}</div>
             <div className="text-xl font-bold font-mono text-white">{data.confidence}%</div>
             <div className="w-full bg-white/5 rounded-full h-1.5 mt-2">
               <div className="bg-[#C9A046] h-1.5 rounded-full" style={{ width: `${data.confidence}%` }} />
@@ -215,7 +215,7 @@ export default function SentimentStreamDashboard() {
             <div className={`text-xl font-bold font-mono ${c.score >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
               {c.score >= 0 ? '+' : ''}{c.score}
             </div>
-            <div className="text-[10px] text-gray-500 mt-1">权重 {c.weight * 100}%</div>
+            <div className="text-[10px] text-gray-500 mt-1">{i18n.t('SentimentStreamDashboard.k0')}{c.weight * 100}%</div>
             <div className="w-full bg-white/5 rounded-full h-1 mt-2">
               <div
                 className="h-1 rounded-full bg-[#C9A046]"
@@ -228,14 +228,14 @@ export default function SentimentStreamDashboard() {
 
       {/* History Chart */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-white mb-4">情绪趋势</h2>
+        <h2 className="text-sm font-semibold text-white mb-4">{i18n.t('SentimentStreamDashboard.k2')}</h2>
         <div id="sentiment-history" className="w-full h-[240px]" />
       </div>
 
       {/* Alerts */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/5">
-          <h2 className="text-sm font-semibold text-white">情绪告警</h2>
+          <h2 className="text-sm font-semibold text-white">{i18n.t('SentimentStreamDashboard.k3')}</h2>
         </div>
         <div className="divide-y divide-white/5">
           {data.alerts.map((a) => (

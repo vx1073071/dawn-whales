@@ -175,11 +175,11 @@ function CreateRuleForm({ onSubmit, onCancel }: {
 
   return (
     <div className="bg-[#1e1e2e] border border-white/10 rounded-xl p-5 flex flex-col gap-4">
-      <h3 className="text-white font-semibold">创建规则</h3>
+      <h3 className="text-white font-semibold">{i18n.t('ConditionRulePanel.k0')}</h3>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="text-gray-400 text-xs mb-1 block">标的代码</label>
+          <label className="text-gray-400 text-xs mb-1 block">{i18n.t('ConditionRulePanel.k1')}</label>
           <input
             value={symbol}
             onChange={e => setSymbol(e.target.value)}
@@ -188,7 +188,7 @@ function CreateRuleForm({ onSubmit, onCancel }: {
           />
         </div>
         <div>
-          <label className="text-gray-400 text-xs mb-1 block">引用字段</label>
+          <label className="text-gray-400 text-xs mb-1 block">{i18n.t('ConditionRulePanel.k2')}</label>
           <select
             value={reference}
             onChange={e => setReference(e.target.value as PriceCondition['reference'])}
@@ -202,7 +202,7 @@ function CreateRuleForm({ onSubmit, onCancel }: {
           </select>
         </div>
         <div>
-          <label className="text-gray-400 text-xs mb-1 block">操作符</label>
+          <label className="text-gray-400 text-xs mb-1 block">{i18n.t('ConditionRulePanel.k3')}</label>
           <select
             value={operator}
             onChange={e => setOperator(e.target.value as PriceCondition['operator'])}
@@ -215,7 +215,7 @@ function CreateRuleForm({ onSubmit, onCancel }: {
           </select>
         </div>
         <div>
-          <label className="text-gray-400 text-xs mb-1 block">目标价格</label>
+          <label className="text-gray-400 text-xs mb-1 block">{i18n.t('ConditionRulePanel.k4')}</label>
           <input
             value={targetPrice}
             onChange={e => setTargetPrice(e.target.value)}
@@ -234,7 +234,7 @@ function CreateRuleForm({ onSubmit, onCancel }: {
           />
         </div>
         <div>
-          <label className="text-gray-400 text-xs mb-1 block">每日最大触发</label>
+          <label className="text-gray-400 text-xs mb-1 block">{i18n.t('ConditionRulePanel.k5')}</label>
           <input
             value={maxTriggers}
             onChange={e => setMaxTriggers(e.target.value)}
@@ -323,8 +323,8 @@ export default function ConditionRulePanel({ onBack }: Props) {
               className="bg-[#1a1a25] border border-white/10 rounded px-3 py-1.5 text-sm text-gray-300 focus:border-[#C9A046] focus:outline-none"
             >
               <option value="all">{"components.all"}</option>
-              <option value="active">仅启用</option>
-              <option value="disabled">仅禁用</option>
+              <option value="active">{i18n.t('ConditionRulePanel.k6')}</option>
+              <option value="disabled">{i18n.t('ConditionRulePanel.k7')}</option>
             </select>
             <button
               onClick={() => setShowCreate(true)}
@@ -337,10 +337,10 @@ export default function ConditionRulePanel({ onBack }: Props) {
 
         {/* Stats bar */}
         <div className="flex gap-4 mb-4 text-xs">
-          <span className="text-gray-400">规则总数 <span className="text-white font-semibold">{rules.length}</span></span>
-          <span className="text-gray-400">启用中 <span className="text-green-400 font-semibold">{rules.filter(r => r.enabled).length}</span></span>
-          <span className="text-gray-400">今日触发 <span className="text-yellow-400 font-semibold">{rules.reduce((s, r) => s + r.triggerCount, 0)}</span></span>
-          <span className="text-gray-400">触发历史 <span className="text-blue-400 font-semibold">{history.length}</span></span>
+          <span className="text-gray-400">{i18n.t('ConditionRulePanel.k8')}<span className="text-white font-semibold">{rules.length}</span></span>
+          <span className="text-gray-400">{i18n.t('ConditionRulePanel.k9')}<span className="text-green-400 font-semibold">{rules.filter(r => r.enabled).length}</span></span>
+          <span className="text-gray-400">{i18n.t('ConditionRulePanel.k10')}<span className="text-yellow-400 font-semibold">{rules.reduce((s, r) => s + r.triggerCount, 0)}</span></span>
+          <span className="text-gray-400">{i18n.t('ConditionRulePanel.k11')}<span className="text-blue-400 font-semibold">{history.length}</span></span>
         </div>
 
         {/* Create form */}
@@ -354,7 +354,7 @@ export default function ConditionRulePanel({ onBack }: Props) {
         {filteredRules.length === 0 ? (
           <div className="text-center py-16 text-gray-500">
             <div className="text-4xl mb-3">📋</div>
-            <div className="text-sm">暂无规则</div>
+            <div className="text-sm">{i18n.t('ConditionRulePanel.k12')}</div>
             <div className="text-xs mt-1">点击右上角t("components.newRule")创建第一个条件</div>
           </div>
         ) : (

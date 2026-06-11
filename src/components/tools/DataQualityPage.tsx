@@ -248,7 +248,7 @@ function generateIssues(dimensions: QualityDimension[]): QualityIssue[] {
         id: generateId(),
         dimension: dim.label,
         severity: 'critical',
-        message: `${dim.label}得分低于60，存在严重数据质量问题`,
+        message: `${dim.label}${i18n.t('DataQualityPage.k0')}`,
         affectedRows: dim.issueCount,
         suggestion: getCriticalSuggestion(dim.key),
       });
@@ -257,7 +257,7 @@ function generateIssues(dimensions: QualityDimension[]): QualityIssue[] {
         id: generateId(),
         dimension: dim.label,
         severity: 'warning',
-        message: `${dim.label}得分偏低，建议关注`,
+        message: `${dim.label}${i18n.t('DataQualityPage.k1')}`,
         affectedRows: dim.issueCount,
         suggestion: getWarningSuggestion(dim.key),
       });
@@ -266,7 +266,7 @@ function generateIssues(dimensions: QualityDimension[]): QualityIssue[] {
         id: generateId(),
         dimension: dim.label,
         severity: 'info',
-        message: `${dim.label}存在 ${dim.issueCount} 个小问题`,
+        message: `${dim.label}${i18n.t('DataQualityPage.k2')}${dim.issueCount}${i18n.t('DataQualityPage.k3')}`,
         affectedRows: dim.issueCount,
         suggestion: i18n.t('DataQualityPage.k6'),
       });
@@ -317,7 +317,7 @@ function generateRecommendations(issues: QualityIssue[], dimensions: QualityDime
     recs.push({
       id: generateId(),
       priority: 'high',
-      text: `紧急：${dim.label}维度得分仅 ${dim.score} 分，需要立即介入处理`,
+      text: `${i18n.t('DataQualityPage.k4')}${dim.label}${i18n.t('DataQualityPage.k5')}${dim.score}${i18n.t('DataQualityPage.k6')}`,
       dimension: dim.label,
     });
   });
@@ -326,7 +326,7 @@ function generateRecommendations(issues: QualityIssue[], dimensions: QualityDime
     recs.push({
       id: generateId(),
       priority: 'medium',
-      text: `关注：${dim.label}维度有提升空间，当前 ${dim.score} 分`,
+      text: `${i18n.t('DataQualityPage.k7')}${dim.label}${i18n.t('DataQualityPage.k8')}${dim.score}${i18n.t('DataQualityPage.k9')}`,
       dimension: dim.label,
     });
   });
@@ -447,7 +447,7 @@ const DimensionCard: React.FC<{ dimension: QualityDimension }> = ({ dimension })
       </div>
 
       <div className="flex items-center justify-between text-xs text-gray-400">
-        <span>权重 {dimension.weight}%</span>
+        <span>{i18n.t('DataQualityPage.k10')}{dimension.weight}%</span>
         <span>{dimension.issueCount} 个问题</span>
       </div>
     </div>

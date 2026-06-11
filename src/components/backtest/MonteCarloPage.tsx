@@ -705,13 +705,13 @@ export default function MonteCarloPage() {
               <StatCard
                 label="VaR (95%)"
                 value={`¥${fmt(results.stats.var95)}`}
-                sub={`最大亏损 95% 置信`}
+                sub={i18n.t('MonteCarloPage.k0')}
                 variant="danger"
               />
               <StatCard
                 label="CVaR (95%)"
                 value={`¥${fmt(results.stats.cvar95)}`}
-                sub={`尾部平均亏损`}
+                sub={i18n.t('MonteCarloPage.k1')}
                 variant="danger"
               />
             </div>

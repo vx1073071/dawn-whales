@@ -226,7 +226,7 @@ export default function BacktestComparisonPage() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">📊 回测对比</h1>
-          <p className="text-gray-400 text-sm">多策略回测结果对比分析</p>
+          <p className="text-gray-400 text-sm">{i18n.t('BacktestComparisonPage.k0')}</p>
         </div>
         <button
           onClick={load}
@@ -238,7 +238,7 @@ export default function BacktestComparisonPage() {
 
       {/* Strategy Selector */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-        <div className="text-xs text-gray-500 mb-3">选择要对比的策略</div>
+        <div className="text-xs text-gray-500 mb-3">{i18n.t('BacktestComparisonPage.k1')}</div>
         <div className="flex flex-wrap gap-2">
           {results.map((r) => (
             <button
@@ -260,13 +260,13 @@ export default function BacktestComparisonPage() {
       {/* Metrics Comparison Table */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/5">
-          <h2 className="text-sm font-semibold text-white">风险收益指标对比</h2>
+          <h2 className="text-sm font-semibold text-white">{i18n.t('BacktestComparisonPage.k2')}</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs">
-                <th className="px-4 py-3 text-left">指标</th>
+                <th className="px-4 py-3 text-left">{i18n.t('BacktestComparisonPage.k3')}</th>
                 {filtered.map((r) => (
                   <th key={r.strategyId} className="px-4 py-3 text-right">
                     <span className="inline-flex items-center gap-1.5">
@@ -317,7 +317,7 @@ export default function BacktestComparisonPage() {
       {/* Chart Tabs */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-semibold text-white">净值曲线对比</h2>
+          <h2 className="text-sm font-semibold text-white">{i18n.t('BacktestComparisonPage.k4')}</h2>
           <div className="flex gap-1">
             {(['equity', 'monthly'] as const).map((ct) => (
               <button

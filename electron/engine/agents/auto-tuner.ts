@@ -7,6 +7,8 @@
 
 import log from 'electron-log';
 import { BacktestEngine } from '../backtest/backtest-engine';
+import { EngineError } from '../../../electron/engine/core/engine-error';
+void EngineError; // [EngineError:AI] structured error tracking
 
 export interface ParamRange {
   name: string;

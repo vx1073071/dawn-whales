@@ -69,7 +69,7 @@ export default function CapitalFlowPage() {
       grid: { left: activeTab === 'stock' ? 100 : 80, right: 30, top: 10, bottom: 20 },
       xAxis: {
         type: 'value',
-        axisLabel: { color: '#9ca3af', formatter: (v: number) => `${(v / 1e4).toFixed(0)}万` },
+        axisLabel: { color: '#9ca3af', formatter: (v: number) => `${(v / 1e4).toFixed(0)}${i18n.t('CapitalFlowPage.k0')}` },
         splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
       },
       yAxis: {
@@ -89,7 +89,7 @@ export default function CapitalFlowPage() {
         label: {
           show: true,
           position: 'right',
-          formatter: (p: any) => `${((p as any).value / 1e4).toFixed(0)}万`,
+          formatter: (p: any) => `${((p as any).value / 1e4).toFixed(0)}${i18n.t('CapitalFlowPage.k1')}`,
           color: '#9ca3af',
           fontSize: 10,
         },
@@ -156,16 +156,16 @@ export default function CapitalFlowPage() {
 
         {/* Table */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <h2 className="text-sm font-medium text-white mb-3">详细排行</h2>
+          <h2 className="text-sm font-medium text-white mb-3">{i18n.t('CapitalFlowPage.k0')}</h2>
           <div className="overflow-y-auto max-h-[380px]">
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-gray-400 text-xs border-b border-white/5">
-                  <th className="py-2 text-left">排名</th>
+                  <th className="py-2 text-left">{i18n.t('CapitalFlowPage.k1')}</th>
                   <th className="py-2 text-left">{"components.name"}</th>
-                  <th className="py-2 text-right">主力净流入</th>
-                  <th className="py-2 text-right">超大单</th>
-                  <th className="py-2 text-right">大单</th>
+                  <th className="py-2 text-right">{i18n.t('CapitalFlowPage.k2')}</th>
+                  <th className="py-2 text-right">{i18n.t('CapitalFlowPage.k3')}</th>
+                  <th className="py-2 text-right">{i18n.t('CapitalFlowPage.k4')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">

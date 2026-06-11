@@ -75,7 +75,7 @@ export default function GreeksPanel() {
 
       <div className="grid grid-cols-3 gap-2 mb-3">
         <div>
-          <label className="text-[10px] text-gray-500 block mb-1">标的价</label>
+          <label className="text-[10px] text-gray-500 block mb-1">{i18n.t('GreeksPanel.k0')}</label>
           <input
             type="number"
             value={input.spot}
@@ -84,7 +84,7 @@ export default function GreeksPanel() {
           />
         </div>
         <div>
-          <label className="text-[10px] text-gray-500 block mb-1">行权价</label>
+          <label className="text-[10px] text-gray-500 block mb-1">{i18n.t('GreeksPanel.k1')}</label>
           <input
             type="number"
             value={input.strike}
@@ -103,7 +103,7 @@ export default function GreeksPanel() {
           />
         </div>
         <div>
-          <label className="text-[10px] text-gray-500 block mb-1">剩余天数</label>
+          <label className="text-[10px] text-gray-500 block mb-1">{i18n.t('GreeksPanel.k2')}</label>
           <input
             type="number"
             value={input.days}
@@ -112,7 +112,7 @@ export default function GreeksPanel() {
           />
         </div>
         <div>
-          <label className="text-[10px] text-gray-500 block mb-1">无风险利率</label>
+          <label className="text-[10px] text-gray-500 block mb-1">{i18n.t('GreeksPanel.k3')}</label>
           <input
             type="number"
             step="0.01"

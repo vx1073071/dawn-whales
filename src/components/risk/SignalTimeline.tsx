@@ -78,7 +78,7 @@ export default function SignalTimeline({
   if (loading) {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5 flex items-center justify-center h-64">
-        <div className="text-gray-500 text-sm">加载信号数据...</div>
+        <div className="text-gray-500 text-sm">{i18n.t('SignalTimeline.k0')}</div>
       </div>
     );
   }
@@ -112,8 +112,8 @@ export default function SignalTimeline({
       {filtered.length === 0 ? (
         <div className="text-center py-8">
           <div className="text-2xl mb-2 opacity-40">📡</div>
-          <p className="text-gray-500 text-sm">暂无信号记录</p>
-          <p className="text-gray-600 text-xs mt-1">策略运行后自动产生信号</p>
+          <p className="text-gray-500 text-sm">{i18n.t('SignalTimeline.k1')}</p>
+          <p className="text-gray-600 text-xs mt-1">{i18n.t('SignalTimeline.k2')}</p>
         </div>
       ) : (
         <div className="space-y-1 max-h-80 overflow-y-auto pr-1">
@@ -153,9 +153,9 @@ export default function SignalTimeline({
                     )}
                   </div>
                   <div className="flex items-center gap-3 text-[10px] text-gray-500 mt-0.5">
-                    <span>价格 <span className="text-gray-300 font-mono">${s.price.toFixed(2)}</span></span>
-                    <span>数量 <span className="text-gray-300 font-mono">{s.qty}</span></span>
-                    <span>金额 <span className="text-gray-300 font-mono">${(s.price * s.qty).toFixed(0)}</span></span>
+                    <span>{i18n.t('SignalTimeline.k3')}<span className="text-gray-300 font-mono">${s.price.toFixed(2)}</span></span>
+                    <span>{i18n.t('SignalTimeline.k4')}<span className="text-gray-300 font-mono">{s.qty}</span></span>
+                    <span>{i18n.t('SignalTimeline.k5')}<span className="text-gray-300 font-mono">${(s.price * s.qty).toFixed(0)}</span></span>
                     {s.reason && <span className="truncate max-w-[200px]">{s.reason}</span>}
                   </div>
                 </div>

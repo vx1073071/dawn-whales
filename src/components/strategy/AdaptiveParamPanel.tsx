@@ -164,7 +164,7 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">自适应参数优化</h2>
+          <h2 className="text-lg font-semibold text-white">{i18n.t('AdaptiveParamPanel.k0')}</h2>
           <p className="text-xs text-gray-500 mt-1">
             {strategyId} · 已迭代 {state.iterations} 次 · 置信度 {(state.confidence * 100).toFixed(0)}%
           </p>
@@ -180,14 +180,14 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
               onChange={e => setAutoLearn(e.target.checked)}
               className="rounded border-white/10 accent-[#D4A853]"
             />
-            <span className="text-xs text-gray-400">自动学习</span>
+            <span className="text-xs text-gray-400">{i18n.t('AdaptiveParamPanel.k1')}</span>
           </label>
         </div>
       </div>
 
       {/* Strategy Type Selector */}
       <div className="bg-[#12121a] border border-white/5 rounded-xl p-4">
-        <h3 className="text-sm text-gray-400 mb-3">策略类型</h3>
+        <h3 className="text-sm text-gray-400 mb-3">{i18n.t('AdaptiveParamPanel.k2')}</h3>
         <div className="flex gap-2">
           {Object.keys(STRATEGY_PARAMS).map(key => (
             <button
@@ -207,11 +207,11 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
 
       {/* Parameter Comparison: Current vs Suggested */}
       <div className="bg-[#12121a] border border-white/5 rounded-xl p-4">
-        <h3 className="text-sm text-gray-400 mb-3">参数对比</h3>
+        <h3 className="text-sm text-gray-400 mb-3">{i18n.t('AdaptiveParamPanel.k3')}</h3>
         <div className="grid grid-cols-2 gap-4">
           {/* Current */}
           <div>
-            <div className="text-xs text-gray-500 mb-2">当前参数</div>
+            <div className="text-xs text-gray-500 mb-2">{i18n.t('AdaptiveParamPanel.k4')}</div>
             {paramDefs.map(def => (
               <div key={def.key} className="flex justify-between items-center py-1 border-b border-white/5">
                 <span className="text-xs text-gray-400">{def.label}</span>
@@ -270,7 +270,7 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
       {/* Reward History Chart */}
       <div className="bg-[#12121a] border border-white/5 rounded-xl p-4">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm text-gray-400">奖励历史</h3>
+          <h3 className="text-sm text-gray-400">{i18n.t('AdaptiveParamPanel.k5')}</h3>
           <button
             onClick={() => setShowHistory(!showHistory)}
             className="text-xs text-gray-500 hover:text-gray-300"
@@ -332,10 +332,10 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
 
       {/* Learning config */}
       <div className="bg-[#12121a] border border-white/5 rounded-xl p-4">
-        <h3 className="text-sm text-gray-400 mb-3">学习参数</h3>
+        <h3 className="text-sm text-gray-400 mb-3">{i18n.t('AdaptiveParamPanel.k6')}</h3>
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">学习率</label>
+            <label className="text-xs text-gray-500 mb-1 block">{i18n.t('AdaptiveParamPanel.k7')}</label>
             <input
               type="number"
               value={state.learningRate}
@@ -345,7 +345,7 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
             />
           </div>
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">探索率</label>
+            <label className="text-xs text-gray-500 mb-1 block">{i18n.t('AdaptiveParamPanel.k8')}</label>
             <input
               type="number"
               value={state.explorationRate}
@@ -355,7 +355,7 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
             />
           </div>
           <div>
-            <label className="text-xs text-gray-500 mb-1 block">已迭代</label>
+            <label className="text-xs text-gray-500 mb-1 block">{i18n.t('AdaptiveParamPanel.k9')}</label>
             <div className="text-white text-sm font-mono px-3 py-2">{state.iterations}</div>
           </div>
         </div>

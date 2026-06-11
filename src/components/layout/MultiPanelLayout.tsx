@@ -11,6 +11,7 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
+import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -32,9 +33,9 @@ interface LayoutState {
 // ── Constants ───────────────────────────────────────────────────────────
 
 const LAYOUT_LABELS: Record<LayoutPreset, { icon: string; label: string }> = {
-  single: { icon: '◼', label: '单面板' },
-  horizontal: { icon: '◫', label: '左右分屏' },
-  grid4: { icon: '⊞', label: '四面板' },
+  single: { icon: '◼', label: i18n.t('MultiPanelLayout.k0') },
+  horizontal: { icon: '◫', label: i18n.t('MultiPanelLayout.k1') },
+  grid4: { icon: '⊞', label: i18n.t('MultiPanelLayout.k2') },
 };
 
 const STORAGE_KEY = 'dawn-whales-layout';

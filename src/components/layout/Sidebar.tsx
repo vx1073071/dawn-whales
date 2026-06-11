@@ -2,6 +2,7 @@ import { useAppStore } from '@/stores/appStore';
 import type { SidebarView } from '@/lib/types';
 import AccountSummary from '@/components/trading/AccountSummary';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 
 interface NavItem {
   id: SidebarView;
@@ -13,19 +14,19 @@ interface NavItem {
 const navItems: NavItem[] = [
   { id: 'dashboard', icon: '📊', label: 'nav.overview', section: 'nav.overview' },
   { id: 'market', icon: '📈', label: 'components.marketQuotes', section: 'components.trade' },
-  { id: 'strategy', icon: '🧠', label: '策略' },
+  { id: 'strategy', icon: '🧠', label: i18n.t('Sidebar.k0') },
   { id: 'ai', icon: '🐋', label: 'components.aiAssistant' },
-  { id: 'marketplace', icon: '🏪', label: '策略市场' },
+  { id: 'marketplace', icon: '🏪', label: i18n.t('Sidebar.k1') },
   { id: 'creator', icon: '⭐', label: 'components.creatorCenter' },
   { id: 'signals', icon: '📡', label: 'components.signalAnalysis' },
-  { id: 'backtest', icon: '🔬', label: '回测' },
+  { id: 'backtest', icon: '🔬', label: i18n.t('Sidebar.k2') },
   { id: 'portfolio', icon: '💼', label: 'components.portfolio' },
-  { id: 'orders', icon: '📋', label: '订单' },
+  { id: 'orders', icon: '📋', label: i18n.t('Sidebar.k3') },
   { id: 'trade', icon: '💹', label: 'components.tradingDesk' },
   { id: 'risk', icon: '🛡️', label: 'components.riskPanel' },
   { id: 'riskviz', icon: '📉', label: 'components.riskVisual' },
-  { id: 'alert', icon: '🔔', label: '警告中心' },
-  { id: 'settings', icon: '⚙️', label: '设置', section: '系统' },
+  { id: 'alert', icon: '🔔', label: i18n.t('Sidebar.k4') },
+  { id: 'settings', icon: '⚙️', label: i18n.t('Sidebar.k5'), section: i18n.t('Sidebar.k6') },
 ];
 
 interface SidebarProps {

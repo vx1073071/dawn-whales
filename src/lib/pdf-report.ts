@@ -86,13 +86,13 @@ function buildReportHTML(report: ReportData, timestamp: string): string {
     <div class="brand">DAWN WHALES · 道鲸</div>
     <h1>${report.title}</h1>
     ${report.subtitle ? `<div class="subtitle">${report.subtitle}</div>` : ''}
-    <div class="timestamp">生成时间: ${timestamp}</div>
+    <div class="timestamp">{i18n.t('PdfReport.k0')}{timestamp}</div>
   </div>
 
   ${sectionsHTML}
 
   <div class="footer">
-    ${report.footer || '本报告由道鲸·AI量化系统自动生成，仅供参考，不构成投资建议。'}
+    ${report.footer || i18n.t('PdfReport.k0')}
     <br/>DAWN WHALES v0.4.0 · ${timestamp}
   </div>
 </body>
@@ -124,7 +124,7 @@ function buildTableHTML(heading: string, data: { headers: string[]; rows: (strin
 export function backtestToReport(result: unknown): ReportData {
   const isProfit = (result as any).totalReturn >= 0;
   return {
-    title: `回测报告: ${(result as any).strategyName || '策略'}`,
+    title: `回测报告: ${(result as any).strategyName || i18n.t('PdfReport.k1')}`,
     subtitle: `${(result as any).targetCode} · ${(result as any).startDate} ~ ${(result as any).endDate}`,
     sections: [
       {

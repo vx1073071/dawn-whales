@@ -98,7 +98,7 @@ export default function CopyPolish({ className = '' }: CopyPolishProps) {
       <div className="p-5 border-b border-white/5">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold">最终文案确认</h2>
+            <h2 className="text-xl font-bold">{i18n.t('CopyPolish.k0')}</h2>
             <p className="text-gray-500 text-xs mt-0.5">定稿: 定价/下载/免费边界/功能 四表 v1.7.0 GA</p>
           </div>
           <div className="flex bg-white/[0.04] rounded-lg p-0.5">
@@ -179,7 +179,7 @@ export default function CopyPolish({ className = '' }: CopyPolishProps) {
               <table className="w-full text-xs">
                 <thead>
                   <tr className="bg-white/[0.02] text-gray-500">
-                    <th className="text-left px-5 py-2 font-medium">功能 Feature</th>
+                    <th className="text-left px-5 py-2 font-medium">{i18n.t('CopyPolish.k1')}</th>
                     <th className="text-center px-5 py-2 font-medium text-green-400">🆓 免费 Free</th>
                     <th className="text-center px-5 py-2 font-medium text-[#D4A853]">💰 付费 Paid</th>
                   </tr>
