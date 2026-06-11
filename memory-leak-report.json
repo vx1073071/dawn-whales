@@ -1,0 +1,41 @@
+{
+  "baselineAvg": 4.136586507161458,
+  "recoveryAvg": 4.388201395670573,
+  "deltaMB": 0.2516148885091152,
+  "deltaPct": 6.0826695651960225,
+  "threshold": 10,
+  "verdict": "PASS",
+  "operations": [
+    {
+      "label": "Import test modules",
+      "before": 4.1473846435546875,
+      "after": 4.295860290527344,
+      "delta": 0.14847564697265625
+    },
+    {
+      "label": "Large array churn (1M items × 5 cycles)",
+      "before": 4.296470642089844,
+      "after": 4.316429138183594,
+      "delta": 0.01995849609375
+    },
+    {
+      "label": "String processing (100K concatenations)",
+      "before": 4.316444396972656,
+      "after": 4.32171630859375,
+      "delta": 0.00527191162109375
+    },
+    {
+      "label": "Map/Set churn (50K entries)",
+      "before": 4.322013854980469,
+      "after": 4.327049255371094,
+      "delta": 0.005035400390625
+    },
+    {
+      "label": "Promise chains (10K async ops)",
+      "before": 4.3275299072265625,
+      "after": 4.375495910644531,
+      "delta": 0.04796600341796875
+    }
+  ],
+  "timestamp": "2026-06-11T07:46:30.824Z"
+}
