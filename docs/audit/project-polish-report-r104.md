@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R104
+owner: PM
+purpose: (auto-generated, needs review)
+-->
+
 # QuantDesk Pro 项目打磨报告 (R104 验收后)
 
 > 生成时间: 2026-06-12 04:08

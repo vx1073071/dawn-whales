@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # RealtimeDataFlow API 文档
 
 **Phase**: 6.1 R43  

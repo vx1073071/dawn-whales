@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: youdao
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES v1.0.0 发布后监控计划
 
 **制定日期**: 2026-06-08  

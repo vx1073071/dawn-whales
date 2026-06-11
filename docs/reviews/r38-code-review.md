@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R38
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # R38 Code Review 报告
 
 **审查人**: dao  

@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R39
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # R39 性能对比报告
 
 **作者**: dao  

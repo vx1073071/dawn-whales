@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # TradingAgents 融入 DAWN WHALES 建议方案
 
 **提案时间**: 2026-06-08 13:00 GMT+8  

@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # Dawn Whales USDT 积分 API 文档
 
 > 版本: v1.11.0 | 发布日期: 2026-06-12 | 维护: QClaw (文档虾)

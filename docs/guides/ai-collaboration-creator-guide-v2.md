@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: youdao
+purpose: (auto-generated, needs review)
+-->
+
 # AI 协作创作者指南 v2
 
 **版本**: v1.2.0-beta  

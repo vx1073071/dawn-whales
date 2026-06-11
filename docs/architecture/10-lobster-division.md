@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # 10虾分层并行架构方案
 
 ## 1. 虾分工总览

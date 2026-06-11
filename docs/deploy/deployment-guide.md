@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: PM
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES Deployment Guide
 
 > **版本**: v1.10.0

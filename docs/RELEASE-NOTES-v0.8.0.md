@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R100+
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES v0.8.0 Release Notes
 
 **版本**: v0.8.0-alpha  

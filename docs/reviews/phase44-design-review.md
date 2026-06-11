@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # Phase 4.4 设计文档审查报告
 
 **审查人**: dao  

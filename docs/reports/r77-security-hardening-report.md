@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R77
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES v1.8.1 安全加固报告
 
 **版本**: v1.8.1

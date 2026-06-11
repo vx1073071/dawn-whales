@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: PM
+purpose: (auto-generated, needs review)
+-->
+
 # Sprint 2 Phase 4 规划 — 自动化交易引擎
 
 **规划人**: PM (WorkBuddy)

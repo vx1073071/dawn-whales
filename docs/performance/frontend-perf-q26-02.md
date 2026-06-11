@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # 前端性能分析报告 — Q-26-02
 
 **分支**: feature/strategy-optimize  

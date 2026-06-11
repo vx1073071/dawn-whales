@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: youdao
+purpose: (auto-generated, needs review)
+-->
+
 # 自动化流程配置
 
 **作者**: dao  

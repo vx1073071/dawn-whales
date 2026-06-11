@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R38
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # R38 Q-38-02 Engine Performance Benchmark Report
 
 **Date**: 2026-06-07 | **Agent**: QClaw | **Round**: R38

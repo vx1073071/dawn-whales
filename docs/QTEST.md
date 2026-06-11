@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # QTest Documentation
 
 > Custom test framework for DAWN WHALES — no Jest/Vitest dependency required.

@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES · 实盘验证报告
 
 > 日期：2026-06-04 | 账户：281756479319068137 (API子账户)

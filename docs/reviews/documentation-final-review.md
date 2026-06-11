@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES v1.0.0 文档终审报告
 
 **审查时间**: 2026-06-07 23:25 GMT+8  

@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R21
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # Sprint 1 Demo 验收追踪表（R21）
 
 > 基于 docs/demo/v0.7.0-demo-script.md 的 12 场景验收清单

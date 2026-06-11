@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R91
+owner: PM
+purpose: (auto-generated, needs review)
+-->
+
 # R91-R94 四轮总规划 — v1.10.0 收官路线
 
 > **版本**: 草稿 v1.0 (PM 拟制, 待 Owner 审查)

@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # Dawn Whales v1.12.0 独立项目审计报告
 
 > **审计者**: QClaw (独立检查, 非本轮参与方)

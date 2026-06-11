@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # Sprint 2 完整架构文档
 
 **阶段**: Phase 4.3 收官 → Phase 4.4 启动  

@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # 5虾分工职责建议（ML 提交 → PM 审阅）
 
 **提案人**: ML (EasyClaw)  

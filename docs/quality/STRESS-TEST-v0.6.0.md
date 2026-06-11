@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R100+
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES v0.6.0 · 压力测试报告
 
 > 2026-06-04 | 主龙虾(PM) | 38/38 tests green

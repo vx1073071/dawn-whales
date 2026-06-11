@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES 用户操作指南
 
 > **版本**: v1.10.0-rc.1 | **更新日期**: 2026-06-11 | **作者**: QClaw 文档虾

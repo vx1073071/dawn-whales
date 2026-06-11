@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # i18n 硬编码中文最终统计报告
 
 **扫描时间**: 2026-06-10 | **轮次**: R88 | **基线目标**: <10000

@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # JVS IPC Integration Examples
 
 This document provides examples for integrating JVS IPC handlers in frontend components.

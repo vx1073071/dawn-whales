@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # Round 32 计划 (2026-06-06)
 
 ## 当前状态

@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: youdao
+purpose: (auto-generated, needs review)
+-->
+
 # 社交交易用户指南
 
 **版本**: v1.1.0-beta  

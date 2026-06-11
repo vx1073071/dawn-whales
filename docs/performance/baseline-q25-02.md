@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # Performance Baseline Report — Q-25-02
 
 **Date:** 2026-06-06 07:09 HKT

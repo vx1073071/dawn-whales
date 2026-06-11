@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES · Phase 3 实施计划
 
 > 版本：v2.0 | 日期：2026-06-04 | 团队：主龙虾（规划+执行）

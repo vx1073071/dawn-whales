@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R37
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # R37 Engine Performance Baseline Report
 
 **Date**: 2026-06-07 | **Agent**: QClaw | **Round**: R37

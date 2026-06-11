@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: youdao
+purpose: (auto-generated, needs review)
+-->
+
 # AI 功能 & 收费说明
 
 **版本**: v1.8.0-beta | **更新时间**: 2026-06-09 | **作者**: youdao  

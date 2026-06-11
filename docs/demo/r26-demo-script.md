@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R26
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # R26 Demo Script — Sprint 1 Final Demo
 
 **Version**: v0.6.0

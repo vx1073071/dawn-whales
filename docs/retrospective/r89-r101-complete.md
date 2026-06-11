@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R89
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # R89→R101 项目总结 — 从 TypeScript 灾难到 v1.11.0 国际版
 
 > 13轮，50+ commits，729→0 TSC errors，51,113→51 CJK，9→11语言  

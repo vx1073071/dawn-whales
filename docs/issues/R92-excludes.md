@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R92
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # R92 Exclude Tracking — Issue Numbers
 
 ## Remaining 3 Excludes (Target: ≤3 per PM R92)

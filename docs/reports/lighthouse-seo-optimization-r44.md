@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R44
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # Lighthouse 审计 + SEO 优化报告
 
 **版本**: v0.10.0  

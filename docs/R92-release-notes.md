@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R92
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # Dawn Whales v1.10.0-rc.1 Release Notes (R92)
 
 > Release Date: 2026-06-11 | Version: v1.10.0-rc.1 | PM: Claw

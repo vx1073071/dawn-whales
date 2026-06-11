@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: youdao
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES · 道鲸 — Quick Start Guide
 
 **Version**: v0.7.0

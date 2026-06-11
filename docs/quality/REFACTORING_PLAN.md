@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES · main.ts 模块化重构方案
 
 > 状态：骨架已预建 | 等待主龙虾拆分后合并

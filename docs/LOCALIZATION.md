@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # LOCALIZATION.md — Dawn Whales 本地化贡献指南
 
 > **版本**: v1.10.0

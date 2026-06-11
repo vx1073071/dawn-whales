@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R20
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # Round 20 性能基线报告
 
 **测试时间:** 2026-06-06 02:37 GMT+8

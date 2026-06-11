@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # 14 虾并行分工架构
 
 > 版本: v1.0 | 日期: 2026-06-06 | 状态: 已生效

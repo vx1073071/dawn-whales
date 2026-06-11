@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: PM
+purpose: (auto-generated, needs review)
+-->
+
 # Sprint 2 Phase 4.3 规划 — 闭环执行引擎
 
 **规划日期**: 2026-06-06  

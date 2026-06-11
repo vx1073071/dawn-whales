@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R89
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # R89→R97 Dawn Whales Quality Report — v1.10.0 Final
 
 **Generated**: 2026-06-12 01:00 GMT+8 by youdao (测试虾 🦐)

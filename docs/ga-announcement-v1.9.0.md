@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R100+
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # Dawn Whales v1.9.0 GA — 发布公告
 
 ## 🐋 Dawn Whales v1.9.0 GA 正式发布

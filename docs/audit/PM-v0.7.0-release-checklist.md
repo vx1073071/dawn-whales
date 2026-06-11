@@ -1,4 +1,12 @@
-﻿# v0.7.0 发布检查清单
+﻿<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R100+
+owner: PM
+purpose: (auto-generated, needs review)
+-->
+
+# v0.7.0 发布检查清单
 
 > 状态: ✅ 就绪 | 日期: 2026-06-05 06:39
 

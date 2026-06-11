@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R29
+owner: PM
+purpose: (auto-generated, needs review)
+-->
+
 # Round 29 验收报告
 
 **验收人**: PM (WorkBuddy)

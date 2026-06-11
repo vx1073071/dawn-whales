@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: youdao
+purpose: (auto-generated, needs review)
+-->
+
 # IBKR 券商配置指南 & 多语言说明
 
 **版本**: v1.7.0-alpha  

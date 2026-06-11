@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES �?从零到落地的完整架构方案
 
 > 版本：v0.1.0 | 日期�?026-06-03

@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # Round 16 完成报告
 
 **提交时间**: 2026-06-07 05:53 GMT+8  

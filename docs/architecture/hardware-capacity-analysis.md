@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # 硬件容量分析报告 — 虾数量建议
 
 **分析日期**: 2026-06-06  

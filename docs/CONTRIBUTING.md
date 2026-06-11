@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # Contributing to Dawn Whales
 
 > 感谢你考虑为 Dawn Whales 做出贡献！

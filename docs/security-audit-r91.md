@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R91
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES 安全审计记录 — R91
 
 > **审计日期**: 2026-06-11 | **审计版本**: v1.10.0-alpha.2 | **审计人**: QClaw (文档虾)

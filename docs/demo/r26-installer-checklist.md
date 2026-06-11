@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R26
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES v0.6.0 Installer Verification Checklist
 
 **Date**: 2026-06-06

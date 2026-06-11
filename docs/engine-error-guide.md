@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # EngineError 使用指南 — Dawn Whales 开发者迁移文档
 
 > 最后更新: R89 (2026-06-11) | 版本: v1.0 | 作者: youdao (文档虾)

@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R95
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # R95 + R95.1 覆盖率冲刺回顾
 
 > **日期**: 2026-06-11 21:35 — 2026-06-12 00:05 HKT

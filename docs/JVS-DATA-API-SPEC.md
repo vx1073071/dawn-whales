@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # JVS 数据层 API 规范文档 (JVS-36)
 
 > 版本: 1.0.0  

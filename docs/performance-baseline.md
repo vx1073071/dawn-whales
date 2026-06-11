@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # Dawn Whales 性能基线文档
 
 > 基线版本: v1.10.0-alpha.2 (R91)

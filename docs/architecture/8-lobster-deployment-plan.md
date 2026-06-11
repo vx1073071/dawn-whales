@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # 8虾并行部署方案 — 从4虾到8虾的效率跃迁
 
 **版本**: v1.0  

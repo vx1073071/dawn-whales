@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: PM
+purpose: (auto-generated, needs review)
+-->
+
 # Round 45 计划 - Phase 6.2 启动 + 质量巩固
 
 ## 当前状态 (R44 完成后)

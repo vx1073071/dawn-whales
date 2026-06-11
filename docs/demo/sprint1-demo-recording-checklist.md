@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # Sprint 1 Final Demo 录制检查清单 (R27)
 
 **版本**: v0.6.0

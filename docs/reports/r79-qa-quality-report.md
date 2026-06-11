@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R79
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES v1.9.0-beta QA 质量报告 + i18n 一致性说明
 
 **版本**: v1.9.0-beta

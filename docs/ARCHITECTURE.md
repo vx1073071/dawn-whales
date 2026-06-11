@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # Dawn Whales Architecture Guide
 
 > Version: 1.10.0-rc.2 | Last updated: 2026-06-11

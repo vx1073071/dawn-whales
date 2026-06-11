@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: PM
+purpose: (auto-generated, needs review)
+-->
+
 # Phase 5.0 路线图 — DAWN WHALES
 
 > 版本: v0.8.0 → v1.0.0

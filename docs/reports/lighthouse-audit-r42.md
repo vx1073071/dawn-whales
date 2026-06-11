@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R42
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # Lighthouse 性能审计报告
 
 **审计时间**: 2026-06-07T06:10:00+08:00  

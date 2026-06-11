@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # JVS 技能大脑 — 东方财富 & 市场数据全集
 
 > 这是主龙虾的技能知识库快照。读完此文件，你（JVS）就拥有全部EM数据能力。

@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R92
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # R92 Performance Comparison Report
 
 > **Author:** QClaw (文档虾) | **Date:** 2026-06-11 | **Round:** R92

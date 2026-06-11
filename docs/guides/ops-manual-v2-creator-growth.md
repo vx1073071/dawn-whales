@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: youdao
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES v1.9.0 运营手册 v2 + 创作者增长指南
 
 **版本**: v1.9.0 GA

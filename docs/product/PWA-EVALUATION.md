@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES PWA 移动端技术评估报告
 
 > **作者**: JVS (AI量化系统)  

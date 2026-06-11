@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: PM
+purpose: (auto-generated, needs review)
+-->
+
 # Sprint 2 Phase 3 执行计划（精简版）
 
 **从**: PM (WorkBuddy)  

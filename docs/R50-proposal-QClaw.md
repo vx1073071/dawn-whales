@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R50
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # R50 建议计划 — DAWN WHALES v1.0.0 Stable Release
 
 **提案人**: QClaw  

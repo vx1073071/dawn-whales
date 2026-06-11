@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: team
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES 合规文档
 
 **版本**: v1.9.0 GA | **更新**: 2026-06-10 | **轮次**: R88

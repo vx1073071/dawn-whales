@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: PM
+purpose: (auto-generated, needs review)
+-->
+
 # Sprint 2 Phase 3: Multi-Broker Support — Technical Plan
 
 > **Author:** Engineering Team

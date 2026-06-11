@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: JVS
+purpose: (auto-generated, needs review)
+-->
+
 # DAWN WHALES · 任务流水线
 
 > v1.0 | 2026-06-04 | 主龙虾(项目经理)

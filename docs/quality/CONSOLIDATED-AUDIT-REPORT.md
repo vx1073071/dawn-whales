@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R108
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # Dawn Whales 统一审计报告 (Consolidated Audit Report)
 
 > **整合版本**: v2.0 | **日期**: 2026-06-12

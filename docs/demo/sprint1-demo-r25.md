@@ -1,3 +1,11 @@
+<!-- META
+version: 1.12.0
+last_updated: 2026-06-12
+round: R25
+owner: QClaw
+purpose: (auto-generated, needs review)
+-->
+
 # Sprint 1 Demo 验收清单 (R25)
 
 **项目**: DAWN WHALES · 道鲸  
