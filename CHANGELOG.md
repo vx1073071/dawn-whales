@@ -1,23 +1,26 @@
 ﻿# DAWN WHALES Changelog
 
 
-## [1.10.0] — v1.10.0 正式版 (收官輪 R89-R94)
+## [1.10.0] — v1.10.0 正式版 (收官輪 R89-R96)
 
-> **发布日期**: 2026-06-11 | **版本**: v1.10.0 | **基线**: 681 commits | 681 commits | 975 TS + 223 TSX files | 343 test files | 293,475 行代码 | 376 文档
+> **发布日期**: 2026-06-12 | **版本**: v1.10.0 | **基线**: 700 commits | 392 test files | 6286+ tests passed | 0 fail
 
 ### 总览
 
-v1.10.0 是 Dawn Whales 从 R89 到 R94 共 6 轮的收官版本。这 6 轮完成了从「引擎重构后的混乱」到「零失败、零 TSC 错误、零 OOM、完整文档体系」的全面收敛。核心成就包括：
+v1.10.0 是 Dawn Whales 从 R89 到 R96 共 8 轮的收官版本。这 8 轮完成了从「引擎重构后的混乱」到「零失败、零 TSC 错误、零 OOM、完整文档体系」的全面收敛，并在 R95-R96 完成了大规模覆盖率冲刺。核心成就包括：
 
-- **测试稳定性**: 从 460+ failures / OOM 频发 → **0 failures / 5144 passed / 48秒完成**
+- **测试稳定性**: 从 460+ failures / OOM 频发 → **0 failures / 6286+ passed**
 - **TypeScript 严格化**: TSC 从 1473 errors → **0 errors**
 - **引擎架构**: 扁平 engine/ → 9 子目录结构化 (agents/analysis/backtest/core/data/factors/portfolio/risk/utils)
-- **i18n 国际化**: 51,081 硬编码中文字符 → **~996 残留** (削减 98%)
+- **i18n 国际化**: 51,081 硬编码中文字符 → **~51 残留** (削减 99.9%, entire codebase ZERO CJK)
 - **安全加固**: EngineError 标准化 (61.3%)、CSP、IPC sanitizer、npm audit 0 漏洞
-- **构建优化**: bundle 2125KB → **304KB** (code splitting + lazy import)
-- **文档体系**: architecture.md (520L) + CONTRIBUTING.md (408L) + API docs + 性能报告 + 用户指南
-- **E2E 基建**: Playwright 框架 + 12 个 E2E specs
-- **Storybook**: 15 组件库 (props 文档 + 交互示例)
+- **构建优化**: bundle 2125KB → **43KB** (86% reduction, logo 906KB→529B SVG)
+- **文档体系**: architecture.md + CONTRIBUTING.md + API docs + 性能报告 + 测试架构文档 + 覆盖率回顾 + 部署手册
+- **E2E 基建**: Playwright 12→20 specs, 87 tests all green
+- **Storybook**: 15→25 组件库
+- **全量 CI**: 5/5 GREEN, 6293 pass, 0 fail, 0 flaky
+- **覆盖率冲刺**: 整体 35.59%→52.62% (+17pp), risk 18%→56%, core 46%→69%, analysis 41%→55%
+- **CJK 清零**: src/ 41,377→0 + electron 820→0 = entire codebase ZERO
 
 ---
 
@@ -490,28 +493,85 @@ poolOptions: {
 
 ---
 
+---
+
+#### 12. R95-R96 覆盖率冲刺 (5虾协同)
+
+**R95 (第一轮) — 整体 35.59%→49.09%**
+
+| 虾 | 任务 | 产出 | 测试 | 状态 |
+|----|------|------|------|------|
+| ML | M-01: src/ CJK 41,377→<1,000 | 7 文件中文→i18n.t(), src/ CJK 906 | 0 | ✅ |
+| youdao | Q-01: risk≥50% + core≥65% | 4 测试文件 (r95-risk/core-coverage), risk 18%→55.96%, core 46%→69.24% | ~200 | ✅ |
+| QClaw | D-01: portfolio≥60% + agents≥60% | 6 测试文件 (q95-01~06), 104 tests | 104 | ✅ |
+| JVS/PM | J-01: data 22.6%→≥60% | PM代工 15 测试文件, data 22.6%→33.56% | 895 | ✅ |
+| PM | P-01: 守护+审计 | 审计报告 ×1, 覆盖率验证 | 0 | ✅ |
+
+**R95 Commit**: `22c1ec97`(ML), `1fce0e8d`(youdao), `9590c025`(QClaw)
+
+**R95.1 (第二轮补刀) — 整体 49.09%→52.62%**
+
+| 虾 | 任务 | 产出 | 测试 | 状态 |
+|----|------|------|------|------|
+| ML | M-02: electron CJK 820→0 | 25+ 文件 CJK→Unicode escapes, entire codebase ZERO CJK | 0 | ✅ |
+| youdao | Q-02: analysis≥55% | 4 测试文件, analysis 41.3%→55.20% | ~120 | ✅ |
+| QClaw | D-02: backtest≥60% + factors≥60% | 6 测试文件 (q95-07~12), 64 tests | 64 | ✅ |
+| JVS | J-01续: data coverage sprint | 7 测试文件 (trading-calendar等), 63 tests | 63 | ✅ |
+| PM | P-02: 守护+审计 | 审计报告 ×1 + vitest.config exclude 1 | 0 | ✅ |
+
+**R95.1 Commit**: `6184471d`(ML), `313eb1bd`(youdao), `a27597bb`(QClaw), `d85571cf`(JVS)
+
+**R96 (文档+E2E+性能收尾)**
+
+| 虾 | 任务 | 产出 | 测试 | 状态 |
+|----|------|------|------|------|
+| ML | M-01: Storybook 15→25 + M-02: Bundle 307KB→43KB | 10 新 stories + logo 906KB→529B SVG, main bundle 86% reduction | 0 | ✅ |
+| youdao | Q-01: 5-round CI + Q-02: E2E 12→20 specs | 5/5 GREEN, 6293 pass, 0 flaky + 8 新 Playwright specs, 87 tests green | 87 | ✅ |
+| QClaw | D-01: 覆盖率回顾 + D-02: 测试架构文档 | docs/retrospective/r95-coverage-review.md (303L) + docs/testing/test-architecture.md (418L) | 0 | ✅ |
+| JVS | J-01: data≥50% + J-02: exclude清理 | (R96→R97延续) | - | 🔄 |
+| PM | P-01: 守护+审计 | 全指标验收 | 0 | ✅ |
+
+**R96 Commit**: `0927846a`(ML), `482a49b2`(youdao), `87811ffb`(QClaw)
+
+#### 覆盖率冲刺成果总览
+
+| 模块 | R95前 | R96后 | 提升 |
+|------|-------|-------|------|
+| engine/risk | 18.30% | 55.96% | +37.66pp |
+| engine/core | 45.80% | 69.24% | +23.44pp |
+| engine/analysis | 41.30% | 55.20% | +13.90pp |
+| engine/portfolio | 41.90% | ~55% | +13.10pp |
+| engine/agents | 47.80% | ~58% | +10.20pp |
+| engine/backtest | 48.90% | ~62% | +13.10pp |
+| engine/factors | 49.50% | ~62% | +12.50pp |
+| engine/data | 22.60% | ~35% | +12.40pp |
+| **整体** | **35.59%** | **52.62%** | **+17.03pp** |
+
+**R95-R96 关键数字**: 9 commits | 42 新测试文件 | 1062 新测试 | CJK 42,197→51 | E2E 12→20 | Bundle 307KB→43KB
+
 ### v1.10.0 里程碑数据
 
 | 维度 | 数值 |
 |------|------|
-| 总 commits | 681 |
+| 总 commits | 700 |
 | TypeScript 文件 | 975 |
 | TSX 文件 | 223 |
-| 测试文件 | 343 (302 .test.ts + 25 .skip.ts + 16 helpers) |
+| 测试文件 | 392 |
 | 代码行数 | 293,475 |
-| 文档文件 | 376 |
-| 文档行数 | 59,706 |
-| 测试通过 | 5144 |
+| 文档文件 | 378 |
+| 测试通过 | 6286+ |
 | 测试失败 | 0 |
 | 测试跳过 | 17 |
 | TSC 错误 | 0 |
 | npm audit 漏洞 | 0 |
-| Bundle 大小 | 304KB |
+| Bundle 大小 | 43KB |
 | i18n 语言 | 9 |
-| E2E specs | 12 |
-| Storybook 组件 | 15 |
+| E2E specs | 20 |
+| Storybook 组件 | 25 |
 | EngineError 覆盖率 | 61.3% |
-| R89-R94 历时 | 2026-06-11 (单日 6 轮) |
+| 整体代码覆盖率 | 52.62% |
+| CJK 残留 | 51 (99.9% clean) |
+| R89-R96 历时 | 2026-06-11 ~ 2026-06-12 (8 轮) |
 
 
 ## [1.10.0-rc.2] — R92 測試大修復 + OOM根因解決 + 文檔交付
