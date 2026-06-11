@@ -15,7 +15,7 @@ const mockEngine = {
   history: [] as TriggerEvent[],
   _idCounter: 0,
   generateId() {return `rule_${++this._idCounter}_${Date.now()}`;},
-  createRule(input: any): ConditionRule {
+  createRule(input: unknown): ConditionRule {
     const rule: ConditionRule = {
       ...input,
       id: this.generateId(),
@@ -30,7 +30,7 @@ const mockEngine = {
     this.rules = this.rules.filter((r) => r.id !== id);
     return true;
   },
-  updateRule(id: string, patch: any) {
+  updateRule(id: string, patch: unknown) {
     const idx = this.rules.findIndex((r) => r.id === id);
     if (idx === -1) return null;
     this.rules[idx] = { ...this.rules[idx], ...patch };
@@ -56,7 +56,7 @@ function describeCondition(c: PriceCondition): string {
   return `price ${c.operator} ${c.targetPrice} (${ref})`;
 }
 
-function isPriceCondition(c: any): c is PriceCondition {
+function isPriceCondition(c: unknown): c is PriceCondition {
   return c?.type === 'price';
 }
 

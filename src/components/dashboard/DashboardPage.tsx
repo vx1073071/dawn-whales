@@ -138,8 +138,8 @@ export default function DashboardPage() {
 
         const pos = await getPositions(accs[0].accountId);
         if (pos && pos.length > 0) {
-          const totalMV = pos.reduce((s: number, p: any) => s + (p.marketValue || 0), 0);
-          setPositions(pos.map((p: any) => ({
+          const totalMV = pos.reduce((s: number, p: unknown) => s + (p.marketValue || 0), 0);
+          setPositions(pos.map((p: unknown) => ({
             code: p.code,
             name: p.name || p.code,
             qty: p.qty,
@@ -155,7 +155,7 @@ export default function DashboardPage() {
       const strats = await getAllStrategies();
       if (strats) {
         setStrategies(
-          strats.filter((s: any) => s.status === 'running').slice(0, 5).map((s: any) => ({
+          strats.filter((s: unknown) => s.status === 'running').slice(0, 5).map((s: unknown) => ({
             id: s.id,
             name: s.name || i18n.t('DashboardPage.k3'),
             status: 'running' as const,

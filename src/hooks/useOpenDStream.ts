@@ -56,7 +56,7 @@ export function useOpenDStream(codes: string[]) {
         });
         
         // Listen for real-time updates
-        window.api.stockStream.onQuote((data: any) => {
+        window.api.stockStream.onQuote((data: unknown) => {
           setQuotes(prev => {
             const existing = prev.findIndex(q => q.code === data.code);
             const quote: QuoteData = {

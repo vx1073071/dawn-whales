@@ -132,7 +132,7 @@ export function relativeTime(date: Date | number, locale = 'zh-CN'): string {
 // ── Debounce / Throttle ─────────────────────────────────────────────────
 
 /** Debounce: wait for `delay` ms of inactivity before calling fn */
-export function debounce<T extends (...args: any[]) => void>(
+export function debounce<T extends (...args: unknown[]) => void>(
   fn: T,
   delay = 300
 ): (...args: Parameters<T>) => void {
@@ -147,7 +147,7 @@ export function debounce<T extends (...args: any[]) => void>(
 }
 
 /** Throttle: call fn at most once per `interval` ms */
-export function throttle<T extends (...args: any[]) => void>(
+export function throttle<T extends (...args: unknown[]) => void>(
   fn: T,
   interval = 300
 ): (...args: Parameters<T>) => void {
@@ -171,7 +171,7 @@ export function throttle<T extends (...args: any[]) => void>(
 // ── Memoize ─────────────────────────────────────────────────────────────
 
 /** Simple memoize for pure functions (single arg, shallow key) */
-export function memoize<T extends (...args: any[]) => any>(
+export function memoize<T extends (...args: unknown[]) => any>(
   fn: T,
   keyFn?: (...args: Parameters<T>) => string
 ): T {

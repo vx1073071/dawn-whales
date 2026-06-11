@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Modal } from 'antd';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
 import {
@@ -117,23 +118,24 @@ export default function SettingsPage() {
         setNewBroker({ name: '', type: 'futu', host: '127.0.0.1', port: '11111' });
         await refreshBrokers();
       } else {
-        alert(result?.error || i18n.t('SettingsPage.k1'));
+        Modal.info({ title: i18n.t('SettingsPage.k13'), content: result?.error || i18n.t('SettingsPage.k1') });
       }
     } catch (e: unknown) {
-      alert((e as any).message || i18n.t('SettingsPage.k2'));
+      Modal.info({ title: i18n.t('SettingsPage.k13'), content: (e as any).message || i18n.t('SettingsPage.k2') });
     } finally {
       setBrokerActionLoading(null);
     }
   }
 
   async function handleRemoveBroker(id: string) {
-    if (!confirm('settings.confirmDeleteBroker')) return;
+    const confirmed = await new Promise<boolean>((resolve) => { Modal.confirm({ title: i18n.t('SettingsPage.k14'), content: i18n.t('SettingsPage.k15'), onOk: () => resolve(true), onCancel: () => resolve(false) }); });
+    if (!confirmed) return;
     setBrokerActionLoading(id);
     try {
       await removeBroker(id);
       await refreshBrokers();
     } catch (e: unknown) {
-      alert((e as any).message || i18n.t('SettingsPage.k3'));
+      Modal.info({ title: i18n.t('SettingsPage.k13'), content: (e as any).message || i18n.t('SettingsPage.k3') });
     } finally {
       setBrokerActionLoading(null);
     }
@@ -145,7 +147,7 @@ export default function SettingsPage() {
       await setActiveBroker(id);
       await refreshBrokers();
     } catch (e: unknown) {
-      alert((e as any).message || i18n.t('SettingsPage.k4'));
+      Modal.info({ title: i18n.t('SettingsPage.k13'), content: (e as any).message || i18n.t('SettingsPage.k4') });
     } finally {
       setBrokerActionLoading(null);
     }
@@ -173,7 +175,7 @@ export default function SettingsPage() {
   }
 
   // @ts-ignore — R89 type fix
-  const activeBrokerId = brokerStatus.find((s: any) => s.active)?.id || (brokerStatus[0] as any)?.id;
+  const activeBrokerId = brokerStatus.find((s: unknown) => s.active)?.id || (brokerStatus[0] as any)?.id;
 
   const tabs: {id: SettingsTab;label: string;icon: string;}[] = [
   { id: 'broker-mgmt', label: 'settings.brokerManagement', icon: '🏦' },
@@ -296,7 +298,7 @@ export default function SettingsPage() {
             <p className="text-gray-500 text-sm py-4 text-center">{"settings.noBroker"}</p>
             }
               {brokers.map((broker) => {
-              const status = brokerStatus.find((s: any) => s.id === broker.id) as any;
+              const status = brokerStatus.find((s: unknown) => s.id === broker.id) as any;
               const isConnected = status?.connected || false;
               const isActive = activeBrokerId === broker.id;
               const isLoading = brokerActionLoading === broker.id;

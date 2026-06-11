@@ -196,7 +196,7 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
     try {
       // Call engine through IPC bridge
       // R84: typed window access — __optimizerBridge is internal dev API
-      const optimizer = (window as unknown as {__optimizerBridge: {optimize: (params: any) => Promise<unknown>;};}).__optimizerBridge;
+      const optimizer = (window as unknown as {__optimizerBridge: {optimize: (params: unknown) => Promise<unknown>;};}).__optimizerBridge;
       // @ts-ignore — R89 type fix
       if (optimizer?.startOptimization as any as any) {
         (optimizer as any).startOptimization(config);

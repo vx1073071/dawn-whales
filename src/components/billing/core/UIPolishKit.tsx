@@ -160,7 +160,7 @@ export const focusRing: CSSProperties = {
 export function TouchButton({ onClick, children, style, ...rest
 
 
-}: {onClick: () => void;children: ReactNode;style?: CSSProperties;[key: string]: any;}) {
+}: {onClick: () => void;children: ReactNode;style?: CSSProperties;[key: string]: unknown;}) {
   return (
     <button
       onClick={onClick}

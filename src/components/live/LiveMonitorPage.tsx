@@ -50,9 +50,9 @@ export default function LiveMonitorPage() {
   const [showAddInput, setShowAddInput] = useState(false);
 
   // ── Stable handlers via useCallback (avoids re-registering IPC listeners) ──
-  const handleQuotePush = useCallback((data: any) => {
+  const handleQuotePush = useCallback((data: unknown) => {
     const quoteList = Array.isArray(data) ? data : [data];
-    quoteList.forEach((q: any) => {
+    quoteList.forEach((q: unknown) => {
       if (!q || !q.code) return;
       const quote: LiveQuote = {
         code: String(q.code),
@@ -79,7 +79,7 @@ export default function LiveMonitorPage() {
     setQuotes(new Map(quotesRef.current));
   }, []);
 
-  const handleSignalPush = useCallback((data: any) => {
+  const handleSignalPush = useCallback((data: unknown) => {
     const log: SignalLog = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       time: new Date().toLocaleTimeString(),
@@ -128,7 +128,7 @@ export default function LiveMonitorPage() {
   async function loadStrategies() {
     try {
       const all = await api.getStrategies();
-      const live: LiveStrategy[] = (all || []).map((s: any) => ({
+      const live: LiveStrategy[] = (all || []).map((s: unknown) => ({
         id: String(s.id),
         name: String(s.name),
         code: String(s.targetCode || s.code || ''),
@@ -246,7 +246,7 @@ export default function LiveMonitorPage() {
 
   // Quote array is computed but rendered via quotes:push events (live grid updates)
   // Keeping sorted reference here for future extensibility
-  void Array.from(quotes.values()).sort((a: any, b: any) => a.code.localeCompare(b.code));
+  void Array.from(quotes.values()).sort((a: unknown, b: unknown) => a.code.localeCompare(b.code));
 
   return (
     <div className="p-6">

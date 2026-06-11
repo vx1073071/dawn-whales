@@ -369,7 +369,7 @@ export default function TradingDeskPage() {
     try {
       const result = await api.getPositions(id);
       if (Array.isArray(result)) {
-        setPositions(result.map((p: any) => ({
+        setPositions(result.map((p: unknown) => ({
           code: p.code || p.symbol,
           name: p.name,
           qty: p.qty || p.quantity || 0,

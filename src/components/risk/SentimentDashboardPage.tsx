@@ -567,7 +567,7 @@ const SentimentDashboardPage: React.FC = () => {
   useEffect(() => {
     const api = window.api;
     if (api?.on) {
-      const handler = (_event: any, signal: any) => {
+      const handler = (_event: unknown, signal: unknown) => {
         if (signal?.type === 'sentiment_update' || signal?.type === 'signal') {
           fetchData();
         }

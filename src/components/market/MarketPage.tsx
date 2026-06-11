@@ -282,7 +282,7 @@ const WatchlistRow = memo(function WatchlistRow({
 
 
 
-}: {code: string;quote: any;isSelected: boolean;onSelect: (code: string) => void;onRemove: (code: string) => void;}) {
+}: {code: string;quote: unknown;isSelected: boolean;onSelect: (code: string) => void;onRemove: (code: string) => void;}) {
   const chg = quote?.change ?? 0;
   const pct = quote?.changePct ?? 0;
   const cls = chg > 0 ? 'text-emerald-400' : chg < 0 ? 'text-red-400' : 'text-gray-500';

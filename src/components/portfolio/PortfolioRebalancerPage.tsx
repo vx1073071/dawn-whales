@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Modal } from 'antd';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import { getFunds } from '@/lib/bridge-api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -262,7 +263,7 @@ export default function PortfolioRebalancerPage() {
         </div>
         <button
           className="bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-6 py-2.5 rounded-lg transition-colors"
-          onClick={() => alert(dryRun ? i18n.t('PortfolioRebalancerPage.k8') : i18n.t('PortfolioRebalancerPage.k9'))}>
+          onClick={() => Modal.info({ content: dryRun ? i18n.t('PortfolioRebalancerPage.k8') : i18n.t('PortfolioRebalancerPage.k9') })}>
           
           {dryRun ? i18n.t('PortfolioRebalancerPage.k10') : i18n.t('PortfolioRebalancerPage.k11')}
         </button>

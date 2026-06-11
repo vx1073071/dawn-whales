@@ -62,7 +62,7 @@ export default function PortfolioAllocationChart({
         backgroundColor: '#1a1a25',
         borderColor: 'rgba(255,255,255,0.1)',
         textStyle: { color: '#e5e7eb', fontSize: 12 },
-        formatter: (params: any) => {
+        formatter: (params: unknown) => {
           const d = params.data;
           const pct = params.percent;
           void pct; // used in tooltip template below

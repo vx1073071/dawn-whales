@@ -110,7 +110,7 @@ function generateId(): string {
 
 // --- Quality Scoring Engine ---
 
-function computeDimensionScores(data: any[]): QualityDimension[] {
+function computeDimensionScores(data: unknown[]): QualityDimension[] {
   if (!data || data.length === 0) {
     return DIMENSION_CONFIG.map((cfg) => ({
       ...cfg,
@@ -622,7 +622,7 @@ const DataQualityPage: React.FC = () => {
 
       try {
         // Fetch sample data via IPC
-        let rawData: any[] = [];
+        let rawData: unknown[] = [];
         try {
           const newsData = await window.api?.dataProvider?.getNews?.(symbol, 10);
           if (newsData && Array.isArray(newsData)) {

@@ -7,7 +7,7 @@ interface WorkerMessage {
   type: 'run' | 'result' | 'error';
   id: number;
   config?: unknown;
-  klines?: any[];
+  klines?: unknown[];
   data?: unknown;
   error?: string;
 }
@@ -159,15 +159,15 @@ function ensureWorkers(): void {
 
 // backtest
 export async function parallelBacktest(
-  klines: any[],
-  configs: any[],
-): Promise<any[]> {
+  klines: unknown[],
+  configs: unknown[],
+): Promise<unknown[]> {
   ensureWorkers();
 
-  const results: any[] = new Array(configs.length);
+  const results: unknown[] = new Array(configs.length);
   let completed = 0;
-  let resolveAll: (value: any[]) => void;
-  const promise = new Promise<any[]>((resolve) => { resolveAll = resolve; });
+  let resolveAll: (value: unknown[]) => void;
+  const promise = new Promise<unknown[]>((resolve) => { resolveAll = resolve; });
 
   function dispatchNext() {
     if (completed >= configs.length) {

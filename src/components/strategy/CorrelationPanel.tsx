@@ -13,7 +13,7 @@ interface CorrelationResult {
   maxCorrelation: number;
 }
 
-export default function CorrelationPanel({ result }: {result?: any;}) {
+export default function CorrelationPanel({ result }: {result?: unknown;}) {
   const { t } = useTranslation();
 
   if (!result?.success) {

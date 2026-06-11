@@ -5744,5 +5744,8 @@
   "credits.from": "From",
   "credits.to": "To",
   "credits.fee": "Fee",
-  "credits.noP2P": "No P2P transfers yet"
+  "credits.noP2P": "No P2P transfers yet",
+  "SettingsPage.k13": "Notification",
+  "SettingsPage.k14": "Confirm",
+  "SettingsPage.k15": "Confirm"
 }

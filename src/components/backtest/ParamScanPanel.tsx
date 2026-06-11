@@ -7,8 +7,8 @@ import { EngineError } from '../../../electron/engine/core/engine-error';
 void EngineError; // [EngineError:SYSTEM] structured error tracking
 
 interface ParamSweepConfig {
-  klines: any[];
-  baseConfig: any;
+  klines: unknown[];
+  baseConfig: unknown;
   paramRanges: Record<string, {min: number;max: number;step: number;}>;
 }
 

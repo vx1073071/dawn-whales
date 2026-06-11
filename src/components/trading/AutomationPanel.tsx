@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { Modal } from 'antd';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -427,7 +428,7 @@ export default function AutomationPanel({ className }: { className?: string }) {
 
   const handleStartStrategy = useCallback((id: string) => {
     const api = getApi();
-    api?.strategy?.startLive?.(id).then((res: Record<string, any>) => {
+    api?.strategy?.startLive?.(id).then((res: Record<string, unknown>) => {
       if (res?.success) {
         setStrategies(prev => prev.map(s =>
           s.id === id ? { ...s, status: 'running' as const } : s
@@ -440,7 +441,7 @@ export default function AutomationPanel({ className }: { className?: string }) {
 
   const handleStopStrategy = useCallback((id: string) => {
     const api = getApi();
-    api?.strategy?.stopLive?.(id).then((res: Record<string, any>) => {
+    api?.strategy?.stopLive?.(id).then((res: Record<string, unknown>) => {
       if (res?.success) {
         setStrategies(prev => prev.map(s =>
           s.id === id ? { ...s, status: 'stopped' as const } : s
@@ -518,7 +519,7 @@ export default function AutomationPanel({ className }: { className?: string }) {
     ];
     const text = csvLines.join('\n');
     navigator.clipboard.writeText(text).then(() => {
-      alert('Execution history copied to clipboard (CSV format)');
+      Modal.info({ content: 'Execution history copied to clipboard (CSV format)' });
     }).catch((_: unknown) => {
       console.error('[AutomationPanel] clipboard write failed');
     });

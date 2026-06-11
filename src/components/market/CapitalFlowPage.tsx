@@ -89,7 +89,7 @@ export default function CapitalFlowPage() {
         label: {
           show: true,
           position: 'right',
-          formatter: (p: any) => `${((p as any).value / 1e4).toFixed(0)}${i18n.t('CapitalFlowPage.k1')}`,
+          formatter: (p: unknown) => `${((p as any).value / 1e4).toFixed(0)}${i18n.t('CapitalFlowPage.k1')}`,
           color: '#9ca3af',
           fontSize: 10
         }

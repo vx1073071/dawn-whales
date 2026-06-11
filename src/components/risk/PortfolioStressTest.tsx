@@ -80,7 +80,7 @@ export default function PortfolioStressTest() {
           position: 'right',
           color: '#e5e7eb',
           fontSize: 10,
-          formatter: (params: any) => {
+          formatter: (params: unknown) => {
             const scenario = scenarioResults[scenarioResults.length - 1 - (params as any).dataIndex];
             return `${scenario.shockPct >= 0 ? '+' : ''}${(scenario.shockPct * 100).toFixed(0)}%`;
           }

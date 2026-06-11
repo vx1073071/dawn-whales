@@ -10,7 +10,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 // ── Page module map (mirrors App.tsx lazy imports) ──────────────────────
 
-const PAGE_IMPORTS: Record<string, () => Promise<any>> = {
+const PAGE_IMPORTS: Record<string, () => Promise<unknown>> = {
   dashboard: () => import('@/components/dashboard/DashboardPage'),
   market: () => import('@/components/market/MarketPage'),
   strategy: () => import('@/components/strategy/StrategyPage'),

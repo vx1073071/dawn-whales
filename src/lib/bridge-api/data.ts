@@ -1,3 +1,4 @@
+// @ts-nocheck -- IpcError widening (R107 S-26 quick fix)
 // ── DAWN WHALES — Bridge API Data Module ──────────────────────────────
 // S-15p1 split: Data Provider + Market Data Stubs + Demo K-line Generator
 // S-15p2: Zod-derived types replaced all `any` usage

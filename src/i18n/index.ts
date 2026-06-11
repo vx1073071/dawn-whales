@@ -1,12 +1,11 @@
-// ── DAWN WHALES — i18n with lazy locale loading (R92 J-02) ─────────────────
-// Only zh-CN is loaded eagerly (default); other locales lazy-loaded on demand.
-// This reduces the initial bundle from ~2.4MB (9 locales) to ~300KB (1 locale).
+// ── DAWN WHALES — i18n with on-demand locale loading (R107 S-29) ──────────
+// R107 optimization: Detect current language → load only that one file (~30KB).
+// Language switch triggers lazy-load of target language.
+// Eager load: only 'en' as fallback (minimal). Others lazy on first use.
 
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-
-// Eagerly load only the default/fallback locale
-import zhCN from './locales/zh-CN.json';
+import en from './locales/en.json';
 
 export const supportedLanguages = [
   { code: 'zh-CN', label: '简体中文' },
@@ -24,8 +23,9 @@ export const supportedLanguages = [
 
 export type SupportedLang = (typeof supportedLanguages)[number]['code'];
 
-// Dynamic import map for lazy locale loading (R92 J-02)
+// Dynamic import map for lazy locale loading (R107 S-29: all lazy, en as fallback)
 const localeImporters: Record<string, () => Promise<{ default: Record<string, unknown> }>> = {
+  'zh-CN': () => import('./locales/zh-CN.json'),
   'zh-HK': () => import('./locales/zh-HK.json'),
   'zh-TW': () => import('./locales/zh-TW.json'),
   'en': () => import('./locales/en.json'),
@@ -38,8 +38,8 @@ const localeImporters: Record<string, () => Promise<{ default: Record<string, un
   'ru': () => import('./locales/ru.json'),
 };
 
-// Track which locales have been loaded
-const loadedLocales = new Set<string>(['zh-CN']);
+// Track which locales have been loaded (en always loaded as fallback)
+const loadedLocales = new Set<string>(['en']);
 
 // Load a locale dynamically and add it to i18n
 async function loadLocale(lang: string): Promise<void> {
@@ -53,24 +53,25 @@ async function loadLocale(lang: string): Promise<void> {
 
 const savedLang = localStorage.getItem('dw_language') as SupportedLang | null;
 const validLangCodes = Object.keys(localeImporters);
-const defaultLang: SupportedLang = savedLang && (validLangCodes.includes(savedLang) || savedLang === 'zh-CN') ? savedLang : 'zh-CN';
+const detectedLang: SupportedLang = savedLang && validLangCodes.includes(savedLang) ? savedLang : 'zh-CN';
 
-// Initialize with only zh-CN loaded eagerly
+// Initialize with 'en' as fallback (loaded eagerly). Detect user lang on first render.
+const initLang = loadedLocales.has(detectedLang) ? detectedLang : 'en';
 i18n.use(initReactI18next).init({
   resources: {
-    'zh-CN': { translation: zhCN },
+    en: { translation: en },
   },
-  lng: defaultLang,
-  fallbackLng: 'zh-CN',
+  lng: initLang,
+  fallbackLng: 'en',
   interpolation: {
     escapeValue: false,
   },
 });
 
-// If user saved a non-default language, load it asynchronously
-if (defaultLang !== 'zh-CN') {
-  loadLocale(defaultLang).then(() => {
-    i18n.changeLanguage(defaultLang);
+// Load detected language after init
+if (detectedLang !== 'en') {
+  loadLocale(detectedLang).then(() => {
+    i18n.changeLanguage(detectedLang);
   });
 }
 

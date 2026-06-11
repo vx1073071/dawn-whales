@@ -39,12 +39,12 @@ export default function SignalTimeline({
     try {
       const strats = await getAllStrategies();
       const nameMap: Record<string, string> = {};
-      strats.forEach((s: any) => {nameMap[s.id] = s.name || s.id;});
+      strats.forEach((s: unknown) => {nameMap[s.id] = s.name || s.id;});
       setStrategies(nameMap);
 
       const result = await getSignals(strategyId);
       const items = (result || []).
-      map((s: any) => ({
+      map((s: unknown) => ({
         id: s.id || `${s.strategyId}-${s.timestamp}`,
         strategyId: s.strategyId || '',
         strategyName: nameMap[s.strategyId] || s.strategyId || i18n.t('SignalTimeline.k1'),

@@ -11,7 +11,7 @@ interface ParameterDef {
   name: string;
   label: string;
   type: 'number' | 'string' | 'boolean' | 'select';
-  default: any;
+  default: unknown;
   min?: number;
   max?: number;
   step?: number;

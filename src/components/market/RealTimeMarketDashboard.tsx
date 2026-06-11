@@ -100,7 +100,7 @@ export default function RealTimeMarketDashboard() {
   const [streamConnected, setStreamConnected] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
   const flashTimers = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
-  const quoteStreamListener = useRef<((event: any, quotes: any[]) => void) | null>(null);
+  const quoteStreamListener = useRef<((event: unknown, quotes: unknown[]) => void) | null>(null);
 
   const loadQuotes = useCallback(async () => {
     try {
@@ -153,7 +153,7 @@ export default function RealTimeMarketDashboard() {
   useEffect(() => {
     if (typeof window === 'undefined' || !window.api) return;
 
-    const handleQuoteUpdate = (_event: unknown, quoteUpdates: any[]) => {
+    const handleQuoteUpdate = (_event: unknown, quoteUpdates: unknown[]) => {
       if (!Array.isArray(quoteUpdates) || quoteUpdates.length === 0) return;
 
       setQuotes(prev => {

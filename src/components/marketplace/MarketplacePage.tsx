@@ -407,7 +407,7 @@ function MetricBox({ label, value, color = 'text-gray-200' }: {label: string;val
 
 // ── Publish Modal ──────────────────────────────────────────────────────────
 
-function PublishModal({ myStrategies, onClose }: {myStrategies: any[];onClose: () => void;}) {
+function PublishModal({ myStrategies, onClose }: {myStrategies: unknown[];onClose: () => void;}) {
   const [selectedId, setSelectedId] = useState<string>('');
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState('');

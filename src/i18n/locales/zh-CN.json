@@ -6088,5 +6088,8 @@
   "credits.from": "来自",
   "credits.to": "发往",
   "credits.fee": "手续费",
-  "credits.noP2P": "暂无P2P转账"
+  "credits.noP2P": "暂无P2P转账",
+  "SettingsPage.k13": "提示",
+  "SettingsPage.k14": "确认删除",
+  "SettingsPage.k15": "确定要删除该券商吗？"
 }

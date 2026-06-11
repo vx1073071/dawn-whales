@@ -49,7 +49,7 @@ export class OpenDClient {
     );
   }
 
-  async getQuotes(codes: string[]): Promise<any[]> {
+  async getQuotes(codes: string[]): Promise<unknown[]> {
     // Fallback: return mock data if WebSocket is not connected
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
       return codes.map((code) => ({

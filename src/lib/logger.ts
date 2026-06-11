@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — Logger ───────────────────────────────────────────────────
+// ── DAWN WHALES — Logger ───────────────────────────────────────────────────
 // Lightweight logging wrapper. In dev → console; in production → configurable.
 
 const isDev = typeof process !== 'undefined' &&
@@ -20,7 +20,7 @@ class Logger {
     this.prefix = prefix;
   }
 
-  private log(level: LogLevel, ...args: any[]) {
+  private log(level: LogLevel, ...args: unknown[]) {
     if (!isDev && level === 'debug') return; // drop debug in production
     
     const tag = `[${this.prefix}]`;
@@ -37,10 +37,10 @@ class Logger {
     }
   }
 
-  debug(...args: any[]) { this.log('debug', ...args); }
-  info(...args: any[]) { this.log('info', ...args); }
-  warn(...args: any[]) { this.log('warn', ...args); }
-  error(...args: any[]) { this.log('error', ...args); }
+  debug(...args: unknown[]) { this.log('debug', ...args); }
+  info(...args: unknown[]) { this.log('info', ...args); }
+  warn(...args: unknown[]) { this.log('warn', ...args); }
+  error(...args: unknown[]) { this.log('error', ...args); }
 
   /** Create a child logger with sub-prefix */
   child(name: string): Logger {

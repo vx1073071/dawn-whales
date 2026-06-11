@@ -7,7 +7,7 @@ interface Strategy {
   id: string;
   name: string;
   symbol?: string;
-  strategy?: any;
+  strategy?: unknown;
   description?: string;
 }
 

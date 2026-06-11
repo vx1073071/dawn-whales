@@ -33,7 +33,7 @@ export default function PositionMonitor() {
       const accs = await getAccounts();
       if (!accs || accs.length === 0) {setLoading(false);return;}
       const pos = await getPositions(accs[0].accountId || accs[0].accId);
-      setPositions(pos?.map((p: any) => ({
+      setPositions(pos?.map((p: unknown) => ({
         code: p.code,
         name: p.name || p.code,
         qty: p.qty || 0,

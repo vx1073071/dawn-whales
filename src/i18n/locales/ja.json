@@ -5730,5 +5730,8 @@
   "credits.from": "から",
   "credits.to": "へ",
   "credits.fee": "手数料",
-  "credits.noP2P": "P2P送金なし"
+  "credits.noP2P": "P2P送金なし",
+  "SettingsPage.k13": "通知",
+  "SettingsPage.k14": "削除確認",
+  "SettingsPage.k15": "このブローカーを削除しますか？"
 }

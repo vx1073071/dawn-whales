@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { Modal } from 'antd';
 import * as api from '../../lib/bridge-api';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
@@ -278,7 +279,7 @@ export default function BacktestReportPage() {
       <div className="bg-[#12121a] rounded-xl border border-white/5 p-6">
           <div className="text-lg font-medium text-white mb-4">{t(i18n.t('BacktestReportPage.k9'))}</div>
           <div className="grid grid-cols-2 gap-3">
-            {strategies.map((s: any) =>
+            {strategies.map((s: unknown) =>
           <button
           // @ts-ignore — R89 type fix
           key={s.id} as any
@@ -304,7 +305,7 @@ export default function BacktestReportPage() {
             <div>
               // @ts-ignore — R89 type fix
               <label className="text-sm text-gray-400 block mb-1">{t("components.strategy")}</label>
-              <div className="text-white">{(strategies as any[]).find((s: any) => s.id === selectedId)?.name ?? ''}</div>
+              <div className="text-white">{(strategies as any[]).find((s: unknown) => s.id === selectedId)?.name ?? ''}</div>
             </div>
             <div>
               <label className="text-sm text-gray-400 block mb-1">{t(i18n.t('BacktestReportPage.k12'))}</label>
@@ -426,12 +427,12 @@ export default function BacktestReportPage() {
                       options: { dryRun: true, enabled: true }
                     });
                     if (resp?.success) {
-                      alert(`${i18n.t('BacktestReportPage.k20')}${taskName}${i18n.t('BacktestReportPage.k21')}`);
+                      Modal.info({ content: `${i18n.t('BacktestReportPage.k20')}${taskName}${i18n.t('BacktestReportPage.k21')}` });
                     } else {
-                      alert(`❌ ${i18n.t('BacktestReportPage.k3')}: ${resp?.error || 'Unknown error'}`);
+                      Modal.info({ content: `❌ ${i18n.t('BacktestReportPage.k3')}: ${resp?.error || 'Unknown error'}` });
                     }
                   } catch (err: unknown) {
-                    alert(i18n.t('BacktestReportPage.k32'));
+                    Modal.info({ content: i18n.t('BacktestReportPage.k32') });
                   }
                 }}
                 className="px-4 py-2 bg-[#C9A046]/20 hover:bg-[#C9A046]/30 border border-[#C9A046]/30 rounded-lg text-sm text-[#D4A853] font-medium transition-colors shrink-0">

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import i18n from '../../i18n';
 
 interface Props {
-  strategy: any;
+  strategy: unknown;
   onExplain?: (explanation: string) => void;
 }
 

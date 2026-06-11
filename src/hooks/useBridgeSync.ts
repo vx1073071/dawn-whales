@@ -58,7 +58,7 @@ export function useBridgeSync() {
     }, HEALTH_CHECK_INTERVAL);
 
     // Push listener
-    const onPush = (quotes: any[]) => {
+    const onPush = (quotes: unknown[]) => {
       lastPushRef.current = Date.now();
       if (!quotes || quotes.length === 0) return;
       setQuotes(quotes.map(transformQuote));

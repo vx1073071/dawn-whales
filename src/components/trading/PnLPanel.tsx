@@ -34,7 +34,7 @@ export default function PnLPanel() {
       const funds = await getFunds(accs[0].accountId || accs[0].accId);
       const positions = await getPositions(accs[0].accountId || accs[0].accId);
 
-      const unrealized = positions?.reduce((s: number, p: any) => s + (p.pnl || 0), 0) || 0;
+      const unrealized = positions?.reduce((s: number, p: unknown) => s + (p.pnl || 0), 0) || 0;
       const daily = funds?.todayPnl || 0;
       const totalAssets = funds?.totalAssets || 1;
 
@@ -44,10 +44,10 @@ export default function PnLPanel() {
         unrealizedPnl: unrealized,
         dailyPnl: daily,
         dailyPnlPct: (daily / totalAssets) * 100,
-        winCount: positions?.filter((p: any) => (p.pnl || 0) > 0).length || 0,
-        lossCount: positions?.filter((p: any) => (p.pnl || 0) < 0).length || 0,
+        winCount: positions?.filter((p: unknown) => (p.pnl || 0) > 0).length || 0,
+        lossCount: positions?.filter((p: unknown) => (p.pnl || 0) < 0).length || 0,
         winRate: positions?.length > 0
-          ? (positions.filter((p: any) => (p.pnl || 0) > 0).length / positions.length) * 100
+          ? (positions.filter((p: unknown) => (p.pnl || 0) > 0).length / positions.length) * 100
           : 0,
       });
     } catch (e: unknown) {
