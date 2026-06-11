@@ -23,6 +23,230 @@
 - 依赖loose版本: 47 → 0
 - i18n locales: 9 → 10 (+zh-TW)
 
+
+## [1.9.1-pre] — R89 i18n 大规模推进 + EngineError 标准化 + 依赖安全升级
+
+### R89 — i18n 硬编码中文大幅消减 + 引擎错误类型体系建立 + 安全依赖升级
+
+**基线变化**: v1.9.0 GA → R89 完成 | **Commits**: 11 | **Files changed**: 188 | **Insertions**: 53,139 | **Deletions**: 6,583
+
+#### 概览
+
+R89 是 v1.9.0 GA 后的第一个功能迭代轮次，核心目标：
+
+1. **i18n 大规模推进** — 消减硬编码中文 ≥15,000 chars
+2. **EngineError 标准化** — 建立结构化错误类型体系
+3. **安全依赖升级** — npm audit 0 漏洞
+
+5 虾协同完成，最终成果：
+
+- i18n: -18,106 chars（超目标 20.7%）
+- EngineError: 93 文件覆盖（12.9%）
+- npm audit: 0 vulnerabilities
+- TSC: 0 errors
+- Build: 0 errors
+
+---
+
+#### 1. i18n 国际化 — 超目标 20.7%
+
+i18n 是 R89 的最大亮点。ML 作为主力超额完成。
+
+**第一波 (ML M-01)**:
+- 硬编码中文: 51,081 → 32,681 chars（**-18,400 chars**）
+- 75 个 Electron 层文件完成 `i18n.t()` 集成
+- zh-CN.json 新增 2,493 keys + 同步翻译 9 locale
+- React 文件 defer（JSX 语法问题）
+
+**补充 (ML M-02)**:
+- React v3 翻译 304 keys 加入 11 locales
+- React 组件 i18n key 预留，待 R90 集成
+
+**第二波 (ML M-01 末)**:
+- 11 个 React 组件完成 useTranslation + i18n.t()
+- -6,173 chars, 837 keys
+- 模块级 + 组件级全覆盖
+
+**最终指标**:
+- 硬编码中文: 51,081 → 32,975 = **-18,106 chars**
+- zh-CN.json: 新增 **2,797 keys**
+- **11 locales 全量同步**
+
+**i18n 技术要点**:
+- 模块级: `import i18n from '../i18n'` 单例
+- 组件级: `const { t } = useTranslation()` hook
+- Object key: `[i18n.t('key')]` computed property
+- 模板: `\${i18n.t('key')}\` 直接使用
+- 日志、错误消息、UI 文本全替换
+
+---
+
+#### 2. EngineError 标准化 — 结构化错误类型体系
+
+JVS 建立完整 EngineError 类型系统。
+
+**核心模块**: `electron/engine/core/engine-error.ts` (200+ 行)
+
+**ErrorDomain 枚举 (7 域)**:
+- `TRADE` — 交易（下单、撤单、余额不足）
+- `DATA` — 数据（行情、历史数据、数据损坏）
+- `AI` — AI（模型超时、解析错误、限流）
+- `AUTH` — 认证（未授权、Token 过期）
+- `NETWORK` — 网络（连接失败、WebSocket）
+- `VALIDATION` — 校验（参数无效、字段缺失）
+- `SYSTEM` — 系统（内部错误、关停）
+
+**ErrorCode 枚举 (19 码)**: 按域分组，每域 2-4 个细粒度码
+
+**EngineError 类**:
+- 标准构造: `new EngineError(domain, code, message, options?)`
+- Legacy 构造: `new EngineError(message, options?)` → SYSTEM/INTERNAL_ERROR
+- 静态工厂: `.data()`, `.trade()`, `.ai()`, `.auth()`, `.system()`, `.validation()`
+- `toJSON()` 序列化
+- HTTP 状态码自动映射
+- Legacy code 自动映射（20+ 映射）
+
+**兼容层**: `electron/errors.ts` re-export，78+ 文件自动标准化
+
+**首批转换**: 22 文件, 59 处 throw new Error → EngineError
+
+**R89 基线**: 93/723 文件 (12.9%)
+
+---
+
+#### 3. npm audit 安全升级 — 0 漏洞
+
+| 包 | 旧版本 | 新版本 |
+|---|--------|--------|
+| express | 4.21.0 | ^4.22.2 |
+| eslint | 9.39.4 | 9.39.0 |
+| electron | 33.0.0 | 40.6.1 |
+| vite | ^5.4.21 | ^6.3.5 |
+| vitest | 1.6.1 | ^3.2.1 |
+| @vitejs/plugin-react | 4.3.1 | ^4.5.2 |
+| postcss | 8.4.38 | ^8.5.10 |
+| @vitest/coverage-v8 | 1.6.1 | ^3.2.1 |
+| overrides: tar | — | ^7.5.11 |
+| overrides: esbuild | — | >=0.25.0 |
+
+**结果**: npm audit **0 vulnerabilities**
+
+---
+
+#### 4. TSC 0 + Build 0 — 构建系统加固
+
+**Vite 6 升级**:
+- Electron SSR: `target: 'node22'`
+- Renderer: `target: 'es2022'`
+
+**TypeScript 0 errors**:
+- 15+ .tsx/.ts 文件修复
+- nl-parser.ts: 52 个 computed property key
+- 3 个 broken import 修复
+
+**Build 0 errors**: Vite 6.4.3 三个 bundle 成功
+
+---
+
+#### 5. 测试修复 + 质量收敛
+
+- QClaw TSC 0 errors 确认
+- 测试 import 路径修复
+- vitest exclude 清理
+- 21 个 broken tests exclude（fail≤84）
+- i18n: 1,169 处 t()→str, 60+ 文件
+
+---
+
+#### 6. 孤儿文件清理 + Git 卫生
+
+- 删除: main.new.ts, main.new2.ts, t50.bak (-975 行)
+- 删除: 8 个 merged remote branches
+- 11 commits 全部规范 message
+
+---
+
+#### 指标对比表
+
+| 指标 | R88 基线 | R89 结果 | 目标 | 状态 |
+|------|---------|---------|------|------|
+| TSC errors | 729 | **0** | 0 | ✅ DONE |
+| Build errors | — | **0** | 0 | ✅ DONE |
+| npm audit | 1 high | **0** | 0 | ✅ DONE |
+| i18n 硬编码中文 | 51,081 | 32,975 | ≤36,081 | ✅ 超 20.7% |
+| i18n keys (zh-CN) | ~800 | ~3,600 | — | ✅ +2,797 |
+| Locales | 9 | 11 | — | ✅ |
+| EngineError 覆盖 | 4 处 | 93/723 (12.9%) | ≥10% | ✅ DONE |
+| raw throw new Error | 5 | 3 (legit) | ≤3 | ✅ DONE |
+| any 类型 | ~273 | ~250 | ≤500 | ✅ |
+| 孤儿文件 | 3 | 0 | 0 | ✅ DONE |
+| Tests excluded | 8 | 21 | ≤10 | ⚠️ R90 |
+| Test fail | ~84 | ≤84 | ≤30 | ⚠️ R90 |
+
+---
+
+#### Commits 明细 (11 commits)
+
+| # | Commit | Author | Description |
+|---|--------|--------|-------------|
+| 1 | `b1d58fa7` | youdao | D-01 R82-R88 CHANGELOG + D-02 R89-R94 roadmap |
+| 2 | `c1a30ac0` | JVS | EngineError + npm audit + 孤儿文件删除 |
+| 3 | `75f1d174` | JVS | EngineError 22 files (59 throw→EngineError) |
+| 4 | `e97d4495` | QClaw | test import paths + vitest exclude cleanup |
+| 5 | `db8e3c40` | ML | i18n第一波: -18400 chars, 75 files, 2493 keys |
+| 6 | `07db9797` | ML | React v3 翻译 304 keys, 11 locales |
+| 7 | `f99fa8b2` | QClaw | TSC 0 + test fixes + i18n cleanup |
+| 8 | `d8e4894e` | JVS | EngineError + audit 0 + TSC 0 + build 0 |
+| 9 | `bc21b044` | JVS | cleanup remaining files |
+| 10 | `b635529f` | ML | React i18n: 11 组件 -6173 chars, 837 keys |
+| 11 | `1696cb55` | QClaw | exclude 21 broken tests (fail≤84) |
+
+---
+
+#### 各虾贡献
+
+| 虾 | 角色 | R89 贡献 |
+|----|------|---------|
+| JVS | 引擎虾 | EngineError 类型体系, npm audit 0, TSC/build 0, 孤儿文件 |
+| ML | 前端虾 | i18n 主力: -18,106 chars, 837 keys, 11 locales, 11 组件 |
+| QClaw | 测试虾 | TSC 验证, test 修复, exclude 清理, i18n 辅助 |
+| youdao | 文档虾 | R82-R88 CHANGELOG, R89-R94 roadmap |
+| PM | 守护虾 | 统筹 + 审计 + TSC 辅助 |
+
+---
+
+#### 已知问题 (Known Issues)
+
+1. **QClaw 测试 fail 偏高**: 当前 ≤84 (21 excluded), 目标 ≤30 — R90 修复
+2. **EngineError 覆盖率偏低**: 12.9%, 目标 50% — R90-R92 批量转换
+3. **React i18n 未完全集成**: 837 keys 预留 — R90 第二波
+4. **vitest 覆盖率未报告**: R90 补报
+5. **E2E 框架缺失**: Playwright — R90 基础搭建
+
+---
+
+#### 升级指南
+
+**开发者**:
+1. `npm install --ignore-scripts`
+2. `npm run build` — Vite 6.4.3
+3. EngineError import: `import { EngineError, ErrorDomain, ErrorCode } from '...'`
+4. 替换 `throw new Error(msg)` → `throw new EngineError(domain, code, msg)`
+5. i18n: `i18n.t('key')` 替代硬编码中文
+
+**运维**:
+- electron 升级到 40.6.1
+- vite 升级到 6.3.5
+- vitest 升级到 3.2.1
+
+---
+
+#### 致谢
+
+5 虾协同: JVS (引擎+安全), ML (i18n 主力), QClaw (测试+TSC), youdao (文档), PM (统筹+审计)
+
+---
+
 ## [1.9.0 GA] - 2026-06-09
 
 ### R77-R81 5轮收官 — v1.9.0 GA 最终发布
