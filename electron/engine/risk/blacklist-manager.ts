@@ -10,17 +10,17 @@ export interface BlacklistEntry {
   reason: string;
   addedBy: string;
   addedAt: string;
-  expiresAt?: string; // 可选expiry时间
+  expiresAt?: string; // optional expiry
   removedAt?: string;
   removedBy?: string;
   status: 'active' | 'expired' | 'removed';
-  relatedTransfers: string[]; // 关联的transferID
+  relatedTransfers: string[]; // linked transfer IDs
   notes?: string;
 }
 
 export class BlacklistManager {
   private blacklist = new Map<string, BlacklistEntry>();
-  private whitelist = new Set<string>(); // 始终允许的地址
+  private whitelist = new Set<string>(); // always allowed addresses
 
  /** user */
   add(userId: string, reason: string, addedBy: string, expiresInDays?: number, notes?: string): BlacklistEntry {

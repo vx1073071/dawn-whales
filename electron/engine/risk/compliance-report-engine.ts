@@ -254,7 +254,7 @@ export class ComplianceReportEngine {
     );
 
     const respondedAlerts = riskAlerts.filter(alert => {
-      const responseTime = 24 * 60 * 60 * 1000; // 24 小时
+      const responseTime = 24 * 60 * 60 * 1000; // 24 hours
       return Date.now() - alert.timestamp < responseTime;
     });
 
@@ -490,7 +490,7 @@ export class ComplianceReportEngine {
  //
     const recommendations = checkResults
       .flatMap(r => r.recommendations || [])
-      .filter((rec, index, self) => self.indexOf(rec) === index); // 去重
+      .filter((rec, index, self) => self.indexOf(rec) === index); // deduplicate
 
  // audit
     const criticalEvents = auditLogs.filter(log => log.severity === 'CRITICAL').length;

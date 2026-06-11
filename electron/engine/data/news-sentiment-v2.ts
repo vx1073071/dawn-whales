@@ -66,7 +66,7 @@ const DEFAULT_SOURCE_WEIGHTS: Record<NewsSource, number> = {
   CNBC: 0.8,
   Caixin: 0.8,
   SecuritiesTimes: 0.7,
-  经济日报: 0.7,
+  Economic Daily: 0.7,
   Sina: 0.6,
   AAstocks: 0.6,
   eastmoney: 0.6,

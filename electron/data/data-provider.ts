@@ -17,23 +17,23 @@ export interface FundamentalData {
   symbol: string;
   pe: number | null;             // P/E ratio
   pb: number | null;             // P/B ratio
-  marketCap: number | null;      // market cap (亿)
-  revenue: number | null;        // revenue (亿)
-  netProfit: number | null;      // net profit (亿)
-  roe: number | null;            // 净资产收益率
-  debtRatio: number | null;      // 资产负债率
-  revenueGrowth: number | null;  // revenue增长率
-  profitGrowth: number | null;   // 利润增长率
+  marketCap: number | null;      // market cap (100M CNY)
+  revenue: number | null;        // revenue (100M CNY)
+  netProfit: number | null;      // net profit (100M CNY)
+  roe: number | null;            // ROE
+  debtRatio: number | null;      // debt ratio
+  revenueGrowth: number | null;  // revenue growth rate
+  profitGrowth: number | null;   // profit growth rate
   updatedAt: number;
 }
 
 export interface CapitalFlowData {
   symbol: string;
-  mainNetInflow: number | null;  // major player净流入 (万)
-  superLargeIn: number | null;   // 超大单流入
-  largeIn: number | null;        // 大单流入
-  mediumIn: number | null;       // 中单流入
-  smallIn: number | null;        // 小单流入
+  mainNetInflow: number | null;  // net inflow (10K CNY)
+  superLargeIn: number | null;   // super-large order inflow
+  largeIn: number | null;        // large order inflow
+  mediumIn: number | null;       // mid order inflow
+  smallIn: number | null;        // small order inflow
   updatedAt: number;
 }
 
@@ -81,7 +81,7 @@ export interface StockDigest {
 
 export class DataProviderService {
  // cache TTL 
-  private static FUNDAMENTAL_TTL = 24 * 60 * 60 * 1000;    // 24h（financial report不常变）
+  private static FUNDAMENTAL_TTL = 24 * 60 * 60 * 1000;    // 24h (financial reports rarely change)
   private static CAPITAL_FLOW_TTL = 5 * 60 * 1000;          // 5min
   private static REGIME_TTL = 60 * 60 * 1000;               // 1h
   private static ANOMALY_TTL = 15 * 60 * 1000;              // 15min
@@ -553,8 +553,8 @@ export class DataProviderService {
     score: number;           // 0-100
     dimensions: {
       fundamental: number;   // fundamental 0-100
-      capitalFlow: number;   // 资金面 0-100
-      anomaly: number;       // 异动 0-100 (越高越危险)
+      capitalFlow: number;   // capital flow 0-100
+      anomaly: number;       // anomaly 0-100 (higher = riskier)
       regime: string;        // current regime
     };
     signals: AnomalySignal[];
@@ -568,7 +568,7 @@ export class DataProviderService {
     ]);
 
  // fundamental（PE/PB/ROE/）
-    let fundamentalScore = 50; // default中性
+    let fundamentalScore = 50; // default neutral
     if (fundamental) {
       if (fundamental.pe !== null && fundamental.pe > 0 && fundamental.pe < 20) fundamentalScore += 10;
       if (fundamental.roe !== null && fundamental.roe > 15) fundamentalScore += 15;

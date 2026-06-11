@@ -1,13 +1,13 @@
-/**
+﻿/**
  * Built-in dimension scorers: Validity, Uniformity.
  * @module engine/data-quality/data-quality-scorer-dim-c
  */
 
 import type { DimensionResult, QualityContext, QualityIssue } from './data-quality-scorer-types';
-import { numField, clamp } from './data-quality-scorer-utils';
+import { numField, clamp, extractTimestamp } from './data-quality-scorer-utils';
 
-// ������������������������������������������������ Built-in Dimension Scorers ������������������������������������������������
-
+// Built-in Dimension Scorers: Validity, Uniformity
+export function scoreValidity(data: unknown[], context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
   const metadata: Record<string, any> = {};
   const total = data.length;
@@ -134,7 +134,7 @@ import { numField, clamp } from './data-quality-scorer-utils';
       message: `${invalidPrices} price value(s) are zero or negative.`,
       affectedRows: invalidPrices,
       percentage: parseFloat(((invalidPrices / (total * 4)) * 100).toFixed(2)),
-      suggestion: 'Validate price data at ingestion �?prices must be positive.',
+      suggestion: 'Validate price data at ingestion ?prices must be positive.',
     });
   }
 
@@ -145,7 +145,7 @@ import { numField, clamp } from './data-quality-scorer-utils';
       message: `${extremePrices} extreme price outlier(s) detected (IQR method).`,
       affectedRows: extremePrices,
       percentage: parseFloat(((extremePrices / (total * 4)) * 100).toFixed(2)),
-      suggestion: 'Review extreme values �?may indicate data feed errors or genuine market events.',
+      suggestion: 'Review extreme values ?may indicate data feed errors or genuine market events.',
     });
   }
 
@@ -178,7 +178,7 @@ import { numField, clamp } from './data-quality-scorer-utils';
       message: `${invalidTimestamps} timestamp(s) outside reasonable range (2000-2050).`,
       affectedRows: invalidTimestamps,
       percentage: parseFloat(((invalidTimestamps / total) * 100).toFixed(2)),
-      suggestion: 'Fix timestamp parsing �?values should be within 2000-2050.',
+      suggestion: 'Fix timestamp parsing ?values should be within 2000-2050.',
     });
   }
 
@@ -201,7 +201,7 @@ import { numField, clamp } from './data-quality-scorer-utils';
 }
 
 /**
- * 7. Uniformity �?consistent formatting, no mixed types in fields.
+ * 7. Uniformity ?consistent formatting, no mixed types in fields.
  */
 export function scoreUniformity(data: unknown[], _context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
@@ -292,7 +292,7 @@ export function scoreUniformity(data: unknown[], _context: QualityContext): Dime
       message: `${nonUniformFields} field(s) have mixed data types.`,
       affectedRows: total,
       percentage: parseFloat(((nonUniformFields / Math.max(fieldTypeInfo.size, 1)) * 100).toFixed(2)),
-      suggestion: 'Standardize field types �?cast all values in a field to the same type.',
+      suggestion: 'Standardize field types ?cast all values in a field to the same type.',
     });
   }
 

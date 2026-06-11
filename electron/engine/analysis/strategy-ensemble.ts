@@ -37,11 +37,11 @@ export interface EnsembleSignal {
 
 export interface EnsembleConfig {
   strategies: Strategy[];
-  minConfidence: number;    // 最低置信度threshold
+  minConfidence: number;    // min confidence threshold
   consensusThreshold: number; // consistencythreshold
   rebalanceFrequency: 'daily' | 'weekly' | 'monthly';
   maxDrawdown: number;      // max drawdownlimit
-  riskFreeRate: number;     // 无风险利率
+  riskFreeRate: number;     // risk-free rate
 }
 
 export interface EnsembleMetrics {

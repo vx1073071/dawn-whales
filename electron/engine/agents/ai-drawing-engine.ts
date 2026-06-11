@@ -234,7 +234,7 @@ function findHorizontalLevels(
       lines.push({
         id: `${type}-${cluster.price.toFixed(2)}`,
         type,
-        label: `${labelCN} ${cluster.price.toFixed(2)} (${cluster.count}次)`,
+        label: `${labelCN} ${cluster.price.toFixed(2)} (${cluster.count} hits)`,
         confidence,
         points: [
           { x: 0, y: cluster.price, time: klines[klines.length - 1]?.time ?? Date.now() },

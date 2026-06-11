@@ -9,12 +9,12 @@ import log from 'electron-log';
 
 export interface RiskMetricsResult {
   // Return metrics
-  totalReturn: number;          // 总收益率 %
+  totalReturn: number;          // total return %
   annualizedReturn: number;     // annualized return %
   
   // Risk metrics
-  volatility: number;           // 年化volatility %
-  downsideVolatility: number;   // downside volatility率 %
+  volatility: number;           // annualized volatility %
+  downsideVolatility: number;   // downside volatility %
   
   // VaR / CVaR
   var95: number;                // 95% VaR (parametric)

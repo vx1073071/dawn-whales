@@ -287,7 +287,7 @@ export class PortfolioReviewEngine {
       const worst = annual.topDetractors[0];
       if (worst) keyTakeaways.push(`Worst detractor: ${worst.symbol} (${worst.contribution})`);
     }
-    if (annual && annual.realizedPnL > 0) keyTakeaways.push(`Realized gains: +HK$${(annual.realizedPnL / 10000).toFixed(1)}万`);
+    if (annual && annual.realizedPnL > 0) keyTakeaways.push(`Realized gains: +HK$${(annual.realizedPnL / 10000).toFixed(1)}W`);
     if (!keyTakeaways.length) keyTakeaways.push('Performance metrics within normal range');
 
     const topRecommendations: string[] = [];

@@ -274,7 +274,7 @@ export class StressTestEngineV2 {
     if (impactedPositions.length > 0) {
       const topLoss = impactedPositions.sort((a, b) => a.shockLoss - b.shockLoss)[0];
       if (topLoss) {
-        suggestions.push(`📉 Largest impact: ${topLoss.symbol} (${topLoss.shockLossPct}%, HK$${(Math.abs(topLoss.shockLoss) / 10000).toFixed(1)}万)`);
+        suggestions.push(`📉 Largest impact: ${topLoss.symbol} (${topLoss.shockLossPct}%, HK$${(Math.abs(topLoss.shockLoss) / 10000).toFixed(1)}W)`);
       }
     }
     if (scenario.volMultiplier > 3) {

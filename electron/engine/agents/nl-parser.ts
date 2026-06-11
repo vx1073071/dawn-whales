@@ -149,16 +149,16 @@ interface ATRConfig {
 
 function extractATRConfig(text: string): ATRConfig | null {
  // "ATR 14" / "14ATR" / "ATRstop loss"
-  const periodMatch = text.match(/ATR\s*(\d+)|(\d+)\s*日\s*ATR/i);
+  const periodMatch = text.match(/ATR\s*(\d+)|(\d+)\s*\\u65e5\s*ATR/i);
   const period = periodMatch
     ? parseInt(periodMatch[1] || periodMatch[2])
     : 14;
 
-  const multMatch = text.match(/(?:ATR?\s*(?:止损|倍|×|x)|止损\s*(?:ATR?|\d+))(?:\s*(?:ATR?|\d+)\s*[倍×xX])?\s*(\d+(?:\.\d+)?)/i)
-    || text.match(/(?:\d+(?:\.\d+)?)\s*(?:倍|×|x)\s*ATR/i);
+  const multMatch = text.match(/(?:ATR?\s*(?:\\u6b62\\u635f|\\u500d|×|x)|\\u6b62\\u635f\s*(?:ATR?|\d+))(?:\s*(?:ATR?|\d+)\s*[\\u500d×xX])?\s*(\d+(?:\.\d+)?)/i)
+    || text.match(/(?:\d+(?:\.\d+)?)\s*(?:\\u500d|×|x)\s*ATR/i);
   const multiplier = multMatch ? parseFloat(multMatch[1]) : 2;
 
-  if (/ATR|日\s*ATR/i.test(text) && period > 0) {
+  if (/ATR|\\u65e5\s*ATR/i.test(text) && period > 0) {
     return { period, multiplier };
   }
   return null;
@@ -171,10 +171,10 @@ type MatcherResult = Omit<ParsedStrategy, 'success' | 'symbol'> & { symbol?: str
 function matchMACross(text: string): MatcherResult | null {
  // "MA5 MA20 " / "moving average MA10 MA30" / "5moving average20moving average"
   const patterns = [
-    /MA(\d+)\s*(?:上穿|金叉|cross.*up|crosses\s*above)\s*MA(\d+)/i,
-    /均线?\s*(\d+)\s*(?:日)?\s*(?:上穿|金叉|交叉)\s*(?:均线?\s*)?(\d+)/i,
-    /(\d+)\s*日均线.*?上穿.*?(\d+)\s*日均线/i,
-    /MA(\d+)\s*.*(?:cross|交叉|金叉).*MA(\d+)/i,
+    /MA(\d+)\s*(?:\\u4e0a\\u7a7f|\\u91d1\\u53c9|cross.*up|crosses\s*above)\s*MA(\d+)/i,
+    /\\u5747\\u7ebf?\s*(\d+)\s*(?:\\u65e5)?\s*(?:\\u4e0a\\u7a7f|\\u91d1\\u53c9|\\u4ea4\\u53c9)\s*(?:\\u5747\\u7ebf?\s*)?(\d+)/i,
+    /(\d+)\s*\\u65e5\\u5747\\u7ebf.*?\\u4e0a\\u7a7f.*?(\d+)\s*\\u65e5\\u5747\\u7ebf/i,
+    /MA(\d+)\s*.*(?:cross|\\u4ea4\\u53c9|\\u91d1\\u53c9).*MA(\d+)/i,
   ];
 
   for (const p of patterns) {
@@ -196,8 +196,8 @@ function matchMACross(text: string): MatcherResult | null {
 
 function matchRSI(text: string): MatcherResult | null {
  // "RSI 30 " / "RSI < 30 , RSI > 70 " / "RSI"
-  const buyMatch = text.match(/RSI\s*(?:低于|小于|<|<=|below)\s*(\d+)/i);
-  const sellMatch = text.match(/RSI\s*(?:高于|大于|>|>=|above)\s*(\d+)/i);
+  const buyMatch = text.match(/RSI\s*(?:\\u4f4e\\u4e8e|\\u5c0f\\u4e8e|<|<=|below)\s*(\d+)/i);
+  const sellMatch = text.match(/RSI\s*(?:\\u9ad8\\u4e8e|\\u5927\\u4e8e|>|>=|above)\s*(\d+)/i);
 
   if (buyMatch) {
     const oversold = parseInt(buyMatch[1]);
@@ -210,7 +210,7 @@ function matchRSI(text: string): MatcherResult | null {
   }
 
  // "RSI " shorthand
-  if (/RSI\s*超卖/i.test(text)) {
+  if (/RSI\s*\\u8d85\\u5356/i.test(text)) {
     return {
       name: i18n.t('nlParser.k63'),
       description: i18n.t('nlParser.k64'),
@@ -223,9 +223,9 @@ function matchRSI(text: string): MatcherResult | null {
 
 function matchMACD(text: string): MatcherResult | null {
  // "MACD " / "MACD " / "MACD cross"
-  if (/MACD\s*(?:金叉|cross\s*up|bullish)/i.test(text)) {
-    const fast = extractNumber(text, /快线\s*(\d+)/i) ?? 12;
-    const slow = extractNumber(text, /慢线\s*(\d+)/i) ?? 26;
+  if (/MACD\s*(?:\\u91d1\\u53c9|cross\s*up|bullish)/i.test(text)) {
+    const fast = extractNumber(text, /\\u5feb\\u7ebf\s*(\d+)/i) ?? 12;
+    const slow = extractNumber(text, /\\u6162\\u7ebf\s*(\d+)/i) ?? 26;
     return {
       name: i18n.t('nlParser.k65'),
       description: i18n.t('nlParser.k66'),
@@ -237,10 +237,10 @@ function matchMACD(text: string): MatcherResult | null {
 
 function matchMomentum(text: string): MatcherResult | null {
  // " 5% " / "20new high" / "momentumbreakout" / "Nbreakout"
-  const lookback = extractNumber(text, /(\d+)\s*日/i) ?? 20;
-  const threshold = extractNumber(text, /(?:涨|跌|突破|涨幅|变化)\s*(\d+)\s*%/i) ?? 5;
+  const lookback = extractNumber(text, /(\d+)\s*\\u65e5/i) ?? 20;
+  const threshold = extractNumber(text, /(?:\\u6da8|\\u8dcc|\\u7a81\\u7834|\\u6da8\u5e45|\\u53d8\\u5316)\s*(\d+)\s*%/i) ?? 5;
 
-  if (/\d+\s*日?\s*(?:新高|突破|高点)/i.test(text) || /momentum|动量/i.test(text)) {
+  if (/\d+\s*\\u65e5?\s*(?:\\u65b0\\u9ad8|\\u7a81\\u7834|\\u9ad8\\u70b9)/i.test(text) || /momentum|\\u52a8\\u91cf/i.test(text)) {
     return {
       name: i18n.t('nlParser.k67'),
       description: i18n.t('nlParser.k68'),
@@ -252,7 +252,7 @@ function matchMomentum(text: string): MatcherResult | null {
 
 function matchBollinger(text: string): MatcherResult | null {
  // "Bollinger Bands" / "Bollinger lower band buy" / ""
-  if (/布林|bollinger|boll/i.test(text) && /(下轨|lower|底部|支撑)/i.test(text)) {
+  if (/\\u5e03\\u6797|bollinger|boll/i.test(text) && /(\\u4e0b\\u8f68|lower|\\u5e95\\u90e8|\\u652f\\u6491)/i.test(text)) {
     return {
       name: i18n.t('nlParser.k69'),
       description: i18n.t('nlParser.k70'),
@@ -294,7 +294,7 @@ function matchPriceCondition(text: string): PriceConditionResult | null {
   // ── Operator priority (most specific first) ──────────────────────
 
   // 1. crosses_above: crossing UP through the price level
-  if (/上穿|涨破|突破|升穿|crosses?\s*above|cross.*up/i.test(text)) {
+  if (/\\u4e0a\\u7a7f|\\u6da8\u7834|\\u7a81\\u7834|\\u5347\\u7a7f|crosses?\s*above|cross.*up/i.test(text)) {
     return {
       name: i18n.t('nlParser.k71'),
       description: i18n.t('nlParser.k73'),
@@ -304,7 +304,7 @@ function matchPriceCondition(text: string): PriceConditionResult | null {
   }
 
   // 2. crosses_below: crossing DOWN through the price level
-  if (/下穿|跌破|跌穿|降穿|crosses?\s*below|cross.*down/i.test(text)) {
+  if (/\\u4e0b\\u7a7f|\\u8dcc\u7834|\\u8dcc\u7a7f|\\u964d\\u7a7f|crosses?\s*below|cross.*down/i.test(text)) {
     return {
       name: i18n.t('nlParser.k74'),
       description: i18n.t('nlParser.k76'),
@@ -314,7 +314,7 @@ function matchPriceCondition(text: string): PriceConditionResult | null {
   }
 
   // 3. steady above: price is already above the target
-  if (/超过|高于|涨到|升到|价格超过|价格高于|above\b|\+\s*\$/i.test(text)) {
+  if (/\\u8d85\\u8fc7|\\u9ad8\\u4e8e|\\u6da8\u5230|\\u5347\\u5230|\\u4ef7\\u683c\\u8d85\\u8fc7|\\u4ef7\\u683c\\u9ad8\\u4e8e|above\b|\+\s*\$/i.test(text)) {
     return {
       name: i18n.t('nlParser.k77'),
       description: i18n.t('nlParser.k79'),
@@ -324,7 +324,7 @@ function matchPriceCondition(text: string): PriceConditionResult | null {
   }
 
   // 4. steady below: price is already below the target
-  if (/低于|价格低于|价格\s*<|price\s*<|\s<\s|below\b/i.test(text)) {
+  if (/\\u4f4e\\u4e8e|\\u4ef7\\u683c\\u4f4e\\u4e8e|\\u4ef7\\u683c\s*<|price\s*<|\s<\s|below\b/i.test(text)) {
     return {
       name: i18n.t('nlParser.k80'),
       description: i18n.t('nlParser.k82'),
@@ -353,26 +353,26 @@ function _stubMatchPriceCondition(_text: string): PriceConditionResult | null { 
 
 function extractRiskManagement(text: string, strategy: ParsedStrategy['strategy']): void {
  // "stop loss 3%" / "stop loss 3%" / " 3% stop loss" / " 3%"
-  const slMatch = text.match(/(?:止损|stop\s*loss|亏(?:损)?|赔)\s*(\d+(?:\.\d+)?)\s*%/i);
+  const slMatch = text.match(/(?:\\u6b62\\u635f|stop\s*loss|\\u4e8f(?:\\u635f)?|\\u8d54)\s*(\d+(?:\.\d+)?)\s*%/i);
   if (slMatch) strategy.stopLoss = parseFloat(slMatch[1]);
 
  // "take profit 5%" / " 5% " / "take profit 5%" / " 5%" / " 5%"
-  const tpMatch = text.match(/(?:止盈|take\s*profit|目标|涨|赚)\s*(\d+(?:\.\d+)?)\s*%\s*(?:卖出|平仓|exit)?/i);
+  const tpMatch = text.match(/(?:\\u6b62\\u76c8|take\s*profit|\\u76ee\\u6807|\\u6da8|\\u8d5a)\s*(\d+(?:\.\d+)?)\s*%\s*(?:\\u5356\\u51fa|\\u5e73\\u4ed3|exit)?/i);
   if (tpMatch) {
     strategy.takeProfit = parseFloat(tpMatch[1]);
   }
 
  // " X% " as take-profit (only if no other SELL signal)
   if (!strategy.takeProfit) {
-    const sellPctMatch = text.match(/涨\s*(\d+(?:\.\d+)?)\s*%\s*卖出/i);
+    const sellPctMatch = text.match(/\\u6da8\s*(\d+(?:\.\d+)?)\s*%\s*\\u5356\\u51fa/i);
     if (sellPctMatch) {
       strategy.takeProfit = parseFloat(sellPctMatch[1]);
     }
   }
 
  // "NATRstop loss" / "ATRstop loss" — ATR-based stop loss（ risk-engine.ts ）
-  const atrMatch = text.match(/(\d+(?:\.\d+)?)\s*[倍×xX]?\s*ATR\s*(?:止损|止损平仓)/i)
-    || text.match(/ATR\s*(?:止损)\s*(?:\d+(?:\.\d+)?)?\s*[倍×xX]?/i);
+  const atrMatch = text.match(/(\d+(?:\.\d+)?)\s*[\\u500d×xX]?\s*ATR\s*(?:\\u6b62\\u635f|\\u6b62\\u635f\\u5e73\\u4ed3)/i)
+    || text.match(/ATR\s*(?:\\u6b62\\u635f)\s*(?:\d+(?:\.\d+)?)?\s*[\\u500d×xX]?/i);
   if (atrMatch) {
  // ：strategy.stopLoss = -1 ATR stop loss
     strategy.stopLoss = -1; // -1 ATR
@@ -474,7 +474,7 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
   // Phase 4.2: Try PriceCondition matcher.
   // Only match when an explicit stock symbol is present AND no risk-management keywords.
  // This prevents false matches on: "RSI 20", "stop loss 3%", "MA5MA20TQQQstop loss5%".
-  const hasRiskMgmt = /止损|止盈|stop\s*loss|take\s*profit/i.test(normalized);
+  const hasRiskMgmt = /\\u6b62\\u635f|\\u6b62\\u76c8|stop\s*loss|take\s*profit/i.test(normalized);
   if (extractSymbol(normalized) && !hasRiskMgmt) {
     const priceResult = matchPriceCondition(normalized);
     if (priceResult) {
@@ -528,7 +528,7 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
   }).catch((_: unknown) => {});
 
   // Fallback: try to detect any indicator mention
-  const hasIndicator = /RSI|MACD|MA|均线|布林|bollinger|动量|momentum/i.test(text);
+  const hasIndicator = /RSI|MACD|MA|\\u5747\\u7ebf|\\u5e03\\u6797|bollinger|\\u52a8\\u91cf|momentum/i.test(text);
   if (hasIndicator) {
     log.warn('[NLParser] Indicator detected but no pattern matched:', text);
     return {

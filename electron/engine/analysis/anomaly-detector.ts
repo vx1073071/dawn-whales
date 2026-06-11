@@ -231,7 +231,7 @@ export class AnomalyDetector {
     const score = totalWeight > 0 ? weightedScore / totalWeight : 0;
 
     return {
-      isAnomaly: score > 0.7, // threshold可以调整
+      isAnomaly: score > 0.7, // threshold is adjustable
       score,
       details,
     };

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Built-in dimension scorers: Timeliness, Consistency, Uniqueness.
  * @module engine/data-quality/data-quality-scorer-dim-b
  */
@@ -6,7 +6,9 @@
 import type { DimensionResult, QualityContext, QualityIssue } from './data-quality-scorer-types';
 import { intervalToMs, extractTimestamp, clamp } from './data-quality-scorer-utils';
 
-// ������������������������������������������������ Built-in Dimension Scorers ������������������������������������������������
+// Built-in Dimension Scorers: Timeliness, Consistency, Uniqueness, Validity
+
+export function scoreTimeliness(data: unknown[], context: QualityContext): DimensionResult {
 
   const issues: QualityIssue[] = [];
   const metadata: Record<string, any> = {};
@@ -127,7 +129,7 @@ import { intervalToMs, extractTimestamp, clamp } from './data-quality-scorer-uti
 }
 
 /**
- * 4. Consistency �?no contradictions, stable schema across rows.
+ * 4. Consistency ?no contradictions, stable schema across rows.
  */
 export function scoreConsistency(data: unknown[], _context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
@@ -145,7 +147,7 @@ export function scoreConsistency(data: unknown[], _context: QualityContext): Dim
     };
   }
 
-  // Check schema consistency �?all rows should have the same keys
+  // Check schema consistency ?all rows should have the same keys
   const keySets = new Map<string, number>();
   for (let i = 0; i < total; i++) {
     const keys = Object.keys(data[i]).sort().join(',');
@@ -173,7 +175,7 @@ export function scoreConsistency(data: unknown[], _context: QualityContext): Dim
       message: `${schemaVariants} different schema variants detected across ${schemaInconsistentRows} row(s).`,
       affectedRows: schemaInconsistentRows,
       percentage: parseFloat(((schemaInconsistentRows / total) * 100).toFixed(2)),
-      suggestion: 'Normalize data schema �?ensure all rows have the same fields.',
+      suggestion: 'Normalize data schema ?ensure all rows have the same fields.',
     });
   }
 
@@ -258,7 +260,7 @@ export function scoreConsistency(data: unknown[], _context: QualityContext): Dim
 }
 
 /**
- * 5. Uniqueness �?duplicate detection by timestamp.
+ * 5. Uniqueness ?duplicate detection by timestamp.
  */
 export function scoreUniqueness(data: unknown[], _context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
@@ -320,7 +322,7 @@ export function scoreUniqueness(data: unknown[], _context: QualityContext): Dime
       message: `${duplicateTimestamps} duplicate timestamp(s) affecting ${duplicateRows} extra row(s).`,
       affectedRows: duplicateRows,
       percentage: parseFloat(((duplicateRows / total) * 100).toFixed(2)),
-      suggestion: 'Deduplicate by timestamp �?keep the latest or merge records.',
+      suggestion: 'Deduplicate by timestamp ?keep the latest or merge records.',
     });
   }
 
@@ -339,7 +341,7 @@ export function scoreUniqueness(data: unknown[], _context: QualityContext): Dime
     issues.push({
       type: 'missing_timestamp_for_uniqueness',
       severity: 'info',
-      message: `${rowsWithoutTimestamp} row(s) missing timestamp �?cannot check uniqueness.`,
+      message: `${rowsWithoutTimestamp} row(s) missing timestamp ?cannot check uniqueness.`,
       affectedRows: rowsWithoutTimestamp,
       percentage: parseFloat(((rowsWithoutTimestamp / total) * 100).toFixed(2)),
       suggestion: 'Add timestamp field for proper uniqueness validation.',
@@ -362,8 +364,3 @@ export function scoreUniqueness(data: unknown[], _context: QualityContext): Dime
     metadata,
   };
 }
-
-/**
- * 6. Validity �?values within expected ranges (price, volume bounds).
- */
-export function scoreValidity(data: unknown[], context: QualityContext): DimensionResult {

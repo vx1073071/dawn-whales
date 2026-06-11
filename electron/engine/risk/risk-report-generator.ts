@@ -277,7 +277,7 @@ ${config.includeIndividualPositions && positions.length > 0 ? `
           <td>${p.quantity.toLocaleString()}</td>
           <td>$${p.avgCost.toFixed(2)}</td>
           <td>$${p.currentPrice.toFixed(2)}</td>
-          <td>HK$${(p.marketValue/10000).toFixed(1)}万</td>
+          <td>HK$${(p.marketValue/10000).toFixed(1)}W</td>
           <td class="${pnlClass2}">${sign(p.unrealizedPnL, 'HK$')}</td>
           <td>${p.weight.toFixed(2)}%</td>
         </tr>`;
@@ -339,7 +339,7 @@ ${data.recommendations.length > 0 ? `
       `## ${zh('Performance', i18n.t('riskReportGenerator.k30'))}`,
       `| Metric | Value |`,
       `|--------|-------|`,
-      `| ${zh('Total Value', i18n.t('riskReportGenerator.k31'))} | HK$${(data.totalValue/10000).toFixed(1)}万 |`,
+      `| ${zh('Total Value', i18n.t('riskReportGenerator.k31'))} | HK$${(data.totalValue/10000).toFixed(1)}W |`,
       `| ${zh('Day P&L', i18n.t('riskReportGenerator.k32'))} | ${sign(data.dayPnL)} (${sign(data.dayPnL/data.totalValue*100)}%) |`,
       `| ${zh('Total P&L', i18n.t('riskReportGenerator.k33'))} | ${sign(data.totalPnL)} (${sign(data.totalPnLPct)}%) |`,
       `| ${zh('Unrealized', i18n.t('riskReportGenerator.k34'))} | ${sign(data.unrealizedPnL)} |`,

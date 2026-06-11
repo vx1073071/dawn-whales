@@ -31,15 +31,15 @@ interface Trade {
 interface BacktestResult {
   success: boolean;
   result: {
-    totalReturn: number;       // 总收益率 %
+    totalReturn: number;       // total return %
     annualReturn: number;      // annualized return %
     sharpeRatio: number;       // Sharpe ratio
     maxDrawdown: number;       // max drawdown %
     winRate: number;           // win rate %
-    profitFactor: number;      // 盈亏比
+    profitFactor: number;      // profit factor
     totalTrades: number;
-    avgTradePnl: number;       // 平均交易收益 %
-    avgHoldingBars: number;    // 平均position/holding bar 数
+    avgTradePnl: number;       // avg trade return %
+    avgHoldingBars: number;    // avg holding bars
     equityCurve: { time: number; value: number }[];
     trades: Trade[];
     config: BacktestConfig;
@@ -53,10 +53,10 @@ interface BacktestConfig {
   startDate?: string;
   endDate?: string;
   initialCapital: number;
-  commission: number;          // 手续费率 (0.001 = 0.1%)
-  slippage: number;            // 滑点 (0.001 = 0.1%)
+  commission: number;          // commission rate (0.001 = 0.1%)
+  slippage: number;            // slippage (0.001 = 0.1%)
   strategy: StrategyConfig;
-  klines?: KLine[];            // 如果已提供，直接用；否则从 OpenD 拉
+  klines?: KLine[];            // if provided, use directly; else fetch from OpenD
 }
 
 interface StrategyConfig {

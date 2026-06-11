@@ -85,11 +85,11 @@ export interface ParamRange {
 }
 
 export interface WalkForwardConfig {
-  windows: number;                // 步进窗口数量
-  inSampleRatio: number;          // 样本内数据占比 (0.5-0.9)
+  windows: number;                // number of walk-forward windows
+  inSampleRatio: number;          // in-sample ratio (0.5-0.9)
   optimizationObjective: 'sharpe' | 'return' | 'drawdown';
   windowType: 'rolling' | 'expanding';
-  minTrades: number;              // 每个窗口最少交易笔数
+  minTrades: number;              // min trades per window
 }
 
 export interface WalkForwardWindow {

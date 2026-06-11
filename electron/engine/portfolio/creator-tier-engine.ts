@@ -17,19 +17,19 @@ export type CreatorTier = 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond' 
 
 export interface CreatorStats {
   userId: string;
-  aiAnalysisCount: number;       // 累计AI分析次数
-  signalSubscribers: number;     // currentsubscribe数
-  templateSales: number;         // 累计模板销量
-  sevenDayWinRate: number;       // 7日win rate (0-1)
-  totalRevenue: number;          // 累计收益 USDT
-  consecutiveLossDays: number;   // 连续亏损天数
+  aiAnalysisCount: number;       // total AI analysis count
+  signalSubscribers: number;     // current subscribers
+  templateSales: number;         // total template sales
+  sevenDayWinRate: number;       // 7-day win rate (0-1)
+  totalRevenue: number;          // total revenue USDT
+  consecutiveLossDays: number;   // consecutive loss days
 }
 
 export interface TierConfig {
   tier: CreatorTier;
   name: string;
   minXp: number;
-  revenueShare: number;          // creator占比
+  revenueShare: number;          // creator share
   badgeSlots: number;
   minSubscribers: number;
   icon: string;

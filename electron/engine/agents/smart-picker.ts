@@ -256,10 +256,10 @@ export class SmartPickerService {
     let score = 50;
     const mainNet = item.mainNetInflow || 0;
 
-    if (mainNet > 10000) score = 90;       // > 1亿
-    else if (mainNet > 5000) score = 80;   // > 5000万
-    else if (mainNet > 2000) score = 70;   // > 2000万
-    else if (mainNet > 500) score = 60;    // > 500万
+    if (mainNet > 10000) score = 90;       // > 100M
+    else if (mainNet > 5000) score = 80;   // > 50M
+    else if (mainNet > 2000) score = 70;   // > 200.0M
+    else if (mainNet > 500) score = 60;    // > 50.0M
     else if (mainNet > 0) score = 55;
     else if (mainNet > -500) score = 45;
     else if (mainNet > -2000) score = 35;

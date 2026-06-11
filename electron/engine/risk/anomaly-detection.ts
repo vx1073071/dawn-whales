@@ -26,12 +26,12 @@ export interface AnomalyConfig {
   enabled: boolean;
   methods: AnomalyMethod[];
   thresholds: {
-    price: number;      // 价格偏离standard deviation倍数
-    volume: number;     // volume偏离standard deviation倍数
-    volatility: number; // volatility偏离standard deviation倍数
+    price: number;      // price deviation in std devs
+    volume: number;     // volume deviation in std devs
+    volatility: number; // volatility deviation in std devs
   };
-  windowSize: number;   // 历史数据窗口大小
-  checkInterval: number; // 检查interval（毫秒）
+  windowSize: number;   // historical data window size
+  checkInterval: number; // check interval (ms)
 }
 
 export interface AnomalyMethod {
@@ -49,12 +49,12 @@ const DEFAULT_CONFIG: AnomalyConfig = {
     { name: 'isolation_forest', enabled: false, weight: 0.1 },
   ],
   thresholds: {
-    price: 3.0,      // 3个standard deviation
+    price: 3.0,      // 3 std devs
     volume: 3.0,
     volatility: 3.0,
   },
   windowSize: 100,
-  checkInterval: 60000, // 1分钟
+  checkInterval: 60000, // 1 minute
 };
 
 export class AnomalyDetectionSystem extends EventEmitter {

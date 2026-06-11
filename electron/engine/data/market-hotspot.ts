@@ -232,7 +232,7 @@ export class MarketHotspotService {
       const trimmed = line.trim();
       // Match stock mentions: code + name or just name
       const codeMatch = trimmed.match(/([036]\d{5})/);
-      const nameMatch = trimmed.match(/[\u4e00-\u9fa5]{2,8}(?:股份|科技|电子|集团|控股|医药|能源|汽车|银行)?/);
+      const nameMatch = trimmed.match(/[\u4e00-\u9fa5]{2,8}(?:\\u80a1\\u4efd|\\u79d1\\u6280|\\u7535\\u5b50|\\u96c6\\u56e2|\\u63a7\\u80a1|\\u533b\\u836f|\\u80fd\\u6e90|\\u6c7d\\u8f66|\\u94f6\\u884c)?/);
 
       if (codeMatch || nameMatch) {
         const code = codeMatch ? codeMatch[1] : '';
@@ -285,9 +285,9 @@ export class MarketHotspotService {
   private extractSectors(text: string): string[] {
     const sectors: string[] = [];
     const sectorPatterns = [
-      /([\u4e00-\u9fa5]{2,6})板块/,
-      /([\u4e00-\u9fa5]{2,6})行业/,
-      /([\u4e00-\u9fa5]{2,6})产业/,
+      /([\u4e00-\u9fa5]{2,6})\u677f\u5757/,
+      /([\u4e00-\u9fa5]{2,6})\u884c\u4e1a/,
+      /([\u4e00-\u9fa5]{2,6})\u4ea7\u4e1a/,
     ];
     for (const p of sectorPatterns) {
       const matches = text.matchAll(p);

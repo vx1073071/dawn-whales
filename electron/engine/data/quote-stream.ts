@@ -23,10 +23,10 @@ export interface QuoteTick {
   openPrice: number;
   prevClose: number;
   timestamp: number;
-  bid?: number;      // 买一价
-  ask?: number;      // 卖一价
-  bidVolume?: number; // 买一量
-  askVolume?: number; // 卖一量
+  bid?: number;      // bid
+  ask?: number;      // ask
+  bidVolume?: number; // bid size
+  askVolume?: number; // ask size
 }
 
 export interface QuoteStreamConfig {
@@ -239,13 +239,13 @@ export class QuoteStreamService extends EventEmitter {
     return {
       code: d.f57 || symbol,
       name: d.f58 || '',
-      price: this.parsePrice(d.f43),      // 最新价
+      price: this.parsePrice(d.f43),      // latest
       changePct: this.parsePrice(d.f170),  // price change %
       volume: d.f47 || 0,                  // volume
-      highPrice: this.parsePrice(d.f44),   // 最高价
-      lowPrice: this.parsePrice(d.f45),    // 最低价
-      openPrice: this.parsePrice(d.f46),   // 开盘价
-      prevClose: this.parsePrice(d.f48),   // 昨收价
+      highPrice: this.parsePrice(d.f44),   // high
+      lowPrice: this.parsePrice(d.f45),    // low
+      openPrice: this.parsePrice(d.f46),   // open
+      prevClose: this.parsePrice(d.f48),   // prev close
       timestamp: Date.now(),
     };
   }

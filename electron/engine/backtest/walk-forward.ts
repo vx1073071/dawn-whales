@@ -27,20 +27,20 @@ interface StrategyConfig {
 }
 
 interface ParamRange {
-  name: string;          // parameter名 (如 'shortPeriod')
-  values: number[];      // 候选值 [5, 10, 15, 20]
+  name: string;          // parameter name (e.g. 'shortPeriod')
+  values: number[];      // candidate values [5, 10, 15, 20]
 }
 
 export interface WFAConfig {
   symbol: string;
   strategy: StrategyConfig;
-  paramRanges: ParamRange[];        // 要扫描的parameter范围
+  paramRanges: ParamRange[];        // param ranges to scan
   initialCapital: number;
   commission: number;
   slippage: number;
-  inSampleBars: number;             // IS 窗口大小 (如 252)
-  outOfSampleBars: number;          // OOS 窗口大小 (如 63)
-  stepSize: number;                 // 滑动步长 (如 21)
+  inSampleBars: number;             // IS window size (e.g. 252)
+  outOfSampleBars: number;          // OOS window size (e.g. 63)
+  stepSize: number;                 // step size (e.g. 21)
 }
 
 interface WindowResult {
@@ -54,7 +54,7 @@ interface WindowResult {
   oosSharpe: number;
   oosReturn: number;
   oosMaxDrawdown: number;
-  decayRatio: number;               // OOS/IS 衰减比
+  decayRatio: number;               // OOS/IS decay ratio
   allISResults: ParamResult[];
   allOOSResults: ParamResult[];
 }
@@ -74,8 +74,8 @@ export interface WFAReport {
     totalWindows: number;
     avgOosSharpe: number;
     avgOosReturn: number;
-    avgDecayRatio: number;          // 平均衰减比 (>0.5 说明稳健)
-    stabilityScore: number;         // 0-100 稳定性评分
+    avgDecayRatio: number;          // avg decay ratio (>0.5 means robust)
+    stabilityScore: number;         // 0-100 stability score
     robustnessGrade: string;        // S/A/B/C/D/F
   };
   windows: WindowResult[];

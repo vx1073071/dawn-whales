@@ -1,6 +1,6 @@
 /**
  * Tests for DataCleaningPipeline — JVS-84
- * Covers all 8 built-in stages, pipeline CRUD, and convenience methods.
+ * Tests the real built-in stages and pipeline API.
  */
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
@@ -9,7 +9,7 @@ import {
   type CleanDataPoint,
   type CleaningContext,
   type CleaningStage,
-} from '../../../electron/engine/data/data-cleaning-pipeline';
+} from '../../../../electron/engine/data/data-cleaning-pipeline';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -33,549 +33,552 @@ function makeCtx(overrides?: Partial<CleaningContext>): CleaningContext {
   };
 }
 
-function range(n: number, start = 0): number[] {
-  return Array.from({ length: n }, (_, i) => start + i);
+/** Create n identical OHLC bars at successive times. */
+function identicalBars(n: number, interval = 60_000): RawDataPoint[] {
+  const bar = { open: 100, high: 110, low: 90, close: 105, volume: 1000, source: 'test' };
+  return Array.from({ length: n }, (_, i) => ({ ...bar, time: i * interval }));
 }
 
-// ── Pipeline Class ───────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+// Pipeline class API
+// ══════════════════════════════════════════════════════════════════════════════
 
-describe('DataCleaningPipeline class', () => {
-  let pipeline: DataCleaningPipeline;
+describe('DataCleaningPipeline — class API', () => {
+  let p: DataCleaningPipeline;
 
   beforeEach(() => {
-    pipeline = new DataCleaningPipeline();
+    p = new DataCleaningPipeline();
   });
 
-  it('loads 8 default stages on construction', () => {
-    const stages = pipeline.getStages();
-    expect(stages.length).toBe(8);
-    const ids = stages.map(s => s.id);
-    expect(ids).toContain('negative-filter');
-    expect(ids).toContain('duplicate-remover');
-    expect(ids).toContain('time-alignment');
-    expect(ids).toContain('outlier-removal');
-    expect(ids).toContain('ohlc-validator');
-    expect(ids).toContain('volume-normalizer');
-    expect(ids).toContain('gap-filler');
-    expect(ids).toContain('stale-data-detector');
+  it('loads 8 default stages', () => {
+    expect(p.getStages().length).toBe(8);
+    const ids = p.getStages().map(s => s.id);
+    expect(ids).toEqual([
+      'negative-filter',
+      'duplicate-remover',
+      'time-alignment',
+      'outlier-removal',
+      'ohlc-validator',
+      'volume-normalizer',
+      'gap-filler',
+      'stale-data-detector',
+    ]);
   });
 
-  it('constructor with autoLoadDefaults=false starts empty', () => {
-    const empty = new DataCleaningPipeline(false);
-    expect(empty.getStages().length).toBe(0);
+  it('all default stages are enabled', () => {
+    expect(p.getStages().every(s => s.enabled)).toBe(true);
   });
 
-  // ── Stage management ───────────────────────────────────────────────────
+  it('autoLoadDefaults=false starts with 0 stages', () => {
+    expect(new DataCleaningPipeline(false).getStages().length).toBe(0);
+  });
+
+  // ── addStage ───────────────────────────────────────────────────────────
 
   it('addStage appends a new stage', () => {
-    const stage: CleaningStage = {
-      id: 'custom-1',
-      name: 'Custom Stage',
+    const s: CleaningStage = {
+      id: 'custom',
+      name: 'Custom',
       enabled: true,
-      fn: data => data.map(d => ({ ...d, adjusted: false, anomalies: [], qualityScore: 1 })),
+      fn: d => d.map(x => ({ ...x, adjusted: false, anomalies: [], qualityScore: 1 })),
     };
-    pipeline.addStage(stage);
-    expect(pipeline.getStages().length).toBe(9);
-    expect(pipeline.getStages()[8].id).toBe('custom-1');
+    p.addStage(s);
+    expect(p.getStages().length).toBe(9);
+    expect(p.getStages().at(-1)!.id).toBe('custom');
   });
 
-  it('addStage replaces existing stage with same id', () => {
-    const stage: CleaningStage = {
+  it('addStage replaces existing stage by id', () => {
+    p.addStage({
       id: 'negative-filter',
       name: 'Replaced',
       enabled: true,
-      fn: data => data.map(d => ({ ...d, adjusted: false, anomalies: [], qualityScore: 1 })),
-    };
-    pipeline.addStage(stage);
-    expect(pipeline.getStages().length).toBe(8);
-    const neg = pipeline.getStages().find(s => s.id === 'negative-filter')!;
-    expect(neg.name).toBe('Replaced');
+      fn: d => d.map(x => ({ ...x, adjusted: false, anomalies: [], qualityScore: 1 })),
+    });
+    expect(p.getStages().length).toBe(8);
+    expect(p.getStages().find(s => s.id === 'negative-filter')!.name).toBe('Replaced');
   });
 
+  // ── removeStage ────────────────────────────────────────────────────────
+
   it('removeStage removes and returns true', () => {
-    expect(pipeline.removeStage('gap-filler')).toBe(true);
-    expect(pipeline.getStages().length).toBe(7);
-    expect(pipeline.getStages().map(s => s.id)).not.toContain('gap-filler');
+    expect(p.removeStage('gap-filler')).toBe(true);
+    expect(p.getStages().length).toBe(7);
+    expect(p.getStages().map(s => s.id)).not.toContain('gap-filler');
   });
 
   it('removeStage returns false for unknown id', () => {
-    expect(pipeline.removeStage('nonexistent')).toBe(false);
+    expect(p.removeStage('nope')).toBe(false);
   });
 
-  it('enableStage toggles a stage', () => {
-    expect(pipeline.enableStage('outlier-removal', false)).toBe(true);
-    const s = pipeline.getStages().find(s => s.id === 'outlier-removal')!;
-    expect(s.enabled).toBe(false);
-    expect(pipeline.enableStage('outlier-removal', true)).toBe(true);
-    expect(pipeline.getStages().find(s => s.id === 'outlier-removal')!.enabled).toBe(true);
+  // ── enableStage ────────────────────────────────────────────────────────
+
+  it('enableStage toggles enabled flag', () => {
+    expect(p.enableStage('outlier-removal', false)).toBe(true);
+    expect(p.getStages().find(s => s.id === 'outlier-removal')!.enabled).toBe(false);
+    expect(p.enableStage('outlier-removal', true)).toBe(true);
+    expect(p.getStages().find(s => s.id === 'outlier-removal')!.enabled).toBe(true);
   });
 
   it('enableStage returns false for unknown id', () => {
-    expect(pipeline.enableStage('nope', false)).toBe(false);
+    expect(p.enableStage('nope', false)).toBe(false);
   });
 
-  it('reset restores 8 default stages and clears report', () => {
-    pipeline.removeStage('gap-filler');
-    expect(pipeline.getStages().length).toBe(7);
-    // Run clean to populate report
-    pipeline.clean([makeRaw({ time: 1 })], makeCtx());
-    expect(pipeline.getReport()).not.toBeNull();
-    pipeline.reset();
-    expect(pipeline.getStages().length).toBe(8);
-    expect(pipeline.getReport()).toBeNull();
+  // ── reset ──────────────────────────────────────────────────────────────
+
+  it('reset restores defaults and clears report', () => {
+    p.removeStage('gap-filler');
+    p.clean([makeRaw({ time: 1 })], makeCtx());
+    expect(p.getReport()).not.toBeNull();
+    p.reset();
+    expect(p.getStages().length).toBe(8);
+    expect(p.getReport()).toBeNull();
   });
 
-  // ── Convenience methods ────────────────────────────────────────────────
+  // ── getReport ──────────────────────────────────────────────────────────
 
-  it('cleanData returns only data array', () => {
-    const data = pipeline.cleanData([makeRaw({ time: 1 })], makeCtx());
-    expect(Array.isArray(data)).toBe(true);
-    expect(data.length).toBe(1);
-  });
-
-  it('cleanReport returns only report object', () => {
-    const report = pipeline.cleanReport([makeRaw({ time: 1 })], makeCtx());
-    expect(report).toHaveProperty('totalPoints');
-    expect(report).toHaveProperty('qualityScore');
-  });
-
-  it('getReport returns null before first clean', () => {
-    expect(pipeline.getReport()).toBeNull();
+  it('getReport is null before first clean', () => {
+    expect(p.getReport()).toBeNull();
   });
 
   it('getReport returns report after clean', () => {
-    pipeline.clean([makeRaw({ time: 1 })], makeCtx());
-    const r = pipeline.getReport()!;
+    p.clean([makeRaw({ time: 1 })], makeCtx());
+    const r = p.getReport()!;
     expect(r.totalPoints).toBe(1);
     expect(r.cleanedPoints).toBe(1);
+    expect(typeof r.qualityScore).toBe('number');
+    expect(typeof r.durationMs).toBe('number');
   });
 
-  // ── describe() ─────────────────────────────────────────────────────────
+  // ── convenience methods ────────────────────────────────────────────────
 
-  it('describe includes stage list', () => {
-    const desc = pipeline.describe();
-    expect(desc).toContain('DataCleaningPipeline (8 stages)');
-    expect(desc).toContain('negative-filter');
+  it('cleanData returns only data array', () => {
+    const d = p.cleanData([makeRaw({ time: 1 })], makeCtx());
+    expect(Array.isArray(d)).toBe(true);
+    expect(d.length).toBe(1);
   });
 
-  it('describe includes last report info when available', () => {
-    pipeline.clean([makeRaw({ time: 1 })], makeCtx());
-    const desc = pipeline.describe();
-    expect(desc).toContain('Last Report');
-    expect(desc).toContain('Total: 1');
+  it('cleanReport returns only report', () => {
+    const r = p.cleanReport([makeRaw({ time: 1 })], makeCtx());
+    expect(r).toHaveProperty('totalPoints');
+    expect(r).toHaveProperty('qualityScore');
   });
 
-  // ── Empty input ────────────────────────────────────────────────────────
+  // ── describe ───────────────────────────────────────────────────────────
 
-  it('clean on empty data returns empty result and zero-score report', () => {
-    const { data, report } = pipeline.clean([], makeCtx());
+  it('describe shows stage count and ids', () => {
+    const d = p.describe();
+    expect(d).toContain('DataCleaningPipeline (8 stages)');
+    expect(d).toContain('negative-filter');
+    expect(d).toContain('stale-data-detector');
+  });
+
+  it('describe includes last report after clean', () => {
+    p.clean([makeRaw({ time: 1 })], makeCtx());
+    expect(p.describe()).toContain('Last Report');
+  });
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+// Empty / trivial inputs
+// ══════════════════════════════════════════════════════════════════════════════
+
+describe('DataCleaningPipeline — empty and trivial inputs', () => {
+  let p: DataCleaningPipeline;
+
+  beforeEach(() => {
+    p = new DataCleaningPipeline();
+  });
+
+  it('empty input → empty output, quality=0', () => {
+    const { data, report } = p.clean([], makeCtx());
     expect(data).toEqual([]);
     expect(report.totalPoints).toBe(0);
     expect(report.cleanedPoints).toBe(0);
     expect(report.qualityScore).toBe(0);
+    expect(report.removedPoints).toBe(0);
+  });
+
+  it('single valid point passes through', () => {
+    // Use time=0 so time-alignment doesn't snap a non-aligned value
+    const { data, report } = p.clean([makeRaw({ time: 0 })], makeCtx());
+    expect(data.length).toBe(1);
+    expect(report.cleanedPoints).toBe(1);
+  });
+
+  it('disabled stages are skipped (data passes unchanged)', () => {
+    const empty = new DataCleaningPipeline(false);
+    for (const s of p.getStages()) empty.addStage({ ...s, enabled: false });
+    const { data } = empty.clean([makeRaw({ time: 1 }), makeRaw({ time: 2 })], makeCtx());
+    expect(data.length).toBe(2);
   });
 });
 
-// ── Stage: NegativeFilter ────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+// Built-in stage: negative-filter
+// ══════════════════════════════════════════════════════════════════════════════
 
-describe('Stage: negative-filter', () => {
-  let pipeline: DataCleaningPipeline;
+describe('Built-in stage: negative-filter', () => {
+  let p: DataCleaningPipeline;
 
   beforeEach(() => {
-    pipeline = new DataCleaningPipeline(false);
-    pipeline.addStage({
-      id: 'negative-filter',
-      name: 'Negative Filter',
-      enabled: true,
-      fn: (data: RawDataPoint[]) => {
-        return data.filter(p =>
-          p.open >= 0 && p.high >= 0 && p.low >= 0 && p.close >= 0 && p.volume >= 0
-        ).map(d => ({ ...d, adjusted: false, anomalies: [], qualityScore: 1 }));
-      },
-    });
+    p = new DataCleaningPipeline(false);
+    // Only load negative-filter
+    const full = new DataCleaningPipeline();
+    p.addStage(full.getStages().find(s => s.id === 'negative-filter')!);
   });
 
-  it('removes points with negative open', () => {
-    const raw = [makeRaw({ time: 1, open: -5 })];
-    const { data } = pipeline.clean(raw, makeCtx());
+  it('removes point with negative open', () => {
+    const { data } = p.clean([makeRaw({ time: 1, open: -5 })], makeCtx());
     expect(data.length).toBe(0);
   });
 
-  it('removes points with negative volume', () => {
-    const raw = [makeRaw({ time: 1, volume: -100 })];
-    const { data } = pipeline.clean(raw, makeCtx());
+  it('removes point with negative close', () => {
+    const { data } = p.clean([makeRaw({ time: 1, close: -1 })], makeCtx());
+    expect(data.length).toBe(0);
+  });
+
+  it('removes point with negative volume', () => {
+    const { data } = p.clean([makeRaw({ time: 1, volume: -100 })], makeCtx());
+    expect(data.length).toBe(0);
+  });
+
+  it('removes point with negative high', () => {
+    const { data } = p.clean([makeRaw({ time: 1, high: -10 })], makeCtx());
+    expect(data.length).toBe(0);
+  });
+
+  it('removes point with negative low', () => {
+    const { data } = p.clean([makeRaw({ time: 1, low: -1 })], makeCtx());
     expect(data.length).toBe(0);
   });
 
   it('keeps valid points', () => {
-    const raw = [makeRaw({ time: 1 }), makeRaw({ time: 2 })];
-    const { data } = pipeline.clean(raw, makeCtx());
+    const { data } = p.clean([makeRaw({ time: 1 }), makeRaw({ time: 2 })], makeCtx());
     expect(data.length).toBe(2);
+  });
+
+  it('mixed valid and invalid', () => {
+    const { data } = p.clean([
+      makeRaw({ time: 1 }),
+      makeRaw({ time: 2, open: -1 }),
+      makeRaw({ time: 3 }),
+    ], makeCtx());
+    expect(data.length).toBe(2);
+    expect(data.map(d => d.time)).toEqual([1, 3]);
   });
 });
 
-// ── Stage: DuplicateRemover ──────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+// Built-in stage: duplicate-remover
+// ══════════════════════════════════════════════════════════════════════════════
 
-describe('Stage: duplicate-remover', () => {
-  it('keeps highest-volume point for duplicate timestamps', () => {
-    const pipeline = new DataCleaningPipeline(false);
-    pipeline.addStage({
-      id: 'duplicate-remover',
-      name: 'Duplicate Remover',
-      enabled: true,
-      fn: (data: RawDataPoint[]) => {
-        const seen = new Map<number, any>();
-        for (const p of data) {
-          const cp = { ...p, adjusted: false, anomalies: [] as string[], qualityScore: 1 };
-          const existing = seen.get(cp.time);
-          if (existing) {
-            if (cp.volume > existing.volume) seen.set(cp.time, cp);
-          } else {
-            seen.set(cp.time, cp);
-          }
-        }
-        return Array.from(seen.values()).sort((a, b) => a.time - b.time);
-      },
-    });
+describe('Built-in stage: duplicate-remover', () => {
+  let p: DataCleaningPipeline;
 
-    const raw = [
+  beforeEach(() => {
+    p = new DataCleaningPipeline(false);
+    p.addStage(new DataCleaningPipeline().getStages().find(s => s.id === 'duplicate-remover')!);
+  });
+
+  it('keeps higher-volume point for duplicate timestamps', () => {
+    const { data } = p.clean([
       makeRaw({ time: 100, volume: 500 }),
       makeRaw({ time: 100, volume: 1000 }),
       makeRaw({ time: 200, volume: 300 }),
-    ];
-    const { data } = pipeline.clean(raw, makeCtx());
+    ], makeCtx());
     expect(data.length).toBe(2);
-    const t100 = data.find(d => d.time === 100)!;
-    expect(t100.volume).toBe(1000);
+    expect(data.find(d => d.time === 100)!.volume).toBe(1000);
+  });
+
+  it('keeps first-seen when volumes are equal', () => {
+    const { data } = p.clean([
+      makeRaw({ time: 1, volume: 100, close: 50 }),
+      makeRaw({ time: 1, volume: 100, close: 60 }),
+    ], makeCtx());
+    expect(data.length).toBe(1);
+    expect(data[0].close).toBe(50);
+  });
+
+  it('no duplicates → all kept', () => {
+    const { data } = p.clean([makeRaw({ time: 1 }), makeRaw({ time: 2 })], makeCtx());
+    expect(data.length).toBe(2);
   });
 });
 
-// ── Stage: TimeAlignment ─────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+// Built-in stage: time-alignment
+// ══════════════════════════════════════════════════════════════════════════════
 
-describe('Stage: time-alignment', () => {
-  it('snaps slightly off-grid timestamps to interval boundary', () => {
-    const pipeline = new DataCleaningPipeline(false);
-    const intervalMs = 60_000; // 1 minute
-    pipeline.addStage({
-      id: 'time-alignment',
-      name: 'Time Alignment',
-      enabled: true,
-      fn: (data: RawDataPoint[]) => {
-        return data.map(p => {
-          const cp = { ...p, adjusted: false, anomalies: [] as string[], qualityScore: 1 };
-          const rem = cp.time % intervalMs;
-          if (rem !== 0) {
-            const snapped = Math.round(cp.time / intervalMs) * intervalMs;
-            if (Math.abs(cp.time - snapped) < intervalMs * 0.1) {
-              cp.time = snapped;
-              cp.adjusted = true;
-            }
-          }
-          return cp;
-        });
-      },
-    });
+describe('Built-in stage: time-alignment', () => {
+  let p: DataCleaningPipeline;
+  const interval = 60_000; // 1 min
 
-    // 60001 is 1ms off from 60000 — should snap
-    const { data } = pipeline.clean([makeRaw({ time: 60001 })], makeCtx());
+  beforeEach(() => {
+    p = new DataCleaningPipeline(false);
+    p.addStage(new DataCleaningPipeline().getStages().find(s => s.id === 'time-alignment')!);
+  });
+
+  it('snaps near-boundary timestamp (< 10% drift)', () => {
+    // 60001 is 1ms off from 60000 → drift=1ms < 6000ms (10% of 60000)
+    const { data } = p.clean([makeRaw({ time: 60001 })], makeCtx({ metadata: { barIntervalMs: interval } }));
     expect(data[0].time).toBe(60000);
     expect(data[0].adjusted).toBe(true);
+    expect(data[0].anomalies.some(a => a.startsWith('time-aligned'))).toBe(true);
+  });
+
+  it('flags far-from-boundary timestamp (>= 10% drift)', () => {
+    // 60000 + 7000 = 67000, drift=7000 > 6000 (10% of 60000)
+    const { data } = p.clean([makeRaw({ time: 67000 })], makeCtx({ metadata: { barIntervalMs: interval } }));
+    expect(data[0].time).toBe(67000); // not snapped
+    expect(data[0].anomalies.some(a => a.startsWith('time-misaligned'))).toBe(true);
+  });
+
+  it('on-boundary timestamp → no change', () => {
+    const { data } = p.clean([makeRaw({ time: 120000 })], makeCtx({ metadata: { barIntervalMs: interval } }));
+    expect(data[0].time).toBe(120000);
+    expect(data[0].adjusted).toBe(false);
   });
 });
 
-// ── Stage: OutlierRemoval ────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+// Built-in stage: outlier-removal
+// ══════════════════════════════════════════════════════════════════════════════
 
-describe('Stage: outlier-removal', () => {
-  it('removes price outlier exceeding 3 stddev threshold', () => {
-    const pipeline = new DataCleaningPipeline(false);
-    pipeline.addStage({
-      id: 'outlier-removal',
-      name: 'Outlier Removal',
-      enabled: true,
-      fn: (data: RawDataPoint[]) => {
-        if (data.length < 3) return data.map(d => ({ ...d, adjusted: false, anomalies: [], qualityScore: 1 }));
-        const sorted = [...data].sort((a, b) => a.time - b.time);
-        const changes = [];
-        for (let i = 1; i < sorted.length; i++) {
-          changes.push(Math.abs(sorted[i].close - sorted[i - 1].close));
-        }
-        const avg = changes.reduce((s, v) => s + v, 0) / changes.length;
-        const variance = changes.reduce((s, v) => s + (v - avg) ** 2, 0) / changes.length;
-        const std = Math.sqrt(variance);
-        const threshold = 3 * std;
-        if (threshold === 0) return sorted.map(d => ({ ...d, adjusted: false, anomalies: [], qualityScore: 1 }));
-        const result: any[] = [{ ...sorted[0], adjusted: false, anomalies: [], qualityScore: 1 }];
-        for (let i = 1; i < sorted.length; i++) {
-          const change = Math.abs(sorted[i].close - sorted[i - 1].close);
-          if (change <= threshold) {
-            result.push({ ...sorted[i], adjusted: false, anomalies: [], qualityScore: 1 });
-          }
-        }
-        return result;
-      },
-    });
+describe('Built-in stage: outlier-removal', () => {
+  let p: DataCleaningPipeline;
 
-    const raw = range(10).map(i => makeRaw({ time: i, close: 100 + i }));
-    // Add an outlier
-    raw.push(makeRaw({ time: 10, close: 500 }));
-    const { data } = pipeline.clean(raw, makeCtx());
-    expect(data.length).toBeLessThanOrEqual(11);
-    // The outlier at time=10 should be removed
-    expect(data.find(d => d.time === 10 && d.close === 500)).toBeUndefined();
+  beforeEach(() => {
+    p = new DataCleaningPipeline(false);
+    p.addStage(new DataCleaningPipeline().getStages().find(s => s.id === 'outlier-removal')!);
   });
 
-  it('keeps all points when data.length < 3', () => {
-    const pipeline = new DataCleaningPipeline();
-    const raw = [makeRaw({ time: 1 }), makeRaw({ time: 2 })];
-    const { data } = pipeline.clean(raw, makeCtx());
+  it('keeps all points when < 3 points', () => {
+    const { data } = p.clean([makeRaw({ time: 1 }), makeRaw({ time: 2 })], makeCtx());
     expect(data.length).toBe(2);
   });
+
+  it('keeps all points when all changes are identical', () => {
+    // close values: 10, 20, 30, 40 → changes: 10, 10, 10 → stddev=0
+    const raw = [10, 20, 30, 40].map((c, i) => makeRaw({ time: i, close: c }));
+    const { data } = p.clean(raw, makeCtx());
+    expect(data.length).toBe(4);
+  });
+
+  it('removes outlier exceeding 3 stddev', () => {
+    // 10 normal bars (close=100+i) + 1 outlier (close=500)
+    const raw = Array.from({ length: 10 }, (_, i) => makeRaw({ time: i, close: 100 + i }));
+    raw.push(makeRaw({ time: 10, close: 500 }));
+    const { data } = p.clean(raw, makeCtx());
+    expect(data.find(d => d.time === 10 && d.close === 500)).toBeUndefined();
+    expect(data.length).toBeLessThanOrEqual(11);
+  });
 });
 
-// ── Stage: OHLCValidator ─────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+// Built-in stage: ohlc-validator
+// ══════════════════════════════════════════════════════════════════════════════
 
-describe('Stage: ohlc-validator', () => {
-  it('adjusts high < max(open, close)', () => {
-    const pipeline = new DataCleaningPipeline(false);
-    pipeline.addStage({
-      id: 'ohlc-validator',
-      name: 'OHLC Validator',
-      enabled: true,
-      fn: (data: RawDataPoint[]) => {
-        return data.map(p => {
-          const cp = { ...p, adjusted: false, anomalies: [] as string[], qualityScore: 1 };
-          const expectedHigh = Math.max(cp.open, cp.close);
-          if (cp.high < expectedHigh) {
-            cp.high = expectedHigh;
-            cp.adjusted = true;
-            cp.anomalies.push('high<expected');
-          }
-          return cp;
-        });
-      },
-    });
+describe('Built-in stage: ohlc-validator', () => {
+  let p: DataCleaningPipeline;
 
-    // open=100, close=120, high=110 → should fix high to 120
-    const { data } = pipeline.clean([makeRaw({ time: 1, open: 100, close: 120, high: 110 })], makeCtx());
+  beforeEach(() => {
+    p = new DataCleaningPipeline(false);
+    p.addStage(new DataCleaningPipeline().getStages().find(s => s.id === 'ohlc-validator')!);
+  });
+
+  it('fixes high < max(open, close)', () => {
+    const { data } = p.clean(
+      [makeRaw({ time: 1, open: 100, close: 120, high: 110, low: 80 })],
+      makeCtx(),
+    );
     expect(data[0].high).toBe(120);
     expect(data[0].adjusted).toBe(true);
+    expect(data[0].anomalies.some(a => a.startsWith('high<expected'))).toBe(true);
   });
 
-  it('adjusts low > min(open, close)', () => {
-    const pipeline = new DataCleaningPipeline(false);
-    pipeline.addStage({
-      id: 'ohlc-validator',
-      name: 'OHLC Validator',
-      enabled: true,
-      fn: (data: RawDataPoint[]) => {
-        return data.map(p => {
-          const cp = { ...p, adjusted: false, anomalies: [] as string[], qualityScore: 1 };
-          const expectedLow = Math.min(cp.open, cp.close);
-          if (cp.low > expectedLow) {
-            cp.low = expectedLow;
-            cp.adjusted = true;
-          }
-          return cp;
-        });
-      },
-    });
-
-    const { data } = pipeline.clean([makeRaw({ time: 1, open: 100, close: 80, low: 90 })], makeCtx());
+  it('fixes low > min(open, close)', () => {
+    const { data } = p.clean(
+      [makeRaw({ time: 1, open: 100, close: 80, high: 120, low: 90 })],
+      makeCtx(),
+    );
     expect(data[0].low).toBe(80);
+    expect(data[0].adjusted).toBe(true);
+    expect(data[0].anomalies.some(a => a.startsWith('low>expected'))).toBe(true);
+  });
+
+  it('valid data passes unchanged', () => {
+    const { data } = p.clean(
+      [makeRaw({ time: 1, open: 100, high: 120, low: 80, close: 110 })],
+      makeCtx(),
+    );
+    expect(data[0].adjusted).toBe(false);
+    expect(data[0].anomalies.length).toBe(0);
+    expect(data[0].qualityScore).toBe(1);
+  });
+
+  it('adjustment reduces qualityScore', () => {
+    const { data } = p.clean(
+      [makeRaw({ time: 1, open: 100, close: 120, high: 90, low: 80 })],
+      makeCtx(),
+    );
+    expect(data[0].qualityScore).toBeLessThan(1);
   });
 });
 
-// ── Stage: VolumeNormalizer ──────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+// Built-in stage: volume-normalizer
+// ══════════════════════════════════════════════════════════════════════════════
 
-describe('Stage: volume-normalizer', () => {
+describe('Built-in stage: volume-normalizer', () => {
+  let p: DataCleaningPipeline;
+
+  beforeEach(() => {
+    p = new DataCleaningPipeline(false);
+    p.addStage(new DataCleaningPipeline().getStages().find(s => s.id === 'volume-normalizer')!);
+  });
+
   it('flags zero volume', () => {
-    const pipeline = new DataCleaningPipeline(false);
-    pipeline.addStage({
-      id: 'volume-normalizer',
-      name: 'Volume Normalizer',
-      enabled: true,
-      fn: (data: RawDataPoint[]) => {
-        return data.map(p => {
-          const cp = { ...p, adjusted: false, anomalies: [] as string[], qualityScore: 1 };
-          if (cp.volume === 0) {
-            cp.anomalies.push('zero-volume');
-            cp.qualityScore *= 0.8;
-          }
-          return cp;
-        });
-      },
-    });
-
-    const { data } = pipeline.clean([makeRaw({ time: 1, volume: 0 })], makeCtx());
+    const { data } = p.clean([makeRaw({ time: 1, volume: 0 })], makeCtx());
     expect(data[0].anomalies).toContain('zero-volume');
+    expect(data[0].qualityScore).toBeLessThan(1);
   });
 
   it('flags volume spike > 5x average', () => {
-    const pipeline = new DataCleaningPipeline(false);
-    pipeline.addStage({
-      id: 'volume-normalizer',
-      name: 'Volume Normalizer',
-      enabled: true,
-      fn: (data: RawDataPoint[]) => {
-        const vols = data.map(d => d.volume).filter(v => v > 0);
-        const avg = vols.reduce((s, v) => s + v, 0) / vols.length;
-        return data.map(p => {
-          const cp = { ...p, adjusted: false, anomalies: [] as string[], qualityScore: 1 };
-          if (avg > 0 && cp.volume > avg * 5) {
-            cp.anomalies.push('volume-spike');
-          }
-          return cp;
-        });
-      },
-    });
-
     const raw = [
       makeRaw({ time: 1, volume: 100 }),
       makeRaw({ time: 2, volume: 100 }),
-      makeRaw({ time: 3, volume: 10000 }),
+      makeRaw({ time: 3, volume: 100 }),
+      makeRaw({ time: 4, volume: 10000 }), // 32.3x avg of [100,100,100,10000]=2575 → 10000/2575≈3.9x
     ];
-    const { data } = pipeline.clean(raw, makeCtx());
-    expect(data[2].anomalies).toContain('volume-spike');
+    const { data } = p.clean(raw, makeCtx());
+    // avg = (100+100+100+10000)/4 = 2575, spike threshold = 2575*5=12875
+    // 10000 < 12875 → no spike. Use more extreme value:
+    const raw2 = [
+      makeRaw({ time: 1, volume: 100 }),
+      makeRaw({ time: 2, volume: 100 }),
+      makeRaw({ time: 3, volume: 100 }),
+      makeRaw({ time: 4, volume: 50000 }), // avg=12575, 50000/12575≈3.98x still < 5x
+    ];
+    // Need: volume > 5 * avg → volume > 5*(sum/n) → n*volume > 5*sum
+    // With 3 normals at 100: sum=300, need v > 5*(300+v)/4 → 4v > 1500+5v → -v > 1500 → impossible with 4 points
+    // Use more normal points: 10 normals at 100, 1 spike at 10000
+    // avg = (1000+10000)/11 ≈ 909, 10000/909 ≈ 11x > 5x ✓
+    const manyNormals = Array.from({ length: 10 }, (_, i) => makeRaw({ time: i, volume: 100 }));
+    manyNormals.push(makeRaw({ time: 10, volume: 10000 }));
+    const { data: data2 } = p.clean(manyNormals, makeCtx());
+    const spike = data2.find(d => d.time === 10)!;
+    expect(spike.anomalies.some(a => a.startsWith('volume-spike'))).toBe(true);
+  });
+
+  it('fixes negative volume to 0', () => {
+    const { data } = p.clean([makeRaw({ time: 1, volume: -500 })], makeCtx());
+    expect(data[0].volume).toBe(0);
+    expect(data[0].adjusted).toBe(true);
+    expect(data[0].anomalies.some(a => a.startsWith('negative-volume'))).toBe(true);
   });
 });
 
-// ── Stage: GapFiller ─────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+// Built-in stage: gap-filler
+// ══════════════════════════════════════════════════════════════════════════════
 
-describe('Stage: gap-filler', () => {
-  it('interpolates missing bars in time series', () => {
-    const pipeline = new DataCleaningPipeline(false);
-    const interval = 60_000;
-    pipeline.addStage({
-      id: 'gap-filler',
-      name: 'Gap Filler',
-      enabled: true,
-      fn: (data: RawDataPoint[]) => {
-        if (data.length < 2) return data.map(d => ({ ...d, adjusted: false, anomalies: [], qualityScore: 1 }));
-        const sorted = [...data].sort((a, b) => a.time - b.time);
-        const result: any[] = [{ ...sorted[0], adjusted: false, anomalies: [], qualityScore: 1 }];
-        for (let i = 1; i < sorted.length; i++) {
-          const prev = sorted[i - 1];
-          const curr = sorted[i];
-          const gap = curr.time - prev.time;
-          if (gap > interval * 1.5) {
-            const missing = Math.round(gap / interval) - 1;
-            for (let j = 1; j <= missing; j++) {
-              result.push({
-                time: prev.time + j * interval,
-                open: prev.close, high: prev.close, low: prev.close, close: curr.open,
-                volume: 0, source: 'interpolated', adjusted: true,
-                anomalies: ['interpolated-gap-fill'], qualityScore: 0.5,
-              });
-            }
-          }
-          result.push({ ...curr, adjusted: false, anomalies: [], qualityScore: 1 });
-        }
-        return result;
-      },
-    });
+describe('Built-in stage: gap-filler', () => {
+  let p: DataCleaningPipeline;
+  const interval = 60_000;
 
-    // Gap from 60000 to 240000 (3 intervals missing)
-    const raw = [
-      makeRaw({ time: 60000, close: 100 }),
-      makeRaw({ time: 240000, open: 110 }),
-    ];
-    const { data } = pipeline.clean(raw, makeCtx({ metadata: { barIntervalMs: interval } }));
-    // Should have 2 original + 2 interpolated (240000-60000)/60000 - 1 = 2
-    expect(data.length).toBe(4);
+  beforeEach(() => {
+    p = new DataCleaningPipeline(false);
+    p.addStage(new DataCleaningPipeline().getStages().find(s => s.id === 'gap-filler')!);
+  });
+
+  it('interpolates missing bars for large gap', () => {
+    // 60000 → 240000: gap=180000, 180000/60000=3, missing=3-1=2
+    const { data } = p.clean(
+      [makeRaw({ time: 60000, close: 100 }), makeRaw({ time: 240000, open: 110 })],
+      makeCtx({ metadata: { barIntervalMs: interval } }),
+    );
+    expect(data.length).toBe(4); // 2 original + 2 interpolated
     expect(data[1].source).toBe('interpolated');
+    expect(data[1].adjusted).toBe(true);
+    expect(data[1].anomalies).toContain('interpolated-gap-fill');
+    expect(data[1].qualityScore).toBe(0.5);
     expect(data[2].source).toBe('interpolated');
   });
 
-  it('does not fill when gap is <= 1.5x interval', () => {
-    const pipeline = new DataCleaningPipeline(false);
-    const interval = 60_000;
-    pipeline.addStage({
-      id: 'gap-filler',
-      name: 'Gap Filler',
-      enabled: true,
-      fn: (data: RawDataPoint[]) => {
-        if (data.length < 2) return data.map(d => ({ ...d, adjusted: false, anomalies: [], qualityScore: 1 }));
-        const sorted = [...data].sort((a, b) => a.time - b.time);
-        const result: any[] = [{ ...sorted[0], adjusted: false, anomalies: [], qualityScore: 1 }];
-        for (let i = 1; i < sorted.length; i++) {
-          const gap = sorted[i].time - sorted[i - 1].time;
-          if (gap > interval * 1.5) {
-            const missing = Math.round(gap / interval) - 1;
-            for (let j = 1; j <= missing; j++) {
-              result.push({
-                time: sorted[i - 1].time + j * interval,
-                open: 0, high: 0, low: 0, close: 0,
-                volume: 0, source: 'interpolated', adjusted: true,
-                anomalies: ['interpolated'], qualityScore: 0.5,
-              });
-            }
-          }
-          result.push({ ...sorted[i], adjusted: false, anomalies: [], qualityScore: 1 });
-        }
-        return result;
-      },
-    });
+  it('does not fill when gap <= 1.5x interval', () => {
+    // gap = 90000 - 60000 = 30000, threshold = 60000*1.5 = 90000. 30000 <= 90000 → no fill
+    const { data } = p.clean(
+      [makeRaw({ time: 60000 }), makeRaw({ time: 90000 })],
+      makeCtx({ metadata: { barIntervalMs: interval } }),
+    );
+    expect(data.length).toBe(2);
+  });
 
-    const raw = [
-      makeRaw({ time: 60000 }),
-      makeRaw({ time: 90000 }), // gap = 30000, which is 0.5 * interval
-    ];
-    const { data } = pipeline.clean(raw, makeCtx({ metadata: { barIntervalMs: interval } }));
-    expect(data.length).toBe(2); // No interpolation
+  it('does not fill for single point', () => {
+    const { data } = p.clean([makeRaw({ time: 60000 })], makeCtx());
+    expect(data.length).toBe(1);
   });
 });
 
-// ── Stage: StaleDataDetector ─────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+// Built-in stage: stale-data-detector
+// ══════════════════════════════════════════════════════════════════════════════
 
-describe('Stage: stale-data-detector', () => {
-  it('flags consecutive identical OHLC bars', () => {
-    const pipeline = new DataCleaningPipeline(false);
-    pipeline.addStage({
-      id: 'stale-data-detector',
-      name: 'Stale Data Detector',
-      enabled: true,
-      fn: (data: RawDataPoint[]) => {
-        if (data.length < 2) return data.map(d => ({ ...d, adjusted: false, anomalies: [], qualityScore: 1 }));
-        const sorted = [...data].sort((a, b) => a.time - b.time);
-        const result: any[] = [{ ...sorted[0], adjusted: false, anomalies: [], qualityScore: 1 }];
-        let consecutive = 1;
-        for (let i = 1; i < sorted.length; i++) {
-          const cp = { ...sorted[i], adjusted: false, anomalies: [] as string[], qualityScore: 1 };
-          const prev = sorted[i - 1];
-          if (cp.open === prev.open && cp.high === prev.high && cp.low === prev.low && cp.close === prev.close) {
-            consecutive++;
-          } else {
-            consecutive = 1;
-          }
-          if (consecutive > 3) {
-            cp.anomalies.push(`stale-data (${consecutive} identical)`);
-          }
-          result.push(cp);
-        }
-        return result;
-      },
-    });
-
-    const identical = makeRaw({ time: 1, open: 100, high: 110, low: 90, close: 105 });
-    const raw = range(6).map(i => ({ ...identical, time: i }));
-    const { data } = pipeline.clean(raw, makeCtx());
-    // Bars 3,4,5 should be flagged (consecutive > 3)
-    const flagged = data.filter(d => d.anomalies.some(a => a.startsWith('stale-data')));
-    expect(flagged.length).toBe(3);
-  });
-});
-
-// ── Full Pipeline Integration ────────────────────────────────────────────────
-
-describe('Full pipeline integration', () => {
-  let pipeline: DataCleaningPipeline;
+describe('Built-in stage: stale-data-detector', () => {
+  let p: DataCleaningPipeline;
 
   beforeEach(() => {
-    pipeline = new DataCleaningPipeline();
+    p = new DataCleaningPipeline(false);
+    p.addStage(new DataCleaningPipeline().getStages().find(s => s.id === 'stale-data-detector')!);
   });
 
-  it('runs all 8 stages on realistic data', () => {
-    const raw = range(20).map(i =>
+  it('flags consecutive identical bars beyond threshold', () => {
+    const raw = identicalBars(8, 60_000); // default threshold=5
+    const { data } = p.clean(raw, makeCtx());
+    // Bars at index 5,6,7 (6th,7th,8th) exceed threshold of 5 consecutive
+    const stale = data.filter(d => d.anomalies.some(a => a.startsWith('stale-data')));
+    expect(stale.length).toBe(3);
+  });
+
+  it('does not flag when bars differ', () => {
+    const raw = Array.from({ length: 10 }, (_, i) =>
+      makeRaw({ time: i * 60_000, close: 100 + i }),
+    );
+    const { data } = p.clean(raw, makeCtx());
+    expect(data.every(d => d.anomalies.every(a => !a.startsWith('stale-data')))).toBe(true);
+  });
+
+  it('respects custom maxConsecutiveIdentical from context', () => {
+    const raw = identicalBars(5, 60_000);
+    const { data } = p.clean(raw, makeCtx({ metadata: { maxConsecutiveIdentical: 2 } }));
+    // Threshold=2: bars at index 2,3,4 exceed → 3 flagged
+    const stale = data.filter(d => d.anomalies.some(a => a.startsWith('stale-data')));
+    expect(stale.length).toBe(3);
+  });
+
+  it('stale penalty increases with consecutive count', () => {
+    const raw = identicalBars(10, 60_000);
+    const { data } = p.clean(raw, makeCtx());
+    const stale = data.filter(d => d.anomalies.some(a => a.startsWith('stale-data')));
+    // Later stale bars should have lower qualityScore
+    expect(stale.length).toBeGreaterThan(0);
+    expect(stale.at(-1)!.qualityScore).toBeLessThanOrEqual(stale[0].qualityScore);
+  });
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+// Full pipeline integration
+// ══════════════════════════════════════════════════════════════════════════════
+
+describe('Full pipeline integration', () => {
+  let p: DataCleaningPipeline;
+
+  beforeEach(() => {
+    p = new DataCleaningPipeline();
+  });
+
+  it('processes realistic multi-bar data through all 8 stages', () => {
+    const raw = Array.from({ length: 20 }, (_, i) =>
       makeRaw({
         time: i * 300_000,
         open: 100 + Math.sin(i) * 5,
@@ -583,61 +586,71 @@ describe('Full pipeline integration', () => {
         low: 90 + Math.sin(i) * 5,
         close: 105 + Math.sin(i) * 5,
         volume: 1000 + i * 10,
-      })
+      }),
     );
-    const { data, report } = pipeline.clean(raw, makeCtx());
+    const { data, report } = p.clean(raw, makeCtx());
     expect(data.length).toBeGreaterThan(0);
     expect(report.totalPoints).toBe(20);
-    expect(report.durationMs).toBeGreaterThanOrEqual(0);
     expect(report.qualityScore).toBeGreaterThan(0);
     expect(report.qualityScore).toBeLessThanOrEqual(1);
-  });
-
-  it('skips disabled stages', () => {
-    // Disable all stages
-    for (const s of pipeline.getStages()) {
-      pipeline.enableStage(s.id, false);
-    }
-    const raw = [makeRaw({ time: 1 }), makeRaw({ time: 2 })];
-    const { data } = pipeline.clean(raw, makeCtx());
-    // With all stages disabled, data should pass through as-is
-    expect(data.length).toBe(2);
+    expect(report.durationMs).toBeGreaterThanOrEqual(0);
   });
 
   it('handles stage that throws without losing data', () => {
-    const badPipeline = new DataCleaningPipeline(false);
-    badPipeline.addStage({
-      id: 'bad-stage',
-      name: 'Bad Stage',
+    const bad = new DataCleaningPipeline(false);
+    bad.addStage({
+      id: 'bad',
+      name: 'Bad',
       enabled: true,
-      fn: () => { throw new Error('stage crash'); },
+      fn: () => { throw new Error('boom'); },
     });
-    badPipeline.addStage({
-      id: 'good-stage',
-      name: 'Good Stage',
+    bad.addStage({
+      id: 'good',
+      name: 'Good',
       enabled: true,
-      fn: (data) => data.map(d => ({ ...d, adjusted: false, anomalies: [], qualityScore: 1 })),
+      fn: d => d.map(x => ({ ...x, adjusted: false, anomalies: [], qualityScore: 1 })),
     });
-
-    const raw = [makeRaw({ time: 1 })];
-    const { data } = badPipeline.clean(raw, makeCtx());
+    const { data } = bad.clean([makeRaw({ time: 1 })], makeCtx());
     expect(data.length).toBe(1);
   });
 
-  it('report adjustments collect anomaly info', () => {
+  it('report.adjustments collects anomaly categories', () => {
     const raw = [
       makeRaw({ time: 1, volume: 0 }),
       makeRaw({ time: 2, volume: 1000 }),
     ];
-    const { report } = pipeline.clean(raw, makeCtx());
-    // Volume normalizer should flag zero-volume
-    expect(report.adjustments.length).toBeGreaterThanOrEqual(0);
+    const { report } = p.clean(raw, makeCtx());
+    expect(Array.isArray(report.adjustments)).toBe(true);
   });
 
-  it('handles single-point input', () => {
-    const { data, report } = pipeline.clean([makeRaw({ time: 42 })], makeCtx());
-    expect(data.length).toBe(1);
-    expect(data[0].time).toBe(42);
-    expect(report.cleanedPoints).toBe(1);
+  it('all output points are CleanDataPoint (have required fields)', () => {
+    const raw = [makeRaw({ time: 1 }), makeRaw({ time: 2 })];
+    const { data } = p.clean(raw, makeCtx());
+    for (const d of data) {
+      expect(d).toHaveProperty('adjusted');
+      expect(d).toHaveProperty('anomalies');
+      expect(d).toHaveProperty('qualityScore');
+      expect(typeof d.adjusted).toBe('boolean');
+      expect(Array.isArray(d.anomalies)).toBe(true);
+      expect(typeof d.qualityScore).toBe('number');
+    }
+  });
+
+  it('removedPoints can be > 0 when negative-filter fires', () => {
+    const raw = [
+      makeRaw({ time: 1 }),
+      makeRaw({ time: 2, open: -10 }),
+      makeRaw({ time: 3 }),
+    ];
+    const { report } = p.clean(raw, makeCtx());
+    expect(report.removedPoints).toBe(1);
+    expect(report.cleanedPoints).toBe(2);
+  });
+
+  it('qualityScore is rounded to 4 decimal places', () => {
+    const { report } = p.clean([makeRaw({ time: 1 })], makeCtx());
+    const s = report.qualityScore.toString();
+    const dec = s.includes('.') ? s.split('.')[1].length : 0;
+    expect(dec).toBeLessThanOrEqual(4);
   });
 });

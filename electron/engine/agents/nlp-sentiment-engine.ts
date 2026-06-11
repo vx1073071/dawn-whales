@@ -354,11 +354,11 @@ const ENTITY_PATTERNS: EntityPattern[] = [
   // Stock tickers like $AAPL, $TSLA
   { type: 'stock', pattern: /\$([A-Z]{1,5})\b/g },
   // Chinese stock names ending with common suffixes
-  { type: 'stock', pattern: /([\u4e00-\u9fa5]{2,8})(?:股份|控股|集团|科技|电子|生物|医药|银行|证券|保险|地产|能源|汽车)/g },
+  { type: 'stock', pattern: /([\u4e00-\u9fa5]{2,8})(?:\u80a1\u4efd|\u63a7\u80a1|\u96c6\u56e2|\u79d1\u6280|\u7535\u5b50|\u751f\u7269|\u533b\u836f|\u94f6\u884c|\u8bc1\u5238|\u4fdd\u9669|\u5730\u4ea7|\u80fd\u6e90|\u6c7d\u8f66)/g },
   // Sector keywords (Chinese)
   {
     type: 'sector',
-    pattern: /(半导体|芯片|新能源|人工智能|AI|5G|6G|医药|消费|金融|地产|科技|军工|光伏|锂电|储能|氢能|区块链|元宇宙|数据中心|云计算|物联网|自动驾驶|电动车|碳中和)/g,
+    pattern: /(\u534a\u5bfc\u4f53|\u82af\u7247|\\u65b0\u80fd\u6e90|\u4eba\u5de5\u667a\u80fd|AI|5G|6G|\u533b\u836f|\u6d88\u8d39|\u91d1\u878d|\u5730\u4ea7|\u79d1\u6280|\u519b\u5de5|\u5149\u4f0f|\u9502\u7535|\u50a8\u80fd|\u6c22\u80fd|\u533a\u5757\u94fe|\u5143\u5b87\u5b99|\u6570\u636e\u4e2d\u5fc3|\u4e91\u8ba1\u7b97|\u7269\u8054\u7f51|\u81ea\u52a8\u9a7e\u9a76|\u7535\u52a8\u8f66|\u78b3\u4e2d\u548c)/g,
   },
   // Sector keywords (English)
   {
@@ -368,7 +368,7 @@ const ENTITY_PATTERNS: EntityPattern[] = [
   // Event keywords (Chinese)
   {
     type: 'event',
-    pattern: /(财报|年报|季报|半年报|股东大会|董事会|IPO|增发|配股|发债|回购|分红|并购|重组|上市|退市|听证会|发布会|签约仪式|战略合作|产能扩张|投产)/g,
+    pattern: /(\u8d22\u62a5|\u5e74\u62a5|\u5b63\u62a5|\\u534a\u5e74\u62a5|\u80a1\u4e1c\u5927\u4f1a|\u8463\u4e8b\u4f1a|IPO|\u589e\u53d1|\u914d\u80a1|\u53d1\u503a|\u56de\u8d2d|\u5206\u7ea2|\u5e76\u8d2d|\u91cd\u7ec4|\u4e0a\u5e02|\u9000\u5e02|\u542c\u8bc1\u4f1a|\u53d1\u5e03\u4f1a|\u7b7e\u7ea6\u4eea\u5f0f|\u6218\u7565\u5408\u4f5c|\u4ea7\u80fd\u6269\u5f20|\u6295\u4ea7)/g,
   },
   // Event keywords (English)
   {
@@ -378,7 +378,7 @@ const ENTITY_PATTERNS: EntityPattern[] = [
   // Person names (Chinese, 2-4 chars commonly)
   {
     type: 'person',
-    pattern: /(?:董事长|总经理|CEO|总裁|CFO|CTO|创始人|董事|监事|主席)([\u4e00-\u9fa5]{2,4})/g,
+    pattern: /(?:\u8463\u4e8b\u957f|\u603b\u7ecf\u7406|CEO|\u603b\u88c1|CFO|CTO|\u521b\u59cb\u4eba|\u8463\u4e8b|\u76d1\u4e8b|\u4e3b\u5e2d)([\u4e00-\u9fa5]{2,4})/g,
   },
   // Person names (English, common patterns)
   {

@@ -9,7 +9,7 @@ import i18n from '../../../src/i18n';
 
 export interface SectorFlowData {
   sector: string;
-  netInflow: number;       // Net capital inflow (万元)
+  netInflow: number;       // Net capital inflow (10K CNY)
   changePct: number;       // Sector price change (%)
   volume: number;          // Trading volume
   date: string;

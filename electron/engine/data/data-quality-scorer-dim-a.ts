@@ -1,13 +1,15 @@
 /**
- * Built-in dimension scorers: Completeness, Accuracy.
+ * Built-in dimension scorers: Completeness, Accuracy, Timeliness.
  * @module engine/data-quality/data-quality-scorer-dim-a
  */
 
 import type { DimensionResult, QualityContext, QualityIssue } from './data-quality-scorer-types';
 import { intervalToMs, numField, extractTimestamp, clamp } from './data-quality-scorer-utils';
 
-// ������������������������������������������������ Built-in Dimension Scorers ������������������������������������������������
+// ──────────────────── Built-in Dimension Scorers ────────────────────────────
 
+/**
+ * 1. Completeness — missing values and timestamp gaps.
  */
 export function scoreCompleteness(data: unknown[], context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
@@ -24,7 +26,7 @@ export function scoreCompleteness(data: unknown[], context: QualityContext): Dim
         {
           type: 'empty_dataset',
           severity: 'critical',
-          message: 'Dataset is empty �?no data points provided.',
+          message: 'Dataset is empty — no data points provided.',
           affectedRows: 0,
           percentage: 100,
           suggestion: 'Verify the data source is connected and returning data.',
@@ -55,7 +57,7 @@ export function scoreCompleteness(data: unknown[], context: QualityContext): Dim
     if (rowHasMissing) rowsWithMissing.push(i);
   }
 
-  // Gap detection �?check for timestamp gaps larger than 2x expected interval
+  // Gap detection — check for timestamp gaps larger than 2x expected interval
   let gaps = 0;
   let maxGapMs = 0;
   const intervalMs = context.expectedInterval ? intervalToMs(context.expectedInterval) : null;
@@ -132,7 +134,7 @@ export function scoreCompleteness(data: unknown[], context: QualityContext): Dim
 }
 
 /**
- * 2. Accuracy �?OHLC consistency and positive prices.
+ * 2. Accuracy — OHLC consistency and positive prices.
  */
 export function scoreAccuracy(data: unknown[], _context: QualityContext): DimensionResult {
   const issues: QualityIssue[] = [];
@@ -218,7 +220,7 @@ export function scoreAccuracy(data: unknown[], _context: QualityContext): Dimens
       message: `High < Low in ${highLowViolations} row(s).`,
       affectedRows: highLowViolations,
       percentage: parseFloat(((highLowViolations / total) * 100).toFixed(2)),
-      suggestion: 'Verify OHLC data source �?High must always be >= Low.',
+      suggestion: 'Verify OHLC data source — High must always be >= Low.',
     });
   }
 
@@ -264,7 +266,7 @@ export function scoreAccuracy(data: unknown[], _context: QualityContext): Dimens
       message: `${zeroRange} row(s) have zero price range (H=L=O=C).`,
       affectedRows: zeroRange,
       percentage: parseFloat(((zeroRange / total) * 100).toFixed(2)),
-      suggestion: 'May indicate stale data or halted trading �?verify with source.',
+      suggestion: 'May indicate stale data or halted trading — verify with source.',
     });
   }
 
@@ -289,6 +291,17 @@ export function scoreAccuracy(data: unknown[], _context: QualityContext): Dimens
 }
 
 /**
- * 3. Timeliness �?data freshness and update frequency vs expected.
+ * 3. Timeliness — data freshness and update frequency vs expected.
  */
 export function scoreTimeliness(data: unknown[], context: QualityContext): DimensionResult {
+  // Stub — returns a default result until full implementation is provided
+  const total = data.length;
+  return {
+    dimensionId: 'timeliness',
+    score: total > 0 ? 100 : 0,
+    weight: 0,
+    weightedScore: 0,
+    issues: [],
+    metadata: { totalRows: total },
+  };
+}

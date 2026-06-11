@@ -276,10 +276,10 @@ export class PythonProxyService {
   }
 
   private parseDescription(stdout: string): string {
-    const descMatch = stdout.match(/(?:描述|Description|描述)[:\s]+([^\r\n]+)/i);
+    const descMatch = stdout.match(/(?:\\u63cf\\u8ff0|Description|\\u63cf\\u8ff0)[:\s]+([^\r\n]+)/i);
     if (descMatch) return descMatch[1].trim();
 
-    const rowsMatch = stdout.match(/(?:行数|Rows|行数)[:\s]+(\d+)/i);
+    const rowsMatch = stdout.match(/(?:\\u884c\\u6570|Rows|\\u884c\\u6570))[:\s]+(\d+)/i);
     if (rowsMatch) return `${rowsMatch[1]} rows returned`;
 
     // Fallback: first meaningful line
@@ -288,7 +288,7 @@ export class PythonProxyService {
   }
 
   private parseRowCount(stdout: string): number {
-    const match = stdout.match(/(?:行数|Rows|行数|rows?)[:\s]+(\d+)/i);
+    const match = stdout.match(/(?:\\u884c\\u6570|Rows|\\u884c\\u6570)|rows?)[:\s]+(\d+)/i);
     return match ? parseInt(match[1]) : 0;
   }
 

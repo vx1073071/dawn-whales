@@ -30,23 +30,23 @@ export interface CPISubIndex {
 
 export interface RetailSales {
   date: string;
-  total: number;          // 社会消费品零售总额 (亿元)
-  yoyGrowth: number;      // 同比增速 %
-  momGrowth: number;      // 环比增速 %
-  urbanRetail: number;    // 城镇零售
-  ruralRetail: number;    // 乡村零售
-  onlineRetail: number;   // 网上零售
-  catering: number;       // 餐饮收入
-  goodsRetail: number;    // 商品零售
+  total: number;          // total retail sales (100M CNY)
+  yoyGrowth: number;      // YoY growth %
+  momGrowth: number;      // MoM growth %
+  urbanRetail: number;    // urban retail
+  ruralRetail: number;    // rural retail
+  onlineRetail: number;   // online retail
+  catering: number;       // catering revenue
+  goodsRetail: number;    // goods retail
 }
 
 export interface ConsumerConfidence {
   date: string;
-  index: number;          // 消费者信心index
-  expectation: number;    // 预期index
-  satisfaction: number;   // 满意index
-  income: number;         // 收入信心
-  employment: number;     // 就业信心
+  index: number;          // consumer confidence index
+  expectation: number;    // expectation index
+  satisfaction: number;   // satisfaction index
+  income: number;         // income confidence
+  employment: number;     // employment confidence
 }
 
 export interface ConsumerDataReport {

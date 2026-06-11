@@ -44,7 +44,7 @@ export interface StrategyTemplate {
     defaultTakeProfit: number;
     maxPosition: number;        // fraction of equity
   };
- 适用于?: string[];          // applicable symbols/countries
+ applicable?: string[];       // applicable symbols/countries
   tags: string[];
 }
 
@@ -75,7 +75,7 @@ const TEMPLATES: StrategyTemplate[] = [
       takeProfit: i18n.t('strategyTemplates.k16'),
     },
     risk: { defaultStopLoss: 0.02, defaultTakeProfit: 0.05, maxPosition: 0.10 },
-    适用于: [i18n.t('strategyTemplates.k17'), i18n.t('strategyTemplates.k18'), i18n.t('strategyTemplates.k19')],
+    applicable: [i18n.t('strategyTemplates.k17'), i18n.t('strategyTemplates.k18'), i18n.t('strategyTemplates.k19')],
     tags: [i18n.t('strategyTemplates.k20'), 'MACD', i18n.t('strategyTemplates.k21')],
   },
 
@@ -102,7 +102,7 @@ const TEMPLATES: StrategyTemplate[] = [
       takeProfit: i18n.t('strategyTemplates.k37'),
     },
     risk: { defaultStopLoss: 0.025, defaultTakeProfit: 0.04, maxPosition: 0.10 },
-    适用于: [i18n.t('strategyTemplates.k38'), i18n.t('strategyTemplates.k39'), i18n.t('strategyTemplates.k40')],
+    applicable: [i18n.t('strategyTemplates.k38'), i18n.t('strategyTemplates.k39'), i18n.t('strategyTemplates.k40')],
     tags: [i18n.t('strategyTemplates.k41'), i18n.t('strategyTemplates.k42'), 'RSI'],
   },
 
@@ -129,7 +129,7 @@ const TEMPLATES: StrategyTemplate[] = [
       takeProfit: i18n.t('strategyTemplates.k58'),
     },
     risk: { defaultStopLoss: 0.03, defaultTakeProfit: 0.08, maxPosition: 0.08 },
-    适用于: [i18n.t('strategyTemplates.k59'), i18n.t('strategyTemplates.k60'), i18n.t('strategyTemplates.k61')],
+    applicable: [i18n.t('strategyTemplates.k59'), i18n.t('strategyTemplates.k60'), i18n.t('strategyTemplates.k61')],
     tags: [i18n.t('strategyTemplates.k62'), i18n.t('strategyTemplates.k63'), i18n.t('strategyTemplates.k64')],
   },
 
@@ -156,7 +156,7 @@ const TEMPLATES: StrategyTemplate[] = [
       takeProfit: i18n.t('strategyTemplates.k80'),
     },
     risk: { defaultStopLoss: 0.15, defaultTakeProfit: 0.03, maxPosition: 0.30 },
-    适用于: [i18n.t('strategyTemplates.k81'), i18n.t('strategyTemplates.k82')],
+    applicable: [i18n.t('strategyTemplates.k81'), i18n.t('strategyTemplates.k82')],
     tags: [i18n.t('strategyTemplates.k83'), i18n.t('strategyTemplates.k84'), i18n.t('strategyTemplates.k85'), i18n.t('strategyTemplates.k86')],
   },
 
@@ -187,7 +187,7 @@ const TEMPLATES: StrategyTemplate[] = [
       takeProfit: i18n.t('strategyTemplates.k107'),
     },
     risk: { defaultStopLoss: 0.08, defaultTakeProfit: 0.15, maxPosition: 0.15 },
-    适用于: [i18n.t('strategyTemplates.k108')],
+    applicable: [i18n.t('strategyTemplates.k108')],
     tags: [i18n.t('strategyTemplates.k109'), i18n.t('strategyTemplates.k110'), i18n.t('strategyTemplates.k111'), i18n.t('strategyTemplates.k112')],
   },
 
@@ -214,7 +214,7 @@ const TEMPLATES: StrategyTemplate[] = [
       takeProfit: i18n.t('strategyTemplates.k128'),
     },
     risk: { defaultStopLoss: 0.04, defaultTakeProfit: 0.06, maxPosition: 0.10 },
-    适用于: [i18n.t('strategyTemplates.k129'), i18n.t('strategyTemplates.k130')],
+    applicable: [i18n.t('strategyTemplates.k129'), i18n.t('strategyTemplates.k130')],
     tags: [i18n.t('strategyTemplates.k131'), i18n.t('strategyTemplates.k132'), i18n.t('strategyTemplates.k133')],
   },
 
@@ -240,7 +240,7 @@ const TEMPLATES: StrategyTemplate[] = [
       takeProfit: i18n.t('strategyTemplates.k147'),
     },
     risk: { defaultStopLoss: 0.03, defaultTakeProfit: 0.10, maxPosition: 0.08 },
-    适用于: [i18n.t('strategyTemplates.k148'), i18n.t('strategyTemplates.k149'), i18n.t('strategyTemplates.k150')],
+    applicable: [i18n.t('strategyTemplates.k148'), i18n.t('strategyTemplates.k149'), i18n.t('strategyTemplates.k150')],
     tags: [i18n.t('strategyTemplates.k151'), 'ATR', i18n.t('strategyTemplates.k152')],
   },
 
@@ -267,7 +267,7 @@ const TEMPLATES: StrategyTemplate[] = [
       takeProfit: i18n.t('strategyTemplates.k168'),
     },
     risk: { defaultStopLoss: 0.03, defaultTakeProfit: 0.07, maxPosition: 0.10 },
-    适用于: [i18n.t('strategyTemplates.k169'), i18n.t('strategyTemplates.k170'), i18n.t('strategyTemplates.k171')],
+    applicable: [i18n.t('strategyTemplates.k169'), i18n.t('strategyTemplates.k170'), i18n.t('strategyTemplates.k171')],
     tags: ['RSI', i18n.t('strategyTemplates.k172'), i18n.t('strategyTemplates.k173')],
   },
 ];

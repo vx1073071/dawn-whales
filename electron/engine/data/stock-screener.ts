@@ -378,10 +378,10 @@ export class StockScreenerService {
    * Extract description text from stdout
    */
   private extractDescription(stdout: string): string {
-    const descMatch = stdout.match(/(?:描述|Description|描述)[:\s]+([^\r\n]+)/i);
+    const descMatch = stdout.match(/(?:\\u63cf\\u8ff0|Description|\\u63cf\\u8ff0)[:\s]+([^\r\n]+)/i);
     if (descMatch) return descMatch[1].trim();
 
-    const rowsMatch = stdout.match(/(?:行数|Rows|行数)[:\s]+(\d+)/i);
+    const rowsMatch = stdout.match(/(?:\\u884c\\u6570|Rows|\\u884c\\u6570)[:\s]+(\d+)/i);
     if (rowsMatch) return `${rowsMatch[1]} rows returned`;
 
     return '';
@@ -393,7 +393,7 @@ export class StockScreenerService {
   private parseNum(value: string): number | null {
     if (!value || value === '-' || value === '--' || value === 'N/A') return null;
     // Remove Chinese unit suffixes
-    const cleaned = value.replace(/[亿万元%]/g, '');
+    const cleaned = value.replace(/[BW%]/g, '');
     const num = Number(cleaned);
     return isNaN(num) ? null : num;
   }

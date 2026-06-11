@@ -13,7 +13,7 @@ export interface CapitalFlowAlert {
   type: 'main_force_inflow' | 'main_force_outflow' | 'large_order' | 'unusual_activity';
   code: string;
   name: string;
-  amount: number;          // 金额 (万元)
+  amount: number;          // amount (10K CNY)
   changePct: number;       // price change % %
   description: string;
   timestamp: number;
@@ -21,9 +21,9 @@ export interface CapitalFlowAlert {
 }
 
 export interface FlowMonitorConfig {
-  mainForceThreshold: number;     // major player净流入threshold (万元), default 5000
-  largeOrderThreshold: number;    // 大单threshold (万元), default 1000
-  alertInterval: number;          // 同一股票告警interval (ms), default 300000 (5min)
+  mainForceThreshold: number;     // main force net inflow threshold (10K CNY), default 5000
+  largeOrderThreshold: number;    // large order threshold (10K CNY), default 1000
+  alertInterval: number;          // same symbol alert interval (ms), default 300000 (5min)
   enabled: boolean;
 }
 
@@ -42,8 +42,8 @@ export class CapitalFlowMonitor {
 
   constructor(config?: Partial<FlowMonitorConfig>) {
     this.config = {
-      mainForceThreshold: 5000,   // 5000万
-      largeOrderThreshold: 1000,  // 1000万
+      mainForceThreshold: 5000,   // 50M
+      largeOrderThreshold: 1000,  // 10M
       alertInterval: 300000,      // 5 minutes
       enabled: true,
       ...config,
@@ -108,7 +108,7 @@ export class CapitalFlowMonitor {
       // Check unusual activity (high turnover with large flow)
       if (item.turnover && item.mainNetInflow) {
         const ratio = Math.abs(item.mainNetInflow) / item.turnover;
-        if (ratio > 0.3 && item.turnover > 10000) {  // major player占比>30% 且 turnover>1亿
+        if (ratio > 0.3 && item.turnover > 10000) {  // main force ratio >30% and turnover >100M
           const type = 'unusual_activity';
           
           if (!this.isAlertSuppressed(item.code, type)) {

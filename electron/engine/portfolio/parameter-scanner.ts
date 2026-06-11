@@ -57,11 +57,11 @@ export interface ScannerReport {
   success: boolean;
   totalCombinations: number;
   validResults: number;
-  best: ScanResult;                              // 最优parameter
-  robust: ScanResult;                            // 最稳健parameter
-  top10: ScanResult[];                           // Top 10 parameter组合
+  best: ScanResult;                              // best params
+  robust: ScanResult;                            // most robust params
+  top10: ScanResult[];                           // Top 10 param combinations
   heatmap: HeatmapData;                          // parameterheatmap
-  neighborhoodAnalysis: NeighborhoodResult;      // 邻域分析
+  neighborhoodAnalysis: NeighborhoodResult;      // neighborhood analysis
   recommendation: string;
   warnings: string[];
 }
@@ -79,7 +79,7 @@ interface NeighborhoodResult {
   bestSharpe: number;
   neighborAvgSharpe: number;
   neighborStdDev: number;
-  robustnessRatio: number;   // neighborAvg / bestSharpe (>0.7 稳健)
+  robustnessRatio: number;   // neighborAvg / bestSharpe (>0.7 robust)
   robustnessGrade: string;   // S/A/B/C/D/F
   details: {
     params: Record<string, number>;

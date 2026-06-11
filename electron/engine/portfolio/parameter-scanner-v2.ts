@@ -43,7 +43,7 @@ export interface ScannerConfig {
   slippage: number;
   klines: KLine[];
   optimizationTarget: 'sharpe' | 'return' | 'calmar' | 'profitFactor';
-  maxMemory?: number;  // 最大memory使用（结果数量），default 1000
+  maxMemory?: number;  // max memory usage (result count), default 1000
 }
 
 interface ScanResult {
@@ -173,7 +173,7 @@ class TopKHeap {
 class IncrementalStats {
   private count = 0;
   private mean = 0;
-  private m2 = 0;  // 用于计算方差
+  private m2 = 0;  // for variance calculation
 
   push(value: number) {
     this.count++;
@@ -226,8 +226,8 @@ export class ParameterScanner {
 
  // （ maxMemory ）
     const batchSize = maxMemory;
-    const topK = new TopKHeap(100, config.optimizationTarget);  // 保留 Top 100
-    const allStats = new IncrementalStats();  // 增量统计
+    const topK = new TopKHeap(100, config.optimizationTarget);  // keep Top 100
+    const allStats = new IncrementalStats();  // incremental statistics
     let validCount = 0;
     let peakResults = 0;
 
@@ -294,7 +294,7 @@ export class ParameterScanner {
     const warnings = this.generateWarnings(sorted, best, neighborhood);
 
     const computationMs = Date.now() - startTime;
-    const memorySaved = this.formatBytes((combinations.length - peakResults) * 1024);  // 估算
+    const memorySaved = this.formatBytes((combinations.length - peakResults) * 1024);  // est.
 
     log.info(`[ParameterScanner v2] Done: ${validCount}/${combinations.length} valid, best Sharpe=${best.sharpe.toFixed(2)}, time=${computationMs}ms`);
 

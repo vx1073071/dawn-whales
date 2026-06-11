@@ -204,7 +204,7 @@ export class HedgingOptimizer {
       recommendations.push(`❌ ${best.instrument.symbol}: weak hedge (${(best.effectiveness * 100).toFixed(0)}% variance reduction) — consider alternatives`);
     }
     if (annualCost > portfolioValue * 0.01) {
-      recommendations.push(`💰 Annual hedge cost HK$${(annualCost / 10000).toFixed(1)}万 — review budget`);
+      recommendations.push(`💰 Annual hedge cost HK$${(annualCost / 10000).toFixed(1)}W — review budget`);
     }
     if (rollingHedgeRatio.some(r => Math.abs(r - best.hedgeRatio) > rebalanceThreshold)) {
       recommendations.push('🔄 Hedge ratio drifting — schedule rebalance');

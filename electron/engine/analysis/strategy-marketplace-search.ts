@@ -14,8 +14,8 @@ export interface StrategyMetric {
   sharpe: number; // Sharpe ratio
   winRate: number; // win rate (%)
   trades: number; // trade count
-  subscribers: number; // subscribe数
-  rating: number; // user评分 (1-5)
+  subscribers: number; // subscribers
+  rating: number; // user rating (1-5)
   createdAt: number;
   updatedAt: number;
 }
@@ -199,7 +199,7 @@ export class StrategyMarketplaceSearch extends EventEmitter {
 
  // metric (0-100)
     const normalizedReturns = Math.min(100, Math.max(0, (strategy.returns + 50) / 2)); // -50%~100% -> 0~100
-    const normalizedRisk = Math.max(0, 100 - strategy.risk); // 风险越低越好
+    const normalizedRisk = Math.max(0, 100 - strategy.risk); // lower risk is better
     const normalizedSharpe = Math.min(100, Math.max(0, strategy.sharpe * 25)); // 0~4 -> 0~100
     const normalizedWinRate = strategy.winRate;
     const normalizedSubscribers = Math.min(100, strategy.subscribers / 10);

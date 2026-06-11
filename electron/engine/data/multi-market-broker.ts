@@ -34,7 +34,7 @@ export type MarketRegion = 'HK' | 'A-SH' | 'A-SZ' | 'US-NYSE' | 'US-NASDAQ';
 export interface MarketConfig {
   region: MarketRegion;
   minShares: number;
-  boardLot: number;          // 整手股数
+  boardLot: number;          // board lot size
   currency: string;
   dailyUpLimit?: number;      // limit up (0 = no limit)
   dailyDownLimit?: number;    // limit down (0 = no limit)
@@ -47,8 +47,8 @@ export interface MarketConfig {
 
 export interface MultiMarketOrder extends ExecutionOrder {
   market: MarketRegion;
-  isFragmented?: boolean;     // 碎股标记
-  prePostMarket?: boolean;    // 盘前盘后
+  isFragmented?: boolean;     // fragmented flag
+  prePostMarket?: boolean;    // pre/post market
 }
 
 export interface MultiMarketResult extends ExecutionResult {

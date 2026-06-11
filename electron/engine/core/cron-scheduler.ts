@@ -27,7 +27,7 @@ export type CronSchedule = CronExpression | SimpleInterval;
 
 export interface CronExpression {
   type: 'cron';
-  expression: string; // "0 9 * * 1-5" = 工作日9:00
+  expression: string; // "0 9 * * 1-5" = weekday 9:00AM
 }
 
 export interface SimpleInterval {
