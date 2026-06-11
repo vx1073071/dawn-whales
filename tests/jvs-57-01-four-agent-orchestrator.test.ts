@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-57-01 Tests: FourAgentOrchestrator (v19 self-developed)
  *
  * Tests:
@@ -17,7 +17,7 @@ import {
   IAnalyst,
   AnalysisInput,
   AnalysisOutput,
-} from '../electron/engine/four-agent-orchestrator';
+} from '../electron/engine/agents/four-agent-orchestrator';
 
 // ── Mock Agent Factory ─────────────────────────────────────────────────────
 

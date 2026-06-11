@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-53-01: Social Trading API Tests (R53 P0)
  * 社交交易 API 测试套件 — 订阅/信号推送/收益审核全流程
  *
@@ -7,9 +7,9 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { SubscriptionEarnings } from '../electron/engine/subscription-earnings';
-import { ReviewManager, getReviewManager, resetReviewManager } from '../electron/engine/review-manager';
-import { SignalPusher, StrategySignal, SignalSubscription } from '../electron/engine/signal-pusher';
+import { SubscriptionEarnings } from '../electron/engine/portfolio/subscription-earnings';
+import { ReviewManager, getReviewManager, resetReviewManager } from '../electron/engine/portfolio/review-manager';
+import { SignalPusher, StrategySignal, SignalSubscription } from '../electron/engine/data/signal-pusher';
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 

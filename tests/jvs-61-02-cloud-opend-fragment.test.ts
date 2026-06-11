@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-61-02 Tests: 云OpenD + 碎股 (R61 v19 — v1.4.0-beta)
  *
  * Tests:
@@ -17,7 +17,7 @@ import {
   getConnectionPool,
   resetCloudOpenD,
   ConnectionHealth,
-} from '../electron/engine/cloud-opend-fragment';
+} from '../electron/engine/core/cloud-opend-fragment';
 
 describe('J-61-02: CloudOpenD + Fragment', () => {
   beforeEach(() => {

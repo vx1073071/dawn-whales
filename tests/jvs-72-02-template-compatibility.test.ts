@@ -1,9 +1,9 @@
-// ── J-72-02 Tests: Template Compatibility Engine (8 tests) ─────────────
+﻿// ── J-72-02 Tests: Template Compatibility Engine (8 tests) ─────────────
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   TemplateCompatibilityEngine,
   createTemplateCompatibilityEngine,
-} from "../electron/engine/template-compatibility-engine";
+} from "../electron/engine/analysis/template-compatibility-engine";
 
 describe("J-72-02: Template Compatibility Engine", () => {
   let engine: TemplateCompatibilityEngine;

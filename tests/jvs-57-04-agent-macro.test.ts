@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-57-04: Macro Agent Tests (10+ tests)
  */
@@ -7,7 +7,7 @@ import {
   MacroAgent,
   getMacroAgent,
   resetMacroAgent,
-} from '../electron/engine/agent-macro';
+} from '../electron/engine/agents/agent-macro';
 
 describe('J-57-04: MacroAgent', () => {
   let agent: MacroAgent;

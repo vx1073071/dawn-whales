@@ -1,12 +1,12 @@
-// ── JVS Integration Test Suite ─────────────────────────────────────────────
+﻿// ── JVS Integration Test Suite ─────────────────────────────────────────────
 // Validates JVS-1~18 modules with real scenarios
 // Run: npx tsx tests/jvs-integration.test.ts
 
-import { SentimentIndexEngine } from '../electron/engine/sentiment-index';
-import { StockAnomalyDetector } from '../electron/engine/stock-anomaly-detector';
-import { NewsAggregatorService } from '../electron/engine/news-aggregator';
-import { SectorRotationMonitor } from '../electron/engine/sector-rotation';
-import { MarketHotspotService } from '../electron/engine/market-hotspot';
+import { SentimentIndexEngine } from '../electron/engine/analysis/sentiment-index';
+import { StockAnomalyDetector } from '../electron/engine/data/stock-anomaly-detector';
+import { NewsAggregatorService } from '../electron/engine/data/news-aggregator';
+import { SectorRotationMonitor } from '../electron/engine/data/sector-rotation';
+import { MarketHotspotService } from '../electron/engine/data/market-hotspot';
 
 // ── Test Framework ─────────────────────────────────────────────────────────
 
@@ -257,7 +257,7 @@ async function testNewsAggregator() {
 
 // ── JVS-12: Capital Flow Monitor Tests ─────────────────────────────────────
 
-import { getCapitalFlowMonitor } from '../electron/engine/capital-flow-monitor';
+import { getCapitalFlowMonitor } from '../electron/engine/analysis/capital-flow-monitor';
 
 async function testCapitalFlowMonitor() {
   console.log('\n💰 JVS-12: Capital Flow Monitor');
@@ -310,7 +310,7 @@ async function testCapitalFlowMonitor() {
 
 // ── JVS-15: Portfolio Risk Tests ───────────────────────────────────────────
 
-import { calculatePortfolioRisk } from '../electron/engine/portfolio-risk';
+import { calculatePortfolioRisk } from '../electron/engine/portfolio/portfolio-risk';
 
 async function testPortfolioRisk() {
   console.log('\n📊 JVS-15: Portfolio Risk');
@@ -356,7 +356,7 @@ async function testPortfolioRisk() {
 
 // ── JVS-14: Stock Diagnosis Tests ──────────────────────────────────────────
 
-import { diagnoseStock } from '../electron/engine/stock-diagnosis';
+import { diagnoseStock } from '../electron/engine/data/stock-diagnosis';
 
 async function testStockDiagnosis() {
   console.log('\n🔍 JVS-14: Stock Diagnosis');

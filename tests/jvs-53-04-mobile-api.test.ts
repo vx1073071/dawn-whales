@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-53-04: Mobile API Adapter Tests (10+ tests)
  */
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -8,7 +8,7 @@ import {
   FieldStripper,
   getMobileApiAdapter,
   resetMobileApiAdapter,
-} from '../electron/engine/mobile-api-adapter';
+} from '../electron/engine/data/mobile-api-adapter';
 
 function mkItems(n: number) {
   return Array.from({ length: n }, (_, i) => ({

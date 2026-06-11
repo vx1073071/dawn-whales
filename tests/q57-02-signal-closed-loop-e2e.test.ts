@@ -11,22 +11,22 @@ import {
   FundamentalsAgent,
   getFundamentalsAgent,
   resetFundamentalsAgent,
-} from '../electron/engine/agent-fundamentals';
+} from '../electron/engine/agents/agent-fundamentals';
 import {
   TechnicalAgent,
   getTechnicalAgent,
   resetTechnicalAgent,
-} from '../electron/engine/agent-technical';
+} from '../electron/engine/agents/agent-technical';
 import {
   SentimentAgent,
   getSentimentAgent,
   resetSentimentAgent,
-} from '../electron/engine/agent-sentiment';
+} from '../electron/engine/agents/agent-sentiment';
 import {
   MacroAgent,
   getMacroAgent,
   resetMacroAgent,
-} from '../electron/engine/agent-macro';
+} from '../electron/engine/agents/agent-macro';
 import {
   AgentOrchestrator,
   getAgentOrchestrator,
@@ -35,7 +35,7 @@ import {
 import {
   getMultiLLMRouter,
   resetMultiLLMRouter,
-} from '../electron/engine/multi-llm-router';
+} from '../electron/engine/agents/multi-llm-router';
 
 // ── Helper: run 4-agent analysis with result aggregation ─────────────────
 

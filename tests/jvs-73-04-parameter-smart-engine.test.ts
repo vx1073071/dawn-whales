@@ -1,11 +1,11 @@
-// ── J-73-04 Tests: Parameter Smart Engine (5 tests) ──────────────────
+﻿// ── J-73-04 Tests: Parameter Smart Engine (5 tests) ──────────────────
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   ParameterSmartEngine,
   createParameterSmartEngine,
   STANDARD_PARAMETERS,
   PARAMETER_PRESETS,
-} from "../electron/engine/parameter-smart-engine";
+} from "../electron/engine/portfolio/parameter-smart-engine";
 
 describe("J-73-04: Parameter Smart Engine", () => {
   let engine: ParameterSmartEngine;

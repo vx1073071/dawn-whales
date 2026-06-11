@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-47-01: 国际化数据管道测试
  * 测试多币种财报、多时区时间转换、多币种汇率换算
  */
@@ -11,7 +11,7 @@ import {
   TimezoneConfig,
   CurrencyRate,
   FinancialData,
-} from '../electron/engine/i18n-data-pipeline';
+} from '../electron/engine/core/i18n-data-pipeline';
 
 describe('I18nDataPipeline', () => {
   let pipeline: I18nDataPipeline;

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-69-02 [P1] 访客模式+性能E2E (PM R69 v19, 10t)
  *
  * 覆盖:
@@ -13,6 +13,15 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 
@@ -98,7 +107,7 @@ describe('Q-69-02: Guest Mode + Performance E2E', () => {
   describe('Performance Benchmarks', () => {
     it('06: performance engine files exist', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const perfFiles = ['performance-monitor.ts', 'benchmark.ts'];
+      const perfFiles = ['portfolio/performance-monitor.ts', 'core/benchmark.ts', 'performance-monitor.ts', 'benchmark.ts'];
       const found = perfFiles.filter(f => fs.existsSync(path.join(engineDir, f)));
       console.log(`[Q-69-02] Perf files found: ${found.length}/2 (${found.join(', ')})`);
       expect(found.length).toBeGreaterThanOrEqual(1);

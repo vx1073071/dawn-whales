@@ -16,7 +16,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 
 function getCommissionEngine() {
   try {
-    const mod = require("../../electron/engine/platform-commission-engine");
+    const mod = require("../../electron/engine/analysis/platform-commission-engine");
     const Cls = mod.PlatformCommissionEngine || mod.default;
     return new Cls();
   } catch {
@@ -26,7 +26,7 @@ function getCommissionEngine() {
 
 function getTopupGateway() {
   try {
-    const mod = require("../../electron/engine/usdt-topup-gateway");
+    const mod = require("../../electron/engine/portfolio/usdt-topup-gateway");
     const Cls = mod.USDTTopupGateway || mod.default;
     return new Cls();
   } catch {
@@ -36,7 +36,7 @@ function getTopupGateway() {
 
 function getExecutionBridge() {
   try {
-    const mod = require("../../electron/engine/AI-to-execution-bridge");
+    const mod = require("../../electron/engine/agents/ai-to-execution-bridge");
     const Cls = mod.AIExecutionBridge || mod.AIToExecutionBridge || mod.default;
     return new Cls();
   } catch {
@@ -46,7 +46,7 @@ function getExecutionBridge() {
 
 function getRevenueEngine() {
   try {
-    const mod = require("../../electron/engine/revenue-engine-v15");
+    const mod = require("../../electron/engine/portfolio/revenue-engine-v15");
     const Cls = mod.RevenueEngineV15 || mod.default;
     return new Cls();
   } catch {
@@ -69,7 +69,7 @@ describe("Q-59-02-01: Platform Commission L1/L2/L3 Split", () => {
     // Clean up if engine has reset
     if (typeof commission?.reset === "function") commission.reset();
     if (typeof revenue?.resetRevenueEngineV15 === "function") {
-      require("../../electron/engine/revenue-engine-v15").resetRevenueEngineV15();
+      require("../../electron/engine/portfolio/revenue-engine-v15").resetRevenueEngineV15();
     }
   });
 

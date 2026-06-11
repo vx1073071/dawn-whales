@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-59-01 Tests: AI Usage Billing Contract (R59 v19)
  *
  * Tests:
@@ -12,7 +12,7 @@ import {
   AIUsageBillingContract,
   getBillingContract,
   resetBillingContract,
-} from '../electron/engine/ai-usage-billing-contract';
+} from '../electron/engine/agents/ai-usage-billing-contract';
 
 describe('J-59-01: AIUsageBillingContract', () => {
   let billing: AIUsageBillingContract;

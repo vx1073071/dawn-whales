@@ -1,9 +1,9 @@
-// ── QClaw R40: WalkForwardEngine Tests ───────────────────────────────────────
+﻿// ── QClaw R40: WalkForwardEngine Tests ───────────────────────────────────────
 // Fixed for actual WalkForwardEngine API (EventEmitter, WalkForwardWindow fields)
 // Fixes: totalWindows=0 (minTrades filter), "already running" → "engine is already running",
 //        expanding windows inSampleStart=0, efficiency field removed from WalkForwardWindow
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { WalkForwardEngine, createDefaultWalkForwardEngine, type WalkForwardConfig, type ParamRange, type KLine, type Trade } from '../electron/engine/walk-forward-engine';
+import { WalkForwardEngine, createDefaultWalkForwardEngine, type WalkForwardConfig, type ParamRange, type KLine, type Trade } from '../electron/engine/backtest/walk-forward-engine';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 

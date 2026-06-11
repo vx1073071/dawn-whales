@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+﻿import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
   CircuitBreaker,
   CircuitBreakerConfig,
@@ -6,7 +6,7 @@ import {
   CircuitBreakerMetrics,
   CircuitBreakerManager,
   getCircuitBreaker,
-} from '../electron/engine/circuit-breaker';
+} from '../electron/engine/risk/circuit-breaker';
 
 describe('CircuitBreaker', () => {
   const defaultConfig: Partial<CircuitBreakerConfig> = {

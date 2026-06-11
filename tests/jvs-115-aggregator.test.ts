@@ -1,7 +1,7 @@
-// JVS-115: Real-time Aggregator Tests
+﻿// JVS-115: Real-time Aggregator Tests
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { RealtimeAggregator } from '../electron/engine/realtime-aggregator';
+import { RealtimeAggregator } from '../electron/engine/data/realtime-aggregator';
 
 describe('JVS-115: Real-time Aggregator', () => {
   let aggregator: RealtimeAggregator;

@@ -1,7 +1,7 @@
-// ── Q15: Multi-Factor Model Tests ──────────────────────────────
+﻿// ── Q15: Multi-Factor Model Tests ──────────────────────────────
 
 import { describe, it, expect } from 'vitest';
-import { MultiFactorModel, initMultiFactor, getMultiFactor } from '../electron/engine/multi-factor';
+import { MultiFactorModel, initMultiFactor, getMultiFactor } from '../electron/engine/factors/multi-factor';
 
 describe('Q15: Multi-Factor Model', () => {
   it('should initialize with default config', () => {

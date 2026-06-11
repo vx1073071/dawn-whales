@@ -1,9 +1,9 @@
-// ── J-72-05 Tests: Monitoring Engine (3 tests) ──────────────────────────
+﻿// ── J-72-05 Tests: Monitoring Engine (3 tests) ──────────────────────────
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   MonitoringEngine,
   createMonitoringEngine,
-} from "../electron/engine/monitoring-engine";
+} from "../electron/engine/core/monitoring-engine";
 
 describe("J-72-05: System Monitoring Engine", () => {
   let engine: MonitoringEngine;

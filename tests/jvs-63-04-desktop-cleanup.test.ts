@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-63-04 Tests: 桌面端清洁 (R63 v19 — v1.5.0-rc 服务器化)
  *
  * Tests:
@@ -13,7 +13,7 @@ import {
   DESKTOP_CLEANUP_PLAN,
   DesktopCleanupVerifier,
   generateMigrationSummary,
-} from '../electron/engine/desktop-cleanup';
+} from '../electron/engine/core/desktop-cleanup';
 
 describe('J-63-04: Desktop Cleanup', () => {
   describe('Cleanup Plan', () => {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-57-01: Fundamentals Agent Tests (20+ tests)
  */
@@ -7,7 +7,7 @@ import {
   FundamentalsAgent,
   getFundamentalsAgent,
   resetFundamentalsAgent,
-} from '../electron/engine/agent-fundamentals';
+} from '../electron/engine/agents/agent-fundamentals';
 
 // ── Section 1: Core Analysis ───────────────────────────────────────────────
 

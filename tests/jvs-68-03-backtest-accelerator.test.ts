@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-68-03 Tests: 回测加速引擎 (12 tests)
  */
 import { describe, it, expect } from "vitest";
@@ -6,7 +6,7 @@ import {
   BacktestAccelerator,
   BacktestCache,
   type BacktestParams,
-} from "../electron/engine/backtest-accelerator";
+} from "../electron/engine/backtest/backtest-accelerator";
 
 function makeParams(
   symbol: string,

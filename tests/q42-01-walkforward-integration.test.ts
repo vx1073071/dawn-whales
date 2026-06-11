@@ -1,4 +1,4 @@
-// ── QClaw R42: WalkForwardEngine Integration Tests ──────────────────────────────────
+﻿// ── QClaw R42: WalkForwardEngine Integration Tests ──────────────────────────────────
 // Tests WalkForwardEngine integration scenarios:
 //   - Report generation and field validity (including when 0 windows produced)
 //   - Config validation and update
@@ -7,7 +7,7 @@
 //   - Error handling
 //   - Large datasets
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { WalkForwardEngine, type ParamRange, type KLine, type Trade } from '../electron/engine/walk-forward-engine';
+import { WalkForwardEngine, type ParamRange, type KLine, type Trade } from '../electron/engine/backtest/walk-forward-engine';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -262,7 +262,7 @@ describe('WalkForwardEngine Integration', () => {
   // ── 10. createDefaultWalkForwardEngine ──────────────────────────────────────
 
   it('createDefaultWalkForwardEngine should work out of the box', async () => {
-    const { createDefaultWalkForwardEngine } = await import('../electron/engine/walk-forward-engine');
+    const { createDefaultWalkForwardEngine } = await import('../electron/engine/backtest/walk-forward-engine');
     const engine = createDefaultWalkForwardEngine();
     expect(engine).toBeDefined();
     expect(engine.isRunning()).toBe(false);

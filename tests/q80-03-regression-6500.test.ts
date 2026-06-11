@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-80-03 [P0] Full Regression 6500+ / 0 fail + R79 Verification (PM R80 V19, 5t)
  *
  * @vitest-environment node
@@ -7,6 +7,15 @@
 import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT = path.resolve(__dirname, '..');
 
@@ -34,7 +43,7 @@ describe('Q-80-03: Regression 6500+ + R79 Verification', () => {
 
     it('03: engines >= 316', () => {
       const dir = path.join(PROJECT, 'electron', 'engine');
-      const count = fs.readdirSync(dir).filter(function(f: string) { return f.endsWith('.ts'); }).length;
+      const count = _walkRecursive(dir).filter(function(f: string) { return f.endsWith('.ts'); }).length;
       console.log('[Q-80-03] Engines: ' + count + ' (target: >=316)');
       expect(count).toBeGreaterThanOrEqual(316);
     });

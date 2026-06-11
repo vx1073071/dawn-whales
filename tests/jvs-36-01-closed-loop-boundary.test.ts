@@ -1,9 +1,9 @@
-/**
+﻿/**
  * J-36-01: ClosedLoopExecutor 边界测试
  * 测试 13 状态机的边界转换、满仓拒绝、冷却期、快速撤销、日亏损限制等边界条件
  */
 import { describe, it, expect, beforeEach } from 'vitest';
-import { ClosedLoopExecutor, Signal, LoopState } from '../electron/engine/closed-loop-executor';
+import { ClosedLoopExecutor, Signal, LoopState } from '../electron/engine/analysis/closed-loop-executor';
 
 describe('J-36-01: ClosedLoopExecutor 边界测试', () => {
   let executor: ClosedLoopExecutor;

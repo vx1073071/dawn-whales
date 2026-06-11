@@ -1,4 +1,4 @@
-// ── strategy-engine 全场景测试 ──────────────────────────────────────────────
+﻿// ── strategy-engine 全场景测试 ──────────────────────────────────────────────
 // 覆盖: 状态机 / 信号生成 / RiskEngine集成 / 错误恢复
 // 覆盖: createStrategy / startLive / stopLive / emergencyStop / onQuoteUpdate
 
@@ -10,14 +10,14 @@ vi.mock('electron-log', () => ({
 }));
 
 // Mock backtest-engine (used internally by StrategyEngine)
-vi.mock('../electron/engine/backtest-engine', () => ({
+vi.mock('../electron/engine/backtest/backtest-engine', () => ({
   BacktestEngine: vi.fn().mockImplementation(() => ({
     run: vi.fn().mockResolvedValue({ success: true, result: {} }),
   })),
 }));
 
-import { StrategyEngine } from '../electron/engine/strategy-engine';
-import type { RiskEngine } from '../electron/engine/risk-engine';
+import { StrategyEngine } from '../electron/engine/analysis/strategy-engine';
+import type { RiskEngine } from '../electron/engine/risk/risk-engine';
 
 // ── Helper: mock RiskEngine ─────────────────────────────────────────────────
 

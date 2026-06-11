@@ -1,6 +1,6 @@
-// Q-45-01: AdaptiveParamEngine test suite
+﻿// Q-45-01: AdaptiveParamEngine test suite
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { AdaptiveParamEngine, type ParamRange, type OptimizationMethod } from '../electron/engine/adaptive-param-engine';
+import { AdaptiveParamEngine, type ParamRange, type OptimizationMethod } from '../electron/engine/portfolio/adaptive-param-engine';
 
 vi.mock('electron-log', () => ({ default: { info: vi.fn(), debug: vi.fn(), error: vi.fn(), warn: vi.fn() } }));
 

@@ -1,8 +1,8 @@
-// tests/condition-engine-pressure.test.ts
+﻿// tests/condition-engine-pressure.test.ts
 // ConditionEngine pressure tests — Phase 4.2 R31 Q-31-01
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { ConditionEngine } from '../electron/engine/condition-engine.js';
+import { ConditionEngine } from '../electron/engine/core/condition-engine.js';
 import type { ConditionRule, PriceCondition, MarketSnapshot } from '../electron/types/condition.js';
 
 function makeRule(overrides: Partial<ConditionRule> = {}): Omit<ConditionRule, 'id' | 'createdAt' | 'lastTriggeredAt' | 'triggerCount'> {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-63-01 Tests: AI Gateway /api (R63 v19 — v1.5.0-rc 服务器化)
  *
  * Tests:
@@ -16,7 +16,7 @@ import {
   generateLicenseId,
   generateActivationCode,
   PROVIDER_PRIORITY,
-} from '../electron/engine/ai-gateway-server';
+} from '../electron/engine/agents/ai-gateway-server';
 
 function validLicense() {
   return {

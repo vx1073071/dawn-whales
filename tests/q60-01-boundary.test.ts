@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * Q-60-01: OpenD Connection + Boundary Scenario Tests (R60 v19 P0)
  *
@@ -19,8 +19,8 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import {
   AIExecutionBridge,
   DEFAULT_RISK_CONTROLS,
-} from "../electron/engine/AI-to-execution-bridge";
-import type { IExecutionBroker } from "../electron/engine/AI-to-execution-bridge";
+} from "../electron/engine/agents/ai-to-execution-bridge";
+import type { IExecutionBroker } from "../electron/engine/agents/ai-to-execution-bridge";
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 

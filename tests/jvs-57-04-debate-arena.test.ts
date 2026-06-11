@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-57-04 Tests: DebateEngine + ModelArenaEngine (v19)
  *
  * Tests:
@@ -14,7 +14,7 @@ import {
   resetDebateEngine,
   getModelArenaEngine,
   resetModelArenaEngine,
-} from '../electron/engine/debate-arena-engine';
+} from '../electron/engine/agents/debate-arena-engine';
 
 // ── Mock Functions ─────────────────────────────────────────────────────────
 

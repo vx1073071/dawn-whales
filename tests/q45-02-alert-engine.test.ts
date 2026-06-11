@@ -1,6 +1,6 @@
-// Q-45-02: AlertEngine test suite
+﻿// Q-45-02: AlertEngine test suite
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { AlertEngine, getAlertEngine, type AlertRule, type AlertEvent } from '../electron/engine/alert-engine';
+import { AlertEngine, getAlertEngine, type AlertRule, type AlertEvent } from '../electron/engine/core/alert-engine';
 
 vi.mock('electron-log', () => ({ default: { info: vi.fn(), debug: vi.fn(), error: vi.fn(), warn: vi.fn() } }));
 

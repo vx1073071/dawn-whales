@@ -1,4 +1,4 @@
-// @vitest-environment node
+﻿// @vitest-environment node
 /**
  * J-51-03: Performance Benchmark & Engine Cold Start + Memory Leak Detection
  * R51 — v1.0.1 patch
@@ -13,7 +13,7 @@ import {
   getColdStartOptimizer,
   getMemoryLeakDetector,
   resetPerformanceTools,
-} from '../electron/engine/performance-optimizer';
+} from '../electron/engine/portfolio/performance-optimizer';
 
 // ── Section 1: ColdStartOptimizer ─────────────────────────────────────────
 

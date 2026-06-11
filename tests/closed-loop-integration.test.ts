@@ -1,10 +1,10 @@
-/**
+﻿/**
  * J-35-01: ClosedLoop → TradeExecutor Integration Tests
  * Tests the full signal → order → position → close loop
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ClosedLoopExecutor, Signal, Order, Position } from '../electron/engine/closed-loop-executor';
+import { ClosedLoopExecutor, Signal, Order, Position } from '../electron/engine/analysis/closed-loop-executor';
 
 describe('J-35-01: ClosedLoop → TradeExecutor Integration', () => {
   let executor: ClosedLoopExecutor;

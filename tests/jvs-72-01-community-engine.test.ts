@@ -1,10 +1,10 @@
-// ── J-72-01 Tests: Community Engine (10 tests) ───────────────────────────
+﻿// ── J-72-01 Tests: Community Engine (10 tests) ───────────────────────────
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   CommunityEngine,
   SensitiveWordFilter,
   createCommunityEngine,
-} from "../electron/engine/community-engine";
+} from "../electron/engine/portfolio/community-engine";
 
 describe("J-72-01: Community Interaction Engine", () => {
   let engine: CommunityEngine;

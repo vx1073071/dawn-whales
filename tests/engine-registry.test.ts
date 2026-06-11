@@ -1,11 +1,11 @@
-// Q-36-02: EngineRegistry Tests
+﻿// Q-36-02: EngineRegistry Tests
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 vi.mock('electron-log', () => ({
   default: { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() },
 }));
 
-import { EngineRegistry, IEngine, EngineType } from '../electron/engine/engine-registry';
+import { EngineRegistry, IEngine, EngineType } from '../electron/engine/core/engine-registry';
 
 // ── Mock Engines ────────────────────────────────────────────────────────────
 

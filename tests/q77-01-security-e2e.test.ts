@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-77-01 [P0] 安全修复 E2E 验证 (PM R77 V19, 10t)
  *
  * 验证:
@@ -13,6 +13,15 @@
 import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const ENGINE = path.join(PROJECT_ROOT, 'electron', 'engine');
@@ -33,7 +42,7 @@ describe('Q-77-01: Security E2E Validation', () => {
     });
 
     it('02: no API_KEY pattern in electron/engine', () => {
-      const files = fs.readdirSync(ENGINE).filter(f => f.endsWith('.ts'));
+      const files = _walkRecursive(ENGINE).filter(f => f.endsWith('.ts'));
       const hits: string[] = [];
       for (const f of files) {
         const c = fs.readFileSync(path.join(ENGINE, f), 'utf-8');
@@ -56,7 +65,7 @@ describe('Q-77-01: Security E2E Validation', () => {
       let total = 0;
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory()) walk(fp);
             else if (f.endsWith('.js') || f.endsWith('.html')) {
@@ -72,7 +81,7 @@ describe('Q-77-01: Security E2E Validation', () => {
     });
 
     it('04: no hardcoded LLM URLs in engine code', () => {
-      const files = fs.readdirSync(ENGINE).filter(f => f.endsWith('.ts'));
+      const files = _walkRecursive(ENGINE).filter(f => f.endsWith('.ts'));
       const hits: string[] = [];
       for (const f of files) {
         const c = fs.readFileSync(path.join(ENGINE, f), 'utf-8');
@@ -92,7 +101,7 @@ describe('Q-77-01: Security E2E Validation', () => {
 
   describe('A6: Command Injection Sandbox', () => {
     it('05: child_process spawn/exec engines identified', () => {
-      const files = fs.readdirSync(ENGINE).filter(f => f.endsWith('.ts'));
+      const files = _walkRecursive(ENGINE).filter(f => f.endsWith('.ts'));
       const spawners: string[] = [];
       for (const f of files) {
         const c = fs.readFileSync(path.join(ENGINE, f), 'utf-8');
@@ -107,7 +116,7 @@ describe('Q-77-01: Security E2E Validation', () => {
     });
 
     it('06: input validation pattern present in spawn engines', () => {
-      const files = fs.readdirSync(ENGINE).filter(f => f.endsWith('.ts'));
+      const files = _walkRecursive(ENGINE).filter(f => f.endsWith('.ts'));
       let validated = 0;
       let total = 0;
       for (const f of files) {
@@ -122,7 +131,7 @@ describe('Q-77-01: Security E2E Validation', () => {
     });
 
     it('07: timeout protection in spawn engines', () => {
-      const files = fs.readdirSync(ENGINE).filter(f => f.endsWith('.ts'));
+      const files = _walkRecursive(ENGINE).filter(f => f.endsWith('.ts'));
       let timed = 0;
       let total = 0;
       for (const f of files) {
@@ -137,7 +146,7 @@ describe('Q-77-01: Security E2E Validation', () => {
     });
 
     it('08: no eval() or Function() dynamic execution', () => {
-      const files = fs.readdirSync(ENGINE).filter(f => f.endsWith('.ts'));
+      const files = _walkRecursive(ENGINE).filter(f => f.endsWith('.ts'));
       const hits: string[] = [];
       for (const f of files) {
         const c = fs.readFileSync(path.join(ENGINE, f), 'utf-8');
@@ -171,7 +180,7 @@ describe('Q-77-01: Security E2E Validation', () => {
       let xssSafe = 0;
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory() && !f.includes('node_modules')) walk(fp);
             else if (/\.(tsx|ts)$/.test(f)) {
@@ -195,7 +204,7 @@ describe('Q-77-01: Security E2E Validation', () => {
       if (fs.existsSync(apiDir)) {
         const walk = (d: string) => {
           try {
-            for (const f of fs.readdirSync(d)) {
+            for (const f of _walkRecursive(d)) {
               const fp = path.join(d, f);
               if (fs.statSync(fp).isDirectory()) walk(fp);
               else if (f.endsWith('.ts') || f.endsWith('.js')) {

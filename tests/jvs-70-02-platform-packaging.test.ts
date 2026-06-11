@@ -1,6 +1,6 @@
-// ── J-70-02 Tests: Platform Packaging & CI (3 tests) ──────────────────────
+﻿// ── J-70-02 Tests: Platform Packaging & CI (3 tests) ──────────────────────
 import { describe, it, expect } from "vitest";
-import { PackageManager, createPackageManager, ArtifactInfo } from "../electron/engine/platform-packaging";
+import { PackageManager, createPackageManager, ArtifactInfo } from "../electron/engine/core/platform-packaging";
 
 describe("J-70-02: Platform Packaging & CI", () => {
   let pm: PackageManager;

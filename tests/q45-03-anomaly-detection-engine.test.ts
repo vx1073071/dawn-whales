@@ -1,6 +1,6 @@
-// Q-45-03: AnomalyDetectionEngine test suite
+﻿// Q-45-03: AnomalyDetectionEngine test suite
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { AnomalyDetectionSystem, getAnomalyDetectionSystem } from '../electron/engine/anomaly-detection';
+import { AnomalyDetectionSystem, getAnomalyDetectionSystem } from '../electron/engine/risk/anomaly-detection';
 
 vi.mock('electron-log', () => ({ default: { info: vi.fn(), debug: vi.fn(), error: vi.fn(), warn: vi.fn() } }));
 

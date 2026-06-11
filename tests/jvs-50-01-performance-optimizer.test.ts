@@ -1,4 +1,4 @@
-// JVS-50-01: Performance Optimizer Tests
+﻿// JVS-50-01: Performance Optimizer Tests
 // 20+ tests for performance optimization module
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
@@ -6,7 +6,7 @@ import {
   PerformanceOptimizer,
   PerformanceMonitor,
   getPerformanceOptimizer,
-} from '../electron/engine/performance-optimizer';
+} from '../electron/engine/portfolio/performance-optimizer';
 
 describe('JVS-50-01: PerformanceOptimizer', () => {
   let optimizer: PerformanceOptimizer;

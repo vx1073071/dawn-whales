@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-72-03 [P0] 监控告警+全量回归5650+ (PM R72 v19, 8t)
  *
  * 验证:
@@ -12,6 +12,15 @@
 import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 

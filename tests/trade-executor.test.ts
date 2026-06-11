@@ -1,4 +1,4 @@
-// ── TradeExecutor Unit Tests ──────────────────────────────────────────────────
+﻿// ── TradeExecutor Unit Tests ──────────────────────────────────────────────────
 // Q-22-01: TradeExecutor 单元测试
 // 覆盖 7 项风险检查 + Paper/Real 双模式 + TypedEventEmitter
 
@@ -13,8 +13,8 @@ vi.mock('electron', () => ({
   BrowserWindow: { getAllWindows: vi.fn(() => []) },
 }));
 
-import { TradeExecutor, getTradeExecutor, resetTradeExecutor } from '../electron/engine/trade-executor';
-import type { TradeSignal } from '../electron/engine/trade-executor';
+import { TradeExecutor, getTradeExecutor, resetTradeExecutor } from '../electron/engine/analysis/trade-executor';
+import type { TradeSignal } from '../electron/engine/analysis/trade-executor';
 
 // Helper to create a valid signal with safe position size
 // Capital = 1M, maxPositionSizePct = 10% → max position value = 100,000

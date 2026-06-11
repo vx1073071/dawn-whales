@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JVS-38-03: BacktestReplayEngine tests
  * API: BacktestReplayEngine — uses currentIndex = last-emitted-bar-index
  *   After load(klines):  currentIndex = -1 (before first bar, state=idle)
@@ -10,7 +10,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { BacktestReplayEngine, KlineBar, Breakpoint } from '../electron/engine/backtest-replay';
+import { BacktestReplayEngine, KlineBar, Breakpoint } from '../electron/engine/backtest/backtest-replay';
 
 describe('JVS-38-03: BacktestReplayEngine', () => {
   let engine: BacktestReplayEngine;

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * Q-61-01: A/美股 MultiBroker Boundary Tests (R61 v19 FIX P0)
  *
@@ -10,8 +10,8 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { AIExecutionBridge } from "../electron/engine/AI-to-execution-bridge";
-import type { IExecutionBroker } from "../electron/engine/AI-to-execution-bridge";
+import { AIExecutionBridge } from "../electron/engine/agents/ai-to-execution-bridge";
+import type { IExecutionBroker } from "../electron/engine/agents/ai-to-execution-bridge";
 
 // ── Suite 01: Triple-Market Fee Calculation ───────────────────────────────
 

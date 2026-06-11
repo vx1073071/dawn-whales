@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { getSmartCacheManager } from '../electron/engine/smart-cache';
+﻿import { describe, it, expect, beforeEach } from 'vitest';
+import { getSmartCacheManager } from '../electron/engine/core/smart-cache';
 
 describe('SmartCache', () => {
   let manager: ReturnType<typeof getSmartCacheManager>;

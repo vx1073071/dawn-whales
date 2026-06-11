@@ -1,10 +1,10 @@
-// JVS-42-02: MobileDataAdapter Tests
+﻿// JVS-42-02: MobileDataAdapter Tests
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   MobileDataAdapter,
   type MobileDevice,
   type PushNotification,
-} from '../electron/engine/mobile-data-adapter';
+} from '../electron/engine/data/mobile-data-adapter';
 
 describe('MobileDataAdapter', () => {
   let adapter: MobileDataAdapter;

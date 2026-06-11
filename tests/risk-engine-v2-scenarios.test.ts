@@ -1,9 +1,9 @@
-// tests/risk-engine-v2-scenarios.test.ts
+﻿// tests/risk-engine-v2-scenarios.test.ts
 // Q-26-01: RiskEngine v2 实盘场景验证
 // API based on electron/engine/risk-engine.ts (confirmed field names from source)
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { RiskEngine } from '../electron/engine/risk-engine';
+import { RiskEngine } from '../electron/engine/risk/risk-engine';
 
 describe('RiskEngine v2 实盘场景验证', () => {
   let re: RiskEngine;

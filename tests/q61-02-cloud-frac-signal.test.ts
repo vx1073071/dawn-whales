@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * Q-61-02: Cloud OpenD + Fractional Shares + Signal Square E2E (R61 v19 FIX P0)
  *
@@ -9,7 +9,7 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { AIExecutionBridge } from "../electron/engine/AI-to-execution-bridge";
+import { AIExecutionBridge } from "../electron/engine/agents/ai-to-execution-bridge";
 
 // ── Suite 01: Cloud OpenD ─────────────────────────────────────────────────
 

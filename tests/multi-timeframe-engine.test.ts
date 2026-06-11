@@ -14,7 +14,7 @@ import {
   FusionConfig,
   EngineConfig,
   TimeframeConfig,
-} from '../electron/engine/multi-timeframe-engine';
+} from '../electron/engine/data/multi-timeframe-engine';
 
 function makeSignal(
   timeframe: TimeframeKey,

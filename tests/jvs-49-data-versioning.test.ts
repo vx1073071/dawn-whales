@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JVS-49: Enhanced Data Versioning with Snapshots and Rollback
  * Test Suite
  */
@@ -89,7 +89,7 @@ vi.mock('better-sqlite3', () => {
   return { default: MockDatabase, Database: MockDatabase };
 });
 
-import { DataVersioningManager, benchmarkVersioning } from '../electron/engine/data-versioning-enhanced';
+import { DataVersioningManager, benchmarkVersioning } from '../electron/engine/data/data-versioning-enhanced';
 import { existsSync, unlinkSync } from 'node:fs';
 
 describe('JVS-49: Enhanced Data Versioning', () => {

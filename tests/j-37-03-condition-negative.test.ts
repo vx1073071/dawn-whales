@@ -1,6 +1,6 @@
-// J-37-03: ConditionEngine Negative Tests
+﻿// J-37-03: ConditionEngine Negative Tests
 import { describe, it, expect } from 'vitest';
-import { ConditionEngine } from '../electron/engine/condition-engine';
+import { ConditionEngine } from '../electron/engine/core/condition-engine';
 import type { MarketSnapshot } from '../electron/types/condition.js';
 
 function makeSnapshot(price: number): MarketSnapshot {

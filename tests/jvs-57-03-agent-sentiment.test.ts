@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-57-03: Sentiment Agent Tests (15+ tests)
  */
@@ -7,7 +7,7 @@ import {
   SentimentAgent,
   getSentimentAgent,
   resetSentimentAgent,
-} from '../electron/engine/agent-sentiment';
+} from '../electron/engine/agents/agent-sentiment';
 
 describe('J-57-03: SentimentAgent', () => {
   let agent: SentimentAgent;

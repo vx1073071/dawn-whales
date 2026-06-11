@@ -1,10 +1,10 @@
-/**
+﻿/**
  * J-35-03: PerformanceTracker Tests
  * Tests Sharpe, Sortino, Calmar ratio calculations
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { PerformanceTracker, TradeRecord, EquityPoint } from '../electron/engine/performance-tracker';
+import { PerformanceTracker, TradeRecord, EquityPoint } from '../electron/engine/portfolio/performance-tracker';
 
 describe('J-35-03: PerformanceTracker', () => {
   let tracker: PerformanceTracker;

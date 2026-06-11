@@ -1,10 +1,10 @@
-// J-48-01: Engine Stability Tests
+﻿// J-48-01: Engine Stability Tests
 // Tests for engine stability, memory management, and performance
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { BacktestEngine } from '../electron/engine/backtest-engine';
-import { StrategyOptimizer } from '../electron/engine/strategy-optimizer';
-import { EngineStabilityMonitor, StabilityTester } from '../electron/engine/engine-stability';
+import { BacktestEngine } from '../electron/engine/backtest/backtest-engine';
+import { StrategyOptimizer } from '../electron/engine/analysis/strategy-optimizer';
+import { EngineStabilityMonitor, StabilityTester } from '../electron/engine/core/engine-stability';
 
 // Generate mock K-line data
 function generateMockKLines(count: number) {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-52-01: Strategy Marketplace Core API Tests (R52 P0)
  * Audit workflow + Enhanced search + Versioning
  *
@@ -6,7 +6,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MarketplaceApi, getMarketplaceApi, resetMarketplaceApi } from '../electron/engine/marketplace-api';
+import { MarketplaceApi, getMarketplaceApi, resetMarketplaceApi } from '../electron/engine/analysis/marketplace-api';
 
 function mkStrategy(overrides = {}) {
   return {

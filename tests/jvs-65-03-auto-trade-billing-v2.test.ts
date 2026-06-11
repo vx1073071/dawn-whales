@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-65-03 Tests: 自动交易计费完善 (R65 FIX)
  *
  * Tests:
@@ -16,8 +16,8 @@ import {
   getBillingV2,
   resetBillingV2,
   FEE_SCHEDULE,
-} from '../electron/engine/auto-trade-billing-v2';
-import type { TradeExecution } from '../electron/engine/auto-trade-billing-v2';
+} from '../electron/engine/analysis/auto-trade-billing-v2';
+import type { TradeExecution } from '../electron/engine/analysis/auto-trade-billing-v2';
 
 function makeTrade(overrides: Partial<TradeExecution> = {}): TradeExecution {
   return {

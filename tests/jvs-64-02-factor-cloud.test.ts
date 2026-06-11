@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-64-02 Tests: 核心因子云端化+回测签名 (R64 v19)
  *
  * Tests:
@@ -13,7 +13,7 @@ import {
   FactorCloudServer,
   getFactorServer,
   resetFactorServer,
-} from '../electron/engine/factor-cloud-api';
+} from '../electron/engine/factors/factor-cloud-api';
 
 describe('J-64-02: Factor Cloud API + Backtest Signature', () => {
   const SECRET = 'a'.repeat(64);

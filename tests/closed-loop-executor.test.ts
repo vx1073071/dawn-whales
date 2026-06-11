@@ -1,4 +1,4 @@
-// AU-35-01: ClosedLoopExecutor Tests
+﻿// AU-35-01: ClosedLoopExecutor Tests
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 
 // Mock electron-log BEFORE importing the engine
@@ -6,7 +6,7 @@ vi.mock('electron-log', () => ({
   default: { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() },
 }));
 
-import { ClosedLoopExecutor, ExecutorConfig, Signal } from '../electron/engine/closed-loop-executor';
+import { ClosedLoopExecutor, ExecutorConfig, Signal } from '../electron/engine/analysis/closed-loop-executor';
 
 function makeSignal(overrides?: Partial<Signal>): Signal {
   return {

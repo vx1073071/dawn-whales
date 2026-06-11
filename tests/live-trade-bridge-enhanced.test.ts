@@ -1,10 +1,10 @@
-/**
+﻿/**
  * JVS-40-01: LiveTradeBridge 增强测试
  * 测试实盘交易桥接器的核心功能：模式切换、订单同步、风控、对账、审计
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { LiveTradeBridge, createLiveTradeBridge } from '../electron/engine/live-trade-bridge';
+import { LiveTradeBridge, createLiveTradeBridge } from '../electron/engine/analysis/live-trade-bridge';
 import type {
   BridgeConfig,
   PaperOrder,
@@ -16,7 +16,7 @@ import type {
   PaperPosition,
   LivePosition,
   ReconciliationResult,
-} from '../electron/engine/live-trade-bridge';
+} from '../electron/engine/analysis/live-trade-bridge';
 
 describe('LiveTradeBridge — 初始化', () => {
   it('should create bridge with default config', () => {

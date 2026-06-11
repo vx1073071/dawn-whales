@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JVS-100: Complete E2E Test Suite
  * Tests data flow, event propagation, performance, and alerts
  * 
@@ -27,10 +27,10 @@ if (typeof EventEmitter === 'undefined') {
 }
 
 // Import singleton getters
-import { getSlidingWindowAggregator } from '../electron/engine/sliding-window-aggregator';
-import { getPerformanceMonitor } from '../electron/engine/performance-monitor';
-import { getRealtimeVisualizationService } from '../electron/engine/realtime-visualization';
-import { getAlertEngine } from '../electron/engine/alert-engine';
+import { getSlidingWindowAggregator } from '../electron/engine/data/sliding-window-aggregator';
+import { getPerformanceMonitor } from '../electron/engine/portfolio/performance-monitor';
+import { getRealtimeVisualizationService } from '../electron/engine/data/realtime-visualization';
+import { getAlertEngine } from '../electron/engine/core/alert-engine';
 
 describe('JVS-100: E2E Test Suite', () => {
   let aggregator: ReturnType<typeof getSlidingWindowAggregator>;

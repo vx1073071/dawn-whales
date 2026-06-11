@@ -1,4 +1,4 @@
-// Q-47-02 Part 2: i18n Switching E2E — zh-CN / zh-HK / en 三语言完整切换
+﻿// Q-47-02 Part 2: i18n Switching E2E — zh-CN / zh-HK / en 三语言完整切换
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { stubWindowApi } from './helpers/mocks';
 import {
@@ -6,7 +6,7 @@ import {
   translateFields,
   getAllTranslations,
   getSupportedLanguages,
-} from '../electron/engine/i18n-data';
+} from '../electron/engine/core/i18n-data';
 
 describe('Q-47-02 Part 2: i18n Switching E2E — 三语言完整切换', () => {
 

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JVS-43-02: Real-time Data Flow Enhancement Tests
  *
  * Covers:
@@ -20,7 +20,7 @@ import {
   type SourceDataPoint,
   type ConflictStrategy,
   type AnomalyThreshold,
-} from '../electron/engine/realtime-data-flow';
+} from '../electron/engine/data/realtime-data-flow';
 
 // Helper: create a data point
 function makePoint(overrides: Partial<SourceDataPoint> = {}): SourceDataPoint {

@@ -1,4 +1,4 @@
-// Q18: Strategy Templates — Unit Tests
+﻿// Q18: Strategy Templates — Unit Tests
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -8,7 +8,7 @@ import {
   getTemplatesByTag,
   searchTemplates,
   instantiateTemplate,
-} from '../electron/engine/strategy-templates';
+} from '../electron/engine/analysis/strategy-templates';
 
 describe('Q18: Strategy Templates', () => {
 

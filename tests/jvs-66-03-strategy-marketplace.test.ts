@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-66-03 Tests: 策略市场上架API (R66 v19)
  *
  * 5 tests: create, publish, search, filter, stats
@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   StrategyMarketplaceEngine, getMarketplace, resetMarketplace,
-} from '../electron/engine/strategy-marketplace-api';
+} from '../electron/engine/analysis/strategy-marketplace-api';
 
 describe('J-66-03: Strategy Marketplace API', () => {
   let mp: StrategyMarketplaceEngine;

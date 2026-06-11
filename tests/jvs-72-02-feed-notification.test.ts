@@ -1,11 +1,11 @@
-// ── J-72-02 Tests: Feed + Notification Engine (8 tests) ──────────────────
+﻿// ── J-72-02 Tests: Feed + Notification Engine (8 tests) ──────────────────
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   FeedEngine,
   NotificationEngine,
   createFeedEngine,
   createNotificationEngine,
-} from "../electron/engine/feed-notification-engine";
+} from "../electron/engine/data/feed-notification-engine";
 
 describe("J-72-02: Feed + Notification Engine", () => {
   let feed: FeedEngine;

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Tests for Account Analytics Engine (JVS-42-03)
  *
  * Tests cross-account analytics, portfolio aggregation, and risk metrics.
@@ -11,7 +11,7 @@ import {
   type PositionData,
   type AccountSummary,
   type PerformanceMetrics,
-} from '../electron/engine/account-analytics';
+} from '../electron/engine/analysis/account-analytics';
 
 // ---------------------------------------------------------------------------
 // Helpers

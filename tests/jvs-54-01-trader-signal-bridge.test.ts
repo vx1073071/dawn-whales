@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-54-01: Trader Signal Bridge Tests (20+ tests)
  */
@@ -7,7 +7,7 @@ import {
   TraderSignalBridge,
   getTraderSignalBridge,
   resetTraderSignalBridge,
-} from '../electron/engine/trader-signal-bridge';
+} from '../electron/engine/analysis/trader-signal-bridge';
 
 function mkSignal(overrides: Record<string, any> = {}) {
   return {

@@ -1,4 +1,4 @@
-// Q-46-03: DataConsistencyChecker 测试 — QClaw R46
+﻿// Q-46-03: DataConsistencyChecker 测试 — QClaw R46
 // 实际 API: validateStockData(data) → ConsistencyCheckResult
 //           validateMultiSource(sources) → ConsistencyCheckResult
 //           getSummary(result) → string
@@ -8,7 +8,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   DataConsistencyChecker,
-} from '../electron/engine/data-consistency-checker';
+} from '../electron/engine/data/data-consistency-checker';
 
 function makeStock(overrides: Record<string, unknown> = {}): Record<string, unknown> {
   return {

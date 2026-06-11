@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { RiskEngine } from '../electron/engine/risk-engine';
+﻿import { describe, it, expect, beforeEach } from 'vitest';
+import { RiskEngine } from '../electron/engine/risk/risk-engine';
 
 // ── Q-24-01: TradeExecutor 扩测（16 → 34）───────────────────────────────
 // 新增 18 个测试，覆盖：止损 / 撤单 / 风险拒绝 / 模式切换 / 急停 / 统计 / 事件

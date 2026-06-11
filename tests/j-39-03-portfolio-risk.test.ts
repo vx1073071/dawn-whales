@@ -1,11 +1,11 @@
-// J-39-03: PortfolioRiskEngine Tests
+﻿// J-39-03: PortfolioRiskEngine Tests
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   PortfolioRiskEngine,
   Portfolio,
   HistoricalReturn,
   StressScenario,
-} from '../electron/engine/portfolio-risk-engine';
+} from '../electron/engine/portfolio/portfolio-risk-engine';
 
 describe('J-39-03: PortfolioRiskEngine', () => {
   let engine: PortfolioRiskEngine;

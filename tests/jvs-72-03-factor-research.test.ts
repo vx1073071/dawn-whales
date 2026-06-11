@@ -1,9 +1,9 @@
-// ── J-72-03 Tests: Factor Research Engine (8 tests) ─────────────────────
+﻿// ── J-72-03 Tests: Factor Research Engine (8 tests) ─────────────────────
 import { describe, it, expect } from "vitest";
 import {
   FactorResearchEngine,
   createFactorResearchEngine,
-} from "../electron/engine/factor-research-engine";
+} from "../electron/engine/factors/factor-research-engine";
 
 describe("J-72-03: Factor Research Engine", () => {
   const engine = createFactorResearchEngine();

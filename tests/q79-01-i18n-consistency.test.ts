@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-79-01 [P0] i18n Consistency Test (PM R79 V19, 5t)
  *
  * 9 languages x 463 keys alignment check.
@@ -10,6 +10,15 @@
 import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT = path.resolve(__dirname, '..');
 
@@ -22,7 +31,7 @@ describe('Q-79-01: i18n Consistency (9 langs x keys)', () => {
       const tKeys = new Set<string>();
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory() && !f.includes('node_modules')) walk(fp);
             else if (/\.(tsx|ts|jsx|js)$/.test(f)) {
@@ -46,7 +55,7 @@ describe('Q-79-01: i18n Consistency (9 langs x keys)', () => {
       let count = 0;
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory() && !f.includes('node_modules')) walk(fp);
             else if (/\.(tsx|ts)$/.test(f)) {
@@ -97,7 +106,7 @@ describe('Q-79-01: i18n Consistency (9 langs x keys)', () => {
       const langs = new Set<string>();
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory() && !f.includes('node_modules')) walk(fp);
             else if (/\.(tsx|ts|jsx)$/.test(f)) {
@@ -119,7 +128,7 @@ describe('Q-79-01: i18n Consistency (9 langs x keys)', () => {
       let hardcoded = 0;
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory() && !f.includes('node_modules')) walk(fp);
             else if (/\.(tsx|jsx)$/.test(f)) {
@@ -156,7 +165,7 @@ describe('Q-79-01: i18n Consistency (9 langs x keys)', () => {
       let dupes = 0;
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory() && !f.includes('node_modules')) walk(fp);
             else if (/\.(tsx|ts|jsx|js)$/.test(f)) {
@@ -180,7 +189,7 @@ describe('Q-79-01: i18n Consistency (9 langs x keys)', () => {
       let hasFallback = false;
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory() && !f.includes('node_modules')) walk(fp);
             else if (/\.(ts)$/.test(f)) {
@@ -200,7 +209,7 @@ describe('Q-79-01: i18n Consistency (9 langs x keys)', () => {
       let badKeys = 0;
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory() && !f.includes('node_modules')) walk(fp);
             else if (/\.(tsx|ts|jsx)$/.test(f)) {

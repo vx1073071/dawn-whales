@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-52-01: Strategy Marketplace API Tests (R52 P0)
  * 策略市场 API 测试套件 — 发布/审核/搜索/订阅/评价全流程
  *
@@ -7,7 +7,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MarketplaceApi, getMarketplaceApi, resetMarketplaceApi } from '../electron/engine/marketplace-api';
+import { MarketplaceApi, getMarketplaceApi, resetMarketplaceApi } from '../electron/engine/analysis/marketplace-api';
 
 // ── Test Fixtures ────────────────────────────────────────────────────────────
 

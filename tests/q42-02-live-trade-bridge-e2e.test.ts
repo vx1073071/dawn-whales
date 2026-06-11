@@ -1,4 +1,4 @@
-// ── QClaw R42: LiveTradeBridge E2E Integration Tests ──────────────────────────────
+﻿// ── QClaw R42: LiveTradeBridge E2E Integration Tests ──────────────────────────────
 // Tests LiveTradeBridge end-to-end scenarios:
 //   - Order submission lifecycle (submit → fill → stats)
 //   - Risk rule management (add / remove / toggle)
@@ -6,7 +6,7 @@
 //   - Config update and paper/live mode
 //   - Reconciliation and position tracking
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { LiveTradeBridge, type PaperOrder, type BrokerAdapter } from '../electron/engine/live-trade-bridge';
+import { LiveTradeBridge, type PaperOrder, type BrokerAdapter } from '../electron/engine/analysis/live-trade-bridge';
 
 // ── Mock BrokerAdapter ─────────────────────────────────────────────────────────
 

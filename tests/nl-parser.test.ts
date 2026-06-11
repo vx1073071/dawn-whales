@@ -1,4 +1,4 @@
-// ── NL Parser 全场景测试 ──────────────────────────────────────────────────
+﻿// ── NL Parser 全场景测试 ──────────────────────────────────────────────────
 // Q-28-01: 从 42 扩展到 80+ tests
 // 覆盖: normalizeInput / extractATRConfig / parseNaturalLanguage / STRATEGY_TEMPLATES
 
@@ -18,7 +18,7 @@ import {
   extractATRConfig,
   STRATEGY_TEMPLATES,
   SYNONYM_MAP,
-} from '../electron/engine/nl-parser';
+} from '../electron/engine/agents/nl-parser';
 
 // ── normalizeInput ──────────────────────────────────────────────────────────
 

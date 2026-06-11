@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-60-03 Tests: Order State Machine & Audit Trail (R60 v19)
  *
  * Tests:
@@ -14,7 +14,7 @@ import {
   getOrderManager,
   resetOrderManager,
   VALID_TRANSITIONS,
-} from '../electron/engine/order-state-machine';
+} from '../electron/engine/analysis/order-state-machine';
 
 describe('J-60-03: OrderStateManager', () => {
   let manager: OrderStateManager;

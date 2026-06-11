@@ -1,8 +1,8 @@
-// tests/nl-parser-extension.test.ts
+﻿// tests/nl-parser-extension.test.ts
 // NL Parser PriceCondition extension — Phase 4.2 R30 Q-30-03
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { parseNaturalLanguage, normalizeInput } from '../electron/engine/nl-parser.js';
+import { parseNaturalLanguage, normalizeInput } from '../electron/engine/agents/nl-parser.js';
 
 describe('NL Parser — PriceCondition extension', () => {
   describe('above operators', () => {

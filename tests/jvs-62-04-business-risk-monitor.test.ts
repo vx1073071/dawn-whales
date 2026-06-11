@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-62-04 Tests: 业务风控+异常检测 (R62 v19 — v1.5.0-alpha)
  *
  * Tests:
@@ -11,7 +11,7 @@ import {
   BusinessRiskMonitor,
   getBusinessRiskMonitor,
   resetBusinessRiskMonitor,
-} from '../electron/engine/business-risk-monitor';
+} from '../electron/engine/risk/business-risk-monitor';
 
 describe('J-62-04: BusinessRiskMonitor', () => {
   let monitor: BusinessRiskMonitor;

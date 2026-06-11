@@ -10,19 +10,19 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import {
   getFundamentalsAgent,
   resetFundamentalsAgent,
-} from '../electron/engine/agent-fundamentals';
+} from '../electron/engine/agents/agent-fundamentals';
 import {
   getTechnicalAgent,
   resetTechnicalAgent,
-} from '../electron/engine/agent-technical';
+} from '../electron/engine/agents/agent-technical';
 import {
   getSentimentAgent,
   resetSentimentAgent,
-} from '../electron/engine/agent-sentiment';
+} from '../electron/engine/agents/agent-sentiment';
 import {
   getMacroAgent,
   resetMacroAgent,
-} from '../electron/engine/agent-macro';
+} from '../electron/engine/agents/agent-macro';
 import {
   AgentOrchestrator,
   getAgentOrchestrator,
@@ -31,7 +31,7 @@ import {
 import {
   getMultiLLMRouter,
   resetMultiLLMRouter,
-} from '../electron/engine/multi-llm-router';
+} from '../electron/engine/agents/multi-llm-router';
 
 // ── Section 1: Agent Singleton Lifecycle ─────────────────────────────────
 

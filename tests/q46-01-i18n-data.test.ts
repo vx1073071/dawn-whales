@@ -1,4 +1,4 @@
-// Q-46-01: i18n-data 测试 — QClaw R46
+﻿// Q-46-01: i18n-data 测试 — QClaw R46
 // 实际 API: translateField(field, category, lang?)
 //           translateFields(fields, category, lang?)
 //           getAllTranslations(category) → TranslationMap
@@ -16,7 +16,7 @@ import {
   INDUSTRY_NAMES,
   SENTIMENT_LABELS,
   ANOMALY_TYPES,
-} from '../electron/engine/i18n-data';
+} from '../electron/engine/core/i18n-data';
 
 describe('i18n-data', () => {
   describe('translateField', () => {

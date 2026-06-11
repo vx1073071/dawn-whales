@@ -1,10 +1,10 @@
-// ── J-72-06 Tests: Multi-Market Quote + K-line Engine (10 tests) ──────
+﻿// ── J-72-06 Tests: Multi-Market Quote + K-line Engine (10 tests) ──────
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   MultiMarketQuoteEngine,
   createMultiMarketQuoteEngine,
   MARKET_REGISTRY,
-} from "../electron/engine/multi-market-quote-engine";
+} from "../electron/engine/data/multi-market-quote-engine";
 
 describe("J-72-06: Multi-Market Quote + K-line Engine", () => {
   let engine: MultiMarketQuoteEngine;

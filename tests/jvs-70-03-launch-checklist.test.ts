@@ -1,6 +1,6 @@
-// ── J-70-03 Tests: GA Launch Checklist (2 tests) ────────────────────────
+﻿// ── J-70-03 Tests: GA Launch Checklist (2 tests) ────────────────────────
 import { describe, it, expect } from "vitest";
-import { LaunchChecklist, createLaunchChecklist } from "../electron/engine/launch-checklist";
+import { LaunchChecklist, createLaunchChecklist } from "../electron/engine/core/launch-checklist";
 
 describe("J-70-03: GA Launch Checklist", () => {
   it("01: all 20 checklist items pass, GA ready", () => {

@@ -1,9 +1,9 @@
-// ── J-73-02 Tests: AI Drawing Engine (8 tests) ───────────────────────
+﻿// ── J-73-02 Tests: AI Drawing Engine (8 tests) ───────────────────────
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   AIDrawingEngine,
   createAIDrawingEngine,
-} from "../electron/engine/ai-drawing-engine";
+} from "../electron/engine/agents/ai-drawing-engine";
 
 describe("J-73-02: AI Drawing Engine", () => {
   let engine: AIDrawingEngine;

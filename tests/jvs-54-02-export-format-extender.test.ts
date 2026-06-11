@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-54-02: Export Format Extender Tests (15+ tests)
  */
@@ -7,7 +7,7 @@ import {
   ExportFormatExtender,
   getExportFormatExtender,
   resetExportFormatExtender,
-} from '../electron/engine/export-format-extender';
+} from '../electron/engine/analysis/export-format-extender';
 
 const sampleStrategies = [
   { name: 'Alpha Momentum', author: 'Alice', category: 'momentum', sharpe: 2.1, maxDrawdown: -8.5, winRate: 65.2, rating: 4.8, downloads: 1200 },

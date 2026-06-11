@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-68-02 Tests: 碎股完善 — Odd Lot Engine (13 tests)
  */
 import { describe, it, expect } from "vitest";
@@ -9,7 +9,7 @@ import {
   splitIntoStandardAndOdd,
   calculateOddLotFee,
   ODD_LOT_CONFIGS,
-} from "../electron/engine/odd-lot-engine";
+} from "../electron/engine/analysis/odd-lot-engine";
 
 describe("J-68-02: Odd Lot Engine + Partial Fills", () => {
   describe("Detector & Splitter", () => {

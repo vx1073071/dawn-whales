@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Tests for Multi-Account Adapter (JVS-42-01)
  *
  * Tests dual account isolation, switching, and cross-account analytics.
@@ -8,7 +8,7 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import {
   MultiAccountAdapter,
   type AccountConfig,
-} from '../electron/engine/multi-account-adapter';
+} from '../electron/engine/analysis/multi-account-adapter';
 
 describe('MultiAccountAdapter', () => {
   let adapter: MultiAccountAdapter;

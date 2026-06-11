@@ -1,6 +1,6 @@
-// J-37-02: RebalanceEngine Boundary Tests
+﻿// J-37-02: RebalanceEngine Boundary Tests
 import { describe, it, expect } from 'vitest';
-import { RebalanceEngine } from '../electron/engine/rebalance-engine';
+import { RebalanceEngine } from '../electron/engine/portfolio/rebalance-engine';
 
 function makePositions(items: { code: string; quantity: number; price: number }[]) {
   const totalMV = items.reduce((s, i) => s + i.quantity * i.price, 0);

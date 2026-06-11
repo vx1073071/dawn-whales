@@ -1,4 +1,4 @@
-// Q-47-01: i18n-data 完整测试 — zh-CN / zh-TW / en / ja / ko / fr / it / de
+﻿// Q-47-01: i18n-data 完整测试 — zh-CN / zh-TW / en / ja / ko / fr / it / de
 import { describe, it, expect } from 'vitest';
 import {
   translateField,
@@ -10,7 +10,7 @@ import {
   SENTIMENT_LABELS,
   ANOMALY_TYPES,
   SupportedLanguage,
-} from '../electron/engine/i18n-data';
+} from '../electron/engine/core/i18n-data';
 
 const LANGUAGES = ['zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'it', 'de'] as SupportedLanguage[];
 

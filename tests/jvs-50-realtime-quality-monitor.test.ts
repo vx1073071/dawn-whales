@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JVS-50: Real-time Data Quality Monitor Test Suite
  * Tests the quality scoring and alerting pipeline
  */
@@ -12,7 +12,7 @@ import {
   RealtimeQualityMonitor,
   DataQualityCalculator,
   benchmarkQualityMonitor,
-} from '../electron/engine/realtime-quality-monitor';
+} from '../electron/engine/data/realtime-quality-monitor';
 
 describe('JVS-50: Real-time Data Quality Monitor', () => {
   let monitor: RealtimeQualityMonitor;

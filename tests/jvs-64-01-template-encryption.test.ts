@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-64-01 Tests: 策略模板AES-256加密 (R64 v19)
  *
  * Tests:
@@ -14,7 +14,7 @@ import {
   TemplateEncryptionEngine,
   getEncryptionEngine,
   resetEncryptionEngine,
-} from '../electron/engine/template-encryption';
+} from '../electron/engine/analysis/template-encryption';
 
 describe('J-64-01: Template AES-256-GCM Encryption', () => {
   let engine: TemplateEncryptionEngine;

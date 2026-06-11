@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-52-03: Integration Tests (R52 P1)
  * 前后端集成测试套件 — 集联/一致性/错误/边界
  *
@@ -7,7 +7,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MarketplaceApi, getMarketplaceApi, resetMarketplaceApi } from '../electron/engine/marketplace-api';
+import { MarketplaceApi, getMarketplaceApi, resetMarketplaceApi } from '../electron/engine/analysis/marketplace-api';
 
 // ── Test Fixtures ────────────────────────────────────────────────────────────
 

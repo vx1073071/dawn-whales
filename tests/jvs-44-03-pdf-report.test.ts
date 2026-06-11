@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+﻿import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 // Mock electron-log
 vi.mock('electron-log', () => ({
@@ -38,7 +38,7 @@ import {
   type ReportMetadata,
   type BatchReportConfig,
   type GeneratedReport,
-} from '../electron/engine/pdf-report-generator';
+} from '../electron/engine/analysis/pdf-report-generator';
 
 // ── Helpers ──────────────────────────────────────────────────────────────
 

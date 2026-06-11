@@ -1,10 +1,10 @@
-// ── ConditionWatcher E2E Tests ─────────────────────────────────────────────
+﻿// ── ConditionWatcher E2E Tests ─────────────────────────────────────────────
 // ML-30-03: Phase 4.2 condition trigger scenarios
 // Target: npm test >= 400
 
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
-import { ConditionWatcher } from '../electron/engine/condition-watcher';
-import type { QuoteSnapshot, ConditionRule, PriceCondition, IndicatorCondition, CompositeCondition } from '../electron/engine/condition-watcher';
+import { ConditionWatcher } from '../electron/engine/core/condition-watcher';
+import type { QuoteSnapshot, ConditionRule, PriceCondition, IndicatorCondition, CompositeCondition } from '../electron/engine/core/condition-watcher';
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 

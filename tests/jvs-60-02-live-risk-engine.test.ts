@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-60-02 Tests: Live Trading Risk Engine (R60 v19)
  *
  * Tests:
@@ -15,7 +15,7 @@ import {
   getLiveRiskEngine,
   resetLiveRiskEngine,
   DEFAULT_RISK_CONFIG,
-} from '../electron/engine/live-risk-engine';
+} from '../electron/engine/analysis/live-risk-engine';
 
 describe('J-60-02: LiveRiskEngine', () => {
   let engine: LiveRiskEngine;

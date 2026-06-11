@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-59-04 Tests: AI-to-Execution Bridge (R59 v19)
  *
  * Tests:
@@ -12,7 +12,7 @@ import {
   getExecutionBridge,
   resetExecutionBridge,
   AISignal,
-} from '../electron/engine/ai-to-execution-bridge';
+} from '../electron/engine/agents/ai-to-execution-bridge';
 
 describe('J-59-04: AIExecutionBridge', () => {
   let bridge: AIExecutionBridge;

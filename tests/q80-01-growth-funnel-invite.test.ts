@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-80-01 [P0] Growth Funnel + Invite E2E (PM R80 V19, 10t)
  *
  * @vitest-environment node
@@ -7,6 +7,15 @@
 import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT = path.resolve(__dirname, '..');
 
@@ -19,7 +28,7 @@ describe('Q-80-01: Growth Funnel + Invite E2E', () => {
       let funnelFound = false;
       if (fs.existsSync(serverDir)) {
         const walk = (d: string) => {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory()) walk(fp);
             else if (/\.(ts|js)$/.test(f)) {
@@ -42,7 +51,7 @@ describe('Q-80-01: Growth Funnel + Invite E2E', () => {
       let retentionFound = false;
       if (fs.existsSync(serverDir)) {
         const walk = (d: string) => {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory()) walk(fp);
             else if (/\.(ts|js)$/.test(f)) {
@@ -63,7 +72,7 @@ describe('Q-80-01: Growth Funnel + Invite E2E', () => {
     it('03: analytics engine present', () => {
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let analyticsEngine = '';
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (f.includes('analytics') || f.includes('funnel') || f.includes('retention')) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           const lines = c.split('\n').length;
@@ -79,7 +88,7 @@ describe('Q-80-01: Growth Funnel + Invite E2E', () => {
       const stages = ['register', 'activate', 'deposit', 'pay', 'first_ai', 'first_charge'];
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let stageHits = 0;
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (/\.(ts)$/.test(f)) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           for (const s of stages) {
@@ -98,7 +107,7 @@ describe('Q-80-01: Growth Funnel + Invite E2E', () => {
     it('05: invite engine present', () => {
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let inviteFiles: string[] = [];
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (f.includes('invite') || f.includes('referral')) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           inviteFiles.push(f + '(' + c.split('\n').length + 'L)');
@@ -124,7 +133,7 @@ describe('Q-80-01: Growth Funnel + Invite E2E', () => {
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let hasUniqueCode = false;
       let hasReward = false;
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (/\.(ts)$/.test(f)) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           if (/invite.*code|referral.*code|generateInvite/.test(c)) hasUniqueCode = true;
@@ -139,7 +148,7 @@ describe('Q-80-01: Growth Funnel + Invite E2E', () => {
     it('08: anti-fraud logic (same IP/device 24h <=3)', () => {
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let antiFraud = false;
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (/\.(ts)$/.test(f)) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           if (/24.*hour|same.*ip|same.*device|anti.*fraud|fraud.*detect|invite.*limit/.test(c)) {
@@ -159,7 +168,7 @@ describe('Q-80-01: Growth Funnel + Invite E2E', () => {
     it('09: inactive user detection', () => {
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let zombieFound = false;
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (/\.(ts)$/.test(f)) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           if (/zombie|inactive|lastLogin|last_active|7.*day.*login/.test(c)) {
@@ -177,7 +186,7 @@ describe('Q-80-01: Growth Funnel + Invite E2E', () => {
       let freshnessFound = false;
       if (fs.existsSync(serverDir)) {
         const walk = (d: string) => {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory()) walk(fp);
             else if (/\.(ts|js)$/.test(f)) {

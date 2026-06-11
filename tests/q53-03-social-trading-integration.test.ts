@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-53-03: Social Trading Integration Tests (R53 P1)
  * 社交交易集成测试 — 前后端集联/数据一致性/错误处理/跨引擎联动
  *
@@ -6,8 +6,8 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { SubscriptionEarnings } from '../electron/engine/subscription-earnings';
-import { ReviewManager, getReviewManager, resetReviewManager } from '../electron/engine/review-manager';
+import { SubscriptionEarnings } from '../electron/engine/portfolio/subscription-earnings';
+import { ReviewManager, getReviewManager, resetReviewManager } from '../electron/engine/portfolio/review-manager';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Section 1: End-to-End Social Trading Lifecycle

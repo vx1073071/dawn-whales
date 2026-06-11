@@ -1,11 +1,11 @@
-// J-39-01: StrategyOptimizer Tests
+﻿// J-39-01: StrategyOptimizer Tests
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   StrategyOptimizer,
   ParamSpec,
   EvalResult,
   OptimizationConfig,
-} from '../electron/engine/strategy-optimizer';
+} from '../electron/engine/analysis/strategy-optimizer';
 
 describe('J-39-01: StrategyOptimizer', () => {
   let optimizer: StrategyOptimizer;

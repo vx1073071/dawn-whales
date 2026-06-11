@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JVS-47-03: 数据管道可靠性测试
  * 测试断线重连+延迟监控+缓存命中>90%
  */
@@ -7,7 +7,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
   DataPipelineReliability,
   getPipelineReliability,
-} from '../electron/engine/data-pipeline-reliability';
+} from '../electron/engine/data/data-pipeline-reliability';
 
 describe('JVS-47-03: Data Pipeline Reliability', () => {
   let pipeline: DataPipelineReliability;

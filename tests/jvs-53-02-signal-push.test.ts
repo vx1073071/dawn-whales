@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-53-02: Signal Push Engine Tests (25+ tests)
  */
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -8,7 +8,7 @@ import {
   SignalQualityScorer,
   getSignalPushEngine,
   resetSignalPushEngine,
-} from '../electron/engine/signal-push-engine';
+} from '../electron/engine/data/signal-push-engine';
 
 function mkSignalInput(overrides: Record<string, any> = {}) {
   return {

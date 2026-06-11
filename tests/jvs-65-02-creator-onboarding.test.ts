@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-65-02 Tests: 创作者入驻引导API (R65 FIX)
  *
  * Tests:
@@ -13,7 +13,7 @@ import {
   CreatorOnboardingServer,
   getOnboardingServer,
   resetOnboardingServer,
-} from '../electron/engine/creator-onboarding-api';
+} from '../electron/engine/portfolio/creator-onboarding-api';
 
 describe('J-65-02: Creator Onboarding API', () => {
   let server: CreatorOnboardingServer;

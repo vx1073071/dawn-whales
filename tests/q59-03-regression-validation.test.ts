@@ -20,9 +20,9 @@ describe("Q-59-03-01: Full Billing E2E Pipeline", () => {
 
   beforeAll(() => {
     try { engines.billing = new (require("../../electron/engine/AIUsageBillingContract").AIUsageBillingContract)({ freeTierAnalyses: 3 }); } catch {}
-    try { engines.commission = new (require("../../electron/engine/platform-commission-engine").PlatformCommissionEngine)(); } catch {}
-    try { engines.topup = new (require("../../electron/engine/usdt-topup-gateway").USDTTopupGateway)(); } catch {}
-    try { engines.revenue = new (require("../../electron/engine/revenue-engine-v15").RevenueEngineV15)(); } catch {}
+    try { engines.commission = new (require("../../electron/engine/analysis/platform-commission-engine").PlatformCommissionEngine)(); } catch {}
+    try { engines.topup = new (require("../../electron/engine/portfolio/usdt-topup-gateway").USDTTopupGateway)(); } catch {}
+    try { engines.revenue = new (require("../../electron/engine/portfolio/revenue-engine-v15").RevenueEngineV15)(); } catch {}
   });
 
   it("01: E2E — topup 100 USDT → analyze with STANDARD → settle → verify balance", () => {

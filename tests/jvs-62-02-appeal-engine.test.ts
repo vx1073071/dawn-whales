@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-62-02 Tests: 申诉系统+管理员解冻 (R62 v19 — v1.5.0-alpha)
  *
  * Tests:
@@ -13,7 +13,7 @@ import {
   getAppealEngine,
   resetAppealEngine,
   APPEAL_REASONS,
-} from '../electron/engine/appeal-engine';
+} from '../electron/engine/portfolio/appeal-engine';
 
 describe('J-62-02: Appeal & Admin Unfreeze', () => {
   let engine: AppealEngine;

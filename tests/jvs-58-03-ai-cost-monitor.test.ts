@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-58-03 Tests: AI Cost Monitor Engine (R58 v19)
  *
  * Tests:
@@ -13,7 +13,7 @@ import {
   getAICostMonitor,
   resetAICostMonitor,
   CostRecord,
-} from '../electron/engine/ai-cost-monitor';
+} from '../electron/engine/agents/ai-cost-monitor';
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 

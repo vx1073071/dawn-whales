@@ -1,7 +1,7 @@
-// ── Q16: Dynamic Position Sizing Tests ──────────────────────────────
+﻿// ── Q16: Dynamic Position Sizing Tests ──────────────────────────────
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { DynamicSizer, initDynamicSizer, getDynamicSizer } from '../electron/engine/dynamic-sizer';
+import { DynamicSizer, initDynamicSizer, getDynamicSizer } from '../electron/engine/portfolio/dynamic-sizer';
 
 describe('Q16: Dynamic Position Sizing', () => {
   let sizer: DynamicSizer;

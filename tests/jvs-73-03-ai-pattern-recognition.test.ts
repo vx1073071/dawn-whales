@@ -1,9 +1,9 @@
-// ── J-73-03 Tests: AI Pattern Recognition Engine (7 tests) ──────────
+﻿// ── J-73-03 Tests: AI Pattern Recognition Engine (7 tests) ──────────
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   AIPatternRecognitionEngine,
   createAIPatternRecognitionEngine,
-} from "../electron/engine/ai-pattern-recognition";
+} from "../electron/engine/agents/ai-pattern-recognition";
 
 describe("J-73-03: AI Pattern Recognition Engine", () => {
   let engine: AIPatternRecognitionEngine;

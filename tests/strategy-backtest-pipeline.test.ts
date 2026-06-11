@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+﻿import { describe, it, expect, beforeAll } from 'vitest';
 
-import { StrategyEngine } from '../electron/engine/strategy-engine';
-import { BacktestEngine } from '../electron/engine/backtest-engine';
-import { RiskEngine } from '../electron/engine/risk-engine';
-import { parseNaturalLanguage, STRATEGY_TEMPLATES } from '../electron/engine/nl-parser';
+import { StrategyEngine } from '../electron/engine/analysis/strategy-engine';
+import { BacktestEngine } from '../electron/engine/backtest/backtest-engine';
+import { RiskEngine } from '../electron/engine/risk/risk-engine';
+import { parseNaturalLanguage, STRATEGY_TEMPLATES } from '../electron/engine/agents/nl-parser';
 
 function generateKlines(count: number, basePrice = 100) {
   const klines: any[] = [];

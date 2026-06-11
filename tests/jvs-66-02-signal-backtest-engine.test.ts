@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-66-02 Tests: 信号回测引擎 (R66 v19)
  *
  * 7 tests: signal recording, exit update, backtest computation, grading, ranking
@@ -6,8 +6,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   SignalBacktestEngine, getBacktestEngine, resetBacktestEngine,
-} from '../electron/engine/signal-backtest-engine';
-import type { SignalRecord } from '../electron/engine/signal-backtest-engine';
+} from '../electron/engine/backtest/signal-backtest-engine';
+import type { SignalRecord } from '../electron/engine/backtest/signal-backtest-engine';
 
 function makeSignal(overrides: Partial<SignalRecord> = {}): SignalRecord {
   return {

@@ -1,4 +1,4 @@
-// Q19: OpenD Health Check — Unit Tests
+﻿// Q19: OpenD Health Check — Unit Tests
 // Note: opend-health-check.ts imports getQuoteStreamStatus (missing) and
 // getRiskStatus (missing) which are vi.mock'd below.
 
@@ -6,11 +6,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // ── Mock missing dependencies before importing the module ──────────────────────
 
-vi.mock('../electron/engine/quote-stream', () => ({
+vi.mock('../electron/engine/data/quote-stream', () => ({
   getQuoteStreamStatus: vi.fn().mockResolvedValue({ subscribedCount: 5 }),
 }));
 
-vi.mock('../electron/engine/risk-engine', () => ({
+vi.mock('../electron/engine/risk/risk-engine', () => ({
   getRiskStatus: vi.fn().mockResolvedValue({ status: 'OK', drawdown: 0.05 }),
 }));
 
@@ -19,7 +19,7 @@ import {
   pingOpenD,
   type HealthCheckResult,
   type HealthCheck,
-} from '../electron/engine/opend-health-check';
+} from '../electron/engine/data/opend-health-check';
 
 describe('Q19: OpenD Health Check', () => {
 

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-62-01 Tests: P2P积分转账系统 (R62 v19 — v1.5.0-alpha)
  *
  * Tests:
@@ -13,7 +13,7 @@ import {
   getP2PEngine,
   resetP2PEngine,
   DEFAULT_P2P_CONFIG,
-} from '../electron/engine/p2p-transfer-engine';
+} from '../electron/engine/portfolio/p2p-transfer-engine';
 
 describe('J-62-01: P2P Transfer Engine', () => {
   let engine: P2PTransferEngine;

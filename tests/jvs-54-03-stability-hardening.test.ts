@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-54-03: Stability Hardening Tests (10+ tests)
  */
@@ -14,7 +14,7 @@ import {
   getMockStandardizer,
   getRetryRunner,
   resetStabilityHardening,
-} from '../electron/engine/stability-hardening';
+} from '../electron/engine/core/stability-hardening';
 
 function mkRun(testId: string, status: 'pass' | 'fail' | 'timeout', durationMs: number, overrides: Record<string, any> = {}) {
   return {

@@ -1,10 +1,10 @@
-// Q17: Paper Trader — Unit Tests
+﻿// Q17: Paper Trader — Unit Tests
 // Tests: fill simulation, slippage, position tracking, trade recording, performance
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { PaperTrader, initPaperTrader } from '../electron/engine/paper-trader';
-import type { LiveOrder } from '../electron/engine/live-executor';
-import type { QuoteTick } from '../electron/engine/quote-stream';
+import { PaperTrader, initPaperTrader } from '../electron/engine/backtest/paper-trader';
+import type { LiveOrder } from '../electron/engine/analysis/live-executor';
+import type { QuoteTick } from '../electron/engine/data/quote-stream';
 
 // Helper: make a market BUY order
 function makeOrder(overrides: Partial<LiveOrder> = {}): LiveOrder {

@@ -14,7 +14,7 @@ import {
   StressTestResult,
   RiskMetrics,
   HistoricalReturn,
-} from '../electron/engine/portfolio-risk-engine';
+} from '../electron/engine/portfolio/portfolio-risk-engine';
 
 function makePortfolio(symbols = ['BTCUSDT', 'ETHUSDT'], weights = [0.6, 0.4]): Portfolio {
   const positions = symbols.map((symbol, i) => ({

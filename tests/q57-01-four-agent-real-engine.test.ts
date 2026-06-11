@@ -36,7 +36,7 @@ import {
 import {
   getMultiLLMRouter,
   resetMultiLLMRouter,
-} from '../electron/engine/multi-llm-router';
+} from '../electron/engine/agents/multi-llm-router';
 
 // ── Section 1: Agent Type Interface Contract ───────────────────────────
 

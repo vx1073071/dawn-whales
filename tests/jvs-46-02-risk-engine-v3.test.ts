@@ -1,9 +1,9 @@
-/**
+﻿/**
  * JVS-46-02: Risk Engine V3 Tests
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { RiskEngineV3, getRiskEngineV3, resetRiskEngineV3 } from '../electron/engine/risk-engine-v3';
+import { RiskEngineV3, getRiskEngineV3, resetRiskEngineV3 } from '../electron/engine/risk/risk-engine-v3';
 
 describe('JVS-46-02: Risk Engine V3', () => {
   let engine: RiskEngineV3;

@@ -1,8 +1,8 @@
-// tests/condition-engine.test.ts
+﻿// tests/condition-engine.test.ts
 // ConditionEngine 测试套件 — Phase 4.2 R30 Q-30-01
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ConditionEngine } from '../electron/engine/condition-engine.js';
+import { ConditionEngine } from '../electron/engine/core/condition-engine.js';
 import type {
   ConditionRule,
   PriceCondition,

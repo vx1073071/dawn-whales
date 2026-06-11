@@ -1,11 +1,11 @@
-// JVS-46-01: 策略市场搜索/评分引擎测试
+﻿// JVS-46-01: 策略市场搜索/评分引擎测试
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { 
   StrategyMarketplaceSearch,
   StrategyMetric,
   SearchQuery
-} from '../electron/engine/strategy-marketplace-search';
+} from '../electron/engine/analysis/strategy-marketplace-search';
 
 describe('StrategyMarketplaceSearch', () => {
   let search: StrategyMarketplaceSearch;

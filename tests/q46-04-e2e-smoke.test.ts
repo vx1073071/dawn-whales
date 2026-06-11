@@ -1,4 +1,4 @@
-// Q-46-04: LiveTradeBridge E2E Smoke Tests — QClaw R46
+﻿// Q-46-04: LiveTradeBridge E2E Smoke Tests — QClaw R46
 // 实际 API: submitPaperOrder / cancelOrder / updatePaperPosition /
 //           validateOrder / getAllOrders / reconcilePositions /
 //           getAuditTrail / setBrokerAdapter
@@ -16,7 +16,7 @@ import {
   BrokerAdapter,
   LiveOrder,
   LivePosition,
-} from '../electron/engine/live-trade-bridge';
+} from '../electron/engine/analysis/live-trade-bridge';
 
 function makeOrder(overrides: Partial<PaperOrder> = {}): PaperOrder {
   return {

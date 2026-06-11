@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-V15-03: Real Treasury Tests (20+ tests)
  */
@@ -7,7 +7,7 @@ import {
   RealTreasury,
   getRealTreasury,
   resetRealTreasury,
-} from '../electron/engine/real-treasury';
+} from '../electron/engine/analysis/real-treasury';
 
 // ── Section 1: Balance Management ──────────────────────────────────────────
 

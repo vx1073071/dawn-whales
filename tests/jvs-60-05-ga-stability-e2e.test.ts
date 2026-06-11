@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-60-05: GA Stability E2E Tests (R60 v19 — v1.3.0 GA)
  *
  * Tests:
@@ -9,10 +9,10 @@
  * 05: Full regression validation (baseline >=4900)
  */
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getLiveBroker, resetLiveBroker } from '../electron/engine/opend-live-broker';
-import { getLiveRiskEngine, resetLiveRiskEngine } from '../electron/engine/live-risk-engine';
-import { getOrderManager, resetOrderManager } from '../electron/engine/order-state-machine';
-import { getExecutionBillingBridge, resetExecutionBillingBridge } from '../electron/engine/execution-billing-bridge';
+import { getLiveBroker, resetLiveBroker } from '../electron/engine/data/opend-live-broker';
+import { getLiveRiskEngine, resetLiveRiskEngine } from '../electron/engine/analysis/live-risk-engine';
+import { getOrderManager, resetOrderManager } from '../electron/engine/analysis/order-state-machine';
+import { getExecutionBillingBridge, resetExecutionBillingBridge } from '../electron/engine/analysis/execution-billing-bridge';
 
 describe('J-60-05: GA Stability E2E', () => {
   beforeEach(() => {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JVS-43-01: PerformanceMonitor Enhancement Tests
  *
  * Covers:
@@ -19,7 +19,7 @@ import {
   type AccountComparisonResult,
   type Alert,
   type TrendResult,
-} from '../electron/engine/performance-monitor';
+} from '../electron/engine/portfolio/performance-monitor';
 
 describe('JVS-43-01: PerformanceMonitor Enhancement', () => {
   let monitor: PerformanceMonitor;

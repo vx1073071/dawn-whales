@@ -1,9 +1,9 @@
-// ── QClaw R40: DataExporter Tests ───────────────────────────────────────────
+﻿// ── QClaw R40: DataExporter Tests ───────────────────────────────────────────
 // Tests exportData(), batchExport(), generateSummaryReport().
 // app.getPath is unavailable in jsdom — use outputPath to avoid Electron dependency.
 // The DB layer returns empty rows without crashing when getDb() is null.
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { exportData, batchExport, generateSummaryReport, type ExportTarget, type ExportFormat } from '../electron/engine/data-exporter';
+import { exportData, batchExport, generateSummaryReport, type ExportTarget, type ExportFormat } from '../electron/engine/data/data-exporter';
 
 // All targets and formats supported by data-exporter
 const allTargets: ExportTarget[] = ['trades', 'backtest_runs', 'strategies', 'kline_cache', 'alerts', 'portfolio'];

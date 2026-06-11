@@ -1,8 +1,8 @@
-/**
+﻿/**
  * JVS-38-01: AdaptiveParamEngine tests
  */
 import { describe, it, expect, beforeEach } from 'vitest';
-import { AdaptiveParamEngine } from '../electron/engine/adaptive-param-engine';
+import { AdaptiveParamEngine } from '../electron/engine/portfolio/adaptive-param-engine';
 
 describe('JVS-38-01: AdaptiveParamEngine', () => {
   let engine: AdaptiveParamEngine;

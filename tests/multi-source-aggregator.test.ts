@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-41-01: MultiSourceAggregator Activation Tests
  * Tests the activated MultiSourceAggregator with 4 data sources:
  * EastMoney (东方财富), Sina Finance (新浪财经), Tencent Finance (腾讯财经), Xueqiu (雪球)
@@ -7,7 +7,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import {
   MultiSourceAggregator,
-} from '../electron/engine/multi-source-aggregator';
+} from '../electron/engine/data/multi-source-aggregator';
 
 // Mock fetcher that returns controlled data
 function createMockFetcher(sourceId: string, data: any, shouldFail = false, delayMs = 0) {

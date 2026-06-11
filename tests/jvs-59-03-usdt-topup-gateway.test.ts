@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-59-03 Tests: USDT Topup Gateway (R59 v19)
  *
  * Tests:
@@ -11,7 +11,7 @@ import {
   USDTTopupGateway,
   getTopupGateway,
   resetTopupGateway,
-} from '../electron/engine/usdt-topup-gateway';
+} from '../electron/engine/portfolio/usdt-topup-gateway';
 
 describe('J-59-03: USDTTopupGateway', () => {
   let gateway: USDTTopupGateway;

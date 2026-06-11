@@ -1,9 +1,9 @@
-// J-40-03: StrategyExportImport Tests
+﻿// J-40-03: StrategyExportImport Tests
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   StrategyExportImport,
   StrategyConfig,
-} from '../electron/engine/strategy-export-import';
+} from '../electron/engine/analysis/strategy-export-import';
 
 describe('J-40-03: StrategyExportImport', () => {
   let engine: StrategyExportImport;

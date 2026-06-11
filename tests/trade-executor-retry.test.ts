@@ -1,4 +1,4 @@
-// ── E-34-01: TradeExecutor Retry Tests ────────────────────────────────────
+﻿// ── E-34-01: TradeExecutor Retry Tests ────────────────────────────────────
 import { describe, it, expect, vi } from 'vitest';
 
 vi.mock('electron', () => ({
@@ -6,7 +6,7 @@ vi.mock('electron', () => ({
   app: { getPath: vi.fn(() => '/tmp') },
 }));
 
-import { TradeExecutor, ExecutorConfig } from '../electron/engine/trade-executor';
+import { TradeExecutor, ExecutorConfig } from '../electron/engine/analysis/trade-executor';
 
 describe('TradeExecutor - Retry Mechanisms', () => {
   function makeConfig(overrides?: Partial<ExecutorConfig>): ExecutorConfig {

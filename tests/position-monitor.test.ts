@@ -1,10 +1,10 @@
-/**
+﻿/**
  * J-35-02: PositionMonitor Tests
  * Tests position monitoring with stop-loss, take-profit, and time-based exit
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ClosedLoopExecutor, Signal } from '../electron/engine/closed-loop-executor';
+import { ClosedLoopExecutor, Signal } from '../electron/engine/analysis/closed-loop-executor';
 
 describe('J-35-02: PositionMonitor', () => {
   let executor: ClosedLoopExecutor;

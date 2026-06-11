@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Audit Trail Engine Tests
  * D-49-NEW [P0] - youdao
  * 
@@ -12,7 +12,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { AuditTrailEngine, AuditAction, AuditSeverity } from '../electron/engine/audit-trail-engine';
+import { AuditTrailEngine, AuditAction, AuditSeverity } from '../electron/engine/portfolio/audit-trail-engine';
 
 describe('AuditTrailEngine', () => {
   let engine: AuditTrailEngine;

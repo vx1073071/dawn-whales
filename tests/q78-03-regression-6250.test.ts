@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-78-03 [P0] 全量回归 6250+ / 0 fail (PM R78 V19, 5t)
  *
  * @vitest-environment node
@@ -7,6 +7,15 @@
 import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT = path.resolve(__dirname, '..');
 const ENGINE = path.join(PROJECT, 'electron', 'engine');
@@ -33,7 +42,7 @@ describe('Q-78-03: Regression Gate 6250+', () => {
 
     it('03: engines >= 315', () => {
       const dir = path.join(PROJECT, 'electron', 'engine');
-      const count = fs.readdirSync(dir).filter(function(f: string) { return f.endsWith('.ts'); }).length;
+      const count = _walkRecursive(dir).filter(function(f: string) { return f.endsWith('.ts'); }).length;
       console.log('[Q-78-03] Engines: ' + count + ' (target: >=315)');
       expect(count).toBeGreaterThanOrEqual(315);
     });

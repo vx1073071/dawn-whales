@@ -13,8 +13,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   AIExecutionBridge,
-} from "../electron/engine/AI-to-execution-bridge";
-import type { IExecutionBroker } from "../electron/engine/AI-to-execution-bridge";
+} from "../electron/engine/agents/ai-to-execution-bridge";
+import type { IExecutionBroker } from "../electron/engine/agents/ai-to-execution-bridge";
 
 // ── Suite 01: 1000 Consecutive Simulated Trades (GA gate) ─────────────────
 

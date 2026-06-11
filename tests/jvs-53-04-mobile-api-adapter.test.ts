@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-53-04: Mobile API Adapter Tests (10+ tests)
  */
 
@@ -14,7 +14,7 @@ import {
   resetMobileApi,
   getResponseCache,
   getRateLimiter,
-} from '../electron/engine/mobile-api-adapter';
+} from '../electron/engine/data/mobile-api-adapter';
 
 // ── Section 1: Pagination ──────────────────────────────────────────────────
 

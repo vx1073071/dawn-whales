@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-V15-01: Revenue Engine v15 Tests (30+ tests)
  */
@@ -7,7 +7,7 @@ import {
   RevenueEngineV15,
   getRevenueEngineV15,
   resetRevenueEngineV15,
-} from '../electron/engine/revenue-engine-v15';
+} from '../electron/engine/portfolio/revenue-engine-v15';
 
 // ── Section 1: Creator Registration & Tiers ────────────────────────────────
 

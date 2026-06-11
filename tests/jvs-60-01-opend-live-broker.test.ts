@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-60-01 Tests: Futu OpenD LiveBroker (R60 v19)
  *
  * Tests:
@@ -17,7 +17,7 @@ import {
   HK_FEES,
   CN_FEES,
   US_FEES,
-} from '../electron/engine/opend-live-broker';
+} from '../electron/engine/data/opend-live-broker';
 
 describe('J-60-01: OpenDLiveBroker', () => {
   let broker: OpenDLiveBroker;

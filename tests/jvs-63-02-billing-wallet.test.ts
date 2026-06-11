@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-63-02 Tests: 计费+钱包 /api (R63 v19 — v1.5.0-rc 服务器化)
  *
  * Tests:
@@ -13,7 +13,7 @@ import {
   BillingWalletServer,
   getBillingServer,
   resetBillingServer,
-} from '../electron/engine/billing-wallet-server';
+} from '../electron/engine/analysis/billing-wallet-server';
 
 describe('J-63-02: Billing + Wallet /api', () => {
   let server: BillingWalletServer;

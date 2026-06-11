@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { BacktestReplayEngine } from '../electron/engine/backtest-replay';
-import { compareBacktests, summaryTable } from '../electron/engine/backtest-comparator';
+﻿import { describe, it, expect } from 'vitest';
+import { BacktestReplayEngine } from '../electron/engine/backtest/backtest-replay';
+import { compareBacktests, summaryTable } from '../electron/engine/backtest/backtest-comparator';
 
 /**
  * Q-44-04: Engine Performance Benchmark

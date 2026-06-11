@@ -1,8 +1,8 @@
-// J-37-01: ClosedLoopExecutor Boundary Tests
+﻿// J-37-01: ClosedLoopExecutor Boundary Tests
 import {
   ClosedLoopExecutor,
   Signal,
-} from '../electron/engine/closed-loop-executor';
+} from '../electron/engine/analysis/closed-loop-executor';
 
 function makeSignal(overrides: Partial<Signal> = {}): Signal {
   return {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-52-02: Strategy Subscription + Review Tests (R52 P0)
  * Subscription lifecycle + Revenue split + Review management
  *
@@ -10,12 +10,12 @@ import {
   SubscriptionEarnings,
   getSubscriptionEarnings,
   resetSubscriptionEarnings,
-} from '../electron/engine/subscription-earnings';
+} from '../electron/engine/portfolio/subscription-earnings';
 import {
   ReviewManager,
   getReviewManager,
   resetReviewManager,
-} from '../electron/engine/review-manager';
+} from '../electron/engine/portfolio/review-manager';
 
 // ── Section 1: Subscription Lifecycle ──────────────────────────────────────
 

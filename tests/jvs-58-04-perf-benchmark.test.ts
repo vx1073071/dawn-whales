@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-58-04: Performance Benchmark + Stress Tests (R58 v19)
  *
  * Tests:
@@ -8,8 +8,8 @@
  * 07: Memory leak detection
  */
 import { describe, it, expect } from 'vitest';
-import { FourAgentOrchestrator, getFourAgentOrchestrator, resetFourAgentOrchestrator, IAnalyst, AnalysisInput, AnalysisOutput } from '../electron/engine/four-agent-orchestrator';
-import { CacheOptimizer, getCacheOptimizer, resetCacheOptimizer } from '../electron/engine/cache-optimizer';
+import { FourAgentOrchestrator, getFourAgentOrchestrator, resetFourAgentOrchestrator, IAnalyst, AnalysisInput, AnalysisOutput } from '../electron/engine/agents/four-agent-orchestrator';
+import { CacheOptimizer, getCacheOptimizer, resetCacheOptimizer } from '../electron/engine/data/cache-optimizer';
 
 // ── Mock Agent with configurable delay ─────────────────────────────────────
 

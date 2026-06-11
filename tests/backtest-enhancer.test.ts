@@ -1,4 +1,4 @@
-// ── BacktestEnhancer 测试套件 ────────────────────────────────────────────────
+﻿// ── BacktestEnhancer 测试套件 ────────────────────────────────────────────────
 // Q-28-03: BacktestEnhancer 20+ tests
 // 覆盖: computeDeepRiskMetrics / walkForwardAnalysis / parameterSweep / multiPeriodBacktest
 
@@ -28,7 +28,7 @@ function makeMockEngine(overrides?: Partial<ReturnType<typeof vi.fn>>) {
   };
 }
 
-import { BacktestEnhancer } from '../electron/engine/backtest-enhancer';
+import { BacktestEnhancer } from '../electron/engine/backtest/backtest-enhancer';
 
 // ── Helper: 生成假 K 线数据 ─────────────────────────────────────────────────
 

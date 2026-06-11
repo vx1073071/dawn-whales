@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-V15-02: Auto Trade Billing Tests (25+ tests)
  */
@@ -7,7 +7,7 @@ import {
   AutoTradeBilling,
   getAutoTradeBilling,
   resetAutoTradeBilling,
-} from '../electron/engine/auto-trade-billing';
+} from '../electron/engine/analysis/auto-trade-billing';
 
 // ── Section 1: Fee Calculation ──────────────────────────────────────────────
 

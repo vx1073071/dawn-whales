@@ -1,10 +1,10 @@
-// JVS-42-03: AccountAnalytics Tests
+﻿// JVS-42-03: AccountAnalytics Tests
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   AccountAnalytics,
   type AccountData,
   type PositionData,
-} from '../electron/engine/account-analytics';
+} from '../electron/engine/analysis/account-analytics';
 
 describe('AccountAnalytics', () => {
   let analytics: AccountAnalytics;

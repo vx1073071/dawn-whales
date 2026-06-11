@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-56-03: Strategy Signal Converter Tests (10+ tests)
  */
@@ -7,8 +7,8 @@ import {
   StrategySignalConverter,
   getStrategySignalConverter,
   resetStrategySignalConverter,
-} from '../electron/engine/strategy-signal-converter';
-import type { AgentVote } from '../electron/engine/strategy-signal-converter';
+} from '../electron/engine/analysis/strategy-signal-converter';
+import type { AgentVote } from '../electron/engine/analysis/strategy-signal-converter';
 
 function mkVotes(overrides: Partial<AgentVote>[] = []): AgentVote[] {
   const defaults: AgentVote[] = [

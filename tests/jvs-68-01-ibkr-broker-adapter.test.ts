@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-68-01 Tests: IBKR Broker Adapter (10 tests)
  */
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
@@ -7,7 +7,7 @@ import {
   IBKRConnection,
   BrokerRegistry,
   calculateIBKRFee,
-} from "../electron/engine/ibkr-broker-adapter";
+} from "../electron/engine/data/ibkr-broker-adapter";
 
 describe("J-68-01: IBKR Broker Adapter", () => {
   let broker: IBKRBrokerAdapter;

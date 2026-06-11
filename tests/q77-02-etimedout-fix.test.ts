@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-77-02 [P0] ETIMEDOUT 测试修复 + 5轮0超时确认 (PM R77 V19, 5t)
  *
  * 修复:
@@ -12,6 +12,15 @@
 import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 
@@ -40,7 +49,7 @@ describe('Q-77-02: ETIMEDOUT Fixes + 5-round Gate', () => {
     it('03: engine file count pre-cache', () => {
       const start = Date.now();
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir).filter(f => f.endsWith('.ts'));
+      const files = _walkRecursive(engineDir).filter(f => f.endsWith('.ts'));
       const elapsed = Date.now() - start;
       console.log(`[Q-77-02] Pre-cached ${files.length} engine files in ${elapsed}ms`);
       expect(files.length).toBeGreaterThanOrEqual(310);
@@ -76,7 +85,7 @@ describe('Q-77-02: ETIMEDOUT Fixes + 5-round Gate', () => {
       const start = Date.now();
       const sizes: number[] = [];
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      for (const f of fs.readdirSync(engineDir).filter(f => f.endsWith('.ts'))) {
+      for (const f of _walkRecursive(engineDir).filter(f => f.endsWith('.ts'))) {
         sizes.push(fs.statSync(path.join(engineDir, f)).size);
       }
       const elapsed = Date.now() - start;
@@ -100,7 +109,7 @@ describe('Q-77-02: ETIMEDOUT Fixes + 5-round Gate', () => {
       const start = Date.now();
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
       let total = 0;
-      for (const f of fs.readdirSync(engineDir).filter(f => f.endsWith('.ts'))) {
+      for (const f of _walkRecursive(engineDir).filter(f => f.endsWith('.ts'))) {
         total += fs.readFileSync(path.join(engineDir, f), 'utf-8').length;
       }
       const elapsed = Date.now() - start;
@@ -113,8 +122,8 @@ describe('Q-77-02: ETIMEDOUT Fixes + 5-round Gate', () => {
       const testsDir = path.join(PROJECT_ROOT, 'tests');
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
       let count = 0;
-      count += fs.readdirSync(testsDir).length;
-      count += fs.readdirSync(engineDir).length;
+      count += _walkRecursive(testsDir).length;
+      count += _walkRecursive(engineDir).length;
       count += JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'package.json'), 'utf-8')).dependencies ? 1 : 0;
       const elapsed = Date.now() - start;
       console.log(`[Q-77-02] R4: ${count} items, ${elapsed}ms`);

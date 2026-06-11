@@ -1,4 +1,4 @@
-// AU-35-02: RebalanceEngine Tests
+﻿// AU-35-02: RebalanceEngine Tests
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 
 // Mock electron-log BEFORE importing the engine
@@ -6,7 +6,7 @@ vi.mock('electron-log', () => ({
   default: { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() },
 }));
 
-import { RebalanceEngine, RebalanceConfig, TargetWeight, Position } from '../electron/engine/rebalance-engine';
+import { RebalanceEngine, RebalanceConfig, TargetWeight, Position } from '../electron/engine/portfolio/rebalance-engine';
 
 describe('RebalanceEngine', () => {
   let engine: RebalanceEngine;

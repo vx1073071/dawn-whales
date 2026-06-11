@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Tests for Mobile Data Adapter (JVS-42-02)
  *
  * Tests mobile device management, push notifications, compression, and bandwidth optimization.
@@ -8,7 +8,7 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import {
   MobileDataAdapter,
   type MobileDevice,
-} from '../electron/engine/mobile-data-adapter';
+} from '../electron/engine/data/mobile-data-adapter';
 
 describe('MobileDataAdapter', () => {
   let adapter: MobileDataAdapter;

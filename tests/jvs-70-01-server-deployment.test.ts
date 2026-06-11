@@ -1,6 +1,6 @@
-// ── J-70-01 Tests: Server Deployment & Configuration (5 tests) ────────────
+﻿// ── J-70-01 Tests: Server Deployment & Configuration (5 tests) ────────────
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { DeploymentManager, createDeploymentManager, RateLimiter, CORSValidator } from "../electron/engine/server-deployment";
+import { DeploymentManager, createDeploymentManager, RateLimiter, CORSValidator } from "../electron/engine/core/server-deployment";
 
 describe("J-70-01: Server Deployment & Configuration", () => {
   let dm: DeploymentManager;

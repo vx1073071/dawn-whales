@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-68-04 Tests: i18n Engine (10 tests)
  */
 import { describe, it, expect } from "vitest";
@@ -8,7 +8,7 @@ import {
   formatCurrency,
   formatNumber,
   TRANSLATIONS,
-} from "../electron/engine/i18n-engine";
+} from "../electron/engine/core/i18n-engine";
 
 describe("J-68-04: i18n Engine", () => {
   let engine: I18nEngine;

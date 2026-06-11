@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Compliance Report Engine Tests
  * D-49-NEW [P1] - youdao
  * 
@@ -11,8 +11,8 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { AuditTrailEngine } from '../electron/engine/audit-trail-engine';
-import { ComplianceReportEngine, ComplianceStatus } from '../electron/engine/compliance-report-engine';
+import { AuditTrailEngine } from '../electron/engine/portfolio/audit-trail-engine';
+import { ComplianceReportEngine, ComplianceStatus } from '../electron/engine/risk/compliance-report-engine';
 
 describe('ComplianceReportEngine', () => {
   let auditEngine: AuditTrailEngine;

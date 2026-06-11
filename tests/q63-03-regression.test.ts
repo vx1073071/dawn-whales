@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * Q-63-03: Full Regression → 5200+ (R63 v19 P0, 10 tests)
  *
@@ -13,6 +13,15 @@ import { describe, it, expect } from "vitest";
 import { execSync } from "child_process";
 import path from "path";
 import fs from "fs";
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 
@@ -88,7 +97,7 @@ describe("Q-63-03-03: Security Gates", () => {
   it("08: no AI keys hardcoded in engine/ directory", () => {
     const engineDir = path.join(PROJECT_ROOT, "electron", "engine");
     if (!fs.existsSync(engineDir)) return; // skip if no engine dir
-    const files = fs.readdirSync(engineDir).filter(f => f.endsWith(".ts"));
+    const files = _walkRecursive(engineDir).filter(f => f.endsWith('.ts'));
     let keyFound = false;
     for (const f of files.slice(0, 50)) { // sample first 50
       const content = fs.readFileSync(path.join(engineDir, f), "utf-8");

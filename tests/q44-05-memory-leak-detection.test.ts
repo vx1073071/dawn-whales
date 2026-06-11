@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { BacktestReplayEngine } from '../electron/engine/backtest-replay';
+﻿import { describe, it, expect } from 'vitest';
+import { BacktestReplayEngine } from '../electron/engine/backtest/backtest-replay';
 
 /**
  * Q-44-05: Memory Leak Detection Test

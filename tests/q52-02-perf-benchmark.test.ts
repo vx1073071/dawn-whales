@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-52-02: Performance Benchmark Tests (R52 P0)
  * 性能基准测试套件 — API <150ms / 100并发 / 搜索 <200ms
  *
@@ -7,7 +7,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MarketplaceApi, getMarketplaceApi, resetMarketplaceApi } from '../electron/engine/marketplace-api';
+import { MarketplaceApi, getMarketplaceApi, resetMarketplaceApi } from '../electron/engine/analysis/marketplace-api';
 
 // ── Test Fixtures ────────────────────────────────────────────────────────────
 

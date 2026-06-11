@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JVS-95: NLP Sentiment Analysis Engine - Tests
  * NLP-based sentiment analysis for financial news and social media
  */
@@ -8,7 +8,7 @@ import {
   NLPSentimentEngine,
   SentimentConfig,
   NewsArticle,
-} from '../electron/engine/nlp-sentiment-engine';
+} from '../electron/engine/agents/nlp-sentiment-engine';
 
 describe('NLPSentimentEngine', () => {
   let engine: NLPSentimentEngine;

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-58-01 Tests: Cache Optimizer — ≥95% hit rate (R58 v19)
  *
  * Tests:
@@ -11,7 +11,7 @@ import {
   CacheOptimizer,
   getCacheOptimizer,
   resetCacheOptimizer,
-} from '../electron/engine/cache-optimizer';
+} from '../electron/engine/data/cache-optimizer';
 
 describe('J-58-01: CacheOptimizer', () => {
   let cache: CacheOptimizer;

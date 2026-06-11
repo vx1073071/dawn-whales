@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-70-02 [P0] 部署后全链路测试 (PM R70 v19, 10t)
  *
  * 验证:
@@ -12,6 +12,15 @@
 import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const PKG = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'package.json'), 'utf-8'));
@@ -80,7 +89,7 @@ describe('Q-70-02: Post-Deploy Full Chain E2E', () => {
   describe('Security Checklist', () => {
     it('06: no hardcoded DeepSeek/OpenAI keys', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const files = fs.readdirSync(engineDir).filter(f => f.endsWith('.ts'));
+      const files = _walkRecursive(engineDir).filter(f => f.endsWith('.ts'));
       let hardcoded = 0;
       for (const f of files) {
         const content = fs.readFileSync(path.join(engineDir, f), 'utf-8');

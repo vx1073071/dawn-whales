@@ -1,11 +1,11 @@
-import { describe, it, expect } from 'vitest';
+﻿import { describe, it, expect } from 'vitest';
 import {
   BlackLitterman,
   PortfolioOptimizerV2,
   Asset,
   OptimizationConstraints,
   OptimizationResult,
-} from '../electron/engine/portfolio-optimizer-v2';
+} from '../electron/engine/portfolio/portfolio-optimizer-v2';
 
 describe('PortfolioOptimizerV2', () => {
   describe('BlackLitterman', () => {

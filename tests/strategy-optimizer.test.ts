@@ -5,7 +5,7 @@ import {
   ParamSpec,
   EvalResult,
   OptimizationConfig,
-} from '../electron/engine/strategy-optimizer';
+} from '../electron/engine/analysis/strategy-optimizer';
 
 describe('J-39-01: StrategyOptimizer', () => {
   let optimizer: StrategyOptimizer;

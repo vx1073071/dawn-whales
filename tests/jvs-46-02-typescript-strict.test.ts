@@ -1,4 +1,4 @@
-// JVS-46-02: TypeScript Strict Utilities Tests
+﻿// JVS-46-02: TypeScript Strict Utilities Tests
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -35,7 +35,7 @@ import {
   kebabToCamel,
   TypeScriptStrictUtilities,
   getTypeScriptStrictUtilities
-} from '../electron/engine/typescript-strict-utilities';
+} from '../electron/engine/core/typescript-strict-utilities';
 
 describe('TypeScript Strict Utilities', () => {
   describe('Type Guards', () => {

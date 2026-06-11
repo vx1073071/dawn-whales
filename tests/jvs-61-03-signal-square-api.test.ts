@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-61-03 Tests: Signal Square API (R61 v19 — v1.4.0-beta)
  *
  * Tests:
@@ -12,7 +12,7 @@ import {
   SignalSquareAPI,
   getSignalSquare,
   resetSignalSquare,
-} from '../electron/engine/signal-square-api';
+} from '../electron/engine/analysis/signal-square-api';
 
 describe('J-61-03: SignalSquareAPI', () => {
   let api: SignalSquareAPI;

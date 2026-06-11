@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+﻿import { describe, it, expect, beforeEach } from 'vitest';
 import {
   StrategyRankingEngine,
   type StrategyMetrics,
   type StrategyRank,
-} from '../electron/engine/strategy-ranking-engine';
+} from '../electron/engine/analysis/strategy-ranking-engine';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-58-02 Tests: Creator LLM Config Manager (R58 v19)
  *
  * Tests:
@@ -12,7 +12,7 @@ import {
   CreatorLLMConfigManager,
   getCreatorLLMConfigManager,
   resetCreatorLLMConfigManager,
-} from '../electron/engine/creator-llm-config';
+} from '../electron/engine/portfolio/creator-llm-config';
 
 describe('J-58-02: CreatorLLMConfigManager', () => {
   let manager: CreatorLLMConfigManager;

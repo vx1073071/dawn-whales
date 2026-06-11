@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-61-01 Tests: A/美股 MultiMarketBroker (R61 v19 — v1.4.0-beta)
  *
  * Tests:
@@ -16,7 +16,7 @@ import {
   calculateMarketFee,
   checkDailyLimit,
   MarketConfig,
-} from '../electron/engine/multi-market-broker';
+} from '../electron/engine/data/multi-market-broker';
 
 describe('J-61-01: MultiMarketBroker', () => {
   let broker: MultiMarketBroker;

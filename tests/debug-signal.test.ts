@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+﻿import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.mock('electron-log', () => ({
   default: { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() },
@@ -9,7 +9,7 @@ vi.mock('electron', () => ({
   BrowserWindow: { getAllWindows: vi.fn(() => []) },
 }));
 
-import { getTradeExecutor, resetTradeExecutor } from '../electron/engine/trade-executor';
+import { getTradeExecutor, resetTradeExecutor } from '../electron/engine/analysis/trade-executor';
 
 describe('DEBUG signal', () => {
   beforeEach(() => {

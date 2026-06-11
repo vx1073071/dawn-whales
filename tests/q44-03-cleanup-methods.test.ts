@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { BacktestReplayEngine } from '../electron/engine/backtest-replay';
-import { SmartCacheManager, LRUCache } from '../electron/engine/smart-cache';
+﻿import { describe, it, expect } from 'vitest';
+import { BacktestReplayEngine } from '../electron/engine/backtest/backtest-replay';
+import { SmartCacheManager, LRUCache } from '../electron/engine/core/smart-cache';
 
 /**
  * Q-44-03: Cleanup Methods (Memory Leak Prevention)

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-53-02: Social Trading Performance Benchmarks (R53 P0)
  * 社交交易性能基准测试 — API<100ms / 并发100 / 搜索<500ms
  *
@@ -6,8 +6,8 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { SubscriptionEarnings } from '../electron/engine/subscription-earnings';
-import { ReviewManager, getReviewManager, resetReviewManager } from '../electron/engine/review-manager';
+import { SubscriptionEarnings } from '../electron/engine/portfolio/subscription-earnings';
+import { ReviewManager, getReviewManager, resetReviewManager } from '../electron/engine/portfolio/review-manager';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Section 1: SubscriptionEarnings Performance

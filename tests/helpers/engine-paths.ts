@@ -1,79 +1,69 @@
-/**
- * Shared engine path utilities for tests.
- * After JVS R86 engine dir restructure (flat→subdirs), tests need recursive
- * file counting and subdirectory-aware path resolution.
- */
-import * as fs from 'fs';
-import * as path from 'path';
+// tests/helpers/engine-paths.ts — Recursive engine directory utilities
+// [R92] Created to handle JVS engine restructure (flat → 8 subdirectories)
+import fs from 'fs';
+import path from 'path';
 
-const ENGINE_ROOT = path.resolve(__dirname, '../../electron/engine');
+const ENGINE_DIR = path.resolve(__dirname, '../../electron/engine');
 
 /**
- * Recursively find all .ts files under electron/engine/ (excluding .test.* and index.ts)
+ * Recursively walk a directory and return all file names.
  */
-export function countEngineFiles(): number {
-  return findEngineFiles().length;
-}
-
-export function findEngineFiles(): string[] {
-  const results: string[] = [];
-  function walk(dir: string) {
-    if (!fs.existsSync(dir)) return;
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-    for (const entry of entries) {
+export function walkDir(dir: string): string[] {
+  let results: string[] = [];
+  try {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       const full = path.join(dir, entry.name);
       if (entry.isDirectory()) {
-        walk(full);
-      } else if (entry.name.endsWith('.ts') && !entry.name.endsWith('.test.ts') && !entry.name.endsWith('.d.ts') && entry.name !== 'index.ts') {
-        results.push(full);
+        results = results.concat(walkDir(full));
+      } else {
+        results.push(entry.name);
       }
     }
-  }
-  walk(ENGINE_ROOT);
+  } catch { /* ignore */ }
   return results;
 }
 
 /**
- * Check if a specific engine file exists anywhere under electron/engine/
+ * Get all .ts engine files (recursive), excluding index.ts and .d.ts.
  */
-export function engineFileExists(filename: string): boolean {
-  return findEngineFiles().some(f => path.basename(f) === filename);
+export function getEngineFiles(): string[] {
+  return walkDir(ENGINE_DIR).filter(f =>
+    f.endsWith('.ts') && f !== 'index.ts' && !f.endsWith('.d.ts')
+  );
 }
 
 /**
- * Get the full path of an engine file by name (searches recursively)
+ * Count engine .ts files (recursive).
  */
-export function resolveEngineFile(filename: string): string | null {
-  const found = findEngineFiles().find(f => path.basename(f) === filename);
+export function countEngineFiles(): number {
+  return getEngineFiles().length;
+}
+
+/**
+ * Check if a specific engine module exists (recursive search).
+ */
+export function engineFileExists(moduleName: string): boolean {
+  const target = moduleName.endsWith('.ts') ? moduleName : `${moduleName}.ts`;
+  return getEngineFiles().some(f => f === target);
+}
+
+/**
+ * Find the full relative path of an engine module (recursive).
+ */
+export function findEngineFile(moduleName: string): string | null {
+  const target = moduleName.endsWith('.ts') ? moduleName : `${moduleName}.ts`;
+  const all = walkDir(ENGINE_DIR);
+  const found = all.find(f => f === target);
   return found || null;
 }
 
 /**
- * Get all engine subdirectories
+ * Get all engine subdirectories.
  */
 export function getEngineSubdirs(): string[] {
-  if (!fs.existsSync(ENGINE_ROOT)) return [];
-  return fs.readdirSync(ENGINE_ROOT, { withFileTypes: true })
+  return fs.readdirSync(ENGINE_DIR, { withFileTypes: true })
     .filter(e => e.isDirectory())
     .map(e => e.name);
 }
 
-/**
- * Check if MOCK_ pattern exists in an engine file (searches recursively)
- */
-export function countMockInEngine(filename: string): number {
-  const filePath = resolveEngineFile(filename);
-  if (!filePath) return -1; // file not found
-  const content = fs.readFileSync(filePath, 'utf-8');
-  const matches = content.match(/MOCK_/g);
-  return matches ? matches.length : 0;
-}
-
-/**
- * Read engine file content (searches recursively)
- */
-export function readEngineFile(filename: string): string | null {
-  const filePath = resolveEngineFile(filename);
-  if (!filePath) return null;
-  return fs.readFileSync(filePath, 'utf-8');
-}
+export { ENGINE_DIR };

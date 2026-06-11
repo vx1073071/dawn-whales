@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-66-04 Tests: 创作者排行榜API (R66 v19)
  *
  * 3 tests: ranking, dimension switch, tier filter
@@ -6,8 +6,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   CreatorLeaderboardEngine, getLeaderboard, resetLeaderboard,
-} from '../electron/engine/creator-leaderboard-api';
-import type { CreatorSnapshot } from '../electron/engine/creator-leaderboard-api';
+} from '../electron/engine/portfolio/creator-leaderboard-api';
+import type { CreatorSnapshot } from '../electron/engine/portfolio/creator-leaderboard-api';
 
 function makeSnapshot(overrides: Partial<CreatorSnapshot> = {}): CreatorSnapshot {
   return {

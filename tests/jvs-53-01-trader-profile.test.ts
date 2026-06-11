@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-53-01: Trader Profile Engine Tests
  * 30+ tests covering: CRUD, follow, metrics, tier, ranking, certification
  */
@@ -7,7 +7,7 @@ import {
   TraderProfileEngine,
   getTraderProfileEngine,
   resetTraderProfileEngine,
-} from '../electron/engine/trader-profile-engine';
+} from '../electron/engine/analysis/trader-profile-engine';
 
 function mkInput(overrides: Record<string, any> = {}) {
   return {

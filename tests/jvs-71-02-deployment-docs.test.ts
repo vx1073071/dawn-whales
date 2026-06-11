@@ -1,6 +1,6 @@
-// ── J-71-02 Tests: Deployment Docs (3 tests) ─────────────────────────────
+﻿// ── J-71-02 Tests: Deployment Docs (3 tests) ─────────────────────────────
 import { describe, it, expect } from "vitest";
-import { DeploymentGuide, createDeploymentGuide } from "../electron/engine/deployment-docs";
+import { DeploymentGuide, createDeploymentGuide } from "../electron/engine/core/deployment-docs";
 
 describe("J-71-02: Deployment & Packaging Docs", () => {
   it("01: generates Win/Mac/Linux install guides", () => {

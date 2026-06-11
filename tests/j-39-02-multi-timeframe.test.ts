@@ -1,10 +1,10 @@
-// J-39-02: MultiTimeframeEngine Tests
+﻿// J-39-02: MultiTimeframeEngine Tests
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   MultiTimeframeEngine,
   TimeframeSignal,
   FusionMode,
-} from '../electron/engine/multi-timeframe-engine';
+} from '../electron/engine/data/multi-timeframe-engine';
 
 describe('J-39-02: MultiTimeframeEngine', () => {
   let engine: MultiTimeframeEngine;

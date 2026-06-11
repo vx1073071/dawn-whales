@@ -1,4 +1,4 @@
-// ── JVS-39-03: LiveTradeBridge Test ─────────────────────────────────────────
+﻿// ── JVS-39-03: LiveTradeBridge Test ─────────────────────────────────────────
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
   LiveTradeBridge,
@@ -7,7 +7,7 @@ import {
   LiveOrder,
   LivePosition,
   PaperPosition,
-} from '../electron/engine/live-trade-bridge';
+} from '../electron/engine/analysis/live-trade-bridge';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 

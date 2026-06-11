@@ -1,4 +1,4 @@
-// ── J-72-04 Tests: Strategy Comparison + Portfolio Optimization (6 tests)
+﻿// ── J-72-04 Tests: Strategy Comparison + Portfolio Optimization (6 tests)
 import { describe, it, expect } from "vitest";
 import {
   StrategyComparisonEngine,
@@ -6,7 +6,7 @@ import {
   createStrategyComparisonEngine,
   createPortfolioOptimizer,
   StrategyMetrics,
-} from "../electron/engine/strategy-comparison-optimizer";
+} from "../electron/engine/analysis/strategy-comparison-optimizer";
 
 describe("J-72-04: Strategy Comparison + Portfolio Optimization", () => {
   const compare = createStrategyComparisonEngine();

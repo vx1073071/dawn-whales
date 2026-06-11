@@ -1,9 +1,9 @@
-/**
+﻿/**
  * JVS-45-02: Marketplace API Tests
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MarketplaceApi, getMarketplaceApi, resetMarketplaceApi } from '../electron/engine/marketplace-api';
+import { MarketplaceApi, getMarketplaceApi, resetMarketplaceApi } from '../electron/engine/analysis/marketplace-api';
 
 describe('JVS-45-02: Marketplace API', () => {
   let api: MarketplaceApi;

@@ -1,8 +1,8 @@
-/**
+﻿/**
  * JVS-38-02: RewardEngine tests
  */
 import { describe, it, expect, beforeEach } from 'vitest';
-import { RewardEngine, TradeAction, MarketState } from '../electron/engine/reward-engine';
+import { RewardEngine, TradeAction, MarketState } from '../electron/engine/portfolio/reward-engine';
 
 describe('JVS-38-02: RewardEngine', () => {
   let engine: RewardEngine;

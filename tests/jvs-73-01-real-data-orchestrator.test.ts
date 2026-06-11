@@ -1,4 +1,4 @@
-// ── J-73-01 Tests: Real Data Orchestrator (10 tests) ──────────────────
+﻿// ── J-73-01 Tests: Real Data Orchestrator (10 tests) ──────────────────
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   RealDataOrchestrator,
@@ -6,7 +6,7 @@ import {
   getRealDataContext,
   DATA_FRESHNESS,
   REAL_DATA_MIN_INDICATORS,
-} from "../electron/engine/real-data-orchestrator";
+} from "../electron/engine/agents/real-data-orchestrator";
 
 describe("J-73-01: Real Data Orchestrator", () => {
   let orchestrator: RealDataOrchestrator;

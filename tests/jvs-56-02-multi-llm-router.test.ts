@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * J-56-02: Multi-LLM Router Tests (15+ tests)
  */
@@ -7,7 +7,7 @@ import {
   MultiLLMRouter,
   getMultiLLMRouter,
   resetMultiLLMRouter,
-} from '../electron/engine/multi-llm-router';
+} from '../electron/engine/agents/multi-llm-router';
 
 // ── Section 1: Provider Management ─────────────────────────────────────────
 

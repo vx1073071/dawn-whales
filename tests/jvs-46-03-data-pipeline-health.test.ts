@@ -1,10 +1,10 @@
-// JVS-46-03: Data Pipeline Health Monitor Tests
+﻿// JVS-46-03: Data Pipeline Health Monitor Tests
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   DataPipelineHealthMonitor,
   PipelineSource,
-} from '../electron/engine/data-pipeline-health';
+} from '../electron/engine/data/data-pipeline-health';
 
 describe('DataPipelineHealthMonitor', () => {
   let monitor: DataPipelineHealthMonitor;

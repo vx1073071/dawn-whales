@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ============================================================================
  * Dawn Whales — Core Engine Performance Benchmark Suite
  * ============================================================================
@@ -29,15 +29,15 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 
 // ── Engine Imports (wrapped in dynamic import for graceful fallback) ─────────
 
-import { BacktestEngine } from '../electron/engine/backtest-engine';
-import { parseNaturalLanguage } from '../electron/engine/nl-parser';
-import { DataCleaningPipeline } from '../electron/engine/data-cleaning-pipeline';
-import type { RawDataPoint, CleaningContext } from '../electron/engine/data-cleaning-pipeline';
-import { DataWarehouse } from '../electron/engine/data-warehouse';
-import { MultiSourceAggregator } from '../electron/engine/multi-source-aggregator';
-import { GeneticAlgorithm } from '../electron/engine/genetic-algorithm';
-import { MonteCarloSimulator } from '../electron/engine/monte-carlo-simulator';
-import { VolatilityModels } from '../electron/engine/volatility-models';
+import { BacktestEngine } from '../electron/engine/backtest/backtest-engine';
+import { parseNaturalLanguage } from '../electron/engine/agents/nl-parser';
+import { DataCleaningPipeline } from '../electron/engine/data/data-cleaning-pipeline';
+import type { RawDataPoint, CleaningContext } from '../electron/engine/data/data-cleaning-pipeline';
+import { DataWarehouse } from '../electron/engine/data/data-warehouse';
+import { MultiSourceAggregator } from '../electron/engine/data/multi-source-aggregator';
+import { GeneticAlgorithm } from '../electron/engine/agents/genetic-algorithm';
+import { MonteCarloSimulator } from '../electron/engine/backtest/monte-carlo-simulator';
+import { VolatilityModels } from '../electron/engine/risk/volatility-models';
 
 // ── Utility Helpers ──────────────────────────────────────────────────────────
 

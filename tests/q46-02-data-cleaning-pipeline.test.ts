@@ -1,4 +1,4 @@
-// Q-46-02: DataCleaningPipeline 测试 — QClaw R46
+﻿// Q-46-02: DataCleaningPipeline 测试 — QClaw R46
 // 覆盖: addStage / removeStage / enableStage / getStages / getReport / clean
 
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -7,7 +7,7 @@ import {
   RawDataPoint,
   CleaningStage,
   CleaningContext,
-} from '../electron/engine/data-cleaning-pipeline';
+} from '../electron/engine/data/data-cleaning-pipeline';
 
 function makeBar(open: number, high: number, low: number, close: number, volume: number): RawDataPoint {
   return { timestamp: Date.now(), open, high, low, close, volume } as RawDataPoint;

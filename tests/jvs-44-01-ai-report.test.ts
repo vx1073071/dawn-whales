@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JVS-44-01: AI Report Generator Tests
  * Tests for daily/weekly/monthly report generation
  */
@@ -11,7 +11,7 @@ import {
   type DailyReportData,
   type WeeklyReportData,
   type MonthlyReportData,
-} from '../electron/engine/ai-report-generator';
+} from '../electron/engine/agents/ai-report-generator';
 
 describe('JVS-44-01: AI Report Generator', () => {
   beforeEach(() => {

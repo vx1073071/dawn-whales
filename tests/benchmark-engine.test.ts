@@ -1,9 +1,9 @@
-// tests/benchmark-engine.test.ts
+﻿// tests/benchmark-engine.test.ts
 // Q-25-02: Performance baseline report
 // Run: npx vitest run tests/benchmark-engine.test.ts
 
 import { describe, it, expect } from 'vitest';
-import { RiskEngine } from '../electron/engine/risk-engine';
+import { RiskEngine } from '../electron/engine/risk/risk-engine';
 
 describe('Q-25-02: Performance Baseline', () => {
   it('benchmark: RiskEngine core methods ×1000', () => {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-71-02 [P0] 全量回归 5577→5600+ (PM R71 v19, 5t)
  *
  * 验证:
@@ -14,6 +14,15 @@ import { describe, it, expect } from 'vitest';
 import { execSync } from 'child_process';
 import path from 'path';
 import fs from 'fs';
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const PKG = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'package.json'), 'utf-8'));
@@ -43,7 +52,7 @@ describe('Q-71-02: Full Regression Gate 5600+', () => {
 
     it('03: engine files >= 60', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const count = fs.readdirSync(engineDir).filter(f => f.endsWith('.ts')).length;
+      const count = _walkRecursive(engineDir).filter(f => f.endsWith('.ts')).length;
       console.log(`[Q-71-02] Engine files: ${count}`);
       expect(count).toBeGreaterThanOrEqual(60);
     });

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-75-03 [P1] 全量回归 5800+ (PM R75 V19, 5t)
  *
  * 验证:
@@ -14,6 +14,15 @@
 import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const PKG = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, 'package.json'), 'utf-8'));
@@ -43,7 +52,7 @@ describe('Q-75-03: Full Regression Gate 5800+', () => {
 
     it('03: engine files >= 310', () => {
       const engineDir = path.join(PROJECT_ROOT, 'electron', 'engine');
-      const count = fs.readdirSync(engineDir).filter(f => f.endsWith('.ts')).length;
+      const count = _walkRecursive(engineDir).filter(f => f.endsWith('.ts')).length;
       console.log(`[Q-75-03] Engine files: ${count}`);
       expect(count).toBeGreaterThanOrEqual(310);
     });
@@ -53,7 +62,7 @@ describe('Q-75-03: Full Regression Gate 5800+', () => {
       let count = 0;
       const walk = (d: string) => {
         try {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory() && !f.includes('node_modules')) walk(fp);
             else if (f.endsWith('.ts') || f.endsWith('.tsx')) count++;

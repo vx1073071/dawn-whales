@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+﻿import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 // Mock electron-log
 vi.mock('electron-log', () => ({
@@ -14,7 +14,7 @@ import {
   NotificationEngine,
   type NotificationRule,
   type Notification,
-} from '../electron/engine/notification-engine';
+} from '../electron/engine/core/notification-engine';
 
 // ── Helpers ──────────────────────────────────────────────────────────────
 

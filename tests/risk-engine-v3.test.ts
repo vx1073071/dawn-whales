@@ -1,10 +1,10 @@
-// ── RiskEngine v3 Tests ────────────────────────────────────────────────────────
+﻿// ── RiskEngine v3 Tests ────────────────────────────────────────────────────────
 // Q-29-01: RiskEngine v3 Phase 1 Implementation
 // 50+ tests covering aggregateAccounts / getMarginUtilization / getPortfolioExposure / checkCircuitBreaker
 
 import { describe, it, expect, vi } from 'vitest';
-import { RiskEngineV3 } from '../electron/engine/risk-engine-v3';
-import { RiskEngine } from '../electron/engine/risk-engine';
+import { RiskEngineV3 } from '../electron/engine/risk/risk-engine-v3';
+import { RiskEngine } from '../electron/engine/risk/risk-engine';
 import type { IBrokerAdapter, AccountInfo, FundsInfo, PositionInfo } from '../electron/broker/IBrokerAdapter';
 
 // ── Mock Builders ─────────────────────────────────────────────────────────

@@ -1,6 +1,6 @@
-// ── S-34-01: NL Parser Compound Conditions Tests ──────────────────────────
+﻿// ── S-34-01: NL Parser Compound Conditions Tests ──────────────────────────
 import { describe, it, expect } from 'vitest';
-import { parseNaturalLanguage } from '../electron/engine/nl-parser';
+import { parseNaturalLanguage } from '../electron/engine/agents/nl-parser';
 
 describe('NL Parser - Compound Conditions', () => {
 

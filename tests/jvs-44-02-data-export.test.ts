@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JVS-44-02: Data Exporter Tests
  * Tests for CSV/JSON/PDF export functionality
  */
@@ -12,7 +12,7 @@ import {
   listSchedules,
   type ExportOptions,
   type ExportResult,
-} from '../electron/engine/data-exporter';
+} from '../electron/engine/data/data-exporter';
 
 describe('JVS-44-02: Data Exporter', () => {
   beforeEach(() => {

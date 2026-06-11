@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-62-03 Tests: 黑名单+2FA安全系统 (R62 v19 — v1.5.0-alpha)
  *
  * Tests:
@@ -11,7 +11,7 @@ import {
   BlacklistEngine,
   TwoFactorEngine,
   SecurityService,
-} from '../electron/engine/security-engine';
+} from '../electron/engine/core/security-engine';
 
 describe('J-62-03a: BlacklistEngine', () => {
   let engine: BlacklistEngine;

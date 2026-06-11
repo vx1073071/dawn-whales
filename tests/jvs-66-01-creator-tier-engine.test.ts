@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-66-01 Tests: 创作者等级引擎 (R66 v19)
  *
  * 10 tests: XP calculation, promotion, demotion, revenue share, queries
@@ -7,7 +7,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import {
   CreatorTierEngine, getTierEngine, resetTierEngine,
   TIER_CONFIGS, TIER_ORDER, calculateXP, determineTier,
-} from '../electron/engine/creator-tier-engine';
+} from '../electron/engine/portfolio/creator-tier-engine';
 
 describe('J-66-01: Creator Tier Engine', () => {
   let engine: CreatorTierEngine;

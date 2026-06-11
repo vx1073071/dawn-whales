@@ -1,9 +1,9 @@
-/**
+﻿/**
  * JVS-45-01: ECharts Engine Tests
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { EChartsEngine, getEChartsEngine, resetEChartsEngine } from '../electron/engine/echarts-engine';
+import { EChartsEngine, getEChartsEngine, resetEChartsEngine } from '../electron/engine/analysis/echarts-engine';
 
 describe('JVS-45-01: ECharts Engine', () => {
   let engine: EChartsEngine;

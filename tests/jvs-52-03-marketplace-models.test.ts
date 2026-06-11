@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-52-03: Strategy Marketplace Data Model Tests (R52 P1)
  * Validation + Factory + Migration
  *
@@ -19,7 +19,7 @@ import {
   resetIdCounter,
   resetMigrationHistory,
   SCHEMA_VERSION,
-} from '../electron/engine/marketplace-models';
+} from '../electron/engine/analysis/marketplace-models';
 
 beforeEach(() => {
   resetIdCounter();

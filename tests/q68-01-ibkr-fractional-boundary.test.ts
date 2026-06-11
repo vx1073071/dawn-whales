@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-68-01 [P0] IBKR连接+碎股边界测试 (PM R68 v19, 15t)
  *
  * 覆盖:
@@ -22,7 +22,7 @@ describe('Q-68-01: IBKR Connection + Fractional Shares Boundary', () => {
 
   beforeEach(async () => {
     try {
-      ibkrModule = await import('../electron/engine/ibkr-broker-adapter');
+      ibkrModule = await import('../electron/engine/data/ibkr-broker-adapter');
       IBKRConnection = ibkrModule.IBKRConnection;
       IBKRBrokerAdapter = ibkrModule.IBKRBrokerAdapter;
       calculateIBKRFee = ibkrModule.calculateIBKRFee;

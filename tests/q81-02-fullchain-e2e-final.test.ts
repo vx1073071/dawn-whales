@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q-81-02 [P0] Full-Chain E2E Final Verification (PM R81 Final, 5t)
  *
  * @vitest-environment node
@@ -7,6 +7,15 @@
 import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT = path.resolve(__dirname, '..');
 
@@ -19,7 +28,7 @@ describe('Q-81-02: Full-Chain E2E Final Verification', () => {
       let found = false;
       if (fs.existsSync(serverDir)) {
         const walk = (d: string) => {
-          for (const f of fs.readdirSync(d)) {
+          for (const f of _walkRecursive(d)) {
             const fp = path.join(d, f);
             if (fs.statSync(fp).isDirectory()) walk(fp);
             else if (/\.(ts|js)$/.test(f)) {
@@ -40,7 +49,7 @@ describe('Q-81-02: Full-Chain E2E Final Verification', () => {
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let hasDeposit = false;
       let hasWallet = false;
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (/\.(ts)$/.test(f)) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           if (/deposit|usdt.*gateway|充值/.test(c)) hasDeposit = true;
@@ -56,7 +65,7 @@ describe('Q-81-02: Full-Chain E2E Final Verification', () => {
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let hasTrade = false;
       let hasExecution = false;
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (/\.(ts)$/.test(f)) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           if (/trade.*executor|execute.*trade|placeOrder|submitOrder/.test(c)) hasTrade = true;
@@ -74,7 +83,7 @@ describe('Q-81-02: Full-Chain E2E Final Verification', () => {
     it('04: strategy publish API', () => {
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let hasPublish = false;
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (/\.(ts)$/.test(f)) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           if (/publish.*strategy|marketplace.*publish|strategy.*market/.test(c)) hasPublish = true;
@@ -87,7 +96,7 @@ describe('Q-81-02: Full-Chain E2E Final Verification', () => {
     it('05: subscription engine present', () => {
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let hasSubscribe = false;
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (/\.(ts)$/.test(f)) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           if (/subscribe.*strategy|signal.*subscribe|follow.*strategy/.test(c)) hasSubscribe = true;
@@ -100,7 +109,7 @@ describe('Q-81-02: Full-Chain E2E Final Verification', () => {
     it('06: commission/commission engine present', () => {
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let hasCommission = false;
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (/\.(ts)$/.test(f)) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           if (/commission.*engine|佣金|commission.*split|revenue.*share/.test(c)) hasCommission = true;
@@ -118,7 +127,7 @@ describe('Q-81-02: Full-Chain E2E Final Verification', () => {
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let hasTransfer = false;
       let hasFreeze = false;
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (/\.(ts)$/.test(f)) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           if (/p2p.*transfer|transfer.*p2p/.test(c)) hasTransfer = true;
@@ -134,7 +143,7 @@ describe('Q-81-02: Full-Chain E2E Final Verification', () => {
       const engineDir = path.join(PROJECT, 'electron', 'engine');
       let hasDispute = false;
       let hasBlacklist = false;
-      for (const f of fs.readdirSync(engineDir)) {
+      for (const f of _walkRecursive(engineDir)) {
         if (/\.(ts)$/.test(f)) {
           const c = fs.readFileSync(path.join(engineDir, f), 'utf-8');
           if (/dispute|申诉/.test(c)) hasDispute = true;

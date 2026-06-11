@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-65-01 Tests: 下载+注册API (R65 FIX)
  *
  * Tests:
@@ -14,7 +14,7 @@ import {
   DownloadRegistrationServer,
   getDLServer,
   resetDLServer,
-} from '../electron/engine/download-registration-api';
+} from '../electron/engine/portfolio/download-registration-api';
 
 describe('J-65-01: Download + Registration API', () => {
   let server: DownloadRegistrationServer;

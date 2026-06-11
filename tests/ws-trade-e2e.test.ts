@@ -1,12 +1,12 @@
-/**
+﻿/**
  * WS Market Data → Trade Executor E2E Test
  * Verifies the complete flow: FutuMockFeed → signal generation → TradeExecutor → Order
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { getWsMarketDataEngine, WsMarketDataEngine, MarketTick } from '../electron/engine/ws-market-data';
-import { getTradeExecutor, resetTradeExecutor, TradeExecutor, TradeSignal } from '../electron/engine/trade-executor';
-import { getDefaultMockFeed, destroyDefaultMockFeed, FutuMockFeed, MockTick } from '../electron/engine/futu-mock-feed';
+import { getWsMarketDataEngine, WsMarketDataEngine, MarketTick } from '../electron/engine/data/ws-market-data';
+import { getTradeExecutor, resetTradeExecutor, TradeExecutor, TradeSignal } from '../electron/engine/analysis/trade-executor';
+import { getDefaultMockFeed, destroyDefaultMockFeed, FutuMockFeed, MockTick } from '../electron/engine/data/futu-mock-feed';
 
 describe('WS Market Data Engine', () => {
   let wsEngine: WsMarketDataEngine;

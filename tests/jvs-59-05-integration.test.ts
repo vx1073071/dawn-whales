@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-59-05: R59 Integration Tests (end-to-end billing + withdrawal + execution)
  *
  * E2E flows:
@@ -9,9 +9,9 @@
  * 05: full regression verification
  */
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getBillingContract, resetBillingContract } from '../electron/engine/ai-usage-billing-contract';
-import { getCommissionEngine, resetCommissionEngine } from '../electron/engine/platform-commission-engine';
-import { getTopupGateway, resetTopupGateway } from '../electron/engine/usdt-topup-gateway';
+import { getBillingContract, resetBillingContract } from '../electron/engine/agents/ai-usage-billing-contract';
+import { getCommissionEngine, resetCommissionEngine } from '../electron/engine/analysis/platform-commission-engine';
+import { getTopupGateway, resetTopupGateway } from '../electron/engine/portfolio/usdt-topup-gateway';
 
 describe('J-59-05: R59 Integration (E2E)', () => {
   beforeEach(() => {
@@ -102,7 +102,7 @@ describe('J-59-05: R59 Integration (E2E)', () => {
 
   it('05: daily trade limit blocks execution (with bridge)', async () => {
     // Dynamic import to avoid module load issues
-    const mod = await import('../electron/engine/ai-to-execution-bridge');
+    const mod = await import('../electron/engine/agents/ai-to-execution-bridge');
     const bridge = mod.getExecutionBridge();
     const session = bridge.createSession('trader1');
     bridge.updateRiskControls(session.sessionId, { maxDailyTrades: 3 });

@@ -1,10 +1,10 @@
-import { describe, it, expect } from 'vitest';
+﻿import { describe, it, expect } from 'vitest';
 import {
   compareBacktests,
   summaryTable,
   BacktestResult,
   StrategyComparison,
-} from '../electron/engine/backtest-comparator';
+} from '../electron/engine/backtest/backtest-comparator';
 
 describe('BacktestComparator', () => {
   const makeResult = (overrides: Partial<BacktestResult> = {}): BacktestResult => ({

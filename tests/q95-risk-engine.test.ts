@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q95: RiskEngine Core Unit Tests
  * Tests the actual RiskEngine public API (verified against source signatures).
  *
@@ -14,7 +14,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { RiskEngine } from '../electron/engine/risk-engine';
+import { RiskEngine } from '../electron/engine/risk/risk-engine';
 
 describe('Q95: RiskEngine Core', () => {
   let engine: RiskEngine;

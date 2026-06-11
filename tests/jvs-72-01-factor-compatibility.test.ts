@@ -1,9 +1,9 @@
-// ── J-72-01 Tests: Factor Compatibility Engine (10 tests) ──────────────
+﻿// ── J-72-01 Tests: Factor Compatibility Engine (10 tests) ──────────────
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   FactorCompatibilityEngine,
   createFactorCompatibilityEngine,
-} from "../electron/engine/factor-compatibility-engine";
+} from "../electron/engine/factors/factor-compatibility-engine";
 
 describe("J-72-01: Factor Compatibility Engine", () => {
   let engine: FactorCompatibilityEngine;

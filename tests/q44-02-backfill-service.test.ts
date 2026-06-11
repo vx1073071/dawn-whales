@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+﻿import { describe, it, expect, beforeEach } from 'vitest';
 import {
   initializeBackfillManager,
   getBackfillManager,
@@ -11,7 +11,7 @@ import {
   DataGap,
   BackfillStats,
   GapAnalysis,
-} from '../electron/engine/backfill-service';
+} from '../electron/engine/backtest/backfill-service';
 
 describe('BackfillService', () => {
   beforeEach(() => {

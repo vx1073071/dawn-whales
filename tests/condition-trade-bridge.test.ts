@@ -1,4 +1,4 @@
-// Q-36-01: ConditionTradeBridge Unit Tests
+﻿// Q-36-01: ConditionTradeBridge Unit Tests
 // Matches the ML R36 implementation (processTrigger async API)
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 
@@ -31,7 +31,7 @@ import {
   BridgeConfig,
   BridgeSignal,
   BridgeStats,
-} from '../electron/engine/condition-trade-bridge';
+} from '../electron/engine/core/condition-trade-bridge';
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 

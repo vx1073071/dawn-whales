@@ -1,11 +1,11 @@
-// ── QClaw R40: StrategyExportImport Tests ─────────────────────────────────────
+﻿// ── QClaw R40: StrategyExportImport Tests ─────────────────────────────────────
 // Fixed: class name → StrategyExportImport (not StrategyExportImportEngine)
 // API: exportStrategies(StrategyConfig[], format, options?), exportAll(format),
 //      validateImport(data, format), importStrategies(data, format, options?),
 //      getStrategy(id), getAllStrategies(), removeStrategy(id),
 //      registerStrategy(config), clearAll(), destroy()
 import { describe, it, expect, beforeEach } from 'vitest';
-import { StrategyExportImport, getStrategyExportImport, type StrategyConfig, type ExportFormat, type ConflictPolicy } from '../electron/engine/strategy-export-import';
+import { StrategyExportImport, getStrategyExportImport, type StrategyConfig, type ExportFormat, type ConflictPolicy } from '../electron/engine/analysis/strategy-export-import';
 
 // ── Fixtures ──────────────────────────────────────────────────────────────────
 

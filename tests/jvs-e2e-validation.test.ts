@@ -1,4 +1,4 @@
-// ── JVS-21: End-to-End Data Validation Tests ──────────────────────────────
+﻿// ── JVS-21: End-to-End Data Validation Tests ──────────────────────────────
 // Smoke tests all 18 JVS modules with real East Money API calls
 // Run: npx tsx tests/jvs-e2e-validation.test.ts
 // Note: Requires network access to eastmoney.com APIs
@@ -327,7 +327,7 @@ async function testJVS3_Sentiment() {
   console.log('\n🧠 JVS-3: Sentiment Index (local)');
 
   await runTest('Sentiment engine compute', async () => {
-    const { SentimentIndexEngine } = require('../electron/engine/sentiment-index');
+    const { SentimentIndexEngine } = require('../electron/engine/analysis/sentiment-index');
     const engine = new SentimentIndexEngine();
     const result = engine.compute({
       capitalFlowNetInflow: 50,
@@ -348,7 +348,7 @@ async function testJVS7_AnomalyDetector() {
   console.log('\n🚨 JVS-7: Anomaly Detector (local)');
 
   await runTest('Detect limit up', async () => {
-    const { StockAnomalyDetector } = require('../electron/engine/stock-anomaly-detector');
+    const { StockAnomalyDetector } = require('../electron/engine/data/stock-anomaly-detector');
     const detector = new StockAnomalyDetector();
     const alerts = detector.processQuotes([{
       code: '600519', name: '贵州茅台', price: 1980, changePct: 9.95,
@@ -366,7 +366,7 @@ async function testJVS14_StockDiagnosis() {
   console.log('\n🔍 JVS-14: Stock Diagnosis (local)');
 
   await runTest('Diagnose stock with all dimensions disabled', async () => {
-    const { diagnoseStock } = require('../electron/engine/stock-diagnosis');
+    const { diagnoseStock } = require('../electron/engine/data/stock-diagnosis');
     const result = await diagnoseStock({
       code: '600519', name: '贵州茅台',
       includeCapitalFlow: false, includeFundHoldings: false,
@@ -384,7 +384,7 @@ async function testJVS15_PortfolioRisk() {
   console.log('\n📉 JVS-15: Portfolio Risk (local)');
 
   await runTest('Calculate portfolio risk', async () => {
-    const { calculatePortfolioRisk } = require('../electron/engine/portfolio-risk');
+    const { calculatePortfolioRisk } = require('../electron/engine/portfolio/portfolio-risk');
     const result = await calculatePortfolioRisk({
       positions: [
         { code: '600519', name: '贵州茅台', shares: 100, avgCost: 1800, currentPrice: 1900, sector: '白酒' },
@@ -406,7 +406,7 @@ async function testJVS19_EMIUnified() {
   console.log('\n🔗 JVS-19: EMI Unified (local)');
 
   await runTest('Market overview (may use cached/fallback data)', async () => {
-    const { getMarketOverview } = require('../electron/engine/emi-unified');
+    const { getMarketOverview } = require('../electron/engine/core/emi-unified');
     const result = await getMarketOverview();
     assert(result.timestamp > 0, 'Should have timestamp');
     assert(result.sentiment !== undefined, 'Should have sentiment');

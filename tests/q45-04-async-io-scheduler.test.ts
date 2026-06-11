@@ -1,9 +1,9 @@
-// Q-45-04: AsyncIOScheduler test suite
+﻿// Q-45-04: AsyncIOScheduler test suite
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
   AsyncIOScheduler,
   type IOTask,
-} from '../electron/engine/async-io-scheduler';
+} from '../electron/engine/core/async-io-scheduler';
 
 vi.mock('electron-log', () => ({ default: { info: vi.fn(), debug: vi.fn(), error: vi.fn(), warn: vi.fn() } }));
 

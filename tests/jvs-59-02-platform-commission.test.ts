@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-59-02 Tests: Platform Commission Engine (R59 v19)
  *
  * Tests:
@@ -12,7 +12,7 @@ import {
   PlatformCommissionEngine,
   getCommissionEngine,
   resetCommissionEngine,
-} from '../electron/engine/platform-commission-engine';
+} from '../electron/engine/analysis/platform-commission-engine';
 
 describe('J-59-02: PlatformCommissionEngine', () => {
   let engine: PlatformCommissionEngine;

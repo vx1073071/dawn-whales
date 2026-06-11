@@ -1,4 +1,4 @@
-// JVS-50-02: Error Handler Tests
+﻿// JVS-50-02: Error Handler Tests
 // 15+ tests for error handling and boundary validation
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
@@ -6,7 +6,7 @@ import {
   ErrorHandler,
   BoundaryValidator,
   getErrorHandler,
-} from '../electron/engine/error-handler';
+} from '../electron/engine/core/error-handler';
 
 describe('JVS-50-02: ErrorHandler', () => {
   let handler: ErrorHandler;

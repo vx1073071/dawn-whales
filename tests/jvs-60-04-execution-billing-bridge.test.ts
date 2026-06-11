@@ -1,4 +1,4 @@
-/**
+﻿/**
  * J-60-04 Tests: Execution → Billing Closed Loop (R60 v19)
  *
  * Tests:
@@ -12,9 +12,9 @@ import {
   ExecutionBillingBridge,
   getExecutionBillingBridge,
   resetExecutionBillingBridge,
-} from '../electron/engine/execution-billing-bridge';
-import { resetBillingContract } from '../electron/engine/ai-usage-billing-contract';
-import { resetCommissionEngine } from '../electron/engine/platform-commission-engine';
+} from '../electron/engine/analysis/execution-billing-bridge';
+import { resetBillingContract } from '../electron/engine/agents/ai-usage-billing-contract';
+import { resetCommissionEngine } from '../electron/engine/analysis/platform-commission-engine';
 
 describe('J-60-04: ExecutionBillingBridge', () => {
   let bridge: ExecutionBillingBridge;

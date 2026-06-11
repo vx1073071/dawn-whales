@@ -1,4 +1,4 @@
-// J-40-02: WalkForwardEngine Tests
+﻿// J-40-02: WalkForwardEngine Tests
 import { describe, it, expect, beforeEach } from 'vitest';
 import {
   WalkForwardEngine,
@@ -6,7 +6,7 @@ import {
   Trade,
   ParamRange,
   WalkForwardConfig,
-} from '../electron/engine/walk-forward-engine';
+} from '../electron/engine/backtest/walk-forward-engine';
 
 describe('J-40-02: WalkForwardEngine', () => {
   // Mock strategy runner: simple MA crossover

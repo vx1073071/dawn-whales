@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @vitest-environment node
  * Q-60-03: Full Regression Validation (R60 v19 P0)
  *
@@ -14,6 +14,15 @@ import { describe, it, expect } from "vitest";
 import { execSync } from "child_process";
 import path from "path";
 import fs from "fs";
+// [R92] Recursive directory walker for restructured engine subdirs
+function _walkRecursive(dir: string): string[] {
+  let r: string[] = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true } as any)) {
+    if ((e as any).isDirectory()) r = r.concat(_walkRecursive(require('path').join(dir, (e as any).name)));
+    else r.push((e as any).name);
+  }
+  return r;
+}
 
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 
@@ -157,7 +166,7 @@ describe("Q-60-03-04: Baseline Validation", () => {
   it("14: engine files exist (270+ expected)", () => {
     const engineDir = path.join(PROJECT_ROOT, "electron", "engine");
     if (fs.existsSync(engineDir)) {
-      const engineFiles = fs.readdirSync(engineDir).filter(f => f.endsWith(".ts"));
+      const engineFiles = _walkRecursive(engineDir).filter(f => f.endsWith('.ts'));
       expect(engineFiles.length).toBeGreaterThanOrEqual(250);
     }
   });
@@ -169,7 +178,7 @@ describe("Q-60-03-04: Baseline Validation", () => {
     if (!fs.existsSync(engineDir)) return;
 
     const engineFiles = new Set(
-      fs.readdirSync(engineDir).filter(f => f.endsWith(".ts")).map(f => f.replace(".ts", ""))
+      _walkRecursive(engineDir).filter(f => f.endsWith('.ts')).map(f => f.replace(".ts", ""))
     );
     const testFiles = fs.readdirSync(testDir).filter(f => f.endsWith(".test.ts"));
 

@@ -1,8 +1,8 @@
-// tests/condition-engine-integration.test.ts
+﻿// tests/condition-engine-integration.test.ts
 // ConditionEngine 集成测试 — Phase 4.2 R30 Q-30-02
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ConditionEngine } from '../electron/engine/condition-engine.js';
+import { ConditionEngine } from '../electron/engine/core/condition-engine.js';
 import { registerConditionHandlers } from '../electron/main/ipc-handlers-condition.js';
 import type { PriceCondition } from '../electron/types/condition.js';
 
