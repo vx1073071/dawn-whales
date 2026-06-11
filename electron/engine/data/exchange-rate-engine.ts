@@ -184,7 +184,6 @@ export class ExchangeRateEngine {
   }
 
   private async fetchBinance(): Promise<ExchangeRates> {
-    const symbols = ['USDTUSDC']; // proxy for USD
     // Binance doesn't have direct fiat→USDT pairs for all currencies.
     // We use USDTUSDC price as a stability check and fall back to static.
     const url = 'https://api.binance.com/api/v3/ticker/price';
