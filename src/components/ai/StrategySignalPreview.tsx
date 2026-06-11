@@ -61,7 +61,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
   preview,
   onSave,
   onEdit,
-  onDiscard,
+  onDiscard
 }) => {
   const [editing, setEditing] = useState(false);
   const [editedDirection, setEditedDirection] = useState(preview.direction);
@@ -78,7 +78,7 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
       direction: editedDirection,
       confidence: editedConfidence,
       stopLoss: editedStopLoss,
-      takeProfit: editedTakeProfit,
+      takeProfit: editedTakeProfit
     };
     setSaved(true);
     onSave?.(edited);
@@ -87,9 +87,9 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
 
   const getDirectionColor = (d: string) => {
     switch (d) {
-      case 'BUY': return '#4CAF50';
-      case 'SELL': return '#F44336';
-      default: return '#FFC107';
+      case 'BUY':return '#4CAF50';
+      case 'SELL':return '#F44336';
+      default:return '#FFC107';
     }
   };
 
@@ -112,92 +112,92 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
         <div style={styles.signalRow}>
           <div style={styles.signalMain}>
             <span style={styles.label}>{t("components.direction")}</span>
-            {editing ? (
-              <div style={styles.directionBtns}>
-                {(['BUY', 'SELL', 'HOLD'] as const).map(d => (
-                  <button
-                    key={d}
-                    style={{
-                      ...styles.dirBtn,
-                      background: editedDirection === d ? getDirectionColor(d) : 'rgba(255,255,255,0.05)',
-                      color: editedDirection === d ? '#fff' : '#999',
-                    }}
-                    onClick={() => setEditedDirection(d)}
-                  >
+            {editing ?
+            <div style={styles.directionBtns}>
+                {(['BUY', 'SELL', 'HOLD'] as const).map((d) =>
+              <button
+                key={d}
+                style={{
+                  ...styles.dirBtn,
+                  background: editedDirection === d ? getDirectionColor(d) : 'rgba(255,255,255,0.05)',
+                  color: editedDirection === d ? '#fff' : '#999'
+                }}
+                onClick={() => setEditedDirection(d)}>
+                
                     {d === 'BUY' ? i18n.t('StrategySignalPreview.k1') : d === 'SELL' ? i18n.t('StrategySignalPreview.k2') : i18n.t('StrategySignalPreview.k3')}
                   </button>
-                ))}
-              </div>
-            ) : (
-              <span style={{ ...styles.signalValue, color: getDirectionColor(editedDirection), fontSize: 22 }}>
+              )}
+              </div> :
+
+            <span style={{ ...styles.signalValue, color: getDirectionColor(editedDirection), fontSize: 22 }}>
                 {editedDirection === 'BUY' ? i18n.t('StrategySignalPreview.k4') : editedDirection === 'SELL' ? i18n.t('StrategySignalPreview.k5') : i18n.t('StrategySignalPreview.k6')}
               </span>
-            )}
+            }
           </div>
 
           <div style={styles.signalMain}>
             <span style={styles.label}>{i18n.t('StrategySignalPreview.k0')}</span>
-            {editing ? (
-              <div style={styles.confidenceSlider}>
+            {editing ?
+            <div style={styles.confidenceSlider}>
                 <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={editedConfidence}
-                  onChange={e => setEditedConfidence(Number(e.target.value))}
-                  style={styles.slider}
-                />
+                type="range"
+                min={0}
+                max={100}
+                value={editedConfidence}
+                onChange={(e) => setEditedConfidence(Number(e.target.value))}
+                style={styles.slider} />
+              
                 <span style={{ ...styles.signalValue, color: getConfidenceColor(editedConfidence) }}>
                   {editedConfidence}%
                 </span>
-              </div>
-            ) : (
-              <div style={styles.confidenceBar}>
+              </div> :
+
+            <div style={styles.confidenceBar}>
                 <div style={styles.confTrack}>
                   <div style={{
-                    ...styles.confFill,
-                    width: `${editedConfidence}%`,
-                    background: getConfidenceColor(editedConfidence),
-                  }} />
+                  ...styles.confFill,
+                  width: `${editedConfidence}%`,
+                  background: getConfidenceColor(editedConfidence)
+                }} />
                 </div>
                 <span style={styles.signalValue}>{editedConfidence}%</span>
               </div>
-            )}
+            }
           </div>
         </div>
 
         {/* Stop Loss / Take Profit */}
         <div style={styles.slTpRow}>
           <div style={styles.slTpItem}>
-            <span style={styles.label}>🛑 止损</span>
-            {editing ? (
-              <input
-                type="number"
-                style={styles.slTpInput}
-                value={editedStopLoss}
-                onChange={e => setEditedStopLoss(Number(e.target.value))}
-                step={0.01}
-              />
-            ) : (
-              <span style={styles.signalValue}>{editedStopLoss.toFixed(2)}</span>
-            )}
+            <span style={styles.label}>{i18n.t("StrategySignalPreview.r92_72b8")}</span>
+            {editing ?
+            <input
+              type="number"
+              style={styles.slTpInput}
+              value={editedStopLoss}
+              onChange={(e) => setEditedStopLoss(Number(e.target.value))}
+              step={0.01} /> :
+
+
+            <span style={styles.signalValue}>{editedStopLoss.toFixed(2)}</span>
+            }
           </div>
           <div style={styles.slTpItem}>
-            <span style={styles.label}>🎯 止盈</span>
-            {editing ? (
-              <input
-                type="number"
-                style={styles.slTpInput}
-                value={editedTakeProfit}
-                onChange={e => setEditedTakeProfit(Number(e.target.value))}
-                step={0.01}
-              />
-            ) : (
-              <span style={styles.signalValue}>{editedTakeProfit.toFixed(2)}</span>
-            )}
+            <span style={styles.label}>{i18n.t("StrategySignalPreview.r92_a355")}</span>
+            {editing ?
+            <input
+              type="number"
+              style={styles.slTpInput}
+              value={editedTakeProfit}
+              onChange={(e) => setEditedTakeProfit(Number(e.target.value))}
+              step={0.01} /> :
+
+
+            <span style={styles.signalValue}>{editedTakeProfit.toFixed(2)}</span>
+            }
           </div>
           <div style={styles.slTpItem}>
-            <span style={styles.label}>⏰ 时间周期</span>
+            <span style={styles.label}>{i18n.t("StrategySignalPreview.r92_8ff6")}</span>
             <span style={styles.signalValue}>{preview.timeHorizon}</span>
           </div>
         </div>
@@ -205,97 +205,97 @@ export const StrategySignalPreview: React.FC<StrategySignalPreviewProps> = ({
 
       {/* Agent decisions detail */}
       <div style={styles.section}>
-        <div style={styles.sectionTitle}>🤖 4 Agent 决策详情</div>
-        {preview.agentDecisions.map(ad => (
-          <div
-            key={ad.agentType}
-            style={{
-              ...styles.agentRow,
-              borderColor: expandedAgent === ad.agentType ? ad.color : 'rgba(255,255,255,0.08)',
-            }}
-          >
+        <div style={styles.sectionTitle}>{i18n.t("StrategySignalPreview.r92_84b0")}</div>
+        {preview.agentDecisions.map((ad) =>
+        <div
+          key={ad.agentType}
+          style={{
+            ...styles.agentRow,
+            borderColor: expandedAgent === ad.agentType ? ad.color : 'rgba(255,255,255,0.08)'
+          }}>
+          
             <div
-              style={styles.agentRowHeader}
-              onClick={() => setExpandedAgent(expandedAgent === ad.agentType ? null : ad.agentType)}
-            >
+            style={styles.agentRowHeader}
+            onClick={() => setExpandedAgent(expandedAgent === ad.agentType ? null : ad.agentType)}>
+            
               <span style={styles.agentEmoji}>{ad.emoji}</span>
               <span style={styles.agentName}>{ad.agentName}</span>
               <span style={{ ...styles.agentVote, color: getDirectionColor(ad.recommendation === 'buy' ? 'BUY' : ad.recommendation === 'sell' ? 'SELL' : 'HOLD') }}>
                 {ad.recommendation === 'buy' ? i18n.t('StrategySignalPreview.k7') : ad.recommendation === 'sell' ? i18n.t('StrategySignalPreview.k8') : i18n.t('StrategySignalPreview.k9')}
               </span>
               <span style={{
-                ...styles.agentConf,
-                color: getConfidenceColor(ad.confidence),
-              }}>
+              ...styles.agentConf,
+              color: getConfidenceColor(ad.confidence)
+            }}>
                 {ad.confidence}%
               </span>
               <span style={styles.expandIcon}>{expandedAgent === ad.agentType ? '▼' : '▶'}</span>
             </div>
 
-            {expandedAgent === ad.agentType && (
-              <div style={styles.agentDetail}>
+            {expandedAgent === ad.agentType &&
+          <div style={styles.agentDetail}>
                 <div style={styles.agentReasoning}>{ad.reasoning}</div>
                 <div style={styles.factorSection}>
-                  <div style={styles.factorTitle}>✅ 关键因素</div>
-                  {ad.keyFactors.map((f, i) => (
-                    <div key={i} style={styles.factorItem}>• {f}</div>
-                  ))}
+                  <div style={styles.factorTitle}>{i18n.t("StrategySignalPreview.r92_de49")}</div>
+                  {ad.keyFactors.map((f, i) =>
+              <div key={i} style={styles.factorItem}>• {f}</div>
+              )}
                 </div>
-                {ad.riskFlags.length > 0 && (
-                  <div style={styles.riskSection}>
-                    <div style={styles.riskTitle}>⚠️ 风险提示</div>
-                    {ad.riskFlags.map((r, i) => (
-                      <div key={i} style={styles.riskItem}>⚠️ {r}</div>
-                    ))}
+                {ad.riskFlags.length > 0 &&
+            <div style={styles.riskSection}>
+                    <div style={styles.riskTitle}>{i18n.t("StrategySignalPreview.r92_8e28")}</div>
+                    {ad.riskFlags.map((r, i) =>
+              <div key={i} style={styles.riskItem}>⚠️ {r}</div>
+              )}
                   </div>
-                )}
+            }
               </div>
-            )}
+          }
           </div>
-        ))}
+        )}
       </div>
 
       {/* Metadata */}
       <div style={styles.metaRow}>
-        <span>💾 缓存命中率: <strong>{preview.cacheHitRate}%</strong></span>
-        <span>💰 本次费用: <strong>{preview.costUSDT.toFixed(4)} USDT</strong></span>
+        <span>{i18n.t("StrategySignalPreview.r92_fafc")}<strong>{preview.cacheHitRate}%</strong></span>
+        <span>{i18n.t("StrategySignalPreview.r92_2fd5")}<strong>{preview.costUSDT.toFixed(4)} USDT</strong></span>
         <span>🔧 {preview.llmProvider} / {preview.llmModel}</span>
       </div>
 
       {/* Actions */}
-      {!saved ? (
-        <div style={styles.actions}>
-          {!editing ? (
-            <>
-              <button style={styles.editBtn} onClick={() => setEditing(true)}>
-                ✏️ 编辑参数
-              </button>
-              <button style={styles.saveBtn} onClick={handleSave}>
-                💾 保存策略
-              </button>
-              <button style={styles.discardBtn} onClick={onDiscard}>
-                🗑️ 放弃
-              </button>
-            </>
-          ) : (
-            <>
+      {!saved ?
+      <div style={styles.actions}>
+          {!editing ?
+        <>
+              <button style={styles.editBtn} onClick={() => setEditing(true)}>{i18n.t("StrategySignalPreview.r92_d28e")}
+
+          </button>
+              <button style={styles.saveBtn} onClick={handleSave}>{i18n.t("StrategySignalPreview.r92_f952")}
+
+          </button>
+              <button style={styles.discardBtn} onClick={onDiscard}>{i18n.t("StrategySignalPreview.r92_acc0")}
+
+          </button>
+            </> :
+
+        <>
               <button style={styles.cancelBtn} onClick={() => setEditing(false)}>{t('cancel')}</button>
               <button style={styles.confirmBtn} onClick={() => {
-                setEditing(false);
-                handleSave();
-              }}>
-                ✅ 确认保存
-              </button>
+            setEditing(false);
+            handleSave();
+          }}>{i18n.t("StrategySignalPreview.r92_d2ea")}
+
+          </button>
             </>
-          )}
-        </div>
-      ) : (
-        <div style={styles.savedMessage}>
-          ✅ 策略已保存！
-        </div>
-      )}
-    </div>
-  );
+        }
+        </div> :
+
+      <div style={styles.savedMessage}>{i18n.t("StrategySignalPreview.r92_64ad")}
+
+      </div>
+      }
+    </div>);
+
 };
 
 // ── Styles ──────────────────────────────────────────────────────────────
@@ -307,19 +307,19 @@ const styles: Record<string, React.CSSProperties> = {
     padding: 20,
     border: '1px solid rgba(255,255,255,0.08)',
     color: '#e0e0e0',
-    fontFamily: 'system-ui, -apple-system, sans-serif',
+    fontFamily: 'system-ui, -apple-system, sans-serif'
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 16
   },
   title: {
     margin: 0,
     fontSize: 18,
     fontWeight: 600,
-    color: '#fff',
+    color: '#fff'
   },
   symbol: {
     fontSize: 18,
@@ -328,39 +328,39 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '4px 12px',
     borderRadius: 6,
     background: 'rgba(63,81,181,0.2)',
-    color: '#7986cb',
+    color: '#7986cb'
   },
   signalCard: {
     padding: 18,
     borderRadius: 12,
     background: 'rgba(255,255,255,0.05)',
     border: '1px solid rgba(255,255,255,0.08)',
-    marginBottom: 20,
+    marginBottom: 20
   },
   signalRow: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gap: 24,
-    marginBottom: 16,
+    marginBottom: 16
   },
   signalMain: {
     display: 'flex',
     flexDirection: 'column' as const,
-    gap: 8,
+    gap: 8
   },
   label: {
     fontSize: 12,
     color: '#888',
-    fontWeight: 500,
+    fontWeight: 500
   },
   signalValue: {
     fontSize: 18,
     fontWeight: 700,
-    fontFamily: 'monospace',
+    fontFamily: 'monospace'
   },
   directionBtns: {
     display: 'flex',
-    gap: 8,
+    gap: 8
   },
   dirBtn: {
     padding: '8px 18px',
@@ -369,43 +369,43 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 14,
     fontWeight: 600,
     cursor: 'pointer',
-    transition: 'all 0.2s',
+    transition: 'all 0.2s'
   },
   confidenceSlider: {
     display: 'flex',
     alignItems: 'center',
-    gap: 12,
+    gap: 12
   },
   slider: {
     flex: 1,
-    accentColor: '#3f51b5',
+    accentColor: '#3f51b5'
   },
   confidenceBar: {
     display: 'flex',
     alignItems: 'center',
-    gap: 12,
+    gap: 12
   },
   confTrack: {
     flex: 1,
     height: 10,
     borderRadius: 5,
     background: 'rgba(255,255,255,0.1)',
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   confFill: {
     height: '100%',
     borderRadius: 5,
-    transition: 'width 0.5s ease',
+    transition: 'width 0.5s ease'
   },
   slTpRow: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
-    gap: 16,
+    gap: 16
   },
   slTpItem: {
     display: 'flex',
     flexDirection: 'column' as const,
-    gap: 6,
+    gap: 6
   },
   slTpInput: {
     padding: '6px 10px',
@@ -416,23 +416,23 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 14,
     width: '100%',
     fontFamily: 'monospace',
-    outline: 'none',
+    outline: 'none'
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   sectionTitle: {
     fontSize: 14,
     fontWeight: 600,
     color: '#b0b0b0',
-    marginBottom: 10,
+    marginBottom: 10
   },
   agentRow: {
     borderRadius: 8,
     border: '1px solid',
     marginBottom: 6,
     overflow: 'hidden',
-    transition: 'all 0.2s',
+    transition: 'all 0.2s'
   },
   agentRowHeader: {
     display: 'flex',
@@ -440,35 +440,35 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 10,
     padding: '10px 14px',
     cursor: 'pointer',
-    background: 'rgba(255,255,255,0.03)',
+    background: 'rgba(255,255,255,0.03)'
   },
   agentEmoji: {
-    fontSize: 18,
+    fontSize: 18
   },
   agentName: {
     fontSize: 14,
     fontWeight: 600,
-    flex: 1,
+    flex: 1
   },
   agentVote: {
     fontSize: 13,
     fontWeight: 700,
     padding: '2px 8px',
     borderRadius: 4,
-    background: 'rgba(255,255,255,0.06)',
+    background: 'rgba(255,255,255,0.06)'
   },
   agentConf: {
     fontSize: 13,
     fontWeight: 700,
-    fontFamily: 'monospace',
+    fontFamily: 'monospace'
   },
   expandIcon: {
     fontSize: 10,
-    color: '#666',
+    color: '#666'
   },
   agentDetail: {
     padding: '12px 14px',
-    borderTop: '1px solid rgba(255,255,255,0.06)',
+    borderTop: '1px solid rgba(255,255,255,0.06)'
   },
   agentReasoning: {
     fontSize: 13,
@@ -477,35 +477,35 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: 10,
     padding: 10,
     background: 'rgba(255,255,255,0.03)',
-    borderRadius: 6,
+    borderRadius: 6
   },
   factorSection: {
-    marginBottom: 8,
+    marginBottom: 8
   },
   factorTitle: {
     fontSize: 12,
     fontWeight: 600,
     color: '#4CAF50',
-    marginBottom: 4,
+    marginBottom: 4
   },
   factorItem: {
     fontSize: 12,
     color: '#a5d6a7',
-    padding: '2px 8px',
+    padding: '2px 8px'
   },
   riskSection: {
-    marginTop: 8,
+    marginTop: 8
   },
   riskTitle: {
     fontSize: 12,
     fontWeight: 600,
     color: '#FF9800',
-    marginBottom: 4,
+    marginBottom: 4
   },
   riskItem: {
     fontSize: 12,
     color: '#FFB74D',
-    padding: '2px 8px',
+    padding: '2px 8px'
   },
   metaRow: {
     display: 'flex',
@@ -516,11 +516,11 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 12,
     color: '#999',
     flexWrap: 'wrap' as const,
-    marginBottom: 20,
+    marginBottom: 20
   },
   actions: {
     display: 'flex',
-    gap: 10,
+    gap: 10
   },
   editBtn: {
     padding: '10px 20px',
@@ -529,7 +529,7 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'rgba(255,255,255,0.06)',
     color: '#e0e0e0',
     fontSize: 14,
-    cursor: 'pointer',
+    cursor: 'pointer'
   },
   saveBtn: {
     padding: '10px 24px',
@@ -540,7 +540,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 600,
     fontSize: 14,
     cursor: 'pointer',
-    flex: 1,
+    flex: 1
   },
   discardBtn: {
     padding: '10px 20px',
@@ -549,7 +549,7 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'transparent',
     color: '#999',
     fontSize: 14,
-    cursor: 'pointer',
+    cursor: 'pointer'
   },
   cancelBtn: {
     padding: '10px 20px',
@@ -558,7 +558,7 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'rgba(255,255,255,0.05)',
     color: '#e0e0e0',
     fontSize: 14,
-    cursor: 'pointer',
+    cursor: 'pointer'
   },
   confirmBtn: {
     padding: '10px 24px',
@@ -569,7 +569,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 600,
     fontSize: 14,
     cursor: 'pointer',
-    flex: 1,
+    flex: 1
   },
   savedMessage: {
     padding: '12px 20px',
@@ -579,8 +579,8 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#4CAF50',
     fontSize: 15,
     fontWeight: 600,
-    textAlign: 'center' as const,
-  },
+    textAlign: 'center' as const
+  }
 };
 
 export default StrategySignalPreview;

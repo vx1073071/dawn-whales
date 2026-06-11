@@ -91,25 +91,15 @@
 | J-02 | 性能优化: 路由级代码分割 + 懒加载 | Vite code splitting: 按路由分割, 非核心模块懒加载。目标首屏bundle <2MB | ① route-based splitting ② 非核心lazy import ③ 首屏bundle <2MB ④ git commit |
 | J-03 | EngineError 覆盖率 50%→60% | 继续批量转换, 重点: src/components/ 下的UI组件错误处理 | ① 覆盖率 ≥60% ② TSC 0 ③ Build 0 ④ git commit |
 
-### 🦐QClaw (测试虾) — 2 任务
+### 🦐PM(Claw) — 代工测试+文档+守护 (youdao🪦+QClaw🪦 已双亡)
 
-| ID | 任务 | 描述 | 验收标准 |
-|----|------|------|----------|
-| Q-01 | 测试 fail ≤3 + exclude ≤3 | 接近清零。剩余fail必须有issue编号和修复计划 | ① 真实fail ≤3 ② exclude ≤3 ③ 每个残留有issue# ④ git commit |
-| Q-02 | Lighthouse 审计 ≥85 | Electron Lighthouse: Performance/Accessibility/BestPractices/SEO 均≥85 | ① 4项均≥85 ② 报告输出 ③ 低于85的项有修复计划 ④ git commit |
-
-### 🦐youdao (文档虾) — 2 任务
-
-| ID | 任务 | 描述 | 验收标准 |
-|----|------|------|----------|
-| D-01 | 用户操作指南 | docs/user-guide.md: 安装/配置/策略创建/交易/钱包/P2P全流程 | ① 覆盖所有核心功能 ② ≥500行 ③ git commit |
-| D-02 | R91 Release Notes + 安全审计记录 | R91 Release Notes + 安全措施记录 | ① CHANGELOG R91 section ② 安全审计记录 ③ git commit |
-
-### 🦐PM (Claw/守护虾) — 1 任务
-
-| ID | 任务 | 描述 | 验收标准 |
-|----|------|------|----------|
-| P-01 | R92 守护 + 审计 + v1.10.0-rc.1 tag | 审计R92, 验证质量指标, 打rc.1 tag | ① 指标全部验证 ② git tag v1.10.0-rc.1 |
+| ID | 任务 | 描述 | 验收标准 | 状态 |
+|----|------|------|----------|------|
+| Q-01 | 测试 fail ≤3 + exclude ≤3 | 接近清零。剩余fail必须有issue编号和修复计划 | ① 真实fail ≤3 ② exclude ≤3 ③ 每个残留有issue# ④ git commit | 待PM执行 |
+| Q-02 | Lighthouse 审计 ≥85 | Electron Lighthouse: Performance/Accessibility/BestPractices/SEO 均≥85 | ① 4项均≥85 ② 报告输出 ③ 低于85的项有修复计划 ④ git commit | 待PM执行 |
+| D-01 | 用户操作指南 | docs/user-guide.md | — | ✅ QClaw遗作 eff49c13 (683行) |
+| D-02 | R91 Release Notes + 安全审计 | CHANGELOG + security-audit-r91.md | — | ✅ QClaw遗作 eff49c13 |
+| P-01 | R92 守护 + 审计 + v1.10.0-rc.1 tag | 审计R92, 验证质量指标, 打rc.1 tag | ① 指标全部验证 ② git tag v1.10.0-rc.1 | 待PM执行 |
 
 **R92 总任务: 10 个**
 
@@ -134,7 +124,7 @@
 | J-01 | Playwright E2E 扩充到 12 个 | 覆盖核心用户流程: 启动→Dashboard→市场→策略→交易→钱包→设置。包含正向和异常路径 | ① 12个test cases ② 全部通过 ③ CI可跑 ④ git commit |
 | J-02 | Electron Auto-updater 集成 | electron-updater集成, 更新提示UI, 增量更新支持 | ① electron-updater集成 ② 更新UI提示 ③ TSC 0 ④ git commit |
 
-### 🦐QClaw (测试虾) — 3 任务
+### 🦐PM代班youdao (🪦已阵亡) — 3 任务
 
 | ID | 任务 | 描述 | 验收标准 |
 |----|------|------|----------|
@@ -142,7 +132,7 @@
 | Q-02 | 内存泄漏检测 | Electron长时间运行内存监控: 空闲→操作→空闲, 内存应回落基线±10% | ① 内存监控脚本 ② 泄漏报告 ③ 修复(如有) ④ git commit |
 | Q-03 | Coverage 冲刺: statements≥65% | 最终覆盖率冲刺 | ① statements ≥65% ② branches ≥45% ③ functions ≥55% ④ git commit |
 
-### 🦐youdao (文档虾) — 2 任务
+### 🦐QClaw (文档虾) — 2 任务
 
 | ID | 任务 | 描述 | 验收标准 |
 |----|------|------|----------|
@@ -178,14 +168,14 @@
 | J-01 | v1.10.0 构建 + 安装包 | Windows安装包构建。输出installer .exe + 校验和SHA256 | ① installer构建成功 ② SHA256校验和文件 ③ 版本号1.10.0 ④ git tag v1.10.0 |
 | J-02 | 发布文档: 部署清单 + 回滚方案 | docs/release/v1.10.0.md: 构建步骤, 部署清单, 回滚方案, 已知问题 | ① 发布文档完整 ② 回滚方案可执行 ③ git commit |
 
-### 🦐QClaw (测试虾) — 2 任务
+### 🦐PM代班youdao (🪦已阵亡) — 2 任务
 
 | ID | 任务 | 描述 | 验收标准 |
 |----|------|------|----------|
 | Q-01 | 最终全量回归 + Playwright 15+ 全绿 | 单元测试0 fail + E2E 15+全绿。v1.10.0发布门禁 | ① 0 fail ② 0 unexpected skip ③ E2E 15/15 pass ④ git commit |
 | Q-02 | 质量终报: v1.10.0 全指标报告 | 汇总全指标: TSC/Build/i18n/EngineError/测试/覆盖率/npm audit/性能/Lighthouse/E2E | ① 全指标表格 ② vs R89基线对比 ③ 达标/不达标标注 ④ git commit |
 
-### 🦐youdao (文档虾) — 2 任务
+### 🦐QClaw (文档虾) — 2 任务
 
 | ID | 任务 | 描述 | 验收标准 |
 |----|------|------|----------|

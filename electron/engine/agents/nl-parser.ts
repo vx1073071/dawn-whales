@@ -144,7 +144,7 @@ function extractNumber(text: string, pattern: RegExp): number | undefined {
 
 interface ATRConfig {
   period: number;   // ATR period，default14
-  multiplier: number; // ATR 倍数（用于动态stop loss），default2
+  multiplier: number; // ATR （stop loss），default2
 }
 
 function extractATRConfig(text: string): ATRConfig | null {
@@ -375,7 +375,7 @@ function extractRiskManagement(text: string, strategy: ParsedStrategy['strategy'
     || text.match(/ATR\s*(?:止损)\s*(?:\d+(?:\.\d+)?)?\s*[倍×xX]?/i);
   if (atrMatch) {
  // ：strategy.stopLoss = -1 ATR stop loss
-    strategy.stopLoss = -1; // -1 表示由 ATR 引擎决定
+    strategy.stopLoss = -1; // -1 ATR
   }
 }
 

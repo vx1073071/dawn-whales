@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getAllStrategies, getMarketplaceList, getStrategyRating, rateStrategy, addComment, getComments } from '@/lib/bridge-api';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
@@ -41,7 +41,7 @@ type RiskFilter = 'all' | 'low' | 'medium' | 'high';
 
 // ── Demo equity curves for display (until real performance DB is populated) ─
 const DEMO_CHARTS: Record<string, number[]> = {
-  default: [100, 103, 107, 105, 112, 118, 115, 122, 128, 125, 132, 138],
+  default: [100, 103, 107, 105, 112, 118, 115, 122, 128, 125, 132, 138]
 };
 
 export default function MarketplacePage() {
@@ -68,7 +68,7 @@ export default function MarketplacePage() {
       if (res?.success && res.strategies) {
         setMarketStrategies(res.strategies);
       }
-    } catch (_e: unknown) { /* silent */ }
+    } catch (_e: unknown) {/* silent */}
     void EngineError; // [DATA] structured error tracking
     setLoading(false);
   }
@@ -77,11 +77,11 @@ export default function MarketplacePage() {
     try {
       const list = await getAllStrategies();
       setMyStrategies(list);
-    } catch (_e: unknown) { /* silent */ }
+    } catch (_e: unknown) {/* silent */}
   }
 
-  const filtered = marketStrategies
-    .filter((s) => !searchQuery || s.name.includes(searchQuery));
+  const filtered = marketStrategies.
+  filter((s) => !searchQuery || s.name.includes(searchQuery));
 
   const selected = filtered.find((s) => s.id === selectedId);
 
@@ -95,40 +95,40 @@ export default function MarketplacePage() {
         </div>
         <button
           onClick={() => setShowPublish(true)}
-          className="px-4 py-2 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] transition-colors"
-        >
-          📤 发布我的策略
+          className="px-4 py-2 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] transition-colors">{i18n.t("MarketplacePage.r92_91d9")}
+
+
         </button>
       </div>
 
       {/* Tabs + Filters */}
       <div className="flex items-center gap-4 mb-4 flex-wrap">
         <div className="flex gap-1 bg-[#12121a] rounded-lg p-1">
-          {([['hot', i18n.t('MarketplacePage.k3')], ['return', i18n.t('MarketplacePage.k4')], ['stable', i18n.t('MarketplacePage.k5')], ['new', i18n.t('MarketplacePage.k6')], ['free', i18n.t('MarketplacePage.k7')]] as [Tab, string][]).map(([key, label]) => (
-            <button
-              key={key}
-              onClick={() => setActiveTab(key)}
-              className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
-                activeTab === key ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'
-              }`}
-            >
+          {([['hot', i18n.t('MarketplacePage.k3')], ['return', i18n.t('MarketplacePage.k4')], ['stable', i18n.t('MarketplacePage.k5')], ['new', i18n.t('MarketplacePage.k6')], ['free', i18n.t('MarketplacePage.k7')]] as [Tab, string][]).map(([key, label]) =>
+          <button
+            key={key}
+            onClick={() => setActiveTab(key)}
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
+            activeTab === key ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'}`
+            }>
+            
               {label}
             </button>
-          ))}
+          )}
         </div>
 
         <div className="flex gap-1 text-xs">
-          {([['all', 'components.all'], ['low', i18n.t('MarketplacePage.k8')], ['medium', i18n.t('MarketplacePage.k9')], ['high', i18n.t('MarketplacePage.k10')]] as [RiskFilter, string][]).map(([key, label]) => (
-            <button
-              key={key}
-              onClick={() => setRiskFilter(key)}
-              className={`px-2.5 py-1 rounded transition-colors ${
-                riskFilter === key ? 'bg-[#22222f] text-gray-200' : 'text-gray-500 hover:text-gray-300'
-              }`}
-            >
+          {([['all', 'components.all'], ['low', i18n.t('MarketplacePage.k8')], ['medium', i18n.t('MarketplacePage.k9')], ['high', i18n.t('MarketplacePage.k10')]] as [RiskFilter, string][]).map(([key, label]) =>
+          <button
+            key={key}
+            onClick={() => setRiskFilter(key)}
+            className={`px-2.5 py-1 rounded transition-colors ${
+            riskFilter === key ? 'bg-[#22222f] text-gray-200' : 'text-gray-500 hover:text-gray-300'}`
+            }>
+            
               {label}
             </button>
-          ))}
+          )}
         </div>
 
         <div className="flex-1" />
@@ -137,53 +137,53 @@ export default function MarketplacePage() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="搜索策略..."
-          className="bg-[#12121a] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-200 placeholder-gray-500 w-48 focus:outline-none focus:border-[#C9A046]/50"
-        />
+          className="bg-[#12121a] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-200 placeholder-gray-500 w-48 focus:outline-none focus:border-[#C9A046]/50" />
+        
       </div>
 
       {/* Content area */}
-      {loading ? (
-        <div className="text-center py-12 text-gray-500">{i18n.t('MarketplacePage.k11')}</div>
-      ) : (
-        <div className="flex gap-4">
+      {loading ?
+      <div className="text-center py-12 text-gray-500">{i18n.t('MarketplacePage.k11')}</div> :
+
+      <div className="flex gap-4">
           <div className="flex-1 grid grid-cols-2 xl:grid-cols-3 gap-3 content-start">
-            {filtered.map((s) => (
-              <StrategyCardItem
-                key={s.id}
-                strategy={s}
-                selected={s.id === selectedId}
-                onClick={() => { setSelectedId(s.id === selectedId ? null : s.id); setShowDetail(true); }}
-              />
-            ))}
-            {filtered.length === 0 && (
-              <div className="col-span-3 text-center py-12 text-gray-500">
+            {filtered.map((s) =>
+          <StrategyCardItem
+            key={s.id}
+            strategy={s}
+            selected={s.id === selectedId}
+            onClick={() => {setSelectedId(s.id === selectedId ? null : s.id);setShowDetail(true);}} />
+
+          )}
+            {filtered.length === 0 &&
+          <div className="col-span-3 text-center py-12 text-gray-500">
                 {marketStrategies.length === 0 ? i18n.t('MarketplacePage.k12') : i18n.t('MarketplacePage.k13')}
               </div>
-            )}
+          }
           </div>
 
-          {selected && showDetail && (
-            <div className="w-80 flex-shrink-0">
-              <StrategyDetailPanel strategy={selected} onClose={() => { setSelectedId(null); setShowDetail(false); }} />
+          {selected && showDetail &&
+        <div className="w-80 flex-shrink-0">
+              <StrategyDetailPanel strategy={selected} onClose={() => {setSelectedId(null);setShowDetail(false);}} />
             </div>
-          )}
+        }
         </div>
-      )}
+      }
 
       {/* Publish Modal */}
-      {showPublish && (
-        <PublishModal
-          myStrategies={myStrategies}
-          onClose={() => setShowPublish(false)}
-        />
-      )}
-    </div>
-  );
+      {showPublish &&
+      <PublishModal
+        myStrategies={myStrategies}
+        onClose={() => setShowPublish(false)} />
+
+      }
+    </div>);
+
 }
 
 // ── Strategy Card ──────────────────────────────────────────────────────────
 
-function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: MarketplaceStrategy; selected: boolean; onClick: () => void }) {
+function StrategyCardItem({ strategy: s, selected, onClick }: {strategy: MarketplaceStrategy;selected: boolean;onClick: () => void;}) {
   const returnPct = s.performance_return || 0;
   const returnColor = returnPct >= 0 ? 'text-emerald-400' : 'text-red-400';
   const chart = DEMO_CHARTS.default;
@@ -192,14 +192,14 @@ function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: Market
     <button
       onClick={onClick}
       className={`bg-[#1a1a25] border rounded-xl p-4 text-left transition-all hover:border-white/10 ${
-        selected ? 'border-[#C9A046]/50 ring-1 ring-[#C9A046]/20' : 'border-white/5'
-      }`}
-    >
+      selected ? 'border-[#C9A046]/50 ring-1 ring-[#C9A046]/20' : 'border-white/5'}`
+      }>
+      
       <div className="flex items-start justify-between mb-2">
         <div className="flex-1 min-w-0">
           <h3 className="text-white text-sm font-medium truncate">{s.name || i18n.t('MarketplacePage.k14')}</h3>
           <div className="text-gray-500 text-[11px] mt-0.5">
-            ⭐{s.avg_rating || 0} ({s.rating_count || 0}评) · 💬 {s.comment_count || 0}
+            ⭐{s.avg_rating || 0} ({s.rating_count || 0}{i18n.t("MarketplacePage.r92_154e")}{s.comment_count || 0}
           </div>
         </div>
       </div>
@@ -228,13 +228,13 @@ function StrategyCardItem({ strategy: s, selected, onClick }: { strategy: Market
         <div className="text-gray-500 text-[11px]">{i18n.t('MarketplacePage.k16')}</div>
         <div className="text-sm font-bold text-[#D4A853]">{i18n.t('MarketplacePage.k17')}</div>
       </div>
-    </button>
-  );
+    </button>);
+
 }
 
 // ── Mini Chart ─────────────────────────────────────────────────────────────
 
-function MiniChart({ data, positive }: { data: number[]; positive: boolean }) {
+function MiniChart({ data, positive }: {data: number[];positive: boolean;}) {
   if (!data.length) return null;
   const min = Math.min(...data);
   const max = Math.max(...data);
@@ -242,8 +242,8 @@ function MiniChart({ data, positive }: { data: number[]; positive: boolean }) {
   const w = 200;
   const h = 48;
   const points = data.map((v, i) => {
-    const x = (i / (data.length - 1)) * w;
-    const y = h - ((v - min) / range) * h;
+    const x = i / (data.length - 1) * w;
+    const y = h - (v - min) / range * h;
     return `${x},${y}`;
   });
   const color = positive ? '#22c55e' : '#ef4444';
@@ -251,13 +251,13 @@ function MiniChart({ data, positive }: { data: number[]; positive: boolean }) {
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-full" preserveAspectRatio="none">
       <polyline points={points.join(' ')} fill="none" stroke={color} strokeWidth="2" strokeLinejoin="round" />
-    </svg>
-  );
+    </svg>);
+
 }
 
 // ── Strategy Detail Panel (with real rating + comment) ────────────────────
 
-function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceStrategy; onClose: () => void }) {
+function StrategyDetailPanel({ strategy: s, onClose }: {strategy: MarketplaceStrategy;onClose: () => void;}) {
   const [rating, setRating] = useState<StrategyRating>({ avg: 0, count: 0, myRating: 0 });
   const [comments, setComments] = useState<StrategyComment[]>([]);
   const [newComment, setNewComment] = useState('');
@@ -286,7 +286,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
     try {
       await rateStrategy(s.id, star);
       await loadRating();
-    } catch (_e: unknown) { notify('error', i18n.t('MarketplacePage.k18')); }
+    } catch (_e: unknown) {notify('error', i18n.t('MarketplacePage.k18'));}
   }
 
   async function handleComment() {
@@ -295,7 +295,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
       await addComment(s.id, newComment.trim());
       setNewComment('');
       await loadComments();
-    } catch (_e: unknown) { notify('error', i18n.t('MarketplacePage.k19')); }
+    } catch (_e: unknown) {notify('error', i18n.t('MarketplacePage.k19'));}
   }
 
   return (
@@ -313,21 +313,21 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
           <div className="text-3xl font-bold text-[#D4A853]">{rating.avg || '-'}</div>
           <div>
             <div className="flex gap-0.5 mb-0.5">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  onClick={() => handleRate(star)}
-                  onMouseEnter={() => setHoverStar(star)}
-                  onMouseLeave={() => setHoverStar(0)}
-                  className={`text-sm transition-colors ${
-                    star <= (hoverStar || rating.myRating) ? 'text-[#D4A853]' : 'text-gray-600'
-                  }`}
-                >
+              {[1, 2, 3, 4, 5].map((star) =>
+              <button
+                key={star}
+                onClick={() => handleRate(star)}
+                onMouseEnter={() => setHoverStar(star)}
+                onMouseLeave={() => setHoverStar(0)}
+                className={`text-sm transition-colors ${
+                star <= (hoverStar || rating.myRating) ? 'text-[#D4A853]' : 'text-gray-600'}`
+                }>
+                
                   ★
                 </button>
-              ))}
+              )}
             </div>
-            <div className="text-gray-500 text-[10px]">{rating.count} 人评分{rating.myRating > 0 && ` · 我的: ${rating.myRating}星`}</div>
+            <div className="text-gray-500 text-[10px]">{rating.count}{i18n.t("MarketplacePage.r92_4f6c")}{rating.myRating > 0 && ` · 我的: ${rating.myRating}星`}</div>
           </div>
         </div>
       </div>
@@ -342,7 +342,7 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
 
       {/* Comments Section */}
       <div className="mb-3">
-        <div className="text-gray-400 text-[11px] font-medium mb-2">💬 评论 ({comments.length})</div>
+        <div className="text-gray-400 text-[11px] font-medium mb-2">{i18n.t("MarketplacePage.r92_8f80")}{comments.length})</div>
 
         {/* Add comment */}
         <div className="flex gap-2 mb-3">
@@ -351,31 +351,31 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
             onChange={(e) => setNewComment(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleComment()}
             placeholder="写评论..."
-            className="flex-1 bg-[#12121a] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50"
-          />
+            className="flex-1 bg-[#12121a] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50" />
+          
           <button
             onClick={handleComment}
             disabled={!newComment.trim()}
-            className="px-3 py-1.5 bg-[#C9A046]/20 text-[#D4A853] text-xs rounded-lg hover:bg-[#C9A046]/30 disabled:opacity-40"
-          >
-            发送
+            className="px-3 py-1.5 bg-[#C9A046]/20 text-[#D4A853] text-xs rounded-lg hover:bg-[#C9A046]/30 disabled:opacity-40">{i18n.t("MarketplacePage.r92_4f12")}
+
+
           </button>
         </div>
 
         {/* Comment list */}
         <div className="space-y-2 max-h-48 overflow-y-auto">
-          {comments.length === 0 && (
-            <div className="text-gray-600 text-[10px] text-center py-3">{i18n.t('MarketplacePage.k25')}</div>
-          )}
-          {comments.map((c) => (
-            <div key={c.id} className="bg-[#12121a] rounded-lg p-2.5">
+          {comments.length === 0 &&
+          <div className="text-gray-600 text-[10px] text-center py-3">{i18n.t('MarketplacePage.k25')}</div>
+          }
+          {comments.map((c) =>
+          <div key={c.id} className="bg-[#12121a] rounded-lg p-2.5">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-gray-400 text-[10px]">{c.user_id}</span>
                 <span className="text-gray-600 text-[9px]">{c.created_at?.slice(0, 16)}</span>
               </div>
               <div className="text-gray-300 text-xs">{c.content}</div>
             </div>
-          ))}
+          )}
         </div>
       </div>
 
@@ -383,30 +383,30 @@ function StrategyDetailPanel({ strategy: s, onClose }: { strategy: MarketplaceSt
       <div className="border-t border-white/5 pt-4">
         <button
           onClick={() => notify('info', i18n.t('MarketplacePage.k26'))}
-          className="w-full py-2.5 bg-[#C9A046] text-black font-semibold rounded-lg text-sm hover:bg-[#D4A853] transition-colors"
-        >
-          📥 使用此策略
+          className="w-full py-2.5 bg-[#C9A046] text-black font-semibold rounded-lg text-sm hover:bg-[#D4A853] transition-colors">{i18n.t("MarketplacePage.r92_7ad0")}
+
+
         </button>
-        <div className="mt-2 text-center text-[10px] text-gray-600">
-          平台服务费 30% · 创作者收入 70%
+        <div className="mt-2 text-center text-[10px] text-gray-600">{i18n.t("MarketplacePage.r92_5517")}
+
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
-function MetricBox({ label, value, color = 'text-gray-200' }: { label: string; value: string; color?: string }) {
+function MetricBox({ label, value, color = 'text-gray-200' }: {label: string;value: string;color?: string;}) {
   return (
     <div className="bg-[#12121a] rounded-lg p-2.5 text-center">
       <div className={`text-sm font-mono font-bold ${color}`}>{value}</div>
       <div className="text-[10px] text-gray-500 mt-0.5">{label}</div>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Publish Modal ──────────────────────────────────────────────────────────
 
-function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose: () => void }) {
+function PublishModal({ myStrategies, onClose }: {myStrategies: any[];onClose: () => void;}) {
   const [selectedId, setSelectedId] = useState<string>('');
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState('');
@@ -432,26 +432,26 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
           <button onClick={onClose} className="text-gray-500 hover:text-gray-300">✕</button>
         </div>
 
-        {myStrategies.length === 0 ? (
-          <div className="text-center py-8">
+        {myStrategies.length === 0 ?
+        <div className="text-center py-8">
             <div className="text-3xl mb-2 opacity-40">🧠</div>
             <p className="text-gray-400 text-sm">{i18n.t('MarketplacePage.k29')}</p>
             <p className="text-gray-500 text-xs mt-1">{i18n.t('MarketplacePage.k30')}</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
+          </div> :
+
+        <div className="space-y-4">
             {/* Strategy selection */}
             <div>
               <label className="block text-gray-400 text-xs mb-1">{i18n.t('MarketplacePage.k31')}</label>
               <select
-                value={selectedId}
-                onChange={(e) => setSelectedId(e.target.value)}
-                className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50"
-              >
+              value={selectedId}
+              onChange={(e) => setSelectedId(e.target.value)}
+              className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50">
+              
                 <option value="">{i18n.t('MarketplacePage.k32')}</option>
-                {myStrategies.map((s) => (
-                  <option key={s.id} value={s.id}>{s.name || i18n.t('MarketplacePage.k33')}</option>
-                ))}
+                {myStrategies.map((s) =>
+              <option key={s.id} value={s.id}>{s.name || i18n.t('MarketplacePage.k33')}</option>
+              )}
               </select>
             </div>
 
@@ -459,24 +459,24 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
             <div>
               <label className="block text-gray-400 text-xs mb-1">{i18n.t('MarketplacePage.k34')}</label>
               <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="描述你的策略逻辑、适用场景、风险特点..."
-                className="w-full h-20 bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 resize-none focus:outline-none focus:border-[#C9A046]/50"
-              />
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="描述你的策略逻辑、适用场景、风险特点..."
+              className="w-full h-20 bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 resize-none focus:outline-none focus:border-[#C9A046]/50" />
+            
             </div>
 
             {/* Price */}
             <div>
               <label className="block text-gray-400 text-xs mb-1">{i18n.t('MarketplacePage.k35')}</label>
               <input
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(Number(e.target.value))}
-                min={0}
-                max={999}
-                className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50"
-              />
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+              min={0}
+              max={999}
+              className="w-full bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50" />
+            
               <div className="text-gray-500 text-[11px] mt-1">
                 {price === 0 ? i18n.t('MarketplacePage.k36') : `你的收入: ¥${(price * 0.7).toFixed(0)}/月 (70%分成)`}
               </div>
@@ -485,21 +485,21 @@ function PublishModal({ myStrategies, onClose }: { myStrategies: any[]; onClose:
             {/* Revenue split info */}
             <div className="bg-[#C9A046]/10 border border-[#C9A046]/20 rounded-lg p-3">
               <div className="text-[#D4A853] text-xs font-medium mb-1">{i18n.t('MarketplacePage.k37')}</div>
-              <div className="text-gray-400 text-[11px]">
-                创作者 70% · 平台 30%。每月结算一次，满 ¥100 可提现。
-              </div>
+              <div className="text-gray-400 text-[11px]">{i18n.t("MarketplacePage.r92_b333")}
+
+            </div>
             </div>
 
             <button
-              onClick={handlePublish}
-              disabled={!selectedId}
-              className="w-full py-2.5 bg-[#C9A046] text-black font-semibold rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors"
-            >
-              提交审核
-            </button>
+            onClick={handlePublish}
+            disabled={!selectedId}
+            className="w-full py-2.5 bg-[#C9A046] text-black font-semibold rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors">{i18n.t("MarketplacePage.r92_127c")}
+
+
+          </button>
           </div>
-        )}
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 }

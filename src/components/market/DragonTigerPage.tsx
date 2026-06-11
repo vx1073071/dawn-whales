@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
 import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from '../../lib/bridge-api';
@@ -45,8 +45,8 @@ export default function DragonTigerPage() {
     setError('');
     try {
       const res = await getDragonTigerList(selectedDate || undefined);
-      if (res?.success) setEntries(res.entries || []);
-      else setError(res?.error || i18n.t('DragonTigerPage.k1'));
+      if (res?.success) setEntries(res.entries || []);else
+      setError(res?.error || i18n.t('DragonTigerPage.k1'));
     } catch (e: unknown) {
       void EngineError; // [DATA] structured error tracking
       setError((e as any).message || i18n.t('DragonTigerPage.k2'));
@@ -86,8 +86,8 @@ export default function DragonTigerPage() {
   };
 
   useEffect(() => {
-    if (tab === 'daily') fetchDaily();
-    else if (tab === 'institutional') fetchInstitutional();
+    if (tab === 'daily') fetchDaily();else
+    if (tab === 'institutional') fetchInstitutional();
   }, [tab, selectedDate]);
 
   return (
@@ -95,7 +95,7 @@ export default function DragonTigerPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">🐉 龙虎榜</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">{i18n.t("DragonTigerPage.r92_7ed5")}</h1>
           <p className="text-gray-400 text-sm">{i18n.t('DragonTigerPage.k0')}</p>
         </div>
         <div className="flex items-center gap-2">
@@ -103,13 +103,13 @@ export default function DragonTigerPage() {
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50"
-          />
+            className="bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
+          
           <button
             onClick={tab === 'daily' ? fetchDaily : fetchInstitutional}
             disabled={loading}
-            className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors"
-          >
+            className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors">
+            
             {loading ? i18n.t('DragonTigerPage.k5') : '🔄'}
           </button>
         </div>
@@ -117,31 +117,31 @@ export default function DragonTigerPage() {
 
       {/* Tabs */}
       <div className="flex gap-2">
-        {(['daily', 'institutional', 'detail'] as const).map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
-              tab === t
-                ? 'bg-[#C9A046]/20 border-[#C9A046]/40 text-[#C9A046]'
-                : 'bg-[#1a1a25] border-white/10 text-gray-400 hover:text-white'
-            }`}
-          >
+        {(['daily', 'institutional', 'detail'] as const).map((t) =>
+        <button
+          key={t}
+          onClick={() => setTab(t)}
+          className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
+          tab === t ?
+          'bg-[#C9A046]/20 border-[#C9A046]/40 text-[#C9A046]' :
+          'bg-[#1a1a25] border-white/10 text-gray-400 hover:text-white'}`
+          }>
+          
             {t === 'daily' ? i18n.t('DragonTigerPage.k6') : t === 'institutional' ? i18n.t('DragonTigerPage.k7') : i18n.t('DragonTigerPage.k8')}
           </button>
-        ))}
+        )}
       </div>
 
       {/* Error */}
-      {error && (
-        <div className="bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 text-red-400 text-sm">
+      {error &&
+      <div className="bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 text-red-400 text-sm">
           {error}
         </div>
-      )}
+      }
 
       {/* Daily List */}
-      {tab === 'daily' && (
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
+      {tab === 'daily' &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-card text-gray-400 text-xs">
@@ -154,38 +154,38 @@ export default function DragonTigerPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {entries.map((e) => (
-                <tr key={e.code} className="hover:bg-white/[0.02] cursor-pointer">
+              {entries.map((e) =>
+            <tr key={e.code} className="hover:bg-white/[0.02] cursor-pointer">
                   <td className="px-4 py-3 text-gray-300 font-mono text-xs">{e.code}</td>
                   <td className="px-4 py-3 text-white font-medium">{e.name}</td>
                   <td className={`px-4 py-3 text-right font-medium ${e.changePct >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
                     {e.changePct >= 0 ? '+' : ''}{e.changePct?.toFixed(2)}%
                   </td>
                   <td className={`px-4 py-3 text-right font-medium ${e.netBuyAmount >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
-                    {(e.netBuyAmount / 1e4).toFixed(0)}万
-                  </td>
+                    {(e.netBuyAmount / 1e4).toFixed(0)}{i18n.t("DragonTigerPage.r92_87a8")}
+              </td>
                   <td className="px-4 py-3 text-gray-400 text-xs">{e.reason}</td>
                   <td className="px-4 py-3 text-center">
                     <button
-                      onClick={() => fetchDetail(e.code)}
-                      className="text-xs text-[#C9A046] hover:text-[#d4b55a]"
-                    >
-                      详情
-                    </button>
+                  onClick={() => fetchDetail(e.code)}
+                  className="text-xs text-[#C9A046] hover:text-[#d4b55a]">{i18n.t("DragonTigerPage.r92_17b2")}
+
+
+                </button>
                   </td>
                 </tr>
-              ))}
+            )}
             </tbody>
           </table>
-          {entries.length === 0 && !loading && (
-            <div className="text-gray-500 text-sm py-8 text-center">{"components.noData"}</div>
-          )}
+          {entries.length === 0 && !loading &&
+        <div className="text-gray-500 text-sm py-8 text-center">{"components.noData"}</div>
+        }
         </div>
-      )}
+      }
 
       {/* Institutional */}
-      {tab === 'institutional' && (
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
+      {tab === 'institutional' &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-card text-gray-400 text-xs">
@@ -197,30 +197,30 @@ export default function DragonTigerPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {institutional.map((e) => (
-                <tr key={e.code} className="hover:bg-white/[0.02]">
+              {institutional.map((e) =>
+            <tr key={e.code} className="hover:bg-white/[0.02]">
                   <td className="px-4 py-3 text-gray-300 font-mono text-xs">{e.code}</td>
                   <td className="px-4 py-3 text-white font-medium">{e.name}</td>
                   <td className={`px-4 py-3 text-right font-medium ${e.changePct >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
                     {e.changePct >= 0 ? '+' : ''}{e.changePct?.toFixed(2)}%
                   </td>
                   <td className={`px-4 py-3 text-right font-medium ${e.netBuyAmount >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
-                    {(e.netBuyAmount / 1e4).toFixed(0)}万
-                  </td>
+                    {(e.netBuyAmount / 1e4).toFixed(0)}{i18n.t("DragonTigerPage.r92_1669")}
+              </td>
                   <td className="px-4 py-3 text-gray-400 text-xs">{e.reason}</td>
                 </tr>
-              ))}
+            )}
             </tbody>
           </table>
-          {institutional.length === 0 && !loading && (
-            <div className="text-gray-500 text-sm py-8 text-center">{"components.noData"}</div>
-          )}
+          {institutional.length === 0 && !loading &&
+        <div className="text-gray-500 text-sm py-8 text-center">{"components.noData"}</div>
+        }
         </div>
-      )}
+      }
 
       {/* Detail */}
-      {tab === 'detail' && detail && (
-        <div className="space-y-5">
+      {tab === 'detail' && detail &&
+      <div className="space-y-5">
           <div className="flex items-center gap-3">
             <button onClick={() => setTab('daily')} className="text-xs text-gray-500 hover:text-white">{"components.back"}</button>
             <span className="text-white font-medium">{detail.name} ({detail.code})</span>
@@ -232,18 +232,18 @@ export default function DragonTigerPage() {
             <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
               <h3 className="text-sm font-medium text-red-400 mb-3">{i18n.t('DragonTigerPage.k5')}</h3>
               <div className="space-y-2">
-                {detail.buySeats.map((s) => (
-                  <div key={s.rank} className="flex items-center justify-between p-2 bg-card rounded">
+                {detail.buySeats.map((s) =>
+              <div key={s.rank} className="flex items-center justify-between p-2 bg-card rounded">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-gray-500">{s.rank}</span>
                       <span className="text-sm text-white truncate max-w-[200px]">{s.name}</span>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm text-red-400">{(s.buyAmount / 1e4).toFixed(0)}万</div>
-                      <div className="text-[10px] text-gray-500">净 {(s.netAmount / 1e4).toFixed(0)}万</div>
+                      <div className="text-sm text-red-400">{(s.buyAmount / 1e4).toFixed(0)}{i18n.t("DragonTigerPage.r92_4bd6")}</div>
+                      <div className="text-[10px] text-gray-500">{i18n.t("DragonTigerPage.r92_9063")}{(s.netAmount / 1e4).toFixed(0)}{i18n.t("DragonTigerPage.r92_8631")}</div>
                     </div>
                   </div>
-                ))}
+              )}
               </div>
             </div>
 
@@ -251,23 +251,23 @@ export default function DragonTigerPage() {
             <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
               <h3 className="text-sm font-medium text-emerald-400 mb-3">{i18n.t('DragonTigerPage.k6')}</h3>
               <div className="space-y-2">
-                {detail.sellSeats.map((s) => (
-                  <div key={s.rank} className="flex items-center justify-between p-2 bg-card rounded">
+                {detail.sellSeats.map((s) =>
+              <div key={s.rank} className="flex items-center justify-between p-2 bg-card rounded">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-gray-500">{s.rank}</span>
                       <span className="text-sm text-white truncate max-w-[200px]">{s.name}</span>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm text-emerald-400">{(s.sellAmount / 1e4).toFixed(0)}万</div>
-                      <div className="text-[10px] text-gray-500">净 {(s.netAmount / 1e4).toFixed(0)}万</div>
+                      <div className="text-sm text-emerald-400">{(s.sellAmount / 1e4).toFixed(0)}{i18n.t("DragonTigerPage.r92_4cc1")}</div>
+                      <div className="text-[10px] text-gray-500">{i18n.t("DragonTigerPage.r92_c432")}{(s.netAmount / 1e4).toFixed(0)}{i18n.t("DragonTigerPage.r92_2bb2")}</div>
                     </div>
                   </div>
-                ))}
+              )}
               </div>
             </div>
           </div>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }

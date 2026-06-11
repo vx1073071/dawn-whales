@@ -1,6 +1,6 @@
 // ── DAWN WHALES — MarketBreadth (metric) ─────────────────────────────
 
-import { useMemo } from 'react'
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
 
@@ -26,19 +26,19 @@ const DEFAULT_DATA: MarketBreadthData = {
   newHighs: 87,
   newLows: 34,
   upVolume: 4.2e9,
-  downVolume: 3.1e9,
+  downVolume: 3.1e9
 };
 
 export default function MarketBreadth({
   data = DEFAULT_DATA,
-  title = i18n.t('MarketBreadth.k1'),
+  title = i18n.t('MarketBreadth.k1')
 }: MarketBreadthProps) {
   const { t: _t } = useTranslation();
 
   const total = data.advancing + data.declining + data.unchanged;
   const advanceDeclineRatio = data.declining > 0 ? data.advancing / data.declining : 0;
   const volumeRatio = data.downVolume > 0 ? data.upVolume / data.downVolume : 0;
-  const breadth = total > 0 ? (data.advancing / total) * 100 : 0;
+  const breadth = total > 0 ? data.advancing / total * 100 : 0;
 
   const sentiment = useMemo(() => {
     if (breadth >= 60 && advanceDeclineRatio >= 1.5) return { label: i18n.t('MarketBreadth.k2'), color: 'text-emerald-400', bg: 'bg-emerald-500/10' };
@@ -61,26 +61,26 @@ export default function MarketBreadth({
       <div className="mb-4">
         <div className="flex items-center justify-between text-[10px] mb-1.5">
           <span className="text-gray-500">{i18n.t('MarketBreadth.k0')}{advanceDeclineRatio.toFixed(2)}</span>
-          <span className="text-gray-500">{breadth.toFixed(1)}% 上涨</span>
+          <span className="text-gray-500">{breadth.toFixed(1)}{i18n.t("MarketBreadth.r92_9d86")}</span>
         </div>
         <div className="w-full h-3 bg-[#12121a] rounded-full overflow-hidden flex">
           <div
             className="h-full bg-emerald-500/60"
-            style={{ width: `${total > 0 ? (data.advancing / total) * 100 : 0}%` }}
-          />
+            style={{ width: `${total > 0 ? data.advancing / total * 100 : 0}%` }} />
+          
           <div
             className="h-full bg-gray-500/30"
-            style={{ width: `${total > 0 ? (data.unchanged / total) * 100 : 0}%` }}
-          />
+            style={{ width: `${total > 0 ? data.unchanged / total * 100 : 0}%` }} />
+          
           <div
             className="h-full bg-red-500/60"
-            style={{ width: `${total > 0 ? (data.declining / total) * 100 : 0}%` }}
-          />
+            style={{ width: `${total > 0 ? data.declining / total * 100 : 0}%` }} />
+          
         </div>
         <div className="flex justify-between text-[10px] mt-1">
-          <span className="text-emerald-400">涨 {data.advancing}</span>
-          <span className="text-gray-500">平 {data.unchanged}</span>
-          <span className="text-red-400">跌 {data.declining}</span>
+          <span className="text-emerald-400">{i18n.t("MarketBreadth.r92_fc67")}{data.advancing}</span>
+          <span className="text-gray-500">{i18n.t("MarketBreadth.r92_5096")}{data.unchanged}</span>
+          <span className="text-red-400">{i18n.t("MarketBreadth.r92_fa43")}{data.declining}</span>
         </div>
       </div>
 
@@ -113,6 +113,6 @@ export default function MarketBreadth({
           </span>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

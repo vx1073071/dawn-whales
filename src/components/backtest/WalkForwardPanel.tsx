@@ -46,8 +46,8 @@ interface WFAReport {
   avgOverfitRatio: number;
   stabilityScore: number;
   bestParams: Record<string, number>;
-  worstWindow: { index: number; testReturn: number };
-  bestWindow: { index: number; testReturn: number };
+  worstWindow: {index: number;testReturn: number;};
+  bestWindow: {index: number;testReturn: number;};
 }
 
 // ── Mock data ────────────────────────────────────────────────────────────
@@ -55,15 +55,15 @@ interface WFAReport {
 const MOCK_REPORT: WFAReport = {
   totalWindows: 8,
   windows: [
-    { index: 0, trainStart: '2023-01-01', trainEnd: '2023-12-31', testStart: '2024-01-01', testEnd: '2024-03-31', trainSharpe: 2.1, testSharpe: 1.8, trainReturn: 0.35, testReturn: 0.12, trainMaxDD: -0.08, testMaxDD: -0.06, trainWinRate: 0.58, testWinRate: 0.55, overfitRatio: 0.85, params: { maFast: 10, maSlow: 30 } },
-    { index: 1, trainStart: '2023-04-01', trainEnd: '2024-03-31', testStart: '2024-04-01', testEnd: '2024-06-30', trainSharpe: 1.9, testSharpe: 1.6, trainReturn: 0.28, testReturn: 0.09, trainMaxDD: -0.10, testMaxDD: -0.08, trainWinRate: 0.55, testWinRate: 0.52, overfitRatio: 0.78, params: { maFast: 12, maSlow: 28 } },
-    { index: 2, trainStart: '2023-07-01', trainEnd: '2024-06-30', testStart: '2024-07-01', testEnd: '2024-09-30', trainSharpe: 2.3, testSharpe: 0.4, trainReturn: 0.42, testReturn: -0.05, trainMaxDD: -0.07, testMaxDD: -0.15, trainWinRate: 0.62, testWinRate: 0.38, overfitRatio: 0.22, params: { maFast: 8, maSlow: 35 } },
-    { index: 3, trainStart: '2023-10-01', trainEnd: '2024-09-30', testStart: '2024-10-01', testEnd: '2024-12-31', trainSharpe: 2.0, testSharpe: 1.7, trainReturn: 0.31, testReturn: 0.11, trainMaxDD: -0.09, testMaxDD: -0.07, trainWinRate: 0.57, testWinRate: 0.53, overfitRatio: 0.80, params: { maFast: 11, maSlow: 32 } },
-    { index: 4, trainStart: '2024-01-01', trainEnd: '2024-12-31', testStart: '2025-01-01', testEnd: '2025-03-31', trainSharpe: 1.8, testSharpe: 1.5, trainReturn: 0.27, testReturn: 0.08, trainMaxDD: -0.11, testMaxDD: -0.09, trainWinRate: 0.54, testWinRate: 0.50, overfitRatio: 0.75, params: { maFast: 10, maSlow: 30 } },
-    { index: 5, trainStart: '2024-04-01', trainEnd: '2025-03-31', testStart: '2025-04-01', testEnd: '2025-06-30', trainSharpe: 2.2, testSharpe: 1.9, trainReturn: 0.38, testReturn: 0.14, trainMaxDD: -0.06, testMaxDD: -0.05, trainWinRate: 0.60, testWinRate: 0.56, overfitRatio: 0.82, params: { maFast: 9, maSlow: 35 } },
-    { index: 6, trainStart: '2024-07-01', trainEnd: '2025-06-30', testStart: '2025-07-01', testEnd: '2025-09-30', trainSharpe: 1.7, testSharpe: 1.4, trainReturn: 0.24, testReturn: 0.07, trainMaxDD: -0.12, testMaxDD: -0.10, trainWinRate: 0.52, testWinRate: 0.49, overfitRatio: 0.72, params: { maFast: 13, maSlow: 27 } },
-    { index: 7, trainStart: '2024-10-01', trainEnd: '2025-09-30', testStart: '2025-10-01', testEnd: '2025-12-31', trainSharpe: 2.4, testSharpe: 2.0, trainReturn: 0.45, testReturn: 0.16, trainMaxDD: -0.05, testMaxDD: -0.04, trainWinRate: 0.63, testWinRate: 0.60, overfitRatio: 0.88, params: { maFast: 10, maSlow: 30 } },
-  ],
+  { index: 0, trainStart: '2023-01-01', trainEnd: '2023-12-31', testStart: '2024-01-01', testEnd: '2024-03-31', trainSharpe: 2.1, testSharpe: 1.8, trainReturn: 0.35, testReturn: 0.12, trainMaxDD: -0.08, testMaxDD: -0.06, trainWinRate: 0.58, testWinRate: 0.55, overfitRatio: 0.85, params: { maFast: 10, maSlow: 30 } },
+  { index: 1, trainStart: '2023-04-01', trainEnd: '2024-03-31', testStart: '2024-04-01', testEnd: '2024-06-30', trainSharpe: 1.9, testSharpe: 1.6, trainReturn: 0.28, testReturn: 0.09, trainMaxDD: -0.10, testMaxDD: -0.08, trainWinRate: 0.55, testWinRate: 0.52, overfitRatio: 0.78, params: { maFast: 12, maSlow: 28 } },
+  { index: 2, trainStart: '2023-07-01', trainEnd: '2024-06-30', testStart: '2024-07-01', testEnd: '2024-09-30', trainSharpe: 2.3, testSharpe: 0.4, trainReturn: 0.42, testReturn: -0.05, trainMaxDD: -0.07, testMaxDD: -0.15, trainWinRate: 0.62, testWinRate: 0.38, overfitRatio: 0.22, params: { maFast: 8, maSlow: 35 } },
+  { index: 3, trainStart: '2023-10-01', trainEnd: '2024-09-30', testStart: '2024-10-01', testEnd: '2024-12-31', trainSharpe: 2.0, testSharpe: 1.7, trainReturn: 0.31, testReturn: 0.11, trainMaxDD: -0.09, testMaxDD: -0.07, trainWinRate: 0.57, testWinRate: 0.53, overfitRatio: 0.80, params: { maFast: 11, maSlow: 32 } },
+  { index: 4, trainStart: '2024-01-01', trainEnd: '2024-12-31', testStart: '2025-01-01', testEnd: '2025-03-31', trainSharpe: 1.8, testSharpe: 1.5, trainReturn: 0.27, testReturn: 0.08, trainMaxDD: -0.11, testMaxDD: -0.09, trainWinRate: 0.54, testWinRate: 0.50, overfitRatio: 0.75, params: { maFast: 10, maSlow: 30 } },
+  { index: 5, trainStart: '2024-04-01', trainEnd: '2025-03-31', testStart: '2025-04-01', testEnd: '2025-06-30', trainSharpe: 2.2, testSharpe: 1.9, trainReturn: 0.38, testReturn: 0.14, trainMaxDD: -0.06, testMaxDD: -0.05, trainWinRate: 0.60, testWinRate: 0.56, overfitRatio: 0.82, params: { maFast: 9, maSlow: 35 } },
+  { index: 6, trainStart: '2024-07-01', trainEnd: '2025-06-30', testStart: '2025-07-01', testEnd: '2025-09-30', trainSharpe: 1.7, testSharpe: 1.4, trainReturn: 0.24, testReturn: 0.07, trainMaxDD: -0.12, testMaxDD: -0.10, trainWinRate: 0.52, testWinRate: 0.49, overfitRatio: 0.72, params: { maFast: 13, maSlow: 27 } },
+  { index: 7, trainStart: '2024-10-01', trainEnd: '2025-09-30', testStart: '2025-10-01', testEnd: '2025-12-31', trainSharpe: 2.4, testSharpe: 2.0, trainReturn: 0.45, testReturn: 0.16, trainMaxDD: -0.05, testMaxDD: -0.04, trainWinRate: 0.63, testWinRate: 0.60, overfitRatio: 0.88, params: { maFast: 10, maSlow: 30 } }],
+
   avgTrainSharpe: 2.05,
   avgTestSharpe: 1.53,
   avgTrainReturn: 0.3375,
@@ -72,12 +72,12 @@ const MOCK_REPORT: WFAReport = {
   stabilityScore: 0.78,
   bestParams: { maFast: 10, maSlow: 30 },
   worstWindow: { index: 2, testReturn: -0.05 },
-  bestWindow: { index: 7, testReturn: 0.16 },
+  bestWindow: { index: 7, testReturn: 0.16 }
 };
 
 // ── Sub-components ──────────────────────────────────────────────────────
 
-const OverfitIndicator: React.FC<{ ratio: number }> = ({ ratio }) => {
+const OverfitIndicator: React.FC<{ratio: number;}> = ({ ratio }) => {
   const { t: _t } = useTranslation();
   const color = ratio >= 0.85 ? 'bg-emerald-500' : ratio >= 0.7 ? 'bg-amber-500' : ratio >= 0.5 ? 'bg-orange-500' : 'bg-red-500';
   const label = ratio >= 0.85 ? i18n.t('WalkForwardPanel.k1') : ratio >= 0.7 ? i18n.t('WalkForwardPanel.k2') : ratio >= 0.5 ? i18n.t('WalkForwardPanel.k3') : i18n.t('WalkForwardPanel.k4');
@@ -85,8 +85,8 @@ const OverfitIndicator: React.FC<{ ratio: number }> = ({ ratio }) => {
     <span className={`inline-flex items-center gap-1 text-[10px]`}>
       <span className={`w-2 h-2 rounded-full ${color}`} />
       <span className="text-gray-500">{label}{i18n.t('WalkForwardPanel.k0')}{(ratio * 100).toFixed(0)}%)</span>
-    </span>
-  );
+    </span>);
+
 };
 
 // ── Main Component ──────────────────────────────────────────────────────
@@ -106,13 +106,13 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
   // Build chart data
   const chartPoints = useMemo(() => {
     const maxVal = Math.max(
-      ...report.windows.map(w => Math.max(w.trainReturn * 100, Math.abs(w.testReturn * 100), 1))
+      ...report.windows.map((w) => Math.max(w.trainReturn * 100, Math.abs(w.testReturn * 100), 1))
     );
-    return report.windows.map(w => ({
-      trainY: 70 - (w.trainReturn / (maxVal / 100)) * 60,
-      testY: 70 - (Math.max(w.testReturn, -0.2) / (maxVal / 100)) * 60,
+    return report.windows.map((w) => ({
+      trainY: 70 - w.trainReturn / (maxVal / 100) * 60,
+      testY: 70 - Math.max(w.testReturn, -0.2) / (maxVal / 100) * 60,
       overfitRatio: w.overfitRatio,
-      index: w.index,
+      index: w.index
     }));
   }, [report]);
 
@@ -124,22 +124,22 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h3 className="text-lg font-bold text-white">
-            Walk-Forward 分析
+          <h3 className="text-lg font-bold text-white">{i18n.t("WalkForwardPanel.r92_69c3")}
+
             <span className="ml-2 px-2 py-0.5 text-[10px] bg-amber-500/20 text-amber-400 rounded-full font-normal">
               Phase 5.0
             </span>
           </h3>
           <p className="text-xs text-gray-500 mt-0.5">
-            {report.totalWindows} 窗口 · 稳定性 {report.stabilityScore.toFixed(2)}
+            {report.totalWindows}{i18n.t("WalkForwardPanel.r92_faa3")}{report.stabilityScore.toFixed(2)}
           </p>
         </div>
 
         {/* Legend toggle */}
         <button
-          onClick={() => setShowTest(s => !s)}
-          className="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-400 hover:text-gray-200"
-        >
+          onClick={() => setShowTest((s) => !s)}
+          className="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-400 hover:text-gray-200">
+          
           {showTest ? i18n.t('WalkForwardPanel.k5') : i18n.t('WalkForwardPanel.k6')}
         </button>
       </div>
@@ -147,32 +147,32 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
       {/* Performance summary cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
         {([
-          { label: i18n.t('WalkForwardPanel.k7'), value: report.avgTrainSharpe.toFixed(2), color: 'text-blue-400' },
-          { label: i18n.t('WalkForwardPanel.k8'), value: report.avgTestSharpe.toFixed(2), color: 'text-amber-400' },
-          { label: i18n.t('WalkForwardPanel.k9'), value: `${(report.avgTrainReturn * 100).toFixed(1)}%`, color: 'text-blue-400' },
-          { label: i18n.t('WalkForwardPanel.k10'), value: `${(report.avgTestReturn * 100).toFixed(1)}%`, color: 'text-amber-400' },
-          { label: i18n.t('WalkForwardPanel.k11'), value: `${(report.avgOverfitRatio * 100).toFixed(0)}%`, color: report.avgOverfitRatio >= 0.8 ? 'text-emerald-400' : 'text-red-400' },
-          { label: i18n.t('WalkForwardPanel.k12'), value: report.stabilityScore.toFixed(2), color: report.stabilityScore >= 0.7 ? 'text-emerald-400' : 'text-yellow-400' },
-          { label: i18n.t('WalkForwardPanel.k13'), value: `#${report.bestWindow.index}`, color: 'text-emerald-400' },
-          { label: i18n.t('WalkForwardPanel.k14'), value: `#${report.worstWindow.index}`, color: 'text-red-400' },
-        ] as const).map(card => (
-          <div key={card.label} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/30 text-center">
+        { label: i18n.t('WalkForwardPanel.k7'), value: report.avgTrainSharpe.toFixed(2), color: 'text-blue-400' },
+        { label: i18n.t('WalkForwardPanel.k8'), value: report.avgTestSharpe.toFixed(2), color: 'text-amber-400' },
+        { label: i18n.t('WalkForwardPanel.k9'), value: `${(report.avgTrainReturn * 100).toFixed(1)}%`, color: 'text-blue-400' },
+        { label: i18n.t('WalkForwardPanel.k10'), value: `${(report.avgTestReturn * 100).toFixed(1)}%`, color: 'text-amber-400' },
+        { label: i18n.t('WalkForwardPanel.k11'), value: `${(report.avgOverfitRatio * 100).toFixed(0)}%`, color: report.avgOverfitRatio >= 0.8 ? 'text-emerald-400' : 'text-red-400' },
+        { label: i18n.t('WalkForwardPanel.k12'), value: report.stabilityScore.toFixed(2), color: report.stabilityScore >= 0.7 ? 'text-emerald-400' : 'text-yellow-400' },
+        { label: i18n.t('WalkForwardPanel.k13'), value: `#${report.bestWindow.index}`, color: 'text-emerald-400' },
+        { label: i18n.t('WalkForwardPanel.k14'), value: `#${report.worstWindow.index}`, color: 'text-red-400' }] as
+        const).map((card) =>
+        <div key={card.label} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/30 text-center">
             <div className="text-[10px] text-gray-500">{card.label}</div>
             <div className={`text-base font-bold mt-0.5 ${card.color}`}>{card.value}</div>
           </div>
-        ))}
+        )}
       </div>
 
       {/* Return comparison chart */}
       <div className="bg-gray-800/40 rounded-lg p-4 border border-gray-700/30 mb-4">
-        <h4 className="text-xs font-semibold text-gray-400 mb-3 uppercase tracking-wide">
-          多窗口收益对比
+        <h4 className="text-xs font-semibold text-gray-400 mb-3 uppercase tracking-wide">{i18n.t("WalkForwardPanel.r92_fbff")}
+
         </h4>
         <svg width="100%" height="120" viewBox={`0 0 ${chartPoints.length * 80} 120`}>
           {/* Grid lines */}
-          {[10, 30, 50, 70, 90].map(y => (
-            <line key={y} x1="0" y1={y} x2={chartPoints.length * 80} y2={y} stroke="#374151" strokeWidth="0.5" />
-          ))}
+          {[10, 30, 50, 70, 90].map((y) =>
+          <line key={y} x1="0" y1={y} x2={chartPoints.length * 80} y2={y} stroke="#374151" strokeWidth="0.5" />
+          )}
           {/* Zero line */}
           <line x1="0" y1="70" x2={chartPoints.length * 80} y2="70" stroke="#4b5563" strokeWidth="1" strokeDasharray="4,4" />
 
@@ -183,67 +183,67 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
                 <rect
                   x={i * 80 + 12} y={Math.min(p.trainY, 70)}
                   width={20} height={Math.abs(70 - p.trainY)}
-                  fill="#3b82f6" rx={2} opacity={0.6}
-                />
+                  fill="#3b82f6" rx={2} opacity={0.6} />
+                
                 {/* Test bars (overlaid) */}
-                {showTest && (
-                  <rect
-                    x={i * 80 + 36} y={Math.min(p.testY, 70)}
-                    width={20} height={Math.abs(70 - p.testY)}
-                    fill="#f59e0b" rx={2} opacity={0.7}
-                    onClick={() => setSelectedWindow(i)}
-                    className="cursor-pointer"
-                  />
-                )}
+                {showTest &&
+                <rect
+                  x={i * 80 + 36} y={Math.min(p.testY, 70)}
+                  width={20} height={Math.abs(70 - p.testY)}
+                  fill="#f59e0b" rx={2} opacity={0.7}
+                  onClick={() => setSelectedWindow(i)}
+                  className="cursor-pointer" />
+
+                }
                 {/* Window label */}
                 <text
                   x={i * 80 + 40} y={110}
                   textAnchor="middle"
                   fontSize={9} fill="#6b7280"
                   onClick={() => setSelectedWindow(i)}
-                  className="cursor-pointer"
-                >
+                  className="cursor-pointer">
+                  
                   W{i}
                 </text>
                 {/* Overfit indicator dot */}
                 <circle
                   cx={i * 80 + 40} cy={105}
                   r={3}
-                  fill={p.overfitRatio >= 0.85 ? '#22c55e' : p.overfitRatio >= 0.7 ? '#f59e0b' : '#ef4444'}
-                />
-              </g>
-            );
+                  fill={p.overfitRatio >= 0.85 ? '#22c55e' : p.overfitRatio >= 0.7 ? '#f59e0b' : '#ef4444'} />
+                
+              </g>);
+
           })}
         </svg>
         <div className="flex justify-center gap-6 mt-3 text-[10px]">
           <span className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded bg-blue-500/60" /> 训练集收益
+            <span className="w-3 h-3 rounded bg-blue-500/60" />{i18n.t("WalkForwardPanel.r92_ebd9")}
           </span>
-          {showTest && (
-            <span className="flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded bg-amber-500/70" /> 测试集收益
-            </span>
-          )}
+          {showTest &&
+          <span className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded bg-amber-500/70" />{i18n.t("WalkForwardPanel.r92_3bdd")}
+          </span>
+          }
           <span className="flex items-center gap-1.5 text-gray-600">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" /> 低过拟合
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />{i18n.t("WalkForwardPanel.r92_5417")}
           </span>
           <span className="flex items-center gap-1.5 text-gray-600">
-            <span className="w-2 h-2 rounded-full bg-orange-500" /> 高过拟合
+            <span className="w-2 h-2 rounded-full bg-orange-500" />{i18n.t("WalkForwardPanel.r92_860e")}
           </span>
         </div>
       </div>
 
       {/* Selected window drill-down */}
-      {selectedW && (
-        <div className="bg-amber-500/5 border border-amber-500/20 rounded-lg p-4 mb-4">
+      {selectedW &&
+      <div className="bg-amber-500/5 border border-amber-500/20 rounded-lg p-4 mb-4">
           <div className="flex items-center justify-between mb-3">
-            <h4 className="text-xs font-semibold text-amber-400">
-              窗口 #{selectedW.index} 详情
-            </h4>
+            <h4 className="text-xs font-semibold text-amber-400">{i18n.t("WalkForwardPanel.r92_a820")}
+            {selectedW.index}{i18n.t("WalkForwardPanel.r92_0fc9")}
+          </h4>
             <button
-              onClick={() => setSelectedWindow(null)}
-              className="text-gray-600 hover:text-gray-400 text-xs"
-            >
+            onClick={() => setSelectedWindow(null)}
+            className="text-gray-600 hover:text-gray-400 text-xs">
+            
               ✕
             </button>
           </div>
@@ -272,17 +272,17 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
           {/* Metrics grid */}
           <div className="grid grid-cols-4 gap-2 mb-3">
             {([
-              ['Sharpe', selectedW.trainSharpe.toFixed(2), selectedW.testSharpe.toFixed(2)],
-              [i18n.t('WalkForwardPanel.k15'), `${(selectedW.trainMaxDD * 100).toFixed(1)}%`, `${(selectedW.testMaxDD * 100).toFixed(1)}%`],
-              ['components.winRate', `${(selectedW.trainWinRate * 100).toFixed(0)}%`, `${(selectedW.testWinRate * 100).toFixed(0)}%`],
-              [i18n.t('WalkForwardPanel.k16'), '', `${(selectedW.overfitRatio * 100).toFixed(0)}%`],
-            ] as const).map(([label, train, test]) => (
-              <div key={label} className="bg-gray-800/50 rounded p-2 text-center">
+          ['Sharpe', selectedW.trainSharpe.toFixed(2), selectedW.testSharpe.toFixed(2)],
+          [i18n.t('WalkForwardPanel.k15'), `${(selectedW.trainMaxDD * 100).toFixed(1)}%`, `${(selectedW.testMaxDD * 100).toFixed(1)}%`],
+          ['components.winRate', `${(selectedW.trainWinRate * 100).toFixed(0)}%`, `${(selectedW.testWinRate * 100).toFixed(0)}%`],
+          [i18n.t('WalkForwardPanel.k16'), '', `${(selectedW.overfitRatio * 100).toFixed(0)}%`]] as
+          const).map(([label, train, test]) =>
+          <div key={label} className="bg-gray-800/50 rounded p-2 text-center">
                 <div className="text-[10px] text-gray-600">{label}</div>
                 <div className="text-[10px] text-blue-400/70">{train}</div>
                 <div className="text-[10px] text-amber-400">{test || '-'}</div>
               </div>
-            ))}
+          )}
           </div>
 
           {/* Overfit assessment */}
@@ -290,7 +290,7 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
             <OverfitIndicator ratio={selectedW.overfitRatio} />
           </div>
         </div>
-      )}
+      }
 
       {/* Window summary table */}
       <div className="overflow-x-auto">
@@ -306,14 +306,14 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
             </tr>
           </thead>
           <tbody>
-            {report.windows.map(w => (
-              <tr
-                key={w.index}
-                onClick={() => setSelectedWindow(w.index === selectedWindow ? null : w.index)}
-                className={`border-b border-gray-700/20 cursor-pointer transition-colors ${
-                  selectedWindow === w.index ? 'bg-amber-500/10' : 'hover:bg-gray-800/30'
-                }`}
-              >
+            {report.windows.map((w) =>
+            <tr
+              key={w.index}
+              onClick={() => setSelectedWindow(w.index === selectedWindow ? null : w.index)}
+              className={`border-b border-gray-700/20 cursor-pointer transition-colors ${
+              selectedWindow === w.index ? 'bg-amber-500/10' : 'hover:bg-gray-800/30'}`
+              }>
+              
                 <td className="py-2 pr-3 text-gray-400">#{w.index}</td>
                 <td className="py-2 pr-3 text-blue-400 font-mono">{w.trainSharpe.toFixed(2)}</td>
                 <td className="py-2 pr-3 text-amber-400 font-mono">{w.testSharpe.toFixed(2)}</td>
@@ -325,12 +325,12 @@ export const WalkForwardPanel: React.FC<WalkForwardPanelProps> = ({ className, r
                   <OverfitIndicator ratio={w.overfitRatio} />
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default WalkForwardPanel;

@@ -1,6 +1,6 @@
 // ── DAWN WHALES — PortfolioStressTest () ────────────────────────
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as echarts from 'echarts';
 import { useRef, useEffect } from 'react';
@@ -15,13 +15,13 @@ interface Scenario {
 }
 
 const SCENARIOS: Scenario[] = [
-  { name: i18n.t('PortfolioStressTest.k1'), description: i18n.t('PortfolioStressTest.k2'), shockPct: -0.30, probability: 0.05, impact: 'high' },
-  { name: i18n.t('PortfolioStressTest.k3'), description: i18n.t('PortfolioStressTest.k4'), shockPct: -0.15, probability: 0.15, impact: 'high' },
-  { name: i18n.t('PortfolioStressTest.k5'), description: i18n.t('PortfolioStressTest.k6'), shockPct: -0.08, probability: 0.30, impact: 'medium' },
-  { name: i18n.t('PortfolioStressTest.k7'), description: i18n.t('PortfolioStressTest.k8'), shockPct: -0.02, probability: 0.35, impact: 'low' },
-  { name: i18n.t('PortfolioStressTest.k9'), description: i18n.t('PortfolioStressTest.k10'), shockPct: 0.10, probability: 0.12, impact: 'medium' },
-  { name: i18n.t('PortfolioStressTest.k11'), description: i18n.t('PortfolioStressTest.k12'), shockPct: 0.20, probability: 0.03, impact: 'low' },
-];
+{ name: i18n.t('PortfolioStressTest.k1'), description: i18n.t('PortfolioStressTest.k2'), shockPct: -0.30, probability: 0.05, impact: 'high' },
+{ name: i18n.t('PortfolioStressTest.k3'), description: i18n.t('PortfolioStressTest.k4'), shockPct: -0.15, probability: 0.15, impact: 'high' },
+{ name: i18n.t('PortfolioStressTest.k5'), description: i18n.t('PortfolioStressTest.k6'), shockPct: -0.08, probability: 0.30, impact: 'medium' },
+{ name: i18n.t('PortfolioStressTest.k7'), description: i18n.t('PortfolioStressTest.k8'), shockPct: -0.02, probability: 0.35, impact: 'low' },
+{ name: i18n.t('PortfolioStressTest.k9'), description: i18n.t('PortfolioStressTest.k10'), shockPct: 0.10, probability: 0.12, impact: 'medium' },
+{ name: i18n.t('PortfolioStressTest.k11'), description: i18n.t('PortfolioStressTest.k12'), shockPct: 0.20, probability: 0.03, impact: 'low' }];
+
 
 export default function PortfolioStressTest() {
   const { t: _t } = useTranslation();
@@ -36,7 +36,7 @@ export default function PortfolioStressTest() {
     return SCENARIOS.map((s) => ({
       ...s,
       newValue: portfolioValue * (1 + s.shockPct),
-      loss: portfolioValue * s.shockPct,
+      loss: portfolioValue * s.shockPct
     }));
   }, []);
 
@@ -54,39 +54,39 @@ export default function PortfolioStressTest() {
         axisLabel: {
           color: '#6b7280',
           fontSize: 10,
-          formatter: (v: number) => `$${(v / 1000).toFixed(0)}k`,
+          formatter: (v: number) => `$${(v / 1000).toFixed(0)}k`
         },
-        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } }
       },
       yAxis: {
         type: 'category',
         data: scenarioResults.map((s) => s.name).reverse(),
         axisLabel: { color: '#9ca3af', fontSize: 11 },
         axisLine: { show: false },
-        splitLine: { show: false },
+        splitLine: { show: false }
       },
       series: [
-        {
-          type: 'bar',
-          data: scenarioResults.map((s) => ({
-            value: s.newValue,
-            itemStyle: {
-              color: s.shockPct >= 0 ? 'rgba(34, 197, 94, 0.6)' : 'rgba(239, 68, 68, 0.6)',
-            },
-          })).reverse(),
-          barWidth: 16,
-          label: {
-            show: true,
-            position: 'right',
-            color: '#e5e7eb',
-            fontSize: 10,
-            formatter: (params: any) => {
-              const scenario = scenarioResults[scenarioResults.length - 1 - (params as any).dataIndex];
-              return `${scenario.shockPct >= 0 ? '+' : ''}${(scenario.shockPct * 100).toFixed(0)}%`;
-            },
-          },
-        },
-      ],
+      {
+        type: 'bar',
+        data: scenarioResults.map((s) => ({
+          value: s.newValue,
+          itemStyle: {
+            color: s.shockPct >= 0 ? 'rgba(34, 197, 94, 0.6)' : 'rgba(239, 68, 68, 0.6)'
+          }
+        })).reverse(),
+        barWidth: 16,
+        label: {
+          show: true,
+          position: 'right',
+          color: '#e5e7eb',
+          fontSize: 10,
+          formatter: (params: any) => {
+            const scenario = scenarioResults[scenarioResults.length - 1 - (params as any).dataIndex];
+            return `${scenario.shockPct >= 0 ? '+' : ''}${(scenario.shockPct * 100).toFixed(0)}%`;
+          }
+        }
+      }]
+
     };
 
     chartInstance.current.setOption(option);
@@ -105,7 +105,7 @@ export default function PortfolioStressTest() {
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-white font-semibold text-sm">🧪 组合压力测试</h2>
+        <h2 className="text-white font-semibold text-sm">{i18n.t("PortfolioStressTest.r92_731f")}</h2>
         <span className="text-gray-500 text-[10px]">{i18n.t('PortfolioStressTest.k0')}{portfolioValue.toLocaleString()}</span>
       </div>
 
@@ -123,17 +123,17 @@ export default function PortfolioStressTest() {
                 key={scenario.name}
                 onClick={() => setSelectedScenario(scenario)}
                 className={`w-full text-left rounded-lg px-3 py-2 transition-colors ${
-                  isSelected ? 'bg-[#C9A046]/10 border border-[#C9A046]/20' : 'bg-[#12121a] border border-transparent hover:bg-[#1a1a25]'
-                }`}
-              >
+                isSelected ? 'bg-[#C9A046]/10 border border-[#C9A046]/20' : 'bg-[#12121a] border border-transparent hover:bg-[#1a1a25]'}`
+                }>
+                
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-white text-xs font-medium">{scenario.name}</span>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded ${
-                      scenario.impact === 'high' ? 'bg-red-500/10 text-red-400' :
-                      scenario.impact === 'medium' ? 'bg-yellow-500/10 text-yellow-400' :
-                      'bg-emerald-500/10 text-emerald-400'
-                    }`}>
+                    scenario.impact === 'high' ? 'bg-red-500/10 text-red-400' :
+                    scenario.impact === 'medium' ? 'bg-yellow-500/10 text-yellow-400' :
+                    'bg-emerald-500/10 text-emerald-400'}`
+                    }>
                       {scenario.impact === 'high' ? i18n.t('PortfolioStressTest.k13') : scenario.impact === 'medium' ? i18n.t('PortfolioStressTest.k14') : i18n.t('PortfolioStressTest.k15')}
                     </span>
                   </div>
@@ -142,8 +142,8 @@ export default function PortfolioStressTest() {
                   </span>
                 </div>
                 <div className="text-gray-500 text-[10px] mt-0.5">{scenario.description}{i18n.t('PortfolioStressTest.k1')}{(scenario.probability * 100).toFixed(0)}%</div>
-              </button>
-            );
+              </button>);
+
           })}
         </div>
       </div>
@@ -152,13 +152,13 @@ export default function PortfolioStressTest() {
       <div className="mt-4 bg-[#12121a] rounded-lg p-3 border border-white/5">
         <div className="flex items-center justify-between text-xs">
           <span className="text-gray-500">{i18n.t('PortfolioStressTest.k0')}<span className="text-white">{selectedScenario.name}</span></span>
-          <span className="text-gray-500">
-            组合价值: <span className={selectedResult.newValue >= portfolioValue ? 'text-emerald-400' : 'text-red-400'}>
+          <span className="text-gray-500">{i18n.t("PortfolioStressTest.r92_dcde")}
+            <span className={selectedResult.newValue >= portfolioValue ? 'text-emerald-400' : 'text-red-400'}>
               ${selectedResult.newValue.toLocaleString('en-US', { minimumFractionDigits: 0 })}
             </span>
           </span>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

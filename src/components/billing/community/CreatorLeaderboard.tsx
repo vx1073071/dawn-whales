@@ -30,16 +30,16 @@ export interface CreatorProfile {
   xp: number;
   xpToNext: number;
   promotedAt?: string;
-  totalReturn: number;        // %
-  return30d: number;          // %
+  totalReturn: number; // %
+  return30d: number; // %
   sharpe: number;
   subscribers: number;
   strategyCount: number;
   signalCount: number;
-  winRate: number;            // %
-  revenue: number;            // USDT
+  winRate: number; // %
+  revenue: number; // USDT
   rank: number;
-  rankChange?: number;        // + or -
+  rankChange?: number; // + or -
 }
 
 export interface CreatorLeaderboardProps {
@@ -50,41 +50,41 @@ export interface CreatorLeaderboardProps {
 
 // ── Constants ────────────────────────────────────────────────────────────
 
-const LEVELS: { key: CreatorLevel; label: string; icon: string; color: string; bg: string; xpMin: number; split: string }[] = [
-  { key: 'bronze',   label: i18n.t('CreatorLeaderboard.k1'), icon: '🥉', color: '#CD7F32', bg: 'bg-amber-900/20',   xpMin: 0,    split: '70/30' },
-  { key: 'silver',   label: i18n.t('CreatorLeaderboard.k2'), icon: '🥈', color: '#C0C0C0', bg: 'bg-gray-400/10',    xpMin: 100,  split: '75/25' },
-  { key: 'gold',     label: i18n.t('CreatorLeaderboard.k3'), icon: '🥇', color: '#FFD700', bg: 'bg-yellow-500/10',  xpMin: 500,  split: '80/20' },
-  { key: 'platinum', label: i18n.t('CreatorLeaderboard.k4'), icon: '💎', color: '#E5E4E2', bg: 'bg-slate-300/10',   xpMin: 2000, split: '85/15' },
-  { key: 'diamond',  label: i18n.t('CreatorLeaderboard.k5'), icon: '👑', color: '#B9F2FF', bg: 'bg-cyan-300/10',    xpMin: 5000, split: '90/10' },
-  { key: 'king',     label: i18n.t('CreatorLeaderboard.k6'), icon: '🏆', color: '#FF4500', bg: 'bg-orange-600/10',  xpMin: 10000,split: '90/10' },
-];
+const LEVELS: {key: CreatorLevel;label: string;icon: string;color: string;bg: string;xpMin: number;split: string;}[] = [
+{ key: 'bronze', label: i18n.t('CreatorLeaderboard.k1'), icon: '🥉', color: '#CD7F32', bg: 'bg-amber-900/20', xpMin: 0, split: '70/30' },
+{ key: 'silver', label: i18n.t('CreatorLeaderboard.k2'), icon: '🥈', color: '#C0C0C0', bg: 'bg-gray-400/10', xpMin: 100, split: '75/25' },
+{ key: 'gold', label: i18n.t('CreatorLeaderboard.k3'), icon: '🥇', color: '#FFD700', bg: 'bg-yellow-500/10', xpMin: 500, split: '80/20' },
+{ key: 'platinum', label: i18n.t('CreatorLeaderboard.k4'), icon: '💎', color: '#E5E4E2', bg: 'bg-slate-300/10', xpMin: 2000, split: '85/15' },
+{ key: 'diamond', label: i18n.t('CreatorLeaderboard.k5'), icon: '👑', color: '#B9F2FF', bg: 'bg-cyan-300/10', xpMin: 5000, split: '90/10' },
+{ key: 'king', label: i18n.t('CreatorLeaderboard.k6'), icon: '🏆', color: '#FF4500', bg: 'bg-orange-600/10', xpMin: 10000, split: '90/10' }];
+
 
 type LeaderboardDimension = 'totalReturn' | 'return30d' | 'sharpe' | 'subscribers';
 type TimeRange = 'weekly' | 'monthly' | 'all';
 
-const DIMENSIONS: { key: LeaderboardDimension; label: string; icon: string }[] = [
-  { key: 'totalReturn', label: i18n.t('CreatorLeaderboard.k7'), icon: '📈' },
-  { key: 'return30d',   label: i18n.t('CreatorLeaderboard.k8'), icon: '🔥' },
-  { key: 'sharpe',      label: i18n.t('CreatorLeaderboard.k9'), icon: '🎯' },
-  { key: 'subscribers', label: i18n.t('CreatorLeaderboard.k10'), icon: '👥' },
-];
+const DIMENSIONS: {key: LeaderboardDimension;label: string;icon: string;}[] = [
+{ key: 'totalReturn', label: i18n.t('CreatorLeaderboard.k7'), icon: '📈' },
+{ key: 'return30d', label: i18n.t('CreatorLeaderboard.k8'), icon: '🔥' },
+{ key: 'sharpe', label: i18n.t('CreatorLeaderboard.k9'), icon: '🎯' },
+{ key: 'subscribers', label: i18n.t('CreatorLeaderboard.k10'), icon: '👥' }];
+
 
 // ── Mock ─────────────────────────────────────────────────────────────────
 
 const mockProfiles: CreatorProfile[] = [
-  { id: 'c-01', name: 'QuantEdge Pro', avatar: '🦊', verified: true, level: 'diamond', xp: 6720, xpToNext: 10000, totalReturn: 42.3, return30d: 5.2, sharpe: 2.1, subscribers: 2847, strategyCount: 6, signalCount: 847, winRate: 68.2, revenue: 14250, rank: 1, rankChange: 0 },
-  { id: 'c-02', name: 'VolArb', avatar: '🦅', verified: true, level: 'king', xp: 12840, xpToNext: 20000, totalReturn: 35.8, return30d: 3.1, sharpe: 3.1, subscribers: 2103, strategyCount: 4, signalCount: 1204, winRate: 78.4, revenue: 48000, rank: 2, rankChange: 0 },
-  { id: 'c-03', name: 'HK Whale', avatar: '🐋', verified: true, level: 'platinum', xp: 3840, xpToNext: 5000, totalReturn: 31.2, return30d: -1.2, sharpe: 2.4, subscribers: 982, strategyCount: 3, signalCount: 321, winRate: 65.8, revenue: 8200, rank: 3, rankChange: 1 },
-  { id: 'c-04', name: 'MeanReversion', avatar: '🐺', verified: true, level: 'gold', xp: 1250, xpToNext: 2000, totalReturn: 28.1, return30d: 4.8, sharpe: 1.8, subscribers: 1523, strategyCount: 5, signalCount: 523, winRate: 72.1, revenue: 5100, rank: 4, rankChange: -1 },
-  { id: 'c-05', name: 'AI Insights', avatar: '🤖', verified: true, level: 'gold', xp: 890, xpToNext: 2000, totalReturn: 22.5, return30d: 2.1, sharpe: 1.6, subscribers: 756, strategyCount: 4, signalCount: 412, winRate: 61.3, revenue: 3200, rank: 5 },
-  { id: 'c-06', name: 'DragonTiger', avatar: '🐉', verified: false, level: 'silver', xp: 340, xpToNext: 500, totalReturn: 18.7, return30d: -3.5, sharpe: 1.2, subscribers: 341, strategyCount: 3, signalCount: 198, winRate: 55.6, revenue: 890, rank: 6 },
-  { id: 'c-07', name: 'Momentum King', avatar: '🐂', verified: true, level: 'silver', xp: 220, xpToNext: 500, totalReturn: 15.3, return30d: 7.2, sharpe: 0.9, subscribers: 234, strategyCount: 2, signalCount: 156, winRate: 58.9, revenue: 420, rank: 7, rankChange: 3 },
-  { id: 'c-08', name: 'NewbieTrader', avatar: '🐣', verified: false, level: 'bronze', xp: 45, xpToNext: 100, totalReturn: 8.2, return30d: 1.5, sharpe: 0.6, subscribers: 89, strategyCount: 1, signalCount: 56, winRate: 48.3, revenue: 120, rank: 8, rankChange: -1 },
-];
+{ id: 'c-01', name: 'QuantEdge Pro', avatar: '🦊', verified: true, level: 'diamond', xp: 6720, xpToNext: 10000, totalReturn: 42.3, return30d: 5.2, sharpe: 2.1, subscribers: 2847, strategyCount: 6, signalCount: 847, winRate: 68.2, revenue: 14250, rank: 1, rankChange: 0 },
+{ id: 'c-02', name: 'VolArb', avatar: '🦅', verified: true, level: 'king', xp: 12840, xpToNext: 20000, totalReturn: 35.8, return30d: 3.1, sharpe: 3.1, subscribers: 2103, strategyCount: 4, signalCount: 1204, winRate: 78.4, revenue: 48000, rank: 2, rankChange: 0 },
+{ id: 'c-03', name: 'HK Whale', avatar: '🐋', verified: true, level: 'platinum', xp: 3840, xpToNext: 5000, totalReturn: 31.2, return30d: -1.2, sharpe: 2.4, subscribers: 982, strategyCount: 3, signalCount: 321, winRate: 65.8, revenue: 8200, rank: 3, rankChange: 1 },
+{ id: 'c-04', name: 'MeanReversion', avatar: '🐺', verified: true, level: 'gold', xp: 1250, xpToNext: 2000, totalReturn: 28.1, return30d: 4.8, sharpe: 1.8, subscribers: 1523, strategyCount: 5, signalCount: 523, winRate: 72.1, revenue: 5100, rank: 4, rankChange: -1 },
+{ id: 'c-05', name: 'AI Insights', avatar: '🤖', verified: true, level: 'gold', xp: 890, xpToNext: 2000, totalReturn: 22.5, return30d: 2.1, sharpe: 1.6, subscribers: 756, strategyCount: 4, signalCount: 412, winRate: 61.3, revenue: 3200, rank: 5 },
+{ id: 'c-06', name: 'DragonTiger', avatar: '🐉', verified: false, level: 'silver', xp: 340, xpToNext: 500, totalReturn: 18.7, return30d: -3.5, sharpe: 1.2, subscribers: 341, strategyCount: 3, signalCount: 198, winRate: 55.6, revenue: 890, rank: 6 },
+{ id: 'c-07', name: 'Momentum King', avatar: '🐂', verified: true, level: 'silver', xp: 220, xpToNext: 500, totalReturn: 15.3, return30d: 7.2, sharpe: 0.9, subscribers: 234, strategyCount: 2, signalCount: 156, winRate: 58.9, revenue: 420, rank: 7, rankChange: 3 },
+{ id: 'c-08', name: 'NewbieTrader', avatar: '🐣', verified: false, level: 'bronze', xp: 45, xpToNext: 100, totalReturn: 8.2, return30d: 1.5, sharpe: 0.6, subscribers: 89, strategyCount: 1, signalCount: 56, winRate: 48.3, revenue: 120, rank: 8, rankChange: -1 }];
+
 
 // ── Rank Badge ──────────────────────────────────────────────────────────
 
-function RankBadge({ rank }: { rank: number }) {
+function RankBadge({ rank }: {rank: number;}) {
   const { t: _t } = useTranslation();
 
   if (rank === 1) return <span className="text-lg">🥇</span>;
@@ -95,20 +95,20 @@ function RankBadge({ rank }: { rank: number }) {
 
 // ── Level Badge ─────────────────────────────────────────────────────────
 
-function LevelBadge({ level, size }: { level: CreatorLevel; size?: 'sm' | 'md' }) {
+function LevelBadge({ level, size }: {level: CreatorLevel;size?: 'sm' | 'md';}) {
   const cfg = LEVELS.find((l) => l.key === level)!;
   return (
     <span className={`inline-flex items-center gap-1 ${size === 'sm' ? 'px-1.5 py-0.5 text-[11px]' : 'px-2 py-1 text-xs'} rounded font-medium ${cfg.bg}`}
-          style={{ color: cfg.color }}>
+    style={{ color: cfg.color }}>
       {cfg.icon} {cfg.label}
-    </span>
-  );
+    </span>);
+
 }
 
 // ── XP Bar ──────────────────────────────────────────────────────────────
 
-function XPBar({ current, next, level }: { current: number; next: number; level: CreatorLevel }) {
-  const pct = Math.min(100, (current / next) * 100);
+function XPBar({ current, next, level }: {current: number;next: number;level: CreatorLevel;}) {
+  const pct = Math.min(100, current / next * 100);
   const cfg = LEVELS.find((l) => l.key === level)!;
   return (
     <div className="w-full">
@@ -119,8 +119,8 @@ function XPBar({ current, next, level }: { current: number; next: number; level:
       <div className="h-1.5 bg-white/[0.04] rounded-full overflow-hidden">
         <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, backgroundColor: cfg.color }} />
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Main Component ──────────────────────────────────────────────────────
@@ -128,7 +128,7 @@ function XPBar({ current, next, level }: { current: number; next: number; level:
 export default function CreatorLeaderboard({
   profiles: propProfiles,
   currentUserId,
-  className = '',
+  className = ''
 }: CreatorLeaderboardProps) {
   const profiles = propProfiles ?? mockProfiles;
   const [tab, setTab] = useState<'levels' | 'leaderboard'>('leaderboard');
@@ -160,12 +160,12 @@ export default function CreatorLeaderboard({
           {/* Tabs */}
           <div className="flex bg-white/[0.04] rounded-lg p-0.5">
             <button onClick={() => setTab('leaderboard')}
-                    className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${tab === 'leaderboard' ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-500 hover:text-gray-300'}`}>
-              🏆 排行榜
+            className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${tab === 'leaderboard' ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-500 hover:text-gray-300'}`}>{i18n.t("CreatorLeaderboard.r92_7c83")}
+
             </button>
             <button onClick={() => setTab('levels')}
-                    className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${tab === 'levels' ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-500 hover:text-gray-300'}`}>
-              ⭐ 等级体系
+            className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${tab === 'levels' ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-500 hover:text-gray-300'}`}>{i18n.t("CreatorLeaderboard.r92_a9f9")}
+
             </button>
           </div>
         </div>
@@ -173,11 +173,11 @@ export default function CreatorLeaderboard({
 
       <div className="flex-1 overflow-y-auto">
         {/* ── Leaderboard View ──────────────────────────────────────────── */}
-        {tab === 'leaderboard' && (
-          <div className="p-5">
+        {tab === 'leaderboard' &&
+        <div className="p-5">
             {/* Current user rank card */}
-            {currentProfile && (
-              <div className="bg-[#111119] border border-[#C9A046]/20 rounded-xl p-4 mb-5">
+            {currentProfile &&
+          <div className="bg-[#111119] border border-[#C9A046]/20 rounded-xl p-4 mb-5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <span className="text-3xl">{currentProfile.avatar}</span>
@@ -189,36 +189,36 @@ export default function CreatorLeaderboard({
                   <div className="text-right">
                     <div className="text-xs text-gray-500">{i18n.t('CreatorLeaderboard.k2')}</div>
                     <div className="text-[#D4A853] font-bold text-2xl">#{currentProfile.rank}</div>
-                    {currentProfile.rankChange !== undefined && currentProfile.rankChange !== 0 && (
-                      <span className={`text-xs ${currentProfile.rankChange > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {currentProfile.rankChange !== undefined && currentProfile.rankChange !== 0 &&
+                <span className={`text-xs ${currentProfile.rankChange > 0 ? 'text-green-400' : 'text-red-400'}`}>
                         {currentProfile.rankChange > 0 ? '↑' : '↓'} {Math.abs(currentProfile.rankChange)}
                       </span>
-                    )}
+                }
                   </div>
                 </div>
                 <div className="mt-3">
                   <XPBar current={currentProfile.xp} next={currentProfile.xpToNext} level={currentProfile.level} />
                 </div>
               </div>
-            )}
+          }
 
             {/* Dimension + Time toggles */}
             <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
               <div className="flex gap-1">
-                {DIMENSIONS.map((d) => (
-                  <button key={d.key} onClick={() => setDimension(d.key)}
-                          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${dimension === d.key ? 'bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/30' : 'text-gray-500 border border-white/5 hover:text-gray-300'}`}>
+                {DIMENSIONS.map((d) =>
+              <button key={d.key} onClick={() => setDimension(d.key)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${dimension === d.key ? 'bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/30' : 'text-gray-500 border border-white/5 hover:text-gray-300'}`}>
                     {d.icon} {d.label}
                   </button>
-                ))}
+              )}
               </div>
               <div className="flex gap-1">
-                {(['weekly', 'monthly', 'all'] as TimeRange[]).map((t) => (
-                  <button key={t} onClick={() => setTimeRange(t)}
-                          className={`px-3 py-1.5 rounded-lg text-xs transition-colors ${timeRange === t ? 'text-white bg-white/[0.06]' : 'text-gray-600 hover:text-gray-400'}`}>
+                {(['weekly', 'monthly', 'all'] as TimeRange[]).map((t) =>
+              <button key={t} onClick={() => setTimeRange(t)}
+              className={`px-3 py-1.5 rounded-lg text-xs transition-colors ${timeRange === t ? 'text-white bg-white/[0.06]' : 'text-gray-600 hover:text-gray-400'}`}>
                     {t === 'weekly' ? 'components.thisWeek' : t === 'monthly' ? 'components.thisMonth' : 'components.all'}
                   </button>
-                ))}
+              )}
               </div>
             </div>
 
@@ -235,23 +235,23 @@ export default function CreatorLeaderboard({
               </div>
 
               {ranked.map((p, i) => {
-                const isMe = p.id === currentUserId;
-                const val = dimension === 'totalReturn' ? p.totalReturn :
-                            dimension === 'return30d' ? p.return30d :
-                            dimension === 'sharpe' ? p.sharpe :
-                            p.subscribers;
+              const isMe = p.id === currentUserId;
+              const val = dimension === 'totalReturn' ? p.totalReturn :
+              dimension === 'return30d' ? p.return30d :
+              dimension === 'sharpe' ? p.sharpe :
+              p.subscribers;
 
-                return (
-                  <div key={p.id}
-                       className={`grid grid-cols-12 gap-2 px-4 py-3 border-b border-white/5 last:border-0 transition-colors ${isMe ? 'bg-[#C9A046]/5' : 'hover:bg-white/[0.02]'}`}>
+              return (
+                <div key={p.id}
+                className={`grid grid-cols-12 gap-2 px-4 py-3 border-b border-white/5 last:border-0 transition-colors ${isMe ? 'bg-[#C9A046]/5' : 'hover:bg-white/[0.02]'}`}>
                     {/* Rank */}
                     <div className="col-span-1 flex items-center">
                       <RankBadge rank={p.computedRank ?? i + 1} />
-                      {p.rankChange !== undefined && p.rankChange !== 0 && (
-                        <span className={`text-[10px] ml-1 ${p.rankChange > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      {p.rankChange !== undefined && p.rankChange !== 0 &&
+                    <span className={`text-[10px] ml-1 ${p.rankChange > 0 ? 'text-green-400' : 'text-red-400'}`}>
                           {p.rankChange > 0 ? '↑' : '↓'}{Math.abs(p.rankChange)}
                         </span>
-                      )}
+                    }
                     </div>
                     {/* Creator */}
                     <div className="col-span-4 flex items-center gap-2 min-w-0">
@@ -267,10 +267,10 @@ export default function CreatorLeaderboard({
                     </div>
                     {/* Return */}
                     <div className="col-span-2 flex items-center justify-end">
-                      <span className={`text-sm font-medium font-mono ${dimension === 'totalReturn' || dimension === 'return30d' ? (typeof val === 'number' && val >= 0 ? 'text-green-400' : 'text-red-400') : 'text-gray-300'}`}>
+                      <span className={`text-sm font-medium font-mono ${dimension === 'totalReturn' || dimension === 'return30d' ? typeof val === 'number' && val >= 0 ? 'text-green-400' : 'text-red-400' : 'text-gray-300'}`}>
                         {dimension === 'subscribers' ? val.toLocaleString() :
-                         dimension === 'sharpe' ? (val as number).toFixed(2) :
-                         `${(val as number) >= 0 ? '+' : ''}${(val as number).toFixed(1)}%`}
+                      dimension === 'sharpe' ? (val as number).toFixed(2) :
+                      `${val as number >= 0 ? '+' : ''}${(val as number).toFixed(1)}%`}
                       </span>
                     </div>
                     {/* Sharpe */}
@@ -285,39 +285,39 @@ export default function CreatorLeaderboard({
                     <div className="col-span-2 flex items-center justify-end">
                       <span className="text-sm text-[#D4A853] font-mono font-medium">${p.revenue.toLocaleString()}</span>
                     </div>
-                  </div>
-                );
-              })}
+                  </div>);
+
+            })}
             </div>
           </div>
-        )}
+        }
 
         {/* ── Levels View ───────────────────────────────────────────────── */}
-        {tab === 'levels' && (
-          <div className="p-5 space-y-6">
+        {tab === 'levels' &&
+        <div className="p-5 space-y-6">
             {/* Level progression overview */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
               {LEVELS.map((lvl, i) => {
-                const isMax = i === LEVELS.length - 1;
-                return (
-                  <div key={lvl.key}
-                       className={`rounded-xl p-4 text-center border transition-all ${currentProfile?.level === lvl.key ? 'border-[#C9A046]/40 bg-[#C9A046]/5' : 'border-white/5 bg-[#111119]'}`}>
+              const isMax = i === LEVELS.length - 1;
+              return (
+                <div key={lvl.key}
+                className={`rounded-xl p-4 text-center border transition-all ${currentProfile?.level === lvl.key ? 'border-[#C9A046]/40 bg-[#C9A046]/5' : 'border-white/5 bg-[#111119]'}`}>
                     <div className="text-3xl mb-1">{lvl.icon}</div>
                     <div className="text-sm font-semibold" style={{ color: lvl.color }}>{lvl.label}</div>
                     <div className="text-[10px] text-gray-600 mt-0.5">
                       {isMax ? `≥${lvl.xpMin.toLocaleString()} XP` : `${lvl.xpMin.toLocaleString()}+ XP`}
                     </div>
-                    <div className="text-[10px] text-gray-500 mt-1">{lvl.split} 分成</div>
-                  </div>
-                );
-              })}
+                    <div className="text-[10px] text-gray-500 mt-1">{lvl.split}{i18n.t("CreatorLeaderboard.r92_24b8")}</div>
+                  </div>);
+
+            })}
             </div>
 
             {/* Perks Table */}
             <div className="bg-[#111119] border border-white/5 rounded-xl overflow-hidden">
-              <div className="px-5 py-3 border-b border-white/5 text-gray-300 font-semibold text-sm">
-                💰 等级权益明细
-              </div>
+              <div className="px-5 py-3 border-b border-white/5 text-gray-300 font-semibold text-sm">{i18n.t("CreatorLeaderboard.r92_3708")}
+
+            </div>
               <table className="w-full text-xs">
                 <thead>
                   <tr className="bg-white/[0.02] text-gray-500">
@@ -331,9 +331,9 @@ export default function CreatorLeaderboard({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
-                  {LEVELS.map((lvl) => (
-                    <tr key={lvl.key}
-                        className={`${currentProfile?.level === lvl.key ? 'bg-[#C9A046]/5' : 'hover:bg-white/[0.02]'}`}>
+                  {LEVELS.map((lvl) =>
+                <tr key={lvl.key}
+                className={`${currentProfile?.level === lvl.key ? 'bg-[#C9A046]/5' : 'hover:bg-white/[0.02]'}`}>
                       <td className="px-5 py-3">
                         <span className="font-medium" style={{ color: lvl.color }}>{lvl.icon} {lvl.label}</span>
                       </td>
@@ -344,23 +344,23 @@ export default function CreatorLeaderboard({
                         {lvl.key === 'bronze' ? i18n.t('CreatorLeaderboard.k12') : lvl.key === 'silver' ? i18n.t('CreatorLeaderboard.k13') : i18n.t('CreatorLeaderboard.k14')}
                       </td>
                       <td className="px-5 py-3">
-                        {['bronze', 'silver'].includes(lvl.key) ? (
-                          <span className="text-gray-600">—</span>
-                        ) : (
-                          <span className="text-blue-400">✓</span>
-                        )}
+                        {['bronze', 'silver'].includes(lvl.key) ?
+                    <span className="text-gray-600">—</span> :
+
+                    <span className="text-blue-400">✓</span>
+                    }
                       </td>
                       <td className="px-5 py-3">
-                        {lvl.key === 'king' ? (
-                          <span className="text-[#D4A853]">{i18n.t('CreatorLeaderboard.r92_2')}</span>
-                        ) : ['platinum', 'diamond'].includes(lvl.key) ? (
-                          <span className="text-green-400">✓</span>
-                        ) : (
-                          <span className="text-gray-600">—</span>
-                        )}
+                        {lvl.key === 'king' ?
+                    <span className="text-[#D4A853]">{i18n.t('CreatorLeaderboard.r92_2')}</span> :
+                    ['platinum', 'diamond'].includes(lvl.key) ?
+                    <span className="text-green-400">✓</span> :
+
+                    <span className="text-gray-600">—</span>
+                    }
                       </td>
                     </tr>
-                  ))}
+                )}
                 </tbody>
               </table>
             </div>
@@ -371,34 +371,34 @@ export default function CreatorLeaderboard({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                 <div className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg">
                   <span className="text-gray-400">{i18n.t('CreatorLeaderboard.r92_4')}</span>
-                  <span className="text-[#D4A853] font-mono">+10 XP/次</span>
+                  <span className="text-[#D4A853] font-mono">{i18n.t("CreatorLeaderboard.r92_c1f9")}</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg">
                   <span className="text-gray-400">{i18n.t('CreatorLeaderboard.r92_5')}</span>
-                  <span className="text-[#D4A853] font-mono">+50 XP/人</span>
+                  <span className="text-[#D4A853] font-mono">{i18n.t("CreatorLeaderboard.r92_f935")}</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg">
                   <span className="text-gray-400">{i18n.t('CreatorLeaderboard.r92_6')}</span>
-                  <span className="text-[#D4A853] font-mono">+30 XP/次</span>
+                  <span className="text-[#D4A853] font-mono">{i18n.t("CreatorLeaderboard.r92_a647")}</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg">
                   <span className="text-gray-400">{i18n.t('CreatorLeaderboard.r92_7')}</span>
-                  <span className="text-[#D4A853] font-mono">+100 XP/周</span>
+                  <span className="text-[#D4A853] font-mono">{i18n.t("CreatorLeaderboard.r92_749a")}</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg">
                   <span className="text-gray-400">{i18n.t('CreatorLeaderboard.r92_8')}</span>
-                  <span className="text-red-400 font-mono">-20 XP/天</span>
+                  <span className="text-red-400 font-mono">{i18n.t("CreatorLeaderboard.r92_1441")}</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg">
                   <span className="text-gray-400">{i18n.t('CreatorLeaderboard.r92_9')}</span>
-                  <span className="text-red-400 font-mono">-200 XP/次</span>
+                  <span className="text-red-400 font-mono">{i18n.t("CreatorLeaderboard.r92_c6d8")}</span>
                 </div>
               </div>
             </div>
 
             {/* Current Level Card (if user) */}
-            {currentProfile && (
-              <div className="bg-gradient-to-r from-[#111119] to-[#1A1520] border border-[#C9A046]/20 rounded-xl p-5">
+            {currentProfile &&
+          <div className="bg-gradient-to-r from-[#111119] to-[#1A1520] border border-[#C9A046]/20 rounded-xl p-5">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <span className="text-4xl">{currentProfile.avatar}</span>
@@ -413,16 +413,16 @@ export default function CreatorLeaderboard({
                   </div>
                 </div>
                 <XPBar current={currentProfile.xp} next={currentProfile.xpToNext} level={currentProfile.level} />
-                {currentProfile.promotedAt && (
-                  <div className="mt-3 text-xs text-gray-500">
-                    🎉 最近晋升: {currentProfile.promotedAt}
+                {currentProfile.promotedAt &&
+            <div className="mt-3 text-xs text-gray-500">{i18n.t("CreatorLeaderboard.r92_df6a")}
+              {currentProfile.promotedAt}
                   </div>
-                )}
+            }
               </div>
-            )}
+          }
           </div>
-        )}
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 }

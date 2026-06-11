@@ -54,8 +54,8 @@ export default function OrdersPage() {
     try {
       const accs = await api.getAccounts();
       if (accs.length > 0) setSelectedAccount(accs[0].accId);
-    } catch (_e: unknown) { /* silent */ }
-  void EngineError; // [TRADE] structured error tracking
+    } catch (_e: unknown) {/* silent */}
+    void EngineError; // [TRADE] structured error tracking
   }
 
   async function loadOrders() {
@@ -64,7 +64,7 @@ export default function OrdersPage() {
     try {
       const result = await api.getOrders(selectedAccount);
       setOrders(result?.success ? result.orders || [] : []);
-    } catch (_e: unknown) { setOrders([]); } finally { setLoading(false); }
+    } catch (_e: unknown) {setOrders([]);} finally {setLoading(false);}
   }
 
   async function loadTrades() {
@@ -73,7 +73,7 @@ export default function OrdersPage() {
         const trades = await window.api.db.getTrades();
         setDbTrades(trades || []);
       }
-    } catch (_e: unknown) { /* silent */ }
+    } catch (_e: unknown) {/* silent */}
   }
 
   async function handleCancel(order: Order) {
@@ -82,7 +82,7 @@ export default function OrdersPage() {
         await window.api.broker.cancelOrder(order.orderId);
         loadOrders();
       }
-    } catch (_e: unknown) { /* silent */ }
+    } catch (_e: unknown) {/* silent */}
   }
 
   const statusColors: Record<string, string> = {
@@ -93,20 +93,20 @@ export default function OrdersPage() {
     CANCELLED: 'text-gray-400 bg-gray-500/20',
     REJECTED: 'text-red-400 bg-red-500/20',
     submitted: 'text-blue-400 bg-blue-500/20',
-    pending: 'text-yellow-400 bg-yellow-500/20',
+    pending: 'text-yellow-400 bg-yellow-500/20'
   };
 
   const statusLabels: Record<string, string> = {
     SUBMITTED: i18n.t('OrdersPage.k1'), WAITING: i18n.t('OrdersPage.k2'), FILLED: t('components.tradeFilled'), PARTIAL: t('components.partialFill'),
     CANCELLED: i18n.t('OrdersPage.k3'), REJECTED: t('components.tradeRejected'), UNKNOWN: i18n.t('OrdersPage.k4'),
-    submitted: i18n.t('OrdersPage.k5'), pending: t('components.pending'),
+    submitted: i18n.t('OrdersPage.k5'), pending: t('components.pending')
   };
 
-  const tabs: { key: Tab; label: string; icon: string }[] = [
-    { key: 'active', label: i18n.t('OrdersPage.k6'), icon: '📋' },
-    { key: 'history', label: i18n.t('OrdersPage.k7'), icon: '📜' },
-    { key: 'trades', label: i18n.t('OrdersPage.k8'), icon: '🔄' },
-  ];
+  const tabs: {key: Tab;label: string;icon: string;}[] = [
+  { key: 'active', label: i18n.t('OrdersPage.k6'), icon: '📋' },
+  { key: 'history', label: i18n.t('OrdersPage.k7'), icon: '📜' },
+  { key: 'trades', label: i18n.t('OrdersPage.k8'), icon: '🔄' }];
+
 
   const activeOrders = orders.filter((o) => ['SUBMITTED', 'WAITING', 'PARTIAL'].includes(o.status));
   const historyOrders = orders.filter((o) => ['FILLED', 'CANCELLED', 'REJECTED'].includes(o.status));
@@ -119,42 +119,42 @@ export default function OrdersPage() {
           <h1 className="text-2xl font-bold text-white mb-1">{i18n.t('OrdersPage.k0')}</h1>
           <p className="text-gray-400 text-sm">{i18n.t('OrdersPage.k1')}</p>
         </div>
-        <button onClick={() => { loadOrders(); loadTrades(); }} disabled={loading} className="px-4 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">
+        <button onClick={() => {loadOrders();loadTrades();}} disabled={loading} className="px-4 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">
           {loading ? '...' : i18n.t('OrdersPage.k9')}
         </button>
       </div>
 
       {/* Tabs */}
       <div className="flex gap-1 mb-4 bg-[#12121a] rounded-lg p-1 w-fit">
-        {tabs.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              tab === t.key ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'
-            }`}
-          >
+        {tabs.map((t) =>
+        <button
+          key={t.key}
+          onClick={() => setTab(t.key)}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+          tab === t.key ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'}`
+          }>
+          
             {t.icon} {t.label}
-            {t.key === 'active' && activeOrders.length > 0 && (
-              <span className="ml-1.5 text-xs bg-black/20 px-1.5 py-0.5 rounded-full">{activeOrders.length}</span>
-            )}
+            {t.key === 'active' && activeOrders.length > 0 &&
+          <span className="ml-1.5 text-xs bg-black/20 px-1.5 py-0.5 rounded-full">{activeOrders.length}</span>
+          }
           </button>
-        ))}
+        )}
       </div>
 
       {/* Active / History Orders */}
-      {(tab === 'active' || tab === 'history') && (
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
-          {loading && displayOrders.length === 0 ? (
-            <div className="p-8 text-center text-gray-500 text-sm">{t("components.loading")}</div>
-          ) : displayOrders.length === 0 ? (
-            <div className="p-8 text-center">
+      {(tab === 'active' || tab === 'history') &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
+          {loading && displayOrders.length === 0 ?
+        <div className="p-8 text-center text-gray-500 text-sm">{t("components.loading")}</div> :
+        displayOrders.length === 0 ?
+        <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">{tab === 'active' ? '📋' : '📜'}</div>
               <p className="text-gray-400 text-sm">{tab === 'active' ? i18n.t('OrdersPage.k10') : i18n.t('OrdersPage.k11')}</p>
               {!selectedAccount && <p className="text-gray-600 text-xs mt-1">{i18n.t('OrdersPage.k2')}</p>}
-            </div>
-          ) : (
-            <table className="w-full">
+            </div> :
+
+        <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                   <th className="px-4 py-3 text-left">{t("components.time")}</th>
@@ -169,8 +169,8 @@ export default function OrdersPage() {
                 </tr>
               </thead>
               <tbody>
-                {displayOrders.map((o) => (
-                  <tr key={o.orderId} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                {displayOrders.map((o) =>
+            <tr key={o.orderId} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
                     <td className="px-4 py-3 text-gray-400 text-xs font-mono">{o.createTime || '--'}</td>
                     <td className="px-4 py-3 text-white text-sm font-medium">{o.code?.replace('US.', '') || '--'}</td>
                     <td className="px-4 py-3 text-center">
@@ -187,32 +187,32 @@ export default function OrdersPage() {
                         {statusLabels[o.status] || o.status}
                       </span>
                     </td>
-                    {tab === 'active' && (
-                      <td className="px-4 py-3 text-center">
-                        <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded transition-colors">
-                          撤单
-                        </button>
+                    {tab === 'active' &&
+              <td className="px-4 py-3 text-center">
+                        <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded transition-colors">{i18n.t("OrdersPage.r92_bbbf")}
+
+                </button>
                       </td>
-                    )}
+              }
                   </tr>
-                ))}
+            )}
               </tbody>
             </table>
-          )}
+        }
         </div>
-      )}
+      }
 
       {/* Strategy Trades (from DB) */}
-      {tab === 'trades' && (
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
-          {dbTrades.length === 0 ? (
-            <div className="p-8 text-center">
+      {tab === 'trades' &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
+          {dbTrades.length === 0 ?
+        <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">🔄</div>
               <p className="text-gray-400 text-sm">{i18n.t('OrdersPage.k6')}</p>
               <p className="text-gray-600 text-xs mt-1">{i18n.t('OrdersPage.k7')}</p>
-            </div>
-          ) : (
-            <table className="w-full">
+            </div> :
+
+        <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                   <th className="px-4 py-3 text-left">{t("components.time")}</th>
@@ -226,8 +226,8 @@ export default function OrdersPage() {
                 </tr>
               </thead>
               <tbody>
-                {dbTrades.map((t, i) => (
-                  <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                {dbTrades.map((t, i) =>
+            <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
                     <td className="px-4 py-3 text-gray-400 text-xs font-mono">{(t as any).created_at || '--'}</td>
                     <td className="px-4 py-3 text-white text-sm font-medium">{(t as any).symbol?.replace('US.', '')}</td>
                     <td className="px-4 py-3 text-center">
@@ -247,12 +247,12 @@ export default function OrdersPage() {
                     </td>
                     <td className="px-4 py-3 text-gray-500 text-xs truncate max-w-[150px]">{(t as any).remark || ''}</td>
                   </tr>
-                ))}
+            )}
               </tbody>
             </table>
-          )}
+        }
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }

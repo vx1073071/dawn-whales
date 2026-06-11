@@ -13,25 +13,25 @@ import { EngineError } from '../core/engine-error';
 // ── Types ──────────────────────────────────────────────────────────────────
 
 export interface FundHolding {
-  fundCode: string;        // 基金代码
-  fundName: string;        // 基金名称
-  fundType: string;        // 基金类型 (股票型/hybrid型/index型)
-  stockCode: string;       // position/holding股票代码
-  stockName: string;       // position/holding股票名称
-  shares: number;          // 持有股数 (万股)
-  marketValue: number;     // 持有market cap (万元)
-  navRatio: number;        // 占净值比 %
-  sharesChange: number;    // 持股变动 (万股, 正=增持, 负=减持)
-  reportDate: string;      // 报告期
+  fundCode: string;
+  fundName: string;
+  fundType: string;        // (/hybrid/index)
+  stockCode: string;       // position/holding
+  stockName: string;       // position/holding
+  shares: number;          // ()
+  marketValue: number;     // market cap ()
+  navRatio: number;        // %
+  sharesChange: number;    // (, =, =)
+  reportDate: string;
 }
 
 export interface StockFundOwnership {
-  code: string;            // 股票代码
-  name: string;            // 股票名称
-  fundCount: number;       // 持有基金数
-  totalShares: number;     // 基金持股总数 (万股)
-  totalValue: number;      // 基金持股market cap (万元)
-  ratioOfFloat: number;    // 占float shares比例 %
+  code: string;
+  name: string;
+  fundCount: number;
+  totalShares: number;     // ()
+  totalValue: number;      // market cap ()
+  ratioOfFloat: number;    // float shares %
   changeDirection: 'increase' | 'decrease' | 'new' | 'exit' | 'unchanged';
   reportDate: string;
 }

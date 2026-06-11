@@ -14,18 +14,18 @@ import { EngineError } from '../core/engine-error';
 // ── Types ──────────────────────────────────────────────────────────────────
 
 export interface DragonTigerEntry {
-  code: string;           // 股票代码
-  name: string;           // 股票名称
-  close: number;          // 收盘价
+  code: string;
+  name: string;
+  close: number;
   changePct: number;      // price change % %
-  netBuyAmount: number;   // Dragon-Tiger list净买额 (万元)
-  buyAmount: number;      // 买入额 (万元)
-  sellAmount: number;     // 卖出额 (万元)
-  turnover: number;       // turnover (万元)
-  netBuyRatio: number;    // 净买额占总成交比 %
+  netBuyAmount: number;   // Dragon-Tiger list ()
+  buyAmount: number;      // ()
+  sellAmount: number;     // ()
+  turnover: number;       // turnover ()
+  netBuyRatio: number;    // %
   turnoverRate: number;   // turnover rate %
-  reason: string;         // 上榜原因
-  date: string;           // 上榜日期
+  reason: string;
+  date: string;
 }
 
 export interface DragonTigerDetail {
@@ -33,16 +33,16 @@ export interface DragonTigerDetail {
   name: string;
   date: string;
   reason: string;
-  buySeats: TraderSeat[];   // 买入前五席位
-  sellSeats: TraderSeat[];  // 卖出前五席位
+  buySeats: TraderSeat[];
+  sellSeats: TraderSeat[];
 }
 
 export interface TraderSeat {
-  rank: number;            // 排名
-  name: string;            // 营业部名称
-  buyAmount: number;       // 买入额 (万元)
-  sellAmount: number;      // 卖出额 (万元)
-  netAmount: number;       // 净额 (万元)
+  rank: number;
+  name: string;
+  buyAmount: number;       // ()
+  sellAmount: number;      // ()
+  netAmount: number;       // ()
 }
 
 export interface DragonTigerResult {

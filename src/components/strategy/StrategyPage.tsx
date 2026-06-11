@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates, deleteStrategy } from '../../lib/bridge-api';
 
 import StrategyExplainCard from './StrategyExplainCard';
@@ -32,12 +32,12 @@ interface BacktestResult {
   winRate: number;
   profitFactor: number;
   totalTrades: number;
-  equityCurve: { time: number; value: number }[];
+  equityCurve: {time: number;value: number;}[];
   trades: any[];
 }
 
 export default function StrategyPage() {
-  const { t } = (() => { try { return require('react-i18next').useTranslation(); } catch (_e: unknown) { return { t: (k: string) => k }; } })();
+  const { t } = (() => {try {return require('react-i18next').useTranslation();} catch (_e: unknown) {return { t: (k: string) => k };}})();
   const [mode, setMode] = useState<CreateMode>(null);
   const [strategies, setStrategies] = useState<unknown[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -52,9 +52,9 @@ export default function StrategyPage() {
     setStrategies(list);
   }, []);
 
-  const refresh = useCallback(() => { setRefreshKey((k) => k + 1); }, []);
+  const refresh = useCallback(() => {setRefreshKey((k) => k + 1);}, []);
 
-  useEffect(() => { loadStrategies(); }, [refreshKey, loadStrategies]);
+  useEffect(() => {loadStrategies();}, [refreshKey, loadStrategies]);
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -73,78 +73,78 @@ export default function StrategyPage() {
       {mode === 'condition' && <ConditionRulePanel onBack={() => setMode(null)} />}
       {mode === 'closedLoop' && <ClosedLoopConfigPanel onBack={() => setMode(null)} onSave={(config) => console.log('Loop config saved:', config)} strategyId={selectedId || undefined} />}
       {mode === 'adaptive' && <AdaptiveParamPanel onBack={() => setMode(null)} strategyId={selectedId || 'ma_cross'} onApply={(params) => console.log('Adaptive params applied:', params)} />}
-      {mode === 'ai' && <AICreator onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} onFillForm={(parsed) => { setNlPrefill(parsed); setMode('form'); }} />}
-      {mode === 'template' && <TemplateBrowser onBack={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} />}
-      {mode === 'form' && <FormCreator onBack={() => { setMode(null); setNlPrefill(null); }} onCreated={() => { setMode(null); setNlPrefill(null); refresh(); }} nlPrefill={nlPrefill || undefined} />}
+      {mode === 'ai' && <AICreator onBack={() => setMode(null)} onCreated={() => {setMode(null);refresh();}} onFillForm={(parsed) => {setNlPrefill(parsed);setMode('form');}} />}
+      {mode === 'template' && <TemplateBrowser onBack={() => setMode(null)} onCreated={() => {setMode(null);refresh();}} />}
+      {mode === 'form' && <FormCreator onBack={() => {setMode(null);setNlPrefill(null);}} onCreated={() => {setMode(null);setNlPrefill(null);refresh();}} nlPrefill={nlPrefill || undefined} />}
 
       {/* My strategies */}
-      {!mode && !selectedId && (
-        <MyStrategies
-          strategies={strategies}
-          onSelect={(id) => setSelectedId(id)}
-          onEdit={(id) => setEditingId(id)}
-          onDelete={async (id) => {
-            await deleteStrategy(id);
-            refresh();
-          }}
-          onCompare={(strategy) => {
-            setCompareDefaultA(strategy);
-            setCompareOpen(true);
-          }}
-        />
-      )}
+      {!mode && !selectedId &&
+      <MyStrategies
+        strategies={strategies}
+        onSelect={(id) => setSelectedId(id)}
+        onEdit={(id) => setEditingId(id)}
+        onDelete={async (id) => {
+          await deleteStrategy(id);
+          refresh();
+        }}
+        onCompare={(strategy) => {
+          setCompareDefaultA(strategy);
+          setCompareOpen(true);
+        }} />
+
+      }
 
       {/* Edit strategy */}
-      {!mode && editingId && (
-        <FormCreator
-          onBack={() => setEditingId(null)}
-          onCreated={() => { setEditingId(null); refresh(); }}
-          editId={editingId}
-        />
-      )}
+      {!mode && editingId &&
+      <FormCreator
+        onBack={() => setEditingId(null)}
+        onCreated={() => {setEditingId(null);refresh();}}
+        editId={editingId} />
+
+      }
 
       {/* Strategy detail */}
-      {selectedId && (
-        <StrategyDetail
-          strategyId={selectedId}
-          onBack={() => setSelectedId(null)}
-          onRefresh={refresh}
-        />
-      )}
+      {selectedId &&
+      <StrategyDetail
+        strategyId={selectedId}
+        onBack={() => setSelectedId(null)}
+        onRefresh={refresh} />
 
-      {compareOpen && (
-        <StrategyCompareModal
-          strategies={strategies as any}
-          defaultStrategyA={compareDefaultA as any}
-          onClose={() => setCompareOpen(false)}
-        />
-      )}
-    </div>
-  );
+      }
+
+      {compareOpen &&
+      <StrategyCompareModal
+        strategies={strategies as any}
+        defaultStrategyA={compareDefaultA as any}
+        onClose={() => setCompareOpen(false)} />
+
+      }
+    </div>);
+
 }
 
 // ── Mode Selector ──────────────────────────────────────────────────────────
 
-function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
+function ModeSelector({ onSelect }: {onSelect: (m: CreateMode) => void;}) {
   return (
     <div className="space-y-4 mb-8">
       <div className="grid grid-cols-3 gap-4">
         <button onClick={() => onSelect('ai')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
           <div className="text-3xl mb-3">💬</div>
           <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{i18n.t('StrategyPage.k1')}</h3>
-          <p className="text-gray-400 text-xs leading-relaxed">{i18n.t('StrategyPage.k2')}<br/>{i18n.t('StrategyPage.k3')}</p>
+          <p className="text-gray-400 text-xs leading-relaxed">{i18n.t('StrategyPage.k2')}<br />{i18n.t('StrategyPage.k3')}</p>
           <div className="mt-3 text-[#D4A853] text-xs font-medium">{i18n.t('StrategyPage.k4')}</div>
         </button>
         <button onClick={() => onSelect('template')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
           <div className="text-3xl mb-3">📋</div>
           <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{i18n.t('StrategyPage.k5')}</h3>
-          <p className="text-gray-400 text-xs leading-relaxed">{i18n.t('StrategyPage.k6')}<br/>{i18n.t('StrategyPage.k7')}</p>
+          <p className="text-gray-400 text-xs leading-relaxed">{i18n.t('StrategyPage.k6')}<br />{i18n.t('StrategyPage.k7')}</p>
           <div className="mt-3 text-gray-500 text-xs">{i18n.t('StrategyPage.k8')}</div>
         </button>
         <button onClick={() => onSelect('form')} className="bg-[#1a1a25] border border-white/5 rounded-xl p-6 text-left hover:border-[#C9A046]/50 transition-all group">
           <div className="text-3xl mb-3">📊</div>
           <h3 className="text-white font-semibold mb-1 group-hover:text-[#D4A853] transition-colors">{i18n.t('StrategyPage.k9')}</h3>
-          <p className="text-gray-400 text-xs leading-relaxed">{i18n.t('StrategyPage.k10')}<br/>{i18n.t('StrategyPage.k11')}</p>
+          <p className="text-gray-400 text-xs leading-relaxed">{i18n.t('StrategyPage.k10')}<br />{i18n.t('StrategyPage.k11')}</p>
           <div className="mt-3 text-gray-500 text-xs">{i18n.t('StrategyPage.k12')}</div>
         </button>
       </div>
@@ -187,13 +187,13 @@ function ModeSelector({ onSelect }: { onSelect: (m: CreateMode) => void }) {
           <span className="text-[#D4A853] text-xs font-medium">Phase 4.4 →</span>
         </div>
       </button>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── AI Natural Language Creator ────────────────────────────────────────────
 
-function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCreated: () => void; onFillForm?: (parsed: ParsedStrategy) => void }) {
+function AICreator({ onBack, onCreated, onFillForm }: {onBack: () => void;onCreated: () => void;onFillForm?: (parsed: ParsedStrategy) => void;}) {
   const [input, setInput] = useState('');
   const [parsed, setParsed] = useState<ParsedStrategy | null>(null);
   const [loading, setLoading] = useState(false);
@@ -203,12 +203,12 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
   const [strategyId, setStrategyId] = useState<string | null>(null);
 
   const examples = [
-    i18n.t('StrategyPage.k19'),
-    i18n.t('StrategyPage.k20'),
-    i18n.t('StrategyPage.k21'),
-    i18n.t('StrategyPage.k22'),
-    i18n.t('StrategyPage.k23'),
-  ];
+  i18n.t('StrategyPage.k19'),
+  i18n.t('StrategyPage.k20'),
+  i18n.t('StrategyPage.k21'),
+  i18n.t('StrategyPage.k22'),
+  i18n.t('StrategyPage.k23')];
+
 
   const handleParse = useCallback(async () => {
     if (!input.trim()) return;
@@ -237,7 +237,7 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
       const result = await createStrategy({
         text: input,
         strategy: parsed.strategy,
-        symbol: parsed.symbol || 'US.TQQQ',
+        symbol: parsed.symbol || 'US.TQQQ'
       });
       if (result.success) {
         setStrategyId(result.id);
@@ -262,15 +262,15 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
         strategy: parsed?.strategy,
         initialCapital: 100000,
         commission: 0.001,
-        slippage: 0.0005,
+        slippage: 0.0005
       });
       if (result.success) {
         setBacktestResult(result.result);
       }
     } catch (e: unknown) {
+
       // silent
-    } finally {
-      setBacktestLoading(false);
+    } finally {setBacktestLoading(false);
     }
   }, [strategyId, parsed]);
 
@@ -287,8 +287,8 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
           onChange={(e) => setInput(e.target.value)}
           placeholder={i18n.t('StrategyPage.k0')}
           className="w-full h-28 bg-[#12121a] border border-white/10 rounded-lg p-4 text-sm text-gray-200 placeholder-gray-600 resize-none focus:outline-none focus:border-[#C9A046]/50"
-          onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleParse(); }}
-        />
+          onKeyDown={(e) => {if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleParse();}} />
+        
 
         <div className="flex items-center gap-2 mt-3">
           <button onClick={handleParse} disabled={!input.trim() || loading} className="px-4 py-2 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
@@ -298,24 +298,24 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
         </div>
 
         <div className="flex flex-wrap gap-2 mt-2">
-          {examples.map((ex, i) => (
-            <button key={i} onClick={() => setInput(ex)} className="text-xs text-gray-400 bg-[#22222f] px-3 py-1.5 rounded-lg hover:text-gray-200 transition-colors">
+          {examples.map((ex, i) =>
+          <button key={i} onClick={() => setInput(ex)} className="text-xs text-gray-400 bg-[#22222f] px-3 py-1.5 rounded-lg hover:text-gray-200 transition-colors">
               {ex}
             </button>
-          ))}
+          )}
         </div>
       </div>
 
       {/* Error */}
-      {error && (
-        <div className="mt-4 bg-red-500/10 border border-red-500/30 rounded-xl p-4">
+      {error &&
+      <div className="mt-4 bg-red-500/10 border border-red-500/30 rounded-xl p-4">
           <p className="text-red-400 text-sm">{error}</p>
         </div>
-      )}
+      }
 
       {/* Parsed result */}
-      {parsed?.success && (
-        <div className="mt-4 bg-[#1a1a25] border border-[#C9A046]/30 rounded-xl p-6">
+      {parsed?.success &&
+      <div className="mt-4 bg-[#1a1a25] border border-[#C9A046]/30 rounded-xl p-6">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-[#D4A853]">✓</span>
             <h3 className="text-white font-semibold">{parsed.name}</h3>
@@ -329,24 +329,24 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
               <div className="text-gray-500 text-xs mb-1">{i18n.t('StrategyPage.k31')}</div>
               <div className="text-gray-200 font-mono text-xs">{parsed.strategy.type}</div>
             </div>
-            {Object.entries(parsed.strategy.params).slice(0, 3).map(([k, v]) => (
-              <div key={k} className="bg-[#12121a] rounded-lg p-3">
+            {Object.entries(parsed.strategy.params).slice(0, 3).map(([k, v]) =>
+          <div key={k} className="bg-[#12121a] rounded-lg p-3">
                 <div className="text-gray-500 text-xs mb-1">{k}</div>
                 <div className="text-[#D4A853] font-mono">{v}</div>
               </div>
-            ))}
+          )}
           </div>
 
-          {(parsed.strategy.stopLoss || parsed.strategy.takeProfit) && (
-            <div className="flex gap-3 mb-4">
-              {parsed.strategy.stopLoss && (
-                <span className="text-xs bg-red-500/20 text-red-400 px-3 py-1 rounded-lg">{i18n.t('StrategyPage.k0')}{parsed.strategy.stopLoss}%</span>
-              )}
-              {parsed.strategy.takeProfit && (
-                <span className="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-lg">{i18n.t('StrategyPage.k1')}{parsed.strategy.takeProfit}%</span>
-              )}
+          {(parsed.strategy.stopLoss || parsed.strategy.takeProfit) &&
+        <div className="flex gap-3 mb-4">
+              {parsed.strategy.stopLoss &&
+          <span className="text-xs bg-red-500/20 text-red-400 px-3 py-1 rounded-lg">{i18n.t('StrategyPage.k0')}{parsed.strategy.stopLoss}%</span>
+          }
+              {parsed.strategy.takeProfit &&
+          <span className="text-xs bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-lg">{i18n.t('StrategyPage.k1')}{parsed.strategy.takeProfit}%</span>
+          }
             </div>
-          )}
+        }
 
           <div className="flex gap-3">
             <button onClick={handleCreate} disabled={loading || !!strategyId} className="px-4 py-2 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
@@ -355,30 +355,30 @@ function AICreator({ onBack, onCreated, onFillForm }: { onBack: () => void; onCr
             <button onClick={handleBacktest} disabled={backtestLoading} className="px-4 py-2 bg-[#22222f] text-gray-300 rounded-lg text-sm hover:bg-[#2a2a3a] transition-colors">
               {backtestLoading ? i18n.t('StrategyPage.k34') : i18n.t('StrategyPage.k35')}
             </button>
-            {onFillForm && (
-              <button onClick={() => onFillForm(parsed)} className="px-4 py-2 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-lg text-sm hover:bg-blue-500/30 transition-colors">
-                📊 填充表单调整
-              </button>
-            )}
+            {onFillForm &&
+          <button onClick={() => onFillForm(parsed)} className="px-4 py-2 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-lg text-sm hover:bg-blue-500/30 transition-colors">{i18n.t("StrategyPage.r92_6bfe")}
+
+          </button>
+          }
           </div>
         </div>
-      )}
+      }
 
       {/* Backtest result */}
       {backtestResult && <BacktestPanel result={backtestResult} />}
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Backtest Result Panel ──────────────────────────────────────────────────
 
-function BacktestPanel({ result }: { result: BacktestResult }) {
+function BacktestPanel({ result }: {result: BacktestResult;}) {
   const returnColor = result.totalReturn >= 0 ? 'text-emerald-400' : 'text-red-400';
 
   return (
     <div className="mt-4 bg-[#1a1a25] border border-white/5 rounded-xl p-6">
-      <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-        📈 回测结果
+      <h3 className="text-white font-semibold mb-4 flex items-center gap-2">{i18n.t("StrategyPage.r92_021d")}
+
       </h3>
 
       {/* Metrics grid */}
@@ -392,20 +392,20 @@ function BacktestPanel({ result }: { result: BacktestResult }) {
       </div>
 
       {/* Equity curve */}
-      {result.equityCurve.length > 0 && (
-        <div className="bg-[#12121a] rounded-lg p-3 mb-4">
+      {result.equityCurve.length > 0 &&
+      <div className="bg-[#12121a] rounded-lg p-3 mb-4">
           <div className="text-xs text-gray-500 mb-2">{i18n.t('StrategyPage.k2')}{result.totalTrades}{i18n.t('StrategyPage.k3')}</div>
           <EquityChart data={result.equityCurve} />
         </div>
-      )}
+      }
 
       {/* Recent trades */}
-      {result.trades.length > 0 && (
-        <div>
+      {result.trades.length > 0 &&
+      <div>
           <div className="text-xs text-gray-500 mb-2">{i18n.t('StrategyPage.k4')}{result.trades.length}{i18n.t('StrategyPage.k5')}</div>
           <div className="max-h-40 overflow-y-auto space-y-1">
-            {result.trades.slice(-10).reverse().map((t, i) => (
-              <div key={i} className="flex items-center justify-between text-xs bg-[#12121a] rounded px-3 py-2">
+            {result.trades.slice(-10).reverse().map((t, i) =>
+          <div key={i} className="flex items-center justify-between text-xs bg-[#12121a] rounded px-3 py-2">
                 <span className="text-gray-400">{new Date(t.entryTime * 1000).toLocaleDateString()}</span>
                 <span className="text-emerald-400">BUY @ ${t.entryPrice.toFixed(2)}</span>
                 <span>→</span>
@@ -413,26 +413,26 @@ function BacktestPanel({ result }: { result: BacktestResult }) {
                 <span className={t.pnl >= 0 ? 'text-emerald-400' : 'text-red-400'}>
                   {t.pnlPct >= 0 ? '+' : ''}{t.pnlPct.toFixed(1)}%
                 </span>
-                <span className="text-gray-600">{t.bars}天</span>
+                <span className="text-gray-600">{t.bars}{i18n.t("StrategyPage.r92_d8ec")}</span>
               </div>
-            ))}
+          )}
           </div>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
 
-function MetricCard({ label, value, color }: { label: string; value: string; color: string }) {
+function MetricCard({ label, value, color }: {label: string;value: string;color: string;}) {
   return (
     <div className="bg-[#12121a] rounded-lg p-3 text-center">
       <div className="text-gray-500 text-xs mb-1">{label}</div>
       <div className={`font-bold text-sm ${color}`}>{value}</div>
-    </div>
-  );
+    </div>);
+
 }
 
-function EquityChart({ data }: { data: { time: number; value: number }[] }) {
+function EquityChart({ data }: {data: {time: number;value: number;}[];}) {
   if (data.length < 2) return null;
 
   const width = 600;
@@ -445,8 +445,8 @@ function EquityChart({ data }: { data: { time: number; value: number }[] }) {
   const range = max - min || 1;
 
   const points = data.map((d, i) => {
-    const x = padding + (i / (data.length - 1)) * (width - padding * 2);
-    const y = height - padding - ((d.value - min) / range) * (height - padding * 2);
+    const x = padding + i / (data.length - 1) * (width - padding * 2);
+    const y = height - padding - (d.value - min) / range * (height - padding * 2);
     return `${x},${y}`;
   });
 
@@ -471,13 +471,13 @@ function EquityChart({ data }: { data: { time: number; value: number }[] }) {
       {/* Start/end labels */}
       <text x={padding} y={height - 2} fontSize="8" fill="#666">${startVal.toFixed(0)}</text>
       <text x={width - padding} y={height - 2} fontSize="8" fill={strokeColor} textAnchor="end">${endVal.toFixed(0)}</text>
-    </svg>
-  );
+    </svg>);
+
 }
 
 // ── Template Browser ───────────────────────────────────────────────────────
 
-function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated: () => void }) {
+function TemplateBrowser({ onBack, onCreated }: {onBack: () => void;onCreated: () => void;}) {
   const [templates, setTemplates] = useState<unknown[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -496,7 +496,7 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
     try {
       await createStrategy({ templateId: template.id, symbol: template.symbol || 'US.TQQQ' });
       onCreated();
-    } catch (_e: unknown) { /* silent */ } finally {
+    } catch (_e: unknown) {/* silent */} finally {
       setLoading(false);
     }
   }
@@ -518,42 +518,42 @@ function TemplateBrowser({ onBack, onCreated }: { onBack: () => void; onCreated:
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-        {templates.map((t) => (
-          <button
-            key={(t as any).id}
-            onClick={() => setSelected((t as any).id === selected ? null : (t as any).id)}
-            className={`bg-[#1a1a25] border rounded-lg p-4 text-left transition-all ${
-              selected === (t as any).id ? 'border-[#C9A046]/50 bg-[#22222f]' : 'border-white/5 hover:border-white/10'
-            }`}
-          >
+        {templates.map((t) =>
+        <button
+          key={(t as any).id}
+          onClick={() => setSelected((t as any).id === selected ? null : (t as any).id)}
+          className={`bg-[#1a1a25] border rounded-lg p-4 text-left transition-all ${
+          selected === (t as any).id ? 'border-[#C9A046]/50 bg-[#22222f]' : 'border-white/5 hover:border-white/10'}`
+          }>
+          
             <div className="flex items-center justify-between mb-2">
               <h4 className="text-white text-sm font-medium">{(t as any).name}</h4>
-              <span className={`text-xs px-2 py-0.5 rounded ${riskColors[(t as any).risk] || 'text-gray-400 bg-gray-500/20'}`}>{(t as any).risk}风险</span>
+              <span className={`text-xs px-2 py-0.5 rounded ${riskColors[(t as any).risk] || 'text-gray-400 bg-gray-500/20'}`}>{(t as any).risk}{i18n.t("StrategyPage.r92_d982")}</span>
             </div>
             <p className="text-gray-400 text-xs mb-3 leading-relaxed">{(t as any).description}</p>
             <div className="flex items-center justify-between">
               <span className="text-xs text-gray-500 bg-[#22222f] px-2 py-0.5 rounded">{(t as any).category}</span>
             </div>
-            {selected === (t as any).id && (
-              <div className="mt-3 pt-3 border-t border-white/5">
-                <button onClick={(e) => { e.stopPropagation(); handleUse(t); }} disabled={loading} className="w-full px-3 py-2 bg-[#C9A046] text-black text-xs font-medium rounded-lg hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
+            {selected === (t as any).id &&
+          <div className="mt-3 pt-3 border-t border-white/5">
+                <button onClick={(e) => {e.stopPropagation();handleUse(t);}} disabled={loading} className="w-full px-3 py-2 bg-[#C9A046] text-black text-xs font-medium rounded-lg hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
                   {loading ? i18n.t('StrategyPage.k45') : i18n.t('StrategyPage.k46')}
                 </button>
               </div>
-            )}
+          }
           </button>
-        ))}
-        {templates.length === 0 && (
-          <div className="col-span-3 text-center py-8 text-gray-500 text-sm">{i18n.t('StrategyPage.k47')}</div>
         )}
+        {templates.length === 0 &&
+        <div className="col-span-3 text-center py-8 text-gray-500 text-sm">{i18n.t('StrategyPage.k47')}</div>
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Form Creator ───────────────────────────────────────────────────────────
 
-function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => void; onCreated: () => void; editId?: string; nlPrefill?: ParsedStrategy }) {
+function FormCreator({ onBack, onCreated, editId, nlPrefill }: {onBack: () => void;onCreated: () => void;editId?: string;nlPrefill?: ParsedStrategy;}) {
   const [strategyType, setStrategyType] = useState(nlPrefill?.strategy?.type || 'ma_cross');
   const [symbol, setSymbol] = useState(nlPrefill?.symbol || 'US.TQQQ');
   const [shortPeriod, setShortPeriod] = useState(nlPrefill?.strategy?.params?.shortPeriod || 10);
@@ -586,7 +586,7 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
             if (st.stopLoss) setStopLoss(st.stopLoss);
             if (st.takeProfit) setTakeProfit(st.takeProfit);
           }
-        } catch (_e: unknown) { /* silent */ }
+        } catch (_e: unknown) {/* silent */}
       };
       load();
     }
@@ -596,11 +596,11 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
     setCreating(true);
     try {
       let params: Record<string, number> = {};
-      if (strategyType === 'ma_cross') params = { shortPeriod, longPeriod };
-      else if (strategyType === 'rsi') params = { oversold: rsiOversold, overbought: rsiOverbought, rsiPeriod: 14 };
-      else if (strategyType === 'macd') params = { macdFast: 12, macdSlow: 26, macdSignal: 9 };
-      else if (strategyType === 'momentum') params = { lookback: longPeriod, threshold: takeProfit };
-      else if (strategyType === 'bollinger') params = { bbPeriod: longPeriod, bbStdDev: 2 };
+      if (strategyType === 'ma_cross') params = { shortPeriod, longPeriod };else
+      if (strategyType === 'rsi') params = { oversold: rsiOversold, overbought: rsiOverbought, rsiPeriod: 14 };else
+      if (strategyType === 'macd') params = { macdFast: 12, macdSlow: 26, macdSignal: 9 };else
+      if (strategyType === 'momentum') params = { lookback: longPeriod, threshold: takeProfit };else
+      if (strategyType === 'bollinger') params = { bbPeriod: longPeriod, bbStdDev: 2 };
 
       const name = strategyName || `${strategyType.toUpperCase()} ${symbol}`;
       const config = { name, strategy: { type: strategyType, params, stopLoss, takeProfit }, symbol };
@@ -614,14 +614,14 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
         await createStrategy(config);
       }
       onCreated();
-    } catch (_e: unknown) { /* silent */ } finally {
+    } catch (_e: unknown) {/* silent */} finally {
       setCreating(false);
     }
   }
 
   const typeLabels: Record<string, string> = {
     ma_cross: i18n.t('StrategyPage.k48'), rsi: i18n.t('StrategyPage.k49'), macd: i18n.t('StrategyPage.k50'),
-    momentum: i18n.t('StrategyPage.k51'), bollinger: i18n.t('StrategyPage.k52'),
+    momentum: i18n.t('StrategyPage.k51'), bollinger: i18n.t('StrategyPage.k52')
   };
 
   return (
@@ -639,8 +639,8 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
             value={strategyName}
             onChange={(e) => setStrategyName(e.target.value)}
             placeholder={strategyName || `${strategyType.toUpperCase()} ${symbol}`}
-            className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50"
-          />
+            className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50" />
+          
         </div>
 
         {/* Strategy type */}
@@ -655,25 +655,25 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
         <div>
           <label className="block text-gray-400 text-xs mb-1">{i18n.t('StrategyPage.k56')}</label>
           <select value={symbol} onChange={(e) => setSymbol(e.target.value)} className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-[#C9A046]/50">
-            {['US.TQQQ','US.SQQQ','US.QQQ','US.SPY','US.SOXL','US.AAPL','US.NVDA','US.MSFT','US.TSLA','US.AMD'].map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
+            {['US.TQQQ', 'US.SQQQ', 'US.QQQ', 'US.SPY', 'US.SOXL', 'US.AAPL', 'US.NVDA', 'US.MSFT', 'US.TSLA', 'US.AMD'].map((s) =>
+            <option key={s} value={s}>{s}</option>
+            )}
           </select>
         </div>
 
         {/* Parameters (dynamic based on type) */}
-        {strategyType === 'ma_cross' && (
-          <div className="grid grid-cols-2 gap-4">
+        {strategyType === 'ma_cross' &&
+        <div className="grid grid-cols-2 gap-4">
             <SliderInput label={i18n.t('StrategyPage.k57')} value={shortPeriod} min={2} max={50} onChange={setShortPeriod} />
             <SliderInput label={i18n.t('StrategyPage.k58')} value={longPeriod} min={10} max={200} onChange={setLongPeriod} />
           </div>
-        )}
-        {strategyType === 'rsi' && (
-          <div className="grid grid-cols-2 gap-4">
+        }
+        {strategyType === 'rsi' &&
+        <div className="grid grid-cols-2 gap-4">
             <SliderInput label={i18n.t('StrategyPage.k59')} value={rsiOversold} min={10} max={45} onChange={setRsiOversold} />
             <SliderInput label={i18n.t('StrategyPage.k60')} value={rsiOverbought} min={55} max={90} onChange={setRsiOverbought} />
           </div>
-        )}
+        }
 
         {/* Risk management */}
         <div className="border-t border-white/5 pt-4">
@@ -685,14 +685,14 @@ function FormCreator({ onBack, onCreated, editId, nlPrefill }: { onBack: () => v
         </div>
 
         <button onClick={handleCreate} disabled={creating} className="px-5 py-2.5 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] disabled:opacity-40 transition-colors">
-          {creating ? (editId ? i18n.t('StrategyPage.k62') : i18n.t('StrategyPage.k63')) : (editId ? i18n.t('StrategyPage.k64') : i18n.t('StrategyPage.k65'))}
+          {creating ? editId ? i18n.t('StrategyPage.k62') : i18n.t('StrategyPage.k63') : editId ? i18n.t('StrategyPage.k64') : i18n.t('StrategyPage.k65')}
         </button>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
-function SliderInput({ label, value, min, max, onChange, unit = '' }: { label: string; value: number; min: number; max: number; onChange: (v: number) => void; unit?: string }) {
+function SliderInput({ label, value, min, max, onChange, unit = '' }: {label: string;value: number;min: number;max: number;onChange: (v: number) => void;unit?: string;}) {
   return (
     <div>
       <div className="flex justify-between text-xs mb-1">
@@ -700,23 +700,23 @@ function SliderInput({ label, value, min, max, onChange, unit = '' }: { label: s
         <span className="text-[#D4A853] font-mono">{value}{unit}</span>
       </div>
       <input type="range" min={min} max={max} value={value} onChange={(e) => onChange(Number(e.target.value))} className="w-full h-1.5 bg-[#12121a] rounded-lg appearance-none cursor-pointer accent-[#C9A046]" />
-    </div>
-  );
+    </div>);
+
 }
 
 // ── My Strategies ──────────────────────────────────────────────────────────
 
-function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { strategies: any[]; onSelect: (id: string) => void; onEdit: (id: string) => void; onDelete: (id: string) => void; onCompare: (strategy: Record<string, unknown>) => void }) {
+function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: {strategies: any[];onSelect: (id: string) => void;onEdit: (id: string) => void;onDelete: (id: string) => void;onCompare: (strategy: Record<string, unknown>) => void;}) {
   const statusColors: Record<string, string> = {
     draft: 'text-gray-400 bg-gray-500/20',
     backtested: 'text-blue-400 bg-blue-500/20',
     live: 'text-emerald-400 bg-emerald-500/20',
     stopped: 'text-red-400 bg-red-500/20',
-    simulating: 'text-yellow-400 bg-yellow-500/20',
+    simulating: 'text-yellow-400 bg-yellow-500/20'
   };
 
   const statusLabels: Record<string, string> = {
-    draft: i18n.t('StrategyPage.k66'), backtested: i18n.t('StrategyPage.k67'), live: i18n.t('StrategyPage.k68'), stopped: 'stopped', simulating: i18n.t('StrategyPage.k69'),
+    draft: i18n.t('StrategyPage.k66'), backtested: i18n.t('StrategyPage.k67'), live: i18n.t('StrategyPage.k68'), stopped: 'stopped', simulating: i18n.t('StrategyPage.k69')
   };
 
   if (strategies.length === 0) {
@@ -728,20 +728,20 @@ function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { s
           <p className="text-gray-400 text-sm">{i18n.t('StrategyPage.k71')}</p>
           <p className="text-gray-500 text-xs mt-1">{i18n.t('StrategyPage.k72')}</p>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
     <div>
       <h2 className="text-white font-semibold mb-3">{i18n.t('StrategyPage.k73')}</h2>
       <div className="space-y-2">
-        {strategies.map((s) => (
-          <button
-            key={s.id}
-            onClick={() => onSelect(s.id)}
-            className="w-full bg-[#1a1a25] border border-white/5 rounded-xl p-4 text-left hover:border-[#C9A046]/30 transition-all flex items-center justify-between"
-          >
+        {strategies.map((s) =>
+        <button
+          key={s.id}
+          onClick={() => onSelect(s.id)}
+          className="w-full bg-[#1a1a25] border border-white/5 rounded-xl p-4 text-left hover:border-[#C9A046]/30 transition-all flex items-center justify-between">
+          
             <div className="flex items-center gap-4">
               <div>
                 <h4 className="text-white text-sm font-medium">{s.name || i18n.t('StrategyPage.k74')}</h4>
@@ -754,31 +754,31 @@ function MyStrategies({ strategies, onSelect, onEdit, onDelete, onCompare }: { s
               </span>
               <span className="text-gray-600 text-xs">{s.createdAt ? new Date(s.createdAt).toLocaleDateString() : ''}</span>
               <button
-                onClick={(e) => { e.stopPropagation(); onCompare(s); }}
-                className="text-xs px-2 py-1 rounded bg-[#C9A046]/10 text-[#D4A853] hover:bg-[#C9A046]/20"
-                title={i18n.t('StrategyPage.k75')}
-              >⚖️</button>
+              onClick={(e) => {e.stopPropagation();onCompare(s);}}
+              className="text-xs px-2 py-1 rounded bg-[#C9A046]/10 text-[#D4A853] hover:bg-[#C9A046]/20"
+              title={i18n.t('StrategyPage.k75')}>
+              ⚖️</button>
               <button
-                onClick={(e) => { e.stopPropagation(); onEdit(s.id); }}
-                className="text-xs px-2 py-1 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
-                title={i18n.t('StrategyPage.k76')}
-              >✏️</button>
+              onClick={(e) => {e.stopPropagation();onEdit(s.id);}}
+              className="text-xs px-2 py-1 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
+              title={i18n.t('StrategyPage.k76')}>
+              ✏️</button>
               <button
-                onClick={(e) => { e.stopPropagation(); if (confirm(`${i18n.t('StrategyPage.k6')}${s.name}」？`)) onDelete(s.id); }}
-                className="text-xs px-2 py-1 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20"
-                title={i18n.t('StrategyPage.k77')}
-              >🗑️</button>
+              onClick={(e) => {e.stopPropagation();if (confirm(`${i18n.t('StrategyPage.k6')}${s.name}」？`)) onDelete(s.id);}}
+              className="text-xs px-2 py-1 rounded bg-red-500/10 text-red-400 hover:bg-red-500/20"
+              title={i18n.t('StrategyPage.k77')}>
+              🗑️</button>
             </div>
           </button>
-        ))}
+        )}
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Strategy Detail ────────────────────────────────────────────────────────
 
-function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string; onBack: () => void; onRefresh: () => void }) {
+function StrategyDetail({ strategyId, onBack, onRefresh }: {strategyId: string;onBack: () => void;onRefresh: () => void;}) {
   const [strategy, setStrategy] = useState<unknown>(null);
   const [backtestResult, setBacktestResult] = useState<BacktestResult | null>(null);
   const [backtestLoading, setBacktestLoading] = useState(false);
@@ -811,10 +811,10 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
         strategy: strategy?.strategy,
         initialCapital: 100000,
         commission: 0.001,
-        slippage: 0.0005,
+        slippage: 0.0005
       });
       if (result.success) setBacktestResult(result.result);
-    } catch (_e: unknown) { /* silent */ } finally {
+    } catch (_e: unknown) {/* silent */} finally {
       setBacktestLoading(false);
     }
   }
@@ -825,7 +825,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       await startLive(strategyId);
       onRefresh();
       loadDetail();
-    } catch (_e: unknown) { /* silent */ } finally {
+    } catch (_e: unknown) {/* silent */} finally {
       setActionLoading(false);
     }
   }
@@ -836,7 +836,7 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       await stopLive(strategyId);
       onRefresh();
       loadDetail();
-    } catch (_e: unknown) { /* silent */ } finally {
+    } catch (_e: unknown) {/* silent */} finally {
       setActionLoading(false);
     }
   }
@@ -846,8 +846,8 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
       <div>
         <button onClick={onBack} className="text-gray-400 hover:text-gray-200 text-sm mb-4 flex items-center gap-1">{"components.back"}</button>
         <p className="text-gray-500">{"components.loading"}</p>
-      </div>
-    );
+      </div>);
+
   }
 
   const isLive = (strategy as any).status === 'live';
@@ -876,39 +876,39 @@ function StrategyDetail({ strategyId, onBack, onRefresh }: { strategyId: string;
             <div className="text-gray-500 text-xs mb-1">{"components.type"}</div>
             <div className="text-gray-200 text-sm">{(strategy as any).strategy?.type}</div>
           </div>
-          {(strategy as any).strategy?.stopLoss && (
-            <div className="bg-[#12121a] rounded-lg p-3">
+          {(strategy as any).strategy?.stopLoss &&
+          <div className="bg-[#12121a] rounded-lg p-3">
               <div className="text-gray-500 text-xs mb-1">{"components.stopLoss"}</div>
               <div className="text-red-400 text-sm">{(strategy as any).strategy.stopLoss}%</div>
             </div>
-          )}
-          {(strategy as any).strategy?.takeProfit && (
-            <div className="bg-[#12121a] rounded-lg p-3">
+          }
+          {(strategy as any).strategy?.takeProfit &&
+          <div className="bg-[#12121a] rounded-lg p-3">
               <div className="text-gray-500 text-xs mb-1">{"components.takeProfit"}</div>
               <div className="text-emerald-400 text-sm">{(strategy as any).strategy.takeProfit}%</div>
             </div>
-          )}
+          }
         </div>
 
         <div className="flex gap-3">
           <button onClick={handleBacktest} disabled={backtestLoading} className="px-4 py-2 bg-[#22222f] text-gray-300 rounded-lg text-sm hover:bg-[#2a2a3a] transition-colors">
             {backtestLoading ? i18n.t('StrategyPage.k80') : i18n.t('StrategyPage.k81')}
           </button>
-          {isLive ? (
-            <button onClick={handleStopLive} disabled={actionLoading} className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm hover:bg-red-500/30 transition-colors">
-              ⏹ 停止
-            </button>
-          ) : (
-            <button onClick={handleStartLive} disabled={actionLoading} className="px-4 py-2 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] transition-colors">
-              ⚡ 启动实盘
-            </button>
-          )}
+          {isLive ?
+          <button onClick={handleStopLive} disabled={actionLoading} className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm hover:bg-red-500/30 transition-colors">{i18n.t("StrategyPage.r92_8cfe")}
+
+          </button> :
+
+          <button onClick={handleStartLive} disabled={actionLoading} className="px-4 py-2 bg-[#C9A046] text-black font-medium rounded-lg text-sm hover:bg-[#D4A853] transition-colors">{i18n.t("StrategyPage.r92_bcf1")}
+
+          </button>
+          }
         </div>
       </div>
 
       {backtestResult && <BacktestPanel result={backtestResult} />}
 
       <StrategyExplainCard strategy={strategy} />
-    </div>
-  );
+    </div>);
+
 }

@@ -1,3 +1,4 @@
+import i18n from '../../i18n/index';
 /**
  * InstallPrompt — PWA install banner
  * (ML-45-01, R45 Phase 6.2)
@@ -10,7 +11,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+  userChoice: Promise<{outcome: 'accepted' | 'dismissed';}>;
 }
 
 interface InstallPromptProps {
@@ -74,24 +75,24 @@ export const InstallPrompt: React.FC<InstallPromptProps> = ({ className }) => {
         <div className="flex items-start gap-3">
           <span className="text-2xl">📱</span>
           <div className="flex-1 min-w-0">
-            <div className="text-sm font-bold text-white mb-1">
-              添加到主屏幕
+            <div className="text-sm font-bold text-white mb-1">{i18n.t("InstallPrompt.r92_7e2a")}
+
             </div>
-            <p className="text-xs text-gray-500">
-              安装 DAWN WHALES 到桌面，随时随地查看策略信号。
+            <p className="text-xs text-gray-500">{i18n.t("InstallPrompt.r92_9390")}
+
             </p>
             <div className="flex items-center gap-2 mt-3">
               <button
                 onClick={handleInstall}
-                className="px-3 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold hover:bg-amber-400 transition-colors"
-              >
-                安装
+                className="px-3 py-1.5 bg-amber-500 text-black rounded-lg text-xs font-bold hover:bg-amber-400 transition-colors">{i18n.t("InstallPrompt.r92_4fd1")}
+
+
               </button>
               <button
                 onClick={handleDismiss}
-                className="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-500 hover:text-gray-300 transition-colors"
-              >
-                稍后
+                className="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-500 hover:text-gray-300 transition-colors">{i18n.t("InstallPrompt.r92_88d9")}
+
+
               </button>
             </div>
           </div>
@@ -102,8 +103,8 @@ export const InstallPrompt: React.FC<InstallPromptProps> = ({ className }) => {
           </button>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default InstallPrompt;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
 import * as echarts from 'echarts';
@@ -35,10 +35,10 @@ export default function CapitalFlowPage() {
     setError('');
     try {
       const [stockRes, sectorRes, conceptRes] = await Promise.all([
-        getStockCapitalFlowRank('mainNetInflow', 'desc', 20),
-        getSectorCapitalFlowRank('mainNetInflow', 'desc', 15),
-        getConceptCapitalFlowRank('mainNetInflow', 'desc', 15),
-      ]);
+      getStockCapitalFlowRank('mainNetInflow', 'desc', 20),
+      getSectorCapitalFlowRank('mainNetInflow', 'desc', 15),
+      getConceptCapitalFlowRank('mainNetInflow', 'desc', 15)]
+      );
       if (stockRes?.success) setStockData(stockRes.items || []);
       if (sectorRes?.success) setSectorData(sectorRes.items || []);
       if (conceptRes?.success) setConceptData(conceptRes.items || []);
@@ -70,20 +70,20 @@ export default function CapitalFlowPage() {
       xAxis: {
         type: 'value',
         axisLabel: { color: '#9ca3af', formatter: (v: number) => `${(v / 1e4).toFixed(0)}${i18n.t('CapitalFlowPage.k0')}` },
-        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } }
       },
       yAxis: {
         type: 'category',
         data: sorted.map((d) => d.name).reverse(),
         axisLabel: { color: '#d1d5db', fontSize: 11 },
         axisLine: { show: false },
-        axisTick: { show: false },
+        axisTick: { show: false }
       },
       series: [{
         type: 'bar',
         data: sorted.map((d) => ({
           value: d.mainNetInflow,
-          itemStyle: { color: d.mainNetInflow >= 0 ? '#ef4444' : '#10b981' },
+          itemStyle: { color: d.mainNetInflow >= 0 ? '#ef4444' : '#10b981' }
         })).reverse(),
         barWidth: 14,
         label: {
@@ -91,9 +91,9 @@ export default function CapitalFlowPage() {
           position: 'right',
           formatter: (p: any) => `${((p as any).value / 1e4).toFixed(0)}${i18n.t('CapitalFlowPage.k1')}`,
           color: '#9ca3af',
-          fontSize: 10,
-        },
-      }],
+          fontSize: 10
+        }
+      }]
     };
     chart.current.setOption(option, true);
   }, [currentData, activeTab]);
@@ -109,47 +109,47 @@ export default function CapitalFlowPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">💰 资金流向</h1>
-          <p className="text-gray-400 text-sm">主力/超大/大单资金流向监控</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{i18n.t("CapitalFlowPage.r92_037f")}</h1>
+          <p className="text-gray-400 text-sm">{i18n.t("CapitalFlowPage.r92_57dd")}</p>
         </div>
         <button
           onClick={fetchData}
           disabled={loading}
-          className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors"
-        >
+          className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors">
+          
           {loading ? i18n.t('CapitalFlowPage.k2') : i18n.t('CapitalFlowPage.k3')}
         </button>
       </div>
 
       {/* Tabs */}
       <div className="flex gap-2">
-        {(['stock', 'sector', 'concept'] as const).map((t) => (
-          <button
-            key={t}
-            onClick={() => setActiveTab(t)}
-            className={`text-xs px-4 py-2 rounded-lg border transition-colors ${
-              activeTab === t
-                ? 'bg-[#C9A046]/20 border-[#C9A046]/40 text-[#C9A046]'
-                : 'bg-[#1a1a25] border-white/10 text-gray-400 hover:text-white'
-            }`}
-          >
+        {(['stock', 'sector', 'concept'] as const).map((t) =>
+        <button
+          key={t}
+          onClick={() => setActiveTab(t)}
+          className={`text-xs px-4 py-2 rounded-lg border transition-colors ${
+          activeTab === t ?
+          'bg-[#C9A046]/20 border-[#C9A046]/40 text-[#C9A046]' :
+          'bg-[#1a1a25] border-white/10 text-gray-400 hover:text-white'}`
+          }>
+          
             {t === 'stock' ? i18n.t('CapitalFlowPage.k4') : t === 'sector' ? 'components.industry' : 'components.concept'}
           </button>
-        ))}
+        )}
       </div>
 
       {/* Error */}
-      {error && (
-        <div className="bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 text-red-400 text-sm">
+      {error &&
+      <div className="bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 text-red-400 text-sm">
           {error}
         </div>
-      )}
+      }
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Chart */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
           <h2 className="text-sm font-medium text-white mb-3">
-            {activeTab === 'stock' ? i18n.t('CapitalFlowPage.k5') : activeTab === 'sector' ? 'components.industry' : 'components.concept'}资金净流入 Top 15
+            {activeTab === 'stock' ? i18n.t('CapitalFlowPage.k5') : activeTab === 'sector' ? 'components.industry' : 'components.concept'}{i18n.t("CapitalFlowPage.r92_7f6e")}
           </h2>
           <div ref={chartRef} style={{ height: 380 }} />
         </div>
@@ -169,32 +169,32 @@ export default function CapitalFlowPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {currentData.map((item, i) => (
-                  <tr key={item.code} className="hover:bg-white/[0.02]">
+                {currentData.map((item, i) =>
+                <tr key={item.code} className="hover:bg-white/[0.02]">
                     <td className="py-2 text-gray-500 text-xs">{i + 1}</td>
                     <td className="py-2">
                       <div className="text-white text-sm">{item.name}</div>
                       <div className="text-[10px] text-gray-500 font-mono">{item.code}</div>
                     </td>
                     <td className={`py-2 text-right font-medium ${item.mainNetInflow >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
-                      {(item.mainNetInflow / 1e4).toFixed(0)}万
-                    </td>
+                      {(item.mainNetInflow / 1e4).toFixed(0)}{i18n.t("CapitalFlowPage.r92_48ed")}
+                  </td>
                     <td className={`py-2 text-right text-xs ${item.superLargeIn >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
-                      {(item.superLargeIn / 1e4).toFixed(0)}万
-                    </td>
+                      {(item.superLargeIn / 1e4).toFixed(0)}{i18n.t("CapitalFlowPage.r92_097a")}
+                  </td>
                     <td className={`py-2 text-right text-xs ${item.largeIn >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
-                      {(item.largeIn / 1e4).toFixed(0)}万
-                    </td>
+                      {(item.largeIn / 1e4).toFixed(0)}{i18n.t("CapitalFlowPage.r92_22f7")}
+                  </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
-            {currentData.length === 0 && !loading && (
-              <div className="text-gray-500 text-sm py-8 text-center">{"components.noData"}</div>
-            )}
+            {currentData.length === 0 && !loading &&
+            <div className="text-gray-500 text-sm py-8 text-center">{"components.noData"}</div>
+            }
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

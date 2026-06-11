@@ -1,6 +1,6 @@
 // ── DAWN WHALES — RiskConfigEditor (risk controlconfigedit) ─────────────────────────
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
 import { getRiskConfig, updateRiskConfig } from '../../lib/bridge-api';
@@ -31,7 +31,7 @@ const DEFAULT_CONFIG: RiskConfig = {
   drawdownReduceThreshold: 0.15,
   volAdjustEnabled: true,
   vixHighThreshold: 25,
-  vixExtremeThreshold: 35,
+  vixExtremeThreshold: 35
 };
 
 export default function RiskConfigEditor() {
@@ -53,7 +53,7 @@ export default function RiskConfigEditor() {
         setConfig({ ...DEFAULT_CONFIG, ...result });
       }
     } catch (err) {
-    // [EngineError:SYSTEM] — structured error tracking
+      // [EngineError:SYSTEM] — structured error tracking
       void EngineError; // structured error domain: SYSTEM
       console.error('[RiskConfigEditor] load error:', err);
     }
@@ -67,13 +67,13 @@ export default function RiskConfigEditor() {
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch (err) {
-    // [EngineError:SYSTEM] — structured error tracking
+      // [EngineError:SYSTEM] — structured error tracking
       console.error('[RiskConfigEditor] save error:', err);
     }
     setSaving(false);
   }
 
-  const updateField = <K extends keyof RiskConfig>(key: K, value: RiskConfig[K]) => {
+  const updateField = <K extends keyof RiskConfig,>(key: K, value: RiskConfig[K]) => {
     setConfig((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -81,21 +81,21 @@ export default function RiskConfigEditor() {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
         <p className="text-gray-500 text-sm text-center py-4">{i18n.t('RiskConfigEditor.k0')}</p>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-white font-semibold text-sm">⚙️ 风控配置</h2>
+        <h2 className="text-white font-semibold text-sm">{i18n.t("RiskConfigEditor.r92_6ca7")}</h2>
         <div className="flex items-center gap-2">
-          {saved && <span className="text-[10px] text-emerald-400">✓ 已保存</span>}
+          {saved && <span className="text-[10px] text-emerald-400">{i18n.t("RiskConfigEditor.r92_2b6c")}</span>}
           <button
             onClick={saveConfig}
             disabled={saving}
-            className="px-3 py-1.5 bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 rounded-lg text-xs font-medium hover:bg-[#C9A046]/20 transition-colors disabled:opacity-30"
-          >
+            className="px-3 py-1.5 bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 rounded-lg text-xs font-medium hover:bg-[#C9A046]/20 transition-colors disabled:opacity-30">
+            
             {saving ? i18n.t('RiskConfigEditor.k1') : t('components.save')}
           </button>
         </div>
@@ -109,8 +109,8 @@ export default function RiskConfigEditor() {
           suffix="%"
           min={0.05}
           max={0.5}
-          step={0.05}
-        />
+          step={0.05} />
+        
         <ConfigField
           label={i18n.t('RiskConfigEditor.k3')}
           value={config.maxTotalPositionPct}
@@ -118,8 +118,8 @@ export default function RiskConfigEditor() {
           suffix="%"
           min={0.3}
           max={1.0}
-          step={0.05}
-        />
+          step={0.05} />
+        
         <ConfigField
           label={i18n.t('RiskConfigEditor.k4')}
           value={config.dailyLossLimitPct}
@@ -127,8 +127,8 @@ export default function RiskConfigEditor() {
           suffix="%"
           min={0.01}
           max={0.2}
-          step={0.01}
-        />
+          step={0.01} />
+        
         <ConfigField
           label={i18n.t('RiskConfigEditor.k5')}
           value={config.maxOrdersPerMinute}
@@ -136,8 +136,8 @@ export default function RiskConfigEditor() {
           suffix="/min"
           min={1}
           max={60}
-          step={1}
-        />
+          step={1} />
+        
         <ConfigField
           label={i18n.t('RiskConfigEditor.k6')}
           value={config.kellyMaxFraction}
@@ -145,8 +145,8 @@ export default function RiskConfigEditor() {
           suffix="%"
           min={0.1}
           max={0.5}
-          step={0.05}
-        />
+          step={0.05} />
+        
         <ConfigField
           label={i18n.t('RiskConfigEditor.k7')}
           value={config.atrStopMultiplier}
@@ -154,8 +154,8 @@ export default function RiskConfigEditor() {
           suffix="x"
           min={1}
           max={5}
-          step={0.5}
-        />
+          step={0.5} />
+        
         <ConfigField
           label={i18n.t('RiskConfigEditor.k8')}
           value={config.drawdownReduceThreshold}
@@ -163,8 +163,8 @@ export default function RiskConfigEditor() {
           suffix="%"
           min={0.05}
           max={0.3}
-          step={0.05}
-        />
+          step={0.05} />
+        
         <div className="bg-[#12121a] rounded-lg p-3">
           <label className="flex items-center justify-between cursor-pointer">
             <span className="text-gray-400 text-xs">Half-Kelly</span>
@@ -172,8 +172,8 @@ export default function RiskConfigEditor() {
               type="checkbox"
               checked={config.kellyHalfEnabled}
               onChange={(e) => updateField('kellyHalfEnabled', e.target.checked)}
-              className="rounded border-gray-600 bg-[#1a1a25] text-[#C9A046]"
-            />
+              className="rounded border-gray-600 bg-[#1a1a25] text-[#C9A046]" />
+            
           </label>
         </div>
         <div className="bg-[#12121a] rounded-lg p-3">
@@ -183,8 +183,8 @@ export default function RiskConfigEditor() {
               type="checkbox"
               checked={config.volAdjustEnabled}
               onChange={(e) => updateField('volAdjustEnabled', e.target.checked)}
-              className="rounded border-gray-600 bg-[#1a1a25] text-[#C9A046]"
-            />
+              className="rounded border-gray-600 bg-[#1a1a25] text-[#C9A046]" />
+            
           </label>
         </div>
         <ConfigField
@@ -194,8 +194,8 @@ export default function RiskConfigEditor() {
           suffix=""
           min={15}
           max={40}
-          step={1}
-        />
+          step={1} />
+        
         <ConfigField
           label={i18n.t('RiskConfigEditor.k10')}
           value={config.vixExtremeThreshold}
@@ -203,24 +203,24 @@ export default function RiskConfigEditor() {
           suffix=""
           min={25}
           max={50}
-          step={1}
-        />
+          step={1} />
+        
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 function ConfigField({
-  label, value, onChange, suffix, min, max, step,
-}: {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  suffix: string;
-  min: number;
-  max: number;
-  step: number;
-}) {
+  label, value, onChange, suffix, min, max, step
+
+
+
+
+
+
+
+
+}: {label: string;value: number;onChange: (v: number) => void;suffix: string;min: number;max: number;step: number;}) {
   const displayValue = suffix === '%' ? (value * 100).toFixed(suffix === '%' && step < 0.1 ? 1 : 0) : String(value);
 
   return (
@@ -238,8 +238,8 @@ function ConfigField({
         step={suffix === '%' ? step * 100 : step}
         value={suffix === '%' ? value * 100 : value}
         onChange={(e) => onChange(suffix === '%' ? parseFloat(e.target.value) / 100 : parseFloat(e.target.value))}
-        className="w-full h-1 bg-[#1a1a25] rounded-full appearance-none cursor-pointer accent-[#C9A046]"
-      />
-    </div>
-  );
+        className="w-full h-1 bg-[#1a1a25] rounded-full appearance-none cursor-pointer accent-[#C9A046]" />
+      
+    </div>);
+
 }

@@ -1,7 +1,7 @@
 // ── DAWN WHALES — MarketHeatmapPage (W26) ──────────────────────────────────
 // sectorheatmappage： EM ，industry/concept/region
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import { getSectorHeatmap } from '../../lib/bridge-api';
 import i18n from '../../i18n';
@@ -12,7 +12,7 @@ interface SectorItem {
   changePct: number;
   changeAmount: number;
   marketCap?: number;
-  leaders?: { name: string; code: string; changePct: number }[];
+  leaders?: {name: string;code: string;changePct: number;}[];
 }
 
 type BoardType = 'industry' | 'concept' | 'region';
@@ -20,7 +20,7 @@ type BoardType = 'industry' | 'concept' | 'region';
 const BOARD_LABELS: Record<BoardType, string> = {
   industry: i18n.t('MarketHeatmapPage.k1'),
   concept: i18n.t('MarketHeatmapPage.k2'),
-  region: i18n.t('MarketHeatmapPage.k3'),
+  region: i18n.t('MarketHeatmapPage.k3')
 };
 
 export default function MarketHeatmapPage() {
@@ -93,30 +93,30 @@ export default function MarketHeatmapPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">🗺️ 板块热力图</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">{i18n.t("MarketHeatmapPage.r92_b7aa")}</h1>
           <p className="text-gray-400 text-sm">
             {lastUpdate ? `${i18n.t('MarketHeatmapPage.k0')}${lastUpdate.toLocaleTimeString('zh-CN')}` : 'components.loading'}
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {(Object.keys(BOARD_LABELS) as BoardType[]).map((type) => (
-            <button
-              key={type}
-              onClick={() => setBoardType(type)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                boardType === type
-                  ? 'bg-[#C9A046] text-black'
-                  : 'bg-[#22222f] text-gray-400 hover:bg-[#2a2a3a] hover:text-gray-300'
-              }`}
-            >
+          {(Object.keys(BOARD_LABELS) as BoardType[]).map((type) =>
+          <button
+            key={type}
+            onClick={() => setBoardType(type)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+            boardType === type ?
+            'bg-[#C9A046] text-black' :
+            'bg-[#22222f] text-gray-400 hover:bg-[#2a2a3a] hover:text-gray-300'}`
+            }>
+            
               {BOARD_LABELS[type]}
             </button>
-          ))}
+          )}
           <button
             onClick={loadHeatmap}
             disabled={loading}
-            className="px-3 py-1.5 rounded-lg text-xs bg-[#22222f] text-gray-400 hover:text-gray-300 disabled:opacity-40 transition-colors"
-          >
+            className="px-3 py-1.5 rounded-lg text-xs bg-[#22222f] text-gray-400 hover:text-gray-300 disabled:opacity-40 transition-colors">
+            
             {loading ? '⟳' : '↻'}
           </button>
         </div>
@@ -125,56 +125,56 @@ export default function MarketHeatmapPage() {
       {/* Stats */}
       <div className="flex items-center gap-4 text-xs">
         <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-red-500" />
-          上涨 <strong className="text-red-400">{upCount}</strong>
+          <span className="w-2 h-2 rounded-full bg-red-500" />{i18n.t("MarketHeatmapPage.r92_9632")}
+          <strong className="text-red-400">{upCount}</strong>
         </span>
         <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-500" />
-          下跌 <strong className="text-emerald-400">{downCount}</strong>
+          <span className="w-2 h-2 rounded-full bg-emerald-500" />{i18n.t("MarketHeatmapPage.r92_e466")}
+          <strong className="text-emerald-400">{downCount}</strong>
         </span>
         <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-gray-500" />
-          平盘 <strong className="text-gray-400">{flatCount}</strong>
+          <span className="w-2 h-2 rounded-full bg-gray-500" />{i18n.t("MarketHeatmapPage.r92_b59f")}
+          <strong className="text-gray-400">{flatCount}</strong>
         </span>
-        <span className="text-gray-600">共 {sectors.length}{i18n.t('MarketHeatmapPage.k1')}</span>
+        <span className="text-gray-600">{i18n.t("MarketHeatmapPage.r92_ec02")}{sectors.length}{i18n.t('MarketHeatmapPage.k1')}</span>
       </div>
 
       {/* Heatmap Grid */}
-      {loading && sectors.length === 0 ? (
-        <div className="flex items-center justify-center h-64">
+      {loading && sectors.length === 0 ?
+      <div className="flex items-center justify-center h-64">
           <div className="text-gray-500 animate-pulse">{i18n.t('MarketHeatmapPage.k0')}</div>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
-          {sortedSectors.map((sector) => (
-            <div
-              key={sector.code || sector.name}
-              className={`rounded-lg p-3 cursor-pointer transition-transform hover:scale-[1.02] ${getColorClass(
-                sector.changePct
-              )}`}
-              title={`${sector.name}: ${sector.changePct >= 0 ? '+' : ''}${sector.changePct.toFixed(2)}%`}
-            >
+        </div> :
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
+          {sortedSectors.map((sector) =>
+        <div
+          key={sector.code || sector.name}
+          className={`rounded-lg p-3 cursor-pointer transition-transform hover:scale-[1.02] ${getColorClass(
+            sector.changePct
+          )}`}
+          title={`${sector.name}: ${sector.changePct >= 0 ? '+' : ''}${sector.changePct.toFixed(2)}%`}>
+          
               <div className="font-bold text-sm truncate">{sector.name}</div>
               <div className="text-xs opacity-90 mt-0.5">
                 {sector.changePct >= 0 ? '+' : ''}
                 {sector.changePct.toFixed(2)}%
               </div>
-              {sector.leaders && sector.leaders.length > 0 && (
-                <div className="text-[10px] opacity-75 mt-1 truncate">
+              {sector.leaders && sector.leaders.length > 0 &&
+          <div className="text-[10px] opacity-75 mt-1 truncate">
                   {sector.leaders.slice(0, 2).map((l) => l.name).join(', ')}
                 </div>
-              )}
+          }
             </div>
-          ))}
+        )}
         </div>
-      )}
+      }
 
       {/* Leaders Table */}
-      {sortedSectors.length > 0 && (
-        <div className="bg-[#12121a] border border-white/5 rounded-xl overflow-hidden">
-          <div className="px-4 py-3 border-b border-white/5 text-sm font-medium text-white">
-            📈 板块涨幅排行
-          </div>
+      {sortedSectors.length > 0 &&
+      <div className="bg-[#12121a] border border-white/5 rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-white/5 text-sm font-medium text-white">{i18n.t("MarketHeatmapPage.r92_ef0d")}
+
+        </div>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
@@ -187,13 +187,13 @@ export default function MarketHeatmapPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/[0.03]">
-                {sortedSectors.slice(0, 15).map((sector, idx) => (
-                  <tr key={sector.code || sector.name} className="hover:bg-white/[0.02] transition-colors">
+                {sortedSectors.slice(0, 15).map((sector, idx) =>
+              <tr key={sector.code || sector.name} className="hover:bg-white/[0.02] transition-colors">
                     <td className="px-4 py-2.5 text-gray-500">{idx + 1}</td>
                     <td className="px-4 py-2.5 text-gray-200 font-medium">{sector.name}</td>
                     <td className={`px-4 py-2.5 text-right font-mono font-medium ${
-                      sector.changePct > 0 ? 'text-red-400' : sector.changePct < 0 ? 'text-emerald-400' : 'text-gray-400'
-                    }`}>
+                sector.changePct > 0 ? 'text-red-400' : sector.changePct < 0 ? 'text-emerald-400' : 'text-gray-400'}`
+                }>
                       {sector.changePct >= 0 ? '+' : ''}{sector.changePct.toFixed(2)}%
                     </td>
                     <td className="px-4 py-2.5 text-right text-gray-400 font-mono">
@@ -203,61 +203,61 @@ export default function MarketHeatmapPage() {
                       {sector.leaders?.slice(0, 2).map((l) => l.name).join(', ') || '--'}
                     </td>
                   </tr>
-                ))}
+              )}
               </tbody>
             </table>
           </div>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
 
 // ── Demo Data ──────────────────────────────────────────────────────────────
 
 function generateDemoSectors(boardType: BoardType): SectorItem[] {
   const industrySectors = [
-    { name: i18n.t('MarketHeatmapPage.k4'), changePct: 3.24 },
-    { name: i18n.t('MarketHeatmapPage.k5'), changePct: 2.87 },
-    { name: i18n.t('MarketHeatmapPage.k6'), changePct: 1.56 },
-    { name: i18n.t('MarketHeatmapPage.k7'), changePct: 0.98 },
-    { name: i18n.t('MarketHeatmapPage.k8'), changePct: 0.45 },
-    { name: i18n.t('MarketHeatmapPage.k9'), changePct: -0.32 },
-    { name: i18n.t('MarketHeatmapPage.k10'), changePct: -0.78 },
-    { name: i18n.t('MarketHeatmapPage.k11'), changePct: -1.23 },
-    { name: i18n.t('MarketHeatmapPage.k12'), changePct: -1.56 },
-    { name: i18n.t('MarketHeatmapPage.k13'), changePct: -2.10 },
-    { name: i18n.t('MarketHeatmapPage.k14'), changePct: 1.82 },
-    { name: i18n.t('MarketHeatmapPage.k15'), changePct: 0.65 },
-    { name: i18n.t('MarketHeatmapPage.k16'), changePct: 2.15 },
-    { name: i18n.t('MarketHeatmapPage.k17'), changePct: -0.95 },
-    { name: i18n.t('MarketHeatmapPage.k18'), changePct: 0.32 },
-    { name: i18n.t('MarketHeatmapPage.k19'), changePct: 1.45 },
-    { name: i18n.t('MarketHeatmapPage.k20'), changePct: -0.56 },
-    { name: i18n.t('MarketHeatmapPage.k21'), changePct: 0.21 },
-  ];
+  { name: i18n.t('MarketHeatmapPage.k4'), changePct: 3.24 },
+  { name: i18n.t('MarketHeatmapPage.k5'), changePct: 2.87 },
+  { name: i18n.t('MarketHeatmapPage.k6'), changePct: 1.56 },
+  { name: i18n.t('MarketHeatmapPage.k7'), changePct: 0.98 },
+  { name: i18n.t('MarketHeatmapPage.k8'), changePct: 0.45 },
+  { name: i18n.t('MarketHeatmapPage.k9'), changePct: -0.32 },
+  { name: i18n.t('MarketHeatmapPage.k10'), changePct: -0.78 },
+  { name: i18n.t('MarketHeatmapPage.k11'), changePct: -1.23 },
+  { name: i18n.t('MarketHeatmapPage.k12'), changePct: -1.56 },
+  { name: i18n.t('MarketHeatmapPage.k13'), changePct: -2.10 },
+  { name: i18n.t('MarketHeatmapPage.k14'), changePct: 1.82 },
+  { name: i18n.t('MarketHeatmapPage.k15'), changePct: 0.65 },
+  { name: i18n.t('MarketHeatmapPage.k16'), changePct: 2.15 },
+  { name: i18n.t('MarketHeatmapPage.k17'), changePct: -0.95 },
+  { name: i18n.t('MarketHeatmapPage.k18'), changePct: 0.32 },
+  { name: i18n.t('MarketHeatmapPage.k19'), changePct: 1.45 },
+  { name: i18n.t('MarketHeatmapPage.k20'), changePct: -0.56 },
+  { name: i18n.t('MarketHeatmapPage.k21'), changePct: 0.21 }];
+
 
   const conceptSectors = [
-    { name: 'ChatGPT', changePct: 4.12 },
-    { name: i18n.t('MarketHeatmapPage.k22'), changePct: 3.56 },
-    { name: i18n.t('MarketHeatmapPage.k23'), changePct: 2.89 },
-    { name: i18n.t('MarketHeatmapPage.k24'), changePct: 1.92 },
-    { name: i18n.t('MarketHeatmapPage.k25'), changePct: 1.45 },
-    { name: i18n.t('MarketHeatmapPage.k26'), changePct: -0.78 },
-    { name: i18n.t('MarketHeatmapPage.k27'), changePct: -1.23 },
-    { name: i18n.t('MarketHeatmapPage.k28'), changePct: 2.34 },
-  ];
+  { name: 'ChatGPT', changePct: 4.12 },
+  { name: i18n.t('MarketHeatmapPage.k22'), changePct: 3.56 },
+  { name: i18n.t('MarketHeatmapPage.k23'), changePct: 2.89 },
+  { name: i18n.t('MarketHeatmapPage.k24'), changePct: 1.92 },
+  { name: i18n.t('MarketHeatmapPage.k25'), changePct: 1.45 },
+  { name: i18n.t('MarketHeatmapPage.k26'), changePct: -0.78 },
+  { name: i18n.t('MarketHeatmapPage.k27'), changePct: -1.23 },
+  { name: i18n.t('MarketHeatmapPage.k28'), changePct: 2.34 }];
+
 
   const regionSectors = [
-    { name: i18n.t('MarketHeatmapPage.k29'), changePct: 0.85 },
-    { name: i18n.t('MarketHeatmapPage.k30'), changePct: 1.12 },
-    { name: i18n.t('MarketHeatmapPage.k31'), changePct: 0.56 },
-    { name: i18n.t('MarketHeatmapPage.k32'), changePct: 1.45 },
-    { name: i18n.t('MarketHeatmapPage.k33'), changePct: -0.32 },
-    { name: i18n.t('MarketHeatmapPage.k34'), changePct: 0.78 },
-    { name: i18n.t('MarketHeatmapPage.k35'), changePct: -0.45 },
-    { name: i18n.t('MarketHeatmapPage.k36'), changePct: 0.23 },
-  ];
+  { name: i18n.t('MarketHeatmapPage.k29'), changePct: 0.85 },
+  { name: i18n.t('MarketHeatmapPage.k30'), changePct: 1.12 },
+  { name: i18n.t('MarketHeatmapPage.k31'), changePct: 0.56 },
+  { name: i18n.t('MarketHeatmapPage.k32'), changePct: 1.45 },
+  { name: i18n.t('MarketHeatmapPage.k33'), changePct: -0.32 },
+  { name: i18n.t('MarketHeatmapPage.k34'), changePct: 0.78 },
+  { name: i18n.t('MarketHeatmapPage.k35'), changePct: -0.45 },
+  { name: i18n.t('MarketHeatmapPage.k36'), changePct: 0.23 }];
+
 
   const base = boardType === 'concept' ? conceptSectors : boardType === 'region' ? regionSectors : industrySectors;
   return base.map((s, i) => ({
@@ -266,8 +266,8 @@ function generateDemoSectors(boardType: BoardType): SectorItem[] {
     changeAmount: s.changePct * 10,
     marketCap: 500 + Math.random() * 5000,
     leaders: [
-      { name: `${i18n.t('MarketHeatmapPage.k2')}${i}A`, code: `00${i.toString().padStart(3, '0')}`, changePct: s.changePct + 1 },
-      { name: `${i18n.t('MarketHeatmapPage.k3')}${i}B`, code: `00${(i + 1).toString().padStart(3, '0')}`, changePct: s.changePct + 0.5 },
-    ],
+    { name: `${i18n.t('MarketHeatmapPage.k2')}${i}A`, code: `00${i.toString().padStart(3, '0')}`, changePct: s.changePct + 1 },
+    { name: `${i18n.t('MarketHeatmapPage.k3')}${i}B`, code: `00${(i + 1).toString().padStart(3, '0')}`, changePct: s.changePct + 0.5 }]
+
   }));
 }

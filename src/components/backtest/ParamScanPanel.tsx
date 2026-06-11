@@ -9,7 +9,7 @@ void EngineError; // [EngineError:SYSTEM] structured error tracking
 interface ParamSweepConfig {
   klines: any[];
   baseConfig: any;
-  paramRanges: Record<string, { min: number; max: number; step: number }>;
+  paramRanges: Record<string, {min: number;max: number;step: number;}>;
 }
 
 interface ParamResult {
@@ -79,95 +79,95 @@ export default function ParamScanPanel({ result, loading }: ParamScanPanelProps)
   const xVals = [...new Set(heatmap.map((c) => c.x))].sort((a, b) => a - b);
   const yVals = [...new Set(heatmap.map((c) => c.y))].sort((a, b) => a - b);
 
-  const top10 = [...displayResults]
-    .sort((a, b) => b.sharpeRatio - a.sharpeRatio)
-    .slice(0, 10);
+  const top10 = [...displayResults].
+  sort((a, b) => b.sharpeRatio - a.sharpeRatio).
+  slice(0, 10);
 
   function getColor(value: number): string {
     const ratio = (value - minSharpe) / range;
-    return ratio > 0.66 ? `rgb(${Math.round(34)},${Math.round(197)},${Math.round(94)})`
-      : ratio > 0.33 ? `rgb(${Math.round(201)},${Math.round(160)},${Math.round(70)})`
-      : `rgb(${Math.round(239)},${Math.round(68)},${Math.round(68)})`;
+    return ratio > 0.66 ? `rgb(${Math.round(34)},${Math.round(197)},${Math.round(94)})` :
+    ratio > 0.33 ? `rgb(${Math.round(201)},${Math.round(160)},${Math.round(70)})` :
+    `rgb(${Math.round(239)},${Math.round(68)},${Math.round(68)})`;
   }
 
   if (!result) {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-white font-semibold text-sm">🔬 参数扫描</h3>
+          <h3 className="text-white font-semibold text-sm">{i18n.t("ParamScanPanel.r92_4024")}</h3>
         </div>
-        <div className="text-center py-8 text-gray-500 text-sm">
-          点击上方「参数扫描」按钮开始分析
+        <div className="text-center py-8 text-gray-500 text-sm">{i18n.t("ParamScanPanel.r92_8647")}
+
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-white font-semibold text-sm">🔬 参数扫描</h3>
+        <h3 className="text-white font-semibold text-sm">{i18n.t("ParamScanPanel.r92_0de1")}</h3>
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-1.5 text-xs text-gray-400">
             <input
               type="checkbox"
               checked={showRobustOnly}
               onChange={(e) => setShowRobustOnly(e.target.checked)}
-              className="rounded"
-            />
-            仅稳健参数
+              className="rounded" />{i18n.t("ParamScanPanel.r92_73e3")}
+
+
           </label>
         </div>
       </div>
 
-      {loading ? (
-        <div className="text-center py-8 text-gray-500 text-sm">{i18n.t('ParamScanPanel.k0')}</div>
-      ) : (
-        <>
+      {loading ?
+      <div className="text-center py-8 text-gray-500 text-sm">{i18n.t('ParamScanPanel.k0')}</div> :
+
+      <>
           {/* Heatmap */}
-          {xVals.length > 0 && (
-            <div className="mb-4 overflow-x-auto">
+          {xVals.length > 0 &&
+        <div className="mb-4 overflow-x-auto">
               <div className="text-[10px] text-gray-500 mb-1">{paramY} →</div>
               <div className="flex">
                 <div className="flex flex-col justify-around text-[10px] text-gray-500 pr-2">
-                  {yVals.map((y, i) => (
-                    <span key={i}>{y}</span>
-                  ))}
+                  {yVals.map((y, i) =>
+              <span key={i}>{y}</span>
+              )}
                 </div>
                 <div
-                  className="grid gap-0.5"
-                  style={{ gridTemplateColumns: `repeat(${xVals.length}, 28px)` }}
-                >
+              className="grid gap-0.5"
+              style={{ gridTemplateColumns: `repeat(${xVals.length}, 28px)` }}>
+              
                   {yVals.slice().reverse().map((y) =>
-                    xVals.map((x) => {
-                      const cell = heatmap.find((c) => c.x === x && c.y === y);
-                      if (!cell) return <div key={`${x}-${y}`} className="w-7 h-7 bg-[#12121a] rounded" />;
-                      if (showRobustOnly && !cell.isRobust) return <div key={`${x}-${y}`} className="w-7 h-7 bg-[#12121a] rounded opacity-20" />;
-                      return (
-                        <div
-                          key={`${x}-${y}`}
-                          className="w-7 h-7 rounded relative cursor-pointer transition-transform hover:scale-110"
-                          style={{ backgroundColor: getColor(cell.value) }}
-                          onMouseEnter={() => setHoveredCell(cell)}
-                          onMouseLeave={() => setHoveredCell(null)}
-                        >
-                          {cell.isRobust && (
-                            <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-[#D4A853] rounded-full ring-1 ring-black/30" />
-                          )}
-                        </div>
-                      );
-                    })
-                  )}
+              xVals.map((x) => {
+                const cell = heatmap.find((c) => c.x === x && c.y === y);
+                if (!cell) return <div key={`${x}-${y}`} className="w-7 h-7 bg-[#12121a] rounded" />;
+                if (showRobustOnly && !cell.isRobust) return <div key={`${x}-${y}`} className="w-7 h-7 bg-[#12121a] rounded opacity-20" />;
+                return (
+                  <div
+                    key={`${x}-${y}`}
+                    className="w-7 h-7 rounded relative cursor-pointer transition-transform hover:scale-110"
+                    style={{ backgroundColor: getColor(cell.value) }}
+                    onMouseEnter={() => setHoveredCell(cell)}
+                    onMouseLeave={() => setHoveredCell(null)}>
+                    
+                          {cell.isRobust &&
+                    <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-[#D4A853] rounded-full ring-1 ring-black/30" />
+                    }
+                        </div>);
+
+              })
+              )}
                 </div>
               </div>
               <div className="text-[10px] text-gray-500 mt-1 ml-6 flex" style={{ width: xVals.length * 28 }}>
-                {xVals.map((x, i) => (
-                  <span key={i} className="w-7 text-center">{x}</span>
-                ))}
+                {xVals.map((x, i) =>
+            <span key={i} className="w-7 text-center">{x}</span>
+            )}
                 <span className="ml-1">{paramX} →</span>
               </div>
             </div>
-          )}
+        }
 
           {/* Legend */}
           <div className="flex items-center gap-4 mb-4 text-[10px]">
@@ -190,46 +190,46 @@ export default function ParamScanPanel({ result, loading }: ParamScanPanelProps)
           </div>
 
           {/* Hover tooltip */}
-          {hoveredCell && (
-            <div className="bg-[#12121a] border border-white/10 rounded-lg p-3 mb-4 text-xs">
+          {hoveredCell &&
+        <div className="bg-[#12121a] border border-white/10 rounded-lg p-3 mb-4 text-xs">
               <div className="text-gray-400 mb-1">{i18n.t('ParamScanPanel.k5')}</div>
               <div className="grid grid-cols-2 gap-1">
-                {Object.entries(hoveredCell.params).map(([k, v]) => (
-                  <div key={k} className="text-gray-200"><span className="text-gray-500">{k}:</span> {v}</div>
-                ))}
+                {Object.entries(hoveredCell.params).map(([k, v]) =>
+            <div key={k} className="text-gray-200"><span className="text-gray-500">{k}:</span> {v}</div>
+            )}
               </div>
-              <div className="mt-2 text-[#D4A853]">
-                夏普 {hoveredCell.value.toFixed(2)}{hoveredCell.isRobust ? i18n.t('ParamScanPanel.k1') : ''}
+              <div className="mt-2 text-[#D4A853]">{i18n.t("ParamScanPanel.r92_c3ef")}
+            {hoveredCell.value.toFixed(2)}{hoveredCell.isRobust ? i18n.t('ParamScanPanel.k1') : ''}
               </div>
             </div>
-          )}
+        }
 
           {/* Top 10 */}
-          {top10.length > 0 && (
-            <div>
-              <div className="text-gray-400 text-[11px] font-medium mb-2">🏆 最优参数 Top 10</div>
+          {top10.length > 0 &&
+        <div>
+              <div className="text-gray-400 text-[11px] font-medium mb-2">{i18n.t("ParamScanPanel.r92_8941")}</div>
               <div className="space-y-1 max-h-48 overflow-y-auto">
-                {top10.map((r, i) => (
-                  <div key={i} className="flex items-center gap-2 bg-[#12121a] rounded-lg px-3 py-2 text-xs">
+                {top10.map((r, i) =>
+            <div key={i} className="flex items-center gap-2 bg-[#12121a] rounded-lg px-3 py-2 text-xs">
                     <span className={`font-mono font-bold ${i < 3 ? 'text-[#D4A853]' : 'text-gray-500'}`}>
                       #{i + 1}
                     </span>
                     <div className="flex-1 flex gap-2">
-                      {Object.entries(r.params).map(([k, v]) => (
-                        <span key={k} className="text-gray-300">{k}={v}</span>
-                      ))}
+                      {Object.entries(r.params).map(([k, v]) =>
+                <span key={k} className="text-gray-300">{k}={v}</span>
+                )}
                     </div>
-                    <span className={`font-mono ${r.sharpeRatio > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                      夏普 {r.sharpeRatio.toFixed(2)}
+                    <span className={`font-mono ${r.sharpeRatio > 0 ? 'text-emerald-400' : 'text-red-400'}`}>{i18n.t("ParamScanPanel.r92_83d0")}
+                {r.sharpeRatio.toFixed(2)}
                     </span>
                     <span className="text-gray-500">{i18n.t('ParamScanPanel.k0')}{r.totalReturn.toFixed(1)}%</span>
                   </div>
-                ))}
+            )}
               </div>
             </div>
-          )}
+        }
         </>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }

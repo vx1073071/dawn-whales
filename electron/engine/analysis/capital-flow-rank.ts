@@ -13,30 +13,30 @@ import { EngineError } from '../core/engine-error';
 // ── Types ──────────────────────────────────────────────────────────────────
 
 export interface StockCapitalFlow {
-  code: string;            // 股票代码
-  name: string;            // 股票名称
-  close: number;           // 收盘价
+  code: string;
+  name: string;
+  close: number;
   changePct: number;       // price change % %
-  mainNetInflow: number;   // major player净流入 (万元)
-  superLargeIn: number;    // 超大单净流入
-  largeIn: number;         // 大单净流入
-  mediumIn: number;        // 中单净流入
-  smallIn: number;         // 小单净流入
-  mainNetRatio: number;    // major player净流入占比 %
-  turnover: number;        // turnover (万元)
+  mainNetInflow: number;   // major player ()
+  superLargeIn: number;
+  largeIn: number;
+  mediumIn: number;
+  smallIn: number;
+  mainNetRatio: number;    // major player %
+  turnover: number;        // turnover ()
 }
 
 export interface SectorCapitalFlow {
-  code: string;            // sector代码
-  name: string;            // sector名称
+  code: string;            // sector
+  name: string;            // sector
   changePct: number;       // price change % %
-  mainNetInflow: number;   // major player净流入 (万元)
-  superLargeIn: number;    // 超大单净流入
-  largeIn: number;         // 大单净流入
-  mediumIn: number;        // 中单净流入
-  smallIn: number;         // 小单净流入
-  leadingStock: string;    // 领涨股名称
-  leadingChangePct: number; // 领涨股涨幅 %
+  mainNetInflow: number;   // major player ()
+  superLargeIn: number;
+  largeIn: number;
+  mediumIn: number;
+  smallIn: number;
+  leadingStock: string;
+  leadingChangePct: number; // %
 }
 
 export interface CapitalFlowRankResult {

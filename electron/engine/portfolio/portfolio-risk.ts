@@ -15,17 +15,17 @@ import { EngineError } from '../core/engine-error';
 export interface PortfolioPosition {
   code: string;
   name: string;
-  shares: number;          // 持有股数
-  avgCost: number;         // 平均成本
-  currentPrice: number;    // current价格
+  shares: number;
+  avgCost: number;
+  currentPrice: number;    // current
   weight?: number;         // weight (optional, will be calculated)
-  sector?: string;         // 所属sector
+  sector?: string;         // sector
 }
 
 export interface PortfolioRiskRequest {
   positions: PortfolioPosition[];
-  riskFreeRate?: number;   // 无风险利率 (default 2.5%)
-  benchmarkCode?: string;  // 基准index代码
+  riskFreeRate?: number;   // (default 2.5%)
+  benchmarkCode?: string;  // index
   includeConcentration?: boolean;
   includeCorrelation?: boolean;
   includeSentiment?: boolean;
@@ -38,36 +38,36 @@ export interface PortfolioRiskReport {
   // Portfolio overview
   overview: {
     totalValue: number;        // total market cap
-    totalCost: number;         // 总成本
-    totalPnl: number;          // 总盈亏
-    totalPnlPct: number;       // 总盈亏比例 %
-    positionCount: number;     // position/holding数
-    topWeight: number;         // 最大position/holdingweight %
+    totalCost: number;
+    totalPnl: number;
+    totalPnlPct: number;       // %
+    positionCount: number;     // position/holding
+    topWeight: number;         // position/holdingweight %
   };
 
   // Concentration risk
   concentration: {
     hhi: number;               // Herfindahl-Hirschman Index (0-10000)
     hhiGrade: 'low' | 'medium' | 'high' | 'very_high';
-    top3Weight: number;        // 前3大position/holdingweight %
-    top5Weight: number;        // 前5大position/holdingweight %
-    sectorConcentration: Record<string, number>; // sector分布
+    top3Weight: number;        // 3position/holdingweight %
+    top5Weight: number;        // 5position/holdingweight %
+    sectorConcentration: Record<string, number>; // sector
     risk: string;
   };
 
   // Correlation risk
   correlation: {
-    avgCorrelation: number;    // 平均相关性
-    maxCorrelation: number;    // 最大相关性
-    minCorrelation: number;    // 最小相关性
-    diversificationScore: number; // 分散化评分 0-100
+    avgCorrelation: number;
+    maxCorrelation: number;
+    minCorrelation: number;
+    diversificationScore: number; // 0-100
     highCorrPairs: { codeA: string; codeB: string; corr: number }[];
     risk: string;
   };
 
   // Market risk
   marketRisk: {
-    sentimentScore: number;    // 市场情绪 0-100
+    sentimentScore: number;    // 0-100
     sentimentLevel: string;
     sentimentSignal: string;
     sectorRotationRisk: string;

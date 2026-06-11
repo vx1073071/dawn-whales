@@ -22,8 +22,8 @@ interface FactorExposureResult {
   totalPnL: number;
   explainedPnL: number;
   factors: FactorData[];
-  monthlyResiduals: { month: string; residual: number }[];
-  factorCorrelation: { factor1: string; factor2: string; correlation: number }[];
+  monthlyResiduals: {month: string;residual: number;}[];
+  factorCorrelation: {factor1: string;factor2: string;correlation: number;}[];
 }
 
 const MOCK_DATA: FactorExposureResult = {
@@ -33,36 +33,36 @@ const MOCK_DATA: FactorExposureResult = {
   totalPnL: 15280,
   explainedPnL: 12030,
   factors: [
-    { factor: 'MKT', name: i18n.t('FactorExposurePage.k2'), exposure: 0.85, contribution: 6800, tStat: 4.52, pValue: 0.0001, significance: '***' },
-    { factor: 'SMB', name: i18n.t('FactorExposurePage.k3'), exposure: 0.35, contribution: 1200, tStat: 2.18, pValue: 0.032, significance: '*' },
-    { factor: 'HML', name: i18n.t('FactorExposurePage.k4'), exposure: -0.15, contribution: -450, tStat: -1.05, pValue: 0.298, significance: 'ns' },
-    { factor: 'RMW', name: i18n.t('FactorExposurePage.k5'), exposure: 0.22, contribution: 850, tStat: 1.85, pValue: 0.068, significance: '*' },
-    { factor: 'CMA', name: i18n.t('FactorExposurePage.k6'), exposure: 0.08, contribution: 180, tStat: 0.62, pValue: 0.538, significance: 'ns' },
-    { factor: 'MOM', name: i18n.t('FactorExposurePage.k7'), exposure: 0.65, contribution: 5200, tStat: 5.12, pValue: 0.00001, significance: '***' },
-    { factor: 'LOWVOL', name: i18n.t('FactorExposurePage.k8'), exposure: -0.25, contribution: -680, tStat: -1.42, pValue: 0.158, significance: 'ns' },
-    { factor: 'QUAL', name: i18n.t('FactorExposurePage.k9'), exposure: 0.18, contribution: 930, tStat: 1.68, pValue: 0.096, significance: '*' },
-  ],
+  { factor: 'MKT', name: i18n.t('FactorExposurePage.k2'), exposure: 0.85, contribution: 6800, tStat: 4.52, pValue: 0.0001, significance: '***' },
+  { factor: 'SMB', name: i18n.t('FactorExposurePage.k3'), exposure: 0.35, contribution: 1200, tStat: 2.18, pValue: 0.032, significance: '*' },
+  { factor: 'HML', name: i18n.t('FactorExposurePage.k4'), exposure: -0.15, contribution: -450, tStat: -1.05, pValue: 0.298, significance: 'ns' },
+  { factor: 'RMW', name: i18n.t('FactorExposurePage.k5'), exposure: 0.22, contribution: 850, tStat: 1.85, pValue: 0.068, significance: '*' },
+  { factor: 'CMA', name: i18n.t('FactorExposurePage.k6'), exposure: 0.08, contribution: 180, tStat: 0.62, pValue: 0.538, significance: 'ns' },
+  { factor: 'MOM', name: i18n.t('FactorExposurePage.k7'), exposure: 0.65, contribution: 5200, tStat: 5.12, pValue: 0.00001, significance: '***' },
+  { factor: 'LOWVOL', name: i18n.t('FactorExposurePage.k8'), exposure: -0.25, contribution: -680, tStat: -1.42, pValue: 0.158, significance: 'ns' },
+  { factor: 'QUAL', name: i18n.t('FactorExposurePage.k9'), exposure: 0.18, contribution: 930, tStat: 1.68, pValue: 0.096, significance: '*' }],
+
   monthlyResiduals: [
-    { month: i18n.t('FactorExposurePage.k10'), residual: 320 },
-    { month: i18n.t('FactorExposurePage.k11'), residual: -150 },
-    { month: i18n.t('FactorExposurePage.k12'), residual: 480 },
-    { month: i18n.t('FactorExposurePage.k13'), residual: 210 },
-    { month: i18n.t('FactorExposurePage.k14'), residual: -80 },
-    { month: i18n.t('FactorExposurePage.k15'), residual: 350 },
-    { month: i18n.t('FactorExposurePage.k16'), residual: 120 },
-    { month: i18n.t('FactorExposurePage.k17'), residual: 290 },
-    { month: i18n.t('FactorExposurePage.k18'), residual: -210 },
-    { month: i18n.t('FactorExposurePage.k19'), residual: 420 },
-    { month: i18n.t('FactorExposurePage.k20'), residual: 180 },
-    { month: i18n.t('FactorExposurePage.k21'), residual: 320 },
-  ],
+  { month: i18n.t('FactorExposurePage.k10'), residual: 320 },
+  { month: i18n.t('FactorExposurePage.k11'), residual: -150 },
+  { month: i18n.t('FactorExposurePage.k12'), residual: 480 },
+  { month: i18n.t('FactorExposurePage.k13'), residual: 210 },
+  { month: i18n.t('FactorExposurePage.k14'), residual: -80 },
+  { month: i18n.t('FactorExposurePage.k15'), residual: 350 },
+  { month: i18n.t('FactorExposurePage.k16'), residual: 120 },
+  { month: i18n.t('FactorExposurePage.k17'), residual: 290 },
+  { month: i18n.t('FactorExposurePage.k18'), residual: -210 },
+  { month: i18n.t('FactorExposurePage.k19'), residual: 420 },
+  { month: i18n.t('FactorExposurePage.k20'), residual: 180 },
+  { month: i18n.t('FactorExposurePage.k21'), residual: 320 }],
+
   factorCorrelation: [
-    { factor1: 'MKT', factor2: 'MOM', correlation: 0.65 },
-    { factor1: 'MKT', factor2: 'SMB', correlation: 0.35 },
-    { factor1: 'HML', factor2: 'RMW', correlation: 0.42 },
-    { factor1: 'LOWVOL', factor2: 'QUAL', correlation: 0.28 },
-    { factor1: 'MOM', factor2: 'QUAL', correlation: 0.38 },
-  ],
+  { factor1: 'MKT', factor2: 'MOM', correlation: 0.65 },
+  { factor1: 'MKT', factor2: 'SMB', correlation: 0.35 },
+  { factor1: 'HML', factor2: 'RMW', correlation: 0.42 },
+  { factor1: 'LOWVOL', factor2: 'QUAL', correlation: 0.28 },
+  { factor1: 'MOM', factor2: 'QUAL', correlation: 0.38 }]
+
 };
 
 export default function FactorExposurePage() {
@@ -74,14 +74,14 @@ export default function FactorExposurePage() {
   async function load() {
     setLoading(true);
     try {
+
+
       // const res = await getFactorExposure();
       // if (res?.success) setData(res.data);
-    } catch (e) { console.error('[Error:FactorExposurePage]', e); }
-    void EngineError; // [SYSTEM] structured error tracking
-    setLoading(false);
-  }
+    } catch (e) {console.error('[Error:FactorExposurePage]', e);}void EngineError; // [SYSTEM] structured error tracking
+    setLoading(false);}
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {load();}, []);
 
   // Factor radar
   useEffect(() => {
@@ -92,23 +92,23 @@ export default function FactorExposurePage() {
     chart.setOption({
       backgroundColor: 'transparent',
       radar: {
-        indicator: data.factors.map(f => ({ name: f.name, max: 1 })),
+        indicator: data.factors.map((f) => ({ name: f.name, max: 1 })),
         radius: '60%',
         axisName: { color: '#9ca3af', fontSize: 10 },
         splitArea: { areaStyle: { color: ['rgba(255,255,255,0.02)', 'rgba(255,255,255,0.04)'] } },
         axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
       },
       series: [{
         type: 'radar',
         data: [{
-          value: data.factors.map(f => Math.abs(f.exposure)),
+          value: data.factors.map((f) => Math.abs(f.exposure)),
           name: i18n.t('FactorExposurePage.k22'),
           areaStyle: { color: 'rgba(201,160,70,0.2)' },
           lineStyle: { color: '#C9A046', width: 2 },
-          itemStyle: { color: '#C9A046' },
-        }],
-      }],
+          itemStyle: { color: '#C9A046' }
+        }]
+      }]
     });
 
     return () => chart.dispose();
@@ -125,16 +125,16 @@ export default function FactorExposurePage() {
       tooltip: { trigger: 'axis', backgroundColor: '#1a1a25', borderColor: 'rgba(255,255,255,0.1)', textStyle: { color: '#e5e7eb' } },
       grid: { left: 80, right: 20, top: 20, bottom: 30 },
       xAxis: { type: 'value', axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#6b7280', fontSize: 10, formatter: '${value}' }, splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } } },
-      yAxis: { type: 'category', data: data.factors.map(f => f.name).reverse(), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#9ca3af', fontSize: 10 } },
+      yAxis: { type: 'category', data: data.factors.map((f) => f.name).reverse(), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#9ca3af', fontSize: 10 } },
       series: [{
         type: 'bar',
-        data: [...data.factors].reverse().map(f => ({
+        data: [...data.factors].reverse().map((f) => ({
           value: f.contribution,
-          itemStyle: { color: f.contribution >= 0 ? '#ef4444' : '#10b981' },
+          itemStyle: { color: f.contribution >= 0 ? '#ef4444' : '#10b981' }
         })),
         barWidth: '60%',
-        label: { show: true, position: 'right', color: '#e5e7eb', fontSize: 10, formatter: (p: Record<string, unknown>) => `$${p.value}` },
-      }],
+        label: { show: true, position: 'right', color: '#e5e7eb', fontSize: 10, formatter: (p: Record<string, unknown>) => `$${p.value}` }
+      }]
     });
 
     return () => chart.dispose();
@@ -150,16 +150,16 @@ export default function FactorExposurePage() {
       backgroundColor: 'transparent',
       tooltip: { trigger: 'axis', backgroundColor: '#1a1a25', borderColor: 'rgba(255,255,255,0.1)', textStyle: { color: '#e5e7eb' } },
       grid: { left: 50, right: 20, top: 20, bottom: 30 },
-      xAxis: { type: 'category', data: data.monthlyResiduals.map(r => r.month), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#6b7280', fontSize: 10 } },
+      xAxis: { type: 'category', data: data.monthlyResiduals.map((r) => r.month), axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#6b7280', fontSize: 10 } },
       yAxis: { type: 'value', axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#6b7280', fontSize: 10, formatter: '${value}' }, splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } } },
       series: [{
         type: 'bar',
-        data: data.monthlyResiduals.map(r => ({
+        data: data.monthlyResiduals.map((r) => ({
           value: r.residual,
-          itemStyle: { color: r.residual >= 0 ? '#ef4444' : '#10b981' },
+          itemStyle: { color: r.residual >= 0 ? '#ef4444' : '#10b981' }
         })),
-        barWidth: '50%',
-      }],
+        barWidth: '50%'
+      }]
     });
 
     return () => chart.dispose();
@@ -171,37 +171,37 @@ export default function FactorExposurePage() {
     <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">🧬 因子敞口分析</h1>
-          <p className="text-gray-400 text-sm">{data.strategyName} · 多因子归因模型</p>
+          <h1 className="text-2xl font-bold text-white mb-1">{i18n.t("FactorExposurePage.r92_9fd5")}</h1>
+          <p className="text-gray-400 text-sm">{data.strategyName}{i18n.t("FactorExposurePage.r92_04dc")}</p>
         </div>
         <button
           onClick={load}
-          className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-2 rounded-lg transition-colors"
-        >
-          刷新分析
+          className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-2 rounded-lg transition-colors">{i18n.t("FactorExposurePage.r92_ae2e")}
+
+
         </button>
       </div>
 
       {/* Model Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">R² 拟合度</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t("FactorExposurePage.r92_9136")}</div>
           <div className="text-xl font-bold font-mono text-white">{(data.rSquared * 100).toFixed(1)}%</div>
           <div className="w-full bg-white/5 rounded-full h-1.5 mt-2">
             <div className="bg-[#C9A046] h-1.5 rounded-full" style={{ width: `${data.rSquared * 100}%` }} />
           </div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">总 P&L</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t("FactorExposurePage.r92_126e")}</div>
           <div className="text-xl font-bold font-mono text-red-400">+${data.totalPnL.toLocaleString()}</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">因子解释 P&L</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t("FactorExposurePage.r92_a1ba")}</div>
           <div className="text-xl font-bold font-mono text-[#D4A853]">${data.explainedPnL.toLocaleString()}</div>
           <div className="text-xs text-gray-500">{(data.explainedPnL / data.totalPnL * 100).toFixed(1)}%</div>
         </div>
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <div className="text-xs text-gray-500 mb-1">残差 P&L</div>
+          <div className="text-xs text-gray-500 mb-1">{i18n.t("FactorExposurePage.r92_3e92")}</div>
           <div className={`text-xl font-bold font-mono ${data.residualPnL >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
             {data.residualPnL >= 0 ? '+' : ''}${data.residualPnL.toLocaleString()}
           </div>
@@ -232,14 +232,14 @@ export default function FactorExposurePage() {
                 <th className="px-4 py-3 text-left">{t("components.factor")}</th>
                 <th className="px-4 py-3 text-right">{i18n.t('FactorExposurePage.k3')}</th>
                 <th className="px-4 py-3 text-right">{i18n.t('FactorExposurePage.k4')}</th>
-                <th className="px-4 py-3 text-right">t 统计量</th>
-                <th className="px-4 py-3 text-right">p 值</th>
+                <th className="px-4 py-3 text-right">{i18n.t("FactorExposurePage.r92_e6bb")}</th>
+                <th className="px-4 py-3 text-right">{i18n.t("FactorExposurePage.r92_ca0c")}</th>
                 <th className="px-4 py-3 text-center">{i18n.t('FactorExposurePage.k5')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {data.factors.map((f) => (
-                <tr key={f.factor} className="hover:bg-white/[0.02]">
+              {data.factors.map((f) =>
+              <tr key={f.factor} className="hover:bg-white/[0.02]">
                   <td className="px-4 py-3">
                     <div className="font-medium text-white">{f.name}</div>
                     <div className="text-[10px] text-gray-500">{f.factor}</div>
@@ -252,16 +252,16 @@ export default function FactorExposurePage() {
                   <td className="px-4 py-3 text-right font-mono text-gray-300">{f.pValue.toFixed(4)}</td>
                   <td className="px-4 py-3 text-center">
                     <span className={`text-xs font-bold ${
-                      f.significance === '***' ? 'text-red-400' :
-                      f.significance === '**' ? 'text-orange-400' :
-                      f.significance === '*' ? 'text-yellow-400' :
-                      'text-gray-500'
-                    }`}>
+                  f.significance === '***' ? 'text-red-400' :
+                  f.significance === '**' ? 'text-orange-400' :
+                  f.significance === '*' ? 'text-yellow-400' :
+                  'text-gray-500'}`
+                  }>
                       {f.significance}
                     </span>
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
@@ -277,16 +277,16 @@ export default function FactorExposurePage() {
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
         <h2 className="text-sm font-semibold text-white mb-4">{i18n.t('FactorExposurePage.k7')}</h2>
         <div className="flex flex-wrap gap-3">
-          {data.factorCorrelation.map((c, idx) => (
-            <div key={idx} className="bg-deep rounded-lg px-3 py-2">
+          {data.factorCorrelation.map((c, idx) =>
+          <div key={idx} className="bg-deep rounded-lg px-3 py-2">
               <div className="text-xs text-gray-400">{c.factor1} ↔ {c.factor2}</div>
               <div className={`text-sm font-mono font-bold ${c.correlation > 0.5 ? 'text-red-400' : c.correlation > 0.3 ? 'text-yellow-400' : 'text-gray-300'}`}>
                 {c.correlation.toFixed(2)}
               </div>
             </div>
-          ))}
+          )}
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

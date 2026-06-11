@@ -23,9 +23,9 @@ export interface FractionalOrder {
   symbol: string;
   market: 'HK' | 'US' | 'CN';
   direction: 'BUY' | 'SELL';
-  totalQty: number;        // includes fractional part
-  wholeLots: number;       // integer lots
-  fractionalQty: number;   // fractional remainder
+  totalQty: number; // includes fractional part
+  wholeLots: number; // integer lots
+  fractionalQty: number; // fractional remainder
   price: number;
   filledQty: number;
   remainingQty: number;
@@ -68,33 +68,33 @@ export interface FractionalTradePanelProps {
 // ── Market Rules ────────────────────────────────────────────────────────
 
 const MARKET_RULES: MarketRule[] = [
-  { market: 'US', flag: '🇺🇸', currency: 'USD', lotSize: 1, minFractional: 0.01, fractionalStep: 0.01, fractionalLabel: i18n.t('FractionalTradePanel.k1'), commissionPct: 0.0049, minCommission: 0.99, stampPct: 0.0008 },
-  { market: 'HK', flag: '🇭🇰', currency: 'HKD', lotSize: 100, minFractional: 1, fractionalStep: 1, fractionalLabel: i18n.t('FractionalTradePanel.k2'), commissionPct: 0.03, minCommission: 3, stampPct: 0.13 },
+{ market: 'US', flag: '🇺🇸', currency: 'USD', lotSize: 1, minFractional: 0.01, fractionalStep: 0.01, fractionalLabel: i18n.t('FractionalTradePanel.k1'), commissionPct: 0.0049, minCommission: 0.99, stampPct: 0.0008 },
+{ market: 'HK', flag: '🇭🇰', currency: 'HKD', lotSize: 100, minFractional: 1, fractionalStep: 1, fractionalLabel: i18n.t('FractionalTradePanel.k2'), commissionPct: 0.03, minCommission: 3, stampPct: 0.13 }];
 
-];
+
 
 // ── Mock Order ──────────────────────────────────────────────────────────
 
 const mockPartialFills: PartialFillRecord[] = [
-  { time: '09:32:15', qty: 100, price: 195.20, fee: 0.49 },
-  { time: '09:32:48', qty: 100, price: 195.15, fee: 0.49 },
-  { time: '09:33:21', qty: 63, price: 195.30, fee: 0.32 },
-];
+{ time: '09:32:15', qty: 100, price: 195.20, fee: 0.49 },
+{ time: '09:32:48', qty: 100, price: 195.15, fee: 0.49 },
+{ time: '09:33:21', qty: 63, price: 195.30, fee: 0.32 }];
+
 
 const mockActiveOrder: FractionalOrder = {
   symbol: 'AAPL', market: 'US', direction: 'BUY',
   totalQty: 263.5, wholeLots: 263, fractionalQty: 0.50,
   price: 195.25, filledQty: 263, remainingQty: 0.5,
   status: 'partial', avgFillPrice: 195.22, commission: 1.30,
-  partialFills: mockPartialFills,
+  partialFills: mockPartialFills
 };
 
 // ── Sub-components ──────────────────────────────────────────────────────
 
-function FillProgressBar({ filled, total, status }: { filled: number; total: number; status: string }) {
+function FillProgressBar({ filled, total, status }: {filled: number;total: number;status: string;}) {
   const { t: _t } = useTranslation();
 
-  const pct = Math.min(100, (filled / total) * 100);
+  const pct = Math.min(100, filled / total * 100);
   const color = status === 'filled' ? '#4ade80' : status === 'partial' ? '#fbbf24' : status === 'cancelled' ? '#ef4444' : '#475569';
   return (
     <div>
@@ -106,8 +106,8 @@ function FillProgressBar({ filled, total, status }: { filled: number; total: num
       <div className="h-2 bg-white/[0.04] rounded-full overflow-hidden">
         <div className="h-full rounded-full transition-all duration-700" style={{ width: `${pct}%`, background: color }} />
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Main Component ──────────────────────────────────────────────────────
@@ -119,7 +119,7 @@ export default function FractionalTradePanel({
   onOrder,
   onCancel,
   activeOrder: propOrder,
-  className = '',
+  className = ''
 }: FractionalTradePanelProps) {
   const [symbol, setSymbol] = useState(propSymbol ?? 'AAPL');
   const [market, setMarket] = useState<'HK' | 'US' | 'CN'>(propMarket ?? 'US');
@@ -130,7 +130,7 @@ export default function FractionalTradePanel({
   const [activeOrder, setActiveOrder] = useState<FractionalOrder | null>(propOrder ?? mockActiveOrder);
   const [hasActiveOrder, setHasActiveOrder] = useState(!!(propOrder ?? true));
 
-  const rule = useMemo(() => MARKET_RULES.find(r => r.market === market)!, [market]);
+  const rule = useMemo(() => MARKET_RULES.find((r) => r.market === market)!, [market]);
 
   const totalQty = wholeLots + fractionalQty;
   const notional = totalQty * price;
@@ -143,7 +143,7 @@ export default function FractionalTradePanel({
       symbol, market, direction,
       totalQty, wholeLots, fractionalQty, price,
       filledQty: 0, remainingQty: totalQty,
-      status: 'pending', avgFillPrice: 0, commission: 0, partialFills: [],
+      status: 'pending', avgFillPrice: 0, commission: 0, partialFills: []
     };
     setActiveOrder(order);
     setHasActiveOrder(true);
@@ -151,7 +151,7 @@ export default function FractionalTradePanel({
   }, [symbol, market, direction, totalQty, wholeLots, fractionalQty, price, onOrder]);
 
   const handleCancel = useCallback(() => {
-    setActiveOrder(prev => prev ? { ...prev, status: 'cancelled' } : null);
+    setActiveOrder((prev) => prev ? { ...prev, status: 'cancelled' } : null);
     onCancel?.();
   }, [onCancel]);
 
@@ -160,67 +160,67 @@ export default function FractionalTradePanel({
       {/* Header */}
       <div className="p-5 border-b border-white/5">
         <h2 className="text-xl font-bold">{i18n.t('FractionalTradePanel.k0')}</h2>
-        <p className="text-gray-500 text-xs mt-0.5">美股碎股(0.01-1.00) · 部分成交跟踪</p>
+        <p className="text-gray-500 text-xs mt-0.5">{i18n.t("FractionalTradePanel.r92_75ce")}</p>
       </div>
 
       <div className="flex-1 overflow-y-auto p-5 space-y-5">
         {/* ── Market Selector ──────────────────────────────────────────── */}
         <div className="flex gap-2">
-          {MARKET_RULES.map(r => (
-            <button key={r.market} onClick={() => setMarket(r.market as 'HK' | 'US' | 'CN')}
-                    className={`flex-1 py-2.5 rounded-lg text-xs font-semibold transition-colors ${market === r.market ? 'bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/30' : 'text-gray-600 border border-white/5 hover:text-gray-400'}`}>
+          {MARKET_RULES.map((r) =>
+          <button key={r.market} onClick={() => setMarket(r.market as 'HK' | 'US' | 'CN')}
+          className={`flex-1 py-2.5 rounded-lg text-xs font-semibold transition-colors ${market === r.market ? 'bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/30' : 'text-gray-600 border border-white/5 hover:text-gray-400'}`}>
               {r.flag} {r.market}
             </button>
-          ))}
+          )}
         </div>
 
         {/* ── Order Input ───────────────────────────────────────────────── */}
         <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
-          <h3 className="text-gray-300 font-semibold text-sm mb-4">📝 下单参数</h3>
+          <h3 className="text-gray-300 font-semibold text-sm mb-4">{i18n.t("FractionalTradePanel.r92_178f")}</h3>
 
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div>
               <label className="text-[10px] text-gray-600 uppercase tracking-wider">{i18n.t('FractionalTradePanel.k1')}</label>
-              <input type="text" value={symbol} onChange={e => setSymbol(e.target.value)}
-                     className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
+              <input type="text" value={symbol} onChange={(e) => setSymbol(e.target.value)}
+              className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
             </div>
             <div>
               <label className="text-[10px] text-gray-600 uppercase tracking-wider">{i18n.t('FractionalTradePanel.k2')}</label>
-              <input type="number" value={price} onChange={e => setPrice(Number(e.target.value))} step={0.01}
-                     className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
+              <input type="number" value={price} onChange={(e) => setPrice(Number(e.target.value))} step={0.01}
+              className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
             </div>
           </div>
 
           {/* Direction */}
           <div className="flex gap-2 mb-4">
             <button onClick={() => setDirection('BUY')}
-                    className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-colors ${direction === 'BUY' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'text-gray-600 border border-white/5'}`}>
-              🟢 买入 BUY
+            className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-colors ${direction === 'BUY' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'text-gray-600 border border-white/5'}`}>{i18n.t("FractionalTradePanel.r92_e8d1")}
+
             </button>
             <button onClick={() => setDirection('SELL')}
-                    className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-colors ${direction === 'SELL' ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'text-gray-600 border border-white/5'}`}>
-              🔴 卖出 SELL
+            className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-colors ${direction === 'SELL' ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'text-gray-600 border border-white/5'}`}>{i18n.t("FractionalTradePanel.r92_b6ce")}
+
             </button>
           </div>
 
           {/* Quantity */}
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div>
-              <label className="text-[10px] text-gray-600 uppercase tracking-wider">
-                整手 Whole Lots
-                {rule.market !== 'US' && <span className="text-gray-500 ml-1">({rule.lotSize}股/lot)</span>}
+              <label className="text-[10px] text-gray-600 uppercase tracking-wider">{i18n.t("FractionalTradePanel.r92_e69b")}
+
+                {rule.market !== 'US' && <span className="text-gray-500 ml-1">({rule.lotSize}{i18n.t("FractionalTradePanel.r92_a7ae")}</span>}
               </label>
-              <input type="number" value={wholeLots} onChange={e => setWholeLots(Number(e.target.value))} min={0} step={1}
-                     className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
+              <input type="number" value={wholeLots} onChange={(e) => setWholeLots(Number(e.target.value))} min={0} step={1}
+              className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
             </div>
             <div>
-              <label className="text-[10px] text-gray-600 uppercase tracking-wider">
-                碎股 Fractional
+              <label className="text-[10px] text-gray-600 uppercase tracking-wider">{i18n.t("FractionalTradePanel.r92_83bd")}
+
                 <span className="text-gray-500 ml-1">{i18n.t('FractionalTradePanel.k2')}{rule.minFractional})</span>
               </label>
-              <input type="number" value={fractionalQty} onChange={e => setFractionalQty(Number(e.target.value))}
-                     min={rule.minFractional} max={rule.market === 'US' ? 1 : rule.lotSize - 1} step={rule.fractionalStep}
-                     className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-[#D4A853] focus:outline-none focus:border-[#C9A046]/50" />
+              <input type="number" value={fractionalQty} onChange={(e) => setFractionalQty(Number(e.target.value))}
+              min={rule.minFractional} max={rule.market === 'US' ? 1 : rule.lotSize - 1} step={rule.fractionalStep}
+              className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-[#D4A853] focus:outline-none focus:border-[#C9A046]/50" />
             </div>
           </div>
 
@@ -230,7 +230,7 @@ export default function FractionalTradePanel({
               <span className="text-xs text-gray-500">{i18n.t('FractionalTradePanel.k3')}</span>
               <span className="text-sm text-white font-semibold">{totalQty.toLocaleString()}</span>
               <span className="text-[10px] text-gray-600 ml-2">
-                ({wholeLots} 整手 + {fractionalQty} 碎股)
+                ({wholeLots}{i18n.t("FractionalTradePanel.r92_e938")}{fractionalQty}{i18n.t("FractionalTradePanel.r92_8658")}
               </span>
             </div>
             <div className="text-right">
@@ -250,26 +250,26 @@ export default function FractionalTradePanel({
 
           {/* Submit */}
           <button onClick={handleSubmit} disabled={hasActiveOrder}
-                  className="w-full py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-            {direction === 'BUY' ? i18n.t('FractionalTradePanel.k3') : i18n.t('FractionalTradePanel.k4')} {totalQty} 股 {symbol} · {rule.currency} {notional.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+          className="w-full py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+            {direction === 'BUY' ? i18n.t('FractionalTradePanel.k3') : i18n.t('FractionalTradePanel.k4')} {totalQty}{i18n.t("FractionalTradePanel.r92_8506")}{symbol} · {rule.currency} {notional.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </button>
         </div>
 
         {/* ── Active Order / Partial Fill ──────────────────────────────── */}
-        {activeOrder && (
-          <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
+        {activeOrder &&
+        <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-gray-300 font-semibold text-sm">
-                📊 订单状态
-              </h3>
+              <h3 className="text-gray-300 font-semibold text-sm">{i18n.t("FractionalTradePanel.r92_dde7")}
+
+            </h3>
               <span className={`px-3 py-0.5 rounded text-xs font-semibold ${
-                activeOrder.status === 'filled' ? 'bg-green-500/10 text-green-400' :
-                activeOrder.status === 'partial' ? 'bg-yellow-500/10 text-yellow-400' :
-                activeOrder.status === 'cancelled' ? 'bg-red-500/10 text-red-400' :
-                'bg-gray-500/10 text-gray-400'}`}>
+            activeOrder.status === 'filled' ? 'bg-green-500/10 text-green-400' :
+            activeOrder.status === 'partial' ? 'bg-yellow-500/10 text-yellow-400' :
+            activeOrder.status === 'cancelled' ? 'bg-red-500/10 text-red-400' :
+            'bg-gray-500/10 text-gray-400'}`}>
                 {activeOrder.status === 'filled' ? i18n.t('FractionalTradePanel.k5') :
-                 activeOrder.status === 'partial' ? i18n.t('FractionalTradePanel.k6') :
-                 activeOrder.status === 'cancelled' ? i18n.t('FractionalTradePanel.k7') : i18n.t('FractionalTradePanel.k8')}
+              activeOrder.status === 'partial' ? i18n.t('FractionalTradePanel.k6') :
+              activeOrder.status === 'cancelled' ? i18n.t('FractionalTradePanel.k7') : i18n.t('FractionalTradePanel.k8')}
               </span>
             </div>
 
@@ -299,38 +299,38 @@ export default function FractionalTradePanel({
             </div>
 
             {/* Partial fill log */}
-            {activeOrder.partialFills.length > 0 && (
-              <div>
+            {activeOrder.partialFills.length > 0 &&
+          <div>
                 <div className="text-[10px] text-gray-600 uppercase tracking-wider mb-2">{i18n.t('FractionalTradePanel.k10')}</div>
                 <div className="space-y-1">
-                  {activeOrder.partialFills.map((fill, i) => (
-                    <div key={i} className="flex items-center justify-between py-1.5 px-3 bg-white/[0.02] rounded text-xs">
+                  {activeOrder.partialFills.map((fill, i) =>
+              <div key={i} className="flex items-center justify-between py-1.5 px-3 bg-white/[0.02] rounded text-xs">
                       <span className="text-gray-500 font-mono">{fill.time}</span>
                       <span className="text-gray-400 font-mono">{fill.qty}{i18n.t('FractionalTradePanel.k3')}{fill.price}</span>
-                      <span className="text-gray-600 font-mono">费{fill.fee.toFixed(2)}</span>
-                      {i === activeOrder.partialFills.length - 1 && activeOrder.remainingQty > 0 && (
-                        <span className="text-yellow-400 text-[10px]">{i18n.t('FractionalTradePanel.k4')}{activeOrder.remainingQty}{i18n.t('FractionalTradePanel.k5')}</span>
-                      )}
+                      <span className="text-gray-600 font-mono">{i18n.t("FractionalTradePanel.r92_6c66")}{fill.fee.toFixed(2)}</span>
+                      {i === activeOrder.partialFills.length - 1 && activeOrder.remainingQty > 0 &&
+                <span className="text-yellow-400 text-[10px]">{i18n.t('FractionalTradePanel.k4')}{activeOrder.remainingQty}{i18n.t('FractionalTradePanel.k5')}</span>
+                }
                     </div>
-                  ))}
+              )}
                 </div>
               </div>
-            )}
+          }
 
             {/* Cancel button */}
-            {['pending', 'partial'].includes(activeOrder.status) && (
-              <button onClick={handleCancel}
-                      className="mt-4 w-full py-2 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 text-sm transition-colors">
-                取消订单 Cancel Order
-              </button>
-            )}
+            {['pending', 'partial'].includes(activeOrder.status) &&
+          <button onClick={handleCancel}
+          className="mt-4 w-full py-2 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 text-sm transition-colors">{i18n.t("FractionalTradePanel.r92_f5fc")}
+
+          </button>
+          }
           </div>
-        )}
+        }
 
         {/* ── Market Rules Reference ────────────────────────────────────── */}
         <div className="bg-[#111119] border border-white/5 rounded-xl overflow-hidden">
           <div className="px-5 py-3 border-b border-white/5">
-            <h3 className="text-gray-300 font-semibold text-sm">📋 三市场碎股规则</h3>
+            <h3 className="text-gray-300 font-semibold text-sm">{i18n.t("FractionalTradePanel.r92_1bb4")}</h3>
           </div>
           <table className="w-full text-xs">
             <thead>
@@ -344,22 +344,22 @@ export default function FractionalTradePanel({
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {MARKET_RULES.map(r => (
-                <tr key={r.market} className="hover:bg-white/[0.02]">
+              {MARKET_RULES.map((r) =>
+              <tr key={r.market} className="hover:bg-white/[0.02]">
                   <td className="px-5 py-2.5 text-gray-300">{r.flag} {r.market}</td>
-                  <td className="px-5 py-2.5 text-gray-400">{r.lotSize} 股</td>
+                  <td className="px-5 py-2.5 text-gray-400">{r.lotSize}{i18n.t("FractionalTradePanel.r92_e9ce")}</td>
                   <td className="px-5 py-2.5 text-gray-400">
-                    {r.market === 'US' ? '0.01-1.00' : `1-${r.lotSize - 1}`} 股
-                  </td>
+                    {r.market === 'US' ? '0.01-1.00' : `1-${r.lotSize - 1}`}{i18n.t("FractionalTradePanel.r92_e430")}
+                </td>
                   <td className="px-5 py-2.5 text-gray-500">{r.minFractional}</td>
                   <td className="px-5 py-2.5 text-gray-400">{r.commissionPct}%</td>
                   <td className="px-5 py-2.5 text-gray-500">{r.currency}{r.minCommission}</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

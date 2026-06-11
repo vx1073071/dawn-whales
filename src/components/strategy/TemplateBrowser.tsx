@@ -1,4 +1,4 @@
-﻿// TemplateBrowser — Strategy Template Selection UI
+// TemplateBrowser — Strategy Template Selection UI
 // Displays 8 pre-built strategy templates with search, category filter, and instantiating.
 
 import { useState, useEffect } from 'react';
@@ -28,8 +28,8 @@ interface StrategyTemplate {
   timeframe: string[];
   parameters: ParameterDef[];
   indicators: string[];
-  rules: { entry: string; exit: string; stopLoss?: string; takeProfit?: string };
-  risk: { defaultStopLoss: number; defaultTakeProfit: number; maxPosition: number };
+  rules: {entry: string;exit: string;stopLoss?: string;takeProfit?: string;};
+  risk: {defaultStopLoss: number;defaultTakeProfit: number;maxPosition: number;};
   tags: string[];
 }
 
@@ -39,7 +39,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   breakout: i18n.t('TemplateBrowser.k3'),
   pairs: i18n.t('TemplateBrowser.k4'),
   options: i18n.t('TemplateBrowser.k5'),
-  multi_factor: i18n.t('TemplateBrowser.k6'),
+  multi_factor: i18n.t('TemplateBrowser.k6')
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -48,7 +48,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   breakout: 'from-green-900/40 to-green-800/20 border-green-500/30',
   pairs: 'from-yellow-900/40 to-yellow-800/20 border-yellow-500/30',
   options: 'from-pink-900/40 to-pink-800/20 border-pink-500/30',
-  multi_factor: 'from-orange-900/40 to-orange-800/20 border-orange-500/30',
+  multi_factor: 'from-orange-900/40 to-orange-800/20 border-orange-500/30'
 };
 
 interface Props {
@@ -89,11 +89,11 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
     const matchCat = activeCategory === 'all' || t.category === activeCategory;
     const q = search.toLowerCase();
     const matchSearch =
-      !q ||
-      t.name.toLowerCase().includes(q) ||
-      t.nameCn.includes(search) ||
-      t.description.toLowerCase().includes(q) ||
-      t.tags.some((tag) => tag.toLowerCase().includes(q));
+    !q ||
+    t.name.toLowerCase().includes(q) ||
+    t.nameCn.includes(search) ||
+    t.description.toLowerCase().includes(q) ||
+    t.tags.some((tag) => tag.toLowerCase().includes(q));
     return matchCat && matchSearch;
   });
 
@@ -147,43 +147,43 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
           placeholder={i18n.t('TemplateBrowser.k2')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-card border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C9A046]/50"
-        />
-        {search && (
-          <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 text-xs">✕</button>
-        )}
+          className="w-full bg-card border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#C9A046]/50" />
+        
+        {search &&
+        <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 text-xs">✕</button>
+        }
       </div>
 
       {/* Category pills */}
       <div className="flex flex-wrap gap-2">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-              activeCategory === cat
-                ? 'bg-[#C9A046] text-black'
-                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
-            }`}
-          >
-            {cat === 'all' ? t('components.all') : (CATEGORY_LABELS[cat] ?? cat)}
+        {categories.map((cat) =>
+        <button
+          key={cat}
+          onClick={() => setActiveCategory(cat)}
+          className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+          activeCategory === cat ?
+          'bg-[#C9A046] text-black' :
+          'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'}`
+          }>
+          
+            {cat === 'all' ? t('components.all') : CATEGORY_LABELS[cat] ?? cat}
           </button>
-        ))}
+        )}
       </div>
 
       {loading && <div className="text-center text-gray-400 py-12">{t("components.loading")}</div>}
       {error && <div className="text-red-400 text-sm py-4 px-4 bg-red-900/20 rounded-lg border border-red-500/20">{error}</div>}
 
-      {!loading && !error && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filtered.map((tmpl) => (
-            <button
-              key={tmpl.id}
-              onClick={() => setSelectedId(tmpl.id)}
-              className={`bg-gradient-to-br ${CATEGORY_COLORS[tmpl.category] ?? 'from-gray-900/40 to-gray-800/20 border-gray-500/30'} border rounded-xl p-4 text-left transition-all hover:scale-[1.01] cursor-pointer ${
-                selectedId === tmpl.id ? 'ring-2 ring-[#C9A046]' : ''
-              }`}
-            >
+      {!loading && !error &&
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {filtered.map((tmpl) =>
+        <button
+          key={tmpl.id}
+          onClick={() => setSelectedId(tmpl.id)}
+          className={`bg-gradient-to-br ${CATEGORY_COLORS[tmpl.category] ?? 'from-gray-900/40 to-gray-800/20 border-gray-500/30'} border rounded-xl p-4 text-left transition-all hover:scale-[1.01] cursor-pointer ${
+          selectedId === tmpl.id ? 'ring-2 ring-[#C9A046]' : ''}`
+          }>
+          
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <div className="text-white font-semibold text-sm">{tmpl.nameCn || tmpl.name}</div>
@@ -195,28 +195,28 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
               </div>
               <p className="text-gray-400 text-xs leading-relaxed mb-3 line-clamp-2">{tmpl.description}</p>
               <div className="flex flex-wrap gap-1">
-                {tmpl.tags.slice(0, 3).map((tag) => (
-                  <span key={tag} className="text-[10px] bg-white/10 text-gray-300 rounded px-1.5 py-0.5">{tag}</span>
-                ))}
+                {tmpl.tags.slice(0, 3).map((tag) =>
+            <span key={tag} className="text-[10px] bg-white/10 text-gray-300 rounded px-1.5 py-0.5">{tag}</span>
+            )}
               </div>
             </button>
-          ))}
+        )}
         </div>
-      )}
+      }
 
-      {!loading && filtered.length === 0 && !error && (
-        <div className="text-center text-gray-500 py-12">{i18n.t('TemplateBrowser.k3')}</div>
-      )}
+      {!loading && filtered.length === 0 && !error &&
+      <div className="text-center text-gray-500 py-12">{i18n.t('TemplateBrowser.k3')}</div>
+      }
 
       {/* Selected template detail panel */}
-      {selected && (
-        <div className="bg-card border border-white/10 rounded-xl p-5 space-y-4">
+      {selected &&
+      <div className="bg-card border border-white/10 rounded-xl p-5 space-y-4">
           <div className="flex items-start justify-between">
             <div>
               <h3 className="text-white font-semibold">{selected.nameCn || selected.name}</h3>
               <p className="text-gray-400 text-xs mt-0.5">{selected.name}</p>
             </div>
-            <button onClick={() => setSelectedId(null)} className="text-gray-500 hover:text-white text-xs">✕ 关闭</button>
+            <button onClick={() => setSelectedId(null)} className="text-gray-500 hover:text-white text-xs">{i18n.t("TemplateBrowser.r92_ead3")}</button>
           </div>
 
           <p className="text-gray-300 text-sm leading-relaxed">{selected.description}</p>
@@ -229,72 +229,72 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
             <div className="text-xs text-gray-400">
               <span className="text-red-400 font-medium">{i18n.t('TemplateBrowser.k5')}</span>：{selected.rules.exit}
             </div>
-            {selected.rules.stopLoss && (
-              <div className="text-xs text-gray-400">
+            {selected.rules.stopLoss &&
+          <div className="text-xs text-gray-400">
                 <span className="text-yellow-400 font-medium">{t("components.stopLoss")}</span>：{selected.rules.stopLoss}
               </div>
-            )}
-            {selected.rules.takeProfit && (
-              <div className="text-xs text-gray-400">
+          }
+            {selected.rules.takeProfit &&
+          <div className="text-xs text-gray-400">
                 <span className="text-blue-400 font-medium">{t("components.takeProfit")}</span>：{selected.rules.takeProfit}
               </div>
-            )}
+          }
           </div>
 
           {/* Indicators */}
           <div className="flex flex-wrap gap-1.5">
-            {selected.indicators.map((ind) => (
-              <span key={ind} className="text-[11px] bg-[#C9A046]/20 text-[#D4A853] rounded px-2 py-0.5">{ind}</span>
-            ))}
+            {selected.indicators.map((ind) =>
+          <span key={ind} className="text-[11px] bg-[#C9A046]/20 text-[#D4A853] rounded px-2 py-0.5">{ind}</span>
+          )}
           </div>
 
           {/* Timeframes */}
           <div className="flex flex-wrap gap-1.5">
-            {selected.timeframe.map((tf) => (
-              <span key={tf} className="text-[11px] bg-white/10 text-gray-400 rounded px-2 py-0.5">{tf}</span>
-            ))}
+            {selected.timeframe.map((tf) =>
+          <span key={tf} className="text-[11px] bg-white/10 text-gray-400 rounded px-2 py-0.5">{tf}</span>
+          )}
           </div>
 
           {/* Parameters */}
-          {selected.parameters.length > 0 && (
-            <div className="space-y-3">
+          {selected.parameters.length > 0 &&
+        <div className="space-y-3">
               <div className="text-xs text-gray-400 border-t border-white/5 pt-3">{i18n.t('TemplateBrowser.k6')}</div>
-              {selected.parameters.map((p) => (
-                <div key={p.name} className="flex items-center gap-3">
+              {selected.parameters.map((p) =>
+          <div key={p.name} className="flex items-center gap-3">
                   <label className="text-xs text-gray-300 w-32 shrink-0">{p.label}</label>
-                  {p.type === 'boolean' ? (
-                    <input
-                      type="checkbox"
-                      checked={paramOverrides[p.name] ?? p.default}
-                      onChange={(e) => setParamOverrides((prev) => ({ ...prev, [p.name]: e.target.checked }))}
-                      className="accent-[#C9A046]"
-                    />
-                  ) : p.type === 'select' ? (
-                    <select
-                      value={paramOverrides[p.name] ?? p.default}
-                      onChange={(e) => setParamOverrides((prev) => ({ ...prev, [p.name]: e.target.value }))}
-                      className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1 text-xs text-white"
-                    >
-                      {p.options?.map((opt) => (
-                        <option key={opt} value={opt}>{opt}</option>
-                      ))}
-                    </select>
-                  ) : (
-                    <input
-                      type="number"
-                      value={paramOverrides[p.name] ?? p.default}
-                      min={p.min}
-                      max={p.max}
-                      step={p.step ?? 1}
-                      onChange={(e) => setParamOverrides((prev) => ({ ...prev, [p.name]: parseFloat(e.target.value) }))}
-                      className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1 text-xs text-white w-28"
-                    />
-                  )}
+                  {p.type === 'boolean' ?
+            <input
+              type="checkbox"
+              checked={paramOverrides[p.name] ?? p.default}
+              onChange={(e) => setParamOverrides((prev) => ({ ...prev, [p.name]: e.target.checked }))}
+              className="accent-[#C9A046]" /> :
+
+            p.type === 'select' ?
+            <select
+              value={paramOverrides[p.name] ?? p.default}
+              onChange={(e) => setParamOverrides((prev) => ({ ...prev, [p.name]: e.target.value }))}
+              className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1 text-xs text-white">
+              
+                      {p.options?.map((opt) =>
+              <option key={opt} value={opt}>{opt}</option>
+              )}
+                    </select> :
+
+            <input
+              type="number"
+              value={paramOverrides[p.name] ?? p.default}
+              min={p.min}
+              max={p.max}
+              step={p.step ?? 1}
+              onChange={(e) => setParamOverrides((prev) => ({ ...prev, [p.name]: parseFloat(e.target.value) }))}
+              className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1 text-xs text-white w-28" />
+
+            }
                   <span className="text-[10px] text-gray-500">{p.description}</span>
                 </div>
-              ))}
-            </div>
           )}
+            </div>
+        }
 
           {/* Risk defaults */}
           <div className="flex gap-4 text-xs text-gray-500 border-t border-white/5 pt-3">
@@ -304,20 +304,20 @@ export default function TemplateBrowser({ onBack, onCreated }: Props) {
           </div>
 
           {/* Error */}
-          {instantiateError && (
-            <div className="text-red-400 text-xs bg-red-900/20 border border-red-500/20 rounded px-3 py-2">{instantiateError}</div>
-          )}
+          {instantiateError &&
+        <div className="text-red-400 text-xs bg-red-900/20 border border-red-500/20 rounded px-3 py-2">{instantiateError}</div>
+        }
 
           {/* Use template button */}
           <button
-            onClick={instantiate}
-            disabled={instantiating}
-            className="w-full bg-[#C9A046] hover:bg-[#D4A853] disabled:opacity-50 text-black font-semibold text-sm rounded-lg py-2.5 transition-colors"
-          >
+          onClick={instantiate}
+          disabled={instantiating}
+          className="w-full bg-[#C9A046] hover:bg-[#D4A853] disabled:opacity-50 text-black font-semibold text-sm rounded-lg py-2.5 transition-colors">
+          
             {instantiating ? i18n.t('TemplateBrowser.k10') : i18n.t('TemplateBrowser.k11')}
           </button>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }

@@ -21,11 +21,11 @@ import i18n from '../../i18n';
 
 interface TradingSession {
 
-  name: string;       // pre-market | regular | after-hours
+  name: string; // pre-market | regular | after-hours
 
-  start: string;      // HH:MM
+  start: string; // HH:MM
 
-  end: string;        // HH:MM
+  end: string; // HH:MM
 
 }
 
@@ -53,25 +53,25 @@ interface Countdown {
 
 const US_SESSIONS: TradingSession[] = [
 
-  { name: 'pre-market', start: '04:00', end: '09:30' },
+{ name: 'pre-market', start: '04:00', end: '09:30' },
 
-  { name: 'regular', start: '09:30', end: '16:00' },
+{ name: 'regular', start: '09:30', end: '16:00' },
 
-  { name: 'after-hours', start: '16:00', end: '20:00' },
+{ name: 'after-hours', start: '16:00', end: '20:00' }];
 
-];
+
 
 
 
 const HK_SESSIONS: TradingSession[] = [
 
-  { name: 'pre-market', start: '09:00', end: '09:30' },
+{ name: 'pre-market', start: '09:00', end: '09:30' },
 
-  { name: 'regular', start: '09:30', end: '16:00' },
+{ name: 'regular', start: '09:30', end: '16:00' },
 
-  { name: 'after-hours', start: '16:00', end: '17:00' },
+{ name: 'after-hours', start: '16:00', end: '17:00' }];
 
-];
+
 
 
 
@@ -97,7 +97,7 @@ const US_HOLIDAYS_2026: Record<string, string> = {
 
   '2026-11-27': 'Early Close (1PM)',
 
-  '2026-12-25': 'Christmas Day',
+  '2026-12-25': 'Christmas Day'
 
 };
 
@@ -135,7 +135,7 @@ const HK_HOLIDAYS_2026: Record<string, string> = {
 
   '2026-12-25': 'Christmas Day',
 
-  '2026-12-26': 'Boxing Day',
+  '2026-12-26': 'Boxing Day'
 
 };
 
@@ -237,11 +237,11 @@ function computeCountdown(sessions: TradingSession[]): Countdown | null {
 
         hours: Math.floor(diff / 3600000),
 
-        minutes: Math.floor((diff % 3600000) / 60000),
+        minutes: Math.floor(diff % 3600000 / 60000),
 
-        seconds: Math.floor((diff % 60000) / 1000),
+        seconds: Math.floor(diff % 60000 / 1000),
 
-        isTrading: true,
+        isTrading: true
 
       };
 
@@ -271,11 +271,11 @@ function computeCountdown(sessions: TradingSession[]): Countdown | null {
 
         hours: Math.floor(diff / 3600000),
 
-        minutes: Math.floor((diff % 3600000) / 60000),
+        minutes: Math.floor(diff % 3600000 / 60000),
 
-        seconds: Math.floor((diff % 60000) / 1000),
+        seconds: Math.floor(diff % 60000 / 1000),
 
-        isTrading: false,
+        isTrading: false
 
       };
 
@@ -344,7 +344,7 @@ export default function TradingCalendarView() {
 
   // Immediate first update
 
-  useEffect(() => { setCountdown(computeCountdown(sessions)); }, [sessions]);
+  useEffect(() => {setCountdown(computeCountdown(sessions));}, [sessions]);
 
 
 
@@ -366,7 +366,7 @@ export default function TradingCalendarView() {
 
     week.push(d);
 
-    if (week.length === 7) { weeks.push(week); week = []; }
+    if (week.length === 7) {weeks.push(week);week = [];}
 
   }
 
@@ -408,11 +408,11 @@ export default function TradingCalendarView() {
 
         <div className="flex items-center gap-2">
 
-          <button onClick={() => setMonth(m => m === 0 ? 11 : m - 1)} className="text-gray-400 hover:text-white px-2">◀</button>
+          <button onClick={() => setMonth((m) => m === 0 ? 11 : m - 1)} className="text-gray-400 hover:text-white px-2">◀</button>
 
-          <span className="text-white font-medium">{year}年{month + 1}月</span>
+          <span className="text-white font-medium">{year}{i18n.t("TradingCalendarView.r92_a7e0")}{month + 1}{i18n.t("TradingCalendarView.r92_e5d3")}</span>
 
-          <button onClick={() => setMonth(m => m === 11 ? 0 : m + 1)} className="text-gray-400 hover:text-white px-2">▶</button>
+          <button onClick={() => setMonth((m) => m === 11 ? 0 : m + 1)} className="text-gray-400 hover:text-white px-2">▶</button>
 
         </div>
 
@@ -420,11 +420,11 @@ export default function TradingCalendarView() {
 
           <select value={market} onChange={(e) => setMarket(e.target.value as Market)}
 
-            className="bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-gray-300">
+          className="bg-[#1a1a25] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-gray-300">
 
-            <option value="US">美股 (US)</option>
+            <option value="US">{i18n.t("TradingCalendarView.r92_d1f0")}</option>
 
-            <option value="HK">港股 (HK)</option>
+            <option value="HK">{i18n.t("TradingCalendarView.r92_ae06")}</option>
 
           </select>
 
@@ -432,17 +432,17 @@ export default function TradingCalendarView() {
 
             <button onClick={() => setView('month')}
 
-              className={`px-3 py-1.5 rounded-md text-sm ${view === 'month' ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-400'}`}>
+            className={`px-3 py-1.5 rounded-md text-sm ${view === 'month' ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-400'}`}>{i18n.t("TradingCalendarView.r92_1dfc")}
 
-              📅 月
+
 
             </button>
 
             <button onClick={() => setView('week')}
 
-              className={`px-3 py-1.5 rounded-md text-sm ${view === 'week' ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-400'}`}>
+            className={`px-3 py-1.5 rounded-md text-sm ${view === 'week' ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-400'}`}>{i18n.t("TradingCalendarView.r92_2710")}
 
-              📋 周
+
 
             </button>
 
@@ -470,9 +470,9 @@ export default function TradingCalendarView() {
 
             <div className="flex items-center gap-3 mt-2">
 
-              {sessions.map(s => (
+              {sessions.map((s) =>
 
-                <span key={s.name} className={`text-xs px-3 py-1 rounded-full border ${currentSession?.name === s.name ? sessionBg(s.name) : 'bg-transparent border-white/10 text-gray-500'}`}>
+              <span key={s.name} className={`text-xs px-3 py-1 rounded-full border ${currentSession?.name === s.name ? sessionBg(s.name) : 'bg-transparent border-white/10 text-gray-500'}`}>
 
                   {s.name === 'pre-market' ? i18n.t('TradingCalendarView.k3') : s.name === 'regular' ? i18n.t('TradingCalendarView.k4') : i18n.t('TradingCalendarView.k5')}
 
@@ -482,15 +482,15 @@ export default function TradingCalendarView() {
 
                 </span>
 
-              ))}
+              )}
 
             </div>
 
           </div>
 
-          {countdown && (
+          {countdown &&
 
-            <div className={`text-right ${countdown.isTrading ? sessionColor(countdown.session) : 'text-gray-400'}`}>
+          <div className={`text-right ${countdown.isTrading ? sessionColor(countdown.session) : 'text-gray-400'}`}>
 
               <div className="text-xs text-gray-500 mb-1">
 
@@ -506,7 +506,7 @@ export default function TradingCalendarView() {
 
             </div>
 
-          )}
+          }
 
         </div>
 
@@ -522,11 +522,11 @@ export default function TradingCalendarView() {
 
         <div className="grid grid-cols-7 border-b border-white/5">
 
-          {[i18n.t('TradingCalendarView.k7'), i18n.t('TradingCalendarView.k8'), i18n.t('TradingCalendarView.k9'), i18n.t('TradingCalendarView.k10'), i18n.t('TradingCalendarView.k11'), i18n.t('TradingCalendarView.k12'), i18n.t('TradingCalendarView.k13')].map(d => (
+          {[i18n.t('TradingCalendarView.k7'), i18n.t('TradingCalendarView.k8'), i18n.t('TradingCalendarView.k9'), i18n.t('TradingCalendarView.k10'), i18n.t('TradingCalendarView.k11'), i18n.t('TradingCalendarView.k12'), i18n.t('TradingCalendarView.k13')].map((d) =>
 
-            <div key={d} className="p-3 text-center text-xs text-gray-500 font-medium">{d}</div>
+          <div key={d} className="p-3 text-center text-xs text-gray-500 font-medium">{d}</div>
 
-          ))}
+          )}
 
         </div>
 
@@ -534,33 +534,33 @@ export default function TradingCalendarView() {
 
         {/* Weeks */}
 
-        {weeks.map((week, wi) => (
+        {weeks.map((week, wi) =>
 
-          <div key={wi} className="grid grid-cols-7 border-b border-white/[0.02] last:border-b-0">
+        <div key={wi} className="grid grid-cols-7 border-b border-white/[0.02] last:border-b-0">
 
             {week.map((day, di) => {
 
-              if (!day) return <div key={di} className="p-2 min-h-[80px]" />;
+            if (!day) return <div key={di} className="p-2 min-h-[80px]" />;
 
-              const dateStr = formatDate(year, month, day);
+            const dateStr = formatDate(year, month, day);
 
-              const isToday = dateStr === todayStr;
+            const isToday = dateStr === todayStr;
 
-              const isWeekendDay = isWeekend(dateStr);
+            const isWeekendDay = isWeekend(dateStr);
 
-              const isHoliday = !!holidays[dateStr];
+            const isHoliday = !!holidays[dateStr];
 
-              const holidayName = holidays[dateStr];
+            const holidayName = holidays[dateStr];
 
-              const isActive = !isWeekendDay && !isHoliday;
+            const isActive = !isWeekendDay && !isHoliday;
 
 
 
-              return (
+            return (
 
-                <div key={di}
+              <div key={di}
 
-                  className={`p-2 min-h-[80px] border-r border-white/[0.02] last:border-r-0 relative
+              className={`p-2 min-h-[80px] border-r border-white/[0.02] last:border-r-0 relative
 
                     ${isActive ? 'hover:bg-white/[0.03]' : ''}`}>
 
@@ -580,53 +580,53 @@ export default function TradingCalendarView() {
 
                   </div>
 
-                  {isActive && (
+                  {isActive &&
 
-                    <div className="space-y-1 mt-2">
+                <div className="space-y-1 mt-2">
 
-                      {sessions.some(s => s.name === 'pre-market') && (
+                      {sessions.some((s) => s.name === 'pre-market') &&
 
-                        <div className="h-1 rounded bg-blue-500/30" title={i18n.t('TradingCalendarView.k14')} />
+                  <div className="h-1 rounded bg-blue-500/30" title={i18n.t('TradingCalendarView.k14')} />
 
-                      )}
+                  }
 
                       <div className="h-1.5 rounded bg-emerald-500/40" title={i18n.t('TradingCalendarView.k15')} />
 
-                      {sessions.some(s => s.name === 'after-hours') && (
+                      {sessions.some((s) => s.name === 'after-hours') &&
 
-                        <div className="h-1 rounded bg-yellow-500/30" title={i18n.t('TradingCalendarView.k16')} />
+                  <div className="h-1 rounded bg-yellow-500/30" title={i18n.t('TradingCalendarView.k16')} />
 
-                      )}
+                  }
 
                     </div>
 
-                  )}
+                }
 
-                  {holidayName && (
+                  {holidayName &&
 
-                    <div className="absolute bottom-1 left-1 right-1 text-[9px] text-red-400/70 truncate">
+                <div className="absolute bottom-1 left-1 right-1 text-[9px] text-red-400/70 truncate">
 
                       {holidayName}
 
                     </div>
 
-                  )}
+                }
 
-                  {isWeekendDay && (
+                  {isWeekendDay &&
 
-                    <div className="text-[9px] text-gray-600 mt-2">{i18n.t('TradingCalendarView.k4')}</div>
+                <div className="text-[9px] text-gray-600 mt-2">{i18n.t('TradingCalendarView.k4')}</div>
 
-                  )}
+                }
 
-                </div>
+                </div>);
 
-              );
 
-            })}
+
+          })}
 
           </div>
 
-        ))}
+        )}
 
       </div>
 
@@ -670,9 +670,8 @@ export default function TradingCalendarView() {
 
       </div>
 
-    </div>
+    </div>);
 
-  );
+
 
 }
-

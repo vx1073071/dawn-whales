@@ -1,3 +1,4 @@
+import i18n from '../i18n/index';
 // ── DAWN WHALES — Theme Store ───────────────────────────────────────────────
 import { create } from 'zustand';
 
@@ -10,7 +11,7 @@ interface ThemeStore {
 }
 
 export const useThemeStore = create<ThemeStore>((set, get) => ({
-  theme: (localStorage.getItem('dw_theme') as Theme) || 'dark',
+  theme: localStorage.getItem('dw_theme') as Theme || 'dark',
 
   setTheme: (theme: Theme) => {
     localStorage.setItem('dw_theme', theme);
@@ -21,7 +22,7 @@ export const useThemeStore = create<ThemeStore>((set, get) => ({
   toggleTheme: () => {
     const next = get().theme === 'dark' ? 'light' : 'dark';
     get().setTheme(next);
-  },
+  }
 }));
 
 // Apply theme to document
@@ -39,10 +40,10 @@ function applyTheme(theme: Theme) {
 }
 
 // Initialize theme on load
-const savedTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('dw_theme') as Theme) || 'dark';
+const savedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('dw_theme') as Theme || 'dark';
 applyTheme(savedTheme);
 
 export const THEME_LABELS: Record<Theme, string> = {
-  dark: '🌙 深色',
-  light: '☀️ 浅色',
+  dark: i18n.t("theme.r92_8874"),
+  light: i18n.t("theme.r92_f744")
 };

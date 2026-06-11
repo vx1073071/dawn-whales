@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
 import * as echarts from 'echarts';
@@ -39,10 +39,10 @@ export default function MarginDashboard() {
     setError('');
     try {
       const [marginRes, balanceRes, shortRes] = await Promise.all([
-        getMarginData(),
-        getMarginBalanceRank(20),
-        getShortInterestRank(20),
-      ]);
+      getMarginData(),
+      getMarginBalanceRank(20),
+      getShortInterestRank(20)]
+      );
       if (marginRes?.success) setBalanceHistory(marginRes.history || []);
       if (balanceRes?.success) setMarginRank(balanceRes.data || []);
       if (shortRes?.success) setShortRank(shortRes.data || []);
@@ -71,25 +71,25 @@ export default function MarginDashboard() {
       xAxis: {
         type: 'category',
         data: balanceHistory.map((d) => d.date),
-        axisLabel: { color: '#9ca3af' },
+        axisLabel: { color: '#9ca3af' }
       },
       yAxis: [
-        {
-          type: 'value',
-          name: i18n.t('MarginDashboard.k4'),
-          axisLabel: { color: '#9ca3af', formatter: (v: number) => `${(v / 1e8).toFixed(0)}` },
-          splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
-        },
-        {
-          type: 'value',
-          name: i18n.t('MarginDashboard.k5'),
-          axisLabel: { color: '#9ca3af', formatter: (v: number) => `${(v / 1e8).toFixed(0)}` },
-        },
-      ],
+      {
+        type: 'value',
+        name: i18n.t('MarginDashboard.k4'),
+        axisLabel: { color: '#9ca3af', formatter: (v: number) => `${(v / 1e8).toFixed(0)}` },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } }
+      },
+      {
+        type: 'value',
+        name: i18n.t('MarginDashboard.k5'),
+        axisLabel: { color: '#9ca3af', formatter: (v: number) => `${(v / 1e8).toFixed(0)}` }
+      }],
+
       series: [
-        { name: i18n.t('MarginDashboard.k6'), type: 'line', data: balanceHistory.map((d) => d.marginBalance), smooth: true, itemStyle: { color: '#ef4444' }, areaStyle: { color: 'rgba(239,68,68,0.1)' } },
-        { name: i18n.t('MarginDashboard.k7'), type: 'line', yAxisIndex: 1, data: balanceHistory.map((d) => d.shortBalance), smooth: true, itemStyle: { color: '#3b82f6' } },
-      ],
+      { name: i18n.t('MarginDashboard.k6'), type: 'line', data: balanceHistory.map((d) => d.marginBalance), smooth: true, itemStyle: { color: '#ef4444' }, areaStyle: { color: 'rgba(239,68,68,0.1)' } },
+      { name: i18n.t('MarginDashboard.k7'), type: 'line', yAxisIndex: 1, data: balanceHistory.map((d) => d.shortBalance), smooth: true, itemStyle: { color: '#3b82f6' } }]
+
     };
     balanceChart.current.setOption(option);
   }, [balanceHistory]);
@@ -107,52 +107,52 @@ export default function MarginDashboard() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">💳 融资融券</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">{i18n.t("MarginDashboard.r92_f1c8")}</h1>
           <p className="text-gray-400 text-sm">{i18n.t('MarginDashboard.k0')}</p>
         </div>
         <button
           onClick={fetchData}
           disabled={loading}
-          className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors"
-        >
+          className="text-xs bg-[#22222f] hover:bg-[#2a2a3a] text-gray-300 px-3 py-2 rounded-lg border border-white/5 transition-colors">
+          
           {loading ? i18n.t('MarginDashboard.k8') : i18n.t('MarginDashboard.k9')}
         </button>
       </div>
 
       {/* Summary Cards */}
-      {latest && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      {latest &&
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
             <div className="text-xs text-gray-500 mb-1">{i18n.t('MarginDashboard.k1')}</div>
-            <div className="text-xl font-bold text-white">{(latest.marginBalance / 1e8).toFixed(0)}亿</div>
+            <div className="text-xl font-bold text-white">{(latest.marginBalance / 1e8).toFixed(0)}{i18n.t("MarginDashboard.r92_6888")}</div>
             <div className={`text-xs mt-1 ${latest.marginChange >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
-              {latest.marginChange >= 0 ? '+' : ''}{(latest.marginChange / 1e8).toFixed(1)}亿
-            </div>
+              {latest.marginChange >= 0 ? '+' : ''}{(latest.marginChange / 1e8).toFixed(1)}{i18n.t("MarginDashboard.r92_1a91")}
+          </div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
             <div className="text-xs text-gray-500 mb-1">{i18n.t('MarginDashboard.k2')}</div>
-            <div className="text-xl font-bold text-white">{(latest.shortBalance / 1e8).toFixed(0)}亿</div>
+            <div className="text-xl font-bold text-white">{(latest.shortBalance / 1e8).toFixed(0)}{i18n.t("MarginDashboard.r92_8220")}</div>
             <div className={`text-xs mt-1 ${latest.shortChange >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
-              {latest.shortChange >= 0 ? '+' : ''}{(latest.shortChange / 1e8).toFixed(1)}亿
-            </div>
+              {latest.shortChange >= 0 ? '+' : ''}{(latest.shortChange / 1e8).toFixed(1)}{i18n.t("MarginDashboard.r92_87ad")}
+          </div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
             <div className="text-xs text-gray-500 mb-1">{i18n.t('MarginDashboard.k3')}</div>
-            <div className="text-xl font-bold text-white">{((latest.marginBalance + latest.shortBalance) / 1e8).toFixed(0)}亿</div>
+            <div className="text-xl font-bold text-white">{((latest.marginBalance + latest.shortBalance) / 1e8).toFixed(0)}{i18n.t("MarginDashboard.r92_e21b")}</div>
           </div>
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
             <div className="text-xs text-gray-500 mb-1">{i18n.t('MarginDashboard.k4')}</div>
             <div className="text-xl font-bold text-white">{latest.date}</div>
           </div>
         </div>
-      )}
+      }
 
       {/* Error */}
-      {error && (
-        <div className="bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 text-red-400 text-sm">
+      {error &&
+      <div className="bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 text-red-400 text-sm">
           {error}
         </div>
-      )}
+      }
 
       {/* Balance Chart */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
@@ -164,50 +164,50 @@ export default function MarginDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Margin Balance Rank */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <h2 className="text-sm font-medium text-white mb-3">🏆 融资余额 Top 20</h2>
+          <h2 className="text-sm font-medium text-white mb-3">{i18n.t("MarginDashboard.r92_a73b")}</h2>
           <div className="space-y-1 max-h-[400px] overflow-y-auto">
-            {marginRank.map((s, i) => (
-              <div key={s.code} className="flex items-center justify-between p-2 rounded hover:bg-white/[0.02]">
+            {marginRank.map((s, i) =>
+            <div key={s.code} className="flex items-center justify-between p-2 rounded hover:bg-white/[0.02]">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-500 w-5">{i + 1}</span>
                   <span className="text-sm text-white">{s.name}</span>
                   <span className="text-[10px] text-gray-500 font-mono">{s.code}</span>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm text-white">{(s.marginBalance / 1e8).toFixed(1)}亿</div>
+                  <div className="text-sm text-white">{(s.marginBalance / 1e8).toFixed(1)}{i18n.t("MarginDashboard.r92_b98b")}</div>
                   <div className={`text-[10px] ${s.marginChange >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
-                    {s.marginChange >= 0 ? '+' : ''}{(s.marginChange / 1e8).toFixed(1)}亿
-                  </div>
+                    {s.marginChange >= 0 ? '+' : ''}{(s.marginChange / 1e8).toFixed(1)}{i18n.t("MarginDashboard.r92_6337")}
+                </div>
                 </div>
               </div>
-            ))}
+            )}
             {marginRank.length === 0 && <div className="text-gray-500 text-sm py-4 text-center">{"components.noData"}</div>}
           </div>
         </div>
 
         {/* Short Interest Rank */}
         <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
-          <h2 className="text-sm font-medium text-white mb-3">📉 融券余量 Top 20</h2>
+          <h2 className="text-sm font-medium text-white mb-3">{i18n.t("MarginDashboard.r92_be6a")}</h2>
           <div className="space-y-1 max-h-[400px] overflow-y-auto">
-            {shortRank.map((s, i) => (
-              <div key={s.code} className="flex items-center justify-between p-2 rounded hover:bg-white/[0.02]">
+            {shortRank.map((s, i) =>
+            <div key={s.code} className="flex items-center justify-between p-2 rounded hover:bg-white/[0.02]">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-500 w-5">{i + 1}</span>
                   <span className="text-sm text-white">{s.name}</span>
                   <span className="text-[10px] text-gray-500 font-mono">{s.code}</span>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm text-white">{(s.shortBalance / 1e8).toFixed(1)}亿</div>
+                  <div className="text-sm text-white">{(s.shortBalance / 1e8).toFixed(1)}{i18n.t("MarginDashboard.r92_db85")}</div>
                   <div className={`text-[10px] ${s.shortChange >= 0 ? 'text-red-400' : 'text-emerald-400'}`}>
-                    {s.shortChange >= 0 ? '+' : ''}{(s.shortChange / 1e8).toFixed(1)}亿
-                  </div>
+                    {s.shortChange >= 0 ? '+' : ''}{(s.shortChange / 1e8).toFixed(1)}{i18n.t("MarginDashboard.r92_0827")}
+                </div>
                 </div>
               </div>
-            ))}
+            )}
             {shortRank.length === 0 && <div className="text-gray-500 text-sm py-4 text-center">{"components.noData"}</div>}
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

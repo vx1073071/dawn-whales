@@ -23,17 +23,17 @@ interface PerformanceMetrics {
   winningTrades: number;
   losingTrades: number;
   volatility: number;
-  bestMonth: { month: string; return: number };
-  worstMonth: { month: string; return: number };
+  bestMonth: {month: string;return: number;};
+  worstMonth: {month: string;return: number;};
   consecutiveWins: number;
   consecutiveLosses: number;
 }
 
 interface Props {
   metrics?: PerformanceMetrics;
-  equityCurve?: { date: string; value: number }[];
-  monthlyReturns?: { month: string; return: number }[];
-  drawdownCurve?: { date: string; drawdown: number }[];
+  equityCurve?: {date: string;value: number;}[];
+  monthlyReturns?: {month: string;return: number;}[];
+  drawdownCurve?: {date: string;drawdown: number;}[];
   strategyName?: string;
 }
 
@@ -56,12 +56,12 @@ function generateMockMetrics(): PerformanceMetrics {
     bestMonth: { month: '2025-03', return: 8.45 },
     worstMonth: { month: '2025-09', return: -5.67 },
     consecutiveWins: 8,
-    consecutiveLosses: 4,
+    consecutiveLosses: 4
   };
 }
 
-function generateMockEquityCurve(): { date: string; value: number }[] {
-  const data: { date: string; value: number }[] = [];
+function generateMockEquityCurve(): {date: string;value: number;}[] {
+  const data: {date: string;value: number;}[] = [];
   let value = 100000;
   for (let i = 0; i < 252; i++) {
     const date = new Date(2025, 0, 1);
@@ -77,7 +77,7 @@ export default function PerformanceDashboard({
   equityCurve: externalEquity,
   monthlyReturns: _externalMonthly,
   drawdownCurve: _externalDD,
-  strategyName = 'Portfolio',
+  strategyName = 'Portfolio'
 }: Props) {
   const { t } = useTranslation();
 
@@ -92,7 +92,7 @@ export default function PerformanceDashboard({
 
   // Simple sparkline from equity curve
   const sparkline = useMemo(() => {
-    const values = equityCurve.map(p => p.value);
+    const values = equityCurve.map((p) => p.value);
     if (values.length < 2) return '';
     const min = Math.min(...values);
     const max = Math.max(...values);
@@ -114,22 +114,22 @@ export default function PerformanceDashboard({
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold text-white">{i18n.t('PerformanceDashboard.k0')}</h2>
-          <p className="text-xs text-gray-500 mt-1">{strategyName} · {metrics.totalTrades}笔交易</p>
+          <p className="text-xs text-gray-500 mt-1">{strategyName} · {metrics.totalTrades}{i18n.t("PerformanceDashboard.r92_5f73")}</p>
         </div>
         <div className="flex gap-2">
-          {(['1M', '3M', '6M', '1Y', 'ALL'] as const).map(tf => (
-            <button
-              key={tf}
-              onClick={() => setTimeframe(tf)}
-              className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
-                timeframe === tf
-                  ? 'bg-[#D4A853]/20 text-[#D4A853]'
-                  : 'text-gray-500 hover:text-gray-300'
-              }`}
-            >
+          {(['1M', '3M', '6M', '1Y', 'ALL'] as const).map((tf) =>
+          <button
+            key={tf}
+            onClick={() => setTimeframe(tf)}
+            className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+            timeframe === tf ?
+            'bg-[#D4A853]/20 text-[#D4A853]' :
+            'text-gray-500 hover:text-gray-300'}`
+            }>
+            
               {tf}
             </button>
-          ))}
+          )}
         </div>
       </div>
 
@@ -163,14 +163,14 @@ export default function PerformanceDashboard({
           <line x1="0" y1="20" x2="200" y2="20" stroke="#1a1a2e" strokeWidth="0.5" strokeDasharray="2,2" />
           <line x1="0" y1="0" x2="200" y2="0" stroke="#1a1a2e" strokeWidth="0.5" />
           {/* Line */}
-          {sparkline && (
-            <polyline
-              points={sparkline}
-              fill="none"
-              stroke={metrics.totalReturn >= 0 ? '#4ade80' : '#f87171'}
-              strokeWidth="1.5"
-            />
-          )}
+          {sparkline &&
+          <polyline
+            points={sparkline}
+            fill="none"
+            stroke={metrics.totalReturn >= 0 ? '#4ade80' : '#f87171'}
+            strokeWidth="1.5" />
+
+          }
         </svg>
       </div>
 
@@ -200,7 +200,7 @@ export default function PerformanceDashboard({
               </div>
               {/* Mini bar */}
               <div className="mt-1 bg-[#0a0a12] rounded-full h-1.5 overflow-hidden">
-                <div className="bg-green-500 h-full rounded-full" style={{ width: `${Math.min(100, (metrics.bestMonth.return / 10) * 100)}%` }} />
+                <div className="bg-green-500 h-full rounded-full" style={{ width: `${Math.min(100, metrics.bestMonth.return / 10 * 100)}%` }} />
               </div>
             </div>
             <div>
@@ -234,37 +234,37 @@ export default function PerformanceDashboard({
           {selectedMetric === 'drawdown' && `${i18n.t('PerformanceDashboard.k2')}${formatPct(metrics.maxDrawdown)}${i18n.t('PerformanceDashboard.k3')}`}
         </p>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Sub-components ────────────────────────────────────────────────────────
 
 function MetricCard({
-  label, value, color, subtitle, highlight, onClick,
-}: {
-  label: string; value: string; color: 'green' | 'red' | 'yellow';
-  subtitle: string; highlight?: boolean; onClick?: () => void;
-}) {
+  label, value, color, subtitle, highlight, onClick
+
+
+
+}: {label: string;value: string;color: 'green' | 'red' | 'yellow';subtitle: string;highlight?: boolean;onClick?: () => void;}) {
   const colorMap = { green: 'text-green-400', red: 'text-red-400', yellow: 'text-yellow-400' };
   return (
     <div
       className={`bg-[#12121a] rounded-xl p-3 border ${highlight ? 'border-[#D4A853]/50' : 'border-white/5'} ${onClick ? 'cursor-pointer hover:border-white/10' : ''}`}
-      onClick={onClick}
-    >
+      onClick={onClick}>
+      
       <div className="text-xs text-gray-500 mb-1">{label}</div>
       <div className={`text-lg font-mono font-bold ${colorMap[color]}`}>{value}</div>
       <div className="text-[10px] text-gray-600 mt-0.5">{subtitle}</div>
-    </div>
-  );
+    </div>);
+
 }
 
-function StatRow({ label, value, color }: { label: string; value: string; color?: 'green' | 'red' }) {
+function StatRow({ label, value, color }: {label: string;value: string;color?: 'green' | 'red';}) {
   const colorMap = { green: 'text-green-400', red: 'text-red-400' };
   return (
     <div className="flex justify-between items-center">
       <span className="text-xs text-gray-500">{label}</span>
       <span className={`text-xs font-mono ${color ? colorMap[color] : 'text-gray-300'}`}>{value}</span>
-    </div>
-  );
+    </div>);
+
 }

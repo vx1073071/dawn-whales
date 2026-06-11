@@ -1,0 +1,24 @@
+﻿src/components/marketplace/MarketplacePage.tsx(302,6): error TS17008: JSX element 'div' has no corresponding closing tag.
+src/components/marketplace/MarketplacePage.tsx(311,8): error TS17008: JSX element 'div' has no corresponding closing tag.
+src/components/marketplace/MarketplacePage.tsx(312,10): error TS17008: JSX element 'div' has no corresponding closing tag.
+src/components/marketplace/MarketplacePage.tsx(338,66): error TS1005: '}' expected.
+src/components/marketplace/MarketplacePage.tsx(338,109): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/marketplace/MarketplacePage.tsx(338,184): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+src/components/marketplace/MarketplacePage.tsx(396,1): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/marketplace/MarketplacePage.tsx(398,70): error TS1005: '}' expected.
+src/components/marketplace/MarketplacePage.tsx(398,110): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/marketplace/MarketplacePage.tsx(399,3): error TS1109: Expression expected.
+src/components/marketplace/MarketplacePage.tsx(405,1): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/marketplace/MarketplacePage.tsx(409,64): error TS1005: '}' expected.
+src/components/marketplace/MarketplacePage.tsx(409,86): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+src/components/marketplace/MarketplacePage.tsx(409,93): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/marketplace/MarketplacePage.tsx(410,3): error TS1109: Expression expected.
+src/components/marketplace/MarketplacePage.tsx(410,48): error TS17008: JSX element 'string' has no corresponding closing tag.
+src/components/marketplace/MarketplacePage.tsx(414,43): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+src/components/marketplace/MarketplacePage.tsx(417,5): error TS1109: Expression expected.
+src/components/marketplace/MarketplacePage.tsx(418,55): error TS1005: '}' expected.
+src/components/marketplace/MarketplacePage.tsx(420,5): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/marketplace/MarketplacePage.tsx(423,3): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/marketplace/MarketplacePage.tsx(505,1): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+src/components/marketplace/MarketplacePage.tsx(506,1): error TS1005: '</' expected.
+src/components/risk/NotificationCenter.tsx(118,82): error TS1005: ',' expected.

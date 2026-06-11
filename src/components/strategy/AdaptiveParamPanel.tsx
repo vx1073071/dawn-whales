@@ -37,38 +37,38 @@ interface Props {
 
 // ── Param definitions for different strategy types ────────────────────────
 
-const STRATEGY_PARAMS: Record<string, { label: string; key: string; min: number; max: number; step: number; unit: string }[]> = {
+const STRATEGY_PARAMS: Record<string, {label: string;key: string;min: number;max: number;step: number;unit: string;}[]> = {
   'ma_cross': [
-    { label: 'fastPeriod', key: 'fastPeriod', min: 5, max: 50, step: 1, unit: '' },
-    { label: 'slowPeriod', key: 'slowPeriod', min: 20, max: 200, step: 1, unit: '' },
-    { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 20, step: 0.5, unit: '%' },
-    { label: i18n.t('AdaptiveParamPanel.k1'), key: 'takeProfit', min: 2, max: 50, step: 1, unit: '%' },
-  ],
+  { label: 'fastPeriod', key: 'fastPeriod', min: 5, max: 50, step: 1, unit: '' },
+  { label: 'slowPeriod', key: 'slowPeriod', min: 20, max: 200, step: 1, unit: '' },
+  { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 20, step: 0.5, unit: '%' },
+  { label: i18n.t('AdaptiveParamPanel.k1'), key: 'takeProfit', min: 2, max: 50, step: 1, unit: '%' }],
+
   'rsi': [
-    { label: i18n.t('AdaptiveParamPanel.k2'), key: 'period', min: 7, max: 28, step: 1, unit: '' },
-    { label: i18n.t('AdaptiveParamPanel.k3'), key: 'oversold', min: 15, max: 40, step: 1, unit: '' },
-    { label: i18n.t('AdaptiveParamPanel.k4'), key: 'overbought', min: 60, max: 85, step: 1, unit: '' },
-    { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
-  ],
+  { label: i18n.t('AdaptiveParamPanel.k2'), key: 'period', min: 7, max: 28, step: 1, unit: '' },
+  { label: i18n.t('AdaptiveParamPanel.k3'), key: 'oversold', min: 15, max: 40, step: 1, unit: '' },
+  { label: i18n.t('AdaptiveParamPanel.k4'), key: 'overbought', min: 60, max: 85, step: 1, unit: '' },
+  { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' }],
+
   'macd': [
-    { label: i18n.t('AdaptiveParamPanel.k5'), key: 'fast', min: 8, max: 20, step: 1, unit: '' },
-    { label: i18n.t('AdaptiveParamPanel.k6'), key: 'slow', min: 21, max: 40, step: 1, unit: '' },
-    { label: i18n.t('AdaptiveParamPanel.k7'), key: 'signal', min: 5, max: 15, step: 1, unit: '' },
-    { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
-  ],
+  { label: i18n.t('AdaptiveParamPanel.k5'), key: 'fast', min: 8, max: 20, step: 1, unit: '' },
+  { label: i18n.t('AdaptiveParamPanel.k6'), key: 'slow', min: 21, max: 40, step: 1, unit: '' },
+  { label: i18n.t('AdaptiveParamPanel.k7'), key: 'signal', min: 5, max: 15, step: 1, unit: '' },
+  { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' }],
+
   'bollinger': [
-    { label: i18n.t('AdaptiveParamPanel.k8'), key: 'period', min: 10, max: 30, step: 1, unit: '' },
-    { label: i18n.t('AdaptiveParamPanel.k9'), key: 'stdDev', min: 1.5, max: 3.5, step: 0.1, unit: 'σ' },
-    { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
-    { label: i18n.t('AdaptiveParamPanel.k10'), key: 'takeProfit', min: 2, max: 30, step: 1, unit: '%' },
-  ],
+  { label: i18n.t('AdaptiveParamPanel.k8'), key: 'period', min: 10, max: 30, step: 1, unit: '' },
+  { label: i18n.t('AdaptiveParamPanel.k9'), key: 'stdDev', min: 1.5, max: 3.5, step: 0.1, unit: 'σ' },
+  { label: 'stopLossPct', key: 'stopLoss', min: 1, max: 15, step: 0.5, unit: '%' },
+  { label: i18n.t('AdaptiveParamPanel.k10'), key: 'takeProfit', min: 2, max: 30, step: 1, unit: '%' }]
+
 };
 
 const DEFAULT_PARAMS: Record<string, number> = {
   fastPeriod: 12, slowPeriod: 26, stopLoss: 5, takeProfit: 15,
   period: 14, oversold: 30, overbought: 70,
   fast: 12, slow: 26, signal: 9,
-  stdDev: 2.0,
+  stdDev: 2.0
 };
 
 // ── Mock adaptive engine ──────────────────────────────────────────────────
@@ -85,8 +85,8 @@ function generateMockHistory(_strategyId: string, initialParams: Record<string, 
       params: { ...params },
       reward: +reward.toFixed(3),
       pnl,
-      sharpe: +((0.5 + reward * 0.15).toFixed(2)),
-      iteration: i,
+      sharpe: +(0.5 + reward * 0.15).toFixed(2),
+      iteration: i
     });
 
     // Slight param drift
@@ -102,7 +102,7 @@ function generateMockHistory(_strategyId: string, initialParams: Record<string, 
 // ── Component ──────────────────────────────────────────────────────────────
 
 export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, onBack, initialParams }: Props) {
-  
+
   const [state, setState] = useState<AdaptiveState>(() => {
     const params = initialParams || { ...DEFAULT_PARAMS };
     const history = generateMockHistory(strategyId, params);
@@ -120,7 +120,7 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
       explorationRate: 0.2,
       iterations: history.length,
       bestParams: bestItem?.params || params,
-      bestReward: bestItem?.reward || 0,
+      bestReward: bestItem?.reward || 0
     };
   });
 
@@ -135,14 +135,14 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
   }, [state.suggestedParams, onApply]);
 
   const resetToBest = useCallback(() => {
-    setState(prev => ({ ...prev, currentParams: { ...prev.bestParams } }));
+    setState((prev) => ({ ...prev, currentParams: { ...prev.bestParams } }));
   }, []);
 
   // Auto-generate suggestions on interval when autoLearn is on
   useEffect(() => {
     if (!autoLearn) return;
     const timer = setInterval(() => {
-      setState(prev => {
+      setState((prev) => {
         const newSuggested = { ...prev.currentParams };
         for (const key of Object.keys(newSuggested)) {
           newSuggested[key] += (Math.random() - 0.5) * (prev.explorationRate * 5);
@@ -152,7 +152,7 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
           ...prev,
           suggestedParams: newSuggested,
           iterations: prev.iterations + 1,
-          confidence: +Math.min(1, prev.confidence + 0.02).toFixed(2),
+          confidence: +Math.min(1, prev.confidence + 0.02).toFixed(2)
         };
       });
     }, 3000);
@@ -166,20 +166,20 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
         <div>
           <h2 className="text-lg font-semibold text-white">{i18n.t('AdaptiveParamPanel.k0')}</h2>
           <p className="text-xs text-gray-500 mt-1">
-            {strategyId} · 已迭代 {state.iterations} 次 · 置信度 {(state.confidence * 100).toFixed(0)}%
+            {strategyId}{i18n.t("AdaptiveParamPanel.r92_3649")}{state.iterations}{i18n.t("AdaptiveParamPanel.r92_ba44")}{(state.confidence * 100).toFixed(0)}%
           </p>
         </div>
         <div className="flex gap-2">
-          {onBack && (
-            <button onClick={onBack} className="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition-colors">{'goBack'}</button>
-          )}
+          {onBack &&
+          <button onClick={onBack} className="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition-colors">{'goBack'}</button>
+          }
           <label className="flex items-center gap-1.5 cursor-pointer">
             <input
               type="checkbox"
               checked={autoLearn}
-              onChange={e => setAutoLearn(e.target.checked)}
-              className="rounded border-white/10 accent-[#D4A853]"
-            />
+              onChange={(e) => setAutoLearn(e.target.checked)}
+              className="rounded border-white/10 accent-[#D4A853]" />
+            
             <span className="text-xs text-gray-400">{i18n.t('AdaptiveParamPanel.k1')}</span>
           </label>
         </div>
@@ -189,19 +189,19 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
       <div className="bg-[#12121a] border border-white/5 rounded-xl p-4">
         <h3 className="text-sm text-gray-400 mb-3">{i18n.t('AdaptiveParamPanel.k2')}</h3>
         <div className="flex gap-2">
-          {Object.keys(STRATEGY_PARAMS).map(key => (
-            <button
-              key={key}
-              onClick={() => setSelectedParamSet(key)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                selectedParamSet === key
-                  ? 'bg-[#D4A853]/20 text-[#D4A853] border border-[#D4A853]/30'
-                  : 'bg-[#0a0a12] text-gray-500 hover:text-gray-300 border border-white/5'
-              }`}
-            >
+          {Object.keys(STRATEGY_PARAMS).map((key) =>
+          <button
+            key={key}
+            onClick={() => setSelectedParamSet(key)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+            selectedParamSet === key ?
+            'bg-[#D4A853]/20 text-[#D4A853] border border-[#D4A853]/30' :
+            'bg-[#0a0a12] text-gray-500 hover:text-gray-300 border border-white/5'}`
+            }>
+            
               {key.toUpperCase()}
             </button>
-          ))}
+          )}
         </div>
       </div>
 
@@ -212,30 +212,30 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
           {/* Current */}
           <div>
             <div className="text-xs text-gray-500 mb-2">{i18n.t('AdaptiveParamPanel.k4')}</div>
-            {paramDefs.map(def => (
-              <div key={def.key} className="flex justify-between items-center py-1 border-b border-white/5">
+            {paramDefs.map((def) =>
+            <div key={def.key} className="flex justify-between items-center py-1 border-b border-white/5">
                 <span className="text-xs text-gray-400">{def.label}</span>
                 <span className="text-xs text-white font-mono">
                   {state.currentParams[def.key]?.toFixed(1) || '-'}{def.unit}
                 </span>
               </div>
-            ))}
-            {state.bestReward > 0 && (
-              <button onClick={resetToBest} className="mt-2 text-xs text-[#D4A853] hover:underline">
-                ↺ 恢复到最优参数 (reward: {state.bestReward.toFixed(2)})
-              </button>
             )}
+            {state.bestReward > 0 &&
+            <button onClick={resetToBest} className="mt-2 text-xs text-[#D4A853] hover:underline">{i18n.t("AdaptiveParamPanel.r92_9fc2")}
+              {state.bestReward.toFixed(2)})
+              </button>
+            }
           </div>
 
           {/* Suggested */}
           <div>
-            <div className="text-xs text-gray-500 mb-2">
-              建议参数
+            <div className="text-xs text-gray-500 mb-2">{i18n.t("AdaptiveParamPanel.r92_218d")}
+
               <span className="ml-2 text-green-400">
                 {state.improvementPct > 0 ? `↑${state.improvementPct}%` : `${state.improvementPct}%`}
               </span>
             </div>
-            {paramDefs.map(def => {
+            {paramDefs.map((def) => {
               const current = state.currentParams[def.key] || 0;
               const suggested = state.suggestedParams[def.key] || 0;
               const diff = suggested - current;
@@ -248,20 +248,20 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
                     <span className={`text-xs font-mono ${isChanged ? 'text-[#D4A853]' : 'text-gray-500'}`}>
                       {suggested.toFixed(1)}{def.unit}
                     </span>
-                    {isChanged && (
-                      <span className={`text-[10px] font-mono ${diff > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {isChanged &&
+                    <span className={`text-[10px] font-mono ${diff > 0 ? 'text-green-400' : 'text-red-400'}`}>
                         {diff > 0 ? '+' : ''}{diff.toFixed(1)}
                       </span>
-                    )}
+                    }
                   </div>
-                </div>
-              );
+                </div>);
+
             })}
             <button
               onClick={applySuggested}
-              className="mt-3 w-full px-4 py-2 bg-[#D4A853]/20 hover:bg-[#D4A853]/30 text-[#D4A853] rounded-lg text-xs font-medium transition-colors"
-            >
-              应用建议参数
+              className="mt-3 w-full px-4 py-2 bg-[#D4A853]/20 hover:bg-[#D4A853]/30 text-[#D4A853] rounded-lg text-xs font-medium transition-colors">{i18n.t("AdaptiveParamPanel.r92_8853")}
+
+
             </button>
           </div>
         </div>
@@ -273,8 +273,8 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
           <h3 className="text-sm text-gray-400">{i18n.t('AdaptiveParamPanel.k5')}</h3>
           <button
             onClick={() => setShowHistory(!showHistory)}
-            className="text-xs text-gray-500 hover:text-gray-300"
-          >
+            className="text-xs text-gray-500 hover:text-gray-300">
+            
             {showHistory ? 'components.hide' : i18n.t('AdaptiveParamPanel.k11')}
           </button>
         </div>
@@ -287,31 +287,31 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
           <polyline
             points={state.history.map((h, i) => {
               const x = +(i / Math.max(1, state.history.length - 1) * 200).toFixed(1);
-              const maxR = Math.max(...state.history.map(hh => hh.reward), 1);
-              const minR = Math.min(...state.history.map(hh => hh.reward), 0);
+              const maxR = Math.max(...state.history.map((hh) => hh.reward), 1);
+              const minR = Math.min(...state.history.map((hh) => hh.reward), 0);
               const range = Math.max(0.1, maxR - minR);
               const y = +((1 - (h.reward - minR) / range) * 40).toFixed(1);
               return `${x},${y}`;
             }).join(' ')}
             fill="none"
             stroke={state.improvementPct > 0 ? '#4ade80' : '#f87171'}
-            strokeWidth="1.5"
-          />
+            strokeWidth="1.5" />
+          
           {/* Best point */}
-          {state.history.length > 0 && (
-            <circle
-              cx={state.history.indexOf(state.history.reduce((b, h) => h.reward > b.reward ? h : b)) / Math.max(1, state.history.length - 1) * 200}
-              cy={(1 - (state.bestReward - Math.min(...state.history.map(hh => hh.reward), 0)) / Math.max(0.1, Math.max(...state.history.map(hh => hh.reward), 1) - Math.min(...state.history.map(hh => hh.reward), 0))) * 40}
-              r="3"
-              fill="#D4A853"
-            />
-          )}
+          {state.history.length > 0 &&
+          <circle
+            cx={state.history.indexOf(state.history.reduce((b, h) => h.reward > b.reward ? h : b)) / Math.max(1, state.history.length - 1) * 200}
+            cy={(1 - (state.bestReward - Math.min(...state.history.map((hh) => hh.reward), 0)) / Math.max(0.1, Math.max(...state.history.map((hh) => hh.reward), 1) - Math.min(...state.history.map((hh) => hh.reward), 0))) * 40}
+            r="3"
+            fill="#D4A853" />
+
+          }
         </svg>
 
-        {showHistory && (
-          <div className="mt-3 max-h-48 overflow-y-auto space-y-1">
-            {state.history.slice(-10).reverse().map((h, i) => (
-              <div key={i} className="flex items-center justify-between bg-[#0a0a12] rounded px-3 py-1.5 text-xs">
+        {showHistory &&
+        <div className="mt-3 max-h-48 overflow-y-auto space-y-1">
+            {state.history.slice(-10).reverse().map((h, i) =>
+          <div key={i} className="flex items-center justify-between bg-[#0a0a12] rounded px-3 py-1.5 text-xs">
                 <span className="text-gray-500">
                   {new Date(h.timestamp).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
                   {' '}#{h.iteration}
@@ -325,9 +325,9 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
                   </span>
                 </div>
               </div>
-            ))}
+          )}
           </div>
-        )}
+        }
       </div>
 
       {/* Learning config */}
@@ -339,20 +339,20 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
             <input
               type="number"
               value={state.learningRate}
-              onChange={e => setState(prev => ({ ...prev, learningRate: parseFloat(e.target.value) || 0.1 }))}
+              onChange={(e) => setState((prev) => ({ ...prev, learningRate: parseFloat(e.target.value) || 0.1 }))}
               min={0.01} max={0.5} step={0.01}
-              className="w-24 bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-[#D4A853]/50 outline-none"
-            />
+              className="w-24 bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-[#D4A853]/50 outline-none" />
+            
           </div>
           <div>
             <label className="text-xs text-gray-500 mb-1 block">{i18n.t('AdaptiveParamPanel.k8')}</label>
             <input
               type="number"
               value={state.explorationRate}
-              onChange={e => setState(prev => ({ ...prev, explorationRate: parseFloat(e.target.value) || 0.2 }))}
+              onChange={(e) => setState((prev) => ({ ...prev, explorationRate: parseFloat(e.target.value) || 0.2 }))}
               min={0.01} max={0.5} step={0.01}
-              className="w-24 bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-[#D4A853]/50 outline-none"
-            />
+              className="w-24 bg-[#0a0a12] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-[#D4A853]/50 outline-none" />
+            
           </div>
           <div>
             <label className="text-xs text-gray-500 mb-1 block">{i18n.t('AdaptiveParamPanel.k9')}</label>
@@ -360,6 +360,6 @@ export default function AdaptiveParamPanel({ strategyId = 'ma_cross', onApply, o
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

@@ -33,45 +33,45 @@ interface DrawdownState {
 
 interface RiskConfig {
  // ── v1 ──────────────────────────────────
-  maxSinglePositionPct: number;  // 单品种最大占比 (20%)
-  maxTotalPositionPct: number;   // 总position/holding最大占比 (80%, v2 从95%降至80%)
-  dailyLossLimitPct: number;     // 日最大亏损 (5%)
+  maxSinglePositionPct: number;  // (20%)
+  maxTotalPositionPct: number;   // position/holding (80%, v2 95%80%)
+  dailyLossLimitPct: number;     // (5%)
   maxOrdersPerMinute: number;    // frequencylimit (10)
-  maxOrderQty: number;           // 单笔最大数量
-  minOrderQty: number;           // 单笔最小数量 (1)
-  maxOrderValue: number;         // 单笔最大金额 (USD)
-  tradingHoursOnly: boolean;     // 仅交易时段
-  blacklist: string[];           // 禁止交易的标的
+  maxOrderQty: number;
+  minOrderQty: number;           // (1)
+  maxOrderValue: number;         // (USD)
+  tradingHoursOnly: boolean;
+  blacklist: string[];
 
  // ── v2 risk control ──────────────────────────────────
  // ATR-based stop loss
-  atrStopMultiplier: number;     // stop loss = ATR × 倍数 (2.0)
-  atrTrailingEnabled: boolean;   // enable追踪stop loss
+  atrStopMultiplier: number;     // stop loss = ATR × (2.0)
+  atrTrailingEnabled: boolean;   // enablestop loss
 
  // rolling Caps
-  drawdownReduceThreshold: number;  // 回撤触发降仓 (15%)
-  drawdownReduceFactor: number;     // 降仓至 (30%)
-  drawdownRecoveryThreshold: number; // 回撤restore到 < 此值才解除降仓 (10%)
+  drawdownReduceThreshold: number;  // (15%)
+  drawdownReduceFactor: number;     // (30%)
+  drawdownRecoveryThreshold: number; // restore < (10%)
 
   // Kelly position management
   positionSizingMethod: 'kelly' | 'atr' | 'fixed_pct';
-  kellyMaxFraction: number;      // Kelly 最大占比 (25%)
-  kellyHalfEnabled: boolean;     // 使用 Half-Kelly（更保守）
-  fixedPositionPct: number;      // 固定比例时每次用 (10%)
-  atrRiskPerTrade: number;       // ATR-based: 每笔风险占比 (2%)
+  kellyMaxFraction: number;      // Kelly (25%)
+  kellyHalfEnabled: boolean;     // Half-Kelly（）
+  fixedPositionPct: number;      // (10%)
+  atrRiskPerTrade: number;       // ATR-based: (2%)
 
  // volatility
-  volAdjustEnabled: boolean;     // enablevolatility调节
-  vixHighThreshold: number;      // VIX 高volatilitythreshold (25)
-  vixHighReduction: number;      // 高 VIX 降仓比例 (50%)
-  vixExtremeThreshold: number;   // VIX 极端threshold (35)
-  vixExtremeReduction: number;   // 极端 VIX 降仓比例 (75%)
+  volAdjustEnabled: boolean;     // enablevolatility
+  vixHighThreshold: number;      // VIX volatilitythreshold (25)
+  vixHighReduction: number;      // VIX (50%)
+  vixExtremeThreshold: number;   // VIX threshold (35)
+  vixExtremeReduction: number;   // VIX (75%)
 }
 
 const DEFAULT_CONFIG: RiskConfig = {
  // v1 default
   maxSinglePositionPct: 0.20,
-  maxTotalPositionPct: 0.80,   // v2: 从 95% 降至 80%
+  maxTotalPositionPct: 0.80,   // v2: 95% 80%
   dailyLossLimitPct: 0.05,
   maxOrdersPerMinute: 10,
   maxOrderQty: 10000,
@@ -300,7 +300,7 @@ export class RiskEngine {
       return this.fixedPctSizing(price, availableCapital);
     }
 
-    const b = avgWin / avgLoss; // 赔率
+    const b = avgWin / avgLoss;
     const p = winRate;
     const q = 1 - p;
 
@@ -309,7 +309,7 @@ export class RiskEngine {
 
  // limit Kelly 
     kellyFraction = Math.min(kellyFraction, this.config.kellyMaxFraction);
-    kellyFraction = Math.max(kellyFraction, 0); // 不允许负值
+    kellyFraction = Math.max(kellyFraction, 0);
 
  // Half-Kelly ()
     if (this.config.kellyHalfEnabled) {

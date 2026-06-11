@@ -1,0 +1,33 @@
+﻿npx : [33m[7m[33m Vitest [33m[27m "deps.external" is deprecated. If you rely on vite-node directly, use 
+"server.deps.external" instead. Otherwise, consider using "deps.optimizer.web.exclude"[39m
+所在位置 行:3 字符: 1
++ npx vitest run tests/q47-property-testing.test.ts --reporter=basic 2> ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33m[7m[33m ...b.exclude"[39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[1m[46m RUN [49m[22m [36mv3.2.6 [39m[90mC:/Users/vx107/.easyclaw/workspace/dawn-whales[39m
+
+[1m[43m DEPRECATED [49m[22m [33m'basic' reporter is deprecated and will be removed in Vitest v3.
+Remove 'basic' from 'reporters' option. To match 'basic' reporter 100%, use configuration:
+{
+  "test": {
+    "reporters": [
+      [
+        "default",
+        {
+          "summary": false
+        }
+      ]
+    ]
+  }
+}[39m
+ [32m✓[39m tests/q47-property-testing.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 47[2mms[22m[39m
+
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m10 passed[39m[22m[90m (10)[39m
+[2m   Start at [22m 13:05:20
+[2m   Duration [22m 1.41s[2m (transform 59ms, setup 14ms, collect 78ms, tests 47ms, environment 680ms, prepare 258ms)[22m
+

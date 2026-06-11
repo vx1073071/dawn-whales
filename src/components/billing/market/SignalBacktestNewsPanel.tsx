@@ -1,4 +1,4 @@
-﻿import { useState, useMemo, type CSSProperties } from 'react';
+import { useState, useMemo, type CSSProperties } from 'react';
 import { useTranslation } from "react-i18next";
 import i18n from '../../../i18n';
 import { EngineError } from '../../../../electron/engine/core/engine-error';
@@ -6,51 +6,51 @@ void EngineError; // [EngineError:DATA] structured error tracking
 
 // ── Types ──
 interface SignalTrade {
-  id: string; date: string; symbol: string; side: 'BUY' | 'SELL';
-  entryPrice: number; exitPrice: number; pnl: number; pnlPct: number;
-  reason: string; status: 'win' | 'loss';
+  id: string;date: string;symbol: string;side: 'BUY' | 'SELL';
+  entryPrice: number;exitPrice: number;pnl: number;pnlPct: number;
+  reason: string;status: 'win' | 'loss';
 }
 
-interface BacktestSummary { totalSignals: number; winRate: number; profitFactor: number; maxDrawdown: number; sharpe: number; totalPnl: number }
+interface BacktestSummary {totalSignals: number;winRate: number;profitFactor: number;maxDrawdown: number;sharpe: number;totalPnl: number;}
 
 interface NewsItem {
-  id: string; source: string; title: string; summary: string;
-  sentiment: number; symbols: string[]; timestamp: string; url?: string;
+  id: string;source: string;title: string;summary: string;
+  sentiment: number;symbols: string[];timestamp: string;url?: string;
 }
 
 const SIGNAL_TRADES: SignalTrade[] = [
-  { id: 's1', date: '2026-06-09', symbol: '00700.HK', side: 'BUY', entryPrice: 388, exitPrice: 412, pnl: 24, pnlPct: 6.19, reason: i18n.t('SignalBacktestNewsPanel.k1'), status: 'win' },
-  { id: 's2', date: '2026-06-08', symbol: '09988.HK', side: 'SELL', entryPrice: 95, exitPrice: 88, pnl: 7, pnlPct: 7.37, reason: i18n.t('SignalBacktestNewsPanel.k2'), status: 'win' },
-  { id: 's3', date: '2026-06-07', symbol: 'AAPL.US', side: 'BUY', entryPrice: 228, exitPrice: 222, pnl: -6, pnlPct: -2.63, reason: i18n.t('SignalBacktestNewsPanel.k3'), status: 'loss' },
-  { id: 's4', date: '2026-06-06', symbol: '01810.HK', side: 'BUY', entryPrice: 42.5, exitPrice: 46.8, pnl: 4.3, pnlPct: 10.12, reason: i18n.t('SignalBacktestNewsPanel.k4'), status: 'win' },
-  { id: 's5', date: '2026-06-05', symbol: '09961.HK', side: 'SELL', entryPrice: 118, exitPrice: 126, pnl: -8, pnlPct: -6.78, reason: i18n.t('SignalBacktestNewsPanel.k5'), status: 'loss' },
-  { id: 's6', date: '2026-06-04', symbol: 'NTES.US', side: 'BUY', entryPrice: 105, exitPrice: 112, pnl: 7, pnlPct: 6.67, reason: i18n.t('SignalBacktestNewsPanel.k6'), status: 'win' },
-  { id: 's7', date: '2026-06-03', symbol: '00981.HK', side: 'BUY', entryPrice: 35, exitPrice: 38.5, pnl: 3.5, pnlPct: 10.00, reason: i18n.t('SignalBacktestNewsPanel.k7'), status: 'win' },
-  { id: 's8', date: '2026-06-02', symbol: '02800.HK', side: 'SELL', entryPrice: 22.8, exitPrice: 21.5, pnl: 1.3, pnlPct: 5.70, reason: i18n.t('SignalBacktestNewsPanel.k8'), status: 'win' },
-];
+{ id: 's1', date: '2026-06-09', symbol: '00700.HK', side: 'BUY', entryPrice: 388, exitPrice: 412, pnl: 24, pnlPct: 6.19, reason: i18n.t('SignalBacktestNewsPanel.k1'), status: 'win' },
+{ id: 's2', date: '2026-06-08', symbol: '09988.HK', side: 'SELL', entryPrice: 95, exitPrice: 88, pnl: 7, pnlPct: 7.37, reason: i18n.t('SignalBacktestNewsPanel.k2'), status: 'win' },
+{ id: 's3', date: '2026-06-07', symbol: 'AAPL.US', side: 'BUY', entryPrice: 228, exitPrice: 222, pnl: -6, pnlPct: -2.63, reason: i18n.t('SignalBacktestNewsPanel.k3'), status: 'loss' },
+{ id: 's4', date: '2026-06-06', symbol: '01810.HK', side: 'BUY', entryPrice: 42.5, exitPrice: 46.8, pnl: 4.3, pnlPct: 10.12, reason: i18n.t('SignalBacktestNewsPanel.k4'), status: 'win' },
+{ id: 's5', date: '2026-06-05', symbol: '09961.HK', side: 'SELL', entryPrice: 118, exitPrice: 126, pnl: -8, pnlPct: -6.78, reason: i18n.t('SignalBacktestNewsPanel.k5'), status: 'loss' },
+{ id: 's6', date: '2026-06-04', symbol: 'NTES.US', side: 'BUY', entryPrice: 105, exitPrice: 112, pnl: 7, pnlPct: 6.67, reason: i18n.t('SignalBacktestNewsPanel.k6'), status: 'win' },
+{ id: 's7', date: '2026-06-03', symbol: '00981.HK', side: 'BUY', entryPrice: 35, exitPrice: 38.5, pnl: 3.5, pnlPct: 10.00, reason: i18n.t('SignalBacktestNewsPanel.k7'), status: 'win' },
+{ id: 's8', date: '2026-06-02', symbol: '02800.HK', side: 'SELL', entryPrice: 22.8, exitPrice: 21.5, pnl: 1.3, pnlPct: 5.70, reason: i18n.t('SignalBacktestNewsPanel.k8'), status: 'win' }];
+
 
 const NEWS_SAMPLES: NewsItem[] = [
-  { id: 'n1', source: 'NewsAPI', title: i18n.t('SignalBacktestNewsPanel.k9'), summary: i18n.t('SignalBacktestNewsPanel.k10'), sentiment: 78, symbols: ['00700.HK'], timestamp: '2026-06-09 14:30' },
-  { id: 'n2', source: i18n.t('SignalBacktestNewsPanel.k11'), title: i18n.t('SignalBacktestNewsPanel.k12'), summary: i18n.t('SignalBacktestNewsPanel.k13'), sentiment: 85, symbols: ['^HSI'], timestamp: '2026-06-09 13:15' },
-  { id: 'n3', source: 'NewsAPI', title: i18n.t('SignalBacktestNewsPanel.k14'), summary: i18n.t('SignalBacktestNewsPanel.k15'), sentiment: 65, symbols: ['QQQ', 'AAPL.US'], timestamp: '2026-06-09 09:00' },
-  { id: 'n4', source: i18n.t('SignalBacktestNewsPanel.k16'), title: i18n.t('SignalBacktestNewsPanel.k17'), summary: i18n.t('SignalBacktestNewsPanel.k18'), sentiment: 72, symbols: ['01810.HK'], timestamp: '2026-06-09 11:22' },
-  { id: 'n5', source: 'NewsAPI', title: i18n.t('SignalBacktestNewsPanel.k19'), summary: i18n.t('SignalBacktestNewsPanel.k20'), sentiment: -20, symbols: ['^N225'], timestamp: '2026-06-09 08:45' },
-  { id: 'n6', source: i18n.t('SignalBacktestNewsPanel.k21'), title: i18n.t('SignalBacktestNewsPanel.k22'), summary: i18n.t('SignalBacktestNewsPanel.k23'), sentiment: 90, symbols: ['00883.HK'], timestamp: '2026-06-09 10:00' },
-];
+{ id: 'n1', source: 'NewsAPI', title: i18n.t('SignalBacktestNewsPanel.k9'), summary: i18n.t('SignalBacktestNewsPanel.k10'), sentiment: 78, symbols: ['00700.HK'], timestamp: '2026-06-09 14:30' },
+{ id: 'n2', source: i18n.t('SignalBacktestNewsPanel.k11'), title: i18n.t('SignalBacktestNewsPanel.k12'), summary: i18n.t('SignalBacktestNewsPanel.k13'), sentiment: 85, symbols: ['^HSI'], timestamp: '2026-06-09 13:15' },
+{ id: 'n3', source: 'NewsAPI', title: i18n.t('SignalBacktestNewsPanel.k14'), summary: i18n.t('SignalBacktestNewsPanel.k15'), sentiment: 65, symbols: ['QQQ', 'AAPL.US'], timestamp: '2026-06-09 09:00' },
+{ id: 'n4', source: i18n.t('SignalBacktestNewsPanel.k16'), title: i18n.t('SignalBacktestNewsPanel.k17'), summary: i18n.t('SignalBacktestNewsPanel.k18'), sentiment: 72, symbols: ['01810.HK'], timestamp: '2026-06-09 11:22' },
+{ id: 'n5', source: 'NewsAPI', title: i18n.t('SignalBacktestNewsPanel.k19'), summary: i18n.t('SignalBacktestNewsPanel.k20'), sentiment: -20, symbols: ['^N225'], timestamp: '2026-06-09 08:45' },
+{ id: 'n6', source: i18n.t('SignalBacktestNewsPanel.k21'), title: i18n.t('SignalBacktestNewsPanel.k22'), summary: i18n.t('SignalBacktestNewsPanel.k23'), sentiment: 90, symbols: ['00883.HK'], timestamp: '2026-06-09 10:00' }];
+
 
 // ── Sub-components ──
-function PnLBadge({ pnl, pnlPct }: { pnl: number; pnlPct: number }) {
+function PnLBadge({ pnl, pnlPct }: {pnl: number;pnlPct: number;}) {
   const { t: _t } = useTranslation();
 
   const isWin = pnl > 0;
   return (
     <span style={{ fontWeight: 700, fontSize: 13, color: isWin ? '#34D399' : '#FCA5A5', fontFamily: 'monospace' }}>
       {isWin ? '+' : ''}{Math.abs(pnl).toFixed(2)} ({isWin ? '+' : ''}{pnlPct.toFixed(2)}%)
-    </span>
-  );
+    </span>);
+
 }
 
-function SentimentBar({ value }: { value: number }) {
+function SentimentBar({ value }: {value: number;}) {
   const pct = Math.abs(value);
   const isPositive = value > 0;
   const color = value > 30 ? '#10B981' : value < -30 ? '#EF4444' : '#6B7280';
@@ -62,22 +62,22 @@ function SentimentBar({ value }: { value: number }) {
       <span style={{ fontSize: 11, color, fontWeight: 600, minWidth: 36 }}>
         {isPositive ? '😊' : '😟'} {value}
       </span>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Tab Components ──
 function SignalBacktestTab() {
   const summary: BacktestSummary = useMemo(() => {
-    const win = SIGNAL_TRADES.filter(t => t.pnl > 0).length;
+    const win = SIGNAL_TRADES.filter((t) => t.pnl > 0).length;
     const total = SIGNAL_TRADES.length;
-    const grossProfit = SIGNAL_TRADES.filter(t => t.pnl > 0).reduce((a, b) => a + b.pnl, 0);
-    const grossLoss = Math.abs(SIGNAL_TRADES.filter(t => t.pnl < 0).reduce((a, b) => a + b.pnl, 0));
+    const grossProfit = SIGNAL_TRADES.filter((t) => t.pnl > 0).reduce((a, b) => a + b.pnl, 0);
+    const grossLoss = Math.abs(SIGNAL_TRADES.filter((t) => t.pnl < 0).reduce((a, b) => a + b.pnl, 0));
     return {
       totalSignals: total, winRate: win / total * 100,
       profitFactor: grossLoss > 0 ? grossProfit / grossLoss : 0,
       maxDrawdown: 0.08, sharpe: 1.42,
-      totalPnl: SIGNAL_TRADES.reduce((a, b) => a + b.pnl, 0),
+      totalPnl: SIGNAL_TRADES.reduce((a, b) => a + b.pnl, 0)
     };
   }, []);
 
@@ -107,7 +107,7 @@ function SignalBacktestTab() {
       <div style={{ marginBottom: 16, padding: '14px 16px', borderRadius: 10, background: '#111827', border: '1px solid #1F2937' }}>
         <div style={{ fontSize: 12, color: '#9CA3AF', marginBottom: 8 }}>{i18n.t('SignalBacktestNewsPanel.k25')}</div>
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 80 }}>
-          {SIGNAL_TRADES.map(t => {
+          {SIGNAL_TRADES.map((t) => {
             const maxAbs = 10;
             const h = Math.min(75, Math.abs(t.pnlPct) / maxAbs * 75);
             return (
@@ -115,11 +115,11 @@ function SignalBacktestTab() {
                 <div style={{
                   height: `${h}px`, width: '80%', borderRadius: '4px 4px 0 0',
                   background: t.pnl > 0 ? '#10B98188' : '#EF444488',
-                  marginTop: t.pnl > 0 ? 0 : 'auto',
+                  marginTop: t.pnl > 0 ? 0 : 'auto'
                 }} />
                 <span style={{ fontSize: 9, color: '#6B7280' }}>{t.symbol.split('.')[0]}</span>
-              </div>
-            );
+              </div>);
+
           })}
         </div>
       </div>
@@ -139,8 +139,8 @@ function SignalBacktestTab() {
             </tr>
           </thead>
           <tbody>
-            {SIGNAL_TRADES.map(t => (
-              <tr key={t.id} style={{ borderBottom: '1px solid #1F2937' }}>
+            {SIGNAL_TRADES.map((t) =>
+            <tr key={t.id} style={{ borderBottom: '1px solid #1F2937' }}>
                 <td style={{ padding: '10px 10px', color: '#9CA3AF' }}>{t.date}</td>
                 <td style={{ padding: '10px 10px', color: '#D1D5DB', fontWeight: 600 }}>{t.symbol}</td>
                 <td style={{ padding: '10px 10px', textAlign: 'center' }}>
@@ -153,21 +153,21 @@ function SignalBacktestTab() {
                 <td style={{ padding: '10px 10px', textAlign: 'right' }}><PnLBadge pnl={t.pnl} pnlPct={t.pnlPct} /></td>
                 <td style={{ padding: '10px 10px', color: '#6B7280', fontSize: 11 }}>{t.reason}</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 function RealtimeNewsTab() {
   const [sentimentFilter, setSentimentFilter] = useState<'all' | 'positive' | 'negative' | 'neutral'>('all');
   const filtered = useMemo(() => {
     let list = NEWS_SAMPLES;
-    if (sentimentFilter === 'positive') list = list.filter(n => n.sentiment > 30);
-    else if (sentimentFilter === 'negative') list = list.filter(n => n.sentiment < -30);
-    else if (sentimentFilter === 'neutral') list = list.filter(n => n.sentiment >= -30 && n.sentiment <= 30);
+    if (sentimentFilter === 'positive') list = list.filter((n) => n.sentiment > 30);else
+    if (sentimentFilter === 'negative') list = list.filter((n) => n.sentiment < -30);else
+    if (sentimentFilter === 'neutral') list = list.filter((n) => n.sentiment >= -30 && n.sentiment <= 30);
     return [...list].sort((a, b) => b.timestamp.localeCompare(a.timestamp));
   }, [sentimentFilter]);
 
@@ -181,21 +181,21 @@ function RealtimeNewsTab() {
           <span style={{ fontSize: 11, color: '#6B7280' }}>{i18n.t('SignalBacktestNewsPanel.k32')}</span>
           <SentimentBar value={Math.round(avgSentiment)} />
         </div>
-        {['all', 'positive', 'negative', 'neutral'].map(f => (
-          <button key={f} onClick={() => setSentimentFilter(f as any)} style={{
-            padding: '6px 14px', borderRadius: 6, border: '1px solid', borderColor: sentimentFilter === f ? '#6366F1' : '#374151',
-            background: sentimentFilter === f ? '#6366F118' : 'transparent', color: sentimentFilter === f ? '#818CF8' : '#6B7280',
-            fontSize: 12, cursor: 'pointer',
-          }}>
+        {['all', 'positive', 'negative', 'neutral'].map((f) =>
+        <button key={f} onClick={() => setSentimentFilter(f as any)} style={{
+          padding: '6px 14px', borderRadius: 6, border: '1px solid', borderColor: sentimentFilter === f ? '#6366F1' : '#374151',
+          background: sentimentFilter === f ? '#6366F118' : 'transparent', color: sentimentFilter === f ? '#818CF8' : '#6B7280',
+          fontSize: 12, cursor: 'pointer'
+        }}>
             {f === 'all' ? 'components.all' : f === 'positive' ? i18n.t('SignalBacktestNewsPanel.k33') : f === 'negative' ? i18n.t('SignalBacktestNewsPanel.k34') : i18n.t('SignalBacktestNewsPanel.k35')}
           </button>
-        ))}
+        )}
       </div>
 
       {/* News cards */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {filtered.map(n => (
-          <div key={n.id} style={{ padding: '14px 16px', borderRadius: 12, background: '#111827', border: '1px solid #1F2937' }}>
+        {filtered.map((n) =>
+        <div key={n.id} style={{ padding: '14px 16px', borderRadius: 12, background: '#111827', border: '1px solid #1F2937' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 14, fontWeight: 600, color: '#F9FAFB', marginBottom: 2 }}>{n.title}</div>
@@ -206,19 +206,19 @@ function RealtimeNewsTab() {
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <SentimentBar value={n.sentiment} />
                 <span style={{ padding: '2px 8px', borderRadius: 4, background: '#374151', fontSize: 10, color: '#9CA3AF' }}>{n.source}</span>
-                {n.symbols.map(s => (
-                  <span key={s} style={{ padding: '2px 8px', borderRadius: 4, background: '#6366F122', fontSize: 10, color: '#818CF8' }}>
+                {n.symbols.map((s) =>
+              <span key={s} style={{ padding: '2px 8px', borderRadius: 4, background: '#6366F122', fontSize: 10, color: '#818CF8' }}>
                     {s}
                   </span>
-                ))}
+              )}
               </div>
               <span style={{ fontSize: 10, color: '#6B7280' }}>{n.timestamp}</span>
             </div>
           </div>
-        ))}
+        )}
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Main ──
@@ -228,18 +228,18 @@ export default function SignalBacktestNewsPanel() {
   const theme: CSSProperties = {
     background: '#0A0A10', borderRadius: 16, padding: 24,
     border: '1px solid #1F2937', color: '#E5E7EB',
-    maxWidth: 960, margin: '0 auto',
+    maxWidth: 960, margin: '0 auto'
   };
 
   return (
     <div style={theme}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
         <div>
-          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#F9FAFB' }}>
-            📊 信号回测 & 实时新闻
+          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#F9FAFB' }}>{i18n.t("SignalBacktestNewsPanel.r92_b3ef")}
+
           </h2>
-          <p style={{ margin: '4px 0 0', fontSize: 13, color: '#9CA3AF' }}>
-            BUY→SELL闭环回测 · 双源新闻聚合 · 情绪打分
+          <p style={{ margin: '4px 0 0', fontSize: 13, color: '#9CA3AF' }}>{i18n.t("SignalBacktestNewsPanel.r92_3c31")}
+
           </p>
         </div>
       </div>
@@ -248,17 +248,17 @@ export default function SignalBacktestNewsPanel() {
         <button onClick={() => setTab('backtest')} style={{
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'backtest' ? '#6366F1' : '#1F2937',
-          color: tab === 'backtest' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
+          color: tab === 'backtest' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer'
         }}>{i18n.t('SignalBacktestNewsPanel.k36')}</button>
         <button onClick={() => setTab('news')} style={{
           padding: '8px 18px', borderRadius: 8, border: 'none',
           background: tab === 'news' ? '#6366F1' : '#1F2937',
-          color: tab === 'news' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer',
+          color: tab === 'news' ? '#FFF' : '#9CA3AF', fontSize: 14, fontWeight: 600, cursor: 'pointer'
         }}>{i18n.t('SignalBacktestNewsPanel.k37')}</button>
       </div>
 
       {tab === 'backtest' && <SignalBacktestTab />}
       {tab === 'news' && <RealtimeNewsTab />}
-    </div>
-  );
+    </div>);
+
 }

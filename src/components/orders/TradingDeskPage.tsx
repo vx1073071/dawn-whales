@@ -1,4 +1,4 @@
-﻿// ── TradingDeskPage — IPC Full-Link (Round 16 P0) ────────────────────────
+// ── TradingDeskPage — IPC Full-Link (Round 16 P0) ────────────────────────
 // : + position/holding + + + 
 // >=500 lines | dark theme | production-ready
 import { useState, useEffect } from 'react';
@@ -46,7 +46,7 @@ interface Order {
 }
 
 // ── Account Summary Card ─────────────────────────────────────────────────
-function AccountSummary({ fund, connected }: { fund: AccountFund | null; connected: boolean }) {
+function AccountSummary({ fund, connected }: {fund: AccountFund | null;connected: boolean;}) {
 
   if (!fund) {
     return (
@@ -56,15 +56,15 @@ function AccountSummary({ fund, connected }: { fund: AccountFund | null; connect
           <span className="text-xs text-red-400">{connected ? 'components.loading' : 'components.disconnected'}</span>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          {['components.totalAssets', 'components.availableFunds', 'components.positionValue', 'components.buyingPower'].map((label) => (
-            <div key={label}>
+          {['components.totalAssets', 'components.availableFunds', 'components.positionValue', 'components.buyingPower'].map((label) =>
+          <div key={label}>
               <div className="text-gray-500 text-xs mb-1">{label}</div>
               <div className="text-gray-600 font-mono text-sm">--</div>
             </div>
-          ))}
+          )}
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   const fmt = (n: number) => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -93,30 +93,30 @@ function AccountSummary({ fund, connected }: { fund: AccountFund | null; connect
           <div className="text-cyan-400 font-mono text-sm">{fmt(fund.buyingPower)}</div>
         </div>
       </div>
-      {fund.frozenCash && fund.frozenCash > 0 && (
-        <div className="mt-2 text-xs text-yellow-400">{i18n.t('TradingDeskPage.k0')}{fmt(fund.frozenCash)}</div>
-      )}
-    </div>
-  );
+      {fund.frozenCash && fund.frozenCash > 0 &&
+      <div className="mt-2 text-xs text-yellow-400">{i18n.t('TradingDeskPage.k0')}{fmt(fund.frozenCash)}</div>
+      }
+    </div>);
+
 }
 
 // ── Quick Trade Form ─────────────────────────────────────────────────────
 function QuickTradeForm({
   connected,
   selectedAccount: _sa,
-  onOrderPlaced,
-}: {
-  connected: boolean;
-  selectedAccount: string;
-  onOrderPlaced: () => void;
-}) {
+  onOrderPlaced
+
+
+
+
+}: {connected: boolean;selectedAccount: string;onOrderPlaced: () => void;}) {
   const [symbol, setSymbol] = useState('US.TQQQ');
   const [side, setSide] = useState<'BUY' | 'SELL'>('BUY');
   const [orderType, setOrderType] = useState('MARKET');
   const [qty, setQty] = useState('100');
   const [price, setPrice] = useState('');
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ ok: boolean; msg: string } | null>(null);
+  const [result, setResult] = useState<{ok: boolean;msg: string;} | null>(null);
 
   const quickSymbols = ['US.TQQQ', 'US.QQQ', 'US.SPY', 'US.AAPL', 'US.NVDA', 'US.TSLA', 'US.SOXL'];
 
@@ -143,7 +143,7 @@ function QuickTradeForm({
         side,
         orderType: orderType === 'MARKET' ? 'MARKET' : 'LIMIT',
         qty: parseInt(qty),
-        price: orderType === 'LIMIT' ? parseFloat(price) : 0,
+        price: orderType === 'LIMIT' ? parseFloat(price) : 0
       };
 
       const res = await api.placeOrder(order);
@@ -167,17 +167,17 @@ function QuickTradeForm({
 
       {/* Quick symbol buttons */}
       <div className="flex flex-wrap gap-1 mb-3">
-        {quickSymbols.map((s) => (
-          <button
-            key={s}
-            onClick={() => setSymbol(s)}
-            className={`px-2 py-1 rounded text-[10px] font-mono transition-colors ${
-              symbol === s ? 'bg-[#C9A046] text-black' : 'bg-[#12121a] text-gray-400 hover:text-white'
-            }`}
-          >
+        {quickSymbols.map((s) =>
+        <button
+          key={s}
+          onClick={() => setSymbol(s)}
+          className={`px-2 py-1 rounded text-[10px] font-mono transition-colors ${
+          symbol === s ? 'bg-[#C9A046] text-black' : 'bg-[#12121a] text-gray-400 hover:text-white'}`
+          }>
+          
             {s.replace('US.', '')}
           </button>
-        ))}
+        )}
       </div>
 
       {/* Symbol input */}
@@ -186,8 +186,8 @@ function QuickTradeForm({
           value={symbol}
           onChange={(e) => setSymbol(e.target.value.toUpperCase())}
           className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-[#C9A046]/50"
-          placeholder={i18n.t('TradingDeskPage.k3')}
-        />
+          placeholder={i18n.t('TradingDeskPage.k3')} />
+        
       </div>
 
       {/* Side toggle */}
@@ -195,30 +195,30 @@ function QuickTradeForm({
         <button
           onClick={() => setSide('BUY')}
           className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-            side === 'BUY' ? 'bg-emerald-500 text-white' : 'bg-[#12121a] text-gray-400 hover:text-white'
-          }`}
-        >{'buy'}</button>
+          side === 'BUY' ? 'bg-emerald-500 text-white' : 'bg-[#12121a] text-gray-400 hover:text-white'}`
+          }>
+          {'buy'}</button>
         <button
           onClick={() => setSide('SELL')}
           className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-            side === 'SELL' ? 'bg-red-500 text-white' : 'bg-[#12121a] text-gray-400 hover:text-white'
-          }`}
-        >{'sell'}</button>
+          side === 'SELL' ? 'bg-red-500 text-white' : 'bg-[#12121a] text-gray-400 hover:text-white'}`
+          }>
+          {'sell'}</button>
       </div>
 
       {/* Order type */}
       <div className="flex gap-2 mb-3">
-        {['MARKET', 'LIMIT'].map((t) => (
-          <button
-            key={t}
-            onClick={() => setOrderType(t)}
-            className={`flex-1 py-1.5 rounded text-xs font-medium transition-colors ${
-              orderType === t ? 'bg-white/10 text-white' : 'bg-[#12121a] text-gray-500'
-            }`}
-          >
+        {['MARKET', 'LIMIT'].map((t) =>
+        <button
+          key={t}
+          onClick={() => setOrderType(t)}
+          className={`flex-1 py-1.5 rounded text-xs font-medium transition-colors ${
+          orderType === t ? 'bg-white/10 text-white' : 'bg-[#12121a] text-gray-500'}`
+          }>
+          
             {t === 'MARKET' ? 'components.marketPrice' : 'components.limitPrice'}
           </button>
-        ))}
+        )}
       </div>
 
       {/* Quantity */}
@@ -228,59 +228,59 @@ function QuickTradeForm({
           type="number"
           value={qty}
           onChange={(e) => setQty(e.target.value)}
-          className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-[#C9A046]/50"
-        />
+          className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-[#C9A046]/50" />
+        
         <div className="flex gap-1 mt-1">
-          {[100, 500, 1000, 5000].map((n) => (
-            <button
-              key={n}
-              onClick={() => setQty(String(n))}
-              className="text-[10px] text-gray-500 hover:text-gray-300 bg-[#12121a] px-2 py-0.5 rounded transition-colors"
-            >
+          {[100, 500, 1000, 5000].map((n) =>
+          <button
+            key={n}
+            onClick={() => setQty(String(n))}
+            className="text-[10px] text-gray-500 hover:text-gray-300 bg-[#12121a] px-2 py-0.5 rounded transition-colors">
+            
               {n}
             </button>
-          ))}
+          )}
         </div>
       </div>
 
       {/* Price (limit only) */}
-      {orderType === 'LIMIT' && (
-        <div className="mb-3">
+      {orderType === 'LIMIT' &&
+      <div className="mb-3">
           <label className="text-gray-500 text-xs mb-1 block">{i18n.t('TradingDeskPage.k4')}</label>
           <input
-            type="number"
-            step="0.01"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-[#C9A046]/50"
-            placeholder="0.00"
-          />
+          type="number"
+          step="0.01"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-[#C9A046]/50"
+          placeholder="0.00" />
+        
         </div>
-      )}
+      }
 
       {/* Submit */}
       <button
         onClick={handleSubmit}
         disabled={loading || !connected}
         className={`w-full py-3 rounded-lg text-sm font-semibold transition-colors ${
-          !connected
-            ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-            : side === 'BUY'
-              ? 'bg-emerald-500 hover:bg-emerald-600 text-white'
-              : 'bg-red-500 hover:bg-red-600 text-white'
-        } ${loading ? 'opacity-60' : ''}`}
-      >
+        !connected ?
+        'bg-gray-700 text-gray-500 cursor-not-allowed' :
+        side === 'BUY' ?
+        'bg-emerald-500 hover:bg-emerald-600 text-white' :
+        'bg-red-500 hover:bg-red-600 text-white'} ${
+        loading ? 'opacity-60' : ''}`}>
+        
         {loading ? i18n.t('TradingDeskPage.k6') : !connected ? i18n.t('TradingDeskPage.k7') : `${side === 'BUY' ? i18n.t('TradingDeskPage.k5') : i18n.t('TradingDeskPage.k6')} ${symbol.replace('US.', '')} × ${qty}`}
       </button>
 
       {/* Result message */}
-      {result && (
-        <div className={`mt-3 p-2 rounded-lg text-xs ${result.ok ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
+      {result &&
+      <div className={`mt-3 p-2 rounded-lg text-xs ${result.ok ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
           {result.msg}
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
 
 // ── Main Page ────────────────────────────────────────────────────────────
@@ -341,7 +341,7 @@ export default function TradingDeskPage() {
         loadPositions(accs[0].accId);
         loadOrders(accs[0].accId);
       }
-    } catch (_e: unknown) { /* silent */ }
+    } catch (_e: unknown) {/* silent */}
   }
 
   async function loadFunds(accId?: string) {
@@ -357,10 +357,10 @@ export default function TradingDeskPage() {
           buyingPower: result.buyingPower || result.maxPowerLong || 0,
           maxPowerShort: result.maxPowerShort,
           frozenCash: result.frozenCash,
-          currency: result.currency || 'USD',
+          currency: result.currency || 'USD'
         });
       }
-    } catch (_e: unknown) { /* silent */ }
+    } catch (_e: unknown) {/* silent */}
   }
 
   async function loadPositions(accId?: string) {
@@ -378,10 +378,10 @@ export default function TradingDeskPage() {
           marketVal: p.marketVal || 0,
           pnl: p.pnl || p.unrealizedPnl || 0,
           pnlPct: p.pnlPct || p.unrealizedPnlPct || 0,
-          unrealizedPnl: p.unrealizedPnl,
+          unrealizedPnl: p.unrealizedPnl
         })));
       }
-    } catch (_e: unknown) { /* silent */ }
+    } catch (_e: unknown) {/* silent */}
   }
 
   async function loadOrders(accId?: string) {
@@ -405,7 +405,7 @@ export default function TradingDeskPage() {
         const trades = await window.api.db.getTrades();
         setDbTrades(trades || []);
       }
-    } catch (_e: unknown) { /* silent */ }
+    } catch (_e: unknown) {/* silent */}
   }
 
   async function handleCancel(order: Order) {
@@ -414,7 +414,7 @@ export default function TradingDeskPage() {
         await window.api.broker.cancelOrder(order.orderId);
         loadOrders();
       }
-    } catch (_e: unknown) { /* silent */ }
+    } catch (_e: unknown) {/* silent */}
   }
 
   function refreshAll() {
@@ -424,12 +424,12 @@ export default function TradingDeskPage() {
     loadTrades();
   }
 
-  const tabs: { key: Tab; label: string; icon: string }[] = [
-    { key: 'trade', label: i18n.t('TradingDeskPage.k8'), icon: '📈' },
-    { key: 'positions', label: 'components.positions', icon: '💼' },
-    { key: 'orders', label: i18n.t('TradingDeskPage.k9'), icon: '📋' },
-    { key: 'history', label: i18n.t('TradingDeskPage.k10'), icon: '📜' },
-  ];
+  const tabs: {key: Tab;label: string;icon: string;}[] = [
+  { key: 'trade', label: i18n.t('TradingDeskPage.k8'), icon: '📈' },
+  { key: 'positions', label: 'components.positions', icon: '💼' },
+  { key: 'orders', label: i18n.t('TradingDeskPage.k9'), icon: '📋' },
+  { key: 'history', label: i18n.t('TradingDeskPage.k10'), icon: '📜' }];
+
 
   const activeOrders = orders.filter((o) => ['SUBMITTED', 'WAITING', 'PARTIAL'].includes(o.status));
   // historyOrders used for completed orders tab
@@ -439,12 +439,12 @@ export default function TradingDeskPage() {
     SUBMITTED: 'text-blue-400 bg-blue-500/20', WAITING: 'text-yellow-400 bg-yellow-500/20',
     FILLED: 'text-emerald-400 bg-emerald-500/20', PARTIAL: 'text-cyan-400 bg-cyan-500/20',
     CANCELLED: 'text-gray-400 bg-gray-500/20', REJECTED: 'text-red-400 bg-red-500/20',
-    submitted: 'text-blue-400 bg-blue-500/20', pending: 'text-yellow-400 bg-yellow-500/20',
+    submitted: 'text-blue-400 bg-blue-500/20', pending: 'text-yellow-400 bg-yellow-500/20'
   };
   const statusLabels: Record<string, string> = {
     SUBMITTED: i18n.t('TradingDeskPage.k11'), WAITING: i18n.t('TradingDeskPage.k12'), FILLED: 'components.tradeFilled', PARTIAL: 'components.partialFill',
     CANCELLED: i18n.t('TradingDeskPage.k13'), REJECTED: 'components.tradeRejected', UNKNOWN: i18n.t('TradingDeskPage.k14'),
-    submitted: i18n.t('TradingDeskPage.k15'), pending: 'components.pending',
+    submitted: i18n.t('TradingDeskPage.k15'), pending: 'components.pending'
   };
 
   return (
@@ -453,7 +453,7 @@ export default function TradingDeskPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">{i18n.t('TradingDeskPage.k7')}</h1>
-          <p className="text-gray-400 text-sm">IPC 全链路 · 下单/持仓/委托/成交</p>
+          <p className="text-gray-400 text-sm">{i18n.t("TradingDeskPage.r92_5891")}</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 text-xs">
@@ -466,8 +466,8 @@ export default function TradingDeskPage() {
           <button
             onClick={refreshAll}
             disabled={loading}
-            className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors"
-          >
+            className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">
+            
             {loading ? '...' : i18n.t('TradingDeskPage.k17')}
           </button>
         </div>
@@ -475,25 +475,25 @@ export default function TradingDeskPage() {
 
       {/* Tabs */}
       <div className="flex gap-1 mb-4 bg-[#12121a] rounded-lg p-1 w-fit">
-        {tabs.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              tab === t.key ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'
-            }`}
-          >
+        {tabs.map((t) =>
+        <button
+          key={t.key}
+          onClick={() => setTab(t.key)}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+          tab === t.key ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'}`
+          }>
+          
             {t.icon} {t.label}
-            {t.key === 'orders' && activeOrders.length > 0 && (
-              <span className="ml-1.5 text-xs bg-black/20 px-1.5 py-0.5 rounded-full">{activeOrders.length}</span>
-            )}
+            {t.key === 'orders' && activeOrders.length > 0 &&
+          <span className="ml-1.5 text-xs bg-black/20 px-1.5 py-0.5 rounded-full">{activeOrders.length}</span>
+          }
           </button>
-        ))}
+        )}
       </div>
 
       {/* Trade Tab */}
-      {tab === 'trade' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      {tab === 'trade' &&
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-1">
             <AccountSummary fund={fund} connected={connected} />
             <div className="mt-4">
@@ -506,10 +506,10 @@ export default function TradingDeskPage() {
               <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
                 <h3 className="text-white text-sm font-medium">{i18n.t('TradingDeskPage.k2')}{activeOrders.length})</h3>
               </div>
-              {activeOrders.length === 0 ? (
-                <div className="p-6 text-center text-gray-500 text-sm">{i18n.t('TradingDeskPage.k8')}</div>
-              ) : (
-                <table className="w-full">
+              {activeOrders.length === 0 ?
+            <div className="p-6 text-center text-gray-500 text-sm">{i18n.t('TradingDeskPage.k8')}</div> :
+
+            <table className="w-full">
                   <thead>
                     <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                       <th className="px-3 py-2 text-left">{"components.code"}</th>
@@ -522,8 +522,8 @@ export default function TradingDeskPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {activeOrders.map((o) => (
-                      <tr key={o.orderId} className="border-b border-white/5 hover:bg-white/[0.02]">
+                    {activeOrders.map((o) =>
+                <tr key={o.orderId} className="border-b border-white/5 hover:bg-white/[0.02]">
                         <td className="px-3 py-2 text-white text-sm font-medium">{o.code?.replace('US.', '')}</td>
                         <td className="px-3 py-2 text-center">
                           <span className={`text-xs px-2 py-0.5 rounded ${o.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/20' : 'text-red-400 bg-red-500/20'}`}>
@@ -540,10 +540,10 @@ export default function TradingDeskPage() {
                           <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded">{i18n.t('TradingDeskPage.k10')}</button>
                         </td>
                       </tr>
-                    ))}
+                )}
                   </tbody>
                 </table>
-              )}
+            }
             </div>
 
             {/* Positions preview */}
@@ -551,10 +551,10 @@ export default function TradingDeskPage() {
               <div className="px-4 py-3 border-b border-white/5">
                 <h3 className="text-white text-sm font-medium">{i18n.t('TradingDeskPage.k3')}{positions.length})</h3>
               </div>
-              {positions.length === 0 ? (
-                <div className="p-6 text-center text-gray-500 text-sm">{i18n.t('TradingDeskPage.k11')}</div>
-              ) : (
-                <table className="w-full">
+              {positions.length === 0 ?
+            <div className="p-6 text-center text-gray-500 text-sm">{i18n.t('TradingDeskPage.k11')}</div> :
+
+            <table className="w-full">
                   <thead>
                     <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                       <th className="px-3 py-2 text-left">{"components.code"}</th>
@@ -566,9 +566,9 @@ export default function TradingDeskPage() {
                   </thead>
                   <tbody>
                     {positions.map((p, i) => {
-                      const pnlCls = (p.pnl || 0) >= 0 ? 'text-emerald-400' : 'text-red-400';
-                      return (
-                        <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02]">
+                  const pnlCls = (p.pnl || 0) >= 0 ? 'text-emerald-400' : 'text-red-400';
+                  return (
+                    <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02]">
                           <td className="px-3 py-2 text-white text-sm font-medium">{p.code?.replace('US.', '')}</td>
                           <td className="px-3 py-2 text-right font-mono text-sm">{p.qty}</td>
                           <td className="px-3 py-2 text-right font-mono text-sm text-gray-400">${p.avgCost?.toFixed(2)}</td>
@@ -576,28 +576,28 @@ export default function TradingDeskPage() {
                           <td className={`px-3 py-2 text-right font-mono text-sm ${pnlCls}`}>
                             {p.pnl ? `${p.pnl >= 0 ? '+' : ''}$${p.pnl.toFixed(2)}` : '--'}
                           </td>
-                        </tr>
-                      );
-                    })}
+                        </tr>);
+
+                })}
                   </tbody>
                 </table>
-              )}
+            }
             </div>
           </div>
         </div>
-      )}
+      }
 
       {/* Positions Tab */}
-      {tab === 'positions' && (
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
-          {positions.length === 0 ? (
-            <div className="p-8 text-center">
+      {tab === 'positions' &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
+          {positions.length === 0 ?
+        <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">💼</div>
               <p className="text-gray-400 text-sm">{i18n.t('TradingDeskPage.k14')}</p>
               {!selectedAccount && <p className="text-gray-600 text-xs mt-1">{i18n.t('TradingDeskPage.k15')}</p>}
-            </div>
-          ) : (
-            <table className="w-full">
+            </div> :
+
+        <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                   <th className="px-4 py-3 text-left">{"components.code"}</th>
@@ -607,14 +607,14 @@ export default function TradingDeskPage() {
                   <th className="px-4 py-3 text-right">{"components.marketPrice"}</th>
                   <th className="px-4 py-3 text-right">{"components.marketCap"}</th>
                   <th className="px-4 py-3 text-right">{i18n.t('TradingDeskPage.k17')}</th>
-                  <th className="px-4 py-3 text-right">盈亏%</th>
+                  <th className="px-4 py-3 text-right">{i18n.t("TradingDeskPage.r92_d1a4")}</th>
                 </tr>
               </thead>
               <tbody>
                 {positions.map((p, i) => {
-                  const pnlCls = (p.pnl || 0) >= 0 ? 'text-emerald-400' : 'text-red-400';
-                  return (
-                    <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02]">
+              const pnlCls = (p.pnl || 0) >= 0 ? 'text-emerald-400' : 'text-red-400';
+              return (
+                <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02]">
                       <td className="px-4 py-3 text-white text-sm font-medium">{p.code?.replace('US.', '')}</td>
                       <td className="px-4 py-3 text-gray-400 text-xs">{p.name || '--'}</td>
                       <td className="px-4 py-3 text-right font-mono text-sm">{p.qty}</td>
@@ -629,27 +629,27 @@ export default function TradingDeskPage() {
                       <td className={`px-4 py-3 text-right font-mono text-sm ${pnlCls}`}>
                         {p.pnlPct ? `${p.pnlPct >= 0 ? '+' : ''}${p.pnlPct.toFixed(2)}%` : '--'}
                       </td>
-                    </tr>
-                  );
-                })}
+                    </tr>);
+
+            })}
               </tbody>
             </table>
-          )}
+        }
         </div>
-      )}
+      }
 
       {/* Orders Tab */}
-      {(tab === 'orders') && (
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
-          {loading && orders.length === 0 ? (
-            <div className="p-8 text-center text-gray-500 text-sm">{"components.loading"}</div>
-          ) : orders.length === 0 ? (
-            <div className="p-8 text-center">
+      {tab === 'orders' &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
+          {loading && orders.length === 0 ?
+        <div className="p-8 text-center text-gray-500 text-sm">{"components.loading"}</div> :
+        orders.length === 0 ?
+        <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">📋</div>
               <p className="text-gray-400 text-sm">{i18n.t('TradingDeskPage.k18')}</p>
-            </div>
-          ) : (
-            <table className="w-full">
+            </div> :
+
+        <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                   <th className="px-4 py-3 text-left">{"components.time"}</th>
@@ -664,8 +664,8 @@ export default function TradingDeskPage() {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((o) => (
-                  <tr key={o.orderId} className="border-b border-white/5 hover:bg-white/[0.02]">
+                {orders.map((o) =>
+            <tr key={o.orderId} className="border-b border-white/5 hover:bg-white/[0.02]">
                     <td className="px-4 py-3 text-gray-400 text-xs font-mono">{o.createTime || '--'}</td>
                     <td className="px-4 py-3 text-white text-sm font-medium">{o.code?.replace('US.', '') || '--'}</td>
                     <td className="px-4 py-3 text-center">
@@ -683,29 +683,29 @@ export default function TradingDeskPage() {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-center">
-                      {['SUBMITTED', 'WAITING', 'PARTIAL'].includes(o.status) && (
-                        <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded">{i18n.t('TradingDeskPage.k22')}</button>
-                      )}
+                      {['SUBMITTED', 'WAITING', 'PARTIAL'].includes(o.status) &&
+                <button onClick={() => handleCancel(o)} className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 px-2 py-1 rounded">{i18n.t('TradingDeskPage.k22')}</button>
+                }
                     </td>
                   </tr>
-                ))}
+            )}
               </tbody>
             </table>
-          )}
+        }
         </div>
-      )}
+      }
 
       {/* History Tab */}
-      {tab === 'history' && (
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
-          {dbTrades.length === 0 ? (
-            <div className="p-8 text-center">
+      {tab === 'history' &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
+          {dbTrades.length === 0 ?
+        <div className="p-8 text-center">
               <div className="text-3xl mb-2 opacity-40">📜</div>
               <p className="text-gray-400 text-sm">{i18n.t('TradingDeskPage.k23')}</p>
               <p className="text-gray-600 text-xs mt-1">{i18n.t('TradingDeskPage.k24')}</p>
-            </div>
-          ) : (
-            <table className="w-full">
+            </div> :
+
+        <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                   <th className="px-4 py-3 text-left">{"components.time"}</th>
@@ -719,8 +719,8 @@ export default function TradingDeskPage() {
                 </tr>
               </thead>
               <tbody>
-                {dbTrades.map((t, i) => (
-                  <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02]">
+                {dbTrades.map((t, i) =>
+            <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02]">
                     <td className="px-4 py-3 text-gray-400 text-xs font-mono">{(t as any).created_at || '--'}</td>
                     <td className="px-4 py-3 text-white text-sm font-medium">{(t as any).symbol?.replace('US.', '')}</td>
                     <td className="px-4 py-3 text-center">
@@ -740,12 +740,12 @@ export default function TradingDeskPage() {
                     </td>
                     <td className="px-4 py-3 text-gray-500 text-xs truncate max-w-[150px]">{(t as any).remark || ''}</td>
                   </tr>
-                ))}
+            )}
               </tbody>
             </table>
-          )}
+        }
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }

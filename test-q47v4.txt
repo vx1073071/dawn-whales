@@ -1,0 +1,142 @@
+﻿npx : [33m[7m[33m Vitest [33m[27m "deps.external" is deprecated. If you rely on vite-node directly, use 
+"server.deps.external" instead. Otherwise, consider using "deps.optimizer.web.exclude"[39m
+所在位置 行:2 字符: 1
++ npx vitest run tests/q47-property-testing.test.ts --reporter=basic 2> ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33m[7m[33m ...b.exclude"[39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[1m[46m RUN [49m[22m [36mv3.2.6 [39m[90mC:/Users/vx107/.easyclaw/workspace/dawn-whales[39m
+
+[1m[43m DEPRECATED [49m[22m [33m'basic' reporter is deprecated and will be removed in Vitest v3.
+Remove 'basic' from 'reporters' option. To match 'basic' reporter 100%, use configuration:
+{
+  "test": {
+    "reporters": [
+      [
+        "default",
+        {
+          "summary": false
+        }
+      ]
+    ]
+  }
+}[39m
+ [31m❯[39m tests/q47-property-testing.test.ts [2m([22m[2m10 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[32m 46[2mms[22m[39m
+   [32m✓[39m Q47: Property-Based Testing (fast-check)[2m > [22mRSI always in [0, 100][32m 24[2mms[22m[39m
+   [32m✓[39m Q47: Property-Based Testing (fast-check)[2m > [22mRSI deterministic: same input → same output[32m 3[2mms[22m[39m
+   [32m✓[39m Q47: Property-Based Testing (fast-check)[2m > [22mRSI: flat prices → RSI = 100 (no losses)[32m 1[2mms[22m[39m
+[31m   [31m×[31m Q47: Property-Based Testing (fast-check)[2m > [22mnormalCDF always in [0, 1][39m[32m 6[2mms[22m[39m
+[31m     → Property failed after 1 tests
+{ seed: -73298237, path: "0:0", endOnFailure: true }
+Counterexample: [0]
+Shrunk 1 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run[39m
+[31m   [31m×[31m Q47: Property-Based Testing (fast-check)[2m > [22mnormalCDF(0) ≈ 0.5[39m[32m 1[2mms[22m[39m
+[31m     → Property failed after 1 tests
+{ seed: 684240618, path: "0:0", endOnFailure: true }
+Counterexample: [0]
+Shrunk 1 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run[39m
+[31m   [31m×[31m Q47: Property-Based Testing (fast-check)[2m > [22mnormalCDF monotonic for well-separated pairs[39m[32m 1[2mms[22m[39m
+[31m     → Property failed after 1 tests
+{ seed: 247829643, path: "0:0:9:0:2:0:0:0:0:1:0:0:0:0:0:3:1:3:2:2:0:1:1:3:0:0:0:0:1:0:4", endOnFailure: true }
+Counterexample: [0,0.5]
+Shrunk 30 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run[39m
+   [32m✓[39m Q47: Property-Based Testing (fast-check)[2m > [22mnormalPDF always non-negative[32m 1[2mms[22m[39m
+   [32m✓[39m Q47: Property-Based Testing (fast-check)[2m > [22mnormalPDF peaks at mean[32m 1[2mms[22m[39m
+   [32m✓[39m Q47: Property-Based Testing (fast-check)[2m > [22mKelly always in [0, 1][32m 5[2mms[22m[39m
+   [32m✓[39m Q47: Property-Based Testing (fast-check)[2m > [22mHigher wins → higher Kelly (same losses)[32m 2[2mms[22m[39m
+
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 3 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/q47-property-testing.test.ts[2m > [22mQ47: Property-Based Testing (fast-check)[2m > 
+[22mnormalCDF always in [0, 1]
+[31m[1mError[22m: Property failed after 1 tests
+{ seed: -73298237, path: "0:0", endOnFailure: true }
+Counterexample: [0]
+Shrunk 1 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run[39m
+[36m [2m❯[22m buildError node_modules/fast-check/lib/fast-check.js:[2m2441:16[22m[39m
+    [90m2439| [39mfunction buildError(errorMessage, out) {
+    [90m2440| [39m if (out.runConfiguration.includeErrorInReport) throw new SError(error…
+    [90m2441| [39m const error = new SError(errorMessage, { cause: out.errorInstance });
+    [90m   | [39m               [31m^[39m
+    [90m2442| [39m if (!("cause" in error)) safeObjectAssign$5(error, { cause: out.error…
+    [90m2443| [39m return error;
+[90m [2m❯[22m asyncThrowIfFailed node_modules/fast-check/lib/fast-check.js:[2m2453:8[22m[39m
+
+[31m[1mCaused by: TypeError[22m: (0 , normalCDF) is not a function[39m
+[36m [2m❯[22m tests/q47-property-testing.test.ts:[2m75:21[22m[39m
+[90m [2m❯[22m AsyncProperty.predicate node_modules/fast-check/lib/fast-check.js:[2m1261:104[22m[39m
+[90m [2m❯[22m AsyncProperty.run node_modules/fast-check/lib/fast-check.js:[2m1197:30[22m[39m
+[90m [2m❯[22m asyncRunIt node_modules/fast-check/lib/fast-check.js:[2m2495:30[22m[39m
+[90m [2m❯[22m tests/q47-property-testing.test.ts:[2m71:5[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q47-property-testing.test.ts[2m > [22mQ47: Property-Based Testing (fast-check)[2m > 
+[22mnormalCDF(0) ≈ 0.5
+[31m[1mError[22m: Property failed after 1 tests
+{ seed: 684240618, path: "0:0", endOnFailure: true }
+Counterexample: [0]
+Shrunk 1 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run[39m
+[36m [2m❯[22m buildError node_modules/fast-check/lib/fast-check.js:[2m2441:16[22m[39m
+    [90m2439| [39mfunction buildError(errorMessage, out) {
+    [90m2440| [39m if (out.runConfiguration.includeErrorInReport) throw new SError(error…
+    [90m2441| [39m const error = new SError(errorMessage, { cause: out.errorInstance });
+    [90m   | [39m               [31m^[39m
+    [90m2442| [39m if (!("cause" in error)) safeObjectAssign$5(error, { cause: out.error…
+    [90m2443| [39m return error;
+[90m [2m❯[22m asyncThrowIfFailed node_modules/fast-check/lib/fast-check.js:[2m2453:8[22m[39m
+
+[31m[1mCaused by: TypeError[22m: (0 , normalCDF) is not a function[39m
+[36m [2m❯[22m tests/q47-property-testing.test.ts:[2m90:21[22m[39m
+[90m [2m❯[22m AsyncProperty.predicate node_modules/fast-check/lib/fast-check.js:[2m1261:104[22m[39m
+[90m [2m❯[22m AsyncProperty.run node_modules/fast-check/lib/fast-check.js:[2m1197:30[22m[39m
+[90m [2m❯[22m asyncRunIt node_modules/fast-check/lib/fast-check.js:[2m2495:30[22m[39m
+[90m [2m❯[22m tests/q47-property-testing.test.ts:[2m86:5[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q47-property-testing.test.ts[2m > [22mQ47: Property-Based Testing (fast-check)[2m > 
+[22mnormalCDF monotonic for well-separated pairs
+[31m[1mError[22m: Property failed after 1 tests
+{ seed: 247829643, path: "0:0:9:0:2:0:0:0:0:1:0:0:0:0:0:3:1:3:2:2:0:1:1:3:0:0:0:0:1:0:4", endOnFailure: true }
+Counterexample: [0,0.5]
+Shrunk 30 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run[39m
+[36m [2m❯[22m buildError node_modules/fast-check/lib/fast-check.js:[2m2441:16[22m[39m
+    [90m2439| [39mfunction buildError(errorMessage, out) {
+    [90m2440| [39m if (out.runConfiguration.includeErrorInReport) throw new SError(error…
+    [90m2441| [39m const error = new SError(errorMessage, { cause: out.errorInstance });
+    [90m   | [39m               [31m^[39m
+    [90m2442| [39m if (!("cause" in error)) safeObjectAssign$5(error, { cause: out.error…
+    [90m2443| [39m return error;
+[90m [2m❯[22m asyncThrowIfFailed node_modules/fast-check/lib/fast-check.js:[2m2453:8[22m[39m
+
+[31m[1mCaused by: TypeError[22m: (0 , normalCDF) is not a function[39m
+[36m [2m❯[22m tests/q47-property-testing.test.ts:[2m109:22[22m[39m
+[90m [2m❯[22m AsyncProperty.predicate node_modules/fast-check/lib/fast-check.js:[2m1261:104[22m[39m
+[90m [2m❯[22m AsyncProperty.run node_modules/fast-check/lib/fast-check.js:[2m1197:30[22m[39m
+[90m [2m❯[22m asyncRunIt node_modules/fast-check/lib/fast-check.js:[2m2495:30[22m[39m
+[90m [2m❯[22m tests/q47-property-testing.test.ts:[2m102:5[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m7 passed[39m[22m[90m (10)[39m
+[2m   Start at [22m 13:04:24
+[2m   Duration [22m 1.46s[2m (transform 57ms, setup 13ms, collect 77ms, tests 46ms, environment 705ms, prepare 278ms)[22m
+

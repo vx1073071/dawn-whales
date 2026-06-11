@@ -1,6 +1,6 @@
 // ── DAWN WHALES — PriceAlertPanel () ───────────────────────────
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
@@ -28,8 +28,8 @@ export default function PriceAlertPanel() {
     try {
       const saved = localStorage.getItem('dawn-whales-alerts');
       if (saved) setAlerts(JSON.parse(saved));
-    } catch (e) { console.error('[Error:PriceAlertPanel]', e); }
-  void EngineError; // [SYSTEM] structured error tracking
+    } catch (e) {console.error('[Error:PriceAlertPanel]', e);}
+    void EngineError; // [SYSTEM] structured error tracking
   }, []);
 
   // Save to localStorage
@@ -46,7 +46,7 @@ export default function PriceAlertPanel() {
       symbol: symbol.toUpperCase(),
       targetPrice: parseFloat(price),
       condition,
-      createdAt: Date.now(),
+      createdAt: Date.now()
     };
     setAlerts((prev) => [newAlert, ...prev]);
     setSymbol('');
@@ -64,9 +64,9 @@ export default function PriceAlertPanel() {
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-white font-semibold text-sm">🔔 价格告警</h2>
+          <h2 className="text-white font-semibold text-sm">{i18n.t("PriceAlertPanel.r92_45ae")}</h2>
           <p className="text-gray-500 text-[10px] mt-0.5">
-            {activeAlerts.length} 个监控中 · {triggeredAlerts.length} 个已触发
+            {activeAlerts.length}{i18n.t("PriceAlertPanel.r92_4c6a")}{triggeredAlerts.length}{i18n.t("PriceAlertPanel.r92_12a0")}
           </p>
         </div>
       </div>
@@ -77,13 +77,13 @@ export default function PriceAlertPanel() {
           value={symbol}
           onChange={(e) => setSymbol(e.target.value)}
           placeholder={t("components.code")}
-          className="flex-1 bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-600 focus:border-[#C9A046] focus:outline-none"
-        />
+          className="flex-1 bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-600 focus:border-[#C9A046] focus:outline-none" />
+        
         <select
           value={condition}
           onChange={(e) => setCondition(e.target.value as any)}
-          className="bg-[#12121a] border border-white/10 rounded-lg px-2 py-2 text-xs text-white"
-        >
+          className="bg-[#12121a] border border-white/10 rounded-lg px-2 py-2 text-xs text-white">
+          
           <option value="above">≥</option>
           <option value="below">≤</option>
         </select>
@@ -93,27 +93,27 @@ export default function PriceAlertPanel() {
           type="number"
           step="0.01"
           placeholder={t("components.price")}
-          className="w-24 bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-600 focus:border-[#C9A046] focus:outline-none"
-        />
+          className="w-24 bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-600 focus:border-[#C9A046] focus:outline-none" />
+        
         <button
           onClick={addAlert}
           disabled={!symbol || !price}
-          className="px-3 py-2 bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 rounded-lg text-xs font-medium hover:bg-[#C9A046]/20 transition-colors disabled:opacity-30"
-        >
-          添加
+          className="px-3 py-2 bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 rounded-lg text-xs font-medium hover:bg-[#C9A046]/20 transition-colors disabled:opacity-30">{i18n.t("PriceAlertPanel.r92_a784")}
+
+
         </button>
       </div>
 
       {/* Active Alerts */}
-      {activeAlerts.length === 0 ? (
-        <p className="text-gray-500 text-xs text-center py-3">{i18n.t('PriceAlertPanel.k0')}</p>
-      ) : (
-        <div className="space-y-1 mb-3">
-          {activeAlerts.map((alert) => (
-            <div
-              key={alert.id}
-              className="flex items-center justify-between bg-[#12121a] rounded-lg px-3 py-2 border border-white/5"
-            >
+      {activeAlerts.length === 0 ?
+      <p className="text-gray-500 text-xs text-center py-3">{i18n.t('PriceAlertPanel.k0')}</p> :
+
+      <div className="space-y-1 mb-3">
+          {activeAlerts.map((alert) =>
+        <div
+          key={alert.id}
+          className="flex items-center justify-between bg-[#12121a] rounded-lg px-3 py-2 border border-white/5">
+          
               <div className="flex items-center gap-2">
                 <span className="text-white text-xs font-medium">{alert.symbol}</span>
                 <span className="text-[10px] text-gray-500">
@@ -121,26 +121,26 @@ export default function PriceAlertPanel() {
                 </span>
               </div>
               <button
-                onClick={() => removeAlert(alert.id)}
-                className="text-[10px] text-gray-600 hover:text-red-400 transition-colors"
-              >
-                删除
-              </button>
+            onClick={() => removeAlert(alert.id)}
+            className="text-[10px] text-gray-600 hover:text-red-400 transition-colors">{i18n.t("PriceAlertPanel.r92_1307")}
+
+
+          </button>
             </div>
-          ))}
+        )}
         </div>
-      )}
+      }
 
       {/* Triggered Alerts */}
-      {triggeredAlerts.length > 0 && (
-        <div className="pt-2 border-t border-white/5">
+      {triggeredAlerts.length > 0 &&
+      <div className="pt-2 border-t border-white/5">
           <div className="text-[10px] text-gray-500 mb-1">{i18n.t('PriceAlertPanel.k1')}</div>
           <div className="space-y-1">
-            {triggeredAlerts.slice(0, 3).map((alert) => (
-              <div
-                key={alert.id}
-                className="flex items-center justify-between bg-red-500/5 rounded-lg px-3 py-2 border border-red-500/10 opacity-60"
-              >
+            {triggeredAlerts.slice(0, 3).map((alert) =>
+          <div
+            key={alert.id}
+            className="flex items-center justify-between bg-red-500/5 rounded-lg px-3 py-2 border border-red-500/10 opacity-60">
+            
                 <div className="flex items-center gap-2">
                   <span className="text-red-400 text-xs font-medium">{alert.symbol}</span>
                   <span className="text-[10px] text-red-400">
@@ -148,16 +148,16 @@ export default function PriceAlertPanel() {
                   </span>
                 </div>
                 <button
-                  onClick={() => removeAlert(alert.id)}
-                  className="text-[10px] text-gray-600 hover:text-red-400"
-                >
-                  清除
-                </button>
+              onClick={() => removeAlert(alert.id)}
+              className="text-[10px] text-gray-600 hover:text-red-400">{i18n.t("PriceAlertPanel.r92_c0b0")}
+
+
+            </button>
               </div>
-            ))}
+          )}
           </div>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }

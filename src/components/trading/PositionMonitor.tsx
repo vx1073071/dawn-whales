@@ -1,3 +1,4 @@
+import i18n from '../../i18n/index';
 import { useState, useEffect } from 'react';
 
 import { useTranslation } from 'react-i18next';
@@ -30,7 +31,7 @@ export default function PositionMonitor() {
     setError(null);
     try {
       const accs = await getAccounts();
-      if (!accs || accs.length === 0) { setLoading(false); return; }
+      if (!accs || accs.length === 0) {setLoading(false);return;}
       const pos = await getPositions(accs[0].accountId || accs[0].accId);
       setPositions(pos?.map((p: any) => ({
         code: p.code,
@@ -39,7 +40,7 @@ export default function PositionMonitor() {
         marketPrice: p.marketPrice || 0,
         marketValue: p.marketValue || 0,
         pnl: p.pnl || 0,
-        pnlPct: p.pnlPct || 0,
+        pnlPct: p.pnlPct || 0
       })) || []);
     } catch (e: unknown) {
       setError((e as any)?.message || t('common.loadingFailed'));
@@ -66,23 +67,23 @@ export default function PositionMonitor() {
         </div>
       </div>
 
-      {error && (
-        <div className="p-3 text-red-400 text-xs">{error}</div>
-      )}
+      {error &&
+      <div className="p-3 text-red-400 text-xs">{error}</div>
+      }
 
-      {positions.length === 0 && !loading && !error ? (
-        <div className="p-6 text-center text-gray-500 text-sm">{t('portfolio.noPositions')}</div>
-      ) : (
-        <div className="max-h-80 overflow-auto">
-          {positions.map((p) => (
-            <div key={p.code} className="px-4 py-2.5 border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+      {positions.length === 0 && !loading && !error ?
+      <div className="p-6 text-center text-gray-500 text-sm">{t('portfolio.noPositions')}</div> :
+
+      <div className="max-h-80 overflow-auto">
+          {positions.map((p) =>
+        <div key={p.code} className="px-4 py-2.5 border-b border-white/5 hover:bg-white/[0.02] transition-colors">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-sm text-white font-medium">{p.code.split('.')[1] || p.code}</div>
-                  <div className="text-xs text-gray-500">{p.qty}股 · ${p.marketPrice.toFixed(2)}</div>
+                  <div className="text-xs text-gray-500">{p.qty}{i18n.t("PositionMonitor.r92_2789")}{p.marketPrice.toFixed(2)}</div>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm text-white">${(p.marketValue / 10000).toFixed(1)}万</div>
+                  <div className="text-sm text-white">${(p.marketValue / 10000).toFixed(1)}{i18n.t("PositionMonitor.r92_05dc")}</div>
                   <div className={`text-xs ${color(p.pnl)}`}>
                     {p.pnl >= 0 ? '+' : ''}{p.pnl.toFixed(0)} ({p.pnlPct >= 0 ? '+' : ''}{p.pnlPct.toFixed(2)}%)
                   </div>
@@ -90,14 +91,14 @@ export default function PositionMonitor() {
               </div>
               <div className="mt-1 h-1 bg-[#12121a] rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-[#C9A046] rounded-full"
-                  style={{ width: `${totalMV > 0 ? (p.marketValue / totalMV) * 100 : 0}%` }}
-                />
+              className="h-full bg-[#C9A046] rounded-full"
+              style={{ width: `${totalMV > 0 ? p.marketValue / totalMV * 100 : 0}%` }} />
+            
               </div>
             </div>
-          ))}
+        )}
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }

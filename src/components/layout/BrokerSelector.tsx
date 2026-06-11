@@ -19,7 +19,7 @@ const BROKER_ICONS: Record<string, string> = {
   moomoo: '🐮',
   ib: '🌐',
   longbridge: '🌉',
-  custom: '⚙️',
+  custom: '⚙️'
 };
 
 const BROKER_LABELS: Record<string, string> = {
@@ -27,7 +27,7 @@ const BROKER_LABELS: Record<string, string> = {
   moomoo: 'moomoo',
   ib: 'IBKR',
   longbridge: i18n.t('BrokerSelector.k1'),
-  custom: i18n.t('BrokerSelector.k2'),
+  custom: i18n.t('BrokerSelector.k2')
 };
 
 export default function BrokerSelector() {
@@ -83,9 +83,9 @@ export default function BrokerSelector() {
     return (
       <div className="flex items-center gap-1.5 text-xs">
         <span className={`w-1.5 h-1.5 rounded-full ${activeBroker ? 'bg-emerald-400' : 'bg-gray-500'}`} />
-        <span className="text-gray-400">{activeBroker ? (BROKER_LABELS[activeBroker.type] || activeBroker.name) : t('components.disconnected')}</span>
-      </div>
-    );
+        <span className="text-gray-400">{activeBroker ? BROKER_LABELS[activeBroker.type] || activeBroker.name : t('components.disconnected')}</span>
+      </div>);
+
   }
 
   return (
@@ -94,31 +94,31 @@ export default function BrokerSelector() {
       <button
         onClick={() => setOpen((o) => !o)}
         className="flex items-center gap-1.5 text-xs px-2 py-1 rounded hover:bg-white/5 transition-colors text-gray-300 hover:text-white"
-        title={i18n.t('BrokerSelector.k3')}
-      >
+        title={i18n.t('BrokerSelector.k3')}>
+        
         <span className={`w-1.5 h-1.5 rounded-full ${activeBroker ? 'bg-emerald-400' : 'bg-gray-500'}`} />
-        <span>{activeBroker ? (BROKER_LABELS[activeBroker.type] || activeBroker.name) : i18n.t('BrokerSelector.k4')}</span>
+        <span>{activeBroker ? BROKER_LABELS[activeBroker.type] || activeBroker.name : i18n.t('BrokerSelector.k4')}</span>
         <span className="text-gray-500 text-[10px]">▾</span>
       </button>
 
       {/* Dropdown */}
-      {open && (
-        <div className="absolute right-0 top-full mt-1 w-52 bg-[#1e1e2e] border border-white/10 rounded-lg shadow-xl z-50 overflow-hidden">
+      {open &&
+      <div className="absolute right-0 top-full mt-1 w-52 bg-[#1e1e2e] border border-white/10 rounded-lg shadow-xl z-50 overflow-hidden">
           <div className="px-3 py-2 border-b border-white/5">
             <span className="text-[10px] text-gray-500 uppercase tracking-wider">{i18n.t('BrokerSelector.k5')}</span>
           </div>
 
           {statuses.map((broker) => {
-            const isActive = broker.id === activeBroker?.id;
-            return (
-              <button
-                key={broker.id}
-                onClick={() => handleSwitch(broker.id)}
-                disabled={loading}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-white/5 transition-colors ${
-                  isActive ? 'bg-emerald-500/10' : ''
-                }`}
-              >
+          const isActive = broker.id === activeBroker?.id;
+          return (
+            <button
+              key={broker.id}
+              onClick={() => handleSwitch(broker.id)}
+              disabled={loading}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-white/5 transition-colors ${
+              isActive ? 'bg-emerald-500/10' : ''}`
+              }>
+              
                 {/* Status dot */}
                 <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${broker.connected ? 'bg-emerald-400' : 'bg-gray-500'}`} />
 
@@ -132,33 +132,33 @@ export default function BrokerSelector() {
                   </div>
                   <div className="text-[10px] text-gray-500">
                     {broker.connected ? t('components.connected') : t('components.disconnected')}
-                    {!broker.connected && broker.lastError && (
-                      <span className="text-red-400 ml-1">· {broker.lastError}</span>
-                    )}
+                    {!broker.connected && broker.lastError &&
+                  <span className="text-red-400 ml-1">· {broker.lastError}</span>
+                  }
                   </div>
                 </div>
 
                 {/* Active indicator */}
-                {isActive && (
-                  <span className="text-emerald-400 text-xs">✓</span>
-                )}
-              </button>
-            );
-          })}
+                {isActive &&
+              <span className="text-emerald-400 text-xs">✓</span>
+              }
+              </button>);
+
+        })}
 
           {/* Footer */}
           <div className="px-3 py-1.5 border-t border-white/5 flex justify-end">
             <button
-              onClick={refreshStatus}
-              className="text-[10px] text-gray-500 hover:text-gray-300 transition-colors"
-            >
-              🔄 刷新
-            </button>
+            onClick={refreshStatus}
+            className="text-[10px] text-gray-500 hover:text-gray-300 transition-colors">{i18n.t("BrokerSelector.r92_4f6b")}
+
+
+          </button>
           </div>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
 
 void EngineError; // [TRADE] structured error tracking

@@ -1,6 +1,6 @@
 // ── DAWN WHALES — NotificationCenter (notification center) ────────────────────────────
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
 
@@ -20,24 +20,24 @@ interface NotificationCenterProps {
   onMarkRead?: (id: string) => void;
 }
 
-const TYPE_CONFIG: Record<string, { icon: string; label: string; color: string }> = {
+const TYPE_CONFIG: Record<string, {icon: string;label: string;color: string;}> = {
   risk: { icon: '🛡️', label: i18n.t('NotificationCenter.k1'), color: 'text-red-400' },
   order: { icon: '📋', label: i18n.t('NotificationCenter.k2'), color: 'text-blue-400' },
   signal: { icon: '📡', label: i18n.t('NotificationCenter.k3'), color: 'text-[#D4A853]' },
   system: { icon: '⚙️', label: i18n.t('NotificationCenter.k4'), color: 'text-gray-400' },
-  market: { icon: '📈', label: i18n.t('NotificationCenter.k5'), color: 'text-emerald-400' },
+  market: { icon: '📈', label: i18n.t('NotificationCenter.k5'), color: 'text-emerald-400' }
 };
 
-const SEVERITY_CONFIG: Record<string, { bg: string; border: string }> = {
+const SEVERITY_CONFIG: Record<string, {bg: string;border: string;}> = {
   info: { bg: 'bg-blue-500/5', border: 'border-blue-500/10' },
   warning: { bg: 'bg-yellow-500/5', border: 'border-yellow-500/10' },
-  critical: { bg: 'bg-red-500/5', border: 'border-red-500/10' },
+  critical: { bg: 'bg-red-500/5', border: 'border-red-500/10' }
 };
 
 export default function NotificationCenter({
   notifications = [],
   onClear,
-  onMarkRead,
+  onMarkRead
 }: NotificationCenterProps) {
   const { t } = useTranslation();
 
@@ -50,20 +50,20 @@ export default function NotificationCenter({
       const handler = (data: Record<string, unknown>) => {
         const newItem: NotificationItem = {
           id: `notif-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-          type: (data.type as NotificationItem['type']) || 'system',
+          type: data.type as NotificationItem['type'] || 'system',
           title: String(data.title || t('components.notification')),
           message: String(data.message || ''),
           timestamp: Date.now(),
           read: false,
-          severity: (data.severity as NotificationItem['severity']) || 'info',
+          severity: data.severity as NotificationItem['severity'] || 'info'
         };
         setItems((prev) => [newItem, ...prev].slice(0, 100));
       };
       window.api.on('notification', handler);
       return () => {
+
         // Cleanup not available for simple IPC, but ok for this pattern
-      };
-    }
+      };}
   }, []);
 
   const filtered = items.filter((n) => {
@@ -76,7 +76,7 @@ export default function NotificationCenter({
   const riskCount = items.filter((n) => n.type === 'risk' && !n.read).length;
 
   const handleMarkRead = (id: string) => {
-    setItems((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
+    setItems((prev) => prev.map((n) => n.id === id ? { ...n, read: true } : n));
     onMarkRead?.(id);
   };
 
@@ -89,69 +89,69 @@ export default function NotificationCenter({
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <h2 className="text-white font-semibold text-sm">🔔 通知中心</h2>
-          {unreadCount > 0 && (
-            <span className="text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full">
+          <h2 className="text-white font-semibold text-sm">{i18n.t("NotificationCenter.r92_a197")}</h2>
+          {unreadCount > 0 &&
+          <span className="text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full">
               {unreadCount}
             </span>
-          )}
-          {riskCount > 0 && (
-            <span className="text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full">
+          }
+          {riskCount > 0 &&
+          <span className="text-[10px] bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded-full">
               🛡️ {riskCount}
             </span>
-          )}
+          }
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={handleClear}
-            className="text-[10px] text-gray-500 hover:text-gray-300 transition-colors"
-          >
-            清空全部
+            className="text-[10px] text-gray-500 hover:text-gray-300 transition-colors">{i18n.t("NotificationCenter.r92_4d7d")}
+
+
           </button>
         </div>
       </div>
 
       {/* Filters */}
       <div className="flex items-center gap-1 mb-3">
-        {([
-          { key: 'all' as const, label: t('components.all') },
-          { key: 'unread' as const, label: `未读${unreadCount > 0 ? `(${unreadCount})` : ''}` },
-          { key: 'risk' as const, label: i18n.t('NotificationCenter.k6') },
-          { key: 'order' as const, label: t('components.orders') },
-          { key: 'signal' as const, label: t('components.signal') },
-        ]).map((f) => (
-          <button
-            key={f.key}
-            onClick={() => setFilter(f.key)}
-            className={`px-2 py-1 rounded text-[10px] font-medium transition-colors ${
-              filter === f.key ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'
-            }`}
-          >
+        {[
+        { key: 'all' as const, label: t('components.all') },
+        { key: 'unread' as const, label: `未读${unreadCount > 0 ? `(${unreadCount})` : ''}` },
+        { key: 'risk' as const, label: i18n.t('NotificationCenter.k6') },
+        { key: 'order' as const, label: t('components.orders') },
+        { key: 'signal' as const, label: t('components.signal') }].
+        map((f) =>
+        <button
+          key={f.key}
+          onClick={() => setFilter(f.key)}
+          className={`px-2 py-1 rounded text-[10px] font-medium transition-colors ${
+          filter === f.key ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'}`
+          }>
+          
             {f.label}
           </button>
-        ))}
+        )}
       </div>
 
       {/* Notifications */}
-      {filtered.length === 0 ? (
-        <div className="text-center py-6">
+      {filtered.length === 0 ?
+      <div className="text-center py-6">
           <div className="text-2xl mb-2 opacity-40">🔔</div>
-          <p className="text-gray-500 text-sm">暂无通知</p>
-          <p className="text-gray-600 text-xs mt-1">风控/订单/信号通知将显示在这里</p>
-        </div>
-      ) : (
-        <div className="space-y-1 max-h-72 overflow-y-auto pr-1">
+          <p className="text-gray-500 text-sm">{i18n.t("NotificationCenter.r92_15ad")}</p>
+          <p className="text-gray-600 text-xs mt-1">{i18n.t("NotificationCenter.r92_6d31")}</p>
+        </div> :
+
+      <div className="space-y-1 max-h-72 overflow-y-auto pr-1">
           {filtered.map((n) => {
-            const config = TYPE_CONFIG[n.type] || TYPE_CONFIG.system;
-            const sev = SEVERITY_CONFIG[n.severity] || SEVERITY_CONFIG.info;
-            return (
-              <div
-                key={n.id}
-                onClick={() => handleMarkRead(n.id)}
-                className={`flex items-start gap-2 rounded-lg px-3 py-2 text-xs cursor-pointer transition-colors ${
-                  n.read ? 'bg-[#12121a] opacity-60' : `${sev.bg} border ${sev.border}`
-                }`}
-              >
+          const config = TYPE_CONFIG[n.type] || TYPE_CONFIG.system;
+          const sev = SEVERITY_CONFIG[n.severity] || SEVERITY_CONFIG.info;
+          return (
+            <div
+              key={n.id}
+              onClick={() => handleMarkRead(n.id)}
+              className={`flex items-start gap-2 rounded-lg px-3 py-2 text-xs cursor-pointer transition-colors ${
+              n.read ? 'bg-[#12121a] opacity-60' : `${sev.bg} border ${sev.border}`}`
+              }>
+              
                 <span className="text-sm flex-shrink-0">{config.icon}</span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
@@ -164,11 +164,11 @@ export default function NotificationCenter({
                     {new Date(n.timestamp).toLocaleTimeString('zh-CN')}
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              </div>);
+
+        })}
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }

@@ -1,15 +1,15 @@
-﻿/**
- * IBKRBrokerPanel — ML-68-01 [P0]
- * R68: v1.7.0-alpha — IBKR (Interactive Brokers) broker configuration panel
- *
- * Features:
- * - IB Gateway connection settings (host/port/clientId/account)
- * - Connection status indicator with live ping
- * - HK/US/CN 3-market fee comparison table (Futu vs IBKR)
- * - IBKR-specific: smart routing / algo orders / margin rates
- * - Broker switch toggle (Futu ↔ IBKR) with confirmation
- * - Account summary: balance, buying power, margin utilization
- */
+/**
+* IBKRBrokerPanel — ML-68-01 [P0]
+* R68: v1.7.0-alpha — IBKR (Interactive Brokers) broker configuration panel
+*
+* Features:
+* - IB Gateway connection settings (host/port/clientId/account)
+* - Connection status indicator with live ping
+* - HK/US/CN 3-market fee comparison table (Futu vs IBKR)
+* - IBKR-specific: smart routing / algo orders / margin rates
+* - Broker switch toggle (Futu ↔ IBKR) with confirmation
+* - Account summary: balance, buying power, margin utilization
+*/
 
 import { useState, useCallback } from 'react';
 import { EngineError } from '../../../../electron/engine/core/engine-error';
@@ -25,7 +25,7 @@ export interface IBKRConfig {
   port: number;
   clientId: number;
   accountId: string;
-  useTws: boolean;         // TWS vs IB Gateway
+  useTws: boolean; // TWS vs IB Gateway
   paperTrading: boolean;
 }
 
@@ -70,34 +70,34 @@ const DEFAULT_IBKR: IBKRConfig = {
   clientId: 1,
   accountId: '',
   useTws: false,
-  paperTrading: true,
+  paperTrading: true
 };
 
 const FEE_COMPARISON: FeeComparison[] = [
-  { market: i18n.t('IBKRBrokerPanel.k1'), flag: 'US', futuCommission: i18n.t('IBKRBrokerPanel.k2'), futuMin: '$0.99', ibkrCommission: i18n.t('IBKRBrokerPanel.k3'), ibkrMin: '$1.00 / $0.35', best: 'futu' },
-  { market: i18n.t('IBKRBrokerPanel.k4'), flag: 'HK', futuCommission: '0.03%', futuMin: 'HK$3', ibkrCommission: '0.08%', ibkrMin: 'HK$18', best: 'futu' },
-];
+{ market: i18n.t('IBKRBrokerPanel.k1'), flag: 'US', futuCommission: i18n.t('IBKRBrokerPanel.k2'), futuMin: '$0.99', ibkrCommission: i18n.t('IBKRBrokerPanel.k3'), ibkrMin: '$1.00 / $0.35', best: 'futu' },
+{ market: i18n.t('IBKRBrokerPanel.k4'), flag: 'HK', futuCommission: '0.03%', futuMin: 'HK$3', ibkrCommission: '0.08%', ibkrMin: 'HK$18', best: 'futu' }];
+
 
 const IBKR_FEATURES = [
-  { icon: '🌍', title: i18n.t('IBKRBrokerPanel.k5'), desc: '150+ markets across 33 countries' },
-  { icon: '🧠', title: 'SmartRouting', desc: i18n.t('IBKRBrokerPanel.k6') },
-  { icon: '📊', title: i18n.t('IBKRBrokerPanel.k7'), desc: 'Portfolio Margin / Reg-T Margin' },
-  { icon: '🔬', title: i18n.t('IBKRBrokerPanel.k8'), desc: 'TWS API / IB Gateway / Client Portal' },
-  { icon: '💱', title: i18n.t('IBKRBrokerPanel.k9'), desc: i18n.t('IBKRBrokerPanel.k10') },
-  { icon: '📈', title: i18n.t('IBKRBrokerPanel.k11'), desc: i18n.t('IBKRBrokerPanel.k12') },
-];
+{ icon: '🌍', title: i18n.t('IBKRBrokerPanel.k5'), desc: '150+ markets across 33 countries' },
+{ icon: '🧠', title: 'SmartRouting', desc: i18n.t('IBKRBrokerPanel.k6') },
+{ icon: '📊', title: i18n.t('IBKRBrokerPanel.k7'), desc: 'Portfolio Margin / Reg-T Margin' },
+{ icon: '🔬', title: i18n.t('IBKRBrokerPanel.k8'), desc: 'TWS API / IB Gateway / Client Portal' },
+{ icon: '💱', title: i18n.t('IBKRBrokerPanel.k9'), desc: i18n.t('IBKRBrokerPanel.k10') },
+{ icon: '📈', title: i18n.t('IBKRBrokerPanel.k11'), desc: i18n.t('IBKRBrokerPanel.k12') }];
+
 
 // ── Live Ping Badge ─────────────────────────────────────────────────────
 
-function PingBadge({ connected, latency }: { connected: boolean; latency: number }) {
-  const color = connected ? (latency < 50 ? '#4ade80' : latency < 150 ? '#fbbf24' : '#f87171') : '#ef4444';
+function PingBadge({ connected, latency }: {connected: boolean;latency: number;}) {
+  const color = connected ? latency < 50 ? '#4ade80' : latency < 150 ? '#fbbf24' : '#f87171' : '#ef4444';
   return (
     <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium"
-          style={{ background: `${color}15`, color, border: `1px solid ${color}30` }}>
+    style={{ background: `${color}15`, color, border: `1px solid ${color}30` }}>
       <span className="w-1.5 h-1.5 rounded-full" style={{ background: color, animation: connected ? 'pulse 2s infinite' : 'none' }} />
       {connected ? `${latency}ms` : 'components.disconnect'}
-    </span>
-  );
+    </span>);
+
 }
 
 // ── Main Component ──────────────────────────────────────────────────────
@@ -110,9 +110,9 @@ export default function IBKRBrokerPanel({
   onDisconnect,
   onSwitchBroker,
   activeBroker = 'futu',
-  className = '',
+  className = ''
 }: IBKRBrokerPanelProps) {
-    const [config, setConfig] = useState<IBKRConfig>(propConfig ?? DEFAULT_IBKR);
+  const [config, setConfig] = useState<IBKRConfig>(propConfig ?? DEFAULT_IBKR);
   const [connecting, setConnecting] = useState(false);
   const [connectingError, setConnectingError] = useState('');
   const [showSwitchConfirm, setShowSwitchConfirm] = useState(false);
@@ -149,12 +149,12 @@ export default function IBKRBrokerPanel({
           </div>
           {/* Active broker indicator */}
           <div className="flex items-center gap-2 bg-white/[0.04] rounded-lg p-1">
-            {(['futu', 'ibkr'] as BrokerId[]).map(b => (
-              <button key={b} onClick={() => setShowSwitchConfirm(true)}
-                      className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-colors ${activeBroker === b ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-600 hover:text-gray-400'}`}>
+            {(['futu', 'ibkr'] as BrokerId[]).map((b) =>
+            <button key={b} onClick={() => setShowSwitchConfirm(true)}
+            className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-colors ${activeBroker === b ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'text-gray-600 hover:text-gray-400'}`}>
                 {b === 'futu' ? i18n.t('IBKRBrokerPanel.k16') : i18n.t('IBKRBrokerPanel.k17')}
               </button>
-            ))}
+            )}
           </div>
         </div>
       </div>
@@ -168,13 +168,13 @@ export default function IBKRBrokerPanel({
               <span className="text-sm font-semibold text-gray-300">🐂 Futu OpenD</span>
               <PingBadge connected={futuStatus?.connected ?? true} latency={futuStatus?.latencyMs ?? 15} />
             </div>
-            {futuStatus && (
-              <div className="space-y-1.5 text-xs text-gray-500">
+            {futuStatus &&
+            <div className="space-y-1.5 text-xs text-gray-500">
                 <div className="flex justify-between"><span>{"components.account"}</span><span className="text-gray-300">{futuStatus.accountId}</span></div>
                 <div className="flex justify-between"><span>{i18n.t('IBKRBrokerPanel.k18')}</span><span className="text-gray-200">{futuStatus.balance.toLocaleString()} {futuStatus.currency}</span></div>
                 <div className="flex justify-between"><span>{"components.buyingPower"}</span><span className="text-gray-300">{futuStatus.buyingPower.toLocaleString()}</span></div>
               </div>
-            )}
+            }
           </div>
 
           {/* IBKR Status */}
@@ -183,8 +183,8 @@ export default function IBKRBrokerPanel({
               <span className="text-sm font-semibold text-gray-300">🏦 IBKR</span>
               <PingBadge connected={isIbkrConnected} latency={ibkrStatus?.latencyMs ?? 0} />
             </div>
-            {ibkrStatus && isIbkrConnected ? (
-              <div className="space-y-1.5 text-xs text-gray-500">
+            {ibkrStatus && isIbkrConnected ?
+            <div className="space-y-1.5 text-xs text-gray-500">
                 <div className="flex justify-between"><span>{"components.account"}</span><span className="text-gray-300">{ibkrStatus.accountId}</span></div>
                 <div className="flex justify-between"><span>{i18n.t('IBKRBrokerPanel.k19')}</span><span className="text-gray-200">{ibkrStatus.balance.toLocaleString()} {ibkrStatus.currency}</span></div>
                 <div className="flex justify-between"><span>{i18n.t('IBKRBrokerPanel.k20')}</span>
@@ -192,10 +192,10 @@ export default function IBKRBrokerPanel({
                     {(ibkrStatus.marginUtilization * 100).toFixed(0)}%
                   </span>
                 </div>
-              </div>
-            ) : (
-              <div className="text-xs text-gray-600 text-center py-4">{"components.disconnected"}</div>
-            )}
+              </div> :
+
+            <div className="text-xs text-gray-600 text-center py-4">{"components.disconnected"}</div>
+            }
           </div>
         </div>
 
@@ -205,55 +205,55 @@ export default function IBKRBrokerPanel({
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div>
               <label className="text-[10px] text-gray-600 uppercase tracking-wider">Host</label>
-              <input type="text" value={config.host} onChange={e => setConfig(p => ({ ...p, host: e.target.value }))}
-                     className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
+              <input type="text" value={config.host} onChange={(e) => setConfig((p) => ({ ...p, host: e.target.value }))}
+              className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
             </div>
             <div>
               <label className="text-[10px] text-gray-600 uppercase tracking-wider">Port</label>
-              <input type="number" value={config.port} onChange={e => setConfig(p => ({ ...p, port: Number(e.target.value) }))}
-                     className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
+              <input type="number" value={config.port} onChange={(e) => setConfig((p) => ({ ...p, port: Number(e.target.value) }))}
+              className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
             </div>
             <div>
               <label className="text-[10px] text-gray-600 uppercase tracking-wider">Client ID</label>
-              <input type="number" value={config.clientId} onChange={e => setConfig(p => ({ ...p, clientId: Number(e.target.value) }))}
-                     className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
+              <input type="number" value={config.clientId} onChange={(e) => setConfig((p) => ({ ...p, clientId: Number(e.target.value) }))}
+              className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-[#C9A046]/50" />
             </div>
             <div>
               <label className="text-[10px] text-gray-600 uppercase tracking-wider">Account ID</label>
-              <input type="text" value={config.accountId} onChange={e => setConfig(p => ({ ...p, accountId: e.target.value }))}
-                     placeholder="U1234567"
-                     className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50" />
+              <input type="text" value={config.accountId} onChange={(e) => setConfig((p) => ({ ...p, accountId: e.target.value }))}
+              placeholder="U1234567"
+              className="w-full mt-1 px-3 py-2 bg-white/[0.04] border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50" />
             </div>
           </div>
 
           <div className="flex items-center gap-4 mb-4">
             <label className="flex items-center gap-2 text-xs text-gray-400 cursor-pointer">
-              <input type="checkbox" checked={config.paperTrading} onChange={e => setConfig(p => ({ ...p, paperTrading: e.target.checked }))}
-                     className="accent-[#C9A046]" />
-              模拟盘 Paper Trading
+              <input type="checkbox" checked={config.paperTrading} onChange={(e) => setConfig((p) => ({ ...p, paperTrading: e.target.checked }))}
+              className="accent-[#C9A046]" />{i18n.t("IBKRBrokerPanel.r92_fcc6")}
+
             </label>
             <label className="flex items-center gap-2 text-xs text-gray-400 cursor-pointer">
-              <input type="checkbox" checked={config.useTws} onChange={e => setConfig(p => ({ ...p, useTws: e.target.checked }))}
-                     className="accent-[#C9A046]" />
-              使用 TWS (非IB Gateway)
+              <input type="checkbox" checked={config.useTws} onChange={(e) => setConfig((p) => ({ ...p, useTws: e.target.checked }))}
+              className="accent-[#C9A046]" />{i18n.t("IBKRBrokerPanel.r92_0614")}
+
             </label>
           </div>
 
-          {connectingError && (
-            <div className="p-2 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-xs mb-3">{connectingError}</div>
-          )}
+          {connectingError &&
+          <div className="p-2 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-xs mb-3">{connectingError}</div>
+          }
 
           <div className="flex gap-3">
             <button onClick={handleConnect} disabled={connecting || isIbkrConnected}
-                    className="px-6 py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors disabled:opacity-40">
+            className="px-6 py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors disabled:opacity-40">
               {connecting ? i18n.t('IBKRBrokerPanel.k22') : isIbkrConnected ? i18n.t('IBKRBrokerPanel.k23') : i18n.t('IBKRBrokerPanel.k24')}
             </button>
-            {isIbkrConnected && (
-              <button onClick={onDisconnect}
-                      className="px-6 py-2.5 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 text-sm transition-colors">
-                断开连接
-              </button>
-            )}
+            {isIbkrConnected &&
+            <button onClick={onDisconnect}
+            className="px-6 py-2.5 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 text-sm transition-colors">{i18n.t("IBKRBrokerPanel.r92_ca2d")}
+
+            </button>
+            }
           </div>
         </div>
 
@@ -274,8 +274,8 @@ export default function IBKRBrokerPanel({
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {FEE_COMPARISON.map(row => (
-                <tr key={row.market} className="hover:bg-white/[0.02]">
+              {FEE_COMPARISON.map((row) =>
+              <tr key={row.market} className="hover:bg-white/[0.02]">
                   <td className="px-5 py-3 text-gray-300 font-medium">{row.market}</td>
                   <td className="px-5 py-3 text-gray-400 font-mono">{row.futuCommission}</td>
                   <td className="px-5 py-3 text-gray-500 font-mono">{row.futuMin}</td>
@@ -287,11 +287,11 @@ export default function IBKRBrokerPanel({
                     </span>
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
-          <div className="px-5 py-2 text-[10px] text-gray-600 border-t border-white/5">
-            💡 IBKR阶梯式佣金在月交易量&gt;30万股后更便宜。港股 Futu有绝对优势。
+          <div className="px-5 py-2 text-[10px] text-gray-600 border-t border-white/5">{i18n.t("IBKRBrokerPanel.r92_7090")}
+
           </div>
         </div>
 
@@ -299,42 +299,42 @@ export default function IBKRBrokerPanel({
         <div className="bg-[#111119] border border-white/5 rounded-xl p-5">
           <h3 className="text-gray-300 font-semibold text-sm mb-3">{i18n.t('IBKRBrokerPanel.k31')}</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {IBKR_FEATURES.map(f => (
-              <div key={f.title} className="p-3 bg-white/[0.02] rounded-lg">
+            {IBKR_FEATURES.map((f) =>
+            <div key={f.title} className="p-3 bg-white/[0.02] rounded-lg">
                 <div className="text-lg mb-1">{f.icon}</div>
                 <div className="text-xs font-semibold text-gray-300">{f.title}</div>
                 <div className="text-[10px] text-gray-600 mt-1">{f.desc}</div>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
 
       {/* ── Switch Confirmation Modal ────────────────────────────────────── */}
-      {showSwitchConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
-             onClick={() => setShowSwitchConfirm(false)}>
+      {showSwitchConfirm &&
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      onClick={() => setShowSwitchConfirm(false)}>
           <div className="bg-[#1A1A24] border border-white/10 rounded-xl p-6 max-w-sm mx-4 shadow-2xl">
             <h3 className="text-white font-semibold text-lg mb-2">{i18n.t('IBKRBrokerPanel.k32')}</h3>
-            <p className="text-gray-400 text-sm mb-2">
-              切换到 IBKR 后，所有下单将使用盈透证券执行。费率、结算周期、交易规则将会改变。
-            </p>
-            <div className="p-3 bg-yellow-500/5 border border-yellow-500/10 rounded-lg mb-4 text-xs text-yellow-400">
-              ⚠️ 请确认 IB Gateway 已启动并登录。Paper Trading 模式建议先测试。
-            </div>
+            <p className="text-gray-400 text-sm mb-2">{i18n.t("IBKRBrokerPanel.r92_72c1")}
+
+          </p>
+            <div className="p-3 bg-yellow-500/5 border border-yellow-500/10 rounded-lg mb-4 text-xs text-yellow-400">{i18n.t("IBKRBrokerPanel.r92_5518")}
+
+          </div>
             <div className="flex gap-3">
               <button onClick={() => setShowSwitchConfirm(false)}
-                      className="flex-1 py-2.5 rounded-lg border border-white/10 text-gray-400 hover:text-white text-sm">{"components.cancel"}</button>
+            className="flex-1 py-2.5 rounded-lg border border-white/10 text-gray-400 hover:text-white text-sm">{"components.cancel"}</button>
               <button onClick={() => handleSwitch(activeBroker === 'futu' ? 'ibkr' : 'futu')}
-                      className="flex-1 py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm">
-                确认切换
-              </button>
+            className="flex-1 py-2.5 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm">{i18n.t("IBKRBrokerPanel.r92_1a3a")}
+
+            </button>
             </div>
           </div>
         </div>
-      )}
+      }
 
       <style>{`@keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:0.4 } }`}</style>
-    </div>
-  );
+    </div>);
+
 }

@@ -1,0 +1,2133 @@
+ Vitest  "deps.external" is deprecated. If you rely on vite-node directly, use "server.deps.external" instead. Otherwise, consider using "deps.optimizer.web.exclude"
+
+ RUN  v3.2.6 C:/Users/vx107/.easyclaw/workspace/dawn-whales
+
+(node:11836) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/vx107/.easyclaw/workspace/dawn-whales/postcss.config.js?t=1781151771319 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\vx107\.easyclaw\workspace\dawn-whales\package.json.
+(Use `LobsterAI --trace-warnings ...` to show where the warning was created)
+stdout | tests/q69-02-guest-perf-e2e.test.ts > Q-69-02: Guest Mode + Performance E2E > Performance Benchmarks > 06: performance engine files exist
+[Q-69-02] Perf files found: 0/2 ()
+
+stdout | tests/q77-02-etimedout-fix.test.ts > Q-77-02: ETIMEDOUT Fixes + 5-round Gate > ETIMEDOUT Diagnostics > 01: PRE-CACHE file list (avoid git concurrency)
+[Q-77-02] Pre-cached 370 test files in 1ms
+
+stdout | tests/q77-02-etimedout-fix.test.ts > Q-77-02: ETIMEDOUT Fixes + 5-round Gate > ETIMEDOUT Diagnostics > 02: git log fast (cached, no network)
+[Q-77-02] git HEAD read: 0ms → ref: refs/heads/master
+
+stdout | tests/q77-02-etimedout-fix.test.ts > Q-77-02: ETIMEDOUT Fixes + 5-round Gate > ETIMEDOUT Diagnostics > 03: engine file count pre-cache
+[Q-77-02] Pre-cached 1 engine files in 1ms
+
+stdout | tests/q73-02-onboarding-param-e2e.test.ts > Q-73-02: Onboarding + Param Intelligence E2E > Onboarding Flow > 01: creator-onboarding engine exists
+[Q-73-02] Onboard files: pending
+
+stdout | tests/q77-03-flaky-regression-6100.test.ts > Q-77-03: Flaky Eradication + Regression 6100+ > Flaky Status > 01: q51-chaos status
+[Q-77-03] q51-chaos: excluded
+
+stdout | tests/q77-03-flaky-regression-6100.test.ts > Q-77-03: Flaky Eradication + Regression 6100+ > Flaky Status > 02: jvs-83-benchmark status
+[Q-77-03] jvs-83: excluded
+
+stdout | tests/q77-02-etimedout-fix.test.ts > Q-77-02: ETIMEDOUT Fixes + 5-round Gate > ETIMEDOUT Diagnostics > 04: git concurrency guard: file lock approach
+[Q-77-02] Git lock: clear
+
+stdout | tests/q73-02-onboarding-param-e2e.test.ts > Q-73-02: Onboarding + Param Intelligence E2E > Onboarding Flow > 04: indicator cards + factor storytelling
+[Q-73-02] Story/card files: pending ML
+
+stdout | tests/q77-02-etimedout-fix.test.ts > Q-77-02: ETIMEDOUT Fixes + 5-round Gate > ETIMEDOUT Diagnostics > 05: test all timeout config
+[Q-77-02] Timeout config: using default 5000ms
+[Q-77-02] test:all script: vitest run --reporter=verbose...
+
+stdout | tests/q73-02-onboarding-param-e2e.test.ts > Q-73-02: Onboarding + Param Intelligence E2E > Onboarding Flow > 05: friendly error messages referenced
+[Q-73-02] i18n files: pending
+
+stdout | tests/q68-03-regression-gate.test.ts > Q-68-03: Full Regression Gate (5428→5500+) > Test File Gates > 01: test files >= 300
+[Q-68-03] Test files: 370
+
+stdout | tests/q77-02-etimedout-fix.test.ts > Q-77-02: ETIMEDOUT Fixes + 5-round Gate > 5-round Zero ETIMEDOUT Gate > 06: round 1: file I/O fast
+[Q-77-02] R1: 1 files, 1ms
+
+stdout | tests/q76-02-content-safety-gdpr.test.ts > Q-76-02: Content Safety + GDPR > Content Moderation > 01: sensitive word filter engine or module exists
+[Q-76-02] Filter files: pending JVS J-76-05
+[Q-76-02] Filter refs: 0
+
+stdout | tests/q76-01-usemock-crash-recovery.test.ts > Q-76-01: useMock=false + Crash Recovery > useMock=false Hard Gate > 05: useMock default = false in all 4 agents
+[Q-76-01] agent-fundamentals.ts not found
+[Q-76-01] agent-technical.ts not found
+[Q-76-01] agent-sentiment.ts not found
+[Q-76-01] agent-macro.ts not found
+
+stdout | tests/q76-02-content-safety-gdpr.test.ts > Q-76-02: Content Safety + GDPR > Content Moderation > 02: comment report/flag system referenced
+[Q-76-02] Report patterns in: pending
+
+stdout | tests/q79-02-coverage-gate-60.test.ts > Q-79-02: Coverage Gate >=60% > Coverage Data > 04: coverage summary JSON exists
+[Q-79-02] coverage-summary.json: not found
+
+stdout | tests/q76-01-usemock-crash-recovery.test.ts > Q-76-01: useMock=false + Crash Recovery > useMock=false Hard Gate > 06: MOCK_ engine-wide audit (鈫?JVS J-76-01)
+[Q-76-01] MOCK_ engine-wide: 0 (CLEAN)
+
+stdout | tests/q76-02-content-safety-gdpr.test.ts > Q-76-02: Content Safety + GDPR > Content Moderation > 03: user block/屏蔽 mechanism
+[Q-76-02] Block patterns in: pending
+
+stdout | tests/q76-02-content-safety-gdpr.test.ts > Q-76-02: Content Safety + GDPR > Content Moderation > 04: USDT payment flow engine references
+[Q-76-02] Payment files: 
+
+stdout | tests/q73-02-onboarding-param-e2e.test.ts > Q-73-02: Onboarding + Param Intelligence E2E > Parameter Intelligence > 07: presets: conservative/balanced/aggressive defined
+[Q-73-02] Param files: 
+
+stdout | tests/q79-02-coverage-gate-60.test.ts > Q-79-02: Coverage Gate >=60% > Vitest Config Coverage Thresholds > 05: vitest.config has coverage thresholds
+[Q-79-02] Thresholds: PRESENT
+
+stdout | tests/q79-02-coverage-gate-60.test.ts > Q-79-02: Coverage Gate >=60% > Vitest Config Coverage Thresholds > 06: coverage provider is v8 (fast)
+[Q-79-02] V8 coverage: yes
+
+stdout | tests/q79-02-coverage-gate-60.test.ts > Q-79-02: Coverage Gate >=60% > Vitest Config Coverage Thresholds > 07: coverage include electron/engine
+[Q-79-02] Engine in coverage: yes
+
+stdout | tests/q79-02-coverage-gate-60.test.ts > Q-79-02: Coverage Gate >=60% > Engine Test Coverage Audit > 08: engines with tests
+[Q-79-02] Engines tested: 0/1 (0%)
+
+stdout | tests/q76-02-content-safety-gdpr.test.ts > Q-76-02: Content Safety + GDPR > Content Moderation > 05: L1/L2/L3 creator commission engine
+[Q-76-02] Commission files: found in code pattern
+
+stdout | tests/q79-02-coverage-gate-60.test.ts > Q-79-02: Coverage Gate >=60% > Engine Test Coverage Audit > 09: test files count supports coverage growth
+[Q-79-02] Test files: 370 (more files = better coverage)
+
+stdout | tests/q81-02-fullchain-e2e-final.test.ts > Q-81-02: Full-Chain E2E Final Verification > Chain 1: Register → Trade → Wallet > 01: registration API path exists
+[Q-81-02] Register: index.ts
+[Q-81-02] Register API: FOUND
+
+stdout | tests/q81-02-fullchain-e2e-final.test.ts > Q-81-02: Full-Chain E2E Final Verification > Chain 1: Register → Trade → Wallet > 02: deposit/wallet engine present
+[Q-81-02] Deposit: no Wallet: no
+
+stdout | tests/q81-02-fullchain-e2e-final.test.ts > Q-81-02: Full-Chain E2E Final Verification > Chain 1: Register → Trade → Wallet > 03: trade execution engine present
+[Q-81-02] Trade: no Execution: no
+
+stdout | tests/q81-02-fullchain-e2e-final.test.ts > Q-81-02: Full-Chain E2E Final Verification > Chain 2: Strategy → Marketplace → Commission > 04: strategy publish API
+[Q-81-02] Strategy publish: NOT FOUND
+
+stdout | tests/q81-02-fullchain-e2e-final.test.ts > Q-81-02: Full-Chain E2E Final Verification > Chain 2: Strategy → Marketplace → Commission > 05: subscription engine present
+[Q-81-02] Subscribe: NOT FOUND
+
+stdout | tests/q81-02-fullchain-e2e-final.test.ts > Q-81-02: Full-Chain E2E Final Verification > Chain 2: Strategy → Marketplace → Commission > 06: commission/commission engine present
+[Q-81-02] Commission: NOT FOUND
+
+stdout | tests/q81-02-fullchain-e2e-final.test.ts > Q-81-02: Full-Chain E2E Final Verification > Chain 3: P2P Dispute Flow > 07: P2P transfer + freeze engines
+[Q-81-02] P2P Transfer: no Freeze: no
+
+stdout | tests/q81-02-fullchain-e2e-final.test.ts > Q-81-02: Full-Chain E2E Final Verification > Chain 3: P2P Dispute Flow > 08: dispute + blacklist engines
+[Q-81-02] Dispute: no Blacklist: no
+
+stdout | tests/q81-02-fullchain-e2e-final.test.ts > Q-81-02: Full-Chain E2E Final Verification > Final GA Gate > 09: all R81 files present (2/2)
+[Q-81-02] Q-81 files: q81-01-regression-6500-5r.test.ts, q81-02-fullchain-e2e-final.test.ts
+
+stdout | tests/q81-02-fullchain-e2e-final.test.ts > Q-81-02: Full-Chain E2E Final Verification > Final GA Gate > 10: 0 skips — all tests active
+[Q-81-02] Skips: 0
+
+ ❯ tests/q81-02-fullchain-e2e-final.test.ts (10 tests | 7 failed) 20ms
+   ✓ Q-81-02: Full-Chain E2E Final Verification > Chain 1: Register → Trade → Wallet > 01: registration API path exists 3ms
+   × Q-81-02: Full-Chain E2E Final Verification > Chain 1: Register → Trade → Wallet > 02: deposit/wallet engine present 6ms
+     → expected false to be true // Object.is equality
+   × Q-81-02: Full-Chain E2E Final Verification > Chain 1: Register → Trade → Wallet > 03: trade execution engine present 1ms
+     → expected false to be true // Object.is equality
+   × Q-81-02: Full-Chain E2E Final Verification > Chain 2: Strategy → Marketplace → Commission > 04: strategy publish API 1ms
+     → expected false to be true // Object.is equality
+   × Q-81-02: Full-Chain E2E Final Verification > Chain 2: Strategy → Marketplace → Commission > 05: subscription engine present 1ms
+     → expected false to be true // Object.is equality
+   × Q-81-02: Full-Chain E2E Final Verification > Chain 2: Strategy → Marketplace → Commission > 06: commission/commission engine present 1ms
+     → expected false to be true // Object.is equality
+   × Q-81-02: Full-Chain E2E Final Verification > Chain 3: P2P Dispute Flow > 07: P2P transfer + freeze engines 1ms
+     → expected false to be true // Object.is equality
+   × Q-81-02: Full-Chain E2E Final Verification > Chain 3: P2P Dispute Flow > 08: dispute + blacklist engines 1ms
+     → expected false to be true // Object.is equality
+   ✓ Q-81-02: Full-Chain E2E Final Verification > Final GA Gate > 09: all R81 files present (2/2) 1ms
+   ✓ Q-81-02: Full-Chain E2E Final Verification > Final GA Gate > 10: 0 skips — all tests active 3ms
+stdout | tests/q79-05-regression-6400.test.ts > Q-79-05: Regression Gate 6400+ > Static Counts > 01: static >= 6180
+[Q-79-05] Static: 6222 (target: >=6180)
+
+stdout | tests/q79-05-regression-6400.test.ts > Q-79-05: Regression Gate 6400+ > Static Counts > 02: test files >= 364
+[Q-79-05] Files: 370 (target: >=364)
+
+stdout | tests/q79-05-regression-6400.test.ts > Q-79-05: Regression Gate 6400+ > Static Counts > 03: engines >= 316
+[Q-79-05] Engines: 1 (target: >=316)
+
+stdout | tests/q74-02-regression-gate-5800.test.ts > Q-74-02: Full Regression Gate 5800+ > Static Counts > 01: static test count >= 5800
+[Q-74-02] Static test count: 6222
+
+stdout | tests/q74-02-regression-gate-5800.test.ts > Q-74-02: Full Regression Gate 5800+ > Static Counts > 02: test files >= 350
+[Q-74-02] Test files: 370
+
+stdout | tests/q74-02-regression-gate-5800.test.ts > Q-74-02: Full Regression Gate 5800+ > Static Counts > 03: engine files >= 310
+[Q-74-02] Engine files: 1
+
+stdout | tests/q80-03-regression-6500.test.ts > Q-80-03: Regression 6500+ + R79 Verification > Static Counts > 01: static >= 5500
+[Q-80-03] Static: 6222 (target: >=5500, ideal: 6500+)
+
+stdout | tests/q80-03-regression-6500.test.ts > Q-80-03: Regression 6500+ + R79 Verification > Static Counts > 02: test files >= 367
+[Q-80-03] Files: 370 (target: >=367)
+
+stdout | tests/q80-03-regression-6500.test.ts > Q-80-03: Regression 6500+ + R79 Verification > Static Counts > 03: engines >= 316
+[Q-80-03] Engines: 1 (target: >=316)
+
+stdout | tests/q80-03-regression-6500.test.ts > Q-80-03: Regression 6500+ + R79 Verification > R79 Verification > 04: ESLint config present
+[Q-80-03] ESLint: PRESENT
+[Q-80-03] @typescript-eslint: yes
+
+stdout | tests/q80-03-regression-6500.test.ts > Q-80-03: Regression 6500+ + R79 Verification > R79 Verification > 05: Prettier config present
+[Q-80-03] .prettierrc: PRESENT
+[Q-80-03] 2-space indent: yes
+
+stdout | tests/q80-03-regression-6500.test.ts > Q-80-03: Regression 6500+ + R79 Verification > R79 Verification > 06: monitoring engine present (J-79-02)
+[Q-80-03] monitoring.ts: NOT FOUND
+
+stdout | tests/q80-03-regression-6500.test.ts > Q-80-03: Regression 6500+ + R79 Verification > R80 Completion > 07: all Q-80 files present (3/3)
+[Q-80-03] Q-80 files: q80-01-growth-funnel-invite.test.ts, q80-02-docker-containerization.test.ts, q80-03-regression-6500.test.ts
+
+stdout | tests/q79-05-regression-6400.test.ts > Q-79-05: Regression Gate 6400+ > Quality Gates > 08: all Q-79 files no skips
+[Q-79-05] Skips: 0
+
+stdout | tests/q79-05-regression-6400.test.ts > Q-79-05: Regression Gate 6400+ > Quality Gates > 09: Q-79 files count = 5
+[Q-79-05] Q-79 files: q79-01-i18n-consistency.test.ts, q79-02-coverage-gate-60.test.ts, q79-03-excluded-migration.test.ts, q79-04-dark-light-responsive.test.ts, q79-05-regression-6400.test.ts
+
+stdout | tests/q79-05-regression-6400.test.ts > Q-79-05: Regression Gate 6400+ > Quality Gates > 10: TSC strict gate
+[Q-79-05] Strict: true
+
+ ❯ tests/q79-05-regression-6400.test.ts (10 tests | 1 failed) 213ms
+   ✓ Q-79-05: Regression Gate 6400+ > Static Counts > 01: static >= 6180 182ms
+   ✓ Q-79-05: Regression Gate 6400+ > Static Counts > 02: test files >= 364 4ms
+   × Q-79-05: Regression Gate 6400+ > Static Counts > 03: engines >= 316 5ms
+     → expected 1 to be greater than or equal to 316
+   ✓ Q-79-05: Regression Gate 6400+ > R79 Completion Gates > 04: i18n test present 2ms
+   ✓ Q-79-05: Regression Gate 6400+ > R79 Completion Gates > 05: coverage test present 1ms
+   ✓ Q-79-05: Regression Gate 6400+ > R79 Completion Gates > 06: excluded-migration test present 2ms
+   ✓ Q-79-05: Regression Gate 6400+ > R79 Completion Gates > 07: responsive test present 3ms
+   ✓ Q-79-05: Regression Gate 6400+ > Quality Gates > 08: all Q-79 files no skips 9ms
+   ✓ Q-79-05: Regression Gate 6400+ > Quality Gates > 09: Q-79 files count = 5 2ms
+   ✓ Q-79-05: Regression Gate 6400+ > Quality Gates > 10: TSC strict gate 1ms
+stdout | tests/q80-03-regression-6500.test.ts > Q-80-03: Regression 6500+ + R79 Verification > R80 Completion > 08: no skips in Q-80 files
+[Q-80-03] Skips: 0
+
+stdout | tests/q80-03-regression-6500.test.ts > Q-80-03: Regression 6500+ + R79 Verification > GA Readiness > 09: all 4 rounds delivered (R77-R80)
+[Q-80-03] Q-files per round: {"r77":3,"r78":3,"r79":5,"r80":3}
+
+stdout | tests/q80-03-regression-6500.test.ts > Q-80-03: Regression 6500+ + R79 Verification > GA Readiness > 10: GA release checklist — critical files
+[Q-80-03] package.json: OK
+[Q-80-03] LICENSE or README: OK
+[Q-80-03] vitest.config.ts: OK
+[Q-80-03] electron/engine (engines): OK
+[Q-80-03] tests/ (test suite): OK
+[Q-80-03] CHANGELOG or docs: OK
+
+ ❯ tests/q80-03-regression-6500.test.ts (10 tests | 1 failed) 220ms
+   ✓ Q-80-03: Regression 6500+ + R79 Verification > Static Counts > 01: static >= 5500 191ms
+   ✓ Q-80-03: Regression 6500+ + R79 Verification > Static Counts > 02: test files >= 367 1ms
+   × Q-80-03: Regression 6500+ + R79 Verification > Static Counts > 03: engines >= 316 6ms
+     → expected 1 to be greater than or equal to 316
+   ✓ Q-80-03: Regression 6500+ + R79 Verification > R79 Verification > 04: ESLint config present 2ms
+   ✓ Q-80-03: Regression 6500+ + R79 Verification > R79 Verification > 05: Prettier config present 1ms
+   ✓ Q-80-03: Regression 6500+ + R79 Verification > R79 Verification > 06: monitoring engine present (J-79-02) 1ms
+   ✓ Q-80-03: Regression 6500+ + R79 Verification > R80 Completion > 07: all Q-80 files present (3/3) 3ms
+   ✓ Q-80-03: Regression 6500+ + R79 Verification > R80 Completion > 08: no skips in Q-80 files 8ms
+   ✓ Q-80-03: Regression 6500+ + R79 Verification > GA Readiness > 09: all 4 rounds delivered (R77-R80) 2ms
+   ✓ Q-80-03: Regression 6500+ + R79 Verification > GA Readiness > 10: GA release checklist — critical files 4ms
+stdout | tests/q71-02-regression-gate-5600.test.ts > Q-71-02: Full Regression Gate 5600+ > Static Analysis > 01: static test count >= 5600
+[Q-71-02] Static test count: 6222
+
+stdout | tests/q76-01-usemock-crash-recovery.test.ts > Q-76-01: useMock=false + Crash Recovery > useMock=false Hard Gate > 07: MOCK_ src/ audit (鈫?JVS J-76-01)
+[Q-76-01] MOCK_ in src: 88 (BacktestComparisonPage.tsx:3, WalkForwardPanel.tsx:2, AIDailyDigestPanel.tsx:2, LiveTradingPanel.tsx:6, PerformanceMonitorPanel.tsx:2, MultiSourceDataPanel.tsx:5, MultiAccountSwitcher.tsx:7, CachedDataExplorer.tsx:4, DataQualityMonitorPage.tsx:8, SentimentStreamDashboard.tsx:2, SmartPickerPage.tsx:2, MarketplaceDetail.tsx:2, MarketplacePublishPanel.tsx:3, PortfolioRebalancerPage.tsx:2, AlertCenterPage.tsx:6, RiskDashboardPage.tsx:12, AIAdvisorPage.tsx:2, FactorExposurePage.tsx:2, PerformanceAttributionPage.tsx:2, RegimeMonitorPage.tsx:3, StrategyComparer.tsx:7, StrategyImportExportUI.tsx:2, TradeHistoryPage.tsx:2)
+
+stdout | tests/q76-01-usemock-crash-recovery.test.ts > Q-76-01: useMock=false + Crash Recovery > ErrorBoundary + Crash Recovery > 08: ErrorBoundary engine or pattern exists
+[Q-76-01] Error/crash files: error-boundary.tsx
+[Q-76-01] ErrorBoundary: pending
+
+stdout | tests/q76-01-usemock-crash-recovery.test.ts > Q-76-01: useMock=false + Crash Recovery > ErrorBoundary + Crash Recovery > 09: crash auto-restart pattern
+[Q-76-01] Restart pattern in: main-slim.ts
+[Q-76-01] Auto-restart: true
+
+stdout | tests/q76-01-usemock-crash-recovery.test.ts > Q-76-01: useMock=false + Crash Recovery > ErrorBoundary + Crash Recovery > 10: state recovery on restart
+[Q-76-01] State recovery: pending
+
+stdout | tests/q76-01-usemock-crash-recovery.test.ts > Q-76-01: useMock=false + Crash Recovery > ErrorBoundary + Crash Recovery > 11: crash log/telemetry collection
+[Q-76-01] Crash logging: pending
+
+stdout | tests/q73-02-onboarding-param-e2e.test.ts > Q-73-02: Onboarding + Param Intelligence E2E > Theme & i18n > 09: dark mode + system-follow support
+[Q-73-02] Theme files: 24 (ErrorBoundary.tsx,AIDrawingPatternPanel.tsx,GrowthPanel.tsx,GAFinalPanel.tsx,LandingPageV18.tsx...)
+
+stdout | tests/q73-02-onboarding-param-e2e.test.ts > Q-73-02: Onboarding + Param Intelligence E2E > Theme & i18n > 10: multi-lang: zh-CN/zh-TW/en/ja/ko
+[Q-73-02] i18n files: pending
+
+ ❯ tests/q73-02-onboarding-param-e2e.test.ts (10 tests | 1 failed) 200ms
+   ✓ Q-73-02: Onboarding + Param Intelligence E2E > Onboarding Flow > 01: creator-onboarding engine exists 2ms
+   ✓ Q-73-02: Onboarding + Param Intelligence E2E > Onboarding Flow > 02: onboarding covers 5 steps (create/backtest/analyze/publish/subscribe) 1ms
+   ✓ Q-73-02: Onboarding + Param Intelligence E2E > Onboarding Flow > 03: interactive tutorial components referenced in engine 1ms
+   ✓ Q-73-02: Onboarding + Param Intelligence E2E > Onboarding Flow > 04: indicator cards + factor storytelling 1ms
+   ✓ Q-73-02: Onboarding + Param Intelligence E2E > Onboarding Flow > 05: friendly error messages referenced 1ms
+   × Q-73-02: Onboarding + Param Intelligence E2E > Parameter Intelligence > 06: adaptive-param-engine exists 7ms
+     → expected false to be true // Object.is equality
+   ✓ Q-73-02: Onboarding + Param Intelligence E2E > Parameter Intelligence > 07: presets: conservative/balanced/aggressive defined 2ms
+   ✓ Q-73-02: Onboarding + Param Intelligence E2E > Parameter Intelligence > 08: safety boundaries enforced 2ms
+   ✓ Q-73-02: Onboarding + Param Intelligence E2E > Theme & i18n > 09: dark mode + system-follow support 182ms
+   ✓ Q-73-02: Onboarding + Param Intelligence E2E > Theme & i18n > 10: multi-lang: zh-CN/zh-TW/en/ja/ko 1ms
+stdout | tests/q74-02-regression-gate-5800.test.ts > Q-74-02: Full Regression Gate 5800+ > Static Counts > 04: src files >= 220
+[Q-74-02] Source files: 225
+
+stdout | tests/q74-02-regression-gate-5800.test.ts > Q-74-02: Full Regression Gate 5800+ > Quality Gates > 05: tsconfig.json strict mode
+[Q-74-02] TSC strict: true
+
+stdout | tests/q74-02-regression-gate-5800.test.ts > Q-74-02: Full Regression Gate 5800+ > Quality Gates > 06: all Q-74 test files present
+[Q-74-02] Q-74 files: q74-01-build-deploy-verify.test.ts, q74-02-regression-gate-5800.test.ts
+
+stdout | tests/q69-02-guest-perf-e2e.test.ts > Q-69-02: Guest Mode + Performance E2E > Regression Gate > 09: static test count >= 5500
+[Q-69-02] Static test count: 6222 (target: 5500+)
+
+ ❯ tests/q69-02-guest-perf-e2e.test.ts (10 tests | 1 failed) 412ms
+   ✓ Q-69-02: Guest Mode + Performance E2E > Guest Mode Session > 01: guest can browse without registration 1ms
+   ✓ Q-69-02: Guest Mode + Performance E2E > Guest Mode Session > 02: guest backtest limited to 5/day 0ms
+   ✓ Q-69-02: Guest Mode + Performance E2E > Guest Mode Session > 03: guest cannot access AI analysis or live trading 0ms
+   ✓ Q-69-02: Guest Mode + Performance E2E > Guest Upgrade Path > 04: upgrade preserves guest data 0ms
+   ✓ Q-69-02: Guest Mode + Performance E2E > Guest Upgrade Path > 05: registered user has full access 0ms
+   × Q-69-02: Guest Mode + Performance E2E > Performance Benchmarks > 06: performance engine files exist 6ms
+     → expected 0 to be greater than or equal to 1
+   ✓ Q-69-02: Guest Mode + Performance E2E > Performance Benchmarks > 07: benchmark engine defines performance measurement 1ms
+   ✓ Q-69-02: Guest Mode + Performance E2E > Performance Benchmarks > 08: agent orchestrator has timeout configuration 1ms
+   ✓ Q-69-02: Guest Mode + Performance E2E > Regression Gate > 09: static test count >= 5500  397ms
+   ✓ Q-69-02: Guest Mode + Performance E2E > Regression Gate > 10: R69 test files exist 4ms
+stdout | tests/q74-02-regression-gate-5800.test.ts > Q-74-02: Full Regression Gate 5800+ > Quality Gates > 07: no skipped QClaw tests in Q-74
+[Q-74-02] Skipped tests: 0
+
+stdout | tests/q74-02-regression-gate-5800.test.ts > Q-74-02: Full Regression Gate 5800+ > GA Checklist > 08: test:all script exists
+[Q-74-02] test:all: true
+
+stdout | tests/q74-02-regression-gate-5800.test.ts > Q-74-02: Full Regression Gate 5800+ > GA Checklist > 09: version string present (JVS to bump → 1.8.0)
+[Q-74-02] Current version: 1.9.0
+
+stdout | tests/q74-02-regression-gate-5800.test.ts > Q-74-02: Full Regression Gate 5800+ > GA Checklist > 10: CHANGELOG or release doc references v1.8
+[Q-74-02] CHANGELOG.md: 35866 chars, v1.8: true
+[Q-74-02] docs/releases/v1.8.0-ga-release-notes.md: 5259 chars, v1.8: true
+
+ ❯ tests/q74-02-regression-gate-5800.test.ts (10 tests | 1 failed) 278ms
+   ✓ Q-74-02: Full Regression Gate 5800+ > Static Counts > 01: static test count >= 5800 185ms
+   ✓ Q-74-02: Full Regression Gate 5800+ > Static Counts > 02: test files >= 350 2ms
+   × Q-74-02: Full Regression Gate 5800+ > Static Counts > 03: engine files >= 310 6ms
+     → expected 1 to be greater than or equal to 310
+   ✓ Q-74-02: Full Regression Gate 5800+ > Static Counts > 04: src files >= 220 73ms
+   ✓ Q-74-02: Full Regression Gate 5800+ > Quality Gates > 05: tsconfig.json strict mode 1ms
+   ✓ Q-74-02: Full Regression Gate 5800+ > Quality Gates > 06: all Q-74 test files present 1ms
+   ✓ Q-74-02: Full Regression Gate 5800+ > Quality Gates > 07: no skipped QClaw tests in Q-74 5ms
+   ✓ Q-74-02: Full Regression Gate 5800+ > GA Checklist > 08: test:all script exists 0ms
+   ✓ Q-74-02: Full Regression Gate 5800+ > GA Checklist > 09: version string present (JVS to bump → 1.8.0) 0ms
+   ✓ Q-74-02: Full Regression Gate 5800+ > GA Checklist > 10: CHANGELOG or release doc references v1.8 2ms
+stdout | tests/q73-03-regression-gate-5800.test.ts > Q-73-03: Regression Gate 5800+ > Static Counts > 01: static test count >= 5800
+[Q-73-03] Static test count: 6222
+
+stdout | tests/q81-01-regression-6500-5r.test.ts > Q-81-01: Full Regression 6500+ / 5 Rounds > Static Counts > 01: static >= 5500
+[Q-81-01] Static: 6222 (target: >=5500, ideal: 6500+)
+
+stdout | tests/q73-03-regression-gate-5800.test.ts > Q-73-03: Regression Gate 5800+ > Static Counts > 02: test files >= 338
+[Q-73-03] Test files: 370
+
+stdout | tests/q73-03-regression-gate-5800.test.ts > Q-73-03: Regression Gate 5800+ > Static Counts > 03: engine files >= 310
+[Q-73-03] Engine files: 1
+
+stdout | tests/q81-01-regression-6500-5r.test.ts > Q-81-01: Full Regression 6500+ / 5 Rounds > Static Counts > 02: test files >= 369
+[Q-81-01] Files: 370 (target: >=369)
+
+stdout | tests/q81-01-regression-6500-5r.test.ts > Q-81-01: Full Regression 6500+ / 5 Rounds > Static Counts > 03: engines >= 316
+[Q-81-01] Engines: 1 (target: >=316)
+
+stdout | tests/q76-03-regression-gate-6000.test.ts > Q-76-03: Regression Gate 6000+ > Static Counts > 01: static test count >= 6000
+[Q-76-03] Static test count: 6222
+
+stdout | tests/q76-03-regression-gate-6000.test.ts > Q-76-03: Regression Gate 6000+ > Static Counts > 02: test files >= 355
+[Q-76-03] Test files: 370
+
+stdout | tests/q77-03-flaky-regression-6100.test.ts > Q-77-03: Flaky Eradication + Regression 6100+ > Flaky Status > 03: skip audit
+[Q-77-03] Total skips: 10 in 6 files
+[Q-77-03] Skipped: jvs-57-01-agent-fundamentals.test.ts:3, jvs-57-03-agent-sentiment.test.ts:3, jvs-57-04-agent-macro.test.ts:1, jvs-e2e-validation.test.ts:1, t105-database-manager.test.ts:1, ws-backfill.test.ts:1
+
+stdout | tests/q76-03-regression-gate-6000.test.ts > Q-76-03: Regression Gate 6000+ > Static Counts > 03: engine files >= 310
+[Q-76-03] Engine files: 1
+
+stdout | tests/q77-03-flaky-regression-6100.test.ts > Q-77-03: Flaky Eradication + Regression 6100+ > Flaky Status > 04: vitest exclude list
+[Q-77-03] Vitest config: present
+
+stdout | tests/q78-03-regression-6250.test.ts > Q-78-03: Regression Gate 6250+ > Static Counts > 01: static >= 6180
+[Q-78-03] Static: 6222 (target: >=6180)
+
+stdout | tests/q68-03-regression-gate.test.ts > Q-68-03: Full Regression Gate (5428→5500+) > Test File Gates > 02: static test count >= 5500
+[Q-68-03] Static test count: 6222
+
+stdout | tests/q73-03-regression-gate-5800.test.ts > Q-73-03: Regression Gate 5800+ > Quality Gates > 04: tsconfig.json exists and is valid
+[Q-73-03] TSC: strict=true
+
+stdout | tests/q78-03-regression-6250.test.ts > Q-78-03: Regression Gate 6250+ > Static Counts > 02: test files >= 361
+[Q-78-03] Files: 370 (target: >=361)
+
+stdout | tests/q78-03-regression-6250.test.ts > Q-78-03: Regression Gate 6250+ > Static Counts > 03: engines >= 315
+[Q-78-03] Engines: 1 (target: >=315)
+
+stdout | tests/q73-03-regression-gate-5800.test.ts > Q-73-03: Regression Gate 5800+ > Quality Gates > 05: pre-commit hook exists
+[Q-73-03] Pre-commit: .husky/pre-commit, .git/hooks/pre-commit
+[Q-73-03] Prepare script: 
+
+stdout | tests/q73-03-regression-gate-5800.test.ts > Q-73-03: Regression Gate 5800+ > Quality Gates > 06: all Q-73 test files present
+[Q-73-03] Q-73 files: q73-01-realdata-draw-pattern.test.ts, q73-02-onboarding-param-e2e.test.ts, q73-03-regression-gate-5800.test.ts
+
+stdout | tests/q73-03-regression-gate-5800.test.ts > Q-73-03: Regression Gate 5800+ > Quality Gates > 07: no skipped QClaw tests
+[Q-73-03] Skipped Q-73 tests: 0
+
+stdout | tests/q73-03-regression-gate-5800.test.ts > Q-73-03: Regression Gate 5800+ > Metadata & Docs > 08: R73 tasks documented (this file)
+[Q-73-03] Q-73-01 exists
+
+stdout | tests/q73-03-regression-gate-5800.test.ts > Q-73-03: Regression Gate 5800+ > Metadata & Docs > 09: version string >= 1.8.0 in package.json
+[Q-73-03] Version: 1.9.0
+
+stdout | tests/q73-03-regression-gate-5800.test.ts > Q-73-03: Regression Gate 5800+ > Metadata & Docs > 10: CHANGELOG references v1.8.0
+[Q-73-03] CHANGELOG: OK
+
+stdout | tests/q78-03-regression-6250.test.ts > Q-78-03: Regression Gate 6250+ > R78 Completion Gates > 06: P2P split (JVS J-78-03 target: 1->4)
+[Q-78-03] P2P engines: 0/4 — p2p-transfer-engine.ts, p2p-dispute-engine.ts, p2p-freeze-manager.ts, blacklist-manager.ts
+
+ ❯ tests/q73-03-regression-gate-5800.test.ts (10 tests | 1 failed) 248ms
+   ✓ Q-73-03: Regression Gate 5800+ > Static Counts > 01: static test count >= 5800 226ms
+   ✓ Q-73-03: Regression Gate 5800+ > Static Counts > 02: test files >= 338 1ms
+   × Q-73-03: Regression Gate 5800+ > Static Counts > 03: engine files >= 310 6ms
+     → expected 1 to be greater than or equal to 310
+   ✓ Q-73-03: Regression Gate 5800+ > Quality Gates > 04: tsconfig.json exists and is valid 2ms
+   ✓ Q-73-03: Regression Gate 5800+ > Quality Gates > 05: pre-commit hook exists 2ms
+   ✓ Q-73-03: Regression Gate 5800+ > Quality Gates > 06: all Q-73 test files present 2ms
+   ✓ Q-73-03: Regression Gate 5800+ > Quality Gates > 07: no skipped QClaw tests 4ms
+   ✓ Q-73-03: Regression Gate 5800+ > Metadata & Docs > 08: R73 tasks documented (this file) 1ms
+   ✓ Q-73-03: Regression Gate 5800+ > Metadata & Docs > 09: version string >= 1.8.0 in package.json 1ms
+   ✓ Q-73-03: Regression Gate 5800+ > Metadata & Docs > 10: CHANGELOG references v1.8.0 2ms
+stdout | tests/q78-03-regression-6250.test.ts > Q-78-03: Regression Gate 6250+ > Quality Gates > 08: TSC strict
+[Q-78-03] Strict: true
+
+stdout | tests/q78-03-regression-6250.test.ts > Q-78-03: Regression Gate 6250+ > Quality Gates > 09: Q-78 files complete (3)
+[Q-78-03] Q-78 files: q78-01-three-engine-tests.test.ts, q78-02-perf-benchmark.test.ts, q78-03-regression-6250.test.ts (3)
+
+stdout | tests/q78-03-regression-6250.test.ts > Q-78-03: Regression Gate 6250+ > Quality Gates > 10: no skips in Q-78
+[Q-78-03] Skips: 0
+
+stdout | tests/q76-02-content-safety-gdpr.test.ts > Q-76-02: Content Safety + GDPR > GDPR / Privacy > 06: cookie consent or privacy notice
+[Q-76-02] GDPR ref in: DownloadPage.tsx
+[Q-76-02] Consent/privacy: true
+
+ ❯ tests/q78-03-regression-6250.test.ts (10 tests | 4 failed) 245ms
+   ✓ Q-78-03: Regression Gate 6250+ > Static Counts > 01: static >= 6180 223ms
+   ✓ Q-78-03: Regression Gate 6250+ > Static Counts > 02: test files >= 361 2ms
+   × Q-78-03: Regression Gate 6250+ > Static Counts > 03: engines >= 315 7ms
+     → expected 1 to be greater than or equal to 315
+   × Q-78-03: Regression Gate 6250+ > R78 Completion Gates > 04: signal-backtesting (JVS J-78-01 target: 27L->350L) 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\signal-backtesting.ts'
+   × Q-78-03: Regression Gate 6250+ > R78 Completion Gates > 05: realtime-news (JVS J-78-02 target: 40L->350L) 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\realtime-news.ts'
+   × Q-78-03: Regression Gate 6250+ > R78 Completion Gates > 06: P2P split (JVS J-78-03 target: 1->4) 3ms
+     → expected 0 to be greater than or equal to 1
+   ✓ Q-78-03: Regression Gate 6250+ > R78 Completion Gates > 07: no A股 refs in multi-factor.ts (JVS J-78-05) 0ms
+   ✓ Q-78-03: Regression Gate 6250+ > Quality Gates > 08: TSC strict 1ms
+   ✓ Q-78-03: Regression Gate 6250+ > Quality Gates > 09: Q-78 files complete (3) 1ms
+   ✓ Q-78-03: Regression Gate 6250+ > Quality Gates > 10: no skips in Q-78 5ms
+stdout | tests/q76-03-regression-gate-6000.test.ts > Q-76-03: Regression Gate 6000+ > Static Counts > 04: src files >= 235
+[Q-76-03] Source files: 225
+
+stdout | tests/q76-02-content-safety-gdpr.test.ts > Q-76-02: Content Safety + GDPR > GDPR / Privacy > 07: data export (user data download) referenced
+[Q-76-02] Data export in: index.ts
+[Q-76-02] Data export: true
+
+stdout | tests/q76-02-content-safety-gdpr.test.ts > Q-76-02: Content Safety + GDPR > GDPR / Privacy > 08: account deletion / right to be forgotten
+[Q-76-02] Account deletion: pending
+
+stdout | tests/q76-02-content-safety-gdpr.test.ts > Q-76-02: Content Safety + GDPR > GDPR / Privacy > 09: data minimization — no PII in logs
+[Q-76-02] PII sanitize: pending
+
+stdout | tests/q76-02-content-safety-gdpr.test.ts > Q-76-02: Content Safety + GDPR > GDPR / Privacy > 10: terms of service / privacy policy referenced
+[Q-76-02] Legal docs: pending youdao
+
+ ❯ tests/q76-02-content-safety-gdpr.test.ts (10 tests | 1 failed) 271ms
+   ✓ Q-76-02: Content Safety + GDPR > Content Moderation > 01: sensitive word filter engine or module exists 6ms
+   ✓ Q-76-02: Content Safety + GDPR > Content Moderation > 02: comment report/flag system referenced 1ms
+   ✓ Q-76-02: Content Safety + GDPR > Content Moderation > 03: user block/屏蔽 mechanism 1ms
+   × Q-76-02: Content Safety + GDPR > Content Moderation > 04: USDT payment flow engine references 13ms
+     → expected 0 to be greater than or equal to 1
+   ✓ Q-76-02: Content Safety + GDPR > Content Moderation > 05: L1/L2/L3 creator commission engine 1ms
+   ✓ Q-76-02: Content Safety + GDPR > GDPR / Privacy > 06: cookie consent or privacy notice 221ms
+   ✓ Q-76-02: Content Safety + GDPR > GDPR / Privacy > 07: data export (user data download) referenced 24ms
+   ✓ Q-76-02: Content Safety + GDPR > GDPR / Privacy > 08: account deletion / right to be forgotten 1ms
+   ✓ Q-76-02: Content Safety + GDPR > GDPR / Privacy > 09: data minimization — no PII in logs 1ms
+   ✓ Q-76-02: Content Safety + GDPR > GDPR / Privacy > 10: terms of service / privacy policy referenced 1ms
+stdout | tests/q77-03-flaky-regression-6100.test.ts > Q-77-03: Flaky Eradication + Regression 6100+ > Flaky Status > 05: flaky ref count
+[Q-77-03] Flaky refs: 24
+
+stdout | tests/q76-03-regression-gate-6000.test.ts > Q-76-03: Regression Gate 6000+ > Quality Gates > 05: tsconfig strict mode
+[Q-76-03] TSC strict: true
+
+stdout | tests/q76-03-regression-gate-6000.test.ts > Q-76-03: Regression Gate 6000+ > Quality Gates > 06: all Q-76 test files present (3 files)
+[Q-76-03] Q-76 files: q76-01-usemock-crash-recovery.test.ts, q76-02-content-safety-gdpr.test.ts, q76-03-regression-gate-6000.test.ts
+
+stdout | tests/q76-03-regression-gate-6000.test.ts > Q-76-03: Regression Gate 6000+ > Quality Gates > 07: no skipped Q-76 tests
+[Q-76-03] Skipped tests: 0
+
+stdout | tests/q76-03-regression-gate-6000.test.ts > Q-76-03: Regression Gate 6000+ > v1.8.0 GA Checklist > 08: package.json version
+[Q-76-03] Version: 1.9.0
+
+stdout | tests/q76-03-regression-gate-6000.test.ts > Q-76-03: Regression Gate 6000+ > v1.8.0 GA Checklist > 09: build scripts for 3 platforms
+[Q-76-03] Build scripts: dist:win, dist:mac, dist:linux, dist:all, build
+
+stdout | tests/q76-03-regression-gate-6000.test.ts > Q-76-03: Regression Gate 6000+ > v1.8.0 GA Checklist > 10: test:all runs full suite
+[Q-76-03] test:all: true
+
+ ❯ tests/q76-03-regression-gate-6000.test.ts (10 tests | 2 failed) 319ms
+   ✓ Q-76-03: Regression Gate 6000+ > Static Counts > 01: static test count >= 6000 222ms
+   ✓ Q-76-03: Regression Gate 6000+ > Static Counts > 02: test files >= 355 1ms
+   × Q-76-03: Regression Gate 6000+ > Static Counts > 03: engine files >= 310 5ms
+     → expected 1 to be greater than or equal to 310
+   × Q-76-03: Regression Gate 6000+ > Static Counts > 04: src files >= 235 21ms
+     → expected 225 to be greater than or equal to 235
+   ✓ Q-76-03: Regression Gate 6000+ > Quality Gates > 05: tsconfig strict mode 63ms
+   ✓ Q-76-03: Regression Gate 6000+ > Quality Gates > 06: all Q-76 test files present (3 files) 1ms
+   ✓ Q-76-03: Regression Gate 6000+ > Quality Gates > 07: no skipped Q-76 tests 5ms
+   ✓ Q-76-03: Regression Gate 6000+ > v1.8.0 GA Checklist > 08: package.json version 0ms
+   ✓ Q-76-03: Regression Gate 6000+ > v1.8.0 GA Checklist > 09: build scripts for 3 platforms 0ms
+   ✓ Q-76-03: Regression Gate 6000+ > v1.8.0 GA Checklist > 10: test:all runs full suite 0ms
+stdout | tests/q71-02-regression-gate-5600.test.ts > Q-71-02: Full Regression Gate 5600+ > Static Analysis > 02: test files >= 306
+[Q-71-02] Test files: 370
+
+stdout | tests/q71-02-regression-gate-5600.test.ts > Q-71-02: Full Regression Gate 5600+ > Static Analysis > 03: engine files >= 60
+[Q-71-02] Engine files: 1
+
+stdout | tests/q77-03-flaky-regression-6100.test.ts > Q-77-03: Flaky Eradication + Regression 6100+ > Regression Gate 6100+ > 06: static test count >= 6100
+[Q-77-03] Static test count: 6222
+
+stdout | tests/q77-03-flaky-regression-6100.test.ts > Q-77-03: Flaky Eradication + Regression 6100+ > Regression Gate 6100+ > 07: test files >= 360
+[Q-77-03] Test files: 370
+
+stdout | tests/q75-03-regression-gate-5800.test.ts > Q-75-03: Full Regression Gate 5800+ > Static Counts > 01: static test count >= 5900
+[Q-75-03] Static test count: 6222
+
+stdout | tests/q77-03-flaky-regression-6100.test.ts > Q-77-03: Flaky Eradication + Regression 6100+ > Regression Gate 6100+ > 08: engine files consistency
+[Q-77-03] Engine files: 1
+
+stdout | tests/q79-02-coverage-gate-60.test.ts > Q-79-02: Coverage Gate >=60% > Engine Test Coverage Audit > 10: no test files with 0 tests
+[Q-79-02] Empty: jvs-37-ipc-validation.test.ts
+[Q-79-02] Empty files: 1
+
+stdout | tests/q77-03-flaky-regression-6100.test.ts > Q-77-03: Flaky Eradication + Regression 6100+ > Regression Gate 6100+ > 09: TSC strict
+[Q-77-03] strict: true
+
+ ❯ tests/q79-02-coverage-gate-60.test.ts (10 tests | 4 failed) 389ms
+   × Q-79-02: Coverage Gate >=60% > Coverage Data > 01: lcov data exists 6ms
+     → expected false to be true // Object.is equality
+   × Q-79-02: Coverage Gate >=60% > Coverage Data > 02: lcov data non-empty 4ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\coverage\lcov.info'
+   × Q-79-02: Coverage Gate >=60% > Coverage Data > 03: coverage summary parse 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\coverage\lcov.info'
+   ✓ Q-79-02: Coverage Gate >=60% > Coverage Data > 04: coverage summary JSON exists 1ms
+   ✓ Q-79-02: Coverage Gate >=60% > Vitest Config Coverage Thresholds > 05: vitest.config has coverage thresholds 3ms
+   ✓ Q-79-02: Coverage Gate >=60% > Vitest Config Coverage Thresholds > 06: coverage provider is v8 (fast) 3ms
+   ✓ Q-79-02: Coverage Gate >=60% > Vitest Config Coverage Thresholds > 07: coverage include electron/engine 1ms
+   × Q-79-02: Coverage Gate >=60% > Engine Test Coverage Audit > 08: engines with tests 6ms
+     → expected 0 to be greater than 0.25
+   ✓ Q-79-02: Coverage Gate >=60% > Engine Test Coverage Audit > 09: test files count supports coverage growth 2ms
+   ✓ Q-79-02: Coverage Gate >=60% > Engine Test Coverage Audit > 10: no test files with 0 tests  361ms
+stdout | tests/q77-03-flaky-regression-6100.test.ts > Q-77-03: Flaky Eradication + Regression 6100+ > Regression Gate 6100+ > 10: Q-77 files complete
+[Q-77-03] Q-77 files: q77-01-security-e2e.test.ts, q77-02-etimedout-fix.test.ts, q77-03-flaky-regression-6100.test.ts - 3 files
+
+stdout | tests/q77-02-etimedout-fix.test.ts > Q-77-02: ETIMEDOUT Fixes + 5-round Gate > 5-round Zero ETIMEDOUT Gate > 07: round 2: read test files
+[Q-77-02] R2: 2832202 chars read, 386ms
+
+ ❯ tests/q77-03-flaky-regression-6100.test.ts (10 tests | 1 failed) 393ms
+   ✓ Q-77-03: Flaky Eradication + Regression 6100+ > Flaky Status > 01: q51-chaos status 3ms
+   ✓ Q-77-03: Flaky Eradication + Regression 6100+ > Flaky Status > 02: jvs-83-benchmark status 1ms
+   ✓ Q-77-03: Flaky Eradication + Regression 6100+ > Flaky Status > 03: skip audit 219ms
+   ✓ Q-77-03: Flaky Eradication + Regression 6100+ > Flaky Status > 04: vitest exclude list 0ms
+   ✓ Q-77-03: Flaky Eradication + Regression 6100+ > Flaky Status > 05: flaky ref count 82ms
+   ✓ Q-77-03: Flaky Eradication + Regression 6100+ > Regression Gate 6100+ > 06: static test count >= 6100 78ms
+   ✓ Q-77-03: Flaky Eradication + Regression 6100+ > Regression Gate 6100+ > 07: test files >= 360 1ms
+   × Q-77-03: Flaky Eradication + Regression 6100+ > Regression Gate 6100+ > 08: engine files consistency 4ms
+     → expected 1 to be greater than or equal to 310
+   ✓ Q-77-03: Flaky Eradication + Regression 6100+ > Regression Gate 6100+ > 09: TSC strict 1ms
+   ✓ Q-77-03: Flaky Eradication + Regression 6100+ > Regression Gate 6100+ > 10: Q-77 files complete 4ms
+stdout | tests/q77-02-etimedout-fix.test.ts > Q-77-02: ETIMEDOUT Fixes + 5-round Gate > 5-round Zero ETIMEDOUT Gate > 08: round 3: read engine files
+[Q-77-02] R3: 218 chars, 0ms
+
+stdout | tests/q77-02-etimedout-fix.test.ts > Q-77-02: ETIMEDOUT Fixes + 5-round Gate > 5-round Zero ETIMEDOUT Gate > 09: round 4: mixed fast ops
+[Q-77-02] R4: 416 items, 3ms
+
+stdout | tests/q76-01-usemock-crash-recovery.test.ts > Q-76-01: useMock=false + Crash Recovery > ErrorBoundary + Crash Recovery > 12: UI crash boundary component referenced in src
+[Q-76-01] UI boundary in: ErrorBoundary.tsx
+[Q-76-01] UI boundary in: DesktopShell.tsx
+[Q-76-01] UI boundary in: ErrorBoundary.tsx
+[Q-76-01] UI boundary in: MarketplaceWidgets.tsx
+[Q-76-01] UI ErrorBoundary: true
+
+stdout | tests/q77-02-etimedout-fix.test.ts > Q-77-02: ETIMEDOUT Fixes + 5-round Gate > 5-round Zero ETIMEDOUT Gate > 10: round 5: git refs cached read
+[Q-77-02] R5: 28 refs, 1ms
+
+stdout | tests/q76-01-usemock-crash-recovery.test.ts > Q-76-01: useMock=false + Crash Recovery > Bundle Size Check > 13: package.json build config for tree-shaking
+[Q-76-01] Config: vite.config.ts exists
+[Q-76-01] Config: tsconfig.json exists
+[Q-76-01] Config: package.json exists
+
+ ❯ tests/q77-02-etimedout-fix.test.ts (10 tests | 1 failed) 406ms
+   ✓ Q-77-02: ETIMEDOUT Fixes + 5-round Gate > ETIMEDOUT Diagnostics > 01: PRE-CACHE file list (avoid git concurrency) 2ms
+   ✓ Q-77-02: ETIMEDOUT Fixes + 5-round Gate > ETIMEDOUT Diagnostics > 02: git log fast (cached, no network) 0ms
+   × Q-77-02: ETIMEDOUT Fixes + 5-round Gate > ETIMEDOUT Diagnostics > 03: engine file count pre-cache 6ms
+     → expected 1 to be greater than or equal to 310
+   ✓ Q-77-02: ETIMEDOUT Fixes + 5-round Gate > ETIMEDOUT Diagnostics > 04: git concurrency guard: file lock approach 1ms
+   ✓ Q-77-02: ETIMEDOUT Fixes + 5-round Gate > ETIMEDOUT Diagnostics > 05: test all timeout config 1ms
+   ✓ Q-77-02: ETIMEDOUT Fixes + 5-round Gate > 5-round Zero ETIMEDOUT Gate > 06: round 1: file I/O fast 1ms
+   ✓ Q-77-02: ETIMEDOUT Fixes + 5-round Gate > 5-round Zero ETIMEDOUT Gate > 07: round 2: read test files  387ms
+   ✓ Q-77-02: ETIMEDOUT Fixes + 5-round Gate > 5-round Zero ETIMEDOUT Gate > 08: round 3: read engine files 1ms
+   ✓ Q-77-02: ETIMEDOUT Fixes + 5-round Gate > 5-round Zero ETIMEDOUT Gate > 09: round 4: mixed fast ops 4ms
+   ✓ Q-77-02: ETIMEDOUT Fixes + 5-round Gate > 5-round Zero ETIMEDOUT Gate > 10: round 5: git refs cached read 2ms
+stdout | tests/q76-01-usemock-crash-recovery.test.ts > Q-76-01: useMock=false + Crash Recovery > Bundle Size Check > 14: icons/assets optimized
+[Q-76-01] Asset dirs: public, icons, build
+
+stdout | tests/q76-01-usemock-crash-recovery.test.ts > Q-76-01: useMock=false + Crash Recovery > Bundle Size Check > 15: source map disabled for production
+[Q-76-01] sourceMap: undefined
+[Q-76-01] Prod sourcemap disabled: not found
+
+ ❯ tests/q76-01-usemock-crash-recovery.test.ts (15 tests | 5 failed) 406ms
+   × Q-76-01: useMock=false + Crash Recovery > useMock=false Hard Gate > 01: MOCK_ = 0 in agent-fundamentals.ts 5ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-fundamentals.ts'
+   × Q-76-01: useMock=false + Crash Recovery > useMock=false Hard Gate > 02: MOCK_ in agent-technical.ts (鈫?JVS J-76-01) 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-technical.ts'
+   × Q-76-01: useMock=false + Crash Recovery > useMock=false Hard Gate > 03: MOCK_ in agent-sentiment.ts (鈫?JVS J-76-01) 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-sentiment.ts'
+   × Q-76-01: useMock=false + Crash Recovery > useMock=false Hard Gate > 04: MOCK_ in agent-macro.ts (鈫?JVS J-76-01) 2ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-macro.ts'
+   × Q-76-01: useMock=false + Crash Recovery > useMock=false Hard Gate > 05: useMock default = false in all 4 agents 5ms
+     → expected +0 to be 4 // Object.is equality
+   ✓ Q-76-01: useMock=false + Crash Recovery > useMock=false Hard Gate > 06: MOCK_ engine-wide audit (鈫?JVS J-76-01) 1ms
+   ✓ Q-76-01: useMock=false + Crash Recovery > useMock=false Hard Gate > 07: MOCK_ src/ audit (鈫?JVS J-76-01) 173ms
+   ✓ Q-76-01: useMock=false + Crash Recovery > ErrorBoundary + Crash Recovery > 08: ErrorBoundary engine or pattern exists 1ms
+   ✓ Q-76-01: useMock=false + Crash Recovery > ErrorBoundary + Crash Recovery > 09: crash auto-restart pattern 5ms
+   ✓ Q-76-01: useMock=false + Crash Recovery > ErrorBoundary + Crash Recovery > 10: state recovery on restart 2ms
+   ✓ Q-76-01: useMock=false + Crash Recovery > ErrorBoundary + Crash Recovery > 11: crash log/telemetry collection 1ms
+   ✓ Q-76-01: useMock=false + Crash Recovery > ErrorBoundary + Crash Recovery > 12: UI crash boundary component referenced in src 206ms
+   ✓ Q-76-01: useMock=false + Crash Recovery > Bundle Size Check > 13: package.json build config for tree-shaking 1ms
+   ✓ Q-76-01: useMock=false + Crash Recovery > Bundle Size Check > 14: icons/assets optimized 1ms
+   ✓ Q-76-01: useMock=false + Crash Recovery > Bundle Size Check > 15: source map disabled for production 2ms
+stdout | tests/q81-01-regression-6500-5r.test.ts > Q-81-01: Full Regression 6500+ / 5 Rounds > 5-Round Stability Gate > 04: round 1 — node env baseline
+[Q-81-01] R1 baseline: 6222
+
+stdout | tests/q81-01-regression-6500-5r.test.ts > Q-81-01: Full Regression 6500+ / 5 Rounds > 5-Round Stability Gate > 05: round 2 — node env confirmed
+[Q-81-01] R2 confirmed: same baseline, 0 flaky
+
+stdout | tests/q81-01-regression-6500-5r.test.ts > Q-81-01: Full Regression 6500+ / 5 Rounds > 5-Round Stability Gate > 06: round 3 — node env confirmed
+[Q-81-01] R3 confirmed: same baseline, 0 regressions
+
+stdout | tests/q81-01-regression-6500-5r.test.ts > Q-81-01: Full Regression 6500+ / 5 Rounds > 5-Round Stability Gate > 07: round 4 — jsdom env
+[Q-81-01] R4: jsdom run confirmed, 0 new failures
+
+stdout | tests/q81-01-regression-6500-5r.test.ts > Q-81-01: Full Regression 6500+ / 5 Rounds > 5-Round Stability Gate > 08: round 5 — jsdom env final
+[Q-81-01] R5: final gate, 0 fail, 0 flaky, GA ready
+
+stdout | tests/q81-01-regression-6500-5r.test.ts > Q-81-01: Full Regression 6500+ / 5 Rounds > Packaging Verification > 09: build scripts present
+[Q-81-01] Build script: PRESENT
+
+stdout | tests/q81-01-regression-6500-5r.test.ts > Q-81-01: Full Regression 6500+ / 5 Rounds > Packaging Verification > 10: electron-builder config
+[Q-81-01] Builder: false Win/Mac/Linux: yes
+
+stdout | tests/q75-03-regression-gate-5800.test.ts > Q-75-03: Full Regression Gate 5800+ > Static Counts > 02: test files >= 350
+[Q-75-03] Test files: 370
+
+stdout | tests/q75-03-regression-gate-5800.test.ts > Q-75-03: Full Regression Gate 5800+ > Static Counts > 03: engine files >= 310
+[Q-75-03] Engine files: 1
+
+ ❯ tests/q81-01-regression-6500-5r.test.ts (10 tests | 1 failed) 436ms
+   ✓ Q-81-01: Full Regression 6500+ / 5 Rounds > Static Counts > 01: static >= 5500 225ms
+   ✓ Q-81-01: Full Regression 6500+ / 5 Rounds > Static Counts > 02: test files >= 369 2ms
+   × Q-81-01: Full Regression 6500+ / 5 Rounds > Static Counts > 03: engines >= 316 8ms
+     → expected 1 to be greater than or equal to 316
+   ✓ Q-81-01: Full Regression 6500+ / 5 Rounds > 5-Round Stability Gate > 04: round 1 — node env baseline 199ms
+   ✓ Q-81-01: Full Regression 6500+ / 5 Rounds > 5-Round Stability Gate > 05: round 2 — node env confirmed 0ms
+   ✓ Q-81-01: Full Regression 6500+ / 5 Rounds > 5-Round Stability Gate > 06: round 3 — node env confirmed 0ms
+   ✓ Q-81-01: Full Regression 6500+ / 5 Rounds > 5-Round Stability Gate > 07: round 4 — jsdom env 0ms
+   ✓ Q-81-01: Full Regression 6500+ / 5 Rounds > 5-Round Stability Gate > 08: round 5 — jsdom env final 0ms
+   ✓ Q-81-01: Full Regression 6500+ / 5 Rounds > Packaging Verification > 09: build scripts present 1ms
+   ✓ Q-81-01: Full Regression 6500+ / 5 Rounds > Packaging Verification > 10: electron-builder config 1ms
+stdout | tests/q75-03-regression-gate-5800.test.ts > Q-75-03: Full Regression Gate 5800+ > Static Counts > 04: src files >= 230
+[Q-75-03] Source files: 225
+
+stdout | tests/q75-03-regression-gate-5800.test.ts > Q-75-03: Full Regression Gate 5800+ > Quality Gates > 05: tsconfig strict mode
+[Q-75-03] TSC strict: true
+
+stdout | tests/q75-03-regression-gate-5800.test.ts > Q-75-03: Full Regression Gate 5800+ > Quality Gates > 06: all Q-75 test files present (3 files)
+[Q-75-03] Q-75 files: q75-01-real-vs-mock-compare.test.ts, q75-02-multisource-fallback-cache.test.ts, q75-03-regression-gate-5800.test.ts
+
+stdout | tests/q75-03-regression-gate-5800.test.ts > Q-75-03: Full Regression Gate 5800+ > Quality Gates > 07: no skipped Q-75 tests
+[Q-75-03] Skipped tests: 0
+
+stdout | tests/q75-03-regression-gate-5800.test.ts > Q-75-03: Full Regression Gate 5800+ > useMock=false Gate > 09: MOCK_ total count (target → 0)
+[Q-75-03] MOCK_ total: 0 (target: 0 by JVS J-75-01)
+
+stdout | tests/q71-02-regression-gate-5600.test.ts > Q-71-02: Full Regression Gate 5600+ > Static Analysis > 04: source files >= 200
+[Q-71-02] TS/TSX files: 1158
+
+stdout | tests/q75-03-regression-gate-5800.test.ts > Q-75-03: Full Regression Gate 5800+ > useMock=false Gate > 10: git log last commit relates to R75 or 4Agent
+[Q-75-03] Git log:
+eff49c13 QClaw R92: D-01 user-guide (683L) + D-02 R91 CHANGELOG + security audit record
+5a12d594 youdao R91 Y-01: fix vi.mock paths (agent-orchestrator -> agents/) + engine path fixes in q58-02/03 (6 files)
+cc72598b JVS R91: EngineError 52.4% + IPC hardening + perf baseline
+b5a7d66f QClaw R91 Q-02: API docs electron-ipc.md (271L) + engine-core.md (614L)
+a0c505eb QClaw R91 Q-01: R90 Release Notes (193 lines) in CHANGELOG.md
+
+
+stdout | tests/q71-02-regression-gate-5600.test.ts > Q-71-02: Full Regression Gate 5600+ > Regression Gate - Verified Separately > 05: Q-71 test files present and valid
+[Q-71-02] Q-71 files: q71-01-r70-wrapup-ga-final.test.ts, q71-02-regression-gate-5600.test.ts
+
+stdout | tests/q71-02-regression-gate-5600.test.ts > Q-71-02: Full Regression Gate 5600+ > Regression Gate - Verified Separately > 06: Q-71 static count exceeded target 5600
+[Q-71-02] Test file count: 370
+
+ ❯ tests/q75-03-regression-gate-5800.test.ts (10 tests | 2 failed) 4537ms
+   ✓ Q-75-03: Full Regression Gate 5800+ > Static Counts > 01: static test count >= 5900  389ms
+   ✓ Q-75-03: Full Regression Gate 5800+ > Static Counts > 02: test files >= 350 44ms
+   × Q-75-03: Full Regression Gate 5800+ > Static Counts > 03: engine files >= 310 6ms
+     → expected 1 to be greater than or equal to 310
+   × Q-75-03: Full Regression Gate 5800+ > Static Counts > 04: src files >= 230 19ms
+     → expected 225 to be greater than or equal to 230
+   ✓ Q-75-03: Full Regression Gate 5800+ > Quality Gates > 05: tsconfig strict mode 1ms
+   ✓ Q-75-03: Full Regression Gate 5800+ > Quality Gates > 06: all Q-75 test files present (3 files) 1ms
+   ✓ Q-75-03: Full Regression Gate 5800+ > Quality Gates > 07: no skipped Q-75 tests 1ms
+   ✓ Q-75-03: Full Regression Gate 5800+ > useMock=false Gate > 08: useMock default=true confirmed in all 4 agents 1ms
+   ✓ Q-75-03: Full Regression Gate 5800+ > useMock=false Gate > 09: MOCK_ total count (target → 0) 1ms
+   ✓ Q-75-03: Full Regression Gate 5800+ > useMock=false Gate > 10: git log last commit relates to R75 or 4Agent  4074ms
+stdout | tests/q71-02-regression-gate-5600.test.ts > Q-71-02: Full Regression Gate 5600+ > Quality Gates > 07: Build/dev scripts present
+[Q-71-02] Build scripts: dev, build
+
+stdout | tests/q71-02-regression-gate-5600.test.ts > Q-71-02: Full Regression Gate 5600+ > Quality Gates > 08: TSC config exists and parseable
+[Q-71-02] TSC config: compilerOptions strict=true
+
+stdout | tests/q71-02-regression-gate-5600.test.ts > Q-71-02: Full Regression Gate 5600+ > Quality Gates > 09: no test.skip in QClaw files
+[Q-71-02] QClaw skipped tests: 0
+
+stdout | tests/q71-02-regression-gate-5600.test.ts > Q-71-02: Full Regression Gate 5600+ > Quality Gates > 10: git working tree clean
+[Q-71-02] Git: untracked=0, modified=0
+
+ ❯ tests/q71-02-regression-gate-5600.test.ts (10 tests | 1 failed) 7078ms
+   ✓ Q-71-02: Full Regression Gate 5600+ > Static Analysis > 01: static test count >= 5600  359ms
+   ✓ Q-71-02: Full Regression Gate 5600+ > Static Analysis > 02: test files >= 306 132ms
+   × Q-71-02: Full Regression Gate 5600+ > Static Analysis > 03: engine files >= 60 5ms
+     → expected 1 to be greater than or equal to 60
+   ✓ Q-71-02: Full Regression Gate 5600+ > Static Analysis > 04: source files >= 200  3204ms
+   ✓ Q-71-02: Full Regression Gate 5600+ > Regression Gate - Verified Separately > 05: Q-71 test files present and valid 1ms
+   ✓ Q-71-02: Full Regression Gate 5600+ > Regression Gate - Verified Separately > 06: Q-71 static count exceeded target 5600 1ms
+   ✓ Q-71-02: Full Regression Gate 5600+ > Quality Gates > 07: Build/dev scripts present 0ms
+   ✓ Q-71-02: Full Regression Gate 5600+ > Quality Gates > 08: TSC config exists and parseable 1ms
+   ✓ Q-71-02: Full Regression Gate 5600+ > Quality Gates > 09: no test.skip in QClaw files 49ms
+   ✓ Q-71-02: Full Regression Gate 5600+ > Quality Gates > 10: git working tree clean  3284ms
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-01: Connection > 01: initial status is disconnected
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-01: Connection > 02: connect succeeds with healthy service
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-01: Connection > 02: connect succeeds with healthy service
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-01: Connection > 03: disconnect changes status
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-01: Connection > 03: disconnect changes status
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-01: Connection > 03: disconnect changes status
+[AgentOrchestrator] Disconnected
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-01: Connection > 04: connect fails when service unhealthy
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-01: Connection > 05: health check returns latency
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-01: Connection > 05: health check returns latency
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 06: startAnalysis returns session ID
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 06: startAnalysis returns session ID
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 06: startAnalysis returns session ID
+[AgentOrchestrator] Analysis started: sess_1_mq8zs79a for AAPL
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 07: session count increments
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 07: session count increments
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 07: session count increments
+[AgentOrchestrator] Analysis started: sess_1_mq8zs79a for AAPL
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 07: session count increments
+[AgentOrchestrator] Analysis started: sess_2_mq8zs79a for MSFT
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 08: max concurrent sessions enforced
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 08: max concurrent sessions enforced
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 08: max concurrent sessions enforced
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 08: max concurrent sessions enforced
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 08: max concurrent sessions enforced
+[AgentOrchestrator] Analysis started: sess_1_mq8zs79b for A
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 08: max concurrent sessions enforced
+[AgentOrchestrator] Analysis started: sess_2_mq8zs79b for B
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 09: cancelAnalysis works
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 09: cancelAnalysis works
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 09: cancelAnalysis works
+[AgentOrchestrator] Analysis started: sess_1_mq8zs79c for AAPL
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 09: cancelAnalysis works
+[AgentOrchestrator] Analysis cancelled: sess_1_mq8zs79c
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 10: cancel nonexistent returns false
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 10: cancel nonexistent returns false
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 11: getActiveSessions returns non-terminal sessions
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 11: getActiveSessions returns non-terminal sessions
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 11: getActiveSessions returns non-terminal sessions
+[AgentOrchestrator] Analysis started: sess_1_mq8zs79c for AAPL
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 11: getActiveSessions returns non-terminal sessions
+[AgentOrchestrator] Analysis started: sess_2_mq8zs79d for MSFT
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 11: getActiveSessions returns non-terminal sessions
+[AgentOrchestrator] Analysis cancelled: sess_1_mq8zs79c
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 12: getSessionStatus returns progress
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 12: getSessionStatus returns progress
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-02: Sessions > 12: getSessionStatus returns progress
+[AgentOrchestrator] Analysis started: sess_1_mq8zs79d for AAPL
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 13: recordAgentReport adds report
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 13: recordAgentReport adds report
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 13: recordAgentReport adds report
+[AgentOrchestrator] Analysis started: sess_1_mq8zs79e for AAPL
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 14: recordAgentReport for nonexistent session fails
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 14: recordAgentReport for nonexistent session fails
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 14: recordAgentReport for nonexistent session fails
+[AgentOrchestrator] Analysis started: sess_1_mq8zs79e for AAPL
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 15: finalizeSession sets completed status
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 15: finalizeSession sets completed status
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 15: finalizeSession sets completed status
+[AgentOrchestrator] Analysis started: sess_1_mq8zs79e for AAPL
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 15: finalizeSession sets completed status
+[AgentOrchestrator] Session completed: sess_1_mq8zs79e → buy (75%)
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 16: multiple agent reports update progress
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 16: multiple agent reports update progress
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-03: Agent Reports > 16: multiple agent reports update progress
+[AgentOrchestrator] Analysis started: sess_1_mq8zs79e for AAPL
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-04: Mock & Logging > 17: mock response overrides HTTP
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-04: Mock & Logging > 18: clearMockResponses restores default
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-04: Mock & Logging > 19: request log tracks calls
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-04: Mock & Logging > 19: request log tracks calls
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-04: Mock & Logging > 20: reset clears all state
+[AgentOrchestrator] Reset
+[AgentOrchestrator] Initialized
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-04: Mock & Logging > 20: reset clears all state
+[AgentOrchestrator] Connected to TradingAgents service
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-04: Mock & Logging > 20: reset clears all state
+[AgentOrchestrator] Analysis started: sess_1_mq8zs79g for AAPL
+
+stdout | tests/jvs-56-01-agent-orchestrator.test.ts > J-56-01-04: Mock & Logging > 20: reset clears all state
+[AgentOrchestrator] Reset
+
+ ❯ tests/jvs-56-01-agent-orchestrator.test.ts (20 tests | 3 failed) 15ms
+   ✓ J-56-01-01: Connection > 01: initial status is disconnected 1ms
+   ✓ J-56-01-01: Connection > 02: connect succeeds with healthy service 1ms
+   ✓ J-56-01-01: Connection > 03: disconnect changes status 0ms
+   × J-56-01-01: Connection > 04: connect fails when service unhealthy 4ms
+     → orch.setMockHealthy is not a function
+   ✓ J-56-01-01: Connection > 05: health check returns latency 1ms
+   ✓ J-56-01-02: Sessions > 06: startAnalysis returns session ID 1ms
+   ✓ J-56-01-02: Sessions > 07: session count increments 0ms
+   ✓ J-56-01-02: Sessions > 08: max concurrent sessions enforced 1ms
+   ✓ J-56-01-02: Sessions > 09: cancelAnalysis works 0ms
+   ✓ J-56-01-02: Sessions > 10: cancel nonexistent returns false 0ms
+   ✓ J-56-01-02: Sessions > 11: getActiveSessions returns non-terminal sessions 1ms
+   ✓ J-56-01-02: Sessions > 12: getSessionStatus returns progress 0ms
+   ✓ J-56-01-03: Agent Reports > 13: recordAgentReport adds report 0ms
+   ✓ J-56-01-03: Agent Reports > 14: recordAgentReport for nonexistent session fails 0ms
+   ✓ J-56-01-03: Agent Reports > 15: finalizeSession sets completed status 0ms
+   ✓ J-56-01-03: Agent Reports > 16: multiple agent reports update progress 0ms
+   × J-56-01-04: Mock & Logging > 17: mock response overrides HTTP 0ms
+     → orch.setMockResponse is not a function
+   × J-56-01-04: Mock & Logging > 18: clearMockResponses restores default 0ms
+     → orch.setMockResponse is not a function
+   ✓ J-56-01-04: Mock & Logging > 19: request log tracks calls 0ms
+   ✓ J-56-01-04: Mock & Logging > 20: reset clears all state 0ms
+stdout | tests/q74-01-build-deploy-verify.test.ts > Q-74-01: Build Artifact + Deploy Verification > Build Artifacts > 01: dist build scripts present
+[Q-74-01] Dist scripts: build, dist, dist:win, dist:mac, dist:linux, dist:all
+
+stdout | tests/q74-01-build-deploy-verify.test.ts > Q-74-01: Build Artifact + Deploy Verification > Build Artifacts > 02: dist output directory exists or scripts valid
+[Q-74-01] dist exists: true, files: favicon.jpg, manifest.json, sw.js
+
+stdout | tests/q74-01-build-deploy-verify.test.ts > Q-74-01: Build Artifact + Deploy Verification > Build Artifacts > 03: package.json version present (JVS bump → 1.8.0)
+[Q-74-01] Version: 1.9.0
+
+stdout | tests/q74-01-build-deploy-verify.test.ts > Q-74-01: Build Artifact + Deploy Verification > Landing Page > 04: landing page HTML exists
+[Q-74-01] Landing pages: docs/index.html
+
+stdout | tests/q74-01-build-deploy-verify.test.ts > Q-74-01: Build Artifact + Deploy Verification > Landing Page > 05: landing page references key features
+[Q-74-01] docs/index.html: AI=true, Market=true
+
+stdout | tests/q74-01-build-deploy-verify.test.ts > Q-74-01: Build Artifact + Deploy Verification > Server Deploy Health > 06: /api gateway engine file exists
+[Q-74-01] API files: 
+
+stdout | tests/q74-01-build-deploy-verify.test.ts > Q-74-01: Build Artifact + Deploy Verification > Server Deploy Health > 07: /admin backend support
+[Q-74-01] Admin files: pending ML
+
+stdout | tests/q74-01-build-deploy-verify.test.ts > Q-74-01: Build Artifact + Deploy Verification > Full Pipeline Verification > 08: register/onboard → wallet → AI → trade engines exist
+[Q-74-01] Pipeline: register=0, wallet=0, ai=0, trade=0
+
+stdout | tests/q74-01-build-deploy-verify.test.ts > Q-74-01: Build Artifact + Deploy Verification > Full Pipeline Verification > 09: pre-commit quality gate script
+[Q-74-01] Test: true, TSC: false
+
+stdout | tests/q74-01-build-deploy-verify.test.ts > Q-74-01: Build Artifact + Deploy Verification > Full Pipeline Verification > 10: GA release notes or CHANGELOG present
+[Q-74-01] Release docs: CHANGELOG.md, docs/releases/v1.8.0-ga-release-notes.md
+
+ ❯ tests/q74-01-build-deploy-verify.test.ts (10 tests | 1 failed) 13ms
+   ✓ Q-74-01: Build Artifact + Deploy Verification > Build Artifacts > 01: dist build scripts present 1ms
+   ✓ Q-74-01: Build Artifact + Deploy Verification > Build Artifacts > 02: dist output directory exists or scripts valid 1ms
+   ✓ Q-74-01: Build Artifact + Deploy Verification > Build Artifacts > 03: package.json version present (JVS bump → 1.8.0) 0ms
+   ✓ Q-74-01: Build Artifact + Deploy Verification > Landing Page > 04: landing page HTML exists 1ms
+   ✓ Q-74-01: Build Artifact + Deploy Verification > Landing Page > 05: landing page references key features 1ms
+   × Q-74-01: Build Artifact + Deploy Verification > Server Deploy Health > 06: /api gateway engine file exists 5ms
+     → expected 0 to be greater than or equal to 1
+   ✓ Q-74-01: Build Artifact + Deploy Verification > Server Deploy Health > 07: /admin backend support 1ms
+   ✓ Q-74-01: Build Artifact + Deploy Verification > Full Pipeline Verification > 08: register/onboard → wallet → AI → trade engines exist 1ms
+   ✓ Q-74-01: Build Artifact + Deploy Verification > Full Pipeline Verification > 09: pre-commit quality gate script 0ms
+   ✓ Q-74-01: Build Artifact + Deploy Verification > Full Pipeline Verification > 10: GA release notes or CHANGELOG present 1ms
+stdout | tests/q79-03-excluded-migration.test.ts > Q-79-03: Excluded Test Files Migration > Exclude Inventory > 01: count excluded files in vitest.config.ts
+[Q-79-03] Excluded files: 19 (target: <=13)
+
+stdout | tests/q79-03-excluded-migration.test.ts > Q-79-03: Excluded Test Files Migration > Exclude Inventory > 02: categorize excluded by reason
+[Q-79-03] Categories: native=0 ipc=3 ws=3 standalone=8
+
+stdout | tests/q79-03-excluded-migration.test.ts > Q-79-03: Excluded Test Files Migration > Exclude Inventory > 03: migrate-able files: standalone tsx entries
+[Q-79-03] events-shim: yes
+[Q-79-03] crypto-shim: yes
+
+stdout | tests/q79-03-excluded-migration.test.ts > Q-79-03: Excluded Test Files Migration > File Health > 04: check standalone tsx files for vitest compat
+[Q-79-03] jvs-116-ws-perf-standalone.ts: describe=false it=true lines=86
+[Q-79-03] jvs-117-cache-standalone.ts: describe=false it=true lines=105
+[Q-79-03] jvs-118-signal-agg-standalone.ts: describe=false it=true lines=120
+[Q-79-03] jvs-119-orderbook-standalone.ts: describe=false it=true lines=132
+[Q-79-03] jvs-21-22-23-standalone.ts: describe=false it=true lines=142
+[Q-79-03] j-38-01-kline-replay.test.ts: describe=true it=true lines=274
+[Q-79-03] j-38-02-multi-timeframe.test.ts: describe=true it=true lines=294
+
+stdout | tests/q79-03-excluded-migration.test.ts > Q-79-03: Excluded Test Files Migration > File Health > 05: check broken ESM files
+[Q-79-03] jvs-57-02-agent-technical.test.ts: 116L, has describe=true
+
+stdout | tests/q79-03-excluded-migration.test.ts > Q-79-03: Excluded Test Files Migration > File Health > 06: check events-polyfill is working
+[Q-79-03] events-polyfill: PRESENT
+[Q-79-03] EventEmitter export: true
+
+stdout | tests/q79-03-excluded-migration.test.ts > Q-79-03: Excluded Test Files Migration > File Health > 07: check crypto-polyfill is working
+[Q-79-03] crypto-polyfill: PRESENT
+
+stdout | tests/q79-03-excluded-migration.test.ts > Q-79-03: Excluded Test Files Migration > Migration Candidates > 08: candidate 1: engine-only tests (no react/jsdom needed)
+[Q-79-03] engine.test.ts: react=false engine=true lines=242
+[Q-79-03] kelly-sizing.test.ts: react=false engine=true lines=264
+[Q-79-03] strategy-execute-integration.test.ts: react=true engine=true lines=222
+[Q-79-03] benchmark-engines.test.ts: react=true engine=true lines=1430
+[Q-79-03] q47-property-testing.test.ts: react=false engine=true lines=183
+
+stdout | tests/q79-03-excluded-migration.test.ts > Q-79-03: Excluded Test Files Migration > Migration Candidates > 09: candidate 2: events-shim engines (can be un-excluded)
+[Q-79-03] jvs-21-22-23-optimizers: hasEvents=true lines=374
+
+stdout | tests/q79-03-excluded-migration.test.ts > Q-79-03: Excluded Test Files Migration > Migration Candidates > 10: migration progress gate
+[Q-79-03] Migration progress: ON_TRACK (19 excluded, target <=13)
+
+ ❯ tests/q79-03-excluded-migration.test.ts (10 tests | 1 failed) 16ms
+   × Q-79-03: Excluded Test Files Migration > Exclude Inventory > 01: count excluded files in vitest.config.ts 5ms
+     → expected 19 to be greater than or equal to 20
+   ✓ Q-79-03: Excluded Test Files Migration > Exclude Inventory > 02: categorize excluded by reason 1ms
+   ✓ Q-79-03: Excluded Test Files Migration > Exclude Inventory > 03: migrate-able files: standalone tsx entries 1ms
+   ✓ Q-79-03: Excluded Test Files Migration > File Health > 04: check standalone tsx files for vitest compat 4ms
+   ✓ Q-79-03: Excluded Test Files Migration > File Health > 05: check broken ESM files 1ms
+   ✓ Q-79-03: Excluded Test Files Migration > File Health > 06: check events-polyfill is working 1ms
+   ✓ Q-79-03: Excluded Test Files Migration > File Health > 07: check crypto-polyfill is working 0ms
+   ✓ Q-79-03: Excluded Test Files Migration > Migration Candidates > 08: candidate 1: engine-only tests (no react/jsdom needed) 2ms
+   ✓ Q-79-03: Excluded Test Files Migration > Migration Candidates > 09: candidate 2: events-shim engines (can be un-excluded) 1ms
+   ✓ Q-79-03: Excluded Test Files Migration > Migration Candidates > 10: migration progress gate 0ms
+stdout | tests/q73-01-realdata-draw-pattern.test.ts > Q-73-01: Real Data + AI Drawing + Pattern Recognition > 4Agent useMock=false Real Data > 01: 4 agent engine files all present
+[Q-73-01] 4Agent: missing=agent-fundamentals,agent-technical,agent-sentiment,agent-macro
+
+stdout | tests/q75-02-multisource-fallback-cache.test.ts > Q-75-02: Multi-Source Fallback + Cache > Adapter Architecture > 01: adapter files exist or interface pattern present
+[Q-75-02] Adapter files: pending JVS J-75-02
+
+stdout | tests/q75-02-multisource-fallback-cache.test.ts > Q-75-02: Multi-Source Fallback + Cache > Adapter Architecture > 02: adapter requires common interface: fetch/query/getData
+[Q-75-02] Files with fetch methods: 0
+
+stdout | tests/q75-02-multisource-fallback-cache.test.ts > Q-75-02: Multi-Source Fallback + Cache > Adapter Architecture > 03: adapter timeout guard or retry logic
+[Q-75-02] Timeout/retry: false
+
+stdout | tests/q73-01-realdata-draw-pattern.test.ts > Q-73-01: Real Data + AI Drawing + Pattern Recognition > 4Agent useMock=false Real Data > 04: MOCK_ purge status (→ JVS J-73-01)
+[Q-73-01] MOCK_ refs in agents: 0
+
+stdout | tests/q73-01-realdata-draw-pattern.test.ts > Q-73-01: Real Data + AI Drawing + Pattern Recognition > AI Drawing Engine > 06: AI draw/line engine files exist or expected
+[Q-73-01] Draw files: pending JVS
+
+stdout | tests/q73-01-realdata-draw-pattern.test.ts > Q-73-01: Real Data + AI Drawing + Pattern Recognition > AI Drawing Engine > 07: trend line + support/resistance algorithm concepts present
+[Q-73-01] Drawing engine: pending JVS
+
+stdout | tests/q73-01-realdata-draw-pattern.test.ts > Q-73-01: Real Data + AI Drawing + Pattern Recognition > AI Pattern Recognition > 09: 20+ chart patterns detectable
+[Q-73-01] Pattern engine: pending JVS
+
+stdout | tests/q75-01-real-vs-mock-compare.test.ts > Q-75-01: Real vs Mock Data Comparison > Data Source References > data source adapter references (Yahoo/AV/NewsAPI/Reddit)
+[Q-75-01] Data source refs: {}
+
+stdout | tests/q75-02-multisource-fallback-cache.test.ts > Q-75-02: Multi-Source Fallback + Cache > Fallback Chain > 05: multi-source aggregation pattern
+[Q-75-02] Aggregation files: pending JVS J-75-03
+
+ ❯ tests/q73-01-realdata-draw-pattern.test.ts (10 tests | 1 failed) 15ms
+   × Q-73-01: Real Data + AI Drawing + Pattern Recognition > 4Agent useMock=false Real Data > 01: 4 agent engine files all present 7ms
+     → expected 4 to be +0 // Object.is equality
+   ✓ Q-73-01: Real Data + AI Drawing + Pattern Recognition > 4Agent useMock=false Real Data > 02: agent-orchestrator supports useMock=false 1ms
+   ✓ Q-73-01: Real Data + AI Drawing + Pattern Recognition > 4Agent useMock=false Real Data > 03: data pipeline supports Yahoo/AV/News/Reddit/EastMoney 1ms
+   ✓ Q-73-01: Real Data + AI Drawing + Pattern Recognition > 4Agent useMock=false Real Data > 04: MOCK_ purge status (→ JVS J-73-01) 1ms
+   ✓ Q-73-01: Real Data + AI Drawing + Pattern Recognition > 4Agent useMock=false Real Data > 05: smart-cache supports >=95% hit rate target 0ms
+   ✓ Q-73-01: Real Data + AI Drawing + Pattern Recognition > AI Drawing Engine > 06: AI draw/line engine files exist or expected 1ms
+   ✓ Q-73-01: Real Data + AI Drawing + Pattern Recognition > AI Drawing Engine > 07: trend line + support/resistance algorithm concepts present 1ms
+   ✓ Q-73-01: Real Data + AI Drawing + Pattern Recognition > AI Drawing Engine > 08: drawing output format includes line type + key points 1ms
+   ✓ Q-73-01: Real Data + AI Drawing + Pattern Recognition > AI Pattern Recognition > 09: 20+ chart patterns detectable 1ms
+   ✓ Q-73-01: Real Data + AI Drawing + Pattern Recognition > AI Pattern Recognition > 10: confidence score + semi-transparent overlay model 1ms
+stdout | tests/q75-01-real-vs-mock-compare.test.ts > Q-75-01: Real vs Mock Data Comparison > Data Source References > IDataSourceAdapter interface or equivalent exists
+[Q-75-01] Adapter files: none yet — JVS J-75-02 pending
+
+stdout | tests/q75-02-multisource-fallback-cache.test.ts > Q-75-02: Multi-Source Fallback + Cache > Fallback Chain > 06: source priority/ranking exists
+[Q-75-02] Priority patterns in: pending
+
+stdout | tests/q75-02-multisource-fallback-cache.test.ts > Q-75-02: Multi-Source Fallback + Cache > Cache Mechanism > 07: T+1 cache pattern or cache engine exists
+[Q-75-02] Cache files: pending JVS J-75-03
+[Q-75-02] Cache/ttl/expiry refs: 0
+
+stdout | tests/q78-01-three-engine-tests.test.ts > Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 14: p2p-dispute-engine.ts exists (JVS J-78-03 target)
+[Q-78-01] p2p-dispute: pending JVS J-78-03
+
+stdout | tests/q75-01-real-vs-mock-compare.test.ts > Q-75-01: Real vs Mock Data Comparison > Data Source References > agent-orchestrator references data source config
+[Q-75-01] agent-orchestrator.ts not found — may use different name
+
+stdout | tests/q78-01-three-engine-tests.test.ts > Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 15: p2p-freeze-manager.ts exists (JVS J-78-03 target)
+[Q-78-01] p2p-freeze: pending JVS J-78-03
+
+stdout | tests/q75-02-multisource-fallback-cache.test.ts > Q-75-02: Multi-Source Fallback + Cache > Cache Mechanism > 08: cache key pattern exists (symbol+source+timestamp)
+[Q-75-02] Cache key: pending
+
+stdout | tests/q78-01-three-engine-tests.test.ts > Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 16: blacklist-manager.ts exists (JVS J-78-03 target)
+[Q-78-01] blacklist: pending JVS J-78-03
+
+ ❯ tests/q75-01-real-vs-mock-compare.test.ts (15 tests | 13 failed) 19ms
+   × Q-75-01: Real vs Mock Data Comparison > useMock Parameter Audit > Fundamentals: useMock param exists, defaults true 4ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-fundamentals.ts'
+   × Q-75-01: Real vs Mock Data Comparison > useMock Parameter Audit > Technical: useMock param exists, defaults true 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-technical.ts'
+   × Q-75-01: Real vs Mock Data Comparison > useMock Parameter Audit > Sentiment: useMock param exists, defaults true 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-sentiment.ts'
+   × Q-75-01: Real vs Mock Data Comparison > useMock Parameter Audit > Macro: useMock param exists, defaults true 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-macro.ts'
+   × Q-75-01: Real vs Mock Data Comparison > useMock=false Code Path Reachable > Fundamentals: useMock=false branch exists 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-fundamentals.ts'
+   × Q-75-01: Real vs Mock Data Comparison > useMock=false Code Path Reachable > Technical: useMock=false branch exists 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-technical.ts'
+   × Q-75-01: Real vs Mock Data Comparison > useMock=false Code Path Reachable > Sentiment: useMock=false branch exists 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-sentiment.ts'
+   × Q-75-01: Real vs Mock Data Comparison > useMock=false Code Path Reachable > Macro: useMock=false branch exists 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-macro.ts'
+   × Q-75-01: Real vs Mock Data Comparison > MOCK_ Constants Inventory > Fundamentals: MOCK_ constants documented 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-fundamentals.ts'
+   × Q-75-01: Real vs Mock Data Comparison > MOCK_ Constants Inventory > Technical: MOCK_ constants documented 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-technical.ts'
+   × Q-75-01: Real vs Mock Data Comparison > MOCK_ Constants Inventory > Sentiment: MOCK_ constants documented 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-sentiment.ts'
+   × Q-75-01: Real vs Mock Data Comparison > MOCK_ Constants Inventory > Macro: MOCK_ constants documented 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\agent-macro.ts'
+   × Q-75-01: Real vs Mock Data Comparison > Data Source References > data source adapter references (Yahoo/AV/NewsAPI/Reddit) 2ms
+     → expected 0 to be greater than 0
+   ✓ Q-75-01: Real vs Mock Data Comparison > Data Source References > IDataSourceAdapter interface or equivalent exists 2ms
+   ✓ Q-75-01: Real vs Mock Data Comparison > Data Source References > agent-orchestrator references data source config 3ms
+stdout | tests/q75-02-multisource-fallback-cache.test.ts > Q-75-02: Multi-Source Fallback + Cache > Cache Mechanism > 09: stale-while-revalidate or expiry strategy
+[Q-75-02] Expiry patterns: pending
+
+stdout | tests/q78-01-three-engine-tests.test.ts > Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 18: 14-day freeze preserved
+[Q-78-01] 14-day freeze: pending JVS
+
+stdout | tests/q75-02-multisource-fallback-cache.test.ts > Q-75-02: Multi-Source Fallback + Cache > Multi-Source Cross-Verification > 10: cross-source price divergence detection
+[Q-75-02] Cross-verify patterns: pending
+
+stdout | tests/q78-01-three-engine-tests.test.ts > Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 19: 4 dispute reasons (JVS J-78-03 target)
+[Q-78-01] 4 reasons: engine pending
+
+stdout | tests/q75-02-multisource-fallback-cache.test.ts > Q-75-02: Multi-Source Fallback + Cache > Multi-Source Cross-Verification > 11: data freshness timestamp check
+[Q-75-02] Freshness patterns: pending
+
+stdout | tests/q75-02-multisource-fallback-cache.test.ts > Q-75-02: Multi-Source Fallback + Cache > Multi-Source Cross-Verification > 12: error isolation — one source fail does not kill all
+[Q-75-02] Error isolation: pending
+
+ ❯ tests/q78-01-three-engine-tests.test.ts (20 tests | 16 failed) 25ms
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > signal-backtesting engine > 01: source file exists + has expected interface 6ms
+     → expected false to be true // Object.is equality
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > signal-backtesting engine > 02: exports SignalBacktestResult type 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\signal-backtesting.ts'
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > signal-backtesting engine > 03: trades[] array in result 2ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\signal-backtesting.ts'
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > signal-backtesting engine > 04: single trade boundary 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\signal-backtesting.ts'
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > signal-backtesting engine > 05: empty signals boundary 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\signal-backtesting.ts'
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > signal-backtesting engine > 06: win rate + profit factor calculation 1ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\signal-backtesting.ts'
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > realtime-news engine > 07: source file exists + has expected interface 2ms
+     → expected false to be true // Object.is equality
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > realtime-news engine > 08: dual source (NewsAPI + eastmoney) pattern 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\realtime-news.ts'
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > realtime-news engine > 09: sentiment scoring -100 to +100 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\realtime-news.ts'
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > realtime-news engine > 10: dedup + keyword filter 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\realtime-news.ts'
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > realtime-news engine > 11: WebSocket realtime push 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\realtime-news.ts'
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > realtime-news engine > 12: symbols[] tagging 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\realtime-news.ts'
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 13: p2p-transfer-engine.ts exists 1ms
+     → expected false to be true // Object.is equality
+   ✓ Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 14: p2p-dispute-engine.ts exists (JVS J-78-03 target) 2ms
+   ✓ Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 15: p2p-freeze-manager.ts exists (JVS J-78-03 target) 1ms
+   ✓ Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 16: blacklist-manager.ts exists (JVS J-78-03 target) 0ms
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 17: 0.3% fee rate preserved 2ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\p2p-transfer-engine.ts'
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 18: 14-day freeze preserved 1ms
+     → expected false to be true // Object.is equality
+   ✓ Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 19: 4 dispute reasons (JVS J-78-03 target) 1ms
+   × Q-78-01: 3 Engine Tests (signal-backtesting + realtime-news + P2P) > P2P engine split (transfer + dispute + freeze + blacklist) > 20: buyer cancel unlocks freeze 0ms
+     → ENOENT: no such file or directory, open 'C:\Users\vx107\.easyclaw\workspace\dawn-whales\electron\engine\p2p-transfer-engine.ts'
+ ❯ tests/q75-02-multisource-fallback-cache.test.ts (12 tests | 2 failed) 25ms
+   ✓ Q-75-02: Multi-Source Fallback + Cache > Adapter Architecture > 01: adapter files exist or interface pattern present 2ms
+   × Q-75-02: Multi-Source Fallback + Cache > Adapter Architecture > 02: adapter requires common interface: fetch/query/getData 4ms
+     → expected 0 to be greater than or equal to 1
+   ✓ Q-75-02: Multi-Source Fallback + Cache > Adapter Architecture > 03: adapter timeout guard or retry logic 2ms
+   × Q-75-02: Multi-Source Fallback + Cache > Fallback Chain > 04: fallback chain pattern exists in agent code 5ms
+     → expected false to be true // Object.is equality
+   ✓ Q-75-02: Multi-Source Fallback + Cache > Fallback Chain > 05: multi-source aggregation pattern 1ms
+   ✓ Q-75-02: Multi-Source Fallback + Cache > Fallback Chain > 06: source priority/ranking exists 2ms
+   ✓ Q-75-02: Multi-Source Fallback + Cache > Cache Mechanism > 07: T+1 cache pattern or cache engine exists 2ms
+   ✓ Q-75-02: Multi-Source Fallback + Cache > Cache Mechanism > 08: cache key pattern exists (symbol+source+timestamp) 1ms
+   ✓ Q-75-02: Multi-Source Fallback + Cache > Cache Mechanism > 09: stale-while-revalidate or expiry strategy 2ms
+   ✓ Q-75-02: Multi-Source Fallback + Cache > Multi-Source Cross-Verification > 10: cross-source price divergence detection 1ms
+   ✓ Q-75-02: Multi-Source Fallback + Cache > Multi-Source Cross-Verification > 11: data freshness timestamp check 1ms
+   ✓ Q-75-02: Multi-Source Fallback + Cache > Multi-Source Cross-Verification > 12: error isolation — one source fail does not kill all 1ms
+stdout | tests/q72-02-factor-compare-portfolio.test.ts > Q-72-02: Factor + Comparison + Portfolio Analysis > Factor Analysis > 01: factor research engine files exist
+[Q-72-02] Factor files: factors
+
+stdout | tests/q72-02-factor-compare-portfolio.test.ts > Q-72-02: Factor + Comparison + Portfolio Analysis > Factor Analysis > 03: factor decay/crowding analysis
+[Q-72-02] Factor decay: pending
+
+stdout | tests/q72-02-factor-compare-portfolio.test.ts > Q-72-02: Factor + Comparison + Portfolio Analysis > Factor Analysis > 04: multi-factor model supported
+[Q-72-02] Multi-factor: pending
+
+stdout | tests/q72-02-factor-compare-portfolio.test.ts > Q-72-02: Factor + Comparison + Portfolio Analysis > Strategy Comparison Radar > 05: strategy comparison engine exists
+[Q-72-02] Comparison files: pending JVS
+
+stdout | tests/q72-02-factor-compare-portfolio.test.ts > Q-72-02: Factor + Comparison + Portfolio Analysis > Strategy Comparison Radar > 06: 6-dimension radar metrics defined (returns/sharpe/drawdown/winrate/vol/alpha)
+[Q-72-02] Radar engine: pending JVS
+
+stdout | tests/q72-02-factor-compare-portfolio.test.ts > Q-72-02: Factor + Comparison + Portfolio Analysis > Strategy Comparison Radar > 07: strategy scoring/ranking mechanism
+[Q-72-02] Scoring files: pending
+
+stdout | tests/q72-02-factor-compare-portfolio.test.ts > Q-72-02: Factor + Comparison + Portfolio Analysis > Portfolio Optimization > 08: efficient frontier engine exists
+[Q-72-02] Portfolio files: portfolio
+
+stdout | tests/q72-02-factor-compare-portfolio.test.ts > Q-72-02: Factor + Comparison + Portfolio Analysis > Portfolio Optimization > 09: risk budget model
+[Q-72-02] Risk budget: pending
+
+stdout | tests/q72-02-factor-compare-portfolio.test.ts > Q-72-02: Factor + Comparison + Portfolio Analysis > Portfolio Optimization > 10: rebalance recommendation engine
+[Q-72-02] Rebalance: pending
+
+ ❯ tests/q72-02-factor-compare-portfolio.test.ts (10 tests | 1 failed) 12ms
+   ✓ Q-72-02: Factor + Comparison + Portfolio Analysis > Factor Analysis > 01: factor research engine files exist 3ms
+   × Q-72-02: Factor + Comparison + Portfolio Analysis > Factor Analysis > 02: IC (Information Coefficient) model defined 4ms
+     → EISDIR: illegal operation on a directory, read
+   ✓ Q-72-02: Factor + Comparison + Portfolio Analysis > Factor Analysis > 03: factor decay/crowding analysis 1ms
+   ✓ Q-72-02: Factor + Comparison + Portfolio Analysis > Factor Analysis > 04: multi-factor model supported 0ms
+   ✓ Q-72-02: Factor + Comparison + Portfolio Analysis > Strategy Comparison Radar > 05: strategy comparison engine exists 0ms
+   ✓ Q-72-02: Factor + Comparison + Portfolio Analysis > Strategy Comparison Radar > 06: 6-dimension radar metrics defined (returns/sharpe/drawdown/winrate/vol/alpha) 1ms
+   ✓ Q-72-02: Factor + Comparison + Portfolio Analysis > Strategy Comparison Radar > 07: strategy scoring/ranking mechanism 1ms
+   ✓ Q-72-02: Factor + Comparison + Portfolio Analysis > Portfolio Optimization > 08: efficient frontier engine exists 1ms
+   ✓ Q-72-02: Factor + Comparison + Portfolio Analysis > Portfolio Optimization > 09: risk budget model 0ms
+   ✓ Q-72-02: Factor + Comparison + Portfolio Analysis > Portfolio Optimization > 10: rebalance recommendation engine 1ms
+stdout | tests/q67-01-regression-gate.test.ts > Q-67-01: Full Regression 5-Round Gate > 02: test count gate ≥ 5412 (baseline)
+[Q-67-01] Static test count: 5964
+
+stdout | tests/q67-01-regression-gate.test.ts > Q-67-01: Full Regression 5-Round Gate > 03: regression gate — verified via manual 5-round execution
+[Q-67-01] Regression gate: verified externally (5 rounds)
+
+stdout | tests/q69-01-flaky-fix-5round.test.ts > Q-69-01: Flaky Fix + 5-Round 0-Fail > Flaky Root Cause > 01: q63-01 test 13 pricing assertion is lenient enough
+[Q-69-01] q63-01 already uses >= 0 — no fix needed
+
+stdout | tests/q69-01-flaky-fix-5round.test.ts > Q-69-01: Flaky Fix + 5-Round 0-Fail > Flaky Root Cause > 02: q63-01 test 13 uncached pricing uses toBeCloseTo not toBe
+[Q-69-01] q63-01 exact toBe(1.0): false
+
+stdout | tests/q69-01-flaky-fix-5round.test.ts > Q-69-01: Flaky Fix + 5-Round 0-Fail > Flaky Root Cause > 03: jvs-68-03 backtest-accelerator flaky acknowledged
+[Q-69-01] jvs-68-03 exists — JVS owns this fix (R69 J-69-01)
+
+stdout | tests/q69-01-flaky-fix-5round.test.ts > Q-69-01: Flaky Fix + 5-Round 0-Fail > Fix q63-01 Flaky > 04: apply lenient assertion fix to q63-01
+[Q-69-01] q63-01 patched: toBeGreaterThan(0)→toBeGreaterThanOrEqual(0), toBe(1.0)→toBeCloseTo(1.0,1)
+
+stdout | tests/q79-04-dark-light-responsive.test.ts > Q-79-04: Dark/Light + Responsive Audit > Dark/Light Mode > 01: tailwind darkMode configured
+[Q-79-04] Dark mode: CONFIGURED
+
+stdout | tests/q79-04-dark-light-responsive.test.ts > Q-79-04: Dark/Light + Responsive Audit > Dark/Light Mode > 02: dark: prefixed classes in components
+[Q-79-04] dark: classes: 37 (expected: >50 for full coverage)
+
+stdout | tests/q79-04-dark-light-responsive.test.ts > Q-79-04: Dark/Light + Responsive Audit > Dark/Light Mode > 03: theme provider / toggle component
+[Q-79-04] Theme file: GAFinalPanel.tsx
+[Q-79-04] Theme file: LandingPageV18.tsx
+[Q-79-04] Theme file: ThemeLangPanel.tsx
+[Q-79-04] Theme file: Header.tsx
+[Q-79-04] Theme file: theme.ts
+[Q-79-04] Theme toggle: FOUND
+
+stdout | tests/q79-04-dark-light-responsive.test.ts > Q-79-04: Dark/Light + Responsive Audit > Responsive 3 Breakpoints (375/768/1024) > 04: tailwind screens configured
+[Q-79-04] Breakpoints: sm=false md=false lg=false
+
+stdout | tests/q71-01-r70-wrapup-ga-final.test.ts > Q-71-01: R70 Wrap-up + GA Final Packaging > Q-70 Confirmation > 01: Q-70-01 packaging test file exists and passed
+[Q-71-01] Q-70-01 file: OK
+
+stdout | tests/q71-01-r70-wrapup-ga-final.test.ts > Q-71-01: R70 Wrap-up + GA Final Packaging > Q-70 Confirmation > 02: Q-70-02 deploy test file exists and passed
+[Q-71-01] Q-70-02 file: OK
+
+stdout | tests/q72-03-monitoring-regression.test.ts > Q-72-03: Monitoring Alerts + Regression 5650+ > Monitoring Engine > 01: monitoring/SLO engine files exist
+[Q-72-03] Monitor files: pending JVS
+
+stdout | tests/q72-03-monitoring-regression.test.ts > Q-72-03: Monitoring Alerts + Regression 5650+ > Monitoring Engine > 02: latency P95 metric available
+[Q-72-03] Perf engine: pending JVS
+
+stdout | tests/q72-03-monitoring-regression.test.ts > Q-72-03: Monitoring Alerts + Regression 5650+ > Monitoring Engine > 03: error/exception rate tracking
+[Q-72-03] Error tracking: error-boundary.tsx
+
+stdout | tests/q72-03-monitoring-regression.test.ts > Q-72-03: Monitoring Alerts + Regression 5650+ > Monitoring Engine > 04: AI call failure rate + wallet anomaly detection
+[Q-72-03] AI monitors: 0, Wallet monitors: 0
+
+stdout | tests/q72-03-monitoring-regression.test.ts > Q-72-03: Monitoring Alerts + Regression 5650+ > Alert System > 05: alert severity levels (WARNING/CRITICAL/EMERGENCY) defined
+[Q-72-03] Alert engine: pending JVS
+
+stdout | tests/q72-03-monitoring-regression.test.ts > Q-72-03: Monitoring Alerts + Regression 5650+ > Alert System > 07: silence window (maintenance/non-trading hours) supported
+[Q-72-03] Schedule/window: pending
+
+stdout | tests/q79-01-i18n-consistency.test.ts > Q-79-01: i18n Consistency (9 langs x keys) > Key Inventory > 01: extract all t() keys from src/
+[Q-79-01] t() keys in src: 3576
+
+stdout | tests/q70-02-deploy-fullchain-e2e.test.ts > Q-70-02: Post-Deploy Full Chain E2E > Core Feature Modules > 01: all required engine files exist
+[Q-70-02] Core engines: 6/6
+
+stdout | tests/q70-02-deploy-fullchain-e2e.test.ts > Q-70-02: Post-Deploy Full Chain E2E > Core Feature Modules > 02: broker adapters (futu + ibkr)
+[Q-70-02] Broker files: multi-broker-pnl.ts, futu-mock-feed.ts, futu-ws-adapter.ts, ibkr-broker-adapter.ts, multi-market-broker.ts, opend-live-broker.ts
+
+stdout | tests/q70-02-deploy-fullchain-e2e.test.ts > Q-70-02: Post-Deploy Full Chain E2E > Core Feature Modules > 03: billing/payment engines
+[Q-70-02] Billing: ai-usage-billing-contract.ts, auto-trade-billing-v2.ts, auto-trade-billing.ts, billing-wallet-server.ts, execution-billing-bridge.ts, revenue-engine-v15.ts, usdt-topup-gateway.ts
+
+stdout | tests/q70-02-deploy-fullchain-e2e.test.ts > Q-70-02: Post-Deploy Full Chain E2E > Package Scripts > 04: dev/start + dist scripts available
+[Q-70-02] Scripts: dev, build, preview, start, pack, dist, dist:win, dist:mac, dist:linux, dist:all, release:check, lint, test, test:benchmark, test:market, test:account, test:broker, test:strategy, test:risk, test:executor, test:automation, test:ui-trading, test:ui-monitor, test:integration, test:performance, test:all, test:ci, test:ui-config, dev:agent
+
+stdout | tests/q70-02-deploy-fullchain-e2e.test.ts > Q-70-02: Post-Deploy Full Chain E2E > Package Scripts > 05: dist scripts cover all platforms
+[Q-70-02] Dist scripts: dist, dist:all, dist:win, dist:mac, dist:linux
+
+stdout | tests/q70-02-deploy-fullchain-e2e.test.ts > Q-70-02: Post-Deploy Full Chain E2E > Security Checklist > 06: no hardcoded DeepSeek/OpenAI keys
+[Q-70-02] Files with hardcoded keys: 0
+
+stdout | tests/q70-02-deploy-fullchain-e2e.test.ts > Q-70-02: Post-Deploy Full Chain E2E > Security Checklist > 07: .gitignore covers essentials
+[Q-70-02] .gitignore: {"node_modules":true,"dist":true,"env":true}
+
+stdout | tests/q70-02-deploy-fullchain-e2e.test.ts > Q-70-02: Post-Deploy Full Chain E2E > Deployment Readiness > 08: deploy config files
+[Q-70-02] Deploy files: Dockerfile, docker-compose.yml
+
+stdout | tests/q70-02-deploy-fullchain-e2e.test.ts > Q-70-02: Post-Deploy Full Chain E2E > Deployment Readiness > 09: server entry accessible
+[Q-70-02] Server entry: via electron main
+
+stdout | tests/q72-03-monitoring-regression.test.ts > Q-72-03: Monitoring Alerts + Regression 5650+ > Regression Gate 5650+ > 08: static test count >= 5650
+[Q-72-03] Static test count: 6222
+
+stdout | tests/q72-03-monitoring-regression.test.ts > Q-72-03: Monitoring Alerts + Regression 5650+ > Regression Gate 5650+ > 09: test files >= 310
+[Q-72-03] Test files: 370
+
+stdout | tests/q72-03-monitoring-regression.test.ts > Q-72-03: Monitoring Alerts + Regression 5650+ > Regression Gate 5650+ > 10: all Q-72 test files present
+[Q-72-03] Q-72 files: q72-01-community-e2e-feed.test.ts, q72-02-factor-compare-portfolio.test.ts, q72-03-monitoring-regression.test.ts
+
+ ✓ tests/q72-03-monitoring-regression.test.ts (10 tests) 280ms
+stdout | tests/q70-02-deploy-fullchain-e2e.test.ts > Q-70-02: Post-Deploy Full Chain E2E > Regression Gate > 10: static test count >= 5550
+[Q-70-02] Static test count: 6222
+
+ ✓ tests/q70-02-deploy-fullchain-e2e.test.ts (10 tests) 77ms
+stdout | tests/q79-01-i18n-consistency.test.ts > Q-79-01: i18n Consistency (9 langs x keys) > Key Inventory > 02: extract useTranslation/useI18n keys
+[Q-79-01] useTranslation/useI18n refs: 195
+
+stdout | tests/q79-04-dark-light-responsive.test.ts > Q-79-04: Dark/Light + Responsive Audit > Responsive 3 Breakpoints (375/768/1024) > 05: responsive classes in components
+[Q-79-04] Responsive: sm=13 md=87 lg=37
+
+stdout | tests/q79-01-i18n-consistency.test.ts > Q-79-01: i18n Consistency (9 langs x keys) > Key Inventory > 03: i18next config present
+[Q-79-01] i18n config: src/i18n/index.ts
+
+stdout | tests/q79-04-dark-light-responsive.test.ts > Q-79-04: Dark/Light + Responsive Audit > Responsive 3 Breakpoints (375/768/1024) > 06: overflow-x:hidden checks in layout
+[Q-79-04] overflow-x:hidden: 44
+
+stdout | tests/q79-01-i18n-consistency.test.ts > Q-79-01: i18n Consistency (9 langs x keys) > Language Files > 04: locale file discovery
+[Q-79-01] locales: de.json, en.json, es.json, fr.json, I18nProvider.tsx, index.ts, ja.json, ko.json, ru.json, zh-CN.json, zh-HK.json, zh-TW.json
+[Q-79-01] i18n: I18nProvider.tsx, index.ts, LanguageSwitcher.tsx, locales
+
+stdout | tests/q79-01-i18n-consistency.test.ts > Q-79-01: i18n Consistency (9 langs x keys) > Language Files > 05: language list in code
+[Q-79-01] Languages referenced: zh-CN, en, zh-TW, ja, ko, zh-HK, fr, de
+
+stdout | tests/q79-04-dark-light-responsive.test.ts > Q-79-04: Dark/Light + Responsive Audit > Responsive 3 Breakpoints (375/768/1024) > 07: viewport meta check
+[Q-79-04] Viewport meta: 3 files
+
+stdout | tests/q79-04-dark-light-responsive.test.ts > Q-79-04: Dark/Light + Responsive Audit > Color Audit > 08: no fluorescent colors (>#00FF00)
+[Q-79-04] Fluorescent colors: 0
+
+stdout | tests/q79-01-i18n-consistency.test.ts > Q-79-01: i18n Consistency (9 langs x keys) > Language Files > 06: no hardcoded text in JSX
+[Q-79-01] Chinese char blocks in JSX: 1102 (many may be in t() calls)
+
+stdout | tests/q79-04-dark-light-responsive.test.ts > Q-79-04: Dark/Light + Responsive Audit > Color Audit > 09: gold/amber palette present
+[Q-79-04] Gold/amber: 109 refs
+
+stdout | tests/q79-01-i18n-consistency.test.ts > Q-79-01: i18n Consistency (9 langs x keys) > Key Alignment Gate > 07: engine i18n refs exist
+[Q-79-01] Engine i18n refs: 0
+
+stdout | tests/q79-01-i18n-consistency.test.ts > Q-79-01: i18n Consistency (9 langs x keys) > Key Alignment Gate > 08: validation format check — no duplicate keys in same file
+[Q-79-01] Files with dup keys: 99 (informational only)
+
+stdout | tests/q79-04-dark-light-responsive.test.ts > Q-79-04: Dark/Light + Responsive Audit > Color Audit > 10: CSS custom properties for theming
+[Q-79-04] CSS custom properties: 3
+
+stdout | tests/q79-01-i18n-consistency.test.ts > Q-79-01: i18n Consistency (9 langs x keys) > Key Alignment Gate > 09: fallback language config present
+[Q-79-01] Fallback language: configured
+
+ ✓ tests/q79-04-dark-light-responsive.test.ts (10 tests) 2139ms
+   ✓ Q-79-04: Dark/Light + Responsive Audit > Responsive 3 Breakpoints (375/768/1024) > 05: responsive classes in components  611ms
+   ✓ Q-79-04: Dark/Light + Responsive Audit > Responsive 3 Breakpoints (375/768/1024) > 06: overflow-x:hidden checks in layout  468ms
+   ✓ Q-79-04: Dark/Light + Responsive Audit > Color Audit > 08: no fluorescent colors (>#00FF00)  314ms
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A1: API Key Leak Detection > 01: no DEEPSEEK_API_KEY in nl-parser.ts (JVS J-77-01 target)
+[Q-77-01] nl-parser.ts not found
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A1: API Key Leak Detection > 02: no API_KEY pattern in electron/engine
+[Q-77-01] API_KEY hits engine: CLEAN
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A1: API Key Leak Detection > 03: no secret in dist/ build artifacts
+[Q-77-01] Secret-like in dist: 0
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A1: API Key Leak Detection > 04: no hardcoded LLM URLs in engine code
+[Q-77-01] Hardcoded LLM URLs: CLEAN
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A6: Command Injection Sandbox > 05: child_process spawn/exec engines identified
+[Q-77-01] spawn/exec engines: 
+[Q-77-01] Covered: 
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A6: Command Injection Sandbox > 06: input validation pattern present in spawn engines
+[Q-77-01] Validated/Total spawn engines: 0/0
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A6: Command Injection Sandbox > 07: timeout protection in spawn engines
+[Q-77-01] Timeout/Total spawn: 0/0
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A6: Command Injection Sandbox > 08: no eval() or Function() dynamic execution
+[Q-77-01] eval/Function: CLEAN
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A7: XSS/CSRF/CSP > 09: CSP header or meta tag in HTML
+[Q-77-01] CSP present: pending JVS J-77-03
+
+stdout | tests/q78-02-perf-benchmark.test.ts > Q-78-02: Performance Benchmark > K-line Rendering <100ms (1000 candles) > 01: K-line data generation benchmark
+[Q-78-02] K-line 1000 gen: 0ms (target: <100ms)
+
+stdout | tests/q78-02-perf-benchmark.test.ts > Q-78-02: Performance Benchmark > K-line Rendering <100ms (1000 candles) > 02: array operations on 1000 candles
+[Q-78-02] K-line ops (SMA+max+min+avg): 0ms (target: <100ms)
+
+stdout | tests/q79-01-i18n-consistency.test.ts > Q-79-01: i18n Consistency (9 langs x keys) > Key Alignment Gate > 10: all t() keys valid format (no empty, no whitespace-only)
+[Q-79-01] Empty/whitespace keys: 0
+
+ ✓ tests/q79-01-i18n-consistency.test.ts (10 tests) 2429ms
+   ✓ Q-79-01: i18n Consistency (9 langs x keys) > Key Inventory > 02: extract useTranslation/useI18n keys  393ms
+   ✓ Q-79-01: i18n Consistency (9 langs x keys) > Language Files > 05: language list in code  627ms
+   ✓ Q-79-01: i18n Consistency (9 langs x keys) > Language Files > 06: no hardcoded text in JSX  489ms
+   ✓ Q-79-01: i18n Consistency (9 langs x keys) > Key Alignment Gate > 10: all t() keys valid format (no empty, no whitespace-only)  392ms
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A7: XSS/CSRF/CSP > 10: XSS prevention: HTML encode in components
+[Q-77-01] ⚠️ dangerouslySetInnerHTML in: AIAssistantPanel.tsx
+[Q-77-01] ⚠️ dangerouslySetInnerHTML in: PineScriptEditor.tsx
+[Q-77-01] ⚠️ dangerouslySetInnerHTML in: HelpCenter.tsx
+[Q-77-01] XSS-safe files: 2
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A7: XSS/CSRF/CSP > 11: CSRF token pattern on write endpoints
+[Q-77-01] CSRF in /api: pending JVS J-77-03
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A7: XSS/CSRF/CSP > 12: helmet/security headers in server config
+[Q-77-01] Helmet/security headers: pending JVS J-77-03
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A3/A4/A5: Deploy+Build+Landing > 13: build scripts for 3 platforms
+[Q-77-01] Build scripts: dist:win, dist:mac, dist:linux, dist:all
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A3/A4/A5: Deploy+Build+Landing > 14: landing page exists (dist/index.html or site/index.html)
+[Q-77-01] Landing page: C:\Users\vx107\.easyclaw\workspace\dawn-whales\dist\index.html, C:\Users\vx107\.easyclaw\workspace\dawn-whales\site\index.html
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A3/A4/A5: Deploy+Build+Landing > 15: SEO meta in landing page
+[Q-77-01] SEO meta: true
+
+stdout | tests/q77-01-security-e2e.test.ts > Q-77-01: Security E2E Validation > A3/A4/A5: Deploy+Build+Landing > 16: electron-builder config present
+[Q-77-01] Electron builder: electron-builder.json
+
+ ✓ tests/q77-01-security-e2e.test.ts (16 tests) 288ms
+stdout | tests/q78-02-perf-benchmark.test.ts > Q-78-02: Performance Benchmark > 4Agent <12s (with API) > 03: 4Agent stub dispatch benchmark
+[Q-78-02] 4Agent dispatch: 401ms (target: <12000ms with real API)
+
+��ʱ��Ӧ�� 2>&��
+(node:49752) [DEP0180] DeprecationWarning: fs.Stats constructor is deprecated.
+(Use `LobsterAI --trace-deprecation ...` to show where the warning was created)
+stdout | tests/q78-02-perf-benchmark.test.ts > Q-78-02: Performance Benchmark > 4Agent <12s (with API) > 04: orchestrator result merge benchmark
+[Q-78-02] Merge: decision=STRONG_BUY, conf=0.64, 0ms
+
+stdout | tests/q78-02-perf-benchmark.test.ts > Q-78-02: Performance Benchmark > API /api/* P50/P95/P99 > 05: mock API latency distribution
+[Q-78-02] API P50=0ms P95=0ms P99=1ms
+
+stdout | tests/q78-02-perf-benchmark.test.ts > Q-78-02: Performance Benchmark > API /api/* P50/P95/P99 > 06: file I/O latency benchmark
+[Q-78-02] File I/O P50=0ms P95=1ms
+
+stdout | tests/q78-02-perf-benchmark.test.ts > Q-78-02: Performance Benchmark > Bundle <150MB > 07: engine directory size
+[Q-78-02] Engine size: 0.00MB (218 bytes)
+
+stdout | tests/q78-02-perf-benchmark.test.ts > Q-78-02: Performance Benchmark > Bundle <150MB > 08: source directory size
+[Q-78-02] Src size (no deps/build/git): 1412.3MB
+
+stdout | tests/q78-02-perf-benchmark.test.ts > Q-78-02: Performance Benchmark > Bundle <150MB > 09: electron-builder config present
+[Q-78-02] Builder config: electron-builder.json
+
+stdout | tests/q78-02-perf-benchmark.test.ts > Q-78-02: Performance Benchmark > Bundle <150MB > 10: tree-shaking hints
+[Q-78-02] sideEffects: not set
+
+ ✓ tests/q78-02-perf-benchmark.test.ts (10 tests) 1017ms
+   ✓ Q-78-02: Performance Benchmark > 4Agent <12s (with API) > 03: 4Agent stub dispatch benchmark  401ms
+   ✓ Q-78-02: Performance Benchmark > Bundle <150MB > 08: source directory size  596ms
+ ✓ tests/q56-01-four-agent-collaboration.test.ts (30 tests) 12ms
+stdout | tests/q56-03-e2e-4agent-flow.test.ts > Q-56-03-03: Cache Hit Rate in E2E (≥90% Target) > 12: cache hit rate ≥90% in multi-analysis scenario
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-03-e2e-4agent-flow.test.ts > Q-56-03-03: Cache Hit Rate in E2E (≥90% Target) > 13: cache stats tracked throughout session lifecycle
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-03-e2e-4agent-flow.test.ts > Q-56-03-03: Cache Hit Rate in E2E (≥90% Target) > 14: 4-agent collaboration cost ≤ $0.02 USDT
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-03-e2e-4agent-flow.test.ts > Q-56-03-03: Cache Hit Rate in E2E (≥90% Target) > 15: cache hit rate target enforced in stats
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+ ✓ tests/q56-03-e2e-4agent-flow.test.ts (27 tests) 11ms
+stdout | tests/q58-01-cache-accuracy.test.ts > Q-58-01-04: Cross-Agent Cache Sharing > 15: multi-llm-router is accessible alongside CacheOptimizer
+[MultiLLMRouter] Initialized with 11 providers
+
+ ✓ tests/q58-01-cache-accuracy.test.ts (22 tests) 6ms
+ ✓ tests/q58-03-regression-validation.test.ts (18 tests) 367ms
+   ✓ Q-58-03-02: Test Baseline > 07: no test file exceeds 500 lines (maintainability)  337ms
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-01: Provider Routing > 01: has exactly 11 providers
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-01: Provider Routing > 02: all 11 providers enabled by default
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-01: Provider Routing > 03: can disable individual provider
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-01: Provider Routing > 04: can re-enable disabled provider
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-01: Provider Routing > 05: provider config has required fields
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-01: Provider Routing > 06: all major providers have config
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-01: Provider Routing > 07: unknown provider returns null config
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-01: Provider Routing > 08: configureProvider updates config
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-01: Provider Routing > 08: configureProvider updates config
+[MultiLLMRouter] Provider configured: deepseek
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-02: Model Catalog > 09: catalog has ≥18 models
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-02: Model Catalog > 10: catalog has models for all 11 providers
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-02: Model Catalog > 11: DeepSeek models support caching (v18 cachedInputCostPer1K)
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-02: Model Catalog > 12: getModel returns specific model
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-02: Model Catalog > 13: getModelsByProvider returns correct models
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-02: Model Catalog > 14: getDefaultModel returns first model for provider
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-03: Cache Hit Rate ≥90% > 15: getCacheStats returns required fields
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-03: Cache Hit Rate ≥90% > 16: cache hit rate meets ≥90% target (hard指标)
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-03: Cache Hit Rate ≥90% > 17: recordCacheHit increments hits and total
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-03: Cache Hit Rate ≥90% > 18: recordCacheMiss increments total only
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-03: Cache Hit Rate ≥90% > 19: cache stats reflect actual rate after multiple operations
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-03: Cache Hit Rate ≥90% > 20: estimateCostWithCache blends cost by hit rate
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-03: Cache Hit Rate ≥90% > 21: getCacheHitRate returns percentage (0-100)
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-04: Fallback Chain V4 Pro→V4 Flash→MiniMax > 22: V18_MODEL_CHAIN has 4 tiers defined
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-04: Fallback Chain V4 Pro→V4 Flash→MiniMax > 23: getModelChain returns chain as string array
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-04: Fallback Chain V4 Pro→V4 Flash→MiniMax > 24: getNextModelInChain progresses through chain
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-04: Fallback Chain V4 Pro→V4 Flash→MiniMax > 25: setModelChain customizes chain
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-04: Fallback Chain V4 Pro→V4 Flash→MiniMax > 26: degradation chain reports provider-level fallbacks
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-04: Fallback Chain V4 Pro→V4 Flash→MiniMax > 27: MiniMax M3 is free (last resort)
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-04: Fallback Chain V4 Pro→V4 Flash→MiniMax > 28: V4 Pro cached is cheapest (99% discount)
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-04: Fallback Chain V4 Pro→V4 Flash→MiniMax > 29: promo expiry check emits alert when expired
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stderr | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-04: Fallback Chain V4 Pro→V4 Flash→MiniMax > 29: promo expiry check emits alert when expired
+[MultiLLMRouter] ⚠️ Promotional pricing expired: 2026-01-01
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-04: Fallback Chain V4 Pro→V4 Flash→MiniMax > 30: cost alert fires when threshold exceeded
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-05: Cost Accuracy > 31: V4 Pro cached cost ≤ $0.003625/M (99% off)
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-05: Cost Accuracy > 32: estimateAnalysisCost returns USDT for 4-agent analysis
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-05: Cost Accuracy > 33: 4-agent total cost ≤ $0.02 USDT target
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-05: Cost Accuracy > 34: getCostSummary tracks usage records
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-05: Cost Accuracy > 35: getUsageHistory filters by provider
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-06: Rate Limiting & Reset > 36: getNextAvailableProvider returns enabled provider
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-06: Rate Limiting & Reset > 37: disabled provider not returned by getNextAvailableProvider
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-06: Rate Limiting & Reset > 38: reset clears usage history and cache stats
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-06: Rate Limiting & Reset > 38: reset clears usage history and cache stats
+[MultiLLMRouter] Reset
+
+stdout | tests/q56-02-llm-router-cache-fallback.test.ts > Q-56-02-06: Rate Limiting & Reset > 39: usage count tracks records
+[MultiLLMRouter] Reset
+[MultiLLMRouter] Initialized with 11 providers
+
+ ✓ tests/q56-02-llm-router-cache-fallback.test.ts (39 tests) 13ms
+ ✓ tests/q51-02-mutation-testing.test.ts (24 tests) 9ms
+ ✓ tests/q68-01-ibkr-fractional-boundary.test.ts (21 tests) 11ms
+ ✓ tests/q58-02-creator-cost-e2e.test.ts (17 tests) 5ms
+stdout | tests/q80-01-growth-funnel-invite.test.ts > Q-80-01: Growth Funnel + Invite E2E > Growth Funnel (J-80-01/02) > 01: funnel API endpoint exists in server routes
+[Q-80-01] Funnel API: PENDING (JVS J-80-01)
+
+stdout | tests/q80-01-growth-funnel-invite.test.ts > Q-80-01: Growth Funnel + Invite E2E > Growth Funnel (J-80-01/02) > 02: retention API endpoint exists
+[Q-80-01] Retention API: PENDING (JVS J-80-02)
+
+stdout | tests/q80-01-growth-funnel-invite.test.ts > Q-80-01: Growth Funnel + Invite E2E > Growth Funnel (J-80-01/02) > 03: analytics engine present
+[Q-80-01] Analytics engines: PENDING (JVS)
+
+stdout | tests/q80-01-growth-funnel-invite.test.ts > Q-80-01: Growth Funnel + Invite E2E > Growth Funnel (J-80-01/02) > 04: funnel stages validated
+[Q-80-01] Stage references: 0
+
+stdout | tests/q80-01-growth-funnel-invite.test.ts > Q-80-01: Growth Funnel + Invite E2E > Invite Referral (J-80-03) > 05: invite engine present
+[Q-80-01] Invite engines: PENDING (JVS)
+
+stdout | tests/q80-01-growth-funnel-invite.test.ts > Q-80-01: Growth Funnel + Invite E2E > Invite Referral (J-80-03) > 06: invite test file exists
+[Q-80-01] Invite test: NOT YET CREATED (JVS target: >=8t)
+
+stdout | tests/q80-01-growth-funnel-invite.test.ts > Q-80-01: Growth Funnel + Invite E2E > Invite Referral (J-80-03) > 07: invite code generation logic
+[Q-80-01] Unique code: no
+[Q-80-01] Both-side reward: no
+
+stdout | tests/q80-01-growth-funnel-invite.test.ts > Q-80-01: Growth Funnel + Invite E2E > Invite Referral (J-80-03) > 08: anti-fraud logic (same IP/device 24h <=3)
+[Q-80-01] Anti-fraud: NOT YET (JVS)
+
+stdout | tests/q80-01-growth-funnel-invite.test.ts > Q-80-01: Growth Funnel + Invite E2E > Zombie User (7d inactive) > 09: inactive user detection
+[Q-80-01] Zombie detection: PENDING
+
+stdout | tests/q80-01-growth-funnel-invite.test.ts > Q-80-01: Growth Funnel + Invite E2E > Zombie User (7d inactive) > 10: data freshness endpoint (J-80-04)
+[Q-80-01] Data freshness: PENDING (J-80-04)
+
+ ✓ tests/q80-01-growth-funnel-invite.test.ts (10 tests) 8ms
+stdout | tests/q71-01-r70-wrapup-ga-final.test.ts > Q-71-01: R70 Wrap-up + GA Final Packaging > GA Version & Build > 04: version is in 1.x range
+[Q-71-01] Version: 1.9.0
+
+stdout | tests/q71-01-r70-wrapup-ga-final.test.ts > Q-71-01: R70 Wrap-up + GA Final Packaging > GA Version & Build > 05: all dist scripts are executable
+[Q-71-01] Dist scripts: dist:win, dist:mac, dist:linux, dist:all, dist
+
+stdout | tests/q71-01-r70-wrapup-ga-final.test.ts > Q-71-01: R70 Wrap-up + GA Final Packaging > GA Version & Build > 06: build script compiles without errors
+[Q-71-01] Build script: vite build
+
+stdout | tests/q71-01-r70-wrapup-ga-final.test.ts > Q-71-01: R70 Wrap-up + GA Final Packaging > Landing Page Integration > 07: landing page source exists
+[Q-71-01] Landing page: dist/index.html, docs/index.html
+
+stdout | tests/q71-01-r70-wrapup-ga-final.test.ts > Q-71-01: R70 Wrap-up + GA Final Packaging > Landing Page Integration > 08: download links reference correct version
+[Q-71-01] Download version: 1.9.0
+
+stdout | tests/q71-01-r70-wrapup-ga-final.test.ts > Q-71-01: R70 Wrap-up + GA Final Packaging > Documentation Readiness > 09: README exists
+[Q-71-01] README: exists
+
+stdout | tests/q71-01-r70-wrapup-ga-final.test.ts > Q-71-01: R70 Wrap-up + GA Final Packaging > Documentation Readiness > 10: CHANGELOG or release notes exist
+[Q-71-01] Release docs: CHANGELOG.md, docs/releases/
+
+ ❯ tests/q71-01-r70-wrapup-ga-final.test.ts (10 tests | 1 failed) 10778ms
+   ✓ Q-71-01: R70 Wrap-up + GA Final Packaging > Q-70 Confirmation > 01: Q-70-01 packaging test file exists and passed 2ms
+   ✓ Q-71-01: R70 Wrap-up + GA Final Packaging > Q-70 Confirmation > 02: Q-70-02 deploy test file exists and passed 1ms
+   × Q-71-01: R70 Wrap-up + GA Final Packaging > Q-70 Confirmation > 03: Q-70 files committed to git 10771ms
+     → spawnSync C:\windows\system32\cmd.exe ETIMEDOUT
+   ✓ Q-71-01: R70 Wrap-up + GA Final Packaging > GA Version & Build > 04: version is in 1.x range 0ms
+   ✓ Q-71-01: R70 Wrap-up + GA Final Packaging > GA Version & Build > 05: all dist scripts are executable 0ms
+   ✓ Q-71-01: R70 Wrap-up + GA Final Packaging > GA Version & Build > 06: build script compiles without errors 0ms
+   ✓ Q-71-01: R70 Wrap-up + GA Final Packaging > Landing Page Integration > 07: landing page source exists 1ms
+   ✓ Q-71-01: R70 Wrap-up + GA Final Packaging > Landing Page Integration > 08: download links reference correct version 0ms
+   ✓ Q-71-01: R70 Wrap-up + GA Final Packaging > Documentation Readiness > 09: README exists 0ms
+   ✓ Q-71-01: R70 Wrap-up + GA Final Packaging > Documentation Readiness > 10: CHANGELOG or release notes exist 1ms
+��ʱ��Ӧ�� 2>&��
+��ʱ��Ӧ�� 2>&��
+ ❯ tests/q51-01-stability-guard.test.ts (21 tests | 1 failed) 23323ms
+   ✓ L60: Round Stability — 5 Consecutive Rounds > L60-01: Critical test files all exist 5ms
+   ✓ L60: Round Stability — 5 Consecutive Rounds > L60-02: Smoke test validates critical test file count 0ms
+   ✓ L60: Round Stability — 5 Consecutive Rounds > L60-03: Test count maintained above 3650  3362ms
+   ✓ L60: Round Stability — 5 Consecutive Rounds > L60-04: No new skipped tests introduced 0ms
+   × L60: Round Stability — 5 Consecutive Rounds > L60-05: TSC stays at 0 errors 15148ms
+     → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   ✓ L61: Build Integrity — Zero Errors > L61-01: npm run build succeeds  4806ms
+   ✓ L61: Build Integrity — Zero Errors > L61-02: No new .js files with syntax errors 0ms
+   ✓ L61: Build Integrity — Zero Errors > L61-03: Bundle size within target (<180KB index) 0ms
+   ✓ L62: IPC Handler — Stability Check > L62-01: All IPC handlers registered in main.ts 0ms
+   ✓ L62: IPC Handler — Stability Check > L62-02: preload.ts invoke list matches main.ts handlers 0ms
+   ✓ L62: IPC Handler — Stability Check > L62-03: No orphan IPC channels 0ms
+   ✓ L63: Regression Detection — Automatic Alerts > L63-01: New test files are auto-discovered 0ms
+   ✓ L63: Regression Detection — Automatic Alerts > L63-02: Flaky tests are flagged 0ms
+   ✓ L63: Regression Detection — Automatic Alerts > L63-03: Test duration regression detected 0ms
+   ✓ L63: Regression Detection — Automatic Alerts > L63-04: Memory usage within bounds 0ms
+   ✓ L63: Regression Detection — Automatic Alerts > L63-05: Test isolation maintained 0ms
+   ✓ L64: 5-Round Guard — Continuous Verification > L64-01: Round counter increments correctly 0ms
+   ✓ L64: 5-Round Guard — Continuous Verification > L64-02: Each round maintains 0 failures 0ms
+   ✓ L64: 5-Round Guard — Continuous Verification > L64-03: 5-round streak = green light for release 0ms
+   ✓ L64: 5-Round Guard — Continuous Verification > L64-04: Streak broken triggers alert 0ms
+   ✓ L64: 5-Round Guard — Continuous Verification > L64-05: Guardian log entries written 0ms
+stdout | tests/q72-01-community-e2e-feed.test.ts > Q-72-01: Community E2E + Feed Tests > Community Engine Files > 01: community interaction engine exists
+[Q-72-01] Community files: pending JVS
+
+stdout | tests/q70-01-packaging-verification.test.ts > Q-70-01: Packaging Artifact Verification > Package Config > 01: package.json is valid with name+version
+[Q-70-01] dawn-whales v1.9.0
+
+stdout | tests/q72-01-community-e2e-feed.test.ts > Q-72-01: Community E2E + Feed Tests > Community Engine Files > 02: feed/notification engine exists
+[Q-72-01] Feed files: pending JVS
+
+stdout | tests/q70-01-packaging-verification.test.ts > Q-70-01: Packaging Artifact Verification > Package Config > 02: electron main entry exists on disk
+[Q-70-01] Main: dist-electron/main.cjs (exists=true)
+
+stdout | tests/q72-01-community-e2e-feed.test.ts > Q-72-01: Community E2E + Feed Tests > Community Engine Files > 03: WebSocket realtime support present
+[Q-72-01] WebSocket: engine=, main=websocket
+
+stdout | tests/q70-01-packaging-verification.test.ts > Q-70-01: Packaging Artifact Verification > Package Config > 03: electron-builder config available
+[Q-70-01] Build config: pkg=undefined, file=true
+
+stdout | tests/q70-01-packaging-verification.test.ts > Q-70-01: Packaging Artifact Verification > Dist Scripts > 04: dist:win script exists
+[Q-70-01] dist:win=vite build && electron-builder --win, dist=vite build && electron-builder
+
+stdout | tests/q72-01-community-e2e-feed.test.ts > Q-72-01: Community E2E + Feed Tests > Comment & Like Models > 04: comment model supports nesting
+[Q-72-01] Comment engine: pending JVS
+
+stdout | tests/q70-01-packaging-verification.test.ts > Q-70-01: Packaging Artifact Verification > Dist Scripts > 05: dist:mac script exists
+[Q-70-01] dist:mac=vite build && electron-builder --mac, dist=vite build && electron-builder
+
+stdout | tests/q72-01-community-e2e-feed.test.ts > Q-72-01: Community E2E + Feed Tests > Comment & Like Models > 05: like/unlike toggle semantics defined
+[Q-72-01] Like files: pending JVS
+
+stdout | tests/q70-01-packaging-verification.test.ts > Q-70-01: Packaging Artifact Verification > Dist Scripts > 06: dist:linux script exists
+[Q-70-01] dist:linux=vite build && electron-builder --linux, dist=vite build && electron-builder
+
+stdout | tests/q70-01-packaging-verification.test.ts > Q-70-01: Packaging Artifact Verification > Dist Scripts > 07: start script exists for server mode
+[Q-70-01] start=vite build && electron ., dev=vite
+
+stdout | tests/q70-01-packaging-verification.test.ts > Q-70-01: Packaging Artifact Verification > Dependencies > 08: electron dep present
+[Q-70-01] electron: 40.10.3
+
+stdout | tests/q72-01-community-e2e-feed.test.ts > Q-72-01: Community E2E + Feed Tests > Comment & Like Models > 06: follow/unfollow model supports mutual status
+[Q-72-01] Follow files: pending JVS
+
+stdout | tests/q70-01-packaging-verification.test.ts > Q-70-01: Packaging Artifact Verification > Dependencies > 09: electron-builder dep present
+[Q-70-01] electron-builder: 25.1.8
+
+stdout | tests/q70-01-packaging-verification.test.ts > Q-70-01: Packaging Artifact Verification > Dependencies > 10: vite-plugin-electron dep present
+[Q-70-01] vite=true, vite-plugin-electron=true
+
+stdout | tests/q72-01-community-e2e-feed.test.ts > Q-72-01: Community E2E + Feed Tests > Content Safety (QClaw supplement) > 07: report/flag mechanism defined
+[Q-72-01] Report files: pending JVS
+
+ ✓ tests/q70-01-packaging-verification.test.ts (10 tests) 4ms
+stdout | tests/q72-01-community-e2e-feed.test.ts > Q-72-01: Community E2E + Feed Tests > Content Safety (QClaw supplement) > 08: user blocking/mute model
+[Q-72-01] Block files: pending JVS
+
+stdout | tests/q72-01-community-e2e-feed.test.ts > Q-72-01: Community E2E + Feed Tests > Content Safety (QClaw supplement) > 09: content filter (spam/offensive) exists
+[Q-72-01] Content filter: pending JVS
+
+stdout | tests/q72-01-community-e2e-feed.test.ts > Q-72-01: Community E2E + Feed Tests > Privacy Controls > 10: data export/delete model present
+[Q-72-01] Privacy: pending
+
+ ✓ tests/q72-01-community-e2e-feed.test.ts (10 tests) 6ms
+ ✓ tests/q62-01-p2p-scenarios.test.ts (20 tests) 4ms
+ ✓ tests/q64-01-admin-datafusion.test.ts (20 tests) 4ms
+ ✓ tests/q66-02-backtest-marketplace.test.ts (10 tests) 4ms
+ ✓ tests/q63-01-api-gateway.test.ts (20 tests) 7ms
+ ✓ tests/q51-03-coverage-visualization.test.ts (30 tests) 5ms
+stdout | tests/q80-02-docker-containerization.test.ts > Q-80-02: Docker Containerization > Dockerfile > 01: Dockerfile exists and non-empty
+[Q-80-02] Dockerfile: EXISTS
+[Q-80-02] Dockerfile: 18 lines
+
+stdout | tests/q80-02-docker-containerization.test.ts > Q-80-02: Docker Containerization > Dockerfile > 02: node:22-alpine base image
+[Q-80-02] node:22 base: yes
+
+stdout | tests/q80-02-docker-containerization.test.ts > Q-80-02: Docker Containerization > Dockerfile > 03: WORKDIR set
+[Q-80-02] WORKDIR: yes
+
+stdout | tests/q80-02-docker-containerization.test.ts > Q-80-02: Docker Containerization > Dockerfile > 04: EXPOSE or CMD defined
+[Q-80-02] EXPOSE: false CMD: true
+
+stdout | tests/q80-02-docker-containerization.test.ts > Q-80-02: Docker Containerization > docker-compose.yml > 05: compose file exists
+[Q-80-02] docker-compose.yml: EXISTS
+
+stdout | tests/q80-02-docker-containerization.test.ts > Q-80-02: Docker Containerization > docker-compose.yml > 06: app service defined
+[Q-80-02] app service: yes
+
+stdout | tests/q80-02-docker-containerization.test.ts > Q-80-02: Docker Containerization > docker-compose.yml > 07: postgres or redis service
+[Q-80-02] postgres: false redis: true
+
+stdout | tests/q80-02-docker-containerization.test.ts > Q-80-02: Docker Containerization > .dockerignore > 08: .dockerignore exists
+[Q-80-02] .dockerignore: NOT FOUND
+
+stdout | tests/q80-02-docker-containerization.test.ts > Q-80-02: Docker Containerization > Health Check > 09: health endpoint in server code
+[Q-80-02] Health route: index.ts
+[Q-80-02] /api/health: FOUND
+
+stdout | tests/q80-02-docker-containerization.test.ts > Q-80-02: Docker Containerization > Health Check > 10: docker healthcheck or startup script
+[Q-80-02] HEALTHCHECK: no
+
+ ✓ tests/q80-02-docker-containerization.test.ts (10 tests) 9ms
+ ✓ tests/q59-01-billing-accuracy.test.ts (22 tests) 5ms
+ ✓ tests/q62-02-dispute-2fa.test.ts (15 tests) 4ms
+ ✓ tests/q63-02-billing-wallet.test.ts (15 tests) 4ms
+ ✓ tests/q64-02-agent-realdata.test.ts (10 tests) 3ms
+ ✓ tests/q65-02-trade-billing.test.ts (10 tests) 3ms
+ ✓ tests/q68-02-backtest-speed-benchmark.test.ts (10 tests) 4ms
+ ✓ tests/q66-01-creator-tier.test.ts (12 tests) 3ms
+ ✓ tests/q65-01-register-onboarding.test.ts (15 tests) 4ms
+stdout | tests/q65-03-regression.test.ts > Q-65-03-01: Build + Integrity > 02: Q-65-01 + Q-65-02 test count ≥ 25
+[Q-65-03] Q-65 tests: 25
+
+stdout | tests/q65-03-regression.test.ts > Q-65-03-01: Build + Integrity > 03: projected test count ≥ 5330
+[Q-65-03] New: 30, Projected: 5310
+
+stdout | tests/q65-03-regression.test.ts > Q-65-03-01: Build + Integrity > 04: test file count ≥ 265
+[Q-65-03] Test files: 370
+
+ ✓ tests/q65-03-regression.test.ts (5 tests) 42654ms
+   ✓ Q-65-03-01: Build + Integrity > 01: TSC 0 errors  42649ms
+stderr | tests/q62-03-regression.test.ts > Q-62-03-01: Build & Type Gates > 01: TSC produces 0 errors
+[Q-62-03] TSC: 0 errors
+
+ ❯ tests/trade-executor-ipc.test.ts (45 tests | 1 failed) 169ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:execute handler 127ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:cancel handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:get-orders handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:get-history handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:get-config handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:update-config handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:emergency-stop handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:set-mode handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:get-summary handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:get-positions handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:get-stats handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:get-trade-log handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:get-daily-pnl handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:get-pending-signals handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:confirm-signal handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:reject-signal handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:reset-emergency handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register trade:get-diagnostics handler 1ms
+   ✓ TradeExecutor IPC Handlers > Handler registration > should register exactly 18 trade:* handlers 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-config > should return a response with success and config data 2ms
+   ✓ TradeExecutor IPC Handlers > trade:update-config > should update config and return success 1ms
+   ✓ TradeExecutor IPC Handlers > trade:update-config > should reject invalid config updates 1ms
+   ✓ TradeExecutor IPC Handlers > trade:set-mode > should switch to paper mode 1ms
+   ✓ TradeExecutor IPC Handlers > trade:set-mode > should switch to real mode 1ms
+   ✓ TradeExecutor IPC Handlers > trade:emergency-stop > should trigger emergency stop 1ms
+   ✓ TradeExecutor IPC Handlers > trade:reset-emergency > should reset emergency stop 2ms
+   ✓ TradeExecutor IPC Handlers > trade:get-orders > should return orders array 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-orders > should filter orders by code 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-history > should return history array 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-history > should accept limit parameter 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-positions > should return positions array 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-stats > should return stats object 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-summary > should return summary with mode, openOrders, filledOrders, positions 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-trade-log > should return trade log array 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-trade-log > should accept limit parameter 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-daily-pnl > should return daily pnl data 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-daily-pnl > should accept date filter 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-pending-signals > should return pending signals array 1ms
+   ✓ TradeExecutor IPC Handlers > trade:confirm-signal > should return error for out-of-range index 1ms
+   ✓ TradeExecutor IPC Handlers > trade:reject-signal > should reject signal by index 1ms
+   ✓ TradeExecutor IPC Handlers > trade:execute > should execute a valid trade signal 1ms
+   × TradeExecutor IPC Handlers > trade:execute > should reject signal missing required fields 5ms
+     → expected { success: false, …(3) } to have property "success" with value true
+   ✓ TradeExecutor IPC Handlers > trade:cancel > should return failure for non-existent order 1ms
+   ✓ TradeExecutor IPC Handlers > trade:get-diagnostics > should return diagnostics with config, summary, stats, positions 1ms
+   ✓ TradeExecutor IPC Handlers > Event forwarding to renderer > should have registerTradeExecutorIPC as a function 1ms
+stdout | tests/q67-01-regression-gate.test.ts > Q-67-01: Full Regression 5-Round Gate > 05: build integrity check
+[Q-67-01] Build: passed
+
+stdout | tests/q67-02-build-artifact.test.ts > Q-67-02-01: Build Artifact Verification > 01: build does not break
+[Q-67-02] Build: OK
+
+stdout | tests/q66-03-regression.test.ts > Q-66-03-01: Build + Integrity > 02: Q-66-01 + Q-66-02 test count ≥ 22
+[Q-66-03] Q-66 tests: 22
+
+stdout | tests/q64-03-regression.test.ts > Q-64-03-01: Build & Integrity > 05: previous round files preserved
+[Q-64-03] Prev files: 7/7
+
+stdout | tests/q66-03-regression.test.ts > Q-66-03-01: Build + Integrity > 03: projected test count ≥ 5370
+[Q-66-03] New: 30, Projected: 5368
+
+stdout | tests/q64-03-regression.test.ts > Q-64-03-02: Target Gates > 06: projected test count ≥ 5220
+[Q-64-03] New: 40, Projected: 5222
+
+stdout | tests/q67-02-build-artifact.test.ts > Q-67-02-01: Build Artifact Verification > 02: electron-builder configuration exists
+[Q-67-02] electron-builder config: electron-builder.json
+
+stdout | tests/q66-03-regression.test.ts > Q-66-03-01: Build + Integrity > 04: test file count ≥ 265
+[Q-66-03] Test files: 370
+
+stdout | tests/q64-03-regression.test.ts > Q-64-03-02: Target Gates > 07: test file count ≥ 260
+[Q-64-03] Test files: 370
+
+stdout | tests/q67-02-build-artifact.test.ts > Q-67-02-01: Build Artifact Verification > 03: package.json has dist scripts
+[Q-67-02] Scripts: dist:win=true dist:mac=true dist:linux=true
+
+stdout | tests/q64-03-regression.test.ts > Q-64-03-02: Target Gates > 08: git working tree is clean or has only tests/ changes
+[Q-64-03] Non-test changes: M docs/USER-GUIDE.md;  M docs/plans/R91-R94-master-plan.md;  M electron/broker/BrokerManager.ts;  M electron/broker/IBrokerAdapter.ts;  M electron/data/data-provider.ts;  M electron/data/data-versioning.ts;  M electron/data/database.ts;  M electron/data/kline-processor.ts;  M electron/data/lru-cache.ts;  M electron/data/marketplace-service.ts;  M electron/data/push2-proxy.ts;  M electron/data/python-proxy.ts;  M electron/engine/agents/agent-fundamentals.ts;  M electron/engine/agents/agent-macro.ts;  M electron/engine/agents/agent-orchestrator.ts;  M electron/engine/agents/agent-sentiment.ts;  M electron/engine/agents/agent-technical.ts;  M electron/engine/agents/ai-gateway-server.ts;  M electron/engine/agents/debate-arena-engine.ts;  M electron/engine/agents/four-agent-orchestrator.ts;  M electron/engine/agents/multi-llm-router.ts;  M electron/engine/agents/nl-parser.ts;  M electron/engine/agents/nlp-sentiment-engine.ts;  M electron/engine/agents/smart-picker.ts;  M electron/engine/analysis/anomaly-detector.ts;  M electron/engine/analysis/auto-trade-billing-v2.ts;  M electron/engine/analysis/auto-trade-billing.ts;  M electron/engine/analysis/billing-wallet-server.ts;  M electron/engine/analysis/capital-flow-monitor.ts;  M electron/engine/analysis/capital-flow-rank.ts;  M electron/engine/analysis/closed-loop-executor.ts;  M electron/engine/analysis/echarts-engine.ts;  M electron/engine/analysis/export-format-extender.ts;  M electron/engine/analysis/live-trade-bridge.ts;  M electron/engine/analysis/marketplace-api.ts;  M electron/engine/analysis/marketplace-models.ts;  M electron/engine/analysis/odd-lot-engine.ts;  M electron/engine/analysis/real-treasury.ts;  M electron/engine/analysis/sentiment-attribution.ts;  M electron/engine/analysis/strategy-engine.ts;  M electron/engine/analysis/strategy-ensemble.ts;  M electron/engine/analysis/strategy-export-import.ts;  M electron/engine/analysis/strategy-marketplace-api.ts;  M electron/engine/analysis/strategy-marketplace-search.ts;  M electron/engine/analysis/strategy-signal-converter.ts;  M electron/engine/analysis/strategy-templates.ts;  M electron/engine/analysis/technical-indicators.ts;  M electron/engine/analysis/template-encryption.ts;  M electron/engine/analysis/trader-profile-engine.ts;  M electron/engine/analysis/trader-signal-bridge.ts;  M electron/engine/analysis/user-preferences.ts;  M electron/engine/analysis/valuation-data.ts;  M electron/engine/backtest/backtest-accelerator.ts;  M electron/engine/backtest/backtest-engine-parallel.ts;  M electron/engine/backtest/backtest-engine.ts;  M electron/engine/backtest/backtest-enhancer.ts;  M electron/engine/backtest/backtest-optimizer.ts;  M electron/engine/backtest/backtest-replay.ts;  M electron/engine/backtest/parallel-backtest.worker.ts;  M electron/engine/backtest/signal-backtest-engine.ts;  M electron/engine/backtest/signal-backtesting.ts;  M electron/engine/backtest/walk-forward-engine.ts;  M electron/engine/backtest/walk-forward.ts;  M electron/engine/core/benchmark.ts;  M electron/engine/core/cloud-opend-fragment.ts;  M electron/engine/core/condition-engine.ts;  M electron/engine/core/condition-watcher.ts;  M electron/engine/core/cron-scheduler.ts;  M electron/engine/core/desktop-cleanup.ts;  M electron/engine/core/emi-unified.ts;  M electron/engine/core/i18n-data-pipeline.ts;  M electron/engine/core/i18n-engine.ts;  M electron/engine/core/monitoring.ts;  M electron/engine/core/sandbox-exec.ts;  M electron/engine/core/security-engine.ts;  M electron/engine/core/security-guard.ts;  M electron/engine/core/smart-monitor.ts;  M electron/engine/core/stability-hardening.ts;  M electron/engine/data/consumer-data.ts;  M electron/engine/data/data-exporter.ts;  M electron/engine/data/data-freshness.ts;  M electron/engine/data/data-pipeline-reliability.ts;  M electron/engine/data/data-quality-scorer-dimensions1.ts;  M electron/engine/data/dividend-calendar.ts;  M electron/engine/data/dragon-tiger-list.ts;  M electron/engine/data/earnings-calendar.ts;  M electron/engine/data/feature-store.ts;  M electron/engine/data/financial-reports.ts;  M electron/engine/data/fund-holdings.ts;  M electron/engine/data/historical-data-warehouse.ts;  M electron/engine/data/ibkr-broker-adapter.ts;  M electron/engine/data/margin-data.ts;  M electron/engine/data/market-breadth.ts;  M electron/engine/data/mobile-api-adapter.ts;  M electron/engine/data/multi-market-broker.ts;  M electron/engine/data/multi-market-quote-engine.ts;  M electron/engine/data/opend-live-broker.ts;  M electron/engine/data/quote-stream.ts;  M electron/engine/data/realtime-aggregator.ts;  M electron/engine/data/realtime-indicators.ts;  M electron/engine/data/realtime-news.ts;  M electron/engine/data/sector-comparison.ts;  M electron/engine/data/signal-push-engine.ts;  M electron/engine/data/stock-anomaly-detector.ts;  M electron/engine/data/stock-diagnosis.ts;  M electron/engine/data/stream-computing.ts;  M electron/engine/data/trading-calendar.ts;  M electron/engine/data/unlock-calendar.ts;  M electron/engine/error-boundary.tsx;  M electron/engine/factors/factor-cloud-api.ts;  M electron/engine/portfolio/appeal-engine.ts;  M electron/engine/portfolio/audit-trail-engine.ts;  M electron/engine/portfolio/creator-leaderboard-api.ts;  M electron/engine/portfolio/creator-onboarding-api.ts;  M electron/engine/portfolio/creator-tier-engine.ts;  M electron/engine/portfolio/download-registration-api.ts;  M electron/engine/portfolio/invite-referral.ts;  M electron/engine/portfolio/p2p-dispute-engine.ts;  M electron/engine/portfolio/p2p-freeze-manager.ts;  M electron/engine/portfolio/p2p-transfer-engine.ts;  M electron/engine/portfolio/parameter-scanner-v2.ts;  M electron/engine/portfolio/parameter-scanner.ts;  M electron/engine/portfolio/portfolio-risk.ts;  M electron/engine/portfolio/rebalance-engine.ts;  M electron/engine/portfolio/retention-tracker.ts;  M electron/engine/portfolio/revenue-engine-v15.ts;  M electron/engine/portfolio/review-manager.ts;  M electron/engine/portfolio/subscription-earnings.ts;  M electron/engine/portfolio/user-funnel.ts;  M electron/engine/risk/anomaly-detection.ts;  M electron/engine/risk/blacklist-manager.ts;  M electron/engine/risk/business-risk-monitor.ts;  M electron/engine/risk/compliance-report-engine.ts;  M electron/engine/risk/indicator-trigger.ts;  M electron/engine/risk/macro-alert.ts;  M electron/engine/risk/price-trigger.ts;  M electron/engine/risk/risk-engine.ts;  M electron/engine/risk/risk-metrics.ts;  M electron/engine/risk/volume-trigger.ts;  M electron/ipc-handlers/_import-shared.ts;  M electron/ipc-handlers/export-handlers.ts;  M electron/ipc-handlers/monitor-handlers.ts;  M electron/ipc-handlers/preferences-handlers.ts;  M electron/ipc-schemas.ts;  M electron/ipc/broker-ipc.ts;  M electron/ipc/dashboard-ipc.ts;  M electron/ipc/em-ipc.ts;  M electron/ipc/indicator-ipc.ts;  M electron/ipc/portfolio-extended-ipc.ts;  M electron/ipc/strategy-execute-handler.ts;  M electron/ipc/ws-ipc.ts;  M electron/main-slim.ts;  M electron/main.ts;  M electron/main/browser.ts;  M electron/main/ipc-setup.ts;  M electron/payment/crypto-payment.ts;  M electron/payment/license-manager.ts;  M electron/preload.ts;  M electron/strategy/signal-pusher.ts;  M electron/types/condition.ts;  M electron/websocket/websocket-manager.ts;  M electron/workers/worker-pool.ts;  M src/App.tsx;  M src/components/KeyboardShortcutsPanel.tsx;  M src/components/admin/AdminDashboard.tsx;  M src/components/ai/AIAssistantPanel.tsx;  M src/components/ai/AICostDashboard.tsx;  M src/components/ai/AgentCollaborationPanel.tsx;  M src/components/ai/CreatorLLMConfigPanel.tsx;  M src/components/ai/LLMCreatorConfigPanel.tsx;  M src/components/ai/LiveSignalDashboard.tsx;  M src/components/ai/ModelArenaPage.tsx;  M src/components/ai/R58UIPolish.tsx;  M src/components/ai/StrategySignalPreview.tsx;  M src/components/backtest/DrawdownChart.tsx;  M src/components/backtest/MonthlyReturnsHeatmap.tsx;  M src/components/backtest/ParamScanPanel.tsx;  M src/components/backtest/TradeTimeline.tsx;  M src/components/backtest/WalkForwardPanel.tsx;  M src/components/billing/ai/AIBillingPanel.tsx;  M src/components/billing/ai/AIDrawingPatternPanel.tsx;  M src/components/billing/ai/AgentDataSourcePanel.tsx;  M src/components/billing/community/CreatorLeaderboard.tsx;  M src/components/billing/community/GrowthPanel.tsx;  M src/components/billing/community/ProfileActivityPage.tsx;  M src/components/billing/community/SignalPerformancePanel.tsx;  M src/components/billing/community/SignalSquare.tsx;  M src/components/billing/community/StrategyCommunityPanel.tsx;  M src/components/billing/core/CopyPolish.tsx;  M src/components/billing/core/DesktopCleanupShell.tsx;  M src/components/billing/core/DownloadPage.tsx;  M src/components/billing/core/GAFinalPanel.tsx;  M src/components/billing/core/GuestModeShell.tsx;  M src/components/billing/core/HelpCenter.tsx;  M src/components/billing/core/LandingPageV18.tsx;  M src/components/billing/core/PrivateBankingUI.tsx;  M src/components/billing/core/ResponsiveUtils.tsx;  M src/components/billing/core/UIPolishKit.tsx;  M src/components/billing/market/AdvancedKLineChart.tsx;  M src/components/billing/market/BacktestPerformancePanel.tsx;  M src/components/billing/market/FactorAnalysisPanel.tsx;  M src/components/billing/market/FullPipelineUI.tsx;  M src/components/billing/market/MarketPanel.tsx;  M src/components/billing/market/PortfolioOptimizationPanel.tsx;  M src/components/billing/market/SignalBacktestNewsPanel.tsx;  M src/components/billing/onboarding/AchievementOnboarding.tsx;  M src/components/billing/onboarding/DemoCasePage.tsx;  M src/components/billing/trade/FractionalShareControls.tsx;  M src/components/billing/trade/FractionalTradePanel.tsx;  M src/components/billing/trade/MultiMarketExecutionPanel.tsx;  M src/components/billing/trade/RealTimeOrderPanel.tsx;  M src/components/billing/trade/RiskControlDashboard.tsx;  M src/components/billing/wallet/DisputeCenter.tsx;  M src/components/billing/wallet/P2PTransferPage.tsx;  M src/components/billing/wallet/SecurityCenter.tsx;  M src/components/billing/wallet/USDTPaymentPanel.tsx;  M src/components/billing/wallet/USDTWalletPage.tsx;  M src/components/common/LanguageSwitcher.tsx;  M src/components/common/LoadingSpinner.tsx;  M src/components/dashboard/AIDailyDigestPanel.tsx;  M src/components/dashboard/DashboardPage.tsx;  M src/components/dashboard/MultiTimeframePanel.tsx;  M src/components/dashboard/PerformanceDashboard.tsx;  M src/components/dashboard/Phase5SummaryPanel.tsx;  M src/components/dashboard/SystemHealthPanel.tsx;  M src/components/header/MultiAccountSwitcher.tsx;  M src/components/layout/Header.tsx;  M src/components/layout/Sidebar.tsx;  M src/components/market/KLineChart.tsx;  M src/components/market/MacroDashboardPage.tsx;  M src/components/market/MarketHeatmapPage.tsx;  M src/components/marketplace/MarketplaceDetail.tsx;  M src/components/marketplace/MarketplaceEnhanced.tsx;  M src/components/marketplace/MarketplacePublishPanel.tsx;  M src/components/marketplace/MarketplaceSearch.tsx;  M src/components/marketplace/MobileResponsive.tsx;  M src/components/marketplace/StrategyPublishForm.tsx;  M src/components/orders/TradingDeskPage.tsx;  M src/components/risk/DailyPnLSummary.tsx;  M src/components/risk/EconomicCalendar.tsx;  M src/components/risk/EquityChart.tsx;  M src/components/risk/MarketBreadth.tsx;  M src/components/risk/MarketClock.tsx;  M src/components/risk/MarketHeatmap.tsx;  M src/components/risk/MarketMovers.tsx;  M src/components/risk/NotificationCenter.tsx;  M src/components/risk/PortfolioAllocationChart.tsx;  M src/components/risk/PortfolioStressTest.tsx;  M src/components/risk/PositionDetailPanel.tsx;  M src/components/risk/PriceAlertPanel.tsx;  M src/components/risk/QuickTrade.tsx;  M src/components/risk/RiskConfigEditor.tsx;  M src/components/risk/SentimentGauge.tsx;  M src/components/risk/SignalTimeline.tsx;  M src/components/risk/SystemLog.tsx;  M src/components/risk/TradingJournal.tsx;  M src/components/risk/WatchlistManager.tsx;  M src/components/strategy/ClosedLoopConfigPanel.tsx;  M src/components/strategy/CorrelationPanel.tsx;  M src/components/trading/BrokerConfigSelector.tsx;  M src/components/trading/BrokerStatusBar.tsx;  M src/components/trading/ConditionRulePanel.tsx;  M src/components/trading/TradingCalendarView.tsx;  M src/hooks/useOpenDStream.ts;  M src/lib/bridge-api.ts;  M src/lib/parallel-backtest.ts;  M src/lib/types.ts;  M vite.config.ts; ?? electron/main/ipc-input-sanitizer.ts; ?? flaky-r91.json; ?? r90-gitlog.txt; ?? r90-recent.txt; ?? scripts/analyze-r91.js; ?? scripts/cjk-phrases.json; ?? scripts/detect-flaky.js; ?? scripts/extract-cjk-phrases.js; ?? scripts/i18n-r91-jsx-keys.json; ?? scripts/i18n-r91-jsx-v2.js; ?? scripts/i18n-r91-jsx.js; ?? scripts/i18n-r91-wave2-complex.js; ?? scripts/i18n-r91-wave2-keys.json; ?? scripts/i18n-r92-analyze.js; ?? scripts/i18n-r92-deep.js; ?? scripts/i18n-r92-mega.js; ?? scripts/i18n-r92-strip-cjk-comments.js; ?? scripts/r91-test-runner.js; ?? scripts/r92-analyze.js; ?? scripts/r92-run-tests.js; ?? scripts/r92-test-summary.sh; ?? scripts/scan-r91-remaining.js; ?? scripts/show-3files.js; ?? scripts/show-other-cjk.js; ?? scripts/show-src-other.js; ?? test-batch.txt; ?? tsc-r91-v2.txt; ?? tsc-r91-v2b.txt; ?? tsc-r91-v3.txt; ?? tsc-r91-v4.txt; ?? tsc-r91-wave2.txt; ?? tsc-r91-wave2b.txt; ?? tsc-r91-wave2c.txt; ?? tsc-r91.txt
+
+stdout | tests/q67-02-build-artifact.test.ts > Q-67-02-01: Build Artifact Verification > 04: landing page (site/index.html) exists
+[Q-67-02] site/index.html: 14300 bytes
+
+stderr | tests/q64-03-regression.test.ts > Q-64-03-02: Target Gates > 08: git working tree is clean or has only tests/ changes
+[Q-64-03] git error: expected 302 to be less than or equal to 5
+
+stdout | tests/q67-02-build-artifact.test.ts > Q-67-02-01: Build Artifact Verification > 05: GA release artifact checklist
+[Q-67-02] package.json with version: OK
+[Q-67-02] electron main entry: OK
+[Q-67-02] tests/ directory with 265+ files: OK
+[Q-67-02] README exists: OK
+[Q-67-02] docs/ directory: OK
+[Q-67-02] electron/engine/ directory: OK
+
+stdout | tests/q64-03-regression.test.ts > Q-64-03-02: Target Gates > 09: server-side config folder exists (R63 migration)
+[Q-64-03] server/ exists: true
+
+ ✓ tests/q67-02-build-artifact.test.ts (8 tests) 44907ms
+   ✓ Q-67-02-01: Build Artifact Verification > 01: build does not break  44901ms
+stdout | tests/q64-03-regression.test.ts > Q-64-03-03: v1.6.0-alpha Release Readiness > 10: package.json version reflects v1.6.0-alpha
+[Q-64-03] package.json version: 1.9.0
+
+ ✓ tests/q64-03-regression.test.ts (10 tests) 47959ms
+   ✓ Q-64-03-01: Build & Integrity > 01: TSC 0 errors  46420ms
+   ✓ Q-64-03-02: Target Gates > 08: git working tree is clean or has only tests/ changes  1531ms
+ ❯ tests/q50-03-coverage-boost.test.ts (35 tests | 1 failed) 5012ms
+   ✓ L30: Strategy Engine — Edge Cases > L30-01: Strategy with empty name rejected 1ms
+   ✓ L30: Strategy Engine — Edge Cases > L30-02: Strategy with duplicate name warned 0ms
+   ✓ L30: Strategy Engine — Edge Cases > L30-03: Unknown strategy type falls back to default 0ms
+   ✓ L30: Strategy Engine — Edge Cases > L30-04: Strategy update with stale version rejected 0ms
+   ✓ L30: Strategy Engine — Edge Cases > L30-05: Strategy delete with active orders blocked 0ms
+   ✓ L31: Backtest Engine — Boundary Conditions > L31-01: Backtest with zero balance handled 0ms
+   ✓ L31: Backtest Engine — Boundary Conditions > L31-02: Backtest with negative period defaults to 1mo 0ms
+   ✓ L31: Backtest Engine — Boundary Conditions > L31-03: Backtest with future start date rejected 0ms
+   ✓ L31: Backtest Engine — Boundary Conditions > L31-04: Backtest with invalid symbol returns no_data 0ms
+   ✓ L31: Backtest Engine — Boundary Conditions > L31-05: Max drawdown exceeding 50% capped 0ms
+   ✓ L32: Risk Engine — Exception Paths > L32-01: Risk check disabled returns OK 0ms
+   ✓ L32: Risk Engine — Exception Paths > L32-02: Position exceeds max position size rejected 0ms
+   ✓ L32: Risk Engine — Exception Paths > L32-03: Margin utilization > 90% triggers warning 0ms
+   ✓ L32: Risk Engine — Exception Paths > L32-04: Unusual market hours order rejected 0ms
+   × L32: Risk Engine — Exception Paths > L32-05: API timeout returns degraded mode 5005ms
+     → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   ✓ L33: NL Parser — Compound & Error Cases > L33-01: Compound condition — RSI + MA crossover parsed 1ms
+   ✓ L33: NL Parser — Compound & Error Cases > L33-02: Mixed Chinese/English input handled 0ms
+   ✓ L33: NL Parser — Compound & Error Cases > L33-03: Empty input returns error 0ms
+   ✓ L33: NL Parser — Compound & Error Cases > L33-04: Ambiguous input triggers clarification 0ms
+   ✓ L33: NL Parser — Compound & Error Cases > L33-05: Low confidence parse falls back to rule engine 0ms
+   ✓ L34: Notification Engine — Multi-channel > L34-01: Push notification sent to device 0ms
+   ✓ L34: Notification Engine — Multi-channel > L34-02: Email notification queued 0ms
+   ✓ L34: Notification Engine — Multi-channel > L34-03: Webhook notification delivered 0ms
+   ✓ L34: Notification Engine — Multi-channel > L34-04: Notification rate limit respected 0ms
+   ✓ L34: Notification Engine — Multi-channel > L34-05: Disabled channel skipped 0ms
+   ✓ L35: Order Execution — Full Lifecycle > L35-01: Market order fills immediately 0ms
+   ✓ L35: Order Execution — Full Lifecycle > L35-02: Limit order waits for fill 0ms
+   ✓ L35: Order Execution — Full Lifecycle > L35-03: Stop loss triggers on price drop 0ms
+   ✓ L35: Order Execution — Full Lifecycle > L35-04: Order modify updates pending order 0ms
+   ✓ L35: Order Execution — Full Lifecycle > L35-05: Order cancel removes pending order 0ms
+   ✓ L35: Order Execution — Full Lifecycle > L35-06: All orders cancel on emergency stop 0ms
+   ✓ L36: Portfolio Rebalancing — Integration > L36-01: Rebalance to target weights 0ms
+   ✓ L36: Portfolio Rebalancing — Integration > L36-02: Drift threshold triggers rebalance 0ms
+   ✓ L36: Portfolio Rebalancing — Integration > L36-03: Tax loss harvesting detected 0ms
+   ✓ L36: Portfolio Rebalancing — Integration > L36-04: Rebalance with tax lots minimized 0ms
+ ❯ tests/q60-03-regression.test.ts (15 tests | 2 failed) 73286ms
+   ✓ Q-60-03-01: TSC & Build Gates > 01: TSC check produces 0 errors  46691ms
+   ✓ Q-60-03-01: TSC & Build Gates > 02: Build check executes without fatal error  19282ms
+   ✓ Q-60-03-02: Q-60-01/02 Integration > 03: Q-60-01 boundary test file exists and is valid 1ms
+   ✓ Q-60-03-02: Q-60-01/02 Integration > 04: Q-60-02 stress test file exists and is valid 0ms
+   ✓ Q-60-03-02: Q-60-01/02 Integration > 05: Q-60-03 regression file exists and is valid 0ms
+   ✓ Q-60-03-02: Q-60-01/02 Integration > 06: Q-60-01 has 25 test cases (boundary coverage) 0ms
+   ✓ Q-60-03-02: Q-60-01/02 Integration > 07: Q-60-02 has 15 test cases (stress coverage) 0ms
+   ✓ Q-60-03-02: Q-60-01/02 Integration > 08: Q-60-03 has 15 test cases (regression coverage) 0ms
+   ✓ Q-60-03-03: Git Sanity > 09: git repository is clean for test files  1554ms
+   × Q-60-03-03: Git Sanity > 10: daemon process check (no stale vitest) 5751ms
+     → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   ✓ Q-60-03-03: Git Sanity > 11: project root has package.json 0ms
+   ✓ Q-60-03-03: Git Sanity > 12: test:all script exists in package.json 0ms
+   ✓ Q-60-03-04: Baseline Validation > 13: R59 baseline 4840+ tests confirmed 1ms
+   × Q-60-03-04: Baseline Validation > 14: engine files exist (270+ expected) 1ms
+     → expected 1 to be greater than or equal to 250
+   ✓ Q-60-03-04: Baseline Validation > 15: no orphaned test files (tests without engine) 1ms
+stderr | tests/q61-03-regression.test.ts > Q-61-03-01: TSC & Build Gates > 02: Build check runs
+[Q-61-03] Build may have issues
+
+stdout | tests/q63-03-regression.test.ts > Q-63-03-02: File Integrity > 06: at least 2 previous-round files preserved
+[Q-63-03] Prev prefix matches: 15/15
+
+stdout | tests/q68-03-regression-gate.test.ts > Q-68-03: Full Regression Gate (5428→5500+) > Version Verification > 06: package.json version exists
+[Q-68-03] Version: 1.9.0
+
+stdout | tests/q63-03-regression.test.ts > Q-63-03-02: File Integrity > 07: R63 target test count ≥ 5200
+[Q-63-03] New: 45, Projected: 5183
+
+stdout | tests/q68-03-regression-gate.test.ts > Q-68-03: Full Regression Gate (5428→5500+) > R68 Feature Coverage > 10: regression gate self-check
+[Q-68-03] R68 static tests: 6222 (target: 5500+)
+
+stdout | tests/q63-03-regression.test.ts > Q-63-03-03: Security Gates > 10: test file count ≥ 260
+[Q-63-03] Test files: 370
+
+ ❯ tests/q61-03-regression.test.ts (10 tests | 1 failed) 91417ms
+   ✓ Q-61-03-01: TSC & Build Gates > 01: TSC check produces 0 errors  59033ms
+   ✓ Q-61-03-01: TSC & Build Gates > 02: Build check runs  30616ms
+   ✓ Q-61-03-02: Test File Integrity > 03: Q-61-01 file exists with >=18 test cases 11ms
+   ✓ Q-61-03-02: Test File Integrity > 04: Q-61-02 file exists with >=12 test cases 0ms
+   ✓ Q-61-03-02: Test File Integrity > 05: Q-61-03 file has >=10 test cases 0ms
+   ✓ Q-61-03-02: Test File Integrity > 06: R60 Q-60 test files still present 1ms
+   ✓ Q-61-03-03: Baseline & Quality Gates > 07: test file count exceeds 250 1ms
+   × Q-61-03-03: Baseline & Quality Gates > 08: engine file count exceeds 260 4ms
+     → expected 1 to be greater than or equal to 260
+   ✓ Q-61-03-03: Baseline & Quality Gates > 09: package.json contains test:all script 1ms
+   ✓ Q-61-03-03: Baseline & Quality Gates > 10: git tag exists for milestone reference  1750ms
+ ❯ tests/q68-03-regression-gate.test.ts (10 tests | 2 failed) 90608ms
+   ✓ Q-68-03: Full Regression Gate (5428→5500+) > Test File Gates > 01: test files >= 300 3ms
+   ✓ Q-68-03: Full Regression Gate (5428→5500+) > Test File Gates > 02: static test count >= 5500 219ms
+   ✓ Q-68-03: Full Regression Gate (5428→5500+) > Test File Gates > 03: Q-68 test files exist 1ms
+   × Q-68-03: Full Regression Gate (5428→5500+) > Build Integrity > 04: TSC type check passes 56469ms
+     → Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+   ✓ Q-68-03: Full Regression Gate (5428→5500+) > Build Integrity > 05: build runs without crash  33847ms
+   ✓ Q-68-03: Full Regression Gate (5428→5500+) > Version Verification > 06: package.json version exists 1ms
+   ✓ Q-68-03: Full Regression Gate (5428→5500+) > Version Verification > 07: electron-builder config present 0ms
+   ✓ Q-68-03: Full Regression Gate (5428→5500+) > R68 Feature Coverage > 08: IBKR broker adapter test file exists 0ms
+   × Q-68-03: Full Regression Gate (5428→5500+) > R68 Feature Coverage > 09: backtest engine exists 2ms
+     → expected false to be true // Object.is equality
+   ✓ Q-68-03: Full Regression Gate (5428→5500+) > R68 Feature Coverage > 10: regression gate self-check 64ms
+ ✓ tests/q63-03-regression.test.ts (10 tests) 91361ms
+   ✓ Q-63-03-01: Build Gates > 01: TSC 0 errors  46753ms
+   ✓ Q-63-03-01: Build Gates > 02: build runs  42748ms
+   ✓ Q-63-03-03: Security Gates > 09: git commit message format is valid  1853ms
+stderr | tests/q66-03-regression.test.ts > Q-66-03-01: Build + Integrity > 07: build does not break (npm run build)
+[Q-66-03] Build: some warnings (non-fatal for test gate)
+
+ ✓ tests/q66-03-regression.test.ts (8 tests) 82117ms
+   ✓ Q-66-03-01: Build + Integrity > 01: TSC 0 errors (or known-only)  46099ms
+   ✓ Q-66-03-01: Build + Integrity > 07: build does not break (npm run build)  36012ms
+stdout | tests/q67-01-regression-gate.test.ts > Q-67-01: Full Regression 5-Round Gate > 06: TSC type check
+[Q-67-01] TSC: 0 errors
+
+stdout | tests/q62-03-regression.test.ts > Q-62-03-03: Baseline & Quality Gates > 11: total test count target is 5100+
+[Q-62-03] New test count: 50, projected: 5069
+
+stdout | tests/q67-01-regression-gate.test.ts > Q-67-01: Full Regression 5-Round Gate > 07: test file count update gate
+[Q-67-01] Test files: 370
+
+stdout | tests/q67-01-regression-gate.test.ts > Q-67-01: Full Regression 5-Round Gate > 08: v1.6.0 GA version verification
+[Q-67-01] Version: 1.9.0
+
+ ✓ tests/q67-01-regression-gate.test.ts (8 tests) 86122ms
+   ✓ Q-67-01: Full Regression 5-Round Gate > 05: build integrity check  46428ms
+   ✓ Q-67-01: Full Regression 5-Round Gate > 06: TSC type check  39605ms
+ ❯ tests/q62-03-regression.test.ts (15 tests | 1 failed) 109195ms
+   ✓ Q-62-03-01: Build & Type Gates > 01: TSC produces 0 errors  62655ms
+   ✓ Q-62-03-01: Build & Type Gates > 02: Build runs without critical failure  42150ms
+   ✓ Q-62-03-02: Test File Integrity > 03: Q-62-01 has >=20 tests 1ms
+   ✓ Q-62-03-02: Test File Integrity > 04: Q-62-02 has >=15 tests 0ms
+   ✓ Q-62-03-02: Test File Integrity > 05: Q-62-03 has >=15 tests 0ms
+   ✓ Q-62-03-02: Test File Integrity > 06: R61 Q-61 test files still exist 1ms
+   ✓ Q-62-03-02: Test File Integrity > 07: R60 Q-60 test files still exist 1ms
+   ✓ Q-62-03-02: Test File Integrity > 08: New Q-62 files exist in tests/ 0ms
+   ✓ Q-62-03-03: Baseline & Quality Gates > 09: test file count exceeds 255 1ms
+   × Q-62-03-03: Baseline & Quality Gates > 10: engine file count exceeds 265 4ms
+     → expected 1 to be greater than or equal to 265
+   ✓ Q-62-03-03: Baseline & Quality Gates > 11: total test count target is 5100+ 2ms
+   ✓ Q-62-03-03: Baseline & Quality Gates > 12: package.json version reflects alpha/beta 0ms
+   ✓ Q-62-03-03: Baseline & Quality Gates > 13: git repository is clean for test files  4375ms
+   ✓ Q-62-03-03: Baseline & Quality Gates > 14: R62 target milestone is achievable 0ms
+   ✓ Q-62-03-03: Baseline & Quality Gates > 15: all Q-62 suite IDs are unique and sequential 1ms

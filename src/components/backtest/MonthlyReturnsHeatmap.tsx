@@ -27,15 +27,15 @@ export default function MonthlyReturnsHeatmap({ trades }: MonthlyReturnsHeatmapP
     if (trades.length === 0) return [];
 
     const months: Record<string, number> = {};
-    
+
     trades.forEach((trade) => {
       const month = trade.exitDate.substring(0, 7); // YYYY-MM
       months[month] = (months[month] || 0) + trade.pnl;
     });
 
-    return Object.entries(months)
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([month, pnl]) => ({ month, pnl }));
+    return Object.entries(months).
+    sort(([a], [b]) => a.localeCompare(b)).
+    map(([month, pnl]) => ({ month, pnl }));
   }, [trades]);
 
   const stats = useMemo(() => {
@@ -55,8 +55,8 @@ export default function MonthlyReturnsHeatmap({ trades }: MonthlyReturnsHeatmapP
 
   if (monthlyData.length === 0) {
     return (
-      <div className="bg-[#12121a] rounded-xl border border-white/5 p-8 text-center text-gray-500">{t('noMonthlyData')}</div>
-    );
+      <div className="bg-[#12121a] rounded-xl border border-white/5 p-8 text-center text-gray-500">{t('noMonthlyData')}</div>);
+
   }
 
   return (
@@ -98,29 +98,29 @@ export default function MonthlyReturnsHeatmap({ trades }: MonthlyReturnsHeatmapP
         {monthlyData.map((m) => {
           const intensity = Math.min(Math.abs(m.pnl) / Math.max(stats.max, 1), 1);
           const color =
-            m.pnl >= 0
-              ? `rgba(34, 197, 94, ${0.1 + intensity * 0.5})`
-              : `rgba(239, 68, 68, ${0.1 + intensity * 0.5})`;
+          m.pnl >= 0 ?
+          `rgba(34, 197, 94, ${0.1 + intensity * 0.5})` :
+          `rgba(239, 68, 68, ${0.1 + intensity * 0.5})`;
           const textColor = m.pnl >= 0 ? 'text-emerald-400' : 'text-red-400';
 
           return (
             <div
               key={m.month}
               className="p-3 rounded-lg border border-white/5"
-              style={{ backgroundColor: color }}
-            >
+              style={{ backgroundColor: color }}>
+              
               <div className="text-xs text-gray-400 mb-1">{m.month}</div>
               <div className={`text-sm font-bold ${textColor}`}>
                 {m.pnl >= 0 ? '+' : ''}${m.pnl.toFixed(0)}
               </div>
-            </div>
-          );
+            </div>);
+
         })}
       </div>
 
-      <div className="mt-3 text-xs text-gray-500 text-center">
-        共 {monthlyData.length} 个月 · 盈利月份 {stats.positiveMonths} · 亏损月份 {stats.negativeMonths} · 胜率 {((stats.positiveMonths / monthlyData.length) * 100).toFixed(1)}%
+      <div className="mt-3 text-xs text-gray-500 text-center">{i18n.t("MonthlyReturnsHeatmap.r92_ed5d")}
+        {monthlyData.length}{i18n.t("MonthlyReturnsHeatmap.r92_d41c")}{stats.positiveMonths}{i18n.t("MonthlyReturnsHeatmap.r92_f577")}{stats.negativeMonths}{i18n.t("MonthlyReturnsHeatmap.r92_4d3f")}{(stats.positiveMonths / monthlyData.length * 100).toFixed(1)}%
       </div>
-    </div>
-  );
+    </div>);
+
 }

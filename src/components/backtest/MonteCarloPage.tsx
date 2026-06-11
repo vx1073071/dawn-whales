@@ -1,4 +1,4 @@
-﻿import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
@@ -67,7 +67,7 @@ interface SensitivityRow {
 
 // --- Helper: Box-Muller Normal Random ---
 function boxMuller(): number {
-  let u1 = 0, u2 = 0;
+  let u1 = 0,u2 = 0;
   while (u1 === 0) u1 = Math.random();
   while (u2 === 0) u2 = Math.random();
   return Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
@@ -85,21 +85,21 @@ function fatTailRandom(): number {
 // --- Helper: Generate random sample ---
 function randomSample(dist: DistributionType): number {
   switch (dist) {
-    case 'normal': return boxMuller();
-    case 'lognormal': return Math.exp(boxMuller());
-    case 'fat_tail': return fatTailRandom();
+    case 'normal':return boxMuller();
+    case 'lognormal':return Math.exp(boxMuller());
+    case 'fat_tail':return fatTailRandom();
   }
 }
 
 // --- Helper: Generate GBM path ---
 function generateGBMPath(
-  S0: number,
-  mu: number,
-  sigma: number,
-  years: number,
-  stepsPerYear: number,
-  dist: DistributionType
-): number[] {
+S0: number,
+mu: number,
+sigma: number,
+years: number,
+stepsPerYear: number,
+dist: DistributionType)
+: number[] {
   const totalSteps = years * stepsPerYear;
   const dt = 1.0 / stepsPerYear;
   const path: number[] = new Array(totalSteps + 1);
@@ -115,7 +115,7 @@ function generateGBMPath(
 
 // --- Helper: Percentile ---
 function percentile(sorted: number[], p: number): number {
-  const idx = (p / 100) * (sorted.length - 1);
+  const idx = p / 100 * (sorted.length - 1);
   const lo = Math.floor(idx);
   const hi = Math.ceil(idx);
   if (lo === hi) return sorted[lo];
@@ -133,62 +133,62 @@ function computeStats(terminalValues: number[], initialCapital: number): SimStat
   const p5 = percentile(sorted, 5);
   const p95 = percentile(sorted, 95);
   const var95 = initialCapital - p5;
-  const tailValues = sorted.filter(v => v <= p5);
-  const cvar95 = tailValues.length > 0
-    ? initialCapital - tailValues.reduce((s, v) => s + v, 0) / tailValues.length
-    : var95;
-  const probProfit = sorted.filter(v => v > initialCapital).length / n;
+  const tailValues = sorted.filter((v) => v <= p5);
+  const cvar95 = tailValues.length > 0 ?
+  initialCapital - tailValues.reduce((s, v) => s + v, 0) / tailValues.length :
+  var95;
+  const probProfit = sorted.filter((v) => v > initialCapital).length / n;
 
   return { mean, median, stdDev, percentile5: p5, percentile95: p95, min: sorted[0], max: sorted[n - 1], var95, cvar95, probProfit };
 }
 
 // --- Helper: Run a quick scenario ---
 function runScenario(
-  name: string,
-  S0: number,
-  mu: number,
-  sigma: number,
-  years: number,
-  dist: DistributionType,
-  numSims: number
-): ScenarioResult {
+name: string,
+S0: number,
+mu: number,
+sigma: number,
+years: number,
+dist: DistributionType,
+numSims: number)
+: ScenarioResult {
   const paths: number[][] = [];
   for (let i = 0; i < numSims; i++) {
     paths.push(generateGBMPath(S0, mu / 100, sigma / 100, years, 12, dist));
   }
-  const terminals = paths.map(p => p[p.length - 1]);
+  const terminals = paths.map((p) => p[p.length - 1]);
   const sorted = [...terminals].sort((a, b) => a - b);
   const mean = terminals.reduce((s, v) => s + v, 0) / numSims;
   const med = percentile(sorted, 50);
   const p5 = percentile(sorted, 5);
   const var95 = S0 - p5;
-  const probProfit = sorted.filter(v => v > S0).length / numSims;
+  const probProfit = sorted.filter((v) => v > S0).length / numSims;
   return { name, expectedReturn: mu, volatility: sigma, medianFinal: med, meanFinal: mean, var95, probProfit };
 }
 
 // --- Helper: Run sensitivity on one parameter ---
 function runSensitivity(
-  config: SimConfig,
-  param: string,
-  values: number[]
-): SensitivityRow[] {
-  return values.map(v => {
+config: SimConfig,
+param: string,
+values: number[])
+: SensitivityRow[] {
+  return values.map((v) => {
     const cfg = { ...config };
-    if (param === 'expectedReturn') cfg.expectedReturn = v;
-    else if (param === 'volatility') cfg.volatility = v;
-    else if (param === 'timeHorizon') cfg.timeHorizon = v;
+    if (param === 'expectedReturn') cfg.expectedReturn = v;else
+    if (param === 'volatility') cfg.volatility = v;else
+    if (param === 'timeHorizon') cfg.timeHorizon = v;
     const paths: number[][] = [];
     const sims = Math.min(cfg.numSimulations, 500);
     for (let i = 0; i < sims; i++) {
       paths.push(generateGBMPath(cfg.initialCapital, cfg.expectedReturn / 100, cfg.volatility / 100, cfg.timeHorizon, 12, cfg.distribution));
     }
-    const terminals = paths.map(p => p[p.length - 1]);
+    const terminals = paths.map((p) => p[p.length - 1]);
     const sorted = [...terminals].sort((a, b) => a - b);
     const mean = terminals.reduce((s, v) => s + v, 0) / sims;
     const med = percentile(sorted, 50);
     const p5 = percentile(sorted, 5);
     const var95 = cfg.initialCapital - p5;
-    const probProfit = sorted.filter(v => v > cfg.initialCapital).length / sims;
+    const probProfit = sorted.filter((v) => v > cfg.initialCapital).length / sims;
     return {
       param,
       value: param === 'timeHorizon' ? `${v}Y` : `${v}%`,
@@ -212,10 +212,10 @@ function pct(n: number): string {
 }
 
 // --- SVG Sub-components ---
-function EquityCurvesChart({ paths, config }: { paths: number[][]; config: SimConfig }) {
+function EquityCurvesChart({ paths, config }: {paths: number[][];config: SimConfig;}) {
   const { t: _t } = useTranslation();
 
-  const W = 720, H = 320, PAD = 40;
+  const W = 720,H = 320,PAD = 40;
   const samplePaths = useMemo(() => {
     if (paths.length <= 50) return paths;
     const step = Math.floor(paths.length / 50);
@@ -228,7 +228,7 @@ function EquityCurvesChart({ paths, config }: { paths: number[][]; config: SimCo
     const totalSteps = config.timeHorizon * stepsPerYear;
     const med: number[] = [];
     for (let t = 0; t <= totalSteps; t++) {
-      const vals = paths.map(p => p[t]).sort((a, b) => a - b);
+      const vals = paths.map((p) => p[t]).sort((a, b) => a - b);
       med.push(percentile(vals, 50));
     }
     return med;
@@ -236,7 +236,7 @@ function EquityCurvesChart({ paths, config }: { paths: number[][]; config: SimCo
 
   const allVals = useMemo(() => {
     const vals: number[] = [];
-    samplePaths.forEach(p => vals.push(...p));
+    samplePaths.forEach((p) => vals.push(...p));
     if (medianPath.length > 0) vals.push(...medianPath);
     return vals;
   }, [samplePaths, medianPath]);
@@ -247,11 +247,11 @@ function EquityCurvesChart({ paths, config }: { paths: number[][]; config: SimCo
   const maxV = Math.max(...allVals) * 1.05;
   const totalSteps = samplePaths[0]?.length ?? 1;
 
-  const sx = (t: number) => PAD + (t / (totalSteps - 1)) * (W - 2 * PAD);
-  const sy = (v: number) => H - PAD - ((v - minV) / (maxV - minV)) * (H - 2 * PAD);
+  const sx = (t: number) => PAD + t / (totalSteps - 1) * (W - 2 * PAD);
+  const sy = (v: number) => H - PAD - (v - minV) / (maxV - minV) * (H - 2 * PAD);
 
   const pathToD = (path: number[]) =>
-    path.map((v, t) => `${t === 0 ? 'M' : 'L'}${sx(t).toFixed(1)},${sy(v).toFixed(1)}`).join(' ');
+  path.map((v, t) => `${t === 0 ? 'M' : 'L'}${sx(t).toFixed(1)},${sy(v).toFixed(1)}`).join(' ');
 
   // Y-axis ticks
   const yTicks = 5;
@@ -268,35 +268,35 @@ function EquityCurvesChart({ paths, config }: { paths: number[][]; config: SimCo
             <text x={PAD - 4} y={sy(v) + 4} textAnchor="end" fill="#9CA3AF" fontSize={10}>
               {fmt(v)}
             </text>
-          </g>
-        );
+          </g>);
+
       })}
       {/* X-axis labels */}
-      {[0, 0.25, 0.5, 0.75, 1].map(frac => {
+      {[0, 0.25, 0.5, 0.75, 1].map((frac) => {
         const t = Math.round(frac * (totalSteps - 1));
         const yr = (t / 12).toFixed(0);
         return (
           <text key={frac} x={sx(t)} y={H - 8} textAnchor="middle" fill="#9CA3AF" fontSize={10}>
             {yr}Y
-          </text>
-        );
+          </text>);
+
       })}
       {/* Initial capital line */}
       <line x1={PAD} y1={sy(config.initialCapital)} x2={W - PAD} y2={sy(config.initialCapital)} stroke="#F59E0B" strokeWidth={1} strokeDasharray="4 2" />
       {/* Sample paths */}
-      {samplePaths.map((p, i) => (
-        <path key={i} d={pathToD(p)} fill="none" stroke="rgba(59,130,246,0.15)" strokeWidth={0.8} />
-      ))}
-      {/* Median path */}
-      {medianPath.length > 0 && (
-        <path d={pathToD(medianPath)} fill="none" stroke="#10B981" strokeWidth={2.5} />
+      {samplePaths.map((p, i) =>
+      <path key={i} d={pathToD(p)} fill="none" stroke="rgba(59,130,246,0.15)" strokeWidth={0.8} />
       )}
-    </svg>
-  );
+      {/* Median path */}
+      {medianPath.length > 0 &&
+      <path d={pathToD(medianPath)} fill="none" stroke="#10B981" strokeWidth={2.5} />
+      }
+    </svg>);
+
 }
 
-function HistogramChart({ values, initialCapital }: { values: number[]; initialCapital: number }) {
-  const W = 720, H = 240, PAD = 40;
+function HistogramChart({ values, initialCapital }: {values: number[];initialCapital: number;}) {
+  const W = 720,H = 240,PAD = 40;
   const sorted = useMemo(() => [...values].sort((a, b) => a - b), [values]);
   const BINS = 40;
 
@@ -307,7 +307,7 @@ function HistogramChart({ values, initialCapital }: { values: number[]; initialC
     const range = max - min || 1;
     const binWidth = range / BINS;
     const counts = new Array(BINS).fill(0);
-    sorted.forEach(v => {
+    sorted.forEach((v) => {
       const idx = Math.min(Math.floor((v - min) / binWidth), BINS - 1);
       counts[idx]++;
     });
@@ -320,11 +320,11 @@ function HistogramChart({ values, initialCapital }: { values: number[]; initialC
 
   if (bins.length === 0) return null;
 
-  const maxCount = Math.max(...bins.map(b => b.count));
+  const maxCount = Math.max(...bins.map((b) => b.count));
   const minV = bins[0].x0;
   const maxV = bins[bins.length - 1].x1;
-  const sx = (v: number) => PAD + ((v - minV) / (maxV - minV)) * (W - 2 * PAD);
-  const sy = (c: number) => H - PAD - (c / maxCount) * (H - 2 * PAD);
+  const sx = (v: number) => PAD + (v - minV) / (maxV - minV) * (W - 2 * PAD);
+  const sy = (c: number) => H - PAD - c / maxCount * (H - 2 * PAD);
 
   const p5 = percentile(sorted, 5);
   const p50 = percentile(sorted, 50);
@@ -344,33 +344,33 @@ function HistogramChart({ values, initialCapital }: { values: number[]; initialC
       })}
       {/* Percentile markers */}
       {[
-        { v: p5, label: 'P5', color: '#EF4444' },
-        { v: p50, label: 'P50', color: '#10B981' },
-        { v: p95, label: 'P95', color: '#3B82F6' },
-        { v: initialCapital, label: 'S₀', color: '#F59E0B' },
-      ].map(({ v, label, color }) => (
-        <g key={label}>
+      { v: p5, label: 'P5', color: '#EF4444' },
+      { v: p50, label: 'P50', color: '#10B981' },
+      { v: p95, label: 'P95', color: '#3B82F6' },
+      { v: initialCapital, label: 'S₀', color: '#F59E0B' }].
+      map(({ v, label, color }) =>
+      <g key={label}>
           <line x1={sx(v)} y1={4} x2={sx(v)} y2={H - PAD} stroke={color} strokeWidth={1.5} strokeDasharray="3 2" />
           <text x={sx(v)} y={12} textAnchor="middle" fill={color} fontSize={10} fontWeight="bold">{label}</text>
         </g>
-      ))}
+      )}
       {/* X axis labels */}
-      {[0, 0.25, 0.5, 0.75, 1].map(frac => {
+      {[0, 0.25, 0.5, 0.75, 1].map((frac) => {
         const v = minV + frac * (maxV - minV);
         return (
           <text key={frac} x={sx(v)} y={H - 8} textAnchor="middle" fill="#9CA3AF" fontSize={10}>
             {fmt(v)}
-          </text>
-        );
+          </text>);
+
       })}
-    </svg>
-  );
+    </svg>);
+
 }
 
-function ProbabilityGauge({ prob }: { prob: number }) {
+function ProbabilityGauge({ prob }: {prob: number;}) {
   const radius = 60;
   const stroke = 10;
-  const cx = 80, cy = 80;
+  const cx = 80,cy = 80;
   const startAngle = Math.PI * 0.75;
   const endAngle = Math.PI * 2.25;
   const sweep = (endAngle - startAngle) * prob;
@@ -400,12 +400,12 @@ function ProbabilityGauge({ prob }: { prob: number }) {
         {(prob * 100).toFixed(0)}%
       </text>
       <text x={cx} y={cy + 22} textAnchor="middle" fill="#9CA3AF" fontSize={9}>{'profitProbability'}</text>
-    </svg>
-  );
+    </svg>);
+
 }
 
 // --- Stat Card ---
-function StatCard({ label, value, sub, variant = 'default' }: { label: string; value: string; sub?: string; variant?: 'default' | 'danger' | 'success' | 'warning' }) {
+function StatCard({ label, value, sub, variant = 'default' }: {label: string;value: string;sub?: string;variant?: 'default' | 'danger' | 'success' | 'warning';}) {
   const border = variant === 'danger' ? 'border-red-500/40' : variant === 'success' ? 'border-green-500/40' : variant === 'warning' ? 'border-yellow-500/40' : 'border-white/10';
   const textColor = variant === 'danger' ? 'text-red-400' : variant === 'success' ? 'text-green-400' : variant === 'warning' ? 'text-yellow-400' : 'text-white';
   return (
@@ -413,8 +413,8 @@ function StatCard({ label, value, sub, variant = 'default' }: { label: string; v
       <span className="text-xs text-gray-400 mb-1">{label}</span>
       <span className={`text-xl font-bold ${textColor}`}>{value}</span>
       {sub && <span className="text-xs text-gray-500 mt-1">{sub}</span>}
-    </div>
-  );
+    </div>);
+
 }
 
 // ============================================================
@@ -436,7 +436,7 @@ export default function MonteCarloPage() {
   const [engineLoading, setEngineLoading] = useState(false);
 
   const updateConfig = useCallback((key: keyof SimConfig, value: number | string) => {
-    setConfig(prev => ({ ...prev, [key]: value }));
+    setConfig((prev) => ({ ...prev, [key]: value }));
   }, []);
 
   const runSimulation = useCallback(() => {
@@ -453,43 +453,43 @@ export default function MonteCarloPage() {
         horizon: config.timeHorizon,
         simulations: config.numSimulations,
         distribution: config.distribution,
-        riskFreeRate: config.riskFreeRate / 100,
+        riskFreeRate: config.riskFreeRate / 100
       };
-      (api as any).monteCarlo.simulate(serverConfig)
-        .then((res: unknown) => {
-          // @ts-ignore — R89 type fix
-          if (res?.success && (res as any).result) {
-            const r = (res as any).result;
-            // Convert server result to page format
-            const stats: SimStats = {
-              mean: r.statistics.mean,
-              median: r.statistics.median,
-              stdDev: r.statistics.stdDev,
-              percentile5: r.statistics.percentile5,
-              percentile95: r.statistics.percentile95,
-              min: r.statistics.min,
-              max: r.statistics.max,
-              probProfit: r.probabilityOfProfit * 100,
-              probabilityOfProfit: r.probabilityOfProfit * 100,
-              probabilityOfLoss10pct: r.probabilityOfLoss10pct * 100,
-              var95: r.var95,
-              cvar95: r.cvar95,
-            };
-            setResults({
-              paths: r.equityCurves,
-              terminalValues: r.finalValues,
-              stats,
-              scenarios: [], // server mode: scenarios computed client-side as fallback
-              sensitivity: [],
-            });
-            setLoading(false);
-            return;
-          }
-          // Fall through to client-side on error
-          runClientSimulation();
-        })
-        .catch((_: unknown) => runClientSimulation());
-    void EngineError; // [SYSTEM] structured error tracking
+      (api as any).monteCarlo.simulate(serverConfig).
+      then((res: unknown) => {
+        // @ts-ignore — R89 type fix
+        if (res?.success && (res as any).result) {
+          const r = (res as any).result;
+          // Convert server result to page format
+          const stats: SimStats = {
+            mean: r.statistics.mean,
+            median: r.statistics.median,
+            stdDev: r.statistics.stdDev,
+            percentile5: r.statistics.percentile5,
+            percentile95: r.statistics.percentile95,
+            min: r.statistics.min,
+            max: r.statistics.max,
+            probProfit: r.probabilityOfProfit * 100,
+            probabilityOfProfit: r.probabilityOfProfit * 100,
+            probabilityOfLoss10pct: r.probabilityOfLoss10pct * 100,
+            var95: r.var95,
+            cvar95: r.cvar95
+          };
+          setResults({
+            paths: r.equityCurves,
+            terminalValues: r.finalValues,
+            stats,
+            scenarios: [], // server mode: scenarios computed client-side as fallback
+            sensitivity: []
+          });
+          setLoading(false);
+          return;
+        }
+        // Fall through to client-side on error
+        runClientSimulation();
+      }).
+      catch((_: unknown) => runClientSimulation());
+      void EngineError; // [SYSTEM] structured error tracking
     } else {
       runClientSimulation();
     }
@@ -506,23 +506,23 @@ export default function MonteCarloPage() {
         for (let i = 0; i < numSimulations; i++) {
           paths.push(generateGBMPath(initialCapital, mu, sigma, timeHorizon, stepsPerYear, distribution));
         }
-        const terminalValues = paths.map(p => p[p.length - 1]);
+        const terminalValues = paths.map((p) => p[p.length - 1]);
         const stats = computeStats(terminalValues, initialCapital);
 
         // Scenarios
         const simsForScenarios = Math.min(numSimulations, 500);
         const scenarios: ScenarioResult[] = [
-          runScenario(i18n.t('MonteCarloPage.k1'), initialCapital, expectedReturn - 10, volatility + 10, timeHorizon, distribution, simsForScenarios),
-          runScenario(i18n.t('MonteCarloPage.k2'), initialCapital, expectedReturn, volatility, timeHorizon, distribution, simsForScenarios),
-          runScenario(i18n.t('MonteCarloPage.k3'), initialCapital, expectedReturn + 10, Math.max(volatility - 5, 5), timeHorizon, distribution, simsForScenarios),
-        ];
+        runScenario(i18n.t('MonteCarloPage.k1'), initialCapital, expectedReturn - 10, volatility + 10, timeHorizon, distribution, simsForScenarios),
+        runScenario(i18n.t('MonteCarloPage.k2'), initialCapital, expectedReturn, volatility, timeHorizon, distribution, simsForScenarios),
+        runScenario(i18n.t('MonteCarloPage.k3'), initialCapital, expectedReturn + 10, Math.max(volatility - 5, 5), timeHorizon, distribution, simsForScenarios)];
+
 
         // Sensitivity
         const sensitivity: SensitivityRow[] = [
-          ...runSensitivity(config, 'expectedReturn', [5, 10, 15, 20, 30]),
-          ...runSensitivity(config, 'volatility', [10, 20, 30, 40, 60]),
-          ...runSensitivity(config, 'timeHorizon', [3, 5, 10, 15, 20]),
-        ];
+        ...runSensitivity(config, 'expectedReturn', [5, 10, 15, 20, 30]),
+        ...runSensitivity(config, 'volatility', [10, 20, 30, 40, 60]),
+        ...runSensitivity(config, 'timeHorizon', [3, 5, 10, 15, 20])];
+
 
         setResults({ paths, terminalValues, stats, scenarios, sensitivity });
         setLoading(false);
@@ -539,22 +539,22 @@ export default function MonteCarloPage() {
     setEngineLoading(true);
     // Sample equity curve to max 500 points to avoid IPC payload issues
     const curve = results.terminalValues;
-    const sampledCurve = curve.length > 500
-      ? Array.from({ length: 500 }, (_, i) => curve[Math.floor(i * curve.length / 500)])
-      : curve;
+    const sampledCurve = curve.length > 500 ?
+    Array.from({ length: 500 }, (_, i) => curve[Math.floor(i * curve.length / 500)]) :
+    curve;
 
-    api.backtest.riskMetrics(sampledCurve, config.riskFreeRate / 100)
-      .then((data: unknown) => {
-        if (data && typeof data === 'object') {
-          setServerRiskMetrics(data as any);
-        }
-      })
-      .catch((_: unknown) => {
-        // Server metrics unavailable — client-side results remain authoritative
-      })
-      .finally(() => {
-        setEngineLoading(false);
-      });
+    api.backtest.riskMetrics(sampledCurve, config.riskFreeRate / 100).
+    then((data: unknown) => {
+      if (data && typeof data === 'object') {
+        setServerRiskMetrics(data as any);
+      }
+    }).
+    catch((_: unknown) => {
+
+      // Server metrics unavailable — client-side results remain authoritative
+    }).finally(() => {
+      setEngineLoading(false);
+    });
   }, [results, config.riskFreeRate]);
 
   // Sharpe ratio
@@ -589,9 +589,9 @@ export default function MonteCarloPage() {
             <input
               type="number"
               value={config.initialCapital}
-              onChange={e => updateConfig('initialCapital', Number(e.target.value))}
-              className="w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
-            />
+              onChange={(e) => updateConfig('initialCapital', Number(e.target.value))}
+              className="w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-white focus:border-blue-500 focus:outline-none" />
+            
           </div>
 
           {/* Risk-free Rate */}
@@ -601,27 +601,27 @@ export default function MonteCarloPage() {
               type="number"
               step="0.5"
               value={config.riskFreeRate}
-              onChange={e => updateConfig('riskFreeRate', Number(e.target.value))}
-              className="w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-white focus:border-blue-500 focus:outline-none"
-            />
+              onChange={(e) => updateConfig('riskFreeRate', Number(e.target.value))}
+              className="w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-white focus:border-blue-500 focus:outline-none" />
+            
           </div>
 
           {/* Distribution */}
           <div>
             <label className="block text-sm text-gray-400 mb-1">{i18n.t('MonteCarloPage.k9')}</label>
             <div className="flex gap-3 mt-1">
-              {(['normal', 'lognormal', 'fat_tail'] as DistributionType[]).map(d => (
-                <label key={d} className="flex items-center gap-1.5 cursor-pointer">
+              {(['normal', 'lognormal', 'fat_tail'] as DistributionType[]).map((d) =>
+              <label key={d} className="flex items-center gap-1.5 cursor-pointer">
                   <input
-                    type="radio"
-                    name="dist"
-                    checked={config.distribution === d}
-                    onChange={() => updateConfig('distribution', d)}
-                    className="accent-blue-500"
-                  />
+                  type="radio"
+                  name="dist"
+                  checked={config.distribution === d}
+                  onChange={() => updateConfig('distribution', d)}
+                  className="accent-blue-500" />
+                
                   <span className="text-sm">{d === 'fat_tail' ? 'Fat Tail' : d === 'lognormal' ? 'Lognormal' : 'Normal'}</span>
                 </label>
-              ))}
+              )}
             </div>
           </div>
 
@@ -631,9 +631,9 @@ export default function MonteCarloPage() {
             <input
               type="range" min={0} max={50} step={1}
               value={config.expectedReturn}
-              onChange={e => updateConfig('expectedReturn', Number(e.target.value))}
-              className="w-full accent-blue-500"
-            />
+              onChange={(e) => updateConfig('expectedReturn', Number(e.target.value))}
+              className="w-full accent-blue-500" />
+            
           </div>
 
           <div>
@@ -641,19 +641,19 @@ export default function MonteCarloPage() {
             <input
               type="range" min={5} max={80} step={1}
               value={config.volatility}
-              onChange={e => updateConfig('volatility', Number(e.target.value))}
-              className="w-full accent-yellow-500"
-            />
+              onChange={(e) => updateConfig('volatility', Number(e.target.value))}
+              className="w-full accent-yellow-500" />
+            
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1">{i18n.t('MonteCarloPage.k12')}<span className="text-green-400 font-semibold">{config.timeHorizon} 年</span></label>
+            <label className="block text-sm text-gray-400 mb-1">{i18n.t('MonteCarloPage.k12')}<span className="text-green-400 font-semibold">{config.timeHorizon}{i18n.t("MonteCarloPage.r92_b569")}</span></label>
             <input
               type="range" min={1} max={30} step={1}
               value={config.timeHorizon}
-              onChange={e => updateConfig('timeHorizon', Number(e.target.value))}
-              className="w-full accent-green-500"
-            />
+              onChange={(e) => updateConfig('timeHorizon', Number(e.target.value))}
+              className="w-full accent-green-500" />
+            
           </div>
 
           <div className="md:col-span-2 lg:col-span-3">
@@ -661,9 +661,9 @@ export default function MonteCarloPage() {
             <input
               type="range" min={100} max={10000} step={100}
               value={config.numSimulations}
-              onChange={e => updateConfig('numSimulations', Number(e.target.value))}
-              className="w-full accent-purple-500"
-            />
+              onChange={(e) => updateConfig('numSimulations', Number(e.target.value))}
+              className="w-full accent-purple-500" />
+            
           </div>
         </div>
 
@@ -671,25 +671,25 @@ export default function MonteCarloPage() {
         <button
           onClick={runSimulation}
           disabled={loading}
-          className="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
-        >
-          {loading ? (
-            <>
+          className="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2">
+          
+          {loading ?
+          <>
               <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
-              模拟运行中...
-            </>
-          ) : (
-            <>{i18n.t('MonteCarloPage.k14')}</>
-          )}
+              </svg>{i18n.t("MonteCarloPage.r92_b072")}
+
+          </> :
+
+          <>{i18n.t('MonteCarloPage.k14')}</>
+          }
         </button>
       </div>
 
       {/* Results */}
-      {results && !loading && (
-        <>
+      {results && !loading &&
+      <>
           {/* Stats Dashboard */}
           <div className="space-y-3">
             <h2 className="text-lg font-semibold flex items-center gap-2">{i18n.t('MonteCarloPage.k15')}</h2>
@@ -703,17 +703,17 @@ export default function MonteCarloPage() {
               <StatCard label={i18n.t('MonteCarloPage.k20')} value={`¥${fmt(results.stats.max)}`} variant="success" />
               <StatCard label="Sharpe Ratio" value={sharpe.toFixed(2)} variant={sharpe > 1 ? 'success' : sharpe > 0 ? 'warning' : 'danger'} />
               <StatCard
-                label="VaR (95%)"
-                value={`¥${fmt(results.stats.var95)}`}
-                sub={i18n.t('MonteCarloPage.k0')}
-                variant="danger"
-              />
+              label="VaR (95%)"
+              value={`¥${fmt(results.stats.var95)}`}
+              sub={i18n.t('MonteCarloPage.k0')}
+              variant="danger" />
+            
               <StatCard
-                label="CVaR (95%)"
-                value={`¥${fmt(results.stats.cvar95)}`}
-                sub={i18n.t('MonteCarloPage.k1')}
-                variant="danger"
-              />
+              label="CVaR (95%)"
+              value={`¥${fmt(results.stats.cvar95)}`}
+              sub={i18n.t('MonteCarloPage.k1')}
+              variant="danger" />
+            
             </div>
             {/* Probability Gauge */}
             <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-4 flex items-center gap-6">
@@ -723,114 +723,114 @@ export default function MonteCarloPage() {
                 <p className="text-2xl font-bold" style={{ color: results.stats.probProfit >= 0.7 ? '#10B981' : results.stats.probProfit >= 0.5 ? '#F59E0B' : '#EF4444' }}>
                   {pct(results.stats.probProfit)}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">{results.terminalValues.filter(v => v > config.initialCapital).length} / {results.terminalValues.length} 次模拟盈利</p>
+                <p className="text-xs text-gray-500 mt-1">{results.terminalValues.filter((v) => v > config.initialCapital).length} / {results.terminalValues.length}{i18n.t("MonteCarloPage.r92_f73a")}</p>
               </div>
             </div>
           </div>
 
           {/* Engine-Enhanced Risk Metrics (from IPC backtest engine) */}
-          {serverRiskMetrics && (
-            <div className="rounded-2xl border border-indigo-500/30 bg-indigo-500/5 backdrop-blur-md p-6 space-y-4">
+          {serverRiskMetrics &&
+        <div className="rounded-2xl border border-indigo-500/30 bg-indigo-500/5 backdrop-blur-md p-6 space-y-4">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
-                  引擎增强风险指标
-                </h2>
+                  <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />{i18n.t("MonteCarloPage.r92_a9d9")}
+
+            </h2>
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
                   Backtest Engine
                 </span>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                {serverRiskMetrics.annualizedReturn != null && (
-                  <StatCard
-                    label={i18n.t('MonteCarloPage.k21')}
-                    value={`${(Number(serverRiskMetrics.annualizedReturn) * 100).toFixed(2)}%`}
-                    variant={Number(serverRiskMetrics.annualizedReturn) > 0 ? 'success' : 'danger'}
-                    sub={i18n.t('MonteCarloPage.k22')}
-                  />
-                )}
-                {serverRiskMetrics.annualizedVolatility != null && (
-                  <StatCard
-                    label={i18n.t('MonteCarloPage.k23')}
-                    value={`${(Number(serverRiskMetrics.annualizedVolatility) * 100).toFixed(2)}%`}
-                    variant="warning"
-                    sub={i18n.t('MonteCarloPage.k24')}
-                  />
-                )}
-                {serverRiskMetrics.maxDrawdown != null && (
-                  <StatCard
-                    label={'maxDrawdown'}
-                    value={`${(Number(serverRiskMetrics.maxDrawdown) * 100).toFixed(2)}%`}
-                    variant="danger"
-                    sub={i18n.t('MonteCarloPage.k25')}
-                  />
-                )}
-                {serverRiskMetrics.calmarRatio != null && (
-                  <StatCard
-                    label={i18n.t('MonteCarloPage.k26')}
-                    value={Number(serverRiskMetrics.calmarRatio).toFixed(3)}
-                    variant={Number(serverRiskMetrics.calmarRatio) > 1 ? 'success' : 'warning'}
-                    sub={i18n.t('MonteCarloPage.k27')}
-                  />
-                )}
-                {serverRiskMetrics.sortinoRatio != null && (
-                  <StatCard
-                    label={i18n.t('MonteCarloPage.k28')}
-                    value={Number(serverRiskMetrics.sortinoRatio).toFixed(3)}
-                    variant={Number(serverRiskMetrics.sortinoRatio) > 1 ? 'success' : 'warning'}
-                    sub={i18n.t('MonteCarloPage.k29')}
-                  />
-                )}
-                {serverRiskMetrics.informationRatio != null && (
-                  <StatCard
-                    label={i18n.t('MonteCarloPage.k30')}
-                    value={Number(serverRiskMetrics.informationRatio).toFixed(3)}
-                    sub={i18n.t('MonteCarloPage.k31')}
-                  />
-                )}
-                {serverRiskMetrics.omegaRatio != null && (
-                  <StatCard
-                    label={i18n.t('MonteCarloPage.k32')}
-                    value={Number(serverRiskMetrics.omegaRatio).toFixed(3)}
-                    variant={Number(serverRiskMetrics.omegaRatio) > 1 ? 'success' : 'warning'}
-                    sub={i18n.t('MonteCarloPage.k33')}
-                  />
-                )}
-                {serverRiskMetrics.tailRatio != null && (
-                  <StatCard
-                    label={i18n.t('MonteCarloPage.k34')}
-                    value={Number(serverRiskMetrics.tailRatio).toFixed(3)}
-                    sub={i18n.t('MonteCarloPage.k35')}
-                  />
-                )}
-                {serverRiskMetrics.skewness != null && (
-                  <StatCard
-                    label={i18n.t('MonteCarloPage.k36')}
-                    value={Number(serverRiskMetrics.skewness).toFixed(3)}
-                    sub={Number(serverRiskMetrics.skewness) > 0 ? i18n.t('MonteCarloPage.k37') : i18n.t('MonteCarloPage.k38')}
-                  />
-                )}
-                {serverRiskMetrics.kurtosis != null && (
-                  <StatCard
-                    label={i18n.t('MonteCarloPage.k39')}
-                    value={Number(serverRiskMetrics.kurtosis).toFixed(3)}
-                    sub={Number(serverRiskMetrics.kurtosis) > 3 ? i18n.t('MonteCarloPage.k40') : i18n.t('MonteCarloPage.k41')}
-                  />
-                )}
+                {serverRiskMetrics.annualizedReturn != null &&
+            <StatCard
+              label={i18n.t('MonteCarloPage.k21')}
+              value={`${(Number(serverRiskMetrics.annualizedReturn) * 100).toFixed(2)}%`}
+              variant={Number(serverRiskMetrics.annualizedReturn) > 0 ? 'success' : 'danger'}
+              sub={i18n.t('MonteCarloPage.k22')} />
+
+            }
+                {serverRiskMetrics.annualizedVolatility != null &&
+            <StatCard
+              label={i18n.t('MonteCarloPage.k23')}
+              value={`${(Number(serverRiskMetrics.annualizedVolatility) * 100).toFixed(2)}%`}
+              variant="warning"
+              sub={i18n.t('MonteCarloPage.k24')} />
+
+            }
+                {serverRiskMetrics.maxDrawdown != null &&
+            <StatCard
+              label={'maxDrawdown'}
+              value={`${(Number(serverRiskMetrics.maxDrawdown) * 100).toFixed(2)}%`}
+              variant="danger"
+              sub={i18n.t('MonteCarloPage.k25')} />
+
+            }
+                {serverRiskMetrics.calmarRatio != null &&
+            <StatCard
+              label={i18n.t('MonteCarloPage.k26')}
+              value={Number(serverRiskMetrics.calmarRatio).toFixed(3)}
+              variant={Number(serverRiskMetrics.calmarRatio) > 1 ? 'success' : 'warning'}
+              sub={i18n.t('MonteCarloPage.k27')} />
+
+            }
+                {serverRiskMetrics.sortinoRatio != null &&
+            <StatCard
+              label={i18n.t('MonteCarloPage.k28')}
+              value={Number(serverRiskMetrics.sortinoRatio).toFixed(3)}
+              variant={Number(serverRiskMetrics.sortinoRatio) > 1 ? 'success' : 'warning'}
+              sub={i18n.t('MonteCarloPage.k29')} />
+
+            }
+                {serverRiskMetrics.informationRatio != null &&
+            <StatCard
+              label={i18n.t('MonteCarloPage.k30')}
+              value={Number(serverRiskMetrics.informationRatio).toFixed(3)}
+              sub={i18n.t('MonteCarloPage.k31')} />
+
+            }
+                {serverRiskMetrics.omegaRatio != null &&
+            <StatCard
+              label={i18n.t('MonteCarloPage.k32')}
+              value={Number(serverRiskMetrics.omegaRatio).toFixed(3)}
+              variant={Number(serverRiskMetrics.omegaRatio) > 1 ? 'success' : 'warning'}
+              sub={i18n.t('MonteCarloPage.k33')} />
+
+            }
+                {serverRiskMetrics.tailRatio != null &&
+            <StatCard
+              label={i18n.t('MonteCarloPage.k34')}
+              value={Number(serverRiskMetrics.tailRatio).toFixed(3)}
+              sub={i18n.t('MonteCarloPage.k35')} />
+
+            }
+                {serverRiskMetrics.skewness != null &&
+            <StatCard
+              label={i18n.t('MonteCarloPage.k36')}
+              value={Number(serverRiskMetrics.skewness).toFixed(3)}
+              sub={Number(serverRiskMetrics.skewness) > 0 ? i18n.t('MonteCarloPage.k37') : i18n.t('MonteCarloPage.k38')} />
+
+            }
+                {serverRiskMetrics.kurtosis != null &&
+            <StatCard
+              label={i18n.t('MonteCarloPage.k39')}
+              value={Number(serverRiskMetrics.kurtosis).toFixed(3)}
+              sub={Number(serverRiskMetrics.kurtosis) > 3 ? i18n.t('MonteCarloPage.k40') : i18n.t('MonteCarloPage.k41')} />
+
+            }
               </div>
             </div>
-          )}
+        }
 
           {/* Engine metrics loading indicator */}
-          {engineLoading && !serverRiskMetrics && (
-            <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 flex items-center gap-3">
+          {engineLoading && !serverRiskMetrics &&
+        <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4 flex items-center gap-3">
               <svg className="animate-spin h-4 w-4 text-indigo-400" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
               <span className="text-sm text-indigo-400">{i18n.t('MonteCarloPage.k42')}</span>
             </div>
-          )}
+        }
 
           {/* Equity Curves */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 space-y-3">
@@ -863,8 +863,8 @@ export default function MonteCarloPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {results.scenarios.map((s, i) => (
-                    <tr key={i} className={`border-b border-gray-800 ${i === 1 ? 'bg-white/5' : ''}`}>
+                  {results.scenarios.map((s, i) =>
+                <tr key={i} className={`border-b border-gray-800 ${i === 1 ? 'bg-white/5' : ''}`}>
                       <td className="py-2 px-3 font-medium">{s.name}</td>
                       <td className="py-2 px-3 text-right text-blue-400">{s.expectedReturn}%</td>
                       <td className="py-2 px-3 text-right text-yellow-400">{s.volatility}%</td>
@@ -877,7 +877,7 @@ export default function MonteCarloPage() {
                         </span>
                       </td>
                     </tr>
-                  ))}
+                )}
                 </tbody>
               </table>
             </div>
@@ -901,11 +901,11 @@ export default function MonteCarloPage() {
                 </thead>
                 <tbody>
                   {results.sensitivity.map((row, i) => {
-                    const paramLabel = row.param === 'expectedReturn' ? i18n.t('MonteCarloPage.k57') : row.param === 'volatility' ? 'components.volatility' : i18n.t('MonteCarloPage.k58');
-                    const prevRow = i > 0 ? results.sensitivity[i - 1] : null;
-                    const isGroupStart = !prevRow || prevRow.param !== row.param;
-                    return (
-                      <tr key={i} className={`border-b border-gray-800 ${isGroupStart ? 'border-t border-gray-600' : ''}`}>
+                  const paramLabel = row.param === 'expectedReturn' ? i18n.t('MonteCarloPage.k57') : row.param === 'volatility' ? 'components.volatility' : i18n.t('MonteCarloPage.k58');
+                  const prevRow = i > 0 ? results.sensitivity[i - 1] : null;
+                  const isGroupStart = !prevRow || prevRow.param !== row.param;
+                  return (
+                    <tr key={i} className={`border-b border-gray-800 ${isGroupStart ? 'border-t border-gray-600' : ''}`}>
                         <td className="py-2 px-3 text-gray-300">{isGroupStart ? paramLabel : ''}</td>
                         <td className="py-2 px-3 text-right font-mono text-blue-400">{row.value}</td>
                         <td className="py-2 px-3 text-right">¥{fmt(row.median)}</td>
@@ -916,24 +916,24 @@ export default function MonteCarloPage() {
                             {pct(row.probProfit)}
                           </span>
                         </td>
-                      </tr>
-                    );
-                  })}
+                      </tr>);
+
+                })}
                 </tbody>
               </table>
             </div>
           </div>
         </>
-      )}
+      }
 
       {/* Empty state */}
-      {!results && !loading && (
-        <div className="flex flex-col items-center justify-center py-20 text-gray-500">
+      {!results && !loading &&
+      <div className="flex flex-col items-center justify-center py-20 text-gray-500">
           <span className="text-5xl mb-4">🎲</span>
           <p className="text-lg">{i18n.t('MonteCarloPage.k59')}</p>
           <p className="text-sm mt-2">{i18n.t('MonteCarloPage.k60')}</p>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }

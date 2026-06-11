@@ -17,39 +17,39 @@ import { EngineError } from '../core/engine-error';
 
 export interface MarginBalance {
   date: string;
-  totalMarginBalance: number;      // margin balance (亿元)
-  totalShortBalance: number;       // 融券balance (亿元)
-  totalBalance: number;            // margin tradingbalance (亿元)
-  marginChange: number;            // margin balance变化 (亿元)
-  shortChange: number;             // 融券balance变化 (亿元)
-  marginBuyAmount: number;         // 融资买入额 (亿元)
-  shortSellVolume: number;         // 融券卖出量 (亿股)
+  totalMarginBalance: number;      // margin balance ()
+  totalShortBalance: number;       // balance ()
+  totalBalance: number;            // margin tradingbalance ()
+  marginChange: number;            // margin balance ()
+  shortChange: number;             // balance ()
+  marginBuyAmount: number;         // ()
+  shortSellVolume: number;         // ()
 }
 
 export interface StockMargin {
   code: string;
   name: string;
   date: string;
-  marginBalance: number;           // margin balance (万元)
-  marginBuyAmount: number;         // 融资买入额 (万元)
-  marginRepayAmount: number;       // 融资偿还额 (万元)
-  marginNetBuy: number;            // 融资净买入 (万元)
-  shortBalance: number;            // 融券余量 (股)
-  shortSellVolume: number;         // 融券卖出量 (股)
-  shortRepayVolume: number;        // 融券偿还量 (股)
-  shortNetSell: number;            // 融券净卖出 (股)
-  totalBalance: number;            // margin tradingbalance (万元)
+  marginBalance: number;           // margin balance ()
+  marginBuyAmount: number;         // ()
+  marginRepayAmount: number;       // ()
+  marginNetBuy: number;            // ()
+  shortBalance: number;            // ()
+  shortSellVolume: number;         // ()
+  shortRepayVolume: number;        // ()
+  shortNetSell: number;            // ()
+  totalBalance: number;            // margin tradingbalance ()
 }
 
 export interface MarginRanking {
   code: string;
   name: string;
-  marginBalance: number;           // margin balance (万元)
-  marginChange: number;            // margin balance变化率 %
-  marginNetBuy: number;            // 融资净买入 (万元)
-  shortBalance: number;            // 融券余量 (万股)
-  shortChange: number;             // 融券余量变化率 %
-  totalBalance: number;            // margin tradingbalance (万元)
+  marginBalance: number;           // margin balance ()
+  marginChange: number;            // margin balance %
+  marginNetBuy: number;            // ()
+  shortBalance: number;            // ()
+  shortChange: number;             // %
+  totalBalance: number;            // margin tradingbalance ()
 }
 
 export interface MarginDataReport {

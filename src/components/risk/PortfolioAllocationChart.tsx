@@ -22,7 +22,7 @@ export default function PortfolioAllocationChart({
   data,
   title = i18n.t('PortfolioAllocationChart.k1'),
   height = 280,
-  dark = true,
+  dark = true
 }: PortfolioAllocationChartProps) {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);
@@ -39,13 +39,13 @@ export default function PortfolioAllocationChart({
         pnl: d.pnl,
         pnlPct: d.pnlPct,
         itemStyle: {
-          color: d.pnl >= 0
-            ? `rgba(34, 197, 94, ${0.4 + Math.min(Math.abs(d.pnlPct) / 50, 0.5)})`
-            : `rgba(239, 68, 68, ${0.4 + Math.min(Math.abs(d.pnlPct) / 50, 0.5)})`,
-        },
+          color: d.pnl >= 0 ?
+          `rgba(34, 197, 94, ${0.4 + Math.min(Math.abs(d.pnlPct) / 50, 0.5)})` :
+          `rgba(239, 68, 68, ${0.4 + Math.min(Math.abs(d.pnlPct) / 50, 0.5)})`
+        }
       })),
       totalValue: total,
-      totalPnl: pnl,
+      totalPnl: pnl
     };
   }, [data]);
 
@@ -73,7 +73,7 @@ export default function PortfolioAllocationChart({
             <div>${i18n.t('PortfolioAllocationChart.k1')}${(d as any).value.toLocaleString()}</div>
             <div style="color:${pnlColor}">${i18n.t('PortfolioAllocationChart.k2')}${(d as any).pnl >= 0 ? '+' : ''}$${(d as any).pnl.toFixed(0)} (${(d as any).pnlPct.toFixed(1)}%)</div>
           </div>`;
-        },
+        }
       },
       legend: {
         orient: 'vertical',
@@ -85,41 +85,41 @@ export default function PortfolioAllocationChart({
         formatter: (name: string) => {
           const item = pieData.find((d) => d.name === name);
           if (!item) return name;
-          return `${name}  ${((item.value / totalValue) * 100).toFixed(0)}%`;
-        },
+          return `${name}  ${(item.value / totalValue * 100).toFixed(0)}%`;
+        }
       },
       series: [
-        {
-          name: i18n.t('PortfolioAllocationChart.k2'),
-          type: 'pie',
-          radius: ['45%', '72%'],
-          center: ['38%', '50%'],
-          avoidLabelOverlap: true,
-          itemStyle: {
-            borderRadius: 6,
-            borderColor: '#1a1a25',
-            borderWidth: 2,
-          },
-          label: {
-            show: false,
-          },
-          emphasis: {
-            label: {
-              show: true,
-              fontSize: 13,
-              fontWeight: 'bold',
-              color: '#fff',
-              formatter: '{b}\n{d}%',
-            },
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0,0,0,0.5)',
-            },
-          },
-          data: pieData,
+      {
+        name: i18n.t('PortfolioAllocationChart.k2'),
+        type: 'pie',
+        radius: ['45%', '72%'],
+        center: ['38%', '50%'],
+        avoidLabelOverlap: true,
+        itemStyle: {
+          borderRadius: 6,
+          borderColor: '#1a1a25',
+          borderWidth: 2
         },
-      ],
+        label: {
+          show: false
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: 13,
+            fontWeight: 'bold',
+            color: '#fff',
+            formatter: '{b}\n{d}%'
+          },
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0,0,0,0.5)'
+          }
+        },
+        data: pieData
+      }]
+
     };
 
     chartInstance.current.setOption(option);
@@ -137,8 +137,8 @@ export default function PortfolioAllocationChart({
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5 flex items-center justify-center" style={{ height }}>
         <div className="text-gray-500 text-sm">{i18n.t('PortfolioAllocationChart.k0')}</div>
-      </div>
-    );
+      </div>);
+
   }
 
   const pnlColor = totalPnl >= 0 ? 'text-emerald-400' : 'text-red-400';
@@ -148,29 +148,29 @@ export default function PortfolioAllocationChart({
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-white font-semibold text-sm">{title}</h2>
         <div className="flex items-center gap-3 text-[10px] font-mono">
-          <span className="text-gray-500">
-            总持仓 <span className="text-gray-300">${(totalValue / 10000).toFixed(1)}万</span>
+          <span className="text-gray-500">{i18n.t("PortfolioAllocationChart.r92_34d5")}
+            <span className="text-gray-300">${(totalValue / 10000).toFixed(1)}{i18n.t("PortfolioAllocationChart.r92_41e9")}</span>
           </span>
-          <span className="text-gray-500">
-            总盈亏 <span className={pnlColor}>{totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(0)}</span>
+          <span className="text-gray-500">{i18n.t("PortfolioAllocationChart.r92_5148")}
+            <span className={pnlColor}>{totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(0)}</span>
           </span>
         </div>
       </div>
       <div ref={chartRef} style={{ width: '100%', height }} />
       <div className="flex items-center gap-3 mt-2 text-[10px] text-gray-500">
         <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-500/60" />
-          盈利持仓
+          <span className="w-2 h-2 rounded-full bg-emerald-500/60" />{i18n.t("PortfolioAllocationChart.r92_a469")}
+
         </span>
         <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-red-500/60" />
-          亏损持仓
+          <span className="w-2 h-2 rounded-full bg-red-500/60" />{i18n.t("PortfolioAllocationChart.r92_f7ec")}
+
         </span>
         <span className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-gray-500/60" />
-          颜色深浅 = 盈亏幅度
+          <span className="w-2 h-2 rounded-full bg-gray-500/60" />{i18n.t("PortfolioAllocationChart.r92_7f36")}
+
         </span>
       </div>
-    </div>
-  );
+    </div>);
+
 }

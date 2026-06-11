@@ -15,23 +15,23 @@ interface MarketSession {
 }
 
 const MARKETS: MarketSession[] = [
-  {
-    name: i18n.t('MarketClock.k1'), timezone: 'America/New_York', openHour: 9, openMin: 30,
-    closeHour: 16, closeMin: 0, emoji: '🇺🇸', days: [1, 2, 3, 4, 5],
-  },
-  {
-    name: i18n.t('MarketClock.k2'), timezone: 'Asia/Hong_Kong', openHour: 9, openMin: 30,
-    closeHour: 16, closeMin: 0, emoji: '🇭🇰', days: [1, 2, 3, 4, 5],
-  },
-  {
-    name: i18n.t('MarketClock.k3'), timezone: 'Asia/Shanghai', openHour: 9, openMin: 30,
-    closeHour: 15, closeMin: 0, emoji: '🇨🇳', days: [1, 2, 3, 4, 5],
-  },
-  {
-    name: i18n.t('MarketClock.k4'), timezone: 'UTC', openHour: 0, openMin: 0,
-    closeHour: 24, closeMin: 0, emoji: '₿', days: [0, 1, 2, 3, 4, 5, 6],
-  },
-];
+{
+  name: i18n.t('MarketClock.k1'), timezone: 'America/New_York', openHour: 9, openMin: 30,
+  closeHour: 16, closeMin: 0, emoji: '🇺🇸', days: [1, 2, 3, 4, 5]
+},
+{
+  name: i18n.t('MarketClock.k2'), timezone: 'Asia/Hong_Kong', openHour: 9, openMin: 30,
+  closeHour: 16, closeMin: 0, emoji: '🇭🇰', days: [1, 2, 3, 4, 5]
+},
+{
+  name: i18n.t('MarketClock.k3'), timezone: 'Asia/Shanghai', openHour: 9, openMin: 30,
+  closeHour: 15, closeMin: 0, emoji: '🇨🇳', days: [1, 2, 3, 4, 5]
+},
+{
+  name: i18n.t('MarketClock.k4'), timezone: 'UTC', openHour: 0, openMin: 0,
+  closeHour: 24, closeMin: 0, emoji: '₿', days: [0, 1, 2, 3, 4, 5, 6]
+}];
+
 
 function getMarketStatus(market: MarketSession): {
   status: 'open' | 'closed' | 'pre' | 'post';
@@ -93,9 +93,9 @@ export default function MarketClock() {
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-white font-semibold text-sm">🌍 全球市场时钟</h2>
+        <h2 className="text-white font-semibold text-sm">{i18n.t("MarketClock.r92_a310")}</h2>
         <span className="text-gray-500 text-[10px] font-mono">
-          {time.toLocaleTimeString('zh-CN', { hour12: false })} (本地)
+          {time.toLocaleTimeString('zh-CN', { hour12: false })}{i18n.t("MarketClock.r92_6170")}
         </span>
       </div>
 
@@ -105,8 +105,8 @@ export default function MarketClock() {
           return (
             <div
               key={market.name}
-              className="flex items-center justify-between bg-[#12121a] rounded-lg px-3 py-2.5 border border-white/5"
-            >
+              className="flex items-center justify-between bg-[#12121a] rounded-lg px-3 py-2.5 border border-white/5">
+              
               <div className="flex items-center gap-2">
                 <span className="text-sm">{market.emoji}</span>
                 <div>
@@ -122,16 +122,16 @@ export default function MarketClock() {
                   {status.label}
                 </div>
                 <div className="text-gray-500 text-[10px]">
-                  {status.status === 'open'
-                    ? `${status.nextEvent} ${formatCountdown(status.minutesUntil)}`
-                    : `${status.nextEvent} ${formatCountdown(status.minutesUntil)}`
+                  {status.status === 'open' ?
+                  `${status.nextEvent} ${formatCountdown(status.minutesUntil)}` :
+                  `${status.nextEvent} ${formatCountdown(status.minutesUntil)}`
                   }
                 </div>
               </div>
-            </div>
-          );
+            </div>);
+
         })}
       </div>
-    </div>
-  );
+    </div>);
+
 }

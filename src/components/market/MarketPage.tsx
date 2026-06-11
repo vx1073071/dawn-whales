@@ -8,31 +8,31 @@ import * as api from '@/lib/bridge-api';
 import i18n from '../../i18n';
 
 const POPULAR_US = [
-  { code: 'US.TQQQ', name: 'ProShares UltraPro QQQ 3x' },
-  { code: 'US.SQQQ', name: 'ProShares UltraPro Short QQQ' },
-  { code: 'US.SOXL', name: 'Direxion Semiconductor Bull 3x' },
-  { code: 'US.SOXS', name: 'Direxion Semiconductor Bear 3x' },
-  { code: 'US.QQQ', name: 'Invesco QQQ Trust' },
-  { code: 'US.SPY', name: 'SPDR S&P 500 ETF' },
-  { code: 'US.AAPL', name: 'Apple Inc.' },
-  { code: 'US.NVDA', name: 'NVIDIA Corp.' },
-  { code: 'US.MSFT', name: 'Microsoft Corp.' },
-  { code: 'US.TSLA', name: 'Tesla Inc.' },
-  { code: 'US.AMD', name: 'Advanced Micro Devices' },
-  { code: 'US.GOOG', name: 'Alphabet Inc.' },
-  { code: 'US.AMZN', name: 'Amazon.com Inc.' },
-  { code: 'US.META', name: 'Meta Platforms Inc.' },
-  { code: 'US.PLTR', name: 'Palantir Technologies' },
-  { code: 'US.AVGO', name: 'Broadcom Inc.' },
-  { code: 'US.ARKK', name: 'ARK Innovation ETF' },
-  { code: 'US.IWM', name: 'iShares Russell 2000' },
-  { code: 'US.GLD', name: 'SPDR Gold Shares' },
-  { code: 'US.TLT', name: 'iShares 20+ Year Treasury' },
-  { code: 'US.UVXY', name: 'ProShares Ultra VIX' },
-  { code: 'US.BABA', name: 'Alibaba Group (US)' },
-  { code: 'US.PDD', name: 'PDD Holdings' },
-  { code: 'US.NIO', name: 'NIO Inc.' },
-];
+{ code: 'US.TQQQ', name: 'ProShares UltraPro QQQ 3x' },
+{ code: 'US.SQQQ', name: 'ProShares UltraPro Short QQQ' },
+{ code: 'US.SOXL', name: 'Direxion Semiconductor Bull 3x' },
+{ code: 'US.SOXS', name: 'Direxion Semiconductor Bear 3x' },
+{ code: 'US.QQQ', name: 'Invesco QQQ Trust' },
+{ code: 'US.SPY', name: 'SPDR S&P 500 ETF' },
+{ code: 'US.AAPL', name: 'Apple Inc.' },
+{ code: 'US.NVDA', name: 'NVIDIA Corp.' },
+{ code: 'US.MSFT', name: 'Microsoft Corp.' },
+{ code: 'US.TSLA', name: 'Tesla Inc.' },
+{ code: 'US.AMD', name: 'Advanced Micro Devices' },
+{ code: 'US.GOOG', name: 'Alphabet Inc.' },
+{ code: 'US.AMZN', name: 'Amazon.com Inc.' },
+{ code: 'US.META', name: 'Meta Platforms Inc.' },
+{ code: 'US.PLTR', name: 'Palantir Technologies' },
+{ code: 'US.AVGO', name: 'Broadcom Inc.' },
+{ code: 'US.ARKK', name: 'ARK Innovation ETF' },
+{ code: 'US.IWM', name: 'iShares Russell 2000' },
+{ code: 'US.GLD', name: 'SPDR Gold Shares' },
+{ code: 'US.TLT', name: 'iShares 20+ Year Treasury' },
+{ code: 'US.UVXY', name: 'ProShares Ultra VIX' },
+{ code: 'US.BABA', name: 'Alibaba Group (US)' },
+{ code: 'US.PDD', name: 'PDD Holdings' },
+{ code: 'US.NIO', name: 'NIO Inc.' }];
+
 
 export default function MarketPage() {
   const { t } = useTranslation();
@@ -49,19 +49,19 @@ export default function MarketPage() {
   const [klinePeriod, setKlinePeriod] = useState<string>('daily');
 
   const PERIODS = [
-    { key: '1m', label: i18n.t('MarketPage.k1') },
-    { key: '5m', label: i18n.t('MarketPage.k2') },
-    { key: '15m', label: i18n.t('MarketPage.k3') },
-    { key: '60m', label: i18n.t('MarketPage.k4') },
-    { key: 'daily', label: i18n.t('MarketPage.k5') },
-    { key: 'weekly', label: i18n.t('MarketPage.k6') },
-  ];
+  { key: '1m', label: i18n.t('MarketPage.k1') },
+  { key: '5m', label: i18n.t('MarketPage.k2') },
+  { key: '15m', label: i18n.t('MarketPage.k3') },
+  { key: '60m', label: i18n.t('MarketPage.k4') },
+  { key: 'daily', label: i18n.t('MarketPage.k5') },
+  { key: 'weekly', label: i18n.t('MarketPage.k6') }];
+
 
   // ── J-25-05: WebSocket real-time quotes ──────────────────────────────────
   const { quotes: wsQuotes, connected: wsConnected, source: wsSource } = useWebSocketQuotes({
     symbols: watchlist,
     enabled: true,
-    fallbackIntervalMs: 10000,
+    fallbackIntervalMs: 10000
   });
 
   // Merge WS quotes with store quotes (WS takes priority)
@@ -78,7 +78,7 @@ export default function MarketPage() {
         bid: wsQ.bid,
         ask: wsQ.ask,
         _wsSource: wsQ.source,
-        _wsTimestamp: wsQ.timestamp,
+        _wsTimestamp: wsQ.timestamp
       };
     });
     return merged;
@@ -96,19 +96,19 @@ export default function MarketPage() {
         setKlineData(klines.map((k: Record<string, unknown>) => ({
           // @ts-ignore — R89 type fix
           time: typeof k.time === 'number' ? k.time : Math.floor(new Date(k.time).getTime() / 1000),
-          open: k.open, high: k.high, low: k.low, close: k.close, volume: k.volume,
+          open: k.open, high: k.high, low: k.low, close: k.close, volume: k.volume
         })));
       }
-    } catch { /* silent */ } finally { setKlineLoading(false); }
-  void EngineError; // [DATA] structured error tracking
+    } catch {/* silent */} finally {setKlineLoading(false);}
+    void EngineError; // [DATA] structured error tracking
   }
 
-  const filteredSearch = searchQuery.trim()
-    ? POPULAR_US.filter((s) => {
-        const q = searchQuery.toUpperCase();
-        return s.code.includes(q) || s.name.toUpperCase().includes(q);
-      })
-    : POPULAR_US.filter((s) => !watchlist.includes(s.code));
+  const filteredSearch = searchQuery.trim() ?
+  POPULAR_US.filter((s) => {
+    const q = searchQuery.toUpperCase();
+    return s.code.includes(q) || s.name.toUpperCase().includes(q);
+  }) :
+  POPULAR_US.filter((s) => !watchlist.includes(s.code));
 
   function handleAddStock(code: string) {
     addWatch(code);
@@ -122,60 +122,60 @@ export default function MarketPage() {
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">{i18n.t('MarketPage.k0')}</h1>
           <div className="flex items-center gap-2">
-            <p className="text-gray-400 text-sm">实时监控自选股行情 · Push 模式 &lt;50ms</p>
+            <p className="text-gray-400 text-sm">{i18n.t("MarketPage.r92_a782")}</p>
             <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full ${
-              wsConnected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-500/10 text-gray-500'
-            }`}>
+            wsConnected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-500/10 text-gray-500'}`
+            }>
               <span className={`w-1.5 h-1.5 rounded-full ${wsConnected ? 'bg-emerald-400 animate-pulse' : 'bg-gray-500'}`} />
               {wsConnected ? `WS ${wsSource}` : 'Polling'}
             </span>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => setShowSearch(!showSearch)} className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">
-            ＋ 添加自选
+          <button onClick={() => setShowSearch(!showSearch)} className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">{i18n.t("MarketPage.r92_075b")}
+
           </button>
         </div>
       </div>
 
       {/* Search panel */}
-      {showSearch && (
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4 mb-4">
+      {showSearch &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4 mb-4">
           <input
-            autoFocus
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={i18n.t('MarketPage.k1')}
-            className="w-full bg-[#12121a] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50 mb-3"
-            onKeyDown={(e) => { if (e.key === 'Escape') setShowSearch(false); }}
-          />
+          autoFocus
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder={i18n.t('MarketPage.k1')}
+          className="w-full bg-[#12121a] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50 mb-3"
+          onKeyDown={(e) => {if (e.key === 'Escape') setShowSearch(false);}} />
+        
           <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 max-h-48 overflow-y-auto">
             {filteredSearch.map((s) => {
-              const inWatchlist = watchlist.includes(s.code);
-              return (
-                <button
-                  key={s.code}
-                  onClick={() => !inWatchlist && handleAddStock(s.code)}
-                  disabled={inWatchlist}
-                  className={`text-left p-2 rounded-lg text-xs transition-colors ${
-                    inWatchlist
-                      ? 'bg-[#C9A046]/10 text-[#D4A853] cursor-default'
-                      : 'bg-[#12121a] text-gray-300 hover:bg-[#22222f] hover:text-white cursor-pointer'
-                  }`}
-                >
+            const inWatchlist = watchlist.includes(s.code);
+            return (
+              <button
+                key={s.code}
+                onClick={() => !inWatchlist && handleAddStock(s.code)}
+                disabled={inWatchlist}
+                className={`text-left p-2 rounded-lg text-xs transition-colors ${
+                inWatchlist ?
+                'bg-[#C9A046]/10 text-[#D4A853] cursor-default' :
+                'bg-[#12121a] text-gray-300 hover:bg-[#22222f] hover:text-white cursor-pointer'}`
+                }>
+                
                   <div className="font-mono font-medium">{s.code.replace('US.', '')}</div>
                   <div className="text-gray-500 truncate mt-0.5" style={{ fontSize: '10px' }}>{s.name}</div>
-                </button>
-              );
-            })}
-            {filteredSearch.length === 0 && (
-              <div className="col-span-6 text-center text-gray-500 text-sm py-4">
-                未找到匹配 "{searchQuery}" 的股票
-              </div>
-            )}
+                </button>);
+
+          })}
+            {filteredSearch.length === 0 &&
+          <div className="col-span-6 text-center text-gray-500 text-sm py-4">{i18n.t("MarketPage.r92_f5a9")}
+            {searchQuery}{i18n.t("MarketPage.r92_7453")}
+          </div>
+          }
           </div>
         </div>
-      )}
+      }
 
       {/* Market table */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
@@ -193,73 +193,73 @@ export default function MarketPage() {
             </tr>
           </thead>
           <tbody>
-            {watchlist.map((code) => (
-              <WatchlistRow
-                key={code}
-                code={code}
-                quote={mergedQuotes[code]}
-                isSelected={selectedSymbol === code}
-                onSelect={setSelectedSymbol}
-                onRemove={removeWatch}
-              />
-            ))}
+            {watchlist.map((code) =>
+            <WatchlistRow
+              key={code}
+              code={code}
+              quote={mergedQuotes[code]}
+              isSelected={selectedSymbol === code}
+              onSelect={setSelectedSymbol}
+              onRemove={removeWatch} />
+
+            )}
           </tbody>
         </table>
       </div>
 
       {/* K-Line Chart */}
       <div className="mt-6">
-        {klineLoading ? (
-          <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
+        {klineLoading ?
+        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
             <div className="text-3xl mb-2 opacity-40">⏳</div>
             <p className="text-gray-400 text-sm">{i18n.t('MarketPage.k0')}{selectedSymbol?.replace('US.', '')}{i18n.t('MarketPage.k1')}</p>
-          </div>
-        ) : selectedSymbol && klineData.length > 0 ? (
-          <div>
+          </div> :
+        selectedSymbol && klineData.length > 0 ?
+        <div>
             <div className="flex items-center gap-3 mb-3">
               <h2 className="text-white font-semibold">{selectedSymbol.replace('US.', '')}</h2>
               {(() => {
-                const q = mergedQuotes[selectedSymbol];
-                const cls = q && (q as any).change > 0 ? 'text-emerald-400' : q && (q as any).change < 0 ? 'text-red-400' : 'text-gray-500';
-                return q ? (
-                  <span className={`font-mono text-sm ${cls}`}>
+              const q = mergedQuotes[selectedSymbol];
+              const cls = q && (q as any).change > 0 ? 'text-emerald-400' : q && (q as any).change < 0 ? 'text-red-400' : 'text-gray-500';
+              return q ?
+              <span className={`font-mono text-sm ${cls}`}>
                     {(q as any).price.toFixed(2)} {(q as any).change > 0 ? '+' : ''}{(q as any).changePct.toFixed(2)}%
-                  </span>
-                ) : null;
-              })()}
+                  </span> :
+              null;
+            })()}
               <div className="flex gap-1 ml-4">
-                {PERIODS.map((p) => (
-                  <button
-                    key={p.key}
-                    onClick={() => setKlinePeriod(p.key)}
-                    className={`px-2 py-0.5 rounded text-[10px] font-medium transition-colors ${
-                      klinePeriod === p.key
-                        ? 'bg-[#C9A046] text-black'
-                        : 'text-gray-500 hover:text-gray-300 bg-[#12121a]'
-                    }`}
-                  >
+                {PERIODS.map((p) =>
+              <button
+                key={p.key}
+                onClick={() => setKlinePeriod(p.key)}
+                className={`px-2 py-0.5 rounded text-[10px] font-medium transition-colors ${
+                klinePeriod === p.key ?
+                'bg-[#C9A046] text-black' :
+                'text-gray-500 hover:text-gray-300 bg-[#12121a]'}`
+                }>
+                
                     {p.label}
                   </button>
-                ))}
+              )}
               </div>
-              <button onClick={() => loadKlines(selectedSymbol, klinePeriod)} className="text-xs text-gray-500 hover:text-gray-300 ml-auto transition-colors">⟳ 刷新</button>
+              <button onClick={() => loadKlines(selectedSymbol, klinePeriod)} className="text-xs text-gray-500 hover:text-gray-300 ml-auto transition-colors">{i18n.t("MarketPage.r92_4534")}</button>
             </div>
             <KLineChart data={klineData as any} height={400} />
-          </div>
-        ) : selectedSymbol ? (
-          <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
+          </div> :
+        selectedSymbol ?
+        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
             <div className="text-3xl mb-2 opacity-40">📊</div>
-            <p className="text-gray-400 text-sm">K线数据加载中（需要 OpenD 连接）</p>
-          </div>
-        ) : (
-          <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
+            <p className="text-gray-400 text-sm">{i18n.t("MarketPage.r92_d980")}</p>
+          </div> :
+
+        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center">
             <div className="text-3xl mb-2 opacity-40">📈</div>
             <p className="text-gray-400 text-sm">{i18n.t('MarketPage.k5')}</p>
           </div>
-        )}
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 function fmtVol(n: number): string {
@@ -275,14 +275,14 @@ const WatchlistRow = memo(function WatchlistRow({
   quote,
   isSelected,
   onSelect,
-  onRemove,
-}: {
-  code: string;
-  quote: any;
-  isSelected: boolean;
-  onSelect: (code: string) => void;
-  onRemove: (code: string) => void;
-}) {
+  onRemove
+
+
+
+
+
+
+}: {code: string;quote: any;isSelected: boolean;onSelect: (code: string) => void;onRemove: (code: string) => void;}) {
   const chg = quote?.change ?? 0;
   const pct = quote?.changePct ?? 0;
   const cls = chg > 0 ? 'text-emerald-400' : chg < 0 ? 'text-red-400' : 'text-gray-500';
@@ -293,8 +293,8 @@ const WatchlistRow = memo(function WatchlistRow({
   return (
     <tr
       onClick={() => onSelect(code)}
-      className={`border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors cursor-pointer ${isSelected ? 'bg-[#C9A046]/5' : ''}`}
-    >
+      className={`border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors cursor-pointer ${isSelected ? 'bg-[#C9A046]/5' : ''}`}>
+      
       <td className="px-4 py-3 font-semibold text-white text-sm">{sym}</td>
       <td className="px-4 py-3 text-gray-400 text-xs">{quote?.name || '--'}</td>
       <td className={`px-4 py-3 text-right font-mono text-sm ${cls}`}>{quote ? quote.price.toFixed(2) : '--'}</td>
@@ -306,8 +306,8 @@ const WatchlistRow = memo(function WatchlistRow({
         {isInv && <span className="text-[10px] bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded">{i18n.t('MarketPage.k6')}</span>}
       </td>
       <td className="px-4 py-3 text-center">
-        <button onClick={(e) => { e.stopPropagation(); onRemove(code); }} className="text-gray-600 hover:text-red-400 text-xs transition-colors" title={i18n.t('MarketPage.k7')}>✕</button>
+        <button onClick={(e) => {e.stopPropagation();onRemove(code);}} className="text-gray-600 hover:text-red-400 text-xs transition-colors" title={i18n.t('MarketPage.k7')}>✕</button>
       </td>
-    </tr>
-  );
+    </tr>);
+
 });

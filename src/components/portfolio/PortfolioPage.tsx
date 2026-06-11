@@ -40,8 +40,8 @@ export default function PortfolioPage() {
     try {
       const accs = await api.getAccounts();
       if (accs.length > 0) setAccountId(accs[0].accId);
-    } catch (_e: unknown) { /* silent */ }
-  void EngineError; // [SYSTEM] structured error tracking
+    } catch (_e: unknown) {/* silent */}
+    void EngineError; // [SYSTEM] structured error tracking
   }
 
   async function loadData() {
@@ -50,9 +50,9 @@ export default function PortfolioPage() {
     setError('');
     try {
       const [fundsData, pos] = await Promise.all([
-        api.getFunds(accountId),
-        api.getPositions(accountId),
-      ]);
+      api.getFunds(accountId),
+      api.getPositions(accountId)]
+      );
       if (fundsData) setFunds({ ...fundsData, currency: fundsData.currency || 'USD' });
       setPositions(pos || []);
     } catch (e: unknown) {
@@ -69,7 +69,7 @@ export default function PortfolioPage() {
   const totalVal: any = positions.reduce((sum, p) => sum + ((p as any).marketVal || 0), 0);
   const allocation = positions.map((p) => ({
     ...(p as any),
-    pct: totalVal > 0 ? (((p as any).marketVal || 0) / totalVal * 100) : 0,
+    pct: totalVal > 0 ? ((p as any).marketVal || 0) / totalVal * 100 : 0
   })).sort((a, b) => b.pct - a.pct);
 
   return (
@@ -85,94 +85,94 @@ export default function PortfolioPage() {
               type="checkbox"
               checked={autoRefresh}
               onChange={(e) => setAutoRefresh(e.target.checked)}
-              className="accent-[#C9A046]"
-            />
-            自动刷新
+              className="accent-[#C9A046]" />{i18n.t("PortfolioPage.r92_6c14")}
+
+
           </label>
           <button
             onClick={loadData}
             disabled={loading || !accountId}
-            className="px-4 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors disabled:opacity-40"
-          >
-            ⟳ 刷新
+            className="px-4 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors disabled:opacity-40">{i18n.t("PortfolioPage.r92_c502")}
+
+
           </button>
         </div>
       </div>
 
-      {error && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-4 text-red-400 text-sm">{error}</div>
-      )}
+      {error &&
+      <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-4 text-red-400 text-sm">{error}</div>
+      }
 
-      {!accountId && !loading && (
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center mb-4">
+      {!accountId && !loading &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-8 text-center mb-4">
           <div className="text-3xl mb-2 opacity-40">🔌</div>
           <p className="text-gray-400 text-sm">{i18n.t('PortfolioPage.k2')}</p>
           <p className="text-gray-500 text-xs mt-1">{i18n.t('PortfolioPage.k3')}</p>
         </div>
-      )}
+      }
 
       {/* Account Summary Cards */}
-      {funds && (
-        <div className="grid grid-cols-5 gap-3 mb-6">
-          <SummaryCard  label={t("components.totalAssets")} value={`$${fmt(funds.totalAssets)}`} highlight />
+      {funds &&
+      <div className="grid grid-cols-5 gap-3 mb-6">
+          <SummaryCard label={t("components.totalAssets")} value={`$${fmt(funds.totalAssets)}`} highlight />
           <SummaryCard label={i18n.t('PortfolioPage.k2')} value={`${funds.todayPnl >= 0 ? '+' : ''}$${fmt(funds.todayPnl)}`} className={pnlClass(funds.todayPnl)} />
-          <SummaryCard  label={t("components.positionValue")} value={`$${fmt(funds.marketVal)}`} />
-          <SummaryCard  label={t("components.availableFunds")} value={`$${fmt(funds.cash)}`} />
-          <SummaryCard  label={t("components.buyingPower")} value={`$${fmt(funds.power)}`} />
+          <SummaryCard label={t("components.positionValue")} value={`$${fmt(funds.marketVal)}`} />
+          <SummaryCard label={t("components.availableFunds")} value={`$${fmt(funds.cash)}`} />
+          <SummaryCard label={t("components.buyingPower")} value={`$${fmt(funds.power)}`} />
         </div>
-      )}
+      }
 
       {/* Allocation Bar */}
-      {allocation.length > 0 && (
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4 mb-4">
+      {allocation.length > 0 &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4 mb-4">
           <h3 className="text-gray-300 text-xs font-medium mb-3">{i18n.t('PortfolioPage.k4')}</h3>
           <div className="flex h-4 rounded-lg overflow-hidden mb-3">
             {allocation.slice(0, 8).map((p, i) => {
-              const colors = ['#C9A046', '#22c55e', '#3b82f6', '#a855f7', '#ef4444', '#f97316', '#06b6d4', '#ec4899'];
-              return (
-                <div
-                  key={i}
-                  style={{ width: `${p.pct}%`, backgroundColor: colors[i % colors.length] }}
-                  className="transition-all duration-500"
-                  title={`${p.code?.replace('US.', '')}: ${p.pct.toFixed(1)}%`}
-                />
-              );
-            })}
-            {funds && funds.cash > 0 && (totalVal as any) > 0 && (
+            const colors = ['#C9A046', '#22c55e', '#3b82f6', '#a855f7', '#ef4444', '#f97316', '#06b6d4', '#ec4899'];
+            return (
               <div
-                style={{ width: `${(funds.cash / ((totalVal as any) + funds.cash)) * 100}%` }}
-                className="bg-gray-700 transition-all duration-500"
-                title={`${i18n.t('PortfolioPage.k0')}${((funds.cash / ((totalVal as any) + funds.cash)) * 100).toFixed(1)}%`}
-              />
-            )}
+                key={i}
+                style={{ width: `${p.pct}%`, backgroundColor: colors[i % colors.length] }}
+                className="transition-all duration-500"
+                title={`${p.code?.replace('US.', '')}: ${p.pct.toFixed(1)}%`} />);
+
+
+          })}
+            {funds && funds.cash > 0 && totalVal as any > 0 &&
+          <div
+            style={{ width: `${funds.cash / ((totalVal as any) + funds.cash) * 100}%` }}
+            className="bg-gray-700 transition-all duration-500"
+            title={`${i18n.t('PortfolioPage.k0')}${(funds.cash / ((totalVal as any) + funds.cash) * 100).toFixed(1)}%`} />
+
+          }
           </div>
           <div className="flex flex-wrap gap-3 text-[11px]">
             {allocation.slice(0, 8).map((p, i) => {
-              const colors = ['text-[#C9A046]', 'text-emerald-400', 'text-blue-400', 'text-purple-400', 'text-red-400', 'text-orange-400', 'text-cyan-400', 'text-pink-400'];
-              return (
-                <div key={i} className="flex items-center gap-1">
+            const colors = ['text-[#C9A046]', 'text-emerald-400', 'text-blue-400', 'text-purple-400', 'text-red-400', 'text-orange-400', 'text-cyan-400', 'text-pink-400'];
+            return (
+              <div key={i} className="flex items-center gap-1">
                   <span className={`w-2 h-2 rounded-sm`} style={{ backgroundColor: ['#C9A046', '#22c55e', '#3b82f6', '#a855f7', '#ef4444', '#f97316', '#06b6d4', '#ec4899'][i % 8] }} />
                   <span className={colors[i % colors.length]}>{p.code?.replace('US.', '')}</span>
                   <span className="text-gray-500">{p.pct.toFixed(1)}%</span>
-                </div>
-              );
-            })}
+                </div>);
+
+          })}
           </div>
         </div>
-      )}
+      }
 
       {/* Positions Table */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-white/5">
           <h2 className="text-white font-medium text-sm">{i18n.t('PortfolioPage.k1')}{positions.length})</h2>
         </div>
-        {positions.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">
+        {positions.length === 0 ?
+        <div className="p-8 text-center text-gray-500">
             <div className="text-3xl mb-2 opacity-40">💼</div>
             <p className="text-sm">{loading ? t('components.loading') : i18n.t('PortfolioPage.k3')}</p>
-          </div>
-        ) : (
-          <table className="w-full">
+          </div> :
+
+        <table className="w-full">
             <thead>
               <tr className="border-b border-white/5 text-gray-500 text-xs uppercase">
                 <th className="px-4 py-3 text-left">{t("components.code")}</th>
@@ -181,14 +181,14 @@ export default function PortfolioPage() {
                 <th className="px-4 py-3 text-right">{i18n.t('PortfolioPage.k5')}</th>
                 <th className="px-4 py-3 text-right">{i18n.t('PortfolioPage.k6')}</th>
                 <th className="px-4 py-3 text-right">{i18n.t('PortfolioPage.k7')}</th>
-                <th className="px-4 py-3 text-right">盈亏%</th>
+                <th className="px-4 py-3 text-right">{i18n.t("PortfolioPage.r92_b2f3")}</th>
                 <th className="px-4 py-3 text-right">{t("components.marketCap")}</th>
                 <th className="px-4 py-3 text-right">{i18n.t('PortfolioPage.k8')}</th>
               </tr>
             </thead>
             <tbody>
-              {allocation.map((p, i) => (
-                <tr key={i} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
+              {allocation.map((p, i) =>
+            <tr key={i} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
                   <td className="px-4 py-3 font-semibold text-white text-sm">{p.code?.replace('US.', '')}</td>
                   <td className="px-4 py-3 text-gray-400 text-xs">{p.name}</td>
                   <td className="px-4 py-3 text-right font-mono text-sm text-gray-200">{p.qty}</td>
@@ -210,20 +210,20 @@ export default function PortfolioPage() {
                     </div>
                   </td>
                 </tr>
-              ))}
+            )}
             </tbody>
           </table>
-        )}
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
-function SummaryCard({ label, value, className = '', highlight = false }: { label: string; value: string; className?: string; highlight?: boolean }) {
+function SummaryCard({ label, value, className = '', highlight = false }: {label: string;value: string;className?: string;highlight?: boolean;}) {
   return (
     <div className={`rounded-xl p-4 ${highlight ? 'bg-[#C9A046]/10 border border-[#C9A046]/20' : 'bg-[#1a1a25] border border-white/5'}`}>
       <div className="text-gray-500 text-xs mb-1">{label}</div>
       <div className={`text-lg font-bold font-mono ${className}`}>{value}</div>
-    </div>
-  );
+    </div>);
+
 }

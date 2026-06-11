@@ -1,0 +1,242 @@
+﻿npx : [33m[7m[33m Vitest [33m[27m "deps.external" is deprecated. If you rely on vite-node directly, use 
+"server.deps.external" instead. Otherwise, consider using "deps.optimizer.web.exclude"[39m
+所在位置 行:2 字符: 1
++ npx vitest run tests/jvs-57-02-agent-technical.test.ts tests/jvs-21-2 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33m[7m[33m ...b.exclude"[39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[1m[46m RUN [49m[22m [36mv3.2.6 [39m[90mC:/Users/vx107/.easyclaw/workspace/dawn-whales[39m
+
+[1m[43m DEPRECATED [49m[22m [33m'basic' reporter is deprecated and will be removed in Vitest v3.
+Remove 'basic' from 'reporters' option. To match 'basic' reporter 100%, use configuration:
+{
+  "test": {
+    "reporters": [
+      [
+        "default",
+        {
+          "summary": false
+        }
+      ]
+    ]
+  }
+}[39m
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-21: KLine Aggregation Optimizer[2m > [22m[2mshould initialize with default config
+[22m[39m[KLineOptimizer] Initialized (buffer=100)
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-21: KLine Aggregation Optimizer[2m > [22m[2mshould feed single K-line point
+[22m[39m[KLineOptimizer] Initialized (buffer=100)
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-21: KLine Aggregation Optimizer[2m > [22m[2mshould aggregate to higher timeframes
+[22m[39m[KLineOptimizer] Initialized (buffer=100)
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-21: KLine Aggregation Optimizer[2m > [22m[2mshould batch feed multiple points
+[22m[39m[KLineOptimizer] Initialized (buffer=100)
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-21: KLine Aggregation Optimizer[2m > [22m[2mshould respect circular buffer limit
+[22m[39m[KLineOptimizer] Initialized (buffer=100)
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-21: KLine Aggregation Optimizer[2m > [22m[2mshould respect circular buffer limit
+[22m[39m[KLineOptimizer] Initialized (buffer=5)
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-21: KLine Aggregation Optimizer[2m > [22m[2mshould return performance stats
+[22m[39m[KLineOptimizer] Initialized (buffer=100)
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-21: KLine Aggregation Optimizer[2m > [22m[2mshould get aggregation result with metrics
+[22m[39m[KLineOptimizer] Initialized (buffer=100)
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-21: KLine Aggregation Optimizer[2m > [22m[2mshould clear specific symbol
+[22m[39m[KLineOptimizer] Initialized (buffer=100)
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-21: KLine Aggregation Optimizer[2m > [22m[2mshould emit feed events
+[22m[39m[KLineOptimizer] Initialized (buffer=100)
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould initialize
+[22m[39m[SignalPushOptimizer] batch=3, interval=50ms
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould subscribe and filter signals
+[22m[39m[SignalPushOptimizer] batch=3, interval=50ms
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould subscribe and filter signals
+[22m[39m[SignalPushOptimizer] Client client-1 subscribed { symbols: [ [32m'600519'[39m ], minStrength: [33m50[39m }
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould filter by minimum strength
+[22m[39m[SignalPushOptimizer] batch=3, interval=50ms
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould filter by minimum strength
+[22m[39m[SignalPushOptimizer] Client client-1 subscribed { minStrength: [33m70[39m }
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould deduplicate signals within window
+[22m[39m[SignalPushOptimizer] batch=3, interval=50ms
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould deduplicate signals within window
+[22m[39m[SignalPushOptimizer] Client client-1 subscribed {}
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould store signal history
+[22m[39m[SignalPushOptimizer] batch=3, interval=50ms
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould batch push signals
+[22m[39m[SignalPushOptimizer] batch=3, interval=50ms
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould batch push signals
+[22m[39m[SignalPushOptimizer] Client client-1 subscribed {}
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould emit push events on flush
+[22m[39m[SignalPushOptimizer] batch=3, interval=50ms
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould emit push events on flush
+[22m[39m[SignalPushOptimizer] Client client-1 subscribed {}
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould get subscription stats
+[22m[39m[SignalPushOptimizer] batch=3, interval=50ms
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould get subscription stats
+[22m[39m[SignalPushOptimizer] Client client-1 subscribed { symbols: [ [32m'600519'[39m, [32m'000001'[39m ] }
+[SignalPushOptimizer] Client client-2 subscribed { symbols: [ [32m'600036'[39m ] }
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould unsubscribe client
+[22m[39m[SignalPushOptimizer] batch=3, interval=50ms
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-22: Signal Push Optimizer[2m > [22m[2mshould unsubscribe client
+[22m[39m[SignalPushOptimizer] Client client-1 subscribed {}
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-23: Data Compression Transport[2m > [22m[2mshould initialize
+[22m[39m[DataCompression] enabled=true
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-23: Data Compression Transport[2m > [22m[2mshould compress large payloads
+[22m[39m[DataCompression] enabled=true
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-23: Data Compression Transport[2m > [22m[2mshould not compress small payloads
+[22m[39m[DataCompression] enabled=true
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-23: Data Compression Transport[2m > [22m[2mshould not compress small payloads
+[22m[39m[DataCompression] enabled=true
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-23: Data Compression Transport[2m > [22m[2mshould generate delta updates
+[22m[39m[DataCompression] enabled=true
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-23: Data Compression Transport[2m > [22m[2mshould send full update when no previous version
+[22m[39m[DataCompression] enabled=true
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-23: Data Compression Transport[2m > [22m[2mshould apply delta updates correctly
+[22m[39m[DataCompression] enabled=true
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-23: Data Compression Transport[2m > [22m[2mshould decompress correctly
+[22m[39m[DataCompression] enabled=true
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-23: Data Compression Transport[2m > [22m[2mshould batch enqueue and flush
+[22m[39m[DataCompression] enabled=true
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-23: Data Compression Transport[2m > [22m[2mshould track version numbers
+[22m[39m[DataCompression] enabled=true
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mJVS-23: Data Compression Transport[2m > [22m[2mshould report compression metrics
+[22m[39m[DataCompression] enabled=true
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mSingletons[2m > [22m[2mshould return same KLineAggregationOptimizer instance
+[22m[39m[KLineOptimizer] Initialized (buffer=500)
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mSingletons[2m > [22m[2mshould return same SignalPushOptimizer instance
+[22m[39m[SignalPushOptimizer] batch=10, interval=500ms
+
+[90mstdout[2m | tests/jvs-21-22-23-optimizers.test.ts[2m > [22m[2mSingletons[2m > [22m[2mshould return same DataCompressionTransport instance
+[22m[39m[DataCompression] enabled=true
+
+ [31m❯[39m tests/jvs-21-22-23-optimizers.test.ts [2m([22m[2m31 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 117[2mms[22m[39m
+   [32m✓[39m JVS-21: KLine Aggregation Optimizer[2m > [22mshould initialize with default config[32m 1[2mms[22m[39m
+   [32m✓[39m JVS-21: KLine Aggregation Optimizer[2m > [22mshould feed single K-line point[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-21: KLine Aggregation Optimizer[2m > [22mshould aggregate to higher timeframes[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-21: KLine Aggregation Optimizer[2m > [22mshould batch feed multiple points[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-21: KLine Aggregation Optimizer[2m > [22mshould respect circular buffer limit[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-21: KLine Aggregation Optimizer[2m > [22mshould return performance stats[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-21: KLine Aggregation Optimizer[2m > [22mshould get aggregation result with metrics[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-21: KLine Aggregation Optimizer[2m > [22mshould clear specific symbol[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-21: KLine Aggregation Optimizer[2m > [22mshould emit feed events[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-22: Signal Push Optimizer[2m > [22mshould initialize[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-22: Signal Push Optimizer[2m > [22mshould subscribe and filter signals[32m 1[2mms[22m[39m
+   [32m✓[39m JVS-22: Signal Push Optimizer[2m > [22mshould filter by minimum strength[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-22: Signal Push Optimizer[2m > [22mshould deduplicate signals within window[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-22: Signal Push Optimizer[2m > [22mshould store signal history[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-22: Signal Push Optimizer[2m > [22mshould batch push signals[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-22: Signal Push Optimizer[2m > [22mshould emit push events on flush[32m 102[2mms[22m[39m
+   [32m✓[39m JVS-22: Signal Push Optimizer[2m > [22mshould get subscription stats[32m 1[2mms[22m[39m
+   [32m✓[39m JVS-22: Signal Push Optimizer[2m > [22mshould unsubscribe client[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-23: Data Compression Transport[2m > [22mshould initialize[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-23: Data Compression Transport[2m > [22mshould compress large payloads[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-23: Data Compression Transport[2m > [22mshould not compress small payloads[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-23: Data Compression Transport[2m > [22mshould generate delta updates[32m 1[2mms[22m[39m
+   [32m✓[39m JVS-23: Data Compression Transport[2m > [22mshould send full update when no previous version[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-23: Data Compression Transport[2m > [22mshould apply delta updates correctly[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-23: Data Compression Transport[2m > [22mshould decompress correctly[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-23: Data Compression Transport[2m > [22mshould batch enqueue and flush[32m 0[2mms[22m[39m
+   [32m✓[39m JVS-23: Data Compression Transport[2m > [22mshould track version numbers[32m 0[2mms[22m[39m
+[31m   [31m×[31m JVS-23: Data Compression Transport[2m > [22mshould report compression metrics[39m[32m 3[2mms[22m[39m
+[31m     → expected 0 to be greater than 0[39m
+   [32m✓[39m Singletons[2m > [22mshould return same KLineAggregationOptimizer instance[32m 0[2mms[22m[39m
+   [32m✓[39m Singletons[2m > [22mshould return same SignalPushOptimizer instance[32m 0[2mms[22m[39m
+   [32m✓[39m Singletons[2m > [22mshould return same DataCompressionTransport instance[32m 0[2mms[22m[39m
+
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Suites 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m [ tests/jvs-57-02-agent-technical.test.ts ][22m
+[31m[1mReferenceError[22m: localStorage is not defined[39m
+[36m [2m❯[22m src/i18n/index.ts:[2m40:19[22m[39m
+    [90m 38| [39m}[33m;[39m
+    [90m 39| [39m
+    [90m 40| [39mconst savedLang = localStorage.getItem('dw_language') as SupportedLang…
+    [90m   | [39m                  [31m^[39m
+    [90m 41| [39mconst defaultLang: SupportedLang = savedLang && (resources as any)[sav…
+    [90m 42| [39m
+[90m [2m❯[22m electron/engine/agents/agent-technical.ts:[2m22:1[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/q47-property-testing.test.ts[2m [ tests/q47-property-testing.test.ts ][22m
+[31m[1mError[22m: Failed to resolve import "fast-check" from "tests/q47-property-testing.test.ts". Does the file 
+exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36mC:/Users/vx107/.easyclaw/workspace/dawn-whales/tests/q47-property-testing.test.ts[39m:5:15
+[33m  1  |  import { describe, it, expect } from "vitest";
+  2  |  import fc from "fast-check";
+     |                  ^
+  3  |  import { calculateRSI } from "../electron/engine/analysis/technical-indicators";
+  4  |  import { normalCDF, normalPDF } from "../electron/engine/data/calendar-effects";[39m
+[90m [2m❯[22m TransformPluginContext._formatLog 
+node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:[2m42658:41[22m[39m
+[90m [2m❯[22m TransformPluginContext.error node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:[2m42655:16[22m[39m
+[90m [2m❯[22m normalizeUrl node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:[2m40634:23[22m[39m
+[90m [2m❯[22m node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:[2m40753:37[22m[39m
+[90m [2m❯[22m TransformPluginContext.transform 
+node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:[2m40680:7[22m[39m
+[90m [2m❯[22m EnvironmentPluginContainer.transform 
+node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:[2m42453:18[22m[39m
+[90m [2m❯[22m loadAndTransform node_modules/vite/dist/node/chunks/dep-Dm0c1Wj2.js:[2m35845:27[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-21-22-23-optimizers.test.ts[2m > [22mJVS-23: Data Compression Transport[2m > 
+[22mshould report compression metrics
+[31m[1mAssertionError[22m: expected 0 to be greater than 0[39m
+[36m [2m❯[22m tests/jvs-21-22-23-optimizers.test.ts:[2m349:30[22m[39m
+    [90m347| [39m    [35mconst[39m m [33m=[39m transport[33m.[39m[34mgetMetrics[39m()[33m;[39m
+    [90m348| [39m    [34mexpect[39m(m[33m.[39mtotalCompressed)[33m.[39m[34mtoBe[39m([34m1[39m)[33m;[39m
+    [90m349| [39m    
+[34mexpect[39m(m[33m.[39msavingsPercent)[33m.[39m[34mtoBeGreaterThan[39m([34m0[39m)[33m;[39m
+    [90m   | [39m                             [31m^[39m
+    [90m350| [39m  })[33m;[39m
+    [90m351| [39m})[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m30 passed[39m[22m[90m (31)[39m
+[2m   Start at [22m 12:55:07
+[2m   Duration [22m 1.59s[2m (transform 222ms, setup 22ms, collect 65ms, tests 117ms, environment 1.53s, prepare 827ms)[22m
+

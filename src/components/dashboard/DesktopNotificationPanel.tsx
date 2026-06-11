@@ -33,7 +33,7 @@ const TYPE_ICONS: Record<NotificationType, string> = {
   stop_loss: '🛑',
   take_profit: '💰',
   risk_alert: '⚠️',
-  system: '🔔',
+  system: '🔔'
 };
 
 const TYPE_COLORS: Record<NotificationType, string> = {
@@ -41,7 +41,7 @@ const TYPE_COLORS: Record<NotificationType, string> = {
   stop_loss: 'text-red-400',
   take_profit: 'text-emerald-400',
   risk_alert: 'text-orange-400',
-  system: 'text-blue-400',
+  system: 'text-blue-400'
 };
 
 // ── Main Component ──────────────────────────────────────────────────────
@@ -79,7 +79,7 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
       // Send welcome notification
       new Notification('DAWN WHALES', {
         body: i18n.t('DesktopNotificationPanel.k1'),
-        icon: '/logo.png',
+        icon: '/logo.png'
       });
     }
   }, []);
@@ -87,18 +87,18 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
   const sendNotification = useCallback((type: NotificationType, title: string, body: string) => {
     const id = `notif-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
     const entry: DesktopNotification = {
-      id, type, title, body, timestamp: Date.now(), read: false,
+      id, type, title, body, timestamp: Date.now(), read: false
     };
 
     // Push to history
-    setHistory(prev => [entry, ...prev].slice(0, 20));
+    setHistory((prev) => [entry, ...prev].slice(0, 20));
 
     // Browser notification
     if (enabled && 'Notification' in window) {
       new Notification(title, {
         body,
         icon: '/logo.png',
-        tag: type,
+        tag: type
       });
 
       // Sound via AudioContext (short beep)
@@ -115,7 +115,7 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
           osc.start();
           osc.stop(ctx.currentTime + 0.15);
         } catch {}
-      void EngineError; // [SYSTEM] structured error tracking
+        void EngineError; // [SYSTEM] structured error tracking
       }
     }
   }, [enabled, sound]);
@@ -136,14 +136,14 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
   }, [sendNotification]);
 
   const markAllRead = useCallback(() => {
-    setHistory(prev => prev.map(h => ({ ...h, read: true })));
+    setHistory((prev) => prev.map((h) => ({ ...h, read: true })));
   }, []);
 
   const clearHistory = useCallback(() => {
     setHistory([]);
   }, []);
 
-  const unreadCount = history.filter(h => !h.read).length;
+  const unreadCount = history.filter((h) => !h.read).length;
 
   // ── Render ─────────────────────────────────────────────────────────
 
@@ -152,18 +152,18 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h3 className="text-lg font-bold text-white">
-            桌面通知
+          <h3 className="text-lg font-bold text-white">{i18n.t("DesktopNotificationPanel.r92_5ea2")}
+
             <span className="ml-2 px-2 py-0.5 text-[10px] bg-amber-500/20 text-amber-400 rounded-full font-normal">
               Phase 6.0
             </span>
           </h3>
           <p className="text-xs text-gray-500 mt-0.5">
             {permission === 'granted' ? i18n.t('DesktopNotificationPanel.k8') :
-             permission === 'denied' ? i18n.t('DesktopNotificationPanel.k9') :
-             permission === 'unsupported' ? i18n.t('DesktopNotificationPanel.k10') :
-             i18n.t('DesktopNotificationPanel.k11')}
-            {unreadCount > 0 && <span className="ml-2 text-amber-400">{unreadCount} 条未读</span>}
+            permission === 'denied' ? i18n.t('DesktopNotificationPanel.k9') :
+            permission === 'unsupported' ? i18n.t('DesktopNotificationPanel.k10') :
+            i18n.t('DesktopNotificationPanel.k11')}
+            {unreadCount > 0 && <span className="ml-2 text-amber-400">{unreadCount}{i18n.t("DesktopNotificationPanel.r92_9ccc")}</span>}
           </p>
         </div>
 
@@ -173,87 +173,87 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
             <input
               type="checkbox"
               checked={sound}
-              onChange={e => setSound(e.target.checked)}
-              className="accent-amber-500"
-            />
+              onChange={(e) => setSound(e.target.checked)}
+              className="accent-amber-500" />
+            
             🔊
           </label>
           <label className="flex items-center gap-1.5 text-[10px] text-gray-500">
             <input
               type="checkbox"
               checked={enabled}
-              onChange={e => setEnabled(e.target.checked)}
+              onChange={(e) => setEnabled(e.target.checked)}
               disabled={permission !== 'granted'}
-              className="accent-amber-500"
-            />
-            推送
+              className="accent-amber-500" />{i18n.t("DesktopNotificationPanel.r92_19a1")}
+
+
           </label>
         </div>
       </div>
 
       {/* Permission request */}
-      {permission === 'default' && (
-        <div className="bg-amber-500/5 border border-amber-500/20 rounded-lg p-4 mb-5">
+      {permission === 'default' &&
+      <div className="bg-amber-500/5 border border-amber-500/20 rounded-lg p-4 mb-5">
           <div className="flex items-start justify-between">
             <div>
               <div className="text-amber-400 font-bold text-sm">{i18n.t('DesktopNotificationPanel.k0')}</div>
-              <p className="text-xs text-gray-500 mt-1">
-                策略信号、止损触发、风控告警将以桌面弹窗形式通知你。
-              </p>
+              <p className="text-xs text-gray-500 mt-1">{i18n.t("DesktopNotificationPanel.r92_070e")}
+
+            </p>
             </div>
             <button
-              onClick={requestPermission}
-              className="px-4 py-2 bg-amber-500 text-black rounded-lg text-xs font-bold hover:bg-amber-400"
-            >
-              开启
-            </button>
+            onClick={requestPermission}
+            className="px-4 py-2 bg-amber-500 text-black rounded-lg text-xs font-bold hover:bg-amber-400">{i18n.t("DesktopNotificationPanel.r92_cdde")}
+
+
+          </button>
           </div>
         </div>
-      )}
+      }
 
-      {permission === 'denied' && (
-        <div className="bg-red-500/5 border border-red-500/20 rounded-lg p-4 mb-5">
-          <p className="text-xs text-red-400">
-            通知权限已被拒绝。请在浏览器设置中允许通知。
-          </p>
-        </div>
-      )}
+      {permission === 'denied' &&
+      <div className="bg-red-500/5 border border-red-500/20 rounded-lg p-4 mb-5">
+          <p className="text-xs text-red-400">{i18n.t("DesktopNotificationPanel.r92_69e8")}
 
-      {permission === 'unsupported' && (
-        <div className="bg-gray-800/40 rounded-lg p-4 mb-5">
-          <p className="text-xs text-gray-500">
-            当前浏览器不支持桌面通知。请使用 Chrome/Edge/Firefox。
-          </p>
+        </p>
         </div>
-      )}
+      }
+
+      {permission === 'unsupported' &&
+      <div className="bg-gray-800/40 rounded-lg p-4 mb-5">
+          <p className="text-xs text-gray-500">{i18n.t("DesktopNotificationPanel.r92_acf9")}
+
+        </p>
+        </div>
+      }
 
       {/* Test buttons */}
       <div className="flex gap-2 mb-5">
         <button onClick={testSignal} disabled={!enabled}
-          className={`px-3 py-1.5 rounded text-[10px] font-medium transition-colors ${
-            enabled ? 'bg-amber-500/10 text-amber-400 hover:bg-amber-500/20' : 'bg-gray-800 text-gray-600 cursor-not-allowed'
-          }`}>
-          📊 测试信号
+        className={`px-3 py-1.5 rounded text-[10px] font-medium transition-colors ${
+        enabled ? 'bg-amber-500/10 text-amber-400 hover:bg-amber-500/20' : 'bg-gray-800 text-gray-600 cursor-not-allowed'}`
+        }>{i18n.t("DesktopNotificationPanel.r92_b5a3")}
+
         </button>
         <button onClick={testStopLoss} disabled={!enabled}
-          className={`px-3 py-1.5 rounded text-[10px] font-medium transition-colors ${
-            enabled ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20' : 'bg-gray-800 text-gray-600 cursor-not-allowed'
-          }`}>
-          🛑 测试止损
+        className={`px-3 py-1.5 rounded text-[10px] font-medium transition-colors ${
+        enabled ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20' : 'bg-gray-800 text-gray-600 cursor-not-allowed'}`
+        }>{i18n.t("DesktopNotificationPanel.r92_42e6")}
+
         </button>
         <button onClick={testRisk} disabled={!enabled}
-          className={`px-3 py-1.5 rounded text-[10px] font-medium transition-colors ${
-            enabled ? 'bg-orange-500/10 text-orange-400 hover:bg-orange-500/20' : 'bg-gray-800 text-gray-600 cursor-not-allowed'
-          }`}>
-          ⚠️ 测试风控
+        className={`px-3 py-1.5 rounded text-[10px] font-medium transition-colors ${
+        enabled ? 'bg-orange-500/10 text-orange-400 hover:bg-orange-500/20' : 'bg-gray-800 text-gray-600 cursor-not-allowed'}`
+        }>{i18n.t("DesktopNotificationPanel.r92_f786")}
+
         </button>
         {showTestSent && <span className="text-[10px] text-emerald-400 py-1.5">{i18n.t('DesktopNotificationPanel.r92_0')}</span>}
       </div>
 
       {/* Notification history */}
       <div className="flex items-center justify-between mb-3">
-        <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-          通知历史 ({history.length})
+        <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">{i18n.t("DesktopNotificationPanel.r92_b87d")}
+          {history.length})
         </h4>
         <div className="flex gap-2">
           <button onClick={markAllRead} className="text-[10px] text-gray-500 hover:text-gray-300">{i18n.t('DesktopNotificationPanel.k1')}</button>
@@ -262,18 +262,18 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
       </div>
 
       <div className="space-y-2 max-h-64 overflow-y-auto">
-        {history.length === 0 && (
-          <div className="text-center py-6 text-xs text-gray-600">
-            暂无通知记录
-          </div>
-        )}
-        {history.map(entry => (
-          <div
-            key={entry.id}
-            className={`flex items-start gap-3 rounded-lg p-3 border ${
-              entry.read ? 'bg-gray-800/20 border-gray-700/10' : 'bg-gray-800/40 border-gray-700/30'
-            }`}
-          >
+        {history.length === 0 &&
+        <div className="text-center py-6 text-xs text-gray-600">{i18n.t("DesktopNotificationPanel.r92_0d85")}
+
+        </div>
+        }
+        {history.map((entry) =>
+        <div
+          key={entry.id}
+          className={`flex items-start gap-3 rounded-lg p-3 border ${
+          entry.read ? 'bg-gray-800/20 border-gray-700/10' : 'bg-gray-800/40 border-gray-700/30'}`
+          }>
+          
             <span className="text-lg">{TYPE_ICONS[entry.type]}</span>
             <div className="flex-1 min-w-0">
               <div className={`text-xs font-medium ${entry.read ? TYPE_COLORS[entry.type].replace('text-', 'text-').replace('400', '300') : TYPE_COLORS[entry.type]}`}>
@@ -286,10 +286,10 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
               </div>
             </div>
           </div>
-        ))}
+        )}
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default DesktopNotificationPanel;

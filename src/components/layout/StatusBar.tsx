@@ -1,3 +1,4 @@
+import i18n from '../../i18n/index';
 import { useState, useEffect } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +20,7 @@ export default function StatusBar() {
           // @ts-ignore — R89 type fix
           if (info?.total) setMem((info as any).total);
         }).catch(() => {});
-      void EngineError; // [SYSTEM] structured error tracking
+        void EngineError; // [SYSTEM] structured error tracking
       }
     }, 5000);
     return () => clearInterval(t);
@@ -34,11 +35,11 @@ export default function StatusBar() {
       <span className="text-gray-700">|</span>
       <span>{t('components.watchlistCount', { count: 8 })}</span>
       <span className="text-gray-700">|</span>
-      <span>道鲸 v0.1.0</span>
+      <span>{i18n.t("StatusBar.r92_b081")}</span>
       <div className="flex-1" />
-      {mem && <span>内存: {mem}MB</span>}
+      {mem && <span>{i18n.t("StatusBar.r92_48cf")}{mem}MB</span>}
       {mem && <span className="text-gray-700">|</span>}
       <span>{time.toLocaleTimeString('zh-CN', { hour12: false })}</span>
-    </footer>
-  );
+    </footer>);
+
 }

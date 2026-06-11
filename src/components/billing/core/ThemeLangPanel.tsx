@@ -9,28 +9,28 @@ type Theme = 'dark' | 'light';
 type Lang = 'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko';
 
 interface ThemeColors {
-  bg: string; surface: string; border: string; borderHover: string;
-  text: string; textSecondary: string; textMuted: string;
-  accent: string; accentHover: string; accentBg: string;
-  success: string; warning: string; danger: string;
-  chartBg: string; chartGrid: string;
+  bg: string;surface: string;border: string;borderHover: string;
+  text: string;textSecondary: string;textMuted: string;
+  accent: string;accentHover: string;accentBg: string;
+  success: string;warning: string;danger: string;
+  chartBg: string;chartGrid: string;
 }
 
 interface LangStrings {
   // Header
-  appName: string
-  settings: string
+  appName: string;
+  settings: string;
   // Theme
-  darkMode: string; lightMode: string; followSystem: string; themeLabel: string
-  langLabel: string
+  darkMode: string;lightMode: string;followSystem: string;themeLabel: string;
+  langLabel: string;
   // Errors
-  errCodeFormat: string; errParamRange: string; errNetwork: string; errServer: string
+  errCodeFormat: string;errParamRange: string;errNetwork: string;errServer: string;
   // Friendly errors
-  friendlyCodeHK: string; friendlyCodeUS: string; friendlyParamShort: string; friendlyParamLong: string
-  friendlyNetwork: string; friendlyServer: string
+  friendlyCodeHK: string;friendlyCodeUS: string;friendlyParamShort: string;friendlyParamLong: string;
+  friendlyNetwork: string;friendlyServer: string;
   // Common
-  save: string; cancel: string; confirm: string; close: string
-  loading: string; empty: string; error: string
+  save: string;cancel: string;confirm: string;close: string;
+  loading: string;empty: string;error: string;
 }
 
 const THEMES: Record<Theme, ThemeColors> = {
@@ -39,15 +39,15 @@ const THEMES: Record<Theme, ThemeColors> = {
     text: '#F9FAFB', textSecondary: '#D1D5DB', textMuted: '#6B7280',
     accent: '#6366F1', accentHover: '#818CF8', accentBg: '#6366F118',
     success: '#10B981', warning: '#F59E0B', danger: '#EF4444',
-    chartBg: '#111827', chartGrid: '#1F2937',
+    chartBg: '#111827', chartGrid: '#1F2937'
   },
   light: {
     bg: '#F9FAFB', surface: '#FFFFFF', border: '#D1D5DB', borderHover: '#9CA3AF',
     text: '#111827', textSecondary: '#374151', textMuted: '#6B7280',
     accent: '#4F46E5', accentHover: '#6366F1', accentBg: '#EEF2FF',
     success: '#059669', warning: '#D97706', danger: '#DC2626',
-    chartBg: '#FFFFFF', chartGrid: '#E5E7EB',
-  },
+    chartBg: '#FFFFFF', chartGrid: '#E5E7EB'
+  }
 };
 
 const STRINGS: Record<Lang, LangStrings> = {
@@ -63,7 +63,7 @@ const STRINGS: Record<Lang, LangStrings> = {
     friendlyNetwork: i18n.t('ThemeLangPanel.k15'),
     friendlyServer: i18n.t('ThemeLangPanel.k16'),
     save: i18n.t('ThemeLangPanel.k17'), cancel: i18n.t('ThemeLangPanel.k18'), confirm: i18n.t('ThemeLangPanel.k19'), close: i18n.t('ThemeLangPanel.k20'),
-    loading: i18n.t('ThemeLangPanel.k21'), empty: i18n.t('ThemeLangPanel.k22'), error: i18n.t('ThemeLangPanel.k23'),
+    loading: i18n.t('ThemeLangPanel.k21'), empty: i18n.t('ThemeLangPanel.k22'), error: i18n.t('ThemeLangPanel.k23')
   },
   'zh-TW': {
     appName: 'Dawn Whales', settings: i18n.t('ThemeLangPanel.k24'),
@@ -77,7 +77,7 @@ const STRINGS: Record<Lang, LangStrings> = {
     friendlyNetwork: i18n.t('ThemeLangPanel.k38'),
     friendlyServer: i18n.t('ThemeLangPanel.k39'),
     save: i18n.t('ThemeLangPanel.k40'), cancel: i18n.t('ThemeLangPanel.k41'), confirm: i18n.t('ThemeLangPanel.k42'), close: i18n.t('ThemeLangPanel.k43'),
-    loading: i18n.t('ThemeLangPanel.k44'), empty: i18n.t('ThemeLangPanel.k45'), error: i18n.t('ThemeLangPanel.k46'),
+    loading: i18n.t('ThemeLangPanel.k44'), empty: i18n.t('ThemeLangPanel.k45'), error: i18n.t('ThemeLangPanel.k46')
   },
   'en': {
     appName: 'Dawn Whales', settings: 'Settings',
@@ -91,7 +91,7 @@ const STRINGS: Record<Lang, LangStrings> = {
     friendlyNetwork: 'Network seems unstable. Check your connection?',
     friendlyServer: 'Server is busy. Wait a moment, it\'ll recover~',
     save: 'Save', cancel: 'Cancel', confirm: 'Confirm', close: 'Close',
-    loading: 'Loading...', empty: 'No data', error: 'Error',
+    loading: 'Loading...', empty: 'No data', error: 'Error'
   },
   'ja': {
     appName: 'Dawn Whales', settings: i18n.t('ThemeLangPanel.k47'),
@@ -105,7 +105,7 @@ const STRINGS: Record<Lang, LangStrings> = {
     friendlyNetwork: i18n.t('ThemeLangPanel.k55'),
     friendlyServer: i18n.t('ThemeLangPanel.k56'),
     save: i18n.t('ThemeLangPanel.k57'), cancel: 'キャンセル', confirm: i18n.t('ThemeLangPanel.k58'), close: i18n.t('ThemeLangPanel.k59'),
-    loading: i18n.t('ThemeLangPanel.k60'), empty: 'データなし', error: 'エラー',
+    loading: i18n.t('ThemeLangPanel.k60'), empty: 'データなし', error: 'エラー'
   },
   'ko': {
     appName: 'Dawn Whales', settings: '설정',
@@ -119,23 +119,23 @@ const STRINGS: Record<Lang, LangStrings> = {
     friendlyNetwork: '네트워크가 불안정합니다. 연결을 확인해주세요.',
     friendlyServer: '서버가 혼잡합니다. 잠시만 기다려주세요~',
     save: '저장', cancel: '취소', confirm: '확인', close: '닫기',
-    loading: '로딩 중...', empty: '데이터 없음', error: '오류',
-  },
+    loading: '로딩 중...', empty: '데이터 없음', error: '오류'
+  }
 };
 
 // ── Context ──
 interface ThemeLangContextType {
-  theme: Theme; setTheme: (t: Theme) => void; colors: ThemeColors;
-  lang: Lang; setLang: (l: Lang) => void; s: LangStrings;
+  theme: Theme;setTheme: (t: Theme) => void;colors: ThemeColors;
+  lang: Lang;setLang: (l: Lang) => void;s: LangStrings;
   systemPrefersDark: boolean;
 }
 
 const ThemeLangContext = createContext<ThemeLangContextType>(null!);
 export function useThemeLang() {
   const { t: _t } = useTranslation();
- return useContext(ThemeLangContext); }
+  return useContext(ThemeLangContext);}
 
-export function ThemeLangProvider({ children }: { children: ReactNode }) {
+export function ThemeLangProvider({ children }: {children: ReactNode;}) {
   const [theme, setTheme] = useState<Theme>('dark');
   const [lang, setLang] = useState<Lang>('zh-CN');
   const [systemPrefersDark] = useState(true);
@@ -146,8 +146,8 @@ export function ThemeLangProvider({ children }: { children: ReactNode }) {
   return (
     <ThemeLangContext.Provider value={{ theme, setTheme, colors, lang, setLang, s, systemPrefersDark }}>
       {children}
-    </ThemeLangContext.Provider>
-  );
+    </ThemeLangContext.Provider>);
+
 }
 
 // ── Theme Toggle ──
@@ -162,10 +162,10 @@ function ThemeToggle() {
           padding: '6px 14px', borderRadius: 8, border: 'none', cursor: 'pointer',
           background: theme === 'dark' ? colors.accent : 'transparent',
           color: theme === 'dark' ? '#FFF' : colors.textMuted, fontSize: 14,
-          transition: 'all 0.2s',
+          transition: 'all 0.2s'
         }}
-        title={"components.darkMode"}
-      >
+        title={"components.darkMode"}>
+        
         🌙
       </button>
       <button
@@ -174,43 +174,43 @@ function ThemeToggle() {
           padding: '6px 14px', borderRadius: 8, border: 'none', cursor: 'pointer',
           background: theme === 'light' ? colors.accent : 'transparent',
           color: theme === 'light' ? '#FFF' : colors.textMuted, fontSize: 14,
-          transition: 'all 0.2s',
+          transition: 'all 0.2s'
         }}
-        title={"components.lightMode"}
-      >
+        title={"components.lightMode"}>
+        
         ☀️
       </button>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Language Selector ──
 function LanguageSelector() {
   const { lang, setLang, colors } = useThemeLang();
 
-  const options: { value: Lang; label: string; flag: string }[] = [
-    { value: 'zh-CN', label: i18n.t('ThemeLangPanel.k61'), flag: '🇨🇳' },
-    { value: 'zh-TW', label: i18n.t('ThemeLangPanel.k62'), flag: '🇹🇼' },
-    { value: 'en', label: 'English', flag: '🇺🇸' },
-    { value: 'ja', label: i18n.t('ThemeLangPanel.k63'), flag: '🇯🇵' },
-    { value: 'ko', label: '한국어', flag: '🇰🇷' },
-  ];
+  const options: {value: Lang;label: string;flag: string;}[] = [
+  { value: 'zh-CN', label: i18n.t('ThemeLangPanel.k61'), flag: '🇨🇳' },
+  { value: 'zh-TW', label: i18n.t('ThemeLangPanel.k62'), flag: '🇹🇼' },
+  { value: 'en', label: 'English', flag: '🇺🇸' },
+  { value: 'ja', label: i18n.t('ThemeLangPanel.k63'), flag: '🇯🇵' },
+  { value: 'ko', label: '한국어', flag: '🇰🇷' }];
+
 
   return (
     <select
       value={lang}
-      onChange={e => setLang(e.target.value as Lang)}
+      onChange={(e) => setLang(e.target.value as Lang)}
       style={{
         padding: '8px 12px', borderRadius: 8, border: `1px solid ${colors.border}`,
         background: colors.surface, color: colors.text, fontSize: 13, cursor: 'pointer',
-        outline: 'none',
-      }}
-    >
-      {options.map(o => (
-        <option key={o.value} value={o.value}>{o.flag} {o.label}</option>
-      ))}
-    </select>
-  );
+        outline: 'none'
+      }}>
+      
+      {options.map((o) =>
+      <option key={o.value} value={o.value}>{o.flag} {o.label}</option>
+      )}
+    </select>);
+
 }
 
 // ── Friendly Error Demo ──
@@ -218,13 +218,13 @@ function FriendlyErrorDemo() {
   const { lang, colors, s } = useThemeLang();
 
   const pairs = [
-    { old: s.errCodeFormat, new: s.friendlyCodeHK },
-    { old: s.errCodeFormat, new: s.friendlyCodeUS },
-    { old: s.errParamRange, new: s.friendlyParamShort },
-    { old: s.errParamRange, new: s.friendlyParamLong },
-    { old: s.errNetwork, new: s.friendlyNetwork },
-    { old: s.errServer, new: s.friendlyServer },
-  ];
+  { old: s.errCodeFormat, new: s.friendlyCodeHK },
+  { old: s.errCodeFormat, new: s.friendlyCodeUS },
+  { old: s.errParamRange, new: s.friendlyParamShort },
+  { old: s.errParamRange, new: s.friendlyParamLong },
+  { old: s.errNetwork, new: s.friendlyNetwork },
+  { old: s.errServer, new: s.friendlyServer }];
+
 
   return (
     <div style={{ marginTop: 16 }}>
@@ -232,12 +232,12 @@ function FriendlyErrorDemo() {
         💡 {lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k64') : lang === 'zh-TW' ? i18n.t('ThemeLangPanel.k65') : 'Friendly Error Messages'}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-        {pairs.map((p, i) => (
-          <div key={i} style={{
-            display: 'flex', gap: 12, alignItems: 'center',
-            padding: '8px 14px', borderRadius: 8,
-            background: colors.surface, border: `1px solid ${colors.border}`,
-          }}>
+        {pairs.map((p, i) =>
+        <div key={i} style={{
+          display: 'flex', gap: 12, alignItems: 'center',
+          padding: '8px 14px', borderRadius: 8,
+          background: colors.surface, border: `1px solid ${colors.border}`
+        }}>
             <span style={{ fontSize: 12, color: colors.danger, textDecoration: 'line-through', minWidth: 120 }}>
               ❌ {p.old}
             </span>
@@ -245,20 +245,20 @@ function FriendlyErrorDemo() {
               ✅ {p.new}
             </span>
           </div>
-        ))}
+        )}
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Theme Preview Swatch ──
-function ThemeSwatch({ label, bg, text }: { label: string; bg: string; text: string }) {
+function ThemeSwatch({ label, bg, text }: {label: string;bg: string;text: string;}) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center' }}>
       <div style={{ width: 48, height: 48, borderRadius: 10, background: bg, border: '1px solid #374151' }} />
       <span style={{ fontSize: 10, color: text }}>{label}</span>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Main ──
@@ -268,12 +268,12 @@ export default function ThemeLangPanel() {
   const panelStyle: CSSProperties = {
     background: colors.bg, borderRadius: 16, padding: 24,
     border: `1px solid ${colors.border}`, color: colors.text,
-    maxWidth: 800, margin: '0 auto',
+    maxWidth: 800, margin: '0 auto'
   };
 
   const sectionStyle: CSSProperties = {
     padding: '16px 20px', borderRadius: 12, background: colors.surface,
-    border: `1px solid ${colors.border}`, marginBottom: 16,
+    border: `1px solid ${colors.border}`, marginBottom: 16
   };
 
   return (
@@ -308,8 +308,8 @@ export default function ThemeLangPanel() {
           <ThemeSwatch label={i18n.t('ThemeLangPanel.k69')} bg={colors.surface} text={colors.textSecondary} />
           <ThemeSwatch label={i18n.t('ThemeLangPanel.k70')} bg={colors.text} text={colors.textSecondary} />
           <ThemeSwatch label={i18n.t('ThemeLangPanel.k71')} bg={colors.accent} text={colors.textSecondary} />
-          <ThemeSwatch  label={"components.success"} bg={colors.success} text={colors.textSecondary} />
-          <ThemeSwatch  label={"components.warning"} bg={colors.warning} text={colors.textSecondary} />
+          <ThemeSwatch label={"components.success"} bg={colors.success} text={colors.textSecondary} />
+          <ThemeSwatch label={"components.warning"} bg={colors.warning} text={colors.textSecondary} />
           <ThemeSwatch label={i18n.t('ThemeLangPanel.k72')} bg={colors.danger} text={colors.textSecondary} />
           <ThemeSwatch label={i18n.t('ThemeLangPanel.k73')} bg={colors.chartBg} text={colors.textSecondary} />
         </div>
@@ -317,11 +317,11 @@ export default function ThemeLangPanel() {
         {/* Preview card */}
         <div style={{
           marginTop: 12, padding: '16px', borderRadius: 10,
-          background: colors.bg, border: `1px solid ${colors.border}`,
+          background: colors.bg, border: `1px solid ${colors.border}`
         }}>
           <div style={{ fontSize: 14, fontWeight: 600, color: colors.text, marginBottom: 4 }}>{s.appName}</div>
           <div style={{ fontSize: 12, color: colors.textSecondary, marginBottom: 8 }}>
-            {theme === 'dark' ? (lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k74') : 'AI-Powered Quant Strategy Platform') : (lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k75') : 'AI-Powered Quant Strategy Platform')}
+            {theme === 'dark' ? lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k74') : 'AI-Powered Quant Strategy Platform' : lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k75') : 'AI-Powered Quant Strategy Platform'}
           </div>
           <div style={{ display: 'flex', gap: 6 }}>
             <span style={{ padding: '4px 10px', borderRadius: 6, background: colors.success + '22', color: colors.success, fontSize: 11 }}>
@@ -342,8 +342,8 @@ export default function ThemeLangPanel() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <div style={{ fontSize: 15, fontWeight: 600, color: colors.text }}>🌐 {s.langLabel}</div>
-            <div style={{ fontSize: 12, color: colors.textMuted, marginTop: 2 }}>
-              简体中文 · 繁體中文 · English · 日本語 · 한국어
+            <div style={{ fontSize: 12, color: colors.textMuted, marginTop: 2 }}>{i18n.t("ThemeLangPanel.r92_9403")}
+
             </div>
           </div>
           <LanguageSelector />
@@ -359,14 +359,14 @@ export default function ThemeLangPanel() {
       <div style={{
         padding: '12px 16px', borderRadius: 10, background: colors.accentBg,
         border: `1px solid ${colors.accent}33`, fontSize: 12, color: colors.textSecondary,
-        lineHeight: 1.8,
+        lineHeight: 1.8
       }}>
         📋 <strong>{lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k76') : 'Current Config'}:</strong><br />
         {s.themeLabel}: <strong>{theme === 'dark' ? s.darkMode : s.lightMode}</strong> · {s.langLabel}: <strong>{lang}</strong><br />
         {lang === 'zh-CN' ? i18n.t('ThemeLangPanel.k77') : '5 languages supported · Dual theme · Friendly error messages'}
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Standalone wrapper ──
@@ -374,8 +374,8 @@ export function ThemeLangPanelStandalone() {
   return (
     <ThemeLangProvider>
       <ThemeLangPanel />
-    </ThemeLangProvider>
-  );
+    </ThemeLangProvider>);
+
 }
 
 void EngineError; // [TRADE] structured error tracking

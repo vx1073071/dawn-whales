@@ -22,11 +22,11 @@ interface JournalEntry {
 }
 
 const EMOTION_EMOJI: Record<string, string> = {
-  calm: '😌', greedy: '🤤', fearful: '😰', impatient: '😤', confident: '😎',
+  calm: '😌', greedy: '🤤', fearful: '😰', impatient: '😤', confident: '😎'
 };
 
 const EMOTION_LABEL: Record<string, string> = {
-  calm: i18n.t('TradingJournal.k1'), greedy: i18n.t('TradingJournal.k2'), fearful: i18n.t('TradingJournal.k3'), impatient: i18n.t('TradingJournal.k4'), confident: i18n.t('TradingJournal.k5'),
+  calm: i18n.t('TradingJournal.k1'), greedy: i18n.t('TradingJournal.k2'), fearful: i18n.t('TradingJournal.k3'), impatient: i18n.t('TradingJournal.k4'), confident: i18n.t('TradingJournal.k5')
 };
 
 const ALL_TAGS = [i18n.t('TradingJournal.k6'), i18n.t('TradingJournal.k7'), i18n.t('TradingJournal.k8'), i18n.t('TradingJournal.k9'), i18n.t('TradingJournal.k10'), i18n.t('TradingJournal.k11'), i18n.t('TradingJournal.k12'), i18n.t('TradingJournal.k13'), i18n.t('TradingJournal.k14'), i18n.t('TradingJournal.k15')];
@@ -45,8 +45,8 @@ export default function TradingJournal() {
     try {
       const saved = localStorage.getItem('dawn-whales-journal');
       if (saved) setEntries(JSON.parse(saved));
-    } catch (e) { console.error('[Error:TradingJournal]', e); }
-  void EngineError; // [SYSTEM] structured error tracking
+    } catch (e) {console.error('[Error:TradingJournal]', e);}
+    void EngineError; // [SYSTEM] structured error tracking
   }, []);
 
   // Save to localStorage
@@ -60,7 +60,7 @@ export default function TradingJournal() {
     const newEntry: JournalEntry = {
       ...entry,
       id: `journal-${Date.now()}`,
-      date: new Date().toISOString(),
+      date: new Date().toISOString()
     };
     setEntries((prev) => [newEntry, ...prev]);
     setShowForm(false);
@@ -106,18 +106,18 @@ export default function TradingJournal() {
   const exportCSV = useCallback(() => {
     const headers = [i18n.t('TradingJournal.k16'), i18n.t('TradingJournal.k17'), i18n.t('TradingJournal.k18'), i18n.t('TradingJournal.k19'), i18n.t('TradingJournal.k20'), i18n.t('TradingJournal.k21'), i18n.t('TradingJournal.k22'), i18n.t('TradingJournal.k23'), i18n.t('TradingJournal.k24'), i18n.t('TradingJournal.k25'), i18n.t('TradingJournal.k26')];
     const rows = filtered.map((e) => [
-      new Date(e.date).toLocaleDateString('zh-CN'),
-      e.symbol,
-      e.action,
-      e.price,
-      e.qty || '',
-      e.reasoning,
-      EMOTION_LABEL[e.emotion],
-      e.outcome || 'pending',
-      e.pnl || 0,
-      e.lessons,
-      e.tags.join(';'),
-    ]);
+    new Date(e.date).toLocaleDateString('zh-CN'),
+    e.symbol,
+    e.action,
+    e.price,
+    e.qty || '',
+    e.reasoning,
+    EMOTION_LABEL[e.emotion],
+    e.outcome || 'pending',
+    e.pnl || 0,
+    e.lessons,
+    e.tags.join(';')]
+    );
     const csv = [headers.join(','), ...rows.map((r) => r.map((v) => `"${v}"`).join(','))].join('\n');
     const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -130,7 +130,7 @@ export default function TradingJournal() {
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-white font-semibold text-sm">📝 交易日志</h2>
+          <h2 className="text-white font-semibold text-sm">{i18n.t("TradingJournal.r92_9bb8")}</h2>
           <p className="text-gray-500 text-[10px] mt-0.5">{stats.total}{i18n.t('TradingJournal.k0')}{stats.totalPnl >= 0 ? '+' : ''}${stats.totalPnl.toFixed(0)}</p>
         </div>
         <div className="flex items-center gap-2">
@@ -151,11 +151,11 @@ export default function TradingJournal() {
         <span className="text-gray-500 text-[10px]">{i18n.t('TradingJournal.k3')}</span>
         <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="bg-[#12121a] border border-white/10 rounded px-2 py-1 text-[10px] text-white" />
         <div className="flex items-center gap-1">
-          {(['all', 'win', 'loss', 'pending'] as const).map((f) => (
-            <button key={f} onClick={() => setFilter(f)} className={`px-2 py-1 rounded text-[10px] ${filter === f ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'}`}>
+          {(['all', 'win', 'loss', 'pending'] as const).map((f) =>
+          <button key={f} onClick={() => setFilter(f)} className={`px-2 py-1 rounded text-[10px] ${filter === f ? 'bg-[#C9A046] text-black' : 'text-gray-400 hover:text-gray-200'}`}>
               {f === 'all' ? i18n.t('TradingJournal.k29') : f === 'win' ? i18n.t('TradingJournal.k30') : f === 'loss' ? i18n.t('TradingJournal.k31') : i18n.t('TradingJournal.k32')}
             </button>
-          ))}
+          )}
         </div>
         <select value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)} className="bg-[#12121a] border border-white/10 rounded px-2 py-1 text-[10px] text-white">
           <option value="all">{i18n.t('TradingJournal.k4')}</option>
@@ -170,17 +170,17 @@ export default function TradingJournal() {
       {view === 'calendar' && <CalendarHeatmap data={calendarData} />}
 
       {/* List View */}
-      {view === 'list' && (
-        <>
-          {filtered.length === 0 ? (
-            <div className="text-center py-6">
+      {view === 'list' &&
+      <>
+          {filtered.length === 0 ?
+        <div className="text-center py-6">
               <div className="text-2xl mb-2 opacity-40">📝</div>
               <p className="text-gray-500 text-sm">{entries.length === 0 ? i18n.t('TradingJournal.k33') : i18n.t('TradingJournal.k34')}</p>
-            </div>
-          ) : (
-            <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
-              {filtered.map((entry) => (
-                <div key={entry.id} className="bg-[#12121a] rounded-lg p-3 border border-white/5">
+            </div> :
+
+        <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
+              {filtered.map((entry) =>
+          <div key={entry.id} className="bg-[#12121a] rounded-lg p-3 border border-white/5">
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
@@ -199,16 +199,16 @@ export default function TradingJournal() {
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
           )}
+            </div>
+        }
         </>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
 
-function CalendarHeatmap({ data }: { data: [string, number][] }) {
+function CalendarHeatmap({ data }: {data: [string, number][];}) {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);
 
@@ -229,9 +229,9 @@ function CalendarHeatmap({ data }: { data: [string, number][] }) {
         left: 'center',
         bottom: 0,
         inRange: {
-          color: ['#ef4444', '#1a1a25', '#22c55e'],
+          color: ['#ef4444', '#1a1a25', '#22c55e']
         },
-        textStyle: { color: '#6b7280', fontSize: 10 },
+        textStyle: { color: '#6b7280', fontSize: 10 }
       },
       calendar: {
         top: 30,
@@ -243,28 +243,28 @@ function CalendarHeatmap({ data }: { data: [string, number][] }) {
         splitLine: { show: false },
         yearLabel: { show: false },
         dayLabel: { color: '#6b7280', fontSize: 9 },
-        monthLabel: { color: '#6b7280', fontSize: 10 },
+        monthLabel: { color: '#6b7280', fontSize: 10 }
       },
       series: [{
         type: 'heatmap',
         coordinateSystem: 'calendar',
-        data: data,
-      }],
+        data: data
+      }]
     };
 
     chartInstance.current.setOption(option);
     const handleResize = () => chartInstance.current?.resize();
     window.addEventListener('resize', handleResize);
-    return () => { window.removeEventListener('resize', handleResize); chartInstance.current?.dispose(); };
+    return () => {window.removeEventListener('resize', handleResize);chartInstance.current?.dispose();};
   }, [data]);
 
   return <div ref={chartRef} style={{ width: '100%', height: 220 }} />;
 }
 
-function JournalForm({ onSubmit, onCancel }: {
-  onSubmit: (entry: Omit<JournalEntry, 'id' | 'date'>) => void;
-  onCancel: () => void;
-}) {
+function JournalForm({ onSubmit, onCancel
+
+
+}: {onSubmit: (entry: Omit<JournalEntry, 'id' | 'date'>) => void;onCancel: () => void;}) {
   const [symbol, setSymbol] = useState('');
   const [action, setAction] = useState<'BUY' | 'SELL' | 'HOLD' | 'WATCH'>('BUY');
   const [price, setPrice] = useState('');
@@ -289,7 +289,7 @@ function JournalForm({ onSubmit, onCancel }: {
       qty: qty ? parseInt(qty) : undefined,
       reasoning, emotion, outcome,
       pnl: pnl ? parseFloat(pnl) : undefined,
-      lessons, tags: selectedTags,
+      lessons, tags: selectedTags
     });
   };
 
@@ -306,26 +306,26 @@ function JournalForm({ onSubmit, onCancel }: {
       <textarea value={reasoning} onChange={(e) => setReasoning(e.target.value)} placeholder={i18n.t('TradingJournal.k13')} rows={2} className="w-full bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" required />
       <div className="grid grid-cols-3 gap-2">
         <select value={emotion} onChange={(e) => setEmotion(e.target.value as any)} className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white">
-          <option value="calm">😌 平静</option><option value="confident">😎 自信</option><option value="greedy">🤤 贪婪</option><option value="fearful">😰 恐惧</option><option value="impatient">😤 急躁</option>
+          <option value="calm">{i18n.t("TradingJournal.r92_35cc")}</option><option value="confident">{i18n.t("TradingJournal.r92_d474")}</option><option value="greedy">{i18n.t("TradingJournal.r92_2c83")}</option><option value="fearful">{i18n.t("TradingJournal.r92_f885")}</option><option value="impatient">{i18n.t("TradingJournal.r92_2094")}</option>
         </select>
         <select value={outcome} onChange={(e) => setOutcome(e.target.value as any)} className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white">
-          <option value="pending">⏳ 待定</option><option value="win">✓ 盈利</option><option value="loss">✗ 亏损</option>
+          <option value="pending">{i18n.t("TradingJournal.r92_cbd4")}</option><option value="win">{i18n.t("TradingJournal.r92_d209")}</option><option value="loss">{i18n.t("TradingJournal.r92_e984")}</option>
         </select>
         <input value={pnl} onChange={(e) => setPnl(e.target.value)} placeholder={i18n.t('TradingJournal.k14')} type="number" className="bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" />
       </div>
       {/* Tags */}
       <div className="flex flex-wrap gap-1">
-        {ALL_TAGS.map((tag) => (
-          <button key={tag} type="button" onClick={() => toggleTag(tag)} className={`px-2 py-1 rounded text-[10px] transition-colors ${selectedTags.includes(tag) ? 'bg-[#C9A046]/20 text-[#D4A853] border border-[#C9A046]/30' : 'bg-[#1a1a25] text-gray-500 border border-white/5 hover:text-gray-300'}`}>
+        {ALL_TAGS.map((tag) =>
+        <button key={tag} type="button" onClick={() => toggleTag(tag)} className={`px-2 py-1 rounded text-[10px] transition-colors ${selectedTags.includes(tag) ? 'bg-[#C9A046]/20 text-[#D4A853] border border-[#C9A046]/30' : 'bg-[#1a1a25] text-gray-500 border border-white/5 hover:text-gray-300'}`}>
             {tag}
           </button>
-        ))}
+        )}
       </div>
       <textarea value={lessons} onChange={(e) => setLessons(e.target.value)} placeholder={i18n.t('TradingJournal.k15')} rows={2} className="w-full bg-[#1a1a25] border border-white/10 rounded px-2 py-1.5 text-xs text-white placeholder-gray-600" />
       <div className="flex gap-2">
         <button type="submit" className="flex-1 px-3 py-1.5 bg-[#C9A046] text-black text-xs font-medium rounded hover:bg-[#D4A853] transition-colors">{i18n.t('TradingJournal.k16')}</button>
         <button type="button" onClick={onCancel} className="px-3 py-1.5 text-gray-400 text-xs hover:text-gray-200 transition-colors">{i18n.t('TradingJournal.k17')}</button>
       </div>
-    </form>
-  );
+    </form>);
+
 }

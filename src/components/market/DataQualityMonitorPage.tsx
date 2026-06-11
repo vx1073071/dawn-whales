@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import { useTranslation } from 'react-i18next';
 import * as echarts from 'echarts';
@@ -21,7 +21,7 @@ interface SymbolQuality {
   status: 'good' | 'stale' | 'error';
   lastUpdate: string;
   latencyMs: number;
-  checks: { format: boolean; priceBounds: boolean; volume: boolean; timestamp: boolean; stale: boolean };
+  checks: {format: boolean;priceBounds: boolean;volume: boolean;timestamp: boolean;stale: boolean;};
 }
 
 interface QualityAlert {
@@ -44,41 +44,41 @@ interface CacheStats {
 }
 
 const MOCK_CHECKS: QualityCheck[] = [
-  { type: 'format', label: i18n.t('DataQualityMonitorPage.k1'), status: 'pass', checked: 12580, passed: 12580, failed: 0, lastCheck: '2024-06-05T00:54:12' },
-  { type: 'priceBounds', label: i18n.t('DataQualityMonitorPage.k2'), status: 'pass', checked: 12580, passed: 12578, failed: 2, lastCheck: '2024-06-05T00:54:12' },
-  { type: 'volume', label: i18n.t('DataQualityMonitorPage.k3'), status: 'warn', checked: 12580, passed: 12560, failed: 20, lastCheck: '2024-06-05T00:54:12' },
-  { type: 'timestamp', label: i18n.t('DataQualityMonitorPage.k4'), status: 'pass', checked: 12580, passed: 12575, failed: 5, lastCheck: '2024-06-05T00:54:12' },
-  { type: 'stale', label: i18n.t('DataQualityMonitorPage.k5'), status: 'warn', checked: 12580, passed: 12550, failed: 30, lastCheck: '2024-06-05T00:54:12' },
-];
+{ type: 'format', label: i18n.t('DataQualityMonitorPage.k1'), status: 'pass', checked: 12580, passed: 12580, failed: 0, lastCheck: '2024-06-05T00:54:12' },
+{ type: 'priceBounds', label: i18n.t('DataQualityMonitorPage.k2'), status: 'pass', checked: 12580, passed: 12578, failed: 2, lastCheck: '2024-06-05T00:54:12' },
+{ type: 'volume', label: i18n.t('DataQualityMonitorPage.k3'), status: 'warn', checked: 12580, passed: 12560, failed: 20, lastCheck: '2024-06-05T00:54:12' },
+{ type: 'timestamp', label: i18n.t('DataQualityMonitorPage.k4'), status: 'pass', checked: 12580, passed: 12575, failed: 5, lastCheck: '2024-06-05T00:54:12' },
+{ type: 'stale', label: i18n.t('DataQualityMonitorPage.k5'), status: 'warn', checked: 12580, passed: 12550, failed: 30, lastCheck: '2024-06-05T00:54:12' }];
+
 
 const MOCK_SYMBOLS: SymbolQuality[] = [
-  { code: 'AAPL', name: i18n.t('DataQualityMonitorPage.k6'), status: 'good', lastUpdate: '00:54:10', latencyMs: 45, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
-  { code: 'NVDA', name: i18n.t('DataQualityMonitorPage.k7'), status: 'good', lastUpdate: '00:54:11', latencyMs: 42, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
-  { code: 'TSLA', name: i18n.t('DataQualityMonitorPage.k8'), status: 'good', lastUpdate: '00:54:09', latencyMs: 38, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
-  { code: 'MSFT', name: i18n.t('DataQualityMonitorPage.k9'), status: 'stale', lastUpdate: '00:53:15', latencyMs: 120, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: false } },
-  { code: 'AMZN', name: i18n.t('DataQualityMonitorPage.k10'), status: 'good', lastUpdate: '00:54:10', latencyMs: 50, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
-  { code: 'GOOGL', name: i18n.t('DataQualityMonitorPage.k11'), status: 'good', lastUpdate: '00:54:08', latencyMs: 55, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
-  { code: 'META', name: 'Meta', status: 'error', lastUpdate: '00:52:30', latencyMs: 500, checks: { format: true, priceBounds: false, volume: true, timestamp: false, stale: false } },
-  { code: 'AVGO', name: i18n.t('DataQualityMonitorPage.k12'), status: 'good', lastUpdate: '00:54:11', latencyMs: 48, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
-  { code: '00700', name: i18n.t('DataQualityMonitorPage.k13'), status: 'stale', lastUpdate: '00:53:45', latencyMs: 200, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: false } },
-  { code: '09988', name: i18n.t('DataQualityMonitorPage.k14'), status: 'good', lastUpdate: '00:54:10', latencyMs: 65, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
-];
+{ code: 'AAPL', name: i18n.t('DataQualityMonitorPage.k6'), status: 'good', lastUpdate: '00:54:10', latencyMs: 45, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+{ code: 'NVDA', name: i18n.t('DataQualityMonitorPage.k7'), status: 'good', lastUpdate: '00:54:11', latencyMs: 42, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+{ code: 'TSLA', name: i18n.t('DataQualityMonitorPage.k8'), status: 'good', lastUpdate: '00:54:09', latencyMs: 38, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+{ code: 'MSFT', name: i18n.t('DataQualityMonitorPage.k9'), status: 'stale', lastUpdate: '00:53:15', latencyMs: 120, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: false } },
+{ code: 'AMZN', name: i18n.t('DataQualityMonitorPage.k10'), status: 'good', lastUpdate: '00:54:10', latencyMs: 50, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+{ code: 'GOOGL', name: i18n.t('DataQualityMonitorPage.k11'), status: 'good', lastUpdate: '00:54:08', latencyMs: 55, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+{ code: 'META', name: 'Meta', status: 'error', lastUpdate: '00:52:30', latencyMs: 500, checks: { format: true, priceBounds: false, volume: true, timestamp: false, stale: false } },
+{ code: 'AVGO', name: i18n.t('DataQualityMonitorPage.k12'), status: 'good', lastUpdate: '00:54:11', latencyMs: 48, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } },
+{ code: '00700', name: i18n.t('DataQualityMonitorPage.k13'), status: 'stale', lastUpdate: '00:53:45', latencyMs: 200, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: false } },
+{ code: '09988', name: i18n.t('DataQualityMonitorPage.k14'), status: 'good', lastUpdate: '00:54:10', latencyMs: 65, checks: { format: true, priceBounds: true, volume: true, timestamp: true, stale: true } }];
+
 
 const MOCK_ALERTS: QualityAlert[] = [
-  { id: 'A001', timestamp: '00:54:05', code: 'META', type: i18n.t('DataQualityMonitorPage.k15'), severity: 'high', message: i18n.t('DataQualityMonitorPage.k16'), acknowledged: false },
-  { id: 'A002', timestamp: '00:53:50', code: '00700', type: i18n.t('DataQualityMonitorPage.k17'), severity: 'medium', message: i18n.t('DataQualityMonitorPage.k18'), acknowledged: false },
-  { id: 'A003', timestamp: '00:53:30', code: 'MSFT', type: i18n.t('DataQualityMonitorPage.k19'), severity: 'low', message: i18n.t('DataQualityMonitorPage.k20'), acknowledged: false },
-  { id: 'A004', timestamp: '00:52:15', code: 'META', type: i18n.t('DataQualityMonitorPage.k21'), severity: 'high', message: i18n.t('DataQualityMonitorPage.k22'), acknowledged: true },
-  { id: 'A005', timestamp: '00:51:40', code: 'TSLA', type: i18n.t('DataQualityMonitorPage.k23'), severity: 'low', message: i18n.t('DataQualityMonitorPage.k24'), acknowledged: true },
-];
+{ id: 'A001', timestamp: '00:54:05', code: 'META', type: i18n.t('DataQualityMonitorPage.k15'), severity: 'high', message: i18n.t('DataQualityMonitorPage.k16'), acknowledged: false },
+{ id: 'A002', timestamp: '00:53:50', code: '00700', type: i18n.t('DataQualityMonitorPage.k17'), severity: 'medium', message: i18n.t('DataQualityMonitorPage.k18'), acknowledged: false },
+{ id: 'A003', timestamp: '00:53:30', code: 'MSFT', type: i18n.t('DataQualityMonitorPage.k19'), severity: 'low', message: i18n.t('DataQualityMonitorPage.k20'), acknowledged: false },
+{ id: 'A004', timestamp: '00:52:15', code: 'META', type: i18n.t('DataQualityMonitorPage.k21'), severity: 'high', message: i18n.t('DataQualityMonitorPage.k22'), acknowledged: true },
+{ id: 'A005', timestamp: '00:51:40', code: 'TSLA', type: i18n.t('DataQualityMonitorPage.k23'), severity: 'low', message: i18n.t('DataQualityMonitorPage.k24'), acknowledged: true }];
+
 
 const MOCK_CACHE: CacheStats[] = [
-  { namespace: 'quote', entries: 1520, hitRate: 87.5, misses: 190, evictions: 45, expired: 120 },
-  { namespace: 'heatmap', entries: 320, hitRate: 92.3, misses: 25, evictions: 8, expired: 15 },
-  { namespace: 'macro', entries: 85, hitRate: 95.1, misses: 4, evictions: 2, expired: 5 },
-  { namespace: 'sentiment', entries: 210, hitRate: 78.2, misses: 47, evictions: 12, expired: 30 },
-  { namespace: 'fund', entries: 450, hitRate: 88.9, misses: 50, evictions: 15, expired: 40 },
-];
+{ namespace: 'quote', entries: 1520, hitRate: 87.5, misses: 190, evictions: 45, expired: 120 },
+{ namespace: 'heatmap', entries: 320, hitRate: 92.3, misses: 25, evictions: 8, expired: 15 },
+{ namespace: 'macro', entries: 85, hitRate: 95.1, misses: 4, evictions: 2, expired: 5 },
+{ namespace: 'sentiment', entries: 210, hitRate: 78.2, misses: 47, evictions: 12, expired: 30 },
+{ namespace: 'fund', entries: 450, hitRate: 88.9, misses: 50, evictions: 15, expired: 40 }];
+
 
 export default function DataQualityMonitorPage() {
   const { t } = useTranslation();
@@ -92,14 +92,14 @@ export default function DataQualityMonitorPage() {
   async function load() {
     setLoading(true);
     try {
+
+
       // const res = await getDataQualityStatus();
       // if (res?.success) { ... }
-    } catch (e) { console.error('[Error:DataQualityMonitorPage]', e); }
-    void EngineError; // [DATA] structured error tracking
-    setLoading(false);
-  }
+    } catch (e) {console.error('[Error:DataQualityMonitorPage]', e);}void EngineError; // [DATA] structured error tracking
+    setLoading(false);}
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {load();}, []);
 
   // Quality trend chart
   useEffect(() => {
@@ -122,18 +122,18 @@ export default function DataQualityMonitorPage() {
         smooth: true,
         symbol: 'none',
         lineStyle: { width: 2, color: '#C9A046' },
-        areaStyle: { color: 'rgba(201,160,70,0.1)' },
-      }],
+        areaStyle: { color: 'rgba(201,160,70,0.1)' }
+      }]
     });
 
     return () => chart.dispose();
   }, []);
 
   function acknowledgeAlert(id: string) {
-    setAlerts(prev => prev.map(a => a.id === id ? { ...a, acknowledged: true } : a));
+    setAlerts((prev) => prev.map((a) => a.id === id ? { ...a, acknowledged: true } : a));
   }
 
-  const unackCount = alerts.filter(a => !a.acknowledged).length;
+  const unackCount = alerts.filter((a) => !a.acknowledged).length;
 
   if (loading) return <LoadingSpinner fullscreen text={i18n.t('DataQualityMonitorPage.k25')} />;
 
@@ -141,42 +141,42 @@ export default function DataQualityMonitorPage() {
     <div className="p-6 space-y-6 bg-deep min-h-full">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">🔍 数据质量监控</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">{i18n.t("DataQualityMonitorPage.r92_3bcd")}</h1>
           <p className="text-gray-400 text-sm">{i18n.t('DataQualityMonitorPage.k0')}</p>
         </div>
         <button
           onClick={load}
-          className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-2 rounded-lg transition-colors"
-        >
-          刷新状态
+          className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-2 rounded-lg transition-colors">{i18n.t("DataQualityMonitorPage.r92_8d52")}
+
+
         </button>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        {checks.map((c) => (
-          <div key={c.type} className={`border rounded-xl p-4 ${
-            c.status === 'pass' ? 'bg-emerald-500/5 border-emerald-500/20' :
-            c.status === 'warn' ? 'bg-yellow-500/5 border-yellow-500/20' :
-            'bg-red-500/5 border-red-500/20'
-          }`}>
+        {checks.map((c) =>
+        <div key={c.type} className={`border rounded-xl p-4 ${
+        c.status === 'pass' ? 'bg-emerald-500/5 border-emerald-500/20' :
+        c.status === 'warn' ? 'bg-yellow-500/5 border-yellow-500/20' :
+        'bg-red-500/5 border-red-500/20'}`
+        }>
             <div className="flex items-center gap-2 mb-2">
               <span className={`w-2 h-2 rounded-full ${
-                c.status === 'pass' ? 'bg-emerald-400' :
-                c.status === 'warn' ? 'bg-yellow-400' :
-                'bg-red-400'
-              }`} />
+            c.status === 'pass' ? 'bg-emerald-400' :
+            c.status === 'warn' ? 'bg-yellow-400' :
+            'bg-red-400'}`
+            } />
               <span className="text-xs text-gray-400">{c.label}</span>
             </div>
             <div className="text-2xl font-bold font-mono text-white">
-              {((c.passed / c.checked) * 100).toFixed(1)}%
+              {(c.passed / c.checked * 100).toFixed(1)}%
             </div>
             <div className="text-[10px] text-gray-500 mt-1">
-              {c.passed.toLocaleString()}/{c.checked.toLocaleString()} 通过
-              {c.failed > 0 && <span className="text-red-400"> · {c.failed} 异常</span>}
+              {c.passed.toLocaleString()}/{c.checked.toLocaleString()}{i18n.t("DataQualityMonitorPage.r92_f46e")}
+            {c.failed > 0 && <span className="text-red-400"> · {c.failed}{i18n.t("DataQualityMonitorPage.r92_f1d9")}</span>}
             </div>
           </div>
-        ))}
+        )}
       </div>
 
       {/* Alerts */}
@@ -184,19 +184,19 @@ export default function DataQualityMonitorPage() {
         <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h2 className="text-sm font-semibold text-white">{i18n.t('DataQualityMonitorPage.k1')}</h2>
-            {unackCount > 0 && (
-              <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">{unackCount} 未处理</span>
-            )}
+            {unackCount > 0 &&
+            <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">{unackCount}{i18n.t("DataQualityMonitorPage.r92_500b")}</span>
+            }
           </div>
         </div>
         <div className="divide-y divide-white/5">
-          {alerts.map((a) => (
-            <div key={a.id} className={`px-4 py-3 flex items-start gap-3 ${a.acknowledged ? 'opacity-50' : ''}`}>
+          {alerts.map((a) =>
+          <div key={a.id} className={`px-4 py-3 flex items-start gap-3 ${a.acknowledged ? 'opacity-50' : ''}`}>
               <span className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${
-                a.severity === 'high' ? 'bg-red-400' :
-                a.severity === 'medium' ? 'bg-yellow-400' :
-                'bg-blue-400'
-              }`} />
+            a.severity === 'high' ? 'bg-red-400' :
+            a.severity === 'medium' ? 'bg-yellow-400' :
+            'bg-blue-400'}`
+            } />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-white font-medium">{a.code}</span>
@@ -205,16 +205,16 @@ export default function DataQualityMonitorPage() {
                 </div>
                 <p className="text-xs text-gray-400 mt-0.5">{a.message}</p>
               </div>
-              {!a.acknowledged && (
-                <button
-                  onClick={() => acknowledgeAlert(a.id)}
-                  className="text-xs text-[#D4A853] hover:text-[#E5B964] transition-colors flex-shrink-0"
-                >
-                  确认
-                </button>
-              )}
+              {!a.acknowledged &&
+            <button
+              onClick={() => acknowledgeAlert(a.id)}
+              className="text-xs text-[#D4A853] hover:text-[#E5B964] transition-colors flex-shrink-0">{i18n.t("DataQualityMonitorPage.r92_7005")}
+
+
+            </button>
+            }
             </div>
-          ))}
+          )}
         </div>
       </div>
 
@@ -239,18 +239,18 @@ export default function DataQualityMonitorPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {symbols.map((s) => (
-                <tr key={s.code} className="hover:bg-white/[0.02]">
+              {symbols.map((s) =>
+              <tr key={s.code} className="hover:bg-white/[0.02]">
                   <td className="px-4 py-3">
                     <div className="font-medium text-white">{s.name}</div>
                     <div className="text-[10px] text-gray-500">{s.code}</div>
                   </td>
                   <td className="px-4 py-3 text-center">
                     <span className={`text-xs px-2 py-1 rounded ${
-                      s.status === 'good' ? 'bg-emerald-500/10 text-emerald-400' :
-                      s.status === 'stale' ? 'bg-yellow-500/10 text-yellow-400' :
-                      'bg-red-500/10 text-red-400'
-                    }`}>
+                  s.status === 'good' ? 'bg-emerald-500/10 text-emerald-400' :
+                  s.status === 'stale' ? 'bg-yellow-500/10 text-yellow-400' :
+                  'bg-red-500/10 text-red-400'}`
+                  }>
                       {s.status === 'good' ? i18n.t('DataQualityMonitorPage.k26') : s.status === 'stale' ? i18n.t('DataQualityMonitorPage.k27') : i18n.t('DataQualityMonitorPage.k28')}
                     </span>
                   </td>
@@ -258,15 +258,15 @@ export default function DataQualityMonitorPage() {
                     {s.latencyMs}ms
                   </td>
                   <td className="px-4 py-3 text-right font-mono text-gray-300">{s.lastUpdate}</td>
-                  {['format', 'priceBounds', 'volume', 'timestamp', 'stale'].map((key) => (
-                    <td key={key} className="px-4 py-3 text-center">
+                  {['format', 'priceBounds', 'volume', 'timestamp', 'stale'].map((key) =>
+                <td key={key} className="px-4 py-3 text-center">
                       <span className={`text-sm ${(s.checks as any)[key] ? 'text-emerald-400' : 'text-red-400'}`}>
                         {(s.checks as any)[key] ? '✓' : '✗'}
                       </span>
                     </td>
-                  ))}
+                )}
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
@@ -274,16 +274,16 @@ export default function DataQualityMonitorPage() {
 
       {/* Quality Trend */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-white mb-4">24小时通过率趋势</h2>
+        <h2 className="text-sm font-semibold text-white mb-4">{i18n.t("DataQualityMonitorPage.r92_7c05")}</h2>
         <div id="quality-trend-chart" className="w-full h-[200px]" />
       </div>
 
       {/* Cache Stats */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-white mb-4">缓存统计 (JVS-32)</h2>
+        <h2 className="text-sm font-semibold text-white mb-4">{i18n.t("DataQualityMonitorPage.r92_1617")}</h2>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
-          {cacheStats.map((c) => (
-            <div key={c.namespace} className="bg-deep rounded-lg p-3">
+          {cacheStats.map((c) =>
+          <div key={c.namespace} className="bg-deep rounded-lg p-3">
               <div className="text-xs text-gray-500 mb-1 capitalize">{c.namespace}</div>
               <div className="text-lg font-bold font-mono text-white">{c.hitRate.toFixed(1)}%</div>
               <div className="text-[10px] text-gray-500 mt-1">{i18n.t('DataQualityMonitorPage.k9')}</div>
@@ -291,13 +291,13 @@ export default function DataQualityMonitorPage() {
                 <div className="bg-[#C9A046] h-1 rounded-full" style={{ width: `${c.hitRate}%` }} />
               </div>
               <div className="flex justify-between mt-2 text-[10px] text-gray-500">
-                <span>{c.entries} 条目</span>
+                <span>{c.entries}{i18n.t("DataQualityMonitorPage.r92_fbd0")}</span>
                 <span>{c.misses} miss</span>
               </div>
             </div>
-          ))}
+          )}
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }

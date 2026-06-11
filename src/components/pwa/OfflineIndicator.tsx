@@ -38,7 +38,7 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ className })
       setShowReconnected(true);
       const now = Date.now();
       setLastSyncTime(now);
-      try { localStorage.setItem('dw-last-sync', String(now)); } catch (_e: unknown) {}
+      try {localStorage.setItem('dw-last-sync', String(now));} catch (_e: unknown) {}
       setTimeout(() => setShowReconnected(false), 3000);
     };
 
@@ -59,22 +59,22 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ className })
 
   return (
     <div className={className}>
-      {!online && (
-        <div className="fixed top-0 left-0 right-0 z-[999] bg-red-600 text-white text-center py-2 px-4 text-xs font-medium">
-          📡 当前离线 — 部分功能可能不可用
-          <button onClick={handleRefresh} className="ml-3 underline text-white/80 hover:text-white">
-            重试
-          </button>
-        </div>
-      )}
+      {!online &&
+      <div className="fixed top-0 left-0 right-0 z-[999] bg-red-600 text-white text-center py-2 px-4 text-xs font-medium">{i18n.t("OfflineIndicator.r92_b70b")}
 
-      {showReconnected && (
-        <div className="fixed top-0 left-0 right-0 z-[999] bg-emerald-600 text-white text-center py-2 px-4 text-xs font-medium transition-opacity animate-pulse">
-          ✅ 网络已恢复 — 数据同步中...
+        <button onClick={handleRefresh} className="ml-3 underline text-white/80 hover:text-white">{i18n.t("OfflineIndicator.r92_93cc")}
+
+        </button>
         </div>
-      )}
-    </div>
-  );
+      }
+
+      {showReconnected &&
+      <div className="fixed top-0 left-0 right-0 z-[999] bg-emerald-600 text-white text-center py-2 px-4 text-xs font-medium transition-opacity animate-pulse">{i18n.t("OfflineIndicator.r92_754d")}
+
+      </div>
+      }
+    </div>);
+
 };
 
 // ── OfflineDataNotice ────────────────────────────────────────────────────
@@ -106,24 +106,24 @@ export const OfflineDataNotice: React.FC<OfflineDataNoticeProps> = ({ className 
         <span>📦</span>
         <div>
           <span className="text-amber-400 font-medium">{i18n.t('OfflineIndicator.k0')}</span>
-          {lastSync && (
-            <span className="text-gray-500 ml-1">{i18n.t('OfflineIndicator.k0')}{lastSync}</span>
-          )}
-          <p className="text-gray-600 text-[10px] mt-0.5">
-            自选股和持仓数据已缓存。行情数据需要联网更新。
+          {lastSync &&
+          <span className="text-gray-500 ml-1">{i18n.t('OfflineIndicator.k0')}{lastSync}</span>
+          }
+          <p className="text-gray-600 text-[10px] mt-0.5">{i18n.t("OfflineIndicator.r92_881f")}
+
           </p>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 // ── PullToRefresh Hook ───────────────────────────────────────────────────
 
 export function usePullToRefresh(
-  containerRef: React.RefObject<HTMLElement | null>,
-  onRefresh: () => Promise<void>
-) {
+containerRef: React.RefObject<HTMLElement | null>,
+onRefresh: () => Promise<void>)
+{
   const [refreshing, setRefreshing] = useState(false);
   const [pullDistance, setPullDistance] = useState(0);
 
@@ -192,11 +192,11 @@ export const PullToRefreshIndicator: React.FC<PullToRefreshIndicatorProps> = ({ 
   return (
     <div
       className="flex items-center justify-center text-xs text-gray-500 overflow-hidden transition-all"
-      style={{ height: pullDistance }}
-    >
+      style={{ height: pullDistance }}>
+      
       {refreshing ? i18n.t('OfflineIndicator.k1') : pullDistance > 40 ? i18n.t('OfflineIndicator.k2') : i18n.t('OfflineIndicator.k3')}
-    </div>
-  );
+    </div>);
+
 };
 
 export default OfflineIndicator;

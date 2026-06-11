@@ -16,17 +16,17 @@ interface DailyPnLSummaryProps {
 }
 
 const DEMO_DATA: PnLItem[] = [
-  { symbol: 'TQQQ', realized: 1200, unrealized: 850, total: 2050 },
-  { symbol: 'AAPL', realized: 0, unrealized: -320, total: -320 },
-  { symbol: 'NVDA', realized: 680, unrealized: 420, total: 1100 },
-  { symbol: 'SOXL', realized: -450, unrealized: 180, total: -270 },
-  { symbol: 'QQQ', realized: 0, unrealized: 210, total: 210 },
-  { symbol: 'SPY', realized: 150, unrealized: 95, total: 245 },
-];
+{ symbol: 'TQQQ', realized: 1200, unrealized: 850, total: 2050 },
+{ symbol: 'AAPL', realized: 0, unrealized: -320, total: -320 },
+{ symbol: 'NVDA', realized: 680, unrealized: 420, total: 1100 },
+{ symbol: 'SOXL', realized: -450, unrealized: 180, total: -270 },
+{ symbol: 'QQQ', realized: 0, unrealized: 210, total: 210 },
+{ symbol: 'SPY', realized: 150, unrealized: 95, total: 245 }];
+
 
 export default function DailyPnLSummary({
   data = DEMO_DATA,
-  title = i18n.t('DailyPnLSummary.k0'),
+  title = i18n.t('DailyPnLSummary.k0')
 }: DailyPnLSummaryProps) {
   const summary = useMemo(() => {
     const totalRealized = data.reduce((s, d) => s + d.realized, 0);
@@ -67,7 +67,7 @@ export default function DailyPnLSummary({
           </div>
         </div>
         <div className="bg-[#12121a] rounded-lg p-2.5">
-          <div className="text-[10px] text-gray-500">赢/亏</div>
+          <div className="text-[10px] text-gray-500">{i18n.t("DailyPnLSummary.r92_bb82")}</div>
           <div className="text-sm font-mono font-medium text-gray-300">
             <span className="text-emerald-400">{summary.winners}</span>
             <span className="text-gray-500 mx-1">/</span>
@@ -77,26 +77,26 @@ export default function DailyPnLSummary({
       </div>
 
       {/* Best/Worst */}
-      {(summary.best || summary.worst) && (
-        <div className="flex items-center gap-2 mb-3 text-[10px]">
-          {summary.best && (
-            <span className="bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded">
-              最佳 {summary.best.symbol} +${summary.best.total.toFixed(0)}
+      {(summary.best || summary.worst) &&
+      <div className="flex items-center gap-2 mb-3 text-[10px]">
+          {summary.best &&
+        <span className="bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded">{i18n.t("DailyPnLSummary.r92_fc9f")}
+          {summary.best.symbol} +${summary.best.total.toFixed(0)}
             </span>
-          )}
-          {summary.worst && (
-            <span className="bg-red-500/10 text-red-400 px-2 py-1 rounded">
-              最差 {summary.worst.symbol} ${summary.worst.total.toFixed(0)}
+        }
+          {summary.worst &&
+        <span className="bg-red-500/10 text-red-400 px-2 py-1 rounded">{i18n.t("DailyPnLSummary.r92_356f")}
+          {summary.worst.symbol} ${summary.worst.total.toFixed(0)}
             </span>
-          )}
+        }
         </div>
-      )}
+      }
 
       {/* Breakdown */}
       <div className="space-y-1">
         {sorted.map((item) => {
           const maxVal = Math.max(...data.map((d) => Math.abs(d.total)));
-          const barWidth = maxVal > 0 ? (Math.abs(item.total) / maxVal) * 100 : 0;
+          const barWidth = maxVal > 0 ? Math.abs(item.total) / maxVal * 100 : 0;
           const isProfit = item.total >= 0;
           return (
             <div key={item.symbol} className="flex items-center gap-2">
@@ -104,16 +104,16 @@ export default function DailyPnLSummary({
               <div className="flex-1 h-4 bg-[#12121a] rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full ${isProfit ? 'bg-emerald-500/40' : 'bg-red-500/40'}`}
-                  style={{ width: `${Math.max(barWidth, 4)}%` }}
-                />
+                  style={{ width: `${Math.max(barWidth, 4)}%` }} />
+                
               </div>
               <span className={`text-[10px] font-mono w-12 text-right ${isProfit ? 'text-emerald-400' : 'text-red-400'}`}>
                 {isProfit ? '+' : ''}${item.total.toFixed(0)}
               </span>
-            </div>
-          );
+            </div>);
+
         })}
       </div>
-    </div>
-  );
+    </div>);
+
 }

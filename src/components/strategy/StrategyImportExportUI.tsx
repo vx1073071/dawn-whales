@@ -56,16 +56,16 @@ const MOCK_STRATEGY: StrategyConfig = {
   updatedAt: '2026-06-05T14:30:00Z',
   params: { maFast: 10, maSlow: 30, stopLoss: 0.05, takeProfit: 0.10, maxPosition: 1000, useVolume: 1 },
   paramSpecs: [
-    { name: 'maFast', value: 10, type: 'int', min: 3, max: 50, description: 'fastPeriod' },
-    { name: 'maSlow', value: 30, type: 'int', min: 10, max: 200, description: 'slowPeriod' },
-    { name: 'stopLoss', value: 0.05, type: 'number', min: 0.01, max: 0.20, description: i18n.t('StrategyImportExportUI.k2') },
-    { name: 'takeProfit', value: 0.10, type: 'number', min: 0.01, max: 0.50, description: i18n.t('StrategyImportExportUI.k3') },
-    { name: 'maxPosition', value: 1000, type: 'int', min: 100, max: 10000, description: i18n.t('StrategyImportExportUI.k4') },
-    { name: 'useVolume', value: 1, type: 'boolean', min: 0, max: 1, description: i18n.t('StrategyImportExportUI.k5') },
-  ],
+  { name: 'maFast', value: 10, type: 'int', min: 3, max: 50, description: 'fastPeriod' },
+  { name: 'maSlow', value: 30, type: 'int', min: 10, max: 200, description: 'slowPeriod' },
+  { name: 'stopLoss', value: 0.05, type: 'number', min: 0.01, max: 0.20, description: i18n.t('StrategyImportExportUI.k2') },
+  { name: 'takeProfit', value: 0.10, type: 'number', min: 0.01, max: 0.50, description: i18n.t('StrategyImportExportUI.k3') },
+  { name: 'maxPosition', value: 1000, type: 'int', min: 100, max: 10000, description: i18n.t('StrategyImportExportUI.k4') },
+  { name: 'useVolume', value: 1, type: 'boolean', min: 0, max: 1, description: i18n.t('StrategyImportExportUI.k5') }],
+
   description: i18n.t('StrategyImportExportUI.k6'),
   tags: [i18n.t('StrategyImportExportUI.k7'), i18n.t('StrategyImportExportUI.k8'), i18n.t('StrategyImportExportUI.k9')],
-  author: 'ML',
+  author: 'ML'
 };
 
 // ── Main Component ──────────────────────────────────────────────────────
@@ -75,7 +75,7 @@ interface StrategyImportExportProps {
 }
 
 export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ className }) => {
-    const [activeStrategy, _setActiveStrategy] = useState<StrategyConfig>(MOCK_STRATEGY);
+  const [activeStrategy, _setActiveStrategy] = useState<StrategyConfig>(MOCK_STRATEGY);
   const [importText, setImportText] = useState('');
   const [importError, setImportError] = useState<string | null>(null);
   const [importedStrategy, setImportedStrategy] = useState<StrategyConfig | null>(null);
@@ -137,18 +137,18 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
         createdAt: parsed.createdAt ?? new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         params: parsed.params,
-        paramSpecs: activeStrategy.paramSpecs.map(s => ({
+        paramSpecs: activeStrategy.paramSpecs.map((s) => ({
           ...s,
-          value: parsed.params[s.name] ?? s.value,
+          value: parsed.params[s.name] ?? s.value
         })),
         description: parsed.description,
         tags: parsed.tags,
-        author: parsed.author,
+        author: parsed.author
       };
       setImportedStrategy(strategy);
     } catch (e) {
-    // [EngineError:SYSTEM] — structured error tracking
-    void EngineError; // structured error domain: SYSTEM
+      // [EngineError:SYSTEM] — structured error tracking
+      void EngineError; // structured error domain: SYSTEM
       setImportError(`${i18n.t('StrategyImportExportUI.k0')}${(e as Error).message}`);
     }
   }, [importText, activeStrategy]);
@@ -159,9 +159,9 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
     if (!importedStrategy) return [];
     const entries: DiffEntry[] = [];
     const allKeys = new Set([
-      ...Object.keys(activeStrategy.params),
-      ...Object.keys(importedStrategy.params),
-    ]);
+    ...Object.keys(activeStrategy.params),
+    ...Object.keys(importedStrategy.params)]
+    );
     for (const key of allKeys) {
       const oldVal = activeStrategy.params[key];
       const newVal = importedStrategy.params[key];
@@ -170,9 +170,9 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
         param: key,
         oldValue: oldVal ?? i18n.t('StrategyImportExportUI.k12'),
         newValue: newVal ?? i18n.t('StrategyImportExportUI.k13'),
-        pctChange: typeof oldVal === 'number' && typeof newVal === 'number' && oldVal !== 0
-          ? ((Number(newVal) - Number(oldVal)) / Number(oldVal)) * 100
-          : undefined,
+        pctChange: typeof oldVal === 'number' && typeof newVal === 'number' && oldVal !== 0 ?
+        (Number(newVal) - Number(oldVal)) / Number(oldVal) * 100 :
+        undefined
       });
     }
     return entries;
@@ -185,8 +185,8 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h3 className="text-lg font-bold text-white">
-            策略导入导出
+          <h3 className="text-lg font-bold text-white">{i18n.t("StrategyImportExportUI.r92_5284")}
+
             <span className="ml-2 px-2 py-0.5 text-[10px] bg-amber-500/20 text-amber-400 rounded-full font-normal">
               Phase 5.0
             </span>
@@ -200,56 +200,56 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
       {/* Tab bar */}
       <div className="flex gap-1 mb-5 bg-gray-800/40 rounded-lg p-1">
         {([
-          { key: 'export', label: i18n.t('StrategyImportExportUI.k14') },
-          { key: 'import', label: i18n.t('StrategyImportExportUI.k15') },
-        ] as const).map(tab => (
-          <button
-            key={tab.key}
-            onClick={() => setMode(tab.key)}
-            className={`flex-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-              mode === tab.key ? 'bg-amber-500/20 text-amber-400' : 'text-gray-500 hover:text-gray-300'
-            }`}
-          >
+        { key: 'export', label: i18n.t('StrategyImportExportUI.k14') },
+        { key: 'import', label: i18n.t('StrategyImportExportUI.k15') }] as
+        const).map((tab) =>
+        <button
+          key={tab.key}
+          onClick={() => setMode(tab.key)}
+          className={`flex-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+          mode === tab.key ? 'bg-amber-500/20 text-amber-400' : 'text-gray-500 hover:text-gray-300'}`
+          }>
+          
             {tab.label}
           </button>
-        ))}
+        )}
       </div>
 
       {/* ── Export tab ─────────────────────────────────────────────── */}
-      {mode === 'export' && (
-        <div className="space-y-4">
+      {mode === 'export' &&
+      <div className="space-y-4">
           {/* Strategy info */}
           <div className="bg-gray-800/40 rounded-lg p-4 border border-gray-700/30">
             <div className="flex items-center gap-3 mb-3">
               <span className="text-sm font-bold text-white">{activeStrategy.name}</span>
               <span className="text-[10px] text-gray-600 bg-gray-800 px-2 py-0.5 rounded">{activeStrategy.type}</span>
               <span className="text-[10px] text-gray-600">v{activeStrategy.version}</span>
-              {activeStrategy.tags?.map(tag => (
-                <span key={tag} className="text-[10px] text-blue-400/70 bg-blue-500/10 px-1.5 py-0.5 rounded">{tag}</span>
-              ))}
+              {activeStrategy.tags?.map((tag) =>
+            <span key={tag} className="text-[10px] text-blue-400/70 bg-blue-500/10 px-1.5 py-0.5 rounded">{tag}</span>
+            )}
             </div>
 
             {/* Param grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-3">
-              {activeStrategy.paramSpecs.map(spec => (
-                <div key={spec.name} className="flex items-center gap-2 text-xs">
+              {activeStrategy.paramSpecs.map((spec) =>
+            <div key={spec.name} className="flex items-center gap-2 text-xs">
                   <span className="text-gray-500">{spec.name}</span>
                   <span className="text-white font-mono">{spec.value}</span>
                   <span className="text-[10px] text-gray-600">({spec.type})</span>
                 </div>
-              ))}
+            )}
             </div>
 
-            {activeStrategy.description && (
-              <p className="text-xs text-gray-500">{activeStrategy.description}</p>
-            )}
+            {activeStrategy.description &&
+          <p className="text-xs text-gray-500">{activeStrategy.description}</p>
+          }
           </div>
 
           {/* JSON preview */}
           <div className="bg-gray-950 rounded-lg border border-gray-700/50 p-4">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] text-gray-500 uppercase tracking-wide">{i18n.t('StrategyImportExportUI.r92_0')}</span>
-              <span className="text-[10px] text-gray-600">{exportJson.length} 字符</span>
+              <span className="text-[10px] text-gray-600">{exportJson.length}{i18n.t("StrategyImportExportUI.r92_3f71")}</span>
             </div>
             <pre className="text-xs text-gray-400 font-mono max-h-64 overflow-y-auto whitespace-pre-wrap">
               {exportJson}
@@ -259,53 +259,53 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
           {/* Action buttons */}
           <div className="flex gap-3">
             <button
-              onClick={handleCopy}
-              className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-300 hover:bg-gray-700 transition-colors"
-            >
+            onClick={handleCopy}
+            className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-300 hover:bg-gray-700 transition-colors">
+            
               {copied ? i18n.t('StrategyImportExportUI.k16') : i18n.t('StrategyImportExportUI.k17')}
             </button>
             <button
-              onClick={handleDownload}
-              className="flex-1 px-4 py-2 bg-amber-500 text-black rounded-lg text-xs font-bold hover:bg-amber-400 transition-colors"
-            >
-              ⬇ 下载 JSON 文件
-            </button>
+            onClick={handleDownload}
+            className="flex-1 px-4 py-2 bg-amber-500 text-black rounded-lg text-xs font-bold hover:bg-amber-400 transition-colors">{i18n.t("StrategyImportExportUI.r92_d457")}
+
+
+          </button>
           </div>
         </div>
-      )}
+      }
 
       {/* ── Import tab ─────────────────────────────────────────────── */}
-      {mode === 'import' && (
-        <div className="space-y-4">
+      {mode === 'import' &&
+      <div className="space-y-4">
           {/* Import textarea */}
           <div>
-            <label className="text-xs text-gray-500 mb-1.5 block">
-              粘贴策略 JSON
-            </label>
+            <label className="text-xs text-gray-500 mb-1.5 block">{i18n.t("StrategyImportExportUI.r92_ad19")}
+
+          </label>
             <textarea
-              value={importText}
-              onChange={e => setImportText(e.target.value)}
-              placeholder='{"id": "strat-xxx", "name": "...", "type": "MA_CROSS", "params": {...}}'
-              rows={10}
-              className="w-full bg-gray-950 border border-gray-700 rounded-lg p-3 text-xs text-gray-300 font-mono resize-y focus:border-amber-500/50 focus:outline-none placeholder-gray-700"
-            />
-            {importError && (
-              <div className="mt-2 text-xs text-red-400 bg-red-500/10 px-3 py-1.5 rounded">{importError}</div>
-            )}
+            value={importText}
+            onChange={(e) => setImportText(e.target.value)}
+            placeholder='{"id": "strat-xxx", "name": "...", "type": "MA_CROSS", "params": {...}}'
+            rows={10}
+            className="w-full bg-gray-950 border border-gray-700 rounded-lg p-3 text-xs text-gray-300 font-mono resize-y focus:border-amber-500/50 focus:outline-none placeholder-gray-700" />
+          
+            {importError &&
+          <div className="mt-2 text-xs text-red-400 bg-red-500/10 px-3 py-1.5 rounded">{importError}</div>
+          }
           </div>
 
           {/* Import button */}
           <button
-            onClick={handleImport}
-            disabled={!importText.trim()}
-            className="w-full px-4 py-2 bg-amber-500 text-black rounded-lg text-xs font-bold hover:bg-amber-400 disabled:bg-gray-800 disabled:text-gray-600 disabled:cursor-not-allowed transition-colors"
-          >
-            🔍 解析并验证
-          </button>
+          onClick={handleImport}
+          disabled={!importText.trim()}
+          className="w-full px-4 py-2 bg-amber-500 text-black rounded-lg text-xs font-bold hover:bg-amber-400 disabled:bg-gray-800 disabled:text-gray-600 disabled:cursor-not-allowed transition-colors">{i18n.t("StrategyImportExportUI.r92_0479")}
+
+
+        </button>
 
           {/* Imported strategy preview + diff */}
-          {importedStrategy && (
-            <div className="space-y-4">
+          {importedStrategy &&
+        <div className="space-y-4">
               {/* Strategy info */}
               <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
@@ -317,11 +317,11 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
               </div>
 
               {/* Diff table */}
-              {diffs.length > 0 && (
-                <div className="bg-gray-800/40 rounded-lg p-4 border border-gray-700/30">
-                  <h4 className="text-xs font-semibold text-gray-400 mb-3 uppercase tracking-wide">
-                    参数差异对比 ({diffs.length} 项变化)
-                  </h4>
+              {diffs.length > 0 &&
+          <div className="bg-gray-800/40 rounded-lg p-4 border border-gray-700/30">
+                  <h4 className="text-xs font-semibold text-gray-400 mb-3 uppercase tracking-wide">{i18n.t("StrategyImportExportUI.r92_2326")}
+              {diffs.length}{i18n.t("StrategyImportExportUI.r92_81ad")}
+            </h4>
                   <table className="w-full text-xs">
                     <thead>
                       <tr className="text-gray-500 border-b border-gray-700/50">
@@ -332,46 +332,46 @@ export const StrategyImportExportUI: React.FC<StrategyImportExportProps> = ({ cl
                       </tr>
                     </thead>
                     <tbody>
-                      {diffs.map(d => (
-                        <tr key={d.param} className="border-b border-gray-700/20 text-gray-400">
+                      {diffs.map((d) =>
+                <tr key={d.param} className="border-b border-gray-700/20 text-gray-400">
                           <td className="py-1.5 pr-3 font-mono">{d.param}</td>
                           <td className="py-1.5 pr-3 text-gray-500">{String(d.oldValue)}</td>
                           <td className="py-1.5 pr-3 text-amber-300">{String(d.newValue)}</td>
                           <td className={`py-1.5 ${
-                            d.pctChange !== undefined
-                              ? d.pctChange >= 0 ? 'text-emerald-400' : 'text-red-400'
-                              : 'text-gray-500'
-                          }`}>
-                            {d.pctChange !== undefined
-                              ? `${d.pctChange >= 0 ? '+' : ''}${d.pctChange.toFixed(1)}%`
-                              : '—'}
+                  d.pctChange !== undefined ?
+                  d.pctChange >= 0 ? 'text-emerald-400' : 'text-red-400' :
+                  'text-gray-500'}`
+                  }>
+                            {d.pctChange !== undefined ?
+                    `${d.pctChange >= 0 ? '+' : ''}${d.pctChange.toFixed(1)}%` :
+                    '—'}
                           </td>
                         </tr>
-                      ))}
+                )}
                     </tbody>
                   </table>
                 </div>
-              )}
+          }
 
-              {diffs.length === 0 && (
-                <div className="text-center py-4 text-gray-600 text-xs">
-                  没有参数变化 — 导入策略与当前策略一致
-                </div>
-              )}
+              {diffs.length === 0 &&
+          <div className="text-center py-4 text-gray-600 text-xs">{i18n.t("StrategyImportExportUI.r92_d99c")}
+
+          </div>
+          }
 
               {/* Apply button */}
               <button
-                onClick={() => setImportedStrategy(null)}
-                className="w-full px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-500 transition-colors"
-              >
-                应用导入策略
-              </button>
+            onClick={() => setImportedStrategy(null)}
+            className="w-full px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-500 transition-colors">{i18n.t("StrategyImportExportUI.r92_b39c")}
+
+
+          </button>
             </div>
-          )}
+        }
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 };
 
 export default StrategyImportExportUI;

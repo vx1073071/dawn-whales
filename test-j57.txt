@@ -1,0 +1,353 @@
+﻿npx : [33m[7m[33m Vitest [33m[27m "deps.external" is deprecated. If you rely on vite-node directly, use 
+"server.deps.external" instead. Otherwise, consider using "deps.optimizer.web.exclude"[39m
+所在位置 行:2 字符: 1
++ npx vitest run tests/jvs-57-02-agent-technical.test.ts --reporter=bas ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33m[7m[33m ...b.exclude"[39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[1m[46m RUN [49m[22m [36mv3.2.6 [39m[90mC:/Users/vx107/.easyclaw/workspace/dawn-whales[39m
+
+[1m[43m DEPRECATED [49m[22m [33m'basic' reporter is deprecated and will be removed in Vitest v3.
+Remove 'basic' from 'reporters' option. To match 'basic' reporter 100%, use configuration:
+{
+  "test": {
+    "reporters": [
+      [
+        "default",
+        {
+          "summary": false
+        }
+      ]
+    ]
+  }
+}[39m
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m01: analyzes AAPL and returns analysis
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m02: analyzes MSFT with trend analysis
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m03: analyzes TSLA with bearish signals
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m04: price parameter overrides default
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m05: random symbol generates mock data
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m06: cache returns same result
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m07: clearCache + reset work
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m08: RSI analysis detects strength
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m09: MACD analysis for AAPL signals positive
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m10: Bollinger analysis exists
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m11: volume analysis responds to volume ratio
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m12: resistance levels included
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m13: narrative generated in Chinese
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m14: LLM cost is low (cached)
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m15: agentType is technical
+[22m[39m[TechnicalAgent] Initialized
+
+[90mstdout[2m | tests/jvs-57-02-agent-technical.test.ts[2m > [22m[2mJ-57-02: TechnicalAgent[2m > [22m[2m16: completedAt is valid
+[22m[39m[TechnicalAgent] Initialized
+
+ [31m❯[39m tests/jvs-57-02-agent-technical.test.ts [2m([22m[2m16 tests[22m[2m | [22m[31m15 failed[39m[2m)[22m[32m 18[2mms[22m[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m01: analyzes AAPL and returns analysis[39m[32m 7[2mms[22m[39m
+[31m     → expected null not to be null[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m02: analyzes MSFT with trend analysis[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'trendAnalysis')[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m03: analyzes TSLA with bearish signals[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'signals')[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m04: price parameter overrides default[39m[32m 1[2mms[22m[39m
+[31m     → expected null not to be null[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m05: random symbol generates mock data[39m[32m 1[2mms[22m[39m
+[31m     → expected null not to be null[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m06: cache returns same result[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'score')[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m07: clearCache + reset work[39m[32m 1[2mms[22m[39m
+[31m     → expected null not to be null[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m08: RSI analysis detects strength[39m[32m 0[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'rsiAnalysis')[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m09: MACD analysis for AAPL signals positive[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'macdAnalysis')[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m10: Bollinger analysis exists[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'bollingerAnalysis')[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m11: volume analysis responds to volume ratio[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'volumeAnalysis')[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m12: resistance levels included[39m[32m 0[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'supportResistance')[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m13: narrative generated in Chinese[39m[32m 0[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'narrative')[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m14: LLM cost is low (cached)[39m[32m 1[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'llmCost')[39m
+   [32m✓[39m J-57-02: TechnicalAgent[2m > [22m15: agentType is technical[32m 0[2mms[22m[39m
+[31m   [31m×[31m J-57-02: TechnicalAgent[2m > [22m16: completedAt is valid[39m[32m 0[2mms[22m[39m
+[31m     → Cannot read properties of null (reading 'completedAt')[39m
+
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 15 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m01: 
+analyzes AAPL and returns analysis
+[31m[1mAssertionError[22m: expected null not to be null[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m34:19[22m[39m
+    [90m 32| [39m  [34mit[39m([32m'01: analyzes AAPL and returns analysis'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m 33| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m 34| [39m    [34mexpect[39m(r)[33m.[39mnot[33m.[39m[34mtoBeNull[39m()[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m 35| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39msymbol)[33m.[39m[34mtoBe[39m([32m'AAPL'[39m)[33m;[39m
+    [90m 36| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mscore)[33m.[39m[34mtoBeGreaterThan[39m([34m0[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m02: 
+analyzes MSFT with trend analysis
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'trendAnalysis')[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m42:15[22m[39m
+    [90m 40| [39m  [34mit[39m([32m'02: analyzes MSFT with trend analysis'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m 41| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'MSFT'[39m)[33m;[39m
+    [90m 42| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mtrendAnalysis)[33m.[39m[34mtoContain[39m([32m'MA'[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m 43| [39m  })[33m;[39m
+    [90m 44| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m03: 
+analyzes TSLA with bearish signals
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'signals')[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m47:15[22m[39m
+    [90m 45| [39m  [34mit[39m([32m'03: analyzes TSLA with bearish signals'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m 46| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'TSLA'[39m)[33m;[39m
+    [90m 47| [39m    [34mexpect[39m(r[33m![39m[33m.[39msignals[33m.[39mlength)[33m.[39m[34mtoBeGreaterThan
+[39m([34m0[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m 48| [39m  })[33m;[39m
+    [90m 49| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m04: 
+price parameter overrides default
+[31m[1mAssertionError[22m: expected null not to be null[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m52:19[22m[39m
+    [90m 50| [39m  [34mit[39m([32m'04: price parameter overrides default'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m 51| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m[33m,[39m [34m200[39m)[33m;[39m
+    [90m 52| [39m    [34mexpect[39m(r)[33m.[39mnot[33m.[39m[34mtoBeNull[39m()[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m 53| [39m  })[33m;[39m
+    [90m 54| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m05: 
+random symbol generates mock data
+[31m[1mAssertionError[22m: expected null not to be null[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m57:19[22m[39m
+    [90m 55| [39m  [34mit[39m([32m'05: random symbol generates mock data'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m 56| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'UNKNOWN'[39m)[33m;[39m
+    [90m 57| [39m    [34mexpect[39m(r)[33m.[39mnot[33m.[39m[34mtoBeNull[39m()[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m 58| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mscore)[33m.[39m[34mtoBeGreaterThan[39m([34m0[39m)[33m;[39m
+    [90m 59| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m06: 
+cache returns same result
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'score')[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m66:16[22m[39m
+    [90m 64| [39m    [35mconst[39m r1 [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m 65| [39m    [35mconst[39m r2 [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m 66| [39m    
+[34mexpect[39m(r1[33m![39m[33m.[39mscore)[33m.[39m[34mtoBe[39m(r2[33m![39m[33m.[39mscore)[33m;[39m
+    [90m   | [39m               [31m^[39m
+    [90m 67| [39m  })[33m;[39m
+    [90m 68| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m07: 
+clearCache + reset work
+[31m[1mAssertionError[22m: expected null not to be null[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m73:19[22m[39m
+    [90m 71| [39m    agent[33m.[39m[34mclearCache[39m()[33m;[39m
+    [90m 72| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'MSFT'[39m)[33m;[39m
+    [90m 73| [39m    [34mexpect[39m(r)[33m.[39mnot[33m.[39m[34mtoBeNull[39m()[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m 74| [39m  })[33m;[39m
+    [90m 75| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m08: 
+RSI analysis detects strength
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'rsiAnalysis')[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m80:15[22m[39m
+    [90m 78| [39m  [34mit[39m([32m'08: RSI analysis detects strength'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m 79| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'MSFT'[39m)[33m;[39m [90m// RSI 68[39m
+    [90m 80| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mrsiAnalysis)[33m.[39m[34mtoContain[39m([32m'RSI'[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m 81| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mrsiAnalysis)[33m.[39m[34mtoContain[39m([32m'偏强'[39m)[33m;[39m
+    [90m 82| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m09: 
+MACD analysis for AAPL signals positive
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'macdAnalysis')[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m86:15[22m[39m
+    [90m 84| [39m  [34mit[39m([32m'09: MACD analysis for AAPL signals positive'[39m[33m,[39m [35masync[39m 
+() [33m=>[39m {
+    [90m 85| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m [90m// MACD histogram positive[39m
+    [90m 86| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mmacdAnalysis)[33m.[39m[34mtoContain[39m([32m'金叉'[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m 87| [39m  })[33m;[39m
+    [90m 88| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m10: 
+Bollinger analysis exists
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'bollingerAnalysis')[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m91:15[22m[39m
+    [90m 89| [39m  [34mit[39m([32m'10: Bollinger analysis exists'[39m[33m,[39m [35masync[39m () [33m=>[39m 
+{
+    [90m 90| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m 91| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mbollingerAnalysis)[33m.[39m[34mtoContain[39m([32m'布林带'[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m 92| [39m  })[33m;[39m
+    [90m 93| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m11: 
+volume analysis responds to volume ratio
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'volumeAnalysis')[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m96:15[22m[39m
+    [90m 94| [39m  [34mit[39m([32m'11: volume analysis responds to volume ratio'[39m[33m,[39m [35masync[39m 
+() [33m=>[39m {
+    [90m 95| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'MSFT'[39m)[33m;[39m [90m// volumeRatio 1.12[39m
+    [90m 96| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mvolumeAnalysis)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m 97| [39m  })[33m;[39m
+    [90m 98| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m12: 
+resistance levels included
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'supportResistance')[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m101:15[22m[39m
+    [90m 99| [39m  [34mit[39m([32m'12: resistance levels included'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m100| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m101| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39msupportResistance)[33m.[39m[34mtoContain[39m([32m'/'[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m102| [39m  })[33m;[39m
+    [90m103| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m13: 
+narrative generated in Chinese
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'narrative')[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m108:15[22m[39m
+    [90m106| [39m  [34mit[39m([32m'13: narrative generated in Chinese'[39m[33m,[39m [35masync[39m () 
+[33m=>[39m {
+    [90m107| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m108| [39m    [34mexpect[39m(r[33m![39m[33m.[39mnarrative[33m.[39mlength)[33m.[39m[34mtoBeGreaterTh
+an[39m([34m20[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m109| [39m  })[33m;[39m
+    [90m110| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m14: 
+LLM cost is low (cached)
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'llmCost')[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m113:15[22m[39m
+    [90m111| [39m  [34mit[39m([32m'14: LLM cost is low (cached)'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m112| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m113| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mllmCost)[33m.[39m[34mtoBeLessThan[39m([34m0.01[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m114| [39m    
+[34mexpect[39m(r[33m![39m[33m.[39mcacheHit)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m115| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/15]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/jvs-57-02-agent-technical.test.ts[2m > [22mJ-57-02: TechnicalAgent[2m > [22m16: 
+completedAt is valid
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'completedAt')[39m
+[36m [2m❯[22m tests/jvs-57-02-agent-technical.test.ts:[2m123:26[22m[39m
+    [90m121| [39m  [34mit[39m([32m'16: completedAt is valid'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m122| [39m    [35mconst[39m r [33m=[39m [35mawait[39m 
+agent[33m.[39m[34manalyze[39m([32m'AAPL'[39m)[33m;[39m
+    [90m123| [39m    [34mexpect[39m([33mDate[39m[33m.[39m[34mparse[39m(r[33m![39m[33m.[39mcompletedAt))[
+33m.[39mnot[33m.[39m[34mtoBeNaN[39m()[33m;[39m
+    [90m   | [39m                         [31m^[39m
+    [90m124| [39m  })[33m;[39m
+    [90m125| [39m})[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/15]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m15 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (16)[39m
+[2m   Start at [22m 12:58:54
+[2m   Duration [22m 925ms[2m (transform 167ms, setup 14ms, collect 308ms, tests 18ms, environment 0ms, prepare 267ms)[22m
+

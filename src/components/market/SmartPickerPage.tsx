@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import * as echarts from 'echarts';
@@ -10,7 +10,7 @@ interface SmartPickItem {
   name: string;
   score: number;
   reasons: string[];
-  dimensions: { value: number; growth: number; momentum: number; quality: number; sentiment: number };
+  dimensions: {value: number;growth: number;momentum: number;quality: number;sentiment: number;};
   price: number;
   changePct: number;
   pe?: number;
@@ -19,17 +19,17 @@ interface SmartPickItem {
 }
 
 const MOCK_DATA: SmartPickItem[] = [
-  { code: 'NVDA', name: i18n.t('SmartPickerPage.k1'), score: 94, reasons: [i18n.t('SmartPickerPage.k2'), i18n.t('SmartPickerPage.k3'), i18n.t('SmartPickerPage.k4')], dimensions: { value: 75, growth: 98, momentum: 92, quality: 90, sentiment: 95 }, price: 875.28, changePct: 2.35, pe: 65.2, pb: 42.1, marketCap: 2150000000000 },
-  { code: 'MSFT', name: i18n.t('SmartPickerPage.k5'), score: 91, reasons: [i18n.t('SmartPickerPage.k6'), i18n.t('SmartPickerPage.k7'), i18n.t('SmartPickerPage.k8')], dimensions: { value: 82, growth: 88, momentum: 85, quality: 95, sentiment: 90 }, price: 412.20, changePct: 0.85, pe: 36.1, pb: 12.8, marketCap: 3050000000000 },
-  { code: 'AAPL', name: i18n.t('SmartPickerPage.k9'), score: 88, reasons: [i18n.t('SmartPickerPage.k10'), i18n.t('SmartPickerPage.k11'), i18n.t('SmartPickerPage.k12')], dimensions: { value: 85, growth: 72, momentum: 78, quality: 96, sentiment: 85 }, price: 189.52, changePct: -0.42, pe: 29.3, pb: 45.2, marketCap: 2900000000000 },
-  { code: 'AVGO', name: i18n.t('SmartPickerPage.k13'), score: 87, reasons: [i18n.t('SmartPickerPage.k14'), i18n.t('SmartPickerPage.k15'), i18n.t('SmartPickerPage.k16')], dimensions: { value: 80, growth: 85, momentum: 88, quality: 88, sentiment: 82 }, price: 1280.45, changePct: 1.92, pe: 48.5, pb: 18.3, marketCap: 590000000000 },
-  { code: 'META', name: 'Meta', score: 86, reasons: [i18n.t('SmartPickerPage.k17'), i18n.t('SmartPickerPage.k18'), i18n.t('SmartPickerPage.k19')], dimensions: { value: 78, growth: 80, momentum: 90, quality: 82, sentiment: 88 }, price: 474.35, changePct: 1.15, pe: 25.8, pb: 6.7, marketCap: 1210000000000 },
-  { code: 'AMZN', name: i18n.t('SmartPickerPage.k20'), score: 84, reasons: [i18n.t('SmartPickerPage.k21'), i18n.t('SmartPickerPage.k22'), i18n.t('SmartPickerPage.k23')], dimensions: { value: 72, growth: 82, momentum: 80, quality: 85, sentiment: 80 }, price: 178.15, changePct: 0.55, pe: 58.2, pb: 6.2, marketCap: 1850000000000 },
-  { code: 'GOOGL', name: i18n.t('SmartPickerPage.k24'), score: 83, reasons: [i18n.t('SmartPickerPage.k25'), i18n.t('SmartPickerPage.k26'), i18n.t('SmartPickerPage.k27')], dimensions: { value: 76, growth: 75, momentum: 82, quality: 90, sentiment: 78 }, price: 165.85, changePct: -0.22, pe: 24.5, pb: 5.8, marketCap: 2050000000000 },
-  { code: 'TSLA', name: i18n.t('SmartPickerPage.k28'), score: 79, reasons: [i18n.t('SmartPickerPage.k29'), i18n.t('SmartPickerPage.k30'), i18n.t('SmartPickerPage.k31')], dimensions: { value: 65, growth: 88, momentum: 85, quality: 70, sentiment: 75 }, price: 172.63, changePct: 3.12, pe: 42.1, pb: 8.5, marketCap: 550000000000 },
-  { code: 'AMD', name: 'AMD', score: 77, reasons: [i18n.t('SmartPickerPage.k32'), i18n.t('SmartPickerPage.k33'), i18n.t('SmartPickerPage.k34')], dimensions: { value: 68, growth: 85, momentum: 80, quality: 72, sentiment: 78 }, price: 148.25, changePct: -1.05, pe: 185.3, pb: 3.8, marketCap: 239000000000 },
-  { code: 'CRM', name: 'Salesforce', score: 75, reasons: [i18n.t('SmartPickerPage.k35'), i18n.t('SmartPickerPage.k36'), i18n.t('SmartPickerPage.k37')], dimensions: { value: 70, growth: 72, momentum: 75, quality: 80, sentiment: 72 }, price: 298.45, changePct: 0.28, pe: 62.5, pb: 4.2, marketCap: 288000000000 },
-];
+{ code: 'NVDA', name: i18n.t('SmartPickerPage.k1'), score: 94, reasons: [i18n.t('SmartPickerPage.k2'), i18n.t('SmartPickerPage.k3'), i18n.t('SmartPickerPage.k4')], dimensions: { value: 75, growth: 98, momentum: 92, quality: 90, sentiment: 95 }, price: 875.28, changePct: 2.35, pe: 65.2, pb: 42.1, marketCap: 2150000000000 },
+{ code: 'MSFT', name: i18n.t('SmartPickerPage.k5'), score: 91, reasons: [i18n.t('SmartPickerPage.k6'), i18n.t('SmartPickerPage.k7'), i18n.t('SmartPickerPage.k8')], dimensions: { value: 82, growth: 88, momentum: 85, quality: 95, sentiment: 90 }, price: 412.20, changePct: 0.85, pe: 36.1, pb: 12.8, marketCap: 3050000000000 },
+{ code: 'AAPL', name: i18n.t('SmartPickerPage.k9'), score: 88, reasons: [i18n.t('SmartPickerPage.k10'), i18n.t('SmartPickerPage.k11'), i18n.t('SmartPickerPage.k12')], dimensions: { value: 85, growth: 72, momentum: 78, quality: 96, sentiment: 85 }, price: 189.52, changePct: -0.42, pe: 29.3, pb: 45.2, marketCap: 2900000000000 },
+{ code: 'AVGO', name: i18n.t('SmartPickerPage.k13'), score: 87, reasons: [i18n.t('SmartPickerPage.k14'), i18n.t('SmartPickerPage.k15'), i18n.t('SmartPickerPage.k16')], dimensions: { value: 80, growth: 85, momentum: 88, quality: 88, sentiment: 82 }, price: 1280.45, changePct: 1.92, pe: 48.5, pb: 18.3, marketCap: 590000000000 },
+{ code: 'META', name: 'Meta', score: 86, reasons: [i18n.t('SmartPickerPage.k17'), i18n.t('SmartPickerPage.k18'), i18n.t('SmartPickerPage.k19')], dimensions: { value: 78, growth: 80, momentum: 90, quality: 82, sentiment: 88 }, price: 474.35, changePct: 1.15, pe: 25.8, pb: 6.7, marketCap: 1210000000000 },
+{ code: 'AMZN', name: i18n.t('SmartPickerPage.k20'), score: 84, reasons: [i18n.t('SmartPickerPage.k21'), i18n.t('SmartPickerPage.k22'), i18n.t('SmartPickerPage.k23')], dimensions: { value: 72, growth: 82, momentum: 80, quality: 85, sentiment: 80 }, price: 178.15, changePct: 0.55, pe: 58.2, pb: 6.2, marketCap: 1850000000000 },
+{ code: 'GOOGL', name: i18n.t('SmartPickerPage.k24'), score: 83, reasons: [i18n.t('SmartPickerPage.k25'), i18n.t('SmartPickerPage.k26'), i18n.t('SmartPickerPage.k27')], dimensions: { value: 76, growth: 75, momentum: 82, quality: 90, sentiment: 78 }, price: 165.85, changePct: -0.22, pe: 24.5, pb: 5.8, marketCap: 2050000000000 },
+{ code: 'TSLA', name: i18n.t('SmartPickerPage.k28'), score: 79, reasons: [i18n.t('SmartPickerPage.k29'), i18n.t('SmartPickerPage.k30'), i18n.t('SmartPickerPage.k31')], dimensions: { value: 65, growth: 88, momentum: 85, quality: 70, sentiment: 75 }, price: 172.63, changePct: 3.12, pe: 42.1, pb: 8.5, marketCap: 550000000000 },
+{ code: 'AMD', name: 'AMD', score: 77, reasons: [i18n.t('SmartPickerPage.k32'), i18n.t('SmartPickerPage.k33'), i18n.t('SmartPickerPage.k34')], dimensions: { value: 68, growth: 85, momentum: 80, quality: 72, sentiment: 78 }, price: 148.25, changePct: -1.05, pe: 185.3, pb: 3.8, marketCap: 239000000000 },
+{ code: 'CRM', name: 'Salesforce', score: 75, reasons: [i18n.t('SmartPickerPage.k35'), i18n.t('SmartPickerPage.k36'), i18n.t('SmartPickerPage.k37')], dimensions: { value: 70, growth: 72, momentum: 75, quality: 80, sentiment: 72 }, price: 298.45, changePct: 0.28, pe: 62.5, pb: 4.2, marketCap: 288000000000 }];
+
 
 export default function SmartPickerPage() {
   const { t } = useTranslation();
@@ -44,12 +44,12 @@ export default function SmartPickerPage() {
     try {
       const res = await getSmartPick();
       if (res?.success && Array.isArray(res.data)) setData(res.data);
-    } catch (e) { console.error('[Error:SmartPickerPage]', e); }
+    } catch (e) {console.error('[Error:SmartPickerPage]', e);}
     void EngineError; // [DATA] structured error tracking
     setLoading(false);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {load();}, []);
 
   const sorted = useMemo(() => {
     return [...data].sort((a, b) => {
@@ -66,17 +66,17 @@ export default function SmartPickerPage() {
       backgroundColor: 'transparent',
       radar: {
         indicator: [
-          { name: i18n.t('SmartPickerPage.k38'), max: 100 },
-          { name: i18n.t('SmartPickerPage.k39'), max: 100 },
-          { name: i18n.t('SmartPickerPage.k40'), max: 100 },
-          { name: i18n.t('SmartPickerPage.k41'), max: 100 },
-          { name: i18n.t('SmartPickerPage.k42'), max: 100 },
-        ],
+        { name: i18n.t('SmartPickerPage.k38'), max: 100 },
+        { name: i18n.t('SmartPickerPage.k39'), max: 100 },
+        { name: i18n.t('SmartPickerPage.k40'), max: 100 },
+        { name: i18n.t('SmartPickerPage.k41'), max: 100 },
+        { name: i18n.t('SmartPickerPage.k42'), max: 100 }],
+
         radius: '65%',
         axisName: { color: '#9ca3af', fontSize: 10 },
         splitArea: { areaStyle: { color: ['rgba(255,255,255,0.02)', 'rgba(255,255,255,0.04)'] } },
         axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
       },
       series: [{
         type: 'radar',
@@ -85,9 +85,9 @@ export default function SmartPickerPage() {
           name: item.code,
           areaStyle: { color: 'rgba(201,160,70,0.2)' },
           lineStyle: { color: '#C9A046', width: 2 },
-          itemStyle: { color: '#C9A046' },
-        }],
-      }],
+          itemStyle: { color: '#C9A046' }
+        }]
+      }]
     });
   }
 
@@ -105,24 +105,24 @@ export default function SmartPickerPage() {
           <p className="text-gray-400 text-sm">{t(i18n.t('SmartPickerPage.k44'))}</p>
         </div>
         <div className="flex gap-2">
-          {(['score', 'changePct', 'pe'] as const).map((k) => (
-            <button
-              key={k}
-              onClick={() => setSortKey(k)}
-              className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
-                sortKey === k
-                  ? 'bg-[#C9A046]/20 border-[#C9A046] text-[#D4A853]'
-                  : 'bg-[#1a1a25] border-white/5 text-gray-400 hover:text-gray-200'
-              }`}
-            >
+          {(['score', 'changePct', 'pe'] as const).map((k) =>
+          <button
+            key={k}
+            onClick={() => setSortKey(k)}
+            className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
+            sortKey === k ?
+            'bg-[#C9A046]/20 border-[#C9A046] text-[#D4A853]' :
+            'bg-[#1a1a25] border-white/5 text-gray-400 hover:text-gray-200'}`
+            }>
+            
               {k === 'score' ? i18n.t('SmartPickerPage.k45') : k === 'changePct' ? i18n.t('SmartPickerPage.k46') : i18n.t('SmartPickerPage.k47')}
             </button>
-          ))}
+          )}
           <button
             onClick={load}
             disabled={loading}
-            className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-1.5 rounded-lg transition-colors"
-          >
+            className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-1.5 rounded-lg transition-colors">
+            
             {loading ? i18n.t('SmartPickerPage.k48') : t('components.refresh')}
           </button>
         </div>
@@ -146,12 +146,12 @@ export default function SmartPickerPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {sorted.map((item, idx) => (
-                <tr key={item.code} className="hover:bg-white/[0.02] transition-colors">
+              {sorted.map((item, idx) =>
+              <tr key={item.code} className="hover:bg-white/[0.02] transition-colors">
                   <td className="px-4 py-3">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                      idx < 3 ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'bg-[#1a1a25] text-gray-500'
-                    }`}>
+                  idx < 3 ? 'bg-[#C9A046]/20 text-[#D4A853]' : 'bg-[#1a1a25] text-gray-500'}`
+                  }>
                       {idx + 1}
                     </span>
                   </td>
@@ -172,29 +172,29 @@ export default function SmartPickerPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-1">
-                      {item.reasons.map((r) => (
-                        <span key={r} className="text-[10px] bg-[#C9A046]/10 text-[#D4A853] px-1.5 py-0.5 rounded">{r}</span>
-                      ))}
+                      {item.reasons.map((r) =>
+                    <span key={r} className="text-[10px] bg-[#C9A046]/10 text-[#D4A853] px-1.5 py-0.5 rounded">{r}</span>
+                    )}
                     </div>
                   </td>
                   <td className="px-4 py-3 text-center">
                     <button
-                      onClick={() => setSelected(item)}
-                      className="text-xs text-[#D4A853] hover:text-[#E5B964] transition-colors"
-                    >
-                      详情
-                    </button>
+                    onClick={() => setSelected(item)}
+                    className="text-xs text-[#D4A853] hover:text-[#E5B964] transition-colors">{i18n.t("SmartPickerPage.r92_90c0")}
+
+
+                  </button>
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
       </div>
 
       {/* Detail Modal */}
-      {selected && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setSelected(null)}>
+      {selected &&
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setSelected(null)}>
           <div className="bg-[#1a1a25] border border-white/10 rounded-2xl p-6 w-[600px] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-start justify-between mb-4">
               <div>
@@ -216,34 +216,34 @@ export default function SmartPickerPage() {
             {/* Dimension Breakdown */}
             <div className="grid grid-cols-5 gap-2 mt-4">
               {[
-                { label: i18n.t('SmartPickerPage.k54'), val: selected.dimensions.value },
-                { label: i18n.t('SmartPickerPage.k55'), val: selected.dimensions.growth },
-                { label: i18n.t('SmartPickerPage.k56'), val: selected.dimensions.momentum },
-                { label: i18n.t('SmartPickerPage.k57'), val: selected.dimensions.quality },
-                { label: i18n.t('SmartPickerPage.k58'), val: selected.dimensions.sentiment },
-              ].map((d) => (
-                <div key={d.label} className="bg-deep rounded-lg p-3 text-center">
+            { label: i18n.t('SmartPickerPage.k54'), val: selected.dimensions.value },
+            { label: i18n.t('SmartPickerPage.k55'), val: selected.dimensions.growth },
+            { label: i18n.t('SmartPickerPage.k56'), val: selected.dimensions.momentum },
+            { label: i18n.t('SmartPickerPage.k57'), val: selected.dimensions.quality },
+            { label: i18n.t('SmartPickerPage.k58'), val: selected.dimensions.sentiment }].
+            map((d) =>
+            <div key={d.label} className="bg-deep rounded-lg p-3 text-center">
                   <div className="text-lg font-bold text-white">{d.val}</div>
                   <div className="text-[10px] text-gray-500">{d.label}</div>
                   <div className="w-full bg-white/5 rounded-full h-1 mt-2">
                     <div className="bg-[#C9A046] h-1 rounded-full" style={{ width: `${d.val}%` }} />
                   </div>
                 </div>
-              ))}
+            )}
             </div>
 
             {/* Reasons */}
             <div className="mt-4">
               <div className="text-xs text-gray-500 mb-2">{t(i18n.t('SmartPickerPage.k59'))}</div>
               <div className="flex flex-wrap gap-2">
-                {selected.reasons.map((r) => (
-                  <span key={r} className="text-xs bg-[#C9A046]/10 text-[#D4A853] px-2 py-1 rounded-lg">{r}</span>
-                ))}
+                {selected.reasons.map((r) =>
+              <span key={r} className="text-xs bg-[#C9A046]/10 text-[#D4A853] px-2 py-1 rounded-lg">{r}</span>
+              )}
               </div>
             </div>
           </div>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }

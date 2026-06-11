@@ -43,35 +43,35 @@ const DEFAULT_QUOTA: GuestQuota = {
   backtestLimit: 5,
   aiAnalysisUsed: 0,
   aiAnalysisLimit: 3,
-  signalViewsUsed: 12,
+  signalViewsUsed: 12
 };
 
 // ── Guest Banner ────────────────────────────────────────────────────────
 
-function GuestBanner({ onRegister, onUpgrade }: { onRegister?: () => void; onUpgrade?: () => void }) {
+function GuestBanner({ onRegister, onUpgrade }: {onRegister?: () => void;onUpgrade?: () => void;}) {
   return (
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, flexWrap: 'wrap',
       padding: '10px 20px', background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', color: '#fff',
-      fontSize: 13, fontWeight: 600,
+      fontSize: 13, fontWeight: 600
     }}>
       <span>{i18n.t('GuestModeShell.r92_0')}</span>
       <button onClick={onRegister}
-        style={{ padding: '6px 18px', fontSize: 12, fontWeight: 700, background: '#fff', color: '#3b82f6', border: 'none', borderRadius: 8, cursor: 'pointer' }}>
-        免费注册 → Register Free
+      style={{ padding: '6px 18px', fontSize: 12, fontWeight: 700, background: '#fff', color: '#3b82f6', border: 'none', borderRadius: 8, cursor: 'pointer' }}>{i18n.t("GuestModeShell.r92_95eb")}
+
       </button>
       <button onClick={onUpgrade}
-        style={{ padding: '6px 18px', fontSize: 12, fontWeight: 600, background: 'rgba(255,255,255,0.15)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, cursor: 'pointer' }}>
-        了解更多 Learn More
+      style={{ padding: '6px 18px', fontSize: 12, fontWeight: 600, background: 'rgba(255,255,255,0.15)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, cursor: 'pointer' }}>{i18n.t("GuestModeShell.r92_9159")}
+
       </button>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Quota Indicator ──────────────────────────────────────────────────────
 
-function QuotaBar({ label, used, limit }: { label: string; used: number; limit: number }) {
-  const pct = Math.min(100, (used / limit) * 100);
+function QuotaBar({ label, used, limit }: {label: string;used: number;limit: number;}) {
+  const pct = Math.min(100, used / limit * 100);
   const isLow = limit - used <= 2;
   return (
     <div style={{ marginBottom: 8 }}>
@@ -85,72 +85,72 @@ function QuotaBar({ label, used, limit }: { label: string; used: number; limit: 
         <div style={{
           height: '100%', borderRadius: 2, width: `${pct}%`,
           background: isLow ? '#fbbf24' : '#3b82f6',
-          transition: 'width 0.3s ease',
+          transition: 'width 0.3s ease'
         }} />
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Upgrade Nudge ────────────────────────────────────────────────────────
 
-function UpgradeNudge({ feature, onUpgrade }: { feature: string; onUpgrade?: () => void }) {
+function UpgradeNudge({ feature, onUpgrade }: {feature: string;onUpgrade?: () => void;}) {
   return (
     <div style={{
       padding: '12px 16px', background: 'rgba(59,130,246,0.05)', border: '1px solid rgba(59,130,246,0.15)',
-      borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+      borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12
     }}>
       <div>
         <div style={{ fontSize: 13, fontWeight: 600, color: '#60a5fa' }}>🔒 {feature}</div>
         <div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>{i18n.t('GuestModeShell.k0')}</div>
       </div>
       <button onClick={onUpgrade}
-        style={{ padding: '6px 16px', fontSize: 12, fontWeight: 700, background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', whiteSpace: 'nowrap' }}>
-        注册解锁 →
+      style={{ padding: '6px 16px', fontSize: 12, fontWeight: 700, background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', whiteSpace: 'nowrap' }}>{i18n.t("GuestModeShell.r92_4d90")}
+
       </button>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Guest Entry Screen ──────────────────────────────────────────────────
 
-function GuestEntryScreen({ onEnter, onRegister }: { onEnter?: () => void; onRegister?: () => void }) {
+function GuestEntryScreen({ onEnter, onRegister }: {onEnter?: () => void;onRegister?: () => void;}) {
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       minHeight: '100vh', background: '#0D0D14', color: '#fff', padding: 40,
-      fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
+      fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
     }}>
       <span style={{ fontSize: 64, marginBottom: 16 }}>🐋</span>
       <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 8 }}>DAWN WHALES</h1>
-      <p style={{ fontSize: 15, color: '#94a3b8', marginBottom: 32, textAlign: 'center', maxWidth: 480 }}>
-        AI量化交易平台 · 4 Agent协作 · 港股美股
+      <p style={{ fontSize: 15, color: '#94a3b8', marginBottom: 32, textAlign: 'center', maxWidth: 480 }}>{i18n.t("GuestModeShell.r92_9ede")}
+
         <br /><span style={{ fontSize: 12, color: '#64748b' }}>AI-Powered Quantitative Trading · Global Markets</span>
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%', maxWidth: 340 }}>
         <button onClick={onRegister}
-          style={{
-            padding: '14px 0', fontSize: 15, fontWeight: 700, background: '#3b82f6', color: '#fff',
-            border: 'none', borderRadius: 12, cursor: 'pointer',
-          }}>
-          🚀 免费注册 · Register Free
+        style={{
+          padding: '14px 0', fontSize: 15, fontWeight: 700, background: '#3b82f6', color: '#fff',
+          border: 'none', borderRadius: 12, cursor: 'pointer'
+        }}>{i18n.t("GuestModeShell.r92_c6b8")}
+
         </button>
         <button onClick={onEnter}
-          style={{
-            padding: '14px 0', fontSize: 15, fontWeight: 600, background: 'rgba(255,255,255,0.05)',
-            color: '#cbd5e1', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, cursor: 'pointer',
-          }}>
-          👀 免费体验 · Try Without Account
+        style={{
+          padding: '14px 0', fontSize: 15, fontWeight: 600, background: 'rgba(255,255,255,0.05)',
+          color: '#cbd5e1', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, cursor: 'pointer'
+        }}>{i18n.t("GuestModeShell.r92_5e04")}
+
         </button>
       </div>
 
-      <div style={{ marginTop: 32, fontSize: 12, color: '#64748b', textAlign: 'center' }}>
-        访客模式可浏览信号广场+基础回测(5次/天)+行情+下载
+      <div style={{ marginTop: 32, fontSize: 12, color: '#64748b', textAlign: 'center' }}>{i18n.t("GuestModeShell.r92_e8b0")}
+
         <br />Guest mode: browse signals, basic backtest (5/day), market data, download
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 // ── Main Component ──────────────────────────────────────────────────────
@@ -163,7 +163,7 @@ export default function GuestModeShell({
   onEnterGuest,
   onExitGuest: _onExitGuest,
   children,
-  className = '',
+  className = ''
 }: GuestModeShellProps) {
   const [showEntry, setShowEntry] = useState(true);
 
@@ -194,13 +194,13 @@ export default function GuestModeShell({
       </div>
 
       {/* Bottom quota bar (guest only) */}
-      {isGuest && (
-        <div style={{
-          position: 'fixed', bottom: 0, left: 0, right: 0,
-          background: 'rgba(13,13,20,0.95)', backdropFilter: 'blur(8px)',
-          borderTop: '1px solid rgba(255,255,255,0.06)', padding: '12px 20px',
-          zIndex: 40,
-        }}>
+      {isGuest &&
+      <div style={{
+        position: 'fixed', bottom: 0, left: 0, right: 0,
+        background: 'rgba(13,13,20,0.95)', backdropFilter: 'blur(8px)',
+        borderTop: '1px solid rgba(255,255,255,0.06)', padding: '12px 20px',
+        zIndex: 40
+      }}>
           <div style={{ maxWidth: 600, margin: '0 auto' }}>
             <div style={{ display: 'flex', gap: 16 }}>
               <div style={{ flex: 1 }}>
@@ -209,24 +209,24 @@ export default function GuestModeShell({
               <div style={{ flex: 1 }}>
                 <QuotaBar label={i18n.t('GuestModeShell.k2')} used={guestQuota.aiAnalysisUsed} limit={guestQuota.aiAnalysisLimit} />
               </div>
-              <div style={{ fontSize: 11, color: '#64748b', alignSelf: 'center', whiteSpace: 'nowrap' }}>
-                📡 已浏览 {guestQuota.signalViewsUsed} 信号
-              </div>
+              <div style={{ fontSize: 11, color: '#64748b', alignSelf: 'center', whiteSpace: 'nowrap' }}>{i18n.t("GuestModeShell.r92_1671")}
+              {guestQuota.signalViewsUsed}{i18n.t("GuestModeShell.r92_6ebf")}
             </div>
-            {guestQuota.backtestUsed >= guestQuota.backtestLimit && (
-              <div style={{ marginTop: 8, textAlign: 'center' }}>
+            </div>
+            {guestQuota.backtestUsed >= guestQuota.backtestLimit &&
+          <div style={{ marginTop: 8, textAlign: 'center' }}>
                 <span style={{ fontSize: 11, color: '#fbbf24' }}>{i18n.t('GuestModeShell.r92_1')}</span>
                 <button onClick={onUpgrade}
-                  style={{ fontSize: 11, fontWeight: 700, background: 'none', color: '#3b82f6', border: 'none', cursor: 'pointer', marginLeft: 8 }}>
-                  注册解锁无限 Backtest →
-                </button>
+            style={{ fontSize: 11, fontWeight: 700, background: 'none', color: '#3b82f6', border: 'none', cursor: 'pointer', marginLeft: 8 }}>{i18n.t("GuestModeShell.r92_fe5b")}
+
+            </button>
               </div>
-            )}
+          }
           </div>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
 
 export { GuestBanner, QuotaBar, UpgradeNudge, GuestEntryScreen };

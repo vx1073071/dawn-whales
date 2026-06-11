@@ -35,7 +35,7 @@ export default function WatchlistManager() {
           symbol: s,
           price: q?.price || 0,
           change: q?.change || 0,
-          changePct: q?.changePct || 0,
+          changePct: q?.changePct || 0
         };
       });
       setItems(mapped);
@@ -85,16 +85,16 @@ export default function WatchlistManager() {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
         <p className="text-gray-500 text-sm text-center py-4">{i18n.t('WatchlistManager.k0')}</p>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
     <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-white font-semibold text-sm">⭐ 自选股</h2>
-          <p className="text-gray-500 text-[10px] mt-0.5">{items.length} 只标的</p>
+          <h2 className="text-white font-semibold text-sm">{i18n.t("WatchlistManager.r92_3a5c")}</h2>
+          <p className="text-gray-500 text-[10px] mt-0.5">{items.length}{i18n.t("WatchlistManager.r92_5637")}</p>
         </div>
         <div className="flex items-center gap-2">
           <input
@@ -102,13 +102,13 @@ export default function WatchlistManager() {
             onChange={(e) => setNewSymbol(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && addItem()}
             placeholder={i18n.t('WatchlistManager.k1')}
-            className="w-24 bg-[#12121a] border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white placeholder-gray-600 focus:border-[#C9A046] focus:outline-none"
-          />
+            className="w-24 bg-[#12121a] border border-white/10 rounded-lg px-2 py-1.5 text-xs text-white placeholder-gray-600 focus:border-[#C9A046] focus:outline-none" />
+          
           <button
             onClick={addItem}
             disabled={!newSymbol}
-            className="px-2 py-1.5 bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 rounded-lg text-xs hover:bg-[#C9A046]/20 transition-colors disabled:opacity-30"
-          >
+            className="px-2 py-1.5 bg-[#C9A046]/10 text-[#D4A853] border border-[#C9A046]/20 rounded-lg text-xs hover:bg-[#C9A046]/20 transition-colors disabled:opacity-30">
+            
             +
           </button>
         </div>
@@ -120,45 +120,45 @@ export default function WatchlistManager() {
           return (
             <div
               key={item.symbol}
-              className="flex items-center justify-between bg-[#12121a] rounded-lg px-3 py-2 border border-white/5"
-            >
+              className="flex items-center justify-between bg-[#12121a] rounded-lg px-3 py-2 border border-white/5">
+              
               <div className="flex items-center gap-2 flex-1 min-w-0">
                 <span className="text-white text-xs font-medium">{item.symbol}</span>
-                {item.price ? (
-                  <span className="text-gray-500 text-[10px] font-mono">${item.price.toFixed(2)}</span>
-                ) : null}
-                {item.changePct !== undefined ? (
-                  <span className={`text-[10px] font-mono ${isProfit ? 'text-emerald-400' : 'text-red-400'}`}>
+                {item.price ?
+                <span className="text-gray-500 text-[10px] font-mono">${item.price.toFixed(2)}</span> :
+                null}
+                {item.changePct !== undefined ?
+                <span className={`text-[10px] font-mono ${isProfit ? 'text-emerald-400' : 'text-red-400'}`}>
                     {isProfit ? '+' : ''}{item.changePct.toFixed(2)}%
-                  </span>
-                ) : null}
+                  </span> :
+                null}
               </div>
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => moveUp(index)}
                   disabled={index === 0}
-                  className="text-gray-600 text-[10px] hover:text-gray-300 disabled:opacity-20 px-1"
-                >
+                  className="text-gray-600 text-[10px] hover:text-gray-300 disabled:opacity-20 px-1">
+                  
                   ↑
                 </button>
                 <button
                   onClick={() => moveDown(index)}
                   disabled={index === items.length - 1}
-                  className="text-gray-600 text-[10px] hover:text-gray-300 disabled:opacity-20 px-1"
-                >
+                  className="text-gray-600 text-[10px] hover:text-gray-300 disabled:opacity-20 px-1">
+                  
                   ↓
                 </button>
                 <button
                   onClick={() => removeItem(item.symbol)}
-                  className="text-gray-600 text-[10px] hover:text-red-400 px-1"
-                >
+                  className="text-gray-600 text-[10px] hover:text-red-400 px-1">
+                  
                   ✕
                 </button>
               </div>
-            </div>
-          );
+            </div>);
+
         })}
       </div>
-    </div>
-  );
+    </div>);
+
 }
