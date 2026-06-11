@@ -39,7 +39,7 @@ function NavBar() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <span style={{ fontSize: 22 }}>🐋</span>
         <span style={{ fontSize: 20, fontWeight: 800, color: '#F9FAFB', letterSpacing: -0.5 }}>Dawn Whales</span>
-        <span style={{ padding: '2px 8px', borderRadius: 6, background: '#6366F122', color: '#818CF8', fontSize: 11, fontWeight: 700 }}>v1.8.0</span>
+        <span style={{ padding: '2px 8px', borderRadius: 6, background: '#6366F122', color: '#818CF8', fontSize: 11, fontWeight: 700 }}>v1.10.0</span>
       </div>
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
         {[i18n.t('LandingPageV18.k65'), i18n.t('LandingPageV18.k66'), i18n.t('LandingPageV18.k67'), i18n.t('LandingPageV18.k68')].map((l) =>
@@ -68,7 +68,7 @@ function HeroSection() {
       
       {/* Stats */}
       <div style={{ display: 'flex', gap: 32, justifyContent: 'center', marginBottom: 36 }}>
-        {[{ n: '7', l: 'components.markets' }, { n: '30+', l: 'components.factor' }, { n: '22', l: i18n.t('LandingPageV18.k70') }, { n: i18n.t('LandingPageV18.k71'), l: 'components.onboarding' }, { n: '5', l: 'components.language' }].map((s) =>
+        {[{ n: '7', l: 'components.markets' }, { n: '30+', l: 'components.factor' }, { n: '22', l: i18n.t('LandingPageV18.k70') }, { n: i18n.t('LandingPageV18.k71'), l: 'components.onboarding' }, { n: '8', l: 'components.language' }, { n: '5144', l: 'components.tests' }, { n: '15', l: 'components.storybook' }].map((s) =>
         <div key={s.l}>
             <div style={{ fontSize: 28, fontWeight: 800, color: '#D4A853' }}>{s.n}</div>
             <div style={{ fontSize: 12, color: '#6B7280' }}>{s.l}</div>
@@ -212,7 +212,7 @@ function Footer() {
       <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
         <div>
           <span style={{ marginRight: 6 }}>🐋</span>
-          <span style={{ color: '#D1D5DB', fontWeight: 600 }}>Dawn Whales</span> v1.8.0 GA
+          <span style={{ color: '#D1D5DB', fontWeight: 600 }}>Dawn Whales</span> v1.10.0
         </div>
         <div style={{ display: 'flex', gap: 20 }}>
           <span>© 2026 Dawn Whales</span>
