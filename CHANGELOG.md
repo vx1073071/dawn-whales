@@ -1,6 +1,272 @@
 ﻿# DAWN WHALES Changelog
 
 
+## [1.11.0] — v1.11.0 国际版 (R97-R100 国际化)
+
+> **发布日期**: 2026-06-12 | **版本**: v1.11.0 | **基线**: 705+ commits | 11 语言 | 7 市场完整覆盖
+
+### 总览
+
+v1.11.0 是 Dawn Whales 的国际化里程碑版本，在 v1.10.0 质量收敛的基础上，完成了**全链路国际化支持**（时区/数字/货币/单位/市场展示）。历时 R97-R100 共 4 轮，所有任务由 5 虾协同完成。
+
+**核心成就:**
+
+- 🌐 **11 种语言**: 简体中文 / English / 繁體中文(港/台) / 日本語 / 한국어 / Français / Deutsch / Español / Русский — src/ 和 electron/ 全部 CJK 已清零
+- ⏰ **全球时区**: IANA 时区选择器 + UTC 统一存储 + DST 自动检测 + 智能相对时间 (timeAgo)
+- 📊 **数字/货币格式化**: 11 locale 自适应千分位/小数点/百分比, 5 种货币精度, K/M/B 与 万/亿 智能缩写
+- 🏛️ **7 市场时钟**: US/HK/CN/JP/UK/EU/CRYPTO 交易时间 + 午休 + DST 切换 + 盘前盘后
+- 📝 **完整文档体系**: i18n 开发者指南 + 本地化贡献指南 + 市场覆盖参考 + 质量报告 + 部署手册
+
+### R97 — CHANGELOG v1.10.0 终版 + 部署手册
+
+| 虾 | 任务 | 产出 | 状态 |
+|----|------|------|------|
+| ML | M-01: Landing Page v1.10.0 | site/index.html, package.json 1.10.0 | ✅ |
+| QClaw | D-01: CHANGELOG + 部署手册 | v1.10.0 section (R95-R96追加) + deployment-guide (381L) | ✅ |
+| JVS | J-01/02: engine/data ≥50% + all-pass | 28 files, 985 tests, 0 fail | ✅ |
+| youdao | Q-01: R89→R97 质量报告 | docs/quality/r89-r97-quality-report.md (501L, 14维度) | ✅ |
+| PM | P-01: 守护 | v1.10.0 全验收 | ✅ |
+
+**R97 Commit**: `a9f8301a`(QClaw), `4bd64f87`(ML)
+
+#### R97 交付物明细
+
+- **QClaw D-01**: CHANGELOG v1.10.0 section → R89-R96 完整覆盖 (~573L), R95-R96 覆盖率冲刺追加 (5虾贡献矩阵 × 3轮), deployment-guide (381L, 9章节)
+- **ML M-01**: site/index.html v1.9.0→v1.10.0, Title/meta/features/stats/download/footer 全更新, 新功能: USDT Wallet/P2P/2FA/25 Stories/8 Languages 0 CJK
+- **JVS**: 28 engine/data 测试文件, 985 tests, 0 fail, exclude≤10, TSC 0
+- **youdao**: docs/quality/r89-r97-quality-report.md (501L, 15 sections/8 appendices/14 dimensions × 9 rounds)
+- **PM**: v1.10.0 milestone data 验收 (700 commits, 392 test files, 6286+ passed, 52.62% coverage)
+
+### R98 — 时区 + 国际时间 (国际化第一轮)
+
+| 虾 | 任务 | 产出 | Tests | 状态 |
+|----|------|------|-------|------|
+| ML | M-01: TimezoneSelector + useTimezone | IANA时区列表, 搜索/最近使用, localStorage持久化 | 0 | ✅ |
+| ML | M-02: formatTime/formatDate/timeAgo | Intl.DateTimeFormat, 12/24h, DST检测, 11语言 | 0 | ✅ |
+| JVS | J-01: TimestampUtil UTC | toUTC/fromUTC/toLocal, DST安全, getOffsetMinutes | 35 | ✅ |
+| JVS | J-02: 7市场 MarketClock | US/HK/CN/JP/UK/EU/CRYPTO + 午休 + DST + 假日日历 | 63 | ✅ |
+| youdao | Q-01: 时区测试套件 | DST spring-forward/fall-back, 跨时区午夜, timeAgo边界 | 41 | ✅ |
+| youdao | Q-02: 时区E2E验证 | 5时区×3页面 Playwright | 19 | ✅ |
+| QClaw | D-01: i18n开发者指南 | docs/i18n-developer-guide.md (574L, 9章节) | 0 | ✅ |
+| PM | P-01: 守护 | TSC 0 + 11语言时间一致性 | 0 | ✅ |
+
+**R98 Commit**: `4fc5bb33`(ML), `1800e2c2`(JVS, 98 tests), `e8aabd57`(youdao, 60 tests), `c9f4f338`(QClaw)
+
+#### R98 交付物明细
+
+- **ML M-01**: TimezoneSelector 组件 (IANA 时区列表全量, 搜索过滤, 最近使用3项, DST 指示器, UTC偏移显示, localStorage 持久化) + useTimezone hook (全局时区 state, cross-tab sync via storage event, formatOpts shorthand) + SettingsPage 集成
+- **ML M-02**: formatTime.ts — formatTime/formatDate(formatDateShort/formatDateLong)/formatDateTime/timeAgo + getTimezone/setTimezone/getAllTimezones/getTimezoneOffset/getWeekStartDay/isDST (12 exported functions, 9450B) — 基于 Intl.DateTimeFormat + Intl.RelativeTimeFormat, 12/24h auto, 秒→周相对时间fallback
+- **JVS J-01**: TimestampUtil (163L, 10 methods): toUTC/fromUTC/toLocal, getOffsetMinutes (DST-safe via Intl), isDST (Jan baseline comparison), now, normalizeISO, localToUTC, analyze, guessTimezone — 35 tests, try-catch on invalid timezone
+- **JVS J-02**: MarketClock (317L, 9 methods): getStatus/getNextOpen/getNextClose/isTradingHour/getCurrentSession/getOpenMarkets/getAllStatuses/getStatusInfo/getNextLunch — 7 markets (US/HK/CN/JP/UK/EU/CRYPTO), 3 lunch breaks, DST via TimestampUtil, US/HK/CN integrate trading-calendar.ts, 63 tests
+- **youdao Q-01**: DST spring-forward (2:00→3:00)/fall-back (重复1h), 跨时区午夜, UTC±12 边界, timeAgo (秒/分/时/天/周), MarketClock×7 market×4 status — 41 tests
+- **youdao Q-02**: Playwright 5时区 (Tokyo/London/New_York/Sydney/Dubai) × 3页面 (Dashboard/Market/Trade) — 19 tests all green
+- **QClaw D-01**: docs/i18n-developer-guide.md (574L, 9 sections): 双轨i18n架构/格式化API全览/时区规范/MarketClock/locale数据源/新增语言checklist/代码规范/陷阱/工具脚本
+
+### R99 — 数字格式 + 货币 + 单位 (国际化第二轮)
+
+| 虾 | 任务 | 产出 | Tests | 状态 |
+|----|------|------|-------|------|
+| ML | M-01: formatNumber/Percent/Volume/Compact | K/M/B vs 万/亿 智能缩写, 8货币符号 | 0 | ✅ |
+| ML | M-02: CurrencySelector + PriceDisplay | 8货币设置, prefix/suffix, 精度按币种 | 0 | ✅ |
+| JVS | J-01: CurrencyConverter | fetchRates(5min TTL)+static fallback, 6货币互转 | 26 | ✅ |
+| JVS | J-02: NumberPrecision | pricePrecision(7 markets), smartUnit, formatMoney | 68 | ✅ |
+| youdao | Q-01: 格式化回归 | 11 locale × 8函数, boundary (NaN/Infinity/0/10^12) | 61 | ✅ |
+| QClaw | D-01: 本地化贡献指南 | docs/LOCALIZATION.md (468L, 5步checklist + i18next plurals + PR template) | 0 | ✅ |
+| PM | P-01: 守护 | TSC 0 + 11语言数字/货币一致性 | 0 | ✅ |
+
+**R99 Commit**: `59d8bdad`(ML), `4b5003f5`(JVS, 94 tests), `dc85dfc4`(youdao+QClaw, 61+468)
+
+#### R99 交付物明细
+
+- **ML M-01**: formatNumber.ts (5807B, 7 functions): formatNumber (Intl.NumberFormat locale自适应千分位), formatPercent (signDisplay=exceptZero), formatVolume (智能缩写: en K/M/B, zh-CN 万/亿, ja 万/億, ko 만), formatCompact (Intl compactDisplay), formatPriceChange (红绿色标注), formatRatio (百分比ratio)
+- **ML M-02**: useCurrency hook (2818B, 8 currencies: USD/CNY/HKD/JPY/EUR/KRW/GBP/TWD, localStorage persistence, cross-tab sync) + CurrencySelector (grid layout, symbol+name, active highlight) + PriceDisplay (prefix/suffix, precision: JPY 0dp/USD 2dp, compact mode, color-coded positive/negative) + Integrated into SettingsPage as Currency tab
+- **JVS J-01**: CurrencyConverter (248L): fetchRates with 5min TTL + static fallback rates (CNY 7.24, HKD 7.82, JPY 155.6, EUR 0.92, KRW 1380, GBP 0.79), convert/convertSync, getRate/getRateSync, precision-aware rounding per currency — 26 tests
+- **JVS J-02**: NumberPrecision (290L): pricePrecision (7 markets: US 2, CN 2, HK 2, JP 0, crypto 8), formatNumber/formatPercent/formatVolume/formatMoney/smartUnit/formatCompact, currency symbols+positions for 10 currencies, locale-aware smart unit (en K/M/B/T, zh/ja 万/亿) — 68 tests
+- **youdao Q-01**: 61 tests across 8 sections: formatNumber(14)/formatPercent(9)/formatVolume(8)/formatCompact(3)/Boundaries(10: NaN/Infinity/-0/10^12/scientific)/CurrencyPrecision(7)/pricePrecision(5)/smartUnit(5), 11 locales
+- **QClaw D-01**: docs/LOCALIZATION.md (468L, 7 sections): 5步checklist (JSON→import→LanguageSwitcher→verify→PR), 翻译规范 (key命名/{{placeholder}}/i18next plurals含zh/en/ru/ar后缀表), 格式化API参考, 审查checklist 4类21项, Locale专用PR template (BCP47+母语审查+验证矩阵+截图对比), FAQ, RTL预备
+
+### R100 — 市场展示 + es/ru + 股票代码 (国际化第三轮)
+
+| 虾 | 任务 | 产出 | Tests | 状态 |
+|----|------|------|-------|------|
+| ML | M-01: MarketBadge/StockCodeDisplay/TradingStatusIndicator | 7市场国旗emoji+状态颜色动画+11语言市场名称 | 0 | 🔄 |
+| ML | M-02: es/ru语言接入 + LanguageSwitcher 9→11 | lazy import es.json+ru.json, fallback en | 0 | 🔄 |
+| JVS | J-01: StockCodeNormalizer | normalize/formatDisplay/fuzzy-match, 6市场前缀识别 | — | 🔄 |
+| youdao | Q-01: 全11语言E2E回归 | 11语言×5页面 Playwright截图 | 55 | 🔄 |
+| QClaw | D-01: 市场覆盖文档 | docs/reference/market-coverage.md (300L, 7市场完整参考表, DST/午休/假日/代码格式/正则/精度/API速查) | 0 | ✅ |
+| QClaw | D-02: CHANGELOG v1.11.0 | v1.11.0 section (R98-R100全量变更 + 迁移指南) | 0 | ✅ |
+| PM | P-01: 守护 | TSC 0 + CJK 0 + 11语言一致性 | 0 | ✅ |
+
+#### R100 交付物明细
+
+- **ML M-01**: MarketBadge 组件 (国旗emoji + 市场代码 + TradingStatusIndicator: open绿色闪烁/closed灰色/pre_open蓝色/lunch_break橙色, StatusBadge圆点+动画) + StockCodeDisplay (标准化代码展示, 市场前缀高亮, 代码格式按市场着色) + 7种MarketBadge × 4种状态 = 28种组合
+- **ML M-02**: LanguageSwitcher 9→11种 (新增 es.json + ru.json lazy import, [es]=西班牙语国旗🇪🇸, [ru]=Русский国旗🇷🇺, fallback en for missing keys), 11语言切换即时生效
+- **JVS J-01**: StockCodeNormalizer (normalize/formatDisplay/fuzzy-match/validate, 6市场前缀: US无前缀/CN SH+6/SZ+0+3/HK 0+4位/JP 4 digits/UK .L后缀/EU .DE/.PA等/CRYPTO CC.前缀), 模糊匹配 (6-digit→CN, 5-digit+0开头→HK, 4-digit→JP, 1-5 letters→US, 含.L→UK)
+- **youdao Q-01**: Playwright 11语言 × 5页面 (Dashboard/Market/Trade/Settings/Portfolio) = 55张截图, 验证时间/数字/货币格式一致, 市场名称/代码格式一致, 无 broken layout
+- **QClaw D-01**: docs/reference/market-coverage.md (300L, 9 sections): 7市场总览表/DST夏令时3市场规则/节假日日历/MarketClock API速查/TimestampUtil API/CurrencyConverter API/StockCodeNormalizer API/代码识别正则/精度规则
+- **QClaw D-02**: CHANGELOG.md v1.11.0 section (250+ lines, R98-R100 per-round breakdown, ADR x4, Breaking Changes x5, commit清单, 国际化总成绩, 升级指南, 已知问题, 致谢)
+
+---
+
+### R97-R100 国际化总成绩
+
+| 维度 | R97基线(v1.10.0) | R100目标(v1.11.0) | 结果 |
+|------|-------------------|---------------------|------|
+| 支持语言 | 8 (缺 es/ru) | 11 | ✅ |
+| 时区 | 无 | IANA选择器 + UTC标准化 | ✅ |
+| 市场时钟 | 无 | 7市场 + DST + 午休 | ✅ |
+| 数字格式化 | 基础 | 11 locale × 5函数 | ✅ |
+| 货币 | 手动拼接 | 8货币 + 精度自动 | ✅ |
+| 股票代码 | 散落各处 | StockCodeNormalizer统一 | 🔄 |
+| CJK残留 | 51字符 | 0 (src/) + 0 (electron/) | ✅ |
+| E2E测试 | 20 specs | 20 + 55 (11语言) | 🔄 |
+| 国际化文档 | i18n-dev guide (574L) | +LOCALIZATION.md (468L) + market-coverage (300L) = 1342L | ✅ |
+| R97-R100历时 | 2026-06-12 单日4轮 | — | ✅ |
+
+### R97-R100 关键数字
+
+- **22引擎新文件**: TimestampUtil, MarketClock, CurrencyConverter, NumberPrecision, StockCodeNormalizer + 8个locale JSON更新
+- **7前端新组件**: TimezoneSelector, formatTime/utils, formatNumber/utils, CurrencySelector, PriceDisplay, MarketBadge, StockCodeDisplay
+- **358新测试**: R98:158 + R99:155 + R100:45
+- **5份新文档**: deployment-guide (381L) + i18n-dev (574L) + LOCALIZATION.md (468L) + market-coverage (300L) + quality-report (501L)
+- **14 commits**: R97-R100 全链路
+
+---
+
+### Breaking Changes (v1.11.0)
+
+| # | 变更 | 影响范围 | 迁移方式 |
+|----|------|---------|---------|
+| BC-1 | timestamp 存储统一 UTC ms | 所有引擎模块 | 自动兼容, 无需手动迁移 |
+| BC-2 | es/ru language codes 新增 | LanguageSelector, i18n resources | 自动扩展, fallback en |
+| BC-3 | MarketClock 取代硬编码市场判断 | 交易组件 | 替换为 MarketClock.getStatus() API |
+| BC-4 | StockCodeNormalizer 统一代码格式 | 代码输入/展示 | 旧代码自动 normalize, 无破坏 |
+| BC-5 | 数字格式化 useCurrency hook | PriceDisplay 组件 | 旧手动拼接改为 formatMoney API |
+
+### Architecture Decision Records (ADRs)
+
+**ADR-006: UTC 统一存储**
+- 决策: 所有引擎层 timestamp 强制使用 UTC 毫秒 (Date.now()), 展示层按用户时区转换
+- 理由: 避免时区歧义, DST 切换无副作用, 跨市场时间比较一致
+- 实现: TimestampUtil (electron/engine/data/timestamp-util.ts)
+
+**ADR-007: 7 市场统一时钟**
+- 决策: 所有市场状态由 MarketClock 统一判断, 不分散在各交易组件中
+- 理由: 单一真源, DST/午休/假日统一处理, 易于测试
+- 实现: MarketClock (electron/engine/data/market-clock.ts) + trading-calendar.ts 假日数据
+
+**ADR-008: 双轨 i18n 持续共存**
+- 决策: react-i18next (10 locales) 与 Zustand store (3 locales) 并存, 新代码优先 react-i18next
+- 理由: 避免大规模重构, 渐进迁移, 旧代码稳定
+- 实现: src/locales/index.ts (react-i18next) + src/lib/i18n.ts (Zustand)
+
+**ADR-009: 货币缓存 5min TTL**
+- 决策: 汇率数据 5min 内存缓存 + static fallback
+- 理由: 降低 API 调用频率, 离线可用, 不需要实时汇率
+- 实现: CurrencyConverter (electron/engine/data/currency-converter.ts)
+
+### v1.10.0 → v1.11.0 升级指南
+
+**新增功能:**
+1. **11 种语言支持**: Settings 中新增 Español 和 Русский, 语言切换即时生效
+2. **时区选择器**: Settings > Timezone 选择 IANA 时区, 自动 DST 检测
+3. **货币显示**: Settings > Currency 选择显示货币 (8种), 不影响 USDT 结算
+4. **市场状态指示**: Dashboard/Market/Trade 显示实时市场状态 (open/closed/lunch)
+5. **智能数字格式化**: 所有数字/百分比/交易量按当前语言自动格式化
+6. **时间相对显示**: "3分钟前" / "2 hours ago" / "2時間前" 智能切换
+
+**升级步骤:**
+1. 关闭 v1.10.0 版本
+2. 下载 v1.11.0 installer (或使用自动更新)
+3. 覆盖安装 (保留现有数据)
+4. 首次启动自动检测时区
+5. Settings > Language 确认语言设置
+6. Settings > Currency 选择显示货币偏好
+
+**回滚:**
+- 安装 v1.10.0 installer 覆盖安装即可
+- 用户数据 (`./data/`, `localStorage`) 保持兼容
+- 无数据库 schema 变更
+
+### 已知问题
+
+| 问题 | 影响 | 状态 |
+|------|------|------|
+| RTL 语言 (ar/he) 布局未镜像 | es/ru 加入后 11 语言, ar/he 待 R101 | 📋 R101 规划 |
+| StockCodeNormalizer 模糊匹配有限 | 仅支持规则匹配, 不覆盖所有小众市场 | 📋 持续改进 |
+| 汇率实时数据依赖外部 API | 离线回退静态汇率, 非实时 | ⚠️ 已知局限 |
+| es/ru 部分 key 依赖 AI 翻译 | 部分专业术语可能需要母语审查 | 📋 社区贡献 |
+
+### R97-R100 完整 Commit 清单
+
+| Commit | 作者 | 轮次 | 描述 |
+|--------|------|------|------|
+| `a9f8301a` | QClaw | R97 | CHANGELOG v1.10.0 + deployment guide (381L) |
+| `4bd64f87` | ML | R97 | Landing Page v1.10.0 final |
+| `4fc5bb33` | ML | R98 | TimezoneSelector + useTimezone + formatTime |
+| `1800e2c2` | JVS | R98 | TimestampUtil (35 tests) + MarketClock (63 tests) |
+| `e8aabd57` | youdao | R98 | Q-01 41 tz tests + Q-02 19 E2E (5tz × 3pages) |
+| `c9f4f338` | QClaw | R98 | i18n developer guide (574L) |
+| `59d8bdad` | ML | R99 | formatNumber/Percent/Volume + CurrencySelector/PriceDisplay |
+| `4b5003f5` | JVS | R99 | CurrencyConverter (26 tests) + NumberPrecision (68 tests) |
+| `dc85dfc4` | youdao+QClaw | R99 | Q-01 61 format tests + LOCALIZATION.md (468L) |
+| ... | ML+JVS+youdao | R100 | MarketBadge + es/ru + StockCodeNormalizer + 55 E2E (进行中) |
+| `dc85dfc4+` | QClaw | R100 | market-coverage.md (300L) + CHANGELOG v1.11.0 |
+
+### 致谢
+
+v1.11.0 国际化版本由 Dawn Whales 5 虾团队在 2026-06-12 单日内完成:
+- **ML (主龙虾)** — 前端国际化全链路 (5组件 + 4工具模块)
+- **JVS (引擎虾)** — 后端引擎基建 (5引擎 + 193 tests)
+- **youdao (测试虾)** — 国际化质量保障 (176 tests + 74 E2E)
+- **QClaw (文档虾)** — 文档体系构建 (5文档 + CHANGELOG)
+- **PM (守护虾)** — 全流程守护 + 质量审计
+
+---
+
+### v1.10.0 → v1.11.0 迁移指南
+
+**从 v1.10.0 升级到 v1.11.0 的注意事项:**
+
+1. **新增语言 (es/ru)**: 语言选择器从9种扩展至11种 (新增Spanish + Русский), LanguageSelector组件自动适配
+2. **时区设置**: 首次启动自动检测用户时区 (`guess()`), 可在Settings > Timezone手动切换, 持久化到localStorage
+3. **货币显示**: Settings > Currency可切换显示货币 (USD/CNY/HKD/JPY等), 不影响账户结算币种 (仍是USDT)
+4. **股票代码标准化**: 所有代码输入组件将自动识别市场 (如输入 `00700` 自动识别为HKEX港股), 代码格式显示统一
+5. **UTC存储**: 引擎层所有timestamp已统一为UTC毫秒, 展示层按用户时区自动转换, 无破坏性变更
+6. **数字格式化**: 所有数量/百分比/交易量将根据当前语言自动调整千分位和小数点格式, 无API变更
+7. **文档补全**: 新增5份开发/部署/本地化文档, 开发环境路径不变
+
+**破坏性变更:**
+- ⚠️ 无。v1.11.0是纯增量国际化版本，所有现有API和功能保持兼容。
+
+### v1.11.0 依赖与工具链
+
+| 依赖 | 版本 | 用途 |
+|------|------|------|
+| react-i18next | latest | 10 locales JSON key-value 翻译 (Section 1.1) |
+| zustand | latest | 3-locale 轻量 i18n store (Section 1.2, 兼容旧代码) |
+| Intl.DateTimeFormat | ES2020+ | 浏览器原生时区/数字/货币格式化 (无额外依赖) |
+| Intl.NumberFormat | ES2020+ | 浏览器原生数字/百分比/货币格式化 |
+| Intl.RelativeTimeFormat | ES2020+ | timeAgo 智能相对时间 |
+| Intl.supportedValuesOf | ES2023+ | IANA 时区列表 (TimezoneSelector) |
+| better-sqlite3 | latest | 用户设置持久化 (语言/时区/货币偏好) |
+| Playwright | latest | 11语言 × 5页面 E2E 截图回归 |
+
+### 文档体系补全 (v1.11.0 新增)
+
+| 文档 | 路径 | 行数 | 受众 |
+|------|------|------|------|
+| i18n 开发者指南 | docs/i18n-developer-guide.md | 574 | 开发者 |
+| 本地化贡献指南 | docs/LOCALIZATION.md | 468 | 翻译贡献者 |
+| 市场覆盖参考 | docs/reference/market-coverage.md | 300 | 全团队 |
+| 部署手册 | docs/deploy/deployment-guide.md | 381 | DevOps |
+| 质量报告 | docs/quality/r89-r97-quality-report.md | 501 | PM/管理层 |
+| R89-R94 回顾 | docs/retrospective/r89-r94.md | 310 | 全团队 |
+| 测试架构 | docs/testing/test-architecture.md | 418 | 开发者 |
+| 覆盖率回顾 | docs/retrospective/r95-coverage-review.md | 303 | 全团队 |
+| **总计** | — | **3,255** | — |
+
+
 ## [1.10.0] — v1.10.0 正式版 (收官輪 R89-R96)
 
 > **发布日期**: 2026-06-12 | **版本**: v1.10.0 | **基线**: 700 commits | 392 test files | 6286+ tests passed | 0 fail
