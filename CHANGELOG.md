@@ -1,6 +1,199 @@
 ﻿# DAWN WHALES Changelog
 
-## [Unreleased] — R82-R88 Post-GA 质量收敛
+## [1.10.0-alpha.1] — R90 测试基建修复 + Playwright E2E 框架 + 文檔交付
+
+### R90 — 引擎目錄重構後測試修復 + TSC 歸零 + E2E 基建
+
+**基線變化**: R89 → R90 | **Commits**: 7 | **角色**: QClaw(測試→文檔過渡) / JVS / ML / youdao
+
+#### 概覽
+
+R90 是 R89 引擎目錄重構（扁平→5子目錄）後的修復收斂輪次。JVS 在 R89 將 `electron/engine/` 從扁平結構重組為 `agents/analysis/data/core/backtest/` 五個子目錄，導致大量測試文件的 import 路徑和文件搜索邏輯失效。QClaw 的核心任務是修復這些破壞、確保 TSC 歸零、搭建 Playwright E2E 框架。
+
+同時，本輪完成了 R89 的文檔交付（Release Notes + EngineError 指南），並正式宣布 QClaw 從測試蝦轉型為文檔蝦（R91 起永久生效）。
+
+---
+
+#### 1. TSC 0 errors — 完全確認
+
+**負責人**: QClaw (Q-01)
+
+- `tsc --noEmit` 返回 EXIT:0，零輸出
+- R89 提交的 `f99fa8b2` 已修復 36 個文件的 TSC 錯誤（1001+/2007-）
+- R90 進一步確認：i18n `t()` 調用殘留清零、bridge-api Window 接口修復、回調參數類型修正
+- **最終**: 0 TypeScript errors（從 R88 的 729 → R89 的 0 → R90 確認保持 0）
+
+**TSC 修復歷史**:
+| 輪次 | 錯誤數 | 主要修復 |
+|------|--------|----------|
+| R88 初始 | 1473 | i18n hook 插入 + 二進制文件恢復 |
+| R88 收尾 | 729 | t()→string literals 替換 (944次/29文件) |
+| R89 | 0 | 完整清理 + bridge-api 接口修復 |
+| R90 | 0 | 確認保持 |
+
+---
+
+#### 2. 測試路徑修復 — 21+ 文件
+
+**負責人**: QClaw (Q-01)
+
+JVS R89 引擎目錄重構後，`readdirSync('electron/engine/')` 只返回 1 個文件（`index.ts`），而非之前的 310+ 個引擎文件。這導致大量依賴文件計數和路徑搜索的測試失敗。
+
+**修復方案**:
+- 創建 `tests/helpers/engine-paths.ts` — 共享遞歸文件搜索工具
+  - `findTsFiles(dir)` — 遞歸遍歷子目錄收集所有 `.ts` 文件
+  - `engineFileExists(name)` — 在子目錄中查找引擎文件
+- 創建 `electron/engine/utils/id.ts` — `generateId()` 函數（`trade-executor.ts` 缺失依賴）
+- 批量修復 13 個測試文件（Python 腳本 `fix_r90_batch.py`）
+- 手動修復 6 個複雜測試文件:
+  - `q56-01` — `vi.mock` 路徑更新到 `agents/` 子目錄
+  - `q56-03` — import 路徑修正
+  - `q58-02` — `creator-llm-config` → `portfolio/`，`ai-cost-monitor` → `agents/`
+  - `q59-02` — 5 個 `require` 路徑更新（platform-commission→analysis/, usdt-topup→portfolio/ 等）
+  - `q58-03` — 替換為遞歸搜索 helpers
+  - `q70-02` — 注入遞歸引擎搜索 helpers
+
+**vitest.config.ts exclude 收斂**:
+| 時間 | exclude 數 | 說明 |
+|------|-----------|------|
+| R87 | ~19 | 回歸門禁測試排除 |
+| R89 | 44 | +21 JVS重構破壞 + legacy |
+| R90 | ~10 | 移除34個修復後的exclude，保留10個確實無法運行的 |
+
+**部分驗證結果**: vitest 運行 71 個測試文件 / 0 failures（完整運行因系統 OOM 被 SIGKILL）
+
+---
+
+#### 3. Playwright E2E 框架搭建
+
+**負責人**: QClaw (Q-03)
+
+為後續 R93 的完整 E2E 測試奠定基礎。
+
+**創建文件**:
+
+| 文件 | 說明 |
+|------|------|
+| `playwright.config.ts` | 配置：Chromium/Firefox/WebKit 三瀏覽器，dev server 自動啟動，trace/screenshot |
+| `e2e/01-app-launch.spec.ts` | 3 smoke tests：頁面加載、#root 可見、無關鍵 JS 錯誤 |
+| `e2e/02-login.spec.ts` | 3 smoke tests：登錄頁可達、註冊表單、訪客模式 |
+| `e2e/03-navigation.spec.ts` | 3 smoke tests：側邊欄、儀表板導航、行情頁導航 |
+
+**配置要點**:
+- `baseURL`: http://localhost:5173
+- `timeout`: 30s（測試）/ 5s（斷言）
+- `webServer`: 自動啟動 `npm run dev`，支持 `reuseExistingServer`
+- `reporter`: HTML 報告
+- 9 個 smoke tests 總計
+
+**注意**: Playwright 未安裝（npm install 因 OOM 被 SIGKILL），`npx playwright test` 無法在當前環境運行。E2E 測試需等系統資源恢復後驗證。
+
+---
+
+#### 4. 覆蓋率配置與靜態分析
+
+**負責人**: QClaw (Q-02)
+
+**vitest.config.ts 覆蓋率閾值**（R87 配置，R90 確認生效）:
+| 指標 | 閾值 |
+|------|------|
+| Lines | 60% |
+| Branches | 50% |
+| Functions | 55% |
+| Statements | 60% |
+
+**靜態分析數據**（因 OOM 無法運行 vitest --coverage）:
+| 指標 | 值 |
+|------|----|
+| Engine 文件數 | 333 |
+| Engine 代碼行數 | 143,977 |
+| 測試文件數 | 370 |
+| 估算測試數 | ~9,172 |
+
+**說明**: 所有 5+ 次 `vitest --coverage` 嘗試均因系統 OOM 被 SIGKILL，無法獲取實際 v8/istanbul 覆蓋率數據。已創建 `scripts/quick-cov.js` 靜態分析腳本作為替代。
+
+---
+
+#### 5. R89 文檔交付（R90 完成）
+
+**負責人**: youdao（JVS 代工）
+
+| 文檔 | 行數 | 目標 | 狀態 |
+|------|------|------|------|
+| CHANGELOG.md R89 Section | 223 行 | ≥200 行 | ✅ |
+| docs/engine-error-guide.md | 622 行 | ≥150 行 | ✅ |
+
+**EngineError 指南內容**:
+- ErrorDomain/ErrorCode 完整參考
+- 構造函數模式 + 靜態工廠
+- 4 種代碼模式示例
+- 最佳實踐 + FAQ
+- Legacy 兼容層說明
+
+---
+
+#### 6. 指標對比表
+
+| 指標 | R89 基線 | R90 結果 | 目標 | 狀態 |
+|------|---------|---------|------|------|
+| TSC errors | 0 | 0 | 0 | ✅ |
+| Build errors | 0 | 0 | 0 | ✅ |
+| vitest exclude | 44 | ~10 | ≤10 | ✅ |
+| Engine files | ~310 | 333 | — | 📊 |
+| Test files | ~360 | 370 | — | 📊 |
+| Coverage (statements) | N/A | N/A (OOM) | ≥60% | ⚠️ |
+| Playwright E2E | 無 | config+9 tests | 框架搭建 | ✅ |
+| R89 Release Notes | 未寫 | 223 行 | ≥200 行 | ✅ |
+| EngineError Guide | 未寫 | 622 行 | ≥150 行 | ✅ |
+
+---
+
+#### 7. 已知問題
+
+1. **系統 OOM 嚴重**: 所有大型 Node.js 進程（vitest 全量、tsc 首次、coverage、playwright install）頻繁被 SIGKILL。影響：
+   - 無法獲取完整 vitest 運行結果（部分運行 71 files/0 fail）
+   - 無法獲取 v8/istanbul 覆蓋率數據
+   - Playwright 未安裝，smoke tests 無法執行
+
+2. **10 個 exclude 測試文件**: 仍保留在 vitest.config.ts 中，主要為：
+   - 獨立 `.ts` 文件（非測試格式）
+   - `e2e-pipeline` 系列（需完整環境）
+   - `kelly-sizing` 等過時測試
+
+3. **JVS 引擎子目錄**: 新的 5 子目錄結構（agents/analysis/data/core/backtest/）已穩定，但部分測試可能遺漏路徑更新。
+
+---
+
+#### 8. 角色變更預告
+
+**R91 起永久生效**:
+- **QClaw**: 測試蝦 → **文檔蝦**（負責文檔/審查/Release Notes/API文檔）
+- **youdao**: 文檔蝦 → **測試蝦**（負責測試/覆蓋率/E2E/質量報告/Flaky治理）
+
+此決定由 Owner 做出，PM 已廣播確認。
+
+---
+
+#### 9. Commits
+
+| Hash | 作者 | 說明 |
+|------|------|------|
+| `3a980fe2` | QClaw | fix test excludes + recursive engine paths + TSC 0 (23 files) |
+| `287992de` | QClaw | Playwright E2E framework (config + 3 smoke tests) |
+| `74f91007` | youdao/JVS | R89 Release Notes (223L) + EngineError Guide (622L) |
+
+#### 10. 升級指南
+
+**開發者**:
+1. 引擎文件路徑已變更：`electron/engine/xxx.ts` → `electron/engine/{agents|analysis|data|core|backtest}/xxx.ts`
+2. 測試文件使用 `tests/helpers/engine-paths.ts` 的遞歸搜索函數
+3. Playwright E2E 框架已就緒，安裝後即可使用：`npm install -D @playwright/test && npx playwright install`
+
+**用戶**: 本輪為內部質量改進，無用戶可見變更。
+
+---
+
+## [Unreleased] — R82-R88 Post-GA 質量收斂
 
 ### R82-R88 — 安全加固 + i18n协同 + 引擎模块化 + 类型清理
 
