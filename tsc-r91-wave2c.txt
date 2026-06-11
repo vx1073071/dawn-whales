@@ -1,1 +1,0 @@
-﻿src/components/risk/PortfolioAllocationChart.tsx(67,17): error TS6133: 'pct' is declared but its value is never read.

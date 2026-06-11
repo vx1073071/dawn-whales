@@ -15,26 +15,37 @@ node_modules/
 
 coverage/
 
-# ---- R82 cleanup guards ----
-# prevent junk files from coming back
-$null
-=*
-*.tgz
-*.bak
-*.bak.ts
-check_*
-check-*
-fix_*
-debug_*
+# ---- R105 cleanup guards ----
+# temporary / test-run / log artifacts — DO NOT COMMIT
+commit-*.txt
+test-*.txt
+test-*.json
+vitest-*.txt
+vitest-*.tmp
+round*.log
+tsc-*.txt
+run-*.mjs
+run-*.js
+*-task-summary.md
+session-artifact-*.md
+be-test.txt
+jvs57-test.txt
+r90-*.txt
+q78-*.txt
+memory-leak-report.json
+security-key-audit-*.md
+test-analysis.md
+test-summary.json
+coverage-analysis.mjs
+coverage-r*.txt
+coverage-report.json
+flaky-r*.json
+git-log-*.txt
+vitest.config.oom-safe.ts
+# older R82 entries (consolidated above)
 temp/
 build-log.txt
 dist-build.log
-commit-msg.txt
-test-baseline.txt
-ba_check.txt
-bridge_*.txt
-diff_ba.txt
-prefs_check*.txt
 read_last_msg.py
 run-qtest.js
 run-e2e-tests.bat
@@ -43,9 +54,6 @@ send_to_wb.py
 temp-broadcast*.js
 find_r43.py
 install-*.ps1
-# random session artifacts in root
-*-task-summary.md
-session-artifact-*.md
 
 storybook-static/
 

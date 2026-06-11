@@ -256,6 +256,14 @@ const AIAssistantPanel: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const mountedRef = useRef(true);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -281,6 +289,7 @@ const AIAssistantPanel: React.FC = () => {
       setIsTyping(true);
       // Simulate AI processing delay
       setTimeout(() => {
+        if (!mountedRef.current) return;
         const cat = category ?? 'general';
         const response = templates[cat] ?? templates.general ?? '';
         addMessage({

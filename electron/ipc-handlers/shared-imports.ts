@@ -1,6 +1,5 @@
-��// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
-// ： (Electron + C++ core + React)
-// ：Electron + Node.js (Main) + React (Renderer)
+// ── DAWN WHALES Shared Import Barrel ──────────────────────────────────
+// Common re-exports for IPC handler modules
 
 import { app, BrowserWindow, ipcMain, shell, Tray, Menu, nativeImage } from 'electron';
 import path from 'path';

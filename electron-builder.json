@@ -16,6 +16,7 @@
     "node_modules/electron-log/**"
   ],
   "compression": "maximum",
+  "npmRebuild": false,
   "extraMetadata": {
     "main": "dist-electron/main.cjs"
   },
@@ -23,6 +24,10 @@
     "target": [
       {
         "target": "nsis",
+        "arch": ["x64"]
+      },
+      {
+        "target": "portable",
         "arch": ["x64"]
       }
     ],

@@ -10,7 +10,7 @@
  * - Comment input with submit
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from "react-i18next";
 import i18n from '../../../i18n';
 import { EngineError } from '../../../../electron/engine/core/engine-error';
@@ -176,9 +176,14 @@ export default function StrategyCommunityPanel({
     onLike?.(id);
   }, [onLike]);
 
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    return () => { mountedRef.current = false; };
+  }, []);
+
   const handleShare = useCallback((p: 'twitter' | 'telegram' | 'copy') => {
     setShared(p === 'copy' ? i18n.t('StrategyCommunityPanel.k14') : `${i18n.t('StrategyCommunityPanel.k0')}${p === 'twitter' ? 'Twitter' : 'Telegram'}`);
-    setTimeout(() => setShared(''), 2000);
+    setTimeout(() => { if (mountedRef.current) setShared(''); }, 2000);
     onShare?.(p);
   }, [onShare]);
 

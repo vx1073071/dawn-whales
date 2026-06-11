@@ -163,13 +163,11 @@ export default function SettingsPage() {
   }
 
   // Callbacks for BrokerSelector
-  function handleBrokerSelectorChange(brokerId: string) {
-    console.log('[SettingsPage] Broker changed:', brokerId);
+  function handleBrokerSelectorChange(_brokerId: string) {
     refreshBrokers();
   }
 
   function handleBrokerConnectionChange(isConnected: boolean) {
-    console.log('[SettingsPage] Connection changed:', isConnected);
     setConnected(isConnected);
     init(); // Refresh risk config and app info
   }

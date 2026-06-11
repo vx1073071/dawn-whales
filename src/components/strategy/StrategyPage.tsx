@@ -71,8 +71,8 @@ export default function StrategyPage() {
 
       {!mode && !selectedId && <ModeSelector onSelect={setMode} />}
       {mode === 'condition' && <ConditionRulePanel onBack={() => setMode(null)} />}
-      {mode === 'closedLoop' && <ClosedLoopConfigPanel onBack={() => setMode(null)} onSave={(config) => console.log('Loop config saved:', config)} strategyId={selectedId || undefined} />}
-      {mode === 'adaptive' && <AdaptiveParamPanel onBack={() => setMode(null)} strategyId={selectedId || 'ma_cross'} onApply={(params) => console.log('Adaptive params applied:', params)} />}
+      {mode === 'closedLoop' && <ClosedLoopConfigPanel onBack={() => setMode(null)} onSave={() => {}} strategyId={selectedId || undefined} />}
+      {mode === 'adaptive' && <AdaptiveParamPanel onBack={() => setMode(null)} strategyId={selectedId || 'ma_cross'} onApply={() => {}} />}
       {mode === 'ai' && <AICreator onBack={() => setMode(null)} onCreated={() => {setMode(null);refresh();}} onFillForm={(parsed) => {setNlPrefill(parsed);setMode('form');}} />}
       {mode === 'template' && <TemplateBrowser onBack={() => setMode(null)} onCreated={() => {setMode(null);refresh();}} />}
       {mode === 'form' && <FormCreator onBack={() => {setMode(null);setNlPrefill(null);}} onCreated={() => {setMode(null);setNlPrefill(null);refresh();}} nlPrefill={nlPrefill || undefined} />}

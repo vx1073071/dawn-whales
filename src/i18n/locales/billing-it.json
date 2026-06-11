@@ -7,7 +7,7 @@
   "analyzeFree": "⚡ Analizza (Gratis×{{count}})",
   "freeRemaining": "{{count}} {{context}} gratuit{{e}} rimanent{{i}}",
   "freeSingular": "analisi",
-  "freePlural": "analisi",
+  "freePlural": "analisi [plurali]",
   "freeAllLeft": "{{count}} gratis — approfittane!",
   "freeLastOne": "Ultima analisi gratuita! Ricarica dopo.",
   "freeUsedUp": "Quota gratuita esaurita. Ricarica per continuare.",

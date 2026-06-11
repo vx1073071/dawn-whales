@@ -778,6 +778,8 @@ app.whenReady().then(async () => {
         if (emDataProvider) await emDataProvider.getHeatmap('industry');
       });
 
-}
+  } catch (err) {
+    log.error('[IPC] Init failed:', err.message);
+  }
 
 }

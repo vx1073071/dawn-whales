@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useTranslation } from "react-i18next";
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
@@ -421,6 +421,10 @@ function StatCard({ label, value, sub, variant = 'default' }: {label: string;val
 // Main Page Component
 // ============================================================
 export default function MonteCarloPage() {
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    return () => { mountedRef.current = false; };
+  }, []);
   const [config, setConfig] = useState<SimConfig>({
     initialCapital: 100000,
     expectedReturn: 10,
@@ -496,6 +500,7 @@ export default function MonteCarloPage() {
 
     function runClientSimulation() {
       setTimeout(() => {
+        if (!mountedRef.current) return;
         const { initialCapital, expectedReturn, volatility, timeHorizon, numSimulations, distribution } = config;
         const mu = expectedReturn / 100;
         const sigma = volatility / 100;
