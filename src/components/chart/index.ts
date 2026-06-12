@@ -39,3 +39,9 @@ export { default as MarketScanner } from './MarketScanner';
 export type { ScanItem, PresetScan, ScanFilter, MarketScannerProps } from './MarketScanner';
 export { AlertPanel, FundFlowPanel } from './AlertAndFundFlow';
 export type { AlertRule, AlertChannel, AlertTrigger, AlertPanelProps, FundFlowItem, FundFlowProps } from './AlertAndFundFlow';
+
+// R116 CBBO + Arbitrage
+export { default as CBBOPanel } from './CBBOPanel';
+export type { CBBOQuote, CBBOData, CBBOPanelProps } from './CBBOPanel';
+export { default as ArbitrageMonitor } from './ArbitrageMonitor';
+export type { ArbOpportunity, TriangleArb, ArbitrageMonitorProps } from './ArbitrageMonitor';
