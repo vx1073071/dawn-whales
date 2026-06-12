@@ -10,6 +10,8 @@ import { useState, useMemo } from 'react';
 import { Table, Button, Tag, Badge, Modal, Select, InputNumber, Space, Progress } from 'antd';
 import { SwapOutlined, ThunderboltOutlined, CopyOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
+import { useBrokerData } from '../../hooks/useBrokerData';
+import { ChartSkeleton, ChartError, ChartEmpty } from '../chart/ChartStates';
 
 // ── Types ──────────────────────────────────────────────
 
@@ -62,7 +64,13 @@ const BROKERS = [
 // ── Component ──────────────────────────────────────────
 
 export default function ArbitragePanel() {
-  const [opportunities] = useState(MOCK_OPPORTUNITIES);
+  const { data: ipdOpps, loading, error, refetch, source } = useBrokerData<ArbitrageOpportunity[]>({
+    channel: 'broker:scanArbitrage',
+    params: { threshold: 0.05 },
+    mockData: MOCK_OPPORTUNITIES,
+    pollInterval: 3000,
+  });
+  const [opportunities] = useState(ipdOpps || MOCK_OPPORTUNITIES);
   const [copyConfigs, setCopyConfigs] = useState(MOCK_COPY_CONFIGS);
   const [addModal, setAddModal] = useState(false);
   const [scanThreshold, setScanThreshold] = useState(0.05); // 0.05%
@@ -154,6 +162,9 @@ export default function ArbitragePanel() {
     )},
   ];
 
+  if (loading) return <ChartSkeleton rows={5} />;
+  if (error) return <ChartError title="套利扫描失败" message={error} onRetry={refetch} />;
+
   return (
     <div className="p-4 space-y-6">
       {/* ── Arbitrage Opportunities ── */}
@@ -162,6 +173,7 @@ export default function ArbitragePanel() {
           <h3 className="text-white font-semibold flex items-center gap-2">
             <ThunderboltOutlined className="text-yellow-400" />
             Arbitrage Opportunities
+            {source === 'ipc' && <Tag color="green" className="text-[8px]">LIVE</Tag>}
           </h3>
           <Space>
             <span className="text-gray-400 text-xs">Min spread:</span>

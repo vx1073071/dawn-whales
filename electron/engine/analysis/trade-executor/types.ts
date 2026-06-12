@@ -1,7 +1,3 @@
-type EventMap = Record<string, (...args: unknown[]) => void>;
-
-class TypedEventEmitter<T extends EventMap> {
-  private listeners: Map<string, Set<Function>> = new Map();
 export interface TradeSignal {
   strategyId: string;
   strategyName: string;

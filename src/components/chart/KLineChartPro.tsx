@@ -200,6 +200,17 @@ export default function KLineChartPro({
       }
     });
 
+    // Track visible range for zoom display
+    const updateZoomLabel = () => {
+      const range = chart.timeScale().getVisibleRange();
+      if (range) {
+        const count = chart.timeScale().getVisibleLogicalRange();
+        if (count) setZoomLabel(`${Math.round(count.to - count.from)} bars`);
+      }
+    };
+    chart.timeScale().subscribeVisibleLogicalRangeChange(updateZoomLabel);
+    updateZoomLabel();
+
     return () => {
       mountedRef.current = false;
       window.removeEventListener('resize', handleResize);
@@ -270,6 +281,12 @@ export default function KLineChartPro({
     onTimeframeChange?.(tf);
   }, [onTimeframeChange]);
 
+  // ── Zoom state ──
+  const [zoomLabel, setZoomLabel] = useState('');
+  const resetZoom = useCallback(() => {
+    chartRef.current?.timeScale().fitContent();
+  }, []);
+
   // ── Toggle indicator ──
   const toggleIndicator = useCallback((id: string) => {
     setActiveIndicators(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
@@ -337,6 +354,12 @@ export default function KLineChartPro({
 
       {/* Chart container */}
       <div ref={containerRef} className="w-full" />
+
+      {/* Zoom controls */}
+      <div className="flex items-center justify-between px-2 py-0.5 border-t border-[#1c2333] text-[8px] text-[#484f58]">
+        <span>🖱 滚轮缩放 · 拖拽平移 · {zoomLabel}</span>
+        <button onClick={resetZoom} className="text-[#3b82f6] hover:underline">全屏显示</button>
+      </div>
     </div>
   );
 }

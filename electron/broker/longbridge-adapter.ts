@@ -27,6 +27,7 @@ import type {
   OrderInfo,
   PlaceOrderRequest,
 } from './IBrokerAdapter';
+import { CodeNormalizer } from './CodeNormalizer';
 
 // ══ Constants ═══════════════════════════════════════════════
 
@@ -82,6 +83,7 @@ export class LongbridgeAdapter implements IBrokerAdapter {
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
   private tokenExpiry = 0;
+  private normalizer = CodeNormalizer.getInstance();
   private quoteCallbacks: Array<(quotes: QuoteInfo[]) => void> = [];
   private disconnectCallbacks: Array<() => void> = [];
   private mockTimer: ReturnType<typeof setInterval> | null = null;

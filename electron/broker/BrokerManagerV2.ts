@@ -5,6 +5,7 @@
 import { log } from 'electron-log';
 import type { IBrokerAdapterV2, BrokerConnectionStatus, TaggedQuoteInfo, TaggedPositionInfo, TaggedOrderInfo, TaggedPlaceOrderRequest, BrokerConfig, BrokerType, MarketType } from './IBrokerAdapterV2';
 import type { AccountInfo, FundsInfo, PositionInfo, OrderInfo, QuoteInfo, KlineInfo, PlaceOrderRequest, IBrokerAdapter } from './IBrokerAdapter';
+import { DirectAdapterBase } from './adapters/DirectAdapterBase';
 
 export interface BrokerManagerV2Config {
   maxConcurrentConnections?: number;    // default: 20
@@ -444,6 +445,124 @@ export class BrokerManagerV2 {
     if (code.includes('USDT') || code.includes('BTC') || code.includes('ETH')) return 'CRYPTO';
     if (code.includes('EURGBP') || code.includes('GBPUSD')) return 'UK';
     return 'US';
+  }
+
+  // ═══ R119: Status & Observability ══════════════════════
+  
+  /** Get full connection status map (all brokers) */
+  getConnectionStatus(): Map<string, BrokerConnectionStatus> {
+    const map = new Map<string, BrokerConnectionStatus>();
+    for (const [id, entry] of this.brokers) {
+      map.set(id, { ...entry.status });
+    }
+    return map;
+  }
+
+  /** Subscribe to status changes for a specific broker */
+  onStatusChange(brokerId: string, callback: StatusChangeCallback): void {
+    const entry = this.brokers.get(brokerId);
+    if (entry) {
+      entry.statusCallbacks.add(callback);
+    }
+  }
+
+  /** Remove status change listener */
+  removeStatusChange(brokerId: string, callback: StatusChangeCallback): void {
+    const entry = this.brokers.get(brokerId);
+    if (entry) {
+      entry.statusCallbacks.delete(callback);
+    }
+  }
+
+  /** Get current max connection limit */
+  getMaxConnections(): number {
+    return this.config.maxConcurrentConnections;
+  }
+
+  // ═══ R119: Adapter Factory Bulk Registration ══════════
+  
+  /**
+   * Register all known adapter factories for production use.
+   * Uses lazy require() to avoid circular deps at module load time.
+   */
+  registerAllFactories(): void {
+    // Crypto (P0) — CryptoAdapterBase subclasses
+    this.adapterFactory.set('binance', (cfg) => {
+      const { BinanceAdapter } = require('./adapters/CryptoAdapterBase');
+      return new BinanceAdapter(cfg);
+    });
+    this.adapterFactory.set('okx', (cfg) => {
+      const { OKXAdapter } = require('./adapters/CryptoAdapterBase');
+      return new OKXAdapter(cfg);
+    });
+    this.adapterFactory.set('bybit', (cfg) => {
+      const { BybitAdapter } = require('./adapters/CryptoAdapterBase');
+      return new BybitAdapter(cfg);
+    });
+    this.adapterFactory.set('bitget', (cfg) => {
+      const { BitgetAdapter } = require('./adapters/CryptoAdapterBase');
+      return new BitgetAdapter(cfg);
+    });
+
+    // HK/US (P0) — existing adapters
+    this.adapterFactory.set('futu', (cfg) => {
+      const { FutuOpenDAdapter } = require('./futu-opend');
+      return new FutuOpenDAdapter(cfg);
+    });
+    this.adapterFactory.set('moomoo', (cfg) => {
+      const { MoomooAdapter } = require('./moomoo-adapter');
+      return new MoomooAdapter(cfg);
+    });
+    this.adapterFactory.set('ib', (cfg) => {
+      const { IBAdapter } = require('./ib-adapter');
+      return new IBAdapter(cfg);
+    });
+    this.adapterFactory.set('longbridge', (cfg) => {
+      const { LongbridgeAdapter } = require('./longbridge-adapter');
+      return new LongbridgeAdapter(cfg);
+    });
+
+    // OAuth & Bridge (P1)
+    this.adapterFactory.set('tiger', (cfg) => {
+      const { TigerAdapter } = require('./adapters/BridgeAdapterBase');
+      return new TigerAdapter(cfg);
+    });
+    this.adapterFactory.set('schwab', (cfg) => {
+      const { SchwabAdapter } = require('./adapters/SchwabAdapter');
+      return new SchwabAdapter(cfg);
+    });
+    this.adapterFactory.set('etrade', (cfg) => {
+      const { ETRADEAdapter } = require('./adapters/ETRADEAdapter');
+      return new ETRADEAdapter(cfg);
+    });
+    this.adapterFactory.set('webull', (cfg) => {
+      const { WebullAdapter } = require('./adapters/WebullAdapter');
+      return new WebullAdapter(cfg);
+    });
+    this.adapterFactory.set('etoro', (cfg) => {
+      const { eToroAdapter } = require('./adapters/eToroAdapter');
+      return new eToroAdapter(cfg);
+    });
+    this.adapterFactory.set('robinhood', (cfg) => {
+      const { RobinhoodAdapter } = require('./adapters/BridgeAdapterBase');
+      return new RobinhoodAdapter(cfg);
+    });
+
+    // Bridge (P2)
+    this.adapterFactory.set('vbkr', (cfg) => {
+      const { VBKRAdapter } = require('./adapters/BridgeAdapterBase');
+      return new VBKRAdapter(cfg);
+    });
+    this.adapterFactory.set('usmart', (cfg) => {
+      const { USmartAdapter } = require('./adapters/BridgeAdapterBase');
+      return new USmartAdapter(cfg);
+    });
+    this.adapterFactory.set('mt5', (cfg) => {
+      const { MT5Adapter } = require('./adapters/BridgeAdapterBase');
+      return new MT5Adapter(cfg);
+    });
+
+    log.info(`[BrokerManagerV2] Registered ${this.adapterFactory.size} adapter factories`);
   }
 
   // Cleanup

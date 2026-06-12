@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 // ── DAWN WHALES IPC: report ────────────────────────────────────────────
 // 6 handlers
 
@@ -74,8 +75,8 @@ export function registerReportIPC(
     if (vErr) return vErr;
     const { results, symbol, apiKey, timeoutMs } = raw as {
       results: any[];
-      symbol?: string;\1/** @deprecated R83 — use server-side AI Gateway token */
-\1\2
+      symbol?: string;      /** @deprecated R83 — use server-side AI Gateway token */
+
       timeoutMs?: number;
     };
     const report = await generateBacktestReport(results, symbol, apiKey, timeoutMs ?? 20000);

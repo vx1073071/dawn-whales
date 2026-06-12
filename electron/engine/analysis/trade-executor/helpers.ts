@@ -14,6 +14,8 @@ import { generateId } from '../utils/id';
 // Type-Safe Event Emitter
 // ============================================================
 
+class TypeSafeEventEmitter<T extends Record<string, Function>> {
+  private listeners: Map<string, Set<Function>> = new Map();
   private onceListeners: Map<string, Set<Function>> = new Map();
 
   on<K extends keyof T & string>(event: K, listener: T[K]): () => void {

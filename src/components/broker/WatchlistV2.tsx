@@ -1,13 +1,14 @@
 /**
  * src/components/broker/WatchlistV2.tsx
- * R4 CONC-06: Multi-broker real-time watchlist (production)
- * R4 enhancements: error states, empty state, loading state, broker connection badges
+ * R119 #19: Multi-broker real-time watchlist — IPC wired
+ * Auto-detects IPC availability, falls back to mock data for dev
  */
 
 import { useState, useMemo } from 'react';
-import { Table, Tag, Badge, Tooltip, Empty, Result, Button } from 'antd';
-import { ReloadOutlined } from '@ant-design/icons';
+import { Table, Tag, Badge, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { useBrokerData } from '../../hooks/useBrokerData';
+import { ChartSkeleton, ChartError, ChartEmpty } from '../chart/ChartStates';
 
 // ── Types ──────────────────────────────────────────────
 
@@ -29,75 +30,44 @@ interface WatchlistRow {
   quotes: Record<string, TaggedQuote>;
 }
 
-// ── Mock data ──────────────────────────────────────────
-
-const MOCK_BROKERS = ['binance', 'okx', 'bybit', 'bitget'];
+// ── Mock data (fallback when no IPC) ───────────────────
 
 const MOCK_SYMBOLS = ['BTC-USDT', 'ETH-USDT', 'SOL-USDT', 'DOGE-USDT', 'ADA-USDT'];
-
-function generateMockQuote(symbol: string, brokerId: string): TaggedQuote {
-  const basePrice: Record<string, number> = {
-    'BTC-USDT': 98234.5,
-    'ETH-USDT': 5432.1,
-    'SOL-USDT': 187.45,
-    'DOGE-USDT': 0.12345,
-    'ADA-USDT': 0.8765,
-  };
-
-  const bp = basePrice[symbol] || 100;
-  // Add small random variance per broker
-  const variance = (Math.random() - 0.5) * bp * 0.002; // ±0.1%
-  const price = bp + variance;
-
-  return {
-    symbol,
-    brokerId,
-    brokerName: brokerId.charAt(0).toUpperCase() + brokerId.slice(1),
-    price: Math.round(price * 1e6) / 1e6,
-    change24h: Math.round((Math.random() - 0.5) * 1000 * 1e6) / 1e6,
-    changePercent24h: Math.round((Math.random() - 0.5) * 10 * 100) / 100,
-    volume24h: Math.round(Math.random() * 1e9),
-    bid: Math.round((price - Math.random() * 0.5) * 1e6) / 1e6,
-    ask: Math.round((price + Math.random() * 0.5) * 1e6) / 1e6,
-    timestamp: Date.now(),
-  };
-}
+const MOCK_BROKERS = ['Binance', 'OKX', 'Bybit', 'Bitget'];
 
 function generateMockData(): WatchlistRow[] {
+  const basePrice: Record<string, number> = {
+    'BTC-USDT': 98234.5, 'ETH-USDT': 3821.2, 'SOL-USDT': 187.45, 'DOGE-USDT': 0.382, 'ADA-USDT': 0.745,
+  };
   return MOCK_SYMBOLS.map(symbol => {
     const quotes: Record<string, TaggedQuote> = {};
-    MOCK_BROKERS.forEach(brokerId => {
-      quotes[brokerId] = generateMockQuote(symbol, brokerId);
+    MOCK_BROKERS.forEach((broker, i) => {
+      const offset = (i - 1.5) * 0.001 * basePrice[symbol];
+      const price = basePrice[symbol] + offset;
+      quotes[broker] = {
+        symbol, brokerId: broker.toLowerCase(), brokerName: broker,
+        price: +price.toFixed(4),
+        change24h: +(price - basePrice[symbol] * 0.998).toFixed(4),
+        changePercent24h: +((price - basePrice[symbol] * 0.998) / (basePrice[symbol] * 0.998) * 100).toFixed(2),
+        volume24h: Math.floor(Math.random() * 1e9 + 5e7),
+        bid: +(price * 0.9998).toFixed(4),
+        ask: +(price * 1.0002).toFixed(4),
+        timestamp: Date.now() - i * 500,
+      };
     });
     return { symbol, quotes };
   });
 }
 
-// ── Helpers ────────────────────────────────────────────
+// ── Utility ────────────────────────────────────────────
 
-function getBestBroker(
-  quotes: Record<string, TaggedQuote>,
-  type: 'bid' | 'ask'
-): string {
-  let best = '';
-  let bestPrice = type === 'ask' ? Infinity : -Infinity;
-  for (const [brokerId, q] of Object.entries(quotes)) {
-    const price = type === 'ask' ? q.ask : q.bid;
-    if (type === 'ask' ? price < bestPrice : price > bestPrice) {
-      bestPrice = price;
-      best = brokerId;
-    }
-  }
-  return best;
-}
-
-function detectArbitrage(quotes: Record<string, TaggedQuote>): { exists: boolean; gainPct: number } {
-  const bids = Object.values(quotes).map(q => q.bid);
-  const asks = Object.values(quotes).map(q => q.ask);
-  const maxBid = Math.max(...bids);
-  const minAsk = Math.min(...asks);
+function findArbitrage(quotes: Record<string, TaggedQuote>): { exists: boolean; gainPct: number } {
+  const entries = Object.values(quotes);
+  if (entries.length < 2) return { exists: false, gainPct: 0 };
+  const minAsk = Math.min(...entries.map(q => q.ask));
+  const maxBid = Math.max(...entries.map(q => q.bid));
   if (maxBid > minAsk) {
-    return { exists: true, gainPct: ((maxBid - minAsk) / minAsk) * 100 };
+    return { exists: true, gainPct: +(((maxBid - minAsk) / minAsk) * 100).toFixed(3) };
   }
   return { exists: false, gainPct: 0 };
 }
@@ -105,66 +75,62 @@ function detectArbitrage(quotes: Record<string, TaggedQuote>): { exists: boolean
 // ── Component ──────────────────────────────────────────
 
 export default function WatchlistV2() {
-  const [data] = useState<WatchlistRow[]>(generateMockData);
-  const [selectedBrokers] = useState<string[]>(['Binance', 'OKX', 'Bybit', 'Bitget']);
-  const visible = data;
+  // Try real IPC first, fall back to mock
+  const { data: ipcData, loading, error, source, refetch } = useBrokerData<WatchlistRow[]>({
+    channel: 'broker:getAggregatedQuotes',
+    mockData: generateMockData(),
+    pollInterval: 5000,
+  });
+
+  const selectedBrokers = MOCK_BROKERS;
 
   const columns: ColumnsType<WatchlistRow> = useMemo(() => {
     const base: ColumnsType<WatchlistRow> = [
       {
-        title: 'Symbol',
-        dataIndex: 'symbol',
-        key: 'symbol',
-        width: 120,
-        fixed: 'left',
-        render: (symbol: string) => (
-          <span className="font-mono font-bold text-white">{symbol}</span>
-        ),
+        title: 'Symbol', dataIndex: 'symbol', key: 'symbol', width: 120, fixed: 'left',
+        render: (symbol: string) => <span className="font-mono font-bold text-[#c9d1d9] text-xs">{symbol}</span>,
       },
       {
-        title: 'Arbitrage',
-        key: 'arbitrage',
-        width: 100,
-        render: (_: unknown, record: WatchlistRow) => {
-          const { exists, gainPct } = detectArbitrage(record.quotes);
-          return exists ? (
-            <Badge status="processing" text={
-              <span className="text-xs text-green-500 font-mono">+{gainPct.toFixed(3)}%</span>
-            } />
-          ) : (
-            <span className="text-xs text-gray-600">—</span>
-          );
+        title: 'Arbitrage', key: 'arb', width: 80,
+        render: (_: unknown, row: WatchlistRow) => {
+          const arb = findArbitrage(row.quotes);
+          return arb.exists ? (
+            <Tooltip title={`${arb.gainPct}% spread`}>
+              <Tag color="green" className="text-[9px] animate-pulse">⚡{arb.gainPct}%</Tag>
+            </Tooltip>
+          ) : <span className="text-[#484f58] text-[9px]">—</span>;
         },
       },
     ];
 
-    // One column per broker
-    MOCK_BROKERS.forEach(brokerId => {
+    selectedBrokers.forEach(broker => {
       base.push({
-        title: (
-          <span className="text-xs font-mono capitalize">{brokerId}</span>
+        title: () => (
+          <div className="flex items-center gap-1">
+            <Badge status="processing" color="#3b82f6" />
+            <span className="text-[10px] text-[#8b949e]">{broker}</span>
+          </div>
         ),
-        key: brokerId,
-        width: 160,
-        render: (_: unknown, record: WatchlistRow) => {
-          const quote = record.quotes[brokerId];
-          if (!quote) return <span className="text-gray-600">—</span>;
-          const isCheapestAsk = getBestBroker(record.quotes, 'ask') === brokerId;
+        key: broker,
+        width: 140,
+        render: (_: unknown, row: WatchlistRow) => {
+          const quote = row.quotes[broker];
+          if (!quote) return <span className="text-[#484f58] text-[9px]">—</span>;
+          const isUp = quote.change24h >= 0;
+          const isBestBid = quote.bid === Math.max(...Object.values(row.quotes).map(q => q.bid));
+          const isBestAsk = quote.ask === Math.min(...Object.values(row.quotes).map(q => q.ask));
           return (
-            <div className="flex flex-col gap-0.5 text-xs">
+            <div className="flex flex-col gap-0.5 py-0.5">
               <div className="flex items-center gap-1">
-                <span className={isCheapestAsk ? 'text-green-400 font-bold' : 'text-white'}>
-                  {quote.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
+                <span className={`font-mono font-bold text-xs ${isUp ? 'text-[#22c55e]' : 'text-[#ef4444]'}`}>
+                  {quote.price.toFixed(2)}
                 </span>
-                {isCheapestAsk && <Tag color="green" className="text-[10px] px-1 py-0 leading-3">BEST</Tag>}
+                {isBestBid && <Tag color="green" className="text-[8px] px-1 leading-none">B</Tag>}
+                {isBestAsk && <Tag color="red" className="text-[8px] px-1 leading-none">A</Tag>}
               </div>
-              <div className="flex gap-2">
-                <Tooltip title="Bid">
-                  <span className="text-green-600 font-mono">{quote.bid.toFixed(4)}</span>
-                </Tooltip>
-                <Tooltip title="Ask">
-                  <span className="text-red-500 font-mono">{quote.ask.toFixed(4)}</span>
-                </Tooltip>
+              <div className="flex gap-2 text-[9px]">
+                <Tooltip title="Bid"><span className="text-[#22c55e] font-mono">{quote.bid.toFixed(2)}</span></Tooltip>
+                <Tooltip title="Ask"><span className="text-[#ef4444] font-mono">{quote.ask.toFixed(2)}</span></Tooltip>
               </div>
             </div>
           );
@@ -175,38 +141,28 @@ export default function WatchlistV2() {
     return base;
   }, []);
 
-  const [error, setError] = useState<string | null>(null);
-  const [loading] = useState(false);
-
-  if (error) {
-    return (
-      <div className="p-4">
-        <Result status="error" title="Connection Error" subTitle={error}
-          extra={<Button icon={<ReloadOutlined />} onClick={() => setError(null)}>Retry</Button>} />
-      </div>
-    );
-  }
+  // ── Loading / Error / Empty states ──
+  if (loading) return <ChartSkeleton rows={6} />;
+  if (error) return <ChartError title="Watchlist加载失败" message={error} onRetry={refetch} />;
+  if (!ipcData || ipcData.length === 0) return <ChartEmpty icon="📋" title="自选列表为空" message="添加标的后开始监控多券商报价" />;
 
   return (
     <div className="p-4">
-      <h2 className="text-lg font-bold text-white mb-4">
-        <span className="text-blue-400">●</span> Multi-Broker Watchlist
-        <Tag color="blue" className="ml-2">{selectedBrokers.length} Brokers</Tag>
-      </h2>
-      {visible.length === 0 ? (
-        <Empty description="No symbols in watchlist" image={Empty.PRESENTED_IMAGE_SIMPLE} />
-      ) : (
-        <Table
-          columns={columns}
-          dataSource={visible}
-          rowKey="symbol"
-          pagination={false}
-          size="small"
-          loading={loading}
-          scroll={{ x: 800 }}
-          className="[&_.ant-table]:bg-gray-900 [&_.ant-table-thead>tr>th]:bg-gray-800 [&_.ant-table-tbody>tr>td]:bg-gray-900 [&_.ant-table-tbody>tr:hover>td]:bg-gray-800"
-        />
-      )}
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-[#8b949e] text-xs font-semibold tracking-wide">● Multi-Broker Watchlist</span>
+        <Tag color="blue" className="text-[9px]">{selectedBrokers.length} Brokers</Tag>
+        {source === 'mock' && <Tag color="orange" className="text-[8px]">MOCK</Tag>}
+        {source === 'ipc' && <Tag color="green" className="text-[8px]">LIVE</Tag>}
+      </div>
+      <Table
+        columns={columns}
+        dataSource={ipcData}
+        rowKey="symbol"
+        pagination={false}
+        size="small"
+        scroll={{ x: 800 }}
+        className="[&_.ant-table]:bg-gray-900 [&_.ant-table-thead>tr>th]:bg-gray-800 [&_.ant-table-tbody>tr>td]:bg-gray-900 [&_.ant-table-tbody>tr:hover>td]:bg-gray-800"
+      />
     </div>
   );
 }
