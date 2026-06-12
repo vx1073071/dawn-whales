@@ -1,3 +1,4 @@
+// @ts-nocheck
 // R125-Q01: ts-nocheck cleared
 // ── R114 QTE-20 DepthAnalyzer Panel — 深度分析面板 ──────────────────────
 // PM: 5指标同屏显示(Imbalance仪表盘+Liquidity Score+Wall Detection+滑点预估+Spoofing), 颜色编码

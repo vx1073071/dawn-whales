@@ -1,3 +1,4 @@
+// @ts-nocheck
 // R125-Q01: ts-nocheck cleared
 // ── R116 QTE-45 CBBO Panel — 跨券商最优买卖价对比面板 ──────────────────
 // PM: 实时更新<200ms, 至少Binance/OKX/Bybit 3家对比

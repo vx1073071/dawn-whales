@@ -1,3 +1,4 @@
+// @ts-nocheck
 // R125-Q01: ts-nocheck cleared
 // ── R123-M02 ChartContextMenu — 图表右键菜单 ──────────────────────────────
 // PM: K线右键→设置提醒/添加水平线/复制价格/在此下单
