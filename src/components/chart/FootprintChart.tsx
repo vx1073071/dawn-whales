@@ -99,7 +99,7 @@ export default function FootprintChart({ data, height = 400, showDelta = true, c
 
       {/* Volume rows */}
       <div className="flex-1 overflow-y-auto">
-        {enriched.levels.map((level, i) => (
+        {enriched.levels.map((level, _i) => (
           <div key={level.price}
             className={`flex items-center gap-1 px-1 border-b border-[#1c2333] hover:bg-[#161b22] transition-colors
               ${level.poc ? 'bg-[#c9a96e08]' : ''}

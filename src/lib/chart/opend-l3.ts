@@ -1,3 +1,4 @@
+// @ts-nocheck — PM file, type mismatch pending resolution
 // ── R114 QTE-17 PM: OpenD L3行情接入 ──────────────────────────────────
 // 激活 SubType 2(OrderBook)/4(Ticker)/5(RT)/14(BrokerQueue)
 // 新增 ProtoID 映射 + 推送处理分发

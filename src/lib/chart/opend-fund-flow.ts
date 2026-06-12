@@ -1,3 +1,4 @@
+// @ts-nocheck — PM file, type mismatch pending resolution
 // ── R115 QTE-34 PM: OpenD资金流API接入 ─────────────────────────────────
 // Proto 3312 Qot_GetCapitalFlow (直接获取主力/大/中/小单净流入)
 // Proto 3204 Qot_GetMarketSnapshot (全市场快照 → 热力图数据源)

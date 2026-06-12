@@ -7,7 +7,7 @@
 // @round R116
 // @since 2026-06-12
 
-import type { OrderBookSnapshot, BestBidAsk } from './depth-types';
+import type { OrderBookSnapshot } from './depth-types';
 
 // ═══════════════════════════════════════════════════════════════════════
 // TYPES
@@ -289,7 +289,7 @@ export function scanCrossExchangeSpread(
         const netProfitPct = spreadPct - 0.2; // 假设双边手续费0.2%
         if (netProfitPct <= 0) continue;
 
-        const maxVol = Math.min(bidA.volume, askB.volume);
+        const maxVol = Math.min(bidA.size, askB.size);
         results.push({
           id: `stat_spread_${symbol}_${bookA.exchange}_${bookB.exchange}`,
           type: 'statistical',
@@ -367,7 +367,7 @@ export function routeSplit(
     // 计算该券商可承接量
     const available = Math.min(
       remaining,
-      bestPrice.volume * 0.8, // 留20%余量
+      bestPrice.size * 0.8, // 留20%余量
       side === 'buy' ? getDepthLiquidity(book.asks) : getDepthLiquidity(book.bids),
     );
 
@@ -425,7 +425,7 @@ export function routeByLiquidity(
     let filled = 0;
     let cost = 0;
     for (const level of levels) {
-      const take = Math.min(volume - filled, level.volume);
+      const take = Math.min(volume - filled, level.size);
       cost += take * level.price;
       filled += take;
       if (filled >= volume) break;
@@ -472,7 +472,7 @@ export function scanSpreadArbitrage(
       const spreadPct = (ask.price - bid.price) / bid.price * 100;
       if (spreadPct < minSpreadPct) continue;
 
-      const vol = Math.min(bid.volume, ask.volume);
+      const vol = Math.min(bid.size, ask.size);
       if (vol < minVolume) continue;
 
       results.push({
@@ -501,16 +501,16 @@ export function scanSpreadArbitrage(
 // HELPERS
 // ═══════════════════════════════════════════════════════════════════════
 
-function getBestBid(book: OrderBookSnapshot): { price: number; volume: number } | null {
-  if (book.best?.bidPrice) return { price: book.best.bidPrice, volume: book.best.bidSize };
+function getBestBid(book: OrderBookSnapshot): { price: number; size: number } | null {
+  if (book.best?.bidPrice) return { price: book.best.bidPrice, size: book.best.bidSize };
   return book.bids[0] || null;
 }
 
-function getBestAsk(book: OrderBookSnapshot): { price: number; volume: number } | null {
-  if (book.best?.askPrice) return { price: book.best.askPrice, volume: book.best.askSize };
+function getBestAsk(book: OrderBookSnapshot): { price: number; size: number } | null {
+  if (book.best?.askPrice) return { price: book.best.askPrice, size: book.best.askSize };
   return book.asks[0] || null;
 }
 
-function getDepthLiquidity(levels: { volume: number }[]): number {
-  return levels.reduce((s, l) => s + l.volume, 0);
+function getDepthLiquidity(levels: { size: number }[]): number {
+  return levels.reduce((s, l) => s + l.size, 0);
 }

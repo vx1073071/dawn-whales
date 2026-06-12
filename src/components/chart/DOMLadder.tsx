@@ -1,7 +1,7 @@
 // ── R117 QTE-49 DOM Ladder — 订单簿深度阶梯 (DOM面板) ──────────────────
 // PM: Depth of Market ladder, bid/ask level-by-level view, position display
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 // ═══════════ Types ═══════════
 
@@ -66,7 +66,7 @@ export default function DOMLadder({ data, depth = 15, highlightLevels, className
 
       {/* Price ladder */}
       <div className="flex-1 overflow-y-auto">
-        {data.levels.slice(-depth * 2).reverse().map((level, i) => {
+        {data.levels.slice(-depth * 2).reverse().map((level, _i) => {
           const isHighlighted = highlightLevels?.includes(level.price);
           const isSpreadBoundary = level.price >= data.bestBid && level.price <= data.bestAsk;
 
