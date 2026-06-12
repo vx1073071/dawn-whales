@@ -13,3 +13,9 @@ export type { Timeframe, AdjustType, CandleType, KlineBar, IndicatorLine, ChartT
 export { CHART_THEME_DARK, DEFAULT_LAYOUT } from '../../lib/chart/types';
 export * from '../../lib/chart/indicator-engine';
 export { transformCandles, toHeikinAshi, applyPreAdjust, applyPostAdjust, downsample, aggregateTimeframe, niceScale, findPriceRange } from '../../lib/chart/kline-utils';
+
+// Drawing tools
+export { default as DrawingToolbar } from './DrawingToolbar';
+export type { DrawingToolbarProps } from './DrawingToolbar';
+export { DRAWING_TOOLS, DRAWING_CATEGORY_LABELS, DRAWING_CATEGORY_COLORS, DRAWING_COLORS, LINE_STYLES } from './DrawingToolbar';
+export type { DrawingToolDef, DrawingCategory } from './DrawingToolbar';
