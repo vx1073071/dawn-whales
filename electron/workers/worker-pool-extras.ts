@@ -134,7 +134,7 @@ export class PoolHealthMonitor {
 
       // Auto-scale suggestion
       if (stats.queueLength > 50 && stats.totalWorkers < 8) {
-        console.info('[PoolHealth] Suggest scaling workers to', Math.min(stats.totalWorkers + 2, 8));
+        log.info('[PoolHealth] Suggest scaling workers to', Math.min(stats.totalWorkers + 2, 8));
       }
     }
     }, intervalMs);

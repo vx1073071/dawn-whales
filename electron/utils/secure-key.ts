@@ -1,3 +1,4 @@
+import log from 'electron-log';
 import { EngineError } from './engine/core/engine-error';
 
 /**
@@ -220,7 +221,7 @@ export function deleteKey(app, name) {
 
 /** Convenience: get DeepSeek key specifically */
 export function getDeepSeekKey(app) {
-  console.warn('[secure-key] @deprecated — Key is now managed server-side via process.env.DEEPSEEK_API_KEY. Use that directly.');
+  log.warn('[secure-key] @deprecated — Key is now managed server-side via process.env.DEEPSEEK_API_KEY. Use that directly.');
   return getKey(app, 'DEEPSEEK_API_KEY');
 }
 

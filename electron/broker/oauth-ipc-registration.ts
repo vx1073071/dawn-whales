@@ -1,4 +1,4 @@
-// ── DAWN WHALES — OAuth Broker IPC Registration ───────────────────────
+﻿// ── DAWN WHALES — OAuth Broker IPC Registration ───────────────────────
 // R3 OAU-05: Register 4 OAuth adapters with BrokerManagerV2
 // Schwab, E*TRADE, eToro, Webull — all via OAuthBrokerBase
 
@@ -8,8 +8,8 @@ import { SchwabAdapter } from '../broker/adapters/SchwabAdapter';
 import { ETRADEAdapter } from '../broker/adapters/ETRADEAdapter';
 import { eToroAdapter } from '../broker/adapters/eToroAdapter';
 import { WebullAdapter } from '../broker/adapters/WebullAdapter';
-import type { BrokerConfig } from '../broker/IBrokerAdapter';
-import type { BrokerType } from '../broker/IBrokerAdapterV2';
+import type { BrokerConfig } from '../IBrokerAdapter';
+import type { BrokerType } from '../IBrokerAdapterV2';
 
 /**
  * Register all 4 OAuth broker factories with BrokerManagerV2.

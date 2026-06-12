@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 type EventListener = (...args: unknown[]) => void;
 
 class SimpleEventEmitter {

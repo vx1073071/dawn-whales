@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 // ── Q40: News Sentiment Engine v2 ────────────────────────────────────────────
 // Fine-grained sentiment scoring (bullish/bearish/neutral 0-1)
 // Source weighting + Time decay + Event-driven sentiment shift

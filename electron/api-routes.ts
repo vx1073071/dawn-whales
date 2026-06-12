@@ -6,6 +6,7 @@
 //   registerApiRoutes(app);
 //
 
+import log from 'electron-log';
 import { EngineError, ErrorCode } from './errors';
 
 // ── Types ─────────────────────────────────────────────────────────────────
@@ -84,9 +85,9 @@ export async function handleAiChat(body: Record<string, unknown>): Promise<ApiRe
       }
 
       // If DeepSeek fails with non-2xx, fall through to gateway or simulation
-      console.warn(`[api-routes] DeepSeek returned ${res.status}, falling back to gateway/simulation`);
+      log.warn(`[api-routes] DeepSeek returned ${res.status}, falling back to gateway/simulation`);
     } catch (err) {
-      console.warn(`[api-routes] DeepSeek direct call failed: ${(err as Error).message}, falling back`);
+      log.warn(`[api-routes] DeepSeek direct call failed: ${(err as Error).message}, falling back`);
     }
   }
 
@@ -122,9 +123,9 @@ export async function handleAiChat(body: Record<string, unknown>): Promise<ApiRe
         };
       }
 
-      console.warn(`[api-routes] Gateway returned ${res.status}, falling back to simulation`);
+      log.warn(`[api-routes] Gateway returned ${res.status}, falling back to simulation`);
     } catch (err) {
-      console.warn(`[api-routes] Gateway call failed: ${(err as Error).message}, falling back to simulation`);
+      log.warn(`[api-routes] Gateway call failed: ${(err as Error).message}, falling back to simulation`);
     }
   }
 

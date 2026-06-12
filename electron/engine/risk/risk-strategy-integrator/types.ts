@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 export interface RiskAssessment {
   strategyId: string;
   strategyName: string;

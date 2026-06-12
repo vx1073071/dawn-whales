@@ -1,11 +1,11 @@
-// ── DAWN WHALES — BrokerEventBus ───────────────────────────────────────
+﻿// ── DAWN WHALES — BrokerEventBus ───────────────────────────────────────
 // R1 CONC-03: 跨券商事件总线
 // 统一事件流 — Quote/Order/Risk/Arbitrage/Status 五种事件
 // 解耦: BrokerManagerV2 → EventBus → UI/Strategy/RiskEngine
 
 import { EventEmitter } from 'events';
 import { log } from 'electron-log';
-import type { BrokerType, TaggedQuoteInfo, TaggedPositionInfo, TaggedOrderInfo } from '../broker/IBrokerAdapterV2';
+import type { BrokerType, TaggedQuoteInfo, TaggedPositionInfo, TaggedOrderInfo } from '../IBrokerAdapterV2';
 
 // ═══ Event Types ═══════════════════════════════════════
 

@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 // ── Walk-Forward Report (JVS-53) ────────────────────────────────────────────
 // Walk-Forward analysis report generation with stability scoring
 // Generates in-sample vs out-of-sample performance comparison

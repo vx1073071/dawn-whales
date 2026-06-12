@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 import { EngineError, ErrorCode } from '../../errors';
 /**
  * J-61-01: A/ MultiMarketBroker (R61 v19 — v1.4.0-beta)

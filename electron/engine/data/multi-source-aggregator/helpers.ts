@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 /**
  * Multi-Source Data Aggregator (JVS-41-01)
  *

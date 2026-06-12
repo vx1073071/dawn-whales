@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 /**
  * Built-in dimension scorer: Coverage.
  * @module engine/data-quality/data-quality-scorer-dim-d

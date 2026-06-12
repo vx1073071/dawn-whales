@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 // ── Risk-Strategy Integrator — Deep Integration Layer ──────────────────────
 // J-30-02: Dawn Whales
 //

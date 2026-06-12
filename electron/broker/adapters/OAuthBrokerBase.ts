@@ -1,4 +1,4 @@
-// ── DAWN WHALES — OAuthBrokerBase ──────────────────────────────────────
+﻿// ── DAWN WHALES — OAuthBrokerBase ──────────────────────────────────────
 // R1 INF-07: OAuth1/OAuth2 券商适配器基类
 // 用于 Schwab (OAuth2) / E*TRADE (OAuth1.0a) / eToro (OAuth2) / Webull (OAuth2)
 // 通过 local server 回调获取 access_token
@@ -8,8 +8,8 @@ import { app } from 'electron';
 import { log } from 'electron-log';
 import { createServer, type Server, type IncomingMessage, type ServerResponse } from 'http';
 import { URL } from 'url';
-import type { IBrokerAdapter, BrokerConfig, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from '../broker/IBrokerAdapter';
-import type { IBrokerAdapterV2, BrokerType, BrokerConnectionStatus, MarketType } from '../broker/IBrokerAdapterV2';
+import type { IBrokerAdapter, BrokerConfig, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from '../IBrokerAdapter';
+import type { IBrokerAdapterV2, BrokerType, BrokerConnectionStatus, MarketType } from '../IBrokerAdapterV2';
 
 export interface OAuthBrokerConfig extends BrokerConfig {
   // OAuth配置

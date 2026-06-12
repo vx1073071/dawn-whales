@@ -1,12 +1,12 @@
-// ── DAWN WHALES — BridgeAdapter Base ─────────────────────────────────────
+﻿// ── DAWN WHALES — BridgeAdapter Base ─────────────────────────────────────
 // R1 INF-06: 本地网关型券商适配器基类 (Tiger OpenD / VBKR / uSMART)
 // 复用 poll/complete job queue 模式 (参考 futu-opend + cloud端架构)
 // 子类实现: _enqueueJob, _pollJobStatus, _parseJobResponse
 
 import { EventEmitter } from 'events';
 import { log } from 'electron-log';
-import type { IBrokerAdapter, BrokerConfig, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from '../broker/IBrokerAdapter';
-import type { IBrokerAdapterV2, BrokerType, BrokerConnectionStatus, MarketType } from '../broker/IBrokerAdapterV2';
+import type { IBrokerAdapter, BrokerConfig, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from '../IBrokerAdapter';
+import type { IBrokerAdapterV2, BrokerType, BrokerConnectionStatus, MarketType } from '../IBrokerAdapterV2';
 
 export interface BridgeAdapterConfig extends BrokerConfig {
   // Bridge连接信息

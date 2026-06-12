@@ -4,6 +4,7 @@
  *
  * API 文档: https://developers.binance.com/docs/binance-spot-api-docs
  */
+import log from 'electron-log';
 import * as crypto from 'crypto';
 import WebSocket from 'ws';
 import type {
@@ -120,7 +121,7 @@ export class BinanceAdapter implements IBrokerAdapter {
           this.wsListeners.get(sym)?.forEach(cb => cb(evt));
         }
       });
-      this.ws.on('error', (err) => console.error('[Binance WS]', err));
+      this.ws.on('error', (err) => log.error('[Binance WS]', err));
     }
 
     for (const sym of symbols) {

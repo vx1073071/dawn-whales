@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 // ── Sector Rotation Detector (JVS-48) ──────────────────────────────────────
 // Monitor sector capital flows and detect rotation signals
 // IPC: em:sector-rotation

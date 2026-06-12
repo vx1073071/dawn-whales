@@ -5,6 +5,7 @@
 import { log } from 'electron-log';
 import type { IBrokerAdapterV2, BrokerConnectionStatus, TaggedQuoteInfo, TaggedPositionInfo, TaggedOrderInfo, TaggedPlaceOrderRequest, BrokerConfig, BrokerType, MarketType } from './IBrokerAdapterV2';
 import type { AccountInfo, FundsInfo, PositionInfo, OrderInfo, QuoteInfo, KlineInfo, PlaceOrderRequest, IBrokerAdapter } from './IBrokerAdapter';
+import { getCredentialManager } from './CredentialManager';
 import { DirectAdapterBase } from './adapters/DirectAdapterBase';
 
 export interface BrokerManagerV2Config {
@@ -65,8 +66,13 @@ export class BrokerManagerV2 {
     }
 
     let adapter: IBrokerAdapter;
-    if (this.adapterFactory.has(config.type)) {
-      adapter = this.adapterFactory.get(config.type)!(config);
+
+    // R119 #37: Inject secrets from secure storage before creating adapter
+    const credMgr = getCredentialManager();
+    const secureConfig = await credMgr.injectSecrets(config);
+
+    if (this.adapterFactory.has(secureConfig.type)) {
+      adapter = this.adapterFactory.get(secureConfig.type)!(secureConfig);
     } else {
       throw new Error(`[BrokerManagerV2] No adapter factory for type: ${config.type}`);
     }

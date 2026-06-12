@@ -1,9 +1,9 @@
-// ── DAWN WHALES — CodeNormalizer ───────────────────────────────────────
+﻿// ── DAWN WHALES — CodeNormalizer ───────────────────────────────────────
 // R1 CONC-01: 统一代码映射器 + UnifiedCode映射表
 // 职责: normalize(券商原生代码) → standardCode, denormalize(standardCode, brokerId) → 券商代码
 
 import { log } from 'electron-log';
-import type { BrokerType, MarketType } from '../broker/IBrokerAdapterV2';
+import type { BrokerType, MarketType } from '../IBrokerAdapterV2';
 
 /**
  * UnifiedCode format: "{market}:{standardSymbol}"

@@ -164,9 +164,11 @@ if (!isProduction) {
   if (isTest) {
     const mockUrl = env('MOCK_SERVER_URL', 'http://127.0.0.1:19001');
     // Tests should not call real APIs; mock server handles everything
-    console.log(`[ENDPOINTS] Test mode active — all external APIs → ${mockUrl}`);
+    log.log(`[ENDPOINTS] Test mode active — all external APIs → ${mockUrl}`);
   }
   if (isDev) {
-    console.log('[ENDPOINTS] Development mode — using default endpoints');
+    log.log('[ENDPOINTS] Development mode — using default endpoints');
   }
 }
+
+import log from 'electron-log';

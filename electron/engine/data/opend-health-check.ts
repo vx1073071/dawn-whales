@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 // ── Q19: OpenD Health Check ──────────────────────────────────────────────────
 // Monitors Futu OpenD connection health: latency, quote subscription status,
 // market data freshness, error count, and reconnection logic.

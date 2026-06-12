@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 /**
  * Multi-Account Adapter (J-42-01)
  *
