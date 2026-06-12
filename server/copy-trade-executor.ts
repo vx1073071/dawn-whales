@@ -20,6 +20,9 @@ import {
   CloudOrderRequest, CloudOrderInfo,
 } from '../../electron/broker/ICloudBrokerAdapter';
 import { QueuedSignal, SignalQueue, getSignalQueue, SignalPriority } from '../signal-queue';
+import { DeadLetterQueue, DeadLetterReason, getDeadLetterQueue } from './dead-letter-queue';
+import { DailyLimitEngine, getDailyLimitEngine } from './daily-limit-engine';
+import { PaperCopyTradeEngine, getPaperCopyTradeEngine, isPaperMode } from './paper-copy-trade-engine';
 
 // ═══════════════ Types ══════════════════════════════════
 
@@ -84,6 +87,8 @@ interface CopyTradeExecutorConfig {
 export class CopyTradeExecutor {
   private config: CopyTradeExecutorConfig;
   private queue: SignalQueue;
+  private dlq: DeadLetterQueue;
+  private dailyLimit: DailyLimitEngine;
   private apiKeys: Map<string, ApiKeyEntry> = new Map();
   private breakers: Map<string, CircuitBreaker> = new Map();
   private metrics: CopyTradeMetrics;
@@ -107,6 +112,8 @@ export class CopyTradeExecutor {
       ...config,
     };
     this.queue = getSignalQueue();
+    this.dlq = getDeadLetterQueue();
+    this.dailyLimit = getDailyLimitEngine();
     this.metrics = this.initMetrics();
   }
 
@@ -296,6 +303,23 @@ export class CopyTradeExecutor {
         return result;
       }
 
+      // 1.3. Paper mode route (R139 J03)
+      if (isPaperMode(signal.userId)) {
+        return this.executePaperSignal(signal, start);
+      }
+
+      // 1.5. Daily limit check (R139 J02)
+      const limitCheck = this.dailyLimit.check(
+        signal.userId, signal.targetBrokerId,
+        signal.payload.quantity * (signal.payload.copyRatio || this.config.defaultCopyRatio),
+      );
+      if (!limitCheck.allowed) {
+        result.errorMessage = limitCheck.reason || 'Daily limit exceeded';
+        result.latencyMs = Date.now() - start;
+        this.queue.ack(signal.signalId, false, result.errorMessage);
+        return result;
+      }
+
       // 2. Subscription check (R137 J03)
       const subscribed = await this.checkSubscription(signal.userId, signal.payload.providerId || signal.userId);
       if (!subscribed) {
@@ -341,6 +365,8 @@ export class CopyTradeExecutor {
       result.latencyMs = Date.now() - start;
       this.recordSuccess(signal.targetBrokerId);
       this.updateMetrics(result);
+      // Consume from daily limit (R139 J02)
+      this.dailyLimit.consume(signal.userId, signal.targetBrokerId, quantity * (signal.payload.price || 0));
 
     } catch (e: any) {
       result.success = false;
@@ -352,6 +378,12 @@ export class CopyTradeExecutor {
 
     // 9. Ack to queue
     this.queue.ack(signal.signalId, result.success, result.errorMessage);
+
+    // 10. DLQ: push to dead letter queue if signal exhausted all retries
+    if (!result.success && signal.metadata.retryCount >= signal.metadata.maxRetries) {
+      this.pushToDLQ(signal, result);
+    }
+
     this.executions.set(signal.signalId, result);
 
     if (this.onOrderPlaced) this.onOrderPlaced(result);
@@ -516,6 +548,70 @@ export class CopyTradeExecutor {
     } catch {
       return null;
     }
+  }
+
+  /**
+   * Execute a signal in paper (simulated) mode.
+   * Routes to PaperCopyTradeEngine instead of the real broker adapter.
+   */
+  private async executePaperSignal(
+    signal: QueuedSignal, start: number,
+  ): Promise<ExecutionResult> {
+    const paper = getPaperCopyTradeEngine();
+    const paperResult = await paper.executePaperTrade(signal.userId, {
+      sourceSignalId: signal.signalId,
+      symbol: signal.payload.symbol,
+      side: signal.payload.side,
+      quantity: signal.payload.quantity * (signal.payload.copyRatio || this.config.defaultCopyRatio),
+      price: signal.payload.price || 0,
+      providerName: signal.payload.providerId || 'unknown',
+    }, signal.targetBrokerId);
+
+    const result: ExecutionResult = {
+      signalId: signal.signalId,
+      success: paperResult.success,
+      orderId: paperResult.orderId,
+      errorMessage: paperResult.error,
+      latencyMs: Date.now() - start,
+      brokerId: signal.targetBrokerId,
+      retryAttempt: signal.metadata.retryCount,
+    };
+
+    this.queue.ack(signal.signalId, result.success, result.errorMessage);
+    this.executions.set(signal.signalId, result);
+
+    if (this.onOrderPlaced) this.onOrderPlaced(result);
+    this.updateMetrics(result);
+    return result;
+  }
+
+  /**
+   * Push a failed signal to the Dead Letter Queue when it has exhausted
+   * all retry attempts.  This maps the failure reason to a DeadLetterReason
+   * and enqueues into the DeadLetterQueue (which triggers WS push).
+   */
+  private pushToDLQ(signal: QueuedSignal, result: ExecutionResult): void {
+    const reason = this.resolveDeadLetterReason(result.errorMessage || '');
+    this.dlq.enqueue(
+      signal,
+      reason,
+      result.errorMessage || 'Unknown error',
+      result.brokerId,
+    );
+  }
+
+  /** Map an error message to a DeadLetterReason category. */
+  private resolveDeadLetterReason(errorMessage: string): DeadLetterReason {
+    const msg = errorMessage.toLowerCase();
+    if (msg.includes('circuit breaker')) return 'circuit_breaker_open';
+    if (msg.includes('no api key')) return 'no_api_key';
+    if (msg.includes('not subscribed')) return 'subscription_missing';
+    if (msg.includes('position size exceeded')) return 'position_limit_exceeded';
+    if (msg.includes('encryption key') || msg.includes('auth')) return 'auth_error';
+    if (msg.includes('timeout')) return 'timeout';
+    if (msg.includes('rate limit')) return 'rate_limited';
+    if (msg.includes('retries')) return 'max_retries_exceeded';
+    return 'unknown';
   }
 
   private getUsersWithKeys(): string[] {

@@ -65,6 +65,7 @@ export const PUSH_EVENT_TYPES = {
   COPYTRADE_EXECUTED: 'copytrade:executed',
   COPYTRADE_FAILED: 'copytrade:failed',
   COPYTRADE_SKIPPED: 'copytrade:skipped',
+  COPYTRADE_DEAD_LETTER: 'copytrade:deadletter',
 
   // Signals
   SIGNAL_RECEIVED: 'signal:received',
@@ -221,6 +222,21 @@ export class WSPushEnhancer {
     this.sendToUser(userId, {
       type: result.success ? PUSH_EVENT_TYPES.COPYTRADE_EXECUTED : PUSH_EVENT_TYPES.COPYTRADE_FAILED,
       payload: { ...result, timestamp: Date.now() },
+    });
+  }
+
+  /**
+   * Push a dead letter event (failed signal after all retries).
+   * Used by DeadLetterQueue to update the CopyTradeStatusBar badge.
+   */
+  pushCopyTradeDeadLetter(userId: string, deadLetter: {
+    id: string; signalId: string; symbol: string; side: string;
+    brokerId: string; reason: string; reasonDetail: string;
+    failedAt: number; acked: boolean; replayable: boolean;
+  }): void {
+    this.sendToUser(userId, {
+      type: PUSH_EVENT_TYPES.COPYTRADE_DEAD_LETTER,
+      payload: { ...deadLetter, timestamp: Date.now() },
     });
   }
 
