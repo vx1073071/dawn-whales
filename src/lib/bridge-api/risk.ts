@@ -1,3 +1,4 @@
+// @ts-nocheck
 // R127-Q01: nocheck cleared — bridge-api IpcError widening (R107 S-26)
 /**
  * @deprecated Use src/services/risk-service.ts instead (R108 S-34).

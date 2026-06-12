@@ -10,5 +10,4 @@ const meta: Meta<typeof TopUpConfirmModal> = {
 export default meta;
 type Story = StoryObj<typeof TopUpConfirmModal>;
 
-export const Open: Story = { args: { open: true, amount: 100, currency: 'CNY', rate: 0.138, estimatedUSDT: 13.8, onClose: () => {}, onConfirm: () => {} } };
-export const Closed: Story = { args: { open: false, onClose: () => {} } };
+export const Default: Story = { args: { amount: 100, currency: 'CNY', rate: 0.138, estimatedUSDT: 13.8, rateSource: 'Binance', onConfirm: () => {}, onCancel: () => {} } };

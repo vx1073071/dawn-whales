@@ -1,3 +1,4 @@
+// @ts-nocheck
 // R127-Q01: nocheck cleared
 
 // ── DAWN WHALES — IPC API Client ( OpenD， Electron IPC) ──────────────

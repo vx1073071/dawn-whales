@@ -10,4 +10,4 @@ const meta: Meta<typeof ModeSelector> = {
 export default meta;
 type Story = StoryObj<typeof ModeSelector>;
 
-export const Default: Story = { args: { onSelect: (m) => console.log('Selected:', m) } };
+export const Default: Story = { args: { onSelect: (m: any) => console.log('Selected:', m) } };

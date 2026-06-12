@@ -16,5 +16,5 @@ const meta: Meta<typeof MyStrategies> = {
 export default meta;
 type Story = StoryObj<typeof MyStrategies>;
 
-export const WithStrategies: Story = { args: { strategies: mockStrategies, onSelect: (id) => console.log('Select:', id), onEdit: (id) => console.log('Edit:', id), onDelete: (id) => console.log('Delete:', id), onCompare: (s) => console.log('Compare:', s.name) } };
+export const WithStrategies: Story = { args: { strategies: mockStrategies, onSelect: (id: any) => console.log('Select:', id), onEdit: (id: any) => console.log('Edit:', id), onDelete: (id: any) => console.log('Delete:', id), onCompare: (s: any) => console.log('Compare:', s.name) } };
 export const Empty: Story = { args: { strategies: [], onSelect: () => {}, onEdit: () => {}, onDelete: () => {}, onCompare: () => {} } };

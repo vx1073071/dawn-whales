@@ -10,4 +10,4 @@ const meta: Meta<typeof AICreator> = {
 export default meta;
 type Story = StoryObj<typeof AICreator>;
 
-export const Default: Story = { args: { onBack: () => {}, onCreated: () => {}, onFillForm: (parsed) => console.log('Fill form:', parsed) } };
+export const Default: Story = { args: { onBack: () => {}, onCreated: () => {}, onFillForm: (parsed: any) => console.log('Fill form:', parsed) } };

@@ -258,7 +258,7 @@ export class WebSocketPool {
     const symbol = msg.symbol || msg.s || msg.pair;
     if (!channel) return;
 
-    for (const [subId, sub] of conn.subscriptions) {
+    for (const [_subId, sub] of conn.subscriptions) {
       let match = sub.channel === channel;
       if (symbol && sub.symbol) {
         match = match && (symbol.toUpperCase() === sub.symbol.toUpperCase());

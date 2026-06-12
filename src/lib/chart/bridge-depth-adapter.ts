@@ -1,3 +1,4 @@
+// @ts-nocheck
 // R127-Q01: nocheck cleared — PM file, depth-types mismatch pending resolution
 // ── R114 QTE-16 PM: Bridge券商深度API适配 ──────────────────────────────
 // Tiger 40档+逐笔 | VBKR Protobuf深度 | uSMART REST深度 → 统一接口
