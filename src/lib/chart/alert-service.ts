@@ -2,7 +2,7 @@
 // PM: 价格/成交量/盘口/指标触发, 4通知渠道: System/Telegram/Toast/邮件, 100并发<100ms, 误触发<1%
 
 export type AlertType = 'price' | 'volume' | 'orderbook' | 'indicator' | 'spread' | 'imbalance';
-export type AlertChannel = 'system' | 'telegram' | 'toast' | 'email';
+export type AlertChannel = 'system' | 'telegram' | 'feishu' | 'email';
 export type AlertOperator = '>' | '<' | '>=' | '<=' | '=' | 'cross_above' | 'cross_below';
 
 export interface AlertRule {
@@ -225,5 +225,173 @@ export class AlertService {
       case 'cross_below': return prev != null && prev >= threshold && current < threshold;
       default: return false;
     }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// QTE-33 PM: CHANNEL ADAPTERS (System/Telegram/飞书/Email)
+// ═══════════════════════════════════════════════════════════════════════
+
+export interface ChannelConfig {
+  enabled: boolean;
+  /** System notification (Electron Notification API) */
+  system?: { requireInteraction?: boolean };
+  /** Telegram Bot */
+  telegram?: { botToken: string; chatId: string };
+  /** 飞书 Webhook */
+  feishu?: { webhookUrl: string; secret?: string };
+  /** Email (SMTP) */
+  email?: { smtp: string; port: number; user: string; pass: string; to: string };
+}
+
+export class ChannelManager {
+  private config: ChannelConfig;
+
+  constructor(config: ChannelConfig) {
+    this.config = config;
+  }
+
+  updateConfig(config: Partial<ChannelConfig>): void {
+    this.config = { ...this.config, ...config };
+  }
+
+  async send(event: AlertEvent, channels: AlertChannel[]): Promise<void> {
+    const text = `[${event.type.toUpperCase()}] ${event.message}`;
+    const detail = `Symbol: ${event.symbol}\nValue: ${event.currentValue}\nThreshold: ${event.threshold}\nTime: ${new Date(event.timestamp).toISOString()}`;
+
+    for (const ch of channels) {
+      try {
+        switch (ch) {
+          case 'system':
+            this.sendSystem(text, detail);
+            break;
+          case 'telegram':
+            if (this.config.telegram) await this.sendTelegram(text, detail);
+            break;
+          case 'feishu':
+            if (this.config.feishu) await this.sendFeishu(text, detail);
+            break;
+          case 'email':
+            if (this.config.email) await this.sendEmail(text, detail);
+            break;
+        }
+      } catch {
+        // Channel failure doesn't block other channels
+      }
+    }
+  }
+
+  private sendSystem(text: string, detail: string): void {
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      if (Notification.permission === 'granted') {
+        new Notification(text, { body: detail, requireInteraction: true });
+      }
+    }
+    // Electron main process fallback
+    if (typeof process !== 'undefined' && (process as any).type === 'browser') {
+      const { Notification } = require('electron');
+      new Notification({ title: text, body: detail });
+    }
+  }
+
+  private async sendTelegram(text: string, detail: string): Promise<void> {
+    if (!this.config.telegram) return;
+    const { botToken, chatId } = this.config.telegram;
+    const msg = `${text}\n\n${detail}`;
+    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text: msg, parse_mode: 'HTML' }),
+    });
+  }
+
+  private async sendFeishu(text: string, detail: string): Promise<void> {
+    if (!this.config.feishu) return;
+    const { webhookUrl } = this.config.feishu;
+    await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        msg_type: 'interactive',
+        card: {
+          header: { title: { content: text, tag: 'plain_text' } },
+          elements: [{ tag: 'div', text: { content: detail, tag: 'plain_text' } }],
+        },
+      }),
+    });
+  }
+
+  private async sendEmail(text: string, detail: string): Promise<void> {
+    // SMTP email via backend proxy (避免客户端泄露密码)
+    // This is a placeholder - actual SMTP should go through IPC to main process
+    console.log(`[Email Alert] ${text}\n${detail}`);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// QTE-33 PM: SPREAD ALERT (跨所价差警报)
+// ═══════════════════════════════════════════════════════════════════════
+
+export interface SpreadAlertConfig {
+  /** 价差阈值 (百分比) */
+  thresholdPct: number;
+  /** 检查间隔 (ms) */
+  intervalMs: number;
+  /** 最小成交量要求 */
+  minVolume?: number;
+}
+
+/**
+ * 跨所价差警报 - 对接CBBO数据
+ * 当同一标的在不同券商的买卖价差超过阈值时触发
+ */
+export class SpreadAlertService {
+  private alertService: AlertService;
+  private config: SpreadAlertConfig;
+
+  constructor(
+    alertService: AlertService,
+    config: SpreadAlertConfig,
+  ) {
+    this.alertService = alertService;
+    this.config = config;
+  }
+
+  /**
+   * 检查跨所价差
+   * @param symbol 标准代码
+   * @param bids 各券商最佳买价 [{brokerId, price, volume}]
+   * @param asks 各券商最佳卖价 [{brokerId, price, volume}]
+   */
+  checkSpread(
+    symbol: string,
+    bids: { brokerId: string; price: number; volume: number }[],
+    asks: { brokerId: string; price: number; volume: number }[],
+  ): void {
+    if (bids.length < 2 || asks.length < 2) return;
+
+    const bestBid = bids.reduce((max, b) => b.price > max.price ? b : max, bids[0]);
+    const bestAsk = asks.reduce((min, a) => a.price < min.price ? a : min, asks[0]);
+
+    const spread = (bestAsk.price - bestBid.price) / bestBid.price;
+    if (spread <= this.config.thresholdPct) return;
+
+    const minVol = this.config.minVolume || 0;
+    if (bestBid.volume < minVol || bestAsk.volume < minVol) return;
+
+    // 触发价差警报
+    const ruleId = `spread_${symbol}`;
+    this.alertService.addRule({
+      id: ruleId,
+      type: 'spread',
+      symbol,
+      field: 'spread',
+      operator: '>',
+      value: this.config.thresholdPct,
+      channels: ['system', 'feishu'],
+      cooldownMs: 30000,
+      enabled: true,
+      label: `${symbol} 跨所价差 ${(spread * 100).toFixed(2)}% (B:${bestBid.brokerId}@${bestBid.price} A:${bestAsk.brokerId}@${bestAsk.price})`,
+    });
   }
 }
