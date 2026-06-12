@@ -1,4 +1,4 @@
-// @ts-nocheck
+// R127-Q01: nocheck cleared
 /**
  * @deprecated Use src/services/portfolio-service.ts instead (R108 S-34).
  * Service layer provides typed interfaces and abstracts IPC calls.

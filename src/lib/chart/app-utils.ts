@@ -1,4 +1,4 @@
-// @ts-nocheck — R120: unused variable pending cleanup
+// R127-Q01: nocheck cleared — R120: unused variable pending cleanup
 // ── R120 #26/27 + R119 #16 PM: 全局搜索 + 自选股 + IB格式 ───────────
 // #26: 全局搜索输入框 → 自动识别市场/券商
 // #27: 自选股 localStorage持久化

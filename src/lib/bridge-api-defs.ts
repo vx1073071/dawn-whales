@@ -1,6 +1,6 @@
 // ── DAWN WHALES — IPC Bridge Type Definitions ───────────────────────────
 // R124-P02: broker + risk (batch 1/4). R125-P02: marketplace + dataProvider (batch 2/4).
-// R126-P02: strategy + backtest + nl (batch 3/4). 75+ `any` replacements across 7 namespaces.
+// R127-P03: db + app + stockStream + prefs + greeks (batch 4/4). 104/104 complete.
 
 // ── Broker namespace ────────────────────────────────────────────────────
 
@@ -363,4 +363,105 @@ export interface NLTemplate {
   pattern: string;
   example: string;
   category: string;
+}
+
+// ── DB namespace ────────────────────────────────────────────────────────
+
+export interface DBStrategy {
+  id: string;
+  name: string;
+  type: string;
+  config: Record<string, unknown>;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DBTrade {
+  id: string;
+  strategyId: string;
+  symbol: string;
+  side: string;
+  price: number;
+  quantity: number;
+  pnl: number;
+  timestamp: string;
+}
+
+export interface DBSignal {
+  id: string;
+  strategyId: string;
+  symbol: string;
+  direction: string;
+  confidence: number;
+  price: number;
+  timestamp: string;
+}
+
+export interface DBWatchlist {
+  id: string;
+  name: string;
+  codes: string[];
+  updatedAt: string;
+}
+
+export interface AppInfo {
+  version: string;
+  platform: string;
+  electronVersion: string;
+  nodeVersion: string;
+  uptime: number;
+}
+
+export interface MemoryUsage {
+  heapTotal: number;
+  heapUsed: number;
+  rss: number;
+  external: number;
+}
+
+export interface UpdateInfo {
+  available: boolean;
+  version?: string;
+  size?: number;
+  releaseDate?: string;
+  changelog?: string;
+}
+
+// ── StockStream namespace ────────────────────────────────────────────────
+
+export interface StockStreamConfig {
+  symbols: string[];
+  brokerId?: string;
+  reconnect: boolean;
+}
+
+// ── Prefs namespace ──────────────────────────────────────────────────────
+
+export interface PrefsExport {
+  version: string;
+  exportedAt: string;
+  sections: Record<string, Record<string, unknown>>;
+}
+
+// ── Greeks namespace ─────────────────────────────────────────────────────
+
+export interface GreeksParams {
+  symbol: string;
+  spotPrice: number;
+  strike: number;
+  expiry: string;
+  volatility: number;
+  riskFreeRate: number;
+  optionType: 'CALL' | 'PUT';
+}
+
+export interface GreeksResult {
+  delta: number;
+  gamma: number;
+  theta: number;
+  vega: number;
+  rho: number;
+  iv: number;
+  price: number;
 }

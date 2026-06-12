@@ -1,4 +1,4 @@
-// @ts-nocheck
+// R127-Q01: nocheck cleared
 /**
  * DAWN WHALES R126 J02 — Microstructure Tooltip Utilities
  * 

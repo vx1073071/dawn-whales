@@ -1,4 +1,4 @@
-// @ts-nocheck
+// R127-Q01: nocheck cleared
 /**
  * DAWN WHALES R125 J02 — Price Localization Utilities
  * 

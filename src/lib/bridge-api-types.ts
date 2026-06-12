@@ -1,7 +1,6 @@
 
 // ── DAWN WHALES — IPC API Client ( OpenD， Electron IPC) ──────────────
-// R124-P02: broker + risk (batch 1/4). R125-P02: marketplace + dataProvider (batch 2/4).
-// R126-P02: strategy + backtest + nl (batch 3/4).
+// R127-P03: bridge-api type-safety COMPLETE — all 12 namespaces typed (batches 1-4/4). 104/104.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import type {
@@ -14,6 +13,9 @@ import type {
   StrategyDSL, StrategyRecord, BacktestConfig, BacktestResult,
   WalkForwardConfig, ParamScanConfig, MultiTimeframeConfig,
   NLParsedCommand, NLTemplate,
+  DBStrategy, DBTrade, DBSignal, DBWatchlist,
+  AppInfo, MemoryUsage, UpdateInfo,
+  StockStreamConfig, PrefsExport, GreeksParams, GreeksResult,
 } from './bridge-api-defs';
 
 declare global {
@@ -39,8 +41,8 @@ declare global {
         getStatus: () => Promise<IpcResponse<BrokerStatus>>;
       };
       greeks: {
-        calculate: (params: any) => Promise<any>;
-        portfolio: (positions: any[]) => Promise<any>;
+        calculate: (params: GreeksParams) => Promise<IpcResponse<GreeksResult>>;
+        portfolio: (positions: BrokerPosition[]) => Promise<IpcResponse<{ totalGreeks: GreeksResult; byPosition: Array<{ symbol: string; greeks: GreeksResult }> }>>;
       };
       marketplace: {
         rate: (strategyId: string, rating: number) => Promise<IpcResponse>;
@@ -110,21 +112,21 @@ declare global {
         updateVix: (vix: number) => Promise<IpcResponse>;
       };
       db: {
-        getStrategies: () => Promise<any>;
-        saveStrategy: (s: any) => Promise<any>;
-        getSettings: () => Promise<any>;
-        saveSettings: (s: any) => Promise<any>;
-        getTrades: (strategyId?: string) => Promise<any>;
-        getBacktestResults: (strategyId: string) => Promise<any>;
-        getWatchlist: () => Promise<any>;
-        saveWatchlist: (codes: string[]) => Promise<any>;
-        getSignals: (strategyId?: string) => Promise<any>;
+        getStrategies: () => Promise<IpcResponse<{ strategies: DBStrategy[] }>>;
+        saveStrategy: (s: DBStrategy) => Promise<IpcResponse>;
+        getSettings: () => Promise<IpcResponse<Record<string, unknown>>>;
+        saveSettings: (s: Record<string, unknown>) => Promise<IpcResponse>;
+        getTrades: (strategyId?: string) => Promise<IpcResponse<{ trades: DBTrade[] }>>;
+        getBacktestResults: (strategyId: string) => Promise<IpcResponse<BacktestResult[]>>;
+        getWatchlist: () => Promise<IpcResponse<DBWatchlist>>;
+        saveWatchlist: (codes: string[]) => Promise<IpcResponse>;
+        getSignals: (strategyId?: string) => Promise<IpcResponse<{ signals: DBSignal[] }>>;
       };
       app: {
-        getInfo: () => Promise<any>;
-        getMemoryUsage: () => Promise<any>;
-        checkUpdate: () => Promise<any>;
-        downloadUpdate: () => Promise<any>;
+        getInfo: () => Promise<IpcResponse<AppInfo>>;
+        getMemoryUsage: () => Promise<IpcResponse<MemoryUsage>>;
+        checkUpdate: () => Promise<IpcResponse<UpdateInfo>>;
+        downloadUpdate: () => Promise<IpcResponse>;
         installUpdate: () => Promise<void>;
         emergencyStop: () => Promise<void>;
         openExternal: (url: string) => Promise<void>;
@@ -132,25 +134,25 @@ declare global {
         getPlatform: () => Promise<string>;
       };
       stockStream: {
-        connect: (config: any) => Promise<void>;
+        connect: (config: StockStreamConfig) => Promise<void>;
         disconnect: () => void;
-        getQuotes: (codes: string[]) => Promise<any[]>;
-        getStatus: () => any;
-        onQuote: (cb: (data: any) => void) => void;
+        getQuotes: (codes: string[]) => Promise<BrokerQuote[]>;
+        getStatus: () => { connected: boolean; symbols: string[]; latency: number };
+        onQuote: (cb: (data: BrokerQuote) => void) => void;
         subscribe: (symbols: string[]) => void;
         unsubscribe: () => void;
-        onData: (cb: (data: any) => void) => void;
-        removeDataListener: (cb: (data: any) => void) => void;
+        onData: (cb: (data: BrokerQuote) => void) => void;
+        removeDataListener: (cb: (data: BrokerQuote) => void) => void;
         isActive: () => boolean;
       };
       prefs: {
-        get: (key: string) => Promise<any>;
-        set: (key: string, value: any) => Promise<any>;
-        getAll: () => Promise<any>;
-        setSection: (section: string, data: any) => Promise<any>;
-        reset: (...args: any[]) => Promise<any>;
-        exportPrefs: () => Promise<any>;
-        importPrefs: (...args: any[]) => Promise<any>;
+        get: (key: string) => Promise<IpcResponse<unknown>>;
+        set: (key: string, value: unknown) => Promise<IpcResponse>;
+        getAll: () => Promise<IpcResponse<Record<string, unknown>>>;
+        setSection: (section: string, data: Record<string, unknown>) => Promise<IpcResponse>;
+        reset: (...args: string[]) => Promise<IpcResponse>;
+        exportPrefs: () => Promise<IpcResponse<PrefsExport>>;
+        importPrefs: (...args: string[]) => Promise<IpcResponse>;
       };
       on: (channel: string, callback: (...args: any[]) => void) => void;
       off?: (channel: string, callback: (...args: any[]) => void) => void;

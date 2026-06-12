@@ -1,4 +1,4 @@
-// @ts-nocheck — R114 JVS engine WIP
+// R127-Q01: nocheck cleared — R114 JVS engine WIP
 // DAWN WHALES R114 QTE-10 — OrderBook Core Engine
 // PM: 深度行情 P0, 多券商聚合, Snapshot + Delta 合并, 断线全量恢复
 // Binance/OKX/Bybit WS depth verified
