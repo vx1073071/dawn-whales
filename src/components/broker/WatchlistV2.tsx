@@ -5,7 +5,7 @@
  * Auto-detects IPC availability, falls back to mock data for dev
  */
 
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { BrokerChartBridge, getChartBridge } from '../../lib/chart/broker-chart-bridge';
 import { Table, Tag, Badge, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
@@ -13,6 +13,7 @@ import { useBrokerData } from '../../hooks/useBrokerData';
 import { ChartSkeleton, ChartError, ChartEmpty } from '../chart/ChartStates';
 
 import { useChartStore } from '../../store/ChartStore';
+import { ChartContextMenu, useChartContextMenu } from '../chart/ChartContextMenu';
 
 // ── Types ──────────────────────────────────────────────
 
@@ -80,6 +81,7 @@ function findArbitrage(quotes: Record<string, TaggedQuote>): { exists: boolean; 
 
 export default function WatchlistV2() {
   const storeSetSymbol = useChartStore((s) => s.setSymbol);
+  const { menuState, openContextMenu, closeContextMenu } = useChartContextMenu();
 
   // Try real IPC first, fall back to mock
   const { data: ipcData, loading, error, source, refetch } = useBrokerData<WatchlistRow[]>({
@@ -98,7 +100,8 @@ export default function WatchlistV2() {
           <span
             className="font-mono font-bold text-[#c9d1d9] text-xs cursor-pointer hover:text-[#58a6ff] transition-colors"
             onClick={() => { storeSetSymbol(symbol); navigator.clipboard.writeText(symbol).catch(() => {}); }}
-            title={`Click to view ${symbol} on K-line`}
+            onContextMenu={(e) => openContextMenu(e, 'watchlist', { symbol })}
+            title={`左键查看 ${symbol} K线 | 右键更多操作`}
           >
             {symbol}
           </span>
@@ -177,6 +180,7 @@ export default function WatchlistV2() {
         scroll={{ x: 800 }}
         className="[&_.ant-table]:bg-gray-900 [&_.ant-table-thead>tr>th]:bg-gray-800 [&_.ant-table-tbody>tr>td]:bg-gray-900 [&_.ant-table-tbody>tr:hover>td]:bg-gray-800"
       />
+      <ChartContextMenu state={menuState} onClose={closeContextMenu} />
     </div>
   );
 }

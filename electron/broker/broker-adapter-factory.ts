@@ -1,21 +1,14 @@
 /**
  * DAWN WHALES R122 J02 — BrokerAdapterFactory
- * 17券商工厂注册: registerAllFactories() → BrokerManagerV2.createAdapter(type, config)
+ * 17券商工厂注册: registerAllFactories() for BrokerManagerV2
  * 
- * Supports: Binance, OKX, Bybit, Bitget, Futu, Moomoo, Tiger, Longbridge,
- *           Huasheng, Yingli, WeBull, Schwab, ETRADE, eToro, Robinhood, MT5, Crypto
+ * Uses existing adapters: Futu (opend), Moomoo, Longbridge, IB.
+ * Crypto adapters (Binance/OKX/Bybit/Bitget) are placeholder until R2/R3 build.
+ * Bridge adapters (Tiger/Huasheng/Yingli/WeBull/Schwab/ETRADE/eToro/Robinhood/MT5)
+ * are placeholder until respective adapter implementations exist.
  */
 
-import type { BrokerConfig, IBrokerAdapter } from '../broker/IBrokerAdapter';
-import type { BrokerAdapterFactory as IFactory } from '../broker/types';
-import { FutuBrokerAdapter } from '../broker/futu-broker-adapter';
-import { MoomooBrokerAdapter } from '../broker/moomoo-broker-adapter';
-import { TigerBrokerAdapter } from '../broker/tiger-broker-adapter';
-import { LongbridgeBrokerAdapter } from '../broker/longbridge-broker-adapter';
-import { BinanceBrokerAdapter } from '../broker/binance-broker-adapter';
-import { OKXBrokerAdapter } from '../broker/okx-broker-adapter';
-import { BybitBrokerAdapter } from '../broker/bybit-broker-adapter';
-import { BitgetBrokerAdapter } from '../broker/bitget-broker-adapter';
+import type { BrokerConfig, IBrokerAdapter } from './IBrokerAdapter';
 import log from 'electron-log';
 
 // ═══════════ Factory Registry ════════════════════════════════
@@ -24,47 +17,57 @@ type AdapterConstructor = new (config: BrokerConfig) => IBrokerAdapter;
 
 const factoryRegistry = new Map<string, AdapterConstructor>();
 
-// ═══════════ Register All 17 Factories ═══════════════════════
+// ═══════════ Register Factories ═══════════════════════════
 
 export function registerAllFactories(): void {
-  const factories: Array<[string, AdapterConstructor]> = [
-    // P0 — Crypto (HK/USDT)
-    ['binance', BinanceBrokerAdapter],
-    ['okx', OKXBrokerAdapter],
-    ['bybit', BybitBrokerAdapter],
-    ['bitget', BitgetBrokerAdapter],
-
-    // P0 — Stock/HK-US via OpenD
-    ['futu', FutuBrokerAdapter as any],
-    ['moomoo', MoomooBrokerAdapter as any],
-
-    // P1 — Bridge adapters
-    ['tiger', TigerBrokerAdapter as any],
-    ['longbridge', LongbridgeBrokerAdapter as any],
-  ];
-
-  for (const [type, ctor] of factories) {
-    factoryRegistry.set(type, ctor);
-    log.info(`[Factory] Registered: ${type}`);
+  // P0 — Real adapters
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { FutuOpenDClient } = require('./futu-opend');
+    // Futu adapter is created via BrokerManager, not direct constructor
+    factoryRegistry.set('futu', null as any); // handled by BrokerManager
+    log.info('[Factory] Registered: futu (via BrokerManager)');
+  } catch (e) {
+    log.warn('[Factory] Futu not available:', e);
   }
 
-  // P1+ — Placeholder registrations for adapters not yet implemented
-  const placeholderTypes = [
-    'huasheng', 'yingli', 'webull', 'schwab',
-    'etrade', 'etoro', 'robinhood', 'mt5', 'generic-crypto',
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { MoomooOpenDClient } = require('./moomoo-adapter');
+    factoryRegistry.set('moomoo', null as any);
+    log.info('[Factory] Registered: moomoo (via BrokerManager)');
+  } catch (e) {
+    log.warn('[Factory] Moomoo not available:', e);
+  }
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { LongbridgeAdapter } = require('./longbridge-adapter');
+    factoryRegistry.set('longbridge', LongbridgeAdapter as any);
+    log.info('[Factory] Registered: longbridge');
+  } catch (e) {
+    log.info('[Factory] Longbridge not available (pending adapter)');
+    factoryRegistry.set('longbridge', null as any);
+  }
+
+  // P1 — Placeholder for bridge adapters (pending implementation)
+  const placeholders = [
+    'binance', 'okx', 'bybit', 'bitget',
+    'tiger', 'huasheng', 'yingli', 'webull',
+    'schwab', 'etrade', 'etoro', 'robinhood',
+    'ib', 'mt5', 'generic-crypto',
   ];
-  for (const type of placeholderTypes) {
-    if (!factoryRegistry.has(type)) {
-      // Register a null factory — will be filled when adapter is built
-      factoryRegistry.set(type, null as any);
-      log.info(`[Factory] Placeholder: ${type} (pending adapter implementation)`);
+  for (const t of placeholders) {
+    if (!factoryRegistry.has(t)) {
+      factoryRegistry.set(t, null as any);
+      log.info(`[Factory] Placeholder: ${t}`);
     }
   }
 
   log.info(`[Factory] Total: ${factoryRegistry.size} broker types registered`);
 }
 
-// ═══════════ Create Adapter ═══════════════════════════════
+// ═══════════ Create Adapter ═══════════════════════════
 
 export function createBrokerAdapter(config: BrokerConfig): IBrokerAdapter | null {
   const type = config.type?.toLowerCase();
@@ -74,8 +77,14 @@ export function createBrokerAdapter(config: BrokerConfig): IBrokerAdapter | null
   }
 
   const ctor = factoryRegistry.get(type);
-  if (!ctor) {
-    log.error(`[Factory] No factory for: ${type}`);
+  if (ctor === undefined) {
+    log.error(`[Factory] No factory for type: ${type}`);
+    return null;
+  }
+
+  // null ctor = adapter handled externally (BrokerManager/V2 createAdapter)
+  if (ctor === null) {
+    log.info(`[Factory] Type '${type}' delegated to BrokerManager`);
     return null;
   }
 
@@ -89,7 +98,7 @@ export function createBrokerAdapter(config: BrokerConfig): IBrokerAdapter | null
   }
 }
 
-// ═══════════ List Registered ═══════════════════════════
+// ═══════════ Registry Queries ═══════════════════════════
 
 export function getRegisteredBrokerTypes(): string[] {
   return Array.from(factoryRegistry.keys());

@@ -7,7 +7,7 @@
  * Fallback: if Worker IPC is unavailable (preload not loaded), falls back to sync computation.
  */
 
-import type { KlineBar } from '../lib/chart/types';
+import type { KlineBar } from './types';
 
 // ═══════════ Worker Request/Response ═══════════════════════
 
@@ -86,18 +86,17 @@ async function computeIndicatorsSync(
 ): Promise<{ results: WorkerIndicatorResult[]; elapsedMs: number }> {
   const start = performance.now();
   const results: WorkerIndicatorResult[] = [];
-  const prices = bars.map(b => b.close);
 
   // Dynamic import to avoid circular with indicator-engine
-  const { calcSMA, calcEMA, calcRSI, calcMACD, calcKDJ, calcBOLL } = await import('../lib/chart/indicator-engine');
+  const { calcSMA, calcEMA, calcRSI, calcMACD, calcKDJ, calcBOLL } = await import('./indicator-engine');
 
   for (const id of indicatorIds) {
     switch (id) {
       case 'sma':
       case 'ma': {
-        const ma7 = calcSMA(prices, 7);
-        const ma25 = calcSMA(prices, 25);
-        const ma99 = calcSMA(prices, 99);
+        const ma7 = calcSMA(bars, 7);
+        const ma25 = calcSMA(bars, 25);
+        const ma99 = calcSMA(bars, 99);
         results.push({
           id,
           lines: [
@@ -109,8 +108,8 @@ async function computeIndicatorsSync(
         break;
       }
       case 'ema': {
-        const ema12 = calcEMA(prices, 12);
-        const ema26 = calcEMA(prices, 26);
+        const ema12 = calcEMA(bars, 12);
+        const ema26 = calcEMA(bars, 26);
         results.push({
           id,
           lines: [
@@ -121,7 +120,7 @@ async function computeIndicatorsSync(
         break;
       }
       case 'rsi': {
-        const rsi = calcRSI(prices, 14);
+        const rsi = calcRSI(bars, 14);
         results.push({
           id: 'rsi',
           lines: [{ label: 'RSI14', data: rsi.map((v: any, i: number) => ({ time: bars[i]?.time ?? 0, value: v })) }],
@@ -152,7 +151,7 @@ async function computeIndicatorsSync(
         break;
       }
       case 'boll': {
-        const [upper, mid, lower] = calcBOLL(prices, 20, 2);
+        const [upper, mid, lower] = calcBOLL(bars, 20, 2);
         results.push({
           id: 'boll',
           lines: [

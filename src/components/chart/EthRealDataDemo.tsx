@@ -6,8 +6,8 @@
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { useDataPipeline, quotesToKlineBars, depthToOrderBookSnapshot, tickToTickRecord } from '../hooks/useDataPipeline';
-import type { QuotePushData, DepthPushData } from '../hooks/useDataPipeline';
+import { useDataPipeline, depthToOrderBookSnapshot } from '../../hooks/useDataPipeline';
+import type { QuotePushData, DepthPushData } from '../../hooks/useDataPipeline';
 
 export const EthRealDataDemo: React.FC = () => {
   const [klineCount, setKlineCount] = useState(0);
@@ -33,7 +33,7 @@ export const EthRealDataDemo: React.FC = () => {
         setOrderBookLevels({ bids: snapshot.bids.length, asks: snapshot.asks.length });
       }
     }, []),
-    onTick: useCallback((tick) => {
+    onTick: useCallback((tick: any) => {
       if (tick.symbol?.toUpperCase().includes('ETH')) {
         setTickCount(prev => prev + 1);
       }
