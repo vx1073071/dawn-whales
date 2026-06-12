@@ -4,11 +4,10 @@
 // 通过 local server 回调获取 access_token
 
 import { EventEmitter } from 'events';
-import { app } from 'electron';
 import { log } from 'electron-log';
 import { createServer, type Server, type IncomingMessage, type ServerResponse } from 'http';
 import { URL } from 'url';
-import type { IBrokerAdapter, BrokerConfig, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from '../IBrokerAdapter';
+import type { BrokerConfig, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from '../IBrokerAdapter';
 import type { IBrokerAdapterV2, BrokerType, BrokerConnectionStatus, MarketType } from '../IBrokerAdapterV2';
 
 export interface OAuthBrokerConfig extends BrokerConfig {
@@ -91,7 +90,7 @@ export abstract class OAuthBrokerBase extends EventEmitter implements IBrokerAda
     }
   }
 
-  private _oauthVersion(): OAuthVersion {
+  protected _oauthVersion(): OAuthVersion {
     return this.config._oauthVersion();
   }
 
@@ -366,7 +365,7 @@ export abstract class OAuthBrokerBase extends EventEmitter implements IBrokerAda
     return this._parseOrderResult(data);
   }
 
-  async cancelOrder(orderId: string, accountId: string, code: string): Promise<void> {
+  async cancelOrder(orderId: string, accountId: string, _code: string): Promise<void> {
     await this._makeAuthRequest('DELETE', `/accounts/${accountId}/orders/${orderId}`);
   }
 
