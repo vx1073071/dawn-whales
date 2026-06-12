@@ -53,3 +53,7 @@ export { default as FootprintChart } from './FootprintChart';
 export type { FootprintLevel, FootprintData, FootprintChartProps } from './FootprintChart';
 export { VolumeProfile, SpreadMonitor } from './VolumeProfileSpread';
 export type { VPLevel, VolumeProfileData, VolumeProfileProps, SpreadItem, SpreadMonitorProps } from './VolumeProfileSpread';
+
+// R118 Replay + Microstructure
+export { ReplayPanel, MicrostructurePanel } from './ReplayAndMicrostructure';
+export type { ReplaySession, ReplayPanelProps, MicroMetrics, MicrostructurePanelProps } from './ReplayAndMicrostructure';
