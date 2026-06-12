@@ -106,6 +106,8 @@ function detectArbitrage(quotes: Record<string, TaggedQuote>): { exists: boolean
 
 export default function WatchlistV2() {
   const [data] = useState<WatchlistRow[]>(generateMockData);
+  const [selectedBrokers] = useState<string[]>(['Binance', 'OKX', 'Bybit', 'Bitget']);
+  const visible = data;
 
   const columns: ColumnsType<WatchlistRow> = useMemo(() => {
     const base: ColumnsType<WatchlistRow> = [
@@ -194,16 +196,17 @@ export default function WatchlistV2() {
       {visible.length === 0 ? (
         <Empty description="No symbols in watchlist" image={Empty.PRESENTED_IMAGE_SIMPLE} />
       ) : (
-      <Table
-        columns={columns}
-        dataSource={visible}
-        rowKey="symbol"
-        pagination={false}
-        size="small"
-        loading={loading}
-        scroll={{ x: 800 }}
-        className="[&_.ant-table]:bg-gray-900 [&_.ant-table-thead>tr>th]:bg-gray-800 [&_.ant-table-tbody>tr>td]:bg-gray-900 [&_.ant-table-tbody>tr:hover>td]:bg-gray-800"
-      />)
+        <Table
+          columns={columns}
+          dataSource={visible}
+          rowKey="symbol"
+          pagination={false}
+          size="small"
+          loading={loading}
+          scroll={{ x: 800 }}
+          className="[&_.ant-table]:bg-gray-900 [&_.ant-table-thead>tr>th]:bg-gray-800 [&_.ant-table-tbody>tr>td]:bg-gray-900 [&_.ant-table-tbody>tr:hover>td]:bg-gray-800"
+        />
+      )}
     </div>
   );
 }

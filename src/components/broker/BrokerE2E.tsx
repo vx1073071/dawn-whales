@@ -6,8 +6,8 @@
  * Coverage: connect / quote / kline / order / position / disconnect
  */
 
-import React, { useState, useCallback } from 'react';
-import { Card, Button, Tag, Timeline, Space, Spin, Progress } from 'antd';
+import { useState, useCallback } from 'react';
+import { Card, Button, Tag, Timeline, Progress } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, LoadingOutlined, PlayCircleOutlined } from '@ant-design/icons';
 
 // ── Types ──────────────────────────────────────────────
