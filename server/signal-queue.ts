@@ -40,6 +40,8 @@ export interface QueuedSignal {
     leverage?: number;
     /** Fraction of source position size to copy (0.01–1.0) */
     copyRatio?: number;
+    /** Source signal provider ID for subscription check (R137 J03) */
+    providerId?: string;
   };
   metadata: {
     timestamp: number;
@@ -283,17 +285,35 @@ export class SignalQueue {
       for (const [, userQueue] of this.queues) {
         for (let i = userQueue.length - 1; i >= 0; i--) {
           const s = userQueue[i];
-          // Remove expired
+          // Remove completed/failed after 1h
           if ((s.status === 'completed' || s.status === 'failed') && s.completedAt && (now - s.completedAt > 3600000)) {
             userQueue.splice(i, 1);
             this.processing.delete(s.signalId);
           }
-          // Expire stale
+          // Expire stale queued
           if (s.status === 'queued' && s.metadata.ttlMs > 0 && (now - s.createdAt > s.metadata.ttlMs)) {
             s.status = 'expired';
             s.updatedAt = now;
             this.processing.delete(s.signalId);
             userQueue.splice(i, 1);
+          }
+          // R137 J04: Reset stuck processing signals (OpenD offline for > TTL*2)
+          if (s.status === 'processing' && s.metadata.ttlMs > 0 && (now - s.updatedAt) > (s.metadata.ttlMs * 2)) {
+            const retryCount = s.metadata.retryCount + 1;
+            if (retryCount <= s.metadata.maxRetries) {
+              // Reset to queued so executor picks it up again
+              s.status = 'queued';
+              s.metadata.retryCount = retryCount;
+              s.updatedAt = now;
+              s.errorMessage = `Processing timeout reset (attempt ${retryCount}/${s.metadata.maxRetries})`;
+            } else {
+              // Max retries exceeded → mark failed
+              s.status = 'failed';
+              s.completedAt = now;
+              s.updatedAt = now;
+              s.errorMessage = 'Processing timeout after max retries';
+              this.processing.delete(s.signalId);
+            }
           }
         }
       }

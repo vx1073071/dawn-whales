@@ -101,8 +101,9 @@ export class OpenDSignalFetcher extends EventEmitter {
     this.lastPollTime = Date.now();
 
     try {
+      // R137 J02 FIX: use limit param for batch size, not brokerId
       const res = await fetch(
-        `${this.options.serverUrl}/api/signal/pending?brokerId=${this.options.maxBatchSize}`,
+        `${this.options.serverUrl}/api/signal/pending?limit=${this.options.maxBatchSize}`,
         {
           headers: {
             Authorization: `Bearer ${this.options.jwtToken}`,

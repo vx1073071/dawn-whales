@@ -28,6 +28,7 @@ const navItems: NavItem[] = [
   { id: 'risk', icon: '🛡️', label: 'components.riskPanel' },
   { id: 'riskviz', icon: '📉', label: 'components.riskVisual' },
   { id: 'alert', icon: '🔔', label: i18n.t('Sidebar.k4') },
+  { id: 'copytrade', icon: '🐋', label: 'Copy Trade', section: 'components.trade' },
   { id: 'settings', icon: '⚙️', label: i18n.t('Sidebar.k5'), section: i18n.t('Sidebar.k6') },
 ];
 

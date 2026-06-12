@@ -1,19 +1,17 @@
 // @ts-nocheck
 /**
- * DAWN WHALES R132 J01 — Copy Trade Executor Engine
+ * DAWN WHALES R132 J01 + R137 J01 — Copy Trade Executor Engine
  * 
  * Full copy-trade execution pipeline:
- *   Source Signal → API Key Lookup → Risk Check → Place Order → Ack Queue
+ *   Source Signal → API Key Lookup(decrypt) → Subscription Check →
+ *   MaxPosition Check → Circuit Breaker → Place Order → Ack Queue
+ * 
+ * R137 J01 FIX: placeOrder() now calls decryptApiKey() before passing to adapter.
+ *   - ApiKeyEntry stores fields as "iv:tag:ciphertext" hex triplet
+ *   - decryptApiKey() splits the triplet, runs AES-256-GCM, returns plain text
+ *   - placeOrder() decrypts apiKey/secretKey/passphrase/privateKeyPem individually
  * 
  * Dependencies: SignalQueue, ICloudBrokerAdapter, AdapterFactory
- * 
- * Features:
- *  - Dual-mode: cloud (Binance/OKX/Bybit/…) + OpenD (Futu/moomoo)
- *  - API key encryption: AES-256-GCM decrypt before use
- *  - Circuit breaker: 3 consecutive failures → halt + notify
- *  - Copy ratio: partial copy (1%–100% of source position)
- *  - Rounding: minQuantity, lotSize, price precision
- *  - Per-user executor isolation
  */
 
 import crypto from 'crypto';
@@ -29,10 +27,16 @@ export interface ApiKeyEntry {
   userId: string;
   brokerId: string;
   brokerType: string;
-  apiKey: string;      // encrypted
-  secretKey: string;   // encrypted
-  passphrase?: string; // encrypted, OKX/Bitget
-  privateKeyPem?: string; // encrypted, ED25519 (Robinhood)
+  /**
+   * Encrypted format: "iv:tag:ciphertext" (hex triplets)
+   *   iv        – 12 bytes (96-bit) random nonce, hex-encoded
+   *   tag       – 16 bytes auth tag from GCM, hex-encoded
+   *   ciphertext – AES-256-GCM encrypted payload, hex-encoded
+   */
+  apiKey: string;
+  secretKey: string;
+  passphrase?: string;     // encrypted, OKX/Bitget
+  privateKeyPem?: string;  // encrypted, ED25519 (Robinhood)
   permission: 'trade' | 'readonly';
   enabled: boolean;
   expireAt?: number;
@@ -121,15 +125,49 @@ export class CopyTradeExecutor {
     return Array.from(this.apiKeys.values()).filter((k) => k.userId === userId && k.enabled);
   }
 
-  /** Decrypt API key using AES-256-GCM */
-  decryptApiKey(encrypted: string, iv: string, tag: string): string {
-    if (!this.config.apiKeyEncryptionKey) throw new Error('Encryption key not configured');
+  /**
+   * Decrypt one encrypted field (format: "iv:tag:ciphertext" hex triplets).
+   * 
+   * The encrypted value is stored as three colon-delimited hex strings:
+   *   iv:tag:ciphertext
+   * 
+   * This method splits the triple, runs AES-256-GCM decryption,
+   * and returns the original plaintext.
+   * 
+   * @throws Error if encryption key is not configured or format invalid
+   */
+  decryptTriplet(encryptedTriplet: string): string {
+    if (!this.config.apiKeyEncryptionKey) {
+      throw new Error('Encryption key not configured');
+    }
+    const parts = encryptedTriplet.split(':');
+    if (parts.length !== 3) {
+      throw new Error('Invalid encrypted format: expected iv:tag:ciphertext');
+    }
+    const [ivHex, tagHex, cipherHex] = parts;
+
     const key = Buffer.from(this.config.apiKeyEncryptionKey, 'hex');
-    const decipher = crypto.createDecipheriv('aes-256-gcm', key, Buffer.from(iv, 'hex'));
-    decipher.setAuthTag(Buffer.from(tag, 'hex'));
-    let dec = decipher.update(encrypted, 'hex', 'utf8');
+    if (key.length !== 32) {
+      throw new Error('Encryption key must be 32 bytes (64 hex chars)');
+    }
+
+    const decipher = crypto.createDecipheriv(
+      'aes-256-gcm',
+      key,
+      Buffer.from(ivHex, 'hex'),
+    );
+    decipher.setAuthTag(Buffer.from(tagHex, 'hex'));
+    let dec = decipher.update(cipherHex, 'hex', 'utf8');
     dec += decipher.final('utf8');
     return dec;
+  }
+
+  /**
+   * @deprecated Use decryptTriplet() instead. Kept for backward compatibility.
+   */
+  decryptApiKey(encrypted: string, iv: string, tag: string): string {
+    const triplet = `${iv}:${tag}:${encrypted}`;
+    return this.decryptTriplet(triplet);
   }
 
   // ═══════════════ Circuit Breaker ════════════════════════
@@ -170,9 +208,75 @@ export class CopyTradeExecutor {
     return b.status === 'open';
   }
 
+  // ═══════════════ Subscription Check (R137 J03) ══════════
+
+  /**
+   * Verify that a user has subscribed to the signal provider.
+   * 
+   * Checks the user_subscriptions table for an active subscription
+   * matching (userId, providerId). This prevents cross-user signal leakage
+   * where user A's signals could be executed for user B via provider_id match.
+   */
+  private async checkSubscription(userId: string, providerId: string): Promise<boolean> {
+    try {
+      const db = this.resolveMainDb();
+      if (!db) return true; // No DB available → allow (offline/external key mode)
+      const row = db.prepare(
+        `SELECT 1 FROM user_subscriptions
+         WHERE user_id = ? AND provider_id = ? AND status = 'active'
+         LIMIT 1`
+      ).get(userId, providerId);
+      return !!row;
+    } catch {
+      // DB not available skip (standalone executor mode)
+      return true;
+    }
+  }
+
+  // ═══════════════ Max Position Check (R137 J05) ══════════
+
+  /**
+   * Consult maxPositionSize from user config return true if placing
+   * this order would exceed the user’s total position limit for the symbol.
+   */
+  private async checkMaxPosition(
+    userId: string,
+    brokerId: string,
+    symbol: string,
+    newQuantity: number,
+    side: string,
+  ): Promise<boolean> {
+    try {
+      const db = this.resolveMainDb();
+      if (!db) return true; // No DB → allow
+
+      const cfg = db.prepare(
+        `SELECT max_position_size FROM copy_trade_configs
+         WHERE user_id = ? AND broker_id = ? AND symbol = ?
+         LIMIT 1`
+      ).get(userId, brokerId, symbol) as { max_position_size: number } | undefined;
+
+      const maxSize = cfg?.max_position_size ?? 0;
+      if (maxSize <= 0) return true; // No limit configured
+
+      // Sum existing positions for this symbol
+      const existing = db.prepare(
+        `SELECT SUM(quantity) as total_qty
+         FROM copy_trades
+         WHERE user_id = ? AND broker_id = ? AND symbol = ? AND status = 'executed'
+           AND side = ?`
+      ).get(userId, brokerId, symbol, side) as { total_qty: number } | undefined;
+
+      const current = existing?.total_qty ?? 0;
+      return (current + newQuantity) <= maxSize;
+    } catch {
+      return true; // Standalone mode
+    }
+  }
+
   // ═══════════════ Execution ══════════════════════════════
 
-  /** Process one signal: resolve → execute → ack */
+  /** Process one signal: resolve → subscribe-check → decrypt → execute → ack */
   async executeSignal(signal: QueuedSignal): Promise<ExecutionResult> {
     const start = Date.now();
     const result: ExecutionResult = {
@@ -192,7 +296,16 @@ export class CopyTradeExecutor {
         return result;
       }
 
-      // 2. Resolve API key
+      // 2. Subscription check (R137 J03)
+      const subscribed = await this.checkSubscription(signal.userId, signal.payload.providerId || signal.userId);
+      if (!subscribed) {
+        result.errorMessage = `User ${signal.userId} not subscribed to provider ${signal.payload.providerId}`;
+        result.latencyMs = Date.now() - start;
+        this.queue.ack(signal.signalId, false, result.errorMessage);
+        return result;
+      }
+
+      // 3. Resolve API key
       const keyEntry = this.apiKeys.get(`${signal.userId}:${signal.targetBrokerId}`);
       if (!keyEntry) {
         result.errorMessage = `No API key for ${signal.userId}/${signal.targetBrokerId}`;
@@ -201,17 +314,28 @@ export class CopyTradeExecutor {
         return result;
       }
 
-      // 3. Compute copy ratio quantities
+      // 4. Compute copy ratio quantities
       const ratio = signal.payload.copyRatio || this.config.defaultCopyRatio;
       const quantity = this.roundQuantity(signal.payload.quantity * ratio, signal.payload.symbol);
 
-      // 4. Build order request
+      // 5. Max position check (R137 J05)
+      const withinLimit = await this.checkMaxPosition(
+        signal.userId, signal.targetBrokerId, signal.payload.symbol, quantity, signal.payload.side,
+      );
+      if (!withinLimit) {
+        result.errorMessage = `Max position size exceeded for ${signal.payload.symbol} on ${signal.targetBrokerId}`;
+        result.latencyMs = Date.now() - start;
+        this.queue.ack(signal.signalId, false, result.errorMessage);
+        return result;
+      }
+
+      // 6. Build order request
       const orderReq = this.buildOrderRequest(signal, keyEntry, quantity);
 
-      // 5. Place order via adapter
+      // 7. Place order via adapter (R137 J01: decrypt keys before passing)
       const orderResult = await this.placeOrder(orderReq, keyEntry);
 
-      // 6. Update metrics
+      // 8. Update metrics
       result.success = true;
       result.orderId = orderResult.orderId;
       result.latencyMs = Date.now() - start;
@@ -226,7 +350,7 @@ export class CopyTradeExecutor {
       this.updateMetrics(result);
     }
 
-    // 7. Ack to queue
+    // 9. Ack to queue
     this.queue.ack(signal.signalId, result.success, result.errorMessage);
     this.executions.set(signal.signalId, result);
 
@@ -351,14 +475,30 @@ export class CopyTradeExecutor {
     return Math.floor(qty * factor) / factor;
   }
 
+  /**
+   * Place order via adapter with decrypted keys (R137 J01 FIX).
+   * 
+   * Before this fix, keyEntry.apiKey/secretKey/etc were passed directly
+   * to the adapter factory in encrypted form, causing signature failures.
+   * Now each field is decrypted via decryptTriplet() before being passed.
+   */
   private async placeOrder(orderReq: any, keyEntry: ApiKeyEntry): Promise<CloudOrderInfo> {
-    // Dynamically resolve adapter via factory
+    // Decrypt API credentials before passing to adapter
+    const plainApiKey = this.decryptTriplet(keyEntry.apiKey);
+    const plainSecretKey = this.decryptTriplet(keyEntry.secretKey);
+    const plainPassphrase = keyEntry.passphrase
+      ? this.decryptTriplet(keyEntry.passphrase)
+      : undefined;
+    const plainPrivateKeyPem = keyEntry.privateKeyPem
+      ? this.decryptTriplet(keyEntry.privateKeyPem)
+      : undefined;
+
     const factory = this.resolveAdapterFactory();
     const brokerConfig = factory.buildCloudConfig(keyEntry.brokerId, {
-      apiKey: keyEntry.apiKey, // factory will handle decryption in production
-      secretKey: keyEntry.secretKey,
-      passphrase: keyEntry.passphrase,
-      options: keyEntry.privateKeyPem ? { privateKeyPem: keyEntry.privateKeyPem } : undefined,
+      apiKey: plainApiKey,
+      secretKey: plainSecretKey,
+      passphrase: plainPassphrase,
+      options: plainPrivateKeyPem ? { privateKeyPem: plainPrivateKeyPem } : undefined,
     });
 
     const adapter = await factory.getOrCreate(brokerConfig);
@@ -368,6 +508,14 @@ export class CopyTradeExecutor {
   private resolveAdapterFactory() {
     // Lazy require to avoid circular deps
     return require('../adapters/adapter-factory');
+  }
+
+  private resolveMainDb(): any | null {
+    try {
+      return require('../db/database').getMainDb();
+    } catch {
+      return null;
+    }
   }
 
   private getUsersWithKeys(): string[] {
