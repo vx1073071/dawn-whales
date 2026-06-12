@@ -888,9 +888,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
       await this.sendCommand(CMD.QotSub, {
         c2s: {
           securityList,
-          subTypeList: [1],
-          isSubOrUnSub: true,
-          isRegOrUnRegPush: false,
+          subTypeList: [1, 2, 4, 5, 14],
           isFirstPush: true,
         },
       });
@@ -988,7 +986,7 @@ export abstract class OpenDBaseAdapter implements IBrokerAdapter {
         await this.sendCommand(CMD.QotSub, {
           c2s: {
             securityList,
-            subTypeList: [1],
+            subTypeList: [1, 2, 4, 5, 14],
             isSubOrUnSub: true,
             isRegOrUnRegPush: true,  // Enable push
             isFirstPush: true,
