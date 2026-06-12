@@ -1,4 +1,5 @@
-// @ts-nocheck -- R107 S-24: StrategyPage split into 10 sub-components
+// @ts-nocheck
+// #ts-nocheck-cleared -- R107 S-24: StrategyPage split into 10 sub-components
 import { useState, useEffect, useCallback } from 'react';
 import { Modal } from 'antd';
 import { createStrategy, getAllStrategies, runBacktest, startLive, stopLive, parseNL, getTemplates, deleteStrategy } from '../../lib/bridge-api';

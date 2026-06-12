@@ -1,8 +1,4 @@
 // @ts-nocheck
-// R125-Q01: ts-nocheck cleared
-// src/components/trading/ConditionRulePanel.tsx
-// conditionrule — Phase 4.2 R30 Q-30-02
-
 import { useState, useCallback } from 'react';
 import type { ConditionRule, PriceCondition, TriggerEvent } from '../../../electron/types/condition.js';
 import i18n from '../../i18n';

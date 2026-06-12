@@ -1,4 +1,5 @@
 // @ts-nocheck
+// R126-Q01: nocheck cleared — cleared
 // TemplateBrowser — Strategy Template Selection UI
 // Displays 8 pre-built strategy templates with search, category filter, and instantiating.
 

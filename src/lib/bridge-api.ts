@@ -1,7 +1,8 @@
 // @ts-nocheck
 
 // ── DAWN WHALES — IPC API Client ( OpenD， Electron IPC) ──────────────
-// R124-P02: broker + risk typed (batch 1/4). R125-P02: marketplace + dataProvider (batch 2/4).
+// R124-P02: broker + risk (batch 1/4). R125-P02: marketplace + dataProvider (batch 2/4).
+// R126-P02: strategy + backtest + nl (batch 3/4).
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import type {
@@ -11,6 +12,9 @@ import type {
   IpcResponse,
   MarketplaceStrategy, MarketplacePerformance, MarketplaceComment,
   FundamentalData, CapitalFlowData, MarketRegime, AnomalySignal, CompositeScore, NewsItem,
+  StrategyDSL, StrategyRecord, BacktestConfig, BacktestResult,
+  WalkForwardConfig, ParamScanConfig, MultiTimeframeConfig,
+  NLParsedCommand, NLTemplate,
 } from './bridge-api-defs';
 
 declare global {
@@ -67,35 +71,35 @@ declare global {
         clearCache: () => Promise<IpcResponse>;
       };
       backtestEnhanced: {
-        walkForward: (config: any) => Promise<any>;
-        paramScan: (config: any) => Promise<any>;
-        multiTimeframe: (config: any) => Promise<any>;
+        walkForward: (config: WalkForwardConfig) => Promise<IpcResponse<BacktestResult>>;
+        paramScan: (config: ParamScanConfig) => Promise<IpcResponse<BacktestResult[]>>;
+        multiTimeframe: (config: MultiTimeframeConfig) => Promise<IpcResponse<BacktestResult[]>>;
       };
       backtest: {
-        multiPeriod: (config: any) => Promise<any>;
-        paramSweep: (config: any) => Promise<any>;
-        walkForward: (config: any) => Promise<any>;
-        riskMetrics: (equityCurve: number[], riskFreeRate?: number) => Promise<any>;
-        walkForwardV2: (config: any) => Promise<any>;
-        paramScan: (config: any) => Promise<any>;
-        multiTimeframe: (config: any) => Promise<any>;
+        multiPeriod: (config: BacktestConfig) => Promise<IpcResponse<BacktestResult[]>>;
+        paramSweep: (config: ParamScanConfig) => Promise<IpcResponse<BacktestResult[]>>;
+        walkForward: (config: WalkForwardConfig) => Promise<IpcResponse<BacktestResult>>;
+        riskMetrics: (equityCurve: number[], riskFreeRate?: number) => Promise<IpcResponse<{ sharpe: number; sortino: number; maxDrawdown: number; calmar: number }>>;
+        walkForwardV2: (config: WalkForwardConfig) => Promise<IpcResponse<BacktestResult>>;
+        paramScan: (config: ParamScanConfig) => Promise<IpcResponse<BacktestResult[]>>;
+        multiTimeframe: (config: MultiTimeframeConfig) => Promise<IpcResponse<BacktestResult[]>>;
       };
       strategy: {
-        create: (dsl: any) => Promise<any>;
-        getAll: () => Promise<any>;
-        get: (id: string) => Promise<any>;
-        update: (id: string, updates: any) => Promise<any>;
-        delete: (id: string) => Promise<any>;
-        backtest: (config: any) => Promise<any>;
-        startLive: (id: string) => Promise<any>;
-        stopLive: (id: string) => Promise<any>;
-        explain: (strategy: any) => Promise<any>;
-        compare: (s1: any, s2: any) => Promise<any>;
-        optimize: (strategyDSL: any, backtestResult: any) => Promise<any>;
+        create: (dsl: StrategyDSL) => Promise<IpcResponse<{ strategy: StrategyRecord }>>;
+        getAll: () => Promise<IpcResponse<{ strategies: StrategyRecord[] }>>;
+        get: (id: string) => Promise<IpcResponse<StrategyRecord>>;
+        update: (id: string, updates: Partial<StrategyDSL>) => Promise<IpcResponse>;
+        delete: (id: string) => Promise<IpcResponse>;
+        backtest: (config: BacktestConfig) => Promise<IpcResponse<BacktestResult>>;
+        startLive: (id: string) => Promise<IpcResponse>;
+        stopLive: (id: string) => Promise<IpcResponse>;
+        explain: (strategy: StrategyRecord) => Promise<IpcResponse<{ explanation: string }>>;
+        compare: (s1: StrategyRecord, s2: StrategyRecord) => Promise<IpcResponse<{ metrics: Record<string, { s1: number; s2: number; winner: string }> }>>;
+        optimize: (strategyDSL: StrategyDSL, backtestResult: BacktestResult) => Promise<IpcResponse<StrategyDSL>>;
       };
       nl: {
-        parse: (text: string) => Promise<any>;
-        templates: () => Promise<any>;
+        parse: (text: string) => Promise<IpcResponse<NLParsedCommand>>;
+        templates: () => Promise<IpcResponse<{ templates: NLTemplate[] }>>;
       };
       risk: {
         getConfig: () => Promise<IpcResponse<RiskConfig>>;

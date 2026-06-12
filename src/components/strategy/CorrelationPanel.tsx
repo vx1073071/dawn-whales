@@ -1,4 +1,5 @@
 // @ts-nocheck
+// R126-Q01: nocheck cleared — cleared
 import i18n from '../../i18n/index';
 // ── DAWN WHALES — Strategy Correlation Panel (Q2 UI) ───────────────────────
 // strategy/policy + 

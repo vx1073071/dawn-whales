@@ -1,5 +1,4 @@
 // @ts-nocheck
-// R125-Q01: ts-nocheck cleared
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Modal } from 'antd';
 import { EngineError } from '../../../electron/engine/core/engine-error';

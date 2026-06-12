@@ -10,7 +10,6 @@
 
 import type { KlineBar } from './types';
 import type { ToolType, DrawingStyle } from './drawing-types';
-import { getChartColor } from './chart-theme-colors';
 
 // ═══════════════════════════════════════════════════════════════════════
 // QTE-53: DRAWING TOOLS P1 — 48 EXTRA TOOLS (from 20→68)
@@ -94,7 +93,7 @@ export const EXTENDED_DRAWING_TOOLS: DrawingToolDefinition[] = [
 
 /** 默认样式 */
 export const DEFAULT_DRAWING_STYLE: DrawingStyle = {
-  color: 'getChartColor('accent')',
+  color: '#2196f3',
   lineWidth: 1,
   opacity: 0.9,
   dash: undefined,

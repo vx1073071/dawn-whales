@@ -1,6 +1,6 @@
 // ── DAWN WHALES — IPC Bridge Type Definitions ───────────────────────────
 // R124-P02: broker + risk (batch 1/4). R125-P02: marketplace + dataProvider (batch 2/4).
-// 50+ `any` replacements across 4 namespaces.
+// R126-P02: strategy + backtest + nl (batch 3/4). 75+ `any` replacements across 7 namespaces.
 
 // ── Broker namespace ────────────────────────────────────────────────────
 
@@ -283,4 +283,84 @@ export interface NewsItem {
   url: string;
   sentiment: 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
   timestamp: string;
+}
+
+// ── Strategy namespace ──────────────────────────────────────────────────
+
+export interface StrategyDSL {
+  name: string;
+  description: string;
+  logic: string;
+  inputs: Record<string, unknown>;
+  parameters: Record<string, number>;
+  constraints: Record<string, { min: number; max: number }>;
+}
+
+export interface StrategyRecord {
+  id: string;
+  name: string;
+  description: string;
+  dsl: StrategyDSL;
+  status: 'DRAFT' | 'BACKTEST' | 'LIVE' | 'PAUSED' | 'STOPPED';
+  createdAt: string;
+  updatedAt: string;
+  liveSince?: string;
+}
+
+export interface BacktestConfig {
+  strategyId: string;
+  symbols: string[];
+  startDate: string;
+  endDate: string;
+  initialCapital: number;
+  commission: number;
+  slippage: number;
+  period?: string;
+}
+
+export interface BacktestResult {
+  totalReturn: number;
+  annualizedReturn: number;
+  sharpeRatio: number;
+  maxDrawdown: number;
+  winRate: number;
+  totalTrades: number;
+  profitFactor: number;
+  avgWin: number;
+  avgLoss: number;
+  equityCurve: number[];
+  trades: Array<{ date: string; type: string; price: number; pnl: number }>;
+}
+
+// ── Backtest (extended) namespace ───────────────────────────────────────
+
+export interface WalkForwardConfig extends BacktestConfig {
+  trainWindow: number;
+  testWindow: number;
+}
+
+export interface ParamScanConfig extends BacktestConfig {
+  paramName: string;
+  paramRange: { min: number; max: number; step: number };
+}
+
+export interface MultiTimeframeConfig extends BacktestConfig {
+  timeframes: string[];
+}
+
+// ── NL namespace ────────────────────────────────────────────────────────
+
+export interface NLParsedCommand {
+  intent: string;
+  entities: Record<string, string>;
+  confidence: number;
+  action: Record<string, unknown>;
+}
+
+export interface NLTemplate {
+  id: string;
+  label: string;
+  pattern: string;
+  example: string;
+  category: string;
 }
