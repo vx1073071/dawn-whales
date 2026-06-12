@@ -2,8 +2,8 @@
 // Owner: 不需要 delegate, PM 一个人做
 
 import { useState, useMemo, useCallback } from 'react';
-import { BRAND_COLORS, getSavedTheme, saveTheme, CURRENT_PRICE_LINE, getThemeColors, type AppTheme } from '../lib/chart/brand-colors';
-import type { NormalizedSeries } from '../lib/chart/brand-colors';
+import { BRAND_COLORS, getSavedTheme, saveTheme, type AppTheme } from '../../lib/chart/brand-colors';
+import type { NormalizedSeries } from '../../lib/chart/brand-colors';
 
 // ═══════════════════════════════════════════════════════════════════════
 // 1. 深色/浅色主题切换按钮
@@ -189,8 +189,8 @@ export function BrokerHealthDashboard({ brokers }: { brokers: BrokerHealthStatus
 // 4. 资金曲线面板
 // ═══════════════════════════════════════════════════════════════════════
 
-import type { PnLPoint } from '../lib/chart/brand-colors';
-import { computePnLStats } from '../lib/chart/brand-colors';
+import type { PnLPoint } from '../../lib/chart/brand-colors';
+import { computePnLStats } from '../../lib/chart/brand-colors';
 
 export function EquityCurvePanel({ curve }: { curve: PnLPoint[] }) {
   const stats = useMemo(() => computePnLStats(curve), [curve]);

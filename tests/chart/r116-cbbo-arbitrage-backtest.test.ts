@@ -499,14 +499,6 @@ describe('QTE-47.5: Backtest Framework', () => {
     expect(typeof result.winRate).toBe('number');
     expect(result.profitFactor).toBeDefined();
   });
-    const bars = generateBacktestBars(200);
-    const result = runBacktest(bars, (bar, i) => i === 50 ? 'BUY' : i === 100 ? 'CLOSE_LONG' : 'HOLD');
-
-    expect(result.trades.length).toBe(1);
-    expect(typeof result.totalPnl).toBe('number');
-    expect(typeof result.winRate).toBe('number');
-    expect(result.profitFactor).toBeDefined();
-  });
 
   it('no trades → zero pnl', () => {
     const bars = generateBacktestBars(100);
