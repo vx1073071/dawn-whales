@@ -39,7 +39,7 @@ export interface DOMLadderProps {
 // ═══════════ Component ═══════════
 
 export default function DOMLadder({ data, depth = 15, highlightLevels, className = '' }: DOMLadderProps) {
-  const [autoCenter, setAutoCenter] = useState(true);
+  const [_autoCenter, _setAutoCenter] = useState(true);
 
   if (!data) {
     return (
