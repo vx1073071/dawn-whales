@@ -1,5 +1,6 @@
-// @ts-nocheck — R120: IndicatorLine→IndicatorDef migration
-// ── R113 Chart barrel — KLineChart Pro + Indicator Panel + 指标引擎 ─────
+// ══════ Dawn Whales Chart Component Barrel — R109-R121 ══════
+
+// R113 KLine + Indicator
 export { default as KLineChartPro } from './KLineChartPro';
 export type { KLineChartProProps } from './KLineChartPro';
 
@@ -62,3 +63,13 @@ export type { ReplaySession, ReplayPanelProps, MicroMetrics, MicrostructurePanel
 // R119 Unified states
 export { ChartSkeleton, ChartError, ChartEmpty, BrokerStatusBar } from './ChartStates';
 export type { BrokerStatus } from './ChartStates';
+
+// R121 Trade essentials (大结局新增)
+export { ThemeToggle, ConditionalOrderPanel, BrokerHealthDashboard, EquityCurvePanel, MultiComparePanel } from './TradeEssentials';
+export { buildTradeMarkers, buildPositionLines } from './TradeEssentials';
+export type { ConditionalOrder, OrderType, BrokerHealthStatus, TradeMarker, PositionLines } from './TradeEssentials';
+
+// R121 Indicator templates
+export { IndicatorTemplatesUI, useIndicatorTemplates } from './IndicatorTemplates';
+export type { IndicatorTemplate } from './IndicatorTemplates';
+

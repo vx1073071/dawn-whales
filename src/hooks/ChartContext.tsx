@@ -37,11 +37,31 @@ export function useChartContextSafe() {
 // ═══════════ Provider ═══════════
 
 export function ChartContextProvider({ children }: { children: ReactNode }) {
-  const [symbol, setSymbol] = useState('BTC-USDT');
-  const [timeframe, setTimeframe] = useState<Timeframe>('D');
-  const [market, setMarket] = useState<'crypto' | 'us' | 'hk' | 'forex'>('crypto');
+  const [symbol, setSymbol] = useState(() => {
+    try { return localStorage.getItem('dw_symbol') || 'BTC-USDT'; } catch { return 'BTC-USDT'; }
+  });
+  const [timeframe, setTimeframe] = useState<Timeframe>(() => {
+    try { return (localStorage.getItem('dw_tf') as Timeframe) || 'D'; } catch { return 'D'; }
+  });
+  const [market, setMarketState] = useState<'crypto' | 'us' | 'hk' | 'forex'>(() => {
+    try { return (localStorage.getItem('dw_market') as any) || 'crypto'; } catch { return 'crypto'; }
+  });
   const [connectedBrokers, setConnectedBrokers] = useState<string[]>([]);
-  const [activeIndicators, setActiveIndicatorsState] = useState<string[]>(['ma', 'boll']);
+  const [activeIndicators, setActiveIndicatorsState] = useState<string[]>(() => {
+    try { const saved = localStorage.getItem('dw_indicators'); return saved ? JSON.parse(saved) : ['ma', 'boll']; }
+    catch { return ['ma', 'boll']; }
+  });
+
+  // --- persisted setters ---
+  const setSymbolPersisted = useCallback((s: string) => {
+    setSymbol(s); try { localStorage.setItem('dw_symbol', s); } catch {}
+  }, []);
+  const setTimeframePersisted = useCallback((tf: Timeframe) => {
+    setTimeframe(tf); try { localStorage.setItem('dw_tf', tf); } catch {}
+  }, []);
+  const setMarket = useCallback((m: 'crypto' | 'us' | 'hk' | 'forex') => {
+    setMarketState(m); try { localStorage.setItem('dw_market', m); } catch {}
+  }, []);
 
   const setActiveIndicators = useCallback((ids: string[]) => {
     setActiveIndicatorsState(ids);
@@ -58,8 +78,8 @@ export function ChartContextProvider({ children }: { children: ReactNode }) {
 
   return (
     <ChartContext.Provider value={{
-      symbol, setSymbol,
-      timeframe, setTimeframe,
+      symbol, setSymbol: setSymbolPersisted,
+      timeframe, setTimeframe: setTimeframePersisted,
       market, setMarket,
       connectedBrokers, setConnectedBrokers,
       activeIndicators, setActiveIndicators, toggleIndicator,

@@ -381,3 +381,20 @@ export function deserializeCollection(json: string, maxUndo = 50): DrawingCollec
   const data = JSON.parse(json);
   return { drawings: data.drawings || [], selectedId: data.selectedId || null, undoStack: [], redoStack: [], maxUndo };
 }
+
+// ═══════════ Persistence (localStorage) ═══════════
+
+export function saveDrawings(chartId: string, coll: DrawingCollection): void {
+  try { localStorage.setItem(`dw_drawings_${chartId}`, serializeCollection(coll)); } catch {}
+}
+
+export function loadDrawings(chartId: string): DrawingCollection | null {
+  try {
+    const raw = localStorage.getItem(`dw_drawings_${chartId}`);
+    return raw ? deserializeCollection(raw) : null;
+  } catch { return null; }
+}
+
+export function deleteDrawings(chartId: string): void {
+  try { localStorage.removeItem(`dw_drawings_${chartId}`); } catch {}
+}

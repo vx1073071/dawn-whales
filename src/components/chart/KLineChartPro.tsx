@@ -57,7 +57,11 @@ export default function KLineChartPro({
   onCrosshairChange,
   className = '',
 }: KLineChartProProps) {
-  const [timeframe, setTimeframe] = useState<Timeframe>(propTf ?? 'D');
+  const [timeframe, setTimeframe] = useState<Timeframe>(() => {
+    // 恢复用户偏好周期
+    try { return (localStorage.getItem('dw_tf') as Timeframe) || propTf || 'D'; }
+    catch { return propTf || 'D'; }
+  });
   const [activeIndicators, setActiveIndicators] = useState<string[]>(indicators);
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
@@ -65,6 +69,17 @@ export default function KLineChartPro({
   const volumeSeriesRef = useRef<ISeriesApi<'Histogram'> | null>(null);
   const indicatorSeriesRef = useRef<ISeriesApi<'Line'>[]>([]);
   const mountedRef = useRef(true);
+
+  // ── sync indicators from prop (IndicatorPanel → KLineChartPro) ──
+  useEffect(() => {
+    setActiveIndicators(indicators);
+  }, [indicators]);
+
+  // ── persist timeframe preference ──
+  useEffect(() => {
+    try { localStorage.setItem('dw_tf', timeframe); } catch {}
+    onTimeframeChange?.(timeframe);
+  }, [timeframe]);
 
   // ── Data pipeline ──
   const processedData = useMemo(() => {
