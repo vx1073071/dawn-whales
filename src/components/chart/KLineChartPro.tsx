@@ -8,7 +8,8 @@ import type { KlineBar, Timeframe, AdjustType, CandleType } from '../../lib/char
 import type { IndicatorLine } from '../../lib/chart/types'; // @ts-ignore — deprecated alias
 import { ALL_TIMEFRAMES, TIMEFRAME_LABELS, CHART_THEME_DARK } from '../../lib/chart/types';
 import { transformCandles, applyPreAdjust, applyPostAdjust, downsample } from '../../lib/chart/kline-utils';
-import { calcSMA, calcEMA, calcBOLL, calcSAR, calcVWAP } from '../../lib/chart/indicator-engine';
+import { calcSMA, calcEMA, calcBOLL, calcSAR, calcVWAP, calcRSI, calcKDJ, calcMACD } from '../../lib/chart/indicator-engine';
+import { useChartStore } from '../../store/ChartStore';
 
 // ═══════════ Props ═══════════
 
@@ -57,12 +58,22 @@ export default function KLineChartPro({
   onCrosshairChange,
   className = '',
 }: KLineChartProProps) {
+  // ── R122-M01: ChartStore integration ──
+  const storeSymbol = useChartStore((s) => s.symbol);
+  const storeTimeframe = useChartStore((s) => s.timeframe);
+  const storeIndicators = useChartStore((s) => s.activeIndicators);
+  const storeSetTimeframe = useChartStore((s) => s.setTimeframe);
+
+  const displaySymbol = symbol || storeSymbol || 'BTC-USDT';
+
   const [timeframe, setTimeframe] = useState<Timeframe>(() => {
-    // 恢复用户偏好周期
-    try { return (localStorage.getItem('dw_tf') as Timeframe) || propTf || 'D'; }
-    catch { return propTf || 'D'; }
+    try { return (localStorage.getItem('dw_tf') as Timeframe) || propTf || storeTimeframe || 'D'; }
+    catch { return propTf || storeTimeframe || 'D'; }
   });
-  const [activeIndicators, setActiveIndicators] = useState<string[]>(indicators);
+  // Active indicators: prop > store indicators
+  const [activeIndicators, setActiveIndicators] = useState<string[]>(
+    indicators.length > 0 ? indicators : storeIndicators
+  );
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const mainSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
@@ -72,12 +83,20 @@ export default function KLineChartPro({
 
   // ── sync indicators from prop (IndicatorPanel → KLineChartPro) ──
   useEffect(() => {
-    setActiveIndicators(indicators);
+    if (indicators.length > 0) setActiveIndicators(indicators);
   }, [indicators]);
 
-  // ── persist timeframe preference ──
+  // ── sync indicators from store ──
+  useEffect(() => {
+    if (indicators.length === 0 && storeIndicators.length > 0) {
+      setActiveIndicators(storeIndicators);
+    }
+  }, [storeIndicators, indicators]);
+
+  // ── persist timeframe preference + sync to store ──
   useEffect(() => {
     try { localStorage.setItem('dw_tf', timeframe); } catch {}
+    storeSetTimeframe(timeframe);
     onTimeframeChange?.(timeframe);
   }, [timeframe]);
 
@@ -162,6 +181,15 @@ export default function KLineChartPro({
         borderColor: CHART_THEME_DARK.border,
         timeVisible: true,
         secondsVisible: false,
+        // R122-M04: 动态日期标签
+        tickMarkFormatter: (time: Time) => {
+          const d = new Date((time as number) * 1000);
+          const mm = String(d.getMonth() + 1).padStart(2, '0');
+          const dd = String(d.getDate()).padStart(2, '0');
+          const HH = String(d.getHours()).padStart(2, '0');
+          const MM = String(d.getMinutes()).padStart(2, '0');
+          return `${mm}-${dd} ${HH}:${MM}`;
+        },
       },
     });
 
@@ -258,7 +286,12 @@ export default function KLineChartPro({
     chartRef.current?.timeScale().fitContent();
   }, [processedData, showVolume]);
 
-  // ── Indicator overlay ──
+  // ── Sub-pane refs (R122-M03) ──
+  const subPaneRef = useRef<{ pane: any; macdHist: ISeriesApi<'Histogram'> | null; macdSignal: ISeriesApi<'Line'> | null; rsiLine: ISeriesApi<'Line'> | null; kLine: ISeriesApi<'Line'> | null; dLine: ISeriesApi<'Line'> | null; jLine: ISeriesApi<'Line'> | null }>({
+    pane: null, macdHist: null, macdSignal: null, rsiLine: null, kLine: null, dLine: null, jLine: null,
+  });
+
+  // ── Indicator overlay (main pane) ──
   useEffect(() => {
     if (!chartRef.current) return;
     // Remove old indicator series
@@ -291,6 +324,65 @@ export default function KLineChartPro({
     };
   }, [indicatorLines, processedData]);
 
+  // ── R122-M03: MACD/RSI/KDJ rendered as overlay indicators ──
+  // lightweight-charts v4 does not support separate sub-panes natively.
+  // Indicators share the main pane. Crosshair moves are already synced
+  // because all series are in one chart instance.
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart || !processedData.length) return;
+
+    // Cleanup old sub-indicator series
+    if (subPaneRef.current.macdHist) { try { chart.removeSeries(subPaneRef.current.macdHist!); } catch {} }
+    if (subPaneRef.current.macdSignal) { try { chart.removeSeries(subPaneRef.current.macdSignal!); } catch {} }
+    if (subPaneRef.current.rsiLine) { try { chart.removeSeries(subPaneRef.current.rsiLine!); } catch {} }
+    if (subPaneRef.current.kLine) { try { chart.removeSeries(subPaneRef.current.kLine!); } catch {} }
+    if (subPaneRef.current.dLine) { try { chart.removeSeries(subPaneRef.current.dLine!); } catch {} }
+    if (subPaneRef.current.jLine) { try { chart.removeSeries(subPaneRef.current.jLine!); } catch {} }
+    subPaneRef.current = { pane: null, macdHist: null, macdSignal: null, rsiLine: null, kLine: null, dLine: null, jLine: null };
+
+    const hasMacd = activeIndicators.includes('macd');
+    const hasRsi = activeIndicators.includes('rsi');
+    const hasKdj = activeIndicators.includes('kdj');
+    if (!hasMacd && !hasRsi && !hasKdj) return;
+
+    const timeData = processedData.map(d => ({ time: (d.time / 1000) as Time, close: d.close }));
+
+    // ── MACD ──
+    if (hasMacd) {
+      const [, dea, macdBar] = calcMACD(processedData, 12, 26, 9);
+      const histData = macdBar.map((v, i) => v !== null && i < timeData.length ? { time: timeData[i].time, value: v, color: v >= 0 ? '#22c55e80' : '#ef444480' } : null).filter(Boolean) as any[];
+      if (histData.length > 0) { const s = chart.addHistogramSeries({ priceScaleId: '', priceFormat: { type: 'price', precision: 6 } }); s.setData(histData); subPaneRef.current.macdHist = s; }
+      const deaData = dea.map((v, i) => v !== null && i < timeData.length ? { time: timeData[i].time, value: v } : null).filter(Boolean) as any[];
+      if (deaData.length > 0) { const s = chart.addLineSeries({ color: '#f59e0b', lineWidth: 1 }); s.setData(deaData); subPaneRef.current.macdSignal = s; }
+    }
+
+    // ── RSI ──
+    if (hasRsi) {
+      const rsiValues = calcRSI(processedData, 14);
+      const rsiData = rsiValues.map((v, i) => v !== null && i < timeData.length ? { time: timeData[i].time, value: v } : null).filter(Boolean) as any[];
+      if (rsiData.length > 0) { const s = chart.addLineSeries({ color: '#a78bfa', lineWidth: 1 }); s.setData(rsiData); subPaneRef.current.rsiLine = s; }
+    }
+
+    // ── KDJ ──
+    if (hasKdj) {
+      const [k, d, j] = calcKDJ(processedData, 9, 3, 3);
+      const toData = (arr: (number | null)[]) => arr.map((v, i) => v !== null && i < timeData.length ? { time: timeData[i].time, value: v } : null).filter(Boolean) as any[];
+      const kData = toData(k); if (kData.length > 0) { const s = chart.addLineSeries({ color: '#3b82f6', lineWidth: 1 }); s.setData(kData); subPaneRef.current.kLine = s; }
+      const dData = toData(d); if (dData.length > 0) { const s = chart.addLineSeries({ color: '#f59e0b', lineWidth: 1 }); s.setData(dData); subPaneRef.current.dLine = s; }
+      const jData = toData(j); if (jData.length > 0) { const s = chart.addLineSeries({ color: '#ef4444', lineWidth: 1 }); s.setData(jData); subPaneRef.current.jLine = s; }
+    }
+
+    return () => {
+      if (subPaneRef.current.macdHist) { try { chart.removeSeries(subPaneRef.current.macdHist!); } catch {} }
+      if (subPaneRef.current.macdSignal) { try { chart.removeSeries(subPaneRef.current.macdSignal!); } catch {} }
+      if (subPaneRef.current.rsiLine) { try { chart.removeSeries(subPaneRef.current.rsiLine!); } catch {} }
+      if (subPaneRef.current.kLine) { try { chart.removeSeries(subPaneRef.current.kLine!); } catch {} }
+      if (subPaneRef.current.dLine) { try { chart.removeSeries(subPaneRef.current.dLine!); } catch {} }
+      if (subPaneRef.current.jLine) { try { chart.removeSeries(subPaneRef.current.jLine!); } catch {} }
+    };
+  }, [processedData, activeIndicators]);
+
   // ── Timeframe change ──
   const handleTimeframe = useCallback((tf: Timeframe) => {
     setTimeframe(tf);
@@ -322,7 +414,16 @@ export default function KLineChartPro({
         <div className="flex items-center justify-between px-3 py-2 border-b border-[#1c2333] gap-1 flex-wrap">
           {/* Symbol + Price */}
           <div className="flex items-center gap-3 min-w-fit">
-            {symbol && <span className="text-[#c9a96e] font-bold text-sm">{symbol}</span>}
+            {/* R122-M01: Display symbol from store if prop not given */}
+            {displaySymbol && (
+              <span
+                className="text-[#c9a96e] font-bold text-sm cursor-pointer hover:text-[#f0d080] transition-colors"
+                title="Click to copy symbol"
+                onClick={() => { try { navigator.clipboard.writeText(displaySymbol); } catch {} }}
+              >
+                {displaySymbol}
+              </span>
+            )}
             <span className={`font-mono text-sm ${isUp ? 'text-[#22c55e]' : 'text-[#ef4444]'}`}>
               {lastPrice.toFixed(2)}
             </span>

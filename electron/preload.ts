@@ -191,6 +191,16 @@ contextBridge.exposeInMainWorld('api', {
     },
   },
 
+  // ── Indicator Worker (R122 J04) ─────────────────────────────────
+  indicator: {
+    compute: (req: unknown) => ipcRenderer.invoke('indicator:compute', req),
+  },
+
+  // ── Data Pipeline (R122 J01) ────────────────────────────────────
+  dataPipeline: {
+    getStatus: () => ipcRenderer.invoke('data-pipeline:status'),
+  },
+
   // ── Events (Main → Renderer) ─────────────────────────────────────
   on: (channel: string, callback: (...args: unknown[]) => void) => {
     const allowed = [

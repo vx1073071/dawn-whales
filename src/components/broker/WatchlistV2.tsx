@@ -12,6 +12,8 @@ import type { ColumnsType } from 'antd/es/table';
 import { useBrokerData } from '../../hooks/useBrokerData';
 import { ChartSkeleton, ChartError, ChartEmpty } from '../chart/ChartStates';
 
+import { useChartStore } from '../../store/ChartStore';
+
 // ── Types ──────────────────────────────────────────────
 
 interface TaggedQuote {
@@ -77,6 +79,8 @@ function findArbitrage(quotes: Record<string, TaggedQuote>): { exists: boolean; 
 // ── Component ──────────────────────────────────────────
 
 export default function WatchlistV2() {
+  const storeSetSymbol = useChartStore((s) => s.setSymbol);
+
   // Try real IPC first, fall back to mock
   const { data: ipcData, loading, error, source, refetch } = useBrokerData<WatchlistRow[]>({
     channel: 'broker:getAggregatedQuotes',
@@ -90,7 +94,15 @@ export default function WatchlistV2() {
     const base: ColumnsType<WatchlistRow> = [
       {
         title: 'Symbol', dataIndex: 'symbol', key: 'symbol', width: 120, fixed: 'left',
-        render: (symbol: string) => <span className="font-mono font-bold text-[#c9d1d9] text-xs">{symbol}</span>,
+        render: (symbol: string) => (
+          <span
+            className="font-mono font-bold text-[#c9d1d9] text-xs cursor-pointer hover:text-[#58a6ff] transition-colors"
+            onClick={() => { storeSetSymbol(symbol); navigator.clipboard.writeText(symbol).catch(() => {}); }}
+            title={`Click to view ${symbol} on K-line`}
+          >
+            {symbol}
+          </span>
+        ),
       },
       {
         title: 'Arbitrage', key: 'arb', width: 80,

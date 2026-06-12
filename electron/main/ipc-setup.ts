@@ -23,6 +23,10 @@ import { DataProviderService } from '../data/data-provider';
 import { z } from 'zod';
 import { WalkForwardEngine } from '../engine/backtest/walk-forward';
 import { ParameterScanner } from '../engine/portfolio/parameter-scanner';
+// R122 J01: Data pipeline connector
+import { DataPipelineConnector } from './data-pipeline-connector';
+// R122 J02: Broker adapter factory
+import { registerAllFactories, createBrokerAdapter, getRegisteredBrokerTypes } from '../broker/broker-adapter-factory';
 import { validate,
   BrokerSwitchSchema,
   BrokerAddSchema,
@@ -126,6 +130,11 @@ export function setupIPC(ctx: IPCContext): void {
       client.onQuotePush((quotes) => {
         ctx.mainWindow?.webContents.send('quotes:push', quotes);
         ctx.strategyEngine?.onQuoteUpdate(quotes);
+        // R122 J01: Feed quotes into data pipeline (triggers links 2-5)
+        const pipeline = (globalThis as any).__dataPipeline;
+        if (pipeline && typeof pipeline.feedQuotes === 'function') {
+          pipeline.feedQuotes(quotes);
+        }
       });
       const savedWatchlist = ctx.db?.getWatchlist();
       if (savedWatchlist && savedWatchlist.length > 0) {
@@ -134,6 +143,14 @@ export function setupIPC(ctx: IPCContext): void {
       }
       await client.subscribeAndPush(ctx.WATCHLIST);
       log.info('[Broker] Push mode active');
+
+      // R122 J01: Start data pipeline for all 5 links
+      if (!(globalThis as any).__dataPipeline) {
+        const pipeline = new DataPipelineConnector(null as any, ctx.mainWindow);
+        (globalThis as any).__dataPipeline = pipeline;
+        pipeline.connectSimplified(client, ctx.WATCHLIST, ctx.mainWindow);
+        log.info('[Broker] DataPipeline 5-link started');
+      }
 
       return { success: true, host: config.host, port: config.port };
     } catch (err) {
@@ -282,6 +299,25 @@ export function setupIPC(ctx: IPCContext): void {
     } catch (err) {
     // [EngineError:AI] — structured error tracking
     return { success: false, error: err.message }; }
+  });
+
+  // R122 J02: Broker factory registration
+  registerAllFactories();
+  log.info('[Factory] Registered:', getRegisteredBrokerTypes().length, 'broker types');
+
+  ipcMain.handle('broker:list-factories', async () => {
+    return { success: true, types: getRegisteredBrokerTypes() };
+  });
+
+  ipcMain.handle('broker:create-from-factory', async (_e, cfg: BrokerConfig) => {
+    try {
+      const adapter = createBrokerAdapter(cfg);
+      if (!adapter) return { success: false, error: `No factory for type: ${cfg.type}` };
+      ctx.brokerManager?.addAdapter(adapter);
+      return { success: true, brokerId: cfg.id };
+    } catch (err) {
+      return { success: false, error: (err as Error).message };
+    }
   });
 
   ipcMain.handle('broker:list', async () => {
@@ -1269,6 +1305,32 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   (globalThis as any).__ipcHardenedHandle = hardenedHandle;
 
   log.info('[IPC] R91 hardening layer active: timeout + reentry guard + health tracking + EngineError wrapping');
+
+  // ── R122 J03: Register 4 missing IPC modules ────────────────────
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { registerNotificationIPC } = require('../ipc/notification-ipc');
+    registerNotificationIPC(ctx.mainWindow);
+    log.info('[IPC] notification-ipc registered');
+  } catch (e) {
+    log.warn('[IPC] notification-ipc registration failed:', e);
+  }
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { registerDifferentialPushIPC } = require('../ipc/differential-push-ipc');
+    registerDifferentialPushIPC();
+    log.info('[IPC] differential-push-ipc registered');
+  } catch (e) {
+    log.warn('[IPC] differential-push-ipc registration failed:', e);
+  }
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { registerIndicatorWorkerIPC } = require('../ipc/indicator-worker-ipc');
+    registerIndicatorWorkerIPC();
+    log.info('[IPC] indicator-worker-ipc registered');
+  } catch (e) {
+    log.warn('[IPC] indicator-worker-ipc registration failed:', e);
+  }
 
   // ── R107 S-28: Schema Coverage Validation ──────────────────────────
   try {
