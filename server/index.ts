@@ -1,5 +1,5 @@
 // ── DAWN WHALES Server ────────────────────────────────────────────────
-// R129: Express+SQLite+JWT+encryption+signal endpoints
+// R129: Express+SQLite+JWT+encryption+signal. R130: audit logger
 
 import express from 'express';
 import { createServer } from 'http';
@@ -7,11 +7,15 @@ import cors from 'cors';
 import { registerApiRoutes } from '../electron/api-routes';
 import { initDatabases } from './db/database';
 import { registerAuthRoutes } from './middleware/jwt-auth';
+import { auditMiddleware } from './middleware/audit-logger';
 import { config, validateConfig } from './config/env';
 import signalRoutes from './routes/signal';
 
 const app = express();
 const PORT = config.port;
+
+// ── R130: Audit logging ─────────────────────────────────────────────
+app.use(auditMiddleware);
 
 // ── Middleware ────────────────────────────────────────────────────────
 app.use(cors({ origin: config.corsOrigin }));
