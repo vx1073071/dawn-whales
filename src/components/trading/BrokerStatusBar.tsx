@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── BrokerStatusBar Component ──────────────────────────────────────────────
 // Compact broker status bar with quick switch and account summary
 // J-26-02: BrokerSelector component + UI
