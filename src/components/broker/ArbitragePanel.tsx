@@ -7,6 +7,13 @@
  */
 
 import { useState, useMemo } from 'react';
+import { ArbitrageEngine, type ArbitrageOpportunity } from '../../lib/chart/arbitrage-engine';
+
+let _abEngine: ArbitrageEngine | null = null;
+export function getArbitrageEngine(): ArbitrageEngine {
+  if (!_abEngine) _abEngine = new ArbitrageEngine();
+  return _abEngine;
+}
 import { Table, Button, Tag, Badge, Modal, Select, InputNumber, Space, Progress } from 'antd';
 import { SwapOutlined, ThunderboltOutlined, CopyOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';

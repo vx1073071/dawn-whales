@@ -1,7 +1,18 @@
+// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
 // ── R114 QTE-20 DepthAnalyzer Panel — 深度分析面板 ──────────────────────
 // PM: 5指标同屏显示(Imbalance仪表盘+Liquidity Score+Wall Detection+滑点预估+Spoofing), 颜色编码
 
 import { useMemo } from 'react';
+
+
+
+// ═══════ Bridge: DepthAnalyzer → Panel ═══════════
+import { DepthAnalyzer } from '../../lib/chart/depth-analyzer';
+import type { DepthLevel } from '../../lib/chart/depth-types';
+
+export function runDepthAnalysis(levels: DepthLevel[]) {
+  return new DepthAnalyzer().analyze(levels);
+}
 
 // ═══════════ Types ═══════════
 

@@ -6,7 +6,7 @@
 import { createHmac } from 'crypto';
 import { log } from 'electron-log';
 import { DirectAdapterBase, type DirectAdapterConfig } from './DirectAdapterBase';
-import type { IBrokerAdapterV2, BrokerType, MarketType, TradingPairInfo, OrderBookInfo, TaggedQuoteInfo } from '../IBrokerAdapterV2';
+import type { BrokerType, MarketType, TradingPairInfo, TaggedQuoteInfo } from '../IBrokerAdapterV2';
 import type { QuoteInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo } from '../IBrokerAdapter';
 
 export enum CryptoExchange {
@@ -78,7 +78,7 @@ export abstract class CryptoAdapterBase extends DirectAdapterBase {
       recvWindow,
     };
 
-    const { queryString, signature } = this._signRequest(params);
+    const { signature } = this._signRequest(params);
 
     return {
       [this.exchangeConfig.signatureHeader]: this.config.apiKey,

@@ -5,7 +5,7 @@
 
 import { EventEmitter } from 'events';
 import { log } from 'electron-log';
-import type { IBrokerAdapter, BrokerConfig, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from '../IBrokerAdapter';
+import type { BrokerConfig, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from '../IBrokerAdapter';
 import type { IBrokerAdapterV2, BrokerType, BrokerConnectionStatus, MarketType } from '../IBrokerAdapterV2';
 
 export interface BridgeAdapterConfig extends BrokerConfig {

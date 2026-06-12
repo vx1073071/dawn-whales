@@ -5,6 +5,7 @@
  */
 
 import { useMemo } from 'react';
+import { BrokerChartBridge, getChartBridge } from '../../lib/chart/broker-chart-bridge';
 import { Table, Tag, Badge, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useBrokerData } from '../../hooks/useBrokerData';

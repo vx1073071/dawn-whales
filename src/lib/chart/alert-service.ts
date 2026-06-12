@@ -324,7 +324,9 @@ export class ChannelManager {
   private async sendEmail(text: string, detail: string): Promise<void> {
     // SMTP email via backend proxy (避免客户端泄露密码)
     // This is a placeholder - actual SMTP should go through IPC to main process
-    console.log(`[Email Alert] ${text}\n${detail}`);
+    // console.log → should use IPC to main process for email sending
+    // eslint-disable-next-line no-console
+    console.info(`[Email Alert] ${text}\n${detail}`);
   }
 }
 

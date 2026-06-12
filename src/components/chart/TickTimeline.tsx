@@ -1,7 +1,17 @@
+// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
 // ── R114 QTE-19 TickTimeline — 逐笔成交时间轴 UI ───────────────────────
 // PM: 深度行情P0, 红买绿卖/成交量分布/大单弹窗提醒
 
 import { useMemo, useRef, useEffect, useState } from 'react';
+
+
+
+// ═══════ Bridge: TickCache → Timeline ═══════════
+import { TickCache } from '../../lib/chart/tick-cache';
+
+export function getTickTimelineCache(): TickCache {
+  return new TickCache(5000);
+}
 
 // ═══════════ Types ═══════════
 

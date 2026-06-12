@@ -4,6 +4,13 @@
 
 import { useMemo, useState } from 'react';
 
+
+
+// ═══════ Bridge: Heatmap → depth-types ═══════════
+import type { OrderBookSnapshot } from '../../lib/chart/depth-types';
+
+export type { OrderBookSnapshot as HeatmapData };
+
 // ═══════════ Types ═══════════
 
 export interface HeatmapItem {

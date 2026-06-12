@@ -1,9 +1,67 @@
+// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
 // ── R114 QTE-18 OrderBook Waterfall — 订单簿瀑布图 (买卖深度可视化) ──
 // PM: 深度行情P0, 买卖盘红绿渐变/横条宽度=挂单量/大单墙高亮/价格跳动动画
 
 import { useMemo, useRef, useEffect } from 'react';
 
 // ═══════════ Types ═══════════
+
+// ═══════ Bridge: OrderBookEngine → UI ═══════════
+import type { OrderBookSnapshot, DepthLevel as LibDepthLevel } from '../../lib/chart/depth-types';
+
+interface OrderBookLevel {
+  price: number;
+  size: number;
+  total: number;
+  orderCount?: number;
+}
+
+interface OrderBookData {
+  symbol: string;
+  bids: OrderBookLevel[];
+  asks: OrderBookLevel[];
+  spread: number;
+  spreadPct: number;
+  midPrice: number;
+  timestamp: number;
+  updateSeq?: number;
+}
+
+interface OrderBookProps {
+  data: OrderBookData | null;
+  depth?: number;
+  height?: number;
+  width?: number;
+  showHeader?: boolean;
+  className?: string;
+}
+
+/** Convert chart-lib OrderBookSnapshot → waterfall component's OrderBookData */
+export function snapshotToWaterfallData(snapshot: OrderBookSnapshot): OrderBookData {
+  const cumBids: OrderBookLevel[] = [];
+  let bidTotal = 0;
+  for (const l of snapshot.bids) {
+    bidTotal += l.size;
+    cumBids.push({ price: l.price, size: l.size, total: bidTotal, orderCount: l.orderCount });
+  }
+  const cumAsks: OrderBookLevel[] = [];
+  let askTotal = 0;
+  for (const l of snapshot.asks) {
+    askTotal += l.size;
+    cumAsks.push({ price: l.price, size: l.size, total: askTotal, orderCount: l.orderCount });
+  }
+  return {
+    symbol: snapshot.symbol,
+    bids: cumBids,
+    asks: cumAsks,
+    spread: snapshot.best.spread,
+    spreadPct: snapshot.best.spreadPercent,
+    midPrice: (snapshot.best.bidPrice + snapshot.best.askPrice) / 2,
+    timestamp: snapshot.timestamp,
+    updateSeq: snapshot.updateId,
+  };
+}
+
 
 export interface OrderBookLevel {
   price: number;

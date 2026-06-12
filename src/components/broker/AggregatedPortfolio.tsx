@@ -6,6 +6,7 @@
 import { useMemo } from 'react';
 import { Progress } from 'antd';
 import { useBrokerData } from '../../hooks/useBrokerData';
+import { BrokerChartBridge, getChartBridge } from '../../lib/chart/broker-chart-bridge';
 import { ChartSkeleton, ChartError, ChartEmpty } from '../chart/ChartStates';
 
 // ── Types ──────────────────────────────────────────────

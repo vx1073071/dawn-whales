@@ -537,7 +537,7 @@ export class ETRADEAdapter extends OAuthBrokerBase {
     return `/market/v1/quote/${symbols}?detailFlag=ALL`;
   }
 
-  protected _klinePath(code: string, period: string, count: number): string {
+  protected _klinePath(code: string, _period: string, _count: number): string {
     // E*TRADE doesn't have a dedicated kline endpoint — use quote history
     return `/market/v1/quote/${code.replace(/^US\./, '')}?detailFlag=ALL`;
   }

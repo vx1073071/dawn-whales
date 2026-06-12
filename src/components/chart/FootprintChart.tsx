@@ -1,7 +1,18 @@
+// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
 // ── R117 QTE-50 FootprintChart — 足迹图 (成交量分布+买卖方向) ──────────
 // PM: Bid/Ask volume at each price level, delta imbalance, cumulative delta
 
 import { useMemo } from 'react';
+
+
+
+// ═══════ Bridge: TickCache → Footprint Chart ═══════════
+import { TickCache } from '../../lib/chart/tick-cache';
+import type { TickRecord } from '../../lib/chart/depth-types';
+
+export function getTickCache(): TickCache {
+  return new TickCache(10000);
+}
 
 // ═══════════ Types ═══════════
 

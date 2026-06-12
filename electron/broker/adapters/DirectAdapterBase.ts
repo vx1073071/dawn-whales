@@ -5,8 +5,8 @@
 
 import { EventEmitter } from 'events';
 import { log } from 'electron-log';
-import type { IBrokerAdapter, BrokerConfig, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from '../IBrokerAdapter';
-import type { IBrokerAdapterV2, BrokerType, MarketType, TradingPairInfo, OrderBookInfo, MarginInfo, BrokerConnectionStatus } from '../IBrokerAdapterV2';
+import type { BrokerConfig, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from '../IBrokerAdapter';
+import type { IBrokerAdapterV2, BrokerType, MarketType, BrokerConnectionStatus } from '../IBrokerAdapterV2';
 
 export interface DirectAdapterConfig extends BrokerConfig {
   restBaseUrl: string;

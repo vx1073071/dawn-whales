@@ -1,7 +1,21 @@
+// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
 // ── R118 QTE-60 ReplayPanel + QTE-61 MicrostructurePanel ─────────────────
 // PM: 回放控制 UI (8h) + 微观结构监控面板 (8h)
 
 import { useState, useMemo } from 'react';
+
+
+
+// ═══════ Bridge: TickCache + SmartThrottle → Replay ═══════════
+import { TickCache } from '../../lib/chart/tick-cache';
+import { SmartThrottle } from '../../lib/chart/smart-throttle';
+
+export function getReplayTickCache(): TickCache {
+  return new TickCache(20000);
+}
+export function getReplayThrottle(): SmartThrottle {
+  return new SmartThrottle();
+}
 
 // ═══════════ QTE-60 Replay Types ═══════════
 

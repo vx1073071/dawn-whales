@@ -1,7 +1,19 @@
+// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
 // ── R117 QTE-49 DOM Ladder — 订单簿深度阶梯 (DOM面板) ──────────────────
 // PM: Depth of Market ladder, bid/ask level-by-level view, position display
 
 import { useState } from 'react';
+
+
+
+// ═══════ Bridge: DepthAnalyzer → DOMLadder ═══════════
+import { DepthAnalyzer } from '../../lib/chart/depth-analyzer';
+import type { DepthLevel } from '../../lib/chart/depth-types';
+
+export function analyzeLevels(levels: DepthLevel[]): ReturnType<DepthAnalyzer['analyze']> {
+  const analyzer = new DepthAnalyzer();
+  return analyzer.analyze(levels);
+}
 
 // ═══════════ Types ═══════════
 

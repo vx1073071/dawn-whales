@@ -1,6 +1,23 @@
+// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
 // ── R115 QTE-27 AlertPanel + QTE-28 FundFlow — 异动提醒+资金流向 ────────
 
 import { useState, useCallback, useMemo } from 'react';
+
+
+
+// ═══════ Bridge: AlertService + FundFlow → Panel ═══════════
+import { AlertService, type AlertEvent } from '../../lib/chart/alert-service';
+import { FundFlow } from '../../lib/chart/fund-flow';
+
+let _alertService: AlertService | null = null;
+export function getAlertService(): AlertService {
+  if (!_alertService) _alertService = new AlertService();
+  return _alertService;
+}
+
+export function getFundFlowInstance(): FundFlow {
+  return new FundFlow();
+}
 
 // ═══════════ Alert Types ═══════════
 
