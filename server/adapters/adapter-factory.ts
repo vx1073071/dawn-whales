@@ -35,6 +35,13 @@ class AdapterRegistry {
     this.register('okx', require('./okx-adapter').OkxAdapter, 'OKX');
     this.register('okx-testnet', require('./okx-adapter').OkxAdapter, 'OKX Testnet');
 
+    // R131: Bybit + Bitget + Robinhood Crypto
+    this.register('bybit', require('./bybit-adapter').BybitAdapter, 'Bybit');
+    this.register('bybit-testnet', require('./bybit-adapter').BybitAdapter, 'Bybit Testnet');
+    this.register('bitget', require('./bitget-adapter').BitgetAdapter, 'Bitget');
+    this.register('bitget-testnet', require('./bitget-adapter').BitgetAdapter, 'Bitget Testnet');
+    this.register('robinhood', require('./robinhood-crypto-adapter').RobinhoodCryptoAdapter, 'Robinhood Crypto');
+
     // More adapters added in R131-R134:
     // this.register('bybit', ...)
     // this.register('bitget', ...)
@@ -163,6 +170,11 @@ export function buildCloudConfig(
     'binance-testnet': { rest: 'https://testnet.binance.vision', ws: 'wss://testnet.binance.vision' },
     'okx': { rest: 'https://www.okx.com', ws: 'wss://ws.okx.com:8443/ws/v5' },
     'okx-testnet': { rest: 'https://www.okx.com', ws: 'wss://wspap.okx.com:8443/ws/v5/public?brokerId=0' },
+    'bybit': { rest: 'https://api.bybit.com', ws: 'wss://stream.bybit.com/v5/public/spot' },
+    'bybit-testnet': { rest: 'https://api-testnet.bybit.com', ws: 'wss://stream-testnet.bybit.com/v5/public/spot' },
+    'bitget': { rest: 'https://api.bitget.com', ws: 'wss://ws.bitget.com/v2/ws/public' },
+    'bitget-testnet': { rest: 'https://api.bitget.com', ws: 'wss://ws.bitget.com/v2/ws/public' },
+    'robinhood': { rest: 'https://api.robinhood.com', ws: '' },
   };
 
   const urls = defaultUrls[brokerType] || { rest: 'https://api.example.com', ws: 'wss://ws.example.com' };

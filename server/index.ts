@@ -1,5 +1,5 @@
 // ── DAWN WHALES Server ────────────────────────────────────────────────
-// R129: Express+SQLite+JWT+encryption+signal. R130: audit logger
+// R129: Express+SQLite+JWT+encryption+signal. R130: audit. R131: error handler
 
 import express from 'express';
 import { createServer } from 'http';
@@ -8,6 +8,7 @@ import { registerApiRoutes } from '../electron/api-routes';
 import { initDatabases } from './db/database';
 import { registerAuthRoutes } from './middleware/jwt-auth';
 import { auditMiddleware } from './middleware/audit-logger';
+import { globalErrorHandler } from './middleware/error-handler';
 import { config, validateConfig } from './config/env';
 import signalRoutes from './routes/signal';
 
@@ -65,6 +66,9 @@ const configErrors = validateConfig();
 if (configErrors.length > 0) {
   console.warn('[Server] Configuration warnings:', configErrors);
 }
+
+// ── R131: Error handler (must be last) ─────────────────────────────
+app.use(globalErrorHandler);
 
 // ── Start server ─────────────────────────────────────────────────────
 export function startServer(port: number = PORT): ReturnType<typeof createServer> {
