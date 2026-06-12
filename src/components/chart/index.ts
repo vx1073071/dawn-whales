@@ -45,3 +45,11 @@ export { default as CBBOPanel } from './CBBOPanel';
 export type { CBBOQuote, CBBOData, CBBOPanelProps } from './CBBOPanel';
 export { default as ArbitrageMonitor } from './ArbitrageMonitor';
 export type { ArbOpportunity, TriangleArb, ArbitrageMonitorProps } from './ArbitrageMonitor';
+
+// R117 Advanced visualization
+export { default as DOMLadder } from './DOMLadder';
+export type { DOMLevel, DOMSnapshot, DOMLadderProps } from './DOMLadder';
+export { default as FootprintChart } from './FootprintChart';
+export type { FootprintLevel, FootprintData, FootprintChartProps } from './FootprintChart';
+export { VolumeProfile, SpreadMonitor } from './VolumeProfileSpread';
+export type { VPLevel, VolumeProfileData, VolumeProfileProps, SpreadItem, SpreadMonitorProps } from './VolumeProfileSpread';
