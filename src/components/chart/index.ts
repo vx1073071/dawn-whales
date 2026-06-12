@@ -31,3 +31,11 @@ export { default as TickTimeline } from './TickTimeline';
 export type { TickRecord, TickTimelineProps } from './TickTimeline';
 export { default as DepthAnalyzerPanel } from './DepthAnalyzerPanel';
 export type { DepthMetrics, DepthAnalyzerProps } from './DepthAnalyzerPanel';
+
+// R115 Heatmap/Scanner/Alert/FundFlow
+export { default as HeatmapTreemap } from './HeatmapTreemap';
+export type { HeatmapItem, HeatmapView, HeatmapPeriod, HeatmapProps } from './HeatmapTreemap';
+export { default as MarketScanner } from './MarketScanner';
+export type { ScanItem, PresetScan, ScanFilter, MarketScannerProps } from './MarketScanner';
+export { AlertPanel, FundFlowPanel } from './AlertAndFundFlow';
+export type { AlertRule, AlertChannel, AlertTrigger, AlertPanelProps, FundFlowItem, FundFlowProps } from './AlertAndFundFlow';
