@@ -1,5 +1,5 @@
 // ── DAWN WHALES Server ────────────────────────────────────────────────
-// R129: Express+SQLite+JWT+encryption+signal. R130: audit. R131: error handler
+// R129-131: all layers. R132: dead letter queue
 
 import express from 'express';
 import { createServer } from 'http';
@@ -11,6 +11,7 @@ import { auditMiddleware } from './middleware/audit-logger';
 import { globalErrorHandler } from './middleware/error-handler';
 import { config, validateConfig } from './config/env';
 import signalRoutes from './routes/signal';
+import deadLetterRoutes from './middleware/dead-letter';
 
 const app = express();
 const PORT = config.port;
@@ -57,6 +58,9 @@ registerAuthRoutes(app);
 
 // ── R129: Signal routes ──────────────────────────────────────────────
 app.use('/api/signal', signalRoutes);
+
+// ── R132: Dead letter queue ──────────────────────────────────────────
+app.use('/api/dead-letter', deadLetterRoutes);
 
 // ── Existing API routes (AI chat, report, billing, wallet) ──────────
 registerApiRoutes(app);

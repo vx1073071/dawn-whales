@@ -74,6 +74,17 @@ export function initDatabases(): void {
     CREATE INDEX IF NOT EXISTS idx_signals_broker_type ON signals(broker_type);
     CREATE INDEX IF NOT EXISTS idx_copy_trades_user ON copy_trades(user_id);
     CREATE INDEX IF NOT EXISTS idx_copy_trades_signal ON copy_trades(signal_id);
+
+    CREATE TABLE IF NOT EXISTS dead_letters (
+      id TEXT PRIMARY KEY,
+      signal_id TEXT NOT NULL REFERENCES signals(id),
+      reason TEXT NOT NULL,
+      retry_count INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now')),
+      resolved_at TEXT
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_dead_letters_signal ON dead_letters(signal_id);
   `);
 
   // ── Keys database (separate encrypted DB) ──────────────────────────
