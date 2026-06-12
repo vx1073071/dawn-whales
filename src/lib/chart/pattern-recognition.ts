@@ -163,19 +163,15 @@ export function detectExtremePoints(
 // GEOMETRIC HELPERS
 // ═══════════════════════════════════════════════════════════════════════
 
+function isNear(a: number, b: number, tolerance: number = 0.03): boolean {
+  return Math.abs(a - b) / Math.max(Math.abs(a), Math.abs(b)) <= tolerance;
+}
+
 function avgPrice(points: { price: number }[]): number {
   return points.reduce((s, p) => s + p.price, 0) / points.length;
 }
 
-function priceDiffPercent(a: number, b: number): number {
-  return Math.abs(a - b) / Math.max(a, b);
-}
-
-function isNear(a: number, b: number, tolerance: number = 0.03): boolean {
-  return priceDiffPercent(a, b) <= tolerance;
-}
-
-function _slope(p1: { index: number; price: number }, p2: { index: number; price: number }): number {
+// ═══════════════════════════════════════════════════════════════════════
 // PATTERN DETECTORS (20 patterns)
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -1261,5 +1257,3 @@ export function candlestickToOverlayResults(results: CandlestickResult[]): Patte
   }));
 }
 
-
-}
