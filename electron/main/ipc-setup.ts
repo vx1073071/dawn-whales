@@ -267,10 +267,49 @@ export function setupIPC(ctx: IPCContext): void {
     if (order.price !== undefined && (typeof order.price !== 'number' || order.price < 0)) {
       return { success: false, error: 'Invalid order.price' };
     }
+
+    // R123 J03: Two-phase order confirmation — return pending for renderer confirmation
+    const pendingId = `order-pending-${Date.now()}`;
+    (globalThis as any).__pendingOrders = (globalThis as any).__pendingOrders || {};
+    (globalThis as any).__pendingOrders[pendingId] = {
+      order,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 30000, // 30s timeout
+    };
+
+    // Send confirmation request to renderer
+    const brokerName = (order as any).brokerName || 'Futu OpenD';
+    const estimatedFee = calculateEstimatedFee(order);
+    ctx.mainWindow?.webContents.send('order:confirm-required', {
+      pendingId,
+      brokerName,
+      code: (order as any).code,
+      side: (order as any).side,
+      qty: (order as any).qty,
+      price: (order as any).price,
+      estimatedFee,
+      market: (order as any).market || 'US',
+    });
+
+    return { success: true, pending: true, pendingId, brokerName, estimatedFee };
+  });
+
+  // R123 J03: Confirm pending order
+  ipcMain.handle('broker:placeOrderConfirm', async (_e, pendingId: string, confirmed: boolean) => {
+    const pending = (globalThis as any).__pendingOrders?.[pendingId];
+    if (!pending) return { success: false, error: 'Order expired or not found' };
+
+    delete (globalThis as any).__pendingOrders[pendingId];
+
+    if (!confirmed) {
+      return { success: true, cancelled: true, message: 'Order cancelled by user' };
+    }
+
+    const { order } = pending;
     const riskResult = ctx.riskEngine?.checkOrder(order);
     if (riskResult && !riskResult.pass) {
       ctx.mainWindow?.webContents.send('risk-alert', { order, reason: riskResult.reason });
-      return { success: false, error: i18n.t('ipcSetup.k1') };
+      return { success: false, error: `Risk check failed: ${riskResult.reason}` };
     }
     try {
       const result = await ctx.opendClient.placeOrder(order);
@@ -278,9 +317,25 @@ export function setupIPC(ctx: IPCContext): void {
       ctx.mainWindow?.webContents.send('order-update', { ...order, orderId: result.orderId, status: 'submitted' });
       return { success: true, ...result };
     } catch (err) {
-    // [EngineError:AI] — structured error tracking
-    return { success: false, error: err.message }; }
+    return { success: false, error: (err as Error).message }; }
   });
+
+  // R123 J03: Estimate fee helper
+  function calculateEstimatedFee(order: any): { commission: number; platform: number; total: number; currency: string } {
+    const qty = order.qty || 0;
+    const price = order.price || 0;
+    const notional = qty * price;
+    const commissionRate = 0.0003; // 0.03%
+    const platformRate = 0.0005;   // 0.05%
+    const commission = +(notional * commissionRate).toFixed(2);
+    const platform = +(notional * platformRate).toFixed(2);
+    return {
+      commission,
+      platform,
+      total: +(commission + platform).toFixed(2),
+      currency: order.market === 'US' ? 'USD' : order.market === 'HK' ? 'HKD' : 'USDT',
+    };
+  }
 
   ipcMain.handle('broker:cancelOrder', async (_e, orderId: string, accountId: string, code: string) => {
     if (!ctx.opendClient?.connected) return { success: false, error: 'Not connected' };

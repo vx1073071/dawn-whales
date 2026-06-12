@@ -14,6 +14,7 @@ contextBridge.exposeInMainWorld('api', {
     subscribe: (codes: string[]) => ipcRenderer.invoke('broker:subscribe', codes),
     unsubscribe: (codes: string[]) => ipcRenderer.invoke('broker:unsubscribe', codes),
     placeOrder: (order: unknown) => ipcRenderer.invoke('broker:placeOrder', order),
+    placeOrderConfirm: (pendingId: string, confirmed: boolean) => ipcRenderer.invoke('broker:placeOrderConfirm', pendingId, confirmed),
     cancelOrder: (orderId: string) => ipcRenderer.invoke('broker:cancelOrder', orderId),
     getOrders: (accountId: string) => ipcRenderer.invoke('broker:getOrders', accountId),
     // Sprint1: multi-broker management
