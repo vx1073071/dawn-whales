@@ -23,7 +23,6 @@ import type {
   PlaceOrderRequest,
 } from './IBrokerAdapter';
 import {
-import { EngineError } from './engine/core/engine-error';
 
   OpenDBaseAdapter,
   type ContractInfo,

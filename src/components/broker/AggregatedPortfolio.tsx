@@ -6,7 +6,7 @@
  * per-broker breakdown, and cross-broker position aggregation.
  */
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Progress, Tooltip } from 'antd';
 
 // ── Types ──────────────────────────────────────────────
