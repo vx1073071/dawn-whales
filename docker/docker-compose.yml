@@ -1,0 +1,67 @@
+# ═══════════════════════════════════════════════════════════════════
+# DAWN WHALES v2.1.0 — docker-compose.yml (R136 J02)
+# ═══════════════════════════════════════════════════════════════════
+
+version: '3.8'
+
+services:
+  dawn-whales:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: dawn-whales
+    restart: unless-stopped
+    ports:
+      - "3000:3000"     # Vite frontend (nginx proxied)
+      - "4096:4096"     # Express API + WebSocket
+    environment:
+      - NODE_ENV=production
+      - PORT=4096
+      - DB_PATH=/data/dawn-whales.db
+      - JWT_SECRET=${JWT_SECRET:-changeme-in-production}
+      - SSL_ENABLED=${SSL_ENABLED:-false}
+      - CORS_ORIGIN=${CORS_ORIGIN:-https://dawnwhales.app}
+      - BROKER_API_KEYS=${BROKER_API_KEYS:-}
+      - FUTU_OPEND_HOST=${FUTU_OPEND_HOST:-127.0.0.1}
+      - FUTU_OPEND_PORT=${FUTU_OPEND_PORT:-11111}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - HEALTH_CHECK_INTERVAL=${HEALTH_CHECK_INTERVAL:-30000}
+    volumes:
+      - dawn-whales-data:/data
+      - ./ssl:/etc/nginx/ssl:ro  # SSL certs (mounted read-only)
+      - ./logs:/app/logs
+    networks:
+      - dawn-whales-net
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4096/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ═══════ Optional: Redis cache (if enabled) ═══════
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: dawn-whales-redis
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis-data:/data
+  #   networks:
+  #     - dawn-whales-net
+
+volumes:
+  dawn-whales-data:
+    driver: local
+  # redis-data:
+  #   driver: local
+
+networks:
+  dawn-whales-net:
+    driver: bridge
