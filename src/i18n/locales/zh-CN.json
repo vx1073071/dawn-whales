@@ -366,7 +366,8 @@
     "addError": "添加异常",
     "confirmDeleteBroker": "确定删除该券商配置？",
     "deleteFailed": "删除失败",
-    "switchFailed": "切换失败"
+    "switchFailed": "切换失败",
+    "server": "服务器"
   },
   "realTimeMarket": {
     "title": "实时行情",
@@ -6091,5 +6092,32 @@
   "credits.noP2P": "暂无P2P转账",
   "SettingsPage.k13": "提示",
   "SettingsPage.k14": "确认删除",
-  "SettingsPage.k15": "确定要删除该券商吗？"
+  "SettingsPage.k15": "确定要删除该券商吗？",
+  "client": {
+    "connected": "已连接",
+    "connecting": "连接中...",
+    "disconnected": "未连接",
+    "error": "连接错误",
+    "connect": "连接",
+    "disconnect": "断开连接",
+    "testConnection": "测试连接",
+    "testing": "测试中...",
+    "connectionOk": "连接成功",
+    "connectionFailed": "连接失败",
+    "connectionError": "连接出错",
+    "serverUrl": "服务器地址",
+    "apiKey": "API 密钥",
+    "showKey": "显示密钥",
+    "hideKey": "隐藏密钥",
+    "lastHeartbeat": "上次心跳",
+    "tokenExpiry": "令牌过期",
+    "expired": "已过期",
+    "notAvailable": "API 不可用",
+    "saveKey": "保存密钥",
+    "keySaved": "API 密钥已安全保存",
+    "keyDeleted": "API 密钥已删除",
+    "serverConnection": "服务器连接",
+    "serverConnectionDesc": "连接到 Dawn Whales 云服务器，实现双模跟单和信号同步。",
+    "enterServerInfo": "输入服务器地址和 API 密钥进行连接。"
+  }
 }

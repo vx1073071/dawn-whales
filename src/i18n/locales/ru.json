@@ -342,7 +342,8 @@
     "addError": "Add Error",
     "confirmDeleteBroker": "Are you sure you want to delete this broker config?",
     "deleteFailed": "Delete Failed",
-    "switchFailed": "Switch Failed"
+    "switchFailed": "Switch Failed",
+    "server": "Сервер"
   },
   "orderStatus": {
     "pending": "Pending",
@@ -5740,5 +5741,32 @@
   "credits.from": "From",
   "credits.to": "To",
   "credits.fee": "Fee",
-  "credits.noP2P": "No P2P transfers yet"
+  "credits.noP2P": "No P2P transfers yet",
+  "client": {
+    "connected": "Подключено",
+    "connecting": "Подключение...",
+    "disconnected": "Отключено",
+    "error": "Ошибка подключения",
+    "connect": "Подключить",
+    "disconnect": "Отключить",
+    "testConnection": "Проверить соединение",
+    "testing": "Проверка...",
+    "connectionOk": "Соединение успешно",
+    "connectionFailed": "Соединение не удалось",
+    "connectionError": "Ошибка соединения",
+    "serverUrl": "URL сервера",
+    "apiKey": "API ключ",
+    "showKey": "Показать ключ",
+    "hideKey": "Скрыть ключ",
+    "lastHeartbeat": "Последний heartbeat",
+    "tokenExpiry": "Срок токена",
+    "expired": "Истек",
+    "notAvailable": "API недоступен",
+    "saveKey": "Сохранить ключ",
+    "keySaved": "API ключ сохранен безопасно",
+    "keyDeleted": "API ключ удален",
+    "serverConnection": "Подключение к серверу",
+    "serverConnectionDesc": "Подключитесь к облачному серверу Dawn Whales для двухрежимного копитрейдинга и синхронизации сигналов.",
+    "enterServerInfo": "Введите URL сервера и ключ API для подключения."
+  }
 }

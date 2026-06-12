@@ -342,7 +342,8 @@
     "addError": "Add Error",
     "confirmDeleteBroker": "Are you sure you want to delete this broker config?",
     "deleteFailed": "Delete Failed",
-    "switchFailed": "Switch Failed"
+    "switchFailed": "Switch Failed",
+    "server": "Servidor"
   },
   "orderStatus": {
     "pending": "Pending",
@@ -5740,5 +5741,32 @@
   "credits.from": "From",
   "credits.to": "To",
   "credits.fee": "Fee",
-  "credits.noP2P": "No P2P transfers yet"
+  "credits.noP2P": "No P2P transfers yet",
+  "client": {
+    "connected": "Conectado",
+    "connecting": "Conectando...",
+    "disconnected": "Desconectado",
+    "error": "Error de conexión",
+    "connect": "Conectar",
+    "disconnect": "Desconectar",
+    "testConnection": "Probar conexión",
+    "testing": "Probando...",
+    "connectionOk": "Conexión exitosa",
+    "connectionFailed": "Conexión fallida",
+    "connectionError": "Error de conexión",
+    "serverUrl": "URL del servidor",
+    "apiKey": "Clave API",
+    "showKey": "Mostrar clave",
+    "hideKey": "Ocultar clave",
+    "lastHeartbeat": "Último heartbeat",
+    "tokenExpiry": "Caducidad del token",
+    "expired": "Caducado",
+    "notAvailable": "API no disponible",
+    "saveKey": "Guardar clave",
+    "keySaved": "Clave API guardada de forma segura",
+    "keyDeleted": "Clave API eliminada",
+    "serverConnection": "Conexión del servidor",
+    "serverConnectionDesc": "Conéctese al servidor cloud de Dawn Whales para copy trading dual-mode y sincronización de señales.",
+    "enterServerInfo": "Ingrese la URL del servidor y la clave API para conectarse."
+  }
 }

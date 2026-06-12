@@ -14,12 +14,13 @@ import i18n from '../../i18n';
 
 import TimezoneSelector from './TimezoneSelector';
 import CurrencySelector from './CurrencySelector';
+import ServerConnectionStatus from './ServerConnectionStatus';
 import CreditsHistoryPage from '../billing/CreditsHistoryPage';
 import PointsTopUpPage from '../billing/PointsTopUpPage';
 import CreditsDashboard from '../billing/CreditsDashboard';
 import P2PTransferRecords from '../billing/P2PTransferRecords';
 
-type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'currency' | 'credits' | 'topup' | 'dashboard' | 'p2p' | 'update' | 'info' | 'exchangeRate';
+type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'currency' | 'credits' | 'topup' | 'dashboard' | 'p2p' | 'update' | 'info' | 'exchangeRate' | 'server';
 
 interface BrokerItem {
   id: string;
@@ -190,6 +191,7 @@ export default function SettingsPage() {
   { id: 'dashboard', label: 'settings.dashboard', icon: '📊' },
   { id: 'p2p', label: 'settings.p2p', icon: '🤝' },
   { id: 'exchangeRate', label: 'settings.exchangeRate', icon: '💹' },
+  { id: 'server', label: 'settings.server', icon: '☁️' },
   { id: 'update', label: 'settings.softwareUpdate', icon: '🔄' },
   { id: 'info', label: 'settings.systemInfo', icon: 'ℹ️' }];
 
@@ -501,6 +503,15 @@ export default function SettingsPage() {
       {activeTab === 'p2p' && <P2PTransferRecords />}
 
       {activeTab === 'exchangeRate' && <ExchangeRatePanel />}
+
+      {/* ── Tab: Server Connection (R129 M-02) ─────────────────── */}
+      {activeTab === 'server' &&
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">
+          <h2 className="text-white font-semibold mb-2 flex items-center gap-2">☁️ {i18n.t('client.serverConnection')}</h2>
+          <p className="text-gray-400 text-sm mb-4">{i18n.t('client.serverConnectionDesc')}</p>
+          <ServerConnectionStatus />
+        </div>
+      }
 
       {activeTab === 'info' &&
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-6">

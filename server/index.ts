@@ -1,72 +1,78 @@
+// ── DAWN WHALES Server ────────────────────────────────────────────────
+// R129: Express+SQLite+JWT+encryption+signal endpoints
+
 import express from 'express';
 import { createServer } from 'http';
+import cors from 'cors';
 import { registerApiRoutes } from '../electron/api-routes';
+import { initDatabases } from './db/database';
+import { registerAuthRoutes } from './middleware/jwt-auth';
+import { config, validateConfig } from './config/env';
+import signalRoutes from './routes/signal';
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = config.port;
 
-// ── Middleware ──────────────────────────────────────────────────────────────
-
+// ── Middleware ────────────────────────────────────────────────────────
+app.use(cors({ origin: config.corsOrigin }));
 app.use(express.json());
 
-// Health check: lightweight, always-on readiness probe
+// ── R129: Init databases ─────────────────────────────────────────────
+try {
+  initDatabases();
+  console.log('[Server] Databases initialized');
+} catch (err) {
+  console.error('[Server] Database init failed:', err);
+  process.exit(1);
+}
+
+// ── Health check ─────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
   res.status(200).json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    version: process.env.APP_VERSION || '1.9.0',
+    version: process.env.APP_VERSION || '2.0.0',
   });
 });
 
-// AI Gateway status endpoint — R88: enhanced with key presence check
+// AI Gateway status
 app.get('/api/ai/status', (_req, res) => {
   const deepseekKey = process.env.DEEPSEEK_API_KEY;
-  const gatewayUrl = process.env.AI_GATEWAY_URL;
-
   res.json({
-    gateway: deepseekKey ? 'direct' : gatewayUrl ? 'proxy' : 'offline',
+    gateway: deepseekKey ? 'direct' : process.env.AI_GATEWAY_URL ? 'proxy' : 'offline',
     providers: ['deepseek-v4-pro', 'deepseek-flash', 'minimax-abab'],
-    cacheEnabled: true,
     hasApiKey: !!deepseekKey,
-    gatewayUrl: gatewayUrl || null,
-    model: process.env.AI_DEFAULT_MODEL || 'deepseek-chat',
     timestamp: new Date().toISOString(),
   });
 });
 
-// Mount all API routes (AI chat, report, billing, wallet, auth)
+// ── R129: Auth routes ────────────────────────────────────────────────
+registerAuthRoutes(app);
+
+// ── R129: Signal routes ──────────────────────────────────────────────
+app.use('/api/signal', signalRoutes);
+
+// ── Existing API routes (AI chat, report, billing, wallet) ──────────
 registerApiRoutes(app);
 
-// ── Health check middleware for other routes ───────────────────────────────
-
-function healthCheckMiddleware(
-  _req: express.Request,
-  res: express.Response,
-  next: express.NextFunction,
-) {
-  // Attach server status to response headers for monitoring
-  res.setHeader('X-Server-Status', 'healthy');
-  res.setHeader('X-Response-Time', Date.now().toString());
-  next();
+// ── Config validation ────────────────────────────────────────────────
+const configErrors = validateConfig();
+if (configErrors.length > 0) {
+  console.warn('[Server] Configuration warnings:', configErrors);
 }
 
-app.use(healthCheckMiddleware);
-
-// ── Start server ───────────────────────────────────────────────────────────
-
+// ── Start server ─────────────────────────────────────────────────────
 export function startServer(port: number = PORT): ReturnType<typeof createServer> {
   const server = app.listen(port, () => {
     console.log(`[Server] HTTP server listening on http://localhost:${port}`);
-    console.log(`[Server] Health check: http://localhost:${port}/api/health`);
+    console.log(`[Server] Health: http://localhost:${port}/api/health`);
+    console.log(`[Server] Signal API: http://localhost:${port}/api/signal`);
   });
-
   return server;
 }
 
 export { app };
-
-// ── CLI entry ──────────────────────────────────────────────────────────────
 
 if (require.main === module) {
   startServer();

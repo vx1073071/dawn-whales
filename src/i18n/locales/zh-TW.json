@@ -342,7 +342,8 @@
     "addError": "新增異常",
     "confirmDeleteBroker": "確定刪除該券商配置？",
     "deleteFailed": "刪除失敗",
-    "switchFailed": "切換失敗"
+    "switchFailed": "切換失敗",
+    "server": "伺服器"
   },
   "orderStatus": {
     "pending": "待提交",
@@ -5730,5 +5731,32 @@
   "credits.from": "From",
   "credits.to": "To",
   "credits.fee": "Fee",
-  "credits.noP2P": "No P2P transfers yet"
+  "credits.noP2P": "No P2P transfers yet",
+  "client": {
+    "connected": "已連線",
+    "connecting": "連線中...",
+    "disconnected": "未連線",
+    "error": "連線錯誤",
+    "connect": "連線",
+    "disconnect": "斷開連線",
+    "testConnection": "測試連線",
+    "testing": "測試中...",
+    "connectionOk": "連線成功",
+    "connectionFailed": "連線失敗",
+    "connectionError": "連線出錯",
+    "serverUrl": "伺服器網址",
+    "apiKey": "API 金鑰",
+    "showKey": "顯示金鑰",
+    "hideKey": "隱藏金鑰",
+    "lastHeartbeat": "上次心跳",
+    "tokenExpiry": "令牌過期",
+    "expired": "已過期",
+    "notAvailable": "API 不可用",
+    "saveKey": "儲存金鑰",
+    "keySaved": "API 金鑰已安全儲存",
+    "keyDeleted": "API 金鑰已刪除",
+    "serverConnection": "伺服器連線",
+    "serverConnectionDesc": "連線到 Dawn Whales 雲端伺服器，實現雙模跟單和訊號同步。",
+    "enterServerInfo": "輸入伺服器網址和 API 金鑰進行連線。"
+  }
 }

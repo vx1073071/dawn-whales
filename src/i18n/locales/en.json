@@ -342,7 +342,8 @@
     "addError": "Add Error",
     "confirmDeleteBroker": "Are you sure you want to delete this broker config?",
     "deleteFailed": "Delete Failed",
-    "switchFailed": "Switch Failed"
+    "switchFailed": "Switch Failed",
+    "server": "Server"
   },
   "orderStatus": {
     "pending": "Pending",
@@ -5747,5 +5748,32 @@
   "credits.noP2P": "No P2P transfers yet",
   "SettingsPage.k13": "Notification",
   "SettingsPage.k14": "Confirm",
-  "SettingsPage.k15": "Confirm"
+  "SettingsPage.k15": "Confirm",
+  "client": {
+    "connected": "Connected",
+    "connecting": "Connecting...",
+    "disconnected": "Disconnected",
+    "error": "Connection Error",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "testConnection": "Test Connection",
+    "testing": "Testing...",
+    "connectionOk": "Connection successful",
+    "connectionFailed": "Connection failed",
+    "connectionError": "Connection error occurred",
+    "serverUrl": "Server URL",
+    "apiKey": "API Key",
+    "showKey": "Show key",
+    "hideKey": "Hide key",
+    "lastHeartbeat": "Last heartbeat",
+    "tokenExpiry": "Token expiry",
+    "expired": "Expired",
+    "notAvailable": "API not available",
+    "saveKey": "Save Key",
+    "keySaved": "API Key saved securely",
+    "keyDeleted": "API Key deleted",
+    "serverConnection": "Server Connection",
+    "serverConnectionDesc": "Connect to Dawn Whales cloud server for dual-mode copy trading and signal synchronization.",
+    "enterServerInfo": "Enter your server URL and API Key to connect."
+  }
 }

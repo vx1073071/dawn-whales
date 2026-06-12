@@ -1406,4 +1406,14 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   } catch (e) {
     log.error('[IPC Setup] Failed to register SQLite IPC bridge:', e);
   }
+
+  // ── R129 M-01: Server Client IPC (desktop ↔ cloud server) ──────────
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { registerServerIPC } = require('../ipc/server-ipc');
+    registerServerIPC(app);
+    log.info('[IPC Setup] Server-client IPC registered');
+  } catch (e) {
+    log.error('[IPC Setup] Failed to register server-client IPC:', e);
+  }
 }

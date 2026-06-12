@@ -68,6 +68,13 @@ contextBridge.exposeInMainWorld('api', {
     getWatchlist: () => ipcRenderer.invoke('db:getWatchlist'),
     saveWatchlist: (codes: string[]) => ipcRenderer.invoke('db:saveWatchlist', codes),
     getSignals: (strategyId?: string) => ipcRenderer.invoke('db:getSignals', strategyId),
+    // R128 J01: SQLite raw query bridge
+    all: (sql: string, params?: unknown[]) => ipcRenderer.invoke('db:all', sql, params),
+    get: (sql: string, params?: unknown[]) => ipcRenderer.invoke('db:get', sql, params),
+    run: (sql: string, params?: unknown[]) => ipcRenderer.invoke('db:run', sql, params),
+    exec: (sql: string) => ipcRenderer.invoke('db:exec', sql),
+    query: (opts: { sql: string; type: 'all' | 'get' | 'run'; params?: unknown[] }) =>
+      ipcRenderer.invoke('db:query', opts),
   },
 
   // ── App ───────────────────────────────────────────────────────────
@@ -237,13 +244,17 @@ contextBridge.exposeInMainWorld('api', {
     ipcRenderer.removeListener(channel, callback);
   },
 
-  // ── R128 J01: SQLite IPC Bridge (sandbox:true) ────────────────
-  db: {
-    all: (sql: string, params?: unknown[]) => ipcRenderer.invoke('db:all', sql, params),
-    get: (sql: string, params?: unknown[]) => ipcRenderer.invoke('db:get', sql, params),
-    run: (sql: string, params?: unknown[]) => ipcRenderer.invoke('db:run', sql, params),
-    exec: (sql: string) => ipcRenderer.invoke('db:exec', sql),
-    query: (opts: { sql: string; type: 'all' | 'get' | 'run'; params?: unknown[] }) =>
-      ipcRenderer.invoke('db:query', opts),
+  // ── R129 M-01: Server Client ───────────────────────────────────
+  server: {
+    connect: (url: string, apiKey: string) => ipcRenderer.invoke('server:connect', url, apiKey),
+    disconnect: () => ipcRenderer.invoke('server:disconnect'),
+    getStatus: () => ipcRenderer.invoke('server:getStatus'),
+    testConnection: (url: string, apiKey: string) => ipcRenderer.invoke('server:testConnection', url, apiKey),
+    sendSignal: (signal: unknown) => ipcRenderer.invoke('server:sendSignal', signal),
+    saveApiKey: (key: string) => ipcRenderer.invoke('server:saveApiKey', key),
+    getApiKey: () => ipcRenderer.invoke('server:getApiKey'),
+    deleteApiKey: () => ipcRenderer.invoke('server:deleteApiKey'),
+    subscribeStatus: () => ipcRenderer.send('server:subscribeStatus'),
+    unsubscribeStatus: () => ipcRenderer.send('server:unsubscribeStatus'),
   },
 });

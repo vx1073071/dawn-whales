@@ -342,7 +342,8 @@
     "addError": "追加エラー",
     "confirmDeleteBroker": "この証券設定を削除しますか？",
     "deleteFailed": "削除失敗",
-    "switchFailed": "切替失敗"
+    "switchFailed": "切替失敗",
+    "server": "サーバー"
   },
   "orderStatus": {
     "pending": "保留中",
@@ -5733,5 +5734,32 @@
   "credits.noP2P": "P2P送金なし",
   "SettingsPage.k13": "通知",
   "SettingsPage.k14": "削除確認",
-  "SettingsPage.k15": "このブローカーを削除しますか？"
+  "SettingsPage.k15": "このブローカーを削除しますか？",
+  "client": {
+    "connected": "接続済み",
+    "connecting": "接続中...",
+    "disconnected": "未接続",
+    "error": "接続エラー",
+    "connect": "接続",
+    "disconnect": "切断",
+    "testConnection": "接続テスト",
+    "testing": "テスト中...",
+    "connectionOk": "接続成功",
+    "connectionFailed": "接続失敗",
+    "connectionError": "接続エラー",
+    "serverUrl": "サーバーURL",
+    "apiKey": "APIキー",
+    "showKey": "キーを表示",
+    "hideKey": "キーを隠す",
+    "lastHeartbeat": "最終ハートビート",
+    "tokenExpiry": "トークン期限",
+    "expired": "期限切れ",
+    "notAvailable": "API利用不可",
+    "saveKey": "キーを保存",
+    "keySaved": "APIキーを安全に保存しました",
+    "keyDeleted": "APIキーを削除しました",
+    "serverConnection": "サーバー接続",
+    "serverConnectionDesc": "Dawn Whales クラウドサーバーに接続し、デュアルモードコピートレードとシグナル同期を実現します。",
+    "enterServerInfo": "サーバーURLとAPIキーを入力して接続してください。"
+  }
 }

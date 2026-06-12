@@ -342,7 +342,8 @@
     "addError": "Erreur Ajout",
     "confirmDeleteBroker": "Supprimer cette config courtier ?",
     "deleteFailed": "Échec Suppression",
-    "switchFailed": "Échec Changement"
+    "switchFailed": "Échec Changement",
+    "server": "Serveur"
   },
   "orderStatus": {
     "pending": "En attente",
@@ -5730,5 +5731,32 @@
   "credits.from": "From",
   "credits.to": "To",
   "credits.fee": "Fee",
-  "credits.noP2P": "No P2P transfers yet"
+  "credits.noP2P": "No P2P transfers yet",
+  "client": {
+    "connected": "Connecté",
+    "connecting": "Connexion en cours...",
+    "disconnected": "Déconnecté",
+    "error": "Erreur de connexion",
+    "connect": "Connecter",
+    "disconnect": "Déconnecter",
+    "testConnection": "Tester la connexion",
+    "testing": "Test en cours...",
+    "connectionOk": "Connexion réussie",
+    "connectionFailed": "Échec de connexion",
+    "connectionError": "Erreur de connexion",
+    "serverUrl": "URL du serveur",
+    "apiKey": "Clé API",
+    "showKey": "Afficher la clé",
+    "hideKey": "Masquer la clé",
+    "lastHeartbeat": "Dernier heartbeat",
+    "tokenExpiry": "Expiration du jeton",
+    "expired": "Expiré",
+    "notAvailable": "API indisponible",
+    "saveKey": "Enregistrer la clé",
+    "keySaved": "Clé API enregistrée en toute sécurité",
+    "keyDeleted": "Clé API supprimée",
+    "serverConnection": "Connexion serveur",
+    "serverConnectionDesc": "Connectez-vous au serveur cloud Dawn Whales pour le copy trading double mode et la synchronisation des signaux.",
+    "enterServerInfo": "Entrez l'URL du serveur et la clé API pour vous connecter."
+  }
 }

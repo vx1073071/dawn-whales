@@ -360,7 +360,8 @@
     "addError": "Add Error",
     "confirmDeleteBroker": "Are you sure you want to delete this broker config?",
     "deleteFailed": "Delete Failed",
-    "switchFailed": "Switch Failed"
+    "switchFailed": "Switch Failed",
+    "server": "伺服器"
   },
   "risk": {
     "title": "風險儀錶板",
@@ -5768,5 +5769,32 @@
   "credits.from": "From",
   "credits.to": "To",
   "credits.fee": "Fee",
-  "credits.noP2P": "No P2P transfers yet"
+  "credits.noP2P": "No P2P transfers yet",
+  "client": {
+    "connected": "已連接",
+    "connecting": "連接中...",
+    "disconnected": "未連接",
+    "error": "連接錯誤",
+    "connect": "連接",
+    "disconnect": "斷開連接",
+    "testConnection": "測試連接",
+    "testing": "測試中...",
+    "connectionOk": "連接成功",
+    "connectionFailed": "連接失敗",
+    "connectionError": "連接出錯",
+    "serverUrl": "伺服器地址",
+    "apiKey": "API 密鑰",
+    "showKey": "顯示密鑰",
+    "hideKey": "隱藏密鑰",
+    "lastHeartbeat": "上次心跳",
+    "tokenExpiry": "令牌過期",
+    "expired": "已過期",
+    "notAvailable": "API 不可用",
+    "saveKey": "保存密鑰",
+    "keySaved": "API 密鑰已安全保存",
+    "keyDeleted": "API 密鑰已刪除",
+    "serverConnection": "伺服器連接",
+    "serverConnectionDesc": "連接到 Dawn Whales 雲端伺服器，實現雙模跟單和信號同步。",
+    "enterServerInfo": "輸入伺服器地址和 API 密鑰進行連接。"
+  }
 }

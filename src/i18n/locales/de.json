@@ -342,7 +342,8 @@
     "addError": "Hinzufügefehler",
     "confirmDeleteBroker": "Diese Broker-Konfiguration löschen?",
     "deleteFailed": "Löschen Fehlgeschlagen",
-    "switchFailed": "Wechsel Fehlgeschlagen"
+    "switchFailed": "Wechsel Fehlgeschlagen",
+    "server": "Server"
   },
   "orderStatus": {
     "pending": "Ausstehend",
@@ -5730,5 +5731,32 @@
   "credits.from": "From",
   "credits.to": "To",
   "credits.fee": "Fee",
-  "credits.noP2P": "No P2P transfers yet"
+  "credits.noP2P": "No P2P transfers yet",
+  "client": {
+    "connected": "Verbunden",
+    "connecting": "Verbindung wird hergestellt...",
+    "disconnected": "Getrennt",
+    "error": "Verbindungsfehler",
+    "connect": "Verbinden",
+    "disconnect": "Trennen",
+    "testConnection": "Verbindung testen",
+    "testing": "Test läuft...",
+    "connectionOk": "Verbindung erfolgreich",
+    "connectionFailed": "Verbindung fehlgeschlagen",
+    "connectionError": "Verbindungsfehler aufgetreten",
+    "serverUrl": "Server-URL",
+    "apiKey": "API-Schlüssel",
+    "showKey": "Schlüssel anzeigen",
+    "hideKey": "Schlüssel verbergen",
+    "lastHeartbeat": "Letzter Heartbeat",
+    "tokenExpiry": "Token-Ablauf",
+    "expired": "Abgelaufen",
+    "notAvailable": "API nicht verfügbar",
+    "saveKey": "Schlüssel speichern",
+    "keySaved": "API-Schlüssel sicher gespeichert",
+    "keyDeleted": "API-Schlüssel gelöscht",
+    "serverConnection": "Serververbindung",
+    "serverConnectionDesc": "Verbinden Sie sich mit dem Dawn Whales Cloud-Server für Dual-Mode Copy Trading und Signal-Synchronisation.",
+    "enterServerInfo": "Geben Sie die Server-URL und den API-Schlüssel ein, um sich zu verbinden."
+  }
 }
