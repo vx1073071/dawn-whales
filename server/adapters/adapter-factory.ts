@@ -42,10 +42,10 @@ class AdapterRegistry {
     this.register('bitget-testnet', require('./bitget-adapter').BitgetAdapter, 'Bitget Testnet');
     this.register('robinhood', require('./robinhood-crypto-adapter').RobinhoodCryptoAdapter, 'Robinhood Crypto');
 
-    // More adapters added in R131-R134:
-    // this.register('bybit', ...)
-    // this.register('bitget', ...)
-    // this.register('tiger', ...)
+    // R133: Traditional Brokers — IB TWS + Tiger + Schwab (OAuth2)
+    this.register('ib', require('./ib-tws-adapter').IBTwsAdapter, 'Interactive Brokers TWS');
+    this.register('tiger', require('./tiger-adapter').TigerAdapter, 'Tiger Brokers');
+    this.register('schwab', require('./schwab-adapter').SchwabAdapter, 'Charles Schwab');
   }
 
   /** Create and connect an adapter */
@@ -175,6 +175,9 @@ export function buildCloudConfig(
     'bitget': { rest: 'https://api.bitget.com', ws: 'wss://ws.bitget.com/v2/ws/public' },
     'bitget-testnet': { rest: 'https://api.bitget.com', ws: 'wss://ws.bitget.com/v2/ws/public' },
     'robinhood': { rest: 'https://api.robinhood.com', ws: '' },
+    'ib': { rest: 'https://localhost:5000', ws: '' },
+    'tiger': { rest: 'https://openapi.tigersecurities.com', ws: '' },
+    'schwab': { rest: 'https://api.schwabapi.com', ws: '' },
   };
 
   const urls = defaultUrls[brokerType] || { rest: 'https://api.example.com', ws: 'wss://ws.example.com' };
