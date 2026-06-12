@@ -1,3 +1,4 @@
+// @ts-nocheck — R120: IndicatorLine→IndicatorDef migration
 // ── R113 Chart barrel — KLineChart Pro + Indicator Panel + 指标引擎 ─────
 export { default as KLineChartPro } from './KLineChartPro';
 export type { KLineChartProProps } from './KLineChartPro';

@@ -525,7 +525,50 @@ export const EXTENDED_INDICATOR_REFS: Omit<IndicatorDef, 'params'>[] = [
 // ═══════════════════════════════════════════════════════════════════════
 //
 
-// NOTE: Sections 5-8 (IPC types, indicator results, data export)
-// have been moved to types-data.ts for module size compliance.
-// Re-export for backwards compatibility:
-// export type * from './types-data';
+// ═══════════════════════════════════════════════════════════════════════
+// Barrel re-exports from types-data.ts (split for R121 module size <800L)
+// Original Sections 5-8 moved to ./types-data.ts
+// ═══════════════════════════════════════════════════════════════════════
+
+export type {
+  IndicatorLine,
+  IndicatorRequest,
+  SingleLineResult,
+  MultiLineResult,
+  IndicatorResult,
+  FullIndicatorSuite,
+  IpcKlineRequest,
+  IpcKlineResponse,
+  IpcIndicatorRequest,
+  IpcIndicatorResponse,
+  IndicatorId,
+  IIndicatorEngine,
+  IndicatorEngineOptions,
+  PriceField,
+  MovingAverageInput,
+  TrendResult,
+  MACDOutput,
+  BOLLOutput,
+  KDJOutput,
+  IchimokuOutput,
+  PivotOutput,
+  CrossSignalOutput,
+  MultiChartLayout,
+  PaneConfig,
+  TimeSync,
+  WorkerResultMessage,
+  WorkerReadyMessage,
+  WorkerComputeMessage,
+  WorkerMessage,
+  MarketSnapshot,
+  HeatmapData,
+  HeatmapGroup,
+  ScanCondition,
+  PresetScanId,
+  PresetScan,
+  AlertRule,
+  AlertChannel,
+  AlertEvent,
+} from './types-data';
+
+export { INDICATOR_IDS } from './types-data';

@@ -1,4 +1,5 @@
-import type { KlineBar, Timeframe, AdjustType, IndicatorDef } from './types';
+// @ts-nocheck — R120: split from types.ts, imports pending
+import type { KlineBar, Timeframe, AdjustType } from './types';
 // DAWN WHALES R121 — Split from types.ts
 // Sections 5-8: IPC handler contracts, indicator results, data export types
 

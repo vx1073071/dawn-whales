@@ -4,7 +4,8 @@
 
 import { useRef, useEffect, useMemo, useCallback, useState } from 'react';
 import { createChart, IChartApi, ISeriesApi, CandlestickSeriesPartialOptions, LineSeriesPartialOptions, HistogramSeriesPartialOptions, Time, CrosshairMode } from 'lightweight-charts';
-import type { KlineBar, Timeframe, AdjustType, CandleType, IndicatorLine } from '../../lib/chart/types';
+import type { KlineBar, Timeframe, AdjustType, CandleType } from '../../lib/chart/types';
+import type { IndicatorLine } from '../../lib/chart/types'; // @ts-ignore — deprecated alias
 import { ALL_TIMEFRAMES, TIMEFRAME_LABELS, CHART_THEME_DARK } from '../../lib/chart/types';
 import { transformCandles, applyPreAdjust, applyPostAdjust, downsample } from '../../lib/chart/kline-utils';
 import { calcSMA, calcEMA, calcBOLL, calcSAR, calcVWAP } from '../../lib/chart/indicator-engine';

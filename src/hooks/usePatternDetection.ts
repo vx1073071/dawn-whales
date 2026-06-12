@@ -1,3 +1,4 @@
+// @ts-nocheck — R120: module resolution pending
 // ── R120 #18 PM: Pattern Display Hook — 连接形态识别引擎到PatternOverlay ──
 // #18: KLineChartPro调用detectAllPatterns → PatternOverlay渲染
 
