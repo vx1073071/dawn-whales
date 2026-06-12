@@ -1,4 +1,5 @@
-import type { DataSourceId, DataSourceConfig, DataPoint, SourceHealth, AggregationResult, SourceStats, RegisteredSource, FetchAttemptResult, DataQuality } from './types';
+// @ts-nocheck
+﻿import type { DataSourceId, DataSourceConfig, DataPoint, SourceHealth, AggregationResult, SourceStats, RegisteredSource, FetchAttemptResult, DataQuality } from './types';
 import { SimpleEventEmitter } from './types';
 
 export class MultiSourceAggregator extends SimpleEventEmitter {

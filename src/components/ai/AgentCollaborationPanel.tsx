@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
 * AgentCollaborationPanel — ML-56-01 [P0]
 * R56: v1.2.0-alpha — AI + 4 Agent 

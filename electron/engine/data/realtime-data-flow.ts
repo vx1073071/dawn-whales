@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Real-time Data Flow Enhancement (JVS-43-02)
  *

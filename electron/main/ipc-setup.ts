@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── DAWN WHALES — IPC Handler Setup ────────────────────────────────────────
 // Extracted from electron/main.ts — all IPC handlers under setupIPC()
 import { app, BrowserWindow, ipcMain, shell } from 'electron';

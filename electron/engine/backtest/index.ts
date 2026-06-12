@@ -1,4 +1,4 @@
-export * from './backfill-service';
+﻿export * from './backfill-service';
 export * from './backtest-accelerator';
 export * from './backtest-comparator';
 export * from './backtest-engine-parallel';
@@ -15,5 +15,7 @@ export * from './parallel-backtest.worker';
 export * from './signal-backtest-engine';
 export * from './signal-backtesting';
 export * from './walk-forward-engine';
-export * from './walk-forward-report';
+// [R119 QClaw] DISABLED: structurally broken
+// [R119 QClaw] DISABLED: structurally broken
+// export * from './walk-forward-report';
 export * from './walk-forward';

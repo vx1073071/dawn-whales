@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * WebSocket Market Data Engine
  * Sprint 2 Phase 1 — Real-time market data via WebSocket

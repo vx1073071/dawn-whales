@@ -1,4 +1,4 @@
-// ── DAWN WHALES — CredentialManager (R119 #15 + #37) ──────────────────
+﻿// ── DAWN WHALES — CredentialManager (R119 #15 + #37) ──────────────────
 // Secure credential storage for all broker adapters.
 // Uses OAuthTokenStore (keytar) for OS-level encryption.
 // Entry point for BrokerManagerV2 to load credentials before adapter creation.
@@ -8,8 +8,9 @@
 // @task #15 (API Key security) + #37 (OAuthTokenStore integration)
 // @since 2026-06-12
 
-import { log } from 'electron-log';
+import log from 'electron-log';
 import { OAuthTokenStore } from './OAuthTokenStore';
+import type { OAuthToken } from './adapters/OAuthBrokerBase';
 import type { BrokerConfig } from './IBrokerAdapterV2';
 
 export interface StoredCredential {
@@ -48,7 +49,13 @@ export class CredentialManager {
       ...cred,
       storedAt: Date.now(),
     };
-    await this.tokenStore.storeToken(brokerId, entry);
+    // Wrap StoredCredential as OAuthToken for OAuthTokenStore compatibility
+    const oauthToken: OAuthToken = {
+      accessToken: JSON.stringify(entry),
+      tokenType: 'broker_credentials',
+      expiresAt: 0, // credentials don't expire like OAuth tokens
+    };
+    await this.tokenStore.storeToken(brokerId, oauthToken);
     log.info(`[CredentialManager] Stored credentials for: ${brokerId}`);
   }
 

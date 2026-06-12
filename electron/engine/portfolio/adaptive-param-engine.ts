@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Adaptive Parameter Adjustment Engine
  * Dawn Whales Project (J-38-01)

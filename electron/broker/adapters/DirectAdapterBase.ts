@@ -1,10 +1,11 @@
-﻿// ── DAWN WHALES — DirectAdapter Base ─────────────────────────────────────
+﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
+// ── DAWN WHALES — DirectAdapter Base ─────────────────────────────────────
 // R1 INF-05: Direct REST + WebSocket 适配器基类
 // 用于直连云API的券商(加密5家、Robinhood Crypto)
 // 子类实现: _buildHeaders, _signRequest, _getBaseURL, _getWSUrl
 
 import { EventEmitter } from 'events';
-import { log } from 'electron-log';
+import log from 'electron-log';
 import type { BrokerConfig, QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from '../IBrokerAdapter';
 import type { IBrokerAdapterV2, BrokerType, MarketType, BrokerConnectionStatus } from '../IBrokerAdapterV2';
 

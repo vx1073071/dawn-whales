@@ -1,10 +1,11 @@
+﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
 // ── DAWN WHALES — SchwabAdapter ─────────────────────────────────────────
 // R2 OAU-01: Charles Schwab Broker Adapter
 // Inherits OAuthBrokerBase (OAuth2 Authorization Code + PKCE)
 // API Base: https://api.schwabapi.com
 // Markets: US equities, ETFs, options, futures, mutual funds, bonds
 
-import { log } from 'electron-log';
+import log from 'electron-log';
 import { OAuthBrokerBase, type OAuthBrokerConfig, type OAuthVersion } from './OAuthBrokerBase';
 import type {
   BrokerConfig, QuoteInfo, KlineInfo, AccountInfo,

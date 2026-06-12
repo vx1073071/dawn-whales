@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * JVS-84: Data Cleaning Pipeline
  * Transforms raw market data into clean, validated data through

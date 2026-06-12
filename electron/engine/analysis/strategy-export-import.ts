@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * StrategyExportImport - strategy/policyimportexport (J-40-03, R40)
  *

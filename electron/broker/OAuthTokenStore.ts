@@ -1,9 +1,9 @@
-// ── DAWN WHALES — OAuth Token Secure Storage ───────────────────────────
+﻿// ── DAWN WHALES — OAuth Token Secure Storage ───────────────────────────
 // R1 SEC-02: OAuth token安全存储(keytar)
 // 使用操作系统原生密钥管理(Windows Credential Manager/macOS Keychain/Linux libsecret)
 // 封装 keytar 调用, 提供 fallback 文件存储
 
-import { log } from 'electron-log';
+import log from 'electron-log';
 import type { OAuthToken } from '../broker/adapters/OAuthBrokerBase';
 
 // Try to import keytar, fallback to file-based secure storage

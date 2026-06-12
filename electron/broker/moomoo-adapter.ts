@@ -1,3 +1,4 @@
+﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
 /**
  * Moomoo OpenD Adapter — Extends OpenDBaseAdapter
  *

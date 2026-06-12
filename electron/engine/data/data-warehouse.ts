@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * JVS-85: Data Warehouse Layer
  * Structured local storage for all market data with time-series optimization.

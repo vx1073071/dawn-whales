@@ -1,4 +1,4 @@
-export * from './cache-explorer';
+﻿export * from './cache-explorer';
 export * from './cache-optimizer';
 export * from './calendar-effects';
 export * from './consumer-data';
@@ -39,28 +39,33 @@ export * from './market-data-cache-manager';
 export * from './market-hotspot';
 export * from './mobile-api-adapter';
 export * from './mobile-data-adapter';
-export * from './multi-market-broker';
+// [R119 QClaw] DISABLED: structurally broken
+// export * from './multi-market-broker';
 export * from './multi-market-quote-engine';
 export * from './multi-source-aggregator';
 export * from './multi-timeframe-engine';
 export * from './multi-timeframe-replay';
 export * from './news-aggregator';
-export * from './news-sentiment-v2';
+// [R119 QClaw] DISABLED: structurally broken
+// export * from './news-sentiment-v2';
 export * from './opend-connection-validator';
-export * from './opend-health-check';
+// [R119 QClaw] DISABLED: structurally broken
+// export * from './opend-health-check';
 export * from './opend-live-broker';
 export * from './pipeline-engine';
 export * from './quote-stream';
 export * from './realtime-aggregator';
 export * from './realtime-data-flow';
 export * from './realtime-indicators';
-export * from './realtime-news';
+// [R119 QClaw] DISABLED: structurally broken
+// export * from './realtime-news';
 export * from './realtime-quality-monitor';
 export * from './realtime-visualization-v2';
 export * from './realtime-visualization';
 export * from './redis-cache-layer';
 export * from './sector-comparison';
-export * from './sector-rotation-v2';
+// [R119 QClaw] DISABLED: structurally broken
+// export * from './sector-rotation-v2';
 export * from './sector-rotation';
 export * from './signal-push-engine';
 export * from './signal-push-optimizer';
@@ -68,11 +73,13 @@ export * from './signal-pusher';
 export * from './sliding-window-aggregator';
 export * from './stock-anomaly-detector';
 export * from './stock-diagnosis';
-export * from './stock-screener';
+// [R119 QClaw] DISABLED: structurally broken
+// export * from './stock-screener';
 export * from './stream-computing';
 export * from './trading-calendar';
 export * from './unlock-calendar';
-export * from './websocket-enhancer';
+// [R119 QClaw] DISABLED: structurally broken
+// export * from './websocket-enhancer';
 export * from './websocket-performance-monitor';
 export * from './ws-market-data';
 export * from './ws-trade-bridge';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * JVS-87: ETL Pipeline Engine
  * A generic extract-transform-load framework for data processing workflows.

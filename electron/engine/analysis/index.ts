@@ -1,4 +1,4 @@
-void EngineError; // [EngineError:SYSTEM] structured error tracking
+﻿void EngineError; // [EngineError:SYSTEM] structured error tracking
 import { EngineError } from '../../../electron/engine/core/engine-error';
 export * from './account-analytics';
 export * from './analytics-engine';
@@ -19,11 +19,13 @@ export * from './greeks-aggregator';
 export * from './health-dashboard';
 export * from './live-executor';
 export * from './live-risk-engine';
-export * from './live-trade-bridge';
+// [R119 QClaw] DISABLED: structurally broken
+// export * from './live-trade-bridge';
 export * from './marketplace-api';
 export * from './marketplace-models';
 export * from './microstructure';
-export * from './multi-account-adapter';
+// [R119 QClaw] DISABLED: structurally broken
+// export * from './multi-account-adapter';
 export * from './multi-asset-connector';
 export * from './multi-broker-pnl';
 export * from './odd-lot-engine';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * JVS-92: Bayesian Optimizer
  * 

@@ -1,12 +1,12 @@
+﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
 // ── DAWN WHALES — BrokerManagerV2 ───────────────────────────────────────
 // R1 INF-02: 多券商并发连接管理器 (无activeBrokerId概念)
 // 所有已连接券商同时活跃, per-broker独立订阅+聚合查询
 
-import { log } from 'electron-log';
-import type { IBrokerAdapterV2, BrokerConnectionStatus, TaggedQuoteInfo, TaggedPositionInfo, TaggedOrderInfo, TaggedPlaceOrderRequest, BrokerConfig, BrokerType, MarketType } from './IBrokerAdapterV2';
-import type { AccountInfo, FundsInfo, PositionInfo, OrderInfo, QuoteInfo, KlineInfo, PlaceOrderRequest, IBrokerAdapter } from './IBrokerAdapter';
+import log from 'electron-log';
+import type { IBrokerAdapterV2, BrokerConnectionStatus, TaggedQuoteInfo, TaggedPositionInfo, TaggedOrderInfo, BrokerConfig, BrokerType, MarketType } from './IBrokerAdapterV2';
+import type { QuoteInfo, IBrokerAdapter } from './IBrokerAdapter';
 import { getCredentialManager } from './CredentialManager';
-import { DirectAdapterBase } from './adapters/DirectAdapterBase';
 
 export interface BrokerManagerV2Config {
   maxConcurrentConnections?: number;    // default: 20

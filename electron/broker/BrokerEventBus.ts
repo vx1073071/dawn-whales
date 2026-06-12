@@ -4,8 +4,8 @@
 // 解耦: BrokerManagerV2 → EventBus → UI/Strategy/RiskEngine
 
 import { EventEmitter } from 'events';
-import { log } from 'electron-log';
-import type { BrokerType, TaggedQuoteInfo, TaggedPositionInfo, TaggedOrderInfo } from '../IBrokerAdapterV2';
+import log from 'electron-log';
+import type { BrokerType, TaggedQuoteInfo, TaggedPositionInfo, TaggedOrderInfo } from './IBrokerAdapterV2';
 
 // ═══ Event Types ═══════════════════════════════════════
 

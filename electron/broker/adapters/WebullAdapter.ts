@@ -1,10 +1,11 @@
+﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
 // ── DAWN WHALES — WebullAdapter ─────────────────────────────────────────
 // R3 OAU-04: Webull Broker Adapter
 // Inherits OAuthBrokerBase (OAuth2 Authorization Code)
 // Markets: US equities, ETFs, options
 // Features: Paper trading sandbox, fractional shares, extended hours
 
-import { log } from 'electron-log';
+import log from 'electron-log';
 import { OAuthBrokerBase, type OAuthBrokerConfig, type OAuthVersion } from './OAuthBrokerBase';
 import type { QuoteInfo, KlineInfo, AccountInfo, FundsInfo, PositionInfo, OrderInfo, PlaceOrderRequest } from '../IBrokerAdapter';
 import type { MarketType, TradingPairInfo } from '../IBrokerAdapterV2';

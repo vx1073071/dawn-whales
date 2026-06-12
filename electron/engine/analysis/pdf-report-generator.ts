@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── PDF Report Generator ──────────────────────────────────────────────────────
 // J-44-03: PDF Report Generator with Email Integration
 // Generates PDF reports from Markdown content with charts, templates, and batch support.

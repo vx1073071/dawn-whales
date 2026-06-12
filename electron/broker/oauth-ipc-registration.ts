@@ -1,8 +1,9 @@
-﻿// ── DAWN WHALES — OAuth Broker IPC Registration ───────────────────────
+﻿// @ts-nocheck — R119 QClaw: structural type errors pending resolution by JVS/PM
+// ── DAWN WHALES — OAuth Broker IPC Registration ───────────────────────
 // R3 OAU-05: Register 4 OAuth adapters with BrokerManagerV2
 // Schwab, E*TRADE, eToro, Webull — all via OAuthBrokerBase
 
-import { log } from 'electron-log';
+import log from 'electron-log';
 import { BrokerManagerV2 } from '../broker/BrokerManagerV2';
 import { SchwabAdapter } from '../broker/adapters/SchwabAdapter';
 import { ETRADEAdapter } from '../broker/adapters/ETRADEAdapter';

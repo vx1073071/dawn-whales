@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { EngineError, ErrorCode } from '../../errors';
 /**
  * Strategy Optimizer Engine

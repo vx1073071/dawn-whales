@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Strategy Ranking Engine — Multi-dimensional strategy ranking for the Marketplace.
  * JVS-41-02

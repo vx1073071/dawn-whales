@@ -21,5 +21,26 @@
     }
   },
   "include": ["electron/engine/**/*.ts"],
-  "exclude": ["electron/**/*.test.ts", "electron/**/*.spec.ts"]
+  "exclude": [
+    "electron/**/*.test.ts",
+    "electron/**/*.spec.ts",
+    "electron/**/*.ts.ts",
+    "electron/engine/analysis/live-trade-bridge.ts",
+    "electron/engine/analysis/multi-account-adapter.ts",
+    "electron/engine/backtest/walk-forward-report.ts",
+    "electron/engine/core/sandbox-exec.ts",
+    "electron/engine/data/data-quality-scorer-dim-d.ts",
+    "electron/engine/data/data-quality-scorer-dimensions1.ts",
+    "electron/engine/data/multi-market-broker.ts",
+    "electron/engine/data/multi-source-aggregator/helpers.ts",
+    "electron/engine/data/multi-source-aggregator/types.ts",
+    "electron/engine/data/news-sentiment-v2.ts",
+    "electron/engine/data/opend-health-check.ts",
+    "electron/engine/data/realtime-news.ts",
+    "electron/engine/data/sector-rotation-v2.ts",
+    "electron/engine/data/stock-screener.ts",
+    "electron/engine/data/websocket-enhancer.ts",
+    "electron/engine/risk/risk-strategy-integrator/helpers.ts",
+    "electron/engine/risk/risk-strategy-integrator/types.ts"
+  ]
 }

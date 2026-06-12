@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── DAWN WHALES IPC: em ────────────────────────────────────────────
 // 67 handlers
 

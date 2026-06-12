@@ -1,11 +1,10 @@
-// ── DAWN WHALES — QuoteAggregator ─────────────────────────────────────
+﻿// ── DAWN WHALES — QuoteAggregator ─────────────────────────────────────
 // R1 CONC-02: 多券商行情聚合 + 套利扫描
 // 接收所有已连接券商的TaggedQuoteInfo → 按standardCode聚合 → 分发给前端
 // 同时扫描跨券商套利机会 (bid(brokerA) > ask(brokerB) → arbitrage)
 
-import { log } from 'electron-log';
 import { CodeNormalizer } from './CodeNormalizer';
-import type { BrokerType, MarketType, TaggedQuoteInfo } from './IBrokerAdapterV2';
+import type { MarketType, TaggedQuoteInfo } from './IBrokerAdapterV2';
 import type { BrokerManagerV2 } from './BrokerManagerV2';
 
 export interface AggregatedQuote {
@@ -68,12 +67,26 @@ export class QuoteAggregator {
       const normalized = this.normalizer.normalize(q.originalCode, brokerId, q.brokerType);
       if (!normalized.normalized) continue;
 
-      const tagged: TaggedQuoteInfo = {
-        ...q,
+      const tagged = {
+        code: q.code,
+        price: q.price,
+        change: q.change,
+        changePct: q.changePct,
+        volume: q.volume,
+        turnover: q.turnover,
+        high: q.high,
+        low: q.low,
+        open: q.open,
+        prevClose: q.prevClose,
+        time: q.time,
+        brokerId: q.brokerId,
+        brokerName: q.brokerName,
+        brokerType: q.brokerType,
+        market: q.market,
+        originalCode: q.originalCode,
         standardCode: normalized.standardCode,
-        brokerId,
         timestamp: now,
-      };
+      } as TaggedQuoteInfo;
 
       // Store per-broker quote
       if (!this.brokerQuotes.has(brokerId)) {

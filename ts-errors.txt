@@ -1,0 +1,2 @@
+﻿electron/broker/QuoteAggregator.ts(8,15): error TS1003: Identifier expected.
+electron/broker/QuoteAggregator.ts(68,80): error TS1003: Identifier expected.

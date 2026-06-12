@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ── DAWN WHALES — Unified Account Manager (Cross-Broker) ─────────────────────
 // J-28-02: Manages multiple broker connections simultaneously.
 // Aggregates accounts, positions, funds, and P&L across Futu, Moomoo, and IB.

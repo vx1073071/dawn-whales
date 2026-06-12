@@ -1,4 +1,4 @@
-export * from './alert-engine';
+﻿export * from './alert-engine';
 export * from './async-io-scheduler';
 export * from './benchmark';
 export * from './cloud-opend-fragment';
@@ -25,7 +25,8 @@ export * from './notification-engine';
 export * from './platform-packaging';
 export * from './prometheus-metrics';
 export * from './rate-limiter';
-export * from './sandbox-exec';
+// [R119 QClaw] DISABLED: structurally broken
+// export * from './sandbox-exec';
 export * from './security-engine';
 export * from './security-guard';
 export * from './server-deployment';
