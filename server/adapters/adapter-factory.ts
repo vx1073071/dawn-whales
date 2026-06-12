@@ -46,6 +46,13 @@ class AdapterRegistry {
     this.register('ib', require('./ib-tws-adapter').IBTwsAdapter, 'Interactive Brokers TWS');
     this.register('tiger', require('./tiger-adapter').TigerAdapter, 'Tiger Brokers');
     this.register('schwab', require('./schwab-adapter').SchwabAdapter, 'Charles Schwab');
+
+    // R134: More Traditional + Universal — E*TRADE + eToro + MT5 + VBKR + uSMART
+    this.register('etrade', require('./etrade-adapter').EtradeAdapter, 'E*TRADE');
+    this.register('etoro', require('./etoro-adapter').EtoroAdapter, 'eToro');
+    this.register('mt5', require('./mt5-adapter').Mt5Adapter, 'MT5 (MetaApi)');
+    this.register('vbkr', require('./vbkr-adapter').VbkrAdapter, '华盛 VBKR');
+    this.register('usmart', require('./vbkr-adapter').USmartAdapter, '盈立 uSMART');
   }
 
   /** Create and connect an adapter */
@@ -178,6 +185,11 @@ export function buildCloudConfig(
     'ib': { rest: 'https://localhost:5000', ws: '' },
     'tiger': { rest: 'https://openapi.tigersecurities.com', ws: '' },
     'schwab': { rest: 'https://api.schwabapi.com', ws: '' },
+    'etrade': { rest: 'https://api.etrade.com', ws: '' },
+    'etoro': { rest: 'https://api.etoro.com', ws: '' },
+    'mt5': { rest: 'https://mt-client-api-v1.agiliumtrade.agiliumtrade.ai', ws: '' },
+    'vbkr': { rest: 'https://openapi.vbkr.com', ws: '' },
+    'usmart': { rest: 'https://openapi.usmart.securities', ws: '' },
   };
 
   const urls = defaultUrls[brokerType] || { rest: 'https://api.example.com', ws: 'wss://ws.example.com' };
