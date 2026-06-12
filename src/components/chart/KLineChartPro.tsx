@@ -243,7 +243,7 @@ export default function KLineChartPro({
     // Add new indicator series
     for (const line of indicatorLines) {
       const validData = line.data
-        .map((v, i) => v != null && i < processedData.length ? { time: (processedData[i].time / 1000) as Time, value: v } : null)
+        .map((v: number | null, i: number) => v != null && i < processedData.length ? { time: (processedData[i].time / 1000) as Time, value: v } : null)
         .filter(Boolean) as { time: Time; value: number }[];
 
       if (validData.length === 0) continue;

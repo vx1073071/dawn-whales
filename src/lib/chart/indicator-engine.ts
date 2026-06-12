@@ -360,3 +360,193 @@ export function computePivotSeries(bars: KlineBar[]) {
 export function computeEnvelopeSeries(bars: KlineBar[], period = 20, pct = 3) {
   return calcMAEnvelope(bars, period, pct);
 }
+
+// ═══════════ R113b ADDITIONS (10 new indicators) ═══════════
+
+// === BIAS (乖离率) ===
+export function calcBIAS(bars: KlineBar[], period = 6): (number | null)[] {
+  const ma = calcSMA(bars, period);
+  return ma.map((v, i) => v == null ? null : +(((bars[i].close - v) / v) * 100).toFixed(2));
+}
+
+// === DMI (Directional Movement Index) === returns [PDI, MDI, ADX, ADXR]
+export function calcDMI(bars: KlineBar[], period = 14, adxPeriod = 6): [(number | null)[], (number | null)[], (number | null)[], (number | null)[]] {
+  const pdi: (number | null)[] = [], mdi: (number | null)[] = [], adx: (number | null)[] = [], adxr: (number | null)[] = [];
+  let trSum = 0, pdiSum = 0, mdiSum = 0;
+  const trVals: number[] = [], pdiVals: number[] = [], mdiVals: number[] = [];
+
+  for (let i = 0; i < bars.length; i++) {
+    if (i === 0) { pdi.push(null); mdi.push(null); adx.push(null); adxr.push(null); continue; }
+    const h = bars[i].high, l = bars[i].low, prevC = bars[i-1].close;
+    const tr = Math.max(h - l, Math.abs(h - prevC), Math.abs(l - prevC));
+    const upMove = h - bars[i-1].high, downMove = bars[i-1].low - l;
+    const pd = upMove > downMove && upMove > 0 ? upMove : 0;
+    const md = downMove > upMove && downMove > 0 ? downMove : 0;
+    trVals.push(tr); pdiVals.push(pd); mdiVals.push(md);
+
+    if (trVals.length > period) { trSum -= trVals[trVals.length - period - 1]; pdiSum -= pdiVals[pdiVals.length - period - 1]; mdiSum -= mdiVals[mdiVals.length - period - 1]; }
+    trSum += tr; pdiSum += pd; mdiSum += md;
+    if (i < period) { pdi.push(null); mdi.push(null); adx.push(null); adxr.push(null); continue; }
+    const pdiVal = trSum === 0 ? 0 : (pdiSum / trSum) * 100;
+    const mdiVal = trSum === 0 ? 0 : (mdiSum / trSum) * 100;
+    void (pdiVal - mdiVal); // used implicitly
+    pdi.push(+pdiVal.toFixed(2)); mdi.push(+mdiVal.toFixed(2));
+    // ADX: average of DX over adxPeriod
+    if (i >= period + adxPeriod - 1) {
+      let adxSum = 0;
+      for (let k = i - adxPeriod + 1; k <= i; k++) {
+        const pk = pdi[k], mk = mdi[k];
+        if (pk != null && mk != null) {
+          adxSum += (Math.abs(pk - mk) / (pk + mk || 1)) * 100;
+        }
+      }
+      adx.push(+(adxSum / adxPeriod).toFixed(2));
+    } else { adx.push(null); }
+    adxr.push(adx[i] != null && adx[i - adxPeriod + 1] != null ? +((adx[i]! + adx[i - adxPeriod + 1]!) / 2).toFixed(2) : null);
+  }
+  return [pdi, mdi, adx, adxr];
+}
+
+// === PSY (心理线) ===
+export function calcPSY(bars: KlineBar[], period = 12): (number | null)[] {
+  const out: (number | null)[] = [];
+  for (let i = 0; i < bars.length; i++) {
+    if (i < period - 1) { out.push(null); continue; }
+    let up = 0;
+    for (let j = i - period + 1; j <= i; j++) if (bars[j].close > bars[j-1].close) up++;
+    out.push(+((up / period) * 100).toFixed(2));
+  }
+  return out;
+}
+
+// === VR (成交量变异率) ===
+export function calcVR(bars: KlineBar[], period = 26): (number | null)[] {
+  const out: (number | null)[] = [];
+  for (let i = 0; i < bars.length; i++) {
+    if (i < period) { out.push(null); continue; }
+    let upVol = 0, downVol = 0, sameVol = 0;
+    for (let j = i - period + 1; j <= i; j++) {
+      if (bars[j].close > bars[j-1].close) upVol += bars[j].volume;
+      else if (bars[j].close < bars[j-1].close) downVol += bars[j].volume;
+      else sameVol += bars[j].volume;
+    }
+    out.push(downVol + sameVol / 2 === 0 ? 100 : +((upVol + sameVol / 2) / (downVol + sameVol / 2) * 100).toFixed(2));
+  }
+  return out;
+}
+
+// === ASI (振动升降指标) ===
+export function calcASI(bars: KlineBar[]): (number | null)[] {
+  const out: (number | null)[] = [];
+  let asi = 0;
+  for (let i = 0; i < bars.length; i++) {
+    if (i === 0) { out.push(0); continue; }
+    const h = bars[i].high, l = bars[i].low, c = bars[i].close, o = bars[i].open;
+    const prevC = bars[i-1].close, prevO = bars[i-1].open, prevL = bars[i-1].low;
+    const a = Math.abs(h - prevC), b = Math.abs(l - prevC), cc = Math.abs(h - prevL);
+    const e = Math.abs(prevC - prevO);
+    let r = 0;
+    if (a >= b && a >= cc) r = a + b / 2 + cc / 4;
+    else if (b >= a && b >= cc) r = b + a / 2 + cc / 4;
+    else r = cc + e / 4;
+    const k = Math.max(a, b);
+    const si = r === 0 ? 0 : 50 * (c - prevC + (c - o) / 2 + (prevC - prevO) / 4) / r * (k / (r || 1));
+    asi += si;
+    out.push(+asi.toFixed(2));
+  }
+  return out;
+}
+
+// === ARBR (人气指标/买卖意愿指标) === returns [AR, BR]
+export function calcARBR(bars: KlineBar[], period = 26): [(number | null)[], (number | null)[]] {
+  const ar: (number | null)[] = [], br: (number | null)[] = [];
+  for (let i = 0; i < bars.length; i++) {
+    if (i < period - 1) { ar.push(null); br.push(null); continue; }
+    let arNum = 0, arDen = 0, brNum = 0, brDen = 0;
+    for (let j = i - period + 1; j <= i; j++) {
+      arNum += bars[j].high - bars[j].open;
+      arDen += bars[j].open - bars[j].low;
+      if (j > 0) {
+        brNum += Math.max(0, bars[j].high - bars[j-1].close);
+        brDen += Math.max(0, bars[j-1].close - bars[j].low);
+      }
+    }
+    ar.push(arDen === 0 ? 100 : +((arNum / arDen) * 100).toFixed(2));
+    br.push(brDen === 0 ? 100 : +((brNum / brDen) * 100).toFixed(2));
+  }
+  return [ar, br];
+}
+
+// === CR (能量指标) ===
+export function calcCR(bars: KlineBar[], period = 26, maPeriod = 10): [(number | null)[], (number | null)[], (number | null)[], (number | null)[]] {
+  const cr: (number | null)[] = [], ma1: (number | null)[] = [], ma2: (number | null)[] = [], ma3: (number | null)[] = [];
+  for (let i = 0; i < bars.length; i++) {
+    if (i < period) { cr.push(null); ma1.push(null); ma2.push(null); ma3.push(null); continue; }
+    void ((bars[i].high + bars[i].low) / 2); // midpoint reference
+    let upSum = 0, downSum = 0;
+    for (let j = i - period; j <= i; j++) {
+      const prevMid = (bars[j-1]?.high + bars[j-1]?.low) / 2;
+      upSum += Math.max(0, bars[j].high - prevMid);
+      downSum += Math.max(0, prevMid - bars[j].low);
+    }
+    cr.push(downSum === 0 ? 0 : +(upSum / downSum * 100).toFixed(2));
+    if (i >= period + maPeriod - 1) {
+      let sA = 0, sB = 0, sC = 0;
+      for (let k = i - maPeriod + 1; k <= i; k++) { sA += cr[k] || 0; sB += (cr[k] || 0) * 2; sC += (cr[k] || 0) * 3; }
+      ma1.push(+(sA / maPeriod).toFixed(2)); ma2.push(+(sB / maPeriod).toFixed(2)); ma3.push(+(sC / maPeriod).toFixed(2));
+    } else { ma1.push(null); ma2.push(null); ma3.push(null); }
+  }
+  return [cr, ma1, ma2, ma3];
+}
+
+// === EMV (简易波动指标) ===
+export function calcEMV(bars: KlineBar[], period = 14): (number | null)[] {
+  const out: (number | null)[] = [], emvVals: number[] = [];
+  for (let i = 0; i < bars.length; i++) {
+    if (i === 0 || bars[i].volume === 0) { emvVals.push(0); out.push(null); continue; }
+    const midMove = ((bars[i].high + bars[i].low) / 2) - ((bars[i-1].high + bars[i-1].low) / 2);
+    const br = bars[i].volume / (bars[i].high - bars[i].low || 1);
+    const emv = br === 0 ? 0 : midMove / br;
+    emvVals.push(emv);
+    if (i < period - 1) { out.push(null); continue; }
+    let sum = 0;
+    for (let j = i - period + 1; j <= i; j++) sum += emvVals[j];
+    out.push(+(sum / period).toFixed(8));
+  }
+  return out;
+}
+
+// === TRIX (三重指数平滑平均线) ===
+export function calcTRIX(bars: KlineBar[], period = 12, signal = 9): [(number | null)[], (number | null)[]] {
+  const closes = bars.map(b => b.close);
+  const ema1: (number | null)[] = [], ema2: (number | null)[] = [], ema3: (number | null)[] = [];
+  const trix: (number | null)[] = [], trma: (number | null)[] = [];
+  const alpha = 2 / (period + 1);
+  let e1 = closes[0], e2 = closes[0], e3 = closes[0];
+  for (let i = 0; i < bars.length; i++) {
+    e1 = closes[i] * alpha + e1 * (1 - alpha); ema1.push(e1);
+    e2 = e1 * alpha + e2 * (1 - alpha); ema2.push(e2);
+    e3 = e2 * alpha + e3 * (1 - alpha); ema3.push(e3);
+    if (i < period * 2) { trix.push(null); trma.push(null); continue; }
+    trix.push(ema3[i-1] === 0 ? 0 : +(((e3 - (ema3[i-1] ?? 0)) / (ema3[i-1] ?? 1)) * 100).toFixed(4));
+  }
+  // TRMA: signal-period MA of TRIX
+  for (let i = 0; i < bars.length; i++) {
+    if (trix[i] === null || i < period * 2 + signal - 1) { trma.push(null); continue; }
+    let sum = 0;
+    for (let j = i - signal + 1; j <= i; j++) sum += trix[j] || 0;
+    trma.push(+(sum / signal).toFixed(4));
+  }
+  return [trix, trma];
+}
+
+// === ROC (变动率指标) ===
+export function calcROC(bars: KlineBar[], period = 12): (number | null)[] {
+  const out: (number | null)[] = [];
+  for (let i = 0; i < bars.length; i++) {
+    if (i < period) { out.push(null); continue; }
+    const prev = bars[i - period].close;
+    out.push(prev === 0 ? 0 : +(((bars[i].close - prev) / prev) * 100).toFixed(2));
+  }
+  return out;
+}

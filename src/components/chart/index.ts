@@ -19,3 +19,7 @@ export { default as DrawingToolbar } from './DrawingToolbar';
 export type { DrawingToolbarProps } from './DrawingToolbar';
 export { DRAWING_TOOLS, DRAWING_CATEGORY_LABELS, DRAWING_CATEGORY_COLORS, DRAWING_COLORS, LINE_STYLES } from './DrawingToolbar';
 export type { DrawingToolDef, DrawingCategory } from './DrawingToolbar';
+
+// Pattern overlay
+export { default as PatternOverlay, PatternSummary, detectPatterns, PATTERN_CATALOG } from './PatternOverlay';
+export type { PatternOverlayProps, PatternResult, PatternSummaryProps } from './PatternOverlay';

@@ -99,10 +99,10 @@ export function aggregateTimeframe(bars: KlineBar[], tf: Timeframe): KlineBar[] 
 
 /** Get ms for a timeframe */
 function getTimeframeMs(tf: Timeframe): number {
-  const map: Record<Timeframe, number> = {
-    '1m': 60_000, '5m': 300_000, '15m': 900_000, '30m': 1_800_000,
+  const map: Record<string, number> = {
+    '1s': 1_000, '1m': 60_000, '5m': 300_000, '15m': 900_000, '30m': 1_800_000,
     '1h': 3_600_000, '4h': 14_400_000, 'D': 86_400_000,
-    'W': 604_800_000, 'M': 2_592_000_000,
+    'W': 604_800_000, 'M': 2_592_000_000, Q: 7_776_000_000, Y: 31_536_000_000,
   };
   return map[tf] || 86_400_000;
 }
