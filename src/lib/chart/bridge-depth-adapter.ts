@@ -203,10 +203,10 @@ export class TigerDepthAdapter extends BridgeDepthAdapter {
           price: tickPrice,
           size: tickSize,
           turnover: tickPrice * tickSize,
-          side: msg.direction === 'B' ? 'BUY' : 'SELL',
+          side: (msg.direction === 'B' ? 'BUY' : 'SELL') as 'BUY' | 'SELL' | 'UNKNOWN',
           tradeId: String(msg.seq || 0),
-          
-        timestamp: Date.now(),
+          timestamp: msg.time || Date.now(),
+          seqId: msg.seq || 0,
         });
       }
     } catch {
@@ -278,14 +278,24 @@ export class VBKRDepthAdapter extends BridgeDepthAdapter {
     const response = await fetch(`${this.apiUrl}/market/depth?symbol=${symbol}&level=${depth}`);
     const data = await response.json();
 
+    const askList = (data.ask || []).map((a: any) => ({ price: a.price, size: a.volume || 0 }));
+    const bidList = (data.bid || []).map((b: any) => ({ price: b.price, size: b.volume || 0 }));
+
     const snapshot: OrderBookSnapshot = {
       exchange: this.brokerId,
       symbol,
+      bids: bidList,
+      asks: askList,
+      best: {
+        bidPrice: bidList[0]?.price || 0,
+        askPrice: askList[0]?.price || 0,
+        bidSize: bidList[0]?.size || 0,
+        askSize: askList[0]?.size || 0,
+        spread: (askList[0]?.price || 0) - (bidList[0]?.price || 0),
+        spreadPercent: bidList[0]?.price ? ((askList[0]?.price || 0) - bidList[0].price) / bidList[0].price * 100 : 0,
+      },
       timestamp: Date.now(),
-      best: { bidPrice: 0, askPrice: 0, bidSize: 0, askSize: 0, spread: 0, spreadPercent: 0 },
       localTimestamp: Date.now(),
-      asks: (data.ask || []).map((a: any) => ({ price: a.price, size: a.volume })),
-      timestamp: Date.now(),
       updateId: data.sn || 0,
     };
 
@@ -306,14 +316,21 @@ export class VBKRDepthAdapter extends BridgeDepthAdapter {
       const msg = JSON.parse(event.data as string);
       if (msg.topic?.startsWith('depth:')) {
         const symbol = msg.topic.replace('depth:', '');
+        const bids = (msg.bids || []).map((b: any) => ({ price: b.price, size: b.volume || 0 }));
+        const asks = (msg.asks || []).map((a: any) => ({ price: a.price, size: a.volume || 0 }));
         this.onDepthUpdate?.({
-          timestamp: Date.now(),
-          best: { bidPrice: 0, askPrice: 0, bidSize: 0, askSize: 0, spread: 0, spreadPercent: 0 },
-          localTimestamp: Date.now(),
+          symbol,
           exchange: this.brokerId,
-          bids: (msg.bids || []).map((b: any) => ({ price: b.price, volume: b.volume })),
-          asks: (msg.asks || []).map((a: any) => ({ price: a.price, volume: a.volume })),
+          bids,
+          asks,
+          best: {
+            bidPrice: bids[0]?.price || 0, askPrice: asks[0]?.price || 0,
+            bidSize: bids[0]?.size || 0, askSize: asks[0]?.size || 0,
+            spread: (asks[0]?.price || 0) - (bids[0]?.price || 0),
+            spreadPercent: bids[0]?.price ? ((asks[0]?.price || 0) - bids[0].price) / bids[0].price * 100 : 0,
+          },
           timestamp: Date.now(),
+          localTimestamp: Date.now(),
           updateId: msg.seq || 0,
         });
       }
@@ -365,13 +382,13 @@ export class USMARTDepthAdapter extends BridgeDepthAdapter {
       bids: data.bid_price
         ? data.bid_price.map((p: number, i: number) => ({
           price: p,
-          volume: data.bid_volume?.[i] || 0,
+          size: data.bid_volume?.[i] || 0,
         }))
         : [],
       asks: data.ask_price
         ? data.ask_price.map((p: number, i: number) => ({
           price: p,
-          volume: data.ask_volume?.[i] || 0,
+          size: data.ask_volume?.[i] || 0,
         }))
         : [],
       updateId: Date.now(),

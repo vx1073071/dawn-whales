@@ -27,14 +27,14 @@
     }
   },
   "include": [
-    "src",
-    "electron/broker",
-    "electron/ipc",
-    "electron/workers"
+    "src"
   ],
   "references": [
     {
       "path": "./tsconfig.node.json"
     }
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

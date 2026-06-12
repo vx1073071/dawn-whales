@@ -3,8 +3,8 @@
  * R119 #19: Cross-broker aggregated portfolio — IPC wired
  */
 
-import { useState, useMemo } from 'react';
-import { Progress, Tooltip } from 'antd';
+import { useMemo } from 'react';
+import { Progress } from 'antd';
 import { useBrokerData } from '../../hooks/useBrokerData';
 import { ChartSkeleton, ChartError, ChartEmpty } from '../chart/ChartStates';
 

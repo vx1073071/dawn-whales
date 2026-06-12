@@ -778,4 +778,9 @@ app.whenReady().then(async () => {
       dataScheduler.register('heatmap', async () => {
         if (emDataProvider) await emDataProvider.getHeatmap('industry');
       });
-      });
+
+    } // end if (db)
+  } catch (err) {
+    log.error('[App] Service init failed:', (err as Error).message);
+  }
+}

@@ -4,7 +4,7 @@
  * Auto-detects IPC availability, falls back to mock data for dev
  */
 
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Table, Tag, Badge, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useBrokerData } from '../../hooks/useBrokerData';

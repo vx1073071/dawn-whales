@@ -20,6 +20,7 @@
 // 4. 输出: PatternResult[] 含置信度和可靠度
 
 import type { KlineBar } from './types';
+import type { PatternResult } from '../../components/chart/PatternOverlay';
 
 // ═══════════════════════════════════════════════════════════════════════
 // TYPES
@@ -1221,8 +1222,6 @@ export function detectCandlestickPatterns(bars: KlineBar[]): CandlestickResult[]
 }
 
 // ═══════ EXPORT MAPPING TO PatternOverlay COMPAT ═══════
-
-import type { PatternResult } from '../../components/chart/PatternOverlay';
 
 /** 将ChartPattern转换为PatternOverlay组件所需格式 */
 export function toPatternOverlayResults(patterns: ChartPattern[]): PatternResult[] {
