@@ -23,3 +23,11 @@ export type { DrawingToolDef, DrawingCategory } from './DrawingToolbar';
 // Pattern overlay
 export { default as PatternOverlay, PatternSummary, detectPatterns, PATTERN_CATALOG } from './PatternOverlay';
 export type { PatternOverlayProps, PatternResult, PatternSummaryProps } from './PatternOverlay';
+
+// R114 Depth/Tick UI
+export { default as OrderBookWaterfall } from './OrderBookWaterfall';
+export type { OrderBookData, OrderBookLevel, OrderBookProps } from './OrderBookWaterfall';
+export { default as TickTimeline } from './TickTimeline';
+export type { TickRecord, TickTimelineProps } from './TickTimeline';
+export { default as DepthAnalyzerPanel } from './DepthAnalyzerPanel';
+export type { DepthMetrics, DepthAnalyzerProps } from './DepthAnalyzerPanel';
