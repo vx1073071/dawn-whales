@@ -1,4 +1,4 @@
-// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
+// R125-Q01: ts-nocheck cleared
 // ── R117 QTE-50 FootprintChart — 足迹图 (成交量分布+买卖方向) ──────────
 // PM: Bid/Ask volume at each price level, delta imbalance, cumulative delta
 

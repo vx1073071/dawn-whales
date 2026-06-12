@@ -1,4 +1,4 @@
-// @ts-nocheck
+// R125-Q01: ts-nocheck cleared
 // src/components/trading/ConditionRulePanel.tsx
 // conditionrule — Phase 4.2 R30 Q-30-02
 

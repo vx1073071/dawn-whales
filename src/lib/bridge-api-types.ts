@@ -1,6 +1,6 @@
 
 // ── DAWN WHALES — IPC API Client ( OpenD， Electron IPC) ──────────────
-// R124-P02: broker + risk namespaces typed. 25+ any's eliminated (batch 1/4).
+// R124-P02: broker + risk typed (batch 1/4). R125-P02: marketplace + dataProvider (batch 2/4).
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import type {
@@ -8,6 +8,8 @@ import type {
   BrokerOrderRequest, BrokerOrder, BrokerStatus, BrokerListEntry,
   RiskConfig, RiskAlert, RiskStatusSnapshot, RiskDrawdownState, RiskKellyStats,
   IpcResponse,
+  MarketplaceStrategy, MarketplacePerformance, MarketplaceComment,
+  FundamentalData, CapitalFlowData, MarketRegime, AnomalySignal, CompositeScore, NewsItem,
 } from './bridge-api-defs';
 
 declare global {
@@ -37,31 +39,31 @@ declare global {
         portfolio: (positions: any[]) => Promise<any>;
       };
       marketplace: {
-        rate: (strategyId: string, rating: number) => Promise<any>;
-        getRating: (strategyId: string) => Promise<any>;
-        comment: (strategyId: string, content: string, parentId?: number) => Promise<any>;
-        getComments: (strategyId: string) => Promise<any>;
-        savePerformance: (data: any) => Promise<any>;
-        getPerformance: (strategyId: string) => Promise<any>;
-        list: (sortBy?: string, limit?: number) => Promise<any>;
-        score: (strategyId: string) => Promise<any>;
-        verify: (strategyId: string) => Promise<any>;
-        updateAllScores: () => Promise<any>;
+        rate: (strategyId: string, rating: number) => Promise<IpcResponse>;
+        getRating: (strategyId: string) => Promise<IpcResponse<{ rating: number; count: number }>>;
+        comment: (strategyId: string, content: string, parentId?: number) => Promise<IpcResponse<{ comment: MarketplaceComment }>>;
+        getComments: (strategyId: string) => Promise<IpcResponse<{ comments: MarketplaceComment[] }>>;
+        savePerformance: (data: MarketplacePerformance) => Promise<IpcResponse>;
+        getPerformance: (strategyId: string) => Promise<IpcResponse<MarketplacePerformance>>;
+        list: (sortBy?: string, limit?: number) => Promise<IpcResponse<{ strategies: MarketplaceStrategy[] }>>;
+        score: (strategyId: string) => Promise<IpcResponse<{ score: number }>>;
+        verify: (strategyId: string) => Promise<IpcResponse>;
+        updateAllScores: () => Promise<IpcResponse>;
       };
       dataProvider: {
-        getFundamental: (symbol: string) => Promise<any>;
-        getCapitalFlow: (symbol: string) => Promise<any>;
-        getRegime: () => Promise<any>;
-        getAnomalies: (symbol: string) => Promise<any>;
-        getNews: (symbol: string, limit?: number) => Promise<any>;
-        getCompositeScore: (symbol: string) => Promise<any>;
-        saveFundamental: (data: any) => Promise<any>;
-        saveCapitalFlow: (data: any) => Promise<any>;
-        saveRegime: (regime: any) => Promise<any>;
-        computeRegime: (factors: any) => Promise<any>;
-        saveAnomaly: (signal: any) => Promise<any>;
-        saveNews: (symbol: string, items: any[]) => Promise<any>;
-        clearCache: () => Promise<any>;
+        getFundamental: (symbol: string) => Promise<IpcResponse<FundamentalData>>;
+        getCapitalFlow: (symbol: string) => Promise<IpcResponse<CapitalFlowData>>;
+        getRegime: () => Promise<IpcResponse<MarketRegime>>;
+        getAnomalies: (symbol: string) => Promise<IpcResponse<{ anomalies: AnomalySignal[] }>>;
+        getNews: (symbol: string, limit?: number) => Promise<IpcResponse<{ news: NewsItem[] }>>;
+        getCompositeScore: (symbol: string) => Promise<IpcResponse<CompositeScore>>;
+        saveFundamental: (data: FundamentalData) => Promise<IpcResponse>;
+        saveCapitalFlow: (data: CapitalFlowData) => Promise<IpcResponse>;
+        saveRegime: (regime: MarketRegime) => Promise<IpcResponse>;
+        computeRegime: (factors: Record<string, number>) => Promise<IpcResponse<MarketRegime>>;
+        saveAnomaly: (signal: AnomalySignal) => Promise<IpcResponse>;
+        saveNews: (symbol: string, items: NewsItem[]) => Promise<IpcResponse>;
+        clearCache: () => Promise<IpcResponse>;
       };
       backtestEnhanced: {
         walkForward: (config: any) => Promise<any>;

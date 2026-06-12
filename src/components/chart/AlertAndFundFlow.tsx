@@ -1,4 +1,4 @@
-// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
+// R125-Q01: ts-nocheck cleared
 // ── R115 QTE-27 AlertPanel + QTE-28 FundFlow — 异动提醒+资金流向 ────────
 
 import { useState, useCallback, useMemo } from 'react';

@@ -1,4 +1,4 @@
-// @ts-nocheck — R107/S-26 bridge-api type widening pre-existing
+// R125-Q01: ts-nocheck cleared
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Modal } from 'antd';
 import { EngineError } from '../../../electron/engine/core/engine-error';

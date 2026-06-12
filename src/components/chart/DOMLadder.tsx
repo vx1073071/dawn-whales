@@ -1,4 +1,4 @@
-// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
+// R125-Q01: ts-nocheck cleared
 // ── R117 QTE-49 DOM Ladder — 订单簿深度阶梯 (DOM面板) ──────────────────
 // PM: Depth of Market ladder, bid/ask level-by-level view, position display
 

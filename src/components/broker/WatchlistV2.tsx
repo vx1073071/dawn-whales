@@ -1,4 +1,4 @@
-// @ts-nocheck — R119: ML code, cross-module type mismatch
+// R125-Q01: ts-nocheck cleared
 /**
  * src/components/broker/WatchlistV2.tsx
  * R119 #19: Multi-broker real-time watchlist — IPC wired

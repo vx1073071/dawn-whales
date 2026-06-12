@@ -1,6 +1,6 @@
 // ── DAWN WHALES — IPC Bridge Type Definitions ───────────────────────────
-// R124-P02: Type-safe bridge API interfaces. Replaces `any` in bridge-api.d.ts.
-// 25+ `any` replacements in broker + risk namespaces (batch 1/4).
+// R124-P02: broker + risk (batch 1/4). R125-P02: marketplace + dataProvider (batch 2/4).
+// 50+ `any` replacements across 4 namespaces.
 
 // ── Broker namespace ────────────────────────────────────────────────────
 
@@ -180,4 +180,107 @@ export interface IpcResponse<T = unknown> {
   data?: T;
   error?: string;
   [key: string]: unknown;
+}
+
+// ── Marketplace namespace ───────────────────────────────────────────────
+
+export interface MarketplaceStrategy {
+  id: string;
+  name: string;
+  description: string;
+  author: string;
+  type: string;
+  tags: string[];
+  rating: number;
+  downloads: number;
+  verified: boolean;
+  score: number;
+  createdAt: string;
+  updatedAt: string;
+  performance?: MarketplacePerformance;
+}
+
+export interface MarketplacePerformance {
+  totalReturn: number;
+  annualizedReturn: number;
+  sharpeRatio: number;
+  maxDrawdown: number;
+  winRate: number;
+  totalTrades: number;
+  avgHoldingDays: number;
+}
+
+export interface MarketplaceComment {
+  id: number;
+  strategyId: string;
+  author: string;
+  content: string;
+  parentId?: number;
+  createdAt: string;
+  replies?: MarketplaceComment[];
+}
+
+// ── DataProvider namespace ──────────────────────────────────────────────
+
+export interface FundamentalData {
+  symbol: string;
+  marketCap: number;
+  pe: number;
+  pb: number;
+  roe: number;
+  debtRatio: number;
+  revenueGrowth: number;
+  earningsGrowth: number;
+  dividendYield: number;
+  sector: string;
+  updatedAt: string;
+}
+
+export interface CapitalFlowData {
+  symbol: string;
+  mainInflow: number;
+  mainOutflow: number;
+  retailInflow: number;
+  retailOutflow: number;
+  netFlow: number;
+  period: string;
+  timestamp: string;
+}
+
+export interface MarketRegime {
+  regime: 'BULL' | 'BEAR' | 'SIDEWAYS' | 'VOLATILE';
+  confidence: number;
+  factors: Record<string, number>;
+  updatedAt: string;
+}
+
+export interface AnomalySignal {
+  symbol: string;
+  type: string;
+  severity: 'LOW' | 'MEDIUM' | 'HIGH';
+  message: string;
+  value: number;
+  threshold: number;
+  timestamp: string;
+}
+
+export interface CompositeScore {
+  symbol: string;
+  overall: number;
+  fundamentals: number;
+  technicals: number;
+  sentiment: number;
+  momentum: number;
+  quality: number;
+  updatedAt: string;
+}
+
+export interface NewsItem {
+  id: string;
+  symbol: string;
+  title: string;
+  source: string;
+  url: string;
+  sentiment: 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
+  timestamp: string;
 }

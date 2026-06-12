@@ -11,6 +11,7 @@ import type { Drawing, TrendLine, FibRetracement, Rectangle, Point } from './dra
 import { getDrawingColor } from './drawing-tools';
 import type { ChartTheme } from './types';
 import { CHART_THEME_DARK } from './types';
+import { getChartColor } from './chart-theme-colors';
 
 export interface ISeriesPrimitivePaneRenderer {
   draw(target: CanvasRenderingTarget2D): void;
@@ -116,7 +117,7 @@ export class DrawingPrimitive implements ISeriesPrimitive<void> {
       const price = p2.price - diff * level;
       const y = p1.y + (p2.y - p1.y) * level;
       const hue = level <= 0.5 ? 120 : 360 - (level * 300);
-      const levelColor = level === 0 || level === 1 ? '#8b949e' : 'hsl(' + hue + ',60%,50%)';
+      const levelColor = level === 0 || level === 1 ? getChartColor('textMuted') : 'hsl(' + hue + ',60%,50%)';
 
       drawDashedLine(ctx, leftX, y, rightX, y, levelColor);
 
@@ -149,7 +150,7 @@ export class DrawingPrimitive implements ISeriesPrimitive<void> {
 
   private drawHandles(ctx: CanvasRenderingContext2D, color: string): void {
     ctx.fillStyle = color;
-    ctx.strokeStyle = '#ffffff';
+    ctx.strokeStyle = getChartColor('bgPrimary');
     ctx.lineWidth = 1;
     for (const p of this.drawing.points) {
       ctx.beginPath();

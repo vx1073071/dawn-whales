@@ -1,4 +1,4 @@
-// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
+// R125-Q01: ts-nocheck cleared
 // ── R116 QTE-45 CBBO Panel — 跨券商最优买卖价对比面板 ──────────────────
 // PM: 实时更新<200ms, 至少Binance/OKX/Bybit 3家对比
 // NBBO: bestBid/bestAsk + all bids/asks展开列表 + spread%绿黄红染色

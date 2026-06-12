@@ -1,4 +1,4 @@
-// @ts-nocheck
+// R125-Q01: ts-nocheck cleared
 import { useState, useEffect, useCallback } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 

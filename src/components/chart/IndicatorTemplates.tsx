@@ -74,17 +74,41 @@ export function IndicatorTemplatesUI({
         </div>
       )}
 
-      <div className="flex flex-wrap gap-0.5">
+      {/* R125: 拖拽排序 + 预览 */}
+      <div className="flex flex-col gap-0.5 max-h-32 overflow-y-auto">
         {templates.map((t, i) => (
-          <div key={i} className="flex items-center gap-0.5">
+          <div key={i}
+            className="flex items-center gap-1 group px-1 py-0.5 rounded hover:bg-[#161b22] transition-colors cursor-grab active:cursor-grabbing"
+            draggable
+          >
+            {/* Drag handle */}
+            <span className="text-[6px] text-[#30363d] cursor-grab select-none">⠿</span>
+
+            {/* Apply button */}
             <button onClick={() => applyTemplate(t.ids)}
-              className="px-1.5 py-0.5 text-[8px] bg-[#161b22] text-[#8b949e] rounded hover:bg-[#1c2333] font-mono"
-              title={t.ids.join(', ')}>
+              className="flex-1 text-left px-1.5 py-0.5 text-[8px] bg-[#0d1117] text-[#8b949e] rounded hover:bg-[#1c2333] hover:text-[#c9d1d9] font-mono truncate transition-colors"
+              title={`点击应用: ${t.ids.join(', ')}`}>
               {t.name}
             </button>
-            <button onClick={() => deleteTemplate(i)} className="text-[7px] text-[#ef4444] hover:text-[#ff6666]">×</button>
+
+            {/* Preview tooltip — shows indicator IDs on hover */}
+            <span
+              className="text-[7px] text-[#484f58] truncate max-w-[100px] hidden group-hover:inline"
+              title={t.ids.join(', ')}
+            >
+              {t.ids.slice(0, 3).join(',')}{t.ids.length > 3 ? ` +${t.ids.length - 3}` : ''}
+            </span>
+
+            {/* Delete */}
+            <button onClick={(e) => { e.stopPropagation(); deleteTemplate(i); }}
+              className="text-[7px] text-[#484f58] hover:text-[#ef4444] opacity-0 group-hover:opacity-100 transition-opacity">
+              ×
+            </button>
           </div>
         ))}
+        {templates.length === 0 && (
+          <div className="text-[8px] text-center py-2 text-[#30363d]">暂无保存的模板</div>
+        )}
       </div>
     </div>
   );
