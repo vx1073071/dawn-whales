@@ -1396,4 +1396,14 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   } catch (e) {
     log.warn('[IPC Schema] Could not load coverage registry:', e);
   }
+
+  // ── R128 J01: SQLite IPC Bridge (sandbox:true) ─────────────────────
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { registerSqliteIPC } = require('./sqlite-ipc');
+    registerSqliteIPC();
+    log.info('[IPC Setup] SQLite IPC bridge registered (sandbox:true)');
+  } catch (e) {
+    log.error('[IPC Setup] Failed to register SQLite IPC bridge:', e);
+  }
 }

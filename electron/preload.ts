@@ -236,4 +236,14 @@ contextBridge.exposeInMainWorld('api', {
   off: (channel: string, callback: (...args: unknown[]) => void) => {
     ipcRenderer.removeListener(channel, callback);
   },
+
+  // ── R128 J01: SQLite IPC Bridge (sandbox:true) ────────────────
+  db: {
+    all: (sql: string, params?: unknown[]) => ipcRenderer.invoke('db:all', sql, params),
+    get: (sql: string, params?: unknown[]) => ipcRenderer.invoke('db:get', sql, params),
+    run: (sql: string, params?: unknown[]) => ipcRenderer.invoke('db:run', sql, params),
+    exec: (sql: string) => ipcRenderer.invoke('db:exec', sql),
+    query: (opts: { sql: string; type: 'all' | 'get' | 'run'; params?: unknown[] }) =>
+      ipcRenderer.invoke('db:query', opts),
+  },
 });

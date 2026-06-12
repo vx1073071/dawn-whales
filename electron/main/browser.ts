@@ -57,7 +57,7 @@ export function createWindow() {
       preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false, // Required for better-sqlite3 native module access
+      sandbox: true, // R128: sqlite moved to main process (sqlite-ipc.ts)
       webSecurity: true, // R92: Enabled for CSP enforcement
     },
   });
