@@ -1,8 +1,8 @@
 # Dawn Whales User Manual v2.2.0
 
-> **Version**: v2.2.0 | **Last Updated**: 2026-06-13
-> **Covers**: Wallet, Marketplace, AI, Trading — Complete Operation Guide
-> **Update Notes**: Integrated R149-R151 (v17.6 fee lock, unified billing, fee preview, toast feedback, creator progress, monthly reports)
+> **Version**: v2.3.0 | **Last Updated**: 2026-06-14
+> **Covers**: Wallet, Marketplace, AI, Trading, Quotes — Complete Operation Guide
+> **Update Notes**: R152-R154 (search bar, real-time quotes, broker priority, market status indicators)
 
 ---
 
@@ -11,14 +11,15 @@
 1. [Getting Started](#1-getting-started)
 2. [Wallet & Balance](#2-wallet--balance)
 3. [Trading Fees](#3-trading-fees)
-4. [Creator Marketplace](#4-creator-marketplace)
-5. [AI Features](#5-ai-features)
-6. [Trading Agents (TA)](#6-trading-agents-ta)
-7. [Order Types](#7-order-types)
-8. [Fee Feedback & Protection](#8-fee-feedback--protection)
-9. [Monthly Spending Report](#9-monthly-spending-report)
-10. [Settings & Preferences](#10-settings--preferences)
-11. [Security](#11-security)
+4. [Market & Real-time Quotes](#4-market--real-time-quotes)
+5. [Creator Marketplace](#5-creator-marketplace)
+6. [AI Features](#6-ai-features)
+7. [Trading Agents (TA)](#7-trading-agents-ta)
+8. [Order Types](#8-order-types)
+9. [Fee Feedback & Protection](#9-fee-feedback--protection)
+10. [Monthly Spending Report](#10-monthly-spending-report)
+11. [Settings & Preferences](#11-settings--preferences)
+12. [Security](#12-security)
 
 ---
 
@@ -183,7 +184,152 @@ The fee and arrival amount are shown in real-time as you type the withdrawal amo
 
 ---
 
-## 4. Creator Marketplace
+## 4. Market & Real-time Quotes
+
+### Search for Symbols
+
+Use the global search bar (Ctrl+K or ⌘+K) to find any trading instrument:
+
+```
+Search supports:
+  📝 Name:     "腾讯" → HK.00700 Tencent
+  🔢 Code:     "00700" or "700" → HK.00700
+  🔤 Ticker:   "AAPL" → US.AAPL
+  💱 Crypto:   "BTC" → CC.BTCUSD
+  🇨🇳 Chinese:  "茅台" → SH.600519
+  🌐 English:  "Tesla" → US.TSLA
+```
+
+**Smart detection**:
+The search engine automatically identifies the market from your input:
+- 1-5 digit number → Hong Kong (e.g., `9988` → HK.09988)
+- 6-digit, starts with 6 → Shanghai A-share (e.g., `600519`)
+- 6-digit, starts with 0 or 3 → Shenzhen A-share (e.g., `000001`)
+- Letters only → US (e.g., `MSFT`)
+- Chinese characters → full-text name search
+
+### Search Results
+
+```
+Each result shows:
+  🏷  Symbol code        (e.g., HK.00700)
+  📛  Name CN + EN       (腾讯控股 / Tencent)
+  🏛  Market             (港股 label)
+  💰  Last price         (385.60 HKD)
+
+  Available Brokers:     🟢Futu 🟢Huasheng 🔴Tiger 🔴IBKR
+                         (green = connected, red = disconnected)
+  Quote Source:          富途
+  
+  [+ Add to Watchlist]
+```
+
+> If a broker shows 🔴: click the symbol → you'll be guided to connect that broker first.
+
+### Real-time Quote Display
+
+```
+Watchlist Panel:
+┌──────────────────────────────────────────────┐
+│  📈 My Watchlist           Source: 富途       │
+│                                              │
+│  HK.00700  腾讯         385.60  +2.30 (+0.6%)│
+│  US.AAPL   Apple Inc    195.80  -0.45 (-0.2%)│
+│  CC.BTCUSD Bitcoin    65000.00 +1200 (+1.9%)│
+│  SH.600519 贵州茅台     1680.00  +5.00 (+0.3%)│
+│                                              │
+│  Last updated: 14:32:05 HKT                   │
+└──────────────────────────────────────────────┘
+```
+
+### Quote Source Indicator
+
+Every watchlist item shows its data source at the bottom-right:
+
+```
+  Source: 富途           ← green = healthy (< 50ms)
+  Source: Tiger          ← yellow = moderate (50-200ms)
+  Source: eToro          ← red = slow (> 500ms)
+```
+
+Color codes:
+- 🟢 Green: < 50ms — optimal
+- 🟡 Yellow: 50-200ms — acceptable
+- 🟠 Orange: 200-500ms — degraded
+- 🔴 Red: > 500ms — consider switching source
+
+### Market Status Indicator
+
+```
+Top of Market/Watchlist page:
+
+  🇭🇰 港股: 交易中 09:30-16:00    ← green indicator
+  🇺🇸 美股: 已收盘 16:00-04:00+1  ← gray, next open in 5h
+
+  (Only shown for markets in your watchlist)
+```
+
+Markets auto-detect their trading status:
+- **交易中** (Trading) — green, live quotes updating
+- **已收盘** (Closed) — gray, last closing price shown
+- **盘前** (Pre-market) — blue, pre-market quotes if available
+- **盘后** (After-hours) — orange, after-hours quotes if available
+
+### Switching Quote Sources
+
+If you prefer a different data source for a symbol:
+
+```
+1. Right-click a symbol → "Change Quote Source"
+2. Available sources listed: 富途 (45ms) | Tiger (100ms) | IBKR (80ms)
+3. Click to switch → new source used immediately
+4. Switch is persistent (survives restart)
+
+⚠ Manual override disables auto-failover for this symbol
+```
+
+### Broker Priority Settings
+
+Go to Settings → Broker Priority to customize which data source Dawn Whales uses first:
+
+```
+┌──────────────────────────────────────────────────┐
+│  ⚙️ Broker Priority                                │
+│                                                  │
+│  Market: [🇭🇰 Hong Kong  ▾]                       │
+│                                                  │
+│  Drag to reorder (top = highest priority):       │
+│                                                  │
+│  ☰ 1. 富途         45ms   L2 Depth   🟢 Healthy │
+│  ☰ 2. 华盛          120ms  L1 Quote   🟢 Healthy │
+│  ☰ 3. 盈立          200ms  L1 Quote   🟢 Healthy │
+│  ☰ 4. Tiger         100ms  L1 Quote   🟡 120ms  │
+│  ☰ 5. IBKR          80ms   L1 Quote   🔴 Offline │
+│                                                  │
+│  Changes take effect immediately.                │
+│  Drag IBKR up if you prefer it over others.      │
+│  Disable a broker: toggle the switch OFF.        │
+└──────────────────────────────────────────────────┘
+```
+
+Changes auto-save. The quote router uses your custom priority ordering for all symbols in that market.
+
+### K-line Chart Data
+
+```
+Open any symbol → click "Chart" tab:
+
+  Period: [1m] [5m] [15m] [30m] [1h] [Day] [Week] [Month]
+  
+  Data comes from the assigned quote source.
+  Cache: 30 seconds — same symbol won't fetch repeat K-lines.
+  
+  Offline mode: charts load from indexedDB cache.
+```
+
+---
+
+## 5. Creator Marketplace
 
 ### Tip Live Preview
 
@@ -371,7 +517,7 @@ A filled stop at -10% is better than an unfilled stop at -50%.
 
 ---
 
-## 8. Fee Feedback & Protection
+## 9. Fee Feedback & Protection
 
 ### Deduction Toast
 Every time USDT is deducted, a toast notification appears:
@@ -422,7 +568,7 @@ All fees go through a single entry point: `billing-service.ts`. There are no lon
 
 ---
 
-## 9. Monthly Spending Report
+## 10. Monthly Spending Report
 
 Every month, you can review your spending:
 
@@ -453,7 +599,7 @@ The report auto-generates on the 1st of each month and is available anytime.
 
 ---
 
-## 10. Settings & Preferences
+## 11. Settings & Preferences
 
 ### Language
 Dawn Whales supports 8 languages: 🇨🇳 简体中文 | 🇺🇸 English | 🇯🇵 日本語 | 🇰🇷 한국어 | 🇪🇸 Español | 🇫🇷 Français | 🇩🇪 Deutsch | 🇷🇺 Русский
@@ -483,9 +629,58 @@ The reminder appears 24 hours before expiry. Auto-renew is ON by default. You ca
 ### Broker Connection
 Go to Settings → Broker to connect your trading accounts.
 
+### Broker Priority & Quote Health
+
+Configure which broker Dawn Whales uses first for quotes. Drag to reorder — changes apply immediately.
+
+```
+Settings → Broker Priority:
+
+  Market: [🇭🇰 Hong Kong ▾] [🇺🇸 US] [🇨🇳 A-Share] [💱 Crypto]
+  
+  ☰ 富途          45ms   🟢   L2 Depth
+  ☰ Tiger         100ms  🟡   L1 Quote
+  ☰ IBKR          80ms   🔴   Offline
+  
+  Each market has independent priority ordering.
+  Disable a broker: toggle the switch OFF — it won't be used.
+```
+
+### Quote Health Dashboard
+
+Monitor all your connected quote sources:
+
+```
+Settings → Connection Health:
+
+  Broker     Status    Latency    Error Rate    Uptime
+  ─────────────────────────────────────────────────
+  富途       🟢 Healthy   45ms       0.1%       99.8%
+  Tiger      🟡 Warning  120ms       2.3%       98.1%
+  Binance    🟢 Healthy   30ms       0.0%       99.9%
+  IBKR       🔴 Offline    —          —          —
+  
+  [Test Connection] [Refresh All]
+```
+
+Color codes: 🟢 Healthy (< 50ms) | 🟡 Warning (50-200ms) | 🟠 Degraded (200-500ms) | 🔴 Offline (> 500ms or disconnected)
+
+### Market Hours Display
+
+Settings → Display → Show Market Hours — toggle on/off:
+
+```
+When enabled, the watchlist header shows:
+
+  🇭🇰 HK  09:30-16:00  ▮▮▮▮▮░░░░  (trading, 3h 28m remaining)
+  🇺🇸 US  09:30-16:00  ░░░░░░░░░░  (closed, opens in 9h)
+```
+
+Auto-detects holidays and early closures based on your connected brokers.
+
 ---
 
-## 11. Security
+## 12. Security
 
 ### Your Wallet Security
 - All balances stored server-side (never trust client)
@@ -532,5 +727,6 @@ A: Yes, subject to the 0.1% withdrawal fee (minimum 2 USDT). Withdrawals over 10
 ---
 
 > **Version History**:
+> - v2.3.0 (2026-06-14) — R152-R154 integration: search bar, real-time quotes, broker priority, market status, quote source indicator
 > - v2.2.0 (2026-06-13) — R149-R151 integration: unified billing, fee preview, toast feedback, creator progress, monthly report, subscription renewal
 > - v2.1.0 (2026-06-13) — Initial complete manual with wallet, marketplace, AI, TA, trading
