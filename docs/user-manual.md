@@ -1,7 +1,8 @@
-# Dawn Whales User Manual v2.1.0
+# Dawn Whales User Manual v2.2.0
 
-> **Version**: v2.1.0 | **Last Updated**: 2026-06-13
+> **Version**: v2.2.0 | **Last Updated**: 2026-06-13
 > **Covers**: Wallet, Marketplace, AI, Trading — Complete Operation Guide
+> **Update Notes**: Integrated R149-R151 (v17.6 fee lock, unified billing, fee preview, toast feedback, creator progress, monthly reports)
 
 ---
 
@@ -14,8 +15,10 @@
 5. [AI Features](#5-ai-features)
 6. [Trading Agents (TA)](#6-trading-agents-ta)
 7. [Order Types](#7-order-types)
-8. [Settings & Preferences](#8-settings--preferences)
-9. [Security](#9-security)
+8. [Fee Feedback & Protection](#8-fee-feedback--protection)
+9. [Monthly Spending Report](#9-monthly-spending-report)
+10. [Settings & Preferences](#10-settings--preferences)
+11. [Security](#11-security)
 
 ---
 
@@ -29,9 +32,11 @@
 ### First Launch
 1. Install Dawn Whales from the official download page
 2. Launch the desktop application
-3. First-time users get **3 free AI analyses** (registration bonus)
-4. Go to Wallet → Deposit USDT to unlock all paid features
+3. Go to Wallet → Deposit USDT to start using paid features
+4. All AI features are pay-per-use — check pricing before clicking
 5. Connect your broker to start trading
+
+> 💡 New to Dawn Whales? See the **Onboarding Guide** (Help → Getting Started) for a 5-minute walkthrough.
 
 ### Navigation
 ```
@@ -126,8 +131,22 @@ Wallet Page:
 │  06-12  Transfer to @traderX  -100.30 USDT   │
 │                                              │
 │  [View All Transactions]                     │
+│  [📊 Monthly Report]                         │
 └──────────────────────────────────────────────┘
 ```
+
+### Insufficient Balance
+
+```
+If you try to buy a 49.9 USDT strategy but only have 30 USDT:
+
+  ⚠ Insufficient Balance
+  You need 19.9 USDT more (including fees).
+  
+  [💳 Deposit USDT] → One-click jump to deposit page
+```
+
+This check runs before every paid action (purchase, AI, TA). No deduction attempt if balance is too low.
 
 ---
 
@@ -146,14 +165,44 @@ When you place a trade through Dawn Whales, you pay:
 | Crypto Contracts | 0.02% | 0.5 USDT | Buy $10,000 → 2 USDT |
 
 ### Fee Visibility
+- **FeePreview component** on every order entry — shows estimated fee before you confirm
 - Fee is shown **before you confirm** every trade
-- Fee is displayed in the order placement UI
 - All fees are recorded in your transaction history
 - Fees are non-refundable except when: broker rejects order / you cancel before fill / order expires unfilled
+
+### Withdrawal Fee Preview
+```
+When you go to Withdraw, you'll see:
+  Amount: 100 USDT
+  Fee (0.1%): 0.10 USDT → min 2 USDT → 2.00 USDT
+  You receive: 98.00 USDT
+
+  [Confirm Withdrawal]
+```
+The fee and arrival amount are shown in real-time as you type the withdrawal amount.
 
 ---
 
 ## 4. Creator Marketplace
+
+### Tip Live Preview
+
+```
+When you tip a creator:
+
+  Creator: @topTrader (L2 — 80% share)
+  
+  Select Amount: [9.9] [19.9] [49.9] [99.9] [Custom]
+  
+  You selected: 49.9 USDT
+  
+  Platform share (20%): 9.98 USDT
+  Creator receives:    39.92 USDT
+  
+  [💝 Send Tip]
+```
+
+The platform share updates in real-time as you select the amount. The creator's level is fetched automatically — no manual lookup needed.
 
 ### Buying Strategies
 
@@ -190,6 +239,20 @@ Creator Levels:
 
 Levels upgrade AUTOMATICALLY when you reach the sales threshold.
 No KYC, no manual review, no demotion.
+
+### Creator Progress Bar
+
+```
+Creator Dashboard:
+
+  Current Level: 🟢 L1 (70% share)
+  Total Sales: 47 / 100 to L2
+  [████████████████░░░░░░░░░░░░] 47% to next level
+  
+  📈 You need 53 more sales to reach 🔵 L2 (80% share)
+```
+
+The progress bar updates after every sale. You can see exactly how close you are to the next tier.
 ```
 
 ---
@@ -308,7 +371,89 @@ A filled stop at -10% is better than an unfilled stop at -50%.
 
 ---
 
-## 8. Settings & Preferences
+## 8. Fee Feedback & Protection
+
+### Deduction Toast
+Every time USDT is deducted, a toast notification appears:
+
+```
+┌─────────────────────────────────┐
+│  💰 Deducted 1.00 USDT          │
+│  AI Auto-Drawing                │
+│  [View Details]                 │  ← disappears after 2 seconds
+└─────────────────────────────────┘
+```
+
+The toast is visible but non-intrusive (silent deduction ≠ invisible). Click "View Details" to see the transaction record.
+
+### Refund Visual Feedback
+When a fee is refunded (e.g., broker rejection, AI failure):
+
+```
+┌─────────────────────────────────┐
+│  ↩ Refunded 2.00 USDT           │
+│  Trade rejected by broker       │
+│  Balance: 1,250.00 → 1,252.00   │  ← green balance update animation
+│  [Why refunded?]                │
+└─────────────────────────────────┘
+```
+
+A green animation shows your balance updating. Click "Why refunded?" for the specific reason.
+
+### FeePreview Component
+All order/transaction entry points include a unified **FeePreview** component:
+
+```
+  Order: Buy 100 AAPL @ $185.00 = $18,500.00
+  Fee (0.1%):   18.50 USDT
+  Total Deduction: $18,500.00 + 18.50 USDT
+  
+  [Place Order]
+```
+
+This appears on: Market orders, Strategy entries, Copy trade entries, AI purchases.
+
+### Unified Billing System (v17.6)
+All fees go through a single entry point: `billing-service.ts`. There are no longer separate billing pipelines for different features. This ensures:
+- One source of truth for all fee calculations
+- Consistent deduction/refund logic
+- Single transaction history
+- No orphaned billing code from old versions (old engines marked `@deprecated`)
+
+---
+
+## 9. Monthly Spending Report
+
+Every month, you can review your spending:
+
+```
+📊 June 2026 Spending Report
+
+  💰 Total Spent:     87.50 USDT
+  🎨 AI Features:      32.00 USDT (36.6%)
+  🛒 Marketplace:      49.90 USDT (57.0%)
+  📊 Trading Fees:      5.60 USDT (6.4%)
+  ──────────────────────────────
+  
+  Category Breakdown:
+  AI Draw:         5 × 1.00 =  5.00 USDT
+  AI Chat:        15 × 1.00 = 15.00 USDT
+  AI Optimize:     8 × 1.50 = 12.00 USDT
+  Strategy Buy:    1 × 49.90 = 49.90 USDT
+  Stock Trades:    2 × 0.10 =  5.60 USDT (avg fee: 2.80)
+  
+  📈 vs Last Month: +12.50 USDT (16.7% increase)
+  
+  [Export CSV] [View All Months]
+```
+
+Access: Wallet → Monthly Report (or click "📊 Monthly Report" on the wallet page).
+
+The report auto-generates on the 1st of each month and is available anytime.
+
+---
+
+## 10. Settings & Preferences
 
 ### Language
 Dawn Whales supports 8 languages: 🇨🇳 简体中文 | 🇺🇸 English | 🇯🇵 日本語 | 🇰🇷 한국어 | 🇪🇸 Español | 🇫🇷 Français | 🇩🇪 Deutsch | 🇷🇺 Русский
@@ -320,15 +465,27 @@ Configure notifications for:
 - Wallet balance low (below threshold)
 - Trade executed or failed
 - AI analysis complete
-- Subscription renewal
+- **Subscription renewal reminder** (24h before expiry, with auto-renew toggle)
 - Health check alerts (red status)
+
+### Subscription Renewal
+```
+When a signal subscription is about to expire:
+
+  ⏰ Subscription Expiring
+  "Crypto Momentum Signals" expires in 24 hours.
+  
+  [🔄 Auto-Renew: ON]  ← toggle on/off
+  [Renew Now] [Manage]
+```
+The reminder appears 24 hours before expiry. Auto-renew is ON by default. You can cancel at any time — the subscription stays active until the end of the current billing period.
 
 ### Broker Connection
 Go to Settings → Broker to connect your trading accounts.
 
 ---
 
-## 9. Security
+## 11. Security
 
 ### Your Wallet Security
 - All balances stored server-side (never trust client)
@@ -374,4 +531,6 @@ A: Yes, subject to the 0.1% withdrawal fee (minimum 2 USDT). Withdrawals over 10
 
 ---
 
-> **Version History**: v2.1.0 (2026-06-13) — Initial complete manual with wallet, marketplace, AI, TA, trading
+> **Version History**:
+> - v2.2.0 (2026-06-13) — R149-R151 integration: unified billing, fee preview, toast feedback, creator progress, monthly report, subscription renewal
+> - v2.1.0 (2026-06-13) — Initial complete manual with wallet, marketplace, AI, TA, trading
