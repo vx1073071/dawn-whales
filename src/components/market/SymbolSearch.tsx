@@ -192,6 +192,31 @@ export default function SymbolSearch({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedMarket, setSelectedMarket] = useState<Market | null>(null);
   const [showBrokerHint, setShowBrokerHint] = useState<{ market: Market; symbol: SymbolEntry } | null>(null);
+  const [searchHistory, setSearchHistory] = useState<string[]>(() => {
+    // ── R156 #12: localStorage search history (last 10) ──
+    try {
+      const saved = localStorage.getItem('dw-search-history');
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
+
+  // ── R156 #10: Mock price preview (to be replaced by GET /api/symbol/quote-preview) ──
+  const getMockPrice = useCallback((code: string): { price: number; change: number } | null => {
+    const mockPrices: Record<string, { price: number; change: number }> = {
+      'US.AAPL': { price: 198.5, change: 2.3 },
+      'US.NVDA': { price: 892.3, change: 15.7 },
+      'US.TSLA': { price: 247.8, change: -3.2 },
+      'US.SPY': { price: 523.4, change: 1.8 },
+      'US.QQQ': { price: 445.2, change: 4.1 },
+      'HK.00700': { price: 378.5, change: 5.2 },
+      'HK.09988': { price: 82.3, change: -1.1 },
+      'HK.01810': { price: 28.5, change: 0.8 },
+      'CRYPTO.BTC-USDT': { price: 97234, change: 1200 },
+      'CRYPTO.ETH-USDT': { price: 3821, change: -45 },
+      'CRYPTO.SOL-USDT': { price: 192.3, change: 8.5 },
+    };
+    return mockPrices[code] || null;
+  }, []);
 
   void compact; // R152 — reserved for compact mode
 
@@ -234,6 +259,12 @@ export default function SymbolSearch({
     onAdd(s.code);
     setQuery('');
     message.success(`已添加 ${s.code}`);
+    // ── R156 #12: Save to search history ──
+    setSearchHistory(prev => {
+      const next = [s.code, ...prev.filter(h => h !== s.code)].slice(0, 10);
+      try { localStorage.setItem('dw-search-history', JSON.stringify(next)); } catch {}
+      return next;
+    });
   }, [onAdd]);
 
   return (
@@ -336,6 +367,20 @@ export default function SymbolSearch({
                   </div>
                   <div style={{ fontSize: 11, color: '#6b7280', marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {s.name}
+                    {/* ── R156 #10: Price preview ── */}
+                    {(() => {
+                      const px = getMockPrice(s.code);
+                      if (!px) return null;
+                      const clr = px.change >= 0 ? '#22c55e' : '#ef4444';
+                      return (
+                        <span style={{ marginLeft: 8, fontFamily: 'monospace', fontSize: 11, fontWeight: 600, color: clr }}>
+                          ${px.price.toFixed(s.code.startsWith('CRYPTO') ? 0 : 2)}
+                          <span style={{ fontSize: 9, marginLeft: 3 }}>
+                            {px.change >= 0 ? '+' : ''}{px.change.toFixed(s.code.startsWith('CRYPTO') ? 0 : 2)}
+                          </span>
+                        </span>
+                      );
+                    })()}
                   </div>
 
                   {/* ── Broker availability ── */}
@@ -422,6 +467,47 @@ export default function SymbolSearch({
               忽略
             </button>
           </Space>
+        </div>
+      )}
+
+      {/* ── R156 #12: Search history ── */}
+      {isOpen && !query && searchHistory.length > 0 && (
+        <div style={{
+          marginTop: 6, padding: 10, borderRadius: 10,
+          background: '#1a1d2e', border: '1px solid #2a2d3e',
+        }}>
+          <div style={{ fontSize: 11, color: '#6b7280', marginBottom: 6 }}>最近添加</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            {searchHistory.map(h => {
+              const entry = SYMBOL_DB.find(s => s.code === h);
+              if (!entry) return null;
+              const mc = MARKET_CONFIG[entry.market];
+              const px = getMockPrice(h);
+              return (
+                <button
+                  key={h}
+                  onMouseDown={() => {
+                    if (!watchlist.includes(h)) handleAdd(entry);
+                    else onAdd(h);
+                  }}
+                  style={{
+                    padding: '4px 10px', borderRadius: 6, fontSize: 10,
+                    background: '#0d0f1a', border: '1px solid #2a2d3e',
+                    color: '#e0e0e0', cursor: 'pointer', display: 'flex',
+                    alignItems: 'center', gap: 6,
+                  }}
+                >
+                  <span style={{ color: mc.color }}>{mc.icon}</span>
+                  <span style={{ fontFamily: 'monospace', fontWeight: 600 }}>{h}</span>
+                  {px && (
+                    <span style={{ color: px.change >= 0 ? '#22c55e' : '#ef4444', fontSize: 9 }}>
+                      ${px.price.toFixed(h.startsWith('CRYPTO') ? 0 : 2)}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
 

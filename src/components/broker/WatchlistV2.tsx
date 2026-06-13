@@ -1,4 +1,8 @@
 // @ts-nocheck
+// ⚠️ @deprecated R156 (2026-06-14): Unified into MarketPage.tsx + marketStore.ts.
+// All watchlist management now goes through src/stores/marketStore.ts.
+// Quote source display: src/components/market/QuoteSourceBadge.tsx.
+// Do NOT maintain a separate watchlist here — use marketStore.addWatch() instead.
 // R125-Q01: ts-nocheck cleared
 /**
  * src/components/broker/WatchlistV2.tsx

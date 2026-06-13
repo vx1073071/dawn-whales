@@ -19,8 +19,9 @@ import CreditsHistoryPage from '../billing/CreditsHistoryPage';
 import PointsTopUpPage from '../billing/PointsTopUpPage';
 import CreditsDashboard from '../billing/CreditsDashboard';
 import P2PTransferRecords from '../billing/P2PTransferRecords';
+import BrokerPriorityPanel from './BrokerPriority';
 
-type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'currency' | 'credits' | 'topup' | 'dashboard' | 'p2p' | 'update' | 'info' | 'exchangeRate' | 'server';
+type SettingsTab = 'broker-mgmt' | 'connect' | 'risk' | 'timezone' | 'currency' | 'credits' | 'topup' | 'dashboard' | 'p2p' | 'update' | 'info' | 'exchangeRate' | 'server' | 'quote-source';
 
 interface BrokerItem {
   id: string;
@@ -190,6 +191,7 @@ export default function SettingsPage() {
   { id: 'topup', label: 'settings.topUp', icon: '💳' },
   { id: 'dashboard', label: 'settings.dashboard', icon: '📊' },
   { id: 'p2p', label: 'settings.p2p', icon: '🤝' },
+  { id: 'quote-source', label: '行情源', icon: '📡' },
   { id: 'exchangeRate', label: 'settings.exchangeRate', icon: '💹' },
   { id: 'server', label: 'settings.server', icon: '☁️' },
   { id: 'update', label: 'settings.softwareUpdate', icon: '🔄' },
@@ -501,6 +503,9 @@ export default function SettingsPage() {
       )}
 
       {activeTab === 'p2p' && <P2PTransferRecords />}
+
+      {/* ── R156 #19: Broker priority settings ── */}
+      {activeTab === 'quote-source' && <BrokerPriorityPanel />}
 
       {activeTab === 'exchangeRate' && <ExchangeRatePanel />}
 

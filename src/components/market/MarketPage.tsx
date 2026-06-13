@@ -25,7 +25,6 @@ export default function MarketPage() {
   const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
   const [klineData, setKlineData] = useState<unknown[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showSearch, setShowSearch] = useState(false);
   const [klineLoading, setKlineLoading] = useState(false);
   const [klinePeriod, setKlinePeriod] = useState<string>('daily');
 
@@ -86,6 +85,8 @@ export default function MarketPage() {
 
   function handleAddStock(code: string) {
     addWatch(code);
+    // ── R156 #6: auto-select for K-line ──
+    setSelectedSymbol(code);
     setSearchQuery('');
     setShowSearch(false);
   }
@@ -108,14 +109,11 @@ export default function MarketPage() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => setShowSearch(!showSearch)} className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">{i18n.t("MarketPage.r92_075b")}
-          </button>
           <MarketStatusIndicator compact />
         </div>
       </div>
 
-      {/* Search panel — R152: SymbolSearch replaces hardcoded POPULAR_US */}
-      {showSearch &&
+      {/* ── R156 #18: Search always visible (was toggle-only) ── */}
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4 mb-4">
           <SymbolSearch
             watchlist={watchlist}
@@ -123,7 +121,6 @@ export default function MarketPage() {
             showOnlyNew
           />
         </div>
-      }
 
       {/* Market table */}
       <QuoteSourcePanel watchlist={watchlist} quotes={{}} />
