@@ -18,6 +18,8 @@ import deadLetterRoutes from './middleware/dead-letter';
 import { APIIntegration, unifiedErrorHandler } from './services/api-integration';
 import { RateLimiter, rateLimitMiddleware, AIRateLimiter, IndexOptimizer, LRUCache, BatchExecutor } from './middleware/optimizations';
 import { ChainMonitorV2 } from './services/chain-monitor-v2';
+import { AIHealthCheckService } from './services/ai-health';
+import { AIBillingService } from './services/ai-billing';
 
 const app = express();
 const PORT = config.port;
@@ -66,8 +68,39 @@ try {
   console.warn('[Server] Chain monitor init failed:', err);
 }
 
-// ── R148: API Integration ───────────────────────────────────────────
-const integration = new APIIntegration(db!);
+// ── R151: AI health check daily cron ──────────────────────────────
+let aiHealthCheck: AIHealthCheckService | null = null;
+let aiHealthCheckTimer: ReturnType<typeof setInterval> | null = null;
+try {
+  const aiBilling = new AIBillingService(db!);
+  aiHealthCheck = new AIHealthCheckService(db!, aiBilling);
+  console.log('[Server] AI health check service initialized');
+
+  // Run daily at 02:00 UTC (10:00 HKT)
+  aiHealthCheckTimer = setInterval(() => {
+    const now = new Date();
+    if (now.getUTCHours() === 2 && now.getUTCMinutes() < 30) {
+      console.log('[Server] Running daily AI health check...');
+      try {
+        const users = db!.prepare('SELECT DISTINCT user_id, id as wallet_id FROM wallets').all() as any[];
+        for (const user of users) {
+          try {
+            aiHealthCheck!.checkHealth(user.user_id, user.wallet_id, `daily-cron-${now.toISOString().split('T')[0]}-${user.user_id}`);
+          } catch (userErr) {
+            console.warn(`[Server] AI health check failed for user ${user.user_id}:`, userErr);
+          }
+        }
+        console.log(`[Server] Daily AI health check complete — ${users.length} users scanned`);
+      } catch (err) {
+        console.warn('[Server] Daily AI health check error:', err);
+      }
+    }
+  }, 30 * 60 * 1000); // Every 30 minutes, check if it's 02:00 UTC
+
+  console.log('[Server] AI health check daily cron registered (02:00 UTC)');
+} catch (err) {
+  console.warn('[Server] AI health check init failed:', err);
+}
 
 // ── Health check ─────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
@@ -80,7 +113,7 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
-// R148: Extended health with chain status
+// R148: Extended health with chain + AI health status
 app.get('/api/health/extended', async (_req, res) => {
   const chainStatus = chainMonitor ? await chainMonitor.getStatus() : [];
   res.json({
@@ -88,6 +121,7 @@ app.get('/api/health/extended', async (_req, res) => {
     version: '2.1.0',
     uptime: process.uptime(),
     chainStatus,
+    aiHealthCheck: aiHealthCheck ? 'active' : 'disabled',
     rateLimiter: generalLimiter.stats(),
     aiRateLimiter: aiLimiter.stats(),
   });
@@ -145,7 +179,7 @@ export function startServer(port: number = PORT): ReturnType<typeof createServer
   return server;
 }
 
-export { app, chainMonitor, integration, generalLimiter, aiLimiter };
+export { app, chainMonitor, aiHealthCheck, integration, generalLimiter, aiLimiter };
 
 if (require.main === module) {
   startServer();

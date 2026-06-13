@@ -150,6 +150,145 @@ router.post('/', authMiddleware, (req: Request, res: Response) => {
   }
 });
 
+// ─── GET /api/wallet/report/:userId/:month ── R151 #28: Monthly spending report ─────
+router.get('/report/:userId/:month', authMiddleware, (req: Request, res: Response) => {
+  try {
+    const callerId = getUserId(req);
+    const targetUserId = req.params.userId;
+    const month = req.params.month; // format: YYYY-MM
+
+    // Authorization
+    if (callerId !== targetUserId) {
+      res.status(403).json({ success: false, error: 'Access denied — can only view own report' });
+      return;
+    }
+
+    // Validate month format
+    if (!/^\d{4}-\d{2}$/.test(month)) {
+      res.status(400).json({ success: false, error: 'Invalid month format. Use YYYY-MM (e.g. 2026-06)' });
+      return;
+    }
+
+    const [year, mon] = month.split('-').map(Number);
+    const nextMonth = mon === 12 ? `${year + 1}-01` : `${year}-${String(mon + 1).padStart(2, '0')}`;
+
+    const db = getMainDb();
+
+    // Get user wallet
+    const wallet = db.prepare('SELECT * FROM wallets WHERE user_id = ?').get(targetUserId) as any;
+    if (!wallet) {
+      res.status(404).json({ success: false, error: 'No wallet found' });
+      return;
+    }
+
+    // Query ledger entries for the month
+    const entries = db.prepare(
+      `SELECT * FROM ledger_entries
+       WHERE wallet_id = ? AND created_at >= ? AND created_at < ?
+       ORDER BY created_at ASC`
+    ).all(wallet.id, `${month}-01`, nextMonth) as LedgerEntryRow[];
+
+    // Aggregate by category
+    let tradingFees = 0;
+    let aiFees = 0;
+    let transferFees = 0;
+    let withdrawalFees = 0;
+    let tipsGiven = 0;
+    let tipsReceived = 0;
+    let deposits = 0;
+    let refunds = 0;
+    let subscriptionPayments = 0;
+    let subscriptionEarnings = 0;
+    const categoryBreakdown: Record<string, { count: number; total: number }> = {};
+
+    for (const entry of entries) {
+      const et = entry.entry_type;
+      const amt = entry.amount_usdt;
+
+      if (!categoryBreakdown[et]) {
+        categoryBreakdown[et] = { count: 0, total: 0 };
+      }
+      categoryBreakdown[et].count++;
+      categoryBreakdown[et].total += Math.abs(amt);
+
+      if (et === 'TRADE_FEE' || et === 'TRADE_COMMISSION' || et === 'STAMP_DUTY' || et === 'TRANSFER_TAX') {
+        tradingFees += Math.abs(amt);
+      } else if (et === 'AI_CALL' || et === 'AI_DEBATE' || et === 'AI_ARENA' || et === 'AI_ANALYSIS' || et === 'AI_DRAW' || et === 'AI_PARAM_FILL' || et === 'AI_PORTFOLIO' || et === 'AI_BACKTEST' || et === 'AI_OPTIMIZE' || et === 'AI_HEALTH') {
+        aiFees += Math.abs(amt);
+      } else if (et === 'TRANSFER_SEND') {
+        transferFees += Math.abs(amt);
+      } else if (et === 'WITHDRAWAL_FEE') {
+        withdrawalFees += Math.abs(amt);
+      } else if (et === 'TIP_SEND') {
+        tipsGiven += Math.abs(amt);
+      } else if (et === 'TIP_RECEIVE') {
+        tipsReceived += amt;
+      } else if (et === 'DEPOSIT' || et === 'RECHARGE') {
+        deposits += amt;
+      } else if (et === 'REFUND' || et === 'AI_REFUND') {
+        refunds += Math.abs(amt);
+      } else if (et === 'SUBSCRIPTION_PAY') {
+        subscriptionPayments += Math.abs(amt);
+      } else if (et === 'SUBSCRIPTION_EARN') {
+        subscriptionEarnings += amt;
+      }
+    }
+
+    const totalSpending = tradingFees + aiFees + transferFees + withdrawalFees + tipsGiven + subscriptionPayments;
+    const totalIncome = deposits + tipsReceived + refunds + subscriptionEarnings;
+    const netChange = totalIncome - totalSpending;
+
+    // Find top spending days
+    const dailyTotals: Record<string, number> = {};
+    for (const entry of entries) {
+      const day = entry.created_at.substring(0, 10);
+      if (Object.values(['DEPOSIT', 'RECHARGE', 'TIP_RECEIVE', 'SUBSCRIPTION_EARN', 'REFUND', 'AI_REFUND']).some(t => t === entry.entry_type)) {
+        continue; // skip income entries for top spending
+      }
+      dailyTotals[day] = (dailyTotals[day] || 0) + Math.abs(entry.amount_usdt);
+    }
+    const topSpendingDays = Object.entries(dailyTotals)
+      .map(([day, total]) => ({ day, total: Math.round(total * 100) / 100 }))
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 5);
+
+    const report = {
+      month,
+      userId: targetUserId,
+      walletId: wallet.id,
+      startBalance: 0,  // TODO: could query balance at start of month
+      endBalance: wallet.usdt_balance,
+      summary: {
+        totalSpending: Math.round(totalSpending * 100) / 100,
+        totalIncome: Math.round(totalIncome * 100) / 100,
+        netChange: Math.round(netChange * 100) / 100,
+        transactionCount: entries.length,
+      },
+      breakdown: {
+        tradingFees: Math.round(tradingFees * 100) / 100,
+        aiFees: Math.round(aiFees * 100) / 100,
+        transferFees: Math.round(transferFees * 100) / 100,
+        withdrawalFees: Math.round(withdrawalFees * 100) / 100,
+        tipsGiven: Math.round(tipsGiven * 100) / 100,
+        tipsReceived: Math.round(tipsReceived * 100) / 100,
+        subscriptionPayments: Math.round(subscriptionPayments * 100) / 100,
+        subscriptionEarnings: Math.round(subscriptionEarnings * 100) / 100,
+        deposits: Math.round(deposits * 100) / 100,
+        refunds: Math.round(refunds * 100) / 100,
+      },
+      categoryBreakdown: Object.fromEntries(
+        Object.entries(categoryBreakdown).map(([k, v]) => [k, { count: v.count, total: Math.round(v.total * 100) / 100 }])
+      ),
+      topSpendingDays,
+      generatedAt: new Date().toISOString(),
+    };
+
+    res.status(200).json({ success: true, report });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // ─── GET /api/wallet/:id ── Get wallet balance + checksum ────────────────
 router.get('/deposit-address/:userId', authMiddleware, (req: Request, res: Response) => {
   try {
