@@ -1,5 +1,7 @@
 // ── DAWN WHALES Server ────────────────────────────────────────────────
 // R148: Full integration + performance + chain stability + rate limiting
+// R151: AI health cron + monthly spending report
+// R152: Symbol search engine + broker market API
 
 import express from 'express';
 import { createServer } from 'http';
@@ -12,6 +14,7 @@ import { globalErrorHandler } from './middleware/error-handler';
 import { config, validateConfig } from './config/env';
 import signalRoutes from './routes/signal';
 import walletRoutes from './routes/wallet';
+import symbolRoutes from './routes/symbol'; // R152: symbol search
 import deadLetterRoutes from './middleware/dead-letter';
 
 // R148: Integration + optimizations
@@ -149,6 +152,9 @@ app.use('/api/signal', signalRoutes);
 
 // ── R141: Wallet + Ledger + Idempotency routes ─────────────────────────
 app.use('/api/wallet', walletRoutes);
+
+// ── R152: Symbol Search + Broker Markets routes ─────────────────────────
+app.use('/api/symbol', symbolRoutes);
 
 // ── R132: Dead letter queue ──────────────────────────────────────────
 app.use('/api/dead-letter', deadLetterRoutes);

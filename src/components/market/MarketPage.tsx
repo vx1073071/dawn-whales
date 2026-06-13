@@ -5,34 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { useMarketStore } from '@/stores/marketStore';
 import { useWebSocketQuotes } from '@/hooks/useWebSocketQuotes';
 import KLineChart from './KLineChart';
+import SymbolSearch from './SymbolSearch';
 import * as api from '@/lib/bridge-api';
 import i18n from '../../i18n';
 
-const POPULAR_US = [
-{ code: 'US.TQQQ', name: 'ProShares UltraPro QQQ 3x' },
-{ code: 'US.SQQQ', name: 'ProShares UltraPro Short QQQ' },
-{ code: 'US.SOXL', name: 'Direxion Semiconductor Bull 3x' },
-{ code: 'US.SOXS', name: 'Direxion Semiconductor Bear 3x' },
-{ code: 'US.QQQ', name: 'Invesco QQQ Trust' },
-{ code: 'US.SPY', name: 'SPDR S&P 500 ETF' },
-{ code: 'US.AAPL', name: 'Apple Inc.' },
-{ code: 'US.NVDA', name: 'NVIDIA Corp.' },
-{ code: 'US.MSFT', name: 'Microsoft Corp.' },
-{ code: 'US.TSLA', name: 'Tesla Inc.' },
-{ code: 'US.AMD', name: 'Advanced Micro Devices' },
-{ code: 'US.GOOG', name: 'Alphabet Inc.' },
-{ code: 'US.AMZN', name: 'Amazon.com Inc.' },
-{ code: 'US.META', name: 'Meta Platforms Inc.' },
-{ code: 'US.PLTR', name: 'Palantir Technologies' },
-{ code: 'US.AVGO', name: 'Broadcom Inc.' },
-{ code: 'US.ARKK', name: 'ARK Innovation ETF' },
-{ code: 'US.IWM', name: 'iShares Russell 2000' },
-{ code: 'US.GLD', name: 'SPDR Gold Shares' },
-{ code: 'US.TLT', name: 'iShares 20+ Year Treasury' },
-{ code: 'US.UVXY', name: 'ProShares Ultra VIX' },
-{ code: 'US.BABA', name: 'Alibaba Group (US)' },
-{ code: 'US.PDD', name: 'PDD Holdings' },
-{ code: 'US.NIO', name: 'NIO Inc.' }];
+// ── R152: POPULAR_US replaced by SymbolSearch multi-market database ──
+// Old POPULAR_US list removed; maintained in SymbolSearch.tsx for backward compat
 
 
 export default function MarketPage() {
@@ -104,18 +82,13 @@ export default function MarketPage() {
     void EngineError; // [DATA] structured error tracking
   }
 
-  const filteredSearch = searchQuery.trim() ?
-  POPULAR_US.filter((s) => {
-    const q = searchQuery.toUpperCase();
-    return s.code.includes(q) || s.name.toUpperCase().includes(q);
-  }) :
-  POPULAR_US.filter((s) => !watchlist.includes(s.code));
-
   function handleAddStock(code: string) {
     addWatch(code);
     setSearchQuery('');
     setShowSearch(false);
   }
+
+  // ── R152: Remove old filteredSearch (POPULAR_US hardcoded) ──
 
   return (
     <div className="p-6">
@@ -139,42 +112,14 @@ export default function MarketPage() {
         </div>
       </div>
 
-      {/* Search panel */}
+      {/* Search panel — R152: SymbolSearch replaces hardcoded POPULAR_US */}
       {showSearch &&
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4 mb-4">
-          <input
-          autoFocus
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder={i18n.t('MarketPage.k1')}
-          className="w-full bg-[#12121a] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C9A046]/50 mb-3"
-          onKeyDown={(e) => {if (e.key === 'Escape') setShowSearch(false);}} />
-        
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 max-h-48 overflow-y-auto">
-            {filteredSearch.map((s) => {
-            const inWatchlist = watchlist.includes(s.code);
-            return (
-              <button
-                key={s.code}
-                onClick={() => !inWatchlist && handleAddStock(s.code)}
-                disabled={inWatchlist}
-                className={`text-left p-2 rounded-lg text-xs transition-colors ${
-                inWatchlist ?
-                'bg-[#C9A046]/10 text-[#D4A853] cursor-default' :
-                'bg-[#12121a] text-gray-300 hover:bg-[#22222f] hover:text-white cursor-pointer'}`
-                }>
-                
-                  <div className="font-mono font-medium">{s.code.replace('US.', '')}</div>
-                  <div className="text-gray-500 truncate mt-0.5" style={{ fontSize: '10px' }}>{s.name}</div>
-                </button>);
-
-          })}
-            {filteredSearch.length === 0 &&
-          <div className="col-span-6 text-center text-gray-500 text-sm py-4">{i18n.t("MarketPage.r92_f5a9")}
-            {searchQuery}{i18n.t("MarketPage.r92_7453")}
-          </div>
-          }
-          </div>
+          <SymbolSearch
+            watchlist={watchlist}
+            onAdd={handleAddStock}
+            showOnlyNew
+          />
         </div>
       }
 
