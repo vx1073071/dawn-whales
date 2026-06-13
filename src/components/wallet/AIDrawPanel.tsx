@@ -118,6 +118,10 @@ function AIDrawLines() {
         </Button>
         <Tag color="blue">余额: {balance.toFixed(2)} U</Tag>
         {deducted && <Tag color="green">已扣费</Tag>}
+        {/* ── R150 #30: 退款视觉反馈 ── */}
+        {!deducted && lines.length === 0 && patterns.length === 0 && !loading && (
+          <Tag color="#22c55e" style={{animation:'pulse 2s ease-in-out'}}>↩️ 已退费1U</Tag>
+        )}
       </div>
       <div style={{marginBottom:10}}>
         <FeePreview aiService="draw" showAiPrice={false} size="small" />
@@ -150,7 +154,7 @@ function AIDrawLines() {
       )}
 
       {lines.length===0&&!loading&&<Empty description="点击「AI自动画线」分析K线趋势和形态 (扣费1 USDT)"/>}
-      <Alert message="AI画线+形态识别: 1 USDT/次 · 失败退费 · 置信度<30%不标注 · 最多输入500根K线" type="info" showIcon={false}
+      <Alert message="AI画线+形态识别: 1 USDT/次 · 失败退费 · 置信度<30%不标注 · 退款原因: AI模型分析超时或置信度不足" type="info" showIcon={false}
         style={{background:'#1a2e2a',border:'1px solid #3b82f633',borderRadius:8,marginTop:10,fontSize:11}}/>
     </div>
   );

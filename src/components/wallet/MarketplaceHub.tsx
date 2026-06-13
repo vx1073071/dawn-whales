@@ -236,6 +236,34 @@ function SignalSubscribePage() {
   const [subs, setSubs] = useState(MOCK_SUBSCRIPTIONS);
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [selectedSub, setSelectedSub] = useState<SignalSubscription|null>(null);
+  const [autoRenew, setAutoRenew] = useState<Record<string,boolean>>({s1:true});
+  const [showRenewWarning, setShowRenewWarning] = useState(true);
+  const [renewConfirmVisible, setRenewConfirmVisible] = useState(false);
+  const [renewTarget, setRenewTarget] = useState<SignalSubscription|null>(null);
+
+  // Calculate time until expiry
+  const getTimeUntil = (expiresAt: number) => expiresAt - Date.now();
+  const formatRemaining = (ms: number) => {
+    if (ms <= 0) return { text:'已过期', color:'#ef4444', urgent:true };
+    const hours = ms / 3600000;
+    if (hours < 2) return { text:`${Math.floor(hours)}小时`, color:'#ef4444', urgent:true };
+    if (hours < 24) return { text:`${Math.floor(hours)}小时`, color:'#f59e0b', urgent:true };
+    if (hours < 72) return { text:`${Math.floor(hours/24)}天`, color:'#f59e0b', urgent:false };
+    return { text:`${Math.floor(hours/24)}天`, color:'#22c55e', urgent:false };
+  };
+  const toggleAutoRenew = useCallback((id:string)=>{
+    setAutoRenew(prev=>({...prev,[id]:!prev[id]}));
+    message.info(autoRenew[id]?'已关闭自动续费':'已开启自动续费');
+  },[autoRenew]);
+  const handleManualRenew = useCallback((s:SignalSubscription)=>{
+    setRenewTarget(s);setRenewConfirmVisible(true);
+  },[]);
+  const handleRenewConfirm = useCallback(()=>{
+    if(!renewTarget)return;
+    setSubs(prev=>prev.map(x=>x.id===renewTarget.id?{...x,isSubscribed:true,expiresAt:Date.now()+2592000000}:x));
+    setRenewConfirmVisible(false);
+    message.success(`已续费 ${renewTarget.creator.name} 信号`);
+  },[renewTarget]);
 
   const handleSubscribe = useCallback((s:SignalSubscription)=>{
     setSelectedSub(s);setConfirmVisible(true);
@@ -255,6 +283,24 @@ function SignalSubscribePage() {
 
   return (
     <div>
+      {/* ── R150 #26: 到期续费警告 ── */}
+      {showRenewWarning && subs.some(s=>s.isSubscribed&&s.expiresAt&&getTimeUntil(s.expiresAt).urgent) && (
+        <Alert
+          message={
+            <Space direction="vertical" size={2} style={{width:'100%'}}>
+              <span style={{fontWeight:600}}>⏰ 信号订阅即将到期</span>
+              {subs.filter(s=>s.isSubscribed&&s.expiresAt&&getTimeUntil(s.expiresAt).urgent).map(s=>(
+                <div key={s.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                  <span>{s.creator.name}: 剩余 <strong style={{color:getTimeUntil(s.expiresAt!).color}}>{formatRemaining(getTimeUntil(s.expiresAt!)).text}</strong></span>
+                  <Button size="small" type="primary" onClick={()=>handleManualRenew(s)} style={{fontSize:10}}>立即续费</Button>
+                </div>
+              ))}
+            </Space>
+          }
+          type="warning" closable onClose={()=>setShowRenewWarning(false)}
+          style={{background:'#2e2a0a',border:'1px solid #f59e0b66',borderRadius:10,marginBottom:12}}/>
+      )}
+
       {subs.map(s=>{const lc=LEVEL_CONFIG[s.creator.level];return(
         <Card key={s.id} size="small"
           style={{background:s.isSubscribed?'#1a2e1a':'#1a1d2e',border:`1px solid ${s.isSubscribed?'#22c55e33':'#2a2d3e'}`,borderRadius:10,marginBottom:10}}
@@ -281,8 +327,14 @@ function SignalSubscribePage() {
               <div style={{color:'#f59e0b',fontSize:18,fontWeight:700,fontFamily:'monospace'}}>{s.price}U<span style={{fontSize:11,color:'#8b949e'}}>/月</span></div>
               {s.isSubscribed ? (
                 <div>
-                  <div style={{color:'#22c55e',fontSize:9}}>到期: {new Date(s.expiresAt!).toLocaleDateString()}</div>
-                  <Button size="small" danger onClick={()=>handleCancel(s)} style={{marginTop:4}}>取消订阅</Button>
+                  <div style={{color:'#22c55e',fontSize:9}}>到期: {new Date(s.expiresAt!).toLocaleDateString()} · {formatRemaining(getTimeUntil(s.expiresAt!)).text}</div>
+                  <Space size={4} style={{marginTop:4}}>
+                    <Button size="small" onClick={()=>toggleAutoRenew(s.id)}
+                      type={autoRenew[s.id]?'primary':'default'} style={{fontSize:9}}>
+                      {autoRenew[s.id]?'自动续费:开':'自动续费:关'}
+                    </Button>
+                    <Button size="small" danger onClick={()=>handleCancel(s)}>取消订阅</Button>
+                  </Space>
                 </div>
               ) : (
                 <Button size="small" type="primary" onClick={()=>handleSubscribe(s)} style={{marginTop:4}}>订阅</Button>
@@ -303,6 +355,21 @@ function SignalSubscribePage() {
           </Descriptions>
           <Alert message="每月自动续费。余额不足暂停，充值后恢复。可随时取消。" type="info" showIcon={false}
             style={{background:'#1a2e2a',border:'1px solid #3b82f633',borderRadius:8,marginTop:12,fontSize:11}}/>
+        </>}
+      </Modal>
+
+      {/* ── R150 #26: 手动续费确认 ── */}
+      <Modal title={<Space><ThunderboltOutlined style={{color:'#22c55e'}}/><span>续费确认</span></Space>}
+        open={renewConfirmVisible} onCancel={()=>setRenewConfirmVisible(false)} onOk={handleRenewConfirm}
+        okText={`续费 ${renewTarget?.price}U/月`} width={460}>
+        {renewTarget&&<>
+          <Descriptions size="small" column={1} labelStyle={{color:'#6b7280'}} contentStyle={{color:'#e0e0e0'}}>
+            <Descriptions.Item label="信号源">{renewTarget.creator.name} <CreatorBadge creator={renewTarget.creator} showCut/></Descriptions.Item>
+            <Descriptions.Item label="续费价格"><span style={{color:'#22c55e',fontWeight:700}}>{renewTarget.price} USDT/月</span></Descriptions.Item>
+            <Descriptions.Item label="费用明细">
+              <FeePreview marketplaceProduct="subscription" productPrice={renewTarget.price} creatorLevel={renewTarget.creator.level} size="small"/>
+            </Descriptions.Item>
+          </Descriptions>
         </>}
       </Modal>
     </div>

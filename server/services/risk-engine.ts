@@ -223,10 +223,24 @@ export class RiskEngine {
     };
     checks.push(check6);
 
-    // Determine cold wallet routing (> 10,000 USDT)
-    if (req.amountUSDT > 10_000) {
+    // Determine cold wallet routing (> 10,000 USDT single, OR > 10,000 cumulative 24h)
+    // R151 fix: prevent withdrawal split bypass (2×5,000 = 10,000 should route cold)
+    const cumulative24h = this.getCumulative24h(req.userId);
+    if (req.amountUSDT > 10_000 || (cumulative24h + req.amountUSDT) > 10_000) {
       routeToColdWallet = true;
     }
+
+    // Check 7: Cumulative 24h bypass prevention (R151)
+    const check7: RiskCheckResult = {
+      checkName: 'CUMULATIVE_24H_COLD_WALLET',
+      passed: true,
+      detail: (req.amountUSDT > 10_000)
+        ? `Single withdrawal ${req.amountUSDT} > 10,000 → cold wallet`
+        : (cumulative24h + req.amountUSDT) > 10_000
+          ? `Cumulative 24h ${cumulative24h} + ${req.amountUSDT} = ${cumulative24h + req.amountUSDT} > 10,000 → cold wallet (split bypass prevented)`
+          : `24h cumulative ${cumulative24h + req.amountUSDT} ≤ 10,000 → hot wallet OK`,
+    };
+    checks.push(check7);
 
     // Determine risk level
     let riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' = 'LOW';
@@ -348,6 +362,20 @@ export class RiskEngine {
       WHERE to_address = ? AND created_at > datetime('now', ?)
       ORDER BY created_at DESC LIMIT 1
     `).get(address, `-${RiskEngine.SAME_ADDRESS_WINDOW_HOURS} hours`);
+  }
+
+  /**
+   * R151: Get cumulative withdrawals in last 24h for this user.
+   * Prevents split bypass (2×5,000 circumventing single >10,000 cold wallet routing).
+   */
+  private getCumulative24h(userId: string): number {
+    const row = this.db.prepare(`
+      SELECT COALESCE(SUM(amount_usdt), 0) as total
+      FROM withdrawal_audit
+      WHERE user_id = ? AND created_at > datetime('now', '-24 hours')
+        AND status NOT IN ('ROLLED_BACK','FAILED')
+    `).get(userId) as any;
+    return roundUSD(row.total);
   }
 }
 

@@ -111,14 +111,41 @@ function OverviewTab({ data }: { data: CreatorDashboardData }) {
 
       <Card size="small" title={<Space><PieChartOutlined style={{color:'#f59e0b'}}/><span style={{color:'#e0e0e0'}}>等级</span></Space>}
         style={{background:'#1a1d2e',border:'1px solid #2a2d3e',borderRadius:10}}
-        styles={{body:{padding:'14px',textAlign:'center'}}}>
-        <div style={{fontSize:32,color:lc.color}}>{lc.icon}</div>
-        <div style={{fontSize:20,fontWeight:700,color:lc.color,marginTop:4}}>{data.level} {lc.label}</div>
-        <div style={{color:'#6b7280',fontSize:11,marginTop:4}}>平台抽{lc.cut}% · 你拿{100-lc.cut}%</div>
-        <Tag color={lc.color} style={{marginTop:8,fontSize:12,padding:'4px 16px'}}>
-          {data.level==='L1'?`${data.totalSales}/${LEVEL_CONFIG.L1.cut*p0||100} 笔 → L2`:
-           data.level==='L2'?`${data.totalSales}/1000 笔 → L3`:'已达最高等级 🎉'}
-        </Tag>
+        styles={{body:{padding:'14px'}}}>
+        <div style={{textAlign:'center'}}>
+          <div style={{fontSize:32,color:lc.color}}>{lc.icon}</div>
+          <div style={{fontSize:20,fontWeight:700,color:lc.color,marginTop:4}}>{data.level} {lc.label}</div>
+          <div style={{color:'#6b7280',fontSize:11,marginTop:4}}>平台抽{lc.cut}% · 你拿{100-lc.cut}%</div>
+        </div>
+
+        {/* ── R150 #27: 等级进度条 ── */}
+        {data.level !== 'L3' && (
+          <div style={{marginTop:16}}>
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:11,color:'#8b949e',marginBottom:6}}>
+              <span>{data.level === 'L1' ? 'L1 新手' : 'L2 进阶'}</span>
+              <span style={{fontWeight:600,color:lc.color}}>
+                还差 <strong>{data.levelNext - data.totalSales} 笔</strong> 到 {data.level === 'L1' ? 'L2 (进阶 20%抽成)' : 'L3 (旗舰 10%抽成)'}
+              </span>
+              <span>{data.level === 'L1' ? 'L2' : 'L3'}</span>
+            </div>
+            <div style={{height:8,borderRadius:4,background:'#0d0f1a',overflow:'hidden'}}>
+              <div style={{height:'100%',borderRadius:4,background:`linear-gradient(90deg,${lc.color},${lc.color}88)`,width:`${data.levelProgress}%`,transition:'width 0.6s ease'}}/>
+            </div>
+            <div style={{textAlign:'center',fontSize:10,color:'#6b7280',marginTop:6}}>
+              {data.level === 'L1' 
+                ? `${data.totalSales}/100 笔 · 达标后平台抽成从30%降至20%`
+                : `${data.totalSales}/1000 笔 · 达标后平台抽成从20%降至10%`}
+            </div>
+          </div>
+        )}
+        {data.level === 'L3' && (
+          <div style={{marginTop:16,textAlign:'center',padding:'10px',background:'#1a2e1a',borderRadius:8,border:'1px solid #22c55e33'}}>
+            <span style={{color:'#22c55e',fontSize:13,fontWeight:600}}>🏆 已达最高等级 — 平台仅抽10%</span>
+            <div style={{color:'#6b7280',fontSize:10,marginTop:4}}>{data.totalSales.toLocaleString()} 笔总销量 · 旗舰创作者</div>
+          </div>
+        )}
+        <Progress percent={data.level === 'L3' ? 100 : data.levelProgress} showInfo={false}
+          strokeColor={lc.color} trailColor="#0d0f1a" size="small" style={{marginTop:12,marginBottom:0}}/>
       </Card>
     </div>
   );

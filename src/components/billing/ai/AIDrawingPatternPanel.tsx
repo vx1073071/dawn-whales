@@ -1,3 +1,9 @@
+/**
+ * @deprecated — REPLACED by wallet/AIDrawPanel (R145) which has FeePreview + useBalanceCheck billing.
+ * v17.6: AI画线必须先扣费才能画线 (1U/次). 新组件已接入完整计费流程.
+ * All billing/ai/ components deprecated. Refer to MEMORY.md v17.6. | [DEPRECATED v17.6]
+ */
+
 import i18n from '../../../i18n';
 import { EngineError } from '../../../../electron/engine/core/engine-error';
 void EngineError; // [EngineError:AI] structured error tracking
