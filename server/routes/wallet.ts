@@ -151,6 +151,80 @@ router.post('/', authMiddleware, (req: Request, res: Response) => {
 });
 
 // ─── GET /api/wallet/:id ── Get wallet balance + checksum ────────────────
+router.get('/deposit-address/:userId', authMiddleware, (req: Request, res: Response) => {
+  try {
+    const callerId = getUserId(req);
+    const targetUserId = req.params.userId;
+
+    // Authorization: user can only query their own deposit address
+    if (callerId !== targetUserId) {
+      res.status(403).json({ success: false, error: 'Access denied — can only query own deposit address' });
+      return;
+    }
+
+    const chain = (req.query.chain as string) || 'TRC-20';
+    if (!['TRC-20', 'ERC-20'].includes(chain)) {
+      res.status(400).json({ success: false, error: 'Invalid chain. Use TRC-20 or ERC-20' });
+      return;
+    }
+
+    const monitor = getChainMonitorService();
+
+    // Try to retrieve existing deposit address
+    const existing = monitor.getUserDepositAddress(targetUserId, chain as 'TRC-20' | 'ERC-20');
+    if (existing) {
+      res.status(200).json({
+        success: true,
+        depositAddress: {
+          userId: existing.userId,
+          address: existing.address,
+          chain: existing.chain,
+          createdAt: existing.createdAt,
+          depositCount: existing.depositCount,
+          totalDepositedUSDT: existing.totalDepositedUSDT,
+        },
+        isNew: false,
+      });
+      return;
+    }
+
+    // Generate new deposit address for this user
+    const generated = monitor.generateDepositAddress(targetUserId, chain as 'TRC-20' | 'ERC-20');
+    res.status(201).json({
+      success: true,
+      depositAddress: {
+        userId: generated.userId,
+        address: generated.address,
+        chain: generated.chain,
+        createdAt: generated.createdAt,
+        depositCount: 0,
+        totalDepositedUSDT: 0,
+      },
+      isNew: true,
+      warning: 'This is an MVP deposit address. For production, use HD wallet (BIP44) key derivation.',
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ─── GET /api/wallet/config ── Get system wallet config (fee rates) ──
+router.get('/config', (_req: Request, res: Response) => {
+  try {
+    const db = getMainDb();
+    const configs = db.prepare('SELECT key, value FROM wallet_config').all() as { key: string; value: string }[];
+
+    const map: Record<string, string> = {};
+    for (const c of configs) {
+      map[c.key] = c.value;
+    }
+
+    res.status(200).json({ success: true, config: map });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 router.get('/:id', authMiddleware, (req: Request, res: Response) => {
   try {
     const userId = getUserId(req);
@@ -417,78 +491,4 @@ router.post('/idempotency/check', authMiddleware, (req: Request, res: Response) 
 });
 
 // ─── GET /api/wallet/deposit-address/:userId ── R150 #22: server-side deposit address ─────
-router.get('/deposit-address/:userId', authMiddleware, (req: Request, res: Response) => {
-  try {
-    const callerId = getUserId(req);
-    const targetUserId = req.params.userId;
-
-    // Authorization: user can only query their own deposit address
-    if (callerId !== targetUserId) {
-      res.status(403).json({ success: false, error: 'Access denied — can only query own deposit address' });
-      return;
-    }
-
-    const chain = (req.query.chain as string) || 'TRC-20';
-    if (!['TRC-20', 'ERC-20'].includes(chain)) {
-      res.status(400).json({ success: false, error: 'Invalid chain. Use TRC-20 or ERC-20' });
-      return;
-    }
-
-    const monitor = getChainMonitorService();
-
-    // Try to retrieve existing deposit address
-    const existing = monitor.getUserDepositAddress(targetUserId, chain as 'TRC-20' | 'ERC-20');
-    if (existing) {
-      res.status(200).json({
-        success: true,
-        depositAddress: {
-          userId: existing.userId,
-          address: existing.address,
-          chain: existing.chain,
-          createdAt: existing.createdAt,
-          depositCount: existing.depositCount,
-          totalDepositedUSDT: existing.totalDepositedUSDT,
-        },
-        isNew: false,
-      });
-      return;
-    }
-
-    // Generate new deposit address for this user
-    const generated = monitor.generateDepositAddress(targetUserId, chain as 'TRC-20' | 'ERC-20');
-    res.status(201).json({
-      success: true,
-      depositAddress: {
-        userId: generated.userId,
-        address: generated.address,
-        chain: generated.chain,
-        createdAt: generated.createdAt,
-        depositCount: 0,
-        totalDepositedUSDT: 0,
-      },
-      isNew: true,
-      warning: 'This is an MVP deposit address. For production, use HD wallet (BIP44) key derivation.',
-    });
-  } catch (err: any) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// ─── GET /api/wallet/config ── Get system wallet config (fee rates) ──
-router.get('/config', (_req: Request, res: Response) => {
-  try {
-    const db = getMainDb();
-    const configs = db.prepare('SELECT key, value FROM wallet_config').all() as { key: string; value: string }[];
-
-    const map: Record<string, string> = {};
-    for (const c of configs) {
-      map[c.key] = c.value;
-    }
-
-    res.status(200).json({ success: true, config: map });
-  } catch (err: any) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
 export default router;
