@@ -40,6 +40,9 @@ export interface QuotePush {
   timestamp: number;
   source: QuoteSource;        // which broker provided this
   latencyMs: number;
+  /** R156 #15: Quote freshness tracking */
+  lastUpdateMs: number;       // ms since quote was first received (age)
+  isStale: boolean;           // true if >5s since last fresh data
 }
 
 export interface WSPushStats {
@@ -142,9 +145,14 @@ export class WSPushService {
     const subs = this.symbolSubscribers.get(standardCode);
     if (!subs || subs.size === 0) return 0;
 
+    const ageMs = Date.now() - quote.timestamp;
     const message = JSON.stringify({
       type: 'QUOTE',
-      data: quote,
+      data: {
+        ...quote,
+        lastUpdateMs: ageMs,
+        isStale: ageMs > 5000,
+      },
       timestamp: Date.now(),
     });
 

@@ -31,6 +31,15 @@ export interface CacheEntry<T> {
   source: string;  // brokerId
 }
 
+/** R156 #15: Freshness-aware cache result */
+export interface CacheResult<T> {
+  data: T;
+  source: string;
+  createdAt: number;
+  ageMs: number;
+  isStale: boolean;
+}
+
 export interface LatencyRecord {
   brokerId: string;
   timestamps: number[];  // last N request latencies in ms
@@ -69,7 +78,7 @@ export class QuoteCacheService {
 
   // ── Cache Operations ───────────────────────────────────────────────────
 
-  get<T>(key: string): { data: T; source: string } | null {
+  get<T>(key: string): CacheResult<T> | null {
     const entry = this.store.get(key);
     if (!entry || Date.now() - entry.createdAt > entry.ttlMs) {
       this.misses++;
@@ -78,7 +87,8 @@ export class QuoteCacheService {
     }
     entry.hits++;
     this.hits++;
-    return { data: entry.data, source: entry.source };
+    const ageMs = Date.now() - entry.createdAt;
+    return { data: entry.data, source: entry.source, createdAt: entry.createdAt, ageMs, isStale: ageMs > 5000 };
   }
 
   set<T>(key: string, data: T, ttlMs: number = QUOTE_TTL_MS, source: string = 'unknown'): void {
