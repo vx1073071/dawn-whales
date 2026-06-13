@@ -1,5 +1,8 @@
 // @ts-nocheck
 /**
+ * @deprecated v17.6 — Replaced by chain-monitor-v2.ts (exponential backoff, checkpoint resume, RPC failover).
+ * This file is kept for reference only. Do NOT use in new code.
+ * 
  * DAWN WHALES R142 J01+J04 — On-chain Monitor + Deposit Address Service
  * 
  * Monitors TRC-20 (Tron) and ERC-20 (Ethereum) blockchains for incoming

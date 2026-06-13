@@ -31,6 +31,7 @@
  */
 
 import Database from 'better-sqlite3';
+import { CreatorLevelEngine, LEVEL_CONFIGS as CE_LEVEL_CONFIGS } from './creator-level';
 
 // ═══════════════ Types ═══════════════════════════════════════════════════
 
@@ -66,12 +67,14 @@ export interface CreatorInfo {
   totalTipsReceived: number;
 }
 
-// ═══════════════ Level Thresholds (v17.6) ════════════════════════════════
+// ═══════════════ Level Thresholds (v17.6 — unified with CreatorLevelEngine) ════════════════════════════════
+// ⚠️ R149 #6+#12: Was minSubscribers/minEarnings. Now uses pure sales count from CreatorLevelEngine.
+// Tip-level = CreatorLevelEngine level, NOT a separate system!
 
-const LEVEL_CONFIG: Record<CreatorLevel, { platformRate: number; creatorRate: number; minSubscribers: number; minEarnings: number }> = {
-  L1: { platformRate: 0.30, creatorRate: 0.70, minSubscribers: 0,    minEarnings: 0 },
-  L2: { platformRate: 0.20, creatorRate: 0.80, minSubscribers: 100,  minEarnings: 1_000 },
-  L3: { platformRate: 0.10, creatorRate: 0.90, minSubscribers: 1000, minEarnings: 10_000 },
+const LEVEL_CONFIG: Record<CreatorLevel, { platformRate: number; creatorRate: number; minTotalSales: number }> = {
+  L1: { platformRate: 0.30, creatorRate: 0.70, minTotalSales: 0 },
+  L2: { platformRate: 0.20, creatorRate: 0.80, minTotalSales: 100 },
+  L3: { platformRate: 0.10, creatorRate: 0.90, minTotalSales: 1000 },
 };
 
 const QUICK_AMOUNTS = [9.9, 19.9, 49.9, 99.9];
@@ -80,9 +83,11 @@ const QUICK_AMOUNTS = [9.9, 19.9, 49.9, 99.9];
 
 export class TipService {
   private db: Database.Database;
+  private levelEngine: CreatorLevelEngine;
 
-  constructor(db: Database.Database) {
+  constructor(db: Database.Database, levelEngine?: CreatorLevelEngine) {
     this.db = db;
+    this.levelEngine = levelEngine || new CreatorLevelEngine(db);
     this.ensureTables();
   }
 
@@ -228,13 +233,13 @@ export class TipService {
         `${req.idempotencyKey}_receive`,
         `Tip from ${req.fromUserId} — ${creatorShare} USDT (${config.platformRate * 100}% commission)`);
 
-      // Update creator stats
-      this.db.prepare(
-        'UPDATE creator_levels SET total_tips_received = total_tips_received + 1, total_earnings_usdt = total_earnings_usdt + ?, updated_at = datetime("now") WHERE user_id = ?'
-      ).run(creatorShare, req.toCreatorId);
+      // Update creator stats via unified engine (R149 #12)
+      this.levelEngine.recordSale(req.toCreatorId, creatorShare);
 
-      // Recalculate level after earnings update
-      this.recalculateLevel(req.toCreatorId);
+      // Track total tips received (in tips table, for queries)
+      this.db.prepare(
+        'UPDATE creator_levels_v2 SET total_tips_received = COALESCE(total_tips_received,0) + 1 WHERE user_id = ?'
+      ).run(req.toCreatorId);
     }) as (() => void);
 
     try {
@@ -257,72 +262,48 @@ export class TipService {
   }
 
   /**
-   * Get or create creator level info.
+   * Get creator level — delegates to CreatorLevelEngine (single source of truth).
+   * R149 #12: Was independent creator_levels table. Now unified.
    */
   getCreatorLevel(userId: string): CreatorLevel {
-    let creator = this.db.prepare('SELECT * FROM creator_levels WHERE user_id=?').get(userId) as any;
-    if (!creator) {
-      this.db.prepare(
-        'INSERT OR IGNORE INTO creator_levels (user_id, level, subscriber_count, total_earnings_usdt, total_tips_received) VALUES (?,?,?,?,?)'
-      ).run(userId, 'L1', 0, 0, 0);
-      return 'L1';
-    }
-    return creator.level;
+    const info = this.levelEngine.getCreatorLevel(userId);
+    return info.level;
   }
 
   /**
-   * Get full creator info.
+   * Get full creator info — delegates to CreatorLevelEngine.
    */
   getCreatorInfo(userId: string): CreatorInfo {
-    let c = this.db.prepare('SELECT * FROM creator_levels WHERE user_id=?').get(userId) as any;
-    if (!c) {
-      this.db.prepare(
-        'INSERT OR IGNORE INTO creator_levels (user_id, level, subscriber_count, total_earnings_usdt, total_tips_received) VALUES (?,?,?,?,?)'
-      ).run(userId, 'L1', 0, 0, 0);
-      return { userId, level: 'L1', subscriberCount: 0, totalEarningsUSDT: 0, totalTipsReceived: 0 };
-    }
+    const info = this.levelEngine.getCreatorLevel(userId);
     return {
-      userId: c.user_id,
-      level: c.level,
-      subscriberCount: c.subscriber_count,
-      totalEarningsUSDT: c.total_earnings_usdt,
-      totalTipsReceived: c.total_tips_received,
+      userId: info.userId,
+      level: info.level,
+      subscriberCount: info.totalSales,    // sales count used as level metric
+      totalEarningsUSDT: info.totalRevenueUSDT,
+      totalTipsReceived: 0,                // tips tracked in tips table, not levels
     };
   }
 
   /**
-   * Recalculate creator level based on earnings/subscribers.
+   * Recalculate creator level — delegates to CreatorLevelEngine.
+   * R149 #12: Was independent logic. Now unified.
    */
   recalculateLevel(userId: string): CreatorLevel {
-    const c = this.db.prepare('SELECT * FROM creator_levels WHERE user_id=?').get(userId) as any;
-    if (!c) return 'L1';
-
-    let newLevel: CreatorLevel = 'L1';
-    if (c.subscriber_count >= 1000 || c.total_earnings_usdt >= 10000) {
-      newLevel = 'L3';
-    } else if (c.subscriber_count >= 100 || c.total_earnings_usdt >= 1000) {
-      newLevel = 'L2';
-    }
-
-    if (newLevel !== c.level) {
-      this.db.prepare('UPDATE creator_levels SET level=?, updated_at=datetime("now") WHERE user_id=?')
-        .run(newLevel, userId);
-    }
-    return newLevel;
+    const info = this.levelEngine.getCreatorLevel(userId);
+    return this.levelEngine.computeLevel(info.totalSales);
   }
 
   /**
-   * Update subscriber count (called when subscription changes).
+   * Update subscriber count — delegates to CreatorLevelEngine via recordSale.
+   * R149 #12: Was updating creator_levels table directly. Now unified.
    */
   updateSubscriberCount(creatorId: string, delta: number): CreatorInfo {
-    // Ensure exists
-    this.getCreatorLevel(creatorId);
-
-    this.db.prepare(
-      'UPDATE creator_levels SET subscriber_count = subscriber_count + ?, updated_at = datetime("now") WHERE user_id = ?'
-    ).run(delta, creatorId);
-
-    this.recalculateLevel(creatorId);
+    // Each subscription counts as 1 "sale" for level calculation
+    if (delta > 0) {
+      for (let i = 0; i < delta; i++) {
+        this.levelEngine.recordSale(creatorId, 0);  // $0 sale; only increments count
+      }
+    }
     return this.getCreatorInfo(creatorId);
   }
 

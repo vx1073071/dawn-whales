@@ -1,4 +1,7 @@
 /**
+ * @deprecated v17.6 — Replaced by server/services/ai-billing.ts (unified AI billing, no free tier, no debate/arena surcharge).
+ * v17.6 model: pure per-use, 1-2 USDT flat, 10 service types. Do NOT use in new code.
+ * 
  * J-59-01: AI Usage Billing Contract (R59 v19)
  * Per-use billing for AI analysis with 3-tier pricing + debate/arena extras
  *

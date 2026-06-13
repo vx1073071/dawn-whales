@@ -1,4 +1,7 @@
 /**
+ * @deprecated v17.6 — Execution→Billing bridge replaced by server/services/order-types.ts + server/services/ta-billing.ts (TA tier billing) + server/services/fee-calculator-v2.ts (5-class trade fees).
+ * This v1.3.0-era closed loop uses old maker/taker model. Do NOT use in new code.
+ * 
  * J-60-04: Execution → Billing Closed Loop (R60 v19 — v1.3.0 GA)
  *
  * Features:

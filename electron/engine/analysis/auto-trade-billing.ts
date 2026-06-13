@@ -1,4 +1,7 @@
 /**
+ * @deprecated v17.6 — Replaced by server/services/fee-calculator-v2.ts (5 asset classes) + server/services/ai-billing.ts (unified AI billing).
+ * This v15-era engine uses old taker/maker model. Do NOT use in new code.
+ * 
  * J-V15-02: Auto Trade Billing Engine (R53 v15 )
  * : 0.1% taker / 0.02% maker / 0.04% taker ( 100%)
  *

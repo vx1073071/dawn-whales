@@ -1,4 +1,7 @@
 /**
+ * @deprecated v17.6 — Replaced by server/services/wallet.ts (CRUD), server/services/withdraw.ts (withdrawal), server/services/transfer.ts (transfer), server/services/tip.ts (tipping).
+ * This v1.5.0-era billing wallet has been split into dedicated per-function services. Do NOT use in new code.
+ * 
  * J-63-02: + /api (R63 v19 — v1.5.0-rc service)
  *
  * migration: +balance+。

@@ -147,7 +147,8 @@ const CHANNEL_FEES: Record<FeeChannel, { rate: number; minFeeUSDT: number }> = {
   withdrawal:       { rate: 0.001, minFeeUSDT: 2 },       // 0.1%
   transfer_send:    { rate: 0.003, minFeeUSDT: 1 },       // 0.3%
   transfer_receive: { rate: 0.003, minFeeUSDT: 1 },       // 0.3%
-  ai_call:          { rate: 0.009, minFeeUSDT: 0 },       // $0.009 fixed
+  /** @deprecated v17.6 — AI pricing moved to ai-billing.ts (1-2 USDT per call). Do NOT use this channel. */
+  ai_call:          { rate: 0, minFeeUSDT: 0 },
   copy_trade:       { rate: 0, minFeeUSDT: 0 },           // uses trade fee
 };
 
@@ -292,8 +293,8 @@ export class FeeCalculatorV2 {
     let finalFee: number;
 
     if (channel === 'ai_call') {
-      // Fixed $0.009 per call
-      finalFee = config.rate;
+      // @deprecated v17.6 — AI billing now via ai-billing.ts. Returns 0 to signal deprecation.
+      finalFee = 0;
     } else {
       const computed = roundUSD(amountUSDT * config.rate);
       finalFee = Math.max(computed, config.minFeeUSDT);
@@ -325,7 +326,8 @@ export class FeeCalculatorV2 {
   }
 
   /**
-   * Get AI call fee.
+   * Get AI call fee. 
+   * @deprecated v17.6 — Use AIBillingService in ai-billing.ts instead (1-2 USDT/call).
    */
   calculateAIFee(): ChannelFee {
     return this.calculateChannelFee('ai_call', 0);
