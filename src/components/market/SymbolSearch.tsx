@@ -1,9 +1,10 @@
 // ── R152 ML — SymbolSearch (全局搜索框) ────────────────────────────────
 // PM: 4 modules, 6h. Replaces POPULAR_US hardcoded list.
+// R155 PM: Connected to GET /api/symbol/search — local SYMBOL_DB as offline fallback.
 // Supports: HK stocks, US stocks, crypto — with broker availability badges.
 //
 // Features:
-//  1. Global symbol search (code + name, multi-market)
+//  1. Global symbol search (code + name, multi-market) — primarily API, DB fallback
 //  2. Search results with: code + name + exchange tag + broker availability
 //  3. Add-to-watchlist interaction: check broker → normalize code → add
 //  4. Broker unavailable hint: guide to connect correct market broker
@@ -94,25 +95,67 @@ const SYMBOL_DB: SymbolEntry[] = [
   { code:'CRYPTO.LINK-USDT',name:'Chainlink / USDT',market:'CRYPTO',exchange:'Binance',supportedBrokers:['binance','okx','bybit','bitget']},
 ];
 
-// ═══════════ Broker connection status (mock — to be replaced by IPC) ══════
-
-const MOCK_BROKER_STATUS: BrokerStatus[] = [
-  { id:'futu',name:'Futu (富途)',market:'HK',connected:true },
-  { id:'binance',name:'Binance',market:'CRYPTO',connected:true },
-  { id:'okx',name:'OKX',market:'CRYPTO',connected:true },
-  { id:'bybit',name:'Bybit',market:'CRYPTO',connected:true },
-  { id:'bitget',name:'Bitget',market:'CRYPTO',connected:true },
+// ── R155 #2: Real broker status via IPC (was MOCK) ──
+// Fallback mock for when IPC is unavailable (dev mode)
+const FALLBACK_BROKER_STATUS: BrokerStatus[] = [
+  { id:'futu',name:'Futu (富途)',market:'HK',connected:false },
+  { id:'binance',name:'Binance',market:'CRYPTO',connected:false },
+  { id:'okx',name:'OKX',market:'CRYPTO',connected:false },
+  { id:'bybit',name:'Bybit',market:'CRYPTO',connected:false },
+  { id:'bitget',name:'Bitget',market:'CRYPTO',connected:false },
   { id:'tiger',name:'Tiger Brokers',market:'HK',connected:false },
-  { id:'ibkr',name:'Interactive Brokers',market:'US',connected:true },
+  { id:'ibkr',name:'Interactive Brokers',market:'US',connected:false },
   { id:'schwab',name:'Charles Schwab',market:'US',connected:false },
 ];
 
+// Runtime broker status — populated via IPC getBrokerStatus(), fallback to disconnected
+let _brokerStatus: BrokerStatus[] = FALLBACK_BROKER_STATUS;
+let _statusLoaded = false;
+
+async function loadBrokerStatus(): Promise<void> {
+  if (_statusLoaded) return;
+  try {
+    // Try IPC bridge first
+    if (typeof window !== 'undefined' && (window as any).api?.getBrokerStatus) {
+      const status = await (window as any).api.getBrokerStatus();
+      if (Array.isArray(status) && status.length > 0) {
+        _brokerStatus = status.map((b: any) => ({
+          id: b.id || b.brokerId,
+          name: b.name || b.id,
+          market: b.market || 'US',
+          connected: b.connected ?? b.status === 'connected',
+        }));
+      }
+    } else {
+      // Try REST API fallback
+      const res = await fetch('/api/broker/status');
+      if (res.ok) {
+        const json = await res.json();
+        if (Array.isArray(json.brokers)) {
+          _brokerStatus = json.brokers.map((b: any) => ({
+            id: b.id,
+            name: b.name || b.id,
+            market: b.market || 'US',
+            connected: b.connected ?? b.status === 'connected',
+          }));
+        }
+      }
+    }
+  } catch {
+    // Keep fallback — all disconnected
+  }
+  _statusLoaded = true;
+}
+
+// Eager-load on module init
+loadBrokerStatus();
+
 function hasConnectedBroker(market: Market): boolean {
-  return MOCK_BROKER_STATUS.some(b => b.market === market && b.connected);
+  return _brokerStatus.some(b => b.market === market && b.connected);
 }
 
 function getConnectedBrokersFor(market: Market): BrokerStatus[] {
-  return MOCK_BROKER_STATUS.filter(b => b.market === market && b.connected);
+  return _brokerStatus.filter(b => b.market === market && b.connected);
 }
 
 // ═══════════ Helpers ═══════════

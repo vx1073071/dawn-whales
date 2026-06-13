@@ -486,6 +486,103 @@ router.get('/market/playback', (req: Request, res: Response) => {
   }
 });
 
+// ── R155 JVS #2: GET /api/broker/status — Real broker connection status ──
+// Replaces SymbolSearch.tsx MOCK_BROKER_STATUS with actual adapter health.
+// Reads from AdapterRegistry.healthCheckAll() + BrokerPriorityStore for per-broker
+// connection state, latency, market support, and error info.
+
+import { getAdapterRegistry } from '../adapters/adapter-factory';
+
+const BROKER_LABELS: Record<string, string> = {
+  futu: '富途', 'futu-cloud': 'Futu OpenD', moomoo: 'moomoo', ib: '盈透', longbridge: '长桥',
+  'longbridge-cloud': 'Longbridge', tiger: '老虎', vbkr: '华盛', usmart: '盈立',
+  binance: '币安', 'binance-testnet': 'Binance Testnet', okx: 'OKX', 'okx-testnet': 'OKX Testnet',
+  bybit: 'Bybit', 'bybit-testnet': 'Bybit Testnet', bitget: 'Bitget', 'bitget-testnet': 'Bitget Testnet',
+  schwab: '嘉信', etrade: 'E*TRADE', etoro: 'eToro', webull: '微牛',
+  robinhood: 'Robinhood', mt5: 'MT5',
+};
+
+function brokerLabel(brokerId: string): string {
+  return BROKER_LABELS[brokerId] || brokerId;
+}
+
+router.get('/status', async (_req: Request, res: Response) => {
+  try {
+    const registry = getAdapterRegistry();
+    registry.registerAll(); // ensure all adapters registered
+
+    const activeAdapters = registry.listActive();
+    const healthResults = await registry.healthCheckAll().catch(() => []);
+
+    // Map health results by brokerId
+    const healthMap = new Map<string, { ok: boolean; latencyMs: number }>();
+    for (const h of healthResults) {
+      healthMap.set(h.brokerId, { ok: h.ok, latencyMs: h.latencyMs });
+    }
+
+    // Get broker priority info from BrokerPriorityStore
+    const allPriorities = brokerStore.get();
+    const priorityMap = new Map<string, { priority: number; enabled: boolean; markets: string[] }>();
+    for (const p of allPriorities) {
+      priorityMap.set(p.brokerId, { priority: p.priority, enabled: p.enabled, markets: p.markets });
+    }
+
+    // Build comprehensive broker status list from known broker IDs
+    const brokers: Array<{
+      brokerId: string; label: string; connected: boolean; active: boolean;
+      latencyMs: number; healthy: boolean; priority: number; enabled: boolean;
+      markets: string[]; lastError: string | null; lastCheck: string;
+    }> = [];
+
+    // Collect all known broker IDs: priority store + active adapters + BROKER_LABELS
+    const knownIds = new Set<string>();
+    for (const p of allPriorities) knownIds.add(p.brokerId);
+    for (const a of activeAdapters) knownIds.add(a.brokerId);
+    for (const k of Object.keys(BROKER_LABELS)) knownIds.add(k);
+
+    for (const brokerId of knownIds) {
+      const health = healthMap.get(brokerId);
+      const priority = priorityMap.get(brokerId) || { priority: 99, enabled: true, markets: [] };
+      const active = activeAdapters.find(a => a.brokerId === brokerId);
+
+      brokers.push({
+        brokerId,
+        label: brokerLabel(brokerId),
+        connected: active?.connected || false,
+        active: !!active,
+        latencyMs: health?.latencyMs ?? -1,
+        healthy: health?.ok || false,
+        priority: priority.priority,
+        enabled: priority.enabled,
+        markets: priority.markets,
+        lastError: null,
+        lastCheck: new Date().toISOString(),
+      });
+    }
+
+    const connectedCount = brokers.filter(b => b.connected).length;
+    const totalCount = brokers.length;
+
+    return res.json({
+      success: true,
+      timestamp: new Date().toISOString(),
+      totalBrokers: totalCount,
+      connectedBrokers: connectedCount,
+      brokers: brokers.sort((a, b) => a.priority - b.priority),
+      summary: {
+        online: connectedCount,
+        offline: totalCount - connectedCount,
+        avgLatency: connectedCount > 0
+          ? Math.round(brokers.filter(b => b.connected && b.latencyMs > 0)
+              .reduce((s, b) => s + b.latencyMs, 0) / Math.max(1, brokers.filter(b => b.connected && b.latencyMs > 0).length))
+          : -1,
+      },
+    });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 export default router;
 export { brokerStore, getMarketStatus, MARKET_SESSIONS, BrokerPriorityStore };
 export type { BrokerPriorityEntry, MarketCode, MarketStatus, MarketStatusInfo };

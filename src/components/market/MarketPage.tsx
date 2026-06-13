@@ -6,7 +6,7 @@ import { useMarketStore } from '@/stores/marketStore';
 import { useWebSocketQuotes } from '@/hooks/useWebSocketQuotes';
 import KLineChart from './KLineChart';
 import SymbolSearch from './SymbolSearch';
-import QuoteSourcePanel from './QuoteSourceBadge';
+import QuoteSourcePanel, { QuoteSourceIndicator } from './QuoteSourceBadge';
 import { MarketStatusIndicator } from '@/components/settings/BrokerPriority';
 import * as api from '@/lib/bridge-api';
 import i18n from '../../i18n';
@@ -138,6 +138,7 @@ export default function MarketPage() {
               <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">{i18n.t('MarketPage.k3')}</th>
               <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">{t("components.priceChange")}</th>
               <th className="px-4 py-3 text-right text-xs text-gray-500 font-medium uppercase tracking-wide">{t("components.volume")}</th>
+              <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide">来源</th>
               <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide">{i18n.t('MarketPage.k4')}</th>
               <th className="px-4 py-3 text-center text-xs text-gray-500 font-medium uppercase tracking-wide w-12"></th>
             </tr>
@@ -251,6 +252,16 @@ const WatchlistRow = memo(function WatchlistRow({
       <td className={`px-4 py-3 text-right font-mono text-sm ${cls}`}>{chg > 0 ? '+' : ''}{chg.toFixed(2)}</td>
       <td className={`px-4 py-3 text-right font-mono text-sm ${cls}`}>{pct > 0 ? '+' : ''}{pct.toFixed(2)}%</td>
       <td className="px-4 py-3 text-right font-mono text-xs text-gray-400">{quote ? fmtVol(quote.volume) : '--'}</td>
+      <td className="px-4 py-3 text-center">
+        {/* ── R155 #5: per-row quote source badge ── */}
+        {quote?._wsSource && (
+          <QuoteSourceIndicator
+            sources={[{ id: quote._wsSource as any, name: quote._wsSource, status: 'connected', latency: 12, market: 'US', lastUpdate: Date.now() }]}
+            currentSource={quote._wsSource as any}
+            compact
+          />
+        )}
+      </td>
       <td className="px-4 py-3 text-center">
         {isLev && <span className="text-[10px] bg-yellow-500/10 text-yellow-400 px-1.5 py-0.5 rounded mr-1">3x</span>}
         {isInv && <span className="text-[10px] bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded">{i18n.t('MarketPage.k6')}</span>}

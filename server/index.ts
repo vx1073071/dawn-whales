@@ -2,7 +2,9 @@
 // R148: Full integration + performance + chain stability + rate limiting
 // R151: AI health cron + monthly spending report
 // R152: Symbol search engine + broker market API
+// R153: WebSocket push + quote cache + latency monitor
 // R154: Broker priority config + Market status + Playback
+// R155: Mount quote-router/cache/health — data pipeline live!
 
 import express from 'express';
 import { createServer } from 'http';
@@ -24,6 +26,11 @@ import { RateLimiter, rateLimitMiddleware, AIRateLimiter, IndexOptimizer, LRUCac
 import { ChainMonitorV2 } from './services/chain-monitor-v2';
 import { AIHealthCheckService } from './services/ai-health';
 import { AIBillingService } from './services/ai-billing';
+
+// R155: Quote data pipeline — mounted!
+import { getQuoteRouter } from './services/quote-router';
+import { getQuoteCache } from './services/quote-cache';
+import { QuoteHealthMonitor } from './services/quote-health';
 
 const app = express();
 const PORT = config.port;
@@ -52,6 +59,22 @@ try {
   console.error('[Server] Database init failed:', err);
   process.exit(1);
 }
+
+// ── R155: Quote pipeline initialization ──────────────────────────────
+const quoteRouter = getQuoteRouter();
+const quoteCache = getQuoteCache();
+const quoteHealth = new QuoteHealthMonitor(db!);
+console.log('[Server] Quote pipeline mounted: router + cache + health');
+
+// ── R155: Quote health endpoint ──────────────────────────────────────
+app.get('/api/quote/health', (_req, res) => {
+  res.json({
+    router: quoteRouter.getStats(),
+    cache: quoteCache.getCacheStats(),
+    brokerHealth: quoteHealth.getAllBrokerHealth(),
+    markets: quoteHealth.getAllMarketStatuses(),
+  });
+});
 
 // ── R148: Index optimization ─────────────────────────────────────────
 try {
