@@ -1,8 +1,8 @@
 # Dawn Whales User Manual v2.2.0
 
-> **Version**: v2.3.0 | **Last Updated**: 2026-06-14
+> **Version**: v2.5.0 | **Last Updated**: 2026-06-14
 > **Covers**: Wallet, Marketplace, AI, Trading, Quotes — Complete Operation Guide
-> **Update Notes**: R152-R154 (search bar, real-time quotes, broker priority, market status indicators)
+> **Update Notes**: R155-R157 (dynamic search, pinyin, groups, drag-sort, pin, shortcuts, import/export, source override, search history)
 
 ---
 
@@ -12,6 +12,11 @@
 2. [Wallet & Balance](#2-wallet--balance)
 3. [Trading Fees](#3-trading-fees)
 4. [Market & Real-time Quotes](#4-market--real-time-quotes)
+   - Search & History
+   - Watchlist Groups, Pinning & Reorder
+   - Quote Source Switching & Manual Override
+   - Broker Priority & Market Status
+   - Import/Export & Keyboard Shortcuts
 5. [Creator Marketplace](#5-creator-marketplace)
 6. [AI Features](#6-ai-features)
 7. [Trading Agents (TA)](#7-trading-agents-ta)
@@ -188,146 +193,350 @@ The fee and arrival amount are shown in real-time as you type the withdrawal amo
 
 ### Search for Symbols
 
-Use the global search bar (Ctrl+K or ⌘+K) to find any trading instrument:
+Use the fixed search bar at the top of the Market page (or press **Ctrl+K** / **⌘+K** anywhere):
 
 ```
-Search supports:
-  📝 Name:     "腾讯" → HK.00700 Tencent
-  🔢 Code:     "00700" or "700" → HK.00700
-  🔤 Ticker:   "AAPL" → US.AAPL
-  💱 Crypto:   "BTC" → CC.BTCUSD
-  🇨🇳 Chinese:  "茅台" → SH.600519
-  🌐 English:  "Tesla" → US.TSLA
+┌─────────────────────────────────────────────────────────────┐
+│  🔍 Search symbols by name, code, or keyword...  [🇭🇰][🇺🇸][💱]│
+└─────────────────────────────────────────────────────────────┘
 ```
 
-**Smart detection**:
-The search engine automatically identifies the market from your input:
-- 1-5 digit number → Hong Kong (e.g., `9988` → HK.09988)
-- 6-digit, starts with 6 → Shanghai A-share (e.g., `600519`)
-- 6-digit, starts with 0 or 3 → Shenzhen A-share (e.g., `000001`)
-- Letters only → US (e.g., `MSFT`)
-- Chinese characters → full-text name search
+**Search supports all input formats:**
 
-### Search Results
+| Input | Example | Finds |
+|-------|---------|-------|
+| 🇨🇳 Chinese name | `工商银行` | HK.01398 ICBC |
+| 🇨🇳 Chinese partial | `腾讯` | HK.00700 Tencent |
+| 🔢 Numeric code | `00700` | HK.00700 |
+| 🔤 Ticker | `AAPL` | US.AAPL Apple |
+| 💱 Crypto ticker | `BTC` | CRYPTO.BTC-USDT |
+| 🌐 English name | `Tesla` | US.TSLA |
+| 🔤 Pinyin (NEW) | `zhongguo` | CN.601857 中国石油 |
+| 🇨🇳 Abbreviation | `工行` | HK.01398 (alias match) |
+
+**Smart Market Detection:**
+
+The search engine auto-detects the market from your query:
+- 4-5 digits → Hong Kong stock (`9988` → HK.09988)
+- 6 digits starting `60` → Shanghai A-share (`600519`)
+- 6 digits starting `00`/`30` → Shenzhen A-share (`000001`)
+- Uppercase letters → US stock (`MSFT`)
+- Chinese characters + pinyin → full-text with phonetic match
+- Crypto pairs → auto-detected by ticker pattern
+
+> 💡 The search is **dynamic** — it queries the live server API, not a fixed list. Newly listed symbols appear immediately.
+
+### Search Results (NEW: Real-time Price Preview)
 
 ```
+┌─── Search results for "00700" ───────────────────────────────────┐
+│                                                                  │
+│  🟢 HK.00700  腾讯控股  Tencent    港股  HKEX                   │
+│     💰 385.60  🟢 +2.30 (+0.6%)   Vol: 45.2M                    │
+│     🐂 富途·35ms  🐯 Tiger  🔴 IBKR                              │
+│     🕐 Added 2 min ago                                            │
+│                                                     [+] Add      │
+│                                                                  │
+│  ────────────────────────────────────────────────────────────    │
+│                                                                  │
+│  🕐 HK.00700        · 2 min ago                                  │
+│  🕐 AAPL (US.AAPL)  · 15 min ago                                 │
+│  🕐 BTC             · 1 hour ago                                 │
+│                                                                  │
+│  Searched 00:02 · 342 symbols indexed                            │
+└──────────────────────────────────────────────────────────────────┘
+```
+
 Each result shows:
-  🏷  Symbol code        (e.g., HK.00700)
-  📛  Name CN + EN       (腾讯控股 / Tencent)
-  🏛  Market             (港股 label)
-  💰  Last price         (385.60 HKD)
+- **Real-time price + change%** (NEW — see the price BEFORE adding)
+- **Available brokers** with connection status (green = connected, red = offline)
+- **Market label** (港股/美股/加密/A股)
+- **Quote source latency** (milliseconds — lower is fresher data)
 
-  Available Brokers:     🟢Futu 🟢Huasheng 🔴Tiger 🔴IBKR
-                         (green = connected, red = disconnected)
-  Quote Source:          富途
-  
-  [+ Add to Watchlist]
+### Search History (NEW)
+
+The search bar remembers your last 10 searches:
+
+- **Automatic**: Each successful search is saved to local storage
+- **Persistent**: Survives app restart (stored in `localStorage`)
+- **Click to reuse**: Click any history entry to instantly re-search
+- **Clear**: "Clear History" button at the bottom
+- **Unique**: Duplicate searches update timestamp, don't create duplicates
+
+```
+History dropdown:
+  🕐 腾讯 (HK.00700)    · 2 min ago
+  🕐 AAPL (US.AAPL)     · 15 min ago
+  🕐 BTC (CRYPTO.BTC)   · 1 hour ago
+  ─────────────────────────
+  [Clear History]
 ```
 
-> If a broker shows 🔴: click the symbol → you'll be guided to connect that broker first.
+### Adding Symbols to Watchlist
+
+```
+Click [+] on any search result → symbol is added instantly:
+
+1. Symbol appears in watchlist immediately (0ms)
+2. Skeleton placeholder blinks for < 300ms
+3. Real-time price fills in from WS/API (100-500ms)
+4. K-line chart auto-opens for the new symbol (NEW!)
+5. Symbol is saved to localStorage — persists after restart (NEW!)
+```
+
+> 🆕 **No more "add then click to see" — the chart opens automatically.**
+
+### Watchlist Groups & Organization (NEW)
+
+Your watchlist is grouped by market for easy navigation:
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  📈 Watchlist                              [Import][Export]│
+│  [🇭🇰港股] [🇺🇸美股] [💱加密] [🇨🇳A股] [+ New Group]         │
+│                                                          │
+│  ── 🇭🇰 港股 ────────────────────────────────────────── │
+│  📌 HK.00700  腾讯控股       385.60  +0.6%  🐂富途·35ms │
+│     HK.09988  阿里巴巴-SW    102.50  +1.2%  🐂富途·32ms │
+│     HK.00388  香港交易所     298.00  -0.3%  🐯Tiger·110ms│
+│                                                          │
+│  ── 🇺🇸 美股 ────────────────────────────────────────── │
+│     US.AAPL   Apple Inc      195.80  -0.2%  🔴IBKR·80ms │
+│     US.NVDA   NVIDIA         128.50  +3.1%  🔴IBKR·85ms │
+│     US.SPY    SPDR S&P 500   542.00  +0.1%  🔴IBKR·78ms │
+│                                                          │
+│  ── 💱 加密 ────────────────────────────────────────── │
+│     CRYPTO.BTC-USDT  Bitcoin    65,000  +1.9% 🟢OKX·45ms│
+│     CRYPTO.ETH-USDT  Ethereum    3,450  +0.8% 🟢OKX·42ms│
+└──────────────────────────────────────────────────────────┘
+```
+
+**Group features:**
+- **Auto-grouped by market** — HK/US/CRYPTO/CN tabs
+- **Custom groups** — "+ New Group" creates your own (e.g., "短线", "长线")
+- **Move symbols** — right-click → "Move to Group"
+- **Group color** — optional color coding for custom groups
+
+### Pinning Symbols (NEW)
+
+Keep important symbols at the top of their group:
+
+```
+Right-click any row → 📌 Pin / 📌 Unpin
+
+Pinned symbols:
+- Always appear first in the group (above unpinned)
+- Show a 📌 indicator
+- Order within pins: most recently pinned first
+- Survive restarts (saved to localStorage)
+```
+
+### Drag-to-Reorder (NEW)
+
+```
+Drag any row up/down to reorder your watchlist:
+
+- Grab the ≡ handle on the left of each row
+- Drop anywhere in the same group
+- Order is saved automatically to localStorage
+- Pinned items stay on top (dragging is within pinned section)
+```
+
+### Column Sorting (NEW)
+
+```
+Click any column header to sort:
+
+  [Code ▾]  [Name]  [Price ▲]  [Change]  [Volume]  [Source]
+
+- Click once: ascending ▲
+- Click twice: descending ▼
+- Click third time: reset to custom order
+- Sort is per-group, not global
+- Active sort column is highlighted
+```
 
 ### Real-time Quote Display
 
 ```
-Watchlist Panel:
-┌──────────────────────────────────────────────┐
-│  📈 My Watchlist           Source: 富途       │
-│                                              │
-│  HK.00700  腾讯         385.60  +2.30 (+0.6%)│
-│  US.AAPL   Apple Inc    195.80  -0.45 (-0.2%)│
-│  CC.BTCUSD Bitcoin    65000.00 +1200 (+1.9%)│
-│  SH.600519 贵州茅台     1680.00  +5.00 (+0.3%)│
-│                                              │
-│  Last updated: 14:32:05 HKT                   │
-└──────────────────────────────────────────────┘
+Each watchlist row:
+
+┌── HK.00700 ─┬─ 腾讯控股 ─┬─ 385.60 ─┬─ +2.30 ─┬─ 45.2M ─┬─ 🐂富途·35ms ─┐
+│  Code       │  Name      │  Price    │ Change   │ Volume   │ Source+Latency│
+└─────────────┴───────────┴──────────┴─────────┴────────┴───────────────┘
+                                                                  ↑ clickable
 ```
+
+**Color conventions:**
+- 🟢 Price goes green on uptick, red on downtick (flash for 500ms)
+- 🔴 Negative change: red background highlight
+- 🟢 Positive change: green background highlight
+- Data freshness: greyed out if > 5 seconds since last update
 
 ### Quote Source Indicator
 
-Every watchlist item shows its data source at the bottom-right:
+Every watchlist row shows its active data source:
 
 ```
-  Source: 富途           ← green = healthy (< 50ms)
-  Source: Tiger          ← yellow = moderate (50-200ms)
-  Source: eToro          ← red = slow (> 500ms)
+  🐂 富途 · 35ms       ← green = healthy (< 50ms)
+  🐯 Tiger · 100ms     ← yellow = moderate (50-200ms)
+  🦅 IBKR · 350ms      ← orange = degraded (200-500ms)
+  🔴 华盛 · 1200ms     ← red = slow (> 500ms, consider switching)
+
+  🔒 Tiger · 100ms     ← blue lock = manually overridden
 ```
 
-Color codes:
-- 🟢 Green: < 50ms — optimal
-- 🟡 Yellow: 50-200ms — acceptable
-- 🟠 Orange: 200-500ms — degraded
-- 🔴 Red: > 500ms — consider switching source
+**Latency color code:**
+
+| Latency | Color | Meaning |
+|---------|-------|---------|
+| < 50ms | 🟢 Green | Optimal — direct broker connection |
+| 50-200ms | 🟡 Yellow | Acceptable — slight network delay |
+| 200-500ms | 🟠 Orange | Degraded — check your connection |
+| > 500ms | 🔴 Red | Slow — consider switching source |
+
+### Switching Quote Sources (NEW: Manual Override)
+
+```
+Right-click a symbol → "Change Quote Source":
+
+  ┌─────────────────────────────┐
+  │ ○ Auto (Recommended)        │
+  │   → Currently: 富途 · 35ms  │
+  │                             │
+  │ ● 富途       35ms  🟢      │ ← currently active
+  │ ● Tiger      100ms 🟡      │
+  │ ● IBKR       80ms  🔴      │ ← offline, greyed out
+  │ ● 华盛       200ms 🟠      │
+  │                             │
+  │ ───────────────────────     │
+  │ ⚠ Manual override disables  │
+  │   automatic failover for    │
+  │   this symbol.              │
+  │                             │
+  │ [Restore Auto Selection]    │
+  └─────────────────────────────┘
+```
+
+**Locked source behavior:**
+- Label changes to 🔒 (lock icon) + broker name
+- Auto-failover is **disabled** — you'll see stale data if the broker goes offline
+- If the locked broker disconnects: toast warning "Tiger offline — switch back to Auto?"
+- Override is saved to localStorage, persists across restarts
+- Unlock via "Restore Auto Selection" or select "Auto (Recommended)"
+
+**Switch animation:**
+```
+When the quote source changes (auto-failover or manual switch):
+→ Bottom toast: "🐂 富途 → 🐯 Tiger · Main source timed out"
+→ Fades in over 500ms, stays for 3s, fades out
+→ Only one toast at a time (new switch replaces old)
+```
 
 ### Market Status Indicator
 
 ```
-Top of Market/Watchlist page:
+Top of Market page:
 
-  🇭🇰 港股: 交易中 09:30-16:00    ← green indicator
-  🇺🇸 美股: 已收盘 16:00-04:00+1  ← gray, next open in 5h
-
-  (Only shown for markets in your watchlist)
+  🇭🇰 港股 ● 交易中    09:30-16:00 HKT
+  🇺🇸 美股 ◉ 已收盘   09:30-16:00 EST (opens in 5h)
+  🇨🇳 A股 ◉ 已收盘    09:30-15:00 CST
+  💱 加密 ● 24/7      Always open
 ```
 
-Markets auto-detect their trading status:
-- **交易中** (Trading) — green, live quotes updating
-- **已收盘** (Closed) — gray, last closing price shown
-- **盘前** (Pre-market) — blue, pre-market quotes if available
-- **盘后** (After-hours) — orange, after-hours quotes if available
-
-### Switching Quote Sources
-
-If you prefer a different data source for a symbol:
-
-```
-1. Right-click a symbol → "Change Quote Source"
-2. Available sources listed: 富途 (45ms) | Tiger (100ms) | IBKR (80ms)
-3. Click to switch → new source used immediately
-4. Switch is persistent (survives restart)
-
-⚠ Manual override disables auto-failover for this symbol
-```
+Market statuses auto-detect:
+- **● 交易中** (Trading) — green pulse, live quotes
+- **◉ 午休** (Lunch break) — orange, HK/CN 12:00-13:00
+- **◉ 盘前** (Pre-market) — blue, pre-market quotes if available
+- **◉ 盘后** (After-hours) — purple, after-hours quotes if available
+- **◉ 已收盘** (Closed) — gray, last closing price
+- **◉ 周末** (Weekend) — gray, markets closed
 
 ### Broker Priority Settings
 
-Go to Settings → Broker Priority to customize which data source Dawn Whales uses first:
+Go to Settings → Broker Priority to control which broker Dawn Whales uses first:
 
 ```
-┌──────────────────────────────────────────────────┐
-│  ⚙️ Broker Priority                                │
-│                                                  │
-│  Market: [🇭🇰 Hong Kong  ▾]                       │
-│                                                  │
-│  Drag to reorder (top = highest priority):       │
-│                                                  │
-│  ☰ 1. 富途         45ms   L2 Depth   🟢 Healthy │
-│  ☰ 2. 华盛          120ms  L1 Quote   🟢 Healthy │
-│  ☰ 3. 盈立          200ms  L1 Quote   🟢 Healthy │
-│  ☰ 4. Tiger         100ms  L1 Quote   🟡 120ms  │
-│  ☰ 5. IBKR          80ms   L1 Quote   🔴 Offline │
-│                                                  │
-│  Changes take effect immediately.                │
-│  Drag IBKR up if you prefer it over others.      │
-│  Disable a broker: toggle the switch OFF.        │
-└──────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│  ⚙️ Broker Priority                                       │
+│                                                          │
+│  Market: [🇭🇰 Hong Kong ▾] [🇺🇸 US] [🇨🇳 A-Share] [💱 Crypto]│
+│                                                          │
+│  Drag to reorder (top = highest priority):               │
+│                                                          │
+│  ≡ 1. 富途         45ms   L2 Depth   🟢 Healthy          │
+│  ≡ 2. Tiger        100ms  L1 Quote   🟡 Moderate         │
+│  ≡ 3. 华盛         120ms  L1 Quote   🟢 Healthy (off)    │
+│  ≡ 4. IBKR         80ms   L1 Quote   🔴 Offline          │
+│                                                          │
+│  Each market has independent priority ordering.          │
+│  Disable a broker: toggle the switch OFF (greyed out).   │
+│  Changes are auto-saved and take effect immediately.     │
+└──────────────────────────────────────────────────────────┘
 ```
-
-Changes auto-save. The quote router uses your custom priority ordering for all symbols in that market.
 
 ### K-line Chart Data
 
 ```
-Open any symbol → click "Chart" tab:
+Click any symbol row → chart opens with K-line data:
 
   Period: [1m] [5m] [15m] [30m] [1h] [Day] [Week] [Month]
-  
-  Data comes from the assigned quote source.
-  Cache: 30 seconds — same symbol won't fetch repeat K-lines.
-  
-  Offline mode: charts load from indexedDB cache.
+
+  Data source: assigned broker (from priority or manual lock)
+  Cache: 30 seconds — repeat views use cache, no extra API calls
+  Offline mode: charts load from IndexedDB cache
+
+NEW: ⭐ Star button on the chart title bar
+  → Click to add/remove from watchlist directly
+  → Filled star = in watchlist, empty star = not added
+  → No need to go back to search!
 ```
 
+### Import / Export Watchlist (NEW)
+
+```
+Settings → Watchlist → Import/Export:
+
+Import:
+  - CSV format: code,name,market,brokerId
+  - JSON format: full WatchlistItem[] array
+  - Paste list: one code per line, auto-detects market
+  
+Export:
+  - CSV: lightweight, compatible with other platforms
+  - JSON: full backup (includes groups, pins, broker locks)
+```
+
+### Delete Confirmation + Undo (NEW)
+
+```
+First delete: confirmation dialog "Remove 00700 from watchlist?"
+Subsequent deletes (in same session): 3-second Toast with [Undo] button
+
+┌─────────────────────────────────────────────┐
+│  "00700 removed from watchlist"  [Undo]     │
+└─────────────────────────────────────────────┘
+                                        ↑ click to restore
+```
+
+### Keyboard Shortcuts (NEW)
+
+| Shortcut | Action |
+|----------|--------|
+| **Ctrl+K** / ⌘+K | Focus search bar (works from any page) |
+| **Ctrl+1/2/3/4** | Switch watchlist group tabs |
+| **Delete** | Remove selected row (with confirmation) |
+| **Esc** | Close search / dismiss dropdown |
+| **↑↓** | Navigate search results |
+| **Enter** | Add selected search result |
+
 ---
+
+> 💡 **Pro tip**: Pin your 3-5 most-watched symbols, group by market, and use Ctrl+1/2/3 to jump between groups. The search bar is always one keystroke away (Ctrl+K).
+
+---
+
+## 5. Creator Marketplace
 
 ## 5. Creator Marketplace
 
@@ -727,6 +936,8 @@ A: Yes, subject to the 0.1% withdrawal fee (minimum 2 USDT). Withdrawals over 10
 ---
 
 > **Version History**:
+> - v2.5.0 (2026-06-14) — R155-R157 (Chapter 4 rewrite): dynamic search + pinyin, groups/drag-sort/pin, manual source override, search history, import/export, delete undo, shortcuts
+> - v2.4.0 (2026-06-14) — R155 integration: dynamic search API, tagged watchlist (persistence + cross-market defaults + broker binding)
 > - v2.3.0 (2026-06-14) — R152-R154 integration: search bar, real-time quotes, broker priority, market status, quote source indicator
 > - v2.2.0 (2026-06-13) — R149-R151 integration: unified billing, fee preview, toast feedback, creator progress, monthly report, subscription renewal
 > - v2.1.0 (2026-06-13) — Initial complete manual with wallet, marketplace, AI, TA, trading

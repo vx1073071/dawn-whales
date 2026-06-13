@@ -87,43 +87,43 @@ export interface SymbolEntry {
 const SYMBOL_DB: SymbolEntry[] = [
   // HK Stocks
   // ── HK Stocks ───────────────────────────────────────────────
-  { standardCode: 'HK:00700', symbol: '00700', market: 'HK', exchange: 'SEHK', name: '腾讯控股', nameEn: 'Tencent', aliases: ['tengxun', 'tx', 'tencent', 'tencent holdings'], type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 100 },
-  { standardCode: 'HK:09988', symbol: '09988', market: 'HK', exchange: 'SEHK', name: '阿里巴巴-SW', nameEn: 'Alibaba', aliases: ['alibaba', 'ali', 'baba'], type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 100 },
-  { standardCode: 'HK:09999', symbol: '09999', market: 'HK', exchange: 'SEHK', name: '网易-S', nameEn: 'NetEase', aliases: ['wangyi', 'wy', 'netease'], type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 100 },
-  { standardCode: 'HK:00388', symbol: '00388', market: 'HK', exchange: 'SEHK', name: '香港交易所', nameEn: 'HKEX', aliases: ['gangjiaosuo', 'jiaoyisuo', 'hkex', 'xianggang jiaoyisuo'], type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 100 },
-  { standardCode: 'HK:09961', symbol: '09961', market: 'HK', exchange: 'SEHK', name: '携程集团-S', nameEn: 'Trip.com', aliases: ['xiecheng', 'xc', 'trip', 'trip.com'], type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 100 },
-  { standardCode: 'HK:00005', symbol: '00005', market: 'HK', exchange: 'SEHK', name: '汇丰控股', nameEn: 'HSBC', aliases: ['huifeng', 'hf', 'hsbc'], type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 400 },
-  { standardCode: 'HK:09888', symbol: '09888', market: 'HK', exchange: 'SEHK', name: '百度集团-SW', nameEn: 'Baidu', aliases: ['baidu', 'bd'], type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 50 },
-  { standardCode: 'HK:03690', symbol: '03690', market: 'HK', exchange: 'SEHK', name: '美团-W', nameEn: 'Meituan', aliases: ['meituan', 'mt', 'mei tuan'], type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 100 },
-  { standardCode: 'HK:01810', symbol: '01810', market: 'HK', exchange: 'SEHK', name: '小米集团-W', nameEn: 'Xiaomi', aliases: ['xiaomi', 'xm', 'xiao mi'], type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 200 },
-  { standardCode: 'HK:09987', symbol: '09987', market: 'HK', exchange: 'SEHK', name: '百胜中国', nameEn: 'Yum China', aliases: ['baisheng', 'bs', 'yum', 'yumchina'], type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 50 },
-  { standardCode: 'HK:02800', symbol: '02800', market: 'HK', exchange: 'SEHK', name: '盈富基金', nameEn: 'Tracker Fund', aliases: ['yingfu', 'yf', 'tracker'], type: 'ETF', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 500 },
-  { standardCode: 'HK:03033', symbol: '03033', market: 'HK', exchange: 'SEHK', name: '南方恒生科技', nameEn: 'CSOP HS TECH', aliases: ['nanfang', 'nf', 'hengsheng', 'hs tech', 'csop'], type: 'ETF', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 200 },
+  { standardCode: 'HK:00700', symbol: '00700', market: 'HK', exchange: 'SEHK', name: '腾讯控股', nameZH: '腾讯控股', nameEn: 'Tencent', aliases: ['tengxun', 'tx', 'tencent', 'tencent holdings'], pinyinInitials: 'tx', type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 100 },
+  { standardCode: 'HK:09988', symbol: '09988', market: 'HK', exchange: 'SEHK', name: '阿里巴巴-SW', nameZH: '阿里巴巴', nameEn: 'Alibaba', aliases: ['alibaba', 'ali', 'baba'], pinyinInitials: 'al', type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 100 },
+  { standardCode: 'HK:09999', symbol: '09999', market: 'HK', exchange: 'SEHK', name: '网易-S', nameZH: '网易', nameEn: 'NetEase', aliases: ['wangyi', 'wy', 'netease'], pinyinInitials: 'wy', type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 100 },
+  { standardCode: 'HK:00388', symbol: '00388', market: 'HK', exchange: 'SEHK', name: '香港交易所', nameZH: '香港交易所', nameEn: 'HKEX', aliases: ['gangjiaosuo', 'jiaoyisuo', 'hkex', 'xianggang jiaoyisuo'], pinyinInitials: 'xg', type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 100 },
+  { standardCode: 'HK:09961', symbol: '09961', market: 'HK', exchange: 'SEHK', name: '携程集团-S', nameZH: '携程集团', nameEn: 'Trip.com', aliases: ['xiecheng', 'xc', 'trip', 'trip.com'], pinyinInitials: 'xc', type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 100 },
+  { standardCode: 'HK:00005', symbol: '00005', market: 'HK', exchange: 'SEHK', name: '汇丰控股', nameZH: '汇丰控股', nameEn: 'HSBC', aliases: ['huifeng', 'hf', 'hsbc'], pinyinInitials: 'hf', type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 400 },
+  { standardCode: 'HK:09888', symbol: '09888', market: 'HK', exchange: 'SEHK', name: '百度集团-SW', nameZH: '百度集团', nameEn: 'Baidu', aliases: ['baidu', 'bd'], pinyinInitials: 'bd', type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 50 },
+  { standardCode: 'HK:03690', symbol: '03690', market: 'HK', exchange: 'SEHK', name: '美团-W', nameZH: '美团', nameEn: 'Meituan', aliases: ['meituan', 'mt', 'mei tuan'], pinyinInitials: 'mt', type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 100 },
+  { standardCode: 'HK:01810', symbol: '01810', market: 'HK', exchange: 'SEHK', name: '小米集团-W', nameZH: '小米集团', nameEn: 'Xiaomi', aliases: ['xiaomi', 'xm', 'xiao mi'], pinyinInitials: 'xm', type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 200 },
+  { standardCode: 'HK:09987', symbol: '09987', market: 'HK', exchange: 'SEHK', name: '百胜中国', nameZH: '百胜中国', nameEn: 'Yum China', aliases: ['baisheng', 'bs', 'yum', 'yumchina'], pinyinInitials: 'bs', type: 'STOCK', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 50 },
+  { standardCode: 'HK:02800', symbol: '02800', market: 'HK', exchange: 'SEHK', name: '盈富基金', nameZH: '盈富基金', nameEn: 'Tracker Fund', aliases: ['yingfu', 'yf', 'tracker'], pinyinInitials: 'yf', type: 'ETF', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 500 },
+  { standardCode: 'HK:03033', symbol: '03033', market: 'HK', exchange: 'SEHK', name: '南方恒生科技', nameZH: '南方恒生科技', nameEn: 'CSOP HS TECH', aliases: ['nanfang', 'nf', 'hengsheng', 'hs tech', 'csop'], pinyinInitials: 'nf', type: 'ETF', brokerCapable: getBrokersForMarket('HK'), currency: 'HKD', lotSize: 200 },
   // ── US Stocks ───────────────────────────────────────────────
-  { standardCode: 'US:AAPL', symbol: 'AAPL', market: 'US', exchange: 'NASDAQ', name: '苹果', nameEn: 'Apple Inc.', aliases: ['pingguo', 'apple', 'pg'], type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
-  { standardCode: 'US:NVDA', symbol: 'NVDA', market: 'US', exchange: 'NASDAQ', name: '英伟达', nameEn: 'NVIDIA', aliases: ['yingweida', 'nvidia', 'ywd'], type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
-  { standardCode: 'US:TSLA', symbol: 'TSLA', market: 'US', exchange: 'NASDAQ', name: '特斯拉', nameEn: 'Tesla', aliases: ['tesila', 'tesla', 'tsl'], type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
-  { standardCode: 'US:MSFT', symbol: 'MSFT', market: 'US', exchange: 'NASDAQ', name: '微软', nameEn: 'Microsoft', aliases: ['weiruan', 'microsoft', 'wr'], type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
-  { standardCode: 'US:GOOGL', symbol: 'GOOGL', market: 'US', exchange: 'NASDAQ', name: '谷歌', nameEn: 'Alphabet', aliases: ['guge', 'google', 'alphabet', 'gg'], type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
-  { standardCode: 'US:META', symbol: 'META', market: 'US', exchange: 'NASDAQ', name: 'Meta', nameEn: 'Meta Platforms', aliases: ['facebook', 'fb'], type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
-  { standardCode: 'US:AMZN', symbol: 'AMZN', market: 'US', exchange: 'NASDAQ', name: '亚马逊', nameEn: 'Amazon', aliases: ['yamaxun', 'amazon', 'ymx'], type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
-  { standardCode: 'US:AMD', symbol: 'AMD', market: 'US', exchange: 'NASDAQ', name: 'AMD', nameEn: 'Advanced Micro Devices', aliases: ['amd'], type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
-  { standardCode: 'US:JPM', symbol: 'JPM', market: 'US', exchange: 'NYSE', name: '摩根大通', nameEn: 'JPMorgan Chase', aliases: ['mogen', 'jpmorgan', 'jpm'], type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
-  { standardCode: 'US:BABA', symbol: 'BABA', market: 'US', exchange: 'NYSE', name: '阿里巴巴', nameEn: 'Alibaba ADR', aliases: ['alibaba', 'ali', 'baba adr'], type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
-  { standardCode: 'US:NIO', symbol: 'NIO', market: 'US', exchange: 'NYSE', name: '蔚来', nameEn: 'NIO Inc.', aliases: ['weilai', 'wl', 'nio'], type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
-  { standardCode: 'US:SPY', symbol: 'SPY', market: 'US', exchange: 'NYSEARCA', name: '标普500 ETF', nameEn: 'SPDR S&P 500', aliases: ['biaopu', 'bp', 'sp500', 'sandp', 'spx'], type: 'ETF', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
-  { standardCode: 'US:QQQ', symbol: 'QQQ', market: 'US', exchange: 'NASDAQ', name: '纳斯达克100 ETF', nameEn: 'Invesco QQQ', aliases: ['nasida', 'nasdaq', 'ndx'], type: 'ETF', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:AAPL', symbol: 'AAPL', market: 'US', exchange: 'NASDAQ', name: '苹果', nameZH: '苹果', nameEn: 'Apple Inc.', aliases: ['pingguo', 'apple', 'pg'], pinyinInitials: 'pg', type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:NVDA', symbol: 'NVDA', market: 'US', exchange: 'NASDAQ', name: '英伟达', nameZH: '英伟达', nameEn: 'NVIDIA', aliases: ['yingweida', 'nvidia', 'ywd'], pinyinInitials: 'yw', type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:TSLA', symbol: 'TSLA', market: 'US', exchange: 'NASDAQ', name: '特斯拉', nameZH: '特斯拉', nameEn: 'Tesla', aliases: ['tesila', 'tesla', 'tsl'], pinyinInitials: 'ts', type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:MSFT', symbol: 'MSFT', market: 'US', exchange: 'NASDAQ', name: '微软', nameZH: '微软', nameEn: 'Microsoft', aliases: ['weiruan', 'microsoft', 'wr'], pinyinInitials: 'wr', type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:GOOGL', symbol: 'GOOGL', market: 'US', exchange: 'NASDAQ', name: '谷歌', nameZH: '谷歌', nameEn: 'Alphabet', aliases: ['guge', 'google', 'alphabet', 'gg'], pinyinInitials: 'gg', type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:META', symbol: 'META', market: 'US', exchange: 'NASDAQ', name: 'Meta', nameZH: 'Meta', nameEn: 'Meta Platforms', aliases: ['facebook', 'fb'], pinyinInitials: 'mt', type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:AMZN', symbol: 'AMZN', market: 'US', exchange: 'NASDAQ', name: '亚马逊', nameZH: '亚马逊', nameEn: 'Amazon', aliases: ['yamaxun', 'amazon', 'ymx'], pinyinInitials: 'ym', type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:AMD', symbol: 'AMD', market: 'US', exchange: 'NASDAQ', name: 'AMD', nameZH: 'AMD', nameEn: 'Advanced Micro Devices', aliases: ['amd'], pinyinInitials: 'ad', type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:JPM', symbol: 'JPM', market: 'US', exchange: 'NYSE', name: '摩根大通', nameZH: '摩根大通', nameEn: 'JPMorgan Chase', aliases: ['mogen', 'jpmorgan', 'jpm'], pinyinInitials: 'mg', type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:BABA', symbol: 'BABA', market: 'US', exchange: 'NYSE', name: '阿里巴巴', nameZH: '阿里巴巴', nameEn: 'Alibaba ADR', aliases: ['alibaba', 'ali', 'baba adr'], pinyinInitials: 'al', type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:NIO', symbol: 'NIO', market: 'US', exchange: 'NYSE', name: '蔚来', nameZH: '蔚来', nameEn: 'NIO Inc.', aliases: ['weilai', 'wl', 'nio'], pinyinInitials: 'wl', type: 'STOCK', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:SPY', symbol: 'SPY', market: 'US', exchange: 'NYSEARCA', name: '标普500 ETF', nameZH: '标普500', nameEn: 'SPDR S&P 500', aliases: ['biaopu', 'bp', 'sp500', 'sandp', 'spx'], pinyinInitials: 'bp', type: 'ETF', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
+  { standardCode: 'US:QQQ', symbol: 'QQQ', market: 'US', exchange: 'NASDAQ', name: '纳斯达克100 ETF', nameZH: '纳斯达克100', nameEn: 'Invesco QQQ', aliases: ['nasida', 'nasdaq', 'ndx'], pinyinInitials: 'ns', type: 'ETF', brokerCapable: getBrokersForMarket('US'), currency: 'USD' },
   // ── Crypto ──────────────────────────────────────────────────
-  { standardCode: 'CRYPTO:BTC-USDT', symbol: 'BTC', market: 'CRYPTO', exchange: 'BINANCE', name: '比特币', nameEn: 'Bitcoin', aliases: ['bitebi', 'bt', 'bitcoin'], type: 'CRYPTO', brokerCapable: getBrokersForMarket('CRYPTO'), currency: 'USDT' },
-  { standardCode: 'CRYPTO:ETH-USDT', symbol: 'ETH', market: 'CRYPTO', exchange: 'BINANCE', name: '以太坊', nameEn: 'Ethereum', aliases: ['yitaifang', 'ytf', 'ethereum'], type: 'CRYPTO', brokerCapable: getBrokersForMarket('CRYPTO'), currency: 'USDT' },
-  { standardCode: 'CRYPTO:SOL-USDT', symbol: 'SOL', market: 'CRYPTO', exchange: 'BINANCE', name: 'Solana', nameEn: 'Solana', aliases: ['suolana', 'solana'], type: 'CRYPTO', brokerCapable: getBrokersForMarket('CRYPTO'), currency: 'USDT' },
-  { standardCode: 'CRYPTO:DOGE-USDT', symbol: 'DOGE', market: 'CRYPTO', exchange: 'BINANCE', name: '狗狗币', nameEn: 'Dogecoin', aliases: ['gougou', 'gg', 'dogecoin'], type: 'CRYPTO', brokerCapable: getBrokersForMarket('CRYPTO'), currency: 'USDT' },
-  { standardCode: 'CRYPTO:XRP-USDT', symbol: 'XRP', market: 'CRYPTO', exchange: 'BINANCE', name: '瑞波币', nameEn: 'Ripple', aliases: ['ruibo', 'rb', 'ripple'], type: 'CRYPTO', brokerCapable: getBrokersForMarket('CRYPTO'), currency: 'USDT' },
-  { standardCode: 'CRYPTO:BNB-USDT', symbol: 'BNB', market: 'CRYPTO', exchange: 'BINANCE', name: '币安币', nameEn: 'BNB', aliases: ['binance', 'bianbi', 'ba'], type: 'CRYPTO', brokerCapable: getBrokersForMarket('CRYPTO'), currency: 'USDT' },
+  { standardCode: 'CRYPTO:BTC-USDT', symbol: 'BTC', market: 'CRYPTO', exchange: 'BINANCE', name: '比特币', nameZH: '比特币', nameEn: 'Bitcoin', aliases: ['bitebi', 'bt', 'bitcoin'], pinyinInitials: 'bt', type: 'CRYPTO', brokerCapable: getBrokersForMarket('CRYPTO'), currency: 'USDT' },
+  { standardCode: 'CRYPTO:ETH-USDT', symbol: 'ETH', market: 'CRYPTO', exchange: 'BINANCE', name: '以太坊', nameZH: '以太坊', nameEn: 'Ethereum', aliases: ['yitaifang', 'ytf', 'ethereum'], pinyinInitials: 'yt', type: 'CRYPTO', brokerCapable: getBrokersForMarket('CRYPTO'), currency: 'USDT' },
+  { standardCode: 'CRYPTO:SOL-USDT', symbol: 'SOL', market: 'CRYPTO', exchange: 'BINANCE', name: 'Solana', nameZH: 'Solana', nameEn: 'Solana', aliases: ['suolana', 'solana'], pinyinInitials: 'sl', type: 'CRYPTO', brokerCapable: getBrokersForMarket('CRYPTO'), currency: 'USDT' },
+  { standardCode: 'CRYPTO:DOGE-USDT', symbol: 'DOGE', market: 'CRYPTO', exchange: 'BINANCE', name: '狗狗币', nameZH: '狗狗币', nameEn: 'Dogecoin', aliases: ['gougou', 'gg', 'dogecoin'], pinyinInitials: 'gg', type: 'CRYPTO', brokerCapable: getBrokersForMarket('CRYPTO'), currency: 'USDT' },
+  { standardCode: 'CRYPTO:XRP-USDT', symbol: 'XRP', market: 'CRYPTO', exchange: 'BINANCE', name: '瑞波币', nameZH: '瑞波币', nameEn: 'Ripple', aliases: ['ruibo', 'rb', 'ripple'], pinyinInitials: 'rb', type: 'CRYPTO', brokerCapable: getBrokersForMarket('CRYPTO'), currency: 'USDT' },
+  { standardCode: 'CRYPTO:BNB-USDT', symbol: 'BNB', market: 'CRYPTO', exchange: 'BINANCE', name: '币安币', nameZH: '币安币', nameEn: 'BNB', aliases: ['binance', 'bianbi', 'ba'], pinyinInitials: 'ba', type: 'CRYPTO', brokerCapable: getBrokersForMarket('CRYPTO'), currency: 'USDT' },
   // ── CN A-shares ─────────────────────────────────────────────
-  { standardCode: 'CN:00230', symbol: '00230', market: 'CN', exchange: 'SZ', name: '科大讯飞', nameEn: 'iFlytek', aliases: ['keda', 'kd', 'xunfei', 'iflytek'], type: 'STOCK', brokerCapable: getBrokersForMarket('CN'), currency: 'CNY', lotSize: 100 },
-  { standardCode: 'CN:00241', symbol: '00241', market: 'CN', exchange: 'SH', name: '歌尔股份', nameEn: 'GoerTek', aliases: ['geer', 'ge', 'goertek'], type: 'STOCK', brokerCapable: getBrokersForMarket('CN'), currency: 'CNY', lotSize: 100 },
-  { standardCode: 'CN:60001', symbol: '60001', market: 'CN', exchange: 'SH', name: '招商银行', nameEn: 'CMB', aliases: ['zhaoshang', 'zs', 'zhaohang', 'cmb', 'chinamerchants'], type: 'STOCK', brokerCapable: getBrokersForMarket('CN'), currency: 'CNY', lotSize: 100 },
+  { standardCode: 'CN:00230', symbol: '00230', market: 'CN', exchange: 'SZ', name: '科大讯飞', nameZH: '科大讯飞', nameEn: 'iFlytek', aliases: ['keda', 'kd', 'xunfei', 'iflytek'], pinyinInitials: 'kd', type: 'STOCK', brokerCapable: getBrokersForMarket('CN'), currency: 'CNY', lotSize: 100 },
+  { standardCode: 'CN:00241', symbol: '00241', market: 'CN', exchange: 'SH', name: '歌尔股份', nameZH: '歌尔股份', nameEn: 'GoerTek', aliases: ['geer', 'ge', 'goertek'], pinyinInitials: 'ge', type: 'STOCK', brokerCapable: getBrokersForMarket('CN'), currency: 'CNY', lotSize: 100 },
+  { standardCode: 'CN:60001', symbol: '60001', market: 'CN', exchange: 'SH', name: '招商银行', nameZH: '招商银行', nameEn: 'CMB', aliases: ['zhaoshang', 'zs', 'zhaohang', 'cmb', 'chinamerchants'], pinyinInitials: 'zs', type: 'STOCK', brokerCapable: getBrokersForMarket('CN'), currency: 'CNY', lotSize: 100 },
 ];
 
 // ═══════════════════════════════════════════════════════════
@@ -371,6 +371,16 @@ export class SymbolSearchEngine {
     // English name contains query: 50
     else if (nameEn.includes(q)) {
       score = 50;
+    }
+
+    // ── R157 #27: Pinyin initial shorthand matching ──
+    // "zg" matches "中国" (zhong guo), "tx" matches "腾讯" (teng xun)
+    if (score === 0 && entry.pinyinInitials && qLower.length >= 2) {
+      if (entry.pinyinInitials === qLower) {
+        score = 50; // "tx" = "tx"
+      } else if (entry.pinyinInitials.startsWith(qLower)) {
+        score = 45; // "t" prefix of "tx"
+      }
     }
 
     // ── R155 #5: Alias matching (pinyin, abbreviation, common names) ──
