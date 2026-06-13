@@ -1,11 +1,11 @@
 // ── DAWN WHALES Server ────────────────────────────────────────────────
-// R129-131: all layers. R132: dead letter queue
+// R148: Full integration + performance + chain stability + rate limiting
 
 import express from 'express';
 import { createServer } from 'http';
 import cors from 'cors';
 import { registerApiRoutes } from '../electron/api-routes';
-import { initDatabases } from './db/database';
+import { initDatabases, getDatabase } from './db/database';
 import { registerAuthRoutes } from './middleware/jwt-auth';
 import { auditMiddleware } from './middleware/audit-logger';
 import { globalErrorHandler } from './middleware/error-handler';
@@ -14,8 +14,17 @@ import signalRoutes from './routes/signal';
 import walletRoutes from './routes/wallet';
 import deadLetterRoutes from './middleware/dead-letter';
 
+// R148: Integration + optimizations
+import { APIIntegration, unifiedErrorHandler } from './services/api-integration';
+import { RateLimiter, rateLimitMiddleware, AIRateLimiter, IndexOptimizer, LRUCache, BatchExecutor } from './middleware/optimizations';
+import { ChainMonitorV2 } from './services/chain-monitor-v2';
+
 const app = express();
 const PORT = config.port;
+
+// ── R148: Rate limiters ────────────────────────────────────────────
+const generalLimiter = new RateLimiter(60000, 100);  // 100 req/min
+const aiLimiter = new AIRateLimiter();                // 10 req/min for AI
 
 // ── R130: Audit logging ─────────────────────────────────────────────
 app.use(auditMiddleware);
@@ -24,14 +33,41 @@ app.use(auditMiddleware);
 app.use(cors({ origin: config.corsOrigin }));
 app.use(express.json());
 
+// ── R148: General rate limiting ─────────────────────────────────────
+app.use(rateLimitMiddleware(generalLimiter));
+
 // ── R129: Init databases ─────────────────────────────────────────────
+let db: ReturnType<typeof getDatabase>;
 try {
   initDatabases();
+  db = getDatabase();
   console.log('[Server] Databases initialized');
 } catch (err) {
   console.error('[Server] Database init failed:', err);
   process.exit(1);
 }
+
+// ── R148: Index optimization ─────────────────────────────────────────
+try {
+  const optimizer = new IndexOptimizer(db!);
+  const created = optimizer.ensureIndexes();
+  console.log(`[Server] Index optimizer: ensured ${created.length} indexes`);
+} catch (err) {
+  console.warn('[Server] Index optimization failed:', err);
+}
+
+// ── R148: Chain monitor v2 (resilience) ──────────────────────────────
+let chainMonitor: ChainMonitorV2;
+try {
+  chainMonitor = new ChainMonitorV2();
+  chainMonitor.startHealthChecks();
+  console.log('[Server] Chain monitor v2 started');
+} catch (err) {
+  console.warn('[Server] Chain monitor init failed:', err);
+}
+
+// ── R148: API Integration ───────────────────────────────────────────
+const integration = new APIIntegration(db!);
 
 // ── Health check ─────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
@@ -39,7 +75,21 @@ app.get('/api/health', (_req, res) => {
     status: 'ok',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    version: process.env.APP_VERSION || '2.0.0',
+    version: process.env.APP_VERSION || '2.1.0',
+    services: Array.from(integration['services']?.keys() || []),
+  });
+});
+
+// R148: Extended health with chain status
+app.get('/api/health/extended', async (_req, res) => {
+  const chainStatus = chainMonitor ? await chainMonitor.getStatus() : [];
+  res.json({
+    status: 'ok',
+    version: '2.1.0',
+    uptime: process.uptime(),
+    chainStatus,
+    rateLimiter: generalLimiter.stats(),
+    aiRateLimiter: aiLimiter.stats(),
   });
 });
 
@@ -54,6 +104,9 @@ app.get('/api/ai/status', (_req, res) => {
   });
 });
 
+// ── R148: AI routes with stricter rate limiting ────────────────────
+app.use('/api/ai', aiLimiter ? rateLimitMiddleware(aiLimiter) : (_req, _res, next) => next());
+
 // ── R129: Auth routes ────────────────────────────────────────────────
 registerAuthRoutes(app);
 
@@ -66,6 +119,9 @@ app.use('/api/wallet', walletRoutes);
 // ── R132: Dead letter queue ──────────────────────────────────────────
 app.use('/api/dead-letter', deadLetterRoutes);
 
+// ── R148: Integration health ────────────────────────────────────────
+integration.mountAll(app, db!);
+
 // ── Existing API routes (AI chat, report, billing, wallet) ──────────
 registerApiRoutes(app);
 
@@ -75,8 +131,8 @@ if (configErrors.length > 0) {
   console.warn('[Server] Configuration warnings:', configErrors);
 }
 
-// ── R131: Error handler (must be last) ─────────────────────────────
-app.use(globalErrorHandler);
+// ── R148: Unified error handler (replaces globalErrorHandler) ──────
+app.use(unifiedErrorHandler);
 
 // ── Start server ─────────────────────────────────────────────────────
 export function startServer(port: number = PORT): ReturnType<typeof createServer> {
@@ -84,11 +140,12 @@ export function startServer(port: number = PORT): ReturnType<typeof createServer
     console.log(`[Server] HTTP server listening on http://localhost:${port}`);
     console.log(`[Server] Health: http://localhost:${port}/api/health`);
     console.log(`[Server] Signal API: http://localhost:${port}/api/signal`);
+    console.log(`[Server] Version: v2.1.0`);
   });
   return server;
 }
 
-export { app };
+export { app, chainMonitor, integration, generalLimiter, aiLimiter };
 
 if (require.main === module) {
   startServer();
