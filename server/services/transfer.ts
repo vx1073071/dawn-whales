@@ -8,6 +8,10 @@
  *  - Sender: 0.3% fee on amount sent
  *  - Receiver: 0.3% fee on amount received
  *  - Both fees → platform revenue
+ *  - Minimum fee: 1 USDT per side (sender + receiver independently)
+ *    RATIONALE: prevents dust-spam transfers (e.g. 0.001 USDT tx → 0.000003 USDT fee).
+ *    At the 1 USDT floor, transfers under ~333 USDT pay flat fee.
+ *    This is INTENTIONAL — transfers are P2P, not micro-payments (use tips for small amounts).
  * 
  * Transfer lifecycle:
  *   1. Idempotency check

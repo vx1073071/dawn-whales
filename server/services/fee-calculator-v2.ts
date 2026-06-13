@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R142 J02+J03 — 5-Class Fee Calculator v2 + Rate Router
  * 

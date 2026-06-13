@@ -1,7 +1,7 @@
 // @ts-nocheck
 // ── R143 ML — WalletFullPage (提现+转账+打赏+总览) ───────────────────────
 // PM: 4 modules, 7h. 提现/转账/打赏/总览整合
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   Card, Button, Input, Select, Tabs, Table, Tag, Space, QRCode,
   Alert, message, Badge, Empty, Statistic, Modal, Descriptions, Tooltip, Slider,
@@ -205,38 +205,61 @@ function TransferPanel() {
   );
 }
 
-// ── Tip Component ──
+// ── Tip Component (v17.6 R150 Claw/PM fix: auto-query creator level) ──
 
-function TipModal({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+function TipModal({ visible, onClose, creatorId }: { visible: boolean; onClose: () => void; creatorId?: string }) {
   const [selectedAmount, setSelectedAmount] = useState(19.9);
-  const [creatorLevel, setCreatorLevel] = useState<'L1'|'L2'|'L3'>('L3');
   const [submitting, setSubmitting] = useState(false);
+  const [creatorLevel, setCreatorLevel] = useState<'L1'|'L2'|'L3'|null>(null);
+  const [queryingLevel, setQueryingLevel] = useState(false);
+  const [creatorName, setCreatorName] = useState('');
 
-  const lc = LEVEL_CONFIG[creatorLevel];
-  const cutPct = parseInt(lc.cut);
+  // Auto-query creator level when creatorId provided (R150 fix: replaces manual Select)
+  useEffect(() => {
+    if (!creatorId) { setCreatorLevel(null); setCreatorName(''); return; }
+    setQueryingLevel(true);
+    // Simulate API call → replace with real IPC call
+    setTimeout(() => {
+      // Mock: query creator-level engine
+      // In production: window.api.wallet.getCreatorLevel(creatorId)
+      setCreatorLevel('L3');
+      setCreatorName('AlphaQuant');
+      setQueryingLevel(false);
+    }, 300);
+  }, [creatorId]);
+
+  const lc = creatorLevel ? LEVEL_CONFIG[creatorLevel] : null;
+  const cutPct = lc ? parseInt(lc.cut) : 30;
   const platformCut = selectedAmount * (cutPct / 100);
   const creatorGets = selectedAmount - platformCut;
 
   const handleTip = useCallback(async () => {
+    if (!creatorLevel) return message.warning('请先选择创作者');
     setSubmitting(true);
     await new Promise((r) => setTimeout(r, 500));
     setSubmitting(false);
-    message.success(`打赏 ${fmtUsdt(selectedAmount)} USDT 成功! 创作者获得 ${fmtUsdt(creatorGets)} USDT`);
+    message.success(`打赏 ${fmtUsdt(selectedAmount)} USDT 成功! ${creatorName || '创作者'} 获得 ${fmtUsdt(creatorGets)} USDT`);
     onClose();
-  }, [selectedAmount, creatorGets, onClose]);
+  }, [selectedAmount, creatorGets, onClose, creatorLevel, creatorName]);
 
   return (
     <Modal title={<Space><HeartOutlined style={{color:'#ef4444'}}/><span>打赏创作者</span></Space>}
       open={visible} onCancel={onClose} onOk={handleTip} confirmLoading={submitting} okText="确认打赏" width={460}>
       <Space direction="vertical" size={14} style={{width:'100%'}}>
+        {/* R150: Creator ID input → auto-query level (replaces manual Select) */}
         <div>
-          <div style={{color:'#6b7280',fontSize:11,marginBottom:4}}>创作者等级</div>
-          <Select value={creatorLevel} onChange={setCreatorLevel} style={{width:'100%'}}>
-            <Select.Option value="L1">L1 新手 (平台抽30%)</Select.Option>
-            <Select.Option value="L2">L2 进阶 ≥100笔 (平台抽20%)</Select.Option>
-            <Select.Option value="L3">L3 旗舰 ≥1000笔 (平台抽10%)</Select.Option>
-          </Select>
+          <div style={{color:'#6b7280',fontSize:11,marginBottom:4}}>创作者 ID / 用户名</div>
+          <Input placeholder="输入创作者ID自动查询等级" value={creatorId||''} readOnly disabled={!creatorId} style={{background:'#0d0f1a'}}/>
         </div>
+        {queryingLevel && <div style={{color:'#f59e0b',fontSize:11}}>查询创作者等级中...</div>}
+        {creatorLevel && lc && (
+          <div style={{padding:'8px 12px',background:'#0d0f1a',borderRadius:6,display:'flex',alignItems:'center',gap:8}}>
+            <Tag color={lc.color} style={{fontSize:11}}>{lc.icon} {creatorLevel} {lc.label}</Tag>
+            <span style={{color:'#6b7280',fontSize:11}}>平台抽成</span>
+            <span style={{color:lc.color,fontWeight:700,fontFamily:'monospace'}}>{lc.cut}</span>
+            {creatorName && <span style={{color:'#e0e0e0',fontSize:11}}>@{creatorName}</span>}
+          </div>
+        )}
 
         <div>
           <div style={{color:'#6b7280',fontSize:11,marginBottom:6}}>打赏金额</div>
@@ -272,6 +295,7 @@ function TipModal({ visible, onClose }: { visible: boolean; onClose: () => void 
 
 function TipPanel() {
   const [tipVisible, setTipVisible] = useState(false);
+  const [tipCreatorId, setTipCreatorId] = useState('');
 
   const columns = [
     { title: '创作者', dataIndex: 'creatorName', key:'name', render:(v:string,r:TipRecord)=>(<div><span style={{color:'#e0e0e0'}}>{v}</span><Tag color={LEVEL_CONFIG[r.creatorLevel].color} style={{fontSize:9,marginLeft:4}}>{LEVEL_CONFIG[r.creatorLevel].icon} {r.creatorLevel}</Tag></div>) },
@@ -284,7 +308,7 @@ function TipPanel() {
   return (
     <div>
       <Card size="small" title={<Space><HeartOutlined style={{color:'#ef4444'}}/><span style={{color:'#e0e0e0'}}>打赏创作者</span></Space>}
-        extra={<Button type="primary" size="small" icon={<HeartOutlined/>} onClick={()=>setTipVisible(true)}>打赏</Button>}
+        extra={<Space size={6}><Input placeholder="创作者ID" size="small" style={{width:140}} value={tipCreatorId} onChange={(e)=>setTipCreatorId(e.target.value)}/><Button type="primary" size="small" icon={<HeartOutlined/>} onClick={()=>{if(!tipCreatorId)return message.warning('请先输入创作者ID');setTipVisible(true)}}>打赏</Button></Space>}
         style={{background:'#1a1d2e',border:'1px solid #2a2d3e',borderRadius:10,marginBottom:12}}
         styles={{body:{padding:'12px'}}}>
         <div style={{display:'flex',gap:12,flexWrap:'wrap',marginBottom:12}}>
@@ -310,7 +334,7 @@ function TipPanel() {
           rowClassName={()=>'dark-table-row'} locale={{emptyText:<Empty description="暂无打赏记录"/>}}/>
       </Card>
 
-      <TipModal visible={tipVisible} onClose={()=>setTipVisible(false)}/>
+      <TipModal visible={tipVisible} onClose={()=>setTipVisible(false)} creatorId={tipCreatorId}/>
     </div>
   );
 }

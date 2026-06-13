@@ -13,6 +13,7 @@ import {
   SafetyCertificateOutlined, CheckCircleOutlined,
   ArrowRightOutlined, ClockCircleOutlined,
 } from '@ant-design/icons';
+import FeePreview from '@/components/billing/FeePreview';
 
 // ═══════════ Types ═══════════
 
@@ -123,8 +124,14 @@ function PurchaseConfirmModal({
         <Descriptions.Item label="产品">{product.name}</Descriptions.Item>
         <Descriptions.Item label="创作者"><Space><span>{product.creator.name}</span><CreatorBadge creator={product.creator} showCut/></Space></Descriptions.Item>
         <Descriptions.Item label="价格"><span style={{color:'#f59e0b',fontWeight:700,fontSize:16}}>{product.price} USDT</span></Descriptions.Item>
-        <Descriptions.Item label="平台抽成({lc.cut}%)"><span style={{color:'#3b82f6'}}>{platformCut.toFixed(2)} USDT</span></Descriptions.Item>
-        <Descriptions.Item label="创作者获得"><span style={{color:'#22c55e'}}>{creatorGets.toFixed(2)} USDT</span></Descriptions.Item>
+        <Descriptions.Item label="费用明细">
+          <FeePreview
+            marketplaceProduct="template"
+            productPrice={product.price}
+            creatorLevel={product.creator.level}
+            size="small"
+          />
+        </Descriptions.Item>
       </Descriptions>
       <div style={{marginTop:12,padding:'10px',background:canAfford?'#1a2e1a':'#2e0a0a',borderRadius:8,border:`1px solid ${canAfford?'#22c55e33':'#ef444433'}`,fontSize:11}}>
         {canAfford ? <span style={{color:'#22c55e'}}>✅ 余额充足: {balance.toFixed(2)} → {(balance-product.price).toFixed(2)} USDT</span>

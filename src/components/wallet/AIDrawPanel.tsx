@@ -1,6 +1,7 @@
 // @ts-nocheck
 // ── R145 ML — AIDrawPanel (AI画线+形态识别+对话扣费+参数填充) ───────────
 // PM: 4 modules, 6h
+// R150: Added FeePreview + useBalanceCheck integration
 import { useState, useCallback, useRef } from 'react';
 import {
   Card, Button, Space, Tag, Table, Input, Select, Modal, Progress,
@@ -12,6 +13,8 @@ import {
   DollarOutlined, ReloadOutlined, FormOutlined, ApiOutlined,
   EyeOutlined, SafetyCertificateOutlined,
 } from '@ant-design/icons';
+import FeePreview from '@/components/billing/FeePreview';
+import useBalanceCheck from '@/hooks/useBalanceCheck';
 
 // ═══════════ Types ═══════════
 
@@ -81,29 +84,27 @@ function AIDrawLines() {
   const [loading, setLoading] = useState(false);
   const [lines, setLines] = useState<DrawLineResult[]>([]);
   const [patterns, setPatterns] = useState<PatternResult[]>([]);
-  const [balance, setBalance] = useState(10234.80);
   const [deducted, setDeducted] = useState(false);
+  const { balance, deductFee, checkBalance } = useBalanceCheck();
 
   const handleDraw = useCallback(async () => {
-    if (balance < 1) return message.error('余额不足, 需1 USDT');
-    setLoading(true);
-    // Simulate AI: deduct 1U, then return results
-    setBalance(p=>p-1);
-    setDeducted(true);
-    await new Promise(r=>setTimeout(r,1200+Math.random()*800));
-    // 90% success rate
-    if (Math.random() > 0.1) {
-      setLines(MOCK_DRAW_LINES);
-      setPatterns(MOCK_PATTERNS);
-      message.success('AI画线完成 (扣费1 USDT)');
-    } else {
-      setLines([]);
-      setPatterns([]);
-      setBalance(p=>p+1); // refund
-      message.warning('AI分析失败, 已退费1 USDT');
-    }
-    setLoading(false);
-  }, [balance]);
+    const ok = await deductFee(1, 'AI画线+形态识别', async () => {
+      setLoading(true);
+      setDeducted(true);
+      await new Promise(r=>setTimeout(r,1200+Math.random()*800));
+      if (Math.random() > 0.1) {
+        setLines(MOCK_DRAW_LINES);
+        setPatterns(MOCK_PATTERNS);
+      } else {
+        setLines([]);
+        setPatterns([]);
+        setDeducted(false);
+        message.warning('AI分析失败, 已退费1 USDT');
+      }
+      setLoading(false);
+    });
+    if (!ok) checkBalance(1, 'AI画线+形态识别');
+  }, [deductFee, checkBalance]);
 
   const lineColors: Record<string,string> = {trendline:'#22c55e',support:'#22c55e',resistance:'#ef4444',channel_upper:'#3b82f6',channel_lower:'#3b82f6',neckline:'#f59e0b'};
 
@@ -117,6 +118,9 @@ function AIDrawLines() {
         </Button>
         <Tag color="blue">余额: {balance.toFixed(2)} U</Tag>
         {deducted && <Tag color="green">已扣费</Tag>}
+      </div>
+      <div style={{marginBottom:10}}>
+        <FeePreview aiService="draw" showAiPrice={false} size="small" />
       </div>
 
       {lines.length > 0 && (
@@ -160,29 +164,29 @@ function AIChatBilling() {
   ]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
-  const [balance, setBalance] = useState(10234.80);
   const chatRef = useRef<HTMLDivElement>(null);
+  const { balance, deductFee, checkBalance } = useBalanceCheck();
 
   const handleSend = useCallback(async () => {
     if (!input.trim()) return;
-    if (balance < 1) return message.error('余额不足, 需1 USDT');
     const userMsg: AIChatMessage = {id:'u'+Date.now(),role:'user',content:input,timestamp:Date.now()};
     setMessages(p=>[...p,userMsg]);
     setInput('');
     setSending(true);
-    setBalance(p=>p-1);
-    await new Promise(r=>setTimeout(r,600+Math.random()*500));
-    const success = Math.random() > 0.12;
-    if (success) {
-      const replies = ['根据当前K线形态, MACD显示金叉信号, 建议关注...','RSI处于中性区域, 暂无明确方向, 建议观望...','布林带收窄, 可能出现突破行情, 建议设置突破挂单...'];
-      const reply = replies[Math.floor(Math.random()*replies.length)];
-      setMessages(p=>[...p,{id:'a'+Date.now(),role:'assistant',content:reply,timestamp:Date.now(),cost:1}]);
-      message.success('AI回复 (扣费1 USDT)');
-    } else {
-      setBalance(p=>p+1);
-      setMessages(p=>[...p,{id:'a'+Date.now(),role:'assistant',content:'抱歉, AI回复失败。已退费1 USDT, 请重试。',timestamp:Date.now(),error:'退费'}]);}
+    
+    const ok = await deductFee(1, 'AI对话', async () => {
+      await new Promise(r=>setTimeout(r,600+Math.random()*500));
+      const success = Math.random() > 0.12;
+      if (success) {
+        const replies = ['根据当前K线形态, MACD显示金叉信号, 建议关注...','RSI处于中性区域, 暂无明确方向, 建议观望...','布林带收窄, 可能出现突破行情, 建议设置突破挂单...'];
+        const reply = replies[Math.floor(Math.random()*replies.length)];
+        setMessages(p=>[...p,{id:'a'+Date.now(),role:'assistant',content:reply,timestamp:Date.now(),cost:1}]);
+      } else {
+        setMessages(p=>[...p,{id:'a'+Date.now(),role:'assistant',content:'抱歉, AI回复失败。已退费1 USDT, 请重试。',timestamp:Date.now(),error:'退费'}]);}
+    });
+    if (!ok) checkBalance(1, 'AI对话');
     setSending(false);
-  },[input,balance]);
+  },[input,deductFee,checkBalance]);
 
   return (
     <div>
@@ -225,24 +229,23 @@ function ParamFillUI() {
   const [framework, setFramework] = useState('MA均线');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ParamFillResult|null>(null);
-  const [balance, setBalance] = useState(10234.80);
   const [saved, setSaved] = useState<Record<string,boolean>>({});
+  const { balance, deductFee, checkBalance } = useBalanceCheck();
 
   const handleFill = useCallback(async () => {
-    if (balance < 1) return message.error('余额不足, 需1 USDT');
-    setLoading(true);
-    setBalance(p=>p-1);
-    setResult(null);
-    await new Promise(r=>setTimeout(r,1000+Math.random()*600));
-    if (Math.random() > 0.1) {
-      setResult(MOCK_PARAM_FILLS[framework]);
-      message.success('AI参数推荐完成 (扣费1 USDT)');
-    } else {
-      setBalance(p=>p+1);
-      message.warning('AI分析失败, 已退费1 USDT');
-    }
-    setLoading(false);
-  },[framework,balance]);
+    const ok = await deductFee(1, 'AI参数推荐', async () => {
+      setLoading(true);
+      setResult(null);
+      await new Promise(r=>setTimeout(r,1000+Math.random()*600));
+      if (Math.random() > 0.1) {
+        setResult(MOCK_PARAM_FILLS[framework]);
+      } else {
+        message.warning('AI分析失败, 已退费1 USDT');
+      }
+      setLoading(false);
+    });
+    if (!ok) checkBalance(1, 'AI参数推荐');
+  },[framework,deductFee,checkBalance]);
 
   const handleSave = useCallback((framework:string)=>{
     setSaved(p=>({...p,[framework]:true}));

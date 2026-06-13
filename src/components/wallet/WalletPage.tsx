@@ -1,4 +1,7 @@
 // @ts-nocheck
+// ⚠️ @deprecated v17.6 R150 (2026-06-13): Use WalletFullPage.tsx instead.
+// WalletFullPage is the single unified wallet entry point with all features
+// (balance/withdraw/transfer/tip/overview integrated in one page).
 // ── R141-M01 WalletPage — 钱包页面 (余额+充值+提现+转账) ──────────────────
 // PM: 钱包页面框架, 8h
 import { useState, useEffect, useCallback } from 'react';

@@ -29,6 +29,7 @@ const RiskVisualizerPage = lazy(() => import('@/components/risk/RiskVisualizer')
 const CreatorLeaderboardPage = lazy(() => import('@/components/billing/community/CreatorLeaderboard'));
 const SignalPerformancePage = lazy(() => import('@/components/billing/community/SignalPerformancePanel'));
 const CopyTradeHub = lazy(() => import('@/components/broker/CopyTradeHub'));
+const WalletFullPage = lazy(() => import('@/components/wallet/WalletFullPage'));
 
 const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   dashboard: DashboardPage,
@@ -48,6 +49,7 @@ const pages: Record<string, React.LazyExoticComponent<React.FC>> = {
   creator: CreatorLeaderboardPage,
   signals: SignalPerformancePage,
   copytrade: CopyTradeHub,
+  wallet: WalletFullPage,
 };
 
 function PageFallback() {

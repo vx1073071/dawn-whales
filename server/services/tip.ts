@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R143 J04 — Tipping / Reward Service
  * 

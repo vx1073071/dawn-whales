@@ -12,6 +12,7 @@ import {
   CloseCircleOutlined, ClockCircleOutlined, SendOutlined,
   ReloadOutlined, FireOutlined,
 } from '@ant-design/icons';
+import FeePreview from '@/components/billing/FeePreview';
 
 // ═══════════ Types ═══════════
 
@@ -156,6 +157,16 @@ function OrderTypeUI() {
 
       <Alert message="4种下单场景: 策略入场(限价)/跟单(市价)/止损(市价·锁定)/止盈(限价·锁定) · 用户可调整限价/市价" type="info" showIcon={false}
         style={{background:'#1a2e2a',border:'1px solid #3b82f633',borderRadius:8,marginBottom:10,fontSize:11}}/>
+
+      {/* ── R150 #15 FeePreview ── */}
+      <div style={{marginBottom:10}}>
+        <FeePreview
+          assetType="crypto_spot"
+          orderAmount={price * quantity}
+          size="small"
+          style={{ padding: '8px 12px', background: '#1a1d2e', borderRadius: 8, border: '1px solid #2a2d3e' }}
+        />
+      </div>
     </div>
   );
 }
