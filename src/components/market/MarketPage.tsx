@@ -6,6 +6,7 @@ import { useMarketStore } from '@/stores/marketStore';
 import { useWebSocketQuotes } from '@/hooks/useWebSocketQuotes';
 import KLineChart from './KLineChart';
 import SymbolSearch from './SymbolSearch';
+import QuoteSourcePanel from './QuoteSourceBadge';
 import * as api from '@/lib/bridge-api';
 import i18n from '../../i18n';
 
@@ -124,6 +125,8 @@ export default function MarketPage() {
       }
 
       {/* Market table */}
+      <QuoteSourcePanel watchlist={watchlist} quotes={{}} />
+
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl overflow-hidden">
         <table className="w-full">
           <thead>

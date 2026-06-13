@@ -47,6 +47,10 @@ class AdapterRegistry {
     this.register('tiger', require('./tiger-adapter').TigerAdapter, 'Tiger Brokers');
     this.register('schwab', require('./schwab-adapter').SchwabAdapter, 'Charles Schwab');
 
+    // R153: Futu + Longbridge server-side cloud adapters
+    this.register('futu-cloud', require('./futu-adapter').FutuAdapter, 'Futu OpenD (Cloud)');
+    this.register('longbridge-cloud', require('./longbridge-adapter').LongbridgeAdapter, 'Longbridge (Cloud)');
+
     // R134: More Traditional + Universal — E*TRADE + eToro + MT5 + VBKR + uSMART
     this.register('etrade', require('./etrade-adapter').EtradeAdapter, 'E*TRADE');
     this.register('etoro', require('./etoro-adapter').EtoroAdapter, 'eToro');
