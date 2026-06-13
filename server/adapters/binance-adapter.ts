@@ -56,6 +56,14 @@ export class BinanceAdapter implements ICloudBrokerAdapter {
   private userDataWs?: WebSocket;
   private reconnectTimers: Map<string, NodeJS.Timeout> = new Map();
 
+  // R153: 增强健壮性 — 自动重连计数 + 延迟统计
+  private errorCount = 0;
+  private lastQuoteTs = 0;
+  private reconnectCount = 0;
+  private maxReconnectAttempts = 10;
+  private subscribedQuoteStreams: string[] = [];
+  private activeDepthSymbol: string | null = null;
+
   constructor(config: CloudBrokerConfig) {
     this.config = config;
     this.brokerId = config.brokerId;
@@ -215,6 +223,8 @@ export class BinanceAdapter implements ICloudBrokerAdapter {
 
   subscribeQuotes(symbols: string[]): void {
     const streams = symbols.map((s) => `${s.replace('/', '').toLowerCase()}@ticker`).join('/');
+    this.subscribedQuoteStreams = streams.split('/');
+    this.reconnectCount = 0;
     this.connectQuoteStream(streams);
   }
 
@@ -264,6 +274,8 @@ export class BinanceAdapter implements ICloudBrokerAdapter {
     this.quoteWs = this.createWs(`wss://stream.binance.com:9443/ws/${streams}`, 'quote');
     this.quoteWs.on('message', (raw) => {
       try {
+        this.errorCount = 0; // Reset error counter on success
+        this.lastQuoteTs = Date.now();
         const t = JSON.parse(raw.toString());
         const quote: CloudQuoteInfo = {
           brokerId: this.brokerId,
@@ -277,25 +289,28 @@ export class BinanceAdapter implements ICloudBrokerAdapter {
           timestamp: t.E || Date.now(),
         };
         this.quoteCallbacks.forEach((cb) => cb(quote));
-      } catch {}
+      } catch { this.errorCount++; }
     });
   }
 
   private createWs(url: string, label: string): WebSocket {
     const ws = new WebSocket(url);
-    ws.on('error', (e) => this.emitError(new Error(`Binance ${label} WS error: ${e.message}`)));
+    ws.on('error', (e) => {
+      this.emitError(new Error(`Binance ${label} WS error: ${e.message}`));
+    });
     ws.on('close', () => {
-      if (this.connected) this.scheduleReconnect(label, () => this.connectQuoteStream(
-        // re-subscribe — for simplicity, reconnects don't re-stream here
-        ''
-      ));
+      if (this.connected && this.reconnectCount < this.maxReconnectAttempts) {
+        this.reconnectCount++;
+        const delay = Math.min(1000 * Math.pow(2, this.reconnectCount), 30000);
+        console.warn(`[BinanceAdapter] ${label} WS closed, reconnecting #${this.reconnectCount} in ${delay}ms`);
+        const streams = this.subscribedQuoteStreams.join('/');
+        const timer = setTimeout(() => this.connectQuoteStream(streams), delay);
+        this.reconnectTimers.set(label, timer as any);
+      } else {
+        this.emitError(new Error(`Binance ${label} WS closed — max reconnects exceeded`));
+      }
     });
     return ws;
-  }
-
-  private scheduleReconnect(label: string, fn: () => void): void {
-    const timer = setTimeout(fn, 3000);
-    this.reconnectTimers.set(label, timer);
   }
 
   private cleanupWebSockets(): void {
