@@ -7,6 +7,7 @@ import { useWebSocketQuotes } from '@/hooks/useWebSocketQuotes';
 import KLineChart from './KLineChart';
 import SymbolSearch from './SymbolSearch';
 import QuoteSourcePanel from './QuoteSourceBadge';
+import { MarketStatusIndicator } from '@/components/settings/BrokerPriority';
 import * as api from '@/lib/bridge-api';
 import i18n from '../../i18n';
 
@@ -108,8 +109,8 @@ export default function MarketPage() {
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setShowSearch(!showSearch)} className="px-3 py-2 bg-[#1a1a25] border border-white/5 rounded-lg text-sm text-gray-300 hover:bg-[#22222f] transition-colors">{i18n.t("MarketPage.r92_075b")}
-
           </button>
+          <MarketStatusIndicator compact />
         </div>
       </div>
 

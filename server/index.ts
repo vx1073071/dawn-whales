@@ -2,6 +2,7 @@
 // R148: Full integration + performance + chain stability + rate limiting
 // R151: AI health cron + monthly spending report
 // R152: Symbol search engine + broker market API
+// R154: Broker priority config + Market status + Playback
 
 import express from 'express';
 import { createServer } from 'http';
@@ -155,6 +156,11 @@ app.use('/api/wallet', walletRoutes);
 
 // ── R152: Symbol Search + Broker Markets routes ─────────────────────────
 app.use('/api/symbol', symbolRoutes);
+
+// ── R154: Broker Config + Market Status + Playback routes ───────────────
+import brokerConfigRoutes from './routes/broker-config';
+app.use('/api/broker', brokerConfigRoutes);
+app.use('/api/market', brokerConfigRoutes);
 
 // ── R132: Dead letter queue ──────────────────────────────────────────
 app.use('/api/dead-letter', deadLetterRoutes);
