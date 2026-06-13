@@ -1,4 +1,7 @@
 /**
+ * @deprecated — Replaced by CreatorDashboard (wallet/, R148) + WalletFullPage (wallet/, R143).
+ * All billing/ components deprecated. Refer to MEMORY.md v17.6. | [DEPRECATED v17.6]
+ *
  * CreditsDashboard — R104 M-01: Creator revenue dashboard
  *
  * Shows:

@@ -1,14 +1,25 @@
 <!-- META
 version: 1.12.0
 last_updated: 2026-06-12
-round: R108
+round: R108 (DEPRECATED)
 owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES 创作者付费指南
+> [!WARNING]
+> ## [DEPRECATED] — 此文档引用 v1.3.0-alpha 旧版计费
+> 
+> 本文档参照旧版计费系统（v1.3.0-alpha），**已废弃**。
+> v17.6 创作者计费规则详见:
+> - [`docs/design/creator-guide.md`](../design/creator-guide.md) — 创作者指南
+> - [`docs/design/marketplace-guide.md`](../design/marketplace-guide.md) — 市场规则
+> 
+> **请勿参考本文档的价格/抽成/等级数据。**
+>
 
-**版本**: v1.3.0-alpha  
+# [DEPRECATED] DAWN WHALES 创作者付费指南
+
+**版本**: v1.3.0-alpha **(已废弃，仅供参考)**  
 **更新时间**: 2026-06-09  
 **作者**: youdao  
 

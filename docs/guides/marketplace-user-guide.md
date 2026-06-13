@@ -1,12 +1,20 @@
 <!-- META
 version: 1.12.0
 last_updated: 2026-06-12
-round: R108
+round: R108 (DEPRECATED)
 owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# 策略市场用户指南
+> [!WARNING]
+> ## [DEPRECATED] — 此文档已由 v17.6 市场指南取代
+> 
+> 本文档参照旧版策略市场系统，**已废弃**。
+> 请使用新版文档:
+> - [`docs/design/marketplace-guide.md`](../design/marketplace-guide.md) — v17.6 市场规则
+>
+
+# [DEPRECATED] 策略市场用户指南
 
 **版本**: v1.1.0-alpha  
 **更新日期**: 2026-06-08  

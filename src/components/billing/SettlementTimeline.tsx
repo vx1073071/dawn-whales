@@ -1,4 +1,8 @@
 /**
+ * @deprecated — Replaced by WalletFullPage transaction history (wallet/, R143).
+ * All billing/ components deprecated. Refer to MEMORY.md v17.6. | [DEPRECATED v17.6]
+ */
+/**
  * SettlementTimeline — R103 M-01: Settlement history with filter + pagination + CSV export
  *
  * Features:

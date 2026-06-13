@@ -6,6 +6,18 @@ owner: JVS
 purpose: (auto-generated, needs review)
 -->
 
+> [!WARNING]
+> ## [DEPRECATED] — 此文档引用的旧版计费系统已替换
+> 
+> 本文档参照 `electron/engine/` 旧引擎编写，**已全部标记 [DEPRECATED]**。
+> v17.6 计费系统迁移至 `server/services/` 目录，费率规则详见:
+> - [`docs/reference/fee-schedule.md`](../reference/fee-schedule.md) — 新费率表
+> - [`docs/design/fee-structure.md`](../design/fee-structure.md) — 五类资产费率
+> - [`docs/design/ai-billing-rules.md`](../design/ai-billing-rules.md) — AI 计费
+> 
+> **请勿在新增代码中引用本文档描述的旧接口。**
+>
+
 # Dawn Whales USDT 积分 API 文档
 
 > 版本: v1.11.0 | 发布日期: 2026-06-12 | 维护: QClaw (文档虾)

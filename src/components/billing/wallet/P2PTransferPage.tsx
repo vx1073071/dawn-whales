@@ -1,16 +1,9 @@
 /**
- * P2PTransferPage — ML-62-01 [P0]
- * R62: v1.5.0-alpha — P2P USDTpointstransfer (v15)
+ * @deprecated — REPLACED by v17.6 WalletFullPage internal-transfer (wallet/, R143)
+ * v17.6: P2P removed → user-to-user transfers only (0.3% sender + 0.3% receiver).
+ * No negotiate/release/dispute flow. All billing/wallet/ deprecated. | [DEPRECATED v17.6]
  *
- * Features:
- * - Recipient search + selection
- * - Transfer form: amount, note
- * - 0.3% fee preview (bidirectional)
- * - Balance check before transfer
- * - 14-day freeze countdown on active transfers
- * - Transfer status: pending→frozen→released / disputed
- * - Transfer history: direction/amount/status/remaining freeze
- * - Confirmation modal with fee breakdown
+ * Original (R62 v1.5.0): P2PTransferPage — P2P USDT points transfer
  */
 
 import React, { useState, useCallback, useMemo } from 'react';

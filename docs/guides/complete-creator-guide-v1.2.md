@@ -1,12 +1,20 @@
 <!-- META
 version: 1.12.0
 last_updated: 2026-06-12
-round: R100+
+round: R100+ (DEPRECATED)
 owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES v1.2.0 完整创作者指南
+> [!WARNING]
+> ## [DEPRECATED] — 此文档已由 v17.6 创作者指南取代
+> 
+> 本文档对应 v1.2.0，**已废弃**。
+> 请使用新版文档:
+> - [`docs/design/creator-guide.md`](../design/creator-guide.md) — v17.6 创作者指南
+>
+
+# [DEPRECATED] DAWN WHALES v1.2.0 完整创作者指南
 
 **版本**: v1.2.0-rc  
 **更新时间**: 2026-06-09  

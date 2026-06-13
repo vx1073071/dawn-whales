@@ -1,12 +1,8 @@
 /**
- * AdminDashboardV2 — ML-70-03 [P1]
- * R70: v1.7.0 GA — /admin final polish: health + quick actions + audit log
+ * @deprecated — Admin dashboard handled by server /admin panel. All billing/wallet/ deprecated.
+ * Refer to MEMORY.md v17.6. | [DEPRECATED v17.6]
  *
- * Enhancements over R64 AdminDashboard:
- * - System health: CPU/memory/disk/uptime gauges
- * - Quick actions: restart service, clear cache, force backup, config reload
- * - Audit log: recent admin actions with timestamps
- * - GA readiness: all metrics green, deployment-ready layout
+ * Original (R70 v1.7.0): AdminDashboardV2 — ML-70-03 — system health + quick actions + audit log
  */
 
 import { useState, useCallback } from 'react';

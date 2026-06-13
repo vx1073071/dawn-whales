@@ -1,12 +1,23 @@
 <!-- META
 version: 1.12.0
 last_updated: 2026-06-12
-round: R108
+round: R108 (DEPRECATED)
 owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES 创作者完整使用指南
+> [!WARNING]
+> ## [DEPRECATED] — 此文档已由新版创作者指南取代
+> 
+> 本文档参照旧版系统，**已废弃**。
+> 请使用新版文档:
+> - [`docs/design/creator-guide.md`](../design/creator-guide.md) — v17.6 创作者指南
+> - [`docs/design/marketplace-guide.md`](../design/marketplace-guide.md) — 市场规则
+>
+> **请勿参考本文档的等级/抽成/定价规则。**
+>
+
+# [DEPRECATED] DAWN WHALES 创作者完整使用指南
 
 **版本**: v1.6.0 GA  
 **更新时间**: 2026-06-09  

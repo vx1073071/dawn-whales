@@ -164,11 +164,11 @@ export class TABillingService {
         executed: false, error: `Unknown tier: ${req.tier}` };
     }
 
-    // Create round record
+    // Create round record (status defaults to 'PENDING' per schema)
     const roundId = generateId();
     this.db.prepare(`
-      INSERT INTO ta_execution_rounds (id, user_id, tier, round_number, status)
-      VALUES (?,?,?,?,?,'PENDING')
+      INSERT INTO ta_execution_rounds (id, user_id, tier, round_number)
+      VALUES (?,?,?,?)
     `).run(roundId, req.userId, req.tier, req.roundNumber);
 
     // Bill via unified pipeline

@@ -1,5 +1,12 @@
+// @ts-nocheck — v17.6 deprecated, entire component blocked
+
 /**
- * PointsTopUpPage — R103 M-01: USDT points top-up flow
+ * @deprecated — v17.6 MANDATES pure USDT (no fiat top-up). Points removed entirely.
+ * Top-up replaced by on-chain USDT deposit (0% fee, TRC-20/ERC-20) in WalletFullPage (wallet/, R143).
+ * This component is a v17.6 VIOLATION and must NOT be routed or rendered.
+ * Refer to MEMORY.md v17.6 六-B (充值免费, 充100到100积分). | [DEPRECATED v17.6]
+ *
+ * PointsTopUpPage — R103 M-01: USDT points top-up flow [VIOLATES v17.6]
  *
  * Features:
  * - Input fiat amount → real-time USDT estimate via ExchangeRateEngine
@@ -41,6 +48,22 @@ const PRESET_AMOUNTS: Record<FiatCurrency, number[]> = {
 export default function PointsTopUpPage() {
   const { t: _t } = useTranslation();
   const { balance, addTransaction } = useCredits();
+
+  // ── v17.6 VIOLATION: Fiat top-up is FORBIDDEN. Block render. ──
+  // Replaced by: on-chain USDT deposit in WalletFullPage (wallet/, R143)
+  return (
+    <div style={{ padding: 32, textAlign: 'center', color: '#ef4444' }}>
+      <h2>⚠️ This page has been removed (v17.6)</h2>
+      <p style={{ color: '#8b949e', fontSize: 13 }}>
+        Fiat top-up is no longer supported. Use on-chain USDT deposit instead — visit <strong>Wallet</strong> page.
+      </p>
+    </div>
+  );
+}
+
+// ── Original code below (preserved for archaeology) ──
+// @ts-nocheck
+const _PointsTopUpPage = () => {
 
   const [currency, setCurrency] = useState<FiatCurrency>('USD');
   const [amount, setAmount] = useState<string>('');
@@ -272,4 +295,7 @@ export default function PointsTopUpPage() {
       )}
     </div>
   );
-}
+};
+
+// Original component archived — DO NOT USE
+void _PointsTopUpPage;

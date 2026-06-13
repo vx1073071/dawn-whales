@@ -1,19 +1,23 @@
 /**
+ * ⚠️ @deprecated v17.6 PERMANENT LOCK (2026-06-13)
+ * 
+ * DO NOT USE THIS FILE FOR BILLING!
+ * 
+ * This file uses v15 fee model (taker:0.1% / maker:0.02% / stop:0.04%)
+ * which is INCOMPATIBLE with v17.6.
+ * 
+ * v17.6 replaces all trading fees with asset-type-based rates:
+ *   Stock/ETF/Futures/Options: 0.1% min 2 USDT
+ *   Crypto Perpetuals:        0.02% min 0.5 USDT
+ * 
+ * USE server/services/billing-service.ts and server/services/trade-detail.ts instead.
+ * USE electron/engine/data/fee-calculator.ts → calcTradeFeeV17() instead.
+ * 
+ * Original doc:
  * J-65-03 [P1]: (R65 FIX — v1.6.0-beta)
- *
  * : 0.1% taker / 0.02% maker / 0.04% taker, 100%。
  * user → USDT ()。
  * userApp → 。
- *
- * Features:
- * - Trade fee calculation v2: precise rounding (4 decimal USDT)
- * - Billing pre-check: verify balance before execution
- * - Execution-billing bridge: charge only when order fills, not on placement
- * - Platform revenue tracking (100% to platform)
- * - Monthly statement + fee summary
- * - Free vs paid boundary: basic market orders through Futu → free
- *
- * >=200L, 5 tests
  */
 
 import * as crypto from 'crypto';

@@ -1,3 +1,8 @@
+/**
+ * @deprecated — P2P blacklist removed in v17.6 (no P2P). All billing/wallet/ deprecated.
+ * Refer to MEMORY.md v17.6. | [DEPRECATED v17.6]
+ */
+
 import { useState, type CSSProperties } from 'react';
 import { EngineError } from '../../../../electron/engine/core/engine-error';
 import { useTranslation } from "react-i18next";

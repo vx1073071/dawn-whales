@@ -1,13 +1,8 @@
 /**
- * USDTWalletPage — ML-59-02 [P0]
- * R59: v1.3.0-alpha — USDT Wallet with TRC-20 top-up + withdrawal
+ * @deprecated — REPLACED by v17.6 WalletFullPage (wallet/WalletFullPage.tsx, R143)
+ * v17.6: unified wallet. This legacy billing/wallet/ is deprecated. | [DEPRECATED v17.6]
  *
- * Features:
- * - Balance display + recharge button
- * - TRC-20 top-up guide: address + QR code + chain confirmation
- * - Withdrawal: request + review status
- * - Transaction history: deposit/withdraw/analysis/platform commission
- * - Commission breakdown: platform fee / creator earnings
+ * Original (R59 v1.3.0): USDTWalletPage — TRC-20 top-up + withdrawal
  */
 
 import React, { useState } from 'react';

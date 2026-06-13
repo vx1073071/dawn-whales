@@ -1,4 +1,8 @@
 /**
+ * @deprecated — Silent deduction now built into AI panels (wallet/AIDrawPanel + AIStrategyPanel, R145-R146).
+ * All billing/ components deprecated. Refer to MEMORY.md v17.6. | [DEPRECATED v17.6]
+ */
+/**
  * FeeDeductionToast — Animated toast for USDT fee deductions
  * 
  * R102 M-01: Auto-trade completion → fee deduction notification

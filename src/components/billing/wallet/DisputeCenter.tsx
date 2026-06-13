@@ -1,15 +1,8 @@
 /**
- * DisputeCenter + TransactionHistory — ML-62-02 [P0]
- * R62: v1.5.0-alpha — Dispute filing & transaction records (v15)
+ * @deprecated — Dispute/arbitration replaced by v17.6 internal-transfer rollback. All billing/wallet/ deprecated.
+ * Refer to MEMORY.md v17.6. | [DEPRECATED v17.6]
  *
- * Features:
- * - Dispute filing form: 4 reason types + description + evidence
- * - Dispute tracking: pending→reviewed→resolved/rejected
- * - Dispute history with status indicators
- * - "Cancel" option for buyer (releases frozen funds)
- * - Platform no-arbitration policy notice
- * - Transaction records: full history with filters
- * - Transaction detail: direction/amount/status/freeze countdown
+ * Original (R62 v1.5.0): DisputeCenter — dispute filing + transaction records
  */
 
 import React, { useState, useCallback } from 'react';

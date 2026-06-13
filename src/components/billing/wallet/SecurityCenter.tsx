@@ -1,14 +1,8 @@
 /**
- * SecurityCenter — ML-62-03 [P1]
- * R62: v1.5.0-alpha — 2FA setup + security center (v15)
+ * @deprecated — 2FA now handled by global auth middleware. All billing/wallet/ deprecated.
+ * Refer to MEMORY.md v17.6. | [DEPRECATED v17.6]
  *
- * Features:
- * - TOTP 2FA setup flow: scan QR → enter code → enable
- * - Backup codes generation (8 one-time codes)
- * - 2FA status indicator (enabled/disabled)
- * - Security event log (login/2FA/withdrawal/password change)
- * - Recovery flow: use backup code to disable 2FA
- * - 2FA required for: login + withdrawal
+ * Original (R62 v1.5.0): SecurityCenter — TOTP 2FA + backup codes + security event log
  */
 
 import React, { useState, useCallback } from 'react';

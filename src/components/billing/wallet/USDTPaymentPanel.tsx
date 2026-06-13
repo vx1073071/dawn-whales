@@ -1,3 +1,8 @@
+/**
+ * @deprecated — Payment/revenue tracking replaced by WalletFullPage (wallet/, R143). All billing/wallet/ deprecated.
+ * Refer to MEMORY.md v17.6. | [DEPRECATED v17.6]
+ */
+
 import { useState, type CSSProperties } from 'react';
 import i18n from '../../../i18n';
 import { EngineError } from '../../../../electron/engine/core/engine-error';

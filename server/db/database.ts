@@ -97,13 +97,14 @@ export function initDatabases(): void {
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,
       broker_id TEXT NOT NULL,
+      account_label TEXT DEFAULT 'default',
       api_key_encrypted TEXT NOT NULL,
       secret_encrypted TEXT NOT NULL,
       passphrase_encrypted TEXT,
       encryption_version INTEGER DEFAULT 1,
       created_at TEXT DEFAULT (datetime('now')),
       updated_at TEXT DEFAULT (datetime('now')),
-      UNIQUE(user_id, broker_id)
+      UNIQUE(user_id, broker_id, account_label)
     );
 
     CREATE TABLE IF NOT EXISTS key_audit_log (

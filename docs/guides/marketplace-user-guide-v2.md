@@ -1,12 +1,20 @@
 <!-- META
 version: 1.12.0
 last_updated: 2026-06-12
-round: R108
+round: R108 (DEPRECATED)
 owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# Marketplace 用户指南
+> [!WARNING]
+> ## [DEPRECATED] — 此文档已由 v17.6 市场指南取代
+> 
+> 本文档参照旧版 Marketplace 系统，**已废弃**。
+> 请使用新版文档:
+> - [`docs/design/marketplace-guide.md`](../design/marketplace-guide.md) — v17.6 市场规则
+>
+
+# [DEPRECATED] Marketplace 用户指南
 
 **版本**: v0.12.0  
 **作者**: dao  

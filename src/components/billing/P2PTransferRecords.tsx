@@ -1,4 +1,8 @@
 /**
+ * @deprecated — P2P removed in v17.6. Replaced by WalletFullPage internal-transfer (wallet/, R143).
+ * All billing/ components deprecated. Refer to MEMORY.md v17.6. | [DEPRECATED v17.6]
+ */
+/**
  * P2PTransferRecords — R104 M-01: P2P transfer history
  *
  * Shows:

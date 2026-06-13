@@ -1,4 +1,8 @@
 /**
+ * @deprecated — Fiat top-up VIOLATES v17.6 (pure USDT only, no fiat). Removed from top-up flow.
+ * All billing/ components deprecated. Refer to MEMORY.md v17.6 六-B. | [DEPRECATED v17.6]
+ */
+/**
  * TopUpConfirmModal — R103 M-01: Confirmation dialog for USDT top-up
  *
  * Shows:

@@ -1,15 +1,22 @@
 /**
- * AIBillingPanel — R83 P1-5c i18n 
- * All hardcoded strings replaced with t() calls.
- * Billing translations: src/i18n/locales/billing-*.json (9 languages)
+ * @deprecated — REPLACED by v17.6 AIDrawPanel + AIStrategyPanel (wallet/)
  *
- * Features:
- * - 3 pricing tiers: Standard (1.0) / Premium (1.5) / Flagship (2.0) USDT/analysis
- * - Debate surcharge: +0.5/round, Arena: base × models × 0.3
- * - Balance display + pre-charge → settle → refund flow
- * - New creator: first 3 analyses FREE
- * - Monthly budget slider + usage progress
- * - Cost estimator per analysis
+ * v17.6 MANDATE (permanent):
+ * - NO free tier (no freeRemaining, no free quota)
+ * - NO pricing tiers (Standard/Premium/Flagship removed)
+ * - NO monthly budget slider
+ * - NO debate surcharge / Arena pricing
+ * - NO 3-free-analyses for new creators
+ * - PURE pay-per-use: 1U-2U per analysis, silent deduction
+ *
+ * Refer to: src/components/wallet/AIDrawPanel.tsx (R145)
+ *           src/components/wallet/AIStrategyPanel.tsx (R146)
+ *           MEMORY.md v17.6 section 五
+ *
+ * This file is retained for reference only. Do NOT add new imports or routes.
+ *
+ * Original comment for archaeology:
+ * AIBillingPanel — R83 P1-5c i18n [DEPRECATED v17.6]
  */
 
 import React, { useState, useMemo } from 'react';

@@ -1,4 +1,8 @@
 /**
+ * @deprecated — Replaced by WalletFullPage transaction history (wallet/, R143).
+ * All billing/ components deprecated. Refer to MEMORY.md v17.6. | [DEPRECATED v17.6]
+ */
+/**
  * CreditsHistoryPage — USDT credits transaction history
  * 
  * R102 M-01: Settings → Credits History

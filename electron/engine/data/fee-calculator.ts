@@ -1,21 +1,26 @@
 /**
- * fee-calculator.ts — R102 J-02 Fee Calculator
+ * fee-calculator.ts — v17.6 Fee Calculator (R149 Claw/PM fix)
  *
- * Calculates trading fees in USDT based on creator tier, P2P split,
- * and withdrawal flat rate. All amounts are in USDT with 6 decimal precision.
+ * ⚠️ v17.6 永久锁: 费率按资产类型, 不是 CreatorTier!
+ * CreatorTier 是创作者市场抽成(L1:30%/L2:20%/L3:10%), 与交易手续费无关.
  *
- * Fee schedule:
- *   L1 (creator): 0.1%
- *   L2 (creator): 0.02%
- *   L3 (creator): 0.04%
- *   P2P: 0.3% × 2 (sender + receiver)
- *   Withdraw: 0.1%
+ * Fee schedule (v17.6):
+ *   Stock/ETF:      0.1% min 2 USDT
+ *   Futures:        0.1% min 2 USDT
+ *   Options:        0.1% min 2 USDT
+ *   Crypto Spot:    0.1% min 2 USDT
+ *   Crypto Futures: 0.02% min 0.5 USDT
+ *   P2P Transfer:   0.3% × 2
+ *   Withdrawal:     0.1% min 2 USDT
  *   Precision: 6 decimal places (0.000001 USDT)
  */
 
 import type { FiatCurrency } from './exchange-rate-engine';
 
-/** Creator tier */
+/** Asset type for v17.6 fee calculation */
+export type AssetType = 'STOCK' | 'ETF' | 'FUTURES' | 'OPTIONS' | 'CRYPTO_SPOT' | 'CRYPTO_FUTURES';
+
+/** @deprecated v17.6: CreatorTier is NOT used for trading fees. Use AssetType instead. */
 export type CreatorTier = 'L1' | 'L2' | 'L3';
 
 /** Fee type */
@@ -33,10 +38,14 @@ export interface TradeFee {
   feeUSDT: number;
   /** Fee as percentage (e.g., 0.1 = 0.1%) */
   feePercent: number;
-  /** Creator tier used */
-  tier: CreatorTier;
+  /** Asset type used (v17.6) */
+  assetType: AssetType;
   /** Amount in USDT after conversion */
   amountUSDT: number;
+  /** Whether minimum fee was applied */
+  minFeeApplied: boolean;
+  /** @deprecated v17.6: use assetType instead */
+  tier?: CreatorTier;
 }
 
 /** P2P fee (sender + receiver each pay) */
@@ -63,10 +72,22 @@ export interface WithdrawFee {
   rate: number;
   /** Flat fee percent */
   feePercent: number;
+  /** Receivable amount after fee */
+  receiveAmount: number;
 }
 
-// ─── Fee rate table ───
+// ─── v17.6 Fee rate table (by asset type) ───
 
+const ASSET_FEE_RATES: Record<AssetType, { rate: number; minUSDT: number; label: string }> = {
+  STOCK:          { rate: 0.001,  minUSDT: 2.0, label: 'Stock/ETF' },
+  ETF:            { rate: 0.001,  minUSDT: 2.0, label: 'Stock/ETF' },
+  FUTURES:        { rate: 0.001,  minUSDT: 2.0, label: 'Futures (Non-Crypto)' },
+  OPTIONS:        { rate: 0.001,  minUSDT: 2.0, label: 'Options (Non-Crypto)' },
+  CRYPTO_SPOT:    { rate: 0.001,  minUSDT: 2.0, label: 'Crypto Spot' },
+  CRYPTO_FUTURES: { rate: 0.0002, minUSDT: 0.5, label: 'Crypto Futures' },
+};
+
+// @deprecated — v17.6 不再使用 CreatorTier 决定交易费率
 const FEE_RATES: Record<CreatorTier, number> = {
   L1: 0.001,   // 0.1%
   L2: 0.0002,  // 0.02%
@@ -75,6 +96,7 @@ const FEE_RATES: Record<CreatorTier, number> = {
 
 const P2P_FEE_RATE = 0.003;     // 0.3%
 const WITHDRAW_FEE_RATE = 0.001; // 0.1%
+const WITHDRAW_FEE_MIN = 2.0;   // min 2 USDT
 
 /** Max precision for USDT amounts (6 decimal places) */
 const USDT_DECIMALS = 6;
@@ -97,11 +119,34 @@ export class FeeCalculator {
   }
 
   /**
-   * Calculate trading fee for a given amount and creator tier.
+   * 🆕 v17.6: Calculate trading fee by asset type with minimum fee floor.
    *
    * @param amount - Trade amount in source currency
    * @param currency - Source fiat currency
-   * @param tier - Creator tier (default: L1)
+   * @param assetType - Asset type (STOCK/FUTURES/CRYPTO_SPOT etc.)
+   */
+  calcTradeFeeV17(amount: number, currency: FiatCurrency, assetType: AssetType = 'STOCK'): TradeFee {
+    const rate = this.getRateFn(currency);
+    const amountUSDT = this.round(amount * rate);
+    const config = ASSET_FEE_RATES[assetType];
+    const rawFee = this.round(amountUSDT * config.rate);
+    const feeUSDT = Math.max(rawFee, config.minUSDT);
+
+    return {
+      amountCurrency: amount,
+      currency,
+      rate,
+      feeUSDT,
+      feePercent: config.rate,
+      assetType,
+      amountUSDT,
+      minFeeApplied: rawFee < config.minUSDT,
+    };
+  }
+
+  /**
+   * @deprecated v17.6: use calcTradeFeeV17(amount, currency, assetType) instead.
+   * CreatorTier is NOT used for trading fees in v17.6.
    */
   calcTradeFee(amount: number, currency: FiatCurrency, tier: CreatorTier = 'L1'): TradeFee {
     const rate = this.getRateFn(currency);
@@ -115,8 +160,10 @@ export class FeeCalculator {
       rate,
       feeUSDT,
       feePercent,
-      tier,
+      assetType: 'STOCK',
       amountUSDT,
+      minFeeApplied: false,
+      tier,
     };
   }
 
@@ -139,18 +186,20 @@ export class FeeCalculator {
   }
 
   /**
-   * Calculate withdrawal fee (flat 0.1% of amount).
+   * Calculate withdrawal fee (v17.6: 0.1% min 2 USDT).
    */
   calcWithdrawFee(amount: number, currency: FiatCurrency): WithdrawFee {
     const rate = this.getRateFn(currency);
     const amountUSDT = this.round(amount * rate);
-    const feeUSDT = this.round(amountUSDT * WITHDRAW_FEE_RATE);
+    const rawFee = this.round(amountUSDT * WITHDRAW_FEE_RATE);
+    const feeUSDT = Math.max(rawFee, WITHDRAW_FEE_MIN);
 
     return {
       amountCurrency: amount,
       feeUSDT,
       rate,
       feePercent: WITHDRAW_FEE_RATE,
+      receiveAmount: this.round(amountUSDT - feeUSDT),
     };
   }
 
@@ -175,14 +224,39 @@ export class FeeCalculator {
   }
 
   /**
-   * Get fee rate for a creator tier.
+   * 🆕 v17.6: Get fee rate by asset type.
+   */
+  getFeeRateV17(assetType: AssetType): number {
+    return ASSET_FEE_RATES[assetType].rate;
+  }
+
+  /**
+   * 🆕 v17.6: Get minimum fee by asset type.
+   */
+  getMinFeeV17(assetType: AssetType): number {
+    return ASSET_FEE_RATES[assetType].minUSDT;
+  }
+
+  /**
+   * 🆕 v17.6: Get all v17.6 asset fee rates.
+   */
+  getAllAssetFeeRates(): Record<AssetType, { rate: number; minUSDT: number }> {
+    const result: any = {};
+    for (const [k, v] of Object.entries(ASSET_FEE_RATES)) {
+      result[k] = { rate: v.rate, minUSDT: v.minUSDT };
+    }
+    return result;
+  }
+
+  /**
+   * @deprecated v17.6: use getFeeRateV17(assetType) instead.
    */
   getFeeRate(tier: CreatorTier): number {
     return FEE_RATES[tier];
   }
 
   /**
-   * Get fee rate as display string (e.g., "0.10%").
+   * @deprecated v17.6: use getFeeRateV17(assetType) instead.
    */
   getFeeRateDisplay(tier: CreatorTier): string {
     const rate = FEE_RATES[tier] * 100;
@@ -190,7 +264,7 @@ export class FeeCalculator {
   }
 
   /**
-   * Get all fee rates.
+   * @deprecated v17.6: use getAllAssetFeeRates() instead.
    */
   getAllFeeRates(): Record<CreatorTier, number> {
     return { ...FEE_RATES };
