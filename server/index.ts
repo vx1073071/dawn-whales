@@ -11,6 +11,7 @@ import { auditMiddleware } from './middleware/audit-logger';
 import { globalErrorHandler } from './middleware/error-handler';
 import { config, validateConfig } from './config/env';
 import signalRoutes from './routes/signal';
+import walletRoutes from './routes/wallet';
 import deadLetterRoutes from './middleware/dead-letter';
 
 const app = express();
@@ -58,6 +59,9 @@ registerAuthRoutes(app);
 
 // ── R129: Signal routes ──────────────────────────────────────────────
 app.use('/api/signal', signalRoutes);
+
+// ── R141: Wallet + Ledger + Idempotency routes ─────────────────────────
+app.use('/api/wallet', walletRoutes);
 
 // ── R132: Dead letter queue ──────────────────────────────────────────
 app.use('/api/dead-letter', deadLetterRoutes);
