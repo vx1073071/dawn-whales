@@ -1,4 +1,8 @@
 <!-- META
+
+> ⚠️ **[DEPRECATED — 2026-06-13]** 此 v1.9.0 用户手册已过时。替代文档: docs/user-manual.md (v2.1.0)。
+> 主要变更: 费率模型从 taker/maker/stop 改为 5 类资产统一费率; AI 从辩论附加费改为纯按次; 创作者从订阅者升级改为纯销量升级; 新增转账与打赏分离。
+
 version: 1.12.0
 last_updated: 2026-06-12
 round: R100+

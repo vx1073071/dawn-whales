@@ -6,6 +6,11 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
+
+> ⚠️ **[DEPRECATED — 2026-06-13]** 本文档已过时。请以 docs/reference/fee-schedule.md (v17.6 永久锁版) 为准。
+> 主要变更: (1) 不再区分 taker/maker/stop 费率，统一按 5 类资产计费 (2) AI 不再有免费轮次 (3) 创作者等级基于纯销量而非订阅者数。
+> 替代文档: docs/reference/fee-schedule.md | docs/design/ai-billing-rules.md | docs/design/marketplace-guide.md
+
 # AI 功能 & 收费说明
 
 **版本**: v1.8.0-beta | **更新时间**: 2026-06-09 | **作者**: youdao  
