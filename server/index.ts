@@ -32,6 +32,9 @@ import { getQuoteRouter } from './services/quote-router';
 import { getQuoteCache } from './services/quote-cache';
 import { QuoteHealthMonitor } from './services/quote-health';
 
+// R157: Watchlist import/export API
+import watchlistRoutes from './routes/watchlist';
+
 const app = express();
 const PORT = config.port;
 
@@ -184,6 +187,9 @@ app.use('/api/symbol', symbolRoutes);
 import brokerConfigRoutes from './routes/broker-config';
 app.use('/api/broker', brokerConfigRoutes);
 app.use('/api/market', brokerConfigRoutes);
+
+// ── R157: Watchlist Import/Export routes ────────────────────────────────
+app.use('/api/watchlist', watchlistRoutes);
 
 // ── R132: Dead letter queue ──────────────────────────────────────────
 app.use('/api/dead-letter', deadLetterRoutes);

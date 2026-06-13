@@ -279,6 +279,7 @@ export default function SymbolSearch({
             onBlur={() => setTimeout(() => setIsOpen(false), 200)}
             onKeyDown={e => { if (e.key === 'Escape') setIsOpen(false); }}
             placeholder="搜索代码或名称 (00700 / AAPL / BTC...)"
+            className="symbol-search-input"
             style={{
               width: '100%', padding: '10px 14px 10px 38px',
               background: '#0d0f1a', border: '1px solid #2a2d3e',

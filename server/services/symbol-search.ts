@@ -69,9 +69,13 @@ export interface SymbolEntry {
   market: MarketType;            // "HK"
   exchange: string;              // "SEHK"
   name: string;                  // "腾讯控股"
+  /** R157: Explicit simplified Chinese name for frontend display */
+  nameZH: string;                // "腾讯控股" (same as name for CJK entries)
   nameEn: string;                // "Tencent"
   /** R155: Search aliases — pinyin, abbreviation, common misspellings */
   aliases?: string[];            // e.g. ["tengxun", "tx", "tencent"]
+  /** R157: Pinyin initial shorthand for CJK name-first-char matching */
+  pinyinInitials?: string;       // e.g. "tx" for tengxun, "zg" for zhongguo
   type: 'STOCK' | 'ETF' | 'CRYPTO' | 'FUTURES' | 'INDEX' | 'FUND';
   brokerCapable: BrokerType[];   // connected brokers that can trade
   isin?: string;
