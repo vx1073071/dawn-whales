@@ -10,6 +10,8 @@ import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
+type DisclosureLevel = 'L1' | 'L2' | 'L3';
+
 interface AIAdvice {
   marketView: string;
   score: number;
@@ -30,7 +32,12 @@ interface FactorRecommendation {
   ir: number; // Information Ratio
   score: number; // 0-100
   direction: 'long' | 'short';
-  summary: string; // one-liner, always free
+  summary: string; // L1: one-liner, always free
+  weight: number; // L2: recommended weight 0-1
+  backtestAnnualReturn: number; // L3: paid
+  backtestSharpe: number; // L3: paid
+  backtestMaxDD: number; // L3: paid
+  compatScore: number; // 0-1 compatibility with portfolio
 }
 
 const RECOMMENDATION_MAP: Record<string, { label: string; color: string; bg: string }> = {
@@ -48,41 +55,49 @@ const MOCK_FACTORS: FactorRecommendation[] = [
     id: 'momentum_12m', name: '12M Momentum', nameZh: '12月动量', category: 'momentum', categoryZh: '动量',
     ic: 0.045, ir: 0.72, score: 82, direction: 'long',
     summary: '中期价格趋势跟踪，12个月窗口捕捉持续性收益',
+    weight: 0.22, backtestAnnualReturn: 18.5, backtestSharpe: 1.42, backtestMaxDD: 15.2, compatScore: 0.85,
   },
   {
     id: 'market_beta', name: 'Market Beta', nameZh: '市场Beta', category: 'risk', categoryZh: '风险',
     ic: 0.055, ir: 0.85, score: 88, direction: 'long',
     summary: '系统性风险暴露，高Beta在牛市中提供超额收益',
+    weight: 0.20, backtestAnnualReturn: 22.1, backtestSharpe: 1.55, backtestMaxDD: 18.7, compatScore: 0.92,
   },
   {
     id: 'value_ep', name: 'Earnings Yield', nameZh: '盈利收益率', category: 'value', categoryZh: '价值',
     ic: 0.038, ir: 0.61, score: 75, direction: 'long',
     summary: 'E/P比率衡量估值水平，低估值股票长期胜率更高',
+    weight: 0.18, backtestAnnualReturn: 14.2, backtestSharpe: 1.18, backtestMaxDD: 12.8, compatScore: 0.78,
   },
   {
     id: 'quality_roe', name: 'ROE Quality', nameZh: 'ROE质量', category: 'quality', categoryZh: '品质',
     ic: 0.042, ir: 0.68, score: 79, direction: 'long',
     summary: '高ROE公司持续盈利能力更强，防御性特征明显',
+    weight: 0.16, backtestAnnualReturn: 16.8, backtestSharpe: 1.35, backtestMaxDD: 10.5, compatScore: 0.80,
   },
   {
     id: 'low_vol', name: 'Low Volatility', nameZh: '低波动', category: 'volatility', categoryZh: '波动',
     ic: 0.031, ir: 0.55, score: 68, direction: 'long',
     summary: '低波动股票风险调整后收益更强，适合稳健型投资者',
+    weight: 0.10, backtestAnnualReturn: 10.5, backtestSharpe: 1.05, backtestMaxDD: 8.2, compatScore: 0.70,
   },
   {
     id: 'size_small', name: 'Small Size', nameZh: '小市值', category: 'size', categoryZh: '规模',
     ic: 0.028, ir: 0.42, score: 60, direction: 'long',
     summary: '小市值效应，历史长期跑赢大市值但波动更大',
+    weight: 0.08, backtestAnnualReturn: 12.0, backtestSharpe: 0.78, backtestMaxDD: 25.3, compatScore: 0.55,
   },
   {
     id: 'reversal_short', name: 'Short-term Reversal', nameZh: '短期反转', category: 'momentum', categoryZh: '动量',
     ic: 0.035, ir: 0.58, score: 65, direction: 'short',
     summary: '1-2周反转效应，捕捉短期超买超卖回归均值',
+    weight: 0.04, backtestAnnualReturn: 8.2, backtestSharpe: 0.72, backtestMaxDD: 20.1, compatScore: 0.48,
   },
   {
     id: 'liquidity', name: 'Liquidity', nameZh: '流动性', category: 'liquidity', categoryZh: '流动性',
     ic: 0.025, ir: 0.38, score: 55, direction: 'long',
     summary: '低流动性补偿，换手率低的股票享受流动性溢价',
+    weight: 0.02, backtestAnnualReturn: 6.5, backtestSharpe: 0.55, backtestMaxDD: 22.0, compatScore: 0.40,
   },
 ];
 
@@ -113,15 +128,43 @@ const MOCK_ADVICE: AIAdvice = {
   nextWeekOutlook: i18n.t('AIAdvisorPage.k27'),
 };
 
-// ── Free tier: Factor summary card ──────────────────────────────────────
+// ── Tiered Factor Card (L1/L2/L3 progressive disclosure) ────────────────
 
-function FreeFactorCard({ factor }: { factor: FactorRecommendation }) {
+function TieredFactorCard({
+  factor,
+  level,
+  isUnlocked,
+  onUnlock,
+}: {
+  factor: FactorRecommendation;
+  level: DisclosureLevel;
+  isUnlocked: boolean;
+  onUnlock: () => void;
+}) {
+  const showL2 = level === 'L2' || level === 'L3' || isUnlocked;
+  const showL3 = (level === 'L3' && isUnlocked) || isUnlocked;
+  const needsPay = !isUnlocked;
+
   return (
-    <div className="bg-[#1a1a25] border border-white/5 rounded-lg p-3 hover:border-[#C9A046]/20 transition-all">
+    <div
+      className={`rounded-lg p-3 transition-all ${
+        isUnlocked
+          ? 'bg-[#1a1a25] border border-[#D4A853]/20'
+          : 'bg-[#1a1a25] border border-white/5 hover:border-[#C9A046]/20'
+      }`}
+    >
+      {/* L1: Always visible — name + category + IC + summary */}
       <div className="flex items-center justify-between mb-1.5">
         <div className="flex items-center gap-2">
-          <span className="text-xs bg-white/5 px-1.5 py-0.5 rounded text-gray-500">{factor.categoryZh}</span>
+          <span
+            className={`text-xs px-1.5 py-0.5 rounded ${
+              isUnlocked ? 'bg-[#D4A853]/20 text-[#D4A853]' : 'bg-white/5 text-gray-500'
+            }`}
+          >
+            {factor.categoryZh}
+          </span>
           <span className="text-sm font-medium text-white">{factor.nameZh}</span>
+          {isUnlocked && <span className="text-[10px] text-green-400 bg-green-500/10 px-1 py-0.5 rounded">已解锁</span>}
         </div>
         <div className="flex items-center gap-1.5">
           <span
@@ -140,85 +183,91 @@ function FreeFactorCard({ factor }: { factor: FactorRecommendation }) {
           </span>
         </div>
       </div>
-      <p className="text-xs text-gray-400 leading-relaxed">{factor.summary}</p>
-      {/* Paywall hint */}
-      <div className="flex items-center gap-1 mt-2 text-[10px] text-[#D4A853]">
-        <span>🔒</span>
-        <span>1 USDT 查看完整分析</span>
-      </div>
-    </div>
-  );
-}
+      {/* L1 summary */}
+      <p className="text-xs text-gray-400 leading-relaxed mb-1">{factor.summary}</p>
 
-// ── Paid tier: Detailed factor analysis card ────────────────────────────
-
-function PaidFactorDetail({ factor }: { factor: FactorRecommendation }) {
-  return (
-    <div className="bg-[#1a1a25] border border-[#D4A853]/20 rounded-lg p-4">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <span className="text-xs bg-[#D4A853]/20 text-[#D4A853] px-1.5 py-0.5 rounded">{factor.categoryZh}</span>
-          <span className="text-base font-semibold text-white">{factor.nameZh}</span>
-          <span className="text-xs text-gray-500">({factor.name})</span>
-        </div>
-        <span className="text-xs text-green-400 bg-green-500/10 px-1.5 py-0.5 rounded">✅ 已解锁</span>
-      </div>
-
-      {/* Summary */}
-      <p className="text-sm text-gray-300 mb-4">{factor.summary}</p>
-
-      {/* Stats grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-        <div className="bg-deep rounded-lg p-2.5 text-center">
-          <div className="text-xs text-gray-500">IC (信息系数)</div>
-          <div className={`text-sm font-bold font-mono ${factor.ic >= 0.04 ? 'text-green-400' : factor.ic >= 0.03 ? 'text-yellow-400' : 'text-gray-400'}`}>
-            {factor.ic >= 0 ? '+' : ''}{factor.ic.toFixed(3)}
+      {/* L2: Weight bar + IR + Score + Compat */}
+      {showL2 && (
+        <div className="mt-3 pt-3 border-t border-white/5 space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] text-gray-500">推荐权重</span>
+            <span className="text-[11px] text-white font-mono">{(factor.weight * 100).toFixed(0)}%</span>
+          </div>
+          <div className="w-full bg-white/5 rounded-full h-1.5">
+            <div
+              className="h-1.5 rounded-full bg-[#D4A853] transition-all"
+              style={{ width: `${Math.min(factor.weight * 100, 100)}%` }}
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="bg-deep rounded p-1.5">
+              <div className="text-[9px] text-gray-500">IR</div>
+              <div className={`text-[11px] font-mono font-semibold ${factor.ir >= 0.7 ? 'text-green-400' : factor.ir >= 0.5 ? 'text-yellow-400' : 'text-gray-400'}`}>
+                {factor.ir.toFixed(2)}
+              </div>
+            </div>
+            <div className="bg-deep rounded p-1.5">
+              <div className="text-[9px] text-gray-500">评分</div>
+              <div className={`text-[11px] font-mono font-semibold ${factor.score >= 75 ? 'text-green-400' : factor.score >= 60 ? 'text-yellow-400' : 'text-gray-400'}`}>
+                {factor.score}
+              </div>
+            </div>
+            <div className="bg-deep rounded p-1.5">
+              <div className="text-[9px] text-gray-500">兼容</div>
+              <div className={`text-[11px] font-mono font-semibold ${factor.compatScore >= 0.8 ? 'text-green-400' : factor.compatScore >= 0.6 ? 'text-yellow-400' : 'text-red-400'}`}>
+                {(factor.compatScore * 100).toFixed(0)}%
+              </div>
+            </div>
           </div>
         </div>
-        <div className="bg-deep rounded-lg p-2.5 text-center">
-          <div className="text-xs text-gray-500">IR (信息比)</div>
-          <div className={`text-sm font-bold font-mono ${factor.ir >= 0.7 ? 'text-green-400' : factor.ir >= 0.5 ? 'text-yellow-400' : 'text-gray-400'}`}>
-            {factor.ir.toFixed(2)}
-          </div>
-        </div>
-        <div className="bg-deep rounded-lg p-2.5 text-center">
-          <div className="text-xs text-gray-500">综合评分</div>
-          <div className={`text-sm font-bold font-mono ${factor.score >= 75 ? 'text-green-400' : factor.score >= 60 ? 'text-yellow-400' : 'text-gray-400'}`}>
-            {factor.score}/100
-          </div>
-        </div>
-        <div className="bg-deep rounded-lg p-2.5 text-center">
-          <div className="text-xs text-gray-500">方向</div>
-          <div className={`text-sm font-bold ${factor.direction === 'long' ? 'text-green-400' : 'text-red-400'}`}>
-            {factor.direction === 'long' ? '做多' : '做空'}
-          </div>
-        </div>
-      </div>
+      )}
 
-      {/* IC interpretation */}
-      <div className="bg-white/[0.02] border border-white/5 rounded-lg p-3 mb-3">
-        <div className="text-xs text-gray-500 mb-1.5">📊 IC 解读</div>
-        <p className="text-xs text-gray-300 leading-relaxed">
-          {factor.ic >= 0.05
-            ? `高IC值表明${factor.nameZh}因子具有很强的预测能力。当前IC为${factor.ic.toFixed(3)}，在同类因子中处于前${Math.round((1 - factor.ic / 0.08) * 100)}%水平。结合IR ${factor.ir.toFixed(2)}，该因子稳定性优秀，适合作为核心因子。`
-            : factor.ic >= 0.03
-            ? `${factor.nameZh}因子的当前IC为${factor.ic.toFixed(3)}，处于中等预测能力水平。IR ${factor.ir.toFixed(2)}显示信号一致性较好。建议与其他互补因子搭配使用以提升组合稳定性。`
-            : `${factor.nameZh}因子当前IC偏低(${factor.ic.toFixed(3)})，IR ${factor.ir.toFixed(2)}表明信号不够一致。在当前市场环境下，该因子独立使用效果有限，建议作为辅助因子或等待IC回升。`}
-        </p>
-      </div>
+      {/* L3: Paid detail — backtest + IC interpretation */}
+      {showL3 && (
+        <div className="mt-3 pt-3 border-t border-[#D4A853]/20 space-y-3">
+          <div className="grid grid-cols-3 gap-2">
+            <div className="bg-[#D4A853]/5 border border-[#D4A853]/10 rounded p-2 text-center">
+              <div className="text-[9px] text-gray-500">年化收益</div>
+              <div className={`text-xs font-bold ${factor.backtestAnnualReturn >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                {factor.backtestAnnualReturn >= 0 ? '+' : ''}{factor.backtestAnnualReturn.toFixed(1)}%
+              </div>
+            </div>
+            <div className="bg-[#D4A853]/5 border border-[#D4A853]/10 rounded p-2 text-center">
+              <div className="text-[9px] text-gray-500">Sharpe</div>
+              <div className="text-xs font-bold text-white">{factor.backtestSharpe.toFixed(2)}</div>
+            </div>
+            <div className="bg-[#D4A853]/5 border border-[#D4A853]/10 rounded p-2 text-center">
+              <div className="text-[9px] text-gray-500">最大回撤</div>
+              <div className="text-xs font-bold text-red-400">{factor.backtestMaxDD.toFixed(1)}%</div>
+            </div>
+          </div>
+          <div className="bg-[#D4A853]/5 border border-[#D4A853]/10 rounded p-2.5">
+            <div className="text-[10px] text-[#D4A853] font-medium mb-1">💡 AI 解读</div>
+            <p className="text-[10px] text-gray-300 leading-relaxed">
+              {factor.ic >= 0.05
+                ? `高IC(${factor.ic.toFixed(3)})表明${factor.nameZh}具有强预测力。IR ${factor.ir.toFixed(2)}信号稳定。年化${factor.backtestAnnualReturn.toFixed(1)}%回测支持，建议配置${(factor.weight * 100).toFixed(0)}%为核心因子。`
+                : factor.ic >= 0.03
+                ? `${factor.nameZh} IC ${factor.ic.toFixed(3)}中等水平，IR ${factor.ir.toFixed(2)}信号基本稳定。年化${factor.backtestAnnualReturn.toFixed(1)}%，适合辅助因子配置${(factor.weight * 100).toFixed(0)}%。`
+                : `${factor.nameZh}当前IC偏低(${factor.ic.toFixed(3)})，Sharpe仅${factor.backtestSharpe.toFixed(2)}，建议等待IC回升后纳入。`}
+            </p>
+          </div>
+        </div>
+      )}
 
-      {/* Action recommendation */}
-      <div className="bg-[#D4A853]/5 border border-[#D4A853]/10 rounded-lg p-3">
-        <div className="text-xs text-[#D4A853] font-medium mb-1">💡 AI 建议</div>
-        <p className="text-xs text-gray-300">
-          {factor.score >= 75
-            ? `${factor.nameZh}因子当前评分${factor.score}/100，建议配置${Math.round(factor.score / 10)}%权重于策略组合中。${factor.direction === 'long' ? '做多方向适合当前市场环境。' : '做空方向可用于对冲多头风险。'}`
-            : factor.score >= 60
-            ? `${factor.nameZh}因子评分${factor.score}/100，建议作为辅助因子配置${Math.round(factor.score / 15)}%权重。当前不是最优配置窗口，可适度参与。`
-            : `当前评分较低，建议等待该因子的IC回升后再考虑纳入策略组合。`}
-        </p>
-      </div>
+      {/* Paywall CTA */}
+      {needsPay && (
+        <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/5">
+          <span className="text-[10px] text-gray-500">
+            {level === 'L1' ? '🔒 点击展开更多' : '🔒 1 USDT 查看完整分析'}
+          </span>
+          <button
+            onClick={onUnlock}
+            className="text-[10px] bg-[#C9A046]/20 hover:bg-[#C9A046]/30 text-[#D4A853] px-2 py-1 rounded transition-colors"
+          >
+            解锁 →
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -281,6 +330,7 @@ export default function AIAdvisorPage() {
 
   // Freemium state
   const [unlocked, setUnlocked] = useState(false);
+  const [disclosureLevel, setDisclosureLevel] = useState<DisclosureLevel>('L1');
   const [showUnlockModal, setShowUnlockModal] = useState(false);
   const [unlocking, setUnlocking] = useState(false);
   const [factors] = useState<FactorRecommendation[]>(MOCK_FACTORS);
@@ -357,29 +407,47 @@ export default function AIAdvisorPage() {
 
       {/* ── Freemium: Free unlock-all banner ─────────────────────── */}
       {!unlocked && (
-        <div className="bg-gradient-to-r from-[#D4A853]/10 to-[#1a1a25] border border-[#D4A853]/20 rounded-xl p-4 flex items-center justify-between">
+        <div className="bg-gradient-to-r from-[#D4A853]/10 to-[#1a1a25] border border-[#D4A853]/20 rounded-xl p-4">
           <div className="flex items-center gap-3">
             <span className="text-2xl">🔍</span>
-            <div>
-              <div className="text-white font-medium text-sm">免费因子列表已展示</div>
+            <div className="flex-1">
+              <div className="text-white font-medium text-sm">渐进式因子分析</div>
               <div className="text-xs text-gray-400 mt-0.5">
-                下方展示 {factors.length} 个推荐因子概览 · 1 USDT 解锁全部深度分析
+                免费查看 {factors.length} 个因子 · L1/L2 详情免费 · L3 深度分析需 1 USDT 解锁
               </div>
             </div>
           </div>
-          <button
-            onClick={() => setShowUnlockModal(true)}
-            className="px-4 py-2 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors whitespace-nowrap"
-          >
-            1 USDT 解锁全部
-          </button>
+          {/* Disclosure level selector */}
+          <div className="flex items-center gap-1 mt-2 bg-white/[0.02] border border-white/5 rounded-lg p-1">
+            {([
+              { key: 'L1' as const, label: 'L1 概览', desc: '免费', active: disclosureLevel === 'L1' },
+              { key: 'L2' as const, label: 'L2 权重', desc: '免费', active: disclosureLevel === 'L2' },
+              { key: 'L3' as const, label: 'L3 深度', desc: '1U', active: disclosureLevel === 'L3' },
+            ] as const).map(({ key, label, desc, active }) => (
+              <button
+                key={key}
+                onClick={() => setDisclosureLevel(key)}
+                className={`flex-1 py-1.5 rounded text-xs font-medium transition-all ${
+                  active
+                    ? 'bg-[#C9A046] text-black'
+                    : 'text-gray-500 hover:text-gray-300'
+                }`}
+              >
+                {label}
+                <span className={`block text-[9px] ${active ? 'text-black/60' : 'text-gray-600'}`}>{desc}</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
       {unlocked && (
-        <div className="bg-green-500/5 border border-green-500/10 rounded-xl p-3 flex items-center gap-2">
-          <span className="text-green-400 text-sm">✅</span>
-          <span className="text-sm text-green-400">已解锁全部因子深度分析</span>
+        <div className="bg-green-500/5 border border-green-500/10 rounded-xl p-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-green-400 text-sm">✅</span>
+            <span className="text-sm text-green-400">已解锁全部因子 L1-L3 深度分析</span>
+          </div>
+          <span className="text-[10px] text-gray-500">全部级别可视</span>
         </div>
       )}
 
@@ -437,21 +505,18 @@ export default function AIAdvisorPage() {
           )}
         </div>
 
-        {!unlocked ? (
-          /* Free tier: factor cards without detail */
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {sortedFactors.map((f) => (
-              <FreeFactorCard key={f.id} factor={f} />
-            ))}
-          </div>
-        ) : (
-          /* Paid tier: full detailed analysis */
-          <div className="space-y-4">
-            {sortedFactors.map((f) => (
-              <PaidFactorDetail key={f.id} factor={f} />
-            ))}
-          </div>
-        )}
+        {/* Factor list — tiered progressive disclosure */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {sortedFactors.map((f) => (
+            <TieredFactorCard
+              key={f.id}
+              factor={f}
+              level={disclosureLevel}
+              isUnlocked={isFactorUnlocked(f.id)}
+              onUnlock={() => setShowUnlockModal(true)}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Market View */}
