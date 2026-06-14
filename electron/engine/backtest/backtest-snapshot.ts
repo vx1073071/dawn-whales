@@ -149,7 +149,7 @@ export class BacktestSnapshotStore {
    * Called automatically after each backtest run.
    */
   async save(snapshot: Omit<BacktestSnapshot, 'id' | 'timestamp'>): Promise<BacktestSnapshot> {
-    const id = this.generateId(snapshot.strategyId);
+    const id = this.generateId(strategyId);
     const now = Date.now();
 
     const snap: BacktestSnapshot = {
@@ -159,7 +159,7 @@ export class BacktestSnapshotStore {
     };
 
     // Store in a list for this strategy
-    const listKey = `${SNAPSHOT_PREFIX}list:${snapshot.strategyId}`;
+    const listKey = `${SNAPSHOT_PREFIX}list:${strategyId}`;
     const detailKey = `${SNAPSHOT_PREFIX}detail:${id}`;
 
     // Save detail
@@ -169,9 +169,9 @@ export class BacktestSnapshotStore {
     await this.cache.hset(listKey, id, String(now));
 
     // Prune old snapshots
-    await this.pruneOldSnapshots(snapshot.strategyId);
+    await this.pruneOldSnapshots(strategyId);
 
-    log.info(`[BacktestSnapshot] Saved snapshot ${id} for strategy ${snapshot.strategyId}`);
+    log.info(`[BacktestSnapshot] Saved snapshot ${id} for strategy ${strategyId}`);
     return snap;
   }
 
@@ -179,7 +179,7 @@ export class BacktestSnapshotStore {
    * List snapshots for a strategy, newest first.
    */
   async list(strategyId: string, limit = 10, offset = 0): Promise<SnapshotListResponse> {
-    const listKey = `${SNAPSHOT_PREFIX}list:${snapshot.strategyId}`;
+    const listKey = `${SNAPSHOT_PREFIX}list:${strategyId}`;
     const hash = await this.cache.hgetall(listKey);
 
     if (!hash || Object.keys(hash).length === 0) {
@@ -346,7 +346,7 @@ export class BacktestSnapshotStore {
    * Delete all snapshots for a strategy.
    */
   async deleteAll(strategyId: string): Promise<boolean> {
-    const listKey = `${SNAPSHOT_PREFIX}list:${snapshot.strategyId}`;
+    const listKey = `${SNAPSHOT_PREFIX}list:${strategyId}`;
     const hash = await this.cache.hgetall(listKey);
     if (hash) {
       const keys = Object.keys(hash).map((id) => `${SNAPSHOT_PREFIX}detail:${id}`);
@@ -374,7 +374,7 @@ export class BacktestSnapshotStore {
   }
 
   private async pruneOldSnapshots(strategyId: string): Promise<void> {
-    const listKey = `${SNAPSHOT_PREFIX}list:${snapshot.strategyId}`;
+    const listKey = `${SNAPSHOT_PREFIX}list:${strategyId}`;
     const hash = await this.cache.hgetall(listKey);
     if (!hash) return;
 
