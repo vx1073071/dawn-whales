@@ -807,6 +807,356 @@ export class StrategyOptimizer extends EventEmitterPolyfill {
     this.cancel();
     this.resetAll();
   }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // R165 P1-B2: Factor Weight Scanning + Pareto Enhancement
+  // ═══════════════════════════════════════════════════════════════════════
+
+  /**
+   * Scan factor weights against the evaluation function.
+   * Uses IC_weighted optimization: factor weights are guided by typicalIC values
+   * while simultaneously tuning technical parameters.
+   *
+   * @param factorWeights  Map of factorId → ParamSpec for weight range
+   * @param factorICs      Map of factorId → typical IC value (0-1)
+   * @param mode           Scan mode: "grid" | "random" | "ic_weighted"
+   * @returns  ICWeightOptimization result
+   */
+  async scanFactorWeights(
+    factorWeights: Record<string, ParamSpec>,
+    factorICs: Record<string, number>,
+    mode: 'grid' | 'random' | 'ic_weighted' = 'ic_weighted',
+  ): Promise<ICWeightOptimization> {
+    const factorIds = Object.keys(factorWeights);
+    if (factorIds.length === 0) {
+      throw new EngineError('No factor weights configured', { code: ErrorCode.ENGINE_INTERNAL_ERROR });
+    }
+    if (!this.evaluateFn) {
+      throw new EngineError('No evaluation function configured', { code: ErrorCode.ENGINE_INTERNAL_ERROR });
+    }
+
+    // Build IC-weighted initial distribution
+    const icTotal = factorIds.reduce((s, id) => s + (factorICs[id] ?? 0.01), 0);
+    const icWeights: Record<string, number> = {};
+    for (const id of factorIds) {
+      icWeights[id] = (factorICs[id] ?? 0.01) / icTotal;
+    }
+
+    // Merge factor weight specs into paramSpecs for the optimizer
+    const savedParamSpecs = [...this.paramSpecs];
+    const savedConfig = { ...this.config };
+    const savedBest = this.bestResult ? { ...this.bestResult } : null;
+    const savedHistory = [...this.history];
+
+    // Reset state for the factor scan
+    this.config.mode = mode === 'grid' ? 'grid_search' :
+      mode === 'random' ? 'random_search' : 'bayesian';
+    this.config.maxIterations = Math.min(500, Math.max(50, factorIds.length * 30));
+    this.reset();
+
+    const allSpecs = [
+      ...savedParamSpecs,
+      ...factorIds.map((id) => ({
+        name: `fw_${id}`,
+        min: factorWeights[id].min,
+        max: factorWeights[id].max,
+        step: factorWeights[id].step,
+        default: icWeights[id] ?? 0.1,
+      })),
+    ];
+    this.setParamSpecs(allSpecs);
+
+    // Run optimization with hybrid evaluation
+    const fn = this.evaluateFn;
+    const self = this;
+
+    this.evaluateFn = (params: Record<string, number>) => {
+      // Split params into technique params and factor weights
+      const techParams: Record<string, number> = {};
+      const fwParams: Record<string, number> = {};
+      for (const key of Object.keys(params)) {
+        if (key.startsWith('fw_')) {
+          fwParams[key.slice(3)] = params[key];
+        } else {
+          techParams[key] = params[key];
+        }
+      }
+      // Call original evaluator with technique params
+      const raw = fn(techParams);
+
+      // Merge fw params into the result so history tracks them
+      const mergedParams = { ...raw.params, ...params };
+
+      // Apply IC-weighted bonus: factor weight alignment with IC
+      if (mode === 'ic_weighted' && Object.keys(fwParams).length > 0) {
+        let icBonus = 0;
+        for (const id of Object.keys(fwParams)) {
+          const targetWeight = icWeights[id] ?? 0;
+          const actualWeight = fwParams[id] ?? 0;
+          // Cosine similarity between target and actual distribution
+          icBonus += 1 - Math.abs(targetWeight - actualWeight) * 2;
+        }
+        icBonus = icBonus / Object.keys(fwParams).length;
+        icBonus = Math.max(0, Math.min(1, (icBonus + 0.5) / 1.5));
+
+        raw.totalReturn *= (0.9 + 0.2 * icBonus);
+        raw.sharpe *= (0.9 + 0.2 * icBonus);
+        raw.winRate *= (0.9 + 0.11 * icBonus);
+      }
+
+      return { ...raw, params: mergedParams };
+    };
+
+    try {
+      await this.optimize();
+    } finally {
+      // Restore original evaluateFn but keep results
+      this.evaluateFn = fn;
+    }
+
+    const result = this.buildResult();
+
+    // Extract factor weight results from scan
+    const optimizedWeights: Record<string, number> = {};
+    const weightEvals: FWScanEntry[] = [];
+
+    for (const id of factorIds) {
+      const fwKey = `fw_${id}`;
+      if (result.bestParams && result.bestParams[fwKey] !== undefined) {
+        optimizedWeights[id] = result.bestParams[fwKey];
+      }
+    }
+
+    // Build per-factor evaluation entries
+    for (const id of factorIds) {
+      const values = result.history
+        .filter((h) => h.params[`fw_${id}`] !== undefined)
+        .map((h) => ({
+          weight: h.params[`fw_${id}`],
+          fitness: h.fitness,
+        }));
+      if (values.length > 0) {
+        weightEvals.push({
+          factorId: id,
+          icValue: factorICs[id] ?? 0,
+          icWeight: icWeights[id] ?? 0,
+          optimizedWeight: optimizedWeights[id] ?? icWeights[id] ?? 0.1,
+          bestFitness: Math.max(...values.map((v) => v.fitness)),
+          evaluations: values.length,
+        });
+      }
+    }
+
+    // Restore original state
+    this.paramSpecs = savedParamSpecs;
+    this.config = savedConfig;
+    if (savedBest) this.bestResult = savedBest;
+    else this.bestResult = null;
+    this.history = savedHistory;
+
+    return {
+      mode,
+      factorIds,
+      totalEvaluations: result.totalEvaluations,
+      durationMs: result.durationMs,
+      bestFitness: result.bestFitness,
+      optimizedWeights,
+      icBaselineWeights: icWeights,
+      weightEvals: weightEvals.sort((a, b) => b.bestFitness - a.bestFitness),
+      history: result.history,
+      paretoFront: result.paretoFront,
+    };
+  }
+
+  /**
+   * Get enriched Pareto summary with objective breakdown and recommendations.
+   */
+  getParetoSummary(): ParetoSummary {
+    const front = this.getParetoFront();
+    if (front.length === 0) {
+      return {
+        count: 0,
+        points: [],
+        recommendation: 'No data available — run optimization first',
+        objectiveRanges: { sharpe: [0, 0], totalReturn: [0, 0], maxDrawdown: [0, 0], winRate: [0, 0] },
+      };
+    }
+
+    const points: ParetoPoint[] = front.map((r, i) => ({
+      rank: i + 1,
+      params: r.params,
+      sharpe: r.sharpe,
+      totalReturn: r.totalReturn,
+      maxDrawdown: r.maxDrawdown,
+      winRate: r.winRate,
+      fitness: r.fitness,
+      tradeCount: r.tradeCount,
+    }));
+
+    const sharpeMin = Math.min(...front.map((r) => r.sharpe));
+    const sharpeMax = Math.max(...front.map((r) => r.sharpe));
+    const returnMin = Math.min(...front.map((r) => r.totalReturn));
+    const returnMax = Math.max(...front.map((r) => r.totalReturn));
+    const ddMin = Math.min(...front.map((r) => r.maxDrawdown));
+    const ddMax = Math.max(...front.map((r) => r.maxDrawdown));
+    const wrMin = Math.min(...front.map((r) => r.winRate));
+    const wrMax = Math.max(...front.map((r) => r.winRate));
+
+    // Recommendation: best balance of Sharpe and Return with acceptable DD
+    const balanced = front.map((r) => ({
+      r,
+      score: (r.sharpe / Math.max(0.01, r.maxDrawdown)) * r.totalReturn,
+    }));
+    balanced.sort((a, b) => b.score - a.score);
+    const recommendation = balanced.length > 0
+      ? `Top pick: Sharpe=${balanced[0].r.sharpe.toFixed(2)}, Return=${balanced[0].r.totalReturn.toFixed(1)}%, DD=${balanced[0].r.maxDrawdown.toFixed(1)}%`
+      : 'No recommendation';
+
+    return {
+      count: front.length,
+      points,
+      recommendation,
+      objectiveRanges: {
+        sharpe: [sharpeMin, sharpeMax],
+        totalReturn: [returnMin, returnMax],
+        maxDrawdown: [ddMin, ddMax],
+        winRate: [wrMin, wrMax],
+      },
+    };
+  }
+
+  /**
+   * Compare two Pareto fronts (e.g., before/after factor optimization).
+   */
+  comparePareto(optimizationA?: OptimizationResult, optimizationB?: OptimizationResult): ParetoComparison {
+    const frontA = optimizationA?.paretoFront ?? this.getParetoFront();
+    const frontB = optimizationB?.paretoFront ?? [];
+
+    if (frontA.length === 0) {
+      return { comparison: 'No data available', improvements: [], regressions: [], summary: 'Both fronts empty' };
+    }
+
+    // Average objective values
+    const avgA = {
+      sharpe: frontA.reduce((s, r) => s + r.sharpe, 0) / frontA.length,
+      totalReturn: frontA.reduce((s, r) => s + r.totalReturn, 0) / frontA.length,
+      maxDrawdown: frontA.reduce((s, r) => s + r.maxDrawdown, 0) / frontA.length,
+      winRate: frontA.reduce((s, r) => s + r.winRate, 0) / frontA.length,
+    };
+
+    const avgB = frontB.length > 0 ? {
+      sharpe: frontB.reduce((s, r) => s + r.sharpe, 0) / frontB.length,
+      totalReturn: frontB.reduce((s, r) => s + r.totalReturn, 0) / frontB.length,
+      maxDrawdown: frontB.reduce((s, r) => s + r.maxDrawdown, 0) / frontB.length,
+      winRate: frontB.reduce((s, r) => s + r.winRate, 0) / frontB.length,
+    } : null;
+
+    const cmp = avgB ? this.determineComparison(avgA, avgB) : 'First run — baseline only';
+
+    const improvements: string[] = [];
+    const regressions: string[] = [];
+
+    if (avgB) {
+      if (avgB.sharpe > avgA.sharpe) improvements.push(`Sharpe: +${(avgB.sharpe - avgA.sharpe).toFixed(3)}`);
+      else if (avgB.sharpe < avgA.sharpe) regressions.push(`Sharpe: ${(avgB.sharpe - avgA.sharpe).toFixed(3)}`);
+
+      if (avgB.totalReturn > avgA.totalReturn) improvements.push(`Return: +${(avgB.totalReturn - avgA.totalReturn).toFixed(1)}%`);
+      else if (avgB.totalReturn < avgA.totalReturn) regressions.push(`Return: ${(avgB.totalReturn - avgA.totalReturn).toFixed(1)}%`);
+
+      if (avgB.maxDrawdown < avgA.maxDrawdown) improvements.push(`DD: ${(avgB.maxDrawdown - avgA.maxDrawdown).toFixed(1)}%`);
+      else if (avgB.maxDrawdown > avgA.maxDrawdown) regressions.push(`DD: +${(avgB.maxDrawdown - avgA.maxDrawdown).toFixed(1)}%`);
+
+      if (avgB.winRate > avgA.winRate) improvements.push(`WinRate: +${(avgB.winRate - avgA.winRate).toFixed(1)}%`);
+      else if (avgB.winRate < avgA.winRate) regressions.push(`WinRate: ${(avgB.winRate - avgA.winRate).toFixed(1)}%`);
+    }
+
+    return {
+      comparison: cmp,
+      improvements,
+      regressions,
+      summary: avgB
+        ? improvements.length > 0
+          ? `Front B improves on ${improvements.length} objectives vs A: ${improvements.join('; ')}`
+          : 'No objective improvement in Front B vs A'
+        : 'Baseline only — run optimization B to compare',
+    };
+  }
+
+  private determineComparison(
+    a: { sharpe: number; totalReturn: number; maxDrawdown: number; winRate: number },
+    b: { sharpe: number; totalReturn: number; maxDrawdown: number; winRate: number },
+  ): string {
+    const wins = (b.sharpe > a.sharpe ? 1 : 0) +
+      (b.totalReturn > a.totalReturn ? 1 : 0) +
+      (b.maxDrawdown < a.maxDrawdown ? 1 : 0) +
+      (b.winRate > a.winRate ? 1 : 0);
+    const losses = (b.sharpe < a.sharpe ? 1 : 0) +
+      (b.totalReturn < a.totalReturn ? 1 : 0) +
+      (b.maxDrawdown > a.maxDrawdown ? 1 : 0) +
+      (b.winRate < a.winRate ? 1 : 0);
+
+    if (wins >= 3 && losses === 0) return 'B dominates A';
+    if (losses >= 3 && wins === 0) return 'A dominates B';
+    if (wins >= 2 && losses <= 1) return 'B slightly better';
+    if (losses >= 2 && wins <= 1) return 'A slightly better';
+    return 'Comparable — trade-offs exist';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// R165 P1-B2: Factor Weight + Pareto types
+// ══════════════════════════════════════════════════════════════════════════
+
+export interface FWScanEntry {
+  factorId: string;
+  icValue: number;
+  icWeight: number;
+  optimizedWeight: number;
+  bestFitness: number;
+  evaluations: number;
+}
+
+export interface ICWeightOptimization {
+  mode: 'grid' | 'random' | 'ic_weighted';
+  factorIds: string[];
+  totalEvaluations: number;
+  durationMs: number;
+  bestFitness: number;
+  optimizedWeights: Record<string, number>;
+  icBaselineWeights: Record<string, number>;
+  weightEvals: FWScanEntry[];
+  history: EvalResult[];
+  paretoFront: EvalResult[];
+}
+
+export interface ParetoPoint {
+  rank: number;
+  params: Record<string, number>;
+  sharpe: number;
+  totalReturn: number;
+  maxDrawdown: number;
+  winRate: number;
+  fitness: number;
+  tradeCount: number;
+}
+
+export interface ParetoSummary {
+  count: number;
+  points: ParetoPoint[];
+  recommendation: string;
+  objectiveRanges: {
+    sharpe: [number, number];
+    totalReturn: [number, number];
+    maxDrawdown: [number, number];
+    winRate: [number, number];
+  };
+}
+
+export interface ParetoComparison {
+  comparison: string;
+  improvements: string[];
+  regressions: string[];
+  summary: string;
 }
 
 // ── Singleton ──────────────────────────────────────────────────────────────
