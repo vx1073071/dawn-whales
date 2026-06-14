@@ -24,6 +24,9 @@ interface FactorExposureResult {
   factors: FactorData[];
   monthlyResiduals: {month: string;residual: number;}[];
   factorCorrelation: {factor1: string;factor2: string;correlation: number;}[];
+  // R159: Data source transparency
+  isSimulated: boolean;
+  simulatedFactors: string[];
 }
 
 const MOCK_DATA: FactorExposureResult = {
@@ -61,7 +64,11 @@ const MOCK_DATA: FactorExposureResult = {
   { factor1: 'MKT', factor2: 'SMB', correlation: 0.35 },
   { factor1: 'HML', factor2: 'RMW', correlation: 0.42 },
   { factor1: 'LOWVOL', factor2: 'QUAL', correlation: 0.28 },
-  { factor1: 'MOM', factor2: 'QUAL', correlation: 0.38 }]
+  { factor1: 'MOM', factor2: 'QUAL', correlation: 0.38 }],
+
+  // R159: Mark mock data as simulated
+  isSimulated: true,
+  simulatedFactors: ['SMB', 'HML', 'RMW', 'CMA', 'LOWVOL', 'QUAL']
 
 };
 
@@ -169,6 +176,28 @@ export default function FactorExposurePage() {
 
   return (
     <div className="p-6 space-y-6 bg-deep min-h-full">
+      {/* R159: Simulated data warning banner */}
+      {data.isSimulated && (
+        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <span className="text-yellow-400 text-xl mt-0.5">⚠️</span>
+            <div className="flex-1">
+              <h3 className="text-yellow-300 font-semibold text-sm mb-1">
+                {i18n.t('FactorExposurePage.simulatedTitle', '此报告部分基于模拟数据')}
+              </h3>
+              <p className="text-yellow-200/70 text-xs leading-relaxed">
+                {i18n.t('FactorExposurePage.simulatedBody', '以下因子使用估算值而非真实市场数据：')}{' '}
+                {data.simulatedFactors.map((f) => (
+                  <code key={f} className="bg-yellow-500/20 text-yellow-200 px-1.5 py-0.5 rounded text-xs mx-0.5">{f}</code>
+                ))}
+              </p>
+              <p className="text-yellow-200/50 text-xs mt-2">
+                {i18n.t('FactorExposurePage.simulatedNote', '归因结果仅供研究参考，不可用于实盘决策。真实数据引擎正在升级中。')}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">{i18n.t("FactorExposurePage.r92_9fd5")}</h1>

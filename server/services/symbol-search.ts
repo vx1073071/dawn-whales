@@ -206,7 +206,7 @@ export interface SearchResponse {
 }
 
 const MARKET_LABELS: Record<string, string> = {
-  HK: '港股', US: '美股', CN: 'A股', CRYPTO: '加密', SG: '新加坡', JP: '日本', UK: '英国', EU: '欧洲',
+  HK: '港股', US: '美股', CN: '中国', CRYPTO: '加密', SG: '新加坡', JP: '日本', UK: '英国', EU: '欧洲',
 };
 
 const MARKET_EXCHANGE_LABELS: Record<string, string> = {

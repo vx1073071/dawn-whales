@@ -237,7 +237,7 @@ describe("Q-66-02-02: Marketplace E2E", () => {
   beforeEach(() => { market = new StrategyMarketplace(); });
 
   it("06: publish strategy with valid price (1-1000 USDT)", () => {
-    const listing = market.publish("creator-1", "动量因子ABC", "A股大小盘轮动动量策略", 200);
+    const listing = market.publish("creator-1", "动量因子ABC", "多市场动量轮动策略", 200);
     expect(listing).not.toBeNull();
     expect(listing!.price).toBe(200);
     expect(listing!.id).toMatch(/^strat-/);
@@ -249,8 +249,8 @@ describe("Q-66-02-02: Marketplace E2E", () => {
   });
 
   it("08: search by keyword returns matching listings", () => {
-    market.publish("c1", "动量因子A", "沪深300动量", 100);
-    market.publish("c2", "均值回归B", "创业板均值回归", 200);
+    market.publish("c1", "动量因子A", "大盘动量", 100);
+    market.publish("c2", "均值回归B", "成长均值回归", 200);
     market.publish("c3", "趋势跟随C", "动量趋势策略", 300);
     const results = market.search("动量");
     expect(results.length).toBe(2); // A and C match "动量"

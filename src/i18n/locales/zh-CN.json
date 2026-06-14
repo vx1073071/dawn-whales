@@ -6119,5 +6119,10 @@
     "serverConnection": "服务器连接",
     "serverConnectionDesc": "连接到 Dawn Whales 云服务器，实现双模跟单和信号同步。",
     "enterServerInfo": "输入服务器地址和 API 密钥进行连接。"
+  },
+  "FactorExposurePage": {
+    "simulatedTitle": "此报告部分基于模拟数据",
+    "simulatedBody": "以下因子使用估算值而非真实市场数据：",
+    "simulatedNote": "归因结果仅供研究参考，不可用于实盘决策。真实数据引擎正在升级中。"
   }
 }

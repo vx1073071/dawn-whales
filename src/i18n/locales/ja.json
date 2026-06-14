@@ -5761,5 +5761,10 @@
     "serverConnection": "サーバー接続",
     "serverConnectionDesc": "Dawn Whales クラウドサーバーに接続し、デュアルモードコピートレードとシグナル同期を実現します。",
     "enterServerInfo": "サーバーURLとAPIキーを入力して接続してください。"
+  },
+  "FactorExposurePage": {
+    "simulatedTitle": "このレポートは一部シミュレーションデータに基づいています",
+    "simulatedBody": "以下の要因は実際の市場データではなく推定値を使用しています：",
+    "simulatedNote": "帰属結果は参考用であり、実取引の判断には使用できません。実データエンジンのアップグレードが進行中です。"
   }
 }

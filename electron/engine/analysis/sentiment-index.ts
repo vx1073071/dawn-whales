@@ -1,5 +1,5 @@
 // ── Sentiment Index Engine — Composite Market Sentiment Indicator ───────────
-// JVS-3: Aggregates capital flow, margin balance, northbound flow, A/D ratio
+// JVS-3: Aggregates capital flow, margin balance, institutional flow, A/D ratio
 // Output: 0-100 score (0=extreme fear, 100=extreme greed)
 
 import log from 'electron-log';
@@ -18,8 +18,8 @@ export interface SentimentInput {
   marginBalanceTrend?: 'increasing' | 'decreasing' | 'flat';
 
   // Northbound flow (Stock Connect, billions)
-  northboundNetBuy?: number;         // Positive = net buy
-  northboundTrend?: 'increasing' | 'decreasing' | 'flat';
+  institutionalNetBuy?: number;         // Positive = net buy
+  institutionalTrend?: 'increasing' | 'decreasing' | 'flat';
 
   // Advance/Decline ratio
   advanceCount?: number;             // Number of advancing stocks
@@ -76,7 +76,7 @@ export type SentimentSignal =
 const DEFAULT_WEIGHTS: Record<string, number> = {
   capitalFlow: 0.25,    // Capital flow is the smart money
   marginBalance: 0.15,  // Leverage sentiment
-  northbound: 0.20,     // Foreign institutional sentiment
+  institutional: 0.20,     // Institutional flow sentiment
   advanceDecline: 0.20, // Market breadth
   turnover: 0.10,       // Volume enthusiasm
   limitUpDown: 0.10,    // Extreme moves
@@ -142,16 +142,16 @@ export class SentimentIndexEngine {
       inputCount++;
     }
 
-    // 3. Northbound Flow Component
-    if (input.northboundNetBuy !== undefined) {
-      const score = this.scoreNorthbound(input.northboundNetBuy, input.northboundTrend);
-      const weight = this.weights.northbound;
+    // 3. Institutional Flow Component
+    if (input.institutionalNetBuy !== undefined) {
+      const score = this.scoreInstitutional(input.institutionalNetBuy, input.institutionalTrend);
+      const weight = this.weights.institutional;
       components.push({
         name: 'Northbound Flow',
         score,
         weight,
         contribution: score * weight,
-        detail: `Net buy: ${input.northboundNetBuy.toFixed(2)}B, trend: ${input.northboundTrend || 'unknown'}`,
+        detail: `Net buy: ${input.institutionalNetBuy.toFixed(2)}B, trend: ${input.institutionalTrend || 'unknown'}`,
       });
       weightedSum += score * weight;
       totalWeight += weight;
@@ -308,7 +308,7 @@ export class SentimentIndexEngine {
    * Northbound (Stock Connect): net buy = greed, net sell = fear
    * Typical daily: -15B to +15B
    */
-  private scoreNorthbound(netBuy: number, trend?: string): number {
+  private scoreInstitutional(netBuy: number, trend?: string): number {
     let score = 50 + (netBuy / 15) * 50;
     score = Math.max(0, Math.min(100, score));
 

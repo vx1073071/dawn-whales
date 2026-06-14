@@ -189,7 +189,7 @@ const TYPE_CONFIG: Record<string, { color: string; icon: React.ReactNode; bg: st
 const REGION_LABELS: Record<string, string> = {
   US: '🇺🇸 美股',
   HK: '🇭🇰 港股',
-  CN: '🇨🇳 A股',
+  CN: '🇨🇳 中国',
   Crypto: '🪙 加密货币',
   Global: '🌍 全球',
 };

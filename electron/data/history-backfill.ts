@@ -66,7 +66,7 @@ const MODULES: ModuleDef[] = [
   { id: 'market-breadth', name: 'Market Breadth', apiType: 'kline', endpoint: 'breadth' },
   { id: 'capital-flow-rank', name: 'Capital Flow Rank', apiType: 'capital' },
   { id: 'capital-flow-monitor', name: 'Capital Flow Monitor', apiType: 'capital' },
-  { id: 'dragon-tiger', name: 'Dragon Tiger List', apiType: 'custom', endpoint: 'dragon' },
+  // [R158] dragon-tiger removed (A-stock only feature)
   { id: 'stock-screener', name: 'Stock Screener', apiType: 'kline', endpoint: 'screener' },
   { id: 'quote-stream', name: 'Quote History', apiType: 'kline', endpoint: 'quote' },
 

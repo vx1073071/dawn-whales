@@ -5775,5 +5775,10 @@
     "serverConnection": "Server Connection",
     "serverConnectionDesc": "Connect to Dawn Whales cloud server for dual-mode copy trading and signal synchronization.",
     "enterServerInfo": "Enter your server URL and API Key to connect."
+  },
+  "FactorExposurePage": {
+    "simulatedTitle": "This report is partially based on simulated data",
+    "simulatedBody": "The following factors use estimated values instead of real market data:",
+    "simulatedNote": "Attribution results are for reference only, not suitable for live trading decisions. Real data engine upgrade in progress."
   }
 }

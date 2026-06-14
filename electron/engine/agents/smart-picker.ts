@@ -34,7 +34,7 @@ export interface SmartPickResult {
   grade: 'S' | 'A' | 'B' | 'C' | 'D';
   scores: {
     capitalFlow: number;
-    dragonTiger: number;
+    institutionalFlow: number;
     fundHolding: number;
     sentiment: number;
     technical: number;
@@ -58,7 +58,7 @@ export interface SmartPickReport {
 
 const DEFAULT_WEIGHTS = {
   capitalFlow: 0.30,
-  dragonTiger: 0.15,
+  institutionalFlow: 0.15,
   fundHolding: 0.20,
   sentiment: 0.15,
   technical: 0.20,
@@ -107,21 +107,11 @@ export class SmartPickerService {
         }
       }
 
-      // Source 2: Dragon Tiger list
-      const dtResult = await getDragonTigerList();
-      if (dtResult.success && dtResult.entries) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        for (const item of dtResult.entries as any[]) {
-          const code = item.code;
-          if (!candidates.has(code)) {
-            candidates.set(code, { name: item.name, signals: [], scores: {} });
-          }
-          const c = candidates.get(code)!;
-          c.scores.dragonTiger = this.scoreDragonTiger(item);
-          if (item.netBuyAmount > 0) c.signals.push(i18n.t('smartPicker.k3'));
-          if (item.reason) c.signals.push(i18n.t('smartPicker.k4'));
-        }
-      }
+      // Source 2: Institutional flow (replaces dragon tiger, R158)
+      // TODO: JVS R158 - implement multi-market institutional flow data source
+      // Placeholder: no institutional flow data available yet
+      // [R158] Dragon tiger code block removed (A-stock only)
+      // JVS will replace with multi-market institutional flow in R158
 
       // Source 3: Fund increase rank
       try {
@@ -163,7 +153,7 @@ export class SmartPickerService {
 
         // Set defaults for missing scores
         c.scores.capitalFlow = c.scores.capitalFlow ?? 50;
-        c.scores.dragonTiger = c.scores.dragonTiger ?? 50;
+        c.scores.institutionalFlow = c.scores.institutionalFlow ?? 50;
         c.scores.fundHolding = c.scores.fundHolding ?? 50;
       }
 
@@ -173,7 +163,7 @@ export class SmartPickerService {
       for (const [code, c] of candidates) {
         const totalScore = Math.round(
           c.scores.capitalFlow * weights.capitalFlow +
-          c.scores.dragonTiger * weights.dragonTiger +
+          c.scores.institutionalFlow * weights.institutionalFlow +
           c.scores.fundHolding * weights.fundHolding +
           c.scores.sentiment * weights.sentiment +
           c.scores.technical * weights.technical
@@ -192,7 +182,7 @@ export class SmartPickerService {
         // Reasons
         const reasons: string[] = [];
         if (c.scores.capitalFlow >= 70) reasons.push(i18n.t('smartPicker.k6'));
-        if (c.scores.dragonTiger >= 70) reasons.push(i18n.t('smartPicker.k7'));
+        if (c.scores.institutionalFlow >= 70) reasons.push(i18n.t('smartPicker.k7'));
         if (c.scores.fundHolding >= 70) reasons.push(i18n.t('smartPicker.k8'));
         if (c.scores.sentiment >= 70) reasons.push(i18n.t('smartPicker.k9'));
         if (c.scores.technical >= 70) reasons.push(i18n.t('smartPicker.k10'));
@@ -211,7 +201,7 @@ export class SmartPickerService {
           grade,
           scores: {
             capitalFlow: Math.round(c.scores.capitalFlow),
-            dragonTiger: Math.round(c.scores.dragonTiger),
+            institutionalFlow: Math.round(c.scores.institutionalFlow),
             fundHolding: Math.round(c.scores.fundHolding),
             sentiment: Math.round(c.scores.sentiment),
             technical: Math.round(c.scores.technical),
@@ -271,7 +261,7 @@ export class SmartPickerService {
     return score;
   }
 
-  private scoreDragonTiger(item: unknown): number {
+  private scoreInstitutionalFlow(item: unknown): number {
     let score = 50;
     const netBuy = item.netBuyAmount || 0;
 

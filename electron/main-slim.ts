@@ -36,7 +36,7 @@ import { MarketHotspotService } from './engine/data/market-hotspot';
 import { DataSchedulerService } from './engine/data/data-scheduler';
 import { initQuoteStream, getQuoteStream } from './engine/data/quote-stream';
 import { initLiveExecutor, getLiveExecutor, LiveExecutor } from './engine/analysis/live-executor';
-import { getDragonTigerList, getDragonTigerDetail, getInstitutionalTrades } from './engine/data/dragon-tiger-list';
+// [R158] dragon-tiger imports removed (A-stock only feature)
 import { getStockCapitalFlowRank, getSectorCapitalFlowRank, getConceptCapitalFlowRank } from './engine/analysis/capital-flow-rank';
 import { getCapitalFlowMonitor } from './engine/analysis/capital-flow-monitor';
 import { getFundHoldings, getStockFundOwnership, getFundIncreaseRank, getFundDecreaseRank } from './engine/data/fund-holdings';
@@ -63,7 +63,7 @@ import { correlationMatrix } from './engine/risk/correlation-matrix-v2';
 import { detectSectorRotation } from './engine/data/sector-rotation-v2';
 import { getDataQualityStream } from './engine/data/data-quality-stream';
 import { getSmartCacheManager } from './engine/core/smart-cache';
-import { getDragonTigerStream } from './engine/data/dragon-tiger-stream';
+// [R158] dragon-tiger-stream import removed (A-stock only feature)
 import { getUnlockCalendar } from './engine/data/unlock-calendar';
 import { getDividendCalendar } from './engine/data/dividend-calendar';
 import { getEarningsCalendar } from './engine/data/earnings-calendar';

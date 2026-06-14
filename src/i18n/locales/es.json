@@ -5768,5 +5768,10 @@
     "serverConnection": "Conexión del servidor",
     "serverConnectionDesc": "Conéctese al servidor cloud de Dawn Whales para copy trading dual-mode y sincronización de señales.",
     "enterServerInfo": "Ingrese la URL del servidor y la clave API para conectarse."
+  },
+  "FactorExposurePage": {
+    "simulatedTitle": "Este informe se basa parcialmente en datos simulados",
+    "simulatedBody": "Los siguientes factores utilizan valores estimados en lugar de datos de mercado reales:",
+    "simulatedNote": "Los resultados de atribución son solo de referencia, no aptos para decisiones en vivo. Actualización del motor de datos reales en progreso."
   }
 }

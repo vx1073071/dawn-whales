@@ -5796,5 +5796,10 @@
     "serverConnection": "伺服器連接",
     "serverConnectionDesc": "連接到 Dawn Whales 雲端伺服器，實現雙模跟單和信號同步。",
     "enterServerInfo": "輸入伺服器地址和 API 密鑰進行連接。"
+  },
+  "FactorExposurePage": {
+    "simulatedTitle": "此報告部分基於模擬數據",
+    "simulatedBody": "以下因子使用估算值而非真實市場數據：",
+    "simulatedNote": "歸因結果僅供研究參考，不可用於實盤決策。真實數據引擎正在升級中。"
   }
 }

@@ -581,7 +581,7 @@ export const ASSET_CLASS_COLORS: Record<AssetClass, string> = {
 
 /** Market display labels */
 export const MARKET_LABELS: Record<string, string> = {
-  HK: '港股', US: '美股', CN: 'A股', JP: '日股', SG: '新加坡', UK: '英股', crypto: '加密货币',
+  HK: '港股', US: '美股', CN: '中国', JP: '日股', SG: '新加坡', UK: '英股', crypto: '加密货币',
 };
 
 /** Risk level display labels */

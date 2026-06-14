@@ -512,11 +512,11 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   // ── Q15: Multi-Factor Model ─────────────────────────────────────
   ipcMain.handle('strategy:multi-factor', async (_e, raw: unknown) => {
     try {
-      const { scoreStocks, scoreTopAStocks } = require('./engine/multi-factor');
+      const { scoreStocks, scoreTopStocks } = require('./engine/multi-factor');
       const req = raw as { stocks?: Array<{ code: string; name: string }>; preset?: string; limit?: number };
       if (req.limit != null) {
-        // Top-A mode
-        const result = await scoreTopAStocks(req.limit, req.preset as unknown);
+        // Top stocks mode (multi-market: US/HK/CRYPTO)
+        const result = await scoreTopStocks(req.limit, req.preset as unknown);
         return { success: true, ...result };
       }
       if (!req.stocks || req.stocks.length === 0) {

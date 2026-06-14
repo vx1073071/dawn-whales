@@ -87,7 +87,7 @@ const REGION_LABELS: Record<string, string> = {
   US: '🇺🇸 美股',
   HK: '🇭🇰 港股',
   Global: '🌍 全球',
-  CN: '🇨🇳 A股',
+  CN: '🇨🇳 中国',
 };
 
 // ── Health Score Badge ──

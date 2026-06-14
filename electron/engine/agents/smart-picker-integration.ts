@@ -126,7 +126,7 @@ export class SmartPickerIntegration {
       if (mfEntry) {
         mfFactors.sentiment = Math.round(mfEntry.sentimentScore ?? 50);
         mfFactors.capitalFlow = Math.round(mfEntry.capitalFlowScore ?? 50);
-        mfFactors.dragonTiger = Math.round(mfEntry.dragonTigerScore ?? 50);
+        mfFactors.institutionalFlow = Math.round(mfEntry.institutionalFlowScore ?? 50);
         mfFactors.fundHolding = Math.round(mfEntry.fundHoldingScore ?? 50);
         mfFactors.diagnosis = Math.round(mfEntry.diagnosisScore ?? 50);
       }

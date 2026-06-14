@@ -9,7 +9,7 @@ import log from 'electron-log';
 import { getSmartCacheManager } from '../core/smart-cache';
 import { getMarketOverview } from '../core/emi-unified';
 import { getStockCapitalFlowRank, getSectorCapitalFlowRank } from '../analysis/capital-flow-rank';
-import { getDragonTigerList } from './dragon-tiger-list';
+// dragon-tiger export removed (A-stock only feature, R158)
 import { getMacroDataReport } from '../risk/macro-data';
 import { getMarginDataReport } from './margin-data';
 import { getConsumerDataReport } from './consumer-data';
@@ -47,7 +47,7 @@ const DATA_SOURCES: Record<string, () => Promise<any>> = {
   'market-overview': () => getMarketOverview(),
   'capital-flow-stock': () => getStockCapitalFlowRank(100),
   'capital-flow-sector': () => getSectorCapitalFlowRank(100),
-  'dragon-tiger': () => getDragonTigerList(),
+  // 'dragon-tiger' removed (A-stock only, R158)
   'macro-data': () => getMacroDataReport(),
   'margin-data': () => getMarginDataReport(),
   'consumer-data': () => getConsumerDataReport(),

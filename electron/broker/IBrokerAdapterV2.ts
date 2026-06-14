@@ -65,7 +65,7 @@ export interface TaggedQuoteInfo {
 export type MarketType = 'HK' | 'US' | 'CN' | 'CRYPTO' | 'SG' | 'JP' | 'UK' | 'EU';
 
 export const MARKET_LABELS: Record<MarketType, string> = {
-  HK: '港股', US: '美股', CN: '加密', CRYPTO: '加密货币',
+  HK: '港股', US: '美股', CN: '中国', CRYPTO: '加密货币',
   SG: '新加坡', JP: '日本', UK: '英国', EU: '欧洲',
 };
 

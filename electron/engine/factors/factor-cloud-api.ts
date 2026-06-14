@@ -16,7 +16,7 @@ export type FactorType = 'momentum' | 'volatility' | 'volumeProfile' | 'sentimen
 
 export interface FactorRequest {
   symbol: string;
-  market: 'HK' | 'US' | 'A';
+  market: 'HK' | 'US' | 'CN';
   factorTypes: FactorType[];
   period?: '1d' | '1w' | '1m' | '3m';
 }
@@ -67,7 +67,7 @@ function computeFactor(symbol: string, type: FactorType): FactorResult {
     symbol,
     value: Number((hash(seed + type.length * 7) * m.value).toFixed(2)),
     rank: Math.floor(hash(seed + type.length * 13) * m.rank),
-    confidence: Number((m.conf + Math.random() * 0.1).toFixed(4)),
+    confidence: Number((m.conf + hash(seed + type.length * 19) * 0.1).toFixed(4)),
     timestamp: now,
   };
 }

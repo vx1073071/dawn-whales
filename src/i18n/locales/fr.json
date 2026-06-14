@@ -5758,5 +5758,10 @@
     "serverConnection": "Connexion serveur",
     "serverConnectionDesc": "Connectez-vous au serveur cloud Dawn Whales pour le copy trading double mode et la synchronisation des signaux.",
     "enterServerInfo": "Entrez l'URL du serveur et la clé API pour vous connecter."
+  },
+  "FactorExposurePage": {
+    "simulatedTitle": "Ce rapport est partiellement basé sur des données simulées",
+    "simulatedBody": "Les facteurs suivants utilisent des estimations au lieu de données de marché réelles:",
+    "simulatedNote": "Les résultats d'attribution sont indicatifs, non adaptés aux décisions en direct. Mise à niveau du moteur de données réelles en cours."
   }
 }

@@ -283,7 +283,7 @@ describe('StockCodeNormalizer', () => {
 
     it('CN market name in zh-CN', () => {
       const name = normalizer.getMarketName('CN', 'zh-CN');
-      expect(name).toBe('A股');
+      expect(name).toBe('中国');
     });
 
     it('HK market name in en', () => {

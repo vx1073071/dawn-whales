@@ -18,6 +18,8 @@ export interface FactorExposure {
   contribution: number;    // % contribution to total risk
   isOverweight: boolean;
   isSignificant: boolean;
+  // R159: Per-factor simulation status
+  isSimulated: boolean;
 }
 
 export interface FactorRiskReport {
@@ -49,6 +51,11 @@ export interface FactorRiskReport {
 
   // Recommendations
   hedgingSuggestions: string[];
+
+  // R159: Data source transparency — mark if any data is simulated/estimated
+  isSimulated: boolean;
+  simulatedFactors: string[];  // List of factor names using simulated data
+
   timestamp: number;
 }
 
@@ -147,6 +154,22 @@ export class FactorRiskModel {
       // Contribution to risk (weighted by exposure squared)
       const contribution = Math.abs(wtdExposure) * 0.1;
 
+      // R159: Detect if this factor uses simulated/default values
+      const isSimulated = positions.some(p => {
+        switch (factor) {
+          case 'MKT': return false; // Market beta is always derived from price data
+          case 'SMB': case 'SIZE': return p.marketCap === undefined;
+          case 'HML': return p.bvpm === undefined;
+          case 'MOM': return p.momentum6m === undefined;
+          case 'LIQ': return p.adv20 === undefined;
+          case 'VOL': return p.vol20 === undefined;
+          case 'GROWTH': return p.revenueGrowth === undefined;
+          case 'QUALITY': return p.roe === undefined;
+          case 'YIELD': return p.dividendYield === undefined;
+          default: return true;
+        }
+      });
+
       exposures.push({
         factor,
         label: FACTOR_LABELS[factor],
@@ -155,6 +178,7 @@ export class FactorRiskModel {
         contribution: Math.round(contribution * 10000) / 100,
         isOverweight: Math.abs(wtdExposure) > 0.5,
         isSignificant: Math.abs(wtdExposure) > 0.3,
+        isSimulated,
       });
     }
 
@@ -278,6 +302,18 @@ export class FactorRiskModel {
       hedgingSuggestions.push('✅ Risk balanced: no extreme factor exposures detected');
     }
 
+    // R159: Determine which factors use estimated/missing data
+    const simulatedFactors = positions
+      .filter(p => p.marketCap === undefined || p.bvpm === undefined || p.momentum6m === undefined)
+      .flatMap(p => {
+        const missing: string[] = [];
+        if (p.marketCap === undefined) missing.push('SMB', 'SIZE');
+        if (p.bvpm === undefined) missing.push('HML');
+        if (p.momentum6m === undefined) missing.push('MOM');
+        return missing;
+      });
+    const uniqueSimulated = [...new Set(simulatedFactors)];
+
     return {
       portfolioId,
       totalRisk: Math.round(totalVol * 10000) / 100,
@@ -293,6 +329,8 @@ export class FactorRiskModel {
       riskFlags,
       dominantRiskFactor,
       hedgingSuggestions,
+      isSimulated: uniqueSimulated.length > 0,
+      simulatedFactors: uniqueSimulated,
       timestamp: Date.now(),
     };
   }
@@ -309,6 +347,7 @@ export class FactorRiskModel {
         contribution: 0,
         isOverweight: false,
         isSignificant: false,
+        isSimulated: true,
       }));
   }
 }
