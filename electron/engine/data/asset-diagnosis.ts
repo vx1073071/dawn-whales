@@ -10,7 +10,7 @@ import { getStockFundOwnership } from './fund-holdings';
 import { getInstitutionalFlow } from './institutional-flow';
 import { SentimentIndexEngine } from '../analysis/sentiment-index';
 import { StockAnomalyDetector } from './stock-anomaly-detector';
-import { NewsAggregatorService } from './news-aggregator';
+import { NewsAggregator } from './news-aggregator';
 import i18n from '../../../src/i18n';
 import { EngineError } from '../core/engine-error';
 
@@ -71,7 +71,7 @@ export interface DimensionResult {
 
 const SENTIMENT_ENGINE = new SentimentIndexEngine();
 const ANOMALY_DETECTOR = new StockAnomalyDetector();
-const NEWS_AGGREGATOR = new NewsAggregatorService();
+const NEWS_AGGREGATOR = new NewsAggregator();
 
 // Dimension weights per asset type
 const WEIGHTS: Record<AssetType, Record<string, number>> = {
@@ -322,25 +322,23 @@ async function evalNews(
   rawData: Record<string, unknown>
 ): Promise<void> {
   try {
-    const newsResult = await NEWS_AGGREGATOR.search({ query: `${code} ${name}`, hoursBack: 72, limit: 20 });
-    rawData.news = newsResult;
+    const newsItems = await NEWS_AGGREGATOR.getNewsForSymbols([code]);
+    rawData.news = newsItems;
 
-    if (newsResult.success && newsResult.articles) {
-      const summary = newsResult.sentimentSummary;
-      if (summary) {
-        if (summary.overallMood === 'bullish' && summary.avgScore > 0.3) {
-          dims.news = { score: 80, grade: 'A', signal: 'bullish', detail: 'Strong positive news sentiment', available: true };
-        } else if (summary.overallMood === 'bullish') {
-          dims.news = { score: 65, grade: 'B', signal: 'mild_bullish', detail: 'Positive news sentiment', available: true };
-        } else if (summary.overallMood === 'mixed') {
-          dims.news = { score: 50, grade: 'C', signal: 'neutral', detail: 'Mixed news sentiment', available: true };
-        } else if (summary.avgScore < -0.3) {
-          dims.news = { score: 20, grade: 'F', signal: 'bearish', detail: 'Strong negative news sentiment', available: true };
-        } else {
-          dims.news = { score: 35, grade: 'D', signal: 'mild_bearish', detail: 'Negative news sentiment', available: true };
-        }
+    if (newsItems.length > 0) {
+      const avgSentiment = newsItems.reduce((sum, item) => sum + item.sentiment.score, 0) / newsItems.length;
+      const conclusion = newsItems[0].sentiment.label;
+
+      if (conclusion === 'positive' && avgSentiment > 0.3) {
+        dims.news = { score: 80, grade: 'A', signal: 'bullish', detail: 'Strong positive news sentiment', available: true };
+      } else if (conclusion === 'positive') {
+        dims.news = { score: 65, grade: 'B', signal: 'mild_bullish', detail: 'Positive news sentiment', available: true };
+      } else if (conclusion === 'neutral') {
+        dims.news = { score: 50, grade: 'C', signal: 'neutral', detail: 'Mixed news sentiment', available: true };
+      } else if (avgSentiment < -0.3) {
+        dims.news = { score: 20, grade: 'F', signal: 'bearish', detail: 'Strong negative news sentiment', available: true };
       } else {
-        dims.news = { score: 50, grade: 'C', signal: 'neutral', detail: 'Insufficient news data', available: true };
+        dims.news = { score: 35, grade: 'D', signal: 'mild_bearish', detail: 'Negative news sentiment', available: true };
       }
     } else {
       dims.news = { score: 50, grade: 'C', signal: 'neutral', detail: 'No news available', available: true };
