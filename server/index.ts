@@ -200,6 +200,10 @@ app.use('/api/watchlist', watchlistRoutes);
 // ── R163: Factor Spot-Check + Comparison routes ────────────────────────────
 app.use('/api/factor', factorApiRoutes);
 
+// ── R164: Factor Discovery Wizard routes ─────────────────────────────────
+import factorDiscoveryRoutes from './routes/factor-discovery';
+app.use('/api/factor/discover', factorDiscoveryRoutes);
+
 // ── R162: Backtest Snapshot + Comparison routes ───────────────────────────
 app.use('/api/backtest/snapshots', backtestRoutes);
 
