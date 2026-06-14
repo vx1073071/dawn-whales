@@ -11,6 +11,10 @@
 //   AI_FACTOR_ADVISOR = 1.0 USDT
 
 import log from 'electron-log';
+// R174 E2: Dynamic IC/IR from ETF price source
+import { getETFPriceSource } from '../factors/etf-price-source';
+// R174 E3: Real backtest engine
+import { runFactorBacktest, type FactorBacktestResult } from '../backtest/backtest-engine';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -447,13 +451,64 @@ export class AIFactorAdvisor {
       reason: bf.reason,
       typicalIC: this.getTypicalIC(bf.id),
     }));
+    // ── R174 E3: Real backtest (replaces virtual projectedCurve) ──
+    let backtestResult: any = null;
+    let projectedCurve: Array<{ month: string; cumulative: number }> = [];
+    let expReturn = pattern.backtestBaseline.ret;
+    let expSharpe = pattern.backtestBaseline.sharpe;
+    let expMaxDD = pattern.backtestBaseline.dd;
+    let expWinRate = pattern.backtestBaseline.winRate;
 
-    // ── Build backtest preview ──
-    const months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-    const projectedCurve = months.map((m, i) => ({
-      month: m,
-      cumulative: Number(((pattern.backtestBaseline.ret / 12) * (i + 1) * (0.8 + Math.random() * 0.4)).toFixed(2)),
-    }));
+    try {
+      const factorWeights: Record<string, number> = {};
+      for (const f of factors) {
+        factorWeights[f.factorId] = f.recommendedWeight;
+      }
+      const totalW = Object.values(factorWeights).reduce((a, b) => a + b, 0);
+      if (totalW > 0) {
+        for (const k of Object.keys(factorWeights)) {
+          factorWeights[k] /= totalW;
+        }
+      }
+      const endDate = new Date().toISOString().split('T')[0];
+      const startDate = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      backtestResult = await runFactorBacktest({
+        factorWeights,
+        startDate,
+        endDate,
+        market: request.market || 'US',
+      });
+      if (backtestResult.success) {
+        expReturn = backtestResult.annualReturn;
+        expSharpe = backtestResult.sharpeRatio;
+        expMaxDD = backtestResult.maxDrawdown;
+        expWinRate = backtestResult.winRate;
+        const equityCurve = backtestResult.equityCurve;
+        if (equityCurve.length > 0) {
+          const step = Math.max(1, Math.floor(equityCurve.length / 12));
+          const monLabels = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+          for (let i = 0; i < 12; i++) {
+            const idx = Math.min((i + 1) * step - 1, equityCurve.length - 1);
+            projectedCurve.push({
+              month: monLabels[i],
+              cumulative: Number((equityCurve[idx]?.value ?? 0).toFixed(2)),
+            });
+          }
+        }
+        log.info('[AIFactorAdvisor] Real backtest OK — Sharpe:' + expSharpe.toFixed(3) + ' Return:' + expReturn.toFixed(1) + '%');
+      }
+    } catch (err: any) {
+      log.warn('[AIFactorAdvisor] Backtest failed, using baseline: ' + (err?.message || err));
+    }
+
+    // ── Fallback: if backtest didn't produce curve, use virtual ──
+    if (projectedCurve.length === 0) {
+      const months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+      projectedCurve = months.map((m, i) => ({
+        month: m,
+        cumulative: Number(((pattern.backtestBaseline.ret / 12) * (i + 1) * (0.8 + Math.random() * 0.4)).toFixed(2)),
+      }));
+    }
 
     // ── Warnings ──
     const warnings = this.generateWarnings(intentResult.intent, pattern);
@@ -470,12 +525,12 @@ export class AIFactorAdvisor {
       factors,
       suggestedFactorCount: factors.length,
       backtest: {
-        expectedReturn: pattern.backtestBaseline.ret,
-        expectedSharpe: pattern.backtestBaseline.sharpe,
-        expectedMaxDrawdown: pattern.backtestBaseline.dd,
-        expectedWinRate: pattern.backtestBaseline.winRate,
+        expectedReturn: expReturn,
+        expectedSharpe: expSharpe,
+        expectedMaxDrawdown: expMaxDD,
+        expectedWinRate: expWinRate,
         projectedCurve,
-        vsBenchmark: pattern.backtestBaseline.ret - 8.0,
+        vsBenchmark: expReturn - 8.0,
       },
       billing: { charged, amountUSDT: AIFactorAdvisor.COST_USDT, serviceType: AIFactorAdvisor.SERVICE_TYPE, transactionId: txId },
       warnings,
@@ -578,7 +633,77 @@ export class AIFactorAdvisor {
     return map[id] || 0.015;
   }
 
-  // ── Warnings ─────────────────────────────────────────────────────────
+  // ── E2: Dynamic IC/IR Computation (R174) ────────────────────────────
+
+  private liveICCache: Map<string, { ic: number; ir: number; timestamp: number }> = new Map();
+  private static readonly IC_CACHE_TTL = 5 * 60 * 1000; // 5 min
+
+  /**
+   * Fetch live IC/IR from ETF price source.
+   * Falls back to typicalIC for factors without live data.
+   */
+  async refreshLiveStats(): Promise<void> {
+    try {
+      const etfSource = getETFPriceSource();
+      await etfSource.initialize();
+      const pairs = etfSource.getAllPairs();
+      const endDate = new Date().toISOString().slice(0, 10);
+      const startDate = new Date(Date.now() - 60 * 24 * 3600 * 1000).toISOString().slice(0, 10);
+
+      for (const pair of pairs) {
+        const stats = etfSource.computeFactorStats(pair.factorId, startDate, endDate);
+        if (stats && stats.n >= 5) {
+          // IC ≈ annualizedSharpe / sqrt(252) ≈ dailyMean / dailyStd
+          const ic = stats.dailyStd > 0 ? Math.abs(stats.dailyMean) / stats.dailyStd : 0;
+          const ir = stats.dailyStd > 0 ? stats.dailyMean / stats.dailyStd * Math.sqrt(252) : 0;
+          this.liveICCache.set(pair.factorId, { ic, ir, timestamp: Date.now() });
+        }
+      }
+      log.info(`[AIFactorAdvisor] Live IC/IR refreshed: ${this.liveICCache.size} factors`);
+    } catch (e) {
+      log.warn('[AIFactorAdvisor] Live stats refresh failed, using cache/hardcoded', e);
+    }
+  }
+
+  /** Get IC for a factor, preferring live data over hardcoded */
+  private getIC(id: string): number {
+    const cached = this.liveICCache.get(id);
+    if (cached && (Date.now() - cached.timestamp) < AIFactorAdvisor.IC_CACHE_TTL) {
+      return cached.ic;
+    }
+    return this.getTypicalIC(id);
+  }
+
+  /** Get IR for a factor (live or estimated) */
+  private getIR(id: string): number {
+    const cached = this.liveICCache.get(id);
+    if (cached && (Date.now() - cached.timestamp) < AIFactorAdvisor.IC_CACHE_TTL) {
+      return cached.ir;
+    }
+    return this.getTypicalIC(id) * 0.8; // Rough: IR ≈ IC × 0.8
+  }
+
+  /**
+   * Get top-N factors by live IC, filtered by market compatibility.
+   * This replaces the old hardcoded factor lists from INTENT_PATTERNS.
+   */
+  getTopFactorsByIC(market: string, topN: number = 10): Array<{ factorId: string; ic: number; ir: number }> {
+    const allFactors = [
+      'MOM_12M', 'MOM_1M', 'LIQ', 'VOL_60D', 'GROWTH', 'QUAL', 'SIZE', 'YIELD',
+      'HML', 'RMW', 'CMA', 'MA_20_60', 'EMA_12_26', 'RSI_14', 'BOLL', 'ADX', 'ATR_14',
+    ];
+
+    const scored = allFactors.map(id => ({
+      factorId: id,
+      ic: this.getIC(id),
+      ir: this.getIR(id),
+    }));
+
+    // Sort by IC desc, then IR desc
+    scored.sort((a, b) => b.ic !== a.ic ? b.ic - a.ic : b.ir - a.ir);
+
+    return scored.slice(0, topN);
+  }
 
   private generateWarnings(intent: FactorAdvisorIntent, pattern: IntentPattern): string[] {
     const warnings: string[] = [];
