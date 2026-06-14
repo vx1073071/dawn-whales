@@ -1,10 +1,12 @@
-// ── R168 P2-01: FactorCard with Hover Popover Encyclopedia ──────────────
-// Each factor card shows name + IC + signal indicator.
+// ── R168 P2-01 + R184 P0-02: FactorCard with Level Badge + Signal Light ──
+// Each factor card shows name + IC + signal indicator + level badge.
 // Hovering reveals a popover with: factor definition, calculation method,
-// typical IC range, best market, and usage tips.
-// Acts as a mini-encyclopedia for each factor.
+// typical IC range, best market, usage tips, and level info.
+// Level badge: 🌱 L1 (essential) / 🌿 L2 (advanced) / 🌳 L3 (expert).
+// Signal light: green/red/gray dot with glow animation.
 
 import React, { useState, useRef, useEffect } from 'react';
+import type { FactorLevel } from '../factor/FactorLevelSelector';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -212,12 +214,22 @@ interface FactorCardProps {
   size?: 'sm' | 'md';
 }
 
-export const FactorCard: React.FC<FactorCardProps> = ({
+export const FactorCard: React.FC<FactorCardProps & {
+  /** R184: Factor tier level */
+  level?: FactorLevel;
+  /** R184: Whether to show level badge */
+  showLevel?: boolean;
+  /** R184: Show animated signal glow */
+  showSignalGlow?: boolean;
+}> = ({
   factorId,
   nameCN,
   ic,
   signal = 'neutral',
   size = 'md',
+  level,
+  showLevel = true,
+  showSignalGlow = true,
 }) => {
   const [showPopover, setShowPopover] = useState(false);
   const [popoverPos, setPopoverPos] = useState<PopoverPosition>({ top: 0, left: 0 });
@@ -246,6 +258,12 @@ export const FactorCard: React.FC<FactorCardProps> = ({
     setShowPopover(true);
   };
 
+  const levelBadge = level ? {
+    L1: { emoji: '🌱', label: '常⽤', color: '#22c55e' },
+    L2: { emoji: '🌿', label: '进阶', color: '#f59e0b' },
+    L3: { emoji: '🌳', label: '实验', color: '#a855f7' },
+  }[level] : null;
+
   return (
     <>
       <div
@@ -256,6 +274,22 @@ export const FactorCard: React.FC<FactorCardProps> = ({
         onMouseEnter={handleHover}
         onMouseLeave={() => setShowPopover(false)}
       >
+        {/* R184: Level badge (top-left micro tag) */}
+        {showLevel && levelBadge && (
+          <div
+            className="absolute -top-1.5 -left-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold flex items-center gap-0.5 z-10"
+            style={{
+              backgroundColor: levelBadge.color + '25',
+              color: levelBadge.color,
+              border: `1px solid ${levelBadge.color}40`,
+            }}
+            title={`${levelBadge.label}因子 — ${level}`}
+          >
+            <span className="text-[8px]">{levelBadge.emoji}</span>
+            {levelBadge.label}
+          </div>
+        )}
+
         <div className="flex items-center justify-between mb-1">
           <span className={`font-medium ${isSm ? 'text-[10px]' : 'text-xs'} text-white`}>
             {displayName}
@@ -265,16 +299,40 @@ export const FactorCard: React.FC<FactorCardProps> = ({
               </span>
             )}
           </span>
-          <span
-            className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium`}
-            style={{
-              backgroundColor: signalColors[signal] + '20',
-              color: signalColors[signal],
-              border: `1px solid ${signalColors[signal]}30`,
-            }}
-          >
-            {signalLabels[signal]}
-          </span>
+          {/* R184: Signal light with animated glow */}
+          <div className="flex items-center gap-1.5">
+            <div className="relative flex items-center">
+              <div
+                className={`w-2 h-2 rounded-full ${
+                  showSignalGlow && signal !== 'neutral'
+                    ? signal === 'up' ? 'animate-pulse' : ''
+                    : ''
+                }`}
+                style={{
+                  backgroundColor: signalColors[signal],
+                  boxShadow: showSignalGlow && signal !== 'neutral'
+                    ? `0 0 6px ${signalColors[signal]}80`
+                    : 'none',
+                }}
+              />
+              {(signal === 'up' || signal === 'down') && showSignalGlow && (
+                <div
+                  className="absolute inset-0 rounded-full animate-ping opacity-20"
+                  style={{ backgroundColor: signalColors[signal] }}
+                />
+              )}
+            </div>
+            <span
+              className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium`}
+              style={{
+                backgroundColor: signalColors[signal] + '20',
+                color: signalColors[signal],
+                border: `1px solid ${signalColors[signal]}30`,
+              }}
+            >
+              {signalLabels[signal]}
+            </span>
+          </div>
         </div>
         {ic !== undefined && (
           <div className={`font-mono ${isSm ? 'text-sm' : 'text-lg'} font-bold ${
