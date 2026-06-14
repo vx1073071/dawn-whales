@@ -2,7 +2,7 @@
  * J-57-04: Agent (Macro Agent)
  * Responsibilities: Macro indicators, interest rates, inflation, GDP,
  *   sector analysis, geopolitical risk, currency impact
- * LLM: DeepSeek V4 Pro (cached, 99% off)
+ * LLM: Provider Tier 1 (primary, cached)
  * Data source: macro-economic data (mock for R57)
  *
  * Features:
@@ -130,7 +130,7 @@ export class MacroAgent extends EventEmitter {
         implicationsSummary: this.implications(data, score),
         debateQuestions,
         narrative: this.buildNarrative(data, rating),
-        llmProvider: 'deepseek-v4-pro-cached',
+        llmProvider: 'primary-cached',
         llmCost: 0.0003,
         cacheHit: true,
         completedAt: new Date().toISOString(),

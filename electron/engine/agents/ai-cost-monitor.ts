@@ -86,13 +86,13 @@ export interface ModelPrice {
 
 const MODEL_PRICES: ModelPrice[] = [
   {
-    provider: 'deepseek', model: 'deepseek-v4-pro',
+    provider: 'LLM Provider', model: 'LLM Provider-v4-pro',
     inputCostPer1K: 0.000435, outputCostPer1K: 0.000435,
     cachedInputCostPer1K: 0.00000435, cacheDiscountPct: 99,
     effectiveFrom: '2026-06-01', expiryHint: '2026-07-01',
   },
   {
-    provider: 'deepseek', model: 'deepseek-v4-flash',
+    provider: 'LLM Provider', model: 'LLM Provider-v4-flash',
     inputCostPer1K: 0.0002175, outputCostPer1K: 0.0002175,
     cachedInputCostPer1K: 0.000002175, cacheDiscountPct: 99,
     effectiveFrom: '2026-06-01', expiryHint: '2026-07-01',

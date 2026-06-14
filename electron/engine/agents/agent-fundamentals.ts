@@ -1,7 +1,7 @@
 /**
  * J-57-01: fundamental Agent (Fundamentals Agent)
  * Responsibilities: PE/PB/ROE analysis, earnings reports, valuation models
- * LLM: DeepSeek V4 Pro (cached, 99% off)
+ * LLM: Provider Tier 1 (primary, cached)
  * Data source: em-mx-finance-data (mock for R57, real in R58)
  *
  * Features:
@@ -11,7 +11,7 @@
  * - Valuation model (DCF/PEG/Graham)
  * - Peer comparison
  * - LLM-enhanced narrative output
- * - DeepSeek caching (identical prompts for 90%+ hit rate)
+ * - LLM caching (identical prompts for 90%+ hit rate)
  *
  * >=400L, 20 tests
  */
@@ -113,7 +113,7 @@ export class FundamentalsAgent extends EventEmitter implements IAnalyst {
       const risks = this.identifyRisks(data, score);
       const highlights = this.identifyHighlights(data, score);
 
-      // 7. LLM narrative (cached via DeepSeek)
+      // 7. LLM narrative (cached via LLM Provider)
       const { narrative, llmProvider, llmCost, cacheHit } = await this.generateNarrative(symbol, data, scores, rating);
 
       const analysis: FundamentalsAnalysis = {
@@ -347,11 +347,11 @@ export class FundamentalsAgent extends EventEmitter implements IAnalyst {
       const router = getMultiLLMRouter();
       const prompt = this.buildNarrativePrompt(symbol, data, scores, rating);
       // Use router for cost estimation — actual LLM call would go through router.invoke()
-      // For R57, use deterministic template-based narrative (DeepSeek caching compatibility)
+      // For R57, use deterministic template-based narrative (LLM caching compatibility)
       const summary = router.getCostSummary();
       return {
         narrative: this.deterministicNarrative(symbol, data, rating),
-        llmProvider: 'deepseek-v4-pro-cached',
+        llmProvider: 'primary-cached',
         llmCost: 0.0005, // ~$0.0005 with 99% cache hit
         cacheHit: true,
       };

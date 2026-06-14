@@ -373,7 +373,7 @@ export class FourAgentOrchestrator extends EventEmitter {
     options?: { requirement?: string },
   ): Promise<ModelArenaResult[]> {
     const providers = [
-      { provider: 'deepseek', model: 'deepseek-v4-pro-cached' },
+      { provider: 'LLM Provider', model: 'LLM Provider-v4-pro-cached' },
       { provider: 'openai', model: 'gpt-4o-mini' },
       { provider: 'anthropic', model: 'claude-sonnet' },
     ];

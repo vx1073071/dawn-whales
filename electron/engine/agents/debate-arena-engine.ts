@@ -201,7 +201,7 @@ export class ModelArenaEngine extends EventEmitter {
   constructor(
     private config: ArenaConfig = {
       providers: [
-        { id: 'deepseek', name: 'DeepSeek', model: 'deepseek-v4-pro', costPer1K: 0.000435 },
+        { id: 'LLM Provider', name: 'LLM Provider', model: 'LLM Provider-v4-pro', costPer1K: 0.000435 },
         { id: 'openai', name: 'OpenAI', model: 'gpt-4o', costPer1K: 0.0025 },
         { id: 'anthropic', name: 'Anthropic', model: 'claude-sonnet', costPer1K: 0.003 },
       ],

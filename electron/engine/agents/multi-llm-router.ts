@@ -3,7 +3,7 @@
  * 11 LLM route + + downgrade
  *
  * Supported providers:
- * 1. DeepSeek (default, cheapest, good Chinese)
+ * 1. LLM Provider (default, cheapest, good Chinese)
  * 2. Qwen (Alibaba, good Chinese)
  * 3. MiniMax (Chinese-native)
  * 4. ZhiPu/GLM (Chinese academic)
@@ -18,7 +18,7 @@
  * Features:
  * - Provider registry with model catalog
  * - Cost estimation per call (input/output tokens)
- * - Degradation chain (DeepSeek → Qwen → MiniMax → Ollama)
+ * - Degradation chain (LLM Provider → Qwen → MiniMax → Ollama)
  * - Rate limiting per provider
  * - Usage tracking + monthly cost aggregation
  * - API key management (encrypted storage reference)
@@ -33,7 +33,7 @@ void EngineError; // [EngineError:AI] structured error tracking
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
-export type LLMProvider = 'deepseek' | 'qwen' | 'minimax' | 'zhipu' | 'openai' | 'anthropic' | 'gemini' | 'ollama' | 'moonshot' | 'baichuan' | 'yi';
+export type LLMProvider = 'LLM Provider' | 'qwen' | 'minimax' | 'zhipu' | 'openai' | 'anthropic' | 'gemini' | 'ollama' | 'moonshot' | 'baichuan' | 'yi';
 export type LLMCapability = 'chat' | 'analysis' | 'code' | 'reasoning' | 'multimodal';
 
 export interface LLMModel {
@@ -120,13 +120,13 @@ export interface DegradationChain {
 // ── Model Catalog ──────────────────────────────────────────────────────────
 
 const MODEL_CATALOG: LLMModel[] = [
-  // DeepSeek V4 family (v18 pricing, 2026/06)
-  { id: 'deepseek-v4-pro-cached', provider: 'deepseek', name: 'deepseek-v4-pro', displayName: 'DeepSeek V4 Pro (Cached)', contextWindow: 128000, maxOutputTokens: 16384, inputCostPer1K: 0.000435, outputCostPer1K: 0.00087, cachedInputCostPer1K: 0.000003625, cacheDiscountPct: 99, capabilities: ['chat', 'analysis', 'reasoning', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 1500, isLocal: false },
-  { id: 'deepseek-v4-pro', provider: 'deepseek', name: 'deepseek-v4-pro', displayName: 'DeepSeek V4 Pro', contextWindow: 128000, maxOutputTokens: 16384, inputCostPer1K: 0.00174, outputCostPer1K: 0.00348, capabilities: ['chat', 'analysis', 'reasoning', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 1500, isLocal: false },
-  { id: 'deepseek-v4-flash', provider: 'deepseek', name: 'deepseek-v4-flash', displayName: 'DeepSeek V4 Flash', contextWindow: 128000, maxOutputTokens: 8192, inputCostPer1K: 0.00014, outputCostPer1K: 0.00028, cachedInputCostPer1K: 0.0000028, cacheDiscountPct: 98, capabilities: ['chat', 'analysis', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 800, isLocal: false },
-  // DeepSeek V3 family (legacy)
-  { id: 'deepseek-chat', provider: 'deepseek', name: 'deepseek-chat', displayName: 'DeepSeek V3.2 Chat', contextWindow: 128000, maxOutputTokens: 8192, inputCostPer1K: 0.00014, outputCostPer1K: 0.00028, capabilities: ['chat', 'analysis', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 800, isLocal: false },
-  { id: 'deepseek-reasoner', provider: 'deepseek', name: 'deepseek-reasoner', displayName: 'DeepSeek R1', contextWindow: 128000, maxOutputTokens: 16384, inputCostPer1K: 0.00055, outputCostPer1K: 0.00219, capabilities: ['chat', 'analysis', 'reasoning'], supportsStreaming: true, supportsFunctionCalling: false, latencyMs: 3000, isLocal: false },
+  // LLM Provider V4 family (v18 pricing, 2026/06)
+  { id: 'LLM Provider-v4-pro-cached', provider: 'LLM Provider', name: 'LLM Provider-v4-pro', displayName: 'Provider T1 (primary) (Cached)', contextWindow: 128000, maxOutputTokens: 16384, inputCostPer1K: 0.000435, outputCostPer1K: 0.00087, cachedInputCostPer1K: 0.000003625, cacheDiscountPct: 99, capabilities: ['chat', 'analysis', 'reasoning', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 1500, isLocal: false },
+  { id: 'LLM Provider-v4-pro', provider: 'LLM Provider', name: 'LLM Provider-v4-pro', displayName: 'Provider T1 (primary)', contextWindow: 128000, maxOutputTokens: 16384, inputCostPer1K: 0.00174, outputCostPer1K: 0.00348, capabilities: ['chat', 'analysis', 'reasoning', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 1500, isLocal: false },
+  { id: 'LLM Provider-v4-flash', provider: 'LLM Provider', name: 'LLM Provider-v4-flash', displayName: 'LLM Provider V4 Flash', contextWindow: 128000, maxOutputTokens: 8192, inputCostPer1K: 0.00014, outputCostPer1K: 0.00028, cachedInputCostPer1K: 0.0000028, cacheDiscountPct: 98, capabilities: ['chat', 'analysis', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 800, isLocal: false },
+  // LLM Provider V3 family (legacy)
+  { id: 'LLM Provider-chat', provider: 'LLM Provider', name: 'LLM Provider-chat', displayName: 'LLM Provider V3.2 Chat', contextWindow: 128000, maxOutputTokens: 8192, inputCostPer1K: 0.00014, outputCostPer1K: 0.00028, capabilities: ['chat', 'analysis', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 800, isLocal: false },
+  { id: 'LLM Provider-reasoner', provider: 'LLM Provider', name: 'LLM Provider-reasoner', displayName: 'LLM Provider R1', contextWindow: 128000, maxOutputTokens: 16384, inputCostPer1K: 0.00055, outputCostPer1K: 0.00219, capabilities: ['chat', 'analysis', 'reasoning'], supportsStreaming: true, supportsFunctionCalling: false, latencyMs: 3000, isLocal: false },
   { id: 'qwen-turbo', provider: 'qwen', name: 'qwen-turbo', displayName: 'Qwen Turbo', contextWindow: 128000, maxOutputTokens: 8192, inputCostPer1K: 0.0002, outputCostPer1K: 0.0006, capabilities: ['chat', 'analysis'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 600, isLocal: false },
   { id: 'qwen-max', provider: 'qwen', name: 'qwen-max', displayName: 'Qwen Max', contextWindow: 128000, maxOutputTokens: 8192, inputCostPer1K: 0.002, outputCostPer1K: 0.006, capabilities: ['chat', 'analysis', 'reasoning', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 1200, isLocal: false },
   { id: 'minimax-m3', provider: 'minimax', name: 'MiniMax-M3', displayName: 'MiniMax M3', contextWindow: 204800, maxOutputTokens: 8192, inputCostPer1K: 0, outputCostPer1K: 0, capabilities: ['chat', 'analysis', 'code'], supportsStreaming: true, supportsFunctionCalling: true, latencyMs: 700, isLocal: false },
@@ -144,15 +144,15 @@ const MODEL_CATALOG: LLMModel[] = [
 
 // Default degradation chain (v18): V4 Pro cached → V4 Pro → V4 Flash → MiniMax M3
 const DEFAULT_CHAIN: DegradationChain = {
-  primary: 'deepseek',
-  fallbacks: ['deepseek', 'deepseek', 'minimax'],
+  primary: 'LLM Provider',
+  fallbacks: ['LLM Provider', 'LLM Provider', 'minimax'],
   reason: 'V4 Pro cached → V4 Pro → V4 Flash → MiniMax M3 (cost-optimized)',
 };
 
 // v18 model-level degradation chain (model IDs, not just providers)
 export const V18_MODEL_CHAIN = {
-  primary: 'deepseek-v4-pro-cached',
-  fallbacks: ['deepseek-v4-pro', 'deepseek-v4-flash', 'minimax-m3'],
+  primary: 'LLM Provider-v4-pro-cached',
+  fallbacks: ['LLM Provider-v4-pro', 'LLM Provider-v4-flash', 'minimax-m3'],
   reason: 'V4 Pro 99% cache → V4 Pro full → V4 Flash → MiniMax M3 (free)',
 };
 
@@ -177,7 +177,7 @@ export class MultiLLMRouter extends EventEmitter {
     this.degradationChain = { ...DEFAULT_CHAIN, fallbacks: [...DEFAULT_CHAIN.fallbacks] };
 
     // Initialize all providers as enabled by default
-    const allProviders: LLMProvider[] = ['deepseek', 'qwen', 'minimax', 'zhipu', 'openai', 'anthropic', 'gemini', 'ollama', 'moonshot', 'baichuan', 'yi'];
+    const allProviders: LLMProvider[] = ['LLM Provider', 'qwen', 'minimax', 'zhipu', 'openai', 'anthropic', 'gemini', 'ollama', 'moonshot', 'baichuan', 'yi'];
     for (const p of allProviders) {
       this.providers.set(p, {
         provider: p,

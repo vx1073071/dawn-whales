@@ -2,7 +2,7 @@
  * J-57-03: Agent (Sentiment Agent)
  * Responsibilities: Social media sentiment, news sentiment, fear & greed,
  *   analyst consensus, insider trading detection
- * LLM: DeepSeek V4 Pro (cached, 99% off)
+ * LLM: Provider Tier 1 (primary, cached)
  * Data source: (mock for R57)
  *
  * Features:
@@ -11,7 +11,7 @@
  * - Fear & Greed index (0-100)
  * - Analyst consensus aggregation (buy/hold/sell ratio)
  * - Insider trading signals
- * - LLM-enhanced narrative (DeepSeek cached)
+ * - LLM-enhanced narrative (LLM cached)
  * - Sentiment trend tracking (improving/stable/deteriorating)
  *
  * >=350L, 15 tests
@@ -113,7 +113,7 @@ export class SentimentAgent extends EventEmitter {
         sentimentTrend: this.trendStr(data.sentimentTrend),
         sentimentSummary: this.summaryStr(data, score),
         narrative: this.buildNarrative(symbol, data, rating),
-        llmProvider: 'deepseek-v4-pro-cached',
+        llmProvider: 'primary-cached',
         llmCost: 0.0003,
         cacheHit: true,
         completedAt: new Date().toISOString(),

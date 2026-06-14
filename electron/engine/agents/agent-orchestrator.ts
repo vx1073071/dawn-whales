@@ -317,8 +317,8 @@ export class AgentOrchestrator extends EventEmitter {
         debateRounds: [],
         finalDecision: { recommendation: 'hold', confidence: 0, reasoning: '', votes: { fundamentals: 'neutral', sentiment: 'neutral', news: 'neutral', technical: 'neutral' } },
         durationMs: 0,
-        llmProvider: session.request.llmProvider || 'deepseek',
-        llmModel: session.request.llmModel || 'deepseek-chat',
+        llmProvider: session.request.llmProvider || 'LLM Provider',
+        llmModel: session.request.llmModel || 'LLM Provider-chat',
         costEstimate: 0,
         completedAt: '',
       };

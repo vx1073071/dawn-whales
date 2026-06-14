@@ -3,14 +3,14 @@ import { EngineError, ErrorCode } from '../../errors';
  * J-63-01: AI Gateway /api (R63 v19 — v1.5.0-rc service)
  *
  * : multi-llm-router migrationservice。
- * DeepSeek key service, 。
+ * LLM key service, 。
  * middlewareAI, cache≥95%, downgrade V4Pro→Flash→MiniMax。
  *
  * Features:
  * - Express/Fastify-style API routes for 4 Agent AI calls
  * - JWT authentication on every request
  * - License middleware: validate before every AI call
- * - Multi-LLM router: DeepSeek V4 Pro → Flash → MiniMax fallback
+ * - Multi-LLM router: Provider T1 → Flash → MiniMax fallback
  * - Cache layer: L1(in-memory) L2(disk) with ≥95% hit rate target
  * - Cost tracking per request
  * - Rate limiting per license
@@ -24,8 +24,8 @@ import i18n from '../../../src/i18n';
 // ── Types ──────────────────────────────────────────────────────────────────
 
 export type LLMProvider =
-  | 'deepseek-v4-pro'
-  | 'deepseek-flash'
+  | 'primary-t1'
+  | 'primary-t2'
   | 'minimax-abab'
   | 'moonshot-v1'
   | 'zhipu-glm4'
@@ -37,14 +37,14 @@ export type LLMProvider =
   | 'yi-large';
 
 export const PROVIDER_PRIORITY: LLMProvider[] = [
-  'deepseek-v4-pro',
-  'deepseek-flash',
+  'primary-t1',
+  'primary-t2',
   'minimax-abab',
 ];
 
 export const ALL_PROVIDERS: { id: LLMProvider; label: string; tier: number }[] = [
-  { id: 'deepseek-v4-pro', label: 'DeepSeek V4 Pro', tier: 1 },
-  { id: 'deepseek-flash', label: 'DeepSeek Flash', tier: 2 },
+  { id: 'primary-t1', label: 'Provider T1', tier: 1 },
+  { id: 'primary-t2', label: 'Provider T2', tier: 2 },
   { id: 'minimax-abab', label: 'MiniMax ABAB', tier: 2 },
   { id: 'moonshot-v1', label: 'Moonshot V1', tier: 3 },
   { id: 'zhipu-glm4', label: i18n.t('aiGatewayServer.k1'), tier: 3 },
@@ -126,8 +126,8 @@ export class AIGatewayServer {
 
   // Cost per 1K tokens (simplified)
   private costPer1K: Record<string, number> = {
-    'deepseek-v4-pro': 0.002,
-    'deepseek-flash': 0.0005,
+    'primary-t1': 0.002,
+    'primary-t2': 0.0005,
     'minimax-abab': 0.001,
   };
 
@@ -230,8 +230,8 @@ export class AIGatewayServer {
    * Execute an AI call against the selected provider.
    *
    * TODO(J-01): Currently simulated. In production, this should:
-   *   1. Read DEEPSEEK_API_KEY from process.env.DEEPSEEK_API_KEY
-   *   2. Make a real HTTPS call to api.deepseek.com/v1/chat/completions
+   *   1. Read LLM_API_KEY from process.env.LLM_API_KEY
+   *   2. Make a real HTTPS call to llm-provider.internal/v1/chat/completions
    *   3. Map the response to AIResponse format
    *   4. Track actual token usage from response.usage
    *

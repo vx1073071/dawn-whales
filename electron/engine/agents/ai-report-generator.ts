@@ -1,7 +1,7 @@
 ﻿import { EngineError, ErrorCode } from '../../errors';
 // ── AI Report Generator ─────────────────────────────────────────────────────
 // Q4: Backtest Result AI Interpretation
-// Input: backtest results array → DeepSeek LLM → Markdown report
+// Input: backtest results array → LLM Provider LLM → Markdown report
 // Timeout fallback: 20s → English template, Markdown includes key metrics + risk + recommendations
 
 import log from 'electron-log';
@@ -203,7 +203,7 @@ ${i18n.t('AiReportGenerator.k22')}`;
       const { callChatCompletions } = await import('./utils/ai-gateway-client');
       const result = await callChatCompletions({
         messages: [{ role: 'user', content: prompt }],
-        model: 'deepseek-chat',
+        model: 'LLM Provider-chat',
         temperature: 0.25,
         max_tokens: 600,
       }, timeoutMs);
@@ -302,7 +302,7 @@ ${i18n.t('AiReportGenerator.k45')}`;
       const { callChatCompletions } = await import('./utils/ai-gateway-client');
       const result = await callChatCompletions({
         messages: [{ role: 'user', content: prompt }],
-        model: 'deepseek-chat',
+        model: 'LLM Provider-chat',
         temperature: 0.25,
         max_tokens: 600,
       }, timeoutMs);
@@ -440,7 +440,7 @@ ${i18n.t('AiReportGenerator.k60')}`;
       const { callChatCompletions } = await import('./utils/ai-gateway-client');
       const result = await callChatCompletions({
         messages: [{ role: 'user', content: prompt }],
-        model: 'deepseek-chat',
+        model: 'LLM Provider-chat',
         temperature: 0.25,
         max_tokens: 600,
       }, timeoutMs);
@@ -571,7 +571,7 @@ ${i18n.t('AiReportGenerator.k75')}`;
       const { callChatCompletions } = await import('./utils/ai-gateway-client');
       const result = await callChatCompletions({
         messages: [{ role: 'user', content: prompt }],
-        model: 'deepseek-chat',
+        model: 'LLM Provider-chat',
         temperature: 0.25,
         max_tokens: 600,
       }, timeoutMs);

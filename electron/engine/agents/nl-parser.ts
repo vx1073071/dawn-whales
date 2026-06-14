@@ -380,7 +380,7 @@ function extractRiskManagement(text: string, strategy: ParsedStrategy['strategy'
 }
 
 // ── LLM Fallback Interface (Phase 3 ) ──────────────────────────────────
-// rule， DeepSeek Qwen API
+// rule， LLM Provider Qwen API
 
 interface LLMParseResult {
   type: 'ma_cross' | 'rsi' | 'macd' | 'momentum' | 'bollinger' | 'combined';
@@ -413,7 +413,7 @@ function callLLM(input: string): Promise<LLMParseResult | null> {
     const gatewayUrl = new URL(AI_GATEWAY_URL);
     const prompt = LLM_PROMPT_TEMPLATE.replace('{{INPUT}}', input);
     const body = JSON.stringify({
-      provider: 'deepseek',
+      provider: 'LLM Provider',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.1,
       max_tokens: 300,

@@ -1,7 +1,7 @@
 /**
  * J-57-02: technical Agent (Technical Agent)
  * Responsibilities: Moving averages, RSI, MACD, volume analysis, patterns
- * LLM: DeepSeek V4 Pro (cached, 99% off)
+ * LLM: Provider Tier 1 (primary, cached)
  * Data source: quant-strategy technical indicators (mock for R57)
  *
  * Features:
@@ -12,7 +12,7 @@
  * - Support/resistance level detection
  * - Pattern recognition (double bottom/top, head-shoulders)
  * - Bollinger Band position
- * - LLM-enhanced narrative (DeepSeek cached)
+ * - LLM-enhanced narrative (LLM cached)
  *
  * >=350L, 15 tests
  */
@@ -127,7 +127,7 @@ export class TechnicalAgent extends EventEmitter {
         signals,
         risks,
         narrative: this.buildNarrative(symbol, data, rating, scores),
-        llmProvider: 'deepseek-v4-pro-cached',
+        llmProvider: 'primary-cached',
         llmCost: 0.0004,
         cacheHit: true,
         completedAt: new Date().toISOString(),

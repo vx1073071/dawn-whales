@@ -12,6 +12,8 @@
 import log from 'electron-log';
 import type { FactorSignal, FactorStrategy } from './factor-signal-pipeline';
 import { getFactorSignalPipeline } from './factor-signal-pipeline';
+// R178 G11: AI action boundary guard
+import { assertNotAICaller } from '../agents/ai-action-guard';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -220,6 +222,8 @@ export class OrderExecutor {
     strategyId: string,
     signalIds: string[],
   ): Promise<OrderConfirmation> {
+    // R178 G11: AI must never place orders directly
+    assertNotAICaller('OrderExecutor.placeOrder');
     const feeEstimate = this.feeCalc.estimate(position.assetClass, position.notionalValue);
 
     if (!feeEstimate.effective) {
@@ -266,6 +270,8 @@ export class OrderExecutor {
     strategy: FactorStrategy,
     positions: PositionSizeResult[],
   ): Promise<OrderConfirmation[]> {
+    // R178 G11: AI must never execute trading strategies
+    assertNotAICaller('OrderExecutor.executeStrategy');
     const confirmations: OrderConfirmation[] = [];
     const signalIds = strategy.signals.map(s => s.signalId);
 
@@ -347,6 +353,8 @@ export class FactorTradePipeline {
     totalNotional: number;
     viable: boolean;
   }> {
+    // R178 G11: AI must never execute trading strategies
+    assertNotAICaller('FactorTradePipeline.executeStrategy');
     const { strategy, symbols, accountEquity, maxPositionPct = 0.2 } = params;
 
     // Map factors to symbols (simple: one symbol per factor)
