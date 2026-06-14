@@ -1,4 +1,4 @@
-# Dawn Whales Transfer vs Tip — Two Independent Pipelines
+# TradingEasy Transfer vs Tip — Two Independent Pipelines
 
 > **Round**: R143 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: SPECIFICATION — v17.6 Final, Locked by Owner

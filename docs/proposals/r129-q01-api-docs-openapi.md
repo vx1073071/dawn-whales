@@ -1,4 +1,4 @@
-# R129-Q01: Dawn Whales Server API 接口文档 (OpenAPI 3.0)
+# R129-Q01: TradingEasy Server API 接口文档 (OpenAPI 3.0)
 
 > **Author**: QClaw · **Task**: R129-Q01 · **Hours**: 3h
 > **Version**: v2.0.0 | **Base URL**: `http://localhost:3001/api`
@@ -7,7 +7,7 @@
 
 ## 概述
 
-Dawn Whales Server 提供 RESTful HTTP API，用于双模跟单架构的服务器端组件。所有写操作端点需 JWT Bearer Token 认证，健康检查端点公开访问。
+TradingEasy Server 提供 RESTful HTTP API，用于双模跟单架构的服务器端组件。所有写操作端点需 JWT Bearer Token 认证，健康检查端点公开访问。
 
 - **协议**: HTTP/1.1
 - **数据格式**: JSON

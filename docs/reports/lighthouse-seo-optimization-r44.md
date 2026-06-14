@@ -94,7 +94,7 @@ purpose: (auto-generated, needs review)
 ```html
 <!-- index.html -->
 <head>
-  <title>DAWN WHALES</title>
+  <title>TradingEasy</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -111,16 +111,16 @@ purpose: (auto-generated, needs review)
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
   <!-- SEO Meta -->
-  <title>DAWN WHALES - 智能量化交易平台 | AI 策略优化 + 实时风控</title>
-  <meta name="description" content="DAWN WHALES 是领先的智能量化交易平台，提供 AI 策略生成、自动回测优化、实时性能监控、多账户管理等功能。支持 A 股、港股、美股交易。">
-  <meta name="keywords" content="量化交易,智能策略,AI交易,自动回测,风控系统,多账户,实时行情,DAWN WHALES">
-  <meta name="author" content="DAWN WHALES Team">
+  <title>TradingEasy - 智能量化交易平台 | AI 策略优化 + 实时风控</title>
+  <meta name="description" content="TradingEasy 是领先的智能量化交易平台，提供 AI 策略生成、自动回测优化、实时性能监控、多账户管理等功能。支持 A 股、港股、美股交易。">
+  <meta name="keywords" content="量化交易,智能策略,AI交易,自动回测,风控系统,多账户,实时行情,TradingEasy">
+  <meta name="author" content="TradingEasy Team">
   <meta name="robots" content="index, follow">
   
   <!-- Open Graph (Facebook/LinkedIn) -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://dawn-whales.ai/">
-  <meta property="og:title" content="DAWN WHALES - 智能量化交易平台">
+  <meta property="og:title" content="TradingEasy - 智能量化交易平台">
   <meta property="og:description" content="AI 策略生成 + 自动回测优化 + 实时性能监控 + 多账户管理">
   <meta property="og:image" content="https://dawn-whales.ai/og-image.png">
   <meta property="og:locale" content="zh_CN">
@@ -129,7 +129,7 @@ purpose: (auto-generated, needs review)
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://dawn-whales.ai/">
-  <meta name="twitter:title" content="DAWN WHALES - 智能量化交易平台">
+  <meta name="twitter:title" content="TradingEasy - 智能量化交易平台">
   <meta name="twitter:description" content="AI 策略生成 + 自动回测优化 + 实时性能监控">
   <meta name="twitter:image" content="https://dawn-whales.ai/twitter-card.png">
   
@@ -155,7 +155,7 @@ purpose: (auto-generated, needs review)
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "DAWN WHALES",
+    "name": "TradingEasy",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Windows, macOS, Linux",
     "description": "智能量化交易平台",
@@ -269,7 +269,7 @@ purpose: (auto-generated, needs review)
 #### robots.txt
 
 ```txt
-# DAWN WHALES Robots.txt
+# TradingEasy Robots.txt
 # Last updated: 2026-06-07
 
 # 允许所有爬虫
@@ -321,7 +321,7 @@ Host: https://dawn-whales.ai
 <picture>
   <source srcset="/logo.avif" type="image/avif">
   <source srcset="/logo.webp" type="image/webp">
-  <img src="/logo.png" alt="DAWN WHALES Logo" width="200" height="60" loading="eager" decoding="async">
+  <img src="/logo.png" alt="TradingEasy Logo" width="200" height="60" loading="eager" decoding="async">
 </picture>
 
 <picture>
@@ -385,29 +385,29 @@ Host: https://dawn-whales.ai
 
 ```html
 <!-- 首页 -->
-<title>DAWN WHALES - 智能量化交易平台 | AI 策略优化 + 实时风控</title>
+<title>TradingEasy - 智能量化交易平台 | AI 策略优化 + 实时风控</title>
 
 <!-- 策略页 -->
-<title>策略管理 - DAWN WHALES | AI 策略生成 + 模板库 + 手动编写</title>
+<title>策略管理 - TradingEasy | AI 策略生成 + 模板库 + 手动编写</title>
 
 <!-- 回测页 -->
-<title>回测系统 - DAWN WHALES | 历史数据回测 + 收益分析 + 风险评估</title>
+<title>回测系统 - TradingEasy | 历史数据回测 + 收益分析 + 风险评估</title>
 
 <!-- 优化页 -->
-<title>策略优化 - DAWN WHALES | 参数优化 + Walk-Forward + 多目标优化</title>
+<title>策略优化 - TradingEasy | 参数优化 + Walk-Forward + 多目标优化</title>
 ```
 
 #### 描述优化
 
 ```html
 <!-- 首页 -->
-<meta name="description" content="DAWN WHALES 是领先的智能量化交易平台，提供 AI 策略生成、自动回测优化、实时性能监控、多账户管理等功能。支持 A 股、港股、美股交易。">
+<meta name="description" content="TradingEasy 是领先的智能量化交易平台，提供 AI 策略生成、自动回测优化、实时性能监控、多账户管理等功能。支持 A 股、港股、美股交易。">
 
 <!-- 策略页 -->
-<meta name="description" content="使用 DAWN WHALES 策略管理系统，通过 AI 自动生成策略、选择模板快速创建、或手动编写自定义策略。支持双均线、RSI、MACD 等多种策略类型。">
+<meta name="description" content="使用 TradingEasy 策略管理系统，通过 AI 自动生成策略、选择模板快速创建、或手动编写自定义策略。支持双均线、RSI、MACD 等多种策略类型。">
 
 <!-- 回测页 -->
-<meta name="description" content="DAWN WHALES 回测系统提供历史数据回测、收益曲线分析、风险指标评估。支持自定义时间范围、初始资金、手续费设置。">
+<meta name="description" content="TradingEasy 回测系统提供历史数据回测、收益曲线分析、风险指标评估。支持自定义时间范围、初始资金、手续费设置。">
 ```
 
 ### 结构化数据
@@ -418,7 +418,7 @@ Host: https://dawn-whales.ai
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "DAWN WHALES",
+  "name": "TradingEasy",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Windows, macOS, Linux",
   "description": "智能量化交易平台",
@@ -449,7 +449,7 @@ Host: https://dawn-whales.ai
   "datePublished": "2026-06-07",
   "author": {
     "@type": "Organization",
-    "name": "DAWN WHALES Team"
+    "name": "TradingEasy Team"
   }
 }
 ```

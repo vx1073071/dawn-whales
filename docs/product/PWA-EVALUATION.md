@@ -6,7 +6,7 @@ owner: JVS
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES PWA 移动端技术评估报告
+# TradingEasy PWA 移动端技术评估报告
 
 > **作者**: JVS (AI量化系统)  
 > **日期**: 2026-06-04  
@@ -61,7 +61,7 @@ purpose: (auto-generated, needs review)
 - ✅ **适合**: 策略监控、行情查看、信号推送、绩效查看、回测报告
 - ❌ **不适合**: 策略执行、下单交易、实时风控计算
 
-**推荐定位**: PWA 作为 DAWN WHALES 的"移动端只读伴侣"，不做交易执行。
+**推荐定位**: PWA 作为 TradingEasy 的"移动端只读伴侣"，不做交易执行。
 
 ---
 
@@ -72,7 +72,7 @@ purpose: (auto-generated, needs review)
 **原理**: 用 `vite-plugin-pwa` 在现有 Vite 构建基础上生成 PWA 配置。
 
 ```
-DAWN WHALES Desktop (Electron)
+TradingEasy Desktop (Electron)
   └── React 前端 (共享)
        └── PWA 构建产物 (独立部署)
             ├── manifest.json
@@ -106,7 +106,7 @@ DAWN WHALES Desktop (Electron)
 **原理**: 用 Capacitor 将 React 代码打包为原生 iOS/Android 应用。
 
 ```
-DAWN WHALES Desktop (Electron)
+TradingEasy Desktop (Electron)
   └── React 前端 (共享)
        └── Capacitor 壳 (iOS/Android)
             ├── WebView 渲染
@@ -142,7 +142,7 @@ DAWN WHALES Desktop (Electron)
 **原理**: 用 React Native 重写移动端，共享业务逻辑但重写 UI。
 
 ```
-DAWN WHALES Desktop (Electron)
+TradingEasy Desktop (Electron)
   └── React 前端
   └── React Native 移动端 (独立项目)
        ├── 共享: Zustand store / 类型定义 / 工具函数
@@ -202,7 +202,7 @@ DAWN WHALES Desktop (Electron)
 
 **部署**:
 - Cloudflare Pages (免费 + 全球 CDN)
-- 自定义域名: `m.dawnwhales.app` 或 `app.dawnwhales.app`
+- 自定义域名: `m.TradingEasy.app` 或 `app.TradingEasy.app`
 
 #### Phase 2: 交互增强 (可选, +20h)
 
@@ -263,7 +263,7 @@ API Gateway (Node.js + Express/Fastify)
 |------|--------|------|
 | Cloudflare Pages | $0 | 免费套餐足够 |
 | 后端服务器 | $10-20 | Railway/Fly.io |
-| 域名 | $1 | dawnwhales.app |
+| 域名 | $1 | TradingEasy.app |
 | **总计** | **$11-21/月** | — |
 
 ### 6.3 预期收益
@@ -330,7 +330,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'DAWN WHALES · 道鲸',
+        name: 'TradingEasy · 道鲸',
         short_name: '道鲸',
         description: 'AI量化交易 · 说人话就能做量化',
         theme_color: '#0d1117',
@@ -346,7 +346,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/api\.dawnwhales\.app\/.*/i,
+            urlPattern: /^https:\/\/api\.TradingEasy\.app\/.*/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',

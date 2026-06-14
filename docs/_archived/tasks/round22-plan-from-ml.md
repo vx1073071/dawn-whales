@@ -55,7 +55,7 @@ R21 把测试覆盖率从 92.9% 推到 97.9%，26→7 fail。R22 做 **Sprint 1 
 **背景**: R20 Electron 启动验证通过，但 `npm run dist:win` 未执行。
 
 **交付物**:
-- `npm run dist:win` 生成 DAWN WHALES Setup x.x.x.exe
+- `npm run dist:win` 生成 TradingEasy Setup x.x.x.exe
 - 双击安装 → 启动 → Dashboard 显示 → 0 crash
 - `docs/demo/v0.7.0-launch-checklist.md` 更新
 

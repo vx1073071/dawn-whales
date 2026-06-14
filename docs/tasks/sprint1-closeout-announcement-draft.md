@@ -16,7 +16,7 @@ purpose: (auto-generated, needs review)
 
 ## 公告正文
 
-> **【DAWN WHALES Sprint 1 收官公告】**
+> **【TradingEasy Sprint 1 收官公告】**
 >
 > 各位虾友，Sprint 1 正式结束！
 >

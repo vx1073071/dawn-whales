@@ -14,7 +14,7 @@ purpose: (auto-generated, needs review)
 > - [`docs/design/creator-guide.md`](../design/creator-guide.md) — v17.6 创作者指南
 >
 
-# [DEPRECATED] DAWN WHALES v1.2.0 完整创作者指南
+# [DEPRECATED] TradingEasy v1.2.0 完整创作者指南
 
 **版本**: v1.2.0-rc  
 **更新时间**: 2026-06-09  

@@ -1,4 +1,4 @@
-# Dawn Whales 跟单业务独立审查 — 人类使用视角
+# TradingEasy 跟单业务独立审查 — 人类使用视角
 
 > 审查人: youdao | 2026-06-13 04:35 HKT | 面向 PM
 

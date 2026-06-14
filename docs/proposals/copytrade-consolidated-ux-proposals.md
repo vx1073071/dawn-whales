@@ -1,4 +1,4 @@
-# Dawn Whales 跟单业务合并审查 — 待选清单
+# TradingEasy 跟单业务合并审查 — 待选清单
 
 > **合并来源**: PM(Claw) + youdao | **日期**: 2026-06-13 04:40 HKT
 > **待补充**: JVS / ML / QClaw

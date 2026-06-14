@@ -35,7 +35,7 @@ signature = ED25519.sign(message, privateKey).base64()
 | x-timestamp | Unix秒 (必须 ±30s) |
 | Content-Type | application/json |
 
-### DAWN WHALES 实现参考
+### TradingEasy 实现参考
 
 ```typescript
 private sign(method: string, path: string, body: string, timestamp: string): string {
@@ -57,7 +57,7 @@ private sign(method: string, path: string, body: string, timestamp: string): str
 ```
 1. Robinhood → Settings → API → Create API Key
 2. 下载: api.key (base64 public) + private.key (base64)
-3. DAWN WHALES 输入: apiKey + privateKey (2字段)
+3. TradingEasy 输入: apiKey + privateKey (2字段)
 ```
 
 ---
@@ -84,7 +84,7 @@ GET /marketdata/forex/quotes/BTC-USD/
 }
 ```
 
-**注意**: 无 WebSocket，DAWN WHALES 使用 5秒轮询 `setInterval()`。
+**注意**: 无 WebSocket，TradingEasy 使用 5秒轮询 `setInterval()`。
 
 ### 3.3 下单
 

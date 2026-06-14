@@ -6,7 +6,7 @@ owner: JVS
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES · Phase 3 实施计划
+# TradingEasy · Phase 3 实施计划
 
 > 版本：v2.0 | 日期：2026-06-04 | 团队：主龙虾（规划+执行）
 > 状态：已按主人指示调整——无实名 + USDT收款

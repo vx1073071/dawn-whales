@@ -1,4 +1,4 @@
-# DAWN WHALES R127 J02 — Security Audit Report
+# TradingEasy R127 J02 — Security Audit Report
 # Generated: 2026-06-13T02:25+08:00
 # Scope: CSP / Permissions / Sandbox / Supply Chain / Network / Privacy
 

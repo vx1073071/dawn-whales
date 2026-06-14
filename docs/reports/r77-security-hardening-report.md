@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES v1.8.1 安全加固报告
+# TradingEasy v1.8.1 安全加固报告
 
 **版本**: v1.8.1
 **日期**: 2026-06-09
@@ -88,13 +88,13 @@ echo "test; rm -rf /" | npm run test:security
   script-src 'self';
   style-src 'self' 'unsafe-inline';
   img-src 'self' data: https:;
-  connect-src 'self' https://api.dawnwhales.com wss://api.dawnwhales.com;
+  connect-src 'self' https://api.TradingEasy.com wss://api.TradingEasy.com;
   frame-ancestors 'none';
   ```
 
 ### 验收
 ```bash
-curl -I https://api.dawnwhales.com/api/health | grep Content-Security-Policy
+curl -I https://api.TradingEasy.com/api/health | grep Content-Security-Policy
 # → Content-Security-Policy: default-src 'self'; ...
 
 # XSS 测试

@@ -1,4 +1,4 @@
-# Dawn Whales 盈利模型独立审查 — 代码与v17.6对齐 + 人类UX
+# TradingEasy 盈利模型独立审查 — 代码与v17.6对齐 + 人类UX
 
 > 审查人: youdao | 2026-06-13 10:09 HKT | 面向 PM
 

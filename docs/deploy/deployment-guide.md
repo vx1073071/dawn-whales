@@ -6,7 +6,7 @@ owner: PM
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES Deployment Guide
+# TradingEasy Deployment Guide
 
 > **版本**: v1.10.0
 > **最后更新**: 2026-06-12
@@ -51,23 +51,23 @@ purpose: (auto-generated, needs review)
 
 **方式一: NSIS 安装包 (推荐)**
 ```
-1. 从 GitHub Releases 下载 DAWN WHALES Setup 1.10.0.exe (128MB)
+1. 从 GitHub Releases 下载 TradingEasy Setup 1.10.0.exe (128MB)
 2. 双击运行 → 选择安装目录 → 完成
 3. 验证 SHA256:
-   certutil -hashfile "DAWN WHALES Setup 1.10.0.exe" SHA256
+   certutil -hashfile "TradingEasy Setup 1.10.0.exe" SHA256
    应为: AEFE59FEB5650936A51790E21A874BE07357EB77A15839DA2FD3ED032CE393A4
 ```
 
 **方式二: Portable 免安装版**
 ```
-1. 下载 DAWN WHALES 1.10.0.exe (105MB)
+1. 下载 TradingEasy 1.10.0.exe (105MB)
 2. 直接双击运行 (无需安装)
 3. SHA256: 388136A24C0DB68D8F8B8E9EE6E6EC3BEB97C63C4B41CDE6C2D840C2EA2A955A
 ```
 
 **方式三: 开发模式**
 ```bash
-git clone https://github.com/vx1073071/dawn-whales.git
+git clone https://github.com/vx1073071/tradingeasy.git
 cd dawn-whales
 pnpm install
 pnpm run build
@@ -77,7 +77,7 @@ pnpm run build
 
 ```bash
 # 1. 下载 DMG 镜像
-open "DAWN WHALES-1.10.0-arm64.dmg"
+open "TradingEasy-1.10.0-arm64.dmg"
 # 2. 拖拽到 Applications
 # 3. 首次打开: 右键 → Open (绕过 Gatekeeper)
 ```
@@ -86,8 +86,8 @@ open "DAWN WHALES-1.10.0-arm64.dmg"
 
 ```bash
 # AppImage (推荐)
-chmod +x "DAWN WHALES-1.10.0.AppImage"
-./"DAWN WHALES-1.10.0.AppImage"
+chmod +x "TradingEasy-1.10.0.AppImage"
+./"TradingEasy-1.10.0.AppImage"
 
 # .deb 安装包
 sudo dpkg -i "dawn-whales_1.10.0_amd64.deb"
@@ -101,8 +101,8 @@ sudo dpkg -i "dawn-whales_1.10.0_amd64.deb"
 
 ```json
 {
-  "appId": "com.dawnwhales.app",
-  "productName": "DAWN WHALES",
+  "appId": "com.TradingEasy.app",
+  "productName": "TradingEasy",
   "directories": { "output": "release" },
   "files": ["dist/**/*", "dist-electron/**/*", "package.json"],
   "asar": true,
@@ -213,7 +213,7 @@ npm run build                             # Vite 前端构建
 npx electron-builder --win --publish never  # Electron 打包
 
 # 4. 生成 SHA256
-certutil -hashfile "release/DAWN WHALES Setup 1.10.0.exe" SHA256 > release/SHA256SUMS.txt
+certutil -hashfile "release/TradingEasy Setup 1.10.0.exe" SHA256 > release/SHA256SUMS.txt
 
 # 5. Git 操作
 git add .
@@ -264,7 +264,7 @@ git push origin master --tags
 curl http://127.0.0.1:11111/api/getGlobalState
 
 # 进程检查
-ps aux | grep "DAWN WHALES"
+ps aux | grep "TradingEasy"
 ps aux | grep "FutuOpenD"
 ```
 
@@ -294,7 +294,7 @@ ps aux | grep "FutuOpenD"
 
 ```bash
 # 通过自动更新回滚
-# 1. 打开 Help → About DAWN WHALES
+# 1. 打开 Help → About TradingEasy
 # 2. 点击 "Restore previous version"
 # 3. 自动下载并重启
 

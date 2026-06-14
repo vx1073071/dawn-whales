@@ -6,7 +6,7 @@ owner: JVS
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES 引擎文档: Signal Backtesting + Realtime News
+# TradingEasy 引擎文档: Signal Backtesting + Realtime News
 
 **版本**: v1.9.0-alpha
 **日期**: 2026-06-09

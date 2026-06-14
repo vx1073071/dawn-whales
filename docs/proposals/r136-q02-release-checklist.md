@@ -130,10 +130,10 @@ curl http://localhost:3000/api/health
 ```nginx
 server {
     listen 443 ssl;
-    server_name api.dawnwhales.com;
+    server_name api.TradingEasy.com;
 
-    ssl_certificate /etc/ssl/dawnwhales.crt;
-    ssl_certificate_key /etc/ssl/dawnwhales.key;
+    ssl_certificate /etc/ssl/TradingEasy.crt;
+    ssl_certificate_key /etc/ssl/TradingEasy.key;
 
     location / {
         proxy_pass http://localhost:3000;
@@ -198,7 +198,7 @@ npm run server &
 # PM 执行:
 git checkout master
 git pull origin master
-git tag -a v2.1.0 -m "DAWN WHALES v2.1.0 — Multi-Broker Copy Trade (17 brokers, Cloud+OpenD dual mode)"
+git tag -a v2.1.0 -m "TradingEasy v2.1.0 — Multi-Broker Copy Trade (17 brokers, Cloud+OpenD dual mode)"
 git push origin v2.1.0
 
 # GitHub Release:

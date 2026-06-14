@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES 完整用户手册 v2
+# TradingEasy 完整用户手册 v2
 
 **版本**: v0.13.0  
 **更新日期**: 2026-06-07  
@@ -361,7 +361,7 @@ export default class DualMAStrategy {
 
 ### 概述
 
-AI 助理是 DAWN WHALES v0.13.0 新增的智能助手，提供：
+AI 助理是 TradingEasy v0.13.0 新增的智能助手，提供：
 
 - **策略建议**: 基于市场状况推荐策略
 - **风险问答**: 解答风险管理问题

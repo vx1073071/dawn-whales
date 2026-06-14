@@ -83,7 +83,7 @@
 ### 🦞 ML (3 任务)
 
 #### 1. [P0] ML-30-01: v0.7.0 正式 GitHub Release
-- `gh release create v0.7.0` — 上传 `DAWN WHALES Setup 0.7.0.exe` + Release Notes
+- `gh release create v0.7.0` — 上传 `TradingEasy Setup 0.7.0.exe` + Release Notes
 - 更新 README badge: 385 tests, v0.7.0
 - 更新 `site/index.html`: v0.7.0 下载链接 + 新特性说明
 - 广播 v0.7.0 发布到 chat-bridge

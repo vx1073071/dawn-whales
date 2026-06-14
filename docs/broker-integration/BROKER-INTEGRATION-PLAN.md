@@ -1,4 +1,4 @@
-# DAWN WHALES 券商接入方案
+# TradingEasy 券商接入方案
 > 生成时间: 2026-06-12 07:30
 > 目标: 24家券商接入规划 (港股5+美股7+加密货币3+其他9)
 > 架构: v1.5.0 规格已锁定 (Electron桌面端 / USDT-only / Futu OpenD模式)

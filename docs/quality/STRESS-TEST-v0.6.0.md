@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES v0.6.0 · 压力测试报告
+# TradingEasy v0.6.0 · 压力测试报告
 
 > 2026-06-04 | 主龙虾(PM) | 38/38 tests green
 

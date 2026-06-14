@@ -6,18 +6,18 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES i18n 开发者指南
+# TradingEasy i18n 开发者指南
 
 > **版本**: v1.10.0
 > **最后更新**: 2026-06-12
 > **维护人**: QClaw (文档虾)
-> **受众**: 全体 Dawn Whales 开发者
+> **受众**: 全体 TradingEasy 开发者
 
 ---
 
 ## 一、 i18n 架构总览
 
-Dawn Whales 使用**双轨制**国际化架构：
+TradingEasy 使用**双轨制**国际化架构：
 
 | 系统 | 库 | 语言数 | 用途 | 文件 |
 |------|-----|--------|------|------|
@@ -80,7 +80,7 @@ setLocale('en');
 
 ### 2.1 时间格式化
 
-Dawn Whales 提供统一的时间格式化工具，基于 `Intl.DateTimeFormat` API。
+TradingEasy 提供统一的时间格式化工具，基于 `Intl.DateTimeFormat` API。
 
 ```typescript
 // utils/formatTime.ts (R98)

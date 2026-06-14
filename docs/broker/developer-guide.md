@@ -1,4 +1,4 @@
-# Dawn Whales 多券商接入开发者文档
+# TradingEasy 多券商接入开发者文档
 
 > R3 DOC-01 | 版本 1.0 | 2026-06-12 | 作者: youdao
 
@@ -214,7 +214,7 @@ export class MoomooAdapter extends OpenDBaseAdapter {
   // 仅需实现5个抽象方法
   getAdapterName(): string { return 'MoomooAdapter'; }
   getDefaultPort(): number { return 11211; }
-  getClientId(): string { return 'DawnWhales-Moomoo'; }
+  getClientId(): string { return 'TradingEasy-Moomoo'; }
   getContractMapping(): Record<string, ContractInfo> { return MOOMOO_CONTRACTS; }
   generateMockQuote(code: string): QuoteInfo { /* ... */ }
 }

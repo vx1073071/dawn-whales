@@ -1,4 +1,4 @@
-# Dawn Whales Creator Guide v17.6
+# TradingEasy Creator Guide v17.6
 
 > **Round**: R144 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: GUIDE — v17.6 Final
@@ -8,7 +8,7 @@
 
 ## Welcome, Creator!
 
-This guide explains everything you need to create, sell, and earn on the Dawn Whales Creator Marketplace.
+This guide explains everything you need to create, sell, and earn on the TradingEasy Creator Marketplace.
 
 ---
 

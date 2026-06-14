@@ -1,4 +1,4 @@
-# DAWN WHALES v2.1.0 CHANGELOG
+# TradingEasy v2.1.0 CHANGELOG
 
 > **Release Date**: 2026-06-13 | **Git Tag**: v2.1.0
 > **Rounds**: R129–R136 (8 rounds, 4 days sprint)

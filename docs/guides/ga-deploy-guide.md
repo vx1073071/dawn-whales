@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES v1.7.0 GA 部署手册 & 最终创作者指南
+# TradingEasy v1.7.0 GA 部署手册 & 最终创作者指南
 
 **版本**: v1.7.0 GA  
 **更新时间**: 2026-06-09  
@@ -39,18 +39,18 @@ pm2 save && pm2 startup
 # 5. Nginx 反向代理
 server {
     listen 443 ssl;
-    server_name api.dawnwhales.com;
+    server_name api.TradingEasy.com;
     location / { proxy_pass http://127.0.0.1:3000; }
 }
 
 # 6. SSL 证书
-certbot --nginx -d dawnwhales.com -d api.dawnwhales.com
+certbot --nginx -d TradingEasy.com -d api.TradingEasy.com
 ```
 
 ### 落地页部署
 
 ```bash
-cp site/index.html /var/www/dawnwhales.com/
+cp site/index.html /var/www/TradingEasy.com/
 nginx -s reload
 ```
 
@@ -68,7 +68,7 @@ npm run dist:linux  # Linux .AppImage
 
 | 检查项 | ✅ |
 |--------|-----|
-| dawnwhales.com 可访问 | |
+| TradingEasy.com 可访问 | |
 | /api/health 返回 200 | |
 | /admin 2FA 登录正常 | |
 | 桌面端下载+安装+启动 | |

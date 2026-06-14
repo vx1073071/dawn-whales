@@ -222,7 +222,7 @@ Response 200:
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dawn-whales.com/schemas/signal-v1.json",
-  "title": "Dawn Whales Copy Trading Signal",
+  "title": "TradingEasy Copy Trading Signal",
   "type": "object",
   "required": ["symbol", "direction", "providerId"],
   "properties": {

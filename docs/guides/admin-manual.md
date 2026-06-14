@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES /admin 管理员操作手册
+# TradingEasy /admin 管理员操作手册
 
 **版本**: v1.6.0-alpha  
 **更新时间**: 2026-06-09  

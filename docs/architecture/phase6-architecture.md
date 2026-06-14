@@ -31,7 +31,7 @@ purpose: (auto-generated, needs review)
 
 ### 目标
 
-Phase 6.0 是 DAWN WHALES 项目的**产品化打造**阶段，核心目标：
+Phase 6.0 是 TradingEasy 项目的**产品化打造**阶段，核心目标：
 
 1. **全站 Responsive**: 手机/平板/桌面三端适配
 2. **Multi-Account**: 多账户管理（双账户隔离）
@@ -109,7 +109,7 @@ Phase 6.0 是 DAWN WHALES 项目的**产品化打造**阶段，核心目标：
 ┌───────────────────────┐
 │  Mobile (< 768px)     │
 ├───────────────────────┤
-│ ☰     DAWN WHALES  👤 │
+│ ☰     TradingEasy  👤 │
 ├───────────────────────┤
 │                       │
 │   Main Content        │

@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES 免费入门指南
+# TradingEasy 免费入门指南
 
 **版本**: v1.6.0-beta  
 **更新时间**: 2026-06-09  
@@ -58,16 +58,16 @@ purpose: (auto-generated, needs review)
 
 | 平台 | 链接 |
 |------|------|
-| Windows | dawnwhales.com/download/win |
-| macOS | dawnwhales.com/download/mac |
-| Linux | dawnwhales.com/download/linux |
+| Windows | TradingEasy.com/download/win |
+| macOS | TradingEasy.com/download/mac |
+| Linux | TradingEasy.com/download/linux |
 
 ---
 
 ## 📝 注册流程
 
 ```
-dawnwhales.com → 注册（邮箱+密码）→ 桌面端登录 → 充 USDT → 开始
+TradingEasy.com → 注册（邮箱+密码）→ 桌面端登录 → 充 USDT → 开始
 ```
 
 ---

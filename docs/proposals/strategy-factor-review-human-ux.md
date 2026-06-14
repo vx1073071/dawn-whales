@@ -1,4 +1,4 @@
-# Dawn Whales 策略因子系统独立审查 — 人类使用视角
+# TradingEasy 策略因子系统独立审查 — 人类使用视角
 
 > 审查人: youdao | 2026-06-14 08:06 HKT | 面向 PM
 
@@ -179,7 +179,7 @@ null | 'ai' | 'template' | 'form' | 'condition' | 'closedLoop' | 'adaptive'
 
 ## 五、参考行业标杆
 
-| 功能 | TradingView | 富途牛牛 | Dawn Whales (当前) | 建议 |
+| 功能 | TradingView | 富途牛牛 | TradingEasy (当前) | 建议 |
 |------|-----------|---------|-------------------|------|
 | 策略创建 | Pine Script 编辑器 | 条件单+回测 | 6 种入口 | 简化为 3 种 |
 | 回测展示 | 即时图表叠加 | 收益曲线+指标 | 独立面板 | 即时叠加到K线 |

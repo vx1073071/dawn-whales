@@ -21,7 +21,7 @@
 
 ## Round 20 目标
 
-**"Sprint 1 Demo Ready"** — 让 DAWN WHALES v0.7.0 在 Electron 中真正跑起来，展示真实数据。
+**"Sprint 1 Demo Ready"** — 让 TradingEasy v0.7.0 在 Electron 中真正跑起来，展示真实数据。
 
 ---
 

@@ -1,4 +1,4 @@
-# Dawn Whales 券商+行情系统独立审查报告 v1.0
+# TradingEasy 券商+行情系统独立审查报告 v1.0
 
 > 审查人: youdao | 日期: 2026-06-12 | 提交: PM(Claw/64001)
 

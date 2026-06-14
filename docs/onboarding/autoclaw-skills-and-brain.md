@@ -7,7 +7,7 @@
 
 ## 第一章：项目全景
 
-### 1.1 Dawn Whales 是什么
+### 1.1 TradingEasy 是什么
 - 桌面端应用 (Electron + React + TypeScript)
 - 核心业务：USDT P2P 跟单交易 + AI 量化因子系统
 - 三产品拆分：落地页(静态HTML) / 桌面端(Electron) / 服务器(一台)

@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES v1.0.0 文档最终完善报告
+# TradingEasy v1.0.0 文档最终完善报告
 
 **更新时间**: 2026-06-08 00:20 GMT+8  
 **更新人**: youdao  
@@ -304,7 +304,7 @@ purpose: (auto-generated, needs review)
 
 | 术语 | 使用次数 | 状态 |
 |-----|---------|------|
-| DAWN WHALES | 50+ | ✅ 统一 |
+| TradingEasy | 50+ | ✅ 统一 |
 | v1.0.0 | 30+ | ✅ 统一 |
 | youdao | 20+ | ✅ 统一 |
 | Phase 6.4 | 15+ | ✅ 统一 |

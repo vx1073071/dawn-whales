@@ -1,4 +1,4 @@
-# Dawn Whales Deposit Flow v2.0
+# TradingEasy Deposit Flow v2.0
 
 > **Round**: R142 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: DESIGN DOCUMENT — Production Ready
@@ -8,7 +8,7 @@
 
 ## Overview
 
-Dawn Whales processes USDT deposits via **server-side chain monitoring** — the server actively scans blockchain transactions and credits wallets automatically. **Users never submit `tx_hash`** — this prevents forgery.
+TradingEasy processes USDT deposits via **server-side chain monitoring** — the server actively scans blockchain transactions and credits wallets automatically. **Users never submit `tx_hash`** — this prevents forgery.
 
 ### Supported Networks
 
@@ -249,7 +249,7 @@ Chain monitor flow:
 
 ## 7. ERC-20 Gas Subsidy
 
-ERC-20 deposits incur gas fees paid in ETH. Dawn Whales **subsidizes gas** — the user always receives the full amount they sent.
+ERC-20 deposits incur gas fees paid in ETH. TradingEasy **subsidizes gas** — the user always receives the full amount they sent.
 
 ```
 User sends: 100 USDT via ERC-20
@@ -281,7 +281,7 @@ Internal ledger entry (separate):
 
 | Scenario | Detection | Handling |
 |----------|-----------|----------|
-| User sends to wrong address | Cannot detect (blockchain is open) | No credit; funds lost unless address is another Dawn Whales user |
+| User sends to wrong address | Cannot detect (blockchain is open) | No credit; funds lost unless address is another TradingEasy user |
 | User sends to old address | Old address still maps to user | Credit as normal |
 | Chain reorg removes tx | Confirmations drop | Re-verify before crediting; if confirms < min, mark STALE |
 | Network congestion (slow confirms) | Confirmations < min | Poller keeps checking, up to timeout |

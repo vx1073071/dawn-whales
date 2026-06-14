@@ -1,4 +1,4 @@
-# Dawn Whales 因子系统独立审查 v3.0 — 营收对齐 + 人类UX终极版
+# TradingEasy 因子系统独立审查 v3.0 — 营收对齐 + 人类UX终极版
 
 > 审查人: youdao | 2026-06-14 13:53 HKT | 面向 PM
 
@@ -120,7 +120,7 @@ if (score.total < 60) {
 
 **现状**: `StrategyShareCard.tsx` 导出图片。
 
-**建议**: 添加水印"Dawn Whales" + 二维码"扫码试用" → 病毒传播。
+**建议**: 添加水印"TradingEasy" + 二维码"扫码试用" → 病毒传播。
 
 ### 3.6 参数 mini 回测 — 结果无对比
 

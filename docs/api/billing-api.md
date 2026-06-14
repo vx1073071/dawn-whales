@@ -1,4 +1,4 @@
-# Dawn Whales Billing API v2.0
+# TradingEasy Billing API v2.0
 
 > **Round**: R141 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: API SPECIFICATION — Production Ready

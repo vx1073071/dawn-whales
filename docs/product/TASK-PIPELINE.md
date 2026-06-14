@@ -6,7 +6,7 @@ owner: JVS
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES · 任务流水线
+# TradingEasy · 任务流水线
 
 > v1.0 | 2026-06-04 | 主龙虾(项目经理)
 

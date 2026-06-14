@@ -40,7 +40,7 @@ PWA (Progressive Web App) 是一种现代化的 Web 应用技术方案，提供�
 - **全屏运行**: 可以全屏运行，隐藏浏览器地址栏
 - **快速加载**: 通过缓存实现快速加载
 
-### DAWN WHALES PWA 特性
+### TradingEasy PWA 特性
 
 | 特性 | 说明 | 状态 |
 |-----|------|------|
@@ -58,8 +58,8 @@ PWA (Progressive Web App) 是一种现代化的 Web 应用技术方案，提供�
 
 ```json
 {
-  "name": "DAWN WHALES - 智能量化交易平台",
-  "short_name": "DAWN WHALES",
+  "name": "TradingEasy - 智能量化交易平台",
+  "short_name": "TradingEasy",
   "description": "AI 策略生成 + 自动回测优化 + 实时性能监控 + 多账户管理",
   "start_url": "/",
   "display": "standalone",
@@ -373,7 +373,7 @@ function showUpdateNotification() {
 | Network First | 优先使用网络 | API 请求、HTML 页面 | 数据新鲜 | 网络慢时延迟高 |
 | Stale While Revalidate | 先返回缓存，后台更新 | 不常变化的数据 | 快速 + 新鲜 | 实现复杂 |
 
-### DAWN WHALES 策略选择
+### TradingEasy 策略选择
 
 ```
 静态资源 (JS/CSS/图片):
@@ -402,7 +402,7 @@ HTML 页面:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>离线 - DAWN WHALES</title>
+  <title>离线 - TradingEasy</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -570,7 +570,7 @@ test.describe('PWA', () => {
     const response = await page.goto('/manifest.json');
     expect(response?.status()).toBe(200);
     const manifest = await response?.json();
-    expect(manifest.name).toContain('DAWN WHALES');
+    expect(manifest.name).toContain('TradingEasy');
   });
 
   test('离线页面可访问', async ({ page }) => {

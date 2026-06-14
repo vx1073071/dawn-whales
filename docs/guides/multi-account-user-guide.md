@@ -31,7 +31,7 @@ purpose: (auto-generated, needs review)
 
 ### 什么是多账户？
 
-多账户功能允许您在同一个 DAWN WHALES 应用中管理多个交易账户，每个账户的数据完全隔离，互不影响。
+多账户功能允许您在同一个 TradingEasy 应用中管理多个交易账户，每个账户的数据完全隔离，互不影响。
 
 ### 适用场景
 
@@ -55,7 +55,7 @@ purpose: (auto-generated, needs review)
 
 ### 第一步：创建第一个账户
 
-1. 打开 DAWN WHALES 应用
+1. 打开 TradingEasy 应用
 2. 点击右上角 **账户图标** 👤
 3. 选择 **添加账户**
 4. 填写账户信息：
@@ -370,7 +370,7 @@ const sessions = new Map<string, Session>();
 **A**: 立即采取以下措施：
 
 1. **撤销凭证**: 在券商后台撤销 API Key
-2. **删除账户**: 在 DAWN WHALES 中删除该账户
+2. **删除账户**: 在 TradingEasy 中删除该账户
 3. **生成新凭证**: 在券商后台生成新的 API Key
 4. **重新添加**: 使用新凭证重新添加账户
 

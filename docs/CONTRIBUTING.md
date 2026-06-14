@@ -6,9 +6,9 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# Contributing to Dawn Whales
+# Contributing to TradingEasy
 
-> 感谢你考虑为 Dawn Whales 做出贡献！
+> 感谢你考虑为 TradingEasy 做出贡献！
 
 ## 目录
 
@@ -38,7 +38,7 @@ purpose: (auto-generated, needs review)
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/vx1073071/dawn-whales.git
+git clone https://github.com/vx1073071/tradingeasy.git
 cd dawn-whales
 
 # 2. 安装依赖

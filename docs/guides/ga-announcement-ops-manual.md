@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES v1.8.0 GA — 正式发布公告 + 运营手册 + 安全合规
+# TradingEasy v1.8.0 GA — 正式发布公告 + 运营手册 + 安全合规
 
 **版本**: v1.8.0 GA
 **发布日期**: 2026-06-09
@@ -16,13 +16,13 @@ purpose: (auto-generated, needs review)
 
 # 第一部分：GA 正式发布公告
 
-## 🏆 DAWN WHALES v1.8.0 GA 正式上线
+## 🏆 TradingEasy v1.8.0 GA 正式上线
 
-经过 25 轮迭代（R52-R76）、5 只虾协作、6000+ 测试、26 轮文档收割，DAWN WHALES v1.8.0 GA 正式面向全球发布。
+经过 25 轮迭代（R52-R76）、5 只虾协作、6000+ 测试、26 轮文档收割，TradingEasy v1.8.0 GA 正式面向全球发布。
 
 ### 一句话
 
-> DAWN WHALES = 全球首个四 Agent AI 协作量化交易平台。7 市场全覆盖，30+ 因子，AI 自动画线形态识别，策略市场自由买卖。免费下载，USDT 付费。
+> TradingEasy = 全球首个四 Agent AI 协作量化交易平台。7 市场全覆盖，30+ 因子，AI 自动画线形态识别，策略市场自由买卖。免费下载，USDT 付费。
 
 ### 核心亮点
 
@@ -52,14 +52,14 @@ purpose: (auto-generated, needs review)
 
 ### 快速开始
 
-1. 下载 [dawnwhales.com](https://dawnwhales.com) (Win/Mac/Linux)
+1. 下载 [TradingEasy.com](https://TradingEasy.com) (Win/Mac/Linux)
 2. 安装 → 注册 → 连接 Futu OpenD 或 IBKR
 3. 选择市场 → 套用模板 → 调整参数 → 回测 → 发布
 4. 需要 AI 分析？充值 USDT (TRC-20)
 
 ### 与竞品对比
 
-| 维度 | DAWN WHALES | 富途 moomoo |
+| 维度 | TradingEasy | 富途 moomoo |
 |------|-------------|-------------|
 | AI 分析 | ✅ 4Agent 协作 | ❌ |
 | AI 形态识别 | ✅ 22 种 | ❌ |
@@ -117,12 +117,12 @@ npm run start:server  # /api :3001, /admin :3002
 ```nginx
 server {
     listen 443 ssl;
-    server_name api.dawnwhales.com;
+    server_name api.TradingEasy.com;
     location / { proxy_pass http://127.0.0.1:3001; }
 }
 server {
     listen 443 ssl;
-    server_name admin.dawnwhales.com;
+    server_name admin.TradingEasy.com;
     location / { proxy_pass http://127.0.0.1:3002; }
 }
 ```
@@ -162,7 +162,7 @@ npm run dist:all
 
 ## 3. 落地页部署
 
-`dawnwhales.com` 为纯静态 HTML+Tailwind，直接部署到 CDN 或 Nginx：
+`TradingEasy.com` 为纯静态 HTML+Tailwind，直接部署到 CDN 或 Nginx：
 
 ```bash
 npm run build:landing
@@ -177,11 +177,11 @@ npm run build:landing
 
 ```bash
 # /api
-curl https://api.dawnwhales.com/health
+curl https://api.TradingEasy.com/health
 # → {"status":"ok","uptime":86400,"db":"connected","redis":"connected"}
 
 # /admin
-curl https://admin.dawnwhales.com/health
+curl https://admin.TradingEasy.com/health
 ```
 
 ### 日志查看
@@ -271,7 +271,7 @@ AdminDashboard (`/admin`) 提供实时监控：
 
 ```bash
 # PostgreSQL 每日备份
-pg_dump dawnwhales > /backup/dawnwhales_$(date +%Y%m%d).sql
+pg_dump TradingEasy > /backup/TradingEasy_$(date +%Y%m%d).sql
 
 # Redis 持久化 (自动)
 # redis.conf: save 900 1, save 300 10, save 60 10000
@@ -289,7 +289,7 @@ pg_dump dawnwhales > /backup/dawnwhales_$(date +%Y%m%d).sql
 ```bash
 # 1. 通知用户维护窗口
 # 2. 备份数据库
-pg_dump dawnwhales > /backup/pre_upgrade_$(date +%Y%m%d_%H%M).sql
+pg_dump TradingEasy > /backup/pre_upgrade_$(date +%Y%m%d_%H%M).sql
 
 # 3. 拉取新版本
 git pull origin main
@@ -305,7 +305,7 @@ pm2 reload dawn-whales-api
 pm2 reload dawn-whales-admin
 
 # 7. 健康检查 + 冒烟测试
-curl https://api.dawnwhales.com/health
+curl https://api.TradingEasy.com/health
 ```
 
 ---
@@ -314,7 +314,7 @@ curl https://api.dawnwhales.com/health
 
 ## GDPR 合规声明
 
-DAWN WHALES 遵守 GDPR (General Data Protection Regulation) 核心原则。
+TradingEasy 遵守 GDPR (General Data Protection Regulation) 核心原则。
 
 ### 我们收集什么
 
@@ -343,7 +343,7 @@ DAWN WHALES 遵守 GDPR (General Data Protection Regulation) 核心原则。
 4. **限制处理权**: 限制特定数据处理
 5. **数据可携权**: 以机器可读格式获取数据
 
-行使权利请发送邮件至 `privacy@dawnwhales.com`，30 天内回复。
+行使权利请发送邮件至 `privacy@TradingEasy.com`，30 天内回复。
 
 ### 数据处理法律基础
 
@@ -441,11 +441,11 @@ pm2 stop dawn-whales-api && pm2 stop dawn-whales-admin
 
 | 用途 | 联系方式 |
 |------|----------|
-| 技术支持 | `support@dawnwhales.com` |
-| 隐私/GDPR | `privacy@dawnwhales.com` |
-| 安全漏洞报告 | `security@dawnwhales.com` (PGP: 0xABCD...) |
-| 商务合作 | `business@dawnwhales.com` |
+| 技术支持 | `support@TradingEasy.com` |
+| 隐私/GDPR | `privacy@TradingEasy.com` |
+| 安全漏洞报告 | `security@TradingEasy.com` (PGP: 0xABCD...) |
+| 商务合作 | `business@TradingEasy.com` |
 
 ---
 
-**DAWN WHALES v1.8.0 GA — 全球首个四 Agent AI 协作量化交易平台。正式上线。**
+**TradingEasy v1.8.0 GA — 全球首个四 Agent AI 协作量化交易平台。正式上线。**

@@ -10,7 +10,7 @@ purpose: (auto-generated, needs review)
 
 **版本**: v1.2.0-alpha  
 **更新时间**: 2026-06-09  
-**适用版本**: DAWN WHALES v1.2.0+
+**适用版本**: TradingEasy v1.2.0+
 
 ---
 
@@ -29,7 +29,7 @@ purpose: (auto-generated, needs review)
 
 ## 什么是 AI 协作
 
-AI 协作是 DAWN WHALES v1.2.0 推出的核心功能，通过 **4 个专业 AI Agent** 协作分析，帮助创作者生成高质量交易策略。
+AI 协作是 TradingEasy v1.2.0 推出的核心功能，通过 **4 个专业 AI Agent** 协作分析，帮助创作者生成高质量交易策略。
 
 ### 核心优势
 

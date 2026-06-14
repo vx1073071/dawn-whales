@@ -7,7 +7,7 @@
 
 ## 一、什么是 OpenD 跟单
 
-OpenD 跟单模式允许您在桌面端通过 Futu OpenD/TWS **本地直连**券商执行跟单信号，无需通过云端服务器。信号从 DAWN WHALES 服务器拉取到本地，经由 OpenD 下单，执行结果回传服务器。
+OpenD 跟单模式允许您在桌面端通过 Futu OpenD/TWS **本地直连**券商执行跟单信号，无需通过云端服务器。信号从 TradingEasy 服务器拉取到本地，经由 OpenD 下单，执行结果回传服务器。
 
 ```
 Cloud 模式:   信号源 → Server → Cloud Broker (Binance/OKX/...) → 执行
@@ -34,7 +34,7 @@ OpenD 模式:   信号源 → Server → 桌面端拉取 → OpenD (Futu/IB) →
 3. 在 OpenD GUI 中登录您的富途账户
 4. 确认端口 11111 已开放 (设置→API设置)
 
-### 2.3 DAWN WHALES 配置
+### 2.3 TradingEasy 配置
 
 ```
 路径: 设置 → 券商管理 → 添加 OpenD 券商

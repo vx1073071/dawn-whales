@@ -1,4 +1,4 @@
-# Dawn Whales 因子审计48项 — 6虾完美项目方案
+# TradingEasy 因子审计48项 — 6虾完美项目方案
 
 > 制定：PM(Claw) | 版本：v1.0 | 日期：2026-06-14
 > 范围：48项审计建议全部完成，6虾协作，每轮3-5天
@@ -359,7 +359,7 @@ autoclaw 是PM直属"灭火虾"，承担以下跨域任务：
 | **ML** | ① 因子对比仪表板 | F1 | 6h | 雷达图+IC热力图+因子排名+历史IC曲线 |
 | **ML** | ② 回测嵌入因子归因 | F4 | 6h | BacktestReportPage+FactorAttribution卡片+R² |
 | **ML** | ③ 因子排行榜 | G1 | 3h | 热门因子Top10+用户IC百分位 |
-| **ML** | ④ 分享卡片+水印二维码 | G2 | 1h | StrategyShareCard+"Dawn Whales"水印+二维码 |
+| **ML** | ④ 分享卡片+水印二维码 | G2 | 1h | StrategyShareCard+"TradingEasy"水印+二维码 |
 | **ML** | ⑤ 策略到期主动推送UI | G4 | 2h | 闪烁badge+通知栏+一键AI优化 |
 | **JVS** | ① 优化器+因子权重扫描 | F5续 | 2h | UI数据接口完善 |
 | **JVS** | ② GRS统计量UI输出 | F7续 | 2h | IPC bridge暴露GRS+滚动IC |

@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES 用户操作指南
+# TradingEasy 用户操作指南
 
 > **版本**: v1.10.0-rc.1 | **更新日期**: 2026-06-11 | **作者**: QClaw 文档虾
 
@@ -38,7 +38,7 @@ purpose: (auto-generated, needs review)
 
 ## 1. 快速开始
 
-### 三句话讲完 DAWN WHALES
+### 三句话讲完 TradingEasy
 
 1. **选市场** → **套模板** → **一键回测** → 看结果
 2. **AI 分析**帮你诊断策略、画线、识别形态、打分情绪
@@ -69,7 +69,7 @@ purpose: (auto-generated, needs review)
 
 ### 下载
 
-打开 [dawnwhales.com](https://dawnwhales.com)，选择你的平台：
+打开 [TradingEasy.com](https://TradingEasy.com)，选择你的平台：
 
 | 平台 | 安装包 | 大小 |
 |------|--------|:---:|
@@ -86,7 +86,7 @@ purpose: (auto-generated, needs review)
 
 **macOS**:
 1. 双击 `.dmg` 文件
-2. 将 DAWN WHALES 拖入 Applications 文件夹
+2. 将 TradingEasy 拖入 Applications 文件夹
 3. 首次打开如提示"未验证开发者"：系统偏好设置 → 安全性与隐私 → 仍要打开
 
 **Linux**:
@@ -97,7 +97,7 @@ chmod +x dawn-whales-*.AppImage
 
 ### 首次启动
 
-1. 打开 DAWN WHALES
+1. 打开 TradingEasy
 2. 创建账号（邮箱 + 密码）
 3. 设置交易密码（6 位数字，用于提现和重要操作）
 4. 可选：设置 2FA 两步验证（推荐）
@@ -121,7 +121,7 @@ chmod +x dawn-whales-*.AppImage
 
 ## 3. 连接券商
 
-DAWN WHALES 支持多券商同时连接，一键切换。
+TradingEasy 支持多券商同时连接，一键切换。
 
 ### 3.1 Futu OpenD（推荐新手）
 
@@ -271,7 +271,7 @@ DAWN WHALES 支持多券商同时连接，一键切换。
 
 ### 6.2 4 Agent 协作机制
 
-DAWN WHALES 使用四个专业 AI Agent 协同分析：
+TradingEasy 使用四个专业 AI Agent 协同分析：
 
 ```
 ┌─────────────────────────────────────┐
@@ -367,7 +367,7 @@ A 股支持 **100 股起**（1 手起），美股支持 **1 股起**。
 
 ### 8.1 钱包概述
 
-DAWN WHALES 使用 USDT（TRC-20）作为平台内唯一支付货币。无需信用卡或法币。
+TradingEasy 使用 USDT（TRC-20）作为平台内唯一支付货币。无需信用卡或法币。
 
 ### 8.2 充值
 
@@ -664,8 +664,8 @@ A: 平台提供 20+ 预设模板。你也可以将自己的策略设为私有模
 
 | 渠道 | 地址 |
 |------|------|
-| 在线文档 | [dawnwhales.com/docs](https://dawnwhales.com/docs) |
-| 技术支持 | `support@dawnwhales.com` |
+| 在线文档 | [TradingEasy.com/docs](https://TradingEasy.com/docs) |
+| 技术支持 | `support@TradingEasy.com` |
 | 策略市场指南 | [创作者完全指南](docs/guides/complete-creator-guide.md) |
 | API 文档 | [API 参考](docs/api/api-reference.md) |
 | 引擎文档 | [Engine Core API](docs/api/engine-core.md) |
@@ -677,14 +677,14 @@ A: 平台提供 20+ 预设模板。你也可以将自己的策略设为私有模
 
 | 术语 | 说明 |
 |------|------|
-| **OpenD** | Futu 提供的 API 网关程序，连接 DAWN WHALES 与富途证券 |
+| **OpenD** | Futu 提供的 API 网关程序，连接 TradingEasy 与富途证券 |
 | **IB Gateway** | Interactive Brokers 的 API 网关 |
 | **夏普比率** | 风险调整后收益指标，越高说明性价比越好 |
 | **最大回撤** | 历史最高点到最低点的跌幅，衡量极端风险 |
-| **TRC-20** | TRON 区块链上的代币标准，DAWN WHALES 使用此网络的 USDT |
+| **TRC-20** | TRON 区块链上的代币标准，TradingEasy 使用此网络的 USDT |
 | **2FA** | 两步验证，添加额外安全层（Google Authenticator） |
 | **P2P** | 用户之间直接转账 |
-| **4 Agent** | DAWN WHALES 的 AI 分析框架：基本面/技术面/情绪/宏观 |
+| **4 Agent** | TradingEasy 的 AI 分析框架：基本面/技术面/情绪/宏观 |
 | **Walk-Forward** | 前向分析，用滚动窗口验证策略稳定性 |
 | **跟单** | 自动复制其他用户的策略交易信号 |
 | **信号广场** | 展示所有已发布策略实时交易信号的浏览页面 |

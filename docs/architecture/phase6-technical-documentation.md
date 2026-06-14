@@ -34,7 +34,7 @@ purpose: (auto-generated, needs review)
 
 ### 目标
 
-Phase 6.0 是 DAWN WHALES 项目的**产品化收官**阶段，核心目标：
+Phase 6.0 是 TradingEasy 项目的**产品化收官**阶段，核心目标：
 
 1. **产品化打磨**: Responsive + Multi-Account + i18n
 2. **性能监控**: PerformanceMonitor + RealtimeDataFlow
@@ -69,7 +69,7 @@ Phase 6.0 是 DAWN WHALES 项目的**产品化收官**阶段，核心目标：
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    DAWN WHALES v0.10.0                           │
+│                    TradingEasy v0.10.0                           │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │

@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES v1.9.0-beta QA 质量报告 + i18n 一致性说明
+# TradingEasy v1.9.0-beta QA 质量报告 + i18n 一致性说明
 
 **版本**: v1.9.0-beta
 **日期**: 2026-06-09

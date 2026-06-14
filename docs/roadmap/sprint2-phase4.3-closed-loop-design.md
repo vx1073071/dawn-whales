@@ -20,7 +20,7 @@ purpose: (auto-generated, needs review)
 
 ### 1.1 什么是 ClosedLoopExecutor
 
-ClosedLoopExecutor（闭环执行引擎）是 DAWN WHALES 自动化交易体系的最高层协调器。它建立在 ConditionEngine、StrategyRunner、TradeExecutor、PositionMonitor、RiskEngine 之上，实现**从信号产生到持仓管理再到绩效追踪的完整闭环**。
+ClosedLoopExecutor（闭环执行引擎）是 TradingEasy 自动化交易体系的最高层协调器。它建立在 ConditionEngine、StrategyRunner、TradeExecutor、PositionMonitor、RiskEngine 之上，实现**从信号产生到持仓管理再到绩效追踪的完整闭环**。
 
 ### 1.2 为什么需要它
 

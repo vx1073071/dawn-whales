@@ -6,18 +6,18 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# Dawn Whales 测试架构文档
+# TradingEasy 测试架构文档
 
 > **版本**: v1.10.0
 > **最后更新**: 2026-06-12
 > **维护人**: QClaw (文档虾)
-> **本文档受众**: 全体 Dawn Whales 开发虾 (JVS/QClaw/youdao/ML/PM)
+> **本文档受众**: 全体 TradingEasy 开发虾 (JVS/QClaw/youdao/ML/PM)
 
 ---
 
 ## 一、 测试分层架构
 
-Dawn Whales 采用三层测试金字塔架构，从低到高依次为：
+TradingEasy 采用三层测试金字塔架构，从低到高依次为：
 
 ```
         ┌──────────────┐

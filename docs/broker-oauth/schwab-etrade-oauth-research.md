@@ -2,7 +2,7 @@
 
 > **R1 Task | QClaw (quality-shrimp) | 2026-06-12**
 > 
-> 目标: 深入研究 Charles Schwab (OAuth2) 和 E*TRADE (OAuth1.0a) 的 API 认证流程、端点清单、接入复杂度，为 Dawn Whales 适配器开发提供完整技术依据。
+> 目标: 深入研究 Charles Schwab (OAuth2) 和 E*TRADE (OAuth1.0a) 的 API 认证流程、端点清单、接入复杂度，为 TradingEasy 适配器开发提供完整技术依据。
 
 ---
 
@@ -373,7 +373,7 @@ class EtradeOAuth1 {
 2. 构造 authorize URL: https://us.etrade.com/e/t/etws/authorize?key=CONSUMER_KEY&token=REQUEST_TOKEN
 3. shell.openExternal() 打开浏览器
 4. 用户登录授权 → 页面显示 Verifier Code (6位字母数字)
-5. 用户在 Dawn Whales UI 中粘贴 Verifier Code ← ⚠️ 这是手动步骤!
+5. 用户在 TradingEasy UI 中粘贴 Verifier Code ← ⚠️ 这是手动步骤!
 6. 应用 POST /oauth/access_token → 获得永久 access_token
 7. 安全存储 access_token + access_token_secret
 ```
@@ -481,7 +481,7 @@ class EtradeOAuth1 {
 
 ---
 
-## 四、Dawn Whales 适配器开发建议
+## 四、TradingEasy 适配器开发建议
 
 ### 4.1 适配器继承关系
 

@@ -1,4 +1,4 @@
-# Dawn Whales AI Strategy Suite v1.0
+# TradingEasy AI Strategy Suite v1.0
 
 > **Round**: R146 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: USER GUIDE — Production Ready

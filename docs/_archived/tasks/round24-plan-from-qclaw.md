@@ -84,7 +84,7 @@ R24 目标 ≥30 个 TradeExecutor 相关测试（e2e + unit）。
 ## 对 ML 的建议（精简后 2 个 P0）
 
 ### [P0] ML-24-01: Electron .exe 打包
-- `npm run dist:win` → `release/DAWN WHALES Setup x.x.x.exe`
+- `npm run dist:win` → `release/TradingEasy Setup x.x.x.exe`
 - 双击安装 → 启动 → Dashboard → 0 crash
 - 截图 `docs/demo/r24-exe-screenshot.png`
 

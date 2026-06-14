@@ -43,7 +43,7 @@ const authParams = new URLSearchParams({
 **攻击场景**:
 1. 攻击者发起 OAuth2 授权，获取自己的 authorization code
 2. 欺骗受害者点击 `https://YOUR_APP/callback?code=ATTACKER_CODE&state=...`
-3. 应用将攻击者的 account 绑定到受害者的 DAWN WHALES 账号
+3. 应用将攻击者的 account 绑定到受害者的 TradingEasy 账号
 4. 攻击者通过跟单功能控制受攻击账户
 
 **修复方案**:

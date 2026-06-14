@@ -1,4 +1,4 @@
-# Dawn Whales AI Billing Rules v17.6
+# TradingEasy AI Billing Rules v17.6
 
 > **Round**: R145 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: SPECIFICATION — v17.6 Final, Locked by Owner
@@ -8,7 +8,7 @@
 
 ## Overview
 
-All AI-powered features in Dawn Whales follow a **unified pay-per-use model**: deduct before calling, refund on failure, no free tiers, no subscriptions.
+All AI-powered features in TradingEasy follow a **unified pay-per-use model**: deduct before calling, refund on failure, no free tiers, no subscriptions.
 
 ### Core Principles
 

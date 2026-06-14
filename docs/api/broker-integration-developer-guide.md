@@ -6,7 +6,7 @@ owner: QClaw
 purpose: 多券商接入开发者完整参考 — 架构/继承/新建/注册/示例
 -->
 
-# Dawn Whales 多券商接入开发者文档
+# TradingEasy 多券商接入开发者文档
 
 > **版本**: v1.12.0 | **轮次**: R4 Final | **维护**: QClaw (文档虾)
 > **用途**: 凭本文档可从头创建任何新的券商适配器并注册到 BrokerManagerV2
@@ -202,7 +202,7 @@ interface IBrokerAdapterV2 extends IBrokerAdapter {
 文件路径: `electron/broker/adapters/{BrokerName}Adapter.ts`
 
 ```typescript
-// ── DAWN WHALES — {BrokerName}Adapter ─────────────────────────
+// ── TradingEasy — {BrokerName}Adapter ─────────────────────────
 // Round: R{X} | Task: {task-id}
 // Inherits: {BaseClass}
 // API Base: {api-url}

@@ -20,7 +20,7 @@ purpose: (auto-generated, needs review)
 
 ### 1.1 Current State
 
-Dawn Whales currently operates with a **single broker backend**: Futu OpenD. All market data, order routing, and account management flow through a single `FutuOpenDClient` instance. This limits users to Futu-supported markets and a single account.
+TradingEasy currently operates with a **single broker backend**: Futu OpenD. All market data, order routing, and account management flow through a single `FutuOpenDClient` instance. This limits users to Futu-supported markets and a single account.
 
 ### 1.2 Target State
 
@@ -531,7 +531,7 @@ export class FxNormalizer {
 
 ```
 ┌──────────────────────────┐
-│  ☰ Dawn Whales           │
+│  ☰ TradingEasy           │
 │  ─────────────────────── │
 │  📊 Portfolio            │
 │  ┌────────────────────┐  │

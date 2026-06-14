@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES · 道鲸 — Quick Start Guide
+# TradingEasy · 道鲸 — Quick Start Guide
 
 **Version**: v0.7.0
 **Last Updated**: 2026-06-06
@@ -15,7 +15,7 @@ purpose: (auto-generated, needs review)
 
 ## Overview
 
-DAWN WHALES (道鲸) is an AI-powered quantitative trading desktop application. It supports:
+TradingEasy (道鲸) is an AI-powered quantitative trading desktop application. It supports:
 
 - **Natural Language Strategy Creation**: Type "买入TQQQ 100股，止损-5%" and let AI parse it
 - **Multi-Broker Trading**: Futu OpenD + Moomoo OpenD + Interactive Brokers (IB)
@@ -37,14 +37,14 @@ DAWN WHALES (道鲸) is an AI-powered quantitative trading desktop application. 
 
 ### Option 1: Installer (Windows)
 
-1. Download `DAWN WHALES Setup 0.7.0.exe` from [GitHub Releases](https://github.com/vx1073071/dawn-whales/releases)
+1. Download `TradingEasy Setup 0.7.0.exe` from [GitHub Releases](https://github.com/vx1073071/dawn-whales/releases)
 2. Run the installer
 3. Launch from desktop shortcut
 
 ### Option 2: From Source
 
 ```bash
-git clone https://github.com/vx1073071/dawn-whales.git
+git clone https://github.com/vx1073071/tradingeasy.git
 cd dawn-whales
 npm ci
 npm run dev          # dev mode
@@ -58,7 +58,7 @@ npm run dist:win     # package .exe
 
 ### Step 1: Connect a Broker
 
-1. Launch DAWN WHALES
+1. Launch TradingEasy
 2. Go to **Settings** → **券商设置** (Broker Settings)
 3. Enter your broker connection:
    - **Futu OpenD**: host `127.0.0.1`, port `11111`
@@ -105,7 +105,7 @@ npm run dist:win     # package .exe
 
 ```
 ┌─────────────────────────────────────────────────┐
-│                   DAWN WHALES                    │
+│                   TradingEasy                    │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐       │
 │  │  Futu    │  │ Moomoo   │  │    IB    │       │
 │  │ OpenD    │  │ OpenD    │  │ Gateway  │       │
@@ -142,7 +142,7 @@ Strategies define **when** to buy/sell (conditions) and **how much** (position s
 
 ### Brokers
 
-DAWN WHALES supports three brokers simultaneously. Switch between them in the top bar **BrokerSelector**. Account assets and positions are **aggregated** in the sidebar and Portfolio page.
+TradingEasy supports three brokers simultaneously. Switch between them in the top bar **BrokerSelector**. Account assets and positions are **aggregated** in the sidebar and Portfolio page.
 
 ### Risk Management
 

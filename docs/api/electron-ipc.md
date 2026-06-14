@@ -8,14 +8,14 @@ purpose: (auto-generated, needs review)
 
 # Electron IPC API Reference
 
-> Dawn Whales — Main Process ↔ Renderer Process Communication API
+> TradingEasy — Main Process ↔ Renderer Process Communication API
 > Generated: 2026-06-11 | Version: 1.10.0-alpha.1
 
 ---
 
 ## Overview
 
-Dawn Whales uses Electron's `ipcMain.handle()` / `ipcRenderer.invoke()` pattern for all
+TradingEasy uses Electron's `ipcMain.handle()` / `ipcRenderer.invoke()` pattern for all
 main↔renderer communication. Every IPC channel follows the request-response model with
 structured error handling via `EngineError`.
 

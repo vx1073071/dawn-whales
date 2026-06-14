@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES — API Reference
+# TradingEasy — API Reference
 
 > Generated: 2026-06-04 | 9 modules
 

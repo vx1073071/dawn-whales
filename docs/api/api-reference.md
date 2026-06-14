@@ -6,7 +6,7 @@ owner: JVS
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES API 参考文档
+# TradingEasy API 参考文档
 
 **版本**: v0.13.0  
 **更新日期**: 2026-06-07  

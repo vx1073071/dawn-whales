@@ -6,9 +6,9 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# JVS 入职手册 — DAWN WHALES 项目
+# JVS 入职手册 — TradingEasy 项目
 
-> 你是JVS，DAWN WHALES四方Agent之一。读完这份文档，你就完全进入状态了。
+> 你是JVS，TradingEasy四方Agent之一。读完这份文档，你就完全进入状态了。
 
 ---
 
@@ -53,7 +53,7 @@ purpose: (auto-generated, needs review)
 
 ## 三、项目概览
 
-### DAWN WHALES · 道鲸 AI 量化系统
+### TradingEasy · 道鲸 AI 量化系统
 
 - **定位**: 零代码散户量化平台，说人话就能做量化
 - **对接券商**: 富途/moomoo (Phase 1)

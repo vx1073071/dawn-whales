@@ -1,4 +1,4 @@
-# Dawn Whales Chain Security v2.0
+# TradingEasy Chain Security v2.0
 
 > **Round**: R142 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: SECURITY SPECIFICATION — Production Ready
@@ -8,7 +8,7 @@
 
 ## Overview
 
-Dawn Whales handles real USDT with a two-wallet architecture and server-side validation. This document covers all chain-level security threats and their mitigations.
+TradingEasy handles real USDT with a two-wallet architecture and server-side validation. This document covers all chain-level security threats and their mitigations.
 
 ---
 
@@ -330,7 +330,7 @@ User is tricked into withdrawing to a scam address.
   TRC-20: must start with 'T', 34 characters
   ERC-20: must start with '0x', 42 characters
   ```
-- **Cannot prevent**: Blockchain transactions are irreversible. Dawn Whales is non-custodial for withdrawals — user is responsible for address correctness.
+- **Cannot prevent**: Blockchain transactions are irreversible. TradingEasy is non-custodial for withdrawals — user is responsible for address correctness.
 
 ---
 

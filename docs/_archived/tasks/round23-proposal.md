@@ -1,4 +1,4 @@
-# Round 23 Proposal — DAWN WHALES Sprint 1 Final Polish + Sprint 2 Kickoff
+# Round 23 Proposal — TradingEasy Sprint 1 Final Polish + Sprint 2 Kickoff
 
 **Author:** QClaw  
 **Created:** 2026-06-06 05:30 GMT+8  

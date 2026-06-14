@@ -8,7 +8,7 @@ purpose: (auto-generated, needs review)
 
 # Sprint 1 Demo 录制脚本 (R26)
 
-**项目**: DAWN WHALES · 道鲸  
+**项目**: TradingEasy · 道鲸  
 **版本**: v0.6.0  
 **日期**: 2026-06-06  
 **录制工具**: 推荐 ScreenToGif (Windows) 或 OBS  
@@ -39,7 +39,7 @@ purpose: (auto-generated, needs review)
 **目标**: 展示应用启动后的主界面，突出实时数据和净值曲线
 
 **操作步骤**:
-1. 双击 `DAWN WHALES Setup 0.6.0.exe` 启动应用（或 `npm start`）
+1. 双击 `TradingEasy Setup 0.6.0.exe` 启动应用（或 `npm start`）
 2. 等待应用加载完成（约 3–5 秒）
 3. **截图 1**: 完整 Dashboard 页面（`docs/demo/r26-scene01-dashboard.png`）
 4. 鼠标悬停在「总资产」卡片上，停留 2 秒
@@ -48,7 +48,7 @@ purpose: (auto-generated, needs review)
 7. **截图 2**: 净值曲线特写（`docs/demo/r26-scene01-equity.png`）
 
 **验证点**:
-- [ ] 窗口标题显示 "DAWN WHALES · 道鲸"
+- [ ] 窗口标题显示 "TradingEasy · 道鲸"
 - [ ] 标题栏和任务栏显示 DW logo（非 Electron 默认图标）
 - [ ] 总资产、现金、市值、今日盈亏 4 个卡片可见
 - [ ] 持仓热力图显示至少 2 个持仓色块
@@ -56,7 +56,7 @@ purpose: (auto-generated, needs review)
 - [ ] 侧边栏「连接状态」显示绿色/在线
 
 **旁白建议**:
-> 「这是 DAWN WHALES 的 Dashboard，启动后自动加载。总资产 150 万港元，今日盈利 1.25 万。净值曲线展示了策略运行以来的累计收益走势。」
+> 「这是 TradingEasy 的 Dashboard，启动后自动加载。总资产 150 万港元，今日盈利 1.25 万。净值曲线展示了策略运行以来的累计收益走势。」
 
 ---
 
@@ -287,7 +287,7 @@ purpose: (auto-generated, needs review)
 **目标**: 展示从 .exe 到启动的完整安装流程
 
 **操作步骤**:
-1. 在文件资源管理器中定位 `DAWN WHALES Setup 0.6.0.exe`
+1. 在文件资源管理器中定位 `TradingEasy Setup 0.6.0.exe`
 2. **截图**: .exe 文件图标显示正确（`docs/demo/r26-scene10-exe-icon.png`）
 3. 双击 .exe
 4. 等待 NSIS 安装向导出现（约 2 秒）
@@ -295,7 +295,7 @@ purpose: (auto-generated, needs review)
 6. 点击「Next」→ 选择安装路径 → 点击「Install」
 7. 等待安装完成（约 10–20 秒）
 8. **GIF**: 安装进度条（`docs/demo/r26-scene10-install.gif`，10 秒）
-9. 勾选「Launch DAWN WHALES」→ 点击「Finish」
+9. 勾选「Launch TradingEasy」→ 点击「Finish」
 10. 应用自动启动
 11. **截图**: 启动后 Dashboard（`docs/demo/r26-scene10-launched.png`）
 12. 检查桌面快捷方式图标
@@ -310,7 +310,7 @@ purpose: (auto-generated, needs review)
 - [ ] 启动后 DevTools Console 无红色报错
 
 **旁白建议**:
-> 「DAWN WHALES 提供 Windows 安装包。双击安装向导，选择路径后一键安装。安装完成后自动启动，桌面生成快捷方式。」
+> 「TradingEasy 提供 Windows 安装包。双击安装向导，选择路径后一键安装。安装完成后自动启动，桌面生成快捷方式。」
 
 ---
 

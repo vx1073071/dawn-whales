@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES · 实盘验证报告
+# TradingEasy · 实盘验证报告
 
 > 日期：2026-06-04 | 账户：281756479319068137 (API子账户)
 > 验证人：主龙虾 | OpenD 端口：11111
@@ -79,6 +79,6 @@ purpose: (auto-generated, needs review)
 
 ## 结论
 
-**DAWN WHALES 实盘数据管线全部接通。** OpenD 直连正常，实时行情、K线数据、策略信号计算、回测引擎在真实数据下全部运行正常。风控引擎的动态功能（Kelly/回撤/VIX）需在有真实交易记录或波动行情时触发验证。
+**TradingEasy 实盘数据管线全部接通。** OpenD 直连正常，实时行情、K线数据、策略信号计算、回测引擎在真实数据下全部运行正常。风控引擎的动态功能（Kelly/回撤/VIX）需在有真实交易记录或波动行情时触发验证。
 
 > **状态：实盘验证通过 → 可发版 v0.5.0**

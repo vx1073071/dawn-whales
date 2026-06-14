@@ -1,4 +1,4 @@
-# Dawn Whales 精修轮总体规划：R122 → R128
+# TradingEasy 精修轮总体规划：R122 → R128
 
 > **制定**: PM(Claw/WorkBuddy) | 2026-06-12 23:43 HKT
 > **来源**: 五虾独立审查合并 (QClaw+youdao+JVS+ML+PM) — 40项 ~194h

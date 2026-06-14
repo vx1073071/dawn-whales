@@ -6,7 +6,7 @@ owner: JVS
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES P2P 引擎文档: 分发 + 黑名单管理
+# TradingEasy P2P 引擎文档: 分发 + 黑名单管理
 
 **版本**: v1.9.0-alpha
 **日期**: 2026-06-09
@@ -306,7 +306,7 @@ await resolveDispute('D-001', 'unfreeze', '链上已确认转账，解冻');
 // → P2P-001 立即解冻, B 收到 USDT
 
 // 5. 如果 C 是欺诈者
-await addToBlacklist('TC...', '多次欺诈申诉', 'admin@dawnwhales.com');
+await addToBlacklist('TC...', '多次欺诈申诉', 'admin@TradingEasy.com');
 // → C 的所有资产冻结, P2P 挂单取消, 禁止新转账
 ```
 

@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES — 市场覆盖参考文档
+# TradingEasy — 市场覆盖参考文档
 
 > **版本**: v1.11.0
 > **最后更新**: 2026-06-12

@@ -32,7 +32,7 @@ purpose: (auto-generated, needs review)
 
 ### 背景
 
-DAWN WHALES v1.2.0 需要实现 AI 协作功能，通过多个 AI Agent 协作分析，帮助创作者生成高质量交易策略。
+TradingEasy v1.2.0 需要实现 AI 协作功能，通过多个 AI Agent 协作分析，帮助创作者生成高质量交易策略。
 
 ### 可选方案
 
@@ -106,7 +106,7 @@ DAWN WHALES v1.2.0 需要实现 AI 协作功能，通过多个 AI Agent 协作�
 #### 2. Python 语言不匹配
 
 **问题**:
-- DAWN WHALES 是 TypeScript/Electron 项目
+- TradingEasy 是 TypeScript/Electron 项目
 - TradingAgents 是 Python 项目
 - 需要进程间通信 (IPC)
 
@@ -137,7 +137,7 @@ DAWN WHALES v1.2.0 需要实现 AI 协作功能，通过多个 AI Agent 协作�
 
 ### 结论
 
-虽然 TradingAgents 是优秀的开源项目，但在协议依赖、语言集成、定制性等方面不符合 DAWN WHALES 的需求，因此不采用。
+虽然 TradingAgents 是优秀的开源项目，但在协议依赖、语言集成、定制性等方面不符合 TradingEasy 的需求，因此不采用。
 
 ---
 

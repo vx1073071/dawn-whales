@@ -124,7 +124,7 @@ FactorLab + 策略分享所有数据以"全或无"方式展示——创建者要
 
 ```
 导出PNG必须包含:
-  ✅ "Dawn Whales/TradingEasy" 水印 (35% opacity, 居中)
+  ✅ "TradingEasy/TradingEasy" 水印 (35% opacity, 居中)
   ✅ 策略ID + 创建时间 (可追溯)
   ✅ "仅供展示，非完整策略" 声明 (底部)
   ✅ 创作者昵称 (品牌保护)

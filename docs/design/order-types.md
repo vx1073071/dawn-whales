@@ -1,4 +1,4 @@
-# Dawn Whales Order Types Guide v1.0
+# TradingEasy Order Types Guide v1.0
 
 > **Round**: R147 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: USER GUIDE — Production Ready
@@ -8,7 +8,7 @@
 
 ## Overview
 
-Dawn Whales supports **4 order types** with intelligent defaults per trading scenario. Users can override defaults based on their needs.
+TradingEasy supports **4 order types** with intelligent defaults per trading scenario. Users can override defaults based on their needs.
 
 ---
 
@@ -27,7 +27,7 @@ Dawn Whales supports **4 order types** with intelligent defaults per trading sce
 
 ### Smart Defaults
 
-Dawn Whales automatically selects the most appropriate order type for each scenario:
+TradingEasy automatically selects the most appropriate order type for each scenario:
 
 | Scenario | Default Order Type | Rationale | Overridable? |
 |----------|-------------------|-----------|-------------|

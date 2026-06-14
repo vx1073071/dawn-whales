@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# Dawn Whales 统一审计报告 (Consolidated Audit Report)
+# TradingEasy 统一审计报告 (Consolidated Audit Report)
 
 > **整合版本**: v2.0 | **日期**: 2026-06-12
 > **基线版本**: v1.12.0 (R104 收官) | **基准提交**: `63bde7a5`
@@ -684,7 +684,7 @@ vitest 配置 singleThread:true 防 OOM，根因可能是 better-sqlite3 未正�
 
 ## 十、结论
 
-**Dawn Whales v1.12.0 已达到生产级质量** (TSC 0 / 7052-0 fail / 11语言 / 积分安全全部通过)，处于从"功能完整"到"工业化打磨"的关键阶段。
+**TradingEasy v1.12.0 已达到生产级质量** (TSC 0 / 7052-0 fail / 11语言 / 积分安全全部通过)，处于从"功能完整"到"工业化打磨"的关键阶段。
 
 **核心技术债** (按共识优先级):
 

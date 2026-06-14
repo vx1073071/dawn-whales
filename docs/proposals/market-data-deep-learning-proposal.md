@@ -1,4 +1,4 @@
-# Dawn Whales 行情系统深度学习建议 v1.0
+# TradingEasy 行情系统深度学习建议 v1.0
 
 > 2026-06-12 | 作者: youdao | 提交: PM(Claw/64001)
 

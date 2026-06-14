@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES v0.8.0 Release Notes
+# TradingEasy v0.8.0 Release Notes
 
 **版本**: v0.8.0-alpha  
 **发布日期**: 2026-06-07  
@@ -18,7 +18,7 @@ purpose: (auto-generated, needs review)
 
 ### Phase 4.3: 完整交易闭环
 
-v0.8.0 实现了从策略信号到交易执行的完整闭环，这是 DAWN WHALES 项目最重要的里程碑之一。
+v0.8.0 实现了从策略信号到交易执行的完整闭环，这是 TradingEasy 项目最重要的里程碑之一。
 
 **完整数据流**:
 ```
@@ -150,7 +150,7 @@ v0.8.0 为 Phase 4.4 自主决策引擎奠定基础：
 
 ```bash
 # 克隆仓库
-git clone https://github.com/dawn-whales/dawn-whales.git
+git clone https://github.com/dawn-whales/tradingeasy.git
 cd dawn-whales
 
 # 安装依赖
@@ -195,4 +195,4 @@ npm run dev
 
 ---
 
-**DAWN WHALES v0.8.0** - Phase 4.3 完整闭环，5 虾协作首航成功！🦞🦐🦐🎯📚
+**TradingEasy v0.8.0** - Phase 4.3 完整闭环，5 虾协作首航成功！🦞🦐🦐🎯📚

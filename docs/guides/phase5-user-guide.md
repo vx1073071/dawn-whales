@@ -33,7 +33,7 @@ purpose: (auto-generated, needs review)
 
 ## Phase 5.0 概述
 
-Phase 5.0 是 DAWN WHALES 项目的智能策略优化与可视化阶段，核心目标：
+Phase 5.0 是 TradingEasy 项目的智能策略优化与可视化阶段，核心目标：
 
 1. **策略自动优化**: 基于历史表现自动调整策略参数
 2. **多周期分析**: 7 个时间周期信号融合

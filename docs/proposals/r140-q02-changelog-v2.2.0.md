@@ -1,4 +1,4 @@
-# Dawn Whales v2.2.0 Release Notes
+# TradingEasy v2.2.0 Release Notes
 
 > **Release**: v2.2.0 · **Codename**: "Whale Pod" · **Date**: 2026-06-13
 > **Branch**: master · **Tag**: v2.2.0
@@ -9,7 +9,7 @@
 
 ## Release Overview
 
-Dawn Whales v2.2.0 is the **CopyTrade General Availability** release. After 32 rounds of development across 5 contributors, the platform now supports 17 brokers across 7 markets, dual-mode copy trading (Cloud 24/7 + Desktop OpenD), full risk management with circuit breakers, paper trading simulation, and a polished unified UI.
+TradingEasy v2.2.0 is the **CopyTrade General Availability** release. After 32 rounds of development across 5 contributors, the platform now supports 17 brokers across 7 markets, dual-mode copy trading (Cloud 24/7 + Desktop OpenD), full risk management with circuit breakers, paper trading simulation, and a polished unified UI.
 
 ---
 

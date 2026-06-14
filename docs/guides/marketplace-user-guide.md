@@ -38,7 +38,7 @@ purpose: (auto-generated, needs review)
 
 ### 什么是策略市场？
 
-策略市场是 DAWN WHALES v1.1.0 引入的核心功能，允许用户：
+策略市场是 TradingEasy v1.1.0 引入的核心功能，允许用户：
 
 - **发布策略**: 将自己的量化策略分享到市场
 - **搜索策略**: 通过关键词、标签、筛选条件找到需要的策略
@@ -158,7 +158,7 @@ interface Review {
 
 ### 步骤 1: 创建策略草稿
 
-1. 打开 DAWN WHALES 应用
+1. 打开 TradingEasy 应用
 2. 点击左侧导航栏的 "策略市场"
 3. 点击右上角的 "发布策略" 按钮
 4. 选择 "创建新策略"
@@ -193,7 +193,7 @@ interface Review {
 
 **代码要求**:
 - 使用 TypeScript 编写
-- 遵循 DAWN WHALES 策略接口规范
+- 遵循 TradingEasy 策略接口规范
 - 包含完整的注释
 - 通过代码质量检查
 
@@ -405,7 +405,7 @@ MACD RSI
 
 ### 步骤 1: 浏览策略市场
 
-1. 打开 DAWN WHALES 应用
+1. 打开 TradingEasy 应用
 2. 点击左侧导航栏的 "策略市场"
 3. 使用搜索和筛选功能找到感兴趣的策略
 

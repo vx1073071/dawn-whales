@@ -17,7 +17,7 @@ purpose: (auto-generated, needs review)
 
 ## Overview
 
-JVS provides the **market data infrastructure** for DAWN WHALES, covering sector heatmaps, macro indicators, sentiment analysis, stock screening, news aggregation, sector rotation monitoring, anomaly detection, and market hotspot discovery.
+JVS provides the **market data infrastructure** for TradingEasy, covering sector heatmaps, macro indicators, sentiment analysis, stock screening, news aggregation, sector rotation monitoring, anomaly detection, and market hotspot discovery.
 
 All data is exposed via **IPC handlers** and accessible through the **preload bridge** and **renderer API**.
 

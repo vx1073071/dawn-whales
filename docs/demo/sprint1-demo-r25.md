@@ -8,7 +8,7 @@ purpose: (auto-generated, needs review)
 
 # Sprint 1 Demo 验收清单 (R25)
 
-**项目**: DAWN WHALES · 道鲸  
+**项目**: TradingEasy · 道鲸  
 **版本**: v0.6.0  
 **日期**: 2026-06-06  
 **状态**: 🔄 录制中
@@ -111,7 +111,7 @@ purpose: (auto-generated, needs review)
 ---
 
 ### 场景 10: .exe 安装 → 启动流程
-- [ ] 双击 `DAWN WHALES Setup 0.6.0.exe`
+- [ ] 双击 `TradingEasy Setup 0.6.0.exe`
 - [ ] NSIS 安装向导正常显示
 - [ ] 安装完成自动/手动启动
 - [ ] 启动后显示 Dashboard
@@ -151,7 +151,7 @@ purpose: (auto-generated, needs review)
 | Tests | 129/129 pass / 6 files | ✅ |
 | Exit Code | 0 | ✅ |
 | 版本号 | 0.6.0 | ✅ |
-| .exe | DAWN WHALES Setup 0.6.0.exe | 🔄 |
+| .exe | TradingEasy Setup 0.6.0.exe | 🔄 |
 
 ---
 

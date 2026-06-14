@@ -6,7 +6,7 @@ owner: team
 purpose: (auto-generated, needs review)
 -->
 
-# EngineError 使用指南 — Dawn Whales 开发者迁移文档
+# EngineError 使用指南 — TradingEasy 开发者迁移文档
 
 > 最后更新: R89 (2026-06-11) | 版本: v1.0 | 作者: youdao (文档虾)
 
@@ -31,7 +31,7 @@ purpose: (auto-generated, needs review)
 
 ## 概述
 
-`EngineError` 是 Dawn Whales 项目的统一错误类型，定义在 `electron/engine/core/engine-error.ts`。
+`EngineError` 是 TradingEasy 项目的统一错误类型，定义在 `electron/engine/core/engine-error.ts`。
 它为所有引擎错误提供结构化的域 (Domain)、码 (Code)、上下文 (Context) 和时间戳 (Timestamp)，
 替代了之前散落在各处的 `throw new Error('...')` 模式。
 

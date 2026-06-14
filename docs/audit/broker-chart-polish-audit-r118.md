@@ -1,4 +1,4 @@
-# DAWN WHALES 券商&行情打磨审计报告
+# TradingEasy 券商&行情打磨审计报告
 > 独立审查日期: 2026-06-12 13:00
 > 审查范围: 28个组件 (17 chart + 4 broker + 7 lib engines)
 > 审查人: ML

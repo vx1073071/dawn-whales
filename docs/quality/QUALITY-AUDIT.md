@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES · 质量审计报告
+# TradingEasy · 质量审计报告
 
 > v1.0 | 2026-06-04
 

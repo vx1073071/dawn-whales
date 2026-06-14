@@ -9,7 +9,7 @@ purpose: (auto-generated, needs review)
 # Sprint 1 Demo 验收清单
 
 ## 目标
-验证 DAWN WHALES v0.7.0 Electron 应用可正常启动，核心页面可展示真实数据。
+验证 TradingEasy v0.7.0 Electron 应用可正常启动，核心页面可展示真实数据。
 
 ## 验收环境
 - OS: Windows 10/11

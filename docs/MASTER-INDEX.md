@@ -6,7 +6,7 @@ owner: QClaw (quality-shrimp)
 purpose: Master index of all active documentation
 -->
 
-# Dawn Whales — Master Documentation Index
+# TradingEasy — Master Documentation Index
 
 > **Generated**: 2026-06-12 R108 | **Active files**: 191 (reduced from 394)  
 > **Archived**: docs/_archived/ (pre-R38 / v0.x era files)

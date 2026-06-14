@@ -16,7 +16,7 @@ purpose: (auto-generated, needs review)
 
 ## 概述
 
-本配置定义 DAWN WHALES 项目的自动化流程，包括：
+本配置定义 TradingEasy 项目的自动化流程，包括：
 - 定时健康检查
 - 性能回归测试
 - 文档同步

@@ -93,7 +93,7 @@
 - 总 Round 22: 1.5-2 小时
 
 ## 关键文件路径
-- DAWN WHALES: `C:\Users\vx107\.easyclaw\workspace\dawn-whales`
+- TradingEasy: `C:\Users\vx107\.easyclaw\workspace\dawn-whales`
 - TradeExecutor: `electron/engine/trade-executor.ts`
 - TradeExecutor IPC: `electron/ipc/trade-executor-ipc.ts`
 - WS Market Data: `electron/engine/ws-market-data.ts`

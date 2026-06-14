@@ -23,7 +23,7 @@
 
 ### 1.1 What is IB Gateway?
 
-IB Gateway is a lightweight, headless application that provides API access to Interactive Brokers' trading infrastructure. Unlike Trader Workstation (TWS), it does not include a graphical trading interface — it exists purely to serve API connections. This makes it ideal for automated trading systems like Dawn Whales.
+IB Gateway is a lightweight, headless application that provides API access to Interactive Brokers' trading infrastructure. Unlike Trader Workstation (TWS), it does not include a graphical trading interface — it exists purely to serve API connections. This makes it ideal for automated trading systems like TradingEasy.
 
 **Key differences:**
 
@@ -38,7 +38,7 @@ IB Gateway is a lightweight, headless application that provides API access to In
 
 ### 1.2 Download Links
 
-**IB Gateway (recommended for Dawn Whales):**
+**IB Gateway (recommended for TradingEasy):**
 
 | Platform | URL |
 |----------|-----|
@@ -185,7 +185,7 @@ After launching IB Gateway, configure the API settings:
 
 ```
 127.0.0.1     # Always include localhost
-192.168.1.0   # Local network (optional, if Dawn Whales runs on another machine)
+192.168.1.0   # Local network (optional, if TradingEasy runs on another machine)
 ```
 
 ### 1.5 Security Settings
@@ -225,7 +225,7 @@ IB Gateway requires a weekly restart (typically Sunday morning). Configure auto-
 
 1. Go to `Configure → Settings → Auto Restart`
 2. Set restart time to a low-activity period (e.g., Sunday 04:00 AM ET)
-3. Dawn Whales should handle the brief disconnection gracefully via the auto-reconnect logic in `IBAdapter`
+3. TradingEasy should handle the brief disconnection gracefully via the auto-reconnect logic in `IBAdapter`
 
 ---
 
@@ -281,7 +281,7 @@ IB Gateway uses **session-based authentication** — there are no API keys for l
 - No OAuth tokens, no API keys, no HMAC signatures
 - The security boundary is the IB Gateway login session itself
 
-**For Dawn Whales:**
+**For TradingEasy:**
 
 ```typescript
 // No API key configuration needed — just connect to the port
@@ -311,7 +311,7 @@ Each TCP connection to IB Gateway must use a unique client ID (integer, 1-32).
 | Persistence | Orders are tied to client ID — reconnecting with the same ID shows those orders |
 | Master client ID | ID 0 is special — it can see/cancel orders from all other clients |
 
-**Dawn Whales usage:**
+**TradingEasy usage:**
 
 ```typescript
 // Main trading instance
@@ -878,7 +878,7 @@ IB supports multiple security types, identified by short string codes:
 
 ### 5.1 Protocol Architecture
 
-The Dawn Whales codebase supports two broker protocol families:
+The TradingEasy codebase supports two broker protocol families:
 
 | Aspect | OpenD (Futu/Moomoo) | IB Gateway/TWS |
 |--------|---------------------|----------------|
@@ -1356,7 +1356,7 @@ const accounts = await adapter.getAccounts();
 
 ### Debug Logging
 
-Enable verbose logging in Dawn Whales to diagnose IB issues:
+Enable verbose logging in TradingEasy to diagnose IB issues:
 
 ```typescript
 // In electron/main.ts or test setup
@@ -1384,4 +1384,4 @@ These logs show every API message sent/received and are invaluable for debugging
 
 ---
 
-*This document is maintained as part of the Dawn Whales codebase. Update it whenever the IB adapter implementation changes significantly.*
+*This document is maintained as part of the TradingEasy codebase. Update it whenever the IB adapter implementation changes significantly.*

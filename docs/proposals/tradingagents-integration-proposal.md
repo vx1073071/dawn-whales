@@ -6,7 +6,7 @@ owner: JVS
 purpose: (auto-generated, needs review)
 -->
 
-# TradingAgents 融入 DAWN WHALES 建议方案
+# TradingAgents 融入 TradingEasy 建议方案
 
 **提案时间**: 2026-06-08 13:00 GMT+8  
 **提案人**: youdao  
@@ -79,11 +79,11 @@ TradingAgents 是一个**多智能体 LLM 金融交易框架**，模拟真实交
 
 ---
 
-## 二、与 DAWN WHALES 的契合点分析
+## 二、与 TradingEasy 的契合点分析
 
 ### 2.1 功能契合度
 
-| DAWN WHALES 功能 | TradingAgents 能力 | 契合度 | 说明 |
+| TradingEasy 功能 | TradingAgents 能力 | 契合度 | 说明 |
 |-----------------|-------------------|--------|------|
 | 策略引擎 | 多智能体分析 | ⭐⭐⭐⭐⭐ | 可增强策略生成和决策 |
 | 回测系统 | 历史分析 | ⭐⭐⭐⭐ | 可整合回测分析 |
@@ -93,7 +93,7 @@ TradingAgents 是一个**多智能体 LLM 金融交易框架**，模拟真实交
 
 ### 2.2 技术契合度
 
-| 维度 | DAWN WHALES | TradingAgents | 契合度 |
+| 维度 | TradingEasy | TradingAgents | 契合度 |
 |-----|-------------|---------------|--------|
 | 语言 | TypeScript | Python | ⭐⭐ | 需要桥接层 |
 | 架构 | Electron + React | LangGraph | ⭐⭐⭐ | 可集成 |
@@ -126,7 +126,7 @@ TradingAgents 是一个**多智能体 LLM 金融交易框架**，模拟真实交
    - 搭建 Python FastAPI 服务
    - 封装 TradingAgents 核心功能
    - 提供 REST API 接口
-   - 集成到 DAWN WHALES 后端
+   - 集成到 TradingEasy 后端
 
 2. **API 桥接层** (~300L)
    - TypeScript API 客户端
@@ -256,7 +256,7 @@ TradingAgents 是一个**多智能体 LLM 金融交易框架**，模拟真实交
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                 DAWN WHALES 架构                         │
+│                 TradingEasy 架构                         │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
 │  前端 (Electron + React)                                │
@@ -335,7 +335,7 @@ PUT /api/trading-agents/config
 ```
 用户请求分析
     ↓
-DAWN WHALES 后端
+TradingEasy 后端
     ↓
 TradingAgents 桥接层
     ↓
@@ -372,7 +372,7 @@ TradingAgents Python 服务
     ↓
 返回决策结果
     ↓
-DAWN WHALES 前端展示
+TradingEasy 前端展示
 ```
 
 ---
@@ -520,12 +520,12 @@ DAWN WHALES 前端展示
 
 - [TradingAgents README](https://github.com/TauricResearch/TradingAgents/blob/main/README.md)
 - [TradingAgents CHANGELOG](https://github.com/TauricResearch/TradingAgents/blob/main/CHANGELOG.md)
-- [DAWN WHALES v1.1.0 路线图](../roadmap/v1.1.0-roadmap-update-r53.md)
+- [TradingEasy v1.1.0 路线图](../roadmap/v1.1.0-roadmap-update-r53.md)
 
 ### 9.3 联系方式
 
 - **TradingAgents**: https://github.com/TauricResearch/TradingAgents/issues
-- **DAWN WHALES**: project@dawn-whales.ai
+- **TradingEasy**: project@dawn-whales.ai
 
 ---
 

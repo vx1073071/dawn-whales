@@ -1,4 +1,4 @@
-# R129-Q02: Dawn Whales Server 安全方案文档
+# R129-Q02: TradingEasy Server 安全方案文档
 
 > **Author**: QClaw · **Task**: R129-Q02 · **Hours**: 3h
 > **Version**: v2.0.0 (R129 服务器基础设施)

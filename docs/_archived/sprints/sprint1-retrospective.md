@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Sprint 1 delivered a fully functional AI quantitative trading desktop application: DAWN WHALES (道鲸). The app supports real-time strategy execution, backtesting, risk management, and multi-broker trading across Futu/Moomoo. **129 tests pass, 0 TSC errors, v0.6.0 .exe installer (113 MB).**
+Sprint 1 delivered a fully functional AI quantitative trading desktop application: TradingEasy (道鲸). The app supports real-time strategy execution, backtesting, risk management, and multi-broker trading across Futu/Moomoo. **129 tests pass, 0 TSC errors, v0.6.0 .exe installer (113 MB).**
 
 ---
 

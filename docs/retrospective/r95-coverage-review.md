@@ -286,7 +286,7 @@ R95/R95.1 采用以下测试方法论:
 3. **测试代码 review**: 测试代码也应接受 Code Review (非仅审查生产代码)
 4. **E2E 场景扩充**: 当前 14 个 Playwright spec → 目标 30+，覆盖关键用户旅程
 5. **性能回归测试**: 引擎 benchmark 定期运行，防止性能退化
-- **项目**: Dawn Whales (Electron + React + TypeScript)
+- **项目**: TradingEasy (Electron + React + TypeScript)
 - **目录**: `C:\Users\vx107\.easyclaw\workspace\dawn-whales`
 - **引擎文件**: 344 个 TypeScript 文件 (9 个子目录)
 - **测试文件**: 392 个 (R95前 353 + R95/R95.1 新增 39)

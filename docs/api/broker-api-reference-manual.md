@@ -6,7 +6,7 @@ owner: QClaw
 purpose: 16家券商API完整对比参考手册 — 行情/交易/账户/认证/限制速查
 -->
 
-# Dawn Whales 16 家券商 API 参考手册
+# TradingEasy 16 家券商 API 参考手册
 
 > **版本**: v1.12.0 | **轮次**: R4 Final | **维护**: QClaw (文档虾)
 > **用途**: 快速查询任意券商的 API 能力、限制条件、市场覆盖、认证方式

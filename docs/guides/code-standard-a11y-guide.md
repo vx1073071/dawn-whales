@@ -6,7 +6,7 @@ owner: youdao
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES v1.9.0-beta 代码规范 + 无障碍说明
+# TradingEasy v1.9.0-beta 代码规范 + 无障碍说明
 
 **版本**: v1.9.0-beta
 **日期**: 2026-06-09
@@ -132,7 +132,7 @@ npx lint-staged
 
 ## 无障碍目标: WCAG 2.1 AA
 
-DAWN WHALES 面向全球用户，包括使用屏幕阅读器、键盘导航、高对比度模式的用户。
+TradingEasy 面向全球用户，包括使用屏幕阅读器、键盘导航、高对比度模式的用户。
 
 ## 屏幕阅读器支持
 

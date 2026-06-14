@@ -1,4 +1,4 @@
-# Dawn Whales 全项目独立审查 v2.0 — 人类使用视角
+# TradingEasy 全项目独立审查 v2.0 — 人类使用视角
 
 > 审查人: youdao | 2026-06-12 22:23 HKT | 面向 PM
 

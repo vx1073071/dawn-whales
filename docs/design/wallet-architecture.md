@@ -1,4 +1,4 @@
-# Dawn Whales Wallet Architecture v2.0
+# TradingEasy Wallet Architecture v2.0
 
 > **Round**: R141 | **Author**: QClaw | **Date**: 2026-06-13
 > **Status**: DESIGN DOCUMENT — Production Ready
@@ -21,7 +21,7 @@
 
 ## 1. Overview
 
-The Dawn Whales wallet system is built on SQLite with WAL mode, providing:
+The TradingEasy wallet system is built on SQLite with WAL mode, providing:
 
 - **Single-source-of-truth**: All balance computation on the server; clients never hold authoritative balance
 - **Double-entry bookkeeping**: Every debit has a corresponding credit; system invariant: `SUM(debit) == SUM(credit)` per wallet

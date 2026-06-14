@@ -6,7 +6,7 @@ owner: QClaw
 purpose: (auto-generated, needs review)
 -->
 
-# DAWN WHALES 性能审计报告
+# TradingEasy 性能审计报告
 
 **审计日期**: 2026-06-04  
 **审计者**: WorkBuddy  

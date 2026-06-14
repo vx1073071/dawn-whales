@@ -8,7 +8,7 @@ purpose: (auto-generated, needs review)
 
 # Engine Core API Reference
 
-> Dawn Whales — Core Engine Module Public API
+> TradingEasy — Core Engine Module Public API
 > Generated: 2026-06-11 | Version: 1.10.0-alpha.1
 
 ---
