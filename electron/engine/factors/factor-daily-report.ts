@@ -13,6 +13,20 @@
 
 import log from 'electron-log';
 
+// ── Push State Types (R177 G3-G4续) ────────────────────────────────────────
+
+interface PushState {
+  lastPushDate: string;    // YYYY-MM-DD
+  lastPushType: 'daily' | 'weekly' | 'none';
+  pushCount: number;       // push count for current day
+}
+
+interface UserSubscription {
+  factorIds: string[];     // factors user follows
+  style: string;           // user's investment style
+  market: string;          // primary market
+}
+
 // ── Types ───────────────────────────────────────────────────────────────────
 
 export interface FactorDaySnapshot {
@@ -67,9 +81,11 @@ export interface WeeklyReport extends DailyReport {
 
 export class FactorDailyReport {
   private static instance: FactorDailyReport;
+  private pushStates: Map<string, PushState> = new Map(); // userId → push state
+  private readonly MAX_DAILY_PUSHES = 1;                  // 每天最多1次推送
 
   private constructor() {
-    log.info('[FactorDailyReport] Initialized');
+    log.info('[FactorDailyReport] Initialized with push frequency control');
   }
 
   static getInstance(): FactorDailyReport {
@@ -187,6 +203,139 @@ export class FactorDailyReport {
         log.warn('[FactorDailyReport] SignalPipeline push skipped:', e?.message);
       }
     }
+  }
+
+  /**
+   * [R177 G3续] Push with frequency control.
+   * Enforces: max 1 push per day per user. Returns whether push was sent.
+   */
+  publishWithRateLimit(
+    report: DailyReport | WeeklyReport,
+    userId: string,
+    channels?: string[],
+  ): { sent: boolean; reason?: string } {
+    const today = new Date().toISOString().split('T')[0];
+    const state = this.pushStates.get(userId);
+
+    // Check rate limit: only 1 push per day
+    if (state && state.lastPushDate === today && state.pushCount >= this.MAX_DAILY_PUSHES) {
+      const reason = `每日推送已达上限 (${this.MAX_DAILY_PUSHES}次), 上次推送: ${state.lastPushDate}`;
+      log.info(`[FactorDailyReport] Rate limited for user ${userId}: ${reason}`);
+      return { sent: false, reason };
+    }
+
+    // Update state
+    this.pushStates.set(userId, {
+      lastPushDate: today,
+      lastPushType: report.type,
+      pushCount: (state?.lastPushDate === today ? state.pushCount : 0) + 1,
+    });
+
+    // Deliver
+    this.publish(report, channels);
+    return { sent: true };
+  }
+
+  /**
+   * [R177 G4续] Personalize report by user's followed factors.
+   * Filters snapshots to user's factor watchlist and adjusts recommendations.
+   */
+  personalizeReport(report: DailyReport, subscription: UserSubscription): DailyReport {
+    const followedIds = new Set(subscription.factorIds);
+
+    // Filter to user's factors
+    const top5 = report.top5.filter(s => followedIds.has(s.factorId));
+    const bottom5 = report.bottom5.filter(s => followedIds.has(s.factorId));
+    const anomalies = report.anomalies.filter(s => followedIds.has(s.factorId));
+    const alerts = report.alerts.filter(a => followedIds.has(a.factorId));
+    const decayAlerts = report.decayAlerts.filter(a => followedIds.has(a.factorId));
+    const crowdingAlerts = report.crowdingAlerts.filter(a => followedIds.has(a.factorId));
+
+    // Personalized recommendations
+    const recs: string[] = [];
+    const topIc = top5.length > 0 ? top5[0].dailyIC : 0;
+    const hasDecay = decayAlerts.length > 0;
+    const hasCrowding = crowdingAlerts.length > 0;
+    const styleMap: Record<string, string> = {
+      momentum: '动量策略', value: '价值投资', quality: '质量选股',
+      growth: '成长投资', defensive: '防御配置', crypto: '加密投资',
+    };
+    const styleLabel = styleMap[subscription.style] || '当前策略';
+
+    if (topIc > 0.04) {
+      recs.push(`你的关注因子表现强劲，${styleLabel}方向持续有效`);
+    }
+    if (hasDecay) {
+      recs.push(`${decayAlerts[0].nameCN}因子IC衰减加速，建议关注是否需要调仓`);
+    }
+    if (hasCrowding) {
+      recs.push(`${crowdingAlerts[0].nameCN}因子拥挤度升高，新资金谨慎入场`);
+    }
+    if (alerts.length === 0 && topIc > 0) {
+      recs.push('你关注的因子整体健康，按现有配置持有即可');
+    }
+    if (subscription.factorIds.length < 3) {
+      recs.push('关注因子较少，建议添加互补因子以分散风险');
+    }
+
+    // Personalized summary
+    const summary = top5.length > 0
+      ? `你的${top5.length}个关注因子中，${top5[0].nameCN}表现最佳 (IC=${top5[0].dailyIC.toFixed(3)})，${hasDecay ? '部分因子出现衰减，需关注' : '整体表现稳定'}.`
+      : `今日你关注的因子暂无突出表现，${report.summary}`;
+
+    return {
+      ...report,
+      top5,
+      bottom5,
+      anomalies,
+      alerts,
+      decayAlerts,
+      crowdingAlerts,
+      recommendations: recs.length > 0 ? recs : report.recommendations,
+      summary,
+    };
+  }
+
+  /**
+   * [R177 G3-G4续] Full pipeline: check rate limit → personalize → push.
+   */
+  async generateAndPush(
+    market: string,
+    userId: string,
+    subscription: UserSubscription,
+    factorSnapshots?: FactorDaySnapshot[],
+    channels?: string[],
+  ): Promise<{ report: DailyReport; pushResult: { sent: boolean; reason?: string } }> {
+    const rawReport = await this.generateDailyReport(market, factorSnapshots);
+    const personalized = subscription.factorIds.length > 0
+      ? this.personalizeReport(rawReport, subscription)
+      : rawReport;
+
+    const pushResult = this.publishWithRateLimit(personalized, userId, channels);
+    return { report: personalized, pushResult };
+  }
+
+  /**
+   * [R177 G3续] Get push state for a user (for debugging/admin).
+   */
+  getPushState(userId: string): PushState | null {
+    return this.pushStates.get(userId) || null;
+  }
+
+  /**
+   * [R177 G3续] Reset push state (admin override or testing).
+   */
+  resetPushState(userId: string): void {
+    this.pushStates.delete(userId);
+    log.info(`[FactorDailyReport] Reset push state for user ${userId}`);
+  }
+
+  /**
+   * [R177 G3续] Reset ALL push states (daily cron).
+   */
+  resetDailyLimits(): void {
+    this.pushStates.clear();
+    log.info('[FactorDailyReport] Daily push limits reset');
   }
 
   // ── Private Helpers ──────────────────────────────────────────────────
