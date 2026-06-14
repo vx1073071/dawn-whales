@@ -346,6 +346,175 @@ export class TurnoverCostEngine {
   listProfiles(): FactorTurnoverProfile[] {
     return Array.from(this.profiles.values());
   }
+
+  /**
+   * R172 F8续: Get UI-ready turnover cost summary.
+   * Returns formatted data for frontend display: cost breakdown per factor,
+   * market comparison, cost tiers, and actionable recommendations.
+   */
+  getTurnoverCostSummary(options?: {
+    market?: string;
+    tradeSizeUSD?: number;
+    avgDailyVolumeUSD?: number;
+    factorIds?: string[];
+  }): {
+    timestamp: number;
+    market: string;
+    parameters: {
+      tradeSizeUSD: number;
+      avgDailyVolumeUSD: number;
+      commissionRate: number;
+      spreadBps: number;
+      impactFactor: number;
+    };
+    costTiers: Array<{
+      tier: 'low' | 'medium' | 'high' | 'extreme';
+      label: string;
+      labelCN: string;
+      threshold: number; // totalCostPct threshold
+      factors: Array<{
+        factorId: string;
+        nameCN: string;
+        totalCostPct: number;
+        annualTurnover: number;
+        rebalanceDays: number;
+        costPerTradePct: number;
+      }>;
+    }>;
+    allFactors: Array<{
+      factorId: string;
+      nameCN: string;
+      rank: number;
+      tier: 'low' | 'medium' | 'high' | 'extreme';
+      totalCostPct: number;
+      costBreakdown: {
+        commission: number;
+        spread: number;
+        impact: number;
+      };
+      annualTurnover: number;
+      rebalanceDays: number;
+      tradesPerYear: number;
+      costPerTradePct: number;
+      volatilitySensitivity: string;
+    }>;
+    lowestCostFactors: string[];
+    highestCostFactors: string[];
+    recommendations: string[];
+  } {
+    const mkt = options?.market || 'US';
+    const tradeSize = options?.tradeSizeUSD || 10000;
+    const adv = options?.avgDailyVolumeUSD || 5000000;
+    const marketDefaults = MARKET_DEFAULTS[mkt] || MARKET_DEFAULTS.US;
+
+    // Get estimates for all (or specified) factors
+    const factorIds = options?.factorIds
+      || Array.from(this.profiles.keys());
+    const estimates = factorIds.map(fid => {
+      const est = this.estimateForMarket(fid, mkt, tradeSize, adv);
+      const profile = this.profiles.get(fid);
+      return { estimate: est, profile };
+    });
+
+    // Sort by total cost ascending
+    estimates.sort((a, b) => a.estimate.totalCostPct - b.estimate.totalCostPct);
+
+    // Assign tiers
+    const tierThresholds = {
+      low: { threshold: 0.005, label: 'Low', labelCN: '低成本' },      // <0.5%/yr
+      medium: { threshold: 0.02, label: 'Medium', labelCN: '中等成本' }, // 0.5-2%/yr
+      high: { threshold: 0.05, label: 'High', labelCN: '高成本' },       // 2-5%/yr
+      extreme: { threshold: Infinity, label: 'Extreme', labelCN: '极高成本' },
+    };
+
+    const tiers: Record<string, Array<{ factorId: string; nameCN: string; totalCostPct: number; annualTurnover: number; rebalanceDays: number; costPerTradePct: number }>> = {
+      low: [], medium: [], high: [], extreme: [],
+    };
+
+    // CN name mapping
+    const cnNames: Record<string, string> = {
+      MOM_12M: '12月动量', MOM_1M: '1月动量', HML: '价值因子', SIZE: '规模因子',
+      QUAL: '质量因子', RMW: '盈利能力', CMA: '投资风格', GROWTH: '成长因子',
+      YIELD: '股息因子', VOL_60D: '60日波动率', LIQ: '流动性因子',
+      MA_20_60: '均线交叉', EMA_12_26: 'MACD', RSI_14: 'RSI',
+      ADX: 'ADX趋势', BOLL: '布林带', CRYPTO_FUNDING: '资金费率',
+      CRYPTO_LIQUIDATIONS: '爆仓热度',
+    };
+
+    const allFactors: Array<any> = [];
+
+    for (let i = 0; i < estimates.length; i++) {
+      const { estimate: e, profile: p } = estimates[i];
+      const tier: 'low' | 'medium' | 'high' | 'extreme' =
+        e.totalCostPct < 0.005 ? 'low' :
+        e.totalCostPct < 0.02 ? 'medium' :
+        e.totalCostPct < 0.05 ? 'high' : 'extreme';
+
+      tiers[tier].push({
+        factorId: e.factorId,
+        nameCN: cnNames[e.factorId] || e.factorId,
+        totalCostPct: e.totalCostPct,
+        annualTurnover: e.factorAnnualTurnover,
+        rebalanceDays: p?.rebalanceFrequencyDays || 90,
+        costPerTradePct: e.costPerTradePct,
+      });
+
+      allFactors.push({
+        factorId: e.factorId,
+        nameCN: cnNames[e.factorId] || e.factorId,
+        rank: i + 1,
+        tier,
+        totalCostPct: e.totalCostPct,
+        costBreakdown: {
+          commission: e.commissionCostPct,
+          spread: e.spreadCostPct,
+          impact: e.impactCostPct,
+        },
+        annualTurnover: e.factorAnnualTurnover,
+        rebalanceDays: p?.rebalanceFrequencyDays || 90,
+        tradesPerYear: e.estimatedTradesPerYear,
+        costPerTradePct: e.costPerTradePct,
+        volatilitySensitivity: p?.volatilitySensitivity || 'medium',
+      });
+    }
+
+    // Recommendations
+    const recommendations: string[] = [];
+    const lowestIds = allFactors.slice(0, 3).map(f => f.nameCN);
+    const highestIds = allFactors.slice(-3).map(f => f.nameCN);
+
+    recommendations.push(`▼ 最低换手成本: ${lowestIds.join('、')} — 适合长期持有策略`);
+    recommendations.push(`▲ 最高换手成本: ${highestIds.join('、')} — 仅适合高频/LP策略`);
+    recommendations.push(`⚡ 成本占比中，${marketDefaults.impactFactor > 0.08 ? '市场冲击' : marketDefaults.spreadBps > 5 ? '价差成本' : '佣金'}是主要成本来源`);
+    if (mkt === 'CRYPTO') {
+      recommendations.push('⚠️ 加密货币资金费率因子换手率极高，仅在永续合约市场有效');
+    }
+    if (mkt === 'HK') {
+      recommendations.push('⚠️ 港股价差较大，小型股因子策略需额外注意流动性');
+    }
+
+    return {
+      timestamp: Date.now(),
+      market: mkt,
+      parameters: {
+        tradeSizeUSD: tradeSize,
+        avgDailyVolumeUSD: adv,
+        commissionRate: marketDefaults.commissionRate,
+        spreadBps: marketDefaults.spreadBps,
+        impactFactor: marketDefaults.impactFactor,
+      },
+      costTiers: [
+        { tier: 'low' as const, ...tierThresholds.low, factors: tiers.low },
+        { tier: 'medium' as const, ...tierThresholds.medium, factors: tiers.medium },
+        { tier: 'high' as const, ...tierThresholds.high, factors: tiers.high },
+        { tier: 'extreme' as const, ...tierThresholds.extreme, factors: tiers.extreme },
+      ],
+      allFactors,
+      lowestCostFactors: allFactors.slice(0, 3).map(f => f.factorId),
+      highestCostFactors: allFactors.slice(-3).map(f => f.factorId),
+      recommendations,
+    };
+  }
 }
 
 // ── Factory ─────────────────────────────────────────────────────────────────

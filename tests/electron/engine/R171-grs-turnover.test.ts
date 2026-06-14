@@ -284,3 +284,116 @@ describe('R171 F8: Turnover Cost Model', () => {
     expect(typeof e.estimateForMarket).toBe('function');
   });
 });
+
+/**
+ * R172 F8续: getTurnoverCostSummary tests
+ */
+import { describe, it, expect } from 'vitest';
+import {
+  TurnoverCostEngine,
+  createTurnoverCostEngine,
+  getTurnoverCostEngine,
+} from '../../../electron/engine/analysis/turnover-cost-model';
+
+describe('R172 F8续: getTurnoverCostSummary', () => {
+  let engine: TurnoverCostEngine;
+
+  beforeEach(() => {
+    engine = createTurnoverCostEngine();
+  });
+
+  it('returns structured summary with all required fields', () => {
+    const summary = engine.getTurnoverCostSummary({ market: 'US' });
+
+    expect(summary).toHaveProperty('timestamp');
+    expect(summary).toHaveProperty('market', 'US');
+    expect(summary).toHaveProperty('parameters');
+    expect(summary).toHaveProperty('costTiers');
+    expect(summary).toHaveProperty('allFactors');
+    expect(summary).toHaveProperty('lowestCostFactors');
+    expect(summary).toHaveProperty('highestCostFactors');
+    expect(summary).toHaveProperty('recommendations');
+  });
+
+  it('parameters reflect market defaults', () => {
+    const us = engine.getTurnoverCostSummary({ market: 'US' });
+    expect(us.parameters.commissionRate).toBe(0.001);
+    expect(us.parameters.spreadBps).toBe(3);
+
+    const crypto = engine.getTurnoverCostSummary({ market: 'CRYPTO' });
+    expect(crypto.parameters.commissionRate).toBe(0.0002);
+  });
+
+  it('costTiers has 4 tiers populated', () => {
+    const summary = engine.getTurnoverCostSummary();
+    expect(summary.costTiers.length).toBe(4);
+
+    const tierNames = summary.costTiers.map(t => t.tier);
+    expect(tierNames).toEqual(['low', 'medium', 'high', 'extreme']);
+  });
+
+  it('allFactors is sorted by totalCostPct ascending', () => {
+    const summary = engine.getTurnoverCostSummary();
+    for (let i = 1; i < summary.allFactors.length; i++) {
+      expect(summary.allFactors[i - 1].totalCostPct)
+        .toBeLessThanOrEqual(summary.allFactors[i].totalCostPct);
+    }
+  });
+
+  it('allFactors have CN names and cost breakdowns', () => {
+    const summary = engine.getTurnoverCostSummary();
+    for (const f of summary.allFactors) {
+      expect(f.nameCN).toBeDefined();
+      expect(f.nameCN.length).toBeGreaterThan(0);
+      expect(f.costBreakdown).toHaveProperty('commission');
+      expect(f.costBreakdown).toHaveProperty('spread');
+      expect(f.costBreakdown).toHaveProperty('impact');
+      expect(f.tier).toBeDefined();
+      expect(['low', 'medium', 'high', 'extreme']).toContain(f.tier);
+    }
+  });
+
+  it('filters by factorIds', () => {
+    const summary = engine.getTurnoverCostSummary({ factorIds: ['HML', 'MOM_12M'] });
+    expect(summary.allFactors.length).toBe(2);
+    expect(summary.allFactors.map(f => f.factorId)).toContain('HML');
+    expect(summary.allFactors.map(f => f.factorId)).toContain('MOM_12M');
+  });
+
+  it('highest cost factors are liquidity or momentum types', () => {
+    const summary = engine.getTurnoverCostSummary({ market: 'US' });
+    expect(summary.highestCostFactors.length).toBe(3);
+    // Highest cost should include momentum-related factors (high turnover)
+    const highTurnoverIds = summary.highestCostFactors;
+    expect(highTurnoverIds.some(id => id.includes('MOM') || id.includes('EMA') || id.includes('MA_'))).toBe(true);
+  });
+
+  it('recommendations include market-specific tips', () => {
+    const us = engine.getTurnoverCostSummary({ market: 'US' });
+    expect(us.recommendations.length).toBeGreaterThanOrEqual(3);
+
+    const crypto = engine.getTurnoverCostSummary({ market: 'CRYPTO' });
+    const warnsAboutFunding = crypto.recommendations.some(r =>
+      r.includes('资金费率') || r.includes('永续'),
+    );
+    expect(warnsAboutFunding).toBe(true);
+  });
+
+  it('custom trade size affects impact cost', () => {
+    const smallTrade = engine.getTurnoverCostSummary({ tradeSizeUSD: 1000 });
+    const largeTrade = engine.getTurnoverCostSummary({ tradeSizeUSD: 100000 });
+
+    // Large trade has higher impact cost for the same factor
+    const smallMOM = smallTrade.allFactors.find(f => f.factorId === 'MOM_12M')!;
+    const largeMOM = largeTrade.allFactors.find(f => f.factorId === 'MOM_12M')!;
+    expect(largeMOM.costBreakdown.impact).toBeGreaterThan(smallMOM.costBreakdown.impact);
+  });
+
+  it('singleton returns consistent summary', () => {
+    const e = getTurnoverCostEngine();
+    const s1 = e.getTurnoverCostSummary();
+    const s2 = e.getTurnoverCostSummary();
+    expect(s1.timestamp).toBeLessThanOrEqual(s2.timestamp);
+    expect(s1.allFactors.length).toBe(s2.allFactors.length);
+  });
+});

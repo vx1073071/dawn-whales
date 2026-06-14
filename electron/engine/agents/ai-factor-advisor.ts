@@ -66,6 +66,33 @@ export interface BacktestPreview {
   vsBenchmark: number;
 }
 
+// ── R172 E6: Holdings Conflict Detection Types ─────────────────────────
+
+export interface UserHolding {
+  code: string;
+  name: string;
+  market: 'US' | 'HK' | 'CRYPTO';
+  quantity: number;
+  costBasis: number;
+  currentPrice: number;
+  factorExposures?: Record<string, number>;
+}
+
+export interface HoldingConflict {
+  holding: UserHolding;
+  conflictingFactors: string[];
+  message: string;
+  severity: 'info' | 'warning' | 'critical';
+  resolution: string;
+}
+
+export interface DedupResult {
+  original: FactorRecommendation[];
+  deduplicated: FactorRecommendation[];
+  removed: string[];
+  summary: string;
+}
+
 export interface FactorAdvisorResult {
   success: boolean;
   /** Unique session ID */
@@ -431,6 +458,9 @@ export class AIFactorAdvisor {
     // ── Warnings ──
     const warnings = this.generateWarnings(intentResult.intent, pattern);
 
+    // ── R172 E5: Persist recommendation to history ──
+    this.recordRecommendation(sessionId, intentResult.intent, factors);
+
     return {
       success: true,
       sessionId,
@@ -572,6 +602,144 @@ export class AIFactorAdvisor {
       expectedReturn: 0, expectedSharpe: 0, expectedMaxDrawdown: 0, expectedWinRate: 0,
       projectedCurve: [], vsBenchmark: 0,
     };
+  }
+
+  // ── R172 E5: AI Recommendation History Store ───────────────────────
+
+  private recommendationHistory: Array<{
+    sessionId: string;
+    intent: FactorAdvisorIntent;
+    factors: FactorRecommendation[];
+    timestamp: number;
+    query?: string;
+    market?: string;
+    userId?: string;
+    transactionId?: string;
+  }> = [];
+  private static readonly MAX_HISTORY = 50;
+
+  private recordRecommendation(
+    sessionId: string,
+    intent: FactorAdvisorIntent,
+    factors: FactorRecommendation[],
+    extra?: { query?: string; market?: string; userId?: string; transactionId?: string },
+  ): void {
+    this.recommendationHistory.push({
+      sessionId,
+      intent,
+      factors: factors.map(f => ({ ...f })),
+      timestamp: Date.now(),
+      ...(extra || {}),
+    });
+    // Trim to MAX_HISTORY
+    if (this.recommendationHistory.length > AIFactorAdvisor.MAX_HISTORY) {
+      this.recommendationHistory = this.recommendationHistory.slice(-AIFactorAdvisor.MAX_HISTORY);
+    }
+  }
+
+  /**
+   * Get recommendation history, optionally filtered.
+   * @param filters.intent — filter by intent type
+   * @param filters.userId — filter by user
+   * @param filters.since — unix ms timestamp, only records since this time
+   * @param filters.limit — max records to return (default all)
+   */
+  getRecommendationHistory(filters?: {
+    intent?: FactorAdvisorIntent;
+    userId?: string;
+    since?: number;
+    limit?: number;
+  }): ReadonlyArray<{
+    sessionId: string;
+    intent: FactorAdvisorIntent;
+    factors: FactorRecommendation[];
+    timestamp: number;
+    query?: string;
+    market?: string;
+    userId?: string;
+    transactionId?: string;
+  }> {
+    let results = [...this.recommendationHistory];
+
+    if (filters) {
+      if (filters.intent) {
+        results = results.filter(r => r.intent === filters.intent);
+      }
+      if (filters.userId) {
+        results = results.filter(r => r.userId === filters.userId);
+      }
+      if (filters.since) {
+        results = results.filter(r => r.timestamp >= filters.since);
+      }
+      if (filters.limit) {
+        results = results.slice(-filters.limit);
+      }
+    }
+
+    return results;
+  }
+
+  /**
+   * Get aggregate stats from recommendation history.
+   */
+  getHistoryStats(): {
+    totalRecommendations: number;
+    uniqueIntents: number;
+    mostUsedIntent: string;
+    topFactors: Array<{ factorId: string; timesRecommended: number }>;
+    avgFactorsPerRecommendation: number;
+    lastRecommendationTime: number | null;
+  } {
+    const hist = this.recommendationHistory;
+    if (hist.length === 0) {
+      return {
+        totalRecommendations: 0,
+        uniqueIntents: 0,
+        mostUsedIntent: '',
+        topFactors: [],
+        avgFactorsPerRecommendation: 0,
+        lastRecommendationTime: null,
+      };
+    }
+
+    // Intent counts
+    const intentCounts: Record<string, number> = {};
+    for (const r of hist) {
+      intentCounts[r.intent] = (intentCounts[r.intent] || 0) + 1;
+    }
+    let mostUsedIntent = '';
+    let maxCount = 0;
+    for (const [k, v] of Object.entries(intentCounts)) {
+      if (v > maxCount) { maxCount = v; mostUsedIntent = k; }
+    }
+
+    // Factor frequency
+    const factorCounts: Record<string, number> = {};
+    for (const r of hist) {
+      for (const f of r.factors) {
+        factorCounts[f.factorId] = (factorCounts[f.factorId] || 0) + 1;
+      }
+    }
+    const topFactors = Object.entries(factorCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([factorId, timesRecommended]) => ({ factorId, timesRecommended }));
+
+    const avgFactors = hist.reduce((s, r) => s + r.factors.length, 0) / hist.length;
+
+    return {
+      totalRecommendations: hist.length,
+      uniqueIntents: Object.keys(intentCounts).length,
+      mostUsedIntent,
+      topFactors,
+      avgFactorsPerRecommendation: Number(avgFactors.toFixed(1)),
+      lastRecommendationTime: hist[hist.length - 1].timestamp,
+    };
+  }
+
+  clearHistory(): void {
+    this.recommendationHistory = [];
+    log.info('[AIFactorAdvisor] History cleared');
   }
 
   /** List all available intents for UI display */
