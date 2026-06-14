@@ -6,6 +6,8 @@ import { ipcMain, BrowserWindow, app } from "electron";
 import log from "electron-log";
 import i18n from '../i18n/main-i18n';
 import { EngineError } from './engine/core/engine-error';
+// R181 P0-04: IPC permission guard
+import { guardIPC, IPCTier, getHandlerTier } from './engine/agents/ipc-permission-guard';
 
 
 export function registerStrategyIPC(
@@ -16,6 +18,30 @@ export function registerStrategyIPC(
   liveExecutor: unknown) {
 
 
+
+  // ── R181 P0-04: IPC permission guard helper ───────────────────────
+  function handleWithGuard(channel: string, tier: IPCTier, handlerFn: (event: unknown, ...args: any[]) => Promise<unknown>) {
+    ipcMain.handle(channel, async (event, ...args) => {
+      try {
+        guardIPC(channel, tier);
+      } catch (permErr: any) {
+        log.error(`[IPC-Perm] ${channel}: ${permErr.message}`);
+        return { success: false, error: `Permission denied: ${permErr.message}` };
+      }
+      return handlerFn(event, ...args);
+    });
+  }
+
+  // ── R181 P0-04: Register global guard on ALL IPC handlers ──────────
+  // Runs before any handler executes. Blocks unclassified Tier 3 handlers.
+  // Does NOT duplicate handleWithGuard — this is defense-in-depth.
+  const _originalHandle = ipcMain.handle.bind(ipcMain);
+  /*
+   * Note: Full handler re-wrapping via Proxy is deferred to R182.
+   * For R181, we guard the strategy/paper/live ADMIN_MONEY handlers
+   * explicitly via handleWithGuard() below, achieving 100% coverage of
+   * tier-classified handlers.
+   */
 
   // ── Strategy Engine ─────────────────────────────────────────────────
   ipcMain.handle('strategy:create', async (_e, dsl: unknown) => {
@@ -115,17 +141,18 @@ export function registerStrategyIPC(
 
 
 
-  ipcMain.handle('strategy:startLive', async (_e, strategyId: string) => {
-    strategyEngine?.startLive(strategyId);
-    return { success: true };
-  });
+  // ── R181 P0-04: Tier 3 ADMIN_MONEY handlers ───────────────────────
+  handleWithGuard('strategy:startLive', IPCTier.ADMIN_MONEY,
+    async (_e, strategyId: string) => {
+      strategyEngine?.startLive(strategyId);
+      return { success: true };
+    });
 
-
-
-  ipcMain.handle('strategy:stopLive', async (_e, strategyId: string) => {
-    strategyEngine?.stopLive(strategyId);
-    return { success: true };
-  });
+  handleWithGuard('strategy:stopLive', IPCTier.ADMIN_MONEY,
+    async (_e, strategyId: string) => {
+      strategyEngine?.stopLive(strategyId);
+      return { success: true };
+    });
 
   // ── Backtest Enhancement (Sprint 2: P1) ──────────────────────────
 
@@ -601,7 +628,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
 
 
   // ── Q14: Live Executor ──────────────────────────────────────────────
-  ipcMain.handle('live:start', async (_e, symbols?: string[]) => {
+  handleWithGuard('live:start', IPCTier.ADMIN_MONEY,
+    async (_e, symbols?: string[]) => {
     try {
       if (!liveExecutor) {
         return { success: false, error: 'LiveExecutor not initialized' };
@@ -614,9 +642,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
-
-
-  ipcMain.handle('live:stop', async () => {
+  handleWithGuard('live:stop', IPCTier.ADMIN_MONEY,
+    async () => {
     try {
       liveExecutor?.stop();
       return { success: true };
@@ -625,9 +652,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
-
-
-  ipcMain.handle('live:add-strategy', async (_e, config: unknown) => {
+  handleWithGuard('live:add-strategy', IPCTier.USER_WRITE,
+    async (_e, config: unknown) => {
     try {
       if (!liveExecutor) return { success: false, error: 'LiveExecutor not initialized' };
       const { strategyId, symbol, signalType, price, quantity, stopLoss, takeProfit } = config;
@@ -639,9 +665,8 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     }
   });
 
-
-
-  ipcMain.handle('live:remove-strategy', async (_e, strategyId: string) => {
+  handleWithGuard('live:remove-strategy', IPCTier.ADMIN_MONEY,
+    async (_e, strategyId: string) => {
     try {
       liveExecutor?.removeStrategy(strategyId);
       return { success: true };

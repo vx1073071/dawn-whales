@@ -1,5 +1,4 @@
-/**
- * J-57-01: fundamental Agent (Fundamentals Agent)
+/** J-57-01: fundamental Agent (Fundamentals Agent)
  * Responsibilities: PE/PB/ROE analysis, earnings reports, valuation models
  * LLM: Provider Tier 1 (primary, cached)
  * Data source: em-mx-finance-data (mock for R57, real in R58)
@@ -21,6 +20,8 @@ import { EngineError } from '../core/engine-error';
 import { EventEmitter } from 'events';
 import { getMultiLLMRouter } from './multi-llm-router';
 import i18n from '../../../src/i18n';
+// ── R181 P0-01: Prompt injection guard ───────────────────────────────
+import { sanitizeAIInput } from './prompt-injection-guard';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 

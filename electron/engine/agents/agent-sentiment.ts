@@ -21,6 +21,8 @@ import log from 'electron-log';
 import { EventEmitter } from 'events';
 import i18n from '../../../src/i18n';
 import { EngineError } from '../core/engine-error';
+// ── R181 P0-01: Prompt injection guard ───────────────────────────────
+import { sanitizeAIInput } from './prompt-injection-guard';
 
 
 // ── Types ──────────────────────────────────────────────────────────────────

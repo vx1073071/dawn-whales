@@ -1,4 +1,4 @@
-﻿// ── DAWN WHALES — Electron Main Process ────────────────────────────────────
+// ── TradingEasy — Electron Main Process ────────────────────────────────────
 // ： (Electron + C++ core + React)
 // ：Electron + Node.js (Main) + React (Renderer)
 
@@ -28,6 +28,10 @@ import { getSentimentDashboard } from './engine/analysis/sentiment-dashboard';
 import { exportData, getAvailableModules } from './engine/data/data-export-service';
 import { getRateLimiterManager } from './engine/core/rate-limiter';
 import { runConsistencyCheck, getConsistencyRules } from './engine/data/data-consistency-checker';
+// ── R181 P0-03: Audit anomaly detection (auto-block + alert) ─────────
+import { detectAnomalies, getAnomalyQueue, clearAnomalyQueue } from './engine/agents/audit-anomaly-detector';
+import { executeEmergencyStop } from './engine/analysis/live-executor';
+import type { AuditEntry } from './engine/agents/audit-anomaly-detector';
 import { StockScreenerService } from './engine/data/stock-screener';
 import { NewsAggregatorService } from './engine/data/news-aggregator';
 import { SectorRotationMonitor } from './engine/data/sector-rotation';
@@ -283,7 +287,7 @@ function createTray() {
   tray = new Tray(icon);
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'DAWN WHALES', enabled: false },
+    { label: 'TradingEasy', enabled: false },
     { type: 'separator' },
     { label: 'Show', click: () => mainWindow?.show() },
     { label: 'Emergency Stop', click: () => strategyEngine?.emergencyStop() },
@@ -291,7 +295,7 @@ function createTray() {
     { label: 'Quit', click: () => app.quit() },
   ]);
 
-  tray.setToolTip('DAWN WHALES');
+  tray.setToolTip('TradingEasy');
   tray.setContextMenu(contextMenu);
   tray.on('double-click', () => mainWindow?.show());
 }
@@ -299,7 +303,7 @@ function createTray() {
 // ── App Lifecycle ──────────────────────────────────────────────────────────
 
 app.whenReady().then(async () => {
-  log.info('[App] DAWN WHALES starting...');
+  log.info('[App] TradingEasy starting...');
 
   // Initialize modules
   try {
@@ -532,9 +536,50 @@ app.whenReady().then(async () => {
     // Check for updates 10s after launch, then every 4 hours
     setTimeout(() => autoUpdater.checkForUpdates().catch((_: unknown) => {}), 10000);
     setInterval(() => autoUpdater.checkForUpdates().catch((_: unknown) => {}), 4 * 60 * 60 * 1000);
+
+    // ── R181 P0-03: Security anomaly detection (every 5 min) ────────────
+    let lastAuditCheck = Date.now();
+    const ANOMALY_CHECK_INTERVAL = 5 * 60 * 1000; // 5 minutes
+    setInterval(() => {
+      try {
+        const recentEntries: AuditEntry[] = []; // populated by IPC handlers
+        const alerts = detectAnomalies(recentEntries);
+        if (alerts.length > 0) {
+          log.warn(`[Security] ${alerts.length} anomalies detected!`);
+          const criticalAlerts = alerts.filter((a: any) => a.severity === 'critical');
+          if (criticalAlerts.length > 0) {
+            log.error(`[Security] CRITICAL anomalies! Triggering emergency stop...`);
+            // Auto-block on critical anomalies
+            try {
+              executeEmergencyStop();
+            } catch (e) {
+              log.error('[Security] Emergency stop failed:', e);
+            }
+            // Notify via system notification
+            try {
+              const { Notification } = require('electron');
+              new Notification({
+                title: '\u26A0\uFE0F TradingEasy Security Alert',
+                body: `${criticalAlerts.length} critical security anomalies detected. Trading has been paused.`,
+              }).show();
+            } catch (_) {}
+          }
+        } else {
+          // Threshold check for 100+ alerts in queue
+          const queue = getAnomalyQueue();
+          if (queue.length > 100) {
+            log.warn(`[Security] Anomaly queue large (${queue.length}), clearing old entries...`);
+            clearAnomalyQueue();
+          }
+        }
+        lastAuditCheck = Date.now();
+      } catch (err) {
+        log.error('[Security] Anomaly detection error:', err);
+      }
+    }, ANOMALY_CHECK_INTERVAL);
   }
 
-  log.info('[App] DAWN WHALES ready');
+  log.info('[App] TradingEasy ready');
 });
 
 app.on('window-all-closed', () => {

@@ -4,6 +4,8 @@
 // Phase 3: + extension + LLMinterface/API
 
 import log from 'electron-log';
+// ── R181 P0-01: Prompt injection guard for NL parsing ─────────────────
+import { sanitizeAIInput } from './prompt-injection-guard';
 
 import { spawn } from 'child_process';
 import path from 'path';
@@ -465,6 +467,20 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
   if (!text) {
     return { success: false, name: '', description: '', strategy: { type: 'ma_cross', params: {} }, error: i18n.t('nlParser.k87') };
   }
+
+  // ── R181 P0-01+P0-11: Prompt injection guard on user NL input ──────
+  const guardResult = sanitizeAIInput(text);
+  if (!guardResult.safe) {
+    log.warn(`[NLParser] Blocked injection attempt: ${guardResult.blockReason} (layer=${guardResult.blockLayer})`);
+    return {
+      success: false,
+      name: '',
+      description: '',
+      strategy: { type: 'ma_cross', params: {} },
+      error: guardResult.presetResponse || 'Unable to process this input. Please describe your trading strategy in plain language.',
+    };
+  }
+  // ────────────────────────────────────────────────────────────────────
 
  // Phase 3: 
   const normalized = normalizeInput(text);

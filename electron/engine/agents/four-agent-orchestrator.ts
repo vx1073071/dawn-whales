@@ -18,6 +18,9 @@
 import log from 'electron-log';
 import { EventEmitter } from 'events';
 import { EngineError, ErrorCode } from '../../errors';
+// ── R181 P0-01+P0-02: Security middleware ───────────────────────────────
+import { sanitizeAIInput } from './prompt-injection-guard';
+import { checkRateLimit } from './rate-limiter';
 
 
 // ── Unified IAnalyst Interface (v19) ──────────────────────────────────────
@@ -194,6 +197,28 @@ export class FourAgentOrchestrator extends EventEmitter {
 
     if (agentTypes.length === 0) {
       throw new EngineError(ErrorCode.INTERNAL_ERROR, 'No agents registered');
+    }
+
+    // ── R181 P0-01+P0-11: Prompt injection guard ──────────────────────
+    const userRequirement = options?.requirement || '';
+    if (userRequirement) {
+      const injectionResult = sanitizeAIInput(userRequirement);
+      if (!injectionResult.safe) {
+        log.warn(`[4AgentOrch] Blocked injection attempt: ${injectionResult.blockReason}`);
+        throw new EngineError(ErrorCode.INPUT_ERROR,
+          injectionResult.presetResponse || 'AI analysis blocked: unsafe input detected',
+          { blockLayer: injectionResult.blockLayer, blockLevel: injectionResult.blockLevel });
+      }
+      // Use sanitized version
+      options = { ...options, requirement: injectionResult.sanitizedQuery || userRequirement };
+    }
+
+    // ── R181 P0-02: AI call rate limiter ─────────────────────────────
+    const rateResult = checkRateLimit(`ai-orch:${symbol}`, 'four-agent-orchestrator');
+    if (!rateResult.allowed) {
+      log.warn(`[4AgentOrch] Rate limit: ${rateResult.reason}`);
+      throw new EngineError(ErrorCode.RATE_LIMITED,
+        `AI analysis rate limited: ${rateResult.reason}. Retry in ${Math.ceil(rateResult.retryAfterMs / 1000)}s.`);
     }
 
     // Find which agents to use
