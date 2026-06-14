@@ -1,4 +1,6 @@
-﻿export * from './cache-explorer';
+﻿// [R158 JVS] NEW: Multi-asset diagnosis (replaces stock-diagnosis)
+export * from './asset-diagnosis';
+export * from './cache-explorer';
 export * from './cache-optimizer';
 export * from './calendar-effects';
 export * from './consumer-data';
@@ -21,8 +23,9 @@ export * from './data-versioning-enhanced';
 export * from './data-versioning';
 export * from './data-warehouse';
 export * from './dividend-calendar';
-export * from './dragon-tiger-list';
-export * from './dragon-tiger-stream';
+// [R158 PM] DISABLED: A-stock only feature, not supported
+// export * from './dragon-tiger-list';
+// export * from './dragon-tiger-stream';
 export * from './earnings-calendar';
 export * from './feature-store';
 export * from './feed-notification-engine';
@@ -32,6 +35,8 @@ export * from './futu-mock-feed';
 export * from './futu-ws-adapter';
 export * from './historical-data-warehouse';
 export * from './ibkr-broker-adapter';
+// [R158 JVS] NEW: Multi-market institutional flow (replaces dragon-tiger)
+export * from './institutional-flow';
 export * from './kline-aggregation-optimizer';
 export * from './margin-data';
 export * from './market-breadth';
