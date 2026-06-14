@@ -6,7 +6,6 @@
 import log from 'electron-log';
 import { EngineError } from '../core/engine-error';
 import { getStockCapitalFlowRank } from '../analysis/capital-flow-rank';
-import { getDragonTigerList } from '../data/dragon-tiger-list';
 import { getFundIncreaseRank } from '../data/fund-holdings';
 import { SentimentIndexEngine } from '../analysis/sentiment-index';
 import { NewsAggregatorService } from '../data/news-aggregator';
@@ -21,7 +20,7 @@ export interface SmartPickRequest {
   minScore?: number;         // Minimum score threshold (0-100)
   weights?: {
     capitalFlow?: number;    // Default 0.30
-    dragonTiger?: number;    // Default 0.15
+    institutionalFlow?: number;    // Default 0.15
     fundHolding?: number;    // Default 0.20
     sentiment?: number;      // Default 0.15
     technical?: number;      // Default 0.20

@@ -6,7 +6,7 @@
 import log from 'electron-log';
 
 import { SmartPickerService, SmartPickResult } from './smart-picker';
-import { scoreTopAStocks } from '../factors/multi-factor';
+import { scoreTopStocks } from '../factors/multi-factor';
 import i18n from '../../../src/i18n';
 import { EngineError } from '../core/engine-error';
 
@@ -86,7 +86,7 @@ export class SmartPickerIntegration {
   async getBlendedScores(topN = 20): Promise<BlendedScore[]> {
     const [spReport, mfReport] = await Promise.allSettled([
       this.smartPicker.pick({ limit: topN }),
-      scoreTopAStocks(topN).catch((_: unknown) => ({ scores: [], success: false })),
+      scoreTopStocks(topN).catch((_: unknown) => ({ scores: [], success: false })),
     ]);
 
     const spPicks = spReport.status === 'fulfilled' ? spReport.value.picks : [];

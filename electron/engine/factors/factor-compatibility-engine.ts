@@ -224,12 +224,12 @@ const FACTOR_LIBRARY: FactorDefinition[] = [
 
   // ═══ HKEX-Specific ═══
   {
-    id: "HKEX_NORTHBOUND", name: "Northbound Flow", nameCN: i18n.t('factorCompatibilityEngine.k43'),
+    id: "HKEX_SOUTHBOUND", name: "Southbound Flow", nameCN: i18n.t('factorCompatibilityEngine.k43'),
     category: "sentiment",
-    description: "Daily northbound net flow (connect), foreign capital to A-shares via HKEX",
+    description: "Daily southbound net flow via Stock Connect, mainland capital to HK stocks",
     compatibleMarkets: ["HKEX"],
     compatibleInstruments: ["stock"],
-    calculation: "Daily Shanghai+Shenzhen Connect net buy (CNY), Z-score 20d",
+    calculation: "Daily HK Connect net buy (HKD), Z-score 20d",
     typicalIC: 0.055, decayHalfLife: 5, usage: i18n.t('factorCompatibilityEngine.k44'),
   },
   {

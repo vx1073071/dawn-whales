@@ -7,7 +7,6 @@
 import log from 'electron-log';
 import { EngineError } from './engine-error';
 import { getStockCapitalFlowRank } from '../analysis/capital-flow-rank';
-import { getDragonTigerList } from '../data/dragon-tiger-list';
 import { getStockFundOwnership } from '../data/fund-holdings';
 import { diagnoseStock } from '../data/stock-diagnosis';
 import { SentimentIndexEngine } from '../analysis/sentiment-index';
@@ -183,7 +182,8 @@ export async function getStockOverview(code: string): Promise<StockOverview> {
     log.warn('[EMI-Unified] Capital flow error:', err.message);
   }
 
-  // 3. Dragon tiger
+  // 3. Institutional flow (replaces dragon tiger, A-stock only feature removed)
+  // TODO: JVS R158 - replace with multi-market institutional flow data
   try {
     const dtResult = await getDragonTigerList();
     if (dtResult.success) {

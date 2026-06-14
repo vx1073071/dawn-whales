@@ -1,5 +1,5 @@
 // ── Q15: Multi-Factor Stock Selection Model ─────────────────────────────
-// Consumes JVS data (sentiment/capital flow/dragon tiger/fund holdings)
+// Consumes JVS data (sentiment/capital flow/institutional flow/fund holdings)
 // Outputs composite score per stock (0-100, higher = better)
 // Integrates with LiveExecutor for position sizing
 
@@ -7,7 +7,6 @@ import log from 'electron-log';
 
 import { SentimentIndexEngine } from '../analysis/sentiment-index';
 import { CapitalFlowRank } from '../analysis/capital-flow-rank';
-import { DragonTigerList } from '../data/dragon-tiger-list';
 import { FundHoldings } from '../data/fund-holdings';
 import { StockDiagnosis } from '../data/stock-diagnosis';
 import i18n from '../../../src/i18n';
@@ -20,7 +19,7 @@ export interface FactorConfig {
   // Factor weights (must sum to 1.0)
   sentimentWeight: number;      // 0-1, default 0.25
   capitalFlowWeight: number;    // 0-1, default 0.25
-  dragonTigerWeight: number;   // 0-1, default 0.15
+  institutionalFlowWeight: number;   // 0-1, default 0.15
   fundHoldingWeight: number;   // 0-1, default 0.20
   diagnosisWeight: number;      // 0-1, default 0.15
   
@@ -41,7 +40,7 @@ export interface StockFactorScore {
   // Component scores (0-100 each)
   sentimentScore: number;
   capitalFlowScore: number;
-  dragonTigerScore: number;
+  institutionalFlowScore: number;
   fundHoldingScore: number;
   diagnosisScore: number;
   
@@ -79,7 +78,7 @@ export interface MultiFactorResult {
 const DEFAULT_CONFIG: FactorConfig = {
   sentimentWeight: 0.25,
   capitalFlowWeight: 0.25,
-  dragonTigerWeight: 0.15,
+  institutionalFlowWeight: 0.15,
   fundHoldingWeight: 0.20,
   diagnosisWeight: 0.15,
   lookbackDays: 20,
@@ -95,7 +94,7 @@ export class MultiFactorModel {
   private config: FactorConfig;
   private sentimentEngine: SentimentIndexEngine | null = null;
   private capitalFlowRank: CapitalFlowRank | null = null;
-  private dragonTigerList: DragonTigerList | null = null;
+  private institutionalFlowData: Map<string, number> | null = null;
   private fundHoldings: FundHoldings | null = null;
   private stockDiagnosis: StockDiagnosis | null = null;
 
@@ -117,9 +116,9 @@ export class MultiFactorModel {
     log.info('[MultiFactor] CapitalFlowRank connected');
   }
   
-  useDragonTigerList(list: DragonTigerList): void {
-    this.dragonTigerList = list;
-    log.info('[MultiFactor] DragonTigerList connected');
+  useInstitutionalFlow(data: Map<string, number>): void {
+    this.institutionalFlowData = data;
+    log.info('[MultiFactor] InstitutionalFlow data connected');
   }
   
   useFundHoldings(holdings: FundHoldings): void {
@@ -150,13 +149,13 @@ export class MultiFactorModel {
       const [
         sentimentResults,
         capitalFlowResults,
-        dragonTigerResults,
+        institutionalFlowResults,
         fundHoldingResults,
         diagnosisResults,
       ] = await Promise.all([
         this.fetchSentimentScores(symbols),
         this.fetchCapitalFlowScores(symbols),
-        this.fetchDragonTigerScores(symbols),
+        this.fetchInstitutionalFlowScores(symbols),
         this.fetchFundHoldingScores(symbols),
         this.fetchDiagnosisScores(symbols),
       ]);
@@ -165,7 +164,7 @@ export class MultiFactorModel {
       const scores: StockFactorScore[] = symbols.map((code) => {
         const sentimentScore = sentimentResults.get(code) ?? 50;
         const capitalFlowScore = capitalFlowResults.get(code) ?? 50;
-        const dragonTigerScore = dragonTigerResults.get(code) ?? 50;
+        const institutionalFlowScore = institutionalFlowResults.get(code) ?? 50;
         const fundHoldingScore = fundHoldingResults.get(code) ?? 50;
         const diagnosisScore = diagnosisResults.get(code) ?? 50;
 
@@ -173,7 +172,7 @@ export class MultiFactorModel {
         const compositeScore =
           sentimentScore * config.sentimentWeight +
           capitalFlowScore * config.capitalFlowWeight +
-          dragonTigerScore * config.dragonTigerWeight +
+          institutionalFlowScore * config.institutionalFlowWeight +
           fundHoldingScore * config.fundHoldingWeight +
           diagnosisScore * config.diagnosisWeight;
 
@@ -182,7 +181,7 @@ export class MultiFactorModel {
           code,
           sentimentScore,
           capitalFlowScore,
-          dragonTigerScore,
+          institutionalFlowScore,
           fundHoldingScore,
           diagnosisScore
         );
@@ -192,7 +191,7 @@ export class MultiFactorModel {
           name: '', // Filled from broker/EM API
           sentimentScore,
           capitalFlowScore,
-          dragonTigerScore,
+          institutionalFlowScore,
           fundHoldingScore,
           diagnosisScore,
           compositeScore: Math.round(compositeScore * 100) / 100,
@@ -291,32 +290,18 @@ export class MultiFactorModel {
     return scores;
   }
 
-  private async fetchDragonTigerScores(symbols: string[]): Promise<Map<string, number>> {
+  private async fetchInstitutionalFlowScores(symbols: string[]): Promise<Map<string, number>> {
     const scores = new Map<string, number>();
 
-    if (!this.dragonTigerList) {
+    if (!this.institutionalFlowData) {
       symbols.forEach((s) => scores.set(s, 50));
       return scores;
     }
 
-    try {
-      const result = await this.dragonTigerList.getList();
-      if (result.success && result.data) {
-        // Dragon Tiger list = institutional buying = bullish
-        result.data.forEach((item: unknown) => {
-          if (symbols.includes(item.code)) {
-            // Higher net buy = higher score
-            const score = Math.min(100, 50 + (item.netBuyAmount || 0) / 1000000 * 10);
-            scores.set(item.code, score);
-          }
-        });
-      }
-    } catch (err: unknown) {
-      log.error('[MultiFactor] Dragon Tiger fetch failed:', err.message);
-    }
-
-    symbols.forEach((s) => {
-      if (!scores.has(s)) scores.set(s, 50);
+    // Direct lookup from institutional flow data map
+    symbols.forEach((code) => {
+      const score = this.institutionalFlowData!.get(code) ?? 50;
+      scores.set(code, score);
     });
 
     return scores;
@@ -397,7 +382,7 @@ export class MultiFactorModel {
     code: string,
     sentimentScore: number,
     capitalFlowScore: number,
-    dragonTigerScore: number,
+    institutionalFlowScore: number,
     fundHoldingScore: number,
     diagnosisScore: number
   ): string {
@@ -405,7 +390,7 @@ export class MultiFactorModel {
 
     if (sentimentScore >= 70) factors.push(i18n.t('multiFactor.k1'));
     if (capitalFlowScore >= 70) factors.push(i18n.t('multiFactor.k2'));
-    if (dragonTigerScore >= 70) factors.push(i18n.t('multiFactor.k3'));
+    if (institutionalFlowScore >= 70) factors.push(i18n.t('multiFactor.k3'));
     if (fundHoldingScore >= 70) factors.push(i18n.t('multiFactor.k4'));
     if (diagnosisScore >= 70) factors.push(i18n.t('multiFactor.k5'));
 
@@ -420,7 +405,7 @@ export class MultiFactorModel {
     const totalWeight =
       this.config.sentimentWeight +
       this.config.capitalFlowWeight +
-      this.config.dragonTigerWeight +
+      this.config.institutionalFlowWeight +
       this.config.fundHoldingWeight +
       this.config.diagnosisWeight;
 
@@ -429,7 +414,7 @@ export class MultiFactorModel {
       const factor = 1.0 / totalWeight;
       this.config.sentimentWeight *= factor;
       this.config.capitalFlowWeight *= factor;
-      this.config.dragonTigerWeight *= factor;
+      this.config.institutionalFlowWeight *= factor;
       this.config.fundHoldingWeight *= factor;
       this.config.diagnosisWeight *= factor;
     }
@@ -495,14 +480,13 @@ export async function scoreStocks(request: { stocks: Array<{ code: string; name:
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function scoreTopAStocks(limit: number = 20, preset?: string): Promise<any> {
+export async function scoreTopStocks(limit: number = 20, preset?: string): Promise<any> {
   const model = getMultiFactor();
   if (!model) {
     return { success: false, error: 'MultiFactorModel not initialized' };
   }
 
-  // Use US/HK stock universe (A-share branch removed in v1.9.0)
-  // All symbols now come from config or real-data-orchestrator
+  // Multi-market stock universe (US/HK/CRYPTO, no A-share)
   const stockCodes = await getTopStockCodes(limit * 2);
 
   const result = await model.scoreStocks({ symbols: stockCodes, topN: limit });
@@ -520,7 +504,7 @@ export async function scoreTopAStocks(limit: number = 20, preset?: string): Prom
 }
 
 async function getTopStockCodes(limit: number): Promise<string[]> {
-  // v1.9.0: A-share code list removed. Symbols come from config or data orchestrator.
+  // Multi-market universe: US/HK/CRYPTO (A-share removed, no A-stock support)
   return [
     'US.AAPL', 'US.MSFT', 'US.GOOGL', 'US.AMZN', 'US.TSLA',
     'US.NVDA', 'US.META', 'US.BRK.B', 'US.V', 'US.JPM',
