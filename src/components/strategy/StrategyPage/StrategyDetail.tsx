@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StrategyExpiryBanner } from '../StrategyExpiryBanner';
 
 interface BacktestResult {
   totalReturn?: number;
@@ -114,6 +115,19 @@ export const StrategyDetail: React.FC<Props> = ({ strategyId, onBack, onRefresh 
           ← {t('StrategyDetail.back', '返回')}
         </button>
       </div>
+
+      {/* ── R166 X5: Strategy Expiry Banner ── */}
+      <StrategyExpiryBanner
+        strategyId={strategy.id}
+        strategyName={strategy.nameCn || strategy.name}
+        lastOptimizedAt={strategy.lastOptimizedAt}
+        createdAt={strategy.createdAt}
+        onNavigateOptimizer={() => {
+          // Navigate to optimizer - dispatch an event or use store
+          const event = new CustomEvent('navigate-strategy-tab', { detail: { strategyId, tab: 'optimizer' } });
+          window.dispatchEvent(event);
+        }}
+      />
 
       {/* Description */}
       {strategy.description && (

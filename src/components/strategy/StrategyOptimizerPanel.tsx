@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { EngineError, ErrorDomain, ErrorCode } from '../../../electron/engine/core/engine-error';
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import i18n from '../../i18n';
+import { OptimizerAdoptButton } from './OptimizerAdoptButton';
 
 // ── Types (mirrors engine types) ────────────────────────────────────────
 
@@ -547,17 +548,32 @@ export const StrategyOptimizerPanel: React.FC<StrategyOptimizerPanelProps> = ({
             </div>
         }
 
-          {/* Apply button */}
-          {onApplyParams &&
-        <div className="flex justify-end">
+          {/* ── R166 X6: Optimizer Adopt Button ── */}
+          <div className="flex items-center justify-between">
+            <OptimizerAdoptButton
+              strategyId={strategy.id}
+              strategyName={strategy.name}
+              currentParams={strategy.params}
+              optimizedParams={result.bestParams}
+              onAdopt={async (params: Record<string, number>) => {
+                if (onApplyParams) {
+                  onApplyParams(params);
+                  // Trigger a backtest refresh event
+                  const event = new CustomEvent('backtest-refresh', { detail: { strategyId: strategy.id } });
+                  window.dispatchEvent(event);
+                }
+              }}
+            />
+            {/* Legacy apply button */}
+            {onApplyParams &&
               <button
-            onClick={() => onApplyParams(result.bestParams)}
-            className="px-5 py-2 bg-amber-500 text-black rounded-lg text-sm font-bold hover:bg-amber-400 transition-colors">{i18n.t("StrategyOptimizerPanel.r92_1d8b")}
-
-
-          </button>
-            </div>
-        }
+                onClick={() => onApplyParams(result.bestParams)}
+                className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-400 hover:text-white hover:border-gray-600 transition-colors"
+              >
+                {i18n.t("StrategyOptimizerPanel.r92_1d8b")}
+              </button>
+            }
+          </div>
         </div>
       }
 
