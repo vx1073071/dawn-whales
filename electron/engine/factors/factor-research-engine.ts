@@ -219,6 +219,85 @@ export class FactorResearchEngine {
     };
   }
 
+  // ── EMA-Smoothed IC (for worker integration) ───────────────────────────
+
+  /**
+   * Compute 252-day rolling IC with EMA smoothing.
+   * This is the method called by ic-worker.ts for daily after-close calculation.
+   */
+  computeEMASmoothedIC(
+    factorName: string,
+    factorValues: number[],
+    forwardReturns: number[],
+    dates: string[],
+    emaAlpha: number = 0.05,
+    prevEmaRankIC: number = 0,
+    prevEmaPearsonIC: number = 0,
+  ): ICResult & { emaRankIC: number; emaPearsonIC: number } {
+    const base = this.computeIC(factorName, factorValues, forwardReturns, dates);
+
+    const emaRankIC = prevEmaRankIC === 0
+      ? base.rankIC
+      : emaAlpha * base.rankIC + (1 - emaAlpha) * prevEmaRankIC;
+    const emaPearsonIC = prevEmaPearsonIC === 0
+      ? base.pearsonIC
+      : emaAlpha * base.pearsonIC + (1 - emaAlpha) * prevEmaPearsonIC;
+
+    return {
+      ...base,
+      emaRankIC: Number(emaRankIC.toFixed(6)),
+      emaPearsonIC: Number(emaPearsonIC.toFixed(6)),
+    };
+  }
+
+  /**
+   * Check if a factor's IC has decayed below threshold.
+   * Returns alert level and reason — used by ic-worker for IC failure alerts.
+   */
+  detectICFailure(
+    emaIC: number,
+    threshold: number,
+    consecutiveFailureDays: number,
+    maxTolerableDays: number,
+  ): { level: 'none' | 'watch' | 'warning' | 'critical'; reason?: string } {
+    const absIC = Math.abs(emaIC);
+
+    if (absIC >= threshold) {
+      return { level: 'none' };
+    }
+
+    if (consecutiveFailureDays >= maxTolerableDays) {
+      return {
+        level: 'critical',
+        reason: `EMA |IC| = ${absIC.toFixed(4)} < ${threshold} for ${consecutiveFailureDays} consecutive days. Factor may have permanently decayed.`,
+      };
+    }
+
+    if (consecutiveFailureDays >= Math.ceil(maxTolerableDays * 0.6)) {
+      return {
+        level: 'warning',
+        reason: `EMA |IC| declining: ${absIC.toFixed(4)} (${consecutiveFailureDays}/${maxTolerableDays} days below threshold)`,
+      };
+    }
+
+    return {
+      level: 'watch',
+      reason: `EMA |IC| = ${absIC.toFixed(4)} dropped below threshold ${threshold}`,
+    };
+  }
+
+  /**
+   * Convenience: compute rolling IC over a specific lookback window.
+   * Used by ic-worker.ts for 252-day rolling IC.
+   */
+  computeRollingWindowIC(
+    factorValues: number[],
+    forwardReturns: number[],
+    windowSize: number,
+  ): number[] {
+    return this.rollingIC(factorValues, forwardReturns, windowSize);
+  }
+
   // ── Multi-Factor Comparison ────────────────────────────────────────────
 
   compareFactors(factors: ICResult[]): {
