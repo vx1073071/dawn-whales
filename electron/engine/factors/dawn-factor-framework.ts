@@ -146,7 +146,15 @@ export class DawnFactorFramework {
   private dataProviders: Map<string, FactorDataProvider> = new Map();
 
   // Universe data cache for CALCULATED mode
-  private universeCache: Map<string, import('./multi-factor-selector').StockData> = new Map();
+  // Universe data cache for CALCULATED mode (R170 A9: inline type, no multi-factor-selector dep)
+  private universeCache: Map<string, {
+    code: string; name: string; sector?: string;
+    price: number; pe: number; pb: number; ps: number; dividendYield: number;
+    roe: number; roa: number; profitMargin: number; debtToEquity: number; revenueGrowth: number;
+    priceChange1M: number; priceChange3M: number; priceChange6M: number; priceChange1Y: number;
+    volatility20D: number; volatility60D: number; beta: number;
+    avgVolume20D: number; turnoverRate: number; marketCap: number;
+  }> = new Map();
 
   constructor(config?: Partial<DawnFactorConfig>) {
     this.config = { ...DAWN_DEFAULT_CONFIG, ...config };

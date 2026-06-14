@@ -7,6 +7,24 @@
 
 import log from 'electron-log';
 import { createRedisCache } from '../data/redis-cache-layer';
+import { type FactorId, LEGACY_ID_MAP, STANDARD_FACTOR_IDS } from './factor-id-registry';
+
+// ── R170 A1: Exposure naming → Standard ID mapping ──────────────────────────
+// The exposure module uses camelCase field names internally (market, smb, etc.).
+// These map to canonical factor IDs via LEGACY_ID_MAP.
+// FactorContribution.factor now uses standard FactorId type.
+
+/** Map loading field names (camelCase) to standard factor IDs */
+export const LOADING_TO_FACTOR_ID: Record<string, FactorId> = {
+  market: STANDARD_FACTOR_IDS.MKT,
+  smb: STANDARD_FACTOR_IDS.SIZE,
+  hml: STANDARD_FACTOR_IDS.HML,
+  rmw: STANDARD_FACTOR_IDS.RMW,
+  cma: STANDARD_FACTOR_IDS.CMA,
+  momentum: STANDARD_FACTOR_IDS.MOM_12M,
+  lowVol: STANDARD_FACTOR_IDS.VOL_60D,
+  quality: STANDARD_FACTOR_IDS.QUAL,
+};
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -34,7 +52,7 @@ export interface FactorReturn {
 }
 
 export interface FactorContribution {
-  factor: string;
+  factor: FactorId;          // R170 A1: Now uses canonical factor ID
   label: string;
   avgBeta: number;
   contributionPct: number;   // % of total P&L explained by this factor
@@ -67,6 +85,7 @@ export interface FactorAttributionReport {
   // R159: Data source transparency
   isSimulated: boolean;      // true if factor returns are estimated (not from real ETF data)
   dataSource: string;        // e.g. "ETF_PROXY" or "REAL_KLINE"
+  simulationMethod: string;  // R170 A2: if simulated, describes the method used (e.g. 'etf_proxy', 'ols_estimate', 'none')
 
   timestamp: number;
 }
@@ -367,6 +386,7 @@ export class FactorExposureAnalyzer {
       unexplainedRisk: Math.round(this.realizedVol(returns) * 10000) / 100,
       isSimulated: false,  // R159: ETF proxy data is deterministic, not random
       dataSource: 'ETF_PROXY',
+      simulationMethod: 'etf_proxy',  // R170 A2
       timestamp: Date.now(),
     };
   }
@@ -914,6 +934,7 @@ export class FactorExposureAnalyzer {
       unexplainedRisk: 0,
       isSimulated: true,
       dataSource: 'NONE',
+      simulationMethod: 'none',  // R170 A2: no data available
       timestamp: Date.now(),
     };
   }
