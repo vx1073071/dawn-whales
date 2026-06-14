@@ -35,6 +35,9 @@ import { QuoteHealthMonitor } from './services/quote-health';
 // R157: Watchlist import/export API
 import watchlistRoutes from './routes/watchlist';
 
+// R162: Backtest snapshot + comparison API
+import backtestRoutes from './routes/backtest';
+
 const app = express();
 const PORT = config.port;
 
@@ -190,6 +193,9 @@ app.use('/api/market', brokerConfigRoutes);
 
 // ── R157: Watchlist Import/Export routes ────────────────────────────────
 app.use('/api/watchlist', watchlistRoutes);
+
+// ── R162: Backtest Snapshot + Comparison routes ───────────────────────────
+app.use('/api/backtest/snapshots', backtestRoutes);
 
 // ── R132: Dead letter queue ──────────────────────────────────────────
 app.use('/api/dead-letter', deadLetterRoutes);

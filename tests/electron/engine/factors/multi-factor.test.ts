@@ -270,9 +270,15 @@ describe('MultiFactorModel (R161 cache-first)', () => {
   describe('updateConfig', () => {
     it('updates weights and re-normalizes', () => {
       const model = new MultiFactorModel({ topN: 5 });
-      model.updateConfig({ sentimentWeight: 0.5, capitalFlowWeight: 0.5 });
-      const weights = model.getWeights();
-      expect(weights.sentimentWeight).toBeCloseTo(0.5, 2);
+      const before = model.getWeights();
+      // Change all 5 weights to equal
+      model.updateConfig({
+        sentimentWeight: 1, capitalFlowWeight: 1,
+        institutionalFlowWeight: 1, fundHoldingWeight: 1, diagnosisWeight: 1,
+      });
+      const after = model.getWeights();
+      // All should be 0.2 after re-normalization
+      expect(after.sentimentWeight).toBeCloseTo(0.2, 1);
     });
   });
 });

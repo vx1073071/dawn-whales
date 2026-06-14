@@ -441,7 +441,8 @@ describe('FactorExposureAnalyzer', () => {
         exitPrice: 110,
         pnl: 10,
       }];
-      const marketReturns = generateReturns(25, 42);
+      const rng = mulberry32(42);
+      const marketReturns = Array.from({ length: 25 }, () => (rng() - 0.5) * 0.1);
 
       const report = await a.analyzeAttributionCached('test-strat', positions, marketReturns);
       expect(report.strategyId).toBe('test-strat');
@@ -460,7 +461,8 @@ describe('FactorExposureAnalyzer', () => {
         exitPrice: 55,
         pnl: 5,
       }];
-      const marketReturns = generateReturns(20, 123);
+      const rng = mulberry32(123);
+      const marketReturns = Array.from({ length: 20 }, () => (rng() - 0.5) * 0.1);
 
       const r1 = await a.analyzeAttributionCached('cache-test', positions, marketReturns);
       const r2 = await a.analyzeAttributionCached('cache-test', positions, marketReturns);
@@ -481,7 +483,9 @@ describe('FactorExposureAnalyzer', () => {
         exitPrice: 210,
         pnl: 10,
       }];
-      const result = await a.analyzeAttributionCached('clear-test', positions, generateReturns(15, 77));
+      const rng2 = mulberry32(77);
+      const result = await a.analyzeAttributionCached('clear-test', positions, 
+        Array.from({ length: 15 }, () => (rng2() - 0.5) * 0.1));
       expect(result.strategyId).toBe('clear-test');
     });
 
@@ -500,7 +504,8 @@ describe('FactorExposureAnalyzer', () => {
         exitPrice: 330,
         pnl: 30,
       }];
-      const mr = generateReturns(15, 42);
+      const rng3 = mulberry32(42);
+      const mr = Array.from({ length: 15 }, () => (rng3() - 0.5) * 0.1);
 
       const r1 = await a.analyzeAttributionCached('diff-1', pos, mr);
       const r2 = await a.analyzeAttributionCached('diff-2', pos, mr);

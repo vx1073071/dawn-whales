@@ -1,6 +1,7 @@
 ﻿export * from './backfill-service';
 export * from './backtest-accelerator';
 export * from './backtest-comparator';
+export * from './backtest-snapshot';
 export * from './backtest-engine-parallel';
 export * from './backtest-engine';
 export * from './backtest-enhancer';
