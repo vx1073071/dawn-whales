@@ -432,6 +432,97 @@ export async function getPerformance(strategyId: string): Promise<any> {
   return window.api.marketplace.getPerformance(strategyId);
 }
 
+// ── R164 P1-E4: Factor Suggestions ────────────────────────────────────────
+// Calls FactorCompatibilityEngine.suggestFactors() via IPC bridge.
+// Falls back to inline STRATEGY_FACTORS when IPC is unavailable (dev/browser).
+// This centralizes the recommendation logic — TemplateBrowser no longer embeds it.
+
+export type StrategyCategory = 'momentum' | 'value' | 'growth' | 'balanced' | 'defensive';
+
+export interface FactorSuggestion {
+  factorId: string;
+  nameCN: string;
+  categoryCN: string;
+  typicalIC: number;
+  compatible: boolean;
+  reason?: string;
+}
+
+// Inline fallback (mirrors FactorCompatibilityEngine's per-strategy-type scoring)
+const STRATEGY_FACTORS: Record<StrategyCategory, Array<{ id: string; nameCN: string; cat: string; ic: number }>> = {
+  momentum: [
+    { id: 'MOM_12M', nameCN: '12月动量', cat: '动量', ic: 0.045 },
+    { id: 'MA_20_60', nameCN: '均线交叉', cat: '趋势', ic: 0.025 },
+    { id: 'RSI_14', nameCN: 'RSI 14', cat: '动量', ic: 0.028 },
+    { id: 'ADX', nameCN: 'ADX 14', cat: '趋势', ic: 0.015 },
+    { id: 'LIQ', nameCN: '流动性', cat: '波动率', ic: 0.038 },
+  ],
+  value: [
+    { id: 'HML', nameCN: '价值因子', cat: '价值', ic: 0.038 },
+    { id: 'QUAL', nameCN: '质量因子', cat: '质量', ic: 0.035 },
+    { id: 'RMW', nameCN: '盈利因子', cat: '质量', ic: 0.030 },
+    { id: 'YIELD', nameCN: '股息率', cat: '收益', ic: 0.018 },
+    { id: 'SIZE', nameCN: '规模因子', cat: '规模', ic: 0.025 },
+  ],
+  defensive: [
+    { id: 'VOL_60D', nameCN: '60日波动率', cat: '波动率', ic: 0.042 },
+    { id: 'QUAL', nameCN: '质量因子', cat: '质量', ic: 0.035 },
+    { id: 'YIELD', nameCN: '股息率', cat: '收益', ic: 0.018 },
+    { id: 'LIQ', nameCN: '流动性', cat: '波动率', ic: 0.038 },
+    { id: 'HML', nameCN: '价值因子', cat: '价值', ic: 0.038 },
+  ],
+  balanced: [
+    { id: 'MOM_12M', nameCN: '12月动量', cat: '动量', ic: 0.045 },
+    { id: 'HML', nameCN: '价值因子', cat: '价值', ic: 0.038 },
+    { id: 'QUAL', nameCN: '质量因子', cat: '质量', ic: 0.035 },
+    { id: 'VOL_60D', nameCN: '60日波动率', cat: '波动率', ic: 0.042 },
+    { id: 'SIZE', nameCN: '规模因子', cat: '规模', ic: 0.025 },
+    { id: 'LIQ', nameCN: '流动性', cat: '波动率', ic: 0.038 },
+  ],
+  growth: [
+    { id: 'GROWTH', nameCN: '成长性', cat: '成长', ic: 0.028 },
+    { id: 'MOM_12M', nameCN: '12月动量', cat: '动量', ic: 0.045 },
+    { id: 'QUAL', nameCN: '质量因子', cat: '质量', ic: 0.035 },
+    { id: 'RMW', nameCN: '盈利因子', cat: '质量', ic: 0.030 },
+    { id: 'LIQ', nameCN: '流动性', cat: '波动率', ic: 0.038 },
+  ],
+};
+
+export async function getFactorSuggestions(
+  strategyType: StrategyCategory,
+  topN: number = 5,
+): Promise<FactorSuggestion[]> {
+  // Try IPC bridge first (future: window.api.factor.suggestFactors)
+  if (hasIPC()) {
+    try {
+      // Dynamic check for factor namespace (added in R164)
+      const api = (window as any).api;
+      if (api?.factor?.suggestFactors) {
+        const result = await api.factor.suggestFactors({ strategyType, topN });
+        if (result?.success && result.factors) {
+          return result.factors.map((f: Record<string, unknown>) => ({
+            factorId: String(f.factorId || f.id || ''),
+            nameCN: String(f.nameCN || f.nameCN || ''),
+            categoryCN: String(f.categoryCN || f.category || ''),
+            typicalIC: Number(f.typicalIC || 0),
+            compatible: true,
+          }));
+        }
+      }
+    } catch { /* fall through to inline */ }
+  }
+
+  // Inline fallback
+  const factors = STRATEGY_FACTORS[strategyType] || STRATEGY_FACTORS.balanced;
+  return factors.slice(0, topN).map(f => ({
+    factorId: f.id,
+    nameCN: f.nameCN,
+    categoryCN: f.cat,
+    typicalIC: f.ic,
+    compatible: true,
+  }));
+}
+
 export async function getMarketplaceList(sortBy?: string, limit?: number): Promise<any> {
   if (!hasIPC()) return { success: false, strategies: [] };
   return window.api.marketplace.list(sortBy, limit);

@@ -667,6 +667,27 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   ipcMain.handle('live:get-orders', async () => {
     return { success: true, orders: liveExecutor?.getOrders() ?? [] };
   });
+
+  // ── R164 P1-E4: Factor suggestFactors bridge ─────────────────────────────
+  ipcMain.handle('factor:suggestFactors', async (_e, params: {
+    market?: string;
+    instrument?: string;
+    strategyType?: 'momentum' | 'value' | 'growth' | 'balanced' | 'defensive';
+    topN?: number;
+  }) => {
+    try {
+      const { createFactorCompatibilityEngine } = require('./engine/factors/factor-compatibility-engine');
+      const engine = createFactorCompatibilityEngine();
+      const market = (params.market || 'NYSE') as any;
+      const instrument = (params.instrument || 'stock') as any;
+      const strategyType = params.strategyType || 'balanced';
+      const topN = params.topN || 5;
+      const factors = engine.suggestFactors(market, instrument, strategyType, topN);
+      return { success: true, factors };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Unknown error' };
+    }
+  });
 }
 
 // ── System Tray ────────────────────────────────────────────────────────────

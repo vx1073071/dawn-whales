@@ -4,6 +4,9 @@
 
 import log from 'electron-log';
 import i18n from '../../../src/i18n';
+// R173 D3: Factor backtest imports
+import { getETFPriceSource } from '../factors/etf-price-source';
+import { ETF_PAIRS, type FactorDailyReturn } from '../factors/etf-price-source';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -486,4 +489,272 @@ export class BacktestEngine {
       equityCurve: [], trades: [], config, reason,
     };
   }
+}
+
+// ── R173 D3: Factor Portfolio Backtest ─────────────────────────────────────
+// Runs a multi-factor portfolio backtest using real ETF price data.
+// Connects to frontend C2 mini-backtest (weight-drag → instant preview).
+
+/** Factor backtest input */
+export interface FactorBacktestRequest {
+  /** Factor IDs with weights (weights should sum to 1) */
+  factorWeights: Record<string, number>;
+  /** Start date YYYY-MM-DD (inclusive) */
+  startDate: string;
+  /** End date YYYY-MM-DD (inclusive) */
+  endDate: string;
+  /** Optional market filter */
+  market?: string;
+  /** Risk-free rate (annualized, default 0.04 = 4%) */
+  riskFreeRate?: number;
+  /** Rebalance frequency in trading days (default 20 = monthly) */
+  rebalanceFreq?: number;
+}
+
+/** Factor contribution decomposition */
+export interface FactorContribution {
+  factorId: string;
+  weight: number;
+  annualizedReturn: number;
+  annualizedVol: number;
+  sharpeRatio: number;
+  contributionToReturn: number;   // weight × annualReturn
+  contributionToRisk: number;     // % of total portfolio risk
+  maxDrawdown: number;
+}
+
+/** Factor backtest result */
+export interface FactorBacktestResult {
+  success: boolean;
+  /** Total annualized return (%) */
+  annualReturn: number;
+  /** Sharpe ratio */
+  sharpeRatio: number;
+  /** Max drawdown (%) */
+  maxDrawdown: number;
+  /** Win rate (% of positive days) */
+  winRate: number;
+  /** Cumulative return (%) */
+  cumulativeReturn: number;
+  /** Annualized volatility (%) */
+  annualVolatility: number;
+  /** Calmar ratio (annualReturn / |maxDrawdown|) */
+  calmarRatio: number;
+  /** Number of trading days */
+  tradingDays: number;
+  /** Daily equity curve */
+  equityCurve: Array<{ date: string; value: number }>;
+  /** Daily returns for further analysis */
+  dailyReturns: number[];
+  /** Per-factor contribution breakdown */
+  factorContributions: FactorContribution[];
+  /** Input request echo */
+  request: FactorBacktestRequest;
+  /** Error message (if success=false) */
+  error?: string;
+}
+
+/**
+ * Run a factor portfolio backtest.
+ *
+ * Uses real ETF factor returns from etf-price-source.
+ * Computes portfolio return = Σ(weight_i × factor_return_i) for each day.
+ *
+ * Connects to: ML C2 mini-backtest (drag weight → instant preview)
+ */
+export async function runFactorBacktest(
+  request: FactorBacktestRequest,
+): Promise<FactorBacktestResult> {
+  const { factorWeights, startDate, endDate, riskFreeRate = 0.04, rebalanceFreq = 20 } = request;
+
+  // Validate
+  const totalWeight = Object.values(factorWeights).reduce((a, b) => a + b, 0);
+  if (Math.abs(totalWeight - 1) > 0.01) {
+    return buildError(request, `权重总和必须为1.0，当前为${totalWeight.toFixed(3)}`);
+  }
+
+  const factorIds = Object.keys(factorWeights);
+  if (factorIds.length === 0) {
+    return buildError(request, '至少需要1个因子');
+  }
+
+  // Get ETF data source
+  const etfSource = getETFPriceSource();
+  await etfSource.initialize();
+
+  // Get daily factor returns
+  const allReturns = etfSource.computeFactorReturnsInRange(startDate, endDate);
+  if (allReturns.length < 5) {
+    return buildError(request, `数据不足: 仅${allReturns.length}个交易日，至少需要5天`);
+  }
+
+  // Filter to requested factors
+  const validFactors = factorIds.filter(fid =>
+    allReturns.some(r => r[fid] !== undefined),
+  );
+  if (validFactors.length === 0) {
+    return buildError(request, `所选因子均无数据: ${factorIds.join(', ')}`);
+  }
+
+  // Compute portfolio daily returns
+  const dailyReturns: number[] = [];
+  const equityCurve: Array<{ date: string; value: number }> = [];
+  const factorReturns: Record<string, number[]> = {};
+  for (const fid of validFactors) {
+    factorReturns[fid] = [];
+  }
+
+  let equity = 100; // Start at 100
+  equityCurve.push({ date: allReturns[0].date, value: equity });
+
+  // Rebalance: redistribute weights every rebalanceFreq days
+  const rebalancedWeights = { ...factorWeights };
+
+  for (let i = 0; i < allReturns.length; i++) {
+    const day = allReturns[i];
+
+    // Periodic rebalance
+    if (i > 0 && i % rebalanceFreq === 0) {
+      // Reset weights to original
+      for (const fid of validFactors) {
+        rebalancedWeights[fid] = (factorWeights[fid] / totalWeight);
+      }
+    }
+
+    // Portfolio return = sum(weight_i × return_i)
+    let portfolioReturn = 0;
+    for (const fid of validFactors) {
+      const ret = (day[fid] as number) || 0;
+      portfolioReturn += (rebalancedWeights[fid] || 0) * ret;
+      factorReturns[fid].push(ret);
+      // Update rebalanced weights with drift
+      rebalancedWeights[fid] = (rebalancedWeights[fid] || 0) * (1 + ret);
+    }
+
+    dailyReturns.push(portfolioReturn);
+    equity *= (1 + portfolioReturn);
+    equityCurve.push({ date: day.date, value: Math.round(equity * 100) / 100 });
+  }
+
+  // ── Compute metrics ──────────────────────────────────────────────────
+
+  const n = dailyReturns.length;
+  const totalReturn = equity / 100 - 1;
+  const cumulativeReturn = totalReturn * 100;
+  const years = n / 252;
+
+  // Annualized return
+  const annualReturn = years > 0
+    ? (Math.pow(1 + totalReturn, 1 / years) - 1) * 100
+    : 0;
+
+  // Daily stats
+  const dailyMean = n > 0 ? dailyReturns.reduce((a, b) => a + b, 0) / n : 0;
+  const dailyStd = n > 1
+    ? Math.sqrt(dailyReturns.reduce((s, r) => s + (r - dailyMean) ** 2, 0) / n)
+    : 0;
+  const annualVolatility = dailyStd * Math.sqrt(252) * 100;
+
+  // Sharpe ratio
+  const sharpeRatio = dailyStd > 0
+    ? ((dailyMean * 252) - riskFreeRate) / (dailyStd * Math.sqrt(252))
+    : 0;
+
+  // Max drawdown
+  let peak = equityCurve[0].value;
+  let maxDrawdown = 0;
+  for (const point of equityCurve) {
+    if (point.value > peak) peak = point.value;
+    const dd = (point.value - peak) / peak * 100;
+    if (dd < maxDrawdown) maxDrawdown = dd;
+  }
+
+  // Win rate
+  const wins = dailyReturns.filter(r => r > 0).length;
+  const winRate = n > 0 ? (wins / n) * 100 : 0;
+
+  // Calmar ratio
+  const calmarRatio = maxDrawdown < 0 ? annualReturn / Math.abs(maxDrawdown) : annualReturn / 0.01;
+
+  // Factor contribution decomposition
+  const factorContributions: FactorContribution[] = [];
+  for (const fid of validFactors) {
+    const rets = factorReturns[fid] || [];
+    const fMean = rets.length > 0 ? rets.reduce((a, b) => a + b, 0) / rets.length : 0;
+    const fStd = rets.length > 1
+      ? Math.sqrt(rets.reduce((s, r) => s + (r - fMean) ** 2, 0) / rets.length)
+      : 0;
+    const fAnnualRet = fMean * 252 * 100;
+    const fAnnualVol = fStd * Math.sqrt(252) * 100;
+    const fSharpe = fStd > 0 ? (fMean * 252 - riskFreeRate) / (fStd * Math.sqrt(252)) : 0;
+
+    // Factor drawdown
+    let fPeak = 0;
+    let fDD = 0;
+    let fCum = 1;
+    for (const r of rets) {
+      fCum *= (1 + r);
+      if (fCum > fPeak) fPeak = fCum;
+      const dd = (fCum - fPeak) / fPeak * 100;
+      if (dd < fDD) fDD = dd;
+    }
+
+    factorContributions.push({
+      factorId: fid,
+      weight: factorWeights[fid] || 0,
+      annualizedReturn: Math.round(fAnnualRet * 100) / 100,
+      annualizedVol: Math.round(fAnnualVol * 100) / 100,
+      sharpeRatio: Math.round(fSharpe * 100) / 100,
+      contributionToReturn: Math.round((factorWeights[fid] || 0) * fAnnualRet * 100) / 100,
+      contributionToRisk: 0, // computed below
+      maxDrawdown: Math.round(fDD * 100) / 100,
+    });
+  }
+
+  // Risk contribution (simplified: weight × vol / total vol)
+  const totalRiskContrib = factorContributions.reduce(
+    (s, f) => s + Math.abs(f.weight * f.annualizedVol / 100), 0,
+  );
+  for (const fc of factorContributions) {
+    fc.contributionToRisk = totalRiskContrib > 0
+      ? Math.round((Math.abs(fc.weight * fc.annualizedVol / 100) / totalRiskContrib) * 10000) / 100
+      : 0;
+  }
+
+  log.info(
+    `[runFactorBacktest] ${validFactors.length} factors × ${n} days: ` +
+    `ret=${annualReturn.toFixed(1)}%, Sharpe=${sharpeRatio.toFixed(2)}, MaxDD=${maxDrawdown.toFixed(1)}%`,
+  );
+
+  return {
+    success: true,
+    annualReturn: Math.round(annualReturn * 100) / 100,
+    sharpeRatio: Math.round(sharpeRatio * 100) / 100,
+    maxDrawdown: Math.round(maxDrawdown * 100) / 100,
+    winRate: Math.round(winRate * 10) / 10,
+    cumulativeReturn: Math.round(cumulativeReturn * 100) / 100,
+    annualVolatility: Math.round(annualVolatility * 100) / 100,
+    calmarRatio: Math.round(calmarRatio * 100) / 100,
+    tradingDays: n,
+    equityCurve: equityCurve.filter((_, idx) =>
+      idx % Math.max(1, Math.floor(equityCurve.length / 200)) === 0 ||
+      idx === equityCurve.length - 1,
+    ),
+    dailyReturns,
+    factorContributions: factorContributions.sort(
+      (a, b) => Math.abs(b.contributionToReturn) - Math.abs(a.contributionToReturn),
+    ),
+    request,
+  };
+}
+
+function buildError(request: FactorBacktestRequest, msg: string): FactorBacktestResult {
+  return {
+    success: false,
+    error: msg,
+    annualReturn: 0, sharpeRatio: 0, maxDrawdown: 0, winRate: 0,
+    cumulativeReturn: 0, annualVolatility: 0, calmarRatio: 0, tradingDays: 0,
+    equityCurve: [], dailyReturns: [], factorContributions: [],
+    request,
+  };
 }

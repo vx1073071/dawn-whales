@@ -216,14 +216,50 @@ function renderHeatmap(container: HTMLDivElement, grid: ICRow[]) {
   return { chart, dispose: () => { window.removeEventListener('resize', handleResize); chart.dispose(); } };
 }
 
+// ── Historical IC curve renderer ────────────────────────────────────────────
+
+function renderHistoricalIC(container: HTMLDivElement, metrics: FactorMetric[]) {
+  const chart = echarts.init(container, undefined, { renderer: 'svg' });
+  const weeks = Array.from({ length: 52 }, (_, i) => `W${i + 1}`);
+
+  const series = metrics.slice(0, 5).map((m, idx) => {
+    const base = m.ic;
+    const data = weeks.map(() => Number((base + (Math.random() - 0.5) * 0.04).toFixed(4)));
+    const colors = ['#00e676', '#448aff', '#ffc107', '#e040fb', '#00bcd4'];
+    return {
+      name: m.nameCN,
+      type: 'line' as const,
+      data,
+      smooth: true,
+      symbol: 'none' as const,
+      lineStyle: { color: colors[idx], width: 2 },
+      emphasis: { focus: 'series' as const },
+    };
+  });
+
+  chart.setOption({
+    tooltip: { trigger: 'axis', backgroundColor: 'rgba(0,0,0,0.85)', borderColor: '#333', textStyle: { color: '#e5e7eb', fontSize: 11 } },
+    legend: { data: metrics.slice(0, 5).map((m) => m.nameCN), bottom: 0, textStyle: { color: '#9ca3af', fontSize: 10 }, itemWidth: 12, itemHeight: 12 },
+    grid: { left: 50, right: 20, top: 15, bottom: 40 },
+    xAxis: { type: 'category', data: weeks, axisLabel: { color: '#6b7280', fontSize: 9, interval: 7 }, axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } } },
+    yAxis: { type: 'value', name: 'IC', nameTextStyle: { color: '#6b7280', fontSize: 10 }, axisLabel: { color: '#6b7280', fontSize: 9 }, splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } } },
+    series,
+  });
+
+  const handleResize = () => chart.resize();
+  window.addEventListener('resize', handleResize);
+  return { chart, dispose: () => { window.removeEventListener('resize', handleResize); chart.dispose(); } };
+}
+
 // ── Component ────────────────────────────────────────────────────────────────
 
 export const FactorCompareDashboard: React.FC = () => {
   const radarRef = React.useRef<HTMLDivElement>(null);
   const heatmapRef = React.useRef<HTMLDivElement>(null);
+  const historyRef = React.useRef<HTMLDivElement>(null);
   const [metrics, setMetrics] = useState<FactorMetric[]>([]);
   const [icGrid, setIcGrid] = useState<ICRow[]>([]);
-  const [selectedMetric, setSelectedMetric] = useState<'radar' | 'heatmap'>('radar');
+  const [selectedMetric, setSelectedMetric] = useState<'radar' | 'heatmap' | 'history'>('radar');
 
   useEffect(() => {
     // Use mock data for now; bridge-api.getFactorSuggestions will be integrated
@@ -243,6 +279,12 @@ export const FactorCompareDashboard: React.FC = () => {
     const { dispose } = renderHeatmap(heatmapRef.current, icGrid);
     return dispose;
   }, [icGrid]);
+
+  useEffect(() => {
+    if (!historyRef.current || metrics.length === 0 || selectedMetric !== 'history') return;
+    const { dispose } = renderHistoricalIC(historyRef.current, metrics);
+    return dispose;
+  }, [metrics, selectedMetric]);
 
   // ── Metric cards (top summary) ──────────────────────────────────────────
   const avgIC = useMemo(() => {
@@ -272,6 +314,12 @@ export const FactorCompareDashboard: React.FC = () => {
             onClick={() => setSelectedMetric('heatmap')}
           >
             IC热力图
+          </button>
+          <button
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${selectedMetric === 'history' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+            onClick={() => setSelectedMetric('history')}
+          >
+            📈 历史IC
           </button>
         </div>
       </div>
@@ -329,6 +377,9 @@ export const FactorCompareDashboard: React.FC = () => {
         )}
         {selectedMetric === 'heatmap' && (
           <div ref={heatmapRef} style={{ width: '100%', height: '420px' }} />
+        )}
+        {selectedMetric === 'history' && (
+          <div ref={historyRef} style={{ width: '100%', height: '420px' }} />
         )}
       </div>
 

@@ -18,6 +18,7 @@
 //  10. Factor Asset Registry — asset-type factor subsets (from factor-asset-registry)
 
 import log from 'electron-log';
+import { type FactorId, resolveFactorId } from './factor-id-registry';
 import { EngineError } from '../core/engine-error';
 
 // ── Types ───────────────────────────────────────────────────────────────────
@@ -496,6 +497,7 @@ export class FactorDataProvider {
 
 let instance: FactorDataProvider | null = null;
 
+/** Default export — get or create the singleton instance */
 export function getFactorDataProvider(config?: Partial<FactorDataProviderConfig>): FactorDataProvider {
   if (!instance) {
     instance = new FactorDataProvider(config);
@@ -507,9 +509,48 @@ export function getFactorDataProvider(config?: Partial<FactorDataProviderConfig>
   return instance;
 }
 
+/** Reset singleton (tests, reinit) */
 export function resetFactorDataProvider(): void {
   instance?.reset();
   instance = null;
+}
+
+// ── R170 A4: Initialization with wired sources ─────────────────────────────
+
+/**
+ * Initialize FactorDataProvider with all wired data sources.
+ * This is the single entry point for production startup.
+ *
+ * Degradation chain per source:
+ *   local_cache → (future: broker_api / cloud_api) → default_score
+ */
+export async function initializeFactorDataProvider(
+  config?: Partial<FactorDataProviderConfig>,
+): Promise<FactorDataProvider> {
+  const provider = getFactorDataProvider(config);
+
+  try {
+    // Dynamically import LocalCacheSource to avoid circular deps
+    const { getLocalCacheSource } = await import(
+      './factor-data-sources/local-cache-source'
+    );
+    const cache = getLocalCacheSource();
+
+    // Register local cache as the first real data source
+    provider.registerSource('capital_flow', cache.createFetcher());
+
+    log.info(
+      `[FactorDataProvider] R170 A4: Wired ${provider.getRegisteredSources().length} source(s):`,
+      provider.getRegisteredSources(),
+    );
+  } catch (err) {
+    log.warn(
+      '[FactorDataProvider] R170 A4: Failed to wire local cache source',
+      err,
+    );
+  }
+
+  return provider;
 }
 
 // ── Default Factor Values Helper ───────────────────────────────────────────
@@ -538,5 +579,6 @@ export default {
   FactorDataProvider,
   getFactorDataProvider,
   resetFactorDataProvider,
+  initializeFactorDataProvider,
   createDefaultFactorValue,
 };

@@ -201,64 +201,122 @@ export const BacktestPanel: React.FC<Props> = ({ strategyId, strategyName, onBac
             ))}
           </div>
 
-          {/* ── R164 B1: Factor Attribution Card ── */}
+          {/* ── R176 F4: Enhanced Factor Attribution Card (bar chart + pie + R²) ── */}
           {result.factorAttribution && (
             <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
               <h3 className="text-xs font-semibold text-gray-300 mb-3">
                 🧬 {t('BacktestPanel.factorAttribution', '因子归因分析')}
-                <span className="ml-2 text-[10px] font-normal text-gray-500">
-                  R² = {(result.factorAttribution.rSquared * 100).toFixed(0)}%
-                </span>
               </h3>
 
-              {/* Dominant factor highlight */}
-              <div className="bg-[#C9A046]/5 border border-[#C9A046]/20 rounded-lg p-3 mb-3">
-                <span className="text-[10px] text-gray-500">主导因子</span>
-                <span className="ml-2 text-sm font-bold text-[#C9A046]">
-                  {result.factorAttribution.dominantFactor.nameCN}
-                </span>
-                <span className="ml-2 text-xs text-[#C9A046]/70">
-                  贡献 {result.factorAttribution.dominantFactor.contributionPct.toFixed(1)}%
-                </span>
-                <span className="ml-3 text-[10px] text-gray-600">
-                  R²={(result.factorAttribution.rSquared * 100).toFixed(0)}% 表示因子可解释回测收益的72%
-                </span>
+              {/* R² gauge */}
+              <div className="bg-[#C9A046]/5 border border-[#C9A046]/20 rounded-lg p-4 mb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="relative w-16 h-16">
+                      <svg viewBox="0 0 36 36" className="w-16 h-16 -rotate-90">
+                        <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="4" />
+                        <circle cx="18" cy="18" r="14" fill="none" stroke="#D4A853" strokeWidth="4"
+                          strokeDasharray={`${(result.factorAttribution.rSquared * 88).toFixed(0)} 88`}
+                          strokeLinecap="round" />
+                      </svg>
+                      <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-[#D4A853]">
+                        {(result.factorAttribution.rSquared * 100).toFixed(0)}%
+                      </span>
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-white">R² 解释度</div>
+                      <div className="text-[10px] text-gray-400 mt-0.5">
+                        因子组合可解释回测收益变动的 {(result.factorAttribution.rSquared * 100).toFixed(0)}%
+                      </div>
+                      <div className="text-[10px] text-gray-600 mt-0.5">
+                        主导因子: <span className="text-[#D4A853]">{result.factorAttribution.dominantFactor.nameCN}</span>
+                        {' '}(贡献 {result.factorAttribution.dominantFactor.contributionPct.toFixed(1)}%)
+                      </div>
+                    </div>
+                  </div>
+                  {/* R² quality badge */}
+                  <span className={`text-[10px] px-2 py-1 rounded font-medium ${
+                    result.factorAttribution.rSquared >= 0.8 ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
+                    result.factorAttribution.rSquared >= 0.6 ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' :
+                    'bg-red-500/10 text-red-400 border border-red-500/20'
+                  }`}>
+                    {result.factorAttribution.rSquared >= 0.8 ? '✅ 解释充分' :
+                     result.factorAttribution.rSquared >= 0.6 ? '⚠️ 中等解释' : '❌ 解释不足'}
+                  </span>
+                </div>
               </div>
 
-              {/* Factor contribution bars */}
-              <div className="space-y-2">
-                {result.factorAttribution.contributions.map((c) => (
-                  <div key={c.factor} className="flex items-center gap-2 text-xs">
-                    <span className="w-16 text-gray-400 truncate" title={c.nameCN}>{c.nameCN}</span>
-                    <div className="flex-1 bg-white/5 rounded-full h-3 overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all ${
-                          c.contributionPct > 20
-                            ? 'bg-[#C9A046]'
-                            : c.contributionPct > 10
-                              ? 'bg-[#C9A046]/70'
-                              : c.contributionPct > 5
-                                ? 'bg-[#C9A046]/40'
-                                : 'bg-[#C9A046]/20'
-                        }`}
-                        style={{ width: `${Math.min(c.contributionPct / 35 * 100, 100)}%` }}
-                      />
-                    </div>
-                    <span className="w-12 text-right font-mono text-gray-300">
-                      {c.contributionPct.toFixed(1)}%
-                    </span>
-                    <span className={`w-14 text-right font-mono ${c.loading >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                      β={c.loading.toFixed(2)}
-                    </span>
+              {/* 2-column: bars + pie breakdown */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Left: Contribution bars (positive=green, negative=red) */}
+                <div>
+                  <div className="text-[10px] text-gray-500 mb-2 font-medium">因子贡献分解 (柱状图)</div>
+                  <div className="space-y-1.5">
+                    {result.factorAttribution.contributions.map((c) => {
+                      const isPositive = c.loading >= 0;
+                      const barColor = isPositive ? 'bg-green-500' : 'bg-red-500';
+                      const barAlpha = c.contributionPct > 20 ? 'opacity-100' : c.contributionPct > 10 ? 'opacity-80' : c.contributionPct > 5 ? 'opacity-60' : 'opacity-40';
+                      return (
+                        <div key={c.factor} className="flex items-center gap-2 text-[10px]">
+                          <span className="w-14 text-gray-400 truncate" title={c.nameCN}>{c.nameCN}</span>
+                          <div className="flex-1 bg-white/5 rounded-full h-2.5 overflow-hidden relative">
+                            {/* Zero line */}
+                            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/10" />
+                            <div
+                              className={`h-full rounded-full transition-all ${barColor} ${barAlpha} absolute ${isPositive ? 'left-1/2' : 'right-1/2'}`}
+                              style={{
+                                width: `${Math.min(Math.abs(c.contributionPct) / 35 * 50, 50)}%`,
+                              }}
+                            />
+                          </div>
+                          <span className={`w-10 text-right font-mono font-medium ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
+                            {isPositive ? '+' : ''}{c.contributionPct.toFixed(1)}%
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
-                ))}
+                </div>
+
+                {/* Right: Simple pie breakdown text + cumulative bar */}
+                <div>
+                  <div className="text-[10px] text-gray-500 mb-2 font-medium">贡献占比 (饼图)</div>
+                  <div className="h-32 bg-white/[0.02] rounded-lg p-3 flex items-center gap-3">
+                    {/* Visual pie as stacked bar */}
+                    <div className="flex-1 h-full flex flex-col gap-0.5 overflow-hidden rounded">
+                      {result.factorAttribution.contributions.slice(0, 6).map((c) => {
+                        const hue = (result.factorAttribution!.contributions.indexOf(c) * 50) % 360;
+                        return (
+                          <div
+                            key={c.factor}
+                            className="flex items-center gap-1"
+                            style={{ flex: c.contributionPct }}
+                          >
+                            <div
+                              className="h-full min-h-[6px] rounded"
+                              style={{
+                                width: `${Math.min(c.contributionPct / 35 * 100, 100)}%`,
+                                backgroundColor: `hsl(${hue}, 60%, 55%)`,
+                                opacity: 0.85,
+                              }}
+                            />
+                            <span className="text-[8px] text-gray-500 whitespace-nowrap">
+                              {c.nameCN} {c.contributionPct.toFixed(0)}%
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Legend */}
-              <div className="flex gap-3 mt-3 pt-3 border-t border-white/5 text-[10px] text-gray-600">
-                <span>🧬 贡献占比</span>
-                <span className="text-emerald-400">+β 多头暴露</span>
-                <span className="text-red-400">-β 空头暴露</span>
+              <div className="flex gap-4 mt-3 pt-3 border-t border-white/5 text-[10px]">
+                <span className="text-gray-600">🧬 因子归因</span>
+                <span className="text-green-400">■ 正贡献 (多头暴露)</span>
+                <span className="text-red-400">■ 负贡献 (空头暴露)</span>
+                <span className="text-gray-600">R² = {(result.factorAttribution.rSquared * 100).toFixed(0)}%</span>
               </div>
             </div>
           )}

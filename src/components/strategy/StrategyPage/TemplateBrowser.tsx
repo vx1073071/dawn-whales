@@ -7,6 +7,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getTemplates, createStrategy, getFactorSuggestions } from '../../../lib/bridge-api';
+import type { StrategyCategory } from '../../../lib/bridge-api';
 
 interface TemplateItem {
   id: string;
@@ -66,7 +68,6 @@ export const TemplateBrowser: React.FC<Props> = ({ onBack, onCreated }) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const { getTemplates } = await import('../../../lib/bridge-api');
         const list = await getTemplates();
         setTemplates(list || []);
       } catch { /* fallback */ }
@@ -91,66 +92,15 @@ export const TemplateBrowser: React.FC<Props> = ({ onBack, onCreated }) => {
     return true;
   });
 
-  // R163: Fetch factor recommendations when a template is selected
+  // R164 P1-E4: Fetch factor recommendations via centralized bridge-api (was inline STRATEGY_FACTORS)
   const handleSelectTemplate = async (tmpl: TemplateItem) => {
     setSelectedTemplate(tmpl);
     setRecLoading(true);
     setRecommendations([]);
 
     try {
-      // R163: Build recommendations from template category
-      // Inline suggestFactors logic (renderer can't import Electron engine directly)
       const strategyType = CATEGORY_TO_STRATEGY[tmpl.category] || 'balanced';
-
-      // Factor recommendations per strategy type (mirrors FactorCompatibilityEngine.suggestFactors)
-      const STRATEGY_FACTORS: Record<string, Array<{ id: string; nameCN: string; cat: string; ic: number }>> = {
-        momentum: [
-          { id: 'MOM_12M', nameCN: '12月动量', cat: '动量', ic: 0.045 },
-          { id: 'MA_20_60', nameCN: '均线交叉', cat: '趋势', ic: 0.025 },
-          { id: 'RSI_14', nameCN: 'RSI 14', cat: '动量', ic: 0.028 },
-          { id: 'ADX', nameCN: 'ADX 14', cat: '趋势', ic: 0.015 },
-          { id: 'LIQ', nameCN: '流动性', cat: '波动率', ic: 0.038 },
-        ],
-        value: [
-          { id: 'HML', nameCN: '价值因子', cat: '价值', ic: 0.038 },
-          { id: 'QUAL', nameCN: '质量因子', cat: '质量', ic: 0.035 },
-          { id: 'RMW', nameCN: '盈利因子', cat: '质量', ic: 0.030 },
-          { id: 'YIELD', nameCN: '股息率', cat: '收益', ic: 0.018 },
-          { id: 'SIZE', nameCN: '规模因子', cat: '规模', ic: 0.025 },
-        ],
-        defensive: [
-          { id: 'VOL_60D', nameCN: '60日波动率', cat: '波动率', ic: 0.042 },
-          { id: 'QUAL', nameCN: '质量因子', cat: '质量', ic: 0.035 },
-          { id: 'YIELD', nameCN: '股息率', cat: '收益', ic: 0.018 },
-          { id: 'LIQ', nameCN: '流动性', cat: '波动率', ic: 0.038 },
-          { id: 'HML', nameCN: '价值因子', cat: '价值', ic: 0.038 },
-        ],
-        balanced: [
-          { id: 'MOM_12M', nameCN: '12月动量', cat: '动量', ic: 0.045 },
-          { id: 'HML', nameCN: '价值因子', cat: '价值', ic: 0.038 },
-          { id: 'QUAL', nameCN: '质量因子', cat: '质量', ic: 0.035 },
-          { id: 'VOL_60D', nameCN: '60日波动率', cat: '波动率', ic: 0.042 },
-          { id: 'SIZE', nameCN: '规模因子', cat: '规模', ic: 0.025 },
-          { id: 'LIQ', nameCN: '流动性', cat: '波动率', ic: 0.038 },
-        ],
-        growth: [
-          { id: 'GROWTH', nameCN: '成长性', cat: '成长', ic: 0.028 },
-          { id: 'MOM_12M', nameCN: '12月动量', cat: '动量', ic: 0.045 },
-          { id: 'QUAL', nameCN: '质量因子', cat: '质量', ic: 0.035 },
-          { id: 'RMW', nameCN: '盈利因子', cat: '质量', ic: 0.030 },
-          { id: 'LIQ', nameCN: '流动性', cat: '波动率', ic: 0.038 },
-        ],
-      };
-
-      const factors = STRATEGY_FACTORS[strategyType] || STRATEGY_FACTORS.balanced;
-      const recs: FactorRecommendation[] = factors.map((f) => ({
-        factorId: f.id,
-        nameCN: f.nameCN,
-        categoryCN: f.cat,
-        compatible: true,
-        typicalIC: f.ic,
-      }));
-
+      const recs = await getFactorSuggestions(strategyType as StrategyCategory, 6);
       setRecommendations(recs);
     } catch {
       setRecommendations([]);
@@ -188,7 +138,6 @@ export const TemplateBrowser: React.FC<Props> = ({ onBack, onCreated }) => {
     if (!selectedTemplate) return;
     saveFactorWeights();
     try {
-      const { createStrategy } = await import('../../../lib/bridge-api');
       await createStrategy({
         templateId: selectedTemplate.id,
         name: selectedTemplate.nameCn || selectedTemplate.name,

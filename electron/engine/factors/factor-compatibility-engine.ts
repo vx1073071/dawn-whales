@@ -1,4 +1,5 @@
 import i18n from '../../../src/i18n';
+import { sortFactors, type SortableFactor } from './index';
 // ── J-72-01 R72 AUTHORITATIVE: Factor Compatibility Matrix ────────────────
 // 30+ Factors × 7 Markets, stock screen auto-filters incompatible factors
 
@@ -510,12 +511,16 @@ export class FactorCompatibilityEngine {
         result.push(f);
       }
     }
-    return result.sort((a, b) => a.category.localeCompare(b.category));
+    return sortFactors(
+      result.map(f => ({ id: f.id, ic: f.typicalIC })),
+    ).map(s => result.find(f => f.id === s.id)!).filter(Boolean);
   }
 
   /** Get all factors */
   getAllFactors(): FactorDefinition[] {
-    return [...this.factors.values()].sort((a, b) => a.id.localeCompare(b.id));
+    return sortFactors(
+      [...this.factors.values()].map(f => ({ id: f.id, ic: f.typicalIC })),
+    ).map(s => this.factors.get(s.id)!).filter(Boolean);
   }
 
   /** Get factor by ID */

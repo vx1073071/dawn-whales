@@ -13,8 +13,12 @@
 import log from 'electron-log';
 // R174 E2: Dynamic IC/IR from ETF price source
 import { getETFPriceSource } from '../factors/etf-price-source';
+// R175 E2+/E6+: Portfolio evaluator for correlation/VIF constraints
+import { getFactorPortfolioEvaluator } from '../factors/factor-portfolio-eval';
 // R174 E3: Real backtest engine
 import { runFactorBacktest, type FactorBacktestResult } from '../backtest/backtest-engine';
+// R175 G6: Factor user profile for smart pre-fill
+import { getFactorUserProfile } from '../factors/factor-user-profile';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -516,6 +520,20 @@ export class AIFactorAdvisor {
     // ── R172 E5: Persist recommendation to history ──
     this.recordRecommendation(sessionId, intentResult.intent, factors);
 
+    // ── R175 G6: Update factor user profile ──
+    try {
+      const profile = getFactorUserProfile();
+      const factorData = factors.map(f => ({
+        factorId: f.factorId,
+        nameCN: f.nameCN,
+        weight: f.recommendedWeight,
+        ic: f.typicalIC,
+      }));
+      profile.updateProfile(request.userId, factorData, intentResult.intent, request.market);
+    } catch (e: any) {
+      log.warn('[AIFactorAdvisor] Profile update skipped:', e?.message);
+    }
+
     return {
       success: true,
       sessionId,
@@ -574,7 +592,27 @@ export class AIFactorAdvisor {
       return { intent: 'selection', confidence: 0.80 };
     }
 
-    // ── Legacy INTENT_PATTERNS (second priority) ──
+    // ── R175 E1续: 5 new specialized intents (high priority, before legacy) ──
+    const newSpecKW: Array<{ intent: FactorAdvisorIntent; kw: string[]; min: number }> = [
+      { intent: 'tail_risk', kw: ['尾部', '黑天鹅', '崩盘', '暴跌', '保护', 'tail', 'crash', 'disaster', 'extreme', 'swan', 'black swan', '下跌保护'], min: 1 },
+      { intent: 'macro_hedge', kw: ['宏观', '对冲', '通胀', '衰退', '加息', '降息', 'macro', 'hedge', 'inflation', 'recession'], min: 1 },
+      { intent: 'style_rotation', kw: ['风格', '轮动', '切换', 'style rotation', 'growth vs value', 'rotate'], min: 1 },
+      { intent: 'factor_substitution', kw: ['替换', '换因子', '替代', 'swap', 'replace', 'substitute', 'instead of'], min: 1 },
+      { intent: 'crypto_portfolio', kw: ['加密组合', '加密配置', 'crypto portfolio', 'defi', 'layer 2', 'layer2', 'l1', 'btc eth 配置', '配置比例', 'staking'], min: 1 },
+    ];
+    for (const entry of newSpecKW) {
+      const hits = entry.kw.filter(k => lowerQ.includes(k.toLowerCase())).length;
+      if (hits >= entry.min) {
+        return { intent: entry.intent, confidence: Math.min(0.88, 0.55 + hits * 0.12) };
+      }
+    }
+
+    // Quick crypto check: if query has 加密 and no newSpecKW matched, route to crypto_trend
+    if (lowerQ.includes('加密') && market === 'CRYPTO') {
+      return { intent: 'crypto_trend', confidence: 0.75 };
+    }
+
+    // ── Legacy INTENT_PATTERNS (lowest priority before fallback) ──
     for (const pattern of INTENT_PATTERNS) {
       // Check Chinese keywords
       for (const kw of pattern.keywordsCN) {
@@ -703,6 +741,86 @@ export class AIFactorAdvisor {
     scored.sort((a, b) => b.ic !== a.ic ? b.ic - a.ic : b.ir - a.ir);
 
     return scored.slice(0, topN);
+  }
+
+  // ── R175 E2+: Constrained Factor Weight Optimization ─────────────────
+
+  optimizeFactorWeights(initialFactors: Array<{ factorId: string }>): Array<{
+    factorId: string; weight: number; ic: number; vif: number;
+    removed: boolean; removeReason?: string;
+  }> {
+    const ids = initialFactors.map(f => f.factorId);
+    if (ids.length === 0) return [];
+    if (ids.length === 1) return [{ factorId: ids[0], weight: 1, ic: this.getIC(ids[0]), vif: 1, removed: false }];
+    const portEval = getFactorPortfolioEvaluator();
+    const corr = portEval.computeCorrelationMatrix(ids, 0.5);
+    const toRemove = new Set<string>();
+    for (const e of corr.entries) {
+      if (e.level === 'danger' || e.level === 'warning') {
+        toRemove.add(this.getIC(e.factor1) <= this.getIC(e.factor2) ? e.factor1 : e.factor2);
+      }
+    }
+    const valid = ids.filter(id => !toRemove.has(id));
+    if (valid.length > 0) {
+      const vif = eval.computeVIF(valid, undefined, 3);
+      for (const r of vif.results) { if (r.status === 'danger' || r.status === 'warning') toRemove.add(r.factorId); }
+    }
+    const kept = ids.filter(id => !toRemove.has(id));
+    const maxW = 0.30;
+    const results: Array<{ factorId: string; weight: number; ic: number; vif: number; removed: boolean; removeReason?: string }> = [];
+    if (kept.length === 0) {
+      const top = ids.sort((a,b) => this.getIC(b)-this.getIC(a))[0];
+      results.push({ factorId: top, weight: 1, ic: this.getIC(top), vif: 1, removed: false });
+    } else {
+      const tmp: Record<string,number> = {}; let totalIC = 0;
+      for (const id of kept) { tmp[id] = this.getIC(id); totalIC += tmp[id]; }
+      let excess = 0;
+      for (const id of kept) { let w = tmp[id]/totalIC; if (w>maxW) { excess+=w-maxW; w=maxW; } tmp[id]=w; }
+      if (excess>0.001 && kept.length>1) {
+        const uc = kept.filter(id=>tmp[id]<maxW);
+        const each = uc.length>0 ? excess/uc.length : 0;
+        for (const id of uc) tmp[id]=Math.min(maxW, tmp[id]+each);
+      }
+      const vif = eval.computeVIF(kept, undefined, 3);
+      for (const id of ids) {
+        const isRemoved = toRemove.has(id);
+        const ve = vif.results.find(r => r.factorId === id);
+        const hadCorr = corr.entries.some(e => (e.factor1===id||e.factor2===id) && (e.level==='danger'||e.level==='warning'));
+        results.push({
+          factorId: id, weight: isRemoved?0:Math.round(tmp[id]*10000)/10000, ic: this.getIC(id), vif: ve?.vif??1, removed: isRemoved,
+          removeReason: isRemoved ? (hadCorr?'高相关性排除':'VIF过高排除') : undefined,
+        });
+      }
+    }
+    return results;
+  }
+
+  // ── R175 E6+: Incremental Factor Replacement Suggestions ───────────
+
+  suggestReplacements(conflictingIds: string[]): Array<{
+    original: string; replacement: string; reason: string; icDelta: number;
+  }> {
+    const pool: Record<string, Array<{ factorId: string; reason: string }>> = {
+      MOM_12M: [{ factorId: 'MOM_1M', reason: '短期动量替代' }, { factorId: 'MA_20_60', reason: '均线趋势替代' }],
+      MOM_1M: [{ factorId: 'RSI_14', reason: '超买超卖替代' }],
+      VOL_60D: [{ factorId: 'ATR_14', reason: '波动率替代' }, { factorId: 'BOLL', reason: '布林带替代' }],
+      HML: [{ factorId: 'CMA', reason: '保守价值替代' }, { factorId: 'YIELD', reason: '高股息替代' }],
+      QUAL: [{ factorId: 'RMW', reason: '盈利质量替代' }],
+      GROWTH: [{ factorId: 'MOM_12M', reason: '动量增长替代' }],
+    };
+    const suggestions: Array<{ original: string; replacement: string; reason: string; icDelta: number }> = [];
+    for (const cfid of conflictingIds) {
+      const best = (pool[cfid]||[]).map(p=>({...p,ic:this.getIC(p.factorId)})).sort((a,b)=>b.ic-a.ic)[0];
+      if (best) suggestions.push({ original: cfid, replacement: best.factorId, reason: best.reason, icDelta: Math.round((best.ic-this.getIC(cfid))*10000)/10000 });
+    }
+    const top = this.getTopFactorsByIC('HK', 5);
+    for (const cfid of conflictingIds) {
+      if (!suggestions.some(s=>s.original===cfid)) {
+        const alt = top.find(t=>t.factorId!==cfid);
+        if (alt) suggestions.push({ original: cfid, replacement: alt.factorId, reason: `最高IC(${alt.ic.toFixed(3)})替代`, icDelta: Math.round((alt.ic-this.getIC(cfid))*10000)/10000 });
+      }
+    }
+    return suggestions;
   }
 
   private generateWarnings(intent: FactorAdvisorIntent, pattern: IntentPattern): string[] {
@@ -875,6 +993,64 @@ export class AIFactorAdvisor {
       description: p.explanation.slice(0, 80) + '...',
       market: p.intent.includes('crypto') ? 'CRYPTO' : 'US/HK',
     }));
+  }
+
+  // ── R172 E6: Holdings Conflict Detection + Auto Dedup ───────────────
+
+  private userHoldings: UserHolding[] = [];
+
+  loadUserHoldings(holdings?: UserHolding[]): UserHolding[] {
+    if (holdings) this.userHoldings = [...holdings];
+    return [...this.userHoldings];
+  }
+
+  detectConflicts(recommendations: FactorRecommendation[], holdings?: UserHolding[]): HoldingConflict[] {
+    const hlds = holdings || this.userHoldings;
+    if (hlds.length === 0) return [];
+    const conflicts: HoldingConflict[] = [];
+    for (const h of hlds) {
+      if (h.factorExposures) {
+        for (const fid of Object.keys(h.factorExposures)) {
+          for (const rec of recommendations) {
+            if (fid === rec.factorId) {
+              conflicts.push({
+                holding: h, conflictingFactors: [fid],
+                message: `${h.name}已暴露${this.getFactorCNName(fid)}，与推荐重叠`,
+                severity: 'info', resolution: '降低该因子权重以分散暴露',
+              });
+            }
+          }
+        }
+      }
+    }
+    return conflicts;
+  }
+
+  autoDedup(recommendations: FactorRecommendation[], holdings?: UserHolding[]): DedupResult {
+    const original = [...recommendations];
+    const seen = new Set<string>();
+    const phase1: FactorRecommendation[] = [];
+    const removed: string[] = [];
+    for (const rec of recommendations) {
+      if (seen.has(rec.factorId)) { removed.push(`dup:${rec.factorId}`); continue; }
+      seen.add(rec.factorId); phase1.push(rec);
+    }
+    const families: Record<string, string[]> = {
+      momentum: ['MOM_12M','MOM_1M','MA_20_60','EMA_12_26','ADX','RSI_14'],
+      value: ['HML','CMA'], quality: ['QUAL','RMW'],
+      volatility: ['VOL_60D','ATR_14','BOLL'],
+    };
+    let dedup = [...phase1];
+    for (const [, members] of Object.entries(families)) {
+      const fRecs = dedup.filter(r => members.includes(r.factorId));
+      if (fRecs.length > 2) {
+        const sorted = fRecs.sort((a,b) => b.typicalIC - a.typicalIC);
+        const toDrop = sorted.slice(2).map(r => r.factorId);
+        dedup = dedup.filter(r => !toDrop.includes(r.factorId));
+        removed.push(...toDrop.map(id => `near-dup:${id}`));
+      }
+    }
+    return { original, deduplicated: dedup, removed, summary: removed.length>0?`已移除${removed.length}个重复因子`:'无需去重' };
   }
 
   reset(): void { log.info('[AIFactorAdvisor] Reset'); }

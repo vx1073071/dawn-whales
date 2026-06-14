@@ -1,17 +1,18 @@
-// ── Q21: SmartPicker Integration ────────────────────────────────────────────
-// Consumes JVS SmartPicker scores → blends into MultiFactor model
+﻿// 鈹€鈹€ Q21: SmartPicker Integration 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+// Consumes JVS SmartPicker scores 鈫?blends into MultiFactor model
 // Feeds top picks into strategy creation pipeline
 // Two modes: (1) enhance multi-factor with SmartPicker scores, (2) standalone top picks
 
 import log from 'electron-log';
 
 import { SmartPickerService, SmartPickResult } from './smart-picker';
-import { scoreTopStocks } from '../factors/multi-factor';
+// R171 A8: Migrated from multi-factor 鈫?DawnFactorFramework
+import { DawnFactorFramework, getDawnFactorFramework, type UnifiedFactorScore } from '../factors/dawn-factor-framework';
 import i18n from '../../../src/i18n';
 import { EngineError } from '../core/engine-error';
 
 
-// ── Types ───────────────────────────────────────────────────────────────────
+// 鈹€鈹€ Types 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export interface SmartPickerWeightConfig {
   // How much SmartPicker contributes to blended score
@@ -66,7 +67,7 @@ export interface IntegrationReport {
   error?: string;
 }
 
-// ── SmartPicker Integration ──────────────────────────────────────────────────
+// 鈹€鈹€ SmartPicker Integration 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 export class SmartPickerIntegration {
   private smartPicker: SmartPickerService;
@@ -81,12 +82,12 @@ export class SmartPickerIntegration {
     log.info('[SmartPickerIntegration] Initialized', this.weights);
   }
 
-  // ── Blended Score ────────────────────────────────────────────────────────
+  // 鈹€鈹€ Blended Score 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
   async getBlendedScores(topN = 20): Promise<BlendedScore[]> {
     const [spReport, mfReport] = await Promise.allSettled([
       this.smartPicker.pick({ limit: topN }),
-      scoreTopStocks(topN).catch((_: unknown) => ({ scores: [], success: false })),
+      scoreStocks({ symbols: [], topN: topN, market: 'HKEX' }).catch((_: unknown) => ({ scores: [], success: false })),
     ]);
 
     const spPicks = spReport.status === 'fulfilled' ? spReport.value.picks : [];
@@ -163,7 +164,7 @@ export class SmartPickerIntegration {
     return results.slice(0, topN);
   }
 
-  // ── Strategy Picks ──────────────────────────────────────────────────────
+  // 鈹€鈹€ Strategy Picks 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
   async getStrategyPicks(topN = 10): Promise<StrategyPick[]> {
     const blended = await this.getBlendedScores(topN * 2);
@@ -199,7 +200,7 @@ export class SmartPickerIntegration {
     });
   }
 
-  // ── Helpers ─────────────────────────────────────────────────────────────
+  // 鈹€鈹€ Helpers 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
   private recommendStrategy(stock: BlendedScore): string {
     const sp = stock.smartPickerScore;
@@ -262,7 +263,7 @@ export class SmartPickerIntegration {
     return i18n.t('smartPickerIntegration.k10');
   }
 
-  // ── Report ─────────────────────────────────────────────────────────────
+  // 鈹€鈹€ Report 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
   async generateReport(topN = 20): Promise<IntegrationReport> {
     log.info(`[SmartPickerIntegration] Generating report, top ${topN}`);
@@ -278,7 +279,7 @@ export class SmartPickerIntegration {
         picks,
         strategies,
         timestamp: Date.now(),
-        sourcesQueried: ['SmartPicker (JVS-25)', 'MultiFactor (Q15)'],
+        sourcesQueried: ['SmartPicker (JVS-25)', 'DawnFactorFramework (R171 A8)'],
       };
     } catch (err: unknown) {
       log.error('[SmartPickerIntegration] Error:', err.message);
@@ -287,13 +288,13 @@ export class SmartPickerIntegration {
         picks: [],
         strategies: [],
         timestamp: Date.now(),
-        sourcesQueried: ['SmartPicker (JVS-25)', 'MultiFactor (Q15)'],
+        sourcesQueried: ['SmartPicker (JVS-25)', 'DawnFactorFramework (R171 A8)'],
         error: err.message,
       };
     }
   }
 
-  // ── Weight Control ─────────────────────────────────────────────────────
+  // 鈹€鈹€ Weight Control 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
   setWeights(weights: Partial<SmartPickerWeightConfig>): void {
     this.weights = { ...this.weights, ...weights };
@@ -301,7 +302,7 @@ export class SmartPickerIntegration {
   }
 }
 
-// ── Singleton ────────────────────────────────────────────────────────────────
+// 鈹€鈹€ Singleton 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 
 let instance: SmartPickerIntegration | null = null;
 
