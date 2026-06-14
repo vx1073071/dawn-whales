@@ -7,6 +7,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getAISuggest } from '@/lib/bridge-api';
 import i18n from '../../i18n';
+import AIPriceBadge, { AI_PRICES } from '../common/AIPriceBadge';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
@@ -398,9 +399,10 @@ export default function AIAdvisorPage() {
           <button
             onClick={load}
             disabled={loading}
-            className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-2 rounded-lg transition-colors"
+            className="text-xs bg-[#C9A046] hover:bg-[#D4A853] text-black font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5"
           >
             {loading ? i18n.t('AIAdvisorPage.k30') : i18n.t('AIAdvisorPage.k31')}
+            <AIPriceBadge config={AI_PRICES.aiRefresh} userBalance={balance} inline />
           </button>
         </div>
       </div>
@@ -498,9 +500,15 @@ export default function AIAdvisorPage() {
           {!unlocked && (
             <button
               onClick={() => setShowUnlockModal(true)}
-              className="text-xs bg-[#C9A046]/20 hover:bg-[#C9A046]/30 text-[#D4A853] px-3 py-1.5 rounded-lg transition-colors"
+              disabled={balance < 1}
+              className={`text-xs px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 ${
+                balance >= 1
+                  ? 'bg-[#C9A046]/20 hover:bg-[#C9A046]/30 text-[#D4A853]'
+                  : 'bg-gray-500/10 text-gray-500 cursor-not-allowed'
+              }`}
             >
-              1 USDT 解锁全部 →
+              解锁全部
+              <AIPriceBadge config={AI_PRICES.aiUnlockAll} userBalance={balance} inline />
             </button>
           )}
         </div>
