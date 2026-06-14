@@ -10,6 +10,8 @@
 // Default rates align with DawnWhales v17.6 commission schedule:
 //   Stocks/ETF: 0.1%, Crypto spot: 0.1%, Crypto futures: 0.02%
 
+import { log } from '../../../../src/lib/logger';
+
 // ── Types ───────────────────────────────────────────────────────────────────
 
 export interface TurnoverCostParams {
@@ -513,6 +515,76 @@ export class TurnoverCostEngine {
       lowestCostFactors: allFactors.slice(0, 3).map(f => f.factorId),
       highestCostFactors: allFactors.slice(-3).map(f => f.factorId),
       recommendations,
+    };
+  }
+
+  /**
+   * [R176 F8续] Get turnover cost summary as chart-friendly JSON for UI display.
+   * Implemented as standalone function to support esbuild/vitest transform.
+   */
+  getTurnoverCostJSON(currentWeights, targetWeights, market, marketValue) {
+    const mkt = market || 'US';
+    const mv = marketValue != null ? marketValue : 100000;
+    const cw = currentWeights || [];
+    const tw = targetWeights || [];
+
+    const wm = new Map<string, number>();
+    for (const w of cw) wm.set(w.factorId, w.weight);
+    for (const w of tw) {
+      const cur = wm.get(w.factorId) || 0;
+      wm.set(w.factorId, w.weight - cur); // store delta
+    }
+
+    const details: any[] = [];
+
+    let totalAbsDelta = 0;
+    for (const t of tw) {
+      const cur = cw.find((c: any) => c.factorId === t.factorId)?.weight ?? 0;
+      const delta = Math.abs(t.weight - cur);
+      totalAbsDelta += delta;
+
+      const factorProfile = this.profiles.get(t.factorId);
+      const annualTurnover = factorProfile?.typicalAnnualTurnover ?? 1.0;
+      const mktDef = MARKET_DEFAULTS[mkt] || MARKET_DEFAULTS.US;
+      const costBps = delta * annualTurnover * (mktDef.commissionRate + mktDef.spreadBps / 10000 + mktDef.impactFactor * 0.01) * 10000;
+
+      details.push({
+        factorId: t.factorId,
+        currentWeight: Math.round(cur * 10000) / 100,
+        targetWeight: Math.round(t.weight * 10000) / 100,
+        changePct: Math.round(delta * 10000) / 100,
+        annualTurnover: Math.round(annualTurnover * 100) / 100,
+        costPerFactorBps: Math.round(costBps * 100) / 100,
+      });
+    }
+
+    const turnoverPct = totalAbsDelta / 2;
+    const mktDef = MARKET_DEFAULTS[mkt] || MARKET_DEFAULTS.US;
+    const costBps = turnoverPct * (mktDef.commissionRate + mktDef.spreadBps / 10000 + mktDef.impactFactor * 0.01) * 10000;
+    const costUSD = mv * (costBps / 10000);
+    const feasible = turnoverPct <= 0.50 && costUSD <= mv * 0.01;
+
+    let recommendation: string;
+    if (!feasible) {
+      recommendation = turnoverPct > 0.50
+        ? `换手率 ${(turnoverPct * 100).toFixed(1)}% 过高, 建议分批执行或降低调整幅度`
+        : `预计成本 $${costUSD.toFixed(1)} 超出 1%, 建议优化组合`;
+    } else {
+      recommendation = `换手率 ${(turnoverPct * 100).toFixed(1)}%, 预计成本 $${costUSD.toFixed(2)}, 建议一次性执行`;
+    }
+
+    return {
+      summary: {
+        totalTurnoverPct: Math.round(turnoverPct * 10000) / 100,
+        estimatedCostBps: Math.round(costBps * 100) / 100,
+        estimatedCostUSD: Math.round(costUSD * 100) / 100,
+        feasible,
+        recommendation,
+      },
+      details,
+      market: mkt,
+      marketValue: mv,
+      timestamp: Date.now(),
     };
   }
 }

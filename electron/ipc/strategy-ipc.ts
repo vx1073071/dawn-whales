@@ -688,6 +688,84 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
       return { success: false, error: err?.message || 'Unknown error' };
     }
   });
+
+  // ── R176 F5续: Factor Optimizer summary ────────────────────────────────
+  ipcMain.handle('factor:optimizer-summary', async (_e, raw: unknown) => {
+    try {
+      const { getFactorOptimizer } = require('./engine/factors/factor-optimizer');
+      const opt = getFactorOptimizer();
+      const result = raw ? (raw as any).lastResult : undefined;
+      return { success: true, ...opt.getOptimizerSummary(result) };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Unknown error' };
+    }
+  });
+
+  // ── R176 F5续: Factor Optimizer Pareto frontier ────────────────────────
+  ipcMain.handle('factor:pareto-frontier', async (_e, raw: unknown) => {
+    try {
+      const { getFactorOptimizer } = require('./engine/factors/factor-optimizer');
+      const opt = getFactorOptimizer();
+      const frontier = raw ? (raw as any).frontier : undefined;
+      return { success: true, ...opt.getParetoFrontierJSON(frontier) };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Unknown error' };
+    }
+  });
+
+  // ── R176 F7续: GRS statistic UI output ─────────────────────────────────
+  ipcMain.handle('factor:grs', async (_e, raw: unknown) => {
+    try {
+      const { createFactorResearchEngine } = require('./engine/factors/factor-research-engine');
+      const engine = createFactorResearchEngine();
+      const params = (raw ?? {}) as any;
+      const assets = params.assetReturns ?? [];
+      const factors = params.factorReturns ?? [];
+      return { success: true, ...engine.getGRSSummary(assets, factors) };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Unknown error' };
+    }
+  });
+
+  // ── R176 F7续: rolling IC chart JSON ───────────────────────────────────
+  ipcMain.handle('factor:rolling-ic', async (_e, raw: unknown) => {
+    try {
+      const { createFactorResearchEngine } = require('./engine/factors/factor-research-engine');
+      const engine = createFactorResearchEngine();
+      const params = (raw ?? {}) as any;
+      return {
+        success: true,
+        ...engine.getRollingICJSON(
+          params.factorValues ?? [],
+          params.forwardReturns ?? [],
+          params.windowSize ?? 60,
+          params.factorName ?? 'Unnamed',
+        ),
+      };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Unknown error' };
+    }
+  });
+
+  // ── R176 F8续: turnover cost JSON for UI ───────────────────────────────
+  ipcMain.handle('factor:turnover-cost', async (_e, raw: unknown) => {
+    try {
+      const { getTurnoverCostEngine } = require('./engine/analysis/turnover-cost-model');
+      const engine = getTurnoverCostEngine();
+      const params = (raw ?? {}) as any;
+      return {
+        success: true,
+        ...engine.getTurnoverCostJSON(
+          params.currentWeights ?? [],
+          params.targetWeights ?? [],
+          params.market ?? 'US',
+          params.marketValue ?? 100000,
+        ),
+      };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Unknown error' };
+    }
+  });
 }
 
 // ── System Tray ────────────────────────────────────────────────────────────

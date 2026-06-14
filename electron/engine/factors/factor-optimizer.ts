@@ -525,6 +525,104 @@ export class FactorOptimizer {
       },
     };
   }
+
+  /**
+   * [R176 F5续] Get optimizer summary for UI display.
+   * Returns key metrics from the last optimization run.
+   */
+  getOptimizerSummary(lastResult?: OptimizationResult): {
+    totalScans: number;
+    validCandidates: number;
+    durationMs: number;
+    bestScore: number;
+    bestSharpe: number;
+    bestReturn: number;
+    bestDrawdown: number;
+    convergenceRate: number; // valid / total
+    top3Combos: Array<{ factors: string[]; weights: number[]; sharpe: number; returnPct: number }>;
+  } {
+    const s = lastResult?.summary;
+    const totalScans = s?.totalScans ?? 5000;
+    const valid = s?.validCandidates ?? totalScans;
+    const top3 = (lastResult?.topCandidates ?? []).slice(0, 3).map(c => ({
+      factors: c.weights.map(w => w.factorId),
+      weights: c.weights.map(w => Math.round(w.weight * 10000) / 100),
+      sharpe: Math.round(c.metrics.expectedSharpe * 100) / 100,
+      returnPct: Math.round(c.metrics.expectedReturn * 100) / 100,
+    }));
+
+    return {
+      totalScans,
+      validCandidates: valid,
+      durationMs: s?.durationMs ?? 0,
+      bestScore: s?.bestScore != null ? Math.round(s.bestScore * 100) / 100 : 0,
+      bestSharpe: s?.bestSharpe != null ? Math.round(s.bestSharpe * 100) / 100 : 0,
+      bestReturn: s?.bestReturn != null ? Math.round(s.bestReturn * 100) / 100 : 0,
+      bestDrawdown: s?.bestDrawdown != null ? Math.round(s.bestDrawdown * 100) / 100 : 0,
+      convergenceRate: totalScans > 0 ? Math.round((valid / totalScans) * 10000) / 100 : 0,
+      top3Combos: top3,
+    };
+  }
+
+  /**
+   * [R176 F5续] Get Pareto frontier as chart-friendly JSON.
+   * Returns datasets suitable for scatter/line charts (Sharpe vs Return).
+   */
+  getParetoFrontierJSON(frontier?: ParetoFrontier): {
+    labels: string[]; // e.g. ["S1","S2",...]
+    datasets: Array<{
+      label: string;
+      data: Array<{ x: number; y: number }>; // x=sharpe, y=return
+      pointRadius: number;
+      borderColor: string;
+      backgroundColor: string;
+    }>;
+    efficientPoints: Array<{ label: string; sharpe: number; returnPct: number; dominance: number }>;
+    summary: string;
+  } {
+    const points = frontier?.points ?? [];
+    const effPoints = frontier?.efficientFrontier;
+    const labels = points.map((_, i) => `S${i + 1}`);
+
+    const allPoints = points.map(p => ({
+      x: Math.round(p.sharpe * 100) / 100,
+      y: Math.round(p.returnPct * 100) / 100,
+    }));
+
+    const efficientList: Array<{ label: string; sharpe: number; returnPct: number; dominance: number }> = [];
+    if (effPoints) {
+      for (const [key, pt] of Object.entries(effPoints)) {
+        efficientList.push({
+          label: key,
+          sharpe: Math.round(pt.sharpe * 100) / 100,
+          returnPct: Math.round(pt.returnPct * 100) / 100,
+          dominance: pt.dominance,
+        });
+      }
+    }
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: 'All candidates',
+          data: allPoints,
+          pointRadius: 2,
+          borderColor: '#8b8b9e',
+          backgroundColor: '#8b8b9e',
+        },
+        {
+          label: 'Efficient frontier',
+          data: efficientList.map(e => ({ x: e.sharpe, y: e.returnPct })),
+          pointRadius: 5,
+          borderColor: '#22c55e',
+          backgroundColor: '#22c55e',
+        },
+      ],
+      efficientPoints: efficientList,
+      summary: frontier?.summary ?? 'No Pareto frontier available',
+    };
+  }
 }
 
 // ── Factory ─────────────────────────────────────────────────────────────────

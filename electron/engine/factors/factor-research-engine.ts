@@ -611,6 +611,86 @@ export class FactorResearchEngine {
       observations: 0,
     };
   }
+
+  /**
+   * [R176 F7续] Get GRS statistic summary for UI display.
+   * Exposes the GRS test result in a human-readable + chart-ready format.
+   */
+  getGRSSummary(assetReturns: number[][], factorReturns: number[][]): {
+    grs: number;
+    pValue: number;
+    df1: number;
+    df2: number;
+    isRejected: boolean;
+    isSignificant: boolean;
+    interpretation: string;
+    detail: string;
+  } {
+    const result = this.grsStatistic(assetReturns, factorReturns);
+    const df = result.degreesOfFreedom ?? { numerator: 0, denominator: 0 };
+    return {
+      grs: Math.round(result.grsStatistic * 10000) / 10000,
+      pValue: Math.round(result.pValue * 10000) / 10000,
+      df1: df.numerator,
+      df2: df.denominator,
+      isRejected: result.significant,
+      isSignificant: result.pValue < 0.05,
+      interpretation: result.interpretation,
+      detail: result.significant
+        ? `GRS=${result.grsStatistic.toFixed(4)}, p=${result.pValue.toFixed(4)} — L factors do NOT fully explain asset returns`
+        : `GRS=${result.grsStatistic.toFixed(4)}, p=${result.pValue.toFixed(4)} — L factors adequately capture asset returns`,
+    };
+  }
+
+  /**
+   * [R176 F7续] Get rolling IC as chart-friendly JSON.
+   * Returns date-indexed IC series for line chart rendering.
+   */
+  getRollingICJSON(
+    factorValues: number[],
+    forwardReturns: number[],
+    windowSize: number = 60,
+    factorName: string = 'Unnamed',
+  ): {
+    factorName: string;
+    windowSize: number;
+    observations: number;
+    series: Array<{ index: number; ic: number }>;
+    summary: {
+      meanIC: number;
+      stdIC: number;
+      minIC: number;
+      maxIC: number;
+      positiveRatio: number; // fraction where IC > 0
+    };
+  } {
+    const icSeries = this._rollingIC(factorValues, forwardReturns, windowSize);
+    const series = icSeries.map((ic, i) => ({
+      index: i + 1,
+      ic: Math.round(ic * 10000) / 10000,
+    }));
+
+    const n = icSeries.length;
+    const meanIC = n > 0 ? icSeries.reduce((a, b) => a + b, 0) / n : 0;
+    const variance = n > 1
+      ? icSeries.reduce((s, v) => s + (v - meanIC) ** 2, 0) / (n - 1)
+      : 0;
+    const positiveCount = icSeries.filter(v => v > 0).length;
+
+    return {
+      factorName,
+      windowSize,
+      observations: n,
+      series,
+      summary: {
+        meanIC: Math.round(meanIC * 10000) / 10000,
+        stdIC: Math.round(Math.sqrt(variance) * 10000) / 10000,
+        minIC: n > 0 ? Math.round(Math.min(...icSeries) * 10000) / 10000 : 0,
+        maxIC: n > 0 ? Math.round(Math.max(...icSeries) * 10000) / 10000 : 0,
+        positiveRatio: n > 0 ? Math.round((positiveCount / n) * 10000) / 10000 : 0,
+      },
+    };
+  }
 }
 
 // ── Factory ──────────────────────────────────────────────────────────────
