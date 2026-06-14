@@ -1,8 +1,6 @@
-// @ts-nocheck
-// R126-Q01: nocheck cleared — cleared
 import i18n from '../../i18n/index';
 // ── DAWN WHALES — Strategy Correlation Panel (Q2 UI) ───────────────────────
-// strategy/policy + 
+// R163: Added loading prop + empty state handling
 
 import { useTranslation } from 'react-i18next';
 
@@ -15,21 +13,37 @@ interface CorrelationResult {
   maxCorrelation: number;
 }
 
-export default function CorrelationPanel({ result }: {result?: unknown;}) {
+interface Props {
+  result?: unknown;
+  loading?: boolean;
+}
+
+export default function CorrelationPanel({ result, loading }: Props) {
   const { t } = useTranslation();
 
-  if (!result?.success) {
+  // ── Loading state ──
+  if (loading) {
+    return (
+      <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
+        <h3 className="text-white font-semibold text-sm mb-2">{t('strategyCorrelation')}</h3>
+        <div className="flex items-center justify-center py-8">
+          <div className="animate-spin rounded-full h-6 w-6 border-2 border-[#C9A046] border-t-transparent" />
+        </div>
+      </div>
+    );
+  }
+
+  // ── Error / empty state ──
+  if (!result || !(result as Record<string, unknown>)?.success) {
     return (
       <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-5">
         <h3 className="text-white font-semibold text-sm mb-2">{t('strategyCorrelation')}</h3>
         <div className="text-gray-500 text-sm text-center py-6">{i18n.t("CorrelationPanel.r92_38be")}
-
         </div>
       </div>);
-
   }
 
-  const data: CorrelationResult = result;
+  const data = result as CorrelationResult;
   const score = data.diversificationScore;
   const scoreColor = score > 0.5 ? 'text-emerald-400' : score > 0.3 ? 'text-yellow-400' : 'text-red-400';
   const scoreLabel = score > 0.5 ? t('highlyDiversified') : score > 0.3 ? t('moderatelyDiversified') : t('highlyConcentrated');

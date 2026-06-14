@@ -35,6 +35,9 @@ import { QuoteHealthMonitor } from './services/quote-health';
 // R157: Watchlist import/export API
 import watchlistRoutes from './routes/watchlist';
 
+// R163: Factor spot-check + comparison API
+import factorApiRoutes from './routes/factor-api';
+
 // R162: Backtest snapshot + comparison API
 import backtestRoutes from './routes/backtest';
 
@@ -193,6 +196,9 @@ app.use('/api/market', brokerConfigRoutes);
 
 // ── R157: Watchlist Import/Export routes ────────────────────────────────
 app.use('/api/watchlist', watchlistRoutes);
+
+// ── R163: Factor Spot-Check + Comparison routes ────────────────────────────
+app.use('/api/factor', factorApiRoutes);
 
 // ── R162: Backtest Snapshot + Comparison routes ───────────────────────────
 app.use('/api/backtest/snapshots', backtestRoutes);

@@ -4,6 +4,7 @@ import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { useTranslation } from "react-i18next";
 import i18n from '../../i18n';
+import { getPerformance } from '@/lib/bridge-api';
 
 interface AttributionData {
   strategyName: string;
@@ -11,79 +12,60 @@ interface AttributionData {
   totalReturn: number;
   benchmarkReturn: number;
   excessReturn: number;
-  // Brinson attribution
   allocationEffect: number;
   selectionEffect: number;
   interactionEffect: number;
-  // Factor exposures
   factorExposures: {factor: string;exposure: number;contribution: number;}[];
-  // Time series
   monthlyAttribution: {month: string;excessReturn: number;allocation: number;selection: number;interaction: number;}[];
-  // Sector attribution
   sectorAttribution: {sector: string;portfolioWeight: number;benchmarkWeight: number;portfolioReturn: number;benchmarkReturn: number;excessReturn: number;}[];
 }
-
-const MOCK_DATA: AttributionData = {
-  strategyName: i18n.t('PerformanceAttributionPage.k1'),
-  strategyId: 'strategy-001',
-  totalReturn: 28.5,
-  benchmarkReturn: 15.2,
-  excessReturn: 13.3,
-  allocationEffect: 3.2,
-  selectionEffect: 8.5,
-  interactionEffect: 1.6,
-  factorExposures: [
-  { factor: i18n.t('PerformanceAttributionPage.k2'), exposure: 0.65, contribution: 5.2 },
-  { factor: i18n.t('PerformanceAttributionPage.k3'), exposure: 0.15, contribution: 0.8 },
-  { factor: i18n.t('PerformanceAttributionPage.k4'), exposure: 0.25, contribution: 1.5 },
-  { factor: i18n.t('PerformanceAttributionPage.k5'), exposure: -0.10, contribution: -0.5 },
-  { factor: i18n.t('PerformanceAttributionPage.k6'), exposure: 0.35, contribution: 2.8 },
-  { factor: i18n.t('PerformanceAttributionPage.k7'), exposure: 0.45, contribution: 3.5 }],
-
-  monthlyAttribution: [
-  { month: i18n.t('PerformanceAttributionPage.k8'), excessReturn: 2.1, allocation: 0.5, selection: 1.4, interaction: 0.2 },
-  { month: i18n.t('PerformanceAttributionPage.k9'), excessReturn: -1.5, allocation: -0.3, selection: -0.9, interaction: -0.3 },
-  { month: i18n.t('PerformanceAttributionPage.k10'), excessReturn: 3.2, allocation: 0.8, selection: 2.0, interaction: 0.4 },
-  { month: i18n.t('PerformanceAttributionPage.k11'), excessReturn: 1.8, allocation: 0.4, selection: 1.1, interaction: 0.3 },
-  { month: i18n.t('PerformanceAttributionPage.k12'), excessReturn: -0.5, allocation: -0.1, selection: -0.3, interaction: -0.1 },
-  { month: i18n.t('PerformanceAttributionPage.k13'), excessReturn: 2.8, allocation: 0.6, selection: 1.8, interaction: 0.4 },
-  { month: i18n.t('PerformanceAttributionPage.k14'), excessReturn: 1.2, allocation: 0.3, selection: 0.7, interaction: 0.2 },
-  { month: i18n.t('PerformanceAttributionPage.k15'), excessReturn: 3.5, allocation: 0.9, selection: 2.2, interaction: 0.4 },
-  { month: i18n.t('PerformanceAttributionPage.k16'), excessReturn: -2.1, allocation: -0.5, selection: -1.3, interaction: -0.3 },
-  { month: i18n.t('PerformanceAttributionPage.k17'), excessReturn: 4.2, allocation: 1.0, selection: 2.6, interaction: 0.6 },
-  { month: i18n.t('PerformanceAttributionPage.k18'), excessReturn: 1.5, allocation: 0.4, selection: 0.9, interaction: 0.2 },
-  { month: i18n.t('PerformanceAttributionPage.k19'), excessReturn: 2.8, allocation: 0.7, selection: 1.7, interaction: 0.4 }],
-
-  sectorAttribution: [
-  { sector: i18n.t('PerformanceAttributionPage.k20'), portfolioWeight: 35, benchmarkWeight: 28, portfolioReturn: 32.5, benchmarkReturn: 25.8, excessReturn: 6.7 },
-  { sector: i18n.t('PerformanceAttributionPage.k21'), portfolioWeight: 15, benchmarkWeight: 18, portfolioReturn: 12.3, benchmarkReturn: 14.5, excessReturn: -2.2 },
-  { sector: i18n.t('PerformanceAttributionPage.k22'), portfolioWeight: 20, benchmarkWeight: 22, portfolioReturn: 18.5, benchmarkReturn: 16.2, excessReturn: 2.3 },
-  { sector: i18n.t('PerformanceAttributionPage.k23'), portfolioWeight: 12, benchmarkWeight: 10, portfolioReturn: 15.8, benchmarkReturn: 12.5, excessReturn: 3.3 },
-  { sector: i18n.t('PerformanceAttributionPage.k24'), portfolioWeight: 8, benchmarkWeight: 12, portfolioReturn: 8.5, benchmarkReturn: 10.2, excessReturn: -1.7 },
-  { sector: i18n.t('PerformanceAttributionPage.k25'), portfolioWeight: 10, benchmarkWeight: 10, portfolioReturn: 16.2, benchmarkReturn: 14.8, excessReturn: 1.4 }]
-
-};
 
 export default function PerformanceAttributionPage() {
   const { t } = useTranslation();
 
-  const [data] = useState<AttributionData>(MOCK_DATA);
-  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<AttributionData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   async function load() {
     setLoading(true);
+    setError(null);
     try {
+      const res = await getPerformance('default');
+      if (res?.success && res.attribution) {
+        setData({
+          strategyName: res.attribution.strategyName || '当前策略',
+          strategyId: res.attribution.strategyId || 'default',
+          totalReturn: res.attribution.totalReturn ?? 0,
+          benchmarkReturn: res.attribution.benchmarkReturn ?? 0,
+          excessReturn: (res.attribution.totalReturn ?? 0) - (res.attribution.benchmarkReturn ?? 0),
+          allocationEffect: res.attribution.allocationEffect ?? 0,
+          selectionEffect: res.attribution.selectionEffect ?? 0,
+          interactionEffect: res.attribution.interactionEffect ?? 0,
+          factorExposures: (res.attribution.factorExposures || []).map((f: Record<string, unknown>) => ({
+            factor: String(f.factor || ''),
+            exposure: Number(f.exposure || 0),
+            contribution: Number(f.contribution || 0),
+          })),
+          monthlyAttribution: res.attribution.monthlyAttribution || [],
+          sectorAttribution: res.attribution.sectorAttribution || [],
+        });
+      } else {
+        setError('未获取到归因数据');
+      }
+    } catch (e) {
+      console.error('[PerformanceAttributionPage]', e);
+      void EngineError;
+      setError(String(e));
+    }
+    setLoading(false);
+  }
 
-
-      // const res = await getPerformanceAttribution();
-      // if (res?.success) setData(res.data);
-    } catch (e) {console.error('[Error:PerformanceAttributionPage]', e);}void EngineError; // [SYSTEM] structured error tracking
-    setLoading(false);}
-
-  useEffect(() => {load();}, []);
+  useEffect(() => { load(); }, []);
 
   // Brinson stacked bar chart
   useEffect(() => {
+    if (!data) return;
     const chartDom = document.getElementById('brinson-chart');
     if (!chartDom) return;
     const chart = echarts.init(chartDom, undefined, { renderer: 'canvas' });
@@ -107,6 +89,7 @@ export default function PerformanceAttributionPage() {
 
   // Factor exposure radar
   useEffect(() => {
+    if (!data) return;
     const chartDom = document.getElementById('factor-radar');
     if (!chartDom) return;
     const chart = echarts.init(chartDom, undefined, { renderer: 'canvas' });
@@ -137,6 +120,19 @@ export default function PerformanceAttributionPage() {
   }, [data]);
 
   if (loading) return <LoadingSpinner fullscreen text={i18n.t('PerformanceAttributionPage.k33')} />;
+  if (error) return (
+    <div className="p-6 min-h-full bg-deep flex flex-col items-center justify-center">
+      <div className="text-red-400 text-lg font-semibold mb-2">⚠️ {t('common.error')}</div>
+      <p className="text-gray-500 text-sm mb-4">{error}</p>
+      <button onClick={load} className="px-4 py-2 bg-[#C9A046] text-black rounded-lg text-sm">重试</button>
+    </div>
+  );
+  if (!data) return (
+    <div className="p-6 min-h-full bg-deep flex flex-col items-center justify-center">
+      <div className="text-gray-400 text-lg font-semibold mb-2">📊 暂无归因数据</div>
+      <p className="text-gray-600 text-sm">请运行策略获取绩效归因分析</p>
+    </div>
+  );
 
   return (
     <div className="p-6 space-y-6 bg-deep min-h-full">

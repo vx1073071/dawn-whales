@@ -131,6 +131,25 @@ const FactorWeightSlider: React.FC<{
   const [weights, setWeights] = useState<Record<FactorId, number>>(saved.weights);
   const [preset, setPreset] = useState<WeightPreset>(saved.preset);
   const [dragging, setDragging] = useState<FactorId | null>(null);
+  const [recBanner, setRecBanner] = useState<{ templateId: string; factors: string[] } | null>(null);
+
+  // R163: Check for template-recommended factors
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('dw-factor-recommendations');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed.templateId && parsed.factors && Array.isArray(parsed.factors)) {
+          setRecBanner({ templateId: parsed.templateId, factors: parsed.factors });
+        }
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  const dismissRecBanner = () => {
+    localStorage.removeItem('dw-factor-recommendations');
+    setRecBanner(null);
+  };
   const dragRef = useRef<{ startX: number; startVal: number; factor: FactorId } | null>(null);
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<echarts.ECharts | null>(null);
@@ -235,6 +254,31 @@ const FactorWeightSlider: React.FC<{
   // ── Render ────────────────────────────────────────────────────────
   return (
     <div className="space-y-5">
+      {/* R163: Template recommendation banner */}
+      {recBanner && (
+        <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-3">
+          <div className="flex items-start justify-between">
+            <div className="flex items-start gap-2">
+              <span className="text-emerald-400 text-sm mt-0.5">🧬</span>
+              <div>
+                <h4 className="text-xs font-semibold text-emerald-300">
+                  {t('FactorWeightSlider.recBannerTitle', '模板推荐权重已加载')}
+                </h4>
+                <p className="text-[10px] text-emerald-200/60 mt-0.5">
+                  {t('FactorWeightSlider.recBannerBody', '以下因子组合基于所选策略模板自动推荐。你可以手动调整。')}
+                </p>
+                <div className="flex flex-wrap gap-1 mt-1.5">
+                  {recBanner.factors.map((f) => (
+                    <code key={f} className="text-[10px] bg-emerald-500/10 text-emerald-300 px-1.5 py-0.5 rounded">{f}</code>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <button onClick={dismissRecBanner} className="text-gray-500 hover:text-gray-300 text-xs">✕</button>
+          </div>
+        </div>
+      )}
+
       {/* Preset Buttons */}
       <div className="flex flex-wrap gap-2">
         {PRESETS.map((p) => (

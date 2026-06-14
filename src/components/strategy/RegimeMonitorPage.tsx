@@ -68,6 +68,7 @@ export default function RegimeMonitorPage() {
   const [data, setData] = useState<RegimeData | null>(null);
   const [, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isFallback, setIsFallback] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -78,6 +79,7 @@ export default function RegimeMonitorPage() {
         const result = await getMarketRegime();
         if (cancelled) return;
         if (result?.success && result.regime) {
+          setIsFallback(false);
           setData({
             current: result.regime.label || result.regime.current || 'unknown',
             confidence: result.regime.confidence || 0,
@@ -90,12 +92,14 @@ export default function RegimeMonitorPage() {
           });
         } else {
           // Fallback to mock data when IPC unavailable
+          setIsFallback(true);
           setData(MOCK_REGIME);
         }
       } catch {
         void EngineError; // [SYSTEM] structured error tracking
         if (!cancelled) {
           // IPC failed — use mock as graceful degradation
+          setIsFallback(true);
           setData(MOCK_REGIME);
         }
       } finally {
@@ -122,6 +126,13 @@ export default function RegimeMonitorPage() {
           <p className="text-gray-400 text-sm">{t('regimeMonitor.subtitle')}</p>
         </div>
       </div>
+
+      {/* R163: Warning banner when on fallback mock data */}
+      {isFallback && (
+        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-3">
+          <span className="text-yellow-400 text-xs">⚠️ 此数据基于模拟评估，实时市场状态暂不可用</span>
+        </div>
+      )}
 
       {/* Current Regime Card */}
       <div className={`rounded-xl border p-6 ${cfg.bg}`}>

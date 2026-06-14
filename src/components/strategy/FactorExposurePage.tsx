@@ -1,17 +1,17 @@
 /**
- * ── R162 ML: FactorExposurePage — Human-Readable Factor Cards + Progressive Disclosure
+ * ── R162 ML + R163 PM: FactorExposurePage — Human-Readable Factor Cards + Real IPC Data
  * P0-H1+P0-H3: Chinese factor names, color bars, one-line summaries,
  * click-to-expand timeline, click-to-reveal comparison.
  * Raw p-Values hidden behind a foldable toggle.
  *
- * Data flow: electron FactorExposureAnalyzer → IPC → this component.
- * Fallback: MOCK_DATA for demo/development.
+ * R163 P0-U1: Removed MOCK_DATA, now fetches real data via IPC bridge (getPerformance).
  */
 
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as echarts from 'echarts';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import { getPerformance } from '@/lib/bridge-api';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -86,56 +86,76 @@ const FACTOR_DIRECTIONS: Record<string, { direction: 'higherBetter' | 'lowerBett
   QUAL: { direction: 'higherBetter', nameCN: '品质因子', oneLine: '偏向高ROE/高利润率，质优公司长期更稳健' },
 };
 
-// ── MOCK ───────────────────────────────────────────────────────────────────
-
-const MOCK_DATA: FactorExposureResult = {
-  strategyName: '示例策略 (MACD双均线)',
-  rSquared: 0.72,
-  residualPnL: 3250,
-  totalPnL: 15280,
-  explainedPnL: 12030,
-  factors: [
-    { factor: 'MKT',  name: 'Market',  nameCN: '市场 Beta', oneLine: '对大盘的敏感度', exposure: 0.85, contribution: 6800,  tStat: 4.52, pValue: 0.0001, significance: '***' },
-    { factor: 'SMB',  name: 'Size',    nameCN: '小盘因子',   oneLine: '偏向小盘股的程度', exposure: 0.35, contribution: 1200,  tStat: 2.18, pValue: 0.032,  significance: '*' },
-    { factor: 'HML',  name: 'Value',   nameCN: '价值因子',   oneLine: '偏向低估值股票', exposure: -0.15, contribution: -450,  tStat: -1.05, pValue: 0.298, significance: 'ns' },
-    { factor: 'RMW',  name: 'Profit',  nameCN: '盈利因子',   oneLine: '偏向高利润率公司', exposure: 0.22, contribution: 850,   tStat: 1.85, pValue: 0.068,  significance: '*' },
-    { factor: 'CMA',  name: 'Invest',  nameCN: '投资因子',   oneLine: '偏向保守投资公司', exposure: 0.08, contribution: 180,   tStat: 0.62, pValue: 0.538, significance: 'ns' },
-    { factor: 'MOM',  name: 'Momentum',nameCN: '动量因子',   oneLine: '偏向近期强势股', exposure: 0.65, contribution: 5200,  tStat: 5.12, pValue: 0.00001, significance: '***' },
-    { factor: 'LOWVOL',name:'Low Vol', nameCN: '低波因子',   oneLine: '偏向低波动股票', exposure: -0.25, contribution: -680,  tStat: -1.42, pValue: 0.158, significance: 'ns' },
-    { factor: 'QUAL', name: 'Quality', nameCN: '品质因子',   oneLine: '偏向高ROE公司', exposure: 0.18, contribution: 930,   tStat: 1.68, pValue: 0.096,  significance: '*' },
-  ],
-  monthlyResiduals: [
-    { month: '1月', residual: 320 }, { month: '2月', residual: -150 }, { month: '3月', residual: 480 },
-    { month: '4月', residual: 210 }, { month: '5月', residual: -80 }, { month: '6月', residual: 350 },
-    { month: '7月', residual: 120 }, { month: '8月', residual: 290 }, { month: '9月', residual: -210 },
-    { month: '10月', residual: 420 }, { month: '11月', residual: 180 }, { month: '12月', residual: 320 },
-  ],
-  factorCorrelation: [
-    { factor1: 'MKT', factor2: 'MOM', correlation: 0.65 },
-    { factor1: 'MKT', factor2: 'SMB', correlation: 0.35 },
-    { factor1: 'HML', factor2: 'RMW', correlation: 0.42 },
-    { factor1: 'LOWVOL', factor2: 'QUAL', correlation: 0.28 },
-    { factor1: 'MOM', factor2: 'QUAL', correlation: 0.38 },
-  ],
-  isSimulated: true,
-  simulatedFactors: ['SMB', 'HML', 'RMW', 'CMA', 'LOWVOL', 'QUAL'],
-};
-
 // ── Component ──────────────────────────────────────────────────────────────
 
 export default function FactorExposurePage() {
   const { t } = useTranslation(); void t;
-  const [data] = useState<FactorExposureResult>(MOCK_DATA);
-  const [loading] = useState(false); void loading;
+  const [data, setData] = useState<FactorExposureResult | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showTimeline, setShowTimeline] = useState(false);
   const [showCompare, setShowCompare] = useState(false);
   const [showRawStats, setShowRawStats] = useState(false);
   const [expandedFactor, setExpandedFactor] = useState<string | null>(null);
 
-  // ══ Charts ════════════════════════════════════════════════════════════
+  // ── Fetch factor exposure from electron engine ──────────────────────
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchData() {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await getPerformance('default');
+        if (cancelled) return;
+        if (result?.success && result.attribution) {
+          const attr = result.attribution;
+          setData({
+            strategyName: attr.strategyName || result.strategyName || '当前策略',
+            rSquared: attr.rSquared ?? 0,
+            residualPnL: attr.residualPnL ?? 0,
+            totalPnL: attr.totalPnL ?? 0,
+            explainedPnL: (attr.totalPnL ?? 0) - (attr.residualPnL ?? 0),
+            factors: (attr.factorExposures || attr.loadings ? Object.entries(attr.loadings || {}) : []).map(
+              ([key, val]: [string, unknown]) => {
+                const meta = FACTOR_DIRECTIONS[key];
+                return {
+                  factor: key,
+                  name: meta?.nameCN || key,
+                  nameCN: meta?.nameCN,
+                  oneLine: meta?.oneLine,
+                  exposure: typeof val === 'number' ? val : 0,
+                  contribution: attr.contributions?.find((c: Record<string, unknown>) => c.factor === key)?.contributionAbs || 0,
+                  tStat: 0,
+                  pValue: 0,
+                  significance: 'ns' as const,
+                };
+              },
+            ) || [],
+            monthlyResiduals: attr.monthlyResiduals || [],
+            factorCorrelation: attr.factorCorrelation || [],
+            isSimulated: attr.isSimulated ?? true,
+            simulatedFactors: attr.simulatedFactors || [],
+          });
+        } else {
+          setError('无法获取因子暴露数据');
+        }
+      } catch (err: unknown) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : '数据加载失败');
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    fetchData();
+    return () => { cancelled = true; };
+  }, []);
+
+  // ══ Charts (only when data is available) ════════════════════════════════════
 
   // Factor radar
   useEffect(() => {
+    if (!data) return;
     const el = document.getElementById('factor-radar-chart');
     if (!el) return;
     const c = echarts.init(el, undefined, { renderer: 'canvas' });
@@ -162,6 +182,7 @@ export default function FactorExposurePage() {
 
   // Contribution bar
   useEffect(() => {
+    if (!data) return;
     const el = document.getElementById('factor-contribution-chart');
     if (!el) return;
     const c = echarts.init(el, undefined, { renderer: 'canvas' });
@@ -178,7 +199,7 @@ export default function FactorExposurePage() {
 
   // Residual chart (only when expanded)
   useEffect(() => {
-    if (!showTimeline) return;
+    if (!data || !showTimeline) return;
     const el = document.getElementById('residual-chart');
     if (!el) return;
     const c = echarts.init(el, undefined, { renderer: 'canvas' });
@@ -196,6 +217,21 @@ export default function FactorExposurePage() {
   // ── Rendering ────────────────────────────────────────────────────────────
 
   if (loading) return <LoadingSpinner fullscreen text="加载因子暴露分析..." />;
+  if (error) return (
+    <div className="p-6 min-h-full bg-deep flex flex-col items-center justify-center">
+      <div className="text-red-400 text-lg font-semibold mb-2">⚠️ 数据加载失败</div>
+      <p className="text-gray-500 text-sm mb-4">{error}</p>
+      <button onClick={() => window.location.reload()} className="px-4 py-2 bg-[#C9A046] text-black rounded-lg text-sm">
+        刷新页面
+      </button>
+    </div>
+  );
+  if (!data || data.factors.length === 0) return (
+    <div className="p-6 min-h-full bg-deep flex flex-col items-center justify-center">
+      <div className="text-gray-400 text-lg font-semibold mb-2">📊 暂无因子暴露数据</div>
+      <p className="text-gray-600 text-sm">请先运行策略或确保引擎已连接</p>
+    </div>
+  );
 
   // Build a one-line summary
   const dominantFactor = [...data.factors].sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution))[0];

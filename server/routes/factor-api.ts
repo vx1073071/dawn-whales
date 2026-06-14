@@ -1,425 +1,439 @@
 /**
- * DAWN WHALES R163 P1-X3 — Factor Spot-Check + Compare API
+ * DAWN WHALES R163 P1-X3 — Factor Spot-Check + Comparison API
  *
  * Endpoints:
- *   GET  /api/factor/spot-check?symbol=HK:00700    — Full factor scores + drag factors
- *   GET  /api/factor/compare?a=HK:00700&b=HK:09988 — Side-by-side diff
- *   POST /api/factor/batch-spot-check               — Batch spot-check (body: {symbols: [...]})
+ *   GET /api/factor/spot-check?symbol=HK:00700&market=HK — full factor scoring + drag analysis
+ *   GET /api/factor/compare?a=US:AAPL&b=US:MSFT — side-by-side factor comparison
+ *   GET /api/factor/scores?symbols=US:AAPL,US:GOOGL — batch scoring
  *
- * ≥200L
+ * >=200L
  */
 
 import { Router, Request, Response } from 'express';
-import {
-  getDawnFactorFramework,
-  type UnifiedFactorScore,
-  type FactorScoreDetail,
-  type Market,
-  type InstrumentType,
+import { getDawnFactorFramework } from '../../electron/engine/factors/dawn-factor-framework';
+import type {
+  UnifiedFactorScore,
+  DragAnalysis,
+  FactorScoreDetail,
+  FactorRating,
 } from '../../electron/engine/factors/dawn-factor-framework';
-import { getFactorCompatibilityEngine } from '../../electron/engine/factors/factor-compatibility-engine';
-import log from 'electron-log';
 
 const router = Router();
 
-// ── Helpers ─────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════
+// Types
+// ═══════════════════════════════════════════════════════════
 
-/**
- * Parse "HK:00700" → { market: "HKEX", symbol: "00700" }
- */
-function parseQualifiedSymbol(qualified: string): { market: Market; symbol: string; instrumentType: InstrumentType } | null {
-  const parts = qualified.split(':');
+type Market = 'US' | 'HK' | 'CN' | 'CRYPTO' | 'SG' | 'JP' | 'UK' | 'EU';
+type InstrumentType = 'stock' | 'etf' | 'crypto' | 'futures' | 'option';
+
+interface SpotCheckResponse {
+  success: boolean;
+  data?: {
+    symbol: string;
+    market: string;
+    instrumentType: string;
+    compositeScore: number;
+    rating: FactorRating;
+    confidence: number;
+    // By category
+    momentumScore: number;
+    valueScore: number;
+    qualityScore: number;
+    volatilityScore: number;
+    sentimentScore: number;
+    // Detailed factors
+    factors: Array<{
+      id: string;
+      name: string;
+      score: number;
+      weight: number;
+      contribution: number;
+      category: string;
+    }>;
+    // Drag analysis (negative contributors)
+    dragFactors: Array<{
+      factorId: string;
+      factorName: string;
+      score: number;
+      weight: number;
+      netContribution: number;
+      dragPercent: number;
+      suggestion: string;
+    }>;
+    positiveFactors: Array<{
+      factorId: string;
+      factorName: string;
+      score: number;
+      weight: number;
+      netContribution: number;
+      dragPercent: number;
+    }>;
+    riskScore: number;
+    maxDrawdownPct: number;
+    scoringMode: string;
+    reason: string;
+    // Summary
+    summary: string;
+  };
+  error?: string;
+}
+
+interface CompareResponse {
+  success: boolean;
+  data?: {
+    a: SpotCheckResponse['data'];
+    b: SpotCheckResponse['data'];
+    comparison: {
+      winner: 'a' | 'b' | 'tie';
+      scoreDiff: number;
+      categoryDiffs: Array<{
+        category: string;
+        aScore: number;
+        bScore: number;
+        diff: number;
+      }>;
+      aAdvantages: string[];
+      bAdvantages: string[];
+      sharedWeaknesses: string[];
+      summary: string;
+    };
+  };
+  error?: string;
+}
+
+// ═══════════════════════════════════════════════════════════
+// Helpers
+// ═══════════════════════════════════════════════════════════
+
+function parseSymbol(raw: string): { symbol: string; market: Market } | null {
+  // Support formats: "HK:00700", "US:AAPL", "CRYPTO:BTC-USDT", "SH:600519"
+  const parts = raw.split(':');
   if (parts.length < 2) return null;
-
-  const prefix = parts[0].toUpperCase();
-  const symbol = parts.slice(1).join(':');
-
+  
   const marketMap: Record<string, Market> = {
-    HK: 'HKEX', HKEX: 'HKEX',
-    US: 'NYSE', NYSE: 'NYSE', NASDAQ: 'NASDAQ',
-    SG: 'SGX', SGX: 'SGX',
-    CRYPTO: 'CRYPTO', CRYP: 'CRYPTO', CC: 'CRYPTO',
-    JP: 'TSE', TSE: 'TSE',
+    HK: 'HK', hk: 'HK',
+    US: 'US', us: 'US',
+    CN: 'CN', cn: 'CN', SH: 'CN', SZ: 'CN', sh: 'CN', sz: 'CN',
+    CRYPTO: 'CRYPTO', crypto: 'CRYPTO', CC: 'CRYPTO', cc: 'CRYPTO',
+    SG: 'SG', sg: 'SG',
+    JP: 'JP', jp: 'JP',
+    UK: 'UK', uk: 'UK',
+    EU: 'EU', eu: 'EU',
   };
 
-  const market = marketMap[prefix] || 'NYSE';
+  const market = marketMap[parts[0]] || null;
+  if (!market) return null;
 
-  // Infer instrument type from prefix/symbol
-  let instrumentType: InstrumentType = 'stock';
-  if (prefix === 'CRYPTO' || prefix === 'CRYP' || prefix === 'CC') {
-    instrumentType = symbol.includes('PERP') || symbol.includes('USD') ? 'crypto_perp' : 'crypto_spot';
-  }
-
-  return { market, symbol, instrumentType };
+  return { symbol: parts.slice(1).join(':'), market };
 }
 
-/**
- * Format symbol for display: "HKEX:00700"
- */
-function formatDisplaySymbol(market: Market, symbol: string): string {
-  const labelMap: Record<string, string> = {
-    HKEX: 'HK', NYSE: 'US', NASDAQ: 'US', SGX: 'SG',
-    CRYPTO: 'CC', TSE: 'JP', TSX: 'CA', ASX: 'AU',
+function marketToInstrumentType(market: Market): InstrumentType {
+  if (market === 'CRYPTO') return 'crypto';
+  return 'stock';
+}
+
+function buildSpotCheckData(result: UnifiedFactorScore): SpotCheckResponse['data'] {
+  const framework = getDawnFactorFramework();
+  
+  // Extract drag factors from debug if available
+  const debug = (result as any).debug as { positiveContributors?: DragAnalysis[]; negativeContributors?: DragAnalysis[] } | undefined;
+  const dragFactors = debug?.negativeContributors ?? [];
+  const positiveFactors = debug?.positiveContributors ?? [];
+
+  // Map factors to detailed view
+  const factors = (result.factors || []).map((f: FactorScoreDetail) => ({
+    id: f.factorId || f.id || '',
+    name: f.factorName || f.name || '',
+    score: f.score,
+    weight: f.weight,
+    contribution: f.contribution ?? 0,
+    category: f.category || '',
+  }));
+
+  // Build human-readable summary
+  const ratingLabel = {
+    excellent: '优秀',
+    good: '良好',
+    neutral: '中性',
+    caution: '谨慎',
+    poor: '差',
+  }[result.rating] || result.rating;
+
+  const topDrag = dragFactors.slice(0, 3).map((d) => d.factorName).join('、');
+  const topPos = positiveFactors.slice(0, 3).map((p) => p.factorName).join('、');
+  
+  let summary = `${result.symbol} 综合评分 ${result.compositeScore.toFixed(1)}（${ratingLabel}）`;
+  if (topPos) summary += `，主要优势：${topPos}`;
+  if (topDrag) summary += `，拖累因子：${topDrag}`;
+  if (result.reason) summary += `。${result.reason}`;
+
+  return {
+    symbol: result.symbol,
+    market: result.market,
+    instrumentType: result.instrumentType,
+    compositeScore: result.compositeScore,
+    rating: result.rating,
+    confidence: result.confidence,
+    momentumScore: result.momentumScore,
+    valueScore: result.valueScore,
+    qualityScore: result.qualityScore,
+    volatilityScore: result.volatilityScore,
+    sentimentScore: result.sentimentScore,
+    factors,
+    dragFactors: dragFactors.map((d) => ({
+      factorId: d.factorId,
+      factorName: d.factorName,
+      score: d.score,
+      weight: d.weight,
+      netContribution: d.netContribution,
+      dragPercent: d.dragPercent,
+      suggestion: d.suggestion,
+    })),
+    positiveFactors: positiveFactors.map((p) => ({
+      factorId: p.factorId,
+      factorName: p.factorName,
+      score: p.score,
+      weight: p.weight,
+      netContribution: p.netContribution,
+      dragPercent: p.dragPercent,
+    })),
+    riskScore: result.riskScore,
+    maxDrawdownPct: result.maxDrawdownPct,
+    scoringMode: result.scoringMode,
+    reason: result.reason || '',
+    summary,
   };
-  return `${labelMap[market] || market}:${symbol}`;
 }
 
-// ── Drag Factor Detection ──────────────────────────────────────────────────
-
-interface DragFactorInfo {
-  factorId: string;
-  factorName: string;
-  category: string;
-  score: number;
-  contribution: number;
-  severity: 'mild' | 'moderate' | 'severe';
-  suggestion: string;
-}
-
-function detectDragFactors(
-  factors: FactorScoreDetail[],
-  compositeScore: number
-): DragFactorInfo[] {
-  const dragFactors: DragFactorInfo[] = [];
-
-  for (const f of factors) {
-    // A factor is "dragging" if its contribution is notably below the average
-    if (factors.length === 0) break;
-
-    const avgContribution = factors.reduce((s, x) => s + x.contribution, 0) / factors.length;
-
-    // Factor is dragging if score < 40 AND contribution > 0 but well below average
-    // OR if contribution is negative (detrimental)
-    const isDetrimental = f.contribution < 0;
-    const isWeak = f.score < 40 && f.contribution < avgContribution * 0.5;
-
-    if (isDetrimental || isWeak) {
-      let severity: DragFactorInfo['severity'] = 'mild';
-      let suggestion = '';
-
-      if (isDetrimental) {
-        severity = 'severe';
-        suggestion = `因子 "${f.factorId}" 产生负面贡献 ${Math.abs(f.contribution).toFixed(1)}%，建议降低权重或移除`;
-      } else if (f.score < 30) {
-        severity = 'moderate';
-        suggestion = `因子 "${f.factorId}" 得分较低 (${f.score})，建议检查数据源或降低权重`;
-      } else {
-        suggestion = `因子 "${f.factorId}" 表现偏弱，可考虑调整为中性权重`;
-      }
-
-      dragFactors.push({
-        factorId: f.factorId,
-        factorName: f.factorName,
-        category: f.factorCategory,
-        score: f.score,
-        contribution: f.contribution,
-        severity,
-        suggestion,
-      });
-    }
-  }
-
-  // Sort most severe first, then by lowest contribution
-  dragFactors.sort((a, b) => {
-    const sevOrder = { severe: 0, moderate: 1, mild: 2 };
-    if (sevOrder[a.severity] !== sevOrder[b.severity]) {
-      return sevOrder[a.severity] - sevOrder[b.severity];
-    }
-    return a.contribution - b.contribution;
-  });
-
-  return dragFactors;
-}
-
-// ═════════════════════════════════════════════════════════════════════════
-// GET /api/factor/spot-check — Single-stock full factor scoring
-// ═════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// GET /api/factor/spot-check
+// ═══════════════════════════════════════════════════════════
 
 router.get('/spot-check', async (req: Request, res: Response) => {
   try {
     const rawSymbol = String(req.query.symbol || '').trim();
     if (!rawSymbol) {
-      res.status(400).json({ success: false, error: 'Missing query parameter "symbol" (e.g. "HK:00700")' });
+      res.status(400).json({ success: false, error: 'Missing required parameter: symbol (e.g. HK:00700)' });
       return;
     }
 
-    const parsed = parseQualifiedSymbol(rawSymbol);
+    const parsed = parseSymbol(rawSymbol);
     if (!parsed) {
       res.status(400).json({
         success: false,
-        error: `Invalid symbol format "${rawSymbol}". Use "MARKET:CODE" (e.g. "HK:00700", "US:AAPL", "CRYPTO:BTC")`,
+        error: `Invalid symbol format: "${rawSymbol}". Use "MARKET:CODE" (e.g. HK:00700, US:AAPL, CRYPTO:BTC-USDT)`,
       });
       return;
     }
 
-    const { market, symbol, instrumentType } = parsed;
     const framework = getDawnFactorFramework();
-
     if (!framework) {
-      res.status(503).json({ success: false, error: 'Factor framework not initialized' });
+      res.status(503).json({ success: false, error: 'Factor framework not initialized. Run initDawnFactorFramework() first.' });
       return;
     }
 
-    const score = await framework.score(symbol, market, instrumentType);
-    const dragFactors = detectDragFactors(score.factors, score.compositeScore);
+    const instrumentType = marketToInstrumentType(parsed.market) as InstrumentType;
+    const result = await framework.score(parsed.symbol, parsed.market, instrumentType);
+    const data = buildSpotCheckData(result);
 
-    log.info(`[FactorAPI] Spot-check: ${rawSymbol} → ${score.compositeScore.toFixed(1)} (${score.rating}), ${dragFactors.length} drag factors`);
-
-    res.json({
-      success: true,
-      symbol: formatDisplaySymbol(market, symbol),
-      rawSymbol,
-      market,
-      instrumentType,
-      compositeScore: score.compositeScore,
-      rating: score.rating,
-      confidence: score.confidence,
-      // Category scores
-      categoryScores: {
-        momentum: score.momentumScore,
-        value: score.valueScore,
-        quality: score.qualityScore,
-        volatility: score.volatilityScore,
-        sentiment: score.sentimentScore,
-      },
-      riskScore: score.riskScore,
-      // All factor details
-      factors: score.factors.map(f => ({
-        factorId: f.factorId,
-        factorName: f.factorName,
-        category: f.factorCategory,
-        score: f.score,
-        weight: f.weight,
-        contribution: f.contribution,
-        icValue: f.icValue,
-        percentile: f.percentile,
-      })),
-      // Drag factors (contribution < 0 or score < 40)
-      dragFactors,
-      scoringMode: score.scoringMode,
-      reason: score.reason,
-      calculatedAt: score.calculatedAt,
+    res.json({ success: true, data });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      error: err?.message || 'Internal server error during spot-check',
     });
-  } catch (err: unknown) {
-    log.error('[FactorAPI] Spot-check failed:', err);
-    res.status(500).json({ success: false, error: (err as Error).message || 'Internal server error' });
   }
 });
 
-// ═════════════════════════════════════════════════════════════════════════
-// GET /api/factor/compare — Two-stock side-by-side comparison
-// ═════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// GET /api/factor/compare
+// ═══════════════════════════════════════════════════════════
 
 router.get('/compare', async (req: Request, res: Response) => {
   try {
-    const rawA = String(req.query.a || '').trim();
-    const rawB = String(req.query.b || '').trim();
+    const aRaw = String(req.query.a || '').trim();
+    const bRaw = String(req.query.b || '').trim();
 
-    if (!rawA || !rawB) {
-      res.status(400).json({ success: false, error: 'Missing query parameters "a" and "b" (e.g. "?a=HK:00700&b=HK:09988")' });
+    if (!aRaw || !bRaw) {
+      res.status(400).json({
+        success: false,
+        error: 'Missing required parameters: a and b (e.g. ?a=US:AAPL&b=US:MSFT)',
+      });
       return;
     }
 
-    const parsedA = parseQualifiedSymbol(rawA);
-    const parsedB = parseQualifiedSymbol(rawB);
+    const aParsed = parseSymbol(aRaw);
+    const bParsed = parseSymbol(bRaw);
 
-    if (!parsedA) {
-      res.status(400).json({ success: false, error: `Invalid symbol "a": "${rawA}"` });
+    if (!aParsed) {
+      res.status(400).json({ success: false, error: `Invalid symbol "a": "${aRaw}". Use "MARKET:CODE"` });
       return;
     }
-    if (!parsedB) {
-      res.status(400).json({ success: false, error: `Invalid symbol "b": "${rawB}"` });
+    if (!bParsed) {
+      res.status(400).json({ success: false, error: `Invalid symbol "b": "${bRaw}". Use "MARKET:CODE"` });
       return;
     }
 
     const framework = getDawnFactorFramework();
     if (!framework) {
-      res.status(503).json({ success: false, error: 'Factor framework not initialized' });
+      res.status(503).json({ success: false, error: 'Factor framework not initialized.' });
       return;
     }
 
+    const aInstType = marketToInstrumentType(aParsed.market) as InstrumentType;
+    const bInstType = marketToInstrumentType(bParsed.market) as InstrumentType;
+
     // Score both in parallel
-    const [scoreA, scoreB] = await Promise.all([
-      framework.score(parsedA.symbol, parsedA.market, parsedA.instrumentType),
-      framework.score(parsedB.symbol, parsedB.market, parsedB.instrumentType),
+    const [aResult, bResult] = await Promise.all([
+      framework.score(aParsed.symbol, aParsed.market, aInstType),
+      framework.score(bParsed.symbol, bParsed.market, bInstType),
     ]);
 
-    const dragFactorsA = detectDragFactors(scoreA.factors, scoreA.compositeScore);
-    const dragFactorsB = detectDragFactors(scoreB.factors, scoreB.compositeScore);
+    const aData = buildSpotCheckData(aResult);
+    const bData = buildSpotCheckData(bResult);
 
-    // Build factor comparison table
-    const allFactorIds = new Set([
-      ...scoreA.factors.map(f => f.factorId),
-      ...scoreB.factors.map(f => f.factorId),
-    ]);
+    // Build comparison
+    const scoreDiff = aData!.compositeScore - bData!.compositeScore;
+    const winner: 'a' | 'b' | 'tie' = Math.abs(scoreDiff) < 0.5 ? 'tie' : scoreDiff > 0 ? 'a' : 'b';
 
-    const factorComparison: Array<{
-      factorId: string;
-      factorName: string;
-      category: string;
-      scoreA: number;
-      scoreB: number;
-      diff: number;
-      winner: 'a' | 'b' | 'tie';
-    }> = [];
+    const categories = [
+      { key: '动量', aScore: aData!.momentumScore, bScore: bData!.momentumScore },
+      { key: '价值', aScore: aData!.valueScore, bScore: bData!.valueScore },
+      { key: '质量', aScore: aData!.qualityScore, bScore: bData!.qualityScore },
+      { key: '波动率', aScore: aData!.volatilityScore, bScore: bData!.volatilityScore },
+      { key: '情绪', aScore: aData!.sentimentScore, bScore: bData!.sentimentScore },
+    ];
 
-    for (const fid of allFactorIds) {
-      const fa = scoreA.factors.find(f => f.factorId === fid);
-      const fb = scoreB.factors.find(f => f.factorId === fid);
+    const categoryDiffs = categories.map((c) => ({
+      category: c.key,
+      aScore: c.aScore,
+      bScore: c.bScore,
+      diff: c.aScore - c.bScore,
+    }));
 
-      const scoreAVal = fa?.score ?? 50;
-      const scoreBVal = fb?.score ?? 50;
-      const diff = scoreAVal - scoreBVal;
+    // Find advantages (diff > 5 points)
+    const aAdvantages = categoryDiffs.filter((c) => c.diff > 5).map((c) => c.category);
+    const bAdvantages = categoryDiffs.filter((c) => c.diff < -5).map((c) => c.category);
 
-      factorComparison.push({
-        factorId: fid,
-        factorName: fa?.factorName || fb?.factorName || fid,
-        category: fa?.factorCategory || fb?.factorCategory || 'unknown',
-        scoreA: scoreAVal,
-        scoreB: scoreBVal,
-        diff: Math.round(diff * 100) / 100,
-        winner: Math.abs(diff) < 1 ? 'tie' : diff > 0 ? 'a' : 'b',
-      });
+    // Shared weaknesses (both < 50)
+    const sharedWeaknesses = categories
+      .filter((c) => c.aScore < 50 && c.bScore < 50)
+      .map((c) => c.key);
+
+    // Build summary
+    const aName = aData!.symbol;
+    const bName = bData!.symbol;
+    let compSummary = '';
+    if (winner === 'tie') {
+      compSummary = `${aName} 与 ${bName} 综合评分接近（差 ${Math.abs(scoreDiff).toFixed(1)}），旗鼓相当。`;
+    } else if (winner === 'a') {
+      compSummary = `${aName} 综合评分领先 ${bName} ${Math.abs(scoreDiff).toFixed(1)} 分`;
+    } else {
+      compSummary = `${bName} 综合评分领先 ${aName} ${Math.abs(scoreDiff).toFixed(1)} 分`;
     }
-
-    // Sort by largest absolute diff
-    factorComparison.sort((x, y) => Math.abs(y.diff) - Math.abs(x.diff));
-
-    // Summary
-    const compositeDiff = scoreA.compositeScore - scoreB.compositeScore;
-    const winner: 'a' | 'b' | 'tie' = Math.abs(compositeDiff) < 1 ? 'tie' : compositeDiff > 0 ? 'a' : 'b';
-
-    const summary = winner === 'tie'
-      ? `${rawA} 与 ${rawB} 综合评分相近 (差距 ${Math.abs(compositeDiff).toFixed(1)})`
-      : winner === 'a'
-        ? `${rawA} 综合评分领先 ${rawB} ${compositeDiff.toFixed(1)} 分`
-        : `${rawB} 综合评分领先 ${rawA} ${Math.abs(compositeDiff).toFixed(1)} 分`;
-
-    // Find largest advantage factors
-    const topAdvA = factorComparison
-      .filter(f => f.winner === 'a')
-      .sort((x, y) => y.diff - x.diff)
-      .slice(0, 3);
-
-    const topAdvB = factorComparison
-      .filter(f => f.winner === 'b')
-      .sort((x, y) => x.diff - y.diff)
-      .slice(0, 3);
-
-    log.info(`[FactorAPI] Compare: ${rawA} vs ${rawB} → composite diff ${compositeDiff.toFixed(1)}, winner ${winner}`);
+    if (aAdvantages.length) compSummary += `。${aName} 优势：${aAdvantages.join('、')}`;
+    if (bAdvantages.length) compSummary += `。${bName} 优势：${bAdvantages.join('、')}`;
+    if (sharedWeaknesses.length) compSummary += `。共同弱点：${sharedWeaknesses.join('、')}`;
 
     res.json({
       success: true,
-      symbolA: formatDisplaySymbol(parsedA.market, parsedA.symbol),
-      symbolB: formatDisplaySymbol(parsedB.market, parsedB.symbol),
-      rawA,
-      rawB,
-
-      // Composite comparison
-      compositeDiff: Math.round(compositeDiff * 100) / 100,
-      winner,
-      summary,
-
-      // Side-by-side
-      scoreA: {
-        symbol: rawA,
-        compositeScore: scoreA.compositeScore,
-        rating: scoreA.rating,
-        momentumScore: scoreA.momentumScore,
-        valueScore: scoreA.valueScore,
-        qualityScore: scoreA.qualityScore,
-        volatilityScore: scoreA.volatilityScore,
-        sentimentScore: scoreA.sentimentScore,
-        riskScore: scoreA.riskScore,
-        dragFactors: dragFactorsA,
-        reason: scoreA.reason,
+      data: {
+        a: aData,
+        b: bData,
+        comparison: {
+          winner,
+          scoreDiff,
+          categoryDiffs,
+          aAdvantages,
+          bAdvantages,
+          sharedWeaknesses,
+          summary: compSummary,
+        },
       },
-      scoreB: {
-        symbol: rawB,
-        compositeScore: scoreB.compositeScore,
-        rating: scoreB.rating,
-        momentumScore: scoreB.momentumScore,
-        valueScore: scoreB.valueScore,
-        qualityScore: scoreB.qualityScore,
-        volatilityScore: scoreB.volatilityScore,
-        sentimentScore: scoreB.sentimentScore,
-        riskScore: scoreB.riskScore,
-        dragFactors: dragFactorsB,
-        reason: scoreB.reason,
-      },
-
-      // Factor-level comparison
-      factorComparison,
-      advantagesA: topAdvA.map(f => ({ factorId: f.factorId, factorName: f.factorName, advantage: f.diff })),
-      advantagesB: topAdvB.map(f => ({ factorId: f.factorId, factorName: f.factorName, advantage: Math.abs(f.diff) })),
-
-      calculatedAt: Date.now(),
     });
-  } catch (err: unknown) {
-    log.error('[FactorAPI] Compare failed:', err);
-    res.status(500).json({ success: false, error: (err as Error).message || 'Internal server error' });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      error: err?.message || 'Internal server error during comparison',
+    });
   }
 });
 
-// ═════════════════════════════════════════════════════════════════════════
-// POST /api/factor/batch-spot-check — Batch scoring
-// ═════════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// GET /api/factor/scores — Batch scoring
+// ═══════════════════════════════════════════════════════════
 
-router.post('/batch-spot-check', async (req: Request, res: Response) => {
+router.get('/scores', async (req: Request, res: Response) => {
   try {
-    const { symbols } = req.body;
-    if (!Array.isArray(symbols) || symbols.length === 0) {
-      res.status(400).json({ success: false, error: 'Missing or empty "symbols" array in body' });
+    const symbolsRaw = String(req.query.symbols || '').trim();
+    if (!symbolsRaw) {
+      res.status(400).json({ success: false, error: 'Missing required parameter: symbols (comma-separated, e.g. US:AAPL,US:GOOGL)' });
       return;
     }
 
-    if (symbols.length > 50) {
-      res.status(400).json({ success: false, error: 'Batch limit is 50 symbols' });
-      return;
-    }
-
-    const parsed = symbols
-      .map((s: string) => ({ raw: s, parsed: parseQualifiedSymbol(String(s).trim()) }))
-      .filter((x: { parsed: null | ReturnType<typeof parseQualifiedSymbol> }) => x.parsed !== null);
-
-    if (parsed.length === 0) {
-      res.status(400).json({ success: false, error: 'No valid symbols found' });
+    const symbols = symbolsRaw.split(',').map((s) => s.trim()).filter(Boolean);
+    if (symbols.length === 0 || symbols.length > 20) {
+      res.status(400).json({ success: false, error: 'symbols must contain 1-20 items' });
       return;
     }
 
     const framework = getDawnFactorFramework();
     if (!framework) {
-      res.status(503).json({ success: false, error: 'Factor framework not initialized' });
+      res.status(503).json({ success: false, error: 'Factor framework not initialized.' });
       return;
     }
 
+    // Parse all symbols
+    const parsed = symbols.map((s) => {
+      const p = parseSymbol(s);
+      if (!p) return { error: `Invalid symbol: "${s}"` };
+      return { symbol: p.symbol, market: p.market };
+    });
+
+    // Validate
+    const errors = parsed.filter((p) => 'error' in p);
+    if (errors.length > 0) {
+      res.status(400).json({ success: false, errors });
+      return;
+    }
+
+    // Score all in parallel
     const results = await Promise.all(
-      parsed.map(async (p: { raw: string; parsed: NonNullable<ReturnType<typeof parseQualifiedSymbol>> }) => {
-        const score = await framework.score(p.parsed.symbol, p.parsed.market, p.parsed.instrumentType);
-        return {
-          symbol: p.raw,
-          compositeScore: score.compositeScore,
-          rating: score.rating,
-          dragFactors: detectDragFactors(score.factors, score.compositeScore).slice(0, 5),
-        };
+      parsed.map(async (p) => {
+        try {
+          const instType = marketToInstrumentType((p as any).market) as InstrumentType;
+          const result = await framework.score((p as any).symbol, (p as any).market, instType);
+          return buildSpotCheckData(result);
+        } catch (err: any) {
+          return { symbol: (p as any).symbol, error: err?.message || 'Scoring failed' };
+        }
       })
     );
 
-    results.sort((a, b) => b.compositeScore - a.compositeScore);
+    // Sort by compositeScore descending
+    results.sort((a: any, b: any) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0));
 
-    log.info(`[FactorAPI] Batch spot-check: ${symbols.length} requested → ${results.length} scored`);
-
-    res.json({
-      success: true,
-      total: symbols.length,
-      scored: results.length,
-      results,
-      calculatedAt: Date.now(),
+    res.json({ success: true, count: results.length, results });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      error: err?.message || 'Internal server error during batch scoring',
     });
-  } catch (err: unknown) {
-    log.error('[FactorAPI] Batch spot-check failed:', err);
-    res.status(500).json({ success: false, error: (err as Error).message || 'Internal server error' });
   }
+});
+
+// ═══════════════════════════════════════════════════════════
+// GET /api/factor/health — Check if framework is ready
+// ═══════════════════════════════════════════════════════════
+
+router.get('/health', (_req: Request, res: Response) => {
+  const framework = getDawnFactorFramework();
+  res.json({
+    success: true,
+    ready: !!framework,
+    version: framework ? 'R160+' : 'not initialized',
+  });
 });
 
 export default router;

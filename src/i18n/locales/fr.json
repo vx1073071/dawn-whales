@@ -5785,7 +5785,9 @@
     "descValue": "Ratios de valorisation (P/E, P/B)",
     "descQuality": "Rentabilité et efficacité (ROE, marge)",
     "descVolatility": "Stabilité et exposition au risque",
-    "descLiquidity": "Volume de trading et profondeur de marché"
+    "descLiquidity": "Volume de trading et profondeur de marché",
+    "recBannerTitle": "Template-recommended weights loaded",
+    "recBannerBody": "These factor weights were auto-recommended based on the selected strategy template. You can adjust manually."
   },
   "ModeSelector": {
     "heading": "Choose Creation Method",
@@ -5818,7 +5820,17 @@
     "searchPlaceholder": "Search templates...",
     "allCategories": "All",
     "noResults": "No matching templates",
-    "useTemplate": "Use This Template"
+    "useTemplate": "Use This Template",
+    "factorRecTitle": "Factor Recommendations",
+    "factorRecSubtitle": "Factors auto-recommended based on ",
+    "factorRecSubtitle2": " strategy type",
+    "analyzing": "Analyzing...",
+    "compatible": "Compatible",
+    "incompatible": "Incompatible",
+    "saveWeights": "Save recommended weights to factor configurator",
+    "noFactors": "No factor data available, you can configure manually",
+    "createWithFactors": "Create strategy with this template",
+    "selected": "Selected — scroll to see factor recommendations"
   },
   "AICreator": {
     "title": "AI Smart Create",

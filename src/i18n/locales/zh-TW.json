@@ -5785,7 +5785,9 @@
     "descValue": "估值比率 (本益比、股價淨值比)",
     "descQuality": "獲利能力與效率 (ROE、利潤率)",
     "descVolatility": "穩定性與風險敞口",
-    "descLiquidity": "交易量與市場深度"
+    "descLiquidity": "交易量與市場深度",
+    "recBannerTitle": "Template-recommended weights loaded",
+    "recBannerBody": "These factor weights were auto-recommended based on the selected strategy template. You can adjust manually."
   },
   "ModeSelector": {
     "heading": "选择创建方式",
@@ -5818,7 +5820,17 @@
     "searchPlaceholder": "搜索模板名称或标签...",
     "allCategories": "全部",
     "noResults": "没有匹配的模板",
-    "useTemplate": "使用此模板"
+    "useTemplate": "使用此模板",
+    "factorRecTitle": "Factor Recommendations",
+    "factorRecSubtitle": "Factors auto-recommended based on ",
+    "factorRecSubtitle2": " strategy type",
+    "analyzing": "Analyzing...",
+    "compatible": "Compatible",
+    "incompatible": "Incompatible",
+    "saveWeights": "Save recommended weights to factor configurator",
+    "noFactors": "No factor data available, you can configure manually",
+    "createWithFactors": "Create strategy with this template",
+    "selected": "Selected — scroll to see factor recommendations"
   },
   "AICreator": {
     "title": "AI 智能创建",

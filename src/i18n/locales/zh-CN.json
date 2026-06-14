@@ -6146,7 +6146,9 @@
     "descValue": "估值比率 (市盈率、市净率)",
     "descQuality": "盈利能力与效率 (ROE、利润率)",
     "descVolatility": "稳定性与风险敞口",
-    "descLiquidity": "交易量与市场深度"
+    "descLiquidity": "交易量与市场深度",
+    "recBannerTitle": "模板推荐权重已加载",
+    "recBannerBody": "以下因子组合基于所选策略模板自动推荐。你可以手动调整。"
   },
   "ModeSelector": {
     "heading": "选择创建方式",
@@ -6179,7 +6181,17 @@
     "searchPlaceholder": "搜索模板名称或标签...",
     "allCategories": "全部",
     "noResults": "没有匹配的模板",
-    "useTemplate": "使用此模板"
+    "useTemplate": "使用此模板",
+    "factorRecTitle": "因子推荐",
+    "factorRecSubtitle": "基于",
+    "factorRecSubtitle2": "的策略类型自动推荐的因子组合",
+    "analyzing": "分析中...",
+    "compatible": "兼容",
+    "incompatible": "不兼容",
+    "saveWeights": "保存推荐权重到因子配置器",
+    "noFactors": "暂无因子推荐数据，你可以手动配置",
+    "createWithFactors": "使用此模板创建策略",
+    "selected": "已选择 — 滚动查看因子推荐"
   },
   "AICreator": {
     "title": "AI 智能创建",
