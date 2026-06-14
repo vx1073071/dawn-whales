@@ -96,6 +96,334 @@ const MOCK_STRATEGIES: StrategySnapshot[] = [
 
 // ── Radar chart sub-component ───────────────────────────────────────────
 
+// ── R168 P2-12: Market Regime Detection + Comparison Conclusion ─────────
+
+type MarketRegime = 'bull' | 'bear' | 'ranging' | 'volatile';
+
+interface RegimeAnalysis {
+  regime: MarketRegime;
+  regimeCN: string;
+  confidence: number; // 0-1
+  trendSlope: number;
+  volatilityPercentile: number; // 0-100, higher=more volatile
+  evidence: string;
+}
+
+interface ComparisonConclusion {
+  /** Overall winner */
+  overallWinner: 'A' | 'B' | 'tie';
+  /** Dimension-specific winners */
+  returnWinner: 'A' | 'B' | 'tie';
+  riskWinner: 'A' | 'B' | 'tie';
+  stabilityWinner: 'A' | 'B' | 'tie';
+  /** Market regime analysis */
+  regime: RegimeAnalysis;
+  /** Scenario-based recommendations */
+  scenarios: ScenarioRecommendation[];
+  /** One-line verdict */
+  verdict: string;
+  /** Detailed reasoning */
+  reasoning: string[];
+}
+
+interface ScenarioRecommendation {
+  scenario: string;
+  scenarioCN: string;
+  recommended: 'A' | 'B' | 'either';
+  reason: string;
+}
+
+/**
+ * Detect market regime from equity curve and factor exposures.
+ */
+function detectMarketRegime(
+  curveA: number[],
+  curveB: number[],
+  mktBetaA: number,
+  mktBetaB: number,
+): RegimeAnalysis {
+  // Use average curve for regime detection
+  const avgCurve = curveA.map((v, i) => (v + (curveB[i] ?? v)) / 2);
+  const n = avgCurve.length;
+
+  if (n < 10) {
+    return { regime: 'ranging', regimeCN: '震荡', confidence: 0.3, trendSlope: 0, volatilityPercentile: 50, evidence: '数据不足' };
+  }
+
+  // Linear regression trend
+  let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+  for (let i = 0; i < n; i++) {
+    sumX += i;
+    sumY += avgCurve[i];
+    sumXY += i * avgCurve[i];
+    sumX2 += i * i;
+  }
+  const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX + 0.0001);
+  const meanY = sumY / n;
+  const normalizedSlope = slope / (meanY + 0.0001);
+
+  // Volatility: std of daily returns
+  const returns = [];
+  for (let i = 1; i < n; i++) {
+    returns.push((avgCurve[i] - avgCurve[i - 1]) / (avgCurve[i - 1] + 0.0001));
+  }
+  const meanRet = returns.reduce((s, r) => s + r, 0) / returns.length;
+  const retVol = Math.sqrt(returns.reduce((s, r) => s + (r - meanRet) ** 2, 0) / returns.length);
+
+  // Percentile (rough): typical daily vol 1% = normal, >2% = high
+  const volPct = Math.min(100, Math.round(retVol / 0.03 * 100));
+
+  // Average market beta
+  const avgBeta = (mktBetaA + mktBetaB) / 2;
+
+  let regime: MarketRegime;
+  let regimeCN: string;
+  let confidence: number;
+  let evidence: string;
+
+  if (normalizedSlope > 0.003) {
+    regime = 'bull';
+    regimeCN = '牛市';
+    confidence = Math.min(0.95, 0.5 + Math.abs(normalizedSlope) * 50);
+    evidence = `趋势向上(斜率${(normalizedSlope * 100).toFixed(1)}%)，市场Beta=${avgBeta.toFixed(2)}`;
+  } else if (normalizedSlope < -0.003) {
+    regime = 'bear';
+    regimeCN = '熊市';
+    confidence = Math.min(0.95, 0.5 + Math.abs(normalizedSlope) * 50);
+    evidence = `趋势向下(斜率${(normalizedSlope * 100).toFixed(1)}%)，市场Beta=${avgBeta.toFixed(2)}`;
+  } else if (volPct > 60) {
+    regime = 'volatile';
+    regimeCN = '高波动';
+    confidence = Math.min(0.9, 0.4 + volPct / 200);
+    evidence = `横盘但波动率高(${volPct}分位)，市场Beta=${avgBeta.toFixed(2)}`;
+  } else {
+    regime = 'ranging';
+    regimeCN = '震荡';
+    confidence = Math.min(0.85, 0.4 + (100 - volPct) / 200);
+    evidence = `横盘低波动(${volPct}分位)，市场Beta=${avgBeta.toFixed(2)}`;
+  }
+
+  return { regime, regimeCN, confidence, trendSlope: normalizedSlope, volatilityPercentile: volPct, evidence };
+}
+
+/**
+ * Generate comparison conclusion with market-aware recommendations.
+ */
+function generateConclusion(
+  a: StrategySnapshot,
+  b: StrategySnapshot,
+): ComparisonConclusion {
+  const mktBetaA = a.factorExposures?.find((f) => f.factor === 'MKT')?.loading ?? 0.5;
+  const mktBetaB = b.factorExposures?.find((f) => f.factor === 'MKT')?.loading ?? 0.5;
+  const regime = detectMarketRegime(a.equityCurve, b.equityCurve, mktBetaA, mktBetaB);
+
+  // Return winner: total return
+  const returnWinner: 'A' | 'B' | 'tie' =
+    a.totalReturn > b.totalReturn * 1.02 ? 'A' : b.totalReturn > a.totalReturn * 1.02 ? 'B' : 'tie';
+
+  // Risk winner: composite (sharpe + maxDD + volatility)
+  const riskScoreA = a.sharpe * 0.4 + (1 / Math.abs(a.maxDrawdown + 0.01)) * 0.35 + (1 / (a.annualVol + 0.01)) * 0.25;
+  const riskScoreB = b.sharpe * 0.4 + (1 / Math.abs(b.maxDrawdown + 0.01)) * 0.35 + (1 / (b.annualVol + 0.01)) * 0.25;
+  const riskWinner: 'A' | 'B' | 'tie' =
+    riskScoreA > riskScoreB * 1.05 ? 'A' : riskScoreB > riskScoreA * 1.05 ? 'B' : 'tie';
+
+  // Stability winner: Calmar + winRate + profitability consistency
+  const stabilityScoreA = a.calmarRatio * 0.4 + a.winRate * 0.4 + (a.profitFactor > 0 ? a.profitFactor * 0.2 : 0);
+  const stabilityScoreB = b.calmarRatio * 0.4 + b.winRate * 0.4 + (b.profitFactor > 0 ? b.profitFactor * 0.2 : 0);
+  const stabilityWinner: 'A' | 'B' | 'tie' =
+    stabilityScoreA > stabilityScoreB * 1.05 ? 'A' : stabilityScoreB > stabilityScoreA * 1.05 ? 'B' : 'tie';
+
+  // Overall winner: composite
+  const overallScoreA = a.totalReturn * 0.35 + a.sharpe * 0.25 + (1 / (Math.abs(a.maxDrawdown) + 0.01)) * 0.2 + a.winRate * 0.2;
+  const overallScoreB = b.totalReturn * 0.35 + b.sharpe * 0.25 + (1 / (Math.abs(b.maxDrawdown) + 0.01)) * 0.2 + b.winRate * 0.2;
+  const overallWinner: 'A' | 'B' | 'tie' =
+    overallScoreA > overallScoreB * 1.03 ? 'A' : overallScoreB > overallScoreA * 1.03 ? 'B' : 'tie';
+
+  // Scenario recommendations
+  const scenarios: ScenarioRecommendation[] = [
+    {
+      scenario: 'bull', scenarioCN: '牛市中',
+      recommended: mktBetaA > mktBetaB + 0.15 ? 'A' : mktBetaB > mktBetaA + 0.15 ? 'B' : 'either',
+      reason: `高Beta策略在牛市中表现更优 (A=${mktBetaA.toFixed(2)}, B=${mktBetaB.toFixed(2)})`,
+    },
+    {
+      scenario: 'bear', scenarioCN: '熊市中',
+      recommended: Math.abs(a.maxDrawdown) < Math.abs(b.maxDrawdown) ? 'A' : Math.abs(b.maxDrawdown) < Math.abs(a.maxDrawdown) ? 'B' : 'either',
+      reason: `低回撤策略在熊市中更安全 (A=${(Math.abs(a.maxDrawdown) * 100).toFixed(0)}%, B=${(Math.abs(b.maxDrawdown) * 100).toFixed(0)}%)`,
+    },
+    {
+      scenario: 'ranging', scenarioCN: '震荡市中',
+      recommended: a.winRate > b.winRate + 0.05 ? 'A' : b.winRate > a.winRate + 0.05 ? 'B' : 'either',
+      reason: `高胜率策略在震荡市中更稳定 (A=${(a.winRate * 100).toFixed(0)}%, B=${(b.winRate * 100).toFixed(0)}%)`,
+    },
+    {
+      scenario: 'volatile', scenarioCN: '高波动中',
+      recommended: a.calmarRatio > b.calmarRatio + 0.3 ? 'A' : b.calmarRatio > a.calmarRatio + 0.3 ? 'B' : 'either',
+      reason: `高Calmar策略在高波动中回撤控制更好 (A=${a.calmarRatio.toFixed(1)}, B=${b.calmarRatio.toFixed(1)})`,
+    },
+    {
+      scenario: 'current', scenarioCN: `当前${regime.regimeCN}`,
+      recommended: regime.regime === 'bull'
+        ? (mktBetaA > mktBetaB + 0.15 ? 'A' : mktBetaB > mktBetaA + 0.15 ? 'B' : returnWinner !== 'tie' ? returnWinner : 'either')
+        : regime.regime === 'bear'
+        ? (Math.abs(a.maxDrawdown) < Math.abs(b.maxDrawdown) ? 'A' : Math.abs(b.maxDrawdown) < Math.abs(a.maxDrawdown) ? 'B' : riskWinner !== 'tie' ? riskWinner : 'either')
+        : ((a.sharpe > b.sharpe ? 'A' : b.sharpe > a.sharpe ? 'B' : 'either')),
+      reason: `基于当前${regime.regimeCN}环境自动推荐`,
+    },
+  ];
+
+  // Verdict
+  const nameA = a.name.length > 12 ? a.name.slice(0, 12) + '…' : a.name;
+  const nameB = b.name.length > 12 ? b.name.slice(0, 12) + '…' : b.name;
+
+  let verdict: string;
+  if (overallWinner === 'A') {
+    verdict = `${nameA} 综合表现更优`;
+  } else if (overallWinner === 'B') {
+    verdict = `${nameB} 综合表现更优`;
+  } else {
+    verdict = `两者综合表现接近，需根据市场环境选择`;
+  }
+
+  // Reasoning
+  const reasoning: string[] = [];
+  if (returnWinner !== 'tie') {
+    reasoning.push(`收益: ${returnWinner === 'A' ? nameA : nameB} 领先 (${returnWinner === 'A' ? (a.totalReturn * 100).toFixed(1) : (b.totalReturn * 100).toFixed(1)}% vs ${returnWinner === 'A' ? (b.totalReturn * 100).toFixed(1) : (a.totalReturn * 100).toFixed(1)}%)`);
+  }
+  if (riskWinner !== 'tie') {
+    reasoning.push(`风险: ${riskWinner === 'A' ? nameA : nameB} 更安全 (夏普${riskWinner === 'A' ? a.sharpe.toFixed(1) : b.sharpe.toFixed(1)} vs ${riskWinner === 'A' ? b.sharpe.toFixed(1) : a.sharpe.toFixed(1)})`);
+  }
+  reasoning.push(`市场: 检测到${regime.regimeCN}环境 (置信度${(regime.confidence * 100).toFixed(0)}%)`);
+  const currentScenario = scenarios.find((s) => s.scenario === 'current');
+  if (currentScenario && currentScenario.recommended !== 'either') {
+    const recName = currentScenario.recommended === 'A' ? nameA : nameB;
+    reasoning.push(`建议: 当前${regime.regimeCN}环境推荐 ${recName}`);
+  }
+
+  return {
+    overallWinner,
+    returnWinner,
+    riskWinner,
+    stabilityWinner,
+    regime,
+    scenarios,
+    verdict,
+    reasoning,
+  };
+}
+
+// ── R168: Conclusion Summary Card ────────────────────────────────────────
+
+const ConclusionCard: React.FC<{ conclusion: ComparisonConclusion; nameA: string; nameB: string }> = ({
+  conclusion,
+  nameA,
+  nameB,
+}) => {
+  const { regime, scenarios, verdict, reasoning, overallWinner, returnWinner, riskWinner } = conclusion;
+
+  const regimeColors: Record<MarketRegime, string> = {
+    bull: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+    bear: 'text-red-400 bg-red-500/10 border-red-500/30',
+    ranging: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+    volatile: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
+  };
+
+  const winnerBadge = (winner: 'A' | 'B' | 'tie') => {
+    if (winner === 'A') return <span className="text-amber-400 font-semibold">{nameA} ⬅</span>;
+    if (winner === 'B') return <span className="text-blue-400 font-semibold">➡ {nameB}</span>;
+    return <span className="text-gray-500">持平</span>;
+  };
+
+  return (
+    <div className="mt-5 space-y-4">
+      {/* Verdict banner */}
+      <div className={`p-4 rounded-lg border ${
+        overallWinner === 'A' ? 'bg-amber-500/5 border-amber-500/30' :
+        overallWinner === 'B' ? 'bg-blue-500/5 border-blue-500/30' :
+        'bg-gray-800/40 border-gray-700/30'
+      }`}>
+        <div className="flex items-center gap-3 mb-3">
+          <span className="text-lg">📋</span>
+          <span className="text-sm font-bold text-white">{i18n.t('StrategyComparer.k12')}</span>
+        </div>
+        <p className="text-base font-bold text-white">{verdict}</p>
+        <ul className="mt-2 space-y-1">
+          {reasoning.map((r, i) => (
+            <li key={i} className="text-xs text-gray-400 flex items-start gap-1.5">
+              <span className="text-gray-600 mt-0.5">•</span>
+              {r}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Dimension winners */}
+      <div className="grid grid-cols-3 gap-3">
+        <div className="bg-gray-800/40 rounded-lg p-3 border border-gray-700/30 text-center">
+          <div className="text-[10px] text-gray-500 mb-1">{i18n.t('StrategyComparer.k13')}</div>
+          <div className="text-xs">{winnerBadge(returnWinner)}</div>
+        </div>
+        <div className="bg-gray-800/40 rounded-lg p-3 border border-gray-700/30 text-center">
+          <div className="text-[10px] text-gray-500 mb-1">{i18n.t('StrategyComparer.k14')}</div>
+          <div className="text-xs">{winnerBadge(riskWinner)}</div>
+        </div>
+        <div className="bg-gray-800/40 rounded-lg p-3 border border-gray-700/30 text-center">
+          <div className="text-[10px] text-gray-500 mb-1">{i18n.t('StrategyComparer.k15')}</div>
+          <div className="text-xs">{winnerBadge(conclusion.stabilityWinner)}</div>
+        </div>
+      </div>
+
+      {/* Market regime detection */}
+      <div className={`p-3 rounded-lg border ${regimeColors[regime.regime]}`}>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-sm">{regime.regime === 'bull' ? '🐂' : regime.regime === 'bear' ? '🐻' : regime.regime === 'volatile' ? '🌪️' : '📊'}</span>
+          <span className="text-xs font-semibold">{i18n.t('StrategyComparer.k16')}: {regime.regimeCN}</span>
+          <span className="text-[10px] opacity-70">置信度{(regime.confidence * 100).toFixed(0)}%</span>
+        </div>
+        <p className="text-[10px] opacity-70">{regime.evidence}</p>
+      </div>
+
+      {/* Scenario recommendations */}
+      <div>
+        <div className="text-[10px] text-gray-500 mb-2 font-semibold uppercase tracking-wider">
+          {i18n.t('StrategyComparer.k17')}
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          {scenarios.map((sc, i) => {
+            const isCurrent = sc.scenario === 'current';
+            return (
+              <div
+                key={i}
+                className={`p-2.5 rounded border text-xs ${
+                  isCurrent
+                    ? 'bg-yellow-500/5 border-yellow-500/40'
+                    : 'bg-gray-800/30 border-gray-700/30'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className={`font-semibold ${isCurrent ? 'text-yellow-400' : 'text-gray-300'}`}>
+                    {sc.scenarioCN}{isCurrent ? ' ⭐' : ''}
+                  </span>
+                  <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${
+                    sc.recommended === 'A' ? 'bg-amber-500/20 text-amber-400' :
+                    sc.recommended === 'B' ? 'bg-blue-500/20 text-blue-400' :
+                    'bg-gray-600/20 text-gray-500'
+                  }`}>
+                    {sc.recommended === 'A' ? nameA : sc.recommended === 'B' ? nameB : '均可'}
+                  </span>
+                </div>
+                <p className="text-[10px] text-gray-500 leading-relaxed">{sc.reason}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ── Original Radar Chart Component ───────────────────────────────────────
+
 const RadarChart: React.FC<{
   data: {label: string;valueA: number;valueB: number;maxVal: number;}[];
   size?: number;
@@ -339,6 +667,11 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
     return a > b ? 'a' : b > a ? 'b' : 'tie';
   };
 
+  // ── R168 P2-12: Comparison Conclusion ─────────────────────────
+  const conclusion = useMemo(() => generateConclusion(strategyA, strategyB), [strategyA, strategyB]);
+  const nameA = strategyA.name.length > 12 ? strategyA.name.slice(0, 12) + '…' : strategyA.name;
+  const nameB = strategyB.name.length > 12 ? strategyB.name.slice(0, 12) + '…' : strategyB.name;
+
   // ── Render ─────────────────────────────────────────────────────────
 
   return (
@@ -495,6 +828,10 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
           </table>
         </div>
       </div>
+
+      {/* ── R168 P2-12: Comparison Conclusion ── */}
+      <ConclusionCard conclusion={conclusion} nameA={nameA} nameB={nameB} />
+
     </div>);
 
 };
