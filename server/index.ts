@@ -204,9 +204,9 @@ app.use('/api/factor', factorApiRoutes);
 import factorDiscoveryRoutes from './routes/factor-discovery';
 app.use('/api/factor/discover', factorDiscoveryRoutes);
 
-// ── R166: Factor Cloud API (unified marketplace) ───────────────────────────
-import factorCloudRoutes from './routes/factor-cloud-api';
-app.use('/api/factor-cloud', factorCloudRoutes);
+// ── R167: Live Deviation Tracker routes ──────────────────────────────────
+import deviationTrackerRoutes from './routes/deviation-tracker';
+app.use('/api/deviation', deviationTrackerRoutes);
 
 // ── R162: Backtest Snapshot + Comparison routes ───────────────────────────
 app.use('/api/backtest/snapshots', backtestRoutes);
