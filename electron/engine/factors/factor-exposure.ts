@@ -2,8 +2,11 @@
 // Multi-factor attribution: decompose P&L into factor contributions
 // 5 Fama-French factors: Market / SMB (size) / HML (value) / RMW (profitability) / CMA (investment)
 // Plus 3 custom: Momentum / LowVol / Quality
+//
+// R161 P0-U5: Cache exposure analysis results via RedisCache mget
 
 import log from 'electron-log';
+import { createRedisCache } from '../data/redis-cache-layer';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -215,6 +218,9 @@ const ANNUAL_FACTOR_RETURNS: Record<keyof Omit<FactorReturn, 'date'>, number> = 
 // ── Factor Analyzer ─────────────────────────────────────────────────────────
 
 export class FactorExposureAnalyzer {
+  // R161: Exposure analysis cache (5-min TTL, shared across factor calls)
+  private exposureCache = createRedisCache({ namespace: 'factor-exposure', defaultTTL: 300 });
+
   constructor() {
     log.info('[FactorExposure] Initialized');
   }
@@ -363,6 +369,56 @@ export class FactorExposureAnalyzer {
       dataSource: 'ETF_PROXY',
       timestamp: Date.now(),
     };
+  }
+
+  // ── R161: Cached Exposure Analysis ──────────────────────────────────
+
+  /**
+   * Analyze attribution with cache-first strategy.
+   * key: strategyId + date range → prevents redundant OLS computation.
+   */
+  async analyzeAttributionCached(
+    strategyId: string,
+    positions: Array<{
+      strategyId: string;
+      entryTime: number;
+      exitTime: number;
+      entryPrice: number;
+      exitPrice: number;
+      pnl: number;
+    }>,
+    marketReturns: number[]
+  ): Promise<FactorAttributionReport> {
+    const startDate = positions.length > 0
+      ? new Date(Math.min(...positions.map(p => p.entryTime))).toISOString().split('T')[0]
+      : '';
+    const endDate = positions.length > 0
+      ? new Date(Math.max(...positions.map(p => p.exitTime))).toISOString().split('T')[0]
+      : '';
+    const cacheKey = `attr:${strategyId}:${startDate}:${endDate}:${positions.length}`;
+
+    // R161: Try cache via mget-equivalent get
+    const cached = await this.exposureCache.get<string>(cacheKey);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached) as FactorAttributionReport;
+        log.info(`[FactorExposure] Cache hit for ${strategyId}`);
+        return parsed;
+      } catch {
+        // Parse failed, recompute
+      }
+    }
+
+    const report = this.analyzeAttribution(strategyId, positions, marketReturns);
+    // Cache result
+    await this.exposureCache.set(cacheKey, JSON.stringify(report), 300);
+    return report;
+  }
+
+  /** R161: Clear exposure analysis cache */
+  async clearCache(): Promise<void> {
+    await this.exposureCache.flushdb();
+    log.info('[FactorExposure] Cache cleared');
   }
 
   // ── Report Formatting ─────────────────────────────────────────────────

@@ -426,4 +426,86 @@ describe('FactorExposureAnalyzer', () => {
       expect(loadings.marketBeta).toBeLessThan(2.5);
     });
   });
+
+  // ── R161: Cached Attribution Analysis ─────────────────────────────────
+
+  describe('analyzeAttributionCached (R161)', () => {
+    const a = new FactorExposureAnalyzer();
+
+    it('returns report for valid positions', async () => {
+      const positions = [{
+        strategyId: 'test-strat',
+        entryTime: new Date('2026-01-02').getTime(),
+        exitTime: new Date('2026-01-31').getTime(),
+        entryPrice: 100,
+        exitPrice: 110,
+        pnl: 10,
+      }];
+      const marketReturns = generateReturns(25, 42);
+
+      const report = await a.analyzeAttributionCached('test-strat', positions, marketReturns);
+      expect(report.strategyId).toBe('test-strat');
+      expect(report.totalPnL).toBeGreaterThanOrEqual(0);
+      expect(report).toHaveProperty('loadings');
+      expect(report).toHaveProperty('contributions');
+      expect(report.dataSource).toBe('ETF_PROXY');
+    });
+
+    it('returns same report on second call (cache hit)', async () => {
+      const positions = [{
+        strategyId: 'cache-test',
+        entryTime: new Date('2026-02-01').getTime(),
+        exitTime: new Date('2026-02-28').getTime(),
+        entryPrice: 50,
+        exitPrice: 55,
+        pnl: 5,
+      }];
+      const marketReturns = generateReturns(20, 123);
+
+      const r1 = await a.analyzeAttributionCached('cache-test', positions, marketReturns);
+      const r2 = await a.analyzeAttributionCached('cache-test', positions, marketReturns);
+
+      expect(r1.strategyId).toBe(r2.strategyId);
+      expect(r1.totalPnL).toBe(r2.totalPnL);
+      expect(r1.loadings.marketBeta).toBe(r2.loadings.marketBeta);
+    });
+
+    it('clearCache works', async () => {
+      await a.clearCache();
+      // After cache clear, recompute should still work
+      const positions = [{
+        strategyId: 'clear-test',
+        entryTime: new Date('2026-03-01').getTime(),
+        exitTime: new Date('2026-03-15').getTime(),
+        entryPrice: 200,
+        exitPrice: 210,
+        pnl: 10,
+      }];
+      const result = await a.analyzeAttributionCached('clear-test', positions, generateReturns(15, 77));
+      expect(result.strategyId).toBe('clear-test');
+    });
+
+    it('handles empty positions list', async () => {
+      const report = await a.analyzeAttributionCached('empty-strat', [], []);
+      expect(report.strategyId).toBe('empty-strat');
+      expect(report.totalPnL).toBe(0);
+    });
+
+    it('different strategyIds get different reports', async () => {
+      const pos = [{
+        strategyId: 'diff-1',
+        entryTime: new Date('2026-01-05').getTime(),
+        exitTime: new Date('2026-01-20').getTime(),
+        entryPrice: 300,
+        exitPrice: 330,
+        pnl: 30,
+      }];
+      const mr = generateReturns(15, 42);
+
+      const r1 = await a.analyzeAttributionCached('diff-1', pos, mr);
+      const r2 = await a.analyzeAttributionCached('diff-2', pos, mr);
+
+      expect(r1.strategyId).not.toBe(r2.strategyId);
+    });
+  });
 });
