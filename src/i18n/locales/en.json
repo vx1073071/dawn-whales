@@ -5780,5 +5780,28 @@
     "simulatedTitle": "This report is partially based on simulated data",
     "simulatedBody": "The following factors use estimated values instead of real market data:",
     "simulatedNote": "Attribution results are for reference only, not suitable for live trading decisions. Real data engine upgrade in progress."
+  },
+  "FactorWeightSlider": {
+    "reset": "Reset",
+    "chartTitle": "Weight Distribution",
+    "sliderTitle": "Adjust Factor Weights",
+    "total": "Total",
+    "raw": "raw",
+    "dragHint": "Drag",
+    "autoNormalize": "Weights auto-normalize to 100%.",
+    "presetBalanced": "Balanced",
+    "presetMomentum": "Momentum",
+    "presetValue": "Value",
+    "presetDefensive": "Defensive",
+    "factorMomentum": "Momentum",
+    "factorValue": "Value",
+    "factorQuality": "Quality",
+    "factorVolatility": "Volatility",
+    "factorLiquidity": "Liquidity",
+    "descMomentum": "Trend strength & price dynamics",
+    "descValue": "Valuation ratios (P/E, P/B)",
+    "descQuality": "Profitability & efficiency (ROE, margin)",
+    "descVolatility": "Stability & risk exposure",
+    "descLiquidity": "Trading volume & market depth"
   }
 }

@@ -5763,5 +5763,28 @@
     "simulatedTitle": "Questo rapporto è parzialmente basato su dati simulati",
     "simulatedBody": "I seguenti fattori utilizzano valori stimati anziché dati di mercato reali:",
     "simulatedNote": "I risultati di attribuzione sono solo di riferimento, non adatti a decisioni in tempo reale. Aggiornamento del motore dati reali in corso."
+  },
+  "FactorWeightSlider": {
+    "reset": "Ripristina",
+    "chartTitle": "Distribuzione Pesi",
+    "sliderTitle": "Regola Pesi Fattoriali",
+    "total": "Totale",
+    "raw": "grezzo",
+    "dragHint": "Trascina",
+    "autoNormalize": "I pesi vengono normalizzati automaticamente al 100%.",
+    "presetBalanced": "Bilanciato",
+    "presetMomentum": "Momentum",
+    "presetValue": "Valore",
+    "presetDefensive": "Difensivo",
+    "factorMomentum": "Momentum",
+    "factorValue": "Valore",
+    "factorQuality": "Qualità",
+    "factorVolatility": "Volatilità",
+    "factorLiquidity": "Liquidità",
+    "descMomentum": "Forza del trend e dinamica dei prezzi",
+    "descValue": "Rapporti di valutazione (P/E, P/B)",
+    "descQuality": "Redditività ed efficienza (ROE, margine)",
+    "descVolatility": "Stabilità ed esposizione al rischio",
+    "descLiquidity": "Volume di scambi e profondità di mercato"
   }
 }

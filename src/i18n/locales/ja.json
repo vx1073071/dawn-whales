@@ -5766,5 +5766,28 @@
     "simulatedTitle": "このレポートは一部シミュレーションデータに基づいています",
     "simulatedBody": "以下の要因は実際の市場データではなく推定値を使用しています：",
     "simulatedNote": "帰属結果は参考用であり、実取引の判断には使用できません。実データエンジンのアップグレードが進行中です。"
+  },
+  "FactorWeightSlider": {
+    "reset": "リセット",
+    "chartTitle": "重み分布",
+    "sliderTitle": "ファクター重みを調整",
+    "total": "合計",
+    "raw": "生値",
+    "dragHint": "ドラッグ",
+    "autoNormalize": "重みは自動的に100%に正規化されます。",
+    "presetBalanced": "バランス",
+    "presetMomentum": "モメンタム",
+    "presetValue": "バリュー",
+    "presetDefensive": "ディフェンシブ",
+    "factorMomentum": "モメンタム",
+    "factorValue": "バリュー",
+    "factorQuality": "クオリティ",
+    "factorVolatility": "ボラティリティ",
+    "factorLiquidity": "流動性",
+    "descMomentum": "トレンド強度と価格動態",
+    "descValue": "バリュエーション指標（PER, PBR）",
+    "descQuality": "収益性と効率性（ROE, 利益率）",
+    "descVolatility": "安定性とリスクエクスポージャー",
+    "descLiquidity": "取引量と市場深度"
   }
 }

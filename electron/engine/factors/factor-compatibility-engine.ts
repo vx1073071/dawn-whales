@@ -598,3 +598,12 @@ export class FactorCompatibilityEngine {
 export function createFactorCompatibilityEngine(): FactorCompatibilityEngine {
   return new FactorCompatibilityEngine();
 }
+
+let compatEngineInstance: FactorCompatibilityEngine | null = null;
+
+export function getFactorCompatibilityEngine(): FactorCompatibilityEngine {
+  if (!compatEngineInstance) {
+    compatEngineInstance = new FactorCompatibilityEngine();
+  }
+  return compatEngineInstance;
+}

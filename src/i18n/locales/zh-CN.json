@@ -6124,5 +6124,28 @@
     "simulatedTitle": "此报告部分基于模拟数据",
     "simulatedBody": "以下因子使用估算值而非真实市场数据：",
     "simulatedNote": "归因结果仅供研究参考，不可用于实盘决策。真实数据引擎正在升级中。"
+  },
+  "FactorWeightSlider": {
+    "reset": "恢复默认",
+    "chartTitle": "权重分布",
+    "sliderTitle": "调整因子权重",
+    "total": "合计",
+    "raw": "原始",
+    "dragHint": "拖动调整",
+    "autoNormalize": "权重自动归一化至100%。",
+    "presetBalanced": "均衡型",
+    "presetMomentum": "动量型",
+    "presetValue": "价值型",
+    "presetDefensive": "防御型",
+    "factorMomentum": "动量",
+    "factorValue": "价值",
+    "factorQuality": "质量",
+    "factorVolatility": "波动率",
+    "factorLiquidity": "流动性",
+    "descMomentum": "趋势强度与价格动能",
+    "descValue": "估值比率 (市盈率、市净率)",
+    "descQuality": "盈利能力与效率 (ROE、利润率)",
+    "descVolatility": "稳定性与风险敞口",
+    "descLiquidity": "交易量与市场深度"
   }
 }

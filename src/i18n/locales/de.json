@@ -5763,5 +5763,28 @@
     "simulatedTitle": "Dieser Bericht basiert teilweise auf simulierten Daten",
     "simulatedBody": "Die folgenden Faktoren verwenden Schätzungswerte statt realer Marktdaten:",
     "simulatedNote": "Die Attributionsergebnisse dienen nur als Referenz und sind nicht für Live-Entscheidungen geeignet. Das echte Daten-Engine wird derzeit aktualisiert."
+  },
+  "FactorWeightSlider": {
+    "reset": "Zurücksetzen",
+    "chartTitle": "Gewichtung",
+    "sliderTitle": "Faktorgewichte anpassen",
+    "total": "Gesamt",
+    "raw": "Roh",
+    "dragHint": "Ziehen",
+    "autoNormalize": "Gewichte werden automatisch auf 100% normalisiert.",
+    "presetBalanced": "Ausgewogen",
+    "presetMomentum": "Momentum",
+    "presetValue": "Wert",
+    "presetDefensive": "Defensiv",
+    "factorMomentum": "Momentum",
+    "factorValue": "Wert",
+    "factorQuality": "Qualität",
+    "factorVolatility": "Volatilität",
+    "factorLiquidity": "Liquidität",
+    "descMomentum": "Trendstärke & Kursdynamik",
+    "descValue": "Bewertungskennzahlen (KGV, KBV)",
+    "descQuality": "Rentabilität & Effizienz (ROE, Marge)",
+    "descVolatility": "Stabilität & Risikoexposition",
+    "descLiquidity": "Handelsvolumen & Markttiefe"
   }
 }

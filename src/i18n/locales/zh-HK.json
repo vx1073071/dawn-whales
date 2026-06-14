@@ -5801,5 +5801,28 @@
     "simulatedTitle": "此報告部分基於模擬數據",
     "simulatedBody": "以下因子使用估算值而非真實市場數據：",
     "simulatedNote": "歸因結果僅供研究參考，不可用於實盤決策。真實數據引擎正在升級中。"
+  },
+  "FactorWeightSlider": {
+    "reset": "恢復默認",
+    "chartTitle": "權重分佈",
+    "sliderTitle": "調整因子權重",
+    "total": "合計",
+    "raw": "原始",
+    "dragHint": "拖動調整",
+    "autoNormalize": "權重自動歸一化至100%。",
+    "presetBalanced": "均衡型",
+    "presetMomentum": "動量型",
+    "presetValue": "價值型",
+    "presetDefensive": "防禦型",
+    "factorMomentum": "動量",
+    "factorValue": "價值",
+    "factorQuality": "質量",
+    "factorVolatility": "波動率",
+    "factorLiquidity": "流動性",
+    "descMomentum": "趨勢強度與價格動能",
+    "descValue": "估值比率 (市盈率、市淨率)",
+    "descQuality": "盈利能力與效率 (ROE、利潤率)",
+    "descVolatility": "穩定性與風險敞口",
+    "descLiquidity": "交易量與市場深度"
   }
 }

@@ -5763,5 +5763,28 @@
     "simulatedTitle": "Ce rapport est partiellement basé sur des données simulées",
     "simulatedBody": "Les facteurs suivants utilisent des estimations au lieu de données de marché réelles:",
     "simulatedNote": "Les résultats d'attribution sont indicatifs, non adaptés aux décisions en direct. Mise à niveau du moteur de données réelles en cours."
+  },
+  "FactorWeightSlider": {
+    "reset": "Réinitialiser",
+    "chartTitle": "Distribution des Poids",
+    "sliderTitle": "Ajuster les Poids des Facteurs",
+    "total": "Total",
+    "raw": "brut",
+    "dragHint": "Glisser",
+    "autoNormalize": "Les poids sont normalisés automatiquement à 100%.",
+    "presetBalanced": "Équilibré",
+    "presetMomentum": "Momentum",
+    "presetValue": "Valeur",
+    "presetDefensive": "Défensif",
+    "factorMomentum": "Momentum",
+    "factorValue": "Valeur",
+    "factorQuality": "Qualité",
+    "factorVolatility": "Volatilité",
+    "factorLiquidity": "Liquidité",
+    "descMomentum": "Force de tendance et dynamique des prix",
+    "descValue": "Ratios de valorisation (P/E, P/B)",
+    "descQuality": "Rentabilité et efficacité (ROE, marge)",
+    "descVolatility": "Stabilité et exposition au risque",
+    "descLiquidity": "Volume de trading et profondeur de marché"
   }
 }

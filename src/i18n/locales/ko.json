@@ -5763,5 +5763,28 @@
     "simulatedTitle": "이 보고서는 부분적으로 시뮬레이션 데이터를 기반으로 합니다",
     "simulatedBody": "다음 요소는 실제 시장 데이터 대신 추정값을 사용합니다:",
     "simulatedNote": "귀속 결과는 참고용이며 실거래 결정에 적합하지 않습니다. 실데이터 엔진 업그레이드 진행 중입니다."
+  },
+  "FactorWeightSlider": {
+    "reset": "초기화",
+    "chartTitle": "가중치 분포",
+    "sliderTitle": "팩터 가중치 조정",
+    "total": "합계",
+    "raw": "원값",
+    "dragHint": "드래그",
+    "autoNormalize": "가중치는 자동으로 100%로 정규화됩니다.",
+    "presetBalanced": "균형",
+    "presetMomentum": "모멘텀",
+    "presetValue": "가치",
+    "presetDefensive": "방어적",
+    "factorMomentum": "모멘텀",
+    "factorValue": "가치",
+    "factorQuality": "품질",
+    "factorVolatility": "변동성",
+    "factorLiquidity": "유동성",
+    "descMomentum": "추세 강도 및 가격 역학",
+    "descValue": "가치평가 비율 (PER, PBR)",
+    "descQuality": "수익성 및 효율성 (ROE, 마진)",
+    "descVolatility": "안정성 및 리스크 노출",
+    "descLiquidity": "거래량 및 시장 심도"
   }
 }
