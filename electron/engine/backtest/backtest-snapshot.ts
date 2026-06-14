@@ -149,7 +149,7 @@ export class BacktestSnapshotStore {
    * Called automatically after each backtest run.
    */
   async save(snapshot: Omit<BacktestSnapshot, 'id' | 'timestamp'>): Promise<BacktestSnapshot> {
-    const id = this.generateId(strategyId);
+    const id = this.generateId(snapshot.strategyId);
     const now = Date.now();
 
     const snap: BacktestSnapshot = {
@@ -159,7 +159,7 @@ export class BacktestSnapshotStore {
     };
 
     // Store in a list for this strategy
-    const listKey = `${SNAPSHOT_PREFIX}list:${strategyId}`;
+    const listKey = `${SNAPSHOT_PREFIX}list:${snapshot.strategyId}`;
     const detailKey = `${SNAPSHOT_PREFIX}detail:${id}`;
 
     // Save detail
@@ -169,9 +169,9 @@ export class BacktestSnapshotStore {
     await this.cache.hset(listKey, id, String(now));
 
     // Prune old snapshots
-    await this.pruneOldSnapshots(strategyId);
+    await this.pruneOldSnapshots(snapshot.strategyId);
 
-    log.info(`[BacktestSnapshot] Saved snapshot ${id} for strategy ${strategyId}`);
+    log.info(`[BacktestSnapshot] Saved snapshot ${id} for strategy ${snapshot.strategyId}`);
     return snap;
   }
 
