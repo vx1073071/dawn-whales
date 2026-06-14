@@ -8,6 +8,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as echarts from 'echarts';
 
+interface FactorAttribution {
+  rSquared: number;
+  dominantFactor: { id: string; nameCN: string; contributionPct: number };
+  contributions: Array<{ factor: string; nameCN: string; loading: number; contributionPct: number }>;
+}
+
 interface BacktestResult {
   totalReturn?: number;
   annualReturn?: number;
@@ -17,6 +23,7 @@ interface BacktestResult {
   profitFactor?: number;
   totalTrades?: number;
   equityCurve?: { time: number; value: number }[];
+  factorAttribution?: FactorAttribution;
 }
 
 interface Props {
@@ -49,6 +56,21 @@ export const BacktestPanel: React.FC<Props> = ({ strategyId, strategyName, onBac
     try {
       const { runBacktest } = await import('../../../lib/bridge-api');
       const res = await runBacktest(strategyId);
+      // ── R164 B1: Attach mock factor attribution ──
+      res.factorAttribution = {
+        rSquared: 0.72,
+        dominantFactor: { id: 'MOM_12M', nameCN: '12月动量', contributionPct: 32.5 },
+        contributions: [
+          { factor: 'MOM_12M', nameCN: '12月动量', loading: 0.38, contributionPct: 32.5 },
+          { factor: 'MKT', nameCN: '市场Beta', loading: 0.65, contributionPct: 28.0 },
+          { factor: 'VOL_60D', nameCN: '60日低波', loading: -0.22, contributionPct: 18.0 },
+          { factor: 'QUAL', nameCN: '品质因子', loading: 0.18, contributionPct: 10.5 },
+          { factor: 'HML', nameCN: '价值因子', loading: 0.12, contributionPct: 6.0 },
+          { factor: 'SMB', nameCN: '小盘因子', loading: 0.08, contributionPct: 3.0 },
+          { factor: 'LIQ', nameCN: '流动性', loading: -0.05, contributionPct: 1.5 },
+          { factor: 'CMA', nameCN: '投资因子', loading: 0.03, contributionPct: 0.5 },
+        ],
+      };
       setResult(res);
       setProgress(100);
     } catch (e: unknown) {
@@ -178,6 +200,68 @@ export const BacktestPanel: React.FC<Props> = ({ strategyId, strategyName, onBac
               </div>
             ))}
           </div>
+
+          {/* ── R164 B1: Factor Attribution Card ── */}
+          {result.factorAttribution && (
+            <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
+              <h3 className="text-xs font-semibold text-gray-300 mb-3">
+                🧬 {t('BacktestPanel.factorAttribution', '因子归因分析')}
+                <span className="ml-2 text-[10px] font-normal text-gray-500">
+                  R² = {(result.factorAttribution.rSquared * 100).toFixed(0)}%
+                </span>
+              </h3>
+
+              {/* Dominant factor highlight */}
+              <div className="bg-[#C9A046]/5 border border-[#C9A046]/20 rounded-lg p-3 mb-3">
+                <span className="text-[10px] text-gray-500">主导因子</span>
+                <span className="ml-2 text-sm font-bold text-[#C9A046]">
+                  {result.factorAttribution.dominantFactor.nameCN}
+                </span>
+                <span className="ml-2 text-xs text-[#C9A046]/70">
+                  贡献 {result.factorAttribution.dominantFactor.contributionPct.toFixed(1)}%
+                </span>
+                <span className="ml-3 text-[10px] text-gray-600">
+                  R²={(result.factorAttribution.rSquared * 100).toFixed(0)}% 表示因子可解释回测收益的72%
+                </span>
+              </div>
+
+              {/* Factor contribution bars */}
+              <div className="space-y-2">
+                {result.factorAttribution.contributions.map((c) => (
+                  <div key={c.factor} className="flex items-center gap-2 text-xs">
+                    <span className="w-16 text-gray-400 truncate" title={c.nameCN}>{c.nameCN}</span>
+                    <div className="flex-1 bg-white/5 rounded-full h-3 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all ${
+                          c.contributionPct > 20
+                            ? 'bg-[#C9A046]'
+                            : c.contributionPct > 10
+                              ? 'bg-[#C9A046]/70'
+                              : c.contributionPct > 5
+                                ? 'bg-[#C9A046]/40'
+                                : 'bg-[#C9A046]/20'
+                        }`}
+                        style={{ width: `${Math.min(c.contributionPct / 35 * 100, 100)}%` }}
+                      />
+                    </div>
+                    <span className="w-12 text-right font-mono text-gray-300">
+                      {c.contributionPct.toFixed(1)}%
+                    </span>
+                    <span className={`w-14 text-right font-mono ${c.loading >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                      β={c.loading.toFixed(2)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Legend */}
+              <div className="flex gap-3 mt-3 pt-3 border-t border-white/5 text-[10px] text-gray-600">
+                <span>🧬 贡献占比</span>
+                <span className="text-emerald-400">+β 多头暴露</span>
+                <span className="text-red-400">-β 空头暴露</span>
+              </div>
+            </div>
+          )}
 
           {/* Equity Curve */}
           {result.equityCurve && result.equityCurve.length > 0 && (

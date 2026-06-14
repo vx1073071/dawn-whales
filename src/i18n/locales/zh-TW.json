@@ -5910,6 +5910,7 @@
     "maxDD": "最大回撤",
     "winRate": "胜率",
     "trades": "交易",
-    "equity": "权益曲线"
+    "equity": "权益曲线",
+    "factorAttribution": "因子归因分析"
   }
 }

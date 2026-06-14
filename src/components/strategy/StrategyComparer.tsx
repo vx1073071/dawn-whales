@@ -15,6 +15,13 @@ import i18n from '../../i18n';
 
 // ── Types ───────────────────────────────────────────────────────────────
 
+// ── R164 B3: Factor exposure per strategy for radar comparison ────────
+interface FactorExposure {
+  factor: string;
+  nameCN: string;
+  loading: number; // standardized beta, -1 to +1
+}
+
 interface StrategySnapshot {
   id: string;
   name: string;
@@ -29,6 +36,7 @@ interface StrategySnapshot {
   avgHoldingDays: number;
   profitFactor: number;
   equityCurve: number[]; // 100 normalized points
+  factorExposures?: FactorExposure[];
 }
 
 // ── Mock data ────────────────────────────────────────────────────────────
@@ -39,21 +47,51 @@ const MOCK_STRATEGIES: StrategySnapshot[] = [
   sharpe: 2.1, totalReturn: 0.35, maxDrawdown: -0.12, winRate: 0.58,
   annualVol: 0.18, calmarRatio: 2.9, tradeCount: 245, avgHoldingDays: 7.2,
   profitFactor: 1.8,
-  equityCurve: Array.from({ length: 100 }, (_, i) => 100 + Math.sin(i / 8) * 15 + i * 0.35 + Math.random() * 5)
+  equityCurve: Array.from({ length: 100 }, (_, i) => 100 + Math.sin(i / 8) * 15 + i * 0.35 + Math.random() * 5),
+  factorExposures: [
+    { factor: 'MKT', nameCN: '市场Beta', loading: 0.72 },
+    { factor: 'SMB', nameCN: '小盘因子', loading: 0.15 },
+    { factor: 'HML', nameCN: '价值因子', loading: -0.08 },
+    { factor: 'MOM_12M', nameCN: '12月动量', loading: 0.45 },
+    { factor: 'VOL_60D', nameCN: '60日低波', loading: -0.32 },
+    { factor: 'QUAL', nameCN: '品质因子', loading: 0.22 },
+    { factor: 'LIQ', nameCN: '流动性', loading: 0.10 },
+    { factor: 'YIELD', nameCN: '股息率', loading: -0.05 },
+  ],
 },
 {
   id: 's2', name: i18n.t('StrategyComparer.k2'), type: 'MOMENTUM',
   sharpe: 1.8, totalReturn: 0.28, maxDrawdown: -0.18, winRate: 0.52,
   annualVol: 0.22, calmarRatio: 1.6, tradeCount: 180, avgHoldingDays: 4.5,
   profitFactor: 1.4,
-  equityCurve: Array.from({ length: 100 }, (_, i) => 100 + Math.cos(i / 6) * 20 + i * 0.28 + Math.random() * 8)
+  equityCurve: Array.from({ length: 100 }, (_, i) => 100 + Math.cos(i / 6) * 20 + i * 0.28 + Math.random() * 8),
+  factorExposures: [
+    { factor: 'MKT', nameCN: '市场Beta', loading: 0.55 },
+    { factor: 'SMB', nameCN: '小盘因子', loading: 0.30 },
+    { factor: 'HML', nameCN: '价值因子', loading: -0.18 },
+    { factor: 'MOM_12M', nameCN: '12月动量', loading: 0.68 },
+    { factor: 'VOL_60D', nameCN: '60日低波', loading: -0.15 },
+    { factor: 'QUAL', nameCN: '品质因子', loading: 0.10 },
+    { factor: 'LIQ', nameCN: '流动性', loading: 0.28 },
+    { factor: 'YIELD', nameCN: '股息率', loading: -0.12 },
+  ],
 },
 {
   id: 's3', name: i18n.t('StrategyComparer.k3'), type: 'MEAN_REV',
   sharpe: 2.4, totalReturn: 0.42, maxDrawdown: -0.09, winRate: 0.63,
   annualVol: 0.15, calmarRatio: 4.7, tradeCount: 320, avgHoldingDays: 3.1,
   profitFactor: 2.1,
-  equityCurve: Array.from({ length: 100 }, (_, i) => 100 + Math.sin(i / 10) * 8 + i * 0.42 + Math.random() * 3)
+  equityCurve: Array.from({ length: 100 }, (_, i) => 100 + Math.sin(i / 10) * 8 + i * 0.42 + Math.random() * 3),
+  factorExposures: [
+    { factor: 'MKT', nameCN: '市场Beta', loading: 0.42 },
+    { factor: 'SMB', nameCN: '小盘因子', loading: -0.22 },
+    { factor: 'HML', nameCN: '价值因子', loading: 0.35 },
+    { factor: 'MOM_12M', nameCN: '12月动量', loading: 0.05 },
+    { factor: 'VOL_60D', nameCN: '60日低波', loading: -0.48 },
+    { factor: 'QUAL', nameCN: '品质因子', loading: 0.38 },
+    { factor: 'LIQ', nameCN: '流动性', loading: -0.08 },
+    { factor: 'YIELD', nameCN: '股息率', loading: 0.20 },
+  ],
 }];
 
 // ── Radar chart sub-component ───────────────────────────────────────────
@@ -152,7 +190,73 @@ const RadarChart: React.FC<{
 
 };
 
-// ── Main Component ──────────────────────────────────────────────────────
+// ── R164 B3: Factor Exposure Radar (8-factor) ───────────────────────────
+const FactorExposureRadar: React.FC<{
+  exposuresA?: FactorExposure[];
+  exposuresB?: FactorExposure[];
+  size?: number;
+}> = ({ exposuresA, exposuresB, size = 160 }) => {
+  const expA = exposuresA ?? [];
+  const expB = exposuresB ?? [];
+  if (expA.length === 0 && expB.length === 0) return null;
+
+  const cx = size / 2;
+  const cy = size / 2;
+  const radius = size * 0.33;
+  const n = Math.max(expA.length, expB.length);
+
+  const factors = expA.length >= expB.length ? expA : expB;
+
+  const getPoint = (index: number, loading: number) => {
+    const angle = (index / n) * 2 * Math.PI - Math.PI / 2;
+    // loading ranges -0.8 to 0.8, map to 0.1~1.0 of radius
+    const r = Math.max(0.1, Math.min(1, (Math.abs(loading) / 0.8))) * radius;
+    return { x: cx + (loading >= 0 ? r : -r) * Math.cos(angle), y: cy + (loading >= 0 ? r : -r) * Math.sin(angle) };
+  };
+
+  const levels = [0.25, 0.5, 0.75, 1.0];
+
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      {/* Grid */}
+      {levels.map((level) => (
+        <circle key={level} cx={cx} cy={cy} r={level * radius} fill="none" stroke="#374151" strokeWidth="0.5" />
+      ))}
+      {/* Axes */}
+      {factors.map((_: FactorExposure, i: number) => (
+        <line key={i} x1={cx} y1={cy} x2={cx + radius * Math.cos((i / n) * 2 * Math.PI - Math.PI / 2)} y2={cy + radius * Math.sin((i / n) * 2 * Math.PI - Math.PI / 2)} stroke="#374151" strokeWidth="0.5" />
+      ))}
+      {/* Zero circle */}
+      <circle cx={cx} cy={cy} r={0.12 * radius} fill="none" stroke="#4b5563" strokeWidth="0.5" strokeDasharray="2,2" />
+      {/* Mid-line */}
+      <line x1={cx - 2} y1={cy} x2={cx + 2} y2={cy} stroke="#4b5563" strokeWidth="0.5" />
+      <line x1={cx} y1={cy - 2} x2={cx} y2={cy + 2} stroke="#4b5563" strokeWidth="0.5" />
+      {/* Strategy B polygon */}
+      {expB.length > 0 && (
+        <polygon
+          points={expB.map((e: FactorExposure, i: number) => { const p = getPoint(i, e.loading); return `${p.x},${p.y}`; }).join(' ')}
+          fill="#3b82f6" fillOpacity="0.15" stroke="#3b82f6" strokeWidth="1.5" />
+      )}
+      {/* Strategy A polygon */}
+      {expA.length > 0 && (
+        <polygon
+          points={expA.map((e: FactorExposure, i: number) => { const p = getPoint(i, e.loading); return `${p.x},${p.y}`; }).join(' ')}
+          fill="#f59e0b" fillOpacity="0.2" stroke="#f59e0b" strokeWidth="1.5" />
+      )}
+      {/* Labels */}
+      {factors.map((e: FactorExposure, i: number) => {
+        const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
+        const lx = cx + (radius + 14) * Math.cos(angle);
+        const ly = cy + (radius + 14) * Math.sin(angle);
+        return (
+          <text key={i} x={lx} y={ly} textAnchor="middle" dominantBaseline="central" fontSize={7} fill="#6b7280">
+            {e.nameCN}
+          </text>
+        );
+      })}
+    </svg>
+  );
+};
 
 interface StrategyComparerProps {
   className?: string;
@@ -339,6 +443,22 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
             <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500" /> B</span>
           </div>
         </div>
+
+        {/* ── R164 B3: Factor Exposure Radar ── */}
+        {(strategyA.factorExposures || strategyB.factorExposures) && (
+          <div className="flex-shrink-0">
+            <div className="text-[10px] text-gray-500 mb-1 text-center">因子暴露</div>
+            <FactorExposureRadar
+              exposuresA={strategyA.factorExposures}
+              exposuresB={strategyB.factorExposures}
+              size={160}
+            />
+            <div className="flex justify-center gap-4 mt-2 text-[10px]">
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500" /> A</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500" /> B</span>
+            </div>
+          </div>
+        )}
 
         {/* Metrics table */}
         <div className="flex-1 overflow-x-auto">

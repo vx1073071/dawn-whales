@@ -5910,6 +5910,7 @@
     "maxDD": "Max DD",
     "winRate": "Win Rate",
     "trades": "Trades",
-    "equity": "Equity Curve"
+    "equity": "Equity Curve",
+    "factorAttribution": "因子归因分析"
   }
 }
