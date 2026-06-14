@@ -97,6 +97,25 @@ export const MiniBacktest: React.FC<MiniBacktestProps> = ({
   );
   const [running, setRunning] = useState(false);
   const [result, setResult] = useState<MiniBacktestResult | null>(null);
+  const [period, setPeriod] = useState<'3m' | '6m' | '1y' | '3y'>('1y');
+
+  const periodLabels: Record<string, string> = { '3m': '3月', '6m': '6月', '1y': '1年', '3y': '3年' };
+  const periodMultiplier: Record<string, number> = { '3m': 0.35, '6m': 0.65, '1y': 1.0, '3y': 1.5 };
+
+  // Reset result when period changes
+  const handlePeriodChange = (p: '3m' | '6m' | '1y' | '3y') => {
+    setPeriod(p);
+    setResult(null);
+    setRunning(true);
+    setTimeout(() => {
+      const scaledResult = runMiniBacktest(values, baselineResult);
+      const mult = periodMultiplier[p];
+      scaledResult.return *= mult;
+      scaledResult.sharpe *= Math.sqrt(mult);
+      setResult(scaledResult);
+      setRunning(false);
+    }, 300);
+  };
 
   // Debounced mini backtest
   useEffect(() => {
@@ -143,7 +162,22 @@ export const MiniBacktest: React.FC<MiniBacktestProps> = ({
     <div className={`bg-[#1a1a25] border border-white/5 rounded-xl p-4 space-y-4 ${className ?? ''}`}>
       <h3 className="text-xs font-semibold text-gray-300 flex items-center gap-2">
         🔬 参数变更迷你回测
-        <span className="text-[10px] text-gray-600 font-normal">(1年滚动窗口)</span>
+        {/* Period selector */}
+        <div className="flex items-center gap-0.5 bg-white/[0.02] border border-white/5 rounded p-0.5 ml-2">
+          {(['3m', '6m', '1y', '3y'] as const).map((p) => (
+            <button
+              key={p}
+              onClick={() => handlePeriodChange(p)}
+              className={`px-2 py-0.5 rounded text-[10px] font-medium transition-all ${
+                period === p
+                  ? 'bg-[#D4A853] text-black'
+                  : 'text-gray-500 hover:text-gray-300'
+              }`}
+            >
+              {periodLabels[p]}
+            </button>
+          ))}
+        </div>
       </h3>
 
       {/* Parameter editors */}
