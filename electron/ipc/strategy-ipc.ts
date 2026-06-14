@@ -793,6 +793,36 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
   });
 }
 
+// ── R182 P0-12: Rate limit admin IPC ──────────────────────────────────────
+ipcMain.handle('admin:rate-limit-stats', async () => {
+  const { getRateLimitStats, getAllRateStates, getRateLimitConfig } = await import('./engine/agents/rate-limiter');
+  return {
+    success: true,
+    global: getRateLimitStats(),
+    config: getRateLimitConfig(),
+    allUsers: getAllRateStates(),
+  };
+});
+
+ipcMain.handle('admin:rate-limit-reset-user', async (_e, userId: string) => {
+  const { resetUserRateLimit } = await import('./engine/agents/rate-limiter');
+  resetUserRateLimit(userId);
+  return { success: true };
+});
+
+ipcMain.handle('admin:rate-limit-reset-all', async () => {
+  const { resetAllRateLimits } = await import('./engine/agents/rate-limiter');
+  resetAllRateLimits();
+  return { success: true };
+});
+
+ipcMain.handle('admin:rate-limit-config', async (_e, partial: any) => {
+  const { updateRateLimitConfig, getRateLimitConfig } = await import('./engine/agents/rate-limiter');
+  updateRateLimitConfig(partial ?? {});
+  return { success: true, config: getRateLimitConfig() };
+});
+}
+
 // ── System Tray ────────────────────────────────────────────────────────────
 
 function createTray() {

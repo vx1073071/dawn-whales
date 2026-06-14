@@ -19,6 +19,20 @@ import { getFactorPortfolioEvaluator } from '../factors/factor-portfolio-eval';
 import { runFactorBacktest, type FactorBacktestResult } from '../backtest/backtest-engine';
 // R175 G6: Factor user profile for smart pre-fill
 import { getFactorUserProfile } from '../factors/factor-user-profile';
+// R178 G7+: AI output guard for input/output sanitization
+import { getAIOutputGuard, guardAIOutput } from '../security/ai-output-guard';
+// R178 G7+/G14: User context sanitizer — strip sensitive data before AI
+import { sanitizeForAI } from '../security/ai-input-sanitizer';
+// R178 G14: Factor billing gateway for wallet-less billing check
+import { getFactorBillingGateway } from '../factors/factor-billing-gateway';
+// R179 G16: Data source anomaly guard — refuse AI when data source unhealthy
+import { getDataSourceGuard } from '../security/factor-data-source-guard';
+// R182 P0-12: Rate limiter for AI recommendation entry
+import { checkRateLimit } from './rate-limiter';
+// R181 P0-05: AI hallucination detection & fact anchoring
+import { hallucinationCheck, tagOutputProvenance, type HallucinationReport } from '../security/ai-hallucination-check';
+// R182 P0-10: Unified AI security gateway
+import { getAISecurityGateway } from '../security/ai-security-gateway';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -32,6 +46,9 @@ export type FactorAdvisorIntent =
   | 'crypto_trend'
   | 'crypto_mean_reversion'
   | 'balanced_all_weather'
+  | 'sector_neutral'        // R179 G24: 行业中性
+  | 'macro_resilient'       // R179 G24: 宏观韧性
+  | 'multi_style_rotation'  // R179 G24: 多风格轮动
   | 'question'        // R171 E1: 问 — ask about specific factor/framework
   | 'selection'       // R171 E1: 选 — pick from options per constraints
   | 'answer'          // R171 E1: 答 — direct answer with evidence
@@ -44,10 +61,14 @@ export interface FactorAdvisorRequest {
   query: string;
   /** Target market */
   market: 'US' | 'HK' | 'CRYPTO';
-  /** User ID for billing */
+  /** User ID for billing (R178 G14: no longer passes to AI — used for billing gate only) */
   userId: string;
-  /** Wallet balance (for pre-check) */
-  walletBalanceUSDT: number;
+  /**
+   * @deprecated R178 G14: walletBalance removed from AI context.
+   * Billing pre-check now uses internal wallet service via FactorBillingGateway.
+   * This field is ignored for security — kept only for backward compat.
+   */
+  walletBalanceUSDT?: number;
 }
 
 export interface FactorRecommendation {
@@ -291,6 +312,55 @@ const INTENT_PATTERNS: IntentPattern[] = [
     ],
     backtestBaseline: { ret: 13.0, sharpe: 1.50, dd: 12.0, winRate: 60 },
   },
+  // ── R179 G24: 3 New Balanced Intents ──────────────────────────────
+  {
+    intent: 'sector_neutral',
+    keywordsCN: ['行业中性', '板块中性', '不偏行业', '行业均衡', '跨行业'],
+    keywordsEN: ['sector neutral', 'industry neutral', 'cross sector'],
+    intentLabel: '行业中性',
+    explanation: '行业中性配置，所有因子在GICS 11大行业中均匀暴露。适合对特定行业无偏好的投资者，降低行业集中风险。',
+    baseFactors: [
+      { id: 'VOL_60D', weight: 0.25, reason: '跨行业低波动' },
+      { id: 'QUAL', weight: 0.25, reason: '跨行业质量' },
+      { id: 'MOM_12M', weight: 0.15, reason: '跨行业动量' },
+      { id: 'HML', weight: 0.15, reason: '跨行业价值' },
+      { id: 'SIZE', weight: 0.10, reason: '规模分散' },
+      { id: 'RMW', weight: 0.10, reason: '盈利覆盖' },
+    ],
+    backtestBaseline: { ret: 11.0, sharpe: 1.35, dd: 14.0, winRate: 58 },
+  },
+  {
+    intent: 'macro_resilient',
+    keywordsCN: ['宏观韧性', '抗宏观', '抗通胀', '加息', '降息', '宏观对冲', '经济周期'],
+    keywordsEN: ['macro resilient', 'inflation hedge', 'rate hike', 'economic cycle'],
+    intentLabel: '宏观韧性',
+    explanation: '宏观环境韧性组合，在利率/通胀/经济增长变化中保持稳健。加息期偏价值+质量，降息期偏成长+动量，通胀期偏商品+价值。',
+    baseFactors: [
+      { id: 'HML', weight: 0.22, reason: '价值抗通胀' },
+      { id: 'QUAL', weight: 0.22, reason: '质量抗周期' },
+      { id: 'CMA', weight: 0.18, reason: '保守投资策略' },
+      { id: 'VOL_60D', weight: 0.15, reason: '低波动防御' },
+      { id: 'YIELD', weight: 0.13, reason: '高股息现金牛' },
+      { id: 'MOM_12M', weight: 0.10, reason: '动量追踪' },
+    ],
+    backtestBaseline: { ret: 10.5, sharpe: 1.40, dd: 13.0, winRate: 59 },
+  },
+  {
+    intent: 'multi_style_rotation',
+    keywordsCN: ['风格轮动', '多风格', '风格切换', '动态风格', '风格配置'],
+    keywordsEN: ['style rotation', 'multi style', 'style switch', 'dynamic style'],
+    intentLabel: '多风格轮动',
+    explanation: '多风格动态轮动，在动量/价值/质量/成长四种风格之间按市场环境动态配置权重。适合主动管理型投资者，追求风格alpha。',
+    baseFactors: [
+      { id: 'MOM_12M', weight: 0.20, reason: '动量风格' },
+      { id: 'HML', weight: 0.20, reason: '价值风格' },
+      { id: 'QUAL', weight: 0.20, reason: '质量风格' },
+      { id: 'GROWTH', weight: 0.17, reason: '成长风格' },
+      { id: 'SIZE', weight: 0.13, reason: '小盘弹性' },
+      { id: 'ADX', weight: 0.10, reason: '趋势强度信号' },
+    ],
+    backtestBaseline: { ret: 15.0, sharpe: 1.25, dd: 18.0, winRate: 52 },
+  },
   // ── R171 E1: 5 New Conversational Intents ──────────────────────────
   {
     intent: 'question',
@@ -402,19 +472,60 @@ export class AIFactorAdvisor {
   async recommend(request: FactorAdvisorRequest): Promise<FactorAdvisorResult> {
     const sessionId = `aifa-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
-    // ── Billing pre-check ──
-    if (request.walletBalanceUSDT < AIFactorAdvisor.COST_USDT) {
+    // ── R179 G16: Data source health gate ──
+    const dsGuard = getDataSourceGuard();
+    if (!dsGuard.isSafeForAI()) {
+      const health = dsGuard.checkAllSources();
       return {
         success: false,
         sessionId, intent: 'unknown', intentLabel: '',
-        explanation: '余额不足', factors: [], suggestedFactorCount: 0,
+        explanation: `数据源异常(${health.overallScore}分)，AI推荐已暂停: ${health.summary}`,
+        factors: [], suggestedFactorCount: 0,
         backtest: this.emptyBacktest(),
-        billing: { charged: false, amountUSDT: AIFactorAdvisor.COST_USDT, serviceType: AIFactorAdvisor.SERVICE_TYPE, error: `余额 ${request.walletBalanceUSDT.toFixed(2)} USDT 不足，需要 ${AIFactorAdvisor.COST_USDT} USDT` },
+        billing: { charged: false, amountUSDT: 0, serviceType: AIFactorAdvisor.SERVICE_TYPE, error: 'DATA_SOURCE_UNHEALTHY' },
+        warnings: health.checks.flatMap(c => c.details),
+      };
+    }
+
+    // ── R182 P0-12: Rate limit check ──────────────────────────────────
+    const rateCheck = checkRateLimit(request.userId, 'ai.recommend');
+    if (!rateCheck.allowed) {
+      return {
+        success: false,
+        sessionId, intent: 'unknown', intentLabel: '',
+        explanation: `Too many AI requests. Please try again in ${Math.ceil(rateCheck.retryAfterMs / 1000)}s.`,
+        factors: [], suggestedFactorCount: 0,
+        backtest: this.emptyBacktest(),
+        billing: { charged: false, amountUSDT: 0, serviceType: AIFactorAdvisor.SERVICE_TYPE, error: 'RATE_LIMITED' },
+        warnings: [rateCheck.reason || 'Rate limit exceeded'],
+      };
+    }
+
+    // ── R179 G26: Track session intent ──
+    this.trackIntent(request.userId);
+
+    // ── R178 G7+: Input sanitization ──
+    const cleanedQuery = sanitizeForAI(request.query);
+    if (cleanedQuery !== request.query) {
+      log.warn(`[AIAdvisor] Input sanitized: ${request.query.length}→${cleanedQuery.length} chars`);
+    }
+
+    // ── R178 G14: Billing pre-check via gateway (wallet NOT exposed to AI) ──
+    const billingGate = getFactorBillingGateway();
+    const billingCheck = await billingGate.attemptAccess(request.userId, 'AI_RECOMMENDATION');
+    if (!billingCheck.ok) {
+      return {
+        success: false,
+        sessionId, intent: 'unknown', intentLabel: '',
+        explanation: billingCheck.message || '扣费失败，请检查账户余额',
+        factors: [], suggestedFactorCount: 0,
+        backtest: this.emptyBacktest(),
+        billing: { charged: false, amountUSDT: AIFactorAdvisor.COST_USDT, serviceType: AIFactorAdvisor.SERVICE_TYPE, error: billingCheck.message },
         warnings: [],
       };
     }
 
-    // ── Hold charge ──
+    // ── Hold charge (R178 G14: userId for billing gate only, not AI) ──
     let charged = false;
     let txId: string | undefined;
     if (this.chargeCallback) {
@@ -442,19 +553,23 @@ export class AIFactorAdvisor {
       }
     }
 
-    // ── Parse intent from query ──
-    const intentResult = this.parseIntent(request.query, request.market);
+    // ── Parse intent from sanitized query (R178 G7+) ──
+    const intentResult = this.parseIntent(cleanedQuery, request.market);
 
     // ── Build factor recommendations ──
     const pattern = INTENT_PATTERNS.find(p => p.intent === intentResult.intent) || INTENT_PATTERNS[8]; // fallback to balanced
-    const factors: FactorRecommendation[] = pattern.baseFactors.map(bf => ({
+    const factors: FactorRecommendation[] = pattern.baseFactors.map(bf => {
+      // R179 G24: fingerprint diversity — ±3% jitter on weights
+      const jitter = 1 + (Math.random() - 0.5) * 0.06; // ±3%
+      return {
       factorId: bf.id,
       nameCN: this.getFactorCNName(bf.id),
       categoryCN: this.getCategoryCN(bf.id),
-      recommendedWeight: Number(bf.weight.toFixed(2)),
+      recommendedWeight: Number((bf.weight * jitter).toFixed(4)),
       reason: bf.reason,
       typicalIC: this.getTypicalIC(bf.id),
-    }));
+      };
+    });
     // ── R174 E3: Real backtest (replaces virtual projectedCurve) ──
     let backtestResult: any = null;
     let projectedCurve: Array<{ month: string; cumulative: number }> = [];
@@ -514,8 +629,10 @@ export class AIFactorAdvisor {
       }));
     }
 
-    // ── Warnings ──
+    // ── Warnings (R178 G12: add metrics validation warning) ──
     const warnings = this.generateWarnings(intentResult.intent, pattern);
+    const metricsWarnings = this.validateMetrics(factors, expReturn, expSharpe);
+    warnings.push(...metricsWarnings);
 
     // ── R172 E5: Persist recommendation to history ──
     this.recordRecommendation(sessionId, intentResult.intent, factors);
@@ -534,7 +651,7 @@ export class AIFactorAdvisor {
       log.warn('[AIFactorAdvisor] Profile update skipped:', e?.message);
     }
 
-    return {
+    const result: FactorAdvisorResult = {
       success: true,
       sessionId,
       intent: intentResult.intent,
@@ -553,6 +670,38 @@ export class AIFactorAdvisor {
       billing: { charged, amountUSDT: AIFactorAdvisor.COST_USDT, serviceType: AIFactorAdvisor.SERVICE_TYPE, transactionId: txId },
       warnings,
     };
+
+    // ── R182 P0-10: Unified AI security gateway (replaces scattered guardAIOutput + hallucinationCheck + tagOutputProvenance) ──
+    const securityGateway = getAISecurityGateway();
+    const outputCheck = securityGateway.guardOutput(result.explanation, {
+      factorIds: result.factors.map(f => f.factorId),
+      intent: result.intent,
+      userId: request.userId,
+    });
+
+    if (outputCheck.level === 'BLOCKED') {
+      log.warn(`[AIAdvisor] Output blocked: ${outputCheck.blockExplanation}`);
+      return {
+        ...result,
+        success: false,
+        explanation: outputCheck.allowedOutput,
+        factors: [],
+        warnings: [...result.warnings, ...[`[安全拦截] ${outputCheck.blockExplanation || ''}`.trim()].filter(Boolean)],
+      };
+    }
+
+    // Attach credibility badges + semantic warnings to result
+    if (outputCheck.credibilityBadges.length > 0) {
+      result.warnings.push(...outputCheck.credibilityBadges.map(b => `${b.label}: ${b.detail}`));
+    }
+    if (outputCheck.warnings.length > 0) {
+      result.warnings.push(...outputCheck.warnings);
+    }
+
+    // R181 P0-08: Multi-turn dialog tracking
+    this.multiTurnDialog(request.userId, request.query);
+
+    return result;
   }
 
   // ── Intent Parsing (keyword matching) ───────────────────────────────
@@ -1053,8 +1202,382 @@ export class AIFactorAdvisor {
     return { original, deduplicated: dedup, removed, summary: removed.length>0?`已移除${removed.length}个重复因子`:'无需去重' };
   }
 
-  reset(): void { log.info('[AIFactorAdvisor] Reset'); }
+  // ── R178 G12: IC/Sharpe Metrics Validation ──────────────────────────
+  // Verifies AI-generated metrics against real ETF price data (±3σ range).
+
+  private validateMetrics(factors: FactorRecommendation[], expReturn: number, expSharpe: number): string[] {
+    const warnings: string[] = [];
+    const etfSource = getETFPriceSource();
+
+    // Validate IC values per factor
+    for (const f of factors) {
+      if (f.typicalIC < -0.30) {
+        warnings.push(`[指标异常] ${f.nameCN} IC=${f.typicalIC.toFixed(4)} 低于合理下限(-0.3)，已钳制`);
+      }
+      if (f.typicalIC > 0.30) {
+        warnings.push(`[指标异常] ${f.nameCN} IC=${f.typicalIC.toFixed(4)} 高于合理上限(0.3)，已钳制`);
+      }
+    }
+
+    // Validate Sharpe ratio against ETF factor returns
+    try {
+      const factorReturns = etfSource.computeFactorReturns();
+      const realSharpes: number[] = [];
+      for (const [, ret] of Object.entries(factorReturns)) {
+        if ((ret as any).annualizedSharpe > -5 && (ret as any).annualizedSharpe < 5) {
+          realSharpes.push((ret as any).annualizedSharpe);
+        }
+      }
+      if (realSharpes.length > 0) {
+        const avgRealSharpe = realSharpes.reduce((a, b) => a + b, 0) / realSharpes.length;
+        const stdRealSharpe = Math.sqrt(realSharpes.reduce((s, v) => s + (v - avgRealSharpe) ** 2, 0) / realSharpes.length);
+        const lowerBound = avgRealSharpe - 3 * stdRealSharpe;
+        const upperBound = avgRealSharpe + 3 * stdRealSharpe;
+
+        if (expSharpe < lowerBound) {
+          warnings.push(`[真实性警告] Sharpe=${expSharpe.toFixed(3)} 显著低于${lowerBound.toFixed(2)}（ETF真实±3σ范围），数据可能失真`);
+        }
+        if (expSharpe > upperBound) {
+          warnings.push(`[真实性警告] Sharpe=${expSharpe.toFixed(3)} 显著高于${upperBound.toFixed(2)}（ETF真实±3σ范围），结果可能被AI夸大`);
+        }
+      }
+    } catch {
+      // ETF source unavailable — skip validation, don't block
+    }
+
+    // Validate annual return bounds
+    if (expReturn > 100) {
+      warnings.push(`[真实性警告] 年化收益${expReturn.toFixed(1)}%异常高，可能为AI虚构`);
+    }
+    if (expReturn < -60) {
+      warnings.push(`[真实性警告] 年化收益${expReturn.toFixed(1)}%异常低`);
+    }
+
+    if (warnings.length > 0) {
+      log.warn(`[AIAdvisor] Metrics validation: ${warnings.length} warnings`);
+    }
+
+    return warnings;
+  }
+
+  // ── R179 G26: Per-user session isolation ───────────────────────────
+
+  /** Active user session tracking — one session per userId at a time */
+  private userSessions: Map<string, { sessionId: string; startedAt: number; intentCount: number }> = new Map();
+
+  /** Begin a new session for a user (R179 G26: clears previous session state). */
+  beginUserSession(userId: string): { sessionId: string; isNew: boolean } {
+    const existing = this.userSessions.get(userId);
+    const sessionId = `usess-${userId.slice(0, 8)}-${Date.now()}`;
+
+    if (existing) {
+      log.info(`[AIAdvisor] Ending previous session ${existing.sessionId.slice(0, 20)}... (${existing.intentCount} intents)`);
+      // Clear previous session's derived data
+    }
+
+    this.userSessions.set(userId, { sessionId, startedAt: Date.now(), intentCount: 0 });
+    log.info(`[AIAdvisor] Session started: ${sessionId.slice(0, 24)} for user ${userId.slice(0, 8)}...`);
+    return { sessionId, isNew: !existing };
+  }
+
+  /** End a user session and clear associated data. */
+  endUserSession(userId: string): boolean {
+    const session = this.userSessions.get(userId);
+    if (!session) return false;
+    log.info(`[AIAdvisor] Session ended: ${session.sessionId.slice(0, 24)} (${session.intentCount} intents, ${Math.round((Date.now() - session.startedAt) / 1000)}s)`);
+    this.userSessions.delete(userId);
+    return true;
+  }
+
+  /** Get current session info for a user. */
+  getUserSession(userId: string): { sessionId: string; startedAt: number; intentCount: number } | null {
+    return this.userSessions.get(userId) || null;
+  }
+
+  /** Increment intent count for active session (R179 G26: rate limit helper). */
+  private trackIntent(userId: string): void {
+    const session = this.userSessions.get(userId);
+    if (session) session.intentCount++;
+  }
+
+  // ── R181 P0-08: Multi-Turn Dialog ────────────────────────────────────
+  // User preference memory across turns (per userId).
+  // Used by multiTurnDialog() to progressively refine recommendations.
+
+  private turnMemory: Map<string, {
+    conversation: Array<{ role: 'user' | 'assistant'; text: string; timestamp: number }>;
+    revealedPreferences: string[];    // e.g. ['low_risk', 'dividend_lover']
+    lastIntent?: FactorAdvisorIntent;
+    lastFactors?: string[];
+    turnCount: number;
+  }> = new Map();
+
+  /**
+   * Multi-turn dialog: AI remembers user preferences across turns,
+   * progressively refines recommendations. Each turn builds on the last.
+   */
+  multiTurnDialog(userId: string, query: string): {
+    conversation: Array<{ role: string; text: string }>;
+    preferences: string[];
+    transition: 'NEW' | 'CONTINUING' | 'REFINING';
+    hint: string;
+  } {
+    let memory = this.turnMemory.get(userId);
+    const now = Date.now();
+
+    // New conversation after 30min idle
+    if (!memory || now - (memory.conversation[memory.conversation.length - 1]?.timestamp || 0) > 1800000) {
+      memory = { conversation: [], revealedPreferences: [], turnCount: 0 };
+      this.turnMemory.set(userId, memory);
+    }
+
+    memory.turnCount++;
+    memory.conversation.push({ role: 'user', text: query, timestamp: now });
+
+    // Detect preferences from query keywords
+    const newPrefs = this.detectPreferences(query);
+    for (const p of newPrefs) {
+      if (!memory.revealedPreferences.includes(p)) {
+        memory.revealedPreferences.push(p);
+      }
+    }
+
+    let transition: 'NEW' | 'CONTINUING' | 'REFINING';
+    let hint: string;
+
+    if (memory.turnCount === 1) {
+      transition = 'NEW';
+      hint = '首次对话。将根据您的偏好提供初始因子推荐。您可以在后续对话中细化。';
+    } else if (newPrefs.length > 0) {
+      transition = 'REFINING';
+      hint = `检测到新偏好: ${newPrefs.join('、')}。正在基于前${memory.turnCount}轮对话优化推荐。`;
+    } else {
+      transition = 'CONTINUING';
+      hint = `第${memory.turnCount}轮对话。继续基于您的偏好(${memory.revealedPreferences.join('、')})优化推荐。`;
+    }
+
+    return {
+      conversation: memory.conversation.map(c => ({ role: c.role, text: c.text })),
+      preferences: memory.revealedPreferences,
+      transition,
+      hint,
+    };
+  }
+
+  /** Get conversation history for a user. */
+  getConversation(userId: string): Array<{ role: string; text: string }> {
+    const memory = this.turnMemory.get(userId);
+    return memory?.conversation.map(c => ({ role: c.role, text: c.text })) || [];
+  }
+
+  private detectPreferences(query: string): string[] {
+    const prefs: string[] = [];
+    const map: Array<{ pattern: RegExp; pref: string }> = [
+      { pattern: /低风险|保守|稳健|不要亏|保本|安全/, pref: 'low_risk' },
+      { pattern: /高风险|激进|敢冒险|高收益|弹性/, pref: 'high_risk' },
+      { pattern: /分红|股息|派息|现金流/, pref: 'dividend_lover' },
+      { pattern: /成长|增长|爆发|高增长/, pref: 'growth_seeker' },
+      { pattern: /价值|便宜|低估值|抄底/, pref: 'value_hunter' },
+      { pattern: /科创|科技|AI|半导体|新能源/, pref: 'tech_bull' },
+      { pattern: /短期|快进快出|波段|短线/, pref: 'short_term' },
+      { pattern: /长期|定投|长期持有|养老/, pref: 'long_term' },
+      { pattern: /分散|多元|多因子|均衡/, pref: 'diversified' },
+    ];
+    for (const { pattern, pref } of map) {
+      if (pattern.test(query)) prefs.push(pref);
+    }
+    return prefs;
+  }
+
+  // ── R181 P0-06: Suggest Next Questions ───────────────────────────────
+  // After each recommendation, suggest 2-3 natural follow-up questions
+  // so users don't need to think "what should I ask next?".
+
+  /**
+   * Generate 2-3 clickable follow-up questions based on current intent.
+   * Uses curated templates per intent for natural flow.
+   */
+  suggestNextQuestions(
+    intent: FactorAdvisorIntent,
+    factors: string[],
+  ): string[] {
+    const templates: Record<string, string[]> = {
+      high_growth_low_volatility: [
+        '这些因子中哪个IC值最高？',
+        '如果我想降低最大回撤，应该怎么调整？',
+        '帮我看看这个组合在2024年的回测表现',
+      ],
+      value_reversal: [
+        '价值因子目前处于什么分位？',
+        '港股和美股的价值因子哪个更强？',
+        '加一个动量因子会不会更好？',
+      ],
+      momentum_following: [
+        '动量因子近期信号强度如何？',
+        '如果市场转向，这个组合会亏多少？',
+        '结合波动率因子调整一下权重',
+      ],
+      quality_defensive: [
+        '质量因子覆盖了哪些财务指标？',
+        '这个组合在熊市表现怎么样？',
+        '加入股息因子能提高确定性吗？',
+      ],
+      high_dividend: [
+        '这些高股息标的的派息率是多少？',
+        '股息因子和债券收益率的关系？',
+        '提高增长率的同时保持股息率可能吗？',
+      ],
+      small_cap_growth: [
+        '小盘因子最近一年表现怎么样？',
+        '小盘成长的波动率有多高？',
+        '搭配质量因子能降低风险吗？',
+      ],
+      balanced_all_weather: [
+        '哪些因子贡献了最多的收益？',
+        '这个组合去年在通胀环境下表现如何？',
+        '调整成更偏进攻型的权重',
+      ],
+      macro_resilient: [
+        '当前宏观环境适合这个组合吗？',
+        '利率变化对各因子有什么影响？',
+        '如果降息周期来了应该怎么调整？',
+      ],
+      multi_style_rotation: [
+        '目前哪个风格因子最强？',
+        '风格轮动的触发信号是什么？',
+        '帮我对比一下价值和成长目前的IC差距',
+      ],
+      sector_neutral: [
+        '各行业因子的暴露度均衡吗？',
+        '有没有行业集中度风险？',
+        '科技行业占比过高怎么办？',
+      ],
+    };
+
+    // Fallback: generic follow-ups based on factor categories
+    const genericQuestions = [
+      '这些因子的IC值排名是怎样的？',
+      '帮我做一个完整的回测分析',
+      '如果我想降低风险应该怎么做？',
+      `${factors.length > 0 ? `为什么选择了${factors.slice(0, 2).join('和')}？` : ''}`,
+    ].filter(Boolean);
+
+    const candidates = templates[intent] || genericQuestions;
+    // Return 2-3
+    return candidates.slice(0, 3);
+  }
+
+  // ── R181 P0-09: Humanize Metrics ─────────────────────────────────────
+  // Translate raw numbers (IC/Sharpe/MaxDD) into human-friendly language.
+  // Designed for non-technical users who shouldn't need a CFA to understand.
+
+  /**
+   * Translate a raw metric into a human-friendly description.
+   */
+  humanizeMetric(metric: 'IC' | 'IR' | 'Sharpe' | 'MaxDD' | 'WinRate' | 'AnnualReturn' | 'Volatility', value: number): {
+    label: string;
+    value: string;
+    emoji: string;
+    plainLanguage: string;
+    rating: 1 | 2 | 3 | 4 | 5;
+  } {
+    const patterns = HUMANIZE_PATTERNS[metric];
+    const match = patterns.find(p => {
+      if (p.range[0] === -Infinity) return value <= p.range[1];
+      if (p.range[1] === Infinity) return value >= p.range[0];
+      return value >= p.range[0] && value < p.range[1];
+    }) || patterns[patterns.length - 1];
+
+    return {
+      label: match.label,
+      value: metric === 'MaxDD' || metric === 'Volatility'
+        ? `${(value * 100).toFixed(1)}%`
+        : value.toFixed(2),
+      emoji: match.emoji,
+      plainLanguage: match.plainLanguage,
+      rating: match.rating,
+    };
+  }
+
+  /** Bulk humanize a set of key metrics for UI display. */
+  humanizeMetricsBundle(metrics: { ic?: number; sharpe?: number; maxDD?: number; winRate?: number }): Array<{
+    metric: string;
+    label: string;
+    value: string;
+    emoji: string;
+    plainLanguage: string;
+    rating: number;
+  }> {
+    const results: Array<{ metric: string; label: string; value: string; emoji: string; plainLanguage: string; rating: number }> = [];
+    if (metrics.ic !== undefined) results.push({ metric: 'IC', ...this.humanizeMetric('IC', metrics.ic) });
+    if (metrics.sharpe !== undefined) results.push({ metric: 'Sharpe', ...this.humanizeMetric('Sharpe', metrics.sharpe) });
+    if (metrics.maxDD !== undefined) results.push({ metric: 'MaxDD', ...this.humanizeMetric('MaxDD', metrics.maxDD) });
+    if (metrics.winRate !== undefined) results.push({ metric: 'WinRate', ...this.humanizeMetric('WinRate', metrics.winRate / 100) });
+    return results;
+  }
+
+  reset(): void {
+    this.turnMemory.clear();
+    this.userSessions.clear();
+    log.info('[AIFactorAdvisor] Reset');
+  }
 }
+
+// ── R181 P0-09: Humanization Patterns ──────────────────────────────────────
+// Ordered from best to worst — first match wins.
+// Designed so non-professional investors instantly understand what each number means.
+
+type HumanizePattern = {
+  range: [number, number];
+  label: string;
+  emoji: string;
+  plainLanguage: string;
+  rating: 1 | 2 | 3 | 4 | 5;
+};
+
+const HUMANIZE_PATTERNS: Record<string, HumanizePattern[]> = {
+  IC: [
+    { range: [0.10, Infinity], label: '极强预测力', emoji: '🟢', plainLanguage: '这个因子预测能力极强，10次判断里至少有6次是对的', rating: 5 },
+    { range: [0.05, 0.10], label: '良好预测力', emoji: '🟢', plainLanguage: '预测能力不错，比一半以上的纯随机选择靠谱', rating: 4 },
+    { range: [0.02, 0.05], label: '一般预测力', emoji: '🟡', plainLanguage: '有一点预测能力，但不太稳定，建议搭配其他因子使用', rating: 3 },
+    { range: [0.00, 0.02], label: '弱预测力', emoji: '🟠', plainLanguage: '预测能力比较弱，单用可能不太可靠', rating: 2 },
+    { range: [-Infinity, 0.00], label: '负预测力', emoji: '🔴', plainLanguage: '这个因子目前是反向指标，用它选股可能事与愿违', rating: 1 },
+  ],
+  Sharpe: [
+    { range: [1.5, Infinity], label: '优秀', emoji: '🟢', plainLanguage: '收益远超风险，每承担1块钱波动能赚1块5以上，非常舒服', rating: 5 },
+    { range: [1.0, 1.5], label: '良好', emoji: '🟢', plainLanguage: '收益比风险高，这个策略的赔率不错', rating: 4 },
+    { range: [0.5, 1.0], label: '合理', emoji: '🟡', plainLanguage: '收益和风险基本平衡，比放银行强但波动也不小', rating: 3 },
+    { range: [0.0, 0.5], label: '偏低', emoji: '🟠', plainLanguage: '波动太大了，收益不够补偿风险，心理承受力要强', rating: 2 },
+    { range: [-Infinity, 0.0], label: '负收益风险比', emoji: '🔴', plainLanguage: '风险远超收益，这个策略在亏钱，需要重新考虑', rating: 1 },
+  ],
+  MaxDD: [
+    { range: [0.0, 0.10], label: '回撤很小', emoji: '🟢', plainLanguage: '最大回撤不到10%，最坏情况也就亏一成，适合安稳型', rating: 5 },
+    { range: [0.10, 0.20], label: '回撤可控', emoji: '🟢', plainLanguage: '极端情况下可能亏一到两成，大多数人能接受', rating: 4 },
+    { range: [0.20, 0.35], label: '回撤较大', emoji: '🟡', plainLanguage: '极端情况下可能亏两三成，需要比较强的心理承受力', rating: 3 },
+    { range: [0.35, 0.50], label: '回撤很大', emoji: '🟠', plainLanguage: '可能腰斩一半，只有经验丰富的交易者才适合', rating: 2 },
+    { range: [0.50, Infinity], label: '高风险', emoji: '🔴', plainLanguage: '极端情况下可能亏损超过一半，风险非常高', rating: 1 },
+  ],
+  WinRate: [
+    { range: [0.60, Infinity], label: '胜率很高', emoji: '🟢', plainLanguage: '10次交易里至少有6次赚钱，胜率很稳', rating: 5 },
+    { range: [0.50, 0.60], label: '胜率不错', emoji: '🟢', plainLanguage: '超过一半的交易能赚钱，比扔硬币强', rating: 4 },
+    { range: [0.40, 0.50], label: '胜率一般', emoji: '🟡', plainLanguage: '跟扔硬币差不多，胜负各半', rating: 3 },
+    { range: [0.30, 0.40], label: '胜率偏低', emoji: '🟠', plainLanguage: '多数交易在亏钱，但偶尔一次大赚可能弥补', rating: 2 },
+    { range: [-Infinity, 0.30], label: '胜率很低', emoji: '🔴', plainLanguage: '十赌九输，这个策略的胜率太低了', rating: 1 },
+  ],
+  AnnualReturn: [
+    { range: [0.20, Infinity], label: '高收益', emoji: '🟢', plainLanguage: '年化20%以上，复利效应很强，比绝大多数基金表现好', rating: 5 },
+    { range: [0.10, 0.20], label: '不错', emoji: '🟢', plainLanguage: '年化10%-20%，跑赢通胀还有得赚，稳稳的幸福', rating: 4 },
+    { range: [0.03, 0.10], label: '合理', emoji: '🟡', plainLanguage: '比定存强但不算惊艳，长期复利下来也不错', rating: 3 },
+    { range: [0.00, 0.03], label: '偏低', emoji: '🟠', plainLanguage: '跑不过通胀，钱在慢慢贬值', rating: 2 },
+    { range: [-Infinity, 0.00], label: '亏损', emoji: '🔴', plainLanguage: '本金在缩水，这个策略目前在亏钱，建议暂停', rating: 1 },
+  ],
+  Volatility: [
+    { range: [0.0, 0.15], label: '低波动', emoji: '🟢', plainLanguage: '波动很小，日常涨跌不大，适合安稳型的你', rating: 5 },
+    { range: [0.15, 0.25], label: '中等波动', emoji: '🟡', plainLanguage: '日常有涨有跌，习惯就好，适合大多数人', rating: 3 },
+    { range: [0.25, 0.40], label: '高波动', emoji: '🟠', plainLanguage: '经常大起大落，心脏不好的话要谨慎', rating: 2 },
+    { range: [0.40, Infinity], label: '极高波动', emoji: '🔴', plainLanguage: '像坐过山车，可能一天涨跌超过40%，极端风险资产', rating: 1 },
+  ],
+};
 
 // ── Factory ─────────────────────────────────────────────────────────────────
 

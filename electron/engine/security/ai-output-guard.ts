@@ -15,6 +15,8 @@
 import log from 'electron-log';
 // R179 G20: Sensitive field masker — consistent field-level masking
 import { maskSensitiveFields, maskEmail, maskWallet } from '../agents/sensitive-field-masker';
+// R182 P1-09: Anti-leak guard — prevent balance binary inference
+import { applyAntiLeakPolicy, isLeakyText } from '../agents/anti-leak-guard';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -265,9 +267,20 @@ export function guardAIOutput(text: string): { allowed: boolean; content: string
     };
   }
 
+  // ── R182 P1-09: Anti-leak guard — prevent balance binary inference ─
+  const outputText = result.sanitized || text;
+  const antiLeak = applyAntiLeakPolicy(outputText);
+  if (!antiLeak.safe) {
+    return {
+      allowed: false,
+      content: antiLeak.text,
+      reason: 'BALANCE_INFERENCE_LEAK',
+    };
+  }
+
   return {
     allowed: true,
-    content: result.sanitized || text,
+    content: antiLeak.text,
   };
 }
 

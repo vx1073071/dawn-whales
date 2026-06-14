@@ -6,6 +6,8 @@
 import log from 'electron-log';
 // ── R181 P0-01: Prompt injection guard for NL parsing ─────────────────
 import { sanitizeAIInput } from './prompt-injection-guard';
+// ── R182 P0-12: Rate limiter for NL parse entry ──────────────────────
+import { checkRateLimit } from './rate-limiter';
 
 import { spawn } from 'child_process';
 import path from 'path';
@@ -481,6 +483,19 @@ export function parseNaturalLanguage(input: string): ParsedStrategy {
     };
   }
   // ────────────────────────────────────────────────────────────────────
+
+  // ── R182 P0-12: Rate limit check before NL processing ──────────────
+  const rateResult = checkRateLimit(`nl:${text.slice(0, 30)}`, 'nl.parse');
+  if (!rateResult.allowed) {
+    log.warn(`[NLParser] Rate limited: ${rateResult.reason}`);
+    return {
+      success: false,
+      name: '',
+      description: '',
+      strategy: { type: 'ma_cross', params: {} },
+      error: `Too many requests. Please try again in ${Math.ceil(rateResult.retryAfterMs / 1000)} seconds.`,
+    };
+  }
 
  // Phase 3: 
   const normalized = normalizeInput(text);
