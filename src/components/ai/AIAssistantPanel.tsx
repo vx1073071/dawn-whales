@@ -210,7 +210,7 @@ const templateResponses: Record<string, Record<string, string>> = {
       '- China A-Shares: Northbound flow, margin balances\n\n' +
       '💡 Check **Market Center** for real-time quotes.',
     general:
-      '🤖 **DAWN WHALES AI Assistant**\n\n' +
+      '🤖 **TradingEasy AI Assistant**\n\n' +
       'I can help with:\n' +
       '• 🧠 **Create Strategy** — Describe in natural language\n' +
       '• 🛡️ **Risk Analysis** — Portfolio exposure & VaR\n' +
@@ -247,7 +247,7 @@ const AIAssistantPanel: React.FC = () => {
       role: 'assistant',
       content: lang === 'zh'
         ? i18n.t('AIAssistantPanel.k48')
-        : "Hi! I'm **DAWN WHALES AI Assistant** 🐋\n\nI can help create strategies, analyze risks, and interpret backtest reports. Try the quick prompts below or type your request!",
+        : "Hi! I'm **TradingEasy AI Assistant** 🐋\n\nI can help create strategies, analyze risks, and interpret backtest reports. Try the quick prompts below or type your request!",
       timestamp: Date.now(),
       category: 'general',
     },
@@ -412,7 +412,7 @@ const AIAssistantPanel: React.FC = () => {
                     ? lang === 'zh'
                       ? i18n.t('AIAssistantPanel.k52')
                       : 'You'
-                    : 'DAWN WHALES AI'}
+                    : 'TradingEasy AI'}
                 </span>
                 <span className="text-[10px] text-gray-700">
                   {new Date(msg.timestamp).toLocaleTimeString(

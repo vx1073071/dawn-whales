@@ -1,4 +1,4 @@
-// ══════ Dawn Whales Chart Component Barrel — R109-R121 ══════
+// ══════ TradingEasy Chart Component Barrel — R109-R121 ══════
 
 // R113 KLine + Indicator
 export { default as KLineChartPro } from './KLineChartPro';

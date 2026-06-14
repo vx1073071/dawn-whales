@@ -1,4 +1,4 @@
-// DAWN WHALES R116 QTE-41 — Differential Push Engine
+// TradingEasy R116 QTE-41 — Differential Push Engine
 // PM: 增量推送, 节省70% IPC带宽, 字段级diff+压缩
 
 export interface DiffPushConfig {

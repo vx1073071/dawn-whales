@@ -164,7 +164,7 @@ function AIDrawLines() {
 
 function AIChatBilling() {
   const [messages, setMessages] = useState<AIChatMessage[]>([
-    {id:'m1',role:'assistant',content:'你好! 我是Dawn Whales AI助手。每次对话扣费1 USDT, 回复失败退费。',timestamp:Date.now()-60000},
+    {id:'m1',role:'assistant',content:'你好! 我是TradingEasy AI助手。每次对话扣费1 USDT, 回复失败退费。',timestamp:Date.now()-60000},
   ]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);

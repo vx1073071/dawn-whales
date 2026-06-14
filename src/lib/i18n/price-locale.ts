@@ -1,7 +1,7 @@
 // @ts-nocheck
 // R127-Q01: nocheck cleared
 /**
- * DAWN WHALES R125 J02 — Price Localization Utilities
+ * TradingEasy R125 J02 — Price Localization Utilities
  * 
  * Locale-aware number/price formatting for i18n support.
  * Chinese locales: 万/亿 notation

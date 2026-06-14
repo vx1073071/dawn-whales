@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Parameter Scan Panel (Sprint 2 UI) ───────────────────────
+// ── TradingEasy — Parameter Scan Panel (Sprint 2 UI) ───────────────────────
 // Heatmap grid + robust region detection + Top 10 combos
 
 import { useState, useEffect } from 'react';

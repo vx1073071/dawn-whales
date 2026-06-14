@@ -1,6 +1,6 @@
 import electronLog from 'electron-log';
 
-// ── DAWN WHALES — Payment Integration (Scaffolding) ────────────────────────
+// ── TradingEasy — Payment Integration (Scaffolding) ────────────────────────
 //
 // @deprecated Since v1.12.0 (2026-06-12).
 // The project has moved to USDT-only points system (see electron/engine/data/usdt-points-manager.ts).

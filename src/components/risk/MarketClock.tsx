@@ -1,4 +1,4 @@
-// ── DAWN WHALES — MarketClock () ───────────────────────────────
+// ── TradingEasy — MarketClock () ───────────────────────────────
 
 import { useState, useEffect } from 'react';
 import i18n from '../../i18n';

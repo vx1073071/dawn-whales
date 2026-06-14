@@ -1,7 +1,7 @@
 // @ts-nocheck
 // R127-Q01: nocheck cleared
 /**
- * DAWN WHALES R126 J02 — Microstructure Tooltip Utilities
+ * TradingEasy R126 J02 — Microstructure Tooltip Utilities
  * 
  * Computes microstructure indicators for display on chart hover/tooltip:
  * - VPIN (Volume-synchronized Probability of Informed Trading)

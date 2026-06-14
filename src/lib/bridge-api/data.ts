@@ -4,7 +4,7 @@
  * @deprecated Use src/services/market-service.ts instead (R108 S-34).
  * Service layer provides typed interfaces and abstracts IPC calls.
  *
- * ── DAWN WHALES — Bridge API Data Module ──────────────────────────────
+ * ── TradingEasy — Bridge API Data Module ──────────────────────────────
  * S-15p1 split: Data Provider + Market Data Stubs + Demo K-line Generator
  * S-15p2: Zod-derived types replaced all `any` usage
  */

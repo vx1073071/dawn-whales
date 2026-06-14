@@ -121,7 +121,7 @@ export function OAuth2Flow({ onComplete }: { onComplete: (brokerId: string, toke
     setState(prev => ({ ...prev, loading: true, error: '' }));
 
     const { broker, state: oauthState, codeChallenge } = state;
-    const redirectUri = 'dawnwhales://oauth/callback';
+    const redirectUri = 'TradingEasy://oauth/callback';
     const params = new URLSearchParams({
       response_type: 'code',
       client_id: `dw-${broker.id}`,

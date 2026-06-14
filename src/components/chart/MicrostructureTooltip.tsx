@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * DAWN WHALES R126 J02 — MicrostructureTooltip Component
+ * TradingEasy R126 J02 — MicrostructureTooltip Component
  * 
  * Renderer: displays microstructure indicators on chart hover.
  * Uses VPIN, Kyle Lambda, ArrivalPrice, Spread, OFI from microstructure-tooltip.ts.

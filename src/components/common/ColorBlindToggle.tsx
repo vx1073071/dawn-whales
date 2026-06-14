@@ -36,7 +36,7 @@ const COLORBLIND_VARS = {
   '--color-heatmap-low': '#ea580c',
 };
 
-const STORAGE_KEY = 'dawn-whales-colorblind-mode';
+const STORAGE_KEY = 'TradingEasy-colorblind-mode';
 
 // ── Helper ──────────────────────────────────────────────────────────────
 

@@ -358,8 +358,8 @@ function ServerConfigCard({
 
 function DeploymentStatusSummary({ config }: { config: ServerConfig }) {
   const [deployments] = useState([
-    { env: '生产环境', url: 'https://api.dawnwhales.com', status: 'online', version: 'v2.1.0', uptime: '7d 3h', latency: 23 },
-    { env: '测试环境', url: 'https://staging.dawnwhales.com', status: 'online', version: 'v2.1.0-rc1', uptime: '2d 12h', latency: 18 },
+    { env: '生产环境', url: 'https://api.TradingEasy.com', status: 'online', version: 'v2.1.0', uptime: '7d 3h', latency: 23 },
+    { env: '测试环境', url: 'https://staging.TradingEasy.com', status: 'online', version: 'v2.1.0-rc1', uptime: '2d 12h', latency: 18 },
     { env: '本机开发', url: 'http://localhost:3001', status: 'offline', version: '—', uptime: '—', latency: 0 },
   ]);
 

@@ -46,7 +46,7 @@ function NavBar() {
     <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', background: '#0A0A10dd', backdropFilter: 'blur(12px)', borderBottom: '1px solid #1F2937', position: 'sticky', top: 0, zIndex: 100 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <span style={{ fontSize: 22 }}>🐋</span>
-        <span style={{ fontSize: 20, fontWeight: 800, color: '#F9FAFB', letterSpacing: -0.5 }}>Dawn Whales</span>
+        <span style={{ fontSize: 20, fontWeight: 800, color: '#F9FAFB', letterSpacing: -0.5 }}>TradingEasy</span>
         <span style={{ padding: '2px 8px', borderRadius: 6, background: '#6366F122', color: '#818CF8', fontSize: 11, fontWeight: 700 }}>v1.11.0</span>
       </div>
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -221,10 +221,10 @@ function DownloadSection() {
         <h2 style={{ fontSize: 28, fontWeight: 800, color: '#F9FAFB', margin: '0 0 8px' }}>{i18n.t('LandingPageV18.v110_download')}</h2>
         <p style={{ fontSize: 14, color: '#9CA3AF', marginBottom: 24 }}>{i18n.t('LandingPageV18.v110_release')}</p>
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 24 }}>
-          <a href="https://github.com/nicnoc/dawn-whales/releases/tag/v1.11.0" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, background: '#6366F1', color: '#FFF', fontSize: 16, fontWeight: 700, textDecoration: 'none', cursor: 'pointer' }}>
+          <a href="https://github.com/nicnoc/TradingEasy/releases/tag/v1.11.0" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, background: '#6366F1', color: '#FFF', fontSize: 16, fontWeight: 700, textDecoration: 'none', cursor: 'pointer' }}>
             <span>📦</span> {i18n.t('LandingPageV18.v110_download')}
           </a>
-          <a href="https://github.com/nicnoc/dawn-whales/blob/master/CHANGELOG.md" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, border: '1px solid #374151', background: '#1F2937', color: '#D1D5DB', fontSize: 16, textDecoration: 'none', cursor: 'pointer' }}>
+          <a href="https://github.com/nicnoc/TradingEasy/blob/master/CHANGELOG.md" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, border: '1px solid #374151', background: '#1F2937', color: '#D1D5DB', fontSize: 16, textDecoration: 'none', cursor: 'pointer' }}>
             <span>📋</span> {i18n.t('LandingPageV18.v110_changelog')}
           </a>
         </div>
@@ -258,10 +258,10 @@ function Footer() {
       <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
         <div>
           <span style={{ marginRight: 6 }}>🐋</span>
-          <span style={{ color: '#D1D5DB', fontWeight: 600 }}>Dawn Whales</span> v1.11.0
+          <span style={{ color: '#D1D5DB', fontWeight: 600 }}>TradingEasy</span> v1.11.0
         </div>
         <div style={{ display: 'flex', gap: 20 }}>
-          <span>© 2026 Dawn Whales</span>
+          <span>© 2026 TradingEasy</span>
           <span>{i18n.t('LandingPageV18.k81')}</span>
           <span>{i18n.t('LandingPageV18.k82')}</span>
           <span>{i18n.t('LandingPageV18.k83')}</span>
@@ -276,7 +276,7 @@ function SEOHead() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'Dawn Whales',
+    name: 'TradingEasy',
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Windows, macOS, Linux',
     description: i18n.t('LandingPageV18.k84'),
@@ -297,7 +297,7 @@ function SEOHead() {
       <meta property="og:type" content="website" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={i18n.t('LandingPageV18.k90')} />
-      <link rel="canonical" href="https://dawnwhales.com" />
+      <link rel="canonical" href="https://TradingEasy.com" />
       <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
     </>);
 

@@ -1,4 +1,4 @@
-// ── DAWN WHALES — NotificationCenter (notification center) ────────────────────────────
+// ── TradingEasy — NotificationCenter (notification center) ────────────────────────────
 
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R123 J01 — BrokerStatusBar
+ * TradingEasy R123 J01 — BrokerStatusBar
  * 
  * Top-bar persistent component showing broker connection status.
  * Green (connected) / Yellow (connecting/reconnecting) / Red (disconnected).

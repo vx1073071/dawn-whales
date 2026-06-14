@@ -1,4 +1,4 @@
-// ── DAWN WHALES — PortfolioStressTest () ────────────────────────
+// ── TradingEasy — PortfolioStressTest () ────────────────────────
 
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';

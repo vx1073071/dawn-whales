@@ -1,5 +1,5 @@
 // @ts-nocheck
-// ── DAWN WHALES — EquityChart () ───────────────────────────────────
+// ── TradingEasy — EquityChart () ───────────────────────────────────
 // strategy/policy/ + 
 
 import { useRef, useEffect, useMemo } from 'react';

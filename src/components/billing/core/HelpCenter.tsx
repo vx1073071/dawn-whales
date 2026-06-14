@@ -1,6 +1,6 @@
 ﻿/**
  * HelpCenter — ML-71-01 [P0]
- * R71: v1.7.0 GA — SEO help center + FAQ for dawnwhales.com
+ * R71: v1.7.0 GA — SEO help center + FAQ for TradingEasy.com
  *
  * Features:
  * - Structured FAQ: install/register/recharge/AI///withdraw
@@ -145,7 +145,7 @@ export default function HelpCenter({ articles: propArticles, className = '' }: H
         <nav style={{ borderBottom: '1px solid #e2e8f0', padding: '12px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
             <span style={{ fontSize: 22 }}>🐋</span>
-            <span style={{ fontSize: 16, fontWeight: 800, color: '#1e293b' }}>DAWN WHALES</span>
+            <span style={{ fontSize: 16, fontWeight: 800, color: '#1e293b' }}>TradingEasy</span>
           </a>
           <span style={{ fontSize: 13, color: '#64748b', fontWeight: 600 }}>{i18n.t('HelpCenter.k46')}</span>
         </nav>
@@ -219,8 +219,8 @@ export default function HelpCenter({ articles: propArticles, className = '' }: H
 
         {/* Footer */}
         <footer style={{ borderTop: '1px solid #e2e8f0', padding: '32px 24px', textAlign: 'center', fontSize: 12, color: '#94a3b8' }}>
-          <p>🐋 DAWN WHALES Help Center · v1.7.0 GA</p>
-          <p style={{ marginTop: 4 }}>Need more help? <a href="https://github.com/vx1073071/dawn-whales" style={{ color: '#3b82f6' }}>GitHub</a></p>
+          <p>🐋 TradingEasy Help Center · v1.7.0 GA</p>
+          <p style={{ marginTop: 4 }}>Need more help? <a href="https://github.com/vx1073071/TradingEasy" style={{ color: '#3b82f6' }}>GitHub</a></p>
         </footer>
       </body>
     </html>

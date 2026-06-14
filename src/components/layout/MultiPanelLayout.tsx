@@ -38,7 +38,7 @@ const LAYOUT_LABELS: Record<LayoutPreset, { icon: string; label: string }> = {
   grid4: { icon: '⊞', label: i18n.t('MultiPanelLayout.k2') },
 };
 
-const STORAGE_KEY = 'dawn-whales-layout';
+const STORAGE_KEY = 'TradingEasy-layout';
 
 // ── Main Component ──────────────────────────────────────────────────────
 

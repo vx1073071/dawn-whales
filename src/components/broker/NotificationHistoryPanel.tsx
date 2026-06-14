@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R123 J04 — Notification History + Do Not Disturb
+ * TradingEasy R123 J04 — Notification History + Do Not Disturb
  * 
  * - Stores last 50 notifications in localStorage
  * - Do Not Disturb toggle with timer

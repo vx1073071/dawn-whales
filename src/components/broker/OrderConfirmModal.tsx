@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R123 J03 — Order Confirm Modal
+ * TradingEasy R123 J03 — Order Confirm Modal
  * 
  * Shows before placing: broker name, code, side, qty, price, estimated fee.
  * Two buttons: [Confirm] [Cancel].

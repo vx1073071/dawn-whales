@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R124 J01 — Data Freshness Indicator
+ * TradingEasy R124 J01 — Data Freshness Indicator
  * 
  * Shows how current the displayed market data is.
  * 4 states:

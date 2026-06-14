@@ -1,4 +1,4 @@
-// ── DAWN WHALES — MacroDashboardPage (W27) ─────────────────────────────────
+// ── TradingEasy — MacroDashboardPage (W27) ─────────────────────────────────
 // dashboard：GDP/CPI/PMI/PPI/M2/LPR//
 
 import { useState, useEffect, useCallback, useMemo } from 'react';

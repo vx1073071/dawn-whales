@@ -1,4 +1,4 @@
-// ── DAWN WHALES — MarketMovers () ──────────────────────────────────
+// ── TradingEasy — MarketMovers () ──────────────────────────────────
 
 import { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next';

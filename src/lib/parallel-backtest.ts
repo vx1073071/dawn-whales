@@ -1,6 +1,6 @@
 // @ts-nocheck
 // R127-Q01: nocheck cleared
-// ── DAWN WHALES — Web Worker backtest (v0.6.0) ─────────────────────────────
+// ── TradingEasy — Web Worker backtest (v0.6.0) ─────────────────────────────
 // parameter sweep/periodWorker
 
 const BATCH_SIZE = 4; // 4backtest

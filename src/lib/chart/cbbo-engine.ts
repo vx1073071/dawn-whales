@@ -1,4 +1,4 @@
-// DAWN WHALES R116 QTE-39 — CBBO Aggregation Engine
+// TradingEasy R116 QTE-39 — CBBO Aggregation Engine
 // PM: 跨券商最优ask/bid, <100ms响应, 至少3家对比
 
 import type { OrderBookLevel, OrderBookSnapshot } from './orderbook-engine';

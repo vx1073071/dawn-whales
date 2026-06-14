@@ -115,7 +115,7 @@ export function ColdStartProgress({
         <div className="text-5xl animate-bounce">🐳</div>
 
         {/* Title */}
-        <h1 className="text-[#e6edf3] text-lg font-bold font-mono">Dawn Whales</h1>
+        <h1 className="text-[#e6edf3] text-lg font-bold font-mono">TradingEasy</h1>
 
         {/* Progress bar */}
         <div className="w-full">

@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * DAWN WHALES R126 J01 — AggregatedOrderBook
+ * TradingEasy R126 J01 — AggregatedOrderBook
  * 
  * Supports aggregation levels: 1x / 5x / 10x / 50x tick sizes.
  * Shows depth wall (iceberg detection), cumulative volume bars,

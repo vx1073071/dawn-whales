@@ -1,4 +1,4 @@
-// DAWN WHALES R114 QTE-12 — Tick Circular Buffer Cache
+// TradingEasy R114 QTE-12 — Tick Circular Buffer Cache
 // PM: 循环缓冲5000条/symbol, ≥3家券商, UTC统一时间轴
 
 export interface TickRecord {

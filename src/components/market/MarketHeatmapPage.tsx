@@ -1,4 +1,4 @@
-// ── DAWN WHALES — MarketHeatmapPage (W26) ──────────────────────────────────
+// ── TradingEasy — MarketHeatmapPage (W26) ──────────────────────────────────
 // sectorheatmappage： EM ，industry/concept/region
 
 import { useState, useEffect, useCallback, useMemo } from 'react';

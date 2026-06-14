@@ -1,4 +1,4 @@
-// DAWN WHALES R115 QTE-30 — FundFlow Engine
+// TradingEasy R115 QTE-30 — FundFlow Engine
 // PM: 4类大单分级(超大单>100万/大单>20万/中单>4万/小单), 实时聚合, 准确率>99%
 
 import type { TickRecord } from './tick-cache';

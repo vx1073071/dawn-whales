@@ -56,7 +56,7 @@ const errorHelp: Record<ApiErrorType, string> = {
 // ── DesktopCleanupShell ─────────────────────────────────────────────────
 
 const DesktopCleanupShell: React.FC<DesktopCleanupShellProps> = ({
-  serverUrl = 'https://api.dawnwhales.com',
+  serverUrl = 'https://api.TradingEasy.com',
   licenseValid = true,
   onRetry,
   children,

@@ -1,4 +1,4 @@
-// ── DAWN WHALES — PositionDetailPanel (position/holding) ───────────────────────
+// ── TradingEasy — PositionDetailPanel (position/holding) ───────────────────────
 
 import { useState } from 'react';
 import { useTranslation } from "react-i18next";

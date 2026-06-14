@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R122 J04 — Async Indicator Worker Bridge
+ * TradingEasy R122 J04 — Async Indicator Worker Bridge
  * 
  * Wraps synchronous indicator computation into async Worker IPC calls.
  * Used by KLineChartPro to offload 60+ indicators from main thread.

@@ -134,7 +134,7 @@ function Step1SearchBroker({
     <div className="flex flex-col gap-4" style={{ fontFamily: 'monospace' }}>
       <div className="text-center">
         <div className="text-3xl mb-2">🐳</div>
-        <h2 className="text-[#e6edf3] text-lg font-bold mb-1">欢迎使用 Dawn Whales</h2>
+        <h2 className="text-[#e6edf3] text-lg font-bold mb-1">欢迎使用 TradingEasy</h2>
         <p className="text-[#8b949e] text-xs">连接你的券商账户，开始专业交易</p>
       </div>
 

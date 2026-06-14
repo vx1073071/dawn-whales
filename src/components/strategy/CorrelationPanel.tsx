@@ -1,5 +1,5 @@
 import i18n from '../../i18n/index';
-// ── DAWN WHALES — Strategy Correlation Panel (Q2 UI) ───────────────────────
+// ── TradingEasy — Strategy Correlation Panel (Q2 UI) ───────────────────────
 // R163: Added loading prop + empty state handling
 
 import { useTranslation } from 'react-i18next';

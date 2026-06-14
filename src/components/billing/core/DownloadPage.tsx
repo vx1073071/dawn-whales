@@ -6,7 +6,7 @@
  * - Platform download section (Windows/Mac/Linux)
  * - 3-step onboarding guide: Download → Register → Activate
  * - 7-day free trial explanation with feature comparison
- * - License purchase CTA (links to dawnwhales.com)
+ * - License purchase CTA (links to TradingEasy.com)
  * - System requirements checklist
  * - FAQ for common activation issues
  */
@@ -46,24 +46,24 @@ export interface DownloadPageProps {
 // ── Mock ────────────────────────────────────────────────────────────────
 
 const defaultDownloads: DownloadInfo[] = [
-  { platform: 'windows', label: 'Windows', icon: '🪟', version: 'v1.5.0-rc', size: '128 MB', url: '/downloads/dawn-whales-setup-1.5.0.exe' },
-  { platform: 'mac', label: 'macOS', icon: '🍎', version: 'v1.5.0-rc', size: '145 MB', url: '/downloads/dawn-whales-1.5.0.dmg' },
-  { platform: 'linux', label: 'Linux', icon: '🐧', version: 'v1.5.0-rc', size: '132 MB', url: '/downloads/dawn-whales-1.5.0.AppImage' },
+  { platform: 'windows', label: 'Windows', icon: '🪟', version: 'v1.5.0-rc', size: '128 MB', url: '/downloads/TradingEasy-setup-1.5.0.exe' },
+  { platform: 'mac', label: 'macOS', icon: '🍎', version: 'v1.5.0-rc', size: '145 MB', url: '/downloads/TradingEasy-1.5.0.dmg' },
+  { platform: 'linux', label: 'Linux', icon: '🐧', version: 'v1.5.0-rc', size: '132 MB', url: '/downloads/TradingEasy-1.5.0.AppImage' },
 ];
 
 const defaultSteps: OnboardingStep[] = [
   { step: 1, title: 'Download & Install', description: 'Download the desktop app for your platform. Run the installer and follow the setup wizard.', icon: '📥', action: 'Download' },
   { step: 2, title: 'Create Account', description: 'Launch the app and register with your email. You will get 7 days of free trial automatically.', icon: '📝' },
-  { step: 3, title: 'Activate License', description: 'Enter your license key (purchased from dawnwhales.com) or continue with the 7-day trial.', icon: '🔑', action: 'Buy License' },
+  { step: 3, title: 'Activate License', description: 'Enter your license key (purchased from TradingEasy.com) or continue with the 7-day trial.', icon: '🔑', action: 'Buy License' },
 ];
 
 const faqs = [
-  { q: 'What is DAWN WHALES?', a: 'An AI-powered quantitative trading platform. Creators use 4 AI agents to generate trading signals, and users subscribe to follow trades across HK, US, and China A-share markets.' },
+  { q: 'What is TradingEasy?', a: 'An AI-powered quantitative trading platform. Creators use 4 AI agents to generate trading signals, and users subscribe to follow trades across HK, US, and China A-share markets.' },
   { q: 'How does the 7-day trial work?', a: 'After registration, you get 7 days of full access including 3 free AI analyses. No credit card required. After trial, activate a license to continue.' },
   { q: 'What happens when trial expires?', a: 'AI analysis and live trading are paused. Local strategy calculation and cached data remain available. Activate a license to restore full access.' },
-  { q: 'How do I get a license key?', a: 'Visit dawnwhales.com to purchase a license. Personal ($29/mo), Professional ($79/mo), or Enterprise (custom). License key is emailed immediately.' },
+  { q: 'How do I get a license key?', a: 'Visit TradingEasy.com to purchase a license. Personal ($29/mo), Professional ($79/mo), or Enterprise (custom). License key is emailed immediately.' },
   { q: 'Can I use it offline?', a: 'Limited offline mode: cached data, local strategy calculation, and Futu OpenD connectivity work. AI analysis and wallet require server connection.' },
-  { q: 'Is my AI key safe?', a: 'AI API keys are stored only on DAWN WHALES servers, never on your desktop. Your desktop app is a thin client that cannot expose your credentials.' },
+  { q: 'Is my AI key safe?', a: 'AI API keys are stored only on TradingEasy servers, never on your desktop. Your desktop app is a thin client that cannot expose your credentials.' },
 ];
 
 const sysRequirements: Record<string, string[]> = {
@@ -103,7 +103,7 @@ const DownloadPage: React.FC<DownloadPageProps> = ({
     <div className={`download-page ${className}`} style={{ maxWidth: 700, margin: '0 auto', padding: '24px 16px' }}>
       {/* Hero */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-slate-800 mb-2">🐋 DAWN WHALES</h1>
+        <h1 className="text-3xl font-bold text-slate-800 mb-2">🐋 TradingEasy</h1>
         <p className="text-lg text-slate-500 mb-1">AI-Powered Quantitative Trading Platform</p>
         <p className="text-sm text-slate-400">Speak naturally. Trade quantitatively.</p>
       </div>
@@ -295,14 +295,14 @@ const DownloadPage: React.FC<DownloadPageProps> = ({
 
       {/* Footer */}
       <div className="mt-8 text-center text-[10px] text-slate-400 space-y-1">
-        <p>DAWN WHALES v1.5.0-rc · &copy; 2026</p>
+        <p>TradingEasy v1.5.0-rc · &copy; 2026</p>
         <p>AI keys stored server-side only · Your data never leaves your control</p>
         <p>
           <span className="hover:text-blue-500 cursor-pointer">Terms</span>
           <span className="mx-2">·</span>
           <span className="hover:text-blue-500 cursor-pointer">Privacy</span>
           <span className="mx-2">·</span>
-          <span className="hover:text-blue-500 cursor-pointer">dawnwhales.com</span>
+          <span className="hover:text-blue-500 cursor-pointer">TradingEasy.com</span>
         </p>
       </div>
     </div>

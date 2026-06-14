@@ -1,5 +1,5 @@
 import i18n from '../i18n';
-// ── DAWN WHALES — PDF Report Generator (print-to-PDF) ──────────────────────
+// ── TradingEasy — PDF Report Generator (print-to-PDF) ──────────────────────
 
 interface ReportData {
   title: string;
@@ -83,7 +83,7 @@ function buildReportHTML(report: ReportData, timestamp: string): string {
 </head>
 <body>
   <div class="header">
-    <div class="brand">DAWN WHALES</div>
+    <div class="brand">TradingEasy</div>
     <h1>${report.title}</h1>
     ${report.subtitle ? `<div class="subtitle">${report.subtitle}</div>` : ''}
     <div class="timestamp">{i18n.t('PdfReport.k0')}{timestamp}</div>
@@ -93,7 +93,7 @@ function buildReportHTML(report: ReportData, timestamp: string): string {
 
   <div class="footer">
     ${report.footer || i18n.t('PdfReport.k0')}
-    <br/>DAWN WHALES v0.4.0 · ${timestamp}
+    <br/>TradingEasy v0.4.0 · ${timestamp}
   </div>
 </body>
 </html>`;

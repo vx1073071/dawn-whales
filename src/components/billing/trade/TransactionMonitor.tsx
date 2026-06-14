@@ -59,12 +59,12 @@ const mockTransactions: MonitoredTransaction[] = [
 ];
 
 const mockAudit: AuditEntry[] = [
-  { id: 'au-001', admin: 'admin@dawnwhales.com', action: 'Blacklist User', target: 'SpamBot_01', detail: 'Multiple disputed transactions', ip: '10.0.1.100', timestamp: '2026-06-09T06:20:00Z', category: 'user' },
-  { id: 'au-002', admin: 'admin@dawnwhales.com', action: 'Manual Unfreeze', target: 'Transfer p2p-003', detail: 'System error recovery', ip: '10.0.1.100', timestamp: '2026-06-09T06:00:00Z', category: 'financial' },
-  { id: 'au-003', admin: 'admin@dawnwhales.com', action: 'Verify Creator', target: 'DeepAlpha AI', detail: 'Identity verified', ip: '10.0.1.100', timestamp: '2026-06-08T22:00:00Z', category: 'user' },
-  { id: 'au-004', admin: 'admin@dawnwhales.com', action: 'Fee Adjust', target: 'L3 Commission', detail: 'Adjusted to 90/10', ip: '10.0.1.100', timestamp: '2026-06-08T18:00:00Z', category: 'system' },
-  { id: 'au-005', admin: 'admin@dawnwhales.com', action: '2FA Reset', target: 'User_1024', detail: 'Lost device recovery', ip: '10.0.1.100', timestamp: '2026-06-08T15:30:00Z', category: 'security' },
-  { id: 'au-006', admin: 'admin@dawnwhales.com', action: 'License Revoke', target: 'user@leaked.com', detail: 'License key shared publicly', ip: '10.0.1.100', timestamp: '2026-06-08T12:00:00Z', category: 'security' },
+  { id: 'au-001', admin: 'admin@TradingEasy.com', action: 'Blacklist User', target: 'SpamBot_01', detail: 'Multiple disputed transactions', ip: '10.0.1.100', timestamp: '2026-06-09T06:20:00Z', category: 'user' },
+  { id: 'au-002', admin: 'admin@TradingEasy.com', action: 'Manual Unfreeze', target: 'Transfer p2p-003', detail: 'System error recovery', ip: '10.0.1.100', timestamp: '2026-06-09T06:00:00Z', category: 'financial' },
+  { id: 'au-003', admin: 'admin@TradingEasy.com', action: 'Verify Creator', target: 'DeepAlpha AI', detail: 'Identity verified', ip: '10.0.1.100', timestamp: '2026-06-08T22:00:00Z', category: 'user' },
+  { id: 'au-004', admin: 'admin@TradingEasy.com', action: 'Fee Adjust', target: 'L3 Commission', detail: 'Adjusted to 90/10', ip: '10.0.1.100', timestamp: '2026-06-08T18:00:00Z', category: 'system' },
+  { id: 'au-005', admin: 'admin@TradingEasy.com', action: '2FA Reset', target: 'User_1024', detail: 'Lost device recovery', ip: '10.0.1.100', timestamp: '2026-06-08T15:30:00Z', category: 'security' },
+  { id: 'au-006', admin: 'admin@TradingEasy.com', action: 'License Revoke', target: 'user@leaked.com', detail: 'License key shared publicly', ip: '10.0.1.100', timestamp: '2026-06-08T12:00:00Z', category: 'security' },
 ];
 
 // ── Helpers ─────────────────────────────────────────────────────────────

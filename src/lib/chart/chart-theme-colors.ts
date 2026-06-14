@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R125 J01 — Chart Theme Colors Adapter
+ * TradingEasy R125 J01 — Chart Theme Colors Adapter
  * 
  * Replaces hardcoded hex values in chart/market engines with CSS-variable-driven colors.
  * Priority: window.getComputedStyle  → ThemeContext.colors → fallback defaults.

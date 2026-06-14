@@ -137,7 +137,7 @@ interface I18nProviderProps {
 export const I18nProvider: React.FC<I18nProviderProps> = ({ children, defaultLocale = 'zh' }) => {
   const [locale, setLocaleState] = useState<Locale>(() => {
     try {
-      const saved = localStorage.getItem('dawn-whales-locale');
+      const saved = localStorage.getItem('TradingEasy-locale');
       if (saved === 'zh' || saved === 'en') return saved;
     } catch {}
     return defaultLocale;
@@ -145,7 +145,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children, defaultLoc
 
   const setLocale = useCallback((l: Locale) => {
     setLocaleState(l);
-    try { localStorage.setItem('dawn-whales-locale', l); } catch {}
+    try { localStorage.setItem('TradingEasy-locale', l); } catch {}
   }, []);
 
   const t = useCallback((key: string, fallback?: string): string => {

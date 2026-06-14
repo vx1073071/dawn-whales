@@ -59,7 +59,7 @@ class GlobalErrorBoundary extends React.Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     this.setState({ errorInfo: errorInfo.componentStack ?? '' });
-    console.error('[DAWN WHALES] Crash:', error.message, errorInfo.componentStack);
+    console.error('[TradingEasy] Crash:', error.message, errorInfo.componentStack);
   }
 
   handleRecover = () => {
@@ -113,7 +113,7 @@ function CrashScreen({ error, version, onRecover }: {error: string;version?: str
 
         </button>
       </div>
-      {version && <div style={{ marginTop: 32, fontSize: 11, color: '#475569' }}>DAWN WHALES {version}</div>}
+      {version && <div style={{ marginTop: 32, fontSize: 11, color: '#475569' }}>TradingEasy {version}</div>}
     </div>);
 
 }
@@ -163,7 +163,7 @@ function DesktopShellInner({
 }: DesktopShellProps) {
   const [steps, setSteps] = useState<Record<ConnectionStep, StepState>>({
     opend: { status: 'pending', message: i18n.t('DesktopShell.k1'), hint: 'Connecting to Futu OpenD' },
-    api: { status: 'pending', message: i18n.t('DesktopShell.k2'), hint: 'Connecting to dawnwhales.com API' },
+    api: { status: 'pending', message: i18n.t('DesktopShell.k2'), hint: 'Connecting to TradingEasy.com API' },
     license: { status: 'pending', message: i18n.t('DesktopShell.k3'), hint: 'Verifying license' },
     ready: { status: 'pending', message: i18n.t('DesktopShell.k4'), hint: 'Loading complete' }
   });
@@ -254,7 +254,7 @@ function DesktopShellInner({
         {/* Logo */}
         <div style={{ marginBottom: 40, textAlign: 'center' }}>
           <span style={{ fontSize: 56, display: 'block', marginBottom: 8 }}>🐋</span>
-          <div style={{ fontSize: 24, fontWeight: 900, letterSpacing: '-1px', color: '#e2e8f0' }}>DAWN WHALES</div>
+          <div style={{ fontSize: 24, fontWeight: 900, letterSpacing: '-1px', color: '#e2e8f0' }}>TradingEasy</div>
           <div style={{ fontSize: 11, color: '#64748b', marginTop: 4 }}>{version} · {environment}</div>
         </div>
 

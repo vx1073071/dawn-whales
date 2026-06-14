@@ -259,7 +259,7 @@ function TrayBadgeSimulator({
             </span>
           )}
           <div style={{ fontSize: 10, color: '#8b949e', marginTop: 4 }}>
-            Dawn Whales
+            TradingEasy
           </div>
         </div>
 

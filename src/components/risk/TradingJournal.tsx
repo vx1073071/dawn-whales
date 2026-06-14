@@ -1,4 +1,4 @@
-// ── DAWN WHALES — TradingJournal v2 (log) ─────────────────────────────
+// ── TradingEasy — TradingJournal v2 (log) ─────────────────────────────
 // v2: +heatmap + +CSVexport +filter
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
@@ -43,7 +43,7 @@ export default function TradingJournal() {
   // Load from localStorage
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('dawn-whales-journal');
+      const saved = localStorage.getItem('TradingEasy-journal');
       if (saved) setEntries(JSON.parse(saved));
     } catch (e) {console.error('[Error:TradingJournal]', e);}
     void EngineError; // [SYSTEM] structured error tracking
@@ -52,7 +52,7 @@ export default function TradingJournal() {
   // Save to localStorage
   useEffect(() => {
     if (entries.length > 0) {
-      localStorage.setItem('dawn-whales-journal', JSON.stringify(entries));
+      localStorage.setItem('TradingEasy-journal', JSON.stringify(entries));
     }
   }, [entries]);
 

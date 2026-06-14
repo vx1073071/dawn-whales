@@ -1,4 +1,4 @@
-// DAWN WHALES R116 QTE-40 — Smart Throttling Engine
+// TradingEasy R116 QTE-40 — Smart Throttling Engine
 // PM: 动态节流 — BTC/ETH 10条/s, 中盘4条/s, penny/小币1条/s
 // 基于成交量和波动率自适应调整
 

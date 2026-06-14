@@ -1,4 +1,4 @@
-// DAWN WHALES R113 - Drawing Tools (20 core tools)
+// TradingEasy R113 - Drawing Tools (20 core tools)
 // TradingView-grade drawing annotation system
 // PM: quote upgrade v2.0 module 3 P0 - TradingView 68 kinds, 20 core first
 // Integrates with lightweight-charts 4.2.3 via ISeriesPrimitive

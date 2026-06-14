@@ -1,5 +1,5 @@
 import i18n from '../i18n/index';
-// ── DAWN WHALES — Theme Store ───────────────────────────────────────────────
+// ── TradingEasy — Theme Store ───────────────────────────────────────────────
 import { create } from 'zustand';
 
 export type Theme = 'dark' | 'light';

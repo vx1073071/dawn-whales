@@ -1,4 +1,4 @@
-// ── DAWN WHALES — SentimentGauge (W28) ─────────────────────────────────────
+// ── TradingEasy — SentimentGauge (W28) ─────────────────────────────────────
 // indexdashboard：0-100，/
 
 import { useState, useEffect, useCallback, useMemo } from 'react';

@@ -1,4 +1,4 @@
-// ── DAWN WHALES — PriceAlertPanel () ───────────────────────────
+// ── TradingEasy — PriceAlertPanel () ───────────────────────────
 
 import { useState, useEffect, useCallback } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
@@ -26,7 +26,7 @@ export default function PriceAlertPanel() {
   // Load from localStorage
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('dawn-whales-alerts');
+      const saved = localStorage.getItem('TradingEasy-alerts');
       if (saved) setAlerts(JSON.parse(saved));
     } catch (e) {console.error('[Error:PriceAlertPanel]', e);}
     void EngineError; // [SYSTEM] structured error tracking
@@ -35,7 +35,7 @@ export default function PriceAlertPanel() {
   // Save to localStorage
   useEffect(() => {
     if (alerts.length > 0) {
-      localStorage.setItem('dawn-whales-alerts', JSON.stringify(alerts));
+      localStorage.setItem('TradingEasy-alerts', JSON.stringify(alerts));
     }
   }, [alerts]);
 

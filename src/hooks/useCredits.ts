@@ -29,7 +29,7 @@ interface CreditsState {
   transactions: CreditTransaction[];
 }
 
-const STORAGE_KEY = 'dawn-whales-credits';
+const STORAGE_KEY = 'TradingEasy-credits';
 const INITIAL_BALANCE = 100.0; // 100 USDT starting credits for demo
 
 function loadState(): CreditsState {

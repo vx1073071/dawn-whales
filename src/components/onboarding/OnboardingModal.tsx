@@ -85,7 +85,7 @@ interface OnboardingModalProps {
   connected?: boolean;
 }
 
-const STORAGE_KEY = 'dawn-whales-onboarding-done';
+const STORAGE_KEY = 'TradingEasy-onboarding-done';
 
 export const OnboardingModal: React.FC<OnboardingModalProps> = ({ onComplete, className, open: _open, onClose: _onClose, onConnect: _onConnect, connected: _connected }) => {
   const [step, setStep] = useState(1);

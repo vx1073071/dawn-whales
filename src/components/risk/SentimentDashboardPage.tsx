@@ -821,7 +821,7 @@ const SentimentDashboardPage: React.FC = () => {
 
       {/* Footer */}
       <div className="text-center text-[10px] text-gray-700 pt-2">
-        NLP Sentiment Analysis Dashboard · Powered by Dawn Whales Engine · {new Date().getFullYear()}
+        NLP Sentiment Analysis Dashboard · Powered by TradingEasy Engine · {new Date().getFullYear()}
       </div>
     </div>);
 

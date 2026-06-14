@@ -1,5 +1,5 @@
 // @ts-nocheck
-// ── DAWN WHALES — SignalTimeline (strategy/policy) ──────────────────────────
+// ── TradingEasy — SignalTimeline (strategy/policy) ──────────────────────────
 
 import { useState, useEffect, useCallback } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';

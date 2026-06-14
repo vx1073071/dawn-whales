@@ -101,7 +101,7 @@ function InviteTab() {
   const inviteCode = 'DW-A3X7K';
   const totalRewards = 2.0;
   const invitesPending = 1;
-  const link = `https://dawnwhales.com/invite/${inviteCode}`;
+  const link = `https://TradingEasy.com/invite/${inviteCode}`;
 
   return (
     <div>

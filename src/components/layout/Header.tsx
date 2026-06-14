@@ -23,7 +23,7 @@ export default function Header() {
         <img src={logo} alt={t("common.appName")} className="w-7 h-7 rounded-md" />
         <div className="flex flex-col leading-tight">
           <span className="text-white font-bold text-xs">{t('components.appFullName')}</span>
-          <span className="text-[#D4A853] text-[9px] font-medium tracking-wider">DAWN WHALES</span>
+          <span className="text-[#D4A853] text-[9px] font-medium tracking-wider">TradingEasy</span>
         </div>
       </div>
 

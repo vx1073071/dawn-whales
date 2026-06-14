@@ -1,4 +1,4 @@
-// DAWN WHALES R114 QTE-11 — DepthAnalyzer Engine
+// TradingEasy R114 QTE-11 — DepthAnalyzer Engine
 // PM: 订单簿深度分析, Imbalance >0.3预测 / Wall Detection >3x / Spoofing >5x @5s
 // Liquidity Score / Slippage预估 / 重构图表检测
 

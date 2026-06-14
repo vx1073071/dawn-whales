@@ -122,7 +122,7 @@ function GuestEntryScreen({ onEnter, onRegister }: {onEnter?: () => void;onRegis
       fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
     }}>
       <span style={{ fontSize: 64, marginBottom: 16 }}>🐋</span>
-      <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 8 }}>DAWN WHALES</h1>
+      <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 8 }}>TradingEasy</h1>
       <p style={{ fontSize: 15, color: '#94a3b8', marginBottom: 32, textAlign: 'center', maxWidth: 480 }}>{i18n.t("GuestModeShell.r92_9ede")}
 
         <br /><span style={{ fontSize: 12, color: '#64748b' }}>AI-Powered Quantitative Trading · Global Markets</span>

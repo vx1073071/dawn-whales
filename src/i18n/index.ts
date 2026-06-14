@@ -1,4 +1,4 @@
-// ── DAWN WHALES — i18n with on-demand locale loading (R107 S-29) ──────────
+// ── TradingEasy — i18n with on-demand locale loading (R107 S-29) ──────────
 // R107 optimization: Detect current language → load only that one file (~30KB).
 // Language switch triggers lazy-load of target language.
 // Eager load: only 'en' as fallback (minimal). Others lazy on first use.

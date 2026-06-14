@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Logger ───────────────────────────────────────────────────
+// ── TradingEasy — Logger ───────────────────────────────────────────────────
 // Lightweight logging wrapper. In dev → console; in production → configurable.
 
 const isDev = typeof process !== 'undefined' &&

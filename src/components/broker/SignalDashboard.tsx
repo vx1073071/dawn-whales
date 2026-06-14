@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R123 J02 — SignalDashboard Data Pipeline Connector
+ * TradingEasy R123 J02 — SignalDashboard Data Pipeline Connector
  * 
  * Bridges signal-push-engine with SignalDashboard UI.
  * Subscribes to strategy signals via IPC and provides React hook.

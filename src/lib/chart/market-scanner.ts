@@ -1,4 +1,4 @@
-// DAWN WHALES R115 QTE-29 — MarketScanner Engine
+// TradingEasy R115 QTE-29 — MarketScanner Engine
 // PM: 5预设+自定义扫描, 动态选股对接, 结果排序缓存, 500+标的<3s, 命中率>80%
 
 import type { CachedQuote } from './quote-cache';

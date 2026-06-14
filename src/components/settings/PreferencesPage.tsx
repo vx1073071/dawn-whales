@@ -901,7 +901,7 @@ const PreferencesPage: React.FC = () => {
         <div className="space-y-2">
           <div className="flex justify-between items-center py-1.5 border-b border-gray-700/50">
             <span className="text-sm text-gray-500">Application</span>
-            <span className="text-sm font-medium text-gray-300">Dawn Whales</span>
+            <span className="text-sm font-medium text-gray-300">TradingEasy</span>
           </div>
           <div className="flex justify-between items-center py-1.5 border-b border-gray-700/50">
             <span className="text-sm text-gray-500">Version</span>
@@ -961,7 +961,7 @@ const PreferencesPage: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           <h1 className="text-xl font-bold text-white tracking-tight">Preferences</h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Configure your Dawn Whales experience. Changes are saved automatically.
+            Configure your TradingEasy experience. Changes are saved automatically.
           </p>
         </div>
       </div>

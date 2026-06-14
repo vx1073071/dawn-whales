@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES — IPC Parameter & Response Type Definitions
+ * TradingEasy — IPC Parameter & Response Type Definitions
  *
  * Mirrors the Zod schemas in electron/ipc-schemas.ts.
  * Pure TypeScript types (no Zod dependency) for renderer-side bridge-api usage.

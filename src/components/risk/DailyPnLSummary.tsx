@@ -1,4 +1,4 @@
-// ── DAWN WHALES — DailyPnLSummary () ───────────────────────────
+// ── TradingEasy — DailyPnLSummary () ───────────────────────────
 
 import { useMemo } from 'react';
 import i18n from '../../i18n';

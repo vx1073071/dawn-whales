@@ -1,4 +1,4 @@
-// DAWN WHALES R115 QTE-31 — QuoteCache
+// TradingEasy R115 QTE-31 — QuoteCache
 // PM: 命中率>99.9%, 合并窗口100ms, TTL 1s去抖, 优先级 depth>tick>quote>kline
 
 export interface CachedQuote {

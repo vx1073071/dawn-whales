@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * DAWN WHALES R157 Claw(PM) — SymbolSearch Index
+ * TradingEasy R157 Claw(PM) — SymbolSearch Index
  * 
  * Splits the 420-line SymbolSearch.tsx into 3 focused modules:
  *   - symbolData.ts  — multi-market symbol database + broker config

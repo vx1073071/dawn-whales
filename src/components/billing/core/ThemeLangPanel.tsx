@@ -52,7 +52,7 @@ const THEMES: Record<Theme, ThemeColors> = {
 
 const STRINGS: Record<Lang, LangStrings> = {
   'zh-CN': {
-    appName: 'Dawn Whales', settings: i18n.t('ThemeLangPanel.k1'),
+    appName: 'TradingEasy', settings: i18n.t('ThemeLangPanel.k1'),
     darkMode: i18n.t('ThemeLangPanel.k2'), lightMode: i18n.t('ThemeLangPanel.k3'), followSystem: i18n.t('ThemeLangPanel.k4'), themeLabel: i18n.t('ThemeLangPanel.k5'),
     langLabel: i18n.t('ThemeLangPanel.k6'),
     errCodeFormat: i18n.t('ThemeLangPanel.k7'), errParamRange: i18n.t('ThemeLangPanel.k8'), errNetwork: i18n.t('ThemeLangPanel.k9'), errServer: i18n.t('ThemeLangPanel.k10'),
@@ -66,7 +66,7 @@ const STRINGS: Record<Lang, LangStrings> = {
     loading: i18n.t('ThemeLangPanel.k21'), empty: i18n.t('ThemeLangPanel.k22'), error: i18n.t('ThemeLangPanel.k23')
   },
   'zh-TW': {
-    appName: 'Dawn Whales', settings: i18n.t('ThemeLangPanel.k24'),
+    appName: 'TradingEasy', settings: i18n.t('ThemeLangPanel.k24'),
     darkMode: i18n.t('ThemeLangPanel.k25'), lightMode: i18n.t('ThemeLangPanel.k26'), followSystem: i18n.t('ThemeLangPanel.k27'), themeLabel: i18n.t('ThemeLangPanel.k28'),
     langLabel: i18n.t('ThemeLangPanel.k29'),
     errCodeFormat: i18n.t('ThemeLangPanel.k30'), errParamRange: i18n.t('ThemeLangPanel.k31'), errNetwork: i18n.t('ThemeLangPanel.k32'), errServer: i18n.t('ThemeLangPanel.k33'),
@@ -80,7 +80,7 @@ const STRINGS: Record<Lang, LangStrings> = {
     loading: i18n.t('ThemeLangPanel.k44'), empty: i18n.t('ThemeLangPanel.k45'), error: i18n.t('ThemeLangPanel.k46')
   },
   'en': {
-    appName: 'Dawn Whales', settings: 'Settings',
+    appName: 'TradingEasy', settings: 'Settings',
     darkMode: 'Dark', lightMode: 'Light', followSystem: 'System', themeLabel: 'Theme',
     langLabel: 'Language',
     errCodeFormat: 'Invalid code format', errParamRange: 'Parameter out of range', errNetwork: 'Network error', errServer: 'Server error',
@@ -94,7 +94,7 @@ const STRINGS: Record<Lang, LangStrings> = {
     loading: 'Loading...', empty: 'No data', error: 'Error'
   },
   'ja': {
-    appName: 'Dawn Whales', settings: i18n.t('ThemeLangPanel.k47'),
+    appName: 'TradingEasy', settings: i18n.t('ThemeLangPanel.k47'),
     darkMode: 'ダーク', lightMode: 'ライト', followSystem: 'システム', themeLabel: 'テーマ',
     langLabel: i18n.t('ThemeLangPanel.k48'),
     errCodeFormat: i18n.t('ThemeLangPanel.k49'), errParamRange: i18n.t('ThemeLangPanel.k50'), errNetwork: 'ネットワークエラー', errServer: 'サーバーエラー',
@@ -108,7 +108,7 @@ const STRINGS: Record<Lang, LangStrings> = {
     loading: i18n.t('ThemeLangPanel.k60'), empty: 'データなし', error: 'エラー'
   },
   'ko': {
-    appName: 'Dawn Whales', settings: '설정',
+    appName: 'TradingEasy', settings: '설정',
     darkMode: '다크', lightMode: '라이트', followSystem: '시스템', themeLabel: '테마',
     langLabel: '언어',
     errCodeFormat: '코드 형식 오류', errParamRange: '매개변수 범위 초과', errNetwork: '네트워크 오류', errServer: '서버 오류',

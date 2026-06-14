@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R124 J02 — Signal Share UI Components
+ * TradingEasy R124 J02 — Signal Share UI Components
  * 
  * 5 components per spec docs/design/signal-share-ui-design.md:
  *   SignalShareButton → SignalShareModal → 生成链接+QR
@@ -118,7 +118,7 @@ interface ShareModalProps {
 }
 
 export const SignalShareModal: React.FC<ShareModalProps> = ({ signal, onClose }) => {
-  const shareUrl = `dawnwhales://signal/${signal.token}`;
+  const shareUrl = `TradingEasy://signal/${signal.token}`;
   const [copied, setCopied] = useState(false);
   const [includeHistory, setIncludeHistory] = useState(true);
   const [liveUpdate, setLiveUpdate] = useState(false);

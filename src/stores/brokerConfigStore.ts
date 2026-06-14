@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * DAWN WHALES R156 Claw(PM) — Shared Broker Config Store
+ * TradingEasy R156 Claw(PM) — Shared Broker Config Store
  * 
  * Single source of truth for broker connection status and priority.
  * Used by: BrokerPriority (settings) + QuoteSourceBadge (market) + SymbolSearch.

@@ -1,4 +1,4 @@
-// ── DAWN WHALES — Server Connection Status (R129 M-02) ──────────────────
+// ── TradingEasy — Server Connection Status (R129 M-02) ──────────────────
 // Displays connection status to the cloud server for dual-mode copy trading.
 
 import { useState, useEffect, useCallback } from 'react';
@@ -53,7 +53,7 @@ export default function ServerConnectionStatus() {
     lastError: null,
     tokenExpiry: null,
   });
-  const [serverUrl, setServerUrl] = useState('https://api.dawnwhales.com');
+  const [serverUrl, setServerUrl] = useState('https://api.TradingEasy.com');
   const [apiKey, setApiKey] = useState('');
   const [hasKey, setHasKey] = useState(false);
   const [keyPreview, setKeyPreview] = useState('');
@@ -214,7 +214,7 @@ export default function ServerConnectionStatus() {
           <input
             value={serverUrl}
             onChange={(e) => setServerUrl(e.target.value)}
-            placeholder="https://api.dawnwhales.com"
+            placeholder="https://api.TradingEasy.com"
             className="w-full bg-[#12121a] border border-white/10 rounded-lg px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-[#C9A046]/50"
           />
         </div>

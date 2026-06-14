@@ -1,4 +1,4 @@
-// ── DAWN WHALES — QuickTrade () ────────────────────────────────────
+// ── TradingEasy — QuickTrade () ────────────────────────────────────
 
 import { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';

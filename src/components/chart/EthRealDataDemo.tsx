@@ -1,5 +1,5 @@
 /**
- * DAWN WHALES R122 J05 — Real Data Demo: Binance ETH-USDT
+ * TradingEasy R122 J05 — Real Data Demo: Binance ETH-USDT
  * 
  * Verification page: connects to Binance → fetches real Kline + OrderBook → renders.
  * Proves the full data pipeline works end-to-end.

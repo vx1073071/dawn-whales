@@ -1,4 +1,4 @@
-// ── useKeyboardShortcuts — Global hotkeys for DAWN WHALES ──────────────────
+// ── useKeyboardShortcuts — Global hotkeys for TradingEasy ──────────────────
 import { useEffect } from 'react';
 import { useAppStore } from '@/stores/appStore';
 import i18n from '../i18n';

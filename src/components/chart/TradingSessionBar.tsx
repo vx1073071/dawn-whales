@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * DAWN WHALES R125 J02 — Trading Session Indicator
+ * TradingEasy R125 J02 — Trading Session Indicator
  * 
  * Shows which market sessions are currently active.
  * US Pre/Regular/After | HK Morning/Afternoon | UK | Crypto 24/7

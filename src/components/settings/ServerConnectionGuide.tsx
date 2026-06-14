@@ -11,7 +11,7 @@ import { LinkOutlined, CheckCircleOutlined, CloseCircleOutlined, LoadingOutlined
 
 export function ServerConnectionGuide({ onComplete }: { onComplete: (url: string) => void }) {
   const [step, setStep] = useState(0);
-  const [url, setUrl] = useState('https://api.dawnwhales.com');
+  const [url, setUrl] = useState('https://api.TradingEasy.com');
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState<{ success: boolean; version?: string; latency?: number; error?: string } | null>(null);
   const [connecting, setConnecting] = useState(false);
@@ -67,7 +67,7 @@ export function ServerConnectionGuide({ onComplete }: { onComplete: (url: string
       {/* Header */}
       <div className="text-center">
         <div className="text-4xl mb-3">🐳</div>
-        <h2 className="text-[#e6edf3] text-lg font-bold mb-1">连接到 Dawn Whales 服务器</h2>
+        <h2 className="text-[#e6edf3] text-lg font-bold mb-1">连接到 TradingEasy 服务器</h2>
         <p className="text-[#8b949e] text-xs">连接服务器以启用24小时自动跟单和信号接收</p>
       </div>
 
@@ -89,14 +89,14 @@ export function ServerConnectionGuide({ onComplete }: { onComplete: (url: string
           <div className="flex flex-col gap-2">
             <label className="text-[10px] text-[#8b949e] flex items-center gap-1">
               服务器地址
-              <Tooltip title="你的Dawn Whales服务器URL，例如 https://api.dawnwhales.com">
+              <Tooltip title="你的TradingEasy服务器URL，例如 https://api.TradingEasy.com">
                 <QuestionCircleOutlined className="text-[#484f58] text-[10px]" />
               </Tooltip>
             </label>
             <Input
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://api.dawnwhales.com"
+              placeholder="https://api.TradingEasy.com"
               prefix={<LinkOutlined className="text-[#484f58]" />}
               className="bg-[#0d1117] border-[#30363d] text-[#c9d1d9] text-xs font-mono"
               onKeyDown={(e) => e.key === 'Enter' && setStep(1)}

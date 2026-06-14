@@ -53,9 +53,9 @@ const mockHealth: SystemHealth = {
 };
 
 const mockAudit: AuditEntry[] = [
-{ id: 'a1', time: '10:42:15', action: i18n.t('AdminDashboardV2.k1'), admin: 'admin@dawnwhales.com', target: 'api-server', details: i18n.t('AdminDashboardV2.k2') },
-{ id: 'a2', time: '10:38:02', action: i18n.t('AdminDashboardV2.k3'), admin: 'admin@dawnwhales.com', target: 'backtest-cache', details: i18n.t('AdminDashboardV2.k4') },
-{ id: 'a3', time: '10:15:33', action: i18n.t('AdminDashboardV2.k5'), admin: 'admin@dawnwhales.com', target: 'user_0x3f2a', details: i18n.t('AdminDashboardV2.k6') },
+{ id: 'a1', time: '10:42:15', action: i18n.t('AdminDashboardV2.k1'), admin: 'admin@TradingEasy.com', target: 'api-server', details: i18n.t('AdminDashboardV2.k2') },
+{ id: 'a2', time: '10:38:02', action: i18n.t('AdminDashboardV2.k3'), admin: 'admin@TradingEasy.com', target: 'backtest-cache', details: i18n.t('AdminDashboardV2.k4') },
+{ id: 'a3', time: '10:15:33', action: i18n.t('AdminDashboardV2.k5'), admin: 'admin@TradingEasy.com', target: 'user_0x3f2a', details: i18n.t('AdminDashboardV2.k6') },
 { id: 'a4', time: '09:52:10', action: i18n.t('AdminDashboardV2.k7'), admin: 'system', target: 'database', details: i18n.t('AdminDashboardV2.k8') },
 { id: 'a5', time: '09:30:00', action: i18n.t('AdminDashboardV2.k9'), admin: 'auto', target: 'license_batch', details: i18n.t('AdminDashboardV2.k10') }];
 

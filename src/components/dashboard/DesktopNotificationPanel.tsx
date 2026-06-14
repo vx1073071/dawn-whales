@@ -1,5 +1,5 @@
 /**
- * DesktopNotification â€?Browser Notification API bridge for trading alerts
+ * DesktopNotification ï¿½?Browser Notification API bridge for trading alerts
  * (ML-43-03, R43 Phase 6.0)
  *
  * Features:
@@ -77,7 +77,7 @@ export const DesktopNotificationPanel: React.FC<DesktopNotificationPanelProps> =
     setPermission(result);
     if (result === 'granted') {
       // Send welcome notification
-      new Notification('DAWN WHALES', {
+      new Notification('TradingEasy', {
         body: i18n.t('DesktopNotificationPanel.k1'),
         icon: '/logo.svg'
       });

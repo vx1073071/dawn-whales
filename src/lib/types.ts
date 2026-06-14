@@ -1,4 +1,4 @@
-// ── DAWN WHALES · — Core Type Definitions ─────────────────────────────
+// ── TradingEasy · — Core Type Definitions ─────────────────────────────
 
 // ── Broker Types ──────────────────────────────────────────────────────────
 

@@ -1,4 +1,4 @@
-// ── DAWN WHALES — RiskConfigEditor (risk controlconfigedit) ─────────────────────────
+// ── TradingEasy — RiskConfigEditor (risk controlconfigedit) ─────────────────────────
 
 import { useState, useEffect } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';

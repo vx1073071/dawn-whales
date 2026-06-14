@@ -1,4 +1,4 @@
-// DAWN WHALES R114 QTE-13 — Multi-Broker Depth WebSocket Manager
+// TradingEasy R114 QTE-13 — Multi-Broker Depth WebSocket Manager
 // PM: 4交易所深度WS连接 — Binance@20@100ms / OKX@400 / Bybit@200 / Bitget@20
 
 import type { OrderBookSnapshot, OrderBookDelta, OrderBookLevel } from './orderbook-engine';

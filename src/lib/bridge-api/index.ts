@@ -2,7 +2,7 @@
  * @deprecated Use src/services/ instead (R108 S-34).
  * Service layer provides typed, domain-split interfaces.
  *
- * ── DAWN WHALES — Bridge API Index ────────────────────────────────────
+ * ── TradingEasy — Bridge API Index ────────────────────────────────────
  * S-15p1: Re-export all modules + types
  * Backward-compatible: import { x } from 'src/lib/bridge-api' still works.
  */

@@ -86,7 +86,7 @@ export function ServerStatusBar() {
 // ═══════════ Settings Panel ═══════════
 
 export function ServerConnectionPanel() {
-  const [url, setUrl] = useState('https://api.dawnwhales.com');
+  const [url, setUrl] = useState('https://api.TradingEasy.com');
   const [status, setStatus] = useState<ServerStatus>('disconnected');
   const [testing, setTesting] = useState(false);
   const [connecting, setConnecting] = useState(false);
@@ -202,7 +202,7 @@ export function ServerConnectionPanel() {
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-[#e6edf3] text-sm font-bold mb-0.5">服务器连接</h3>
-          <p className="text-[#484f58] text-[10px]">连接到 Dawn Whales 服务器以启用24小时跟单</p>
+          <p className="text-[#484f58] text-[10px]">连接到 TradingEasy 服务器以启用24小时跟单</p>
         </div>
         <Tag color={isConnected ? 'green' : 'default'} className="text-[10px]">
           {isConnected ? '已连接' : status === 'connecting' ? '连接中' : '未连接'}
@@ -216,7 +216,7 @@ export function ServerConnectionPanel() {
           <Input
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://api.dawnwhales.com"
+            placeholder="https://api.TradingEasy.com"
             disabled={isConnected}
             prefix={<LinkOutlined className="text-[#484f58]" />}
             className="bg-[#0d1117] border-[#30363d] text-[#c9d1d9] text-xs flex-1 font-mono"

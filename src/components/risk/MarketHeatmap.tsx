@@ -1,4 +1,4 @@
-// ── DAWN WHALES — MarketHeatmap (sectorheatmap) ───────────────────────────
+// ── TradingEasy — MarketHeatmap (sectorheatmap) ───────────────────────────
 // sector — : 
 
 import { useState, useMemo } from 'react';

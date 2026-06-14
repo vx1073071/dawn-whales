@@ -1,6 +1,6 @@
 // R124-Q01: ts-nocheck directive removed — imports validated
 import type { KlineBar, Timeframe, AdjustType } from './types';
-// DAWN WHALES R121 — Split from types.ts
+// TradingEasy R121 — Split from types.ts
 // Sections 5-8: IPC handler contracts, indicator results, data export types
 
 // SECTION 5: 指标计算结果类型

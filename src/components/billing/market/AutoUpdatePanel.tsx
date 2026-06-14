@@ -59,7 +59,7 @@ const mockUpdate: UpdateInfo = {
   i18n.t('AutoUpdatePanel.k5'),
   i18n.t('AutoUpdatePanel.k6')],
 
-  downloadUrl: 'https://github.com/vx1073071/dawn-whales/releases/latest'
+  downloadUrl: 'https://github.com/vx1073071/TradingEasy/releases/latest'
 };
 
 // ── Main Component ──────────────────────────────────────────────────────

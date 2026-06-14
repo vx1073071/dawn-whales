@@ -108,7 +108,7 @@ const RoadmapPage: React.FC = () => {
       </div>
 
       <div className="px-6 py-6 text-center border-t border-white/[0.04]">
-        <a href="https://github.com/vx1073071/dawn-whales/issues/new?template=feature_request.md" target="_blank" rel="noopener noreferrer" className="text-xs text-amber-400 hover:text-amber-300">
+        <a href="https://github.com/vx1073071/TradingEasy/issues/new?template=feature_request.md" target="_blank" rel="noopener noreferrer" className="text-xs text-amber-400 hover:text-amber-300">
           + Submit Feature Request
         </a>
       </div>
