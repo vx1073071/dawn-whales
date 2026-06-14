@@ -1,13 +1,19 @@
-// ── R164 P1-E2: IC Decay Curve Chart ──────────────────────────────────────
+// ── R164 P1-E2 + R171 F2: IC Decay Curve Chart with Hyperbolic Decay ───
 // Visualize Information Coefficient decay over lag periods.
-// X-axis: lag (days/months)  Y-axis: IC value
-// Each factor gets its own line; threshold lines at 0 and ±0.03
+// R171 upgrade: dual-track decay model (mechanical hyperbolic vs judgment exponential+breaks)
+// X-axis: lag (days)  Y-axis: IC value
+// Each factor gets its own line; threshold lines at 0 and ±0.03; breakpoints marked ⚡
 // Annotations for half-life (IC drops to 50% of initial)
+// Mechanical=达hed line, Judgment=dotted line
 //
-// Data: factor-research-engine.computeDecay() via IPC
-//       Falls back to mock data when IPC unavailable
+// Data: HyperbolicDecayModel (R171) → falls back to factor-research-engine.computeDecay()
 
 import React, { useEffect, useState, useRef } from 'react';
+import {
+  generateHyperbolicDecayCurves,
+  type HyperbolicDecayCurve,
+  DecayTypeBadge,
+} from './HyperbolicDecayModel';
 import * as echarts from 'echarts';
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -179,21 +185,31 @@ function renderDecayChart(container: HTMLDivElement, series: DecaySeries[]) {
 export const DecayCurveChart: React.FC = () => {
   const chartRef = useRef<HTMLDivElement>(null);
   const [decayData, setDecayData] = useState<DecaySeries[]>([]);
+  const [hyperbolicData, setHyperbolicData] = useState<HyperbolicDecayCurve[]>([]);
   const [selectedFactors, setSelectedFactors] = useState<Set<string>>(new Set());
+  const [useHyperbolic, setUseHyperbolic] = useState(true); // R171: toggle hyperbolic model
 
   useEffect(() => {
+    // R171: Generate hyperbolic decay curves
+    const hCurves = generateHyperbolicDecayCurves();
+    setHyperbolicData(hCurves);
+
+    // Also keep old mock for fallback
     const mock = generateMockDecaySeries();
     setDecayData(mock);
-    setSelectedFactors(new Set(mock.slice(0, 4).map((s) => s.factorId)));
-  }, []);
+    setSelectedFactors(new Set(
+      (useHyperbolic ? hCurves : mock).slice(0, 4).map((s) => s.factorId)
+    ));
+  }, [useHyperbolic]);
 
   useEffect(() => {
     if (!chartRef.current || selectedFactors.size === 0) return;
-    const filtered = decayData.filter((d) => selectedFactors.has(d.factorId));
+    const sourceData = useHyperbolic ? hyperbolicData : decayData;
+    const filtered = sourceData.filter((d) => selectedFactors.has(d.factorId));
     if (filtered.length === 0) return;
-    const { dispose } = renderDecayChart(chartRef.current, filtered);
+    const { dispose } = renderDecayChart(chartRef.current, filtered as DecaySeries[]);
     return dispose;
-  }, [decayData, selectedFactors]);
+  }, [decayData, hyperbolicData, selectedFactors, useHyperbolic]);
 
   const toggleFactor = (factorId: string) => {
     setSelectedFactors((prev) => {
@@ -207,11 +223,33 @@ export const DecayCurveChart: React.FC = () => {
   const selectAll = () => setSelectedFactors(new Set(decayData.map((d) => d.factorId)));
   const clearAll = () => setSelectedFactors(new Set());
 
+  const sourceData = useHyperbolic ? hyperbolicData : decayData;
+
   return (
     <div className="p-6 space-y-5 bg-deep min-h-full">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">📉 IC衰减曲线</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-white">📉 IC衰减曲线</h1>
+          <div className="flex items-center gap-2 mt-1">
+            {/* R171: Decay model toggle */}
+            <button
+              onClick={() => setUseHyperbolic(!useHyperbolic)}
+              className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${
+                useHyperbolic
+                  ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+                  : 'bg-gray-800 text-gray-500 border-gray-700'
+              }`}
+            >
+              {useHyperbolic ? '🔬 双曲衰减模型' : '📊 指数衰减模型'}
+            </button>
+            {useHyperbolic && (
+              <span className="text-[9px] text-gray-600">
+                机械因子(双曲) · 判断因子(指数+突变)
+              </span>
+            )}
+          </div>
+        </div>
         <div className="flex gap-2">
           <button
             className="px-3 py-1.5 rounded text-xs bg-green-700 text-white hover:bg-green-600 transition-colors"
@@ -230,7 +268,7 @@ export const DecayCurveChart: React.FC = () => {
 
       {/* Factor toggle chips */}
       <div className="flex flex-wrap gap-2">
-        {decayData.map((d) => {
+        {sourceData.map((d) => {
           const isSelected = selectedFactors.has(d.factorId);
           return (
             <button
@@ -270,6 +308,7 @@ export const DecayCurveChart: React.FC = () => {
           <thead>
             <tr className="border-b border-gray-800 text-gray-400">
               <th className="py-2 px-3 text-left">因子</th>
+              {useHyperbolic && <th className="py-2 px-3 text-center">类型</th>}
               <th className="py-2 px-3 text-right">初始IC</th>
               <th className="py-2 px-3 text-right">半衰期(天)</th>
               <th className="py-2 px-3 text-right">D30 IC</th>
@@ -278,7 +317,10 @@ export const DecayCurveChart: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {decayData.map((d) => (
+            {sourceData.map((d) => {
+              const hParams = useHyperbolic ? (d as HyperbolicDecayCurve).params : null;
+              const curveData = useHyperbolic ? (d as HyperbolicDecayCurve).curve : (d as DecaySeries).decayCurve;
+              return (
               <tr key={d.factorId} className="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors">
                 <td className="py-2 px-3">
                   <span
@@ -287,17 +329,22 @@ export const DecayCurveChart: React.FC = () => {
                   />
                   <span className="text-white font-medium">{d.nameCN}</span>
                 </td>
+                {useHyperbolic && hParams && (
+                  <td className="py-2 px-3 text-center">
+                    <DecayTypeBadge type={hParams.type} size="sm" />
+                  </td>
+                )}
                 <td className="py-2 px-3 text-right" style={{ color: d.color }}>
-                  {d.decayCurve[0]?.toFixed(4) || '—'}
+                  {(curveData[0] as number)?.toFixed(4) || '—'}
                 </td>
                 <td className="py-2 px-3 text-right text-cyan-400">
                   {d.halfLife < 60 ? d.halfLife : '60+'}
                 </td>
                 <td className="py-2 px-3 text-right text-gray-300">
-                  {d.decayCurve[29]?.toFixed(4) || '—'}
+                  {(curveData[29] as number)?.toFixed(4) || '—'}
                 </td>
                 <td className="py-2 px-3 text-right text-gray-300">
-                  {d.decayCurve[59]?.toFixed(4) || '—'}
+                  {(curveData[59] as number)?.toFixed(4) || '—'}
                 </td>
                 <td className="py-2 px-3 text-center">
                   <span
@@ -313,7 +360,8 @@ export const DecayCurveChart: React.FC = () => {
                   </span>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>

@@ -1,14 +1,16 @@
-// ── R164 P1-E3: Long/Short Factor Return Chart ──────────────────────────
+// ── R164 P1-E3 + R171 F3: Long/Short Factor Return Chart ───────────────
 // Visualize factor-based long-short portfolio returns.
+// R171 upgrade: real data integration bridge + DataTrustBadge
 // Top: Cumulative long return, short return, long-short spread (area chart)
 // Bottom: Monthly long/short/spread bar chart
 // Annotations for max drawdown, best/worst month, total spread
 //
-// Data: factor-research-engine.computeFactorReturn() via IPC
+// Data: bridge-api.getFactorReturns() → factor-research-engine.computeFactorReturn()
 //       Falls back to mock data when IPC unavailable
 
 import React, { useEffect, useState, useRef } from 'react';
 import * as echarts from 'echarts';
+import { DataTrustBadge } from '@/components/common/DataTrustBadge';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -22,10 +24,10 @@ interface LongShortPoint {
 interface LongShortData {
   factorId: string;
   nameCN: string;
-  series: LongShortPoint[];          // Raw daily/monthly
-  cumulativeLong: number[];          // Cumulative sum of long returns
-  cumulativeShort: number[];         // Cumulative sum of short returns (positive = profit from short)
-  cumulativeSpread: number[];        // Cumulative long-short spread
+  series: LongShortPoint[];
+  cumulativeLong: number[];
+  cumulativeShort: number[];
+  cumulativeSpread: number[];
   dates: string[];
   totalLongReturn: number;
   totalShortReturn: number;
@@ -33,6 +35,8 @@ interface LongShortData {
   maxDrawdown: number;
   bestMonth: { date: string; spread: number };
   worstMonth: { date: string; spread: number };
+  /** R171: data source */
+  dataSource?: 'REAL' | 'SIMULATED' | 'MOCK';
 }
 
 // ── Factor names ────────────────────────────────────────────────────────────
@@ -111,6 +115,7 @@ function generateMockLongShort(): LongShortData[] {
       totalLongReturn: Number(cumLong.toFixed(4)),
       totalShortReturn: Number(cumShort.toFixed(4)),
       totalSpread: Number(cumSpread.toFixed(4)),
+      dataSource: 'SIMULATED' as const,
       maxDrawdown: Number(maxDD.toFixed(4)),
       bestMonth: { date: bestDate, spread: Number(bestSpread.toFixed(6)) },
       worstMonth: { date: worstDate, spread: Number(worstSpread.toFixed(6)) },
@@ -293,7 +298,20 @@ export const LongShortChart: React.FC = () => {
     <div className="p-6 space-y-5 bg-deep min-h-full">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">📈 多空因子收益</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-white">📈 多空因子收益</h1>
+          {/* R171: Data trust badge */}
+          {activeData && (
+            <div className="mt-1">
+              <DataTrustBadge
+                source={activeData.dataSource || 'MOCK'}
+                provider="factor-research-engine"
+                freshness="回测模拟"
+                size="sm"
+              />
+            </div>
+          )}
+        </div>
         <div className="flex gap-2">
           <button
             className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${viewMode === 'cumulative' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
