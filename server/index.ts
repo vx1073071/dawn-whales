@@ -197,6 +197,10 @@ app.use('/api/watchlist', watchlistRoutes);
 // ── R162: Backtest Snapshot + Comparison routes ───────────────────────────
 app.use('/api/backtest/snapshots', backtestRoutes);
 
+// ── R163 P1-X3: Factor Spot-Check + Compare API ──────────────────────
+import factorApiRoutes from './routes/factor-api';
+app.use('/api/factor', factorApiRoutes);
+
 // ── R132: Dead letter queue ──────────────────────────────────────────
 app.use('/api/dead-letter', deadLetterRoutes);
 

@@ -76,10 +76,32 @@ export interface UnifiedFactorScore {
   // Scoring metadata
   scoringMode: ScoringMode;
   reason: string;            // Human-readable explanation (i18n)
+  /** R163: Drag factor analysis — contribution breakdown */
+  debug?: FactorDebug;
   calculatedAt: number;
 }
 
 export type FactorRating = 'STRONG_BUY' | 'BUY' | 'HOLD' | 'SELL' | 'STRONG_SELL';
+
+// ── R163 P1-X4: Drag Factor Analysis ──────────────────────────────────────
+
+export interface DragAnalysis {
+  factorId: string;
+  factorName: string;
+  score: number;
+  weight: number;
+  /** Net contribution relative to neutral-50: (score - 50) × weight / totalWeight */
+  netContribution: number;
+  /** Drag percentage vs composite (negative = dragging down) */
+  dragPercent: number;
+  suggestion: string;
+}
+
+export interface FactorDebug {
+  positiveContributors: DragAnalysis[];
+  dragFactors: DragAnalysis[];
+  compositeBreakdown: string;
+}
 
 export interface DawnFactorConfig {
   mode: ScoringMode;
@@ -178,6 +200,10 @@ export class DawnFactorFramework {
       // Build reason
       const reason = this.buildReason(symbol, factorScores, rating);
 
+      // R163: Drag factor analysis
+      const debug = this.computeDragAnalysis(factorScores, composite.totalWeight, composite.categoryScores);
+      const reasonWithDrag = this.augmentReason(reason, debug);
+
       const elapsed = Date.now() - start;
       log.debug(`[DawnFactorFramework] Scored ${symbol} in ${elapsed}ms → ${composite.compositeScore.toFixed(1)} (${rating})`);
 
@@ -197,7 +223,8 @@ export class DawnFactorFramework {
         riskScore: composite.riskScore,
         maxDrawdownPct: 0,
         scoringMode: this.config.mode,
-        reason,
+        reason: reasonWithDrag,
+        debug,
         calculatedAt: Date.now(),
       };
 
@@ -334,9 +361,10 @@ export class DawnFactorFramework {
     confidence: number;
     categoryScores: Record<string, number>;
     riskScore: number;
+    totalWeight: number;
   } {
     if (factors.length === 0) {
-      return { compositeScore: 50, confidence: 0, categoryScores: {}, riskScore: 50 };
+      return { compositeScore: 50, confidence: 0, categoryScores: {}, riskScore: 50, totalWeight: 0 };
     }
 
     // Weighted average (auto-normalize weights)
@@ -374,7 +402,90 @@ export class DawnFactorFramework {
       confidence: Math.round(confidence * 1000) / 1000,
       categoryScores,
       riskScore: Math.round(riskScore * 100) / 100,
+      totalWeight: Math.round(totalWeight * 1000) / 1000,
     };
+  }
+
+  // ── R163 P1-X4: Drag Factor Analysis ───────────────────────────────
+
+  /**
+   * Compute drag factor analysis: identifies factors dragging the composite
+   * score down (score < 50 neutral threshold) and calculates their net
+   * contribution relative to neutral. Returns structured debug data and
+   * human-readable suggestions (e.g., "动量因子 拖累-12.3%, 建议降低权重").
+   */
+  private computeDragAnalysis(
+    factors: FactorScoreDetail[],
+    totalWeight: number,
+    _categoryScores: Record<string, number>
+  ): FactorDebug {
+    const NEUTRAL = 50;
+
+    // Separate factors into positive contributors (above neutral) and drag (below neutral)
+    const positiveContributors: DragAnalysis[] = [];
+    const dragFactors: DragAnalysis[] = [];
+
+    for (const f of factors) {
+      const netContribution = totalWeight > 0
+        ? ((f.score - NEUTRAL) * f.weight) / totalWeight
+        : 0;
+
+      const dragPercent = totalWeight > 0
+        ? ((f.score - NEUTRAL) * f.weight / totalWeight) * 100
+        : 0;
+
+      const analysis: DragAnalysis = {
+        factorId: f.factorId,
+        factorName: f.factorName,
+        score: f.score,
+        weight: f.weight,
+        netContribution: Math.round(netContribution * 100) / 100,
+        dragPercent: Math.round(dragPercent * 10) / 10,
+        suggestion: '',
+      };
+
+      if (f.score < NEUTRAL) {
+        // Score below neutral = dragging factor
+        const absPct = Math.abs(dragPercent).toFixed(1);
+        analysis.suggestion = `拖累${absPct}%, 建议降低权重或替换为更优因子`;
+        dragFactors.push(analysis);
+      } else {
+        analysis.suggestion = `贡献+${dragPercent.toFixed(1)}%, 权重合理`;
+        positiveContributors.push(analysis);
+      }
+    }
+
+    // Sort drag factors by most damaging first
+    dragFactors.sort((a, b) => a.netContribution - b.netContribution);
+    positiveContributors.sort((a, b) => b.netContribution - a.netContribution);
+
+    // Composite breakdown text
+    const posSummary = positiveContributors.length > 0
+      ? positiveContributors.slice(0, 3).map(p => `${p.factorName}+${Math.abs(p.dragPercent).toFixed(1)}%`).join(' | ')
+      : '无显著正贡献因子';
+    const negSummary = dragFactors.length > 0
+      ? dragFactors.slice(0, 3).map(d => `${d.factorName} ${d.dragPercent.toFixed(1)}%`).join(' | ')
+      : '无拖累因子';
+    const compositeBreakdown = `[贡献分解] 正向: ${posSummary} ｜ 拖累: ${negSummary}`;
+
+    return { positiveContributors, dragFactors, compositeBreakdown };
+  }
+
+  /**
+   * Augment the i18n reason string with drag factor analysis when drag
+   * factors are present. The drag analysis is appended in logical order
+   * for progressive UI display.
+   */
+  private augmentReason(reason: string, debug: FactorDebug): string {
+    if (debug.dragFactors.length === 0) {
+      return `${reason} | ${debug.compositeBreakdown}`;
+    }
+
+    // Build drag factor warning: list top 3 drag factors with suggestions
+    const top3Drags = debug.dragFactors.slice(0, 3);
+    const dragParts = top3Drags.map(d => `${d.factorName}(${d.suggestion})`);
+
+    return `${reason} | ${debug.compositeBreakdown} | ⚠️ ${dragParts.join('; ')}`;
   }
 
   // ── Helpers ─────────────────────────────────────────────────────────

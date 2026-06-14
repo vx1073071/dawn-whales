@@ -45,6 +45,8 @@ export interface FactorHighlight {
   color: 'green' | 'yellow' | 'red';
   oneLine: string;
   contribution: string;
+  /** R163: Net drag percentage (negative = dragging composite down) */
+  dragPct?: number;
 }
 
 export interface RiskFlag {
@@ -183,13 +185,24 @@ export class FactorSummaryEngine {
     return factors.map(f => {
       const i18n = getFactorI18n(f.factorId);
       const color = getFactorColor(f.factorId, f.score);
+      const NEUTRAL = 50;
+      const dragPct = f.score - NEUTRAL; // positive = help, negative = drag
+      let contribution: string;
+      if (f.score >= 60) {
+        contribution = `正向贡献 +${dragPct.toFixed(1)}%`;
+      } else if (f.score <= 40) {
+        contribution = `拖累 ${dragPct.toFixed(1)}%, 建议降低权重`;
+      } else {
+        contribution = '中性';
+      }
       return {
         factorId: f.factorId,
         nameCN: i18n?.nameCN ?? f.factorId,
         score: f.score,
         color,
         oneLine: i18n?.oneLine ?? '',
-        contribution: f.score >= 60 ? '正向贡献' : f.score <= 40 ? '拖累' : '中性',
+        contribution,
+        dragPct: Math.round(dragPct * 10) / 10,
       };
     });
   }
@@ -284,8 +297,12 @@ const zh = {
     }
 
     if (negatives.length > 0) {
-      const negNames = negatives.map(f => getFactorI18n(f.factorId)?.nameCN ?? f.factorId).join('、');
-      parts.push(`拖累因子为${negNames}，这些因子处于弱势区间，建议关注并在回测中测试降低对应权重的效果。`);
+      const negNames = negatives.map(f => {
+        const name = getFactorI18n(f.factorId)?.nameCN ?? f.factorId;
+        const drag = (f.score - 50).toFixed(1);
+        return `${name}(${drag}%)`;
+      }).join('、');
+      parts.push(`拖累因子为${negNames}，这些因子低于中性线，建议在回测中降低权重或替换为更优因子。`);
     }
 
     if (attribution?.rSquared !== undefined) {
