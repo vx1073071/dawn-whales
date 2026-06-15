@@ -6897,5 +6897,31 @@
   "kb_undo": "撤销",
   "kb_save": "保存",
   "kb_saved": "已保存",
-  "kb_shortcut_hint": "键盘快捷键可用"
+  "kb_shortcut_hint": "键盘快捷键可用",
+  "chartContextMenu": {
+    "copySymbol": "复制代码",
+    "copied": "已复制",
+    "addWatchlist": "添加自选",
+    "added": "已添加",
+    "setAlert": "设置提醒",
+    "alertSet": "提醒已设置",
+    "share": "分享",
+    "linkCopied": "链接已复制",
+    "export": "导出数据",
+    "exportStarted": "导出已开始",
+    "viewDetail": "查看详情",
+    "copyCell": "复制单元格",
+    "removeFromWatchlist": "从自选移除",
+    "removed": "已移除",
+    "copyPrice": "复制价格",
+    "bid": "买盘",
+    "ask": "卖盘"
+  },
+  "interactionEnhance": {
+    "resetZoom": "已重置缩放",
+    "reorderSaved": "排序已保存",
+    "copied": "已复制",
+    "clickToCopy": "点击复制",
+    "paramsApplied": "指标参数已同步"
+  }
 }

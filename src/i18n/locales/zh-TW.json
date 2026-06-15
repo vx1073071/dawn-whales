@@ -6539,5 +6539,31 @@
   "kb_undo": "復原",
   "kb_save": "儲存",
   "kb_saved": "已儲存",
-  "kb_shortcut_hint": "鍵盤快速鍵可用"
+  "kb_shortcut_hint": "鍵盤快速鍵可用",
+  "chartContextMenu": {
+    "copySymbol": "複製代碼",
+    "copied": "已複製",
+    "addWatchlist": "添加自選",
+    "added": "已添加",
+    "setAlert": "設定提醒",
+    "alertSet": "提醒已設定",
+    "share": "分享",
+    "linkCopied": "連結已複製",
+    "export": "匯出資料",
+    "exportStarted": "匯出已開始",
+    "viewDetail": "檢視詳情",
+    "copyCell": "複製儲存格",
+    "removeFromWatchlist": "從自選移除",
+    "removed": "已移除",
+    "copyPrice": "複製價格",
+    "bid": "買盤",
+    "ask": "賣盤"
+  },
+  "interactionEnhance": {
+    "resetZoom": "已重置縮放",
+    "reorderSaved": "排序已保存",
+    "copied": "已複製",
+    "clickToCopy": "點擊複製",
+    "paramsApplied": "指標參數已同步"
+  }
 }

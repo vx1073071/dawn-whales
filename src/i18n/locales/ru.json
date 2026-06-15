@@ -6079,5 +6079,31 @@
     "reconnectAllFailed": "Переподключение всех не удалось",
     "allReconnected": "Все брокеры переподключены",
     "reconnected": "Переподключено"
+  },
+  "chartContextMenu": {
+    "copySymbol": "Копировать Код",
+    "copied": "Скопировано",
+    "addWatchlist": "В Watchlist",
+    "added": "Добавлено",
+    "setAlert": "Установить Оповещение",
+    "alertSet": "Оповещение установлено",
+    "share": "Поделиться",
+    "linkCopied": "Ссылка скопирована",
+    "export": "Экспорт Данных",
+    "exportStarted": "Экспорт запущен",
+    "viewDetail": "Подробнее",
+    "copyCell": "Копировать Ячейку",
+    "removeFromWatchlist": "Удалить из Watchlist",
+    "removed": "Удалено",
+    "copyPrice": "Копировать Цену",
+    "bid": "Покупка",
+    "ask": "Продажа"
+  },
+  "interactionEnhance": {
+    "resetZoom": "Масштаб сброшен",
+    "reorderSaved": "Порядок сохранён",
+    "copied": "Скопировано",
+    "clickToCopy": "Нажмите чтобы скопировать",
+    "paramsApplied": "Параметры синхронизированы"
   }
 }

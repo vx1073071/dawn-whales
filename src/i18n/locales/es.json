@@ -6506,5 +6506,31 @@
   "kb_undo": "Deshacer",
   "kb_save": "Guardar",
   "kb_saved": "Guardado",
-  "kb_shortcut_hint": "Atajos de teclado disponibles"
+  "kb_shortcut_hint": "Atajos de teclado disponibles",
+  "chartContextMenu": {
+    "copySymbol": "Copiar Código",
+    "copied": "Copiado",
+    "addWatchlist": "Añadir a Lista",
+    "added": "Añadido",
+    "setAlert": "Establecer Alerta",
+    "alertSet": "Alerta establecida",
+    "share": "Compartir",
+    "linkCopied": "Enlace copiado",
+    "export": "Exportar Datos",
+    "exportStarted": "Exportación iniciada",
+    "viewDetail": "Ver Detalle",
+    "copyCell": "Copiar Celda",
+    "removeFromWatchlist": "Eliminar de Lista",
+    "removed": "Eliminado",
+    "copyPrice": "Copiar Precio",
+    "bid": "Compra",
+    "ask": "Venta"
+  },
+  "interactionEnhance": {
+    "resetZoom": "Zoom reiniciado",
+    "reorderSaved": "Orden guardado",
+    "copied": "Copiado",
+    "clickToCopy": "Clic para copiar",
+    "paramsApplied": "Parámetros sincronizados"
+  }
 }

@@ -6367,5 +6367,31 @@
     "reconnectAllFailed": "Riconnessione totale fallita",
     "allReconnected": "Tutti i broker riconnessi",
     "reconnected": "Riconnesso"
+  },
+  "chartContextMenu": {
+    "copySymbol": "Copia Codice",
+    "copied": "Copiato",
+    "addWatchlist": "Aggiungi Watchlist",
+    "added": "Aggiunto",
+    "setAlert": "Imposta Allarme",
+    "alertSet": "Allarme impostato",
+    "share": "Condividi",
+    "linkCopied": "Link copiato",
+    "export": "Esporta Dati",
+    "exportStarted": "Esportazione avviata",
+    "viewDetail": "Dettaglio",
+    "copyCell": "Copia Cella",
+    "removeFromWatchlist": "Rimuovi Watchlist",
+    "removed": "Rimosso",
+    "copyPrice": "Copia Prezzo",
+    "bid": "Denaro",
+    "ask": "Lettera"
+  },
+  "interactionEnhance": {
+    "resetZoom": "Zoom ripristinato",
+    "reorderSaved": "Ordine salvato",
+    "copied": "Copiato",
+    "clickToCopy": "Clicca per copiare",
+    "paramsApplied": "Parametri sincronizzati"
   }
 }

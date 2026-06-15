@@ -1,4 +1,4 @@
-// @ts-nocheck
+// ML R223 C3: @ts-nocheck removed — types validated
 // #ts-nocheck-cleared -- R107 S-24: StrategyPage split into 10 sub-components
 import { useState, useEffect, useCallback } from 'react';
 import { Modal } from 'antd';

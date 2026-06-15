@@ -6539,5 +6539,31 @@
   "kb_undo": "Rückgängig",
   "kb_save": "Speichern",
   "kb_saved": "Gespeichert",
-  "kb_shortcut_hint": "Tastenkürzel verfügbar"
+  "kb_shortcut_hint": "Tastenkürzel verfügbar",
+  "chartContextMenu": {
+    "copySymbol": "Symbol kopieren",
+    "copied": "Kopiert",
+    "addWatchlist": "Zur Watchlist",
+    "added": "Hinzugefügt",
+    "setAlert": "Alarm setzen",
+    "alertSet": "Alarm gesetzt",
+    "share": "Teilen",
+    "linkCopied": "Link kopiert",
+    "export": "Daten exportieren",
+    "exportStarted": "Export gestartet",
+    "viewDetail": "Details",
+    "copyCell": "Zelle kopieren",
+    "removeFromWatchlist": "Von Watchlist entfernen",
+    "removed": "Entfernt",
+    "copyPrice": "Preis kopieren",
+    "bid": "Bid",
+    "ask": "Ask"
+  },
+  "interactionEnhance": {
+    "resetZoom": "Zoom zurückgesetzt",
+    "reorderSaved": "Reihenfolge gespeichert",
+    "copied": "Kopiert",
+    "clickToCopy": "Klicken zum Kopieren",
+    "paramsApplied": "Indikator-Parameter synchronisiert"
+  }
 }

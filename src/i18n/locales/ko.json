@@ -6539,5 +6539,31 @@
   "kb_undo": "실행 취소",
   "kb_save": "저장",
   "kb_saved": "저장됨",
-  "kb_shortcut_hint": "키보드 단축키 사용 가능"
+  "kb_shortcut_hint": "키보드 단축키 사용 가능",
+  "chartContextMenu": {
+    "copySymbol": "코드 복사",
+    "copied": "복사됨",
+    "addWatchlist": "워치리스트 추가",
+    "added": "추가됨",
+    "setAlert": "알림 설정",
+    "alertSet": "알림 설정됨",
+    "share": "공유",
+    "linkCopied": "링크 복사됨",
+    "export": "데이터 내보내기",
+    "exportStarted": "내보내기 시작",
+    "viewDetail": "상세 보기",
+    "copyCell": "셀 복사",
+    "removeFromWatchlist": "워치리스트 제거",
+    "removed": "제거됨",
+    "copyPrice": "가격 복사",
+    "bid": "매수",
+    "ask": "매도"
+  },
+  "interactionEnhance": {
+    "resetZoom": "줌 리셋",
+    "reorderSaved": "순서 저장됨",
+    "copied": "복사됨",
+    "clickToCopy": "클릭하여 복사",
+    "paramsApplied": "지표 파라미터 동기화됨"
+  }
 }

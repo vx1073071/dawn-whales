@@ -10,6 +10,7 @@ import { ALL_TIMEFRAMES, TIMEFRAME_LABELS, CHART_THEME_DARK } from '../../lib/ch
 import { transformCandles, applyPreAdjust, applyPostAdjust, downsample } from '../../lib/chart/kline-utils';
 import { calcSMA, calcEMA, calcBOLL, calcSAR, calcVWAP, calcRSI, calcKDJ, calcMACD } from '../../lib/chart/indicator-engine';
 import { useChartStore } from '../../store/ChartStore';
+import { useKlineContextMenu } from './ChartContextMenu';
 
 // ═══════════ Props ═══════════
 
@@ -390,6 +391,8 @@ export default function KLineChartPro({
   }, [onTimeframeChange]);
 
   // ── Zoom state ──
+  // ── R223 ML#2: K线右键菜单 ──
+  const klineMenu = useKlineContextMenu({});
   const [zoomLabel, setZoomLabel] = useState('');
   const resetZoom = useCallback(() => {
     chartRef.current?.timeScale().fitContent();
@@ -470,11 +473,23 @@ export default function KLineChartPro({
       )}
 
       {/* Chart container */}
-      <div ref={containerRef} className="w-full" />
+      <div
+        ref={containerRef}
+        className="w-full"
+        onContextMenu={(e) => {
+          e.preventDefault();
+          const rect = containerRef.current?.getBoundingClientRect();
+          klineMenu.show(
+            { type: 'kline', symbol: displaySymbol, price: processedData[processedData.length - 1]?.close },
+            { x: e.clientX + 4, y: e.clientY - (rect?.top ?? 0) }
+          );
+        }}
+      />
+      {klineMenu.menu}
 
       {/* Zoom controls */}
       <div className="flex items-center justify-between px-2 py-0.5 border-t border-[#1c2333] text-[8px] text-[#484f58]">
-        <span>🖱 滚轮缩放 · 拖拽平移 · {zoomLabel}</span>
+        <span>🖱 滚轮缩放 · 拖拽平移 · 右键菜单 · {zoomLabel}</span>
         <button onClick={resetZoom} className="text-[#3b82f6] hover:underline">全屏显示</button>
       </div>
     </div>

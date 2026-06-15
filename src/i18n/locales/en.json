@@ -6553,5 +6553,31 @@
   "kb_undo": "Undo",
   "kb_save": "Save",
   "kb_saved": "Saved",
-  "kb_shortcut_hint": "Keyboard shortcuts available"
+  "kb_shortcut_hint": "Keyboard shortcuts available",
+  "chartContextMenu": {
+    "copySymbol": "Copy Symbol",
+    "copied": "Copied",
+    "addWatchlist": "Add to Watchlist",
+    "added": "Added",
+    "setAlert": "Set Alert",
+    "alertSet": "Alert set",
+    "share": "Share",
+    "linkCopied": "Link copied",
+    "export": "Export Data",
+    "exportStarted": "Export started",
+    "viewDetail": "View Detail",
+    "copyCell": "Copy Cell",
+    "removeFromWatchlist": "Remove from Watchlist",
+    "removed": "Removed",
+    "copyPrice": "Copy Price",
+    "bid": "Bid",
+    "ask": "Ask"
+  },
+  "interactionEnhance": {
+    "resetZoom": "Zoom reset",
+    "reorderSaved": "Order saved",
+    "copied": "Copied",
+    "clickToCopy": "Click to copy",
+    "paramsApplied": "Indicator params synced"
+  }
 }

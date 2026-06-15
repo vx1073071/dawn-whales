@@ -6539,5 +6539,31 @@
   "kb_undo": "元に戻す",
   "kb_save": "保存",
   "kb_saved": "保存しました",
-  "kb_shortcut_hint": "キーボードショートカット利用可"
+  "kb_shortcut_hint": "キーボードショートカット利用可",
+  "chartContextMenu": {
+    "copySymbol": "コードコピー",
+    "copied": "コピー済",
+    "addWatchlist": "ウォッチリスト追加",
+    "added": "追加済",
+    "setAlert": "アラート設定",
+    "alertSet": "アラート設定済",
+    "share": "共有",
+    "linkCopied": "リンクコピー済",
+    "export": "データエクスポート",
+    "exportStarted": "エクスポート開始",
+    "viewDetail": "詳細表示",
+    "copyCell": "セルコピー",
+    "removeFromWatchlist": "ウォッチリスト削除",
+    "removed": "削除済",
+    "copyPrice": "価格コピー",
+    "bid": "買",
+    "ask": "売"
+  },
+  "interactionEnhance": {
+    "resetZoom": "ズームリセット",
+    "reorderSaved": "順序保存",
+    "copied": "コピー済",
+    "clickToCopy": "クリックでコピー",
+    "paramsApplied": "指標パラメータ同期"
+  }
 }
