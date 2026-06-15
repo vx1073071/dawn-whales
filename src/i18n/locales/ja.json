@@ -6565,5 +6565,26 @@
     "copied": "コピー済",
     "clickToCopy": "クリックでコピー",
     "paramsApplied": "指標パラメータ同期"
-  }
+  },
+  "kb_esc": "ESC — 閉じる/キャンセル",
+  "kb_ctrl_z": "Ctrl+Z — 元に戻す",
+  "kb_ctrl_s": "Ctrl+S — 保存",
+  "kb_ctrl_f": "Ctrl+F — 検索",
+  "kb_ctrl_c": "Ctrl+C — コピー",
+  "kb_arrow_lr": "← → — チャート移動",
+  "kb_arrow_ud": "↑ ↓ — ズーム",
+  "kb_space": "スペース — チャート切替",
+  "kb_dblclick": "ダブルクリック — ズームリセット",
+  "kb_drag": "ドラッグ — ウォッチリスト並替",
+  "kb_section_global": "全体",
+  "kb_section_chart": "チャート",
+  "kb_section_nav": "ナビゲーション",
+  "kb_title": "キーボードショートカット",
+  "kb_press_hint": "? キーでショートカット表示",
+  "skeleton_loading": "読み込み中...",
+  "skeleton_chart_loading": "チャートデータ読込中",
+  "skeleton_market_loading": "マーケットデータ読込中",
+  "skeleton_portfolio_loading": "ポートフォリオ読込中",
+  "skeleton_empty_data": "データなし",
+  "skeleton_animation_pulse": "パルスアニメーション"
 }

@@ -6565,5 +6565,26 @@
     "copied": "Copié",
     "clickToCopy": "Cliquer pour copier",
     "paramsApplied": "Paramètres synchronisés"
-  }
+  },
+  "kb_esc": "ESC — Fermer/Annuler",
+  "kb_ctrl_z": "Ctrl+Z — Annuler",
+  "kb_ctrl_s": "Ctrl+S — Enregistrer",
+  "kb_ctrl_f": "Ctrl+F — Rechercher",
+  "kb_ctrl_c": "Ctrl+C — Copier",
+  "kb_arrow_lr": "← → — Déplacer le graphique",
+  "kb_arrow_ud": "↑ ↓ — Zoom",
+  "kb_space": "Espace — Changer type de graphique",
+  "kb_dblclick": "Double-clic — Réinitialiser le zoom",
+  "kb_drag": "Glisser — Réorganiser la liste",
+  "kb_section_global": "Global",
+  "kb_section_chart": "Graphique",
+  "kb_section_nav": "Navigation",
+  "kb_title": "Raccourcis clavier",
+  "kb_press_hint": "Appuyez sur ? pour afficher les raccourcis",
+  "skeleton_loading": "Chargement...",
+  "skeleton_chart_loading": "Chargement des données du graphique",
+  "skeleton_market_loading": "Chargement des données de marché",
+  "skeleton_portfolio_loading": "Chargement du portefeuille",
+  "skeleton_empty_data": "Aucune donnée",
+  "skeleton_animation_pulse": "Animation de pulsation"
 }

@@ -6565,5 +6565,26 @@
     "copied": "已複製",
     "clickToCopy": "點擊複製",
     "paramsApplied": "指標參數已同步"
-  }
+  },
+  "kb_esc": "ESC — 關閉/取消",
+  "kb_ctrl_z": "Ctrl+Z — 復原",
+  "kb_ctrl_s": "Ctrl+S — 儲存",
+  "kb_ctrl_f": "Ctrl+F — 搜尋",
+  "kb_ctrl_c": "Ctrl+C — 複製",
+  "kb_arrow_lr": "← → — 平移圖表",
+  "kb_arrow_ud": "↑ ↓ — 縮放",
+  "kb_space": "空白鍵 — 切換圖表類型",
+  "kb_dblclick": "按兩下 — 重置縮放",
+  "kb_drag": "拖曳 — 排序自選",
+  "kb_section_global": "全域",
+  "kb_section_chart": "圖表",
+  "kb_section_nav": "導覽",
+  "kb_title": "鍵盤快速鍵",
+  "kb_press_hint": "按 ? 顯示快速鍵面板",
+  "skeleton_loading": "載入中...",
+  "skeleton_chart_loading": "圖表資料載入中",
+  "skeleton_market_loading": "行情資料載入中",
+  "skeleton_portfolio_loading": "持倉載入中",
+  "skeleton_empty_data": "尚無資料",
+  "skeleton_animation_pulse": "脈衝動畫"
 }

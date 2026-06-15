@@ -6579,5 +6579,26 @@
     "copied": "Copied",
     "clickToCopy": "Click to copy",
     "paramsApplied": "Indicator params synced"
-  }
+  },
+  "kb_esc": "ESC — Close / Cancel",
+  "kb_ctrl_z": "Ctrl+Z — Undo",
+  "kb_ctrl_s": "Ctrl+S — Save",
+  "kb_ctrl_f": "Ctrl+F — Search",
+  "kb_ctrl_c": "Ctrl+C — Copy",
+  "kb_arrow_lr": "← → — Pan chart",
+  "kb_arrow_ud": "↑ ↓ — Zoom in/out",
+  "kb_space": "Space — Toggle chart type",
+  "kb_dblclick": "Double-click — Reset zoom",
+  "kb_drag": "Drag — Reorder watchlist",
+  "kb_section_global": "Global",
+  "kb_section_chart": "Chart",
+  "kb_section_nav": "Navigation",
+  "kb_title": "Keyboard Shortcuts",
+  "kb_press_hint": "Press ? to show this dialog",
+  "skeleton_loading": "Loading...",
+  "skeleton_chart_loading": "Chart data loading",
+  "skeleton_market_loading": "Market data loading",
+  "skeleton_portfolio_loading": "Portfolio loading",
+  "skeleton_empty_data": "No data yet",
+  "skeleton_animation_pulse": "Pulse animation active"
 }

@@ -6565,5 +6565,26 @@
     "copied": "복사됨",
     "clickToCopy": "클릭하여 복사",
     "paramsApplied": "지표 파라미터 동기화됨"
-  }
+  },
+  "kb_esc": "ESC — 닫기/취소",
+  "kb_ctrl_z": "Ctrl+Z — 실행 취소",
+  "kb_ctrl_s": "Ctrl+S — 저장",
+  "kb_ctrl_f": "Ctrl+F — 검색",
+  "kb_ctrl_c": "Ctrl+C — 복사",
+  "kb_arrow_lr": "← → — 차트 이동",
+  "kb_arrow_ud": "↑ ↓ — 확대/축소",
+  "kb_space": "스페이스 — 차트 유형 전환",
+  "kb_dblclick": "더블클릭 — 확대/축소 초기화",
+  "kb_drag": "드래그 — 관심 목록 정렬",
+  "kb_section_global": "전역",
+  "kb_section_chart": "차트",
+  "kb_section_nav": "탐색",
+  "kb_title": "키보드 단축키",
+  "kb_press_hint": "? 키로 단축키 패널 표시",
+  "skeleton_loading": "로딩 중...",
+  "skeleton_chart_loading": "차트 데이터 로딩 중",
+  "skeleton_market_loading": "시장 데이터 로딩 중",
+  "skeleton_portfolio_loading": "포트폴리오 로딩 중",
+  "skeleton_empty_data": "데이터 없음",
+  "skeleton_animation_pulse": "펄스 애니메이션"
 }

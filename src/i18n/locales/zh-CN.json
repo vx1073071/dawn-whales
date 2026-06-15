@@ -6923,5 +6923,26 @@
     "copied": "已复制",
     "clickToCopy": "点击复制",
     "paramsApplied": "指标参数已同步"
-  }
+  },
+  "kb_esc": "ESC — 关闭/取消",
+  "kb_ctrl_z": "Ctrl+Z — 撤销",
+  "kb_ctrl_s": "Ctrl+S — 保存",
+  "kb_ctrl_f": "Ctrl+F — 搜索",
+  "kb_ctrl_c": "Ctrl+C — 复制",
+  "kb_arrow_lr": "← → — 平移图表",
+  "kb_arrow_ud": "↑ ↓ — 缩放",
+  "kb_space": "空格 — 切换图表类型",
+  "kb_dblclick": "双击 — 重置缩放",
+  "kb_drag": "拖拽 — 排序自选",
+  "kb_section_global": "全局",
+  "kb_section_chart": "图表",
+  "kb_section_nav": "导航",
+  "kb_title": "键盘快捷键",
+  "kb_press_hint": "按 ? 显示快捷键面板",
+  "skeleton_loading": "加载中...",
+  "skeleton_chart_loading": "图表数据加载中",
+  "skeleton_market_loading": "行情数据加载中",
+  "skeleton_portfolio_loading": "持仓加载中",
+  "skeleton_empty_data": "暂无数据",
+  "skeleton_animation_pulse": "脉冲动画"
 }

@@ -6565,5 +6565,26 @@
     "copied": "Kopiert",
     "clickToCopy": "Klicken zum Kopieren",
     "paramsApplied": "Indikator-Parameter synchronisiert"
-  }
+  },
+  "kb_esc": "ESC — Schließen/Abbrechen",
+  "kb_ctrl_z": "Strg+Z — Rückgängig",
+  "kb_ctrl_s": "Strg+S — Speichern",
+  "kb_ctrl_f": "Strg+F — Suchen",
+  "kb_ctrl_c": "Strg+C — Kopieren",
+  "kb_arrow_lr": "← → — Chart bewegen",
+  "kb_arrow_ud": "↑ ↓ — Zoomen",
+  "kb_space": "Leertaste — Chart-Typ wechseln",
+  "kb_dblclick": "Doppelklick — Zoom zurücksetzen",
+  "kb_drag": "Ziehen — Watchlist sortieren",
+  "kb_section_global": "Global",
+  "kb_section_chart": "Chart",
+  "kb_section_nav": "Navigation",
+  "kb_title": "Tastenkürzel",
+  "kb_press_hint": "? drücken, um Shortcuts anzuzeigen",
+  "skeleton_loading": "Wird geladen...",
+  "skeleton_chart_loading": "Chart-Daten werden geladen",
+  "skeleton_market_loading": "Marktdaten werden geladen",
+  "skeleton_portfolio_loading": "Portfolio wird geladen",
+  "skeleton_empty_data": "Keine Daten",
+  "skeleton_animation_pulse": "Puls-Animation"
 }
