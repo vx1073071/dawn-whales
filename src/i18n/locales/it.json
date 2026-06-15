@@ -6022,5 +6022,303 @@
     "shareTo": "Condividi su",
     "urlCopied": "URL copiata",
     "previewLink": "Link anteprima"
+  },
+  "SettingsPage.k13": "Notifica",
+  "SettingsPage.k14": "Conferma eliminazione",
+  "SettingsPage.k15": "Eliminare questo broker?",
+  "factorDecay": {
+    "title": "Monitor decadimento fattori",
+    "simulatedBanner": "Dati simulati",
+    "monitored": "Monitorato",
+    "stable": "Stabile",
+    "declining": "In declino",
+    "avgHalfLife": "Avg Half-Life",
+    "avgHalfLifeTip": "Average days until IC drops to 50%",
+    "heatmapTitle": "IC Decay Heatmap",
+    "trendTitle": "Half-Life Trend",
+    "toggleTitle": "Toggle Factors"
+  },
+  "timingConfig": {
+    "title": "Monitor decadimento fattori",
+    "presets": "Preimpostazioni",
+    "groups": "Gruppi di fattori",
+    "load": "Carica",
+    "save": "Salva",
+    "saved": "Salvato",
+    "loaded": "Caricato",
+    "enterName": "Please enter a config name",
+    "weight": "Weight",
+    "rotation": "Rotation",
+    "rebalance": "Rebalance",
+    "totalWeight": "Total Weight",
+    "autoNormalize": "Auto-normalized on next change",
+    "distribution": "Distribution",
+    "noFactors": "No factors enabled",
+    "backtestPreview": "Backtest Preview (1yr simulated)",
+    "annualReturn": "Annual Return",
+    "sharpe": "Sharpe Ratio",
+    "maxDrawdown": "Max Drawdown",
+    "volatility": "Volatility",
+    "saveConfig": "Save Config",
+    "loadConfig": "Load Config",
+    "configName": "Config Name",
+    "configNamePlaceholder": "e.g. My Momentum Strategy",
+    "noSaved": "No saved configs",
+    "loadBtn": "Load"
+  },
+  "templateCategory": {
+    "sectionTitle": "Strategy Categories",
+    "allCategories": "All Categories",
+    "recommended": "Recommended for You",
+    "totalTemplates": "templates",
+    "filterByCategory": "Filter by Category",
+    "filterByRisk": "Filter by Risk Level",
+    "trend": {
+      "name": "Trend Following",
+      "description": "Follow established price trends using moving averages, channels, and trend indicators across multiple timeframes",
+      "tagline": "Ride the trend, don't fight it"
+    },
+    "meanReversion": {
+      "name": "Mean Reversion",
+      "description": "Profit from price returning to its average — buy oversold dips, sell overbought rips with statistical edge",
+      "tagline": "What goes down must come up"
+    },
+    "momentum": {
+      "name": "Momentum",
+      "description": "Go with strength — strategies based on price acceleration, relative strength ranking, and volume confirmation",
+      "tagline": "Buy strong, sell stronger"
+    },
+    "value": {
+      "name": "Value Investing",
+      "description": "Buy undervalued assets using fundamental metrics: PE, PB, ROE, dividend yield, and cash flow analysis",
+      "tagline": "Price is what you pay, value is what you get"
+    },
+    "arbitrage": {
+      "name": "Arbitrage",
+      "description": "Profit from price discrepancies across markets, exchanges, or related instruments — market-neutral by design",
+      "tagline": "Risk-free spreads, steady profits"
+    },
+    "hedge": {
+      "name": "Hedge & Protect",
+      "description": "Protect your portfolio from drawdowns using options, futures, inverse ETFs, and volatility instruments",
+      "tagline": "Sleep well at night"
+    },
+    "crypto": {
+      "name": "Crypto Native",
+      "description": "On-chain data, DeFi metrics, funding rates, whale tracking — strategies born on the blockchain",
+      "tagline": "Born on the blockchain"
+    },
+    "crossMarket": {
+      "name": "Global Markets",
+      "description": "Multi-region strategies spanning Asia, Europe, and emerging markets — think global, trade local",
+      "tagline": "Think global, trade local"
+    },
+    "aiPowered": {
+      "name": "AI-Powered",
+      "description": "AI-driven strategies with conversational tuning, real-time adaptation, and automated optimization",
+      "tagline": "AI thinks, you trade"
+    }
+  },
+  "templateRisk": {
+    "sectionTitle": "Risk Profile",
+    "riskLevel": "Risk Level",
+    "conservative": {
+      "name": "Conservative",
+      "stylizedLabel": "🛡️ Conservative",
+      "description": "Low risk, long-term horizon. Focus on capital preservation and steady income. Suitable for retirement accounts or risk-averse investors.",
+      "recommendedFor": "Best for: Retirement portfolios, income seekers, risk-averse beginners"
+    },
+    "balanced": {
+      "name": "Balanced",
+      "stylizedLabel": "⚖️ Balanced",
+      "description": "Medium risk, swing to position trading. Diversified approach balancing growth and protection. Suitable for most active traders.",
+      "recommendedFor": "Best for: Active traders, diversified portfolios, experienced retail investors"
+    },
+    "aggressive": {
+      "name": "Aggressive",
+      "stylizedLabel": "⚡ Aggressive",
+      "description": "High risk, short-term horizon. Leveraged or concentrated positions pursuing maximum returns. Suitable for experienced, high-conviction traders.",
+      "recommendedFor": "Best for: Experienced traders, high risk tolerance, short-term speculation"
+    }
+  },
+  "costPreview": {
+    "sectionTitle": "Fee Preview",
+    "serviceTitle": "Service: {service}",
+    "priceLabel": "Price",
+    "yourBalance": "Your Balance",
+    "balanceAfter": "After payment",
+    "freeRemaining": "{count} free use(s) remaining",
+    "freeUsedUp": "Free quota used up",
+    "confirmPay": "Pay {price} USDT",
+    "useFree": "Use Free",
+    "cancel": "Cancel",
+    "notEnoughBalance": "Not enough balance",
+    "needMore": "Need {shortfall} USDT more",
+    "rechargeAction": "Recharge",
+    "feeTransparent": "All fees shown upfront. No hidden charges.",
+    "perUse": "/use"
+  },
+  "onboardingGuide": {
+    "sectionTitle": "Find Your Strategy",
+    "sectionSubtitle": "Answer 3 questions, get personalized recommendations",
+    "step1": "Investment Amount",
+    "step2": "Preferred Markets",
+    "step3": "Risk Tolerance",
+    "q1_tiny": "Under $1,000",
+    "q1_small": "$1,000 - $10,000",
+    "q1_medium": "$10,000 - $100,000",
+    "q1_large": "Over $100,000",
+    "q2_us": "US Stocks",
+    "q2_hk": "HK Stocks",
+    "q2_crypto": "Crypto",
+    "q2_global": "Global (All)",
+    "q3_conservative": "Conservative — Sleep well at night",
+    "q3_balanced": "Balanced — Growth with protection",
+    "q3_aggressive": "Aggressive — Maximize returns",
+    "resultTitle": "Your Matches",
+    "resultMatches": "{count} strategy templates matched your profile",
+    "resultNoMatch": "No exact match. Try adjusting your preferences or browse all templates.",
+    "resultRetry": "Retry",
+    "resultExploreAll": "Browse All {count} Templates"
+  },
+  "bundlePricing": {
+    "sectionTitle": "AI Service Bundles",
+    "sectionSubtitle": "Save up to 55% with bundles vs pay-per-use",
+    "basic": {
+      "name": "Basic",
+      "price": "Pay as you go",
+      "desc": "Single service, pay per use. No commitment."
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "4 USDT / 5 uses",
+      "desc": "Save 20% vs pay-per-use. Best for regular users.",
+      "mostPopular": "Most Popular"
+    },
+    "elite": {
+      "name": "Elite",
+      "price": "6.5 USDT / 10 uses",
+      "desc": "Save 35% vs pay-per-use. For power users.",
+      "bestValue": "Best Value"
+    },
+    "ultimate": {
+      "name": "Ultimate",
+      "price": "10 USDT / month unlimited",
+      "desc": "All AI services unlimited. Save 55%+ at 20+ uses/month."
+    },
+    "savePercent": "Save {percent}%",
+    "perAnalysis": "{price} USDT / analysis",
+    "includesAll": "Includes all 7 AI services: Strategy Match, Market State, Daily Briefing, Arbitrage Scan, Signal Push, Stress Test, Attribution",
+    "comparePlans": "Compare Plans"
+  },
+  "refundPolicy": {
+    "sectionTitle": "Refund Policy",
+    "ironLaw": "No Refunds",
+    "ironLawDetail": "All AI services are non-refundable. Please review the fee preview carefully before confirming payment.",
+    "aiFaultException": "Exception: If the AI service fails to execute (technical error only), the fee is automatically refunded.",
+    "acknowledge": "I understand and agree"
+  },
+  "sandboxActivation": {
+    "sectionTitle": "Strategy Activation",
+    "step1Title": "Preview",
+    "step1Desc": "Review strategy details, iron rules, factor combination, and risk profile",
+    "step2Title": "Configure",
+    "step2Desc": "Set position size, stop loss, take profit, and trading hours",
+    "step3Title": "Sandbox Test",
+    "step3Desc": "Run 30-day simulation with real market data to preview expected performance",
+    "step4Title": "Go Live",
+    "step4Desc": "Review risk disclosure, slide to confirm, activate strategy for live trading",
+    "sandboxTitle": "Sandbox Simulation Results",
+    "sandboxPeriod": "Simulation period: 30 days",
+    "sandboxProfit": "Simulated P&L",
+    "sandboxWinRate": "Win Rate",
+    "sandboxMaxDrawdown": "Max Drawdown",
+    "sandboxSharpe": "Sharpe Ratio",
+    "sandboxDisclaimer": "Past simulation does not guarantee future results. This is NOT real trading data.",
+    "sandboxContinue": "Continue to Live",
+    "sandboxRetry": "Adjust & Retry"
+  },
+  "riskDisclosure": {
+    "sectionTitle": "Risk Disclosure",
+    "intro": "Please read and acknowledge the following before activating live trading:",
+    "item1": "I understand that automated trading can result in financial loss, up to total loss of invested capital.",
+    "item2": "I understand that past performance and sandbox simulations do not guarantee future results.",
+    "item3": "I confirm that I have tested this strategy in sandbox mode and accept the associated risks.",
+    "sliderLabel": "Slide to confirm activation",
+    "sliderHint": "Slide right →",
+    "confirmed": "Confirmed. Activating strategy...",
+    "cancel": "Cancel"
+  },
+  "creatorDashboard": {
+    "sectionTitle": "Creator Dashboard",
+    "level": "Level {level}: {name}",
+    "l1Name": "Novice",
+    "l2Name": "Advanced",
+    "l3Name": "Flagship",
+    "l1Desc": "Register to publish. Platform takes 30%, you get 70%.",
+    "l2Desc": "100+ sales. Platform 20%, you 80%. Unlocks: Hot Display 7 days + Recommendation badge.",
+    "l3Desc": "1,000+ sales. Platform only 10%, you get 90%. Elite Creator status.",
+    "salesCount": "Total Sales",
+    "commissionEarned": "Commission Earned",
+    "subscriberCount": "Subscribers",
+    "salesToNextLevel": "{count} more sales to reach {nextLevel}",
+    "l2Badge": "Recommended",
+    "l2HotDisplay": "Hot Display 7 days",
+    "monthlyTrend": "Monthly Trend",
+    "withdraw": "Withdraw",
+    "noSalesYet": "No sales yet. Publish your first strategy template to start earning!"
+  },
+  "creatorAudit": {
+    "sectionTitle": "Strategy Review",
+    "approved": "Approved — Your strategy is now live in the marketplace!",
+    "rejected": "Not approved — See specific suggestions below to improve and re-submit.",
+    "reason1": "Human-line too long (>80 chars). Rewrite as: \"Buy low sell high with discipline\"",
+    "reason2": "Missing stop loss rule. Add e.g.: \"Stop loss at -8% or break of 20-day MA\"",
+    "reason3": "Market scope unclear. Specify: \"HK stocks, Hang Seng Index constituents only\"",
+    "reason4": "Missing failure self-check. Add: \"Strategy invalid if AH premium spread drops below 5% for 5 consecutive days\"",
+    "reason5": "Factor weights don't sum to 100. Adjust to total exactly 100.",
+    "reason6": "Duplicate or overlapping factors. Remove redundancy: factors A and B measure similar things.",
+    "reason7": "Strategy name too vague. Use descriptive name: \"HK AH Premium Arbitrage\" not \"My Strategy\"",
+    "reason8": "AI trigger points missing or incorrect. Add 3-5 AI services this strategy uses with correct pricing.",
+    "resubmit": "Revise & Re-submit"
+  },
+  "factorWeightPanel": {
+    "sectionTitle": "Factor Weights",
+    "dragHint": "Drag slices to adjust weights. Total always 100.",
+    "autoNormalize": "Auto-normalized",
+    "ironRuleCheck": "Iron Rule Check",
+    "weightSumOk": "Weight sum = 100 ✓",
+    "weightSumError": "Weight sum = {sum}. Must equal 100.",
+    "factorTooLowWarning": "{factor}: weight too low (<5%). Consider removing this factor.",
+    "factorTooHighWarning": "{factor}: too dominant (>50%). Over-reliance on single factor increases risk.",
+    "factorLocked": "{factor} is locked by strategy iron rules",
+    "resetWeights": "Reset to Default"
+  },
+  "paramSensitivity": {
+    "sectionTitle": "Parameter Sensitivity",
+    "heatmapTitle": "Sensitivity Heatmap",
+    "heatmapXLabel": "Parameter Value",
+    "heatmapYLabel": "Performance Metric",
+    "colorScale": "🟢 Stable  →  🟡 Sensitive  →  🔴 Overfit",
+    "overfitZone": "🔴 Overfit zone: small parameter change → large performance swing. Simplify this parameter.",
+    "stableZone": "🟢 Stable zone: parameter change doesn't dramatically affect results. Good sign.",
+    "gridInfo": "Grid: {xSteps} × {ySteps} = {total} scenarios tested"
+  },
+  "modeSelector": {
+    "sectionTitle": "Select Your Level",
+    "beginner": "Beginner",
+    "beginnerDesc": "3-5 curated templates. Simple, safe, one-click.",
+    "experienced": "Experienced",
+    "experiencedDesc": "20 templates. More strategies, more control.",
+    "professional": "Professional",
+    "professionalDesc": "All 44 templates. Full arsenal, maximum flexibility.",
+    "lockedByLevel": "Unlock at higher level",
+    "difficultyLabel": "Difficulty",
+    "star1": "Very Easy",
+    "star2": "Easy",
+    "star3": "Moderate",
+    "star4": "Hard",
+    "star5": "Expert",
+    "upgradeHint": "Complete 5 more trades to unlock"
   }
 }
