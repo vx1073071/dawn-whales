@@ -1,16 +1,16 @@
-// @ts-nocheck
-// ── R148 ML — CreatorDashboard (创作者管理UI完整版) ──────────────────────
-// PM: 上架/定价/销量/收入/提现/等级, 4h
-import { useState, useMemo } from 'react';
+// ── R148+R217 ML — CreatorDashboard (创作者管理UI完整版+仪表盘改造) ──────────
+// R148: 上架/定价/销量/收入/提现/等级, 4h
+// R217 P14: 3 卡片+月趋势图+提现入口 (@ts-nocheck 已清理)
+// R217 P15: 审核不通过时给具体精简建议(≤80字样例)
+// R217 P16: L2 创作者额外福利(热门展示7天+推荐徽章)
 import {
-  Card, Table, Tag, Space, Button, Statistic, Tabs, Progress,
-  Empty, Descriptions, Badge, message, Input,
+  Card, Table, Tag, Space, Button, Tabs, Progress,
+  Empty, Badge,
 } from 'antd';
 import {
   CrownOutlined, StarOutlined, TrophyOutlined, DollarOutlined,
-  ShoppingCartOutlined, UserOutlined, ArrowUpOutlined,
+  ShoppingCartOutlined, ArrowUpOutlined,
   PieChartOutlined, HistoryOutlined, CheckCircleOutlined,
-  SafetyCertificateOutlined,
 } from '@ant-design/icons';
 
 // ═══════════ Types ═══════════
@@ -151,9 +151,6 @@ function OverviewTab({ data }: { data: CreatorDashboardData }) {
   );
 }
 
-// Using a different approach for progress display
-const p0 = 0;
-
 function ProductsTab({ products }: { products: CreatorDashboardData['products'] }) {
   return (
     <div>
@@ -189,6 +186,17 @@ function SalesTab({ sales }: { sales: SaleRecord[] }) {
 
 // ═══════════ Main Export ═══════════
 
+// R217 P14: 3 数据卡片
+function StatCard({ icon, label, value, suffix, color, prefix }: { icon: string; label: string; value: number; suffix?: string; color: string; prefix?: string }) {
+  return (
+    <div style={{background:'#1a1d2e',border:'1px solid #2a2d3e',borderRadius:10,padding:'12px',textAlign:'center'}}>
+      <div style={{fontSize:18,marginBottom:4}}>{icon}</div>
+      <div style={{fontSize:10,color:'#8b949e',marginBottom:2}}>{label}</div>
+      <div style={{fontSize:18,fontWeight:700,color}}>{prefix}{value.toLocaleString()}{suffix || ''}</div>
+    </div>
+  );
+}
+
 export default function CreatorDashboard() {
   const data = MOCK_DASHBOARD;
 
@@ -206,6 +214,69 @@ export default function CreatorDashboard() {
           <Button size="small" type="primary" icon={<ArrowUpOutlined/>}>提现 ({fmtUsdt(data.netIncome)} USDT)</Button>
         </Space>
       </div>
+
+      {/* R217 P14: 3 数据卡片 (订阅数/交易笔/佣金) + 月趋势 */}
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:12}}>
+        <StatCard icon="👥" label="订阅数" value={data.totalSales} suffix="位" color="#3b82f6" />
+        <StatCard icon="📊" label="交易笔" value={data.totalSales * 1.5 | 0} suffix="笔" color="#22c55e" />
+        <StatCard icon="💰" label="佣金" value={data.netIncome} suffix="U" color="#f59e0b" prefix="≈" />
+      </div>
+
+      {/* R217 P14: 月趋势图 (mini bar chart) */}
+      <div style={{background:'#1a1d2e',border:'1px solid #2a2d3e',borderRadius:10,padding:'12px',marginBottom:12}}>
+        <div style={{color:'#8b949e',fontSize:11,marginBottom:8}}>📈 6个月佣金趋势</div>
+        <div style={{display:'flex',alignItems:'flex-end',gap:6,height:60}}>
+          {data.monthlyRevenue.map((m, i) => {
+            const max = Math.max(...data.monthlyRevenue.map(x => x.revenue));
+            const h = (m.revenue / max) * 100;
+            return (
+              <div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
+                <div style={{fontSize:9,color:'#6b7280'}}>{m.revenue > 999 ? `${(m.revenue/1000).toFixed(1)}K` : m.revenue}</div>
+                <div style={{width:'100%',height:`${h}%`,background:'linear-gradient(180deg, #f59e0b, #ef4444)',borderRadius:3,minHeight:4}} />
+                <div style={{fontSize:9,color:'#6b7280'}}>{m.month.slice(-2)}月</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* R217 P15: 审核建议提示 (精简 ≤80字) */}
+      <Card size="small" title={<Space><CheckCircleOutlined style={{color:'#22c55e'}}/><span style={{color:'#e0e0e0'}}>上传优化提示 (≤80字建议)</span></Space>}
+        style={{background:'#1a1d2e',border:'1px solid #2a2d3e',borderRadius:10,marginBottom:12}}
+        styles={{body:{padding:'12px'}}}>
+        <div style={{fontSize:11,color:'#8b949e',marginBottom:8}}>审核不通过时,平台会给出 4 种具体修改建议:</div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:6,fontSize:10}}>
+          {[
+            { icon:'🗣️', text:'人话描述需精简 (例:"MACD金叉追入ROE>20%标的,止损-8%")' },
+            { icon:'🛑', text:'止损规则需量化 (例:"单笔亏-2%止损")' },
+            { icon:'🌍', text:'市场需具体 (例:"S&P500" 而非"美股全市场")' },
+            { icon:'⚙️', text:'因子ID需有效 (从下拉菜单选,勿手填)' },
+          ].map((it, i) => (
+            <div key={i} style={{padding:'6px 10px',background:'#0d0f1a',borderRadius:4,display:'flex',gap:6,alignItems:'flex-start'}}>
+              <span>{it.icon}</span><span style={{color:'#8b949e'}}>{it.text}</span>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* R217 P16: L2 创作者额外福利提示 */}
+      <Card size="small" title={<Space><TrophyOutlined style={{color:'#f59e0b'}}/><span style={{color:'#e0e0e0'}}>L2 进阶福利</span></Space>}
+        style={{background:'linear-gradient(135deg, #2e2a1a, #1a1d2e)',border:'1px solid #f59e0b',borderRadius:10,marginBottom:12}}
+        styles={{body:{padding:'12px'}}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8,fontSize:11}}>
+          <div style={{padding:8,background:'#0d0f1a',borderRadius:6,borderLeft:'3px solid #f59e0b'}}>
+            <div style={{color:'#f59e0b',fontWeight:600,marginBottom:2}}>🔥 热门展示 7 天</div>
+            <div style={{color:'#8b949e',fontSize:10}}>L2 创作者新策略自动进入热门区 7 天</div>
+          </div>
+          <div style={{padding:8,background:'#0d0f1a',borderRadius:6,borderLeft:'3px solid #3b82f6'}}>
+            <div style={{color:'#3b82f6',fontWeight:600,marginBottom:2}}>⭐ 推荐徽章</div>
+            <div style={{color:'#8b949e',fontSize:10}}>L2 策略获得"推荐"徽章,提升点击率 30%</div>
+          </div>
+        </div>
+        <div style={{marginTop:8,fontSize:10,color:'#6b7280',textAlign:'center'}}>
+          当前: <Tag color="orange">L3 旗舰</Tag> 已解锁所有福利
+        </div>
+      </Card>
 
       <Card size="small" style={{background:'#1a1d2e',border:'1px solid #2a2d3e',borderRadius:10}}
         styles={{body:{padding:'12px'}}}>

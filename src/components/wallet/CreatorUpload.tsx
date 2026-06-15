@@ -95,6 +95,48 @@ const I18N: Record<string, Record<string, string>> = {
   es: { title: 'Subir Estrategia', submit: 'Enviar revisión', submitting: 'Enviando...', retry: 'Reintentar', strategyName: 'Nombre estrategia', strategyPlaceholder: 'ej: MACD Cruce Dorado', goldenRules: '4 reglas de oro', rule1: 'Descripción simple (≤80 car.)', rule1PH: 'Explica de forma sencilla', rule2: 'Regla stop-loss', rule2PH: 'ej: Pérdida>2% stop', rule3: 'Mercado+Activo', rule3PH: 'ej: Acciones A o BTC-USDT', rule4: 'Autochequeo fallo', rule4PH: 'ej: MACD falla en rangos', templateConfig: 'Config plantilla', factorIds: 'IDs de factores', factorIdsPH: 'Separados por coma', parameters: 'Parámetros', parametersPH: 'JSON', backtest: 'Resumen backtest', backtestPH: 'ej: Acierto 65%, Sharpe 1.8', review: 'Resultado revisión', reviewCost: 'Costo revisión', reviewHint: '1U/revisión, no reembolsable, ilimitado', pass: 'OK', fail: 'FALLÓ', resubmit: 'Editar y Reenviar', passedAll: '¡Todo OK!', passedDetail: '{n}/{total} controles OK', failedDetail: '{n}/{total} fallaron', checks: 'Controles', online: 'Publicado', linked: 'Ranking vinculado', cancel: 'Cancelar', confirm: 'Confirmar', error: 'Envío fallido' },
 };
 
+// R217 P15: 8 项审核项的具体精简建议
+const SUGGESTIONS: Record<string, Record<string, string>> = {
+  '人话描述': {
+    'zh-CN': '样例: "MACD金叉追入ROE>20%标的,止损-8%,连续miss退出"',
+    en: 'Example: "Buy stocks when MACD golden cross + ROE>20%, stop -8%"',
+  },
+  '止损规则': {
+    'zh-CN': '样例: "单笔亏-2%止损 或 ATR×2止盈(具体数字)"',
+    en: 'Example: "Single loss -2% or ATR×2 take-profit"',
+  },
+  '适用市场+品种': {
+    'zh-CN': '样例: "S&P500" 而非"美股全市场"; 港股恒生指数 82 只',
+    en: 'Example: "S&P500" not "US entire market"; HK Hang Seng 82 stocks',
+  },
+  '失效自检': {
+    'zh-CN': '样例: "MACD 在震荡市失效" / "利率变化时估值因子失真"',
+    en: 'Example: "MACD fails in range-bound markets"',
+  },
+  '因子ID有效': {
+    'zh-CN': '从下拉菜单选(MACD_12_26, RSI_14),勿手填',
+    en: 'Pick from dropdown (MACD_12_26, RSI_14), do not hand-type',
+  },
+  '参数合理性': {
+    'zh-CN': '样例: 止损 2-5%, 持仓 5-10 只, 杠杆 ≤ 1.5x',
+    en: 'Example: stop 2-5%, positions 5-10, leverage ≤ 1.5x',
+  },
+  '回测数据完整': {
+    'zh-CN': '样例: 胜率 65%, 夏普 1.8, 最大回撤 -12%, 样本数 252 天',
+    en: 'Example: Win 65%, Sharpe 1.8, Max DD -12%, 252-day sample',
+  },
+  '抄袭检测': {
+    'zh-CN': '差异化: 加入你的独到因子或参数 (如自创的"社群情绪"因子)',
+    en: 'Differentiate: add your unique factor or param (e.g., custom "social sentiment")',
+  },
+};
+
+function getItemSuggestion(name: string, lang: string): string {
+  const entry = SUGGESTIONS[name];
+  if (!entry) return '';
+  return entry[lang] || entry['zh-CN'] || '';
+}
+
 // ── Component ───────────────────────────────────────────────────────
 const CreatorUpload: React.FC<CreatorUploadProps> = ({
   onUpload,
@@ -194,8 +236,14 @@ const CreatorUpload: React.FC<CreatorUploadProps> = ({
                 <div style={{ fontSize: 13, fontWeight: 500, color: item.passed ? '#065f46' : '#991b1b' }}>
                   {item.name} {item.detail && `— ${item.detail}`}
                 </div>
+                {/* R217 P15: 具体精简建议 (≤80字) */}
+                {!item.passed && (
+                  <div style={{ fontSize: 12, color: '#b45309', marginTop: 4, padding: 6, background: 'rgba(254,243,199,0.5)', borderRadius: 4 }}>
+                    💡 {getItemSuggestion(item.name, langKey)}
+                  </div>
+                )}
                 {!item.passed && item.suggestion && (
-                  <div style={{ fontSize: 12, color: '#b45309', marginTop: 2 }}>{item.suggestion}</div>
+                  <div style={{ fontSize: 11, color: '#94a3b8', marginTop: 2 }}>{item.suggestion}</div>
                 )}
               </div>
             </div>

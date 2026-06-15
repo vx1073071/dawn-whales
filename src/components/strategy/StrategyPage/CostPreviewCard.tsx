@@ -74,6 +74,20 @@ const CostPreviewCard: React.FC<CostPreviewProps> = ({
   freeTrialsUsed = 0, freeTrialsTotal = 0, icon = '⚙️',
   onConfirm, onCancel, locale: pl,
 }) => {
+  // R217 P12: Price anchoring — show human-readable value comparison
+  const getPriceAnchor = (cost: number): string => {
+    if (cost <= 0) return '';
+    if (cost === 0.5) return '≈ 1杯咖啡';
+    if (cost === 1.0) return '≈ 专业分析师 10 分钟工作量';
+    if (cost === 1.5) return '≈ 2小时手动调参';
+    if (cost === 2.0) return '≈ 1小时专家咨询';
+    if (cost <= 0.3) return '≈ 1支棒棒糖';
+    if (cost <= 0.8) return '≈ 1杯奶茶';
+    if (cost <= 2) return '≈ 一顿快餐';
+    if (cost <= 5) return '≈ 半天兼职收入';
+    return '≈ 一天兼职收入';
+  };
+  const priceAnchor = getPriceAnchor(costUSDT);
   const langKey = (pl === 'zh-CN' || pl === 'zh-TW') ? 'zh-CN' : (I18N[pl ?? ''] ? pl! : 'en');
   const t = I18N[langKey] ?? I18N.en;
 
@@ -134,6 +148,12 @@ const CostPreviewCard: React.FC<CostPreviewProps> = ({
               {effectiveCost === 0 ? `🎁 ${t.free}` : `${effectiveCost} USDT`}
             </span>
           </div>
+          {/* R217 P12: Price anchoring */}
+          {priceAnchor && effectiveCost > 0 && (
+            <div style={{ fontSize: 11, color: '#92400e', fontStyle: 'italic', marginBottom: 4 }}>
+              💡 {priceAnchor}
+            </div>
+          )}
           {currentBalance !== undefined && (
             <>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#475569' }}>
