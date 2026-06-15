@@ -131,11 +131,30 @@ export const HK_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'LOW_VOLATILITY', factorName: '低波动', weight: 10, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'AH溢价策略健康: 价差仍在历史区间? 套利窗口>1%?' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: 'AH溢价突破阈值实时推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: 'AI分析AH溢价历史套利胜率和最优入场阈值' },
       { id: 'param-optimize', label: 'AI参数优化', touchpointId: 'FACTOR_PARAM_OPTIMIZE', costUSDT: 1.5, description: 'AI自动优化溢价阈值和持仓天数' },
       { id: 'alt-data', label: '替代数据解锁', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '解锁AH溢价实时监控+港交所持股数据' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是AH溢价套利策略助手。基于AH溢价/南向资金/PB价值因子，帮助用户优化溢价阈值、持仓周期和止损参数。',
+      conversationStarters: [
+        'AH溢价何时入场最优？',
+        '南向资金流出需要减仓吗？',
+        '溢价阈值设30%还是35%更优？'
+      ],
+      tunableParams: [
+        { paramName: 'premiumThreshold', description: 'AH溢价入场阈值', currentValue: '30%', range: '25%-40%' },
+        { paramName: 'holdingDays', description: '持仓天数', currentValue: '5-20', range: '3-30天' },
+        { paramName: 'stopLossPct', description: '止损百分比', currentValue: '5%', range: '3%-8%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['AH溢价', '套利', '跨市场', '价值'],
     version: 'v1.0',
   },
@@ -170,7 +189,25 @@ export const HK_TEMPLATES: FactorStrategyTemplate[] = [
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '窝轮反向指标历史胜率分析' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '诊断窝轮拥挤度+牛熊比例可靠性' },
       { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '窝轮实时街货量+发行商对冲数据' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是港股窝轮牛熊证策略助手。基于街货量/散户情绪/沽空比率因子，帮助用户判断方向信号强度和止盈止损。',
+      conversationStarters: [
+        '窝轮街货量激增是反向信号吗？',
+        '牛熊证比例怎么看方向？',
+        '窝轮数据失真怎么办？'
+      ],
+      tunableParams: [
+        { paramName: 'flowThreshold', description: '窝轮方向阈值', currentValue: '1.5', range: '1.0-2.5' },
+        { paramName: 'holdingDays', description: '持仓天数', currentValue: '1-3', range: '1-5天' },
+        { paramName: 'sentimentWeight', description: '散户情绪权重', currentValue: '10%', range: '5%-20%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['窝轮', '牛熊证', '逆向', '散户情绪'],
     version: 'v1.0',
   },
@@ -205,7 +242,25 @@ export const HK_TEMPLATES: FactorStrategyTemplate[] = [
       { id: 'param-optimize', label: 'AI参数优化', touchpointId: 'FACTOR_PARAM_OPTIMIZE', costUSDT: 1.5, description: '优化股息率阈值和仓位分配' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '港股股息策略历史表现分析' },
       { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '港交所披露易+公司公告派息预测数据' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是港股股息阶梯策略助手。基于股息率/PB价值/派息稳定性因子，帮助用户优化除息日轮动和调仓节奏。',
+      conversationStarters: [
+        '港股股息率>5%的蓝筹有哪些？',
+        '除息日轮动怎么排期最优？',
+        '公司削派息时怎么切换？'
+      ],
+      tunableParams: [
+        { paramName: 'divYieldMin', description: '最低股息率', currentValue: '5%', range: '4%-7%' },
+        { paramName: 'holdingMonths', description: '持仓月数', currentValue: '3-12', range: '1-24个月' },
+        { paramName: 'pbMax', description: 'PB上限', currentValue: '1.0', range: '0.5-1.5' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['高股息', '价值', '蓝筹', '长期持有'],
     version: 'v1.0',
   },
@@ -236,10 +291,30 @@ export const HK_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'MONEY_FLOW_CMF', factorName: '资金流量', weight: 10, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: '南向资金策略健康: 资金流向趋势延续? IC>0.03?' },
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '港股通北向资金+港交所CCASS持仓替代数据' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '南向资金历史alpha分析' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '南向资金拥挤度+边际效应衰减预警' },
       { id: 'ai-daily', label: 'AI每日简报', touchpointId: 'AI_DAILY_BRIEFING', costUSDT: 1, description: '每日南向资金动向+Top被买标的' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是港股南向资金追踪策略助手。基于南向净买入/板块偏好/聪明钱信号因子，帮助用户跟随后续资金流向。',
+      conversationStarters: [
+        '南向资金流向哪个板块最多？',
+        '南向净流出是否持续？',
+        '聪明钱信号可靠性如何提升？'
+      ],
+      tunableParams: [
+        { paramName: 'flowThreshold', description: '南向流入阈值', currentValue: '5亿', range: '2-10亿/日' },
+        { paramName: 'sectorRotation', description: '板块轮动间隔', currentValue: '2周', range: '1-4周' },
+        { paramName: 'trailingStop', description: '移动止损', currentValue: '8%', range: '5%-12%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['南向资金', '资金流', '趋势', '聪明钱'],
     version: 'v1.0',
   },
@@ -270,11 +345,30 @@ export const HK_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'REGULATORY_RISK', factorName: '监管风险', weight: 10, direction: 'short', threshold: { max: -0.5 } },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: '红筹回A策略健康: 回A进度正常? 价差合理?' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '红筹回A进度+价差信号推送' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '红筹回归概率+时间线预测' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '历史中概回归案例收益率分析' },
       { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '港交所/A股IPO审核进度+招股书分析' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是港股红筹回归策略助手。基于红筹股回A股折价/政策催化剂/流动性对比因子，帮助用户抓住回A套利机会。',
+      conversationStarters: [
+        '红筹回A大概率折价多少？',
+        '哪些红筹股最有回A可能？',
+        '政策暂停回A怎么办？'
+      ],
+      tunableParams: [
+        { paramName: 'discountTarget', description: '回归折价目标', currentValue: '20%', range: '10%-35%' },
+        { paramName: 'policyCatalyst', description: '政策催化剂权重', currentValue: '30%', range: '20%-40%' },
+        { paramName: 'timeHorizon', description: '时间窗口', currentValue: '3-12月', range: '1-24月' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['红筹', '回归套利', '事件驱动', '中概'],
     version: 'v1.0',
   },
@@ -312,12 +406,31 @@ export const CRYPTO_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'CRYPTO_STABLECOIN_MINT', factorName: '稳定币铸造', weight: 10, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'BTC趋势策略月度健康体检: IC>0.02? 因子相关性<0.7?' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: 'BTC趋势信号+资金费率异动实时推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: 'BTC趋势策略各周期表现分析' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: 'MVRV+Puell+资金费率综合诊断' },
       { id: 'param-optimize', label: 'AI参数优化', touchpointId: 'FACTOR_PARAM_OPTIMIZE', costUSDT: 1.5, description: '优化动量窗口+NVRV阈值' },
       { id: 'alt-data', label: '链上数据解锁', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '实时链上数据: 巨鲸交易+交易所余额+活跃地址' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是BTC趋势跟踪策略助手。基于BTC动量/全网算力/MVRV/交易所余额因子，帮助用户调整跟踪止损和仓位。',
+      conversationStarters: [
+        'BTC趋势是否还健康？',
+        'MVRV进入危险区了吗？',
+        '算力下跌是风险信号吗？'
+      ],
+      tunableParams: [
+        { paramName: 'trendPeriod', description: '趋势判断周期', currentValue: '20日', range: '10-60日' },
+        { paramName: 'trailingStop', description: '跟踪止损', currentValue: '15%', range: '10%-25%' },
+        { paramName: 'positionPct', description: '建议仓位', currentValue: '40%', range: '20%-80%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['BTC', '趋势', '动量', '链上'],
     version: 'v1.0',
   },
@@ -348,11 +461,31 @@ export const CRYPTO_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'BTC_DOMINANCE', factorName: 'BTC主导率', weight: 20, direction: 'short', threshold: { max: 55 } },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'ETH/BTC轮动策略健康检查: 轮动信号准确率>60%?' },
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: 'ETH链上Gas费+稳定币供应+DeFi TVL替代数据' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: 'ETH/BTC轮动信号+Gas费异常推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: 'ETH/BTC轮动历史表现' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: 'DeFi生态健康度+ETH燃烧率分析' },
       { id: 'param-optimize', label: 'AI参数优化', touchpointId: 'FACTOR_PARAM_OPTIMIZE', costUSDT: 1.5, description: '轮动阈值+持仓比例优化' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是ETH/BTC轮动策略助手。基于ETH/BTC汇率/Gas费/DeFi TVL/L2活跃度因子，帮助用户判断轮动时机。',
+      conversationStarters: [
+        'ETH/BTC汇率现在该轮动吗？',
+        'Gas费暴涨是牛市信号吗？',
+        'L2吸走ETH价值怎么办？'
+      ],
+      tunableParams: [
+        { paramName: 'ratioThreshold', description: 'ETH/BTC轮动阈值', currentValue: '0.06', range: '0.04-0.08' },
+        { paramName: 'gasIndicator', description: 'Gas费参考权重', currentValue: '25%', range: '15%-35%' },
+        { paramName: 'rebalancePeriod', description: '调仓周期', currentValue: '14天', range: '7-30天' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['ETH', 'BTC', '轮动', '相对价值'],
     version: 'v1.0',
   },
@@ -383,11 +516,31 @@ export const CRYPTO_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'BTC_MOMENTUM_1M', factorName: 'BTC 1月动量', weight: 10, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: '资金费率套利健康: 套利空间持续存在? 执行成功率>90%?' },
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '交易所BTC储备+稳定币流入/流出替代数据' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '资金费率异动触发套利窗口推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '资金费率套利各费率区间的历史胜率' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: 'OI+费率+Liquidation综合市场情绪诊断' },
       { id: 'stress-test', label: 'AI压力测试', touchpointId: 'AI_STRESS_TEST', costUSDT: 2, description: '极端行情下套利策略最大回撤模拟' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是加密资金费率套利策略助手。基于永续合约资金费率/现货溢价/市场情绪因子，帮助用户优化套利参数。',
+      conversationStarters: [
+        '资金费率套利年化收益多少？',
+        '资金费率转负该平仓吗？',
+        '极端行情套利还安全吗？'
+      ],
+      tunableParams: [
+        { paramName: 'fundingThreshold', description: '资金费率入场阈值', currentValue: '0.01%', range: '0.005%-0.03%' },
+        { paramName: 'maxLeverage', description: '最大杠杆', currentValue: '3x', range: '1x-5x' },
+        { paramName: 'exitFunding', description: '退出资金费率', currentValue: '0.003%', range: '0.001%-0.01%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['资金费率', '套利', '中性', '合约'],
     version: 'v1.0',
   },
@@ -422,7 +575,25 @@ export const CRYPTO_TEMPLATES: FactorStrategyTemplate[] = [
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '清算热力图+OI结构分析' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '清算猎杀历史触发的反弹概率' },
       { id: 'stress-test', label: 'AI压力测试', touchpointId: 'AI_STRESS_TEST', costUSDT: 2, description: '连环清算场景下的策略最大回撤' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是加密爆仓猎手策略助手。基于爆仓热力图/多空比/未平仓合约/资金费率因子，帮助用户判断极端行情反向机会。',
+      conversationStarters: [
+        '爆仓密集区会反弹吗？',
+        '多空比极端该抄底吗？',
+        'OI骤降是底还是腰斩？'
+      ],
+      tunableParams: [
+        { paramName: 'liqThreshold', description: '爆仓金额阈值', currentValue: '1亿', range: '5000万-5亿' },
+        { paramName: 'longShortRatio', description: '多空比极端值', currentValue: '3.0', range: '2.0-5.0' },
+        { paramName: 'recoveryWait', description: '企稳等待时间', currentValue: '4小时', range: '1-24小时' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['清算', '逆向', '高杠杆', '短线'],
     version: 'v1.0',
   },
@@ -456,7 +627,25 @@ export const CRYPTO_TEMPLATES: FactorStrategyTemplate[] = [
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '链上活跃度+交易所余额+巨鲸行为综合诊断' },
       { id: 'signal-push', label: '信号推送订阅', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '三灯信号变化即时推送' },
       { id: 'alt-data', label: '链上数据解锁', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '实时链上: 交易所净流入+聪明钱+巨鲸警报' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是链上三灯策略助手。基于大额转账/交易所净流入/稳定币铸币/巨鲸地址因子，帮助用户解读链上信号。',
+      conversationStarters: [
+        '链上大额转入交易所=要砸盘？',
+        '稳定币大量铸币是买入信号吗？',
+        '三灯全绿要不要加仓？'
+      ],
+      tunableParams: [
+        { paramName: 'whaleThreshold', description: '巨鲸交易阈值', currentValue: '1000BTC', range: '500-5000BTC' },
+        { paramName: 'inflowSignal', description: '交易所流入权重', currentValue: '40%', range: '25%-55%' },
+        { paramName: 'stablecoinMint', description: '稳定币铸币权重', currentValue: '35%', range: '20%-50%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['链上', '三灯', '信号', '趋势'],
     version: 'v1.0',
   },
@@ -486,11 +675,31 @@ export const CRYPTO_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'CRYPTO_OPEN_INTEREST', factorName: '未平仓合约', weight: 15, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: '期现套利健康: 价差>交易成本? IC持续为正?' },
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '期货持仓量+多空比+清算热力图替代数据' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '期现价差异常扩大推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '各交易所期现套利年化收益对比' },
       { id: 'arbitrage-scan', label: 'AI套利扫描', touchpointId: 'AI_ARBITRAGE_SCAN', costUSDT: 2, description: '全交易所期现/跨期价差实时扫描' },
       { id: 'param-optimize', label: 'AI参数优化', touchpointId: 'FACTOR_PARAM_OPTIMIZE', costUSDT: 1.5, description: '最优入场溢价阈值+交割日前平仓时机' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是加密期现套利策略助手。基于期货溢价/资金费率/交割日期因子，帮助用户优化期现套利和到期管理。',
+      conversationStarters: [
+        '期货溢价>5%怎么套利？',
+        '交割日临近溢价收窄怎么办？',
+        '不同交易所溢价差异怎么利用？'
+      ],
+      tunableParams: [
+        { paramName: 'premiumEntry', description: '溢价入场阈值', currentValue: '3%', range: '1%-10%' },
+        { paramName: 'maxTenor', description: '最大期限', currentValue: '90天', range: '30-180天' },
+        { paramName: 'minAPY', description: '最低年化收益', currentValue: '15%', range: '10%-30%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['期现套利', '中性', '低风险', '稳定收益'],
     version: 'v1.0',
   },
@@ -525,7 +734,25 @@ export const CRYPTO_TEMPLATES: FactorStrategyTemplate[] = [
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: 'HODL增强vs普通DCA长期收益对比' },
       { id: 'param-optimize', label: 'AI参数优化', touchpointId: 'FACTOR_PARAM_OPTIMIZE', costUSDT: 1.5, description: '优化加倍/跳过阈值+定投频率' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '周期定位+底部顶部概率评估' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是加密定投增强策略助手。基于恐惧贪婪指数/RSI超卖/200日均线偏离因子，帮助用户优化定投节奏。',
+      conversationStarters: [
+        '恐惧指数低该加倍定投吗？',
+        'RSI超卖是最佳加仓点吗？',
+        '定投组合需要调整吗？'
+      ],
+      tunableParams: [
+        { paramName: 'fearGreed', description: '恐惧贪婪加仓阈值', currentValue: '25', range: '15-35' },
+        { paramName: 'dcaAmount', description: '定投金额', currentValue: '100', range: '50-500' },
+        { paramName: 'bonusMultiplier', description: '超跌加倍倍数', currentValue: '2x', range: '1.5x-3x' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['定投', 'HODL', '长期', '新手友好'],
     version: 'v1.0',
   },
@@ -560,7 +787,25 @@ export const CRYPTO_TEMPLATES: FactorStrategyTemplate[] = [
       { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '大额链上转账实时推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '鲸鱼行为与币价的历史关联度' },
       { id: 'alt-data', label: '链上数据解锁', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '鲸鱼地址标签+聪明钱跟踪+OTC交易数据' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是加密巨鲸追踪策略助手。基于巨鲸地址/聪明钱/交易所大额转移/DeFi协议TVL因子，帮助用户跟随聪明钱。',
+      conversationStarters: [
+        '巨鲸增持什么币最多？',
+        '聪明钱在买还是卖？',
+        '大额提币到钱包是什么信号？'
+      ],
+      tunableParams: [
+        { paramName: 'whaleListSize', description: '追踪巨鲸数量', currentValue: '50', range: '20-100' },
+        { paramName: 'minTransfer', description: '最小转账金额', currentValue: '100万', range: '50万-500万' },
+        { paramName: 'followDelay', description: '跟单延迟', currentValue: '1小时', range: '0-24小时' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['巨鲸', '链上', '聪明钱', '趋势'],
     version: 'v1.0',
   },
@@ -653,11 +898,31 @@ export const JP_KR_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'DIVIDEND_YIELD', factorName: '股息率', weight: 10, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'JPX价值修复健康: 价值因子溢价持续? 公司治理改善?' },
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '东京证交所披露数据+外资持股变动替代数据' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: 'JPX价值股催化剂事件推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: 'JPX价值修复策略历史胜率分析' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '日股PB+ROE+回购综合估值诊断' },
       { id: 'param-optimize', label: 'AI参数优化', touchpointId: 'FACTOR_PARAM_OPTIMIZE', costUSDT: 1.5, description: '优化PB阈值+持有期限' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是日股价值修复策略助手。基于PB/ROE/自社株買い/配当利回因子，帮助用户抓住日本公司治理改革机会。',
+      conversationStarters: [
+        '东证改革哪些股票受益最大？',
+        'PB<1的日股能修复到1吗？',
+        '自社株買い力度增强要加仓吗？'
+      ],
+      tunableParams: [
+        { paramName: 'pbThreshold', description: 'PB门槛', currentValue: '1.0', range: '0.5-1.2' },
+        { paramName: 'roeMin', description: '最小ROE', currentValue: '8%', range: '5%-12%' },
+        { paramName: 'buybackWeight', description: '回购信号权重', currentValue: '30%', range: '20%-40%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['JPX', '价值修复', '回购', '日股'],
     version: 'v1.0',
   },
@@ -687,7 +952,25 @@ export const JP_KR_TEMPLATES: FactorStrategyTemplate[] = [
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: 'NISA定投增强vs普通DCA收益对比' },
       { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: '持仓分红可持续性检查' },
       { id: 'param-optimize', label: 'AI参数优化', touchpointId: 'FACTOR_PARAM_OPTIMIZE', costUSDT: 1.5, description: '优化分红季前后加倍/减半时机' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是NISA定投增强策略助手。基于日股估值/日元汇率/全球资金流向/东证指数ETF因子，帮助用户优化NISA免税额度利用。',
+      conversationStarters: [
+        'NISA额度怎么分配最优？',
+        '日元贬值该加仓日股吗？',
+        '东证ETF现在估值合理吗？'
+      ],
+      tunableParams: [
+        { paramName: 'nisaAllocation', description: 'NISA额度分配', currentValue: '60%日股40%全球', range: '自定比例' },
+        { paramName: 'yenHedge', description: '日元对冲比例', currentValue: '30%', range: '0%-50%' },
+        { paramName: 'rebalanceFrequency', description: '再平衡频率', currentValue: '季度', range: '月度-年度' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['NISA', '定投', '分红', '新手友好'],
     version: 'v1.0',
   },
@@ -714,10 +997,29 @@ export const JP_KR_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'VOLATILITY', factorName: '波动率', weight: 10, direction: 'short', threshold: { max: 35 } },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'KRX动量策略健康: 动量因子IC>0? 换手率合理?' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '韩股动量策略历史表现' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '韩股外资+三星链综合诊断' },
       { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '板块动量轮动实时推送' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是韩国动量策略助手。基于外资净买入/动量/半导体周期/汇率因子，帮助用户在KRX市场捕捉趋势。',
+      conversationStarters: [
+        '外资买入持续性怎么看？',
+        '半导体周期见底了吗？',
+        '韩元贬值对哪些股票利好？'
+      ],
+      tunableParams: [
+        { paramName: 'foreignFlow', description: '外资流入阈值', currentValue: '1000亿韩元', range: '500-3000亿' },
+        { paramName: 'momentumPeriod', description: '动量周期', currentValue: '20日', range: '10-60日' },
+        { paramName: 'semiconductorWeight', description: '半导体板块权重', currentValue: '40%', range: '25%-55%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['韩股', '动量', '板块轮动', '外资'],
     version: 'v1.0',
   },
@@ -744,11 +1046,30 @@ export const JP_KR_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'SECTOR_MANUFACTURING', factorName: '制造业板块', weight: 10, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'KRX出口周期健康: 出口数据与股价相关性稳定?' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '韩国出口数据+汇率异动推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '出口周期轮动历史胜率' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '全球PMI+韩元+出口综合诊断' },
       { id: 'arbitrage-scan', label: 'AI套利扫描', touchpointId: 'AI_ARBITRAGE_SCAN', costUSDT: 2, description: '韩股出口vs内需板块轮动信号' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是韩国出口周期策略助手。基于韩国出口数据/全球PMI/半导体出货量/航运指数因子，帮助用户判断出口周期位置。',
+      conversationStarters: [
+        '韩国出口增速见顶了吗？',
+        '全球PMI下行出口股怎么办？',
+        '半导体出货量拐点怎么看？'
+      ],
+      tunableParams: [
+        { paramName: 'exportGrowth', description: '出口增速阈值', currentValue: '5%', range: '0%-15%' },
+        { paramName: 'globalPMI', description: '全球PMI权重', currentValue: '35%', range: '25%-45%' },
+        { paramName: 'cyclePosition', description: '周期位置权重', currentValue: '30%', range: '20%-40%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['韩股', '出口', '周期', '轮动'],
     version: 'v1.0',
   },
@@ -782,11 +1103,30 @@ export const TW_SG_AU_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'DIVIDEND_YIELD', factorName: '股息率', weight: 10, direction: 'long', threshold: { min: 4 } },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'TWSE除权息健康: 填息率>70%? 因子稳定性?' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '除权息日历+填息概率信号推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '台股除权息行情历史胜率' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '台积电链+外资+融资综合诊断' },
       { id: 'param-optimize', label: 'AI参数优化', touchpointId: 'FACTOR_PARAM_OPTIMIZE', costUSDT: 1.5, description: '优化除权前后持有天数' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是台股电子除息策略助手。基于台积电/联发科/鸿海等电子龙头除息日历+填息率+外资动向因子，帮助用户优化除息交易。',
+      conversationStarters: [
+        '台积电除息前该买吗？',
+        '填息率高的电子股有哪些？',
+        '外资在除息前后怎么操作？'
+      ],
+      tunableParams: [
+        { paramName: 'exdivLookback', description: '除息回溯天数', currentValue: '30', range: '14-60天' },
+        { paramName: 'fillRatioMin', description: '最低填息率', currentValue: '70%', range: '50%-90%' },
+        { paramName: 'foreignWeight', description: '外资动向权重', currentValue: '30%', range: '20%-40%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['台股', '除权息', '季节性', '电子'],
     version: 'v1.0',
   },
@@ -816,7 +1156,25 @@ export const TW_SG_AU_TEMPLATES: FactorStrategyTemplate[] = [
       { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'REIT分红可持续性分析' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '新加坡REIT长期收益率分析' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '息差+新元+物业周期综合诊断' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是新加坡金融收息策略助手。基于DBS/OCBC/UOB股息率/新加坡SORA利率/REITs收益因子，帮助用户优化收息组合。',
+      conversationStarters: [
+        '新加坡银行股息率现在多少？',
+        'SORA利率下降对银行股利好吗？',
+        '新加坡REIT vs 银行哪个更有吸引力？'
+      ],
+      tunableParams: [
+        { paramName: 'yieldMin', description: '最低股息率', currentValue: '4%', range: '3%-6%' },
+        { paramName: 'soraWeight', description: 'SORA利率权重', currentValue: '25%', range: '15%-35%' },
+        { paramName: 'rebalanceQuarter', description: '调仓频率', currentValue: '季度', range: '月度-半年度' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['新加坡', 'REIT', '高息', '长期'],
     version: 'v1.0',
   },
@@ -843,11 +1201,31 @@ export const TW_SG_AU_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'CMD_MOMENTUM_12M', factorName: '商品动量', weight: 15, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'ASX资源策略健康: 大宗商品与股价相关性? Franking信用?' },
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '澳洲港口出货量+矿山生产报告替代数据' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '大宗商品价格突破+Franking变化推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '澳股矿业+银行双收策略历史表现' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '铁矿石+澳元+分红综合诊断' },
       { id: 'arbitrage-scan', label: 'AI套利扫描', touchpointId: 'AI_ARBITRAGE_SCAN', costUSDT: 2, description: '澳股矿业vs银行轮动信号' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是澳洲资源股+Frankling Credit策略助手。基于铁矿石/煤炭/LNG价格+澳元汇率+Franking收益率因子，帮助用户优化资源股配置。',
+      conversationStarters: [
+        '铁矿石价格还会涨吗？',
+        'Franking Credit能抵多少税？',
+        '澳元与资源股负相关怎么对冲？'
+      ],
+      tunableParams: [
+        { paramName: 'ironOreWeight', description: '铁矿石价格权重', currentValue: '30%', range: '20%-40%' },
+        { paramName: 'audHedge', description: '澳元对冲比例', currentValue: '40%', range: '20%-60%' },
+        { paramName: 'frankingYield', description: 'Franking最低收益率', currentValue: '5%', range: '3%-8%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['澳股', '矿业', 'Franking', '高息'],
     version: 'v1.0',
   },
@@ -874,10 +1252,29 @@ export const TW_SG_AU_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'QUALITY_ROE', factorName: 'ROE质量', weight: 10, direction: 'long', threshold: { min: 20 } },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'NSE IT外包健康: IT支出趋势延续? 汇率影响可控?' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '印度IT财报季策略历史胜率' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: 'FII+卢比+IT支出综合诊断' },
       { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '印度IT巨头财报日历提醒' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是印度IT外包策略助手。基于TCS/Infosys/Wipro季报/美元兑卢比汇率/美国IT支出趋势因子，帮助用户判断印度IT板块机会。',
+      conversationStarters: [
+        '印度IT外包订单增长趋势？',
+        '卢比贬值利好IT出口吗？',
+        '美国IT预算削减影响多大？'
+      ],
+      tunableParams: [
+        { paramName: 'revenueGrowth', description: '营收增速阈值', currentValue: '10%', range: '5%-20%' },
+        { paramName: 'usdInrWeight', description: '美元卢比汇率权重', currentValue: '25%', range: '15%-35%' },
+        { paramName: 'dealPipeline', description: '订单管道权重', currentValue: '35%', range: '25%-45%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['印度', 'IT', '财报', '外包'],
     version: 'v1.0',
   },
@@ -911,11 +1308,30 @@ export const EU_IN_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'MOMENTUM_12M', factorName: '12月动量', weight: 10, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'STOXX ESG健康: ESG评级变动趋势? 碳价影响?' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: 'ESG评级变动+碳价异动推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '欧洲ESG溢价历史表现分析' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: 'ESG升级/降级预测+资金流向分析' },
       { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: 'MSCI ESG评级变化+可持续披露数据' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是欧洲ESG溢价策略助手。基于ESG评分/碳足迹/绿色税收优惠/EU Taxonomy因子，帮助用户捕捉欧洲ESG溢价。',
+      conversationStarters: [
+        'ESG评级升级对股价影响多大？',
+        '碳关税利好哪些欧洲公司？',
+        'EU Taxonomy合规标的怎么筛选？'
+      ],
+      tunableParams: [
+        { paramName: 'esgThreshold', description: 'ESG最低评分', currentValue: '70', range: '60-85' },
+        { paramName: 'carbonWeight', description: '碳足迹权重', currentValue: '25%', range: '15%-35%' },
+        { paramName: 'greenTaxonomy', description: '绿色分类权重', currentValue: '30%', range: '20%-40%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['欧洲', 'ESG', '溢价', '可持续'],
     version: 'v1.0',
   },
@@ -942,11 +1358,31 @@ export const EU_IN_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'CMD_MOMENTUM_12M', factorName: '商品动量', weight: 10, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'NSE通胀对冲健康: 通胀敏感度稳定? 因子有效性?' },
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '印度CPI成分价格+季风降雨替代数据' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '印度CPI/WPI数据异动+商品价格推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '印度通胀对冲策略历史表现' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '通胀+利率+卢比综合诊断' },
       { id: 'param-optimize', label: 'AI参数优化', touchpointId: 'FACTOR_PARAM_OPTIMIZE', costUSDT: 1.5, description: '优化通胀阈值+板块配比' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是印度通胀对冲策略助手。基于印度CPI/WPI/Repo Rate/黄金价格/消费数据因子，帮助用户在印度高通胀环境中保护购买力。',
+      conversationStarters: [
+        '印度CPI>6%该配置什么？',
+        'Repo Rate见顶了可以买了吗？',
+        '黄金能对冲印度通胀吗？'
+      ],
+      tunableParams: [
+        { paramName: 'cpiThreshold', description: 'CPI触发阈值', currentValue: '5%', range: '4%-7%' },
+        { paramName: 'goldWeight', description: '黄金配置权重', currentValue: '20%', range: '10%-30%' },
+        { paramName: 'consumptionSector', description: '消费板块权重', currentValue: '30%', range: '20%-40%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['印度', '通胀', '对冲', '金融'],
     version: 'v1.0',
   },
@@ -973,10 +1409,29 @@ export const EU_IN_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'LOW_VOLATILITY', factorName: '低波动', weight: 10, direction: 'short' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'Nifty50轮动健康: 因子轮动超额>基准? IC>0?' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: 'Nifty50轮动策略历史表现' },
       { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '板块动量轮动实时推送' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: 'FII+板块动量+雨季综合诊断' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是Nifty50轮动策略助手。基于板块动量/外资FII流向/国内DII流向/企业盈利增速因子，帮助用户在Nifty50板块间轮动。',
+      conversationStarters: [
+        '现在该切换到哪个板块？',
+        'FII流出DII流入怎么解读？',
+        'Nifty50估值偏高该减仓吗？'
+      ],
+      tunableParams: [
+        { paramName: 'rotationPeriod', description: '轮动周期', currentValue: '月', range: '周-月' },
+        { paramName: 'momentumLookback', description: '动量回溯期', currentValue: '1个月', range: '2周-3个月' },
+        { paramName: 'fiiWeight', description: 'FII流向权重', currentValue: '30%', range: '20%-40%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['印度', 'Nifty50', '轮动', '动量'],
     version: 'v1.0',
   },
@@ -1053,6 +1508,8 @@ export const AI_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'RSI', factorName: 'RSI强度', weight: 10, direction: 'long', threshold: { min: 60 } },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'AI动量策略月度体检: 各因子IC衰减? 过拟合风险?' },
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '跨市场资金流+社交媒体情绪替代数据' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '动量策略历史胜率+夏普比率' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '动量衰减预警+行业动量轮动' },
       { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '动量Top10实时更新推送' },
@@ -1108,6 +1565,7 @@ export const AI_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'VALUE_TRAP', factorName: '价值陷阱检测', weight: 10, direction: 'short', threshold: { max: 0.3 } },
     ],
     aiTriggerPoints: [
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '13F机构持仓+内幕交易披露替代数据' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '价值因子信号+估值修复触发推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '价值策略长期收益率+回撤分析' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '价值vs价值陷阱交叉验证' },
@@ -1218,6 +1676,8 @@ export const AI_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'RSI', factorName: 'RSI超买超卖', weight: 15, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'AI择时策略健康: 信号准确率>55%? 各维度贡献?' },
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '期权订单流+暗池交易量替代数据' },
       { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '多空信号实时推送' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '多因子择时综合评分' },
       { id: 'param-optimize', label: 'AI参数优化', touchpointId: 'FACTOR_PARAM_OPTIMIZE', costUSDT: 1.5, description: '择时窗口+信号阈值优化' },
@@ -1382,6 +1842,8 @@ export const AI_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'DEBT_RATIO', factorName: '负债率', weight: 15, direction: 'short', threshold: { max: 60 } },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'AI选股策略健康: 月胜率>55%? 因子暴露漂移?' },
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '招聘数据+APP下载量+信用卡消费替代数据' },
     { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: 'AI筛选结果更新+新股票信号推送' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '多因子选股历史胜率' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '因子打分有效性检验' },
@@ -1642,7 +2104,25 @@ export const HK_SUPPLEMENT_TEMPLATES: FactorStrategyTemplate[] = [
       { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'REIT分红可持续性+NAV变化' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '港股REIT长期回报分析' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '利率+租金+空置率综合诊断' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是港股REIT收息策略助手。基于领展/置富/冠君等REIT股息率+物业估值+利率敏感度因子，帮助用户优化REIT收息组合。',
+      conversationStarters: [
+        '港股REIT股息率>6%的值得买吗？',
+        '加息周期REIT怎么办？',
+        '香港零售REIT vs 写字楼REIT哪家强？'
+      ],
+      tunableParams: [
+        { paramName: 'yieldMin', description: '最低股息率', currentValue: '5%', range: '4%-7%' },
+        { paramName: 'rateSensitivity', description: '利率敏感度阈值', currentValue: '0.8', range: '0.5-1.0' },
+        { paramName: 'propertyType', description: '物业类型偏好', currentValue: '零售', range: '零售/写字楼/工业/综合' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['港股', 'REIT', '收租', '分红'],
     version: 'v1.0',
   },
@@ -1669,10 +2149,29 @@ export const HK_SUPPLEMENT_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'SENTIMENT', factorName: '市场情绪', weight: 10, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: 'IPO打新健康: 首日涨幅分布正常? 市场热度?' },
       { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '爆款IPO打新机会推送' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: 'IPO热度+暗盘+基石综合评分' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '港股打新历史胜率分析' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是港股IPO打新策略助手。基于超额认购倍数/暗盘价格/基石投资者比例/行业热度因子，帮助用户判断IPO参与策略。',
+      conversationStarters: [
+        '超额认购>100倍可以All in吗？',
+        '暗盘涨了要不要首日卖出？',
+        '基石投资者比例低的IPO风险大吗？'
+      ],
+      tunableParams: [
+        { paramName: 'oversubscription', description: '超额认购阈值', currentValue: '50倍', range: '20-200倍' },
+        { paramName: 'flipStrategy', description: '卖出策略', currentValue: '首日', range: '暗盘/首日/首周' },
+        { paramName: 'cornerstoneMin', description: '基石最低比例', currentValue: '30%', range: '20%-50%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['港股', '打新', 'IPO', '暗盘'],
     version: 'v1.0',
   },
@@ -1699,10 +2198,29 @@ export const HK_SUPPLEMENT_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'SENTIMENT', factorName: '市场情绪', weight: 10, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: '沽空挤压健康: 沽空比例正常? 挤压概率合理?' },
       { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '沽空挤压预警实时推送' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '沽空比率+催化+挤压概率诊断' },
       { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '暗池沽空流量+社交情绪数据' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是港股逼空策略助手。基于沽空比率/借货成本/流通股本/大户持仓因子，帮助用户判断逼空机会和风险。',
+      conversationStarters: [
+        '沽空比率>20%是逼空信号吗？',
+        '借货成本飙升意味什么？',
+        '逼空失败最坏亏多少？'
+      ],
+      tunableParams: [
+        { paramName: 'shortRatio', description: '沽空比率阈值', currentValue: '15%', range: '10%-25%' },
+        { paramName: 'borrowCost', description: '借货成本阈值', currentValue: '10%/年', range: '5%-30%/年' },
+        { paramName: 'maxPosition', description: '最大仓位', currentValue: '10%', range: '5%-20%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['港股', '沽空', '挤压', '高波动'],
     version: 'v1.0',
   },
@@ -1740,10 +2258,30 @@ export const CROSS_SUPPLEMENT_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'INTEREST_RATE', factorName: '利差', weight: 10, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: '外汇对冲健康: 对冲有效性>80%? 成本合理?' },
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '央行利率预期+跨境资金流替代数据' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '最优对冲比率+息差分析' },
       { id: 'backtest-read', label: 'AI回测解读', touchpointId: 'AI_BACKTEST_READ', costUSDT: 1, description: '对冲vs不对冲历史收益对比' },
       { id: 'param-optimize', label: 'AI参数优化', touchpointId: 'FACTOR_PARAM_OPTIMIZE', costUSDT: 1.5, description: '对冲比率+滚动频率优化' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是外汇对冲策略助手。基于利率差/远期曲线/波动率微笑/COT持仓因子，帮助用户设计和优化外汇对冲方案。',
+      conversationStarters: [
+        '美元见顶了该调整对冲吗？',
+        'Carry Trade还能做吗？',
+        '央行干预风险怎么评估？'
+      ],
+      tunableParams: [
+        { paramName: 'hedgeRatio', description: '对冲比例', currentValue: '70%', range: '50%-100%' },
+        { paramName: 'carryThreshold', description: 'Carry最低利差', currentValue: '2%', range: '1%-5%' },
+        { paramName: 'volatility', description: '波动率阈值', currentValue: '10%', range: '5%-20%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['跨市场', '汇率', '对冲', '远期'],
     version: 'v1.0',
   },
@@ -1774,10 +2312,29 @@ export const CROSS_SUPPLEMENT_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'TERM_STRUCTURE', factorName: '期限结构', weight: 10, direction: 'long' },
     ],
     aiTriggerPoints: [
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '各国CPI/PPI+贸易余额替代数据' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '全球利差机会扫描+央行政策分析' },
       { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '利差变化预警推送' },
       { id: 'arbitrage-scan', label: 'AI套利扫描', touchpointId: 'AI_ARBITRAGE_SCAN', costUSDT: 2, description: '跨国利差套利机会扫描' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是利率价差策略助手。基于各国收益率曲线/利差变化/央行政策预期/通胀预期因子，帮助用户捕捉利率定价差机会。',
+      conversationStarters: [
+        '美日利差还会扩大吗？',
+        '收益率曲线倒挂如何交易？',
+        '央行转向怎么提前布局？'
+      ],
+      tunableParams: [
+        { paramName: 'spreadEntry', description: '利差入场阈值', currentValue: '50bp', range: '25-150bp' },
+        { paramName: 'durationTarget', description: '久期目标', currentValue: '5年', range: '2-10年' },
+        { paramName: 'centralBank', description: '央行政策权重', currentValue: '40%', range: '30%-50%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['跨市场', '利率', '债券', '利差'],
     version: 'v1.0',
   },
@@ -1810,7 +2367,25 @@ export const CROSS_SUPPLEMENT_TEMPLATES: FactorStrategyTemplate[] = [
       { id: 'arbitrage-scan', label: 'AI套利扫描', touchpointId: 'AI_ARBITRAGE_SCAN', costUSDT: 2, description: '跨境信用套利机会扫描' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '信用风险评估+套利可行性' },
       { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: 'CDS数据+债券异动监测' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是信用套利策略助手。基于CDS利差/信用评级/违约概率/回收率因子，帮助用户在信用市场寻找定价偏差。',
+      conversationStarters: [
+        'CDS利差扩大=买入机会吗？',
+        '投资级vs垃圾级利差怎么交易？',
+        '信用事件发生时怎么应对？'
+      ],
+      tunableParams: [
+        { paramName: 'cdsSpread', description: 'CDS利差阈值', currentValue: '100bp', range: '50-300bp' },
+        { paramName: 'ratingMin', description: '最低信用评级', currentValue: 'BBB-', range: 'BB-至AAA' },
+        { paramName: 'defaultProb', description: '违约概率阈值', currentValue: '2%', range: '0.5%-5%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['跨市场', '信用', '套利', '债券'],
     version: 'v1.0',
   },
@@ -1839,10 +2414,30 @@ export const CROSS_SUPPLEMENT_TEMPLATES: FactorStrategyTemplate[] = [
       { factorId: 'CMD_INVENTORY', factorName: '商品库存', weight: 10, direction: 'short' },
     ],
     aiTriggerPoints: [
+    { id: 'health-check', label: 'AI健康检查', touchpointId: 'AI_HEALTH_CHECK', costUSDT: 1, description: '商品配对健康: 价差均值回归速度? 季节性稳定?' },
+    { id: 'alt-data', label: '替代数据', touchpointId: 'FACTOR_ALT_DATA_UNLOCK', costUSDT: 2, description: '港口库存+航运指数+天气预测替代数据' },
       { id: 'arbitrage-scan', label: 'AI套利扫描', touchpointId: 'AI_ARBITRAGE_SCAN', costUSDT: 2, description: '全球商品配对机会扫描' },
       { id: 'deep-diagnosis', label: 'AI因子诊断', touchpointId: 'FACTOR_DEEP_DIAGNOSIS', costUSDT: 1, description: '配对相关性+比价均值回归分析' },
       { id: 'signal-push', label: '信号推送', touchpointId: 'AI_FACTOR_SIGNAL_PUSH', costUSDT: 0.5, description: '比价偏离预警实时推送' },
-    ],
+    ],,
+    deepSeekChat: {
+      enabled: true,
+      systemPrompt: '你是商品货币对策略助手。基于商品价格/CFTC持仓/实际利率/美元指数因子，帮助用户交易商品货币对。',
+      conversationStarters: [
+        '油价涨该买CAD还是NOK？',
+        '铁矿价格对AUD影响有多大？',
+        '商品超级周期来了吗？'
+      ],
+      tunableParams: [
+        { paramName: 'commodityCorr', description: '商品汇率相关性', currentValue: '0.7', range: '0.5-0.9' },
+        { paramName: 'cotThreshold', description: 'COT极端持仓阈值', currentValue: '80%', range: '70%-95%' },
+        { paramName: 'positionSize', description: '单品种仓位', currentValue: '5%', range: '2%-10%' }
+      ],
+      costPerTurn: 1,
+      degradationChain: 'AIDegradationChain',
+      oneClickApply: true,
+      maxRounds: 20,
+    }
     tags: ['商品', '配对', '均值回归', '比价'],
     version: 'v1.0',
   },
