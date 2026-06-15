@@ -224,24 +224,51 @@ export class TemplateEngine {
     return [...types];
   }
 
+  /** Calculate total AI cost for a template (sum of all trigger prices) */
+  calculateTotalAICost(template: StrategyTemplate): number {
+    return Math.round(template.aiTriggers.reduce((s, t) => s + t.priceUSDT, 0) * 100) / 100;
+  }
+
+  /** Check if template has signal push trigger */
+  hasSignalPush(template: StrategyTemplate): boolean {
+    return template.aiTriggers.some(t =>
+      t.nameCN.includes('信号推送') || t.nameEN.toLowerCase().includes('signal push'));
+  }
+
+  /** Check if template has alt data trigger */
+  hasAltDataUnlock(template: StrategyTemplate): boolean {
+    return template.aiTriggers.some(t =>
+      t.type === 'ALT_DATA' && t.nameCN.includes('替代数据'));
+  }
+
   /** Summary stats */
   getSummary(templates: StrategyTemplate[]): {
     totalTemplates: number; totalFactors: number; totalMarkets: number;
     avgAITriggers: number; allIronRulesValid: number;
+    totalAICost: number; signalPushCoverage: number; altDataCoverage: number;
   } {
     const factorIds = new Set<string>();
     const markets = this.getMarketTags(templates);
     let totalTriggers = 0;
     let validRules = 0;
+    let totalCost = 0;
+    let signalCount = 0;
+    let altCount = 0;
     for (const t of templates) {
       for (const f of t.factorCombo.factorIds) factorIds.add(f);
       totalTriggers += t.aiTriggers.length;
+      totalCost += this.calculateTotalAICost(t);
       if (this.validateFourIronRules(t.ironRules).valid) validRules++;
+      if (this.hasSignalPush(t)) signalCount++;
+      if (this.hasAltDataUnlock(t)) altCount++;
     }
     return {
       totalTemplates: templates.length, totalFactors: factorIds.size, totalMarkets: markets.length,
-      avgAITriggers: templates.length > 0 ? totalTriggers / templates.length : 0,
+      avgAITriggers: templates.length > 0 ? Math.round((totalTriggers / templates.length) * 10) / 10 : 0,
       allIronRulesValid: validRules,
+      totalAICost: Math.round(totalCost * 100) / 100,
+      signalPushCoverage: templates.length > 0 ? Math.round((signalCount / templates.length) * 100) : 0,
+      altDataCoverage: templates.length > 0 ? Math.round((altCount / templates.length) * 100) : 0,
     };
   }
 }

@@ -91,7 +91,7 @@ const ENCYCLOPEDIA: Record<string, FactorEncyclopedia> = {
     definition: '日均成交额/换手率衡量股票的流动性。流动性好的股票交易成本低，承载资金量更大。',
     calculation: 'log(日均成交额 × 换手率)，20日滚动平均后标准化。',
     typicalICRange: '0.02 ~ 0.04',
-    bestMarket: '全市场通用，对大盘股策略尤为重要。',
+    bestMarket: 'US、HK、JP、TW大型股市场，对大盘股策略尤为重要。',
     usageTips: '流动性因子主要用于风控而非Alpha。大资金策略的硬约束。结合动量可提升执行效率。',
     pros: ['交易成本低', '容量大', '执行效率高'],
     cons: ['超额有限', '机构拥挤', '信号弱'],
