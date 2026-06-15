@@ -101,6 +101,18 @@ export interface OnChainSnapshot {
   developerActivity?: number;
   /** Stablecoin supply ratio */
   stablecoinRatio?: number;
+  /** Network hash rate (hashes/sec) */
+  hashRate?: number;
+  /** Gas used (daily, gwei) */
+  gasUsed?: number;
+  /** Staking ratio (decimal, 0-1) */
+  stakingRatio?: number;
+  /** Total value locked (USD, alias for tvl) */
+  totalValueLocked?: number;
+  /** Whale transaction count (daily, transfers > $100k) */
+  whaleTransactionCount?: number;
+  /** Supply held on exchanges */
+  supplyOnExchanges?: number;
 }
 
 export interface MacroSnapshot {
