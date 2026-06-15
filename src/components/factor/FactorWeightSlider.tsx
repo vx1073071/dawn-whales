@@ -1,416 +1,315 @@
-/**
- * ── R160 ML: Factor Weight Visual Configurator ─────────────────────────
- * P0-F2: 5 sliders + auto-normalization + donut chart + 4 presets
- * Drag-to-adjust with real-time feedback.
- * Persists to localStorage 'dw-factor-weights'.
- * 11-language i18n supported.
- */
+// ── R187 ML P3-01: FactorWeightSlider — 因子权重拖拽+自动归一化 ──────
+// Interactive weight allocator for multi-factor strategies.
+// Users drag sliders to set factor weights. System auto-normalizes to 100%.
+// Visual: horizontal bar chart with drag handles, color-coded by factor.
+//
+// Features:
+// - Drag-to-adjust weight sliders with live normalization
+// - Lock individual weights (keep fixed during normalization)
+// - Preset weight distributions (equal, momentum-heavy, value-heavy, quality-heavy)
+// - Responsive: works on touch and mouse
+// - Shows effective weight after normalization
+// - Dark theme with golden accent
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import * as echarts from 'echarts';
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 
-// ── Types ──────────────────────────────────────────────────────────────
+// ── Types ────────────────────────────────────────────────────────────────────
 
-export type FactorId = 'momentum' | 'value' | 'quality' | 'volatility' | 'liquidity';
-
-export interface FactorWeightConfig {
-  factor: FactorId;
-  weight: number; // 0-100, all sum to 100
-}
-
-export type WeightPreset = 'momentum' | 'value' | 'balanced' | 'defensive' | 'custom';
-
-export interface FactorWeightPreset {
-  id: WeightPreset;
-  labelKey: string;
-  weights: Record<FactorId, number>;
-}
-
-export interface FactorWeightChangeEvent {
-  weights: Record<FactorId, number>;
-  preset: WeightPreset;
-}
-
-// ── Defaults & Presets ────────────────────────────────────────────────
-
-const PRESETS: FactorWeightPreset[] = [
-  { id: 'balanced',   labelKey: 'FactorWeightSlider.presetBalanced',   weights: { momentum: 20, value: 20, quality: 20, volatility: 20, liquidity: 20 } },
-  { id: 'momentum',   labelKey: 'FactorWeightSlider.presetMomentum',   weights: { momentum: 40, value: 15, quality: 15, volatility: 15, liquidity: 15 } },
-  { id: 'value',      labelKey: 'FactorWeightSlider.presetValue',      weights: { momentum: 10, value: 40, quality: 25, volatility: 15, liquidity: 10 } },
-  { id: 'defensive',  labelKey: 'FactorWeightSlider.presetDefensive',  weights: { momentum: 5,  value: 20, quality: 25, volatility: 35, liquidity: 15 } },
-];
-
-const FACTOR_ORDER: FactorId[] = ['momentum', 'value', 'quality', 'volatility', 'liquidity'];
-
-interface FactorMeta {
-  id: FactorId;
-  labelKey: string;
-  descKey: string;
+export interface WeightItem {
+  id: string;
+  name: string;
+  weight: number;       // 0-100
+  locked: boolean;
   color: string;
+  category?: string;
 }
 
-const FACTOR_META: FactorMeta[] = [
-  { id: 'momentum',   labelKey: 'FactorWeightSlider.factorMomentum',   descKey: 'FactorWeightSlider.descMomentum',   color: '#ef4444' },
-  { id: 'value',      labelKey: 'FactorWeightSlider.factorValue',      descKey: 'FactorWeightSlider.descValue',      color: '#3b82f6' },
-  { id: 'quality',    labelKey: 'FactorWeightSlider.factorQuality',    descKey: 'FactorWeightSlider.descQuality',    color: '#10b981' },
-  { id: 'volatility', labelKey: 'FactorWeightSlider.factorVolatility', descKey: 'FactorWeightSlider.descVolatility', color: '#f59e0b' },
-  { id: 'liquidity',  labelKey: 'FactorWeightSlider.factorLiquidity',  descKey: 'FactorWeightSlider.descLiquidity',  color: '#8b5cf6' },
+interface FactorWeightSliderProps {
+  items: WeightItem[];
+  onChange: (items: WeightItem[]) => void;
+  /** Maximum total weight (default 100) */
+  maxTotal?: number;
+  /** Show preset distribution buttons */
+  showPresets?: boolean;
+  /** Show weight distribution bar */
+  showDistribution?: boolean;
+  /** Additional class */
+  className?: string;
+}
+
+// ── Presets ──────────────────────────────────────────────────────────────────
+
+const WEIGHT_PRESETS = [
+  { label: '⚖️ 等权', key: 'equal', description: '所有因子等权重' },
+  { label: '📈 动量优先', key: 'momentum', description: '动量因子权重最高' },
+  { label: '💰 价值优先', key: 'value', description: '价值因子权重最高' },
+  { label: '💎 品质优先', key: 'quality', description: '品质因子权重最高' },
 ];
 
-const STORAGE_KEY = 'dw-factor-weights';
+// ── Normalize weights ────────────────────────────────────────────────────────
 
-// ── Helpers ─────────────────────────────────────────────────────────────
+function normalizeWeights(items: WeightItem[], maxTotal: number = 100): WeightItem[] {
+  const locked = items.filter(i => i.locked);
+  const unlocked = items.filter(i => !i.locked);
 
-function loadWeights(): { weights: Record<FactorId, number>; preset: WeightPreset } {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (parsed.weights && FACTOR_ORDER.every((f) => typeof parsed.weights[f] === 'number')) {
-        return parsed;
+  const lockedTotal = locked.reduce((sum, i) => sum + i.weight, 0);
+  if (lockedTotal > maxTotal) {
+    // Scale down locked weights proportionally
+    const scale = maxTotal / lockedTotal;
+    const adjustedLocked = locked.map(i => ({ ...i, weight: Math.round(i.weight * scale) }));
+    return [...adjustedLocked, ...unlocked.map(i => ({ ...i, weight: 0 }))];
+  }
+
+  const unlockedTotal = unlocked.reduce((sum, i) => sum + i.weight, 0);
+  const remaining = maxTotal - lockedTotal;
+
+  if (unlockedTotal === 0 && remaining > 0) {
+    // Distribute evenly
+    const each = Math.floor(remaining / unlocked.length);
+    const extra = remaining - each * unlocked.length;
+    return [
+      ...locked,
+      ...unlocked.map((u, i) => ({ ...u, weight: each + (i < extra ? 1 : 0) })),
+    ];
+  }
+
+  if (unlockedTotal <= 0) return items;
+
+  const scale = remaining / unlockedTotal;
+  const normalized = unlocked.map((u, i) => {
+    const rawWeight = Math.round(u.weight * scale);
+    return { ...u, weight: rawWeight };
+  });
+
+  // Fix rounding to sum exactly to maxTotal
+  let sum = lockedTotal + normalized.reduce((s, i) => s + i.weight, 0);
+  let idx = 0;
+  while (sum < maxTotal && idx < normalized.length) {
+    if (!normalized[idx].locked) {
+      normalized[idx] = { ...normalized[idx], weight: normalized[idx].weight + 1 };
+      sum++;
+    }
+    idx++;
+  }
+  while (sum > maxTotal && idx < normalized.length) {
+    if (!normalized[idx].locked && normalized[idx].weight > 0) {
+      normalized[idx] = { ...normalized[idx], weight: normalized[idx].weight - 1 };
+      sum--;
+    }
+    idx++;
+  }
+
+  return [...locked, ...normalized];
+}
+
+// ── Component ────────────────────────────────────────────────────────────────
+
+export const FactorWeightSlider: React.FC<FactorWeightSliderProps> = ({
+  items,
+  onChange,
+  maxTotal = 100,
+  showPresets = true,
+  showDistribution = true,
+  className = '',
+}) => {
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Apply preset
+  const applyPreset = useCallback((key: string) => {
+    const newItems = items.map(i => {
+      const cat = i.category || '';
+      switch (key) {
+        case 'equal': return { ...i, weight: 100 / items.length, locked: false };
+        case 'momentum': return { ...i, weight: cat === 'momentum' || cat === 'growth' ? 30 : 10, locked: false };
+        case 'value': return { ...i, weight: cat === 'value' || cat === 'yield' ? 30 : 10, locked: false };
+        case 'quality': return { ...i, weight: cat === 'quality' ? 30 : 10, locked: false };
+        default: return i;
       }
-    }
-  } catch { /* fall through */ }
-  return { weights: { momentum: 20, value: 20, quality: 20, volatility: 20, liquidity: 20 }, preset: 'balanced' as WeightPreset };
-}
+    });
+    onChange(normalizeWeights(newItems, maxTotal));
+  }, [items, maxTotal, onChange]);
 
-function saveWeights(weights: Record<FactorId, number>, preset: WeightPreset): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ weights, preset }));
-}
+  // Handle slider change
+  const handleWeightChange = useCallback((idx: number, newWeight: number) => {
+    const newItems = items.map((item, i) =>
+      i === idx ? { ...item, weight: Math.max(0, Math.min(100, newWeight)) } : item
+    );
+    onChange(normalizeWeights(newItems, maxTotal));
+  }, [items, maxTotal, onChange]);
 
-function normalizeWeights(raw: Record<FactorId, number>): Record<FactorId, number> {
-  const total = FACTOR_ORDER.reduce((s, f) => s + (raw[f] || 0), 0);
-  if (total === 0) {
-    // Uniform fallback
-    const uniform = 100 / FACTOR_ORDER.length;
-    const result: Partial<Record<FactorId, number>> = {};
-    FACTOR_ORDER.forEach((f) => { result[f] = uniform; });
-    return result as Record<FactorId, number>;
-  }
-  const result: Partial<Record<FactorId, number>> = {};
-  let rounded = 0;
-  const exact: number[] = [];
-  for (let i = 0; i < FACTOR_ORDER.length; i++) {
-    const f = FACTOR_ORDER[i];
-    const rawVal = (raw[f] || 0) / total * 100;
-    exact.push(rawVal);
-    const floor = Math.floor(rawVal);
-    result[f] = floor;
-    rounded += floor;
-  }
-  // Distribute rounding remainder
-  let remainder = 100 - rounded;
-  const indices = exact.map((v, i) => ({ v: v - Math.floor(v), i })).sort((a, b) => b.v - a.v);
-  for (let j = 0; j < remainder && j < indices.length; j++) {
-    result[FACTOR_ORDER[indices[j].i]]! += 1;
-  }
-  return result as Record<FactorId, number>;
-}
+  // Toggle lock
+  const toggleLock = useCallback((idx: number) => {
+    const newItems = items.map((item, i) =>
+      i === idx ? { ...item, locked: !item.locked } : item
+    );
+    onChange(normalizeWeights(newItems, maxTotal));
+  }, [items, maxTotal, onChange]);
 
-function detectPreset(weights: Record<FactorId, number>): WeightPreset {
-  for (const p of PRESETS) {
-    let match = true;
-    for (const f of FACTOR_ORDER) {
-      if (Math.abs((p.weights[f] || 0) - (weights[f] || 0)) > 0.5) { match = false; break; }
-    }
-    if (match) return p.id;
-  }
-  return 'custom';
-}
-
-// ── Component ───────────────────────────────────────────────────────────
-
-const FactorWeightSlider: React.FC<{
-  onChange?: (e: FactorWeightChangeEvent) => void;
-  readonly?: boolean;
-}> = ({ onChange, readonly = false }) => {
-  const { t } = useTranslation();
-
-  const saved = loadWeights();
-  const [weights, setWeights] = useState<Record<FactorId, number>>(saved.weights);
-  const [preset, setPreset] = useState<WeightPreset>(saved.preset);
-  const [dragging, setDragging] = useState<FactorId | null>(null);
-  const [recBanner, setRecBanner] = useState<{ templateId: string; factors: string[] } | null>(null);
-
-  // R163: Check for template-recommended factors
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem('dw-factor-recommendations');
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (parsed.templateId && parsed.factors && Array.isArray(parsed.factors)) {
-          setRecBanner({ templateId: parsed.templateId, factors: parsed.factors });
-        }
+  // Drag handling
+  const handleMouseDown = useCallback((idx: number) => {
+    setDragIdx(idx);
+    const handleMouseMove = (e: MouseEvent) => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const pct = ((e.clientX - rect.left) / rect.width) * 100;
+        handleWeightChange(idx, Math.round(pct));
       }
-    } catch { /* ignore */ }
-  }, []);
-
-  const dismissRecBanner = () => {
-    localStorage.removeItem('dw-factor-recommendations');
-    setRecBanner(null);
-  };
-  const dragRef = useRef<{ startX: number; startVal: number; factor: FactorId } | null>(null);
-  const chartRef = useRef<HTMLDivElement>(null);
-  const chartInstance = useRef<echarts.ECharts | null>(null);
-
-  // ── Normalize on weight change ──────────────────────────────────
-  const normalized = normalizeWeights(weights);
-
-  // ── Donut chart ──────────────────────────────────────────────────
-  const updateChart = useCallback(() => {
-    if (!chartRef.current) return;
-    if (!chartInstance.current) {
-      chartInstance.current = echarts.init(chartRef.current, undefined, { renderer: 'canvas' });
-    }
-    const data = FACTOR_ORDER.map((f) => {
-      const meta = FACTOR_META.find((m) => m.id === f)!;
-      return {
-        name: t(meta.labelKey),
-        value: Math.round(normalized[f]),
-        itemStyle: { color: meta.color },
-      };
-    });
-
-    chartInstance.current.setOption({
-      backgroundColor: 'transparent',
-      tooltip: {
-        trigger: 'item',
-        backgroundColor: '#1a1a25',
-        borderColor: 'rgba(255,255,255,0.1)',
-        textStyle: { color: '#e5e7eb', fontSize: 11 },
-        formatter: '{b}: {c}%',
-      },
-      series: [{
-        type: 'pie',
-        radius: ['55%', '80%'],
-        center: ['50%', '50%'],
-        avoidLabelOverlap: false,
-        itemStyle: { borderRadius: 3, borderColor: '#0d0d15', borderWidth: 2 },
-        label: { show: false },
-        emphasis: {
-          label: { show: true, fontSize: 12, fontWeight: 'bold' },
-          scaleSize: 8,
-        },
-        data,
-      }],
-    });
-  }, [normalized, t]);
-
-  useEffect(() => { updateChart(); return () => { chartInstance.current?.dispose(); chartInstance.current = null; }; }, [updateChart]);
-
-  // ── Handlers ────────────────────────────────────────────────────
-  const handlePreset = (p: FactorWeightPreset) => {
-    setWeights({ ...p.weights });
-    setPreset(p.id);
-    saveWeights(p.weights, p.id);
-    onChange?.({ weights: p.weights, preset: p.id });
-  };
-
-  const handleSlider = (factor: FactorId, value: number) => {
-    const next = { ...weights, [factor]: value };
-    setWeights(next);
-    const detectedPreset = detectPreset(normalizeWeights(next));
-    setPreset(detectedPreset);
-    saveWeights(normalizeWeights(next), detectedPreset);
-    onChange?.({ weights: normalizeWeights(next), preset: detectedPreset });
-  };
-
-  const handleReset = () => {
-    const def = PRESETS[0]; // balanced
-    setWeights({ ...def.weights });
-    setPreset('balanced');
-    saveWeights(def.weights, 'balanced');
-    onChange?.({ weights: def.weights, preset: 'balanced' });
-  };
-
-  // ── Drag handling ────────────────────────────────────────────────
-  const handleMouseDown = (factor: FactorId) => (e: React.MouseEvent) => {
-    if (readonly) return;
-    setDragging(factor);
-    dragRef.current = { startX: e.clientX, startVal: weights[factor] || 0, factor };
-  };
-
-  useEffect(() => {
-    if (!dragging) return;
-    const handleMove = (e: MouseEvent) => {
-      if (!dragRef.current) return;
-      const dx = e.clientX - dragRef.current.startX;
-      const sensitivity = 2; // pixels per weight unit
-      const delta = Math.round(dx / sensitivity);
-      const newVal = Math.max(0, Math.min(100, dragRef.current.startVal + delta));
-      handleSlider(dragging, newVal);
     };
-    const handleUp = () => setDragging(null);
-    window.addEventListener('mousemove', handleMove);
-    window.addEventListener('mouseup', handleUp);
-    return () => {
-      window.removeEventListener('mousemove', handleMove);
-      window.removeEventListener('mouseup', handleUp);
+    const handleMouseUp = () => {
+      setDragIdx(null);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dragging]);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }, [handleWeightChange]);
 
-  // ── Render ────────────────────────────────────────────────────────
+  // Pre-compute normalized display
+  const totalWeight = useMemo(() => items.reduce((s, i) => s + i.weight, 0), [items]);
+
+  if (items.length === 0) {
+    return <div className="text-center py-4 text-xs text-gray-600">暂无因子，请先添加因子</div>;
+  }
+
   return (
-    <div className="space-y-5">
-      {/* R163: Template recommendation banner */}
-      {recBanner && (
-        <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-3">
-          <div className="flex items-start justify-between">
-            <div className="flex items-start gap-2">
-              <span className="text-emerald-400 text-sm mt-0.5">🧬</span>
-              <div>
-                <h4 className="text-xs font-semibold text-emerald-300">
-                  {t('FactorWeightSlider.recBannerTitle', '模板推荐权重已加载')}
-                </h4>
-                <p className="text-[10px] text-emerald-200/60 mt-0.5">
-                  {t('FactorWeightSlider.recBannerBody', '以下因子组合基于所选策略模板自动推荐。你可以手动调整。')}
-                </p>
-                <div className="flex flex-wrap gap-1 mt-1.5">
-                  {recBanner.factors.map((f) => (
-                    <code key={f} className="text-[10px] bg-emerald-500/10 text-emerald-300 px-1.5 py-0.5 rounded">{f}</code>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <button onClick={dismissRecBanner} className="text-gray-500 hover:text-gray-300 text-xs">✕</button>
+    <div className={`${className}`}>
+      {/* Presets */}
+      {showPresets && (
+        <div className="mb-4">
+          <span className="text-[10px] text-gray-600 mr-2">快速分配:</span>
+          <div className="inline-flex gap-1 flex-wrap">
+            {WEIGHT_PRESETS.map(preset => (
+              <button
+                key={preset.key}
+                onClick={() => applyPreset(preset.key)}
+                className="text-[10px] px-2 py-1 rounded-full bg-white/[0.03] text-gray-500 border border-white/5 hover:border-[#D4A853]/30 hover:text-[#D4A853] transition-colors"
+                title={preset.description}
+              >
+                {preset.label}
+              </button>
+            ))}
           </div>
         </div>
       )}
 
-      {/* Preset Buttons */}
-      <div className="flex flex-wrap gap-2">
-        {PRESETS.map((p) => (
-          <button
-            key={p.id}
-            onClick={() => handlePreset(p)}
-            disabled={readonly}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-              preset === p.id
-                ? 'bg-[#C9A046] text-black shadow-lg shadow-[#C9A046]/20'
-                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-gray-200 border border-white/5'
-            }`}
-          >
-            {t(p.labelKey)}
-          </button>
-        ))}
-        <button
-          onClick={handleReset}
-          disabled={readonly}
-          className="px-3 py-1.5 rounded-lg text-xs font-medium bg-white/5 text-gray-500 hover:bg-white/10 hover:text-gray-300 border border-white/5 transition-all"
-        >
-          ↺ {t('FactorWeightSlider.reset')}
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* Donut Chart */}
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4 flex flex-col items-center">
-          <h3 className="text-sm font-semibold text-white mb-2 w-full text-center">
-            {t('FactorWeightSlider.chartTitle')}
-          </h3>
-          <div ref={chartRef} className="w-[200px] h-[200px]" />
-          {/* Legend */}
-          <div className="flex flex-wrap justify-center gap-2 mt-3">
-            {FACTOR_META.map((m) => (
-              <div key={m.id} className="flex items-center gap-1 text-xs">
-                <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: m.color }} />
-                <span className="text-gray-400">{t(m.labelKey)}</span>
-                <span className="text-gray-500 font-mono">{Math.round(normalized[m.id])}%</span>
-              </div>
+      {/* Weight distribution bar */}
+      {showDistribution && (
+        <div className="mb-3">
+          <div className="flex items-center justify-between text-[10px] text-gray-600 mb-1">
+            <span>权重分布</span>
+            <span className={totalWeight === maxTotal ? 'text-green-400' : 'text-yellow-400'}>
+              合计: {totalWeight}/{maxTotal}%
+            </span>
+          </div>
+          <div className="flex h-2 rounded-full overflow-hidden bg-white/[0.03]">
+            {items.map((item, i) => (
+              <div
+                key={item.id}
+                className="transition-all duration-300 h-full"
+                style={{
+                  width: `${(item.weight / maxTotal) * 100}%`,
+                  backgroundColor: item.color,
+                  opacity: item.weight > 0 ? 1 : 0.2,
+                }}
+                title={`${item.name}: ${item.weight}%`}
+              />
             ))}
           </div>
         </div>
+      )}
 
-        {/* Sliders */}
-        <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4 space-y-4">
-          <h3 className="text-sm font-semibold text-white mb-1">
-            {t('FactorWeightSlider.sliderTitle')}
-          </h3>
-
-          {FACTOR_META.map((meta) => {
-            const val = weights[meta.id] || 0;
-            const displayVal = Math.round(normalized[meta.id]);
-            return (
-              <div key={meta.id} className="space-y-1">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: meta.color }} />
-                    <span className="text-xs font-medium text-gray-300">{t(meta.labelKey)}</span>
-                    <span className="text-[10px] text-gray-500 hidden sm:inline">
-                      — {t(meta.descKey)}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span
-                      className="text-sm font-mono font-bold tabular-nums"
-                      style={{ color: meta.color }}
-                    >
-                      {displayVal}%
-                    </span>
-                    <span className="text-[10px] text-gray-600">
-                      ({t('FactorWeightSlider.raw')}: {val})
-                    </span>
-                  </div>
-                </div>
-                <div
-                  className="relative group"
-                  onMouseDown={handleMouseDown(meta.id)}
-                  style={{ cursor: readonly ? 'default' : 'ew-resize' }}
+      {/* Individual sliders */}
+      <div ref={containerRef} className="space-y-3">
+        {items.map((item, idx) => (
+          <div key={item.id} className="group">
+            {/* Label row */}
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
+                <span className="text-xs text-white font-medium">{item.name}</span>
+                {item.category && (
+                  <span className="text-[9px] text-gray-600">{item.category}</span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => toggleLock(idx)}
+                  className={`text-[10px] transition-colors ${
+                    item.locked ? 'text-yellow-400' : 'text-gray-700 hover:text-gray-500'
+                  }`}
+                  title={item.locked ? '已锁定（不受归一化影响）' : '点击锁定此权重'}
                 >
-                  <div className="w-full h-6 bg-white/5 rounded-full overflow-hidden relative">
-                    <div
-                      className="h-full rounded-full transition-all duration-100 ease-out"
-                      style={{
-                        width: `${displayVal}%`,
-                        backgroundColor: meta.color,
-                        opacity: dragging === meta.id ? 1 : 0.85,
-                      }}
-                    />
-                    {/* Tick marks */}
-                    {[25, 50, 75].map((tick) => (
-                      <div
-                        key={tick}
-                        className="absolute top-0 h-full w-px bg-white/10"
-                        style={{ left: `${tick}%` }}
-                      />
-                    ))}
-                  </div>
-                  {/* Drag hint */}
-                  {!readonly && (
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                      <span className="text-[10px] text-white/40 bg-black/50 px-2 py-0.5 rounded">
-                        {t('FactorWeightSlider.dragHint')}
-                      </span>
-                    </div>
-                  )}
+                  {item.locked ? '🔒' : '🔓'}
+                </button>
+                <span className={`text-xs font-mono font-bold w-10 text-right ${
+                  item.locked ? 'text-yellow-400' : 'text-white'
+                }`}>
+                  {Math.round(item.weight)}%
+                </span>
+              </div>
+            </div>
+
+            {/* Slider track */}
+            <div className="relative h-6 flex items-center">
+              {/* Track background */}
+              <div className="absolute inset-y-0 left-0 right-0 flex items-center">
+                <div className="w-full h-1.5 rounded-full bg-white/[0.04]">
+                  {/* Filled portion */}
+                  <div
+                    className="h-full rounded-full transition-all duration-200"
+                    style={{
+                      width: `${(item.weight / maxTotal) * 100}%`,
+                      backgroundColor: item.color + '60',
+                    }}
+                  />
                 </div>
               </div>
-            );
-          })}
 
-          {/* Total indicator */}
-          <div className="flex items-center justify-between pt-2 border-t border-white/5">
-            <span className="text-xs text-gray-500">{t('FactorWeightSlider.total')}</span>
-            <span className={`text-sm font-mono font-bold ${
-              Math.abs(FACTOR_ORDER.reduce((s, f) => s + (normalized[f] || 0), 0) - 100) < 0.5
-                ? 'text-emerald-400'
-                : 'text-yellow-400'
-            }`}>
-              {FACTOR_ORDER.reduce((s, f) => s + (normalized[f] || 0), 0)}%
-            </span>
+              {/* Drag handle */}
+              <div
+                className={`absolute w-4 h-4 rounded-full border-2 cursor-ew-resize transition-shadow ${
+                  dragIdx === idx ? 'shadow-lg scale-125 z-10' : 'hover:scale-110'
+                }`}
+                style={{
+                  left: `calc(${(item.weight / maxTotal) * 100}% - 8px)`,
+                  backgroundColor: item.color,
+                  borderColor: item.color,
+                  boxShadow: dragIdx === idx ? `0 0 12px ${item.color}80` : `0 0 4px ${item.color}40`,
+                }}
+                onMouseDown={(e) => { e.preventDefault(); handleMouseDown(idx); }}
+              />
+            </div>
+
+            {/* Fine-tune buttons (visible on hover) */}
+            <div className="flex gap-1 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+              {[-5, -1, +1, +5].map(delta => (
+                <button
+                  key={delta}
+                  onClick={() => handleWeightChange(idx, item.weight + delta)}
+                  className={`text-[9px] px-1.5 py-0.5 rounded ${
+                    delta > 0 ? 'bg-white/[0.03] text-gray-500 hover:text-green-400' : 'bg-white/[0.03] text-gray-500 hover:text-red-400'
+                  } border border-white/5 transition-colors`}
+                >
+                  {delta > 0 ? '+' : ''}{delta}%
+                </button>
+              ))}
+            </div>
           </div>
+        ))}
+      </div>
 
-          {/* Auto-normalize note */}
-          <p className="text-[10px] text-gray-600 leading-relaxed">
-            {t('FactorWeightSlider.autoNormalize')}
-          </p>
-        </div>
+      {/* Summary */}
+      <div className="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px]">
+        <span className="text-gray-600">
+          {items.filter(i => i.locked).length} 锁定 · {items.length - items.filter(i => i.locked).length} 自由
+        </span>
+        <span className={`font-mono ${totalWeight === maxTotal ? 'text-green-400' : 'text-yellow-400'}`}>
+          归一化: {totalWeight === maxTotal ? '✓ 已平衡' : `${totalWeight}/${maxTotal}`}
+        </span>
       </div>
     </div>
   );
 };
 
 export default FactorWeightSlider;
-export { PRESETS, FACTOR_ORDER, FACTOR_META, loadWeights, saveWeights, normalizeWeights, detectPreset };
