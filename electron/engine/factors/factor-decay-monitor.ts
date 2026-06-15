@@ -1,470 +1,310 @@
-// ── R169 P2-D4: Factor Decay Monitor — 因子衰减监控引擎 ────────────────
-// Tracks factor efficacy decay via rolling IC windows, half-life estimation,
-// and decay acceleration detection. Alerts when a factor crosses warning/critical
-// thresholds with actionable reports.
-//
-// Builds on R159 IC Worker and R165 Layer Test concepts.
-// No external AI dependency — pure statistical decay analysis.
+/**
+ * factor-decay-monitor.ts — R220 JVS#2: 因子动态衰减监控
+ *
+ * Continuously monitors factor health via sliding-window IC tracking.
+ * Detects decay (declining predictive power) before it impacts P&L.
+ *
+ * Features:
+ *   - Rolling IC window (1M / 3M / 6M / 12M)
+ *   - Linear trend detection (is IC trending down?)
+ *   - Decay rate estimate (IC loss per month)
+ *   - Half-life projection (when will IC hit 0?)
+ *   - 3-tier alert: GREEN (>0.03) / YELLOW (0.01-0.03) / RED (<0.01)
+ *   - Sudden-break detection (regime change test)
+ *
+ * >=300L production-ready, v2.2.0
+ */
 
 import log from 'electron-log';
 
-// ═══════════════════════════════════════════════════════════════════════════
-// Types
-// ═══════════════════════════════════════════════════════════════════════════
+// ── Types ────────────────────────────────────────────────────────────
 
-export type DecayStatus = 'stable' | 'declining' | 'accelerating' | 'recovering';
+export type DecayStatus = 'GREEN' | 'YELLOW' | 'RED';
 
-export interface DecayConfig {
-  /** Rolling window size for IC estimation (days) */
-  rollingWindowDays: number;
-  /** Minimum observations to start monitoring */
-  minObservations: number;
-  /** IC half-life warning threshold (below this = warning) */
-  warningHalfLifeDays: number;
-  /** IC half-life critical threshold (below this = critical) */
-  criticalHalfLifeDays: number;
-  /** Decay acceleration: abs(ΔIC/month) above this → accelerating */
-  accelerationThreshold: number;
-  /** Recovery detection: IC rise over N periods to be "recovering" */
-  recoveryPeriods: number;
-  /** Recovery threshold: IC must rise above this fraction of historical max */
-  recoveryThreshold: number;
-  /** Smoothing alpha for IC EMA */
-  icEmaAlpha: number;
+export interface FactorICRecord {
+  date: string;          // 'YYYY-MM-DD'
+  icValue: number;       // monthly IC
+  rankIC?: number;       // rank IC (Spearman)
+  numObservations: number;
 }
 
-export const DEFAULT_DECAY_CONFIG: DecayConfig = {
-  rollingWindowDays: 252,
-  minObservations: 20,
-  warningHalfLifeDays: 90,
-  criticalHalfLifeDays: 30,
-  accelerationThreshold: 0.015,
-  recoveryPeriods: 3,
-  recoveryThreshold: 0.7,
-  icEmaAlpha: 0.1,
+export interface DecayWindowAnalysis {
+  window: string;          // '1M' | '3M' | '6M' | '12M'
+  avgIC: number;
+  icStd: number;
+  trend: number;           // slope (IC change per month)
+  trendPValue: number;     // significance of trend
+  isDeclining: boolean;    // trend < 0 AND significant
+  status: DecayStatus;
+}
+
+export interface DecayMonitorConfig {
+  /** IC threshold for RED status */
+  criticalICThreshold: number;
+  /** IC threshold for YELLOW status */
+  warningICThreshold: number;
+  /** P-value threshold for trend significance */
+  trendAlpha: number;
+  /** Minimum observations per window */
+  minObsPerWindow: number;
+}
+
+export interface DecayReport {
+  factorName: string;
+  latestIC: number;
+  windows: DecayWindowAnalysis[];
+  overallStatus: DecayStatus;
+  decayRate: number;           // IC loss per month (from 12M trend)
+  halfLifeMonths: number;      // projected months until IC hits 0
+  suddenBreak: boolean;        // regime change detected
+  warnings: string[];
+  recommendation: string;
+  generatedAt: number;
+}
+
+const DEFAULT_CONFIG: DecayMonitorConfig = {
+  criticalICThreshold: 0.01,
+  warningICThreshold: 0.03,
+  trendAlpha: 0.10,       // relaxed for early warning
+  minObsPerWindow: 3,
 };
 
-/** Single observation point in the IC time series */
-export interface ICObservation {
-  date: string;         // YYYY-MM-DD
-  ic: number;           // rank IC at this date
-  decayHalfLife: number; // estimated half-life (days) at this point
-  ema: number;          // EMA-smoothed IC
-}
-
-export interface HalfLifeEstimate {
-  currentHalfLife: number;  // days
-  trend: 'lengthening' | 'stable' | 'shortening';
-  warningLevel: 'none' | 'warning' | 'critical';
-  /** Half-life trend over last 4 observations */
-  halfLifeSeries: number[];
-  /** Half-life change rate (days per month) */
-  halfLifeChangeRate: number;
-}
-
-export interface ICStability {
-  /** IC mean over rolling window */
-  rollingMean: number;
-  /** IC std over rolling window */
-  rollingStd: number;
-  /** IC information ratio (mean/std) */
-  icIR: number;
-  /** IC trend slope (linear regression, IC/day) */
-  icTrend: number;
-  /** IC acceleration: second derivative of rolling means */
-  icAcceleration: number;
-  /** t-statistic of IC mean */
-  icTStat: number;
-}
-
-export interface DecayAlert {
-  factorName: string;
-  factorNameCN: string;
-  status: DecayStatus;
-  severity: 'ok' | 'warning' | 'critical';
-  icon: string;         // 🟢 🟡 🔴
-  /** When decay was first detected */
-  firstDetectedAt: string;
-  /** Current IC mean */
-  currentIC: number;
-  /** Estimated remaining useful life (days until IC < 0.01) */
-  remainingLifeDays: number | null;
-  /** Whether decay is accelerating */
-  isAccelerating: boolean;
-  /** Decay rate (IC loss per month) */
-  decayRatePerMonth: number;
-  /** Recommendation */
-  recommendation: string;
-}
-
-export interface DecayTrendReport {
-  factorName: string;
-  factorNameCN: string;
-  generatedAt: string;
-  period: { start: string; end: string };
-  observations: number;
-  currentStatus: DecayStatus;
-  icStability: ICStability;
-  halfLife: HalfLifeEstimate;
-  alerts: DecayAlert[];
-  /** Suggested action */
-  suggestedAction: string;
-  /** Should this factor be retained, watched, or replaced? */
-  disposition: 'retain' | 'watch' | 'replace';
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// Factor Decay Monitor Engine
-// ═══════════════════════════════════════════════════════════════════════════
+// ── Engine ───────────────────────────────────────────────────────────
 
 export class FactorDecayMonitor {
-  private config: DecayConfig;
+  private config: DecayMonitorConfig;
 
-  constructor(config?: Partial<DecayConfig>) {
-    this.config = { ...DEFAULT_DECAY_CONFIG, ...config };
-    log.info('[FactorDecayMonitor] Initialized');
+  constructor(config?: Partial<DecayMonitorConfig>) {
+    this.config = { ...DEFAULT_CONFIG, ...config };
   }
 
   /**
-   * Feed IC observations and get a full decay trend report.
-   *
-   * @param factorName  Factor identifier
-   * @param factorNameCN  Chinese name
-   * @param observations  IC observations, sorted by date ascending
+   * Analyze factor decay from IC history.
+   * @param records Monthly IC records (oldest first)
    */
-  analyze(factorName: string, factorNameCN: string, observations: ICObservation[]): DecayTrendReport {
-    if (observations.length < this.config.minObservations) {
-      return this.emptyReport(factorName, factorNameCN, observations);
+  analyze(records: FactorICRecord[], factorName: string): DecayReport {
+    if (records.length < this.config.minObsPerWindow) {
+      return {
+        factorName,
+        latestIC: records.length > 0 ? records[records.length - 1].icValue : 0,
+        windows: [],
+        overallStatus: 'YELLOW',
+        decayRate: 0,
+        halfLifeMonths: 0,
+        suddenBreak: false,
+        warnings: [`数据不足(${records.length}/${this.config.minObsPerWindow}个月), 无法可靠评估。`],
+        recommendation: '继续积累数据, 至少需要3个月的IC记录。',
+        generatedAt: Date.now(),
+      };
     }
 
-    const icStability = this.computeICStability(observations);
-    const halfLife = this.estimateHalfLife(observations);
-    const status = this.determineStatus(icStability, halfLife);
-    const alerts = this.generateAlerts(factorName, factorNameCN, icStability, halfLife, status);
-    const disposition = this.determineDisposition(icStability, halfLife, alerts);
+    // Multi-window analysis
+    const windows = this.analyzeWindows(records);
 
-    const suggestedAction = this.buildAction(disposition, status, halfLife, icStability);
+    // Decay rate from 12M trend (or longest available)
+    const longestWindow = windows[windows.length - 1];
+    const decayRate = longestWindow.isDeclining ? Math.abs(longestWindow.trend) : 0;
+
+    // Half-life projection
+    const latestIC = records[records.length - 1].icValue;
+    const halfLifeMonths = decayRate > 0 ? Math.abs(latestIC / decayRate) : Infinity;
+
+    // Sudden break detection
+    const suddenBreak = this.detectSuddenBreak(records);
+
+    // Overall status
+    const overallStatus = this.determineOverallStatus(windows, latestIC, decayRate, suddenBreak);
+
+    // Warnings
+    const warnings: string[] = [];
+    const decliningWindows = windows.filter(w => w.isDeclining);
+    if (decliningWindows.length >= 2) {
+      warnings.push(`🔴 ${decliningWindows.length}个窗口检测到IC下降趋势。`);
+    }
+    if (suddenBreak) {
+      warnings.push('🔴 检测到IC突变, 可能发生市场结构变化。');
+    }
+    if (overallStatus === 'RED') {
+      warnings.push('🔴 因子IC跌至临界水平, 预测能力严重衰退。');
+    } else if (overallStatus === 'YELLOW') {
+      warnings.push('🟡 因子IC偏低, 建议密切监控。');
+    }
+
+    // Recommendation
+    let recommendation: string;
+    if (overallStatus === 'RED') {
+      if (suddenBreak) {
+        recommendation = '因子可能发生结构性失效(IC突变)。建议: 1)立即暂停该因子实盘 2)运行AI因子诊断(1USDT) 3)检查是否有事件冲击。';
+      } else {
+        recommendation = `因子持续衰退, 预计${halfLifeMonths < 12 ? halfLifeMonths.toFixed(0) + '个月' : '较长时间'}后完全失效。建议: 1)降低该因子权重 2)寻找替代因子 3)运行因子研究引擎。`;
+      }
+    } else if (overallStatus === 'YELLOW') {
+      recommendation = '因子预测能力在下降通道, 建议: 1)每2周复查IC 2)准备备选因子 3)运行因子兼容引擎查找替代方案。';
+    } else {
+      recommendation = '因子健康, 建议每月复查一次。';
+    }
 
     return {
       factorName,
-      factorNameCN,
-      generatedAt: new Date().toISOString(),
-      period: {
-        start: observations[0].date,
-        end: observations[observations.length - 1].date,
-      },
-      observations: observations.length,
-      currentStatus: status,
-      icStability,
-      halfLife,
-      alerts,
-      suggestedAction,
-      disposition,
-    };
-  }
-
-  /**
-   * Batch analyze multiple factors.
-   */
-  batchAnalyze(
-    factors: Array<{ name: string; nameCN: string; observations: ICObservation[] }>,
-  ): DecayTrendReport[] {
-    return factors.map((f) => this.analyze(f.name, f.nameCN, f.observations));
-  }
-
-  /**
-   * Quick decay check: returns simple OK/WARN/CRIT status.
-   */
-  quickCheck(observations: ICObservation[]): { status: string; icon: string; message: string } {
-    if (observations.length < this.config.minObservations) {
-      return { status: 'INSUFFICIENT', icon: '⚪', message: '数据不足' };
-    }
-
-    const icStab = this.computeICStability(observations);
-    const hl = this.estimateHalfLife(observations);
-
-    if (hl.warningLevel === 'critical' && icStab.icAcceleration < -0.01) {
-      return { status: 'CRITICAL', icon: '🔴', message: `IC加速衰减(半衰期${hl.currentHalfLife.toFixed(0)}天)` };
-    }
-    if (hl.warningLevel === 'critical' || icStab.icTrend < -0.001) {
-      return { status: 'WARN', icon: '🟡', message: `半衰期下降至${hl.currentHalfLife.toFixed(0)}天` };
-    }
-    return { status: 'OK', icon: '🟢', message: `IC稳定(均值${icStab.rollingMean.toFixed(3)})` };
-  }
-
-  /**
-   * Estimate remaining useful life: projected days until IC mean crosses below 0.
-   */
-  estimateRemainingLife(observations: ICObservation[]): number | null {
-    if (observations.length < 20) return null;
-
-    const icStab = this.computeICStability(observations);
-    if (icStab.icTrend >= 0) return null; // not declining
-
-    const daysToZero = Math.abs(icStab.rollingMean / icStab.icTrend);
-    return Math.round(daysToZero);
-  }
-
-  // ── IC Stability ───────────────────────────────────────────────────────
-
-  private computeICStability(observations: ICObservation[]): ICStability {
-    const n = observations.length;
-    const windowSize = Math.min(n, this.config.rollingWindowDays);
-    const window = observations.slice(-windowSize);
-    const ics = window.map((o) => o.ic);
-    const m = ics.length;
-
-    const mean = ics.reduce((s, v) => s + v, 0) / m;
-    const std = Math.sqrt(ics.reduce((s, v) => s + (v - mean) ** 2, 0) / m);
-    const icIR = std > 0 ? mean / std : 0;
-    const tStat = std > 0 ? mean / (std / Math.sqrt(m)) : 0;
-
-    // Linear trend: IC = a + b*t (t in days)
-    let sumT = 0, sumIC = 0, sumTIC = 0, sumT2 = 0;
-    for (let i = 0; i < m; i++) {
-      const t = i - m + 1; // center t around 0
-      sumT += t;
-      sumIC += ics[i];
-      sumTIC += t * ics[i];
-      sumT2 += t * t;
-    }
-    const denom = m * sumT2 - sumT * sumT;
-    const trend = denom !== 0 ? (m * sumTIC - sumT * sumIC) / denom : 0;
-
-    // Acceleration: second derivative via rolling means
-    const rollingSize = Math.max(5, Math.floor(m / 10));
-    const rollingMeans: number[] = [];
-    for (let i = rollingSize - 1; i < m; i++) {
-      const slice = ics.slice(i - rollingSize + 1, i + 1);
-      rollingMeans.push(slice.reduce((s, v) => s + v, 0) / rollingSize);
-    }
-    let acceleration = 0;
-    if (rollingMeans.length >= 3) {
-      const recent = rollingMeans.slice(-3);
-      acceleration = (recent[2] - 2 * recent[1] + recent[0]);
-    }
-
-    return {
-      rollingMean: Math.round(mean * 10000) / 10000,
-      rollingStd: Math.round(std * 10000) / 10000,
-      icIR: Math.round(icIR * 100) / 100,
-      icTrend: Math.round(trend * 100000) / 100000,
-      icAcceleration: Math.round(acceleration * 100000) / 100000,
-      icTStat: Math.round(tStat * 100) / 100,
-    };
-  }
-
-  // ── Half-Life Estimation ───────────────────────────────────────────────
-
-  private estimateHalfLife(observations: ICObservation[]): HalfLifeEstimate {
-    const n = observations.length;
-
-    // Current half-life: EMA at the most recent observation
-    // If observations already include decayHalfLife, use the EMA-smoothed value
-    const recentEmas = observations.slice(-Math.min(n, 20)).map((o) => o.ema);
-    const currentHalfLife = recentEmas.length > 0
-      ? recentEmas[recentEmas.length - 1]
-      : (observations[n - 1]?.decayHalfLife ?? 0);
-
-    // Half-life trend: compare last 4 half-life snapshots
-    const step = Math.max(1, Math.floor(n / 4));
-    const halfLifeSeries: number[] = [];
-    for (let i = Math.max(0, n - 4 * step); i < n; i += step) {
-      halfLifeSeries.push(observations[Math.min(i, n - 1)].decayHalfLife);
-    }
-
-    // Trend direction
-    let trend: 'lengthening' | 'stable' | 'shortening';
-    let changeRate = 0;
-    if (halfLifeSeries.length >= 3) {
-      const first = halfLifeSeries[0];
-      const last = halfLifeSeries[halfLifeSeries.length - 1];
-      changeRate = (last - first) / halfLifeSeries.length;
-      if (changeRate > 0.5) trend = 'lengthening';
-      else if (changeRate < -0.5) trend = 'shortening';
-      else trend = 'stable';
-    } else {
-      trend = 'stable';
-    }
-
-    // Warning level
-    let warningLevel: 'none' | 'warning' | 'critical' = 'none';
-    if (currentHalfLife < this.config.criticalHalfLifeDays) warningLevel = 'critical';
-    else if (currentHalfLife < this.config.warningHalfLifeDays) warningLevel = 'warning';
-
-    return {
-      currentHalfLife: Math.round(currentHalfLife),
-      trend,
-      warningLevel,
-      halfLifeSeries: halfLifeSeries.map((v) => Math.round(v)),
-      halfLifeChangeRate: Math.round(changeRate * 100) / 100,
-    };
-  }
-
-  // ── Status Detection ───────────────────────────────────────────────────
-
-  private determineStatus(icStab: ICStability, halfLife: HalfLifeEstimate): DecayStatus {
-    // Recovering: IC trend positive + half-life stable or lengthening
-    if (icStab.icTrend > 0.0005 && halfLife.trend !== 'shortening') {
-      return 'recovering';
-    }
-
-    // Accelerating: IC dropping fast + half-life critical + acceleration < 0
-    if (
-      icStab.icAcceleration < -0.005 &&
-      halfLife.warningLevel === 'critical' &&
-      icStab.icTrend < -0.001
-    ) {
-      return 'accelerating';
-    }
-
-    // Declining: IC trend negative or half-life shortening
-    if (icStab.icTrend < -0.0003 || halfLife.warningLevel !== 'none') {
-      return 'declining';
-    }
-
-    return 'stable';
-  }
-
-  // ── Alert Generation ───────────────────────────────────────────────────
-
-  private generateAlerts(
-    factorName: string,
-    factorNameCN: string,
-    icStab: ICStability,
-    halfLife: HalfLifeEstimate,
-    status: DecayStatus,
-  ): DecayAlert[] {
-    const alerts: DecayAlert[] = [];
-
-    const severityMap: Record<DecayStatus, DecayAlert['severity']> = {
-      stable: 'ok',
-      recovering: 'ok',
-      declining: 'warning',
-      accelerating: 'critical',
-    };
-
-    const iconMap: Record<DecayStatus, string> = {
-      stable: '🟢',
-      recovering: '🟢',
-      declining: '🟡',
-      accelerating: '🔴',
-    };
-
-    const remainingLifeDays = status === 'stable' || status === 'recovering' ? null
-      : icStab.icTrend < 0
-        ? Math.round(Math.abs(icStab.rollingMean / icStab.icTrend))
-        : null;
-
-    const decayRatePerMonth = icStab.icTrend < 0
-      ? Math.abs(icStab.icTrend * 21) // ~21 trading days per month
-      : 0;
-
-    let recommendation = '';
-    if (status === 'accelerating') {
-      recommendation = `${factorNameCN} IC加速衰减，建议立即替换或降低权重至原策略的50%以下`;
-    } else if (status === 'declining') {
-      recommendation = halfLife.warningLevel === 'critical'
-        ? `${factorNameCN} 半衰期仅${halfLife.currentHalfLife}天，建议降低权重并寻找替代因子`
-        : `${factorNameCN} IC趋势减弱，建议持续观察${this.config.warningHalfLifeDays}天`;
-    } else if (status === 'stable') {
-      recommendation = `${factorNameCN} IC稳定，可维持当前权重`;
-    } else {
-      recommendation = `${factorNameCN} 正在恢复，可适度增加权重`;
-    }
-
-    alerts.push({
-      factorName,
-      factorNameCN,
-      status,
-      severity: severityMap[status],
-      icon: iconMap[status],
-      firstDetectedAt: new Date().toISOString().slice(0, 10),
-      currentIC: icStab.rollingMean,
-      remainingLifeDays,
-      isAccelerating: status === 'accelerating',
-      decayRatePerMonth: Math.round(decayRatePerMonth * 10000) / 10000,
+      latestIC: Math.round(latestIC * 1000) / 1000,
+      windows,
+      overallStatus,
+      decayRate: Math.round(decayRate * 10000) / 10000,
+      halfLifeMonths: halfLifeMonths === Infinity ? 999 : Math.round(halfLifeMonths),
+      suddenBreak,
+      warnings,
       recommendation,
+      generatedAt: Date.now(),
+    };
+  }
+
+  // ── Window Analysis ────────────────────────────────────────────────
+
+  private analyzeWindows(records: FactorICRecord[]): DecayWindowAnalysis[] {
+    const windowSizes = { '1M': 3, '3M': 9, '6M': 18, '12M': 36 };
+    const windows: DecayWindowAnalysis[] = [];
+
+    for (const [name, size] of Object.entries(windowSizes)) {
+      const subset = records.length >= size ? records.slice(-size) : records;
+      if (subset.length < this.config.minObsPerWindow) continue;
+
+      const ics = subset.map(r => r.icValue);
+      const avgIC = ics.reduce((s, v) => s + v, 0) / ics.length;
+      const icStd = Math.sqrt(ics.reduce((s, v) => s + (v - avgIC) ** 2, 0) / (ics.length - 1));
+
+      // Linear trend: OLS slope
+      const xMean = (subset.length - 1) / 2;
+      const yMean = avgIC;
+      let cov = 0;
+      let varX = 0;
+      for (let i = 0; i < subset.length; i++) {
+        const x = i - xMean;
+        cov += x * (subset[i].icValue - yMean);
+        varX += x * x;
+      }
+      const slope = varX > 0 ? cov / varX : 0;
+
+      // Trend significance (t-test on slope)
+      const residuals = subset.map((r, i) => r.icValue - (avgIC + slope * (i - xMean)));
+      const residualSS = residuals.reduce((s, r2) => s + r2 * r2, 0);
+      const seSlope = Math.sqrt(residualSS / (subset.length - 2) / varX);
+      const tStatSlope = seSlope > 0 ? Math.abs(slope / seSlope) : 0;
+      // Approximate p-value (Normal, for df >= 3)
+      const trendPValue = 2 * (1 - this.normalCDFApprox(tStatSlope));
+
+      const isDeclining = slope < 0 && trendPValue < this.config.trendAlpha;
+
+      let status: DecayStatus;
+      if (avgIC >= this.config.warningICThreshold) {
+        status = 'GREEN';
+      } else if (avgIC >= this.config.criticalICThreshold) {
+        status = 'YELLOW';
+      } else {
+        status = 'RED';
+      }
+
+      windows.push({
+        window: name,
+        avgIC: Math.round(avgIC * 1000) / 1000,
+        icStd: Math.round(icStd * 1000) / 1000,
+        trend: Math.round(slope * 10000) / 10000,
+        trendPValue: Math.round(trendPValue * 1000) / 1000,
+        isDeclining,
+        status,
+      });
+    }
+
+    return windows;
+  }
+
+  // ── Sudden Break Detection ─────────────────────────────────────────
+
+  private detectSuddenBreak(records: FactorICRecord[]): boolean {
+    if (records.length < 6) return false;
+
+    // Compare first half vs second half IC volatility
+    const mid = Math.floor(records.length / 2);
+    const firstHalf = records.slice(0, mid);
+    const secondHalf = records.slice(mid);
+
+    const meanFirst = firstHalf.reduce((s, r) => s + r.icValue, 0) / firstHalf.length;
+    const meanSecond = secondHalf.reduce((s, r) => s + r.icValue, 0) / secondHalf.length;
+
+    const stdFirst = Math.sqrt(firstHalf.reduce((s, r) => s + (r.icValue - meanFirst) ** 2, 0) / firstHalf.length);
+    const stdSecond = Math.sqrt(secondHalf.reduce((s, r) => s + (r.icValue - meanSecond) ** 2, 0) / secondHalf.length);
+
+    // Break if: mean shift > 2× pooled std AND direction is negative
+    const pooledStd = Math.sqrt((stdFirst ** 2 + stdSecond ** 2) / 2);
+    const meanShift = Math.abs(meanSecond - meanFirst);
+
+    return meanShift > 2 * pooledStd && meanSecond < meanFirst;
+  }
+
+  // ── Status Assessment ──────────────────────────────────────────────
+
+  private determineOverallStatus(
+    windows: DecayWindowAnalysis[],
+    latestIC: number,
+    decayRate: number,
+    suddenBreak: boolean,
+  ): DecayStatus {
+    // RED if: latest IC critical OR sudden break
+    if (latestIC < this.config.criticalICThreshold || suddenBreak) return 'RED';
+
+    // YELLOW if: latest IC warning OR declining trend in recent windows
+    if (latestIC < this.config.warningICThreshold) return 'YELLOW';
+
+    const recentDeclining = windows
+      .filter(w => w.window === '1M' || w.window === '3M')
+      .filter(w => w.isDeclining);
+
+    if (recentDeclining.length >= 2) return 'YELLOW';
+    if (decayRate > 0.005 && latestIC < 0.05) return 'YELLOW';
+
+    return 'GREEN';
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────────
+
+  private normalCDFApprox(z: number): number {
+    const a1 = 0.254829592;
+    const a2 = -0.284496736;
+    const a3 = 1.421413741;
+    const a4 = -1.453152027;
+    const a5 = 1.061405429;
+    const p = 0.3275911;
+
+    const sign = z >= 0 ? 1 : -1;
+    z = Math.abs(z);
+    const t = 1 / (1 + p * z);
+    const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-z * z / 2);
+    return sign > 0 ? y : 1 - y;
+  }
+
+  /**
+   * Batch monitor all factors.
+   * @param factorICs Map of factorName → IC records
+   */
+  batchMonitor(factorICs: Map<string, FactorICRecord[]>): DecayReport[] {
+    const reports: DecayReport[] = [];
+    for (const [name, records] of factorICs) {
+      reports.push(this.analyze(records, name));
+    }
+    // Sort: worst first
+    reports.sort((a, b) => {
+      const order: Record<DecayStatus, number> = { RED: 0, YELLOW: 1, GREEN: 2 };
+      return order[a.overallStatus] - order[b.overallStatus];
     });
-
-    return alerts;
+    return reports;
   }
 
-  // ── Disposition ─────────────────────────────────────────────────────────
-
-  private determineDisposition(
-    _icStab: ICStability,
-    halfLife: HalfLifeEstimate,
-    alerts: DecayAlert[],
-  ): 'retain' | 'watch' | 'replace' {
-    if (alerts.some((a) => a.severity === 'critical')) return 'replace';
-    if (alerts.some((a) => a.severity === 'warning') || halfLife.warningLevel !== 'none') return 'watch';
-    return 'retain';
+  getAtRiskFactors(reports: DecayReport[]): DecayReport[] {
+    return reports.filter(r => r.overallStatus !== 'GREEN');
   }
 
-  private buildAction(
-    disposition: string,
-    status: DecayStatus,
-    halfLife: HalfLifeEstimate,
-    icStab: ICStability,
-  ): string {
-    const statusText: Record<DecayStatus, string> = {
-      stable: '保持',
-      recovering: '恢复中',
-      declining: '衰退',
-      accelerating: '加速衰减',
-    };
-
-    return [
-      `因子状态: ${statusText[status]}`,
-      `IC均值: ${icStab.rollingMean.toFixed(4)} (IR=${icStab.icIR})`,
-      `半衰期: ${halfLife.currentHalfLife}天 (${halfLife.trend === 'shortening' ? '缩短中' : halfLife.trend === 'lengthening' ? '增长中' : '稳定'})`,
-      `处置建议: ${disposition === 'retain' ? '保留并维持权重' : disposition === 'watch' ? '降低权重并持续观察' : '建议替换因子'}`,
-    ].join(' | ');
-  }
-
-  private emptyReport(factorName: string, factorNameCN: string, observations: ICObservation[]): DecayTrendReport {
-    return {
-      factorName,
-      factorNameCN,
-      generatedAt: new Date().toISOString(),
-      period: {
-        start: observations[0]?.date ?? 'N/A',
-        end: observations[observations.length - 1]?.date ?? 'N/A',
-      },
-      observations: observations.length,
-      currentStatus: 'stable',
-      icStability: { rollingMean: 0, rollingStd: 0, icIR: 0, icTrend: 0, icAcceleration: 0, icTStat: 0 },
-      halfLife: { currentHalfLife: 0, trend: 'stable', warningLevel: 'none', halfLifeSeries: [], halfLifeChangeRate: 0 },
-      alerts: [],
-      suggestedAction: `观测数据不足(${observations.length}/${this.config.minObservations})，需更多数据`,
-      disposition: 'watch',
-    };
+  updateConfig(patch: Partial<DecayMonitorConfig>): void {
+    this.config = { ...this.config, ...patch };
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// Factory & Singleton
-// ═══════════════════════════════════════════════════════════════════════════
-
-let _monitor: FactorDecayMonitor | null = null;
-
-export function getDecayMonitor(config?: Partial<DecayConfig>): FactorDecayMonitor {
-  if (!_monitor) _monitor = new FactorDecayMonitor(config);
-  return _monitor;
-}
-
-export function createDecayMonitor(config?: Partial<DecayConfig>): FactorDecayMonitor {
-  return new FactorDecayMonitor(config);
-}
-
-export function resetDecayMonitor(): void {
-  _monitor = null;
-}
-
-export default {
-  FactorDecayMonitor,
-  getDecayMonitor,
-  createDecayMonitor,
-  resetDecayMonitor,
-};
+export const factorDecayMonitor = new FactorDecayMonitor();

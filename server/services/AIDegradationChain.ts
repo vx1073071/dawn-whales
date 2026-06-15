@@ -280,5 +280,162 @@ function classifyError(error: any): { retryable: boolean; reason: string } {
   return { retryable: true, reason: 'unknown' };
 }
 
+// ── R220 JVS#4: 降级链透明化 (UI-facing) ────────────────────────────────
+
+export interface DegradationInfoUI {
+  actualModel: string;
+  actualLevel: number;
+  levelName: string;
+  levelNames: Record<number, string>;
+  modelDisplayName: string;
+  originalModel: string;         // Level 0 name (best)
+  costNote: string;
+  isDegraded: boolean;
+  degradationPath: string;       // human-readable: "Level 2: DeepSeek V4 Flash"
+}
+
+/** 4-level display names for UI */
+const LEVEL_NAMES: Record<number, string> = {
+  0: '旗舰(DeepSeek V4 Pro折扣)',
+  1: '标准(DeepSeek V4 Pro)',
+  2: '快速(DeepSeek V4 Flash)',
+  3: '兜底(MiniMax M3)',
+};
+
+/**
+ * Build transparent degradation info for display in UI.
+ * Shows exactly which model handled the AI request and at which level.
+ */
+export function buildDegradationUIInfo(
+  result: DegradationResult<any>,
+  originalModelName?: string,
+): DegradationInfoUI {
+  const isDegraded = result.levelUsed > 0;
+  const actualLevel = result.levelUsed;
+  const modelDisplayName = result.modelUsed || 'unknown';
+  const levelName = LEVEL_NAMES[actualLevel] || `Level ${actualLevel}`;
+  const original = originalModelName || DEGRADATION_MODELS[0]?.name || 'DeepSeek V4 Pro';
+  const degradationPath = isDegraded
+    ? `降级到 L${actualLevel}: ${modelDisplayName}`
+    : `L0: ${modelDisplayName}`;
+
+  let costNote: string;
+  if (!result.success) {
+    costNote = '4级全失败 · 已退1U';
+  } else if (isDegraded) {
+    costNote = `已降级到L${actualLevel} · 平台承担差价 · 你只付1U`;
+  } else {
+    costNote = 'L0旗舰 · 1U';
+  }
+
+  return {
+    actualModel: modelDisplayName,
+    actualLevel,
+    levelName,
+    levelNames: LEVEL_NAMES,
+    modelDisplayName,
+    originalModel: original,
+    costNote,
+    isDegraded,
+    degradationPath,
+  };
+}
+
+/**
+ * Get all model health for UI health panel display.
+ * Returns per-model status with human-readable labels.
+ */
+export function getDegradationHealthUI(): Array<{
+  level: number;
+  label: string;
+  modelName: string;
+  enabled: boolean;
+  inCooldown: boolean;
+  failures: number;
+  status: 'healthy' | 'cooldown' | 'disabled';
+  statusText: string;
+}> {
+  const health = aiDegradationChain.getHealth();
+  return DEGRADATION_MODELS.map(m => {
+    const modelHealth = health.models[m.id];
+    const enabled = modelHealth?.enabled ?? m.enabled;
+    const inCooldown = modelHealth?.inCooldown ?? false;
+    const failures = modelHealth?.failures ?? 0;
+
+    let status: 'healthy' | 'cooldown' | 'disabled';
+    let statusText: string;
+
+    if (!enabled) {
+      status = 'disabled';
+      statusText = '已禁用';
+    } else if (inCooldown) {
+      status = 'cooldown';
+      statusText = `冷却中(${failures}次失败)`;
+    } else {
+      status = 'healthy';
+      statusText = '正常';
+    }
+
+    return {
+      level: m.level,
+      label: LEVEL_NAMES[m.level] || `Level ${m.level}`,
+      modelName: m.name,
+      enabled,
+      inCooldown,
+      failures,
+      status,
+      statusText,
+    };
+  });
+}
+
+/**
+ * Get a single-line human-readable summary of current degradation state.
+ * For inline UI display (e.g., "当前: DeepSeek V4 Flash (已降级2级)")
+ */
+export function getDegradationSummary(): {
+  bestModel: string;
+  bestLevel: number;
+  activeModelCount: number;
+  degradedModelCount: number;
+  text: string;
+} {
+  const best = aiDegradationChain.getBestAvailableModel();
+  const health = aiDegradationChain.getHealth();
+  const active = Object.values(health.models).filter(m => m.enabled && !m.inCooldown).length;
+  const degraded = Object.values(health.models).filter(m => m.inCooldown).length;
+
+  let text: string;
+  if (!best) {
+    text = '⚠️ 无可用AI模型 (全部冷却或禁用)';
+  } else if (best.level === 0) {
+    text = `🟢 L0 旗舰 (${best.name})`;
+  } else {
+    text = `🟡 已降级到L${best.level} (${best.name}) - ${degraded}个模型在冷却`;
+  }
+
+  return {
+    bestModel: best?.name || 'none',
+    bestLevel: best?.level ?? -1,
+    activeModelCount: active,
+    degradedModelCount: degraded,
+    text,
+  };
+}
+
+// ── Export transparent execute (wraps existing chain) ─────────────────────
+
+/**
+ * Execute AI request with transparent degradation tracking.
+ * Same as aiDegradationChain.execute() but returns UI-ready degradation info.
+ */
+export async function executeWithDegradationUI<T>(
+  executeFn: (model: DegradationModel) => Promise<T>,
+): Promise<{ result: DegradationResult<T>; uiInfo: DegradationInfoUI }> {
+  const result = await aiDegradationChain.execute(executeFn);
+  const uiInfo = buildDegradationUIInfo(result);
+  return { result, uiInfo };
+}
+
 /** Singleton */
 export const aiDegradationChain = new AIDegradationChain();
