@@ -6095,5 +6095,38 @@
     "sliderHint": "Glissez vers la droite →",
     "confirmed": "Confirmé. Activation de la stratégie...",
     "cancel": "Annuler"
+  },
+  "creatorDashboard": {
+    "sectionTitle": "Tableau de bord créateur",
+    "level": "Niveau {level} : {name}",
+    "l1Name": "Débutant",
+    "l2Name": "Avancé",
+    "l3Name": "Phare",
+    "l1Desc": "Publiez dès l'inscription. Plateforme 30%, vous 70%.",
+    "l2Desc": "100+ ventes. Plateforme 20%, vous 80%. Débloque : Affichage populaire 7j + Badge recommandation.",
+    "l3Desc": "1 000+ ventes. Plateforme seulement 10%, vous 90%. Statut Créateur Élite.",
+    "salesCount": "Ventes totales",
+    "commissionEarned": "Commissions gagnées",
+    "subscriberCount": "Abonnés",
+    "salesToNextLevel": "Encore {count} ventes pour atteindre {nextLevel}",
+    "l2Badge": "Recommandé",
+    "l2HotDisplay": "Affichage populaire 7j",
+    "monthlyTrend": "Tendance mensuelle",
+    "withdraw": "Retirer",
+    "noSalesYet": "Pas encore de ventes. Publiez votre premier modèle pour commencer à gagner !"
+  },
+  "creatorAudit": {
+    "sectionTitle": "Révision de stratégie",
+    "approved": "Approuvé — Votre stratégie est en ligne sur le marché !",
+    "rejected": "Non approuvé — Consultez les suggestions ci-dessous pour améliorer et re-soumettre.",
+    "reason1": "Description trop longue (>80 car.). Réécrivez : « Spread >15% acheter, <5% vendre »",
+    "reason2": "Règle stop-loss manquante. Ajoutez : « Stop-loss à -8% ou rupture MA 20 jours »",
+    "reason3": "Périmètre de marché flou. Précisez : « Actions HK, constituants Hang Seng uniquement »",
+    "reason4": "Auto-vérification d'échec manquante. Ajoutez : « Stratégie invalide si spread <5% pendant 5j »",
+    "reason5": "Les poids des facteurs ne totalisent pas 100. Ajustez pour totaliser exactement 100.",
+    "reason6": "Facteurs en double ou chevauchants. Supprimez la redondance : A et B mesurent des choses similaires.",
+    "reason7": "Nom de stratégie trop vague. Utilisez un nom descriptif : « Arbitrage HK AH Premium », pas « Ma stratégie ».",
+    "reason8": "Points de déclenchement IA manquants ou incorrects. Ajoutez 3-5 services IA avec le bon prix.",
+    "resubmit": "Réviser et re-soumettre"
   }
 }

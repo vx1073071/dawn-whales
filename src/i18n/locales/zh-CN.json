@@ -6496,5 +6496,38 @@
     "sliderHint": "向右滑动 →",
     "confirmed": "已确认，正在激活策略...",
     "cancel": "取消"
+  },
+  "creatorDashboard": {
+    "sectionTitle": "创作者中心",
+    "level": "等级 {level}：{name}",
+    "l1Name": "新手",
+    "l2Name": "进阶",
+    "l3Name": "旗舰",
+    "l1Desc": "注册即可上架。平台抽成30%，你得70%。",
+    "l2Desc": "累计100笔销售。平台抽成20%，你得80%。解锁：热门展示7天+推荐徽章。",
+    "l3Desc": "累计1000笔销售。平台仅抽10%，你得90%。精英创作者。",
+    "salesCount": "累计销量",
+    "commissionEarned": "已赚佣金",
+    "subscriberCount": "订阅者",
+    "salesToNextLevel": "再卖出{count}笔升至{nextLevel}",
+    "l2Badge": "推荐创作者",
+    "l2HotDisplay": "热门展示7天",
+    "monthlyTrend": "月趋势",
+    "withdraw": "提现",
+    "noSalesYet": "暂无销售。发布你的第一个策略模板开始赚钱！"
+  },
+  "creatorAudit": {
+    "sectionTitle": "策略审核",
+    "approved": "已通过——你的策略已上架市场！",
+    "rejected": "未通过——查看下方具体建议，修改后可重新提交。",
+    "reason1": "策略人话太长（超过80字）。改写示例：「AH价差>15%时买入，<5%时卖出」",
+    "reason2": "缺少止损规则。添加示例：「止损-8% 或跌破20日均线」",
+    "reason3": "适用市场不明确。明确标注：「港股恒生指数成分股」",
+    "reason4": "缺少失效自检。添加：「AH溢价率连续5天<5%则策略失效」",
+    "reason5": "因子权重合计不等于100。请调整使总和恰好为100。",
+    "reason6": "因子重复或高度相关。删除冗余：因子A和B衡量内容高度相似。",
+    "reason7": "策略名称太模糊。用描述性名称如「港股AH溢价套利」，不是「我的策略」。",
+    "reason8": "AI触发点缺失或错误。添加3-5个策略使用的AI服务并标注正确价格。",
+    "resubmit": "修改并重新提交"
   }
 }

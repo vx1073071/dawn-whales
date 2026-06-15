@@ -6095,5 +6095,38 @@
     "sliderHint": "Nach rechts schieben →",
     "confirmed": "Bestätigt. Strategie wird aktiviert...",
     "cancel": "Abbrechen"
+  },
+  "creatorDashboard": {
+    "sectionTitle": "Ersteller-Dashboard",
+    "level": "Stufe {level}: {name}",
+    "l1Name": "Anfänger",
+    "l2Name": "Fortgeschritten",
+    "l3Name": "Flaggschiff",
+    "l1Desc": "Nach Registrierung veröffentlichen. Plattform 30%, Sie 70%.",
+    "l2Desc": "100+ Verkäufe. Plattform 20%, Sie 80%. Freischaltung: 7 Tage Hot Display + Empfehlungsabzeichen.",
+    "l3Desc": "1.000+ Verkäufe. Plattform nur 10%, Sie 90%. Elite-Ersteller-Status.",
+    "salesCount": "Gesamtverkäufe",
+    "commissionEarned": "Verdiente Provision",
+    "subscriberCount": "Abonnenten",
+    "salesToNextLevel": "Noch {count} Verkäufe bis {nextLevel}",
+    "l2Badge": "Empfohlen",
+    "l2HotDisplay": "7 Tage Top-Anzeige",
+    "monthlyTrend": "Monatlicher Trend",
+    "withdraw": "Auszahlen",
+    "noSalesYet": "Noch keine Verkäufe. Veröffentlichen Sie Ihre erste Strategievorlage!"
+  },
+  "creatorAudit": {
+    "sectionTitle": "Strategieprüfung",
+    "approved": "Genehmigt — Ihre Strategie ist jetzt im Marktplatz live!",
+    "rejected": "Nicht genehmigt — Siehe spezifische Vorschläge unten zur Verbesserung und Wiedereinreichung.",
+    "reason1": "Strategiebeschreibung zu lang (>80 Zeichen). Umschreiben als: \"Spread >15% kaufen, <5% verkaufen\"",
+    "reason2": "Stop-Loss-Regel fehlt. Beispiel hinzufügen: \"Stop-Loss bei -8% oder Bruch des 20-Tage-MA\"",
+    "reason3": "Marktumfang unklar. Angeben: \"HK-Aktien, nur Hang Seng Index-Bestandteile\"",
+    "reason4": "Fehler-Selbstprüfung fehlt. Hinzufügen: \"Strategie ungültig wenn Spread 5 Tage <5%\"",
+    "reason5": "Faktorgewichte ergeben nicht 100. Auf genau 100 anpassen.",
+    "reason6": "Doppelte oder überlappende Faktoren. Redundanz entfernen: Faktoren A und B messen Ähnliches.",
+    "reason7": "Strategiename zu vage. Beschreibenden Namen wie \"HK AH Premium Arbitrage\" verwenden, nicht \"Meine Strategie\".",
+    "reason8": "KI-Triggerpunkte fehlen oder falsch. 3-5 KI-Dienste mit korrekter Preisangabe hinzufügen.",
+    "resubmit": "Überarbeiten & Erneut einreichen"
   }
 }

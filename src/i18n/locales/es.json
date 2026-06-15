@@ -6105,5 +6105,38 @@
     "sliderHint": "Desliza a la derecha →",
     "confirmed": "Confirmado. Activando estrategia...",
     "cancel": "Cancelar"
+  },
+  "creatorDashboard": {
+    "sectionTitle": "Panel de creador",
+    "level": "Nivel {level}: {name}",
+    "l1Name": "Novato",
+    "l2Name": "Avanzado",
+    "l3Name": "Insignia",
+    "l1Desc": "Publica al registrarte. Plataforma 30%, tú 70%.",
+    "l2Desc": "100+ ventas. Plataforma 20%, tú 80%. Desbloquea: Exhibición destacada 7d + Insignia recomendación.",
+    "l3Desc": "1,000+ ventas. Plataforma solo 10%, tú 90%. Estatus Creador Élite.",
+    "salesCount": "Ventas totales",
+    "commissionEarned": "Comisiones ganadas",
+    "subscriberCount": "Suscriptores",
+    "salesToNextLevel": "{count} ventas más para alcanzar {nextLevel}",
+    "l2Badge": "Recomendado",
+    "l2HotDisplay": "Exhibición destacada 7d",
+    "monthlyTrend": "Tendencia mensual",
+    "withdraw": "Retirar",
+    "noSalesYet": "Sin ventas aún. ¡Publica tu primera plantilla para empezar a ganar!"
+  },
+  "creatorAudit": {
+    "sectionTitle": "Revisión de estrategia",
+    "approved": "Aprobado — ¡Tu estrategia ya está en el mercado!",
+    "rejected": "No aprobado — Revisa sugerencias específicas abajo para mejorar y reenviar.",
+    "reason1": "Descripción muy larga (>80 car.). Reescribe: \"Spread >15% comprar, <5% vender\"",
+    "reason2": "Falta regla de stop loss. Añade: \"Stop loss al -8% o ruptura de MA 20 días\"",
+    "reason3": "Alcance de mercado poco claro. Especifica: \"Acciones HK, solo constituyentes Hang Seng\"",
+    "reason4": "Falta autocomprobación de fallo. Añade: \"Estrategia inválida si spread <5% por 5 días\"",
+    "reason5": "Los pesos de factores no suman 100. Ajusta para que sumen exactamente 100.",
+    "reason6": "Factores duplicados o solapados. Elimina redundancia: A y B miden cosas similares.",
+    "reason7": "Nombre de estrategia muy vago. Usa nombre descriptivo: \"Arbitraje HK AH Premium\", no \"Mi estrategia\".",
+    "reason8": "Puntos de activación IA faltantes o incorrectos. Añade 3-5 servicios IA con precio correcto.",
+    "resubmit": "Revisar y reenviar"
   }
 }

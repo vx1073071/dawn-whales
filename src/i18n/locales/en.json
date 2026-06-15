@@ -6152,5 +6152,38 @@
     "sliderHint": "Slide right →",
     "confirmed": "Confirmed. Activating strategy...",
     "cancel": "Cancel"
+  },
+  "creatorDashboard": {
+    "sectionTitle": "Creator Dashboard",
+    "level": "Level {level}: {name}",
+    "l1Name": "Novice",
+    "l2Name": "Advanced",
+    "l3Name": "Flagship",
+    "l1Desc": "Register to publish. Platform takes 30%, you get 70%.",
+    "l2Desc": "100+ sales. Platform 20%, you 80%. Unlocks: Hot Display 7 days + Recommendation badge.",
+    "l3Desc": "1,000+ sales. Platform only 10%, you get 90%. Elite Creator status.",
+    "salesCount": "Total Sales",
+    "commissionEarned": "Commission Earned",
+    "subscriberCount": "Subscribers",
+    "salesToNextLevel": "{count} more sales to reach {nextLevel}",
+    "l2Badge": "Recommended",
+    "l2HotDisplay": "Hot Display 7 days",
+    "monthlyTrend": "Monthly Trend",
+    "withdraw": "Withdraw",
+    "noSalesYet": "No sales yet. Publish your first strategy template to start earning!"
+  },
+  "creatorAudit": {
+    "sectionTitle": "Strategy Review",
+    "approved": "Approved — Your strategy is now live in the marketplace!",
+    "rejected": "Not approved — See specific suggestions below to improve and re-submit.",
+    "reason1": "Human-line too long (>80 chars). Rewrite as: \"Buy low sell high with discipline\"",
+    "reason2": "Missing stop loss rule. Add e.g.: \"Stop loss at -8% or break of 20-day MA\"",
+    "reason3": "Market scope unclear. Specify: \"HK stocks, Hang Seng Index constituents only\"",
+    "reason4": "Missing failure self-check. Add: \"Strategy invalid if AH premium spread drops below 5% for 5 consecutive days\"",
+    "reason5": "Factor weights don't sum to 100. Adjust to total exactly 100.",
+    "reason6": "Duplicate or overlapping factors. Remove redundancy: factors A and B measure similar things.",
+    "reason7": "Strategy name too vague. Use descriptive name: \"HK AH Premium Arbitrage\" not \"My Strategy\"",
+    "reason8": "AI trigger points missing or incorrect. Add 3-5 AI services this strategy uses with correct pricing.",
+    "resubmit": "Revise & Re-submit"
   }
 }
