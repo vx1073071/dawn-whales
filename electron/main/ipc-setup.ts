@@ -152,6 +152,16 @@ export function setupIPC(ctx: IPCContext): void {
         log.info('[Broker] DataPipeline 5-link started');
       }
 
+      // R221 JVS#1: Wire connectDataSources master switch (5-link health monitoring)
+      const { getConnectDataSources } = await import('./connect-data-sources');
+      const cds = getConnectDataSources();
+      // Only connect if not already done (lazy init)
+      if (!(globalThis as any).__connectDataSources) {
+        (globalThis as any).__connectDataSources = cds;
+        await cds.connectAll(ctx.mainWindow!);
+        log.info('[R221 JVS#1] connectDataSources 5-link health monitor active');
+      }
+
       return { success: true, host: config.host, port: config.port };
     } catch (err) {
     // [EngineError:AI] — structured error tracking

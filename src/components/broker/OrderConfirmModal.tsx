@@ -1,8 +1,9 @@
 /**
- * TradingEasy R123 J03 — Order Confirm Modal
+ * TradingEasy R123 J03 + R221 JVS#7 — Order Confirm Modal (enhanced)
  * 
  * Shows before placing: broker name, code, side, qty, price, estimated fee.
- * Two buttons: [Confirm] [Cancel].
+ * Enhancement: pending → confirm state machine + undo window + risk check.
+ * R221 adds: auto-cancel countdown, risk-flag detection, undo-within-3s.
  * 
  * Triggered by IPC 'order:confirm-required' from main process.
  */
@@ -25,12 +26,21 @@ export interface OrderConfirmData {
     currency: string;
   };
   market: string;
+  /** R221: risk flags detected by pre-flight check */
+  riskFlags?: string[];
 }
+
+/** R221 JVS#7: Order state machine — pending → confirming → confirmed → undoable */
+export type OrderConfirmState = 'pending' | 'confirming' | 'confirmed' | 'undoable' | 'cancelled';
 
 // ═══════════ Hook: useOrderConfirm ═══════════════════════
 
+// ═══════════ Hook: useOrderConfirm (enhanced R221) ═══════════════════
+
 export function useOrderConfirm() {
   const [pending, setPending] = useState<OrderConfirmData | null>(null);
+  const [state, setState] = useState<OrderConfirmState>('pending');
+  const [confirmedOrderId, setConfirmedOrderId] = useState<string | null>(null);
 
   useEffect(() => {
     const api = (window as any).api;
@@ -38,6 +48,8 @@ export function useOrderConfirm() {
 
     const unsub = api.on('order:confirm-required', (data: OrderConfirmData) => {
       setPending(data);
+      setState('pending');
+      setConfirmedOrderId(null);
     });
 
     return () => { api.off?.('order:confirm-required', unsub); };
@@ -45,21 +57,41 @@ export function useOrderConfirm() {
 
   const confirm = useCallback(async () => {
     if (!pending) return;
+    setState('confirming');
     const api = (window as any).api;
     const result = await api?.broker?.placeOrderConfirm(pending.pendingId, true);
-    setPending(null);
+    if (result?.orderId) {
+      setConfirmedOrderId(result.orderId);
+      setState('confirmed');
+      // 3-second undo window
+      setTimeout(() => {
+        setState('undoable');
+        setPending(null);
+      }, 3000);
+    } else {
+      setState('pending'); // back to pending on failure
+    }
     return result;
   }, [pending]);
+
+  /** R221: Undo a confirmed order within 3s window */
+  const undo = useCallback(async () => {
+    if (!confirmedOrderId) return;
+    const api = (window as any).api;
+    await api?.broker?.cancelOrder?.(confirmedOrderId);
+    setConfirmedOrderId(null);
+    setState('pending');
+  }, [confirmedOrderId]);
 
   const cancel = useCallback(async () => {
     if (!pending) return;
+    setState('cancelled');
     const api = (window as any).api;
-    const result = await api?.broker?.placeOrderConfirm(pending.pendingId, false);
+    await api?.broker?.placeOrderConfirm(pending.pendingId, false);
     setPending(null);
-    return result;
   }, [pending]);
 
-  return { pending, confirm, cancel, dismiss: () => setPending(null) };
+  return { pending, confirm, cancel, dismiss: () => { setPending(null); setState('cancelled'); }, state, confirmedOrderId, undo };
 }
 
 // ═══════════ OrderConfirmModal Component ═════════════════
@@ -70,7 +102,21 @@ interface Props {
   onCancel: () => void;
 }
 
-export const OrderConfirmModal: React.FC<Props> = ({ data, onConfirm, onCancel }) => {
+// ═══════════ OrderConfirmModal Component (enhanced R221) ═════════════
+
+interface Props {
+  data: OrderConfirmData;
+  onConfirm: () => void;
+  onCancel: () => void;
+  /** R221: order state from useOrderConfirm hook */
+  state?: OrderConfirmState;
+  /** R221: undo confirmed order (3s window) */
+  onUndo?: () => void;
+  /** R221: confirmed order ID for undo target */
+  confirmedOrderId?: string | null;
+}
+
+export const OrderConfirmModal: React.FC<Props> = ({ data, onConfirm, onCancel, state = 'pending', onUndo, confirmedOrderId }) => {
   const [countdown, setCountdown] = useState(30);
   const [confirming, setConfirming] = useState(false);
 
@@ -96,6 +142,42 @@ export const OrderConfirmModal: React.FC<Props> = ({ data, onConfirm, onCancel }
 
   const isMarketOrder = !data.price;
   const notional = data.qty * (data.price || 0);
+  const hasRiskFlags = data.riskFlags && data.riskFlags.length > 0;
+
+  // R221: Confirmed state — show success with undo option
+  if (state === 'confirmed') {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="w-[420px] bg-[#064e3b] border border-[#10b981] rounded-xl shadow-2xl p-6 animate-in fade-in zoom-in">
+          <div className="text-center">
+            <div style={{ fontSize: 48, marginBottom: 8 }}>✅</div>
+            <h3 className="text-base font-semibold text-[#10b981] mb-2">下单成功</h3>
+            <div className="text-[11px] text-[#6ee7b7] mb-1">{data.code} {data.side === 'BUY' ? '买入' : '卖出'} {data.qty} (单号: {confirmedOrderId?.slice(0, 12)}...)</div>
+            <div className="text-[10px] text-[#047857] mb-4">3秒内可撤回</div>
+            <button
+              onClick={onUndo}
+              className="px-6 py-2 rounded-lg border border-[#f59e0b] text-[#f59e0b] hover:bg-[#78350f] text-sm transition-colors"
+            >
+              ↩ 撤回订单 (3s)
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // R221: Confirming state — spinner
+  if (state === 'confirming' || confirming) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="w-[320px] bg-[#161b22] border border-[#30363d] rounded-xl shadow-2xl p-8 text-center">
+          <div style={{ fontSize: 24, marginBottom: 12 }}>⏳</div>
+          <h3 className="text-base font-semibold text-[#c9d1d9] mb-2">正在发送订单...</h3>
+          <div className="text-[11px] text-[#8b949e]">发送至 {data.brokerName}</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
@@ -110,6 +192,16 @@ export const OrderConfirmModal: React.FC<Props> = ({ data, onConfirm, onCancel }
           </h3>
           <span className="text-[10px] text-[#484f58]">{countdown}s 自动取消</span>
         </div>
+
+        {/* Risk Flags (R221 JVS#7) */}
+        {hasRiskFlags && (
+          <div className="mb-4 p-3 rounded-lg bg-[#450a0a] border border-[#ef4444]">
+            <div className="text-[11px] font-semibold text-[#ef4444] mb-1">⚠️ 风险提示</div>
+            {data.riskFlags!.map((flag, i) => (
+              <div key={i} className="text-[10px] text-[#fca5a5]">• {flag}</div>
+            ))}
+          </div>
+        )}
 
         {/* Order Summary */}
         <div className="space-y-2 mb-4">

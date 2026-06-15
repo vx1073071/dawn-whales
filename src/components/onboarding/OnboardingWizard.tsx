@@ -294,6 +294,24 @@ function Step3Completion({
   connectedBrokers: string[];
   onFinish: () => void;
 }) {
+  // R221: Show health status for each connected broker
+  const [healthChecks, setHealthChecks] = useState<Record<string, { status: string; latency: number }>>({});
+
+  useEffect(() => {
+    const check = async () => {
+      try {
+        const api = (window as any).api;
+        for (const bid of connectedBrokers) {
+          const resp = await api?.broker?.invoke('broker:health-check', bid);
+          if (resp?.success) {
+            setHealthChecks(prev => ({ ...prev, [bid]: { status: resp.health.status, latency: resp.health.latencyMs } }));
+          }
+        }
+      } catch {}
+    };
+    check();
+  }, [connectedBrokers]);
+
   return (
     <div className="flex flex-col gap-4" style={{ fontFamily: 'monospace' }}>
       <div className="text-center">
@@ -303,13 +321,22 @@ function Step3Completion({
       </div>
 
       <div className="flex flex-col gap-1">
-        {KNOWN_BROKERS.filter(b => connectedBrokers.includes(b.id)).map(b => (
-          <div key={b.id} className="flex items-center gap-2 px-3 py-1.5">
-            <CheckCircleOutlined className="text-[#22c55e] text-xs" />
-            <span className="text-[#c9d1d9] text-xs flex-1">{b.name}</span>
-            <span className="text-[10px] text-[#22c55e]">已连接</span>
-          </div>
-        ))}
+        {KNOWN_BROKERS.filter(b => connectedBrokers.includes(b.id)).map(b => {
+          const health = healthChecks[b.id];
+          const statusEmoji = health?.status === 'GREEN' ? '🟢' : health?.status === 'YELLOW' ? '🟡' : '⚫';
+          return (
+            <div key={b.id} className="flex items-center gap-2 px-3 py-1.5">
+              <CheckCircleOutlined className="text-[#22c55e] text-xs" />
+              <span className="text-[#c9d1d9] text-xs flex-1">{b.name}</span>
+              {health && (
+                <span className="text-[9px] text-[#64748b]">
+                  {statusEmoji} {health.latency}ms
+                </span>
+              )}
+              <span className="text-[10px] text-[#22c55e]">已连接</span>
+            </div>
+          );
+        })}
         {KNOWN_BROKERS.filter(b => !connectedBrokers.includes(b.id)).slice(0, 3).map(b => (
           <div key={b.id} className="flex items-center gap-2 px-3 py-1.5 opacity-40">
             <CloseCircleOutlined className="text-[#484f58] text-xs" />
@@ -317,6 +344,15 @@ function Step3Completion({
             <span className="text-[10px] text-[#484f58]">未配置</span>
           </div>
         ))}
+      </div>
+
+      {/* R221: Data link status */}
+      <div className="text-[9px] text-[#484f58] flex gap-3 justify-center">
+        <span>📡 行情</span>
+        <span>📊 深度</span>
+        <span>👣 足迹</span>
+        <span>🔀 报价</span>
+        <span>🔔 告警</span>
       </div>
 
       <div className="flex justify-center">
@@ -331,11 +367,41 @@ function Step3Completion({
 // ═══════════ Main Wizard ═══════════
 
 export default function OnboardingWizard({ onClose }: { onClose: () => void }) {
+  // ═══ R221 JVS#8: Enhanced Onboarding — ChartContext + BrokerConnectionIndicator + DataSources ═══
   const [step, setStep] = useState(() => loadOnboardingState().currentStep || 0);
   const [connectingBroker, setConnectingBroker] = useState<string | null>(null);
   const [connected, setConnected] = useState<string[]>(() => loadOnboardingState().connectedBrokers || []);
+  const [dataSourcesReady, setDataSourcesReady] = useState(false);
+  const [healthCheckPassed, setHealthCheckPassed] = useState(false);
 
   const setStoreBrokers = useChartStore((s) => s.setConnectedBrokers);
+
+  // R221: Check if 5 data links are live before showing "start trading"
+  useEffect(() => {
+    if (step === 2 && connected.length > 0) {
+      const checkHealth = async () => {
+        try {
+          const api = (window as any).api;
+          const resp = await api?.broker?.invoke('broker:health-check-all');
+          if (resp?.success && resp?.healthList?.some((h: any) => h.connected)) {
+            setHealthCheckPassed(true);
+          }
+        } catch { /* IPC may not be ready yet */ }
+      };
+      // Verify 5 data source links (L1-L5) are online
+      const checkDataSources = async () => {
+        try {
+          const api = (window as any).api;
+          const resp = await api?.invoke?.('datasource:status');
+          setDataSourcesReady(resp?.allConnected === true);
+        } catch { /* pre-bridge, fall through */ }
+      };
+      checkHealth();
+      checkDataSources();
+      const timer = setInterval(() => { checkHealth(); checkDataSources(); }, 5000);
+      return () => clearInterval(timer);
+    }
+  }, [step, connected]);
 
   // Persist state
   useEffect(() => {

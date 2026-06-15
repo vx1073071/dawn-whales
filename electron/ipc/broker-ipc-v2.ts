@@ -207,7 +207,87 @@ export function registerBrokerIPCV2(
     mainWindow?.webContents.send('broker:statusChange', status);
   });
 
-  log.info('[BrokerIPC V2] All handlers registered (connect/connectMany/getAggregated*/placeOrders/scanArbitrage/copyTrade/killSwitchAll)');
+  // ═══ R221 JVS#2: 4 Missing IPC Registrations (notification/differential/indicator/broker-health) ═══════
+
+  // 1. broker:notification — push broker alerts to notification panel
+  ipcMain.handle('broker:notification', async (_e, payload: { type: string; message: string; brokerId: string }) => {
+    mainWindow?.webContents.send('broker:notification', { ...payload, timestamp: Date.now() });
+    return { success: true };
+  });
+
+  // 2. broker:differential — push price differential alerts (CBBO spread widening)
+  ipcMain.handle('broker:differential', async (_e, payload: { symbol: string; spread: number; bidBroker: string; askBroker: string }) => {
+    mainWindow?.webContents.send('broker:differential', { ...payload, timestamp: Date.now() });
+    return { success: true };
+  });
+
+  // 3. broker:indicator-push — bridge indicator calculation results to chart UI
+  let indicatorCallback: ((results: any[]) => void) | null = null;
+  ipcMain.handle('broker:indicator-register', async (_e, cb: (results: any[]) => void) => {
+    indicatorCallback = cb;
+    return { success: true };
+  });
+  ipcMain.handle('broker:indicator-push', async (_e, results: any[]) => {
+    mainWindow?.webContents.send('broker:indicator-update', results);
+    indicatorCallback?.(results);
+    return { success: true, count: results.length };
+  });
+
+  // 4. broker:health-check — per-broker health with color-coded status
+  ipcMain.handle('broker:health-check', async (_e, brokerId: string) => {
+    try {
+      const status = manager.getStatus(brokerId);
+      const health: BrokerHealthInfo = {
+        brokerId,
+        brokerName: status?.name || brokerId,
+        connected: status?.connectionStatus === 'connected',
+        status: status?.connectionStatus === 'connected' ? 'GREEN' : status?.connectionStatus === 'connecting' ? 'YELLOW' : 'RED',
+        statusText: status?.connectionStatus === 'connected' ? '已连接' : status?.connectionStatus === 'connecting' ? '连接中' : '断开',
+        latencyMs: status?.latencyP50 || 0,
+        lastHeartbeat: status?.lastHeartbeat || 0,
+        errors: 0,
+      };
+      return { success: true, health };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  // broker:health-check-all — batch health for all connected brokers
+  ipcMain.handle('broker:health-check-all', async () => {
+    try {
+      const statuses = manager.getAllStatuses();
+      const healthList: BrokerHealthInfo[] = [];
+      for (const [id, status] of Object.entries(statuses)) {
+        healthList.push({
+          brokerId: id,
+          brokerName: status?.name || id,
+          connected: status?.connectionStatus === 'connected',
+          status: status?.connectionStatus === 'connected' ? 'GREEN' : status?.connectionStatus === 'connecting' ? 'YELLOW' : 'RED',
+          statusText: status?.connectionStatus === 'connected' ? '已连接' : status?.connectionStatus === 'connecting' ? '连接中' : '断开',
+          latencyMs: status?.latencyP50 || 0,
+          lastHeartbeat: status?.lastHeartbeat || 0,
+          errors: 0,
+        });
+      }
+      return { success: true, healthList };
+    } catch (err: any) {
+      return { success: false, error: err.message };
+    }
+  });
+
+  log.info('[BrokerIPC V2] All handlers registered (connect/connectMany/getAggregated*/placeOrders/scanArbitrage/copyTrade/killSwitchAll + R221 notification/differential/indicator/health-check)');
+}
+
+export interface BrokerHealthInfo {
+  brokerId: string;
+  brokerName: string;
+  connected: boolean;
+  status: 'GREEN' | 'YELLOW' | 'RED';
+  statusText: string;
+  latencyMs: number;
+  lastHeartbeat: number;
+  errors: number;
 }
 
 // ═══ DELETE THESE from old broker-ipc.ts ════════════════
