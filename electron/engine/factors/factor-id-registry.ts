@@ -58,6 +58,8 @@ export type FactorLevel2 =
   // Commodity
   | 'L2_TERM_STRUCTURE' | 'L2_INVENTORY' | 'L2_MOMENTUM' | 'L2_VOLATILITY'
   | 'L2_FLOW' | 'L2_FUNDAMENTAL' | 'L2_SEASONAL'
+  // R199
+  | 'L2_COT' | 'L2_MACRO' | 'L2_RATIO'
   // US
   | 'L2_CORPORATE' | 'L2_EVENT' | 'L2_STATS' | 'L2_VALUE'
   | 'L2_SENTIMENT' | 'L2_YIELD' | 'L2_FLOW' | 'L2_SOCIAL' | 'L2_VOLATILITY'
@@ -349,6 +351,23 @@ const FACTOR_SPEC: [string, string, string, FactorLevel1, FactorLevel2][] = [
   // L6 Seasonality (2)
   ['CMD_SEASONALITY', 'CommoditySeasonality', '商品季节性', 'L1_COMMODITY', 'L2_SEASONAL'],
   ['CMD_GOLD_SUMMER', 'GoldSummerEffect', '黄金夏季效应', 'L1_COMMODITY', 'L2_SEASONAL'],
+
+  // ════════════════════════════════════════ Commodity Futures R199 (Final 12) ══════════════════════════════
+  // L3 COT — "大佬底牌" (5)
+  ['CMD_COT_COMMERCIAL', 'COTCommercial', '商业持仓(产业套保)', 'L1_COMMODITY', 'L2_COT'],
+  ['CMD_COT_SPECULATOR', 'COTSpeculator', '投机持仓(聪明钱)', 'L1_COMMODITY', 'L2_COT'],
+  ['CMD_COT_EXTREME', 'COTExtreme', '极端持仓(拥挤信号)', 'L1_COMMODITY', 'L2_COT'],
+  ['CMD_COT_CHANGE', 'COTPositionChange', '仓位变化方向(大佬加减仓)', 'L1_COMMODITY', 'L2_COT'],
+  ['CMD_OPEN_INTEREST', 'OpenInterest', '总持仓量趋势(市场参与度)', 'L1_COMMODITY', 'L2_COT'],
+  // L4 Macro — "大环境" (4)
+  ['CMD_DXY_LINKAGE', 'DXYLinkage', '美元联动(强美元=商品压力)', 'L1_COMMODITY', 'L2_MACRO'],
+  ['CMD_REAL_RATE', 'RealRate', '实际利率(黄金的天敌)', 'L1_COMMODITY', 'L2_MACRO'],
+  ['CMD_INFLATION_BE', 'InflationBE', '通胀预期(通胀升=黄金升)', 'L1_COMMODITY', 'L2_MACRO'],
+  ['CMD_GEOPOL_RISK', 'GeopoliticalRisk', '地缘风险溢价', 'L1_COMMODITY', 'L2_MACRO'],
+  // L5 Ratio — "跨品种比价" (3)
+  ['CMD_GOLD_SILVER_RATIO', 'GoldSilverRatio', '金银比(避险vs风险偏好)', 'L1_COMMODITY', 'L2_RATIO'],
+  ['CMD_GOLD_OIL_RATIO', 'GoldOilRatio', '金油比(衰退指针)', 'L1_COMMODITY', 'L2_RATIO'],
+  ['CMD_CRACK_SPREAD', 'CrackSpread', '裂解价差(炼油利润)', 'L1_COMMODITY', 'L2_RATIO'],
 
 ];
 
