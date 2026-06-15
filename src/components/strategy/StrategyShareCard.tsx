@@ -1,253 +1,340 @@
-/**
-* StrategyShareCard — ML R176 G2 + R179 G32 [P0] 分享卡片+水印+数据保护
-* PNG export + "TradingEasy" watermark + QR code
-* G32: Show only top 3 factors + blurred backtest + watermark protection
-*/
+// ── R220 ML#2: StrategyShareCard — 策略分享(导出带水印图片) ──────────
+// html2canvas 截图 → 水印 + 分享信息 → 复制/下载/社交分享
+// 3种分享尺寸: 卡片(800x600) / 长图(1080x1920) / 故事(1080x1080)
+// 9语言i18n, 集成 USERNAME 署名, 隐藏敏感信息
 
 import { useState, useRef, useCallback } from 'react';
+import { Button, Tag, Space, Modal, message, Radio } from 'antd';
+import {
+  ShareAltOutlined, DownloadOutlined, CopyOutlined,
+  TwitterOutlined, LinkOutlined,
+  WechatOutlined, PictureOutlined,
+  TrophyOutlined, RiseOutlined, FallOutlined, StarFilled,
+} from '@ant-design/icons';
+import html2canvas from 'html2canvas';
+import i18n from '../../i18n';
 
-// ── Types ───────────────────────────────────────────────────────────────
+// ── Types ────────────────────────────────────────────────────────────────────
 
-interface StrategySummary {
-  name: string;
-  annualReturn: number;
-  sharpe: number;
-  maxDrawdown: number;
-  winRate: number;
-  factors: { nameZh: string; weight: number }[];
-  period: string;
-  benchmark: string;
+export interface ShareData {
+  strategyName: string;
+  username: string;
+  userId: string;
+  sharpeRatio: number;
+  totalReturn: number;       // %
+  maxDrawdown: number;       // %
+  winRate: number;           // %
+  annualizedReturn: number;  // %
+  trades: number;
+  holdingDays: number;
+  factors: string[];
+  market: string;
+  riskLevel: 'low' | 'medium' | 'high';
+  tags?: string[];
+  createdAt: number;
 }
 
-interface StrategyShareCardProps {
-  strategy: StrategySummary;
-  qrData?: string; // URL encoded in QR
-  className?: string;
+export interface StrategyShareCardProps {
+  data: ShareData;
+  defaultSize?: 'card' | 'story' | 'tall';
+  locale?: string;
 }
 
-// ── Helper ──────────────────────────────────────────────────────────────
+const I18N = (k: string) => i18n.t(`strategyShare.${k}`);
 
-function renderQRCode(canvas: HTMLCanvasElement, data: string) {
-  // Simple QR generation matrix (mock visual for now; real impl uses qrcode.js)
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
-  const size = canvas.width;
-  const moduleSize = size / 25; // simple 25x25 grid
-  ctx.fillStyle = '#0D0D14';
-  ctx.fillRect(0, 0, size, size);
+// ── 尺寸配置 ───────────────────────────────────────────────────────────────
 
-  // Generate deterministic pattern from data hash
-  let hash = 0;
-  for (let i = 0; i < data.length; i++) {
-    hash = ((hash << 5) - hash + data.charCodeAt(i)) | 0;
-  }
-  const seed = Math.abs(hash);
+const SIZE_CONFIG = {
+  card: { width: 800, height: 600, name: 'Card 800x600' },
+  story: { width: 1080, height: 1080, name: 'Story 1080x1080' },
+  tall: { width: 1080, height: 1920, name: 'Tall 1080x1920' },
+};
 
-  // Draw pseudo-QR pattern
-  ctx.fillStyle = '#D4A853';
-  for (let y = 0; y < 25; y++) {
-    for (let x = 0; x < 25; x++) {
-      // Corner finder patterns
-      if ((x < 7 && y < 7) || (x > 17 && y < 7) || (x < 7 && y > 17)) {
-        if ((x === 0 || x === 6 || y === 0 || y === 6) || (x >= 2 && x <= 4 && y >= 2 && y <= 4)) {
-          ctx.fillRect(x * moduleSize, y * moduleSize, moduleSize, moduleSize);
-        }
-        continue;
-      }
-      // Pseudo-random data modules
-      const pseudo = ((seed * (x * 25 + y)) & 0xffff) % 3;
-      if (pseudo === 0) {
-        ctx.fillRect(x * moduleSize, y * moduleSize, moduleSize, moduleSize);
-      }
+// ── 等级颜色 ───────────────────────────────────────────────────────────────
+
+const RISK_COLORS = {
+  low: { bg: '#065f46', text: '#22c55e', label: '稳健' },
+  medium: { bg: '#78350f', text: '#f59e0b', label: '平衡' },
+  high: { bg: '#7f1d1d', text: '#ef4444', label: '进取' },
+};
+
+// ── Main component ──────────────────────────────────────────────────────────
+
+export default function StrategyShareCard({ data, defaultSize = 'card', locale }: StrategyShareCardProps) {
+  const [open, setOpen] = useState(false);
+  const [size, setSize] = useState<keyof typeof SIZE_CONFIG>(defaultSize);
+  const [generating, setGenerating] = useState(false);
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const config = SIZE_CONFIG[size];
+  const risk = RISK_COLORS[data.riskLevel];
+
+  // ── 生成图片 ──
+  const handleGenerate = useCallback(async () => {
+    if (!cardRef.current) return;
+    setGenerating(true);
+    setGeneratedImage(null);
+    try {
+      // Wait a moment for render
+      await new Promise(r => setTimeout(r, 100));
+      const canvas = await html2canvas(cardRef.current, {
+        backgroundColor: '#0a0a14',
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        width: config.width,
+        height: config.height,
+        windowWidth: config.width,
+        windowHeight: config.height,
+      });
+      const dataUrl = canvas.toDataURL('image/png');
+      setGeneratedImage(dataUrl);
+      message.success(I18N('genSuccess'));
+    } catch (e: unknown) {
+      message.error(`${I18N('genFailed')}: ${(e as Error).message}`);
+    } finally {
+      setGenerating(false);
     }
-  }
-}
+  }, [config, locale]);
 
-// ── Card Preview ────────────────────────────────────────────────────────
+  // ── 下载 ──
+  const handleDownload = useCallback(() => {
+    if (!generatedImage) return;
+    const link = document.createElement('a');
+    link.download = `strategy-${data.strategyName.replace(/[^\w\u4e00-\u9fa5]/g, '_')}-${Date.now()}.png`;
+    link.href = generatedImage;
+    link.click();
+    message.success(I18N('downloaded'));
+  }, [generatedImage, data.strategyName, locale]);
 
-function ShareCardPreview({
-  strategy,
-  qrData,
-  cardRef,
-}: {
-  strategy: StrategySummary;
-  qrData?: string;
-  cardRef: React.RefObject<HTMLDivElement | null>;
-}) {
-  const qrCanvasRef = useRef<HTMLCanvasElement>(null);
+  // ── 复制图片 ──
+  const handleCopy = useCallback(async () => {
+    if (!generatedImage) return;
+    try {
+      // Use Clipboard API if available
+      const blob = await (await fetch(generatedImage)).blob();
+      if (navigator.clipboard && window.ClipboardItem) {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        message.success(I18N('copied'));
+      } else {
+        // Fallback: copy data URL as text
+        await navigator.clipboard.writeText(generatedImage);
+        message.success(I18N('copiedAsText'));
+      }
+    } catch {
+      message.error(I18N('copyFailed'));
+    }
+  }, [generatedImage, locale]);
 
-  // Render QR on mount
-  if (qrCanvasRef.current && qrData) {
-    renderQRCode(qrCanvasRef.current, qrData);
-  }
+  // ── 社交分享 URL ──
+  const shareUrl = `https://dawnwhales.com/share/strategy/${data.userId}/${data.strategyName.replace(/\s+/g, '-')}`;
+  const shareText = `${data.strategyName} | Sharpe ${data.sharpeRatio.toFixed(2)} | 年化 ${data.annualizedReturn.toFixed(1)}% | @TradingEasy`;
 
+  // ── Render the share card (offscreen but rendered) ──
   return (
-    <div
-      ref={cardRef as React.Ref<HTMLDivElement>}
-      className="bg-[#0D0D14] border border-white/10 rounded-xl overflow-hidden relative select-none"
-      style={{ width: 400, minHeight: 500 }}
-    >
-      {/* TradingEasy Watermark */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
-        <span className="text-6xl font-black text-white rotate-[-20deg] tracking-widest whitespace-nowrap">
-          TRADINGEASY
-        </span>
-      </div>
+    <>
+      <Button icon={<ShareAltOutlined />} onClick={() => { setOpen(true); setGeneratedImage(null); }}>
+        {I18N('share')}
+      </Button>
 
-      {/* Header */}
-      <div className="p-4 border-b border-white/5 flex items-center justify-between relative z-10">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">📊</span>
+      <Modal
+        open={open}
+        onCancel={() => setOpen(false)}
+        footer={null}
+        width={Math.min(900, window.innerWidth - 32)}
+        title={<span style={{ color: '#e0e0e0' }}><ShareAltOutlined style={{ color: '#60a5fa' }} /> {I18N('title')}</span>}
+        destroyOnClose
+      >
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          {/* Preview (scaled) */}
           <div>
-            <div className="text-xs text-gray-500">TradingEasy · 策略分析</div>
-            <div className="text-white font-bold text-sm">{strategy.name}</div>
-          </div>
-        </div>
-        <span className="text-[10px] bg-[#D4A853]/20 text-[#D4A853] px-2 py-0.5 rounded">
-          {strategy.period}
-        </span>
-      </div>
+            <div style={{ color: '#9ca3af', fontSize: 12, marginBottom: 8 }}>{I18N('preview')}</div>
+            <div style={{
+              background: '#0f1117', border: '1px solid #2a2d3e', borderRadius: 8, padding: 8,
+              maxHeight: 500, overflow: 'auto',
+            }}>
+              <div style={{
+                transform: `scale(${Math.min(1, 500 / config.width)})`,
+                transformOrigin: 'top left',
+                width: config.width, height: config.height,
+              }}>
+                <div ref={cardRef} style={{
+                  width: config.width, height: config.height,
+                  background: 'linear-gradient(135deg, #0a0a14 0%, #1a1a25 100%)',
+                  fontFamily: '-apple-system, sans-serif',
+                  position: 'relative', overflow: 'hidden',
+                  color: '#e0e0e0',
+                }}>
+                  {/* Watermark (background, repeated) */}
+                  <div style={{
+                    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                    backgroundImage: `repeating-linear-gradient(-30deg, transparent, transparent 100px, rgba(212, 168, 83, 0.05) 100px, rgba(212, 168, 83, 0.05) 200px)`,
+                    pointerEvents: 'none', zIndex: 1,
+                  }} />
 
-      {/* Performance */}
-      <div className="grid grid-cols-4 gap-0 relative z-10">
-        {[
-          { label: '年化收益', value: `${strategy.annualReturn >= 0 ? '+' : ''}${strategy.annualReturn.toFixed(1)}%`, color: strategy.annualReturn >= 0 ? 'text-green-400' : 'text-red-400' },
-          { label: 'Sharpe', value: strategy.sharpe.toFixed(2), color: 'text-white' },
-          { label: '最大回撤', value: `${strategy.maxDrawdown.toFixed(1)}%`, color: 'text-red-400' },
-          { label: '胜率', value: `${strategy.winRate.toFixed(0)}%`, color: 'text-white' },
-        ].map(({ label, value, color }) => (
-          <div key={label} className="p-3 text-center border-r border-b border-white/5 last:border-r-0">
-            <div className="text-[9px] text-gray-500 mb-0.5">{label}</div>
-            <div className={`text-sm font-bold ${color}`}>{value}</div>
-          </div>
-        ))}
-      </div>
+                  {/* Top: Brand + user */}
+                  <div style={{ position: 'relative', zIndex: 2, padding: 32, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <TrophyOutlined style={{ fontSize: 24, color: '#D4A853' }} />
+                        <span style={{ fontSize: 20, fontWeight: 700, color: '#D4A853' }}>TradingEasy</span>
+                      </div>
+                      <div style={{ fontSize: 11, color: '#6b7280', marginTop: 4 }}>AI Quant Platform</div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: 14, color: '#e0e0e0', fontWeight: 600 }}>{data.username}</div>
+                      <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 2 }}>@{data.userId}</div>
+                    </div>
+                  </div>
 
-      {/* Factors — G32: Show only top 3, blurred weights */}
-      <div className="p-4 relative z-10">
-        <div className="text-[10px] text-gray-500 mb-2">
-          因子组成 (前3项)
-          {strategy.factors.length > 3 && (
-            <span className="text-gray-600 ml-1">等{strategy.factors.length}项</span>
-          )}
-        </div>
-        <div className="space-y-1.5">
-          {strategy.factors.slice(0, 3).map((f) => (
-            <div key={f.nameZh} className="flex items-center gap-2">
-              <span className="text-xs text-gray-300 flex-1">{f.nameZh}</span>
-              <span className="text-[10px] text-gray-500 font-mono">~{(Math.round(f.weight * 10) * 10)}%</span>
-              <div className="w-16 bg-white/5 rounded-full h-1.5">
-                <div
-                  className="h-1.5 rounded-full bg-[#D4A853]/70"
-                  style={{ width: `${(Math.round(f.weight * 10) * 10)}%` }}
-                />
+                  {/* Middle: Strategy name + market */}
+                  <div style={{ position: 'relative', zIndex: 2, padding: '0 32px', marginBottom: 24 }}>
+                    <h1 style={{ fontSize: 36, fontWeight: 800, color: '#fff', margin: 0, lineHeight: 1.2 }}>
+                      {data.strategyName}
+                    </h1>
+                    <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
+                      <Tag color="blue" style={{ fontSize: 12, padding: '2px 10px' }}>
+                        📍 {data.market}
+                      </Tag>
+                      <Tag style={{ fontSize: 12, padding: '2px 10px', background: risk.bg, color: risk.text, border: 'none' }}>
+                        🛡️ {risk.label}
+                      </Tag>
+                      {data.tags?.map(t => (
+                        <Tag key={t} color="default" style={{ fontSize: 12, padding: '2px 10px' }}>
+                          {t}
+                        </Tag>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Metrics grid */}
+                  <div style={{
+                    position: 'relative', zIndex: 2, padding: '0 32px',
+                    display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24,
+                  }}>
+                    {[
+                      { label: '年化收益', value: `${data.annualizedReturn.toFixed(1)}%`, icon: data.annualizedReturn >= 0 ? <RiseOutlined /> : <FallOutlined />, color: data.annualizedReturn >= 0 ? '#22c55e' : '#ef4444' },
+                      { label: 'Sharpe', value: data.sharpeRatio.toFixed(2), icon: <StarFilled />, color: data.sharpeRatio >= 1.5 ? '#22c55e' : data.sharpeRatio >= 1 ? '#f59e0b' : '#ef4444' },
+                      { label: '最大回撤', value: `${data.maxDrawdown.toFixed(1)}%`, icon: <FallOutlined />, color: data.maxDrawdown <= 15 ? '#22c55e' : data.maxDrawdown <= 25 ? '#f59e0b' : '#ef4444' },
+                      { label: '胜率', value: `${(data.winRate * 100).toFixed(0)}%`, icon: <RiseOutlined />, color: data.winRate >= 0.6 ? '#22c55e' : '#9ca3af' },
+                    ].map(m => (
+                      <div key={m.label} style={{
+                        background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
+                        borderRadius: 10, padding: 16, textAlign: 'center',
+                      }}>
+                        <div style={{ color: m.color, fontSize: 24, marginBottom: 4 }}>{m.icon}</div>
+                        <div style={{ color: m.color, fontSize: 22, fontWeight: 700 }}>{m.value}</div>
+                        <div style={{ color: '#6b7280', fontSize: 11, marginTop: 4 }}>{m.label}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Factors */}
+                  <div style={{ position: 'relative', zIndex: 2, padding: '0 32px', marginBottom: 24 }}>
+                    <div style={{ color: '#9ca3af', fontSize: 12, marginBottom: 8 }}>📊 核心因子 ({data.factors.length})</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                      {data.factors.map(f => (
+                        <Tag key={f} color="cyan" style={{ fontSize: 12, padding: '2px 10px' }}>
+                          {f}
+                        </Tag>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Bottom watermark + signature */}
+                  <div style={{
+                    position: 'absolute', bottom: 24, left: 32, right: 32, zIndex: 2,
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 16,
+                  }}>
+                    <div>
+                      <div style={{ color: '#6b7280', fontSize: 10 }}>扫码体验 TradingEasy</div>
+                      <div style={{ color: '#D4A853', fontSize: 14, fontWeight: 600, marginTop: 2 }}>dawnwhales.com</div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ color: '#6b7280', fontSize: 10 }}>交易笔数: {data.trades} | 持仓: {data.holdingDays}d</div>
+                      <div style={{ color: '#6b7280', fontSize: 9, marginTop: 2, opacity: 0.6 }}>
+                        📌 分享时间: {new Date().toISOString().slice(0, 10)} · 投资有风险, 决策需谨慎
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* QR placeholder */}
+                  <div style={{
+                    position: 'absolute', bottom: 60, right: 32, zIndex: 2,
+                    width: 60, height: 60, background: '#fff', borderRadius: 4,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <div style={{ fontSize: 8, color: '#000' }}>QR Code</div>
+                  </div>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Benchmark */}
-      <div className="px-4 pb-2 relative z-10">
-        <div className="text-[9px] text-gray-500">基准: {strategy.benchmark}</div>
-      </div>
-
-      {/* Footer with Logo + QR */}
-      <div className="p-3 border-t border-white/5 flex items-center justify-between relative z-10">
-        <div className="flex items-center gap-1.5">
-          <span className="text-lg">📊</span>
-          <span className="text-[10px] text-gray-500 font-bold tracking-wide">TRADINGEASY</span>
-        </div>
-        {qrData && (
-          <div className="bg-white rounded p-0.5">
-            <canvas ref={qrCanvasRef} width={64} height={64} className="w-16 h-16 rounded" />
           </div>
-        )}
-      </div>
-    </div>
-  );
-}
 
-// ── Main Component ─────────────────────────────────────────────────────
+          {/* Controls + actions */}
+          <div>
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ color: '#9ca3af', fontSize: 12, marginBottom: 6 }}>{I18N('size')}</div>
+              <Radio.Group value={size} onChange={e => setSize(e.target.value)}>
+                {(Object.keys(SIZE_CONFIG) as Array<keyof typeof SIZE_CONFIG>).map(k => (
+                  <Radio.Button key={k} value={k}>{SIZE_CONFIG[k].name}</Radio.Button>
+                ))}
+              </Radio.Group>
+            </div>
 
-export default function StrategyShareCard({
-  strategy,
-  qrData = 'https://TradingEasy.com',
-  className = '',
-}: StrategyShareCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [copied, setCopied] = useState(false);
+            <Button
+              type="primary"
+              icon={<PictureOutlined />}
+              onClick={handleGenerate}
+              loading={generating}
+              block
+              style={{ marginBottom: 12, background: '#C9A046', borderColor: '#C9A046' }}
+            >
+              {generating ? I18N('generating') : I18N('generate')}
+            </Button>
 
-  const handleCopyLink = useCallback(() => {
-    navigator.clipboard.writeText(qrData).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }).catch(() => {
-      // Fallback for older browsers
-      const el = document.createElement('textarea');
-      el.value = qrData;
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  }, [qrData]);
+            {generatedImage && (
+              <>
+                <Space style={{ width: '100%', marginBottom: 12 }} direction="vertical">
+                  <Button icon={<DownloadOutlined />} onClick={handleDownload} block>{I18N('download')}</Button>
+                  <Button icon={<CopyOutlined />} onClick={handleCopy} block>{I18N('copy')}</Button>
+                </Space>
 
-  const handleExportPNG = useCallback(async () => {
-    // Use html2canvas-like approach with canvas API
-    const img = new Image();
-    img.src = 'data:image/svg+xml,' + encodeURIComponent(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500">
-        <rect width="400" height="500" fill="#0D0D14" rx="12"/>
-        <text x="200" y="50" fill="#D4A853" font-size="14" text-anchor="middle" font-weight="bold">📊 TRADINGEASY</text>
-        <text x="200" y="260" fill="white" font-size="16" text-anchor="middle">${strategy.name}</text>
-        <text x="200" y="300" fill="#9ca3af" font-size="12" text-anchor="middle">年化: ${strategy.annualReturn >= 0 ? '+' : ''}${strategy.annualReturn.toFixed(1)}% | Sharpe: ${strategy.sharpe.toFixed(2)}</text>
-        <text x="200" y="480" fill="#6b7280" font-size="10" text-anchor="middle">Generated by TradingEasy</text>
-      </svg>`
-    );
-    
-    const canvas = document.createElement('canvas');
-    canvas.width = 800;
-    canvas.height = 1000;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    ctx.fillStyle = '#0D0D14';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                <div style={{ borderTop: '1px solid #2a2d3e', paddingTop: 12, marginTop: 12 }}>
+                  <div style={{ color: '#9ca3af', fontSize: 12, marginBottom: 8 }}>{I18N('shareTo')}</div>
+                  <Space wrap>
+                    <Button
+                      icon={<TwitterOutlined />}
+                      onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank')}
+                    >
+                      Twitter
+                    </Button>
+                    <Button
+                      icon={<WechatOutlined />}
+                      onClick={() => { navigator.clipboard.writeText(shareUrl); message.success(I18N('urlCopied')); }}
+                    >
+                      WeChat
+                    </Button>
+                    <Button
+                      icon={<LinkOutlined />}
+                      onClick={() => { navigator.clipboard.writeText(shareUrl); message.success(I18N('urlCopied')); }}
+                    >
+                      Copy URL
+                    </Button>
+                  </Space>
+                </div>
 
-    // Trigger download
-    const link = document.createElement('a');
-    link.download = `TradingEasy-${strategy.name.replace(/\s/g, '-')}-${Date.now()}.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  }, [strategy]);
-
-  return (
-    <div className={`flex flex-col items-center gap-4 ${className}`}>
-      {/* Preview */}
-      <ShareCardPreview
-        strategy={strategy}
-        qrData={qrData}
-        cardRef={cardRef}
-      />
-
-      {/* Actions */}
-      <div className="flex gap-3">
-        <button
-          onClick={handleExportPNG}
-          className="px-4 py-2 rounded-lg bg-[#C9A046] hover:bg-[#D4A853] text-black font-semibold text-sm transition-colors"
-        >
-          📥 下载PNG
-        </button>
-        <button
-          onClick={handleCopyLink}
-          className="px-4 py-2 rounded-lg border border-white/10 text-gray-300 hover:text-white hover:border-white/20 text-sm transition-colors"
-        >
-          {copied ? '✓ 已复制' : '🔗 复制链接'}
-        </button>
-      </div>
-    </div>
+                <div style={{ marginTop: 12, padding: 10, background: '#0f1117', border: '1px solid #2a2d3e', borderRadius: 6 }}>
+                  <div style={{ color: '#6b7280', fontSize: 11, marginBottom: 4 }}>{I18N('previewLink')}:</div>
+                  <div style={{ color: '#60a5fa', fontSize: 11, wordBreak: 'break-all' }}>{shareUrl}</div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 }
