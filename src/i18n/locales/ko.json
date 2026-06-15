@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "appName": "TradingEasy",
     "tagline": "자연어로 퀀트 투자",
@@ -2203,7 +2203,7 @@
     "k24": "${paramDef.descriptionCN}过低 (${value}${paramDef.unit ?? \"\"})，低于安全下限 ${Math.ceil(warningLow)}。可能导致频繁假信号。",
     "k25": "${paramDef.descriptionCN}过高 (${value}${paramDef.unit ?? \"\"})，超过安全上限 ${Math.floor(warningHigh)}。可能导致信号滞后/错过机会。",
     "k26": "${paramDef.descriptionCN}接近下限 (${value}${paramDef.unit ?? \"\"})。建议适当上调以减少噪音。",
-    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书"\"})。建议适当下调以避免滞后。",
+    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书\"})。建议适当下调以避免滞后。",
     "k28": "${paramDef.descriptionCN}在安全范围内。",
     "k29": "${market}市场低波动+强趋势，</br>建议采用激进趋势跟踪策略。利用MACD快线(6/13)捕捉早期信号，配合移动止损(4%)保护利润。",
     "k30": "${market}市场高波动/弱趋势，</br>建议采用保守均值回归策略。更大布林带宽度(2.5σ)+更严格成交量过滤(2×)，等待极端偏差后进场。",
@@ -5912,5 +5912,80 @@
     "trades": "Trades",
     "equity": "Equity Curve",
     "factorAttribution": "因子归因分析"
+  },
+  "templateCategory": {
+    "sectionTitle": "전략 카테고리",
+    "allCategories": "전체 카테고리",
+    "recommended": "추천",
+    "totalTemplates": "템플릿",
+    "filterByCategory": "카테고리별 필터",
+    "filterByRisk": "리스크별 필터",
+    "trend": {
+      "name": "추세 추종",
+      "description": "이동평균선, 채널, 추세 지표를 활용해 형성된 가격 추세를 추종합니다",
+      "tagline": "추세를 타라, 저항하지 마라"
+    },
+    "meanReversion": {
+      "name": "평균회귀",
+      "description": "가격이 평균으로 회귀하는 통계적 특성을 활용해 과매도 시 매수, 과매수 시 매도합니다",
+      "tagline": "내린 것은 반드시 오른다"
+    },
+    "momentum": {
+      "name": "모멘텀",
+      "description": "강한 것이 더 강해진다——가격 가속도, 상대강도 순위, 거래량 확인 기반 전략",
+      "tagline": "강한 것을 사서 더 강하게 팔아라"
+    },
+    "value": {
+      "name": "가치 투자",
+      "description": "PE, PB, ROE, 배당수익률 등 펀더멘털 지표로 저평가된 우량 자산을 발굴합니다",
+      "tagline": "가격은 지불하는 것, 가치는 얻는 것"
+    },
+    "arbitrage": {
+      "name": "차익거래",
+      "description": "시장, 거래소, 연관 상품 간 가격 차이에서 수익을 얻는 시장 중립적 전략",
+      "tagline": "무위험 스프레드, 안정적인 수익"
+    },
+    "hedge": {
+      "name": "헤지 & 보호",
+      "description": "옵션, 선물, 인버스 ETF, 변동성 상품으로 포트폴리오를 보호합니다",
+      "tagline": "밤에 편히 잠들 수 있다"
+    },
+    "crypto": {
+      "name": "크립토 네이티브",
+      "description": "온체인 데이터, DeFi 지표, 펀딩비율, 고래 추적——블록체인에서 태어난 전략",
+      "tagline": "블록체인에서 태어났다"
+    },
+    "crossMarket": {
+      "name": "글로벌 마켓",
+      "description": "아시아, 유럽, 신흥 시장을 아우르는 멀티 리전 전략——글로벌하게 생각하고 로컬에서 거래",
+      "tagline": "글로벌하게 생각하고 로컬에서 거래하라"
+    },
+    "aiPowered": {
+      "name": "AI 기반",
+      "description": "AI 기반 전략——대화형 파라미터 튜닝, 실시간 적응, 자동 최적화",
+      "tagline": "AI가 생각하고, 당신이 거래한다"
+    }
+  },
+  "templateRisk": {
+    "sectionTitle": "리스크 프로필",
+    "riskLevel": "리스크 레벨",
+    "conservative": {
+      "name": "보수적",
+      "stylizedLabel": "🛡️ 보수적",
+      "description": "저위험, 장기 투자. 원금 보존과 안정적 수익에 중점. 은퇴 자금이나 위험 회피형 투자자에게 적합.",
+      "recommendedFor": "적합: 은퇴 포트폴리오, 배당 수익 추구, 위험 회피형 초보자"
+    },
+    "balanced": {
+      "name": "균형형",
+      "stylizedLabel": "⚖️ 균형형",
+      "description": "중간 위험, 스윙~포지션 트레이딩. 성장과 보호를 균형 있게 분산. 대부분의 액티브 트레이더에게 적합.",
+      "recommendedFor": "적합: 액티브 트레이더, 분산 포트폴리오, 경험 있는 개인 투자자"
+    },
+    "aggressive": {
+      "name": "공격형",
+      "stylizedLabel": "⚡ 공격형",
+      "description": "고위험, 단기 투자. 레버리지 또는 집중 포지션으로 최대 수익 추구. 경험 많고 확신 있는 트레이더에게 적합.",
+      "recommendedFor": "적합: 숙련된 트레이더, 높은 위험 감내, 단기 투기"
+    }
   }
 }

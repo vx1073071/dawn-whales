@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "appName": "道鯨",
     "tagline": "說人話就能做量化",
@@ -2203,7 +2203,7 @@
     "k24": "${paramDef.descriptionCN}过低 (${value}${paramDef.unit ?? \"\"})，低于安全下限 ${Math.ceil(warningLow)}。可能导致频繁假信号。",
     "k25": "${paramDef.descriptionCN}过高 (${value}${paramDef.unit ?? \"\"})，超过安全上限 ${Math.floor(warningHigh)}。可能导致信号滞后/错过机会。",
     "k26": "${paramDef.descriptionCN}接近下限 (${value}${paramDef.unit ?? \"\"})。建议适当上调以减少噪音。",
-    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书"\"})。建议适当下调以避免滞后。",
+    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书\"})。建议适当下调以避免滞后。",
     "k28": "${paramDef.descriptionCN}在安全范围内。",
     "k29": "${market}市场低波动+强趋势，</br>建议采用激进趋势跟踪策略。利用MACD快线(6/13)捕捉早期信号，配合移动止损(4%)保护利润。",
     "k30": "${market}市场高波动/弱趋势，</br>建议采用保守均值回归策略。更大布林带宽度(2.5σ)+更严格成交量过滤(2×)，等待极端偏差后进场。",
@@ -5912,5 +5912,80 @@
     "trades": "交易",
     "equity": "权益曲线",
     "factorAttribution": "因子归因分析"
+  },
+  "templateCategory": {
+    "sectionTitle": "策略分類",
+    "allCategories": "全部分類",
+    "recommended": "為你推薦",
+    "totalTemplates": "個模板",
+    "filterByCategory": "按分類篩選",
+    "filterByRisk": "按風險篩選",
+    "trend": {
+      "name": "趨勢跟踪",
+      "description": "利用均線、通道和趨勢指標，跟蹤已形成的價格趨勢，順勢而為",
+      "tagline": "順勢而為，不與趨勢為敵"
+    },
+    "meanReversion": {
+      "name": "反轉狙擊",
+      "description": "利用價格回歸均值的統計規律，在超賣時買入、超買時賣出，賺取反轉利潤",
+      "tagline": "跌多了就會漲"
+    },
+    "momentum": {
+      "name": "動量策略",
+      "description": "強者恆強——基於價格加速度、相對強度排名和成交量確認的動量策略",
+      "tagline": "買強賣強，強者恆強"
+    },
+    "value": {
+      "name": "價值精選",
+      "description": "利用PE、PB、ROE、股息率等基本面指標，尋找被市場低估的優質資產",
+      "tagline": "價格是你付出的，價值是你得到的"
+    },
+    "arbitrage": {
+      "name": "套利捕手",
+      "description": "捕捉不同市場、交易所或關聯品種之間的價差——市場中性的低風險策略",
+      "tagline": "無風險價差，穩穩的幸福"
+    },
+    "hedge": {
+      "name": "對沖保護",
+      "description": "使用期權、期貨、反向ETF和波動率工具，為你的投資組合穿上防彈衣",
+      "tagline": "晚上睡得安穩"
+    },
+    "crypto": {
+      "name": "加密原生",
+      "description": "鏈上數據、DeFi指標、資金費率、巨鯨追蹤——生於區塊鏈的交易策略",
+      "tagline": "生於區塊鏈"
+    },
+    "crossMarket": {
+      "name": "全球視野",
+      "description": "覆蓋亞洲、歐洲和新興市場的多區域策略——全球視野，本地交易",
+      "tagline": "全球視野，本地交易"
+    },
+    "aiPowered": {
+      "name": "AI賦能",
+      "description": "AI驅動的智能策略，支持對話式調參、實時自適應和自動優化——讓AI幫你思考",
+      "tagline": "AI來思考，你來交易"
+    }
+  },
+  "templateRisk": {
+    "sectionTitle": "風險偏好",
+    "riskLevel": "風險等級",
+    "conservative": {
+      "name": "保守型",
+      "stylizedLabel": "🛡️ 保守型",
+      "description": "低風險、長周期，注重本金保值和穩定收益。適合養老資金或風險厭惡型投資者。",
+      "recommendedFor": "適合：養老組合、收息族、風險厭惡的新手"
+    },
+    "balanced": {
+      "name": "平衡型",
+      "stylizedLabel": "⚖️ 平衡型",
+      "description": "中等風險，波段到持倉交易。多元化組合兼顧增長與保護。適合大多數活躍交易者。",
+      "recommendedFor": "適合：活躍交易者、多元組合、有經驗的散戶"
+    },
+    "aggressive": {
+      "name": "激進型",
+      "stylizedLabel": "⚡ 激進型",
+      "description": "高風險、短周期，使用槓桿或集中持倉追求最大收益。適合經驗豐富、信念堅定的交易者。",
+      "recommendedFor": "適合：資深交易者、高風險承受力、短線投機"
+    }
   }
 }

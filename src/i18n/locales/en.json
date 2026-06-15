@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "appName": "TradingEasy",
     "tagline": "Quant Made Simple",
@@ -2203,7 +2203,7 @@
     "k24": "${paramDef.descriptionCN}过低 (${value}${paramDef.unit ?? \"\"})，低于安全下限 ${Math.ceil(warningLow)}。可能导致频繁假信号。",
     "k25": "${paramDef.descriptionCN}过高 (${value}${paramDef.unit ?? \"\"})，超过安全上限 ${Math.floor(warningHigh)}。可能导致信号滞后/错过机会。",
     "k26": "${paramDef.descriptionCN}接近下限 (${value}${paramDef.unit ?? \"\"})。建议适当上调以减少噪音。",
-    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书"\"})。建议适当下调以避免滞后。",
+    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书\"})。建议适当下调以避免滞后。",
     "k28": "${paramDef.descriptionCN}在安全范围内。",
     "k29": "${market}市场低波动+强趋势，</br>建议采用激进趋势跟踪策略。利用MACD快线(6/13)捕捉早期信号，配合移动止损(4%)保护利润。",
     "k30": "${market}市场高波动/弱趋势，</br>建议采用保守均值回归策略。更大布林带宽度(2.5σ)+更严格成交量过滤(2×)，等待极端偏差后进场。",
@@ -5969,5 +5969,80 @@
     "configNamePlaceholder": "e.g. My Momentum Strategy",
     "noSaved": "No saved configs",
     "loadBtn": "Load"
+  },
+  "templateCategory": {
+    "sectionTitle": "Strategy Categories",
+    "allCategories": "All Categories",
+    "recommended": "Recommended for You",
+    "totalTemplates": "templates",
+    "filterByCategory": "Filter by Category",
+    "filterByRisk": "Filter by Risk Level",
+    "trend": {
+      "name": "Trend Following",
+      "description": "Follow established price trends using moving averages, channels, and trend indicators across multiple timeframes",
+      "tagline": "Ride the trend, don't fight it"
+    },
+    "meanReversion": {
+      "name": "Mean Reversion",
+      "description": "Profit from price returning to its average — buy oversold dips, sell overbought rips with statistical edge",
+      "tagline": "What goes down must come up"
+    },
+    "momentum": {
+      "name": "Momentum",
+      "description": "Go with strength — strategies based on price acceleration, relative strength ranking, and volume confirmation",
+      "tagline": "Buy strong, sell stronger"
+    },
+    "value": {
+      "name": "Value Investing",
+      "description": "Buy undervalued assets using fundamental metrics: PE, PB, ROE, dividend yield, and cash flow analysis",
+      "tagline": "Price is what you pay, value is what you get"
+    },
+    "arbitrage": {
+      "name": "Arbitrage",
+      "description": "Profit from price discrepancies across markets, exchanges, or related instruments — market-neutral by design",
+      "tagline": "Risk-free spreads, steady profits"
+    },
+    "hedge": {
+      "name": "Hedge & Protect",
+      "description": "Protect your portfolio from drawdowns using options, futures, inverse ETFs, and volatility instruments",
+      "tagline": "Sleep well at night"
+    },
+    "crypto": {
+      "name": "Crypto Native",
+      "description": "On-chain data, DeFi metrics, funding rates, whale tracking — strategies born on the blockchain",
+      "tagline": "Born on the blockchain"
+    },
+    "crossMarket": {
+      "name": "Global Markets",
+      "description": "Multi-region strategies spanning Asia, Europe, and emerging markets — think global, trade local",
+      "tagline": "Think global, trade local"
+    },
+    "aiPowered": {
+      "name": "AI-Powered",
+      "description": "AI-driven strategies with conversational tuning, real-time adaptation, and automated optimization",
+      "tagline": "AI thinks, you trade"
+    }
+  },
+  "templateRisk": {
+    "sectionTitle": "Risk Profile",
+    "riskLevel": "Risk Level",
+    "conservative": {
+      "name": "Conservative",
+      "stylizedLabel": "🛡️ Conservative",
+      "description": "Low risk, long-term horizon. Focus on capital preservation and steady income. Suitable for retirement accounts or risk-averse investors.",
+      "recommendedFor": "Best for: Retirement portfolios, income seekers, risk-averse beginners"
+    },
+    "balanced": {
+      "name": "Balanced",
+      "stylizedLabel": "⚖️ Balanced",
+      "description": "Medium risk, swing to position trading. Diversified approach balancing growth and protection. Suitable for most active traders.",
+      "recommendedFor": "Best for: Active traders, diversified portfolios, experienced retail investors"
+    },
+    "aggressive": {
+      "name": "Aggressive",
+      "stylizedLabel": "⚡ Aggressive",
+      "description": "High risk, short-term horizon. Leveraged or concentrated positions pursuing maximum returns. Suitable for experienced, high-conviction traders.",
+      "recommendedFor": "Best for: Experienced traders, high risk tolerance, short-term speculation"
+    }
   }
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "appName": "道鲸",
     "tagline": "说人话就能做量化",
@@ -2547,7 +2547,7 @@
     "k24": "${paramDef.descriptionCN}过低 (${value}${paramDef.unit ?? \"\"})，低于安全下限 ${Math.ceil(warningLow)}。可能导致频繁假信号。",
     "k25": "${paramDef.descriptionCN}过高 (${value}${paramDef.unit ?? \"\"})，超过安全上限 ${Math.floor(warningHigh)}。可能导致信号滞后/错过机会。",
     "k26": "${paramDef.descriptionCN}接近下限 (${value}${paramDef.unit ?? \"\"})。建议适当上调以减少噪音。",
-    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书"\"})。建议适当下调以避免滞后。",
+    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书\"})。建议适当下调以避免滞后。",
     "k28": "${paramDef.descriptionCN}在安全范围内。",
     "k29": "${market}市场低波动+强趋势，</br>建议采用激进趋势跟踪策略。利用MACD快线(6/13)捕捉早期信号，配合移动止损(4%)保护利润。",
     "k30": "${market}市场高波动/弱趋势，</br>建议采用保守均值回归策略。更大布林带宽度(2.5σ)+更严格成交量过滤(2×)，等待极端偏差后进场。",
@@ -6313,5 +6313,80 @@
     "configNamePlaceholder": "例如: 我的动量策略",
     "noSaved": "暂无保存的配置",
     "loadBtn": "加载"
+  },
+  "templateCategory": {
+    "sectionTitle": "策略分类",
+    "allCategories": "全部分类",
+    "recommended": "为你推荐",
+    "totalTemplates": "个模板",
+    "filterByCategory": "按分类筛选",
+    "filterByRisk": "按风险筛选",
+    "trend": {
+      "name": "趋势跟踪",
+      "description": "利用均线、通道和趋势指标，跟踪已形成的价格趋势，顺势而为",
+      "tagline": "顺势而为，不与趋势为敌"
+    },
+    "meanReversion": {
+      "name": "反转狙击",
+      "description": "利用价格回归均值的统计规律，在超卖时买入、超买时卖出，赚取反转利润",
+      "tagline": "跌多了就会涨"
+    },
+    "momentum": {
+      "name": "动量策略",
+      "description": "强者恒强——基于价格加速度、相对强度排名和成交量确认的动量策略",
+      "tagline": "买强卖强，强者恒强"
+    },
+    "value": {
+      "name": "价值精选",
+      "description": "利用PE、PB、ROE、股息率等基本面指标，寻找被市场低估的优质资产",
+      "tagline": "价格是你付出的，价值是你得到的"
+    },
+    "arbitrage": {
+      "name": "套利捕手",
+      "description": "捕捉不同市场、交易所或关联品种之间的价差——市场中性的低风险策略",
+      "tagline": "无风险价差，稳稳的幸福"
+    },
+    "hedge": {
+      "name": "对冲保护",
+      "description": "使用期权、期货、反向ETF和波动率工具，为你的投资组合穿上防弹衣",
+      "tagline": "晚上睡得安稳"
+    },
+    "crypto": {
+      "name": "加密原生",
+      "description": "链上数据、DeFi指标、资金费率、巨鲸追踪——生于区块链的交易策略",
+      "tagline": "生于区块链"
+    },
+    "crossMarket": {
+      "name": "全球视野",
+      "description": "覆盖亚洲、欧洲和新兴市场的多区域策略——全球视野，本地交易",
+      "tagline": "全球视野，本地交易"
+    },
+    "aiPowered": {
+      "name": "AI赋能",
+      "description": "AI驱动的智能策略，支持对话式调参、实时自适应和自动优化——让AI帮你思考",
+      "tagline": "AI来思考，你来交易"
+    }
+  },
+  "templateRisk": {
+    "sectionTitle": "风险偏好",
+    "riskLevel": "风险等级",
+    "conservative": {
+      "name": "保守型",
+      "stylizedLabel": "🛡️ 保守型",
+      "description": "低风险、长周期，注重本金保值和稳定收益。适合养老资金或风险厌恶型投资者。",
+      "recommendedFor": "适合：养老组合、收息族、风险厌恶的新手"
+    },
+    "balanced": {
+      "name": "平衡型",
+      "stylizedLabel": "⚖️ 平衡型",
+      "description": "中等风险，波段到持仓交易。多元化组合兼顾增长与保护。适合大多数活跃交易者。",
+      "recommendedFor": "适合：活跃交易者、多元组合、有经验的散户"
+    },
+    "aggressive": {
+      "name": "激进型",
+      "stylizedLabel": "⚡ 激进型",
+      "description": "高风险、短周期，使用杠杆或集中持仓追求最大收益。适合经验丰富、信念坚定的交易者。",
+      "recommendedFor": "适合：资深交易者、高风险承受力、短线投机"
+    }
   }
 }

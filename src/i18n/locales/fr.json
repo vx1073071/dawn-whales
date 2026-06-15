@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "appName": "TradingEasy",
     "tagline": "Le quant accessible à tous",
@@ -2203,7 +2203,7 @@
     "k24": "${paramDef.descriptionCN}过低 (${value}${paramDef.unit ?? \"\"})，低于安全下限 ${Math.ceil(warningLow)}。可能导致频繁假信号。",
     "k25": "${paramDef.descriptionCN}过高 (${value}${paramDef.unit ?? \"\"})，超过安全上限 ${Math.floor(warningHigh)}。可能导致信号滞后/错过机会。",
     "k26": "${paramDef.descriptionCN}接近下限 (${value}${paramDef.unit ?? \"\"})。建议适当上调以减少噪音。",
-    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书"\"})。建议适当下调以避免滞后。",
+    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书\"})。建议适当下调以避免滞后。",
     "k28": "${paramDef.descriptionCN}在安全范围内。",
     "k29": "${market}市场低波动+强趋势，</br>建议采用激进趋势跟踪策略。利用MACD快线(6/13)捕捉早期信号，配合移动止损(4%)保护利润。",
     "k30": "${market}市场高波动/弱趋势，</br>建议采用保守均值回归策略。更大布林带宽度(2.5σ)+更严格成交量过滤(2×)，等待极端偏差后进场。",
@@ -5912,5 +5912,80 @@
     "trades": "Trades",
     "equity": "Equity Curve",
     "factorAttribution": "因子归因分析"
+  },
+  "templateCategory": {
+    "sectionTitle": "Catégories de stratégie",
+    "allCategories": "Toutes les catégories",
+    "recommended": "Recommandé pour vous",
+    "totalTemplates": "modèles",
+    "filterByCategory": "Filtrer par catégorie",
+    "filterByRisk": "Filtrer par risque",
+    "trend": {
+      "name": "Suivi de tendance",
+      "description": "Suivez les tendances de prix établies avec des moyennes mobiles, canaux et indicateurs de tendance",
+      "tagline": "Surfez la tendance, ne luttez pas contre elle"
+    },
+    "meanReversion": {
+      "name": "Retour à la moyenne",
+      "description": "Profitez du retour des prix à leur moyenne — achetez les creux de survente, vendez les pics de surachat",
+      "tagline": "Ce qui descend doit remonter"
+    },
+    "momentum": {
+      "name": "Momentum",
+      "description": "Misez sur la force — stratégies basées sur l'accélération des prix, le classement de force relative et la confirmation de volume",
+      "tagline": "Achetez fort, vendez plus fort"
+    },
+    "value": {
+      "name": "Investissement valeur",
+      "description": "Achetez des actifs sous-évalués avec des métriques fondamentales : PER, PB, ROE, rendement du dividende",
+      "tagline": "Le prix est ce que vous payez, la valeur est ce que vous obtenez"
+    },
+    "arbitrage": {
+      "name": "Arbitrage",
+      "description": "Profitez des écarts de prix entre marchés, bourses ou instruments liés — stratégie neutre au marché",
+      "tagline": "Spreads sans risque, profits réguliers"
+    },
+    "hedge": {
+      "name": "Couverture & Protection",
+      "description": "Protégez votre portefeuille avec des options, futures, ETF inverses et instruments de volatilité",
+      "tagline": "Dormez sur vos deux oreilles"
+    },
+    "crypto": {
+      "name": "Crypto native",
+      "description": "Données on-chain, métriques DeFi, taux de financement, suivi des baleines — stratégies nées sur la blockchain",
+      "tagline": "Né sur la blockchain"
+    },
+    "crossMarket": {
+      "name": "Marchés mondiaux",
+      "description": "Stratégies multi-régions couvrant l'Asie, l'Europe et les marchés émergents — pensez global, tradez local",
+      "tagline": "Pensez global, tradez local"
+    },
+    "aiPowered": {
+      "name": "Propulsé par l'IA",
+      "description": "Stratégies pilotées par l'IA avec réglage conversationnel, adaptation en temps réel et optimisation automatisée",
+      "tagline": "L'IA pense, vous tradez"
+    }
+  },
+  "templateRisk": {
+    "sectionTitle": "Profil de risque",
+    "riskLevel": "Niveau de risque",
+    "conservative": {
+      "name": "Conservateur",
+      "stylizedLabel": "🛡️ Conservateur",
+      "description": "Faible risque, horizon long terme. Accent sur la préservation du capital et le revenu régulier. Pour comptes retraite ou investisseurs prudents.",
+      "recommendedFor": "Idéal pour : Portefeuilles retraite, chercheurs de revenus, débutants prudents"
+    },
+    "balanced": {
+      "name": "Équilibré",
+      "stylizedLabel": "⚖️ Équilibré",
+      "description": "Risque moyen, trading swing à position. Approche diversifiée équilibrant croissance et protection. Pour la plupart des traders actifs.",
+      "recommendedFor": "Idéal pour : Traders actifs, portefeuilles diversifiés, investisseurs particuliers expérimentés"
+    },
+    "aggressive": {
+      "name": "Agressif",
+      "stylizedLabel": "⚡ Agressif",
+      "description": "Risque élevé, horizon court terme. Positions à effet de levier ou concentrées visant un rendement maximal. Pour traders expérimentés et convaincus.",
+      "recommendedFor": "Idéal pour : Traders expérimentés, tolérance au risque élevée, spéculation court terme"
+    }
   }
 }

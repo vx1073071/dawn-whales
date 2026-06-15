@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "appName": "TradingEasy",
     "tagline": "自然言語で量化投資",
@@ -2203,7 +2203,7 @@
     "k24": "${paramDef.descriptionCN}过低 (${value}${paramDef.unit ?? \"\"})，低于安全下限 ${Math.ceil(warningLow)}。可能导致频繁假信号。",
     "k25": "${paramDef.descriptionCN}过高 (${value}${paramDef.unit ?? \"\"})，超过安全上限 ${Math.floor(warningHigh)}。可能导致信号滞后/错过机会。",
     "k26": "${paramDef.descriptionCN}接近下限 (${value}${paramDef.unit ?? \"\"})。建议适当上调以减少噪音。",
-    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书"\"})。建议适当下调以避免滞后。",
+    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书\"})。建议适当下调以避免滞后。",
     "k28": "${paramDef.descriptionCN}在安全范围内。",
     "k29": "${market}市场低波动+强趋势，</br>建议采用激进趋势跟踪策略。利用MACD快线(6/13)捕捉早期信号，配合移动止损(4%)保护利润。",
     "k30": "${market}市场高波动/弱趋势，</br>建议采用保守均值回归策略。更大布林带宽度(2.5σ)+更严格成交量过滤(2×)，等待极端偏差后进场。",
@@ -5915,5 +5915,80 @@
     "trades": "Trades",
     "equity": "Equity Curve",
     "factorAttribution": "因子归因分析"
+  },
+  "templateCategory": {
+    "sectionTitle": "戦略カテゴリ",
+    "allCategories": "すべてのカテゴリ",
+    "recommended": "あなたにおすすめ",
+    "totalTemplates": "テンプレート",
+    "filterByCategory": "カテゴリで絞り込む",
+    "filterByRisk": "リスクレベルで絞り込む",
+    "trend": {
+      "name": "トレンドフォロー",
+      "description": "移動平均線やチャネル、トレンド指標を使って確立された価格トレンドに従う",
+      "tagline": "トレンドに乗れ、抵抗するな"
+    },
+    "meanReversion": {
+      "name": "平均回帰",
+      "description": "価格が平均に回帰する性質を利用し、売られすぎで買い、買われすぎで売る",
+      "tagline": "下がったものは上がる"
+    },
+    "momentum": {
+      "name": "モメンタム",
+      "description": "強いものはさらに強くなる——価格加速度、相対力ランキング、出来高確認に基づく戦略",
+      "tagline": "強いものを買い、さらに強く売る"
+    },
+    "value": {
+      "name": "バリュー投資",
+      "description": "PE、PB、ROE、配当利回りなどのファンダメンタル指標で割安な優良資産を探す",
+      "tagline": "価格は支払うもの、価値は得るもの"
+    },
+    "arbitrage": {
+      "name": "アービトラージ",
+      "description": "市場間、取引所間、関連商品間の価格差から利益を得る——市場中立の低リスク戦略",
+      "tagline": "リスクフリーのスプレッド、安定した利益"
+    },
+    "hedge": {
+      "name": "ヘッジ＆プロテクト",
+      "description": "オプション、先物、インバースETF、ボラティリティ商品でポートフォリオを守る",
+      "tagline": "夜も安心して眠れる"
+    },
+    "crypto": {
+      "name": "クリプトネイティブ",
+      "description": "オンチェーンデータ、DeFi指標、資金調達率、クジラ追跡——ブロックチェーン生まれの戦略",
+      "tagline": "ブロックチェーン生まれ"
+    },
+    "crossMarket": {
+      "name": "グローバル市場",
+      "description": "アジア、欧州、新興国をカバーするマルチリージョン戦略——グローバルに考え、ローカルで取引",
+      "tagline": "グローバルに考え、ローカルで取引"
+    },
+    "aiPowered": {
+      "name": "AI搭載",
+      "description": "AIが駆動する戦略——会話型パラメータ調整、リアルタイム適応、自動最適化",
+      "tagline": "AIが考え、あなたが取引する"
+    }
+  },
+  "templateRisk": {
+    "sectionTitle": "リスクプロファイル",
+    "riskLevel": "リスクレベル",
+    "conservative": {
+      "name": "保守的",
+      "stylizedLabel": "🛡️ 保守的",
+      "description": "低リスク・長期保有。元本保全と安定収入を重視。退職資金やリスク回避型の投資家に最適。",
+      "recommendedFor": "最適：退職ポートフォリオ、インカム重視、リスク回避型の初心者"
+    },
+    "balanced": {
+      "name": "バランス",
+      "stylizedLabel": "⚖️ バランス",
+      "description": "中リスク、スイング〜ポジション取引。成長と保護をバランスした分散アプローチ。ほとんどのアクティブトレーダーに最適。",
+      "recommendedFor": "最適：アクティブトレーダー、分散ポートフォリオ、経験豊富な個人投資家"
+    },
+    "aggressive": {
+      "name": "アグレッシブ",
+      "stylizedLabel": "⚡ アグレッシブ",
+      "description": "高リスク・短期保有。レバレッジや集中ポジションで最大リターンを追求。経験豊富で確信のあるトレーダー向け。",
+      "recommendedFor": "最適：経験豊富なトレーダー、高リスク許容、短期投機"
+    }
   }
 }

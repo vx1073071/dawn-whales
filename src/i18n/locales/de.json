@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "appName": "TradingEasy",
     "tagline": "Quant für alle",
@@ -2203,7 +2203,7 @@
     "k24": "${paramDef.descriptionCN}过低 (${value}${paramDef.unit ?? \"\"})，低于安全下限 ${Math.ceil(warningLow)}。可能导致频繁假信号。",
     "k25": "${paramDef.descriptionCN}过高 (${value}${paramDef.unit ?? \"\"})，超过安全上限 ${Math.floor(warningHigh)}。可能导致信号滞后/错过机会。",
     "k26": "${paramDef.descriptionCN}接近下限 (${value}${paramDef.unit ?? \"\"})。建议适当上调以减少噪音。",
-    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书"\"})。建议适当下调以避免滞后。",
+    "k27": "服务器: Linux (Ubuntu/CentOS), Node.js 20+, 反向代理, 进程管理器, 域名已解析, SSL 证书\"})。建议适当下调以避免滞后。",
     "k28": "${paramDef.descriptionCN}在安全范围内。",
     "k29": "${market}市场低波动+强趋势，</br>建议采用激进趋势跟踪策略。利用MACD快线(6/13)捕捉早期信号，配合移动止损(4%)保护利润。",
     "k30": "${market}市场高波动/弱趋势，</br>建议采用保守均值回归策略。更大布林带宽度(2.5σ)+更严格成交量过滤(2×)，等待极端偏差后进场。",
@@ -5912,5 +5912,80 @@
     "trades": "Trades",
     "equity": "Equity Curve",
     "factorAttribution": "因子归因分析"
+  },
+  "templateCategory": {
+    "sectionTitle": "Strategie-Kategorien",
+    "allCategories": "Alle Kategorien",
+    "recommended": "Für Sie empfohlen",
+    "totalTemplates": "Vorlagen",
+    "filterByCategory": "Nach Kategorie filtern",
+    "filterByRisk": "Nach Risiko filtern",
+    "trend": {
+      "name": "Trendfolge",
+      "description": "Folgen Sie etablierten Preistrends mit gleitenden Durchschnitten, Kanälen und Trendindikatoren",
+      "tagline": "Reite den Trend, kämpfe nicht dagegen"
+    },
+    "meanReversion": {
+      "name": "Mean Reversion",
+      "description": "Profitieren Sie von der Rückkehr zum Mittelwert — kaufen Sie überverkaufte Dips, verkaufen Sie überkaufte Spitzen",
+      "tagline": "Was fällt, muss auch steigen"
+    },
+    "momentum": {
+      "name": "Momentum",
+      "description": "Auf Stärke setzen — Strategien basierend auf Preisbeschleunigung, relativer Stärke und Volumenbestätigung",
+      "tagline": "Kaufe Stärke, verkaufe stärker"
+    },
+    "value": {
+      "name": "Value-Investing",
+      "description": "Kaufen Sie unterbewertete Vermögenswerte mit fundamentalen Kennzahlen: KGV, KBV, EK-Rendite, Dividendenrendite",
+      "tagline": "Preis ist, was Sie zahlen — Wert ist, was Sie bekommen"
+    },
+    "arbitrage": {
+      "name": "Arbitrage",
+      "description": "Profitieren Sie von Preisunterschieden zwischen Märkten, Börsen oder verwandten Instrumenten — marktneutral",
+      "tagline": "Risikofreie Spreads, stetige Gewinne"
+    },
+    "hedge": {
+      "name": "Absicherung & Schutz",
+      "description": "Schützen Sie Ihr Portfolio mit Optionen, Futures, inversen ETFs und Volatilitätsinstrumenten",
+      "tagline": "Nachts ruhig schlafen"
+    },
+    "crypto": {
+      "name": "Krypto-nativ",
+      "description": "On-Chain-Daten, DeFi-Metriken, Funding Rates, Whale-Tracking — Strategien, die auf der Blockchain geboren wurden",
+      "tagline": "Auf der Blockchain geboren"
+    },
+    "crossMarket": {
+      "name": "Globale Märkte",
+      "description": "Multiregionale Strategien über Asien, Europa und Schwellenländer — global denken, lokal handeln",
+      "tagline": "Global denken, lokal handeln"
+    },
+    "aiPowered": {
+      "name": "KI-gestützt",
+      "description": "KI-gesteuerte Strategien mit dialogbasierter Abstimmung, Echtzeitanpassung und automatischer Optimierung",
+      "tagline": "KI denkt, Sie handeln"
+    }
+  },
+  "templateRisk": {
+    "sectionTitle": "Risikoprofil",
+    "riskLevel": "Risikostufe",
+    "conservative": {
+      "name": "Konservativ",
+      "stylizedLabel": "🛡️ Konservativ",
+      "description": "Geringes Risiko, langfristiger Horizont. Fokus auf Kapitalerhalt und stetiges Einkommen. Für Rentenkonten oder risikoscheue Anleger.",
+      "recommendedFor": "Am besten für: Rentenportfolios, Einkommenssuchende, risikoscheue Anfänger"
+    },
+    "balanced": {
+      "name": "Ausgewogen",
+      "stylizedLabel": "⚖️ Ausgewogen",
+      "description": "Mittleres Risiko, Swing- bis Positionstrading. Diversifizierter Ansatz mit Balance zwischen Wachstum und Schutz.",
+      "recommendedFor": "Am besten für: Aktive Trader, diversifizierte Portfolios, erfahrene Privatanleger"
+    },
+    "aggressive": {
+      "name": "Aggressiv",
+      "stylizedLabel": "⚡ Aggressiv",
+      "description": "Hohes Risiko, kurzfristiger Horizont. Gehebelte oder konzentrierte Positionen für maximale Rendite. Für erfahrene, überzeugte Trader.",
+      "recommendedFor": "Am besten für: Erfahrene Trader, hohe Risikotoleranz, kurzfristige Spekulation"
+    }
   }
 }
