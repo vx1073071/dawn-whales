@@ -1,0 +1,4715 @@
+{
+  "timestamp": "2026-06-15T22:49:11.263Z",
+  "totalFactors": 240,
+  "consistentFactors": 233,
+  "inconsistentFactors": 7,
+  "entries": [
+    {
+      "canonicalId": "MKT",
+      "nameEn": "MarketBeta",
+      "nameCn": "市场Beta",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_MARKET_RISK",
+      "calculatorRefs": [
+        "electron/engine/factors/etf-price-source.ts",
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-exposure.ts",
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-risk-model.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "electron/engine/data/ibkr-broker-adapter.ts",
+        "electron/engine/analysis/real-trader.ts",
+        "src/components/common/FactorHealthLight.tsx",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/strategy/DecayCurveChart.tsx",
+        "src/components/strategy/FactorCard.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorDecayDashboard.tsx",
+        "src/components/strategy/FactorExposurePage.tsx",
+        "src/components/strategy/FactorLabWorkbench.tsx",
+        "src/components/strategy/FactorStylePicker.tsx",
+        "src/components/strategy/HyperbolicDecayModel.tsx",
+        "src/components/strategy/LongShortChart.tsx",
+        "src/components/strategy/MonthlyHeatmap.tsx",
+        "src/components/strategy/StrategyComparer.tsx",
+        "src/components/strategy/StrategyPage/BacktestPanel.tsx",
+        "src/components/strategy/TimingConfigPanel.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx"
+      ],
+      "i18nKey": "factor.mkt.name",
+      "dbColumn": "factor_mkt",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "SIZE",
+      "nameEn": "Size",
+      "nameCn": "规模效应",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_SIZE",
+      "calculatorRefs": [
+        "electron/engine/factors/etf-price-source.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-calculator.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-data-sources/local-cache-source.ts",
+        "electron/engine/factors/factor-exposure.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-pipeline-convergence.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-risk-model.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/EntryFactorGallery.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/components/wallet/ScenarioPackV2.tsx",
+        "src/lib/bridge-api.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.size.name",
+      "dbColumn": "factor_size",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HML",
+      "nameEn": "BookToMarket",
+      "nameCn": "市净率估值",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_VALUE",
+      "calculatorRefs": [
+        "electron/engine/factors/etf-price-source.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-exposure.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-pipeline-convergence.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-ref-validator.ts",
+        "electron/engine/factors/factor-risk-model.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/common/FactorHealthLight.tsx",
+        "src/components/factor/AdvancedFactorCard.tsx",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorMarketIntegration.tsx",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorRollingIC.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/components/strategy/DecayCurveChart.tsx",
+        "src/components/strategy/FactorCard.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorDecayDashboard.tsx",
+        "src/components/strategy/FactorExposurePage.tsx",
+        "src/components/strategy/FactorLabWorkbench.tsx",
+        "src/components/strategy/FactorStylePicker.tsx",
+        "src/components/strategy/HyperbolicDecayModel.tsx",
+        "src/components/strategy/LongShortChart.tsx",
+        "src/components/strategy/MonthlyHeatmap.tsx",
+        "src/components/strategy/StrategyComparer.tsx",
+        "src/components/strategy/StrategyPage/BacktestPanel.tsx",
+        "src/components/strategy/TimingConfigPanel.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/lib/bridge-api.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.hml.name",
+      "dbColumn": "factor_hml",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "EP_RATIO",
+      "nameEn": "EarningsYield",
+      "nameCn": "市盈率倒数",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_VALUE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-calculator.ts",
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.ep_ratio.name",
+      "dbColumn": "factor_ep_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CFP_RATIO",
+      "nameEn": "CashFlowPrice",
+      "nameCn": "现金收益率",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_VALUE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.cfp_ratio.name",
+      "dbColumn": "factor_cfp_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "MOM_12M",
+      "nameEn": "Momentum12M",
+      "nameCn": "12月动量",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/dawn-factor-framework.ts",
+        "electron/engine/factors/etf-price-source.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-data-provider.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-data-sources/local-cache-source.ts",
+        "electron/engine/factors/factor-e2e-validation.ts",
+        "electron/engine/factors/factor-exposure.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-pipeline-convergence.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-risk-model.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/common/FactorHealthLight.tsx",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorMarketIntegration.tsx",
+        "src/components/factor/FactorMarketSwitch.tsx",
+        "src/components/factor/FactorOnboarding.tsx",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorRollingIC.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorSearchBarV2.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/components/onboarding/OnboardingGuide.tsx",
+        "src/components/strategy/DecayCurveChart.tsx",
+        "src/components/strategy/FactorCard.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorDecayDashboard.tsx",
+        "src/components/strategy/FactorLabWorkbench.tsx",
+        "src/components/strategy/FactorStylePicker.tsx",
+        "src/components/strategy/HyperbolicDecayModel.tsx",
+        "src/components/strategy/LongShortChart.tsx",
+        "src/components/strategy/MonthlyHeatmap.tsx",
+        "src/components/strategy/StrategyComparer.tsx",
+        "src/components/strategy/StrategyPage/BacktestPanel.tsx",
+        "src/components/strategy/TimingConfigPanel.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/components/wallet/BlindBoxCard.tsx",
+        "src/components/wallet/DailyBriefingPage.tsx",
+        "src/components/wallet/FactorWeightPanel.tsx",
+        "src/components/wallet/ScenarioPackV2.tsx",
+        "src/components/wallet/SignalPushPopupV2.tsx",
+        "src/components/wallet/TemplateBrowserV2.tsx",
+        "src/components/wallet/WeightSlider.tsx",
+        "src/lib/bridge-api.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.mom_12m.name",
+      "dbColumn": "factor_mom_12m",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "MOM_6M",
+      "nameEn": "Momentum6M",
+      "nameCn": "6月动量",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider.ts",
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx",
+        "src/components/factor/FactorUniverseHub.tsx",
+        "src/components/factor/MarketAutoRecommend.tsx",
+        "src/components/onboarding/OnboardingGuide.tsx",
+        "src/components/wallet/TemplateBrowserV2.tsx",
+        "src/components/wallet/WeeklyRankingPage.tsx"
+      ],
+      "i18nKey": "factor.mom_6m.name",
+      "dbColumn": "factor_mom_6m",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "MOM_1M",
+      "nameEn": "Momentum1M",
+      "nameCn": "1月动量",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/dawn-factor-framework.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-data-provider.ts",
+        "electron/engine/factors/factor-data-sources/local-cache-source.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.mom_1m.name",
+      "dbColumn": "factor_mom_1m",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "MOM_6_1",
+      "nameEn": "Momentum6Minus1",
+      "nameCn": "6-1月动量",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.mom_6_1.name",
+      "dbColumn": "factor_mom_6_1",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "RMW",
+      "nameEn": "RobustMinusWeak",
+      "nameCn": "盈利能力",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_QUALITY",
+      "calculatorRefs": [
+        "electron/engine/factors/etf-price-source.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-exposure.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/factor/AdvancedFactorCard.tsx",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorExposurePage.tsx",
+        "src/components/strategy/FactorLabWorkbench.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/lib/bridge-api.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.rmw.name",
+      "dbColumn": "factor_rmw",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMA",
+      "nameEn": "ConservativeMinusAggressive",
+      "nameCn": "投资风格",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_QUALITY",
+      "calculatorRefs": [
+        "electron/engine/factors/etf-price-source.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-exposure.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorExposurePage.tsx",
+        "src/components/strategy/FactorLabWorkbench.tsx",
+        "src/components/strategy/StrategyPage/BacktestPanel.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.cma.name",
+      "dbColumn": "factor_cma",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "QUAL",
+      "nameEn": "Quality",
+      "nameCn": "质量综合",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_QUALITY",
+      "calculatorRefs": [
+        "electron/engine/factors/etf-price-source.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-data-sources/local-cache-source.ts",
+        "electron/engine/factors/factor-exposure.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-pipeline-convergence.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-risk-model.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/billing/market/FactorAnalysisPanel.tsx",
+        "src/components/common/FactorHealthLight.tsx",
+        "src/components/factor/AdvancedFactorCard.tsx",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorMarketIntegration.tsx",
+        "src/components/factor/FactorOnboarding.tsx",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorRollingIC.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/components/strategy/DecayCurveChart.tsx",
+        "src/components/strategy/FactorCard.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorDecayDashboard.tsx",
+        "src/components/strategy/FactorExposurePage.tsx",
+        "src/components/strategy/FactorLabWorkbench.tsx",
+        "src/components/strategy/FactorStylePicker.tsx",
+        "src/components/strategy/HyperbolicDecayModel.tsx",
+        "src/components/strategy/LongShortChart.tsx",
+        "src/components/strategy/MonthlyHeatmap.tsx",
+        "src/components/strategy/StrategyComparer.tsx",
+        "src/components/strategy/StrategyPage/BacktestPanel.tsx",
+        "src/components/strategy/TimingConfigPanel.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/lib/bridge-api.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.qual.name",
+      "dbColumn": "factor_qual",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "GROWTH",
+      "nameEn": "Growth",
+      "nameCn": "成长性",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_GROWTH",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-data-sources/local-cache-source.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-risk-model.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/sentiment-attribution.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/EntryFactorGallery.tsx",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorRollingIC.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorStylePicker.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/lib/bridge-api.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.growth.name",
+      "dbColumn": "factor_growth",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "YIELD",
+      "nameEn": "DividendYield",
+      "nameCn": "股息率",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_YIELD",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-risk-model.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/common/FactorHealthLight.tsx",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/EntryFactorGallery.tsx",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorRollingIC.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/components/strategy/DecayCurveChart.tsx",
+        "src/components/strategy/FactorCard.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorDecayDashboard.tsx",
+        "src/components/strategy/FactorLabWorkbench.tsx",
+        "src/components/strategy/FactorStylePicker.tsx",
+        "src/components/strategy/HyperbolicDecayModel.tsx",
+        "src/components/strategy/MonthlyHeatmap.tsx",
+        "src/components/strategy/StrategyComparer.tsx",
+        "src/components/strategy/TimingConfigPanel.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/lib/bridge-api.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.yield.name",
+      "dbColumn": "factor_yield",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "DIV_YIELD_12M",
+      "nameEn": "DividendYield12M",
+      "nameCn": "12月股息率",
+      "level1": "L1_CLASSIC",
+      "level2": "L2_YIELD",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.div_yield_12m.name",
+      "dbColumn": "factor_div_yield_12m",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ACCRUALS",
+      "nameEn": "Accruals",
+      "nameCn": "应计利润",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_PROFIT_QUALITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/pro-factor-calculators.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx"
+      ],
+      "i18nKey": "factor.accruals.name",
+      "dbColumn": "factor_accruals",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "EARNINGS_VARIABILITY",
+      "nameEn": "EarningsVariability",
+      "nameCn": "盈利波动率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_PROFIT_QUALITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.earnings_variability.name",
+      "dbColumn": "factor_earnings_variability",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "GROSS_PROFITABILITY",
+      "nameEn": "GrossProfitability",
+      "nameCn": "毛利润率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_PROFIT_QUALITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.gross_profitability.name",
+      "dbColumn": "factor_gross_profitability",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "NET_PAYOUT",
+      "nameEn": "NetPayout",
+      "nameCn": "净派息率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_YIELD_QUALITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.net_payout.name",
+      "dbColumn": "factor_net_payout",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "OPERATING_LEVERAGE",
+      "nameEn": "OperatingLeverage",
+      "nameCn": "经营杠杆",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_RISK_STRUCTURE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.operating_leverage.name",
+      "dbColumn": "factor_operating_leverage",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ASSET_TURNOVER",
+      "nameEn": "AssetTurnover",
+      "nameCn": "资产周转率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_EFFICIENCY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/yellow-factor-calculators.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx"
+      ],
+      "i18nKey": "factor.asset_turnover.name",
+      "dbColumn": "factor_asset_turnover",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CASH_FLOW_YIELD",
+      "nameEn": "CashFlowYield",
+      "nameCn": "自由现金流收益率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_VALUE_DEEP",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/yellow-factor-calculators.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx"
+      ],
+      "i18nKey": "factor.cash_flow_yield.name",
+      "dbColumn": "factor_cash_flow_yield",
+      "aliases": [],
+      "warnings": [
+        "Inconsistent: \"CASHFLOW_YIELD\" in electron/engine/factors/yellow-factor-calculators.ts — should be \"CASH_FLOW_YIELD\"",
+        "Inconsistent: \"CASHFLOW_YIELD\" in src/components/factor/FactorOnboardingWizard.tsx — should be \"CASH_FLOW_YIELD\""
+      ]
+    },
+    {
+      "canonicalId": "DEBT_COVERAGE",
+      "nameEn": "DebtCoverage",
+      "nameCn": "利息覆盖倍数",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_RISK_STRUCTURE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.debt_coverage.name",
+      "dbColumn": "factor_debt_coverage",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "EARNINGS_SURPRISE",
+      "nameEn": "EarningsSurprise",
+      "nameCn": "盈利超预期",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_EVENT",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx",
+        "src/components/factor/MarketAutoRecommend.tsx",
+        "src/components/wallet/DailyBriefingCard.tsx"
+      ],
+      "i18nKey": "factor.earnings_surprise.name",
+      "dbColumn": "factor_earnings_surprise",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "EARN_QUALITY",
+      "nameEn": "EarningsQuality",
+      "nameCn": "盈利质量",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_PROFIT_QUALITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.earn_quality.name",
+      "dbColumn": "factor_earn_quality",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "GROSS_MARGIN_TREND",
+      "nameEn": "GrossMarginTrend",
+      "nameCn": "毛利率趋势",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_EFFICIENCY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.gross_margin_trend.name",
+      "dbColumn": "factor_gross_margin_trend",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "F_SCORE",
+      "nameEn": "PiotroskiFScore",
+      "nameCn": "F分数财务健康",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_HEALTH",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.f_score.name",
+      "dbColumn": "factor_f_score",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ROE_STABILITY",
+      "nameEn": "RoeStability",
+      "nameCn": "ROE稳定性",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_PROFIT_QUALITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.roe_stability.name",
+      "dbColumn": "factor_roe_stability",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "INVENTORY_TURNOVER",
+      "nameEn": "InventoryTurnover",
+      "nameCn": "存货周转率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_EFFICIENCY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/yellow-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.inventory_turnover.name",
+      "dbColumn": "factor_inventory_turnover",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "RECEIVABLE_TURNOVER",
+      "nameEn": "ReceivableTurnover",
+      "nameCn": "应收账款周转",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_EFFICIENCY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.receivable_turnover.name",
+      "dbColumn": "factor_receivable_turnover",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "FREE_CASH_FLOW",
+      "nameEn": "FreeCashFlow",
+      "nameCn": "自由现金流",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_VALUE_DEEP",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/yellow-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.free_cash_flow.name",
+      "dbColumn": "factor_free_cash_flow",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CURRENT_RATIO",
+      "nameEn": "CurrentRatio",
+      "nameCn": "流动比率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_RISK_STRUCTURE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/data/financial-reports.ts"
+      ],
+      "i18nKey": "factor.current_ratio.name",
+      "dbColumn": "factor_current_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "INTEREST_COVERAGE",
+      "nameEn": "InterestCoverage",
+      "nameCn": "利息覆盖",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_RISK_STRUCTURE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.interest_coverage.name",
+      "dbColumn": "factor_interest_coverage",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ANALYST_MOMENTUM",
+      "nameEn": "AnalystMomentum",
+      "nameCn": "分析师动量",
+      "level1": "L1_ANALYST",
+      "level2": "L2_RATING",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.analyst_momentum.name",
+      "dbColumn": "factor_analyst_momentum",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "EARNINGS_REVISION",
+      "nameEn": "EarningsRevision",
+      "nameCn": "盈利修正",
+      "level1": "L1_ANALYST",
+      "level2": "L2_FORECAST",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.earnings_revision.name",
+      "dbColumn": "factor_earnings_revision",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "TARGET_PRICE_IMPLIED",
+      "nameEn": "TargetPriceImplied",
+      "nameCn": "目标价隐含空间",
+      "level1": "L1_ANALYST",
+      "level2": "L2_FORECAST",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.target_price_implied.name",
+      "dbColumn": "factor_target_price_implied",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ANALYST_DISPERSION",
+      "nameEn": "AnalystDispersion",
+      "nameCn": "分析师分歧度",
+      "level1": "L1_ANALYST",
+      "level2": "L2_FORECAST",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx"
+      ],
+      "i18nKey": "factor.analyst_dispersion.name",
+      "dbColumn": "factor_analyst_dispersion",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "RECOMMENDATION_CHANGE",
+      "nameEn": "RecommendationChange",
+      "nameCn": "评级变化方向",
+      "level1": "L1_ANALYST",
+      "level2": "L2_RATING",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.recommendation_change.name",
+      "dbColumn": "factor_recommendation_change",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "REVISION_RATIO",
+      "nameEn": "RevisionRatio",
+      "nameCn": "上调下调比",
+      "level1": "L1_ANALYST",
+      "level2": "L2_RATING",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.revision_ratio.name",
+      "dbColumn": "factor_revision_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "FEAR_GREED_INDEX",
+      "nameEn": "FearGreedIndex",
+      "nameCn": "恐惧贪婪指数",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_MARKET_MOOD",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.fear_greed_index.name",
+      "dbColumn": "factor_fear_greed_index",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "PUT_CALL_SKEW",
+      "nameEn": "PutCallSkew",
+      "nameCn": "期权偏度",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_OPTIONS",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.put_call_skew.name",
+      "dbColumn": "factor_put_call_skew",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HIGH_LOW_RATIO",
+      "nameEn": "HighLowRatio",
+      "nameCn": "新高新低比",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_MARKET_MOOD",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.high_low_ratio.name",
+      "dbColumn": "factor_high_low_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ADVANCE_DECLINE",
+      "nameEn": "AdvanceDecline",
+      "nameCn": "涨跌比",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_MARKET_MOOD",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.advance_decline.name",
+      "dbColumn": "factor_advance_decline",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "OPTION_PCR",
+      "nameEn": "OptionPCR",
+      "nameCn": "Put/Call比率",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_OPTIONS",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/components/factor/AdvancedFactorCard.tsx",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.option_pcr.name",
+      "dbColumn": "factor_option_pcr",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "SOCIAL_SENTIMENT",
+      "nameEn": "SocialSentiment",
+      "nameCn": "社交情绪",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_SOCIAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.social_sentiment.name",
+      "dbColumn": "factor_social_sentiment",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "MEDIA_ATTENTION",
+      "nameEn": "MediaAttention",
+      "nameCn": "媒体关注度",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_SOCIAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.media_attention.name",
+      "dbColumn": "factor_media_attention",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "INSIDER_TRADING",
+      "nameEn": "InsiderTrading",
+      "nameCn": "内部交易信号",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.insider_trading.name",
+      "dbColumn": "factor_insider_trading",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "SHORT_COVERING",
+      "nameEn": "ShortCovering",
+      "nameCn": "逼空压力",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.short_covering.name",
+      "dbColumn": "factor_short_covering",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "NEWS_SENTIMENT",
+      "nameEn": "NewsSentiment",
+      "nameCn": "新闻情绪",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_SOCIAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx",
+        "src/components/factor/FactorUniverseHub.tsx"
+      ],
+      "i18nKey": "factor.news_sentiment.name",
+      "dbColumn": "factor_news_sentiment",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "INSTITUTIONAL_FLOW",
+      "nameEn": "InstitutionalFlow",
+      "nameCn": "机构资金流",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.institutional_flow.name",
+      "dbColumn": "factor_institutional_flow",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "MA_20_60",
+      "nameEn": "MA2060",
+      "nameCn": "均线交叉",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_TREND",
+      "calculatorRefs": [
+        "electron/engine/factors/dawn-factor-framework.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-calculator.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/strategy/DecayCurveChart.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/LongShortChart.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/lib/bridge-api.ts"
+      ],
+      "i18nKey": "factor.ma_20_60.name",
+      "dbColumn": "factor_ma_20_60",
+      "aliases": [],
+      "warnings": [
+        "Inconsistent: \"MA2060\" in electron/engine/factors/factor-id-registry.ts — should be \"MA_20_60\""
+      ]
+    },
+    {
+      "canonicalId": "EMA_12_26",
+      "nameEn": "EMA1226",
+      "nameCn": "MACD",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_TREND",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorRollingIC.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx"
+      ],
+      "i18nKey": "factor.ema_12_26.name",
+      "dbColumn": "factor_ema_12_26",
+      "aliases": [],
+      "warnings": [
+        "Inconsistent: \"EMA1226\" in electron/engine/factors/factor-id-registry.ts — should be \"EMA_12_26\""
+      ]
+    },
+    {
+      "canonicalId": "RSI_14",
+      "nameEn": "RSI14",
+      "nameCn": "相对强弱",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_OSCILLATOR",
+      "calculatorRefs": [
+        "electron/engine/factors/dawn-factor-framework.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-data-sources/local-cache-source.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-summary-engine.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorRollingIC.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/components/strategy/DecayCurveChart.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorDecayDashboard.tsx",
+        "src/components/strategy/FactorLabWorkbench.tsx",
+        "src/components/strategy/LongShortChart.tsx",
+        "src/components/strategy/TimingConfigPanel.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/components/wallet/CreatorUpload.tsx",
+        "src/hooks/useIndicatorWorker.ts",
+        "src/lib/bridge-api.ts",
+        "src/lib/chart/indicator-worker-bridge.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.rsi_14.name",
+      "dbColumn": "factor_rsi_14",
+      "aliases": [],
+      "warnings": [
+        "Inconsistent: \"RSI14\" in electron/engine/factors/factor-id-registry.ts — should be \"RSI_14\"",
+        "Inconsistent: \"RSI14\" in src/hooks/useIndicatorWorker.ts — should be \"RSI_14\"",
+        "Inconsistent: \"RSI14\" in src/lib/chart/indicator-worker-bridge.ts — should be \"RSI_14\""
+      ]
+    },
+    {
+      "canonicalId": "KDJ",
+      "nameEn": "KDJ",
+      "nameCn": "KDJ随机",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_OSCILLATOR",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-calculator.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "electron/engine/data/realtime-indicators.ts",
+        "electron/engine/analysis/strategy-templates.ts",
+        "electron/engine/analysis/technical-indicators.ts",
+        "src/components/chart/IndicatorPanel.tsx",
+        "src/components/chart/KLineChartPro.tsx",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorRollingIC.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/chart/indicator-engine.ts",
+        "src/lib/chart/types-data.ts",
+        "src/lib/chart/types.ts"
+      ],
+      "i18nKey": "factor.kdj.name",
+      "dbColumn": "factor_kdj",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "BOLL",
+      "nameEn": "Bollinger",
+      "nameCn": "布林带",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_VOLATILITY",
+      "calculatorRefs": [
+        "electron/engine/factors/dawn-factor-framework.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/technical-indicators.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/chart/ChartInteractionEnhancements.tsx",
+        "src/components/chart/IndicatorPanel.tsx",
+        "src/components/chart/KLineChartPro.tsx",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/chart/indicator-engine.ts",
+        "src/lib/chart/types-data.ts",
+        "src/lib/chart/types.ts",
+        "src/lib/types.ts"
+      ],
+      "i18nKey": "factor.boll.name",
+      "dbColumn": "factor_boll",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ATR_14",
+      "nameEn": "ATR14",
+      "nameCn": "真实波幅",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_VOLATILITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.atr_14.name",
+      "dbColumn": "factor_atr_14",
+      "aliases": [],
+      "warnings": [
+        "Inconsistent: \"ATR14\" in electron/engine/factors/factor-id-registry.ts — should be \"ATR_14\""
+      ]
+    },
+    {
+      "canonicalId": "ADX",
+      "nameEn": "ADX",
+      "nameCn": "趋向指标",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_TREND",
+      "calculatorRefs": [
+        "electron/engine/factors/dawn-factor-framework.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/strategy-templates.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/components/marketplace/MarketplaceEnhanced.tsx",
+        "src/components/strategy/DecayCurveChart.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorDecayDashboard.tsx",
+        "src/components/strategy/FactorLabWorkbench.tsx",
+        "src/components/strategy/TimingConfigPanel.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/lib/bridge-api.ts",
+        "src/lib/chart/indicator-engine.ts",
+        "src/lib/chart/types.ts",
+        "src/lib/factor/factor-copy-library.ts",
+        "src/lib/factor/suggested-questions.ts"
+      ],
+      "i18nKey": "factor.adx.name",
+      "dbColumn": "factor_adx",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "OBV",
+      "nameEn": "OBV",
+      "nameCn": "能量潮",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_VOLUME",
+      "calculatorRefs": [
+        "electron/engine/factors/dawn-factor-framework.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/data/feature-store.ts",
+        "electron/engine/analysis/strategy-templates.ts",
+        "electron/engine/analysis/technical-indicators.ts",
+        "src/components/chart/IndicatorPanel.tsx",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/chart/types-data.ts",
+        "src/lib/chart/types.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.obv.name",
+      "dbColumn": "factor_obv",
+      "aliases": [],
+      "warnings": [
+        "Inconsistent: \"OBV_\" in electron/engine/factors/factor-compatibility-engine.ts — should be \"OBV\""
+      ]
+    },
+    {
+      "canonicalId": "CMF",
+      "nameEn": "CMF",
+      "nameCn": "资金流量",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_VOLUME",
+      "calculatorRefs": [
+        "electron/engine/factors/dawn-factor-framework.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/lib/chart/types.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.cmf.name",
+      "dbColumn": "factor_cmf",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ICHIMOKU",
+      "nameEn": "Ichimoku",
+      "nameCn": "一目均衡",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_TREND",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/components/chart/IndicatorPanel.tsx",
+        "src/lib/chart/types-data.ts",
+        "src/lib/chart/types.ts"
+      ],
+      "i18nKey": "factor.ichimoku.name",
+      "dbColumn": "factor_ichimoku",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "VWAP",
+      "nameEn": "VWAP",
+      "nameCn": "成交量加权均价",
+      "level1": "L1_TECHNICAL",
+      "level2": "L2_VOLUME",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/data/feature-store.ts",
+        "electron/engine/data/multi-market-quote-engine.ts",
+        "electron/engine/data/sliding-window-aggregator.ts",
+        "electron/engine/data/stream-computing.ts",
+        "electron/engine/analysis/execution-analytics.ts",
+        "electron/engine/analysis/smart-order-router.ts",
+        "electron/engine/analysis/strategy-templates.ts",
+        "electron/engine/analysis/tca-v2.ts",
+        "electron/engine/analysis/tca-v3.ts",
+        "src/components/broker/OpenDSignalPanel.tsx",
+        "src/components/broker/SignalDedupAndPriority.tsx",
+        "src/components/chart/ChartInteractionEnhancements.tsx",
+        "src/components/chart/IndicatorPanel.tsx",
+        "src/components/chart/InteractionSuite.tsx",
+        "src/components/chart/KLineChartPro.tsx",
+        "src/components/chart/MicrostructureTooltip.tsx",
+        "src/components/chart/TickTimeline.tsx",
+        "src/components/roadmap/RoadmapPage.tsx",
+        "src/data/copyTradeMockData.ts",
+        "src/lib/chart/depth-types.ts",
+        "src/lib/chart/indicator-engine.ts",
+        "src/lib/chart/microstructure-tooltip.ts",
+        "src/lib/chart/types-data.ts",
+        "src/lib/chart/types.ts"
+      ],
+      "i18nKey": "factor.vwap.name",
+      "dbColumn": "factor_vwap",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "VOL_60D",
+      "nameEn": "Volatility60D",
+      "nameCn": "60日波动率",
+      "level1": "L1_RISK",
+      "level2": "L2_VOLATILITY",
+      "calculatorRefs": [
+        "electron/engine/factors/dawn-factor-framework.ts",
+        "electron/engine/factors/etf-price-source.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-data-sources/local-cache-source.ts",
+        "electron/engine/factors/factor-exposure.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-pipeline-convergence.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-risk-model.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-summary-engine.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/common/FactorHealthLight.tsx",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorOnboarding.tsx",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorRollingIC.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/components/strategy/DecayCurveChart.tsx",
+        "src/components/strategy/FactorCard.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorDecayDashboard.tsx",
+        "src/components/strategy/FactorLabWorkbench.tsx",
+        "src/components/strategy/FactorStylePicker.tsx",
+        "src/components/strategy/HyperbolicDecayModel.tsx",
+        "src/components/strategy/LongShortChart.tsx",
+        "src/components/strategy/MonthlyHeatmap.tsx",
+        "src/components/strategy/StrategyComparer.tsx",
+        "src/components/strategy/StrategyPage/BacktestPanel.tsx",
+        "src/components/strategy/TimingConfigPanel.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/lib/bridge-api.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.vol_60d.name",
+      "dbColumn": "factor_vol_60d",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "LIQ",
+      "nameEn": "Liquidity",
+      "nameCn": "流动性",
+      "level1": "L1_RISK",
+      "level2": "L2_LIQUIDITY",
+      "calculatorRefs": [
+        "electron/engine/factors/dawn-factor-framework.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-optimizer.ts",
+        "electron/engine/factors/factor-pipeline-convergence.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-portfolio-eval.ts",
+        "electron/engine/factors/factor-risk-model.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/billing/market/FactorAnalysisPanel.tsx",
+        "src/components/common/FactorHealthLight.tsx",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/components/strategy/DecayCurveChart.tsx",
+        "src/components/strategy/FactorCard.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorDecayDashboard.tsx",
+        "src/components/strategy/FactorLabWorkbench.tsx",
+        "src/components/strategy/FactorStylePicker.tsx",
+        "src/components/strategy/HyperbolicDecayModel.tsx",
+        "src/components/strategy/LongShortChart.tsx",
+        "src/components/strategy/MonthlyHeatmap.tsx",
+        "src/components/strategy/StrategyComparer.tsx",
+        "src/components/strategy/StrategyPage/BacktestPanel.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx",
+        "src/lib/bridge-api.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.liq.name",
+      "dbColumn": "factor_liq",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "MAX_DRAWDOWN",
+      "nameEn": "MaxDrawdown",
+      "nameCn": "最大回撤",
+      "level1": "L1_RISK",
+      "level2": "L2_DOWNSIDE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "src/lib/factor/factor-copy-library.ts",
+        "src/lib/factor/humanize-metrics.ts"
+      ],
+      "i18nKey": "factor.max_drawdown.name",
+      "dbColumn": "factor_max_drawdown",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "VAR_95",
+      "nameEn": "VaR95",
+      "nameCn": "95%风险价值",
+      "level1": "L1_RISK",
+      "level2": "L2_DOWNSIDE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.var_95.name",
+      "dbColumn": "factor_var_95",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CVAR_95",
+      "nameEn": "CVaR95",
+      "nameCn": "条件风险价值",
+      "level1": "L1_RISK",
+      "level2": "L2_DOWNSIDE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.cvar_95.name",
+      "dbColumn": "factor_cvar_95",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "DOWNSIDE_DEVIATION",
+      "nameEn": "DownsideDeviation",
+      "nameCn": "下行偏差",
+      "level1": "L1_RISK",
+      "level2": "L2_DOWNSIDE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.downside_deviation.name",
+      "dbColumn": "factor_downside_deviation",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "SORTINO_RATIO",
+      "nameEn": "SortinoRatio",
+      "nameCn": "索提诺比率",
+      "level1": "L1_RISK",
+      "level2": "L2_RISK_ADJUSTED",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.sortino_ratio.name",
+      "dbColumn": "factor_sortino_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "OMEGA_RATIO",
+      "nameEn": "OmegaRatio",
+      "nameCn": "Omega比率",
+      "level1": "L1_RISK",
+      "level2": "L2_RISK_ADJUSTED",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.omega_ratio.name",
+      "dbColumn": "factor_omega_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "TAIL_DEPENDENCE",
+      "nameEn": "TailDependence",
+      "nameCn": "尾部相关",
+      "level1": "L1_RISK",
+      "level2": "L2_DOWNSIDE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.tail_dependence.name",
+      "dbColumn": "factor_tail_dependence",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CROWDING",
+      "nameEn": "Crowding",
+      "nameCn": "拥挤度",
+      "level1": "L1_RISK",
+      "level2": "L2_STRUCTURAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/data/RankingPipeline.ts"
+      ],
+      "i18nKey": "factor.crowding.name",
+      "dbColumn": "factor_crowding",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "MOM_CRASH",
+      "nameEn": "MomentumCrash",
+      "nameCn": "动量崩盘预警",
+      "level1": "L1_RISK",
+      "level2": "L2_DOWNSIDE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.mom_crash.name",
+      "dbColumn": "factor_mom_crash",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "BETA_STABILITY",
+      "nameEn": "BetaStability",
+      "nameCn": "Beta稳定性",
+      "level1": "L1_RISK",
+      "level2": "L2_VOLATILITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.beta_stability.name",
+      "dbColumn": "factor_beta_stability",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "SKEWNESS",
+      "nameEn": "Skewness",
+      "nameCn": "偏度",
+      "level1": "L1_RISK",
+      "level2": "L2_VOLATILITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.skewness.name",
+      "dbColumn": "factor_skewness",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "KURTOSIS",
+      "nameEn": "Kurtosis",
+      "nameCn": "峰度",
+      "level1": "L1_RISK",
+      "level2": "L2_VOLATILITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.kurtosis.name",
+      "dbColumn": "factor_kurtosis",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ALPHA_DECAY",
+      "nameEn": "AlphaDecay",
+      "nameCn": "Alpha衰减监测",
+      "level1": "L1_RISK",
+      "level2": "L2_STRUCTURAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.alpha_decay.name",
+      "dbColumn": "factor_alpha_decay",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "SECTOR_ROTATION",
+      "nameEn": "SectorRotation",
+      "nameCn": "板块轮动",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.sector_rotation.name",
+      "dbColumn": "factor_sector_rotation",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "FX_EXPOSURE",
+      "nameEn": "FXExposure",
+      "nameCn": "外汇敞口",
+      "level1": "L1_MACRO",
+      "level2": "L2_CURRENCY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.fx_exposure.name",
+      "dbColumn": "factor_fx_exposure",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "RATE_BETA",
+      "nameEn": "RateBeta",
+      "nameCn": "利率敏感度",
+      "level1": "L1_MACRO",
+      "level2": "L2_SENSITIVITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.rate_beta.name",
+      "dbColumn": "factor_rate_beta",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "INFLATION_BETA",
+      "nameEn": "InflationBeta",
+      "nameCn": "通胀敏感度",
+      "level1": "L1_MACRO",
+      "level2": "L2_SENSITIVITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/yellow-factor-calculators.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx"
+      ],
+      "i18nKey": "factor.inflation_beta.name",
+      "dbColumn": "factor_inflation_beta",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "USD_BETA",
+      "nameEn": "USDBeta",
+      "nameCn": "美元敏感度",
+      "level1": "L1_MACRO",
+      "level2": "L2_SENSITIVITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.usd_beta.name",
+      "dbColumn": "factor_usd_beta",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "OIL_BETA",
+      "nameEn": "OilBeta",
+      "nameCn": "原油敏感度",
+      "level1": "L1_MACRO",
+      "level2": "L2_SENSITIVITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.oil_beta.name",
+      "dbColumn": "factor_oil_beta",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CREDIT_SPREAD_BETA",
+      "nameEn": "CreditSpreadBeta",
+      "nameCn": "信用利差敏感度",
+      "level1": "L1_MACRO",
+      "level2": "L2_SENSITIVITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.credit_spread_beta.name",
+      "dbColumn": "factor_credit_spread_beta",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ECONOMIC_SURPRISE",
+      "nameEn": "EconomicSurprise",
+      "nameCn": "经济意外指数",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.economic_surprise.name",
+      "dbColumn": "factor_economic_surprise",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "MARKET_REGIME",
+      "nameEn": "MarketRegime",
+      "nameCn": "市场状态",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.market_regime.name",
+      "dbColumn": "factor_market_regime",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "VOLUME_REGIME",
+      "nameEn": "VolumeRegime",
+      "nameCn": "量能状态",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.volume_regime.name",
+      "dbColumn": "factor_volume_regime",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "YIELD_CURVE_SLOPE",
+      "nameEn": "YieldCurveSlope",
+      "nameCn": "收益率曲线斜率",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.yield_curve_slope.name",
+      "dbColumn": "factor_yield_curve_slope",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "REAL_RATE",
+      "nameEn": "RealRate",
+      "nameCn": "实际利率",
+      "level1": "L1_MACRO",
+      "level2": "L2_SENSITIVITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.real_rate.name",
+      "dbColumn": "factor_real_rate",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "PMI_INDEX",
+      "nameEn": "PMIIndex",
+      "nameCn": "PMI指数",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.pmi_index.name",
+      "dbColumn": "factor_pmi_index",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "VOLATILITY_REGIME",
+      "nameEn": "VolatilityRegime",
+      "nameCn": "波动率体制",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/pro-factor-calculators.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx"
+      ],
+      "i18nKey": "factor.volatility_regime.name",
+      "dbColumn": "factor_volatility_regime",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "FACTOR_LEAD_LAG",
+      "nameEn": "FactorLeadLag",
+      "nameCn": "因子领先滞后",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.factor_lead_lag.name",
+      "dbColumn": "factor_factor_lead_lag",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "STR_5D",
+      "nameEn": "ShortTermReversal5D",
+      "nameCn": "5日短期反转",
+      "level1": "L1_REVERSAL",
+      "level2": "L2_SHORT_TERM",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.str_5d.name",
+      "dbColumn": "factor_str_5d",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "LTR_60M",
+      "nameEn": "LongTermReversal60M",
+      "nameCn": "60月长期反转",
+      "level1": "L1_REVERSAL",
+      "level2": "L2_LONG_TERM",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.ltr_60m.name",
+      "dbColumn": "factor_ltr_60m",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "SEASONAL_1M",
+      "nameEn": "Seasonal1M",
+      "nameCn": "月度效应",
+      "level1": "L1_REVERSAL",
+      "level2": "L2_SEASONAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.seasonal_1m.name",
+      "dbColumn": "factor_seasonal_1m",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "GAP_REVERSION",
+      "nameEn": "GapReversion",
+      "nameCn": "缺口回补",
+      "level1": "L1_REVERSAL",
+      "level2": "L2_SHORT_TERM",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.gap_reversion.name",
+      "dbColumn": "factor_gap_reversion",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "MEAN_REVERSION_SPEED",
+      "nameEn": "MeanReversionSpeed",
+      "nameCn": "均值回归速度",
+      "level1": "L1_REVERSAL",
+      "level2": "L2_STATISTICAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.mean_reversion_speed.name",
+      "dbColumn": "factor_mean_reversion_speed",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_VIX",
+      "nameEn": "VIX",
+      "nameCn": "恐慌指数",
+      "level1": "L1_US",
+      "level2": "L2_VOLATILITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-summary-engine.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorRollingIC.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.us_vix.name",
+      "dbColumn": "factor_us_vix",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_SHORT_RATIO",
+      "nameEn": "ShortRatio",
+      "nameCn": "空头比率",
+      "level1": "L1_US",
+      "level2": "L2_SENTIMENT",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.us_short_ratio.name",
+      "dbColumn": "factor_us_short_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_INST_HOLD",
+      "nameEn": "InstitutionalHolding",
+      "nameCn": "机构持仓",
+      "level1": "L1_US",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-data-sources/local-cache-source.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.us_inst_hold.name",
+      "dbColumn": "factor_us_inst_hold",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_BUYBACK",
+      "nameEn": "Buyback",
+      "nameCn": "回购活动",
+      "level1": "L1_US",
+      "level2": "L2_CORPORATE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.us_buyback.name",
+      "dbColumn": "factor_us_buyback",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_EARN_SURPRISE",
+      "nameEn": "USEarningsSurprise",
+      "nameCn": "财报超预期",
+      "level1": "L1_US",
+      "level2": "L2_EVENT",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.us_earn_surprise.name",
+      "dbColumn": "factor_us_earn_surprise",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_INSIDER_BUY",
+      "nameEn": "InsiderBuy",
+      "nameCn": "内部人买入",
+      "level1": "L1_US",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.us_insider_buy.name",
+      "dbColumn": "factor_us_insider_buy",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_SHORT_SQUEEZE",
+      "nameEn": "ShortSqueeze",
+      "nameCn": "逼空风险",
+      "level1": "L1_US",
+      "level2": "L2_SENTIMENT",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.us_short_squeeze.name",
+      "dbColumn": "factor_us_short_squeeze",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_MEME_INDEX",
+      "nameEn": "MemeIndex",
+      "nameCn": "Meme股热度",
+      "level1": "L1_US",
+      "level2": "L2_SOCIAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.us_meme_index.name",
+      "dbColumn": "factor_us_meme_index",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_MARGIN_DEBT",
+      "nameEn": "MarginDebt",
+      "nameCn": "保证金债务",
+      "level1": "L1_US",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.us_margin_debt.name",
+      "dbColumn": "factor_us_margin_debt",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_RESIDUAL_MOM",
+      "nameEn": "ResidualMomentum",
+      "nameCn": "残差动量",
+      "level1": "L1_US",
+      "level2": "L2_STATS",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.us_residual_mom.name",
+      "dbColumn": "factor_us_residual_mom",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_EP_RATIO",
+      "nameEn": "USEarningsPrice",
+      "nameCn": "美股PE倒数",
+      "level1": "L1_US",
+      "level2": "L2_VALUE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.us_ep_ratio.name",
+      "dbColumn": "factor_us_ep_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_BP_RATIO",
+      "nameEn": "USBookPrice",
+      "nameCn": "美股PB倒数",
+      "level1": "L1_US",
+      "level2": "L2_VALUE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.us_bp_ratio.name",
+      "dbColumn": "factor_us_bp_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_DPS_STABILITY",
+      "nameEn": "DPSStability",
+      "nameCn": "分红稳定性",
+      "level1": "L1_US",
+      "level2": "L2_YIELD",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.us_dps_stability.name",
+      "dbColumn": "factor_us_dps_stability",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HKEX_SOUTHBOUND",
+      "nameEn": "Southbound",
+      "nameCn": "南向资金",
+      "level1": "L1_HK",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-data-sources/local-cache-source.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorRollingIC.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.hkex_southbound.name",
+      "dbColumn": "factor_hkex_southbound",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HKEX_CBCS_PREMIUM",
+      "nameEn": "CBCSPremium",
+      "nameCn": "AH溢价",
+      "level1": "L1_HK",
+      "level2": "L2_PRICING",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.hkex_cbcs_premium.name",
+      "dbColumn": "factor_hkex_cbcs_premium",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HKEX_WARRANT_IV",
+      "nameEn": "WarrantIV",
+      "nameCn": "涡轮引伸波幅",
+      "level1": "L1_HK",
+      "level2": "L2_DERIVATIVES",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.hkex_warrant_iv.name",
+      "dbColumn": "factor_hkex_warrant_iv",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HKEX_DLHB",
+      "nameEn": "DLHB",
+      "nameCn": "大轮候补",
+      "level1": "L1_HK",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorSearch.tsx"
+      ],
+      "i18nKey": "factor.hkex_dlhb.name",
+      "dbColumn": "factor_hkex_dlhb",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HKEX_FUND_HOLD",
+      "nameEn": "FundHolding",
+      "nameCn": "基金持仓",
+      "level1": "L1_HK",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-data-sources/initialize.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorSearch.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.hkex_fund_hold.name",
+      "dbColumn": "factor_hkex_fund_hold",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HK_SOUTHBOUND_FLOW",
+      "nameEn": "SouthboundFlowDaily",
+      "nameCn": "南向净流入",
+      "level1": "L1_HK",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.hk_southbound_flow.name",
+      "dbColumn": "factor_hk_southbound_flow",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HK_SOUTHBOUND_TOP10",
+      "nameEn": "SouthboundTop10",
+      "nameCn": "南向TOP10集中",
+      "level1": "L1_HK",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.hk_southbound_top10.name",
+      "dbColumn": "factor_hk_southbound_top10",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HK_SOUTHBOUND_MOM",
+      "nameEn": "SouthboundMomentum",
+      "nameCn": "南向动量",
+      "level1": "L1_HK",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.hk_southbound_mom.name",
+      "dbColumn": "factor_hk_southbound_mom",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HK_CONTROLLING_SH",
+      "nameEn": "ControllingShareholder",
+      "nameCn": "大股东质押率",
+      "level1": "L1_HK",
+      "level2": "L2_RISK",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.hk_controlling_sh.name",
+      "dbColumn": "factor_hk_controlling_sh",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HK_DIV_CUT_RISK",
+      "nameEn": "DividendCutRisk",
+      "nameCn": "减分红风险",
+      "level1": "L1_HK",
+      "level2": "L2_RISK",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.hk_div_cut_risk.name",
+      "dbColumn": "factor_hk_div_cut_risk",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HK_WARRANT_GEX",
+      "nameEn": "WarrantGEX",
+      "nameCn": "涡轮Gamma暴露",
+      "level1": "L1_HK",
+      "level2": "L2_DERIVATIVES",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.hk_warrant_gex.name",
+      "dbColumn": "factor_hk_warrant_gex",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HK_CBBC_STREET",
+      "nameEn": "CBBCStreetRatio",
+      "nameCn": "街货比",
+      "level1": "L1_HK",
+      "level2": "L2_DERIVATIVES",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.hk_cbbc_street.name",
+      "dbColumn": "factor_hk_cbbc_street",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HK_WARRANT_OI",
+      "nameEn": "WarrantOIChange",
+      "nameCn": "涡轮持仓变化",
+      "level1": "L1_HK",
+      "level2": "L2_DERIVATIVES",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.hk_warrant_oi.name",
+      "dbColumn": "factor_hk_warrant_oi",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HK_SHORT_SELL",
+      "nameEn": "ShortSellRatio",
+      "nameCn": "沽空比率",
+      "level1": "L1_HK",
+      "level2": "L2_SENTIMENT",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.hk_short_sell.name",
+      "dbColumn": "factor_hk_short_sell",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HK_ACC_RECEIVABLE",
+      "nameEn": "AccReceivable",
+      "nameCn": "应收异常",
+      "level1": "L1_HK",
+      "level2": "L2_RISK",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.hk_acc_receivable.name",
+      "dbColumn": "factor_hk_acc_receivable",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HK_AH_PREMIUM",
+      "nameEn": "AHPremium",
+      "nameCn": "AH溢价率",
+      "level1": "L1_HK",
+      "level2": "L2_PRICING",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.hk_ah_premium.name",
+      "dbColumn": "factor_hk_ah_premium",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_FUNDING",
+      "nameEn": "FundingRate",
+      "nameCn": "资金费率",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_DERIVATIVES",
+      "calculatorRefs": [
+        "electron/engine/factors/crypto-factor-pipeline.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-portfolio-diagnosis.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-summary-engine.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorRollingIC.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.crypto_funding.name",
+      "dbColumn": "factor_crypto_funding",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_OI_DELTA",
+      "nameEn": "OpenInterestDelta",
+      "nameCn": "持仓量变化",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_DERIVATIVES",
+      "calculatorRefs": [
+        "electron/engine/factors/crypto-factor-pipeline.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.crypto_oi_delta.name",
+      "dbColumn": "factor_crypto_oi_delta",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_EXCHANGE_FLOW",
+      "nameEn": "ExchangeFlow",
+      "nameCn": "交易所流量",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/crypto-factor-pipeline.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-daily-report.ts",
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/MarketAutoRecommend.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.crypto_exchange_flow.name",
+      "dbColumn": "factor_crypto_exchange_flow",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_ORDERBOOK_IMB",
+      "nameEn": "OrderbookImbalance",
+      "nameCn": "订单簿失衡",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_MICROSTRUCTURE",
+      "calculatorRefs": [
+        "electron/engine/factors/crypto-factor-pipeline.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.crypto_orderbook_imb.name",
+      "dbColumn": "factor_crypto_orderbook_imb",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_VOL_RATIO",
+      "nameEn": "VolumeRatio",
+      "nameCn": "量比",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_VOLUME",
+      "calculatorRefs": [
+        "electron/engine/factors/crypto-factor-pipeline.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.crypto_vol_ratio.name",
+      "dbColumn": "factor_crypto_vol_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_VOLUME_PROFILE",
+      "nameEn": "VolumeProfile",
+      "nameCn": "量价分布",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_VOLUME",
+      "calculatorRefs": [
+        "electron/engine/factors/crypto-factor-pipeline.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.crypto_volume_profile.name",
+      "dbColumn": "factor_crypto_volume_profile",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_BTC_CORR",
+      "nameEn": "BTCCorrelation",
+      "nameCn": "BTC相关性",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_CORRELATION",
+      "calculatorRefs": [
+        "electron/engine/factors/crypto-factor-pipeline.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.crypto_btc_corr.name",
+      "dbColumn": "factor_crypto_btc_corr",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_NVT",
+      "nameEn": "NVTRatio",
+      "nameCn": "NVT估值",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_VALUATION",
+      "calculatorRefs": [
+        "electron/engine/factors/crypto-factor-pipeline.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-data-provider.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorPK.tsx",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/FactorWeeklyLeaderboard.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.crypto_nvt.name",
+      "dbColumn": "factor_crypto_nvt",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_ACTIVE_ADDR",
+      "nameEn": "ActiveAddresses",
+      "nameCn": "活跃地址",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_ONCHAIN",
+      "calculatorRefs": [
+        "electron/engine/factors/crypto-factor-pipeline.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.crypto_active_addr.name",
+      "dbColumn": "factor_crypto_active_addr",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_LIQUIDATIONS",
+      "nameEn": "Liquidations",
+      "nameCn": "清算量",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_DERIVATIVES",
+      "calculatorRefs": [
+        "electron/engine/factors/crypto-factor-pipeline.ts",
+        "electron/engine/factors/factor-asset-registry.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-crowding.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-user-profile.ts",
+        "electron/engine/factors/strategy-ab-test.ts",
+        "electron/engine/analysis/turnover-cost-model.ts",
+        "src/components/factor/entryFactorData.ts",
+        "src/components/factor/FactorSearch.tsx",
+        "src/components/factor/ScenarioPackSelector.tsx",
+        "src/lib/factor/factor-copy-library.ts"
+      ],
+      "i18nKey": "factor.crypto_liquidations.name",
+      "dbColumn": "factor_crypto_liquidations",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_SOCIAL_SENTIMENT",
+      "nameEn": "SocialSentimentCrypto",
+      "nameCn": "社交情绪",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_SOCIAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_social_sentiment.name",
+      "dbColumn": "factor_crypto_social_sentiment",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_WHALE_ACCUM",
+      "nameEn": "WhaleAccumulation",
+      "nameCn": "大户累积",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_whale_accum.name",
+      "dbColumn": "factor_crypto_whale_accum",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_WHALE_DISTRIB",
+      "nameEn": "WhaleDistribution",
+      "nameCn": "大户出货",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_whale_distrib.name",
+      "dbColumn": "factor_crypto_whale_distrib",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_MVRV",
+      "nameEn": "MVRVRatio",
+      "nameCn": "MVRV比率",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_VALUATION",
+      "calculatorRefs": [
+        "electron/engine/factors/crypto-factor-pipeline.ts",
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "src/components/factor/ScenarioPackSelector.tsx"
+      ],
+      "i18nKey": "factor.crypto_mvrv.name",
+      "dbColumn": "factor_crypto_mvrv",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_FEAR_GREED",
+      "nameEn": "CryptoFearGreed",
+      "nameCn": "加密恐惧贪婪",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_SENTIMENT",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_fear_greed.name",
+      "dbColumn": "factor_crypto_fear_greed",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_MOM_7D",
+      "nameEn": "Momentum7D",
+      "nameCn": "7日动量",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_mom_7d.name",
+      "dbColumn": "factor_crypto_mom_7d",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_MOM_30D",
+      "nameEn": "Momentum30D",
+      "nameCn": "30日动量",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_mom_30d.name",
+      "dbColumn": "factor_crypto_mom_30d",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_MOM_90D",
+      "nameEn": "Momentum90D",
+      "nameCn": "90日动量",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_mom_90d.name",
+      "dbColumn": "factor_crypto_mom_90d",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_ALPHA_VS_BTC",
+      "nameEn": "AlphaVsBTC",
+      "nameCn": "相对BTC Alpha",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_PERFORMANCE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_alpha_vs_btc.name",
+      "dbColumn": "factor_crypto_alpha_vs_btc",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_ALT_SEASON",
+      "nameEn": "AltSeasonIndex",
+      "nameCn": "Alt-Season指数",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_SENTIMENT",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_alt_season.name",
+      "dbColumn": "factor_crypto_alt_season",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_NVT_SIGNAL",
+      "nameEn": "NVTSignal",
+      "nameCn": "NVT信号",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_VALUATION",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_nvt_signal.name",
+      "dbColumn": "factor_crypto_nvt_signal",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_STAKING_YIELD",
+      "nameEn": "StakingYield",
+      "nameCn": "质押收益率",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_YIELD",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_staking_yield.name",
+      "dbColumn": "factor_crypto_staking_yield",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_FEE_REVENUE",
+      "nameEn": "FeeRevenue",
+      "nameCn": "协议费用收入",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FUNDAMENTAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_fee_revenue.name",
+      "dbColumn": "factor_crypto_fee_revenue",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_TVL_GROWTH",
+      "nameEn": "TVLGrowth",
+      "nameCn": "TVL增长率",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FUNDAMENTAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_tvl_growth.name",
+      "dbColumn": "factor_crypto_tvl_growth",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_MAX_DRAWDOWN_30D",
+      "nameEn": "MaxDrawdown30D",
+      "nameCn": "30日最大回撤",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_RISK",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_max_drawdown_30d.name",
+      "dbColumn": "factor_crypto_max_drawdown_30d",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_PRICE_CORRECTION",
+      "nameEn": "PriceCorrection",
+      "nameCn": "回调幅度",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_RISK",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_price_correction.name",
+      "dbColumn": "factor_crypto_price_correction",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_LIQUIDATION_RISK",
+      "nameEn": "LiquidationRisk",
+      "nameCn": "清算风险",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_RISK",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_liquidation_risk.name",
+      "dbColumn": "factor_crypto_liquidation_risk",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_EXCHANGE_RESERVE",
+      "nameEn": "ExchangeReserve",
+      "nameCn": "交易所余额",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_exchange_reserve.name",
+      "dbColumn": "factor_crypto_exchange_reserve",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_BRIDGE_FLOW",
+      "nameEn": "BridgeFlow",
+      "nameCn": "跨链桥流量",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/final-red-factors.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx"
+      ],
+      "i18nKey": "factor.crypto_bridge_flow.name",
+      "dbColumn": "factor_crypto_bridge_flow",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_ECOSYSTEM_CORR",
+      "nameEn": "EcosystemCorrelation",
+      "nameCn": "生态联动",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_CORRELATION",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_ecosystem_corr.name",
+      "dbColumn": "factor_crypto_ecosystem_corr",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_VC_UNLOCK",
+      "nameEn": "VCUnlock",
+      "nameCn": "VC解锁压力",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_EVENT",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_vc_unlock.name",
+      "dbColumn": "factor_crypto_vc_unlock",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_DEVELOPER_ACTIVITY",
+      "nameEn": "DeveloperActivity",
+      "nameCn": "开发者活跃度",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FUNDAMENTAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_developer_activity.name",
+      "dbColumn": "factor_crypto_developer_activity",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_SMART_MONEY",
+      "nameEn": "SmartMoney",
+      "nameCn": "聪明钱流向",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.crypto_smart_money.name",
+      "dbColumn": "factor_crypto_smart_money",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_STABLECOIN_RATIO",
+      "nameEn": "StablecoinRatio",
+      "nameCn": "稳定币占比",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_SENTIMENT",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx",
+        "src/components/factor/MarketAutoRecommend.tsx"
+      ],
+      "i18nKey": "factor.crypto_stablecoin_ratio.name",
+      "dbColumn": "factor_crypto_stablecoin_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CARRY_EQUITY",
+      "nameEn": "EquityCarry",
+      "nameCn": "股票利差",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CARRY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.carry_equity.name",
+      "dbColumn": "factor_carry_equity",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CARRY_CRYPTO",
+      "nameEn": "CryptoCarry",
+      "nameCn": "加密资金费率利差",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CARRY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.carry_crypto.name",
+      "dbColumn": "factor_carry_crypto",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CARRY_CURRENCY",
+      "nameEn": "CurrencyCarry",
+      "nameCn": "货币利差",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CARRY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.carry_currency.name",
+      "dbColumn": "factor_carry_currency",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "BOND_CARRY",
+      "nameEn": "BondCarry",
+      "nameCn": "债券利差",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CARRY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.bond_carry.name",
+      "dbColumn": "factor_bond_carry",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CURRENCY_MOMENTUM",
+      "nameEn": "CurrencyMomentum",
+      "nameCn": "货币动量",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.currency_momentum.name",
+      "dbColumn": "factor_currency_momentum",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "GOLD_MOMENTUM",
+      "nameEn": "GoldMomentum",
+      "nameCn": "黄金动量",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.gold_momentum.name",
+      "dbColumn": "factor_gold_momentum",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "COMMODITY_SPREAD",
+      "nameEn": "CommoditySpread",
+      "nameCn": "商品期现结构",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_PRICING",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.commodity_spread.name",
+      "dbColumn": "factor_commodity_spread",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CORR_REGIME",
+      "nameEn": "CorrelationRegime",
+      "nameCn": "相关性体制",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CORRELATION",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.corr_regime.name",
+      "dbColumn": "factor_corr_regime",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CROSS_ASSET_CORR",
+      "nameEn": "CrossAssetCorrelation",
+      "nameCn": "跨资产联动",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CORRELATION",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/pro-factor-calculators.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx"
+      ],
+      "i18nKey": "factor.cross_asset_corr.name",
+      "dbColumn": "factor_cross_asset_corr",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "COMMODITY_MOMENTUM",
+      "nameEn": "CommodityMomentum",
+      "nameCn": "商品动量",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.commodity_momentum.name",
+      "dbColumn": "factor_commodity_momentum",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "BOND_MOMENTUM",
+      "nameEn": "BondMomentum",
+      "nameCn": "债券动量",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.bond_momentum.name",
+      "dbColumn": "factor_bond_momentum",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "FX_CARRY",
+      "nameEn": "FXCarry",
+      "nameCn": "外汇利差",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CARRY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.fx_carry.name",
+      "dbColumn": "factor_fx_carry",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "PRE_EARNINGS_DRIFT",
+      "nameEn": "PreEarningsDrift",
+      "nameCn": "盈利前漂移",
+      "level1": "L1_EVENT",
+      "level2": "L2_EARNINGS",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.pre_earnings_drift.name",
+      "dbColumn": "factor_pre_earnings_drift",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "POST_EARNINGS_DRIFT",
+      "nameEn": "PostEarningsDrift",
+      "nameCn": "盈利后漂移",
+      "level1": "L1_EVENT",
+      "level2": "L2_EARNINGS",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx"
+      ],
+      "i18nKey": "factor.post_earnings_drift.name",
+      "dbColumn": "factor_post_earnings_drift",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "DIVIDEND_CAPTURE",
+      "nameEn": "DividendCapture",
+      "nameCn": "分红捕获",
+      "level1": "L1_EVENT",
+      "level2": "L2_CORPORATE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/analysis/template-compatibility-engine.ts"
+      ],
+      "i18nKey": "factor.dividend_capture.name",
+      "dbColumn": "factor_dividend_capture",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "INDEX_REBALANCE",
+      "nameEn": "IndexRebalance",
+      "nameCn": "指数调入效应",
+      "level1": "L1_EVENT",
+      "level2": "L2_REBALANCE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/pro-factor-calculators.ts",
+        "electron/engine/factors/yellow-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.index_rebalance.name",
+      "dbColumn": "factor_index_rebalance",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "IPO_LOCKUP_EXPIRY",
+      "nameEn": "IPOLockupExpiry",
+      "nameCn": "解禁事件",
+      "level1": "L1_EVENT",
+      "level2": "L2_CORPORATE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.ipo_lockup_expiry.name",
+      "dbColumn": "factor_ipo_lockup_expiry",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "BUYBACK_ANNOUNCE",
+      "nameEn": "BuybackAnnouncement",
+      "nameCn": "回购公告效应",
+      "level1": "L1_EVENT",
+      "level2": "L2_CORPORATE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.buyback_announce.name",
+      "dbColumn": "factor_buyback_announce",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "DIV_ANNOUNCEMENT",
+      "nameEn": "DividendAnnouncement",
+      "nameCn": "分红公告日",
+      "level1": "L1_EVENT",
+      "level2": "L2_CORPORATE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.div_announcement.name",
+      "dbColumn": "factor_div_announcement",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "EARN_ANNOUNCEMENT",
+      "nameEn": "EarningsAnnouncement",
+      "nameCn": "财报发布日",
+      "level1": "L1_EVENT",
+      "level2": "L2_EARNINGS",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.earn_announcement.name",
+      "dbColumn": "factor_earn_announcement",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ESG_SCORE",
+      "nameEn": "ESGScore",
+      "nameCn": "ESG综合评分",
+      "level1": "L1_ESG",
+      "level2": "L2_OVERALL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-ref-validator.ts",
+        "src/components/factor/FactorOnboardingWizard.tsx"
+      ],
+      "i18nKey": "factor.esg_score.name",
+      "dbColumn": "factor_esg_score",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CARBON_INTENSITY",
+      "nameEn": "CarbonIntensity",
+      "nameCn": "碳强度",
+      "level1": "L1_ESG",
+      "level2": "L2_ENVIRONMENT",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.carbon_intensity.name",
+      "dbColumn": "factor_carbon_intensity",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "GOVERNANCE_SCORE",
+      "nameEn": "GovernanceScore",
+      "nameCn": "治理评分",
+      "level1": "L1_ESG",
+      "level2": "L2_GOVERNANCE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.governance_score.name",
+      "dbColumn": "factor_governance_score",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "GREEN_REVENUE",
+      "nameEn": "GreenRevenue",
+      "nameCn": "绿色收入占比",
+      "level1": "L1_ESG",
+      "level2": "L2_ENVIRONMENT",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.green_revenue.name",
+      "dbColumn": "factor_green_revenue",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "SOCIAL_SCORE",
+      "nameEn": "SocialScore",
+      "nameCn": "社会责任评分",
+      "level1": "L1_ESG",
+      "level2": "L2_SOCIAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.social_score.name",
+      "dbColumn": "factor_social_score",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ESG_MOMENTUM",
+      "nameEn": "ESGMomentum",
+      "nameCn": "ESG进步速度",
+      "level1": "L1_ESG",
+      "level2": "L2_OVERALL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.esg_momentum.name",
+      "dbColumn": "factor_esg_momentum",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "SMB",
+      "nameEn": "SMB_Deprecated",
+      "nameCn": "SMB(已废弃)",
+      "level1": "L1_LEGACY",
+      "level2": "L2_DEPRECATED",
+      "calculatorRefs": [
+        "electron/engine/factors/etf-price-source.ts",
+        "electron/engine/factors/factor-compatibility-engine.ts",
+        "electron/engine/factors/factor-exposure.ts",
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-ref-validator.ts",
+        "electron/engine/factors/factor-risk-model.ts",
+        "src/components/common/FactorHealthLight.tsx",
+        "src/components/strategy/DecayCurveChart.tsx",
+        "src/components/strategy/FactorCard.tsx",
+        "src/components/strategy/FactorCompareDashboard.tsx",
+        "src/components/strategy/FactorDecayDashboard.tsx",
+        "src/components/strategy/FactorExposurePage.tsx",
+        "src/components/strategy/FactorLabWorkbench.tsx",
+        "src/components/strategy/HyperbolicDecayModel.tsx",
+        "src/components/strategy/LongShortChart.tsx",
+        "src/components/strategy/MonthlyHeatmap.tsx",
+        "src/components/strategy/StrategyComparer.tsx",
+        "src/components/strategy/StrategyPage/BacktestPanel.tsx",
+        "src/components/strategy/TimingConfigPanel.tsx",
+        "src/components/strategy/useFactorChineseNames.tsx"
+      ],
+      "i18nKey": "factor.smb.name",
+      "dbColumn": "factor_smb",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "QUALITY",
+      "nameEn": "Quality_Deprecated",
+      "nameCn": "Quality(已废弃)",
+      "level1": "L1_LEGACY",
+      "level2": "L2_DEPRECATED",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-completion.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-risk-model.ts",
+        "src/components/factor/EntryFactorGallery.tsx"
+      ],
+      "i18nKey": "factor.quality.name",
+      "dbColumn": "factor_quality",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ROA",
+      "nameEn": "ROA",
+      "nameCn": "总资产回报率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_PROFIT_QUALITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/factor-unified-datasource.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "electron/engine/data/sector-comparison.ts",
+        "electron/engine/analysis/valuation-data.ts"
+      ],
+      "i18nKey": "factor.roa.name",
+      "dbColumn": "factor_roa",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "GROSS_MARGIN",
+      "nameEn": "GrossMargin",
+      "nameCn": "毛利率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_PROFIT_QUALITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.gross_margin.name",
+      "dbColumn": "factor_gross_margin",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "DEBT_TO_EQUITY",
+      "nameEn": "DebtToEquity",
+      "nameCn": "负债权益比",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_RISK_STRUCTURE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.debt_to_equity.name",
+      "dbColumn": "factor_debt_to_equity",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "INSIDER_BUYING",
+      "nameEn": "InsiderBuying",
+      "nameCn": "内部人买入信号",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.insider_buying.name",
+      "dbColumn": "factor_insider_buying",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "FUND_FLOW",
+      "nameEn": "FundFlow",
+      "nameCn": "资金净流入",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.fund_flow.name",
+      "dbColumn": "factor_fund_flow",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ETF_FLOW",
+      "nameEn": "ETFFlow",
+      "nameCn": "ETF资金流",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.etf_flow.name",
+      "dbColumn": "factor_etf_flow",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "DIVIDEND_CHANGE",
+      "nameEn": "DividendChange",
+      "nameCn": "股息变化方向",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_YIELD_QUALITY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.dividend_change.name",
+      "dbColumn": "factor_dividend_change",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "SECTOR_STRENGTH",
+      "nameEn": "SectorStrength",
+      "nameCn": "行业强度",
+      "level1": "L1_MACRO",
+      "level2": "L2_CYCLE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.sector_strength.name",
+      "dbColumn": "factor_sector_strength",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "IV_RANK",
+      "nameEn": "IVRank",
+      "nameCn": "隐含波动率排名",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_OPTIONS",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.iv_rank.name",
+      "dbColumn": "factor_iv_rank",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CURRENCY_EFFECT",
+      "nameEn": "CurrencyEffect",
+      "nameCn": "汇率影响",
+      "level1": "L1_MACRO",
+      "level2": "L2_CURRENCY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.currency_effect.name",
+      "dbColumn": "factor_currency_effect",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "FREE_CASH_FLOW_YIELD",
+      "nameEn": "FreeCashFlowYield",
+      "nameCn": "自由现金流收益率",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_VALUE_DEEP",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.free_cash_flow_yield.name",
+      "dbColumn": "factor_free_cash_flow_yield",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "EQUITY_MULTIPLIER",
+      "nameEn": "EquityMultiplier",
+      "nameCn": "权益乘数",
+      "level1": "L1_FUNDAMENTAL",
+      "level2": "L2_RISK_STRUCTURE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "electron/engine/factors/yellow-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.equity_multiplier.name",
+      "dbColumn": "factor_equity_multiplier",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "DISPOSITION_EFFECT",
+      "nameEn": "DispositionEffect",
+      "nameCn": "处置效应",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_SOCIAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "electron/engine/factors/yellow-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.disposition_effect.name",
+      "dbColumn": "factor_disposition_effect",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "ANCHORING",
+      "nameEn": "Anchoring",
+      "nameCn": "锚定效应",
+      "level1": "L1_SENTIMENT",
+      "level2": "L2_SOCIAL",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "electron/engine/factors/yellow-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.anchoring.name",
+      "dbColumn": "factor_anchoring",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "AH_PREMIUM_CHANGE",
+      "nameEn": "AHPremiumChange",
+      "nameCn": "AH溢价变化率",
+      "level1": "L1_HK",
+      "level2": "L2_PRICING",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "electron/engine/factors/yellow-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.ah_premium_change.name",
+      "dbColumn": "factor_ah_premium_change",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HSI_CONSTITUENT",
+      "nameEn": "HSIConstituent",
+      "nameCn": "恒指成分股权重",
+      "level1": "L1_HK",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.hsi_constituent.name",
+      "dbColumn": "factor_hsi_constituent",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "HK_REIT_YIELD",
+      "nameEn": "HKREITYield",
+      "nameCn": "港股REIT收益率",
+      "level1": "L1_HK",
+      "level2": "L2_YIELD",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "electron/engine/factors/market-yellow-calculators.ts"
+      ],
+      "i18nKey": "factor.hk_reit_yield.name",
+      "dbColumn": "factor_hk_reit_yield",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_EARNINGS_CALENDAR",
+      "nameEn": "USEarningsCalendar",
+      "nameCn": "美股财报日历",
+      "level1": "L1_US",
+      "level2": "L2_EVENT",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.us_earnings_calendar.name",
+      "dbColumn": "factor_us_earnings_calendar",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_SECTOR_ROTATION",
+      "nameEn": "USSectorRotation",
+      "nameCn": "美股板块轮动",
+      "level1": "L1_US",
+      "level2": "L2_CORPORATE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.us_sector_rotation.name",
+      "dbColumn": "factor_us_sector_rotation",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_SMALL_CAP_MOMENTUM",
+      "nameEn": "USSmallCapMomentum",
+      "nameCn": "小盘股动量",
+      "level1": "L1_US",
+      "level2": "L2_STATS",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.us_small_cap_momentum.name",
+      "dbColumn": "factor_us_small_cap_momentum",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_DIVIDEND_ARISTOCRATS",
+      "nameEn": "USDividendAristocrats",
+      "nameCn": "股息贵族",
+      "level1": "L1_US",
+      "level2": "L2_YIELD",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.us_dividend_aristocrats.name",
+      "dbColumn": "factor_us_dividend_aristocrats",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "US_SP500_EQUAL_WEIGHT",
+      "nameEn": "USSP500EqualWeight",
+      "nameCn": "标普500等权",
+      "level1": "L1_US",
+      "level2": "L2_VALUE",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.us_sp500_equal_weight.name",
+      "dbColumn": "factor_us_sp500_equal_weight",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_S2F",
+      "nameEn": "CryptoStockToFlow",
+      "nameCn": "S2F模型",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_VALUATION",
+      "calculatorRefs": [
+        "electron/engine/factors/crypto-factor-pipeline.ts",
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.crypto_s2f.name",
+      "dbColumn": "factor_crypto_s2f",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CRYPTO_HASH_RATE",
+      "nameEn": "CryptoHashRate",
+      "nameCn": "哈希率",
+      "level1": "L1_CRYPTO",
+      "level2": "L2_ONCHAIN",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-data-provider-v2.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts",
+        "electron/engine/factors/market-yellow-calculators.ts"
+      ],
+      "i18nKey": "factor.crypto_hash_rate.name",
+      "dbColumn": "factor_crypto_hash_rate",
+      "aliases": [],
+      "warnings": [
+        "Inconsistent: \"CRYPTO_HASHRATE\" in electron/engine/factors/market-yellow-calculators.ts — should be \"CRYPTO_HASH_RATE\""
+      ]
+    },
+    {
+      "canonicalId": "XM_MKTCAP_EXPOSURE",
+      "nameEn": "CrossMarketCapExposure",
+      "nameCn": "跨市场市值暴露",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CORRELATION",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.xm_mktcap_exposure.name",
+      "dbColumn": "factor_xm_mktcap_exposure",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "XM_LIQUIDITY",
+      "nameEn": "CrossLiquidity",
+      "nameCn": "跨市场流动性",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CORRELATION",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.xm_liquidity.name",
+      "dbColumn": "factor_xm_liquidity",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "XM_DIVIDEND_ARAMA",
+      "nameEn": "CrossDividendArama",
+      "nameCn": "跨市场股息比较",
+      "level1": "L1_CROSS_ASSET",
+      "level2": "L2_CARRY",
+      "calculatorRefs": [
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-provider-adapter-r186.ts",
+        "electron/engine/factors/factor-signal-integration.ts",
+        "electron/engine/factors/green-factor-calculators.ts"
+      ],
+      "i18nKey": "factor.xm_dividend_arama.name",
+      "dbColumn": "factor_xm_dividend_arama",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_ROLL_YIELD",
+      "nameEn": "RollYield",
+      "nameCn": "换月成本(展期收益)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_TERM_STRUCTURE",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-ref-validator.ts",
+        "src/components/factor/CommodityFactorCard.tsx",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx",
+        "src/components/wallet/DailyBriefingCard.tsx",
+        "src/components/wallet/WeeklyRankingPage.tsx"
+      ],
+      "i18nKey": "factor.cmd_roll_yield.name",
+      "dbColumn": "factor_cmd_roll_yield",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_TERM_STRUCTURE",
+      "nameEn": "TermStructure",
+      "nameCn": "期限结构斜率",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_TERM_STRUCTURE",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx"
+      ],
+      "i18nKey": "factor.cmd_term_structure.name",
+      "dbColumn": "factor_cmd_term_structure",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_BASIS",
+      "nameEn": "Basis",
+      "nameCn": "基差(现货vs期货)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_TERM_STRUCTURE",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-ref-validator.ts",
+        "src/components/factor/CommodityFactorCard.tsx",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx"
+      ],
+      "i18nKey": "factor.cmd_basis.name",
+      "dbColumn": "factor_cmd_basis",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_MOMENTUM_12M",
+      "nameEn": "CommodityMomentum12M",
+      "nameCn": "12月商品动量",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-ref-validator.ts",
+        "src/components/factor/CommodityFactorCard.tsx",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx"
+      ],
+      "i18nKey": "factor.cmd_momentum_12m.name",
+      "dbColumn": "factor_cmd_momentum_12m",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_MOMENTUM_1M",
+      "nameEn": "CommodityMomentum1M",
+      "nameCn": "1月商品反转",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_MOMENTUM",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx"
+      ],
+      "i18nKey": "factor.cmd_momentum_1m.name",
+      "dbColumn": "factor_cmd_momentum_1m",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_VOLATILITY",
+      "nameEn": "CommodityVolatility",
+      "nameCn": "商品波动率",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_VOLATILITY",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx"
+      ],
+      "i18nKey": "factor.cmd_volatility.name",
+      "dbColumn": "factor_cmd_volatility",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_SKEWNESS",
+      "nameEn": "CommoditySkewness",
+      "nameCn": "收益偏度",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_VOLATILITY",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx"
+      ],
+      "i18nKey": "factor.cmd_skewness.name",
+      "dbColumn": "factor_cmd_skewness",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_EIA_CRUDE",
+      "nameEn": "EIACrudeInventory",
+      "nameCn": "EIA原油库存",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_INVENTORY",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityFactorCard.tsx",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx",
+        "src/components/wallet/SignalPushPopup.tsx"
+      ],
+      "i18nKey": "factor.cmd_eia_crude.name",
+      "dbColumn": "factor_cmd_eia_crude",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_NATGAS_STORAGE",
+      "nameEn": "NatGasStorage",
+      "nameCn": "天然气储气量",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_INVENTORY",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx"
+      ],
+      "i18nKey": "factor.cmd_natgas_storage.name",
+      "dbColumn": "factor_cmd_natgas_storage",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_LME_INVENTORY",
+      "nameEn": "LMEInventory",
+      "nameCn": "LME金属库存",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_INVENTORY",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityFactorCard.tsx",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx"
+      ],
+      "i18nKey": "factor.cmd_lme_inventory.name",
+      "dbColumn": "factor_cmd_lme_inventory",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_GOLD_ETF",
+      "nameEn": "GoldETFHoldings",
+      "nameCn": "黄金ETF持仓",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_FLOW",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-ref-validator.ts",
+        "src/components/factor/CommodityFactorCard.tsx",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx"
+      ],
+      "i18nKey": "factor.cmd_gold_etf.name",
+      "dbColumn": "factor_cmd_gold_etf",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_BALANCE_SHEET",
+      "nameEn": "BalanceSheet",
+      "nameCn": "供需平衡表",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_FUNDAMENTAL",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx"
+      ],
+      "i18nKey": "factor.cmd_balance_sheet.name",
+      "dbColumn": "factor_cmd_balance_sheet",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_SEASONALITY",
+      "nameEn": "CommoditySeasonality",
+      "nameCn": "商品季节性",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_SEASONAL",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityFactorCard.tsx",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx"
+      ],
+      "i18nKey": "factor.cmd_seasonality.name",
+      "dbColumn": "factor_cmd_seasonality",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_GOLD_SUMMER",
+      "nameEn": "GoldSummerEffect",
+      "nameCn": "黄金夏季效应",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_SEASONAL",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-14-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityFactorCard.tsx",
+        "src/components/factor/CommodityLeaderboard.tsx",
+        "src/components/factor/CommodityOnboarding.tsx"
+      ],
+      "i18nKey": "factor.cmd_gold_summer.name",
+      "dbColumn": "factor_cmd_gold_summer",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_COT_COMMERCIAL",
+      "nameEn": "COTCommercial",
+      "nameCn": "商业持仓(产业套保)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_COT",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-12-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/wallet/WeeklyRankingPage.tsx"
+      ],
+      "i18nKey": "factor.cmd_cot_commercial.name",
+      "dbColumn": "factor_cmd_cot_commercial",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_COT_SPECULATOR",
+      "nameEn": "COTSpeculator",
+      "nameCn": "投机持仓(聪明钱)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_COT",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-12-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx"
+      ],
+      "i18nKey": "factor.cmd_cot_speculator.name",
+      "dbColumn": "factor_cmd_cot_speculator",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_COT_EXTREME",
+      "nameEn": "COTExtreme",
+      "nameCn": "极端持仓(拥挤信号)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_COT",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-12-factors.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts"
+      ],
+      "i18nKey": "factor.cmd_cot_extreme.name",
+      "dbColumn": "factor_cmd_cot_extreme",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_COT_CHANGE",
+      "nameEn": "COTPositionChange",
+      "nameCn": "仓位变化方向(大佬加减仓)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_COT",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-12-factors.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx"
+      ],
+      "i18nKey": "factor.cmd_cot_change.name",
+      "dbColumn": "factor_cmd_cot_change",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_OPEN_INTEREST",
+      "nameEn": "OpenInterest",
+      "nameCn": "总持仓量趋势(市场参与度)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_COT",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-12-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx"
+      ],
+      "i18nKey": "factor.cmd_open_interest.name",
+      "dbColumn": "factor_cmd_open_interest",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_DXY_LINKAGE",
+      "nameEn": "DXYLinkage",
+      "nameCn": "美元联动(强美元=商品压力)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_MACRO",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-12-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-ref-validator.ts",
+        "src/components/factor/CommodityLeaderboard.tsx"
+      ],
+      "i18nKey": "factor.cmd_dxy_linkage.name",
+      "dbColumn": "factor_cmd_dxy_linkage",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_REAL_RATE",
+      "nameEn": "RealRate",
+      "nameCn": "实际利率(黄金的天敌)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_MACRO",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-12-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "electron/engine/factors/factor-ref-validator.ts",
+        "src/components/factor/CommodityLeaderboard.tsx"
+      ],
+      "i18nKey": "factor.cmd_real_rate.name",
+      "dbColumn": "factor_cmd_real_rate",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_INFLATION_BE",
+      "nameEn": "InflationBE",
+      "nameCn": "通胀预期(通胀升=黄金升)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_MACRO",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-12-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx"
+      ],
+      "i18nKey": "factor.cmd_inflation_be.name",
+      "dbColumn": "factor_cmd_inflation_be",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_GEOPOL_RISK",
+      "nameEn": "GeopoliticalRisk",
+      "nameCn": "地缘风险溢价",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_MACRO",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-12-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx"
+      ],
+      "i18nKey": "factor.cmd_geopol_risk.name",
+      "dbColumn": "factor_cmd_geopol_risk",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_GOLD_SILVER_RATIO",
+      "nameEn": "GoldSilverRatio",
+      "nameCn": "金银比(避险vs风险偏好)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_RATIO",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-12-factors.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx"
+      ],
+      "i18nKey": "factor.cmd_gold_silver_ratio.name",
+      "dbColumn": "factor_cmd_gold_silver_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_GOLD_OIL_RATIO",
+      "nameEn": "GoldOilRatio",
+      "nameCn": "金油比(衰退指针)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_RATIO",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-12-factors.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx"
+      ],
+      "i18nKey": "factor.cmd_gold_oil_ratio.name",
+      "dbColumn": "factor_cmd_gold_oil_ratio",
+      "aliases": [],
+      "warnings": []
+    },
+    {
+      "canonicalId": "CMD_CRACK_SPREAD",
+      "nameEn": "CrackSpread",
+      "nameCn": "裂解价差(炼油利润)",
+      "level1": "L1_COMMODITY",
+      "level2": "L2_RATIO",
+      "calculatorRefs": [
+        "electron/engine/factors/commodity-12-factors.ts",
+        "electron/engine/factors/commodity-scenario-packs.ts",
+        "electron/engine/factors/factor-i18n-map.ts",
+        "electron/engine/factors/factor-id-registry.ts",
+        "src/components/factor/CommodityLeaderboard.tsx"
+      ],
+      "i18nKey": "factor.cmd_crack_spread.name",
+      "dbColumn": "factor_cmd_crack_spread",
+      "aliases": [],
+      "warnings": []
+    }
+  ]
+}

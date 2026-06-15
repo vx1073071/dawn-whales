@@ -9,7 +9,7 @@ export function createAllYellowFactorCalculators(): FactorCalculator[] {
   return [
     // === A1 Value (3) ===
     createFactorCalculator({ type: 'ratio', factorId: 'SALES_TO_PRICE', level1: 'L1_CLASSIC', level2: 'L2_VALUE', label: 'Sales to Price', numerator: 'revenue', denominator: 'close', invert: true, denominatorFloor: 1e-10 }),
-    createFactorCalculator({ type: 'ratio', factorId: 'CASHFLOW_YIELD', level1: 'L1_CLASSIC', level2: 'L2_VALUE', label: 'Cash Flow Yield', numerator: 'operatingCashFlow', denominator: 'close', invert: true, denominatorFloor: 1e-10 }),
+    createFactorCalculator({ type: 'ratio', factorId: 'CASH_FLOW_YIELD', level1: 'L1_CLASSIC', level2: 'L2_VALUE', label: 'Cash Flow Yield', numerator: 'operatingCashFlow', denominator: 'close', invert: true, denominatorFloor: 1e-10 }),
     createFactorCalculator({ type: 'rank', factorId: 'PEG_RATIO', level1: 'L1_CLASSIC', level2: 'L2_GROWTH', label: 'PEG Ratio', valueExtractor: (input: FactorInput) => { const pe = (input.fundamental?.eps && input.fundamental.eps > 0) ? input.priceData.close / input.fundamental.eps : 0; const g = (input.extra?.earningsGrowth as number) ?? 0.05; return (g > 0 && pe > 0) ? pe / g : 999; }, ascending: true }),
     // === A2 Quality (3) ===
     createFactorCalculator({ type: 'ratio', factorId: 'ROIC', level1: 'L1_FUNDAMENTAL', level2: 'L2_PROFIT_QUALITY', label: 'ROIC', numerator: 'netIncome', denominator: 'totalAssets', invert: false, denominatorFloor: 1 }),

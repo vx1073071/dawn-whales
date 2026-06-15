@@ -48,7 +48,7 @@ const SCENARIO_PACKS: ScenarioPack[] = [
     factorCount: 12,
     tags: ['value', 'dividend', 'defensive'],
     recommended: true,
-    factorIds: ['PE_RATIO', 'PB_RATIO', 'DIVIDEND_YIELD', 'FCF_YIELD', 'EV_EBITDA', 'GRAHAM_NET', 'CASHFLOW_YIELD', 'SALES_TO_PRICE', 'PEG_RATIO', 'EBITDA_EV', 'PRICE_BOOK', 'NET_NET'],
+    factorIds: ['PE_RATIO', 'PB_RATIO', 'DIVIDEND_YIELD', 'FCF_YIELD', 'EV_EBITDA', 'GRAHAM_NET', 'CASH_FLOW_YIELD', 'SALES_TO_PRICE', 'PEG_RATIO', 'EBITDA_EV', 'PRICE_BOOK', 'NET_NET'],
   },
   {
     id: 'momentum-growth',
