@@ -2180,6 +2180,7 @@ const TemplateBrowserV2: React.FC<Props> = ({onSelectMode,onUseTemplate,locale:p
   const [mode,setMode] = useState<CreateMode>('template');
   const [mf,setMf] = useState('全部');
   const [rf,setRf] = useState<'all'|'conservative'|'balanced'|'aggressive'>('all');  // R214 ML#3
+  const [tier,setTier] = useState<'beginner'|'intermediate'|'advanced'>('beginner');  // R216 ML#3
   const [q,setQ] = useState('');
   const [sel,setSel] = useState<TemplateItem|null>(null);
   const [exp,setExp] = useState<string|null>(null);
@@ -2191,6 +2192,10 @@ const TemplateBrowserV2: React.FC<Props> = ({onSelectMode,onUseTemplate,locale:p
     if (q.trim()) { const w = q.toLowerCase(); a = a.filter(t=>t.name.toLowerCase().includes(w)||t.nameCN.includes(w)||t.oneLiner.includes(w)||t.factors.some(f=>f.factorName.includes(w))); }
     return a;
   }, [mf, rf, q]);
+
+  // R216 ML#3: Progressive disclosure (3/20/44 by tier)
+  const TIER_LIMITS: Record<typeof tier, number> = { beginner: 3, intermediate: 20, advanced: 999 };
+  const visibleList = useMemo(() => list.slice(0, TIER_LIMITS[tier]), [list, tier]);
 
   return (
     <div style={{background:'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',borderRadius:12,padding:24,border:'1px solid rgba(74,144,217,0.15)',minHeight:560}}>
@@ -2250,14 +2255,34 @@ const TemplateBrowserV2: React.FC<Props> = ({onSelectMode,onUseTemplate,locale:p
           ))}
         </div>
 
-        <div style={{color:'#909090',fontSize:12,marginBottom:16}}>{list.length}{T('res',l)}</div>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16,flexWrap:'wrap',gap:8}}>
+          <div style={{color:'#909090',fontSize:12}}>
+            {l==='zhCN'?`显示 ${visibleList.length} / ${list.length}`:`Showing ${visibleList.length} of ${list.length}`}
+          </div>
+          {/* R216 ML#3: 渐进式披露 — 3档 */}
+          <div style={{display:'flex',gap:4,alignItems:'center'}}>
+            <span style={{fontSize:11,color:'#909090',marginRight:4}}>📊 {l==='zhCN'?'显示密度':'Density'}:</span>
+            <button onClick={()=>setTier('beginner')}
+              style={{background:tier==='beginner'?'#3b82f6':'rgba(255,255,255,0.04)',color:tier==='beginner'?'#fff':'#909090',border:'1px solid '+(tier==='beginner'?'#3b82f6':'rgba(255,255,255,0.1)'),borderRadius:12,padding:'3px 10px',fontSize:11,cursor:'pointer'}}>
+              {l==='zhCN'?'新手 3':'3'}
+            </button>
+            <button onClick={()=>setTier('intermediate')}
+              style={{background:tier==='intermediate'?'#3b82f6':'rgba(255,255,255,0.04)',color:tier==='intermediate'?'#fff':'#909090',border:'1px solid '+(tier==='intermediate'?'#3b82f6':'rgba(255,255,255,0.1)'),borderRadius:12,padding:'3px 10px',fontSize:11,cursor:'pointer'}}>
+              {l==='zhCN'?'进阶 20':'20'}
+            </button>
+            <button onClick={()=>setTier('advanced')}
+              style={{background:tier==='advanced'?'#3b82f6':'rgba(255,255,255,0.04)',color:tier==='advanced'?'#fff':'#909090',border:'1px solid '+(tier==='advanced'?'#3b82f6':'rgba(255,255,255,0.1)'),borderRadius:12,padding:'3px 10px',fontSize:11,cursor:'pointer'}}>
+              {l==='zhCN'?`专业 全部(${list.length})`:`All ${list.length}`}
+            </button>
+          </div>
+        </div>
       </>)}
 
       {/* Template Grid */}
       {mode==='template' && (
         list.length > 0 ? (
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(340px, 1fr))',gap:14}}>
-            {list.map((tmpl: TemplateItem)=>{
+            {visibleList.map((tmpl: TemplateItem)=>{
               const isExp = exp===tmpl.id;
               const cc: Record<string,string> = {美股:'#4a90d9',港股:'#d73027',加密:'#f7931a',跨市场:'#9b59b6',日股:'#ff6b6b',韩股:'#3b82f6',台股:'#10b981',新加坡:'#a78bfa',澳洲:'#fb923c',印度:'#f43f5e',欧洲:'#06b6d4',大宗:'#eab308'};
               return (
