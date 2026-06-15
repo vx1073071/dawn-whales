@@ -6586,5 +6586,35 @@
   "skeleton_market_loading": "マーケットデータ読込中",
   "skeleton_portfolio_loading": "ポートフォリオ読込中",
   "skeleton_empty_data": "データなし",
-  "skeleton_animation_pulse": "パルスアニメーション"
+  "skeleton_animation_pulse": "パルスアニメーション",
+  "chartToolbar": {
+    "resetToDefault": "デフォルトに戻しました",
+    "volume": "出来高",
+    "crosshair": "十字線",
+    "tooltip": "ツールチップ",
+    "legend": "凡例",
+    "zoom": "ズーム",
+    "indicators": "インジケーター",
+    "reset": "リセット",
+    "hidePanel": "パネル非表示",
+    "showPanel": "パネル表示",
+    "expand": "展開",
+    "collapse": "折りたたむ",
+    "panelsReset": "パネルリセット"
+  },
+  "skeletonWatermark": {
+    "screenshot": "スクリーンショット",
+    "capturing": "生成中...",
+    "screenshotSaved": "保存しました",
+    "screenshotFailed": "失敗"
+  },
+  "panelDetach": {
+    "popupBlocked": "ポップアップがブロックされました",
+    "detached": "新規ウィンドウに分離",
+    "detachedTip": "パネルが新規ウィンドウで開かれました",
+    "reattach": "パネルを戻す",
+    "detach": "新規ウィンドウに分離",
+    "detachedContent": "分離パネルコンテンツ",
+    "detachedContentSub": "メインウィンドウで同期"
+  }
 }

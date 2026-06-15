@@ -6586,5 +6586,35 @@
   "skeleton_market_loading": "行情資料載入中",
   "skeleton_portfolio_loading": "持倉載入中",
   "skeleton_empty_data": "尚無資料",
-  "skeleton_animation_pulse": "脈衝動畫"
+  "skeleton_animation_pulse": "脈衝動畫",
+  "chartToolbar": {
+    "resetToDefault": "已恢復默認",
+    "volume": "成交量",
+    "crosshair": "十字光標",
+    "tooltip": "提示框",
+    "legend": "圖例",
+    "zoom": "縮放",
+    "indicators": "指標",
+    "reset": "重置",
+    "hidePanel": "隱藏面板",
+    "showPanel": "顯示面板",
+    "expand": "展開",
+    "collapse": "折疊",
+    "panelsReset": "面板已重置"
+  },
+  "skeletonWatermark": {
+    "screenshot": "截圖",
+    "capturing": "截圖生成中...",
+    "screenshotSaved": "截圖已保存",
+    "screenshotFailed": "截圖失敗"
+  },
+  "panelDetach": {
+    "popupBlocked": "彈窗被攔截，請允許彈窗",
+    "detached": "已分離到新視窗",
+    "detachedTip": "面板已在新視窗打開",
+    "reattach": "收回面板",
+    "detach": "分離到新視窗",
+    "detachedContent": "獨立面板內容區域",
+    "detachedContentSub": "通過主視窗控制同步"
+  }
 }

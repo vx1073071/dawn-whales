@@ -6393,5 +6393,35 @@
     "copied": "Copiato",
     "clickToCopy": "Clicca per copiare",
     "paramsApplied": "Parametri sincronizzati"
+  },
+  "chartToolbar": {
+    "resetToDefault": "Ripristinato default",
+    "volume": "Volume",
+    "crosshair": "Mirino",
+    "tooltip": "Tooltip",
+    "legend": "Legenda",
+    "zoom": "Zoom",
+    "indicators": "Indicatori",
+    "reset": "Ripristina",
+    "hidePanel": "Nascondi Pannello",
+    "showPanel": "Mostra Pannello",
+    "expand": "Espandi",
+    "collapse": "Comprimi",
+    "panelsReset": "Pannelli ripristinati"
+  },
+  "skeletonWatermark": {
+    "screenshot": "Screenshot",
+    "capturing": "Acquisizione...",
+    "screenshotSaved": "Screenshot salvato",
+    "screenshotFailed": "Screenshot fallito"
+  },
+  "panelDetach": {
+    "popupBlocked": "Popup bloccato",
+    "detached": "Staccato in nuova finestra",
+    "detachedTip": "Pannello in nuova finestra",
+    "reattach": "Riattacca pannello",
+    "detach": "Stacca in nuova finestra",
+    "detachedContent": "Contenuto pannello staccato",
+    "detachedContentSub": "Sincronizzato da finestra principale"
   }
 }

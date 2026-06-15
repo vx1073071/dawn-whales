@@ -6586,5 +6586,35 @@
   "skeleton_market_loading": "시장 데이터 로딩 중",
   "skeleton_portfolio_loading": "포트폴리오 로딩 중",
   "skeleton_empty_data": "데이터 없음",
-  "skeleton_animation_pulse": "펄스 애니메이션"
+  "skeleton_animation_pulse": "펄스 애니메이션",
+  "chartToolbar": {
+    "resetToDefault": "기본값으로 복원",
+    "volume": "거래량",
+    "crosshair": "십자선",
+    "tooltip": "툴팁",
+    "legend": "범례",
+    "zoom": "확대",
+    "indicators": "지표",
+    "reset": "초기화",
+    "hidePanel": "패널 숨기기",
+    "showPanel": "패널 보기",
+    "expand": "펼치기",
+    "collapse": "접기",
+    "panelsReset": "패널 초기화됨"
+  },
+  "skeletonWatermark": {
+    "screenshot": "스크린샷",
+    "capturing": "캡처 중...",
+    "screenshotSaved": "스크린샷 저장됨",
+    "screenshotFailed": "스크린샷 실패"
+  },
+  "panelDetach": {
+    "popupBlocked": "팝업 차단됨, 허용해주세요",
+    "detached": "새 창으로 분리됨",
+    "detachedTip": "패널이 새 창에서 열렸습니다",
+    "reattach": "패널 되돌리기",
+    "detach": "새 창으로 분리",
+    "detachedContent": "분리된 패널 콘텐츠",
+    "detachedContentSub": "메인 창으로 동기화"
+  }
 }

@@ -6105,5 +6105,35 @@
     "copied": "Скопировано",
     "clickToCopy": "Нажмите чтобы скопировать",
     "paramsApplied": "Параметры синхронизированы"
+  },
+  "chartToolbar": {
+    "resetToDefault": "По умолчанию",
+    "volume": "Объём",
+    "crosshair": "Перекрестие",
+    "tooltip": "Подсказка",
+    "legend": "Легенда",
+    "zoom": "Масштаб",
+    "indicators": "Индикаторы",
+    "reset": "Сбросить",
+    "hidePanel": "Скрыть Панель",
+    "showPanel": "Показать Панель",
+    "expand": "Развернуть",
+    "collapse": "Свернуть",
+    "panelsReset": "Панели сброшены"
+  },
+  "skeletonWatermark": {
+    "screenshot": "Скриншот",
+    "capturing": "Сохранение...",
+    "screenshotSaved": "Скриншот сохранён",
+    "screenshotFailed": "Скриншот не удался"
+  },
+  "panelDetach": {
+    "popupBlocked": "Всплывающее окно заблокировано",
+    "detached": "Отделено в новое окно",
+    "detachedTip": "Панель открыта в новом окне",
+    "reattach": "Вернуть панель",
+    "detach": "Отделить в новое окно",
+    "detachedContent": "Содержимое отделённой панели",
+    "detachedContentSub": "Синхронизация через главное окно"
   }
 }

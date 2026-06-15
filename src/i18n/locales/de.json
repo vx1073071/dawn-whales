@@ -6586,5 +6586,35 @@
   "skeleton_market_loading": "Marktdaten werden geladen",
   "skeleton_portfolio_loading": "Portfolio wird geladen",
   "skeleton_empty_data": "Keine Daten",
-  "skeleton_animation_pulse": "Puls-Animation"
+  "skeleton_animation_pulse": "Puls-Animation",
+  "chartToolbar": {
+    "resetToDefault": "Standard wiederhergestellt",
+    "volume": "Volumen",
+    "crosshair": "Fadenkreuz",
+    "tooltip": "Tooltip",
+    "legend": "Legende",
+    "zoom": "Zoom",
+    "indicators": "Indikatoren",
+    "reset": "Zurücksetzen",
+    "hidePanel": "Panel ausblenden",
+    "showPanel": "Panel einblenden",
+    "expand": "Erweitern",
+    "collapse": "Reduzieren",
+    "panelsReset": "Panels zurückgesetzt"
+  },
+  "skeletonWatermark": {
+    "screenshot": "Screenshot",
+    "capturing": "Erfasse...",
+    "screenshotSaved": "Screenshot gespeichert",
+    "screenshotFailed": "Screenshot fehlgeschlagen"
+  },
+  "panelDetach": {
+    "popupBlocked": "Popup blockiert",
+    "detached": "In neuem Fenster",
+    "detachedTip": "Panel in neuem Fenster",
+    "reattach": "Panel wieder anheften",
+    "detach": "In neues Fenster",
+    "detachedContent": "Getrennter Panel-Inhalt",
+    "detachedContentSub": "Synchronisiert über Hauptfenster"
+  }
 }
