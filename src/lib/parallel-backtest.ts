@@ -189,14 +189,14 @@ export async function parallelBacktest(
     const handler = (e: MessageEvent) => {
       const msg = e.data as WorkerMessage;
       if (msg.type === 'result') {
-        results[nextTaskIdx] = { ...(msg as any).data, params: configs[nextTaskIdx]?.params };
+        results[nextTaskIdx] = { ...(msg as any).data, params: (configs[nextTaskIdx] as any)?.params };
         completed++;
         workerBusy[freeIdx] = false;
         worker.removeEventListener('message', handler);
         dispatchNext();
         dispatchNext(); // try to fill all free workers
       } else if (msg.type === 'error') {
-        results[nextTaskIdx] = { error: msg.error, params: configs[nextTaskIdx]?.params };
+        results[nextTaskIdx] = { error: msg.error, params: (configs[nextTaskIdx] as any)?.params };
         completed++;
         workerBusy[freeIdx] = false;
         worker.removeEventListener('message', handler);

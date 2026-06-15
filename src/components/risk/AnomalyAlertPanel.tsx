@@ -1,5 +1,3 @@
-// @ts-nocheck — R107/S-26 bridge-api type widening pre-existing
-// @ts-nocheck — TODO: R107 i18n.t() return type fixes (S-23 removed, S-25 will restore)
 import { useState, useEffect, useCallback } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 import { getAnomalySummary, getAnomalyAlerts, acknowledgeAnomalyAlert } from '../../lib/bridge-api';
@@ -110,7 +108,7 @@ export default function AnomalyAlertPanel() {
       </div>
 
       {/* Summary */}
-      {summary &&
+      {summary as any &&
       <div className="grid grid-cols-4 gap-2 mb-4">
           <div className="bg-card rounded-lg p-2 text-center">
             <div className="text-xs text-gray-500">{"components.today"}</div>
@@ -157,19 +155,19 @@ export default function AnomalyAlertPanel() {
           const sev = SEVERITY_CONFIG[alert.severity];
           return (
             <div
-              key={alert.id}
+              key={(alert as any).id}
               className={`relative p-3 rounded-lg border ${sev.border} ${sev.bg} ${alert.acknowledged ? 'opacity-50' : ''}`}>
               
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className={`w-1.5 h-1.5 rounded-full ${sev.dot}`} />
-                    <span className="text-xs font-medium text-white">{alert.name}</span>
-                    <span className="text-[10px] text-gray-500 font-mono">{alert.code}</span>
+                    <span className="text-xs font-medium text-white">{(alert as any).name}</span>
+                    <span className="text-[10px] text-gray-500 font-mono">{(alert as any).code}</span>
                     <span className={`text-[10px] px-1 py-0.5 rounded ${sev.bg} ${sev.text}`}>{sev.label}</span>
                   </div>
                   <div className="text-xs text-gray-300 mb-1">{TYPE_LABELS[alert.type] || alert.type}</div>
-                  <div className="text-[11px] text-gray-500">{alert.description}</div>
+                  <div className="text-[11px] text-gray-500">{String(alert.description || "")}</div>
                   <div className="flex items-center gap-3 mt-1.5">
                     {alert.price &&
                     <span className="text-[11px] text-gray-400">¥{alert.price.toFixed(2)}</span>
@@ -179,7 +177,7 @@ export default function AnomalyAlertPanel() {
                         {alert.changePct >= 0 ? '+' : ''}{alert.changePct.toFixed(2)}%
                       </span>
                     }
-                    <span className="text-[10px] text-gray-600">{alert.timestamp}</span>
+                    <span className="text-[10px] text-gray-600">{(alert as any).timestamp}</span>
                   </div>
                 </div>
                 {!alert.acknowledged &&

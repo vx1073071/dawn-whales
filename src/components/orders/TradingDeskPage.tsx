@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── TradingDeskPage — IPC Full-Link (Round 16 P0) ────────────────────────
 // : + position/holding + + + 
 // >=500 lines | dark theme | production-ready

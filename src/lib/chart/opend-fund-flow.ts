@@ -1,4 +1,3 @@
-// @ts-nocheck
 // R127-Q01: nocheck cleared — PM file, type mismatch pending resolution
 // ── R115 QTE-34 PM: OpenD资金流API接入 ─────────────────────────────────
 // Proto 3312 Qot_GetCapitalFlow (直接获取主力/大/中/小单净流入)

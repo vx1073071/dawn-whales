@@ -1,5 +1,3 @@
-// @ts-nocheck — R107/S-26 bridge-api type widening pre-existing
-// @ts-nocheck — TODO: R107 i18n.t() return type fixes (S-23 removed, S-25 will restore)
 import { useState, useEffect, useCallback } from 'react';
 import { EngineError } from '../../../electron/engine/core/engine-error';
 
@@ -97,7 +95,7 @@ export default function NewsDashboardPage() {
       </div>
 
       {/* Market Mood */}
-      {mood &&
+      {mood as any &&
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-[#1a1a25] border border-white/5 rounded-xl p-4">
             <div className="text-xs text-gray-500 mb-1">{i18n.t('NewsDashboardPage.k0') as string}</div>
@@ -192,8 +190,8 @@ export default function NewsDashboardPage() {
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <h3 className="text-sm font-medium text-white leading-relaxed mb-1">{article.title}</h3>
-                  {article.summary &&
-                  <p className="text-xs text-gray-400 line-clamp-2 mb-2">{article.summary}</p>
+                  {!!article.summary &&
+                  <p className="text-xs text-gray-400 line-clamp-2 mb-2">{article.summary as any}</p>
                   }
                   <div className="flex items-center gap-3 text-xs text-gray-500">
                     <span>{article.source}</span>

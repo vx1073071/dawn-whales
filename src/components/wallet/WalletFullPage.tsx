@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R143 ML — WalletFullPage (提现+转账+打赏+总览) ───────────────────────
 // PM: 4 modules, 7h. 提现/转账/打赏/总览整合
 import { useState, useCallback, useEffect } from 'react';

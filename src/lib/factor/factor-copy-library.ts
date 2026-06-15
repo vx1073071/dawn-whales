@@ -1,7 +1,7 @@
 /**
  * Factor Humanize Copy Library — 因子人话翻译文案库
  *
- * 42因子的"人话比喻"文案 + 15指标的速判翻译。
+ * 240因子的"人话比喻"文案 + 15指标的速判翻译。
  * 用于 AI Factor Advisor 输出 + FactorCard hover 展示 + FactorLab 新手引导。
  *
  * 每条文案包含:
@@ -43,7 +43,7 @@ export interface FactorCopy {
   badWhen: string;
 }
 
-// ─── 42因子人话文案库 ────────────────────────────────────
+// ─── 240因子人话文案库 ────────────────────────────────────
 
 export const FACTOR_COPY_LIBRARY: Record<string, FactorCopy> = {
 

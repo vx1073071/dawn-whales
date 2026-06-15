@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 /**
  * DAWN WHALES R139 J01 — Dead Letter Queue (DLQ) for Copy Trade
  * 

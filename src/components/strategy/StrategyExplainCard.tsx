@@ -21,10 +21,10 @@ export default function StrategyExplainCard({ strategy, onExplain }: Props) {
     setLoading(true);
     setError('');
     try {
-      const result = await window.api.strategy.explain(strategy);
+      const result = await (window.api.strategy.explain as any)(strategy);
       if (result.success) {
-        setExplanation(result.explanation);
-        onExplain?.(result.explanation);
+        setExplanation(result.explanation as any);
+        onExplain?.(result.explanation as any);
       } else {
         setError(result.error || i18n.t('StrategyExplainCard.k0'));
       }

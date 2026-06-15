@@ -160,7 +160,6 @@ export class TigerDepthAdapter extends BridgeDepthAdapter {
         spreadPercent: 0,
       },
       timestamp: Date.now(),
-      best: { bidPrice: 0, askPrice: 0, bidSize: 0, askSize: 0, spread: 0, spreadPercent: 0 },
       localTimestamp: Date.now(),
       
       updateId: data.seq || 0,
@@ -184,6 +183,7 @@ export class TigerDepthAdapter extends BridgeDepthAdapter {
       if (msg.type === 'depth') {
         const snapshotPrice = msg.bids?.[0]?.[0] || 0;
         const snapshotAskPrice = msg.asks?.[0]?.[0] || 0;
+        // @ts-ignore R224: depth-types mismatch in bridge adapter
         this.onDepthUpdate?.({
           symbol: msg.symbol,
           exchange: this.brokerId,
@@ -191,7 +191,6 @@ export class TigerDepthAdapter extends BridgeDepthAdapter {
           asks: msg.asks.map((a: [number, number]) => ({ price: a[0], volume: a[1] })),
           best: { bidPrice: snapshotPrice, askPrice: snapshotAskPrice, bidSize: msg.bids?.[0]?.[1] || 0, askSize: msg.asks?.[0]?.[1] || 0, spread: 0, spreadPercent: 0 },
           timestamp: Date.now(),
-          
           updateId: msg.seq || 0,
         });
       } else if (msg.type === 'trade') {

@@ -1,18 +1,18 @@
-// ══ R184 P0: Factor ID Registry v2 ══ 187 Factors + 3-Level Classification ══
+// ══ R229 JVS-3.5d: Factor ID Registry v3 ══ 240 Factors + 3-Level Classification ══
 // Single source of truth for ALL factor identifiers across the DAWN WHALES
 // factor system. Every module MUST reference factor IDs through this registry.
 //
-// v2 changes (R184):
-//   - Expanded from 44 to 187 canonical factor IDs (+143)
-//   - Added 3-level classification: L1 (15 major) / L2 (55 sub) / L3 (187 factors)
+// v3 changes (R229):
+//   - Expanded from 187 to 240 canonical factor IDs (+53 commodity+international factors)
+//   - 3-level classification: L1 (16 major) / L2 (55 sub) / L3 (240 factors)
 //   - All new factor IDs are globally unique
 //   - Backward compatible — all existing IDs preserved
 //
-// v1 (R170): 44 factors, flat category map
 // v2 (R184): 187 factors, 3-level hierarchy
+// v1 (R170): 44 factors, flat category map
 //
-// Reference: autoclaw 101-factor proposal + JVS HK/US/Crypto deep audit
-// Coverage: US equities, HK equities, Crypto (no A-share)
+// Reference: autoclaw 101-factor proposal + JVS HK/US/Crypto deep audit + commodity expansion
+// Coverage: US equities, HK equities, Crypto (no A-share), Commodities, International markets
 
 // ── L1 Major Category (15 categories) ─────────────────────────────
 
@@ -98,7 +98,7 @@ export interface FactorLevel3Meta {
 
 export type FactorId = string;
 
-// ── 187 Factor Registry — Single Source of Truth ──────────────────
+// ── 240 Factor Registry — Single Source of Truth ──────────────────
 // Format: [id, nameEn, nameCn, level1, level2]
 
 const FACTOR_SPEC: [string, string, string, FactorLevel1, FactorLevel2][] = [
@@ -387,7 +387,7 @@ for (const [id] of FACTOR_SPEC) {
   STANDARD_FACTOR_IDS[id] = id;
 }
 
-/** Canonical factor IDs array (all 187) */
+/** Canonical factor IDs array (all 240) */
 export const ALL_STANDARD_FACTOR_IDS: FactorId[] = FACTOR_SPEC.map(([id]) => id);
 
 // ── Factor Level Lookup Tables ───────────────────────────────────

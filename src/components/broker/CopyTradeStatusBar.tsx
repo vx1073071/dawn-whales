@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R135-M03 CopyTradeStatusBar — 跟单状态总栏 (15家Cloud绿+2家OpenD黄) ──
 // PM: 一眼看清所有券商跟单状态
 

@@ -263,7 +263,7 @@ export const FactorStylePicker: React.FC = () => {
             ))}
           </div>
 
-          {/* Premium tier: Full 42 factors */}
+          {/* Premium tier: Full 240 factors */}
           <div className="bg-gradient-to-r from-[#C9A046]/10 to-transparent rounded-xl p-4 border border-[#C9A046]/20">
             <div className="flex items-center justify-between">
               <div>

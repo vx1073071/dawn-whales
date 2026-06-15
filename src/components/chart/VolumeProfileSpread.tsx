@@ -1,4 +1,3 @@
-// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
 // ── R117 QTE-51 VolumeProfile + QTE-52 SpreadMonitor ─────────────────────
 
 import { useMemo, useState } from 'react';

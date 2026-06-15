@@ -23,7 +23,7 @@ interface FactorEncyclopedia {
   cons: string[];
 }
 
-// ── Encyclopedia Data (42 factors, showing top 8 for UI) ────────────────────
+// ── Encyclopedia Data (240 factors, showing top 8 for UI) ────────────────────
 
 const ENCYCLOPEDIA: Record<string, FactorEncyclopedia> = {
   MKT: {

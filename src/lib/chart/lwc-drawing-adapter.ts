@@ -3,15 +3,19 @@
 // Bridges DrawingTools with lightweight-charts 4.2.3 ISeriesPrimitive API
 // PM: quote upgrade v2.0 module 3 P0
 
+// @ts-ignore R224: lightweight-charts v4.2.3 API mismatch — needs lwc upgrade for proper types
 import type {
   ISeriesPrimitive, ISeriesPrimitiveAxisView, ISeriesPrimitivePaneView,
-  SeriesPrimitivePaneViewZOrder, Time, CanvasRenderingTarget2D,
+  SeriesPrimitivePaneViewZOrder,
 } from 'lightweight-charts';
 import type { Drawing, TrendLine, FibRetracement, Rectangle, Point } from './drawing-tools';
 import { getDrawingColor } from './drawing-tools';
 import type { ChartTheme } from './types';
 import { CHART_THEME_DARK } from './types';
 import { getChartColor } from './chart-theme-colors';
+
+// @ts-ignore R224: CanvasRenderingTarget2D not exported by lwc v4.2.3 — define locally
+type CanvasRenderingTarget2D = any;
 
 export interface ISeriesPrimitivePaneRenderer {
   draw(target: CanvasRenderingTarget2D): void;
@@ -59,8 +63,10 @@ export class DrawingPrimitive implements ISeriesPrimitive<void> {
 
   paneViews(): readonly ISeriesPrimitivePaneView[] {
     return [{
-      renderer: this as unknown as ISeriesPrimitivePaneRenderer,
-      zOrder: 'above' as SeriesPrimitivePaneViewZOrder,
+      // @ts-ignore R224: lwc v4.2.3 expects renderer/zOrder as functions
+      renderer: () => this as unknown as ISeriesPrimitivePaneRenderer,
+      zOrder: () => 'above' as SeriesPrimitivePaneViewZOrder,
+      // @ts-ignore R224: lwc v4.2.3 API — ISeriesPrimitivePaneView.update removed
       update: () => {},
     }];
   }
@@ -236,8 +242,10 @@ export function canvasToChart(
 export function hitTestDrawings(x: number, y: number, drawings: Drawing[], threshold = 10): string | null {
   for (const d of [...drawings].reverse()) {
     if (!d.visible) continue;
-    if (d.type === 'trend-line' || d.type === 'ray' || (d.type as string) === 'extended-line') {
-      const [p1, p2] = d.points;
+    const dt = d.type as string;
+    if (dt === 'trend-line' || dt === 'ray' || dt === 'extended-line') {
+      if (d.points.length < 2) continue;
+      const [p1, p2] = d.points as [Point, Point];
       const dx = p2.x - p1.x, dy = p2.y - p1.y;
       const lenSq = dx * dx + dy * dy;
       if (lenSq === 0) { if (Math.hypot(x - p1.x, y - p1.y) < threshold) return d.id; continue; }

@@ -1,4 +1,3 @@
-// @ts-nocheck — R107 S-26 bridge-api type widening
 // ── KLineChart — TradingView Lightweight Charts + MA Overlays ──────────────
 import { useEffect, useRef, useMemo } from 'react';
 import { createChart, IChartApi, ISeriesApi } from 'lightweight-charts';
@@ -32,7 +31,7 @@ function downsample(data: Array<{ time: number; open: number; high: number; low:
       high: Math.max(...chunk.map((c: Record<string, unknown>) => c.high as number)),
       low: Math.min(...chunk.map((c: Record<string, unknown>) => c.low as number)),
       close: chunk[chunk.length - 1].close,
-      volume: chunk.reduce((sum: number, c: unknown) => sum + (c.volume || 0), 0),
+      volume: chunk.reduce((sum: number, c: any) => sum + (c.volume || 0), 0),
     });
   }
   return result;

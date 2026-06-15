@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R123-M01 OnboardingWizard — 3步首次使用引导 ─────────────────────────
 // PM Spec: docs/design/onboarding-wizard-design.md
 // Step 1: 搜索券商 (自动发现+手动搜索)

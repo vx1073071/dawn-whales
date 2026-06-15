@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R133-M02 CopyTradeBrokerSelector — 跟单券商选择器改进 ────────────────
 // PM: Cloud/OpenD 标签 + 过滤搜索 + 按市场/协议分组
 

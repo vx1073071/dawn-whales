@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R145 Claw(PM) — AI Fallback Chain
  * 

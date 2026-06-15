@@ -1,4 +1,3 @@
-// @ts-nocheck
 // R126-Q01: nocheck cleared — cleared
 // PositionMonitorPanel — Real-time position monitoring UI
 // Phase 4.3 R32 ML-32-03 / R35 ML-35-02: IPC integration
@@ -101,7 +100,7 @@ export default function PositionMonitorPanel({
 
       const rawPositions = await getPositions(activeAcc);
       if (rawPositions && rawPositions.length > 0) {
-        setPositions(rawPositions.map((p: unknown) => ({
+        setPositions(rawPositions.map((p: any) => ({
           id: p.code || `pos_${Date.now()}`,
           code: p.code,
           name: p.name || p.code,
@@ -255,7 +254,7 @@ export default function PositionMonitorPanel({
           </div>
         }
 
-        {positions.map((pos) =>
+        {(positions as any).map((pos: any) =>
         <div
           key={pos.id}
           className={`${getStatusColor(pos.pnlPct, pos.stopLoss, pos.currentPrice, pos.type)} border rounded-xl p-4 cursor-pointer transition-all hover:border-[#C9A046]/30`}

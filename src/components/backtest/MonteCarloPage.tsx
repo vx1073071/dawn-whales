@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useTranslation } from "react-i18next";
 import { EngineError } from '../../../electron/engine/core/engine-error';

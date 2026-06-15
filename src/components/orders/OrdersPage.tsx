@@ -71,7 +71,7 @@ export default function OrdersPage() {
     try {
       if (typeof window !== 'undefined' && window.api?.db) {
         const trades = await window.api.db.getTrades();
-        setDbTrades(trades || []);
+        setDbTrades((trades as any) || []);
       }
     } catch (_e: unknown) {/* silent */}
   }

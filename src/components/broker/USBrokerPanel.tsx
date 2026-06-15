@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R133-M01 USBrokerPanel — 美股券商管理面板 (IB/Tiger/Schwab 3家) ──────
 // PM: 添加/配置/测试连接 3家美股券商
 

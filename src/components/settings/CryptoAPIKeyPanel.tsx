@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R130-M03 CryptoAPIKeyPanel — 加密交易所API Key管理面板 ──────────────
 // @ts-nocheck — window.api contextBridge access
 // PM: 统一管理 Binance/OKX/Bybit/Bitget 等加密交易所的API Key

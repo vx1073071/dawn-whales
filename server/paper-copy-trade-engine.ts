@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 /**
  * DAWN WHALES R139 J03 — Paper Copy Trade Engine (模拟跟单)
  * 

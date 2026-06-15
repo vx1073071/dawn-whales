@@ -1,4 +1,3 @@
-// @ts-nocheck — v17.6 deprecated, entire component blocked
 
 /**
  * @deprecated — v17.6 MANDATES pure USDT (no fiat top-up). Points removed entirely.

@@ -40,9 +40,9 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
     setError('');
     setComparison(null);
     try {
-      const result = await window.api.strategy.compare(strategyA, strategyB);
+      const result = await window.api.strategy.compare(strategyA as any, strategyB as any);
       if (result.success) {
-        setComparison(result.comparison);
+        setComparison(result.comparison as any);
       } else {
         setError(result.error || i18n.t('StrategyCompareModal.k2'));
       }
@@ -122,7 +122,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
               <div className="mt-2 text-xs text-gray-500">
                   <span className="font-mono text-[#D4A853]">{strategyA.symbol || '—'}</span>
                   {' · '}
-                  <span>{strategyA.strategy?.type || '—'}</span>
+                  <span>{(strategyA.strategy as any)?.type || '—'}</span>
                 </div>
               }
             </div>
@@ -146,7 +146,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
               <div className="mt-2 text-xs text-gray-500">
                   <span className="font-mono text-[#D4A853]">{strategyB.symbol || '—'}</span>
                   {' · '}
-                  <span>{strategyB.strategy?.type || '—'}</span>
+                  <span>{(strategyB.strategy as any)?.type || '—'}</span>
                 </div>
               }
             </div>

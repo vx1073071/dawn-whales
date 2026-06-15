@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R139-M04 OrderPreviewCancelModal — 试算弹窗+撤单5s倒计时 ─────────────
 // PM: P1-9/P1-10, 3h. Spec: docs/design/order-preview-cancel-wireframe.md
 

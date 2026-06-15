@@ -11,9 +11,7 @@
 import type {
   IpcResponse,
   NlParsedStrategy,
-  NlParseParams,
   RiskUpdateConfigParams,
-  RiskUpdateVixParams,
 } from '../../types/ipc';
 
 // R224: Bridge IPC types are approximate — cast through any at boundary

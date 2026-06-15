@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R134-M02 CopyTradeDashboard — 跟单仪表盘 (总资产/总收益/各券商分布) ──
 // PM: 全局跟单状态一览
 

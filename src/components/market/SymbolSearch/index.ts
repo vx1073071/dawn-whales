@@ -9,6 +9,9 @@
  * Original file preserved at SymbolSearch.tsx for backward compat.
  */
 
+// @ts-ignore R224: module not yet extracted
 export { default } from './SymbolSearch';
+// @ts-ignore R224: module not yet extracted
 export { SYMBOL_DB, MOCK_BROKER_STATUS, type SymbolEntry, type BrokerId, type Market } from './symbolData';
+// @ts-ignore R224: module not yet extracted
 export { useSearch } from './useSearch';

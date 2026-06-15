@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R133-M03 ProfitSplitVisualizer — 分润比例可视化 (15%/15%/10%) ─────────
 // PM: 在跟单设置中显示三档分润结构
 

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // R127-Q01: nocheck cleared — PM file, structural issues pending resolution
 // ── R114 QTE-14 PM: 图表形态识别算法 (富途20种) ───────────────────────
 // 使用 ZigZag 极值点检测 + 几何匹配实现

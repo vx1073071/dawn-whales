@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * DAWN WHALES R146 Claw(PM) — AI Result Cache
  * 

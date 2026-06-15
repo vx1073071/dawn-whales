@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R139-M03 CreatorProfitPanel — 创作者分润面板 (接线ProfitSplit) ────────
 // PM: P1-8, 3h
 import { useState, useMemo } from 'react';

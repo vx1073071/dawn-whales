@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R146 ML — AIStrategyPanel (组合生成+回测解读+优化+健康检查) ──────────
 // PM: 4 modules, 6h
 import { useState, useCallback } from 'react';

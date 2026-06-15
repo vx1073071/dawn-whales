@@ -1,0 +1,1202 @@
+[
+  {
+    "id": "MKT",
+    "engName": "MarketBeta",
+    "zhName": "市场Beta"
+  },
+  {
+    "id": "SIZE",
+    "engName": "Size",
+    "zhName": "规模效应"
+  },
+  {
+    "id": "HML",
+    "engName": "BookToMarket",
+    "zhName": "市净率估值"
+  },
+  {
+    "id": "EP_RATIO",
+    "engName": "EarningsYield",
+    "zhName": "市盈率倒数"
+  },
+  {
+    "id": "CFP_RATIO",
+    "engName": "CashFlowPrice",
+    "zhName": "现金收益率"
+  },
+  {
+    "id": "MOM_12M",
+    "engName": "Momentum12M",
+    "zhName": "12月动量"
+  },
+  {
+    "id": "MOM_6M",
+    "engName": "Momentum6M",
+    "zhName": "6月动量"
+  },
+  {
+    "id": "MOM_1M",
+    "engName": "Momentum1M",
+    "zhName": "1月动量"
+  },
+  {
+    "id": "MOM_6_1",
+    "engName": "Momentum6Minus1",
+    "zhName": "6-1月动量"
+  },
+  {
+    "id": "RMW",
+    "engName": "RobustMinusWeak",
+    "zhName": "盈利能力"
+  },
+  {
+    "id": "CMA",
+    "engName": "ConservativeMinusAggressive",
+    "zhName": "投资风格"
+  },
+  {
+    "id": "QUAL",
+    "engName": "Quality",
+    "zhName": "质量综合"
+  },
+  {
+    "id": "GROWTH",
+    "engName": "Growth",
+    "zhName": "成长性"
+  },
+  {
+    "id": "YIELD",
+    "engName": "DividendYield",
+    "zhName": "股息率"
+  },
+  {
+    "id": "DIV_YIELD_12M",
+    "engName": "DividendYield12M",
+    "zhName": "12月股息率"
+  },
+  {
+    "id": "ACCRUALS",
+    "engName": "Accruals",
+    "zhName": "应计利润"
+  },
+  {
+    "id": "EARNINGS_VARIABILITY",
+    "engName": "EarningsVariability",
+    "zhName": "盈利波动率"
+  },
+  {
+    "id": "GROSS_PROFITABILITY",
+    "engName": "GrossProfitability",
+    "zhName": "毛利润率"
+  },
+  {
+    "id": "NET_PAYOUT",
+    "engName": "NetPayout",
+    "zhName": "净派息率"
+  },
+  {
+    "id": "OPERATING_LEVERAGE",
+    "engName": "OperatingLeverage",
+    "zhName": "经营杠杆"
+  },
+  {
+    "id": "ASSET_TURNOVER",
+    "engName": "AssetTurnover",
+    "zhName": "资产周转率"
+  },
+  {
+    "id": "CASH_FLOW_YIELD",
+    "engName": "CashFlowYield",
+    "zhName": "自由现金流收益率"
+  },
+  {
+    "id": "DEBT_COVERAGE",
+    "engName": "DebtCoverage",
+    "zhName": "利息覆盖倍数"
+  },
+  {
+    "id": "EARNINGS_SURPRISE",
+    "engName": "EarningsSurprise",
+    "zhName": "盈利超预期"
+  },
+  {
+    "id": "EARN_QUALITY",
+    "engName": "EarningsQuality",
+    "zhName": "盈利质量"
+  },
+  {
+    "id": "GROSS_MARGIN_TREND",
+    "engName": "GrossMarginTrend",
+    "zhName": "毛利率趋势"
+  },
+  {
+    "id": "F_SCORE",
+    "engName": "PiotroskiFScore",
+    "zhName": "F分数财务健康"
+  },
+  {
+    "id": "ROE_STABILITY",
+    "engName": "RoeStability",
+    "zhName": "ROE稳定性"
+  },
+  {
+    "id": "INVENTORY_TURNOVER",
+    "engName": "InventoryTurnover",
+    "zhName": "存货周转率"
+  },
+  {
+    "id": "RECEIVABLE_TURNOVER",
+    "engName": "ReceivableTurnover",
+    "zhName": "应收账款周转"
+  },
+  {
+    "id": "FREE_CASH_FLOW",
+    "engName": "FreeCashFlow",
+    "zhName": "自由现金流"
+  },
+  {
+    "id": "CURRENT_RATIO",
+    "engName": "CurrentRatio",
+    "zhName": "流动比率"
+  },
+  {
+    "id": "INTEREST_COVERAGE",
+    "engName": "InterestCoverage",
+    "zhName": "利息覆盖"
+  },
+  {
+    "id": "ANALYST_MOMENTUM",
+    "engName": "AnalystMomentum",
+    "zhName": "分析师动量"
+  },
+  {
+    "id": "EARNINGS_REVISION",
+    "engName": "EarningsRevision",
+    "zhName": "盈利修正"
+  },
+  {
+    "id": "TARGET_PRICE_IMPLIED",
+    "engName": "TargetPriceImplied",
+    "zhName": "目标价隐含空间"
+  },
+  {
+    "id": "ANALYST_DISPERSION",
+    "engName": "AnalystDispersion",
+    "zhName": "分析师分歧度"
+  },
+  {
+    "id": "RECOMMENDATION_CHANGE",
+    "engName": "RecommendationChange",
+    "zhName": "评级变化方向"
+  },
+  {
+    "id": "REVISION_RATIO",
+    "engName": "RevisionRatio",
+    "zhName": "上调下调比"
+  },
+  {
+    "id": "FEAR_GREED_INDEX",
+    "engName": "FearGreedIndex",
+    "zhName": "恐惧贪婪指数"
+  },
+  {
+    "id": "PUT_CALL_SKEW",
+    "engName": "PutCallSkew",
+    "zhName": "期权偏度"
+  },
+  {
+    "id": "HIGH_LOW_RATIO",
+    "engName": "HighLowRatio",
+    "zhName": "新高新低比"
+  },
+  {
+    "id": "ADVANCE_DECLINE",
+    "engName": "AdvanceDecline",
+    "zhName": "涨跌比"
+  },
+  {
+    "id": "OPTION_PCR",
+    "engName": "OptionPCR",
+    "zhName": "Put/Call比率"
+  },
+  {
+    "id": "SOCIAL_SENTIMENT",
+    "engName": "SocialSentiment",
+    "zhName": "社交情绪"
+  },
+  {
+    "id": "MEDIA_ATTENTION",
+    "engName": "MediaAttention",
+    "zhName": "媒体关注度"
+  },
+  {
+    "id": "INSIDER_TRADING",
+    "engName": "InsiderTrading",
+    "zhName": "内部交易信号"
+  },
+  {
+    "id": "SHORT_COVERING",
+    "engName": "ShortCovering",
+    "zhName": "逼空压力"
+  },
+  {
+    "id": "NEWS_SENTIMENT",
+    "engName": "NewsSentiment",
+    "zhName": "新闻情绪"
+  },
+  {
+    "id": "INSTITUTIONAL_FLOW",
+    "engName": "InstitutionalFlow",
+    "zhName": "机构资金流"
+  },
+  {
+    "id": "MA_20_60",
+    "engName": "MA2060",
+    "zhName": "均线交叉"
+  },
+  {
+    "id": "EMA_12_26",
+    "engName": "EMA1226",
+    "zhName": "MACD"
+  },
+  {
+    "id": "RSI_14",
+    "engName": "RSI14",
+    "zhName": "相对强弱"
+  },
+  {
+    "id": "KDJ",
+    "engName": "KDJ",
+    "zhName": "KDJ随机"
+  },
+  {
+    "id": "BOLL",
+    "engName": "Bollinger",
+    "zhName": "布林带"
+  },
+  {
+    "id": "ATR_14",
+    "engName": "ATR14",
+    "zhName": "真实波幅"
+  },
+  {
+    "id": "ADX",
+    "engName": "ADX",
+    "zhName": "趋向指标"
+  },
+  {
+    "id": "OBV",
+    "engName": "OBV",
+    "zhName": "能量潮"
+  },
+  {
+    "id": "CMF",
+    "engName": "CMF",
+    "zhName": "资金流量"
+  },
+  {
+    "id": "ICHIMOKU",
+    "engName": "Ichimoku",
+    "zhName": "一目均衡"
+  },
+  {
+    "id": "VWAP",
+    "engName": "VWAP",
+    "zhName": "成交量加权均价"
+  },
+  {
+    "id": "VOL_60D",
+    "engName": "Volatility60D",
+    "zhName": "60日波动率"
+  },
+  {
+    "id": "LIQ",
+    "engName": "Liquidity",
+    "zhName": "流动性"
+  },
+  {
+    "id": "MAX_DRAWDOWN",
+    "engName": "MaxDrawdown",
+    "zhName": "最大回撤"
+  },
+  {
+    "id": "VAR_95",
+    "engName": "VaR95",
+    "zhName": "95%风险价值"
+  },
+  {
+    "id": "CVAR_95",
+    "engName": "CVaR95",
+    "zhName": "条件风险价值"
+  },
+  {
+    "id": "DOWNSIDE_DEVIATION",
+    "engName": "DownsideDeviation",
+    "zhName": "下行偏差"
+  },
+  {
+    "id": "SORTINO_RATIO",
+    "engName": "SortinoRatio",
+    "zhName": "索提诺比率"
+  },
+  {
+    "id": "OMEGA_RATIO",
+    "engName": "OmegaRatio",
+    "zhName": "Omega比率"
+  },
+  {
+    "id": "TAIL_DEPENDENCE",
+    "engName": "TailDependence",
+    "zhName": "尾部相关"
+  },
+  {
+    "id": "CROWDING",
+    "engName": "Crowding",
+    "zhName": "拥挤度"
+  },
+  {
+    "id": "MOM_CRASH",
+    "engName": "MomentumCrash",
+    "zhName": "动量崩盘预警"
+  },
+  {
+    "id": "BETA_STABILITY",
+    "engName": "BetaStability",
+    "zhName": "Beta稳定性"
+  },
+  {
+    "id": "SKEWNESS",
+    "engName": "Skewness",
+    "zhName": "偏度"
+  },
+  {
+    "id": "KURTOSIS",
+    "engName": "Kurtosis",
+    "zhName": "峰度"
+  },
+  {
+    "id": "ALPHA_DECAY",
+    "engName": "AlphaDecay",
+    "zhName": "Alpha衰减监测"
+  },
+  {
+    "id": "SECTOR_ROTATION",
+    "engName": "SectorRotation",
+    "zhName": "板块轮动"
+  },
+  {
+    "id": "FX_EXPOSURE",
+    "engName": "FXExposure",
+    "zhName": "外汇敞口"
+  },
+  {
+    "id": "RATE_BETA",
+    "engName": "RateBeta",
+    "zhName": "利率敏感度"
+  },
+  {
+    "id": "INFLATION_BETA",
+    "engName": "InflationBeta",
+    "zhName": "通胀敏感度"
+  },
+  {
+    "id": "USD_BETA",
+    "engName": "USDBeta",
+    "zhName": "美元敏感度"
+  },
+  {
+    "id": "OIL_BETA",
+    "engName": "OilBeta",
+    "zhName": "原油敏感度"
+  },
+  {
+    "id": "CREDIT_SPREAD_BETA",
+    "engName": "CreditSpreadBeta",
+    "zhName": "信用利差敏感度"
+  },
+  {
+    "id": "ECONOMIC_SURPRISE",
+    "engName": "EconomicSurprise",
+    "zhName": "经济意外指数"
+  },
+  {
+    "id": "MARKET_REGIME",
+    "engName": "MarketRegime",
+    "zhName": "市场状态"
+  },
+  {
+    "id": "VOLUME_REGIME",
+    "engName": "VolumeRegime",
+    "zhName": "量能状态"
+  },
+  {
+    "id": "YIELD_CURVE_SLOPE",
+    "engName": "YieldCurveSlope",
+    "zhName": "收益率曲线斜率"
+  },
+  {
+    "id": "REAL_RATE",
+    "engName": "RealRate",
+    "zhName": "实际利率"
+  },
+  {
+    "id": "PMI_INDEX",
+    "engName": "PMIIndex",
+    "zhName": "PMI指数"
+  },
+  {
+    "id": "VOLATILITY_REGIME",
+    "engName": "VolatilityRegime",
+    "zhName": "波动率体制"
+  },
+  {
+    "id": "FACTOR_LEAD_LAG",
+    "engName": "FactorLeadLag",
+    "zhName": "因子领先滞后"
+  },
+  {
+    "id": "STR_5D",
+    "engName": "ShortTermReversal5D",
+    "zhName": "5日短期反转"
+  },
+  {
+    "id": "LTR_60M",
+    "engName": "LongTermReversal60M",
+    "zhName": "60月长期反转"
+  },
+  {
+    "id": "SEASONAL_1M",
+    "engName": "Seasonal1M",
+    "zhName": "月度效应"
+  },
+  {
+    "id": "GAP_REVERSION",
+    "engName": "GapReversion",
+    "zhName": "缺口回补"
+  },
+  {
+    "id": "MEAN_REVERSION_SPEED",
+    "engName": "MeanReversionSpeed",
+    "zhName": "均值回归速度"
+  },
+  {
+    "id": "US_VIX",
+    "engName": "VIX",
+    "zhName": "恐慌指数"
+  },
+  {
+    "id": "US_SHORT_RATIO",
+    "engName": "ShortRatio",
+    "zhName": "空头比率"
+  },
+  {
+    "id": "US_INST_HOLD",
+    "engName": "InstitutionalHolding",
+    "zhName": "机构持仓"
+  },
+  {
+    "id": "US_BUYBACK",
+    "engName": "Buyback",
+    "zhName": "回购活动"
+  },
+  {
+    "id": "US_EARN_SURPRISE",
+    "engName": "USEarningsSurprise",
+    "zhName": "财报超预期"
+  },
+  {
+    "id": "US_INSIDER_BUY",
+    "engName": "InsiderBuy",
+    "zhName": "内部人买入"
+  },
+  {
+    "id": "US_SHORT_SQUEEZE",
+    "engName": "ShortSqueeze",
+    "zhName": "逼空风险"
+  },
+  {
+    "id": "US_MEME_INDEX",
+    "engName": "MemeIndex",
+    "zhName": "Meme股热度"
+  },
+  {
+    "id": "US_MARGIN_DEBT",
+    "engName": "MarginDebt",
+    "zhName": "保证金债务"
+  },
+  {
+    "id": "US_RESIDUAL_MOM",
+    "engName": "ResidualMomentum",
+    "zhName": "残差动量"
+  },
+  {
+    "id": "US_EP_RATIO",
+    "engName": "USEarningsPrice",
+    "zhName": "美股PE倒数"
+  },
+  {
+    "id": "US_BP_RATIO",
+    "engName": "USBookPrice",
+    "zhName": "美股PB倒数"
+  },
+  {
+    "id": "US_DPS_STABILITY",
+    "engName": "DPSStability",
+    "zhName": "分红稳定性"
+  },
+  {
+    "id": "HKEX_SOUTHBOUND",
+    "engName": "Southbound",
+    "zhName": "南向资金"
+  },
+  {
+    "id": "HKEX_CBCS_PREMIUM",
+    "engName": "CBCSPremium",
+    "zhName": "AH溢价"
+  },
+  {
+    "id": "HKEX_WARRANT_IV",
+    "engName": "WarrantIV",
+    "zhName": "涡轮引伸波幅"
+  },
+  {
+    "id": "HKEX_DLHB",
+    "engName": "DLHB",
+    "zhName": "大轮候补"
+  },
+  {
+    "id": "HKEX_FUND_HOLD",
+    "engName": "FundHolding",
+    "zhName": "基金持仓"
+  },
+  {
+    "id": "HK_SOUTHBOUND_FLOW",
+    "engName": "SouthboundFlowDaily",
+    "zhName": "南向净流入"
+  },
+  {
+    "id": "HK_SOUTHBOUND_TOP10",
+    "engName": "SouthboundTop10",
+    "zhName": "南向TOP10集中"
+  },
+  {
+    "id": "HK_SOUTHBOUND_MOM",
+    "engName": "SouthboundMomentum",
+    "zhName": "南向动量"
+  },
+  {
+    "id": "HK_CONTROLLING_SH",
+    "engName": "ControllingShareholder",
+    "zhName": "大股东质押率"
+  },
+  {
+    "id": "HK_DIV_CUT_RISK",
+    "engName": "DividendCutRisk",
+    "zhName": "减分红风险"
+  },
+  {
+    "id": "HK_WARRANT_GEX",
+    "engName": "WarrantGEX",
+    "zhName": "涡轮Gamma暴露"
+  },
+  {
+    "id": "HK_CBBC_STREET",
+    "engName": "CBBCStreetRatio",
+    "zhName": "街货比"
+  },
+  {
+    "id": "HK_WARRANT_OI",
+    "engName": "WarrantOIChange",
+    "zhName": "涡轮持仓变化"
+  },
+  {
+    "id": "HK_SHORT_SELL",
+    "engName": "ShortSellRatio",
+    "zhName": "沽空比率"
+  },
+  {
+    "id": "HK_ACC_RECEIVABLE",
+    "engName": "AccReceivable",
+    "zhName": "应收异常"
+  },
+  {
+    "id": "HK_AH_PREMIUM",
+    "engName": "AHPremium",
+    "zhName": "AH溢价率"
+  },
+  {
+    "id": "CRYPTO_FUNDING",
+    "engName": "FundingRate",
+    "zhName": "资金费率"
+  },
+  {
+    "id": "CRYPTO_OI_DELTA",
+    "engName": "OpenInterestDelta",
+    "zhName": "持仓量变化"
+  },
+  {
+    "id": "CRYPTO_EXCHANGE_FLOW",
+    "engName": "ExchangeFlow",
+    "zhName": "交易所流量"
+  },
+  {
+    "id": "CRYPTO_ORDERBOOK_IMB",
+    "engName": "OrderbookImbalance",
+    "zhName": "订单簿失衡"
+  },
+  {
+    "id": "CRYPTO_VOL_RATIO",
+    "engName": "VolumeRatio",
+    "zhName": "量比"
+  },
+  {
+    "id": "CRYPTO_VOLUME_PROFILE",
+    "engName": "VolumeProfile",
+    "zhName": "量价分布"
+  },
+  {
+    "id": "CRYPTO_BTC_CORR",
+    "engName": "BTCCorrelation",
+    "zhName": "BTC相关性"
+  },
+  {
+    "id": "CRYPTO_NVT",
+    "engName": "NVTRatio",
+    "zhName": "NVT估值"
+  },
+  {
+    "id": "CRYPTO_ACTIVE_ADDR",
+    "engName": "ActiveAddresses",
+    "zhName": "活跃地址"
+  },
+  {
+    "id": "CRYPTO_LIQUIDATIONS",
+    "engName": "Liquidations",
+    "zhName": "清算量"
+  },
+  {
+    "id": "CRYPTO_SOCIAL_SENTIMENT",
+    "engName": "SocialSentimentCrypto",
+    "zhName": "社交情绪"
+  },
+  {
+    "id": "CRYPTO_WHALE_ACCUM",
+    "engName": "WhaleAccumulation",
+    "zhName": "大户累积"
+  },
+  {
+    "id": "CRYPTO_WHALE_DISTRIB",
+    "engName": "WhaleDistribution",
+    "zhName": "大户出货"
+  },
+  {
+    "id": "CRYPTO_MVRV",
+    "engName": "MVRVRatio",
+    "zhName": "MVRV比率"
+  },
+  {
+    "id": "CRYPTO_FEAR_GREED",
+    "engName": "CryptoFearGreed",
+    "zhName": "加密恐惧贪婪"
+  },
+  {
+    "id": "CRYPTO_MOM_7D",
+    "engName": "Momentum7D",
+    "zhName": "7日动量"
+  },
+  {
+    "id": "CRYPTO_MOM_30D",
+    "engName": "Momentum30D",
+    "zhName": "30日动量"
+  },
+  {
+    "id": "CRYPTO_MOM_90D",
+    "engName": "Momentum90D",
+    "zhName": "90日动量"
+  },
+  {
+    "id": "CRYPTO_ALPHA_VS_BTC",
+    "engName": "AlphaVsBTC",
+    "zhName": "相对BTC Alpha"
+  },
+  {
+    "id": "CRYPTO_ALT_SEASON",
+    "engName": "AltSeasonIndex",
+    "zhName": "Alt-Season指数"
+  },
+  {
+    "id": "CRYPTO_NVT_SIGNAL",
+    "engName": "NVTSignal",
+    "zhName": "NVT信号"
+  },
+  {
+    "id": "CRYPTO_STAKING_YIELD",
+    "engName": "StakingYield",
+    "zhName": "质押收益率"
+  },
+  {
+    "id": "CRYPTO_FEE_REVENUE",
+    "engName": "FeeRevenue",
+    "zhName": "协议费用收入"
+  },
+  {
+    "id": "CRYPTO_TVL_GROWTH",
+    "engName": "TVLGrowth",
+    "zhName": "TVL增长率"
+  },
+  {
+    "id": "CRYPTO_MAX_DRAWDOWN_30D",
+    "engName": "MaxDrawdown30D",
+    "zhName": "30日最大回撤"
+  },
+  {
+    "id": "CRYPTO_PRICE_CORRECTION",
+    "engName": "PriceCorrection",
+    "zhName": "回调幅度"
+  },
+  {
+    "id": "CRYPTO_LIQUIDATION_RISK",
+    "engName": "LiquidationRisk",
+    "zhName": "清算风险"
+  },
+  {
+    "id": "CRYPTO_EXCHANGE_RESERVE",
+    "engName": "ExchangeReserve",
+    "zhName": "交易所余额"
+  },
+  {
+    "id": "CRYPTO_BRIDGE_FLOW",
+    "engName": "BridgeFlow",
+    "zhName": "跨链桥流量"
+  },
+  {
+    "id": "CRYPTO_ECOSYSTEM_CORR",
+    "engName": "EcosystemCorrelation",
+    "zhName": "生态联动"
+  },
+  {
+    "id": "CRYPTO_VC_UNLOCK",
+    "engName": "VCUnlock",
+    "zhName": "VC解锁压力"
+  },
+  {
+    "id": "CRYPTO_DEVELOPER_ACTIVITY",
+    "engName": "DeveloperActivity",
+    "zhName": "开发者活跃度"
+  },
+  {
+    "id": "CRYPTO_SMART_MONEY",
+    "engName": "SmartMoney",
+    "zhName": "聪明钱流向"
+  },
+  {
+    "id": "CRYPTO_STABLECOIN_RATIO",
+    "engName": "StablecoinRatio",
+    "zhName": "稳定币占比"
+  },
+  {
+    "id": "CARRY_EQUITY",
+    "engName": "EquityCarry",
+    "zhName": "股票利差"
+  },
+  {
+    "id": "CARRY_CRYPTO",
+    "engName": "CryptoCarry",
+    "zhName": "加密资金费率利差"
+  },
+  {
+    "id": "CARRY_CURRENCY",
+    "engName": "CurrencyCarry",
+    "zhName": "货币利差"
+  },
+  {
+    "id": "BOND_CARRY",
+    "engName": "BondCarry",
+    "zhName": "债券利差"
+  },
+  {
+    "id": "CURRENCY_MOMENTUM",
+    "engName": "CurrencyMomentum",
+    "zhName": "货币动量"
+  },
+  {
+    "id": "GOLD_MOMENTUM",
+    "engName": "GoldMomentum",
+    "zhName": "黄金动量"
+  },
+  {
+    "id": "COMMODITY_SPREAD",
+    "engName": "CommoditySpread",
+    "zhName": "商品期现结构"
+  },
+  {
+    "id": "CORR_REGIME",
+    "engName": "CorrelationRegime",
+    "zhName": "相关性体制"
+  },
+  {
+    "id": "CROSS_ASSET_CORR",
+    "engName": "CrossAssetCorrelation",
+    "zhName": "跨资产联动"
+  },
+  {
+    "id": "COMMODITY_MOMENTUM",
+    "engName": "CommodityMomentum",
+    "zhName": "商品动量"
+  },
+  {
+    "id": "BOND_MOMENTUM",
+    "engName": "BondMomentum",
+    "zhName": "债券动量"
+  },
+  {
+    "id": "FX_CARRY",
+    "engName": "FXCarry",
+    "zhName": "外汇利差"
+  },
+  {
+    "id": "PRE_EARNINGS_DRIFT",
+    "engName": "PreEarningsDrift",
+    "zhName": "盈利前漂移"
+  },
+  {
+    "id": "POST_EARNINGS_DRIFT",
+    "engName": "PostEarningsDrift",
+    "zhName": "盈利后漂移"
+  },
+  {
+    "id": "DIVIDEND_CAPTURE",
+    "engName": "DividendCapture",
+    "zhName": "分红捕获"
+  },
+  {
+    "id": "INDEX_REBALANCE",
+    "engName": "IndexRebalance",
+    "zhName": "指数调入效应"
+  },
+  {
+    "id": "IPO_LOCKUP_EXPIRY",
+    "engName": "IPOLockupExpiry",
+    "zhName": "解禁事件"
+  },
+  {
+    "id": "BUYBACK_ANNOUNCE",
+    "engName": "BuybackAnnouncement",
+    "zhName": "回购公告效应"
+  },
+  {
+    "id": "DIV_ANNOUNCEMENT",
+    "engName": "DividendAnnouncement",
+    "zhName": "分红公告日"
+  },
+  {
+    "id": "EARN_ANNOUNCEMENT",
+    "engName": "EarningsAnnouncement",
+    "zhName": "财报发布日"
+  },
+  {
+    "id": "ESG_SCORE",
+    "engName": "ESGScore",
+    "zhName": "ESG综合评分"
+  },
+  {
+    "id": "CARBON_INTENSITY",
+    "engName": "CarbonIntensity",
+    "zhName": "碳强度"
+  },
+  {
+    "id": "GOVERNANCE_SCORE",
+    "engName": "GovernanceScore",
+    "zhName": "治理评分"
+  },
+  {
+    "id": "GREEN_REVENUE",
+    "engName": "GreenRevenue",
+    "zhName": "绿色收入占比"
+  },
+  {
+    "id": "SOCIAL_SCORE",
+    "engName": "SocialScore",
+    "zhName": "社会责任评分"
+  },
+  {
+    "id": "ESG_MOMENTUM",
+    "engName": "ESGMomentum",
+    "zhName": "ESG进步速度"
+  },
+  {
+    "id": "SMB",
+    "engName": "SMB_Deprecated",
+    "zhName": "SMB(已废弃)"
+  },
+  {
+    "id": "QUALITY",
+    "engName": "Quality_Deprecated",
+    "zhName": "Quality(已废弃)"
+  },
+  {
+    "id": "ROA",
+    "engName": "ROA",
+    "zhName": "总资产回报率"
+  },
+  {
+    "id": "GROSS_MARGIN",
+    "engName": "GrossMargin",
+    "zhName": "毛利率"
+  },
+  {
+    "id": "DEBT_TO_EQUITY",
+    "engName": "DebtToEquity",
+    "zhName": "负债权益比"
+  },
+  {
+    "id": "INSIDER_BUYING",
+    "engName": "InsiderBuying",
+    "zhName": "内部人买入信号"
+  },
+  {
+    "id": "FUND_FLOW",
+    "engName": "FundFlow",
+    "zhName": "资金净流入"
+  },
+  {
+    "id": "ETF_FLOW",
+    "engName": "ETFFlow",
+    "zhName": "ETF资金流"
+  },
+  {
+    "id": "DIVIDEND_CHANGE",
+    "engName": "DividendChange",
+    "zhName": "股息变化方向"
+  },
+  {
+    "id": "SECTOR_STRENGTH",
+    "engName": "SectorStrength",
+    "zhName": "行业强度"
+  },
+  {
+    "id": "IV_RANK",
+    "engName": "IVRank",
+    "zhName": "隐含波动率排名"
+  },
+  {
+    "id": "CURRENCY_EFFECT",
+    "engName": "CurrencyEffect",
+    "zhName": "汇率影响"
+  },
+  {
+    "id": "FREE_CASH_FLOW_YIELD",
+    "engName": "FreeCashFlowYield",
+    "zhName": "自由现金流收益率"
+  },
+  {
+    "id": "EQUITY_MULTIPLIER",
+    "engName": "EquityMultiplier",
+    "zhName": "权益乘数"
+  },
+  {
+    "id": "DISPOSITION_EFFECT",
+    "engName": "DispositionEffect",
+    "zhName": "处置效应"
+  },
+  {
+    "id": "ANCHORING",
+    "engName": "Anchoring",
+    "zhName": "锚定效应"
+  },
+  {
+    "id": "AH_PREMIUM_CHANGE",
+    "engName": "AHPremiumChange",
+    "zhName": "AH溢价变化率"
+  },
+  {
+    "id": "HSI_CONSTITUENT",
+    "engName": "HSIConstituent",
+    "zhName": "恒指成分股权重"
+  },
+  {
+    "id": "HK_REIT_YIELD",
+    "engName": "HKREITYield",
+    "zhName": "港股REIT收益率"
+  },
+  {
+    "id": "US_EARNINGS_CALENDAR",
+    "engName": "USEarningsCalendar",
+    "zhName": "美股财报日历"
+  },
+  {
+    "id": "US_SECTOR_ROTATION",
+    "engName": "USSectorRotation",
+    "zhName": "美股板块轮动"
+  },
+  {
+    "id": "US_SMALL_CAP_MOMENTUM",
+    "engName": "USSmallCapMomentum",
+    "zhName": "小盘股动量"
+  },
+  {
+    "id": "US_DIVIDEND_ARISTOCRATS",
+    "engName": "USDividendAristocrats",
+    "zhName": "股息贵族"
+  },
+  {
+    "id": "US_SP500_EQUAL_WEIGHT",
+    "engName": "USSP500EqualWeight",
+    "zhName": "标普500等权"
+  },
+  {
+    "id": "CRYPTO_S2F",
+    "engName": "CryptoStockToFlow",
+    "zhName": "S2F模型"
+  },
+  {
+    "id": "CRYPTO_HASH_RATE",
+    "engName": "CryptoHashRate",
+    "zhName": "哈希率"
+  },
+  {
+    "id": "XM_MKTCAP_EXPOSURE",
+    "engName": "CrossMarketCapExposure",
+    "zhName": "跨市场市值暴露"
+  },
+  {
+    "id": "XM_LIQUIDITY",
+    "engName": "CrossLiquidity",
+    "zhName": "跨市场流动性"
+  },
+  {
+    "id": "XM_DIVIDEND_ARAMA",
+    "engName": "CrossDividendArama",
+    "zhName": "跨市场股息比较"
+  },
+  {
+    "id": "CMD_ROLL_YIELD",
+    "engName": "RollYield",
+    "zhName": "换月成本(展期收益)"
+  },
+  {
+    "id": "CMD_TERM_STRUCTURE",
+    "engName": "TermStructure",
+    "zhName": "期限结构斜率"
+  },
+  {
+    "id": "CMD_BASIS",
+    "engName": "Basis",
+    "zhName": "基差(现货vs期货)"
+  },
+  {
+    "id": "CMD_MOMENTUM_12M",
+    "engName": "CommodityMomentum12M",
+    "zhName": "12月商品动量"
+  },
+  {
+    "id": "CMD_MOMENTUM_1M",
+    "engName": "CommodityMomentum1M",
+    "zhName": "1月商品反转"
+  },
+  {
+    "id": "CMD_VOLATILITY",
+    "engName": "CommodityVolatility",
+    "zhName": "商品波动率"
+  },
+  {
+    "id": "CMD_SKEWNESS",
+    "engName": "CommoditySkewness",
+    "zhName": "收益偏度"
+  },
+  {
+    "id": "CMD_EIA_CRUDE",
+    "engName": "EIACrudeInventory",
+    "zhName": "EIA原油库存"
+  },
+  {
+    "id": "CMD_NATGAS_STORAGE",
+    "engName": "NatGasStorage",
+    "zhName": "天然气储气量"
+  },
+  {
+    "id": "CMD_LME_INVENTORY",
+    "engName": "LMEInventory",
+    "zhName": "LME金属库存"
+  },
+  {
+    "id": "CMD_GOLD_ETF",
+    "engName": "GoldETFHoldings",
+    "zhName": "黄金ETF持仓"
+  },
+  {
+    "id": "CMD_BALANCE_SHEET",
+    "engName": "BalanceSheet",
+    "zhName": "供需平衡表"
+  },
+  {
+    "id": "CMD_SEASONALITY",
+    "engName": "CommoditySeasonality",
+    "zhName": "商品季节性"
+  },
+  {
+    "id": "CMD_GOLD_SUMMER",
+    "engName": "GoldSummerEffect",
+    "zhName": "黄金夏季效应"
+  },
+  {
+    "id": "CMD_COT_COMMERCIAL",
+    "engName": "COTCommercial",
+    "zhName": "商业持仓(产业套保)"
+  },
+  {
+    "id": "CMD_COT_SPECULATOR",
+    "engName": "COTSpeculator",
+    "zhName": "投机持仓(聪明钱)"
+  },
+  {
+    "id": "CMD_COT_EXTREME",
+    "engName": "COTExtreme",
+    "zhName": "极端持仓(拥挤信号)"
+  },
+  {
+    "id": "CMD_COT_CHANGE",
+    "engName": "COTPositionChange",
+    "zhName": "仓位变化方向(大佬加减仓)"
+  },
+  {
+    "id": "CMD_OPEN_INTEREST",
+    "engName": "OpenInterest",
+    "zhName": "总持仓量趋势(市场参与度)"
+  },
+  {
+    "id": "CMD_DXY_LINKAGE",
+    "engName": "DXYLinkage",
+    "zhName": "美元联动(强美元=商品压力)"
+  },
+  {
+    "id": "CMD_REAL_RATE",
+    "engName": "RealRate",
+    "zhName": "实际利率(黄金的天敌)"
+  },
+  {
+    "id": "CMD_INFLATION_BE",
+    "engName": "InflationBE",
+    "zhName": "通胀预期(通胀升=黄金升)"
+  },
+  {
+    "id": "CMD_GEOPOL_RISK",
+    "engName": "GeopoliticalRisk",
+    "zhName": "地缘风险溢价"
+  },
+  {
+    "id": "CMD_GOLD_SILVER_RATIO",
+    "engName": "GoldSilverRatio",
+    "zhName": "金银比(避险vs风险偏好)"
+  },
+  {
+    "id": "CMD_GOLD_OIL_RATIO",
+    "engName": "GoldOilRatio",
+    "zhName": "金油比(衰退指针)"
+  },
+  {
+    "id": "CMD_CRACK_SPREAD",
+    "engName": "CrackSpread",
+    "zhName": "裂解价差(炼油利润)"
+  }
+]

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R142-M01 DepositPage — 充值页面 (TRC-20/ERC-20+QR+状态轮询+通知) ────
 // PM: 7h, 4 tasks in 1 file
 import { useState, useEffect, useCallback, useRef } from 'react';

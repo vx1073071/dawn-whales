@@ -7,8 +7,7 @@
 
 import log from 'electron-log';
 import { CommodityDataProvider, getCommodityDataProvider } from './commodity-data-provider';
-import { COMMODITY_FACTOR_CALCULATORS, computeAllCommodityFactors } from './commodity-14-factors';
-import { COMMODITY_12_FACTORS, compute12Factors } from './commodity-12-factors';
+import { COMMODITY_FACTOR_CALCULATORS, computeAllCommodityFactors } from './commodity-factors';
 import { CommodityScenarioEngine, commodityScenarioEngine, ScenarioOutput } from './commodity-scenario-packs';
 import {
   CommodityFactorInput, CommodityCategory, ALL_COMMODITY_SYMBOLS,
@@ -95,11 +94,10 @@ export class CommodityBatchEngine {
       }
 
       try {
-        // Run 14 base + 12 advanced in parallel
-        const [factor14, factor12] = await Promise.all([
-          Promise.resolve(computeAllCommodityFactors(input)),
-          compute12Factors(sym, category, input),
-        ]);
+        // Run all 26 factors in one unified call
+        const allFactors = await Promise.resolve(computeAllCommodityFactors(sym, category, input));
+        const factor14 = allFactors.slice(0, 14);
+        const factor12 = allFactors.slice(14);
 
         // Optional: compute scenarios for scenario symbols (GC, CL, HG subsets)
         let scenarios: ScenarioOutput[] | undefined;

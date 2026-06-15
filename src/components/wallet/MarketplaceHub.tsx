@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R144 ML — MarketplaceHub (模板市场+组合市场+信号订阅+等级徽章+购买确认) ──
 // PM: 5 modules, 6h
 import { useState, useCallback, useMemo } from 'react';

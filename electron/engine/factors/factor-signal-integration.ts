@@ -114,7 +114,7 @@ export class FactorSignalIntegration {
   private initFactorETFMap(): void {
     // Universal / Fama-French factors → ETF pairs
     const etfMappings: Array<[string, { longETF: string; shortETF?: string; dailyMean: number; dailyStd: number; annualPremium: number }]> = [
-      // Original 42 factors
+      // Original 110 factors
       ['MOM_12M', { longETF: 'MTUM', dailyMean: 0.0003, dailyStd: 0.012, annualPremium: 0.075 }],
       ['MOM_1M', { longETF: 'MTUM', dailyMean: 0.00025, dailyStd: 0.015, annualPremium: 0.06 }],
       ['QUAL', { longETF: 'QUAL', dailyMean: 0.0002, dailyStd: 0.008, annualPremium: 0.05 }],

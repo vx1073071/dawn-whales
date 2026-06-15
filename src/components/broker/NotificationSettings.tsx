@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ── R140-M01 NotificationSettings — 通知分级+智能静音 ────────────────────
 // PM: P2-1, 3h. 成交声/止损弹窗/日报静默
 

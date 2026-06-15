@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ⚠️ @deprecated v17.6 R150 (2026-06-13): Use WalletFullPage.tsx instead.
 // WalletFullPage is the single unified wallet entry point with all features
 // (balance/withdraw/transfer/tip/overview integrated in one page).

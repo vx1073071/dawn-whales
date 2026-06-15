@@ -1,4 +1,3 @@
-// @ts-nocheck — R119: cross-module type mismatch pending lib/component alignment
 // ── R114 QTE-18 OrderBook Waterfall — 订单簿瀑布图 (买卖深度可视化) ──
 // PM: 深度行情P0, 买卖盘红绿渐变/横条宽度=挂单量/大单墙高亮/价格跳动动画
 
@@ -7,34 +6,9 @@ import { useMemo, useRef, useEffect } from 'react';
 // ═══════════ Types ═══════════
 
 // ═══════ Bridge: OrderBookEngine → UI ═══════════
-import type { OrderBookSnapshot, DepthLevel as LibDepthLevel } from '../../lib/chart/depth-types';
+import type { OrderBookSnapshot } from '../../lib/chart/depth-types';
 
-interface OrderBookLevel {
-  price: number;
-  size: number;
-  total: number;
-  orderCount?: number;
-}
-
-interface OrderBookData {
-  symbol: string;
-  bids: OrderBookLevel[];
-  asks: OrderBookLevel[];
-  spread: number;
-  spreadPct: number;
-  midPrice: number;
-  timestamp: number;
-  updateSeq?: number;
-}
-
-interface OrderBookProps {
-  data: OrderBookData | null;
-  depth?: number;
-  height?: number;
-  width?: number;
-  showHeader?: boolean;
-  className?: string;
-}
+// ── Interface declarations are below (exported, shared with chart barrel) ──
 
 /** Convert chart-lib OrderBookSnapshot → waterfall component's OrderBookData */
 export function snapshotToWaterfallData(snapshot: OrderBookSnapshot): OrderBookData {
