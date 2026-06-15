@@ -6717,5 +6717,21 @@
   "wizard_run_cost": "費用: {cost} USDT/回 · 3回無料",
   "wizard_backtest_btn": "まずバックテスト",
   "wizard_save_later": "後で試す",
-  "wizard_step_labels": "市場選択 | AI推薦 | プレビュー実行"
+  "wizard_step_labels": "市場選択 | AI推薦 | プレビュー実行",
+  "factor_store_title": "ファクターストア",
+  "factor_store_search": "ファクター検索: 「PER」「モメンタム」「クジラ」...",
+  "factor_store_empty": "一致するファクターがありません。フィルターや検索語を変えてみてください。",
+  "factor_store_onboarding": "ヒント: ファクターは料理の調味料。正しい組合せで戦略が輝く。16カテゴリーから探検しよう！",
+  "factor_store_add_btn": "戦略に追加",
+  "factor_store_compare_btn": "比較",
+  "factor_store_fav_btn": "お気に入り",
+  "factor_card_ic": "30日IC",
+  "factor_card_status_ok": "利用可",
+  "factor_card_status_delayed": "データ遅延",
+  "factor_card_status_no": "利用不可",
+  "factor_card_when": "有効な場面",
+  "factor_card_source": "データソース",
+  "factor_card_params": "調整可能パラメータ",
+  "factor_card_winrate": "90日勝率",
+  "factor_store_ic_chart": "IC推移"
 }

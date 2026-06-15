@@ -6717,5 +6717,21 @@
   "wizard_run_cost": "Kosten: {cost} USDT/Durchlauf · 3 Gratis-Tests",
   "wizard_backtest_btn": "Zuerst Backtest",
   "wizard_save_later": "Für später speichern",
-  "wizard_step_labels": "Positionierung | KI-Auswahl | Vorschau & Start"
+  "wizard_step_labels": "Positionierung | KI-Auswahl | Vorschau & Start",
+  "factor_store_title": "Faktor-Shop",
+  "factor_store_search": "Faktoren suchen: \"KGV\", \"Momentum\", \"Wal\"...",
+  "factor_store_empty": "Keine passenden Faktoren. Andere Filter oder Suchbegriffe probieren.",
+  "factor_store_onboarding": "Tipp: Faktoren sind wie Gewürze. Die richtige Mischung macht die Strategie. Stöbern Sie durch die 16 Kategorien!",
+  "factor_store_add_btn": "Zur Strategie",
+  "factor_store_compare_btn": "Vergleichen",
+  "factor_store_fav_btn": "Favorit",
+  "factor_card_ic": "30-Tage-IC",
+  "factor_card_status_ok": "Verfügbar",
+  "factor_card_status_delayed": "Daten verzögert",
+  "factor_card_status_no": "Nicht verfügbar",
+  "factor_card_when": "Am besten wenn",
+  "factor_card_source": "Datenquelle",
+  "factor_card_params": "Einstellbare Parameter",
+  "factor_card_winrate": "90-Tage-Quote",
+  "factor_store_ic_chart": "IC-Verlauf"
 }

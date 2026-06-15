@@ -6717,5 +6717,21 @@
   "wizard_run_cost": "Coût: {cost} USDT/tour · 3 essais gratuits",
   "wizard_backtest_btn": "Backtest d'abord",
   "wizard_save_later": "Sauvegarder pour plus tard",
-  "wizard_step_labels": "Positionnement | Sélection IA | Aperçu & Exécution"
+  "wizard_step_labels": "Positionnement | Sélection IA | Aperçu & Exécution",
+  "factor_store_title": "Magasin de facteurs",
+  "factor_store_search": "Rechercher: \"PER\", \"momentum\", \"baleine\"...",
+  "factor_store_empty": "Aucun facteur correspondant. Essayez d'autres filtres ou termes.",
+  "factor_store_onboarding": "Astuce: Les facteurs sont comme des épices. Le bon mélange fait la stratégie. Explorez les 16 catégories!",
+  "factor_store_add_btn": "Ajouter à la stratégie",
+  "factor_store_compare_btn": "Comparer",
+  "factor_store_fav_btn": "Favori",
+  "factor_card_ic": "IC 30j",
+  "factor_card_status_ok": "Disponible",
+  "factor_card_status_delayed": "Données retardées",
+  "factor_card_status_no": "Indisponible",
+  "factor_card_when": "Fonctionne mieux quand",
+  "factor_card_source": "Source de données",
+  "factor_card_params": "Paramètres ajustables",
+  "factor_card_winrate": "Taux de succès 90j",
+  "factor_store_ic_chart": "Tendance IC"
 }

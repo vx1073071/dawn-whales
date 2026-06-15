@@ -6731,5 +6731,21 @@
   "wizard_run_cost": "Cost: {cost} USDT/turn · 3 free trials",
   "wizard_backtest_btn": "Backtest First",
   "wizard_save_later": "Save for Later",
-  "wizard_step_labels": "Positioning | AI Picks | Preview & Run"
+  "wizard_step_labels": "Positioning | AI Picks | Preview & Run",
+  "factor_store_title": "Factor Store",
+  "factor_store_search": "Search factors: \"PE ratio\", \"momentum\", \"whale\"...",
+  "factor_store_empty": "No matching factors. Try different filters or search terms.",
+  "factor_store_onboarding": "Tip: Factors are like spices. The right combo makes the strategy work. Start exploring from the 16 categories!",
+  "factor_store_add_btn": "Add to Strategy",
+  "factor_store_compare_btn": "Compare",
+  "factor_store_fav_btn": "Favorite",
+  "factor_card_ic": "30d IC",
+  "factor_card_status_ok": "Available",
+  "factor_card_status_delayed": "Data delayed",
+  "factor_card_status_no": "Unavailable",
+  "factor_card_when": "Works best when",
+  "factor_card_source": "Data Source",
+  "factor_card_params": "Tunable Params",
+  "factor_card_winrate": "90d Win Rate",
+  "factor_store_ic_chart": "IC Trend"
 }

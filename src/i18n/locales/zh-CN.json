@@ -7075,5 +7075,21 @@
   "wizard_run_cost": "费用: {cost} USDT/轮 · 3次免费试用",
   "wizard_backtest_btn": "先回测看看",
   "wizard_save_later": "加到自选稍后试",
-  "wizard_step_labels": "市场定位 | AI推荐 | 预览运行"
+  "wizard_step_labels": "市场定位 | AI推荐 | 预览运行",
+  "factor_store_title": "因子超市",
+  "factor_store_search": "搜索因子: \"市盈率\"\"动量\"\"巨鲸\"...",
+  "factor_store_empty": "没有匹配的因子。试试换个筛选条件, 或者搜索其他关键词。",
+  "factor_store_onboarding": "提示: 因子就像菜谱里的调料。选对了组合, 策略才好吃。从左侧16大类开始浏览吧！",
+  "factor_store_add_btn": "加到策略",
+  "factor_store_compare_btn": "对比",
+  "factor_store_fav_btn": "收藏",
+  "factor_card_ic": "近30日IC",
+  "factor_card_status_ok": "可用",
+  "factor_card_status_delayed": "数据延迟",
+  "factor_card_status_no": "暂不可用",
+  "factor_card_when": "适用场景",
+  "factor_card_source": "数据来源",
+  "factor_card_params": "可调参数",
+  "factor_card_winrate": "近90日胜率",
+  "factor_store_ic_chart": "IC走势"
 }

@@ -6717,5 +6717,21 @@
   "wizard_run_cost": "費用: {cost} USDT/輪 · 3次免費試用",
   "wizard_backtest_btn": "先回測看看",
   "wizard_save_later": "加到自選稍後試",
-  "wizard_step_labels": "市場定位 | AI推薦 | 預覽執行"
+  "wizard_step_labels": "市場定位 | AI推薦 | 預覽執行",
+  "factor_store_title": "因子超市",
+  "factor_store_search": "搜尋因子: \"本益比\"\"動量\"\"巨鯨\"...",
+  "factor_store_empty": "沒有符合的因子。試試換個篩選條件, 或者搜尋其他關鍵詞。",
+  "factor_store_onboarding": "提示: 因子就像食譜裡的調味料。選對了組合, 策略才會好吃。從左側16大類開始瀏覽吧！",
+  "factor_store_add_btn": "加入策略",
+  "factor_store_compare_btn": "比較",
+  "factor_store_fav_btn": "收藏",
+  "factor_card_ic": "近30日IC",
+  "factor_card_status_ok": "可用",
+  "factor_card_status_delayed": "資料延遲",
+  "factor_card_status_no": "暫時無法使用",
+  "factor_card_when": "適用場景",
+  "factor_card_source": "資料來源",
+  "factor_card_params": "可調參數",
+  "factor_card_winrate": "近90日勝率",
+  "factor_store_ic_chart": "IC走勢"
 }

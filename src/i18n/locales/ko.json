@@ -6717,5 +6717,21 @@
   "wizard_run_cost": "비용: {cost} USDT/회 · 3회 무료",
   "wizard_backtest_btn": "먼저 백테스트",
   "wizard_save_later": "나중에 저장",
-  "wizard_step_labels": "시장 선택 | AI 추천 | 미리보기 실행"
+  "wizard_step_labels": "시장 선택 | AI 추천 | 미리보기 실행",
+  "factor_store_title": "팩터 스토어",
+  "factor_store_search": "팩터 검색: \"PER\" \"모멘텀\" \"고래\"...",
+  "factor_store_empty": "일치하는 팩터가 없습니다. 필터나 검색어를 변경해 보세요.",
+  "factor_store_onboarding": "팁: 팩터는 요리의 양념과 같습니다. 올바른 조합이 전략을 완성합니다. 16개 카테고리부터 탐색하세요!",
+  "factor_store_add_btn": "전략에 추가",
+  "factor_store_compare_btn": "비교",
+  "factor_store_fav_btn": "즐겨찾기",
+  "factor_card_ic": "30일 IC",
+  "factor_card_status_ok": "사용 가능",
+  "factor_card_status_delayed": "데이터 지연",
+  "factor_card_status_no": "사용 불가",
+  "factor_card_when": "적용 시나리오",
+  "factor_card_source": "데이터 출처",
+  "factor_card_params": "조정 가능 매개변수",
+  "factor_card_winrate": "90일 승률",
+  "factor_store_ic_chart": "IC 추세"
 }
