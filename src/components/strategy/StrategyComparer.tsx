@@ -322,8 +322,8 @@ const ConclusionCard: React.FC<{ conclusion: ComparisonConclusion; nameA: string
   const { regime, scenarios, verdict, reasoning, overallWinner, returnWinner, riskWinner } = conclusion;
 
   const regimeColors: Record<MarketRegime, string> = {
-    bull: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
-    bear: 'text-red-400 bg-red-500/10 border-red-500/30',
+    bull: 'text-blue-400 bg-blue-500/10 border-blue-500/30',
+    bear: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
     ranging: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
     volatile: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
   };
@@ -734,7 +734,7 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
         <div className="bg-gray-800/40 rounded-lg p-3 border border-gray-700/30">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] font-bold text-gray-400">A: {strategyA.name}</span>
-            <span className={`text-[10px] ${strategyA.totalReturn >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+            <span className={`text-[10px] ${strategyA.totalReturn >= 0 ? 'text-blue-400' : 'text-orange-400'}`}>
               {(strategyA.totalReturn * 100).toFixed(1)}%
             </span>
           </div>
@@ -751,7 +751,7 @@ export const StrategyComparer: React.FC<StrategyComparerProps> = ({ className })
         <div className="bg-gray-800/40 rounded-lg p-3 border border-gray-700/30">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] font-bold text-gray-400">B: {strategyB.name}</span>
-            <span className={`text-[10px] ${strategyB.totalReturn >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+            <span className={`text-[10px] ${strategyB.totalReturn >= 0 ? 'text-blue-400' : 'text-orange-400'}`}>
               {(strategyB.totalReturn * 100).toFixed(1)}%
             </span>
           </div>

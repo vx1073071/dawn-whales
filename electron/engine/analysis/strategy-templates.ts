@@ -53,6 +53,14 @@ export interface StrategyTemplate {
   applicable?: string[];
   tags: string[];
   backtestSummary?: string;         // R161: brief backtest results summary
+  // R222-ML#4: 四铁律+AI触发+因子权重
+  ironRules?: { humanReadable: string; stopLossExplicit: string; marketApplicable: string; failureSelfCheck: string };
+  aiTriggers?: Array<{ context: string; label: string; cost: number }>;
+  factorWeight?: Record<string, number>;
+  riskLevel?: 'conservative' | 'balanced' | 'aggressive';
+  categoryCn?: string;
+  updatedAt?: number;
+  version?: string;
 }
 
 // ── Template Registry (22 templates / 6 categories) ────────────────────────

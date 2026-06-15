@@ -154,7 +154,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
           </div>
 
           {error &&
-          <div className="mt-3 text-red-400 text-xs bg-red-500/10 rounded-lg px-3 py-2">{error}</div>
+          <div className="mt-3 text-orange-400 text-xs bg-orange-500/10 rounded-lg px-3 py-2">{error}</div>
           }
 
           <button
@@ -180,7 +180,7 @@ export default function StrategyCompareModal({ strategies, defaultStrategyA, onC
         {comparison &&
         <div className="p-5 max-h-80 overflow-y-auto">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-green-400 text-sm">✓</span>
+              <span className="text-blue-400 text-sm">✓</span>
               <h3 className="text-white text-sm font-medium">{i18n.t('StrategyCompareModal.k6')}</h3>
             </div>
             <div className="space-y-0.5">

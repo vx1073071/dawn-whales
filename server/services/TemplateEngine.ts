@@ -81,6 +81,9 @@ export interface StrategyTemplate {
   /** 四铁律 (R204 new) */
   ironRules: FourIronRules;
 
+  /** Risk level — R222 JVS#1: conservative/balanced/aggressive mapping */
+  riskLevel: 'low' | 'medium' | 'high';
+
   /** 3-5 AI trigger points (R204 new) */
   aiTriggers: AITriggerPoint[];
 
@@ -177,13 +180,17 @@ export class TemplateEngine {
     return { valid: errors.length === 0, errors };
   }
 
-  /** Full template validation: weights + 四铁律 + AI triggers */
+  /** Full template validation: weights + 四铁律 + AI triggers + riskLevel */
   validateTemplate(template: StrategyTemplate): { valid: boolean; errors: string[] } {
     const allErrors: string[] = [];
     const weightResult = this.validateWeights(template.factorCombo);
     const ironResult = this.validateFourIronRules(template.ironRules);
     const triggerResult = this.validateAITriggers(template.aiTriggers);
     allErrors.push(...weightResult.errors, ...ironResult.errors, ...triggerResult.errors);
+    // R222: Validate riskLevel
+    if (!template.riskLevel || !['low','medium','high'].includes(template.riskLevel)) {
+      allErrors.push('riskLevel missing or invalid: ' + String(template.riskLevel));
+    }
     return { valid: allErrors.length === 0, errors: allErrors };
   }
 
@@ -280,6 +287,7 @@ export class TemplateEngine {
     totalTemplates: number; totalFactors: number; totalMarkets: number;
     avgAITriggers: number; allIronRulesValid: number;
     totalAICost: number; signalPushCoverage: number; altDataCoverage: number;
+    riskLevelDistribution: Record<string, number>;
   } {
     const factorIds = new Set<string>();
     const markets = this.getMarketTags(templates);
@@ -288,6 +296,7 @@ export class TemplateEngine {
     let totalCost = 0;
     let signalCount = 0;
     let altCount = 0;
+    const riskDist: Record<string, number> = { low: 0, medium: 0, high: 0 };
     for (const t of templates) {
       for (const f of t.factorCombo.factorIds) factorIds.add(f);
       totalTriggers += t.aiTriggers.length;
@@ -295,6 +304,7 @@ export class TemplateEngine {
       if (this.validateFourIronRules(t.ironRules).valid) validRules++;
       if (this.hasSignalPush(t)) signalCount++;
       if (this.hasAltDataUnlock(t)) altCount++;
+      if (t.riskLevel) riskDist[t.riskLevel] = (riskDist[t.riskLevel] || 0) + 1;
     }
     return {
       totalTemplates: templates.length, totalFactors: factorIds.size, totalMarkets: markets.length,
@@ -303,6 +313,7 @@ export class TemplateEngine {
       totalAICost: Math.round(totalCost * 100) / 100,
       signalPushCoverage: templates.length > 0 ? Math.round((signalCount / templates.length) * 100) : 0,
       altDataCoverage: templates.length > 0 ? Math.round((altCount / templates.length) * 100) : 0,
+      riskLevelDistribution: riskDist,
     };
   }
 }

@@ -53,6 +53,19 @@ export interface StrategyTemplate {
   applicable?: string[];
   tags: string[];
   backtestSummary?: string;         // R161: brief backtest results summary
+  // R222-ML#4: 四铁律 + AI触发 + 因子标准
+  ironRules?: {
+    humanReadable: string;
+    stopLossExplicit: string;
+    marketApplicable: string;
+    failureSelfCheck: string;
+  };
+  aiTriggers?: Array<{ context: 'factor' | 'goldenRule' | 'backtest' | 'parameter'; label: string; cost: number }>;
+  factorWeight?: Record<string, number>;
+  riskLevel?: 'conservative' | 'balanced' | 'aggressive';
+  categoryCn?: string;
+  updatedAt?: number;
+  version?: string;
 }
 
 // ── Template Registry (22 templates / 6 categories) ────────────────────────
@@ -778,4 +791,94 @@ export function instantiateTemplate(
   };
 
   return { strategy };
+}
+
+// ── R222-ML#4: 四铁律 + AI触发 + 因子权重 向后兼容层 ───────────────
+// 为所有21个（去掉R214删除的template）添加因子标准字段
+
+const IRON_RULE_DEFAULTS: Record<string, StrategyTemplate['ironRules']> = {
+  trend: {
+    humanReadable: '符合趋势跟踪逻辑，MACD/MA交叉信号',
+    stopLossExplicit: '固定百分比止损或ATR动态止损',
+    marketApplicable: '适用于有明确趋势的市场(HK/US/JP)',
+    failureSelfCheck: '震荡市频繁假信号/趋势反转未止盈/止损过宽',
+  },
+  mean_reversion: {
+    humanReadable: '价格偏离均线后向均值回归',
+    stopLossExplicit: '突破布林带外轨2%止损',
+    marketApplicable: '适用于震荡市场，单边趋势禁用',
+    failureSelfCheck: '趋势市持续背离/RSI极端值持续/布林带收窄后未及时退出',
+  },
+  momentum: {
+    humanReadable: '价格动量延续，强者恒强',
+    stopLossExplicit: '跌破前低或3日低点止损',
+    marketApplicable: '适用于强势上涨或下跌市场',
+    failureSelfCheck: '动量反转未及时退出/假突破/市场情绪突变',
+  },
+  value: {
+    humanReadable: '低估值买入高估值卖出',
+    stopLossExplicit: '跌破支撑位或PE分位数回升止损',
+    marketApplicable: '适用于成熟市场，新兴市场谨慎',
+    failureSelfCheck: '价值陷阱/估值修复不达预期/宏观变化',
+  },
+  multi_factor: {
+    humanReadable: '多因子组合选取最优标的',
+    stopLossExplicit: '因子失效后止损或调仓',
+    marketApplicable: '全市场适用，需根据市场动态调整权重',
+    failureSelfCheck: '因子IC衰减/因子拥挤/过拟合',
+  },
+  options: {
+    humanReadable: '期权策略，利用波动率和时间价值',
+    stopLossExplicit: '权利金亏损100%或标的价格突破止损',
+    marketApplicable: '适用于有期权市场的品种(US/HK)',
+    failureSelfCheck: '隐波骤变/Gamma风险/到期日未平仓',
+  },
+};
+
+const DEFAULT_AI_TRIGGERS: StrategyTemplate['aiTriggers'] = [
+  { context: 'backtest', label: 'AI回测解读', cost: 1 },
+  { context: 'parameter', label: 'AI参数优化', cost: 1.5 },
+  { context: 'factor', label: 'AI因子分析', cost: 1 },
+];
+
+const FACTOR_W_DEFAULTS: Record<string, Record<string, number>> = {
+  trend: { MA: 0.35, MACD: 0.35, ADX: 0.30 },
+  mean_reversion: { BOLL: 0.40, RSI: 0.35, MA: 0.25 },
+  momentum: { MOM_12M: 0.45, SMB: 0.25, VOL: 0.30 },
+  value: { PE: 0.40, PB: 0.30, DIV: 0.30 },
+  multi_factor: { MOM_12M: 0.25, ROE: 0.25, PE: 0.25, VOL_60D: 0.25 },
+  options: { IV: 0.40, GAMMA: 0.30, THETA: 0.30 },
+};
+
+/** 为模板注入四铁律+AI触发+因子权重(如果缺失) */
+export function enrichTemplateWithStandards(tmpl: StrategyTemplate): StrategyTemplate {
+  return {
+    ...tmpl,
+    ironRules: tmpl.ironRules || IRON_RULE_DEFAULTS[tmpl.category] || IRON_RULE_DEFAULTS.trend,
+    aiTriggers: tmpl.aiTriggers || DEFAULT_AI_TRIGGERS,
+    factorWeight: tmpl.factorWeight || FACTOR_W_DEFAULTS[tmpl.category] || {},
+    riskLevel: tmpl.riskLevel ||
+      (tmpl.category === 'options' ? 'aggressive' : tmpl.category === 'momentum' ? 'balanced' : 'conservative') as StrategyTemplate['riskLevel'],
+    categoryCn: tmpl.categoryCn || categoryToCn(tmpl.category),
+    updatedAt: Date.now(),
+    version: 'v2.3.0',
+  };
+}
+
+function categoryToCn(cat: string): string {
+  const m: Record<string, string> = {
+    trend: '趋势', mean_reversion: '均值回归', momentum: '动量',
+    value: '价值', multi_factor: '多因子', options: '期权',
+  };
+  return m[cat] || cat;
+}
+
+/** 为所有模板批量注入标准字段 */
+export function enrichAllTemplates(): StrategyTemplate[] {
+  return TEMPLATES.map(enrichTemplateWithStandards);
+}
+
+/** 获取已注入标准的模板列表 */
+export function getStandardizedTemplates(): StrategyTemplate[] {
+  return enrichAllTemplates();
 }

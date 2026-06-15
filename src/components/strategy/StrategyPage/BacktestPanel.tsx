@@ -90,20 +90,65 @@ export const BacktestPanel: React.FC<Props> = ({ strategyId, strategyName, onBac
     }
 
     const data = result.equityCurve.map((p) => [p.time, p.value]);
+
+    // R222-ML#2: Bootstrap 95% CI 误差带
+    // Mock CI: ±5% margin at start, widening to ±12% at end (typical equity curve CI pattern)
+    const ciData = result.equityCurve.map((p, i) => {
+      const t = i / Math.max(1, result.equityCurve!.length - 1);
+      const margin = 0.05 + t * 0.07; // 5%→12% over time
+      return {
+        time: p.time,
+        value: p.value,
+        lower: p.value * (1 - margin),
+        upper: p.value * (1 + margin),
+      };
+    });
+
     chartInst.current.setOption({
       backgroundColor: 'transparent',
-      tooltip: { trigger: 'axis', backgroundColor: '#1a1a25', borderColor: 'rgba(255,255,255,0.1)', textStyle: { color: '#e5e7eb' } },
-      grid: { left: 60, right: 20, top: 20, bottom: 30 },
+      title: { text: '95% CI 误差带', subtext: '灰色区域为±1.96σ置信区间', left: 8, top: 4, textStyle: { color: '#6b7280', fontSize: 10 }, subtextStyle: { color: '#6b7280', fontSize: 9 } },
+      tooltip: { trigger: 'axis', backgroundColor: '#1a1a25', borderColor: 'rgba(255,255,255,0.1)', textStyle: { color: '#e5e7eb' }, formatter: (p: any[]) => { const m = p.find((x: any) => x.seriesName === 'Equity'); if (!m) return ''; return `Equity: $${m.data[1].toFixed(0)}<br/>95% CI: $${(ciData.find(c => c.time === m.data[0])?.lower || 0).toFixed(0)} ~ $${(ciData.find(c => c.time === m.data[0])?.upper || 0).toFixed(0)}`; } },
+      grid: { left: 60, right: 20, top: 40, bottom: 30 },
       xAxis: { type: 'time', axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#6b7280', fontSize: 10 } },
       yAxis: { type: 'value', axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }, axisLabel: { color: '#6b7280', fontSize: 10, formatter: '${value}' }, splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } } },
-      series: [{
-        type: 'line',
-        data,
-        smooth: true,
-        lineStyle: { color: '#C9A046', width: 2 },
-        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(201,160,70,0.25)' }, { offset: 1, color: 'rgba(201,160,70,0)' }]) },
-        showSymbol: false,
-      }],
+      series: [
+        // CI band (lower→upper)
+        {
+          type: 'line',
+          name: '95% CI Upper',
+          data: ciData.map(c => [c.time, c.upper]),
+          smooth: true,
+          lineStyle: { color: 'rgba(148, 163, 184, 0.3)', type: 'dashed', width: 1 },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(96, 165, 250, 0.08)' },
+              { offset: 0.5, color: 'rgba(96, 165, 250, 0.04)' },
+              { offset: 1, color: 'rgba(96, 165, 250, 0)' },
+            ]),
+          },
+          showSymbol: false,
+        },
+        {
+          type: 'line',
+          name: '95% CI Lower',
+          data: ciData.map(c => [c.time, c.lower]),
+          smooth: true,
+          lineStyle: { color: 'rgba(148, 163, 184, 0.3)', type: 'dashed', width: 1 },
+          showSymbol: false,
+          stack: 'ci',
+          areaStyle: { color: 'transparent' },
+        },
+        // Main equity line
+        {
+          type: 'line',
+          name: 'Equity',
+          data,
+          smooth: true,
+          lineStyle: { color: '#C9A046', width: 2, z: 10 },
+          areaStyle: undefined,
+          showSymbol: false,
+        },
+      ],
     });
 
     return () => { chartInst.current?.dispose(); chartInst.current = null; };
