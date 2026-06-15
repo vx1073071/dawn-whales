@@ -6074,5 +6074,36 @@
     "ironLawDetail": "Todos los servicios IA no son reembolsables. Revise la vista previa de costes antes de pagar.",
     "aiFaultException": "Excepción: Si el servicio IA falla (solo error técnico), la tarifa se reembolsa automáticamente.",
     "acknowledge": "Entiendo y acepto"
+  },
+  "sandboxActivation": {
+    "sectionTitle": "Activación de estrategia",
+    "step1Title": "Vista previa",
+    "step1Desc": "Revisa detalles, reglas, combinación de factores y perfil de riesgo",
+    "step2Title": "Configurar",
+    "step2Desc": "Define tamaño, stop loss, take profit y horarios de trading",
+    "step3Title": "Prueba sandbox",
+    "step3Desc": "Simulación de 30 días con datos reales para previsualizar rendimiento esperado",
+    "step4Title": "Activar en real",
+    "step4Desc": "Lee aviso de riesgo, desliza para confirmar, activa estrategia en trading real",
+    "sandboxTitle": "Resultados de simulación sandbox",
+    "sandboxPeriod": "Período de simulación: 30 días",
+    "sandboxProfit": "Ganancia/Pérdida simulada",
+    "sandboxWinRate": "Tasa de acierto",
+    "sandboxMaxDrawdown": "Drawdown máximo",
+    "sandboxSharpe": "Ratio de Sharpe",
+    "sandboxDisclaimer": "Simulaciones pasadas no garantizan resultados futuros. No son datos de trading reales.",
+    "sandboxContinue": "Continuar a real",
+    "sandboxRetry": "Ajustar y reintentar"
+  },
+  "riskDisclosure": {
+    "sectionTitle": "Aviso de riesgo",
+    "intro": "Lea y reconozca lo siguiente antes de activar el trading real:",
+    "item1": "Entiendo que el trading automatizado puede generar pérdidas financieras, incluida la pérdida total.",
+    "item2": "Entiendo que el rendimiento pasado y las simulaciones sandbox no garantizan resultados futuros.",
+    "item3": "Confirmo que he probado esta estrategia en modo sandbox y acepto los riesgos asociados.",
+    "sliderLabel": "Desliza para confirmar activación",
+    "sliderHint": "Desliza a la derecha →",
+    "confirmed": "Confirmado. Activando estrategia...",
+    "cancel": "Cancelar"
   }
 }

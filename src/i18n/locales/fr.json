@@ -6064,5 +6064,36 @@
     "ironLawDetail": "Tous les services IA ne sont pas remboursables. Veuillez vérifier l'aperçu des frais avant de payer.",
     "aiFaultException": "Exception : Si le service IA échoue (erreur technique uniquement), les frais sont automatiquement remboursés.",
     "acknowledge": "Je comprends et j'accepte"
+  },
+  "sandboxActivation": {
+    "sectionTitle": "Activation de la stratégie",
+    "step1Title": "Aperçu",
+    "step1Desc": "Examinez les détails, règles, combinaison de facteurs et profil de risque",
+    "step2Title": "Configurer",
+    "step2Desc": "Définissez la taille, stop-loss, take-profit et heures de trading",
+    "step3Title": "Test bac à sable",
+    "step3Desc": "Simulation 30 jours avec données réelles pour prévisualiser la performance attendue",
+    "step4Title": "Mise en production",
+    "step4Desc": "Lisez l'avis de risque, confirmez par glissement, activez pour le trading réel",
+    "sandboxTitle": "Résultats de la simulation",
+    "sandboxPeriod": "Période de simulation : 30 jours",
+    "sandboxProfit": "P&L simulé",
+    "sandboxWinRate": "Taux de réussite",
+    "sandboxMaxDrawdown": "Drawdown max",
+    "sandboxSharpe": "Ratio de Sharpe",
+    "sandboxDisclaimer": "Les simulations passées ne garantissent pas les résultats futurs. Données non réelles.",
+    "sandboxContinue": "Continuer vers le réel",
+    "sandboxRetry": "Ajuster et réessayer"
+  },
+  "riskDisclosure": {
+    "sectionTitle": "Avis de risque",
+    "intro": "Veuillez lire et reconnaître ce qui suit avant d'activer le trading réel :",
+    "item1": "Je comprends que le trading automatisé peut entraîner des pertes financières, jusqu'à la perte totale.",
+    "item2": "Je comprends que les performances passées et les simulations ne garantissent pas les résultats futurs.",
+    "item3": "Je confirme avoir testé cette stratégie en mode bac à sable et j'accepte les risques associés.",
+    "sliderLabel": "Glissez pour confirmer l'activation",
+    "sliderHint": "Glissez vers la droite →",
+    "confirmed": "Confirmé. Activation de la stratégie...",
+    "cancel": "Annuler"
   }
 }

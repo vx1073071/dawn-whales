@@ -6064,5 +6064,36 @@
     "ironLawDetail": "Alle KI-Dienste sind nicht erstattungsfähig. Bitte prüfen Sie die Kostenvorschau vor der Zahlung.",
     "aiFaultException": "Ausnahme: Schlägt der KI-Dienst fehl (nur technischer Fehler), wird die Gebühr automatisch erstattet.",
     "acknowledge": "Ich verstehe und stimme zu"
+  },
+  "sandboxActivation": {
+    "sectionTitle": "Strategieaktivierung",
+    "step1Title": "Vorschau",
+    "step1Desc": "Strategiedetails, eiserne Regeln, Faktorkombination und Risikoprofil prüfen",
+    "step2Title": "Konfigurieren",
+    "step2Desc": "Positionsgröße, Stop-Loss, Take-Profit und Handelszeiten festlegen",
+    "step3Title": "Sandbox-Test",
+    "step3Desc": "30-Tage-Simulation mit echten Marktdaten zur Vorschau der erwarteten Performance",
+    "step4Title": "Live schalten",
+    "step4Desc": "Risikohinweis prüfen, per Slider bestätigen, Strategie für Live-Trading aktivieren",
+    "sandboxTitle": "Sandbox-Simulationsergebnisse",
+    "sandboxPeriod": "Simulationszeitraum: 30 Tage",
+    "sandboxProfit": "Simulierter Gewinn/Verlust",
+    "sandboxWinRate": "Gewinnrate",
+    "sandboxMaxDrawdown": "Max. Drawdown",
+    "sandboxSharpe": "Sharpe-Ratio",
+    "sandboxDisclaimer": "Vergangene Simulationen garantieren keine zukünftigen Ergebnisse. Keine echten Handelsdaten.",
+    "sandboxContinue": "Weiter zu Live",
+    "sandboxRetry": "Anpassen & Wiederholen"
+  },
+  "riskDisclosure": {
+    "sectionTitle": "Risikohinweis",
+    "intro": "Bitte lesen und bestätigen Sie vor der Aktivierung des Live-Handels:",
+    "item1": "Ich verstehe, dass automatisierter Handel zu finanziellen Verlusten bis hin zum Totalverlust führen kann.",
+    "item2": "Ich verstehe, dass vergangene Performance und Sandbox-Simulationen keine zukünftigen Ergebnisse garantieren.",
+    "item3": "Ich bestätige, dass ich diese Strategie im Sandbox-Modus getestet habe und die Risiken akzeptiere.",
+    "sliderLabel": "Zum Bestätigen schieben",
+    "sliderHint": "Nach rechts schieben →",
+    "confirmed": "Bestätigt. Strategie wird aktiviert...",
+    "cancel": "Abbrechen"
   }
 }

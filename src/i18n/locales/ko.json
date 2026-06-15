@@ -6064,5 +6064,36 @@
     "ironLawDetail": "모든 AI 서비스는 환불이 불가합니다. 결제 전 비용 미리보기를 꼭 확인하세요.",
     "aiFaultException": "유일한 예외: AI 서비스 실행 실패(기술적 오류만 해당) 시 비용이 자동 환불됩니다.",
     "acknowledge": "이해하고 동의합니다"
+  },
+  "sandboxActivation": {
+    "sectionTitle": "전략 활성화",
+    "step1Title": "미리보기",
+    "step1Desc": "전략 상세, 철칙, 팩터 조합, 위험 프로필 검토",
+    "step2Title": "매개변수 설정",
+    "step2Desc": "포지션 크기, 손절/익절, 거래 시간 설정",
+    "step3Title": "샌드박스 테스트",
+    "step3Desc": "실제 시장 데이터로 30일 시뮬레이션, 예상 성과 미리보기",
+    "step4Title": "실전 배포",
+    "step4Desc": "위험 고지 확인 후 슬라이더 동의, 실전 거래 활성화",
+    "sandboxTitle": "샌드박스 결과",
+    "sandboxPeriod": "시뮬레이션 기간: 30일",
+    "sandboxProfit": "시뮬레이션 손익",
+    "sandboxWinRate": "승률",
+    "sandboxMaxDrawdown": "최대 낙폭",
+    "sandboxSharpe": "샤프 비율",
+    "sandboxDisclaimer": "과거 시뮬레이션은 미래 수익을 보장하지 않습니다. 실제 거래 데이터가 아닙니다.",
+    "sandboxContinue": "실전으로 진행",
+    "sandboxRetry": "매개변수 조정 후 재시도"
+  },
+  "riskDisclosure": {
+    "sectionTitle": "위험 고지",
+    "intro": "실전 거래 활성화 전 다음 내용을 읽고 확인하세요:",
+    "item1": "자동 거래로 인해 투자 원금 전체를 포함한 금전적 손실이 발생할 수 있음을 이해합니다.",
+    "item2": "과거 성과 및 샌드박스 시뮬레이션이 미래 수익을 보장하지 않음을 이해합니다.",
+    "item3": "샌드박스 모드에서 이 전략을 테스트했으며 관련 위험을 수용함을 확인합니다.",
+    "sliderLabel": "밀어서 활성화 확인",
+    "sliderHint": "오른쪽으로 밀기 →",
+    "confirmed": "확인됨. 전략 활성화 중...",
+    "cancel": "취소"
   }
 }

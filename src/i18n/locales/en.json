@@ -6121,5 +6121,36 @@
     "ironLawDetail": "All AI services are non-refundable. Please review the fee preview carefully before confirming payment.",
     "aiFaultException": "Exception: If the AI service fails to execute (technical error only), the fee is automatically refunded.",
     "acknowledge": "I understand and agree"
+  },
+  "sandboxActivation": {
+    "sectionTitle": "Strategy Activation",
+    "step1Title": "Preview",
+    "step1Desc": "Review strategy details, iron rules, factor combination, and risk profile",
+    "step2Title": "Configure",
+    "step2Desc": "Set position size, stop loss, take profit, and trading hours",
+    "step3Title": "Sandbox Test",
+    "step3Desc": "Run 30-day simulation with real market data to preview expected performance",
+    "step4Title": "Go Live",
+    "step4Desc": "Review risk disclosure, slide to confirm, activate strategy for live trading",
+    "sandboxTitle": "Sandbox Simulation Results",
+    "sandboxPeriod": "Simulation period: 30 days",
+    "sandboxProfit": "Simulated P&L",
+    "sandboxWinRate": "Win Rate",
+    "sandboxMaxDrawdown": "Max Drawdown",
+    "sandboxSharpe": "Sharpe Ratio",
+    "sandboxDisclaimer": "Past simulation does not guarantee future results. This is NOT real trading data.",
+    "sandboxContinue": "Continue to Live",
+    "sandboxRetry": "Adjust & Retry"
+  },
+  "riskDisclosure": {
+    "sectionTitle": "Risk Disclosure",
+    "intro": "Please read and acknowledge the following before activating live trading:",
+    "item1": "I understand that automated trading can result in financial loss, up to total loss of invested capital.",
+    "item2": "I understand that past performance and sandbox simulations do not guarantee future results.",
+    "item3": "I confirm that I have tested this strategy in sandbox mode and accept the associated risks.",
+    "sliderLabel": "Slide to confirm activation",
+    "sliderHint": "Slide right →",
+    "confirmed": "Confirmed. Activating strategy...",
+    "cancel": "Cancel"
   }
 }

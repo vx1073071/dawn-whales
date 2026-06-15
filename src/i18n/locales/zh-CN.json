@@ -6465,5 +6465,36 @@
     "ironLawDetail": "所有AI服务不支持退款。请在支付前仔细查看费用预览。",
     "aiFaultException": "唯一例外：AI服务执行失败（仅限技术故障）时，费用将自动退还。",
     "acknowledge": "我已知晓并同意"
+  },
+  "sandboxActivation": {
+    "sectionTitle": "策略激活",
+    "step1Title": "预览策略",
+    "step1Desc": "查看策略详情、铁律、因子组合与风险画像",
+    "step2Title": "参数配置",
+    "step2Desc": "设置仓位大小、止损止盈、交易时段",
+    "step3Title": "沙盒模拟",
+    "step3Desc": "用真实行情数据模拟30天，预览预期表现",
+    "step4Title": "实盘确认",
+    "step4Desc": "阅读风险揭示、滑块确认后激活策略进入实盘",
+    "sandboxTitle": "沙盒模拟结果",
+    "sandboxPeriod": "模拟周期：30天",
+    "sandboxProfit": "模拟盈亏",
+    "sandboxWinRate": "胜率",
+    "sandboxMaxDrawdown": "最大回撤",
+    "sandboxSharpe": "夏普比率",
+    "sandboxDisclaimer": "历史模拟不代表未来收益。此为模拟数据，非真实交易结果。",
+    "sandboxContinue": "继续实盘",
+    "sandboxRetry": "调整参数重试"
+  },
+  "riskDisclosure": {
+    "sectionTitle": "风险揭示",
+    "intro": "激活实盘交易前，请阅读并确认以下内容：",
+    "item1": "我知晓自动化交易可能造成资金损失，包括全部本金亏损。",
+    "item2": "我知晓历史表现和沙盒模拟不代表未来收益。",
+    "item3": "我已确认完成沙盒测试，并接受相关风险。",
+    "sliderLabel": "滑动以确认激活",
+    "sliderHint": "向右滑动 →",
+    "confirmed": "已确认，正在激活策略...",
+    "cancel": "取消"
   }
 }
