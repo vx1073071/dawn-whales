@@ -31,7 +31,8 @@ export type FactorLevel1 =
   | 'L1_CROSS_ASSET'  // Cross-Asset & Carry
   | 'L1_EVENT'        // Event-Driven
   | 'L1_ESG'          // ESG & Sustainability
-  | 'L1_LEGACY';      // Legacy / Deprecated
+  | 'L1_LEGACY'       // Legacy / Deprecated
+  | 'L1_COMMODITY'    // Commodity Futures
 
 // ── L2 Sub-Category (55 sub-categories) ───────────────────────────
 
@@ -54,6 +55,9 @@ export type FactorLevel2 =
   | 'L2_CYCLE' | 'L2_CURRENCY' | 'L2_SENSITIVITY'
   // Reversal
   | 'L2_SHORT_TERM' | 'L2_LONG_TERM' | 'L2_SEASONAL' | 'L2_STATISTICAL'
+  // Commodity
+  | 'L2_TERM_STRUCTURE' | 'L2_INVENTORY' | 'L2_MOMENTUM' | 'L2_VOLATILITY'
+  | 'L2_FLOW' | 'L2_FUNDAMENTAL' | 'L2_SEASONAL'
   // US
   | 'L2_CORPORATE' | 'L2_EVENT' | 'L2_STATS' | 'L2_VALUE'
   | 'L2_SENTIMENT' | 'L2_YIELD' | 'L2_FLOW' | 'L2_SOCIAL' | 'L2_VOLATILITY'
@@ -326,6 +330,25 @@ const FACTOR_SPEC: [string, string, string, FactorLevel1, FactorLevel2][] = [
   ['XM_MKTCAP_EXPOSURE', 'CrossMarketCapExposure', '跨市场市值暴露', 'L1_CROSS_ASSET', 'L2_CORRELATION'],
   ['XM_LIQUIDITY', 'CrossLiquidity', '跨市场流动性', 'L1_CROSS_ASSET', 'L2_CORRELATION'],
   ['XM_DIVIDEND_ARAMA', 'CrossDividendArama', '跨市场股息比较', 'L1_CROSS_ASSET', 'L2_CARRY'],
+
+  // ════════════════════════════════════════ Commodity Futures (R198) ════════════════════════════════════════
+  // L1 Term Structure (7)
+  ['CMD_ROLL_YIELD', 'RollYield', '换月成本(展期收益)', 'L1_COMMODITY', 'L2_TERM_STRUCTURE'],
+  ['CMD_TERM_STRUCTURE', 'TermStructure', '期限结构斜率', 'L1_COMMODITY', 'L2_TERM_STRUCTURE'],
+  ['CMD_BASIS', 'Basis', '基差(现货vs期货)', 'L1_COMMODITY', 'L2_TERM_STRUCTURE'],
+  ['CMD_MOMENTUM_12M', 'CommodityMomentum12M', '12月商品动量', 'L1_COMMODITY', 'L2_MOMENTUM'],
+  ['CMD_MOMENTUM_1M', 'CommodityMomentum1M', '1月商品反转', 'L1_COMMODITY', 'L2_MOMENTUM'],
+  ['CMD_VOLATILITY', 'CommodityVolatility', '商品波动率', 'L1_COMMODITY', 'L2_VOLATILITY'],
+  ['CMD_SKEWNESS', 'CommoditySkewness', '收益偏度', 'L1_COMMODITY', 'L2_VOLATILITY'],
+  // L2 Inventory/Supply-Demand (5)
+  ['CMD_EIA_CRUDE', 'EIACrudeInventory', 'EIA原油库存', 'L1_COMMODITY', 'L2_INVENTORY'],
+  ['CMD_NATGAS_STORAGE', 'NatGasStorage', '天然气储气量', 'L1_COMMODITY', 'L2_INVENTORY'],
+  ['CMD_LME_INVENTORY', 'LMEInventory', 'LME金属库存', 'L1_COMMODITY', 'L2_INVENTORY'],
+  ['CMD_GOLD_ETF', 'GoldETFHoldings', '黄金ETF持仓', 'L1_COMMODITY', 'L2_FLOW'],
+  ['CMD_BALANCE_SHEET', 'BalanceSheet', '供需平衡表', 'L1_COMMODITY', 'L2_FUNDAMENTAL'],
+  // L6 Seasonality (2)
+  ['CMD_SEASONALITY', 'CommoditySeasonality', '商品季节性', 'L1_COMMODITY', 'L2_SEASONAL'],
+  ['CMD_GOLD_SUMMER', 'GoldSummerEffect', '黄金夏季效应', 'L1_COMMODITY', 'L2_SEASONAL'],
 
 ];
 
