@@ -297,7 +297,36 @@ const FACTOR_SPEC: [string, string, string, FactorLevel1, FactorLevel2][] = [
   ['ESG_MOMENTUM', 'ESGMomentum', 'ESG进步速度', 'L1_ESG', 'L2_OVERALL'],
   // ════════════════════════════════════════ 15. Legacy / Deprecated ════════════════════════════════════════
   ['SMB', 'SMB_Deprecated', 'SMB(已废弃)', 'L1_LEGACY', 'L2_DEPRECATED'],
-  ['QUALITY', 'Quality_Deprecated', 'Quality(已废弃)', 'L1_LEGACY', 'L2_DEPRECATED']
+  ['QUALITY', 'Quality_Deprecated', 'Quality(已废弃)', 'L1_LEGACY', 'L2_DEPRECATED'],
+  // ═══════════ R185: 27 new green-factor IDs ═══════════
+  ['ROA', 'ROA', '总资产回报率', 'L1_FUNDAMENTAL', 'L2_PROFIT_QUALITY'],
+  ['GROSS_MARGIN', 'GrossMargin', '毛利率', 'L1_FUNDAMENTAL', 'L2_PROFIT_QUALITY'],
+  ['DEBT_TO_EQUITY', 'DebtToEquity', '负债权益比', 'L1_FUNDAMENTAL', 'L2_RISK_STRUCTURE'],
+  ['INSIDER_BUYING', 'InsiderBuying', '内部人买入信号', 'L1_SENTIMENT', 'L2_FLOW'],
+  ['FUND_FLOW', 'FundFlow', '资金净流入', 'L1_SENTIMENT', 'L2_FLOW'],
+  ['ETF_FLOW', 'ETFFlow', 'ETF资金流', 'L1_SENTIMENT', 'L2_FLOW'],
+  ['DIVIDEND_CHANGE', 'DividendChange', '股息变化方向', 'L1_FUNDAMENTAL', 'L2_YIELD_QUALITY'],
+  ['SECTOR_STRENGTH', 'SectorStrength', '行业强度', 'L1_MACRO', 'L2_CYCLE'],
+  ['IV_RANK', 'IVRank', '隐含波动率排名', 'L1_SENTIMENT', 'L2_OPTIONS'],
+  ['CURRENCY_EFFECT', 'CurrencyEffect', '汇率影响', 'L1_MACRO', 'L2_CURRENCY'],
+  ['FREE_CASH_FLOW_YIELD', 'FreeCashFlowYield', '自由现金流收益率', 'L1_FUNDAMENTAL', 'L2_VALUE_DEEP'],
+  ['EQUITY_MULTIPLIER', 'EquityMultiplier', '权益乘数', 'L1_FUNDAMENTAL', 'L2_RISK_STRUCTURE'],
+  ['DISPOSITION_EFFECT', 'DispositionEffect', '处置效应', 'L1_SENTIMENT', 'L2_SOCIAL'],
+  ['ANCHORING', 'Anchoring', '锚定效应', 'L1_SENTIMENT', 'L2_SOCIAL'],
+  ['AH_PREMIUM_CHANGE', 'AHPremiumChange', 'AH溢价变化率', 'L1_HK', 'L2_PRICING'],
+  ['HSI_CONSTITUENT', 'HSIConstituent', '恒指成分股权重', 'L1_HK', 'L2_FLOW'],
+  ['HK_REIT_YIELD', 'HKREITYield', '港股REIT收益率', 'L1_HK', 'L2_YIELD'],
+  ['US_EARNINGS_CALENDAR', 'USEarningsCalendar', '美股财报日历', 'L1_US', 'L2_EVENT'],
+  ['US_SECTOR_ROTATION', 'USSectorRotation', '美股板块轮动', 'L1_US', 'L2_CORPORATE'],
+  ['US_SMALL_CAP_MOMENTUM', 'USSmallCapMomentum', '小盘股动量', 'L1_US', 'L2_STATS'],
+  ['US_DIVIDEND_ARISTOCRATS', 'USDividendAristocrats', '股息贵族', 'L1_US', 'L2_YIELD'],
+  ['US_SP500_EQUAL_WEIGHT', 'USSP500EqualWeight', '标普500等权', 'L1_US', 'L2_VALUE'],
+  ['CRYPTO_S2F', 'CryptoStockToFlow', 'S2F模型', 'L1_CRYPTO', 'L2_VALUATION'],
+  ['CRYPTO_HASH_RATE', 'CryptoHashRate', '哈希率', 'L1_CRYPTO', 'L2_ONCHAIN'],
+  ['XM_MKTCAP_EXPOSURE', 'CrossMarketCapExposure', '跨市场市值暴露', 'L1_CROSS_ASSET', 'L2_CORRELATION'],
+  ['XM_LIQUIDITY', 'CrossLiquidity', '跨市场流动性', 'L1_CROSS_ASSET', 'L2_CORRELATION'],
+  ['XM_DIVIDEND_ARAMA', 'CrossDividendArama', '跨市场股息比较', 'L1_CROSS_ASSET', 'L2_CARRY'],
+
 ];
 
 // ═══════════════════════════════════════════════════════════════════
@@ -409,6 +438,24 @@ export const LEGACY_ID_MAP: Record<string, FactorId> = {
   INVESTMENT: 'CMA',
   DIVIDEND: 'YIELD',
   DIV_YIELD: 'YIELD',
+  // R185: Green factor canonical alias mappings
+  EARNINGS_YIELD: 'EP_RATIO',
+  BOOK_TO_PRICE: 'HML',
+  DIVIDEND_YIELD: 'YIELD',
+  BETA: 'MKT',
+  MAX_DRAWDOWN_1Y: 'MAX_DRAWDOWN',
+  SOUTHBOUND_FLOW: 'HK_SOUTHBOUND_FLOW',
+  CRYPTO_ACTIVE_ADDRESSES: 'CRYPTO_ACTIVE_ADDR',
+  INSIDER_TRADING: 'INSIDER_BUYING',
+  US_INSIDER_BUY: 'INSIDER_BUYING',
+  INSTITUTIONAL_FLOW: 'FUND_FLOW',
+  EARNINGS_SURPRISE_GREEN: 'EARNINGS_SURPRISE',
+  SECTOR_ROTATION_US: 'US_SECTOR_ROTATION',
+  FX_EXPOSURE_GREEN: 'CURRENCY_EFFECT',
+  CASH_FLOW_YIELD: 'FREE_CASH_FLOW_YIELD',
+  FREE_CASH_FLOW_GREEN: 'FREE_CASH_FLOW_YIELD',
+  HK_SOUTHBOUND_GREEN: 'SOUTHBOUND_FLOW',
+
 } as const;
 
 // ── Factor Category Map (v1 backward compat) ─────────────────────
@@ -527,3 +574,4 @@ export function getFactorCategory(id: string): FactorCategory | undefined {
   if (!meta) return undefined;
   return L2_TO_LEGACY_CATEGORY[meta.level2];
 }
+
